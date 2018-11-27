@@ -1,6 +1,8 @@
 Alma Monthly Payments for WooCommerce
 =====
 
+⚠️ Alma is only available to 🇫🇷 French merchants at the moment ⚠️
+
 Contributors: almapayments, olance  
 Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo commerce, alma, monthly payments, split payments  
 Requires at least: 4.4  
