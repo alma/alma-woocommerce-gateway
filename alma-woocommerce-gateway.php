@@ -11,6 +11,9 @@
  * Text Domain: alma-woocommerce-gateway
  * Domain Path: /languages
  *
+ * WC requires at least: 2.6
+ * WC tested up to: 3.5
+ *
  * Alma Payment Gateway for WooCommerce is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
