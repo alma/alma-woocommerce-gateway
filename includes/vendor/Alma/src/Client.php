@@ -33,7 +33,7 @@ class ParamsError extends \Exception {};
 class DependenciesError extends \Exception {};
 
 class Client {
-    const API_URL = 'http://alma:1337';
+    const API_URL = 'https://api.getalma.eu';
 
     protected $context;
 
