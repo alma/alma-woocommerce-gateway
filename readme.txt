@@ -16,11 +16,12 @@ This plugin adds a new payment method to WooCommerce, which allows you to offer 
 This plugin integrates Alma into WooCommerce by adding a new payment method that you can activate to offer monthly payments to your customers.
 
 == Installation ==
-## Prerequisites
+
+= Prerequisites =
 
 You first need to create your merchant account on [dashboard.getalma.eu](https://dashboard.getalma.eu) and activate your account.
 
-## Configuring the plugin
+= Configuring the plugin =
 
 After installing the plugin, go to WooCommerce settings and activate the new Alma payment method.
 You should be redirected to the payment method settings upon activation.
@@ -37,3 +38,9 @@ Once everything is properly set up, go ahead and switch to \"Live\" mode!
 2. Cart eligibility for monthly payments
 3. Payment method at checkout
 4. Alma\'s payment page that users are sent to upon order confirmation
+
+== Changelog ==
+
+= 1.0.0 =
+* Very first release of the plugin
+* Fill your API keys in, customize messages text and start accepting monthly payments!
