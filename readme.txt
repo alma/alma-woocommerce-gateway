@@ -33,7 +33,7 @@ We advise you to stay in \"Test\" mode until you\'re happy with your configurati
 Once everything is properly set up, go ahead and switch to \"Live\" mode!
 
 == Screenshots ==
-1. Alma\\\'s payment method settings
+1. Alma\'s payment method settings
 2. Cart eligibility for monthly payments
 3. Payment method at checkout
-4. Alma's payment page that users are sent to upon order confirmation
+4. Alma\'s payment page that users are sent to upon order confirmation
