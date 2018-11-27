@@ -117,7 +117,7 @@ class Alma_WC_Plugin {
 
 	public function bootstrap() {
 		try {
-			require_once( $this->includes_path . "vendor/Alma/Alma.php" );
+			require_once( $this->includes_path . "vendor/Alma/autoload.php" );
 			require_once( $this->includes_path . 'class-alma-wc-logger.php' );
 
 			if ( $this->_bootstrapped ) {
