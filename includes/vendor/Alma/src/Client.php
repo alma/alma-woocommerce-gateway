@@ -72,7 +72,7 @@ class Client {
      * @throws DependenciesError
      * @throws ParamsError
      */
-    public function __construct($api_key, $logger, $options) {
+    public function __construct($api_key, $logger, $options = array()) {
         $this->check_dependencies();
 
         if (empty($api_key)) {
