@@ -23,27 +23,25 @@
  *
  */
 
-namespace Alma\API\Endpoints;
+namespace Alma\API\Endpoints\Results;
 
-use Alma\API\Entities\Merchant;
-use Alma\API\RequestError;
+use Alma\API\Response;
 
-class Merchants extends Base
+class Eligibility
 {
-    const MERCHANTS_PATH = '/v1/merchants';
-    const ME_PATH = '/v1/me';
+    public $isEligible;
+    public $reasons;
 
     /**
-     * @throws RequestError
+     * Eligibility constructor.
+     * @param Response $res
      */
-    public function me()
+    public function __construct($res)
     {
-        $res = $this->request(self::ME_PATH . '/extended-data')->get();
+        $this->isEligible = ($res->responseCode == 200);
 
-        if ($res->isError()) {
-            throw new RequestError($res->errorMessage, null, $res);
+        if ($res->responseCode === 406) {
+            $this->reasons = $res->json["reasons"];
         }
-
-        return new Merchant($res->json);
     }
 }
