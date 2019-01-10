@@ -8,21 +8,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Alma_WC_Cart_Handler {
-	public function __construct() {
+    private $logger;
+
+    public function __construct() {
+	    $this->logger = new Alma_WC_Logger();
+
 		if ( ! alma_wc_plugin()->settings->is_usable() ) {
 			return;
 		}
 
 		$locale = get_locale();
 		if ( $locale !== 'fr_FR' ) {
-			Alma_WC_Logger::info( "Locale {$locale} not supported - Not displaying Alma" );
+			$this->logger->info( "Locale {$locale} not supported - Not displaying Alma" );
 
 			return;
 		}
 
 		$currency = get_woocommerce_currency();
 		if ( $currency !== 'EUR' ) {
-			Alma_WC_Logger::info( "Currency {$currency} not supported - Not displaying Alma" );
+			$this->logger->info( "Currency {$currency} not supported - Not displaying Alma" );
 
 			return;
 		}
@@ -42,19 +46,19 @@ class Alma_WC_Cart_Handler {
 		try {
 			$alma        = alma_wc_plugin()->get_alma_client();
 			$eligibility = $alma->payments->eligibility( Alma_WC_Payment::from_cart() );
-		} catch ( \Alma\RequestError $e ) {
-			Alma_WC_Logger::error( 'Error checking payment eligibility: ' . $e->getMessage() );
+		} catch ( \Alma\API\RequestError $e ) {
+			$this->logger->error( 'Error checking payment eligibility: ' . $e->getMessage() );
 
 			return;
 		}
 
-		if ( ! $eligibility->is_eligible ) {
+		if ( ! $eligibility->isEligible ) {
 			$eligibility_msg = alma_wc_plugin()->settings->cart_not_eligible_message;
 
 			try {
 				$merchant = $alma->merchants->me();
-			} catch ( \Alma\RequestError $e ) {
-				Alma_WC_Logger::error( 'Error fetching merchant information: ' . $e->getMessage() );
+			} catch ( \Alma\API\RequestError $e ) {
+				$this->logger->error( 'Error fetching merchant information: ' . $e->getMessage() );
 			}
 
 			if ( isset( $merchant ) && $merchant ) {
@@ -73,7 +77,7 @@ class Alma_WC_Cart_Handler {
 			}
 		}
 		?>
-        <div style="margin: 15px 0">
+        <div class="alma--eligibility-msg" style="margin: 15px 0">
             <img src="<?php echo $logo_url; ?>"
                  style="width: initial !important; height: initial !important; border: none !important; vertical-align: middle"
                  alt="Alma"> <span style="text-transform: initial"><?php echo $eligibility_msg; ?></span>

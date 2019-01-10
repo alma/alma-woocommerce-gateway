@@ -1,0 +1,18 @@
+{
+    "name": "alma/alma-woocommerce-gateway",
+    "description": "Alma WooCommerce integration, adds a new payment method to your shop to let your customers pay in monthly installments",
+    "type": "library",
+    "require": {
+        "alma/alma-php-client": "*"
+    },
+    "license": "GPLv3",
+    "authors": [
+        {
+            "name": "Alma",
+            "email": "contact@getalma.eu"
+        }
+    ],
+    "config": {
+        "vendor-dir": "./includes/vendor"
+    }
+}

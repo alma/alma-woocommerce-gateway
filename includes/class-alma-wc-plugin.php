@@ -58,15 +58,20 @@ class Alma_WC_Plugin {
 	public $settings;
 
 	private $_alma_client;
+    private $logger;
 
-	public function __construct( $file, $version ) {
-		$this->file    = $file;
+    public function __construct( $file, $version ) {
+	    $this->file    = $file;
 		$this->version = $version;
 
 		// Path.
 		$this->plugin_path   = trailingslashit( plugin_dir_path( $this->file ) );
 		$this->plugin_url    = trailingslashit( plugin_dir_url( $this->file ) );
 		$this->includes_path = $this->plugin_path . trailingslashit( 'includes' );
+
+        require_once( $this->includes_path . "vendor/autoload.php" );
+        require_once( $this->includes_path . 'class-alma-wc-logger.php' );
+        $this->logger = new Alma_WC_Logger();
 
 		// Updates
 		if ( version_compare( $version, get_option( 'alma_version' ), '>' ) ) {
@@ -85,12 +90,15 @@ class Alma_WC_Plugin {
 		}
 
 		try {
-			$this->_alma_client = new \Alma\Client( $this->settings->get_active_api_key(), new Alma_WC_Logger() );
+			$this->_alma_client = new \Alma\API\Client( $this->settings->get_active_api_key(), array(
+			        'mode' => $this->settings->get_environment(),
+                    'logger' => $this->logger
+            ) );
 
 			return $this->_alma_client;
 		} catch ( \Exception $e ) {
 			if ( $this->settings->is_logging_enabled() ) {
-				Alma_WC_Logger::error( "Error creating Alma API client: " . print_r( $e, true ) );
+				$this->logger->error( "Error creating Alma API client: " . print_r( $e, true ) );
 			}
 
 			return null;
@@ -117,9 +125,6 @@ class Alma_WC_Plugin {
 
 	public function bootstrap() {
 		try {
-			require_once( $this->includes_path . "vendor/Alma/autoload.php" );
-			require_once( $this->includes_path . 'class-alma-wc-logger.php' );
-
 			if ( $this->_bootstrapped ) {
 				throw new Exception( __( 'WooCommerce Gateway Alma plugin can only be bootstrapped once', ALMA_WC_TEXT_DOMAIN ) );
 			}
@@ -138,7 +143,7 @@ class Alma_WC_Plugin {
 			} );
 
 		} catch ( Exception $e ) {
-			Alma_WC_Logger::error( 'Bootstrap error: ' . $e->getMessage() );
+			$this->logger->error( 'Bootstrap error: ' . $e->getMessage() );
 			$this->handle_settings_exception( $e );
 		}
 	}
@@ -295,7 +300,7 @@ class Alma_WC_Plugin {
 
 		// Don't advertise our payment gateway if we're in test mode and current user is not an admin
 		if ( $this->settings->get_environment() === 'test' && ! current_user_can( 'administrator' ) ) {
-			Alma_WC_Logger::info( "Not displaying Alma in Test mode to non-admin user" );
+			$this->logger->info( "Not displaying Alma in Test mode to non-admin user" );
 
 			return;
 		}
@@ -324,8 +329,8 @@ class Alma_WC_Plugin {
 
 		try {
 			$merchant = $alma->merchants->me();
-		} catch ( \Alma\RequestError $e ) {
-			if ( $e->response && $e->response->response_code === 401 ) {
+		} catch ( \Alma\API\RequestError $e ) {
+			if ( $e->response && $e->response->responseCode === 401 ) {
 				$dashboard_url = 'https://dashboard.getalma.eu/security';
 
 				throw new Exception(
@@ -407,7 +412,7 @@ class Alma_WC_Plugin {
 	 */
 	public function alma_domains_whitelist( $domains ) {
 		$domains[] = 'pay.getalma.eu';
-		$domains[] = 'test.pay.getalma.eu';
+		$domains[] = 'pay.sandbox.getalma.eu';
 
 		return $domains;
 	}
@@ -450,7 +455,7 @@ class Alma_WC_Plugin {
 		$payment_id = $_GET['pid'];
 
 		if ( ! $payment_id ) {
-			Alma_WC_Logger::error( 'Validate payment webhook called without a payment ID' );
+			$this->logger->error( 'Validate payment webhook called without a payment ID' );
 
 			wc_add_notice(
 				__( 'Payment validation error: no ID provided.<br>Please try again or contact us if the problem persists.', ALMA_WC_TEXT_DOMAIN ),

@@ -1,7 +1,7 @@
 <?php
 
-use Alma\Entities\Instalment;
-use Alma\Entities\Payment;
+use Alma\API\Entities\Instalment;
+use Alma\API\Entities\Payment;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -14,11 +14,15 @@ if ( ! class_exists( 'WC_Payment_Gateway' ) ) {
 class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	const GATEWAY_ID = 'alma';
 
-	public function __construct() {
+	private $logger;
+
+    public function __construct() {
 		$this->id                 = self::GATEWAY_ID;
 		$this->has_fields         = false;
 		$this->method_title       = __( 'Alma monthly payments', ALMA_WC_TEXT_DOMAIN );
 		$this->method_description = __( 'Easily provide monthly payments to your customers, risk-free!', ALMA_WC_TEXT_DOMAIN );
+
+		$this->logger = new Alma_WC_Logger();
 
 		$this->init_form_fields();
 		$this->init_settings();
@@ -187,27 +191,27 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		$locale = get_locale();
 		if ( $locale !== 'fr_FR' ) {
-			Alma_WC_Logger::info( "Locale {$locale} not supported - Not displaying Alma" );
+			$this->logger->info( "Locale {$locale} not supported - Not displaying Alma" );
 
 			return false;
 		}
 
 		$currency = get_woocommerce_currency();
 		if ( $currency !== 'EUR' ) {
-			Alma_WC_Logger::info( "Currency {$currency} not supported - Not displaying Alma" );
+			$this->logger->info( "Currency {$currency} not supported - Not displaying Alma" );
 
 			return false;
 		}
 
 		try {
 			$eligibility = $alma->payments->eligibility( Alma_WC_Payment::from_cart() );
-		} catch ( \Alma\RequestError $e ) {
-			Alma_WC_Logger::error( 'Error while checking payment eligibility: ' . print_r( $e, true ) );
+		} catch ( \Alma\API\RequestError $e ) {
+			$this->logger->error( 'Error while checking payment eligibility: ' . print_r( $e, true ) );
 
 			return false;
 		}
 
-		return $eligibility->is_eligible && parent::is_available();
+		return $eligibility->isEligible && parent::is_available();
 	}
 
 	public function process_payment( $order_id ) {
@@ -223,9 +227,9 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		}
 
 		try {
-			$payment = $alma->payments->create_payment( Alma_WC_Payment::from_order( $order_id ) );
-		} catch ( \Alma\RequestError $e ) {
-			Alma_WC_Logger::error( 'Error while creating payment: ' . $e->getMessage() );
+			$payment = $alma->payments->createPayment( Alma_WC_Payment::from_order( $order_id ) );
+		} catch ( \Alma\API\RequestError $e ) {
+			$this->logger->error( 'Error while creating payment: ' . $e->getMessage() );
 			wc_add_notice( $error_msg, 'error' );
 
 			return array( 'result' => 'error' );
@@ -255,8 +259,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		try {
 			$payment = $alma->payments->fetch( $payment_id );
-		} catch ( \Alma\RequestError $e ) {
-			Alma_WC_Logger::error( 'Error while fetching payment with id ' . $payment_id . ': ' . $e->getMessage() );
+		} catch ( \Alma\API\RequestError $e ) {
+			$this->logger->error( 'Error while fetching payment with id ' . $payment_id . ': ' . $e->getMessage() );
 
 			return $this->_redirect_to_cart_with_error( $error_msg );
 		}
@@ -264,20 +268,21 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		try {
 			$order = new Alma_WC_Order( $payment->custom_data['order_id'], $payment->custom_data['order_key'] );
 		} catch ( Exception $e ) {
-			Alma_WC_Logger::error( "Error getting order associated to payment '$payment_id': " . $e->getMessage() );
+			$this->logger->error( "Error getting order associated to payment '$payment_id': " . $e->getMessage() );
 
 			return $this->_redirect_to_cart_with_error( $error_msg );
 		}
 
 		if ( $order->get_total() !== $payment->purchase_amount ) {
-			Alma_WC_Logger::error( "Order {$order->get_id()} total ({$order->get_total()}) does not match purchase amount of '$payment_id' ({$payment->purchase_amount})" );
+			$this->logger->error( "Order {$order->get_id()} total ({$order->get_total()}) does not match purchase amount of '$payment_id' ({$payment->purchase_amount})" );
 
 			return $this->_redirect_to_cart_with_error( $error_msg );
 		}
 
 		$first_instalment = $payment->payment_plan[0];
-		if ( $payment->state !== Payment::STATE_IN_PROGRESS || $first_instalment->state !== Instalment::STATE_PAID ) {
-			Alma_WC_Logger::error( "Payment '$payment_id': state incorrect {$payment->state} & {$first_instalment->state}" );
+		if ( !in_array($payment->state, array(Payment::STATE_IN_PROGRESS, Payment::STATE_PAID)) ||
+            $first_instalment->state !== Instalment::STATE_PAID ) {
+			$this->logger->error( "Payment '$payment_id': state incorrect {$payment->state} & {$first_instalment->state}" );
 
 			return $this->_redirect_to_cart_with_error( $error_msg );
 		}

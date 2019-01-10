@@ -30,7 +30,8 @@ class Alma_WC_Payment {
 		try {
 			$order = new Alma_WC_Order( $order_id );
 		} catch ( Exception $e ) {
-			Alma_WC_Logger::error( "Error getting payment info from order: " . $e->getMessage() );
+		    $logger = new Alma_WC_Logger();
+			$logger->error( "Error getting payment info from order: " . $e->getMessage() );
 
 			return array();
 		}
