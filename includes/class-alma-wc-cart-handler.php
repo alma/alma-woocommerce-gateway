@@ -41,7 +41,7 @@ class Alma_WC_Cart_Handler {
 	 */
 	public function display_cart_eligibility() {
 		$eligibility_msg = alma_wc_plugin()->settings->cart_is_eligible_message;
-		$logo_url        = alma_wc_plugin()->get_asset_url( 'images/tiny_logo.png' );
+		$logo_url        = alma_wc_plugin()->get_asset_url( 'images/alma_logo.svg' );
 
 		try {
 			$alma        = alma_wc_plugin()->get_alma_client();
@@ -79,7 +79,7 @@ class Alma_WC_Cart_Handler {
 		?>
         <div class="alma--eligibility-msg" style="margin: 15px 0">
             <img src="<?php echo $logo_url; ?>"
-                 style="width: initial !important; height: initial !important; border: none !important; vertical-align: middle"
+                 style="width: auto !important; height: 25px !important; border: none !important; vertical-align: middle"
                  alt="Alma"> <span style="text-transform: initial"><?php echo $eligibility_msg; ?></span>
         </div>
 		<?php
