@@ -55,26 +55,18 @@ class Alma_WC_Cart_Handler {
 		if ( ! $eligibility->isEligible ) {
 			$eligibility_msg = alma_wc_plugin()->settings->cart_not_eligible_message;
 
-			try {
-				$merchant = $alma->merchants->me();
-			} catch ( \Alma\API\RequestError $e ) {
-				$this->logger->error( 'Error fetching merchant information: ' . $e->getMessage() );
-			}
+            $cart       = new Alma_WC_Cart();
+            $cart_total = $cart->get_total();
+            $min_amount = $eligibility->constraints["purchase_amount"]["minimum"];
+            $max_amount = $eligibility->constraints["purchase_amount"]["maximum"];
 
-			if ( isset( $merchant ) && $merchant ) {
-				$cart       = new Alma_WC_Cart();
-				$cart_total = $cart->get_total();
-				$min_amount = $merchant->minimum_purchase_amount;
-				$max_amount = $merchant->maximum_purchase_amount;
-
-				if ( $cart_total < $min_amount || $cart_total > $max_amount ) {
-					if ( $cart_total > $max_amount ) {
-						$eligibility_msg .= '<br>' . sprintf( __( '(Maximum amount: %s)', ALMA_WC_TEXT_DOMAIN ), wc_price( alma_wc_price_from_cents( $max_amount ), array( 'decimals' => 0 ) ) );
-					} else {
-						$eligibility_msg .= '<br>' . sprintf( __( '(Minimum amount: %s)', ALMA_WC_TEXT_DOMAIN ), wc_price( alma_wc_price_from_cents( $min_amount ), array( 'decimals' => 0 ) ) );
-					}
-				}
-			}
+            if ( $cart_total < $min_amount || $cart_total > $max_amount ) {
+                if ( $cart_total > $max_amount ) {
+                    $eligibility_msg .= '<br>' . sprintf( __( '(Maximum amount: %s)', ALMA_WC_TEXT_DOMAIN ), wc_price( alma_wc_price_from_cents( $max_amount ), array( 'decimals' => 0 ) ) );
+                } else {
+                    $eligibility_msg .= '<br>' . sprintf( __( '(Minimum amount: %s)', ALMA_WC_TEXT_DOMAIN ), wc_price( alma_wc_price_from_cents( $min_amount ), array( 'decimals' => 0 ) ) );
+                }
+            }
 		}
 		?>
         <div class="alma--eligibility-msg" style="margin: 15px 0">
