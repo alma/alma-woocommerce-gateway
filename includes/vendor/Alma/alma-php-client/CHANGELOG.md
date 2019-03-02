@@ -1,6 +1,27 @@
 CHANGELOG
 =========
 
+v1.0.0
+------
+
+Getting more serious with a 1.0.0 release! 🎉
+
+* Adds User-Agent with PHP and client version
+* Adds ability to add User-Agent "components" to the request
+
+v0.0.7
+-------
+
+* Eligibility check now returns `200 OK` with `{"eligible": false}` for non-eligible purchases:
+    supports legacy `406` status code and the new version
+* New eligibility check's negative response includes constraints that should be met to be eligible
+
+
+v0.0.6
+-------
+
+* Adds the possibility to flag a payment as potentially fraudulent
+
 v0.0.5
 ------
 
