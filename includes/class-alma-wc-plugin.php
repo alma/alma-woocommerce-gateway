@@ -95,6 +95,10 @@ class Alma_WC_Plugin {
                     'logger' => $this->logger
             ) );
 
+            $this->_alma_client->addUserAgentComponent("WordPress", get_bloginfo('version'));
+            $this->_alma_client->addUserAgentComponent("WooCommerce", wc()->version);
+            $this->_alma_client->addUserAgentComponent("Alma for WooCommerce", ALMA_WC_VERSION);
+
 			return $this->_alma_client;
 		} catch ( \Exception $e ) {
 			if ( $this->settings->is_logging_enabled() ) {
