@@ -249,52 +249,32 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		return array( 'result' => 'error', 'redirect' => wc_get_cart_url() );
 	}
 
-	public function validate_payment( $payment_id ) {
-		$error_msg = __( 'There was an error when validating your payment.<br>Please try again or contact us if the problem persists.', ALMA_WC_TEXT_DOMAIN );
+	public function validate_payment_on_customer_return( $payment_id ) {
+        try {
+            $order = Alma_WC_Payment_Validator::validate_payment( $payment_id );
+        } catch ( AlmaPaymentValidationError $e ) {
+            $error_msg = __( 'There was an error when validating your payment.<br>Please try again or contact us if the problem persists.', ALMA_WC_TEXT_DOMAIN );
+            return $this->_redirect_to_cart_with_error( $error_msg );
+        } catch ( \Exception $e ) {
+            return $this->_redirect_to_cart_with_error( $e->getMessage() );
+        }
 
-		$alma = alma_wc_plugin()->get_alma_client();
-		if ( ! $alma ) {
-			return $this->_redirect_to_cart_with_error( $error_msg );
-		}
-
-		try {
-			$payment = $alma->payments->fetch( $payment_id );
-		} catch ( \Alma\API\RequestError $e ) {
-			$this->logger->error( 'Error while fetching payment with id ' . $payment_id . ': ' . $e->getMessage() );
-
-			return $this->_redirect_to_cart_with_error( $error_msg );
-		}
-
-		try {
-			$order = new Alma_WC_Order( $payment->custom_data['order_id'], $payment->custom_data['order_key'] );
-		} catch ( Exception $e ) {
-			$this->logger->error( "Error getting order associated to payment '$payment_id': " . $e->getMessage() );
-
-			return $this->_redirect_to_cart_with_error( $error_msg );
-		}
-
-		if ( $order->get_total() !== $payment->purchase_amount ) {
-			$this->logger->error( "Order {$order->get_id()} total ({$order->get_total()}) does not match purchase amount of '$payment_id' ({$payment->purchase_amount})" );
-
-			return $this->_redirect_to_cart_with_error( $error_msg );
-		}
-
-		$first_instalment = $payment->payment_plan[0];
-		if ( !in_array($payment->state, array(Payment::STATE_IN_PROGRESS, Payment::STATE_PAID)) ||
-            $first_instalment->state !== Instalment::STATE_PAID ) {
-			$this->logger->error( "Payment '$payment_id': state incorrect {$payment->state} & {$first_instalment->state}" );
-
-			return $this->_redirect_to_cart_with_error( $error_msg );
-		}
-
-
-		// If we're down here, everything went OK and we  can validate the order!
-		$order->payment_complete( $payment_id );
-
-		// Redirect user to the order-received page
+		// Redirect user to the order confirmation page
 		$return_url = $this->get_return_url( $order->get_wc_order() );
 		wp_redirect( $return_url );
 
 		return array( 'result' => 'success', 'redirect' => $return_url );
+	}
+
+    public function validate_payment_from_ipn( $payment_id )
+    {
+        try {
+            Alma_WC_Payment_Validator::validate_payment( $payment_id );
+        } catch ( \Exception $e ) {
+            status_header( 500 );
+            wp_send_json( array( 'error' => $e->getMessage() ) );
+        }
+
+        wp_send_json( array( 'success' => true ) );
 	}
 }

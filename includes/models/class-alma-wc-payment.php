@@ -12,8 +12,9 @@ class Alma_WC_Payment {
 
 		$data = array(
 			"payment" => array(
-				"purchase_amount" => $cart->get_total(),
-				'return_url'      => wc()->api_request_url( Alma_WC_Webhooks::ValidatePayment ),
+				"purchase_amount"  => $cart->get_total(),
+				'return_url'       => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::CustomerReturn ),
+				'ipn_callback_url' => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::IpnCallback ),
 			),
 		);
 
@@ -38,9 +39,10 @@ class Alma_WC_Payment {
 
 		$data = array(
 			'payment' => array(
-				'purchase_amount' => $order->get_total(),
-				'return_url'      => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::ValidatePayment ),
-				'custom_data'     => array(
+				'purchase_amount'  => $order->get_total(),
+				'return_url'       => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::CustomerReturn ),
+                'ipn_callback_url' => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::IpnCallback ),
+				'custom_data'      => array(
 					'order_id'  => $order_id,
 					'order_key' => $order->get_order_key()
 				),

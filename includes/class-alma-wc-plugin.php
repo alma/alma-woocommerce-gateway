@@ -113,12 +113,20 @@ class Alma_WC_Plugin {
 		require_once( $this->includes_path . "class-alma-wc-webhooks.php" );
 
 		add_action(
-			Alma_WC_Webhooks::action_for( Alma_WC_Webhooks::ValidatePayment ),
+			Alma_WC_Webhooks::action_for( Alma_WC_Webhooks::CustomerReturn ),
 			array(
 				$this,
-				'handle_validate_payment'
+                'handle_customer_return'
 			)
 		);
+
+        add_action(
+            Alma_WC_Webhooks::action_for( Alma_WC_Webhooks::IpnCallback ),
+            array(
+                $this,
+                'handle_ipn_callback'
+            )
+        );
 
 		add_action( 'init', array( $this, 'bootstrap' ) );
 		add_filter( 'allowed_redirect_hosts', array( $this, 'alma_domains_whitelist' ) );
@@ -297,7 +305,8 @@ class Alma_WC_Plugin {
 		require_once( $this->includes_path . 'models/class-alma-wc-payment.php' );
 
 		require_once( $this->includes_path . 'class-alma-wc-cart-handler.php' );
-		require_once( $this->includes_path . 'class-alma-wc-payment-gateway.php' );
+        require_once( $this->includes_path . 'class-alma-wc-payment-validator.php' );
+        require_once( $this->includes_path . 'class-alma-wc-payment-gateway.php' );
 
 		$this->settings     = new Alma_WC_Settings();
 		$this->cart_handler = new Alma_WC_Cart_Handler();
@@ -455,23 +464,34 @@ class Alma_WC_Plugin {
 	}
 
 	/** WEBHOOKS HANDLERS **/
-	public function handle_validate_payment() {
-		$payment_id = $_GET['pid'];
+    private function get_payment_to_validate() {
+        $payment_id = $_GET['pid'];
 
-		if ( ! $payment_id ) {
-			$this->logger->error( 'Validate payment webhook called without a payment ID' );
+        if ( ! $payment_id ) {
+            $this->logger->error( 'Payment validation webhook called without a payment ID' );
 
-			wc_add_notice(
-				__( 'Payment validation error: no ID provided.<br>Please try again or contact us if the problem persists.', ALMA_WC_TEXT_DOMAIN ),
-				'error'
-			);
+            wc_add_notice(
+                __( 'Payment validation error: no ID provided.<br>Please try again or contact us if the problem persists.', ALMA_WC_TEXT_DOMAIN ),
+                'error'
+            );
 
-			//wp_redirect( wc_get_cart_url() );
+            wp_redirect( wc_get_cart_url() );
+            die();
+        }
 
-			return;
-		}
+        return $payment_id;
+	}
 
-		$gateway = new Alma_WC_Payment_Gateway();
-		$gateway->validate_payment( $payment_id );
+	public function handle_customer_return() {
+        $payment_id = $this->get_payment_to_validate();
+        $gateway = new Alma_WC_Payment_Gateway();
+		$gateway->validate_payment_on_customer_return( $payment_id );
+	}
+
+    public function handle_ipn_callback()
+    {
+        $payment_id = $this->get_payment_to_validate();
+        $gateway = new Alma_WC_Payment_Gateway();
+        $gateway->validate_payment_from_ipn( $payment_id );
 	}
 }
