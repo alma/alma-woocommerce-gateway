@@ -42,32 +42,48 @@ class Alma_WC_Cart_Handler {
 	public function display_cart_eligibility() {
 		$eligibility_msg = alma_wc_plugin()->settings->cart_is_eligible_message;
 		$logo_url        = alma_wc_plugin()->get_asset_url( 'images/alma_logo.svg' );
+        $skip_eligibility_call = false;
 
-		try {
-			$alma        = alma_wc_plugin()->get_alma_client();
-			$eligibility = $alma->payments->eligibility( Alma_WC_Payment::from_cart() );
-		} catch ( \Alma\API\RequestError $e ) {
-			$this->logger->error( 'Error checking payment eligibility: ' . $e->getMessage() );
+        if ( isset( alma_wc_plugin()->settings->excluded_products_list ) && count(alma_wc_plugin()->settings->excluded_products_list) > 0 ) {
+            foreach ( WC()->cart->get_cart() as $key => $cart_item ) {
+                $product = $cart_item['data'];
 
-			return;
-		}
-
-		if ( ! $eligibility->isEligible ) {
-			$eligibility_msg = alma_wc_plugin()->settings->cart_not_eligible_message;
-
-            $cart       = new Alma_WC_Cart();
-            $cart_total = $cart->get_total();
-            $min_amount = $eligibility->constraints["purchase_amount"]["minimum"];
-            $max_amount = $eligibility->constraints["purchase_amount"]["maximum"];
-
-            if ( $cart_total < $min_amount || $cart_total > $max_amount ) {
-                if ( $cart_total > $max_amount ) {
-                    $eligibility_msg .= '<br>' . sprintf( __( '(Maximum amount: %s)', ALMA_WC_TEXT_DOMAIN ), wc_price( alma_wc_price_from_cents( $max_amount ), array( 'decimals' => 0 ) ) );
-                } else {
-                    $eligibility_msg .= '<br>' . sprintf( __( '(Minimum amount: %s)', ALMA_WC_TEXT_DOMAIN ), wc_price( alma_wc_price_from_cents( $min_amount ), array( 'decimals' => 0 ) ) );
+                foreach ( alma_wc_plugin()->settings->excluded_products_list as $category_slug ) {
+                    if ( has_term( $category_slug, 'product_cat', $product->get_id() ) ) {
+                        $skip_eligibility_call = true;
+                        $eligibility_msg = alma_wc_plugin()->settings->cart_not_eligible_message_gift_cards;
+                    }
                 }
             }
-		}
+        }
+
+        if ( ! $skip_eligibility_call ) {
+            try {
+                $alma        = alma_wc_plugin()->get_alma_client();
+                $eligibility = $alma->payments->eligibility( Alma_WC_Payment::from_cart() );
+            } catch ( \Alma\API\RequestError $e ) {
+                $this->logger->error( 'Error checking payment eligibility: ' . $e->getMessage() );
+
+                return;
+            }
+
+            if ( ! $eligibility->isEligible ) {
+                $eligibility_msg = alma_wc_plugin()->settings->cart_not_eligible_message;
+
+                $cart       = new Alma_WC_Cart();
+                $cart_total = $cart->get_total();
+                $min_amount = $eligibility->constraints["purchase_amount"]["minimum"];
+                $max_amount = $eligibility->constraints["purchase_amount"]["maximum"];
+
+                if ( $cart_total < $min_amount || $cart_total > $max_amount ) {
+                    if ( $cart_total > $max_amount ) {
+                        $eligibility_msg .= '<br>' . sprintf( __( '(Maximum amount: %s)', ALMA_WC_TEXT_DOMAIN ), wc_price( alma_wc_price_from_cents( $max_amount ), array( 'decimals' => 0 ) ) );
+                    } else {
+                        $eligibility_msg .= '<br>' . sprintf( __( '(Minimum amount: %s)', ALMA_WC_TEXT_DOMAIN ), wc_price( alma_wc_price_from_cents( $min_amount ), array( 'decimals' => 0 ) ) );
+                    }
+                }
+            }
+        }
 		?>
         <div class="alma--eligibility-msg" style="margin: 15px 0">
             <img src="<?php echo $logo_url; ?>"

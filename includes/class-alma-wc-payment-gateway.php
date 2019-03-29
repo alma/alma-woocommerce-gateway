@@ -139,7 +139,24 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				'desc_tip'    => true,
 				'default'     => __( 'Your cart is not eligible for monthly payments', ALMA_WC_TEXT_DOMAIN ),
 			),
-		);
+
+            'excluded_products_list' => array(
+                'title' => __( 'Excluded product categories', ALMA_WC_TEXT_DOMAIN ),
+                'type' => 'multiselect',
+                'description' => __( 'Exclude all virtual/downloadable product categories, as you cannot sell them with Alma', ALMA_WC_TEXT_DOMAIN ),
+                'desc_tip'    => true,
+                'css' => 'height: 150px;',
+                'options' => $this->product_categories_options(),
+            ),
+
+            'cart_not_eligible_message_gift_cards' => array(
+                'title'       => __( 'Non-eligibility message for excluded products', ALMA_WC_TEXT_DOMAIN ),
+                'type'        => 'text',
+                'description' => __( 'Message displayed below the cart totals when it contains excluded products', ALMA_WC_TEXT_DOMAIN ),
+                'desc_tip'    => true,
+                'default'     => __( 'Gift cards cannot be paid with monthly installments', ALMA_WC_TEXT_DOMAIN ),
+            ),
+        );
 
 		$debug_fields = array(
 			'debug_section' => array(
@@ -184,7 +201,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	}
 
 	public function is_available() {
-		$alma = alma_wc_plugin()->get_alma_client();
+
+        $alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
 			return false;
 		}
@@ -203,7 +221,20 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			return false;
 		}
 
-		try {
+		if ( array_key_exists('excluded_products_list', $this->settings) && count($this->settings['excluded_products_list']) > 0 ) {
+            foreach ( WC()->cart->get_cart() as $key => $cart_item ) {
+                $product = $cart_item['data'];
+
+                foreach ($this->settings['excluded_products_list'] as $category_slug ) {
+                    if ( has_term( $category_slug, 'product_cat', $product->get_id() ) ) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+
+        try {
 			$eligibility = $alma->payments->eligibility( Alma_WC_Payment::from_cart() );
 		} catch ( \Alma\API\RequestError $e ) {
 			$this->logger->error( 'Error while checking payment eligibility: ' . print_r( $e, true ) );
@@ -277,4 +308,27 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
         wp_send_json( array( 'success' => true ) );
 	}
+
+    private function product_categories_options()
+    {
+        $orderby = 'name';
+        $order = 'asc';
+        $hide_empty = false;
+        $cat_args = array(
+            'orderby'    => $orderby,
+            'order'      => $order,
+            'hide_empty' => $hide_empty,
+        );
+
+        $product_categories = get_terms( 'product_cat', $cat_args );
+
+        $options = array();
+        if ( ! empty( $product_categories ) ) {
+            foreach ( $product_categories as $key => $category ) {
+                $options[$category->slug] = $category->name;
+            }
+        }
+
+        return $options;
+    }
 }

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Alma Gateway\n"
-"POT-Creation-Date: 2018-11-27 17:59+0100\n"
-"PO-Revision-Date: 2018-11-27 18:00+0100\n"
+"POT-Creation-Date: 2019-03-29 16:56+0100\n"
+"PO-Revision-Date: 2019-03-29 16:57+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 2.2.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: alma-woocommerce-gateway.php\n"
@@ -21,44 +21,44 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: includes/class-alma-wc-cart-handler.php:68
+#: includes/class-alma-wc-cart-handler.php:80
 #, php-format
 msgid "(Maximum amount: %s)"
 msgstr "(Maximum : %s)"
 
-#: includes/class-alma-wc-cart-handler.php:70
+#: includes/class-alma-wc-cart-handler.php:82
 #, php-format
 msgid "(Minimum amount: %s)"
 msgstr "(Minimum : %s)"
 
-#: includes/class-alma-wc-payment-gateway.php:20
+#: includes/class-alma-wc-payment-gateway.php:22
 msgid "Alma monthly payments"
 msgstr "Paiement en plusieurs fois avec Alma"
 
 #. Description of the plugin/theme
-#: includes/class-alma-wc-payment-gateway.php:21
+#: includes/class-alma-wc-payment-gateway.php:23
 msgid "Easily provide monthly payments to your customers, risk-free!"
 msgstr ""
 "Proposez le paiement en plusieurs fois à vos clients, facilement et sans "
 "risque !"
 
-#: includes/class-alma-wc-payment-gateway.php:46
+#: includes/class-alma-wc-payment-gateway.php:50
 msgid "→ Start by filling in your API keys"
 msgstr "→ Commencez par renseigner vos clefs d’API"
 
-#: includes/class-alma-wc-payment-gateway.php:48
+#: includes/class-alma-wc-payment-gateway.php:52
 msgid "→ API configuration"
 msgstr "→ Configuration de l’API"
 
-#: includes/class-alma-wc-payment-gateway.php:52
+#: includes/class-alma-wc-payment-gateway.php:56
 msgid "Enable/Disable"
 msgstr "Activer/Désactiver"
 
-#: includes/class-alma-wc-payment-gateway.php:54
+#: includes/class-alma-wc-payment-gateway.php:58
 msgid "Enable monthly payments with Alma"
 msgstr "Activer le paiement en plusieurs fois avec Alma"
 
-#: includes/class-alma-wc-payment-gateway.php:62
+#: includes/class-alma-wc-payment-gateway.php:66
 msgid ""
 "You can find your API keys on <a href=\"https://dashboard.getalma.eu/security"
 "\" target=\"_blank\">your Alma dashboard</a>"
@@ -66,19 +66,19 @@ msgstr ""
 "Vous trouverez vos clefs d’API sur <a href=\"https://dashboard.getalma.eu/"
 "security\" target=\"_blank\">votre dashboard Alma</a>"
 
-#: includes/class-alma-wc-payment-gateway.php:65
+#: includes/class-alma-wc-payment-gateway.php:69
 msgid "Live API key"
 msgstr "API key live"
 
-#: includes/class-alma-wc-payment-gateway.php:69
+#: includes/class-alma-wc-payment-gateway.php:73
 msgid "Test API key"
 msgstr "API key de test"
 
-#: includes/class-alma-wc-payment-gateway.php:73
+#: includes/class-alma-wc-payment-gateway.php:77
 msgid "API Mode"
 msgstr "Mode de l’API"
 
-#: includes/class-alma-wc-payment-gateway.php:75
+#: includes/class-alma-wc-payment-gateway.php:79
 msgid ""
 "Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In "
 "Test mode, only admins can see Alma on cart/checkout pages."
@@ -87,23 +87,23 @@ msgstr ""
 "des commandes avec Alma<br>En mode Test, seuls les administrateurs voient "
 "Alma sur les pages de panier/validation de commande."
 
-#: includes/class-alma-wc-payment-gateway.php:78
+#: includes/class-alma-wc-payment-gateway.php:82
 msgid "Test"
 msgstr "Test"
 
-#: includes/class-alma-wc-payment-gateway.php:79
+#: includes/class-alma-wc-payment-gateway.php:83
 msgid "Live"
 msgstr "Live"
 
-#: includes/class-alma-wc-payment-gateway.php:86
+#: includes/class-alma-wc-payment-gateway.php:90
 msgid "→ General configuration"
 msgstr "→ Configuration générale"
 
-#: includes/class-alma-wc-payment-gateway.php:91
+#: includes/class-alma-wc-payment-gateway.php:95
 msgid "Title"
 msgstr "Titre"
 
-#: includes/class-alma-wc-payment-gateway.php:93
+#: includes/class-alma-wc-payment-gateway.php:97
 msgid ""
 "This controls the payment method name which the user sees during checkout."
 msgstr ""
@@ -111,15 +111,15 @@ msgstr ""
 "la validation de commande."
 
 # Default title for payment method on checkout page
-#: includes/class-alma-wc-payment-gateway.php:94
+#: includes/class-alma-wc-payment-gateway.php:98
 msgid "Monthly Payments with Alma"
 msgstr "Payer en plusieurs fois avec Alma"
 
-#: includes/class-alma-wc-payment-gateway.php:98
+#: includes/class-alma-wc-payment-gateway.php:102
 msgid "Description"
 msgstr "Description"
 
-#: includes/class-alma-wc-payment-gateway.php:101
+#: includes/class-alma-wc-payment-gateway.php:105
 msgid ""
 "This controls the payment method description which the user sees during "
 "checkout."
@@ -128,25 +128,52 @@ msgstr ""
 "validation de commande."
 
 # Default payment method description
-#: includes/class-alma-wc-payment-gateway.php:102
+#: includes/class-alma-wc-payment-gateway.php:106
 msgid "Pay in 3 monthly payments with your credit card."
 msgstr "Payez en 3 fois avec votre carte bancaire."
 
-#: includes/class-alma-wc-payment-gateway.php:119
+#: includes/class-alma-wc-payment-gateway.php:123
+msgid "Excluded product categories"
+msgstr "Catégories de produits exclues"
+
+#: includes/class-alma-wc-payment-gateway.php:125
+msgid ""
+"Exclude all virtual/downloadable product categories, as you cannot sell them "
+"with Alma"
+msgstr ""
+"Excluez toutes les catégories de produits virtuels/téléchargeables, qui ne "
+"peuvent être vendus avec Alma"
+
+#: includes/class-alma-wc-payment-gateway.php:132
+msgid "Non-eligibility message for excluded products"
+msgstr "Message de non-éligibilité pour les produits exclus"
+
+#: includes/class-alma-wc-payment-gateway.php:134
+msgid ""
+"Message displayed below the cart totals when it contains excluded products"
+msgstr ""
+"Message affiché en-dessous du total du panier lorsqu’il contient des "
+"produits exclus"
+
+#: includes/class-alma-wc-payment-gateway.php:136
+msgid "Gift cards cannot be paid with monthly installments"
+msgstr "Les cartes cadeaux ne sont pas payables en plusieurs fois"
+
+#: includes/class-alma-wc-payment-gateway.php:140
 msgid "Cart eligibility notice"
 msgstr "Éligibilité du panier"
 
-#: includes/class-alma-wc-payment-gateway.php:121
+#: includes/class-alma-wc-payment-gateway.php:142
 msgid "Display a message about cart eligibility for monthly payments"
 msgstr ""
 "Afficher un message indiquant l’éligibilité du panier au paiement en "
 "plusieurs fois"
 
-#: includes/class-alma-wc-payment-gateway.php:125
+#: includes/class-alma-wc-payment-gateway.php:146
 msgid "Eligibility message"
 msgstr "Message d’éligibilité"
 
-#: includes/class-alma-wc-payment-gateway.php:127
+#: includes/class-alma-wc-payment-gateway.php:148
 msgid ""
 "Message displayed below the cart totals when it is eligible for monthly "
 "payments"
@@ -154,15 +181,15 @@ msgstr ""
 "Message affiché en-dessous du total du panier lorsqu’il est éligible au "
 "paiement en plusieurs fois"
 
-#: includes/class-alma-wc-payment-gateway.php:129
+#: includes/class-alma-wc-payment-gateway.php:150
 msgid "Your cart is eligible for monthly payments"
 msgstr "Commande éligible au paiement en plusieurs fois"
 
-#: includes/class-alma-wc-payment-gateway.php:132
+#: includes/class-alma-wc-payment-gateway.php:153
 msgid "Non-eligibility message"
 msgstr "Message de non-éligibilité"
 
-#: includes/class-alma-wc-payment-gateway.php:134
+#: includes/class-alma-wc-payment-gateway.php:155
 msgid ""
 "Message displayed below the cart totals when it is not eligible for monthly "
 "payments"
@@ -170,34 +197,34 @@ msgstr ""
 "Message affiché en-dessous du total du panier lorsqu’il n’est pas éligible "
 "au paiement en plusieurs fois"
 
-#: includes/class-alma-wc-payment-gateway.php:136
+#: includes/class-alma-wc-payment-gateway.php:157
 msgid "Your cart is not eligible for monthly payments"
 msgstr "Commande non éligible au paiement en plusieurs fois"
 
-#: includes/class-alma-wc-payment-gateway.php:142
+#: includes/class-alma-wc-payment-gateway.php:163
 msgid "→ Debug options"
 msgstr "→ Options de déboggage"
 
-#: includes/class-alma-wc-payment-gateway.php:146
+#: includes/class-alma-wc-payment-gateway.php:167
 msgid "Debug mode"
 msgstr "Mode debug"
 
-#: includes/class-alma-wc-payment-gateway.php:148
+#: includes/class-alma-wc-payment-gateway.php:169
 msgid "Activate debug mode"
 msgstr "Activer le mode debug"
 
-#: includes/class-alma-wc-payment-gateway.php:148
+#: includes/class-alma-wc-payment-gateway.php:169
 #, php-format
 msgid " (<a href=\"%s\">Go to logs</a>)"
 msgstr " (<a href=\"%s\">Voir les logs</a>)"
 
-#: includes/class-alma-wc-payment-gateway.php:149
+#: includes/class-alma-wc-payment-gateway.php:170
 msgid "Enable logging info and errors to help debug any issue with the plugin"
 msgstr ""
 "Active la journalisation d’infos et erreur pour aider au déboggage de "
 "problèmes avec l’extension"
 
-#: includes/class-alma-wc-payment-gateway.php:214
+#: includes/class-alma-wc-payment-gateway.php:249
 msgid ""
 "There was an error processing your payment.<br>Please try again or contact "
 "us if the problem persists."
@@ -205,7 +232,7 @@ msgstr ""
 "Une erreur est survenue lors du traitement de votre paiement.<br>Réessayez "
 "ou contactez-nous si le problème persiste."
 
-#: includes/class-alma-wc-payment-gateway.php:249
+#: includes/class-alma-wc-payment-gateway.php:287
 msgid ""
 "There was an error when validating your payment.<br>Please try again or "
 "contact us if the problem persists."
@@ -213,37 +240,37 @@ msgstr ""
 "Une erreur est survenue lors du traitement de votre paiement.<br>Réessayez "
 "ou contactez-nous si le problème persiste."
 
-#: includes/class-alma-wc-plugin.php:124
+#: includes/class-alma-wc-plugin.php:141
 msgid "WooCommerce Gateway Alma plugin can only be bootstrapped once"
 msgstr ""
 "Le plugin WooCommerce Alma Gateway ne peut être initialisé qu’une seule fois"
 
-#: includes/class-alma-wc-plugin.php:192
+#: includes/class-alma-wc-plugin.php:209
 msgid "Alma requires WooCommerce to be activated"
 msgstr "WooCommerce doit être activé pour que le plugin Alma fonctionne"
 
-#: includes/class-alma-wc-plugin.php:196
+#: includes/class-alma-wc-plugin.php:213
 msgid "Alma requires WooCommerce version 2.6 or greater"
 msgstr "Le plugin Alma nécessite WooCommerce 2.6 ou plus récent"
 
-#: includes/class-alma-wc-plugin.php:200
+#: includes/class-alma-wc-plugin.php:217
 msgid "Alma requires the cURL PHP extension to be installed on your server"
 msgstr ""
 "Le plugin Alma requiert l’installation de l’extension cURL pour PHP sur "
 "votre serveur"
 
-#: includes/class-alma-wc-plugin.php:204
+#: includes/class-alma-wc-plugin.php:221
 msgid "Alma requires the JSON PHP extension to be installed on your server"
 msgstr ""
 "Le plugin Alma requiert l’installation de l’extension JSON pour PHP sur "
 "votre serveur"
 
-#: includes/class-alma-wc-plugin.php:207
+#: includes/class-alma-wc-plugin.php:224
 msgid "Alma requires OpenSSL >= 1.0.1 to be installed on your server"
 msgstr ""
 "Le plugin Alma requiert l’installation de OpenSSL 1.0.1+ sur votre serveur"
 
-#: includes/class-alma-wc-plugin.php:248
+#: includes/class-alma-wc-plugin.php:265
 #, php-format
 msgid ""
 "Thanks for installing Alma! Start by <a href='%s'>activating Alma's payment "
@@ -252,7 +279,7 @@ msgstr ""
 "Merci d’avoir installé Alma ! Commencez par <a href='%s'>activer la méthode "
 "de paiement Alma</a>, puis configurez-la pour vous lancer."
 
-#: includes/class-alma-wc-plugin.php:269
+#: includes/class-alma-wc-plugin.php:286
 #, php-format
 msgid ""
 "Alma is almost ready. To get started, <a href=\"%s\">fill in your API keys</"
@@ -261,7 +288,7 @@ msgstr ""
 "Alma est presque prêt. Pour démarrer, <a href=\"%s\">renseignez vos clefs "
 "d’API</a>."
 
-#: includes/class-alma-wc-plugin.php:318
+#: includes/class-alma-wc-plugin.php:336
 #, php-format
 msgid ""
 "Error while initializing Alma API client.<br><a href=\"%1$s\">Activate debug "
@@ -271,7 +298,7 @@ msgstr ""
 "mode debug</a> et <a href=\"%2$s\">vérifiez les logs</a> pour plus "
 "d’information."
 
-#: includes/class-alma-wc-plugin.php:333
+#: includes/class-alma-wc-plugin.php:351
 #, php-format
 msgid ""
 "Could not connect to Alma using your API keys.<br>Please double check your "
@@ -281,12 +308,12 @@ msgstr ""
 "vérifier vos clefs sur votre <a href=\"%1$s\" target=\"_blank\">dashboard "
 "Alma</a>."
 
-#: includes/class-alma-wc-plugin.php:340
+#: includes/class-alma-wc-plugin.php:358
 #, php-format
 msgid "Alma encountered an error when fetching merchant status: %s"
 msgstr "Alma a rencontré une erreur en récupérant vos données marchand: %s"
 
-#: includes/class-alma-wc-plugin.php:351
+#: includes/class-alma-wc-plugin.php:369
 #, php-format
 msgid ""
 "Your Alma account needs to be activated before you can use Alma on your shop."
@@ -298,11 +325,11 @@ msgstr ""
 "\">dashboard Alma</a> pour activer votre compte.<br><a href=\"%2$s"
 "\">Rafraîchissez la page</a> lorsque c’est fait."
 
-#: includes/class-alma-wc-plugin.php:431
+#: includes/class-alma-wc-plugin.php:449
 msgid "Settings"
 msgstr "Configuration"
 
-#: includes/class-alma-wc-plugin.php:456
+#: includes/class-alma-wc-plugin.php:474
 msgid ""
 "Payment validation error: no ID provided.<br>Please try again or contact us "
 "if the problem persists."
