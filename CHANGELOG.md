@@ -1,6 +1,13 @@
 Changelog
 =========
 
+v1.1.0
+------
+
+* Fixes case of "alma" in includes path
+* Adds possibility to exclude product categories from installment payments, to help enforce contractual restrictions 
+  (i.e. Alma cannot be used to sell/buy virtual/downloadable products such as gift cards, subscriptions, ...)
+
 v1.0.1
 ------
 Let's start following semver.
