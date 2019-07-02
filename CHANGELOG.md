@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v1.1.1
+------
+
+* Fixes bug occurring in `wp-admin/nav-menus.php`
+
 v1.1.0
 ------
 
