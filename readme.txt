@@ -41,6 +41,9 @@ Once everything is properly set up, go ahead and switch to \"Live\" mode!
 
 == Changelog ==
 
+= 1.1.2 =
+* Adds hidden option to be able to choose installments count to use for created payments
+
 = 1.1.1 =
 * Fixes bug occurring in `wp-admin/nav-menus.php`
 

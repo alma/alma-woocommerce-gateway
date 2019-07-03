@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v1.1.2
+------
+
+* Adds hidden option to be able to choose installments count to use for created payments
+
 v1.1.1
 ------
 
