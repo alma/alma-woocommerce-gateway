@@ -9,6 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Alma_WC_Settings {
 	const OPTIONS_KEY = 'alma_wc_settings';
+	const INSTALLMENTS_COUNT_OPTION = 'alma_installments_count';
 
 	/**
 	 * Setting values from get_option.
@@ -139,4 +140,9 @@ class Alma_WC_Settings {
 	public function get_environment() {
 		return 'live' === $this->environment ? 'live' : 'test';
 	}
+
+    public function get_installments_count()
+    {
+        return (int)get_option(self::INSTALLMENTS_COUNT_OPTION, 3);
+    }
 }

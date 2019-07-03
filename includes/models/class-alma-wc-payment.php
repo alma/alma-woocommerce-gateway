@@ -27,7 +27,7 @@ class Alma_WC_Payment {
 		return $data;
 	}
 
-	public static function from_order( $order_id ) {
+	public static function from_order( $order_id, $installments_count ) {
 		try {
 			$order = new Alma_WC_Order( $order_id );
 		} catch ( Exception $e ) {
@@ -42,6 +42,7 @@ class Alma_WC_Payment {
 				'purchase_amount'  => $order->get_total(),
 				'return_url'       => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::CustomerReturn ),
                 'ipn_callback_url' => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::IpnCallback ),
+				'installments_count' => $installments_count,
 				'custom_data'      => array(
 					'order_id'  => $order_id,
 					'order_key' => $order->get_order_key()

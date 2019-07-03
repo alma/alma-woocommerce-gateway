@@ -261,7 +261,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		}
 
 		try {
-			$payment = $alma->payments->createPayment( Alma_WC_Payment::from_order( $order_id ) );
+			$payment = $alma->payments->createPayment( Alma_WC_Payment::from_order( $order_id, alma_wc_plugin()->settings->get_installments_count() ) );
 		} catch ( \Alma\API\RequestError $e ) {
 			$this->logger->error( 'Error while creating payment: ' . $e->getMessage() );
 			wc_add_notice( $error_msg, 'error' );
