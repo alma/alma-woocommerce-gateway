@@ -3,7 +3,7 @@
  * Plugin Name: Alma Monthly Payments for WooCommerce
  * Plugin URI: https://www.getalma.eu/wordpress
  * Description: Easily provide monthly payments to your customers, risk-free!
- * Version: 1.1.2
+ * Version: 1.1.3
  * Author: Alma
  * Author URI: https://www.getalma.eu
  * License: GNU General Public License v3.0
@@ -32,7 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' );
 }
 
-define( 'ALMA_WC_VERSION', '1.1.2' );
+define( 'ALMA_WC_VERSION', '1.1.3' );
 define( 'ALMA_WC_TEXT_DOMAIN', 'alma-woocommerce-gateway' );
 
 /**

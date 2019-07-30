@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v1.1.3
+-------
+
+* Fixes warning when `excluded_products_list` is not set
+
 v1.1.2
 ------
 
