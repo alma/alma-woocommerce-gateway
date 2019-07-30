@@ -44,7 +44,11 @@ class Alma_WC_Cart_Handler {
 		$logo_url        = alma_wc_plugin()->get_asset_url( 'images/alma_logo.svg' );
         $skip_eligibility_call = false;
 
-        if ( isset( alma_wc_plugin()->settings->excluded_products_list ) && count(alma_wc_plugin()->settings->excluded_products_list) > 0 ) {
+        if (
+                isset( alma_wc_plugin()->settings->excluded_products_list ) &&
+                is_array(alma_wc_plugin()->settings->excluded_products_list) &&
+                count(alma_wc_plugin()->settings->excluded_products_list) > 0
+        ) {
             foreach ( WC()->cart->get_cart() as $key => $cart_item ) {
                 $product = $cart_item['data'];
 

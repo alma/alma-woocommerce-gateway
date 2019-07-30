@@ -224,7 +224,11 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			return false;
 		}
 
-		if ( array_key_exists('excluded_products_list', $this->settings) && count($this->settings['excluded_products_list']) > 0 ) {
+		if (
+		    array_key_exists('excluded_products_list', $this->settings) &&
+            is_array($this->settings['excluded_products_list']) &&
+            count($this->settings['excluded_products_list']) > 0
+        ) {
             foreach ( WC()->cart->get_cart() as $key => $cart_item ) {
                 $product = $cart_item['data'];
 
