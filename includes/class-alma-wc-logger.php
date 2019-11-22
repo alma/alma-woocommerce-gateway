@@ -20,7 +20,7 @@ class Alma_WC_Logger extends \Psr\Log\AbstractLogger
 
 	public function log($level, $message, array $context = array())
     {
-        if ( ! alma_wc_plugin()->settings->is_logging_enabled() ) {
+        if ( ! is_callable("wc") || ( alma_wc_plugin()->settings && ! alma_wc_plugin()->settings->is_logging_enabled()) ) {
             return;
         }
 
