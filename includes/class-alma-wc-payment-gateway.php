@@ -201,7 +201,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	}
 
 	public function is_available() {
-        if ( is_admin() ) {
+        // If we're in the context of the admin or an API call, don't
+        if ( is_admin() || alma_wc_is_rest_call() ) {
             return parent::is_available();
         }
 
