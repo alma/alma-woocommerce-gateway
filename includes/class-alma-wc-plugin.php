@@ -145,6 +145,10 @@ class Alma_WC_Plugin {
 
 			delete_option( 'alma_bootstrap_warning_message' );
 
+            require_once( $this->includes_path . 'alma-wc-functions.php' );
+            require_once( $this->includes_path . 'class-alma-wc-settings.php' );
+            $this->settings = new Alma_WC_Settings();
+
 			$this->_check_dependencies();
 			$this->_run();
 
@@ -170,9 +174,10 @@ class Alma_WC_Plugin {
 
 		delete_option( 'alma_bootstrap_warning_message_dismissed' );
 		update_option( 'alma_bootstrap_warning_message', $e->getMessage() );
-		$this->show_settings_warning();
 
-		$this->settings->warnings_handled = true;
+        add_action( 'admin_notices', array( $this, 'show_settings_warning' ) );
+
+        $this->settings->warnings_handled = true;
 	}
 
 	public function show_settings_warning() {
@@ -296,9 +301,6 @@ class Alma_WC_Plugin {
 	protected function _run() {
 		// TODO: Handle privacy message/personal data exporter/eraser
 		// require_once( $this->includes_path . 'class-alma-privacy.php' );
-		require_once( $this->includes_path . 'alma-wc-functions.php' );
-		require_once( $this->includes_path . 'class-alma-wc-settings.php' );
-
 		require_once( $this->includes_path . 'models/class-alma-wc-cart.php' );
 		require_once( $this->includes_path . 'models/class-alma-wc-customer.php' );
 		require_once( $this->includes_path . 'models/class-alma-wc-order.php' );
@@ -308,7 +310,6 @@ class Alma_WC_Plugin {
         require_once( $this->includes_path . 'class-alma-wc-payment-validator.php' );
         require_once( $this->includes_path . 'class-alma-wc-payment-gateway.php' );
 
-		$this->settings     = new Alma_WC_Settings();
 		$this->cart_handler = new Alma_WC_Cart_Handler();
 
 		// Don't advertise our payment gateway if we're in test mode and current user is not an admin
