@@ -1,6 +1,14 @@
 Changelog
 =========
 
+v1.1.4
+-------
+
+* Fixes various warnings when WooCommerce isn't activated
+* Updates dependencies
+* Fixes errors when Alma's API is not available
+* Attempt to fix problem triggered when calling the Wordpress API 
+
 v1.1.3
 -------
 

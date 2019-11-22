@@ -41,6 +41,12 @@ Once everything is properly set up, go ahead and switch to \"Live\" mode!
 
 == Changelog ==
 
+= 1.1.4 =
+* Fixes various warnings when WooCommerce isn't activated
+* Updates dependencies
+* Fixes errors when Alma's API is not available
+* Attempt to fix problem triggered when calling the Wordpress API
+
 = 1.1.3 =
 * Fixes warning when `excluded_products_list` is not set
 

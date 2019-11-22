@@ -32,7 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' );
 }
 
-define( 'ALMA_WC_VERSION', '1.1.3' );
+define( 'ALMA_WC_VERSION', '1.1.4' );
 define( 'ALMA_WC_TEXT_DOMAIN', 'alma-woocommerce-gateway' );
 
 /**
