@@ -2,7 +2,7 @@
 Contributors: almapayments, olance
 Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo commerce, alma, monthly payments, split payments
 Requires at least: 4.4
-Tested up to: 4.9
+Tested up to: 5.3
 Requires PHP: 5.3
 Stable tag: 1.0
 License: GPLv3
@@ -40,6 +40,10 @@ Once everything is properly set up, go ahead and switch to \"Live\" mode!
 4. Alma\'s payment page that users are sent to upon order confirmation
 
 == Changelog ==
+
+= 1.1.5 =
+* Fixes display on cart option that was always on
+* Tested against latest versions of Wordpress/WooCommerce
 
 = 1.1.4 =
 * Fixes various warnings when WooCommerce isn't activated

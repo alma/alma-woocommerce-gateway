@@ -1,6 +1,13 @@
 Changelog
 =========
 
+
+v1.1.5
+-------
+
+* Fixes display on cart option that was always on
+* Tested against latest versions of Wordpress/WooCommerce
+
 v1.1.4
 -------
 
