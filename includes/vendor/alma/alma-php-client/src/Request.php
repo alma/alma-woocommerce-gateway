@@ -54,6 +54,7 @@ class Request
     private $curlHandle;
     private $queryParams = array();
     private $headers = array();
+    private $hasData;
 
     /**
      * @param $context ClientContext    The current client context
@@ -75,6 +76,7 @@ class Request
     {
         $this->context = $context;
         $this->url = $url;
+        $this->hasData = false;
         $this->initCurl();
     }
 
@@ -172,8 +174,14 @@ class Request
     public function setRequestBody($data = array())
     {
         $body = $data ? json_encode($data) : '';
+
         curl_setopt($this->curlHandle, CURLOPT_POSTFIELDS, $body);
-        $this->headers[] = 'Content-type: application/json';
+
+        if ($body) {
+            $this->headers[] = 'Content-type: application/json';
+            $this->hasData = true;
+        }
+
         return $this;
     }
 
@@ -208,10 +216,52 @@ class Request
      */
     public function post()
     {
+        // If no data was set, force an empty body to make sure we don't get a 411 error from some servers
+        if (!$this->hasData) {
+            $this->setRequestBody(null);
+        }
+
         curl_setopt_array($this->curlHandle, array(
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_HTTPGET => false,
             CURLOPT_POST => true,
+        ));
+
+        return $this->exec();
+    }
+
+    /**
+     * @return Response
+     * @throws RequestError
+     */
+    public function put()
+    {
+        // If no data was set, force an empty body to make sure we don't get a 411 error from some servers
+        if (!$this->hasData) {
+            $this->setRequestBody(null);
+        }
+
+        curl_setopt_array($this->curlHandle, array(
+            CURLOPT_CUSTOMREQUEST => 'PUT',
+            CURLOPT_HTTPGET => false,
+            CURLOPT_POST => true,
+        ));
+
+        return $this->exec();
+    }
+
+    /**
+     * @return Response
+     * @throws RequestError
+     */
+    public function delete()
+    {
+        $this->setRequestBody(null);
+
+        curl_setopt_array($this->curlHandle, array(
+            CURLOPT_CUSTOMREQUEST => 'DELETE',
+            CURLOPT_HTTPGET => false,
+            CURLOPT_POST => false,
         ));
 
         return $this->exec();

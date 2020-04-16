@@ -1,17 +1,17 @@
 [
     {
         "name": "alma/alma-php-client",
-        "version": "v1.0.0",
-        "version_normalized": "1.0.0.0",
+        "version": "v1.0.10",
+        "version_normalized": "1.0.10.0",
         "source": {
             "type": "git",
             "url": "https://github.com/alma/alma-php-client.git",
-            "reference": "4dbb769661e759bb31420494568ce4f29bf32eab"
+            "reference": "05d75ad6817d9af29cf5f6c8b42d980bdd8f3e61"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/alma/alma-php-client/zipball/4dbb769661e759bb31420494568ce4f29bf32eab",
-            "reference": "4dbb769661e759bb31420494568ce4f29bf32eab",
+            "url": "https://api.github.com/repos/alma/alma-php-client/zipball/05d75ad6817d9af29cf5f6c8b42d980bdd8f3e61",
+            "reference": "05d75ad6817d9af29cf5f6c8b42d980bdd8f3e61",
             "shasum": ""
         },
         "require": {
@@ -20,10 +20,11 @@
         "require-dev": {
             "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
             "phpcompatibility/php-compatibility": "^9.0",
+            "phpunit/phpunit": "^8",
             "roave/security-advisories": "@dev",
             "squizlabs/php_codesniffer": "^3.3"
         },
-        "time": "2019-03-01T14:36:50+00:00",
+        "time": "2020-03-30T22:09:54+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

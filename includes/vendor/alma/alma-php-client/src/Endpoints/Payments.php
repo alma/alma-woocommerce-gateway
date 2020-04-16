@@ -26,6 +26,7 @@
 namespace Alma\API\Endpoints;
 
 use Alma\API\Endpoints\Results\Eligibility;
+use Alma\API\Entities\Order;
 use Alma\API\Entities\Payment;
 use Alma\API\RequestError;
 
@@ -42,13 +43,35 @@ class Payments extends Base
     public function eligibility($orderData)
     {
         $res = $this->request(self::PAYMENTS_PATH . '/eligibility')->setRequestBody($orderData)->post();
-        $result = new Eligibility($res);
 
-        if (!$result->isEligible) {
+        $serverError = $res->responseCode >= 500;
+
+        if (!$serverError && is_assoc_array($res->json)) {
+            $result = new Eligibility($res->json, $res->responseCode);
+            if (!$result->isEligible()) {
+                $this->logger->info(
+                    "Eligibility check failed for following reasons: " .
+                    var_export($result->reasons, true)
+                );
+            }
+        } elseif (!$serverError && is_array($res->json)) {
+            $result = [];
+            foreach ($res->json as $data) {
+                $eligibility = new Eligibility($data, $res->responseCode);
+                $result[$eligibility->getInstallmentsCount()] = $eligibility;
+                if (!$eligibility->isEligible()) {
+                    $this->logger->info(
+                        "Eligibility check failed for following reasons: " .
+                        var_export($eligibility->reasons, true)
+                    );
+                }
+            }
+        } else {
             $this->logger->info(
-                "Eligibility check failed for following reasons: " .
-                var_export($result->reasons, true)
+                "Unexpected value from eligibility: " . var_export($res->json, true)
             );
+
+            $result = new Eligibility(array("eligible" => false), $res->responseCode);
         }
 
         return $result;
@@ -60,7 +83,7 @@ class Payments extends Base
      * @return Payment
      * @throws RequestError
      */
-    public function createPayment($data)
+    public function create($data)
     {
         $res = $this->request(self::PAYMENTS_PATH)->setRequestBody($data)->post();
 
@@ -70,6 +93,19 @@ class Payments extends Base
 
         return new Payment($res->json);
     }
+
+    /**
+     * @param $data
+     *
+     * @return Payment
+     * @throws RequestError
+     * @deprecated Use Payments::create() instead
+     */
+    public function createPayment($data)
+    {
+        return $this->create($data);
+    }
+
 
     /**
      * @param $id string The external ID for the payment to fetch
@@ -110,4 +146,55 @@ class Payments extends Base
 
         return true;
     }
+
+    /**
+     * @param string $id ID of the payment to be refunded
+     * @param bool $totalRefund Should the payment be completely refunded? In this case, $amount is not required as the
+     *                          API will automatically compute the amount to refund, including possible customer fees
+     * @param int $amount Amount that should be refunded, for a partial refund. Must be expressed as a cents
+     *                          integer
+     * @return Payment
+     * @throws RequestError
+     */
+    public function refund($id, $totalRefund = true, $amount = null)
+    {
+        $req = $this->request(self::PAYMENTS_PATH . "/$id/refund");
+
+        if (!$totalRefund) {
+            $req->setRequestBody(array("amount" => $amount));
+        }
+
+        $res = $req->post();
+        if ($res->isError()) {
+            throw new RequestError($res->errorMessage, $req, $res);
+        }
+
+        return new Payment($res->json);
+    }
+
+    /**
+     * Adds an Order to the given Payment, possibly overwriting existing orders
+     *
+     * @param string $id ID of the payment to which the order must be added
+     * @param array $orderData Data of the Order
+     * @param bool $overwrite Should the order replace any other order set on the payment, or be appended to the payment's orders (default: false)
+     *
+     * @return Order
+     *
+     * @throws RequestError
+     */
+    public function addOrder($id, $orderData, $overwrite = false)
+    {
+        $req = $this->request(self::PAYMENTS_PATH . "/$id/orders")->setRequestBody(array("order" => $orderData));
+
+        $res = null;
+        if ($overwrite) {
+            $res = $req->post();
+        } else {
+            $res = $req->put();
+        }
+
+        return new Order(end($res->json));
+    }
+
 }

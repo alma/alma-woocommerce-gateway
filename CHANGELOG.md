@@ -1,6 +1,10 @@
 Changelog
 =========
 
+v1.1.6
+------
+
+* Dependencies update
 
 v1.1.5
 -------

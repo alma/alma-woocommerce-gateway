@@ -41,6 +41,9 @@ Once everything is properly set up, go ahead and switch to \"Live\" mode!
 
 == Changelog ==
 
+= 1.1.6 =
+* Dependencies update
+
 = 1.1.5 =
 * Fixes display on cart option that was always on
 * Tested against latest versions of Wordpress/WooCommerce
