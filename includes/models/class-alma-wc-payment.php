@@ -19,9 +19,9 @@ class Alma_WC_Payment {
 		);
 
 		if ( $customer->has_data() ) {
-			$data['payment']['billing_address']  = $customer->get_billing_address();
-			$data['payment']['shipping_address'] = $customer->get_shipping_address();
-			$data['customer']                    = $customer->get_data();
+			$data[ 'payment' ][ 'billing_address' ]  = $customer->get_billing_address();
+			$data[ 'payment' ][ 'shipping_address' ] = $customer->get_shipping_address();
+			$data[ 'customer' ]                    = $customer->get_data();
 		}
 
 		return $data;
@@ -42,38 +42,44 @@ class Alma_WC_Payment {
 				'purchase_amount'  => $order->get_total(),
 				'return_url'       => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::CustomerReturn ),
                 'ipn_callback_url' => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::IpnCallback ),
+				'customer_cancel_url' => self::get_customer_cancel_url(),
 				'installments_count' => $installments_count,
 				'custom_data'      => array(
 					'order_id'  => $order_id,
 					'order_key' => $order->get_order_key()
 				),
 			),
+            'order' => array(
+                'merchant_reference' => $order->get_order_reference(),
+                'merchant_url' => $order->get_merchant_url(),
+                'customer_url' => $order->get_customer_url()
+            )
 		);
 
 		if ( $order->has_billing_address() ) {
 			$billing_address                    = $order->get_billing_address();
-			$data['payment']['billing_address'] = $billing_address;
+			$data[ 'payment' ][ 'billing_address' ] = $billing_address;
 
-			$data['customer'] = array(
-				'first_name' => $billing_address['first_name'],
-				'last_name'  => $billing_address['last_name'],
-				'email'      => $billing_address['email'],
-				'phone'      => $billing_address['phone'],
+			$data[ 'customer' ] = array(
+				'first_name' => $billing_address[ 'first_name' ],
+				'last_name'  => $billing_address[ 'last_name' ],
+				'email'      => $billing_address[ 'email' ],
+				'phone'      => $billing_address[ 'phone' ],
 				'addresses'  => array( $billing_address ),
 			);
 		}
 
 		if ( $order->has_shipping_address() ) {
 			$shipping_address                    = $order->get_shipping_address();
-			$data['payment']['shipping_address'] = $shipping_address;
+			$data[ 'payment' ][ 'shipping_address' ] = $shipping_address;
 
 			$customer_data = array(
-				'first_name' => $shipping_address['first_name'],
-				'last_name'  => $shipping_address['last_name'],
+				'first_name' => $shipping_address[ 'first_name' ],
+				'last_name'  => $shipping_address[ 'last_name' ],
 				'addresses'  => array( $shipping_address ),
 			);
 
-			$data['customer'] = alma_wc_array_merge_recursive( $data['customer'], $customer_data );
+			$data[ 'customer' ] = alma_wc_array_merge_recursive( $data[ 'customer' ], $customer_data );
 		}
 
 		// Merge built data on data extracted from Cart to have as much data as possible
@@ -81,4 +87,12 @@ class Alma_WC_Payment {
 
 		return $data;
 	}
+
+	public static function get_customer_cancel_url() {
+	    if ( version_compare( wc()->version, '2.5.0', '<' ) ) {
+	        return wc()->cart->get_checkout_url();
+        } else {
+	        return wc_get_checkout_url();
+        }
+    }
 }

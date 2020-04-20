@@ -59,6 +59,10 @@ class Alma_WC_Order {
 		}
 	}
 
+	public function get_order_reference() {
+	    return $this->order->get_order_number();
+    }
+
 	public function has_billing_address() {
 		if ( $this->legacy ) {
 			return $this->order->billing_address_1 || $this->order->billing_address_2;
@@ -130,4 +134,22 @@ class Alma_WC_Order {
 			);
 		}
 	}
+
+	public function get_customer_url() {
+	    return $this->order->get_view_order_url();
+    }
+
+    public function get_merchant_url() {
+        $admin_path = 'post.php?post=' . $this->order->get_id() . '&action=edit';
+
+        if ( version_compare( wc()->version, '2.6.0', '<' ) ) {
+            return '';
+        } elseif ( version_compare( wc()->version, '3.0.0', '<' ) ) {
+            return admin_url($admin_path);
+        } elseif ( version_compare( wc()->version, '3.3.0', '<' ) ) {
+            return get_admin_url( null, $admin_path);
+        } else {
+	        return $this->order->get_edit_order_url();
+        }
+    }
 }

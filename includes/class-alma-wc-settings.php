@@ -141,6 +141,20 @@ class Alma_WC_Settings {
 		return 'live' === $this->environment ? 'live' : 'test';
 	}
 
+    /**
+     * @return bool
+     */
+    public function is_live() {
+	    return $this->get_environment() === 'live';
+    }
+
+    /**
+     * @return bool
+     */
+    public function is_test() {
+        return $this->get_environment() === 'test';
+    }
+
     public function get_installments_count()
     {
         return (int)get_option(self::INSTALLMENTS_COUNT_OPTION, 3);
