@@ -1,6 +1,15 @@
 Changelog
 =========
 
+v1.1.7
+------
+
+* Do not require Live key in Test mode and vice versa
+* Include cancel url, order reference & order URLs in payment data
+* Don't show the eligibility message in case of API error
+* Stop checking in vendor dependencies – they'll be included in each release's ZIP file
+
+
 v1.1.6
 ------
 

@@ -2,8 +2,8 @@
 Contributors: almapayments, olance
 Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo commerce, alma, monthly payments, split payments
 Requires at least: 4.4
-Tested up to: 5.3
-Requires PHP: 5.3
+Tested up to: 5.4
+Requires PHP: 5.6
 Stable tag: 1.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -40,6 +40,12 @@ Once everything is properly set up, go ahead and switch to \"Live\" mode!
 4. Alma\'s payment page that users are sent to upon order confirmation
 
 == Changelog ==
+
+= 1.17 =
+* Do not require Live key in Test mode and vice versa
+* Include cancel url, order reference & order URLs in payment data
+* Don't show the eligibility message in case of API error
+* Stop checking in vendor dependencies – they'll be included in each release's ZIP file
 
 = 1.1.6 =
 * Dependencies update
