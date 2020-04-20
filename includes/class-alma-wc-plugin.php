@@ -284,7 +284,7 @@ class Alma_WC_Plugin {
 		$live_api_key = $this->settings->live_api_key;
 		$test_api_key = $this->settings->test_api_key;
 
-		if ( ! $live_api_key || ! $test_api_key ) {
+		if ( ( ! $live_api_key && $this->settings->is_live() ) || ( ! $test_api_key && $this->settings->is_test() ) ) {
 			$settings_url = $this->get_admin_setting_url();
 			throw new Exception(
 				sprintf(
