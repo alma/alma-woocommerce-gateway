@@ -79,6 +79,11 @@ class Alma_WC_Cart_Handler {
                 $min_amount = $eligibility->constraints["purchase_amount"]["minimum"];
                 $max_amount = $eligibility->constraints["purchase_amount"]["maximum"];
 
+                // TODO: The PHP client should allow us to check whether the Eligibility call resulted in an error
+                if ( $max_amount === null || (int) $max_amount === 0  ) {
+                    return;
+                }
+
                 if ( $cart_total < $min_amount || $cart_total > $max_amount ) {
                     if ( $cart_total > $max_amount ) {
                         $eligibility_msg .= '<br>' . sprintf( __( '(Maximum amount: %s)', ALMA_WC_TEXT_DOMAIN ), wc_price( alma_wc_price_from_cents( $max_amount ), array( 'decimals' => 0 ) ) );
