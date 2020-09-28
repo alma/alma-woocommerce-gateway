@@ -58,10 +58,10 @@ class Alma_WC_Plugin {
 	public $settings;
 
 	private $_alma_client;
-    private $logger;
+	private $logger;
 
-    public function __construct( $file, $version ) {
-	    $this->file    = $file;
+	public function __construct( $file, $version ) {
+		$this->file    = $file;
 		$this->version = $version;
 
 		// Path.
@@ -69,9 +69,9 @@ class Alma_WC_Plugin {
 		$this->plugin_url    = trailingslashit( plugin_dir_url( $this->file ) );
 		$this->includes_path = $this->plugin_path . trailingslashit( 'includes' );
 
-        require_once( $this->includes_path . "vendor/autoload.php" );
-        require_once( $this->includes_path . 'class-alma-wc-logger.php' );
-        $this->logger = new Alma_WC_Logger();
+		require_once $this->includes_path . 'vendor/autoload.php';
+		require_once $this->includes_path . 'class-alma-wc-logger.php';
+		$this->logger = new Alma_WC_Logger();
 
 		// Updates
 		if ( version_compare( $version, get_option( 'alma_version' ), '>' ) ) {
@@ -90,19 +90,22 @@ class Alma_WC_Plugin {
 		}
 
 		try {
-			$this->_alma_client = new \Alma\API\Client( $this->settings->get_active_api_key(), array(
-			        'mode' => $this->settings->get_environment(),
-                    'logger' => $this->logger
-            ) );
+			$this->_alma_client = new \Alma\API\Client(
+				$this->settings->get_active_api_key(),
+				array(
+					'mode'   => $this->settings->get_environment(),
+					'logger' => $this->logger,
+				)
+			);
 
-            $this->_alma_client->addUserAgentComponent("WordPress", get_bloginfo('version'));
-            $this->_alma_client->addUserAgentComponent("WooCommerce", wc()->version);
-            $this->_alma_client->addUserAgentComponent("Alma for WooCommerce", ALMA_WC_VERSION);
+			$this->_alma_client->addUserAgentComponent( 'WordPress', get_bloginfo( 'version' ) );
+			$this->_alma_client->addUserAgentComponent( 'WooCommerce', wc()->version );
+			$this->_alma_client->addUserAgentComponent( 'Alma for WooCommerce', ALMA_WC_VERSION );
 
 			return $this->_alma_client;
 		} catch ( \Exception $e ) {
 			if ( $this->settings->is_logging_enabled() ) {
-				$this->logger->error( "Error creating Alma API client: " . print_r( $e, true ) );
+				$this->logger->error( 'Error creating Alma API client: ' . print_r( $e, true ) );
 			}
 
 			return null;
@@ -110,23 +113,23 @@ class Alma_WC_Plugin {
 	}
 
 	public function try_running() {
-		require_once( $this->includes_path . "class-alma-wc-webhooks.php" );
+		require_once $this->includes_path . 'class-alma-wc-webhooks.php';
 
 		add_action(
 			Alma_WC_Webhooks::action_for( Alma_WC_Webhooks::CustomerReturn ),
 			array(
 				$this,
-                'handle_customer_return'
+				'handle_customer_return',
 			)
 		);
 
-        add_action(
-            Alma_WC_Webhooks::action_for( Alma_WC_Webhooks::IpnCallback ),
-            array(
-                $this,
-                'handle_ipn_callback'
-            )
-        );
+		add_action(
+			Alma_WC_Webhooks::action_for( Alma_WC_Webhooks::IpnCallback ),
+			array(
+				$this,
+				'handle_ipn_callback',
+			)
+		);
 
 		add_action( 'init', array( $this, 'bootstrap' ) );
 		add_filter( 'allowed_redirect_hosts', array( $this, 'alma_domains_whitelist' ) );
@@ -145,18 +148,21 @@ class Alma_WC_Plugin {
 
 			delete_option( 'alma_bootstrap_warning_message' );
 
-            require_once( $this->includes_path . 'alma-wc-functions.php' );
-            require_once( $this->includes_path . 'class-alma-wc-settings.php' );
-            $this->settings = new Alma_WC_Settings();
+			require_once $this->includes_path . 'alma-wc-functions.php';
+			require_once $this->includes_path . 'class-alma-wc-settings.php';
+			$this->settings = new Alma_WC_Settings();
 
 			$this->_check_dependencies();
 			$this->_run();
 
 			// Defer settings check to after potential settings update
 			$this->settings->warnings_handled = false;
-			add_action( 'admin_notices', function () {
-				$this->check_settings( false );
-			} );
+			add_action(
+				'admin_notices',
+				function () {
+					$this->check_settings( false );
+				}
+			);
 
 		} catch ( Exception $e ) {
 			$this->logger->error( 'Bootstrap error: ' . $e->getMessage() );
@@ -175,31 +181,31 @@ class Alma_WC_Plugin {
 		delete_option( 'alma_bootstrap_warning_message_dismissed' );
 		update_option( 'alma_bootstrap_warning_message', $e->getMessage() );
 
-        add_action( 'admin_notices', array( $this, 'show_settings_warning' ) );
+		add_action( 'admin_notices', array( $this, 'show_settings_warning' ) );
 
-        $this->settings->warnings_handled = true;
+		$this->settings->warnings_handled = true;
 	}
 
 	public function show_settings_warning() {
 		$message = get_option( 'alma_bootstrap_warning_message', '' );
 		if ( ! empty( $message ) && ! get_option( 'alma_bootstrap_warning_message_dismissed' ) ) {
 			?>
-            <div class="notice notice-warning is-dismissible alma-dismiss-bootstrap-warning-message">
-                <p>
-                    <strong><?php echo $message ?></strong>
-                </p>
-            </div>
-            <script>
-                (function ($) {
-                    $('.alma-dismiss-bootstrap-warning-message').on('click', '.notice-dismiss', function () {
-                        jQuery.post("<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>", {
-                            action: "alma_dismiss_notice_message",
-                            dismiss_action: "alma_dismiss_bootstrap_warning_message",
-                            nonce: "<?php echo esc_js( wp_create_nonce( 'alma_dismiss_notice' ) ); ?>"
-                        });
-                    });
-                })(jQuery);
-            </script>
+			<div class="notice notice-warning is-dismissible alma-dismiss-bootstrap-warning-message">
+				<p>
+					<strong><?php echo $message; ?></strong>
+				</p>
+			</div>
+			<script>
+				(function ($) {
+					$('.alma-dismiss-bootstrap-warning-message').on('click', '.notice-dismiss', function () {
+						jQuery.post("<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>", {
+							action: "alma_dismiss_notice_message",
+							dismiss_action: "alma_dismiss_bootstrap_warning_message",
+							nonce: "<?php echo esc_js( wp_create_nonce( 'alma_dismiss_notice' ) ); ?>"
+						});
+					});
+				})(jQuery);
+			</script>
 			<?php
 		}
 	}
@@ -301,20 +307,20 @@ class Alma_WC_Plugin {
 	protected function _run() {
 		// TODO: Handle privacy message/personal data exporter/eraser
 		// require_once( $this->includes_path . 'class-alma-privacy.php' );
-		require_once( $this->includes_path . 'models/class-alma-wc-cart.php' );
-		require_once( $this->includes_path . 'models/class-alma-wc-customer.php' );
-		require_once( $this->includes_path . 'models/class-alma-wc-order.php' );
-		require_once( $this->includes_path . 'models/class-alma-wc-payment.php' );
+		require_once $this->includes_path . 'models/class-alma-wc-cart.php';
+		require_once $this->includes_path . 'models/class-alma-wc-customer.php';
+		require_once $this->includes_path . 'models/class-alma-wc-order.php';
+		require_once $this->includes_path . 'models/class-alma-wc-payment.php';
 
-		require_once( $this->includes_path . 'class-alma-wc-cart-handler.php' );
-        require_once( $this->includes_path . 'class-alma-wc-payment-validator.php' );
-        require_once( $this->includes_path . 'class-alma-wc-payment-gateway.php' );
+		require_once $this->includes_path . 'class-alma-wc-cart-handler.php';
+		require_once $this->includes_path . 'class-alma-wc-payment-validator.php';
+		require_once $this->includes_path . 'class-alma-wc-payment-gateway.php';
 
 		$this->cart_handler = new Alma_WC_Cart_Handler();
 
 		// Don't advertise our payment gateway if we're in test mode and current user is not an admin
 		if ( $this->settings->get_environment() === 'test' && ! current_user_can( 'administrator' ) ) {
-			$this->logger->info( "Not displaying Alma in Test mode to non-admin user" );
+			$this->logger->info( 'Not displaying Alma in Test mode to non-admin user' );
 
 			return;
 		}
@@ -465,34 +471,33 @@ class Alma_WC_Plugin {
 	}
 
 	/** WEBHOOKS HANDLERS **/
-    private function get_payment_to_validate() {
-        $payment_id = $_GET['pid'];
+	private function get_payment_to_validate() {
+		$payment_id = $_GET['pid'];
 
-        if ( ! $payment_id ) {
-            $this->logger->error( 'Payment validation webhook called without a payment ID' );
+		if ( ! $payment_id ) {
+			$this->logger->error( 'Payment validation webhook called without a payment ID' );
 
-            wc_add_notice(
-                __( 'Payment validation error: no ID provided.<br>Please try again or contact us if the problem persists.', ALMA_WC_TEXT_DOMAIN ),
-                'error'
-            );
+			wc_add_notice(
+				__( 'Payment validation error: no ID provided.<br>Please try again or contact us if the problem persists.', ALMA_WC_TEXT_DOMAIN ),
+				'error'
+			);
 
-            wp_redirect( wc_get_cart_url() );
-            die();
-        }
+			wp_redirect( wc_get_cart_url() );
+			die();
+		}
 
-        return $payment_id;
+		return $payment_id;
 	}
 
 	public function handle_customer_return() {
-        $payment_id = $this->get_payment_to_validate();
-        $gateway = new Alma_WC_Payment_Gateway();
+		$payment_id = $this->get_payment_to_validate();
+		$gateway    = new Alma_WC_Payment_Gateway();
 		$gateway->validate_payment_on_customer_return( $payment_id );
 	}
 
-    public function handle_ipn_callback()
-    {
-        $payment_id = $this->get_payment_to_validate();
-        $gateway = new Alma_WC_Payment_Gateway();
-        $gateway->validate_payment_from_ipn( $payment_id );
+	public function handle_ipn_callback() {
+		$payment_id = $this->get_payment_to_validate();
+		$gateway    = new Alma_WC_Payment_Gateway();
+		$gateway->validate_payment_from_ipn( $payment_id );
 	}
 }

@@ -78,22 +78,21 @@ function alma_wc_array_merge_recursive() {
  * @author matzeeable
  * @see https://wordpress.stackexchange.com/a/317041
  */
-function alma_wc_is_rest_call()
-{
-    $prefix = rest_get_url_prefix();
-    if (defined('REST_REQUEST') && REST_REQUEST // (#1)
-        || isset($_GET['rest_route']) // (#2)
-        && strpos(trim($_GET['rest_route'], '\\/'), $prefix, 0) === 0) {
-        return true;
-    }
-    // (#3)
-    global $wp_rewrite;
-    if ($wp_rewrite === null) {
-        $wp_rewrite = new WP_Rewrite();
-    }
+function alma_wc_is_rest_call() {
+	$prefix = rest_get_url_prefix();
+	if ( defined( 'REST_REQUEST' ) && REST_REQUEST // (#1)
+		|| isset( $_GET['rest_route'] ) // (#2)
+		&& strpos( trim( $_GET['rest_route'], '\\/' ), $prefix, 0 ) === 0 ) {
+		return true;
+	}
+	// (#3)
+	global $wp_rewrite;
+	if ( $wp_rewrite === null ) {
+		$wp_rewrite = new WP_Rewrite();
+	}
 
-    // (#4)
-    $rest_url = wp_parse_url(trailingslashit(rest_url()));
-    $current_url = wp_parse_url(add_query_arg(array()));
-    return strpos($current_url['path'], $rest_url['path'], 0) === 0;
+	// (#4)
+	$rest_url    = wp_parse_url( trailingslashit( rest_url() ) );
+	$current_url = wp_parse_url( add_query_arg( array() ) );
+	return strpos( $current_url['path'], $rest_url['path'], 0 ) === 0;
 }

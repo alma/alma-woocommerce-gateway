@@ -45,7 +45,7 @@ class Alma_WC_Customer {
 			'first_name' => $this->customer->get_first_name(),
 			'last_name'  => $this->customer->get_last_name(),
 			'email'      => $this->customer->get_email(),
-			'phone'      => $this->customer->get_billing_phone()
+			'phone'      => $this->customer->get_billing_phone(),
 		);
 
 		foreach ( array( 'first_name', 'last_name', 'email', 'phone' ) as $attr ) {

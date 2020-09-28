@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Alma_WC_Webhooks {
 	const CustomerReturn = 'alma_customer_return';
-	const IpnCallback = 'alma_ipn_callback';
+	const IpnCallback    = 'alma_ipn_callback';
 
 	public static function url_for( $webhook ) {
 		return wc()->api_request_url( $webhook );

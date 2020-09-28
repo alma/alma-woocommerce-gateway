@@ -12,7 +12,7 @@ class Alma_WC_Order {
 	 * Alma_Order constructor.
 	 *
 	 * @param $order_id
-	 * @param null $order_key
+	 * @param null     $order_key
 	 *
 	 * @throws Exception
 	 */
@@ -60,8 +60,8 @@ class Alma_WC_Order {
 	}
 
 	public function get_order_reference() {
-	    return $this->order->get_order_number();
-    }
+		return $this->order->get_order_number();
+	}
 
 	public function has_billing_address() {
 		if ( $this->legacy ) {
@@ -136,20 +136,20 @@ class Alma_WC_Order {
 	}
 
 	public function get_customer_url() {
-	    return $this->order->get_view_order_url();
-    }
+		return $this->order->get_view_order_url();
+	}
 
-    public function get_merchant_url() {
-        $admin_path = 'post.php?post=' . $this->order->get_id() . '&action=edit';
+	public function get_merchant_url() {
+		$admin_path = 'post.php?post=' . $this->order->get_id() . '&action=edit';
 
-        if ( version_compare( wc()->version, '2.6.0', '<' ) ) {
-            return '';
-        } elseif ( version_compare( wc()->version, '3.0.0', '<' ) ) {
-            return admin_url($admin_path);
-        } elseif ( version_compare( wc()->version, '3.3.0', '<' ) ) {
-            return get_admin_url( null, $admin_path);
-        } else {
-	        return $this->order->get_edit_order_url();
-        }
-    }
+		if ( version_compare( wc()->version, '2.6.0', '<' ) ) {
+			return '';
+		} elseif ( version_compare( wc()->version, '3.0.0', '<' ) ) {
+			return admin_url( $admin_path );
+		} elseif ( version_compare( wc()->version, '3.3.0', '<' ) ) {
+			return get_admin_url( null, $admin_path );
+		} else {
+			return $this->order->get_edit_order_url();
+		}
+	}
 }

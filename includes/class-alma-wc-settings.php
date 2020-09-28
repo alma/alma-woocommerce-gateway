@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Handles settings retrieval from the settings API.
  */
 class Alma_WC_Settings {
-	const OPTIONS_KEY = 'alma_wc_settings';
+	const OPTIONS_KEY               = 'alma_wc_settings';
 	const INSTALLMENTS_COUNT_OPTION = 'alma_installments_count';
 
 	/**
@@ -141,22 +141,21 @@ class Alma_WC_Settings {
 		return 'live' === $this->environment ? 'live' : 'test';
 	}
 
-    /**
-     * @return bool
-     */
-    public function is_live() {
-	    return $this->get_environment() === 'live';
-    }
+	/**
+	 * @return bool
+	 */
+	public function is_live() {
+		return $this->get_environment() === 'live';
+	}
 
-    /**
-     * @return bool
-     */
-    public function is_test() {
-        return $this->get_environment() === 'test';
-    }
+	/**
+	 * @return bool
+	 */
+	public function is_test() {
+		return $this->get_environment() === 'test';
+	}
 
-    public function get_installments_count()
-    {
-        return (int)get_option(self::INSTALLMENTS_COUNT_OPTION, 3);
-    }
+	public function get_installments_count() {
+		return (int) get_option( self::INSTALLMENTS_COUNT_OPTION, 3 );
+	}
 }

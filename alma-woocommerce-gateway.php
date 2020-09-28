@@ -44,7 +44,7 @@ function alma_wc_plugin() {
 	static $plugin;
 
 	if ( ! isset( $plugin ) ) {
-		require_once( 'includes/class-alma-wc-plugin.php' );
+		require_once 'includes/class-alma-wc-plugin.php';
 
 		$plugin = new Alma_WC_Plugin( __FILE__, ALMA_WC_VERSION );
 	}
