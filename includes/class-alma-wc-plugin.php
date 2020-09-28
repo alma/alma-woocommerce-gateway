@@ -69,7 +69,7 @@ class Alma_WC_Plugin {
 		$this->plugin_url    = trailingslashit( plugin_dir_url( $this->file ) );
 		$this->includes_path = $this->plugin_path . trailingslashit( 'includes' );
 
-		require_once $this->includes_path . 'vendor/autoload.php';
+		require_once $this->plugin_path . 'vendor/autoload.php';
 		require_once $this->includes_path . 'class-alma-wc-logger.php';
 		$this->logger = new Alma_WC_Logger();
 

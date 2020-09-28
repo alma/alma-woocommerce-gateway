@@ -17,9 +17,6 @@
             "email": "contact@getalma.eu"
         }
     ],
-    "config": {
-        "vendor-dir": "./includes/vendor"
-    },
     "scripts": {
         "lint": "phpcs .",
         "lint-fix": "phpcbf ."
