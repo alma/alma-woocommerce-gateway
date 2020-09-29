@@ -18,7 +18,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 	public function __construct() {
 		$this->id                 = self::GATEWAY_ID;
-		$this->has_fields         = false;
+		$this->has_fields         = true;
 		$this->method_title       = __( 'Alma monthly payments', 'alma-woocommerce-gateway' );
 		$this->method_description = __( 'Easily provide monthly payments to your customers, risk-free!', 'alma-woocommerce-gateway' );
 
@@ -94,6 +94,24 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				'type'  => 'title',
 			),
 			'enabled'                              => $enabled_option,
+			'enabled_2x'                           => array(
+				'title'   => __( '2 installments payment', 'alma-woocommerce-gateway' ),
+				'type'    => 'checkbox',
+				'label'   => __( 'Enable 2 installments payments with Alma', 'alma-woocommerce-gateway' ),
+				'default' => 'no',
+			),
+			'enabled_3x'                           => array(
+				'title'   => __( '3 installments payment', 'alma-woocommerce-gateway' ),
+				'type'    => 'checkbox',
+				'label'   => __( 'Enable 3 installments payments with Alma', 'alma-woocommerce-gateway' ),
+				'default' => 'yes',
+			),
+			'enabled_4x'                           => array(
+				'title'   => __( '4 installments payment', 'alma-woocommerce-gateway' ),
+				'type'    => 'checkbox',
+				'label'   => __( 'Enable 4 installments payments with Alma', 'alma-woocommerce-gateway' ),
+				'default' => 'no',
+			),
 			'title'                                => array(
 				'title'       => __( 'Title', 'alma-woocommerce-gateway' ),
 				'type'        => 'text',
@@ -106,7 +124,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				'type'        => 'text',
 				'desc_tip'    => true,
 				'description' => __( 'This controls the payment method description which the user sees during checkout.', 'alma-woocommerce-gateway' ),
-				'default'     => __( 'Pay in 3 monthly payments with your credit card.', 'alma-woocommerce-gateway' ),
+				'default'     => __( 'Pay in multiple monthly payments with your credit card.', 'alma-woocommerce-gateway' ),
 			),
 
 			/*
@@ -256,6 +274,49 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		return $eligibility->isEligible && parent::is_available();
 	}
 
+	public function payment_fields() {
+		echo wpautop( wp_kses_post( $this->description ) );
+		$allowed_installments_list = alma_wc_plugin()->settings->get_enabled_pnx_list();
+		$default_installments      = alma_wc_plugin()->settings->get_default_pnx();
+		?>
+		<div class="form-row">
+			<p>En combien de fois voulez-vous payer ? <span class="required">*</span></p>
+			<p>
+				<?php foreach ( $allowed_installments_list as $n ) { ?>
+				<input
+					type="radio"
+					id="alma_installments_count_<?php echo esc_attr( $n ); ?>"
+					name="alma_installments_count"
+					value="<?php echo esc_attr( $n ); ?>"
+					<?php if ( $n === $default_installments ) { ?>
+					checked
+					<?php	} ?>
+				>
+				<label
+					class="checkbox"
+					for="alma_installments_count_<?php echo esc_attr( $n ); ?>"
+				>
+					<?php echo esc_attr( $n ); ?> fois
+				</label>
+				<?php } ?>
+			</p>
+		</div>
+		<?php
+	}
+
+	public function validate_fields() {
+		if ( empty( $_POST['alma_installments_count'] ) ) {
+			wc_add_notice( '<strong>Installments count</strong> is required.', 'error' );
+			return false;
+		}
+		$allowed_values = array_map( 'strval', alma_wc_plugin()->settings->get_enabled_pnx_list() );
+		if ( ! in_array( $_POST['alma_installments_count'], $allowed_values, true ) ) {
+			wc_add_notice( '<strong>Installments count</strong> is invalid.', 'error' );
+			return false;
+		}
+		return true;
+	}
+
 	public function process_payment( $order_id ) {
 		$error_msg = __( 'There was an error processing your payment.<br>Please try again or contact us if the problem persists.', 'alma-woocommerce-gateway' );
 
@@ -269,7 +330,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		}
 
 		try {
-			$payment = $alma->payments->createPayment( Alma_WC_Payment::from_order( $order_id, alma_wc_plugin()->settings->get_installments_count() ) );
+			$payment = $alma->payments->createPayment( Alma_WC_Payment::from_order( $order_id, intval( $_POST['alma_installments_count'] ) ) );
 		} catch ( \Alma\API\RequestError $e ) {
 			$this->logger->error( 'Error while creating payment: ' . $e->getMessage() );
 			wc_add_notice( $error_msg, 'error' );

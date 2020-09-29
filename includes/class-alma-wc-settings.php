@@ -8,8 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Handles settings retrieval from the settings API.
  */
 class Alma_WC_Settings {
-	const OPTIONS_KEY               = 'alma_wc_settings';
-	const INSTALLMENTS_COUNT_OPTION = 'alma_installments_count';
+	const OPTIONS_KEY = 'alma_wc_settings';
 
 	/**
 	 * Setting values from get_option.
@@ -111,6 +110,50 @@ class Alma_WC_Settings {
 		return 'yes' === $this->enabled;
 	}
 
+	/**
+	 * Is pnx enabled.
+	 *
+	 * @return bool
+	 */
+	public function is_pnx_enabled( $installments = 3 ) {
+		return 'yes' === $this->__get( "enabled_${installments}x" );
+	}
+
+	/**
+	 * Get enabled pnx list.
+	 *
+	 * @return int[]
+	 */
+	public function get_enabled_pnx_list() {
+		$pnx_list = array();
+
+		foreach ( array( 2, 3, 4 ) as $installments ) {
+			if ( $this->is_pnx_enabled( $installments ) ) {
+				$pnx_list[] = $installments;
+			}
+		}
+
+		return $pnx_list;
+	}
+
+	/**
+	 * Get default pnx according to enabled pnx list.
+	 *
+	 * @return int|null
+	 */
+	public function get_default_pnx() {
+		$pnx_list = $this->get_enabled_pnx_list();
+
+		if ( ! count( $pnx_list ) ) {
+			return null;
+		}
+
+		if ( in_array( 3, $pnx_list, true ) ) {
+			return 3;
+		}
+
+		return end( $pnx_list );
+	}
 
 	/**
 	 * Is plugin "usable", i.e. is it enabled and correctly configured
@@ -153,9 +196,5 @@ class Alma_WC_Settings {
 	 */
 	public function is_test() {
 		return $this->get_environment() === 'test';
-	}
-
-	public function get_installments_count() {
-		return (int) get_option( self::INSTALLMENTS_COUNT_OPTION, 3 );
 	}
 }
