@@ -41,7 +41,7 @@ class Alma_WC_Cart_Handler {
 	 */
 	public function display_cart_eligibility() {
 		$eligibility_msg       = alma_wc_plugin()->settings->cart_is_eligible_message;
-		$logo_url              = alma_wc_plugin()->get_asset_url( 'images/alma_logo.svg' );
+		$logo_url              = alma_wc_plugin()->get_asset_url( 'images/alma_logo.png' );
 		$skip_eligibility_call = false;
 
 		if (
