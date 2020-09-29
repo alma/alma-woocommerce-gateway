@@ -71,8 +71,7 @@
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<property name="text_domain" type="array">
-				<element value="my-textdomain"/>
-				<element value="library-textdomain"/>
+				<element value="alma-woocommerce-gateway"/>
 			</property>
 		</properties>
 	</rule>

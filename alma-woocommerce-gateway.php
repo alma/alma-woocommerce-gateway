@@ -33,7 +33,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'ALMA_WC_VERSION', '1.1.7' );
-define( 'ALMA_WC_TEXT_DOMAIN', 'alma-woocommerce-gateway' );
 
 /**
  * Return instance of Alma_Plugin.

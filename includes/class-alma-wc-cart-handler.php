@@ -86,9 +86,9 @@ class Alma_WC_Cart_Handler {
 
 				if ( $cart_total < $min_amount || $cart_total > $max_amount ) {
 					if ( $cart_total > $max_amount ) {
-						$eligibility_msg .= '<br>' . sprintf( __( '(Maximum amount: %s)', ALMA_WC_TEXT_DOMAIN ), wc_price( alma_wc_price_from_cents( $max_amount ), array( 'decimals' => 0 ) ) );
+						$eligibility_msg .= '<br>' . sprintf( __( '(Maximum amount: %s)', 'alma-woocommerce-gateway' ), wc_price( alma_wc_price_from_cents( $max_amount ), array( 'decimals' => 0 ) ) );
 					} else {
-						$eligibility_msg .= '<br>' . sprintf( __( '(Minimum amount: %s)', ALMA_WC_TEXT_DOMAIN ), wc_price( alma_wc_price_from_cents( $min_amount ), array( 'decimals' => 0 ) ) );
+						$eligibility_msg .= '<br>' . sprintf( __( '(Minimum amount: %s)', 'alma-woocommerce-gateway' ), wc_price( alma_wc_price_from_cents( $min_amount ), array( 'decimals' => 0 ) ) );
 					}
 				}
 			}

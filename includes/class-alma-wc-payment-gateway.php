@@ -19,8 +19,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	public function __construct() {
 		$this->id                 = self::GATEWAY_ID;
 		$this->has_fields         = false;
-		$this->method_title       = __( 'Alma monthly payments', ALMA_WC_TEXT_DOMAIN );
-		$this->method_description = __( 'Easily provide monthly payments to your customers, risk-free!', ALMA_WC_TEXT_DOMAIN );
+		$this->method_title       = __( 'Alma monthly payments', 'alma-woocommerce-gateway' );
+		$this->method_description = __( 'Easily provide monthly payments to your customers, risk-free!', 'alma-woocommerce-gateway' );
 
 		$this->logger = new Alma_WC_Logger();
 
@@ -50,15 +50,15 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$need_keys = empty( alma_wc_plugin()->settings->get_active_api_key() );
 
 		if ( $need_keys ) {
-			$keys_title = __( '→ Start by filling in your API keys', ALMA_WC_TEXT_DOMAIN );
+			$keys_title = __( '→ Start by filling in your API keys', 'alma-woocommerce-gateway' );
 		} else {
-			$keys_title = __( '→ API configuration', ALMA_WC_TEXT_DOMAIN );
+			$keys_title = __( '→ API configuration', 'alma-woocommerce-gateway' );
 		}
 
 		$enabled_option = array(
-			'title'   => __( 'Enable/Disable', ALMA_WC_TEXT_DOMAIN ),
+			'title'   => __( 'Enable/Disable', 'alma-woocommerce-gateway' ),
 			'type'    => 'checkbox',
-			'label'   => __( 'Enable monthly payments with Alma', ALMA_WC_TEXT_DOMAIN ),
+			'label'   => __( 'Enable monthly payments with Alma', 'alma-woocommerce-gateway' ),
 			'default' => 'yes',
 		);
 
@@ -66,112 +66,112 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			'keys_section' => array(
 				'title'       => $keys_title,
 				'type'        => 'title',
-				'description' => __( 'You can find your API keys on <a href="https://dashboard.getalma.eu/security" target="_blank">your Alma dashboard</a>', ALMA_WC_TEXT_DOMAIN ),
+				'description' => __( 'You can find your API keys on <a href="https://dashboard.getalma.eu/security" target="_blank">your Alma dashboard</a>', 'alma-woocommerce-gateway' ),
 			),
 			'live_api_key' => array(
-				'title' => __( 'Live API key', ALMA_WC_TEXT_DOMAIN ),
+				'title' => __( 'Live API key', 'alma-woocommerce-gateway' ),
 				'type'  => 'text',
 			),
 			'test_api_key' => array(
-				'title' => __( 'Test API key', ALMA_WC_TEXT_DOMAIN ),
+				'title' => __( 'Test API key', 'alma-woocommerce-gateway' ),
 				'type'  => 'text',
 			),
 			'environment'  => array(
-				'title'       => __( 'API Mode', ALMA_WC_TEXT_DOMAIN ),
+				'title'       => __( 'API Mode', 'alma-woocommerce-gateway' ),
 				'type'        => 'select',
-				'description' => __( 'Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In Test mode, only admins can see Alma on cart/checkout pages.', ALMA_WC_TEXT_DOMAIN ),
+				'description' => __( 'Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In Test mode, only admins can see Alma on cart/checkout pages.', 'alma-woocommerce-gateway' ),
 				'default'     => 'test',
 				'options'     => array(
-					'test' => __( 'Test', ALMA_WC_TEXT_DOMAIN ),
-					'live' => __( 'Live', ALMA_WC_TEXT_DOMAIN ),
+					'test' => __( 'Test', 'alma-woocommerce-gateway' ),
+					'live' => __( 'Live', 'alma-woocommerce-gateway' ),
 				),
 			),
 		);
 
 		$settings_fields = array(
 			'general_section'                      => array(
-				'title' => __( '→ General configuration', ALMA_WC_TEXT_DOMAIN ),
+				'title' => __( '→ General configuration', 'alma-woocommerce-gateway' ),
 				'type'  => 'title',
 			),
 			'enabled'                              => $enabled_option,
 			'title'                                => array(
-				'title'       => __( 'Title', ALMA_WC_TEXT_DOMAIN ),
+				'title'       => __( 'Title', 'alma-woocommerce-gateway' ),
 				'type'        => 'text',
-				'description' => __( 'This controls the payment method name which the user sees during checkout.', ALMA_WC_TEXT_DOMAIN ),
-				'default'     => __( 'Monthly Payments with Alma', ALMA_WC_TEXT_DOMAIN ),
+				'description' => __( 'This controls the payment method name which the user sees during checkout.', 'alma-woocommerce-gateway' ),
+				'default'     => __( 'Monthly Payments with Alma', 'alma-woocommerce-gateway' ),
 				'desc_tip'    => true,
 			),
 			'description'                          => array(
-				'title'       => __( 'Description', ALMA_WC_TEXT_DOMAIN ),
+				'title'       => __( 'Description', 'alma-woocommerce-gateway' ),
 				'type'        => 'text',
 				'desc_tip'    => true,
-				'description' => __( 'This controls the payment method description which the user sees during checkout.', ALMA_WC_TEXT_DOMAIN ),
-				'default'     => __( 'Pay in 3 monthly payments with your credit card.', ALMA_WC_TEXT_DOMAIN ),
+				'description' => __( 'This controls the payment method description which the user sees during checkout.', 'alma-woocommerce-gateway' ),
+				'default'     => __( 'Pay in 3 monthly payments with your credit card.', 'alma-woocommerce-gateway' ),
 			),
 
 			/*
 			 We only support Euros at the moment, so there's no need for an option
 			'active_currencies'         => array(
-				'title'       => __( 'Allowed currencies', ALMA_WC_TEXT_DOMAIN ),
+				'title'       => __( 'Allowed currencies', 'alma-woocommerce-gateway' ),
 				'type'        => 'multiselect',
 				'desc_tip'    => true,
-				'description' => __( 'Choose which currencies you want to accept monthly payments with', ALMA_WC_TEXT_DOMAIN ),
+				'description' => __( 'Choose which currencies you want to accept monthly payments with', 'alma-woocommerce-gateway' ),
 				'default'     => 'EUR',
 				'options'     => array(
-					'EUR' => __( 'Euros (€)', ALMA_WC_TEXT_DOMAIN ),
+					'EUR' => __( 'Euros (€)', 'alma-woocommerce-gateway' ),
 				),
 			),
 			*/
 
 			'display_cart_eligibility'             => array(
-				'title'   => __( 'Cart eligibility notice', ALMA_WC_TEXT_DOMAIN ),
+				'title'   => __( 'Cart eligibility notice', 'alma-woocommerce-gateway' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Display a message about cart eligibility for monthly payments', ALMA_WC_TEXT_DOMAIN ),
+				'label'   => __( 'Display a message about cart eligibility for monthly payments', 'alma-woocommerce-gateway' ),
 				'default' => 'yes',
 			),
 			'cart_is_eligible_message'             => array(
-				'title'       => __( 'Eligibility message', ALMA_WC_TEXT_DOMAIN ),
+				'title'       => __( 'Eligibility message', 'alma-woocommerce-gateway' ),
 				'type'        => 'text',
-				'description' => __( 'Message displayed below the cart totals when it is eligible for monthly payments', ALMA_WC_TEXT_DOMAIN ),
+				'description' => __( 'Message displayed below the cart totals when it is eligible for monthly payments', 'alma-woocommerce-gateway' ),
 				'desc_tip'    => true,
-				'default'     => __( 'Your cart is eligible for monthly payments', ALMA_WC_TEXT_DOMAIN ),
+				'default'     => __( 'Your cart is eligible for monthly payments', 'alma-woocommerce-gateway' ),
 			),
 			'cart_not_eligible_message'            => array(
-				'title'       => __( 'Non-eligibility message', ALMA_WC_TEXT_DOMAIN ),
+				'title'       => __( 'Non-eligibility message', 'alma-woocommerce-gateway' ),
 				'type'        => 'text',
-				'description' => __( 'Message displayed below the cart totals when it is not eligible for monthly payments', ALMA_WC_TEXT_DOMAIN ),
+				'description' => __( 'Message displayed below the cart totals when it is not eligible for monthly payments', 'alma-woocommerce-gateway' ),
 				'desc_tip'    => true,
-				'default'     => __( 'Your cart is not eligible for monthly payments', ALMA_WC_TEXT_DOMAIN ),
+				'default'     => __( 'Your cart is not eligible for monthly payments', 'alma-woocommerce-gateway' ),
 			),
 
 			'excluded_products_list'               => array(
-				'title'       => __( 'Excluded product categories', ALMA_WC_TEXT_DOMAIN ),
+				'title'       => __( 'Excluded product categories', 'alma-woocommerce-gateway' ),
 				'type'        => 'multiselect',
-				'description' => __( 'Exclude all virtual/downloadable product categories, as you cannot sell them with Alma', ALMA_WC_TEXT_DOMAIN ),
+				'description' => __( 'Exclude all virtual/downloadable product categories, as you cannot sell them with Alma', 'alma-woocommerce-gateway' ),
 				'desc_tip'    => true,
 				'css'         => 'height: 150px;',
 				'options'     => $this->product_categories_options(),
 			),
 
 			'cart_not_eligible_message_gift_cards' => array(
-				'title'       => __( 'Non-eligibility message for excluded products', ALMA_WC_TEXT_DOMAIN ),
+				'title'       => __( 'Non-eligibility message for excluded products', 'alma-woocommerce-gateway' ),
 				'type'        => 'text',
-				'description' => __( 'Message displayed below the cart totals when it contains excluded products', ALMA_WC_TEXT_DOMAIN ),
+				'description' => __( 'Message displayed below the cart totals when it contains excluded products', 'alma-woocommerce-gateway' ),
 				'desc_tip'    => true,
-				'default'     => __( 'Gift cards cannot be paid with monthly installments', ALMA_WC_TEXT_DOMAIN ),
+				'default'     => __( 'Gift cards cannot be paid with monthly installments', 'alma-woocommerce-gateway' ),
 			),
 		);
 
 		$debug_fields = array(
 			'debug_section' => array(
-				'title' => __( '→ Debug options', ALMA_WC_TEXT_DOMAIN ),
+				'title' => __( '→ Debug options', 'alma-woocommerce-gateway' ),
 				'type'  => 'title',
 			),
 			'debug'         => array(
-				'title'       => __( 'Debug mode', ALMA_WC_TEXT_DOMAIN ),
+				'title'       => __( 'Debug mode', 'alma-woocommerce-gateway' ),
 				'type'        => 'checkbox',
-				'label'       => __( 'Activate debug mode', ALMA_WC_TEXT_DOMAIN ) . sprintf( __( ' (<a href="%s">Go to logs</a>)', ALMA_WC_TEXT_DOMAIN ), alma_wc_plugin()->get_admin_logs_url() ),
-				'description' => __( 'Enable logging info and errors to help debug any issue with the plugin', ALMA_WC_TEXT_DOMAIN ),
+				'label'       => __( 'Activate debug mode', 'alma-woocommerce-gateway' ) . sprintf( __( ' (<a href="%s">Go to logs</a>)', 'alma-woocommerce-gateway' ), alma_wc_plugin()->get_admin_logs_url() ),
+				'description' => __( 'Enable logging info and errors to help debug any issue with the plugin', 'alma-woocommerce-gateway' ),
 				'desc_tip'    => true,
 				'default'     => 'no',
 			),
@@ -257,7 +257,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	}
 
 	public function process_payment( $order_id ) {
-		$error_msg = __( 'There was an error processing your payment.<br>Please try again or contact us if the problem persists.', ALMA_WC_TEXT_DOMAIN );
+		$error_msg = __( 'There was an error processing your payment.<br>Please try again or contact us if the problem persists.', 'alma-woocommerce-gateway' );
 
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
@@ -298,7 +298,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		try {
 			$order = Alma_WC_Payment_Validator::validate_payment( $payment_id );
 		} catch ( AlmaPaymentValidationError $e ) {
-			$error_msg = __( 'There was an error when validating your payment.<br>Please try again or contact us if the problem persists.', ALMA_WC_TEXT_DOMAIN );
+			$error_msg = __( 'There was an error when validating your payment.<br>Please try again or contact us if the problem persists.', 'alma-woocommerce-gateway' );
 			return $this->_redirect_to_cart_with_error( $error_msg );
 		} catch ( \Exception $e ) {
 			return $this->_redirect_to_cart_with_error( $e->getMessage() );
