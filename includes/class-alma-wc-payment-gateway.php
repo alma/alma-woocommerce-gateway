@@ -31,6 +31,39 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			'woocommerce_update_options_payment_gateways_' . $this->id,
 			array( $this, 'process_admin_options' )
 		);
+
+		add_filter(
+			'woocommerce_settings_api_sanitized_fields_' . $this->id,
+			array( $this, 'on_settings_save' )
+		);
+	}
+
+	/**
+	 * Get option from DB.
+	 *
+	 * Gets an option from the settings API, using defaults if necessary to prevent undefined notices.
+	 *
+	 * @param  string $key Option key.
+	 * @param  mixed  $empty_value Value when empty.
+	 * @return string The value specified for the option or a default value for the option.
+	 */
+	public function get_option( $key, $empty_value = null ) {
+		$option = parent::get_option( $key, $empty_value );
+
+		if ( in_array( $key, Alma_WC_Settings::AMOUNT_KEYS ) ) {
+			return strval( alma_wc_price_from_cents( $option ) );
+		}
+
+		return $option;
+	}
+
+	public function on_settings_save( $settings ) {
+		foreach ( Alma_WC_Settings::AMOUNT_KEYS as $key ) {
+			if ( $settings[ $key ] ) {
+				$settings[ $key ] = alma_wc_price_to_cents( $settings[ $key ] );
+			}
+		}
+		return $settings;
 	}
 
 	public function get_icon() {
@@ -96,17 +129,83 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				'label'   => __( 'Enable 2 installments payments with Alma', 'alma-woocommerce-gateway' ),
 				'default' => $default_settings['enabled_2x'],
 			),
+			'min_amount_2x'                        => array(
+				'title'             => __( 'Minimum amount', 'alma-woocommerce-gateway' ),
+				'type'              => 'number',
+				'css'               => 'width: 100px;',
+				'custom_attributes' => array(
+					'required' => 'required',
+					'min'      => 0,
+					'step'     => 0.01,
+				),
+				'default'           => $default_settings['min_amount_2x'],
+			),
+			'max_amount_2x'                        => array(
+				'title'             => __( 'Maximum amount', 'alma-woocommerce-gateway' ),
+				'type'              => 'number',
+				'css'               => 'width: 100px;',
+				'custom_attributes' => array(
+					'required' => 'required',
+					'min'      => 0,
+					'step'     => 0.01,
+				),
+				'default'           => $default_settings['max_amount_2x'],
+			),
 			'enabled_3x'                           => array(
 				'title'   => __( '3 installments payment', 'alma-woocommerce-gateway' ),
 				'type'    => 'checkbox',
 				'label'   => __( 'Enable 3 installments payments with Alma', 'alma-woocommerce-gateway' ),
 				'default' => $default_settings['enabled_3x'],
 			),
+			'min_amount_3x'                        => array(
+				'title'             => __( 'Minimum amount', 'alma-woocommerce-gateway' ),
+				'type'              => 'number',
+				'css'               => 'width: 100px;',
+				'custom_attributes' => array(
+					'required' => 'required',
+					'min'      => 0,
+					'step'     => 0.01,
+				),
+				'default'           => $default_settings['min_amount_3x'],
+			),
+			'max_amount_3x'                        => array(
+				'title'             => __( 'Maximum amount', 'alma-woocommerce-gateway' ),
+				'type'              => 'number',
+				'css'               => 'width: 100px;',
+				'custom_attributes' => array(
+					'required' => 'required',
+					'min'      => 0,
+					'step'     => 0.01,
+				),
+				'default'           => $default_settings['max_amount_3x'],
+			),
 			'enabled_4x'                           => array(
 				'title'   => __( '4 installments payment', 'alma-woocommerce-gateway' ),
 				'type'    => 'checkbox',
 				'label'   => __( 'Enable 4 installments payments with Alma', 'alma-woocommerce-gateway' ),
 				'default' => $default_settings['enabled_4x'],
+			),
+			'min_amount_4x'                        => array(
+				'title'             => __( 'Minimum amount', 'alma-woocommerce-gateway' ),
+				'type'              => 'number',
+				'css'               => 'width: 100px;',
+				'custom_attributes' => array(
+					'required' => 'required',
+					'min'      => 0,
+					'step'     => 0.01,
+				),
+				'default'           => $default_settings['min_amount_4x'],
+			),
+			'max_amount_4x'                        => array(
+				'title'             => __( 'Maximum amount', 'alma-woocommerce-gateway' ),
+				'type'              => 'number',
+				'css'               => 'width: 100px;',
+				'custom_attributes' => array(
+					'required' => 'required',
+					'min'      => 0,
+					'step'     => 0.01,
+				),
+				'default'           => $default_settings['max_amount_4x'],
 			),
 			'title'                                => array(
 				'title'       => __( 'Title', 'alma-woocommerce-gateway' ),
