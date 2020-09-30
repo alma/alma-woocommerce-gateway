@@ -276,7 +276,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$default_installments      = alma_wc_plugin()->settings->get_default_pnx();
 		?>
 		<div class="form-row">
-			<p>En combien de fois voulez-vous payer ? <span class="required">*</span></p>
+			<p><?php echo esc_html__( 'How many installments do you want to pay?', 'alma-woocommerce-gateway' ); ?> <span class="required">*</span></p>
 			<p>
 				<?php foreach ( $allowed_installments_list as $n ) { ?>
 				<input
@@ -292,7 +292,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 					class="checkbox"
 					for="alma_installments_count_<?php echo esc_attr( $n ); ?>"
 				>
-					<?php echo esc_attr( $n ); ?> fois
+					<?php echo sprintf( esc_html__( '%d installments', 'alma-woocommerce-gateway' ), esc_html( $n ) ); ?>
 				</label>
 				<?php } ?>
 			</p>
