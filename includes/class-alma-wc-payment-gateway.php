@@ -78,6 +78,14 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		$default_settings = Alma_WC_Settings::get_default_settings();
 
+		if ( ! $need_keys ) {
+			try {
+				$merchant = alma_wc_plugin()->get_alma_client()->merchants->me();
+			} catch ( \Alma\API\RequestError $e ) {
+				alma_wc_plugin()->handle_settings_exception( $e );
+			}
+		}
+
 		if ( $need_keys ) {
 			$keys_title = __( '→ Start by filling in your API keys', 'alma-woocommerce-gateway' );
 		} else {
@@ -93,7 +101,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		$api_key_fields = array(
 			'keys_section' => array(
-				'title'       => $keys_title,
+				'title'       => '<hr />' . $keys_title,
 				'type'        => 'title',
 				'description' => __( 'You can find your API keys on <a href="https://dashboard.getalma.eu/security" target="_blank">your Alma dashboard</a>', 'alma-woocommerce-gateway' ),
 			),
@@ -118,166 +126,143 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		);
 
 		$settings_fields = array(
-			'general_section'                      => array(
-				'title' => __( '→ General configuration', 'alma-woocommerce-gateway' ),
-				'type'  => 'title',
-			),
-			'enabled'                              => $enabled_option,
-			'enabled_2x'                           => array(
-				'title'   => __( '2 installments payment', 'alma-woocommerce-gateway' ),
-				'type'    => 'checkbox',
-				'label'   => __( 'Enable 2 installments payments with Alma', 'alma-woocommerce-gateway' ),
-				'default' => $default_settings['enabled_2x'],
-			),
-			'min_amount_2x'                        => array(
-				'title'             => __( 'Minimum amount', 'alma-woocommerce-gateway' ),
-				'type'              => 'number',
-				'css'               => 'width: 100px;',
-				'custom_attributes' => array(
-					'required' => 'required',
-					'min'      => 0,
-					'step'     => 0.01,
-				),
-				'default'           => $default_settings['min_amount_2x'],
-			),
-			'max_amount_2x'                        => array(
-				'title'             => __( 'Maximum amount', 'alma-woocommerce-gateway' ),
-				'type'              => 'number',
-				'css'               => 'width: 100px;',
-				'custom_attributes' => array(
-					'required' => 'required',
-					'min'      => 0,
-					'step'     => 0.01,
-				),
-				'default'           => $default_settings['max_amount_2x'],
-			),
-			'enabled_3x'                           => array(
-				'title'   => __( '3 installments payment', 'alma-woocommerce-gateway' ),
-				'type'    => 'checkbox',
-				'label'   => __( 'Enable 3 installments payments with Alma', 'alma-woocommerce-gateway' ),
-				'default' => $default_settings['enabled_3x'],
-			),
-			'min_amount_3x'                        => array(
-				'title'             => __( 'Minimum amount', 'alma-woocommerce-gateway' ),
-				'type'              => 'number',
-				'css'               => 'width: 100px;',
-				'custom_attributes' => array(
-					'required' => 'required',
-					'min'      => 0,
-					'step'     => 0.01,
-				),
-				'default'           => $default_settings['min_amount_3x'],
-			),
-			'max_amount_3x'                        => array(
-				'title'             => __( 'Maximum amount', 'alma-woocommerce-gateway' ),
-				'type'              => 'number',
-				'css'               => 'width: 100px;',
-				'custom_attributes' => array(
-					'required' => 'required',
-					'min'      => 0,
-					'step'     => 0.01,
-				),
-				'default'           => $default_settings['max_amount_3x'],
-			),
-			'enabled_4x'                           => array(
-				'title'   => __( '4 installments payment', 'alma-woocommerce-gateway' ),
-				'type'    => 'checkbox',
-				'label'   => __( 'Enable 4 installments payments with Alma', 'alma-woocommerce-gateway' ),
-				'default' => $default_settings['enabled_4x'],
-			),
-			'min_amount_4x'                        => array(
-				'title'             => __( 'Minimum amount', 'alma-woocommerce-gateway' ),
-				'type'              => 'number',
-				'css'               => 'width: 100px;',
-				'custom_attributes' => array(
-					'required' => 'required',
-					'min'      => 0,
-					'step'     => 0.01,
-				),
-				'default'           => $default_settings['min_amount_4x'],
-			),
-			'max_amount_4x'                        => array(
-				'title'             => __( 'Maximum amount', 'alma-woocommerce-gateway' ),
-				'type'              => 'number',
-				'css'               => 'width: 100px;',
-				'custom_attributes' => array(
-					'required' => 'required',
-					'min'      => 0,
-					'step'     => 0.01,
-				),
-				'default'           => $default_settings['max_amount_4x'],
-			),
-			'title'                                => array(
-				'title'       => __( 'Title', 'alma-woocommerce-gateway' ),
-				'type'        => 'text',
-				'description' => __( 'This controls the payment method name which the user sees during checkout.', 'alma-woocommerce-gateway' ),
-				'default'     => $default_settings['title'],
-				'desc_tip'    => true,
-			),
-			'description'                          => array(
-				'title'       => __( 'Description', 'alma-woocommerce-gateway' ),
-				'type'        => 'text',
-				'desc_tip'    => true,
-				'description' => __( 'This controls the payment method description which the user sees during checkout.', 'alma-woocommerce-gateway' ),
-				'default'     => $default_settings['description'],
-			),
+			'enabled' => $enabled_option,
+		);
 
-			/*
-			 We only support Euros at the moment, so there's no need for an option
-			'active_currencies'         => array(
-				'title'       => __( 'Allowed currencies', 'alma-woocommerce-gateway' ),
-				'type'        => 'multiselect',
-				'desc_tip'    => true,
-				'description' => __( 'Choose which currencies you want to accept monthly payments with', 'alma-woocommerce-gateway' ),
-				'default'     => 'EUR',
-				'options'     => array(
-					'EUR' => __( 'Euros (€)', 'alma-woocommerce-gateway' ),
+		if ( isset( $merchant ) ) {
+			foreach ( $merchant->fee_plans as $fee_plan ) {
+				if ( $fee_plan['allowed'] ) {
+					$installments          = $fee_plan['installments_count'];
+					$min_amount            = alma_wc_price_from_cents( $fee_plan['min_purchase_amount'] );
+					$max_amount            = alma_wc_price_from_cents( $fee_plan['max_purchase_amount'] );
+					$merchant_fee_fixed    = alma_wc_price_from_cents( $fee_plan['merchant_fee_fixed'] );
+					$merchant_fee_variable = $fee_plan['merchant_fee_variable'] / 100; // percent.
+					$customer_fee_fixed    = alma_wc_price_from_cents( $fee_plan['customer_fee_fixed'] );
+					$customer_fee_variable = $fee_plan['customer_fee_variable'] / 100; // percent.
+
+					$settings_fields = array_merge(
+						$settings_fields,
+						array(
+							"${installments}x_section"    => array(
+								'title'       => '<hr />' . sprintf( __( '→ %d-installment payment', 'alma-woocommerce-gateway' ), $installments ),
+								'type'        => 'title',
+								'description' => $this->get_fee_plan_description( $installments, $min_amount, $max_amount, $merchant_fee_fixed, $merchant_fee_variable, $customer_fee_fixed, $customer_fee_variable ),
+							),
+							"enabled_${installments}x"    => array(
+								'title'   => __( 'Enable/Disable', 'alma-woocommerce-gateway' ),
+								'type'    => 'checkbox',
+								'label'   => sprintf( __( 'Enable %d-installment payments with Alma', 'alma-woocommerce-gateway' ), $installments ),
+								'default' => $default_settings[ "enabled_${installments}x" ],
+							),
+							"min_amount_${installments}x" => array(
+								'title'             => __( 'Minimum amount', 'alma-woocommerce-gateway' ),
+								'type'              => 'number',
+								'css'               => 'width: 100px;',
+								'custom_attributes' => array(
+									'required' => 'required',
+									'min'      => $min_amount,
+									'max'      => $max_amount,
+									'step'     => 0.01,
+								),
+								'default'           => alma_wc_price_to_cents( $min_amount ),
+							),
+							"max_amount_${installments}x" => array(
+								'title'             => __( 'Maximum amount', 'alma-woocommerce-gateway' ),
+								'type'              => 'number',
+								'css'               => 'width: 100px;',
+								'custom_attributes' => array(
+									'required' => 'required',
+									'min'      => $min_amount,
+									'max'      => $max_amount,
+									'step'     => 0.01,
+								),
+								'default'           => alma_wc_price_to_cents( $max_amount ),
+							),
+						)
+					);
+				}
+			}
+		}
+
+		$settings_fields = array_merge(
+			$settings_fields,
+			array(
+				'general_section'                      => array(
+					'title' => '<hr />' . __( '→ General configuration', 'alma-woocommerce-gateway' ),
+					'type'  => 'title',
 				),
-			),
-			*/
+				'title'                                => array(
+					'title'       => __( 'Title', 'alma-woocommerce-gateway' ),
+					'type'        => 'text',
+					'description' => __( 'This controls the payment method name which the user sees during checkout.', 'alma-woocommerce-gateway' ),
+					'default'     => $default_settings['title'],
+					'desc_tip'    => true,
+				),
+				'description'                          => array(
+					'title'       => __( 'Description', 'alma-woocommerce-gateway' ),
+					'type'        => 'text',
+					'desc_tip'    => true,
+					'description' => __( 'This controls the payment method description which the user sees during checkout.', 'alma-woocommerce-gateway' ),
+					'default'     => $default_settings['description'],
+				),
 
-			'display_cart_eligibility'             => array(
-				'title'   => __( 'Cart eligibility notice', 'alma-woocommerce-gateway' ),
-				'type'    => 'checkbox',
-				'label'   => __( 'Display a message about cart eligibility for monthly payments', 'alma-woocommerce-gateway' ),
-				'default' => $default_settings['display_cart_eligibility'],
-			),
-			'cart_is_eligible_message'             => array(
-				'title'       => __( 'Eligibility message', 'alma-woocommerce-gateway' ),
-				'type'        => 'text',
-				'description' => __( 'Message displayed below the cart totals when it is eligible for monthly payments', 'alma-woocommerce-gateway' ),
-				'desc_tip'    => true,
-				'default'     => $default_settings['cart_is_eligible_message'],
-			),
-			'cart_not_eligible_message'            => array(
-				'title'       => __( 'Non-eligibility message', 'alma-woocommerce-gateway' ),
-				'type'        => 'text',
-				'description' => __( 'Message displayed below the cart totals when it is not eligible for monthly payments', 'alma-woocommerce-gateway' ),
-				'desc_tip'    => true,
-				'default'     => $default_settings['cart_not_eligible_message'],
-			),
+				/*
+				 We only support Euros at the moment, so there's no need for an option
+				'active_currencies'         => array(
+					'title'       => __( 'Allowed currencies', 'alma-woocommerce-gateway' ),
+					'type'        => 'multiselect',
+					'desc_tip'    => true,
+					'description' => __( 'Choose which currencies you want to accept monthly payments with', 'alma-woocommerce-gateway' ),
+					'default'     => 'EUR',
+					'options'     => array(
+						'EUR' => __( 'Euros (€)', 'alma-woocommerce-gateway' ),
+					),
+				),
+				*/
 
-			'excluded_products_list'               => array(
-				'title'       => __( 'Excluded product categories', 'alma-woocommerce-gateway' ),
-				'type'        => 'multiselect',
-				'description' => __( 'Exclude all virtual/downloadable product categories, as you cannot sell them with Alma', 'alma-woocommerce-gateway' ),
-				'desc_tip'    => true,
-				'css'         => 'height: 150px;',
-				'options'     => $this->product_categories_options(),
-			),
+				'display_cart_eligibility'             => array(
+					'title'   => __( 'Cart eligibility notice', 'alma-woocommerce-gateway' ),
+					'type'    => 'checkbox',
+					'label'   => __( 'Display a message about cart eligibility for monthly payments', 'alma-woocommerce-gateway' ),
+					'default' => $default_settings['display_cart_eligibility'],
+				),
+				'cart_is_eligible_message'             => array(
+					'title'       => __( 'Eligibility message', 'alma-woocommerce-gateway' ),
+					'type'        => 'text',
+					'description' => __( 'Message displayed below the cart totals when it is eligible for monthly payments', 'alma-woocommerce-gateway' ),
+					'desc_tip'    => true,
+					'default'     => $default_settings['cart_is_eligible_message'],
+				),
+				'cart_not_eligible_message'            => array(
+					'title'       => __( 'Non-eligibility message', 'alma-woocommerce-gateway' ),
+					'type'        => 'text',
+					'description' => __( 'Message displayed below the cart totals when it is not eligible for monthly payments', 'alma-woocommerce-gateway' ),
+					'desc_tip'    => true,
+					'default'     => $default_settings['cart_not_eligible_message'],
+				),
 
-			'cart_not_eligible_message_gift_cards' => array(
-				'title'       => __( 'Non-eligibility message for excluded products', 'alma-woocommerce-gateway' ),
-				'type'        => 'text',
-				'description' => __( 'Message displayed below the cart totals when it contains excluded products', 'alma-woocommerce-gateway' ),
-				'desc_tip'    => true,
-				'default'     => $default_settings['cart_not_eligible_message_gift_cards'],
-			),
+				'excluded_products_list'               => array(
+					'title'       => __( 'Excluded product categories', 'alma-woocommerce-gateway' ),
+					'type'        => 'multiselect',
+					'description' => __( 'Exclude all virtual/downloadable product categories, as you cannot sell them with Alma', 'alma-woocommerce-gateway' ),
+					'desc_tip'    => true,
+					'css'         => 'height: 150px;',
+					'options'     => $this->product_categories_options(),
+				),
+
+				'cart_not_eligible_message_gift_cards' => array(
+					'title'       => __( 'Non-eligibility message for excluded products', 'alma-woocommerce-gateway' ),
+					'type'        => 'text',
+					'description' => __( 'Message displayed below the cart totals when it contains excluded products', 'alma-woocommerce-gateway' ),
+					'desc_tip'    => true,
+					'default'     => $default_settings['cart_not_eligible_message_gift_cards'],
+				),
+			)
 		);
 
 		$debug_fields = array(
 			'debug_section' => array(
-				'title' => __( '→ Debug options', 'alma-woocommerce-gateway' ),
+				'title' => '<hr />' . __( '→ Debug options', 'alma-woocommerce-gateway' ),
 				'type'  => 'title',
 			),
 			'debug'         => array(
@@ -501,5 +486,49 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		}
 
 		return $options;
+	}
+
+	private function get_fee_plan_description( $installments, $min_amount, $max_amount, $merchant_fee_fixed, $merchant_fee_variable, $customer_fee_fixed, $customer_fee_variable ) {
+		$description = '<p>';
+
+		$description .= sprintf( __( 'You can offer %1$d-installment payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-woocommerce-gateway' ), $installments, $min_amount, $max_amount )
+			. '<br />'
+			. __( 'Fees applied to each transaction for this plan:', 'alma-woocommerce-gateway' );
+
+		if ( $merchant_fee_variable || $merchant_fee_fixed ) {
+			$description .= '<br />';
+			$description .= '<b>' . __( 'You pay:', 'alma-woocommerce-gateway' ) . '</b> ';
+		}
+
+		if ( $merchant_fee_variable ) {
+			$description .= $merchant_fee_variable . '%';
+		}
+
+		if ( $merchant_fee_fixed ) {
+			if ( $merchant_fee_variable ) {
+				$description .= ' + ';
+			}
+			$description .= $merchant_fee_fixed . '€';
+		}
+
+		if ( $customer_fee_variable || $customer_fee_fixed ) {
+			$description .= '<br />';
+			$description .= '<b>' . __( 'Customer pays:', 'alma-woocommerce-gateway' ) . '</b> ';
+		}
+
+		if ( $customer_fee_variable ) {
+			$description .= $customer_fee_variable . '%';
+		}
+
+		if ( $customer_fee_fixed ) {
+			if ( $customer_fee_variable ) {
+				$description .= ' + ';
+			}
+			$description .= $customer_fee_fixed . '€';
+		}
+
+		$description .= '</p>';
+
+		return $description;
 	}
 }

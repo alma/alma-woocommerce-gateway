@@ -8,10 +8,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Handles settings retrieval from the settings API.
  */
 class Alma_WC_Settings {
-	const OPTIONS_KEY        = 'alma_wc_settings';
-	const AMOUNT_KEYS        = array( 'min_amount_2x', 'max_amount_2x', 'min_amount_3x', 'max_amount_3x', 'min_amount_4x', 'max_amount_4x' );
-	const DEFAULT_MIN_AMOUNT = 10000;
-	const DEFAULT_MAX_AMOUNT = 200000;
+	const OPTIONS_KEY = 'alma_wc_settings';
+	const AMOUNT_KEYS = array( 'min_amount_2x', 'max_amount_2x', 'min_amount_3x', 'max_amount_3x', 'min_amount_4x', 'max_amount_4x' );
 
 	/**
 	 * Setting values from get_option.
@@ -31,14 +29,8 @@ class Alma_WC_Settings {
 		return array(
 			'enabled'                              => 'yes',
 			'enabled_2x'                           => 'no',
-			'min_amount_2x'                        => self::DEFAULT_MIN_AMOUNT,
-			'max_amount_2x'                        => self::DEFAULT_MAX_AMOUNT,
 			'enabled_3x'                           => 'yes',
-			'min_amount_3x'                        => self::DEFAULT_MIN_AMOUNT,
-			'max_amount_3x'                        => self::DEFAULT_MAX_AMOUNT,
 			'enabled_4x'                           => 'no',
-			'min_amount_4x'                        => self::DEFAULT_MIN_AMOUNT,
-			'max_amount_4x'                        => self::DEFAULT_MAX_AMOUNT,
 			'title'                                => __( 'Monthly Payments with Alma', 'alma-woocommerce-gateway' ),
 			'description'                          => __( 'Pay in multiple monthly payments with your credit card.', 'alma-woocommerce-gateway' ),
 			'display_cart_eligibility'             => 'yes',

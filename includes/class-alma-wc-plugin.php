@@ -57,6 +57,11 @@ class Alma_WC_Plugin {
 	 */
 	public $settings;
 
+	/**
+	 * Instance of Alma Api client.
+	 *
+	 * @var \Alma\API\Client
+	 */
 	private $_alma_client;
 	private $logger;
 
