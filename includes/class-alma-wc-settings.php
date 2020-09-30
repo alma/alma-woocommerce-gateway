@@ -24,6 +24,26 @@ class Alma_WC_Settings {
 	 */
 	private $_are_settings_loaded = false;
 
+	public static function get_default_settings() {
+		return array(
+			'enabled'                              => 'yes',
+			'enabled_2x'                           => 'no',
+			'enabled_3x'                           => 'yes',
+			'enabled_4x'                           => 'no',
+			'title'                                => __( 'Monthly Payments with Alma', 'alma-woocommerce-gateway' ),
+			'description'                          => __( 'Pay in multiple monthly payments with your credit card.', 'alma-woocommerce-gateway' ),
+			'display_cart_eligibility'             => 'yes',
+			'cart_is_eligible_message'             => __( 'Your cart is eligible for monthly payments', 'alma-woocommerce-gateway' ),
+			'cart_not_eligible_message'            => __( 'Your cart is not eligible for monthly payments', 'alma-woocommerce-gateway' ),
+			'excluded_products_list'               => array(),
+			'cart_not_eligible_message_gift_cards' => __( 'Gift cards cannot be paid with monthly installments', 'alma-woocommerce-gateway' ),
+			'live_api_key'                         => '',
+			'test_api_key'                         => '',
+			'environment'                          => 'test',
+			'debug'                                => 'no',
+		);
+	}
+
 	public function __set( $key, $value ) {
 		$this->_settings[ $key ] = $value;
 		$this->save();
@@ -56,7 +76,8 @@ class Alma_WC_Settings {
 		if ( $this->_are_settings_loaded && ! $force_reload ) {
 			return $this;
 		}
-		$this->_settings            = (array) get_option( self::OPTIONS_KEY, array() );
+		$settings                   = (array) get_option( self::OPTIONS_KEY, array() );
+		$this->_settings            = array_merge( self::get_default_settings(), $settings );
 		$this->_are_settings_loaded = true;
 
 		return $this;
