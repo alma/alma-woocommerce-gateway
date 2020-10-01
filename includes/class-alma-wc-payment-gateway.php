@@ -349,6 +349,10 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			return false;
 		}
 
+		if ( ! count( self::get_eligible_installments_for_cart_according_to_settings() ) ) {
+			return false;
+		}
+
 		if (
 			array_key_exists( 'excluded_products_list', $this->settings ) &&
 			is_array( $this->settings['excluded_products_list'] ) &&
@@ -378,13 +382,16 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 	public function payment_fields() {
 		echo wpautop( wp_kses_post( $this->description ) );
-		$allowed_installments_list = alma_wc_plugin()->settings->get_enabled_pnx_list();
-		$default_installments      = alma_wc_plugin()->settings->get_default_pnx();
+
+		$eligible_installments_list = self::get_eligible_installments_for_cart_according_to_settings();
+
+		$default_installments = self::get_default_pnx( $eligible_installments_list );
+
 		?>
 		<div class="form-row">
 			<p><?php echo esc_html__( 'How many installments do you want to pay?', 'alma-woocommerce-gateway' ); ?> <span class="required">*</span></p>
 			<p>
-				<?php foreach ( $allowed_installments_list as $n ) { ?>
+				<?php foreach ( $eligible_installments_list as $n ) { ?>
 				<input
 					type="radio"
 					id="alma_installments_count_<?php echo esc_attr( $n ); ?>"
@@ -411,7 +418,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			wc_add_notice( '<strong>Installments count</strong> is required.', 'error' );
 			return false;
 		}
-		$allowed_values = array_map( 'strval', alma_wc_plugin()->settings->get_enabled_pnx_list() );
+		$allowed_values = array_map( 'strval', self::get_eligible_installments_for_cart_according_to_settings() );
 		if ( ! in_array( $_POST['alma_installments_count'], $allowed_values, true ) ) {
 			wc_add_notice( '<strong>Installments count</strong> is invalid.', 'error' );
 			return false;
@@ -552,5 +559,49 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$description .= '</p>';
 
 		return $description;
+	}
+
+	/**
+	 * Get eligible installments according to settings.
+	 *
+	 * @return int[]
+	 */
+	public static function get_eligible_installments_for_cart_according_to_settings() {
+		$allowed_installments_list = alma_wc_plugin()->settings->get_enabled_pnx_list();
+
+		$cart       = new Alma_WC_Cart();
+		$cart_total = $cart->get_total();
+
+		$eligible_installments_list = array();
+
+		foreach ( $allowed_installments_list as $installments ) {
+			$min_amount = alma_wc_plugin()->settings->get_min_amount( $installments );
+			$max_amount = alma_wc_plugin()->settings->get_max_amount( $installments );
+
+			if ( $cart_total >= $min_amount && $cart_total <= $max_amount ) {
+				$eligible_installments_list[] = $installments;
+			}
+		}
+
+		return $eligible_installments_list;
+	}
+
+	/**
+	 * Get default pnx according to eligible pnx list.
+	 *
+	 * @param int[] $pnx_list the list of aligible pnx.
+	 *
+	 * @return int|null
+	 */
+	private static function get_default_pnx( $pnx_list ) {
+		if ( ! count( $pnx_list ) ) {
+			return null;
+		}
+
+		if ( in_array( 3, $pnx_list, true ) ) {
+			return 3;
+		}
+
+		return end( $pnx_list );
 	}
 }

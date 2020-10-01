@@ -137,7 +137,7 @@ class Alma_WC_Settings {
 	 *
 	 * @return bool
 	 */
-	public function is_pnx_enabled( $installments = 3 ) {
+	public function is_pnx_enabled( $installments ) {
 		return 'yes' === $this->__get( "enabled_${installments}x" );
 	}
 
@@ -159,22 +159,21 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Get default pnx according to enabled pnx list.
+	 * Get min amount for pnx.
 	 *
-	 * @return int|null
+	 * @return int
 	 */
-	public function get_default_pnx() {
-		$pnx_list = $this->get_enabled_pnx_list();
+	public function get_min_amount( $installments ) {
+		return $this->__get( "min_amount_${installments}x" );
+	}
 
-		if ( ! count( $pnx_list ) ) {
-			return null;
-		}
-
-		if ( in_array( 3, $pnx_list, true ) ) {
-			return 3;
-		}
-
-		return end( $pnx_list );
+	/**
+	 * Get max amount for pnx.
+	 *
+	 * @return int
+	 */
+	public function get_max_amount( $installments ) {
+		return $this->__get( "max_amount_${installments}x" );
 	}
 
 	/**

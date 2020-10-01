@@ -31,6 +31,10 @@ class Alma_WC_Cart_Handler {
 			return;
 		}
 
+		if ( ! count( alma_wc_plugin()->settings->get_enabled_pnx_list() ) ) {
+			return;
+		}
+
 		if ( 'yes' == alma_wc_plugin()->settings->display_cart_eligibility ) {
 			add_action( 'woocommerce_cart_totals_after_order_total', array( $this, 'display_cart_eligibility' ) );
 		}
