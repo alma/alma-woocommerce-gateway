@@ -58,11 +58,35 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	}
 
 	public function on_settings_save( $settings ) {
+		// convert euros to cents.
 		foreach ( Alma_WC_Settings::AMOUNT_KEYS as $key ) {
 			if ( $settings[ $key ] ) {
 				$settings[ $key ] = alma_wc_price_to_cents( $settings[ $key ] );
 			}
 		}
+
+		if ( ! empty( alma_wc_plugin()->settings->get_active_api_key() ) ) {
+			try {
+				$merchant = alma_wc_plugin()->get_alma_client()->merchants->me();
+
+				foreach ( $merchant->fee_plans as $fee_plan ) {
+					if ( ! $fee_plan['allowed'] ) {
+						$installments       = $fee_plan['installments_count'];
+						$default_min_amount = $fee_plan['min_purchase_amount'];
+						$default_max_amount = $fee_plan['max_purchase_amount'];
+
+						// force disable not available fee_plans to prevent showing them in checkout.
+						$settings[ "enabled_${installments}x" ] = 'no';
+						// reset min and max amount for disabled plans to prevent multiplication by 100 on each save.
+						$settings[ "min_amount_${installments}x" ] = $default_min_amount;
+						$settings[ "max_amount_${installments}x" ] = $default_max_amount;
+					}
+				}
+			} catch ( \Alma\API\RequestError $e ) {
+				alma_wc_plugin()->handle_settings_exception( $e );
+			}
+		}
+
 		return $settings;
 	}
 
@@ -77,14 +101,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$need_keys = empty( alma_wc_plugin()->settings->get_active_api_key() );
 
 		$default_settings = Alma_WC_Settings::get_default_settings();
-
-		if ( ! $need_keys ) {
-			try {
-				$merchant = alma_wc_plugin()->get_alma_client()->merchants->me();
-			} catch ( \Alma\API\RequestError $e ) {
-				alma_wc_plugin()->handle_settings_exception( $e );
-			}
-		}
 
 		if ( $need_keys ) {
 			$keys_title = __( '→ Start by filling in your API keys', 'alma-woocommerce-gateway' );
@@ -129,58 +145,64 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			'enabled' => $enabled_option,
 		);
 
-		if ( isset( $merchant ) ) {
-			foreach ( $merchant->fee_plans as $fee_plan ) {
-				if ( $fee_plan['allowed'] ) {
-					$installments          = $fee_plan['installments_count'];
-					$min_amount            = alma_wc_price_from_cents( $fee_plan['min_purchase_amount'] );
-					$max_amount            = alma_wc_price_from_cents( $fee_plan['max_purchase_amount'] );
-					$merchant_fee_fixed    = alma_wc_price_from_cents( $fee_plan['merchant_fee_fixed'] );
-					$merchant_fee_variable = $fee_plan['merchant_fee_variable'] / 100; // percent.
-					$customer_fee_fixed    = alma_wc_price_from_cents( $fee_plan['customer_fee_fixed'] );
-					$customer_fee_variable = $fee_plan['customer_fee_variable'] / 100; // percent.
+		if ( ! $need_keys ) {
+			try {
+				$merchant = alma_wc_plugin()->get_alma_client()->merchants->me();
 
-					$settings_fields = array_merge(
-						$settings_fields,
-						array(
-							"${installments}x_section"    => array(
-								'title'       => '<hr />' . sprintf( __( '→ %d-installment payment', 'alma-woocommerce-gateway' ), $installments ),
-								'type'        => 'title',
-								'description' => $this->get_fee_plan_description( $installments, $min_amount, $max_amount, $merchant_fee_fixed, $merchant_fee_variable, $customer_fee_fixed, $customer_fee_variable ),
-							),
-							"enabled_${installments}x"    => array(
-								'title'   => __( 'Enable/Disable', 'alma-woocommerce-gateway' ),
-								'type'    => 'checkbox',
-								'label'   => sprintf( __( 'Enable %d-installment payments with Alma', 'alma-woocommerce-gateway' ), $installments ),
-								'default' => $default_settings[ "enabled_${installments}x" ],
-							),
-							"min_amount_${installments}x" => array(
-								'title'             => __( 'Minimum amount', 'alma-woocommerce-gateway' ),
-								'type'              => 'number',
-								'css'               => 'width: 100px;',
-								'custom_attributes' => array(
-									'required' => 'required',
-									'min'      => $min_amount,
-									'max'      => $max_amount,
-									'step'     => 0.01,
+				foreach ( $merchant->fee_plans as $fee_plan ) {
+					if ( $fee_plan['allowed'] ) {
+						$installments          = $fee_plan['installments_count'];
+						$default_min_amount    = alma_wc_price_from_cents( $fee_plan['min_purchase_amount'] );
+						$default_max_amount    = alma_wc_price_from_cents( $fee_plan['max_purchase_amount'] );
+						$merchant_fee_fixed    = alma_wc_price_from_cents( $fee_plan['merchant_fee_fixed'] );
+						$merchant_fee_variable = $fee_plan['merchant_fee_variable'] / 100; // percent.
+						$customer_fee_fixed    = alma_wc_price_from_cents( $fee_plan['customer_fee_fixed'] );
+						$customer_fee_variable = $fee_plan['customer_fee_variable'] / 100; // percent.
+
+						$settings_fields = array_merge(
+							$settings_fields,
+							array(
+								"${installments}x_section" => array(
+									'title'       => '<hr />' . sprintf( __( '→ %d-installment payment', 'alma-woocommerce-gateway' ), $installments ),
+									'type'        => 'title',
+									'description' => $this->get_fee_plan_description( $installments, $default_min_amount, $default_max_amount, $merchant_fee_fixed, $merchant_fee_variable, $customer_fee_fixed, $customer_fee_variable ),
 								),
-								'default'           => alma_wc_price_to_cents( $min_amount ),
-							),
-							"max_amount_${installments}x" => array(
-								'title'             => __( 'Maximum amount', 'alma-woocommerce-gateway' ),
-								'type'              => 'number',
-								'css'               => 'width: 100px;',
-								'custom_attributes' => array(
-									'required' => 'required',
-									'min'      => $min_amount,
-									'max'      => $max_amount,
-									'step'     => 0.01,
+								"enabled_${installments}x" => array(
+									'title'   => __( 'Enable/Disable', 'alma-woocommerce-gateway' ),
+									'type'    => 'checkbox',
+									'label'   => sprintf( __( 'Enable %d-installment payments with Alma', 'alma-woocommerce-gateway' ), $installments ),
+									'default' => $default_settings[ "enabled_${installments}x" ],
 								),
-								'default'           => alma_wc_price_to_cents( $max_amount ),
-							),
-						)
-					);
+								"min_amount_${installments}x" => array(
+									'title'             => __( 'Minimum amount', 'alma-woocommerce-gateway' ),
+									'type'              => 'number',
+									'css'               => 'width: 100px;',
+									'custom_attributes' => array(
+										'required' => 'required',
+										'min'      => $default_min_amount,
+										'max'      => $default_max_amount,
+										'step'     => 0.01,
+									),
+									'default'           => alma_wc_price_to_cents( $default_min_amount ),
+								),
+								"max_amount_${installments}x" => array(
+									'title'             => __( 'Maximum amount', 'alma-woocommerce-gateway' ),
+									'type'              => 'number',
+									'css'               => 'width: 100px;',
+									'custom_attributes' => array(
+										'required' => 'required',
+										'min'      => $default_min_amount,
+										'max'      => $default_max_amount,
+										'step'     => 0.01,
+									),
+									'default'           => alma_wc_price_to_cents( $default_max_amount ),
+								),
+							)
+						);
+					}
 				}
+			} catch ( \Alma\API\RequestError $e ) {
+				alma_wc_plugin()->handle_settings_exception( $e );
 			}
 		}
 
