@@ -69,6 +69,9 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			try {
 				$merchant = alma_wc_plugin()->get_alma_client()->merchants->me();
 
+				// store merchant id
+				$settings['merchant_id'] = $merchant->id;
+
 				foreach ( $merchant->fee_plans as $fee_plan ) {
 					if ( ! $fee_plan['allowed'] ) {
 						$installments       = $fee_plan['installments_count'];
@@ -242,6 +245,12 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				),
 				*/
 
+				'display_product_eligibility'          => array(
+					'title'   => __( 'Product eligibility notice', 'alma-woocommerce-gateway' ),
+					'type'    => 'checkbox',
+					'label'   => __( 'Display a message about product eligibility for monthly payments', 'alma-woocommerce-gateway' ),
+					'default' => $default_settings['display_product_eligibility'],
+				),
 				'display_cart_eligibility'             => array(
 					'title'   => __( 'Cart eligibility notice', 'alma-woocommerce-gateway' ),
 					'type'    => 'checkbox',
@@ -249,18 +258,32 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 					'default' => $default_settings['display_cart_eligibility'],
 				),
 				'cart_is_eligible_message'             => array(
-					'title'       => __( 'Eligibility message', 'alma-woocommerce-gateway' ),
+					'title'       => __( 'Eligible cart message', 'alma-woocommerce-gateway' ),
 					'type'        => 'text',
 					'description' => __( 'Message displayed below the cart totals when it is eligible for monthly payments', 'alma-woocommerce-gateway' ),
 					'desc_tip'    => true,
 					'default'     => $default_settings['cart_is_eligible_message'],
 				),
 				'cart_not_eligible_message'            => array(
-					'title'       => __( 'Non-eligibility message', 'alma-woocommerce-gateway' ),
+					'title'       => __( 'Non-eligible cart message', 'alma-woocommerce-gateway' ),
 					'type'        => 'text',
 					'description' => __( 'Message displayed below the cart totals when it is not eligible for monthly payments', 'alma-woocommerce-gateway' ),
 					'desc_tip'    => true,
 					'default'     => $default_settings['cart_not_eligible_message'],
+				),
+				'product_is_eligible_message'          => array(
+					'title'       => __( 'Eligible product message', 'alma-woocommerce-gateway' ),
+					'type'        => 'text',
+					'description' => __( 'Message displayed above the "add to cart" button when product is eligible for monthly payments', 'alma-woocommerce-gateway' ),
+					'desc_tip'    => true,
+					'default'     => $default_settings['product_is_eligible_message'],
+				),
+				'product_not_eligible_message'         => array(
+					'title'       => __( 'Non-eligible product message', 'alma-woocommerce-gateway' ),
+					'type'        => 'text',
+					'description' => __( 'Message displayed above the "add to cart" button when product is not eligible for monthly payments', 'alma-woocommerce-gateway' ),
+					'desc_tip'    => true,
+					'default'     => $default_settings['product_not_eligible_message'],
 				),
 
 				'excluded_products_list'               => array(
@@ -349,7 +372,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			return false;
 		}
 
-		if ( ! count( self::get_eligible_installments_for_cart_according_to_settings() ) ) {
+		if ( ! count( alma_wc_get_eligible_installments_for_cart_according_to_settings() ) ) {
 			return false;
 		}
 
@@ -383,7 +406,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	public function payment_fields() {
 		echo wpautop( wp_kses_post( $this->description ) );
 
-		$eligible_installments_list = self::get_eligible_installments_for_cart_according_to_settings();
+		$eligible_installments_list = alma_wc_get_eligible_installments_for_cart_according_to_settings();
 
 		$default_installments = self::get_default_pnx( $eligible_installments_list );
 
@@ -418,7 +441,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			wc_add_notice( '<strong>Installments count</strong> is required.', 'error' );
 			return false;
 		}
-		$allowed_values = array_map( 'strval', self::get_eligible_installments_for_cart_according_to_settings() );
+		$allowed_values = array_map( 'strval', alma_wc_get_eligible_installments_for_cart_according_to_settings() );
 		if ( ! in_array( $_POST['alma_installments_count'], $allowed_values, true ) ) {
 			wc_add_notice( '<strong>Installments count</strong> is invalid.', 'error' );
 			return false;
@@ -559,31 +582,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$description .= '</p>';
 
 		return $description;
-	}
-
-	/**
-	 * Get eligible installments according to settings.
-	 *
-	 * @return int[]
-	 */
-	public static function get_eligible_installments_for_cart_according_to_settings() {
-		$allowed_installments_list = alma_wc_plugin()->settings->get_enabled_pnx_list();
-
-		$cart       = new Alma_WC_Cart();
-		$cart_total = $cart->get_total();
-
-		$eligible_installments_list = array();
-
-		foreach ( $allowed_installments_list as $installments ) {
-			$min_amount = alma_wc_plugin()->settings->get_min_amount( $installments );
-			$max_amount = alma_wc_plugin()->settings->get_max_amount( $installments );
-
-			if ( $cart_total >= $min_amount && $cart_total <= $max_amount ) {
-				$eligible_installments_list[] = $installments;
-			}
-		}
-
-		return $eligible_installments_list;
 	}
 
 	/**

@@ -96,3 +96,72 @@ function alma_wc_is_rest_call() {
 	$current_url = wp_parse_url( add_query_arg( array() ) );
 	return strpos( $current_url['path'], $rest_url['path'], 0 ) === 0;
 }
+
+/**
+ * Get eligible installments for price according to settings.
+ *
+ * @return int[]
+ */
+function alma_wc_get_eligible_installments_according_to_settings( $price ) {
+	$allowed_installments_list  = alma_wc_plugin()->settings->get_enabled_pnx_list();
+	$eligible_installments_list = array();
+
+	foreach ( $allowed_installments_list as $installments ) {
+		$min_amount = alma_wc_plugin()->settings->get_min_amount( $installments );
+		$max_amount = alma_wc_plugin()->settings->get_max_amount( $installments );
+
+		if ( $price >= $min_amount && $price <= $max_amount ) {
+			$eligible_installments_list[] = $installments;
+		}
+	}
+
+	return $eligible_installments_list;
+}
+
+/**
+ * Get eligible installments for cart according to settings.
+ *
+ * @return int[]
+ */
+function alma_wc_get_eligible_installments_for_cart_according_to_settings() {
+	$cart       = new Alma_WC_Cart();
+	$cart_total = $cart->get_total();
+
+	return alma_wc_get_eligible_installments_according_to_settings( $cart_total );
+}
+
+/**
+ * Get min eligible amount according to settings.
+ *
+ * @return int
+ */
+function alma_wc_get_min_eligible_amount_according_to_settings() {
+	$allowed_installments_list = alma_wc_plugin()->settings->get_enabled_pnx_list();
+
+	$min_amount = INF;
+
+	foreach ( $allowed_installments_list as $installments ) {
+		$plan_min_amount = alma_wc_plugin()->settings->get_min_amount( $installments );
+		$min_amount      = min( $min_amount, $plan_min_amount );
+	}
+
+	return $min_amount;
+}
+
+/**
+ * Get max eligible amount according to settings.
+ *
+ * @return int
+ */
+function alma_wc_get_max_eligible_amount_according_to_settings() {
+	$allowed_installments_list = alma_wc_plugin()->settings->get_enabled_pnx_list();
+
+	$max_amount = 0;
+
+	foreach ( $allowed_installments_list as $installments ) {
+		$plan_max_amount = alma_wc_plugin()->settings->get_max_amount( $installments );
+		$max_amount      = max( $max_amount, $plan_max_amount );
+	}
+
+	return $max_amount;
+}

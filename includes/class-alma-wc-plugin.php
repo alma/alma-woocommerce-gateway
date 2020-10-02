@@ -317,11 +317,14 @@ class Alma_WC_Plugin {
 		require_once $this->includes_path . 'models/class-alma-wc-order.php';
 		require_once $this->includes_path . 'models/class-alma-wc-payment.php';
 
+		require_once $this->includes_path . 'class-alma-wc-generic-handler.php';
 		require_once $this->includes_path . 'class-alma-wc-cart-handler.php';
+		require_once $this->includes_path . 'class-alma-wc-product-handler.php';
 		require_once $this->includes_path . 'class-alma-wc-payment-validator.php';
 		require_once $this->includes_path . 'class-alma-wc-payment-gateway.php';
 
-		$this->cart_handler = new Alma_WC_Cart_Handler();
+		$this->cart_handler    = new Alma_WC_Cart_Handler();
+		$this->product_handler = new Alma_WC_Product_Handler();
 
 		// Don't advertise our payment gateway if we're in test mode and current user is not an admin
 		if ( $this->settings->get_environment() === 'test' && ! current_user_can( 'administrator' ) ) {
