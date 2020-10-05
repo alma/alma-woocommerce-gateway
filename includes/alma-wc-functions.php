@@ -100,18 +100,17 @@ function alma_wc_is_rest_call() {
 /**
  * Get eligible installments for price according to settings.
  *
+ * @param int $amount the amount to pay.
+ *
  * @return int[]
  */
-function alma_wc_get_eligible_installments_according_to_settings( $price ) {
-	$allowed_installments_list  = alma_wc_plugin()->settings->get_enabled_pnx_list();
+function alma_wc_get_eligible_installments_according_to_settings( $amount ) {
+	$allowed_installments_list  = alma_wc_plugin()->settings->get_enabled_pnx_plans_list();
 	$eligible_installments_list = array();
 
-	foreach ( $allowed_installments_list as $installments ) {
-		$min_amount = alma_wc_plugin()->settings->get_min_amount( $installments );
-		$max_amount = alma_wc_plugin()->settings->get_max_amount( $installments );
-
-		if ( $price >= $min_amount && $price <= $max_amount ) {
-			$eligible_installments_list[] = $installments;
+	foreach ( $allowed_installments_list as $plan ) {
+		if ( $amount >= $plan['min_amount'] && $amount <= $plan['max_amount'] ) {
+			$eligible_installments_list[] = $plan['installments'];
 		}
 	}
 
@@ -136,12 +135,12 @@ function alma_wc_get_eligible_installments_for_cart_according_to_settings() {
  * @return int
  */
 function alma_wc_get_min_eligible_amount_according_to_settings() {
-	$allowed_installments_list = alma_wc_plugin()->settings->get_enabled_pnx_list();
+	$allowed_plans_list = alma_wc_plugin()->settings->get_enabled_pnx_plans_list();
 
 	$min_amount = INF;
 
-	foreach ( $allowed_installments_list as $installments ) {
-		$plan_min_amount = alma_wc_plugin()->settings->get_min_amount( $installments );
+	foreach ( $allowed_plans_list as $plan ) {
+		$plan_min_amount = alma_wc_plugin()->settings->get_min_amount( $plan['installments'] );
 		$min_amount      = min( $min_amount, $plan_min_amount );
 	}
 
@@ -154,12 +153,12 @@ function alma_wc_get_min_eligible_amount_according_to_settings() {
  * @return int
  */
 function alma_wc_get_max_eligible_amount_according_to_settings() {
-	$allowed_installments_list = alma_wc_plugin()->settings->get_enabled_pnx_list();
+	$allowed_plans_list = alma_wc_plugin()->settings->get_enabled_pnx_plans_list();
 
 	$max_amount = 0;
 
-	foreach ( $allowed_installments_list as $installments ) {
-		$plan_max_amount = alma_wc_plugin()->settings->get_max_amount( $installments );
+	foreach ( $allowed_plans_list as $plan ) {
+		$plan_max_amount = alma_wc_plugin()->settings->get_max_amount( $plan['installments'] );
 		$max_amount      = max( $max_amount, $plan_max_amount );
 	}
 

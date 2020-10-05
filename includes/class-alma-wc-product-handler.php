@@ -40,9 +40,12 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 
 		$amount = alma_wc_price_to_cents( wc_get_product()->get_price() );
 
-		if ( ! count( alma_wc_get_eligible_installments_according_to_settings( $amount ) ) ) {
-			$skip_payment_plan_injection = true;
-			$eligibility_msg             = alma_wc_plugin()->settings->product_not_eligible_message;
+		$is_variable_product = wc_get_product()->get_type() === 'variable';
+
+		if ( $is_variable_product ) {
+			$eligibility_msg = '';
+		} elseif ( ! count( alma_wc_get_eligible_installments_according_to_settings( $amount ) ) ) {
+			$eligibility_msg = alma_wc_plugin()->settings->product_not_eligible_message;
 		}
 
 		$this->inject_payment_plan_html_js( $eligibility_msg, $skip_payment_plan_injection, $amount );

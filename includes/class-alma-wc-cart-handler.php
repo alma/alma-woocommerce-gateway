@@ -11,6 +11,8 @@ class Alma_WC_Cart_Handler extends Alma_WC_Generic_Handler {
 	public function __construct() {
 		parent::__construct();
 
+		$this->jquery_update_event = 'updated_cart_totals';
+
 		if ( 'yes' === alma_wc_plugin()->settings->display_cart_eligibility ) {
 			add_action( 'woocommerce_cart_totals_after_order_total', array( $this, 'display_cart_eligibility' ) );
 		}
@@ -44,8 +46,7 @@ class Alma_WC_Cart_Handler extends Alma_WC_Generic_Handler {
 		$amount = $cart->get_total();
 
 		if ( ! count( alma_wc_get_eligible_installments_according_to_settings( $amount ) ) ) {
-			$skip_payment_plan_injection = true;
-			$eligibility_msg             = alma_wc_plugin()->settings->cart_not_eligible_message;
+			$eligibility_msg = alma_wc_plugin()->settings->cart_not_eligible_message;
 		}
 
 		$this->inject_payment_plan_html_js( $eligibility_msg, $skip_payment_plan_injection, $amount );

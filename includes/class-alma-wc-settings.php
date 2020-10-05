@@ -145,16 +145,20 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Get enabled pnx list.
+	 * Get enabled pnx plans list.
 	 *
-	 * @return int[]
+	 * @return array
 	 */
-	public function get_enabled_pnx_list() {
+	public function get_enabled_pnx_plans_list() {
 		$pnx_list = array();
 
 		foreach ( array( 2, 3, 4 ) as $installments ) {
 			if ( $this->is_pnx_enabled( $installments ) ) {
-				$pnx_list[] = $installments;
+				$pnx_list[] = array(
+					'installments' => $installments,
+					'min_amount'   => $this->get_min_amount( $installments ),
+					'max_amount'   => $this->get_max_amount( $installments ),
+				);
 			}
 		}
 
@@ -164,6 +168,8 @@ class Alma_WC_Settings {
 	/**
 	 * Get min amount for pnx.
 	 *
+	 * @param int $installments the number of installments.
+	 *
 	 * @return int
 	 */
 	public function get_min_amount( $installments ) {
@@ -172,6 +178,8 @@ class Alma_WC_Settings {
 
 	/**
 	 * Get max amount for pnx.
+	 *
+	 * @param int $installments the number of installments.
 	 *
 	 * @return int
 	 */
