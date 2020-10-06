@@ -94,7 +94,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	}
 
 	public function get_icon() {
-		$icon_url = alma_wc_plugin()->get_asset_url( 'images/alma_logo.png' );
+		$icon_url = alma_wc_plugin()->get_asset_url( 'images/alma_logo.svg' );
 		$icon     = '<img src="' . WC_HTTPS::force_https_url( $icon_url ) . '" alt="' . esc_attr( $this->get_title() ) . '" style="width: auto !important; height: 25px !important; border: none !important;">';
 
 		return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
@@ -270,13 +270,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 					'description' => __( 'Message displayed below the cart totals when it is not eligible for monthly payments', 'alma-woocommerce-gateway' ),
 					'desc_tip'    => true,
 					'default'     => $default_settings['cart_not_eligible_message'],
-				),
-				'product_is_eligible_message'          => array(
-					'title'       => __( 'Eligible product message', 'alma-woocommerce-gateway' ),
-					'type'        => 'text',
-					'description' => __( 'Message displayed above the "add to cart" button when product is eligible for monthly payments', 'alma-woocommerce-gateway' ),
-					'desc_tip'    => true,
-					'default'     => $default_settings['product_is_eligible_message'],
 				),
 				'product_not_eligible_message'         => array(
 					'title'       => __( 'Non-eligible product message', 'alma-woocommerce-gateway' ),

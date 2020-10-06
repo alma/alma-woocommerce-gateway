@@ -8,6 +8,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
+	const JQUERY_VARIABLE_PRODUCT_UPDATE_EVENT   = 'check_variations';
+	const VARIABLE_PRODUCT_AMOUNT_QUERY_SELECTOR = 'form.variations_form div.woocommerce-variation-price span.woocommerce-Price-amount bdi';
+
 	public function __construct() {
 		parent::__construct();
 
@@ -20,7 +23,7 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 	 *  Display payment plan below the 'add to cart' button to indicate whether Alma is available or not
 	 */
 	public function inject_payment_plan() {
-		$eligibility_msg             = alma_wc_plugin()->settings->product_is_eligible_message;
+		$eligibility_msg             = '';
 		$skip_payment_plan_injection = false;
 
 		if (
@@ -38,16 +41,26 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 			}
 		}
 
-		$amount = alma_wc_price_to_cents( wc_get_product()->get_price() );
+		$amount                = alma_wc_price_to_cents( wc_get_product()->get_price() );
+		$amount_query_selector = null;
+		$jquery_update_event   = null;
+		$first_render          = true;
 
 		$is_variable_product = wc_get_product()->get_type() === 'variable';
 
 		if ( $is_variable_product ) {
-			$eligibility_msg = '';
-		} elseif ( ! count( alma_wc_get_eligible_installments_according_to_settings( $amount ) ) ) {
-			$eligibility_msg = alma_wc_plugin()->settings->product_not_eligible_message;
+			$amount_query_selector = 'form.variations_form div.woocommerce-variation-price span.woocommerce-Price-amount bdi';
+			$jquery_update_event   = self::JQUERY_VARIABLE_PRODUCT_UPDATE_EVENT;
+			$first_render          = false;
 		}
 
-		$this->inject_payment_plan_html_js( $eligibility_msg, $skip_payment_plan_injection, $amount );
+		$this->inject_payment_plan_html_js(
+			$eligibility_msg,
+			$skip_payment_plan_injection,
+			$amount,
+			$jquery_update_event,
+			$amount_query_selector,
+			$first_render
+		);
 	}
 }

@@ -13,8 +13,6 @@ class Alma_WC_Generic_Handler {
 	private $min_amount;
 	private $max_amount;
 
-	protected $jquery_update_event;
-
 	public function __construct() {
 		$this->logger = new Alma_WC_Logger();
 
@@ -44,9 +42,17 @@ class Alma_WC_Generic_Handler {
 		$this->max_amount = alma_wc_get_max_eligible_amount_according_to_settings();
 	}
 
-	protected function inject_payment_plan_html_js( $eligibility_msg, $skip_payment_plan_injection, $amount ) {
-		$logo_url = alma_wc_plugin()->get_asset_url( 'images/alma_logo.png' );
+	protected function inject_payment_plan_html_js(
+		$eligibility_msg,
+		$skip_payment_plan_injection, $amount = 0,
+		$jquery_update_event = null,
+		$amount_query_selector = null,
+		$first_render = true
+	) {
+		$logo_url = alma_wc_plugin()->get_asset_url( 'images/alma_logo.svg' );
 
+		$merchant_id   = alma_wc_plugin()->settings->merchant_id;
+		$api_mode      = alma_wc_plugin()->settings->environment;
 		$enabled_plans = alma_wc_plugin()->settings->get_enabled_pnx_plans_list();
 
 		?>
@@ -57,65 +63,27 @@ class Alma_WC_Generic_Handler {
 			<p>
 				<div
 					id="alma-payment-plan"
+					data-merchant-id="<?php echo esc_attr( $merchant_id ); ?>"
+					data-api-mode="<?php echo esc_attr( $api_mode ); ?>"
 					data-amount="<?php echo esc_attr( $amount ); ?>"
 					data-enabled-plans="<?php echo esc_attr( wp_json_encode( $enabled_plans ) ); ?>"
+					data-min-amount="<?php echo esc_attr( $this->min_amount ); ?>"
+					data-max-amount="<?php echo esc_attr( $this->max_amount ); ?>"
+					data-amount-query-selector="<?php echo esc_attr( $amount_query_selector ); ?>"
+					data-jquery-update-event="<?php echo esc_attr( $jquery_update_event ); ?>"
+					data-first-render="<?php echo esc_attr( $first_render ); ?>"
 				>
 				</div>
 			</p>
 		</div>
 		<?php
 		if ( ! $skip_payment_plan_injection ) {
-			$alma_widjet_js_url  = alma_wc_plugin()->get_asset_url( 'js/alma-widgets.umd.min.js' );
-			$alma_widjet_css_url = alma_wc_plugin()->get_asset_url( 'css/alma-widgets.umd.css' );
-			$alma_widget_handle  = 'alma-widget';
-			wp_enqueue_style( $alma_widget_handle, $alma_widjet_css_url, array(), false );
-			wp_enqueue_script( $alma_widget_handle, $alma_widjet_js_url, array(), false, true );
-			wp_add_inline_script( $alma_widget_handle, $this->get_inline_script( $amount ) );
+			$alma_widjet_js_url        = alma_wc_plugin()->get_asset_url( 'js/alma-widgets.umd.min.js' );
+			$alma_widjet_js_create_url = alma_wc_plugin()->get_asset_url( 'js/alma-widgets-create.js' );
+			$alma_widjet_css_url       = alma_wc_plugin()->get_asset_url( 'css/alma-widgets.umd.css' );
+			wp_enqueue_style( 'alma-widget', $alma_widjet_css_url, array(), false );
+			wp_enqueue_script( 'alma-widget', $alma_widjet_js_url, array(), false, true );
+			wp_enqueue_script( 'alma-widget-create', $alma_widjet_js_create_url, array(), false, true );
 		}
-	}
-
-	private function get_inline_script() {
-		$merchant_id = alma_wc_plugin()->settings->merchant_id;
-		$api_mode    = alma_wc_plugin()->settings->environment;
-
-		$inline_script = '
-		window.AlmaInitWidget = function () {
-			var amount = parseInt(jQuery("#alma-payment-plan").data("amount"));
-			var enabledPlans = jQuery("#alma-payment-plan").data("enabled-plans");
-
-			var eligibleInstallments = enabledPlans.filter(function(plan) {
-				return amount >= plan.min_amount && amount <= plan.max_amount;
-			}).map(function (plan) { return plan.installments; });
-
-			var almaWidgets = Alma.Widgets.initialize("' . esc_js( $merchant_id ) . '", "' . esc_js( $api_mode ) . '");
-
-			almaWidgets.create(Alma.Widgets.PaymentPlan, {
-				container: "#alma-payment-plan",
-				purchaseAmount: amount,
-				installmentsCount: eligibleInstallments,
-				minPurchaseAmount: ' . esc_js( $this->min_amount ) . ',
-				maxPurchaseAmount: ' . esc_js( $this->max_amount ) . ',
-				templates: {
-					notEligible: function(min, max, installmentsCounts, config, createWidget) {
-						return "<b>Le paiement en plusieurs fois est disponible entre €" + min / 100 + " et €" + max / 100 + "</b>";
-					}
-				}
-			});
-
-			almaWidgets.render();
-		};
-
-		window.AlmaInitWidget();
-		';
-
-		if ( $this->jquery_update_event ) {
-			$inline_script .= '
-				jQuery( document.body ).on( "' . esc_js( $this->jquery_update_event ) . '", function() {
-					window.AlmaInitWidget();
-				});
-			';
-		}
-
-		return $inline_script;
 	}
 }

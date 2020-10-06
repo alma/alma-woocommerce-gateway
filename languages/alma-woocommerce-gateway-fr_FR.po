@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Alma Gateway\n"
-"POT-Creation-Date: 2020-10-02 18:17+0200\n"
-"PO-Revision-Date: 2020-10-02 18:17+0200\n"
+"POT-Creation-Date: 2020-10-06 13:10+0200\n"
+"PO-Revision-Date: 2020-10-06 13:10+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -20,16 +20,6 @@ msgstr ""
 "_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
-
-#: includes/class-alma-wc-generic-handler.php:46
-#, php-format
-msgid "(Maximum amount: %s)"
-msgstr "(Maximum : %s)"
-
-#: includes/class-alma-wc-generic-handler.php:48
-#, php-format
-msgid "(Minimum amount: %s)"
-msgstr "(Minimum : %s)"
 
 #: includes/class-alma-wc-payment-gateway.php:19
 msgid "Alma monthly payments"
@@ -186,22 +176,10 @@ msgstr ""
 "au paiement en plusieurs fois"
 
 #: includes/class-alma-wc-payment-gateway.php:275
-msgid "Eligible product message"
-msgstr "Message d’éligibilité d'un produit"
-
-#: includes/class-alma-wc-payment-gateway.php:277
-msgid ""
-"Message displayed above the \"add to cart\" button when product is eligible "
-"for monthly payments"
-msgstr ""
-"Message affiché au-dessus du bouton \"Ajouter au panier\" lorsque le produit "
-"est éligible au paiement en plusieurs fois"
-
-#: includes/class-alma-wc-payment-gateway.php:282
 msgid "Non-eligible product message"
 msgstr "Message de non-éligibilité d'un produit"
 
-#: includes/class-alma-wc-payment-gateway.php:284
+#: includes/class-alma-wc-payment-gateway.php:277
 msgid ""
 "Message displayed above the \"add to cart\" button when product is not "
 "eligible for monthly payments"
@@ -209,11 +187,11 @@ msgstr ""
 "Message affiché au-dessus du bouton \"Ajouter au panier\" lorsque le produit "
 "n'est pas éligible au paiement en plusieurs fois"
 
-#: includes/class-alma-wc-payment-gateway.php:290
+#: includes/class-alma-wc-payment-gateway.php:283
 msgid "Excluded product categories"
 msgstr "Catégories de produits exclues"
 
-#: includes/class-alma-wc-payment-gateway.php:292
+#: includes/class-alma-wc-payment-gateway.php:285
 msgid ""
 "Exclude all virtual/downloadable product categories, as you cannot sell them "
 "with Alma"
@@ -221,50 +199,50 @@ msgstr ""
 "Excluez toutes les catégories de produits virtuels/téléchargeables, qui ne "
 "peuvent être vendus avec Alma"
 
-#: includes/class-alma-wc-payment-gateway.php:299
+#: includes/class-alma-wc-payment-gateway.php:292
 msgid "Non-eligibility message for excluded products"
 msgstr "Message de non-éligibilité pour les produits exclus"
 
-#: includes/class-alma-wc-payment-gateway.php:301
+#: includes/class-alma-wc-payment-gateway.php:294
 msgid ""
 "Message displayed below the cart totals when it contains excluded products"
 msgstr ""
 "Message affiché en-dessous du total du panier lorsqu’il contient des "
 "produits exclus"
 
-#: includes/class-alma-wc-payment-gateway.php:310
+#: includes/class-alma-wc-payment-gateway.php:303
 msgid "→ Debug options"
 msgstr "→ Options de déboggage"
 
-#: includes/class-alma-wc-payment-gateway.php:314
+#: includes/class-alma-wc-payment-gateway.php:307
 msgid "Debug mode"
 msgstr "Mode debug"
 
-#: includes/class-alma-wc-payment-gateway.php:316
+#: includes/class-alma-wc-payment-gateway.php:309
 msgid "Activate debug mode"
 msgstr "Activer le mode debug"
 
-#: includes/class-alma-wc-payment-gateway.php:316
+#: includes/class-alma-wc-payment-gateway.php:309
 #, php-format
 msgid " (<a href=\"%s\">Go to logs</a>)"
 msgstr " (<a href=\"%s\">Voir les logs</a>)"
 
-#: includes/class-alma-wc-payment-gateway.php:317
+#: includes/class-alma-wc-payment-gateway.php:310
 msgid "Enable logging info and errors to help debug any issue with the plugin"
 msgstr ""
 "Active la journalisation d’infos et erreur pour aider au déboggage de "
 "problèmes avec l’extension"
 
-#: includes/class-alma-wc-payment-gateway.php:415
+#: includes/class-alma-wc-payment-gateway.php:408
 msgid "How many installments do you want to pay?"
 msgstr "En combien de fois voulez-vous payer ?"
 
-#: includes/class-alma-wc-payment-gateway.php:431
+#: includes/class-alma-wc-payment-gateway.php:424
 #, php-format
 msgid "%d installments"
 msgstr "%d fois"
 
-#: includes/class-alma-wc-payment-gateway.php:453
+#: includes/class-alma-wc-payment-gateway.php:446
 msgid ""
 "There was an error processing your payment.<br>Please try again or contact "
 "us if the problem persists."
@@ -272,7 +250,7 @@ msgstr ""
 "Une erreur est survenue lors du traitement de votre paiement.<br>Réessayez "
 "ou contactez-nous si le problème persiste."
 
-#: includes/class-alma-wc-payment-gateway.php:494
+#: includes/class-alma-wc-payment-gateway.php:487
 msgid ""
 "There was an error when validating your payment.<br>Please try again or "
 "contact us if the problem persists."
@@ -280,7 +258,7 @@ msgstr ""
 "Une erreur est survenue lors du traitement de votre paiement.<br>Réessayez "
 "ou contactez-nous si le problème persiste."
 
-#: includes/class-alma-wc-payment-gateway.php:546
+#: includes/class-alma-wc-payment-gateway.php:539
 #, php-format
 msgid ""
 "You can offer %1$d-installment payments for amounts between <b>%2$d€</b> and "
@@ -289,15 +267,15 @@ msgstr ""
 "Vous pouvez proposer le paiement en %1$d fois pour des montants compris "
 "entre <b>%2$d€</b> et <b>%3$d€</b>."
 
-#: includes/class-alma-wc-payment-gateway.php:548
+#: includes/class-alma-wc-payment-gateway.php:541
 msgid "Fees applied to each transaction for this plan:"
 msgstr "Des frais s'appliquent pour chaque transaction:"
 
-#: includes/class-alma-wc-payment-gateway.php:552
+#: includes/class-alma-wc-payment-gateway.php:545
 msgid "You pay:"
 msgstr "Vous payez :"
 
-#: includes/class-alma-wc-payment-gateway.php:568
+#: includes/class-alma-wc-payment-gateway.php:561
 msgid "Customer pays:"
 msgstr "Le client paye :"
 
@@ -416,15 +394,7 @@ msgstr "Commande éligible au paiement en plusieurs fois"
 msgid "Your cart is not eligible for monthly payments"
 msgstr "Commande non éligible au paiement en plusieurs fois"
 
-#: includes/class-alma-wc-settings.php:40
-msgid "This product is eligible for monthly payments"
-msgstr "Produit éligible au paiement en plusieurs fois"
-
 #: includes/class-alma-wc-settings.php:41
-msgid "This product is not eligible for monthly payments"
-msgstr "Produit non éligible au paiement en plusieurs fois"
-
-#: includes/class-alma-wc-settings.php:43
 msgid "Gift cards cannot be paid with monthly installments"
 msgstr "Les cartes cadeaux ne sont pas payables en plusieurs fois"
 
@@ -443,6 +413,28 @@ msgstr "Alma"
 #. Author URI of the plugin/theme
 msgid "https://www.getalma.eu"
 msgstr "https://www.getalma.eu"
+
+#~ msgid "Eligible product message"
+#~ msgstr "Message d’éligibilité d'un produit"
+
+#~ msgid ""
+#~ "Message displayed above the \"add to cart\" button when product is "
+#~ "eligible for monthly payments"
+#~ msgstr ""
+#~ "Message affiché au-dessus du bouton \"Ajouter au panier\" lorsque le "
+#~ "produit est éligible au paiement en plusieurs fois"
+
+#~ msgid "This product is eligible for monthly payments"
+#~ msgstr "Produit éligible au paiement en plusieurs fois"
+
+#~ msgid "This product is not eligible for monthly payments"
+#~ msgstr "Produit non éligible au paiement en plusieurs fois"
+
+#~ msgid "(Maximum amount: %s)"
+#~ msgstr "(Maximum : %s)"
+
+#~ msgid "(Minimum amount: %s)"
+#~ msgstr "(Minimum : %s)"
 
 #~ msgid "3 installments payment"
 #~ msgstr "- Paiement en 3 fois"
