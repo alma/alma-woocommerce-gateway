@@ -8,8 +8,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
-	const JQUERY_VARIABLE_PRODUCT_UPDATE_EVENT   = 'check_variations';
-	const VARIABLE_PRODUCT_AMOUNT_QUERY_SELECTOR = 'form.variations_form div.woocommerce-variation-price span.woocommerce-Price-amount bdi';
+	const JQUERY_VARIABLE_PRODUCT_UPDATE_EVENT          = 'check_variations';
+	const DEFAULT_VARIABLE_PRODUCT_PRICE_QUERY_SELECTOR = 'form.variations_form div.woocommerce-variation-price span.woocommerce-Price-amount bdi';
 
 	public function __construct() {
 		parent::__construct();
@@ -49,7 +49,7 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 		$is_variable_product = wc_get_product()->get_type() === 'variable';
 
 		if ( $is_variable_product ) {
-			$amount_query_selector = 'form.variations_form div.woocommerce-variation-price span.woocommerce-Price-amount bdi';
+			$amount_query_selector = alma_wc_plugin()->settings->variable_product_price_query_selector;
 			$jquery_update_event   = self::JQUERY_VARIABLE_PRODUCT_UPDATE_EVENT;
 			$first_render          = false;
 		}

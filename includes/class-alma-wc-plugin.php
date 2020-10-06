@@ -153,11 +153,21 @@ class Alma_WC_Plugin {
 
 			delete_option( 'alma_bootstrap_warning_message' );
 
+			$this->_check_dependencies();
+
+			// TODO: Handle privacy message/personal data exporter/eraser
+			// require_once( $this->includes_path . 'class-alma-privacy.php' );
+			require_once $this->includes_path . 'models/class-alma-wc-cart.php';
+			require_once $this->includes_path . 'models/class-alma-wc-customer.php';
+			require_once $this->includes_path . 'models/class-alma-wc-order.php';
+			require_once $this->includes_path . 'models/class-alma-wc-payment.php';
 			require_once $this->includes_path . 'alma-wc-functions.php';
+			require_once $this->includes_path . 'class-alma-wc-generic-handler.php';
+			require_once $this->includes_path . 'class-alma-wc-cart-handler.php';
+			require_once $this->includes_path . 'class-alma-wc-product-handler.php';
 			require_once $this->includes_path . 'class-alma-wc-settings.php';
 			$this->settings = new Alma_WC_Settings();
 
-			$this->_check_dependencies();
 			$this->_run();
 
 			if ( is_admin() ) {
@@ -311,16 +321,7 @@ class Alma_WC_Plugin {
 	 * Run the plugin.
 	 */
 	protected function _run() {
-		// TODO: Handle privacy message/personal data exporter/eraser
-		// require_once( $this->includes_path . 'class-alma-privacy.php' );
-		require_once $this->includes_path . 'models/class-alma-wc-cart.php';
-		require_once $this->includes_path . 'models/class-alma-wc-customer.php';
-		require_once $this->includes_path . 'models/class-alma-wc-order.php';
-		require_once $this->includes_path . 'models/class-alma-wc-payment.php';
 
-		require_once $this->includes_path . 'class-alma-wc-generic-handler.php';
-		require_once $this->includes_path . 'class-alma-wc-cart-handler.php';
-		require_once $this->includes_path . 'class-alma-wc-product-handler.php';
 		require_once $this->includes_path . 'class-alma-wc-payment-validator.php';
 		require_once $this->includes_path . 'class-alma-wc-payment-gateway.php';
 
