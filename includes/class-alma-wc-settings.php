@@ -53,11 +53,13 @@ class Alma_WC_Settings {
 	}
 
 	public function __get( $key ) {
+		$value = null;
+
 		if ( array_key_exists( $key, $this->_settings ) ) {
-			return $this->_settings[ $key ];
+			$value = $this->_settings[ $key ];
 		}
 
-		return null;
+		return apply_filters( 'alma_wc_settings_' . $key, $value );
 	}
 
 	public function __isset( $key ) {
