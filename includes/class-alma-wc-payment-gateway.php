@@ -12,6 +12,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	const GATEWAY_ID = 'alma';
 
 	private $logger;
+	private $_eligibilities;
 
 	public function __construct() {
 		$this->id                 = self::GATEWAY_ID;
@@ -353,11 +354,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			return parent::is_available();
 		}
 
-		$alma = alma_wc_plugin()->get_alma_client();
-		if ( ! $alma ) {
-			return false;
-		}
-
 		$locale = get_locale();
 		if ( $locale !== 'fr_FR' ) {
 			$this->logger->info( "Locale {$locale} not supported - Not displaying Alma" );
@@ -392,15 +388,19 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			}
 		}
 
-		try {
-			$eligibility = $alma->payments->eligibility( Alma_WC_Payment::from_cart() );
-		} catch ( \Alma\API\RequestError $e ) {
-			$this->logger->error( 'Error while checking payment eligibility: ' . print_r( $e, true ) );
+		$eligibilities = $this->get_cart_eligibilities();
 
+		if ( ! $eligibilities ) {
 			return false;
 		}
 
-		return $eligibility->isEligible && parent::is_available();
+		$is_eligible = false;
+
+		foreach ( $eligibilities as $plan ) {
+			$is_eligible = $is_eligible || $plan->isEligible;
+		}
+
+		return $is_eligible && parent::is_available();
 	}
 
 	public function payment_fields() {
@@ -423,6 +423,10 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 					<?php if ( $n === $default_installments ) { ?>
 					checked
 					<?php	} ?>
+					onchange="
+						jQuery('.js-alma-payment-plan-table').hide();
+						jQuery('#alma-payment-plan-table-' + event.target.value + '-installments').show();
+					"
 				>
 				<label
 					class="checkbox"
@@ -430,7 +434,50 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				>
 					<?php echo sprintf( esc_html__( '%d installments', 'alma-woocommerce-gateway' ), esc_html( $n ) ); ?>
 				</label>
-				<?php } ?>
+					<?php
+				}
+
+				$eligibilities = $this->get_cart_eligibilities();
+
+				if ( $eligibilities ) {
+					foreach ( $eligibilities as $n => $plan ) {
+						?>
+						<div
+							id="alma-payment-plan-table-<?php echo esc_html( $n ); ?>-installments"
+							class="js-alma-payment-plan-table"
+							style="
+								margin: 0 auto;
+								<?php if ( $n !== $default_installments ) { ?>
+								display: none;
+								<?php	} ?>
+							"
+						>
+							<?php
+							$plans_count = count( $plan->paymentPlan );
+							$plan_index  = 0;
+							foreach ( $plan->paymentPlan as $step ) {
+								?>
+								<p style="
+									display: flex;
+									justify-content: space-between;
+									padding: 4px 0;
+									margin: 4px 0;
+									<?php if ( ++$plan_index !== $plans_count ) { ?>
+									border-bottom: 1px solid lightgrey;
+									<?php	} else { ?>
+									padding-bottom: 0;
+									margin-bottom: 0;
+									<?php	} ?>
+								">
+									<span><?php echo esc_html( date( 'd/m/Y', $step['due_date'] ) ); ?></span>
+									<span>€<?php echo esc_html( alma_wc_price_from_cents( $step['purchase_amount'] + $step['customer_fee'] ) ); ?></span>
+								</p>
+							<?php } ?>
+						</div>
+						<?php
+					}
+				}
+				?>
 			</p>
 		</div>
 		<?php
@@ -582,6 +629,29 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$description .= '</p>';
 
 		return $description;
+	}
+
+	/**
+	 * Get eligibilities from cart.
+	 *
+	 * @return array|null
+	 */
+	private function get_cart_eligibilities() {
+		if ( ! $this->_eligibilities ) {
+			$alma = alma_wc_plugin()->get_alma_client();
+			if ( ! $alma ) {
+				return null;
+			}
+
+			try {
+				$this->_eligibilities = $alma->payments->eligibility( Alma_WC_Payment::from_cart() );
+			} catch ( \Alma\API\RequestError $e ) {
+				$this->logger->error( 'Error while checking payment eligibility: ' . print_r( $e, true ) );
+				return null;
+			}
+		}
+
+		return $this->_eligibilities;
 	}
 
 	/**

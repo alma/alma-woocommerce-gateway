@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Alma Gateway\n"
-"POT-Creation-Date: 2020-10-06 14:12+0200\n"
-"PO-Revision-Date: 2020-10-06 14:14+0200\n"
+"POT-Creation-Date: 2020-10-06 17:32+0200\n"
+"PO-Revision-Date: 2020-10-06 17:32+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -21,35 +21,35 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: includes/class-alma-wc-payment-gateway.php:19
+#: includes/class-alma-wc-payment-gateway.php:20
 msgid "Alma monthly payments"
 msgstr "Paiement en plusieurs fois avec Alma"
 
 #. Description of the plugin/theme
-#: includes/class-alma-wc-payment-gateway.php:20
+#: includes/class-alma-wc-payment-gateway.php:21
 msgid "Easily provide monthly payments to your customers, risk-free!"
 msgstr ""
 "Proposez le paiement en plusieurs fois à vos clients, facilement et sans "
 "risque !"
 
-#: includes/class-alma-wc-payment-gateway.php:109
+#: includes/class-alma-wc-payment-gateway.php:110
 msgid "→ Start by filling in your API keys"
 msgstr "→ Commencez par renseigner vos clefs d’API"
 
-#: includes/class-alma-wc-payment-gateway.php:111
+#: includes/class-alma-wc-payment-gateway.php:112
 msgid "→ API configuration"
 msgstr "→ Configuration de l’API"
 
-#: includes/class-alma-wc-payment-gateway.php:115
-#: includes/class-alma-wc-payment-gateway.php:174
+#: includes/class-alma-wc-payment-gateway.php:116
+#: includes/class-alma-wc-payment-gateway.php:175
 msgid "Enable/Disable"
 msgstr "Activer/Désactiver"
 
-#: includes/class-alma-wc-payment-gateway.php:117
+#: includes/class-alma-wc-payment-gateway.php:118
 msgid "Enable monthly payments with Alma"
 msgstr "Activer le paiement en plusieurs fois avec Alma"
 
-#: includes/class-alma-wc-payment-gateway.php:125
+#: includes/class-alma-wc-payment-gateway.php:126
 msgid ""
 "You can find your API keys on <a href=\"https://dashboard.getalma.eu/security"
 "\" target=\"_blank\">your Alma dashboard</a>"
@@ -57,19 +57,19 @@ msgstr ""
 "Vous trouverez vos clefs d’API sur <a href=\"https://dashboard.getalma.eu/"
 "security\" target=\"_blank\">votre dashboard Alma</a>"
 
-#: includes/class-alma-wc-payment-gateway.php:128
+#: includes/class-alma-wc-payment-gateway.php:129
 msgid "Live API key"
 msgstr "API key live"
 
-#: includes/class-alma-wc-payment-gateway.php:132
+#: includes/class-alma-wc-payment-gateway.php:133
 msgid "Test API key"
 msgstr "API key de test"
 
-#: includes/class-alma-wc-payment-gateway.php:136
+#: includes/class-alma-wc-payment-gateway.php:137
 msgid "API Mode"
 msgstr "Mode de l’API"
 
-#: includes/class-alma-wc-payment-gateway.php:138
+#: includes/class-alma-wc-payment-gateway.php:139
 msgid ""
 "Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In "
 "Test mode, only admins can see Alma on cart/checkout pages."
@@ -78,52 +78,52 @@ msgstr ""
 "des commandes avec Alma<br>En mode Test, seuls les administrateurs voient "
 "Alma sur les pages de panier/validation de commande."
 
-#: includes/class-alma-wc-payment-gateway.php:141
+#: includes/class-alma-wc-payment-gateway.php:142
 msgid "Test"
 msgstr "Test"
 
-#: includes/class-alma-wc-payment-gateway.php:142
+#: includes/class-alma-wc-payment-gateway.php:143
 msgid "Live"
 msgstr "Live"
 
-#: includes/class-alma-wc-payment-gateway.php:169
+#: includes/class-alma-wc-payment-gateway.php:170
 #, php-format
 msgid "→ %d-installment payment"
 msgstr "→ Paiement en %d fois"
 
-#: includes/class-alma-wc-payment-gateway.php:176
+#: includes/class-alma-wc-payment-gateway.php:177
 #, php-format
 msgid "Enable %d-installment payments with Alma"
 msgstr "Activer le paiement en %d fois"
 
-#: includes/class-alma-wc-payment-gateway.php:180
+#: includes/class-alma-wc-payment-gateway.php:181
 msgid "Minimum amount"
 msgstr "Montant minimum (€)"
 
-#: includes/class-alma-wc-payment-gateway.php:192
+#: includes/class-alma-wc-payment-gateway.php:193
 msgid "Maximum amount"
 msgstr "Montant maximum (€)"
 
-#: includes/class-alma-wc-payment-gateway.php:216
+#: includes/class-alma-wc-payment-gateway.php:217
 msgid "→ General configuration"
 msgstr "→ Configuration générale"
 
-#: includes/class-alma-wc-payment-gateway.php:220
+#: includes/class-alma-wc-payment-gateway.php:221
 msgid "Title"
 msgstr "Titre"
 
-#: includes/class-alma-wc-payment-gateway.php:222
+#: includes/class-alma-wc-payment-gateway.php:223
 msgid ""
 "This controls the payment method name which the user sees during checkout."
 msgstr ""
 "Choisissez le nom de la méthode de paiement que l'utilisateur voit pendant "
 "la validation de commande."
 
-#: includes/class-alma-wc-payment-gateway.php:227
+#: includes/class-alma-wc-payment-gateway.php:228
 msgid "Description"
 msgstr "Description"
 
-#: includes/class-alma-wc-payment-gateway.php:230
+#: includes/class-alma-wc-payment-gateway.php:231
 msgid ""
 "This controls the payment method description which the user sees during "
 "checkout."
@@ -131,31 +131,31 @@ msgstr ""
 "Choisissez la description de la méthode de paiement sur la page de "
 "validation de commande."
 
-#: includes/class-alma-wc-payment-gateway.php:249
+#: includes/class-alma-wc-payment-gateway.php:250
 msgid "Product eligibility notice"
 msgstr "Éligibilité des produits"
 
-#: includes/class-alma-wc-payment-gateway.php:251
+#: includes/class-alma-wc-payment-gateway.php:252
 msgid "Display a message about product eligibility for monthly payments"
 msgstr ""
 "Afficher un message indiquant l’éligibilité d'un produit au paiement en "
 "plusieurs fois"
 
-#: includes/class-alma-wc-payment-gateway.php:255
+#: includes/class-alma-wc-payment-gateway.php:256
 msgid "Cart eligibility notice"
 msgstr "Éligibilité du panier"
 
-#: includes/class-alma-wc-payment-gateway.php:257
+#: includes/class-alma-wc-payment-gateway.php:258
 msgid "Display a message about cart eligibility for monthly payments"
 msgstr ""
 "Afficher un message indiquant l’éligibilité du panier au paiement en "
 "plusieurs fois"
 
-#: includes/class-alma-wc-payment-gateway.php:261
+#: includes/class-alma-wc-payment-gateway.php:262
 msgid "Eligible cart message"
 msgstr "Message d’éligibilité du panier"
 
-#: includes/class-alma-wc-payment-gateway.php:263
+#: includes/class-alma-wc-payment-gateway.php:264
 msgid ""
 "Message displayed below the cart totals when it is eligible for monthly "
 "payments"
@@ -163,11 +163,11 @@ msgstr ""
 "Message affiché en-dessous du total du panier lorsqu’il est éligible au "
 "paiement en plusieurs fois"
 
-#: includes/class-alma-wc-payment-gateway.php:268
+#: includes/class-alma-wc-payment-gateway.php:269
 msgid "Non-eligible cart message"
 msgstr "Message de non-éligibilité du panier"
 
-#: includes/class-alma-wc-payment-gateway.php:270
+#: includes/class-alma-wc-payment-gateway.php:271
 msgid ""
 "Message displayed below the cart totals when it is not eligible for monthly "
 "payments"
@@ -175,11 +175,11 @@ msgstr ""
 "Message affiché en-dessous du total du panier lorsqu’il n’est pas éligible "
 "au paiement en plusieurs fois"
 
-#: includes/class-alma-wc-payment-gateway.php:275
+#: includes/class-alma-wc-payment-gateway.php:276
 msgid "Non-eligible product message"
 msgstr "Message de non-éligibilité d'un produit"
 
-#: includes/class-alma-wc-payment-gateway.php:277
+#: includes/class-alma-wc-payment-gateway.php:278
 msgid ""
 "Message displayed above the \"add to cart\" button when product is not "
 "eligible for monthly payments"
@@ -187,21 +187,21 @@ msgstr ""
 "Message affiché au-dessus du bouton \"Ajouter au panier\" lorsque le produit "
 "n'est pas éligible au paiement en plusieurs fois"
 
-#: includes/class-alma-wc-payment-gateway.php:282
+#: includes/class-alma-wc-payment-gateway.php:283
 msgid "Variable products price query selector"
 msgstr "Query selector du prix des produits variables"
 
-#: includes/class-alma-wc-payment-gateway.php:284
+#: includes/class-alma-wc-payment-gateway.php:285
 msgid "Query selector used to get the price of product with variations"
 msgstr ""
 "Query selector utilisé pour récupérer le prix des produits possédant des "
 "variations"
 
-#: includes/class-alma-wc-payment-gateway.php:290
+#: includes/class-alma-wc-payment-gateway.php:291
 msgid "Excluded product categories"
 msgstr "Catégories de produits exclues"
 
-#: includes/class-alma-wc-payment-gateway.php:292
+#: includes/class-alma-wc-payment-gateway.php:293
 msgid ""
 "Exclude all virtual/downloadable product categories, as you cannot sell them "
 "with Alma"
@@ -209,35 +209,35 @@ msgstr ""
 "Excluez toutes les catégories de produits virtuels/téléchargeables, qui ne "
 "peuvent être vendus avec Alma"
 
-#: includes/class-alma-wc-payment-gateway.php:299
+#: includes/class-alma-wc-payment-gateway.php:300
 msgid "Non-eligibility message for excluded products"
 msgstr "Message de non-éligibilité pour les produits exclus"
 
-#: includes/class-alma-wc-payment-gateway.php:301
+#: includes/class-alma-wc-payment-gateway.php:302
 msgid ""
 "Message displayed below the cart totals when it contains excluded products"
 msgstr ""
 "Message affiché en-dessous du total du panier lorsqu’il contient des "
 "produits exclus"
 
-#: includes/class-alma-wc-payment-gateway.php:310
+#: includes/class-alma-wc-payment-gateway.php:311
 msgid "→ Debug options"
 msgstr "→ Options de déboggage"
 
-#: includes/class-alma-wc-payment-gateway.php:314
+#: includes/class-alma-wc-payment-gateway.php:315
 msgid "Debug mode"
 msgstr "Mode debug"
 
-#: includes/class-alma-wc-payment-gateway.php:316
+#: includes/class-alma-wc-payment-gateway.php:317
 msgid "Activate debug mode"
 msgstr "Activer le mode debug"
 
-#: includes/class-alma-wc-payment-gateway.php:316
+#: includes/class-alma-wc-payment-gateway.php:317
 #, php-format
 msgid " (<a href=\"%s\">Go to logs</a>)"
 msgstr " (<a href=\"%s\">Voir les logs</a>)"
 
-#: includes/class-alma-wc-payment-gateway.php:317
+#: includes/class-alma-wc-payment-gateway.php:318
 msgid "Enable logging info and errors to help debug any issue with the plugin"
 msgstr ""
 "Active la journalisation d’infos et erreur pour aider au déboggage de "
@@ -247,12 +247,12 @@ msgstr ""
 msgid "How many installments do you want to pay?"
 msgstr "En combien de fois voulez-vous payer ?"
 
-#: includes/class-alma-wc-payment-gateway.php:431
+#: includes/class-alma-wc-payment-gateway.php:435
 #, php-format
 msgid "%d installments"
 msgstr "%d fois"
 
-#: includes/class-alma-wc-payment-gateway.php:453
+#: includes/class-alma-wc-payment-gateway.php:500
 msgid ""
 "There was an error processing your payment.<br>Please try again or contact "
 "us if the problem persists."
@@ -260,7 +260,7 @@ msgstr ""
 "Une erreur est survenue lors du traitement de votre paiement.<br>Réessayez "
 "ou contactez-nous si le problème persiste."
 
-#: includes/class-alma-wc-payment-gateway.php:494
+#: includes/class-alma-wc-payment-gateway.php:541
 msgid ""
 "There was an error when validating your payment.<br>Please try again or "
 "contact us if the problem persists."
@@ -268,7 +268,7 @@ msgstr ""
 "Une erreur est survenue lors du traitement de votre paiement.<br>Réessayez "
 "ou contactez-nous si le problème persiste."
 
-#: includes/class-alma-wc-payment-gateway.php:546
+#: includes/class-alma-wc-payment-gateway.php:593
 #, php-format
 msgid ""
 "You can offer %1$d-installment payments for amounts between <b>%2$d€</b> and "
@@ -277,15 +277,15 @@ msgstr ""
 "Vous pouvez proposer le paiement en %1$d fois pour des montants compris "
 "entre <b>%2$d€</b> et <b>%3$d€</b>."
 
-#: includes/class-alma-wc-payment-gateway.php:548
+#: includes/class-alma-wc-payment-gateway.php:595
 msgid "Fees applied to each transaction for this plan:"
 msgstr "Des frais s'appliquent pour chaque transaction:"
 
-#: includes/class-alma-wc-payment-gateway.php:552
+#: includes/class-alma-wc-payment-gateway.php:599
 msgid "You pay:"
 msgstr "Vous payez :"
 
-#: includes/class-alma-wc-payment-gateway.php:568
+#: includes/class-alma-wc-payment-gateway.php:615
 msgid "Customer pays:"
 msgstr "Le client paye :"
 
