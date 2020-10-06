@@ -160,15 +160,16 @@ class Alma_WC_Plugin {
 			$this->_check_dependencies();
 			$this->_run();
 
-			// Defer settings check to after potential settings update
-			$this->settings->warnings_handled = false;
-			add_action(
-				'admin_notices',
-				function () {
-					$this->check_settings( false );
-				}
-			);
-
+			if ( is_admin() ) {
+				// Defer settings check to after potential settings update
+				$this->settings->warnings_handled = false;
+				add_action(
+					'admin_notices',
+					function () {
+						$this->check_settings( false );
+					}
+				);
+			}
 		} catch ( Exception $e ) {
 			$this->logger->error( 'Bootstrap error: ' . $e->getMessage() );
 			$this->handle_settings_exception( $e );
