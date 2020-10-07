@@ -555,12 +555,12 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return bool
 	 */
 	public function validate_fields() {
-		if ( empty( $_POST['alma_installments_count'] ) ) {
+		if ( empty( $_POST['alma_installments_count'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			wc_add_notice( '<strong>Installments count</strong> is required.', 'error' );
 			return false;
 		}
 		$allowed_values = array_map( 'strval', alma_wc_get_eligible_installments_for_cart_according_to_settings() );
-		if ( ! in_array( $_POST['alma_installments_count'], $allowed_values, true ) ) {
+		if ( ! in_array( $_POST['alma_installments_count'], $allowed_values, true ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			wc_add_notice( '<strong>Installments count</strong> is invalid.', 'error' );
 			return false;
 		}
@@ -587,7 +587,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		}
 
 		try {
-			$payment = $alma->payments->createPayment( Alma_WC_Payment::from_order( $order_id, intval( $_POST['alma_installments_count'] ) ) );
+			// phpcs:ignore WordPress.Security.NonceVerification
+			$payment = $alma->payments->create( Alma_WC_Payment::from_order( $order_id, intval( $_POST['alma_installments_count'] ) ) );
 		} catch ( \Alma\API\RequestError $e ) {
 			$this->logger->error( 'Error while creating payment: ' . $e->getMessage() );
 			wc_add_notice( $error_msg, 'error' );
