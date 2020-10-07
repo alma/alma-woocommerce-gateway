@@ -488,11 +488,10 @@ class Alma_WC_Plugin {
 		}
 
 		check_ajax_referer( 'alma_dismiss_notice', 'nonce' );
-		switch ( $_POST['dismiss_action'] ) {
-			case 'alma_dismiss_bootstrap_warning_message':
-				update_option( 'alma_bootstrap_warning_message_dismissed', true );
-				break;
+		if ( 'alma_dismiss_bootstrap_warning_message' === $_POST['dismiss_action'] ) {
+			update_option( 'alma_bootstrap_warning_message_dismissed', true );
 		}
+
 		wp_die();
 	}
 
