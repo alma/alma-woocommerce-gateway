@@ -30,11 +30,11 @@ class Alma_WC_Cart_Handler extends Alma_WC_Generic_Handler {
 				is_array( alma_wc_plugin()->settings->excluded_products_list ) &&
 				count( alma_wc_plugin()->settings->excluded_products_list ) > 0
 		) {
-			foreach ( WC()->cart->get_cart() as $key => $cart_item ) {
-				$product = $cart_item['data'];
+			foreach ( WC()->cart->get_cart() as $cart_item ) {
+				$product_id = $cart_item['product_id'];
 
 				foreach ( alma_wc_plugin()->settings->excluded_products_list as $category_slug ) {
-					if ( has_term( $category_slug, 'product_cat', $product->get_id() ) ) {
+					if ( has_term( $category_slug, 'product_cat', $product_id ) ) {
 						$skip_payment_plan_injection = true;
 						$eligibility_msg             = alma_wc_plugin()->settings->cart_not_eligible_message_gift_cards;
 					}
