@@ -55,9 +55,10 @@ class Alma_WC_Payment_Validator {
 				$logger->error( $error );
 
 				try {
+					$logger->warning( "Amount mismatch for order {$order->get_id()}" );
 					$alma->payments->flagAsPotentialFraud( $payment_id, Payment::FRAUD_AMOUNT_MISMATCH );
 				} catch ( RequestError $e ) {
-					// Do nothing.
+					$logger->warning( $e->getMessage() );
 				}
 
 				throw new Alma_WC_Payment_Validation_Error( $error );
@@ -71,9 +72,10 @@ class Alma_WC_Payment_Validator {
 				$logger->error( $error );
 
 				try {
+					$logger->warning( "Payment state error for order {$order->get_id()}" );
 					$alma->payments->flagAsPotentialFraud( $payment_id, Payment::FRAUD_STATE_ERROR );
 				} catch ( RequestError $e ) {
-					// Do nothing.
+					$logger->warning( $e->getMessage() );
 				}
 
 				throw new Alma_WC_Payment_Validation_Error( $error );
