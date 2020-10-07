@@ -21,6 +21,9 @@ if ( ! class_exists( 'WC_Payment_Gateway' ) ) {
 class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	const GATEWAY_ID = 'alma';
 
+	const ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE = 'alma-payment-plan-table-%d-installments';
+	const ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS   = 'js-alma-payment-plan-table';
+
 	/**
 	 * Logger
 	 *
@@ -487,8 +490,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 					checked
 					<?php	} ?>
 					onchange="
-						jQuery('.js-alma-payment-plan-table').hide();
-						jQuery('#alma-payment-plan-table-' + event.target.value + '-installments').show();
+						jQuery( '.<?php echo esc_html( self::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS ); ?>' ).hide();
+						jQuery( '#<?php echo esc_html( self::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE ); ?>'.replace( '%d', event.target.value ) ).show();
 					"
 				>
 				<label
@@ -503,46 +506,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 					<?php
 				}
 
-				$eligibilities = $this->get_cart_eligibilities();
-
-				if ( $eligibilities ) {
-					foreach ( $eligibilities as $n => $plan ) {
-						?>
-						<div
-							id="alma-payment-plan-table-<?php echo esc_html( $n ); ?>-installments"
-							class="js-alma-payment-plan-table"
-							style="
-								margin: 0 auto;
-								<?php if ( $n !== $default_installments ) { ?>
-								display: none;
-								<?php	} ?>
-							"
-						>
-							<?php
-							$plans_count = count( $plan->paymentPlan ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName
-							$plan_index  = 0;
-							foreach ( $plan->paymentPlan as $step ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName
-								?>
-								<p style="
-									display: flex;
-									justify-content: space-between;
-									padding: 4px 0;
-									margin: 4px 0;
-									<?php if ( ++$plan_index !== $plans_count ) { ?>
-									border-bottom: 1px solid lightgrey;
-									<?php	} else { ?>
-									padding-bottom: 0;
-									margin-bottom: 0;
-									<?php	} ?>
-								">
-									<span><?php echo esc_html( gmdate( 'd/m/Y', $step['due_date'] ) ); ?></span>
-									<span>€<?php echo esc_html( alma_wc_price_from_cents( $step['purchase_amount'] + $step['customer_fee'] ) ); ?></span>
-								</p>
-							<?php } ?>
-						</div>
-						<?php
-					}
-				}
+				$this->render_payment_plan( $default_installments );
 				?>
 			</p>
 		</div>
@@ -746,6 +710,55 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$description .= '</p>';
 
 		return $description;
+	}
+
+	/**
+	 * Render payment plan with dates.
+	 *
+	 * @param int $default_installments Number of installments.
+	 *
+	 * @return void
+	 */
+	private function render_payment_plan( $default_installments ) {
+		$eligibilities = $this->get_cart_eligibilities();
+		if ( $eligibilities ) {
+			foreach ( $eligibilities as $n => $plan ) {
+				?>
+				<div
+					id="<?php echo esc_html( sprintf( self::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $n ) ); ?>"
+					class="<?php echo esc_html( self::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS ); ?>"
+					style="
+						margin: 0 auto;
+						<?php if ( $n !== $default_installments ) { ?>
+						display: none;
+						<?php	} ?>
+					"
+				>
+					<?php
+					$plans_count = count( $plan->paymentPlan ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName
+					$plan_index  = 0;
+					foreach ( $plan->paymentPlan as $step ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName
+						?>
+						<p style="
+							display: flex;
+							justify-content: space-between;
+							padding: 4px 0;
+							margin: 4px 0;
+							<?php if ( ++$plan_index !== $plans_count ) { ?>
+							border-bottom: 1px solid lightgrey;
+							<?php	} else { ?>
+							padding-bottom: 0;
+							margin-bottom: 0;
+							<?php	} ?>
+						">
+							<span><?php echo esc_html( gmdate( 'd/m/Y', $step['due_date'] ) ); ?></span>
+							<span>€<?php echo esc_html( alma_wc_price_from_cents( $step['purchase_amount'] + $step['customer_fee'] ) ); ?></span>
+						</p>
+					<?php } ?>
+				</div>
+				<?php
+			}
+		}
 	}
 
 	/**
