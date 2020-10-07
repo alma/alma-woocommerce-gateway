@@ -1,10 +1,18 @@
 <?php
-/** HELPER FUNCTIONS */
+/**
+ * HELPER FUNCTIONS
+ *
+ * @package Alma_WooCommerce_Gateway
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
 
 /**
- * Converts a float price to its integer cents value, used by the API
+ * Converts a float price to its integer cents value, used by the API.
  *
- * @param $price float
+ * @param float $price Price.
  *
  * @return integer
  */
@@ -13,9 +21,9 @@ function alma_wc_price_to_cents( $price ) {
 }
 
 /**
- * Converts an integer price in cents to a float price in the used currency units
+ * Converts an integer price in cents to a float price in the used currency units.
  *
- * @param $price int
+ * @param int $price Price.
  *
  * @return float
  */
@@ -23,10 +31,15 @@ function alma_wc_price_from_cents( $price ) {
 	return (float) ( $price / 100 );
 }
 
-// https://secure.php.net/manual/en/function.array-merge-recursive.php#104145
-// Addition: will automatically discard null values
-function alma_wc_array_merge_recursive() {
 
+/**
+ * Merge arrays recursively.
+ * From https://secure.php.net/manual/en/function.array-merge-recursive.php#104145
+ * Addition: will automatically discard null values
+ *
+ * @return array
+ */
+function alma_wc_array_merge_recursive() {
 	if ( func_num_args() < 2 ) {
 		trigger_error( __FUNCTION__ . ' needs two or more array arguments', E_USER_WARNING );
 
@@ -36,7 +49,7 @@ function alma_wc_array_merge_recursive() {
 	$merged = array();
 	while ( $arrays ) {
 		$array = array_shift( $arrays );
-		if ( $array === null ) {
+		if ( null === $array ) {
 			continue;
 		}
 		if ( ! is_array( $array ) ) {
@@ -74,7 +87,8 @@ function alma_wc_array_merge_recursive() {
  * Case #4: URL Path begins with wp-json/ (your REST prefix)
  *          Also supports WP installations in subfolders
  *
- * @returns boolean
+ * @return boolean
+ *
  * @author matzeeable
  * @see https://wordpress.stackexchange.com/a/317041
  */
@@ -87,7 +101,7 @@ function alma_wc_is_rest_call() {
 	}
 	// (#3)
 	global $wp_rewrite;
-	if ( $wp_rewrite === null ) {
+	if ( null === $wp_rewrite ) {
 		$wp_rewrite = new WP_Rewrite();
 	}
 

@@ -11,6 +11,8 @@
  * Text Domain: alma-woocommerce-gateway
  * Domain Path: /languages
  *
+ * @package Alma_WooCommerce_Gateway
+ *
  * WC requires at least: 2.6
  * WC tested up to: 4.0
  *
@@ -29,7 +31,7 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	die( 'Not allowed' );
+	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
 define( 'ALMA_WC_VERSION', '1.1.7' );

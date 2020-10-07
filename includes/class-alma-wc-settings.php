@@ -1,4 +1,9 @@
 <?php
+/**
+ * Alma settings
+ *
+ * @package Alma_WooCommerce_Gateway
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -25,6 +30,11 @@ class Alma_WC_Settings {
 	 */
 	private $_are_settings_loaded = false;
 
+	/**
+	 * Get default settings.
+	 *
+	 * @return array
+	 */
 	public static function get_default_settings() {
 		return array(
 			'enabled'                               => 'yes',
@@ -47,11 +57,26 @@ class Alma_WC_Settings {
 		);
 	}
 
+	/**
+	 * __set
+	 *
+	 * @param string $key Key.
+	 * @param mixed  $value Value.
+	 *
+	 * @return void
+	 */
 	public function __set( $key, $value ) {
 		$this->_settings[ $key ] = $value;
 		$this->save();
 	}
 
+	/**
+	 * __get
+	 *
+	 * @param string $key Key.
+	 *
+	 * @return mixed
+	 */
 	public function __get( $key ) {
 		$value = null;
 
@@ -62,10 +87,22 @@ class Alma_WC_Settings {
 		return apply_filters( 'alma_wc_settings_' . $key, $value );
 	}
 
+	/**
+	 * __isset
+	 *
+	 * @param string $key Key.
+	 *
+	 * @return bool
+	 */
 	public function __isset( $key ) {
 		return array_key_exists( $key, $this->_settings );
 	}
 
+	/**
+	 * __construct
+	 *
+	 * @return void
+	 */
 	public function __construct() {
 		$this->load();
 	}
@@ -73,7 +110,7 @@ class Alma_WC_Settings {
 	/**
 	 * Load settings from DB.
 	 *
-	 * @param bool $force_reload Force reload settings
+	 * @param bool $force_reload Force reload settings.
 	 *
 	 * @return Alma_WC_Settings Instance of Alma_Settings
 	 */
@@ -88,6 +125,13 @@ class Alma_WC_Settings {
 		return $this;
 	}
 
+	/**
+	 * Update from settings.
+	 *
+	 * @param mixed $settings Settings.
+	 *
+	 * @return void
+	 */
 	public function update_from( $settings = array() ) {
 		foreach ( $settings as $key => $value ) {
 			$this->_settings[ $key ] = $value;
@@ -96,6 +140,11 @@ class Alma_WC_Settings {
 		$this->save();
 	}
 
+	/**
+	 * Save settings.
+	 *
+	 * @return void
+	 */
 	public function save() {
 		update_option( self::OPTIONS_KEY, $this->_settings );
 	}
@@ -138,6 +187,8 @@ class Alma_WC_Settings {
 
 	/**
 	 * Is pnx enabled.
+	 *
+	 * @param int $installments Number of installments.
 	 *
 	 * @return bool
 	 */
@@ -218,6 +269,8 @@ class Alma_WC_Settings {
 	}
 
 	/**
+	 * Is using live API.
+	 *
 	 * @return bool
 	 */
 	public function is_live() {
@@ -225,6 +278,8 @@ class Alma_WC_Settings {
 	}
 
 	/**
+	 * Is using test API.
+	 *
 	 * @return bool
 	 */
 	public function is_test() {

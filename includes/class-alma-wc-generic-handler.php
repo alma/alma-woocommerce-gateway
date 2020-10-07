@@ -1,18 +1,44 @@
 <?php
 /**
- * Alma payments pluging for WooCommerce
+ * Alma generic handler
+ *
+ * @package Alma_WooCommerce_Gateway
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	die( 'Not allowed' );
+	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
+/**
+ * Alma_WC_Generic_Handler
+ */
 class Alma_WC_Generic_Handler {
+	/**
+	 * Logger
+	 *
+	 * @var Alma_WC_Logger
+	 */
 	private $logger;
 
+	/**
+	 * Min amount.
+	 *
+	 * @var float
+	 */
 	private $min_amount;
+
+	/**
+	 * Max amount.
+	 *
+	 * @var float
+	 */
 	private $max_amount;
 
+	/**
+	 * __construct
+	 *
+	 * @return void
+	 */
 	public function __construct() {
 		$this->logger = new Alma_WC_Logger();
 
@@ -21,14 +47,14 @@ class Alma_WC_Generic_Handler {
 		}
 
 		$locale = get_locale();
-		if ( $locale !== 'fr_FR' ) {
+		if ( 'fr_FR' !== $locale ) {
 			$this->logger->info( "Locale {$locale} not supported - Not displaying Alma" );
 
 			return;
 		}
 
 		$currency = get_woocommerce_currency();
-		if ( $currency !== 'EUR' ) {
+		if ( 'EUR' !== $currency ) {
 			$this->logger->info( "Currency {$currency} not supported - Not displaying Alma" );
 
 			return;
@@ -42,9 +68,22 @@ class Alma_WC_Generic_Handler {
 		$this->max_amount = alma_wc_get_max_eligible_amount_according_to_settings();
 	}
 
+	/**
+	 * Inject payment plan.
+	 *
+	 * @param string      $eligibility_msg Eligibility msg.
+	 * @param bool        $skip_payment_plan_injection Skip payment plan injection.
+	 * @param int         $amount Amount.
+	 * @param string|null $jquery_update_event Jquery update event.
+	 * @param string|null $amount_query_selector Amount query selector.
+	 * @param bool        $first_render First render.
+	 *
+	 * @return void
+	 */
 	protected function inject_payment_plan_html_js(
 		$eligibility_msg,
-		$skip_payment_plan_injection, $amount = 0,
+		$skip_payment_plan_injection,
+		$amount = 0,
 		$jquery_update_event = null,
 		$amount_query_selector = null,
 		$first_render = true
@@ -79,11 +118,11 @@ class Alma_WC_Generic_Handler {
 		<?php
 		if ( ! $skip_payment_plan_injection ) {
 			$alma_widjet_js_url        = alma_wc_plugin()->get_asset_url( 'js/alma-widgets.umd.min.js' );
-			$alma_widjet_js_create_url = alma_wc_plugin()->get_asset_url( 'js/alma-widgets-create.js' );
+			$alma_widjet_js_create_url = alma_wc_plugin()->get_asset_url( 'js/alma-widgets-inject.js' );
 			$alma_widjet_css_url       = alma_wc_plugin()->get_asset_url( 'css/alma-widgets.umd.css' );
-			wp_enqueue_style( 'alma-widget', $alma_widjet_css_url, array(), false );
-			wp_enqueue_script( 'alma-widget', $alma_widjet_js_url, array(), false, true );
-			wp_enqueue_script( 'alma-widget-create', $alma_widjet_js_create_url, array(), false, true );
+			wp_enqueue_style( 'alma-widget', $alma_widjet_css_url, array(), ALMA_WC_VERSION );
+			wp_enqueue_script( 'alma-widget', $alma_widjet_js_url, array(), ALMA_WC_VERSION, true );
+			wp_enqueue_script( 'alma-widget-create', $alma_widjet_js_create_url, array(), ALMA_WC_VERSION, true );
 		}
 	}
 }

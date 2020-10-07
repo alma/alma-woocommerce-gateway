@@ -1,16 +1,26 @@
 <?php
 /**
- * Alma payments pluging for WooCommerce
+ * Alma product handler
+ *
+ * @package Alma_WooCommerce_Gateway
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	die( 'Not allowed' );
+	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
+/**
+ * Alma_WC_Product_Handler
+ */
 class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 	const JQUERY_VARIABLE_PRODUCT_UPDATE_EVENT          = 'check_variations';
 	const DEFAULT_VARIABLE_PRODUCT_PRICE_QUERY_SELECTOR = 'form.variations_form div.woocommerce-variation-price span.woocommerce-Price-amount bdi';
 
+	/**
+	 * __construct
+	 *
+	 * @return void
+	 */
 	public function __construct() {
 		parent::__construct();
 

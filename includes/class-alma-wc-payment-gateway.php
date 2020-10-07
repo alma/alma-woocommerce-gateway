@@ -1,4 +1,9 @@
 <?php
+/**
+ * Alma WooCommerce payment gateway
+ *
+ * @package Alma_WooCommerce_Gateway
+ */
 
 use Alma\API\Endpoints\Results\Eligibility;
 
@@ -10,12 +15,29 @@ if ( ! class_exists( 'WC_Payment_Gateway' ) ) {
 	return;
 }
 
+/**
+ * Alma_WC_Payment_Gateway
+ */
 class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	const GATEWAY_ID = 'alma';
 
+	/**
+	 * Logger
+	 *
+	 * @var Alma_WC_Logger
+	 */
 	private $logger;
+
+	/**
+	 * Eligibilities
+	 *
+	 * @var array<int,Eligibility>|null
+	 */
 	private $_eligibilities;
 
+	/**
+	 * __construct
+	 */
 	public function __construct() {
 		$this->id                 = self::GATEWAY_ID;
 		$this->has_fields         = true;
@@ -46,8 +68,9 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 *
 	 * Gets an option from the settings API, using defaults if necessary to prevent undefined notices.
 	 *
-	 * @param  string $key Option key.
-	 * @param  mixed  $empty_value Value when empty.
+	 * @param string $key Option key.
+	 * @param mixed  $empty_value Value when empty.
+	 *
 	 * @return string The value specified for the option or a default value for the option.
 	 */
 	public function get_option( $key, $empty_value = null ) {
@@ -60,6 +83,13 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		return $option;
 	}
 
+	/**
+	 * Callback called after settings are saved.
+	 *
+	 * @param array $settings the settings.
+	 *
+	 * @return array
+	 */
 	public function on_settings_save( $settings ) {
 		// convert euros to cents.
 		foreach ( Alma_WC_Settings::AMOUNT_KEYS as $key ) {
@@ -72,7 +102,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			try {
 				$merchant = alma_wc_plugin()->get_alma_client()->merchants->me();
 
-				// store merchant id
+				// store merchant id.
 				$settings['merchant_id'] = $merchant->id;
 
 				foreach ( $merchant->fee_plans as $fee_plan ) {
@@ -96,13 +126,21 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		return $settings;
 	}
 
+	/**
+	 * Get Alma icon.
+	 *
+	 * @return string
+	 */
 	public function get_icon() {
 		$icon_url = alma_wc_plugin()->get_asset_url( 'images/alma_logo.svg' );
 		$icon     = '<img src="' . WC_HTTPS::force_https_url( $icon_url ) . '" alt="' . esc_attr( $this->get_title() ) . '" style="width: auto !important; height: 25px !important; border: none !important;">';
 
-		return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
+		return apply_filters( 'alma_wc_gateway_icon', $icon, $this->id );
 	}
 
+	/**
+	 * Init admin settings form fields.
+	 */
 	public function init_form_fields() {
 		$need_keys = empty( alma_wc_plugin()->settings->get_active_api_key() );
 
@@ -123,7 +161,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		$api_key_fields = array(
 			'keys_section' => array(
-				'title'       => '<hr />' . $keys_title,
+				'title'       => '<hr>' . $keys_title,
 				'type'        => 'title',
 				'description' => __( 'You can find your API keys on <a href="https://dashboard.getalma.eu/security" target="_blank">your Alma dashboard</a>', 'alma-woocommerce-gateway' ),
 			),
@@ -169,13 +207,15 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 							$settings_fields,
 							array(
 								"${installments}x_section" => array(
-									'title'       => '<hr />' . sprintf( __( '→ %d-installment payment', 'alma-woocommerce-gateway' ), $installments ),
+									// translators: %d: number of installments.
+									'title'       => '<hr>' . sprintf( __( '→ %d-installment payment', 'alma-woocommerce-gateway' ), $installments ),
 									'type'        => 'title',
 									'description' => $this->get_fee_plan_description( $installments, $default_min_amount, $default_max_amount, $merchant_fee_fixed, $merchant_fee_variable, $customer_fee_fixed, $customer_fee_variable ),
 								),
 								"enabled_${installments}x" => array(
 									'title'   => __( 'Enable/Disable', 'alma-woocommerce-gateway' ),
 									'type'    => 'checkbox',
+									// translators: %d: number of installments.
 									'label'   => sprintf( __( 'Enable %d-installment payments with Alma', 'alma-woocommerce-gateway' ), $installments ),
 									'default' => $default_settings[ "enabled_${installments}x" ],
 								),
@@ -216,7 +256,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			$settings_fields,
 			array(
 				'general_section'                       => array(
-					'title' => '<hr />' . __( '→ General configuration', 'alma-woocommerce-gateway' ),
+					'title' => '<hr>' . __( '→ General configuration', 'alma-woocommerce-gateway' ),
 					'type'  => 'title',
 				),
 				'title'                                 => array(
@@ -310,12 +350,13 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		$debug_fields = array(
 			'debug_section' => array(
-				'title' => '<hr />' . __( '→ Debug options', 'alma-woocommerce-gateway' ),
+				'title' => '<hr>' . __( '→ Debug options', 'alma-woocommerce-gateway' ),
 				'type'  => 'title',
 			),
 			'debug'         => array(
 				'title'       => __( 'Debug mode', 'alma-woocommerce-gateway' ),
 				'type'        => 'checkbox',
+				// translators: %s: Admin logs url.
 				'label'       => __( 'Activate debug mode', 'alma-woocommerce-gateway' ) . sprintf( __( ' (<a href="%s">Go to logs</a>)', 'alma-woocommerce-gateway' ), alma_wc_plugin()->get_admin_logs_url() ),
 				'description' => __( 'Enable logging info and errors to help debug any issue with the plugin', 'alma-woocommerce-gateway' ),
 				'desc_tip'    => true,
@@ -330,17 +371,30 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		}
 	}
 
+	/**
+	 * Return whether or not this gateway still requires setup to function.
+	 *
+	 * @return bool
+	 */
 	public function needs_setup() {
 		$this->update_option( 'enabled', 'yes' );
 
 		return true;
 	}
 
+	/**
+	 * Init settings.
+	 */
 	public function init_settings() {
 		parent::init_settings();
 		alma_wc_plugin()->settings->update_from( $this->settings );
 	}
 
+	/**
+	 * Processes and saves options.
+	 *
+	 * @return bool
+	 */
 	public function process_admin_options() {
 		$saved = parent::process_admin_options();
 
@@ -350,21 +404,26 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		return $saved;
 	}
 
+	/**
+	 * Check if the gateway is available for use.
+	 *
+	 * @return bool
+	 */
 	public function is_available() {
-		// If we're in the context of the admin or an API call, don't
+		// If we're in the context of the admin or an API call or a context without cart, don't do other checks.
 		if ( is_admin() || alma_wc_is_rest_call() || wc()->cart === null ) {
 			return parent::is_available();
 		}
 
 		$locale = get_locale();
-		if ( $locale !== 'fr_FR' ) {
+		if ( 'fr_FR' !== $locale ) {
 			$this->logger->info( "Locale {$locale} not supported - Not displaying Alma" );
 
 			return false;
 		}
 
 		$currency = get_woocommerce_currency();
-		if ( $currency !== 'EUR' ) {
+		if ( 'EUR' !== $currency ) {
 			$this->logger->info( "Currency {$currency} not supported - Not displaying Alma" );
 
 			return false;
@@ -399,14 +458,17 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$is_eligible = false;
 
 		foreach ( $eligibilities as $plan ) {
-			$is_eligible = $is_eligible || $plan->isEligible;
+			$is_eligible = $is_eligible || $plan->isEligible; // phpcs:ignore WordPress.NamingConventions.ValidVariableName
 		}
 
 		return $is_eligible && parent::is_available();
 	}
 
+	/**
+	 * Custom payment fields.
+	 */
 	public function payment_fields() {
-		echo wpautop( wp_kses_post( $this->description ) );
+		echo wp_kses_post( $this->description );
 
 		$eligible_installments_list = alma_wc_get_eligible_installments_for_cart_according_to_settings();
 
@@ -434,7 +496,10 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 					class="checkbox"
 					for="alma_installments_count_<?php echo esc_attr( $n ); ?>"
 				>
-					<?php echo sprintf( esc_html__( '%d installments', 'alma-woocommerce-gateway' ), esc_html( $n ) ); ?>
+					<?php
+					// translators: %d: number of installments.
+					echo sprintf( esc_html__( '%d installments', 'alma-woocommerce-gateway' ), esc_html( $n ) );
+					?>
 				</label>
 					<?php
 				}
@@ -455,9 +520,9 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 							"
 						>
 							<?php
-							$plans_count = count( $plan->paymentPlan );
+							$plans_count = count( $plan->paymentPlan ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName
 							$plan_index  = 0;
-							foreach ( $plan->paymentPlan as $step ) {
+							foreach ( $plan->paymentPlan as $step ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName
 								?>
 								<p style="
 									display: flex;
@@ -471,7 +536,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 									margin-bottom: 0;
 									<?php	} ?>
 								">
-									<span><?php echo esc_html( date( 'd/m/Y', $step['due_date'] ) ); ?></span>
+									<span><?php echo esc_html( gmdate( 'd/m/Y', $step['due_date'] ) ); ?></span>
 									<span>€<?php echo esc_html( alma_wc_price_from_cents( $step['purchase_amount'] + $step['customer_fee'] ) ); ?></span>
 								</p>
 							<?php } ?>
@@ -485,6 +550,11 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		<?php
 	}
 
+	/**
+	 * Validate payment fields.
+	 *
+	 * @return bool
+	 */
 	public function validate_fields() {
 		if ( empty( $_POST['alma_installments_count'] ) ) {
 			wc_add_notice( '<strong>Installments count</strong> is required.', 'error' );
@@ -498,6 +568,13 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		return true;
 	}
 
+	/**
+	 * Process Payment.
+	 *
+	 * @param int $order_id Order ID.
+	 *
+	 * @return array
+	 */
 	public function process_payment( $order_id ) {
 		$error_msg = __( 'There was an error processing your payment.<br>Please try again or contact us if the problem persists.', 'alma-woocommerce-gateway' );
 
@@ -519,13 +596,20 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			return array( 'result' => 'error' );
 		}
 
-		// Redirect user to our payment page
+		// Redirect user to our payment page.
 		return array(
 			'result'   => 'success',
 			'redirect' => $payment->url,
 		);
 	}
 
+	/**
+	 * Redirect to cart with error.
+	 *
+	 * @param string $error_msg Error message.
+	 *
+	 * @return array
+	 */
 	private function _redirect_to_cart_with_error( $error_msg ) {
 		wc_add_notice( $error_msg, 'error' );
 		wp_redirect( wc_get_cart_url() );
@@ -536,17 +620,24 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		);
 	}
 
+	/**
+	 * Validate payment on customer return.
+	 *
+	 * @param string $payment_id Payment Id.
+	 *
+	 * @return array
+	 */
 	public function validate_payment_on_customer_return( $payment_id ) {
 		try {
 			$order = Alma_WC_Payment_Validator::validate_payment( $payment_id );
-		} catch ( AlmaPaymentValidationError $e ) {
+		} catch ( Alma_WC_Payment_Validation_Error $e ) {
 			$error_msg = __( 'There was an error when validating your payment.<br>Please try again or contact us if the problem persists.', 'alma-woocommerce-gateway' );
 			return $this->_redirect_to_cart_with_error( $error_msg );
 		} catch ( \Exception $e ) {
 			return $this->_redirect_to_cart_with_error( $e->getMessage() );
 		}
 
-		// Redirect user to the order confirmation page
+		// Redirect user to the order confirmation page.
 		$return_url = $this->get_return_url( $order->get_wc_order() );
 		wp_redirect( $return_url );
 
@@ -556,6 +647,11 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		);
 	}
 
+	/**
+	 * Validate payment from ipn.
+	 *
+	 * @param string $payment_id Payment Id.
+	 */
 	public function validate_payment_from_ipn( $payment_id ) {
 		try {
 			Alma_WC_Payment_Validator::validate_payment( $payment_id );
@@ -567,6 +663,11 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		wp_send_json( array( 'success' => true ) );
 	}
 
+	/**
+	 * Product categories options.
+	 *
+	 * @return array
+	 */
 	private function product_categories_options() {
 		$orderby    = 'name';
 		$order      = 'asc';
@@ -581,7 +682,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		$options = array();
 		if ( ! empty( $product_categories ) ) {
-			foreach ( $product_categories as $key => $category ) {
+			foreach ( $product_categories as $category ) {
 				$options[ $category->slug ] = $category->name;
 			}
 		}
@@ -589,15 +690,29 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		return $options;
 	}
 
+	/**
+	 * Get fee plan description.
+	 *
+	 * @param int   $installments Number of installments.
+	 * @param float $min_amount Min amount.
+	 * @param float $max_amount Max amount.
+	 * @param float $merchant_fee_fixed Merchant fee fixed.
+	 * @param float $merchant_fee_variable Merchant fee variable.
+	 * @param float $customer_fee_fixed Customer fee fixed.
+	 * @param float $customer_fee_variable Customer fee variable.
+	 *
+	 * @return string
+	 */
 	private function get_fee_plan_description( $installments, $min_amount, $max_amount, $merchant_fee_fixed, $merchant_fee_variable, $customer_fee_fixed, $customer_fee_variable ) {
 		$description = '<p>';
 
+		// translators: %d: number of installments.
 		$description .= sprintf( __( 'You can offer %1$d-installment payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-woocommerce-gateway' ), $installments, $min_amount, $max_amount )
-			. '<br />'
+			. '<br>'
 			. __( 'Fees applied to each transaction for this plan:', 'alma-woocommerce-gateway' );
 
 		if ( $merchant_fee_variable || $merchant_fee_fixed ) {
-			$description .= '<br />';
+			$description .= '<br>';
 			$description .= '<b>' . __( 'You pay:', 'alma-woocommerce-gateway' ) . '</b> ';
 		}
 
@@ -613,7 +728,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		}
 
 		if ( $customer_fee_variable || $customer_fee_fixed ) {
-			$description .= '<br />';
+			$description .= '<br>';
 			$description .= '<b>' . __( 'Customer pays:', 'alma-woocommerce-gateway' ) . '</b> ';
 		}
 

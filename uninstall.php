@@ -1,6 +1,8 @@
 <?php
 /**
  * Uninstall WooCommerce Gateway Alma plugin
+ *
+ * @package Alma_WooCommerce_Gateway
  */
 
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {

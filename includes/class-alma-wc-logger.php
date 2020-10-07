@@ -1,4 +1,9 @@
 <?php
+/**
+ * Alma logger
+ *
+ * @package Alma_WooCommerce_Gateway
+ */
 
 use Psr\Log\LogLevel;
 
@@ -6,10 +11,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
+/**
+ * Alma_WC_Logger
+ */
 class Alma_WC_Logger extends \Psr\Log\AbstractLogger {
 
 	const LOG_HANDLE = 'alma';
 
+	/**
+	 * Get logger.
+	 *
+	 * @return WC_Logger
+	 */
 	private static function get_logger() {
 		if ( version_compare( wc()->version, '3.0', '<' ) ) {
 			return new WC_Logger();
@@ -18,6 +31,15 @@ class Alma_WC_Logger extends \Psr\Log\AbstractLogger {
 		}
 	}
 
+	/**
+	 * Logs with an arbitrary level.
+	 *
+	 * @param string $level Log level.
+	 * @param string $message Message.
+	 * @param array  $context Context.
+	 *
+	 * @return void
+	 */
 	public function log( $level, $message, array $context = array() ) {
 		if ( ! is_callable( 'wc' ) || ( alma_wc_plugin()->settings && ! alma_wc_plugin()->settings->is_logging_enabled() ) ) {
 			return;

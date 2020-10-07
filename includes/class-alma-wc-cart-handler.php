@@ -1,15 +1,25 @@
 <?php
 /**
- * Alma payments pluging for WooCommerce
+ * Alma cart handler
+ *
+ * @package Alma_WooCommerce_Gateway
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	die( 'Not allowed' );
+	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
+/**
+ * Alma_WC_Cart_Handler
+ */
 class Alma_WC_Cart_Handler extends Alma_WC_Generic_Handler {
 	const JQUERY_CART_UPDATE_EVENT = 'updated_cart_totals';
 
+	/**
+	 * __construct
+	 *
+	 * @return void
+	 */
 	public function __construct() {
 		parent::__construct();
 

@@ -1,3 +1,9 @@
+/**
+ * Inject payment plan widget.
+ *
+ * @package Alma_WooCommerce_Gateway
+ */
+
 (function () {
 	var paymentPlanContainerId = "#alma-payment-plan";
 	var paymentPlanContainer   = jQuery( paymentPlanContainerId );
@@ -5,7 +11,7 @@
 	var firstRender            = paymentPlanContainer.data( "first-render" );
 
 	window.AlmaInitWidget = function () {
-		paymentPlanContainer    = jQuery( paymentPlanContainerId ); // re-query element
+		paymentPlanContainer    = jQuery( paymentPlanContainerId ); // re-query element.
 		var enabledPlans        = paymentPlanContainer.data( "enabled-plans" );
 		var merchantId          = paymentPlanContainer.data( "merchant-id" );
 		var apiMode             = paymentPlanContainer.data( "api-mode" );
