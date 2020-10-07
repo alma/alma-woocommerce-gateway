@@ -1,5 +1,7 @@
 <?php
 
+use Alma\API\Endpoints\Results\Eligibility;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
@@ -634,7 +636,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	/**
 	 * Get eligibilities from cart.
 	 *
-	 * @return array|null
+	 * @return array<int,Eligibility>|null
 	 */
 	private function get_cart_eligibilities() {
 		if ( ! $this->_eligibilities ) {
