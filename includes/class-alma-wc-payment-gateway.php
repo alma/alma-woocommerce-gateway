@@ -410,8 +410,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return bool
 	 */
 	public function is_available() {
-		// If we're in the context of the admin or an API call or a context without cart, don't do other checks.
-		if ( is_admin() || alma_wc_is_rest_call() || wc()->cart === null ) {
+		if ( wc()->cart === null ) {
 			return parent::is_available();
 		}
 
