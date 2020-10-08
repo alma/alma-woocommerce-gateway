@@ -75,6 +75,18 @@ class Alma_WC_Settings {
 	}
 
 	/**
+	 * __set
+	 *
+	 * @param string $key Key.
+	 * @param mixed  $value Value.
+	 *
+	 * @return void
+	 */
+	public function __set( $key, $value ) {
+		$this->_settings[ $key ] = $value;
+	}
+
+	/**
 	 * __isset
 	 *
 	 * @param string $key Key.

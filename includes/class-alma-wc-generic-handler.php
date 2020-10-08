@@ -42,30 +42,40 @@ class Alma_WC_Generic_Handler {
 	public function __construct() {
 		$this->logger = new Alma_WC_Logger();
 
+		$this->min_amount = alma_wc_get_min_eligible_amount_according_to_settings();
+		$this->max_amount = alma_wc_get_max_eligible_amount_according_to_settings();
+	}
+
+
+	/**
+	 * Check whether we're in a situation where we can inject JS for our payment plan widget
+	 *
+	 * @return bool
+	 */
+	private function is_usable() {
 		if ( ! alma_wc_plugin()->settings->is_usable() ) {
-			return;
+			return false;
 		}
 
 		$locale = get_locale();
 		if ( 'fr_FR' !== $locale ) {
 			$this->logger->info( "Locale {$locale} not supported - Not displaying Alma" );
 
-			return;
+			return false;
 		}
 
 		$currency = get_woocommerce_currency();
 		if ( 'EUR' !== $currency ) {
 			$this->logger->info( "Currency {$currency} not supported - Not displaying Alma" );
 
-			return;
+			return false;
 		}
 
 		if ( ! count( alma_wc_plugin()->settings->get_enabled_pnx_plans_list() ) ) {
-			return;
+			return false;
 		}
 
-		$this->min_amount = alma_wc_get_min_eligible_amount_according_to_settings();
-		$this->max_amount = alma_wc_get_max_eligible_amount_according_to_settings();
+		return true;
 	}
 
 	/**
@@ -88,6 +98,10 @@ class Alma_WC_Generic_Handler {
 		$amount_query_selector = null,
 		$first_render = true
 	) {
+		if ( ! $this->is_usable() ) {
+			return;
+		}
+
 		$logo_url = alma_wc_plugin()->get_asset_url( 'images/alma_logo.svg' );
 
 		$merchant_id = alma_wc_plugin()->settings->merchant_id;
@@ -96,11 +110,7 @@ class Alma_WC_Generic_Handler {
 		}
 
 		$enabled_plans = alma_wc_plugin()->settings->get_enabled_pnx_plans_list();
-		if ( ! count( $enabled_plans ) ) {
-			return;
-		}
-
-		$api_mode = alma_wc_plugin()->settings->environment;
+		$api_mode      = alma_wc_plugin()->settings->environment;
 
 		?>
 		<div class="alma--eligibility-msg" style="margin: 15px 0;">
