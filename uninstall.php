@@ -11,4 +11,3 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 
 require_once dirname( __FILE__ ) . '/includes/class-alma-wc-settings.php';
 delete_option( Alma_WC_Settings::OPTIONS_KEY );
-delete_option( 'woocommerce_alma_settings' );

@@ -90,9 +90,17 @@ class Alma_WC_Generic_Handler {
 	) {
 		$logo_url = alma_wc_plugin()->get_asset_url( 'images/alma_logo.svg' );
 
-		$merchant_id   = alma_wc_plugin()->settings->merchant_id;
-		$api_mode      = alma_wc_plugin()->settings->environment;
+		$merchant_id = alma_wc_plugin()->settings->merchant_id;
+		if ( empty( $merchant_id ) ) {
+			return;
+		}
+
 		$enabled_plans = alma_wc_plugin()->settings->get_enabled_pnx_plans_list();
+		if ( ! count( $enabled_plans ) ) {
+			return;
+		}
+
+		$api_mode = alma_wc_plugin()->settings->environment;
 
 		?>
 		<div class="alma--eligibility-msg" style="margin: 15px 0">

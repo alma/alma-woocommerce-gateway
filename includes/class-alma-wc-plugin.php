@@ -216,6 +216,7 @@ class Alma_WC_Plugin {
 			if ( is_admin() ) {
 				// Defer settings check to after potential settings update.
 				$this->settings->warnings_handled = false;
+				$this->settings->save();
 				add_action(
 					'admin_notices',
 					function () {
@@ -247,6 +248,7 @@ class Alma_WC_Plugin {
 		add_action( 'admin_notices', array( $this, 'show_settings_warning' ) );
 
 		$this->settings->warnings_handled = true;
+		$this->settings->save();
 	}
 
 	/**
@@ -260,7 +262,7 @@ class Alma_WC_Plugin {
 			?>
 			<div class="notice notice-warning is-dismissible alma-dismiss-bootstrap-warning-message">
 				<p>
-					<strong><?php echo esc_html( $message ); ?></strong>
+					<strong><?php echo wp_kses_post( $message ); ?></strong>
 				</p>
 			</div>
 			<script>
@@ -336,6 +338,8 @@ class Alma_WC_Plugin {
 			$this->check_merchant_status();
 
 			$this->settings->fully_configured = true;
+
+			$this->settings->save();
 		} catch ( Exception $e ) {
 			$this->handle_settings_exception( $e );
 		}

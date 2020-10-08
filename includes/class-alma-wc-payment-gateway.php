@@ -79,7 +79,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	public function get_option( $key, $empty_value = null ) {
 		$option = parent::get_option( $key, $empty_value );
 
-		if ( in_array( $key, Alma_WC_Settings::AMOUNT_KEYS ) ) {
+		if ( in_array( $key, Alma_WC_Settings::AMOUNT_KEYS, true ) ) {
 			return strval( alma_wc_price_from_cents( $option ) );
 		}
 
@@ -101,7 +101,11 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			}
 		}
 
-		if ( ! empty( alma_wc_plugin()->settings->get_active_api_key() ) ) {
+		alma_wc_plugin()->settings->update_from( $settings );
+
+		$need_keys = empty( alma_wc_plugin()->settings->get_active_api_key() );
+
+		if ( ! $need_keys ) {
 			try {
 				$merchant = alma_wc_plugin()->get_alma_client()->merchants->me();
 
@@ -109,11 +113,19 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				$settings['merchant_id'] = $merchant->id;
 
 				foreach ( $merchant->fee_plans as $fee_plan ) {
-					if ( ! $fee_plan['allowed'] ) {
-						$installments       = $fee_plan['installments_count'];
-						$default_min_amount = $fee_plan['min_purchase_amount'];
-						$default_max_amount = $fee_plan['max_purchase_amount'];
+					$installments       = $fee_plan['installments_count'];
+					$default_min_amount = $fee_plan['min_purchase_amount'];
+					$default_max_amount = $fee_plan['max_purchase_amount'];
 
+					if ( $fee_plan['allowed'] ) {
+						// set min and max amount default values.
+						if ( ! isset( $settings[ "min_amount_${installments}x" ] ) ) {
+							$settings[ "min_amount_${installments}x" ] = $default_min_amount;
+						}
+						if ( ! isset( $settings[ "max_amount_${installments}x" ] ) ) {
+							$settings[ "max_amount_${installments}x" ] = $default_max_amount;
+						}
+					} else {
 						// force disable not available fee_plans to prevent showing them in checkout.
 						$settings[ "enabled_${installments}x" ] = 'no';
 						// reset min and max amount for disabled plans to prevent multiplication by 100 on each save.
@@ -123,6 +135,13 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				}
 			} catch ( \Alma\API\RequestError $e ) {
 				alma_wc_plugin()->handle_settings_exception( $e );
+			}
+		} else {
+			// reset merchant id.
+			$settings['merchant_id'] = null;
+			// reset min and max amount for all plans.
+			foreach ( Alma_WC_Settings::AMOUNT_KEYS as $key ) {
+				$settings[ $key ] = null;
 			}
 		}
 
