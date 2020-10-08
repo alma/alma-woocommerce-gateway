@@ -667,7 +667,15 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 *
 	 * @return string
 	 */
-	private function get_fee_plan_description( $installments, $min_amount, $max_amount, $merchant_fee_fixed, $merchant_fee_variable, $customer_fee_fixed, $customer_fee_variable ) {
+	private function get_fee_plan_description(
+		$installments,
+		$min_amount,
+		$max_amount,
+		$merchant_fee_fixed,
+		$merchant_fee_variable,
+		$customer_fee_fixed,
+		$customer_fee_variable
+	) {
 		$description = '<p>';
 
 		// translators: %d: number of installments.
@@ -751,7 +759,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 							margin-bottom: 0;
 							<?php	} ?>
 						">
-							<span><?php echo esc_html( gmdate( 'd/m/Y', $step['due_date'] ) ); ?></span>
+							<span><?php echo esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) ); ?></span>
 							<span>€<?php echo esc_html( alma_wc_price_from_cents( $step['purchase_amount'] + $step['customer_fee'] ) ); ?></span>
 						</p>
 					<?php } ?>
