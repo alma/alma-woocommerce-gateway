@@ -103,7 +103,7 @@ class Alma_WC_Generic_Handler {
 		$api_mode = alma_wc_plugin()->settings->environment;
 
 		?>
-		<div class="alma--eligibility-msg" style="margin: 15px 0">
+		<div class="alma--eligibility-msg" style="margin: 15px 0;">
 			<img src="<?php echo esc_html( $logo_url ); ?>"
 				style="width: auto !important; height: 25px !important; border: none !important; vertical-align: middle; display: inline-block;"
 				alt="Alma"> <span style="text-transform: initial"><?php echo wp_kses_post( $eligibility_msg ); ?></span>
