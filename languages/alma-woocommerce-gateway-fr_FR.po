@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Alma Gateway\n"
-"POT-Creation-Date: 2020-10-08 16:02+0200\n"
-"PO-Revision-Date: 2020-10-08 16:02+0200\n"
+"POT-Creation-Date: 2020-10-08 22:24+0200\n"
+"PO-Revision-Date: 2020-10-08 22:24+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -415,7 +415,11 @@ msgstr "Commande éligible au paiement en plusieurs fois"
 msgid "Your cart is not eligible for monthly payments"
 msgstr "Commande non éligible au paiement en plusieurs fois"
 
-#: includes/class-alma-wc-settings.php:52
+#: includes/class-alma-wc-settings.php:50
+msgid "This product is not eligible for monthly payments"
+msgstr "Produit non éligible au paiement en plusieurs fois"
+
+#: includes/class-alma-wc-settings.php:53
 msgid "Gift cards cannot be paid with monthly installments"
 msgstr "Les cartes cadeaux ne sont pas payables en plusieurs fois"
 
@@ -447,9 +451,6 @@ msgstr "https://www.getalma.eu"
 
 #~ msgid "This product is eligible for monthly payments"
 #~ msgstr "Produit éligible au paiement en plusieurs fois"
-
-#~ msgid "This product is not eligible for monthly payments"
-#~ msgstr "Produit non éligible au paiement en plusieurs fois"
 
 #~ msgid "(Maximum amount: %s)"
 #~ msgstr "(Maximum : %s)"

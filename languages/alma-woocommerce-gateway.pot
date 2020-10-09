@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WooCommerce Alma Gateway\n"
-"POT-Creation-Date: 2020-10-08 16:02+0200\n"
+"POT-Creation-Date: 2020-10-08 22:24+0200\n"
 "PO-Revision-Date: 2018-11-14 10:05+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -357,7 +357,11 @@ msgstr ""
 msgid "Your cart is not eligible for monthly payments"
 msgstr ""
 
-#: includes/class-alma-wc-settings.php:52
+#: includes/class-alma-wc-settings.php:50
+msgid "This product is not eligible for monthly payments"
+msgstr ""
+
+#: includes/class-alma-wc-settings.php:53
 msgid "Gift cards cannot be paid with monthly installments"
 msgstr ""
 

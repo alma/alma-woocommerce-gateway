@@ -47,6 +47,7 @@ class Alma_WC_Settings {
 			'display_product_eligibility'           => 'yes',
 			'cart_is_eligible_message'              => __( 'Your cart is eligible for monthly payments', 'alma-woocommerce-gateway' ),
 			'cart_not_eligible_message'             => __( 'Your cart is not eligible for monthly payments', 'alma-woocommerce-gateway' ),
+			'product_not_eligible_message'          => __( 'This product is not eligible for monthly payments', 'alma-woocommerce-gateway' ),
 			'variable_product_price_query_selector' => Alma_WC_Product_Handler::DEFAULT_VARIABLE_PRODUCT_PRICE_QUERY_SELECTOR,
 			'excluded_products_list'                => array(),
 			'cart_not_eligible_message_gift_cards'  => __( 'Gift cards cannot be paid with monthly installments', 'alma-woocommerce-gateway' ),
