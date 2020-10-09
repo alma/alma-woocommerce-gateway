@@ -238,7 +238,7 @@ class Alma_WC_Plugin {
 	 * @return void
 	 */
 	public function handle_settings_exception( $e ) {
-		if ( $this->settings->warnings_handled ) {
+		if ( $this->settings && $this->settings->warnings_handled ) {
 			return;
 		}
 
@@ -247,8 +247,10 @@ class Alma_WC_Plugin {
 
 		add_action( 'admin_notices', array( $this, 'show_settings_warning' ) );
 
-		$this->settings->warnings_handled = true;
-		$this->settings->save();
+		if ( $this->settings ) {
+			$this->settings->warnings_handled = true;
+			$this->settings->save();
+		}
 	}
 
 	/**
