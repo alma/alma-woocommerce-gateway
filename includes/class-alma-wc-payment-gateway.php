@@ -70,6 +70,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * Get option from DB.
 	 *
 	 * Gets an option from the settings API, using defaults if necessary to prevent undefined notices.
+	 * This is overriden so that values saved in cents in the DB can be shown in euros to the user.
 	 *
 	 * @param string $key Option key.
 	 * @param mixed  $empty_value Value when empty.
@@ -103,7 +104,9 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		alma_wc_plugin()->settings->update_from( $settings );
 
-		$need_api_key = empty( alma_wc_plugin()->settings->get_active_api_key() );
+		alma_wc_plugin()->init_alma_client();
+
+		$need_api_key = alma_wc_plugin()->settings->need_api_key();
 
 		if ( ! $need_api_key ) {
 			try {
@@ -164,7 +167,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * Init admin settings form fields.
 	 */
 	public function init_form_fields() {
-		$need_api_key = empty( alma_wc_plugin()->settings->get_active_api_key() );
+		$need_api_key = alma_wc_plugin()->settings->need_api_key();
 
 		$default_settings = Alma_WC_Settings::get_default_settings();
 
@@ -450,7 +453,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			return false;
 		}
 
-		if ( ! count( alma_wc_get_eligible_installments_for_cart_according_to_settings() ) ) {
+		if ( ! alma_wc_plugin()->settings->is_cart_eligible() ) {
 			return false;
 		}
 
@@ -491,14 +494,13 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	public function payment_fields() {
 		echo wp_kses_post( $this->description );
 
-		$eligible_installments_list = alma_wc_get_eligible_installments_for_cart_according_to_settings();
-
-		$default_installments = self::get_default_pnx( $eligible_installments_list );
+		$eligible_installments = alma_wc_plugin()->settings->get_eligible_installments_for_cart();
+		$default_installments  = self::get_default_pnx( $eligible_installments );
 
 		?>
 		<p><?php echo esc_html__( 'How many installments do you want to pay?', 'alma-woocommerce-gateway' ); ?> <span class="required">*</span></p>
 		<p>
-			<?php foreach ( $eligible_installments_list as $n ) { ?>
+			<?php foreach ( $eligible_installments as $n ) { ?>
 			<input
 				type="radio"
 				style="margin-right: 5px;"
@@ -542,7 +544,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			wc_add_notice( '<strong>Installments count</strong> is required.', 'error' );
 			return false;
 		}
-		$allowed_values = array_map( 'strval', alma_wc_get_eligible_installments_for_cart_according_to_settings() );
+		$allowed_values = array_map( 'strval', alma_wc_plugin()->settings->get_eligible_installments_for_cart() );
 		if ( ! in_array( $_POST['alma_installments_count'], $allowed_values, true ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			wc_add_notice( '<strong>Installments count</strong> is invalid.', 'error' );
 			return false;
@@ -595,11 +597,13 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 */
 	private function _redirect_to_cart_with_error( $error_msg ) {
 		wc_add_notice( $error_msg, 'error' );
-		wp_redirect( wc_get_cart_url() );
+
+		$cart_url = wc_get_cart_url();
+		wp_redirect( $cart_url );
 
 		return array(
 			'result'   => 'error',
-			'redirect' => wc_get_cart_url(),
+			'redirect' => $cart_url,
 		);
 	}
 

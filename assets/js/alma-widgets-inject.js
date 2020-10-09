@@ -4,28 +4,28 @@
  * @package Alma_WooCommerce_Gateway
  */
 
-(function () {
+( function () {
 	var paymentPlanContainerId = "#alma-payment-plan";
-	var paymentPlanContainer   = jQuery( paymentPlanContainerId );
-	var jqueryUpdateEvent      = paymentPlanContainer.data( "jquery-update-event" );
-	var firstRender            = paymentPlanContainer.data( "first-render" );
+	var $paymentPlanContainer  = jQuery( paymentPlanContainerId );
+	var jqueryUpdateEvent      = $paymentPlanContainer.data( "jquery-update-event" );
+	var firstRender            = $paymentPlanContainer.data( "first-render" );
 
 	window.AlmaInitWidget = function () {
-		paymentPlanContainer    = jQuery( paymentPlanContainerId ); // re-query element.
-		var enabledPlans        = paymentPlanContainer.data( "enabled-plans" );
-		var merchantId          = paymentPlanContainer.data( "merchant-id" );
-		var apiMode             = paymentPlanContainer.data( "api-mode" );
-		var amount              = parseFloat( paymentPlanContainer.data( "amount" ) );
-		var minAmount           = parseFloat( paymentPlanContainer.data( "min-amount" ) );
-		var maxAmount           = parseFloat( paymentPlanContainer.data( "max-amount" ) );
-		var amountQuerySelector = paymentPlanContainer.data( "amount-query-selector" );
+		$paymentPlanContainer   = jQuery( paymentPlanContainerId ); // re-query element to get updated data.
+		var enabledPlans        = $paymentPlanContainer.data( "enabled-plans" );
+		var merchantId          = $paymentPlanContainer.data( "merchant-id" );
+		var apiMode             = $paymentPlanContainer.data( "api-mode" );
+		var amount              = parseFloat( $paymentPlanContainer.data( "amount" ) );
+		var minAmount           = parseFloat( $paymentPlanContainer.data( "min-amount" ) );
+		var maxAmount           = parseFloat( $paymentPlanContainer.data( "max-amount" ) );
+		var amountQuerySelector = $paymentPlanContainer.data( "amount-query-selector" );
 
-		if (amountQuerySelector) {
+		if ( amountQuerySelector ) {
 			var amountElement = document.querySelector( amountQuerySelector );
-			if (amountElement) {
+			if ( amountElement ) {
 				var child = amountElement.firstChild;
-				while (child) {
-					if (child.nodeType == 3) {
+				while ( child ) {
+					if ( child.nodeType === Node.TEXT_NODE ) {
 						amount = parseFloat( child.data.replace( ",", "." ) ) * 100;
 						break;
 					}
@@ -36,12 +36,12 @@
 
 		var eligibleInstallments = enabledPlans
 			.filter(
-				function (plan) {
+				function ( plan ) {
 					return amount >= plan.min_amount && amount <= plan.max_amount;
 				}
 			)
 			.map(
-				function (plan) {
+				function ( plan ) {
 					return plan.installments;
 				}
 			);
@@ -57,8 +57,8 @@
 				minPurchaseAmount: minAmount,
 				maxPurchaseAmount: maxAmount,
 				templates: {
-					notEligible: function (min, max, installmentsCounts, config, createWidget) {
-						return "<b>Le paiement en plusieurs fois est disponible entre €" + min / 100 + " et €" + max / 100 + "</b>";
+					notEligible: function ( min, max, installmentsCounts, config, createWidget ) {
+						return "<b>Le paiement en plusieurs fois est disponible entre " + Alma.Utils.priceFromCents( min ) + "€ et " + Alma.Utils.priceFromCents( max ) + "€</b>";
 					},
 				},
 			}
@@ -67,11 +67,11 @@
 		almaWidgets.render();
 	};
 
-	if (firstRender) {
+	if ( firstRender ) {
 		window.AlmaInitWidget();
 	}
 
-	if (jqueryUpdateEvent) {
+	if ( jqueryUpdateEvent ) {
 		jQuery( document.body ).on(
 			jqueryUpdateEvent,
 			function () {
@@ -79,4 +79,4 @@
 			}
 		);
 	}
-})();
+} )();

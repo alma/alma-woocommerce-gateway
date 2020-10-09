@@ -28,7 +28,7 @@ class Alma_WC_Payment {
 				'purchase_amount'    => $cart->get_total(),
 				'return_url'         => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::CUSTOMER_RETURN ),
 				'ipn_callback_url'   => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::IPN_CALLBACK ),
-				'installments_count' => alma_wc_get_eligible_installments_for_cart_according_to_settings(),
+				'installments_count' => alma_wc_plugin()->settings->get_eligible_installments_for_cart(),
 			),
 		);
 

@@ -116,15 +116,11 @@ class Alma_WC_Plugin {
 	}
 
 	/**
-	 * Get alma client.
+	 * Init alma client.
 	 *
-	 * @return \Alma\API\Client|null
+	 * @return void
 	 */
-	public function get_alma_client() {
-		if ( $this->_alma_client ) {
-			return $this->_alma_client;
-		}
-
+	public function init_alma_client() {
 		try {
 			$this->_alma_client = new \Alma\API\Client(
 				$this->settings->get_active_api_key(),
@@ -137,15 +133,24 @@ class Alma_WC_Plugin {
 			$this->_alma_client->addUserAgentComponent( 'WordPress', get_bloginfo( 'version' ) );
 			$this->_alma_client->addUserAgentComponent( 'WooCommerce', wc()->version );
 			$this->_alma_client->addUserAgentComponent( 'Alma for WooCommerce', ALMA_WC_VERSION );
-
-			return $this->_alma_client;
 		} catch ( \Exception $e ) {
 			if ( $this->settings->is_logging_enabled() ) {
 				$this->logger->error( 'Error creating Alma API client: ' . print_r( $e, true ) );
 			}
-
-			return null;
 		}
+	}
+
+	/**
+	 * Get alma client.
+	 *
+	 * @return \Alma\API\Client|null
+	 */
+	public function get_alma_client() {
+		if ( ! $this->_alma_client ) {
+			$this->init_alma_client();
+		}
+
+		return $this->_alma_client;
 	}
 
 	/**
@@ -376,10 +381,7 @@ class Alma_WC_Plugin {
 	 * @throws Exception Exception.
 	 */
 	public function check_credentials() {
-		$live_api_key = $this->settings->live_api_key;
-		$test_api_key = $this->settings->test_api_key;
-
-		if ( ( ! $live_api_key && $this->settings->is_live() ) || ( ! $test_api_key && $this->settings->is_test() ) ) {
+		if ( $this->settings->need_api_key() ) {
 			$settings_url = $this->get_admin_setting_url();
 			throw new Exception(
 				sprintf(

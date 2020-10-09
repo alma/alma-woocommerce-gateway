@@ -11,7 +11,7 @@ cp -r ./* /tmp/alma-build/alma-woocommerce-gateway/
 mkdir ./dist
 
 cd /tmp/alma-build/alma-woocommerce-gateway
-rm vendor -r
+rm -r vendor
 composer install --no-dev
 cd ..
 zip -9 -r "$DIR/dist/alma-woocommerce-gateway.zip" alma-woocommerce-gateway --exclude "*/.*" "*/build.sh" "*/dist" "*/docker*"

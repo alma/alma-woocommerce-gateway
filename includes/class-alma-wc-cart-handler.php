@@ -43,11 +43,9 @@ class Alma_WC_Cart_Handler extends Alma_WC_Generic_Handler {
 			foreach ( WC()->cart->get_cart() as $cart_item ) {
 				$product_id = $cart_item['product_id'];
 
-				foreach ( alma_wc_plugin()->settings->excluded_products_list as $category_slug ) {
-					if ( has_term( $category_slug, 'product_cat', $product_id ) ) {
-						$skip_payment_plan_injection = true;
-						$eligibility_msg             = alma_wc_plugin()->settings->cart_not_eligible_message_gift_cards;
-					}
+				if ( $this->is_product_excluded( $product_id ) ) {
+					$skip_payment_plan_injection = true;
+					$eligibility_msg             = alma_wc_plugin()->settings->cart_not_eligible_message_gift_cards;
 				}
 			}
 		}
@@ -55,10 +53,10 @@ class Alma_WC_Cart_Handler extends Alma_WC_Generic_Handler {
 		$cart   = new Alma_WC_Cart();
 		$amount = $cart->get_total();
 
-		if ( ! count( alma_wc_get_eligible_installments_according_to_settings( $amount ) ) ) {
+		if ( ! alma_wc_plugin()->settings->is_cart_eligible() ) {
 			$eligibility_msg = alma_wc_plugin()->settings->cart_not_eligible_message;
 		}
 
-		$this->inject_payment_plan_html_js( $eligibility_msg, $skip_payment_plan_injection, $amount, self::JQUERY_CART_UPDATE_EVENT );
+		$this->inject_payment_plan_widget( $eligibility_msg, $skip_payment_plan_injection, $amount, self::JQUERY_CART_UPDATE_EVENT );
 	}
 }

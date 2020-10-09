@@ -50,7 +50,7 @@ class Alma_WC_Settings {
 			'product_not_eligible_message'          => __( 'This product is not eligible for monthly payments', 'alma-woocommerce-gateway' ),
 			'variable_product_price_query_selector' => Alma_WC_Product_Handler::DEFAULT_VARIABLE_PRODUCT_PRICE_QUERY_SELECTOR,
 			'excluded_products_list'                => array(),
-			'cart_not_eligible_message_gift_cards'  => __( 'Gift cards cannot be paid with monthly installments', 'alma-woocommerce-gateway' ),
+			'cart_not_eligible_message_gift_cards'  => __( 'Some products cannot be paid with monthly installments', 'alma-woocommerce-gateway' ),
 			'live_api_key'                          => '',
 			'test_api_key'                          => '',
 			'environment'                           => 'test',
@@ -171,7 +171,16 @@ class Alma_WC_Settings {
 	 * @return string
 	 */
 	public function get_active_api_key() {
-		return 'live' === $this->get_environment() ? $this->get_live_api_key() : $this->get_test_api_key();
+		return $this->is_live() ? $this->get_live_api_key() : $this->get_test_api_key();
+	}
+
+	/**
+	 * Need API key.
+	 *
+	 * @return bool
+	 */
+	public function need_api_key() {
+		return empty( $this->get_active_api_key() );
 	}
 
 	/**
@@ -199,7 +208,7 @@ class Alma_WC_Settings {
 	 *
 	 * @return array
 	 */
-	public function get_enabled_pnx_plans_list() {
+	public function get_enabled_pnx_plans() {
 		$pnx_list = array();
 
 		foreach ( array( 2, 3, 4 ) as $installments ) {
@@ -235,6 +244,83 @@ class Alma_WC_Settings {
 	 */
 	public function get_max_amount( $installments ) {
 		return $this->__get( "max_amount_${installments}x" );
+	}
+
+	/**
+	 * Get eligible installments for price.
+	 *
+	 * @param int $amount the amount to pay.
+	 *
+	 * @return int[]
+	 */
+	public function get_eligible_installments( $amount ) {
+		$allowed_installments  = alma_wc_plugin()->settings->get_enabled_pnx_plans();
+		$eligible_installments = array();
+
+		foreach ( $allowed_installments as $plan ) {
+			if ( $amount >= $plan['min_amount'] && $amount <= $plan['max_amount'] ) {
+				$eligible_installments[] = $plan['installments'];
+			}
+		}
+
+		return $eligible_installments;
+	}
+
+	/**
+	 * Get eligible installments for cart.
+	 *
+	 * @return int[]
+	 */
+	public function get_eligible_installments_for_cart() {
+		$cart       = new Alma_WC_Cart();
+		$cart_total = $cart->get_total();
+
+		return $this->get_eligible_installments( $cart_total );
+	}
+
+	/**
+	 * Is cart eligible.
+	 *
+	 * @return bool
+	 */
+	public function is_cart_eligible() {
+		return count( $this->get_eligible_installments_for_cart() ) > 0;
+	}
+
+	/**
+	 * Get min eligible amount.
+	 *
+	 * @return int
+	 */
+	public function get_min_eligible_amount() {
+		$allowed_plans_list = $this->get_enabled_pnx_plans();
+
+		$min_amount = INF;
+
+		foreach ( $allowed_plans_list as $plan ) {
+			$plan_min_amount = $this->get_min_amount( $plan['installments'] );
+			$min_amount      = min( $min_amount, $plan_min_amount );
+		}
+
+		return $min_amount;
+	}
+
+	/**
+	 * Get max eligible amount.
+	 *
+	 * @return int
+	 */
+	public function get_max_eligible_amount() {
+		$allowed_plans_list = $this->get_enabled_pnx_plans();
+
+		$max_amount = 0;
+
+		foreach ( $allowed_plans_list as $plan ) {
+			$plan_max_amount = $this->get_max_amount( $plan['installments'] );
+			$max_amount      = max( $max_amount, $plan_max_amount );
+		}
+
+		return $max_amount;
 	}
 
 	/**

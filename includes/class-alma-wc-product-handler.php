@@ -30,7 +30,7 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 	}
 
 	/**
-	 *  Display payment plan below the 'add to cart' button to indicate whether Alma is available or not
+	 * Display payment plan below the 'add to cart' button to indicate whether Alma is available or not
 	 */
 	public function inject_payment_plan() {
 		$eligibility_msg             = '';
@@ -43,11 +43,9 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 		) {
 			$product_id = wc_get_product()->get_id();
 
-			foreach ( alma_wc_plugin()->settings->excluded_products_list as $category_slug ) {
-				if ( has_term( $category_slug, 'product_cat', $product_id ) ) {
-					$skip_payment_plan_injection = true;
-					$eligibility_msg             = alma_wc_plugin()->settings->product_not_eligible_message;
-				}
+			if ( $this->is_product_excluded( $product_id ) ) {
+				$skip_payment_plan_injection = true;
+				$eligibility_msg             = alma_wc_plugin()->settings->product_not_eligible_message;
 			}
 		}
 
@@ -64,7 +62,7 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 			$first_render          = false;
 		}
 
-		$this->inject_payment_plan_html_js(
+		$this->inject_payment_plan_widget(
 			$eligibility_msg,
 			$skip_payment_plan_injection,
 			$amount,
