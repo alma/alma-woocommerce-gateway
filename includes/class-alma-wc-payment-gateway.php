@@ -95,17 +95,17 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 */
 	public function on_settings_save( $settings ) {
 		// convert euros to cents.
-		foreach ( Alma_WC_Settings::AMOUNT_KEYS as $key ) {
-			if ( $settings[ $key ] ) {
-				$settings[ $key ] = alma_wc_price_to_cents( $settings[ $key ] );
+		foreach ( Alma_WC_Settings::AMOUNT_KEYS as $amount_key ) {
+			if ( $settings[ $amount_key ] ) {
+				$settings[ $amount_key ] = alma_wc_price_to_cents( $settings[ $amount_key ] );
 			}
 		}
 
 		alma_wc_plugin()->settings->update_from( $settings );
 
-		$need_keys = empty( alma_wc_plugin()->settings->get_active_api_key() );
+		$need_api_key = empty( alma_wc_plugin()->settings->get_active_api_key() );
 
-		if ( ! $need_keys ) {
+		if ( ! $need_api_key ) {
 			try {
 				$merchant = alma_wc_plugin()->get_alma_client()->merchants->me();
 
@@ -140,8 +140,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			// reset merchant id.
 			$settings['merchant_id'] = null;
 			// reset min and max amount for all plans.
-			foreach ( Alma_WC_Settings::AMOUNT_KEYS as $key ) {
-				$settings[ $key ] = null;
+			foreach ( Alma_WC_Settings::AMOUNT_KEYS as $amount_key ) {
+				$settings[ $amount_key ] = null;
 			}
 		}
 
@@ -164,11 +164,11 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * Init admin settings form fields.
 	 */
 	public function init_form_fields() {
-		$need_keys = empty( alma_wc_plugin()->settings->get_active_api_key() );
+		$need_api_key = empty( alma_wc_plugin()->settings->get_active_api_key() );
 
 		$default_settings = Alma_WC_Settings::get_default_settings();
 
-		if ( $need_keys ) {
+		if ( $need_api_key ) {
 			$keys_title = __( '→ Start by filling in your API keys', 'alma-woocommerce-gateway' );
 		} else {
 			$keys_title = __( '→ API configuration', 'alma-woocommerce-gateway' );
@@ -211,7 +211,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			'enabled' => $enabled_option,
 		);
 
-		if ( ! $need_keys ) {
+		if ( ! $need_api_key ) {
 			try {
 				$merchant = alma_wc_plugin()->get_alma_client()->merchants->me();
 
@@ -386,7 +386,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			),
 		);
 
-		if ( $need_keys ) {
+		if ( $need_api_key ) {
 			$this->form_fields = array_merge( array( 'enabled' => $enabled_option ), $api_key_fields, $debug_fields );
 		} else {
 			$this->form_fields = array_merge( $settings_fields, $api_key_fields, $debug_fields );
