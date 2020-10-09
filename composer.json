@@ -24,8 +24,8 @@
         }
     ],
     "scripts": {
-        "lint": "phpcs .",
-        "lint-fix": "phpcbf ."
+        "phpcs": "phpcs --standard=phpcs.xml .",
+        "phpcbf": "phpcbf --standard=phpcs.xml ."
     },
     "config": {
         "sort-packages": true
