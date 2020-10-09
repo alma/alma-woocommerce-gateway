@@ -14,6 +14,6 @@ cd /tmp/alma-build/alma-woocommerce-gateway
 rm -r vendor
 composer install --no-dev
 cd ..
-zip -9 -r "$DIR/dist/alma-woocommerce-gateway.zip" alma-woocommerce-gateway --exclude "*/.*" "*/build.sh" "*/dist" "*/docker*"
+zip -9 -r "$DIR/dist/alma-woocommerce-gateway.zip" alma-woocommerce-gateway --exclude "*/.*" "*/build.sh" "*/dist" "*/docker*" "*/cypress*" "*/package.json" "*/yarn.lock"
 
 rm -rf /tmp/alma-build
