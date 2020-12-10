@@ -214,9 +214,9 @@ class Alma_WC_Settings {
 		foreach ( array( 2, 3, 4 ) as $installments ) {
 			if ( $this->is_pnx_enabled( $installments ) ) {
 				$pnx_list[] = array(
-					'installments' => $installments,
-					'min_amount'   => $this->get_min_amount( $installments ),
-					'max_amount'   => $this->get_max_amount( $installments ),
+					'installments_count' => $installments,
+					'min_amount'         => $this->get_min_amount( $installments ),
+					'max_amount'         => $this->get_max_amount( $installments ),
 				);
 			}
 		}

@@ -59,7 +59,7 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 		if ( $is_variable_product ) {
 			$amount_query_selector = alma_wc_plugin()->settings->variable_product_price_query_selector;
 			$jquery_update_event   = self::JQUERY_VARIABLE_PRODUCT_UPDATE_EVENT;
-			$first_render          = false;
+			$first_render          = true;
 		}
 
 		$this->inject_payment_plan_widget(

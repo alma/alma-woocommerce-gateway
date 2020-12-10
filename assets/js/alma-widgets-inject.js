@@ -4,63 +4,65 @@
  * @package Alma_WooCommerce_Gateway
  */
 
-( function () {
-	var paymentPlanContainerId = "#alma-payment-plan";
-	var $paymentPlanContainer  = jQuery( paymentPlanContainerId );
-	var jqueryUpdateEvent      = $paymentPlanContainer.data( "jquery-update-event" );
-	var firstRender            = $paymentPlanContainer.data( "first-render" );
+(function ($) {
+	var paymentPlansContainerId = "#alma-payment-plans";
+	var settings                = $( paymentPlansContainerId ).data( 'settings' )
+	var jqueryUpdateEvent       = settings.jqueryUpdateEvent;
+	var firstRender             = settings.firstRender;
 
-	window.AlmaInitWidget = function () {
-		$paymentPlanContainer   = jQuery( paymentPlanContainerId ); // re-query element to get updated data.
-		var enabledPlans        = $paymentPlanContainer.data( "enabled-plans" );
-		var merchantId          = $paymentPlanContainer.data( "merchant-id" );
-		var apiMode             = $paymentPlanContainer.data( "api-mode" );
-		var amount              = parseFloat( $paymentPlanContainer.data( "amount" ) );
-		var minAmount           = parseFloat( $paymentPlanContainer.data( "min-amount" ) );
-		var maxAmount           = parseFloat( $paymentPlanContainer.data( "max-amount" ) );
-		var amountQuerySelector = $paymentPlanContainer.data( "amount-query-selector" );
+	function isVisible( elem ) {
+		return ! ! ( elem && ( elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length ) );
+	}
+
+	function getAmountElement() {
+		var amountQuerySelector = settings.amountQuerySelector;
 
 		if ( amountQuerySelector ) {
-			var amountElement = document.querySelector( amountQuerySelector );
-			if ( amountElement ) {
+			return document.querySelector( amountQuerySelector );
+		}
+
+		return null
+	}
+
+	window.AlmaInitWidget = function () {
+		// Make sure settings are up-to-date after a potential cart_totals refresh.
+		var settings = $( paymentPlansContainerId ).data( 'settings' )
+
+		var merchantId = settings.merchantId;
+		var apiMode    = settings.apiMode;
+		var amount     = parseInt( settings.amount );
+
+		var amountElement = getAmountElement()
+		if (amountElement) {
+			if (isVisible( amountElement )) {
 				var child = amountElement.firstChild;
-				while ( child ) {
-					if ( child.nodeType === Node.TEXT_NODE ) {
-						amount = parseFloat( child.data.replace( ",", "." ) ) * 100;
+				while (child) {
+					if (child.nodeType === ( Node.TEXT_NODE || 3 )) {
+						amount = Alma.Utils.priceToCents( parseFloat( child.data.replace( ",", "." ) ) );
 						break;
 					}
 					child = child.nextSibling;
 				}
+			} else {
+				amount = 0
 			}
 		}
 
-		var eligibleInstallments = enabledPlans
-			.filter(
-				function ( plan ) {
-					return amount >= plan.min_amount && amount <= plan.max_amount;
-				}
-			)
-			.map(
-				function ( plan ) {
-					return plan.installments;
-				}
-			);
-
 		var almaWidgets = Alma.Widgets.initialize( merchantId, apiMode );
-
-		almaWidgets.create(
-			Alma.Widgets.PaymentPlan,
+		almaWidgets.add(
+			Alma.Widgets.PaymentPlans,
 			{
-				container: paymentPlanContainerId,
+				container: paymentPlansContainerId,
 				purchaseAmount: amount,
-				installmentsCount: eligibleInstallments,
-				minPurchaseAmount: minAmount,
-				maxPurchaseAmount: maxAmount,
-				templates: {
-					notEligible: function ( min, max, installmentsCounts, config, createWidget ) {
-						return "<b>Le paiement en plusieurs fois est disponible entre " + Alma.Utils.priceFromCents( min ) + "€ et " + Alma.Utils.priceFromCents( max ) + "€</b>";
-					},
-				},
+				plans: settings.enabledPlans.map(
+					function ( plan ) {
+						return {
+							installmentsCount: plan.installments_count,
+							minAmount: plan.min_amount,
+							maxAmount: plan.max_amount
+						}
+					}
+				)
 			}
 		);
 
@@ -72,11 +74,26 @@
 	}
 
 	if ( jqueryUpdateEvent ) {
-		jQuery( document.body ).on(
+		$( document.body ).on(
 			jqueryUpdateEvent,
 			function () {
-				window.AlmaInitWidget();
+				// WooCommerce animates the appearing of the product's price when necessary options have been selected,
+				// or its disappearing when some choices are missing. We first try to find an ongoing animation to
+				// update our widget *after* the animation has taken place, so that it uses up-to-date information/DOM
+				// in AlmaInitWidget.
+				var amountElement = getAmountElement()
+				var timer         = $.timers.find(
+					function ( t ) {
+						return t.elem === jQuery( amountElement ).closest( '.woocommerce-variation' ).get( 0 )
+					}
+				)
+
+				if ( timer ) {
+					timer.anim.then( window.AlmaInitWidget )
+				} else if ( isVisible( amountElement ) || ! settings.amountQuerySelector ) {
+					window.AlmaInitWidget()
+				}
 			}
 		);
 	}
-} )();
+} )(jQuery);
