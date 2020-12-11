@@ -498,9 +498,13 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$default_installments  = self::get_default_pnx( $eligible_installments );
 
 		?>
-		<p><?php echo esc_html__( 'How many installments do you want to pay?', 'alma-woocommerce-gateway' ); ?> <span class="required">*</span></p>
+		<p><?php echo esc_html__( 'How many installments do you want to pay?', 'alma-woocommerce-gateway' ); ?><span class="required">*</span></p>
 		<p>
-			<?php foreach ( $eligible_installments as $n ) { ?>
+			<?php
+			foreach ( $eligible_installments as $n ) {
+				$plan_class = '.' . self::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS;
+				$plan_id    = '#' . sprintf( self::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $n );
+				?>
 			<input
 				type="radio"
 				style="margin-right: 5px;"
@@ -510,10 +514,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				<?php if ( $n === $default_installments ) { ?>
 				checked
 				<?php	} ?>
-				onchange="
-					jQuery( '.<?php echo esc_html( self::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS ); ?>' ).hide();
-					jQuery( '#<?php echo esc_html( self::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE ); ?>'.replace( '%d', event.target.value ) ).show();
-				"
+				onchange="if (this.checked) { jQuery( '<?php echo esc_js( $plan_class ); ?>' ).hide(); jQuery( '<?php echo esc_js( $plan_id ); ?>' ).show() }"
 			>
 			<label
 				class="checkbox"
@@ -595,7 +596,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 *
 	 * @return array
 	 */
-	private function _redirect_to_cart_with_error( $error_msg ) {
+	private function redirect_to_cart_with_error( $error_msg ) {
 		wc_add_notice( $error_msg, 'error' );
 
 		$cart_url = wc_get_cart_url();
@@ -619,9 +620,9 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			$order = Alma_WC_Payment_Validator::validate_payment( $payment_id );
 		} catch ( Alma_WC_Payment_Validation_Error $e ) {
 			$error_msg = __( 'There was an error when validating your payment.<br>Please try again or contact us if the problem persists.', 'alma-woocommerce-gateway' );
-			return $this->_redirect_to_cart_with_error( $error_msg );
+			return $this->redirect_to_cart_with_error( $error_msg );
 		} catch ( \Exception $e ) {
-			return $this->_redirect_to_cart_with_error( $e->getMessage() );
+			return $this->redirect_to_cart_with_error( $e->getMessage() );
 		}
 
 		// Redirect user to the order confirmation page.
@@ -756,8 +757,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			foreach ( $eligibilities as $n => $plan ) {
 				?>
 				<div
-					id="<?php echo esc_html( sprintf( self::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $n ) ); ?>"
-					class="<?php echo esc_html( self::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS ); ?>"
+					id="<?php echo esc_attr( sprintf( self::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $n ) ); ?>"
+					class="<?php echo esc_attr( self::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS ); ?>"
 					style="
 						margin: 0 auto;
 						<?php if ( $n !== $default_installments ) { ?>
