@@ -201,7 +201,7 @@ class Alma_WC_Plugin {
 
 			delete_option( 'alma_bootstrap_warning_message' );
 
-			$this->_check_dependencies();
+			$this->check_dependencies();
 
 			// TODO: Handle privacy message/personal data exporter/eraser.
 			/* require_once( $this->includes_path . 'class-alma-privacy.php' ); */
@@ -220,7 +220,7 @@ class Alma_WC_Plugin {
 
 			if ( is_admin() ) {
 				// Defer settings check to after potential settings update.
-				$this->settings->warnings_handled = false;
+				update_option( 'alma_warnings_handled', false );
 				$this->settings->save();
 				add_action(
 					'admin_notices',
@@ -243,7 +243,7 @@ class Alma_WC_Plugin {
 	 * @return void
 	 */
 	public function handle_settings_exception( $e ) {
-		if ( $this->settings && $this->settings->warnings_handled ) {
+		if ( get_option( 'alma_warnings_handled' ) ) {
 			return;
 		}
 
@@ -252,10 +252,7 @@ class Alma_WC_Plugin {
 
 		add_action( 'admin_notices', array( $this, 'show_settings_warning' ) );
 
-		if ( $this->settings ) {
-			$this->settings->warnings_handled = true;
-			$this->settings->save();
-		}
+		update_option( 'alma_warnings_handled', true );
 	}
 
 	/**
@@ -292,7 +289,7 @@ class Alma_WC_Plugin {
 	 *
 	 * @throws Exception Exception.
 	 */
-	protected function _check_dependencies() {
+	protected function check_dependencies() {
 		if ( ! function_exists( 'WC' ) ) {
 			throw new Exception( __( 'Alma requires WooCommerce to be activated', 'alma-woocommerce-gateway' ) );
 		}
@@ -332,13 +329,13 @@ class Alma_WC_Plugin {
 	 * @return void
 	 */
 	public function check_settings( $force = true ) {
-		if ( ( $this->settings->fully_configured || $this->settings->warnings_handled ) && ! $force ) {
+		if ( ( $this->settings->fully_configured || get_option( 'alma_warnings_handled' ) ) && ! $force ) {
 			return;
 		}
 
 		try {
+			update_option( 'alma_warnings_handled', false );
 			$this->settings->fully_configured = false;
-			$this->settings->warnings_handled = false;
 
 			$this->check_activation();
 			$this->check_credentials();
