@@ -504,6 +504,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			foreach ( $eligible_installments as $n ) {
 				$plan_class = '.' . self::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS;
 				$plan_id    = '#' . sprintf( self::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $n );
+				$logo_url   = alma_wc_plugin()->get_asset_url( "images/p${n}x_logo.svg" );
 				?>
 			<input
 				type="radio"
@@ -521,10 +522,14 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				style="margin-right: 10px; display: inline;"
 				for="alma_installments_count_<?php echo esc_attr( $n ); ?>"
 			>
-				<?php
-				// translators: %d: number of installments.
-				echo sprintf( esc_html__( '%d installments', 'alma-woocommerce-gateway' ), esc_html( $n ) );
-				?>
+				<img src="<?php echo esc_attr( $logo_url ); ?>"
+					style="float: unset !important; width: auto !important; height: 30px !important;  border: none !important; vertical-align: middle; display: inline-block;"
+					alt="
+					<?php
+						// translators: %d: number of installments.
+						echo sprintf( esc_html__( '%d installments', 'alma-woocommerce-gateway' ), esc_html( $n ) );
+					?>
+					">
 			</label>
 				<?php
 			}
