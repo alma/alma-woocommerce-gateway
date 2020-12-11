@@ -298,53 +298,11 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 					'description' => __( 'This controls the payment method description which the user sees during checkout.', 'alma-woocommerce-gateway' ),
 					'default'     => $default_settings['description'],
 				),
-
-				/*
-				 We only support Euros at the moment, so there's no need for an option
-				'active_currencies'         => array(
-					'title'       => __( 'Allowed currencies', 'alma-woocommerce-gateway' ),
-					'type'        => 'multiselect',
-					'desc_tip'    => true,
-					'description' => __( 'Choose which currencies you want to accept monthly payments with', 'alma-woocommerce-gateway' ),
-					'default'     => 'EUR',
-					'options'     => array(
-						'EUR' => __( 'Euros (€)', 'alma-woocommerce-gateway' ),
-					),
-				),
-				*/
-
 				'display_product_eligibility'           => array(
 					'title'   => __( 'Product eligibility notice', 'alma-woocommerce-gateway' ),
 					'type'    => 'checkbox',
 					'label'   => __( 'Display a message about product eligibility for monthly payments', 'alma-woocommerce-gateway' ),
 					'default' => $default_settings['display_product_eligibility'],
-				),
-				'display_cart_eligibility'              => array(
-					'title'   => __( 'Cart eligibility notice', 'alma-woocommerce-gateway' ),
-					'type'    => 'checkbox',
-					'label'   => __( 'Display a message about cart eligibility for monthly payments', 'alma-woocommerce-gateway' ),
-					'default' => $default_settings['display_cart_eligibility'],
-				),
-				'cart_is_eligible_message'              => array(
-					'title'       => __( 'Eligible cart message', 'alma-woocommerce-gateway' ),
-					'type'        => 'text',
-					'description' => __( 'Message displayed below the cart totals when it is eligible for monthly payments', 'alma-woocommerce-gateway' ),
-					'desc_tip'    => true,
-					'default'     => $default_settings['cart_is_eligible_message'],
-				),
-				'cart_not_eligible_message'             => array(
-					'title'       => __( 'Non-eligible cart message', 'alma-woocommerce-gateway' ),
-					'type'        => 'text',
-					'description' => __( 'Message displayed below the cart totals when it is not eligible for monthly payments', 'alma-woocommerce-gateway' ),
-					'desc_tip'    => true,
-					'default'     => $default_settings['cart_not_eligible_message'],
-				),
-				'product_not_eligible_message'          => array(
-					'title'       => __( 'Non-eligible product message', 'alma-woocommerce-gateway' ),
-					'type'        => 'text',
-					'description' => __( 'Message displayed above the "add to cart" button when product is not eligible for monthly payments', 'alma-woocommerce-gateway' ),
-					'desc_tip'    => true,
-					'default'     => $default_settings['product_not_eligible_message'],
 				),
 				'variable_product_price_query_selector' => array(
 					'title'       => __( 'Variable products price query selector', 'alma-woocommerce-gateway' ),
@@ -353,7 +311,12 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 					'desc_tip'    => true,
 					'default'     => $default_settings['variable_product_price_query_selector'],
 				),
-
+				'display_cart_eligibility'              => array(
+					'title'   => __( 'Cart eligibility notice', 'alma-woocommerce-gateway' ),
+					'type'    => 'checkbox',
+					'label'   => __( 'Display a message about cart eligibility for monthly payments', 'alma-woocommerce-gateway' ),
+					'default' => $default_settings['display_cart_eligibility'],
+				),
 				'excluded_products_list'                => array(
 					'title'       => __( 'Excluded product categories', 'alma-woocommerce-gateway' ),
 					'type'        => 'multiselect',
@@ -362,7 +325,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 					'css'         => 'height: 150px;',
 					'options'     => $this->product_categories_options(),
 				),
-
 				'cart_not_eligible_message_gift_cards'  => array(
 					'title'       => __( 'Non-eligibility message for excluded products', 'alma-woocommerce-gateway' ),
 					'type'        => 'text',
