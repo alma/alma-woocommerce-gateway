@@ -1,16 +1,37 @@
 <?php
+/**
+ * Alma customer
+ *
+ * @package Alma_WooCommerce_Gateway
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
+/**
+ * Alma_WC_Customer
+ */
 class Alma_WC_Customer {
-	private $legacy = false;
 	/**
+	 * Legacy
+	 *
+	 * @var bool
+	 */
+	private $legacy = false;
+
+	/**
+	 * Customer
+	 *
 	 * @var WC_Customer|WP_User
 	 */
 	private $customer;
 
+	/**
+	 * __construct
+	 *
+	 * @return void
+	 */
 	public function __construct() {
 		$this->legacy = version_compare( wc()->version, '3.0.0', '<' );
 
@@ -21,11 +42,21 @@ class Alma_WC_Customer {
 		}
 	}
 
+	/**
+	 * Has data
+	 *
+	 * @return bool
+	 */
 	public function has_data() {
-		return ( $this->legacy && $this->customer->ID !== 0 ) || $this->customer->get_id();
+		return ( $this->legacy && 0 !== $this->customer->ID ) || $this->customer->get_id();
 	}
 
-	private function _get_legacy_data() {
+	/**
+	 * Get data (legacy).
+	 *
+	 * @return array
+	 */
+	private function get_legacy_data() {
 		$data = array(
 			'first_name' => $this->customer->first_name,
 			'last_name'  => $this->customer->last_name,
@@ -40,12 +71,17 @@ class Alma_WC_Customer {
 		return $data;
 	}
 
-	private function _get_data() {
+	/**
+	 * Get data (not legacy).
+	 *
+	 * @return array
+	 */
+	private function latest_get_data() {
 		$data = array(
 			'first_name' => $this->customer->get_first_name(),
 			'last_name'  => $this->customer->get_last_name(),
 			'email'      => $this->customer->get_email(),
-			'phone'      => $this->customer->get_billing_phone()
+			'phone'      => $this->customer->get_billing_phone(),
 		);
 
 		foreach ( array( 'first_name', 'last_name', 'email', 'phone' ) as $attr ) {
@@ -68,14 +104,24 @@ class Alma_WC_Customer {
 		return $data;
 	}
 
+	/**
+	 * Get data.
+	 *
+	 * @return array
+	 */
 	public function get_data() {
 		if ( $this->legacy ) {
-			return $this->_get_legacy_data();
+			return $this->get_legacy_data();
 		} else {
-			return $this->_get_data();
+			return $this->latest_get_data();
 		}
 	}
 
+	/**
+	 * Get billing address.
+	 *
+	 * @return array
+	 */
 	public function get_billing_address() {
 		if ( $this->legacy ) {
 			$customer = wc()->customer;
@@ -104,6 +150,11 @@ class Alma_WC_Customer {
 		}
 	}
 
+	/**
+	 * Get shipping address.
+	 *
+	 * @return array
+	 */
 	public function get_shipping_address() {
 		if ( $this->legacy ) {
 			$customer = wc()->customer;

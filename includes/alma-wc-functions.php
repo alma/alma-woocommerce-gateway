@@ -1,10 +1,18 @@
 <?php
-/** HELPER FUNCTIONS */
+/**
+ * HELPER FUNCTIONS
+ *
+ * @package Alma_WooCommerce_Gateway
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
 
 /**
- * Converts a float price to its integer cents value, used by the API
+ * Converts a float price to its integer cents value, used by the API.
  *
- * @param $price float
+ * @param float $price Price.
  *
  * @return integer
  */
@@ -13,9 +21,9 @@ function alma_wc_price_to_cents( $price ) {
 }
 
 /**
- * Converts an integer price in cents to a float price in the used currency units
+ * Converts an integer price in cents to a float price in the used currency units.
  *
- * @param $price int
+ * @param int $price Price.
  *
  * @return float
  */
@@ -23,26 +31,28 @@ function alma_wc_price_from_cents( $price ) {
 	return (float) ( $price / 100 );
 }
 
-// https://secure.php.net/manual/en/function.array-merge-recursive.php#104145
-// Addition: will automatically discard null values
+
+/**
+ * Merge arrays recursively.
+ * From https://secure.php.net/manual/en/function.array-merge-recursive.php#104145
+ * Addition: will automatically discard null values
+ *
+ * @return array
+ * @throws RuntimeException Throws when argument count invalid or an argument is not an array.
+ */
 function alma_wc_array_merge_recursive() {
-
 	if ( func_num_args() < 2 ) {
-		trigger_error( __FUNCTION__ . ' needs two or more array arguments', E_USER_WARNING );
-
-		return null;
+		throw new RuntimeException( __FUNCTION__ . ' needs two or more array arguments', E_USER_WARNING );
 	}
 	$arrays = func_get_args();
 	$merged = array();
 	while ( $arrays ) {
 		$array = array_shift( $arrays );
-		if ( $array === null ) {
+		if ( null === $array ) {
 			continue;
 		}
 		if ( ! is_array( $array ) ) {
-			trigger_error( __FUNCTION__ . ' encountered a non array argument', E_USER_WARNING );
-
-			return null;
+			throw new RuntimeException( __FUNCTION__ . ' encountered a non array argument', E_USER_WARNING );
 		}
 		if ( ! $array ) {
 			continue;
@@ -63,37 +73,16 @@ function alma_wc_array_merge_recursive() {
 	return $merged;
 }
 
-
 /**
- * Checks if the current request is a WP REST API request.
+ * Converts a string (e.g. 'yes' or 'no') to a bool.
  *
- * Case #1: After WP_REST_Request initialisation
- * Case #2: Support "plain" permalink settings
- * Case #3: It can happen that WP_Rewrite is not yet initialized,
- *          so do this (wp-settings.php)
- * Case #4: URL Path begins with wp-json/ (your REST prefix)
- *          Also supports WP installations in subfolders
+ * Taken from WooCommerce, to which it was added in version 3.0.0 and we need support for older WC versions.
  *
- * @returns boolean
- * @author matzeeable
- * @see https://wordpress.stackexchange.com/a/317041
+ * @param string $string String to convert.
+ * @return bool
  */
-function alma_wc_is_rest_call()
-{
-    $prefix = rest_get_url_prefix();
-    if (defined('REST_REQUEST') && REST_REQUEST // (#1)
-        || isset($_GET['rest_route']) // (#2)
-        && strpos(trim($_GET['rest_route'], '\\/'), $prefix, 0) === 0) {
-        return true;
-    }
-    // (#3)
-    global $wp_rewrite;
-    if ($wp_rewrite === null) {
-        $wp_rewrite = new WP_Rewrite();
-    }
-
-    // (#4)
-    $rest_url = wp_parse_url(trailingslashit(rest_url()));
-    $current_url = wp_parse_url(add_query_arg(array()));
-    return strpos($current_url['path'], $rest_url['path'], 0) === 0;
+function alma_wc_string_to_bool( $string ) {
+	return is_bool( $string )
+		? $string
+		: ( 'yes' === strtolower( $string ) || 1 === $string || 'true' === strtolower( $string ) || '1' === $string );
 }
