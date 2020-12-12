@@ -1,6 +1,19 @@
 Changelog
 =========
 
+v1.2.0
+------
+
+* Allows merchant to activate 2-, 3- a 4-installment plans, with min and max allowed amounts per plan
+* Displays an Alma widget on product pages and cart page to inform customers of eligible payment plans
+* Displays a full payment plan for each plan option on the checkout page
+* Enables Alma by default for all `fr_*` locales
+* Adds a `alma_wc_enable_for_locale` that can be used to enable Alma for additional locales
+* Any of the module's settings can be overridden via a filter: `alma_wc_settings_[setting_name]`
+* Fixes compatibility issues with WooCommerce 2.6.14
+* Fixes many bugs
+* Dependencies update
+
 v1.1.7
 ------
 
