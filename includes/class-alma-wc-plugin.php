@@ -53,7 +53,7 @@ class Alma_WC_Plugin {
 	 *
 	 * @var bool
 	 */
-	private $_bootstrapped = false;
+	private $bootstrapped = false;
 
 	/**
 	 * Instance of Alma_Settings.
@@ -67,7 +67,7 @@ class Alma_WC_Plugin {
 	 *
 	 * @var \Alma\API\Client
 	 */
-	private $_alma_client;
+	private $alma_client;
 
 	/**
 	 * Instance of WC_Logger.
@@ -122,7 +122,7 @@ class Alma_WC_Plugin {
 	 */
 	public function init_alma_client() {
 		try {
-			$this->_alma_client = new \Alma\API\Client(
+			$this->alma_client = new \Alma\API\Client(
 				$this->settings->get_active_api_key(),
 				array(
 					'mode'   => $this->settings->get_environment(),
@@ -130,9 +130,9 @@ class Alma_WC_Plugin {
 				)
 			);
 
-			$this->_alma_client->addUserAgentComponent( 'WordPress', get_bloginfo( 'version' ) );
-			$this->_alma_client->addUserAgentComponent( 'WooCommerce', wc()->version );
-			$this->_alma_client->addUserAgentComponent( 'Alma for WooCommerce', ALMA_WC_VERSION );
+			$this->alma_client->addUserAgentComponent( 'WordPress', get_bloginfo( 'version' ) );
+			$this->alma_client->addUserAgentComponent( 'WooCommerce', wc()->version );
+			$this->alma_client->addUserAgentComponent( 'Alma for WooCommerce', ALMA_WC_VERSION );
 		} catch ( \Exception $e ) {
 			if ( $this->settings->is_logging_enabled() ) {
 				$this->logger->error( 'Error creating Alma API client: ' . print_r( $e, true ) );
@@ -146,11 +146,11 @@ class Alma_WC_Plugin {
 	 * @return \Alma\API\Client|null
 	 */
 	public function get_alma_client() {
-		if ( ! $this->_alma_client ) {
+		if ( ! $this->alma_client ) {
 			$this->init_alma_client();
 		}
 
-		return $this->_alma_client;
+		return $this->alma_client;
 	}
 
 	/**
@@ -193,7 +193,7 @@ class Alma_WC_Plugin {
 	 */
 	public function bootstrap() {
 		try {
-			if ( $this->_bootstrapped ) {
+			if ( $this->bootstrapped ) {
 				throw new Exception( __( 'WooCommerce Gateway Alma plugin can only be bootstrapped once', 'alma-woocommerce-gateway' ) );
 			}
 
