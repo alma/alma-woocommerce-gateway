@@ -83,7 +83,6 @@ class Alma_WC_Generic_Handler {
 	/**
 	 * Inject payment plan.
 	 *
-	 * @param string      $eligibility_msg Eligibility msg.
 	 * @param bool        $skip_payment_plan_injection Skip payment plan injection.
 	 * @param int         $amount Amount.
 	 * @param string|null $jquery_update_event Jquery update event.
@@ -93,7 +92,6 @@ class Alma_WC_Generic_Handler {
 	 * @return void
 	 */
 	protected function inject_payment_plan_widget(
-		$eligibility_msg,
 		$skip_payment_plan_injection,
 		$amount = 0,
 		$jquery_update_event = null,
@@ -120,6 +118,8 @@ class Alma_WC_Generic_Handler {
 			'amountQuerySelector' => $amount_query_selector,
 			'jqueryUpdateEvent'   => $jquery_update_event,
 			'firstRender'         => $first_render,
+			'decimalSeparator'    => wc_get_price_decimal_separator(),
+			'thousandSeparator'   => wc_get_price_thousand_separator(),
 		)
 		?>
 		<div style="margin: 15px 0; max-width: 350px">

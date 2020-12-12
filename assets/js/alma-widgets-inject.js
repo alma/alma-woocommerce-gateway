@@ -26,19 +26,24 @@
 
 	window.AlmaInitWidget = function () {
 		// Make sure settings are up-to-date after a potential cart_totals refresh.
-		var settings = $( paymentPlansContainerId ).data( 'settings' )
+		const settings = $( paymentPlansContainerId ).data( 'settings' )
 
-		var merchantId = settings.merchantId;
-		var apiMode    = settings.apiMode;
-		var amount     = parseInt( settings.amount );
+		const merchantId = settings.merchantId;
+		const apiMode    = settings.apiMode;
+		let amount       = parseInt( settings.amount );
 
-		var amountElement = getAmountElement()
+		const amountElement = getAmountElement()
 		if (amountElement) {
 			if (isVisible( amountElement )) {
-				var child = amountElement.firstChild;
+				let child = amountElement.firstChild;
 				while (child) {
 					if (child.nodeType === ( Node.TEXT_NODE || 3 )) {
-						amount = Alma.Utils.priceToCents( parseFloat( child.data.replace( ",", "." ) ) );
+						const strAmount = child.data
+							.replace( settings.thousandSeparator, '' )
+							.replace( settings.decimalSeparator, '.' )
+							.replace( /[^\d.]/g, '' )
+
+						amount = Alma.Utils.priceToCents( parseFloat( strAmount ) );
 						break;
 					}
 					child = child.nextSibling;
@@ -81,19 +86,19 @@
 				// or its disappearing when some choices are missing. We first try to find an ongoing animation to
 				// update our widget *after* the animation has taken place, so that it uses up-to-date information/DOM
 				// in AlmaInitWidget.
-				var amountElement = getAmountElement()
-				var timer         = $.timers.find(
+				const amountElement = getAmountElement()
+				const timer         = $.timers.find(
 					function ( t ) {
 						return t.elem === jQuery( amountElement ).closest( '.woocommerce-variation' ).get( 0 )
 					}
 				)
 
 				if ( timer ) {
-					timer.anim.then( window.AlmaInitWidget )
+					window.setTimeout( window.AlmaInitWidget, timer.anim.duration )
 				} else if ( isVisible( amountElement ) || ! settings.amountQuerySelector ) {
 					window.AlmaInitWidget()
 				}
 			}
 		);
 	}
-} )(jQuery);
+} )( jQuery );

@@ -13,8 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Alma_WC_Product_Handler
  */
 class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
-	const JQUERY_VARIABLE_PRODUCT_UPDATE_EVENT          = 'check_variations';
-	const DEFAULT_VARIABLE_PRODUCT_PRICE_QUERY_SELECTOR = 'form.variations_form div.woocommerce-variation-price span.woocommerce-Price-amount bdi';
+	const JQUERY_VARIABLE_PRODUCT_UPDATE_EVENT = 'check_variations';
 
 	/**
 	 * __construct
@@ -30,10 +29,24 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 	}
 
 	/**
+	 * Return the default CSS selector for the price element of variable products, depending on the version of
+	 * WooCommerce, as WooCommerce 4.4.0 added a `<bdi>` wrapper around the price.
+	 *
+	 * @return string
+	 */
+	public static function default_variable_price_selector() {
+		$selector = 'form.variations_form div.woocommerce-variation-price span.woocommerce-Price-amount';
+		if ( version_compare( wc()->version, '4.4.0', '>=' ) ) {
+			$selector .= ' bdi';
+		}
+
+		return $selector;
+	}
+
+	/**
 	 * Display payment plan below the 'add to cart' button to indicate whether Alma is available or not
 	 */
 	public function inject_payment_plan() {
-		$eligibility_msg             = '';
 		$skip_payment_plan_injection = false;
 
 		if (
@@ -45,7 +58,6 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 
 			if ( $this->is_product_excluded( $product_id ) ) {
 				$skip_payment_plan_injection = true;
-				$eligibility_msg             = alma_wc_plugin()->settings->product_not_eligible_message;
 			}
 		}
 
@@ -63,7 +75,6 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 		}
 
 		$this->inject_payment_plan_widget(
-			$eligibility_msg,
 			$skip_payment_plan_injection,
 			$amount,
 			$jquery_update_event,

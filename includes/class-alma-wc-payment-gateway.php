@@ -36,7 +36,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 *
 	 * @var array<int,Eligibility>|null
 	 */
-	private $_eligibilities;
+	private $eligibilities;
 
 	/**
 	 * __construct
@@ -169,7 +169,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	public function init_form_fields() {
 		$need_api_key = alma_wc_plugin()->settings->need_api_key();
 
-		$default_settings = Alma_WC_Settings::get_default_settings();
+		$default_settings = Alma_WC_Settings::default_settings();
 
 		if ( $need_api_key ) {
 			$keys_title = __( '→ Start by filling in your API keys', 'alma-woocommerce-gateway' );
@@ -766,21 +766,21 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return array<int,Eligibility>|null
 	 */
 	private function get_cart_eligibilities() {
-		if ( ! $this->_eligibilities ) {
+		if ( ! $this->eligibilities ) {
 			$alma = alma_wc_plugin()->get_alma_client();
 			if ( ! $alma ) {
 				return null;
 			}
 
 			try {
-				$this->_eligibilities = $alma->payments->eligibility( Alma_WC_Payment::from_cart() );
+				$this->eligibilities = $alma->payments->eligibility( Alma_WC_Payment::from_cart() );
 			} catch ( \Alma\API\RequestError $e ) {
-				$this->logger->error( 'Error while checking payment eligibility: ' . print_r( $e, true ) );
+				$this->logger->error( 'Error while checking payment eligibility: ' . var_export( $e, true ) );
 				return null;
 			}
 		}
 
-		return $this->_eligibilities;
+		return $this->eligibilities;
 	}
 
 	/**

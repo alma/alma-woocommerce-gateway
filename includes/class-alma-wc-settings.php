@@ -21,21 +21,21 @@ class Alma_WC_Settings {
 	 *
 	 * @var array
 	 */
-	protected $_settings = array();
+	protected $settings = array();
 
 	/**
 	 * Flag to indicate setting has been loaded from DB.
 	 *
 	 * @var bool
 	 */
-	private $_are_settings_loaded = false;
+	private $are_settings_loaded = false;
 
 	/**
 	 * Get default settings.
 	 *
 	 * @return array
 	 */
-	public static function get_default_settings() {
+	public static function default_settings() {
 		return array(
 			'enabled'                               => 'yes',
 			'enabled_2x'                            => 'no',
@@ -45,10 +45,7 @@ class Alma_WC_Settings {
 			'description'                           => __( 'Pay in multiple monthly payments with your credit card.', 'alma-woocommerce-gateway' ),
 			'display_cart_eligibility'              => 'yes',
 			'display_product_eligibility'           => 'yes',
-			'cart_is_eligible_message'              => __( 'Your cart is eligible for monthly payments', 'alma-woocommerce-gateway' ),
-			'cart_not_eligible_message'             => __( 'Your cart is not eligible for monthly payments', 'alma-woocommerce-gateway' ),
-			'product_not_eligible_message'          => __( 'This product is not eligible for monthly payments', 'alma-woocommerce-gateway' ),
-			'variable_product_price_query_selector' => Alma_WC_Product_Handler::DEFAULT_VARIABLE_PRODUCT_PRICE_QUERY_SELECTOR,
+			'variable_product_price_query_selector' => Alma_WC_Product_Handler::default_variable_price_selector(),
 			'excluded_products_list'                => array(),
 			'cart_not_eligible_message_gift_cards'  => __( 'Some products cannot be paid with monthly installments', 'alma-woocommerce-gateway' ),
 			'live_api_key'                          => '',
@@ -68,8 +65,8 @@ class Alma_WC_Settings {
 	public function __get( $key ) {
 		$value = null;
 
-		if ( array_key_exists( $key, $this->_settings ) ) {
-			$value = $this->_settings[ $key ];
+		if ( array_key_exists( $key, $this->settings ) ) {
+			$value = $this->settings[ $key ];
 		}
 
 		return apply_filters( 'alma_wc_settings_' . $key, $value );
@@ -84,7 +81,7 @@ class Alma_WC_Settings {
 	 * @return void
 	 */
 	public function __set( $key, $value ) {
-		$this->_settings[ $key ] = $value;
+		$this->settings[ $key ] = $value;
 	}
 
 	/**
@@ -95,7 +92,7 @@ class Alma_WC_Settings {
 	 * @return bool
 	 */
 	public function __isset( $key ) {
-		return array_key_exists( $key, $this->_settings );
+		return array_key_exists( $key, $this->settings );
 	}
 
 	/**
@@ -115,12 +112,12 @@ class Alma_WC_Settings {
 	 * @return Alma_WC_Settings Instance of Alma_Settings
 	 */
 	public function load( $force_reload = false ) {
-		if ( $this->_are_settings_loaded && ! $force_reload ) {
+		if ( $this->are_settings_loaded && ! $force_reload ) {
 			return $this;
 		}
-		$settings                   = (array) get_option( self::OPTIONS_KEY, array() );
-		$this->_settings            = array_merge( self::get_default_settings(), $settings );
-		$this->_are_settings_loaded = true;
+		$settings                  = (array) get_option( self::OPTIONS_KEY, array() );
+		$this->settings            = array_merge( self::default_settings(), $settings );
+		$this->are_settings_loaded = true;
 
 		return $this;
 	}
@@ -134,7 +131,7 @@ class Alma_WC_Settings {
 	 */
 	public function update_from( $settings = array() ) {
 		foreach ( $settings as $key => $value ) {
-			$this->_settings[ $key ] = $value;
+			$this->settings[ $key ] = $value;
 		}
 	}
 
@@ -144,7 +141,7 @@ class Alma_WC_Settings {
 	 * @return void
 	 */
 	public function save() {
-		update_option( self::OPTIONS_KEY, $this->_settings );
+		update_option( self::OPTIONS_KEY, $this->settings );
 	}
 
 	/**
