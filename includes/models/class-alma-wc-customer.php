@@ -56,7 +56,7 @@ class Alma_WC_Customer {
 	 *
 	 * @return array
 	 */
-	private function _get_legacy_data() {
+	private function get_legacy_data() {
 		$data = array(
 			'first_name' => $this->customer->first_name,
 			'last_name'  => $this->customer->last_name,
@@ -76,7 +76,7 @@ class Alma_WC_Customer {
 	 *
 	 * @return array
 	 */
-	private function _get_data() {
+	private function latest_get_data() {
 		$data = array(
 			'first_name' => $this->customer->get_first_name(),
 			'last_name'  => $this->customer->get_last_name(),
@@ -111,9 +111,9 @@ class Alma_WC_Customer {
 	 */
 	public function get_data() {
 		if ( $this->legacy ) {
-			return $this->_get_legacy_data();
+			return $this->get_legacy_data();
 		} else {
-			return $this->_get_data();
+			return $this->latest_get_data();
 		}
 	}
 

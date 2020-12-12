@@ -550,46 +550,34 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * Redirect to cart with error.
 	 *
 	 * @param string $error_msg Error message.
-	 *
-	 * @return array
 	 */
 	private function redirect_to_cart_with_error( $error_msg ) {
 		wc_add_notice( $error_msg, 'error' );
 
 		$cart_url = wc_get_cart_url();
-		wp_redirect( $cart_url );
-
-		return array(
-			'result'   => 'error',
-			'redirect' => $cart_url,
-		);
+		wp_safe_redirect( $cart_url );
+		exit();
 	}
 
 	/**
 	 * Validate payment on customer return.
 	 *
 	 * @param string $payment_id Payment Id.
-	 *
-	 * @return array
 	 */
 	public function validate_payment_on_customer_return( $payment_id ) {
 		try {
 			$order = Alma_WC_Payment_Validator::validate_payment( $payment_id );
 		} catch ( Alma_WC_Payment_Validation_Error $e ) {
 			$error_msg = __( 'There was an error when validating your payment.<br>Please try again or contact us if the problem persists.', 'alma-woocommerce-gateway' );
-			return $this->redirect_to_cart_with_error( $error_msg );
+			$this->redirect_to_cart_with_error( $error_msg );
 		} catch ( \Exception $e ) {
-			return $this->redirect_to_cart_with_error( $e->getMessage() );
+			$this->redirect_to_cart_with_error( $e->getMessage() );
 		}
 
 		// Redirect user to the order confirmation page.
 		$return_url = $this->get_return_url( $order->get_wc_order() );
-		wp_redirect( $return_url );
-
-		return array(
-			'result'   => 'success',
-			'redirect' => $return_url,
-		);
+		wp_safe_redirect( $return_url );
+		exit();
 	}
 
 	/**

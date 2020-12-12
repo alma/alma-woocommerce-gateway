@@ -203,8 +203,6 @@ class Alma_WC_Plugin {
 
 			$this->check_dependencies();
 
-			// TODO: Handle privacy message/personal data exporter/eraser.
-			/* require_once( $this->includes_path . 'class-alma-privacy.php' ); */
 			require_once $this->includes_path . 'models/class-alma-wc-cart.php';
 			require_once $this->includes_path . 'models/class-alma-wc-customer.php';
 			require_once $this->includes_path . 'models/class-alma-wc-order.php';
@@ -216,7 +214,7 @@ class Alma_WC_Plugin {
 			require_once $this->includes_path . 'class-alma-wc-settings.php';
 			$this->settings = new Alma_WC_Settings();
 
-			$this->_run();
+			$this->run();
 
 			if ( is_admin() ) {
 				// Defer settings check to after potential settings update.
@@ -425,7 +423,7 @@ class Alma_WC_Plugin {
 	/**
 	 * Run the plugin.
 	 */
-	protected function _run() {
+	private function run() {
 
 		require_once $this->includes_path . 'class-alma-wc-payment-validation-error.php';
 		require_once $this->includes_path . 'class-alma-wc-payment-validator.php';
@@ -622,8 +620,8 @@ class Alma_WC_Plugin {
 				'error'
 			);
 
-			wp_redirect( wc_get_cart_url() );
-			die();
+			wp_safe_redirect( wc_get_cart_url() );
+			exit();
 		}
 
 		return $payment_id;
