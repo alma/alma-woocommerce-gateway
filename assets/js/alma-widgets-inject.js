@@ -28,6 +28,10 @@
 		// Make sure settings are up-to-date after a potential cart_totals refresh.
 		const settings = $( paymentPlansContainerId ).data( 'settings' )
 
+		if (settings.hasExcludedProducts) {
+			return;
+		}
+
 		const merchantId = settings.merchantId;
 		const apiMode    = settings.apiMode;
 		let amount       = parseInt( settings.amount );

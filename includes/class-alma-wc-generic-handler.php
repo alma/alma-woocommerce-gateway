@@ -22,18 +22,11 @@ class Alma_WC_Generic_Handler {
 	private $logger;
 
 	/**
-	 * Min amount.
+	 * Plugin settings
 	 *
-	 * @var float
+	 * @var Alma_WC_Settings
 	 */
-	private $min_amount;
-
-	/**
-	 * Max amount.
-	 *
-	 * @var float
-	 */
-	private $max_amount;
+	protected $settings;
 
 	/**
 	 * __construct
@@ -41,12 +34,8 @@ class Alma_WC_Generic_Handler {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->logger = new Alma_WC_Logger();
-
+		$this->logger   = new Alma_WC_Logger();
 		$this->settings = alma_wc_plugin()->settings;
-
-		$this->min_amount = $this->settings->get_min_eligible_amount();
-		$this->max_amount = $this->settings->get_max_eligible_amount();
 	}
 
 	/**
@@ -63,7 +52,7 @@ class Alma_WC_Generic_Handler {
 			return false;
 		}
 
-		if ( ! count( $this->settings->get_enabled_pnx_plans() ) ) {
+		if ( ! count( $this->settings->enabled_pnx_plans() ) ) {
 			$this->logger->info( 'No payment plans have been activated - Not displaying Alma' );
 			return false;
 		}
@@ -74,7 +63,7 @@ class Alma_WC_Generic_Handler {
 	/**
 	 * Inject payment plan.
 	 *
-	 * @param bool        $skip_payment_plan_injection Skip payment plan injection.
+	 * @param bool        $has_excluded_products Skip payment plan injection if true.
 	 * @param int         $amount Amount.
 	 * @param string|null $jquery_update_event Jquery update event.
 	 * @param string|null $amount_query_selector Amount query selector.
@@ -83,7 +72,7 @@ class Alma_WC_Generic_Handler {
 	 * @return void
 	 */
 	protected function inject_payment_plan_widget(
-		$skip_payment_plan_injection,
+		$has_excluded_products,
 		$amount = 0,
 		$jquery_update_event = null,
 		$amount_query_selector = null,
@@ -98,10 +87,11 @@ class Alma_WC_Generic_Handler {
 			return;
 		}
 
-		$enabled_plans = $this->settings->get_enabled_pnx_plans();
+		$enabled_plans = $this->settings->enabled_pnx_plans();
 		$api_mode      = $this->settings->environment;
 
 		$widget_settings = array(
+			'hasExcludedProducts' => $has_excluded_products,
 			'merchantId'          => $merchant_id,
 			'apiMode'             => $api_mode,
 			'amount'              => $amount,
@@ -111,24 +101,40 @@ class Alma_WC_Generic_Handler {
 			'firstRender'         => $first_render,
 			'decimalSeparator'    => wc_get_price_decimal_separator(),
 			'thousandSeparator'   => wc_get_price_thousand_separator(),
-		)
+		);
+
+		// Inject JS/CSS required for the eligibility/payment plans info display.
+		$alma_widgets_js_url = 'https://unpkg.io/@alma/widgets@1.x.x/dist/alma-widgets.umd.js';
+		wp_enqueue_script( 'alma-widgets', $alma_widgets_js_url, array(), null, true );
+
+		$alma_widgets_css_url = 'https://unpkg.io/@alma/widgets@1.x.x/dist/alma-widgets.css';
+		wp_enqueue_style( 'alma-widgets', $alma_widgets_css_url, array(), null );
+
+		$alma_widgets_injection_url = alma_wc_plugin()->get_asset_url( 'js/alma-widgets-inject.js' );
+		wp_enqueue_script( 'alma-widgets-injection', $alma_widgets_injection_url, array(), ALMA_WC_VERSION, true );
+
 		?>
 		<div style="margin: 15px 0; max-width: 350px">
 			<div id="alma-payment-plans" data-settings="<?php echo esc_attr( wp_json_encode( $widget_settings ) ); ?>"></div>
+
+			<?php
+			if ( $has_excluded_products ) {
+				$logo_url      = alma_wc_plugin()->get_asset_url( 'images/alma_logo.svg' );
+				$exclusion_msg = $this->settings->cart_not_eligible_message_gift_cards;
+				?>
+				<img src="<?php echo esc_attr( $logo_url ); ?>"
+					alt="Alma"
+					style="width: auto !important; height: 25px !important; border: none !important; vertical-align: middle; display: inline-block;">
+				<span style="text-transform: initial"><?php echo wp_kses_post( $exclusion_msg ); ?></span>
+				<?php
+			}
+			?>
 		</div>
 		<?php
-		if ( ! $skip_payment_plan_injection ) {
-			$alma_widgets_js_url        = 'https://unpkg.io/@alma/widgets@1.x.x/dist/alma-widgets.umd.js';
-			$alma_widgets_js_create_url = alma_wc_plugin()->get_asset_url( 'js/alma-widgets-inject.js' );
-			$alma_widgets_css_url       = 'https://unpkg.io/@alma/widgets@1.x.x/dist/alma-widgets.css';
-			wp_enqueue_style( 'alma-widgets', $alma_widgets_css_url, array(), null );
-			wp_enqueue_script( 'alma-widgets', $alma_widgets_js_url, array(), null, true );
-			wp_enqueue_script( 'alma-widgets-create', $alma_widgets_js_create_url, array(), ALMA_WC_VERSION, true );
-		}
 	}
 
 	/**
-	 * Is product excluded.
+	 * Check if a given product is excluded.
 	 *
 	 * @param int $product_id Product Id.
 	 *

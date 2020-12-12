@@ -47,7 +47,7 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 	 * Display payment plan below the 'add to cart' button to indicate whether Alma is available or not
 	 */
 	public function inject_payment_plan() {
-		$skip_payment_plan_injection = false;
+		$has_excluded_products = false;
 
 		if (
 				isset( alma_wc_plugin()->settings->excluded_products_list ) &&
@@ -57,7 +57,7 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 			$product_id = wc_get_product()->get_id();
 
 			if ( $this->is_product_excluded( $product_id ) ) {
-				$skip_payment_plan_injection = true;
+				$has_excluded_products = true;
 			}
 		}
 
@@ -75,7 +75,7 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 		}
 
 		$this->inject_payment_plan_widget(
-			$skip_payment_plan_injection,
+			$has_excluded_products,
 			$amount,
 			$jquery_update_event,
 			$amount_query_selector,
