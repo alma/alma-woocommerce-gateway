@@ -28,6 +28,13 @@ class Alma_WC_Order {
 	private $order;
 
 	/**
+	 * Order ID
+	 *
+	 * @var int
+	 */
+	private $order_id;
+
+	/**
 	 * __construct
 	 *
 	 * @param int         $order_id Order Id.
@@ -40,19 +47,20 @@ class Alma_WC_Order {
 	public function __construct( $order_id, $order_key = null ) {
 		$this->legacy = version_compare( wc()->version, '3.0.0', '<' );
 
-		$order = wc_get_order( $order_id );
+		$this->order_id = $order_id;
+		$this->order    = wc_get_order( $this->order_id );
 
-		if ( ! $order && $order_key ) {
+		if ( ! $this->order && $order_key ) {
 			// We have an invalid $order_id, probably because invoice_prefix has changed.
-			$order_id = wc_get_order_id_by_order_key( $order_key );
-			$order    = wc_get_order( $order_id );
+			$this->order_id = wc_get_order_id_by_order_key( $order_key );
+			$this->order    = wc_get_order( $order_id );
 		}
 
-		if ( ! $order || ( $order_key && $order->get_order_key() !== $order_key ) ) {
+		if ( ! $this->order || ( $order_key && $this->get_order_key() !== $order_key ) ) {
 			throw new Exception( "Can't find order '$order_id' (key: $order_key). Order Keys do not match." );
 		}
 
-		$this->order = $order;
+		$this->order_id = $order_id;
 	}
 
 	/**
@@ -91,7 +99,7 @@ class Alma_WC_Order {
 	 * @return int
 	 */
 	public function get_id() {
-		return $this->order->get_id();
+		return $this->order_id;
 	}
 
 	/**
@@ -113,7 +121,7 @@ class Alma_WC_Order {
 	 * @return string
 	 */
 	public function get_order_reference() {
-		return $this->order->get_order_number();
+		return (string) $this->order->get_order_number();
 	}
 
 	/**
@@ -223,7 +231,7 @@ class Alma_WC_Order {
 	 * @return string
 	 */
 	public function get_merchant_url() {
-		$admin_path = 'post.php?post=' . $this->order->get_id() . '&action=edit';
+		$admin_path = 'post.php?post=' . $this->get_id() . '&action=edit';
 
 		if ( version_compare( wc()->version, '2.6.0', '<' ) ) {
 			return '';

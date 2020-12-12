@@ -386,13 +386,13 @@ class Alma_WC_Plugin {
 	 *
 	 * @return void
 	 *
-	 * @throws \Exception Exception.
+	 * @throws Exception Exception.
 	 */
 	public function check_activation() {
 		$gateway = new Alma_WC_Payment_Gateway();
 		$enabled = $gateway->get_option( 'enabled', 'no' );
 
-		if ( ! wc_string_to_bool( $enabled ) ) {
+		if ( ! alma_wc_string_to_bool( $enabled ) ) {
 			throw new Exception(
 				sprintf(
 					// translators: %s: Admin settings url.

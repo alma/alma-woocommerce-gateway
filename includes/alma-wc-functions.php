@@ -38,12 +38,11 @@ function alma_wc_price_from_cents( $price ) {
  * Addition: will automatically discard null values
  *
  * @return array
+ * @throws RuntimeException Throws when argument count invalid or an argument is not an array.
  */
 function alma_wc_array_merge_recursive() {
 	if ( func_num_args() < 2 ) {
-		trigger_error( __FUNCTION__ . ' needs two or more array arguments', E_USER_WARNING );
-
-		return null;
+		throw new RuntimeException( __FUNCTION__ . ' needs two or more array arguments', E_USER_WARNING );
 	}
 	$arrays = func_get_args();
 	$merged = array();
@@ -53,9 +52,7 @@ function alma_wc_array_merge_recursive() {
 			continue;
 		}
 		if ( ! is_array( $array ) ) {
-			trigger_error( __FUNCTION__ . ' encountered a non array argument', E_USER_WARNING );
-
-			return null;
+			throw new RuntimeException( __FUNCTION__ . ' encountered a non array argument', E_USER_WARNING );
 		}
 		if ( ! $array ) {
 			continue;
@@ -74,4 +71,18 @@ function alma_wc_array_merge_recursive() {
 	}
 
 	return $merged;
+}
+
+/**
+ * Converts a string (e.g. 'yes' or 'no') to a bool.
+ *
+ * Taken from WooCommerce, to which it was added in version 3.0.0 and we need support for older WC versions.
+ *
+ * @param string $string String to convert.
+ * @return bool
+ */
+function alma_wc_string_to_bool( $string ) {
+	return is_bool( $string )
+		? $string
+		: ( 'yes' === strtolower( $string ) || 1 === $string || 'true' === strtolower( $string ) || '1' === $string );
 }
