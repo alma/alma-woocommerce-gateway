@@ -205,7 +205,7 @@ class Alma_WC_Settings {
 	 *
 	 * @return array
 	 */
-	public function get_enabled_pnx_plans() {
+	public function enabled_pnx_plans() {
 		$pnx_list = array();
 
 		foreach ( array( 2, 3, 4 ) as $installments ) {
@@ -251,12 +251,12 @@ class Alma_WC_Settings {
 	 * @return int[]
 	 */
 	public function get_eligible_installments( $amount ) {
-		$allowed_installments  = alma_wc_plugin()->settings->get_enabled_pnx_plans();
+		$enabled_plans         = $this->enabled_pnx_plans();
 		$eligible_installments = array();
 
-		foreach ( $allowed_installments as $plan ) {
+		foreach ( $enabled_plans as $plan ) {
 			if ( $amount >= $plan['min_amount'] && $amount <= $plan['max_amount'] ) {
-				$eligible_installments[] = $plan['installments'];
+				$eligible_installments[] = $plan['installments_count'];
 			}
 		}
 
@@ -290,13 +290,12 @@ class Alma_WC_Settings {
 	 * @return int
 	 */
 	public function get_min_eligible_amount() {
-		$allowed_plans_list = $this->get_enabled_pnx_plans();
+		$enabled_plans = $this->enabled_pnx_plans();
 
 		$min_amount = INF;
 
-		foreach ( $allowed_plans_list as $plan ) {
-			$plan_min_amount = $this->get_min_amount( $plan['installments'] );
-			$min_amount      = min( $min_amount, $plan_min_amount );
+		foreach ( $enabled_plans as $plan ) {
+			$min_amount = min( $min_amount, $plan['min_amount'] );
 		}
 
 		return $min_amount;
@@ -308,13 +307,12 @@ class Alma_WC_Settings {
 	 * @return int
 	 */
 	public function get_max_eligible_amount() {
-		$allowed_plans_list = $this->get_enabled_pnx_plans();
+		$allowed_plans_list = $this->enabled_pnx_plans();
 
 		$max_amount = 0;
 
 		foreach ( $allowed_plans_list as $plan ) {
-			$plan_max_amount = $this->get_max_amount( $plan['installments'] );
-			$max_amount      = max( $max_amount, $plan_max_amount );
+			$max_amount = max( $max_amount, $plan['max_amount'] );
 		}
 
 		return $max_amount;
