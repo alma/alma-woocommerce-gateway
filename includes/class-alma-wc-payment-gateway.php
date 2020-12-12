@@ -401,17 +401,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			return parent::is_available();
 		}
 
-		$locale = get_locale();
-		if ( 'fr_FR' !== $locale ) {
-			$this->logger->info( "Locale {$locale} not supported - Not displaying Alma" );
-
-			return false;
-		}
-
-		$currency = get_woocommerce_currency();
-		if ( 'EUR' !== $currency ) {
-			$this->logger->info( "Currency {$currency} not supported - Not displaying Alma" );
-
+		if ( ! alma_wc_plugin()->check_locale() || ! alma_wc_plugin()->check_currency() ) {
 			return false;
 		}
 

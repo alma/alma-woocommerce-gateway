@@ -59,21 +59,12 @@ class Alma_WC_Generic_Handler {
 			return false;
 		}
 
-		$locale = get_locale();
-		if ( 'fr_FR' !== $locale ) {
-			$this->logger->info( "Locale {$locale} not supported - Not displaying Alma" );
-
-			return false;
-		}
-
-		$currency = get_woocommerce_currency();
-		if ( 'EUR' !== $currency ) {
-			$this->logger->info( "Currency {$currency} not supported - Not displaying Alma" );
-
+		if ( ! alma_wc_plugin()->check_locale() || ! alma_wc_plugin()->check_currency() ) {
 			return false;
 		}
 
 		if ( ! count( $this->settings->get_enabled_pnx_plans() ) ) {
+			$this->logger->info( 'No payment plans have been activated - Not displaying Alma' );
 			return false;
 		}
 

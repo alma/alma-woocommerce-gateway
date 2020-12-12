@@ -350,6 +350,38 @@ class Alma_WC_Plugin {
 	}
 
 	/**
+	 *  Check that Alma is available for the current locale
+	 */
+	public function check_locale() {
+		$locale      = get_locale();
+		$main_locale = substr( get_locale(), 0, 3 );
+
+		// By default, activate Alma only for french locales.
+		$enable_locale = apply_filters( 'alma_wc_enable_for_locale', 'fr_' === $main_locale, $locale );
+
+		if ( ! $enable_locale ) {
+			$this->logger->info( "Alma is not enabled for locale '{$locale}'" );
+			return false;
+		}
+
+		return true;
+	}
+
+
+	/**
+	 *  Check that Alma is available for the current currency
+	 */
+	public function check_currency() {
+		$currency = get_woocommerce_currency();
+		if ( 'EUR' !== $currency ) {
+			$this->logger->info( "Currency {$currency} not supported - Not displaying Alma" );
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Check activation.
 	 *
 	 * @return void
