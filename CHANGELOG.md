@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v1.2.1
+------
+
+* Fixes default min/max amount values being converted to cents multiple times in a row
+* Improves xdebug configuration
+
 v1.2.0
 ------
 

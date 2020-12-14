@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-define( 'ALMA_WC_VERSION', '1.2.0' );
+define( 'ALMA_WC_VERSION', '1.2.1' );
 
 /**
  * Return instance of Alma_Plugin.
