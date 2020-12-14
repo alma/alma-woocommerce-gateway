@@ -59,11 +59,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			'woocommerce_update_options_payment_gateways_' . $this->id,
 			array( $this, 'process_admin_options' )
 		);
-
-		add_filter(
-			'woocommerce_settings_api_sanitized_fields_' . $this->id,
-			array( $this, 'on_settings_save' )
-		);
 	}
 
 	/**
@@ -85,70 +80,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		}
 
 		return $option;
-	}
-
-	/**
-	 * Callback called after settings are saved.
-	 *
-	 * @param array $settings the settings.
-	 *
-	 * @return array
-	 */
-	public function on_settings_save( $settings ) {
-		// convert euros to cents.
-		foreach ( Alma_WC_Settings::AMOUNT_KEYS as $amount_key ) {
-			if ( $settings[ $amount_key ] ) {
-				$settings[ $amount_key ] = alma_wc_price_to_cents( $settings[ $amount_key ] );
-			}
-		}
-
-		alma_wc_plugin()->settings->update_from( $settings );
-
-		alma_wc_plugin()->init_alma_client();
-
-		$need_api_key = alma_wc_plugin()->settings->need_api_key();
-
-		if ( ! $need_api_key ) {
-			try {
-				$merchant = alma_wc_plugin()->get_alma_client()->merchants->me();
-
-				// store merchant id.
-				$settings['merchant_id'] = $merchant->id;
-
-				foreach ( $merchant->fee_plans as $fee_plan ) {
-					$installments       = $fee_plan['installments_count'];
-					$default_min_amount = $fee_plan['min_purchase_amount'];
-					$default_max_amount = $fee_plan['max_purchase_amount'];
-
-					if ( $fee_plan['allowed'] ) {
-						// set min and max amount default values.
-						if ( ! isset( $settings[ "min_amount_${installments}x" ] ) ) {
-							$settings[ "min_amount_${installments}x" ] = $default_min_amount;
-						}
-						if ( ! isset( $settings[ "max_amount_${installments}x" ] ) ) {
-							$settings[ "max_amount_${installments}x" ] = $default_max_amount;
-						}
-					} else {
-						// force disable not available fee_plans to prevent showing them in checkout.
-						$settings[ "enabled_${installments}x" ] = 'no';
-						// reset min and max amount for disabled plans to prevent multiplication by 100 on each save.
-						$settings[ "min_amount_${installments}x" ] = $default_min_amount;
-						$settings[ "max_amount_${installments}x" ] = $default_max_amount;
-					}
-				}
-			} catch ( \Alma\API\RequestError $e ) {
-				alma_wc_plugin()->handle_settings_exception( $e );
-			}
-		} else {
-			// reset merchant id.
-			$settings['merchant_id'] = null;
-			// reset min and max amount for all plans.
-			foreach ( Alma_WC_Settings::AMOUNT_KEYS as $amount_key ) {
-				$settings[ $amount_key ] = null;
-			}
-		}
-
-		return $settings;
 	}
 
 	/**
@@ -254,7 +185,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 										'max'      => $default_max_amount,
 										'step'     => 0.01,
 									),
-									'default'           => alma_wc_price_to_cents( $default_min_amount ),
+									'default'           => $default_min_amount,
 								),
 								"max_amount_${installments}x" => array(
 									'title'             => __( 'Maximum amount', 'alma-woocommerce-gateway' ),
@@ -266,7 +197,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 										'max'      => $default_max_amount,
 										'step'     => 0.01,
 									),
-									'default'           => alma_wc_price_to_cents( $default_max_amount ),
+									'default'           => $default_max_amount,
 								),
 							)
 						);
@@ -385,10 +316,69 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	public function process_admin_options() {
 		$saved = parent::process_admin_options();
 
+		$post_data = $this->get_post_data();
+
+		// After settings have been updated, override min/max amounts to convert them to cents.
+		foreach ( $this->get_form_fields() as $key => $field ) {
+			if ( in_array( $key, Alma_WC_Settings::AMOUNT_KEYS, true ) ) {
+				try {
+					$amount                 = $this->get_field_value( $key, $field, $post_data );
+					$this->settings[ $key ] = alma_wc_price_to_cents( $amount );
+				} catch ( Exception $e ) {
+					$this->add_error( $e->getMessage() );
+				}
+			}
+		}
+
+		alma_wc_plugin()->settings->update_from( $this->settings );
+		alma_wc_plugin()->init_alma_client();
+
+		// If API is configured with its keys, try to fetch info from merchant account.
+		$need_api_key = alma_wc_plugin()->settings->need_api_key();
+		if ( ! $need_api_key ) {
+			try {
+				$merchant = alma_wc_plugin()->get_alma_client()->merchants->me();
+
+				// store merchant id.
+				$this->settings['merchant_id'] = $merchant->id;
+
+				foreach ( $merchant->fee_plans as $fee_plan ) {
+					$installments       = $fee_plan['installments_count'];
+					$default_min_amount = $fee_plan['min_purchase_amount'];
+					$default_max_amount = $fee_plan['max_purchase_amount'];
+
+					if ( $fee_plan['allowed'] ) {
+						// set min and max amount default values.
+						if ( ! isset( $this->settings[ "min_amount_${installments}x" ] ) ) {
+							$this->settings[ "min_amount_${installments}x" ] = $default_min_amount;
+						}
+						if ( ! isset( $this->settings[ "max_amount_${installments}x" ] ) ) {
+							$this->settings[ "max_amount_${installments}x" ] = $default_max_amount;
+						}
+					} else {
+						// force disable not available fee_plans to prevent showing them in checkout.
+						$this->settings[ "enabled_${installments}x" ] = 'no';
+						// reset min and max amount for disabled plans to prevent multiplication by 100 on each save.
+						$this->settings[ "min_amount_${installments}x" ] = $default_min_amount;
+						$this->settings[ "max_amount_${installments}x" ] = $default_max_amount;
+					}
+				}
+			} catch ( \Alma\API\RequestError $e ) {
+				alma_wc_plugin()->handle_settings_exception( $e );
+			}
+		} else {
+			// reset merchant id.
+			$this->settings['merchant_id'] = null;
+			// reset min and max amount for all plans.
+			foreach ( Alma_WC_Settings::AMOUNT_KEYS as $amount_key ) {
+				$this->settings[ $amount_key ] = null;
+			}
+		}
+
 		alma_wc_plugin()->settings->update_from( $this->settings );
 		alma_wc_plugin()->check_settings();
 
-		return $saved;
+		return $saved && update_option( $this->get_option_key(), $this->settings );
 	}
 
 	/**
