@@ -431,6 +431,47 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
+	 * Output HTML for a single payment field.
+	 *
+	 * @param int     $n                    Installments count.
+	 * @param boolean $with_radio_button    Include a radio button for plan selection.
+	 * @param boolean $checked              Should the radio button be checked.
+	 */
+	private function payment_field( $n, $with_radio_button, $checked ) {
+		$plan_class = '.' . self::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS;
+		$plan_id    = '#' . sprintf( self::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $n );
+		$logo_url   = alma_wc_plugin()->get_asset_url( "images/p${n}x_logo.svg" );
+		?>
+		<input
+				type="<?php echo $with_radio_button ? 'radio' : 'hidden'; ?>"
+				value="<?php echo esc_attr( $n ); ?>"
+				id="alma_installments_count_<?php echo esc_attr( $n ); ?>"
+				name="alma_installments_count"
+
+				<?php if ( $with_radio_button ) : ?>
+					style="margin-right: 5px;"
+					<?php echo $checked ? 'checked' : ''; ?>
+					onchange="if (this.checked) { jQuery( '<?php echo esc_js( $plan_class ); ?>' ).hide(); jQuery( '<?php echo esc_js( $plan_id ); ?>' ).show() }"
+				<?php endif; ?>
+		>
+		<label
+				class="checkbox"
+				style="margin-right: 10px; display: inline;"
+				for="alma_installments_count_<?php echo esc_attr( $n ); ?>"
+		>
+			<img src="<?php echo esc_attr( $logo_url ); ?>"
+				style="float: unset !important; width: auto !important; height: 30px !important;  border: none !important; vertical-align: middle; display: inline-block;"
+				alt="
+					<?php
+					// translators: %d: number of installments.
+					echo sprintf( esc_html__( '%d installments', 'alma-woocommerce-gateway' ), esc_html( $n ) );
+					?>
+					">
+		</label>
+		<?php
+	}
+
+	/**
 	 * Custom payment fields.
 	 */
 	public function payment_fields() {
@@ -438,42 +479,18 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		$eligible_installments = alma_wc_plugin()->settings->get_eligible_installments_for_cart();
 		$default_installments  = self::get_default_pnx( $eligible_installments );
+		$multiple_plans        = count( $eligible_installments ) > 1;
 
+		if ( $multiple_plans ) {
+			?>
+			<p><?php echo esc_html__( 'How many installments do you want to pay?', 'alma-woocommerce-gateway' ); ?><span class="required">*</span></p>
+			<?php
+		}
 		?>
-		<p><?php echo esc_html__( 'How many installments do you want to pay?', 'alma-woocommerce-gateway' ); ?><span class="required">*</span></p>
 		<p>
 			<?php
 			foreach ( $eligible_installments as $n ) {
-				$plan_class = '.' . self::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS;
-				$plan_id    = '#' . sprintf( self::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $n );
-				$logo_url   = alma_wc_plugin()->get_asset_url( "images/p${n}x_logo.svg" );
-				?>
-			<input
-				type="radio"
-				style="margin-right: 5px;"
-				id="alma_installments_count_<?php echo esc_attr( $n ); ?>"
-				name="alma_installments_count"
-				value="<?php echo esc_attr( $n ); ?>"
-				<?php if ( $n === $default_installments ) { ?>
-				checked
-				<?php	} ?>
-				onchange="if (this.checked) { jQuery( '<?php echo esc_js( $plan_class ); ?>' ).hide(); jQuery( '<?php echo esc_js( $plan_id ); ?>' ).show() }"
-			>
-			<label
-				class="checkbox"
-				style="margin-right: 10px; display: inline;"
-				for="alma_installments_count_<?php echo esc_attr( $n ); ?>"
-			>
-				<img src="<?php echo esc_attr( $logo_url ); ?>"
-					style="float: unset !important; width: auto !important; height: 30px !important;  border: none !important; vertical-align: middle; display: inline-block;"
-					alt="
-					<?php
-						// translators: %d: number of installments.
-						echo sprintf( esc_html__( '%d installments', 'alma-woocommerce-gateway' ), esc_html( $n ) );
-					?>
-					">
-			</label>
-				<?php
+				$this->payment_field( $n, $multiple_plans, $n === $default_installments );
 			}
 
 			$this->render_payment_plan( $default_installments );
