@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v1.2.2
+------
+
+* Do not display a radio button at checkout, when there's only one payment plan available
+
 v1.2.1
 ------
 
