@@ -41,6 +41,10 @@ Once everything is properly set up, go ahead and switch to \"Live\" mode!
 
 == Changelog ==
 
+= 1.2.3 =
+
+* Use unpkg.com instead of unpkg.io
+
 = 1.2.2 =
 
 * Do not display a radio button at checkout, when there's only one payment plan available

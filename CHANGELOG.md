@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v1.2.3
+------
+
+* Use unpkg.com instead of unpkg.io
+
 v1.2.2
 ------
 
