@@ -104,10 +104,10 @@ class Alma_WC_Generic_Handler {
 		);
 
 		// Inject JS/CSS required for the eligibility/payment plans info display.
-		$alma_widgets_js_url = 'https://unpkg.io/@alma/widgets@1.x.x/dist/alma-widgets.umd.js';
+		$alma_widgets_js_url = 'https://unpkg.com/@alma/widgets@1.x.x/dist/alma-widgets.umd.js';
 		wp_enqueue_script( 'alma-widgets', $alma_widgets_js_url, array(), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 
-		$alma_widgets_css_url = 'https://unpkg.io/@alma/widgets@1.x.x/dist/alma-widgets.css';
+		$alma_widgets_css_url = 'https://unpkg.com/@alma/widgets@1.x.x/dist/alma-widgets.css';
 		wp_enqueue_style( 'alma-widgets', $alma_widgets_css_url, array(), null ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 
 		$alma_widgets_injection_url = alma_wc_plugin()->get_asset_url( 'js/alma-widgets-inject.js' );
