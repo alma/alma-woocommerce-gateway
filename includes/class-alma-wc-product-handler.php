@@ -49,28 +49,28 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 	public function inject_payment_plan() {
 		$has_excluded_products = false;
 
+		$product = wc_get_product();
 		if (
 				isset( alma_wc_plugin()->settings->excluded_products_list ) &&
 				is_array( alma_wc_plugin()->settings->excluded_products_list ) &&
 				count( alma_wc_plugin()->settings->excluded_products_list ) > 0
 		) {
-			$product_id = wc_get_product()->get_id();
+			$product_id = $product->get_id();
 
 			if ( $this->is_product_excluded( $product_id ) ) {
 				$has_excluded_products = true;
 			}
 		}
 
-		$price = wc_get_product()->get_price();
+		$price = $product->get_price();
 		if ( ! $price ) {
 			return;
 		}
-		$amount                = alma_wc_price_to_cents( $price );
 		$amount_query_selector = null;
 		$jquery_update_event   = null;
 		$first_render          = true;
 
-		$is_variable_product = wc_get_product()->get_type() === 'variable';
+		$is_variable_product = $product->get_type() === 'variable';
 
 		if ( $is_variable_product ) {
 			$amount_query_selector = alma_wc_plugin()->settings->variable_product_price_query_selector;
@@ -80,7 +80,7 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 
 		$this->inject_payment_plan_widget(
 			$has_excluded_products,
-			$amount,
+			alma_wc_price_to_cents( $price ),
 			$jquery_update_event,
 			$amount_query_selector,
 			$first_render
