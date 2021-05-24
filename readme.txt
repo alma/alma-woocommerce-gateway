@@ -41,6 +41,12 @@ Once everything is properly set up, go ahead and switch to \"Live\" mode!
 
 == Changelog ==
 
+= 1.2.x =
+
+* Remove PHP warnings & do not display widget on out-stock or un-priced product
+* Minor refactoring
+* Enhance dev docker env (display php warnings / errors + prioritize custom-php-ini file)
+
 = 1.2.3 =
 
 * Use unpkg.com instead of unpkg.io
