@@ -30,8 +30,10 @@ class Alma_WC_Cart_Handler extends Alma_WC_Generic_Handler {
 
 	/**
 	 *  Display message below cart totals to indicate whether Alma is available or not
+	 *
+	 * @param null|string $amount_query_selector as DOM widgetamount query selector parameter.
 	 */
-	public function display_cart_eligibility() {
+	public function display_cart_eligibility( $amount_query_selector = null ) {
 		$has_excluded_products = false;
 
 		if (
@@ -52,6 +54,6 @@ class Alma_WC_Cart_Handler extends Alma_WC_Generic_Handler {
 		$cart   = new Alma_WC_Cart();
 		$amount = $cart->get_total();
 
-		$this->inject_payment_plan_widget( $has_excluded_products, $amount, self::JQUERY_CART_UPDATE_EVENT );
+		$this->inject_payment_plan_widget( $has_excluded_products, $amount, self::JQUERY_CART_UPDATE_EVENT, $amount_query_selector );
 	}
 }
