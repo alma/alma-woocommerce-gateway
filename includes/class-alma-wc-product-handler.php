@@ -61,7 +61,7 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 			}
 		}
 
-		$amount                = alma_wc_price_to_cents( wc_get_product()->get_price() );
+		$amount                = alma_wc_price_to_cents( wc_get_product()->get_price_including_tax() );
 		$amount_query_selector = null;
 		$jquery_update_event   = null;
 		$first_render          = true;
