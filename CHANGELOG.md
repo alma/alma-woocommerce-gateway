@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v1.2.x
+------
+
+* Fix widget display price without tax depending on woocommerce tax rule configuration
+
 v1.2.3
 ------
 

@@ -41,6 +41,10 @@ Once everything is properly set up, go ahead and switch to \"Live\" mode!
 
 == Changelog ==
 
+= 1.2.x =
+
+* Fix widget display price without tax depending on woocommerce tax rule configuration
+
 = 1.2.3 =
 
 * Use unpkg.com instead of unpkg.io
