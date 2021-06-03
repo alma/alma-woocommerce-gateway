@@ -563,13 +563,18 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @param string $payment_id Payment Id.
 	 */
 	public function validate_payment_on_customer_return( $payment_id ) {
+		$order     = null;
+		$error_msg = __( 'There was an error when validating your payment.<br>Please try again or contact us if the problem persists.', 'alma-woocommerce-gateway' );
 		try {
 			$order = Alma_WC_Payment_Validator::validate_payment( $payment_id );
 		} catch ( Alma_WC_Payment_Validation_Error $e ) {
-			$error_msg = __( 'There was an error when validating your payment.<br>Please try again or contact us if the problem persists.', 'alma-woocommerce-gateway' );
 			$this->redirect_to_cart_with_error( $error_msg );
 		} catch ( \Exception $e ) {
 			$this->redirect_to_cart_with_error( $e->getMessage() );
+		}
+
+		if ( ! $order ) {
+			$this->redirect_to_cart_with_error( $error_msg );
 		}
 
 		// Redirect user to the order confirmation page.
