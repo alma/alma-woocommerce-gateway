@@ -3,6 +3,7 @@
  * Alma payments plugin for WooCommerce
  *
  * @package Alma_WooCommerce_Gateway
+ * @noinspection HtmlUnknownTarget
  */
 
 use Alma\API\Client;
@@ -312,7 +313,7 @@ class Alma_WC_Plugin {
 		$enable_locale = apply_filters( 'alma_wc_enable_for_locale', 'fr_' === $main_locale, $locale );
 
 		if ( ! $enable_locale ) {
-			$this->logger->info( "Alma is not enabled for locale '{$locale}'" );
+			$this->logger->info( "Alma is not enabled for locale '$locale'" );
 			return false;
 		}
 
@@ -326,7 +327,7 @@ class Alma_WC_Plugin {
 	public function check_currency() {
 		$currency = get_woocommerce_currency();
 		if ( 'EUR' !== $currency ) {
-			$this->logger->info( "Currency {$currency} not supported - Not displaying Alma" );
+			$this->logger->info( "Currency $currency not supported - Not displaying Alma" );
 			return false;
 		}
 
