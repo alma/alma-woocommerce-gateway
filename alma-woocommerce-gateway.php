@@ -34,7 +34,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-define( 'ALMA_WC_VERSION', '1.2.3' );
+if ( ! defined( 'ALMA_WC_VERSION' ) ) {
+	define( 'ALMA_WC_VERSION', '1.2.3' );
+}
+if ( ! defined( 'ALMA_WC_PLUGIN_FILE' ) ) {
+	define( 'ALMA_WC_PLUGIN_FILE', __FILE__ );
+}
+if ( ! defined( 'ALMA_WC_PLUGIN_BASENAME' ) ) {
+	define( 'ALMA_WC_PLUGIN_BASENAME', plugin_dir_path( __FILE__ ) );
+}
+if ( ! defined( 'ALMA_WC_PLUGIN_URL' ) ) {
+	define( 'ALMA_WC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+}
 
 /**
  * Return instance of Alma_Plugin.
@@ -45,9 +56,9 @@ function alma_wc_plugin() {
 	static $plugin;
 
 	if ( ! isset( $plugin ) ) {
-		require_once 'includes/class-alma-wc-plugin.php';
+		require_once ALMA_WC_PLUGIN_BASENAME . '/includes/class-alma-wc-autoloader.php';
 
-		$plugin = new Alma_WC_Plugin( __FILE__, ALMA_WC_VERSION );
+		$plugin = new Alma_WC_Plugin();
 	}
 
 	return $plugin;
