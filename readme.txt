@@ -41,6 +41,11 @@ Once everything is properly set up, go ahead and switch to \"Live\" mode!
 
 == Changelog ==
 
+= 1.2.x =
+
+* add autoloader
+* minor refactorisations
+
 = 1.2.3 =
 
 * Use unpkg.com instead of unpkg.io

@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v1.2.x
+------
+
+* add autoloader
+* minor refactorisations
+
 v1.2.3
 ------
 
