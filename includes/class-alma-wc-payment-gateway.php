@@ -6,6 +6,7 @@
  */
 
 use Alma\API\Endpoints\Results\Eligibility;
+use Alma\API\RequestError;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -203,7 +204,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 						);
 					}
 				}
-			} catch ( \Alma\API\RequestError $e ) {
+			} catch ( RequestError $e ) {
 				alma_wc_plugin()->handle_settings_exception( $e );
 			}
 		}
@@ -363,7 +364,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 						$this->settings[ "max_amount_${installments}x" ] = $default_max_amount;
 					}
 				}
-			} catch ( \Alma\API\RequestError $e ) {
+			} catch ( RequestError $e ) {
 				alma_wc_plugin()->handle_settings_exception( $e );
 			}
 		} else {
@@ -539,7 +540,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		try {
 			// phpcs:ignore WordPress.Security.NonceVerification
 			$payment = $alma->payments->create( Alma_WC_Payment::from_order( $order_id, intval( $_POST['alma_installments_count'] ) ) );
-		} catch ( \Alma\API\RequestError $e ) {
+		} catch ( RequestError $e ) {
 			$this->logger->error( 'Error while creating payment: ' . $e->getMessage() );
 			wc_add_notice( $error_msg, 'error' );
 
@@ -759,8 +760,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 			try {
 				$this->eligibilities = $alma->payments->eligibility( Alma_WC_Payment::from_cart() );
-			} catch ( \Alma\API\RequestError $e ) {
 				$this->logger->error( 'Error while checking payment eligibility: ' . var_export( $e, true ) );
+			} catch ( RequestError $e ) {
 				return null;
 			}
 		}

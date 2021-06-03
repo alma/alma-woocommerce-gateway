@@ -5,6 +5,9 @@
  * @package Alma_WooCommerce_Gateway
  */
 
+use Alma\API\Client;
+use Alma\API\RequestError;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
@@ -30,7 +33,7 @@ class Alma_WC_Plugin {
 	/**
 	 * Instance of Alma Api client.
 	 *
-	 * @var \Alma\API\Client
+	 * @var Client
 	 */
 	private $alma_client;
 
@@ -73,7 +76,7 @@ class Alma_WC_Plugin {
 	 */
 	public function init_alma_client() {
 		try {
-			$this->alma_client = new \Alma\API\Client(
+			$this->alma_client = new Client(
 				$this->settings->get_active_api_key(),
 				array(
 					'mode'   => $this->settings->get_environment(),
@@ -94,7 +97,7 @@ class Alma_WC_Plugin {
 	/**
 	 * Get alma client.
 	 *
-	 * @return \Alma\API\Client|null
+	 * @return Client|null
 	 */
 	public function get_alma_client() {
 		if ( ! $this->alma_client ) {
@@ -402,7 +405,7 @@ class Alma_WC_Plugin {
 
 		try {
 			$merchant = $alma->merchants->me();
-		} catch ( \Alma\API\RequestError $e ) {
+		} catch ( RequestError $e ) {
 			if ( $e->response && 401 === $e->response->responseCode ) {
 				$dashboard_url = 'https://dashboard.getalma.eu/security';
 
