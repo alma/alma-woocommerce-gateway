@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Alma_WC_Payment {
 
 	/**
-	 * Create Payment crom cart.
+	 * Create Payment data for Alma API request from Woocommerce Cart.
 	 *
 	 * @return array
 	 */
@@ -42,7 +42,7 @@ class Alma_WC_Payment {
 	}
 
 	/**
-	 * Create Payment crom cart.
+	 * Create Payment data for Alma API request from Woocommerce Order.
 	 *
 	 * @param int $order_id Order Id.
 	 * @param int $installments_count Number of installments.
@@ -105,15 +105,14 @@ class Alma_WC_Payment {
 		}
 
 		// Merge built data on data extracted from Cart to have as much data as possible.
-		$data = alma_wc_array_merge_recursive( self::from_cart(), $data );
-
-		return $data;
+		return alma_wc_array_merge_recursive( self::from_cart(), $data );
 	}
 
 	/**
 	 * Get customer cancel url.
 	 *
 	 * @return string
+	 * @noinspection PhpDeprecationInspection
 	 */
 	public static function get_customer_cancel_url() {
 		if ( version_compare( wc()->version, '2.5.0', '<' ) ) {

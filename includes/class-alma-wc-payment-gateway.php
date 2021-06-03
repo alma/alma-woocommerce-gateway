@@ -3,6 +3,7 @@
  * Alma WooCommerce payment gateway
  *
  * @package Alma_WooCommerce_Gateway
+ * @noinspection HtmlUnknownTarget
  */
 
 use Alma\API\Endpoints\Results\Eligibility;
@@ -66,7 +67,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * Get option from DB.
 	 *
 	 * Gets an option from the settings API, using defaults if necessary to prevent undefined notices.
-	 * This is overriden so that values saved in cents in the DB can be shown in euros to the user.
+	 * This is overridden so that values saved in cents in the DB can be shown in euros to the user.
 	 *
 	 * @param string $key Option key.
 	 * @param mixed  $empty_value Value when empty.
@@ -599,16 +600,14 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return array
 	 */
 	private function product_categories_options() {
-		$orderby    = 'name';
-		$order      = 'asc';
-		$hide_empty = false;
-		$cat_args   = array(
-			'orderby'    => $orderby,
-			'order'      => $order,
-			'hide_empty' => $hide_empty,
+		$product_categories = get_terms(
+			'product_cat',
+			array(
+				'orderby'    => 'name',
+				'order'      => 'asc',
+				'hide_empty' => false,
+			)
 		);
-
-		$product_categories = get_terms( 'product_cat', $cat_args );
 
 		$options = array();
 		if ( ! empty( $product_categories ) ) {
@@ -713,16 +712,17 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 					$plan_index  = 0;
 					foreach ( $plan->paymentPlan as $step ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName
 						?>
+						<!--suppress CssReplaceWithShorthandSafely -->
 						<p style="
 							display: flex;
 							justify-content: space-between;
 							padding: 4px 0;
 							margin: 4px 0;
 							<?php if ( ++$plan_index !== $plans_count ) { ?>
-							border-bottom: 1px solid lightgrey;
+								border-bottom: 1px solid lightgrey;
 							<?php	} else { ?>
-							padding-bottom: 0;
-							margin-bottom: 0;
+								padding-bottom: 0;
+								margin-bottom: 0;
 							<?php	} ?>
 						">
 							<span><?php echo esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) ); ?></span>
@@ -761,7 +761,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	/**
 	 * Get default pnx according to eligible pnx list.
 	 *
-	 * @param int[] $pnx_list the list of aligible pnx.
+	 * @param int[] $pnx_list the list of eligible pnx.
 	 *
 	 * @return int|null
 	 */

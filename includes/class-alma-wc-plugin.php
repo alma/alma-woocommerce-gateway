@@ -3,6 +3,7 @@
  * Alma payments plugin for WooCommerce
  *
  * @package Alma_WooCommerce_Gateway
+ * @noinspection HtmlUnknownTarget
  */
 
 use Alma\API\Client;
@@ -301,7 +302,7 @@ class Alma_WC_Plugin {
 		$enable_locale = apply_filters( 'alma_wc_enable_for_locale', 'fr_' === $main_locale, $locale );
 
 		if ( ! $enable_locale ) {
-			$this->logger->info( "Alma is not enabled for locale '{$locale}'" );
+			$this->logger->info( "Alma is not enabled for locale '$locale'" );
 			return false;
 		}
 
@@ -315,7 +316,7 @@ class Alma_WC_Plugin {
 	public function check_currency() {
 		$currency = get_woocommerce_currency();
 		if ( 'EUR' !== $currency ) {
-			$this->logger->info( "Currency {$currency} not supported - Not displaying Alma" );
+			$this->logger->info( "Currency $currency not supported - Not displaying Alma" );
 			return false;
 		}
 
@@ -367,9 +368,8 @@ class Alma_WC_Plugin {
 	 * Run the plugin.
 	 */
 	private function run() {
-
-		$this->cart_handler    = new Alma_WC_Cart_Handler();
-		$this->product_handler = new Alma_WC_Product_Handler();
+		new Alma_WC_Cart_Handler();
+		new Alma_WC_Product_Handler();
 
 		// Don't advertise our payment gateway if we're in test mode and current user is not an admin.
 		if ( $this->settings->get_environment() === 'test' && ! current_user_can( 'administrator' ) ) {
