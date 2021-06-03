@@ -14,41 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Alma_WC_Plugin {
 	/**
-	 * Filepath of main plugin file.
-	 *
-	 * @var string
-	 */
-	public $file;
-
-	/**
-	 * Plugin version.
-	 *
-	 * @var string
-	 */
-	public $version;
-
-	/**
-	 * Absolute plugin path.
-	 *
-	 * @var string
-	 */
-	public $plugin_path;
-
-	/**
-	 * Absolute plugin URL.
-	 *
-	 * @var string
-	 */
-	public $plugin_url;
-
-	/**
-	 * Absolute path to plugin includes dir.
-	 *
-	 * @var string
-	 */
-	public $includes_path;
-
-	/**
 	 * Flag to indicate the plugin has been bootstrapped.
 	 *
 	 * @var bool
@@ -79,28 +44,11 @@ class Alma_WC_Plugin {
 	/**
 	 * __construct
 	 *
-	 * @param string $file File.
-	 * @param string $version Version.
-	 *
 	 * @return void
 	 */
-	public function __construct( $file, $version ) {
-		$this->file    = $file;
-		$this->version = $version;
-
-		// Path.
-		$this->plugin_path   = trailingslashit( plugin_dir_path( $this->file ) );
-		$this->plugin_url    = trailingslashit( plugin_dir_url( $this->file ) );
-		$this->includes_path = $this->plugin_path . trailingslashit( 'includes' );
-
-		require_once $this->plugin_path . 'vendor/autoload.php';
-		require_once $this->includes_path . 'class-alma-wc-logger.php';
+	public function __construct() {
 		$this->logger = new Alma_WC_Logger();
-
-		// Updates.
-		if ( version_compare( $version, get_option( 'alma_version' ), '>' ) ) {
-			$this->update_to( $version );
-		}
+		$this->self_update();
 	}
 
 	/**
@@ -119,15 +67,14 @@ class Alma_WC_Plugin {
 	}
 
 	/**
-	 * Update to.
-	 *
-	 * @param string $new_version New version.
+	 * Update plugin to the latest version.
 	 *
 	 * @return void
 	 */
-	private function update_to( $new_version ) {
-		// Right now, updating only means setting the correct version in options.
-		update_option( 'alma_version', $new_version );
+	private function self_update() {
+		if ( version_compare( ALMA_WC_VERSION, get_option( 'alma_version' ), '>' ) ) {
+			update_option( 'alma_version', ALMA_WC_VERSION );
+		}
 	}
 
 	/**
@@ -174,8 +121,6 @@ class Alma_WC_Plugin {
 	 * @return void
 	 */
 	public function try_running() {
-		require_once $this->includes_path . 'class-alma-wc-webhooks.php';
-
 		add_action(
 			Alma_WC_Webhooks::action_for( Alma_WC_Webhooks::CUSTOMER_RETURN ),
 			array(
@@ -195,7 +140,7 @@ class Alma_WC_Plugin {
 		add_action( 'init', array( $this, 'bootstrap' ) );
 		add_filter( 'allowed_redirect_hosts', array( $this, 'alma_domains_whitelist' ) );
 
-		add_filter( 'plugin_action_links_' . plugin_basename( $this->file ), array( $this, 'plugin_action_links' ) );
+		add_filter( 'plugin_action_links_' . plugin_basename( ALMA_WC_PLUGIN_FILE ), array( $this, 'plugin_action_links' ) );
 		add_action( 'wp_ajax_alma_dismiss_notice_message', array( $this, 'ajax_dismiss_notice' ) );
 	}
 
@@ -218,16 +163,6 @@ class Alma_WC_Plugin {
 
 			$this->check_dependencies();
 
-			require_once $this->includes_path . 'models/class-alma-wc-cart.php';
-			require_once $this->includes_path . 'models/class-alma-wc-customer.php';
-			require_once $this->includes_path . 'models/class-alma-wc-order.php';
-			require_once $this->includes_path . 'models/class-alma-wc-payment.php';
-			require_once $this->includes_path . 'alma-wc-functions.php';
-			require_once $this->includes_path . 'class-alma-wc-generic-handler.php';
-			require_once $this->includes_path . 'class-alma-wc-cart-handler.php';
-			require_once $this->includes_path . 'class-alma-wc-product-handler.php';
-			require_once $this->includes_path . 'class-alma-wc-settings.php';
-			require_once $this->includes_path . 'class-alma-wc-shortcodes.php';
 			$this->settings = new Alma_WC_Settings();
 
 			$this->run();
@@ -441,10 +376,6 @@ class Alma_WC_Plugin {
 	 */
 	private function run() {
 
-		require_once $this->includes_path . 'class-alma-wc-payment-validation-error.php';
-		require_once $this->includes_path . 'class-alma-wc-payment-validator.php';
-		require_once $this->includes_path . 'class-alma-wc-payment-gateway.php';
-
 		$this->init_widget_handlers();
 
 		// Don't advertise our payment gateway if we're in test mode and current user is not an admin.
@@ -589,7 +520,7 @@ class Alma_WC_Plugin {
 	 * @return void
 	 */
 	public function load_plugin_textdomain() {
-		load_plugin_textdomain( 'alma-woocommerce-gateway', false, plugin_basename( $this->plugin_path ) . '/languages' );
+		load_plugin_textdomain( 'alma-woocommerce-gateway', false, plugin_basename( ALMA_WC_PLUGIN_PATH ) . '/languages' );
 	}
 
 	/**
@@ -620,7 +551,7 @@ class Alma_WC_Plugin {
 	 * @return string URL to given asset
 	 */
 	public function get_asset_url( $path ) {
-		return $this->plugin_url . 'assets/' . $path;
+		return ALMA_WC_PLUGIN_URL . 'assets/' . $path;
 	}
 
 	/** WEBHOOKS HANDLERS **/
