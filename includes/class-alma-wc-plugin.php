@@ -433,7 +433,9 @@ class Alma_WC_Plugin {
 						// translators: %s: Error message.
 						__( 'Alma encountered an error when fetching merchant status: %s', 'alma-woocommerce-gateway' ),
 						$e->getMessage()
-					)
+					),
+					$e->getCode(),
+					$e
 				);
 			}
 		}
