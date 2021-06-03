@@ -172,4 +172,4 @@ To edit the translations, use [Poedit](https://poedit.net/)
 
 ### Build
 
-To build extension for production run `./build.sh`
+To build extension for production run `./bin/build.sh`
