@@ -285,40 +285,6 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Get min eligible amount.
-	 *
-	 * @return int
-	 */
-	public function get_min_eligible_amount() {
-		$enabled_plans = $this->enabled_pnx_plans();
-
-		$min_amount = INF;
-
-		foreach ( $enabled_plans as $plan ) {
-			$min_amount = min( $min_amount, $plan['min_amount'] );
-		}
-
-		return $min_amount;
-	}
-
-	/**
-	 * Get max eligible amount.
-	 *
-	 * @return int
-	 */
-	public function get_max_eligible_amount() {
-		$allowed_plans_list = $this->enabled_pnx_plans();
-
-		$max_amount = 0;
-
-		foreach ( $allowed_plans_list as $plan ) {
-			$max_amount = max( $max_amount, $plan['max_amount'] );
-		}
-
-		return $max_amount;
-	}
-
-	/**
 	 * Is plugin "usable", i.e. is it enabled and correctly configured
 	 *
 	 * @return bool

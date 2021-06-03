@@ -291,17 +291,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Return whether or not this gateway still requires setup to function.
-	 *
-	 * @return bool
-	 */
-	public function needs_setup() {
-		$this->update_option( 'enabled', 'yes' );
-
-		return true;
-	}
-
-	/**
 	 * Init settings.
 	 */
 	public function init_settings() {
