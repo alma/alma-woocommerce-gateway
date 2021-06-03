@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v1.2.x
+------
+
+* add widget shortcodes
+
 v1.2.3
 ------
 
