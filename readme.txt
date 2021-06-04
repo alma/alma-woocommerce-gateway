@@ -41,6 +41,11 @@ Once everything is properly set up, go ahead and switch to \"Live\" mode!
 
 == Changelog ==
 
+= 1.2.x =
+
+* Add fallback locale on checkout payment ALMA API call
+* Add filter to override locale on checkout payment ALMA API call
+
 = 1.2.3 =
 
 * Use unpkg.com instead of unpkg.io

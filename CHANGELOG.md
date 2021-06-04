@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v1.2.x
+------
+
+* Add fallback locale on checkout payment ALMA API call
+* Add filter to override locale on checkout payment ALMA API call
+
 v1.2.3
 ------
 
