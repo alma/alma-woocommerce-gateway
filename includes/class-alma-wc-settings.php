@@ -277,7 +277,7 @@ class Alma_WC_Settings {
 	 * @return int[]
 	 */
 	public function get_eligible_installments_for_cart() {
-		$cart       = new Alma_WC_Cart();
+		$cart       = new Alma_WC_Model_Cart();
 		$cart_total = $cart->get_total();
 
 		return $this->get_eligible_installments( $cart_total );

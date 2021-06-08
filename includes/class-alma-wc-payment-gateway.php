@@ -529,7 +529,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		try {
 			// phpcs:ignore WordPress.Security.NonceVerification
-			$payment = $alma->payments->create( Alma_WC_Payment::from_order( $order_id, intval( $_POST['alma_installments_count'] ) ) );
+			$payment = $alma->payments->create( Alma_WC_Model_Payment::from_order( $order_id, intval( $_POST['alma_installments_count'] ) ) );
 		} catch ( RequestError $e ) {
 			$this->logger->error( 'Error while creating payment: ' . $e->getMessage() );
 			wc_add_notice( $error_msg, 'error' );
@@ -753,7 +753,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			}
 
 			try {
-				$this->eligibilities = $alma->payments->eligibility( Alma_WC_Payment::from_cart() );
+				$this->eligibilities = $alma->payments->eligibility( Alma_WC_Model_Payment::from_cart() );
 			} catch ( RequestError $e ) {
 				alma_wc_plugin()->log_stack_trace( 'Error while checking payment eligibility: ', $e );
 				return null;

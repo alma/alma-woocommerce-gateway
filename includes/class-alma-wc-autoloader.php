@@ -90,7 +90,7 @@ class Alma_WC_Autoloader {
 		$file  = $this->get_file_name_from_class( $class );
 		$path  = '';
 
-		if ( preg_match( '#^alma_wc_(cart|customer|order|payment)$#', $class ) ) {
+		if ( preg_match( '#^alma_wc_model_#', $class ) ) {
 			$path = $this->include_path . 'models/';
 		}
 

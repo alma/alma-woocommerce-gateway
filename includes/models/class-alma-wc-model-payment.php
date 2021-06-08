@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Alma_WC_Payment
  */
-class Alma_WC_Payment {
+class Alma_WC_Model_Payment {
 
 	/**
 	 * Create Payment data for Alma API request from Woocommerce Cart.
@@ -20,8 +20,8 @@ class Alma_WC_Payment {
 	 * @return array
 	 */
 	public static function from_cart() {
-		$cart     = new Alma_WC_Cart();
-		$customer = new Alma_WC_Customer();
+		$cart     = new Alma_WC_Model_Cart();
+		$customer = new Alma_WC_Model_Customer();
 
 		$data = array(
 			'payment' => array(
@@ -52,7 +52,7 @@ class Alma_WC_Payment {
 	 */
 	public static function from_order( $order_id, $installments_count ) {
 		try {
-			$order = new Alma_WC_Order( $order_id );
+			$order = new Alma_WC_Model_Order( $order_id );
 		} catch ( Exception $e ) {
 			$logger = new Alma_WC_Logger();
 			$logger->error( 'Error getting payment info from order: ' . $e->getMessage() );
