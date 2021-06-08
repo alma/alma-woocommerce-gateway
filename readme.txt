@@ -41,7 +41,7 @@ Once everything is properly set up, go ahead and switch to \"Live\" mode!
 
 == Changelog ==
 
-= 1.2.x =
+= 1.2.4 =
 
 * Remove PHP warnings & do not display widget on out-stock or un-priced product
 * Minor refactoring

@@ -1,7 +1,7 @@
 Changelog
 =========
 
-v1.2.x
+v1.2.4
 ------
 
 * Remove PHP warnings & do not display widget on out-stock or un-priced product
