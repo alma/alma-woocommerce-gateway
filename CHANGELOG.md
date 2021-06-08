@@ -7,6 +7,7 @@ v1.2.x
 * Remove PHP warnings & do not display widget on out-stock or un-priced product
 * Minor refactoring
 * Enhance dev docker env (display php warnings / errors + prioritize custom-php-ini file)
+* Fix widget display price without tax depending on woocommerce tax rule configuration
 
 v1.2.3
 ------

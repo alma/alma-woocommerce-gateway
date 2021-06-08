@@ -65,7 +65,7 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 		if ( ! $product->is_in_stock() ) {
 			return;
 		}
-		$price = $product->get_price();
+		$price = $product->get_price_including_tax();
 		if ( ! $price ) {
 			return;
 		}
