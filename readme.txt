@@ -87,6 +87,7 @@ To build extension for production run `./bin/build.sh`
 
 * Add autoloader
 * Minor refactorisations
+* Root tree refactorisation
 
 = 1.3.1 =
 
