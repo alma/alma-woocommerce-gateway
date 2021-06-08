@@ -47,6 +47,8 @@ Once everything is properly set up, go ahead and switch to \"Live\" mode!
 * Minor refactoring
 * Enhance dev docker env (display php warnings / errors + prioritize custom-php-ini file)
 * Fix widget display price without tax depending on woocommerce tax rule configuration
+* Add fallback locale on checkout payment ALMA API call
+* Add filter to override locale on checkout payment ALMA API call
 
 = 1.2.3 =
 

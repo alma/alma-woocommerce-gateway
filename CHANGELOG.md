@@ -8,6 +8,8 @@ v1.2.x
 * Minor refactoring
 * Enhance dev docker env (display php warnings / errors + prioritize custom-php-ini file)
 * Fix widget display price without tax depending on woocommerce tax rule configuration
+* Add fallback locale on checkout payment ALMA API call
+* Add filter to override locale on checkout payment ALMA API call
 
 v1.2.3
 ------

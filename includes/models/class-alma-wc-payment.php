@@ -29,6 +29,7 @@ class Alma_WC_Payment {
 				'return_url'         => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::CUSTOMER_RETURN ),
 				'ipn_callback_url'   => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::IPN_CALLBACK ),
 				'installments_count' => alma_wc_plugin()->settings->get_eligible_installments_for_cart(),
+				'locale'             => self::provide_payment_locale(),
 			),
 		);
 
@@ -121,5 +122,16 @@ class Alma_WC_Payment {
 		} else {
 			return wc_get_checkout_url();
 		}
+	}
+
+	/**
+	 * Check if website locale is supported else return fallback one
+	 *
+	 * @return string
+	 */
+	private static function provide_payment_locale() {
+		$locale = ( substr( get_locale(), 0, 3 ) === 'fr_' ) ? 'fr' : 'en';
+
+		return apply_filters( 'alma_wc_checkout_payment_locale', $locale );
 	}
 }
