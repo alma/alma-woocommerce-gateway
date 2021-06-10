@@ -14,8 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Alma_WC_Generic_Handler {
 
-	const ELIGIBILITY_WIDGET_ALREADY_RENDERED = 'Alma "Eligibility Widget" (cart or product) already rendered on this page - Not displaying Alma';
-
 	/**
 	 * Logger
 	 *
@@ -99,7 +97,7 @@ class Alma_WC_Generic_Handler {
 		$first_render = true
 	) {
 		if ( $this->is_already_rendered() ) {
-			$this->logger->info( self::ELIGIBILITY_WIDGET_ALREADY_RENDERED );
+			$this->logger->info( $this->get_eligibility_widget_already_rendered_message() );
 			return;
 		}
 
@@ -174,5 +172,14 @@ class Alma_WC_Generic_Handler {
 		}
 
 		return false;
+	}
+
+	/**
+	 * A translated message about already rendered widget
+	 *
+	 * @return string|void
+	 */
+	public function get_eligibility_widget_already_rendered_message() {
+		return __( 'Alma "Eligibility Widget" (cart or product) already rendered on this page - Not displaying Alma', 'alma-woocommerce-gateway' );
 	}
 }

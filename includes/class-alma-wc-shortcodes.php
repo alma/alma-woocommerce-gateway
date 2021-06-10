@@ -45,7 +45,7 @@ class Alma_Wc_Shortcodes {
 
 		if ( $handler->is_already_rendered() ) {
 
-			return $this->render_empty( self::CART_SHORTCODE_TAG, Alma_WC_Generic_Handler::ELIGIBILITY_WIDGET_ALREADY_RENDERED, $atts, $content );
+			return $this->render_empty( self::CART_SHORTCODE_TAG, $handler->get_eligibility_widget_already_rendered_message(), $atts, $content );
 		}
 
 		ob_start();
@@ -125,13 +125,14 @@ class Alma_Wc_Shortcodes {
 	private function alma_product_widget( Alma_WC_Product_Handler $handler, $atts, $content = '' ) {
 
 		if ( $handler->is_already_rendered() ) {
-			return $this->render_empty( self::PRODUCT_SHORTCODE_TAG, Alma_WC_Generic_Handler::ELIGIBILITY_WIDGET_ALREADY_RENDERED, $atts, $content );
+			return $this->render_empty( self::PRODUCT_SHORTCODE_TAG, $handler->get_eligibility_widget_already_rendered_message(), $atts, $content );
 		}
 
 		$product = wc_get_product( isset( $atts['id'] ) ? $atts['id'] : false );
 
 		if ( ! $product ) {
-			$product_not_found_content = sprintf( 'Product%s not found - Not displaying Alma', isset( $atts['id'] ) ? ' with id #' . $atts['id'] : '' );
+			/* translators: %s: #product_id (if any) */
+			$product_not_found_content = sprintf( __( 'Product%s not found - Not displaying Alma', 'alma-woocommerce-gateway' ), isset( $atts['id'] ) ? ' with id #' . $atts['id'] : '' );
 
 			return $this->render_empty( self::PRODUCT_SHORTCODE_TAG, $product_not_found_content, $atts, $content );
 		}

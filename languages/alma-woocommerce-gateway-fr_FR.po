@@ -21,6 +21,14 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
+#: includes/class-alma-wc-generic-handler.php:181
+msgid ""
+"Alma \"Eligibility Widget\" (cart or product) already rendered on this page "
+"- Not displaying Alma"
+msgstr ""
+"\"Badge d'éligibilité\" Alma (produit ou panier) déjà affiché sur cette page "
+"- Alma ne s'affiche pas"
+
 #: includes/class-alma-wc-payment-gateway.php:47
 msgid "Alma monthly payments"
 msgstr "Paiement en plusieurs fois avec Alma"
@@ -422,6 +430,11 @@ msgstr "Produit non éligible au paiement en plusieurs fois"
 #: includes/class-alma-wc-settings.php:53
 msgid "Some products cannot be paid with monthly installments"
 msgstr "Certains produits ne sont pas payables en plusieurs fois"
+
+#: includes/class-alma-wc-shortcodes.php:134
+#, php-format
+msgid "Product%s not found - Not displaying Alma"
+msgstr "Produit%s non trouvé - Alma ne s'affiche pas"
 
 #. Plugin Name of the plugin/theme
 msgid "Alma Monthly Payments for WooCommerce"

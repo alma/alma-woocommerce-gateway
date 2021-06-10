@@ -21,6 +21,12 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
+#: includes/class-alma-wc-generic-handler.php:181
+msgid ""
+"Alma \"Eligibility Widget\" (cart or product) already rendered on this page "
+"- Not displaying Alma"
+msgstr ""
+
 #: includes/class-alma-wc-payment-gateway.php:47
 msgid "Alma monthly payments"
 msgstr ""
@@ -363,6 +369,11 @@ msgstr ""
 
 #: includes/class-alma-wc-settings.php:53
 msgid "Some products cannot be paid with monthly installments"
+msgstr ""
+
+#: includes/class-alma-wc-shortcodes.php:134
+#, php-format
+msgid "Product%s not found - Not displaying Alma"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
