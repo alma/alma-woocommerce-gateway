@@ -7,8 +7,11 @@
 (function ($) {
 	var paymentPlansContainerId = "#alma-payment-plans";
 	var settings                = $( paymentPlansContainerId ).data( 'settings' )
-	var jqueryUpdateEvent       = settings.jqueryUpdateEvent;
-	var firstRender             = settings.firstRender;
+	if ( ! settings ) {
+		return;
+	}
+	var jqueryUpdateEvent = settings.jqueryUpdateEvent;
+	var firstRender       = settings.firstRender;
 
 	function isVisible( elem ) {
 		return ! ! ( elem && ( elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length ) );
@@ -27,6 +30,9 @@
 	window.AlmaInitWidget = function () {
 		// Make sure settings are up-to-date after a potential cart_totals refresh.
 		const settings = $( paymentPlansContainerId ).data( 'settings' )
+		if ( ! settings ) {
+			return;
+		}
 
 		if (settings.hasExcludedProducts) {
 			return;

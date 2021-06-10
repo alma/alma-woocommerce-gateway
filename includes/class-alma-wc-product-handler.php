@@ -45,11 +45,13 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 
 	/**
 	 * Display payment plan below the 'add to cart' button to indicate whether Alma is available or not
+	 *
+	 * @param mixed $the_product Post object or post ID of the product.
 	 */
-	public function inject_payment_plan() {
+	public function inject_payment_plan( $the_product = false ) {
 		$has_excluded_products = false;
 
-		$product = wc_get_product();
+		$product = ( $the_product ) ? wc_get_product( $the_product ) : wc_get_product();
 		if (
 				isset( alma_wc_plugin()->settings->excluded_products_list ) &&
 				is_array( alma_wc_plugin()->settings->excluded_products_list ) &&

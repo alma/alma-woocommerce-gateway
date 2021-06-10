@@ -1,7 +1,7 @@
 Changelog
 =========
 
-v1.2.4
+v1.x.x
 ------
 
 * Remove PHP warnings & do not display widget on out-stock or un-priced product
@@ -10,6 +10,7 @@ v1.2.4
 * Fix widget display price without tax depending on woocommerce tax rule configuration
 * Add fallback locale on checkout payment ALMA API call
 * Add filter to override locale on checkout payment ALMA API call
+* add widget shortcodes
 
 v1.2.3
 ------

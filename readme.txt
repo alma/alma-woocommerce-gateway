@@ -41,7 +41,7 @@ Once everything is properly set up, go ahead and switch to \"Live\" mode!
 
 == Changelog ==
 
-= 1.2.4 =
+= 1.x.x =
 
 * Remove PHP warnings & do not display widget on out-stock or un-priced product
 * Minor refactoring
@@ -49,6 +49,7 @@ Once everything is properly set up, go ahead and switch to \"Live\" mode!
 * Fix widget display price without tax depending on woocommerce tax rule configuration
 * Add fallback locale on checkout payment ALMA API call
 * Add filter to override locale on checkout payment ALMA API call
+* add widget shortcodes
 
 = 1.2.3 =
 
