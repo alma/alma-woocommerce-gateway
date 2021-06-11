@@ -104,6 +104,21 @@ class Alma_WC_Plugin {
 	}
 
 	/**
+	 * Init the alma widget handlers :
+	 * - hooked on Woocommerce Cart & Product actions
+	 * - AND add associated shortcodes
+	 */
+	private function init_widget_handlers() {
+		$shortcodes = new Alma_Wc_Shortcodes();
+
+		$cart_handler = new Alma_WC_Cart_Handler();
+		$shortcodes->init_cart_widget_shortcode( $cart_handler );
+
+		$product_handler = new Alma_WC_Product_Handler();
+		$shortcodes->init_product_widget_shortcode( $product_handler );
+	}
+
+	/**
 	 * Update to.
 	 *
 	 * @param string $new_version New version.
@@ -212,6 +227,7 @@ class Alma_WC_Plugin {
 			require_once $this->includes_path . 'class-alma-wc-cart-handler.php';
 			require_once $this->includes_path . 'class-alma-wc-product-handler.php';
 			require_once $this->includes_path . 'class-alma-wc-settings.php';
+			require_once $this->includes_path . 'class-alma-wc-shortcodes.php';
 			$this->settings = new Alma_WC_Settings();
 
 			$this->run();
@@ -429,8 +445,7 @@ class Alma_WC_Plugin {
 		require_once $this->includes_path . 'class-alma-wc-payment-validator.php';
 		require_once $this->includes_path . 'class-alma-wc-payment-gateway.php';
 
-		$this->cart_handler    = new Alma_WC_Cart_Handler();
-		$this->product_handler = new Alma_WC_Product_Handler();
+		$this->init_widget_handlers();
 
 		// Don't advertise our payment gateway if we're in test mode and current user is not an admin.
 		if ( $this->settings->get_environment() === 'test' && ! current_user_can( 'administrator' ) ) {

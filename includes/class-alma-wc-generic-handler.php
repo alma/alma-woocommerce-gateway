@@ -29,6 +29,13 @@ class Alma_WC_Generic_Handler {
 	protected $settings;
 
 	/**
+	 * Has any child handler already rendered the widget in this page
+	 *
+	 * @var bool
+	 */
+	private static $is_already_rendered = false;
+
+	/**
 	 * __construct
 	 *
 	 * @return void
@@ -36,6 +43,16 @@ class Alma_WC_Generic_Handler {
 	public function __construct() {
 		$this->logger   = new Alma_WC_Logger();
 		$this->settings = alma_wc_plugin()->settings;
+	}
+
+	/**
+	 * Has any child handler already rendered the widget in this page
+	 *
+	 * @return bool as rendered widget state.
+	 */
+	public function is_already_rendered() {
+
+		return self::$is_already_rendered;
 	}
 
 	/**
@@ -70,6 +87,7 @@ class Alma_WC_Generic_Handler {
 	 * @param bool        $first_render First render.
 	 *
 	 * @return void
+	 * @TODO verify if amount_query_selector is really useful
 	 */
 	protected function inject_payment_plan_widget(
 		$has_excluded_products,
@@ -78,6 +96,11 @@ class Alma_WC_Generic_Handler {
 		$amount_query_selector = null,
 		$first_render = true
 	) {
+		if ( $this->is_already_rendered() ) {
+			$this->logger->info( $this->get_eligibility_widget_already_rendered_message() );
+			return;
+		}
+
 		if ( ! $this->is_usable() ) {
 			return;
 		}
@@ -131,6 +154,7 @@ class Alma_WC_Generic_Handler {
 			?>
 		</div>
 		<?php
+		self::$is_already_rendered = true;
 	}
 
 	/**
@@ -148,5 +172,14 @@ class Alma_WC_Generic_Handler {
 		}
 
 		return false;
+	}
+
+	/**
+	 * A translated message about already rendered widget
+	 *
+	 * @return string|void
+	 */
+	public function get_eligibility_widget_already_rendered_message() {
+		return __( 'Alma "Eligibility Widget" (cart or product) already rendered on this page - Not displaying Alma', 'alma-woocommerce-gateway' );
 	}
 }

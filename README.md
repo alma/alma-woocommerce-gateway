@@ -6,7 +6,7 @@ Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo c
 Requires at least: 4.4  
 Tested up to: 5.4  
 Requires PHP: 5.6  
-Stable tag: 1.2.3  
+Stable tag: 1.3.0
 License: GPLv3  
 License URI: https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -44,12 +44,103 @@ We advise you to stay in \"Test\" mode until you\'re happy with your configurati
 
 Once everything is properly set up, go ahead and switch to \"Live\" mode!
 
+## Shortcodes
+
+### Definitions
+
+If you'd like to have more control on the position of the Alma badge on your store, you can deactivate the option in your **payment method settings** and use shortcodes directly into your themes templates, with a WooCommerce hook or into the `wp_post.short_description` for example.
+
+It is also possible to use the shortcodes directly into your Posts, Pages or any other WordPress native displayed content.
+
+There are two shortcodes available:
+1. `[alma-product-eligibility]` will display the Alma badge for a product's eligibility
+2. `[alma-cart-eligibility]` will display the Alma badge for the cart eligibility
+
+#### Admin settings to disable
+
+For the Cart Eligibility
+
+![Alma\'s Cart Eligibility Settings](.wordpress.org/screenshot-shortcode-1.png)
+
+For the Product Eligibility
+
+![Alma\'s Cart Eligibility Settings](.wordpress.org/screenshot-shortcode-2.png)
+
+### Usage
+
+#### Alma Product Eligibility
+
+- In a Product page, you should just add the shortcode without parameters (product will be found in the WordPress context) :
+   `[alma-product-eligibility]`
+- In a Page, Post or any other WordPress native displayed content, you have to add the id (__product_id__) parameter into the shortcode :
+   `[alma-product-eligibility id=10]`
+- It is also possible to inject the badge using hooks. Here for example, into the Product summary with a WooCommerce hook (add the following code into your Theme's `functions.php`):
+```php
+<?php
+// ...
+add_action( 'woocommerce_before_single_product_summary', 'inject_alma_product_eligibility_into_product' );
+function inject_alma_product_eligibility_into_product() {
+    echo do_shortcode( '[alma-product-eligibility]' );
+}
+// ...
+```
+
+#### Alma Cart Eligibility
+
+- In a Page, Post or any other WordPress native displayed content, you just have to use the `[alma-cart-eligibility]` shortcode.
+- It is also possible to inject the badge using hooks - here for example, into the Cart page with a WooCommerce hook (add the following code into your Theme's `functions.php`):
+```php
+// ...
+add_action( 'woocommerce_after_cart_table', 'inject_alma_cart_eligibility_into_cart' );
+function inject_alma_cart_eligibility_into_cart() {
+    echo do_shortcode( '[alma-cart-eligibility]' );
+}
+// ...
+
+#### Shortcode optional attributes and content
+
+1. HTML class attribute
+
+   You can customize rendering of the widget by adding your own HTML class attribute, using the shortcode `class` attribute. e.g:
+   ```txt
+   [alma-cart-eligibility class=my-website-amazing-content-style-class]
+   ```
+1. Content
+
+   You can add a content between opening & closing shortcode tags. This content will be displayed into a `div.alma_wc_content`
+   HTML element before the injected Widget. e.g:
+   ```txt
+   [alma-product-eligibility id=10]My Amazing Content about My Wonderfull Product[/alma-product-eligibility ]
+   ```
+
+   You can also add another shortcode into Widget shortcode (here the WooCommerce `product` shortcode):
+   ```txt
+   [alma-product-eligibility id=10][product id=10][/alma-product-eligibility ]
+   ```
+1. Debug
+
+   Each shortcode can be debugged with a `debug=on` attribute. This will display a visual container with a message that
+   will explain why the badge is not displayed. Use this option if you don't see the widget on a page you added the
+   shortcode in. e.g: `[alma-product-eligibility id=10 debug=on]`
+
+   ![Alma\'s Eligibility Shortcode Debug Rendering](.wordpress.org/screenshot-shortcode-3.png)
+   ![Alma\'s Eligibility Shortcode Debug Rendering](.wordpress.org/screenshot-shortcode-4.png)
+
+### Limitation
+
+**<u>Only one Alma badge</u> can be displayed in a webpage.**
+
+If the badge is injected twice or more in a Post, Page, Product, Cart or anywhere:
+the second and following will not be displayed.
+
 ## Screenshots
 
 ![Alma\'s payment method settings](.wordpress.org/screenshot-1.png)
 ![Cart eligibility for monthly payments](.wordpress.org/screenshot-2.png)
+![Alma badge reinsurance Info](.wordpress.org/screenshot-6.png)
 ![Payment method at checkout](.wordpress.org/screenshot-3.png)
 ![Alma\'s payment page that users are sent to upon order confirmation](.wordpress.org/screenshot-4.png)
+![Alma\'s payment page SMS verification](.wordpress.org/screenshot-5.png)
 
 ## Contributing
 
