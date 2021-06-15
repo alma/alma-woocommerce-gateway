@@ -94,6 +94,7 @@ function inject_alma_cart_eligibility_into_cart() {
     echo do_shortcode( '[alma-cart-eligibility]' );
 }
 // ...
+```
 
 #### Shortcode optional attributes and content
 
