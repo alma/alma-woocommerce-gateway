@@ -423,7 +423,7 @@ class Alma_WC_Admin_Form {
 	private function generate_select_options() {
 		$select_options = array();
 		foreach ( alma_wc_plugin()->settings->get_allowed_fee_plans() as $fee_plan ) {
-			$option_key            = $fee_plan['installments_count'] . 'x';
+			$option_key = $fee_plan['installments_count'] . 'x';
 			// translators: %d: number of installments.
 			$select_options[ $option_key ] = sprintf( __( '→ %d-installment payment', 'alma-woocommerce-gateway' ), $fee_plan['installments_count'] );
 		}
