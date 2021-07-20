@@ -38,3 +38,12 @@ div.alma_fee_plan,
 		margin-left: 236px;
 	}
 }
+div.ui-state-active.alma_option_enabled,
+.alma_option_enabled {
+	font-weight: bold;
+}
+div.ui-state-active.alma_option_disabled,
+.alma_option_disabled {
+	font-weight: lighter;
+	font-style: italic;
+}

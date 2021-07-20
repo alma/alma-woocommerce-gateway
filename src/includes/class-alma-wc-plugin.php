@@ -192,7 +192,7 @@ class Alma_WC_Plugin {
 		wp_enqueue_script(
 			'alma-admin-scripts',
 			alma_wc_plugin()->get_asset_url( 'js/alma-admin.js' ),
-			array( 'jquery-effects-highlight' ),
+			array( 'jquery-effects-highlight', 'jquery-ui-selectmenu' ),
 			ALMA_WC_VERSION,
 			true
 		);
