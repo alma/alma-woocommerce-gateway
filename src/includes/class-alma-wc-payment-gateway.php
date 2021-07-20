@@ -470,6 +470,15 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			var select_alma_fee_plan_ids = select_alma_fee_plan_ids || [];
 			select_alma_fee_plan_ids.push('<?php echo esc_attr( $select_id ); ?>')
 		</script>
+		<style>
+			.alma_option_enabled::after {
+				content: ' (<?php echo __( 'enabled', 'alma-woocommerce-gateway' ); ?>)';
+			}
+			.alma_option_disabled::after {
+				content: ' (<?php echo __( 'disabled', 'alma-woocommerce-gateway' ); ?>)';
+			}
+
+		</style>
 		<?php
 		return parent::generate_select_html( $key, $data );
 	}
