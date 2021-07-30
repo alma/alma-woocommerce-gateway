@@ -19,7 +19,7 @@ class Alma_WC_Generic_Handler {
 	 *
 	 * @var Alma_WC_Logger
 	 */
-	private $logger;
+	protected $logger;
 
 	/**
 	 * Plugin settings
@@ -102,11 +102,15 @@ class Alma_WC_Generic_Handler {
 		}
 
 		if ( ! $this->is_usable() ) {
+			// TODO: translate this message.
+			$this->logger->info( __( 'Handler is not usable: badge injection failed.', 'alma-woocommerce-gateway' ) );
 			return;
 		}
 
 		$merchant_id = $this->settings->merchant_id;
 		if ( empty( $merchant_id ) ) {
+			// TODO: translate this message.
+			$this->logger->info( __( 'Settings merchant id not found: badge injection failed.', 'alma-woocommerce-gateway' ) );
 			return;
 		}
 
