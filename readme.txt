@@ -4,7 +4,7 @@ Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo c
 Requires at least: 4.4
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -40,6 +40,11 @@ Once everything is properly set up, go ahead and switch to \"Live\" mode!
 4. Alma\'s payment page that users are sent to upon order confirmation
 
 == Changelog ==
+
+= 1.3.1 =
+
+* Avoid Fatal error on (not found) product badge injection
+* Increase debug log on non displayed bages
 
 = 1.3.0 =
 

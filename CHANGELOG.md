@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v1.3.1
+------
+
+* Avoid Fatal error on (not found) product badge injection
+* Increase debug log on non displayed bages
+
 v1.3.0
 ------
 
