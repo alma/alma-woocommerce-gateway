@@ -299,17 +299,6 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Is plugin "usable", i.e. is it enabled and correctly configured
-	 *
-	 * @return bool
-	 */
-	public function is_usable() {
-		$user_cant_see = $this->get_environment() === 'test' && ! current_user_can( 'administrator' );
-
-		return $this->is_enabled() && $this->fully_configured && ! $user_cant_see;
-	}
-
-	/**
 	 * Is logging enabled.
 	 *
 	 * @return bool

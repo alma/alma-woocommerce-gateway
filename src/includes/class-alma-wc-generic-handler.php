@@ -61,7 +61,22 @@ class Alma_WC_Generic_Handler {
 	 * @return bool
 	 */
 	private function is_usable() {
-		if ( ! $this->settings->is_usable() ) {
+		if ( ! $this->settings->is_enabled() ) {
+			// TODO: translate this message.
+			$this->logger->info( __( 'Not usable handler: not enabled settings.', 'alma-woocommerce-gateway' ) );
+
+			return false;
+		}
+		if ( ! $this->settings->fully_configured ) {
+			// TODO: translate this message.
+			$this->logger->info( __( 'Not usable handler: settings are not fully configured.', 'alma-woocommerce-gateway' ) );
+
+			return false;
+		}
+		if ( $this->settings->get_environment() === 'test' && ! current_user_can( 'administrator' ) ) {
+			// TODO: translate this message.
+			$this->logger->info( __( 'Not usable handler: admin is needed in test env.', 'alma-woocommerce-gateway' ) );
+
 			return false;
 		}
 
