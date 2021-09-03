@@ -416,8 +416,8 @@ class Alma_WC_Plugin {
 	 */
 	private function run() {
 
-		if ( $this->settings->is_enabled() ) {
-			$this->init_widget_handlers();
+		if ( ! $this->settings->is_enabled() ) {
+			return;
 		}
 
 		// Don't advertise our payment gateway if we're in test mode and current user is not an admin.
@@ -426,6 +426,8 @@ class Alma_WC_Plugin {
 
 			return;
 		}
+
+		$this->init_widget_handlers();
 
 		add_filter( 'woocommerce_payment_gateways', array( $this, 'payment_gateways' ) );
 	}

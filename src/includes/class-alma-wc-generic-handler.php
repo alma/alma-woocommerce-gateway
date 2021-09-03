@@ -73,12 +73,6 @@ class Alma_WC_Generic_Handler {
 
 			return false;
 		}
-		if ( $this->settings->get_environment() === 'test' && ! current_user_can( 'administrator' ) ) {
-			// TODO: translate this message.
-			$this->logger->info( __( 'Not usable handler: admin is needed in test env.', 'alma-woocommerce-gateway' ) );
-
-			return false;
-		}
 
 		if ( ! alma_wc_plugin()->check_locale() || ! alma_wc_plugin()->check_currency() ) {
 			return false;
