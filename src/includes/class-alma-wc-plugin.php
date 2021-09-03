@@ -251,6 +251,7 @@ class Alma_WC_Plugin {
 
 		delete_option( 'alma_bootstrap_warning_message_dismissed' );
 		update_option( 'alma_bootstrap_warning_message', $exception->getMessage() );
+		$this->logger->warning( 'Bootstrap warning: ' . $exception->getMessage() );
 
 		add_action( 'admin_notices', array( $this, 'show_settings_warning' ) );
 
