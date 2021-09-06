@@ -295,7 +295,7 @@ msgid ""
 "There was an error when validating your payment.<br>Please try again or "
 "contact us if the problem persists."
 msgstr ""
-"Une erreur est survenue lors du traitement de votre paiement.<br>Réessayez "
+"Une erreur est survenue lors de la validation de votre paiement.<br>Réessayez "
 "ou contactez-nous si le problème persiste."
 
 #: includes/class-alma-wc-payment-gateway.php:475
@@ -406,7 +406,7 @@ msgid ""
 "Payment validation error: no ID provided.<br>Please try again or contact us "
 "if the problem persists."
 msgstr ""
-"Une erreur est survenue lors du traitement de votre paiement.<br>Réessayez "
+"Une erreur est survenue lors de la validation de votre paiement (ID non transmis).<br>Réessayez "
 "ou contactez-nous si le problème persiste."
 
 #. translators: %s -> path to add after dashboard url
