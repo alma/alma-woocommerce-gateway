@@ -62,13 +62,11 @@ class Alma_WC_Generic_Handler {
 	 */
 	private function is_usable() {
 		if ( ! $this->settings->is_enabled() ) {
-			// TODO: translate this message.
 			$this->logger->info( __( 'Not usable handler: not enabled settings.', 'alma-woocommerce-gateway' ) );
 
 			return false;
 		}
 		if ( ! $this->settings->fully_configured ) {
-			// TODO: translate this message.
 			$this->logger->info( __( 'Not usable handler: settings are not fully configured.', 'alma-woocommerce-gateway' ) );
 
 			return false;
@@ -108,14 +106,12 @@ class Alma_WC_Generic_Handler {
 		}
 
 		if ( ! $this->is_usable() ) {
-			// TODO: translate this message.
 			$this->logger->info( __( 'Handler is not usable: badge injection failed.', 'alma-woocommerce-gateway' ) );
 			return;
 		}
 
 		$merchant_id = $this->settings->merchant_id;
 		if ( empty( $merchant_id ) ) {
-			// TODO: translate this message.
 			$this->logger->info( __( 'Settings merchant id not found: badge injection failed.', 'alma-woocommerce-gateway' ) );
 			return;
 		}

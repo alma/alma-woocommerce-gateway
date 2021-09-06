@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Alma Gateway\n"
-"POT-Creation-Date: 2021-07-20 22:14+0200\n"
-"PO-Revision-Date: 2021-07-20 22:15+0200\n"
+"POT-Creation-Date: 2021-09-06 13:01+0200\n"
+"PO-Revision-Date: 2021-09-06 13:12+0200\n"
 "Last-Translator: syjust <sy.just@gmail.com>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -253,7 +253,27 @@ msgstr "Vous payez :"
 msgid "Customer pays:"
 msgstr "Le client paye :"
 
-#: includes/class-alma-wc-generic-handler.php:177
+#: includes/class-alma-wc-generic-handler.php:65
+msgid "Not usable handler: not enabled settings."
+msgstr "Gestionnaire de widget non utilisable : paramètres Alma non activés."
+
+#: includes/class-alma-wc-generic-handler.php:70
+msgid "Not usable handler: settings are not fully configured."
+msgstr ""
+"Gestionnaire de widget non utilisable : les paramètres ne sont pas "
+"entièrement configurés."
+
+#: includes/class-alma-wc-generic-handler.php:109
+msgid "Handler is not usable: badge injection failed."
+msgstr ""
+"Le gestionnaire de widget n’est pas utilisable : l’injection du badge a "
+"échoué."
+
+#: includes/class-alma-wc-generic-handler.php:115
+msgid "Settings merchant id not found: badge injection failed."
+msgstr "Paramètres ID marchand introuvable : échec de l’injection du badge."
+
+#: includes/class-alma-wc-generic-handler.php:186
 msgid ""
 "Alma \"Eligibility Widget\" (cart or product) already rendered on this page "
 "- Not displaying Alma"
@@ -295,8 +315,8 @@ msgid ""
 "There was an error when validating your payment.<br>Please try again or "
 "contact us if the problem persists."
 msgstr ""
-"Une erreur est survenue lors de la validation de votre paiement.<br>Réessayez "
-"ou contactez-nous si le problème persiste."
+"Une erreur est survenue lors de la validation de votre paiement."
+"<br>Réessayez ou contactez-nous si le problème persiste."
 
 #: includes/class-alma-wc-payment-gateway.php:475
 msgid "enabled"
@@ -306,38 +326,38 @@ msgstr "activé"
 msgid "disabled"
 msgstr "désactivé"
 
-#: includes/class-alma-wc-plugin.php:214
+#: includes/class-alma-wc-plugin.php:215
 msgid "WooCommerce Gateway Alma plugin can only be bootstrapped once"
 msgstr ""
 "Le plugin WooCommerce Alma Gateway ne peut être initialisé qu’une seule fois"
 
-#: includes/class-alma-wc-plugin.php:295
+#: includes/class-alma-wc-plugin.php:297
 msgid "Alma requires WooCommerce to be activated"
 msgstr "WooCommerce doit être activé pour que le plugin Alma fonctionne"
 
-#: includes/class-alma-wc-plugin.php:299
+#: includes/class-alma-wc-plugin.php:301
 msgid "Alma requires WooCommerce version 2.6 or greater"
 msgstr "Le plugin Alma nécessite WooCommerce 2.6 ou plus récent"
 
-#: includes/class-alma-wc-plugin.php:303
+#: includes/class-alma-wc-plugin.php:305
 msgid "Alma requires the cURL PHP extension to be installed on your server"
 msgstr ""
 "Le plugin Alma requiert l’installation de l’extension cURL pour PHP sur "
 "votre serveur"
 
-#: includes/class-alma-wc-plugin.php:307
+#: includes/class-alma-wc-plugin.php:309
 msgid "Alma requires the JSON PHP extension to be installed on your server"
 msgstr ""
 "Le plugin Alma requiert l’installation de l’extension JSON pour PHP sur "
 "votre serveur"
 
-#: includes/class-alma-wc-plugin.php:310
+#: includes/class-alma-wc-plugin.php:312
 msgid "Alma requires OpenSSL >= 1.0.1 to be installed on your server"
 msgstr ""
 "Le plugin Alma requiert l’installation de OpenSSL 1.0.1+ sur votre serveur"
 
 #. translators: %s: Admin settings url.
-#: includes/class-alma-wc-plugin.php:386
+#: includes/class-alma-wc-plugin.php:388
 #, php-format
 msgid ""
 "Thanks for installing Alma! Start by <a href='%s'>activating Alma's payment "
@@ -347,7 +367,7 @@ msgstr ""
 "de paiement Alma</a>, puis configurez-la pour vous lancer."
 
 #. translators: %s: Admin settings url.
-#: includes/class-alma-wc-plugin.php:405
+#: includes/class-alma-wc-plugin.php:407
 #, php-format
 msgid ""
 "Alma is almost ready. To get started, <a href=\"%s\">fill in your API keys</"
@@ -357,7 +377,7 @@ msgstr ""
 "d’API</a>."
 
 #. translators: %1$s: Admin settings url, %2$s: Admin logs url.
-#: includes/class-alma-wc-plugin.php:444
+#: includes/class-alma-wc-plugin.php:448
 #, php-format
 msgid ""
 "Error while initializing Alma API client.<br><a href=\"%1$s\">Activate debug "
@@ -368,7 +388,7 @@ msgstr ""
 "d’information."
 
 #. translators: %s: Alma dashboard url.
-#: includes/class-alma-wc-plugin.php:458
+#: includes/class-alma-wc-plugin.php:462
 #, php-format
 msgid ""
 "Could not connect to Alma using your API keys.<br>Please double check your "
@@ -379,13 +399,13 @@ msgstr ""
 "Alma</a>."
 
 #. translators: %s: Error message.
-#: includes/class-alma-wc-plugin.php:466
+#: includes/class-alma-wc-plugin.php:470
 #, php-format
 msgid "Alma encountered an error when fetching merchant status: %s"
 msgstr "Alma a rencontré une erreur en récupérant vos données marchand: %s"
 
 #. translators: %s: Alma dashboard url.
-#: includes/class-alma-wc-plugin.php:479
+#: includes/class-alma-wc-plugin.php:483
 #, php-format
 msgid ""
 "Your Alma account needs to be activated before you can use Alma on your shop."
@@ -397,29 +417,43 @@ msgstr ""
 "\">dashboard Alma</a> pour activer votre compte.<br><a href=\"%2$s"
 "\">Rafraîchissez la page</a> lorsque c’est fait."
 
-#: includes/class-alma-wc-plugin.php:575
+#: includes/class-alma-wc-plugin.php:579
 msgid "Settings"
 msgstr "Configuration"
 
-#: includes/class-alma-wc-plugin.php:604
+#: includes/class-alma-wc-plugin.php:608
 msgid ""
 "Payment validation error: no ID provided.<br>Please try again or contact us "
 "if the problem persists."
 msgstr ""
-"Une erreur est survenue lors de la validation de votre paiement (ID non transmis).<br>Réessayez "
-"ou contactez-nous si le problème persiste."
+"Une erreur est survenue lors de la validation de votre paiement (ID non "
+"transmis).<br>Réessayez ou contactez-nous si le problème persiste."
 
 #. translators: %s -> path to add after dashboard url
-#: includes/class-alma-wc-plugin.php:647
+#: includes/class-alma-wc-plugin.php:651
 #, php-format
 msgid "https://dashboard.getalma.eu/%s"
 msgstr "https://dashboard.getalma.eu/%s"
 
 #. translators: %s -> path to add after sandbox dashboard url
-#: includes/class-alma-wc-plugin.php:650
+#: includes/class-alma-wc-plugin.php:654
 #, php-format
 msgid "https://dashboard.sandbox.getalma.eu/%s"
 msgstr "https://dashboard.sandbox.getalma.eu/%s"
+
+#: includes/class-alma-wc-product-handler.php:56
+msgid "Product not found: product badge injection failed."
+msgstr "Produit introuvable : échec de l’injection du badge produit."
+
+#: includes/class-alma-wc-product-handler.php:72
+msgid "Product not in stock: product badge injection failed."
+msgstr "Produit en rupture de stock : échec de l’injection du badge produit."
+
+#. translators: %s: the product price.
+#: includes/class-alma-wc-product-handler.php:78
+#, php-format
+msgid "Product price (%s): product badge injection failed."
+msgstr "Prix du produit (%s) : échec de l’injection du badge produit."
 
 # Default title for payment method on checkout page
 #: includes/class-alma-wc-settings.php:63
