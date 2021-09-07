@@ -70,7 +70,7 @@ class Alma_WC_Settings {
 			'live_api_key'                          => '',
 			'test_api_key'                          => '',
 			'environment'                           => 'test',
-			'debug'                                 => 'no',
+			'debug'                                 => 'yes',
 			'fully_configured'                      => false,
 		);
 	}
