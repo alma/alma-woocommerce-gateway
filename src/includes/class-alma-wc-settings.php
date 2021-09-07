@@ -5,6 +5,7 @@
  * @package Alma_WooCommerce_Gateway
  */
 
+use Alma\API\Entities\FeePlan;
 use Alma\API\RequestError;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -360,10 +361,10 @@ class Alma_WC_Settings {
 			function( $fee_plan ) {
 				return get_object_vars( $fee_plan );
 			},
-			array_filter( // allowed but p1x only.
+			array_filter(
 				$fee_plans,
 				function( $fee_plan ) {
-					return $fee_plan->allowed && 1 !== $fee_plan->installments_count;
+					return $this->is_allowed_fee_plan( $fee_plan );
 				}
 			)
 		);
@@ -383,5 +384,23 @@ class Alma_WC_Settings {
 			},
 			$this->get_allowed_fee_plans()
 		);
+	}
+
+	/**
+	 * Say if a fee_plan should be displayed or not in settings
+	 *
+	 * @param FeePlan $fee_plan as fee_plan to evaluate.
+	 *
+	 * @return bool
+	 */
+	private function is_allowed_fee_plan( $fee_plan ) {
+		if ( ! $fee_plan->allowed ) {
+			return false;
+		}
+		if ( $fee_plan->isPayLaterOnly() || $fee_plan->isPnXOnly() ) {
+			return true;
+		}
+
+		return false;
 	}
 }

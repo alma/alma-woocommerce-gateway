@@ -694,6 +694,6 @@ class Alma_WC_Plugin {
 		if ( ! $client ) {
 			return array();
 		}
-		return $client->merchants->feePlans();
+		return $client->merchants->feePlans( FeePlan::KIND_GENERAL, 'all', true );
 	}
 }
