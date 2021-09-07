@@ -105,8 +105,14 @@ class Alma_WC_Plugin {
 	 * @return void
 	 */
 	private function self_update() {
-		if ( version_compare( ALMA_WC_VERSION, get_option( 'alma_version' ), '>' ) ) {
-			$migrations = new Alma_WC_Migrations( get_option( 'alma_version' ), ALMA_WC_VERSION );
+		$db_version = get_option( 'alma_version' );
+		if ( ! $db_version ) {
+			update_option( 'alma_version', ALMA_WC_VERSION );
+
+			return;
+		}
+		if ( version_compare( ALMA_WC_VERSION, $db_version, '>' ) ) {
+			$migrations = new Alma_WC_Migrations( $db_version, ALMA_WC_VERSION );
 			$migrations->up();
 			if ( $migrations->has_success() ) {
 				update_option( 'alma_version', ALMA_WC_VERSION );
