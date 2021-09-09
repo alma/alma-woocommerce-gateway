@@ -91,12 +91,12 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 */
 	protected function check_fee_plans_settings() {
 		foreach ( alma_wc_plugin()->settings->get_allowed_fee_plans() as $fee_plan ) {
-			$installments       = $fee_plan['installments_count'];
-			$default_min_amount = $fee_plan['min_purchase_amount'];
-			$default_max_amount = $fee_plan['max_purchase_amount'];
-			$min_key            = "min_amount_${installments}x";
-			$max_key            = "max_amount_${installments}x";
-			$enabled_key        = "enabled_${installments}x";
+			$plan_key           = $fee_plan->getPlanKey();
+			$default_min_amount = $fee_plan->min_purchase_amount;
+			$default_max_amount = $fee_plan->max_purchase_amount;
+			$min_key            = "min_amount_$plan_key";
+			$max_key            = "max_amount_$plan_key";
+			$enabled_key        = "enabled_$plan_key";
 
 			if ( ! isset( $this->settings[ $min_key ] ) || $this->settings[ $min_key ] < $default_min_amount ) {
 				$this->settings[ $min_key ] = $default_min_amount;
@@ -105,7 +105,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				$this->settings[ $max_key ] = $default_max_amount;
 			}
 			if ( ! isset( $this->settings[ $enabled_key ] ) ) {
-				$this->settings[ $enabled_key ] = alma_wc_plugin()->settings->default_settings()['selected_fee_plan'] === $installments . 'x' ? 'yes' : 'no';
+				$this->settings[ $enabled_key ] = alma_wc_plugin()->settings->default_settings()['selected_fee_plan'] === $plan_key ? 'yes' : 'no';
 			}
 		}
 
@@ -635,9 +635,11 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 	/**
 	 * Force disable not available fee_plans to prevent showing them in checkout.
+	 *
+	 * @TODO rfct for deferred here
 	 */
 	private function disable_unavailable_fee_plans_config() {
-		$allowed_installments = alma_wc_plugin()->settings->get_allowed_installments();
+		$allowed_installments = alma_wc_plugin()->settings->get_allowed_plan_keys();
 		if ( ! $allowed_installments ) {
 			return;
 		}

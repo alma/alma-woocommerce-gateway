@@ -6,6 +6,8 @@
  * @noinspection HtmlUnknownTarget
  */
 
+use Alma\API\Entities\FeePlan;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
@@ -51,27 +53,26 @@ class Alma_WC_Admin_Form {
 	/**
 	 * Init a fee_plan's fields
 	 *
-	 * @param array $fee_plan as fee plan definitions.
-	 * @param array $default_settings as default settings definitions.
-	 * @param bool  $selected if this field is currently selected.
+	 * @param FeePlan $fee_plan as fee plan definitions.
+	 * @param array   $default_settings as default settings definitions.
+	 * @param bool    $selected if this field is currently selected.
 	 *
 	 * @return array[] as field_form definition
 	 */
-	private function init_fee_plan_fields( $fee_plan, $default_settings, $selected ) {
-		$installments          = $fee_plan['installments_count'];
-		$key                   = $installments . 'x';
+	private function init_fee_plan_fields( FeePlan $fee_plan, $default_settings, $selected ) {
+		$key                   = $fee_plan->getPlanKey();
 		$min_amount_key        = 'min_amount_' . $key;
 		$section_key           = $key . '_section';
 		$max_amount_key        = 'max_amount_' . $key;
-		$enabled_key           = 'enabled_' . $key;
+		$toggle_key            = 'enabled_' . $key;
 		$class                 = 'alma_fee_plan alma_fee_plan_' . $key;
 		$css                   = $selected ? '' : 'display: none;';
-		$default_min_amount    = alma_wc_price_from_cents( $fee_plan['min_purchase_amount'] );
-		$default_max_amount    = alma_wc_price_from_cents( $fee_plan['max_purchase_amount'] );
-		$merchant_fee_fixed    = alma_wc_price_from_cents( $fee_plan['merchant_fee_fixed'] );
-		$merchant_fee_variable = $fee_plan['merchant_fee_variable'] / 100; // percent.
-		$customer_fee_fixed    = alma_wc_price_from_cents( $fee_plan['customer_fee_fixed'] );
-		$customer_fee_variable = $fee_plan['customer_fee_variable'] / 100; // percent.
+		$default_min_amount    = alma_wc_price_from_cents( $fee_plan->min_purchase_amount );
+		$default_max_amount    = alma_wc_price_from_cents( $fee_plan->max_purchase_amount );
+		$merchant_fee_fixed    = alma_wc_price_from_cents( $fee_plan->merchant_fee_fixed );
+		$merchant_fee_variable = $fee_plan->merchant_fee_variable / 100; // percent.
+		$customer_fee_fixed    = alma_wc_price_from_cents( $fee_plan->customer_fee_fixed );
+		$customer_fee_variable = $fee_plan->customer_fee_variable / 100; // percent.
 		$default_enabled       = $default_settings['selected_fee_plan'] === $key ? 'yes' : 'no';
 		$custom_attributes     = array(
 			'required' => 'required',
@@ -80,12 +81,36 @@ class Alma_WC_Admin_Form {
 			'step'     => 0.01,
 		);
 
+		$section_title = '';
+		$toggle_label  = '';
+		if ( $fee_plan->isPnXOnly() ) {
+			// translators: %d: number of installments.
+			$section_title = sprintf( __( '→ %d-installment payment', 'alma-woocommerce-gateway' ), $fee_plan->getInstallmentsCount() );
+			// translators: %d: number of installments.
+			$toggle_label = sprintf( __( 'Enable %d-installment payments with Alma', 'alma-woocommerce-gateway' ), $fee_plan->getInstallmentsCount() );
+		}
+		if ( $fee_plan->isPayLaterOnly() ) {
+			$deferred_days   = $fee_plan->getDeferredDays();
+			$deferred_months = $fee_plan->getDeferredMonths();
+			if ( $deferred_days ) {
+				// translators: %d: number of deferred days.
+				$section_title = sprintf( __( '→ D+%d-deferred payment', 'alma-woocommerce-gateway' ), $deferred_days );
+				// translators: %d: number of deferred days.
+				$toggle_label = sprintf( __( 'Enable D+%d-deferred payments with Alma', 'alma-woocommerce-gateway' ), $deferred_days );
+			}
+			if ( $deferred_months ) {
+				// translators: %d: number of deferred months.
+				$section_title = sprintf( __( '→ M+%d-deferred payment', 'alma-woocommerce-gateway' ), $deferred_months );
+				// translators: %d: number of deferred months.
+				$toggle_label = sprintf( __( 'Enable M+%d-deferred payments with Alma', 'alma-woocommerce-gateway' ), $deferred_months );
+			}
+		}
+
 		return array(
 			$section_key    => array(
-				// translators: %d: number of installments.
-				'title'             => sprintf( __( '→ %d-installment payment', 'alma-woocommerce-gateway' ), $fee_plan['installments_count'] ),
+				'title'             => $section_title,
 				'type'              => 'title',
-				'description'       => $this->generate_fee_plan_description( $installments, $default_min_amount, $default_max_amount, $merchant_fee_fixed, $merchant_fee_variable, $customer_fee_fixed, $customer_fee_variable ),
+				'description'       => $this->generate_fee_plan_description( $fee_plan, $default_min_amount, $default_max_amount, $merchant_fee_fixed, $merchant_fee_variable, $customer_fee_fixed, $customer_fee_variable ),
 				'class'             => $class,
 				'description_class' => $class,
 				'table_class'       => $class,
@@ -93,11 +118,10 @@ class Alma_WC_Admin_Form {
 				'description_css'   => $css,
 				'table_css'         => $css,
 			),
-			$enabled_key    => array(
+			$toggle_key     => array(
 				'title'   => __( 'Enable/Disable', 'alma-woocommerce-gateway' ),
 				'type'    => 'checkbox',
-				// translators: %d: number of installments.
-				'label'   => sprintf( __( 'Enable %d-installment payments with Alma', 'alma-woocommerce-gateway' ), $installments ),
+				'label'   => $toggle_label,
 				'default' => $default_enabled,
 			),
 			$min_amount_key => array(
@@ -197,10 +221,9 @@ class Alma_WC_Admin_Form {
 		}
 		$selected_fee_plan = $this->generate_selected_fee_plan_key( $select_options, $default_settings );
 		foreach ( alma_wc_plugin()->settings->get_allowed_fee_plans() as $fee_plan ) {
-			$fee_plan_key     = $fee_plan['installments_count'] . 'x';
 			$fee_plans_fields = array_merge(
 				$fee_plans_fields,
-				$this->init_fee_plan_fields( $fee_plan, $default_settings, $selected_fee_plan === $fee_plan_key )
+				$this->init_fee_plan_fields( $fee_plan, $default_settings, $selected_fee_plan === $fee_plan->getPlanKey() )
 			);
 		}
 
@@ -352,18 +375,18 @@ class Alma_WC_Admin_Form {
 	/**
 	 * Get fee plan description.
 	 *
-	 * @param int   $installments Number of installments.
-	 * @param float $min_amount Min amount.
-	 * @param float $max_amount Max amount.
-	 * @param float $merchant_fee_fixed Merchant fee fixed.
-	 * @param float $merchant_fee_variable Merchant fee variable.
-	 * @param float $customer_fee_fixed Customer fee fixed.
-	 * @param float $customer_fee_variable Customer fee variable.
+	 * @param FeePlan $fee_plan The fee plan do describe.
+	 * @param float   $min_amount Min amount.
+	 * @param float   $max_amount Max amount.
+	 * @param float   $merchant_fee_fixed Merchant fee fixed.
+	 * @param float   $merchant_fee_variable Merchant fee variable.
+	 * @param float   $customer_fee_fixed Customer fee fixed.
+	 * @param float   $customer_fee_variable Customer fee variable.
 	 *
 	 * @return string
 	 */
 	private function generate_fee_plan_description(
-		$installments,
+		FeePlan $fee_plan,
 		$min_amount,
 		$max_amount,
 		$merchant_fee_fixed,
@@ -371,13 +394,38 @@ class Alma_WC_Admin_Form {
 		$customer_fee_fixed,
 		$customer_fee_variable
 	) {
-		$you_can_offer = sprintf(
-			// translators: %d: number of installments.
-			__( 'You can offer %1$d-installment payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-woocommerce-gateway' ),
-			$installments,
-			$min_amount,
-			$max_amount
-		);
+		$you_can_offer = '';
+		if ( $fee_plan->isPnXOnly() ) {
+			$you_can_offer = sprintf(
+				// translators: %d: number of installments.
+				__( 'You can offer %1$d-installment payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-woocommerce-gateway' ),
+				$fee_plan->installments_count,
+				$min_amount,
+				$max_amount
+			);
+		}
+		if ( $fee_plan->isPayLaterOnly() ) {
+			$deferred_days   = $fee_plan->getDeferredDays();
+			$deferred_months = $fee_plan->getDeferredMonths();
+			if ( $deferred_days ) {
+				$you_can_offer = sprintf(
+				// translators: %d: number of deferred days.
+					__( 'You can offer D+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-woocommerce-gateway' ),
+					$deferred_days,
+					$min_amount,
+					$max_amount
+				);
+			}
+			if ( $deferred_months ) {
+				$you_can_offer = sprintf(
+				// translators: %d: number of deferred months.
+					__( 'You can offer M+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-woocommerce-gateway' ),
+					$deferred_months,
+					$min_amount,
+					$max_amount
+				);
+			}
+		}
 		$fees_applied  = __( 'Fees applied to each transaction for this plan:', 'alma-woocommerce-gateway' );
 		$you_pay       = $this->generate_fee_to_pay_description( __( 'You pay:', 'alma-woocommerce-gateway' ), $merchant_fee_variable, $merchant_fee_fixed );
 		$customer_pays = $this->generate_fee_to_pay_description( __( 'Customer pays:', 'alma-woocommerce-gateway' ), $customer_fee_variable, $customer_fee_fixed );
@@ -423,9 +471,24 @@ class Alma_WC_Admin_Form {
 	private function generate_select_options() {
 		$select_options = array();
 		foreach ( alma_wc_plugin()->settings->get_allowed_fee_plans() as $fee_plan ) {
-			$option_key = $fee_plan['installments_count'] . 'x';
-			// translators: %d: number of installments.
-			$select_options[ $option_key ] = sprintf( __( '→ %d-installment payment', 'alma-woocommerce-gateway' ), $fee_plan['installments_count'] );
+			$select_label = '';
+			if ( $fee_plan->isPnXOnly() ) {
+				// translators: %d: number of installments.
+				$select_label = sprintf( __( '→ %d-installment payment', 'alma-woocommerce-gateway' ), $fee_plan->getInstallmentsCount() );
+			}
+			if ( $fee_plan->isPayLaterOnly() ) {
+				$deferred_months = $fee_plan->getDeferredMonths();
+				$deferred_days   = $fee_plan->getDeferredDays();
+				if ( $deferred_days ) {
+					// translators: %d: number of deferred days.
+					$select_label = sprintf( __( '→ D+%d-deferred payment', 'alma-woocommerce-gateway' ), $deferred_days );
+				}
+				if ( $deferred_months ) {
+					// translators: %d: number of deferred months.
+					$select_label = sprintf( __( '→ M+%d-deferred payment', 'alma-woocommerce-gateway' ), $deferred_months );
+				}
+			}
+			$select_options[ $fee_plan->getPlanKey() ] = $select_label;
 		}
 		return $select_options;
 	}

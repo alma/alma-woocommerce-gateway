@@ -47,7 +47,7 @@ class Alma_WC_Settings {
 	/**
 	 * Merchant available plans
 	 *
-	 * @var array
+	 * @var array<FeePlan>
 	 */
 	private $allowed_fee_plans;
 
@@ -59,7 +59,7 @@ class Alma_WC_Settings {
 	public static function default_settings() {
 		return array(
 			'enabled'                               => 'yes',
-			'selected_fee_plan'                     => '3x',
+			'selected_fee_plan'                     => 'general_3_0_0',
 			'enabled_3x'                            => 'yes',
 			'title'                                 => __( 'Monthly Payments with Alma', 'alma-woocommerce-gateway' ),
 			'description'                           => __( 'Pay in multiple monthly payments with your credit card.', 'alma-woocommerce-gateway' ),
@@ -205,14 +205,14 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Is pnx enabled.
+	 * Is plan enabled.
 	 *
-	 * @param int $installments Number of installments.
+	 * @param int $key plan key.
 	 *
 	 * @return bool
 	 */
-	private function is_pnx_enabled( $installments ) {
-		return 'yes' === $this->__get( "enabled_${installments}x" );
+	private function is_pnx_enabled( $key ) {
+		return 'yes' === $this->__get( "enabled_${key}" );
 	}
 
 	/**
@@ -223,12 +223,14 @@ class Alma_WC_Settings {
 	public function enabled_pnx_plans() {
 		$pnx_list = array();
 
-		foreach ( $this->get_allowed_installments() as $installments ) {
-			if ( $this->is_pnx_enabled( $installments ) ) {
+		foreach ( $this->get_allowed_plan_keys() as $key ) {
+			if ( $this->is_pnx_enabled( $key ) ) {
 				$pnx_list[] = array(
-					'installments_count' => $installments,
-					'min_amount'         => $this->get_min_amount( $installments ),
-					'max_amount'         => $this->get_max_amount( $installments ),
+					'installments_count' => $this->get_installments_count( $key ),
+					'min_amount'         => $this->get_min_amount( $key ),
+					'max_amount'         => $this->get_max_amount( $key ),
+					'deferred_days'      => $this->get_deferred_days( $key ),
+					'deferred_months'    => $this->get_deferred_months( $key ),
 				);
 			}
 		}
@@ -239,23 +241,23 @@ class Alma_WC_Settings {
 	/**
 	 * Get min amount for pnx.
 	 *
-	 * @param int $installments the number of installments.
+	 * @param string $key the plan key.
 	 *
 	 * @return int
 	 */
-	public function get_min_amount( $installments ) {
-		return $this->__get( "min_amount_${installments}x" );
+	public function get_min_amount( $key ) {
+		return $this->__get( "min_amount_${key}" );
 	}
 
 	/**
 	 * Get max amount for pnx.
 	 *
-	 * @param int $installments the number of installments.
+	 * @param int $key the plan key.
 	 *
 	 * @return int
 	 */
-	public function get_max_amount( $installments ) {
-		return $this->__get( "max_amount_${installments}x" );
+	public function get_max_amount( $key ) {
+		return $this->__get( "max_amount_${key}" );
 	}
 
 	/**
@@ -338,7 +340,7 @@ class Alma_WC_Settings {
 	/**
 	 * Retrieve allowed fee plans definition from the merchant
 	 *
-	 * @return array
+	 * @return array<FeePlan>
 	 */
 	public function get_allowed_fee_plans() {
 		if ( $this->need_api_key() ) {
@@ -357,16 +359,11 @@ class Alma_WC_Settings {
 		if ( ! $fee_plans ) {
 			return array();
 		}
-		$this->allowed_fee_plans = array_map( // object to array.
+		$this->allowed_fee_plans = array_filter(
+			$fee_plans,
 			function( $fee_plan ) {
-				return get_object_vars( $fee_plan );
-			},
-			array_filter(
-				$fee_plans,
-				function( $fee_plan ) {
-					return $this->is_allowed_fee_plan( $fee_plan );
-				}
-			)
+				return $this->is_allowed_fee_plan( $fee_plan );
+			}
 		);
 
 		return $this->allowed_fee_plans;
@@ -375,12 +372,12 @@ class Alma_WC_Settings {
 	/**
 	 * Get allowed fee plans installment counts
 	 *
-	 * @return array|int[]
+	 * @return array|string[]
 	 */
-	public function get_allowed_installments() {
+	public function get_allowed_plan_keys() {
 		return array_map(
-			function( $fee_plan ) {
-				return $fee_plan['installments_count'];
+			function( FeePlan $fee_plan ) {
+				return $fee_plan->getPlanKey();
 			},
 			$this->get_allowed_fee_plans()
 		);
@@ -393,7 +390,7 @@ class Alma_WC_Settings {
 	 *
 	 * @return bool
 	 */
-	private function is_allowed_fee_plan( $fee_plan ) {
+	private function is_allowed_fee_plan( FeePlan $fee_plan ) {
 		if ( ! $fee_plan->allowed ) {
 			return false;
 		}
@@ -402,5 +399,38 @@ class Alma_WC_Settings {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Get deferred days for plan.
+	 *
+	 * @param int $key The plan key.
+	 *
+	 * @return int
+	 */
+	private function get_deferred_days( $key ) {
+		return $this->__get( "deferred_days_${key}" );
+	}
+
+	/**
+	 * Get deferred months for plan.
+	 *
+	 * @param int $key The plan key.
+	 *
+	 * @return int
+	 */
+	private function get_deferred_months( $key ) {
+		return $this->__get( "deferred_months_${key}" );
+	}
+
+	/**
+	 * Get installments_count for plan.
+	 *
+	 * @param int $key The plan key.
+	 *
+	 * @return int
+	 */
+	private function get_installments_count( $key ) {
+		return $this->__get( "installments_count_${key}x" );
 	}
 }
