@@ -18,6 +18,7 @@ class Alma_WC_Model_Payment {
 	 * Create Payment data for Alma API request from Woocommerce Cart.
 	 *
 	 * @return array
+	 * @TODO rfct for deferred here
 	 */
 	public static function from_cart() {
 		$cart     = new Alma_WC_Model_Cart();
@@ -49,6 +50,7 @@ class Alma_WC_Model_Payment {
 	 * @param int $installments_count Number of installments.
 	 *
 	 * @return array
+	 * @TODO rfct for deferred here
 	 */
 	public static function from_order( $order_id, $installments_count ) {
 		try {

@@ -25,8 +25,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 	const ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE = 'alma-payment-plan-table-%d-installments';
 	const ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS   = 'js-alma-payment-plan-table';
-	const PNX_AMOUNT_KEY_REGEX                = '#^(min|max)_amount_[0-9]+x$#';
-	const PNX_ENABLED_KEY_REGEX               = '#^enabled_([0-9]+)x$#';
+	const AMOUNT_PLAN_KEY_REGEX               = '#^(min|max)_amount_general_[0-9]+_[0-9]+_[0-9]+$#';
+	const ENABLED_PLAN_KEY_REGEX              = '#^enabled_general_([0-9]+_[0-9]+_[0-9]+)$#';
 
 	/**
 	 * Logger
@@ -79,7 +79,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	public function get_option( $key, $empty_value = null ) {
 		$option = parent::get_option( $key, $empty_value );
 
-		if ( $this->is_amount_key( $key ) ) {
+		if ( $this->is_amount_plan_key( $key ) ) {
 			return strval( alma_wc_price_from_cents( $option ) );
 		}
 
@@ -225,6 +225,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 	/**
 	 * Custom payment fields.
+	 *
+	 * @TODO rfct for deferred here
 	 */
 	public function payment_fields() {
 		echo wp_kses_post( $this->description );
@@ -255,6 +257,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * Validate payment fields.
 	 *
 	 * @return bool
+	 *
+	 * @TODO rfct for deferred here
 	 */
 	public function validate_fields() {
 		if ( empty( $_POST['alma_installments_count'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
@@ -275,6 +279,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @param int $order_id Order ID.
 	 *
 	 * @return array
+	 *
+	 * @TODO rfct for deferred here
 	 */
 	public function process_payment( $order_id ) {
 		$error_msg = __( 'There was an error processing your payment.<br>Please try again or contact us if the problem persists.', 'alma-woocommerce-gateway' );
@@ -574,7 +580,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	private function convert_amounts_to_cents() {
 		$post_data = $this->get_post_data();
 		foreach ( $this->get_form_fields() as $key => $field ) {
-			if ( $this->is_amount_key( $key ) ) {
+			if ( $this->is_amount_plan_key( $key ) ) {
 				try {
 					$amount                 = $this->get_field_value( $key, $field, $post_data );
 					$this->settings[ $key ] = alma_wc_price_to_cents( $amount );
@@ -616,7 +622,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$this->settings['merchant_id'] = null;
 		// reset min and max amount for all plans.
 		foreach ( array_keys( $this->settings ) as $key ) {
-			if ( $this->is_amount_key( $key ) ) {
+			if ( $this->is_amount_plan_key( $key ) ) {
 				$this->settings[ $key ] = null;
 			}
 		}
@@ -629,25 +635,23 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 *
 	 * @return boolean
 	 */
-	private function is_amount_key( $key ) {
-		return preg_match( self::PNX_AMOUNT_KEY_REGEX, $key ) > 0;
+	private function is_amount_plan_key( $key ) {
+		return preg_match( self::AMOUNT_PLAN_KEY_REGEX, $key ) > 0;
 	}
 
 	/**
 	 * Force disable not available fee_plans to prevent showing them in checkout.
-	 *
-	 * @TODO rfct for deferred here
 	 */
 	private function disable_unavailable_fee_plans_config() {
-		$allowed_installments = alma_wc_plugin()->settings->get_allowed_plan_keys();
+		$allowed_installments = alma_wc_plugin()->settings->get_allowed_plans_keys();
 		if ( ! $allowed_installments ) {
 			return;
 		}
 		foreach ( array_keys( $this->settings ) as $key ) {
-			if ( preg_match( self::PNX_ENABLED_KEY_REGEX, $key, $matches ) ) {
+			if ( preg_match( self::ENABLED_PLAN_KEY_REGEX, $key, $matches ) ) {
 				// force disable not available fee_plans to prevent showing them in checkout.
 				if ( ! in_array( intval( $matches[1] ), $allowed_installments, true ) ) {
-					$this->settings[ "enabled_${matches[1]}x" ] = 'no';
+					$this->settings[ "enabled_${matches[1]}" ] = 'no';
 				}
 			}
 		}

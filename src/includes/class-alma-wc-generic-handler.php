@@ -76,7 +76,7 @@ class Alma_WC_Generic_Handler {
 			return false;
 		}
 
-		if ( ! count( $this->settings->enabled_pnx_plans() ) ) {
+		if ( ! count( $this->settings->get_enabled_plans_settings() ) ) {
 			$this->logger->info( 'No payment plans have been activated - Not displaying Alma' );
 			return false;
 		}
@@ -121,7 +121,7 @@ class Alma_WC_Generic_Handler {
 			'merchantId'          => $merchant_id,
 			'apiMode'             => $this->settings->get_environment(),
 			'amount'              => $amount,
-			'enabledPlans'        => $this->settings->enabled_pnx_plans(),
+			'enabledPlans'        => $this->settings->get_enabled_plans_settings(),
 			'amountQuerySelector' => $amount_query_selector,
 			'jqueryUpdateEvent'   => $jquery_update_event,
 			'firstRender'         => true,

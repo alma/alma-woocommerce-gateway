@@ -211,21 +211,21 @@ class Alma_WC_Settings {
 	 *
 	 * @return bool
 	 */
-	private function is_pnx_enabled( $key ) {
+	private function is_plan_enabled( $key ) {
 		return 'yes' === $this->__get( "enabled_${key}" );
 	}
 
 	/**
-	 * Get enabled pnx plans list.
+	 * Get enabled plans and configuration summary stored in settings for each enabled plan.
 	 *
-	 * @return array
+	 * @return array containing arrays with plans configurations.
 	 */
-	public function enabled_pnx_plans() {
-		$pnx_list = array();
+	public function get_enabled_plans_settings() {
+		$plans = array();
 
-		foreach ( $this->get_allowed_plan_keys() as $key ) {
-			if ( $this->is_pnx_enabled( $key ) ) {
-				$pnx_list[] = array(
+		foreach ( $this->get_allowed_plans_keys() as $key ) {
+			if ( $this->is_plan_enabled( $key ) ) {
+				$plans[ $key ] = array(
 					'installments_count' => $this->get_installments_count( $key ),
 					'min_amount'         => $this->get_min_amount( $key ),
 					'max_amount'         => $this->get_max_amount( $key ),
@@ -235,7 +235,7 @@ class Alma_WC_Settings {
 			}
 		}
 
-		return $pnx_list;
+		return $plans;
 	}
 
 	/**
@@ -267,17 +267,16 @@ class Alma_WC_Settings {
 	 *
 	 * @return int[]
 	 */
-	public function get_eligible_installments( $amount ) {
-		$enabled_plans         = $this->enabled_pnx_plans();
-		$eligible_installments = array();
+	public function get_eligible_plans_keys( $amount ) {
+		$eligible_plans = array();
 
-		foreach ( $enabled_plans as $plan ) {
+		foreach ( $this->get_enabled_plans_settings() as $key => $plan ) {
 			if ( $amount >= $plan['min_amount'] && $amount <= $plan['max_amount'] ) {
-				$eligible_installments[] = $plan['installments_count'];
+				$eligible_plans[] = $key;
 			}
 		}
 
-		return $eligible_installments;
+		return $eligible_plans;
 	}
 
 	/**
@@ -320,6 +319,7 @@ class Alma_WC_Settings {
 	 * Retrieve allowed fee plans definition from the merchant
 	 *
 	 * @return array<FeePlan>
+	 * @see self::is_allowed_fee_plan
 	 */
 	public function get_allowed_fee_plans() {
 		if ( $this->need_api_key() ) {
@@ -349,11 +349,12 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Get allowed fee plans installment counts
+	 * Get allowed fee plans keys
 	 *
 	 * @return array|string[]
+	 * @see self::get_allowed_fee_plans
 	 */
-	public function get_allowed_plan_keys() {
+	public function get_allowed_plans_keys() {
 		return array_map(
 			function( FeePlan $fee_plan ) {
 				return $fee_plan->getPlanKey();
@@ -363,7 +364,7 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Say if a fee_plan should be displayed or not in settings
+	 * Say if a fee_plan is allowed or not based on Alma fee plans settings & business rules.
 	 *
 	 * @param FeePlan $fee_plan as fee_plan to evaluate.
 	 *
