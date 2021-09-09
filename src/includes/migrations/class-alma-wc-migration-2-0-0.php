@@ -23,21 +23,21 @@ class Alma_WC_Migration_2_0_0 extends Alma_WC_Migrations_Abstract {
 	 * @var array
 	 */
 	private $option_keys = array(
-		'min_amount_2x'  => 'min_amount_general_2_0_0x',
-		'min_amount_3x'  => 'min_amount_general_3_0_0x',
-		'min_amount_4x'  => 'min_amount_general_4_0_0x',
-		'min_amount_10x' => 'min_amount_general_10_0_0x',
-		'min_amount_12x' => 'min_amount_general_12_0_0x',
-		'max_amount_2x'  => 'max_amount_general_2_0_0x',
-		'max_amount_3x'  => 'max_amount_general_3_0_0x',
-		'max_amount_4x'  => 'max_amount_general_4_0_0x',
-		'max_amount_10x' => 'max_amount_general_10_0_0x',
-		'max_amount_12x' => 'max_amount_general_12_0_0x',
-		'enabled_2x'     => 'enabled_general_2_0_0x',
-		'enabled_3x'     => 'enabled_general_3_0_0x',
-		'enabled_4x'     => 'enabled_general_4_0_0x',
-		'enabled_10x'    => 'enabled_general_10_0_0x',
-		'enabled_12x'    => 'enabled_general_12_0_0x',
+		'min_amount_2x'  => 'min_amount_general_2_0_0',
+		'min_amount_3x'  => 'min_amount_general_3_0_0',
+		'min_amount_4x'  => 'min_amount_general_4_0_0',
+		'min_amount_10x' => 'min_amount_general_10_0_0',
+		'min_amount_12x' => 'min_amount_general_12_0_0',
+		'max_amount_2x'  => 'max_amount_general_2_0_0',
+		'max_amount_3x'  => 'max_amount_general_3_0_0',
+		'max_amount_4x'  => 'max_amount_general_4_0_0',
+		'max_amount_10x' => 'max_amount_general_10_0_0',
+		'max_amount_12x' => 'max_amount_general_12_0_0',
+		'enabled_2x'     => 'enabled_general_2_0_0',
+		'enabled_3x'     => 'enabled_general_3_0_0',
+		'enabled_4x'     => 'enabled_general_4_0_0',
+		'enabled_10x'    => 'enabled_general_10_0_0',
+		'enabled_12x'    => 'enabled_general_12_0_0',
 	);
 
 	/**
