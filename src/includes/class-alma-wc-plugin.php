@@ -90,7 +90,7 @@ class Alma_WC_Plugin {
 	 * - AND add associated shortcodes
 	 */
 	private function init_widget_handlers() {
-		$shortcodes = new Alma_Wc_Shortcodes();
+		$shortcodes = new Alma_WC_Shortcodes();
 
 		$cart_handler = new Alma_WC_Cart_Handler();
 		$shortcodes->init_cart_widget_shortcode( $cart_handler );

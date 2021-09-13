@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class Wc_Alma_Shortcodes
  */
-class Alma_Wc_Shortcodes {
+class Alma_WC_Shortcodes {
 	const CART_SHORTCODE_TAG    = 'alma-cart-eligibility';
 	const PRODUCT_SHORTCODE_TAG = 'alma-product-eligibility';
 
