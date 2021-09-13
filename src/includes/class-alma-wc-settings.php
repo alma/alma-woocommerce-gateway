@@ -281,27 +281,6 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Get eligible installments for cart.
-	 *
-	 * @return int[]
-	 */
-	public function get_eligible_installments_for_cart() {
-		$cart       = new Alma_WC_Model_Cart();
-		$cart_total = $cart->get_total();
-
-		return $this->get_eligible_installments( $cart_total );
-	}
-
-	/**
-	 * Is cart eligible.
-	 *
-	 * @return bool
-	 */
-	public function is_cart_eligible() {
-		return count( $this->get_eligible_installments_for_cart() ) > 0;
-	}
-
-	/**
 	 * Is logging enabled.
 	 *
 	 * @return bool
