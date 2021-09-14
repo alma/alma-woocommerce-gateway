@@ -698,23 +698,41 @@ class Alma_WC_Plugin {
 	}
 
 	/**
-	 * Get eligible installments for cart.
+	 * Get Eligibility / Payment formatted eligible plans definitions for current cart.
 	 *
-	 * @return int[]
+	 * @return array<array>
 	 */
 	public function get_eligible_plans_for_cart() {
-		$cart       = new Alma_WC_Model_Cart();
-		$cart_total = $cart->get_total();
+		$amount = ( new Alma_WC_Model_Cart() )->get_total();
 
-		return $this->settings->get_eligible_plans_keys( $cart_total );
+		return array_values(
+			array_map(
+				function( $plan ) use ( $amount ) {
+					unset( $plan['max_amount'] );
+					unset( $plan['min_amount'] );
+					$plan['purchase_amount'] = $amount;
+					return $plan;
+				},
+				$this->settings->get_eligible_plans_definitions( $amount )
+			)
+		);
 	}
 
 	/**
-	 * Is cart eligible.
+	 * Get eligible plans keys for current cart.
+	 *
+	 * @return array<array>
+	 */
+	public function get_eligible_plans_keys_for_cart() {
+		return $this->settings->get_eligible_plans_keys( ( new Alma_WC_Model_Cart() )->get_total() );
+	}
+
+	/**
+	 * Is current cart eligible.
 	 *
 	 * @return bool
 	 */
 	public function is_cart_eligible() {
-		return count( $this->get_eligible_plans_for_cart() ) > 0;
+		return count( $this->get_eligible_plans_keys_for_cart() ) > 0;
 	}
 }

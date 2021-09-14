@@ -233,7 +233,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	public function payment_fields() {
 		echo wp_kses_post( $this->description );
 
-		$eligible_plans    = alma_wc_plugin()->get_eligible_plans_for_cart();
+		$eligible_plans    = alma_wc_plugin()->get_eligible_plans_keys_for_cart();
 		$default_plan      = self::get_default_plan( $eligible_plans );
 		$is_multiple_plans = count( $eligible_plans ) > 1;
 
@@ -267,7 +267,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			wc_add_notice( '<strong>Installments count</strong> is required.', 'error' );
 			return false;
 		}
-		$allowed_values = array_map( 'strval', alma_wc_plugin()->get_eligible_plans_for_cart() );
+		$allowed_values = array_map( 'strval', alma_wc_plugin()->get_eligible_plans_keys_for_cart() );
 		if ( ! in_array( $_POST['alma_installments_count'], $allowed_values, true ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			wc_add_notice( '<strong>Installments count</strong> is invalid.', 'error' );
 			return false;

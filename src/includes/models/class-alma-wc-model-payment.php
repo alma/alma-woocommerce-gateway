@@ -18,7 +18,6 @@ class Alma_WC_Model_Payment {
 	 * Create Payment data for Alma API request from Woocommerce Cart.
 	 *
 	 * @return array
-	 * @TODO rfct for deferred here
 	 */
 	public static function from_cart() {
 		$cart     = new Alma_WC_Model_Cart();
@@ -26,11 +25,11 @@ class Alma_WC_Model_Payment {
 
 		$data = array(
 			'payment' => array(
-				'purchase_amount'    => $cart->get_total(),
-				'return_url'         => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::CUSTOMER_RETURN ),
-				'ipn_callback_url'   => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::IPN_CALLBACK ),
-				'installments_count' => alma_wc_plugin()->get_eligible_plans_for_cart(),
-				'locale'             => self::provide_payment_locale(),
+				'purchase_amount'  => $cart->get_total(),
+				'return_url'       => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::CUSTOMER_RETURN ),
+				'ipn_callback_url' => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::IPN_CALLBACK ),
+				'queries'          => alma_wc_plugin()->get_eligible_plans_for_cart(),
+				'locale'           => self::provide_payment_locale(),
 			),
 		);
 

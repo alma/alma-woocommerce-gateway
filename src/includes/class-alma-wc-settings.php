@@ -220,9 +220,9 @@ class Alma_WC_Settings {
 	/**
 	 * Get enabled plans and configuration summary stored in settings for each enabled plan.
 	 *
-	 * @return array containing arrays with plans configurations.
+	 * @return array<array> containing arrays with plans configurations.
 	 */
-	public function get_enabled_plans_settings() {
+	public function get_enabled_plans_definitions() {
 		$plans = array();
 
 		foreach ( $this->get_allowed_plans_keys() as $key ) {
@@ -263,22 +263,36 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Get eligible installments for price.
+	 * Get eligible plans definitions for amount.
 	 *
 	 * @param int $amount the amount to pay.
 	 *
-	 * @return int[]
+	 * @return array<array> as eligible plans definitions
+	 */
+	public function get_eligible_plans_definitions( $amount ) {
+		return array_filter(
+			$this->get_enabled_plans_definitions(),
+			function( $plan ) use ( $amount ) {
+				return $this->is_eligible( $plan, $amount );
+			}
+		);
+	}
+
+	/**
+	 * Get eligible plans keys for amount.
+	 *
+	 * @param int $amount the amount to pay.
+	 *
+	 * @return array<string> as eligible plans keys
 	 */
 	public function get_eligible_plans_keys( $amount ) {
-		$eligible_plans = array();
-
-		foreach ( $this->get_enabled_plans_settings() as $key => $plan ) {
-			if ( $amount >= $plan['min_amount'] && $amount <= $plan['max_amount'] ) {
-				$eligible_plans[] = $key;
+		$eligible_keys = array();
+		foreach ( $this->get_enabled_plans_definitions() as $key => $plan ) {
+			if ( $this->is_eligible( $plan, $amount ) ) {
+				$eligible_keys[] = $key;
 			}
 		}
-
-		return $eligible_plans;
+		return $eligible_keys;
 	}
 
 	/**
@@ -321,7 +335,7 @@ class Alma_WC_Settings {
 	 * Retrieve allowed fee plans definition from the merchant
 	 *
 	 * @return array<FeePlan>
-	 * @see self::is_allowed_fee_plan
+	 * @see is_allowed_fee_plan()
 	 */
 	public function get_allowed_fee_plans() {
 		if ( $this->need_api_key() ) {
@@ -354,7 +368,7 @@ class Alma_WC_Settings {
 	 * Get allowed fee plans keys
 	 *
 	 * @return array|string[]
-	 * @see self::get_allowed_fee_plans
+	 * @see get_allowed_fee_plans
 	 */
 	public function get_allowed_plans_keys() {
 		return array_map(
@@ -415,4 +429,17 @@ class Alma_WC_Settings {
 	private function get_installments_count( $key ) {
 		return $this->__get( "installments_count_${key}" );
 	}
+
+	/**
+	 * Check if a plan is eligibile.
+	 *
+	 * @param array $plan Plan definition.
+	 * @param int   $amount Price.
+	 *
+	 * @return bool
+	 */
+	protected function is_eligible( $plan, $amount ) {
+		return $amount >= $plan['min_amount'] && $amount <= $plan['max_amount'];
+	}
+
 }
