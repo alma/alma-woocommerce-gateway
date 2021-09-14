@@ -87,9 +87,10 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Check if 'enabled' & 'min / max amounts' are set & ok according merchant configuration
+	 * Sync & Check if 'enabled' & 'min / max amounts' are set & ok according merchant configuration
+	 * Add installments counts & deferred days / months into settings
 	 */
-	protected function check_fee_plans_settings() {
+	protected function sync_fee_plans_settings() {
 		foreach ( alma_wc_plugin()->settings->get_allowed_fee_plans() as $fee_plan ) {
 			$plan_key           = $fee_plan->getPlanKey();
 			$default_min_amount = $fee_plan->min_purchase_amount;
@@ -107,6 +108,9 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			if ( ! isset( $this->settings[ $enabled_key ] ) ) {
 				$this->settings[ $enabled_key ] = alma_wc_plugin()->settings->default_settings()['selected_fee_plan'] === $plan_key ? 'yes' : 'no';
 			}
+			$this->settings[ "deferred_months_$plan_key" ]    = $fee_plan->getDeferredMonths();
+			$this->settings[ "deferred_days_$plan_key" ]      = $fee_plan->getDeferredDays();
+			$this->settings[ "installments_count_$plan_key" ] = $fee_plan->getInstallmentsCount();
 		}
 
 	}
@@ -185,38 +189,38 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	/**
 	 * Output HTML for a single payment field.
 	 *
-	 * @param int     $installment          Installments count.
-	 * @param boolean $with_radio_button    Include a radio button for plan selection.
-	 * @param boolean $checked              Should the radio button be checked.
+	 * @param string  $plan_key            Plan key.
+	 * @param boolean $has_radio_button    Include a radio button for plan selection.
+	 * @param boolean $is_checked          Should the radio button be checked.
 	 */
-	private function payment_field( $installment, $with_radio_button, $checked ) {
+	private function payment_field( $plan_key, $has_radio_button, $is_checked ) {
 		$plan_class = '.' . self::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS;
-		$plan_id    = '#' . sprintf( self::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $installment );
-		$logo_url   = alma_wc_plugin()->get_asset_url( "images/p${installment}x_logo.svg" );
+		$plan_id    = '#' . sprintf( self::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $plan_key );
+		$logo_url   = alma_wc_plugin()->get_asset_url( "images/${plan_key}_logo.svg" );
 		?>
 		<input
-				type="<?php echo $with_radio_button ? 'radio' : 'hidden'; ?>"
-				value="<?php echo esc_attr( $installment ); ?>"
-				id="alma_installments_count_<?php echo esc_attr( $installment ); ?>"
+				type="<?php echo $has_radio_button ? 'radio' : 'hidden'; ?>"
+				value="<?php echo esc_attr( $plan_key ); ?>"
+				id="alma_installments_count_<?php echo esc_attr( $plan_key ); ?>"
 				name="alma_installments_count"
 
-				<?php if ( $with_radio_button ) : ?>
+				<?php if ( $has_radio_button ) : ?>
 					style="margin-right: 5px;"
-					<?php echo $checked ? 'checked' : ''; ?>
+					<?php echo $is_checked ? 'checked' : ''; ?>
 					onchange="if (this.checked) { jQuery( '<?php echo esc_js( $plan_class ); ?>' ).hide(); jQuery( '<?php echo esc_js( $plan_id ); ?>' ).show() }"
 				<?php endif; ?>
 		>
 		<label
 				class="checkbox"
 				style="margin-right: 10px; display: inline;"
-				for="alma_installments_count_<?php echo esc_attr( $installment ); ?>"
+				for="alma_installments_count_<?php echo esc_attr( $plan_key ); ?>"
 		>
 			<img src="<?php echo esc_attr( $logo_url ); ?>"
 				style="float: unset !important; width: auto !important; height: 30px !important;  border: none !important; vertical-align: middle; display: inline-block;"
 				alt="
 					<?php
 					// translators: %d: number of installments.
-					echo sprintf( esc_html__( '%d installments', 'alma-woocommerce-gateway' ), esc_html( $installment ) );
+					echo sprintf( esc_html__( '%d installments', 'alma-woocommerce-gateway' ), esc_html( $plan_key ) );
 					?>
 					">
 		</label>
@@ -225,17 +229,15 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 	/**
 	 * Custom payment fields.
-	 *
-	 * @TODO rfct for deferred here
 	 */
 	public function payment_fields() {
 		echo wp_kses_post( $this->description );
 
-		$eligible_installments = alma_wc_plugin()->get_eligible_plans_for_cart();
-		$default_installments  = self::get_default_pnx( $eligible_installments );
-		$multiple_plans        = count( $eligible_installments ) > 1;
+		$eligible_plans    = alma_wc_plugin()->get_eligible_plans_for_cart();
+		$default_plan      = self::get_default_plan( $eligible_plans );
+		$is_multiple_plans = count( $eligible_plans ) > 1;
 
-		if ( $multiple_plans ) {
+		if ( $is_multiple_plans ) {
 			?>
 			<p><?php echo esc_html__( 'How many installments do you want to pay?', 'alma-woocommerce-gateway' ); ?><span class="required">*</span></p>
 			<?php
@@ -243,11 +245,11 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		?>
 		<p>
 			<?php
-			foreach ( $eligible_installments as $installment ) {
-				$this->payment_field( $installment, $multiple_plans, $installment === $default_installments );
+			foreach ( $eligible_plans as $plan ) {
+				$this->payment_field( $plan, $is_multiple_plans, $plan === $default_plan );
 			}
 
-			$this->render_payment_plan( $default_installments );
+			$this->render_payment_plan( $default_plan );
 			?>
 		</p>
 		<?php
@@ -369,21 +371,21 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	/**
 	 * Render payment plan with dates.
 	 *
-	 * @param int $default_installments Number of installments.
+	 * @param string $default_plan Plan key.
 	 *
 	 * @return void
 	 */
-	private function render_payment_plan( $default_installments ) {
+	private function render_payment_plan( $default_plan ) {
 		$eligibilities = $this->get_cart_eligibilities();
 		if ( $eligibilities ) {
-			foreach ( $eligibilities as $installments => $plan ) {
+			foreach ( $eligibilities as $key => $plan ) {
 				?>
 				<div
-					id="<?php echo esc_attr( sprintf( self::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $installments ) ); ?>"
+					id="<?php echo esc_attr( sprintf( self::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $key ) ); ?>"
 					class="<?php echo esc_attr( self::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS ); ?>"
 					style="
 						margin: 0 auto;
-						<?php if ( $installments !== $default_installments ) { ?>
+						<?php if ( $key !== $default_plan ) { ?>
 						display: none;
 						<?php	} ?>
 					"
@@ -440,22 +442,21 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Get default pnx according to eligible pnx list.
+	 * Get default plan according to eligible pnx list.
 	 *
-	 * @param int[] $pnx_list the list of eligible pnx.
+	 * @param string[] $plans the list of eligible pnx.
 	 *
-	 * @return int|null
+	 * @return string|null
 	 */
-	private static function get_default_pnx( $pnx_list ) {
-		if ( ! count( $pnx_list ) ) {
+	private static function get_default_plan( $plans ) {
+		if ( ! count( $plans ) ) {
 			return null;
 		}
-
-		if ( in_array( 3, $pnx_list, true ) ) {
-			return 3;
+		if ( in_array( Alma_WC_Settings::DEFAULT_FEE_PLAN, $plans, true ) ) {
+			return Alma_WC_Settings::DEFAULT_FEE_PLAN;
 		}
 
-		return end( $pnx_list );
+		return end( $plans );
 	}
 
 	/**
@@ -609,7 +610,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			alma_wc_plugin()->handle_settings_exception( $e );
 			return;
 		}
-		$this->check_fee_plans_settings();
+		$this->sync_fee_plans_settings();
 
 		$this->disable_unavailable_fee_plans_config();
 	}

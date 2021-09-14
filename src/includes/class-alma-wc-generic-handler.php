@@ -121,7 +121,7 @@ class Alma_WC_Generic_Handler {
 			'merchantId'          => $merchant_id,
 			'apiMode'             => $this->settings->get_environment(),
 			'amount'              => $amount,
-			'enabledPlans'        => $this->settings->get_enabled_plans_settings(),
+			'enabledPlans'        => $this->filter_plans_definitions( $this->settings->get_enabled_plans_settings() ),
 			'amountQuerySelector' => $amount_query_selector,
 			'jqueryUpdateEvent'   => $jquery_update_event,
 			'firstRender'         => true,
@@ -163,7 +163,7 @@ class Alma_WC_Generic_Handler {
 	/**
 	 * Check if a given product is excluded.
 	 *
-	 * @param int $product_id Product Id.
+	 * @param int $product_id Product ID.
 	 *
 	 * @return bool
 	 */
@@ -184,5 +184,30 @@ class Alma_WC_Generic_Handler {
 	 */
 	public function get_eligibility_widget_already_rendered_message() {
 		return __( 'Alma "Eligibility Widget" (cart or product) already rendered on this page - Not displaying Alma', 'alma-woocommerce-gateway' );
+	}
+
+	/**
+	 * Filter & format enabled plans to match data-settings.enabledPlans allowed value.
+	 *
+	 * @param array $plans_settings Plans definitions to filter & format.
+	 *
+	 * @return array
+	 */
+	protected function filter_plans_definitions( $plans_settings ) {
+
+		return array_values( // Remove plan_keys from enabled plans definitions.
+			array_filter(
+				$plans_settings,
+				function( $plan_definition ) {
+					if ( ! isset( $plan_definition['installments_count'] ) ) { // Widget does not work fine without installments_count.
+						return false;
+					}
+					if ( 1 === $plan_definition['installments_count'] ) { // Widget does not work fine with p1x and deferred payments.
+						return false;
+					}
+					return true;
+				}
+			)
+		);
 	}
 }
