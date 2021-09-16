@@ -23,7 +23,7 @@ if ( ! class_exists( 'WC_Payment_Gateway' ) ) {
 class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	const GATEWAY_ID = 'alma';
 
-	const ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE = 'alma-payment-plan-table-%d-installments';
+	const ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE = 'alma-payment-plan-table-%s-installments';
 	const ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS   = 'js-alma-payment-plan-table';
 	const AMOUNT_PLAN_KEY_REGEX               = '#^(min|max)_amount_general_[0-9]+_[0-9]+_[0-9]+$#';
 	const ENABLED_PLAN_KEY_REGEX              = '#^enabled_general_([0-9]+_[0-9]+_[0-9]+)$#';
@@ -298,7 +298,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		try {
 			// phpcs:ignore WordPress.Security.NonceVerification
-			$payment = $alma->payments->create( Alma_WC_Model_Payment::from_order( $order_id, intval( $_POST['alma_installments_count'] ) ) );
+			$payment = $alma->payments->create( Alma_WC_Model_Payment::get_payment_payload_from_order( $order_id, intval( $_POST['alma_installments_count'] ) ) );
 		} catch ( RequestError $e ) {
 			$this->logger->error( 'Error while creating payment: ' . $e->getMessage() );
 			wc_add_notice( $error_msg, 'error' );
@@ -431,7 +431,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			}
 
 			try {
-				$this->eligibilities = $alma->payments->eligibility( Alma_WC_Model_Payment::from_cart() );
+				$this->eligibilities = $alma->payments->eligibility( Alma_WC_Model_Payment::get_eligibility_payload_from_cart() );
 			} catch ( RequestError $error ) {
 				$this->logger->log_stack_trace( 'Error while checking payment eligibility: ', $error );
 				return null;

@@ -19,17 +19,16 @@ class Alma_WC_Model_Payment {
 	 *
 	 * @return array
 	 */
-	public static function from_cart() {
-		$cart     = new Alma_WC_Model_Cart();
+	public static function get_payment_payload_from_cart() {
 		$customer = new Alma_WC_Model_Customer();
 
 		$data = array(
-			'payment' => array(
-				'purchase_amount'  => $cart->get_total(),
-				'return_url'       => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::CUSTOMER_RETURN ),
-				'ipn_callback_url' => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::IPN_CALLBACK ),
-				'queries'          => alma_wc_plugin()->get_eligible_plans_for_cart(),
-				'locale'           => self::provide_payment_locale(),
+			'payment' => array_merge(
+				array(
+					'return_url'       => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::CUSTOMER_RETURN ),
+					'ipn_callback_url' => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::IPN_CALLBACK ),
+				),
+				self::get_eligibility_payload_from_cart()
 			),
 		);
 
@@ -49,9 +48,8 @@ class Alma_WC_Model_Payment {
 	 * @param int $installments_count Number of installments.
 	 *
 	 * @return array
-	 * @TODO rfct for deferred here
 	 */
-	public static function from_order( $order_id, $installments_count ) {
+	public static function get_payment_payload_from_order( $order_id, $installments_count ) {
 		try {
 			$order = new Alma_WC_Model_Order( $order_id );
 		} catch ( Exception $e ) {
@@ -107,7 +105,7 @@ class Alma_WC_Model_Payment {
 		}
 
 		// Merge built data on data extracted from Cart to have as much data as possible.
-		return alma_wc_array_merge_recursive( self::from_cart(), $data );
+		return alma_wc_array_merge_recursive( self::get_payment_payload_from_cart(), $data );
 	}
 
 	/**
@@ -133,5 +131,19 @@ class Alma_WC_Model_Payment {
 		$locale = ( substr( get_locale(), 0, 3 ) === 'fr_' ) ? 'fr' : 'en';
 
 		return apply_filters( 'alma_wc_checkout_payment_locale', $locale );
+	}
+
+	/**
+	 * Create Eligibility data for Alma API request from Woocommerce Cart.
+	 *
+	 * @return array Payload to request eligibility v2 endpoint.
+	 */
+	public static function get_eligibility_payload_from_cart() {
+		$cart = new Alma_WC_Model_Cart();
+		return array(
+			'purchase_amount' => $cart->get_total(),
+			'queries'         => alma_wc_plugin()->get_eligible_plans_for_cart(),
+			'locale'          => self::provide_payment_locale(),
+		);
 	}
 }
