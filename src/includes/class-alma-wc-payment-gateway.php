@@ -201,8 +201,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		<input
 				type="<?php echo $has_radio_button ? 'radio' : 'hidden'; ?>"
 				value="<?php echo esc_attr( $plan_key ); ?>"
-				id="alma_installments_count_<?php echo esc_attr( $plan_key ); ?>"
-				name="alma_installments_count"
+				id="alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
+				name="alma_fee_plan"
 
 				<?php if ( $has_radio_button ) : ?>
 					style="margin-right: 5px;"
@@ -213,7 +213,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		<label
 				class="checkbox"
 				style="margin-right: 10px; display: inline;"
-				for="alma_installments_count_<?php echo esc_attr( $plan_key ); ?>"
+				for="alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
 		>
 			<img src="<?php echo esc_attr( $logo_url ); ?>"
 				style="float: unset !important; width: auto !important; height: 30px !important;  border: none !important; vertical-align: middle; display: inline-block;"
@@ -259,16 +259,14 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * Validate payment fields.
 	 *
 	 * @return bool
-	 *
-	 * @TODO rfct for deferred here
 	 */
 	public function validate_fields() {
-		if ( empty( $_POST['alma_installments_count'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+		if ( empty( $_POST['alma_fee_plan'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			wc_add_notice( '<strong>Installments count</strong> is required.', 'error' );
 			return false;
 		}
 		$allowed_values = array_map( 'strval', alma_wc_plugin()->get_eligible_plans_keys_for_cart() );
-		if ( ! in_array( $_POST['alma_installments_count'], $allowed_values, true ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+		if ( ! in_array( $_POST['alma_fee_plan'], $allowed_values, true ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			wc_add_notice( '<strong>Installments count</strong> is invalid.', 'error' );
 			return false;
 		}
@@ -281,8 +279,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @param int $order_id Order ID.
 	 *
 	 * @return array
-	 *
-	 * @TODO rfct for deferred here
 	 */
 	public function process_payment( $order_id ) {
 		$error_msg = __( 'There was an error processing your payment.<br>Please try again or contact us if the problem persists.', 'alma-woocommerce-gateway' );
@@ -295,12 +291,22 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				'result' => 'error',
 			);
 		}
-
 		try {
 			// phpcs:ignore WordPress.Security.NonceVerification
-			$payment = $alma->payments->create( Alma_WC_Model_Payment::get_payment_payload_from_order( $order_id, intval( $_POST['alma_installments_count'] ) ) );
+			$fee_plan_definition = $this->get_definition( $_POST['alma_fee_plan'] );
+		} catch ( Exception $e ) {
+			$this->logger->log_stack_trace( 'Error while creating payment: ', $e );
+			wc_add_notice( $error_msg, 'error' );
+
+			return array( 'result' => 'error' );
+		}
+
+		try {
+			$payment = $alma->payments->create(
+				Alma_WC_Model_Payment::get_payment_payload_from_order( $order_id, $fee_plan_definition )
+			);
 		} catch ( RequestError $e ) {
-			$this->logger->error( 'Error while creating payment: ' . $e->getMessage() );
+			$this->logger->log_stack_trace( 'Error while creating payment: ', $e );
 			wc_add_notice( $error_msg, 'error' );
 
 			return array( 'result' => 'error' );
@@ -656,5 +662,32 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Populate array with plan settings.
+	 *
+	 * @param string $plan_key The plan key.
+	 *
+	 * @return array
+	 *
+	 * @throws Exception If required keys not found.
+	 */
+	private function get_definition( $plan_key ) {
+		$definition = array();
+		if ( ! isset( $this->settings[ "installments_count_$plan_key" ] ) ) {
+			throw new Exception( "installments_count_$plan_key not set" );
+		}
+		if ( ! isset( $this->settings[ "deferred_days_$plan_key" ] ) ) {
+			throw new Exception( "deferred_days_$plan_key not set" );
+		}
+		if ( ! isset( $this->settings[ "deferred_months_$plan_key" ] ) ) {
+			throw new Exception( "deferred_months_$plan_key not set" );
+		}
+		$definition['installments_count'] = $this->settings[ "installments_count_$plan_key" ];
+		$definition['deferred_days']      = $this->settings[ "deferred_days_$plan_key" ];
+		$definition['deferred_months']    = $this->settings[ "deferred_months_$plan_key" ];
+
+		return $definition;
 	}
 }
