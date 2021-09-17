@@ -422,6 +422,8 @@ class Alma_WC_Plugin {
 	 */
 	private function run() {
 
+		add_filter( 'woocommerce_payment_gateways', array( $this, 'add_payment_gateway' ) );
+
 		if ( ! $this->settings->is_enabled() ) {
 			return;
 		}
@@ -434,8 +436,6 @@ class Alma_WC_Plugin {
 		}
 
 		$this->init_widget_handlers();
-
-		add_filter( 'woocommerce_payment_gateways', array( $this, 'payment_gateways' ) );
 	}
 
 	/**
@@ -497,14 +497,14 @@ class Alma_WC_Plugin {
 	/**
 	 * Register Alma payment gateway.
 	 *
-	 * @param string[] $methods Payment methods.
+	 * @param string[] $gateways Payment gateways.
 	 *
 	 * @return string[]
 	 */
-	public function payment_gateways( $methods ) {
-		$methods[] = 'Alma_WC_Payment_Gateway';
+	public function add_payment_gateway( $gateways ) {
+		$gateways[] = 'Alma_WC_Payment_Gateway';
 
-		return $methods;
+		return $gateways;
 	}
 
 	/**
