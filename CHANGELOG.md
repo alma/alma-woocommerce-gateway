@@ -1,10 +1,10 @@
 Changelog
 =========
 
-v2.x.x
+v2.0.0
 ------
 
-* (WIP) Add Paylater feature (Eligibility V2)
+* Add inline Pay Later (Eligibility V2)
 * Add dedicated DB migrations processor
 * Load & update fee-plans dynamically from ALMA dashboard config
 * Add autoloader

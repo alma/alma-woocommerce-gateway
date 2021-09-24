@@ -5,7 +5,7 @@ Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo c
 Requires at least: 4.4
 Tested up to: 5.7
 Requires PHP: 5.6
-Stable tag: 1.3.1
+Stable tag: 2.0.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -83,10 +83,10 @@ To build extension for production run `./bin/build.sh`
 
 == Changelog ==
 
-v2.x.x
-------
+= 2.0.0 =
+---------
 
-* (WIP) Add Paylater feature (Eligibility V2)
+* Add inline Pay Later (Eligibility V2)
 * Add dedicated DB migrations processor
 * Load & update fee-plans dynamically from ALMA dashboard config
 * Add autoloader
