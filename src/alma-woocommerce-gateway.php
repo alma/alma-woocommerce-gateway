@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Alma Monthly Payments for WooCommerce
- * Plugin URI: https://www.getalma.eu/wordpress
+ * Plugin URI: https://docs.getalma.eu/docs/woocommerce
  * Description: Easily provide monthly payments to your customers, risk-free!
  * Version: 2.0.0
  * Author: Alma

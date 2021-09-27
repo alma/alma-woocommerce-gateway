@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Alma Gateway\n"
 "POT-Creation-Date: 2021-09-24 15:49+0200\n"
-"PO-Revision-Date: 2021-09-24 16:01+0200\n"
+"PO-Revision-Date: 2021-09-27 17:31+0200\n"
 "Last-Translator: syjust <sy.just@gmail.com>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -526,8 +526,8 @@ msgid "Alma Monthly Payments for WooCommerce"
 msgstr "Alma - Paiement en plusieurs fois pour WooCommerce"
 
 #. Plugin URI of the plugin/theme
-msgid "https://www.getalma.eu/wordpress"
-msgstr "https://www.getalma.eu/wordpress"
+msgid "https://docs.getalma.eu/docs/woocommerce"
+msgstr "https://docs.getalma.eu/docs/woocommerce"
 
 #. Author of the plugin/theme
 msgid "Alma"
