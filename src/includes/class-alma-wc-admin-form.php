@@ -73,6 +73,7 @@ class Alma_WC_Admin_Form {
 		$merchant_fee_variable = $fee_plan->merchant_fee_variable / 100; // percent.
 		$customer_fee_fixed    = alma_wc_price_from_cents( $fee_plan->customer_fee_fixed );
 		$customer_fee_variable = $fee_plan->customer_fee_variable / 100; // percent.
+		$customer_lending_rate = $fee_plan->customer_lending_rate / 100; // percent.
 		$default_enabled       = $default_settings['selected_fee_plan'] === $key ? 'yes' : 'no';
 		$custom_attributes     = array(
 			'required' => 'required',
@@ -110,7 +111,7 @@ class Alma_WC_Admin_Form {
 			$section_key    => array(
 				'title'             => $section_title,
 				'type'              => 'title',
-				'description'       => $this->generate_fee_plan_description( $fee_plan, $default_min_amount, $default_max_amount, $merchant_fee_fixed, $merchant_fee_variable, $customer_fee_fixed, $customer_fee_variable ),
+				'description'       => $this->generate_fee_plan_description( $fee_plan, $default_min_amount, $default_max_amount, $merchant_fee_fixed, $merchant_fee_variable, $customer_fee_fixed, $customer_fee_variable, $customer_lending_rate ),
 				'class'             => $class,
 				'description_class' => $class,
 				'table_class'       => $class,
@@ -382,6 +383,7 @@ class Alma_WC_Admin_Form {
 	 * @param float   $merchant_fee_variable Merchant fee variable.
 	 * @param float   $customer_fee_fixed Customer fee fixed.
 	 * @param float   $customer_fee_variable Customer fee variable.
+	 * @param float   $customer_lending_rate Customer lending rate.
 	 *
 	 * @return string
 	 */
@@ -392,7 +394,8 @@ class Alma_WC_Admin_Form {
 		$merchant_fee_fixed,
 		$merchant_fee_variable,
 		$customer_fee_fixed,
-		$customer_fee_variable
+		$customer_fee_variable,
+		$customer_lending_rate
 	) {
 		$you_can_offer = '';
 		if ( $fee_plan->isPnXOnly() ) {
@@ -426,11 +429,12 @@ class Alma_WC_Admin_Form {
 				);
 			}
 		}
-		$fees_applied  = __( 'Fees applied to each transaction for this plan:', 'alma-woocommerce-gateway' );
-		$you_pay       = $this->generate_fee_to_pay_description( __( 'You pay:', 'alma-woocommerce-gateway' ), $merchant_fee_variable, $merchant_fee_fixed );
-		$customer_pays = $this->generate_fee_to_pay_description( __( 'Customer pays:', 'alma-woocommerce-gateway' ), $customer_fee_variable, $customer_fee_fixed );
+		$fees_applied          = __( 'Fees applied to each transaction for this plan:', 'alma-woocommerce-gateway' );
+		$you_pay               = $this->generate_fee_to_pay_description( __( 'You pay:', 'alma-woocommerce-gateway' ), $merchant_fee_variable, $merchant_fee_fixed );
+		$customer_pays         = $this->generate_fee_to_pay_description( __( 'Customer pays:', 'alma-woocommerce-gateway' ), $customer_fee_variable, $customer_fee_fixed );
+		$customer_lending_pays = $this->generate_fee_to_pay_description( __( 'Customer lending rate:', 'alma-woocommerce-gateway' ), $customer_lending_rate, 0 );
 
-		return sprintf( '<p>%s<br>%s %s %s</p>', $you_can_offer, $fees_applied, $you_pay, $customer_pays );
+		return sprintf( '<p>%s<br>%s %s %s %s</p>', $you_can_offer, $fees_applied, $you_pay, $customer_pays, $customer_lending_pays );
 	}
 
 	/**
