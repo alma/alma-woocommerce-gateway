@@ -415,7 +415,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 							<?php	} ?>
 						">
 							<span><?php echo esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) ); ?></span>
-							<span>€<?php echo esc_html( alma_wc_price_from_cents( $step['purchase_amount'] + $step['customer_fee'] ) ); ?></span>
+							<span>€<?php echo esc_html( alma_wc_price_from_cents( $step['total_amount'] ) ); ?></span>
 						</p>
 					<?php } ?>
 				</div>
