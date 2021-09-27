@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0dbc6d7741c016504081f3534e6361f6",
+    "content-hash": "7c85bace8669a820c5fc8dbb22fb61be",
     "packages": [
         {
             "name": "alma/alma-php-client",
-            "version": "dev-feature/payment-plan-enhancement",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alma/alma-php-client.git",
-                "reference": "9dbccbbb8b2febc78f518b00019f105c5f80dc03"
+                "reference": "ba2ad85ea8acde83acb7f714e8310043bb15ad15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alma/alma-php-client/zipball/9dbccbbb8b2febc78f518b00019f105c5f80dc03",
-                "reference": "9dbccbbb8b2febc78f518b00019f105c5f80dc03",
+                "url": "https://api.github.com/repos/alma/alma-php-client/zipball/ba2ad85ea8acde83acb7f714e8310043bb15ad15",
+                "reference": "ba2ad85ea8acde83acb7f714e8310043bb15ad15",
                 "shasum": ""
             },
             "require": {
@@ -54,9 +54,9 @@
             "description": "PHP API client for the Alma payments API",
             "support": {
                 "issues": "https://github.com/alma/alma-php-client/issues",
-                "source": "https://github.com/alma/alma-php-client/tree/feature/payment-plan-enhancement"
+                "source": "https://github.com/alma/alma-php-client/tree/v1.3.0"
             },
-            "time": "2021-09-09T07:36:33+00:00"
+            "time": "2021-09-27T12:07:35+00:00"
         },
         {
             "name": "psr/log",
@@ -940,9 +940,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "alma/alma-php-client": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
