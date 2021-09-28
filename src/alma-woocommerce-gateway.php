@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Alma Monthly Payments for WooCommerce
+ * Plugin Name: Alma - 2x 3x 4x, D+15 or D+30 for WooCommerce - Payment in instalments and deferred
  * Plugin URI: https://docs.getalma.eu/docs/woocommerce
  * Description: Easily provide monthly payments to your customers, risk-free!
  * Version: 2.0.0

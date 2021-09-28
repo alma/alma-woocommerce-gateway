@@ -1,6 +1,6 @@
-=== Alma Monthly Payments for WooCommerce ===
+=== Alma - 2x 3x 4x, D+15 or D+30 for WooCommerce - Payment in instalments and deferred ===
 
-Contributors: almapayments, olance
+Contributors: almapayments, olance, syjust
 Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo commerce, alma, monthly payments, split payments
 Requires at least: 4.4
 Tested up to: 5.7
