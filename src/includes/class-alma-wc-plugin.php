@@ -726,7 +726,7 @@ class Alma_WC_Plugin {
 	/**
 	 * Get eligible plans keys for current cart.
 	 *
-	 * @return array<array>
+	 * @return array<string>
 	 */
 	public function get_eligible_plans_keys_for_cart() {
 		return $this->settings->get_eligible_plans_keys( ( new Alma_WC_Model_Cart() )->get_total() );

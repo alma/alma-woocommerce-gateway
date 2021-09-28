@@ -48,8 +48,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	public function __construct() {
 		$this->id                 = self::GATEWAY_ID;
 		$this->has_fields         = true;
-		$this->method_title       = __( 'Alma monthly payments', 'alma-woocommerce-gateway' );
-		$this->method_description = __( 'Easily provide monthly payments to your customers, risk-free!', 'alma-woocommerce-gateway' );
+		$this->method_title       = __( 'Payment in instalments and deferred with Alma - 2x 3x 4x, D+15 or D+30', 'alma-woocommerce-gateway' );
+		$this->method_description = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.', 'alma-woocommerce-gateway' );
 
 		$this->logger = new Alma_WC_Logger();
 
@@ -239,7 +239,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		if ( $is_multiple_plans ) {
 			?>
-			<p><?php echo esc_html__( 'How many installments do you want to pay?', 'alma-woocommerce-gateway' ); ?><span class="required">*</span></p>
+			<p><?php echo esc_html__( 'Choose your payment method', 'alma-woocommerce-gateway' ); ?><span class="required">*</span></p>
 			<?php
 		}
 		?>
