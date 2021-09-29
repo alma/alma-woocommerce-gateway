@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Alma - 2x 3x 4x, D+15 or D+30 for WooCommerce - Payment "
 "in instalments and deferred\n"
-"POT-Creation-Date: 2021-09-28 14:33+0200\n"
-"PO-Revision-Date: 2021-09-28 14:34+0200\n"
+"POT-Creation-Date: 2021-09-30 09:53+0200\n"
+"PO-Revision-Date: 2021-09-30 10:14+0200\n"
 "Last-Translator: syjust <sy.just@gmail.com>\n"
 "Language-Team: Alma\n"
 "Language: fr_FR\n"
@@ -55,7 +55,7 @@ msgstr "→ Paiement différé à J+%d"
 #: includes/class-alma-wc-admin-form.php:100
 #, php-format
 msgid "Enable D+%d-deferred payments with Alma"
-msgstr "→ Activer les paiements différés à J+%d avec Alma"
+msgstr "→ Activer les paiements différés à J+%d avec Alma"
 
 #. translators: %d: number of deferred months.
 #: includes/class-alma-wc-admin-form.php:104
@@ -347,17 +347,17 @@ msgstr ""
 "Boostez vos ventes en installant Alma ! C'est simple et garanti, votre "
 "trésorerie est sécurisée. 0 engagement, 0 abonnement, 0 risque."
 
-#. translators: %d: number of installments.
-#: includes/class-alma-wc-payment-gateway.php:223
+#. translators: %s: plan_key alt image.
+#: includes/class-alma-wc-payment-gateway.php:224
 #, php-format
-msgid "%d installments"
-msgstr "%d fois"
+msgid "%s installments"
+msgstr "Plan de paiement %s"
 
-#: includes/class-alma-wc-payment-gateway.php:242
+#: includes/class-alma-wc-payment-gateway.php:243
 msgid "Choose your payment method"
 msgstr "Choisissez votre mode de paiement"
 
-#: includes/class-alma-wc-payment-gateway.php:284
+#: includes/class-alma-wc-payment-gateway.php:285
 msgid ""
 "There was an error processing your payment.<br>Please try again or contact "
 "us if the problem persists."
@@ -365,7 +365,7 @@ msgstr ""
 "Une erreur est survenue lors du traitement de votre paiement.<br>Réessayez "
 "ou contactez-nous si le problème persiste."
 
-#: includes/class-alma-wc-payment-gateway.php:342
+#: includes/class-alma-wc-payment-gateway.php:343
 msgid ""
 "There was an error when validating your payment.<br>Please try again or "
 "contact us if the problem persists."
@@ -373,11 +373,41 @@ msgstr ""
 "Une erreur est survenue lors de la validation de votre paiement."
 "<br>Réessayez ou contactez-nous si le problème persiste."
 
-#: includes/class-alma-wc-payment-gateway.php:488
+#. translators: %1$s => today_amount (0), %2$s => total_amount, %3$s => i18n formatted due_date.
+#: includes/class-alma-wc-payment-gateway.php:426
+#, php-format
+msgid "%1$s today then %2$s on %3$s"
+msgstr "%1$s aujourd’hui puis %2$s le %3$s"
+
+#: includes/class-alma-wc-payment-gateway.php:449
+msgid "Included fees:"
+msgstr "Dont frais :"
+
+#: includes/class-alma-wc-payment-gateway.php:474
+msgid "Your credit"
+msgstr "Votre crédit"
+
+#: includes/class-alma-wc-payment-gateway.php:483
+msgid "Your cart:"
+msgstr "Votre panier :"
+
+#: includes/class-alma-wc-payment-gateway.php:493
+msgid "Credit cost:"
+msgstr "Coût du crédit :"
+
+#: includes/class-alma-wc-payment-gateway.php:503
+msgid "Annual Interest Rate:"
+msgstr "TAEG fixe :"
+
+#: includes/class-alma-wc-payment-gateway.php:513
+msgid "Total:"
+msgstr "Total :"
+
+#: includes/class-alma-wc-payment-gateway.php:588
 msgid "enabled"
 msgstr "activé"
 
-#: includes/class-alma-wc-payment-gateway.php:491
+#: includes/class-alma-wc-payment-gateway.php:591
 msgid "disabled"
 msgstr "désactivé"
 

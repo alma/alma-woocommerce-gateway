@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Alma - 2x 3x 4x, D+15 or D+30 for WooCommerce - Payment in instalments and deferred\n"
-"POT-Creation-Date: 2021-09-28 14:32+0200\n"
+"POT-Creation-Date: 2021-09-30 09:57+0200\n"
 "PO-Revision-Date: 2021-06-22 13:25+0200\n"
 "Last-Translator: syjust <sy.just@gmail.com>\n"
 "Language-Team: Alma\n"
@@ -280,29 +280,59 @@ msgstr ""
 msgid "Install Alma and boost your sales! It's simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk."
 msgstr ""
 
-#. translators: %d: number of installments.
-#: includes/class-alma-wc-payment-gateway.php:223
+#. translators: %s: plan_key alt image.
+#: includes/class-alma-wc-payment-gateway.php:224
 #, php-format
-msgid "%d installments"
+msgid "%s installments"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:242
+#: includes/class-alma-wc-payment-gateway.php:243
 msgid "Choose your payment method"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:284
+#: includes/class-alma-wc-payment-gateway.php:285
 msgid "There was an error processing your payment.<br>Please try again or contact us if the problem persists."
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:342
+#: includes/class-alma-wc-payment-gateway.php:343
 msgid "There was an error when validating your payment.<br>Please try again or contact us if the problem persists."
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:488
+#. translators: %1$s => today_amount (0), %2$s => total_amount, %3$s => i18n formatted due_date.
+#: includes/class-alma-wc-payment-gateway.php:426
+#, php-format
+msgid "%1$s today then %2$s on %3$s"
+msgstr ""
+
+#: includes/class-alma-wc-payment-gateway.php:449
+msgid "Included fees:"
+msgstr ""
+
+#: includes/class-alma-wc-payment-gateway.php:474
+msgid "Your credit"
+msgstr ""
+
+#: includes/class-alma-wc-payment-gateway.php:483
+msgid "Your cart:"
+msgstr ""
+
+#: includes/class-alma-wc-payment-gateway.php:493
+msgid "Credit cost:"
+msgstr ""
+
+#: includes/class-alma-wc-payment-gateway.php:503
+msgid "Annual Interest Rate:"
+msgstr ""
+
+#: includes/class-alma-wc-payment-gateway.php:513
+msgid "Total:"
+msgstr ""
+
+#: includes/class-alma-wc-payment-gateway.php:588
 msgid "enabled"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:491
+#: includes/class-alma-wc-payment-gateway.php:591
 msgid "disabled"
 msgstr ""
 

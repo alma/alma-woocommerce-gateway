@@ -219,8 +219,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				style="float: unset !important; width: auto !important; height: 30px !important;  border: none !important; vertical-align: middle; display: inline-block;"
 				alt="
 					<?php
-					// translators: %d: number of installments.
-					echo sprintf( esc_html__( '%d installments', 'alma-woocommerce-gateway' ), esc_html( $plan_key ) );
+					// translators: %s: plan_key alt image.
+					echo esc_html( sprintf( __( '%s installments', 'alma-woocommerce-gateway' ), $plan_key ) );
 					?>
 					">
 		</label>
@@ -293,7 +293,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		}
 		try {
 			// phpcs:ignore WordPress.Security.NonceVerification
-			$fee_plan_definition = $this->get_definition( $_POST['alma_fee_plan'] );
+			$fee_plan_definition = $this->get_fee_plan_definition( $_POST['alma_fee_plan'] );
 		} catch ( Exception $e ) {
 			$this->logger->log_stack_trace( 'Error while creating payment: ', $e );
 			wc_add_notice( $error_msg, 'error' );
@@ -384,7 +384,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	private function render_payment_plan( $default_plan ) {
 		$eligibilities = $this->get_cart_eligibilities();
 		if ( $eligibilities ) {
-			foreach ( $eligibilities as $key => $plan ) {
+			foreach ( $eligibilities as $key => $eligibility ) {
 				?>
 				<div
 					id="<?php echo esc_attr( sprintf( self::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $key ) ); ?>"
@@ -397,9 +397,10 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 					"
 				>
 					<?php
-					$plans_count = count( $plan->paymentPlan ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName
-					$plan_index  = 0;
-					foreach ( $plan->paymentPlan as $step ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName
+					$plans_count = count( $eligibility->paymentPlan ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName
+					$plan_index  = 1;
+					foreach ( $eligibility->paymentPlan as $step ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName
+						$display_customer_fee = 1 === $plan_index && $eligibility->getInstallmentsCount() <= 4 && $step['customer_fee'] > 0;
 						?>
 						<!--suppress CssReplaceWithShorthandSafely -->
 						<p style="
@@ -407,17 +408,112 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 							justify-content: space-between;
 							padding: 4px 0;
 							margin: 4px 0;
-							<?php if ( ++$plan_index !== $plans_count ) { ?>
-								border-bottom: 1px solid lightgrey;
+							<?php if ( $plan_index === $plans_count || $display_customer_fee ) { ?>
+									padding-bottom: 0;
+									margin-bottom: 0;
 							<?php	} else { ?>
-								padding-bottom: 0;
-								margin-bottom: 0;
+									border-bottom: 1px solid lightgrey;
 							<?php	} ?>
 						">
-							<span><?php echo esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) ); ?></span>
-							<span>€<?php echo esc_html( alma_wc_price_from_cents( $step['total_amount'] ) ); ?></span>
+							<?php if ( $eligibility->isPayLaterOnly() ) { ?>
+								<?php $justify_fees = 'left'; ?>
+								<span>
+									<?php
+									echo wp_kses_post(
+										sprintf(
+											// translators: %1$s => today_amount (0), %2$s => total_amount, %3$s => i18n formatted due_date.
+											__( '%1$s today then %2$s on %3$s', 'alma-woocommerce-gateway' ),
+											alma_wc_format_price_from_cents( 0 ),
+											alma_wc_format_price_from_cents( $step['total_amount'] ),
+											date_i18n( get_option( 'date_format' ), $step['due_date'] )
+										)
+									);
+									?>
+								</span>
+							<?php } else { ?>
+								<?php $justify_fees = 'right'; ?>
+								<span><?php echo esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) ); ?></span>
+								<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $step['total_amount'] ) ); ?></span>
+							<?php } ?>
+							</p>
+							<?php if ( $display_customer_fee ) { ?>
+							<p style="
+								display: flex;
+								justify-content: <?php echo esc_attr( $justify_fees ); ?>;
+								padding: 0 0 4px 0;
+								margin: 0 0 4px 0;
+								border-bottom: 1px solid lightgrey;
+								font-size: 1.3rem;
+							">
+								<span><?php echo esc_html__( 'Included fees:', 'alma-woocommerce-gateway' ); ?> <?php echo wp_kses_post( alma_wc_format_price_from_cents( $step['customer_fee'] ) ); ?></span>
+							</p>
+						<?php } ?>
+						<?php
+						$plan_index++;
+					} // end foreach
+					if ( $eligibility->getInstallmentsCount() >= 5 ) {
+						$cart = new Alma_WC_Model_Cart();
+						?>
+						<p style="
+							display: flex;
+							justify-content: left;
+							padding: 20px 0 4px 0;
+							margin: 4px 0;
+							font-size: 1.8rem;
+							font-weight: bold;
+							border-top: 1px solid lightgrey;
+						">
+							<span><?php echo esc_html__( 'Your credit', 'alma-woocommerce-gateway' ); ?></span>
 						</p>
-					<?php } ?>
+						<p style="
+								display: flex;
+								justify-content: space-between;
+								padding: 4px 0;
+								margin: 4px 0;
+								border-bottom: 1px solid lightgrey;
+							">
+							<span><?php echo esc_html__( 'Your cart:', 'alma-woocommerce-gateway' ); ?></span>
+							<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $cart->get_total() ) ); ?></span>
+						</p>
+						<p style="
+								display: flex;
+								justify-content: space-between;
+								padding: 4px 0;
+								margin: 4px 0;
+								border-bottom: 1px solid lightgrey;
+							">
+							<span><?php echo esc_html__( 'Credit cost:', 'alma-woocommerce-gateway' ); ?></span>
+							<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $eligibility->customerTotalCostAmount ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName ?></span>
+						</p>
+						<?php
+						$annual_interest_rate = $eligibility->getAnnualInterestRate();
+						if ( ! is_null( $annual_interest_rate ) && $annual_interest_rate > 0 ) {
+							?>
+							<p style="
+								display: flex;
+								justify-content: space-between;
+								padding: 4px 0;
+								margin: 4px 0;
+								border-bottom: 1px solid lightgrey;
+							">
+								<span><?php echo esc_html__( 'Annual Interest Rate:', 'alma-woocommerce-gateway' ); ?></span>
+								<span><?php echo wp_kses_post( alma_wc_format_percent_from_bps( $annual_interest_rate ) ); ?></span>
+							</p>
+						<?php } ?>
+						<p style="
+								display: flex;
+								justify-content: space-between;
+								padding: 4px 0 0 0;
+								margin: 4px 0 0 0;
+								font-weight: bold;
+							">
+							<span><?php echo esc_html__( 'Total:', 'alma-woocommerce-gateway' ); ?></span>
+							<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $eligibility->getCustomerTotalCostAmount() + $cart->get_total() ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName ?></span>
+						</p>
+
+							<?php
+					}
+					?>
 				</div>
 				<?php
 			}
@@ -427,7 +523,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	/**
 	 * Get eligibilities from cart.
 	 *
-	 * @return array<int,Eligibility>|null
+	 * @return array<string,Eligibility>|null
 	 */
 	private function get_cart_eligibilities() {
 		if ( ! $this->eligibilities ) {
@@ -673,7 +769,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 *
 	 * @throws Exception If required keys not found.
 	 */
-	private function get_definition( $plan_key ) {
+	private function get_fee_plan_definition( $plan_key ) {
 		$definition = array();
 		if ( ! isset( $this->settings[ "installments_count_$plan_key" ] ) ) {
 			throw new Exception( "installments_count_$plan_key not set" );
