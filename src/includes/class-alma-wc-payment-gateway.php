@@ -233,7 +233,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	public function payment_fields() {
 		echo wp_kses_post( $this->description );
 
-		$eligible_plans    = alma_wc_plugin()->get_eligible_plans_keys_for_cart();
+		$eligible_plans = alma_wc_plugin()->get_eligible_plans_keys_for_cart();
+		usort( $eligible_plans, 'alma_wc_usort_plans_keys' );
 		$default_plan      = self::get_default_plan( $eligible_plans );
 		$is_multiple_plans = count( $eligible_plans ) > 1;
 
