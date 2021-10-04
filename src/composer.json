@@ -26,8 +26,8 @@
         }
     ],
     "scripts": {
-        "phpcs": "phpcs --standard=phpcs.xml .",
-        "phpcbf": "phpcbf --standard=phpcs.xml ."
+        "phpcs": "vendor/bin/phpcs --standard=phpcs.xml .",
+        "phpcbf": "vendor/bin/phpcbf --standard=phpcs.xml ."
     },
     "config": {
         "sort-packages": true
