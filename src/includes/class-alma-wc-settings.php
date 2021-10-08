@@ -214,7 +214,7 @@ class Alma_WC_Settings {
 	 * @return bool
 	 */
 	private function is_plan_enabled( $key ) {
-		return 'yes' === $this->__get( "enabled_${key}" );
+		return 'yes' === $this->__get( "enabled_$key" );
 	}
 
 	/**
@@ -248,7 +248,7 @@ class Alma_WC_Settings {
 	 * @return int
 	 */
 	public function get_min_amount( $key ) {
-		return $this->__get( "min_amount_${key}" );
+		return $this->__get( "min_amount_$key" );
 	}
 
 	/**
@@ -259,7 +259,7 @@ class Alma_WC_Settings {
 	 * @return int
 	 */
 	public function get_max_amount( $key ) {
-		return $this->__get( "max_amount_${key}" );
+		return $this->__get( "max_amount_$key" );
 	}
 
 	/**
@@ -267,7 +267,7 @@ class Alma_WC_Settings {
 	 *
 	 * @param int $amount the amount to pay.
 	 *
-	 * @return array<array> as eligible plans definitions
+	 * @return array<array> As eligible plans definitions.
 	 */
 	public function get_eligible_plans_definitions( $amount ) {
 		return array_filter(
@@ -405,7 +405,7 @@ class Alma_WC_Settings {
 	 * @return int
 	 */
 	private function get_deferred_days( $key ) {
-		return $this->__get( "deferred_days_${key}" );
+		return $this->__get( "deferred_days_$key" );
 	}
 
 	/**
@@ -416,7 +416,7 @@ class Alma_WC_Settings {
 	 * @return int
 	 */
 	private function get_deferred_months( $key ) {
-		return $this->__get( "deferred_months_${key}" );
+		return $this->__get( "deferred_months_$key" );
 	}
 
 	/**
@@ -427,11 +427,11 @@ class Alma_WC_Settings {
 	 * @return int
 	 */
 	private function get_installments_count( $key ) {
-		return $this->__get( "installments_count_${key}" );
+		return $this->__get( "installments_count_$key" );
 	}
 
 	/**
-	 * Check if a plan is eligibile.
+	 * Check if a plan is eligible.
 	 *
 	 * @param array $plan Plan definition.
 	 * @param int   $amount Price.
