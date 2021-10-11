@@ -141,12 +141,20 @@ class Alma_WC_Model_Payment {
 	 * @return array Payload to request eligibility v2 endpoint.
 	 */
 	public static function get_eligibility_payload_from_cart() {
-		$cart = new Alma_WC_Model_Cart();
+		$cart     = new Alma_WC_Model_Cart();
+		$customer = new Alma_WC_Model_Customer();
 
-		return array(
+		$data = array(
 			'purchase_amount' => $cart->get_total(),
 			'queries'         => alma_wc_plugin()->get_eligible_plans_for_cart(),
 			'locale'          => self::provide_payment_locale(),
 		);
+
+		if ( $customer->has_data() ) {
+			$data['billing_address']  = array( 'country' => $customer->get_billing_address()['country'] );
+			$data['shipping_address'] = array( 'country' => $customer->get_shipping_address()['country'] );
+		}
+
+		return $data;
 	}
 }

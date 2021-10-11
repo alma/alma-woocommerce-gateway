@@ -111,10 +111,11 @@ class Alma_WC_Model_Customer {
 	 */
 	public function get_data() {
 		if ( $this->legacy ) {
+
 			return $this->get_legacy_data();
-		} else {
-			return $this->latest_get_data();
 		}
+
+		return $this->latest_get_data();
 	}
 
 	/**
@@ -135,19 +136,19 @@ class Alma_WC_Model_Customer {
 				'city'        => $customer->get_city(),
 				'country'     => $customer->get_country(),
 			);
-		} else {
-			return array(
-				'first_name'  => $this->customer->get_billing_first_name(),
-				'last_name'   => $this->customer->get_billing_last_name(),
-				'line1'       => $this->customer->get_billing_address(),
-				'line2'       => $this->customer->get_billing_address_2(),
-				'postal_code' => $this->customer->get_billing_postcode(),
-				'city'        => $this->customer->get_billing_city(),
-				'country'     => $this->customer->get_billing_country(),
-				'email'       => $this->customer->get_billing_email(),
-				'phone'       => $this->customer->get_billing_phone(),
-			);
 		}
+
+		return array(
+			'first_name'  => $this->customer->get_billing_first_name(),
+			'last_name'   => $this->customer->get_billing_last_name(),
+			'line1'       => $this->customer->get_billing_address(),
+			'line2'       => $this->customer->get_billing_address_2(),
+			'postal_code' => $this->customer->get_billing_postcode(),
+			'city'        => $this->customer->get_billing_city(),
+			'country'     => $this->customer->get_billing_country(),
+			'email'       => $this->customer->get_billing_email(),
+			'phone'       => $this->customer->get_billing_phone(),
+		);
 	}
 
 	/**
