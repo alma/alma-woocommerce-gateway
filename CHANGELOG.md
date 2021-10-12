@@ -1,6 +1,13 @@
 Changelog
 =========
 
+v2.1.0
+------
+
+* [i18n] allow plugin to works with all locales
+* [i18n] add locale & advanced address fields on payment creation
+* [i18n] add customer addresses information to check payment plans on checkout
+
 v2.0.0
 ------
 
