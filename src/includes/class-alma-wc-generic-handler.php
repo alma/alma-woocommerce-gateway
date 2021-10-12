@@ -72,7 +72,7 @@ class Alma_WC_Generic_Handler {
 			return false;
 		}
 
-		if ( ! alma_wc_plugin()->check_locale() || ! alma_wc_plugin()->check_currency() ) {
+		if ( ! alma_wc_plugin()->check_currency() ) {
 			return false;
 		}
 

@@ -28,7 +28,7 @@ class Alma_WC_Model_Payment {
 					'return_url'       => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::CUSTOMER_RETURN ),
 					'ipn_callback_url' => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::IPN_CALLBACK ),
 					'purchase_amount'  => $cart->get_total(),
-					'locale'           => self::provide_payment_locale(),
+					'locale'           => apply_filters( 'alma_wc_checkout_payment_locale', get_locale() ),
 				),
 		);
 
@@ -125,17 +125,6 @@ class Alma_WC_Model_Payment {
 	}
 
 	/**
-	 * Check if website locale is supported else return fallback one
-	 *
-	 * @return string
-	 */
-	private static function provide_payment_locale() {
-		$locale = ( substr( get_locale(), 0, 3 ) === 'fr_' ) ? 'fr' : 'en';
-
-		return apply_filters( 'alma_wc_checkout_payment_locale', $locale );
-	}
-
-	/**
 	 * Create Eligibility data for Alma API request from Woocommerce Cart.
 	 *
 	 * @return array Payload to request eligibility v2 endpoint.
@@ -147,7 +136,7 @@ class Alma_WC_Model_Payment {
 		$data = array(
 			'purchase_amount' => $cart->get_total(),
 			'queries'         => alma_wc_plugin()->get_eligible_plans_for_cart(),
-			'locale'          => self::provide_payment_locale(),
+			'locale'          => apply_filters( 'alma_wc_eligibility_locale', get_locale() ),
 		);
 
 		if ( $customer->has_data() ) {

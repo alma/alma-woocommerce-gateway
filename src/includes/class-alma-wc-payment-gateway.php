@@ -169,7 +169,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			return parent::is_available();
 		}
 
-		if ( ! alma_wc_plugin()->check_locale() || ! alma_wc_plugin()->check_currency() ) {
+		if ( ! alma_wc_plugin()->check_currency() ) {
 			return false;
 		}
 
