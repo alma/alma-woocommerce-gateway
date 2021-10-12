@@ -29,7 +29,7 @@
 
 	window.AlmaInitWidget = function () {
 		// Make sure settings are up-to-date after a potential cart_totals refresh.
-		const settings = $( paymentPlansContainerId ).data( 'settings' )
+		var settings = $( paymentPlansContainerId ).data( 'settings' )
 		if ( ! settings ) {
 			return;
 		}
@@ -38,17 +38,17 @@
 			return;
 		}
 
-		const merchantId = settings.merchantId;
-		const apiMode    = settings.apiMode;
-		let amount       = parseInt( settings.amount );
+		var merchantId = settings.merchantId;
+		var apiMode    = settings.apiMode;
+		var amount     = parseInt( settings.amount );
 
-		const amountElement = getAmountElement()
+		var amountElement = getAmountElement()
 		if (amountElement) {
 			if (isVisible( amountElement )) {
-				let child = amountElement.firstChild;
+				var child = amountElement.firstChild;
 				while (child) {
 					if (child.nodeType === ( Node.TEXT_NODE || 3 )) {
-						const strAmount = child.data
+						var strAmount = child.data
 							.replace( settings.thousandSeparator, '' )
 							.replace( settings.decimalSeparator, '.' )
 							.replace( /[^\d.]/g, '' )
@@ -96,8 +96,8 @@
 				// or its disappearing when some choices are missing. We first try to find an ongoing animation to
 				// update our widget *after* the animation has taken place, so that it uses up-to-date information/DOM
 				// in AlmaInitWidget.
-				const amountElement = getAmountElement()
-				const timer         = $.timers.find(
+				var amountElement = getAmountElement()
+				var timer         = $.timers.find(
 					function ( t ) {
 						return t.elem === jQuery( amountElement ).closest( '.woocommerce-variation' ).get( 0 )
 					}
