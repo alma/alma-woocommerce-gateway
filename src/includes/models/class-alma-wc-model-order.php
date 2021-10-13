@@ -158,31 +158,35 @@ class Alma_WC_Model_Order {
 	public function get_billing_address() {
 		if ( $this->legacy ) {
 			return array(
-				'first_name'  => $this->order->billing_first_name,
-				'last_name'   => $this->order->billing_last_name,
-				'company'     => $this->order->billing_company,
-				'line1'       => $this->order->billing_address_1,
-				'line2'       => $this->order->billing_address_2,
-				'postal_code' => $this->order->billing_postcode,
-				'city'        => $this->order->billing_city,
-				'country'     => $this->order->billing_country,
-				'email'       => $this->order->billing_email,
-				'phone'       => $this->order->billing_phone,
-			);
-		} else {
-			return array(
-				'first_name'  => $this->order->get_billing_first_name(),
-				'last_name'   => $this->order->get_billing_last_name(),
-				'company'     => $this->order->get_billing_company(),
-				'line1'       => $this->order->get_billing_address_1(),
-				'line2'       => $this->order->get_billing_address_2(),
-				'postal_code' => $this->order->get_billing_postcode(),
-				'city'        => $this->order->get_billing_city(),
-				'country'     => $this->order->get_billing_country(),
-				'email'       => $this->order->get_billing_email(),
-				'phone'       => $this->order->get_billing_phone(),
+				'first_name'         => $this->order->billing_first_name,
+				'last_name'          => $this->order->billing_last_name,
+				'company'            => $this->order->billing_company,
+				'line1'              => $this->order->billing_address_1,
+				'line2'              => $this->order->billing_address_2,
+				'postal_code'        => $this->order->billing_postcode,
+				'city'               => $this->order->billing_city,
+				'country'            => $this->order->billing_country,
+				'county_sublocality' => null,
+				'state_province'     => $this->order->billing_state,
+				'email'              => $this->order->billing_email,
+				'phone'              => $this->order->billing_phone,
 			);
 		}
+
+		return array(
+			'first_name'         => $this->order->get_billing_first_name(),
+			'last_name'          => $this->order->get_billing_last_name(),
+			'company'            => $this->order->get_billing_company(),
+			'line1'              => $this->order->get_billing_address_1(),
+			'line2'              => $this->order->get_billing_address_2(),
+			'postal_code'        => $this->order->get_billing_postcode(),
+			'city'               => $this->order->get_billing_city(),
+			'country'            => $this->order->get_billing_country(),
+			'county_sublocality' => null,
+			'state_province'     => $this->order->get_billing_state(),
+			'email'              => $this->order->get_billing_email(),
+			'phone'              => $this->order->get_billing_phone(),
+		);
 	}
 
 	/**
@@ -193,27 +197,31 @@ class Alma_WC_Model_Order {
 	public function get_shipping_address() {
 		if ( $this->legacy ) {
 			return array(
-				'first_name'  => $this->order->shipping_first_name,
-				'last_name'   => $this->order->shipping_last_name,
-				'company'     => $this->order->shipping_company,
-				'line1'       => $this->order->shipping_address_1,
-				'line2'       => $this->order->shipping_address_2,
-				'postal_code' => $this->order->shipping_postcode,
-				'city'        => $this->order->shipping_city,
-				'country'     => $this->order->shipping_country,
-			);
-		} else {
-			return array(
-				'first_name'  => $this->order->get_shipping_first_name(),
-				'last_name'   => $this->order->get_shipping_last_name(),
-				'company'     => $this->order->get_shipping_company(),
-				'line1'       => $this->order->get_shipping_address_1(),
-				'line2'       => $this->order->get_shipping_address_2(),
-				'postal_code' => $this->order->get_shipping_postcode(),
-				'city'        => $this->order->get_shipping_city(),
-				'country'     => $this->order->get_shipping_country(),
+				'first_name'         => $this->order->shipping_first_name,
+				'last_name'          => $this->order->shipping_last_name,
+				'company'            => $this->order->shipping_company,
+				'line1'              => $this->order->shipping_address_1,
+				'line2'              => $this->order->shipping_address_2,
+				'postal_code'        => $this->order->shipping_postcode,
+				'city'               => $this->order->shipping_city,
+				'county_sublocality' => null,
+				'state_province'     => $this->order->shipping_state,
+				'country'            => $this->order->shipping_country,
 			);
 		}
+
+		return array(
+			'first_name'         => $this->order->get_shipping_first_name(),
+			'last_name'          => $this->order->get_shipping_last_name(),
+			'company'            => $this->order->get_shipping_company(),
+			'line1'              => $this->order->get_shipping_address_1(),
+			'line2'              => $this->order->get_shipping_address_2(),
+			'postal_code'        => $this->order->get_shipping_postcode(),
+			'city'               => $this->order->get_shipping_city(),
+			'county_sublocality' => null,
+			'state_province'     => $this->order->get_shipping_state(),
+			'country'            => $this->order->get_shipping_country(),
+		);
 	}
 
 	/**
