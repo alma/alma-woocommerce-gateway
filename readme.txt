@@ -5,7 +5,7 @@ Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo c
 Requires at least: 4.4
 Tested up to: 5.7
 Requires PHP: 5.6
-Stable tag: 2.0.0
+Stable tag: 2.1.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -89,6 +89,7 @@ To build extension for production run `./bin/build.sh`
 * [i18n] allow plugin to works with all locales
 * [i18n] add locale & advanced address fields on payment creation
 * [i18n] add customer addresses information to check payment plans on checkout
+* [i18n] add nl & es translations
 
 = 2.0.0 =
 ---------
