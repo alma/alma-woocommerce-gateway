@@ -3,6 +3,9 @@ FROM wordpress:latest
 # install composer
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
+# install xdebug
+RUN pecl install xdebug
+
 # install wp-cli
 RUN curl https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -o /usr/local/bin/wp
 RUN chmod +x /usr/local/bin/wp
