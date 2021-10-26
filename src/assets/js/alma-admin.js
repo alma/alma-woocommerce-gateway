@@ -17,6 +17,8 @@ jQuery(document).ready(function() {
     }
 
     /**
+     * Build option classes depending on enabled check / uncheck status
+     *
      * @param {string} optionValue as plan
      * @return {string}
      */
@@ -24,6 +26,9 @@ jQuery(document).ready(function() {
         return jQuery('#woocommerce_alma_enabled_' + optionValue).is(":checked") ? 'alma_option_enabled' : 'alma_option_disabled';
     }
 
+    /**
+     * Decorate / render fee plan select & options
+     */
     jQuery.widget('custom.almaSelectMenu', jQuery.ui.selectmenu, {
         _renderButtonItem: function (item) {
             return jQuery('<span>', {
@@ -48,37 +53,76 @@ jQuery(document).ready(function() {
         }
     });
 
+    /**
+     * Check if ids provided from select_alma_fee_plan_ids are well formatted (number or string only)
+     *
+     * @param id
+     * @return {*|boolean}
+     */
     function validId(id) {
         return ["number", "string"].includes(typeof id) && !!String(id).trim();
     }
 
+    /**
+     * Check if number input is between its min & max attributes
+     *
+     * @param $input
+     * @return {boolean}
+     */
+    function isBetweenMinMax($input) {
+        var val = parseInt($input.val());
+        var min = parseInt($input.attr('min'));
+        var max = parseInt($input.attr('max'));
+        return (val >= min && val <= max)
+    }
+
+    /**
+     * Show plan by planKey with effects
+     *
+     * @param plan
+     */
+    function showPlan(plan) {
+        jQuery('.alma_fee_plan').hide();
+        var $sections = jQuery('.alma_fee_plan_' + plan);
+        $sections.show();
+        $sections.effect('highlight', 1500);
+        $sections.find('b').effect('highlight', 5000);
+    }
+
+    /**
+     * Loop on injected alma select ids
+     */
     select_alma_fee_plan_ids.filter(validId).forEach(function (id) {
         var $select = jQuery('#' + id);
         var previousPlan = $select.val();
+        /**
+         * Display another feePlan on change (only if min max inputs are ok)
+         */
         $select.almaSelectMenu({
             id: id,
             change: function (event) {
                 var plan = $select.val();
-                var $inputMin = jQuery('#woocommerce_alma_min_amount_' + previousPlan);
-                var val = parseInt($inputMin.val());
-                var min = parseInt($inputMin.attr('min'));
-                var max = parseInt($inputMin.attr('max'));
-                if (val < min || val > max) {
-                    $select.val(previousPlan);
-                    event.stopPropagation();
-                    $select.almaSelectMenu('refresh');
-                    jQuery('button[type=submit]').click();
-                    return false;
+                var showingPlan = true;
+                jQuery('#woocommerce_alma_min_amount_' + previousPlan + ', #woocommerce_alma_max_amount_' + previousPlan).each(function () {
+                    var $input = jQuery(this);
+                    if (!isBetweenMinMax($input)) {
+                        jQuery('button[type=submit]').click();
+                        showingPlan = false;
+                        event.preventDefault();
+                        return false;
+                    }
+                })
+                if (showingPlan) {
+                    showPlan(plan);
+                    previousPlan = plan;
                 }
-                jQuery('.alma_fee_plan').hide();
-                var $sections = jQuery('.alma_fee_plan_' + plan);
-                $sections.show();
-                $sections.effect('highlight', 1500);
-                $sections.find('b').effect('highlight', 5000);
-                previousPlan = plan;
             }
         });
     })
+
+    /**
+     * Listen feePlan checkbox status then toggle select options status
+     */
     jQuery('[id^=woocommerce_alma_enabled_]').change(function () {
         var $checkbox = jQuery(this);
         var plan = $checkbox.attr('id').substring(25);
@@ -87,4 +131,42 @@ jQuery(document).ready(function() {
             toggleItems($checkbox, jQuery(selector));
         });
     });
-});
+
+    /**
+     * @param plan
+     */
+    function scrollToSection(plan) {
+        $section = jQuery('#woocommerce_alma_' + plan + "_section");
+        var keyframes = {
+            scrollTop: $section.offset().top - 100 // wc admin have a top bar fixed => -100px
+        };
+        jQuery([document.documentElement, document.body]).animate(keyframes, 0);
+    }
+
+    /**
+     * Handle submit action to check inputs and focus on error if any
+     */
+    jQuery(document).on('click', 'form button[type=submit]', function (e) {
+        var isValid = true;
+        var $input = null;
+        jQuery('[id^=woocommerce_alma_min_amount_], [id^=woocommerce_alma_max_amount_]').each(function() {
+            $input = jQuery(this);
+            isValid &= isBetweenMinMax($input);
+            if (!isValid) {
+                return false;
+            }
+        });
+        if (!isValid) {
+            var plan = $input.attr('id').substring(28);
+            select_alma_fee_plan_ids.filter(validId).forEach(function (id) {
+                var $select = jQuery('#'+id);
+                if ($select.find('option[value='+plan+']').length > 0) {
+                    $select.val(plan);
+                    $select.almaSelectMenu('refresh');
+                    showPlan(plan);
+                    scrollToSection(plan);
+                }
+            });
+        }
+    });
+})
