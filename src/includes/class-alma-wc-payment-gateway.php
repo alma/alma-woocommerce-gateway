@@ -99,10 +99,10 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			$max_key            = "max_amount_$plan_key";
 			$enabled_key        = "enabled_$plan_key";
 
-			if ( ! isset( $this->settings[ $min_key ] ) || $this->settings[ $min_key ] < $default_min_amount ) {
+			if ( ! isset( $this->settings[ $min_key ] ) || $this->settings[ $min_key ] < $default_min_amount || $this->settings[ $min_key ] > $default_max_amount ) {
 				$this->settings[ $min_key ] = $default_min_amount;
 			}
-			if ( ! isset( $this->settings[ $max_key ] ) || $this->settings[ $max_key ] > $default_max_amount ) {
+			if ( ! isset( $this->settings[ $max_key ] ) || $this->settings[ $max_key ] > $default_max_amount || $this->settings[ $max_key ] < $default_min_amount ) {
 				$this->settings[ $max_key ] = $default_max_amount;
 			}
 			if ( ! isset( $this->settings[ $enabled_key ] ) ) {
