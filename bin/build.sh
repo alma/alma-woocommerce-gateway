@@ -7,14 +7,26 @@ rm -rf ./dist/
 rm -rf /tmp/alma-build/alma-woocommerce-gateway
 mkdir -p /tmp/alma-build/alma-woocommerce-gateway
 
-cp -r ./src/* readme.txt LICENSE /tmp/alma-build/alma-woocommerce-gateway/
+TO_SYNC=" \
+readme.txt \
+LICENSE  \
+./src/assets \
+./src/includes \
+./src/languages \
+./src/tests \
+./src/composer.json \
+./src/composer.lock \
+./src/phpcs.xml \
+./src/alma-woocommerce-gateway.php \
+./src/uninstall.php \
+"
+rsync -auv $TO_SYNC --exclude=".DS_Store" /tmp/alma-build/alma-woocommerce-gateway/
 
 mkdir ./dist
 
 cd /tmp/alma-build/alma-woocommerce-gateway
-rm -rf vendor
 composer install --no-dev
 cd ..
-zip -9 -r "$DIR/dist/alma-woocommerce-gateway.zip" alma-woocommerce-gateway --exclude "*/.*" "*/build.sh" "*/dist" "*/docker*"
+zip -9 -r "$DIR/dist/alma-woocommerce-gateway.zip" alma-woocommerce-gateway
 
 rm -rf /tmp/alma-build
