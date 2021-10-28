@@ -19,6 +19,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property string test_api_key Test api key
  * @property string enabled Wp-bool-eq (yes or no)
  * @property string debug Wp-bool-eq (yes or no)
+ * @property string display_product_eligibility Wp-bool-eq (yes or no)
+ * @property string display_cart_eligibility Wp-bool-eq (yes or no)
  * @property string environment Live or test
  * @property bool   fully_configured Flag to indicate setting are fully configured by the plugin.
  * @property string selected_fee_plan Admin dashboard fee_plan in edition mode.
