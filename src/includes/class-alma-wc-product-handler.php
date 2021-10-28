@@ -72,7 +72,11 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 			$this->logger->info( __( 'Product not in stock: product badge injection failed.', 'alma-woocommerce-gateway' ) );
 			return;
 		}
-		$price = $product->get_price_including_tax();
+		if ( version_compare( wc()->version, '3.0', '>=' ) ) {
+			$price = wc_get_price_excluding_tax( $product );
+		} else {
+			$price = $product->get_price_including_tax();
+		}
 		if ( ! $price ) {
 			// translators: %s: the product price.
 			$this->logger->info( sprintf( __( 'Product price (%s): product badge injection failed.', 'alma-woocommerce-gateway' ), $price ) );
