@@ -18,7 +18,7 @@ class Alma_WC_Model_Customer {
 	 *
 	 * @var bool
 	 */
-	private $legacy = false;
+	private $legacy;
 
 	/**
 	 * Customer

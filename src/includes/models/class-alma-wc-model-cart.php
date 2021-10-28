@@ -18,7 +18,7 @@ class Alma_WC_Model_Cart {
 	 *
 	 * @var bool
 	 */
-	private $legacy = false;
+	private $legacy;
 
 	/**
 	 * Cart

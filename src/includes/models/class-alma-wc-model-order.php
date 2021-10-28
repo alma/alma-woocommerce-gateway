@@ -18,7 +18,7 @@ class Alma_WC_Model_Order {
 	 *
 	 * @var bool
 	 */
-	private $legacy = false;
+	private $legacy;
 
 	/**
 	 * Order
