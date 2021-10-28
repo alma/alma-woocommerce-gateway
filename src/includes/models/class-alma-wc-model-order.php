@@ -94,7 +94,7 @@ class Alma_WC_Model_Order {
 	}
 
 	/**
-	 * Get order Id.
+	 * Get order ID.
 	 *
 	 * @return int
 	 */

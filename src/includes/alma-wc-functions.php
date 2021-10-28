@@ -112,7 +112,7 @@ function alma_wc_array_merge_recursive() {
 /**
  * Converts a string (e.g. 'yes' or 'no') to a bool.
  *
- * Taken from WooCommerce, to which it was added in version 3.0.0 and we need support for older WC versions.
+ * Taken from WooCommerce, to which it was added in version 3.0.0, and we need support for older WC versions.
  *
  * @param string $string String to convert.
  * @return bool

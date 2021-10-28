@@ -81,7 +81,7 @@ class Alma_WC_Payment_Validator {
 				throw new Alma_WC_Payment_Validation_Error( $error );
 			}
 
-			// If we're down here, everything went OK and we  can validate the order!
+			// If we're down here, everything went OK, and we can validate the order!
 			$order->payment_complete( $payment_id );
 		}
 

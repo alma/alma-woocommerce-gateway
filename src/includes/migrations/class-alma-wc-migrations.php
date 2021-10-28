@@ -32,8 +32,8 @@ class Alma_WC_Migrations extends Alma_WC_Migrations_Abstract {
 	/**
 	 * Alma_WC_Migrations constructor.
 	 *
-	 * @param string $from_version Version source from where to migrate.
-	 * @param string $to_version Version target where to migrate.
+	 * @param string $from_version The source version from where to migrate.
+	 * @param string $to_version   The target version where to migrate.
 	 */
 	public function __construct( $from_version, $to_version ) {
 		$this->traces = new Alma_WC_Migrations_Traces( $from_version, $to_version );

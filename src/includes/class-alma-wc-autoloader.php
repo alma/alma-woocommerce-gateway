@@ -68,7 +68,6 @@ class Alma_WC_Autoloader {
 	 * @param string $path as php file path.
 	 *
 	 * @return bool successful or not
-	 * @noinspection PhpIncludeInspection
 	 */
 	private function load_file( $path ) {
 		if ( $path && is_readable( $path ) ) {

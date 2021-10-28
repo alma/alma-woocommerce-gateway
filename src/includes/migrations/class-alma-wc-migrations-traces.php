@@ -21,13 +21,13 @@ class Alma_WC_Migrations_Traces {
 	const SUCCESS = 'success';
 	const READY   = 'ready';
 	/**
-	 * The option key for migration from one version to an other
+	 * The option key for migration from one version to another
 	 *
 	 * @var string
 	 */
 	private $migration_option_key;
 	/**
-	 * The key of current traces for given migration (sub array in this options)
+	 * The key of current traces for given migration (sub array in these options)
 	 *
 	 * @var string
 	 */
@@ -54,8 +54,8 @@ class Alma_WC_Migrations_Traces {
 	/**
 	 * Alma_WC_Migrations_Option constructor.
 	 *
-	 * @param string $from_version Version source from where to migrate.
-	 * @param string $to_version Version target where to migrate.
+	 * @param string $from_version The source version from where to migrate.
+	 * @param string $to_version   The target version where to migrate.
 	 */
 	public function __construct( $from_version, $to_version ) {
 		$this->logger               = new Alma_WC_Logger();
@@ -168,7 +168,7 @@ class Alma_WC_Migrations_Traces {
 	}
 
 	/**
-	 * Generate ellapsed time since start date at each call
+	 * Generate elapsed time since start date at each call
 	 *
 	 * @return string
 	 */
