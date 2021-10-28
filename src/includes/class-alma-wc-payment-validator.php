@@ -51,7 +51,7 @@ class Alma_WC_Payment_Validator {
 
 		if ( $order->get_wc_order()->has_status( apply_filters( 'alma_wc_valid_order_statuses_for_payment_complete', array( 'on-hold', 'pending', 'failed', 'cancelled' ) ) ) ) {
 			if ( $order->get_total() !== $payment->purchase_amount ) {
-				$error = "Order {$order->get_id()} total ({$order->get_total()}) does not match purchase amount of '$payment_id' ({$payment->purchase_amount})";
+				$error = "Order {$order->get_id()} total ({$order->get_total()}) does not match purchase amount of '$payment_id' ($payment->purchase_amount)";
 				$logger->error( $error );
 
 				try {
@@ -68,7 +68,7 @@ class Alma_WC_Payment_Validator {
 			if ( ! in_array( $payment->state, array( Payment::STATE_IN_PROGRESS, Payment::STATE_PAID ), true ) ||
 				Instalment::STATE_PAID !== $first_instalment->state ) {
 
-				$error = "Payment '$payment_id': state incorrect {$payment->state} & {$first_instalment->state}";
+				$error = "Payment '$payment_id': state incorrect $payment->state & $first_instalment->state";
 				$logger->error( $error );
 
 				try {
