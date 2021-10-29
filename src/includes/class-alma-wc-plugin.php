@@ -112,11 +112,12 @@ class Alma_WC_Plugin {
 			return;
 		}
 		if ( version_compare( ALMA_WC_VERSION, $db_version, '>' ) ) {
-			$migrations = new Alma_WC_Migrations( $db_version, ALMA_WC_VERSION );
-			$migrations->up();
-			if ( $migrations->has_success() ) {
-				update_option( 'alma_version', ALMA_WC_VERSION );
-			}
+			update_option( 'alma_version', ALMA_WC_VERSION );
+			// $migrations = new Alma_WC_Migrations( $db_version, ALMA_WC_VERSION );
+			// $migrations->up();
+			// if ( $migrations->has_success() ) {
+			// update_option( 'alma_version', ALMA_WC_VERSION );
+			// }
 		}
 	}
 
