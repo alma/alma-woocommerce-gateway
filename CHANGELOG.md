@@ -1,6 +1,16 @@
 Changelog
 =========
 
+v2.1.1
+------
+
+* fix: remove upgrade process
+* fix: usage of woo deprecated get price func
+* refactor: remove redundant properties initializations
+* refactor: add Settings magic properties
+* refactor: remove unnecessary brackets into strings
+* word(typo): fix all doc block typo
+
 v2.1.0
 ------
 

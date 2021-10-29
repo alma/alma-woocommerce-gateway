@@ -5,7 +5,7 @@ Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo c
 Requires at least: 4.4
 Tested up to: 5.7
 Requires PHP: 5.6
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -82,6 +82,16 @@ To edit the translations, use [Poedit](https://poedit.net/)
 To build extension for production run `./bin/build.sh`
 
 == Changelog ==
+
+= 2.1.1 =
+---------
+
+* fix: remove upgrade process
+* fix: usage of woo deprecated get price func
+* refactor: remove redundant properties initializations
+* refactor: add Settings magic properties
+* refactor: remove unnecessary brackets into strings
+* word(typo): fix all doc block typo
 
 = 2.1.0 =
 ---------
