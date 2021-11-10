@@ -140,8 +140,15 @@ class Alma_WC_Model_Payment {
 		);
 
 		if ( $customer->has_data() ) {
-			$data['billing_address']  = array( 'country' => $customer->get_billing_address()['country'] );
-			$data['shipping_address'] = array( 'country' => $customer->get_shipping_address()['country'] );
+			$billing_country  = $customer->get_billing_address()['country'];
+			$shipping_country = $customer->get_shipping_address()['country'];
+
+			if ( $billing_country ) {
+				$data['billing_address'] = array( 'country' => $billing_country );
+			}
+			if ( $shipping_country ) {
+				$data['shipping_address'] = array( 'country' => $shipping_country );
+			}
 		}
 
 		return $data;
