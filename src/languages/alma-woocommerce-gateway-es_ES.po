@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Alma - 2x 3x 4x, D+15 or D+30 for WooCommerce - Payment "
 "in instalments and deferred\n"
-"POT-Creation-Date: 2021-10-21 18:58+0200\n"
-"PO-Revision-Date: 2021-10-21 18:58+0200\n"
+"POT-Creation-Date: 2021-11-10 17:16+0100\n"
+"PO-Revision-Date: 2021-11-10 17:24+0100\n"
 "Last-Translator: syjust <sy.just@gmail.com>\n"
 "Language-Team: Alma\n"
 "Language: es\n"
@@ -246,8 +246,8 @@ msgstr "Activar el modo depurar"
 
 #: includes/class-alma-wc-admin-form.php:328
 #, php-format
-msgid " (<a href=\"%s\">Go to logs</a>)"
-msgstr ""
+msgid "(<a href=\"%s\">Go to logs</a>)"
+msgstr "(<a href=\"%s\">Ir a registros</a>)"
 
 #: includes/class-alma-wc-admin-form.php:329
 msgid "Enable logging info and errors to help debug any issue with the plugin"
@@ -405,37 +405,37 @@ msgstr "habilitado"
 msgid "disabled"
 msgstr "deshabilitado"
 
-#: includes/class-alma-wc-plugin.php:221
+#: includes/class-alma-wc-plugin.php:222
 msgid "WooCommerce Gateway Alma plugin can only be bootstrapped once"
 msgstr "El plugin WooCommerce Alma Gateway solo se puede inicializar una vez"
 
-#: includes/class-alma-wc-plugin.php:303
+#: includes/class-alma-wc-plugin.php:304
 msgid "Alma requires WooCommerce to be activated"
 msgstr "WooCommerce debe estar activado para que el plugin Alma funcione"
 
-#: includes/class-alma-wc-plugin.php:307
+#: includes/class-alma-wc-plugin.php:308
 msgid "Alma requires WooCommerce version 2.6 or greater"
 msgstr "El plugin Alma requiere WooCommerce 2.6 o superior"
 
-#: includes/class-alma-wc-plugin.php:311
+#: includes/class-alma-wc-plugin.php:312
 msgid "Alma requires the cURL PHP extension to be installed on your server"
 msgstr ""
 "El plugin Alma requiere la instalación de la extensión cURL para PHP en tu "
 "servidor"
 
-#: includes/class-alma-wc-plugin.php:315
+#: includes/class-alma-wc-plugin.php:316
 msgid "Alma requires the JSON PHP extension to be installed on your server"
 msgstr ""
 "El plugin Alma requiere la instalación de la extensión JSON para PHP en tu "
 "servidor"
 
-#: includes/class-alma-wc-plugin.php:318
+#: includes/class-alma-wc-plugin.php:319
 msgid "Alma requires OpenSSL >= 1.0.1 to be installed on your server"
 msgstr ""
 "El plugin Alma requiere que OpenSSL 1.0.1+ esté instalado en tu servidor"
 
 #. translators: %s: Admin settings url.
-#: includes/class-alma-wc-plugin.php:375
+#: includes/class-alma-wc-plugin.php:376
 #, php-format
 msgid ""
 "Thanks for installing Alma! Start by <a href='%s'>activating Alma's payment "
@@ -445,7 +445,7 @@ msgstr ""
 "pago Alma</a>, y luego configúralo para empezar."
 
 #. translators: %s: Admin settings url.
-#: includes/class-alma-wc-plugin.php:394
+#: includes/class-alma-wc-plugin.php:395
 #, php-format
 msgid ""
 "Alma is almost ready. To get started, <a href=\"%s\">fill in your API keys</"
@@ -454,7 +454,7 @@ msgstr ""
 "Alma está casi lista. Para empezar, <a href=\"%s\">indica tus claves API</a>."
 
 #. translators: %1$s: Admin settings url, %2$s: Admin logs url.
-#: includes/class-alma-wc-plugin.php:435
+#: includes/class-alma-wc-plugin.php:436
 #, php-format
 msgid ""
 "Error while initializing Alma API client.<br><a href=\"%1$s\">Activate debug "
@@ -465,7 +465,7 @@ msgstr ""
 "a> para obtener más información."
 
 #. translators: %s: Alma dashboard url.
-#: includes/class-alma-wc-plugin.php:449
+#: includes/class-alma-wc-plugin.php:450
 #, php-format
 msgid ""
 "Could not connect to Alma using your API keys.<br>Please double check your "
@@ -476,14 +476,14 @@ msgstr ""
 "\">panel de control Alma</a>."
 
 #. translators: %s: Error message.
-#: includes/class-alma-wc-plugin.php:457
+#: includes/class-alma-wc-plugin.php:458
 #, php-format
 msgid "Alma encountered an error when fetching merchant status: %s"
 msgstr ""
 "Se ha producido un error en Alma al recuperar tus datos de comerciante: %s"
 
 #. translators: %s: Alma dashboard url.
-#: includes/class-alma-wc-plugin.php:470
+#: includes/class-alma-wc-plugin.php:471
 #, php-format
 msgid ""
 "Your Alma account needs to be activated before you can use Alma on your shop."
@@ -495,11 +495,11 @@ msgstr ""
 "para activar tu cuenta.<br><a href=\"%2$s\">Actualiza la página</a> cuando "
 "hayas terminado."
 
-#: includes/class-alma-wc-plugin.php:566
+#: includes/class-alma-wc-plugin.php:567
 msgid "Settings"
 msgstr "Configuración"
 
-#: includes/class-alma-wc-plugin.php:595
+#: includes/class-alma-wc-plugin.php:596
 msgid ""
 "Payment validation error: no ID provided.<br>Please try again or contact us "
 "if the problem persists."
@@ -508,13 +508,13 @@ msgstr ""
 "en contacto con nosotros si el problema persiste."
 
 #. translators: %s -> path to add after dashboard url
-#: includes/class-alma-wc-plugin.php:638
+#: includes/class-alma-wc-plugin.php:639
 #, php-format
 msgid "https://dashboard.getalma.eu/%s"
 msgstr "https://dashboard.getalma.eu/%s"
 
 #. translators: %s -> path to add after sandbox dashboard url
-#: includes/class-alma-wc-plugin.php:641
+#: includes/class-alma-wc-plugin.php:642
 #, php-format
 msgid "https://dashboard.sandbox.getalma.eu/%s"
 msgstr "https://dashboard.sandbox.getalma.eu/%s"
@@ -532,24 +532,24 @@ msgstr ""
 "producto."
 
 #. translators: %s: the product price.
-#: includes/class-alma-wc-product-handler.php:78
+#: includes/class-alma-wc-product-handler.php:82
 #, php-format
 msgid "Product price (%s): product badge injection failed."
 msgstr ""
 "Precio del producto (%s): ha fallado la introducción de credenciales del "
 "producto."
 
-#: includes/class-alma-wc-settings.php:65
+#: includes/class-alma-wc-settings.php:67
 msgid "Monthly and Deferred Payments with Alma"
 msgstr "Pagos mensuales y aplazados con Alma"
 
-#: includes/class-alma-wc-settings.php:66
+#: includes/class-alma-wc-settings.php:68
 msgid "Pay in deferred or multiple monthly payments with your credit card."
 msgstr ""
 "Realice un pago aplazado o en varias cuotas mensuales con su tarjeta de "
 "crédito."
 
-#: includes/class-alma-wc-settings.php:71
+#: includes/class-alma-wc-settings.php:73
 msgid "Some products cannot be paid with monthly or deferred installments"
 msgstr "Algunos productos no se pueden pagar con cuotas mensuales o diferidas"
 
@@ -576,9 +576,3 @@ msgstr "Alma"
 #. Author URI of the plugin/theme
 msgid "https://www.getalma.eu"
 msgstr "https://www.getalma.eu"
-
-#~ msgid "(<a href=\"%s\">Go to logs</a>)"
-#~ msgstr "(<a href=\"%s\">Ir a registros</a>)"
-
-#~ msgid "%d installments"
-#~ msgstr "%d cuotas"

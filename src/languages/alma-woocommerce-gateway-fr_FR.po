@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Alma - 2x 3x 4x, D+15 or D+30 for WooCommerce - Payment "
 "in instalments and deferred\n"
 "POT-Creation-Date: 2021-10-21 18:56+0200\n"
-"PO-Revision-Date: 2021-10-21 18:56+0200\n"
+"PO-Revision-Date: 2021-11-10 17:32+0100\n"
 "Last-Translator: syjust <sy.just@gmail.com>\n"
 "Language-Team: Alma\n"
 "Language: fr_FR\n"
@@ -250,8 +250,8 @@ msgstr "Activer le mode debug"
 
 #: includes/class-alma-wc-admin-form.php:328
 #, php-format
-msgid " (<a href=\"%s\">Go to logs</a>)"
-msgstr " (<a href=\"%s\">Voir les logs</a>)"
+msgid "(<a href=\"%s\">Go to logs</a>)"
+msgstr "(<a href=\"%s\">Voir les logs</a>)"
 
 #: includes/class-alma-wc-admin-form.php:329
 msgid "Enable logging info and errors to help debug any issue with the plugin"

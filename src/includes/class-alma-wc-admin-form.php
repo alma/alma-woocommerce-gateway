@@ -325,7 +325,7 @@ class Alma_WC_Admin_Form {
 				'title'       => __( 'Debug mode', 'alma-woocommerce-gateway' ),
 				'type'        => 'checkbox',
 				// translators: %s: Admin logs url.
-				'label'       => __( 'Activate debug mode', 'alma-woocommerce-gateway' ) . sprintf( __( ' (<a href="%s">Go to logs</a>)', 'alma-woocommerce-gateway' ), alma_wc_plugin()->get_admin_logs_url() ),
+				'label'       => __( 'Activate debug mode', 'alma-woocommerce-gateway' ) . sprintf( __( '(<a href="%s">Go to logs</a>)', 'alma-woocommerce-gateway' ), alma_wc_plugin()->get_admin_logs_url() ),
 				'description' => __( 'Enable logging info and errors to help debug any issue with the plugin', 'alma-woocommerce-gateway' ),
 				'desc_tip'    => true,
 				'default'     => $default_settings['debug'],
