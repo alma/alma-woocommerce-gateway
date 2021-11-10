@@ -73,7 +73,7 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 			return;
 		}
 		if ( version_compare( wc()->version, '3.0', '>=' ) ) {
-			$price = wc_get_price_excluding_tax( $product );
+			$price = wc_get_price_including_tax( $product );
 		} else {
 			$price = $product->get_price_including_tax();
 		}
