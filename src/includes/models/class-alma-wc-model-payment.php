@@ -32,11 +32,9 @@ class Alma_WC_Model_Payment {
 				),
 		);
 
-		if ( $customer->has_data() ) {
-			$data['payment']['billing_address']  = $customer->get_billing_address();
-			$data['payment']['shipping_address'] = $customer->get_shipping_address();
-			$data['customer']                    = $customer->get_data();
-		}
+		$data['payment']['billing_address']  = $customer->get_billing_address();
+		$data['payment']['shipping_address'] = $customer->get_shipping_address();
+		$data['customer']                    = $customer->get_data();
 
 		return $data;
 	}
@@ -139,16 +137,14 @@ class Alma_WC_Model_Payment {
 			'locale'          => apply_filters( 'alma_wc_eligibility_locale', get_locale() ),
 		);
 
-		if ( $customer->has_data() ) {
-			$billing_country  = $customer->get_billing_address()['country'];
-			$shipping_country = $customer->get_shipping_address()['country'];
+		$billing_country  = $customer->get_billing_address()['country'];
+		$shipping_country = $customer->get_shipping_address()['country'];
 
-			if ( $billing_country ) {
-				$data['billing_address'] = array( 'country' => $billing_country );
-			}
-			if ( $shipping_country ) {
-				$data['shipping_address'] = array( 'country' => $shipping_country );
-			}
+		if ( $billing_country ) {
+			$data['billing_address'] = array( 'country' => $billing_country );
+		}
+		if ( $shipping_country ) {
+			$data['shipping_address'] = array( 'country' => $shipping_country );
 		}
 
 		return $data;

@@ -43,15 +43,6 @@ class Alma_WC_Model_Customer {
 	}
 
 	/**
-	 * Has data
-	 *
-	 * @return bool
-	 */
-	public function has_data() {
-		return ( $this->legacy && 0 !== $this->customer->ID ) || $this->customer->get_id();
-	}
-
-	/**
 	 * Get data (legacy).
 	 *
 	 * @return array
