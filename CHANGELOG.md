@@ -1,6 +1,16 @@
 Changelog
 =========
 
+v2.2.0
+------
+
+* ci: add shell script bumper
+* feat: add IT & DE languages
+* fix: call eligibility without country if null
+* fix: dynamic update on checkout for anonymous user
+* fix: update translations without space on go_to_log
+* fix: widget handler replace excluding by including tax
+
 v2.1.1
 ------
 
