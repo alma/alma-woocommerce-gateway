@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v2.2.1
+------
+
+* fix: send user_locale in Alma checkout
+
 v2.2.0
 ------
 
