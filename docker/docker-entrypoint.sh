@@ -96,6 +96,8 @@ if [[ "$1" == apache2* ]] || [ "$1" = 'php-fpm' ]; then
 	fi
 fi
 
+[[ -e /usr/local/bin/env.local ]] && source /usr/local/bin/env.local
+
 if [ ! -x /usr/local/bin/wp ] ; then
     echo >&2 "wp-cli not found or note executable !!!"
     exit 1
@@ -116,6 +118,18 @@ if [ ! -d /var/www/html/wp-content/plugins/alma-woocommerce-gateway/vendor/alma 
     chown -R "$user:$group" /var/www/html/wp-content/plugins/alma-woocommerce-gateway/vendor/ || true
     cd -
 fi
+cd /var/www/html
+if ( ! /usr/local/bin/wp --path=/var/www/html --allow-root core is-installed ) ; then
+    echo "Installing WordPress Core ... " >&2
+    /usr/local/bin/wp --path=/var/www/html --allow-root core install \
+      --url="$WP_URL" \
+      --admin_user="$WP_ADMIN_USER" \
+      --admin_password="$WP_ADMIN_PASSWORD" \
+      --admin_email="$WP_ADMIN_EMAIL" \
+      --title="$WP_TITLE" \
+      --skip-email
+fi
+cd -
 if [ ! -e /var/www/html/wp-content/plugins/woocommerce/woocommerce.php ] ; then
     echo "Installing & activating woocommerce plugin ... " >&2
     /usr/local/bin/wp --path=/var/www/html --allow-root plugin install https://downloads.wordpress.org/plugin/woocommerce.5.3.0.zip

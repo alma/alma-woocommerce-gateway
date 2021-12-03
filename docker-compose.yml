@@ -16,6 +16,8 @@ services:
   wordpress:
     depends_on:
       - db
+    env_file:
+      - docker/env
     build:
       context: ./docker
     volumes:
