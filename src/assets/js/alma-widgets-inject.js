@@ -62,13 +62,18 @@
 				amount = 0
 			}
 		}
-
+		
+		almaApiMode = Alma.ApiMode.TEST;
+		if (settings.apiMode == 'live') {
+			almaApiMode = Alma.ApiMode.LIVE;
+		}
 
 		;(function () {
 			var widgets = Alma.Widgets.initialize(merchantId, almaApiMode)
 			widgets.add(Alma.Widgets.PaymentPlans, {
 				container: paymentPlansContainerId,
 				purchaseAmount: amount,
+				locale: settings.locale, // [optional, default: en]
 				hideIfNotEligible: false,
 				plans: settings.enabledPlans.map(
 					function ( plan ) {
