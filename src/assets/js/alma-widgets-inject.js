@@ -63,25 +63,26 @@
 			}
 		}
 
-		var almaWidgets = Alma.Widgets.initialize( merchantId, apiMode );
-		almaWidgets.add(
-			Alma.Widgets.PaymentPlans,
-			{
+
+		;(function () {
+			var widgets = Alma.Widgets.initialize(merchantId, almaApiMode)
+			widgets.add(Alma.Widgets.PaymentPlans, {
 				container: paymentPlansContainerId,
 				purchaseAmount: amount,
+				hideIfNotEligible: false,
 				plans: settings.enabledPlans.map(
 					function ( plan ) {
 						return {
 							installmentsCount: plan.installments_count,
 							minAmount: plan.min_amount,
-							maxAmount: plan.max_amount
+							maxAmount: plan.max_amount,
+							deferredDays: plan.deferred_days,
+							deferredMonths: plan.deferred_months
 						}
 					}
 				)
-			}
-		);
-
-		almaWidgets.render();
+			})
+		})()
 	};
 
 	if ( firstRender ) {

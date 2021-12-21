@@ -203,9 +203,11 @@ class Alma_WC_Generic_Handler {
 					if ( ! isset( $plan_definition['installments_count'] ) ) { // Widget does not work fine without installments_count.
 						return false;
 					}
-					if ( 1 === $plan_definition['installments_count'] ) { // Widget does not work fine with p1x and deferred payments.
-						return false;
-					}
+                    if ( $plan_definition['installments_count'] === 1 &&
+                        $plan_definition['deferred_days'] === 0 &&
+                        $plan_definition['deferred_months'] === 0 ) {
+                        return false;
+                    }
 					return true;
 				}
 			)
