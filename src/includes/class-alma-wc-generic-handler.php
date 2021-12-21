@@ -130,17 +130,18 @@ class Alma_WC_Generic_Handler {
 		);
 
 		// Inject JS/CSS required for the eligibility/payment plans info display.
-		$alma_widgets_js_url = 'https://unpkg.com/@alma/widgets@1.x.x/dist/alma-widgets.umd.js';
+		$alma_widgets_js_url = 'https://cdn.jsdelivr.net/npm/@alma/widgets@2.x/dist/widgets.umd.js';
 		wp_enqueue_script( 'alma-widgets', $alma_widgets_js_url, array(), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 
-		$alma_widgets_css_url = 'https://unpkg.com/@alma/widgets@1.x.x/dist/alma-widgets.css';
+        $alma_widgets_css_url = 'https://cdn.jsdelivr.net/npm/@alma/widgets@2.x/dist/widgets.min.css';
 		wp_enqueue_style( 'alma-widgets', $alma_widgets_css_url, array(), null ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 
 		$alma_widgets_injection_url = alma_wc_plugin()->get_asset_url( 'js/alma-widgets-inject.js' );
 		wp_enqueue_script( 'alma-widgets-injection', $alma_widgets_injection_url, array(), ALMA_WC_VERSION, true );
 
 		?>
-		<div style="margin: 15px 0; max-width: 350px">
+        <style>#alma-payment-plans button {background-color:white;}</style>
+        <div style="margin: 15px 0; max-width: 350px">
 			<div id="alma-payment-plans" data-settings="<?php echo esc_attr( wp_json_encode( $widget_settings ) ); ?>"></div>
 
 			<?php
