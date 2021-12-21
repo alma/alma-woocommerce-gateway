@@ -62,7 +62,7 @@
 				amount = 0
 			}
 		}
-		
+
 		almaApiMode = Alma.ApiMode.TEST;
 		if (settings.apiMode == 'live') {
 			almaApiMode = Alma.ApiMode.LIVE;
