@@ -1,6 +1,20 @@
 Changelog
 =========
 
+v2.3.0
+------
+
+* feat: use of alma widget v2.x
+
+v2.3.0
+------
+
+* feat(widget): upgrade CDN from 1.x to 2.x
+* feat(widget): alma API mode
+* feat(widget): deferred_days & deferred_months
+* feat(widget): locale
+* fix: filter eligible feeplans in checkout
+
 v2.2.1
 ------
 

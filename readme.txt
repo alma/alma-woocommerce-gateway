@@ -3,9 +3,9 @@
 Contributors: almapayments, olance, syjust
 Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo commerce, alma, monthly payments, split payments
 Requires at least: 4.4
-Tested up to: 5.7
+Tested up to: 5.8.2
 Requires PHP: 5.6
-Stable tag: 2.2.1
+Stable tag: 2.3.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -82,6 +82,15 @@ To edit the translations, use [Poedit](https://poedit.net/)
 To build extension for production run `./bin/build.sh`
 
 == Changelog ==
+
+= 2.3.0 =
+=========
+
+* feat(widget): upgrade CDN from 1.x to 2.x
+* feat(widget): alma API mode
+* feat(widget): deferred_days & deferred_months
+* feat(widget): locale
+* fix: filter eligible feeplans in checkout
 
 = 2.2.1 =
 =========
