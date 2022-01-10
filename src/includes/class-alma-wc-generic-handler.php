@@ -127,22 +127,22 @@ class Alma_WC_Generic_Handler {
 			'firstRender'         => true,
 			'decimalSeparator'    => wc_get_price_decimal_separator(),
 			'thousandSeparator'   => wc_get_price_thousand_separator(),
-            'locale'              => substr(get_locale(), 0, 2)
+			'locale'              => substr( get_locale(), 0, 2 ),
 		);
 
 		// Inject JS/CSS required for the eligibility/payment plans info display.
 		$alma_widgets_js_url = 'https://cdn.jsdelivr.net/npm/@alma/widgets@2.x/dist/widgets.umd.js';
 		wp_enqueue_script( 'alma-widgets', $alma_widgets_js_url, array(), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 
-        $alma_widgets_css_url = 'https://cdn.jsdelivr.net/npm/@alma/widgets@2.x/dist/widgets.min.css';
+		$alma_widgets_css_url = 'https://cdn.jsdelivr.net/npm/@alma/widgets@2.x/dist/widgets.min.css';
 		wp_enqueue_style( 'alma-widgets', $alma_widgets_css_url, array(), null ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 
 		$alma_widgets_injection_url = alma_wc_plugin()->get_asset_url( 'js/alma-widgets-inject.js' );
 		wp_enqueue_script( 'alma-widgets-injection', $alma_widgets_injection_url, array(), ALMA_WC_VERSION, true );
 
 		?>
-        <style>#alma-payment-plans button {background-color:white;}</style>
-        <div style="margin: 15px 0; max-width: 350px">
+		<style>#alma-payment-plans button {background-color:white;}</style>
+		<div style="margin: 15px 0; max-width: 350px">
 			<div id="alma-payment-plans" data-settings="<?php echo esc_attr( wp_json_encode( $widget_settings ) ); ?>"></div>
 
 			<?php
@@ -204,11 +204,11 @@ class Alma_WC_Generic_Handler {
 					if ( ! isset( $plan_definition['installments_count'] ) ) { // Widget does not work fine without installments_count.
 						return false;
 					}
-                    if ( $plan_definition['installments_count'] === 1 &&
-                        $plan_definition['deferred_days'] === 0 &&
-                        $plan_definition['deferred_months'] === 0 ) {
-                        return false;
-                    }
+					if ( 1 === $plan_definition['installments_count'] &&
+						0 === $plan_definition['deferred_days'] &&
+						0 === $plan_definition['deferred_months'] ) {
+						return false;
+					}
 					return true;
 				}
 			)
