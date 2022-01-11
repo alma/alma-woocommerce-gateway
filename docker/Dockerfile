@@ -1,4 +1,4 @@
-FROM wordpress:latest
+FROM wordpress:php7.3-fpm
 
 # install composer
 COPY --from=composer /usr/bin/composer /usr/bin/composer
