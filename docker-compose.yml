@@ -22,14 +22,24 @@ services:
       - ./docker/custom-php-config.ini:/usr/local/etc/php/conf.d/zz-custom-php-config.ini
       - wp_data:/var/www/html
       - ./src:/var/www/html/wp-content/plugins/alma-woocommerce-gateway
-    ports:
-      - "8000:80"
     environment:
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: wordpress
       WORDPRESS_DB_NAME: wordpress
       WP_DEBUG: "true"
+
+  nginx:
+    image: nginx:1.21
+    volumes:
+      - ./docker/nginx:/etc/nginx/conf.d
+      - wp_data:/var/www/html
+      - ./src:/var/www/html/wp-content/plugins/alma-woocommerce-gateway
+    ports:
+      - 8000:80
+    links:
+      - wordpress
+
 
 volumes:
   db_data: {}

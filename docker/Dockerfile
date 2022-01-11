@@ -14,4 +14,4 @@ RUN apt-get update && apt-get install -y vim less unzip
 COPY ./docker-entrypoint.sh /usr/local/bin
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-CMD ["apache2-foreground"]
+CMD ["php-fpm"]
