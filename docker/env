@@ -4,3 +4,6 @@ WP_ADMIN_EMAIL="admin@localhost.local"
 WP_URL="http://localhost:8000"
 WP_TITLE="Alma Tronic"
 WP_ADMIN_PASSWORD="dev-admin-password"
+WP_DB_CLEAN=0
+# your WPML register key (if any)
+OTGS_INSTALLER_SITE_KEY_WPML=""

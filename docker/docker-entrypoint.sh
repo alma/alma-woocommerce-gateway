@@ -118,9 +118,44 @@ if [ ! -d /var/www/html/wp-content/plugins/alma-woocommerce-gateway/vendor/alma 
     chown -R "$user:$group" /var/www/html/wp-content/plugins/alma-woocommerce-gateway/vendor/ || true
     cd -
 fi
-cd /var/www/html
-if ( ! /usr/local/bin/wp --path=/var/www/html --allow-root core is-installed ) ; then
-    echo "Installing WordPress Core ... " >&2
+# {{{ function wp_cli
+#
+wp_cli() {
+    /usr/local/bin/wp --path=/var/www/html --allow-root $@
+}
+export -f wp_cli
+# }}}
+# {{{ function wp_is_installed
+#
+wp_is_installed() {
+    wp_cli core is-installed
+}
+export -f wp_is_installed
+# }}}
+# {{{ function wp_has_products
+#
+wp_has_products() {
+    local count=`wp_cli post list --post_type=product | grep -v ID | wc -l`
+    [[ $count -gt 0 ]]
+}
+export -f wp_has_products
+# }}}
+# {{{ function wc_is_configured
+#
+wc_is_configured() {
+    local modal_dismissed=`wp_cli option get woocommerce_task_list_welcome_modal_dismissed 2>/dev/null`
+    [[ "x$modal_dismissed" == "xyes" ]]
+}
+export -f wc_is_configured
+# }}}
+
+if [[ ${WP_DB_CLEAN:-0} -eq 1 ]] && ( wp_is_installed ) ; then
+    echo "Cleaning WP databases ..." >&2
+    wp_cli db clean --yes
+fi
+if ( ! wp_is_installed ) ; then
+    echo >&2 "Installing WordPress Core ... "
+    # don't use wp_cli here because of possible spaces into variables
     /usr/local/bin/wp --path=/var/www/html --allow-root core install \
       --url="$WP_URL" \
       --admin_user="$WP_ADMIN_USER" \
@@ -129,23 +164,86 @@ if ( ! /usr/local/bin/wp --path=/var/www/html --allow-root core is-installed ) ;
       --title="$WP_TITLE" \
       --skip-email
 fi
-cd -
-if [ ! -e /var/www/html/wp-content/plugins/woocommerce/woocommerce.php ] ; then
-    echo "Installing & activating woocommerce plugin ... " >&2
-    /usr/local/bin/wp --path=/var/www/html --allow-root plugin install https://downloads.wordpress.org/plugin/woocommerce.5.3.0.zip
-    /usr/local/bin/wp --path=/var/www/html --allow-root plugin activate woocommerce
-    [ ! -d /var/www/html/wp-content/uploads/ ] && mkdir -p /var/www/html/wp-content/uploads && chown "$user:$group" /var/www/html/wp-content/uploads
+if ( ! wp_cli plugin is-installed woocommmerce ) ; then
+    echo >&2 "Installing & Activating woocommerce plugin ... "
+    [[ -d /var/www/html/wp-content/plugins/woocommerce ]] && rm -rf /var/www/html/wp-content/plugins/woocommerce
+    wp_cli plugin install https://downloads.wordpress.org/plugin/woocommerce.5.3.0.zip --activate
+    [ ! -d /var/www/html/wp-content/uploads/ ] && mkdir -p /var/www/html/wp-content/uploads
     cp /var/www/html/wp-content/plugins/woocommerce/assets/images/placeholder.png /var/www/html/wp-content/uploads/woocommerce-placeholder.png
-    chown "$user:$group" /var/www/html/wp-content/uploads/woocommerce-placeholder.png || true
 fi
-if [ -d /var/www/html/wp-content/plugins/alma-woocommerce-gateway ] ; then
+if ( ! wp_cli plugin is-active woocommerce ) ; then
+    echo >&2 "Activating woocommerce plugin ... "
+    wp_cli plugin activate woocommerce
+fi
+if ( ! wp_cli plugin is-installed wordpress-importer ) ; then
+    echo >&2 "Activating wordpress-importer plugin ... "
+    wp_cli plugin install wordpress-importer --activate
+fi
+if ( ! wp_cli plugin is-active wordpress-importer ) ; then
+    echo >&2 "Activating wordpress-importer plugin ... "
+    wp_cli plugin activate wordpress-importer
+fi
+if ( ! wp_has_products ) ; then
+    echo >&2 "Installing sample products ..."
+    wp_cli import ./wp-content/plugins/woocommerce/sample-data/sample_products.xml --authors=skip --quiet > /dev/null 2>&1
+fi
+if ( ! wp_cli theme is-installed storefront ) ; then
+    wp_cli theme install storefront --activate
+fi
+if ( ! wp_cli theme is-active storefront ) ; then
+    wp_cli theme activate storefront
+fi
+
+if ( ! wc_is_configured ) ; then
+    [[ -x /usr/local/bin/configure-wc.sh ]] \
+        && echo >&2 "Configuring WooCommerce ..." \
+        && /usr/local/bin/configure-wc.sh
+fi
+if ( ! wp_cli plugin is-installed woocommerce-multilingual ) ; then
+    echo >&2 "Installing woocommerce-multilingual ..."
+    wp_cli plugin install woocommerce-multilingual --activate
+fi
+if ( ! wp_cli plugin is-active woocommerce-multilingual ) ; then
+    echo >&2 "Activating woocommerce-multilingual ..."
+    wp_cli plugin activate woocommerce-multilingual
+fi
+if [[ -d /usr/local/plugins ]] ; then
+    for plugin_path in `find /usr/local/plugins/ -name "*zip" ` ; do
+        plugin_name=`basename $plugin_path | sed 's/\.[0-9]\{1,\}\.[0-9]\{1,\}\.[0-9]\{1,\}\.zip$//'`
+        if ( ! wp_cli plugin is-installed $plugin_name ) ; then
+            echo >&2 "Installing $plugin_name ..."
+            wp_cli plugin install $plugin_path --activate
+        fi
+        if ( ! wp_cli plugin is-active $plugin_name ) ; then
+            echo >&2 "Activating $plugin_name ..."
+            wp_cli plugin activate $plugin_name
+        fi
+    done
+fi
+if ( ! wp_cli plugin is-active alma-woocommerce-gateway ) ; then
     echo >&2 "Activating alma-woocommerce-gateway plugin ..."
-    /usr/local/bin/wp --path=/var/www/html --allow-root plugin activate alma-woocommerce-gateway
+    wp_cli plugin activate alma-woocommerce-gateway
 fi
-if [ ! -e /var/www/html/wp-content/languages/fr_FR.mo ] ; then
-    echo >&2 "Installing & switching to fr_FR language ..."
-    /usr/local/bin/wp --path=/var/www/html --allow-root language core install fr_FR
-    /usr/local/bin/wp --path=/var/www/html --allow-root site switch-language fr_FR
+# {{{ supported wp_langs
+wp_langs="
+fr_FR
+it_IT
+de_DE
+fr_BE
+nl_NL
+nl_BE
+es_ES
+"
+# }}}
+for wp_lang in $wp_langs ; do
+    if ( ! wp_cli language core is-installed $wp_lang ) ; then
+        echo >&2 "Installing $wp_lang languages ..."
+        wp_cli language core install $wp_lang
+    fi
+done
+if ( ! wp_cli language core is-installed fr_FR ) ; then
+    echo >&2 "Switching to fr_FR language ..."
+    wp_cli site switch-language fr_FR
 fi
 chown -R "$user:$group" /var/www/html/wp-content || true
 
