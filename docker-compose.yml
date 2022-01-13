@@ -23,6 +23,7 @@ services:
     volumes:
       - ./docker/custom-php-config.ini:/usr/local/etc/php/conf.d/zz-custom-php-config.ini
       - wp_data:/var/www/html
+      - ./plugins:/usr/local/plugins
       - ./src:/var/www/html/wp-content/plugins/alma-woocommerce-gateway
     environment:
       WORDPRESS_DB_HOST: db:3306
