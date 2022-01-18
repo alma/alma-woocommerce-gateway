@@ -7,6 +7,7 @@
  */
 
 use Alma\API\Client;
+use Alma\API\Endpoints\Results\Eligibility;
 use Alma\API\Entities\FeePlan;
 use Alma\API\Entities\Merchant;
 use Alma\API\RequestError;
@@ -19,6 +20,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Alma_WC_Plugin
  */
 class Alma_WC_Plugin {
+	/**
+	 * Eligibilities
+	 *
+	 * @var array<int,Eligibility>|null
+	 */
+	private $eligibilities;
+
 	/**
 	 * Flag to indicate the plugin has been bootstrapped.
 	 *
@@ -711,8 +719,39 @@ class Alma_WC_Plugin {
 	 * @return array<string>
 	 */
 	public function get_eligible_plans_keys_for_cart() {
-		return $this->settings->get_eligible_plans_keys( ( new Alma_WC_Model_Cart() )->get_total() );
+		$cart_eligibilities = $this->get_cart_eligibilities();
+
+		return array_filter(
+			$this->settings->get_eligible_plans_keys( ( new Alma_WC_Model_Cart() )->get_total() ),
+			function ( $key ) use ( $cart_eligibilities ) {
+				return array_key_exists( $key, $cart_eligibilities );
+			}
+		);
 	}
+
+	/**
+	 * Get eligibilities from cart.
+	 *
+	 * @return array<string,Eligibility>|null
+	 */
+	public function get_cart_eligibilities() {
+		if ( ! $this->eligibilities ) {
+			$alma = alma_wc_plugin()->get_alma_client();
+			if ( ! $alma ) {
+				return null;
+			}
+
+			try {
+				$this->eligibilities = $alma->payments->eligibility( Alma_WC_Model_Payment::get_eligibility_payload_from_cart() );
+			} catch ( RequestError $error ) {
+				$this->logger->log_stack_trace( 'Error while checking payment eligibility: ', $error );
+				return null;
+			}
+		}
+
+		return $this->eligibilities;
+	}
+
 
 	/**
 	 * Is current cart eligible.

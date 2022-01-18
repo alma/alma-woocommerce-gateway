@@ -36,13 +36,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	private $logger;
 
 	/**
-	 * Eligibilities
-	 *
-	 * @var array<int,Eligibility>|null
-	 */
-	private $eligibilities;
-
-	/**
 	 * __construct
 	 */
 	public function __construct() {
@@ -383,7 +376,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return void
 	 */
 	private function render_payment_plan( $default_plan ) {
-		$eligibilities = $this->get_cart_eligibilities();
+		$eligibilities = alma_wc_plugin()->get_cart_eligibilities();
 		if ( $eligibilities ) {
 			foreach ( $eligibilities as $key => $eligibility ) {
 				?>
@@ -522,29 +515,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Get eligibilities from cart.
-	 *
-	 * @return array<string,Eligibility>|null
-	 */
-	private function get_cart_eligibilities() {
-		if ( ! $this->eligibilities ) {
-			$alma = alma_wc_plugin()->get_alma_client();
-			if ( ! $alma ) {
-				return null;
-			}
-
-			try {
-				$this->eligibilities = $alma->payments->eligibility( Alma_WC_Model_Payment::get_eligibility_payload_from_cart() );
-			} catch ( RequestError $error ) {
-				$this->logger->log_stack_trace( 'Error while checking payment eligibility: ', $error );
-				return null;
-			}
-		}
-
-		return $this->eligibilities;
-	}
-
-	/**
 	 * Get default plan according to eligible pnx list.
 	 *
 	 * @param string[] $plans the list of eligible pnx.
@@ -663,7 +633,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return bool
 	 */
 	private function is_cart_eligible() {
-		$eligibilities = $this->get_cart_eligibilities();
+		$eligibilities = alma_wc_plugin()->get_cart_eligibilities();
 
 		if ( ! $eligibilities ) {
 			return false;
