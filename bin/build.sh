@@ -20,7 +20,7 @@ LICENSE  \
 ./src/alma-woocommerce-gateway.php \
 ./src/uninstall.php \
 "
-rsync -auv $TO_SYNC --exclude=".DS_Store" /tmp/alma-build/alma-woocommerce-gateway/
+rsync -auv $TO_SYNC --exclude="*.orig" --exclude=".DS_Store" /tmp/alma-build/alma-woocommerce-gateway/
 
 mkdir ./dist
 
