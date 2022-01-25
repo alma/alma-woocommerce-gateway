@@ -182,11 +182,12 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	/**
 	 * Output HTML for a single payment field.
 	 *
+	 * @param string  $gateway_id          Gateway id.
 	 * @param string  $plan_key            Plan key.
 	 * @param boolean $has_radio_button    Include a radio button for plan selection.
 	 * @param boolean $is_checked          Should the radio button be checked.
 	 */
-	private function payment_field( $plan_key, $has_radio_button, $is_checked ) {
+	private function payment_field( $gateway_id, $plan_key, $has_radio_button, $is_checked ) {
 		$plan_class = '.' . self::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS;
 		$plan_id    = '#' . sprintf( self::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $plan_key );
 		$logo_url   = alma_wc_plugin()->get_asset_url( "images/${plan_key}_logo.svg" );
@@ -194,19 +195,19 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		<input
 				type="<?php echo $has_radio_button ? 'radio' : 'hidden'; ?>"
 				value="<?php echo esc_attr( $plan_key ); ?>"
-				id="alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
+				id="<?php echo $gateway_id; ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
 				name="alma_fee_plan"
 
 				<?php if ( $has_radio_button ) : ?>
 					style="margin-right: 5px;"
 					<?php echo $is_checked ? 'checked' : ''; ?>
-					onchange="if (this.checked) { jQuery( '<?php echo esc_js( $plan_class ); ?>' ).hide(); jQuery( '<?php echo esc_js( $plan_id ); ?>' ).show() }"
+					onchange="if (this.checked) { jQuery( '<?php echo esc_js( $plan_class ); ?>' ).hide(); jQuery(this).closest('li.wc_payment_method').find( '<?php echo esc_js( $plan_id ); ?>' ).show() }"
 				<?php endif; ?>
 		>
 		<label
 				class="checkbox"
 				style="margin-right: 10px; display: inline;"
-				for="alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
+				for="<?php echo $gateway_id; ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
 		>
 			<img src="<?php echo esc_attr( $logo_url ); ?>"
 				style="float: unset !important; width: auto !important; height: 30px !important;  border: none !important; vertical-align: middle; display: inline-block;"
@@ -226,6 +227,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	public function payment_fields() {
 		echo wp_kses_post( $this->description );
 
+		$gateway_id = $this->id;
+
 		$eligible_plans = alma_wc_plugin()->get_eligible_plans_keys_for_cart();
 		usort( $eligible_plans, 'alma_wc_usort_plans_keys' );
 		$default_plan      = self::get_default_plan( $eligible_plans );
@@ -239,11 +242,35 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		?>
 		<p>
 			<?php
+			// gilles
+			$alma_settings = new Alma_WC_Settings();
 			foreach ( $eligible_plans as $plan ) {
-				$this->payment_field( $plan, $is_multiple_plans, $plan === $default_plan );
+				$display_payment_field = false;
+
+				if ( 'alma' === $gateway_id ) {
+					if ( in_array( $alma_settings->get_installments_count( $plan ), array( 2, 3, 4 ) ) ) {
+						$display_payment_field = true;
+					}
+				} elseif ( 'alma_pay_later' === $gateway_id ) {
+					if (
+						$alma_settings->get_installments_count( $plan ) === 1 &&
+						( $alma_settings->get_deferred_days( $plan ) !== 0 ||
+						$alma_settings->get_deferred_months( $plan ) !== 0 )
+					) {
+						$display_payment_field = true;
+					}
+				} elseif ( 'alma_more_than_four_instalments' === $gateway_id ) {
+					if ( $alma_settings->get_installments_count( $plan ) > 4 ) {
+						$display_payment_field = true;
+					}
+				}
+
+				if ( $display_payment_field ) {
+					$this->payment_field( $gateway_id, $plan, $is_multiple_plans, $plan === $default_plan );
+				}
 			}
 
-			$this->render_payment_plan( $default_plan );
+			$this->render_payment_plan( $gateway_id, $default_plan );
 			?>
 		</p>
 		<?php
@@ -375,7 +402,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 *
 	 * @return void
 	 */
-	private function render_payment_plan( $default_plan ) {
+	private function render_payment_plan( $gateway_id, $default_plan ) {
 		$eligibilities = alma_wc_plugin()->get_cart_eligibilities();
 		if ( $eligibilities ) {
 			foreach ( $eligibilities as $key => $eligibility ) {
@@ -383,6 +410,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				<div
 					id="<?php echo esc_attr( sprintf( self::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $key ) ); ?>"
 					class="<?php echo esc_attr( self::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS ); ?>"
+					data-gateway-id="<?php echo esc_attr( $gateway_id ); ?>"
 					style="
 						margin: 0 auto;
 						<?php if ( $key !== $default_plan ) { ?>
@@ -437,7 +465,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 								padding: 0 0 4px 0;
 								margin: 0 0 4px 0;
 								border-bottom: 1px solid lightgrey;
-								font-size: 1.3rem;
 							">
 								<span><?php echo esc_html__( 'Included fees:', 'alma-woocommerce-gateway' ); ?> <?php echo wp_kses_post( alma_wc_format_price_from_cents( $step['customer_fee'] ) ); ?></span>
 							</p>

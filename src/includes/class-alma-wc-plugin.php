@@ -762,3 +762,121 @@ class Alma_WC_Plugin {
 		return count( $this->get_eligible_plans_keys_for_cart() ) > 0;
 	}
 }
+
+
+/**
+ * Filter available_gateways to add ours.
+ *
+ * @author Gilles Dumas
+ * @return bool
+ */
+function alma_woocommerce_available_payment_gateways( $_available_gateways ) {
+
+	if ( ! is_checkout() ) {
+		return $_available_gateways;
+	}
+
+	if ( ! wp_doing_ajax() ) {
+		return $_available_gateways;
+	}
+	// dump('wp_doing_ajax() = '.wp_doing_ajax());
+
+	$alma_settings = new Alma_WC_Settings();
+
+	// wc-ajax=update_order_review
+	$new_available_gateways = array();
+	foreach ( $_available_gateways as $key => $gateway ) {
+
+		$new_available_gateways[ $key ] = $gateway;
+
+		if ( 'alma' !== $gateway->id ) {
+			break;
+		}
+
+		// Pay later
+		$display_payment_method = false;
+		$eligible_plans         = alma_wc_plugin()->get_eligible_plans_keys_for_cart();
+		foreach ( $eligible_plans as $plan ) {
+			if (
+				$alma_settings->get_installments_count( $plan ) === 1 &&
+				( $alma_settings->get_deferred_days( $plan ) !== 0 ||
+				$alma_settings->get_deferred_months( $plan ) !== 0 )
+			) {
+				$display_payment_method = true;
+				break;
+			}
+		}
+		if ( $display_payment_method ) {
+			$tmp_gateway              = clone $gateway;
+			$tmp_gateway->id          = 'alma_pay_later';
+			$tmp_gateway->title       = 'Payez en différé avec Alma';
+			$tmp_gateway->description = 'Payez plus tard avec votre carte bancaire';
+			$new_available_gateways[ 'alma_' . $tmp_gateway->id ] = $tmp_gateway;
+		}
+
+		// Pay in more than four times
+		$display_payment_method = false;
+		$eligible_plans         = alma_wc_plugin()->get_eligible_plans_keys_for_cart();
+		foreach ( $eligible_plans as $plan ) {
+			if ( $alma_settings->get_installments_count( $plan ) > 4 ) {
+				$display_payment_method = true;
+				break;
+			}
+		}
+		if ( $display_payment_method ) {
+			$tmp_gateway              = clone $gateway;
+			$tmp_gateway->id          = 'alma_more_than_four_instalments';
+			$tmp_gateway->title       = 'Etalez vos paiements avec Alma';
+			$tmp_gateway->description = 'Payez en plusieurs fois avec votre carte bancaire';
+			$new_available_gateways[ 'alma_' . $tmp_gateway->id ] = $tmp_gateway;
+		}
+	}
+
+	// dump($new_available_gateways);
+	return $new_available_gateways;
+}
+add_filter( 'woocommerce_available_payment_gateways', 'alma_woocommerce_available_payment_gateways', 10, 1 );
+
+
+/**
+ * AJAX when validating the checkout.
+ * If the payment method used is like "alma_****", then rename it to "alma" and let WC do the payment process.
+ *
+ * @return void
+ */
+function alma_woocommerce_checkout_process() {
+	if ( substr( $_POST['payment_method'], 0, 5 ) === 'alma_' ) {
+		$_POST['payment_method'] = 'alma';
+	}
+};
+add_action( 'woocommerce_checkout_process', 'alma_woocommerce_checkout_process' );
+
+
+/**
+ * Inject JS in checkout page.
+ *
+ * @return void
+ */
+function alma_enqueue_scripts() {
+	if ( is_checkout() ) {
+		$alma_widgets_injection_url = alma_wc_plugin()->get_asset_url( 'js/alma-checkout.js' );
+		wp_enqueue_script( 'alma-checkout-page', $alma_widgets_injection_url, array(), ALMA_WC_VERSION, true );
+	}
+};
+add_action( 'wp_enqueue_scripts', 'alma_enqueue_scripts' );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

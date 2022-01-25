@@ -253,44 +253,92 @@ class Alma_WC_Admin_Form {
 	 */
 	private function init_general_settings_fields( array $default_settings ) {
 		return array(
-			'general_section'                       => array(
+			'general_section'                             => array(
 				'title' => '<hr>' . __( '→ General configuration', 'alma-woocommerce-gateway' ),
 				'type'  => 'title',
 			),
-			'title'                                 => array(
+			'translations'                                => array(
+				'title' => __( '<h3 style="text-decoration:underline;">Fields translations</h3>', 'alma-woocommerce-gateway' ),
+				'type'  => 'title',
+			),
+
+			'payment_method_1'                            => array(
+				'title' => __( '<h4 style="color:#FF414D;">payment method : p2x, p3x, p4x</h4>', 'alma-woocommerce-gateway' ),
+				'type'  => 'title',
+			),
+			'title'                                       => array(
 				'title'       => __( 'Title', 'alma-woocommerce-gateway' ),
 				'type'        => 'text',
 				'description' => __( 'This controls the payment method name which the user sees during checkout.', 'alma-woocommerce-gateway' ),
 				'default'     => $default_settings['title'],
 				'desc_tip'    => true,
 			),
-			'description'                           => array(
+			'description'                                 => array(
 				'title'       => __( 'Description', 'alma-woocommerce-gateway' ),
 				'type'        => 'text',
 				'desc_tip'    => true,
 				'description' => __( 'This controls the payment method description which the user sees during checkout.', 'alma-woocommerce-gateway' ),
 				'default'     => $default_settings['description'],
 			),
-			'display_product_eligibility'           => array(
+
+			'payment_method_alma_pay_later'               => array(
+				'title' => __( '<h4 style="color:#FF414D;">payment method : pay later</h4>', 'alma-woocommerce-gateway' ),
+				'type'  => 'title',
+			),
+			'title_alma_pay_later'                        => array(
+				'title'       => __( 'Title', 'alma-woocommerce-gateway' ),
+				'type'        => 'text',
+				'description' => __( 'This controls the payment method name which the user sees during checkout.', 'alma-woocommerce-gateway' ),
+				'default'     => $default_settings['title'],
+				'desc_tip'    => true,
+			),
+			'description_alma_pay_later'                  => array(
+				'title'       => __( 'Description', 'alma-woocommerce-gateway' ),
+				'type'        => 'text',
+				'desc_tip'    => true,
+				'description' => __( 'This controls the payment method description which the user sees during checkout.', 'alma-woocommerce-gateway' ),
+				'default'     => $default_settings['description'],
+			),
+
+			'payment_method_alma_more_than_four_instalments' => array(
+				'title' => __( '<h4 style="color:#FF414D;">payment method : pay in more than 4 times</h4>', 'alma-woocommerce-gateway' ),
+				'type'  => 'title',
+			),
+			'title_alma_more_than_four_instalments'       => array(
+				'title'       => __( 'Title', 'alma-woocommerce-gateway' ),
+				'type'        => 'text',
+				'description' => __( 'This controls the payment method name which the user sees during checkout.', 'alma-woocommerce-gateway' ),
+				'default'     => $default_settings['title'],
+				'desc_tip'    => true,
+			),
+			'description_alma_more_than_four_instalments' => array(
+				'title'       => __( 'Description', 'alma-woocommerce-gateway' ),
+				'type'        => 'text',
+				'desc_tip'    => true,
+				'description' => __( 'This controls the payment method description which the user sees during checkout.', 'alma-woocommerce-gateway' ),
+				'default'     => $default_settings['description'],
+			),
+
+			'display_product_eligibility'                 => array(
 				'title'   => __( 'Product eligibility notice', 'alma-woocommerce-gateway' ),
 				'type'    => 'checkbox',
 				'label'   => __( 'Display a message about product eligibility for monthly payments', 'alma-woocommerce-gateway' ),
 				'default' => $default_settings['display_product_eligibility'],
 			),
-			'variable_product_price_query_selector' => array(
+			'variable_product_price_query_selector'       => array(
 				'title'       => __( 'Variable products price query selector', 'alma-woocommerce-gateway' ),
 				'type'        => 'text',
 				'description' => __( 'Query selector used to get the price of product with variations', 'alma-woocommerce-gateway' ),
 				'desc_tip'    => true,
 				'default'     => $default_settings['variable_product_price_query_selector'],
 			),
-			'display_cart_eligibility'              => array(
+			'display_cart_eligibility'                    => array(
 				'title'   => __( 'Cart eligibility notice', 'alma-woocommerce-gateway' ),
 				'type'    => 'checkbox',
 				'label'   => __( 'Display a message about cart eligibility for monthly payments', 'alma-woocommerce-gateway' ),
 				'default' => $default_settings['display_cart_eligibility'],
 			),
-			'excluded_products_list'                => array(
+			'excluded_products_list'                      => array(
 				'title'       => __( 'Excluded product categories', 'alma-woocommerce-gateway' ),
 				'type'        => 'multiselect',
 				'description' => __( 'Exclude all virtual/downloadable product categories, as you cannot sell them with Alma', 'alma-woocommerce-gateway' ),
@@ -298,7 +346,7 @@ class Alma_WC_Admin_Form {
 				'css'         => 'height: 150px;',
 				'options'     => $this->generate_categories_options(),
 			),
-			'cart_not_eligible_message_gift_cards'  => array(
+			'cart_not_eligible_message_gift_cards'        => array(
 				'title'       => __( 'Non-eligibility message for excluded products', 'alma-woocommerce-gateway' ),
 				'type'        => 'text',
 				'description' => __( 'Message displayed below the cart totals when it contains excluded products', 'alma-woocommerce-gateway' ),

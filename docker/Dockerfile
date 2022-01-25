@@ -12,7 +12,7 @@ RUN echo "alias wp='wp --allow-root'" >> /root/.bashrc
 RUN apt-get update && apt-get install -y vim less unzip mariadb-client-10.5
 
 COPY --chown=www-data:www-data ./wp-config-docker.php /usr/src/wordpress/
-COPY ./docker-entrypoint.sh ./configure-wc.sh ./env.*local /usr/local/bin
+COPY ./docker-entrypoint.sh ./configure-wc.sh ./env.*local /usr/local/bin/
 RUN chmod +x /usr/local/bin/*sh
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

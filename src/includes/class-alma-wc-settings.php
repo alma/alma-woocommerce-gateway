@@ -406,7 +406,7 @@ class Alma_WC_Settings {
 	 *
 	 * @return int
 	 */
-	private function get_deferred_days( $key ) {
+	public function get_deferred_days( $key ) {
 		return $this->__get( "deferred_days_$key" );
 	}
 
@@ -417,7 +417,7 @@ class Alma_WC_Settings {
 	 *
 	 * @return int
 	 */
-	private function get_deferred_months( $key ) {
+	public function get_deferred_months( $key ) {
 		return $this->__get( "deferred_months_$key" );
 	}
 
@@ -428,7 +428,8 @@ class Alma_WC_Settings {
 	 *
 	 * @return int
 	 */
-	private function get_installments_count( $key ) {
+	public function get_installments_count( $key ) {
+		// dump('get_installments_count avec $key = '.$key);
 		return $this->__get( "installments_count_$key" );
 	}
 
