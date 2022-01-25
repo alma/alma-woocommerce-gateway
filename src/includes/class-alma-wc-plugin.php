@@ -195,6 +195,9 @@ class Alma_WC_Plugin {
 		add_filter( 'plugin_action_links_' . plugin_basename( ALMA_WC_PLUGIN_FILE ), array( $this, 'plugin_action_links' ) );
 		add_action( 'wp_ajax_alma_dismiss_notice_message', array( $this, 'ajax_dismiss_notice' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'alma_admin_enqueue_scripts' ) );
+
+		add_filter( 'woocommerce_gateway_title', array( $this, 'alma_woocommerce_gateway_title' ), 10, 2 );
+		add_filter( 'woocommerce_gateway_description', array( $this, 'alma_woocommerce_gateway_description' ), 10, 2 );
 	}
 
 	/**
@@ -761,11 +764,93 @@ class Alma_WC_Plugin {
 	public function is_cart_eligible() {
 		return count( $this->get_eligible_plans_keys_for_cart() ) > 0;
 	}
+
+
+	/**
+	 * Filter the alma gateway title (visible on checkout page).
+	 *
+	 * @author Gilles Dumas
+	 * @param  string  $title The original title.
+	 * @param  integer $id The payment gateway id.
+	 * @return string
+	 */
+	public function alma_woocommerce_gateway_title( $title, $id ) {
+
+		if ( 'alma' !== substr( $id, 0 ,4 ) ) {
+			return $title;
+		}
+
+		$alma_settings = new Alma_WC_Settings;
+
+		if ( 'alma' === $id ) {
+            $title = $alma_settings->__get('title');
+            if (!$title) {
+                $title = Alma_WC_Settings::default_settings()['title'];
+            }
+		}
+
+		if ( 'alma_pay_later' === $id ) {
+            $title = $alma_settings->__get('title_alma_pay_later');
+            if (!$title) {
+                $title = Alma_WC_Settings::default_settings()['title_alma_pay_later'];
+            }
+		}
+
+		if ( 'alma_more_than_four_instalments' === $id ) {
+            $title = $alma_settings->__get('title_alma_more_than_four_instalments');
+            if (!$title) {
+                $title = Alma_WC_Settings::default_settings()['title_alma_more_than_four_instalments'];
+            }
+		}
+
+		return $title;
+	}
+
+
+	/**
+	 * Filter the alma gateway description (visible on checkout page).
+	 *
+	 * @author Gilles Dumas
+	 * @param  string  $title The original description.
+	 * @param  integer $id The payment gateway id.
+	 * @return string
+	 */
+	public function alma_woocommerce_gateway_description( $description, $id ) {
+
+		if ( 'alma' !== substr( $id, 0 ,4 ) ) {
+			return $description;
+		}
+
+		$alma_settings = new Alma_WC_Settings;
+
+		if ( 'alma' === $id ) {
+            $description = $alma_settings->__get('description');
+            if (!$description) {
+                $description = Alma_WC_Settings::default_settings()['description'];
+            }
+		}
+
+		if ( 'alma_pay_later' === $id ) {
+            $description = $alma_settings->__get('description_alma_pay_later');
+            if (!$description) {
+                $description = Alma_WC_Settings::default_settings()['description_alma_pay_later'];
+            }
+		}
+
+		if ( 'alma_more_than_four_instalments' === $id ) {
+            $description = $alma_settings->__get('description_alma_more_than_four_instalments');
+            if (!$description) {
+                $description = Alma_WC_Settings::default_settings()['description_alma_more_than_four_instalments'];
+            }
+		}
+
+		return $description;
+	}
 }
 
 
 /**
- * Filter available_gateways to add ours.
+ * Filter available_gateways to add "alma_pay_later" and "alma_more_than_four_instalments".
  *
  * @author Gilles Dumas
  * @return bool
@@ -779,11 +864,9 @@ function alma_woocommerce_available_payment_gateways( $_available_gateways ) {
 	if ( ! wp_doing_ajax() ) {
 		return $_available_gateways;
 	}
-	// dump('wp_doing_ajax() = '.wp_doing_ajax());
 
 	$alma_settings = new Alma_WC_Settings();
 
-	// wc-ajax=update_order_review
 	$new_available_gateways = array();
 	foreach ( $_available_gateways as $key => $gateway ) {
 
@@ -793,9 +876,10 @@ function alma_woocommerce_available_payment_gateways( $_available_gateways ) {
 			break;
 		}
 
-		// Pay later
-		$display_payment_method = false;
 		$eligible_plans         = alma_wc_plugin()->get_eligible_plans_keys_for_cart();
+
+		// Add "Alma Pay later" payment method.
+		$display_payment_method = false;
 		foreach ( $eligible_plans as $plan ) {
 			if (
 				$alma_settings->get_installments_count( $plan ) === 1 &&
@@ -807,16 +891,18 @@ function alma_woocommerce_available_payment_gateways( $_available_gateways ) {
 			}
 		}
 		if ( $display_payment_method ) {
-			$tmp_gateway              = clone $gateway;
-			$tmp_gateway->id          = 'alma_pay_later';
-			$tmp_gateway->title       = 'Payez en différé avec Alma';
-			$tmp_gateway->description = 'Payez plus tard avec votre carte bancaire';
+            /*
+             * fields "title" and "description" will then be overwritten by filters :
+             * "woocommerce_gateway_title" and "woocommerce_gateway_description".
+             * */
+			$tmp_gateway     = clone $gateway;
+			$tmp_gateway->id = 'alma_pay_later';
 			$new_available_gateways[ 'alma_' . $tmp_gateway->id ] = $tmp_gateway;
 		}
 
-		// Pay in more than four times
+
+		// Add "Pay in more than four times" payment method.
 		$display_payment_method = false;
-		$eligible_plans         = alma_wc_plugin()->get_eligible_plans_keys_for_cart();
 		foreach ( $eligible_plans as $plan ) {
 			if ( $alma_settings->get_installments_count( $plan ) > 4 ) {
 				$display_payment_method = true;
@@ -824,10 +910,8 @@ function alma_woocommerce_available_payment_gateways( $_available_gateways ) {
 			}
 		}
 		if ( $display_payment_method ) {
-			$tmp_gateway              = clone $gateway;
-			$tmp_gateway->id          = 'alma_more_than_four_instalments';
-			$tmp_gateway->title       = 'Etalez vos paiements avec Alma';
-			$tmp_gateway->description = 'Payez en plusieurs fois avec votre carte bancaire';
+			$tmp_gateway     = clone $gateway;
+			$tmp_gateway->id = 'alma_more_than_four_instalments';
 			$new_available_gateways[ 'alma_' . $tmp_gateway->id ] = $tmp_gateway;
 		}
 	}

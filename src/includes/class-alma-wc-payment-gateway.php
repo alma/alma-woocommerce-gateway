@@ -197,6 +197,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				value="<?php echo esc_attr( $plan_key ); ?>"
 				id="<?php echo $gateway_id; ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
 				name="alma_fee_plan"
+                data-default="<?php echo $is_checked ? '1' : '0'; ?>"
 
 				<?php if ( $has_radio_button ) : ?>
 					style="margin-right: 5px;"
