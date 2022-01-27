@@ -251,7 +251,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				$display_payment_field = false;
 
 				if ( 'alma' === $gateway_id ) {
-					if ( in_array( $alma_settings->get_installments_count( $plan ), array( 2, 3, 4 ) ) ) {
+					if ( in_array( $alma_settings->get_installments_count( $plan ), array( 2, 3, 4 ), true) ) {
 						$display_payment_field = true;
 					}
 				} elseif ( 'alma_pay_later' === $gateway_id ) {

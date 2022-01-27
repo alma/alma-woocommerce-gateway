@@ -771,9 +771,8 @@ class Alma_WC_Plugin {
 	/**
 	 * Filter the alma gateway title (visible on checkout page).
 	 *
-	 * @author Gilles Dumas
-	 * @param  string  $title The original title.
-	 * @param  integer $id The payment gateway id.
+	 * @param string  $title The original title.
+	 * @param integer $id The payment gateway id.
 	 * @return string
 	 */
 	public function woocommerce_gateway_title( $title, $id ) {
