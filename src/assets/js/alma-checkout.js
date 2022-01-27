@@ -23,8 +23,20 @@
 			if (typeof payment_method.attr( 'data-already-checked' ) != 'undefined') {
 				$( '#' + payment_method.attr( 'data-already-checked' ) ).prop( 'checked', true ).trigger( 'change' );
 			} else {
-				fee_plans = payment_method.find( 'input[name="alma_fee_plan"]' );
-				fee_plans.first().prop( 'checked', true ).trigger( 'change' );
+				let fee_plans        = payment_method.find( 'input[name="alma_fee_plan"]' );
+				let fee_plan_checked = false;
+				fee_plans.each(
+					function(){
+						if (typeof $( this ).attr( 'data-default' ) !== typeof undefined && $( this ).attr( 'data-default' ) === '1') {
+							$( this ).prop( 'checked', true ).trigger( 'change' );
+							fee_plan_checked = true;
+							return false;
+						}
+					}
+				);
+				if (fee_plan_checked === false) {
+					fee_plans.first().prop( 'checked', true ).trigger( 'change' );
+				}
 			}
 		}
 	);
