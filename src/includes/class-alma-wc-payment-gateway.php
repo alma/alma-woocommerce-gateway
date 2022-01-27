@@ -56,6 +56,9 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			'woocommerce_update_options_payment_gateways_' . $this->id,
 			array( $this, 'process_admin_options' )
 		);
+
+		add_action( 'woocommerce_checkout_process', array( $this, 'woocommerce_checkout_process' ) );
+		add_filter( 'woocommerce_available_payment_gateways', array( $this, 'woocommerce_available_payment_gateways' ), 10, 1 );
 	}
 
 	/**
@@ -195,9 +198,9 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		<input
 				type="<?php echo $has_radio_button ? 'radio' : 'hidden'; ?>"
 				value="<?php echo esc_attr( $plan_key ); ?>"
-				id="<?php echo $gateway_id; ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
+				id="<?php echo esc_attr( $gateway_id ); ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
 				name="alma_fee_plan"
-                data-default="<?php echo $is_checked ? '1' : '0'; ?>"
+				data-default="<?php echo $is_checked ? '1' : '0'; ?>"
 
 				<?php if ( $has_radio_button ) : ?>
 					style="margin-right: 5px;"
@@ -208,7 +211,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		<label
 				class="checkbox"
 				style="margin-right: 10px; display: inline;"
-				for="<?php echo $gateway_id; ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
+				for="<?php echo esc_attr( $gateway_id ); ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
 		>
 			<img src="<?php echo esc_attr( $logo_url ); ?>"
 				style="float: unset !important; width: auto !important; height: 30px !important;  border: none !important; vertical-align: middle; display: inline-block;"
@@ -243,7 +246,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		?>
 		<p>
 			<?php
-			// gilles
 			$alma_settings = new Alma_WC_Settings();
 			foreach ( $eligible_plans as $plan ) {
 				$display_payment_field = false;
@@ -399,7 +401,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	/**
 	 * Render payment plan with dates.
 	 *
-	 * @param string $default_plan Plan key.
+	 * @param integer $gateway_id   Gateway id.
+	 * @param string  $default_plan Plan key.
 	 *
 	 * @return void
 	 */
@@ -785,4 +788,87 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		return $definition;
 	}
+
+	/**
+	 * AJAX when validating the checkout.
+	 * If the payment method used is like "alma_****", then rename it to "alma" and let WC do the payment process.
+	 *
+	 * @return void
+	 */
+	public function woocommerce_checkout_process() {
+		if ( substr( $_POST['payment_method'], 0, 5 ) === 'alma_' ) { // phpcs:ignore
+			$_POST['payment_method'] = 'alma';
+		}
+	}
+
+	/**
+	 * Filter available_gateways to add "alma_pay_later" and "alma_more_than_four_instalments".
+	 *
+	 * @param array $_available_gateways The list of available gateways.
+	 * @author Gilles Dumas
+	 * @return array
+	 */
+	public function woocommerce_available_payment_gateways( $_available_gateways ) {
+
+		if ( is_admin() ) {
+			return $_available_gateways;
+		}
+
+		if ( ! is_checkout() ) {
+			return $_available_gateways;
+		}
+
+		$alma_settings = new Alma_WC_Settings();
+
+		$new_available_gateways = array();
+		foreach ( $_available_gateways as $key => $gateway ) {
+
+			$new_available_gateways[ $key ] = $gateway;
+
+			if ( 'alma' !== $gateway->id ) {
+				break;
+			}
+
+			$eligible_plans = alma_wc_plugin()->get_eligible_plans_keys_for_cart();
+
+			// Add "Alma Pay later" payment method.
+			$display_payment_method = false;
+			foreach ( $eligible_plans as $plan ) {
+				if (
+					$alma_settings->get_installments_count( $plan ) === 1 &&
+					( $alma_settings->get_deferred_days( $plan ) !== 0 ||
+						$alma_settings->get_deferred_months( $plan ) !== 0 )
+				) {
+					$display_payment_method = true;
+					break;
+				}
+			}
+			if ( $display_payment_method ) {
+				/*
+				 * fields "title" and "description" will then be overwritten by filters :
+				 * "woocommerce_gateway_title" and "woocommerce_gateway_description".
+				 */
+				$tmp_gateway     = clone $gateway;
+				$tmp_gateway->id = 'alma_pay_later';
+				$new_available_gateways[ 'alma_' . $tmp_gateway->id ] = $tmp_gateway;
+			}
+
+			// Add "Pay in more than four times" payment method.
+			$display_payment_method = false;
+			foreach ( $eligible_plans as $plan ) {
+				if ( $alma_settings->get_installments_count( $plan ) > 4 ) {
+					$display_payment_method = true;
+					break;
+				}
+			}
+			if ( $display_payment_method ) {
+				$tmp_gateway     = clone $gateway;
+				$tmp_gateway->id = 'alma_more_than_four_instalments';
+				$new_available_gateways[ 'alma_' . $tmp_gateway->id ] = $tmp_gateway;
+			}
+		}
+
+		return $new_available_gateways;
+	}
+
 }

@@ -38,7 +38,7 @@ class Alma_WC_Settings {
 	 *
 	 * @var array
 	 */
-	protected $settings = array();
+	public $settings = array();
 
 	/**
 	 * Flag to indicate setting has been loaded from DB.
@@ -61,25 +61,25 @@ class Alma_WC_Settings {
 	 */
 	public static function default_settings() {
 		return array(
-			'enabled'                               => 'yes',
-			'selected_fee_plan'                     => self::DEFAULT_FEE_PLAN,
-			'enabled_general_3_0_0'                 => 'yes',
-			'title'                                 => __( 'Monthly and Deferred Payments with Alma', 'alma-woocommerce-gateway' ),
-			'description'                           => __( 'Pay in deferred or multiple monthly payments with your credit card.', 'alma-woocommerce-gateway' ),
+			'enabled'                                     => 'yes',
+			'selected_fee_plan'                           => self::DEFAULT_FEE_PLAN,
+			'enabled_general_3_0_0'                       => 'yes',
+			'title'                                       => __( 'Monthly and Deferred Payments with Alma', 'alma-woocommerce-gateway' ),
+			'description'                                 => __( 'Pay in deferred or multiple monthly payments with your credit card.', 'alma-woocommerce-gateway' ),
 			'title_alma_pay_later'                        => __( 'Pay later with Alma', 'alma-woocommerce-gateway' ),
 			'description_alma_pay_later'                  => __( 'Pay later with your credit card', 'alma-woocommerce-gateway' ),
 			'title_alma_more_than_four_instalments'       => __( 'Spread your payments with Alma', 'alma-woocommerce-gateway' ),
 			'description_alma_more_than_four_instalments' => __( 'Pay in several times with your credit card', 'alma-woocommerce-gateway' ),
-			'display_cart_eligibility'              => 'yes',
-			'display_product_eligibility'           => 'yes',
-			'variable_product_price_query_selector' => Alma_WC_Product_Handler::default_variable_price_selector(),
-			'excluded_products_list'                => array(),
-			'cart_not_eligible_message_gift_cards'  => __( 'Some products cannot be paid with monthly or deferred installments', 'alma-woocommerce-gateway' ),
-			'live_api_key'                          => '',
-			'test_api_key'                          => '',
-			'environment'                           => 'test',
-			'debug'                                 => 'yes',
-			'fully_configured'                      => false,
+			'display_cart_eligibility'                    => 'yes',
+			'display_product_eligibility'                 => 'yes',
+			'variable_product_price_query_selector'       => Alma_WC_Product_Handler::default_variable_price_selector(),
+			'excluded_products_list'                      => array(),
+			'cart_not_eligible_message_gift_cards'        => __( 'Some products cannot be paid with monthly or deferred installments', 'alma-woocommerce-gateway' ),
+			'live_api_key'                                => '',
+			'test_api_key'                                => '',
+			'environment'                                 => 'test',
+			'debug'                                       => 'yes',
+			'fully_configured'                            => false,
 		);
 	}
 
@@ -219,7 +219,7 @@ class Alma_WC_Settings {
 	 *
 	 * @return bool
 	 */
-	private function is_plan_enabled( $key ) {
+	public function is_plan_enabled( $key ) {
 		return 'yes' === $this->__get( "enabled_$key" );
 	}
 
@@ -433,7 +433,6 @@ class Alma_WC_Settings {
 	 * @return int
 	 */
 	public function get_installments_count( $key ) {
-		// dump('get_installments_count avec $key = '.$key);
 		return $this->__get( "installments_count_$key" );
 	}
 
