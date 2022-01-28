@@ -10,7 +10,7 @@
 		'change',
 		'input[name="alma_fee_plan"]',
 		function() {
-			if ($( this ).prop( 'checked' ) == true) {
+			if ( $( this ).prop( 'checked' ) ) {
 				$( this ).closest( 'li.wc_payment_method' ).attr( 'data-already-checked', $( this ).attr( 'id' ) );
 			}
 		}
