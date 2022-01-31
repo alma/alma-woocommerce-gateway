@@ -757,7 +757,6 @@ class Alma_WC_Plugin {
 		return $this->eligibilities;
 	}
 
-
 	/**
 	 * Is current cart eligible.
 	 *
@@ -766,7 +765,6 @@ class Alma_WC_Plugin {
 	public function is_cart_eligible() {
 		return count( $this->get_eligible_plans_keys_for_cart() ) > 0;
 	}
-
 
 	/**
 	 * Filter the alma gateway title (visible on checkout page).
@@ -783,37 +781,26 @@ class Alma_WC_Plugin {
 
 		$alma_settings = new Alma_WC_Settings();
 
-		if ( 'alma' === $id ) {
-			$title = $alma_settings->__get( 'title' );
-			if ( ! $title ) {
-				$title = Alma_WC_Settings::default_settings()['title'];
-			}
+		if ( 'alma_pnx' === $id ) {
+			$title = $alma_settings->get_title( 'payment_method_pnx' );
 		}
 
 		if ( 'alma_pay_later' === $id ) {
-			$title = $alma_settings->__get( 'title_alma_pay_later' );
-			if ( ! $title ) {
-				$title = Alma_WC_Settings::default_settings()['title_alma_pay_later'];
-			}
+			$title = $alma_settings->get_title( 'payment_method_pay_later' );
 		}
 
-		if ( 'alma_more_than_four_instalments' === $id ) {
-			$title = $alma_settings->__get( 'title_alma_more_than_four_instalments' );
-			if ( ! $title ) {
-				$title = Alma_WC_Settings::default_settings()['title_alma_more_than_four_instalments'];
-			}
+		if ( 'alma_pnx_plus_4' === $id ) {
+			$title = $alma_settings->get_title( 'payment_method_pnx_plus_4' );
 		}
 
 		return $title;
 	}
 
-
 	/**
 	 * Filter the alma gateway description (visible on checkout page).
 	 *
-	 * @author Gilles Dumas
-	 * @param  string  $description The original description.
-	 * @param  integer $id The payment gateway id.
+	 * @param string  $description The original description.
+	 * @param integer $id The payment gateway id.
 	 * @return string
 	 */
 	public function woocommerce_gateway_description( $description, $id ) {
@@ -825,24 +812,15 @@ class Alma_WC_Plugin {
 		$alma_settings = new Alma_WC_Settings();
 
 		if ( 'alma' === $id ) {
-			$description = $alma_settings->__get( 'description' );
-			if ( ! $description ) {
-				$description = Alma_WC_Settings::default_settings()['description'];
-			}
+			$description = $alma_settings->get_description( 'payment_method_pnx' );
 		}
 
 		if ( 'alma_pay_later' === $id ) {
-			$description = $alma_settings->__get( 'description_alma_pay_later' );
-			if ( ! $description ) {
-				$description = Alma_WC_Settings::default_settings()['description_alma_pay_later'];
-			}
+			$description = $alma_settings->get_description( 'payment_method_pay_later' );
 		}
 
-		if ( 'alma_more_than_four_instalments' === $id ) {
-			$description = $alma_settings->__get( 'description_alma_more_than_four_instalments' );
-			if ( ! $description ) {
-				$description = Alma_WC_Settings::default_settings()['description_alma_more_than_four_instalments'];
-			}
+		if ( 'alma_pnx_plus_4' === $id ) {
+			$description = $alma_settings->get_description( 'payment_method_pnx_plus_4' );
 		}
 
 		return $description;
@@ -860,21 +838,4 @@ class Alma_WC_Plugin {
 		}
 	}
 
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

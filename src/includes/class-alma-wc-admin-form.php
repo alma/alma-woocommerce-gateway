@@ -41,6 +41,7 @@ class Alma_WC_Admin_Form {
 				self::get_instance()->init_debug_fields( $default_settings )
 			);
 		}
+
 		return array_merge(
 			self::get_instance()->init_enabled_field( $default_settings ),
 			self::get_instance()->init_fee_plans_fields( $default_settings ),
@@ -57,7 +58,7 @@ class Alma_WC_Admin_Form {
 	 * @param array   $default_settings as default settings definitions.
 	 * @param bool    $selected if this field is currently selected.
 	 *
-	 * @return array[] as field_form definition
+	 * @return array  as field_form definition
 	 */
 	private function init_fee_plan_fields( FeePlan $fee_plan, $default_settings, $selected ) {
 		$key                   = $fee_plan->getPlanKey();
@@ -253,98 +254,26 @@ class Alma_WC_Admin_Form {
 	 */
 	private function init_general_settings_fields( array $default_settings ) {
 		$general_settings_fields = array(
-			'general_section'  => array(
+			'general_section' => array(
 				'title' => '<hr>' . __( '→ General configuration', 'alma-woocommerce-gateway' ),
 				'type'  => 'title',
 			),
-			'text_fields'      => array(
+			'text_fields'     => array(
 				'title' => __( '<h3 style="text-decoration:underline;">Text fields</h3>', 'alma-woocommerce-gateway' ),
 				'type'  => 'title',
 			),
-
-			'payment_method_1' => array(
-				'title' => __( '<h4 style="color:#777;">Payment method : p2x, p3x, p4x</h4>', 'alma-woocommerce-gateway' ),
-				'type'  => 'title',
-			),
-			'title'            => array(
-				'title'       => __( 'Title', 'alma-woocommerce-gateway' ),
-				'type'        => 'text',
-				'description' => __( 'This controls the payment method name which the user sees during checkout.', 'alma-woocommerce-gateway' ),
-				'default'     => $default_settings['title'],
-				'desc_tip'    => true,
-			),
-			'description'      => array(
-				'title'       => __( 'Description', 'alma-woocommerce-gateway' ),
-				'type'        => 'text',
-				'desc_tip'    => true,
-				'description' => __( 'This controls the payment method description which the user sees during checkout.', 'alma-woocommerce-gateway' ),
-				'default'     => $default_settings['description'],
-			),
 		);
 
-		$alma_settings                       = new Alma_WC_Settings();
-		$fields_pay_later                    = array();
-		$fields_more_than_four_installments  = array();
-		$display_fields_pay_later            = false;
-		$display_more_than_four_installments = false;
+		$fields_pnx = $this->get_custom_fields_payment_method( 'payment_method_pnx', __( 'Payment method : p2x, p3x, p4x', 'alma-woocommerce-gateway' ), $default_settings );
 
-		foreach ( $alma_settings->get_enabled_plans_definitions() as $plan => $definition ) {
-			if ( 0 !== $alma_settings->settings[ 'deferred_days_' . $plan ] || 0 !== $alma_settings->settings[ 'deferred_months_' . $plan ] ) {
-				if ( $alma_settings->is_plan_enabled( $plan ) ) {
-					$display_fields_pay_later = true;
-				}
-			}
-			if ( $alma_settings->settings[ 'installments_count_' . $plan ] > 4 ) {
-				if ( $alma_settings->is_plan_enabled( $plan ) ) {
-					$display_more_than_four_installments = true;
-				}
-			}
+		$fields_pay_later = array();
+		if ( alma_wc_plugin()->settings->has_pay_later() ) {
+			$fields_pay_later = $this->get_custom_fields_payment_method( 'payment_method_pay_later', __( 'Payment method : pay later', 'alma-woocommerce-gateway' ), $default_settings );
 		}
 
-		if ( $display_fields_pay_later ) {
-			$fields_pay_later = array(
-				'payment_method_alma_pay_later' => array(
-					'title' => __( '<h4 style="color:#777;">Payment method : pay later</h4>', 'alma-woocommerce-gateway' ),
-					'type'  => 'title',
-				),
-				'title_alma_pay_later'          => array(
-					'title'       => __( 'Title', 'alma-woocommerce-gateway' ),
-					'type'        => 'text',
-					'description' => __( 'This controls the payment method name which the user sees during checkout.', 'alma-woocommerce-gateway' ),
-					'default'     => $default_settings['title'],
-					'desc_tip'    => true,
-				),
-				'description_alma_pay_later'    => array(
-					'title'       => __( 'Description', 'alma-woocommerce-gateway' ),
-					'type'        => 'text',
-					'desc_tip'    => true,
-					'description' => __( 'This controls the payment method description which the user sees during checkout.', 'alma-woocommerce-gateway' ),
-					'default'     => $default_settings['description'],
-				),
-			);
-		}
-
-		if ( $display_more_than_four_installments ) {
-			$fields_more_than_four_installments = array(
-				'payment_method_alma_more_than_four_installments' => array(
-					'title' => __( '<h4 style="color:#777;">Payment method : pay in more than 4 times</h4>', 'alma-woocommerce-gateway' ),
-					'type'  => 'title',
-				),
-				'title_alma_more_than_four_installments' => array(
-					'title'       => __( 'Title', 'alma-woocommerce-gateway' ),
-					'type'        => 'text',
-					'description' => __( 'This controls the payment method name which the user sees during checkout.', 'alma-woocommerce-gateway' ),
-					'default'     => $default_settings['title'],
-					'desc_tip'    => true,
-				),
-				'description_alma_more_than_four_installments' => array(
-					'title'       => __( 'Description', 'alma-woocommerce-gateway' ),
-					'type'        => 'text',
-					'desc_tip'    => true,
-					'description' => __( 'This controls the payment method description which the user sees during checkout.', 'alma-woocommerce-gateway' ),
-					'default'     => $default_settings['description'],
-				),
-			);
+		$fields_pnx_plus_4 = array();
+		if ( alma_wc_plugin()->settings->has_pnx_plus_4() ) {
+			$fields_pnx_plus_4 = $this->get_custom_fields_payment_method( 'payment_method_pnx_plus_4', __( 'Payment method : more than 4 times', 'alma-woocommerce-gateway' ), $default_settings );
 		}
 
 		$general_settings_fields_end = array(
@@ -384,7 +313,7 @@ class Alma_WC_Admin_Form {
 			),
 		);
 
-		return array_merge( $general_settings_fields, $fields_pay_later, $fields_more_than_four_installments, $general_settings_fields_end );
+		return array_merge( $general_settings_fields, $fields_pnx, $fields_pay_later, $fields_pnx_plus_4, $general_settings_fields_end );
 	}
 
 	/**
@@ -479,7 +408,7 @@ class Alma_WC_Admin_Form {
 		$you_can_offer = '';
 		if ( $fee_plan->isPnXOnly() ) {
 			$you_can_offer = sprintf(
-				// translators: %d: number of installments.
+			// translators: %d: number of installments.
 				__( 'You can offer %1$d-installment payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-woocommerce-gateway' ),
 				$fee_plan->installments_count,
 				$min_amount,
@@ -491,7 +420,7 @@ class Alma_WC_Admin_Form {
 			$deferred_months = $fee_plan->getDeferredMonths();
 			if ( $deferred_days ) {
 				$you_can_offer = sprintf(
-				// translators: %d: number of deferred days.
+					// translators: %d: number of deferred days.
 					__( 'You can offer D+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-woocommerce-gateway' ),
 					$deferred_days,
 					$min_amount,
@@ -500,7 +429,7 @@ class Alma_WC_Admin_Form {
 			}
 			if ( $deferred_months ) {
 				$you_can_offer = sprintf(
-				// translators: %d: number of deferred months.
+					// translators: %d: number of deferred months.
 					__( 'You can offer M+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-woocommerce-gateway' ),
 					$deferred_months,
 					$min_amount,
@@ -573,6 +502,7 @@ class Alma_WC_Admin_Form {
 			}
 			$select_options[ $fee_plan->getPlanKey() ] = $select_label;
 		}
+
 		return $select_options;
 	}
 
@@ -589,6 +519,38 @@ class Alma_WC_Admin_Form {
 		$select_options_keys = array_keys( $select_options );
 
 		return in_array( $selected_fee_plan, $select_options_keys, true ) ? $selected_fee_plan : $select_options_keys[0];
+	}
+
+	/**
+	 * Get custom fields for a payment method.
+	 *
+	 * @param string $payment_method_name The payment method name.
+	 * @param string $title The title.
+	 * @param array  $default_settings The defaults settings.
+	 *
+	 * @return array[]
+	 */
+	private function get_custom_fields_payment_method( $payment_method_name, $title, array $default_settings ) {
+		return array(
+			$payment_method_name                  => array(
+				'title' => sprintf( '<h4 style="color:#777;">%s</h4>', $title ),
+				'type'  => 'title',
+			),
+			'title_' . $payment_method_name       => array(
+				'title'       => __( 'Title', 'alma-woocommerce-gateway' ),
+				'type'        => 'text',
+				'description' => __( 'This controls the payment method name which the user sees during checkout.', 'alma-woocommerce-gateway' ),
+				'default'     => $default_settings[ "title_$payment_method_name" ],
+				'desc_tip'    => true,
+			),
+			'description_' . $payment_method_name => array(
+				'title'       => __( 'Description', 'alma-woocommerce-gateway' ),
+				'type'        => 'text',
+				'desc_tip'    => true,
+				'description' => __( 'This controls the payment method description which the user sees during checkout.', 'alma-woocommerce-gateway' ),
+				'default'     => $default_settings[ "description_$payment_method_name" ],
+			),
+		);
 	}
 
 }

@@ -229,7 +229,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * Custom payment fields.
 	 */
 	public function payment_fields() {
-		echo wp_kses_post( $this->description );
+		echo wp_kses_post( $this->get_description() );
 
 		$gateway_id = $this->id;
 
@@ -250,7 +250,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			foreach ( $eligible_plans as $plan ) {
 				$display_payment_field = false;
 
-				if ( 'alma' === $gateway_id ) {
+				if ( 'alma_pnx' === $gateway_id ) {
 					if ( in_array( $alma_settings->get_installments_count( $plan ), array( 2, 3, 4 ), true ) ) {
 						$display_payment_field = true;
 					}
@@ -262,7 +262,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 					) {
 						$display_payment_field = true;
 					}
-				} elseif ( 'alma_more_than_four_instalments' === $gateway_id ) {
+				} elseif ( 'alma_pnx_plus_4' === $gateway_id ) {
 					if ( $alma_settings->get_installments_count( $plan ) > 4 ) {
 						$display_payment_field = true;
 					}
@@ -802,10 +802,9 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Filter available_gateways to add "alma_pay_later" and "alma_more_than_four_instalments".
+	 * Filter available_gateways to add "alma_pay_later" and "alma_pnx_plus_4".
 	 *
 	 * @param array $_available_gateways The list of available gateways.
-	 * @author Gilles Dumas
 	 * @return array
 	 */
 	public function woocommerce_available_payment_gateways( $_available_gateways ) {
@@ -828,6 +827,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			if ( 'alma' !== $gateway->id ) {
 				break;
 			}
+			$gateway->id = 'alma_pnx';
 
 			$eligible_plans = alma_wc_plugin()->get_eligible_plans_keys_for_cart();
 
@@ -848,9 +848,9 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				 * fields "title" and "description" will then be overwritten by filters :
 				 * "woocommerce_gateway_title" and "woocommerce_gateway_description".
 				 */
-				$tmp_gateway     = clone $gateway;
-				$tmp_gateway->id = 'alma_pay_later';
-				$new_available_gateways[ 'alma_' . $tmp_gateway->id ] = $tmp_gateway;
+				$tmp_gateway                                = clone $gateway;
+				$tmp_gateway->id                            = 'alma_pay_later';
+				$new_available_gateways[ $tmp_gateway->id ] = $tmp_gateway;
 			}
 
 			// Add "Pay in more than four times" payment method.
@@ -862,9 +862,9 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				}
 			}
 			if ( $display_payment_method ) {
-				$tmp_gateway     = clone $gateway;
-				$tmp_gateway->id = 'alma_more_than_four_instalments';
-				$new_available_gateways[ 'alma_' . $tmp_gateway->id ] = $tmp_gateway;
+				$tmp_gateway                                = clone $gateway;
+				$tmp_gateway->id                            = 'alma_pnx_plus_4';
+				$new_available_gateways[ $tmp_gateway->id ] = $tmp_gateway;
 			}
 		}
 

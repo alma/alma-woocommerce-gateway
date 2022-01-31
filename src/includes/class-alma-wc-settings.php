@@ -48,11 +48,53 @@ class Alma_WC_Settings {
 	private $are_settings_loaded = false;
 
 	/**
-	 * Merchant available plans
+	 * Merchant available plans.
 	 *
 	 * @var array<FeePlan>
 	 */
 	private $allowed_fee_plans;
+
+	/**
+	 * Title for method payment "pnx" (p2x, p3x and p4x).
+	 *
+	 * @var string
+	 */
+	private $title_payment_method_pnx;
+
+	/**
+	 * Title for method payment "pay_later" (p+15 or p+30).
+	 *
+	 * @var string
+	 */
+	private $title_payment_method_pay_later;
+
+	/**
+	 * Title for method payment "pnx_plus_4" (pay in more than 4 times).
+	 *
+	 * @var string
+	 */
+	private $title_payment_method_pnx_plus_4;
+
+	/**
+	 * Description for method payment "pnx" (p2x, p3x and p4x).
+	 *
+	 * @var string
+	 */
+	private $description_payment_method_pnx;
+
+	/**
+	 * Description for method payment "pay_later" (p+15 or p+30).
+	 *
+	 * @var string
+	 */
+	private $description_payment_method_pay_later;
+
+	/**
+	 * Description for method payment "pnx_plus_4" (pay in more than 4 times).
+	 *
+	 * @var string
+	 */
+	private $description_payment_method_pnx_plus_4;
 
 	/**
 	 * Get default settings.
@@ -61,25 +103,25 @@ class Alma_WC_Settings {
 	 */
 	public static function default_settings() {
 		return array(
-			'enabled'                                     => 'yes',
-			'selected_fee_plan'                           => self::DEFAULT_FEE_PLAN,
-			'enabled_general_3_0_0'                       => 'yes',
-			'title'                                       => __( 'Monthly and Deferred Payments with Alma', 'alma-woocommerce-gateway' ),
-			'description'                                 => __( 'Pay in deferred or multiple monthly payments with your credit card.', 'alma-woocommerce-gateway' ),
-			'title_alma_pay_later'                        => __( 'Pay later with Alma', 'alma-woocommerce-gateway' ),
-			'description_alma_pay_later'                  => __( 'Pay later with your credit card', 'alma-woocommerce-gateway' ),
-			'title_alma_more_than_four_instalments'       => __( 'Spread your payments with Alma', 'alma-woocommerce-gateway' ),
-			'description_alma_more_than_four_instalments' => __( 'Pay in several times with your credit card', 'alma-woocommerce-gateway' ),
-			'display_cart_eligibility'                    => 'yes',
-			'display_product_eligibility'                 => 'yes',
-			'variable_product_price_query_selector'       => Alma_WC_Product_Handler::default_variable_price_selector(),
-			'excluded_products_list'                      => array(),
-			'cart_not_eligible_message_gift_cards'        => __( 'Some products cannot be paid with monthly or deferred installments', 'alma-woocommerce-gateway' ),
-			'live_api_key'                                => '',
-			'test_api_key'                                => '',
-			'environment'                                 => 'test',
-			'debug'                                       => 'yes',
-			'fully_configured'                            => false,
+			'enabled'                               => 'yes',
+			'selected_fee_plan'                     => self::DEFAULT_FEE_PLAN,
+			'enabled_general_3_0_0'                 => 'yes',
+			'title_payment_method_pnx'              => __( 'Monthly and Deferred Payments with Alma', 'alma-woocommerce-gateway' ),
+			'description_payment_method_pnx'        => __( 'Pay in deferred or multiple monthly payments with your credit card.', 'alma-woocommerce-gateway' ),
+			'title_payment_method_pay_later'        => __( 'Pay later with Alma', 'alma-woocommerce-gateway' ),
+			'description_payment_method_pay_later'  => __( 'Pay later with your credit card', 'alma-woocommerce-gateway' ),
+			'title_payment_method_pnx_plus_4'       => __( 'Spread your payments with Alma', 'alma-woocommerce-gateway' ),
+			'description_payment_method_pnx_plus_4' => __( 'Pay in several times with your credit card', 'alma-woocommerce-gateway' ),
+			'display_cart_eligibility'              => 'yes',
+			'display_product_eligibility'           => 'yes',
+			'variable_product_price_query_selector' => Alma_WC_Product_Handler::default_variable_price_selector(),
+			'excluded_products_list'                => array(),
+			'cart_not_eligible_message_gift_cards'  => __( 'Some products cannot be paid with monthly or deferred installments', 'alma-woocommerce-gateway' ),
+			'live_api_key'                          => '',
+			'test_api_key'                          => '',
+			'environment'                           => 'test',
+			'debug'                                 => 'yes',
+			'fully_configured'                      => false,
 		);
 	}
 
@@ -244,6 +286,36 @@ class Alma_WC_Settings {
 		}
 
 		return $plans;
+	}
+
+	/**
+	 * Get title for a payment method.
+	 *
+	 * @param string $payment_method The payment method.
+	 *
+	 * @return string
+	 */
+	public function get_title( $payment_method ) {
+		$title = $this->__get( "title_$payment_method" );
+		if ( ! $title ) {
+			$title = self::default_settings()[ "title_$payment_method" ];
+		}
+		return $title;
+	}
+
+	/**
+	 * Get description for a payment method.
+	 *
+	 * @param string $payment_method The payment method.
+	 *
+	 * @return string
+	 */
+	public function get_description( $payment_method ) {
+		$description = $this->__get( "description_$payment_method" );
+		if ( ! $description ) {
+			$description = self::default_settings()[ "description_$payment_method" ];
+		}
+		return $description;
 	}
 
 	/**
@@ -447,5 +519,34 @@ class Alma_WC_Settings {
 	protected function is_eligible( $plan, $amount ) {
 		return $amount >= $plan['min_amount'] && $amount <= $plan['max_amount'];
 	}
+
+	/**
+	 * Tells if the marchand has at least one "pay later" payment method enabled in the WC back-office.
+	 *
+	 * @return bool
+	 */
+	public function has_pay_later() {
+		foreach ( $this->get_enabled_plans_definitions() as $plan_definition ) {
+			if ( $plan_definition['deferred_days'] >= 1 || $plan_definition['deferred_months'] >= 1 ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Tells if the marchand has at least one "pnx_plus_4" payment method enabled in the WC back-office.
+	 *
+	 * @return bool
+	 */
+	public function has_pnx_plus_4() {
+		foreach ( $this->get_enabled_plans_definitions() as $plan_definition ) {
+			if ( $plan_definition['installments_count'] > 4 ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 
 }
