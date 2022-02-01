@@ -55,48 +55,6 @@ class Alma_WC_Settings {
 	private $allowed_fee_plans;
 
 	/**
-	 * Title for method payment "pnx" (p2x, p3x and p4x).
-	 *
-	 * @var string
-	 */
-	private $title_payment_method_pnx;
-
-	/**
-	 * Title for method payment "pay_later" (p+15 or p+30).
-	 *
-	 * @var string
-	 */
-	private $title_payment_method_pay_later;
-
-	/**
-	 * Title for method payment "pnx_plus_4" (pay in more than 4 times).
-	 *
-	 * @var string
-	 */
-	private $title_payment_method_pnx_plus_4;
-
-	/**
-	 * Description for method payment "pnx" (p2x, p3x and p4x).
-	 *
-	 * @var string
-	 */
-	private $description_payment_method_pnx;
-
-	/**
-	 * Description for method payment "pay_later" (p+15 or p+30).
-	 *
-	 * @var string
-	 */
-	private $description_payment_method_pay_later;
-
-	/**
-	 * Description for method payment "pnx_plus_4" (pay in more than 4 times).
-	 *
-	 * @var string
-	 */
-	private $description_payment_method_pnx_plus_4;
-
-	/**
 	 * Get default settings.
 	 *
 	 * @return array

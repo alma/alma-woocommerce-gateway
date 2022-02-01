@@ -226,7 +226,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Custom payment fields.
+	 * Custom payment fields for a payment gateway.
+	 * (We have three payment gateways : "alma_pnx", "alma_pay_later", and "alma_pnx_plus_4")
 	 */
 	public function payment_fields() {
 		echo wp_kses_post( $this->get_description() );
@@ -235,7 +236,12 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		$eligible_plans = alma_wc_plugin()->get_eligible_plans_keys_for_cart();
 		usort( $eligible_plans, 'alma_wc_usort_plans_keys' );
-		$default_plan      = self::get_default_plan( $eligible_plans );
+		$default_plan = self::get_default_plan( $eligible_plans );
+
+		/*
+		 Gilles : attention ceci ne fonctionne pas car pour le p10x par exemple on n'a que celui-là
+		mais la phrase s'affiche quand même. Il faut refaire ceci autrement
+		*/
 		$is_multiple_plans = count( $eligible_plans ) > 1;
 
 		if ( $is_multiple_plans ) {
@@ -246,30 +252,27 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		?>
 		<p>
 			<?php
-			$alma_settings = new Alma_WC_Settings();
-			foreach ( $eligible_plans as $plan ) {
-				$display_payment_field = false;
+			foreach ( $eligible_plans as $plan_key ) {
+				$display_payment_field = $this->should_i_display_plan_for_this_gateway( $plan_key, $gateway_id );
 
-				if ( 'alma_pnx' === $gateway_id ) {
-					if ( in_array( $alma_settings->get_installments_count( $plan ), array( 2, 3, 4 ), true ) ) {
-						$display_payment_field = true;
-					}
-				} elseif ( 'alma_pay_later' === $gateway_id ) {
-					if (
-						$alma_settings->get_installments_count( $plan ) === 1 &&
-						( $alma_settings->get_deferred_days( $plan ) !== 0 ||
-						$alma_settings->get_deferred_months( $plan ) !== 0 )
-					) {
-						$display_payment_field = true;
-					}
-				} elseif ( 'alma_pnx_plus_4' === $gateway_id ) {
-					if ( $alma_settings->get_installments_count( $plan ) > 4 ) {
-						$display_payment_field = true;
-					}
-				}
+				// if ( 'alma_pnx' === $gateway_id ) {
+				// $display_payment_field = $this->should_i_display_plan($gateway_id, $plan);
+				// } elseif ( 'alma_pay_later' === $gateway_id ) {
+				// if (
+				// $alma_settings->get_installments_count( $plan ) === 1 &&
+				// ( $alma_settings->get_deferred_days( $plan ) !== 0 ||
+				// $alma_settings->get_deferred_months( $plan ) !== 0 )
+				// ) {
+				// $display_payment_field = true;
+				// }
+				// } elseif ( 'alma_pnx_plus_4' === $gateway_id ) {
+				// if ( $alma_settings->get_installments_count( $plan ) > 4 ) {
+				// $display_payment_field = true;
+				// }
+				// }!
 
-				if ( $display_payment_field ) {
-					$this->payment_field( $gateway_id, $plan, $is_multiple_plans, $plan === $default_plan );
+				if ( $this->should_i_display_plan_for_this_gateway( $plan_key, $gateway_id ) ) {
+					$this->payment_field( $gateway_id, $plan_key, $is_multiple_plans, $plan_key === $default_plan );
 				}
 			}
 
@@ -277,6 +280,29 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			?>
 		</p>
 		<?php
+	}
+
+	/**
+	 * Tells if we should we display this plan for a gateway.
+	 *
+	 * @param string $plan_key Plan key.
+	 * @param string $gateway_id Gateway id.
+	 *
+	 * @return bool
+	 */
+	public function should_i_display_plan_for_this_gateway( $plan_key, $gateway_id ) {
+		$alma_settings = alma_wc_plugin()->settings;
+		switch ( $gateway_id ) {
+			case 'alma_pnx':
+				return in_array( $alma_settings->get_installments_count( $plan_key ), array( 2, 3, 4 ), true );
+			case 'alma_pay_later':
+				return ( $alma_settings->get_installments_count( $plan_key ) === 1 &&
+				( $alma_settings->get_deferred_days( $plan_key ) !== 0 ||
+				$alma_settings->get_deferred_months( $plan_key ) !== 0 ) );
+			case 'alma_pnx_plus_4':
+				return ( $alma_settings->get_installments_count( $plan_key ) > 4 );
+		}
+		return false;
 	}
 
 	/**
@@ -817,7 +843,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			return $_available_gateways;
 		}
 
-		$alma_settings = new Alma_WC_Settings();
+		$alma_settings = alma_wc_plugin()->settings;
 
 		$new_available_gateways = array();
 		foreach ( $_available_gateways as $key => $gateway ) {

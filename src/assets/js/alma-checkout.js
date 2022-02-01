@@ -23,8 +23,8 @@
 			if (typeof payment_method.attr( 'data-already-checked' ) != 'undefined') {
 				$( '#' + payment_method.attr( 'data-already-checked' ) ).prop( 'checked', true ).trigger( 'change' );
 			} else {
-				let fee_plans        = payment_method.find( 'input[name="alma_fee_plan"]' );
-				let fee_plan_checked = false;
+				var fee_plans        = payment_method.find( 'input[name="alma_fee_plan"]' );
+				var fee_plan_checked = false;
 				fee_plans.each(
 					function(){
 						if (typeof $( this ).attr( 'data-default' ) !== typeof undefined && $( this ).attr( 'data-default' ) === '1') {
