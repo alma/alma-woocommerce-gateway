@@ -274,17 +274,21 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 */
 	public function should_i_display_plan_for_this_gateway( $plan_key, $gateway_id ) {
 		$alma_settings = alma_wc_plugin()->settings;
+		$should_i      = false;
 		switch ( $gateway_id ) {
 			case 'alma_pnx':
-				return in_array( $alma_settings->get_installments_count( $plan_key ), array( 2, 3, 4 ), true );
+				$should_i = in_array( $alma_settings->get_installments_count( $plan_key ), array( 2, 3, 4 ), true );
+				break;
 			case 'alma_pay_later':
-				return ( $alma_settings->get_installments_count( $plan_key ) === 1 &&
+				$should_i = ( $alma_settings->get_installments_count( $plan_key ) === 1 &&
 						 ( $alma_settings->get_deferred_days( $plan_key ) !== 0 ||
 						   $alma_settings->get_deferred_months( $plan_key ) !== 0 ) );
+				break;
 			case 'alma_pnx_plus_4':
-				return ( $alma_settings->get_installments_count( $plan_key ) > 4 );
+				$should_i = ( $alma_settings->get_installments_count( $plan_key ) > 4 );
+				break;
 		}
-		return false;
+		return $should_i;
 	}
 
 	/**
@@ -824,8 +828,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		if ( ! is_checkout() ) {
 			return $_available_gateways;
 		}
-
-		$alma_settings = alma_wc_plugin()->settings;
 
 		$new_available_gateways = array();
 		foreach ( $_available_gateways as $key => $gateway ) {
