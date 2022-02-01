@@ -811,7 +811,7 @@ class Alma_WC_Plugin {
 
 		$alma_settings = new Alma_WC_Settings();
 
-		if ( 'alma' === $id ) {
+		if ( 'alma_pnx' === $id ) {
 			$description = $alma_settings->get_description( 'payment_method_pnx' );
 		}
 

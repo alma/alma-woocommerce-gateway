@@ -202,11 +202,11 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				name="alma_fee_plan"
 				data-default="<?php echo $is_checked ? '1' : '0'; ?>"
 
-				<?php if ( $has_radio_button ) : ?>
-					style="margin-right: 5px;"
-					<?php echo $is_checked ? 'checked' : ''; ?>
-					onchange="if (this.checked) { jQuery( '<?php echo esc_js( $plan_class ); ?>' ).hide(); jQuery(this).closest('li.wc_payment_method').find( '<?php echo esc_js( $plan_id ); ?>' ).show() }"
-				<?php endif; ?>
+			<?php if ( $has_radio_button ) : ?>
+				style="margin-right: 5px;"
+				<?php echo $is_checked ? 'checked' : ''; ?>
+				onchange="if (this.checked) { jQuery( '<?php echo esc_js( $plan_class ); ?>' ).hide(); jQuery(this).closest('li.wc_payment_method').find( '<?php echo esc_js( $plan_id ); ?>' ).show() }"
+			<?php endif; ?>
 		>
 		<label
 				class="checkbox"
@@ -214,8 +214,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				for="<?php echo esc_attr( $gateway_id ); ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
 		>
 			<img src="<?php echo esc_attr( $logo_url ); ?>"
-				style="float: unset !important; width: auto !important; height: 30px !important;  border: none !important; vertical-align: middle; display: inline-block;"
-				alt="
+				 style="float: unset !important; width: auto !important; height: 30px !important;  border: none !important; vertical-align: middle; display: inline-block;"
+				 alt="
 					<?php
 					// translators: %s: plan_key alt image.
 					echo esc_html( sprintf( __( '%s installments', 'alma-woocommerce-gateway' ), $plan_key ) );
@@ -240,7 +240,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		/*
 		 Gilles : attention ceci ne fonctionne pas car pour le p10x par exemple on n'a que celui-là
-		mais la phrase s'affiche quand même. Il faut refaire ceci autrement
+		mais la phrase s'affiche quand même. Il faut revoir ceci autrement.
 		*/
 		$is_multiple_plans = count( $eligible_plans ) > 1;
 
@@ -253,24 +253,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		<p>
 			<?php
 			foreach ( $eligible_plans as $plan_key ) {
-				$display_payment_field = $this->should_i_display_plan_for_this_gateway( $plan_key, $gateway_id );
-
-				// if ( 'alma_pnx' === $gateway_id ) {
-				// $display_payment_field = $this->should_i_display_plan($gateway_id, $plan);
-				// } elseif ( 'alma_pay_later' === $gateway_id ) {
-				// if (
-				// $alma_settings->get_installments_count( $plan ) === 1 &&
-				// ( $alma_settings->get_deferred_days( $plan ) !== 0 ||
-				// $alma_settings->get_deferred_months( $plan ) !== 0 )
-				// ) {
-				// $display_payment_field = true;
-				// }
-				// } elseif ( 'alma_pnx_plus_4' === $gateway_id ) {
-				// if ( $alma_settings->get_installments_count( $plan ) > 4 ) {
-				// $display_payment_field = true;
-				// }
-				// }!
-
 				if ( $this->should_i_display_plan_for_this_gateway( $plan_key, $gateway_id ) ) {
 					$this->payment_field( $gateway_id, $plan_key, $is_multiple_plans, $plan_key === $default_plan );
 				}
@@ -283,7 +265,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Tells if we should we display this plan for a gateway.
+	 * Tells if we should we display this plan for this gateway. (we have three alma payment gateways)
 	 *
 	 * @param string $plan_key Plan key.
 	 * @param string $gateway_id Gateway id.
@@ -297,8 +279,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				return in_array( $alma_settings->get_installments_count( $plan_key ), array( 2, 3, 4 ), true );
 			case 'alma_pay_later':
 				return ( $alma_settings->get_installments_count( $plan_key ) === 1 &&
-				( $alma_settings->get_deferred_days( $plan_key ) !== 0 ||
-				$alma_settings->get_deferred_months( $plan_key ) !== 0 ) );
+						 ( $alma_settings->get_deferred_days( $plan_key ) !== 0 ||
+						   $alma_settings->get_deferred_months( $plan_key ) !== 0 ) );
 			case 'alma_pnx_plus_4':
 				return ( $alma_settings->get_installments_count( $plan_key ) > 4 );
 		}
@@ -438,15 +420,15 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			foreach ( $eligibilities as $key => $eligibility ) {
 				?>
 				<div
-					id="<?php echo esc_attr( sprintf( self::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $key ) ); ?>"
-					class="<?php echo esc_attr( self::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS ); ?>"
-					data-gateway-id="<?php echo esc_attr( $gateway_id ); ?>"
-					style="
-						margin: 0 auto;
+						id="<?php echo esc_attr( sprintf( self::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $key ) ); ?>"
+						class="<?php echo esc_attr( self::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS ); ?>"
+						data-gateway-id="<?php echo esc_attr( $gateway_id ); ?>"
+						style="
+								margin: 0 auto;
 						<?php if ( $key !== $default_plan ) { ?>
-						display: none;
+								display: none;
 						<?php	} ?>
-					"
+								"
 				>
 					<?php
 					$plans_count = count( $eligibility->paymentPlan ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName
@@ -456,24 +438,24 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 						?>
 						<!--suppress CssReplaceWithShorthandSafely -->
 						<p style="
-							display: flex;
-							justify-content: space-between;
-							padding: 4px 0;
-							margin: 4px 0;
-							<?php if ( $plan_index === $plans_count || $display_customer_fee ) { ?>
-									padding-bottom: 0;
-									margin-bottom: 0;
-							<?php	} else { ?>
-									border-bottom: 1px solid lightgrey;
-							<?php	} ?>
-						">
+								display: flex;
+								justify-content: space-between;
+								padding: 4px 0;
+								margin: 4px 0;
+						<?php if ( $plan_index === $plans_count || $display_customer_fee ) { ?>
+								padding-bottom: 0;
+								margin-bottom: 0;
+						<?php	} else { ?>
+								border-bottom: 1px solid lightgrey;
+						<?php	} ?>
+								">
 							<?php if ( $eligibility->isPayLaterOnly() ) { ?>
 								<?php $justify_fees = 'left'; ?>
 								<span>
 									<?php
 									echo wp_kses_post(
 										sprintf(
-											// translators: %1$s => today_amount (0), %2$s => total_amount, %3$s => i18n formatted due_date.
+										// translators: %1$s => today_amount (0), %2$s => total_amount, %3$s => i18n formatted due_date.
 											__( '%1$s today then %2$s on %3$s', 'alma-woocommerce-gateway' ),
 											alma_wc_format_price_from_cents( 0 ),
 											alma_wc_format_price_from_cents( $step['total_amount'] ),
@@ -487,15 +469,15 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 								<span><?php echo esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) ); ?></span>
 								<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $step['total_amount'] ) ); ?></span>
 							<?php } ?>
-							</p>
-							<?php if ( $display_customer_fee ) { ?>
+						</p>
+						<?php if ( $display_customer_fee ) { ?>
 							<p style="
-								display: flex;
-								justify-content: <?php echo esc_attr( $justify_fees ); ?>;
-								padding: 0 0 4px 0;
-								margin: 0 0 4px 0;
-								border-bottom: 1px solid lightgrey;
-							">
+									display: flex;
+									justify-content: <?php echo esc_attr( $justify_fees ); ?>;
+									padding: 0 0 4px 0;
+									margin: 0 0 4px 0;
+									border-bottom: 1px solid lightgrey;
+									">
 								<span><?php echo esc_html__( 'Included fees:', 'alma-woocommerce-gateway' ); ?> <?php echo wp_kses_post( alma_wc_format_price_from_cents( $step['customer_fee'] ) ); ?></span>
 							</p>
 						<?php } ?>
@@ -562,7 +544,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 							<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $eligibility->getCustomerTotalCostAmount() + $cart->get_total() ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName ?></span>
 						</p>
 
-							<?php
+						<?php
 					}
 					?>
 				</div>
@@ -650,7 +632,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		<?php if ( ! empty( $data['description'] ) ) : ?>
 			<div class="<?php echo esc_attr( $data['description_class'] ); ?>" style="<?php echo esc_attr( $data['description_css'] ); ?>"><?php echo wp_kses_post( $data['description'] ); ?></div>
 		<?php endif; ?>
-		<table class="form-table <?php echo esc_attr( $data['table_class'] ); ?>" style="<?php echo esc_attr( $data['table_css'] ); ?>">
+	<table class="form-table <?php echo esc_attr( $data['table_class'] ); ?>" style="<?php echo esc_attr( $data['table_css'] ); ?>">
 		<?php
 
 		return ob_get_clean();
@@ -852,19 +834,17 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 			if ( 'alma' !== $gateway->id ) {
 				break;
+			} else {
+				$new_available_gateways[ $key ]->id = 'alma_pnx';
 			}
-			$gateway->id = 'alma_pnx';
 
 			$eligible_plans = alma_wc_plugin()->get_eligible_plans_keys_for_cart();
 
 			// Add "Alma Pay later" payment method.
 			$display_payment_method = false;
-			foreach ( $eligible_plans as $plan ) {
-				if (
-					$alma_settings->get_installments_count( $plan ) === 1 &&
-					( $alma_settings->get_deferred_days( $plan ) !== 0 ||
-						$alma_settings->get_deferred_months( $plan ) !== 0 )
-				) {
+			$new_gateway_id         = 'alma_pay_later';
+			foreach ( $eligible_plans as $plan_key ) {
+				if ( $this->should_i_display_plan_for_this_gateway( $plan_key, $new_gateway_id ) ) {
 					$display_payment_method = true;
 					break;
 				}
@@ -875,21 +855,22 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				 * "woocommerce_gateway_title" and "woocommerce_gateway_description".
 				 */
 				$tmp_gateway                                = clone $gateway;
-				$tmp_gateway->id                            = 'alma_pay_later';
+				$tmp_gateway->id                            = $new_gateway_id;
 				$new_available_gateways[ $tmp_gateway->id ] = $tmp_gateway;
 			}
 
 			// Add "Pay in more than four times" payment method.
 			$display_payment_method = false;
-			foreach ( $eligible_plans as $plan ) {
-				if ( $alma_settings->get_installments_count( $plan ) > 4 ) {
+			$new_gateway_id         = 'alma_pnx_plus_4';
+			foreach ( $eligible_plans as $plan_key ) {
+				if ( $this->should_i_display_plan_for_this_gateway( $plan_key, $new_gateway_id ) ) {
 					$display_payment_method = true;
 					break;
 				}
 			}
 			if ( $display_payment_method ) {
 				$tmp_gateway                                = clone $gateway;
-				$tmp_gateway->id                            = 'alma_pnx_plus_4';
+				$tmp_gateway->id                            = $new_gateway_id;
 				$new_available_gateways[ $tmp_gateway->id ] = $tmp_gateway;
 			}
 		}
