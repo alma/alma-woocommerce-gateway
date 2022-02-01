@@ -274,7 +274,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 */
 	public function should_i_display_plan_for_this_gateway( $plan_key, $gateway_id ) {
 		$alma_settings = alma_wc_plugin()->settings;
-		$should_i      = false;
 		switch ( $gateway_id ) {
 			case 'alma_pnx':
 				$should_i = in_array( $alma_settings->get_installments_count( $plan_key ), array( 2, 3, 4 ), true );
@@ -286,6 +285,9 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				break;
 			case 'alma_pnx_plus_4':
 				$should_i = ( $alma_settings->get_installments_count( $plan_key ) > 4 );
+				break;
+			default:
+				$should_i = false;
 				break;
 		}
 		return $should_i;
