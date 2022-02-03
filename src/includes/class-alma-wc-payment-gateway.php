@@ -265,7 +265,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Tells if we should we display this plan for this gateway. (we have three alma payment gateways)
+	 * Tells if we should display this plan for this gateway. (we have three alma payment gateways)
 	 *
 	 * @param string $plan_key Plan key.
 	 * @param string $gateway_id Gateway id.
@@ -842,43 +842,57 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				$new_available_gateways[ $key ]->id = 'alma_pnx';
 			}
 
-			$eligible_plans = alma_wc_plugin()->get_eligible_plans_keys_for_cart();
-
-			// Add "Alma Pay later" payment method.
-			$display_payment_method = false;
-			$new_gateway_id         = 'alma_pay_later';
-			foreach ( $eligible_plans as $plan_key ) {
-				if ( $this->should_i_display_plan_for_this_gateway( $plan_key, $new_gateway_id ) ) {
-					$display_payment_method = true;
-					break;
-				}
-			}
-			if ( $display_payment_method ) {
-				/*
-				 * fields "title" and "description" will then be overwritten by filters :
-				 * "woocommerce_gateway_title" and "woocommerce_gateway_description".
-				 */
-				$tmp_gateway                                = clone $gateway;
-				$tmp_gateway->id                            = $new_gateway_id;
-				$new_available_gateways[ $tmp_gateway->id ] = $tmp_gateway;
-			}
-
-			// Add "Pay in more than four times" payment method.
-			$display_payment_method = false;
-			$new_gateway_id         = 'alma_pnx_plus_4';
-			foreach ( $eligible_plans as $plan_key ) {
-				if ( $this->should_i_display_plan_for_this_gateway( $plan_key, $new_gateway_id ) ) {
-					$display_payment_method = true;
-					break;
-				}
-			}
-			if ( $display_payment_method ) {
-				$tmp_gateway                                = clone $gateway;
-				$tmp_gateway->id                            = $new_gateway_id;
-				$new_available_gateways[ $tmp_gateway->id ] = $tmp_gateway;
-			}
+			$new_available_gateways = $this->set_new_available_gateways( $new_available_gateways, $gateway );
 		}
 
+		return $new_available_gateways;
+	}
+
+	/**
+	 * Add two alma payment gateways if needed (pay_later and pnx_plus_4)
+	 *
+	 * @param array  $new_available_gateways List of payment gateways.
+	 * @param object $gateway Alma WC payment gateway.
+	 *
+	 * @return array
+	 */
+	private function set_new_available_gateways( array $new_available_gateways, $gateway ) {
+
+		$eligible_plans = alma_wc_plugin()->get_eligible_plans_keys_for_cart();
+
+		// Add "Alma Pay later" payment method.
+		$display_payment_method = false;
+		$new_gateway_id         = 'alma_pay_later';
+		foreach ( $eligible_plans as $plan_key ) {
+			if ( $this->should_i_display_plan_for_this_gateway( $plan_key, $new_gateway_id ) ) {
+				$display_payment_method = true;
+				break;
+			}
+		}
+		if ( $display_payment_method ) {
+			/*
+			 * fields "title" and "description" will then be overwritten by filters :
+			 * "woocommerce_gateway_title" and "woocommerce_gateway_description".
+			 */
+			$tmp_gateway                                = clone $gateway;
+			$tmp_gateway->id                            = $new_gateway_id;
+			$new_available_gateways[ $tmp_gateway->id ] = $tmp_gateway;
+		}
+
+		// Add "Pay in more than four times" payment method.
+		$display_payment_method = false;
+		$new_gateway_id         = 'alma_pnx_plus_4';
+		foreach ( $eligible_plans as $plan_key ) {
+			if ( $this->should_i_display_plan_for_this_gateway( $plan_key, $new_gateway_id ) ) {
+				$display_payment_method = true;
+				break;
+			}
+		}
+		if ( $display_payment_method ) {
+			$tmp_gateway                                = clone $gateway;
+			$tmp_gateway->id                            = $new_gateway_id;
+			$new_available_gateways[ $tmp_gateway->id ] = $tmp_gateway;
+		}
 		return $new_available_gateways;
 	}
 
