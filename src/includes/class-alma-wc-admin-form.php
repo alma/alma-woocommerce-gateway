@@ -259,12 +259,12 @@ class Alma_WC_Admin_Form {
 				'type'  => 'title',
 			),
 			'text_fields'     => array(
-				'title' => __( '<h3 style="text-decoration:underline;">Text fields</h3>', 'alma-woocommerce-gateway' ),
+				'title' => __( '<p style="font-weight:normal;">Edit the text displayed when choosing the payment method in your checkout.</p>', 'alma-woocommerce-gateway' ),
 				'type'  => 'title',
 			),
 		);
 
-		$fields_pnx = $this->get_custom_fields_payment_method( 'payment_method_pnx', __( 'Payment method : p2x, p3x, p4x', 'alma-woocommerce-gateway' ), $default_settings );
+		$fields_pnx = $this->get_custom_fields_payment_method( 'payment_method_pnx', __( 'Payment method: pay in 2, 3 or 4 times', 'alma-woocommerce-gateway' ), $default_settings );
 
 		$fields_pay_later = array();
 		if ( alma_wc_plugin()->settings->has_pay_later() ) {
