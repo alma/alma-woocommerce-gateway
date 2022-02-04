@@ -264,16 +264,16 @@ class Alma_WC_Admin_Form {
 			),
 		);
 
-		$fields_pnx = $this->get_custom_fields_payment_method( 'payment_method_pnx', __( 'Payment method: pay in 2, 3 or 4 times', 'alma-woocommerce-gateway' ), $default_settings );
+		$fields_pnx = $this->get_custom_fields_payment_method( 'payment_method_pnx', __( 'Payments in 2, 3 and 4 installments:', 'alma-woocommerce-gateway' ), $default_settings );
 
 		$fields_pay_later = array();
 		if ( alma_wc_plugin()->settings->has_pay_later() ) {
-			$fields_pay_later = $this->get_custom_fields_payment_method( 'payment_method_pay_later', __( 'Payment method : pay later', 'alma-woocommerce-gateway' ), $default_settings );
+			$fields_pay_later = $this->get_custom_fields_payment_method( 'payment_method_pay_later', __( 'Deferred Payments:', 'alma-woocommerce-gateway' ), $default_settings );
 		}
 
 		$fields_pnx_plus_4 = array();
 		if ( alma_wc_plugin()->settings->has_pnx_plus_4() ) {
-			$fields_pnx_plus_4 = $this->get_custom_fields_payment_method( 'payment_method_pnx_plus_4', __( 'Payment method : more than 4 times', 'alma-woocommerce-gateway' ), $default_settings );
+			$fields_pnx_plus_4 = $this->get_custom_fields_payment_method( 'payment_method_pnx_plus_4', __( 'Payments in more than 4 installments:', 'alma-woocommerce-gateway' ), $default_settings );
 		}
 
 		$general_settings_fields_end = array(
@@ -533,7 +533,7 @@ class Alma_WC_Admin_Form {
 	private function get_custom_fields_payment_method( $payment_method_name, $title, array $default_settings ) {
 		return array(
 			$payment_method_name                  => array(
-				'title' => sprintf( '<h4 style="color:#777;">%s</h4>', $title ),
+				'title' => sprintf( '<h4 style="color:#777;font-size:1.15em;">%s</h4>', $title ),
 				'type'  => 'title',
 			),
 			'title_' . $payment_method_name       => array(

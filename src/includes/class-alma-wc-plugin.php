@@ -779,7 +779,7 @@ class Alma_WC_Plugin {
 			return $title;
 		}
 
-		$alma_settings = new Alma_WC_Settings();
+		$alma_settings = alma_wc_plugin()->settings;
 
 		if ( 'alma' === $id ) {
 			$title = $alma_settings->get_title( 'payment_method_pnx' );
@@ -809,7 +809,7 @@ class Alma_WC_Plugin {
 			return $description;
 		}
 
-		$alma_settings = new Alma_WC_Settings();
+		$alma_settings = alma_wc_plugin()->settings;
 
 		if ( 'alma' === $id ) {
 			$description = $alma_settings->get_description( 'payment_method_pnx' );
