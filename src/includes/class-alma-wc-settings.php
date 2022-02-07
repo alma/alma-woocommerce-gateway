@@ -60,16 +60,17 @@ class Alma_WC_Settings {
 	 * @return array
 	 */
 	public static function default_settings() {
+		$payment_methods_description = __( 'Fast and secure payment by credit card', 'alma-woocommerce-gateway' );
 		return array(
 			'enabled'                               => 'yes',
 			'selected_fee_plan'                     => self::DEFAULT_FEE_PLAN,
 			'enabled_general_3_0_0'                 => 'yes',
 			'title_payment_method_pnx'              => __( 'Pay in installments with Alma', 'alma-woocommerce-gateway' ),
-			'description_payment_method_pnx'        => __( 'Fast and secure payment by credit card', 'alma-woocommerce-gateway' ),
+			'description_payment_method_pnx'        => $payment_methods_description,
 			'title_payment_method_pay_later'        => __( 'Buy now, Pay later with Alma', 'alma-woocommerce-gateway' ),
-			'description_payment_method_pay_later'  => __( 'Fast and secure payment by credit card', 'alma-woocommerce-gateway' ),
+			'description_payment_method_pay_later'  => $payment_methods_description,
 			'title_payment_method_pnx_plus_4'       => __( 'Spread your payments with Alma', 'alma-woocommerce-gateway' ),
-			'description_payment_method_pnx_plus_4' => __( 'Fast and secure payment by credit card', 'alma-woocommerce-gateway' ),
+			'description_payment_method_pnx_plus_4' => $payment_methods_description,
 			'display_cart_eligibility'              => 'yes',
 			'display_product_eligibility'           => 'yes',
 			'variable_product_price_query_selector' => Alma_WC_Product_Handler::default_variable_price_selector(),
