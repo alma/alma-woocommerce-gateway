@@ -421,99 +421,38 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 */
 	private function render_payment_plan( $gateway_id, $default_plan ) {
 		$eligibilities = alma_wc_plugin()->get_cart_eligibilities();
-		if ( $eligibilities ) {
-			foreach ( $eligibilities as $key => $eligibility ) {
-				?>
-				<div
-						id="<?php echo esc_attr( sprintf( self::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $key ) ); ?>"
-						class="<?php echo esc_attr( self::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS ); ?>"
-						data-gateway-id="<?php echo esc_attr( $gateway_id ); ?>"
-						style="
-								margin: 0 auto;
-						<?php if ( $key !== $default_plan ) { ?>
-								display: none;
-						<?php	} ?>
-								"
-				>
-					<?php
-					$plans_count = count( $eligibility->paymentPlan ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName
-					$plan_index  = 1;
-
-					$this->render_plan( $eligibility );
-
-					if ( $eligibility->getInstallmentsCount() >= 5 ) {
-						$cart = new Alma_WC_Model_Cart();
-						?>
-						<p style="
-							display: flex;
-							justify-content: left;
-							padding: 20px 0 4px 0;
-							margin: 4px 0;
-							font-size: 1.8rem;
-							font-weight: bold;
-							border-top: 1px solid lightgrey;
-						">
-							<span><?php echo esc_html__( 'Your credit', 'alma-woocommerce-gateway' ); ?></span>
-						</p>
-						<p style="
-								display: flex;
-								justify-content: space-between;
-								padding: 4px 0;
-								margin: 4px 0;
-								border-bottom: 1px solid lightgrey;
-							">
-							<span><?php echo esc_html__( 'Your cart:', 'alma-woocommerce-gateway' ); ?></span>
-							<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $cart->get_total() ) ); ?></span>
-						</p>
-						<p style="
-								display: flex;
-								justify-content: space-between;
-								padding: 4px 0;
-								margin: 4px 0;
-								border-bottom: 1px solid lightgrey;
-							">
-							<span><?php echo esc_html__( 'Credit cost:', 'alma-woocommerce-gateway' ); ?></span>
-							<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $eligibility->customerTotalCostAmount ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName ?></span>
-						</p>
-						<?php
-						$annual_interest_rate = $eligibility->getAnnualInterestRate();
-						if ( ! is_null( $annual_interest_rate ) && $annual_interest_rate > 0 ) {
-							?>
-							<p style="
-								display: flex;
-								justify-content: space-between;
-								padding: 4px 0;
-								margin: 4px 0;
-								border-bottom: 1px solid lightgrey;
-							">
-								<span><?php echo esc_html__( 'Annual Interest Rate:', 'alma-woocommerce-gateway' ); ?></span>
-								<span><?php echo wp_kses_post( alma_wc_format_percent_from_bps( $annual_interest_rate ) ); ?></span>
-							</p>
-						<?php } ?>
-						<p style="
-								display: flex;
-								justify-content: space-between;
-								padding: 4px 0 0 0;
-								margin: 4px 0 0 0;
-								font-weight: bold;
-							">
-							<span><?php echo esc_html__( 'Total:', 'alma-woocommerce-gateway' ); ?></span>
-							<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $eligibility->getCustomerTotalCostAmount() + $cart->get_total() ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName ?></span>
-						</p>
-
-						<?php
-					}
-					?>
-				</div>
+		if ( ! $eligibilities ) {
+			return;
+		}
+		foreach ( $eligibilities as $key => $eligibility ) {
+			?>
+			<div
+					id="<?php echo esc_attr( sprintf( self::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $key ) ); ?>"
+					class="<?php echo esc_attr( self::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS ); ?>"
+					data-gateway-id="<?php echo esc_attr( $gateway_id ); ?>"
+					style="
+							margin: 0 auto;
+					<?php if ( $key !== $default_plan ) { ?>
+							display: none;
+					<?php	} ?>
+							"
+			>
 				<?php
-			}
+				$this->render_plan( $eligibility );
+
+				if ( $eligibility->getInstallmentsCount() > 4 ) {
+					$this->render_payments_timeline( $eligibility );
+				}
+				?>
+			</div>
+			<?php
 		}
 	}
 
 	/**
 	 * Render plan
 	 *
-	 * @param object $eligibility The egibility.
+	 * @param object $eligibility The eligibility object.
 	 *
 	 * @return void
 	 */
@@ -575,6 +514,78 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			$plan_index++;
 		} // end foreach
 	}
+
+	/**
+	 * Render payments timeline for p>4x.
+	 *
+	 * @param object $eligibility The eligibility object.
+	 *
+	 * @return void
+	 */
+	private function render_payments_timeline( $eligibility ) {
+
+		$cart = new Alma_WC_Model_Cart();
+		?>
+		<p style="
+			display: flex;
+			justify-content: left;
+			padding: 20px 0 4px 0;
+			margin: 4px 0;
+			font-size: 1.8rem;
+			font-weight: bold;
+			border-top: 1px solid lightgrey;
+		">
+			<span><?php echo esc_html__( 'Your credit', 'alma-woocommerce-gateway' ); ?></span>
+		</p>
+		<p style="
+			display: flex;
+			justify-content: space-between;
+			padding: 4px 0;
+			margin: 4px 0;
+			border-bottom: 1px solid lightgrey;
+		">
+			<span><?php echo esc_html__( 'Your cart:', 'alma-woocommerce-gateway' ); ?></span>
+			<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $cart->get_total() ) ); ?></span>
+		</p>
+		<p style="
+			display: flex;
+			justify-content: space-between;
+			padding: 4px 0;
+			margin: 4px 0;
+			border-bottom: 1px solid lightgrey;
+		">
+			<span><?php echo esc_html__( 'Credit cost:', 'alma-woocommerce-gateway' ); ?></span>
+			<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $eligibility->customerTotalCostAmount ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName ?></span>
+		</p>
+		<?php
+		$annual_interest_rate = $eligibility->getAnnualInterestRate();
+		if ( ! is_null( $annual_interest_rate ) && $annual_interest_rate > 0 ) {
+			?>
+			<p style="
+							display: flex;
+							justify-content: space-between;
+							padding: 4px 0;
+							margin: 4px 0;
+							border-bottom: 1px solid lightgrey;
+						">
+				<span><?php echo esc_html__( 'Annual Interest Rate:', 'alma-woocommerce-gateway' ); ?></span>
+				<span><?php echo wp_kses_post( alma_wc_format_percent_from_bps( $annual_interest_rate ) ); ?></span>
+			</p>
+		<?php } ?>
+		<p style="
+			display: flex;
+			justify-content: space-between;
+			padding: 4px 0 0 0;
+			margin: 4px 0 0 0;
+			font-weight: bold;
+		">
+			<span><?php echo esc_html__( 'Total:', 'alma-woocommerce-gateway' ); ?></span>
+			<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $eligibility->getCustomerTotalCostAmount() + $cart->get_total() ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName ?></span>
+		</p>
+		<?php
+	}
+
+
 
 	/**
 	 * Get default plan according to eligible pnx list.
