@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Alma - 2x 3x 4x, D+15 or D+30 for WooCommerce - Payment in instalments and deferred\n"
-"POT-Creation-Date: 2022-02-04 17:26+0100\n"
+"POT-Creation-Date: 2022-02-07 17:14+0100\n"
 "PO-Revision-Date: 2021-06-22 13:25+0200\n"
 "Last-Translator: syjust <sy.just@gmail.com>\n"
 "Language-Team: Alma\n"
@@ -140,19 +140,19 @@ msgid "→ General configuration"
 msgstr ""
 
 #: includes/class-alma-wc-admin-form.php:262
-msgid "<p style=\"font-weight:normal;\">Edit the text displayed when choosing the payment method in your checkout.</p>"
+msgid "Edit the text displayed when choosing the payment method in your checkout."
 msgstr ""
 
 #: includes/class-alma-wc-admin-form.php:267
-msgid "<p style=\"font-size:1.15em;\">Payments in 2, 3 and 4 installments:</p>"
+msgid "Payments in 2, 3 and 4 installments:"
 msgstr ""
 
 #: includes/class-alma-wc-admin-form.php:271
-msgid "<p style=\"font-size:1.15em;\">Deferred Payments:</p>"
+msgid "Deferred Payments:"
 msgstr ""
 
 #: includes/class-alma-wc-admin-form.php:276
-msgid "<p style=\"font-size:1.15em;\">Payments in more than 4 installments:</p>"
+msgid "Payments in more than 4 installments:"
 msgstr ""
 
 #: includes/class-alma-wc-admin-form.php:281
@@ -287,68 +287,68 @@ msgstr ""
 msgid "Alma \"Eligibility Widget\" (cart or product) already rendered on this page - Not displaying Alma"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:44
+#: includes/class-alma-wc-payment-gateway.php:47
 msgid "Payment in instalments and deferred with Alma - 2x 3x 4x, D+15 or D+30"
 msgstr ""
 
 #. Description of the plugin/theme
-#: includes/class-alma-wc-payment-gateway.php:45
+#: includes/class-alma-wc-payment-gateway.php:48
 msgid "Install Alma and boost your sales! It's simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk."
 msgstr ""
 
 #. translators: %s: plan_key alt image.
-#: includes/class-alma-wc-payment-gateway.php:218
+#: includes/class-alma-wc-payment-gateway.php:221
 #, php-format
 msgid "%s installments"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:247
+#: includes/class-alma-wc-payment-gateway.php:250
 msgid "Choose your payment method"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:321
+#: includes/class-alma-wc-payment-gateway.php:324
 msgid "There was an error processing your payment.<br>Please try again or contact us if the problem persists."
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:379
+#: includes/class-alma-wc-payment-gateway.php:382
 msgid "There was an error when validating your payment.<br>Please try again or contact us if the problem persists."
 msgstr ""
 
 #. translators: %1$s => today_amount (0), %2$s => total_amount, %3$s => i18n formatted due_date.
-#: includes/class-alma-wc-payment-gateway.php:464
+#: includes/class-alma-wc-payment-gateway.php:491
 #, php-format
 msgid "%1$s today then %2$s on %3$s"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:486
+#: includes/class-alma-wc-payment-gateway.php:513
 msgid "Included fees:"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:504
+#: includes/class-alma-wc-payment-gateway.php:541
 msgid "Your credit"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:513
+#: includes/class-alma-wc-payment-gateway.php:550
 msgid "Your cart:"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:523
+#: includes/class-alma-wc-payment-gateway.php:560
 msgid "Credit cost:"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:537
+#: includes/class-alma-wc-payment-gateway.php:574
 msgid "Annual Interest Rate:"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:548
+#: includes/class-alma-wc-payment-gateway.php:585
 msgid "Total:"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:599
+#: includes/class-alma-wc-payment-gateway.php:631
 msgid "enabled"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:602
+#: includes/class-alma-wc-payment-gateway.php:634
 msgid "disabled"
 msgstr ""
 
@@ -452,23 +452,23 @@ msgstr ""
 msgid "Product price (%s): product badge injection failed."
 msgstr ""
 
-#: includes/class-alma-wc-settings.php:67
-msgid "Pay in installments with Alma"
-msgstr ""
-
-#: includes/class-alma-wc-settings.php:68 includes/class-alma-wc-settings.php:70 includes/class-alma-wc-settings.php:72
+#: includes/class-alma-wc-settings.php:63
 msgid "Fast and secure payment by credit card"
 msgstr ""
 
-#: includes/class-alma-wc-settings.php:69
+#: includes/class-alma-wc-settings.php:68
+msgid "Pay in installments with Alma"
+msgstr ""
+
+#: includes/class-alma-wc-settings.php:70
 msgid "Buy now, Pay later with Alma"
 msgstr ""
 
-#: includes/class-alma-wc-settings.php:71
+#: includes/class-alma-wc-settings.php:72
 msgid "Spread your payments with Alma"
 msgstr ""
 
-#: includes/class-alma-wc-settings.php:77
+#: includes/class-alma-wc-settings.php:78
 msgid "Some products cannot be paid with monthly or deferred installments"
 msgstr ""
 

@@ -259,7 +259,7 @@ class Alma_WC_Admin_Form {
 				'type'  => 'title',
 			),
 			'text_fields'     => array(
-				'title' => __( '<p style="font-weight:normal;">Edit the text displayed when choosing the payment method in your checkout.</p>', 'alma-woocommerce-gateway' ),
+				'title' => '<p style="font-weight:normal;">' . __( 'Edit the text displayed when choosing the payment method in your checkout.', 'alma-woocommerce-gateway' ) . '</p>',
 				'type'  => 'title',
 			),
 		);
