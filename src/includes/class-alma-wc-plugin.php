@@ -785,11 +785,11 @@ class Alma_WC_Plugin {
 			$title = $alma_settings->get_title( 'payment_method_pnx' );
 		}
 
-		if ( 'alma_pay_later' === $id ) {
+		if ( Alma_WC_Payment_Gateway::ALMA_GATEWAY_PAY_LATER === $id ) {
 			$title = $alma_settings->get_title( 'payment_method_pay_later' );
 		}
 
-		if ( 'alma_pnx_plus_4' === $id ) {
+		if ( Alma_WC_Payment_Gateway::ALMA_GATEWAY_PAY_MORE_THAN_FOUR === $id ) {
 			$title = $alma_settings->get_title( 'payment_method_pnx_plus_4' );
 		}
 
@@ -815,11 +815,11 @@ class Alma_WC_Plugin {
 			$description = $alma_settings->get_description( 'payment_method_pnx' );
 		}
 
-		if ( 'alma_pay_later' === $id ) {
+		if ( Alma_WC_Payment_Gateway::ALMA_GATEWAY_PAY_LATER === $id ) {
 			$description = $alma_settings->get_description( 'payment_method_pay_later' );
 		}
 
-		if ( 'alma_pnx_plus_4' === $id ) {
+		if ( Alma_WC_Payment_Gateway::ALMA_GATEWAY_PAY_MORE_THAN_FOUR === $id ) {
 			$description = $alma_settings->get_description( 'payment_method_pnx_plus_4' );
 		}
 

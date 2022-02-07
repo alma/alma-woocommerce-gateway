@@ -27,6 +27,9 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	const ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS   = 'js-alma-payment-plan-table';
 	const AMOUNT_PLAN_KEY_REGEX               = '#^(min|max)_amount_general_[0-9]+_[0-9]+_[0-9]+$#';
 	const ENABLED_PLAN_KEY_REGEX              = '#^enabled_general_([0-9]+_[0-9]+_[0-9]+)$#';
+	const ALMA_GATEWAY_PAY_LATER              = 'alma_pay_later';
+	const ALMA_GATEWAY_PAY_MORE_THAN_FOUR     = 'alma_pnx_plus_4';
+
 
 	/**
 	 * Logger
@@ -278,11 +281,11 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			case 'alma':
 				$should_i = in_array( $alma_settings->get_installments_count( $plan_key ), array( 2, 3, 4 ), true );
 				break;
-			case 'alma_pay_later':
+			case self::ALMA_GATEWAY_PAY_LATER:
 				$should_i = ( $alma_settings->get_installments_count( $plan_key ) === 1 &&
 						 ( $alma_settings->get_deferred_days( $plan_key ) !== 0 || $alma_settings->get_deferred_months( $plan_key ) !== 0 ) );
 				break;
-			case 'alma_pnx_plus_4':
+			case self::ALMA_GATEWAY_PAY_MORE_THAN_FOUR:
 				$should_i = ( $alma_settings->get_installments_count( $plan_key ) > 4 );
 				break;
 			default:
@@ -884,7 +887,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		// Add "Alma Pay later" payment method.
 		$display_payment_method = false;
-		$new_gateway_id         = 'alma_pay_later';
+		$new_gateway_id         = self::ALMA_GATEWAY_PAY_LATER;
 		foreach ( $eligible_plans as $plan_key ) {
 			if ( $this->should_i_display_plan_for_this_gateway( $plan_key, $new_gateway_id ) ) {
 				$display_payment_method = true;
@@ -903,7 +906,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		// Add "Pay in more than four times" payment method.
 		$display_payment_method = false;
-		$new_gateway_id         = 'alma_pnx_plus_4';
+		$new_gateway_id         = self::ALMA_GATEWAY_PAY_MORE_THAN_FOUR;
 		foreach ( $eligible_plans as $plan_key ) {
 			if ( $this->should_i_display_plan_for_this_gateway( $plan_key, $new_gateway_id ) ) {
 				$display_payment_method = true;
