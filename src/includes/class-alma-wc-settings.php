@@ -220,7 +220,7 @@ class Alma_WC_Settings {
 	 *
 	 * @return bool
 	 */
-	public function is_plan_enabled( $key ) {
+	private function is_plan_enabled( $key ) {
 		return 'yes' === $this->__get( "enabled_$key" );
 	}
 

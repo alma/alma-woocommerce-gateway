@@ -438,57 +438,9 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 					<?php
 					$plans_count = count( $eligibility->paymentPlan ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName
 					$plan_index  = 1;
-					foreach ( $eligibility->paymentPlan as $step ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName
-						$display_customer_fee = 1 === $plan_index && $eligibility->getInstallmentsCount() <= 4 && $step['customer_fee'] > 0;
-						?>
-						<!--suppress CssReplaceWithShorthandSafely -->
-						<p style="
-								display: flex;
-								justify-content: space-between;
-								padding: 4px 0;
-								margin: 4px 0;
-						<?php if ( $plan_index === $plans_count || $display_customer_fee ) { ?>
-								padding-bottom: 0;
-								margin-bottom: 0;
-						<?php	} else { ?>
-								border-bottom: 1px solid lightgrey;
-						<?php	} ?>
-								">
-							<?php if ( $eligibility->isPayLaterOnly() ) { ?>
-								<?php $justify_fees = 'left'; ?>
-								<span>
-									<?php
-									echo wp_kses_post(
-										sprintf(
-										// translators: %1$s => today_amount (0), %2$s => total_amount, %3$s => i18n formatted due_date.
-											__( '%1$s today then %2$s on %3$s', 'alma-woocommerce-gateway' ),
-											alma_wc_format_price_from_cents( 0 ),
-											alma_wc_format_price_from_cents( $step['total_amount'] ),
-											date_i18n( get_option( 'date_format' ), $step['due_date'] )
-										)
-									);
-									?>
-								</span>
-							<?php } else { ?>
-								<?php $justify_fees = 'right'; ?>
-								<span><?php echo esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) ); ?></span>
-								<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $step['total_amount'] ) ); ?></span>
-							<?php } ?>
-						</p>
-						<?php if ( $display_customer_fee ) { ?>
-							<p style="
-									display: flex;
-									justify-content: <?php echo esc_attr( $justify_fees ); ?>;
-									padding: 0 0 4px 0;
-									margin: 0 0 4px 0;
-									border-bottom: 1px solid lightgrey;
-									">
-								<span><?php echo esc_html__( 'Included fees:', 'alma-woocommerce-gateway' ); ?> <?php echo wp_kses_post( alma_wc_format_price_from_cents( $step['customer_fee'] ) ); ?></span>
-							</p>
-						<?php } ?>
-						<?php
-						$plan_index++;
-					} // end foreach
+
+					$this->render_plan( $eligibility );
+
 					if ( $eligibility->getInstallmentsCount() >= 5 ) {
 						$cart = new Alma_WC_Model_Cart();
 						?>
@@ -556,6 +508,72 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				<?php
 			}
 		}
+	}
+
+	/**
+	 * Render plan
+	 *
+	 * @param object $eligibility The egibility.
+	 *
+	 * @return void
+	 */
+	private function render_plan( $eligibility ) {
+
+		$plan_index   = 1;
+		$payment_plan = $eligibility->paymentPlan; // phpcs:ignore WordPress.NamingConventions.ValidVariableName
+		$plans_count  = count( $payment_plan );
+
+		foreach ( $payment_plan as $step ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName
+			$display_customer_fee = 1 === $plan_index && $eligibility->getInstallmentsCount() <= 4 && $step['customer_fee'] > 0;
+			?>
+			<!--suppress CssReplaceWithShorthandSafely -->
+			<p style="
+					display: flex;
+					justify-content: space-between;
+					padding: 4px 0;
+					margin: 4px 0;
+			<?php if ( $plan_index === $plans_count || $display_customer_fee ) { ?>
+					padding-bottom: 0;
+					margin-bottom: 0;
+			<?php	} else { ?>
+					border-bottom: 1px solid lightgrey;
+			<?php	} ?>
+					">
+				<?php if ( $eligibility->isPayLaterOnly() ) { ?>
+					<?php $justify_fees = 'left'; ?>
+					<span>
+						<?php
+						echo wp_kses_post(
+							sprintf(
+							// translators: %1$s => today_amount (0), %2$s => total_amount, %3$s => i18n formatted due_date.
+								__( '%1$s today then %2$s on %3$s', 'alma-woocommerce-gateway' ),
+								alma_wc_format_price_from_cents( 0 ),
+								alma_wc_format_price_from_cents( $step['total_amount'] ),
+								date_i18n( get_option( 'date_format' ), $step['due_date'] )
+							)
+						);
+						?>
+					</span>
+				<?php } else { ?>
+					<?php $justify_fees = 'right'; ?>
+					<span><?php echo esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) ); ?></span>
+					<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $step['total_amount'] ) ); ?></span>
+				<?php } ?>
+			</p>
+			<?php if ( $display_customer_fee ) { ?>
+				<p style="
+						display: flex;
+						justify-content: <?php echo esc_attr( $justify_fees ); ?>;
+						padding: 0 0 4px 0;
+						margin: 0 0 4px 0;
+						border-bottom: 1px solid lightgrey;
+						">
+					<span><?php echo esc_html__( 'Included fees:', 'alma-woocommerce-gateway' ); ?> <?php echo wp_kses_post( alma_wc_format_price_from_cents( $step['customer_fee'] ) ); ?></span>
+				</p>
+			<?php } ?>
+			<?php
+			$plan_index++;
+		} // end foreach
 	}
 
 	/**
