@@ -562,12 +562,12 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		if ( ! is_null( $annual_interest_rate ) && $annual_interest_rate > 0 ) {
 			?>
 			<p style="
-							display: flex;
-							justify-content: space-between;
-							padding: 4px 0;
-							margin: 4px 0;
-							border-bottom: 1px solid lightgrey;
-						">
+			display: flex;
+				justify-content: space-between;
+				padding: 4px 0;
+				margin: 4px 0;
+				border-bottom: 1px solid lightgrey;
+			">
 				<span><?php echo esc_html__( 'Annual Interest Rate:', 'alma-woocommerce-gateway' ); ?></span>
 				<span><?php echo wp_kses_post( alma_wc_format_percent_from_bps( $annual_interest_rate ) ); ?></span>
 			</p>
