@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: includes/class-alma-wc-admin-form.php:40
 msgid "→ Start by filling in your API keys"
@@ -525,11 +525,11 @@ msgid "Product price (%s): product badge injection failed."
 msgstr "Prezzo prodotto (%s): inserimento badge prodotto non riuscito."
 
 #: includes/class-alma-wc-settings.php:67
-msgid "Monthly and Deferred Payments with Alma"
+msgid "Pay in installments with Alma"
 msgstr "Pagamenti a rate o differiti"
 
 #: includes/class-alma-wc-settings.php:68
-msgid "Pay in deferred or multiple monthly payments with your credit card."
+msgid "Fast and secure payment by credit card"
 msgstr ""
 "Paga con pagamenti differiti o in più rate mensili con la tua carta di "
 "credito."

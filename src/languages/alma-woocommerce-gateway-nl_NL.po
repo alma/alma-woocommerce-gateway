@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Alma - 2x 3x 4x, D+15 or D+30 for WooCommerce - Payment "
 "in instalments and deferred\n"
 "POT-Creation-Date: 2021-11-10 17:16+0100\n"
-"PO-Revision-Date: 2021-11-10 17:30+0100\n"
+"PO-Revision-Date: 2022-02-09 09:43+0100\n"
 "Last-Translator: syjust <sy.just@gmail.com>\n"
 "Language-Team: Alma\n"
 "Language: nl\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.0.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: alma-woocommerce-gateway.php\n"
@@ -533,11 +533,11 @@ msgid "Product price (%s): product badge injection failed."
 msgstr "Productprijs (%s): productbadge-injectie niet gelukt."
 
 #: includes/class-alma-wc-settings.php:67
-msgid "Monthly and Deferred Payments with Alma"
+msgid "Pay in installments with Alma"
 msgstr "Maandelijkse en uitgestelde betalingen met Alma"
 
 #: includes/class-alma-wc-settings.php:68
-msgid "Pay in deferred or multiple monthly payments with your credit card."
+msgid "Fast and secure payment by credit card"
 msgstr "Betaal later of in meerdere maandelijkse termijnen met uw creditcard."
 
 #: includes/class-alma-wc-settings.php:73
