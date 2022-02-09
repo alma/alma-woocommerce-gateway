@@ -277,19 +277,25 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 */
 	public function should_display_plan( $plan_key, $gateway_id ) {
 		$alma_settings  = alma_wc_plugin()->settings;
+		$should_display = false;
 		switch ( $gateway_id ) {
-			case 'alma':
-				return in_array( $alma_settings->get_installments_count( $plan_key ), array( 2, 3, 4 ), true );
+			case self::GATEWAY_ID:
+				$should_display = in_array( $alma_settings->get_installments_count( $plan_key ), array( 2, 3, 4 ), true );
+				break;
 			case self::ALMA_GATEWAY_PAY_LATER:
-				return (
+				$should_display = (
 					$alma_settings->get_installments_count( $plan_key ) === 1
 					&& ( $alma_settings->get_deferred_days( $plan_key ) !== 0 || $alma_settings->get_deferred_months( $plan_key ) !== 0 )
 				);
+				break;
 			case self::ALMA_GATEWAY_PAY_MORE_THAN_FOUR:
-				return ( $alma_settings->get_installments_count( $plan_key ) > 4 );
+				$should_display = ( $alma_settings->get_installments_count( $plan_key ) > 4 );
+				break;
 			default:
 				return false;
 		}
+
+		return $should_display;
 	}
 
 	/**
