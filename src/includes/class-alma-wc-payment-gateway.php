@@ -279,20 +279,17 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$alma_settings = alma_wc_plugin()->settings;
 		switch ( $gateway_id ) {
 			case 'alma':
-				$should_i = in_array( $alma_settings->get_installments_count( $plan_key ), array( 2, 3, 4 ), true );
-				break;
+				return in_array( $alma_settings->get_installments_count( $plan_key ), array( 2, 3, 4 ), true );
 			case self::ALMA_GATEWAY_PAY_LATER:
-				$should_i = ( $alma_settings->get_installments_count( $plan_key ) === 1 &&
-						 ( $alma_settings->get_deferred_days( $plan_key ) !== 0 || $alma_settings->get_deferred_months( $plan_key ) !== 0 ) );
-				break;
+				return (
+					$alma_settings->get_installments_count( $plan_key ) === 1
+					&& ( $alma_settings->get_deferred_days( $plan_key ) !== 0 || $alma_settings->get_deferred_months( $plan_key ) !== 0 )
+				);
 			case self::ALMA_GATEWAY_PAY_MORE_THAN_FOUR:
-				$should_i = ( $alma_settings->get_installments_count( $plan_key ) > 4 );
-				break;
+				return ( $alma_settings->get_installments_count( $plan_key ) > 4 );
 			default:
-				$should_i = false;
-				break;
+				return false;
 		}
-		return $should_i;
 	}
 
 	/**
@@ -859,66 +856,61 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		}
 
 		$new_available_gateways = array();
-		foreach ( $_available_gateways as $key => $gateway ) {
-
-			$new_available_gateways[ $key ] = $gateway;
+		foreach ( $_available_gateways as $gateway ) {
 
 			if ( 'alma' !== $gateway->id ) {
 				break;
 			}
 
-			$new_available_gateways = $this->set_new_available_gateways( $new_available_gateways, $gateway );
+			$new_available_gateways = $this->build_new_available_gateways( $gateway );
+		}
+
+		return array_merge( $_available_gateways, $new_available_gateways );
+	}
+
+	/**
+	 * Add two alma payment gateways if needed (pay_later and pnx_plus_4)
+	 *
+	 * Fields "title" and "description" will then be overwritten by filters :
+	 * "woocommerce_gateway_title" and "woocommerce_gateway_description".
+	 *
+	 * @param object $gateway Alma WC payment gateway.
+	 *
+	 * @return array
+	 */
+	private function build_new_available_gateways( $gateway ) {
+		$new_available_gateways = array();
+
+		if ( $this->is_there_available_plan_for_this_gateway( self::ALMA_GATEWAY_PAY_LATER ) ) {
+			$tmp_gateway                                = clone $gateway;
+			$tmp_gateway->id                            = self::ALMA_GATEWAY_PAY_LATER;
+			$new_available_gateways[ $tmp_gateway->id ] = $tmp_gateway;
+		}
+
+		if ( $this->is_there_available_plan_for_this_gateway( self::ALMA_GATEWAY_PAY_MORE_THAN_FOUR ) ) {
+			$tmp_gateway                                = clone $gateway;
+			$tmp_gateway->id                            = self::ALMA_GATEWAY_PAY_MORE_THAN_FOUR;
+			$new_available_gateways[ $tmp_gateway->id ] = $tmp_gateway;
 		}
 
 		return $new_available_gateways;
 	}
 
 	/**
-	 * Add two alma payment gateways if needed (pay_later and pnx_plus_4)
+	 * Test if is there available plan for given payment method
 	 *
-	 * @param array  $new_available_gateways List of payment gateways.
-	 * @param object $gateway Alma WC payment gateway.
+	 * @param string $payment_method As payment method name.
 	 *
-	 * @return array
+	 * @return bool
 	 */
-	private function set_new_available_gateways( array $new_available_gateways, $gateway ) {
-
-		$eligible_plans = alma_wc_plugin()->get_eligible_plans_keys_for_cart();
-
-		// Add "Alma Pay later" payment method.
-		$display_payment_method = false;
-		$new_gateway_id         = self::ALMA_GATEWAY_PAY_LATER;
-		foreach ( $eligible_plans as $plan_key ) {
-			if ( $this->should_i_display_plan_for_this_gateway( $plan_key, $new_gateway_id ) ) {
-				$display_payment_method = true;
-				break;
+	private function is_there_available_plan_for_this_gateway( $payment_method ) {
+		foreach ( alma_wc_plugin()->get_eligible_plans_keys_for_cart() as $plan_key ) {
+			if ( $this->should_i_display_plan_for_this_gateway( $plan_key, $payment_method ) ) {
+				return true;
 			}
 		}
-		if ( $display_payment_method ) {
-			/*
-			 * fields "title" and "description" will then be overwritten by filters :
-			 * "woocommerce_gateway_title" and "woocommerce_gateway_description".
-			 */
-			$tmp_gateway                                = clone $gateway;
-			$tmp_gateway->id                            = $new_gateway_id;
-			$new_available_gateways[ $tmp_gateway->id ] = $tmp_gateway;
-		}
 
-		// Add "Pay in more than four times" payment method.
-		$display_payment_method = false;
-		$new_gateway_id         = self::ALMA_GATEWAY_PAY_MORE_THAN_FOUR;
-		foreach ( $eligible_plans as $plan_key ) {
-			if ( $this->should_i_display_plan_for_this_gateway( $plan_key, $new_gateway_id ) ) {
-				$display_payment_method = true;
-				break;
-			}
-		}
-		if ( $display_payment_method ) {
-			$tmp_gateway                                = clone $gateway;
-			$tmp_gateway->id                            = $new_gateway_id;
-			$new_available_gateways[ $tmp_gateway->id ] = $tmp_gateway;
-		}
-		return $new_available_gateways;
+		return false;
 	}
 
 }
