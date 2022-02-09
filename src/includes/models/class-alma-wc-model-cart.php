@@ -34,7 +34,7 @@ class Alma_WC_Model_Cart {
 	 */
 	public function __construct() {
 		$this->legacy = version_compare( wc()->version, '3.2.0', '<' );
-		$this->cart   = wc()->cart;
+		$this->cart   = WC()->cart;
 	}
 
 	/**
@@ -43,6 +43,9 @@ class Alma_WC_Model_Cart {
 	 * @return float
 	 */
 	public function get_total() {
+		if ( ! $this->cart ) {
+			return 0;
+		}
 		if ( $this->legacy ) {
 			return alma_wc_price_to_cents( $this->cart->total );
 		} else {
