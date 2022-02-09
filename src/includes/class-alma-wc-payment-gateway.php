@@ -240,7 +240,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		$payment_fields = array();
 		foreach ( $eligible_plans as $plan_key ) {
-			if ( $this->should_i_display_plan_for_this_gateway( $plan_key, $gateway_id ) ) {
+			if ( $this->should_display_plan( $plan_key, $gateway_id ) ) {
 				$payment_fields[] = $plan_key;
 			}
 		}
@@ -275,8 +275,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 *
 	 * @return bool
 	 */
-	public function should_i_display_plan_for_this_gateway( $plan_key, $gateway_id ) {
-		$alma_settings = alma_wc_plugin()->settings;
+	public function should_display_plan( $plan_key, $gateway_id ) {
+		$alma_settings  = alma_wc_plugin()->settings;
 		switch ( $gateway_id ) {
 			case 'alma':
 				return in_array( $alma_settings->get_installments_count( $plan_key ), array( 2, 3, 4 ), true );
@@ -839,7 +839,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 */
 	public function woocommerce_checkout_process() {
 		if ( substr( $_POST['payment_method'], 0, 5 ) === 'alma_' ) { // phpcs:ignore
-			$_POST['payment_method'] = 'alma';
+			$_POST['payment_method'] = self::GATEWAY_ID;
 		}
 	}
 
@@ -899,13 +899,13 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	/**
 	 * Test if is there available plan for given payment method
 	 *
-	 * @param string $payment_method As payment method name.
+	 * @param string $gateway_id As payment method name.
 	 *
 	 * @return bool
 	 */
-	private function is_there_available_plan_for_this_gateway( $payment_method ) {
+	private function is_there_available_plan_for_this_gateway( $gateway_id ) {
 		foreach ( alma_wc_plugin()->get_eligible_plans_keys_for_cart() as $plan_key ) {
-			if ( $this->should_i_display_plan_for_this_gateway( $plan_key, $payment_method ) ) {
+			if ( $this->should_display_plan( $plan_key, $gateway_id ) ) {
 				return true;
 			}
 		}
