@@ -859,7 +859,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		foreach ( $_available_gateways as $gateway ) {
 
 			if ( 'alma' !== $gateway->id ) {
-				break;
+				continue;
 			}
 
 			$new_available_gateways = $this->build_new_available_gateways( $gateway );
