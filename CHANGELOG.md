@@ -1,6 +1,14 @@
 Changelog
 =========
 
+v2.4.0
+------
+
+* feat: split payments
+* fix: model get_cart on null in wysiwyg builder
+* refactor: Remove the unnecessary boolean literal
+* refactor: reduce cognitive complexity
+
 v2.3.0
 ------
 
