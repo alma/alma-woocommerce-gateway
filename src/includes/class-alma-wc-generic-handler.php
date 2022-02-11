@@ -148,7 +148,7 @@ class Alma_WC_Generic_Handler {
 			<?php
 			if ( $has_excluded_products ) {
 				$logo_url      = alma_wc_plugin()->get_asset_url( 'images/alma_logo.svg' );
-				$exclusion_msg = $this->settings->cart_not_eligible_message_gift_cards;
+				$exclusion_msg = $this->settings->get_i18n( 'cart_not_eligible_message_gift_cards' );
 				?>
 				<img src="<?php echo esc_attr( $logo_url ); ?>"
 					alt="Alma"

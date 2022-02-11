@@ -60,32 +60,47 @@ class Alma_WC_Settings {
 	 * @return array
 	 */
 	public static function default_settings() {
-		$payment_methods_description = __( 'Fast and secure payment by credit card', 'alma-woocommerce-gateway' );
-		return array(
-			'enabled'                               => 'yes',
-			'selected_fee_plan'                     => self::DEFAULT_FEE_PLAN,
-			'enabled_general_3_0_0'                 => 'yes',
-			'title_payment_method_pnx'              => __( 'Pay in installments with Alma', 'alma-woocommerce-gateway' ),
-			'description_payment_method_pnx'        => $payment_methods_description,
-			'title_payment_method_pay_later'        => __( 'Buy now, Pay later with Alma', 'alma-woocommerce-gateway' ),
-			'description_payment_method_pay_later'  => $payment_methods_description,
-			'title_payment_method_pnx_plus_4'       => __( 'Spread your payments with Alma', 'alma-woocommerce-gateway' ),
-			'description_payment_method_pnx_plus_4' => $payment_methods_description,
-			'display_cart_eligibility'              => 'yes',
-			'display_product_eligibility'           => 'yes',
-			'variable_product_price_query_selector' => Alma_WC_Product_Handler::default_variable_price_selector(),
-			'excluded_products_list'                => array(),
-			'cart_not_eligible_message_gift_cards'  => __( 'Some products cannot be paid with monthly or deferred installments', 'alma-woocommerce-gateway' ),
-			'live_api_key'                          => '',
-			'test_api_key'                          => '',
-			'environment'                           => 'test',
-			'debug'                                 => 'yes',
-			'fully_configured'                      => false,
+		$payment_methods_description = 'Fast and secure payment by credit card';
+
+		$default_settings = array(
+			'enabled'                                      => 'yes',
+			'selected_fee_plan'                            => self::DEFAULT_FEE_PLAN,
+			'enabled_general_3_0_0'                        => 'yes',
+			'title_payment_method_pnx'                     => 'Pay in installments with Alma',
+			'title_payment_method_pnx_po_edit'             => __( 'Pay in installments with Alma', 'alma-woocommerce-gateway' ),
+			'description_payment_method_pnx'               => $payment_methods_description,
+			'title_payment_method_pay_later'               => 'Buy now, Pay later with Alma',
+			'title_payment_method_pay_later_po_edit'       => __( 'Buy now, Pay later with Alma', 'alma-woocommerce-gateway' ),
+			'description_payment_method_pay_later'         => $payment_methods_description,
+			'title_payment_method_pnx_plus_4'              => 'Spread your payments with Alma',
+			'title_payment_method_pnx_plus_4_po_edit'      => __( 'Spread your payments with Alma', 'alma-woocommerce-gateway' ),
+			'description_payment_method_pnx_plus_4'        => $payment_methods_description,
+			'display_cart_eligibility'                     => 'yes',
+			'display_product_eligibility'                  => 'yes',
+			'variable_product_price_query_selector'        => Alma_WC_Product_Handler::default_variable_price_selector(),
+			'excluded_products_list'                       => array(),
+			'cart_not_eligible_message_gift_cards'         => 'Some products cannot be paid with monthly or deferred installments',
+			'cart_not_eligible_message_gift_cards_po_edit' => __( 'Some products cannot be paid with monthly or deferred installments', 'alma-woocommerce-gateway' ),
+			'live_api_key'                                 => '',
+			'test_api_key'                                 => '',
+			'environment'                                  => 'test',
+			'debug'                                        => 'yes',
+			'fully_configured'                             => false,
 		);
+
+		/**
+		 * Poedit trick !
+		 */
+		foreach ( $default_settings as $key => $value ) {
+			if ( strpos( $key, 'po_edit' ) !== false ) {
+				unset( $default_settings[ $key ] );
+			}
+		}
+		return $default_settings;
 	}
 
 	/**
-	 * __get
+	 * __get.
 	 *
 	 * @param string $key Key.
 	 *
@@ -102,7 +117,7 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * __set
+	 * __set.
 	 *
 	 * @param string $key Key.
 	 * @param mixed  $value Value.
@@ -114,7 +129,7 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * __isset
+	 * __isset.
 	 *
 	 * @param string $key Key.
 	 *
@@ -125,7 +140,7 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * __construct
+	 * __construct.
 	 *
 	 * @return void
 	 */
@@ -134,7 +149,7 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Load settings from DB.
+	 * Loads settings from DB.
 	 */
 	protected function load() {
 		if ( $this->are_settings_loaded ) {
@@ -146,7 +161,7 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Update from settings.
+	 * Updates from settings.
 	 *
 	 * @param mixed $settings Settings.
 	 *
@@ -160,7 +175,7 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Save settings.
+	 * Saves settings.
 	 *
 	 * @return void
 	 */
@@ -169,7 +184,7 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Get API key for live environment.
+	 * Gets API key for live environment.
 	 *
 	 * @return string
 	 */
@@ -178,7 +193,7 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Get API key for test environment.
+	 * Gets API key for test environment.
 	 *
 	 * @return string
 	 */
@@ -187,7 +202,7 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Get API string for the current environment.
+	 * Gets API string for the current environment.
 	 *
 	 * @return string
 	 */
@@ -196,7 +211,7 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Need API key.
+	 * Does need API key ?
 	 *
 	 * @return bool
 	 */
@@ -225,7 +240,7 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Get enabled plans and configuration summary stored in settings for each enabled plan.
+	 * Gets enabled plans and configuration summary stored in settings for each enabled plan.
 	 *
 	 * @return array<array> containing arrays with plans configurations.
 	 */
@@ -248,39 +263,53 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Get title for a payment method.
+	 * Returns a field translated.
+	 *
+	 * @param string $field The field to translate.
+	 *
+	 * @return mixed
+	 */
+	public function get_i18n( $field ) {
+
+		$field_translated = self::default_settings()[ $field ];
+
+		if ( $this->{$field . '_' . get_locale() } && Alma_WC_Internationalization::is_site_multilingual() ) {
+			$field_translated = $this->{$field . '_' . get_locale() };
+		} elseif ( Alma_WC_Internationalization::is_site_multilingual() ) {
+			$field_translated = Alma_WC_Internationalization::get_translated_text( $field_translated, Alma_WC_Internationalization::map_locale( get_locale() ) );
+		} elseif ( $this->{$field} ) {
+			$field_translated = $this->{$field};
+		}
+
+		return $field_translated;
+	}
+
+	/**
+	 * Gets title for a payment method.
 	 *
 	 * @param string $payment_method The payment method.
 	 *
 	 * @return string
 	 */
 	public function get_title( $payment_method ) {
-		$title = $this->__get( "title_$payment_method" );
-		if ( ! $title ) {
-			$title = self::default_settings()[ "title_$payment_method" ];
-		}
-		return $title;
+		return $this->get_i18n( 'title_' . $payment_method );
 	}
 
 	/**
-	 * Get description for a payment method.
+	 * Gets description for a payment method.
 	 *
 	 * @param string $payment_method The payment method.
 	 *
 	 * @return string
 	 */
 	public function get_description( $payment_method ) {
-		$description = $this->__get( "description_$payment_method" );
-		if ( ! $description ) {
-			$description = self::default_settings()[ "description_$payment_method" ];
-		}
-		return $description;
+		return $this->get_i18n( 'description_' . $payment_method );
 	}
 
 	/**
-	 * Get min amount for pnx.
+	 * Gets min amount for pnx.
 	 *
-	 * @param string $key the plan key.
+	 * @param string $key The plan key.
 	 *
 	 * @return int
 	 */
@@ -289,9 +318,9 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Get max amount for pnx.
+	 * Gets max amount for pnx.
 	 *
-	 * @param int $key the plan key.
+	 * @param int $key The plan key.
 	 *
 	 * @return int
 	 */
@@ -300,9 +329,9 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Get eligible plans definitions for amount.
+	 * Gets eligible plans definitions for amount.
 	 *
-	 * @param int $amount the amount to pay.
+	 * @param int $amount The amount to pay.
 	 *
 	 * @return array<array> As eligible plans definitions.
 	 */
@@ -316,7 +345,7 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Get eligible plans keys for amount.
+	 * Gets eligible plans keys for amount.
 	 *
 	 * @param int $amount the amount to pay.
 	 *
@@ -342,7 +371,7 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Get active environment from setting.
+	 * Gets active environment from setting.
 	 *
 	 * @return string
 	 */
@@ -369,7 +398,7 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Retrieve allowed fee plans definition from the merchant
+	 * Retrieves allowed fee plans definition from the merchant.
 	 *
 	 * @return array<FeePlan>
 	 * @see is_allowed_fee_plan()
@@ -402,7 +431,7 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Get allowed fee plans keys
+	 * Gets allowed fee plans keys.
 	 *
 	 * @return array|string[]
 	 * @see get_allowed_fee_plans
@@ -417,7 +446,7 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Say if a fee_plan is allowed or not based on Alma fee plans settings & business rules.
+	 * Says if a fee_plan is allowed or not based on Alma fee plans settings & business rules.
 	 *
 	 * @param FeePlan $fee_plan as fee_plan to evaluate.
 	 *
@@ -435,7 +464,7 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Get deferred days for plan.
+	 * Gets deferred days for plan.
 	 *
 	 * @param int $key The plan key.
 	 *
@@ -446,7 +475,7 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Get deferred months for plan.
+	 * Gets deferred months for plan.
 	 *
 	 * @param int $key The plan key.
 	 *
@@ -457,7 +486,7 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Get installments_count for plan.
+	 * Gets installments_count for plan.
 	 *
 	 * @param int $key The plan key.
 	 *
@@ -468,7 +497,7 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Check if a plan is eligible.
+	 * Checks if a plan is eligible.
 	 *
 	 * @param array $plan Plan definition.
 	 * @param int   $amount Price.
@@ -480,7 +509,7 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Tells if the marchand has at least one "pay later" payment method enabled in the WC back-office.
+	 * Tells if the merchant has at least one "pay later" payment method enabled in the WC back-office.
 	 *
 	 * @return bool
 	 */
@@ -494,7 +523,7 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Tells if the marchand has at least one "pnx_plus_4" payment method enabled in the WC back-office.
+	 * Tells if the merchant has at least one "pnx_plus_4" payment method enabled in the WC back-office.
 	 *
 	 * @return bool
 	 */

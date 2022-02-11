@@ -25,12 +25,11 @@ class Alma_WC_Admin_Form {
 	private static $instance;
 
 	/**
-	 * Admin Form fields initialisation
+	 * Admin Form fields initialisation.
 	 *
 	 * @return array
 	 */
 	public static function init_form_fields() {
-
 		$need_api_key     = alma_wc_plugin()->settings->need_api_key();
 		$default_settings = Alma_WC_Settings::default_settings();
 
@@ -52,11 +51,11 @@ class Alma_WC_Admin_Form {
 	}
 
 	/**
-	 * Init a fee_plan's fields
+	 * Inits a fee_plan's fields.
 	 *
-	 * @param FeePlan $fee_plan as fee plan definitions.
-	 * @param array   $default_settings as default settings definitions.
-	 * @param bool    $selected if this field is currently selected.
+	 * @param FeePlan $fee_plan Fee plan definitions.
+	 * @param array   $default_settings Default settings definitions.
+	 * @param bool    $selected If this field is currently selected.
 	 *
 	 * @return array  as field_form definition
 	 */
@@ -144,7 +143,7 @@ class Alma_WC_Admin_Form {
 	}
 
 	/**
-	 * Init enabled Admin field
+	 * Inits enabled Admin field.
 	 *
 	 * @param array $default_settings as default settings.
 	 *
@@ -162,7 +161,7 @@ class Alma_WC_Admin_Form {
 	}
 
 	/**
-	 * Init test & live api keys fields
+	 * Inits test & live api keys fields.
 	 *
 	 * @param string $keys_title as section title.
 	 * @param array  $default_settings as default settings.
@@ -200,9 +199,9 @@ class Alma_WC_Admin_Form {
 	}
 
 	/**
-	 * Init all allowed fee plans admin field
+	 * Inits all allowed fee plans admin field.
 	 *
-	 * @param array $default_settings as default settings.
+	 * @param array $default_settings Default settings.
 	 *
 	 * @return array|array[]
 	 */
@@ -246,9 +245,9 @@ class Alma_WC_Admin_Form {
 	}
 
 	/**
-	 * Init default plugin fields
+	 * Inits default plugin fields.
 	 *
-	 * @param array $default_settings as default settings.
+	 * @param array $default_settings default settings.
 	 *
 	 * @return array
 	 */
@@ -304,20 +303,65 @@ class Alma_WC_Admin_Form {
 				'css'         => 'height: 150px;',
 				'options'     => $this->generate_categories_options(),
 			),
-			'cart_not_eligible_message_gift_cards'  => array(
-				'title'       => __( 'Non-eligibility message for excluded products', 'alma-woocommerce-gateway' ),
-				'type'        => 'text',
-				'description' => __( 'Message displayed below the cart totals when it contains excluded products', 'alma-woocommerce-gateway' ),
-				'desc_tip'    => true,
-				'default'     => $default_settings['cart_not_eligible_message_gift_cards'],
-			),
 		);
 
-		return array_merge( $general_settings_fields, $fields_pnx, $fields_pay_later, $fields_pnx_plus_4, $general_settings_fields_end );
+		$field_cart_not_eligible_message_gift_cards = $this->generate_i18n_field(
+			'cart_not_eligible_message_gift_cards',
+			array(
+				'title'       => __( 'Non-eligibility message for excluded products', 'alma-woocommerce-gateway' ),
+				'description' => __( 'Message displayed below the cart totals when it contains excluded products', 'alma-woocommerce-gateway' ),
+				'desc_tip'    => true,
+			),
+			$default_settings['cart_not_eligible_message_gift_cards']
+		);
+
+		return array_merge(
+			$general_settings_fields,
+			$fields_pnx,
+			$fields_pay_later,
+			$fields_pnx_plus_4,
+			$general_settings_fields_end,
+			$field_cart_not_eligible_message_gift_cards
+		);
 	}
 
 	/**
-	 * Init debug fields
+	 * Adds all the translated fields for one field.
+	 *
+	 * @param string $field_name The field name.
+	 * @param array  $field_infos The information for this field.
+	 * @param string $default The default value for the field.
+	 *
+	 * @return array
+	 */
+	private function generate_i18n_field( $field_name, $field_infos, $default ) {
+		if ( Alma_WC_Internationalization::is_site_multilingual() ) {
+			$new_fields = array();
+			$lang_list  = Alma_WC_Internationalization::get_list_languages();
+			foreach ( $lang_list as $code_lang => $label_lang ) {
+				$new_file_key                 = $field_name . '_' . $code_lang;
+				$new_field_infos              = $field_infos;
+				$new_field_infos['type']      = 'text_alma_i18n';
+				$new_field_infos['class']     = $code_lang;
+				$new_field_infos['default']   = Alma_WC_Internationalization::get_translated_text( $default, $code_lang );
+				$new_field_infos['lang_list'] = $lang_list;
+
+				$new_fields[ $new_file_key ] = $new_field_infos;
+			}
+
+			return $new_fields;
+		}
+
+		$additional_infos = array(
+			'type'    => 'text',
+			'class'   => 'alma-i18n',
+			'default' => $default,
+		);
+		return array( $field_name => array_merge( $field_infos, $additional_infos ) );
+	}
+
+	/**
+	 * Inits debug fields.
 	 *
 	 * @param array $default_settings as default settings.
 	 *
@@ -342,12 +386,7 @@ class Alma_WC_Admin_Form {
 	}
 
 	/**
-	 * Alma_WC_Admin_Form constructor.
-	 */
-	private function __construct() {}
-
-	/**
-	 * Singleton static method
+	 * Singleton static method.
 	 *
 	 * @return Alma_WC_Admin_Form
 	 */
@@ -382,7 +421,7 @@ class Alma_WC_Admin_Form {
 	}
 
 	/**
-	 * Get fee plan description.
+	 * Gets fee plan description.
 	 *
 	 * @param FeePlan $fee_plan The fee plan do describe.
 	 * @param float   $min_amount Min amount.
@@ -446,8 +485,8 @@ class Alma_WC_Admin_Form {
 	}
 
 	/**
-	 * Generate a string with % + € OR only % OR only € (depending on parameters given)
-	 * If all fees are <= 0 : return an empty string
+	 * Generates a string with % + € OR only % OR only € (depending on parameters given).
+	 * If all fees are <= 0 : return an empty string.
 	 *
 	 * @param string $translation as description prefix.
 	 * @param float  $fee_variable as variable amount (if any).
@@ -476,7 +515,7 @@ class Alma_WC_Admin_Form {
 	}
 
 	/**
-	 * Generate select options key values for allowed fee_plans
+	 * Generates select options key values for allowed fee_plans.
 	 *
 	 * @return array
 	 */
@@ -507,10 +546,10 @@ class Alma_WC_Admin_Form {
 	}
 
 	/**
-	 * Generate the selected option for current fee_plan_keys options
+	 * Generates the selected option for current fee_plan_keys options.
 	 *
-	 * @param array $select_options as key,value allowed fee_plan options.
-	 * @param array $default_settings as default settings.
+	 * @param array $select_options Key,value allowed fee_plan options.
+	 * @param array $default_settings Default settings.
 	 *
 	 * @return string
 	 */
@@ -522,7 +561,7 @@ class Alma_WC_Admin_Form {
 	}
 
 	/**
-	 * Get custom fields for a payment method.
+	 * Gets custom fields for a payment method.
 	 *
 	 * @param string $payment_method_name The payment method name.
 	 * @param string $title The title.
@@ -531,26 +570,41 @@ class Alma_WC_Admin_Form {
 	 * @return array[]
 	 */
 	private function get_custom_fields_payment_method( $payment_method_name, $title, array $default_settings ) {
-		return array(
-			$payment_method_name                  => array(
+
+		$fields = array(
+			$payment_method_name => array(
 				'title' => sprintf( '<h4 style="color:#777;font-size:1.15em;">%s</h4>', $title ),
 				'type'  => 'title',
 			),
-			'title_' . $payment_method_name       => array(
+		);
+
+		$field_payment_method_title = $this->generate_i18n_field(
+			'title_' . $payment_method_name,
+			array(
 				'title'       => __( 'Title', 'alma-woocommerce-gateway' ),
-				'type'        => 'text',
 				'description' => __( 'This controls the payment method name which the user sees during checkout.', 'alma-woocommerce-gateway' ),
-				'default'     => $default_settings[ "title_$payment_method_name" ],
 				'desc_tip'    => true,
 			),
-			'description_' . $payment_method_name => array(
+			$default_settings[ 'title_' . $payment_method_name ]
+		);
+
+		$field_payment_method_description = $this->generate_i18n_field(
+			'description_' . $payment_method_name,
+			array(
 				'title'       => __( 'Description', 'alma-woocommerce-gateway' ),
-				'type'        => 'text',
 				'desc_tip'    => true,
 				'description' => __( 'This controls the payment method description which the user sees during checkout.', 'alma-woocommerce-gateway' ),
-				'default'     => $default_settings[ "description_$payment_method_name" ],
 			),
+			$default_settings[ 'description_' . $payment_method_name ]
+		);
+
+		return array_merge(
+			$fields,
+			$field_payment_method_title,
+			$field_payment_method_description
 		);
 	}
 
 }
+
+

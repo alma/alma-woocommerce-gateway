@@ -214,8 +214,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				for="<?php echo esc_attr( $gateway_id ); ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
 		>
 			<img src="<?php echo esc_attr( $logo_url ); ?>"
-				 style="float: unset !important; width: auto !important; height: 30px !important;  border: none !important; vertical-align: middle; display: inline-block;"
-				 alt="
+				style="float: unset !important; width: auto !important; height: 30px !important;  border: none !important; vertical-align: middle; display: inline-block;"
+				alt="
 					<?php
 					// translators: %s: plan_key alt image.
 					echo esc_html( sprintf( __( '%s installments', 'alma-woocommerce-gateway' ), $plan_key ) );
@@ -623,11 +623,9 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @noinspection PhpUnused
 	 */
 	public function generate_select_alma_fee_plan_html( $key, $data ) {
-		$select_id = $this->get_field_key( $key );
 		?>
 		<script>
-			var select_alma_fee_plan_ids = select_alma_fee_plan_ids || [];
-			select_alma_fee_plan_ids.push('<?php echo esc_attr( $select_id ); ?>')
+			var select_alma_fee_plans_id = select_alma_fee_plans_id || '<?php echo esc_attr( $this->get_field_key( $key ) ); ?>';
 		</script>
 		<style>
 			.alma_option_enabled::after {
@@ -640,6 +638,60 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		</style>
 		<?php
 		return parent::generate_select_html( $key, $data );
+	}
+
+	/**
+	 * Generates a html `i18n` Input HTML.
+	 *
+	 * @param string         $key The field name.
+	 * @param array|string[] $data The configuration for this field.
+	 *
+	 * @return false|string
+	 * @see WC_Settings_API::generate_text_html()
+	 * @noinspection PhpUnused
+	 */
+	public function generate_text_alma_i18n_html( $key, $data ) {
+		$field_key = $this->get_field_key( $key );
+		$defaults  = array(
+			'title'             => '',
+			'disabled'          => false,
+			'class'             => '',
+			'css'               => '',
+			'placeholder'       => '',
+			'type'              => 'text',
+			'desc_tip'          => false,
+			'description'       => '',
+			'custom_attributes' => array(),
+			'lang_list'         => array(),
+		);
+
+		$data = wp_parse_args( $data, $defaults );
+
+		ob_start();
+		?>
+		<tr valign="top" class="alma-i18n-parent" style="display:none;">
+			<th scope="row" class="titledesc">
+				<label for="<?php echo esc_attr( $field_key ); ?>"><?php echo wp_kses_post( $data['title'] ); ?> <?php echo $this->get_tooltip_html( $data ); // WPCS: XSS ok. ?></label>
+			</th>
+			<td class="forminp">
+				<fieldset>
+					<legend class="screen-reader-text"><span><?php echo wp_kses_post( $data['title'] ); ?></span></legend>
+					<input class="input-text regular-input alma-i18n <?php echo esc_attr( $data['class'] ); ?>" type="text" name="<?php echo esc_attr( $field_key ); ?>" id="<?php echo esc_attr( $field_key ); ?>" style="<?php echo esc_attr( $data['css'] ); ?>" value="<?php echo esc_attr( $this->get_option( $key ) ); ?>" placeholder="<?php echo esc_attr( $data['placeholder'] ); ?>" <?php disabled( $data['disabled'], true ); ?> <?php echo $this->get_custom_attribute_html( $data ); // WPCS: XSS ok. ?> />
+					<select class="list_lang_title" style="width:auto;margin-left:10px;line-height:28px;">
+					<?php
+					foreach ( $data['lang_list'] as $code => $label ) {
+						$selected = Alma_WC_Admin_Internationalization_Front_Helper::is_lang_selected( esc_attr( $code ) ) ? 'selected="selected"' : '';
+						print '<option value="' . esc_attr( $code ) . '"' . esc_attr( $selected ) . '>' . esc_attr( $label ) . '</option>';
+					}
+					?>
+					</select>
+					<?php echo $this->get_description_html( $data ); // WPCS: XSS ok. ?>
+				</fieldset>
+			</td>
+		</tr>
+		<?php
+
+		return ob_get_clean();
 	}
 
 	/**
