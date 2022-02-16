@@ -863,15 +863,14 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		$new_available_gateways = array();
 		foreach ( $_available_gateways as $gateway ) {
+			$new_available_gateways[] = $gateway;
 
-			if ( 'alma' !== $gateway->id ) {
-				continue;
+			if ( 'alma' === $gateway->id ) {
+				$new_available_gateways = array_merge( $new_available_gateways, $this->build_new_available_gateways( $gateway ) );
 			}
-
-			$new_available_gateways = $this->build_new_available_gateways( $gateway );
 		}
 
-		return array_merge( $_available_gateways, $new_available_gateways );
+		return $new_available_gateways;
 	}
 
 	/**
