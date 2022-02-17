@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v2.4.1
+------
+
+* fix: issue on payment method order on checkout page
+
 v2.4.0
 ------
 
