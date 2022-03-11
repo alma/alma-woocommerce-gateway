@@ -26,7 +26,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property string selected_fee_plan Admin dashboard fee_plan in edition mode.
  * @property string merchant_id Alma merchant ID
  * @property string variable_product_price_query_selector Css query selector
- * @property string cart_not_eligible_message_gift_cards Message to display
  * @property array  excluded_products_list Wp Categories excluded slug's list
  */
 class Alma_WC_Settings {
@@ -60,43 +59,27 @@ class Alma_WC_Settings {
 	 * @return array
 	 */
 	public static function default_settings() {
-		$payment_methods_description = 'Fast and secure payment by credit card';
-
-		$default_settings = array(
-			'enabled'                                      => 'yes',
-			'selected_fee_plan'                            => self::DEFAULT_FEE_PLAN,
-			'enabled_general_3_0_0'                        => 'yes',
-			'title_payment_method_pnx'                     => 'Pay in installments with Alma',
-			'title_payment_method_pnx_po_edit'             => __( 'Pay in installments with Alma', 'alma-woocommerce-gateway' ),
-			'description_payment_method_pnx'               => $payment_methods_description,
-			'title_payment_method_pay_later'               => 'Buy now, Pay later with Alma',
-			'title_payment_method_pay_later_po_edit'       => __( 'Buy now, Pay later with Alma', 'alma-woocommerce-gateway' ),
-			'description_payment_method_pay_later'         => $payment_methods_description,
-			'title_payment_method_pnx_plus_4'              => 'Spread your payments with Alma',
-			'title_payment_method_pnx_plus_4_po_edit'      => __( 'Spread your payments with Alma', 'alma-woocommerce-gateway' ),
-			'description_payment_method_pnx_plus_4'        => $payment_methods_description,
-			'display_cart_eligibility'                     => 'yes',
-			'display_product_eligibility'                  => 'yes',
-			'variable_product_price_query_selector'        => Alma_WC_Product_Handler::default_variable_price_selector(),
-			'excluded_products_list'                       => array(),
-			'cart_not_eligible_message_gift_cards'         => 'Some products cannot be paid with monthly or deferred installments',
-			'cart_not_eligible_message_gift_cards_po_edit' => __( 'Some products cannot be paid with monthly or deferred installments', 'alma-woocommerce-gateway' ),
-			'live_api_key'                                 => '',
-			'test_api_key'                                 => '',
-			'environment'                                  => 'test',
-			'debug'                                        => 'yes',
-			'fully_configured'                             => false,
+		return array(
+			'enabled'                               => 'yes',
+			'selected_fee_plan'                     => self::DEFAULT_FEE_PLAN,
+			'enabled_general_3_0_0'                 => 'yes',
+			'title_payment_method_pnx'              => Alma_WC_Settings_Helper::default_pnx_title(),
+			'description_payment_method_pnx'        => Alma_WC_Settings_Helper::default_payment_description(),
+			'title_payment_method_pay_later'        => Alma_WC_Settings_Helper::default_pay_later_title(),
+			'description_payment_method_pay_later'  => Alma_WC_Settings_Helper::default_payment_description(),
+			'title_payment_method_pnx_plus_4'       => Alma_WC_Settings_Helper::default_pnx_plus_4_title(),
+			'description_payment_method_pnx_plus_4' => Alma_WC_Settings_Helper::default_payment_description(),
+			'display_cart_eligibility'              => 'yes',
+			'display_product_eligibility'           => 'yes',
+			'variable_product_price_query_selector' => Alma_WC_Settings_Helper::default_variable_price_selector(),
+			'excluded_products_list'                => array(),
+			'cart_not_eligible_message_gift_cards'  => Alma_WC_Settings_Helper::default_not_eligible_cart_message(),
+			'live_api_key'                          => '',
+			'test_api_key'                          => '',
+			'environment'                           => 'test',
+			'debug'                                 => 'yes',
+			'fully_configured'                      => false,
 		);
-
-		/**
-		 * Poedit trick !
-		 */
-		foreach ( $default_settings as $key => $value ) {
-			if ( strpos( $key, 'po_edit' ) !== false ) {
-				unset( $default_settings[ $key ] );
-			}
-		}
-		return $default_settings;
 	}
 
 	/**
@@ -263,25 +246,26 @@ class Alma_WC_Settings {
 	}
 
 	/**
-	 * Returns a field translated.
+	 * Gets a setting value translated.
 	 *
-	 * @param string $field The field to translate.
+	 * @param string $key The setting to translate.
 	 *
-	 * @return mixed
+	 * @return string
 	 */
-	public function get_i18n( $field ) {
+	private function get_i18n( $key ) {
 
-		$field_translated = self::default_settings()[ $field ];
+		if ( Alma_WC_Internationalization::is_site_multilingual() ) {
+			if ( $this->{$key . '_' . get_user_locale() } ) {
+				return $this->{$key . '_' . get_user_locale() };
+			}
 
-		if ( $this->{$field . '_' . get_locale() } && Alma_WC_Internationalization::is_site_multilingual() ) {
-			$field_translated = $this->{$field . '_' . get_locale() };
-		} elseif ( Alma_WC_Internationalization::is_site_multilingual() ) {
-			$field_translated = Alma_WC_Internationalization::get_translated_text( $field_translated, Alma_WC_Internationalization::map_locale( get_locale() ) );
-		} elseif ( $this->{$field} ) {
-			$field_translated = $this->{$field};
+			return Alma_WC_Internationalization::get_translated_text(
+				self::default_settings()[ $key ],
+				get_user_locale()
+			);
 		}
 
-		return $field_translated;
+		return $this->{$key};
 	}
 
 	/**
@@ -534,6 +518,15 @@ class Alma_WC_Settings {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Gets not eligible cart message.
+	 *
+	 * @return string
+	 */
+	public function get_cart_not_eligible_message_gift_cards() {
+		return $this->get_i18n( 'cart_not_eligible_message_gift_cards' );
 	}
 
 

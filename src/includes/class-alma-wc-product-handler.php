@@ -29,21 +29,6 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 	}
 
 	/**
-	 * Return the default CSS selector for the price element of variable products, depending on the version of
-	 * WooCommerce, as WooCommerce 4.4.0 added a `<bdi>` wrapper around the price.
-	 *
-	 * @return string
-	 */
-	public static function default_variable_price_selector() {
-		$selector = 'form.variations_form div.woocommerce-variation-price span.woocommerce-Price-amount';
-		if ( version_compare( wc()->version, '4.4.0', '>=' ) ) {
-			$selector .= ' bdi';
-		}
-
-		return $selector;
-	}
-
-	/**
 	 * Display payment plan below the 'add to cart' button to indicate whether Alma is available or not
 	 *
 	 * @param mixed $the_product Post object or post ID of the product.
