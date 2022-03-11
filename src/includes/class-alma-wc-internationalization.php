@@ -15,6 +15,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Alma_WC_Internationalization {
 
 	/**
+	 * Available languages mo files hash.
+	 *
+	 * @var array
+	 */
+	private static $languages = array();
+
+	/**
 	 * Load languages list.
 	 *
 	 * @return array
@@ -62,7 +69,7 @@ class Alma_WC_Internationalization {
 	/**
 	 * Returns locale in format xx_XX for WP locale format compliance.
 	 * The value returned by this function is the key language code for the <select> of languages.
-	 * This value MUST be the same than the one returned by the get_locale() function.
+	 * This value MUST be the same as the one returned by the get_locale() function.
 	 *
 	 * @param string $locale The locale.
 	 *
@@ -92,16 +99,15 @@ class Alma_WC_Internationalization {
 			return $translation;
 		}
 
-		if ( ! isset( $GLOBALS[ 'alma_wc_object_mo_' . $code_lang ] ) ) {
-			$object_mo = new MO();
-			$object_mo->import_from_file( $mo_path_file );
-			$GLOBALS[ 'alma_wc_object_mo_' . $code_lang ] = $object_mo;
-		} else {
-			$object_mo = $GLOBALS[ 'alma_wc_object_mo_' . $code_lang ];
+		if ( ! isset( self::$languages[ $code_lang ] ) ) {
+			$mo = new MO();
+			$mo->import_from_file( $mo_path_file );
+			self::$languages[ $code_lang ] = $mo;
 		}
+		$mo = self::$languages[ $code_lang ];
 
-		if ( self::is_entry_exists_in_mo_file( $object_mo, $string ) ) {
-			$translation = $object_mo->entries[ $string ]->translations[0];
+		if ( self::entry_exists( $mo, $string ) ) {
+			$translation = $mo->entries[ $string ]->translations[0];
 		}
 		return $translation;
 	}
@@ -109,16 +115,16 @@ class Alma_WC_Internationalization {
 	/**
 	 * Tells is an entry string exists in a .mo file.
 	 *
-	 * @param Object $object_mo The MO object.
-	 * @param String $string The entry string to find.
+	 * @param MO     $mo The MO object.
+	 * @param String $entry The entry string to find.
 	 *
 	 * @return bool
 	 */
-	private static function is_entry_exists_in_mo_file( $object_mo, $string ) {
-		if ( isset( $object_mo->entries ) && isset( $object_mo->entries[ $string ] ) && isset( $object_mo->entries[ $string ]->translations ) && isset( $object_mo->entries[ $string ]->translations[0] ) ) {
-			return true;
-		}
-		return false;
+	private static function entry_exists( $mo, $entry ) {
+		return isset( $mo->entries )
+			&& isset( $mo->entries[ $entry ] )
+			&& isset( $mo->entries[ $entry ]->translations )
+			&& isset( $mo->entries[ $entry ]->translations[0] );
 	}
 
 }

@@ -3,7 +3,6 @@
  * Alma WooCommerce payment gateway
  *
  * @package Alma_WooCommerce_Gateway
- * @noinspection HtmlUnknownTarget
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
