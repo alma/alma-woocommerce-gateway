@@ -32,28 +32,28 @@ LATEST_VERSION="`git tag --list | grep "^v" | sort -n | tail -n1 | $SED_BIN 's/[
 [[ -z "$LATEST_VERSION" ]] && quit "no latest version found. git tag --list return empty version or pattern does not respect the expected one => vx.x.x (@see https://semver.org/)"
 [[ "$LATEST_VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || quit "bad latest version found ($LATEST_VERSION). git tag --list does not return a valid version pattern like vx.x.x (@see https://semver.org/)"
 
-# {{{ function git_log_not_master
+# {{{ function git_log_since_latest
 #
-git_log_not_master() {
-    git log HEAD --not master \
+git_log_since_latest() {
+    git log HEAD --not $LATEST_VERSION \
         | grep -E "^[[:blank:]]*(doc|feat|fix|ci|word|refactor)[a-z()-_]*:" \
         | sed 's/^[[:blank:]]*/* /g' \
         | sort
 }
-export -f git_log_not_master
+export -f git_log_since_latest
 # }}}
 
 
 # BUILD LOCAL CHANGELOG
 TMP_CHANGELOG="`mktemp /tmp/changelog.XXX`"
 echo -e "v$VERSION\n${SEP_CHANGELOG:0:$((${#VERSION}+1))}\n#" > $TMP_CHANGELOG
-git_log_not_master >> $TMP_CHANGELOG
+git_log_since_latest >> $TMP_CHANGELOG
 echo "#" >> $TMP_CHANGELOG
 
 # BUILD LOCAL README
 TMP_README="`mktemp /tmp/readme.XXX`"
 echo -e "= $VERSION =\n${SEP_README:0:$((${#VERSION}+4))}\n#" > $TMP_README
-git_log_not_master >> $TMP_README
+git_log_since_latest >> $TMP_README
 echo "#" >> $TMP_README
 
 
