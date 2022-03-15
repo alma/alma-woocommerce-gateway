@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v2.5.0
+------
+
+* feat: back-office i18n custom fields
+
 v2.4.1
 ------
 
