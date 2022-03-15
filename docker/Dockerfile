@@ -9,7 +9,8 @@ RUN chmod +x /usr/local/bin/wp
 RUN echo "alias wp='wp --allow-root'" >> /root/.bashrc
 
 # install vim & less
-RUN apt-get update && apt-get install -y vim less unzip mariadb-client-10.5
+RUN apt-get update && apt-get install -y vim less unzip mariadb-client-10.5 && apt-get remove -y libaom0 && apt-get -y autoremove
+RUN rm /usr/local/etc/php/conf.d/docker-php-ext-imagick.ini
 
 COPY --chown=www-data:www-data ./wp-config-docker.php /usr/src/wordpress/
 COPY ./docker-entrypoint.sh ./configure-wc.sh ./env.*local /usr/local/bin/
