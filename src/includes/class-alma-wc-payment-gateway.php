@@ -425,6 +425,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 */
 	private function render_payment_plan( $gateway_id, $default_plan ) {
 		$eligibilities = alma_wc_plugin()->get_cart_eligibilities();
+
 		if ( ! $eligibilities ) {
 			return;
 		}
@@ -454,7 +455,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Render plan
+	 * Render a payment plan.
 	 *
 	 * @param object $eligibility The eligibility object.
 	 *
@@ -465,7 +466,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$plan_index   = 1;
 		$payment_plan = $eligibility->paymentPlan; // phpcs:ignore WordPress.NamingConventions.ValidVariableName
 		$plans_count  = count( $payment_plan );
-
 		foreach ( $payment_plan as $step ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName
 			$display_customer_fee = 1 === $plan_index && $eligibility->getInstallmentsCount() <= 4 && $step['customer_fee'] > 0;
 			?>
@@ -482,8 +482,10 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 					border-bottom: 1px solid lightgrey;
 			<?php	} ?>
 					">
-				<?php if ( $eligibility->isPayLaterOnly() ) { ?>
-					<?php $justify_fees = 'left'; ?>
+				<?php
+				if ( $eligibility->isPayLaterOnly() ) {
+					$justify_fees = 'left';
+					?>
 					<span>
 						<?php
 						echo wp_kses_post(
@@ -497,11 +499,33 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 						);
 						?>
 					</span>
-				<?php } else { ?>
-					<?php $justify_fees = 'right'; ?>
-					<span><?php echo esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) ); ?></span>
-					<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $step['total_amount'] ) ); ?></span>
-				<?php } ?>
+					<?php
+				} else {
+					$justify_fees = 'right';
+					if (
+						'yes' === $this->settings['payment_upon_trigger_enabled'] &&
+						$eligibility->getInstallmentsCount() <= 4
+					) {
+						?>
+						<span>
+							<?php
+							if ( 1 === $plan_index ) {
+								echo esc_html( Alma_WC_Payment_Upon_Trigger::get_display_texts()[ alma_wc_plugin()->settings->payment_upon_trigger_display_text ] );
+							} else {
+								echo esc_html( $plan_index - 1 . ' ' . _n( 'month', 'months', $plan_index - 1, 'alma-woocommerce-gateway' ) );
+							}
+							?>
+						</span>
+						<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $step['total_amount'] ) ); ?></span>
+						<?php
+					} else {
+						?>
+						<span><?php echo esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) ); ?></span>
+						<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $step['total_amount'] ) ); ?></span>
+						<?php
+					}
+				}
+				?>
 			</p>
 			<?php if ( $display_customer_fee ) { ?>
 				<p style="
@@ -669,12 +693,17 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		?>
 		<tr valign="top" class="alma-i18n-parent" style="display:none;">
 			<th scope="row" class="titledesc">
-				<label for="<?php echo esc_attr( $field_key ); ?>"><?php echo wp_kses_post( $data['title'] ); ?> <?php echo $this->get_tooltip_html( $data ); // WPCS: XSS ok. ?></label>
+				<label for="<?php echo esc_attr( $field_key ); ?>"><?php echo wp_kses_post( $data['title'] ); ?> <?php echo esc_html( $this->get_tooltip_html( $data ) ); // phpcs:ignore Standard.Category.SniffName.ErrorCode. ?></label>
 			</th>
 			<td class="forminp">
 				<fieldset>
 					<legend class="screen-reader-text"><span><?php echo wp_kses_post( $data['title'] ); ?></span></legend>
-					<input class="input-text regular-input alma-i18n <?php echo esc_attr( $data['class'] ); ?>" type="text" name="<?php echo esc_attr( $field_key ); ?>" id="<?php echo esc_attr( $field_key ); ?>" style="<?php echo esc_attr( $data['css'] ); ?>" value="<?php echo esc_attr( $this->get_option( $key ) ); ?>" placeholder="<?php echo esc_attr( $data['placeholder'] ); ?>" <?php disabled( $data['disabled'], true ); ?> <?php echo $this->get_custom_attribute_html( $data ); // WPCS: XSS ok. ?> />
+					<input class="input-text regular-input alma-i18n <?php echo esc_attr( $data['class'] ); ?>" type="text" name="<?php echo esc_attr( $field_key ); ?>" id="<?php echo esc_attr( $field_key ); ?>" style="<?php echo esc_attr( $data['css'] ); ?>" value="<?php echo esc_attr( $this->get_option( $key ) ); ?>" placeholder="<?php echo esc_attr( $data['placeholder'] ); ?>" 
+																				<?php
+																				disabled( $data['disabled'], true );
+																				echo esc_html( $this->get_custom_attribute_html( $data ) ); // phpcs:ignore Standard.Category.SniffName.ErrorCode. 
+																				?>
+					 />
 					<select class="list_lang_title" style="width:auto;margin-left:10px;line-height:28px;">
 					<?php
 					foreach ( $data['lang_list'] as $code => $label ) {
@@ -683,7 +712,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 					}
 					?>
 					</select>
-					<?php echo $this->get_description_html( $data ); // WPCS: XSS ok. ?>
+					<?php echo $this->get_description_html( $data ); // phpcs:ignore ?>
 				</fieldset>
 			</td>
 		</tr>
@@ -883,6 +912,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$definition['installments_count'] = $this->settings[ "installments_count_$plan_key" ];
 		$definition['deferred_days']      = $this->settings[ "deferred_days_$plan_key" ];
 		$definition['deferred_months']    = $this->settings[ "deferred_months_$plan_key" ];
+		$definition['plan_key']           = $plan_key;
 
 		return $definition;
 	}
