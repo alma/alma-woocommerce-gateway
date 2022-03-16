@@ -54,12 +54,12 @@ class Alma_WC_Admin_Form {
 	/**
 	 * Inits Payment upon trigger fields.
 	 *
-	 * @author gilles.
 	 * @param array $default_settings as default settings.
 	 *
 	 * @return array[]
 	 */
 	private function init_payment_upon_trigger_fields( $default_settings ) {
+
 		$title_field = array(
 			'payment_upon_trigger_section' => array(
 				'title' => '<hr>' . __( '→ Payment upon trigger configuration', 'alma-woocommerce-gateway' ),
@@ -67,28 +67,44 @@ class Alma_WC_Admin_Form {
 			),
 		);
 
+		if ( ! Alma_WC_Payment_Upon_Trigger::has_merchant_payment_upon_trigger_enabled() ) {
+			return array_merge(
+				$title_field,
+				array(
+					'payment_upon_trigger_enabling_info' => array(
+						// translators: %1$s: alma contact email.
+						'title' => '<p style="font-weight:normal;">' . sprintf( __( 'If you are interested in this feature, please get closer to your Alma contact or by sending an email to <a href="mailto:%1$s">%1$s</a>', 'alma-woocommerce-gateway' ), 'support@getalma.eu' ) . '</p>',
+						'type'  => 'title',
+					),
+				)
+			);
+		}
+
 		return array_merge(
 			$title_field,
 			array(
+				'payment_upon_trigger_general_info' => array(
+					'title' => '<p style="font-weight:normal;">' . __( 'This option is available only for Alma payment in 2x, 3x and 4x.<br>When it\'s turned on, your clients will pay the first installment at the order status change. When your client order on your website, Alma will only ask for a payment authorization. Only status handled by Alma are available in the menu below. Please contact Alma if you need us to add another status.', 'alma-woocommerce-gateway' ) . '</p>',
+					'type'  => 'title',
+				),
 				'payment_upon_trigger_enabled'      => array(
-					'title'   => __( 'Enable/Disable', 'alma-woocommerce-gateway' ),
+					'title'   => __( 'Activate the payment upon trigger', 'alma-woocommerce-gateway' ),
 					'type'    => 'checkbox',
-					'label'   => __( 'Enable payment upon trigger', 'alma-woocommerce-gateway' ),
+					'label'   => '&nbsp;',
 					'default' => $default_settings['enabled'],
 				),
-				'payment_upon_trigger_event'        => array(
-					'title'       => __( 'Chose event to trigger', 'alma-woocommerce-gateway' ),
-					'type'        => 'select',
-					'description' => __( 'Please.', 'alma-woocommerce-gateway' ),
-					'default'     => $default_settings['payment_upon_trigger_event'],
-					'options'     => Alma_WC_Payment_Upon_Trigger::get_order_statuses(),
-				),
 				'payment_upon_trigger_display_text' => array(
-					'title'       => __( 'Text to be displayed on front-office', 'alma-woocommerce-gateway' ),
 					'type'        => 'select',
-					'description' => __( 'Please.', 'alma-woocommerce-gateway' ),
+					'title'       => __( 'Trigger typology', 'alma-woocommerce-gateway' ),
+					'description' => __( 'Text that will appear in the payments schedule and in the customer\'s payment authorization email.', 'alma-woocommerce-gateway' ),
 					'default'     => $default_settings['payment_upon_trigger_display_text'],
 					'options'     => Alma_WC_Payment_Upon_Trigger::get_display_texts(),
+				),
+				'payment_upon_trigger_event'        => array(
+					'type'    => 'select',
+					'title'   => __( 'Order status that triggers the first payment', 'alma-woocommerce-gateway' ),
+					'default' => $default_settings['payment_upon_trigger_event'],
+					'options' => Alma_WC_Payment_Upon_Trigger::get_order_statuses(),
 				),
 			)
 		);
