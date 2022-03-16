@@ -753,11 +753,11 @@ class Alma_WC_Plugin {
 	}
 
 	/**
-	 * Is current cart eligible.
+	 * Check if cart has eligibilities.
 	 *
 	 * @return bool
 	 */
-	public function is_cart_eligible() {
+	public function is_there_eligibility_in_cart() {
 		return count( $this->get_eligible_plans_keys_for_cart() ) > 0;
 	}
 

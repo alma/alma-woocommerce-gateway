@@ -6,7 +6,6 @@
  * @noinspection HtmlUnknownTarget
  */
 
-use Alma\API\Endpoints\Results\Eligibility;
 use Alma\API\RequestError;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -162,6 +161,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * Check if the gateway is available for use.
 	 *
 	 * @return bool
+	 * @override
 	 */
 	public function is_available() {
 		if ( wc()->cart === null ) {
@@ -172,7 +172,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			return false;
 		}
 
-		if ( ! alma_wc_plugin()->is_cart_eligible() ) {
+		if ( ! alma_wc_plugin()->is_there_eligibility_in_cart() ) {
 			return false;
 		}
 
@@ -180,9 +180,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			return false;
 		}
 
-		$is_eligible = $this->is_cart_eligible();
-
-		return $is_eligible && parent::is_available();
+		return $this->is_cart_eligible() && parent::is_available();
 	}
 
 	/**
@@ -759,7 +757,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Check cart eligibilities
+	 * Check if cart eligibilities has at least one eligible plan.
 	 *
 	 * @return bool
 	 */

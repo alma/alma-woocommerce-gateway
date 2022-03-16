@@ -143,7 +143,7 @@ class Alma_WC_Model_Customer {
 	}
 
 	/**
-	 * Get shipping address.
+	 * Gets shipping address.
 	 *
 	 * @return array
 	 */
