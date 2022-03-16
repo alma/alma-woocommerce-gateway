@@ -137,8 +137,8 @@ class Alma_WC_Model_Payment {
 			'locale'          => apply_filters( 'alma_wc_eligibility_user_locale', get_user_locale() ),
 		);
 
-		$billing_country  = $customer->get_billing_address()['country'];
-		$shipping_country = $customer->get_shipping_address()['country'];
+		$billing_country  = $customer->get_billing_country();
+		$shipping_country = $customer->get_shipping_country();
 
 		if ( $billing_country ) {
 			$data['billing_address'] = array( 'country' => $billing_country );

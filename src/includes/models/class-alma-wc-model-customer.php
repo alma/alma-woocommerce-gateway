@@ -172,4 +172,28 @@ class Alma_WC_Model_Customer {
 			);
 		}
 	}
+
+	/**
+	 * Gets shipping country if customer exists.
+	 *
+	 * @return string|null
+	 */
+	public function get_shipping_country() {
+		if ( $this->customer ) {
+			return $this->get_shipping_address()['country'];
+		}
+		return null;
+	}
+
+	/**
+	 * Gets billing country if customer exists.
+	 *
+	 * @return string|null
+	 */
+	public function get_billing_country() {
+		if ( $this->customer ) {
+			return $this->get_billing_address()['country'];
+		}
+		return null;
+	}
 }
