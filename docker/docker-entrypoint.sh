@@ -164,10 +164,10 @@ if ( ! wp_is_installed ) ; then
       --title="$WP_TITLE" \
       --skip-email
 fi
-if ( ! wp_cli plugin is-installed woocommmerce ) ; then
-    echo >&2 "Installing & Activating woocommerce plugin ... "
+if ( ! wp_cli plugin is-installed woocommerce ) ; then
+    echo >&2 "Installing woocommerce plugin ... "
     [[ -d /var/www/html/wp-content/plugins/woocommerce ]] && rm -rf /var/www/html/wp-content/plugins/woocommerce
-    wp_cli plugin install https://downloads.wordpress.org/plugin/woocommerce.5.3.0.zip --activate
+    wp_cli plugin install https://downloads.wordpress.org/plugin/woocommerce.5.3.0.zip
     [ ! -d /var/www/html/wp-content/uploads/ ] && mkdir -p /var/www/html/wp-content/uploads
     cp /var/www/html/wp-content/plugins/woocommerce/assets/images/placeholder.png /var/www/html/wp-content/uploads/woocommerce-placeholder.png
 fi
