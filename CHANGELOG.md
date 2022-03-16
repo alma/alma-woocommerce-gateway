@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v2.5.1
+------
+
+* fix: admin test on unavailable var for other admin pages
+* fix: check cart eligibility without customer
+
 v2.5.0
 ------
 

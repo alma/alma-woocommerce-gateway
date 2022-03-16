@@ -5,7 +5,7 @@ Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo c
 Requires at least: 4.4
 Tested up to: 5.8.2
 Requires PHP: 5.6
-Stable tag: 2.5.0
+Stable tag: 2.5.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -82,6 +82,12 @@ To edit the translations, use [Poedit](https://poedit.net/)
 To build extension for production run `./bin/build.sh`
 
 == Changelog ==
+
+= 2.5.1 =
+=========
+
+* fix: admin test on unavailable var for other admin pages
+* fix: check cart eligibility without customer
 
 = 2.5.0 =
 =========
