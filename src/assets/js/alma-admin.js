@@ -119,6 +119,9 @@ function AlmaAdminFeePlan(helper ) {
          * @return void
          */
         var initiateAlmaSelectMenuBehaviour = function()  {
+            if (typeof select_alma_fee_plans_id === 'undefined') {
+                return;
+            }
             var $select = jQuery('#' + select_alma_fee_plans_id);
             var previousPlan = $select.val();
             $select.almaSelectMenu({
