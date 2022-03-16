@@ -936,6 +936,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$definition['installments_count'] = $this->settings[ "installments_count_$plan_key" ];
 		$definition['deferred_days']      = $this->settings[ "deferred_days_$plan_key" ];
 		$definition['deferred_months']    = $this->settings[ "deferred_months_$plan_key" ];
+		$definition['plan_key']           = $plan_key;
 
 		return $definition;
 	}
