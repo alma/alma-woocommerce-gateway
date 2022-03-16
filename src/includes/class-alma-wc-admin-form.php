@@ -43,10 +43,54 @@ class Alma_WC_Admin_Form {
 
 		return array_merge(
 			self::get_instance()->init_enabled_field( $default_settings ),
+			self::get_instance()->init_payment_upon_trigger_fields( $default_settings ),
 			self::get_instance()->init_fee_plans_fields( $default_settings ),
 			self::get_instance()->init_general_settings_fields( $default_settings ),
 			self::get_instance()->init_api_key_fields( __( '→ API configuration', 'alma-woocommerce-gateway' ), $default_settings ),
 			self::get_instance()->init_debug_fields( $default_settings )
+		);
+	}
+
+	/**
+	 * Inits Payment upon trigger fields.
+	 *
+	 * @author gilles.
+	 * @param array $default_settings as default settings.
+	 *
+	 * @return array[]
+	 */
+	private function init_payment_upon_trigger_fields( $default_settings ) {
+		$title_field = array(
+			'payment_upon_trigger_section' => array(
+				'title' => '<hr>' . __( '→ Payment upon trigger configuration', 'alma-woocommerce-gateway' ),
+				'type'  => 'title',
+			),
+		);
+
+		return array_merge(
+			$title_field,
+			array(
+				'payment_upon_trigger_enabled'      => array(
+					'title'   => __( 'Enable/Disable', 'alma-woocommerce-gateway' ),
+					'type'    => 'checkbox',
+					'label'   => __( 'Enable payment upon trigger', 'alma-woocommerce-gateway' ),
+					'default' => $default_settings['enabled'],
+				),
+				'payment_upon_trigger_event'        => array(
+					'title'       => __( 'Chose event to trigger', 'alma-woocommerce-gateway' ),
+					'type'        => 'select',
+					'description' => __( 'Please.', 'alma-woocommerce-gateway' ),
+					'default'     => $default_settings['payment_upon_trigger_event'],
+					'options'     => Alma_WC_Payment_Upon_Trigger::get_order_statuses(),
+				),
+				'payment_upon_trigger_display_text' => array(
+					'title'       => __( 'Text to be displayed on front-office', 'alma-woocommerce-gateway' ),
+					'type'        => 'select',
+					'description' => __( 'Please.', 'alma-woocommerce-gateway' ),
+					'default'     => $default_settings['payment_upon_trigger_display_text'],
+					'options'     => Alma_WC_Payment_Upon_Trigger::get_display_texts(),
+				),
+			)
 		);
 	}
 
@@ -184,6 +228,16 @@ class Alma_WC_Admin_Form {
 			'test_api_key' => array(
 				'title' => __( 'Test API key', 'alma-woocommerce-gateway' ),
 				'type'  => 'text',
+			),
+			'environment'  => array(
+				'title'       => __( 'API Mode', 'alma-woocommerce-gateway' ),
+				'type'        => 'select',
+				'description' => __( 'Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In Test mode, only admins can see Alma on cart/checkout pages.', 'alma-woocommerce-gateway' ),
+				'default'     => $default_settings['environment'],
+				'options'     => array(
+					'test' => __( 'Test', 'alma-woocommerce-gateway' ),
+					'live' => __( 'Live', 'alma-woocommerce-gateway' ),
+				),
 			),
 			'environment'  => array(
 				'title'       => __( 'API Mode', 'alma-woocommerce-gateway' ),
@@ -436,13 +490,13 @@ class Alma_WC_Admin_Form {
 	 */
 	private function generate_fee_plan_description(
 		FeePlan $fee_plan,
-		$min_amount,
-		$max_amount,
-		$merchant_fee_fixed,
-		$merchant_fee_variable,
-		$customer_fee_fixed,
-		$customer_fee_variable,
-		$customer_lending_rate
+				$min_amount,
+				$max_amount,
+				$merchant_fee_fixed,
+				$merchant_fee_variable,
+				$customer_fee_fixed,
+				$customer_fee_variable,
+				$customer_lending_rate
 	) {
 		$you_can_offer = '';
 		if ( $fee_plan->isPnXOnly() ) {
@@ -459,7 +513,7 @@ class Alma_WC_Admin_Form {
 			$deferred_months = $fee_plan->getDeferredMonths();
 			if ( $deferred_days ) {
 				$you_can_offer = sprintf(
-					// translators: %d: number of deferred days.
+				// translators: %d: number of deferred days.
 					__( 'You can offer D+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-woocommerce-gateway' ),
 					$deferred_days,
 					$min_amount,
@@ -468,7 +522,7 @@ class Alma_WC_Admin_Form {
 			}
 			if ( $deferred_months ) {
 				$you_can_offer = sprintf(
-					// translators: %d: number of deferred months.
+				// translators: %d: number of deferred months.
 					__( 'You can offer M+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-woocommerce-gateway' ),
 					$deferred_months,
 					$min_amount,
@@ -606,5 +660,4 @@ class Alma_WC_Admin_Form {
 	}
 
 }
-
 

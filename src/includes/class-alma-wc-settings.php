@@ -61,6 +61,9 @@ class Alma_WC_Settings {
 	public static function default_settings() {
 		return array(
 			'enabled'                               => 'yes',
+			'payment_upon_trigger_enabled'          => 'no',
+			'payment_upon_trigger_event'            => 'completed',
+			'payment_upon_trigger_display_text'     => 'at_shipping',
 			'selected_fee_plan'                     => self::DEFAULT_FEE_PLAN,
 			'enabled_general_3_0_0'                 => 'yes',
 			'title_payment_method_pnx'              => Alma_WC_Settings_Helper::default_pnx_title(),
