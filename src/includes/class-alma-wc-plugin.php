@@ -593,9 +593,13 @@ class Alma_WC_Plugin {
 
 	/**
 	 * Webhooks handlers
+	 *
+	 * PID comes from Alma IPN callback or Alma Checkout page,
+	 * it is not a user form submission: Nonce usage is not suitable here.
 	 */
 	private function get_payment_to_validate() {
-		$payment_id = isset( $_GET['pid'] ) ? $_GET['pid'] : null; // phpcs:ignore WordPress.Security.NonceVerification
+		// phpcs:ignore WordPress.Security.NonceVerification
+		$payment_id = isset( $_GET['pid'] ) ? $_GET['pid'] : null;
 
 		if ( ! $payment_id ) {
 			$this->logger->error( 'Payment validation webhook called without a payment ID' );

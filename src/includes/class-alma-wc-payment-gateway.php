@@ -36,6 +36,12 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @var Alma_WC_Logger
 	 */
 	private $logger;
+	/**
+	 * Checkout Helper.
+	 *
+	 * @var Alma_WC_Checkout_Helper
+	 */
+	private $checkout_helper;
 
 	/**
 	 * __construct
@@ -46,7 +52,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$this->method_title       = __( 'Payment in instalments and deferred with Alma - 2x 3x 4x, D+15 or D+30', 'alma-woocommerce-gateway' );
 		$this->method_description = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.', 'alma-woocommerce-gateway' );
 
-		$this->logger = new Alma_WC_Logger();
+		$this->logger          = new Alma_WC_Logger();
+		$this->checkout_helper = new Alma_WC_Checkout_Helper();
 
 		$this->init_form_fields();
 		$this->init_settings();
@@ -229,6 +236,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 */
 	public function payment_fields() {
 		echo wp_kses_post( $this->get_description() );
+		$this->checkout_helper->render_nonce_field();
 
 		$gateway_id = $this->id;
 
@@ -333,8 +341,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			);
 		}
 		try {
-			// phpcs:ignore WordPress.Security.NonceVerification
-			$fee_plan_definition = $this->get_fee_plan_definition( $_POST['alma_fee_plan'] );
+			$fee_plan_definition = $this->get_fee_plan_definition( $this->checkout_helper->get_chosen_alma_fee_plan() );
 		} catch ( Exception $e ) {
 			$this->logger->log_stack_trace( 'Error while creating payment: ', $e );
 			wc_add_notice( $error_msg, 'error' );
@@ -894,7 +901,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return void
 	 */
 	public function woocommerce_checkout_process() {
-		if ( substr( $_POST['payment_method'], 0, 5 ) === 'alma_' ) { // phpcs:ignore
+		if ( $this->checkout_helper->is_alma_payment_method() ) {
 			$_POST['payment_method'] = self::GATEWAY_ID;
 		}
 	}
