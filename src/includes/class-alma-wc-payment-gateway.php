@@ -597,7 +597,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			border-bottom: 1px solid lightgrey;
 		">
 			<span><?php echo esc_html__( 'Your cart:', 'alma-woocommerce-gateway' ); ?></span>
-			<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $cart->get_total() ) ); ?></span>
+			<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $cart->get_total_in_cents() ) ); ?></span>
 		</p>
 		<p style="
 			display: flex;
@@ -632,7 +632,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			font-weight: bold;
 		">
 			<span><?php echo esc_html__( 'Total:', 'alma-woocommerce-gateway' ); ?></span>
-			<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $eligibility->getCustomerTotalCostAmount() + $cart->get_total() ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName ?></span>
+			<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $eligibility->getCustomerTotalCostAmount() + $cart->get_total_in_cents() ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName ?></span>
 		</p>
 		<?php
 	}
