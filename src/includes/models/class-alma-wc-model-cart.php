@@ -14,13 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Alma_WC_Model_Cart {
 	/**
-	 * Legacy
-	 *
-	 * @var bool
-	 */
-	private $legacy;
-
-	/**
 	 * Cart
 	 *
 	 * @var WC_Cart|null
@@ -33,23 +26,33 @@ class Alma_WC_Model_Cart {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->legacy = version_compare( wc()->version, '3.2.0', '<' );
-		$this->cart   = WC()->cart;
+		$this->cart = WC()->cart;
 	}
 
 	/**
-	 * Get cart total.
+	 * Get cart total in cents.
+	 *
+	 * @return integer
+	 * @see alma_wc_price_to_cents()
+	 * @see get_total_from_wc_cart
+	 */
+	public function get_total_in_cents() {
+		return alma_wc_price_to_cents( $this->get_total_from_wc_cart() );
+	}
+
+	/**
+	 * Gets total from wc cart depending on which wc version is running.
 	 *
 	 * @return float
 	 */
-	public function get_total() {
+	protected function get_total_from_wc_cart() {
 		if ( ! $this->cart ) {
 			return 0;
 		}
-		if ( $this->legacy ) {
-			return alma_wc_price_to_cents( $this->cart->total );
-		} else {
-			return alma_wc_price_to_cents( $this->cart->get_total( null ) );
+		if ( version_compare( WC()->version, '3.2.0', '<' ) ) {
+			return $this->cart->total;
 		}
+
+		return $this->cart->get_total( null );
 	}
 }

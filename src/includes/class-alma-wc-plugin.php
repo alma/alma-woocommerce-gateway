@@ -697,7 +697,7 @@ class Alma_WC_Plugin {
 	 * @return array<array>
 	 */
 	public function get_eligible_plans_for_cart() {
-		$amount = ( new Alma_WC_Model_Cart() )->get_total();
+		$amount = ( new Alma_WC_Model_Cart() )->get_total_in_cents();
 
 		return array_values(
 			array_map(
@@ -726,7 +726,7 @@ class Alma_WC_Plugin {
 		$cart_eligibilities = $this->get_cart_eligibilities();
 
 		return array_filter(
-			$this->settings->get_eligible_plans_keys( ( new Alma_WC_Model_Cart() )->get_total() ),
+			$this->settings->get_eligible_plans_keys( ( new Alma_WC_Model_Cart() )->get_total_in_cents() ),
 			function ( $key ) use ( $cart_eligibilities ) {
 				return array_key_exists( $key, $cart_eligibilities );
 			}
