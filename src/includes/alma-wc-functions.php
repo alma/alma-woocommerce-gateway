@@ -74,6 +74,7 @@ function alma_wc_format_price_from_cents( $price, $args = array() ) {
  *
  * @return array
  * @throws RuntimeException Throws when argument count invalid or an argument is not an array.
+ * // phpcs:ignore
  * @TODO check if array_replace_recursive can do the stuff here ?
  */
 function alma_wc_array_merge_recursive() {
