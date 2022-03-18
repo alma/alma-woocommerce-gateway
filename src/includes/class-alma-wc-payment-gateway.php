@@ -309,13 +309,13 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return bool
 	 */
 	public function validate_fields() {
-		if ( empty( $_POST['alma_fee_plan'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			wc_add_notice( '<strong>Installments count</strong> is required.', 'error' );
+		$alma_fee_plan = $this->checkout_helper->get_chosen_alma_fee_plan();
+		if ( ! $alma_fee_plan ) {
 			return false;
 		}
 		$allowed_values = array_map( 'strval', alma_wc_plugin()->get_eligible_plans_keys_for_cart() );
-		if ( ! in_array( $_POST['alma_fee_plan'], $allowed_values, true ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			wc_add_notice( '<strong>Installments count</strong> is invalid.', 'error' );
+		if ( ! in_array( $alma_fee_plan, $allowed_values, true ) ) {
+			wc_add_notice( '<strong>Fee plan</strong> is invalid.', 'error' );
 			return false;
 		}
 		return true;
