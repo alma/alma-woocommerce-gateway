@@ -16,8 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Alma_WC_Payment_Upon_Trigger {
 
-	const FOO = 'bar';
-
 	/**
 	 * Logger
 	 *
@@ -29,6 +27,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	 * __construct.
 	 */
 	public function __construct() {
+		$this->logger = new Alma_WC_Logger();
 		add_action( 'woocommerce_order_status_changed', array( $this, 'woocommerce_order_status_changed' ), 10, 3 );
 	}
 
@@ -40,16 +39,13 @@ class Alma_WC_Payment_Upon_Trigger {
 	 * @param string  $next_status Order status affected to the order.
 	 * @return void
 	 */
-	public function woocommerce_order_status_changed( $order_id, $previous_status, $next_status ) {
-
+	public function woocommerce_order_status_changed( $order_id, $previous_status, $next_status ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 		if ( 'yes' !== alma_wc_plugin()->settings->payment_upon_trigger_enabled ) {
 			return;
 		}
 
 		if ( alma_wc_plugin()->settings->payment_upon_trigger_event === $next_status ) {
-
-			// @todo check if order isn't flag as already paid.
-			$this->launch_payment( $order_id );
+			$this->trigger_payment( $order_id );
 		}
 	}
 
@@ -59,10 +55,30 @@ class Alma_WC_Payment_Upon_Trigger {
 	 * @param integer $order_id The order id.
 	 * @return void
 	 */
-	private function launch_payment( $order_id ) {
+	private function trigger_payment( $order_id ) {
 
-		// @todo flag order as already paid.
-		error_log( 'launch payment for the order_id = ' . $order_id );
+		$alma = alma_wc_plugin()->get_alma_client();
+		if ( ! $alma ) {
+			return;
+		}
+
+		$order = wc_get_order( $order_id );
+		if ( ! $order->get_transaction_id() ) {
+			$this->logger->log( 1, 'Error while getting transaction_id for order_id = ' . $order_id );
+			return;
+		}
+
+		$payment = $alma->payments->fetch( $order->get_transaction_id() );
+		if ( $payment->deferred_trigger_applied ) {
+			$this->logger->log( 'debug', 'Order number ' . $order_id . ' has already a value : ' . deferred_trigger_applied );
+			return;
+		}
+
+		try {
+			$alma->payments->trigger( $order->get_transaction_id() );
+		} catch ( RequestError $e ) {
+			$this->logger->log_stack_trace( 'Error while trigger payment for order number : ' . $order_id, $e->getMessage() );
+		}
 	}
 
 	/**

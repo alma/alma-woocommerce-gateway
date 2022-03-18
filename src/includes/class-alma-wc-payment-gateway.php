@@ -695,7 +695,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		?>
 		<tr valign="top" class="alma-i18n-parent" style="display:none;">
 			<th scope="row" class="titledesc">
-				<label for="<?php echo esc_attr( $field_key ); ?>"><?php echo wp_kses_post( $data['title'] ); ?> <?php echo esc_html( $this->get_tooltip_html( $data ) ); // phpcs:ignore Standard.Category.SniffName.ErrorCode. ?></label>
+				<label for="<?php echo esc_attr( $field_key ); ?>"><?php echo wp_kses_post( $data['title'] ); ?> <?php echo $this->get_tooltip_html( $data ); // phpcs:ignore ?></label>
 			</th>
 			<td class="forminp">
 				<fieldset>

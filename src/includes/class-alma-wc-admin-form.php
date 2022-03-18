@@ -18,14 +18,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Alma_WC_Admin_Form {
 
 	/**
-	 * Singleton static property
+	 * Singleton static property.
 	 *
 	 * @var self
 	 */
 	private static $instance;
 
 	/**
-	 * Admin Form fields initialisation.
+	 * Admin Form fields initialization.
 	 *
 	 * @return array
 	 */

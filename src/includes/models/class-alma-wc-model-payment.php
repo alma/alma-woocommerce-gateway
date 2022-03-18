@@ -78,7 +78,7 @@ class Alma_WC_Model_Payment {
 			),
 		);
 
-		if ( Alma_WC_Payment_Upon_Trigger::is_payment_upon_trigger_enabled_for_fee_plan( $fee_plan_definition['plan_key'] ) ) {
+		if ( Alma_WC_Payment_Upon_Trigger::does_payment_upon_trigger_apply_for_this_fee_plan( $fee_plan_definition ) ) {
 			$data['payment']['deferred']             = 'trigger';
 			$data['payment']['deferred_description'] = Alma_WC_Payment_Upon_Trigger::get_display_texts()[ alma_wc_plugin()->settings->payment_upon_trigger_display_text ];
 		}
