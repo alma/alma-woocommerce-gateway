@@ -60,6 +60,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	 *
 	 * @param integer $order_id The order id.
 	 * @param string  $next_status The order new status.
+	 *
 	 * @return void
 	 */
 	private function trigger_payment( $order_id, $next_status ) {
@@ -75,7 +76,13 @@ class Alma_WC_Payment_Upon_Trigger {
 			return;
 		}
 
-		$payment = $alma->payments->fetch( $order->get_transaction_id() );
+		try {
+			$payment = $alma->payments->fetch( $order->get_transaction_id() );
+		} catch ( RequestError $e ) {
+			$this->logger->error( sprintf( 'Fail to fetch payment with transaction_id %s for order_id %s ', $order->get_transaction_id(), $order_id ) );
+			return;
+		}
+
 		if ( $payment->deferred_trigger_applied ) {
 			$this->logger->info( 'Order number ' . $order_id . ' has already a value : -->' . deferred_trigger_applied . '<--.' );
 			return;
