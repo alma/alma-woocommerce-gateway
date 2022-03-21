@@ -6,5 +6,5 @@
 
 files:
   -
-    source: /languages/alma-woocommerce-gateway.pot
-    translation: /languages/alma-woocommerce-gateway-%locale_with_underscore%.po
+    source: /languages/alma-gateway-for-woocommerce.pot
+    translation: /languages/alma-gateway-for-woocommerce-%locale_with_underscore%.po

@@ -56,7 +56,7 @@ You need to have `docker` and `docker-compose` installed on your computer.
 - Clone the repository
 - Run `docker-compose up` to start WordPress
 - Run `docker-compose exec wordpress bash` to open a shell in the docker container
-- Run `cd wp-content/plugins/alma-woocommerce-gateway` to go into the plugin directory
+- Run `cd wp-content/plugins/alma-gateway-for-woocommerce` to go into the plugin directory
 - Run `composer install` to install dependencies
 - Go to http://localhost:8000 and follow WordPress installation steps
 - Go to http://localhost:8000/wp-admin/plugin-install.php and install & enable *WooCommerce*

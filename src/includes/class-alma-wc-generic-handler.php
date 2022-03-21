@@ -62,12 +62,12 @@ class Alma_WC_Generic_Handler {
 	 */
 	private function is_usable() {
 		if ( ! $this->settings->is_enabled() ) {
-			$this->logger->info( __( 'Not usable handler: not enabled settings.', 'alma-woocommerce-gateway' ) );
+			$this->logger->info( __( 'Not usable handler: not enabled settings.', 'alma-gateway-for-woocommerce' ) );
 
 			return false;
 		}
 		if ( ! $this->settings->fully_configured ) {
-			$this->logger->info( __( 'Not usable handler: settings are not fully configured.', 'alma-woocommerce-gateway' ) );
+			$this->logger->info( __( 'Not usable handler: settings are not fully configured.', 'alma-gateway-for-woocommerce' ) );
 
 			return false;
 		}
@@ -106,13 +106,13 @@ class Alma_WC_Generic_Handler {
 		}
 
 		if ( ! $this->is_usable() ) {
-			$this->logger->info( __( 'Handler is not usable: badge injection failed.', 'alma-woocommerce-gateway' ) );
+			$this->logger->info( __( 'Handler is not usable: badge injection failed.', 'alma-gateway-for-woocommerce' ) );
 			return;
 		}
 
 		$merchant_id = $this->settings->merchant_id;
 		if ( empty( $merchant_id ) ) {
-			$this->logger->info( __( 'Settings merchant id not found: badge injection failed.', 'alma-woocommerce-gateway' ) );
+			$this->logger->info( __( 'Settings merchant id not found: badge injection failed.', 'alma-gateway-for-woocommerce' ) );
 			return;
 		}
 
@@ -185,7 +185,7 @@ class Alma_WC_Generic_Handler {
 	 * @return string|void
 	 */
 	public function get_eligibility_widget_already_rendered_message() {
-		return __( 'Alma "Eligibility Widget" (cart or product) already rendered on this page - Not displaying Alma', 'alma-woocommerce-gateway' );
+		return __( 'Alma "Eligibility Widget" (cart or product) already rendered on this page - Not displaying Alma', 'alma-gateway-for-woocommerce' );
 	}
 
 	/**

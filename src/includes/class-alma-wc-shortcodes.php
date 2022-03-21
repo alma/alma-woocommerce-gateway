@@ -132,7 +132,7 @@ class Alma_WC_Shortcodes {
 
 		if ( ! $product ) {
 			/* translators: %s: #product_id (if any) */
-			$product_not_found_content = sprintf( __( 'Product%s not found - Not displaying Alma', 'alma-woocommerce-gateway' ), isset( $atts['id'] ) ? ' with id #' . $atts['id'] : '' );
+			$product_not_found_content = sprintf( __( 'Product%s not found - Not displaying Alma', 'alma-gateway-for-woocommerce' ), isset( $atts['id'] ) ? ' with id #' . $atts['id'] : '' );
 
 			return $this->render_empty( self::PRODUCT_SHORTCODE_TAG, $product_not_found_content, $atts, $content );
 		}

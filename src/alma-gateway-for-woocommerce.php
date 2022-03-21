@@ -8,7 +8,7 @@
  * Author URI: https://www.getalma.eu
  * License: GNU General Public License v3.0
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
- * Text Domain: alma-woocommerce-gateway
+ * Text Domain: alma-gateway-for-woocommerce
  * Domain Path: /languages
  *
  * @package Alma_WooCommerce_Gateway

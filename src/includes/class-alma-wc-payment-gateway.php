@@ -49,8 +49,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	public function __construct() {
 		$this->id                 = self::GATEWAY_ID;
 		$this->has_fields         = true;
-		$this->method_title       = __( 'Payment in instalments and deferred with Alma - 2x 3x 4x, D+15 or D+30', 'alma-woocommerce-gateway' );
-		$this->method_description = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.', 'alma-woocommerce-gateway' );
+		$this->method_title       = __( 'Payment in instalments and deferred with Alma - 2x 3x 4x, D+15 or D+30', 'alma-gateway-for-woocommerce' );
+		$this->method_description = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.', 'alma-gateway-for-woocommerce' );
 
 		$this->logger          = new Alma_WC_Logger();
 		$this->checkout_helper = new Alma_WC_Checkout_Helper();
@@ -223,7 +223,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				alt="
 					<?php
 					// translators: %s: plan_key alt image.
-					echo esc_html( sprintf( __( '%s installments', 'alma-woocommerce-gateway' ), $plan_key ) );
+					echo esc_html( sprintf( __( '%s installments', 'alma-gateway-for-woocommerce' ), $plan_key ) );
 					?>
 					">
 		</label>
@@ -253,7 +253,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$is_multiple_plans = count( $payment_fields ) > 1;
 		if ( $is_multiple_plans ) {
 			?>
-			<p><?php echo esc_html__( 'Choose your payment method', 'alma-woocommerce-gateway' ); ?><span class="required">*</span></p>
+			<p><?php echo esc_html__( 'Choose your payment method', 'alma-gateway-for-woocommerce' ); ?><span class="required">*</span></p>
 			<?php
 		} else {
 			?>
@@ -329,7 +329,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return array
 	 */
 	public function process_payment( $order_id ) {
-		$error_msg = __( 'There was an error processing your payment.<br>Please try again or contact us if the problem persists.', 'alma-woocommerce-gateway' );
+		$error_msg = __( 'There was an error processing your payment.<br>Please try again or contact us if the problem persists.', 'alma-gateway-for-woocommerce' );
 
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
@@ -386,7 +386,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 */
 	public function validate_payment_on_customer_return( $payment_id ) {
 		$order     = null;
-		$error_msg = __( 'There was an error when validating your payment.<br>Please try again or contact us if the problem persists.', 'alma-woocommerce-gateway' );
+		$error_msg = __( 'There was an error when validating your payment.<br>Please try again or contact us if the problem persists.', 'alma-gateway-for-woocommerce' );
 		try {
 			$order = Alma_WC_Payment_Validator::validate_payment( $payment_id );
 		} catch ( Alma_WC_Payment_Validation_Error $e ) {
@@ -495,7 +495,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 						echo wp_kses_post(
 							sprintf(
 							// translators: %1$s => today_amount (0), %2$s => total_amount, %3$s => i18n formatted due_date.
-								__( '%1$s today then %2$s on %3$s', 'alma-woocommerce-gateway' ),
+								__( '%1$s today then %2$s on %3$s', 'alma-gateway-for-woocommerce' ),
 								alma_wc_format_price_from_cents( 0 ),
 								alma_wc_format_price_from_cents( $step['total_amount'] ),
 								date_i18n( get_option( 'date_format' ), $step['due_date'] )
@@ -517,7 +517,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 						margin: 0 0 4px 0;
 						border-bottom: 1px solid lightgrey;
 						">
-					<span><?php echo esc_html__( 'Included fees:', 'alma-woocommerce-gateway' ); ?> <?php echo wp_kses_post( alma_wc_format_price_from_cents( $step['customer_fee'] ) ); ?></span>
+					<span><?php echo esc_html__( 'Included fees:', 'alma-gateway-for-woocommerce' ); ?> <?php echo wp_kses_post( alma_wc_format_price_from_cents( $step['customer_fee'] ) ); ?></span>
 				</p>
 			<?php } ?>
 			<?php
@@ -545,7 +545,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			font-weight: bold;
 			border-top: 1px solid lightgrey;
 		">
-			<span><?php echo esc_html__( 'Your credit', 'alma-woocommerce-gateway' ); ?></span>
+			<span><?php echo esc_html__( 'Your credit', 'alma-gateway-for-woocommerce' ); ?></span>
 		</p>
 		<p style="
 			display: flex;
@@ -554,7 +554,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			margin: 4px 0;
 			border-bottom: 1px solid lightgrey;
 		">
-			<span><?php echo esc_html__( 'Your cart:', 'alma-woocommerce-gateway' ); ?></span>
+			<span><?php echo esc_html__( 'Your cart:', 'alma-gateway-for-woocommerce' ); ?></span>
 			<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $cart->get_total_in_cents() ) ); ?></span>
 		</p>
 		<p style="
@@ -564,7 +564,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			margin: 4px 0;
 			border-bottom: 1px solid lightgrey;
 		">
-			<span><?php echo esc_html__( 'Credit cost:', 'alma-woocommerce-gateway' ); ?></span>
+			<span><?php echo esc_html__( 'Credit cost:', 'alma-gateway-for-woocommerce' ); ?></span>
 			<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $eligibility->customerTotalCostAmount ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName ?></span>
 		</p>
 		<?php
@@ -578,7 +578,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				margin: 4px 0;
 				border-bottom: 1px solid lightgrey;
 			">
-				<span><?php echo esc_html__( 'Annual Interest Rate:', 'alma-woocommerce-gateway' ); ?></span>
+				<span><?php echo esc_html__( 'Annual Interest Rate:', 'alma-gateway-for-woocommerce' ); ?></span>
 				<span><?php echo wp_kses_post( alma_wc_format_percent_from_bps( $annual_interest_rate ) ); ?></span>
 			</p>
 		<?php } ?>
@@ -589,7 +589,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			margin: 4px 0 0 0;
 			font-weight: bold;
 		">
-			<span><?php echo esc_html__( 'Total:', 'alma-woocommerce-gateway' ); ?></span>
+			<span><?php echo esc_html__( 'Total:', 'alma-gateway-for-woocommerce' ); ?></span>
 			<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $eligibility->getCustomerTotalCostAmount() + $cart->get_total_in_cents() ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName ?></span>
 		</p>
 		<?php
@@ -633,10 +633,10 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		</script>
 		<style>
 			.alma_option_enabled::after {
-				content: ' (<?php echo esc_attr__( 'enabled', 'alma-woocommerce-gateway' ); ?>)';
+				content: ' (<?php echo esc_attr__( 'enabled', 'alma-gateway-for-woocommerce' ); ?>)';
 			}
 			.alma_option_disabled::after {
-				content: ' (<?php echo esc_attr__( 'disabled', 'alma-woocommerce-gateway' ); ?>)';
+				content: ' (<?php echo esc_attr__( 'disabled', 'alma-gateway-for-woocommerce' ); ?>)';
 			}
 
 		</style>

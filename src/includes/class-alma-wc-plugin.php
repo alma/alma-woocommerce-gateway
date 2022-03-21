@@ -227,7 +227,7 @@ class Alma_WC_Plugin {
 	public function bootstrap() {
 		try {
 			if ( $this->bootstrapped ) {
-				throw new Exception( __( 'WooCommerce Gateway Alma plugin can only be bootstrapped once', 'alma-woocommerce-gateway' ) );
+				throw new Exception( __( 'WooCommerce Gateway Alma plugin can only be bootstrapped once', 'alma-gateway-for-woocommerce' ) );
 			}
 
 			$this->load_plugin_textdomain();
@@ -309,22 +309,22 @@ class Alma_WC_Plugin {
 	 */
 	protected function check_dependencies() {
 		if ( ! function_exists( 'WC' ) ) {
-			throw new Exception( __( 'Alma requires WooCommerce to be activated', 'alma-woocommerce-gateway' ) );
+			throw new Exception( __( 'Alma requires WooCommerce to be activated', 'alma-gateway-for-woocommerce' ) );
 		}
 
 		if ( version_compare( wc()->version, '2.6', '<' ) ) {
-			throw new Exception( __( 'Alma requires WooCommerce version 2.6 or greater', 'alma-woocommerce-gateway' ) );
+			throw new Exception( __( 'Alma requires WooCommerce version 2.6 or greater', 'alma-gateway-for-woocommerce' ) );
 		}
 
 		if ( ! function_exists( 'curl_init' ) ) {
-			throw new Exception( __( 'Alma requires the cURL PHP extension to be installed on your server', 'alma-woocommerce-gateway' ) );
+			throw new Exception( __( 'Alma requires the cURL PHP extension to be installed on your server', 'alma-gateway-for-woocommerce' ) );
 		}
 
 		if ( ! function_exists( 'json_decode' ) ) {
-			throw new Exception( __( 'Alma requires the JSON PHP extension to be installed on your server', 'alma-woocommerce-gateway' ) );
+			throw new Exception( __( 'Alma requires the JSON PHP extension to be installed on your server', 'alma-gateway-for-woocommerce' ) );
 		}
 
-		$openssl_warning = __( 'Alma requires OpenSSL >= 1.0.1 to be installed on your server', 'alma-woocommerce-gateway' );
+		$openssl_warning = __( 'Alma requires OpenSSL >= 1.0.1 to be installed on your server', 'alma-gateway-for-woocommerce' );
 		if ( ! defined( 'OPENSSL_VERSION_TEXT' ) ) {
 			throw new Exception( $openssl_warning );
 		}
@@ -381,7 +381,7 @@ class Alma_WC_Plugin {
 			throw new Exception(
 				sprintf(
 					// translators: %s: Admin settings url.
-					__( "Thanks for installing Alma! Start by <a href='%s'>activating Alma's payment method</a>, then set it up to get started.", 'alma-woocommerce-gateway' ),
+					__( "Thanks for installing Alma! Start by <a href='%s'>activating Alma's payment method</a>, then set it up to get started.", 'alma-gateway-for-woocommerce' ),
 					esc_url( $this->get_admin_setting_url( false ) )
 				)
 			);
@@ -400,7 +400,7 @@ class Alma_WC_Plugin {
 			throw new Exception(
 				sprintf(
 					// translators: %s: Admin settings url.
-					__( 'Alma is almost ready. To get started, <a href="%s">fill in your API keys</a>.', 'alma-woocommerce-gateway' ),
+					__( 'Alma is almost ready. To get started, <a href="%s">fill in your API keys</a>.', 'alma-gateway-for-woocommerce' ),
 					esc_url( $settings_url )
 				)
 			);
@@ -441,7 +441,7 @@ class Alma_WC_Plugin {
 			throw new Exception(
 				sprintf(
 					// translators: %1$s: Admin settings url, %2$s: Admin logs url.
-					__( 'Error while initializing Alma API client.<br><a href="%1$s">Activate debug mode</a> and <a href="%2$s">check logs</a> for more details.', 'alma-woocommerce-gateway' ),
+					__( 'Error while initializing Alma API client.<br><a href="%1$s">Activate debug mode</a> and <a href="%2$s">check logs</a> for more details.', 'alma-gateway-for-woocommerce' ),
 					esc_url( $settings_url ),
 					esc_url( $this->get_admin_logs_url() )
 				)
@@ -455,7 +455,7 @@ class Alma_WC_Plugin {
 				throw new Exception(
 					sprintf(
 						// translators: %s: Alma dashboard url.
-						__( 'Could not connect to Alma using your API keys.<br>Please double check your keys on your <a href="%1$s" target="_blank">Alma dashboard</a>.', 'alma-woocommerce-gateway' ),
+						__( 'Could not connect to Alma using your API keys.<br>Please double check your keys on your <a href="%1$s" target="_blank">Alma dashboard</a>.', 'alma-gateway-for-woocommerce' ),
 						$this->get_alma_dashboard_url( 'security' )
 					)
 				);
@@ -463,7 +463,7 @@ class Alma_WC_Plugin {
 				throw new Exception(
 					sprintf(
 						// translators: %s: Error message.
-						__( 'Alma encountered an error when fetching merchant status: %s', 'alma-woocommerce-gateway' ),
+						__( 'Alma encountered an error when fetching merchant status: %s', 'alma-gateway-for-woocommerce' ),
 						$e->getMessage()
 					),
 					$e->getCode(),
@@ -476,7 +476,7 @@ class Alma_WC_Plugin {
 			throw new Exception(
 				sprintf(
 					// translators: %s: Alma dashboard url.
-					__( 'Your Alma account needs to be activated before you can use Alma on your shop.<br>Go to your <a href="%1$s" target="_blank">Alma dashboard</a> to activate your account.<br><a href="%2$s">Refresh</a> the page when ready.', 'alma-woocommerce-gateway' ),
+					__( 'Your Alma account needs to be activated before you can use Alma on your shop.<br>Go to your <a href="%1$s" target="_blank">Alma dashboard</a> to activate your account.<br><a href="%2$s">Refresh</a> the page when ready.', 'alma-gateway-for-woocommerce' ),
 					$this->get_alma_dashboard_url( 'settings' ),
 					esc_url( $settings_url )
 				)
@@ -557,7 +557,7 @@ class Alma_WC_Plugin {
 	 * @return void
 	 */
 	public function load_plugin_textdomain() {
-		load_plugin_textdomain( 'alma-woocommerce-gateway', false, plugin_basename( ALMA_WC_PLUGIN_PATH ) . '/languages' );
+		load_plugin_textdomain( 'alma-gateway-for-woocommerce', false, plugin_basename( ALMA_WC_PLUGIN_PATH ) . '/languages' );
 	}
 
 	/**
@@ -572,7 +572,7 @@ class Alma_WC_Plugin {
 
 		if ( function_exists( 'WC' ) ) {
 			$setting_url    = $this->get_admin_setting_url();
-			$plugin_links[] = '<a href="' . esc_url( $setting_url ) . '">' . esc_html__( 'Settings', 'alma-woocommerce-gateway' ) . '</a>';
+			$plugin_links[] = '<a href="' . esc_url( $setting_url ) . '">' . esc_html__( 'Settings', 'alma-gateway-for-woocommerce' ) . '</a>';
 		}
 
 		return array_merge( $plugin_links, $links );
@@ -605,7 +605,7 @@ class Alma_WC_Plugin {
 			$this->logger->error( 'Payment validation webhook called without a payment ID' );
 
 			wc_add_notice(
-				__( 'Payment validation error: no ID provided.<br>Please try again or contact us if the problem persists.', 'alma-woocommerce-gateway' ),
+				__( 'Payment validation error: no ID provided.<br>Please try again or contact us if the problem persists.', 'alma-gateway-for-woocommerce' ),
 				'error'
 			);
 
@@ -648,10 +648,10 @@ class Alma_WC_Plugin {
 	public function get_alma_dashboard_url( $path = '' ) {
 		if ( $this->settings->is_live() ) {
 			/* translators: %s -> path to add after dashboard url */
-			return esc_url( sprintf( __( 'https://dashboard.getalma.eu/%s', 'alma-woocommerce-gateway' ), $path ) );
+			return esc_url( sprintf( __( 'https://dashboard.getalma.eu/%s', 'alma-gateway-for-woocommerce' ), $path ) );
 		}
 		/* translators: %s -> path to add after sandbox dashboard url */
-		return esc_url( sprintf( __( 'https://dashboard.sandbox.getalma.eu/%s', 'alma-woocommerce-gateway' ), $path ) );
+		return esc_url( sprintf( __( 'https://dashboard.sandbox.getalma.eu/%s', 'alma-gateway-for-woocommerce' ), $path ) );
 	}
 
 	/**

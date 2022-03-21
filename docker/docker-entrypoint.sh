@@ -106,16 +106,16 @@ if [ ! -x /usr/bin/composer ] ; then
     echo >&2 "composer not found or note executable !!!"
     exit 1
 fi
-if [ ! -d /var/www/html/wp-content/plugins/alma-woocommerce-gateway ] ; then
-    echo >&2 "alma-woocommerce-gateway plugin directory not found !!!"
+if [ ! -d /var/www/html/wp-content/plugins/alma-gateway-for-woocommerce ] ; then
+    echo >&2 "alma-gateway-for-woocommerce plugin directory not found !!!"
     exit 1
 fi
-if [ ! -d /var/www/html/wp-content/plugins/alma-woocommerce-gateway/vendor/alma ] ; then
-    echo -n "Running composer composer install in alma-woocommerce-gateway plugin directory ... " >&2
-    cd /var/www/html/wp-content/plugins/alma-woocommerce-gateway/
+if [ ! -d /var/www/html/wp-content/plugins/alma-gateway-for-woocommerce/vendor/alma ] ; then
+    echo -n "Running composer composer install in alma-gateway-for-woocommerce plugin directory ... " >&2
+    cd /var/www/html/wp-content/plugins/alma-gateway-for-woocommerce/
     /usr/bin/composer update >&2
     /usr/bin/composer install --no-dev >&2
-    chown -R "$user:$group" /var/www/html/wp-content/plugins/alma-woocommerce-gateway/vendor/ || true
+    chown -R "$user:$group" /var/www/html/wp-content/plugins/alma-gateway-for-woocommerce/vendor/ || true
     cd -
 fi
 # {{{ function wp_cli
@@ -220,9 +220,9 @@ if [[ -d /usr/local/plugins ]] ; then
         fi
     done
 fi
-if ( ! wp_cli plugin is-active alma-woocommerce-gateway ) ; then
-    echo >&2 "Activating alma-woocommerce-gateway plugin ..."
-    wp_cli plugin activate alma-woocommerce-gateway
+if ( ! wp_cli plugin is-active alma-gateway-for-woocommerce ) ; then
+    echo >&2 "Activating alma-gateway-for-woocommerce plugin ..."
+    wp_cli plugin activate alma-gateway-for-woocommerce
 fi
 # {{{ supported wp_langs
 wp_langs="

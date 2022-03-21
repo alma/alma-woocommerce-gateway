@@ -74,7 +74,7 @@
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<property name="text_domain" type="array">
-				<element value="alma-woocommerce-gateway"/>
+				<element value="alma-gateway-for-woocommerce"/>
 			</property>
 		</properties>
 	</rule>

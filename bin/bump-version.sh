@@ -114,7 +114,7 @@ update_changelog $TMP_README readme.txt "= ${LATEST_VERSION/v/} ="
 bump_stable_tag README.md ${LATEST_VERSION/v/} $VERSION
 bump_stable_tag readme.txt ${LATEST_VERSION/v/} $VERSION
 
-bump_version src/alma-woocommerce-gateway.php ${LATEST_VERSION/v/} $VERSION
+bump_version src/alma-gateway-for-woocommerce.php ${LATEST_VERSION/v/} $VERSION
 git add --patch
 git commit --message "chore: bump version $VERSION"
 git commit --amend

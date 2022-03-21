@@ -94,7 +94,7 @@ class Alma_WC_Internationalization {
 	public static function get_translated_text( $string, $code_lang ) {
 		$translation = $string;
 
-		$mo_path_file = ALMA_WC_PLUGIN_PATH . 'languages/alma-woocommerce-gateway-' . $code_lang . '.mo';
+		$mo_path_file = ALMA_WC_PLUGIN_PATH . 'languages/alma-gateway-for-woocommerce-' . $code_lang . '.mo';
 		if ( ! file_exists( $mo_path_file ) ) {
 			return $translation;
 		}
