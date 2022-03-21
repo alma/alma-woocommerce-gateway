@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "16a5183486d00ea9a5c9fcdc0584f2ec",
+    "content-hash": "fb82dc526754bc7a7bbdc79655266ef8",
     "packages": [
         {
             "name": "alma/alma-php-client",
@@ -51,6 +51,10 @@
                 }
             ],
             "description": "PHP API client for the Alma payments API",
+            "support": {
+                "issues": "https://github.com/alma/alma-php-client/issues",
+                "source": "https://github.com/alma/alma-php-client/tree/v1.5.4"
+            },
             "time": "2022-03-11T17:09:16+00:00"
         },
         {
@@ -3510,5 +3514,5 @@
         "php": "^5.6 || ~7.0 || ~7.1 || ~7.2 || ~7.3 || ~7.4"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }
