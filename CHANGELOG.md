@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v2.6.0
+------
+
+* feat: add nonce to secure checkout form
+* fix: upd payment fields validation notice messages
+
 v2.5.1
 ------
 
