@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 77e083b1cd468d7c2202d1ff3d20e024\n"
 "POT-Creation-Date: 2022-02-07 17:14+0100\n"
-"PO-Revision-Date: 2022-02-14 12:50\n"
+"PO-Revision-Date: 2022-03-21 13:53\n"
 "Last-Translator: syjust <sy.just@gmail.com>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
@@ -21,8 +21,8 @@ msgstr ""
 "X-Crowdin-Project: 77e083b1cd468d7c2202d1ff3d20e024\n"
 "X-Crowdin-Project-ID: 17\n"
 "X-Crowdin-Language: nl\n"
-"X-Crowdin-File: /languages/alma-gateway-for-woocommerce.pot\n"
-"X-Crowdin-File-ID: 3021\n"
+"X-Crowdin-File: /v3.0.0/languages/alma-gateway-for-woocommerce.pot\n"
+"X-Crowdin-File-ID: 3182\n"
 "Language: nl_NL\n"
 
 #: includes/class-alma-wc-admin-form.php:40
@@ -474,7 +474,7 @@ msgstr "Product%s niet gevonden - Alma wordt niet weergegeven"
 
 #. Plugin Name of the plugin/theme
 msgid "Alma - Pay in installments or later for wooCommerce"
-msgstr "2x 3x 4x, D+15 of D+30 Alma - Betalen in termijnen en uitgestelde betalingen met Alma"
+msgstr "Alma - Betalen in termijnen of later voor wooCommerce"
 
 #. Plugin URI of the plugin/theme
 msgid "https://docs.getalma.eu/docs/woocommerce"
