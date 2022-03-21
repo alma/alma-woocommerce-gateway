@@ -96,7 +96,7 @@ class Alma_WC_Payment_Upon_Trigger {
 			try {
 				$alma->payments->trigger( $order->get_transaction_id() );
 				// translators: %s: An order status (example: "completed").
-				$order->add_order_note( sprintf( __( 'The first customer payment has been triggered, as you updated the order status to "%s".', 'alma-woocommerce-gateway' ), $next_status ) );
+				$order->add_order_note( sprintf( __( 'The first customer payment has been triggered, as you updated the order status to "%s".', 'alma-gateway-for-woocommerce' ), $next_status ) );
 			} catch ( RequestError $e ) {
 				$this->logger->log_stack_trace( 'Error while trigger payment for order number : ' . $order_id, $e );
 			}
@@ -133,7 +133,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	 */
 	public static function get_display_texts_keys_and_values() {
 		return array(
-			'at_shipping' => __( 'At shipping', 'alma-woocommerce-gateway' ),
+			'at_shipping' => __( 'At shipping', 'alma-gateway-for-woocommerce' ),
 		);
 	}
 

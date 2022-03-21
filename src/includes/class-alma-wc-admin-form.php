@@ -36,7 +36,7 @@ class Alma_WC_Admin_Form {
 		if ( $need_api_key ) {
 			return array_merge(
 				self::get_instance()->init_enabled_field( $default_settings ),
-				self::get_instance()->init_api_key_fields( __( '→ Start by filling in your API keys', 'alma-woocommerce-gateway' ), $default_settings ),
+				self::get_instance()->init_api_key_fields( __( '→ Start by filling in your API keys', 'alma-gateway-for-woocommerce' ), $default_settings ),
 				self::get_instance()->init_debug_fields( $default_settings )
 			);
 		}
@@ -46,7 +46,7 @@ class Alma_WC_Admin_Form {
 			self::get_instance()->init_fee_plans_fields( $default_settings ),
 			self::get_instance()->init_general_settings_fields( $default_settings ),
 			self::get_instance()->init_payment_upon_trigger_fields( $default_settings ),
-			self::get_instance()->init_api_key_fields( __( '→ API configuration', 'alma-woocommerce-gateway' ), $default_settings ),
+			self::get_instance()->init_api_key_fields( __( '→ API configuration', 'alma-gateway-for-woocommerce' ), $default_settings ),
 			self::get_instance()->init_technical_fields( $default_settings ),
 			self::get_instance()->init_debug_fields( $default_settings )
 		);
@@ -63,7 +63,7 @@ class Alma_WC_Admin_Form {
 
 		$title_field = array(
 			'payment_upon_trigger_section' => array(
-				'title' => '<hr>' . __( '→ Payment upon trigger configuration', 'alma-woocommerce-gateway' ),
+				'title' => '<hr>' . __( '→ Payment upon trigger configuration', 'alma-gateway-for-woocommerce' ),
 				'type'  => 'title',
 			),
 		);
@@ -74,7 +74,7 @@ class Alma_WC_Admin_Form {
 				array(
 					'payment_upon_trigger_enabling_info' => array(
 						// translators: %1$s: Alma contact email.
-						'title' => $this->render_title( sprintf( __( 'If you are interested in this feature, please get closer to your Alma contact or by sending an email to <a href="mailto:%1$s">%1$s</a>', 'alma-woocommerce-gateway' ), 'support@getalma.eu' ) ),
+						'title' => $this->render_title( sprintf( __( 'If you are interested in this feature, please get closer to your Alma contact or by sending an email to <a href="mailto:%1$s">%1$s</a>', 'alma-gateway-for-woocommerce' ), 'support@getalma.eu' ) ),
 						'type'  => 'title',
 					),
 				)
@@ -85,25 +85,25 @@ class Alma_WC_Admin_Form {
 			$title_field,
 			array(
 				'payment_upon_trigger_general_info' => array(
-					'title' => $this->render_title( __( 'This option is available only for Alma payment in 2x, 3x and 4x.<br>When it\'s turned on, your clients will pay the first installment at the order status change. When your client order on your website, Alma will only ask for a payment authorization. Only status handled by Alma are available in the menu below. Please contact Alma if you need us to add another status.', 'alma-woocommerce-gateway' ) ),
+					'title' => $this->render_title( __( 'This option is available only for Alma payment in 2x, 3x and 4x.<br>When it\'s turned on, your clients will pay the first installment at the order status change. When your client order on your website, Alma will only ask for a payment authorization. Only status handled by Alma are available in the menu below. Please contact Alma if you need us to add another status.', 'alma-gateway-for-woocommerce' ) ),
 					'type'  => 'title',
 				),
 				'payment_upon_trigger_enabled'      => array(
-					'title'   => __( 'Activate the payment upon trigger', 'alma-woocommerce-gateway' ),
+					'title'   => __( 'Activate the payment upon trigger', 'alma-gateway-for-woocommerce' ),
 					'type'    => 'checkbox',
 					'label'   => '&nbsp;',
 					'default' => $default_settings['enabled'],
 				),
 				'payment_upon_trigger_display_text' => array(
 					'type'        => 'select',
-					'title'       => __( 'Trigger typology', 'alma-woocommerce-gateway' ),
-					'description' => __( 'Text that will appear in the payments schedule and in the customer\'s payment authorization email.', 'alma-woocommerce-gateway' ),
+					'title'       => __( 'Trigger typology', 'alma-gateway-for-woocommerce' ),
+					'description' => __( 'Text that will appear in the payments schedule and in the customer\'s payment authorization email.', 'alma-gateway-for-woocommerce' ),
 					'default'     => $default_settings['payment_upon_trigger_display_text'],
 					'options'     => Alma_WC_Payment_Upon_Trigger::get_display_texts_keys_and_values(),
 				),
 				'payment_upon_trigger_event'        => array(
 					'type'    => 'select',
-					'title'   => __( 'Order status that triggers the first payment', 'alma-woocommerce-gateway' ),
+					'title'   => __( 'Order status that triggers the first payment', 'alma-gateway-for-woocommerce' ),
 					'default' => $default_settings['payment_upon_trigger_event'],
 					'options' => Alma_WC_Payment_Upon_Trigger::get_order_statuses(),
 				),
@@ -157,24 +157,24 @@ class Alma_WC_Admin_Form {
 		$toggle_label  = '';
 		if ( $fee_plan->isPnXOnly() ) {
 			// translators: %d: number of installments.
-			$section_title = sprintf( __( '→ %d-installment payment', 'alma-woocommerce-gateway' ), $fee_plan->getInstallmentsCount() );
+			$section_title = sprintf( __( '→ %d-installment payment', 'alma-gateway-for-woocommerce' ), $fee_plan->getInstallmentsCount() );
 			// translators: %d: number of installments.
-			$toggle_label = sprintf( __( 'Enable %d-installment payments with Alma', 'alma-woocommerce-gateway' ), $fee_plan->getInstallmentsCount() );
+			$toggle_label = sprintf( __( 'Enable %d-installment payments with Alma', 'alma-gateway-for-woocommerce' ), $fee_plan->getInstallmentsCount() );
 		}
 		if ( $fee_plan->isPayLaterOnly() ) {
 			$deferred_days   = $fee_plan->getDeferredDays();
 			$deferred_months = $fee_plan->getDeferredMonths();
 			if ( $deferred_days ) {
 				// translators: %d: number of deferred days.
-				$section_title = sprintf( __( '→ D+%d-deferred payment', 'alma-woocommerce-gateway' ), $deferred_days );
+				$section_title = sprintf( __( '→ D+%d-deferred payment', 'alma-gateway-for-woocommerce' ), $deferred_days );
 				// translators: %d: number of deferred days.
-				$toggle_label = sprintf( __( 'Enable D+%d-deferred payments with Alma', 'alma-woocommerce-gateway' ), $deferred_days );
+				$toggle_label = sprintf( __( 'Enable D+%d-deferred payments with Alma', 'alma-gateway-for-woocommerce' ), $deferred_days );
 			}
 			if ( $deferred_months ) {
 				// translators: %d: number of deferred months.
-				$section_title = sprintf( __( '→ M+%d-deferred payment', 'alma-woocommerce-gateway' ), $deferred_months );
+				$section_title = sprintf( __( '→ M+%d-deferred payment', 'alma-gateway-for-woocommerce' ), $deferred_months );
 				// translators: %d: number of deferred months.
-				$toggle_label = sprintf( __( 'Enable M+%d-deferred payments with Alma', 'alma-woocommerce-gateway' ), $deferred_months );
+				$toggle_label = sprintf( __( 'Enable M+%d-deferred payments with Alma', 'alma-gateway-for-woocommerce' ), $deferred_months );
 			}
 		}
 
@@ -191,20 +191,20 @@ class Alma_WC_Admin_Form {
 				'table_css'         => $css,
 			),
 			$toggle_key     => array(
-				'title'   => __( 'Enable/Disable', 'alma-woocommerce-gateway' ),
+				'title'   => __( 'Enable/Disable', 'alma-gateway-for-woocommerce' ),
 				'type'    => 'checkbox',
 				'label'   => $toggle_label,
 				'default' => $default_enabled,
 			),
 			$min_amount_key => array(
-				'title'             => __( 'Minimum amount', 'alma-woocommerce-gateway' ),
+				'title'             => __( 'Minimum amount', 'alma-gateway-for-woocommerce' ),
 				'type'              => 'number',
 				'css'               => 'width: 100px;',
 				'custom_attributes' => $custom_attributes,
 				'default'           => $default_min_amount,
 			),
 			$max_amount_key => array(
-				'title'             => __( 'Maximum amount', 'alma-woocommerce-gateway' ),
+				'title'             => __( 'Maximum amount', 'alma-gateway-for-woocommerce' ),
 				'type'              => 'number',
 				'css'               => 'width: 100px;',
 				'custom_attributes' => $custom_attributes,
@@ -223,9 +223,9 @@ class Alma_WC_Admin_Form {
 	private function init_enabled_field( $default_settings ) {
 		return array(
 			'enabled' => array(
-				'title'   => __( 'Enable/Disable', 'alma-woocommerce-gateway' ),
+				'title'   => __( 'Enable/Disable', 'alma-gateway-for-woocommerce' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable monthly payments with Alma', 'alma-woocommerce-gateway' ),
+				'label'   => __( 'Enable monthly payments with Alma', 'alma-gateway-for-woocommerce' ),
 				'default' => $default_settings['enabled'],
 			),
 		);
@@ -242,25 +242,25 @@ class Alma_WC_Admin_Form {
 
 		return array(
 			'technical_section'                       => array(
-				'title'       => '<hr>' . __( '→ Technical fields', 'alma-woocommerce-gateway' ),
+				'title'       => '<hr>' . __( '→ Technical fields', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'title',
-				'description' => __( 'Specific fields just in case you need it. [<a href="#" id="alma_link_toggle_technical_section">click to open or close</a>]', 'alma-woocommerce-gateway' ),
+				'description' => __( 'Specific fields just in case you need it. [<a href="#" id="alma_link_toggle_technical_section">click to open or close</a>]', 'alma-gateway-for-woocommerce' ),
 			),
 			'variable_product_check_variations_event' => array(
-				'title'       => __( 'Custom check variations event', 'alma-woocommerce-gateway' ),
+				'title'       => __( 'Custom check variations event', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'text',
 				'default'     => $default_settings['variable_product_check_variations_event'],
 				'description' => sprintf(
 					// translators: %1$s is technical information, %2$s is Alma WooCommerce Plugin FAQ doc URL.
-					__( 'This is the javascript event triggered on variables products page, when the customer change the product variation. Default value is <strong>%1$s</strong>.<br />More technical information on <a href="%2$s" target="_blank">Alma documentation</a>', 'alma-woocommerce-gateway' ),
+					__( 'This is the javascript event triggered on variables products page, when the customer change the product variation. Default value is <strong>%1$s</strong>.<br />More technical information on <a href="%2$s" target="_blank">Alma documentation</a>', 'alma-gateway-for-woocommerce' ),
 					Alma_WC_Settings::DEFAULT_CHECK_VARIATIONS_EVENT,
 					'https://docs.getalma.eu/docs/woocommerce-faq'
 				),
 			),
 			'variable_product_price_query_selector'   => array(
-				'title'       => __( 'Variable products price query selector', 'alma-woocommerce-gateway' ),
+				'title'       => __( 'Variable products price query selector', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'text',
-				'description' => __( 'Query selector used to get the price of product with variations', 'alma-woocommerce-gateway' ),
+				'description' => __( 'Query selector used to get the price of product with variations', 'alma-gateway-for-woocommerce' ),
 				'desc_tip'    => true,
 				'default'     => $default_settings['variable_product_price_query_selector'],
 			),
@@ -282,24 +282,24 @@ class Alma_WC_Admin_Form {
 				'title'       => '<hr>' . $keys_title,
 				'type'        => 'title',
 				/* translators: %s Alma security URL */
-				'description' => sprintf( __( 'You can find your API keys on <a href="%s" target="_blank">your Alma dashboard</a>', 'alma-woocommerce-gateway' ), alma_wc_plugin()->get_alma_dashboard_url( 'security' ) ),
+				'description' => sprintf( __( 'You can find your API keys on <a href="%s" target="_blank">your Alma dashboard</a>', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_alma_dashboard_url( 'security' ) ),
 			),
 			'live_api_key' => array(
-				'title' => __( 'Live API key', 'alma-woocommerce-gateway' ),
+				'title' => __( 'Live API key', 'alma-gateway-for-woocommerce' ),
 				'type'  => 'text',
 			),
 			'test_api_key' => array(
-				'title' => __( 'Test API key', 'alma-woocommerce-gateway' ),
+				'title' => __( 'Test API key', 'alma-gateway-for-woocommerce' ),
 				'type'  => 'text',
 			),
 			'environment'  => array(
-				'title'       => __( 'API Mode', 'alma-woocommerce-gateway' ),
+				'title'       => __( 'API Mode', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'select',
-				'description' => __( 'Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In Test mode, only admins can see Alma on cart/checkout pages.', 'alma-woocommerce-gateway' ),
+				'description' => __( 'Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In Test mode, only admins can see Alma on cart/checkout pages.', 'alma-gateway-for-woocommerce' ),
 				'default'     => $default_settings['environment'],
 				'options'     => array(
-					'test' => __( 'Test', 'alma-woocommerce-gateway' ),
-					'live' => __( 'Live', 'alma-woocommerce-gateway' ),
+					'test' => __( 'Test', 'alma-gateway-for-woocommerce' ),
+					'live' => __( 'Live', 'alma-gateway-for-woocommerce' ),
 				),
 			),
 		);
@@ -316,14 +316,14 @@ class Alma_WC_Admin_Form {
 		$fee_plans_fields = array();
 		$title_field      = array(
 			'fee_plan_section' => array(
-				'title' => '<hr>' . __( '→ Fee plans configuration', 'alma-woocommerce-gateway' ),
+				'title' => '<hr>' . __( '→ Fee plans configuration', 'alma-gateway-for-woocommerce' ),
 				'type'  => 'title',
 			),
 		);
 		$select_options   = $this->generate_select_options();
 		if ( count( $select_options ) === 0 ) {
 			/* translators: %s: Alma conditions URL */
-			$title_field['fee_plan_section']['description'] = sprintf( __( '⚠ There is no fee plan allowed in your <a href="%s" target="_blank">Alma dashboard</a>.', 'alma-woocommerce-gateway' ), alma_wc_plugin()->get_alma_dashboard_url( 'conditions' ) );
+			$title_field['fee_plan_section']['description'] = sprintf( __( '⚠ There is no fee plan allowed in your <a href="%s" target="_blank">Alma dashboard</a>.', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_alma_dashboard_url( 'conditions' ) );
 
 			return $title_field;
 		}
@@ -339,10 +339,10 @@ class Alma_WC_Admin_Form {
 			$title_field,
 			array(
 				'selected_fee_plan' => array(
-					'title'       => __( 'Select a fee plan to update', 'alma-woocommerce-gateway' ),
+					'title'       => __( 'Select a fee plan to update', 'alma-gateway-for-woocommerce' ),
 					'type'        => 'select_alma_fee_plan',
 					/* translators: %s: Alma conditions URL */
-					'description' => sprintf( __( 'Choose which fee plan you want to modify<br>(only your <a href="%s" target="_blank">Alma dashboard</a> available fee plans are shown here).', 'alma-woocommerce-gateway' ), alma_wc_plugin()->get_alma_dashboard_url( 'conditions' ) ),
+					'description' => sprintf( __( 'Choose which fee plan you want to modify<br>(only your <a href="%s" target="_blank">Alma dashboard</a> available fee plans are shown here).', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_alma_dashboard_url( 'conditions' ) ),
 					'default'     => $selected_fee_plan,
 					'options'     => $select_options,
 				),
@@ -361,44 +361,51 @@ class Alma_WC_Admin_Form {
 	private function init_general_settings_fields( array $default_settings ) {
 		$general_settings_fields = array(
 			'general_section' => array(
-				'title' => '<hr>' . __( '→ General configuration', 'alma-woocommerce-gateway' ),
+				'title' => '<hr>' . __( '→ General configuration', 'alma-gateway-for-woocommerce' ),
 				'type'  => 'title',
 			),
 			'text_fields'     => array(
-				'title' => $this->render_title( __( 'Edit the text displayed when choosing the payment method in your checkout.', 'alma-woocommerce-gateway' ) ),
+				'title' => $this->render_title( __( 'Edit the text displayed when choosing the payment method in your checkout.', 'alma-gateway-for-woocommerce' ) ),
 				'type'  => 'title',
 			),
 		);
 
-		$fields_pnx = $this->get_custom_fields_payment_method( 'payment_method_pnx', __( 'Payments in 2, 3 and 4 installments:', 'alma-woocommerce-gateway' ), $default_settings );
+		$fields_pnx = $this->get_custom_fields_payment_method( 'payment_method_pnx', __( 'Payments in 2, 3 and 4 installments:', 'alma-gateway-for-woocommerce' ), $default_settings );
 
 		$fields_pay_later = array();
 		if ( alma_wc_plugin()->settings->has_pay_later() ) {
-			$fields_pay_later = $this->get_custom_fields_payment_method( 'payment_method_pay_later', __( 'Deferred Payments:', 'alma-woocommerce-gateway' ), $default_settings );
+			$fields_pay_later = $this->get_custom_fields_payment_method( 'payment_method_pay_later', __( 'Deferred Payments:', 'alma-gateway-for-woocommerce' ), $default_settings );
 		}
 
 		$fields_pnx_plus_4 = array();
 		if ( alma_wc_plugin()->settings->has_pnx_plus_4() ) {
-			$fields_pnx_plus_4 = $this->get_custom_fields_payment_method( 'payment_method_pnx_plus_4', __( 'Payments in more than 4 installments:', 'alma-woocommerce-gateway' ), $default_settings );
+			$fields_pnx_plus_4 = $this->get_custom_fields_payment_method( 'payment_method_pnx_plus_4', __( 'Payments in more than 4 installments:', 'alma-gateway-for-woocommerce' ), $default_settings );
 		}
 
 		$general_settings_fields_end = array(
-			'display_product_eligibility' => array(
-				'title'   => __( 'Product eligibility notice', 'alma-woocommerce-gateway' ),
+			'display_product_eligibility'           => array(
+				'title'   => __( 'Product eligibility notice', 'alma-gateway-for-woocommerce' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Display a message about product eligibility for monthly payments', 'alma-woocommerce-gateway' ),
+				'label'   => __( 'Display a message about product eligibility for monthly payments', 'alma-gateway-for-woocommerce' ),
 				'default' => $default_settings['display_product_eligibility'],
 			),
-			'display_cart_eligibility'    => array(
-				'title'   => __( 'Cart eligibility notice', 'alma-woocommerce-gateway' ),
+			'variable_product_price_query_selector' => array(
+				'title'       => __( 'Variable products price query selector', 'alma-gateway-for-woocommerce' ),
+				'type'        => 'text',
+				'description' => __( 'Query selector used to get the price of product with variations', 'alma-gateway-for-woocommerce' ),
+				'desc_tip'    => true,
+				'default'     => $default_settings['variable_product_price_query_selector'],
+			),
+			'display_cart_eligibility'              => array(
+				'title'   => __( 'Cart eligibility notice', 'alma-gateway-for-woocommerce' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Display a message about cart eligibility for monthly payments', 'alma-woocommerce-gateway' ),
+				'label'   => __( 'Display a message about cart eligibility for monthly payments', 'alma-gateway-for-woocommerce' ),
 				'default' => $default_settings['display_cart_eligibility'],
 			),
-			'excluded_products_list'      => array(
-				'title'       => __( 'Excluded product categories', 'alma-woocommerce-gateway' ),
+			'excluded_products_list'                => array(
+				'title'       => __( 'Excluded product categories', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'multiselect',
-				'description' => __( 'Exclude all virtual/downloadable product categories, as you cannot sell them with Alma', 'alma-woocommerce-gateway' ),
+				'description' => __( 'Exclude all virtual/downloadable product categories, as you cannot sell them with Alma', 'alma-gateway-for-woocommerce' ),
 				'desc_tip'    => true,
 				'css'         => 'height: 150px;',
 				'options'     => $this->generate_categories_options(),
@@ -408,8 +415,8 @@ class Alma_WC_Admin_Form {
 		$field_cart_not_eligible_message_gift_cards = $this->generate_i18n_field(
 			'cart_not_eligible_message_gift_cards',
 			array(
-				'title'       => __( 'Non-eligibility message for excluded products', 'alma-woocommerce-gateway' ),
-				'description' => __( 'Message displayed below the cart totals when it contains excluded products', 'alma-woocommerce-gateway' ),
+				'title'       => __( 'Non-eligibility message for excluded products', 'alma-gateway-for-woocommerce' ),
+				'description' => __( 'Message displayed below the cart totals when it contains excluded products', 'alma-gateway-for-woocommerce' ),
 				'desc_tip'    => true,
 			),
 			$default_settings['cart_not_eligible_message_gift_cards']
@@ -470,15 +477,15 @@ class Alma_WC_Admin_Form {
 	private function init_debug_fields( $default_settings ) {
 		return array(
 			'debug_section' => array(
-				'title' => '<hr>' . __( '→ Debug options', 'alma-woocommerce-gateway' ),
+				'title' => '<hr>' . __( '→ Debug options', 'alma-gateway-for-woocommerce' ),
 				'type'  => 'title',
 			),
 			'debug'         => array(
-				'title'       => __( 'Debug mode', 'alma-woocommerce-gateway' ),
+				'title'       => __( 'Debug mode', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'checkbox',
 				// translators: %s: Admin logs url.
-				'label'       => __( 'Activate debug mode', 'alma-woocommerce-gateway' ) . sprintf( __( '(<a href="%s">Go to logs</a>)', 'alma-woocommerce-gateway' ), alma_wc_plugin()->get_admin_logs_url() ),
-				'description' => __( 'Enable logging info and errors to help debug any issue with the plugin', 'alma-woocommerce-gateway' ),
+				'label'       => __( 'Activate debug mode', 'alma-gateway-for-woocommerce' ) . sprintf( __( '(<a href="%s">Go to logs</a>)', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_admin_logs_url() ),
+				'description' => __( 'Enable logging info and errors to help debug any issue with the plugin', 'alma-gateway-for-woocommerce' ),
 				'desc_tip'    => true,
 				'default'     => $default_settings['debug'],
 			),
@@ -548,7 +555,7 @@ class Alma_WC_Admin_Form {
 		if ( $fee_plan->isPnXOnly() ) {
 			$you_can_offer = sprintf(
 				// translators: %d: number of installments.
-				__( 'You can offer %1$d-installment payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-woocommerce-gateway' ),
+				__( 'You can offer %1$d-installment payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-gateway-for-woocommerce' ),
 				$fee_plan->installments_count,
 				$min_amount,
 				$max_amount
@@ -560,7 +567,7 @@ class Alma_WC_Admin_Form {
 			if ( $deferred_days ) {
 				$you_can_offer = sprintf(
 					// translators: %d: number of deferred days.
-					__( 'You can offer D+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-woocommerce-gateway' ),
+					__( 'You can offer D+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-gateway-for-woocommerce' ),
 					$deferred_days,
 					$min_amount,
 					$max_amount
@@ -569,17 +576,17 @@ class Alma_WC_Admin_Form {
 			if ( $deferred_months ) {
 				$you_can_offer = sprintf(
 				// translators: %d: number of deferred months.
-					__( 'You can offer M+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-woocommerce-gateway' ),
+					__( 'You can offer M+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-gateway-for-woocommerce' ),
 					$deferred_months,
 					$min_amount,
 					$max_amount
 				);
 			}
 		}
-		$fees_applied          = __( 'Fees applied to each transaction for this plan:', 'alma-woocommerce-gateway' );
-		$you_pay               = $this->generate_fee_to_pay_description( __( 'You pay:', 'alma-woocommerce-gateway' ), $merchant_fee_variable, $merchant_fee_fixed );
-		$customer_pays         = $this->generate_fee_to_pay_description( __( 'Customer pays:', 'alma-woocommerce-gateway' ), $customer_fee_variable, $customer_fee_fixed );
-		$customer_lending_pays = $this->generate_fee_to_pay_description( __( 'Customer lending rate:', 'alma-woocommerce-gateway' ), $customer_lending_rate, 0 );
+		$fees_applied          = __( 'Fees applied to each transaction for this plan:', 'alma-gateway-for-woocommerce' );
+		$you_pay               = $this->generate_fee_to_pay_description( __( 'You pay:', 'alma-gateway-for-woocommerce' ), $merchant_fee_variable, $merchant_fee_fixed );
+		$customer_pays         = $this->generate_fee_to_pay_description( __( 'Customer pays:', 'alma-gateway-for-woocommerce' ), $customer_fee_variable, $customer_fee_fixed );
+		$customer_lending_pays = $this->generate_fee_to_pay_description( __( 'Customer lending rate:', 'alma-gateway-for-woocommerce' ), $customer_lending_rate, 0 );
 
 		return sprintf( '<p>%s<br>%s %s %s %s</p>', $you_can_offer, $fees_applied, $you_pay, $customer_pays, $customer_lending_pays );
 	}
@@ -625,18 +632,18 @@ class Alma_WC_Admin_Form {
 			$select_label = '';
 			if ( $fee_plan->isPnXOnly() ) {
 				// translators: %d: number of installments.
-				$select_label = sprintf( __( '→ %d-installment payment', 'alma-woocommerce-gateway' ), $fee_plan->getInstallmentsCount() );
+				$select_label = sprintf( __( '→ %d-installment payment', 'alma-gateway-for-woocommerce' ), $fee_plan->getInstallmentsCount() );
 			}
 			if ( $fee_plan->isPayLaterOnly() ) {
 				$deferred_months = $fee_plan->getDeferredMonths();
 				$deferred_days   = $fee_plan->getDeferredDays();
 				if ( $deferred_days ) {
 					// translators: %d: number of deferred days.
-					$select_label = sprintf( __( '→ D+%d-deferred payment', 'alma-woocommerce-gateway' ), $deferred_days );
+					$select_label = sprintf( __( '→ D+%d-deferred payment', 'alma-gateway-for-woocommerce' ), $deferred_days );
 				}
 				if ( $deferred_months ) {
 					// translators: %d: number of deferred months.
-					$select_label = sprintf( __( '→ M+%d-deferred payment', 'alma-woocommerce-gateway' ), $deferred_months );
+					$select_label = sprintf( __( '→ M+%d-deferred payment', 'alma-gateway-for-woocommerce' ), $deferred_months );
 				}
 			}
 			$select_options[ $fee_plan->getPlanKey() ] = $select_label;
@@ -681,8 +688,8 @@ class Alma_WC_Admin_Form {
 		$field_payment_method_title = $this->generate_i18n_field(
 			'title_' . $payment_method_name,
 			array(
-				'title'       => __( 'Title', 'alma-woocommerce-gateway' ),
-				'description' => __( 'This controls the payment method name which the user sees during checkout.', 'alma-woocommerce-gateway' ),
+				'title'       => __( 'Title', 'alma-gateway-for-woocommerce' ),
+				'description' => __( 'This controls the payment method name which the user sees during checkout.', 'alma-gateway-for-woocommerce' ),
 				'desc_tip'    => true,
 			),
 			$default_settings[ 'title_' . $payment_method_name ]
@@ -691,9 +698,9 @@ class Alma_WC_Admin_Form {
 		$field_payment_method_description = $this->generate_i18n_field(
 			'description_' . $payment_method_name,
 			array(
-				'title'       => __( 'Description', 'alma-woocommerce-gateway' ),
+				'title'       => __( 'Description', 'alma-gateway-for-woocommerce' ),
 				'desc_tip'    => true,
-				'description' => __( 'This controls the payment method description which the user sees during checkout.', 'alma-woocommerce-gateway' ),
+				'description' => __( 'This controls the payment method description which the user sees during checkout.', 'alma-gateway-for-woocommerce' ),
 			),
 			$default_settings[ 'description_' . $payment_method_name ]
 		);
