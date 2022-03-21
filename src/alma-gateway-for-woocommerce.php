@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Alma - 2x 3x 4x, D+15 or D+30 for WooCommerce - Payment in instalments and deferred
+ * Plugin Name: Alma - Pay in installments or later for wooCommerce
  * Plugin URI: https://docs.getalma.eu/docs/woocommerce
  * Description: Install Alma and boost your sales! It's simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.
  * Version: 2.6.0

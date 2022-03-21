@@ -473,7 +473,7 @@ msgid "Product%s not found - Not displaying Alma"
 msgstr "Product%s niet gevonden - Alma wordt niet weergegeven"
 
 #. Plugin Name of the plugin/theme
-msgid "Alma - 2x 3x 4x, D+15 or D+30 for WooCommerce - Payment in instalments and deferred"
+msgid "Alma - Pay in installments or later for wooCommerce"
 msgstr "2x 3x 4x, D+15 of D+30 Alma - Betalen in termijnen en uitgestelde betalingen met Alma"
 
 #. Plugin URI of the plugin/theme
