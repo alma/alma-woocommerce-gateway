@@ -448,7 +448,7 @@ msgstr "Precio del producto (%s): ha fallado la introducción de credenciales de
 
 #: includes/class-alma-wc-settings.php:63
 msgid "Fast and secure payment by credit card"
-msgstr "Realice un pago aplazado o en varias cuotas mensuales con su tarjeta de crédito."
+msgstr "Pago rápido y seguro con tarjeta bancaria"
 
 #: includes/class-alma-wc-settings.php:68
 msgid "Pay in installments with Alma"
