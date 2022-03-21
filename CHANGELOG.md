@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v3.0.0
+------
+
+* refactor: change plugin description (user-friendly name)
+* refactor: change plugin slug
+
 v2.6.0
 ------
 
