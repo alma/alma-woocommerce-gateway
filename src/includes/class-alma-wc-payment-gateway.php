@@ -455,7 +455,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Render a payment plan.
+	 * Renders a payment plan.
 	 *
 	 * @param object $eligibility The eligibility object.
 	 *
@@ -485,45 +485,11 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				<?php
 				if ( $eligibility->isPayLaterOnly() ) {
 					$justify_fees = 'left';
-					?>
-					<span>
-						<?php
-						echo wp_kses_post(
-							sprintf(
-							// translators: %1$s => today_amount (0), %2$s => total_amount, %3$s => i18n formatted due_date.
-								__( '%1$s today then %2$s on %3$s', 'alma-woocommerce-gateway' ),
-								alma_wc_format_price_from_cents( 0 ),
-								alma_wc_format_price_from_cents( $step['total_amount'] ),
-								date_i18n( get_option( 'date_format' ), $step['due_date'] )
-							)
-						);
-						?>
-					</span>
-					<?php
-				} else {
+					$this->render_pay_later_plan( $step );
+				}
+                else {
 					$justify_fees = 'right';
-					if (
-						'yes' === $this->settings['payment_upon_trigger_enabled'] &&
-						$eligibility->getInstallmentsCount() <= 4
-					) {
-						?>
-						<span>
-							<?php
-							if ( 1 === $plan_index ) {
-								echo esc_html( Alma_WC_Payment_Upon_Trigger::get_display_texts()[ alma_wc_plugin()->settings->payment_upon_trigger_display_text ] );
-							} else {
-								echo esc_html( $plan_index - 1 . ' ' . _n( 'month', 'months', $plan_index - 1, 'alma-woocommerce-gateway' ) );
-							}
-							?>
-						</span>
-						<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $step['total_amount'] ) ); ?></span>
-						<?php
-					} else {
-						?>
-						<span><?php echo esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) ); ?></span>
-						<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $step['total_amount'] ) ); ?></span>
-						<?php
-					}
+                    $this->render_pnx_plan( $step, $plan_index, $eligibility );
 				}
 				?>
 			</p>
@@ -537,14 +503,92 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 						">
 					<span><?php echo esc_html__( 'Included fees:', 'alma-woocommerce-gateway' ); ?> <?php echo wp_kses_post( alma_wc_format_price_from_cents( $step['customer_fee'] ) ); ?></span>
 				</p>
-			<?php } ?>
 			<?php
+            }
 			$plan_index++;
 		} // end foreach
 	}
 
 	/**
-	 * Render payments timeline for p>4x.
+	 * Renders pay later plan.
+	 *
+	 * @param array $step A step (payment occurrence) in the payment plan.
+	 * @return void
+	 */
+	private function render_pay_later_plan( $step ) {
+		?>
+		<span>
+			<?php
+			echo wp_kses_post(
+				sprintf(
+				// translators: %1$s => today_amount (0), %2$s => total_amount, %3$s => i18n formatted due_date.
+					__( '%1$s today then %2$s on %3$s', 'alma-woocommerce-gateway' ),
+					alma_wc_format_price_from_cents( 0 ),
+					alma_wc_format_price_from_cents( $step['total_amount'] ),
+					date_i18n( get_option( 'date_format' ), $step['due_date'] )
+				)
+			);
+			?>
+		</span>
+		<?php
+	}
+
+	/**
+	 * Renders pnx plan.
+	 *
+	 * @param array $step A step (payment occurrence) in the payment plan.
+     * @param integer $plan_index A counter.
+     * @param Eligibility $eligibility An Eligibility object.
+	 * @return void
+	 */
+	private function render_pnx_plan( $step, $plan_index, $eligibility ) {
+        if ( 'yes' === $this->settings['payment_upon_trigger_enabled'] && $eligibility->getInstallmentsCount() <= 4 ) {
+            $this->render_pnx_plan_with_payment_upon_trigger_enabled( $step, $plan_index );
+        }
+        else {
+            $this->render_pnx_plan_with_payment_upon_trigger_disabled( $step );
+        }
+	}
+
+	/**
+	 * Renders pnx plan with payment upon trigger enabled.
+	 *
+	 * @param array   $step A step (payment occurrence) in the payment plan.
+	 * @param integer $plan_index A counter.
+	 *
+	 * @return void
+	 */
+	private function render_pnx_plan_with_payment_upon_trigger_enabled( $step, $plan_index ) {
+		?>
+		<span>
+			<?php
+			if ( 1 === $plan_index ) {
+				echo esc_html( Alma_WC_Payment_Upon_Trigger::get_display_texts()[ alma_wc_plugin()->settings->payment_upon_trigger_display_text ] );
+			} else {
+				echo esc_html( $plan_index - 1 . ' ' . _n( 'month', 'months', $plan_index - 1, 'alma-woocommerce-gateway' ) );
+			}
+			?>
+		</span>
+		<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $step['total_amount'] ) ); ?></span>
+		<?php
+	}
+
+	/**
+	 * Renders pnx plan with payment upon trigger disabled.
+	 *
+	 * @param array   $step A step (payment occurrence) in the payment plan.
+	 *
+	 * @return void
+	 */
+	private function render_pnx_plan_with_payment_upon_trigger_disabled( $step ) {
+        ?>
+        <span><?php echo esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) ); ?></span>
+        <span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $step['total_amount'] ) ); ?></span>
+        <?php
+	}
+
+	/**
+	 * Renders payments timeline for p>4x.
 	 *
 	 * @param object $eligibility The eligibility object.
 	 *
@@ -616,7 +660,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 
 	/**
-	 * Get default plan according to eligible pnx list.
+	 * Gets default plan according to eligible pnx list.
 	 *
 	 * @param string[] $plans the list of eligible pnx.
 	 *
@@ -698,12 +742,12 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			<td class="forminp">
 				<fieldset>
 					<legend class="screen-reader-text"><span><?php echo wp_kses_post( $data['title'] ); ?></span></legend>
-					<input class="input-text regular-input alma-i18n <?php echo esc_attr( $data['class'] ); ?>" type="text" name="<?php echo esc_attr( $field_key ); ?>" id="<?php echo esc_attr( $field_key ); ?>" style="<?php echo esc_attr( $data['css'] ); ?>" value="<?php echo esc_attr( $this->get_option( $key ) ); ?>" placeholder="<?php echo esc_attr( $data['placeholder'] ); ?>" 
-																				<?php
-																				disabled( $data['disabled'], true );
-																				echo esc_html( $this->get_custom_attribute_html( $data ) ); // phpcs:ignore Standard.Category.SniffName.ErrorCode. 
-																				?>
-					 />
+					<input class="input-text regular-input alma-i18n <?php echo esc_attr( $data['class'] ); ?>" type="text" name="<?php echo esc_attr( $field_key ); ?>" id="<?php echo esc_attr( $field_key ); ?>" style="<?php echo esc_attr( $data['css'] ); ?>" value="<?php echo esc_attr( $this->get_option( $key ) ); ?>" placeholder="<?php echo esc_attr( $data['placeholder'] ); ?>"
+					<?php
+					disabled( $data['disabled'], true );
+					echo esc_html( $this->get_custom_attribute_html( $data ) ); // phpcs:ignore Standard.Category.SniffName.ErrorCode.
+					?>
+					/>
 					<select class="list_lang_title" style="width:auto;margin-left:10px;line-height:28px;">
 					<?php
 					foreach ( $data['lang_list'] as $code => $label ) {

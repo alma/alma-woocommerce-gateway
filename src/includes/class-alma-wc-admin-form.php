@@ -72,8 +72,8 @@ class Alma_WC_Admin_Form {
 				$title_field,
 				array(
 					'payment_upon_trigger_enabling_info' => array(
-						// translators: %1$s: alma contact email.
-						'title' => '<p style="font-weight:normal;">' . sprintf( __( 'If you are interested in this feature, please get closer to your Alma contact or by sending an email to <a href="mailto:%1$s">%1$s</a>', 'alma-woocommerce-gateway' ), 'support@getalma.eu' ) . '</p>',
+						// translators: %1$s: Alma contact email.
+						'title' => $this->render_title( sprintf( __( 'If you are interested in this feature, please get closer to your Alma contact or by sending an email to <a href="mailto:%1$s">%1$s</a>', 'alma-woocommerce-gateway' ), 'support@getalma.eu' ) ),
 						'type'  => 'title',
 					),
 				)
@@ -84,7 +84,7 @@ class Alma_WC_Admin_Form {
 			$title_field,
 			array(
 				'payment_upon_trigger_general_info' => array(
-					'title' => '<p style="font-weight:normal;">' . __( 'This option is available only for Alma payment in 2x, 3x and 4x.<br>When it\'s turned on, your clients will pay the first installment at the order status change. When your client order on your website, Alma will only ask for a payment authorization. Only status handled by Alma are available in the menu below. Please contact Alma if you need us to add another status.', 'alma-woocommerce-gateway' ) . '</p>',
+					'title' => $this->render_title( __( 'This option is available only for Alma payment in 2x, 3x and 4x.<br>When it\'s turned on, your clients will pay the first installment at the order status change. When your client order on your website, Alma will only ask for a payment authorization. Only status handled by Alma are available in the menu below. Please contact Alma if you need us to add another status.', 'alma-woocommerce-gateway' ) ),
 					'type'  => 'title',
 				),
 				'payment_upon_trigger_enabled'      => array(
@@ -108,6 +108,16 @@ class Alma_WC_Admin_Form {
 				),
 			)
 		);
+	}
+
+	/**
+	 * Render "title" field type with some special css.
+	 *
+	 * @param string $title The title text to display.
+	 * @return string
+	 */
+	private function render_title( $title ) {
+		return '<p style="font-weight:normal;">' . $title . '</p>';
 	}
 
 	/**
@@ -328,7 +338,7 @@ class Alma_WC_Admin_Form {
 				'type'  => 'title',
 			),
 			'text_fields'     => array(
-				'title' => '<p style="font-weight:normal;">' . __( 'Edit the text displayed when choosing the payment method in your checkout.', 'alma-woocommerce-gateway' ) . '</p>',
+				'title' => $this->render_title( __( 'Edit the text displayed when choosing the payment method in your checkout.', 'alma-woocommerce-gateway' ) ),
 				'type'  => 'title',
 			),
 		);
