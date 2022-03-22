@@ -59,6 +59,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	 * Launches the payment on trigger for an order.
 	 *
 	 * @param integer $order_id The order id.
+	 * @param string  $next_status The order new status.
 	 * @return void
 	 */
 	private function trigger_payment( $order_id, $next_status ) {
@@ -68,7 +69,7 @@ class Alma_WC_Payment_Upon_Trigger {
 			return;
 		}
 
-        $order = wc_get_order( $order_id );
+		$order = wc_get_order( $order_id );
 		if ( ! $order->get_transaction_id() ) {
 			$this->logger->error( 'Error while getting transaction_id for order_id = ' . $order_id );
 			return;
@@ -82,7 +83,8 @@ class Alma_WC_Payment_Upon_Trigger {
 
 		try {
 			$alma->payments->trigger( $order->get_transaction_id() );
-            $order->add_order_note( sprintf( __( 'The first customer payment has been triggered, as you updated the order status to "%s".', 'alma-woocommerce-gateway' ), $next_status ) );
+			// translators: %s: An order status (example: "completed").
+			$order->add_order_note( sprintf( __( 'The first customer payment has been triggered, as you updated the order status to "%s".', 'alma-woocommerce-gateway' ), $next_status ) );
 		} catch ( RequestError $e ) {
 			$this->logger->log_stack_trace( 'Error while trigger payment for order number : ' . $order_id, $e );
 		}
@@ -158,7 +160,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	 */
 	public static function does_payment_upon_trigger_apply_for_this_fee_plan( $fee_plan_definition ) {
 		return 'yes' === alma_wc_plugin()->settings->payment_upon_trigger_enabled &&
-			in_array( $fee_plan_definition['installments_count'], array( 1, 2, 3, 4 ) ) &&
+			in_array( $fee_plan_definition['installments_count'], array( 1, 2, 3, 4 ), true ) &&
 			0 === $fee_plan_definition['deferred_days'] &&
 			0 === $fee_plan_definition['deferred_months'];
 	}
