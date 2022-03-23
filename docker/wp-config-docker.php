@@ -112,7 +112,7 @@ $table_prefix = getenv_docker('WORDPRESS_TABLE_PREFIX', 'wp_');
  */
 define( 'WP_DEBUG',         boolval(getenv_docker('WORDPRESS_DEBUG',         '1')) );
 define( 'WP_DEBUG_LOG',     boolval(getenv_docker('WORDPRESS_DEBUG_LOG',     '1')) );
-define( 'WP_DEBUG_DISPLAY', boolval(getenv_docker('WORDPRESS_DEBUG_DISPLAY', '1')) );
+define( 'WP_DEBUG_DISPLAY', boolval(getenv_docker('WORDPRESS_DEBUG_DISPLAY', '0')) );
 
 /* Add any custom values between this line and the "stop editing" line. */
 

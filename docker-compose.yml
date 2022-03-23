@@ -31,6 +31,8 @@ services:
       WORDPRESS_DB_PASSWORD: wordpress
       WORDPRESS_DB_NAME: wordpress
       WP_DEBUG: "true"
+      WP_DEBUG_LOG: "true"
+      WP_DEBUG_DISPLAY: "false"
 
   nginx:
     image: nginx:1.21
