@@ -539,7 +539,7 @@ class Alma_WC_Admin_Form {
 			$deferred_months = $fee_plan->getDeferredMonths();
 			if ( $deferred_days ) {
 				$you_can_offer = sprintf(
-				// translators: %d: number of deferred days.
+						// translators: %d: number of deferred days.
 					__( 'You can offer D+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-woocommerce-gateway' ),
 					$deferred_days,
 					$min_amount,
