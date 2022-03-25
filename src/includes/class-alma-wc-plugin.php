@@ -195,6 +195,8 @@ class Alma_WC_Plugin {
 		add_filter( 'woocommerce_gateway_description', array( $this, 'woocommerce_gateway_description' ), 10, 2 );
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
+		$payment_upon_trigger_helper = new Alma_WC_Payment_Upon_Trigger();
+		add_action( 'woocommerce_order_status_changed', array( $payment_upon_trigger_helper, 'woocommerce_order_status_changed' ), 10, 3 );
 	}
 
 	/**
