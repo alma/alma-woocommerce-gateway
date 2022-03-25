@@ -28,7 +28,6 @@ class Alma_WC_Payment_Upon_Trigger {
 	 */
 	public function __construct() {
 		$this->logger = new Alma_WC_Logger();
-		add_action( 'woocommerce_order_status_changed', array( $this, 'woocommerce_order_status_changed' ), 10, 3 );
 	}
 
 	/**
@@ -172,36 +171,3 @@ class Alma_WC_Payment_Upon_Trigger {
 			0 === $fee_plan_definition['deferred_months'];
 	}
 }
-
-new Alma_WC_Payment_Upon_Trigger();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
