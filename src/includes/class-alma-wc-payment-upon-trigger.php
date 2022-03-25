@@ -169,7 +169,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	 */
 	public static function does_payment_upon_trigger_apply_for_this_fee_plan( $fee_plan_definition ) {
 		return 'yes' === alma_wc_plugin()->settings->payment_upon_trigger_enabled &&
-			in_array( $fee_plan_definition['installments_count'], array( 1, 2, 3, 4 ), true ) &&
+			in_array( $fee_plan_definition['installments_count'], array( 2, 3, 4 ), true ) &&
 			0 === $fee_plan_definition['deferred_days'] &&
 			0 === $fee_plan_definition['deferred_months'];
 	}
