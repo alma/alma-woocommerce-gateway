@@ -565,7 +565,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		<span>
 			<?php
 			if ( 1 === $plan_index ) {
-				echo esc_html( Alma_WC_Payment_Upon_Trigger::get_display_texts()[ alma_wc_plugin()->settings->payment_upon_trigger_display_text ] );
+				echo esc_html( Alma_WC_Payment_Upon_Trigger::get_display_texts_keys_and_values()[ alma_wc_plugin()->settings->payment_upon_trigger_display_text ] );
 			} else {
 				echo esc_html( $plan_index - 1 . ' ' . _n( 'month', 'months', $plan_index - 1, 'alma-woocommerce-gateway' ) );
 			}

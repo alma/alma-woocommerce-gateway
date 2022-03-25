@@ -98,7 +98,7 @@ class Alma_WC_Admin_Form {
 					'title'       => __( 'Trigger typology', 'alma-woocommerce-gateway' ),
 					'description' => __( 'Text that will appear in the payments schedule and in the customer\'s payment authorization email.', 'alma-woocommerce-gateway' ),
 					'default'     => $default_settings['payment_upon_trigger_display_text'],
-					'options'     => Alma_WC_Payment_Upon_Trigger::get_display_texts(),
+					'options'     => Alma_WC_Payment_Upon_Trigger::get_display_texts_keys_and_values(),
 				),
 				'payment_upon_trigger_event'        => array(
 					'type'    => 'select',

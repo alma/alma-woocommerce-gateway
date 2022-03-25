@@ -115,7 +115,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	 *
 	 * @return array
 	 */
-	public static function get_display_texts() {
+	public static function get_display_texts_keys_and_values() {
 		return array(
 			'at_shipping' => __( 'At shipping', 'alma-woocommerce-gateway' ),
 		);
