@@ -115,6 +115,15 @@ class Alma_WC_Payment_Upon_Trigger {
 	 *
 	 * @return array
 	 */
+	public static function get_display_texts() {
+		return self::get_display_texts_keys_and_values() [ alma_wc_plugin()->settings->payment_upon_trigger_display_text ];
+	}
+
+	/**
+	 * Returns the list of texts proposed to be displayed on front-office.
+	 *
+	 * @return array
+	 */
 	public static function get_display_texts_keys_and_values() {
 		return array(
 			'at_shipping' => __( 'At shipping', 'alma-woocommerce-gateway' ),
@@ -152,7 +161,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	 * @return bool
 	 */
 	public static function is_payment_upon_trigger_enabled_for_fee_plan( $fee_plan ) {
-		return intval( $fee_plan->deferred_trigger_limit_days ) > 0 ;
+		return intval( $fee_plan->deferred_trigger_limit_days ) > 0;
 	}
 
 	/**
