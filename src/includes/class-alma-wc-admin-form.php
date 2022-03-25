@@ -265,16 +265,6 @@ class Alma_WC_Admin_Form {
 					'live' => __( 'Live', 'alma-woocommerce-gateway' ),
 				),
 			),
-			'environment'  => array(
-				'title'       => __( 'API Mode', 'alma-woocommerce-gateway' ),
-				'type'        => 'select',
-				'description' => __( 'Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In Test mode, only admins can see Alma on cart/checkout pages.', 'alma-woocommerce-gateway' ),
-				'default'     => $default_settings['environment'],
-				'options'     => array(
-					'test' => __( 'Test', 'alma-woocommerce-gateway' ),
-					'live' => __( 'Live', 'alma-woocommerce-gateway' ),
-				),
-			),
 		);
 	}
 
