@@ -83,7 +83,7 @@ class Alma_WC_Payment_Upon_Trigger {
 		}
 
 		if ( $payment->deferred_trigger_applied ) {
-			$this->logger->info( 'Order number ' . $order_id . ' has already a value : -->' . deferred_trigger_applied . '<--.' );
+			$this->logger->info( 'Order number ' . $order_id . ' was already triggered : -->' . deferred_trigger_applied . '<--.' );
 			return;
 		}
 
@@ -98,7 +98,7 @@ class Alma_WC_Payment_Upon_Trigger {
 
 	/**
 	 * Returns the lists of existing order statuses, without "wc-" prefix because the WC hook "woocommerce_order_status_changed" passes the order status without prefix.
-	 * 
+	 *
 	 * @return array
 	 */
 	public static function get_order_statuses() {
