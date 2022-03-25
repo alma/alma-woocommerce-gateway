@@ -138,12 +138,9 @@ class Alma_WC_Payment_Upon_Trigger {
 	public static function has_merchant_payment_upon_trigger_enabled() {
 		$fee_plans = null;
 		try {
-			$fee_plans = alma_wc_plugin()->get_fee_plans();
+			$fee_plans = alma_wc_plugin()->get_allowed_fee_plans();
 		} catch ( RequestError $e ) {
 			alma_wc_plugin()->handle_settings_exception( $e );
-		}
-		if ( ! $fee_plans ) {
-			return false;
 		}
 
 		foreach ( $fee_plans as $fee_plan ) {
