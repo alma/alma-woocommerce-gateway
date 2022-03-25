@@ -15,6 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Handles settings retrieval from the settings API.
  *
+ * @property string payment_upon_trigger_enabled Bool for triggering payments
+ * @property string payment_upon_trigger_event WC event to trigger payment
+ * @property string payment_upon_trigger_display_text Key of text to display to front-end user for payment on trigger
  * @property string live_api_key Live api key
  * @property string test_api_key Test api key
  * @property string enabled Wp-bool-eq (yes or no)
