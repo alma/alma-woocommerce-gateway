@@ -152,10 +152,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	 * @return bool
 	 */
 	public static function is_payment_upon_trigger_enabled_for_fee_plan( $fee_plan ) {
-		if ( isset( $fee_plan->deferred_trigger_limit_days ) ) {
-			return true;
-		}
-		return false;
+		return intval( $fee_plan->deferred_trigger_limit_days ) > 0 ;
 	}
 
 	/**
