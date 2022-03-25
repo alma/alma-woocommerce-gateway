@@ -97,8 +97,8 @@ class Alma_WC_Payment_Upon_Trigger {
 	}
 
 	/**
-	 * Returns the lists of existing order statuses.
-	 *
+	 * Returns the lists of existing order statuses, without "wc-" prefix because the WC hook "woocommerce_order_status_changed" passes the order status without prefix.
+	 * 
 	 * @return array
 	 */
 	public static function get_order_statuses() {
