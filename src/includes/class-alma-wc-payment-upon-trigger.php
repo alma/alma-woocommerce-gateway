@@ -83,16 +83,16 @@ class Alma_WC_Payment_Upon_Trigger {
 		}
 
 		if ( $payment->deferred_trigger_applied ) {
-			$this->logger->info( 'Order number ' . $order_id . ' was already triggered : -->' . deferred_trigger_applied . '<--.' );
-			return;
+			$this->logger->info( 'Order number ' . $order_id . ' was already triggered : -->' . $payment->deferred_trigger_applied . '<--.' );
 		}
-
-		try {
-			$alma->payments->trigger( $order->get_transaction_id() );
-			// translators: %s: An order status (example: "completed").
-			$order->add_order_note( sprintf( __( 'The first customer payment has been triggered, as you updated the order status to "%s".', 'alma-woocommerce-gateway' ), $next_status ) );
-		} catch ( RequestError $e ) {
-			$this->logger->log_stack_trace( 'Error while trigger payment for order number : ' . $order_id, $e );
+		else {
+			try {
+				$alma->payments->trigger( $order->get_transaction_id() );
+				// translators: %s: An order status (example: "completed").
+				$order->add_order_note( sprintf( __( 'The first customer payment has been triggered, as you updated the order status to "%s".', 'alma-woocommerce-gateway' ), $next_status ) );
+			} catch ( RequestError $e ) {
+				$this->logger->log_stack_trace( 'Error while trigger payment for order number : ' . $order_id, $e );
+			}
 		}
 	}
 
@@ -138,7 +138,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	public static function has_merchant_payment_upon_trigger_enabled() {
 		$fee_plans = null;
 		try {
-			$fee_plans = alma_wc_plugin()->get_allowed_fee_plans();
+			$fee_plans = alma_wc_plugin()->settings->get_allowed_fee_plans();
 		} catch ( RequestError $e ) {
 			alma_wc_plugin()->handle_settings_exception( $e );
 		}
