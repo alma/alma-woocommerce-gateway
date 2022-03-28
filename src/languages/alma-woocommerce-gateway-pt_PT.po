@@ -2,9 +2,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 77e083b1cd468d7c2202d1ff3d20e024\n"
 "POT-Creation-Date: 2022-03-22 18:34+0100\n"
-"PO-Revision-Date: 2022-03-23 09:48\n"
+"PO-Revision-Date: 2022-03-28 16:25+0200\n"
 "Last-Translator: syjust <sy.just@gmail.com>\n"
 "Language-Team: Portuguese\n"
+"Language: pt_PT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15,15 +16,14 @@ msgstr ""
 "X-Poedit-WPHeader: alma-woocommerce-gateway.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.js\n"
-"X-Poedit-SearchPathExcluded-1: vendor\n"
 "X-Crowdin-Project: 77e083b1cd468d7c2202d1ff3d20e024\n"
 "X-Crowdin-Project-ID: 17\n"
 "X-Crowdin-Language: pt\n"
 "X-Crowdin-File: /languages/alma-woocommerce-gateway.pot\n"
 "X-Crowdin-File-ID: 3021\n"
-"Language: pt_PT\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SearchPathExcluded-1: vendor\n"
 
 #: includes/class-alma-wc-admin-form.php:39
 msgid "→ Start by filling in your API keys"
@@ -64,7 +64,8 @@ msgid "Order status that triggers the first payment"
 msgstr "Status da ordem que aciona o primeiro pagamento"
 
 #. translators: %d: number of installments.
-#: includes/class-alma-wc-admin-form.php:159 includes/class-alma-wc-admin-form.php:608
+#: includes/class-alma-wc-admin-form.php:159
+#: includes/class-alma-wc-admin-form.php:608
 #, php-format
 msgid "→ %d-installment payment"
 msgstr "→ %d-pagamento da inscrição"
@@ -76,7 +77,8 @@ msgid "Enable %d-installment payments with Alma"
 msgstr "Habilitar %d- pagamentos de matrícula com Alma"
 
 #. translators: %d: number of deferred days.
-#: includes/class-alma-wc-admin-form.php:168 includes/class-alma-wc-admin-form.php:615
+#: includes/class-alma-wc-admin-form.php:168
+#: includes/class-alma-wc-admin-form.php:615
 #, php-format
 msgid "→ D+%d-deferred payment"
 msgstr "→ D%d- pagamento diferenciado"
@@ -88,7 +90,8 @@ msgid "Enable D+%d-deferred payments with Alma"
 msgstr "Habilitar D%d-diferenciação de pagamentos com Alma"
 
 #. translators: %d: number of deferred months.
-#: includes/class-alma-wc-admin-form.php:174 includes/class-alma-wc-admin-form.php:619
+#: includes/class-alma-wc-admin-form.php:174
+#: includes/class-alma-wc-admin-form.php:619
 #, php-format
 msgid "→ M+%d-deferred payment"
 msgstr "→ M%d- pagamento diferenciado"
@@ -99,7 +102,8 @@ msgstr "→ M%d- pagamento diferenciado"
 msgid "Enable M+%d-deferred payments with Alma"
 msgstr "Habilitar M%d-diferenciação de pagamentos com Alma"
 
-#: includes/class-alma-wc-admin-form.php:193 includes/class-alma-wc-admin-form.php:225
+#: includes/class-alma-wc-admin-form.php:193
+#: includes/class-alma-wc-admin-form.php:225
 msgid "Enable/Disable"
 msgstr "Habilitar/Desabilitar"
 
@@ -129,19 +133,23 @@ msgstr "Chave API ao vivo"
 msgid "Test API key"
 msgstr "Chave API de teste"
 
-#: includes/class-alma-wc-admin-form.php:259 includes/class-alma-wc-admin-form.php:269
+#: includes/class-alma-wc-admin-form.php:259
+#: includes/class-alma-wc-admin-form.php:269
 msgid "API Mode"
 msgstr "Modo API"
 
-#: includes/class-alma-wc-admin-form.php:261 includes/class-alma-wc-admin-form.php:271
+#: includes/class-alma-wc-admin-form.php:261
+#: includes/class-alma-wc-admin-form.php:271
 msgid "Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In Test mode, only admins can see Alma on cart/checkout pages."
 msgstr "Use <b>Teste</b> modo até que você esteja pronto para fazer pedidos reais com Alma<br>No modo Teste, somente admins podem ver Alma no carrinho/páginas de checagem."
 
-#: includes/class-alma-wc-admin-form.php:264 includes/class-alma-wc-admin-form.php:274
+#: includes/class-alma-wc-admin-form.php:264
+#: includes/class-alma-wc-admin-form.php:274
 msgid "Test"
 msgstr "Teste"
 
-#: includes/class-alma-wc-admin-form.php:265 includes/class-alma-wc-admin-form.php:275
+#: includes/class-alma-wc-admin-form.php:265
+#: includes/class-alma-wc-admin-form.php:275
 msgid "Live"
 msgstr "Ao vivo"
 
@@ -533,4 +541,3 @@ msgstr "Alma"
 #. Author URI of the plugin/theme
 msgid "https://www.getalma.eu"
 msgstr "https://www.getalma.eu"
-
