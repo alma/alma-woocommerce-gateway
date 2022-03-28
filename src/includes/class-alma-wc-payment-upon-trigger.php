@@ -37,8 +37,9 @@ class Alma_WC_Payment_Upon_Trigger {
 	 * @param string  $previous_status Order status before it changes.
 	 * @param string  $next_status Order status affected to the order.
 	 * @return void
+	 * phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter
 	 */
-	public function woocommerce_order_status_changed( $order_id, $previous_status, $next_status ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
+	public function woocommerce_order_status_changed( $order_id, $previous_status, $next_status ) {
 
 		$order = wc_get_order( $order_id );
 		if ( 'alma' !== $order->get_payment_method() ) {
