@@ -85,8 +85,7 @@ class Alma_WC_Payment_Upon_Trigger {
 
 		if ( $payment->deferred_trigger_applied ) {
 			$this->logger->info( 'Order number ' . $order_id . ' was already triggered : -->' . $payment->deferred_trigger_applied . '<--.' );
-		}
-		else {
+		} else {
 			try {
 				$alma->payments->trigger( $order->get_transaction_id() );
 				// translators: %s: An order status (example: "completed").
