@@ -557,18 +557,14 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return void
 	 */
 	private function render_pnx_plan_with_payment_upon_trigger_enabled( $step, $plan_index ) {
-		?>
-		<span>
-			<?php
-			if ( 1 === $plan_index ) {
-				echo esc_html( Alma_WC_Payment_Upon_Trigger::get_display_texts() );
-			} else {
-				echo esc_html( $plan_index - 1 . ' ' . _n( 'month', 'months', $plan_index - 1, 'alma-woocommerce-gateway' ) );
-			}
-			?>
-		</span>
-		<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $step['total_amount'] ) ); ?></span>
-		<?php
+		echo '<span>';
+		if ( 1 === $plan_index ) {
+			echo esc_html( Alma_WC_Payment_Upon_Trigger::get_display_texts() );
+		} else {
+			echo esc_html( $plan_index - 1 . ' ' . _n( 'month', 'months', $plan_index - 1, 'alma-woocommerce-gateway' ) );
+		}
+		echo '</span>';
+		echo '<span>' . wp_kses_post( alma_wc_format_price_from_cents( $step['total_amount'] ) ) . '</span>';
 	}
 
 	/**
@@ -579,10 +575,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return void
 	 */
 	private function render_pnx_plan_with_payment_upon_trigger_disabled( $step ) {
-		?>
-		<span><?php echo esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) ); ?></span>
-		<span><?php echo wp_kses_post( alma_wc_format_price_from_cents( $step['total_amount'] ) ); ?></span>
-		<?php
+		echo '<span>' . esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) ) . '</span>';
+		echo '<span>' . wp_kses_post( alma_wc_format_price_from_cents( $step['total_amount'] ) ) . '</span>';
 	}
 
 	/**
