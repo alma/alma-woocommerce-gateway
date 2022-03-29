@@ -482,6 +482,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			<?php	} ?>
 					">
 				<?php
+				echo '<span>';
 				if ( $eligibility->isPayLaterOnly() ) {
 					$justify_fees = 'left';
 					$this->render_pay_later_plan( $step );
@@ -489,6 +490,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 					$justify_fees = 'right';
 					$this->render_pnx_plan( $step, $plan_index, $eligibility );
 				}
+				echo '</span>';
 				?>
 			</p>
 			<?php if ( $display_customer_fee ) { ?>
@@ -514,21 +516,15 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return void
 	 */
 	private function render_pay_later_plan( $step ) {
-		?>
-		<span>
-			<?php
-			echo wp_kses_post(
-				sprintf(
+		echo wp_kses_post(
+			sprintf(
 				// translators: %1$s => today_amount (0), %2$s => total_amount, %3$s => i18n formatted due_date.
-					__( '%1$s today then %2$s on %3$s', 'alma-woocommerce-gateway' ),
-					alma_wc_format_price_from_cents( 0 ),
-					alma_wc_format_price_from_cents( $step['total_amount'] ),
-					date_i18n( get_option( 'date_format' ), $step['due_date'] )
-				)
-			);
-			?>
-		</span>
-		<?php
+				__( '%1$s today then %2$s on %3$s', 'alma-woocommerce-gateway' ),
+				alma_wc_format_price_from_cents( 0 ),
+				alma_wc_format_price_from_cents( $step['total_amount'] ),
+				date_i18n( get_option( 'date_format' ), $step['due_date'] )
+			)
+		);
 	}
 
 	/**
@@ -541,11 +537,11 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 */
 	private function render_pnx_plan( $step, $plan_index, $eligibility ) {
 		if ( 'yes' === $this->settings['payment_upon_trigger_enabled'] && $eligibility->getInstallmentsCount() <= 4 ) {
-			printf( '<span>%s</span>', esc_html( $this->get_plan_upon_trigger_display_text( $plan_index ) ) );
+			echo esc_html( $this->get_plan_upon_trigger_display_text( $plan_index ) );
 		} else {
-			printf( '<span>%s</span>', esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) ) );
+			echo esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) );
 		}
-		printf( '<span>%s</span>', wp_kses_post( alma_wc_format_price_from_cents( $step['total_amount'] ) ) );
+		echo wp_kses_post( alma_wc_format_price_from_cents( $step['total_amount'] ) );
 	}
 
 	/**
