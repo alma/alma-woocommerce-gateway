@@ -53,7 +53,7 @@ class Alma_WC_Payment_Upon_Trigger {
 			return;
 		}
 
-		if ( 'yes' !== alma_wc_plugin()->settings->payment_upon_trigger_enabled ) {
+		if ( ! get_post_meta( $order_id, 'payment_upon_trigger_enabled' ) ) {
 			return;
 		}
 
