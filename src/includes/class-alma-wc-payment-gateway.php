@@ -541,41 +541,25 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 */
 	private function render_pnx_plan( $step, $plan_index, $eligibility ) {
 		if ( 'yes' === $this->settings['payment_upon_trigger_enabled'] && $eligibility->getInstallmentsCount() <= 4 ) {
-			$this->render_pnx_plan_with_payment_upon_trigger_enabled( $step, $plan_index );
+			printf( '<span>%s</span>', esc_html( $this->get_plan_upon_trigger_display_text( $plan_index ) ) );
 		} else {
-			$this->render_pnx_plan_with_payment_upon_trigger_disabled( $step );
+			printf( '<span>%s</span>', esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) ) );
 		}
+		printf( '<span>%s</span>', wp_kses_post( alma_wc_format_price_from_cents( $step['total_amount'] ) ) );
 	}
 
 	/**
 	 * Renders pnx plan with payment upon trigger enabled.
 	 *
-	 * @param array   $step A step (payment occurrence) in the payment plan.
 	 * @param integer $plan_index A counter.
 	 *
-	 * @return void
+	 * @return string
 	 */
-	private function render_pnx_plan_with_payment_upon_trigger_enabled( $step, $plan_index ) {
-		echo '<span>';
+	private function get_plan_upon_trigger_display_text( $plan_index ) {
 		if ( 1 === $plan_index ) {
-			echo esc_html( Alma_WC_Payment_Upon_Trigger::get_display_texts() );
-		} else {
-			echo esc_html( $plan_index - 1 . ' ' . _n( 'month', 'months', $plan_index - 1, 'alma-woocommerce-gateway' ) );
+			return Alma_WC_Payment_Upon_Trigger::get_display_text();
 		}
-		echo '</span>';
-		echo '<span>' . wp_kses_post( alma_wc_format_price_from_cents( $step['total_amount'] ) ) . '</span>';
-	}
-
-	/**
-	 * Renders pnx plan with payment upon trigger disabled.
-	 *
-	 * @param array $step A step (payment occurrence) in the payment plan.
-	 *
-	 * @return void
-	 */
-	private function render_pnx_plan_with_payment_upon_trigger_disabled( $step ) {
-		echo '<span>' . esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) ) . '</span>';
-		echo '<span>' . wp_kses_post( alma_wc_format_price_from_cents( $step['total_amount'] ) ) . '</span>';
+		return sprintf( '%s %s', $plan_index - 1, _n( 'month', 'months', $plan_index - 1, 'alma-woocommerce-gateway' ) );
 	}
 
 	/**
