@@ -5,6 +5,7 @@
  * @package Alma_WooCommerce_Gateway
  */
 
+use Alma\API\Entities\FeePlan;
 use Alma\API\RequestError;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -37,7 +38,6 @@ class Alma_WC_Payment_Upon_Trigger {
 	 * @param string  $previous_status Order status before it changes.
 	 * @param string  $next_status Order status affected to the order.
 	 * @return void
-	 * @SuppressWarnings("unused")
 	 */
 	public function woocommerce_order_status_changed( $order_id, $previous_status, $next_status ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 
@@ -113,7 +113,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	/**
 	 * Returns the list of texts proposed to be displayed on front-office.
 	 *
-	 * @return array
+	 * @return string
 	 */
 	public static function get_display_texts() {
 		return self::get_display_texts_keys_and_values() [ alma_wc_plugin()->settings->payment_upon_trigger_display_text ];
@@ -136,12 +136,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	 * @return bool
 	 */
 	public static function has_merchant_payment_upon_trigger_enabled() {
-		$fee_plans = null;
-		try {
-			$fee_plans = alma_wc_plugin()->settings->get_allowed_fee_plans();
-		} catch ( RequestError $e ) {
-			alma_wc_plugin()->handle_settings_exception( $e );
-		}
+		$fee_plans = alma_wc_plugin()->settings->get_allowed_fee_plans();
 
 		foreach ( $fee_plans as $fee_plan ) {
 			if ( self::is_payment_upon_trigger_enabled_for_fee_plan( $fee_plan ) ) {
@@ -162,7 +157,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	}
 
 	/**
-	 * Tells if a fee plan definition (and not a Feeplan object) should do "payment upon trigger" depending on back-office configuration.
+	 * Tells if a fee plan definition (and not a FeePlan object) should do "payment upon trigger" depending on back-office configuration.
 	 *
 	 * @param array $fee_plan_definition A fee plan definition.
 	 * @return bool
