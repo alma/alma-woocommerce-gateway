@@ -72,7 +72,7 @@ class Alma_WC_Payment_Upon_Trigger {
 
 		$order = wc_get_order( $order_id );
 		if ( ! $order->get_transaction_id() ) {
-			$this->logger->error( 'Error while getting transaction_id for order_id = ' . $order_id );
+			$this->logger->error( 'Error while getting transaction_id on trigger_payment for order_id = ' . $order_id );
 			return;
 		}
 
