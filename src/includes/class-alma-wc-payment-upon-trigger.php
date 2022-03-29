@@ -25,6 +25,13 @@ class Alma_WC_Payment_Upon_Trigger {
 	private $logger;
 
 	/**
+	 * Order Statuses without "wc-" prefix
+	 *
+	 * @var array
+	 */
+	private static $order_statuses = array();
+
+	/**
 	 * __construct.
 	 */
 	public function __construct() {
@@ -102,12 +109,12 @@ class Alma_WC_Payment_Upon_Trigger {
 	 * @return array
 	 */
 	public static function get_order_statuses() {
-		$get_order_statuses = wc_get_order_statuses();
-		foreach ( $get_order_statuses as $status_key => $status_description ) {
-			$get_order_statuses[ str_replace( 'wc-', '', $status_key ) ] = $status_description;
-			unset( $get_order_statuses[ $status_key ] );
+		if ( empty( self::$order_statuses ) ) {
+			foreach ( wc_get_order_statuses() as $status_key => $status_description ) {
+				self::$order_statuses[ str_replace( 'wc-', '', $status_key ) ] = $status_description;
+			}
 		}
-		return $get_order_statuses;
+		return self::$order_statuses;
 	}
 
 	/**
@@ -115,7 +122,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	 *
 	 * @return string
 	 */
-	public static function get_display_texts() {
+	public static function get_display_text() {
 		return self::get_display_texts_keys_and_values() [ alma_wc_plugin()->settings->payment_upon_trigger_display_text ];
 	}
 
@@ -136,9 +143,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	 * @return bool
 	 */
 	public static function has_merchant_payment_upon_trigger_enabled() {
-		$fee_plans = alma_wc_plugin()->settings->get_allowed_fee_plans();
-
-		foreach ( $fee_plans as $fee_plan ) {
+		foreach ( alma_wc_plugin()->settings->get_allowed_fee_plans() as $fee_plan ) {
 			if ( self::is_payment_upon_trigger_enabled_for_fee_plan( $fee_plan ) ) {
 				return true;
 			}
