@@ -276,8 +276,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return bool
 	 */
 	public function should_display_plan( $plan_key, $gateway_id ) {
-		$alma_settings  = alma_wc_plugin()->settings;
-		$should_display = false;
+		$alma_settings = alma_wc_plugin()->settings;
 		switch ( $gateway_id ) {
 			case self::GATEWAY_ID:
 				$should_display = in_array( $alma_settings->get_installments_count( $plan_key ), array( 2, 3, 4 ), true );
@@ -459,7 +458,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	/**
 	 * Renders a payment plan.
 	 *
-	 * @param object $eligibility The eligibility object.
+	 * @param Eligibility $eligibility The eligibility object.
 	 *
 	 * @return void
 	 */
@@ -468,7 +467,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$plan_index   = 1;
 		$payment_plan = $eligibility->paymentPlan; // phpcs:ignore WordPress.NamingConventions.ValidVariableName
 		$plans_count  = count( $payment_plan );
-		foreach ( $payment_plan as $step ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName
+		foreach ( $payment_plan as $step ) {
 			$display_customer_fee = 1 === $plan_index && $eligibility->getInstallmentsCount() <= 4 && $step['customer_fee'] > 0;
 			?>
 			<!--suppress CssReplaceWithShorthandSafely -->
@@ -731,12 +730,12 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		?>
 		<tr valign="top" class="alma-i18n-parent" style="display:none;">
 			<th scope="row" class="titledesc">
-				<label for="<?php echo esc_attr( $field_key ); ?>"><?php echo wp_kses_post( $data['title'] ); ?> <?php echo $this->get_tooltip_html( $data ); // WPCS: XSS ok. ?></label>
+				<label for="<?php echo esc_attr( $field_key ); ?>"><?php echo wp_kses_post( $data['title'] ); ?> <?php echo $this->get_tooltip_html( $data ); // phpcs:ignore WordPress.Security.EscapeOutput ?></label>
 			</th>
 			<td class="forminp">
 				<fieldset>
 					<legend class="screen-reader-text"><span><?php echo wp_kses_post( $data['title'] ); ?></span></legend>
-					<input class="input-text regular-input alma-i18n <?php echo esc_attr( $data['class'] ); ?>" type="text" name="<?php echo esc_attr( $field_key ); ?>" id="<?php echo esc_attr( $field_key ); ?>" style="<?php echo esc_attr( $data['css'] ); ?>" value="<?php echo esc_attr( $this->get_option( $key ) ); ?>" placeholder="<?php echo esc_attr( $data['placeholder'] ); ?>" <?php disabled( $data['disabled'], true ); ?> <?php echo $this->get_custom_attribute_html( $data ); // WPCS: XSS ok. ?>
+					<input class="input-text regular-input alma-i18n <?php echo esc_attr( $data['class'] ); ?>" type="text" name="<?php echo esc_attr( $field_key ); ?>" id="<?php echo esc_attr( $field_key ); ?>" style="<?php echo esc_attr( $data['css'] ); ?>" value="<?php echo esc_attr( $this->get_option( $key ) ); ?>" placeholder="<?php echo esc_attr( $data['placeholder'] ); ?>" <?php disabled( $data['disabled'] ); ?> <?php echo $this->get_custom_attribute_html( $data ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
 					<select class="list_lang_title" style="width:auto;margin-left:10px;line-height:28px;">
 					<?php
 					foreach ( $data['lang_list'] as $code => $label ) {
@@ -745,7 +744,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 					}
 					?>
 					</select>
-					<?php echo $this->get_description_html( $data ); // phpcs:ignore ?>
+					<?php echo $this->get_description_html( $data ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
 				</fieldset>
 			</td>
 		</tr>
@@ -956,7 +955,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return void
 	 */
 	public function woocommerce_checkout_process() {
-		if ( substr( $_POST['payment_method'], 0, 5 ) === 'alma_' ) { // phpcs:ignore
+		if ( substr( $_POST['payment_method'], 0, 5 ) === 'alma_' ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$_POST['payment_method'] = self::GATEWAY_ID;
 		}
 	}

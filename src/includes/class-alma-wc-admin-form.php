@@ -506,18 +506,18 @@ class Alma_WC_Admin_Form {
 	 */
 	private function generate_fee_plan_description(
 		FeePlan $fee_plan,
-				$min_amount,
-				$max_amount,
-				$merchant_fee_fixed,
-				$merchant_fee_variable,
-				$customer_fee_fixed,
-				$customer_fee_variable,
-				$customer_lending_rate
+		$min_amount,
+		$max_amount,
+		$merchant_fee_fixed,
+		$merchant_fee_variable,
+		$customer_fee_fixed,
+		$customer_fee_variable,
+		$customer_lending_rate
 	) {
 		$you_can_offer = '';
 		if ( $fee_plan->isPnXOnly() ) {
 			$you_can_offer = sprintf(
-			// translators: %d: number of installments.
+				// translators: %d: number of installments.
 				__( 'You can offer %1$d-installment payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-woocommerce-gateway' ),
 				$fee_plan->installments_count,
 				$min_amount,
@@ -529,7 +529,7 @@ class Alma_WC_Admin_Form {
 			$deferred_months = $fee_plan->getDeferredMonths();
 			if ( $deferred_days ) {
 				$you_can_offer = sprintf(
-						// translators: %d: number of deferred days.
+					// translators: %d: number of deferred days.
 					__( 'You can offer D+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-woocommerce-gateway' ),
 					$deferred_days,
 					$min_amount,
