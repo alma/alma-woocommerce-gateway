@@ -196,6 +196,11 @@ class Alma_WC_Plugin {
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
 		$payment_upon_trigger_helper = new Alma_WC_Payment_Upon_Trigger();
+
+		// these two lines for testing purposes.
+		$share_of_checkout = new Alma_WC_Share_Of_Checkout();
+		$share_of_checkout->init();
+
 		add_action( 'woocommerce_order_status_changed', array( $payment_upon_trigger_helper, 'woocommerce_order_status_changed' ), 10, 3 );
 
 		$refund = new Alma_WC_Refund();
