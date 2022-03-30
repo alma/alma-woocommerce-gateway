@@ -161,7 +161,12 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		alma_wc_plugin()->settings->update_from( $this->settings );
 		alma_wc_plugin()->force_check_settings();
 
-		return $previously_saved && update_option( $this->get_option_key(), $this->settings );
+		$value = $this->settings;
+		if ( 'yes' === $value['share_of_checkout_enabled'] ) {
+			$value['share_of_checkout_enabled_date'] = gmdate( 'Y-m-d' );
+		}
+
+		return $previously_saved && update_option( $this->get_option_key(), $value );
 	}
 
 	/**
