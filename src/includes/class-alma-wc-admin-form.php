@@ -47,6 +47,7 @@ class Alma_WC_Admin_Form {
 			self::get_instance()->init_fee_plans_fields( $default_settings ),
 			self::get_instance()->init_general_settings_fields( $default_settings ),
 			self::get_instance()->init_api_key_fields( __( '→ API configuration', 'alma-woocommerce-gateway' ), $default_settings ),
+			self::get_instance()->init_share_of_checkout_field( $default_settings ),
 			self::get_instance()->init_debug_fields( $default_settings )
 		);
 	}
@@ -226,6 +227,51 @@ class Alma_WC_Admin_Form {
 				'type'    => 'checkbox',
 				'label'   => __( 'Enable monthly payments with Alma', 'alma-woocommerce-gateway' ),
 				'default' => $default_settings['enabled'],
+			),
+		);
+	}
+
+	/**
+	 * Inits share of checkout Admin field.
+	 *
+	 * @param array $default_settings default settings.
+	 *
+	 * @return array[]
+	 */
+	private function init_share_of_checkout_field( $default_settings ) {
+
+		return array(
+			'share_of_checkout_section'      => array(
+				'title' => '<hr>' . __( '→ Share of checkout configuration', 'alma-woocommerce-gateway' ),
+				'type'  => 'title',
+			),
+			'share_of_checkout_general_info' => array(
+				'title' => $this->render_title(
+					__(
+						'Hello,<br>In order to improve the performance monitoring of Alma on your site, we plan to develop an automated statistical data export from our module.<br>The following data would be collected periodically:<br>
+- the version of your CMS and the Alma module used<br>
+- the activation status of the Alma badge<br>
+- The share of Alma transactions among your different payment methods (in value and volume)<br>
+
+This data would allow us, on the one hand, to better support you to strengthen your conversion and, on the other hand, to monitor the impact of the improvements made to the solution.<br>
+
+No data relating to the details of orders or personal data of your customers would be exported. All data collected will be processed in compliance with the GDPR.<br>
+
+In addition, the option can be fully deactivated from the administration of your CMS; the data being collected only with your consent.<br>
+
+In order to optimize the use of Alma on your site, would you agree, in principle, to sharing this statistical data with us?<br>
+
+The Alma team',
+						'alma-woocommerce-gateway'
+					)
+				),
+				'type'  => 'title',
+			),
+			'share_of_checkout_enabled'      => array(
+				'title'   => __( 'Activate the share of checkout', 'alma-woocommerce-gateway' ),
+				'type'    => 'checkbox',
+				'label'   => '&nbsp;',
+				'default' => $default_settings['share_of_checkout_enabled'],
 			),
 		);
 	}
