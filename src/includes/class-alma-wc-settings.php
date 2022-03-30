@@ -88,7 +88,8 @@ class Alma_WC_Settings {
 			'live_api_key'                               => '',
 			'test_api_key'                               => '',
 			'environment'                                => 'test',
-			'debug'                                      => 'yes',
+            'share_of_checkout_enabled'             => 'no',
+            'debug'                                      => 'yes',
 			'fully_configured'                           => false,
 		);
 	}
