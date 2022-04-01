@@ -134,8 +134,8 @@ class Alma_WC_Generic_Handler {
 		$alma_widgets_js_url = 'https://cdn.jsdelivr.net/npm/@alma/widgets@2.x/dist/widgets.umd.js';
 		wp_enqueue_script( 'alma-widgets', $alma_widgets_js_url, array(), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 
-		$alma_widgets_css_url = 'https://cdn.jsdelivr.net/npm/@alma/widgets@2.x/dist/widgets.min.css';
-		wp_enqueue_style( 'alma-widgets', $alma_widgets_css_url, array(), null ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+		$alma_widgets_css_url = alma_wc_plugin()->get_asset_url( 'css/widgets.min.css' );
+		wp_enqueue_style( 'alma-widgets', $alma_widgets_css_url, array(), ALMA_WC_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 
 		$alma_widgets_injection_url = alma_wc_plugin()->get_asset_url( 'js/alma-widgets-inject.js' );
 		wp_enqueue_script( 'alma-widgets-injection', $alma_widgets_injection_url, array(), ALMA_WC_VERSION, true );
