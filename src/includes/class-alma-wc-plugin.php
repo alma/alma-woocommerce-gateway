@@ -599,7 +599,8 @@ class Alma_WC_Plugin {
 	 */
 	private function get_payment_to_validate() {
 		// phpcs:ignore WordPress.Security.NonceVerification
-		$payment_id = isset( $_GET['pid'] ) ? $_GET['pid'] : null;
+		$id         = sanitize_text_field( $_GET['pid'] );
+		$payment_id = isset( $id ) ? $id : null;
 
 		if ( ! $payment_id ) {
 			$this->logger->error( 'Payment validation webhook called without a payment ID' );
