@@ -35,6 +35,11 @@ class Alma_WC_Model_Cart {
 	public function __construct() {
 		$this->legacy = version_compare( wc()->version, '3.2.0', '<' );
 		$this->cart   = WC()->cart;
+		if ( ! $this->cart && version_compare( wc()->version, '3.6.4', '>=' ) ) {
+			wc_load_cart();
+			WC()->cart->calculate_totals();
+			$this->cart = WC()->cart;
+		}
 	}
 
 	/**
@@ -47,9 +52,10 @@ class Alma_WC_Model_Cart {
 			return 0;
 		}
 		if ( $this->legacy ) {
-			return alma_wc_price_to_cents( $this->cart->total );
+			$total = alma_wc_price_to_cents( $this->cart->total );
 		} else {
-			return alma_wc_price_to_cents( $this->cart->get_total( null ) );
+			$total = alma_wc_price_to_cents( $this->cart->get_total( 'edit' ) );
 		}
+		return $total;
 	}
 }
