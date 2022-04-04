@@ -484,7 +484,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			<?php	} ?>
 					">
 				<?php
-				echo '<span>';
 				if ( $eligibility->isPayLaterOnly() ) {
 					$justify_fees = 'left';
 					$this->render_pay_later_plan( $step );
@@ -492,7 +491,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 					$justify_fees = 'right';
 					$this->render_pnx_plan( $step, $plan_index, $eligibility );
 				}
-				echo '</span>';
 				?>
 			</p>
 			<?php if ( $display_customer_fee ) { ?>
@@ -539,7 +537,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 */
 	private function render_pnx_plan( $step, $plan_index, $eligibility ) {
 		if ( 'yes' === $this->settings['payment_upon_trigger_enabled'] && $eligibility->getInstallmentsCount() <= 4 ) {
-			echo esc_html( $this->get_plan_upon_trigger_display_text( $plan_index ) );
+			echo '<span>' . esc_html( $this->get_plan_upon_trigger_display_text( $plan_index ) ) . '</span>';
 		} else {
 			echo esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) );
 		}
