@@ -470,10 +470,12 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			?>
 			<!--suppress CssReplaceWithShorthandSafely -->
 			<p style="
-					display: flex;
-					justify-content: space-between;
 					padding: 4px 0;
 					margin: 4px 0;
+			<?php if ( ! $eligibility->isPayLaterOnly() ) { ?>
+					display: flex;
+					justify-content: space-between;
+			<?php	} ?>
 			<?php if ( $plan_index === $plans_count || $display_customer_fee ) { ?>
 					padding-bottom: 0;
 					margin-bottom: 0;
@@ -537,7 +539,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		if ( 'yes' === $this->settings['payment_upon_trigger_enabled'] && $eligibility->getInstallmentsCount() <= 4 ) {
 			echo '<span>' . esc_html( $this->get_plan_upon_trigger_display_text( $plan_index ) ) . '</span>';
 		} else {
-			echo esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) );
+			echo '<span>' . esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) ) . '</span>';
 		}
 		echo wp_kses_post( alma_wc_format_price_from_cents( $step['total_amount'] ) );
 	}
