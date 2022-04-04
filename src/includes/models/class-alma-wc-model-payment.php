@@ -81,7 +81,7 @@ class Alma_WC_Model_Payment {
 		if ( Alma_WC_Payment_Upon_Trigger::does_payment_upon_trigger_apply_for_this_fee_plan( $fee_plan_definition ) ) {
 			$data['payment']['deferred']             = 'trigger';
 			$data['payment']['deferred_description'] = Alma_WC_Payment_Upon_Trigger::get_display_text();
-			update_post_meta( $order_id, 'payment_upon_trigger_enabled', true );
+			update_post_meta( $order_id, 'alma_payment_upon_trigger_enabled', true );
 		}
 
 		if ( $order->has_billing_address() ) {
