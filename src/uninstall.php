@@ -21,8 +21,8 @@ delete_option( 'alma_bootstrap_warning_message_dismissed' );
 delete_option( 'alma_bootstrap_warning_message' );
 $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", $wpdb->esc_like( 'alma_migration_' ) . '%' ) );
 
-$timestamp = wp_next_scheduled( 'alma_cron_hook_test' );
-wp_unschedule_event( $timestamp, 'alma_cron_hook_test' );
+//$timestamp = wp_next_scheduled( 'alma_cron_hook_test' );
+//wp_unschedule_event( $timestamp, 'alma_cron_hook_test' );
 
 
 error_log(' gil uninstall.php 2' );

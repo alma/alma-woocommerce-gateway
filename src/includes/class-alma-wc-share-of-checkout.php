@@ -49,7 +49,25 @@ class Alma_WC_Share_Of_Checkout {
 	 */
 	public function init() {
 		add_action( 'init', array( $this, 'bootstrap' ) );
-		add_filter( 'cron_schedules', array( $this, 'schedule_task' ) );
+		add_filter( 'cron_schedules', array( $this, 'add_schedule' ) );
+	}
+
+	/**
+	 * Add the cron task to share datas.
+	 */
+	public function add_schedule() {
+
+		error_log( 'add_schedule()' );
+
+//		$schedules['alma_once_a_day'] = array(
+//			'interval' => 86400,
+//			'display'  => esc_html__( 'Every day for alma' ),
+//		);
+		$schedules['alma_every_ten_seconds_2'] = array(
+			'interval' => 10,
+			'display'  => esc_html__( 'Every 10 seconds for alma' ),
+		);
+		return $schedules;
 	}
 
 	/**
@@ -57,6 +75,7 @@ class Alma_WC_Share_Of_Checkout {
 	 */
 	public function bootstrap() {
 		$this->share_days();
+
 //		if ( ! wp_next_scheduled( 'alma_cron_hook' ) ) {
 //			wp_schedule_event( time(), 'alma_once_a_day', 'alma_cron_hook' );
 //		}
@@ -66,33 +85,16 @@ class Alma_WC_Share_Of_Checkout {
 
 		if ( ! wp_next_scheduled( 'alma_cron_hook_test' ) ) {
 			error_log( 'wp_schedule_event()' );
-			wp_schedule_event( time(), 'alma_every_ten_seconds', 'alma_cron_hook_test' );
+			wp_schedule_event( time(), 'alma_every_ten_seconds_2', 'alma_cron_hook_test' );
 		}
-	}
-
-	/**
-	 * Add the cron task to share datas.
-	 */
-	public function schedule_task() {
-
-		error_log( 'schedule_task()' );
-
-//		$schedules['alma_once_a_day'] = array(
-//			'interval' => 86400,
-//			'display'  => esc_html__( 'Every day for alma' ),
-//		);
-		$schedules['alma_every_ten_seconds'] = array(
-			'interval' => 10,
-			'display'  => esc_html__( 'Every 10 seconds for alma' ),
-		);
-		return $schedules;
+		add_action( 'alma_cron_hook_test', array( $this, 'alma_exec_cron' ) );
 	}
 
 	/**
 	 *
 	 */
-	public function alma_cron_hook_test() {
-		error_log( 'alma_cron_hook_test()' );
+	public function alma_exec_cron() {
+		error_log( '----- Alma_WC_Share_Of_Checkout::alma_cron_hook_test() -----' );
 	}
 
 	/**
