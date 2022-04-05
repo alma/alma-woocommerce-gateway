@@ -68,7 +68,7 @@ class Alma_WC_Settings_Helper {
 	}
 
 	/**
-	 * Gets the default title for all payment method (pnx, pnx+4, pay later).
+	 * Gets the default description for all payment methods (pnx, pnx+4, pay later).
 	 *
 	 * @return string
 	 */
