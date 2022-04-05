@@ -14,6 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Alma_WC_Share_Of_Checkout {
 
+	const CRON_ACTION = 'share_of_checkout_cron_action';
+
 	/**
 	 * Logger
 	 *
@@ -49,24 +51,19 @@ class Alma_WC_Share_Of_Checkout {
 	 */
 	public function init() {
 		add_action( 'init', array( $this, 'bootstrap' ) );
-		add_filter( 'cron_schedules', array( $this, 'add_schedule' ) );
+		add_filter( 'cron_schedules', array( $this, 'add_cron_schedule' ) );
 	}
 
 	/**
-	 * Add the cron task to share datas.
+	 * Add our cron schedule in WP schedules list.
 	 */
-	public function add_schedule() {
+	public function add_cron_schedule() {
 
-		error_log( 'add_schedule()' );
-
-//		$schedules['alma_once_a_day'] = array(
-//			'interval' => 86400,
-//			'display'  => esc_html__( 'Every day for alma' ),
-//		);
-		$schedules['alma_every_ten_seconds_2'] = array(
-			'interval' => 10,
-			'display'  => esc_html__( 'Every 10 seconds for alma' ),
+		$schedules['alma_once_a_day'] = array(
+			'interval' => 20,
+			'display'  => esc_html__( 'Every day for alma' ),
 		);
+
 		return $schedules;
 	}
 
@@ -74,27 +71,39 @@ class Alma_WC_Share_Of_Checkout {
 	 * Bootstrap function.
 	 */
 	public function bootstrap() {
-		$this->share_days();
 
-//		if ( ! wp_next_scheduled( 'alma_cron_hook' ) ) {
-//			wp_schedule_event( time(), 'alma_once_a_day', 'alma_cron_hook' );
-//		}
+//		$this->share_days();
+//
+//		$timestamp = wp_next_scheduled( 'cron_share_of_checkout_action' );
+//		wp_unschedule_event( $timestamp, 'cron_share_of_checkout_action' );
+//
+//		$timestamp = wp_next_scheduled( 'alma_cron_my_test_action' );
+//		wp_unschedule_event( $timestamp, 'alma_cron_my_test_action' );
+//		return;
 
-		error_log( "wp_next_scheduled( 'alma_cron_hook_test' )" );
-		error_log( wp_next_scheduled( 'alma_cron_hook_test' ) );
-
-		if ( ! wp_next_scheduled( 'alma_cron_hook_test' ) ) {
+		if ( ! wp_next_scheduled( self::CRON_ACTION ) ) {
 			error_log( 'wp_schedule_event()' );
-			wp_schedule_event( time(), 'alma_every_ten_seconds_2', 'alma_cron_hook_test' );
+			wp_schedule_event( $this->get_cron_job_first_occurrence_timestamp(), 'alma_once_a_day', self::CRON_ACTION );
 		}
-		add_action( 'alma_cron_hook_test', array( $this, 'alma_exec_cron' ) );
+		add_action( self::CRON_ACTION, array( $this, 'share_of_checkout_cron_execution_callback' ) );
+	}
+
+	/**
+	 * Returns the timestamp of the first occurrence of the cron job.
+	 *
+	 * @return int A timestamp
+	 */
+	function get_cron_job_first_occurrence_timestamp() {
+		// @todo to implement.
+		return time();
 	}
 
 	/**
 	 *
 	 */
-	public function alma_exec_cron() {
-		error_log( '----- Alma_WC_Share_Of_Checkout::alma_cron_hook_test() -----' );
+	public function share_of_checkout_cron_execution_callback() {
+		error_log( '----- Alma_WC_Share_Of_Checkout::alma_exec_cron() -----' );
+		// @todo here we should call $this->share_days();
 	}
 
 	/**
@@ -140,15 +149,31 @@ class Alma_WC_Share_Of_Checkout {
 		// echo '</pre>';
 		// exit;
 	}
-
-
-
 }
 
+return;
 
+// error_log( '----- tests -----' );
+// tests
+// https://developer.wordpress.org/plugins/cron/understanding-wp-cron-scheduling/
+add_filter( 'cron_schedules', 'example_add_cron_interval' );
+function example_add_cron_interval( $schedules ) {
+	$schedules['five_seconds'] = array(
+		'interval' => 5,
+		'display'  => esc_html__( 'Every Five Seconds' ), );
+	return $schedules;
+}
 
+if ( ! wp_next_scheduled( 'bl_cron_hook' ) ) {
+	error_log( '----- bl_cron_hook -----' );
+	wp_schedule_event( time(), 'five_seconds', 'bl_cron_hook' );
+}
 
+add_action( 'bl_cron_hook', 'bl_cron_exec' );
 
+function bl_cron_exec() {
+	error_log( '----- bl_cron_exec() -----' );
+}
 
 
 
