@@ -261,13 +261,13 @@ class Alma_WC_Settings {
 	private function get_i18n( $key ) {
 
 		if ( Alma_WC_Internationalization::is_site_multilingual() ) {
-			if ( $this->{$key . '_' . get_user_locale() } ) {
-				return $this->{$key . '_' . get_user_locale() };
+			if ( $this->{$key . '_' . get_locale() } ) {
+				return $this->{$key . '_' . get_locale() };
 			}
 
 			return Alma_WC_Internationalization::get_translated_text(
 				self::default_settings()[ $key ],
-				get_user_locale()
+				get_locale()
 			);
 		}
 
