@@ -83,9 +83,24 @@ class Alma_WC_Payment_Validator {
 
 			// If we're down here, everything went OK, and we can validate the order!
 			$order->payment_complete( $payment_id );
+
+			self::update_order_post_meta_if_deferred_trigger( $payment, $order );
 		}
 
 		return $order;
+	}
+
+	/**
+	 * Update the order meta "alma_payment_upon_trigger_enabled" if the payment is upon trigger.
+	 *
+	 * @param Payment $payment A payment.
+	 * @param WC Order $order The order.
+	 * @return void
+	 */
+	public static function update_order_post_meta_if_deferred_trigger( $payment, $order ) {
+		if ( $payment->deferred_trigger ) {
+			update_post_meta( $order->get_id(), 'alma_payment_upon_trigger_enabled', true );
+		}
 	}
 
 }
