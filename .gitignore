@@ -3,3 +3,4 @@ vendor
 docker/env.local
 .idea/
 plugins/
+src/composer.lock
