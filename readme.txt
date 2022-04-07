@@ -3,7 +3,7 @@
 Contributors: almapayments, olance, syjust
 Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo commerce, alma, monthly payments, split payments
 Requires at least: 4.4
-Tested up to: 5.8.2
+Tested up to: 5.9.3
 Requires PHP: 5.6
 Stable tag: 2.6.0
 License: GPLv3
