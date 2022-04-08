@@ -196,7 +196,7 @@ function AlmaAdminFeePlan(helper ) {
             jQuery('.alma_fee_plan').stop(true, true).hide();
             var $sections = jQuery('.alma_fee_plan_' + plan);
             $sections.show().effect('highlight', 1500);
-            $sections.find('b').effect('highlight', 5000);
+            $sections.find('b').effect('highlight', {color: 'pink'}, 5000);
         }
 
     return {
