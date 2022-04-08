@@ -127,7 +127,7 @@ class Alma_WC_Generic_Handler {
 			'firstRender'         => true,
 			'decimalSeparator'    => wc_get_price_decimal_separator(),
 			'thousandSeparator'   => wc_get_price_thousand_separator(),
-			'locale'              => substr( get_user_locale(), 0, 2 ),
+			'locale'              => substr( get_locale(), 0, 2 ),
 		);
 
 		// Inject JS/CSS required for the eligibility/payment plans info display.
