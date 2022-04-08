@@ -28,7 +28,7 @@ class Alma_WC_Model_Payment {
 					'return_url'       => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::CUSTOMER_RETURN ),
 					'ipn_callback_url' => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::IPN_CALLBACK ),
 					'purchase_amount'  => $cart->get_total(),
-					'locale'           => apply_filters( 'alma_wc_checkout_payment_user_locale', get_user_locale() ),
+					'locale'           => apply_filters( 'alma_wc_checkout_payment_user_locale', get_locale() ),
 				),
 		);
 
@@ -139,7 +139,7 @@ class Alma_WC_Model_Payment {
 		$data = array(
 			'purchase_amount' => $cart->get_total(),
 			'queries'         => alma_wc_plugin()->get_eligible_plans_for_cart(),
-			'locale'          => apply_filters( 'alma_wc_eligibility_user_locale', get_user_locale() ),
+			'locale'          => apply_filters( 'alma_wc_eligibility_user_locale', get_locale() ),
 		);
 
 		$billing_country  = $customer->get_billing_address()['country'];
