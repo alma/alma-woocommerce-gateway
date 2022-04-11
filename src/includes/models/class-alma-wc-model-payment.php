@@ -15,31 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Alma_WC_Model_Payment {
 
 	/**
-	 * Create Payment data for Alma API request from Woocommerce Cart.
-	 *
-	 * @return array
-	 */
-	public static function get_payment_payload_from_cart() {
-		$customer = new Alma_WC_Model_Customer();
-		$cart     = new Alma_WC_Model_Cart();
-		$data     = array(
-			'payment' =>
-				array(
-					'return_url'       => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::CUSTOMER_RETURN ),
-					'ipn_callback_url' => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::IPN_CALLBACK ),
-					'purchase_amount'  => $cart->get_total(),
-					'locale'           => apply_filters( 'alma_wc_checkout_payment_user_locale', get_locale() ),
-				),
-		);
-
-		$data['payment']['billing_address']  = $customer->get_billing_address();
-		$data['payment']['shipping_address'] = $customer->get_shipping_address();
-		$data['customer']                    = $customer->get_data();
-
-		return $data;
-	}
-
-	/**
 	 * Create Payment data for Alma API request from Woocommerce Order.
 	 *
 	 * @param int   $order_id Order ID.
@@ -70,6 +45,7 @@ class Alma_WC_Model_Payment {
 					'order_id'  => $order_id,
 					'order_key' => $order->get_order_key(),
 				),
+				'locale'              => apply_filters( 'alma_wc_checkout_payment_user_locale', get_locale() ),
 			),
 			'order'   => array(
 				'merchant_reference' => $order->get_order_reference(),
@@ -83,34 +59,29 @@ class Alma_WC_Model_Payment {
 			$data['payment']['deferred_description'] = Alma_WC_Payment_Upon_Trigger::get_display_text();
 		}
 
+		$data['customer']              = array();
+		$data['customer']['addresses'] = array();
 		if ( $order->has_billing_address() ) {
 			$billing_address                    = $order->get_billing_address();
 			$data['payment']['billing_address'] = $billing_address;
 
-			$data['customer'] = array(
-				'first_name' => $billing_address['first_name'],
-				'last_name'  => $billing_address['last_name'],
-				'email'      => $billing_address['email'],
-				'phone'      => $billing_address['phone'],
-				'addresses'  => array( $billing_address ),
-			);
+			$data['customer']['first_name']  = $billing_address['first_name'];
+			$data['customer']['last_name']   = $billing_address['last_name'];
+			$data['customer']['email']       = $billing_address['email'];
+			$data['customer']['phone']       = $billing_address['phone'];
+			$data['customer']['addresses'][] = $billing_address;
 		}
 
 		if ( $order->has_shipping_address() ) {
 			$shipping_address                    = $order->get_shipping_address();
 			$data['payment']['shipping_address'] = $shipping_address;
-
-			$customer_data = array(
-				'first_name' => $shipping_address['first_name'],
-				'last_name'  => $shipping_address['last_name'],
-				'addresses'  => array( $shipping_address ),
-			);
-
-			$data['customer'] = alma_wc_array_merge_recursive( $data['customer'], $customer_data );
+			$data['customer']['addresses'][]     = $shipping_address;
 		}
 
-		// Merge built data on data extracted from Cart to have as much data as possible.
-		return alma_wc_array_merge_recursive( self::get_payment_payload_from_cart(), $data );
+		error_log( 'get_payment_payload_from_order : $data = ' );
+		error_log( serialize( $data ) );
+
+		return $data;
 	}
 
 	/**
