@@ -66,49 +66,6 @@ function alma_wc_format_price_from_cents( $price, $args = array() ) {
 	return wc_price( alma_wc_price_from_cents( $price ), array_merge( array( 'currency' => 'EUR' ), $args ) );
 }
 
-
-/**
- * Merge arrays recursively.
- * From https://secure.php.net/manual/en/function.array-merge-recursive.php#104145
- * Addition: will automatically discard null values
- *
- * @return array
- * @throws RuntimeException Throws when argument count invalid or an argument is not an array.
- * @TODO check if array_replace_recursive can do the stuff here ?
- */
-function alma_wc_array_merge_recursive() {
-	if ( func_num_args() < 2 ) {
-		throw new RuntimeException( __FUNCTION__ . ' needs two or more array arguments', E_USER_WARNING );
-	}
-	$arrays = func_get_args();
-	$merged = array();
-	while ( $arrays ) {
-		$array = array_shift( $arrays );
-		if ( null === $array ) {
-			continue;
-		}
-		if ( ! is_array( $array ) ) {
-			throw new RuntimeException( __FUNCTION__ . ' encountered a non array argument', E_USER_WARNING );
-		}
-		if ( ! $array ) {
-			continue;
-		}
-		foreach ( $array as $key => $value ) {
-			if ( is_string( $key ) ) {
-				if ( is_array( $value ) && array_key_exists( $key, $merged ) && is_array( $merged[ $key ] ) ) {
-					$merged[ $key ] = call_user_func( __FUNCTION__, $merged[ $key ], $value );
-				} else {
-					$merged[ $key ] = $value;
-				}
-			} else {
-				$merged[] = $value;
-			}
-		}
-	}
-
-	return $merged;
-}
-
 /**
  * Converts a string (e.g. 'yes' or 'no') to a bool.
  *
