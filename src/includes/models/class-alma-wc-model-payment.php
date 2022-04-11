@@ -78,10 +78,7 @@ class Alma_WC_Model_Payment {
 			$data['customer']['addresses'][]     = $shipping_address;
 		}
 
-		error_log( 'get_payment_payload_from_order : $data = ' );
-		error_log( serialize( $data ) );
-
-		return $data;
+		return apply_filters( 'alma_wc_get_payment_payload_from_order', $data );
 	}
 
 	/**
