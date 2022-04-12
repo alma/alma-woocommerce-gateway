@@ -43,6 +43,7 @@ class Alma_WC_Admin_Form {
 
 		return array_merge(
 			self::get_instance()->init_enabled_field( $default_settings ),
+			self::get_instance()->init_technical_fields( $default_settings ),
 			self::get_instance()->init_fee_plans_fields( $default_settings ),
 			self::get_instance()->init_general_settings_fields( $default_settings ),
 			self::get_instance()->init_payment_upon_trigger_fields( $default_settings ),
@@ -226,6 +227,28 @@ class Alma_WC_Admin_Form {
 				'type'    => 'checkbox',
 				'label'   => __( 'Enable monthly payments with Alma', 'alma-woocommerce-gateway' ),
 				'default' => $default_settings['enabled'],
+			),
+		);
+	}
+
+	/**
+	 * Technical fields.
+	 *
+	 * @param array  $default_settings as default settings.
+	 *
+	 * @return array[]
+	 */
+	private function init_technical_fields( $default_settings ) {
+
+		return array(
+			'technical_section' => array(
+				'title' => '<hr>' . __( '→ Technical fields', 'alma-woocommerce-gateway' ),
+				'type'  => 'title',
+				'description' => __( 'Here are very technical specific fields (in most cases you shouldn\' use this).', 'alma-woocommerce-gateway' ),
+			),
+			'custom_check_variations_event' => array(
+				'title' => __( 'Custom check variations event', 'alma-woocommerce-gateway' ),
+				'type'  => 'text',
 			),
 		);
 	}
