@@ -8,6 +8,7 @@ jQuery(document).ready(function() {
     almaAdminFeePlan.initiateAlmaSelectMenuBehaviour();
     almaAdminFeePlan.listenFeePlanCheckboxStatus();
     almaAdminFeePlan.checkInputsOnSubmitActionTriggered();
+    almaAdminGeneralHelper.toggleTechnicalConfigFields();
 
 });
 
@@ -52,6 +53,15 @@ function AlmaAdminHelper() {
             } else {
                 $items.removeClass('alma_option_enabled').addClass('alma_option_disabled');
             }
+        },
+        /**
+         * Show or hide technical fields.
+         */
+        toggleTechnicalConfigFields: function() {
+            jQuery(document).on('click', '#alma_link_toggle_technical_section', function (e) {
+                e.preventDefault();
+                jQuery(this).parent('div').next('table.form-table').toggle('slow');
+            });
         }
     }
 }

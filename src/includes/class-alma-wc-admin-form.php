@@ -244,11 +244,11 @@ class Alma_WC_Admin_Form {
 			'technical_section' => array(
 				'title' => '<hr>' . __( '→ Technical fields', 'alma-woocommerce-gateway' ),
 				'type'  => 'title',
-				'description' => __( 'Here are very technical specific fields (in most cases you shouldn\' use this).', 'alma-woocommerce-gateway' ),
+				'description' => __( 'Here are very technical specific fields (in most cases you shouldn\'t use this). [<a href="#" id="alma_link_toggle_technical_section">click to open or close</a>]', 'alma-woocommerce-gateway' ),
 			),
 			'custom_check_variations_event' => array(
-				'title' => __( 'Custom check variations event', 'alma-woocommerce-gateway' ),
-				'type'  => 'text',
+				'title'  => __( 'Custom check variations event', 'alma-woocommerce-gateway' ),
+				'type'   => 'text',
 			),
 		);
 	}
