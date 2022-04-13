@@ -234,21 +234,25 @@ class Alma_WC_Admin_Form {
 	/**
 	 * Technical fields.
 	 *
-	 * @param array  $default_settings as default settings.
+	 * @param array $default_settings as default settings.
 	 *
 	 * @return array[]
 	 */
 	private function init_technical_fields( $default_settings ) {
 
 		return array(
-			'technical_section' => array(
-				'title' => '<hr>' . __( '→ Technical fields', 'alma-woocommerce-gateway' ),
-				'type'  => 'title',
+			'technical_section'                       => array(
+				'title'       => '<hr>' . __( '→ Technical fields', 'alma-woocommerce-gateway' ),
+				'type'        => 'title',
 				'description' => __( 'Here are very technical specific fields (in most cases you shouldn\'t use this). [<a href="#" id="alma_link_toggle_technical_section">click to open or close</a>]', 'alma-woocommerce-gateway' ),
 			),
-			'custom_check_variations_event' => array(
-				'title'  => __( 'Custom check variations event', 'alma-woocommerce-gateway' ),
-				'type'   => 'text',
+			'variable_product_check_variations_event' => array(
+				'title'       => __( 'Custom check variations event', 'alma-woocommerce-gateway' ),
+				'type'        => 'text',
+				'default'     => $default_settings['variable_product_check_variations_event'],
+//				@todo update doc link to link to exact page.
+				/* translators: %s Alma doc URL */
+				'description' => sprintf( __( 'This is the javascript event triggered on variables products page, when the customer change the product variation. Default value is <strong>check_variations</strong>.<br />More technical informations on <a href="%s" target="_blank">Alma documentation</a>', 'alma-woocommerce-gateway' ), 'https://docs.getalma.eu/docs' ),
 			),
 		);
 	}

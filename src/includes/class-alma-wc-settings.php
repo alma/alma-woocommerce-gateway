@@ -29,6 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property string selected_fee_plan Admin dashboard fee_plan in edition mode.
  * @property string merchant_id Alma merchant ID
  * @property string variable_product_price_query_selector Css query selector
+ * @property string variable_product_check_variations_event JS event for product variation change
  * @property array  excluded_products_list Wp Categories excluded slug's list
  */
 class Alma_WC_Settings {
@@ -63,28 +64,29 @@ class Alma_WC_Settings {
 	 */
 	public static function default_settings() {
 		return array(
-			'enabled'                               => 'yes',
-			'payment_upon_trigger_enabled'          => 'no',
-			'payment_upon_trigger_event'            => 'completed',
-			'payment_upon_trigger_display_text'     => 'at_shipping',
-			'selected_fee_plan'                     => self::DEFAULT_FEE_PLAN,
-			'enabled_general_3_0_0'                 => 'yes',
-			'title_payment_method_pnx'              => Alma_WC_Settings_Helper::default_pnx_title(),
-			'description_payment_method_pnx'        => Alma_WC_Settings_Helper::default_payment_description(),
-			'title_payment_method_pay_later'        => Alma_WC_Settings_Helper::default_pay_later_title(),
-			'description_payment_method_pay_later'  => Alma_WC_Settings_Helper::default_payment_description(),
-			'title_payment_method_pnx_plus_4'       => Alma_WC_Settings_Helper::default_pnx_plus_4_title(),
-			'description_payment_method_pnx_plus_4' => Alma_WC_Settings_Helper::default_payment_description(),
-			'display_cart_eligibility'              => 'yes',
-			'display_product_eligibility'           => 'yes',
-			'variable_product_price_query_selector' => Alma_WC_Settings_Helper::default_variable_price_selector(),
-			'excluded_products_list'                => array(),
-			'cart_not_eligible_message_gift_cards'  => Alma_WC_Settings_Helper::default_not_eligible_cart_message(),
-			'live_api_key'                          => '',
-			'test_api_key'                          => '',
-			'environment'                           => 'test',
-			'debug'                                 => 'yes',
-			'fully_configured'                      => false,
+			'enabled'                                 => 'yes',
+			'payment_upon_trigger_enabled'            => 'no',
+			'payment_upon_trigger_event'              => 'completed',
+			'payment_upon_trigger_display_text'       => 'at_shipping',
+			'selected_fee_plan'                       => self::DEFAULT_FEE_PLAN,
+			'enabled_general_3_0_0'                   => 'yes',
+			'title_payment_method_pnx'                => Alma_WC_Settings_Helper::default_pnx_title(),
+			'description_payment_method_pnx'          => Alma_WC_Settings_Helper::default_payment_description(),
+			'title_payment_method_pay_later'          => Alma_WC_Settings_Helper::default_pay_later_title(),
+			'description_payment_method_pay_later'    => Alma_WC_Settings_Helper::default_payment_description(),
+			'title_payment_method_pnx_plus_4'         => Alma_WC_Settings_Helper::default_pnx_plus_4_title(),
+			'description_payment_method_pnx_plus_4'   => Alma_WC_Settings_Helper::default_payment_description(),
+			'display_cart_eligibility'                => 'yes',
+			'display_product_eligibility'             => 'yes',
+			'variable_product_price_query_selector'   => Alma_WC_Settings_Helper::default_variable_price_selector(),
+			'variable_product_check_variations_event' => Alma_WC_Settings_Helper::default_check_variations_event(),
+			'excluded_products_list'                  => array(),
+			'cart_not_eligible_message_gift_cards'    => Alma_WC_Settings_Helper::default_not_eligible_cart_message(),
+			'live_api_key'                            => '',
+			'test_api_key'                            => '',
+			'environment'                             => 'test',
+			'debug'                                   => 'yes',
+			'fully_configured'                        => false,
 		);
 	}
 

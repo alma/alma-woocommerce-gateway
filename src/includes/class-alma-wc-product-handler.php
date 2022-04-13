@@ -13,7 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Alma_WC_Product_Handler
  */
 class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
-	const JQUERY_VARIABLE_PRODUCT_UPDATE_EVENT = 'check_variations';
 
 	/**
 	 * __construct
@@ -73,8 +72,8 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 		$is_variable_product = $product->get_type() === 'variable';
 
 		if ( $is_variable_product ) {
+			$jquery_update_event   = alma_wc_plugin()->settings->variable_product_check_variations_event;
 			$amount_query_selector = alma_wc_plugin()->settings->variable_product_price_query_selector;
-			$jquery_update_event   = self::JQUERY_VARIABLE_PRODUCT_UPDATE_EVENT;
 		}
 
 		$this->inject_payment_plan_widget(
