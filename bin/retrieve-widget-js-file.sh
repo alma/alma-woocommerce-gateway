@@ -6,7 +6,7 @@
 # This js file is supposed to be unminified.
 # So the url below will need to be changed as soon as the unminified file will be reachable.
 
-file_url='https://cdn.jsdelivr.net/npm/@alma/widgets@2.x/dist/widgets.umd.js';
+file_url='https://cdn.jsdelivr.net/npm/@alma/widgets@2.x/dist/raw/widgets.umd.js';
 file_name='widgets.umd.js';
 
 # the directory_prefix is the relative folder path where js resources are called in the plugin via the wp_enqueue_script() function.
