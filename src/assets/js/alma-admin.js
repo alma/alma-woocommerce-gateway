@@ -58,6 +58,7 @@ function AlmaAdminHelper() {
          * Show or hide technical fields.
          */
         toggleTechnicalConfigFields: function() {
+            jQuery('#alma_link_toggle_technical_section').parent('div').next('table.form-table').toggle();
             jQuery(document).on('click', '#alma_link_toggle_technical_section', function (e) {
                 e.preventDefault();
                 jQuery(this).parent('div').next('table.form-table').toggle('slow');
