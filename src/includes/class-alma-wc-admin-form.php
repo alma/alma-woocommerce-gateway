@@ -250,9 +250,8 @@ class Alma_WC_Admin_Form {
 				'title'       => __( 'Custom check variations event', 'alma-woocommerce-gateway' ),
 				'type'        => 'text',
 				'default'     => $default_settings['variable_product_check_variations_event'],
-//				@todo update doc link to link to exact page.
 				/* translators: %s Alma doc URL */
-				'description' => sprintf( __( 'This is the javascript event triggered on variables products page, when the customer change the product variation. Default value is <strong>check_variations</strong>.<br />More technical informations on <a href="%s" target="_blank">Alma documentation</a>', 'alma-woocommerce-gateway' ), 'https://docs.getalma.eu/docs' ),
+				'description' => sprintf( __( 'This is the javascript event triggered on variables products page, when the customer change the product variation. Default value is <strong>check_variations</strong>.<br />More technical informations on <a href="%s" target="_blank">Alma documentation</a>', 'alma-woocommerce-gateway' ), 'https://docs.getalma.eu/docs/woocommerce-installation-guide' ),
 			),
 		);
 	}
