@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v2.5.2
+------
+
+* feat: ignore & remove composer.lock
+* fix: allow widget to be injected in builder
+
 v2.5.1
 ------
 
