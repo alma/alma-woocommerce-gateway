@@ -43,11 +43,11 @@ class Alma_WC_Admin_Form {
 
 		return array_merge(
 			self::get_instance()->init_enabled_field( $default_settings ),
-			self::get_instance()->init_technical_fields( $default_settings ),
 			self::get_instance()->init_fee_plans_fields( $default_settings ),
 			self::get_instance()->init_general_settings_fields( $default_settings ),
 			self::get_instance()->init_payment_upon_trigger_fields( $default_settings ),
 			self::get_instance()->init_api_key_fields( __( '→ API configuration', 'alma-woocommerce-gateway' ), $default_settings ),
+			self::get_instance()->init_technical_fields( $default_settings ),
 			self::get_instance()->init_debug_fields( $default_settings )
 		);
 	}
