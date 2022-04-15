@@ -557,7 +557,9 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		if ( 1 === $plan_index ) {
 			return Alma_WC_Payment_Upon_Trigger::get_display_text();
 		}
-		return sprintf( '%s %s', $plan_index - 1, _n( 'month', 'months', $plan_index - 1, 'alma-woocommerce-gateway' ) );
+		// translators: %s: 'In' refers to a date or time, like in "in two days" or "in three months".
+		$in = esc_html__( 'In', 'alma-woocommerce-gateway' );
+		return $in . ' ' . sprintf( '%s %s', $plan_index - 1, _n( 'month', 'months', $plan_index - 1, 'alma-woocommerce-gateway' ) );
 	}
 
 	/**

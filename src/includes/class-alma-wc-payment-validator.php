@@ -93,7 +93,7 @@ class Alma_WC_Payment_Validator {
 	/**
 	 * Update the order meta "alma_payment_upon_trigger_enabled" if the payment is upon trigger.
 	 *
-	 * @param Payment $payment A payment.
+	 * @param Payment  $payment A payment.
 	 * @param WC Order $order The order.
 	 * @return void
 	 */
