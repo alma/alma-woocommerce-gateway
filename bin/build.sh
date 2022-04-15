@@ -15,7 +15,6 @@ LICENSE  \
 ./src/languages \
 ./src/tests \
 ./src/composer.json \
-./src/composer.lock \
 ./src/phpcs.xml \
 ./src/alma-woocommerce-gateway.php \
 ./src/uninstall.php \

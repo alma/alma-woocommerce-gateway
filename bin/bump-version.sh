@@ -36,7 +36,7 @@ LATEST_VERSION="`git tag --list | grep "^v" | sort -n | tail -n1 | $SED_BIN 's/[
 #
 git_log_since_latest() {
     git log HEAD --not $LATEST_VERSION \
-        | grep -E "^[[:blank:]]*(doc|feat|fix|ci|word|refactor)[a-z()-_]*:" \
+        | grep -E "^[[:blank:]]*(doc|hotfix|feat|fix|ci|word|refactor)[a-z()-_]*:" \
         | sed 's/^[[:blank:]]*/* /g' \
         | sort
 }
