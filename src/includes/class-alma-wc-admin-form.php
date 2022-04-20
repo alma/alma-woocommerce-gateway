@@ -250,9 +250,10 @@ class Alma_WC_Admin_Form {
 				'title'       => __( 'Custom check variations event', 'alma-woocommerce-gateway' ),
 				'type'        => 'text',
 				'default'     => $default_settings['variable_product_check_variations_event'],
-				'description' => __( 'This is the javascript event triggered on variables products page, when the customer change the product variation. Default value is <strong>check_variations</strong>.<br />More technical informations on <a href="https://docs.getalma.eu/docs/woocommerce-installation-guide" target="_blank">Alma documentation</a>', 'alma-woocommerce-gateway' ),
+				// translators: %s is a technical information.
+				'description' => sprintf( __( 'This is the javascript event triggered on variables products page, when the customer change the product variation. Default value is <strong>%s</strong>.<br />More technical informations on <a href="https://docs.getalma.eu/docs/woocommerce-installation-guide" target="_blank">Alma documentation</a>', 'alma-woocommerce-gateway' ), Alma_WC_Settings::DEFAULT_CHECK_VARIATIONS_EVENT ),
 			),
-			'variable_product_price_query_selector' => array(
+			'variable_product_price_query_selector'   => array(
 				'title'       => __( 'Variable products price query selector', 'alma-woocommerce-gateway' ),
 				'type'        => 'text',
 				'description' => __( 'Query selector used to get the price of product with variations', 'alma-woocommerce-gateway' ),
@@ -378,19 +379,19 @@ class Alma_WC_Admin_Form {
 		}
 
 		$general_settings_fields_end = array(
-			'display_product_eligibility'           => array(
+			'display_product_eligibility' => array(
 				'title'   => __( 'Product eligibility notice', 'alma-woocommerce-gateway' ),
 				'type'    => 'checkbox',
 				'label'   => __( 'Display a message about product eligibility for monthly payments', 'alma-woocommerce-gateway' ),
 				'default' => $default_settings['display_product_eligibility'],
 			),
-			'display_cart_eligibility'              => array(
+			'display_cart_eligibility'    => array(
 				'title'   => __( 'Cart eligibility notice', 'alma-woocommerce-gateway' ),
 				'type'    => 'checkbox',
 				'label'   => __( 'Display a message about cart eligibility for monthly payments', 'alma-woocommerce-gateway' ),
 				'default' => $default_settings['display_cart_eligibility'],
 			),
-			'excluded_products_list'                => array(
+			'excluded_products_list'      => array(
 				'title'       => __( 'Excluded product categories', 'alma-woocommerce-gateway' ),
 				'type'        => 'multiselect',
 				'description' => __( 'Exclude all virtual/downloadable product categories, as you cannot sell them with Alma', 'alma-woocommerce-gateway' ),

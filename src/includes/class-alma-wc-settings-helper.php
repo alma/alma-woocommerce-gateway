@@ -32,15 +32,6 @@ class Alma_WC_Settings_Helper {
 	}
 
 	/**
-	 * Gets the default js event to trigger the change of product variation on product page.
-	 *
-	 * @return string
-	 */
-	public static function default_check_variations_event() {
-		return 'check_variations';
-	}
-
-	/**
 	 * Gets the default title for pnx plus 4 payment method.
 	 *
 	 * @return string
