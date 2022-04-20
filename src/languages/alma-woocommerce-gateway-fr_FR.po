@@ -1,11 +1,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 77e083b1cd468d7c2202d1ff3d20e024\n"
-"POT-Creation-Date: 2022-04-15 13:48+0200\n"
-"PO-Revision-Date: 2022-04-15 14:06+0200\n"
+"POT-Creation-Date: 2022-04-20 16:02+0200\n"
+"PO-Revision-Date: 2022-04-20 14:18\n"
 "Last-Translator: syjust <sy.just@gmail.com>\n"
 "Language-Team: French\n"
-"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -16,14 +15,15 @@ msgstr ""
 "X-Poedit-WPHeader: alma-woocommerce-gateway.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SearchPathExcluded-1: vendor\n"
 "X-Crowdin-Project: 77e083b1cd468d7c2202d1ff3d20e024\n"
 "X-Crowdin-Project-ID: 17\n"
 "X-Crowdin-Language: fr\n"
 "X-Crowdin-File: /languages/alma-woocommerce-gateway.pot\n"
 "X-Crowdin-File-ID: 3021\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.js\n"
-"X-Poedit-SearchPathExcluded-1: vendor\n"
+"Language: fr_FR\n"
 
 #: includes/class-alma-wc-admin-form.php:39
 msgid "→ Start by filling in your API keys"
@@ -33,271 +33,285 @@ msgstr "→ Commencez par renseigner vos clefs d’API"
 msgid "→ API configuration"
 msgstr "→ Configuration de l’API"
 
-#: includes/class-alma-wc-admin-form.php:65
+#: includes/class-alma-wc-admin-form.php:66
 msgid "→ Payment upon trigger configuration"
 msgstr "→ Paiement lors de la configuration du déclencheur"
 
 #. translators: %1$s: Alma contact email.
-#: includes/class-alma-wc-admin-form.php:76
+#: includes/class-alma-wc-admin-form.php:77
 #, php-format
 msgid "If you are interested in this feature, please get closer to your Alma contact or by sending an email to <a href=\"mailto:%1$s\">%1$s</a>"
-msgstr "Si cette fonctionnalité vous intéresse, rapprochez-vous de votre contact Alma ou envoyez un courriel à <a href=\"mailto:%1$s\">%1$s</a>."
+msgstr "Si cette fonctionnalité vous intéresse, rapprochez-vous de votre contact Alma ou envoyez un courriel à <a href=\"mailto:%1$s\">%1$s</a>"
 
-#: includes/class-alma-wc-admin-form.php:87
+#: includes/class-alma-wc-admin-form.php:88
 msgid "This option is available only for Alma payment in 2x, 3x and 4x.<br>When it's turned on, your clients will pay the first installment at the order status change. When your client order on your website, Alma will only ask for a payment authorization. Only status handled by Alma are available in the menu below. Please contact Alma if you need us to add another status."
 msgstr "Cette option est disponible uniquement pour le paiement Alma en 2x, 3x et 4x.<br>Lorsqu'elle est activée, vos clients paieront le premier versement lors du changement de statut de la commande. Lorsque votre client commandera sur votre site, Alma lui demandera uniquement une autorisation de paiement. Seuls les statuts gérés par Alma sont disponibles dans le menu ci-dessous. Veuillez contacter Alma si vous avez besoin que nous ajoutions un autre statut."
 
-#: includes/class-alma-wc-admin-form.php:91
+#: includes/class-alma-wc-admin-form.php:92
 msgid "Activate the payment upon trigger"
 msgstr "Activer le paiement au déclenchement"
 
-#: includes/class-alma-wc-admin-form.php:98
+#: includes/class-alma-wc-admin-form.php:99
 msgid "Trigger typology"
 msgstr "Typologie du déclenchement"
 
-#: includes/class-alma-wc-admin-form.php:99
+#: includes/class-alma-wc-admin-form.php:100
 msgid "Text that will appear in the payments schedule and in the customer's payment authorization email."
 msgstr "Texte qui apparaîtra dans l'échéancier des paiements et dans l'email d'autorisation de paiement du client."
 
-#: includes/class-alma-wc-admin-form.php:105
+#: includes/class-alma-wc-admin-form.php:106
 msgid "Order status that triggers the first payment"
 msgstr "Statut de la commande qui déclenche le premier paiement"
 
 #. translators: %d: number of installments.
-#: includes/class-alma-wc-admin-form.php:159
-#: includes/class-alma-wc-admin-form.php:598
+#: includes/class-alma-wc-admin-form.php:160 includes/class-alma-wc-admin-form.php:624
 #, php-format
 msgid "→ %d-installment payment"
 msgstr "→ Paiement en %d fois"
 
 #. translators: %d: number of installments.
-#: includes/class-alma-wc-admin-form.php:161
+#: includes/class-alma-wc-admin-form.php:162
 #, php-format
 msgid "Enable %d-installment payments with Alma"
 msgstr "Activer le paiement en %d fois"
 
 #. translators: %d: number of deferred days.
-#: includes/class-alma-wc-admin-form.php:168
-#: includes/class-alma-wc-admin-form.php:605
+#: includes/class-alma-wc-admin-form.php:169 includes/class-alma-wc-admin-form.php:631
 #, php-format
 msgid "→ D+%d-deferred payment"
 msgstr "→ Paiement différé à J+%d"
 
 #. translators: %d: number of deferred days.
-#: includes/class-alma-wc-admin-form.php:170
+#: includes/class-alma-wc-admin-form.php:171
 #, php-format
 msgid "Enable D+%d-deferred payments with Alma"
 msgstr "→ Activer les paiements différés à J+%d avec Alma"
 
 #. translators: %d: number of deferred months.
-#: includes/class-alma-wc-admin-form.php:174
-#: includes/class-alma-wc-admin-form.php:609
+#: includes/class-alma-wc-admin-form.php:175 includes/class-alma-wc-admin-form.php:635
 #, php-format
 msgid "→ M+%d-deferred payment"
 msgstr "→ Paiement différé à M+%d"
 
 #. translators: %d: number of deferred months.
-#: includes/class-alma-wc-admin-form.php:176
+#: includes/class-alma-wc-admin-form.php:177
 #, php-format
 msgid "Enable M+%d-deferred payments with Alma"
 msgstr "Activer les paiements différés à M+%d avec Alma"
 
-#: includes/class-alma-wc-admin-form.php:193
-#: includes/class-alma-wc-admin-form.php:225
+#: includes/class-alma-wc-admin-form.php:194 includes/class-alma-wc-admin-form.php:226
 msgid "Enable/Disable"
 msgstr "Activer/Désactiver"
 
-#: includes/class-alma-wc-admin-form.php:199
+#: includes/class-alma-wc-admin-form.php:200
 msgid "Minimum amount"
 msgstr "Montant minimum (€)"
 
-#: includes/class-alma-wc-admin-form.php:206
+#: includes/class-alma-wc-admin-form.php:207
 msgid "Maximum amount"
 msgstr "Montant maximum (€)"
 
-#: includes/class-alma-wc-admin-form.php:227
+#: includes/class-alma-wc-admin-form.php:228
 msgid "Enable monthly payments with Alma"
 msgstr "Activer le paiement en plusieurs fois avec Alma"
 
+#: includes/class-alma-wc-admin-form.php:245
+msgid "→ Technical fields"
+msgstr "→ Champs techniques"
+
+#: includes/class-alma-wc-admin-form.php:247
+msgid "Here are very technical specific fields (in most cases you shouldn't use this). [<a href=\"#\" id=\"alma_link_toggle_technical_section\">click to open or close</a>]"
+msgstr "Voici des champs spécifiques très techniques (dans la plupart des cas, vous ne devriez pas les utiliser). [<a href=\"#\" id=\"alma_link_toggle_technical_section\">cliquez pour ouvrir ou fermer</a>]"
+
+#: includes/class-alma-wc-admin-form.php:250
+msgid "Custom check variations event"
+msgstr "Événement de variations de contrôle personnalisé"
+
+#. translators: %s is a technical information.
+#: includes/class-alma-wc-admin-form.php:254
+#, php-format
+msgid "This is the javascript event triggered on variables products page, when the customer change the product variation. Default value is <strong>%s</strong>.<br />More technical informations on <a href=\"https://docs.getalma.eu/docs/woocommerce-installation-guide\" target=\"_blank\">Alma documentation</a>"
+msgstr "L'événement javascript déclenché sur la page des produits variables, lorsque le client change la variation du produit. La valeur par défaut est <strong>%s</strong>.<br />Plus d'informations techniques sur <a href=\"https://docs.getalma.eu/docs/woocommerce-installation-guide\" target=\"_blank\">la documentation Alma</a>"
+
+#: includes/class-alma-wc-admin-form.php:257
+msgid "Variable products price query selector"
+msgstr "Query selector du prix des produits variables"
+
+#: includes/class-alma-wc-admin-form.php:259
+msgid "Query selector used to get the price of product with variations"
+msgstr "Query selector utilisé pour récupérer le prix des produits possédant des variations"
+
 #. translators: %s Alma security URL
-#: includes/class-alma-wc-admin-form.php:248
+#: includes/class-alma-wc-admin-form.php:281
 #, php-format
 msgid "You can find your API keys on <a href=\"%s\" target=\"_blank\">your Alma dashboard</a>"
 msgstr "Vous pouvez trouver vos clés API sur <a href=\"%s\" target=\"_blank\">votre tableau de bord Alma</a>"
 
-#: includes/class-alma-wc-admin-form.php:251
+#: includes/class-alma-wc-admin-form.php:284
 msgid "Live API key"
 msgstr "API key live"
 
-#: includes/class-alma-wc-admin-form.php:255
+#: includes/class-alma-wc-admin-form.php:288
 msgid "Test API key"
 msgstr "API key de test"
 
-#: includes/class-alma-wc-admin-form.php:259
+#: includes/class-alma-wc-admin-form.php:292
 msgid "API Mode"
 msgstr "Mode de l’API"
 
-#: includes/class-alma-wc-admin-form.php:261
+#: includes/class-alma-wc-admin-form.php:294
 msgid "Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In Test mode, only admins can see Alma on cart/checkout pages."
 msgstr "Utilisez le mode <b>Test</b> jusqu’à ce que vous soyez prêt(e) à accepter des commandes avec Alma<br>En mode Test, seuls les administrateurs voient Alma sur les pages de panier/validation de commande."
 
-#: includes/class-alma-wc-admin-form.php:264
+#: includes/class-alma-wc-admin-form.php:297
 msgid "Test"
 msgstr "Test"
 
-#: includes/class-alma-wc-admin-form.php:265
+#: includes/class-alma-wc-admin-form.php:298
 msgid "Live"
 msgstr "Live"
 
-#: includes/class-alma-wc-admin-form.php:282
+#: includes/class-alma-wc-admin-form.php:315
 msgid "→ Fee plans configuration"
 msgstr "→ Configuration des conditions de paiement"
 
 #. translators: %s: Alma conditions URL
-#: includes/class-alma-wc-admin-form.php:289
+#: includes/class-alma-wc-admin-form.php:322
 #, php-format
 msgid "⚠ There is no fee plan allowed in your <a href=\"%s\" target=\"_blank\">Alma dashboard</a>."
 msgstr "⚠ Il n’y a pas de conditions de paiement autorisées dans votre <a href=\"%s\" target=\"_blank\">tableau de bord Alma</a>."
 
-#: includes/class-alma-wc-admin-form.php:305
+#: includes/class-alma-wc-admin-form.php:338
 msgid "Select a fee plan to update"
 msgstr "Sélectionnez une condition de paiement"
 
 #. translators: %s: Alma conditions URL
-#: includes/class-alma-wc-admin-form.php:308
+#: includes/class-alma-wc-admin-form.php:341
 #, php-format
 msgid "Choose which fee plan you want to modify<br>(only your <a href=\"%s\" target=\"_blank\">Alma dashboard</a> available fee plans are shown here)."
 msgstr "Choisissez la condition de paiement que vous souhaitez modifier<br>(seules les conditions de paiement disponibles sur votre <a href=\"%s\" target=\"_blank\">tableau de bord Alma</a> sont affichées ici)."
 
-#: includes/class-alma-wc-admin-form.php:327
+#: includes/class-alma-wc-admin-form.php:360
 msgid "→ General configuration"
 msgstr "→ Configuration générale"
 
-#: includes/class-alma-wc-admin-form.php:331
+#: includes/class-alma-wc-admin-form.php:364
 msgid "Edit the text displayed when choosing the payment method in your checkout."
 msgstr "Modifiez le texte affiché lors du choix de la méthode de paiement dans votre tunnel d’achat."
 
-#: includes/class-alma-wc-admin-form.php:336
+#: includes/class-alma-wc-admin-form.php:369
 msgid "Payments in 2, 3 and 4 installments:"
 msgstr "Paiements en 2, 3 et 4 fois :"
 
-#: includes/class-alma-wc-admin-form.php:340
+#: includes/class-alma-wc-admin-form.php:373
 msgid "Deferred Payments:"
 msgstr "Paiements différés :"
 
-#: includes/class-alma-wc-admin-form.php:345
+#: includes/class-alma-wc-admin-form.php:378
 msgid "Payments in more than 4 installments:"
 msgstr "Paiements en plus de 4 fois :"
 
-#: includes/class-alma-wc-admin-form.php:350
+#: includes/class-alma-wc-admin-form.php:383
 msgid "Product eligibility notice"
 msgstr "Éligibilité des produits"
 
-#: includes/class-alma-wc-admin-form.php:352
+#: includes/class-alma-wc-admin-form.php:385
 msgid "Display a message about product eligibility for monthly payments"
 msgstr "Afficher un message indiquant l’éligibilité d'un produit au paiement en plusieurs fois"
 
-#: includes/class-alma-wc-admin-form.php:356
-msgid "Variable products price query selector"
-msgstr "Query selector du prix des produits variables"
-
-#: includes/class-alma-wc-admin-form.php:358
-msgid "Query selector used to get the price of product with variations"
-msgstr "Query selector utilisé pour récupérer le prix des produits possédant des variations"
-
-#: includes/class-alma-wc-admin-form.php:363
+#: includes/class-alma-wc-admin-form.php:389
 msgid "Cart eligibility notice"
 msgstr "Éligibilité du panier"
 
-#: includes/class-alma-wc-admin-form.php:365
+#: includes/class-alma-wc-admin-form.php:391
 msgid "Display a message about cart eligibility for monthly payments"
 msgstr "Afficher un message indiquant l’éligibilité du panier au paiement en plusieurs fois"
 
-#: includes/class-alma-wc-admin-form.php:369
+#: includes/class-alma-wc-admin-form.php:395
 msgid "Excluded product categories"
 msgstr "Catégories de produits exclues"
 
-#: includes/class-alma-wc-admin-form.php:371
+#: includes/class-alma-wc-admin-form.php:397
 msgid "Exclude all virtual/downloadable product categories, as you cannot sell them with Alma"
 msgstr "Excluez toutes les catégories de produits virtuels/téléchargeables, qui ne peuvent être vendus avec Alma"
 
-#: includes/class-alma-wc-admin-form.php:381
+#: includes/class-alma-wc-admin-form.php:407
 msgid "Non-eligibility message for excluded products"
 msgstr "Message de non-éligibilité pour les produits exclus"
 
-#: includes/class-alma-wc-admin-form.php:382
+#: includes/class-alma-wc-admin-form.php:408
 msgid "Message displayed below the cart totals when it contains excluded products"
 msgstr "Message affiché en-dessous du total du panier lorsqu’il contient des produits exclus"
 
-#: includes/class-alma-wc-admin-form.php:443
+#: includes/class-alma-wc-admin-form.php:469
 msgid "→ Debug options"
 msgstr "→ Options de déboggage"
 
-#: includes/class-alma-wc-admin-form.php:447
+#: includes/class-alma-wc-admin-form.php:473
 msgid "Debug mode"
 msgstr "Mode debug"
 
 #. translators: %s: Admin logs url.
-#: includes/class-alma-wc-admin-form.php:450
+#: includes/class-alma-wc-admin-form.php:476
 msgid "Activate debug mode"
 msgstr "Activer le mode debug"
 
-#: includes/class-alma-wc-admin-form.php:450
+#: includes/class-alma-wc-admin-form.php:476
 #, php-format
 msgid "(<a href=\"%s\">Go to logs</a>)"
 msgstr "(<a href=\"%s\">Voir les logs</a>)"
 
-#: includes/class-alma-wc-admin-form.php:451
+#: includes/class-alma-wc-admin-form.php:477
 msgid "Enable logging info and errors to help debug any issue with the plugin"
 msgstr "Active la journalisation d’infos et erreur pour aider au déboggage de problèmes avec l’extension"
 
 #. translators: %d: number of installments.
-#: includes/class-alma-wc-admin-form.php:521
+#: includes/class-alma-wc-admin-form.php:547
 #, php-format
 msgid "You can offer %1$d-installment payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>."
 msgstr "Vous pouvez proposer le paiement en %1$d fois pour des montants compris entre <b>%2$d€</b> et <b>%3$d€</b>."
 
 #. translators: %d: number of deferred days.
-#: includes/class-alma-wc-admin-form.php:533
+#: includes/class-alma-wc-admin-form.php:559
 #, php-format
 msgid "You can offer D+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>."
 msgstr "Vous pouvez offrir les paiements différés à J+%1$d pour les montants entre <b>%2$d€</b> et <b>%3$d€</b>."
 
 #. translators: %d: number of deferred months.
-#: includes/class-alma-wc-admin-form.php:542
+#: includes/class-alma-wc-admin-form.php:568
 #, php-format
 msgid "You can offer M+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>."
 msgstr "Vous pouvez offrir les paiements différés à M+%1$d pour les montants entre <b>%2$d€</b> et <b>%3$d€</b>."
 
-#: includes/class-alma-wc-admin-form.php:549
+#: includes/class-alma-wc-admin-form.php:575
 msgid "Fees applied to each transaction for this plan:"
 msgstr "Des frais s'appliquent pour chaque transaction:"
 
-#: includes/class-alma-wc-admin-form.php:550
+#: includes/class-alma-wc-admin-form.php:576
 msgid "You pay:"
 msgstr "Vous payez :"
 
-#: includes/class-alma-wc-admin-form.php:551
+#: includes/class-alma-wc-admin-form.php:577
 msgid "Customer pays:"
 msgstr "Le client paye :"
 
-#: includes/class-alma-wc-admin-form.php:552
+#: includes/class-alma-wc-admin-form.php:578
 msgid "Customer lending rate:"
 msgstr "Taux débiteur client :"
 
-#: includes/class-alma-wc-admin-form.php:654
+#: includes/class-alma-wc-admin-form.php:680
 msgid "Title"
 msgstr "Titre"
 
-#: includes/class-alma-wc-admin-form.php:655
+#: includes/class-alma-wc-admin-form.php:681
 msgid "This controls the payment method name which the user sees during checkout."
 msgstr "Choisissez le nom de la méthode de paiement que l'utilisateur voit pendant la validation de commande."
 
-#: includes/class-alma-wc-admin-form.php:664
+#: includes/class-alma-wc-admin-form.php:690
 msgid "Description"
 msgstr "Description"
 
-#: includes/class-alma-wc-admin-form.php:666
+#: includes/class-alma-wc-admin-form.php:692
 msgid "This controls the payment method description which the user sees during checkout."
 msgstr "Choisissez la description de la méthode de paiement sur la page de validation de commande."
 
@@ -321,79 +335,76 @@ msgstr "Paramètres ID marchand introuvable : échec de l’injection du badge."
 msgid "Alma \"Eligibility Widget\" (cart or product) already rendered on this page - Not displaying Alma"
 msgstr "\"Badge d'éligibilité\" Alma (produit ou panier) déjà affiché sur cette page - Alma ne s'affiche pas"
 
-#: includes/class-alma-wc-payment-gateway.php:47
+#: includes/class-alma-wc-payment-gateway.php:46
 msgid "Payment in instalments and deferred with Alma - 2x 3x 4x, D+15 or D+30"
 msgstr "Paiement en plusieurs fois et différé avec Alma - 2x 3x 4x, J+15 ou J+30"
 
 #. Description of the plugin/theme
-#: includes/class-alma-wc-payment-gateway.php:48
+#: includes/class-alma-wc-payment-gateway.php:47
 msgid "Install Alma and boost your sales! It's simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk."
 msgstr "Boostez vos ventes en installant Alma ! C'est simple et garanti, votre trésorerie est sécurisée. 0 engagement, 0 abonnement, 0 risque."
 
 #. translators: %s: plan_key alt image.
-#: includes/class-alma-wc-payment-gateway.php:221
+#: includes/class-alma-wc-payment-gateway.php:219
 #, php-format
 msgid "%s installments"
 msgstr "Plan de paiement %s"
 
-#: includes/class-alma-wc-payment-gateway.php:250
+#: includes/class-alma-wc-payment-gateway.php:248
 msgid "Choose your payment method"
 msgstr "Choisissez votre mode de paiement"
 
-#: includes/class-alma-wc-payment-gateway.php:326
+#: includes/class-alma-wc-payment-gateway.php:324
 msgid "There was an error processing your payment.<br>Please try again or contact us if the problem persists."
 msgstr "Une erreur est survenue lors du traitement de votre paiement.<br>Réessayez ou contactez-nous si le problème persiste."
 
-#: includes/class-alma-wc-payment-gateway.php:384
+#: includes/class-alma-wc-payment-gateway.php:382
 msgid "There was an error when validating your payment.<br>Please try again or contact us if the problem persists."
 msgstr "Une erreur est survenue lors de la validation de votre paiement.<br>Réessayez ou contactez-nous si le problème persiste."
 
-#: includes/class-alma-wc-payment-gateway.php:506
+#: includes/class-alma-wc-payment-gateway.php:504
 msgid "Included fees:"
 msgstr "Dont frais :"
 
 #. translators: %1$s => today_amount (0), %2$s => total_amount, %3$s => i18n formatted due_date.
-#: includes/class-alma-wc-payment-gateway.php:524
+#: includes/class-alma-wc-payment-gateway.php:522
 #, php-format
 msgid "%1$s today then %2$s on %3$s"
 msgstr "%1$s aujourd’hui puis %2$s le %3$s"
 
-#. translators: %s: 'In' refers to a date or time, like in "in two days" or "in three months".
-#: includes/class-alma-wc-payment-gateway.php:561
-msgid "In"
-msgstr "Dans"
+#. translators: 'In' refers to a number of months, like in 'In one month' or 'In three months'.
+#: includes/class-alma-wc-payment-gateway.php:559
+#, php-format
+msgid "In %s month"
+msgid_plural "In %s months"
+msgstr[0] "Dans %s mois"
+msgstr[1] "Dans %s mois"
 
-#: includes/class-alma-wc-payment-gateway.php:562
-msgid "month"
-msgid_plural "months"
-msgstr[0] "mois"
-msgstr[1] "mois"
-
-#: includes/class-alma-wc-payment-gateway.php:585
+#: includes/class-alma-wc-payment-gateway.php:583
 msgid "Your credit"
 msgstr "Votre crédit"
 
-#: includes/class-alma-wc-payment-gateway.php:594
+#: includes/class-alma-wc-payment-gateway.php:592
 msgid "Your cart:"
 msgstr "Votre panier :"
 
-#: includes/class-alma-wc-payment-gateway.php:604
+#: includes/class-alma-wc-payment-gateway.php:602
 msgid "Credit cost:"
 msgstr "Coût du crédit :"
 
-#: includes/class-alma-wc-payment-gateway.php:618
+#: includes/class-alma-wc-payment-gateway.php:616
 msgid "Annual Interest Rate:"
 msgstr "TAEG fixe :"
 
-#: includes/class-alma-wc-payment-gateway.php:629
+#: includes/class-alma-wc-payment-gateway.php:627
 msgid "Total:"
 msgstr "Total :"
 
-#: includes/class-alma-wc-payment-gateway.php:673
+#: includes/class-alma-wc-payment-gateway.php:671
 msgid "enabled"
 msgstr "activé"
 
-#: includes/class-alma-wc-payment-gateway.php:676
+#: includes/class-alma-wc-payment-gateway.php:674
 msgid "disabled"
 msgstr "désactivé"
 
@@ -487,16 +498,16 @@ msgstr "https://dashboard.getalma.eu/%s"
 msgid "https://dashboard.sandbox.getalma.eu/%s"
 msgstr "https://dashboard.sandbox.getalma.eu/%s"
 
-#: includes/class-alma-wc-product-handler.php:41
+#: includes/class-alma-wc-product-handler.php:40
 msgid "Product not found: product badge injection failed."
 msgstr "Produit introuvable : échec de l’injection du badge produit."
 
-#: includes/class-alma-wc-product-handler.php:57
+#: includes/class-alma-wc-product-handler.php:56
 msgid "Product not in stock: product badge injection failed."
 msgstr "Produit en rupture de stock : échec de l’injection du badge produit."
 
 #. translators: %s: the product price.
-#: includes/class-alma-wc-product-handler.php:67
+#: includes/class-alma-wc-product-handler.php:66
 #, php-format
 msgid "Product price (%s): product badge injection failed."
 msgstr "Prix du produit (%s) : échec de l’injection du badge produit."
@@ -542,3 +553,4 @@ msgstr "Alma"
 #. Author URI of the plugin/theme
 msgid "https://www.getalma.eu"
 msgstr "https://www.getalma.eu"
+
