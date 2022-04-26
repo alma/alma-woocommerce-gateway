@@ -244,14 +244,14 @@ class Alma_WC_Admin_Form {
 			'technical_section'                       => array(
 				'title'       => '<hr>' . __( '→ Technical fields', 'alma-woocommerce-gateway' ),
 				'type'        => 'title',
-				'description' => __( 'Here are very technical specific fields (in most cases you shouldn\'t use this). [<a href="#" id="alma_link_toggle_technical_section">click to open or close</a>]', 'alma-woocommerce-gateway' ),
+				'description' => __( 'Specific fields just in case you need it. [<a href="#" id="alma_link_toggle_technical_section">click to open or close</a>]', 'alma-woocommerce-gateway' ),
 			),
 			'variable_product_check_variations_event' => array(
 				'title'       => __( 'Custom check variations event', 'alma-woocommerce-gateway' ),
 				'type'        => 'text',
 				'default'     => $default_settings['variable_product_check_variations_event'],
 				// translators: %s is a technical information.
-				'description' => sprintf( __( 'This is the javascript event triggered on variables products page, when the customer change the product variation. Default value is <strong>%s</strong>.<br />More technical informations on <a href="https://docs.getalma.eu/docs/woocommerce-installation-guide" target="_blank">Alma documentation</a>', 'alma-woocommerce-gateway' ), Alma_WC_Settings::DEFAULT_CHECK_VARIATIONS_EVENT ),
+				'description' => sprintf( __( 'This is the javascript event triggered to refresh the widget on a variable product page when the customer changes the product variation. Default value is <strong>%s</strong>.<br />More technical informations on <a href="https://docs.getalma.eu/docs/woocommerce-installation-guide" target="_blank">Alma documentation</a>', 'alma-woocommerce-gateway' ), Alma_WC_Settings::DEFAULT_CHECK_VARIATIONS_EVENT ),
 			),
 			'variable_product_price_query_selector'   => array(
 				'title'       => __( 'Variable products price query selector', 'alma-woocommerce-gateway' ),
