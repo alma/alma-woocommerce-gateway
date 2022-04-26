@@ -10,7 +10,7 @@
 files_url='https://cdn.jsdelivr.net/npm/@alma/widgets@2.x/dist/';
 raw_url=${files_url}'raw/';
 
-# the directory_prefix is the relative folder path where assets are called in the plugin via the wp_enqueue_script() function.
+# Relative folder paths where assets are loaded in the plugin via the wp_enqueue_script() function.
 widget_directory_prefix='../src/assets/widget/';
 js_directory_prefix=${widget_directory_prefix}'js/';
 css_directory_prefix=${widget_directory_prefix}'css/';
@@ -28,6 +28,8 @@ done
 
 js_file_name='widgets.umd.js';
 js_file_url=${raw_url}${js_file_name};
+js_map_file_name='widgets.umd.js.map';
+js_map_file_url=${raw_url}${js_map_file_name};
 
 css_file_name='widgets.min.css';
 css_file_url=${raw_url}${css_file_name};
@@ -46,7 +48,11 @@ done;
 wget -dc ${js_file_url};
 mv ${js_file_name} ${js_directory_prefix}
 
-# --3-- retrieve CSS.
+# --3-- retrieve JS map.
+wget -dc ${js_map_file_url};
+mv ${js_map_file_name} ${js_directory_prefix}
+
+# --4-- retrieve CSS.
 wget -dc ${css_file_url};
 mv ${css_file_name} ${css_directory_prefix}
 
