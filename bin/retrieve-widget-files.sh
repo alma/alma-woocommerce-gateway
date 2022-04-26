@@ -14,10 +14,9 @@ raw_url=${files_url}'raw/';
 widget_directory_prefix='../src/assets/widget/';
 js_directory_prefix=${widget_directory_prefix}'js/';
 css_directory_prefix=${widget_directory_prefix}'css/';
-assets_directory_prefix=${css_directory_prefix}'assets/';
-fonts_directory_prefix=${assets_directory_prefix}'fonts/';
+fonts_directory_prefix=${css_directory_prefix}'fonts/';
 
-for directory in $widget_directory_prefix $js_directory_prefix $css_directory_prefix $assets_directory_prefix $fonts_directory_prefix
+for directory in $widget_directory_prefix $js_directory_prefix $css_directory_prefix $fonts_directory_prefix
 do
   if [[ -d "$directory" ]] ; then
     echo "$directory already exists on your filesystem. (but this is not a problem)"
@@ -28,10 +27,11 @@ done
 
 js_file_name='widgets.umd.js';
 js_file_url=${raw_url}${js_file_name};
+
 js_map_file_name='widgets.umd.js.map';
 js_map_file_url=${raw_url}${js_map_file_name};
 
-css_file_name='widgets.min.css';
+css_file_name='widgets.css';
 css_file_url=${raw_url}${css_file_name};
 
 font_files_base_url=${files_url}'assets/fonts/';
