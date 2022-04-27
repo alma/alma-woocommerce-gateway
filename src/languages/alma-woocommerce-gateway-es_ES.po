@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 77e083b1cd468d7c2202d1ff3d20e024\n"
-"POT-Creation-Date: 2022-04-20 16:02+0200\n"
-"PO-Revision-Date: 2022-04-20 14:18\n"
+"POT-Creation-Date: 2022-04-26 14:09+0200\n"
+"PO-Revision-Date: 2022-04-27 15:16\n"
 "Last-Translator: syjust <sy.just@gmail.com>\n"
 "Language-Team: Spanish\n"
 "MIME-Version: 1.0\n"
@@ -35,7 +35,7 @@ msgstr "→ Configuración de la API"
 
 #: includes/class-alma-wc-admin-form.php:66
 msgid "→ Payment upon trigger configuration"
-msgstr "→ Pago en la configuración de la activación"
+msgstr "→ Configuración del pago tras el cumplimiento de un evento"
 
 #. translators: %1$s: Alma contact email.
 #: includes/class-alma-wc-admin-form.php:77
@@ -45,15 +45,15 @@ msgstr "Si estás interesado en esta función, acércate a tu contacto de Alma o
 
 #: includes/class-alma-wc-admin-form.php:88
 msgid "This option is available only for Alma payment in 2x, 3x and 4x.<br>When it's turned on, your clients will pay the first installment at the order status change. When your client order on your website, Alma will only ask for a payment authorization. Only status handled by Alma are available in the menu below. Please contact Alma if you need us to add another status."
-msgstr "Esta opción está disponible sólo para el pago de Alma en 2x, 3x y 4x.<br>Cuando está activado, sus clientes pagarán la primera cuota en el cambio de estado del pedido. Cuando su cliente pide en su sitio web, Alma sólo pedirá una autorización de pago. Sólo el estado manejado por Alma está disponible en el menú de abajo. Por favor, póngase en contacto con Alma si necesita que añadamos otro estado."
+msgstr "Esta opción está disponible sólo para el pago de Alma en 2x, 3x y 4x. <br>Cuando está activado, tus clientes pagarán la primera cuota en el cambio de estado del pedido. Cuando tu cliente ordene en tu sitio web, Alma sólo pedirá una autorización de pago. Sólo el estado manejado por Alma está disponible en el menú de abajo. Por favor, ponte en contacto con Alma si necesitas que añadamos otro estado."
 
 #: includes/class-alma-wc-admin-form.php:92
 msgid "Activate the payment upon trigger"
-msgstr "Activar el pago al activarse"
+msgstr "Activar el pago al cumplirse el evento"
 
 #: includes/class-alma-wc-admin-form.php:99
 msgid "Trigger typology"
-msgstr "Tipología de disparos"
+msgstr "Tipos de eventos"
 
 #: includes/class-alma-wc-admin-form.php:100
 msgid "Text that will appear in the payments schedule and in the customer's payment authorization email."
@@ -120,8 +120,8 @@ msgid "→ Technical fields"
 msgstr "→ Campos técnicos"
 
 #: includes/class-alma-wc-admin-form.php:247
-msgid "Here are very technical specific fields (in most cases you shouldn't use this). [<a href=\"#\" id=\"alma_link_toggle_technical_section\">click to open or close</a>]"
-msgstr "Aquí hay campos específicos muy técnicos (en la mayoría de los casos no deberías usar esto). [<a href=\"#\" id=\"alma_link_toggle_technical_section\">haga clic para abrir o cerrar</a>]"
+msgid "Specific fields just in case you need it. [<a href=\"#\" id=\"alma_link_toggle_technical_section\">click to open or close</a>]"
+msgstr "Campos específicos por si lo necesitas. [<a href=\"#\" id=\"alma_link_toggle_technical_section\">haga clic para abrir o cerrar</a>]"
 
 #: includes/class-alma-wc-admin-form.php:250
 msgid "Custom check variations event"
@@ -130,8 +130,8 @@ msgstr "Evento de variaciones de cheques personalizados"
 #. translators: %s is a technical information.
 #: includes/class-alma-wc-admin-form.php:254
 #, php-format
-msgid "This is the javascript event triggered on variables products page, when the customer change the product variation. Default value is <strong>%s</strong>.<br />More technical informations on <a href=\"https://docs.getalma.eu/docs/woocommerce-installation-guide\" target=\"_blank\">Alma documentation</a>"
-msgstr "Este es el evento javascript que se activa en la página de productos variables, cuando el cliente cambia la variación del producto. El valor por defecto es <strong>%s</strong>.<br />Más información técnica en <a href=\"https://docs.getalma.eu/docs/woocommerce-installation-guide\" target=\"_blank\">Documentación de Alma</a>"
+msgid "This is the javascript event triggered to refresh the widget on a variable product page when the customer changes the product variation. Default value is <strong>%s</strong>.<br />More technical informations on <a href=\"https://docs.getalma.eu/docs/woocommerce-installation-guide\" target=\"_blank\">Alma documentation</a>"
+msgstr "Este es el evento javascript disparado para actualizar el widget en una página de producto variable cuando el cliente cambia la variación del producto. El valor por defecto es <strong>%s</strong>.<br />Más información técnica en <a href=\"https://docs.getalma.eu/docs/woocommerce-installation-guide\" target=\"_blank\">Documentación de Alma</a>"
 
 #: includes/class-alma-wc-admin-form.php:257
 msgid "Variable products price query selector"

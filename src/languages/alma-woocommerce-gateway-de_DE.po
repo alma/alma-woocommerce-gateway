@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 77e083b1cd468d7c2202d1ff3d20e024\n"
-"POT-Creation-Date: 2022-04-20 16:02+0200\n"
-"PO-Revision-Date: 2022-04-20 14:18\n"
+"POT-Creation-Date: 2022-04-26 14:09+0200\n"
+"PO-Revision-Date: 2022-04-27 15:16\n"
 "Last-Translator: syjust <sy.just@gmail.com>\n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
@@ -45,7 +45,7 @@ msgstr "Wenn Sie an dieser Funktion interessiert sind, wenden Sie sich bitte an 
 
 #: includes/class-alma-wc-admin-form.php:88
 msgid "This option is available only for Alma payment in 2x, 3x and 4x.<br>When it's turned on, your clients will pay the first installment at the order status change. When your client order on your website, Alma will only ask for a payment authorization. Only status handled by Alma are available in the menu below. Please contact Alma if you need us to add another status."
-msgstr "Diese Option ist nur für die Alma-Zahlungsarten 2x, 3x und 4x verfügbar.<br>Wenn diese Option aktiviert ist, zahlen Ihre Kunden die erste Rate bei der Änderung des Bestellstatus. Wenn Ihr Kunde auf Ihrer Website bestellt, fragt Alma nur nach einer Zahlungsautorisierung. Nur die von Alma bearbeiteten Status sind im untenstehenden Menü verfügbar. Bitte kontaktieren Sie Alma, wenn Sie einen anderen Status hinzufügen möchten."
+msgstr "Diese Option ist nur für die Alma-Zahlungsarten 2x, 3x und 4x verfügbar. <br>Wenn diese Option aktiviert ist, zahlen Ihre Kunden die erste Rate bei der Änderung des Bestellstatus. Wenn Ihr Kunde auf Ihrer Website bestellt, fragt Alma nur nach einer Zahlungsautorisierung. Nur die von Alma bearbeiteten Status sind im untenstehenden Menü verfügbar. Bitte kontaktieren Sie Alma, wenn Sie einen anderen Status hinzufügen möchten."
 
 #: includes/class-alma-wc-admin-form.php:92
 msgid "Activate the payment upon trigger"
@@ -120,8 +120,8 @@ msgid "→ Technical fields"
 msgstr "→ Technische Bereiche"
 
 #: includes/class-alma-wc-admin-form.php:247
-msgid "Here are very technical specific fields (in most cases you shouldn't use this). [<a href=\"#\" id=\"alma_link_toggle_technical_section\">click to open or close</a>]"
-msgstr "Hier sind sehr technische spezifische Felder (in den meisten Fällen sollten Sie diese nicht verwenden). [<a href=\"#\" id=\"alma_link_toggle_technical_section\">zum Öffnen oder Schließen anklicken</a>]"
+msgid "Specific fields just in case you need it. [<a href=\"#\" id=\"alma_link_toggle_technical_section\">click to open or close</a>]"
+msgstr "Spezifische Felder, nur für den Fall, dass Sie sie brauchen. [<a href=\"#\" id=\"alma_link_toggle_technical_section\">zum Öffnen oder Schließen anklicken</a>]"
 
 #: includes/class-alma-wc-admin-form.php:250
 msgid "Custom check variations event"
@@ -130,8 +130,8 @@ msgstr "Ereignis für benutzerdefinierte Prüfvarianten"
 #. translators: %s is a technical information.
 #: includes/class-alma-wc-admin-form.php:254
 #, php-format
-msgid "This is the javascript event triggered on variables products page, when the customer change the product variation. Default value is <strong>%s</strong>.<br />More technical informations on <a href=\"https://docs.getalma.eu/docs/woocommerce-installation-guide\" target=\"_blank\">Alma documentation</a>"
-msgstr "Dies ist das Javascript-Ereignis auf Variablen Produkte Seite ausgelöst, wenn der Kunde die Produktvariante ändern. Standardwert ist <strong>%s</strong>.<br />Weitere technische Informationen auf <a href=\"https://docs.getalma.eu/docs/woocommerce-installation-guide\" target=\"_blank\">Alma Dokumentation</a>"
+msgid "This is the javascript event triggered to refresh the widget on a variable product page when the customer changes the product variation. Default value is <strong>%s</strong>.<br />More technical informations on <a href=\"https://docs.getalma.eu/docs/woocommerce-installation-guide\" target=\"_blank\">Alma documentation</a>"
+msgstr "Dies ist das Javascript-Ereignis, das ausgelöst wird, um das Widget auf einer variablen Produktseite zu aktualisieren, wenn der Kunde die Produktvariation ändert. Standardwert ist <strong>%s</strong>.<br />Weitere technische Informationen auf <a href=\"https://docs.getalma.eu/docs/woocommerce-installation-guide\" target=\"_blank\">Alma Dokumentation</a>"
 
 #: includes/class-alma-wc-admin-form.php:257
 msgid "Variable products price query selector"

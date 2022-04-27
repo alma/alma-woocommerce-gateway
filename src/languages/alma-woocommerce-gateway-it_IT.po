@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 77e083b1cd468d7c2202d1ff3d20e024\n"
-"POT-Creation-Date: 2022-04-20 16:02+0200\n"
-"PO-Revision-Date: 2022-04-20 14:18\n"
+"POT-Creation-Date: 2022-04-26 14:09+0200\n"
+"PO-Revision-Date: 2022-04-27 15:16\n"
 "Last-Translator: syjust <sy.just@gmail.com>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
@@ -120,8 +120,8 @@ msgid "→ Technical fields"
 msgstr "→ Campi tecnici"
 
 #: includes/class-alma-wc-admin-form.php:247
-msgid "Here are very technical specific fields (in most cases you shouldn't use this). [<a href=\"#\" id=\"alma_link_toggle_technical_section\">click to open or close</a>]"
-msgstr "Qui ci sono campi molto tecnici specifici (nella maggior parte dei casi non dovresti usarli). [<a href=\"#\" id=\"alma_link_toggle_technical_section\">clicca per aprire o chiudere</a>]"
+msgid "Specific fields just in case you need it. [<a href=\"#\" id=\"alma_link_toggle_technical_section\">click to open or close</a>]"
+msgstr "Campi specifici nel caso in cui ne abbiate bisogno. [<a href=\"#\" id=\"alma_link_toggle_technical_section\">clicca per aprire o chiudere</a>]"
 
 #: includes/class-alma-wc-admin-form.php:250
 msgid "Custom check variations event"
@@ -130,8 +130,8 @@ msgstr "Evento variazioni di controllo personalizzato"
 #. translators: %s is a technical information.
 #: includes/class-alma-wc-admin-form.php:254
 #, php-format
-msgid "This is the javascript event triggered on variables products page, when the customer change the product variation. Default value is <strong>%s</strong>.<br />More technical informations on <a href=\"https://docs.getalma.eu/docs/woocommerce-installation-guide\" target=\"_blank\">Alma documentation</a>"
-msgstr "Questo è l'evento javascript attivato sulla pagina dei prodotti variabili, quando il cliente cambia la variazione del prodotto. Il valore predefinito è <strong>%s</strong>.<br />Altre informazioni tecniche su <a href=\"https://docs.getalma.eu/docs/woocommerce-installation-guide\" target=\"_blank\">documentazione Alma</a>"
+msgid "This is the javascript event triggered to refresh the widget on a variable product page when the customer changes the product variation. Default value is <strong>%s</strong>.<br />More technical informations on <a href=\"https://docs.getalma.eu/docs/woocommerce-installation-guide\" target=\"_blank\">Alma documentation</a>"
+msgstr "Questo è l'evento javascript attivato per aggiornare il widget su una pagina di prodotto variabile quando il cliente cambia la variazione del prodotto. Il valore predefinito è <strong>%s</strong>.<br />Altre informazioni tecniche su <a href=\"https://docs.getalma.eu/docs/woocommerce-installation-guide\" target=\"_blank\">documentazione Alma</a>"
 
 #: includes/class-alma-wc-admin-form.php:257
 msgid "Variable products price query selector"
