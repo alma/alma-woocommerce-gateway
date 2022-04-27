@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Alma - 2x 3x 4x, D+15 or D+30 for WooCommerce - Payment in instalments and deferred\n"
-"POT-Creation-Date: 2022-04-26 14:09+0200\n"
+"POT-Creation-Date: 2022-04-27 15:48+0200\n"
 "PO-Revision-Date: 2021-06-22 13:25+0200\n"
 "Last-Translator: syjust <sy.just@gmail.com>\n"
 "Language-Team: Alma\n"
@@ -128,13 +128,12 @@ msgstr ""
 msgid "Custom check variations event"
 msgstr ""
 
-#. translators: %s is a technical information.
+#. translators: %1$s is technical information, %2$s is FAQ doc URL.
 #: includes/class-alma-wc-admin-form.php:254
 #, php-format
 msgid ""
-"This is the javascript event triggered to refresh the widget on a variable product page when the customer changes the product "
-"variation. Default value is <strong>%s</strong>.<br />More technical informations on <a href=\"https://docs.getalma.eu/docs/"
-"woocommerce-installation-guide\" target=\"_blank\">Alma documentation</a>"
+"This is the javascript event triggered on variables products page, when the customer change the product variation. Default value is "
+"<strong>%1$s</strong>.<br />More technical informations on <a href=\"%2$s\" target=\"_blank\">Alma documentation</a>"
 msgstr ""
 
 #: includes/class-alma-wc-admin-form.php:257
