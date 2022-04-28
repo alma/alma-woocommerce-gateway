@@ -7,53 +7,32 @@
 # -- the CSS file.
 # -- the fonts.
 
-files_url='https://cdn.jsdelivr.net/npm/@alma/widgets@2.x/dist/';
-raw_url=${files_url}'raw/';
+DIST_URL="https://cdn.jsdelivr.net/npm/@alma/widgets@2.x/dist"
+RAW_URL="${DIST_URL}/raw"
+ROOT_DIR="`dirname $0`/.."
+WIDGET_ASSETS_DIR="${ROOT_DIR}/src/assets/widget"
 
-# Relative folder paths where assets are loaded in the plugin via the wp_enqueue_script() function.
-widget_directory_prefix='../src/assets/widget/';
-js_directory_prefix=${widget_directory_prefix}'js/';
-css_directory_prefix=${widget_directory_prefix}'css/';
-fonts_directory_prefix=${css_directory_prefix}'fonts/';
+mkdir -p ${WIDGET_ASSETS_DIR}/{css/fonts,js}
 
-for directory in $widget_directory_prefix $js_directory_prefix $css_directory_prefix $fonts_directory_prefix
-do
-  if [[ -d "$directory" ]] ; then
-    echo "$directory already exists on your filesystem. (but this is not a problem)"
-  else
-    mkdir $directory;
-  fi
+RAW_FILES="
+css/widgets.css
+js/widgets.umd.js
+js/widgets.umd.js.map
+"
+FONT_FILES="
+css/fonts/Eina04-Bold.ttf
+css/fonts/Eina04-Bold.woff
+css/fonts/PublicSans-VariableFont_wght.ttf
+"
+
+for raw_file in ${RAW_FILES} ; do
+    echo loading ${raw_file}
+    file_name="`basename ${raw_file}`"
+    curl ${RAW_URL}/${file_name} > ${WIDGET_ASSETS_DIR}/${raw_file} 2>/dev/null
+done
+for font_file in $FONT_FILES ; do
+    echo loading ${font_file}
+    curl ${DIST_URL}/${font_file} > ${WIDGET_ASSETS_DIR}/${font_file} 2>/dev/null
 done
 
-js_file_name='widgets.umd.js';
-js_file_url=${raw_url}${js_file_name};
-
-js_map_file_name='widgets.umd.js.map';
-js_map_file_url=${raw_url}${js_map_file_name};
-
-css_file_name='widgets.css';
-css_file_url=${raw_url}${css_file_name};
-
-font_files_base_url=${files_url}'assets/fonts/';
-
-# --1-- retrieve fonts.
-declare -a font_files_array
-font_files_array=(Eina04-Bold.ttf Eina04-Bold.woff PublicSans-VariableFont_wght.ttf);
-for font_file in "${font_files_array[@]}"; do
-  wget -dc ${font_files_base_url}${font_file};
-  mv "${font_file}" ${fonts_directory_prefix}
-done;
-
-# --2-- retrieve JS.
-wget -dc ${js_file_url};
-mv ${js_file_name} ${js_directory_prefix}
-
-# --3-- retrieve JS map.
-wget -dc ${js_map_file_url};
-mv ${js_map_file_name} ${js_directory_prefix}
-
-# --4-- retrieve CSS.
-wget -dc ${css_file_url};
-mv ${css_file_name} ${css_directory_prefix}
-
-exit;
+exit
