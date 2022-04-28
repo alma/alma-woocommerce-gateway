@@ -14,6 +14,9 @@
 	<!-- Exclude tests. -->
 	<exclude-pattern>/tests/*</exclude-pattern>
 
+    <!-- Exclude widget -->
+	<exclude-pattern>/assets/widget/*</exclude-pattern>
+
 	<!-- Exclude the Composer Vendor directory. -->
 	<exclude-pattern>/vendor/*</exclude-pattern>
 
