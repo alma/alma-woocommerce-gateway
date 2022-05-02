@@ -88,12 +88,9 @@ To build extension for production run `./bin/build.sh`
 
 * refactor: change plugin description (user-friendly name)
 * refactor: change plugin slug
-
-= 2.6.0 =
-=========
-
 * feat: add nonce to secure checkout form
 * fix: upd payment fields validation notice messages
+* feat: source widget scripts in project
 
 = 2.5.1 =
 =========

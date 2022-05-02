@@ -6,12 +6,9 @@ v3.0.0
 
 * refactor: change plugin description (user-friendly name)
 * refactor: change plugin slug
-
-v2.6.0
-------
-
 * feat: add nonce to secure checkout form
 * fix: upd payment fields validation notice messages
+* feat: source widget scripts in project
 
 v2.5.1
 ------
