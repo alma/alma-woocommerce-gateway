@@ -56,11 +56,9 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 			$this->logger->info( __( 'Product not in stock: product badge injection failed.', 'alma-woocommerce-gateway' ) );
 			return;
 		}
-		if ( version_compare( wc()->version, '3.0', '>=' ) ) {
-			$price = wc_get_price_including_tax( $product );
-		} else {
-			$price = $product->get_price_including_tax();
-		}
+
+		$price = $this->get_price_to_inject_in_widget( $product );
+
 		if ( ! $price ) {
 			// translators: %s: the product price.
 			$this->logger->info( sprintf( __( 'Product price (%s): product badge injection failed.', 'alma-woocommerce-gateway' ), $price ) );
@@ -76,6 +74,9 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 			$amount_query_selector = alma_wc_plugin()->settings->variable_product_price_query_selector;
 		}
 
+		$test_price = alma_wc_price_to_cents( $price );
+		error_log( 'inject_payment_plan(), price = ' . $test_price );
+
 		$this->inject_payment_plan_widget(
 			$has_excluded_products,
 			alma_wc_price_to_cents( $price ),
@@ -83,4 +84,45 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 			$amount_query_selector
 		);
 	}
+
+	/**
+	 * Returns the product price to send to Alma's API to display the widget.
+	 *
+	 * @param WC_Product $product A WC product.
+	 * @return integer.
+	 */
+	private function get_price_to_inject_in_widget( $product ) {
+
+		if ( version_compare( wc()->version, '3.0', '>=' ) ) {
+
+			if ( $product->is_type( 'simple' ) ) {
+				$price = $product->get_price();
+				if ( $product->is_on_sale() ) {
+					$price = $product->get_sale_price();
+				}
+			} elseif ( $product->is_type( 'variable' ) ) {
+				// https://woocommerce.github.io/code-reference/classes/WC-Product-Variable.html#method_get_variation_regular_price.
+				$price = $product->get_variation_regular_price( 'min', true );
+				if ( $product->is_on_sale() ) {
+					$price = $product->get_variation_sale_price( 'min', true );
+				}
+
+				/*
+				 Error_log( '$product->get_sale_price() = ' . $product->get_sale_price() ) ;
+				 $price = wc_get_price_including_tax( $product );
+				 */
+			}
+		} else {
+			if ( $product->is_type( 'simple' ) ) {
+				$price = $product->get_price_including_tax();
+			} elseif ( $product->is_type( 'variable' ) ) {
+				$price = $product->get_variation_regular_price( 'min', true );
+				if ( $product->is_on_sale() ) {
+					$price = $product->get_variation_sale_price( 'min', true );
+				}
+			}
+		}
+		return $price;
+	}
+
 }
