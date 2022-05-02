@@ -89,6 +89,7 @@ To build extension for production run `./bin/build.sh`
 * feat: add BO dynamic check variation
 * feat: add BO technical fields section
 * feat: add payment upon shipping
+* fix: names inversion between shipping & billing addresses
 
 = 2.5.2 =
 =========

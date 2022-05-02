@@ -7,6 +7,7 @@ v2.6.0
 * feat: add BO dynamic check variation
 * feat: add BO technical fields section
 * feat: add payment upon shipping
+* fix: names inversion between shipping & billing addresses
 
 v2.5.2
 ------
