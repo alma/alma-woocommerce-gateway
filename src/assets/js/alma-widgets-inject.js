@@ -19,13 +19,17 @@ jQuery( document ).ready(
 		}
 
 		function getAmountElement() {
-			var amountQuerySelector = settings.amountQuerySelector;
+
+			var amountQuerySelector = settings.amountQuerySelector + ':last-of-type';
 
 			if ( amountQuerySelector ) {
+				console.log ('amountQuerySelector');
+				console.log (amountQuerySelector);
 				return document.querySelector( amountQuerySelector );
 			}
+			console.log ('return NULL');
 
-			return null
+			return null;
 		}
 
 		window.AlmaInitWidget = function () {
