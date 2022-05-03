@@ -93,35 +93,19 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 	 */
 	private function get_price_to_inject_in_widget( $product ) {
 
-		if ( version_compare( wc()->version, '3.0', '>=' ) ) {
-
-			if ( $product->is_type( 'simple' ) ) {
-				$price = $product->get_price();
-				if ( $product->is_on_sale() ) {
-					$price = $product->get_sale_price();
-				}
-			} elseif ( $product->is_type( 'variable' ) ) {
-				// https://woocommerce.github.io/code-reference/classes/WC-Product-Variable.html#method_get_variation_regular_price.
-				$price = $product->get_variation_regular_price( 'min', true );
-				if ( $product->is_on_sale() ) {
-					$price = $product->get_variation_sale_price( 'min', true );
-				}
-
-				/*
-				 Error_log( '$product->get_sale_price() = ' . $product->get_sale_price() ) ;
-				 $price = wc_get_price_including_tax( $product );
-				 */
-			}
-		} else {
-			if ( $product->is_type( 'simple' ) ) {
+		if ( $product->is_type( 'simple' ) ) {
+			if ( version_compare( wc()->version, '3.0', '>=' ) ) {
+				$price = wc_get_price_including_tax( $product );
+			} else {
 				$price = $product->get_price_including_tax();
-			} elseif ( $product->is_type( 'variable' ) ) {
-				$price = $product->get_variation_regular_price( 'min', true );
-				if ( $product->is_on_sale() ) {
-					$price = $product->get_variation_sale_price( 'min', true );
-				}
+			}
+		} elseif ( $product->is_type( 'variable' ) ) {
+			$price = $product->get_variation_regular_price( 'min', true );
+			if ( $product->is_on_sale() ) {
+				$price = $product->get_variation_sale_price( 'min', true );
 			}
 		}
+
 		return $price;
 	}
 
