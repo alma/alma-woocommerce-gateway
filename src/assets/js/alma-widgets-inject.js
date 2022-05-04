@@ -25,7 +25,8 @@ jQuery( document ).ready(
 				if ( amountsQueryItem.length === 0 ) {
 					return null;
 				}
-				return amountsQueryItem[amountsQueryItem.length- 1];
+				// Usefull for variable products with sales price.
+				return amountsQueryItem[amountsQueryItem.length - 1];
 			}
 			return null;
 		}
