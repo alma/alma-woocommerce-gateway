@@ -19,16 +19,14 @@ jQuery( document ).ready(
 		}
 
 		function getAmountElement() {
-
-			var amountQuerySelector = settings.amountQuerySelector + ':last-of-type';
-
+			var amountQuerySelector = settings.amountQuerySelector;
 			if ( amountQuerySelector ) {
-				console.log ('amountQuerySelector');
-				console.log (amountQuerySelector);
-				return document.querySelector( amountQuerySelector );
+				var amountsQueryItem = document.querySelectorAll( amountQuerySelector );
+				if ( amountsQueryItem.length === 0 ) {
+					return null;
+				}
+				return amountsQueryItem[amountsQueryItem.length- 1];
 			}
-			console.log ('return NULL');
-
 			return null;
 		}
 
