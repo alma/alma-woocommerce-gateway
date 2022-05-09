@@ -19,9 +19,14 @@ jQuery( document ).ready(
 		}
 
 		function getAmountElement() {
-			var amountQuerySelector = settings.amountQuerySelector;
+			var amountQuerySelector          = settings.amountQuerySelector;
+			var amountSalePriceQuerySelector = settings.amountSalePriceQuerySelector;
+			if ( jQuery( amountSalePriceQuerySelector ).length !== 0 ) {
+				amountQuerySelector = amountSalePriceQuerySelector;
+			}
+
 			if ( amountQuerySelector ) {
-				var amountsQueryItem = document.querySelectorAll( amountQuerySelector );
+				var amountsQueryItem = jQuery( amountQuerySelector );
 				if ( amountsQueryItem.length === 0 ) {
 					return null;
 				}

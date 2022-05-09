@@ -64,21 +64,24 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 			$this->logger->info( sprintf( __( 'Product price (%s): product badge injection failed.', 'alma-woocommerce-gateway' ), $price ) );
 			return;
 		}
-		$amount_query_selector = null;
-		$jquery_update_event   = null;
+		$amount_query_selector            = null;
+		$amount_sale_price_query_selector = null;
+		$jquery_update_event              = null;
 
 		$is_variable_product = $product->get_type() === 'variable';
 
 		if ( $is_variable_product ) {
-			$jquery_update_event   = alma_wc_plugin()->settings->variable_product_check_variations_event;
-			$amount_query_selector = alma_wc_plugin()->settings->variable_product_price_query_selector;
+			$jquery_update_event              = alma_wc_plugin()->settings->variable_product_check_variations_event;
+			$amount_query_selector            = alma_wc_plugin()->settings->variable_product_price_query_selector;
+			$amount_sale_price_query_selector = alma_wc_plugin()->settings->variable_product_sale_price_query_selector;
 		}
 
 		$this->inject_payment_plan_widget(
 			$has_excluded_products,
 			alma_wc_price_to_cents( $price ),
 			$jquery_update_event,
-			$amount_query_selector
+			$amount_query_selector,
+			$amount_sale_price_query_selector
 		);
 	}
 

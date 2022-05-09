@@ -241,12 +241,12 @@ class Alma_WC_Admin_Form {
 	private function init_technical_fields( $default_settings ) {
 
 		return array(
-			'technical_section'                       => array(
+			'technical_section'                          => array(
 				'title'       => '<hr>' . __( '→ Technical fields', 'alma-woocommerce-gateway' ),
 				'type'        => 'title',
 				'description' => __( 'Specific fields just in case you need it. [<a href="#" id="alma_link_toggle_technical_section">click to open or close</a>]', 'alma-woocommerce-gateway' ),
 			),
-			'variable_product_check_variations_event' => array(
+			'variable_product_check_variations_event'    => array(
 				'title'       => __( 'Custom check variations event', 'alma-woocommerce-gateway' ),
 				'type'        => 'text',
 				'description' => sprintf(
@@ -257,7 +257,7 @@ class Alma_WC_Admin_Form {
 				),
 				'default'     => $default_settings['variable_product_check_variations_event'],
 			),
-			'variable_product_price_query_selector'   => array(
+			'variable_product_price_query_selector'      => array(
 				'title'       => __( 'Variable products price query selector', 'alma-woocommerce-gateway' ),
 				'type'        => 'text',
 				'description' => sprintf(
@@ -267,7 +267,7 @@ class Alma_WC_Admin_Form {
 				),
 				'default'     => $default_settings['variable_product_price_query_selector'],
 			),
-			'variable_product_sale_price_query_selector'   => array(
+			'variable_product_sale_price_query_selector' => array(
 				'title'       => __( 'Variable products sale price query selector', 'alma-woocommerce-gateway' ),
 				'type'        => 'text',
 				'description' => sprintf(
