@@ -91,6 +91,7 @@ class Alma_WC_Generic_Handler {
 	 * @param int         $amount Amount.
 	 * @param string|null $jquery_update_event Jquery update event.
 	 * @param string|null $amount_query_selector Amount query selector.
+	 * @param string|null $amount_sale_price_query_selector Amount query selector for products with sale variation price.
 	 *
 	 * @return void
 	 */
