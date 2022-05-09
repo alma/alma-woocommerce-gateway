@@ -21,18 +21,13 @@ jQuery( document ).ready(
 		function getAmountElement() {
 			var amountQuerySelector          = settings.amountQuerySelector;
 			var amountSalePriceQuerySelector = settings.amountSalePriceQuerySelector;
-			if ( jQuery( amountSalePriceQuerySelector ).length !== 0 ) {
+			if ( document.querySelector( amountSalePriceQuerySelector ) ) {
 				amountQuerySelector = amountSalePriceQuerySelector;
 			}
-
 			if ( amountQuerySelector ) {
-				var amountsQueryItem = jQuery( amountQuerySelector );
-				if ( amountsQueryItem.length === 0 ) {
-					return null;
-				}
-				// Usefull for variable products with sales price.
-				return amountsQueryItem[amountsQueryItem.length - 1];
+				return document.querySelector( amountQuerySelector );
 			}
+
 			return null;
 		}
 
