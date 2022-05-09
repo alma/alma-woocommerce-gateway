@@ -262,10 +262,20 @@ class Alma_WC_Admin_Form {
 				'type'        => 'text',
 				'description' => sprintf(
 					// translators: %s is technical information.
-					__( 'Query selector used to get the price of product with variations. Default value is <strong>%ss</strong>.', 'alma-woocommerce-gateway' ),
+					__( 'Query selector used to get the price of product with variations. Default value is <strong>%s</strong>.', 'alma-woocommerce-gateway' ),
 					$default_settings['variable_product_price_query_selector']
 				),
 				'default'     => $default_settings['variable_product_price_query_selector'],
+			),
+			'variable_product_sale_price_query_selector'   => array(
+				'title'       => __( 'Variable products sale price query selector', 'alma-woocommerce-gateway' ),
+				'type'        => 'text',
+				'description' => sprintf(
+					// translators: %s is technical information.
+					__( 'Query selector used to get the price of product with <strong>sales variations</strong>. Default value is <strong>%s</strong>.', 'alma-woocommerce-gateway' ),
+					$default_settings['variable_product_sale_price_query_selector']
+				),
+				'default'     => $default_settings['title_payment_method_pnx'],
 			),
 		);
 	}
