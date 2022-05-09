@@ -90,13 +90,13 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 	 */
 	private function get_price_to_inject_in_widget( $product ) {
 
-		if ( $product->is_type( 'simple' ) ) {
-			if ( version_compare( wc()->version, '3.0', '>=' ) ) {
-				$price = wc_get_price_including_tax( $product );
-			} else {
-				$price = $product->get_price_including_tax();
-			}
-		} elseif ( $product->is_type( 'variable' ) ) {
+		if ( version_compare( wc()->version, '3.0', '>=' ) ) {
+			$price = wc_get_price_including_tax( $product );
+		} else {
+			$price = $product->get_price_including_tax();
+		}
+
+		if ( $product->is_type( 'variable' ) ) {
 			$price = $product->get_variation_regular_price( 'min', true );
 			if ( $product->is_on_sale() ) {
 				$price = $product->get_variation_sale_price( 'min', true );
