@@ -99,7 +99,7 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 			$price = $product->get_price_including_tax();
 		}
 
-		if ( $product->is_type( 'variable' ) ) {
+		if ( $product->is_type( 'variable' ) && $product instanceof WC_Product_Variable ) {
 			$price = $product->get_variation_regular_price( 'min', true );
 			if ( $product->is_on_sale() ) {
 				$price = $product->get_variation_sale_price( 'min', true );
