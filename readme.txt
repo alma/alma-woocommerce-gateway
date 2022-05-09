@@ -5,7 +5,7 @@ Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo c
 Requires at least: 4.4
 Tested up to: 5.9.3
 Requires PHP: 5.6
-Stable tag: 2.6.0
+Stable tag: 3.0.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -82,6 +82,14 @@ To edit the translations, use [Poedit](https://poedit.net/)
 To build extension for production run `./bin/build.sh`
 
 == Changelog ==
+
+= 3.0.0 =
+=========
+
+* feat: add nonce to secure checkout form
+* feat: add script to retrieve widget files
+* fix: data sanitizing
+* fix: upd payment fields validation notice messages
 
 = 2.6.0 =
 =========

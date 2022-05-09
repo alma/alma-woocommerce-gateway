@@ -1,6 +1,14 @@
 Changelog
 =========
 
+v3.0.0
+------
+
+* feat: add nonce to secure checkout form
+* feat: add script to retrieve widget files
+* fix: data sanitizing
+* fix: upd payment fields validation notice messages
+
 v2.6.0
 ------
 
