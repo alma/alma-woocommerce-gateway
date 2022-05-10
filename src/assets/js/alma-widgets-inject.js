@@ -62,7 +62,7 @@ jQuery( document ).ready(
 						child = child.nextSibling;
 					}
 				} else {
-					amount = 0
+					amount = parseInt( settings.amount );
 				}
 			}
 
