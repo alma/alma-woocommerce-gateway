@@ -186,6 +186,7 @@ fi
 if ( ! wp_has_products ) ; then
     echo >&2 "Installing sample products ..."
     wp_cli import ./wp-content/plugins/woocommerce/sample-data/sample_products.xml --authors=skip --quiet > /dev/null 2>&1
+    # wp_cli import ???????????????????????
 fi
 if ( ! wp_cli theme is-installed storefront ) ; then
     wp_cli theme install storefront --activate
