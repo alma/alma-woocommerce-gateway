@@ -1,0 +1,1 @@
+alma-gateway-for-woocommerce-fr_FR.mo
