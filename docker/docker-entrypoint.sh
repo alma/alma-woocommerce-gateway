@@ -185,8 +185,8 @@ if ( ! wp_cli plugin is-active wordpress-importer ) ; then
 fi
 if ( ! wp_has_products ) ; then
     echo >&2 "Installing sample products ..."
-    # wp_cli import ./wp-content/plugins/woocommerce/sample-data/sample_products.xml --authors=skip --quiet > /dev/null 2>&1
-    wp_cli import ./wp-content/plugins/alma-woocommerce-gateway/sample-data/sample_products.xml --authors=skip --quiet > /dev/null 2>&1
+    #wp_cli import ./wp-content/plugins/woocommerce/sample-data/sample_products.xml --authors=skip --quiet > /dev/null 2>&1
+    #wp_cli import ./wp-content/plugins/alma-woocommerce-gateway/sample_products_for_alma_e2e_tests.xml --authors=skip --quiet > /dev/null 2>&1
     # wp_cli import ???????????????????????
 fi
 if ( ! wp_cli theme is-installed storefront ) ; then
