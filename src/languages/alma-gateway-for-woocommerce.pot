@@ -1,8 +1,8 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Alma - 2x 3x 4x, D+15 or D+30 for WooCommerce - Payment in instalments and deferred\n"
-"POT-Creation-Date: 2022-04-28 12:08+0200\n"
+"Project-Id-Version: Alma - Pay in installments or later for wooCommerce\n"
+"POT-Creation-Date: 2022-05-19 16:27+0200\n"
 "PO-Revision-Date: 2021-06-22 13:25+0200\n"
 "Last-Translator: syjust <sy.just@gmail.com>\n"
 "Language-Team: Alma\n"
@@ -342,76 +342,76 @@ msgstr ""
 msgid "Alma \"Eligibility Widget\" (cart or product) already rendered on this page - Not displaying Alma"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:46
+#: includes/class-alma-wc-payment-gateway.php:52
 msgid "Payment in instalments and deferred with Alma - 2x 3x 4x, D+15 or D+30"
 msgstr ""
 
 #. Description of the plugin/theme
-#: includes/class-alma-wc-payment-gateway.php:47
+#: includes/class-alma-wc-payment-gateway.php:53
 msgid "Install Alma and boost your sales! It's simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk."
 msgstr ""
 
 #. translators: %s: plan_key alt image.
-#: includes/class-alma-wc-payment-gateway.php:219
+#: includes/class-alma-wc-payment-gateway.php:226
 #, php-format
 msgid "%s installments"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:248
+#: includes/class-alma-wc-payment-gateway.php:256
 msgid "Choose your payment method"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:324
+#: includes/class-alma-wc-payment-gateway.php:332
 msgid "There was an error processing your payment.<br>Please try again or contact us if the problem persists."
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:382
+#: includes/class-alma-wc-payment-gateway.php:389
 msgid "There was an error when validating your payment.<br>Please try again or contact us if the problem persists."
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:504
+#: includes/class-alma-wc-payment-gateway.php:511
 msgid "Included fees:"
 msgstr ""
 
 #. translators: %1$s => today_amount (0), %2$s => total_amount, %3$s => i18n formatted due_date.
-#: includes/class-alma-wc-payment-gateway.php:522
+#: includes/class-alma-wc-payment-gateway.php:529
 #, php-format
 msgid "%1$s today then %2$s on %3$s"
 msgstr ""
 
 #. translators: 'In' refers to a number of months, like in 'In one month' or 'In three months'.
-#: includes/class-alma-wc-payment-gateway.php:559
+#: includes/class-alma-wc-payment-gateway.php:566
 #, php-format
 msgid "In %s month"
 msgid_plural "In %s months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-alma-wc-payment-gateway.php:583
+#: includes/class-alma-wc-payment-gateway.php:590
 msgid "Your credit"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:592
+#: includes/class-alma-wc-payment-gateway.php:599
 msgid "Your cart:"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:602
+#: includes/class-alma-wc-payment-gateway.php:609
 msgid "Credit cost:"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:616
+#: includes/class-alma-wc-payment-gateway.php:623
 msgid "Annual Interest Rate:"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:627
+#: includes/class-alma-wc-payment-gateway.php:634
 msgid "Total:"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:671
+#: includes/class-alma-wc-payment-gateway.php:678
 msgid "enabled"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:674
+#: includes/class-alma-wc-payment-gateway.php:681
 msgid "disabled"
 msgstr ""
 
@@ -495,18 +495,18 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: includes/class-alma-wc-plugin.php:606
+#: includes/class-alma-wc-plugin.php:611
 msgid "Payment validation error: no ID provided.<br>Please try again or contact us if the problem persists."
 msgstr ""
 
 #. translators: %s -> path to add after dashboard url
-#: includes/class-alma-wc-plugin.php:649
+#: includes/class-alma-wc-plugin.php:654
 #, php-format
 msgid "https://dashboard.getalma.eu/%s"
 msgstr ""
 
 #. translators: %s -> path to add after sandbox dashboard url
-#: includes/class-alma-wc-plugin.php:652
+#: includes/class-alma-wc-plugin.php:657
 #, php-format
 msgid "https://dashboard.sandbox.getalma.eu/%s"
 msgstr ""
@@ -552,7 +552,7 @@ msgid "Product%s not found - Not displaying Alma"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
-msgid "Alma - 2x 3x 4x, D+15 or D+30 for WooCommerce - Payment in instalments and deferred"
+msgid "Alma - Pay in installments or later for wooCommerce"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
