@@ -383,26 +383,19 @@ class Alma_WC_Admin_Form {
 		}
 
 		$general_settings_fields_end = array(
-			'display_product_eligibility'           => array(
+			'display_product_eligibility' => array(
 				'title'   => __( 'Product eligibility notice', 'alma-gateway-for-woocommerce' ),
 				'type'    => 'checkbox',
 				'label'   => __( 'Display a message about product eligibility for monthly payments', 'alma-gateway-for-woocommerce' ),
 				'default' => $default_settings['display_product_eligibility'],
 			),
-			'variable_product_price_query_selector' => array(
-				'title'       => __( 'Variable products price query selector', 'alma-gateway-for-woocommerce' ),
-				'type'        => 'text',
-				'description' => __( 'Query selector used to get the price of product with variations', 'alma-gateway-for-woocommerce' ),
-				'desc_tip'    => true,
-				'default'     => $default_settings['variable_product_price_query_selector'],
-			),
-			'display_cart_eligibility'              => array(
+			'display_cart_eligibility'    => array(
 				'title'   => __( 'Cart eligibility notice', 'alma-gateway-for-woocommerce' ),
 				'type'    => 'checkbox',
 				'label'   => __( 'Display a message about cart eligibility for monthly payments', 'alma-gateway-for-woocommerce' ),
 				'default' => $default_settings['display_cart_eligibility'],
 			),
-			'excluded_products_list'                => array(
+			'excluded_products_list'      => array(
 				'title'       => __( 'Excluded product categories', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'multiselect',
 				'description' => __( 'Exclude all virtual/downloadable product categories, as you cannot sell them with Alma', 'alma-gateway-for-woocommerce' ),
