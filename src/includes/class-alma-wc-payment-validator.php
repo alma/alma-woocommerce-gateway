@@ -93,8 +93,8 @@ class Alma_WC_Payment_Validator {
 	/**
 	 * Update the order meta "alma_payment_upon_trigger_enabled" if the payment is upon trigger.
 	 *
-	 * @param Payment  $payment A payment.
-	 * @param WC Order $order The order.
+	 * @param Payment             $payment A payment.
+	 * @param Alma_WC_Model_Order $order The order.
 	 * @return void
 	 */
 	public static function update_order_post_meta_if_deferred_trigger( $payment, $order ) {
