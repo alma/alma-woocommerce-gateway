@@ -17,7 +17,8 @@ COPY ./docker-entrypoint.sh ./configure-wc.sh ./env.*local /usr/local/bin/
 RUN chmod +x /usr/local/bin/*sh
 
 # copy the sample products xml file.
-#COPY --chown=www-data:www-data ./sample_products_for_alma_e2e_tests.xml /wp-content/plugins/alma-woocommerce-gateway/
+RUN chmod +w /var/www/html/
+ADD --chown=www-data:www-data ./sample_products_for_alma_e2e_tests.xml /var/www/html/
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["php-fpm"]
