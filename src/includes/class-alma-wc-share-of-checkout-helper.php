@@ -39,6 +39,22 @@ class Alma_WC_Share_Of_Checkout_Helper {
 		$this->end_time   = null;
 	}
 
+	/**
+	 * Set share of checkout "from date". (date BEGIN)
+	 *
+	 * @param $start_time
+	 * @return void
+	 */
+	public function set_share_of_checkout_from_date( $start_time ) {
+		$this->start_time = $start_time . ' 00:00:00';
+		$this->set_share_of_checkout_to_date( $start_time );
+	}
+
+	/**
+	 * Get share of checkout "from date". (date BEGIN)
+	 *
+	 * @return string|null
+	 */
 	private function get_share_of_checkout_from_date() {
 		if ( isset( $this->start_time ) ) {
 			return $this->start_time;
@@ -47,6 +63,21 @@ class Alma_WC_Share_Of_Checkout_Helper {
 		return date( 'Y-m-d', strtotime( 'yesterday' ) ) . ' 00:00:00';
 	}
 
+	/**
+	 * Set share of checkout "to date". (date END)
+	 *
+	 * @param $start_time
+	 * @return void
+	 */
+	public function set_share_of_checkout_to_date( $start_time ) {
+		$this->end_time = $start_time . ' 23:59:59';
+	}
+
+	/**
+	 * Get share of checkout "to date". (date END)
+	 *
+	 * @return string|null
+	 */
 	private function get_share_of_checkout_to_date() {
 		if ( isset( $this->end_time ) ) {
 			return $this->end_time;
@@ -69,23 +100,6 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	}
 
 	/**
-	 * @param $start_time
-	 * @return void
-	 */
-	public function set_share_of_checkout_from_date( $start_time ) {
-		$this->start_time = $start_time . ' 00:00:00';
-		$this->set_share_of_checkout_to_date( $start_time );
-	}
-
-	/**
-	 * @param $start_time
-	 * @return void
-	 */
-	public function set_share_of_checkout_to_date( $start_time ) {
-		$this->end_time = $start_time . ' 23:59:59';
-	}
-
-	/**
 	 * Gets the orders in a date range.
 	 *
 	 * @param string $from The date from.
@@ -98,7 +112,6 @@ class Alma_WC_Share_Of_Checkout_Helper {
 		);
 		return wc_get_orders( $args );
 	}
-
 
 	/**
 	 * Gets the "orders" payload.
@@ -165,7 +178,6 @@ class Alma_WC_Share_Of_Checkout_Helper {
 		return $payment_methods;
 	}
 
-
 	/**
 	 * Gets orders for a date range.
 	 *
@@ -199,7 +211,7 @@ class Alma_WC_Share_Of_Checkout_Helper {
 		} catch ( RequestError $e ) {
 			$this->logger->info( 'Alma_WC_Share_Of_Checkout_Helper::share error get message :', array( $e->getMessage() ) );
 			// @todo ceci génère une erreur de type "HP Fatal error: Uncaught Alma\API\RequestError: Not found".
-//			throw new RequestError( $e->getMessage(), null, $res );
+			// throw new RequestError( $e->getMessage(), null, $res );
 		} finally {
 			// $this->writeLogs();
 			// $this->flushOrderCollection();
@@ -207,11 +219,6 @@ class Alma_WC_Share_Of_Checkout_Helper {
 		return $res;
 	}
 }
-
-
-
-
-
 
 
 

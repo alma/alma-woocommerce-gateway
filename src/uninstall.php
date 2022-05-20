@@ -10,7 +10,7 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 }
 global $wpdb;
 
-error_log(' gil uninstall.php BEGIN' );
+error_log( ' gil uninstall.php BEGIN' );
 
 require_once dirname( __FILE__ ) . '/includes/class-alma-wc-settings.php';
 delete_option( Alma_WC_Settings::OPTIONS_KEY );
@@ -24,4 +24,4 @@ $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LI
 $timestamp = wp_next_scheduled( Alma_WC_Share_Of_Checkout::CRON_ACTION );
 wp_unschedule_event( $timestamp, Alma_WC_Share_Of_Checkout::CRON_ACTION );
 
-error_log(' gil uninstall.php END' );
+error_log( ' gil uninstall.php END' );
