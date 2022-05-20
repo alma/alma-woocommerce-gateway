@@ -94,7 +94,7 @@ class Alma_WC_Plugin {
 
 	/**
 	 * Init the alma widget handlers :
-	 * - hooked on Woocommerce Cart & Product actions
+	 * - hooked on WooCommerce Cart & Product actions
 	 * - AND add associated shortcodes
 	 */
 	private function init_widget_handlers() {

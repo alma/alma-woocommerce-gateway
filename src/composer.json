@@ -1,6 +1,6 @@
 {
     "name": "alma/alma-gateway-for-woocommerce",
-    "description": "Alma WooCommerce integration, adds a new payment method to your shop to let your customers pay in monthly installments",
+    "description": "Alma - Pay in installments or later for WooCommerce",
     "type": "library",
     "require": {
         "php": "^5.6 || ~7.0 || ~7.1 || ~7.2 || ~7.3 || ~7.4",

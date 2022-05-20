@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Alma_WC_Model_Payment {
 
 	/**
-	 * Create Payment data for Alma API request from Woocommerce Order.
+	 * Create Payment data for Alma API request from WooCommerce Order.
 	 *
 	 * @param int   $order_id Order ID.
 	 * @param array $fee_plan_definition Fee plan definition.
@@ -96,7 +96,7 @@ class Alma_WC_Model_Payment {
 	}
 
 	/**
-	 * Create Eligibility data for Alma API request from Woocommerce Cart.
+	 * Create Eligibility data for Alma API request from WooCommerce Cart.
 	 *
 	 * @return array Payload to request eligibility v2 endpoint.
 	 */

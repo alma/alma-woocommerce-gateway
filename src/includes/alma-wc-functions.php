@@ -32,7 +32,7 @@ function alma_wc_price_from_cents( $price ) {
 }
 
 /**
- * Format bps using default woocommerce price renderer.
+ * Format bps using default WooCommerce price renderer.
  *
  * @param int $bps Bps in cents.
  *
@@ -53,7 +53,7 @@ function alma_wc_format_percent_from_bps( $bps ) {
 }
 
 /**
- * Format price using default woocommerce price renderer.
+ * Format price using default WooCommerce price renderer.
  *
  * @param int   $price Price in cents.
  * @param array $args (default: array()).

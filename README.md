@@ -1,4 +1,4 @@
-# Alma - Pay in installments or later for wooCommerce
+# Alma - Pay in installments or later for WooCommerce
 
 Contributors: almapayments, olance  
 Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo commerce, alma, monthly payments, split payments  
