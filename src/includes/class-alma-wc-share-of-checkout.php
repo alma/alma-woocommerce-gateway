@@ -72,14 +72,14 @@ class Alma_WC_Share_Of_Checkout {
 	 */
 	public function bootstrap() {
 
-//		$this->share_days();
-//
-//		$timestamp = wp_next_scheduled( 'cron_share_of_checkout_action' );
-//		wp_unschedule_event( $timestamp, 'cron_share_of_checkout_action' );
-//
-//		$timestamp = wp_next_scheduled( 'alma_cron_my_test_action' );
-//		wp_unschedule_event( $timestamp, 'alma_cron_my_test_action' );
-//		return;
+		// $this->share_days();
+		//
+		// $timestamp = wp_next_scheduled( 'cron_share_of_checkout_action' );
+		// wp_unschedule_event( $timestamp, 'cron_share_of_checkout_action' );
+		//
+		// $timestamp = wp_next_scheduled( 'alma_cron_my_test_action' );
+		// wp_unschedule_event( $timestamp, 'alma_cron_my_test_action' );
+		// return;
 
 		if ( ! wp_next_scheduled( self::CRON_ACTION ) ) {
 			error_log( 'wp_schedule_event()' );
@@ -121,18 +121,18 @@ class Alma_WC_Share_Of_Checkout {
 		}
 
 		if ( 'yes' !== alma_wc_plugin()->settings->share_of_checkout_enabled ) {
-//			error_log( 'Share Of Checkout is not enabled' );
+			// error_log( 'Share Of Checkout is not enabled' );
 			$this->logger->info( 'Share Of Checkout is not enabled' );
 			return;
 		}
 		$share_of_checkout_enabled_date = alma_wc_plugin()->settings->share_of_checkout_enabled_date;
-//		error_log( '$share_of_checkout_enabled_date = ' . $share_of_checkout_enabled_date );
+		// error_log( '$share_of_checkout_enabled_date = ' . $share_of_checkout_enabled_date );
 
 		$last_update_date = $this->share_of_checkout_helper->get_last_update_date();
-//		error_log( '$last_update_date = ' . $last_update_date );
+		// error_log( '$last_update_date = ' . $last_update_date );
 
 		$dates_to_share = $this->date_helper->get_dates_in_interval( $last_update_date, $share_of_checkout_enabled_date );
-//		error_log( serialize( $dates_to_share ) );
+		// error_log( serialize( $dates_to_share ) );
 
 		foreach ( $dates_to_share as $date ) {
 			try {
@@ -160,7 +160,8 @@ add_filter( 'cron_schedules', 'example_add_cron_interval' );
 function example_add_cron_interval( $schedules ) {
 	$schedules['five_seconds'] = array(
 		'interval' => 5,
-		'display'  => esc_html__( 'Every Five Seconds' ), );
+		'display'  => esc_html__( 'Every Five Seconds' ),
+	);
 	return $schedules;
 }
 
