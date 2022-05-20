@@ -54,11 +54,11 @@ function AlmaWidgetHelper() {
 	}
 
 	/**
-	 * AlmaInitWidget.
+	 * initWidget.
 	 *
 	 * @returns Null
 	 */
-	var AlmaInitWidget = function () {
+	var initWidget = function () {
 		// Make sure settings are up-to-date after a potential cart_totals refresh.
 		var settings = getSettings();
 		if ( ! settings ) {
@@ -123,7 +123,7 @@ function AlmaWidgetHelper() {
 		getAmountElement: getAmountElement,
 		getPaymentPlansContainerId: getPaymentPlansContainerId,
 		getSettings: getSettings,
-		AlmaInitWidget: AlmaInitWidget
+		initWidget: initWidget
 	}
 }
 
@@ -140,7 +140,7 @@ jQuery( document ).ready(
 		var firstRender       = settings.firstRender;
 
 		if ( firstRender ) {
-			almaWidgetHelper.AlmaInitWidget();
+			almaWidgetHelper.initWidget();
 		}
 
 		if ( jqueryUpdateEvent ) {
@@ -150,7 +150,7 @@ jQuery( document ).ready(
 					// WooCommerce animates the appearing of the product's price when necessary options have been selected,
 					// or its disappearing when some choices are missing. We first try to find an ongoing animation to
 					// update our widget *after* the animation has taken place, so that it uses up-to-date information/DOM
-					// in AlmaInitWidget.
+					// in initWidget.
 					var amountElement = almaWidgetHelper.getAmountElement()
 					var timer         = $.timers.find(
 						function ( t ) {
@@ -159,9 +159,9 @@ jQuery( document ).ready(
 					)
 
 					if (timer) {
-						window.setTimeout( window.AlmaInitWidget, timer.anim.duration )
+						window.setTimeout( window.initWidget, timer.anim.duration )
 					} else if ( almaWidgetHelper.isVisible( amountElement ) || ! settings.amountQuerySelector ) {
-						almaWidgetHelper.AlmaInitWidget();
+						almaWidgetHelper.initWidget();
 					}
 				}
 			);
