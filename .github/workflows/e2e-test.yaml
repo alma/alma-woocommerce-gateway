@@ -1,0 +1,56 @@
+---
+name: E2E Test
+on:
+  push:
+    branches:
+      - "master"
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  launch:
+    strategy:
+      matrix:
+        version:
+        - 5.9.1
+        - 6.3.1
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get only last part of branch name in $SLUG_VERSION env var
+      run:  |
+        VERSION=${{ matrix.version }}
+        echo "SLUG_VERSION=${VERSION//./-}" >> $GITHUB_ENV
+
+    - uses: LouisBrunner/checks-action@v1.2.0
+      id: e2e_status
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        name: results (${{ matrix.version }})
+        status: "in_progress"
+
+    - name: Invoke e2e workflow with inputs
+      uses: benc-uk/workflow-dispatch@v1
+      with:
+        workflow: Deploy CMS
+        token: ${{ secrets.INFRA_WORKFLOW_TRIGGER_TOKEN }}
+        repo: 'alma/integration-infrastructure'
+        ref: 'main'
+        inputs: >
+          {
+            "name": "e2e-${{ github.run_id }}-woocommerce-${{ env.SLUG_VERSION }}",
+            "alma_plugin_repository": "${{ github.repository }}",
+            "alma_plugin_branch": "${{ github.head_ref || github.ref_name }}",
+            "cms": "woocommerce-${{ matrix.version }}",
+            "e2e": "true",
+            "e2e_check_id": "${{ steps.e2e_status.outputs.check_id }}",
+            "e2e_update_status_app_installation_id": "1337"
+          }
+
+    - uses: LouisBrunner/checks-action@v1.2.0
+      if: failure()
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        check_id: ${{ steps.e2e_status.outputs.check_id }}
+        conclusion: failure
