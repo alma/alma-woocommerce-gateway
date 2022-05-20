@@ -172,8 +172,8 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	 * @return array
 	 */
 	public function get_payload() {
-		$from = $this->get_share_of_checkout_from_date();
-		$to   = $this->get_share_of_checkout_to_date();
+		$from                 = $this->get_share_of_checkout_from_date();
+		$to                   = $this->get_share_of_checkout_to_date();
 		$orders_by_date_range = $this->get_orders_by_date_range( $from, $to );
 		return array(
 			'start_time'      => $from,

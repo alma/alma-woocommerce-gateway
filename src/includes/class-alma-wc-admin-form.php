@@ -249,9 +249,9 @@ class Alma_WC_Admin_Form {
 				'title' => $this->render_title(
 					__(
 						'Hello,<br>In order to improve the performance monitoring of Alma on your site, we plan to develop an automated statistical data export from our module.<br>The following data would be collected periodically:<br>
-- the version of your CMS and the Alma module used<br>
-- the activation status of the Alma badge<br>
-- The share of Alma transactions among your different payment methods (in value and volume)<br>
+- the version of your CMS and the Alma module used.<br>
+- the activation status of the Alma badge.<br>
+- The share of Alma transactions among your different payment methods (in value and volume).<br>
 
 This data would allow us, on the one hand, to better support you to strengthen your conversion and, on the other hand, to monitor the impact of the improvements made to the solution.<br>
 
@@ -261,7 +261,7 @@ In addition, the option can be fully deactivated from the administration of your
 
 In order to optimize the use of Alma on your site, would you agree, in principle, to sharing this statistical data with us?<br>
 
-The Alma team',
+The Alma team.',
 						'alma-woocommerce-gateway'
 					)
 				),
