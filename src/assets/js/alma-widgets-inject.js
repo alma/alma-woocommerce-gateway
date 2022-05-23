@@ -159,7 +159,7 @@ jQuery( document ).ready(
 					)
 
 					if (timer) {
-						window.setTimeout( window.init, timer.anim.duration )
+						window.setTimeout( almaWidgetHelper.init(), timer.anim.duration )
 					} else if ( almaWidgetHelper.isVisible( amountElement ) || ! settings.amountQuerySelector ) {
 						almaWidgetHelper.init();
 					}
