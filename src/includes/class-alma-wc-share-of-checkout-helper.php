@@ -91,11 +91,23 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	 * @return string
 	 */
 	public function get_last_update_date() {
-		// TODO - Create api call
-		$last_update_by_api = null;
-		if ( isset( $last_update_by_api ) ) {
-			return $last_update_by_api;
+
+		$alma = alma_wc_plugin()->get_alma_client();
+		if ( ! $alma ) {
+			throw new Alma_WC_Payment_Validation_Error( 'api_client_init' );
 		}
+
+		$last_update_by_api = null;
+		try {
+			$last_update_by_api = $alma->shareOfCheckout->getLastUpdateDate();
+			// TODO - extract date from json
+			return $last_update_by_api;
+		} catch ( \Exception $e ) {
+			$this->logger->error( 'Error getting getLastUpdateDate for ShareOfCheckout : ' . $e->getMessage() );
+
+			throw new Alma_WC_Payment_Validation_Error( 'api_client_init' );
+		}
+
 		return date( 'Y-m-d', strtotime( '-2 days' ) );
 	}
 
@@ -179,7 +191,7 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	}
 
 	/**
-	 * Gets orders for a date range.
+	 * Gets the payload to send to API.
 	 *
 	 * @return array
 	 */
