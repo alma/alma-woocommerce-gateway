@@ -72,6 +72,14 @@ class Alma_WC_Share_Of_Checkout {
 	 */
 	public function bootstrap() {
 
+		if ( isset( $_GET['test_soc'] ) ) {
+			$result = $this->share_of_checkout_helper->get_payload( '2022-01-01', '2022-03-30' );
+			echo '<pre>';
+			print_r( $result );
+			echo '</pre>';
+			exit;
+		}
+
 		// $this->share_days();
 		//
 		// $timestamp = wp_next_scheduled( 'cron_share_of_checkout_action' );
@@ -109,7 +117,8 @@ class Alma_WC_Share_Of_Checkout {
 	/**
 	 * Does the call to alma API to share the checkout datas.
 	 *
-	 * @return mixed
+	 * @return void
+	 * @throws \Alma\API\RequestError
 	 */
 	public function share_days() {
 
@@ -142,12 +151,6 @@ class Alma_WC_Share_Of_Checkout {
 				// throw new RequestError($e->getMessage(), null, null);
 			}
 		}
-
-		// $result = $this->get_payload( '2022-01-01', '2022-03-30' );
-		// echo '<pre>';
-		// print_r( $result );
-		// echo '</pre>';
-		// exit;
 	}
 }
 
