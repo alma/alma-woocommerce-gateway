@@ -50,15 +50,4 @@ class Alma_WC_Date_Helper {
 		return $dates_in_interval;
 	}
 
-
 }
-
-
-
-
-
-
-
-
-
-
