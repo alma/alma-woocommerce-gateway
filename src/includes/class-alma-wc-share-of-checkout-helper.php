@@ -88,7 +88,8 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	/**
 	 * Returns the date of the last share of checkout.
 	 *
-	 * @return string
+	 * @return mixed
+	 * @throws Alma_WC_Payment_Validation_Error
 	 */
 	public function get_last_update_date() {
 
@@ -97,15 +98,16 @@ class Alma_WC_Share_Of_Checkout_Helper {
 			throw new Alma_WC_Payment_Validation_Error( 'api_client_init' );
 		}
 
-		$last_update_by_api = null;
 		try {
-			$last_update_by_api = $alma->shareOfCheckout->getLastUpdateDate();
-			// TODO - extract date from json
-			return $last_update_by_api;
-		} catch ( \Exception $e ) {
-			$this->logger->error( 'Error getting getLastUpdateDate for ShareOfCheckout : ' . $e->getMessage() );
+			$last_update_by_api = $alma->shareOfCheckout->getLastUpdateDates();
+			error_log( '$last_update_by_api = ' );
+			error_log( gettype( $last_update_by_api ) );
+			error_log( $last_update_by_api );
 
-			throw new Alma_WC_Payment_Validation_Error( 'api_client_init' );
+			return $last_update_by_api['end_time'];
+		} catch ( \Exception $e ) {
+			error_log( 'Error getting getLastUpdateDates for ShareOfCheckout : ' . $e->getMessage() );
+			$this->logger->error( 'Error getting getLastUpdateDates for ShareOfCheckout : ' . $e->getMessage() );
 		}
 
 		return date( 'Y-m-d', strtotime( '-2 days' ) );
@@ -208,7 +210,9 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	}
 
 	/**
-	 * @throws RequestError
+	 * Send data for one day to API.
+	 *
+	 * @return array|void
 	 */
 	public function share_day() {
 
@@ -222,11 +226,8 @@ class Alma_WC_Share_Of_Checkout_Helper {
 			$res = $alma->shareOfCheckout->share( $this->get_payload() );
 		} catch ( RequestError $e ) {
 			$this->logger->info( 'Alma_WC_Share_Of_Checkout_Helper::share error get message :', array( $e->getMessage() ) );
-			// @todo ceci génère une erreur de type "HP Fatal error: Uncaught Alma\API\RequestError: Not found".
-			// throw new RequestError( $e->getMessage(), null, $res );
 		} finally {
 			// $this->writeLogs();
-			// $this->flushOrderCollection();
 		}
 		return $res;
 	}
