@@ -28,13 +28,6 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	 */
 	public function __construct() {
 		$this->logger = new Alma_WC_Logger();
-		// $this->logger = $logger;
-		// $this->collectionFactory = $collectionFactory;
-		// $this->orderCollection = [];
-		// $this->totalShareOfCheckoutOrders = [];
-		// $this->totalShareOfCheckoutCheckouts = [];
-		// $this->orderHelper = $orderHelper;
-		// $this->almaClient = $almaClient->getDefaultClient();
 		$this->start_time = null;
 		$this->end_time   = null;
 	}
@@ -99,10 +92,11 @@ class Alma_WC_Share_Of_Checkout_Helper {
 		}
 
 		try {
+			// @todo this can change depending on PHP client version.
 			$last_update_by_api = $alma->shareOfCheckout->getLastUpdateDates();
 			error_log( '$last_update_by_api = ' );
 			error_log( gettype( $last_update_by_api ) );
-			error_log( $last_update_by_api );
+			error_log( serialize( $last_update_by_api ) );
 
 			return $last_update_by_api['end_time'];
 		} catch ( \Exception $e ) {
@@ -114,7 +108,7 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	}
 
 	/**
-	 * Gets the orders in a date range.
+	 * Gets the WC orders in a date range.
 	 *
 	 * @param string $from The date from.
 	 * @param string $to The date to.
@@ -215,6 +209,8 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	 * @return array|void
 	 */
 	public function share_day() {
+		error_log( '---------------------------' );
+		error_log( 'function share_day()' );
 
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
@@ -226,8 +222,6 @@ class Alma_WC_Share_Of_Checkout_Helper {
 			$res = $alma->shareOfCheckout->share( $this->get_payload() );
 		} catch ( RequestError $e ) {
 			$this->logger->info( 'Alma_WC_Share_Of_Checkout_Helper::share error get message :', array( $e->getMessage() ) );
-		} finally {
-			// $this->writeLogs();
 		}
 		return $res;
 	}
