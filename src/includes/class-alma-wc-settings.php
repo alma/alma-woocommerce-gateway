@@ -29,6 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property string selected_fee_plan Admin dashboard fee_plan in edition mode.
  * @property string merchant_id Alma merchant ID
  * @property string variable_product_price_query_selector Css query selector
+ * @property string variable_product_sale_price_query_selector Css query selector for variable discounted products
  * @property string variable_product_check_variations_event JS event for product variation change
  * @property array  excluded_products_list Wp Categories excluded slug's list
  */
