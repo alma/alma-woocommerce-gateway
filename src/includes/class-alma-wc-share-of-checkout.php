@@ -60,7 +60,7 @@ class Alma_WC_Share_Of_Checkout {
 	 */
 	public function bootstrap() {
 
-		// Debug test.
+		// @todo debug test to remove later.
 		if ( isset( $_GET['test_soc'] ) ) {
 			$result = $this->share_of_checkout_helper->get_payload();
 			echo '<pre>';
@@ -105,7 +105,8 @@ class Alma_WC_Share_Of_Checkout {
 	public function share_days() {
 
 		// ini_set('max_execution_time', 30);
-		error_log( 'share_days()' );
+		error_log( '--------------------------------------------------------' );
+		error_log( 'function share_days()' );
 
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
