@@ -198,9 +198,8 @@ class Alma_WC_Plugin {
 		$payment_upon_trigger_helper = new Alma_WC_Payment_Upon_Trigger();
 		add_action( 'woocommerce_order_status_changed', array( $payment_upon_trigger_helper, 'woocommerce_order_status_changed' ), 10, 3 );
 
-        $refund = new Alma_WC_Refund;
-        $refund->init();
-//		add_action( 'init', array( 'Alma_WC_Refund', 'init' ) );
+		$refund = new Alma_WC_Refund();
+		add_action( 'admin_init', array( $refund, 'init' ), 10 );
 	}
 
 	/**
