@@ -26,7 +26,7 @@ class Alma_WC_Refund {
 	/**
 	 * Logger
 	 *
-	 * @var Alma_WC_Share_Of_Checkout_Helper
+	 * @var Alma_WC_Refund_Helper
 	 */
 	private $refund_helper;
 
@@ -42,13 +42,141 @@ class Alma_WC_Refund {
 	 * Init.
 	 */
 	public function init() {
-		error_log( 'public function init()' );
-		error_log( json_encode( $_POST ) );
+
+//		error_log( 'public function init()' );
+//		error_log( json_encode( $_POST ) );
 		if ( isset( $_POST ) && isset( $_POST['alma_refund_hidden'] ) ) {
-			$this->do_refund( intval( $_POST['post_ID'] ) );
+			$this->do_refund_old( intval( $_POST['post_ID'] ) );
 		}
+
 		add_action( 'add_meta_boxes', array( $this, 'add_refund_meta_box' ) );
+		add_action( 'woocommerce_order_partially_refunded', array( $this, 'woocommerce_order_partially_refunded' ), 10, 2 );
+		add_action( 'woocommerce_order_fully_refunded', array( $this, 'woocommerce_order_fully_refunded' ), 10, 2 );
+		add_action( 'admin_notices', array( $this, 'admin_notices' ), 10 );
 	}
+
+	/**
+     * Print refund notices.
+     *
+	 * @return void
+	 */
+    public function admin_notices() {
+
+	    if ( 'shop_order' !== get_current_screen()->id ) {
+		    return;
+	    }
+
+	    $order_id = intval( $_GET['post'] );
+	    $refund_notices = get_post_meta( $order_id, 'alma_refund_notices', false );
+	    foreach ( $refund_notices as $notice_infos ) {
+            if ( ! is_array( $notice_infos ) ) {
+                continue;
+            }
+	        ?>
+            <div class="notice notice-<?php echo $notice_infos[ 'notice_type' ]; ?>" "is-dismissible">
+                <p>
+                    <?php
+                    echo $notice_infos['message'];
+                    ?>
+                </p>
+            </div>
+	        <?php
+        }
+	    delete_post_meta( $order_id, 'alma_refund_notices' );
+    }
+
+	/**
+     * Action hook for order partially refunded.
+     *
+	 * @param $order_id
+	 * @param $refund_id
+	 * @return void
+	 */
+    public function woocommerce_order_partially_refunded( $order_id, $refund_id ) {
+	    wc_add_notice( 'woocommerce_order_partially_refunded' );
+        error_log( 'woocommerce_order_partially_refunded' );
+        error_log( '$order_id = '.$order_id );
+        error_log( '$refund_id = '.$refund_id );
+
+	    $order = wc_get_order( $order_id );
+
+	    if ( ! $order->get_transaction_id() ) {
+		    $this->logger->error( 'Error while getting transaction_id on trigger_payment for order_id = ' . $order_id );
+		    return null;
+	    }
+
+	    error_log( '$payment_id' );
+	    error_log( $order->get_transaction_id() );
+
+	    $alma = alma_wc_plugin()->get_alma_client();
+	    if ( ! $alma ) {
+		    throw new Alma_WC_Payment_Validation_Error( 'api_client_init' );
+            error_log( 'api_client_init ERROR' );
+            return null;
+	    }
+
+	    $amount_to_refund   = $this->get_amout_to_refund( $refund_id );
+	    error_log( '$amount_to_refund = ' . $amount_to_refund );
+
+	    $merchant_reference = $this->get_merchant_reference( $order_id );
+	    error_log( '$merchant_reference = ' . $merchant_reference );
+
+	    try {
+		    $alma->payments->partialRefund( $order->get_transaction_id(), $amount_to_refund, $merchant_reference );
+	    } catch ( Exception $e ) {
+		    $this->logger->error( 'Error partialRefund : ' . $e->getMessage() );
+		    error_log( 'Error partialRefund : ' . $e->getMessage() );
+		    wc_add_notice( sprintf( __( 'Partial refund error: %s.', 'alma-woocommerce-gateway' ), $e->getMessage() ), 'error' );
+		    return null;
+	    }
+
+        $refund_notices   = get_post_meta( $order_id, 'alma_refund_notices', false );
+	    $refund_notices[] = array( 'notice_type' => 'success' , 'message' => __( 'Partial refund success.', 'alma-woocommerce-gateway' ) );
+//        error_log(  '$refund_notices' );
+//        error_log( serialize( $refund_notices ) );
+        update_post_meta( $order_id, 'alma_refund_notices', $refund_notices );
+    }
+
+	/**
+     * Gets the amount to refund.
+     *
+	 * @param $refund_id Integer Refund id.
+	 * @return int
+	 */
+    private function get_amout_to_refund( $refund_id ) {
+	    $refund = new WC_Order_Refund( $refund_id );
+        return alma_wc_price_to_cents( floatval( $refund->get_amount() ) );
+    }
+
+	/**
+     * Gets the amount to refund.
+     *
+	 * @param $refund_id Integer Refund id.
+	 * @return int
+	 */
+    private function get_merchant_reference( $order_id ) {
+	    try {
+		    $alma_model_order = new Alma_WC_Model_Order( $order_id );
+	    } catch ( Exception $e ) {
+		    $this->logger->error( 'Error getting payment info from order: ' . $e->getMessage() );
+		    error_log( 'Error getting payment info from order: ' . $e->getMessage() );
+		    return null;
+	    }
+	    return $alma_model_order->get_order_reference();
+    }
+
+	/**
+     * Action hook for order fully refunded.
+     *
+	 * @param $order_id
+	 * @param $refund_id
+	 * @return void
+	 */
+    public function woocommerce_order_fully_refunded( $order_id, $refund_id ) {
+	    error_log('woocommerce_order_fully_refunded');
+	    error_log('$order_id = '.$order_id);
+	    error_log('$refund_id = '.$refund_id);
+    }
 
 	/**
 	 * Does refund.
@@ -58,69 +186,32 @@ class Alma_WC_Refund {
 	 * @throws Alma_WC_Payment_Validation_Error
 	 */
 	public function do_refund( $order_id ) {
-
-		$order = wc_get_order( $order_id );
-//        dd($order);
-
-		if ( ! $order->get_transaction_id() ) {
-			$this->logger->error( 'Error while getting transaction_id on trigger_payment for order_id = ' . $order_id );
-			return;
-		}
-
-		error_log( '$payment_id' );
-		error_log( $order->get_transaction_id() );
-
-		$alma = alma_wc_plugin()->get_alma_client();
-		if ( ! $alma ) {
-			throw new Alma_WC_Payment_Validation_Error( 'api_client_init' );
-		}
-
-		try {
-			$alma_model_order = new Alma_WC_Model_Order( $order_id );
-		} catch ( Exception $e ) {
-			$logger = new Alma_WC_Logger();
-			$logger->error( 'Error getting payment info from order: ' . $e->getMessage() );
-			return;
-		}
-
-		$merchant_reference = $alma_model_order->get_order_reference();
-		error_log( '$merchant_reference' );
-		error_log( $merchant_reference );
-
-		$amout_to_refund = alma_wc_price_to_cents( floatval( $_POST['alma_refund_amount'] ) );
-		error_log( '$amout_to_refund' );
-		error_log( $amout_to_refund );
-
-		if ( 'partial' === $_POST['refund_type'] ) {
-			$alma->payments->partialRefund( $order->get_transaction_id(), $amout_to_refund, $merchant_reference );
-		} elseif ( 'full' === $_POST['refund_type'] ) {
-			$alma->payments->fullRefund( $order->get_transaction_id(), $amout_to_refund, $merchant_reference );
-		}
-
 	}
 
 	/**
 	 * Adds the refund meta_box on shop_order page on back-office.
 	 *
 	 * @return void
+	 * @deprecated
 	 */
 	public function add_refund_meta_box() {
-		add_meta_box( 'alma_refund_meta_box', __( 'Alma Refund', 'alma-woocommerce-gateway' ), array( $this, 'display_refund_meta_box' ), 'shop_order', 'normal', 'default' );
+        if ( 'shop_order' === get_current_screen()->id ) {
+	        add_meta_box( 'alma_refund_meta_box', __( 'Alma Refund', 'alma-woocommerce-gateway' ), array( $this, 'display_refund_meta_box' ), 'shop_order', 'normal', 'default' );
+        }
 	}
 
 	/**
 	 * Displays refund form in meta_box.
 	 *
 	 * @return void
+	 * @deprecated
 	 */
 	public function display_refund_meta_box() {
 
 		$order = wc_get_order( intval( $_GET['post'] ) );
 
 		$max_amount_refund = $order->get_total();
-
 		$currency_refund   = '€';
-
 		?>
 		<style>#alma-payment-plans button {background-color:white;}</style>
 		<div id="meta_box_alma_refund" style="">
@@ -151,15 +242,53 @@ class Alma_WC_Refund {
 		<?php
 	}
 
+	/**
+	 * Does refund.
+	 *
+	 * @param $order_id Integer The order id.
+	 * @return void
+	 * @throws Alma_WC_Payment_Validation_Error
+	 * @deprecated
+	 */
+	public function do_refund_old( $order_id ) {
+
+		$order = wc_get_order( $order_id );
+//        dd($order);
+
+		if ( ! $order->get_transaction_id() ) {
+			$this->logger->error( 'Error while getting transaction_id on trigger_payment for order_id = ' . $order_id );
+			return;
+		}
+
+		error_log( '$payment_id = ' . $order->get_transaction_id() );
+
+		$alma = alma_wc_plugin()->get_alma_client();
+		if ( ! $alma ) {
+			throw new Alma_WC_Payment_Validation_Error( 'api_client_init' );
+		}
+
+		try {
+			$alma_model_order = new Alma_WC_Model_Order( $order_id );
+		} catch ( Exception $e ) {
+			$logger = new Alma_WC_Logger();
+			$logger->error( 'Error getting payment info from order: ' . $e->getMessage() );
+			return;
+		}
+
+		$merchant_reference = $alma_model_order->get_order_reference();
+		error_log( '$merchant_reference = ' . $merchant_reference );
+
+		$amount_to_refund = alma_wc_price_to_cents( floatval( $_POST['alma_refund_amount'] ) );
+		error_log( '$amount_to_refund = ' . $amount_to_refund );
+
+		if ( 'partial' === $_POST['refund_type'] ) {
+			$alma->payments->partialRefund( $order->get_transaction_id(), $amount_to_refund, $merchant_reference );
+		} elseif ( 'full' === $_POST['refund_type'] ) {
+			$alma->payments->fullRefund( $order->get_transaction_id(), $amount_to_refund, $merchant_reference );
+		}
+	}
+
 }
-
-
-
-
-
-
-
-
 
 
 
