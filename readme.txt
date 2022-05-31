@@ -11,12 +11,6 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 This plugin adds a new payment method to WooCommerce, which allows you to offer monthly payments to your customer using Alma.
 
-== Restricted availability ==
-
-FR: Pour le moment, Alma n\'est disponible qu\'aux marchands **français** avec lesquels nous pouvons interagir. Vous pouvez [créer votre compte](https://dashboard.getalma.eu) librement, mais devez nous contacter pour l\'activer et commencer à accepter des paiements.
-
-GB: For the moment, Alma is only available to **french** merchants with whom we can communicate. You can [create your account](https://dashboard.getalma.eu) freely, but you must contact us to have it activated and to start accepting payments.
-
 == Description ==
 
 [Alma](https://getalma.eu) is a service to provide merchants with an **easy** and **safe** monthly payments solution.
@@ -46,29 +40,18 @@ Once everything is properly set up, go ahead and switch to \"Live\" mode!
 
 1. Alma\'s payment method settings
 2. Cart eligibility for monthly payments
-3. Payment method at checkout
-4. Alma\'s payment page that users are sent to upon order confirmation
+3. Alma badge reinsurance Info
+4. Payment method at checkout
+5. Alma\'s payment page that users are sent to upon order confirmation
+6. Alma\'s payment page SMS verification
 
 == Contributing ==
 
-You need to have `docker` and `docker-compose` installed on your computer.
-
-- Clone the repository
-- Run `docker-compose up` to start WordPress
-- Run `docker-compose exec wordpress bash` to open a shell in the docker container
-- Run `cd wp-content/plugins/alma-gateway-for-woocommerce` to go into the plugin directory
+- Clone the repository from https://github.com/alma/alma-woocommerce-gateway in you wp-content/plugins/alma-gateway-for-woocommerce folder
 - Run `composer install` to install dependencies
-- Go to http://localhost:8000 and follow WordPress installation steps
-- Go to http://localhost:8000/wp-admin/plugin-install.php and install & enable *WooCommerce*
-- Create a product with a price
-- Go to http://localhost:8000/wp-admin/plugins.php and enable alma
 - Create an account on http://dashboard.sandbox.getalma.eu/ to get an API key
-- Go to http://localhost:8000/wp-admin/admin.php?page=wc-settings&tab=checkout&section=alma and fill your API key
+- Fill your API key in plugin settings
 - Visit the shop and add a product to the cart to see Alma in action
-
-= Xdebug =
-
-To configure or disable xdebug, edit the `docker/customphp-config.ini` file and restart the docker container.
 
 = Translations =
 

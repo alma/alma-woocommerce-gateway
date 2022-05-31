@@ -1,25 +1,19 @@
 # Alma - Pay in installments or later for WooCommerce
 
-Contributors: almapayments, olance  
-Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo commerce, alma, monthly payments, split payments  
-Requires at least: 4.4  
+Contributors: almapayments, olance, syjust, gilles66
+Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo commerce, alma, monthly payments, split payments
+Requires at least: 4.4
 Tested up to: 5.9.3
-Requires PHP: 5.6  
+Requires PHP: 5.6
 Stable tag: 3.0.0
-License: GPLv3  
-License URI: https://www.gnu.org/licenses/gpl-3.0.html  
+License: GPLv3
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 This plugin adds a new payment method to WooCommerce, which allows you to offer monthly payments to your customer using Alma.
 
-## ⚠️ Restricted availability
-
-🇫🇷 Pour le moment, Alma n\'est disponible qu\'aux marchands **français** avec lesquels nous pouvons interagir. Vous pouvez [créer votre compte](https://dashboard.getalma.eu) librement, mais devez nous contacter pour l\'activer et commencer à accepter des paiements.
-
-🇬🇧 For the moment, Alma is only available to **french** merchants with whom we can communicate. You can [create your account](https://dashboard.getalma.eu) freely, but you must contact us to have it activated and to start accepting payments.
-
 ## Description
 
-[Alma](https://getalma.eu) is a service to provide merchants with an **easy** and **safe** monthly payments solution.  
+[Alma](https://getalma.eu) is a service to provide merchants with an **easy** and **safe** monthly payments solution.
 Let your customers pay for their purchases at their own pace! You'll receive the funds instantly, and your customer will pay later over a few monthly instalments.
 
 This plugin integrates Alma into WooCommerce by adding a new payment method that you can activate to offer monthly payments to your customers.
@@ -136,31 +130,18 @@ the second and following will not be displayed.
 
 ![Alma\'s payment method settings](.wordpress.org/screenshot-1.png)
 ![Cart eligibility for monthly payments](.wordpress.org/screenshot-2.png)
-![Alma badge reinsurance Info](.wordpress.org/screenshot-6.png)
-![Payment method at checkout](.wordpress.org/screenshot-3.png)
-![Alma\'s payment page that users are sent to upon order confirmation](.wordpress.org/screenshot-4.png)
-![Alma\'s payment page SMS verification](.wordpress.org/screenshot-5.png)
+![Alma badge reinsurance Info](.wordpress.org/screenshot-3.png)
+![Payment method at checkout](.wordpress.org/screenshot-4.png)
+![Alma\'s payment page that users are sent to upon order confirmation](.wordpress.org/screenshot-5.png)
+![Alma\'s payment page SMS verification](.wordpress.org/screenshot-6.png)
 
 ## Contributing
 
-You need to have `docker` and `docker-compose` installed on your computer.
-
-- Clone the repository
-- Run `docker-compose up` to start WordPress
-- Run `docker-compose exec wordpress bash` to open a shell in the docker container
-- Run `cd wp-content/plugins/alma-gateway-for-woocommerce` to go into the plugin directory
+- Clone the repository from https://github.com/alma/alma-woocommerce-gateway in you wp-content/plugins/alma-gateway-for-woocommerce folder
 - Run `composer install` to install dependencies
-- Go to http://localhost:8000 and follow WordPress installation steps
-- Go to http://localhost:8000/wp-admin/plugin-install.php and install & enable *WooCommerce*
-- Create a product with a price
-- Go to http://localhost:8000/wp-admin/plugins.php and enable alma
 - Create an account on http://dashboard.sandbox.getalma.eu/ to get an API key
-- Go to http://localhost:8000/wp-admin/admin.php?page=wc-settings&tab=checkout&section=alma and fill your API key
-- Visit the shop and add a product to the cart to see Alma in action 🚀
-
-### Xdebug
-
-To configure or disable xdebug, edit the `docker/customphp-config.ini` file and restart the docker container.
+- Fill your API key in plugin settings
+- Visit the shop and add a product to the cart to see Alma in action
 
 ### Translations
 
