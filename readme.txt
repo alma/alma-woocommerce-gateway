@@ -1,7 +1,7 @@
 === Alma - Pay in installments or later for WooCommerce ===
 
 Contributors: almapayments, olance, syjust, gilles66
-Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo commerce, alma, monthly payments, split payments
+Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell, woo commerce, alma, monthly payments, split payments
 Requires at least: 4.4
 Tested up to: 5.9.3
 Requires PHP: 5.6
@@ -47,7 +47,7 @@ Once everything is properly set up, go ahead and switch to \"Live\" mode!
 
 == Contributing ==
 
-- Clone the repository from https://github.com/alma/alma-woocommerce-gateway in you wp-content/plugins/alma-gateway-for-woocommerce folder
+- Clone the repository from [github](https://github.com/alma/alma-woocommerce-gateway) in you wp-content/plugins/alma-gateway-for-woocommerce folder
 - Run `composer install` to install dependencies
 - Create an account on http://dashboard.sandbox.getalma.eu/ to get an API key
 - Fill your API key in plugin settings
@@ -67,46 +67,32 @@ To build extension for production run `./bin/build.sh`
 == Changelog ==
 
 = 3.0.0 =
-=========
-
 * feat: add nonce to secure checkout form
 * feat: add script to retrieve widget files
 * fix: data sanitizing
 * fix: upd payment fields validation notice messages
 
 = 2.6.0 =
-=========
-
 * feat: add BO dynamic check variation
 * feat: add BO technical fields section
 * feat: add payment upon shipping
 * fix: names inversion between shipping & billing addresses
 
 = 2.5.2 =
-=========
-
 * feat: ignore & remove composer.lock
 * fix: allow widget to be injected in builder
 
 = 2.5.1 =
-=========
-
 * fix: admin test on unavailable var for other admin pages
 * fix: check cart eligibility without customer
 
 = 2.5.0 =
-=========
-
 * feat: back-office i18n custom fields
 
 = 2.4.1 =
-=========
-
 * fix: issue on payment method order on checkout page
 
 = 2.4.0 =
-=========
-
 * feat: split payments
 * fix: model get_cart on null in wysiwyg builder
 * refactor: Remove the unnecessary boolean literal
@@ -114,8 +100,6 @@ To build extension for production run `./bin/build.sh`
 * refactor: reduce cognitive complexity
 
 = 2.3.0 =
-=========
-
 * feat(widget): upgrade CDN from 1.x to 2.x
 * feat(widget): alma API mode
 * feat(widget): deferred_days & deferred_months
@@ -123,13 +107,9 @@ To build extension for production run `./bin/build.sh`
 * fix: filter eligible feeplans in checkout
 
 = 2.2.1 =
-=========
-
 * fix: send user_locale in Alma checkout
 
 = 2.2.0 =
-=========
-
 * ci: add shell script bumper
 * feat: add IT & DE languages
 * fix: call eligibility without country if null
@@ -138,8 +118,6 @@ To build extension for production run `./bin/build.sh`
 * fix: widget handler replace excluding by including tax
 
 = 2.1.1 =
----------
-
 * fix: remove upgrade process
 * fix: usage of woo deprecated get price func
 * refactor: remove redundant properties initializations
@@ -148,8 +126,6 @@ To build extension for production run `./bin/build.sh`
 * word(typo): fix all doc block typo
 
 = 2.1.0 =
----------
-
 * [i18n] allow plugin to works with all locales
 * [i18n] add locale & advanced address fields on payment creation
 * [i18n] add customer addresses information to check payment plans on checkout
@@ -158,8 +134,6 @@ To build extension for production run `./bin/build.sh`
 * enhance docker env
 
 = 2.0.0 =
----------
-
 * Add inline Pay Later (Eligibility V2)
 * Add dedicated DB migrations processor
 * Load & update fee-plans dynamically from ALMA dashboard config
@@ -169,12 +143,10 @@ To build extension for production run `./bin/build.sh`
 * Re-design back-office fee plans configuration
 
 = 1.3.1 =
-
 * Avoid Fatal error on (not found) product badge injection
 * Increase debug log on non displayed bages
 
 = 1.3.0 =
-
 * Remove PHP warnings & do not display widget on out-stock or un-priced product
 * Minor refactoring
 * Enhance dev docker env (display php warnings / errors + prioritize custom-php-ini file)
@@ -184,20 +156,16 @@ To build extension for production run `./bin/build.sh`
 * Add widget shortcodes
 
 = 1.2.3 =
-
 * Use unpkg.com instead of unpkg.io
 
 = 1.2.2 =
-
 * Do not display a radio button at checkout, when there's only one payment plan available
 
 = 1.2.1 =
-
 * Fixes default min/max amount values being converted to cents multiple times in a row
 * Improves xdebug configuration
 
 = 1.2.0 =
-
 * Allows merchant to activate 2-, 3- a 4-installment plans, with min and max allowed amounts per plan
 * Displays an Alma widget on product pages and cart page to inform customers of eligible payment plans
 * Displays a full payment plan for each plan option on the checkout page
@@ -242,20 +210,13 @@ To build extension for production run `./bin/build.sh`
   (i.e. Alma cannot be used to sell/buy virtual/downloadable products such as gift cards, subscriptions, ...)
 
 = 1.0.1 =
-Let's start following semver.
-
 * Switches logo file to SVG
 * Uses latest Eligibility check behaviour to remove one extra call to the API
-* Adds User-Agent string containing the module's version, WordPress version, WooCommerce, PHP client and PHP versions,
-to all requests going to Alma's API.
+* Adds User-Agent string containing the module's version, WordPress version, WooCommerce, PHP client and PHP versions, to all requests going to Alma's API.
 * Adds support for Alma's IPN callback mechanism
 
 = 1.0.0 =
-This version evolved for a while without any version bump 🤷‍♂️
-Features in the latest push to this release:
-
 * Module can be configured in Test and Live mode; Test mode only shows Alma's payment method to visitors who are also
 administrators of the shop
 * A message displays below the cart to indicate whether the purchase is eligible to monthly installments
 * The module adds a payment method to the checkout, which redirects the user to Alma's payment page.
-If everything goes right (i.e. Customer doesn't cancel, pays the right amount, ... ), the order is validated upon customer return.
