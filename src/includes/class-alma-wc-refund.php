@@ -58,8 +58,8 @@ class Alma_WC_Refund {
 			return;
 		}
 
-		$order_id       = intval( $_GET['post'] );
-		$refund_notices = get_post_meta( $order_id, 'alma_refund_notices', true );
+        global $post_id;
+		$refund_notices = get_post_meta( $post_id, 'alma_refund_notices', true );
 
 		if ( ! is_array( $refund_notices ) ) {
 			return;
@@ -75,7 +75,7 @@ class Alma_WC_Refund {
 			</div>
 			<?php
 		}
-		delete_post_meta( $order_id, 'alma_refund_notices' );
+		delete_post_meta( $post_id, 'alma_refund_notices' );
 	}
 
 	/**
@@ -91,13 +91,17 @@ class Alma_WC_Refund {
 		error_log( '$order_id = ' . $order_id );
 		error_log( '$refund_id = ' . $refund_id );
 
+		$order = wc_get_order( $order_id );
+
+		if ( substr( $order->get_payment_method(), 0, 4 ) !== 'alma' ) {
+			return;
+		}
+
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
 			$this->add_refund_notice( $order_id, 'error', __( 'API client init error.', 'alma-woocommerce-gateway' ) );
 			return;
 		}
-
-		$order = wc_get_order( $order_id );
 
 		if ( ! $order->get_transaction_id() ) {
 			$this->logger->error( 'Error while getting transaction_id on trigger_payment for order_id = ' . $order_id );
@@ -115,25 +119,25 @@ class Alma_WC_Refund {
 			return;
 		}
 
-		$refund_comment = $this->get_refund_comment( $refund_id );
-
 		$merchant_reference = $this->get_merchant_reference( $order_id );
-        if ( null === $merchant_reference ) {
-	        $this->logger->error( sprintf( __( 'Partial refund error : merchant reference is missing for order number %s.', $order_id ) ) );
-	        $this->add_refund_notice( $order_id, 'error', __( 'Partial refund error : merchant reference is missing.', 'alma-woocommerce-gateway' ) );
-            return;
-        }
+		if ( null === $merchant_reference ) {
+			$this->logger->error( sprintf( __( 'Partial refund error : merchant reference is missing for order number %s.', $order_id ) ) );
+			$this->add_refund_notice( $order_id, 'error', __( 'Alma partial refund error : merchant reference is missing.', 'alma-woocommerce-gateway' ) );
+			return;
+		}
+
+		$refund_comment = $this->get_refund_comment( $refund_id );
 
 		try {
 			$alma->payments->partialRefund( $order->get_transaction_id(), $amount_to_refund, $merchant_reference, $refund_comment );
 		} catch ( Exception $e ) {
 			$this->logger->error( 'Error partialRefund : ' . $e->getMessage() );
 			error_log( 'Error partialRefund : ' . $e->getMessage() );
-			$this->add_refund_notice( $order_id, 'error', __( 'Partial refund error.', 'alma-woocommerce-gateway' ) );
+			$this->add_refund_notice( $order_id, 'error', __( 'Alma partial refund error.', 'alma-woocommerce-gateway' ) );
 			return;
 		}
 
-		$this->add_refund_notice( $order_id, 'success', __( 'Partial refund success.', 'alma-woocommerce-gateway' ) );
+		$this->add_refund_notice( $order_id, 'success', __( 'Alma partial refund success.', 'alma-woocommerce-gateway' ) );
 	}
 
 	/**
@@ -157,6 +161,10 @@ class Alma_WC_Refund {
 
 		$order = wc_get_order( $order_id );
 
+		if ( substr( $order->get_payment_method(), 0, 4 ) !== 'alma' ) {
+			return;
+		}
+
 		if ( ! $order->get_transaction_id() ) {
 			$this->logger->error( 'Error while getting transaction_id on trigger_payment for order_id = ' . $order_id );
 			return;
@@ -168,7 +176,7 @@ class Alma_WC_Refund {
 		$merchant_reference = $this->get_merchant_reference( $order_id );
 		if ( null === $merchant_reference ) {
 			$this->logger->error( sprintf( __( 'Full refund error : merchant reference is missing for order number %s.', $order_id ) ) );
-			$this->add_refund_notice( $order_id, 'error', __( 'Full refund error : merchant reference is missing.', 'alma-woocommerce-gateway' ) );
+			$this->add_refund_notice( $order_id, 'error', __( 'Alma full refund error : merchant reference is missing.', 'alma-woocommerce-gateway' ) );
 			return;
 		}
 
@@ -182,7 +190,7 @@ class Alma_WC_Refund {
 			return;
 		}
 
-		$this->add_refund_notice( $order_id, 'success', __( 'Full refund success.', 'alma-woocommerce-gateway' ) );
+		$this->add_refund_notice( $order_id, 'success', __( 'Alma full refund success.', 'alma-woocommerce-gateway' ) );
 	}
 
 	/**
