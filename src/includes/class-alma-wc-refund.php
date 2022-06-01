@@ -58,7 +58,7 @@ class Alma_WC_Refund {
 			return;
 		}
 
-        global $post_id;
+		global $post_id;
 		$refund_notices = get_post_meta( $post_id, 'alma_refund_notices', true );
 
 		if ( ! is_array( $refund_notices ) ) {
@@ -138,6 +138,7 @@ class Alma_WC_Refund {
 		}
 
 		$this->add_refund_notice( $order_id, 'success', __( 'Alma partial refund success.', 'alma-woocommerce-gateway' ) );
+		$order->add_order_note( sprintf( __( 'You refunded %s via Alma.', 'alma-woocommerce-gateway' ), $this->get_amout_to_refund( $refund_id, true ) ) );
 	}
 
 	/**
@@ -191,6 +192,7 @@ class Alma_WC_Refund {
 		}
 
 		$this->add_refund_notice( $order_id, 'success', __( 'Alma full refund success.', 'alma-woocommerce-gateway' ) );
+		$order->add_order_note( __( 'You fully refunded this order via Alma.', 'alma-woocommerce-gateway' ) );
 	}
 
 	/**
@@ -214,11 +216,16 @@ class Alma_WC_Refund {
 	 * Gets the amount to refund.
 	 *
 	 * @param $refund_id Integer Refund id.
-	 * @return int
+	 * @param $display Bool Tells if amount is supposed to be used for calculation or display.
+	 * @return int|string
 	 */
-	private function get_amout_to_refund( $refund_id ) {
-		$refund = new WC_Order_Refund( $refund_id );
-		return alma_wc_price_to_cents( floatval( $refund->get_amount() ) );
+	private function get_amout_to_refund( $refund_id, $display = false ) {
+		$refund           = new WC_Order_Refund( $refund_id );
+		$amount_to_refund = alma_wc_price_to_cents( floatval( $refund->get_amount() ) );
+		if ( true === $display ) {
+			$amount_to_refund = $refund->get_amount() . ' ' . $refund->get_currency();
+		}
+		return $amount_to_refund;
 	}
 
 	/**
