@@ -41,10 +41,68 @@ class Alma_WC_Refund {
 	/**
 	 * Init.
 	 */
-	public function init() {
+	public function admin_init() {
 		add_action( 'woocommerce_order_partially_refunded', array( $this, 'woocommerce_order_partially_refunded' ), 10, 2 );
 		add_action( 'woocommerce_order_fully_refunded', array( $this, 'woocommerce_order_fully_refunded' ), 10, 2 );
 		add_action( 'admin_notices', array( $this, 'admin_notices' ), 10 );
+		add_action( 'admin_body_class', array( $this, 'admin_body_class' ), 10, 1 );
+		add_action( 'woocommerce_order_item_add_action_buttons', array( $this, 'woocommerce_order_item_add_action_buttons' ), 10 );
+		add_filter( 'gettext', array( $this, 'gettext' ), 10, 3 );
+	}
+
+	/**
+	 * WP action hook "current_screen".
+	 *
+	 * @return void
+	 */
+	public function woocommerce_order_item_add_action_buttons() {
+		if ( 'shop_order' === get_current_screen()->id ) {
+			add_filter( 'gettext', array( $this, 'gettext' ), 10, 3 );
+		}
+	}
+
+	/**
+	 * Filters the text of the refund button on a back-office order page.
+	 *
+	 * @param $translation String A text translated.
+	 * @param $text String A text to translate.
+	 * @param $domain String A text domain.
+	 * @return mixed|string
+	 */
+	public function gettext( $translation, $text, $domain ) {
+
+		if ( 'Refund %s manually' === $text && 'woocommerce' === $domain ) {
+			$order = wc_get_order( intval( $_GET['post'] ) );
+			if ( substr( $order->get_payment_method(), 0, 4 ) !== 'alma' ) {
+				return $translation;
+			}
+			$translation = str_replace( 'manually', 'via Alma', $text );
+			remove_filter( 'gettext', array( $this, 'gettext' ), 10 );
+		}
+
+		return $translation;
+	}
+
+	/**
+	 * Adds a class in the admin <body>.
+	 *
+	 * @param $classes Sring List of classes already loaded by WP, WC, and other plugins and theme.
+	 * @return string|void
+	 */
+	public function admin_body_class( $classes ) {
+
+		if ( 'shop_order' !== get_current_screen()->id ) {
+			return;
+		}
+
+		global $post_id;
+		$order = wc_get_order( $post_id );
+		if ( substr( $order->get_payment_method(), 0, 4 ) !== 'alma' ) {
+			return;
+		}
+
+		$classes .= ' shop_order_payment_method_alma';
+		return $classes;
 	}
 
 	/**
@@ -261,6 +319,15 @@ class Alma_WC_Refund {
 }
 
 
-
+// Gilles : Truc sympa pour afficher tous les hooks sur une page web !
+//$debug_tags = array();
+//add_action( 'all', function ( $tag ) {
+//	global $debug_tags;
+//	if ( in_array( $tag, $debug_tags ) ) {
+//		return;
+//	}
+//	pre( $tag );
+//	$debug_tags[] = $tag;
+//} );
 
 
