@@ -32,11 +32,15 @@ class Alma_WC_Refund {
 
 	/**
 	 * Admin texts to be changed in order page to replace by Alma text.
+	 *
+	 * @var array
 	 */
 	private $admin_texts_to_change;
 
 	/**
 	 * Number of admin texts dynamically changed.
+	 *
+	 * @var integer
 	 */
 	private $number_of_texts_changed;
 
@@ -83,9 +87,9 @@ class Alma_WC_Refund {
 	/**
 	 * Filters the text of the refund button on a back-office order page.
 	 *
-	 * @param $translation String A text translated.
-	 * @param $text String A text to translate.
-	 * @param $domain String A text domain.
+	 * @param string $translation A text translated.
+	 * @param string $text A text to translate.
+	 * @param string $domain A text domain.
 	 * @return mixed|string
 	 */
 	public function gettext( $translation, $text, $domain ) {
@@ -110,29 +114,6 @@ class Alma_WC_Refund {
 		}
 
 		return $translation;
-	}
-
-	/**
-	 * Adds a class in the admin <body>.
-	 *
-	 * @param $classes String List of classes already loaded by WP, WC, and other plugins and theme.
-	 * @return string|void
-	 * @deprecated ?
-	 */
-	public function admin_body_class( $classes ) {
-
-		if ( 'shop_order' !== get_current_screen()->id ) {
-			return;
-		}
-
-		global $post_id;
-		$order = wc_get_order( $post_id );
-		if ( substr( $order->get_payment_method(), 0, 4 ) !== 'alma' ) {
-			return;
-		}
-
-		$classes .= ' shop_order_payment_method_alma';
-		return $classes;
 	}
 
 	/**
@@ -223,8 +204,8 @@ class Alma_WC_Refund {
 	/**
 	 * Action hook for order fully refunded.
 	 *
-	 * @param $order_id Integer Order id.
-	 * @param $refund_id Integer Refund id.
+	 * @param $order_id integer Order id.
+	 * @param $refund_id integer Refund id.
 	 * @return void
 	 */
 	public function woocommerce_order_fully_refunded( $order_id, $refund_id ) {
