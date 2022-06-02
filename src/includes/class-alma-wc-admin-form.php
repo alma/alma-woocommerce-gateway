@@ -503,7 +503,7 @@ class Alma_WC_Admin_Form {
 				'title'   => __( 'Refund mode', 'alma-woocommerce-gateway' ),
 				'type'    => 'checkbox',
 				'label'   => __( 'Activate automatic refund of order using Alma when order status is changed to "refund".', 'alma-woocommerce-gateway' ),
-				'default' => $default_settings['refund'],
+				'default' => $default_settings['refund_automatically_on_order_status_change'],
 			),
 		);
 	}

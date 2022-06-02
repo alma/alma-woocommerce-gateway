@@ -59,6 +59,7 @@ class Alma_WC_Refund {
 		add_action( 'admin_body_class', array( $this, 'admin_body_class' ), 10, 1 );
 		add_action( 'woocommerce_order_item_add_action_buttons', array( $this, 'woocommerce_order_item_add_action_buttons' ), 10 );
 		add_filter( 'gettext', array( $this, 'gettext' ), 10, 3 );
+		add_action( 'woocommerce_order_status_changed', array( $this->refund_helper, 'woocommerce_order_status_changed' ), 10, 3 );
 	}
 
 	/**
@@ -202,7 +203,7 @@ class Alma_WC_Refund {
 		$merchant_reference = $this->refund_helper->get_merchant_reference( $order_id );
 		if ( null === $merchant_reference ) {
 			/* translators: %s is an order number. */
-			$this->logger->error( sprintf( __( 'Partial refund error : merchant reference is missing for order number %s.', $order_id ) ) );
+			$this->logger->error( sprintf( __( 'Partial refund error : merchant reference is missing for order number %s.', 'alma-woocommerce-gateway' ), $order_id ) );
 			$this->refund_helper->add_refund_notice( $order_id, 'error', __( 'Alma partial refund error : merchant reference is missing.', 'alma-woocommerce-gateway' ) );
 			return;
 		}
@@ -244,7 +245,7 @@ class Alma_WC_Refund {
 
 		$order = wc_get_order( $order_id );
 
-		if ( substr( $order->get_payment_method(), 0, 4 ) !== 'alma' ) {
+		if ( 'alma' !== substr( $order->get_payment_method(), 0, 4 ) ) {
 			return;
 		}
 
@@ -259,7 +260,7 @@ class Alma_WC_Refund {
 		$merchant_reference = $this->refund_helper->get_merchant_reference( $order_id );
 		if ( null === $merchant_reference ) {
 			/* translators: %s is an order number. */
-			$this->logger->error( sprintf( __( 'Full refund error : merchant reference is missing for order number %s.', $order_id ) ) );
+			$this->logger->error( sprintf( __( 'Full refund error : merchant reference is missing for order number %s.', 'alma-woocommerce-gateway' ), $order_id ) );
 			$this->refund_helper->add_refund_notice( $order_id, 'error', __( 'Alma full refund error : merchant reference is missing.', 'alma-woocommerce-gateway' ) );
 			return;
 		}
