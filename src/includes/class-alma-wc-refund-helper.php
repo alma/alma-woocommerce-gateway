@@ -133,9 +133,50 @@ class Alma_WC_Refund_Helper {
 				$message = 'Error fullRefund : ' . $e->getMessage();
 				$this->add_order_note( $order_id, 'error', $message );
 				$this->logger->error( $message );
-				return;
 			}
 		}
+	}
+
+	/**
+	 * Tells if the order is valid for a partial or full refund.
+	 *
+	 * @param $order_id
+	 * @param $refund_id
+	 * @return bool
+	 */
+	public function is_order_valid_for_refund( $order_id, $refund_id ) {
+
+		$is_order_valid_for_refund = true;
+
+		$order = wc_get_order( $order_id );
+		if ( substr( $order->get_payment_method(), 0, 4 ) !== 'alma' ) {
+			$is_order_valid_for_refund = false;
+		}
+
+		if ( ! $order->get_transaction_id() ) {
+			/* translators: %s is an order number. */
+			$message = sprintf( __( 'Error while getting transaction_id on trigger_payment for order_id : %s.', 'alma-woocommerce-gateway' ), $order_id );
+			$this->add_order_note( $order_id, 'error', $message );
+			$this->logger->error( $message );
+			$is_order_valid_for_refund = false;
+		}
+
+		$amount_to_refund = $this->get_amount_to_refund( $refund_id );
+		if ( 0 === $amount_to_refund ) {
+			$this->add_order_note( $order_id, 'error', __( 'Amount canno\'t be equal to 0 to refund with Alma.', 'alma-woocommerce-gateway' ) );
+			$is_order_valid_for_refund = false;
+		}
+
+		$merchant_reference = $this->get_merchant_reference( $order_id );
+		if ( null === $merchant_reference ) {
+			/* translators: %s is an order number. */
+			$message = sprintf( __( 'Partial refund error : merchant reference is missing for order number : %s.', 'alma-woocommerce-gateway' ), $order_id );
+			$this->add_order_note( $order_id, 'error', $message );
+			$this->logger->error( $message );
+			$is_order_valid_for_refund = false;
+		}
+
+		return $is_order_valid_for_refund;
 	}
 }
 
