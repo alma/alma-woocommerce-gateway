@@ -43,6 +43,7 @@ class Alma_WC_Refund {
 		$this->refund_helper = new Alma_WC_Refund_Helper();
 		$this->admin_texts_to_change = array(
 			'You will need to manually issue a refund through your payment gateway after using this.' => __( 'Refund will be operated directly with Alma.', 'alma-woocommerce-gateway' ),
+			/* translators: %s is an amount with currency. */
 			'Refund %s manually' => __( 'Refund %s with Alma', 'alma-woocommerce-gateway' )
 		);
 		$this->number_of_texts_changed = 0;
@@ -108,6 +109,7 @@ class Alma_WC_Refund {
 	 *
 	 * @param $classes Sring List of classes already loaded by WP, WC, and other plugins and theme.
 	 * @return string|void
+     * @deprecated ?
 	 */
 	public function admin_body_class( $classes ) {
 
@@ -177,46 +179,48 @@ class Alma_WC_Refund {
 
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
-			$this->add_refund_notice( $order_id, 'error', __( 'API client init error.', 'alma-woocommerce-gateway' ) );
+			$this->refund_helper->add_refund_notice( $order_id, 'error', __( 'API client init error.', 'alma-woocommerce-gateway' ) );
 			return;
 		}
 
 		if ( ! $order->get_transaction_id() ) {
 			$this->logger->error( 'Error while getting transaction_id on trigger_payment for order_id = ' . $order_id );
-			$this->add_refund_notice( $order_id, 'error', __( 'Error while getting transaction_id on trigger_payment for order_id = ' . $order_id, 'alma-woocommerce-gateway' ) );
+			$this->refund_helper->add_refund_notice( $order_id, 'error', __( 'Error while getting transaction_id on trigger_payment for order_id = ' . $order_id, 'alma-woocommerce-gateway' ) );
 			return;
 		}
 		error_log( '$payment_id' );
 		error_log( $order->get_transaction_id() );
 
-		$amount_to_refund = $this->get_amout_to_refund( $refund_id );
+		$amount_to_refund = $this->refund_helper->get_amout_to_refund( $refund_id );
 		error_log( '$amount_to_refund = ' . $amount_to_refund );
 		error_log( 'gettype($amount_to_refund) = ' . gettype( $amount_to_refund ) );
 		if ( 0 === $amount_to_refund ) {
-			$this->add_refund_notice( $order_id, 'error', __( 'Amount canno\'t be equal to 0 to refund with Alma.', 'alma-woocommerce-gateway' ) );
+			$this->refund_helper->add_refund_notice( $order_id, 'error', __( 'Amount canno\'t be equal to 0 to refund with Alma.', 'alma-woocommerce-gateway' ) );
 			return;
 		}
 
-		$merchant_reference = $this->get_merchant_reference( $order_id );
+		$merchant_reference = $this->refund_helper->get_merchant_reference( $order_id );
 		if ( null === $merchant_reference ) {
+			/* translators: %s is an order number. */
 			$this->logger->error( sprintf( __( 'Partial refund error : merchant reference is missing for order number %s.', $order_id ) ) );
-			$this->add_refund_notice( $order_id, 'error', __( 'Alma partial refund error : merchant reference is missing.', 'alma-woocommerce-gateway' ) );
+			$this->refund_helper->add_refund_notice( $order_id, 'error', __( 'Alma partial refund error : merchant reference is missing.', 'alma-woocommerce-gateway' ) );
 			return;
 		}
 
-		$refund_comment = $this->get_refund_comment( $refund_id );
+		$refund_comment = $this->refund_helper->get_refund_comment( $refund_id );
 
 		try {
 			$alma->payments->partialRefund( $order->get_transaction_id(), $amount_to_refund, $merchant_reference, $refund_comment );
 		} catch ( Exception $e ) {
 			$this->logger->error( 'Error partialRefund : ' . $e->getMessage() );
 			error_log( 'Error partialRefund : ' . $e->getMessage() );
-			$this->add_refund_notice( $order_id, 'error', __( 'Alma partial refund error.', 'alma-woocommerce-gateway' ) );
+			$this->refund_helper->add_refund_notice( $order_id, 'error', __( 'Alma partial refund error.', 'alma-woocommerce-gateway' ) );
 			return;
 		}
 
-		$this->add_refund_notice( $order_id, 'success', __( 'Alma partial refund success.', 'alma-woocommerce-gateway' ) );
-		$order->add_order_note( sprintf( __( 'You refunded %s via Alma.', 'alma-woocommerce-gateway' ), $this->get_amout_to_refund( $refund_id, true ) ) );
+		$this->refund_helper->add_refund_notice( $order_id, 'success', __( 'Alma partial refund success.', 'alma-woocommerce-gateway' ) );
+		/* translators: %s is an amount with currency. */
+		$order->add_order_note( sprintf( __( 'You refunded %s via Alma.', 'alma-woocommerce-gateway' ), $this->refund_helper->get_amout_to_refund( $refund_id, true ) ) );
 	}
 
 	/**
@@ -234,7 +238,7 @@ class Alma_WC_Refund {
 
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
-			$this->add_refund_notice( $order_id, 'error', __( 'API client init error.', 'alma-woocommerce-gateway' ) );
+			$this->refund_helper->add_refund_notice( $order_id, 'error', __( 'API client init error.', 'alma-woocommerce-gateway' ) );
 			return;
 		}
 
@@ -252,14 +256,15 @@ class Alma_WC_Refund {
 		error_log( '$payment_id' );
 		error_log( $order->get_transaction_id() );
 
-		$merchant_reference = $this->get_merchant_reference( $order_id );
+		$merchant_reference = $this->refund_helper->get_merchant_reference( $order_id );
 		if ( null === $merchant_reference ) {
+			/* translators: %s is an order number. */
 			$this->logger->error( sprintf( __( 'Full refund error : merchant reference is missing for order number %s.', $order_id ) ) );
-			$this->add_refund_notice( $order_id, 'error', __( 'Alma full refund error : merchant reference is missing.', 'alma-woocommerce-gateway' ) );
+			$this->refund_helper->add_refund_notice( $order_id, 'error', __( 'Alma full refund error : merchant reference is missing.', 'alma-woocommerce-gateway' ) );
 			return;
 		}
 
-		$refund_comment = $this->get_refund_comment( $refund_id );
+		$refund_comment = $this->refund_helper->get_refund_comment( $refund_id );
 
 		try {
 			$alma->payments->fullRefund( $order->get_transaction_id(), $merchant_reference, $refund_comment );
@@ -269,71 +274,8 @@ class Alma_WC_Refund {
 			return;
 		}
 
-		$this->add_refund_notice( $order_id, 'success', __( 'Alma full refund success.', 'alma-woocommerce-gateway' ) );
+		$this->refund_helper->add_refund_notice( $order_id, 'success', __( 'Alma full refund success.', 'alma-woocommerce-gateway' ) );
 		$order->add_order_note( __( 'You fully refunded this order via Alma.', 'alma-woocommerce-gateway' ) );
-	}
-
-	/**
-	 * Add a refund notice.
-	 *
-	 * @param $order_id Integer Order id.
-	 * @param $notice_type String Notice type.
-	 * @param $message String Message to display.
-	 * @return void
-	 */
-	private function add_refund_notice( $order_id, $notice_type, $message ) {
-		$refund_notices   = get_post_meta( $order_id, 'alma_refund_notices', false );
-		$refund_notices[] = array(
-			'notice_type' => $notice_type,
-			'message'     => $message,
-		);
-		update_post_meta( $order_id, 'alma_refund_notices', $refund_notices );
-	}
-
-	/**
-	 * Gets the amount to refund.
-	 *
-	 * @param $refund_id Integer Refund id.
-	 * @param $display Bool Tells if amount is supposed to be used for calculation or display.
-	 * @return int|string
-	 */
-	private function get_amout_to_refund( $refund_id, $display = false ) {
-		$refund           = new WC_Order_Refund( $refund_id );
-		$amount_to_refund = alma_wc_price_to_cents( floatval( $refund->get_amount() ) );
-		if ( true === $display ) {
-			$amount_to_refund = $refund->get_amount() . ' ' . $refund->get_currency();
-		}
-		return $amount_to_refund;
-	}
-
-	/**
-	 * Gets the comment of a refund (which is optional).
-	 *
-	 * @param $refund_id Integer Refund id.
-	 * @return string
-	 */
-	private function get_refund_comment( $refund_id ) {
-		$refund = new WC_Order_Refund( $refund_id );
-		return $refund->get_reason();
-	}
-
-	/**
-	 * Gets the amount to refund.
-	 *
-	 * @param $refund_id Integer Refund id.
-	 * @return int
-	 */
-	private function get_merchant_reference( $order_id ) {
-		try {
-			$alma_model_order = new Alma_WC_Model_Order( $order_id );
-		} catch ( Exception $e ) {
-			$this->logger->error( 'Error getting payment info from order: ' . $e->getMessage() );
-			error_log( 'Error getting payment info from order: ' . $e->getMessage() );
-			return null;
-		}
-
-		error_log( '$merchant_reference = ' . $alma_model_order->get_order_reference() );
-		return $alma_model_order->get_order_reference();
 	}
 
 }
