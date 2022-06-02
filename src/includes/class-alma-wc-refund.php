@@ -39,12 +39,12 @@ class Alma_WC_Refund {
 	 * __construct.
 	 */
 	public function __construct() {
-		$this->logger        = new Alma_WC_Logger();
-		$this->refund_helper = new Alma_WC_Refund_Helper();
-		$this->admin_texts_to_change = array(
+		$this->logger                  = new Alma_WC_Logger();
+		$this->refund_helper           = new Alma_WC_Refund_Helper();
+		$this->admin_texts_to_change   = array(
 			'You will need to manually issue a refund through your payment gateway after using this.' => __( 'Refund will be operated directly with Alma.', 'alma-woocommerce-gateway' ),
 			/* translators: %s is an amount with currency. */
-			'Refund %s manually' => __( 'Refund %s with Alma', 'alma-woocommerce-gateway' )
+			'Refund %s manually' => __( 'Refund %s with Alma', 'alma-woocommerce-gateway' ),
 		);
 		$this->number_of_texts_changed = 0;
 	}
@@ -86,20 +86,20 @@ class Alma_WC_Refund {
 			return $translation;
 		}
 
-        foreach ( $this->admin_texts_to_change as $original_text => $updated_text ) {
-	        if ( $original_text === $text ) {
-		        $order = wc_get_order( intval( $_GET['post'] ) );
-		        if ( substr( $order->get_payment_method(), 0, 4 ) !== 'alma' ) {
-			        return $translation;
-		        }
-		        $translation = str_replace( $original_text, $updated_text, $text );
-		        $this->number_of_texts_changed++;
-	        }
-        }
+		foreach ( $this->admin_texts_to_change as $original_text => $updated_text ) {
+			if ( $original_text === $text ) {
+				$order = wc_get_order( intval( $_GET['post'] ) );
+				if ( substr( $order->get_payment_method(), 0, 4 ) !== 'alma' ) {
+					return $translation;
+				}
+				$translation = str_replace( $original_text, $updated_text, $text );
+				$this->number_of_texts_changed++;
+			}
+		}
 
-        if ( $this->number_of_texts_changed === count( $this->admin_texts_to_change ) ) {
-	        remove_filter( 'gettext', array( $this, 'gettext' ), 10 );
-        }
+		if ( $this->number_of_texts_changed === count( $this->admin_texts_to_change ) ) {
+			remove_filter( 'gettext', array( $this, 'gettext' ), 10 );
+		}
 
 		return $translation;
 	}
@@ -109,7 +109,7 @@ class Alma_WC_Refund {
 	 *
 	 * @param $classes Sring List of classes already loaded by WP, WC, and other plugins and theme.
 	 * @return string|void
-     * @deprecated ?
+	 * @deprecated ?
 	 */
 	public function admin_body_class( $classes ) {
 
@@ -282,14 +282,14 @@ class Alma_WC_Refund {
 
 
 // Gilles : Truc sympa pour afficher tous les hooks sur une page web !
-//$debug_tags = array();
-//add_action( 'all', function ( $tag ) {
-//	global $debug_tags;
-//	if ( in_array( $tag, $debug_tags ) ) {
-//		return;
-//	}
-//	pre( $tag );
-//	$debug_tags[] = $tag;
-//} );
+// $debug_tags = array();
+// add_action( 'all', function ( $tag ) {
+// global $debug_tags;
+// if ( in_array( $tag, $debug_tags ) ) {
+// return;
+// }
+// pre( $tag );
+// $debug_tags[] = $tag;
+// } );
 
 
