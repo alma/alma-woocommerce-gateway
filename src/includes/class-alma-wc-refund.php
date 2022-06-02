@@ -31,11 +31,21 @@ class Alma_WC_Refund {
 	private $refund_helper;
 
 	/**
+	 * Admin texts to be changed in order page to replace by Alma text.
+	 */
+	private $admin_texts_to_change;
+
+	/**
 	 * __construct.
 	 */
 	public function __construct() {
 		$this->logger        = new Alma_WC_Logger();
 		$this->refund_helper = new Alma_WC_Refund_Helper();
+		$this->admin_texts_to_change = array(
+			'You will need to manually issue a refund through your payment gateway after using this.' => __( 'Refund will be operated directly with Alma.', 'alma-woocommerce-gateway' ),
+			'Refund %s manually' => __( 'Refund %s with Alma', 'alma-woocommerce-gateway' )
+		);
+		$this->number_of_texts_changed = 0;
 	}
 
 	/**
@@ -71,14 +81,24 @@ class Alma_WC_Refund {
 	 */
 	public function gettext( $translation, $text, $domain ) {
 
-		if ( 'Refund %s manually' === $text && 'woocommerce' === $domain ) {
-			$order = wc_get_order( intval( $_GET['post'] ) );
-			if ( substr( $order->get_payment_method(), 0, 4 ) !== 'alma' ) {
-				return $translation;
-			}
-			$translation = str_replace( 'manually', 'via Alma', $text );
-			remove_filter( 'gettext', array( $this, 'gettext' ), 10 );
+		if ( 'woocommerce' !== $domain || ! array_key_exists( $text, $this->admin_texts_to_change ) ) {
+			return $translation;
 		}
+
+        foreach ( $this->admin_texts_to_change as $original_text => $updated_text ) {
+	        if ( $original_text === $text ) {
+		        $order = wc_get_order( intval( $_GET['post'] ) );
+		        if ( substr( $order->get_payment_method(), 0, 4 ) !== 'alma' ) {
+			        return $translation;
+		        }
+		        $translation = str_replace( $original_text, $updated_text, $text );
+		        $this->number_of_texts_changed++;
+	        }
+        }
+
+        if ( $this->number_of_texts_changed === count( $this->admin_texts_to_change ) ) {
+	        remove_filter( 'gettext', array( $this, 'gettext' ), 10 );
+        }
 
 		return $translation;
 	}
