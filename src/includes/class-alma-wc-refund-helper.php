@@ -93,6 +93,50 @@ class Alma_WC_Refund_Helper {
 		);
 		update_post_meta( $order_id, 'alma_refund_notices', $refund_notices );
 	}
+
+	/**
+	 * Callback function for the event "order status changed".
+	 *
+	 * @param integer $order_id The order id.
+	 * @param string  $previous_status Order status before it changes.
+	 * @param string  $next_status Order status affected to the order.
+	 * @return void
+	 */
+	public function woocommerce_order_status_changed( $order_id, $previous_status, $next_status ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
+
+		error_log( 'Alma_WC_Refund_Helper::woocommerce_order_status_changed()' );
+
+		$order = wc_get_order( $order_id );
+		if ( 'alma' !== substr( $order->get_payment_method(), 0, 4 ) ) {
+			return;
+		}
+
+		if (
+			alma_wc_plugin()->settings->refund_automatically_on_order_status_change === 'yes' &&
+			'refunded' === $next_status
+		) {
+			$alma = alma_wc_plugin()->get_alma_client();
+			if ( ! $alma ) {
+				$this->add_refund_notice( $order_id, 'error', __( 'API client init error.', 'alma-woocommerce-gateway' ) );
+				return;
+			}
+			$merchant_reference = $this->get_merchant_reference( $order_id );
+			if ( null === $merchant_reference ) {
+				/* translators: %s is an order number. */
+				$this->logger->error( sprintf( __( 'Full refund error : merchant reference is missing for order number %s.', 'alma-woocommerce-gateway' ), $order_id ) );
+				$this->refund_helper->add_refund_notice( $order_id, 'error', __( 'Alma full refund error : merchant reference is missing.', 'alma-woocommerce-gateway' ) );
+				return;
+			}
+			$refund_comment = __( 'Fully refunded via WooCommerce back-office on order status changed.', 'alma-woocommerce-gateway' );
+			try {
+				$alma->payments->fullRefund( $order->get_transaction_id(), $merchant_reference, $refund_comment );
+			} catch ( Exception $e ) {
+				$this->logger->error( 'Error fullRefund : ' . $e->getMessage() );
+				error_log( 'Error fullRefund : ' . $e->getMessage() );
+				return;
+			}
+		}
+	}
 }
 
 
