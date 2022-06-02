@@ -30,12 +30,11 @@ class Alma_WC_Refund_Helper {
 		$this->logger = new Alma_WC_Logger();
 	}
 
-
 	/**
 	 * Gets the amount to refund.
 	 *
-	 * @param $refund_id Integer Refund id.
-	 * @param $display Bool Tells if amount is supposed to be used for calculation or display.
+	 * @param integer $refund_id Refund id.
+	 * @param bool    $display Tells if amount is supposed to be used for calculation or display.
 	 * @return int|string
 	 */
 	public function get_amount_to_refund( $refund_id, $display = false ) {
@@ -50,7 +49,7 @@ class Alma_WC_Refund_Helper {
 	/**
 	 * Gets the comment of a refund (which is optional).
 	 *
-	 * @param $refund_id Integer Refund id.
+	 * @param integer $refund_id Refund id.
 	 * @return string
 	 */
 	public function get_refund_comment( $refund_id ) {
@@ -61,7 +60,7 @@ class Alma_WC_Refund_Helper {
 	/**
 	 * Gets the merchant reference.
 	 *
-	 * @param $order_id Integer An order id.
+	 * @param integer $order_id An order id.
 	 * @return string
 	 */
 	public function get_merchant_reference( $order_id ) {
@@ -77,9 +76,9 @@ class Alma_WC_Refund_Helper {
 	/**
 	 * Adds an order note, and a back-office notice.
 	 *
-	 * @param $order_id Integer Order id.
-	 * @param $notice_type String Notice type.
-	 * @param $message String Message to display.
+	 * @param integer $order_id Order id.
+	 * @param string  $notice_type Notice type.
+	 * @param string  $message Message to display.
 	 * @return void
 	 */
 	public function add_order_note( $order_id, $notice_type, $message ) {
