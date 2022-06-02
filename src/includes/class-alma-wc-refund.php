@@ -100,7 +100,7 @@ class Alma_WC_Refund {
 
 		foreach ( $this->admin_texts_to_change as $original_text => $updated_text ) {
 			if ( $original_text === $text ) {
-				$order = wc_get_order( intval( $_GET['post'] ) );
+				$order = wc_get_order( intval( $_GET['post'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
 				if ( substr( $order->get_payment_method(), 0, 4 ) !== 'alma' ) {
 					return $translation;
 				}
@@ -109,7 +109,7 @@ class Alma_WC_Refund {
 			}
 		}
 
-		if ( $this->number_of_texts_changed === count( $this->admin_texts_to_change ) ) {
+		if ( count( $this->admin_texts_to_change ) === $this->number_of_texts_changed ) {
 			remove_filter( 'gettext', array( $this, 'gettext' ), 10 );
 		}
 
@@ -139,8 +139,8 @@ class Alma_WC_Refund {
 				continue;
 			}
 			?>
-			<div class="notice notice-<?php echo $notice_infos['notice_type']; ?> is-dismissible">
-				<p><?php echo $notice_infos['message']; ?></p>
+			<div class="notice notice-<?php echo esc_html( $notice_infos['notice_type'] ); ?> is-dismissible">
+				<p><?php echo esc_html( $notice_infos['message'] ); ?></p>
 			</div>
 			<?php
 		}
@@ -150,8 +150,8 @@ class Alma_WC_Refund {
 	/**
 	 * Action hook for order partial refunded.
 	 *
-	 * @param $order_id Integer Order id.
-	 * @param $refund_id Integer Refund id.
+	 * @param integer $order_id Order id.
+	 * @param integer $refund_id Refund id.
 	 * @return void
 	 */
 	public function woocommerce_order_partially_refunded( $order_id, $refund_id ) {
@@ -168,8 +168,10 @@ class Alma_WC_Refund {
 		}
 
 		if ( ! $order->get_transaction_id() ) {
-			$this->refund_helper->add_order_note( $order_id, 'error', __( 'Error while getting transaction_id on trigger_payment for order_id = ' . $order_id, 'alma-woocommerce-gateway' ) );
-			$this->logger->error( 'Error while getting transaction_id on trigger_payment for order_id = ' . $order_id );
+			/* translators: %s is an order number. */
+			$message = sprintf( __( 'Error while getting transaction_id on trigger_payment for order_id : %s.', 'alma-woocommerce-gateway' ), $order_id );
+			$this->refund_helper->add_order_note( $order_id, 'error', $message );
+			$this->logger->error( $message );
 			return;
 		}
 
@@ -182,8 +184,9 @@ class Alma_WC_Refund {
 		$merchant_reference = $this->refund_helper->get_merchant_reference( $order_id );
 		if ( null === $merchant_reference ) {
 			/* translators: %s is an order number. */
-			$this->refund_helper->add_order_note( $order_id, 'error', __( 'Alma partial refund error : merchant reference is missing.', 'alma-woocommerce-gateway' ) );
-			$this->logger->error( sprintf( __( 'Partial refund error : merchant reference is missing for order number %s.', 'alma-woocommerce-gateway' ), $order_id ) );
+			$message = sprintf( __( 'Partial refund error : merchant reference is missing for order number : %s.', 'alma-woocommerce-gateway' ), $order_id );
+			$this->refund_helper->add_order_note( $order_id, 'error', $message );
+			$this->logger->error( $message );
 			return;
 		}
 
@@ -204,8 +207,8 @@ class Alma_WC_Refund {
 	/**
 	 * Action hook for order fully refunded.
 	 *
-	 * @param $order_id integer Order id.
-	 * @param $refund_id integer Refund id.
+	 * @param integer $order_id Order id.
+	 * @param integer $refund_id Refund id.
 	 * @return void
 	 */
 	public function woocommerce_order_fully_refunded( $order_id, $refund_id ) {
@@ -223,7 +226,8 @@ class Alma_WC_Refund {
 		}
 
 		if ( ! $order->get_transaction_id() ) {
-			$message = sprintf( __( 'Error while getting transaction_id for order_id = %s.', 'alma-woocommerce-gateway' ), $order_id );
+			/* translators: %s is an order id. */
+			$message = sprintf( __( 'Error while getting transaction_id for order_id : %s.', 'alma-woocommerce-gateway' ), $order_id );
 			$this->refund_helper->add_order_note( $order_id, 'error', $message );
 			$this->logger->error( $message );
 			return;
