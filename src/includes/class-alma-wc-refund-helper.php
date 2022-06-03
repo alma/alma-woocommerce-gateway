@@ -58,22 +58,6 @@ class Alma_WC_Refund_Helper {
 	}
 
 	/**
-	 * Gets the merchant reference.
-	 *
-	 * @param integer $order_id An order id.
-	 * @return string
-	 */
-	public function get_merchant_reference( $order_id ) {
-		try {
-			$alma_model_order = new Alma_WC_Model_Order( $order_id );
-		} catch ( Exception $e ) {
-			$this->logger->error( 'Error getting payment info from order: ' . $e->getMessage() );
-			return null;
-		}
-		return $alma_model_order->get_order_reference();
-	}
-
-	/**
 	 * Adds an order note, and a back-office notice.
 	 *
 	 * @param integer $order_id Order id.
@@ -97,7 +81,7 @@ class Alma_WC_Refund_Helper {
 	/**
 	 * Callback function for the event "order status changed".
 	 *
-	 * @param integer $order_id The order id.
+	 * @param integer $order_id Order id.
 	 * @param string  $previous_status Order status before it changes.
 	 * @param string  $next_status Order status affected to the order.
 	 * @return void
@@ -111,74 +95,110 @@ class Alma_WC_Refund_Helper {
 
 		if (
 			alma_wc_plugin()->settings->refund_automatically_on_order_status_change === 'yes' &&
-			'refunded' === $next_status
+			'refunded' === $next_status &&
+			true === $this->is_order_valid_for_full_refund_with_alma( $order_id )
 		) {
 			$alma = alma_wc_plugin()->get_alma_client();
 			if ( ! $alma ) {
 				$this->add_order_note( $order_id, 'error', __( 'Alma API client init error.', 'alma-woocommerce-gateway' ) );
 				return;
 			}
-			$merchant_reference = $this->get_merchant_reference( $order_id );
-			if ( null === $merchant_reference ) {
-				/* translators: %s is an order number. */
-				$message = sprintf( __( 'Full refund error : merchant reference is missing for order number %s.', 'alma-woocommerce-gateway' ) );
-				$this->add_order_note( $order_id, 'error', $message );
-				$this->logger->error( $message );
-				return;
-			}
+			$merchant_reference = $order->get_order_number();
+
 			/* translators: %s is a username. */
-			$refund_comment = sprintf( __( 'Order fully refunded by %s via WooCommerce back-office on order status changed.', 'alma-woocommerce-gateway' ), wp_get_current_user()->display_name );
+			$refund_comment = sprintf( __( 'Order fully refunded by %s via WooCommerce back-office.', 'alma-woocommerce-gateway' ), wp_get_current_user()->display_name );
+
 			try {
 				$alma->payments->fullRefund( $order->get_transaction_id(), $merchant_reference, $refund_comment );
 				$this->add_order_note( $order_id, 'success', $refund_comment );
 			} catch ( Exception $e ) {
-				$message = 'Error fullRefund : ' . $e->getMessage();
-				$this->add_order_note( $order_id, 'error', $message );
-				$this->logger->error( $message );
+				$error_message = 'Error fullRefund : ' . $e->getMessage();
+				$this->add_order_note( $order_id, 'error', $error_message );
+				$this->logger->error( $error_message );
 			}
 		}
 	}
 
 	/**
-	 * Tells if the order is valid for a partial or full refund.
+	 * Tells if the order is valid for a partial refund.
 	 *
-	 * @param $order_id
-	 * @param $refund_id
+	 * @param integer $order_id Order id.
+	 * @param integer $refund_id Refund id.
 	 * @return bool
 	 */
-	public function is_order_valid_for_refund( $order_id, $refund_id ) {
+	public function is_order_valid_for_partial_refund_with_alma( $order_id, $refund_id ) {
 
-		$is_order_valid_for_refund = true;
+		$is_valid = true;
 
-		$order = wc_get_order( $order_id );
-		if ( substr( $order->get_payment_method(), 0, 4 ) !== 'alma' ) {
-			$is_order_valid_for_refund = false;
+		if ( ! $this->is_alma_payment_method_for_order( $order_id ) ) {
+			$is_valid = false;
 		}
 
-		if ( ! $order->get_transaction_id() ) {
-			/* translators: %s is an order number. */
-			$message = sprintf( __( 'Error while getting transaction_id on trigger_payment for order_id : %s.', 'alma-woocommerce-gateway' ), $order_id );
-			$this->add_order_note( $order_id, 'error', $message );
-			$this->logger->error( $message );
-			$is_order_valid_for_refund = false;
+		if ( ! $this->has_order_a_transaction_id( $order_id ) ) {
+			$is_valid = false;
 		}
 
 		$amount_to_refund = $this->get_amount_to_refund( $refund_id );
 		if ( 0 === $amount_to_refund ) {
 			$this->add_order_note( $order_id, 'error', __( 'Amount canno\'t be equal to 0 to refund with Alma.', 'alma-woocommerce-gateway' ) );
-			$is_order_valid_for_refund = false;
+			$is_valid = false;
 		}
 
-		$merchant_reference = $this->get_merchant_reference( $order_id );
-		if ( null === $merchant_reference ) {
+		return $is_valid;
+	}
+
+	/**
+	 * Tells if the order is valid for a full refund.
+	 *
+	 * @param integer $order_id Order id.
+	 * @return bool
+	 */
+	public function is_order_valid_for_full_refund_with_alma( $order_id ) {
+
+		$is_valid = true;
+
+		if ( ! $this->is_alma_payment_method_for_order( $order_id ) ) {
+			$is_valid = false;
+		}
+
+		if ( ! $this->has_order_a_transaction_id( $order_id ) ) {
+			$is_valid = false;
+		}
+
+		return $is_valid;
+	}
+
+	/**
+	 * Has this order been paid via Alma payment method ?.
+	 *
+	 * @param integer $order_id Order id.
+	 * @return bool
+	 */
+	private function is_alma_payment_method_for_order( $order_id ) {
+		$order = wc_get_order( $order_id );
+
+		if ( substr( $order->get_payment_method(), 0, 4 ) !== 'alma' ) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Has this order a transaction id ?.
+	 *
+	 * @param integer $order_id Order id.
+	 * @return bool
+	 */
+	private function has_order_a_transaction_id( $order_id ) {
+		$order = wc_get_order( $order_id );
+		if ( ! $order->get_transaction_id() ) {
 			/* translators: %s is an order number. */
-			$message = sprintf( __( 'Refund error : merchant reference is missing for order number : %s.', 'alma-woocommerce-gateway' ), $order_id );
-			$this->add_order_note( $order_id, 'error', $message );
-			$this->logger->error( $message );
-			$is_order_valid_for_refund = false;
+			$error_message = sprintf( __( 'Error while getting transaction_id on trigger_payment for order_id : %s.', 'alma-woocommerce-gateway' ), $order_id );
+			$this->add_order_note( $order_id, 'error', $error_message );
+			$this->logger->error( $error_message );
+			return false;
 		}
-
-		return $is_order_valid_for_refund;
+		return true;
 	}
 }
 
