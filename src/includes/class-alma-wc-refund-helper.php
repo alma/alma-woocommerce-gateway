@@ -115,7 +115,7 @@ class Alma_WC_Refund_Helper {
 		) {
 			$alma = alma_wc_plugin()->get_alma_client();
 			if ( ! $alma ) {
-				$this->add_order_note( $order_id, 'error', __( 'API client init error.', 'alma-woocommerce-gateway' ) );
+				$this->add_order_note( $order_id, 'error', __( 'Alma API client init error.', 'alma-woocommerce-gateway' ) );
 				return;
 			}
 			$merchant_reference = $this->get_merchant_reference( $order_id );
@@ -126,9 +126,11 @@ class Alma_WC_Refund_Helper {
 				$this->logger->error( $message );
 				return;
 			}
-			$refund_comment = __( 'Fully refunded via WooCommerce back-office on order status changed.', 'alma-woocommerce-gateway' );
+			/* translators: %s is a username. */
+			$refund_comment = sprintf( __( 'Order fully refunded by %s via WooCommerce back-office on order status changed.', 'alma-woocommerce-gateway' ), wp_get_current_user()->display_name );
 			try {
 				$alma->payments->fullRefund( $order->get_transaction_id(), $merchant_reference, $refund_comment );
+				$this->add_order_note( $order_id, 'success', $refund_comment );
 			} catch ( Exception $e ) {
 				$message = 'Error fullRefund : ' . $e->getMessage();
 				$this->add_order_note( $order_id, 'error', $message );
@@ -170,7 +172,7 @@ class Alma_WC_Refund_Helper {
 		$merchant_reference = $this->get_merchant_reference( $order_id );
 		if ( null === $merchant_reference ) {
 			/* translators: %s is an order number. */
-			$message = sprintf( __( 'Partial refund error : merchant reference is missing for order number : %s.', 'alma-woocommerce-gateway' ), $order_id );
+			$message = sprintf( __( 'Refund error : merchant reference is missing for order number : %s.', 'alma-woocommerce-gateway' ), $order_id );
 			$this->add_order_note( $order_id, 'error', $message );
 			$this->logger->error( $message );
 			$is_order_valid_for_refund = false;
