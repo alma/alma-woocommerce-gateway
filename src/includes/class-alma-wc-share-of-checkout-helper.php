@@ -160,14 +160,6 @@ class Alma_WC_Share_Of_Checkout_Helper {
 		$payment_methods_currencies = array();
 		foreach ( $orders_by_date_range as $order ) {
 
-			error_log( '-----------------------------------------------' );
-			error_log( 'get_class(order) = ' . get_class( $order ) );
-			error_log( '$order->get_id() = ' . $order->get_id() );
-			error_log( '$order->get_parent_id() = ' . $order->get_parent_id() );
-			error_log( '$order->get_type() = ' . $order->get_type() );
-			error_log( '$order->get_total() = ' . $order->get_total() );
-			error_log( '$order->get_version() = ' . $order->get_version() );
-
 			if ( ! isset( $payment_methods_currencies[ $order->get_payment_method() ] ) ) {
 				$payment_methods_currencies[ $order->get_payment_method() ] = array();
 			}
@@ -182,15 +174,20 @@ class Alma_WC_Share_Of_Checkout_Helper {
 		}
 
 		$payment_methods = array();
-		foreach ( $payment_methods_currencies as $payment_method => $currency_values ) {
-			$payment_methods['payment_method_name'] = $payment_method;
+		foreach ( $payment_methods_currencies as $payment_method_name => $currency_values ) {
+			$payment_method = array();
+			$payment_method['payment_method_name'] = $payment_method_name;
+			$orders = array();
 			foreach ( $currency_values as $currency => $values ) {
-				$payment_methods['orders'] = array(
+				$orders = array();
+				$orders[] = array(
 					'order_count' => $values['order_count'],
 					'amount'      => $values['amount'],
 					'currency'    => $currency,
 				);
 			}
+			$payment_method['orders'] = $orders;
+			$payment_methods[] = $payment_method;
 		}
 		return $payment_methods;
 	}
@@ -220,6 +217,7 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	public function share_day() {
 		error_log( '---------------------------' );
 		error_log( 'function share_day()' );
+		error_log( 'get_share_of_checkout_from_date() = ' . $this->get_share_of_checkout_from_date() );
 
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
@@ -228,7 +226,11 @@ class Alma_WC_Share_Of_Checkout_Helper {
 
 		$res = array();
 		try {
+			error_log( 'get_payload() = ' . json_encode( $this->get_payload() ) );
 			$res = $alma->shareOfCheckout->share( $this->get_payload() );
+			error_log( '$this->get_payload()' );
+			error_log( json_encode( $this->get_payload() ) );
+
 		} catch ( RequestError $e ) {
 			$this->logger->info( sprintf('Alma_WC_Share_Of_Checkout_Helper::share error get message : %s', $e->getMessage() ) );
 		}
