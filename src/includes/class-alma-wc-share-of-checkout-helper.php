@@ -27,7 +27,7 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	 * __construct.
 	 */
 	public function __construct() {
-		$this->logger = new Alma_WC_Logger();
+		$this->logger     = new Alma_WC_Logger();
 		$this->start_time = null;
 		$this->end_time   = null;
 	}
@@ -92,7 +92,6 @@ class Alma_WC_Share_Of_Checkout_Helper {
 		}
 
 		try {
-			// @todo this can change depending on PHP client version.
 			$last_update_by_api = $alma->shareOfCheckout->getLastUpdateDates();
 			error_log( '$last_update_by_api = ' );
 			error_log( gettype( $last_update_by_api ) );
@@ -117,6 +116,7 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	private function get_orders_by_date_range( $from, $to ) {
 		$args = array(
 			'date_created' => $from . '...' . $to,
+			'type'         => 'shop_order',
 		);
 		return wc_get_orders( $args );
 	}
@@ -159,6 +159,15 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	private function get_payload_payment_methods( $orders_by_date_range ) {
 		$payment_methods_currencies = array();
 		foreach ( $orders_by_date_range as $order ) {
+
+			error_log( '-----------------------------------------------' );
+			error_log( 'get_class(order) = ' . get_class( $order ) );
+			error_log( '$order->get_id() = ' . $order->get_id() );
+			error_log( '$order->get_parent_id() = ' . $order->get_parent_id() );
+			error_log( '$order->get_type() = ' . $order->get_type() );
+			error_log( '$order->get_total() = ' . $order->get_total() );
+			error_log( '$order->get_version() = ' . $order->get_version() );
+
 			if ( ! isset( $payment_methods_currencies[ $order->get_payment_method() ] ) ) {
 				$payment_methods_currencies[ $order->get_payment_method() ] = array();
 			}
@@ -221,7 +230,7 @@ class Alma_WC_Share_Of_Checkout_Helper {
 		try {
 			$res = $alma->shareOfCheckout->share( $this->get_payload() );
 		} catch ( RequestError $e ) {
-			$this->logger->info( 'Alma_WC_Share_Of_Checkout_Helper::share error get message :', array( $e->getMessage() ) );
+			$this->logger->info( sprintf('Alma_WC_Share_Of_Checkout_Helper::share error get message : %s', $e->getMessage() ) );
 		}
 		return $res;
 	}
