@@ -175,11 +175,11 @@ class Alma_WC_Share_Of_Checkout_Helper {
 
 		$payment_methods = array();
 		foreach ( $payment_methods_currencies as $payment_method_name => $currency_values ) {
-			$payment_method = array();
+			$payment_method                        = array();
 			$payment_method['payment_method_name'] = $payment_method_name;
-			$orders = array();
+			$orders                                = array();
 			foreach ( $currency_values as $currency => $values ) {
-				$orders = array();
+				$orders   = array();
 				$orders[] = array(
 					'order_count' => $values['order_count'],
 					'amount'      => $values['amount'],
@@ -187,7 +187,7 @@ class Alma_WC_Share_Of_Checkout_Helper {
 				);
 			}
 			$payment_method['orders'] = $orders;
-			$payment_methods[] = $payment_method;
+			$payment_methods[]        = $payment_method;
 		}
 		return $payment_methods;
 	}
@@ -232,7 +232,7 @@ class Alma_WC_Share_Of_Checkout_Helper {
 			error_log( json_encode( $this->get_payload() ) );
 
 		} catch ( RequestError $e ) {
-			$this->logger->info( sprintf('Alma_WC_Share_Of_Checkout_Helper::share error get message : %s', $e->getMessage() ) );
+			$this->logger->info( sprintf( 'Alma_WC_Share_Of_Checkout_Helper::share error get message : %s', $e->getMessage() ) );
 		}
 		return $res;
 	}
