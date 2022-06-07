@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v2.6.1
+------
+
+* fix: version of widgets.umd.js hard coded to 2.8.0
+
 v2.6.0
 ------
 
