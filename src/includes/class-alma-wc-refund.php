@@ -175,7 +175,7 @@ class Alma_WC_Refund {
 
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
-			$this->refund_helper->add_order_note( $order_id, 'error', __( 'API client init error.', 'alma-woocommerce-gateway' ) );
+			$this->refund_helper->add_order_note( $order_id, 'error', __( 'Full refund unavailable due to a connection error.', 'alma-woocommerce-gateway' ) );
 			return;
 		}
 
