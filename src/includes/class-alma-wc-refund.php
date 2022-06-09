@@ -14,8 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Alma_WC_Refund {
 
-	const FOO = 'bar';
-
 	/**
 	 * Logger
 	 *
@@ -81,7 +79,6 @@ class Alma_WC_Refund {
 	 */
 	public function woocommerce_new_order_note_data( $comment_datas ) {
 
-		// @todo check if this message is the same for old WC versions.
 		if ( 'Order status set to refunded. To return funds to the customer you will need to issue a refund through your payment gateway.' === $comment_datas['comment_content'] ) {
 			/* translators: %s is a username. */
 			$comment_datas['comment_content'] = sprintf( __( 'Order fully refunded via Alma by %s.', 'alma-woocommerce-gateway' ), wp_get_current_user()->display_name );
