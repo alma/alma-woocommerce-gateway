@@ -53,17 +53,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 //return;
 
-if ( ! defined( ALMA_WC_OLD_PLUGIN_FILE ) ) {
-	define( ALMA_WC_OLD_PLUGIN_FILE, 'akismet/akismet.php' );
-//	define( ALMA_WC_OLD_PLUGIN_FILE, 'alma-woocommerce-gateway/alma-woocommerce-gateway.php' );
+if ( ! defined( 'ALMA_WC_OLD_PLUGIN_FILE' ) ) {
+	define( 'ALMA_WC_OLD_PLUGIN_FILE', 'akismet/akismet.php' );
+//	define( 'ALMA_WC_OLD_PLUGIN_FILE', 'alma-woocommerce-gateway/alma-woocommerce-gateway.php' );
 }
 
-if ( ! defined( ALMA_WC_OLD_PLUGIN_FILE ) ) {
-	define( 'ALMA_WC_OLD_PLUGIN_FILE', 'alma-gateway-for-woocommerce/alma-gateway-for-woocommerce.php' );
+if ( ! defined( 'ALMA_WC_NEW_PLUGIN_FILE' ) ) {
+	define( 'ALMA_WC_NEW_PLUGIN_FILE', 'alma-gateway-for-woocommerce/alma-gateway-for-woocommerce.php' );
 }
 
-if ( ! defined( ALMA_PREFIX_FOR_TMP_OPTIONS ) ) {
-	define( 'ALMA_PREFIX_FOR_TMP_OPTIONS', 'my_tmp_' );
+if ( ! defined( 'ALMA_PREFIX_FOR_TMP_OPTIONS' ) ) {
+	define( 'ALMA_PREFIX_FOR_TMP_OPTIONS', 'alma_tmp_' );
 }
 
 /**
