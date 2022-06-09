@@ -5,6 +5,8 @@
  * @package Alma_WooCommerce_Gateway
  */
 
+use Alma\API\RequestError;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
@@ -187,7 +189,7 @@ class Alma_WC_Refund {
 			$alma->payments->partialRefund( $order->get_transaction_id(), $amount_to_refund, $merchant_reference, $refund_comment );
 			/* translators: %1$s is a username, %2$s is an amount with currency. */
 			$this->refund_helper->add_order_note( $order_id, 'success', sprintf( __( '%1$s refunded %2$s with Alma.', 'alma-woocommerce-gateway' ), wp_get_current_user()->display_name, $this->refund_helper->get_amount_to_refund( $refund_id, true ) ) );
-		} catch ( Exception $e ) {
+		} catch ( RequestError $e ) {
 			/* translators: %s is an error message. */
 			$error_message = sprintf( __( 'Alma partial refund error : %s.', 'alma-woocommerce-gateway' ), $e->getMessage() );
 			$this->refund_helper->add_order_note( $order_id, 'error', $error_message );
