@@ -152,11 +152,9 @@ class Alma_WC_Refund {
 			if ( ! is_array( $notice_infos ) ) {
 				continue;
 			}
-			?>
-			<div class="notice notice-<?php echo esc_html( $notice_infos['notice_type'] ); ?> is-dismissible">
-				<p><?php echo esc_html( $notice_infos['message'] ); ?></p>
-			</div>
-			<?php
+			echo '<div class="notice notice-' . esc_html( $notice_infos['notice_type'] ) . 'is-dismissible">
+				<p>' . esc_html( $notice_infos['message'] ) . '</p>
+			</div>';
 		}
 		delete_post_meta( $post_id, 'alma_refund_notices' );
 	}
