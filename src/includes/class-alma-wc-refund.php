@@ -171,7 +171,7 @@ class Alma_WC_Refund {
 	public function woocommerce_order_partially_refunded( $order_id, $refund_id ) {
 
 		$order = wc_get_order( $order_id );
-		if ( true !== $this->refund_helper->is_order_valid_for_partial_refund_with_alma( $order_id, $refund_id ) ) {
+		if ( ! $this->refund_helper->is_order_valid_for_partial_refund_with_alma( $order_id, $refund_id ) ) {
 			return;
 		}
 
