@@ -34,16 +34,22 @@ class Alma_WC_Refund_Helper {
 	 * Gets the amount to refund.
 	 *
 	 * @param integer $refund_id Refund id.
-	 * @param bool    $display Tells if amount is supposed to be used for calculation or display.
-	 * @return int|string
+	 * @return int
 	 */
-	public function get_amount_to_refund( $refund_id, $display = false ) {
-		$refund           = new WC_Order_Refund( $refund_id );
-		$amount_to_refund = alma_wc_price_to_cents( floatval( $refund->get_amount() ) );
-		if ( true === $display ) {
-			$amount_to_refund = $refund->get_amount() . ' ' . $refund->get_currency();
-		}
-		return $amount_to_refund;
+	public function get_amount_to_refund( $refund_id ) {
+		$refund = new WC_Order_Refund( $refund_id );
+		return alma_wc_price_to_cents( floatval( $refund->get_amount() ) );
+	}
+
+	/**
+	 * Gets the amount to refund for display on the page.
+	 *
+	 * @param integer $refund_id Refund id.
+	 * @return string
+	 */
+	public function get_amount_to_refund_for_display( $refund_id ) {
+		$refund = new WC_Order_Refund( $refund_id );
+		return $refund->get_amount() . ' ' . $refund->get_currency();
 	}
 
 	/**
@@ -123,7 +129,7 @@ class Alma_WC_Refund_Helper {
 	 * Tells if the order is valid for a partial refund.
 	 *
 	 * @param WC_Order $order An order.
-	 * @param integer $refund_id Refund id.
+	 * @param integer  $refund_id Refund id.
 	 * @return bool
 	 */
 	public function is_order_valid_for_partial_refund_with_alma( $order, $refund_id ) {

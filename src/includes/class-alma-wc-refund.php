@@ -154,7 +154,7 @@ class Alma_WC_Refund {
 			if ( ! is_array( $notice_infos ) ) {
 				continue;
 			}
-			echo '<div class="notice notice-' . esc_html( $notice_infos['notice_type'] ) . 'is-dismissible">
+			echo '<div class="notice notice-' . esc_html( $notice_infos['notice_type'] ) . ' is-dismissible">
 				<p>' . esc_html( $notice_infos['message'] ) . '</p>
 			</div>';
 		}
@@ -188,7 +188,7 @@ class Alma_WC_Refund {
 		try {
 			$alma->payments->partialRefund( $order->get_transaction_id(), $amount_to_refund, $merchant_reference, $refund_comment );
 			/* translators: %1$s is a username, %2$s is an amount with currency. */
-			$this->refund_helper->add_order_note( $order_id, 'success', sprintf( __( '%1$s refunded %2$s with Alma.', 'alma-woocommerce-gateway' ), wp_get_current_user()->display_name, $this->refund_helper->get_amount_to_refund( $refund_id, true ) ) );
+			$this->refund_helper->add_order_note( $order_id, 'success', sprintf( __( '%1$s refunded %2$s with Alma.', 'alma-woocommerce-gateway' ), wp_get_current_user()->display_name, $this->refund_helper->get_amount_to_refund_for_display( $refund_id ) ) );
 		} catch ( RequestError $e ) {
 			/* translators: %s is an error message. */
 			$error_message = sprintf( __( 'Alma partial refund error : %s.', 'alma-woocommerce-gateway' ), $e->getMessage() );
