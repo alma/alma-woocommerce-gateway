@@ -33,33 +33,30 @@ class Alma_WC_Refund_Helper {
 	/**
 	 * Gets the amount to refund.
 	 *
-	 * @param integer $refund_id Refund id.
+	 * @param WC_Order_Refund $refund A Refund object.
 	 * @return int
 	 */
-	public function get_amount_to_refund( $refund_id ) {
-		$refund = new WC_Order_Refund( $refund_id );
+	public function get_amount_to_refund( $refund ) {
 		return alma_wc_price_to_cents( floatval( $refund->get_amount() ) );
 	}
 
 	/**
 	 * Gets the amount to refund for display on the page.
 	 *
-	 * @param integer $refund_id Refund id.
+	 * @param WC_Order_Refund $refund A Refund object.
 	 * @return string
 	 */
-	public function get_amount_to_refund_for_display( $refund_id ) {
-		$refund = new WC_Order_Refund( $refund_id );
+	public function get_amount_to_refund_for_display( $refund ) {
 		return $refund->get_amount() . ' ' . $refund->get_currency();
 	}
 
 	/**
 	 * Gets the comment of a refund (which is optional).
 	 *
-	 * @param integer $refund_id Refund id.
+	 * @param WC_Order_Refund $refund A Refund object.
 	 * @return string
 	 */
-	public function get_refund_comment( $refund_id ) {
-		$refund = new WC_Order_Refund( $refund_id );
+	public function get_refund_comment( $refund ) {
 		return $refund->get_reason();
 	}
 
@@ -128,11 +125,11 @@ class Alma_WC_Refund_Helper {
 	/**
 	 * Tells if the order is valid for a partial refund.
 	 *
-	 * @param WC_Order $order An order.
-	 * @param integer  $refund_id Refund id.
+	 * @param WC_Order        $order An order.
+	 * @param WC_Order_Refund $refund A Refund object.
 	 * @return bool
 	 */
-	public function is_order_valid_for_partial_refund_with_alma( $order, $refund_id ) {
+	public function is_order_valid_for_partial_refund_with_alma( $order, $refund ) {
 
 		$is_valid = true;
 
@@ -144,7 +141,7 @@ class Alma_WC_Refund_Helper {
 			$is_valid = false;
 		}
 
-		$amount_to_refund = $this->get_amount_to_refund( $refund_id );
+		$amount_to_refund = $this->get_amount_to_refund( $refund );
 		if ( 0 === $amount_to_refund ) {
 			$this->add_order_note( $order->get_id(), 'error', __( 'Amount canno\'t be equal to 0 to refund with Alma.', 'alma-woocommerce-gateway' ) );
 			$is_valid = false;
