@@ -63,22 +63,21 @@ class Alma_WC_Refund_Helper {
 	/**
 	 * Adds an order note, and a back-office notice.
 	 *
-	 * @param integer $order_id Order id.
-	 * @param string  $notice_type Notice type.
-	 * @param string  $message Message to display.
+	 * @param WC_Order $order An order.
+	 * @param string   $notice_type Notice type.
+	 * @param string   $message Message to display.
 	 * @return void
 	 */
-	public function add_order_note( $order_id, $notice_type, $message ) {
+	public function add_order_note( $order, $notice_type, $message ) {
 
-		$order = wc_get_order( $order_id );
 		$order->add_order_note( $message );
 
-		$refund_notices   = get_post_meta( $order_id, 'alma_refund_notices', false );
+		$refund_notices   = get_post_meta( $order->get_id(), 'alma_refund_notices', false );
 		$refund_notices[] = array(
 			'notice_type' => $notice_type,
 			'message'     => $message,
 		);
-		update_post_meta( $order_id, 'alma_refund_notices', $refund_notices );
+		update_post_meta( $order->get_id(), 'alma_refund_notices', $refund_notices );
 	}
 
 	/**
@@ -99,24 +98,23 @@ class Alma_WC_Refund_Helper {
 		if (
 			alma_wc_plugin()->settings->refund_automatically_on_order_status_change === 'yes' &&
 			'refunded' === $next_status &&
-			true === $this->is_order_valid_for_full_refund_with_alma( $order_id )
+			true === $this->is_order_valid_for_full_refund_with_alma( $order )
 		) {
 			$alma = alma_wc_plugin()->get_alma_client();
 			if ( ! $alma ) {
-				$this->add_order_note( $order_id, 'error', __( 'Alma API client init error.', 'alma-woocommerce-gateway' ) );
+				$this->add_order_note( $order, 'error', __( 'Alma API client init error.', 'alma-woocommerce-gateway' ) );
 				return;
 			}
-			$merchant_reference = $order->get_order_number();
-
-			/* translators: %s is a username. */
-			$refund_comment = sprintf( __( 'Order fully refunded by %s via WooCommerce back-office.', 'alma-woocommerce-gateway' ), wp_get_current_user()->display_name );
 
 			try {
+				$merchant_reference = $order->get_order_number();
+				/* translators: %s is a username. */
+				$refund_comment = sprintf( __( 'Order fully refunded by %s via WooCommerce back-office.', 'alma-woocommerce-gateway' ), wp_get_current_user()->display_name );
 				$alma->payments->fullRefund( $order->get_transaction_id(), $merchant_reference, $refund_comment );
-				$this->add_order_note( $order_id, 'success', $refund_comment );
-			} catch ( Exception $e ) {
-				$error_message = 'Error fullRefund : ' . $e->getMessage();
-				$this->add_order_note( $order_id, 'error', $error_message );
+				$this->add_order_note( $order, 'success', $refund_comment );
+			} catch ( RequestError $e ) {
+				$error_message = 'Error fullRefund : ' . alma_wc_get_request_error_message( $e );
+				$this->add_order_note( $order, 'error', $error_message );
 				$this->logger->error( $error_message );
 			}
 		}
@@ -143,7 +141,7 @@ class Alma_WC_Refund_Helper {
 
 		$amount_to_refund = $this->get_amount_to_refund( $refund );
 		if ( 0 === $amount_to_refund ) {
-			$this->add_order_note( $order->get_id(), 'error', __( 'Amount canno\'t be equal to 0 to refund with Alma.', 'alma-woocommerce-gateway' ) );
+			$this->add_order_note( $order, 'error', __( 'Amount canno\'t be equal to 0 to refund with Alma.', 'alma-woocommerce-gateway' ) );
 			$is_valid = false;
 		}
 
@@ -194,7 +192,7 @@ class Alma_WC_Refund_Helper {
 		if ( ! $order->get_transaction_id() ) {
 			/* translators: %s is an order number. */
 			$error_message = sprintf( __( 'Error while getting transaction_id on trigger_payment for order_id : %s.', 'alma-woocommerce-gateway' ), $order->get_id() );
-			$this->add_order_note( $order->get_id(), 'error', $error_message );
+			$this->add_order_note( $order, 'error', $error_message );
 			$this->logger->error( $error_message );
 			return false;
 		}
