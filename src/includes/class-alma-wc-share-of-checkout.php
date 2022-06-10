@@ -72,14 +72,13 @@ class Alma_WC_Share_Of_Checkout {
 			// echo 'DB_PASSWORD = ' . DB_PASSWORD . '<br/>';
 			// echo '<pre>';
 			// print_r( alma_wc_plugin()->settings );
-			// echo '</pre>';
+			// echo '</pre>'; !
 
 			$this->share_days();
 			exit;
 		}
 
 		if ( ! wp_next_scheduled( self::CRON_ACTION ) ) {
-			error_log( 'wp_schedule_event() : ' . self::CRON_ACTION );
 			wp_schedule_event( time(), 'daily', self::CRON_ACTION );
 		}
 		add_action( self::CRON_ACTION, array( $this, 'share_of_checkout_cron_execution_callback' ) );
@@ -91,8 +90,6 @@ class Alma_WC_Share_Of_Checkout {
 	 * @return void
 	 */
 	public function share_of_checkout_cron_execution_callback() {
-		error_log( '----- function share_of_checkout_cron_execution_callback() -----' );
-		// @todo here call $this->share_days();
 		$this->share_days();
 	}
 
@@ -100,13 +97,8 @@ class Alma_WC_Share_Of_Checkout {
 	 * Does the call to alma API to share the checkout datas.
 	 *
 	 * @return void
-	 * @throws \Alma\API\RequestError
 	 */
 	public function share_days() {
-
-		// ini_set('max_execution_time', 30);
-		error_log( '--------------------------------------------------------' );
-		error_log( 'function share_days()' );
 
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
@@ -114,30 +106,19 @@ class Alma_WC_Share_Of_Checkout {
 		}
 
 		if ( 'yes' !== alma_wc_plugin()->settings->share_of_checkout_enabled ) {
-			error_log( 'Share Of Checkout is not enabled' );
 			$this->logger->info( 'Share Of Checkout is not enabled' );
 			return;
 		}
 		$share_of_checkout_enabled_date = alma_wc_plugin()->settings->share_of_checkout_enabled_date;
-		error_log( '$share_of_checkout_enabled_date = ' . $share_of_checkout_enabled_date );
 
 		$last_update_dates = $this->share_of_checkout_helper->get_last_update_date();
-		error_log( '$last_update_dates = ' );
-		error_log( gettype( $last_update_dates ) );
-		error_log( $last_update_dates );
-		$last_update_date = $last_update_dates['end_time'];
+		$last_update_date  = $last_update_dates['end_time'];
 
 		$dates_to_share = $this->date_helper->get_dates_in_interval( $last_update_date, $share_of_checkout_enabled_date );
-		error_log( serialize( $dates_to_share ) );
 
 		foreach ( $dates_to_share as $date ) {
-			try {
-				$this->share_of_checkout_helper->set_share_of_checkout_from_date( $date );
-				$this->share_of_checkout_helper->share_day();
-			} catch ( \Exception $e ) {
-				error_log( 'Error getting getLastUpdateDates for ShareOfCheckout : ' . $e->getMessage() );
-				// throw new RequestError($e->getMessage(), null, null);
-			}
+			$this->share_of_checkout_helper->set_share_of_checkout_from_date( $date );
+			$this->share_of_checkout_helper->share_day();
 		}
 	}
 }

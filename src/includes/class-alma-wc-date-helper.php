@@ -44,7 +44,7 @@ class Alma_WC_Date_Helper {
 		$start_timestamp   = strtotime( '+1 day', strtotime( $from ) );
 		for ( $i = $start_timestamp; $i <= $to; $i = strtotime( '+1 day', $i ) ) {
 			if ( $i >= strtotime( $share_of_checkout_enabled_date ) ) {
-				$dates_in_interval[] = date( 'Y-m-d', $i );
+				$dates_in_interval[] = gmdate( 'Y-m-d', $i );
 			}
 		}
 		return $dates_in_interval;
