@@ -179,24 +179,23 @@ class Alma_WC_Refund {
 
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
-			$this->refund_helper->add_order_note( $order_id, 'error', __( 'Full refund unavailable due to a connection error.', 'alma-woocommerce-gateway' ) );
+			$this->refund_helper->add_order_note( $order, 'error', __( 'Full refund unavailable due to a connection error.', 'alma-woocommerce-gateway' ) );
 			return;
 		}
 
-		$amount_to_refund   = $this->refund_helper->get_amount_to_refund( $refund );
-		$merchant_reference = $order->get_order_number();
-		$refund_comment     = $this->refund_helper->get_refund_comment( $refund );
-
 		try {
+			$amount_to_refund   = $this->refund_helper->get_amount_to_refund( $refund );
+			$merchant_reference = $order->get_order_number();
+			$refund_comment     = $this->refund_helper->get_refund_comment( $refund );
 			$alma->payments->partialRefund( $order->get_transaction_id(), $amount_to_refund, $merchant_reference, $refund_comment );
 
 			$refund = new WC_Order_Refund( $refund_id );
 			/* translators: %1$s is a username, %2$s is an amount with currency. */
-			$this->refund_helper->add_order_note( $order_id, 'success', sprintf( __( '%1$s refunded %2$s with Alma.', 'alma-woocommerce-gateway' ), wp_get_current_user()->display_name, $this->refund_helper->get_amount_to_refund_for_display( $refund ) ) );
+			$this->refund_helper->add_order_note( $order, 'success', sprintf( __( '%1$s refunded %2$s with Alma.', 'alma-woocommerce-gateway' ), wp_get_current_user()->display_name, $this->refund_helper->get_amount_to_refund_for_display( $refund ) ) );
 		} catch ( RequestError $e ) {
 			/* translators: %s is an error message. */
 			$error_message = sprintf( __( 'Alma partial refund error : %s.', 'alma-woocommerce-gateway' ), alma_wc_get_request_error_message( $e ) );
-			$this->refund_helper->add_order_note( $order_id, 'error', $error_message );
+			$this->refund_helper->add_order_note( $order, 'error', $error_message );
 			$this->logger->error( $error_message );
 		}
 	}
@@ -216,7 +215,7 @@ class Alma_WC_Refund {
 
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
-			$this->refund_helper->add_order_note( $order_id, 'error', __( 'API client init error.', 'alma-woocommerce-gateway' ) );
+			$this->refund_helper->add_order_note( $order, 'error', __( 'API client init error.', 'alma-woocommerce-gateway' ) );
 			return;
 		}
 
@@ -226,12 +225,11 @@ class Alma_WC_Refund {
 			/* translators: %s is a username. */
 			$refund_comment = sprintf( __( 'Full refund made via WooCommerce back-office by %s.', 'alma-woocommerce-gateway' ), wp_get_current_user()->display_name );
 			$alma->payments->fullRefund( $order->get_transaction_id(), $merchant_reference, $refund_comment );
-			$this->refund_helper->add_order_note( $order_id, 'success', $refund_comment );
-
+			$this->refund_helper->add_order_note( $order, 'success', $refund_comment );
 		} catch ( RequestError $e ) {
 			/* translators: %s is an error message. */
-			$error_message = sprintf( __( 'Alma full refund error : %s.', 'alma-woocommerce-gateway' ), $e->getMessage() );
-			$this->refund_helper->add_order_note( $order_id, 'error', $error_message );
+			$error_message = sprintf( __( 'Alma full refund error : %s.', 'alma-woocommerce-gateway' ), alma_wc_get_request_error_message( $e ) );
+			$this->refund_helper->add_order_note( $order, 'error', $error_message );
 			$this->logger->error( $error_message );
 		}
 	}
