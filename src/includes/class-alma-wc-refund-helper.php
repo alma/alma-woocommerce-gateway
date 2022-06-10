@@ -122,25 +122,25 @@ class Alma_WC_Refund_Helper {
 	/**
 	 * Tells if the order is valid for a partial refund.
 	 *
-	 * @param integer $order_id Order id.
+	 * @param WC_Order $order An order.
 	 * @param integer $refund_id Refund id.
 	 * @return bool
 	 */
-	public function is_order_valid_for_partial_refund_with_alma( $order_id, $refund_id ) {
+	public function is_order_valid_for_partial_refund_with_alma( $order, $refund_id ) {
 
 		$is_valid = true;
 
-		if ( ! $this->is_alma_payment_method_for_order( $order_id ) ) {
+		if ( ! $this->is_alma_payment_method_for_order( $order ) ) {
 			$is_valid = false;
 		}
 
-		if ( ! $this->has_order_a_transaction_id( $order_id ) ) {
+		if ( ! $this->has_order_a_transaction_id( $order ) ) {
 			$is_valid = false;
 		}
 
 		$amount_to_refund = $this->get_amount_to_refund( $refund_id );
 		if ( 0 === $amount_to_refund ) {
-			$this->add_order_note( $order_id, 'error', __( 'Amount canno\'t be equal to 0 to refund with Alma.', 'alma-woocommerce-gateway' ) );
+			$this->add_order_note( $order->get_id(), 'error', __( 'Amount canno\'t be equal to 0 to refund with Alma.', 'alma-woocommerce-gateway' ) );
 			$is_valid = false;
 		}
 
@@ -150,18 +150,18 @@ class Alma_WC_Refund_Helper {
 	/**
 	 * Tells if the order is valid for a full refund.
 	 *
-	 * @param integer $order_id Order id.
+	 * @param WC_Order $order An order.
 	 * @return bool
 	 */
-	public function is_order_valid_for_full_refund_with_alma( $order_id ) {
+	public function is_order_valid_for_full_refund_with_alma( $order ) {
 
 		$is_valid = true;
 
-		if ( ! $this->is_alma_payment_method_for_order( $order_id ) ) {
+		if ( ! $this->is_alma_payment_method_for_order( $order ) ) {
 			$is_valid = false;
 		}
 
-		if ( ! $this->has_order_a_transaction_id( $order_id ) ) {
+		if ( ! $this->has_order_a_transaction_id( $order ) ) {
 			$is_valid = false;
 		}
 
@@ -171,12 +171,10 @@ class Alma_WC_Refund_Helper {
 	/**
 	 * Has this order been paid via Alma payment method ?.
 	 *
-	 * @param integer $order_id Order id.
+	 * @param WC_Order $order An order.
 	 * @return bool
 	 */
-	private function is_alma_payment_method_for_order( $order_id ) {
-		$order = wc_get_order( $order_id );
-
+	private function is_alma_payment_method_for_order( $order ) {
 		if ( substr( $order->get_payment_method(), 0, 4 ) !== 'alma' ) {
 			return false;
 		}
@@ -186,15 +184,14 @@ class Alma_WC_Refund_Helper {
 	/**
 	 * Has this order a transaction id ?.
 	 *
-	 * @param integer $order_id Order id.
+	 * @param WC_Order $order An order.
 	 * @return bool
 	 */
-	private function has_order_a_transaction_id( $order_id ) {
-		$order = wc_get_order( $order_id );
+	private function has_order_a_transaction_id( $order ) {
 		if ( ! $order->get_transaction_id() ) {
 			/* translators: %s is an order number. */
-			$error_message = sprintf( __( 'Error while getting transaction_id on trigger_payment for order_id : %s.', 'alma-woocommerce-gateway' ), $order_id );
-			$this->add_order_note( $order_id, 'error', $error_message );
+			$error_message = sprintf( __( 'Error while getting transaction_id on trigger_payment for order_id : %s.', 'alma-woocommerce-gateway' ), $order->get_id() );
+			$this->add_order_note( $order->get_id(), 'error', $error_message );
 			$this->logger->error( $error_message );
 			return false;
 		}
