@@ -35,7 +35,7 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	/**
 	 * Set share of checkout "from date". (date BEGIN)
 	 *
-	 * @param $start_time
+	 * @param string $start_time The start time.
 	 * @return void
 	 */
 	public function set_share_of_checkout_from_date( $start_time ) {
@@ -53,13 +53,13 @@ class Alma_WC_Share_Of_Checkout_Helper {
 			return $this->start_time;
 		}
 
-		return date( 'Y-m-d', strtotime( 'yesterday' ) ) . ' 00:00:00';
+		return gmdate( 'Y-m-d', strtotime( 'yesterday' ) ) . ' 00:00:00';
 	}
 
 	/**
 	 * Set share of checkout "to date". (date END)
 	 *
-	 * @param $start_time
+	 * @param string $start_time The start time.
 	 * @return void
 	 */
 	public function set_share_of_checkout_to_date( $start_time ) {
@@ -75,35 +75,29 @@ class Alma_WC_Share_Of_Checkout_Helper {
 		if ( isset( $this->end_time ) ) {
 			return $this->end_time;
 		}
-		return date( 'Y-m-d', strtotime( 'yesterday' ) ) . ' 23:59:59';
+		return gmdate( 'Y-m-d', strtotime( 'yesterday' ) ) . ' 23:59:59';
 	}
 
 	/**
 	 * Returns the date of the last share of checkout.
 	 *
 	 * @return mixed
-	 * @throws Alma_WC_Payment_Validation_Error
 	 */
 	public function get_last_update_date() {
 
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
-			throw new Alma_WC_Payment_Validation_Error( 'api_client_init' );
+			return;
 		}
 
 		try {
-			$last_update_by_api = $alma->shareOfCheckout->getLastUpdateDates();
-			error_log( '$last_update_by_api = ' );
-			error_log( gettype( $last_update_by_api ) );
-			error_log( serialize( $last_update_by_api ) );
-
+			$last_update_by_api = $alma->shareOfCheckout->getLastUpdateDates(); // phpcs:ignore
 			return $last_update_by_api['end_time'];
-		} catch ( \Exception $e ) {
-			error_log( 'Error getting getLastUpdateDates for ShareOfCheckout : ' . $e->getMessage() );
+		} catch ( RequestError $e ) {
 			$this->logger->error( 'Error getting getLastUpdateDates for ShareOfCheckout : ' . $e->getMessage() );
 		}
 
-		return date( 'Y-m-d', strtotime( '-2 days' ) );
+		return gmdate( 'Y-m-d', strtotime( '-2 days' ) );
 	}
 
 	/**
@@ -215,28 +209,15 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	 * @return array|void
 	 */
 	public function share_day() {
-		error_log( '---------------------------' );
-		error_log( 'function share_day()' );
-		error_log( 'get_share_of_checkout_from_date() = ' . $this->get_share_of_checkout_from_date() );
-
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
 			return;
 		}
 
-		$res = array();
 		try {
-			error_log( 'get_payload() = ' . json_encode( $this->get_payload() ) );
-			$res = $alma->shareOfCheckout->share( $this->get_payload() );
-			error_log( '$this->get_payload()' );
-			error_log( json_encode( $this->get_payload() ) );
-
+			$alma->shareOfCheckout->share( $this->get_payload() ); // phpcs:ignore
 		} catch ( RequestError $e ) {
 			$this->logger->info( sprintf( 'Alma_WC_Share_Of_Checkout_Helper::share error get message : %s', $e->getMessage() ) );
 		}
-		return $res;
 	}
 }
-
-
-
