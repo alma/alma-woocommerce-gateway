@@ -110,13 +110,14 @@ class Alma_WC_Refund {
 	 */
 	public function gettext( $translation, $text, $domain ) {
 
-		if ( 'woocommerce' !== $domain || ! array_key_exists( $text, $this->admin_texts_to_change ) ) {
+		if ( 'woocommerce' !== $domain || ! array_key_exists( $text, $this->admin_texts_to_change ) || ! isset( $_GET['post'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			return $translation;
 		}
 
 		foreach ( $this->admin_texts_to_change as $original_text => $updated_text ) {
 			if ( $original_text === $text ) {
-				$order = wc_get_order( intval( $_GET['post'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
+				$order_id = intval( $_GET['post'] ); // phpcs:ignore WordPress.Security.NonceVerification
+				$order    = wc_get_order( $order_id );
 				if ( substr( $order->get_payment_method(), 0, 4 ) !== 'alma' ) {
 					return $translation;
 				}
@@ -170,8 +171,9 @@ class Alma_WC_Refund {
 	 */
 	public function woocommerce_order_partially_refunded( $order_id, $refund_id ) {
 
-		$order = wc_get_order( $order_id );
-		if ( ! $this->refund_helper->is_order_valid_for_partial_refund_with_alma( $order, $refund_id ) ) {
+		$order  = wc_get_order( $order_id );
+		$refund = new WC_Order_Refund( $refund_id );
+		if ( ! $this->refund_helper->is_order_valid_for_partial_refund_with_alma( $order, $refund ) ) {
 			return;
 		}
 
@@ -181,17 +183,19 @@ class Alma_WC_Refund {
 			return;
 		}
 
-		$amount_to_refund   = $this->refund_helper->get_amount_to_refund( $refund_id );
+		$amount_to_refund   = $this->refund_helper->get_amount_to_refund( $refund );
 		$merchant_reference = $order->get_order_number();
-		$refund_comment     = $this->refund_helper->get_refund_comment( $refund_id );
+		$refund_comment     = $this->refund_helper->get_refund_comment( $refund );
 
 		try {
 			$alma->payments->partialRefund( $order->get_transaction_id(), $amount_to_refund, $merchant_reference, $refund_comment );
+
+			$refund = new WC_Order_Refund( $refund_id );
 			/* translators: %1$s is a username, %2$s is an amount with currency. */
-			$this->refund_helper->add_order_note( $order_id, 'success', sprintf( __( '%1$s refunded %2$s with Alma.', 'alma-woocommerce-gateway' ), wp_get_current_user()->display_name, $this->refund_helper->get_amount_to_refund_for_display( $refund_id ) ) );
+			$this->refund_helper->add_order_note( $order_id, 'success', sprintf( __( '%1$s refunded %2$s with Alma.', 'alma-woocommerce-gateway' ), wp_get_current_user()->display_name, $this->refund_helper->get_amount_to_refund_for_display( $refund ) ) );
 		} catch ( RequestError $e ) {
 			/* translators: %s is an error message. */
-			$error_message = sprintf( __( 'Alma partial refund error : %s.', 'alma-woocommerce-gateway' ), $e->getMessage() );
+			$error_message = sprintf( __( 'Alma partial refund error : %s.', 'alma-woocommerce-gateway' ), alma_wc_get_request_error_message( $e ) );
 			$this->refund_helper->add_order_note( $order_id, 'error', $error_message );
 			$this->logger->error( $error_message );
 		}
@@ -218,17 +222,17 @@ class Alma_WC_Refund {
 
 		$merchant_reference = $order->get_order_number();
 
-		/* translators: %s is a username. */
-		$refund_comment = sprintf( __( 'Full refund made via WooCommerce back-office by %s.', 'alma-woocommerce-gateway' ), wp_get_current_user()->display_name );
-
 		try {
+			/* translators: %s is a username. */
+			$refund_comment = sprintf( __( 'Full refund made via WooCommerce back-office by %s.', 'alma-woocommerce-gateway' ), wp_get_current_user()->display_name );
 			$alma->payments->fullRefund( $order->get_transaction_id(), $merchant_reference, $refund_comment );
+			$this->refund_helper->add_order_note( $order_id, 'success', $refund_comment );
+
 		} catch ( RequestError $e ) {
 			/* translators: %s is an error message. */
 			$error_message = sprintf( __( 'Alma full refund error : %s.', 'alma-woocommerce-gateway' ), $e->getMessage() );
 			$this->refund_helper->add_order_note( $order_id, 'error', $error_message );
 			$this->logger->error( $error_message );
-			return;
 		}
 	}
 
