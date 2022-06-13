@@ -59,8 +59,9 @@ class Alma_WC_Model_Payment {
 			$data['payment']['deferred_description'] = Alma_WC_Payment_Upon_Trigger::get_display_text();
 		}
 
-		$data['customer']              = array();
-		$data['customer']['addresses'] = array();
+		$data['customer']                = array();
+		$data['customer']['addresses']   = array();
+		$data['customer']['is_business'] = false;
 		if ( $order->has_billing_address() ) {
 			$billing_address                    = $order->get_billing_address();
 			$data['payment']['billing_address'] = $billing_address;
@@ -70,6 +71,11 @@ class Alma_WC_Model_Payment {
 			$data['customer']['email']       = $billing_address['email'];
 			$data['customer']['phone']       = $billing_address['phone'];
 			$data['customer']['addresses'][] = $billing_address;
+
+			if ( $order->is_business() ) {
+				$data['customer']['is_business']   = true;
+				$data['customer']['business_name'] = $order->get_business_name();
+			}
 		}
 
 		if ( $order->has_shipping_address() ) {

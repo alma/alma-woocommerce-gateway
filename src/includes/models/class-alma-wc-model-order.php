@@ -151,6 +151,27 @@ class Alma_WC_Model_Order {
 	}
 
 	/**
+	 * Is it an order for a business customer ?.
+	 *
+	 * @return bool
+	 */
+	public function is_business() {
+		if ( $this->legacy && $this->order->billing_company || ! $this->legacy && $this->order->get_billing_company() ) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Gets the business name of the order.
+	 *
+	 * @return string
+	 */
+	public function get_business_name() {
+		return $this->get_billing_address()['company'];
+	}
+
+	/**
 	 * Get billing address.
 	 *
 	 * @return array
