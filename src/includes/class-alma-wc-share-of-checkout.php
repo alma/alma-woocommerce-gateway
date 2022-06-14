@@ -17,21 +17,21 @@ class Alma_WC_Share_Of_Checkout {
 	const CRON_ACTION = 'share_of_checkout_cron_action';
 
 	/**
-	 * Logger
+	 * Logger.
 	 *
 	 * @var Alma_WC_Logger
 	 */
 	private $logger;
 
 	/**
-	 * Logger
+	 * Share of checkout helper.
 	 *
 	 * @var Alma_WC_Share_Of_Checkout_Helper
 	 */
 	private $share_of_checkout_helper;
 
 	/**
-	 * Logger
+	 * Date helper.
 	 *
 	 * @var Alma_WC_Date_Helper
 	 */
@@ -63,6 +63,7 @@ class Alma_WC_Share_Of_Checkout {
 		// @todo debug test to remove later.
 		if ( isset( $_GET['test_soc'] ) ) {
 			$result = $this->share_of_checkout_helper->get_payload();
+			echo json_encode( $result );
 			echo '<pre>';
 			print_r( $result );
 			echo '</pre>';
@@ -100,6 +101,8 @@ class Alma_WC_Share_Of_Checkout {
 	 */
 	public function share_days() {
 
+		error_log( 'share_days()' );
+
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
 			return;
@@ -109,12 +112,16 @@ class Alma_WC_Share_Of_Checkout {
 			$this->logger->info( 'Share Of Checkout is not enabled' );
 			return;
 		}
-		$share_of_checkout_enabled_date = alma_wc_plugin()->settings->share_of_checkout_enabled_date;
+		// $share_of_checkout_enabled_date = alma_wc_plugin()->settings->share_of_checkout_enabled_date;
+		$share_of_checkout_enabled_date = '2022-06-10';
 
-		$last_update_dates = $this->share_of_checkout_helper->get_last_update_date();
-		$last_update_date  = $last_update_dates['end_time'];
+		$last_update_date = $this->share_of_checkout_helper->get_last_update_date();
+		error_log( '$last_update_date = ' . gmdate( 'Y-m-d', $last_update_date ) );
 
 		$dates_to_share = $this->date_helper->get_dates_in_interval( $last_update_date, $share_of_checkout_enabled_date );
+
+		error_log( '$dates_to_share' );
+		error_log( serialize( $dates_to_share ) );
 
 		foreach ( $dates_to_share as $date ) {
 			$this->share_of_checkout_helper->set_share_of_checkout_from_date( $date );

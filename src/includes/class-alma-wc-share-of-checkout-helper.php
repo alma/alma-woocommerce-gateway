@@ -24,6 +24,20 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	private $logger;
 
 	/**
+	 * Start time;
+	 *
+	 * @var string
+	 */
+	private $start_time;
+
+	/**
+	 * End time;
+	 *
+	 * @var string
+	 */
+	private $end_time;
+
+	/**
 	 * __construct.
 	 */
 	public function __construct() {
@@ -84,6 +98,9 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	 * @return mixed
 	 */
 	public function get_last_update_date() {
+
+		// @todo for debugging purpose.
+		return 1654093294; // first of june 2022.
 
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
@@ -215,6 +232,7 @@ class Alma_WC_Share_Of_Checkout_Helper {
 		}
 
 		try {
+			error_log( serialize( $this->get_payload() ) );
 			$alma->shareOfCheckout->share( $this->get_payload() ); // phpcs:ignore
 		} catch ( RequestError $e ) {
 			$this->logger->info( sprintf( 'Alma_WC_Share_Of_Checkout_Helper::share error get message : %s', $e->getMessage() ) );
