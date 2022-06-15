@@ -62,19 +62,6 @@ class Alma_WC_Share_Of_Checkout {
 
 		// @todo debug test to remove later.
 		if ( isset( $_GET['test_soc'] ) ) {
-			$result = $this->share_of_checkout_helper->get_payload();
-			echo json_encode( $result );
-			echo '<pre>';
-			print_r( $result );
-			echo '</pre>';
-			// echo 'DB_HOST = ' . DB_HOST . '<br/>';
-			// echo 'DB_USER = ' . DB_USER . '<br/>';
-			// echo 'DB_NAME = ' . DB_NAME . '<br/>';
-			// echo 'DB_PASSWORD = ' . DB_PASSWORD . '<br/>';
-			// echo '<pre>';
-			// print_r( alma_wc_plugin()->settings );
-			// echo '</pre>'; !
-
 			$this->share_days();
 			exit;
 		}
@@ -112,6 +99,8 @@ class Alma_WC_Share_Of_Checkout {
 			$this->logger->info( 'Share Of Checkout is not enabled' );
 			return;
 		}
+
+		// @todo debug test to remove later.
 		// $share_of_checkout_enabled_date = alma_wc_plugin()->settings->share_of_checkout_enabled_date;
 		$share_of_checkout_enabled_date = '2022-06-10';
 
@@ -120,8 +109,7 @@ class Alma_WC_Share_Of_Checkout {
 
 		$dates_to_share = $this->date_helper->get_dates_in_interval( $last_update_date, $share_of_checkout_enabled_date );
 
-		error_log( '$dates_to_share' );
-		error_log( serialize( $dates_to_share ) );
+		error_log( '$dates_to_share = ' . serialize( $dates_to_share ) );
 
 		foreach ( $dates_to_share as $date ) {
 			$this->share_of_checkout_helper->set_share_of_checkout_from_date( $date );
