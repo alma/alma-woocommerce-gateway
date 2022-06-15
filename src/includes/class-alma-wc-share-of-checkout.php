@@ -59,13 +59,6 @@ class Alma_WC_Share_Of_Checkout {
 	 * @return void
 	 */
 	public function bootstrap() {
-
-		// @todo debug test to remove later.
-		if ( isset( $_GET['test_soc'] ) ) {
-			$this->share_days();
-			exit;
-		}
-
 		if ( ! wp_next_scheduled( self::CRON_ACTION ) ) {
 			wp_schedule_event( time(), 'daily', self::CRON_ACTION );
 		}
@@ -88,8 +81,6 @@ class Alma_WC_Share_Of_Checkout {
 	 */
 	public function share_days() {
 
-		error_log( 'share_days()' );
-
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
 			return;
@@ -100,16 +91,9 @@ class Alma_WC_Share_Of_Checkout {
 			return;
 		}
 
-		// @todo debug test to remove later.
-		// $share_of_checkout_enabled_date = alma_wc_plugin()->settings->share_of_checkout_enabled_date;
-		$share_of_checkout_enabled_date = '2022-06-10';
-
+		$share_of_checkout_enabled_date = alma_wc_plugin()->settings->share_of_checkout_enabled_date;
 		$last_update_date = $this->share_of_checkout_helper->get_last_update_date();
-		error_log( '$last_update_date = ' . gmdate( 'Y-m-d', $last_update_date ) );
-
 		$dates_to_share = $this->date_helper->get_dates_in_interval( $last_update_date, $share_of_checkout_enabled_date );
-
-		error_log( '$dates_to_share = ' . serialize( $dates_to_share ) );
 
 		foreach ( $dates_to_share as $date ) {
 			$this->share_of_checkout_helper->set_share_of_checkout_from_date( $date );

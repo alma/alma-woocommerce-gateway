@@ -99,9 +99,6 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	 */
 	public function get_last_update_date() {
 
-		// @todo debug test to remove later.
-		return 1654093294; // first of june 2022.
-
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
 			return;
@@ -232,7 +229,6 @@ class Alma_WC_Share_Of_Checkout_Helper {
 		}
 
 		try {
-			error_log( serialize( $this->get_payload() ) );
 			$alma->shareOfCheckout->share( $this->get_payload() ); // phpcs:ignore
 		} catch ( RequestError $e ) {
 			$this->logger->info( sprintf( 'Alma_WC_Share_Of_Checkout_Helper::share error get message : %s', $e->getMessage() ) );
