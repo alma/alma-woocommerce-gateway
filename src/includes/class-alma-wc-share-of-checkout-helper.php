@@ -99,7 +99,7 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	 */
 	public function get_last_update_date() {
 
-		// @todo for debugging purpose.
+		// @todo debug test to remove later.
 		return 1654093294; // first of june 2022.
 
 		$alma = alma_wc_plugin()->get_alma_client();
