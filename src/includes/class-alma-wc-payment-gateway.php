@@ -96,7 +96,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * Add installments counts & deferred days / months into settings
 	 */
 	protected function sync_fee_plans_settings() {
-		foreach ( alma_wc_plugin()->settings->get_allowed_fee_plans() as $fee_plan ) {
+		foreach ( almapay_wc_plugin()->settings->get_allowed_fee_plans() as $fee_plan ) {
 			$plan_key           = $fee_plan->getPlanKey();
 			$default_min_amount = $fee_plan->min_purchase_amount;
 			$default_max_amount = $fee_plan->max_purchase_amount;
@@ -111,7 +111,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				$this->settings[ $max_key ] = $default_max_amount;
 			}
 			if ( ! isset( $this->settings[ $enabled_key ] ) ) {
-				$this->settings[ $enabled_key ] = alma_wc_plugin()->settings->default_settings()['selected_fee_plan'] === $plan_key ? 'yes' : 'no';
+				$this->settings[ $enabled_key ] = almapay_wc_plugin()->settings->default_settings()['selected_fee_plan'] === $plan_key ? 'yes' : 'no';
 			}
 			$this->settings[ "deferred_months_$plan_key" ]    = $fee_plan->getDeferredMonths();
 			$this->settings[ "deferred_days_$plan_key" ]      = $fee_plan->getDeferredDays();
@@ -126,7 +126,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return string
 	 */
 	public function get_icon() {
-		$icon_url = alma_wc_plugin()->get_asset_url( 'images/alma_logo.svg' );
+		$icon_url = almapay_wc_plugin()->get_asset_url( 'images/alma_logo.svg' );
 		$icon     = '<img src="' . WC_HTTPS::force_https_url( $icon_url ) . '" alt="' . esc_attr( $this->get_title() ) . '" style="width: auto !important; height: 25px !important; border: none !important;">';
 
 		return apply_filters( 'alma_wc_gateway_icon', $icon, $this->id );
@@ -145,7 +145,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	public function init_settings() {
 		parent::init_settings();
 		$this->update_settings_from_merchant();
-		alma_wc_plugin()->settings->update_from( $this->settings );
+		almapay_wc_plugin()->settings->update_from( $this->settings );
 	}
 
 	/**
@@ -158,8 +158,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		$this->convert_amounts_to_cents();
 		$this->update_settings_from_merchant();
-		alma_wc_plugin()->settings->update_from( $this->settings );
-		alma_wc_plugin()->force_check_settings();
+		almapay_wc_plugin()->settings->update_from( $this->settings );
+		almapay_wc_plugin()->force_check_settings();
 
 		return $previously_saved && update_option( $this->get_option_key(), $this->settings );
 	}
@@ -175,11 +175,11 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			return parent::is_available();
 		}
 
-		if ( ! alma_wc_plugin()->check_currency() ) {
+		if ( ! almapay_wc_plugin()->check_currency() ) {
 			return false;
 		}
 
-		if ( ! alma_wc_plugin()->is_there_eligibility_in_cart() ) {
+		if ( ! almapay_wc_plugin()->is_there_eligibility_in_cart() ) {
 			return false;
 		}
 
@@ -201,7 +201,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	private function payment_field( $gateway_id, $plan_key, $has_radio_button, $is_checked ) {
 		$plan_class = '.' . self::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS;
 		$plan_id    = '#' . sprintf( self::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $plan_key );
-		$logo_url   = alma_wc_plugin()->get_asset_url( "images/${plan_key}_logo.svg" );
+		$logo_url   = almapay_wc_plugin()->get_asset_url( "images/${plan_key}_logo.svg" );
 		?>
 		<input
 				type="radio"
@@ -240,7 +240,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		$gateway_id = $this->id;
 
-		$eligible_plans = alma_wc_plugin()->get_eligible_plans_keys_for_cart();
+		$eligible_plans = almapay_wc_plugin()->get_eligible_plans_keys_for_cart();
 		usort( $eligible_plans, 'alma_wc_usort_plans_keys' );
 		$default_plan = self::get_default_plan( $eligible_plans );
 
@@ -282,7 +282,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return bool
 	 */
 	public function should_display_plan( $plan_key, $gateway_id ) {
-		$alma_settings = alma_wc_plugin()->settings;
+		$alma_settings = almapay_wc_plugin()->settings;
 		switch ( $gateway_id ) {
 			case self::GATEWAY_ID:
 				$should_display = in_array( $alma_settings->get_installments_count( $plan_key ), array( 2, 3, 4 ), true );
@@ -313,7 +313,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		if ( ! $alma_fee_plan ) {
 			return false;
 		}
-		$allowed_values = array_map( 'strval', alma_wc_plugin()->get_eligible_plans_keys_for_cart() );
+		$allowed_values = array_map( 'strval', almapay_wc_plugin()->get_eligible_plans_keys_for_cart() );
 		if ( ! in_array( $alma_fee_plan, $allowed_values, true ) ) {
 			wc_add_notice( '<strong>Fee plan</strong> is invalid.', 'error' );
 			return false;
@@ -331,7 +331,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	public function process_payment( $order_id ) {
 		$error_msg = __( 'There was an error processing your payment.<br>Please try again or contact us if the problem persists.', 'alma-gateway-for-woocommerce' );
 
-		$alma = alma_wc_plugin()->get_alma_client();
+		$alma = almapay_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
 			wc_add_notice( $error_msg, 'error' );
 
@@ -430,7 +430,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return void
 	 */
 	private function render_payment_plan( $gateway_id, $default_plan ) {
-		$eligibilities = alma_wc_plugin()->get_cart_eligibilities();
+		$eligibilities = almapay_wc_plugin()->get_cart_eligibilities();
 
 		if ( ! $eligibilities ) {
 			return;
@@ -810,7 +810,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return bool
 	 */
 	private function is_cart_eligible() {
-		$eligibilities = alma_wc_plugin()->get_cart_eligibilities();
+		$eligibilities = almapay_wc_plugin()->get_cart_eligibilities();
 
 		if ( ! $eligibilities ) {
 			return false;
@@ -846,18 +846,18 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * If API is configured with its keys, try to fetch info from merchant account.
 	 */
 	private function update_settings_from_merchant() {
-		if ( alma_wc_plugin()->settings->need_api_key() ) {
+		if ( almapay_wc_plugin()->settings->need_api_key() ) {
 			$this->reset_merchant_settings();
 
 			return;
 		}
 
 		try {
-			$merchant                      = alma_wc_plugin()->get_merchant();
+			$merchant                      = almapay_wc_plugin()->get_merchant();
 			$this->settings['merchant_id'] = $merchant->id;
 		} catch ( RequestError $e ) {
 			$this->reset_merchant_settings();
-			alma_wc_plugin()->handle_settings_exception( $e );
+			almapay_wc_plugin()->handle_settings_exception( $e );
 			return;
 		}
 		$this->sync_fee_plans_settings();
@@ -894,7 +894,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * Force disable not available fee_plans to prevent showing them in checkout.
 	 */
 	private function disable_unavailable_fee_plans_config() {
-		$allowed_installments = alma_wc_plugin()->settings->get_allowed_plans_keys();
+		$allowed_installments = almapay_wc_plugin()->settings->get_allowed_plans_keys();
 		if ( ! $allowed_installments ) {
 			return;
 		}
@@ -1007,7 +1007,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return bool
 	 */
 	private function is_there_available_plan_for_this_gateway( $gateway_id ) {
-		foreach ( alma_wc_plugin()->get_eligible_plans_keys_for_cart() as $plan_key ) {
+		foreach ( almapay_wc_plugin()->get_eligible_plans_keys_for_cart() as $plan_key ) {
 			if ( $this->should_display_plan( $plan_key, $gateway_id ) ) {
 				return true;
 			}

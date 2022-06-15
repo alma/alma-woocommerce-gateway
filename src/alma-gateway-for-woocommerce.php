@@ -38,24 +38,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-//if ( ! defined( 'ALMA_WC_VERSION' ) ) {
-//	define( 'ALMA_WC_VERSION', '3.0.0' );
-//}
-//if ( ! defined( 'ALMA_WC_PLUGIN_FILE' ) ) {
-//	define( 'ALMA_WC_PLUGIN_FILE', __FILE__ );
-//}
-//if ( ! defined( 'ALMA_WC_PLUGIN_BASENAME' ) ) {
-//	define( 'ALMA_WC_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-//}
-//if ( ! defined( 'ALMA_WC_PLUGIN_URL' ) ) {
-//	define( 'ALMA_WC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-//}
-
-//return;
+if ( ! defined( 'ALMA_WC_VERSION' ) ) {
+	define( 'ALMA_WC_VERSION', '3.0.0' );
+}
+if ( ! defined( 'ALMA_WC_PLUGIN_FILE' ) ) {
+	define( 'ALMA_WC_PLUGIN_FILE', __FILE__ );
+}
+if ( ! defined( 'ALMA_WC_PLUGIN_PATH' ) ) {
+	define( 'ALMA_WC_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+}
+if ( ! defined( 'ALMA_WC_PLUGIN_URL' ) ) {
+	define( 'ALMA_WC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+}
 
 if ( ! defined( 'ALMA_WC_OLD_PLUGIN_FILE' ) ) {
-	define( 'ALMA_WC_OLD_PLUGIN_FILE', 'akismet/akismet.php' );
-//	define( 'ALMA_WC_OLD_PLUGIN_FILE', 'alma-woocommerce-gateway/alma-woocommerce-gateway.php' );
+//	define( 'ALMA_WC_OLD_PLUGIN_FILE', 'akismet/akismet2.php' );
+	define( 'ALMA_WC_OLD_PLUGIN_FILE', 'alma-woocommerce-gateway-2.6.1/alma-woocommerce-gateway.php' );
 }
 
 if ( ! defined( 'ALMA_WC_NEW_PLUGIN_FILE' ) ) {
@@ -66,12 +64,14 @@ if ( ! defined( 'ALMA_PREFIX_FOR_TMP_OPTIONS' ) ) {
 	define( 'ALMA_PREFIX_FOR_TMP_OPTIONS', 'alma_tmp_' );
 }
 
+//return;
+
 /**
  * @return void
  */
 function deactivate_plugin_conditional() {
 
-	//	error_log( 'function deactivate_plugin_conditional' );
+	error_log( 'function deactivate_plugin_conditional()' );
 
 	if ( is_plugin_active( ALMA_WC_OLD_PLUGIN_FILE) ) {
 		deactivate_plugins( ALMA_WC_OLD_PLUGIN_FILE );
@@ -79,11 +79,30 @@ function deactivate_plugin_conditional() {
 
 		$plugin_file_path = WP_PLUGIN_DIR . '/' . ALMA_WC_OLD_PLUGIN_FILE;
 		error_log( '$plugin_file_path - ' . $plugin_file_path );
-		if ( file_exists( $plugin_file_path ) ) {
-			delete_plugins( [ WP_PLUGIN_DIR . '/' . ALMA_WC_OLD_PLUGIN_FILE ] );
-		}
+//		if ( file_exists( $plugin_file_path ) ) {
+
+
+			$d1 = delete_plugins( [ ALMA_WC_OLD_PLUGIN_FILE ] );
+			error_log( 'd1 = ' );
+			error_log( serialize( $d1 ) );
+
+
+			// Je pense qu'il y a une erreur dans la doc
+			// https://developer.wordpress.org/reference/functions/delete_plugins/
+		    // qui dit "List of plugin paths to delete, relative to the plugins directory", alors qu'il faut le rajouter.
+			$d2 = delete_plugins( [ WP_PLUGIN_DIR . '/' . ALMA_WC_OLD_PLUGIN_FILE ] );
+			error_log( 'd2 = ' );
+			error_log( serialize( $d2 ) );
+
+
+			error_log( 'delete_plugins( [ '.ALMA_WC_OLD_PLUGIN_FILE.' ] )' );
+//		}
+//		error_log( 'file N\'EXISTE PAS ' );
 	}
-	return;
+	else {
+		error_log( 'plugin ' . ALMA_WC_OLD_PLUGIN_FILE . ' pas actif' );
+	}
+
 }
 add_action( 'admin_init', 'deactivate_plugin_conditional', 0 );
 
@@ -119,16 +138,16 @@ function backup_alma_settings() {
 /**
  * @return void
  */
-function my_plugin_activate() {
-	$tmp_options = [
-		'woocommerce_alma_settings' => get_option( 'woocommerce_alma_settings' ),
-	];
-	foreach ( $tmp_options  as $option_name => $option_value ) {
-		$option_name = str_replace( ALMA_PREFIX_FOR_TMP_OPTIONS, '', $option_name );
-		update_option( $option_name, $option_value);
-	}
-}
-register_activation_hook( __FILE__, 'my_plugin_activate' );
+//function my_plugin_activate() {
+//	$tmp_options = [
+//		'woocommerce_alma_settings' => get_option( 'woocommerce_alma_settings' ),
+//	];
+//	foreach ( $tmp_options  as $option_name => $option_value ) {
+//		$option_name = str_replace( ALMA_PREFIX_FOR_TMP_OPTIONS, '', $option_name );
+//		update_option( $option_name, $option_value);
+//	}
+//}
+//register_activation_hook( __FILE__, 'my_plugin_activate' );
 
 
 //return;
@@ -151,9 +170,6 @@ function almapay_wc_plugin() {
 //			deactivate_plugins ( 'alma-woocommerce-gateway.php' );
 //		}
 //	}
-
-
-	exit;
 
 	if ( ! isset( $plugin ) ) {
 		require_once ALMA_WC_PLUGIN_PATH . 'includes/alma-wc-functions.php';
@@ -206,7 +222,17 @@ function pre( $p ) {
 }
 
 
+function alma_wp_footer() {
+	pre( DB_HOST );
+	pre( DB_NAME );
+	pre( DB_USER );
+	pre( DB_PASSWORD );
 
-
+	global $wpdb;
+//	$wpdb->query( $wpdb->prepare( "SELECT * FROM {$wpdb->options} WHERE option_name LIKE %alma%" ) );
+	$results = $wpdb->get_results( "SELECT * FROM {$wpdb->options} WHERE option_name LIKE '%alma%'" );
+	pre( $results );
+}
+add_action( 'wp_footer', 'alma_wp_footer');
 
 

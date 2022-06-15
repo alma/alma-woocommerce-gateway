@@ -30,7 +30,7 @@ class Alma_WC_Payment_Validator {
 	public static function validate_payment( $payment_id ) {
 		$logger = new Alma_WC_Logger();
 
-		$alma = alma_wc_plugin()->get_alma_client();
+		$alma = almapay_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
 			throw new Alma_WC_Payment_Validation_Error( 'api_client_init' );
 		}

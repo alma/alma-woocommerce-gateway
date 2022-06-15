@@ -205,14 +205,14 @@ class Alma_WC_Plugin {
 	public function alma_admin_enqueue_scripts() {
 		wp_enqueue_style(
 			'alma-admin-styles',
-			alma_wc_plugin()->get_asset_url( 'css/alma-admin.css' ),
+			almapay_wc_plugin()->get_asset_url( 'css/alma-admin.css' ),
 			array(),
 			ALMA_WC_VERSION
 		);
 
 		wp_enqueue_script(
 			'alma-admin-scripts',
-			alma_wc_plugin()->get_asset_url( 'js/alma-admin.js' ),
+			almapay_wc_plugin()->get_asset_url( 'js/alma-admin.js' ),
 			array( 'jquery-effects-highlight', 'jquery-ui-selectmenu' ),
 			ALMA_WC_VERSION,
 			true
@@ -743,7 +743,7 @@ class Alma_WC_Plugin {
 	 */
 	public function get_cart_eligibilities() {
 		if ( ! $this->eligibilities ) {
-			$alma = alma_wc_plugin()->get_alma_client();
+			$alma = almapay_wc_plugin()->get_alma_client();
 			if ( ! $alma ) {
 				return null;
 			}
@@ -781,7 +781,7 @@ class Alma_WC_Plugin {
 			return $title;
 		}
 
-		$alma_settings = alma_wc_plugin()->settings;
+		$alma_settings = almapay_wc_plugin()->settings;
 
 		if ( 'alma' === $id ) {
 			$title = $alma_settings->get_title( 'payment_method_pnx' );
@@ -811,7 +811,7 @@ class Alma_WC_Plugin {
 			return $description;
 		}
 
-		$alma_settings = alma_wc_plugin()->settings;
+		$alma_settings = almapay_wc_plugin()->settings;
 
 		if ( 'alma' === $id ) {
 			$description = $alma_settings->get_description( 'payment_method_pnx' );
@@ -835,7 +835,7 @@ class Alma_WC_Plugin {
 	 */
 	public function wp_enqueue_scripts() {
 		if ( is_checkout() ) {
-			$alma_checkout = alma_wc_plugin()->get_asset_url( 'js/alma-checkout.js' );
+			$alma_checkout = almapay_wc_plugin()->get_asset_url( 'js/alma-checkout.js' );
 			wp_enqueue_script( 'alma-checkout-page', $alma_checkout, array(), ALMA_WC_VERSION, true );
 		}
 	}

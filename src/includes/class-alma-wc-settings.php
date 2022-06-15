@@ -406,9 +406,9 @@ class Alma_WC_Settings {
 		$this->allowed_fee_plans = array();
 		$fee_plans               = null;
 		try {
-			$fee_plans = alma_wc_plugin()->get_fee_plans();
+			$fee_plans = almapay_wc_plugin()->get_fee_plans();
 		} catch ( RequestError $e ) {
-			alma_wc_plugin()->handle_settings_exception( $e );
+			almapay_wc_plugin()->handle_settings_exception( $e );
 		}
 		if ( ! $fee_plans ) {
 			return array();

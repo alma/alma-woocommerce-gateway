@@ -23,7 +23,7 @@ class Alma_WC_Cart_Handler extends Alma_WC_Generic_Handler {
 	public function __construct() {
 		parent::__construct();
 
-		if ( 'yes' === alma_wc_plugin()->settings->display_cart_eligibility ) {
+		if ( 'yes' === almapay_wc_plugin()->settings->display_cart_eligibility ) {
 			add_action( 'woocommerce_cart_totals_after_order_total', array( $this, 'display_cart_eligibility' ) );
 		}
 	}
@@ -35,9 +35,9 @@ class Alma_WC_Cart_Handler extends Alma_WC_Generic_Handler {
 		$has_excluded_products = false;
 
 		if (
-				isset( alma_wc_plugin()->settings->excluded_products_list ) &&
-				is_array( alma_wc_plugin()->settings->excluded_products_list ) &&
-				count( alma_wc_plugin()->settings->excluded_products_list ) > 0
+				isset( almapay_wc_plugin()->settings->excluded_products_list ) &&
+				is_array( almapay_wc_plugin()->settings->excluded_products_list ) &&
+				count( almapay_wc_plugin()->settings->excluded_products_list ) > 0
 		) {
 			foreach ( WC()->cart->get_cart() as $cart_item ) {
 				$product_id = $cart_item['product_id'];

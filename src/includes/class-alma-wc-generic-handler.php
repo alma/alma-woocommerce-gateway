@@ -42,7 +42,7 @@ class Alma_WC_Generic_Handler {
 	 */
 	public function __construct() {
 		$this->logger   = new Alma_WC_Logger();
-		$this->settings = alma_wc_plugin()->settings;
+		$this->settings = almapay_wc_plugin()->settings;
 	}
 
 	/**
@@ -72,7 +72,7 @@ class Alma_WC_Generic_Handler {
 			return false;
 		}
 
-		if ( ! alma_wc_plugin()->check_currency() ) {
+		if ( ! almapay_wc_plugin()->check_currency() ) {
 			return false;
 		}
 
@@ -131,13 +131,13 @@ class Alma_WC_Generic_Handler {
 		);
 
 		// Inject JS/CSS required for the eligibility/payment plans info display.
-		$alma_widgets_js_url = alma_wc_plugin()->get_asset_url( 'widget/js/widgets.umd.js' );
+		$alma_widgets_js_url = almapay_wc_plugin()->get_asset_url( 'widget/js/widgets.umd.js' );
 		wp_enqueue_script( 'alma-widgets', $alma_widgets_js_url, array(), ALMA_WC_VERSION, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 
-		$alma_widgets_css_url = alma_wc_plugin()->get_asset_url( 'widget/css/widgets.css' );
+		$alma_widgets_css_url = almapay_wc_plugin()->get_asset_url( 'widget/css/widgets.css' );
 		wp_enqueue_style( 'alma-widgets', $alma_widgets_css_url, array(), ALMA_WC_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 
-		$alma_widgets_injection_url = alma_wc_plugin()->get_asset_url( 'js/alma-widgets-inject.js' );
+		$alma_widgets_injection_url = almapay_wc_plugin()->get_asset_url( 'js/alma-widgets-inject.js' );
 		wp_enqueue_script( 'alma-widgets-injection', $alma_widgets_injection_url, array(), ALMA_WC_VERSION, true );
 
 		?>
@@ -147,7 +147,7 @@ class Alma_WC_Generic_Handler {
 
 			<?php
 			if ( $has_excluded_products ) {
-				$logo_url      = alma_wc_plugin()->get_asset_url( 'images/alma_logo.svg' );
+				$logo_url      = almapay_wc_plugin()->get_asset_url( 'images/alma_logo.svg' );
 				$exclusion_msg = $this->settings->get_cart_not_eligible_message_gift_cards();
 				?>
 				<img src="<?php echo esc_attr( $logo_url ); ?>"
@@ -170,7 +170,7 @@ class Alma_WC_Generic_Handler {
 	 * @return bool
 	 */
 	protected function is_product_excluded( $product_id ) {
-		foreach ( alma_wc_plugin()->settings->excluded_products_list as $category_slug ) {
+		foreach ( almapay_wc_plugin()->settings->excluded_products_list as $category_slug ) {
 			if ( has_term( $category_slug, 'product_cat', $product_id ) ) {
 				return true;
 			}

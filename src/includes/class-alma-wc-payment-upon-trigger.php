@@ -57,7 +57,7 @@ class Alma_WC_Payment_Upon_Trigger {
 			return;
 		}
 
-		if ( alma_wc_plugin()->settings->payment_upon_trigger_event === $next_status ) {
+		if ( almapay_wc_plugin()->settings->payment_upon_trigger_event === $next_status ) {
 			$this->trigger_payment( $order_id, $next_status );
 		}
 	}
@@ -72,7 +72,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	 */
 	private function trigger_payment( $order_id, $next_status ) {
 
-		$alma = alma_wc_plugin()->get_alma_client();
+		$alma = almapay_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
 			return;
 		}
@@ -123,7 +123,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	 * @return string
 	 */
 	public static function get_display_text() {
-		return self::get_display_texts_keys_and_values() [ alma_wc_plugin()->settings->payment_upon_trigger_display_text ];
+		return self::get_display_texts_keys_and_values() [ almapay_wc_plugin()->settings->payment_upon_trigger_display_text ];
 	}
 
 	/**
@@ -143,7 +143,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	 * @return bool
 	 */
 	public static function has_merchant_payment_upon_trigger_enabled() {
-		foreach ( alma_wc_plugin()->settings->get_allowed_fee_plans() as $fee_plan ) {
+		foreach ( almapay_wc_plugin()->settings->get_allowed_fee_plans() as $fee_plan ) {
 			if ( self::is_payment_upon_trigger_enabled_for_fee_plan( $fee_plan ) ) {
 				return true;
 			}
@@ -168,7 +168,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	 * @return bool
 	 */
 	public static function does_payment_upon_trigger_apply_for_this_fee_plan( $fee_plan_definition ) {
-		return 'yes' === alma_wc_plugin()->settings->payment_upon_trigger_enabled &&
+		return 'yes' === almapay_wc_plugin()->settings->payment_upon_trigger_enabled &&
 			in_array( $fee_plan_definition['installments_count'], array( 2, 3, 4 ), true ) &&
 			0 === $fee_plan_definition['deferred_days'] &&
 			0 === $fee_plan_definition['deferred_months'];

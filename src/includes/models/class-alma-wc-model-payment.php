@@ -106,7 +106,7 @@ class Alma_WC_Model_Payment {
 
 		$data = array(
 			'purchase_amount' => $cart->get_total_in_cents(),
-			'queries'         => alma_wc_plugin()->get_eligible_plans_for_cart(),
+			'queries'         => almapay_wc_plugin()->get_eligible_plans_for_cart(),
 			'locale'          => apply_filters( 'alma_wc_eligibility_user_locale', get_locale() ),
 		);
 

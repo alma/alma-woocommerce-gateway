@@ -22,7 +22,7 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 	public function __construct() {
 		parent::__construct();
 
-		if ( 'yes' === alma_wc_plugin()->settings->display_product_eligibility ) {
+		if ( 'yes' === almapay_wc_plugin()->settings->display_product_eligibility ) {
 			add_action( 'woocommerce_single_product_summary', array( $this, 'inject_payment_plan' ), 29 );
 		}
 	}
@@ -41,9 +41,9 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 			return;
 		}
 		if (
-				isset( alma_wc_plugin()->settings->excluded_products_list ) &&
-				is_array( alma_wc_plugin()->settings->excluded_products_list ) &&
-				count( alma_wc_plugin()->settings->excluded_products_list ) > 0
+				isset( almapay_wc_plugin()->settings->excluded_products_list ) &&
+				is_array( almapay_wc_plugin()->settings->excluded_products_list ) &&
+				count( almapay_wc_plugin()->settings->excluded_products_list ) > 0
 		) {
 			$product_id = $product->get_id();
 
@@ -72,8 +72,8 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 		$is_variable_product = $product->get_type() === 'variable';
 
 		if ( $is_variable_product ) {
-			$jquery_update_event   = alma_wc_plugin()->settings->variable_product_check_variations_event;
-			$amount_query_selector = alma_wc_plugin()->settings->variable_product_price_query_selector;
+			$jquery_update_event   = almapay_wc_plugin()->settings->variable_product_check_variations_event;
+			$amount_query_selector = almapay_wc_plugin()->settings->variable_product_price_query_selector;
 		}
 
 		$this->inject_payment_plan_widget(

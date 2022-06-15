@@ -42,7 +42,7 @@ class Alma_WC_Logger extends AbstractLogger {
 	 * @return void
 	 */
 	public function log( $level, $message, array $context = array() ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
-		if ( ! is_callable( 'wc' ) || ( alma_wc_plugin()->settings && ! alma_wc_plugin()->settings->is_logging_enabled() ) ) {
+		if ( ! is_callable( 'wc' ) || ( almapay_wc_plugin()->settings && ! almapay_wc_plugin()->settings->is_logging_enabled() ) ) {
 			return;
 		}
 

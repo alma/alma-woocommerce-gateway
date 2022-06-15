@@ -30,7 +30,7 @@ class Alma_WC_Admin_Form {
 	 * @return array
 	 */
 	public static function init_form_fields() {
-		$need_api_key     = alma_wc_plugin()->settings->need_api_key();
+		$need_api_key     = almapay_wc_plugin()->settings->need_api_key();
 		$default_settings = Alma_WC_Settings::default_settings();
 
 		if ( $need_api_key ) {
@@ -282,7 +282,7 @@ class Alma_WC_Admin_Form {
 				'title'       => '<hr>' . $keys_title,
 				'type'        => 'title',
 				/* translators: %s Alma security URL */
-				'description' => sprintf( __( 'You can find your API keys on <a href="%s" target="_blank">your Alma dashboard</a>', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_alma_dashboard_url( 'security' ) ),
+				'description' => sprintf( __( 'You can find your API keys on <a href="%s" target="_blank">your Alma dashboard</a>', 'alma-gateway-for-woocommerce' ), almapay_wc_plugin()->get_alma_dashboard_url( 'security' ) ),
 			),
 			'live_api_key' => array(
 				'title' => __( 'Live API key', 'alma-gateway-for-woocommerce' ),
@@ -323,12 +323,12 @@ class Alma_WC_Admin_Form {
 		$select_options   = $this->generate_select_options();
 		if ( count( $select_options ) === 0 ) {
 			/* translators: %s: Alma conditions URL */
-			$title_field['fee_plan_section']['description'] = sprintf( __( '⚠ There is no fee plan allowed in your <a href="%s" target="_blank">Alma dashboard</a>.', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_alma_dashboard_url( 'conditions' ) );
+			$title_field['fee_plan_section']['description'] = sprintf( __( '⚠ There is no fee plan allowed in your <a href="%s" target="_blank">Alma dashboard</a>.', 'alma-gateway-for-woocommerce' ), almapay_wc_plugin()->get_alma_dashboard_url( 'conditions' ) );
 
 			return $title_field;
 		}
 		$selected_fee_plan = $this->generate_selected_fee_plan_key( $select_options, $default_settings );
-		foreach ( alma_wc_plugin()->settings->get_allowed_fee_plans() as $fee_plan ) {
+		foreach ( almapay_wc_plugin()->settings->get_allowed_fee_plans() as $fee_plan ) {
 			$fee_plans_fields = array_merge(
 				$fee_plans_fields,
 				$this->init_fee_plan_fields( $fee_plan, $default_settings, $selected_fee_plan === $fee_plan->getPlanKey() )
@@ -342,7 +342,7 @@ class Alma_WC_Admin_Form {
 					'title'       => __( 'Select a fee plan to update', 'alma-gateway-for-woocommerce' ),
 					'type'        => 'select_alma_fee_plan',
 					/* translators: %s: Alma conditions URL */
-					'description' => sprintf( __( 'Choose which fee plan you want to modify<br>(only your <a href="%s" target="_blank">Alma dashboard</a> available fee plans are shown here).', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_alma_dashboard_url( 'conditions' ) ),
+					'description' => sprintf( __( 'Choose which fee plan you want to modify<br>(only your <a href="%s" target="_blank">Alma dashboard</a> available fee plans are shown here).', 'alma-gateway-for-woocommerce' ), almapay_wc_plugin()->get_alma_dashboard_url( 'conditions' ) ),
 					'default'     => $selected_fee_plan,
 					'options'     => $select_options,
 				),
@@ -373,12 +373,12 @@ class Alma_WC_Admin_Form {
 		$fields_pnx = $this->get_custom_fields_payment_method( 'payment_method_pnx', __( 'Payments in 2, 3 and 4 installments:', 'alma-gateway-for-woocommerce' ), $default_settings );
 
 		$fields_pay_later = array();
-		if ( alma_wc_plugin()->settings->has_pay_later() ) {
+		if ( almapay_wc_plugin()->settings->has_pay_later() ) {
 			$fields_pay_later = $this->get_custom_fields_payment_method( 'payment_method_pay_later', __( 'Deferred Payments:', 'alma-gateway-for-woocommerce' ), $default_settings );
 		}
 
 		$fields_pnx_plus_4 = array();
-		if ( alma_wc_plugin()->settings->has_pnx_plus_4() ) {
+		if ( almapay_wc_plugin()->settings->has_pnx_plus_4() ) {
 			$fields_pnx_plus_4 = $this->get_custom_fields_payment_method( 'payment_method_pnx_plus_4', __( 'Payments in more than 4 installments:', 'alma-gateway-for-woocommerce' ), $default_settings );
 		}
 
@@ -477,7 +477,7 @@ class Alma_WC_Admin_Form {
 				'title'       => __( 'Debug mode', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'checkbox',
 				// translators: %s: Admin logs url.
-				'label'       => __( 'Activate debug mode', 'alma-gateway-for-woocommerce' ) . sprintf( __( '(<a href="%s">Go to logs</a>)', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_admin_logs_url() ),
+				'label'       => __( 'Activate debug mode', 'alma-gateway-for-woocommerce' ) . sprintf( __( '(<a href="%s">Go to logs</a>)', 'alma-gateway-for-woocommerce' ), almapay_wc_plugin()->get_admin_logs_url() ),
 				'description' => __( 'Enable logging info and errors to help debug any issue with the plugin', 'alma-gateway-for-woocommerce' ),
 				'desc_tip'    => true,
 				'default'     => $default_settings['debug'],
@@ -621,7 +621,7 @@ class Alma_WC_Admin_Form {
 	 */
 	private function generate_select_options() {
 		$select_options = array();
-		foreach ( alma_wc_plugin()->settings->get_allowed_fee_plans() as $fee_plan ) {
+		foreach ( almapay_wc_plugin()->settings->get_allowed_fee_plans() as $fee_plan ) {
 			$select_label = '';
 			if ( $fee_plan->isPnXOnly() ) {
 				// translators: %d: number of installments.
@@ -654,7 +654,7 @@ class Alma_WC_Admin_Form {
 	 * @return string
 	 */
 	private function generate_selected_fee_plan_key( array $select_options, $default_settings ) {
-		$selected_fee_plan   = alma_wc_plugin()->settings->selected_fee_plan ? alma_wc_plugin()->settings->selected_fee_plan : $default_settings['selected_fee_plan'];
+		$selected_fee_plan   = almapay_wc_plugin()->settings->selected_fee_plan ? almapay_wc_plugin()->settings->selected_fee_plan : $default_settings['selected_fee_plan'];
 		$select_options_keys = array_keys( $select_options );
 
 		return in_array( $selected_fee_plan, $select_options_keys, true ) ? $selected_fee_plan : $select_options_keys[0];
