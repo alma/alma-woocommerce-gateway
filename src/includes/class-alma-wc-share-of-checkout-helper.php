@@ -98,20 +98,21 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	 * @return mixed
 	 */
 	public function get_last_update_date() {
+		$last_update_date = gmdate( 'Y-m-d', strtotime( '-2 days' ) );
 
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
-			return;
+			return $last_update_date;
 		}
 
 		try {
 			$last_update_by_api = $alma->shareOfCheckout->getLastUpdateDates(); // phpcs:ignore
-			return $last_update_by_api['end_time'];
+			$last_update_date   = $last_update_by_api['end_time'];
 		} catch ( RequestError $e ) {
 			$this->logger->error( 'Error getting getLastUpdateDates for ShareOfCheckout : ' . $e->getMessage() );
 		}
 
-		return gmdate( 'Y-m-d', strtotime( '-2 days' ) );
+		return $last_update_date;
 	}
 
 	/**
