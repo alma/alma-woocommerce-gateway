@@ -38,7 +38,7 @@ class Alma_WC_Date_Helper {
 	 */
 	public function get_dates_in_interval( $from, $share_of_checkout_enabled_date, $to = null ) {
 		if ( ! $to ) {
-			$to = strtotime( '+1 day' );
+			$to = strtotime( 'now' );
 		}
 
 		error_log( '$share_of_checkout_enabled_date = ' . $share_of_checkout_enabled_date );
