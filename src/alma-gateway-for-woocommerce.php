@@ -75,6 +75,8 @@ if ( ! defined( 'ALMA_PLUGIN_ACTIVATION' ) ) {
  */
 function new_alma_plugin_activation_hook() {
 	error_log( 'new_alma_plugin_activation_hook()' );
+	backup_alma_settings();
+	deactivate_old_alma_plugin();
 	add_option( ALMA_PLUGIN_ACTIVATION, '1' );
 }
 register_activation_hook( __FILE__, 'new_alma_plugin_activation_hook' );
@@ -86,7 +88,7 @@ register_activation_hook( __FILE__, 'new_alma_plugin_activation_hook' );
  */
 function alma_wc_admin_init() {
 	error_log( 'alma_wc_admin_init' );
-	if ( '1' === get_option( ALMA_PLUGIN_ACTIVATION ) ) {
+	if (  is_admin() && '1' === get_option( ALMA_PLUGIN_ACTIVATION ) ) {
 
 //		global $wpdb;
 //		$get_query = $wpdb->query( sprintf( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '%s'", 'alma' . '%' ) );
@@ -95,8 +97,6 @@ function alma_wc_admin_init() {
 //		exit;
 
 		delete_option( ALMA_PLUGIN_ACTIVATION );
-		backup_alma_settings();
-		deactivate_old_alma_plugin();
 		delete_old_alma_plugin();
 		import_alma_settings();
 	}
@@ -117,7 +117,7 @@ function backup_alma_settings() {
 //		'woocommerce_currency'      => get_option( 'woocommerce_currency' ),
 	];
 	foreach ( $tmp_options  as $option_name => $option_value ) {
-		update_option(  ALMA_PREFIX_FOR_TMP_OPTIONS . $option_name, $option_value);
+		update_option( ALMA_PREFIX_FOR_TMP_OPTIONS . $option_name, $option_value);
 		error_log( "update_option" );
 		error_log( '$option_name = ' . $option_name );
 		error_log( '$option_value = ' . serialize( $option_value ) );
@@ -141,9 +141,18 @@ function deactivate_old_alma_plugin() {
  * @return void
  */
 function delete_old_alma_plugin() {
-	$delete_plugins = delete_plugins( [ WP_PLUGIN_DIR . '/' . ALMA_WC_OLD_PLUGIN_FILE ] );
+
+	$delete_plugins = delete_plugins( [ ALMA_WC_OLD_PLUGIN_FILE ] );
 	error_log( '$delete_plugins = ' . json_encode( $delete_plugins ) );
+
+//	$delete_plugins = delete_plugins( [ WP_PLUGIN_DIR . '/' . ALMA_WC_OLD_PLUGIN_FILE ] );
+//	error_log( '$delete_plugins = ' . json_encode( $delete_plugins ) );
+//
+//	$delete_plugins = delete_plugins( [ 'toto.php' ] );
+//	error_log( '$delete_plugins = ' . json_encode( $delete_plugins ) );
+
 //	add_action('admin_notices', 'general_admin_notice');
+
 }
 
 /**
