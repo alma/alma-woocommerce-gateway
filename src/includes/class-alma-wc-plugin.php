@@ -37,7 +37,7 @@ class Alma_WC_Plugin {
 	/**
 	 * Instance of Alma_Settings.
 	 *
-	 * @var Alma_WC_Settings
+	 * @var Alma_WC_Settings_New
 	 */
 	public $settings;
 
@@ -238,14 +238,17 @@ class Alma_WC_Plugin {
 
 			$this->check_dependencies();
 
-			$this->settings = new Alma_WC_Settings();
+			$this->settings = new Alma_WC_Settings_New();
 
 			$this->run();
 
 			if ( is_admin() ) {
 				// Defer settings check to after potential settings update.
 				update_option( 'alma_warnings_handled', false );
-				$this->settings->save();
+
+                /* 20220617 - Gilles, je commente ceci */
+//                $this->settings->save();
+
 				add_action( 'admin_notices', array( $this, 'check_settings' ) );
 			}
 		} catch ( Exception $e ) {

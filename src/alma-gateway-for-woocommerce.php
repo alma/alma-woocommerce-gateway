@@ -30,10 +30,6 @@
  * along with Alma Payment Gateway for WooCommerce. If not, see https://www.gnu.org/licenses/gpl-3.0.html.
  */
 
-//namespace AlmaPayment;
-
-//return;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
@@ -57,15 +53,20 @@ if ( ! defined( 'ALMA_WC_OLD_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'ALMA_WC_NEW_PLUGIN_FILE' ) ) {
-	define( 'ALMA_WC_NEW_PLUGIN_FILE', 'alma-gateway-for-woocommerce/alma-gateway-for-woocommerce.php' );
+	// @todo en vrai ça sera "alma-gateway-for-woocommerce/alma-gateway-for-woocommerce.php"
+	define( 'ALMA_WC_NEW_PLUGIN_FILE', 'alma-woocommerce-gateway/alma-gateway-for-woocommerce.php' );
 }
 
 if ( ! defined( 'ALMA_PREFIX_FOR_TMP_OPTIONS' ) ) {
-	define( 'ALMA_PREFIX_FOR_TMP_OPTIONS', 'alma_tmp2_' );
+	define( 'ALMA_PREFIX_FOR_TMP_OPTIONS', 'alma_tmp4_' );
 }
 
-if ( ! defined( 'ALMA_PLUGIN_ACTIVATION' ) ) {
-	define( 'ALMA_PLUGIN_ACTIVATION', 'alma_plugin_activation_option_name' );
+if ( ! defined( 'ALMA_PLUGIN_ACTIVATION_OPTION_NAME' ) ) {
+	define( 'ALMA_PLUGIN_ACTIVATION_OPTION_NAME', 'alma_plugin_activation_option_name' );
+}
+
+if ( ! defined( 'ALMA_PLUGIN_ACTIVATION_FLAG' ) ) {
+	define( 'ALMA_PLUGIN_ACTIVATION_FLAG', 'alma_new_installed' );
 }
 
 /**
@@ -77,7 +78,7 @@ function new_alma_plugin_activation_hook() {
 	error_log( 'new_alma_plugin_activation_hook()' );
 	backup_alma_settings();
 	deactivate_old_alma_plugin();
-	add_option( ALMA_PLUGIN_ACTIVATION, '1' );
+	add_option( ALMA_PLUGIN_ACTIVATION_OPTION_NAME, '1' );
 }
 register_activation_hook( __FILE__, 'new_alma_plugin_activation_hook' );
 
@@ -88,20 +89,38 @@ register_activation_hook( __FILE__, 'new_alma_plugin_activation_hook' );
  */
 function alma_wc_admin_init() {
 	error_log( 'alma_wc_admin_init' );
-	if (  is_admin() && '1' === get_option( ALMA_PLUGIN_ACTIVATION ) ) {
 
-//		global $wpdb;
-//		$get_query = $wpdb->query( sprintf( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '%s'", 'alma' . '%' ) );
-//
-//		error_log( 'delete from wp_options = ' . $get_query );
-//		exit;
+//	Pour virer toutes les options Alma.
+//	global $wpdb;
+//	$get_query = $wpdb->query( sprintf( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '%s'", 'alma' . '%' ) );
+//	error_log( 'delete from wp_options = ' . $get_query );
+//	exit;
 
-		delete_option( ALMA_PLUGIN_ACTIVATION );
+	// Delete old version of Alma plugin.
+	if (  isset( $_GET[ ALMA_PLUGIN_ACTIVATION_FLAG ] )  && '1' === $_GET[ ALMA_PLUGIN_ACTIVATION_FLAG ] ) {
 		delete_old_alma_plugin();
-		import_alma_settings();
 	}
+
+	if (  '1' === get_option( ALMA_PLUGIN_ACTIVATION_OPTION_NAME ) ) {
+		delete_option( ALMA_PLUGIN_ACTIVATION_OPTION_NAME );
+
+		error_log( 'alma_wc_admin_init A' );
+
+		$get_plugins = get_option( 'active_plugins' );
+		error_log( '$get_plugins = ' . json_encode( $get_plugins ) );
+
+		$url_redirect = add_query_arg( [ ALMA_PLUGIN_ACTIVATION_FLAG => 1 ], admin_url( '/plugins.php' ) );
+		wp_safe_redirect ( $url_redirect );
+		exit;
+	}
+	error_log( 'alma_wc_admin_init B' );
 }
 add_action( 'admin_init', 'alma_wc_admin_init' );
+
+$GLOBALS['tmp_options'] = [
+	'woocommerce_alma_settings',
+	'alma_warnings_handled'
+];
 
 /**
  * Backups the plugin settings, with different option names.
@@ -109,19 +128,42 @@ add_action( 'admin_init', 'alma_wc_admin_init' );
  * @return void
  */
 function backup_alma_settings() {
+
+	error_log( '-----------------------------' );
 	error_log( 'backup_alma_settings()' );
-	$tmp_options = [
-		'woocommerce_alma_settings' => get_option( 'woocommerce_alma_settings' ),
-		'alma_warnings_handled'     => get_option( 'alma_warnings_handled' ),
-//		'alma_version'              => get_option( 'alma_version' ),
-//		'woocommerce_currency'      => get_option( 'woocommerce_currency' ),
-	];
-	foreach ( $tmp_options  as $option_name => $option_value ) {
+	error_log( '-----------------------------' );
+
+	foreach ( $GLOBALS['tmp_options']  as $option_name ) {
+
+		$option_value = get_option( $option_name );
+
+		delete_option( ALMA_PREFIX_FOR_TMP_OPTIONS . $option_name );
 		update_option( ALMA_PREFIX_FOR_TMP_OPTIONS . $option_name, $option_value);
-		error_log( "update_option" );
-		error_log( '$option_name = ' . $option_name );
-		error_log( '$option_value = ' . serialize( $option_value ) );
+		error_log( 'update_option : $option_name = ' . $option_name . ' et $option_value = ' . serialize( $option_value ) );
 	}
+	error_log( '---------------------------------------------------' );
+}
+
+/**
+ * Backups the plugin options.
+ *
+ * @return void
+ */
+function import_alma_settings() {
+
+	error_log( '-----------------------------' );
+	error_log( 'import_alma_settings()' );
+	error_log( '-----------------------------' );
+
+	foreach ( $GLOBALS['tmp_options']  as $option_name ) {
+
+		$option_value = get_option( ALMA_PREFIX_FOR_TMP_OPTIONS . $option_name );
+
+		delete_option( $option_name );
+		update_option( $option_name, $option_value);
+		error_log( 'update_option : $option_name = ' . $option_name . ' et $option_value = ' . serialize( $option_value ) );
+	}
+	error_log( '---------------------------------------------------' );
 }
 
 /**
@@ -131,7 +173,11 @@ function backup_alma_settings() {
  */
 function deactivate_old_alma_plugin() {
 	if ( is_plugin_active( ALMA_WC_OLD_PLUGIN_FILE) ) {
+		error_log( 'ALMA_WC_OLD_PLUGIN_FILE désactivé !' );
 		deactivate_plugins( ALMA_WC_OLD_PLUGIN_FILE );
+	}
+	else {
+		error_log( 'ALMA_WC_OLD_PLUGIN_FILE NON désactivé !' );
 	}
 }
 
@@ -141,63 +187,23 @@ function deactivate_old_alma_plugin() {
  * @return void
  */
 function delete_old_alma_plugin() {
-
 	$delete_plugins = delete_plugins( [ ALMA_WC_OLD_PLUGIN_FILE ] );
-	error_log( '$delete_plugins = ' . json_encode( $delete_plugins ) );
-
-//	$delete_plugins = delete_plugins( [ WP_PLUGIN_DIR . '/' . ALMA_WC_OLD_PLUGIN_FILE ] );
-//	error_log( '$delete_plugins = ' . json_encode( $delete_plugins ) );
-//
-//	$delete_plugins = delete_plugins( [ 'toto.php' ] );
-//	error_log( '$delete_plugins = ' . json_encode( $delete_plugins ) );
-
-//	add_action('admin_notices', 'general_admin_notice');
-
 }
 
-/**
- * Backups the plugin options.
- *
- * @return void
- */
-function import_alma_settings() {
-	error_log( 'import_alma_settings()' );
-
-	global $wpdb;
-	$results = $wpdb->get_results( sprintf( "SELECT * FROM {$wpdb->options} WHERE option_name LIKE '%s'", ALMA_PREFIX_FOR_TMP_OPTIONS . '%' ) );
-//	pre( $results );
-	foreach ( $results as $key => $result ) {
-//		pre( $results );
-		$option_name = str_replace( ALMA_PREFIX_FOR_TMP_OPTIONS, '', $result->option_name );
-		update_option(  $option_name, $result->option_value );
-		error_log( "update_option" );
-		error_log( '$option_name = ' . $option_name );
-		error_log( '$option_value = ' . serialize( $result->option_value ) );
-	}
-}
-
-function general_admin_notice(){
-//	global $pagenow;
-//	if ( $pagenow == 'options-general.php' ) {
-		echo '<div class="notice notice-warning is-dismissible">
-             <p>This notice appears on the settings page.</p>
-         </div>';
-//	}
-}
 
 /**
  * @param $plugin
  * @return void
  */
-//function deleted_plugin_alma_wc_callback( $plugin_file ) {
-//
-//	error_log( 'deleted_plugin_alma_wc_callback() --------> ' . $plugin_file);
-//
-//	if ( ALMA_WC_OLD_PLUGIN_FILE === $plugin_file ) {
-//		import_alma_settings();
-//	}
-//}
-//add_action( 'deleted_plugin', 'deleted_plugin_alma_wc_callback', 10, 1 );
+function alma_activated_plugin_new( $plugin_file ) {
+
+	error_log( 'alma_activated_plugin_new() --------> ' . $plugin_file);
+
+	if ( ALMA_WC_NEW_PLUGIN_FILE === $plugin_file ) {
+		import_alma_settings();
+	}
+}
+add_action( 'activated_plugin', 'alma_activated_plugin_new', 10, 1 );
 
 /**
  * Return instance of Alma_Plugin.
@@ -208,38 +214,10 @@ function general_admin_notice(){
 function almapay_wc_plugin() {
 	static $plugin;
 
-//	$wp_get_active_and_valid_plugins = wp_get_active_and_valid_plugins();
-//	pre( $wp_get_active_and_valid_plugins );
-//
-//	foreach ( $wp_get_active_and_valid_plugins  as $plugin_file ) {
-//		if ( strpos( $plugin_file, 'alma-woocommerce-gateway.php' ) !== false ) {
-//			// L'ancien plugin Alma est installé.
-//			deactivate_plugins ( 'alma-woocommerce-gateway.php' );
-//		}
-//	}
-
 	if ( ! isset( $plugin ) ) {
 		require_once ALMA_WC_PLUGIN_PATH . 'includes/alma-wc-functions.php';
 		require_once ALMA_WC_PLUGIN_PATH . 'vendor/autoload.php';
 		require_once ALMA_WC_PLUGIN_PATH . 'includes/class-alma-wc-autoloader.php';
-
-//		require_once ALMA_WC_PLUGIN_PATH . 'includes/class-alma-wc-admin-form.php';
-//		require_once ALMA_WC_PLUGIN_PATH . 'includes/class-alma-wc-admin-internationalization-front-helper.php';
-//		require_once ALMA_WC_PLUGIN_PATH . 'includes/class-alma-wc-checkout-helper.php';
-//		require_once ALMA_WC_PLUGIN_PATH . 'includes/class-alma-wc-generic-handler.php';
-//		require_once ALMA_WC_PLUGIN_PATH . 'includes/class-alma-wc-cart-handler.php';
-//		require_once ALMA_WC_PLUGIN_PATH . 'includes/class-alma-wc-internationalization.php';
-//		require_once ALMA_WC_PLUGIN_PATH . 'includes/class-alma-wc-logger.php';
-//		require_once ALMA_WC_PLUGIN_PATH . 'includes/class-alma-wc-payment-gateway.php';
-//		require_once ALMA_WC_PLUGIN_PATH . 'includes/class-alma-wc-payment-upon-trigger.php';
-//		require_once ALMA_WC_PLUGIN_PATH . 'includes/class-alma-wc-payment-validation-error.php';
-//		require_once ALMA_WC_PLUGIN_PATH . 'includes/class-alma-wc-payment-validator.php';
-//		require_once ALMA_WC_PLUGIN_PATH . 'includes/class-alma-wc-plugin.php';
-//		require_once ALMA_WC_PLUGIN_PATH . 'includes/class-alma-wc-product-handler.php';
-//		require_once ALMA_WC_PLUGIN_PATH . 'includes/class-alma-wc-settings-helper.php';
-//		require_once ALMA_WC_PLUGIN_PATH . 'includes/class-alma-wc-settings.php';
-//		require_once ALMA_WC_PLUGIN_PATH . 'includes/class-alma-wc-shortcodes.php';
-//		require_once ALMA_WC_PLUGIN_PATH . 'includes/class-alma-wc-webhooks.php';
 
 		Alma_WC_Autoloader::autoload();
 		$plugin = new Alma_WC_Plugin();
@@ -248,7 +226,7 @@ function almapay_wc_plugin() {
 	return $plugin;
 }
 
-//almapay_wc_plugin()->try_running();
+almapay_wc_plugin()->try_running();
 
 
 //$debug_tags = array();
@@ -263,3 +241,21 @@ function almapay_wc_plugin() {
 //} );
 //
 
+function generateCallTrace()
+{
+	$e = new Exception();
+	$trace = explode("\n", $e->getTraceAsString());
+	// reverse array to make steps line up chronologically
+	$trace = array_reverse($trace);
+	array_shift($trace); // remove {main}
+	array_pop($trace); // remove call to this method
+	$length = count($trace);
+	$result = array();
+
+	for ($i = 0; $i < $length; $i++)
+	{
+		$result[] = ($i + 1)  . ')' . substr($trace[$i], strpos($trace[$i], ' ')); // replace '#someNum' with '$i)', set the right ordering
+	}
+
+	return "\t" . implode("\n\t", $result);
+}

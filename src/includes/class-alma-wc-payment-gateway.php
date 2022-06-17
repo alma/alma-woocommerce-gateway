@@ -650,8 +650,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		if ( ! count( $plans ) ) {
 			return null;
 		}
-		if ( in_array( Alma_WC_Settings::DEFAULT_FEE_PLAN, $plans, true ) ) {
-			return Alma_WC_Settings::DEFAULT_FEE_PLAN;
+		if ( in_array( Alma_WC_Settings_New::DEFAULT_FEE_PLAN, $plans, true ) ) {
+			return Alma_WC_Settings_New::DEFAULT_FEE_PLAN;
 		}
 
 		return end( $plans );

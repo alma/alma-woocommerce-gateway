@@ -31,7 +31,9 @@ class Alma_WC_Admin_Form {
 	 */
 	public static function init_form_fields() {
 		$need_api_key     = almapay_wc_plugin()->settings->need_api_key();
-		$default_settings = Alma_WC_Settings::default_settings();
+		$default_settings = Alma_WC_Settings_New::default_settings();
+
+		error_log( '$need_api_key = ' . $need_api_key );
 
 		if ( $need_api_key ) {
 			return array_merge(
@@ -253,7 +255,7 @@ class Alma_WC_Admin_Form {
 				'description' => sprintf(
 					// translators: %1$s is technical information, %2$s is Alma WooCommerce Plugin FAQ doc URL.
 					__( 'This is the javascript event triggered on variables products page, when the customer change the product variation. Default value is <strong>%1$s</strong>.<br />More technical information on <a href="%2$s" target="_blank">Alma documentation</a>', 'alma-gateway-for-woocommerce' ),
-					Alma_WC_Settings::DEFAULT_CHECK_VARIATIONS_EVENT,
+					Alma_WC_Settings_New::DEFAULT_CHECK_VARIATIONS_EVENT,
 					'https://docs.getalma.eu/docs/woocommerce-faq'
 				),
 			),

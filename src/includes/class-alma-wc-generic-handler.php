@@ -24,7 +24,7 @@ class Alma_WC_Generic_Handler {
 	/**
 	 * Plugin settings
 	 *
-	 * @var Alma_WC_Settings
+	 * @var Alma_WC_Settings_New
 	 */
 	protected $settings;
 
