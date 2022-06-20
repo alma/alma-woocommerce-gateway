@@ -39,7 +39,7 @@ class Alma_WC_Autoloader {
 
 		spl_autoload_register( array( $this, 'load_class' ) );
 
-		$this->include_path = untrailingslashit( ALMA_WC_PLUGIN_PATH ) . '/includes/';
+		$this->include_path = untrailingslashit( ALMAPAY_WC_PLUGIN_PATH ) . '/includes/';
 	}
 
 	/**

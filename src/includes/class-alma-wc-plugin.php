@@ -115,12 +115,12 @@ class Alma_WC_Plugin {
 	private function self_update() {
 		$db_version = get_option( 'alma_version' );
 		if ( ! $db_version ) {
-			update_option( 'alma_version', ALMA_WC_VERSION );
+			update_option( 'alma_version', ALMAPAY_WC_VERSION );
 
 			return;
 		}
-		if ( version_compare( ALMA_WC_VERSION, $db_version, '>' ) ) {
-			update_option( 'alma_version', ALMA_WC_VERSION );
+		if ( version_compare( ALMAPAY_WC_VERSION, $db_version, '>' ) ) {
+			update_option( 'alma_version', ALMAPAY_WC_VERSION );
 		}
 	}
 
@@ -141,7 +141,7 @@ class Alma_WC_Plugin {
 
 			$this->alma_client->addUserAgentComponent( 'WordPress', get_bloginfo( 'version' ) );
 			$this->alma_client->addUserAgentComponent( 'WooCommerce', wc()->version );
-			$this->alma_client->addUserAgentComponent( 'Alma for WooCommerce', ALMA_WC_VERSION );
+			$this->alma_client->addUserAgentComponent( 'Alma for WooCommerce', ALMAPAY_WC_VERSION );
 		} catch ( \Exception $e ) {
 			if ( $this->settings->is_logging_enabled() ) {
 				$this->logger->log_stack_trace( 'Error creating Alma API client', $e );
@@ -187,7 +187,7 @@ class Alma_WC_Plugin {
 		add_action( 'init', array( $this, 'bootstrap' ) );
 		add_filter( 'allowed_redirect_hosts', array( $this, 'alma_domains_whitelist' ) );
 
-		add_filter( 'plugin_action_links_' . plugin_basename( ALMA_WC_PLUGIN_FILE ), array( $this, 'plugin_action_links' ) );
+		add_filter( 'plugin_action_links_' . plugin_basename( ALMAPAY_WC_PLUGIN_FILE ), array( $this, 'plugin_action_links' ) );
 		add_action( 'wp_ajax_alma_dismiss_notice_message', array( $this, 'ajax_dismiss_notice' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'alma_admin_enqueue_scripts' ) );
 
@@ -207,14 +207,14 @@ class Alma_WC_Plugin {
 			'alma-admin-styles',
 			almapay_wc_plugin()->get_asset_url( 'css/alma-admin.css' ),
 			array(),
-			ALMA_WC_VERSION
+			ALMAPAY_WC_VERSION
 		);
 
 		wp_enqueue_script(
 			'alma-admin-scripts',
 			almapay_wc_plugin()->get_asset_url( 'js/alma-admin.js' ),
 			array( 'jquery-effects-highlight', 'jquery-ui-selectmenu' ),
-			ALMA_WC_VERSION,
+			ALMAPAY_WC_VERSION,
 			true
 		);
 	}
@@ -562,7 +562,7 @@ class Alma_WC_Plugin {
 	 * @return void
 	 */
 	public function load_plugin_textdomain() {
-		load_plugin_textdomain( 'alma-gateway-for-woocommerce', false, plugin_basename( ALMA_WC_PLUGIN_PATH ) . '/languages' );
+		load_plugin_textdomain( 'alma-gateway-for-woocommerce', false, plugin_basename( ALMAPAY_WC_PLUGIN_PATH ) . '/languages' );
 	}
 
 	/**
@@ -593,7 +593,7 @@ class Alma_WC_Plugin {
 	 * @return string URL to given asset
 	 */
 	public function get_asset_url( $path ) {
-		return ALMA_WC_PLUGIN_URL . 'assets/' . $path;
+		return ALMAPAY_WC_PLUGIN_URL . 'assets/' . $path;
 	}
 
 	/**
@@ -839,7 +839,7 @@ class Alma_WC_Plugin {
 	public function wp_enqueue_scripts() {
 		if ( is_checkout() ) {
 			$alma_checkout = almapay_wc_plugin()->get_asset_url( 'js/alma-checkout.js' );
-			wp_enqueue_script( 'alma-checkout-page', $alma_checkout, array(), ALMA_WC_VERSION, true );
+			wp_enqueue_script( 'alma-checkout-page', $alma_checkout, array(), ALMAPAY_WC_VERSION, true );
 		}
 	}
 

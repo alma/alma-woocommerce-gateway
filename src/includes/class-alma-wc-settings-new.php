@@ -177,17 +177,6 @@ class Alma_WC_Settings_New {
 		error_log( 'Alma_WC_Settings_New::save()' );
 		error_log( '-----------------------------' );
 		error_log( serialize( $this->settings ) );
-
-		ob_start();
-		echo generateCallTrace();
-		$output = ob_get_clean();
-		error_log( '$debug_backtrace = ' . $output );
-
-		// @todo Stupid debug test.
-//		if ( $this->settings === self::default_settings() ) {
-//			$this->settings = get_option( ALMA_PREFIX_FOR_TMP_OPTIONS . 'woocommerce_alma_settings' );
-//		}
-
 		update_option( self::OPTIONS_KEY, $this->settings );
 	}
 
