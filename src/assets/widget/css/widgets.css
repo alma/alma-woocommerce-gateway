@@ -319,7 +319,7 @@
 
 ._MPKjS {
   padding: 32px 24px;
-  margin-bottom: 40px;
+  margin-bottom: 16px;
   border-top: 1px solid var(--gray-300);
   border-bottom: 1px solid var(--gray-300);
 }
@@ -337,11 +337,22 @@
   font-size: 18px;
 }
 
+._65ZpD {
+  background: var(--gray-200);
+  padding: 24px;
+  margin: 24px 0px;
+  border-radius: 8px;
+}
+
 ._1ZIgu {
   font-family: 'Eina04', sans-serif;
   font-weight: 600;
   font-size: 14px;
   margin-bottom: 24px;
+}
+
+._tUTZp {
+  text-align: right;
 }
 
 ._1BUr8 {
@@ -354,7 +365,18 @@
     margin: 0;
     border-bottom: 1px solid transparent;
     height: 100%;
+    max-height: 180px;
   }
+}
+
+._1N3yO {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+}
+._83cGn {
+  margin: 8px 10px 0 0;
 }
 
 ._180ro {
@@ -440,7 +462,6 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   width: 100%;
 }
 
@@ -541,13 +562,21 @@
   border-bottom: 3px solid var(--blue-300);
 }
 
+._2Kqjn._3dG_J._2icEF {
+  border-bottom-color: var(--red-600);
+}
+
 ._2Kqjn._3dG_J._3O1bg {
   border-bottom-color: var(--gray-600);
   cursor: not-allowed;
 }
 
+._3_qcn {
+  border: none;
+}
+
 ._25GrF {
-  font-family: Public Sans;
+  font-family: Public Sans, sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -568,7 +597,7 @@
   line-height: 100%;
 }
 ._2kGhu {
-  font-family: Public Sans;
+  font-family: Public Sans, sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
