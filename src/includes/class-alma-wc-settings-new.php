@@ -175,6 +175,7 @@ class Alma_WC_Settings_New {
 	public function save() {
 		error_log( '-----------------------------' );
 		error_log( 'Alma_WC_Settings_New::save()' );
+		error_log( '-----------------------------' );
 		error_log( serialize( $this->settings ) );
 
 		ob_start();
