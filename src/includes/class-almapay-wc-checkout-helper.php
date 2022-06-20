@@ -11,15 +11,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 /**
- * Class Alma_WC_Checkout_Helper.
+ * class Almapay_WC_Checkout_Helper.
  */
-class Alma_WC_Checkout_Helper {
+class Almapay_WC_Checkout_Helper {
 	const CHECKOUT_NONCE = 'alma_checkout_nonce';
 
 	/**
 	 * The logger.
 	 *
-	 * @var Alma_WC_Logger
+	 * @var Almapay_WC_Logger
 	 */
 	private $logger;
 
@@ -27,7 +27,7 @@ class Alma_WC_Checkout_Helper {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->logger = new Alma_WC_Logger();
+		$this->logger = new Almapay_WC_Logger();
 	}
 
 	/**

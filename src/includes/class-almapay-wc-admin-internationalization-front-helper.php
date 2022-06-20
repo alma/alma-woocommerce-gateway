@@ -11,9 +11,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 /**
- * Class Alma_WC_Admin_Internationalization_Front_Helper.
+ * class Almapay_WC_Admin_Internationalization_Front_Helper.
  */
-class Alma_WC_Admin_Internationalization_Front_Helper {
+class Almapay_WC_Admin_Internationalization_Front_Helper {
 
 	/**
 	 * Returns if the language code in parameter matches the current admin page language.
@@ -42,6 +42,6 @@ class Alma_WC_Admin_Internationalization_Front_Helper {
 			$current_admin_page_language = ICL_LANGUAGE_CODE;
 		}
 
-		return Alma_WC_Internationalization::map_locale( $current_admin_page_language );
+		return Almapay_WC_Internationalization::map_locale( $current_admin_page_language );
 	}
 }

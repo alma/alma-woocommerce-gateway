@@ -13,9 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Alma_WC_Admin_Form
+ * Almapay_WC_Admin_Form
  */
-class Alma_WC_Admin_Form {
+class Almapay_WC_Admin_Form {
 
 	/**
 	 * Singleton static property.
@@ -31,7 +31,7 @@ class Alma_WC_Admin_Form {
 	 */
 	public static function init_form_fields() {
 		$need_api_key     = almapay_wc_plugin()->settings->need_api_key();
-		$default_settings = Alma_WC_Settings_New::default_settings();
+		$default_settings = Almapay_WC_Settings_New::default_settings();
 
 		error_log( '$need_api_key = ' . $need_api_key );
 
@@ -70,7 +70,7 @@ class Alma_WC_Admin_Form {
 			),
 		);
 
-		if ( ! Alma_WC_Payment_Upon_Trigger::has_merchant_payment_upon_trigger_enabled() ) {
+		if ( ! Almapay_WC_Payment_Upon_Trigger::has_merchant_payment_upon_trigger_enabled() ) {
 			return array_merge(
 				$title_field,
 				array(
@@ -101,13 +101,13 @@ class Alma_WC_Admin_Form {
 					'title'       => __( 'Trigger typology', 'alma-gateway-for-woocommerce' ),
 					'description' => __( 'Text that will appear in the payments schedule and in the customer\'s payment authorization email.', 'alma-gateway-for-woocommerce' ),
 					'default'     => $default_settings['payment_upon_trigger_display_text'],
-					'options'     => Alma_WC_Payment_Upon_Trigger::get_display_texts_keys_and_values(),
+					'options'     => Almapay_WC_Payment_Upon_Trigger::get_display_texts_keys_and_values(),
 				),
 				'payment_upon_trigger_event'        => array(
 					'type'    => 'select',
 					'title'   => __( 'Order status that triggers the first payment', 'alma-gateway-for-woocommerce' ),
 					'default' => $default_settings['payment_upon_trigger_event'],
-					'options' => Alma_WC_Payment_Upon_Trigger::get_order_statuses(),
+					'options' => Almapay_WC_Payment_Upon_Trigger::get_order_statuses(),
 				),
 			)
 		);
@@ -140,11 +140,11 @@ class Alma_WC_Admin_Form {
 		$toggle_key            = 'enabled_' . $key;
 		$class                 = 'alma_fee_plan alma_fee_plan_' . $key;
 		$css                   = $selected ? '' : 'display: none;';
-		$default_min_amount    = alma_wc_price_from_cents( $fee_plan->min_purchase_amount );
-		$default_max_amount    = alma_wc_price_from_cents( $fee_plan->max_purchase_amount );
-		$merchant_fee_fixed    = alma_wc_price_from_cents( $fee_plan->merchant_fee_fixed );
+		$default_min_amount    = almapay_wc_price_from_cents( $fee_plan->min_purchase_amount );
+		$default_max_amount    = almapay_wc_price_from_cents( $fee_plan->max_purchase_amount );
+		$merchant_fee_fixed    = almapay_wc_price_from_cents( $fee_plan->merchant_fee_fixed );
 		$merchant_fee_variable = $fee_plan->merchant_fee_variable / 100; // percent.
-		$customer_fee_fixed    = alma_wc_price_from_cents( $fee_plan->customer_fee_fixed );
+		$customer_fee_fixed    = almapay_wc_price_from_cents( $fee_plan->customer_fee_fixed );
 		$customer_fee_variable = $fee_plan->customer_fee_variable / 100; // percent.
 		$customer_lending_rate = $fee_plan->customer_lending_rate / 100; // percent.
 		$default_enabled       = $default_settings['selected_fee_plan'] === $key ? 'yes' : 'no';
@@ -255,7 +255,7 @@ class Alma_WC_Admin_Form {
 				'description' => sprintf(
 					// translators: %1$s is technical information, %2$s is Alma WooCommerce Plugin FAQ doc URL.
 					__( 'This is the javascript event triggered on variables products page, when the customer change the product variation. Default value is <strong>%1$s</strong>.<br />More technical information on <a href="%2$s" target="_blank">Alma documentation</a>', 'alma-gateway-for-woocommerce' ),
-					Alma_WC_Settings_New::DEFAULT_CHECK_VARIATIONS_EVENT,
+					Almapay_WC_Settings_New::DEFAULT_CHECK_VARIATIONS_EVENT,
 					'https://docs.getalma.eu/docs/woocommerce-faq'
 				),
 			),
@@ -437,15 +437,15 @@ class Alma_WC_Admin_Form {
 	 * @return array
 	 */
 	private function generate_i18n_field( $field_name, $field_infos, $default ) {
-		if ( Alma_WC_Internationalization::is_site_multilingual() ) {
+		if ( Almapay_WC_Internationalization::is_site_multilingual() ) {
 			$new_fields = array();
-			$lang_list  = Alma_WC_Internationalization::get_list_languages();
+			$lang_list  = Almapay_WC_Internationalization::get_list_languages();
 			foreach ( $lang_list as $code_lang => $label_lang ) {
 				$new_file_key                 = $field_name . '_' . $code_lang;
 				$new_field_infos              = $field_infos;
 				$new_field_infos['type']      = 'text_alma_i18n';
 				$new_field_infos['class']     = $code_lang;
-				$new_field_infos['default']   = Alma_WC_Internationalization::get_translated_text( $default, $code_lang );
+				$new_field_infos['default']   = Almapay_WC_Internationalization::get_translated_text( $default, $code_lang );
 				$new_field_infos['lang_list'] = $lang_list;
 
 				$new_fields[ $new_file_key ] = $new_field_infos;
@@ -490,7 +490,7 @@ class Alma_WC_Admin_Form {
 	/**
 	 * Singleton static method.
 	 *
-	 * @return Alma_WC_Admin_Form
+	 * @return Almapay_WC_Admin_Form
 	 */
 	private static function get_instance() {
 		if ( ! self::$instance ) {

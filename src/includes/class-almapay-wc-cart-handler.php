@@ -10,9 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Alma_WC_Cart_Handler
+ * Almapay_WC_Cart_Handler
  */
-class Alma_WC_Cart_Handler extends Alma_WC_Generic_Handler {
+class Almapay_WC_Cart_Handler extends Almapay_WC_Generic_Handler {
 	const JQUERY_CART_UPDATE_EVENT = 'updated_cart_totals';
 
 	/**
@@ -49,7 +49,7 @@ class Alma_WC_Cart_Handler extends Alma_WC_Generic_Handler {
 			}
 		}
 
-		$cart   = new Alma_WC_Model_Cart();
+		$cart   = new Almapay_WC_Model_Cart();
 		$amount = $cart->get_total_in_cents();
 
 		$this->inject_payment_plan_widget( $has_excluded_products, $amount, self::JQUERY_CART_UPDATE_EVENT );

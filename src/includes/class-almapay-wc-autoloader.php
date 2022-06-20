@@ -12,11 +12,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Alma Autoloader.
  */
-class Alma_WC_Autoloader {
+class Almapay_WC_Autoloader {
 	/**
 	 * Singleton (autoloader is loaded if instance is populated)
 	 *
-	 * @var Alma_WC_Autoloader
+	 * @var Almapay_WC_Autoloader
 	 */
 	private static $instance;
 
@@ -89,7 +89,7 @@ class Alma_WC_Autoloader {
 		$file  = $this->get_file_name_from_class( $class );
 		$path  = '';
 
-		if ( preg_match( '#^alma_wc_model_#', $class ) ) {
+		if ( preg_match( '#^Almapay_WC_model_#', $class ) ) {
 			$path = $this->include_path . 'models/';
 		}
 

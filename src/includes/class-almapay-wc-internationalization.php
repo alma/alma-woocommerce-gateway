@@ -10,9 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Alma_WC_Internationalization
+ * Almapay_WC_Internationalization
  */
-class Alma_WC_Internationalization {
+class Almapay_WC_Internationalization {
 
 	/**
 	 * Available languages mo files hash.

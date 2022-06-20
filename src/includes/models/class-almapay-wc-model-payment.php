@@ -10,9 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Alma_WC_Model_Payment
+ * Almapay_WC_Model_Payment
  */
-class Alma_WC_Model_Payment {
+class Almapay_WC_Model_Payment {
 
 	/**
 	 * Create Payment data for Alma API request from WooCommerce Order.
@@ -24,9 +24,9 @@ class Alma_WC_Model_Payment {
 	 */
 	public static function get_payment_payload_from_order( $order_id, $fee_plan_definition ) {
 		try {
-			$order = new Alma_WC_Model_Order( $order_id );
+			$order = new Almapay_WC_Model_Order( $order_id );
 		} catch ( Exception $e ) {
-			$logger = new Alma_WC_Logger();
+			$logger = new Almapay_WC_Logger();
 			$logger->error( 'Error getting payment info from order: ' . $e->getMessage() );
 
 			return array();
@@ -35,8 +35,8 @@ class Alma_WC_Model_Payment {
 		$data = array(
 			'payment' => array(
 				'purchase_amount'     => $order->get_total(),
-				'return_url'          => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::CUSTOMER_RETURN ),
-				'ipn_callback_url'    => Alma_WC_Webhooks::url_for( Alma_WC_Webhooks::IPN_CALLBACK ),
+				'return_url'          => Almapay_WC_Webhooks::url_for( Almapay_WC_Webhooks::CUSTOMER_RETURN ),
+				'ipn_callback_url'    => Almapay_WC_Webhooks::url_for( Almapay_WC_Webhooks::IPN_CALLBACK ),
 				'customer_cancel_url' => self::get_customer_cancel_url(),
 				'installments_count'  => $fee_plan_definition['installments_count'],
 				'deferred_days'       => $fee_plan_definition['deferred_days'],
@@ -45,7 +45,7 @@ class Alma_WC_Model_Payment {
 					'order_id'  => $order_id,
 					'order_key' => $order->get_order_key(),
 				),
-				'locale'              => apply_filters( 'alma_wc_checkout_payment_user_locale', get_locale() ),
+				'locale'              => apply_filters( 'Almapay_WC_checkout_payment_user_locale', get_locale() ),
 			),
 			'order'   => array(
 				'merchant_reference' => $order->get_order_reference(),
@@ -54,9 +54,9 @@ class Alma_WC_Model_Payment {
 			),
 		);
 
-		if ( Alma_WC_Payment_Upon_Trigger::does_payment_upon_trigger_apply_for_this_fee_plan( $fee_plan_definition ) ) {
+		if ( Almapay_WC_Payment_Upon_Trigger::does_payment_upon_trigger_apply_for_this_fee_plan( $fee_plan_definition ) ) {
 			$data['payment']['deferred']             = 'trigger';
-			$data['payment']['deferred_description'] = Alma_WC_Payment_Upon_Trigger::get_display_text();
+			$data['payment']['deferred_description'] = Almapay_WC_Payment_Upon_Trigger::get_display_text();
 		}
 
 		$data['customer']              = array();
@@ -78,7 +78,7 @@ class Alma_WC_Model_Payment {
 			$data['customer']['addresses'][]     = $shipping_address;
 		}
 
-		return apply_filters( 'alma_wc_get_payment_payload_from_order', $data );
+		return apply_filters( 'Almapay_WC_get_payment_payload_from_order', $data );
 	}
 
 	/**
@@ -101,13 +101,13 @@ class Alma_WC_Model_Payment {
 	 * @return array Payload to request eligibility v2 endpoint.
 	 */
 	public static function get_eligibility_payload_from_cart() {
-		$cart     = new Alma_WC_Model_Cart();
-		$customer = new Alma_WC_Model_Customer();
+		$cart     = new Almapay_WC_Model_Cart();
+		$customer = new Almapay_WC_Model_Customer();
 
 		$data = array(
 			'purchase_amount' => $cart->get_total_in_cents(),
 			'queries'         => almapay_wc_plugin()->get_eligible_plans_for_cart(),
-			'locale'          => apply_filters( 'alma_wc_eligibility_user_locale', get_locale() ),
+			'locale'          => apply_filters( 'Almapay_WC_eligibility_user_locale', get_locale() ),
 		);
 
 		$billing_country  = $customer->get_billing_country();

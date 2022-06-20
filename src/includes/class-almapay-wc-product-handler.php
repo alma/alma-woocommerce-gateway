@@ -10,9 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Alma_WC_Product_Handler
+ * Almapay_WC_Product_Handler
  */
-class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
+class Almapay_WC_Product_Handler extends Almapay_WC_Generic_Handler {
 
 	/**
 	 * __construct
@@ -78,7 +78,7 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 
 		$this->inject_payment_plan_widget(
 			$has_excluded_products,
-			alma_wc_price_to_cents( $price ),
+			almapay_wc_price_to_cents( $price ),
 			$jquery_update_event,
 			$amount_query_selector
 		);

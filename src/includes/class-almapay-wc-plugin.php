@@ -17,9 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Alma_WC_Plugin
+ * Almapay_WC_Plugin
  */
-class Alma_WC_Plugin {
+class Almapay_WC_Plugin {
 	/**
 	 * Eligibilities
 	 *
@@ -37,7 +37,7 @@ class Alma_WC_Plugin {
 	/**
 	 * Instance of Alma_Settings.
 	 *
-	 * @var Alma_WC_Settings_New
+	 * @var Almapay_WC_Settings_New
 	 */
 	public $settings;
 
@@ -68,7 +68,7 @@ class Alma_WC_Plugin {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->logger = new Alma_WC_Logger();
+		$this->logger = new Almapay_WC_Logger();
 		$this->self_update();
 	}
 
@@ -98,12 +98,12 @@ class Alma_WC_Plugin {
 	 * - AND add associated shortcodes
 	 */
 	private function init_widget_handlers() {
-		$shortcodes = new Alma_WC_Shortcodes();
+		$shortcodes = new Almapay_WC_Shortcodes();
 
-		$cart_handler = new Alma_WC_Cart_Handler();
+		$cart_handler = new Almapay_WC_Cart_Handler();
 		$shortcodes->init_cart_widget_shortcode( $cart_handler );
 
-		$product_handler = new Alma_WC_Product_Handler();
+		$product_handler = new Almapay_WC_Product_Handler();
 		$shortcodes->init_product_widget_shortcode( $product_handler );
 	}
 
@@ -169,7 +169,7 @@ class Alma_WC_Plugin {
 	 */
 	public function try_running() {
 		add_action(
-			Alma_WC_Webhooks::action_for( Alma_WC_Webhooks::CUSTOMER_RETURN ),
+			Almapay_WC_Webhooks::action_for( Almapay_WC_Webhooks::CUSTOMER_RETURN ),
 			array(
 				$this,
 				'handle_customer_return',
@@ -177,7 +177,7 @@ class Alma_WC_Plugin {
 		);
 
 		add_action(
-			Alma_WC_Webhooks::action_for( Alma_WC_Webhooks::IPN_CALLBACK ),
+			Almapay_WC_Webhooks::action_for( Almapay_WC_Webhooks::IPN_CALLBACK ),
 			array(
 				$this,
 				'handle_ipn_callback',
@@ -195,7 +195,7 @@ class Alma_WC_Plugin {
 		add_filter( 'woocommerce_gateway_description', array( $this, 'woocommerce_gateway_description' ), 10, 2 );
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
-		$payment_upon_trigger_helper = new Alma_WC_Payment_Upon_Trigger();
+		$payment_upon_trigger_helper = new Almapay_WC_Payment_Upon_Trigger();
 		add_action( 'woocommerce_order_status_changed', array( $payment_upon_trigger_helper, 'woocommerce_order_status_changed' ), 10, 3 );
 	}
 
@@ -238,7 +238,7 @@ class Alma_WC_Plugin {
 
 			$this->check_dependencies();
 
-			$this->settings = new Alma_WC_Settings_New();
+			$this->settings = new Almapay_WC_Settings_New();
 
 			$this->run();
 
@@ -246,8 +246,9 @@ class Alma_WC_Plugin {
 				// Defer settings check to after potential settings update.
 				update_option( 'alma_warnings_handled', false );
 
-                /* 20220617 - Gilles, je commente ceci */
-//                $this->settings->save();
+				/*
+				 20220617 - Gilles, je commente ceci */
+				// $this->settings->save();
 
 				add_action( 'admin_notices', array( $this, 'check_settings' ) );
 			}
@@ -379,10 +380,10 @@ class Alma_WC_Plugin {
 	 * @throws Exception Exception.
 	 */
 	public function check_activation() {
-		$gateway = new Alma_WC_Payment_Gateway();
+		$gateway = new Almapay_WC_Payment_Gateway();
 		$enabled = $gateway->get_option( 'enabled', 'no' );
 
-		if ( ! alma_wc_string_to_bool( $enabled ) ) {
+		if ( ! almapay_wc_string_to_bool( $enabled ) ) {
 			throw new Exception(
 				sprintf(
 					// translators: %s: Admin settings url.
@@ -497,7 +498,7 @@ class Alma_WC_Plugin {
 	 * @return string[]
 	 */
 	public function add_payment_gateway( $gateways ) {
-		$gateways[] = 'Alma_WC_Payment_Gateway';
+		$gateways[] = 'Almapay_WC_Payment_Gateway';
 
 		return $gateways;
 	}
@@ -629,7 +630,7 @@ class Alma_WC_Plugin {
 	 */
 	public function handle_customer_return() {
 		$payment_id = $this->get_payment_to_validate();
-		$gateway    = new Alma_WC_Payment_Gateway();
+		$gateway    = new Almapay_WC_Payment_Gateway();
 		$gateway->validate_payment_on_customer_return( $payment_id );
 	}
 
@@ -640,7 +641,7 @@ class Alma_WC_Plugin {
 	 */
 	public function handle_ipn_callback() {
 		$payment_id = $this->get_payment_to_validate();
-		$gateway    = new Alma_WC_Payment_Gateway();
+		$gateway    = new Almapay_WC_Payment_Gateway();
 		$gateway->validate_payment_from_ipn( $payment_id );
 	}
 
@@ -703,7 +704,7 @@ class Alma_WC_Plugin {
 	 * @return array<array>
 	 */
 	public function get_eligible_plans_for_cart() {
-		$amount = ( new Alma_WC_Model_Cart() )->get_total_in_cents();
+		$amount = ( new Almapay_WC_Model_Cart() )->get_total_in_cents();
 
 		return array_values(
 			array_map(
@@ -732,7 +733,7 @@ class Alma_WC_Plugin {
 		$cart_eligibilities = $this->get_cart_eligibilities();
 
 		return array_filter(
-			$this->settings->get_eligible_plans_keys( ( new Alma_WC_Model_Cart() )->get_total_in_cents() ),
+			$this->settings->get_eligible_plans_keys( ( new Almapay_WC_Model_Cart() )->get_total_in_cents() ),
 			function ( $key ) use ( $cart_eligibilities ) {
 				return array_key_exists( $key, $cart_eligibilities );
 			}
@@ -752,7 +753,7 @@ class Alma_WC_Plugin {
 			}
 
 			try {
-				$this->eligibilities = $alma->payments->eligibility( Alma_WC_Model_Payment::get_eligibility_payload_from_cart() );
+				$this->eligibilities = $alma->payments->eligibility( Almapay_WC_Model_Payment::get_eligibility_payload_from_cart() );
 			} catch ( RequestError $error ) {
 				$this->logger->log_stack_trace( 'Error while checking payment eligibility: ', $error );
 				return null;
@@ -790,11 +791,11 @@ class Alma_WC_Plugin {
 			$title = $alma_settings->get_title( 'payment_method_pnx' );
 		}
 
-		if ( Alma_WC_Payment_Gateway::ALMA_GATEWAY_PAY_LATER === $id ) {
+		if ( Almapay_WC_Payment_Gateway::ALMA_GATEWAY_PAY_LATER === $id ) {
 			$title = $alma_settings->get_title( 'payment_method_pay_later' );
 		}
 
-		if ( Alma_WC_Payment_Gateway::ALMA_GATEWAY_PAY_MORE_THAN_FOUR === $id ) {
+		if ( Almapay_WC_Payment_Gateway::ALMA_GATEWAY_PAY_MORE_THAN_FOUR === $id ) {
 			$title = $alma_settings->get_title( 'payment_method_pnx_plus_4' );
 		}
 
@@ -820,11 +821,11 @@ class Alma_WC_Plugin {
 			$description = $alma_settings->get_description( 'payment_method_pnx' );
 		}
 
-		if ( Alma_WC_Payment_Gateway::ALMA_GATEWAY_PAY_LATER === $id ) {
+		if ( Almapay_WC_Payment_Gateway::ALMA_GATEWAY_PAY_LATER === $id ) {
 			$description = $alma_settings->get_description( 'payment_method_pay_later' );
 		}
 
-		if ( Alma_WC_Payment_Gateway::ALMA_GATEWAY_PAY_MORE_THAN_FOUR === $id ) {
+		if ( Almapay_WC_Payment_Gateway::ALMA_GATEWAY_PAY_MORE_THAN_FOUR === $id ) {
 			$description = $alma_settings->get_description( 'payment_method_pnx_plus_4' );
 		}
 

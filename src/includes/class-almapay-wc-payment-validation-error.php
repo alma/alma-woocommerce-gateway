@@ -10,6 +10,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Alma_WC_Payment_Validation_Error
+ * Almapay_WC_Payment_Validation_Error
  */
-class Alma_WC_Payment_Validation_Error extends \Exception {}
+class Almapay_WC_Payment_Validation_Error extends \Exception {}

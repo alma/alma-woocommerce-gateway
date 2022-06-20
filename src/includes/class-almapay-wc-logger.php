@@ -13,9 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Alma_WC_Logger
+ * Almapay_WC_Logger
  */
-class Alma_WC_Logger extends AbstractLogger {
+class Almapay_WC_Logger extends AbstractLogger {
 
 	const LOG_HANDLE = 'alma';
 

@@ -10,21 +10,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Alma_WC_Generic_Handler
+ * Almapay_WC_Generic_Handler
  */
-class Alma_WC_Generic_Handler {
+class Almapay_WC_Generic_Handler {
 
 	/**
 	 * Logger
 	 *
-	 * @var Alma_WC_Logger
+	 * @var Almapay_WC_Logger
 	 */
 	protected $logger;
 
 	/**
 	 * Plugin settings
 	 *
-	 * @var Alma_WC_Settings_New
+	 * @var Almapay_WC_Settings_New
 	 */
 	protected $settings;
 
@@ -41,7 +41,7 @@ class Alma_WC_Generic_Handler {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->logger   = new Alma_WC_Logger();
+		$this->logger   = new Almapay_WC_Logger();
 		$this->settings = almapay_wc_plugin()->settings;
 	}
 

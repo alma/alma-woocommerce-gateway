@@ -10,9 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Alma_WC_Model_Order
+ * Almapay_WC_Model_Order
  */
-class Alma_WC_Model_Order {
+class Almapay_WC_Model_Order {
 	/**
 	 * Legacy
 	 *
@@ -90,7 +90,7 @@ class Alma_WC_Model_Order {
 	 * @return int
 	 */
 	public function get_total() {
-		return alma_wc_price_to_cents( $this->order->get_total() );
+		return almapay_wc_price_to_cents( $this->order->get_total() );
 	}
 
 	/**

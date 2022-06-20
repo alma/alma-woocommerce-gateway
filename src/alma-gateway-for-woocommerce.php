@@ -47,6 +47,8 @@ if ( ! defined( 'ALMAPAY_WC_PLUGIN_URL' ) ) {
 	define( 'ALMAPAY_WC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 }
 
+
+/*
 if ( ! defined( 'ALMAPAY_WC_OLD_PLUGIN_FILE' ) ) {
 	// @todo en vrai il faudra virer "-2.6.1"
 	define( 'ALMAPAY_WC_OLD_PLUGIN_FILE', 'alma-woocommerce-gateway-2.6.1/alma-woocommerce-gateway.php' );
@@ -57,7 +59,7 @@ if ( ! defined( 'ALMAPAY_WC_NEW_PLUGIN_FILE' ) ) {
 	define( 'ALMAPAY_WC_NEW_PLUGIN_FILE', 'alma-woocommerce-gateway/alma-gateway-for-woocommerce.php' );
 }
 
-if ( ! defined( 'ALMAPAY_WC_NEW_PLUGIN_FILE' ) ) {
+if ( ! defined( 'ALMA_PREFIX_FOR_TMP_OPTIONS' ) ) {
 	define( 'ALMA_PREFIX_FOR_TMP_OPTIONS', 'alma_tmp4_' );
 }
 
@@ -67,9 +69,7 @@ if ( ! defined( 'ALMAPAY_PLUGIN_ACTIVATION_OPTION_NAME' ) ) {
 
 if ( ! defined( 'ALMAPAY_PLUGIN_ACTIVATION_FLAG' ) ) {
 	define( 'ALMAPAY_PLUGIN_ACTIVATION_FLAG', 'alma_new_installed' );
-}
-
-
+}*/
 
 /**
  * Return instance of Alma_Plugin.
@@ -81,15 +81,16 @@ function almapay_wc_plugin() {
 	static $plugin;
 
 	if ( ! isset( $plugin ) ) {
-		require_once ALMAPAY_WC_PLUGIN_PATH . 'includes/class-alma-wc-upgrade-update-method.php';
-		require_once ALMAPAY_WC_PLUGIN_PATH . 'includes/alma-wc-functions.php';
+		require_once ALMAPAY_WC_PLUGIN_PATH . 'includes/class-almapay-wc-upgrade-update-method.php';
+		$upgrade_update_method = new Almapay_WC_Upgrade_update_method();
+		register_activation_hook( __FILE__, array( $upgrade_update_method, 'new_alma_plugin_activation_hook' ) );
+
+		require_once ALMAPAY_WC_PLUGIN_PATH . 'includes/almapay-wc-functions.php';
 		require_once ALMAPAY_WC_PLUGIN_PATH . 'vendor/autoload.php';
-		require_once ALMAPAY_WC_PLUGIN_PATH . 'includes/class-alma-wc-autoloader.php';
+		require_once ALMAPAY_WC_PLUGIN_PATH . 'includes/class-almapay-wc-autoloader.php';
 
-		new Alma_WC_Upgrade_update_method();
-
-		Alma_WC_Autoloader::autoload();
-		$plugin = new Alma_WC_Plugin();
+		Almapay_WC_Autoloader::autoload();
+		$plugin = new Almapay_WC_Plugin();
 	}
 
 	return $plugin;
@@ -97,33 +98,31 @@ function almapay_wc_plugin() {
 
 almapay_wc_plugin()->try_running();
 
-//$debug_tags = array();
-//add_action( 'all', function ( $tag ) {
-//	global $debug_tags;
-//	if ( in_array( $tag, $debug_tags ) ) {
-//		return;
-//	}
-//	error_log( '------> action = ' . $tag );
-////	echo "<pre>" . $tag . "</pre>";
-//	$debug_tags[] = $tag;
-//} );
+// $debug_tags = array();
+// add_action( 'all', function ( $tag ) {
+// global $debug_tags;
+// if ( in_array( $tag, $debug_tags ) ) {
+// return;
+// }
+// error_log( '------> action = ' . $tag );
+// echo "<pre>" . $tag . "</pre>";
+// $debug_tags[] = $tag;
+// } );
 //
 
-function generateCallTrace()
-{
-	$e = new Exception();
-	$trace = explode("\n", $e->getTraceAsString());
+function generateCallTrace() {
+	$e     = new Exception();
+	$trace = explode( "\n", $e->getTraceAsString() );
 	// reverse array to make steps line up chronologically
-	$trace = array_reverse($trace);
-	array_shift($trace); // remove {main}
-	array_pop($trace); // remove call to this method
-	$length = count($trace);
+	$trace = array_reverse( $trace );
+	array_shift( $trace ); // remove {main}
+	array_pop( $trace ); // remove call to this method
+	$length = count( $trace );
 	$result = array();
 
-	for ($i = 0; $i < $length; $i++)
-	{
-		$result[] = ($i + 1)  . ')' . substr($trace[$i], strpos($trace[$i], ' ')); // replace '#someNum' with '$i)', set the right ordering
+	for ( $i = 0; $i < $length; $i++ ) {
+		$result[] = ( $i + 1 ) . ')' . substr( $trace[ $i ], strpos( $trace[ $i ], ' ' ) ); // replace '#someNum' with '$i)', set the right ordering
 	}
 
-	return "\t" . implode("\n\t", $result);
+	return "\t" . implode( "\n\t", $result );
 }

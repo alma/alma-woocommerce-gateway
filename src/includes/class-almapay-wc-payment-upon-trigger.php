@@ -13,14 +13,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Alma_WC_Payment_Upon_Trigger
+ * Almapay_WC_Payment_Upon_Trigger
  */
-class Alma_WC_Payment_Upon_Trigger {
+class Almapay_WC_Payment_Upon_Trigger {
 
 	/**
 	 * Logger
 	 *
-	 * @var Alma_WC_Logger
+	 * @var Almapay_WC_Logger
 	 */
 	private $logger;
 
@@ -35,7 +35,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	 * __construct.
 	 */
 	public function __construct() {
-		$this->logger = new Alma_WC_Logger();
+		$this->logger = new Almapay_WC_Logger();
 	}
 
 	/**

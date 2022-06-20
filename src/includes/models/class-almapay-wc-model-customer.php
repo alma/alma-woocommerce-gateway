@@ -10,9 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Alma_WC_Model_Customer
+ * Almapay_WC_Model_Customer
  */
-class Alma_WC_Model_Customer {
+class Almapay_WC_Model_Customer {
 	/**
 	 * Legacy
 	 *

@@ -10,9 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Alma_WC_Model_Cart
+ * Almapay_WC_Model_Cart
  */
-class Alma_WC_Model_Cart {
+class Almapay_WC_Model_Cart {
 	/**
 	 * Cart
 	 *
@@ -33,11 +33,11 @@ class Alma_WC_Model_Cart {
 	 * Get cart total in cents.
 	 *
 	 * @return integer
-	 * @see alma_wc_price_to_cents()
+	 * @see almapay_wc_price_to_cents()
 	 * @see get_total_from_wc_cart
 	 */
 	public function get_total_in_cents() {
-		return alma_wc_price_to_cents( $this->get_total_from_wc_cart() );
+		return almapay_wc_price_to_cents( $this->get_total_from_wc_cart() );
 	}
 
 	/**

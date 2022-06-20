@@ -41,8 +41,8 @@ class AlmaWcTestFunctionsTest extends TestCase {
 	/**
 	 * @dataProvider data_provider
 	 */
-	public function test_alma_wc_match_plan_key_pattern( $plan_key, $expected ) {
-		$this->assertEquals( $expected, alma_wc_match_plan_key_pattern( $plan_key ) );
+	public function test_almapay_wc_match_plan_key_pattern( $plan_key, $expected ) {
+		$this->assertEquals( $expected, almapay_wc_match_plan_key_pattern( $plan_key ) );
 	}
 
 	public function test_alma_wc_usort_pay_later_plans_keys() {
@@ -51,7 +51,7 @@ class AlmaWcTestFunctionsTest extends TestCase {
 			'general_1_15_0',
 			'general_1_30_0',
 		];
-		usort( $array, 'alma_wc_usort_plans_keys' );
+		usort( $array, 'almapay_wc_usort_plans_keys' );
 		$this->assertEquals(
 			[
 				'general_1_15_0',
@@ -70,7 +70,7 @@ class AlmaWcTestFunctionsTest extends TestCase {
 			'general_10_0_0',
 			'general_1_0_0',
 		];
-		usort( $array, 'alma_wc_usort_plans_keys' );
+		usort( $array, 'almapay_wc_usort_plans_keys' );
 		$this->assertEquals(
 			[
 				'general_1_0_0',
@@ -89,7 +89,7 @@ class AlmaWcTestFunctionsTest extends TestCase {
 			'general_1_0_1',
 			'general_1_0_18',
 		];
-		usort( $array, 'alma_wc_usort_plans_keys' );
+		usort( $array, 'almapay_wc_usort_plans_keys' );
 		$this->assertEquals(
 			[
 				'general_1_0_1',
@@ -110,7 +110,7 @@ class AlmaWcTestFunctionsTest extends TestCase {
 			'general_10_0_0',
 			'general_1_0_0',
 		];
-		usort( $array, 'alma_wc_usort_plans_keys' );
+		usort( $array, 'almapay_wc_usort_plans_keys' );
 		$this->assertEquals(
 			[
 				'general_1_0_0',
@@ -138,7 +138,7 @@ class AlmaWcTestFunctionsTest extends TestCase {
 			'general_10_0_0',
 			'general_1_0_0',
 		];
-		usort( $array, 'alma_wc_usort_plans_keys' );
+		usort( $array, 'almapay_wc_usort_plans_keys' );
 		$this->assertEquals(
 			[
 				'general_1_0_0',

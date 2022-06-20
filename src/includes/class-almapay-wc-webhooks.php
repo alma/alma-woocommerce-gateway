@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Handles settings retrieval from the settings API.
  */
-class Alma_WC_Webhooks {
+class Almapay_WC_Webhooks {
 	const CUSTOMER_RETURN = 'alma_customer_return';
 	const IPN_CALLBACK    = 'alma_ipn_callback';
 
