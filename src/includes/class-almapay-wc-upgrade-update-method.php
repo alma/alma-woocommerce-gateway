@@ -22,8 +22,8 @@ class Almapay_WC_Upgrade_update_method {
 	// @todo en vrai ça sera "alma-gateway-for-woocommerce/alma-gateway-for-woocommerce.php"
 //	const ALMAPAY_WC_NEW_PLUGIN_FILE = 'alma-woocommerce-gateway/alma-gateway-for-woocommerce.php';
 
-	const ALMAPAY_PREFIX_FOR_TMP_OPTIONS        = 'almapay_tmp4_';
-	const ALMAPAY_PLUGIN_ACTIVATION_OPTION_NAME = 'almapay_plugin_activation_option_name';
+	const ALMAPAY_PREFIX_FOR_TMP_OPTIONS        = 'almapay_tmp_';
+	const ALMAPAY_PLUGIN_ACTIVATION_OPTION_NAME = 'almapay_new_plugin_activation_running';
 	const ALMAPAY_PLUGIN_ACTIVATION_FLAG        = 'almapay_new_installed';
 
 	/**
@@ -41,7 +41,7 @@ class Almapay_WC_Upgrade_update_method {
 	 */
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'Almapay_WC_admin_init' ) );
-		add_action( 'admin_notices', array( $this, 'general_admin_notice' ) );
+		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 	}
 
 	/**
@@ -86,7 +86,7 @@ class Almapay_WC_Upgrade_update_method {
 	 *
 	 * @return void
 	 */
-	public function general_admin_notice() {
+	public function admin_notices() {
 		global $pagenow;
 		if ( $pagenow === 'plugins.php' ) {
 			echo '<div class="notice updated is-dismissible"><p>' .
