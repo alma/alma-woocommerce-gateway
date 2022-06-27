@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @property array tmp_options Array of Alma's options to back up and import.
  */
-class Almapay_WC_Upgrade_update_method {
+class Almapay_WC_Upgrade_Update_Method {
 
 	// @todo in real life, remove "-2.6.1".
 	const ALMAPAY_WC_OLD_PLUGIN_FILE            = 'alma-woocommerce-gateway-2.6.1/alma-woocommerce-gateway.php';
@@ -24,7 +24,7 @@ class Almapay_WC_Upgrade_update_method {
 	const ALMAPAY_PLUGIN_REMOVE_FLAG            = 'almapay_old_removed';
 
 	/**
-	 * Flag to indicate setting has been loaded from DB.
+	 * Alma options to backup then import.
 	 *
 	 * @var bool
 	 */
@@ -34,15 +34,17 @@ class Almapay_WC_Upgrade_update_method {
 	);
 
 	/**
-	 *
+	 * Constructor.
 	 */
 	public function __construct() {
-		add_action( 'admin_init', array( $this, 'Almapay_WC_admin_init' ) );
+		add_action( 'admin_init', array( $this, 'almapay_wc_admin_init' ) );
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 	}
 
 	/**
+	 * Plugin activation hook.
 	 *
+	 * @return void
 	 */
 	public function new_alma_plugin_activation_hook() {
 		$this->backup_alma_settings();
@@ -55,7 +57,7 @@ class Almapay_WC_Upgrade_update_method {
 	 *
 	 * @return void
 	 */
-	public function Almapay_WC_admin_init() {
+	public function almapay_wc_admin_init() {
 
 		// Redirection after deactivating old plugin to refresh plugins page with new plugins status.
 		if ( '1' === get_option( self::ALMAPAY_PLUGIN_ACTIVATION_OPTION_NAME ) ) {
@@ -65,7 +67,7 @@ class Almapay_WC_Upgrade_update_method {
 		}
 
 		// Delete old version of Alma plugin.
-		if ( isset( $_GET[ self::ALMAPAY_PLUGIN_ACTIVATION_FLAG ] ) && '1' === $_GET[ self::ALMAPAY_PLUGIN_ACTIVATION_FLAG ] ) {
+		if ( isset( $_GET[ self::ALMAPAY_PLUGIN_ACTIVATION_FLAG ] ) && '1' === strval( $_GET[ self::ALMAPAY_PLUGIN_ACTIVATION_FLAG ] ) ) {
 			$this->delete_old_alma_plugin();
 			$this->import_alma_settings();
 			wp_safe_redirect( add_query_arg( array( self::ALMAPAY_PLUGIN_REMOVE_FLAG => 1 ), admin_url( '/plugins.php' ) ) );
@@ -78,9 +80,9 @@ class Almapay_WC_Upgrade_update_method {
 	 * @return void
 	 */
 	public function admin_notices() {
-		if ( isset( $_GET[ self::ALMAPAY_PLUGIN_REMOVE_FLAG ] ) && '1' === $_GET[ self::ALMAPAY_PLUGIN_REMOVE_FLAG ] ) {
+		if ( isset( $_GET[ self::ALMAPAY_PLUGIN_REMOVE_FLAG ] ) && '1' === strval( $_GET[ self::ALMAPAY_PLUGIN_REMOVE_FLAG ] ) ) {
 			echo '<div class="notice updated is-dismissible"><p>' .
-				__( 'The new version of Alma plugin has successfully been installed and the old version has been removed. Thank you for this update!', 'alma-gateway-for-woocommerce' ) .
+				esc_html__( 'The new version of Alma plugin has successfully been installed and the old version has been removed. Thank you for this update!', 'alma-gateway-for-woocommerce' ) .
 				'</p></div>';
 		}
 	}

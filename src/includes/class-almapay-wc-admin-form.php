@@ -33,8 +33,6 @@ class Almapay_WC_Admin_Form {
 		$need_api_key     = almapay_wc_plugin()->settings->need_api_key();
 		$default_settings = Almapay_WC_Settings::default_settings();
 
-		error_log( '$need_api_key = ' . $need_api_key );
-
 		if ( $need_api_key ) {
 			return array_merge(
 				self::get_instance()->init_enabled_field( $default_settings ),

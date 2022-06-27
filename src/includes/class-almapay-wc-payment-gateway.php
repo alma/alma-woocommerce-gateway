@@ -129,7 +129,7 @@ class Almapay_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$icon_url = almapay_wc_plugin()->get_asset_url( 'images/alma_logo.svg' );
 		$icon     = '<img src="' . WC_HTTPS::force_https_url( $icon_url ) . '" alt="' . esc_attr( $this->get_title() ) . '" style="width: auto !important; height: 25px !important; border: none !important;">';
 
-		return apply_filters( 'Almapay_WC_gateway_icon', $icon, $this->id );
+		return apply_filters( 'almapay_wc_gateway_icon', $icon, $this->id );
 	}
 
 	/**

@@ -245,11 +245,7 @@ class Almapay_WC_Plugin {
 			if ( is_admin() ) {
 				// Defer settings check to after potential settings update.
 				update_option( 'alma_warnings_handled', false );
-
-				/*
-				 20220617 - Gilles, je commente ceci */
-				// $this->settings->save();
-
+				$this->settings->save();
 				add_action( 'admin_notices', array( $this, 'check_settings' ) );
 			}
 		} catch ( Exception $e ) {

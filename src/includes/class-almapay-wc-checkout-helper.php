@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 /**
- * class Almapay_WC_Checkout_Helper.
+ * Almapay_WC_Checkout_Helper.
  */
 class Almapay_WC_Checkout_Helper {
 	const CHECKOUT_NONCE = 'alma_checkout_nonce';

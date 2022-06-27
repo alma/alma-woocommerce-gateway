@@ -45,7 +45,7 @@ class Almapay_WC_Model_Payment {
 					'order_id'  => $order_id,
 					'order_key' => $order->get_order_key(),
 				),
-				'locale'              => apply_filters( 'Almapay_WC_checkout_payment_user_locale', get_locale() ),
+				'locale'              => apply_filters( 'almapay_wc_checkout_payment_user_locale', get_locale() ),
 			),
 			'order'   => array(
 				'merchant_reference' => $order->get_order_reference(),
@@ -78,7 +78,7 @@ class Almapay_WC_Model_Payment {
 			$data['customer']['addresses'][]     = $shipping_address;
 		}
 
-		return apply_filters( 'Almapay_WC_get_payment_payload_from_order', $data );
+		return apply_filters( 'almapay_wc_get_payment_payload_from_order', $data );
 	}
 
 	/**
@@ -107,7 +107,7 @@ class Almapay_WC_Model_Payment {
 		$data = array(
 			'purchase_amount' => $cart->get_total_in_cents(),
 			'queries'         => almapay_wc_plugin()->get_eligible_plans_for_cart(),
-			'locale'          => apply_filters( 'Almapay_WC_eligibility_user_locale', get_locale() ),
+			'locale'          => apply_filters( 'almapay_wc_eligibility_user_locale', get_locale() ),
 		);
 
 		$billing_country  = $customer->get_billing_country();

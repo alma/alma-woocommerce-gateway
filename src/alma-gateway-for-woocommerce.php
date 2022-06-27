@@ -59,7 +59,7 @@ function almapay_wc_plugin() {
 	if ( ! isset( $plugin ) ) {
 
 		require_once ALMAPAY_WC_PLUGIN_PATH . 'includes/class-almapay-wc-upgrade-update-method.php';
-		$upgrade_update_method = new Almapay_WC_Upgrade_update_method();
+		$upgrade_update_method = new Almapay_WC_Upgrade_Update_Method();
 		register_activation_hook( __FILE__, array( $upgrade_update_method, 'new_alma_plugin_activation_hook' ) );
 
 		require_once ALMAPAY_WC_PLUGIN_PATH . 'includes/almapay-wc-functions.php';

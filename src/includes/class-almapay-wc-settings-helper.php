@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * class Almapay_WC_Settings_Helper
+ * Almapay_WC_Settings_Helper
  *
  * Helps Settings to define defaults values (including in i18n context)
  */

@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 /**
- * class Almapay_WC_Admin_Internationalization_Front_Helper.
+ * Almapay_WC_Admin_Internationalization_Front_Helper.
  */
 class Almapay_WC_Admin_Internationalization_Front_Helper {
 

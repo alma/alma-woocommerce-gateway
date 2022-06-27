@@ -106,7 +106,7 @@ class Almapay_WC_Settings {
 			$value = $this->settings[ $key ];
 		}
 
-		return apply_filters( 'Almapay_WC_settings_' . $key, $value );
+		return apply_filters( 'almapay_wc_settings_' . $key, $value );
 	}
 
 	/**
@@ -173,10 +173,6 @@ class Almapay_WC_Settings {
 	 * @return void
 	 */
 	public function save() {
-		error_log( '-----------------------------' );
-		error_log( 'Almapay_WC_Settings::save()' );
-		error_log( '-----------------------------' );
-		error_log( serialize( $this->settings ) );
 		update_option( self::OPTIONS_KEY, $this->settings );
 	}
 

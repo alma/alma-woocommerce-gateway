@@ -49,7 +49,7 @@ class Almapay_WC_Payment_Validator {
 			throw new Almapay_WC_Payment_Validation_Error( 'order_fetch_error' );
 		}
 
-		if ( $order->get_wc_order()->has_status( apply_filters( 'Almapay_WC_valid_order_statuses_for_payment_complete', array( 'on-hold', 'pending', 'failed', 'cancelled' ) ) ) ) {
+		if ( $order->get_wc_order()->has_status( apply_filters( 'almapay_wc_valid_order_statuses_for_payment_complete', array( 'on-hold', 'pending', 'failed', 'cancelled' ) ) ) ) {
 			if ( $order->get_total() !== $payment->purchase_amount ) {
 				$error = "Order {$order->get_id()} total ({$order->get_total()}) does not match purchase amount of '$payment_id' ($payment->purchase_amount)";
 				$logger->error( $error );
