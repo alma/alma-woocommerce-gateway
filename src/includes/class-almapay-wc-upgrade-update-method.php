@@ -96,7 +96,6 @@ class Almapay_WC_Upgrade_update_method {
 			$option_value    = get_option( $option_name );
 			delete_option( $tmp_option_name );
 			update_option( $tmp_option_name, $option_value );
-			error_log( 'update_option : $tmp_option_name = ' . $tmp_option_name . ' et $option_value = ' . serialize( $option_value ) );
 		}
 	}
 

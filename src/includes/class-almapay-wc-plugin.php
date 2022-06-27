@@ -37,7 +37,7 @@ class Almapay_WC_Plugin {
 	/**
 	 * Instance of Alma_Settings.
 	 *
-	 * @var Almapay_WC_Settings_New
+	 * @var Almapay_WC_Settings
 	 */
 	public $settings;
 
@@ -238,7 +238,7 @@ class Almapay_WC_Plugin {
 
 			$this->check_dependencies();
 
-			$this->settings = new Almapay_WC_Settings_New();
+			$this->settings = new Almapay_WC_Settings();
 
 			$this->run();
 

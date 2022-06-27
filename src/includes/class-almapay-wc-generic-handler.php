@@ -24,7 +24,7 @@ class Almapay_WC_Generic_Handler {
 	/**
 	 * Plugin settings
 	 *
-	 * @var Almapay_WC_Settings_New
+	 * @var Almapay_WC_Settings
 	 */
 	protected $settings;
 
