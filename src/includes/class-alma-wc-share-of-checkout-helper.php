@@ -83,7 +83,7 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	/**
 	 * Get share of checkout "to date". (date END)
 	 *
-	 * @return string|null
+	 * @return string
 	 */
 	private function get_share_of_checkout_to_date() {
 		if ( isset( $this->end_time ) ) {
@@ -95,7 +95,7 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	/**
 	 * Returns the date of the last share of checkout.
 	 *
-	 * @return mixed
+	 * @return integer (timestamp)
 	 */
 	public function get_last_update_date() {
 		$last_update_date = gmdate( 'Y-m-d', strtotime( '-2 days' ) );
@@ -107,11 +107,10 @@ class Alma_WC_Share_Of_Checkout_Helper {
 
 		try {
 			$last_update_by_api = $alma->shareOfCheckout->getLastUpdateDates(); // phpcs:ignore
-			$last_update_date   = $last_update_by_api['end_time'];
+			$last_update_date   = gmdate( 'Y-m-d', $last_update_by_api['end_time'] );
 		} catch ( RequestError $e ) {
 			$this->logger->error( 'Error getting getLastUpdateDates for ShareOfCheckout : ' . $e->getMessage() );
 		}
-
 		return $last_update_date;
 	}
 

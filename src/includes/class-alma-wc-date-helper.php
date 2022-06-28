@@ -31,25 +31,38 @@ class Alma_WC_Date_Helper {
 	/**
 	 * Gets dates in an interval.
 	 *
-	 * @param string $from The "from" date.
 	 * @param string $share_of_checkout_enabled_date The share of checkout enabled date by the merchant.
-	 * @param string $to The "to" date.
+	 * @param string $last_update_date The last update date in timestamp format.
 	 * @return array
 	 */
-	public function get_dates_in_interval( $from, $share_of_checkout_enabled_date, $to = null ) {
-		if ( ! $to ) {
-			$to = strtotime( 'now' );
+	public function get_dates_in_interval( $share_of_checkout_enabled_date, $last_update_date ) {
+		$start_date      = $last_update_date;
+		$start_timestamp = $this->generate_timestamp( $start_date );
+		if ( $last_update_date < $share_of_checkout_enabled_date ) {
+			$start_date      = $share_of_checkout_enabled_date;
+			$start_timestamp = $this->generate_timestamp( $start_date );
 		}
 
 		$dates_in_interval = array();
-		$start_timestamp   = strtotime( 'now', $from );
-
-		for ( $i = $start_timestamp; $i <= $to; $i = strtotime( '+1 day', $i ) ) {
-			if ( $i >= strtotime( $share_of_checkout_enabled_date ) ) {
-				$dates_in_interval[] = gmdate( 'Y-m-d', $i );
-			}
+		for ( $i = $start_timestamp; time() - $i > 86400; $i = strtotime( '+1 day', $i ) ) {
+			$dates_in_interval[] = gmdate( 'Y-m-d', $i );
 		}
+
 		return $dates_in_interval;
+	}
+
+
+	/**
+	 * Generate a timestamp from a date formatted as "yyyy-mm-dd".
+	 *
+	 * @param string $date_yyyy_mm_dd A date.
+	 * @return false|int
+	 */
+	private function generate_timestamp( $date_yyyy_mm_dd ) {
+		$year  = substr( $date_yyyy_mm_dd, 0, 4 );
+		$month = substr( $date_yyyy_mm_dd, 5, 2 );
+		$day   = substr( $date_yyyy_mm_dd, 8, 2 );
+		return mktime( 0, 0, 0, $month, $day, $year );
 	}
 
 }
