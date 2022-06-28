@@ -89,10 +89,6 @@ class Alma_WC_Refund_Helper {
 	 * @return void
 	 */
 	public function woocommerce_order_status_changed( $order_id, $previous_status, $next_status ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
-
-		error_log( 'woocommerce_order_status_changed()' );
-		error_log( '$next_status = ' . $next_status );
-
 		$order = wc_get_order( $order_id );
 		if (
 			'refunded' === $next_status &&
@@ -109,9 +105,6 @@ class Alma_WC_Refund_Helper {
 	 * @return void
 	 */
 	public function make_full_refund( $order ) {
-
-		error_log( 'make_full_refund().' );
-
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
 			$this->add_order_note( $order, 'error', __( 'Alma API client init error.', 'alma-woocommerce-gateway' ) );
@@ -121,9 +114,9 @@ class Alma_WC_Refund_Helper {
 		try {
 			$merchant_reference = $order->get_order_number();
 			/* translators: %s is a username. */
-			$refund_comment = sprintf( __( 'Full refund made via WooCommerce back-office by %s.', 'alma-woocommerce-gateway' ), wp_get_current_user()->display_name );
-			$alma->payments->fullRefund( $order->get_transaction_id(), $merchant_reference, $refund_comment );
-			$this->add_order_note( $order, 'success', $refund_comment );
+			$comment = sprintf( __( 'Order fully refunded by %s.', 'alma-woocommerce-gateway' ), wp_get_current_user()->display_name );
+			$alma->payments->fullRefund( $order->get_transaction_id(), $merchant_reference, Alma_WC_Refund::PREFIX_REFUND_COMMENT . $comment );
+			$this->add_order_note( $order, 'success', $comment );
 		} catch ( RequestError $e ) {
 			/* translators: %s is an error message. */
 			$error_message = sprintf( __( 'Alma full refund error : %s.', 'alma-woocommerce-gateway' ), alma_wc_get_request_error_message( $e ) );
@@ -140,7 +133,6 @@ class Alma_WC_Refund_Helper {
 	 * @return bool
 	 */
 	public function is_order_valid_for_partial_refund_with_alma( $order, $refund ) {
-
 		$is_valid = true;
 
 		if ( ! $this->is_alma_payment_method_for_order( $order ) ) {
@@ -167,7 +159,6 @@ class Alma_WC_Refund_Helper {
 	 * @return bool
 	 */
 	public function is_order_valid_for_full_refund_with_alma( $order ) {
-
 		$is_valid = true;
 
 		if ( ! $this->is_alma_payment_method_for_order( $order ) ) {

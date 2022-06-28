@@ -15,6 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Alma_WC_Refund
  */
 class Alma_WC_Refund {
+	const PREFIX_REFUND_COMMENT = 'Refund made via WooCommerce back-office - ';
 
 	/**
 	 * Logger
@@ -74,7 +75,7 @@ class Alma_WC_Refund {
 	}
 
 	/**
-	 * Filters WC order note for order fully refunded by order state changed to "refunded"
+	 * Filters WC order note for order fully refunded by order state changed to "refunded".
 	 *
 	 * @param array $comment_datas Information values about the order note.
 	 * @return array
@@ -152,7 +153,7 @@ class Alma_WC_Refund {
 		}
 
 		foreach ( $refund_notices as $notice_infos ) {
-			if ( ! is_array( $notice_infos ) ) {
+			if ( ! is_array( $notice_infos ) || ! isset( $notice_infos['message'] ) ) {
 				continue;
 			}
 			echo '<div class="notice notice-' . esc_html( $notice_infos['notice_type'] ) . ' is-dismissible">
@@ -170,9 +171,6 @@ class Alma_WC_Refund {
 	 * @return void
 	 */
 	public function woocommerce_order_partially_refunded( $order_id, $refund_id ) {
-
-		error_log( 'woocommerce_order_partially_refunded()' );
-
 		$order  = wc_get_order( $order_id );
 		$refund = new WC_Order_Refund( $refund_id );
 		if ( ! $this->refund_helper->is_order_valid_for_partial_refund_with_alma( $order, $refund ) ) {
@@ -188,8 +186,8 @@ class Alma_WC_Refund {
 		try {
 			$amount_to_refund   = $this->refund_helper->get_amount_to_refund( $refund );
 			$merchant_reference = $order->get_order_number();
-			$refund_comment     = $this->refund_helper->get_refund_comment( $refund );
-			$alma->payments->partialRefund( $order->get_transaction_id(), $amount_to_refund, $merchant_reference, $refund_comment );
+			$comment            = self::PREFIX_REFUND_COMMENT . $this->refund_helper->get_refund_comment( $refund );
+			$alma->payments->partialRefund( $order->get_transaction_id(), $amount_to_refund, $merchant_reference, $comment );
 
 			$refund = new WC_Order_Refund( $refund_id );
 			/* translators: %1$s is a username, %2$s is an amount with currency. */
@@ -210,13 +208,11 @@ class Alma_WC_Refund {
 	 */
 	public function woocommerce_order_fully_refunded( $order_id ) {
 		$order = wc_get_order( $order_id );
-		error_log( 'woocommerce_order_fully_refunded()' );
-		error_log( '$order->get_status() = ' . $order->get_status() );
 		if (
 			'refunded' === $order->get_status() &&
-			true === $this->is_order_valid_for_full_refund_with_alma( $order )
+			true === $this->refund_helper->is_order_valid_for_full_refund_with_alma( $order )
 		) {
-			$this->make_full_refund( $order );
+			$this->refund_helper->make_full_refund( $order );
 		}
 	}
 
