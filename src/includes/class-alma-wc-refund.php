@@ -171,6 +171,8 @@ class Alma_WC_Refund {
 	 */
 	public function woocommerce_order_partially_refunded( $order_id, $refund_id ) {
 
+		error_log( 'woocommerce_order_partially_refunded()' );
+
 		$order  = wc_get_order( $order_id );
 		$refund = new WC_Order_Refund( $refund_id );
 		if ( ! $this->refund_helper->is_order_valid_for_partial_refund_with_alma( $order, $refund ) ) {
@@ -179,7 +181,7 @@ class Alma_WC_Refund {
 
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
-			$this->refund_helper->add_order_note( $order, 'error', __( 'Full refund unavailable due to a connection error.', 'alma-woocommerce-gateway' ) );
+			$this->refund_helper->add_order_note( $order, 'error', __( 'Partial refund unavailable due to a connection error.', 'alma-woocommerce-gateway' ) );
 			return;
 		}
 
@@ -209,30 +211,15 @@ class Alma_WC_Refund {
 	public function woocommerce_order_fully_refunded( $order_id ) {
 
 		$order = wc_get_order( $order_id );
-		if ( true !== $this->refund_helper->is_order_valid_for_full_refund_with_alma( $order ) ) {
-			return;
-		}
+		error_log( 'woocommerce_order_fully_refunded()' );
+		error_log( '$order->get_status() = ' . $order->get_status() );
+		return;
 
-		$alma = alma_wc_plugin()->get_alma_client();
-		if ( ! $alma ) {
-			$this->refund_helper->add_order_note( $order, 'error', __( 'API client init error.', 'alma-woocommerce-gateway' ) );
-			return;
-		}
-
-		$merchant_reference = $order->get_order_number();
-
-		try {
-			/* translators: %s is a username. */
-			$refund_comment = sprintf( __( 'Full refund made via WooCommerce back-office by %s.', 'alma-woocommerce-gateway' ), wp_get_current_user()->display_name );
-			$alma->payments->fullRefund( $order->get_transaction_id(), $merchant_reference, $refund_comment );
-			$this->refund_helper->add_order_note( $order, 'success', $refund_comment );
-		} catch ( RequestError $e ) {
-			/* translators: %s is an error message. */
-			$error_message = sprintf( __( 'Alma full refund error : %s.', 'alma-woocommerce-gateway' ), alma_wc_get_request_error_message( $e ) );
-			$this->refund_helper->add_order_note( $order, 'error', $error_message );
-			$this->logger->error( $error_message );
-		}
+//		if (
+//			true === $this->refund_helper->is_order_valid_for_full_refund_with_alma( $order )
+//		) {
+//			$this->refund_helper->make_full_refund( $order );
+//		}
 	}
 
 }
-
