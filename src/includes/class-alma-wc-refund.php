@@ -209,17 +209,15 @@ class Alma_WC_Refund {
 	 * @return void
 	 */
 	public function woocommerce_order_fully_refunded( $order_id ) {
-
 		$order = wc_get_order( $order_id );
 		error_log( 'woocommerce_order_fully_refunded()' );
 		error_log( '$order->get_status() = ' . $order->get_status() );
-		return;
-
-//		if (
-//			true === $this->refund_helper->is_order_valid_for_full_refund_with_alma( $order )
-//		) {
-//			$this->refund_helper->make_full_refund( $order );
-//		}
+		if (
+			'refunded' === $order->get_status() &&
+			true === $this->is_order_valid_for_full_refund_with_alma( $order )
+		) {
+			$this->make_full_refund( $order );
+		}
 	}
 
 }

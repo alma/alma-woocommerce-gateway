@@ -91,11 +91,10 @@ class Alma_WC_Refund_Helper {
 	public function woocommerce_order_status_changed( $order_id, $previous_status, $next_status ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 
 		error_log( 'woocommerce_order_status_changed()' );
-		error_log( 'alma_wc_plugin()->settings->refund_automatically_on_order_status_change == ' . alma_wc_plugin()->settings->refund_automatically_on_order_status_change );
+		error_log( '$next_status = ' . $next_status );
 
 		$order = wc_get_order( $order_id );
 		if (
-			'yes' === alma_wc_plugin()->settings->refund_automatically_on_order_status_change &&
 			'refunded' === $next_status &&
 			true === $this->is_order_valid_for_full_refund_with_alma( $order )
 		) {

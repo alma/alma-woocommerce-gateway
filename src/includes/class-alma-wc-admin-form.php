@@ -46,7 +46,6 @@ class Alma_WC_Admin_Form {
 			self::get_instance()->init_fee_plans_fields( $default_settings ),
 			self::get_instance()->init_general_settings_fields( $default_settings ),
 			self::get_instance()->init_payment_upon_trigger_fields( $default_settings ),
-			self::get_instance()->init_refund_fields( $default_settings ),
 			self::get_instance()->init_api_key_fields( __( '→ API configuration', 'alma-gateway-for-woocommerce' ), $default_settings ),
 			self::get_instance()->init_technical_fields( $default_settings ),
 			self::get_instance()->init_debug_fields( $default_settings )
@@ -482,28 +481,6 @@ class Alma_WC_Admin_Form {
 				'description' => __( 'Enable logging info and errors to help debug any issue with the plugin', 'alma-gateway-for-woocommerce' ),
 				'desc_tip'    => true,
 				'default'     => $default_settings['debug'],
-			),
-		);
-	}
-
-	/**
-	 * Inits refund fields.
-	 *
-	 * @param array $default_settings as default settings.
-	 *
-	 * @return array
-	 */
-	private function init_refund_fields( $default_settings ) {
-		return array(
-			'refund_section'                              => array(
-				'title' => '<hr>' . __( '→ Refund option', 'alma-woocommerce-gateway' ),
-				'type'  => 'title',
-			),
-			'refund_automatically_on_order_status_change' => array(
-				'title'   => __( 'Refund mode', 'alma-woocommerce-gateway' ),
-				'type'    => 'checkbox',
-				'label'   => __( 'Activate automatic refund of order using Alma when order status is changed to "refund".', 'alma-woocommerce-gateway' ),
-				'default' => $default_settings['refund_automatically_on_order_status_change'],
 			),
 		);
 	}
