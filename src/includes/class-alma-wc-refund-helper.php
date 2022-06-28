@@ -107,19 +107,19 @@ class Alma_WC_Refund_Helper {
 	public function make_full_refund( $order ) {
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
-			$this->add_order_note( $order, 'error', __( 'Alma API client init error.', 'alma-woocommerce-gateway' ) );
+			$this->add_order_note( $order, 'error', __( 'Alma API client init error.', 'alma-gateway-for-woocommerce' ) );
 			return;
 		}
 
 		try {
 			$merchant_reference = $order->get_order_number();
 			/* translators: %s is a username. */
-			$comment = sprintf( __( 'Order fully refunded by %s.', 'alma-woocommerce-gateway' ), wp_get_current_user()->display_name );
+			$comment = sprintf( __( 'Order fully refunded by %s.', 'alma-gateway-for-woocommerce' ), wp_get_current_user()->display_name );
 			$alma->payments->fullRefund( $order->get_transaction_id(), $merchant_reference, Alma_WC_Refund::PREFIX_REFUND_COMMENT . $comment );
 			$this->add_order_note( $order, 'success', $comment );
 		} catch ( RequestError $e ) {
 			/* translators: %s is an error message. */
-			$error_message = sprintf( __( 'Alma full refund error : %s.', 'alma-woocommerce-gateway' ), alma_wc_get_request_error_message( $e ) );
+			$error_message = sprintf( __( 'Alma full refund error : %s.', 'alma-gateway-for-woocommerce' ), alma_wc_get_request_error_message( $e ) );
 			$this->add_order_note( $order, 'error', $error_message );
 			$this->logger->error( $error_message );
 		}
@@ -145,7 +145,7 @@ class Alma_WC_Refund_Helper {
 
 		$amount_to_refund = $this->get_amount_to_refund( $refund );
 		if ( 0 === $amount_to_refund ) {
-			$this->add_order_note( $order, 'error', __( 'Amount canno\'t be equal to 0 to refund with Alma.', 'alma-woocommerce-gateway' ) );
+			$this->add_order_note( $order, 'error', __( 'Amount canno\'t be equal to 0 to refund with Alma.', 'alma-gateway-for-woocommerce' ) );
 			$is_valid = false;
 		}
 
@@ -194,7 +194,7 @@ class Alma_WC_Refund_Helper {
 	private function has_order_a_transaction_id( $order ) {
 		if ( ! $order->get_transaction_id() ) {
 			/* translators: %s is an order number. */
-			$error_message = sprintf( __( 'Error while getting transaction_id on trigger_payment for order_id : %s.', 'alma-woocommerce-gateway' ), $order->get_id() );
+			$error_message = sprintf( __( 'Error while getting transaction_id on trigger_payment for order_id : %s.', 'alma-gateway-for-woocommerce' ), $order->get_id() );
 			$this->add_order_note( $order, 'error', $error_message );
 			$this->logger->error( $error_message );
 			return false;
