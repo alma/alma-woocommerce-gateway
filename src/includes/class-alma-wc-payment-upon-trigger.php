@@ -174,5 +174,3 @@ class Alma_WC_Payment_Upon_Trigger {
 			0 === $fee_plan_definition['deferred_months'];
 	}
 }
-
-new Alma_WC_Payment_Upon_Trigger();
