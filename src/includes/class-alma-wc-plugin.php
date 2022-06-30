@@ -421,9 +421,9 @@ class Alma_WC_Plugin {
 		}
 
 		// Don't advertise our payment gateway if we're in test mode and current user is not an admin.
-		if ( $this->settings->get_environment() === 'test' && ! current_user_can( 'administrator' ) ) {
+		$current_user = wp_get_current_user();
+		if ( 'test' === $this->settings->get_environment() && ! in_array( 'administrator', $current_user->roles, true ) ) {
 			$this->logger->info( 'Not displaying Alma in Test mode to non-admin user' );
-
 			return;
 		}
 
