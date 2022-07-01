@@ -83,6 +83,7 @@ class Alma_WC_Refund {
 	 * @return void
 	 */
 	public function woocommerce_order_status_changed( $order_id, $previous_status, $next_status ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
+
 		$order = wc_get_order( $order_id );
 		if (
 			'refunded' === $next_status &&
@@ -234,7 +235,7 @@ class Alma_WC_Refund {
 			'refunded' === $order->get_status() &&
 			true === $this->helper->is_fully_refundable( $order )
 		) {
-			$this->refund_helper->make_full_refund( $order, $refund_id );
+			$this->helper->make_full_refund( $order, $refund_id );
 		}
 	}
 

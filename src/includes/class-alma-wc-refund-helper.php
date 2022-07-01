@@ -15,7 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Alma_WC_Refund_Helper
  */
 class Alma_WC_Refund_Helper {
-	const PREFIX_REFUND_COMMENT = 'Refund made via WooCommerce back-office - ';
+	const PREFIX_REFUND_COMMENT     = 'Refund made via WooCommerce back-office - ';
+	const FLAG_ORDER_FULLY_REFUNDED = 'alma_order_fully_refunded';
 
 	/**
 	 * Logger
@@ -80,6 +81,10 @@ class Alma_WC_Refund_Helper {
 	 */
 	public function make_full_refund( $order, $refund_id = 0 ) {
 
+		if ( '1' === get_post_meta( $order->get_id(), self::FLAG_ORDER_FULLY_REFUNDED, true ) ) {
+			return;
+		}
+
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
 			$this->add_order_note( $order, 'error', __( 'Alma API client init error.', 'alma-gateway-for-woocommerce' ) );
@@ -95,6 +100,7 @@ class Alma_WC_Refund_Helper {
 		}
 		try {
 			$alma->payments->fullRefund( $order->get_transaction_id(), $merchant_reference, $this->format_refund_comment( $comment ) );
+			update_post_meta( $order->get_id(), self::FLAG_ORDER_FULLY_REFUNDED, '1' );
 
 			/* translators: %s is a username. */
 			$order_note = sprintf( __( 'Order fully refunded by %s.', 'alma-gateway-for-woocommerce' ), wp_get_current_user()->display_name );
