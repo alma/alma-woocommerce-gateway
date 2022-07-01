@@ -15,7 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Alma_WC_Refund
  */
 class Alma_WC_Refund {
-	const PREFIX_REFUND_COMMENT = 'Refund made via WooCommerce back-office - ';
 
 	/**
 	 * Logger
@@ -29,7 +28,7 @@ class Alma_WC_Refund {
 	 *
 	 * @var Alma_WC_Refund_Helper
 	 */
-	private $refund_helper;
+	private $helper;
 
 	/**
 	 * Admin texts to be changed in order page to replace by Alma text.
@@ -50,7 +49,7 @@ class Alma_WC_Refund {
 	 */
 	public function __construct() {
 		$this->logger                  = new Alma_WC_Logger();
-		$this->refund_helper           = new Alma_WC_Refund_Helper();
+		$this->helper                  = new Alma_WC_Refund_Helper();
 		$this->admin_texts_to_change   = array(
 			'You will need to manually issue a refund through your payment gateway after using this.' => __( 'Refund will be operated directly with Alma.', 'alma-gateway-for-woocommerce' ),
 			/* translators: %s is an amount with currency. */
@@ -71,8 +70,28 @@ class Alma_WC_Refund {
 		add_action( 'woocommerce_order_item_add_action_buttons', array( $this, 'woocommerce_order_item_add_action_buttons' ), 10 );
 		add_filter( 'gettext', array( $this, 'gettext' ), 10, 3 );
 		add_filter( 'woocommerce_new_order_note_data', array( $this, 'woocommerce_new_order_note_data' ), 10, 1 );
-		add_action( 'woocommerce_order_status_changed', array( $this->refund_helper, 'woocommerce_order_status_changed' ), 10, 3 );
+		add_action( 'woocommerce_order_status_changed', array( $this, 'woocommerce_order_status_changed' ), 10, 3 );
 	}
+
+	/**
+	 * Callback function for the event "order status changed".
+	 * This method will make full refund if possible.
+	 *
+	 * @param integer $order_id Order id.
+	 * @param string  $previous_status Order status before it changes.
+	 * @param string  $next_status Order status affected to the order.
+	 * @return void
+	 */
+	public function woocommerce_order_status_changed( $order_id, $previous_status, $next_status ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
+		$order = wc_get_order( $order_id );
+		if (
+			'refunded' === $next_status &&
+			true === $this->helper->is_fully_refundable( $order )
+		) {
+			$this->helper->make_full_refund( $order );
+		}
+	}
+
 
 	/**
 	 * Filters WC order note for order fully refunded by order state changed to "refunded".
@@ -119,7 +138,7 @@ class Alma_WC_Refund {
 			if ( $original_text === $text ) {
 				$order_id = intval( $_GET['post'] ); // phpcs:ignore WordPress.Security.NonceVerification
 				$order    = wc_get_order( $order_id );
-				if ( substr( $order->get_payment_method(), 0, 4 ) !== 'alma' ) {
+				if ( $this->helper->is_paid_with_alma( $order ) ) {
 					return $translation;
 				}
 				$translation = str_replace( $original_text, $updated_text, $text );
@@ -156,9 +175,11 @@ class Alma_WC_Refund {
 			if ( ! is_array( $notice_infos ) || ! isset( $notice_infos['message'] ) ) {
 				continue;
 			}
-			echo '<div class="notice notice-' . esc_html( $notice_infos['notice_type'] ) . ' is-dismissible">
-				<p>' . esc_html( $notice_infos['message'] ) . '</p>
-			</div>';
+			printf(
+				'<div class="notice notice-%s is-dismissible"><p>%s</p></div>',
+				esc_html( $notice_infos['notice_type'] ),
+				esc_html( $notice_infos['message'] )
+			);
 		}
 		delete_post_meta( $post_id, 'alma_refund_notices' );
 	}
@@ -173,29 +194,29 @@ class Alma_WC_Refund {
 	public function woocommerce_order_partially_refunded( $order_id, $refund_id ) {
 		$order  = wc_get_order( $order_id );
 		$refund = new WC_Order_Refund( $refund_id );
-		if ( ! $this->refund_helper->is_order_valid_for_partial_refund_with_alma( $order, $refund ) ) {
+		if ( ! $this->helper->is_partially_refundable( $order, $refund ) ) {
 			return;
 		}
 
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
-			$this->refund_helper->add_order_note( $order, 'error', __( 'Partial refund unavailable due to a connection error.', 'alma-gateway-for-woocommerce' ) );
+			$this->helper->add_order_note( $order, 'error', __( 'Partial refund unavailable due to a connection error.', 'alma-gateway-for-woocommerce' ) );
 			return;
 		}
 
+		$amount_to_refund   = $this->helper->get_refund_amount( $refund );
+		$merchant_reference = $order->get_order_number();
+		$comment            = $this->helper->format_refund_comment( $refund->get_reason() );
 		try {
-			$amount_to_refund   = $this->refund_helper->get_amount_to_refund( $refund );
-			$merchant_reference = $order->get_order_number();
-			$comment            = self::PREFIX_REFUND_COMMENT . $this->refund_helper->get_refund_comment( $refund );
 			$alma->payments->partialRefund( $order->get_transaction_id(), $amount_to_refund, $merchant_reference, $comment );
 
 			$refund = new WC_Order_Refund( $refund_id );
 			/* translators: %1$s is a username, %2$s is an amount with currency. */
-			$this->refund_helper->add_order_note( $order, 'success', sprintf( __( '%1$s refunded %2$s with Alma.', 'alma-gateway-for-woocommerce' ), wp_get_current_user()->display_name, $this->refund_helper->get_amount_to_refund_for_display( $refund ) ) );
+			$this->helper->add_order_note( $order, 'success', sprintf( __( '%1$s refunded %2$s with Alma.', 'alma-gateway-for-woocommerce' ), wp_get_current_user()->display_name, $this->helper->get_display_refund_amount( $refund ) ) );
 		} catch ( RequestError $e ) {
 			/* translators: %s is an error message. */
-			$error_message = sprintf( __( 'Alma partial refund error : %s.', 'alma-gateway-for-woocommerce' ), alma_wc_get_request_error_message( $e ) );
-			$this->refund_helper->add_order_note( $order, 'error', $error_message );
+			$error_message = sprintf( __( 'Alma partial refund error : %s.', 'alma-gateway-for-woocommerce' ), $e->getErrorMessage() );
+			$this->helper->add_order_note( $order, 'error', $error_message );
 			$this->logger->error( $error_message );
 		}
 	}
@@ -211,7 +232,7 @@ class Alma_WC_Refund {
 		$order = wc_get_order( $order_id );
 		if (
 			'refunded' === $order->get_status() &&
-			true === $this->refund_helper->is_order_valid_for_full_refund_with_alma( $order )
+			true === $this->helper->is_fully_refundable( $order )
 		) {
 			$this->refund_helper->make_full_refund( $order, $refund_id );
 		}

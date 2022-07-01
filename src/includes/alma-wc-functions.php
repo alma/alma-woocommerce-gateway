@@ -155,18 +155,3 @@ function alma_wc_match_plan_key_pattern( $plan_key ) {
 
 	return false;
 }
-
-/**
- * Returns the error message of a RequestError Exception.
- *
- * @param RequestError $e RequestError exception.
- * @return string
- */
-function alma_wc_get_request_error_message( $e ) {
-
-	if ( $e->getMessage() ) {
-		return $e->getMessage();
-	}
-
-	return $e->response->json['errors'][0]['message'];
-}

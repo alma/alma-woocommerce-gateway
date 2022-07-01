@@ -15,6 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Alma_WC_Refund_Helper
  */
 class Alma_WC_Refund_Helper {
+	const PREFIX_REFUND_COMMENT = 'Refund made via WooCommerce back-office - ';
 
 	/**
 	 * Logger
@@ -36,7 +37,7 @@ class Alma_WC_Refund_Helper {
 	 * @param WC_Order_Refund $refund A Refund object.
 	 * @return int
 	 */
-	public function get_amount_to_refund( $refund ) {
+	public function get_refund_amount( $refund ) {
 		return alma_wc_price_to_cents( floatval( $refund->get_amount() ) );
 	}
 
@@ -46,18 +47,8 @@ class Alma_WC_Refund_Helper {
 	 * @param WC_Order_Refund $refund A Refund object.
 	 * @return string
 	 */
-	public function get_amount_to_refund_for_display( $refund ) {
+	public function get_display_refund_amount( $refund ) {
 		return $refund->get_amount() . ' ' . $refund->get_currency();
-	}
-
-	/**
-	 * Gets the comment of a refund (which is optional).
-	 *
-	 * @param WC_Order_Refund $refund A Refund object.
-	 * @return string
-	 */
-	public function get_refund_comment( $refund ) {
-		return $refund->get_reason();
 	}
 
 	/**
@@ -81,24 +72,6 @@ class Alma_WC_Refund_Helper {
 	}
 
 	/**
-	 * Callback function for the event "order status changed".
-	 *
-	 * @param integer $order_id Order id.
-	 * @param string  $previous_status Order status before it changes.
-	 * @param string  $next_status Order status affected to the order.
-	 * @return void
-	 */
-	public function woocommerce_order_status_changed( $order_id, $previous_status, $next_status ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
-		$order = wc_get_order( $order_id );
-		if (
-			'refunded' === $next_status &&
-			true === $this->is_order_valid_for_full_refund_with_alma( $order )
-		) {
-			$this->make_full_refund( $order );
-		}
-	}
-
-	/**
 	 * Make full refund.
 	 *
 	 * @param WC_Order $order An order.
@@ -118,17 +91,17 @@ class Alma_WC_Refund_Helper {
 		$comment = 'Refund made by order status changed to "refunded".';
 		if ( $refund_id ) {
 			$refund  = new WC_Order_Refund( $refund_id );
-			$comment = $this->get_refund_comment( $refund );
+			$comment = $refund->get_reason();
 		}
 		try {
-			$alma->payments->fullRefund( $order->get_transaction_id(), $merchant_reference, Alma_WC_Refund::PREFIX_REFUND_COMMENT . $comment );
+			$alma->payments->fullRefund( $order->get_transaction_id(), $merchant_reference, $this->format_refund_comment( $comment ) );
 
 			/* translators: %s is a username. */
 			$order_note = sprintf( __( 'Order fully refunded by %s.', 'alma-gateway-for-woocommerce' ), wp_get_current_user()->display_name );
 			$this->add_order_note( $order, 'success', $order_note );
 		} catch ( RequestError $e ) {
 			/* translators: %s is an error message. */
-			$error_message = sprintf( __( 'Alma full refund error : %s.', 'alma-gateway-for-woocommerce' ), alma_wc_get_request_error_message( $e ) );
+			$error_message = sprintf( __( 'Alma full refund error : %s.', 'alma-gateway-for-woocommerce' ), $e->getErrorMessage() );
 			$this->add_order_note( $order, 'error', $error_message );
 			$this->logger->error( $error_message );
 		}
@@ -141,44 +114,23 @@ class Alma_WC_Refund_Helper {
 	 * @param WC_Order_Refund $refund A Refund object.
 	 * @return bool
 	 */
-	public function is_order_valid_for_partial_refund_with_alma( $order, $refund ) {
-		$is_valid = true;
-
-		if ( ! $this->is_alma_payment_method_for_order( $order ) ) {
-			$is_valid = false;
+	public function is_partially_refundable( $order, $refund ) {
+		$has_valid_amount = $this->get_refund_amount( $refund ) > 0;
+		if ( ! $has_valid_amount ) {
+			$this->add_order_note( $order, 'error', __( 'Amount cannot be equal to 0 to refund with Alma.', 'alma-gateway-for-woocommerce' ) );
 		}
 
-		if ( ! $this->has_order_a_transaction_id( $order ) ) {
-			$is_valid = false;
-		}
-
-		$amount_to_refund = $this->get_amount_to_refund( $refund );
-		if ( 0 === $amount_to_refund ) {
-			$this->add_order_note( $order, 'error', __( 'Amount canno\'t be equal to 0 to refund with Alma.', 'alma-gateway-for-woocommerce' ) );
-			$is_valid = false;
-		}
-
-		return $is_valid;
+		return $has_valid_amount && $this->is_fully_refundable( $order );
 	}
 
 	/**
-	 * Tells if the order is valid for a full refund.
+	 * Tells if the order is valid for a full refund with Alma.
 	 *
 	 * @param WC_Order $order An order.
 	 * @return bool
 	 */
-	public function is_order_valid_for_full_refund_with_alma( $order ) {
-		$is_valid = true;
-
-		if ( ! $this->is_alma_payment_method_for_order( $order ) ) {
-			$is_valid = false;
-		}
-
-		if ( ! $this->has_order_a_transaction_id( $order ) ) {
-			$is_valid = false;
-		}
-
-		return $is_valid;
+	public function is_fully_refundable( $order ) {
+		return $this->is_paid_with_alma( $order ) && $this->has_transaction_id( $order );
 	}
 
 	/**
@@ -187,11 +139,16 @@ class Alma_WC_Refund_Helper {
 	 * @param WC_Order $order An order.
 	 * @return bool
 	 */
-	private function is_alma_payment_method_for_order( $order ) {
-		if ( substr( $order->get_payment_method(), 0, 4 ) !== 'alma' ) {
-			return false;
-		}
-		return true;
+	public function is_paid_with_alma( $order ) {
+		return in_array(
+			$order->get_payment_method(),
+			array(
+				Alma_WC_Payment_Gateway::GATEWAY_ID,
+				Alma_WC_Payment_Gateway::ALMA_GATEWAY_PAY_LATER,
+				Alma_WC_Payment_Gateway::ALMA_GATEWAY_PAY_MORE_THAN_FOUR,
+			),
+			true
+		);
 	}
 
 	/**
@@ -200,15 +157,26 @@ class Alma_WC_Refund_Helper {
 	 * @param WC_Order $order An order.
 	 * @return bool
 	 */
-	private function has_order_a_transaction_id( $order ) {
+	private function has_transaction_id( $order ) {
 		if ( ! $order->get_transaction_id() ) {
 			/* translators: %s is an order number. */
-			$error_message = sprintf( __( 'Error while getting transaction_id on trigger_payment for order_id : %s.', 'alma-gateway-for-woocommerce' ), $order->get_id() );
+			$error_message = sprintf( __( 'Error while getting alma transaction_id for order_id : %s.', 'alma-gateway-for-woocommerce' ), $order->get_id() );
 			$this->add_order_note( $order, 'error', $error_message );
 			$this->logger->error( $error_message );
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Formats a comment by adding a default refund sentence prefix.
+	 *
+	 * @param string $comment The comment to prefix to.
+	 *
+	 * @return string
+	 */
+	public function format_refund_comment( $comment ) {
+		return self::PREFIX_REFUND_COMMENT . $comment;
 	}
 }
 
