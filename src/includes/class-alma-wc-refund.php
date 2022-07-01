@@ -66,7 +66,7 @@ class Alma_WC_Refund {
 	 */
 	public function admin_init() {
 		add_action( 'woocommerce_order_partially_refunded', array( $this, 'woocommerce_order_partially_refunded' ), 10, 2 );
-		add_action( 'woocommerce_order_fully_refunded', array( $this, 'woocommerce_order_fully_refunded' ), 10, 1 );
+		add_action( 'woocommerce_order_fully_refunded', array( $this, 'woocommerce_order_fully_refunded' ), 10, 2 );
 		add_action( 'admin_notices', array( $this, 'admin_notices' ), 10 );
 		add_action( 'woocommerce_order_item_add_action_buttons', array( $this, 'woocommerce_order_item_add_action_buttons' ), 10 );
 		add_filter( 'gettext', array( $this, 'gettext' ), 10, 3 );
@@ -204,15 +204,16 @@ class Alma_WC_Refund {
 	 * Action hook for order fully refunded.
 	 *
 	 * @param integer $order_id Order id.
+	 * @param integer $refund_id Refund id.
 	 * @return void
 	 */
-	public function woocommerce_order_fully_refunded( $order_id ) {
+	public function woocommerce_order_fully_refunded( $order_id, $refund_id ) {
 		$order = wc_get_order( $order_id );
 		if (
 			'refunded' === $order->get_status() &&
 			true === $this->refund_helper->is_order_valid_for_full_refund_with_alma( $order )
 		) {
-			$this->refund_helper->make_full_refund( $order );
+			$this->refund_helper->make_full_refund( $order, $refund_id );
 		}
 	}
 
