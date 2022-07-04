@@ -5,6 +5,8 @@
  * @package Alma_WooCommerce_Gateway
  */
 
+use Alma\API\RequestError;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
@@ -28,7 +30,7 @@ class Alma_WC_Share_Of_Checkout {
 	 *
 	 * @var Alma_WC_Share_Of_Checkout_Helper
 	 */
-	private $share_of_checkout_helper;
+	private $helper;
 
 	/**
 	 * Date helper.
@@ -41,9 +43,9 @@ class Alma_WC_Share_Of_Checkout {
 	 * __construct.
 	 */
 	public function __construct() {
-		$this->logger                   = new Alma_WC_Logger();
-		$this->share_of_checkout_helper = new Alma_WC_Share_Of_Checkout_Helper();
-		$this->date_helper              = new Alma_WC_Date_Helper();
+		$this->logger      = new Alma_WC_Logger();
+		$this->helper      = new Alma_WC_Share_Of_Checkout_Helper();
+		$this->date_helper = new Alma_WC_Date_Helper();
 	}
 
 	/**
@@ -87,17 +89,36 @@ class Alma_WC_Share_Of_Checkout {
 		}
 
 		if ( 'yes' !== alma_wc_plugin()->settings->share_of_checkout_enabled ) {
-			$this->logger->info( __( 'Share Of Checkout is not enabled', 'alma-gateway-for-woocommerce' ) );
 			return;
 		}
 
 		$share_of_checkout_enabled_date = alma_wc_plugin()->settings->share_of_checkout_enabled_date;
-		$last_update_date               = $this->share_of_checkout_helper->get_last_update_date();
-		$dates_to_share                 = $this->date_helper->get_dates_in_interval( $share_of_checkout_enabled_date, $last_update_date );
+		$last_update_date               = $this->helper->get_last_update_date();
+		$from_date                      = max( $last_update_date, $share_of_checkout_enabled_date );
+		$dates_to_share                 = $this->date_helper->get_dates_in_interval( $from_date );
 
 		foreach ( $dates_to_share as $date ) {
-			$this->share_of_checkout_helper->set_share_of_checkout_from_date( $date );
-			$this->share_of_checkout_helper->share_day();
+			$this->share_day( $date );
+		}
+	}
+
+	/**
+	 * Send data for one day to API.
+	 *
+	 * @param string $start_time The start time.
+	 *
+	 * @return void
+	 */
+	public function share_day( $start_time ) {
+		$alma = alma_wc_plugin()->get_alma_client();
+		if ( ! $alma ) {
+			return;
+		}
+
+		try {
+			$alma->shareOfCheckout->share( $this->helper->get_payload( $start_time ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName
+		} catch ( RequestError $e ) {
+			$this->logger->error( sprintf( 'Alma_WC_Share_Of_Checkout_Helper::share error get message : %s', $e->getMessage() ) );
 		}
 	}
 

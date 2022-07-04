@@ -24,78 +24,36 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	private $logger;
 
 	/**
-	 * Start time;
-	 *
-	 * @var string
-	 */
-	private $start_time;
-
-	/**
-	 * End time;
-	 *
-	 * @var string
-	 */
-	private $end_time;
-
-	/**
 	 * __construct.
 	 */
 	public function __construct() {
-		$this->logger     = new Alma_WC_Logger();
-		$this->start_time = null;
-		$this->end_time   = null;
-	}
-
-	/**
-	 * Set share of checkout "from date". (date BEGIN)
-	 *
-	 * @param string $start_time The start time.
-	 * @return void
-	 */
-	public function set_share_of_checkout_from_date( $start_time ) {
-		$this->start_time = $start_time . ' 00:00:00';
-		$this->set_share_of_checkout_to_date( $start_time );
+		$this->logger = new Alma_WC_Logger();
 	}
 
 	/**
 	 * Get share of checkout "from date". (date BEGIN)
 	 *
-	 * @return string|null
+	 * @param string $start_date The start date yyyy-mm-dd formatted.
+	 * @return string
 	 */
-	private function get_share_of_checkout_from_date() {
-		if ( isset( $this->start_time ) ) {
-			return $this->start_time;
-		}
-
-		return gmdate( 'Y-m-d', strtotime( 'yesterday' ) ) . ' 00:00:00';
-	}
-
-	/**
-	 * Set share of checkout "to date". (date END)
-	 *
-	 * @param string $start_time The start time.
-	 * @return void
-	 */
-	public function set_share_of_checkout_to_date( $start_time ) {
-		$this->end_time = $start_time . ' 23:59:59';
+	private function get_from_date( $start_date ) {
+		return $start_date . ' 00:00:00';
 	}
 
 	/**
 	 * Get share of checkout "to date". (date END)
 	 *
+	 * @param string $start_date The start date yyyy-mm-dd formatted.
 	 * @return string
 	 */
-	private function get_share_of_checkout_to_date() {
-		if ( isset( $this->end_time ) ) {
-			return $this->end_time;
-		}
-		return gmdate( 'Y-m-d', strtotime( 'yesterday' ) ) . ' 23:59:59';
+	private function get_to_date( $start_date ) {
+		return $start_date . ' 23:59:59';
 	}
 
 	/**
 	 * Returns the date of the last share of checkout.
 	 *
-	 * @return integer (timestamp)
+	 * @return int (timestamp)
 	 */
 	public function get_last_update_date() {
 		$last_update_date = gmdate( 'Y-m-d', strtotime( '-2 days' ) );
@@ -119,7 +77,7 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	 *
 	 * @param string $from The date from.
 	 * @param string $to The date to.
-	 * @return array
+	 * @return WC_Order[]
 	 */
 	private function get_orders_by_date_range( $from, $to ) {
 		$args = array(
@@ -142,20 +100,13 @@ class Alma_WC_Share_Of_Checkout_Helper {
 				$order_currencies[ $order->get_currency() ] = array(
 					'total_order_count' => 0,
 					'total_amount'      => 0,
+					'currency'          => $order->get_currency(),
 				);
 			}
 			$order_currencies[ $order->get_currency() ]['total_order_count'] += 1;
 			$order_currencies[ $order->get_currency() ]['total_amount']      += alma_wc_price_to_cents( $order->get_total() );
 		}
-		$orders = array();
-		foreach ( $order_currencies as $currency => $value ) {
-			$orders[] = array(
-				'total_order_count' => $value['total_order_count'],
-				'total_amount'      => $value['total_amount'],
-				'currency'          => $currency,
-			);
-		}
-		return $orders;
+		return array_values( $order_currencies );
 	}
 
 	/**
@@ -203,11 +154,13 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	/**
 	 * Gets the payload to send to API.
 	 *
+	 * @param string $start_date The start date yyyy-mm-dd formatted.
+	 *
 	 * @return array
 	 */
-	public function get_payload() {
-		$from                 = $this->get_share_of_checkout_from_date();
-		$to                   = $this->get_share_of_checkout_to_date();
+	public function get_payload( $start_date ) {
+		$from                 = $this->get_from_date( $start_date );
+		$to                   = $this->get_to_date( $start_date );
 		$orders_by_date_range = $this->get_orders_by_date_range( $from, $to );
 		return array(
 			'start_time'      => $from,
@@ -215,23 +168,5 @@ class Alma_WC_Share_Of_Checkout_Helper {
 			'orders'          => $this->get_payload_orders( $orders_by_date_range ),
 			'payment_methods' => $this->get_payload_payment_methods( $orders_by_date_range ),
 		);
-	}
-
-	/**
-	 * Send data for one day to API.
-	 *
-	 * @return array|void
-	 */
-	public function share_day() {
-		$alma = alma_wc_plugin()->get_alma_client();
-		if ( ! $alma ) {
-			return;
-		}
-
-		try {
-			$alma->shareOfCheckout->share( $this->get_payload() ); // phpcs:ignore
-		} catch ( RequestError $e ) {
-			$this->logger->info( sprintf( 'Alma_WC_Share_Of_Checkout_Helper::share error get message : %s', $e->getMessage() ) );
-		}
 	}
 }
