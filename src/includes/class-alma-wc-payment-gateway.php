@@ -154,18 +154,21 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return bool
 	 */
 	public function process_admin_options() {
+		$value     = $this->settings;
+		$post_data = $this->get_post_data();
+		if (
+			isset( $post_data['share_of_checkout_enabled'] ) &&
+			! isset( alma_wc_plugin()->settings->share_of_checkout_enabled )
+		) {
+			$value['share_of_checkout_enabled_date'] = gmdate( 'Y-m-d' );
+		}
+
 		$previously_saved = parent::process_admin_options();
 
 		$this->convert_amounts_to_cents();
 		$this->update_settings_from_merchant();
 		alma_wc_plugin()->settings->update_from( $this->settings );
 		alma_wc_plugin()->force_check_settings();
-
-		$value = $this->settings;
-		if ( 'yes' === $value['share_of_checkout_enabled'] ) {
-			$value['share_of_checkout_enabled_date'] = gmdate( 'Y-m-d' );
-		}
-
 		return $previously_saved && update_option( $this->get_option_key(), $value );
 	}
 
