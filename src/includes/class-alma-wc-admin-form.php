@@ -243,7 +243,7 @@ class Alma_WC_Admin_Form {
 
 		return array(
 			'share_of_checkout_section'      => array(
-				'title' => '<hr>' . __( '→ Share of checkout configuration', 'alma-woocommerce-gateway' ),
+				'title' => '<hr>' . __( '→ Share of checkout configuration', 'alma-gateway-for-woocommerce' ),
 				'type'  => 'title',
 			),
 			'share_of_checkout_general_info' => array(
@@ -258,13 +258,13 @@ class Alma_WC_Admin_Form {
 	In addition, the option can be fully deactivated from the administration of your CMS; the data being collected only with your consent.<br>
 	In order to optimize the use of Alma on your site, would you agree, in principle, to sharing this statistical data with us?<br>
 	The Alma team.',
-						'alma-woocommerce-gateway'
+						'alma-gateway-for-woocommerce'
 					)
 				),
 				'type'  => 'title',
 			),
 			'share_of_checkout_enabled'      => array(
-				'title'   => __( 'Activate the share of checkout', 'alma-woocommerce-gateway' ),
+				'title'   => __( 'Activate the share of checkout', 'alma-gateway-for-woocommerce' ),
 				'type'    => 'checkbox',
 				'label'   => '&nbsp;',
 				'default' => $default_settings['share_of_checkout_enabled'],
