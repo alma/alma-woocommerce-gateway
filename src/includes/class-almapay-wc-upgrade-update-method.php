@@ -16,8 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Almapay_WC_Upgrade_Update_Method {
 
-	// @todo in real life, remove "-2.6.1".
-	const ALMAPAY_WC_OLD_PLUGIN_FILE            = 'alma-woocommerce-gateway-2.6.1/alma-woocommerce-gateway.php';
+	const ALMAPAY_WC_OLD_PLUGIN_FILE            = 'alma-woocommerce-gateway/alma-woocommerce-gateway.php';
 	const ALMAPAY_PREFIX_FOR_TMP_OPTIONS        = 'almapay_tmp_';
 	const ALMAPAY_PLUGIN_ACTIVATION_OPTION_NAME = 'almapay_new_plugin_activation_running';
 	const ALMAPAY_PLUGIN_ACTIVATION_FLAG        = 'almapay_new_installed';
