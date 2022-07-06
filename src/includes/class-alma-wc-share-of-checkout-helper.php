@@ -33,8 +33,8 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	/**
 	 * __construct.
 	 */
-	public function __construct() {
-		$this->order_helper = new Alma_WC_Helper_Order();
+	public function __construct( $order_helper ) {
+		$this->order_helper = $order_helper;
 		$this->logger       = new Alma_WC_Logger();
 	}
 

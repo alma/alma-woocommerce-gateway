@@ -25,7 +25,7 @@ class AlmaWcShareOfCheckoutHelperTest extends TestCase {
 		return $method->invokeArgs($object, $parameters);
 	}
 
-	public function data_date_provider() {
+	public function data_provider_start_date() {
 		return [
 			"Normal Date" => [ '2022-07-01', '2022-07-01 00:00:00' ],
 			"Past Date"   => [ '2019-01-01', '2019-01-01 00:00:00' ],
@@ -34,10 +34,10 @@ class AlmaWcShareOfCheckoutHelperTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider data_date_provider
+	 * @dataProvider data_provider_start_date
 	 */
 	public function test_get_from_date( $start_date, $expected ) {
-		$helper = new Alma_WC_Share_Of_Checkout_Helper();
+		$helper = new Alma_WC_Share_Of_Checkout_Helper( new Alma_WC_Helper_Order() );
 		$result = $this->invokeMethod( $helper, 'get_from_date', array( $start_date ) );
 		$this->assertEquals( $expected, $result );
 	}
