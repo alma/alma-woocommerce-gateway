@@ -17,6 +17,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Alma_WC_Share_Of_Checkout_Helper {
 
 	/**
+	 * Order helper
+	 *
+	 * @var Alma_WC_Helper_Order
+	 */
+	private $order_helper;
+
+	/**
 	 * Logger
 	 *
 	 * @var Alma_WC_Logger
@@ -27,7 +34,8 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	 * __construct.
 	 */
 	public function __construct() {
-		$this->logger = new Alma_WC_Logger();
+		$this->order_helper = new Alma_WC_Helper_Order();
+		$this->logger       = new Alma_WC_Logger();
 	}
 
 	/**
@@ -70,21 +78,6 @@ class Alma_WC_Share_Of_Checkout_Helper {
 			$this->logger->error( 'Error getting getLastUpdateDates for ShareOfCheckout : ' . $e->getMessage() );
 		}
 		return $last_update_date;
-	}
-
-	/**
-	 * Gets the WC orders in a date range.
-	 *
-	 * @param string $from The date from.
-	 * @param string $to The date to.
-	 * @return WC_Order[]
-	 */
-	private function get_orders_by_date_range( $from, $to ) {
-		$args = array(
-			'date_created' => $from . '...' . $to,
-			'type'         => 'shop_order',
-		);
-		return wc_get_orders( $args );
 	}
 
 	/**
@@ -161,7 +154,7 @@ class Alma_WC_Share_Of_Checkout_Helper {
 	public function get_payload( $start_date ) {
 		$from                 = $this->get_from_date( $start_date );
 		$to                   = $this->get_to_date( $start_date );
-		$orders_by_date_range = $this->get_orders_by_date_range( $from, $to );
+		$orders_by_date_range = $this->order_helper->get_orders_by_date_range( $from, $to );
 		return array(
 			'start_time'      => $from,
 			'end_time'        => $to,
