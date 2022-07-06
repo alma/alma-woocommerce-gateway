@@ -173,7 +173,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	public function is_available() {
 
 		$current_user = wp_get_current_user();
-		if ( ! in_array( 'administrator', $current_user->roles, true ) && 'live' !== alma_wc_plugin()->settings->environment ) {
+		if ( ! alma_wc_plugin()->current_user_can_see_widget() ) {
 			return false;
 		}
 
