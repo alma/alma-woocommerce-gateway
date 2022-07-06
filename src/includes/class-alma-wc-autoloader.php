@@ -93,6 +93,10 @@ class Alma_WC_Autoloader {
 			$path = $this->include_path . 'models/';
 		}
 
+		if ( preg_match( '#^alma_wc_helper_#', $class ) ) {
+			$path = $this->include_path . 'helpers/';
+		}
+
 		if ( empty( $path ) || ( ! $this->load_file( $path . $file ) && strpos( $class, 'wc_' ) === 0 ) ) {
 			$this->load_file( $this->include_path . $file );
 		}
