@@ -26,9 +26,11 @@ class AlmaWcShareOfCheckoutHelperTest extends TestCase {
 	}
 
 	public function data_date_provider() {
-		yield [ '2022-07-01', '2022-07-01 00:00:00' ];
-		yield [ '2019-01-01', '2019-01-01 00:00:00' ];
-		yield [ '2031-12-31', '2031-12-31 00:00:00' ];
+		return [
+			"Normal Date" => [ '2022-07-01', '2022-07-01 00:00:00' ],
+			"Past Date"   => [ '2019-01-01', '2019-01-01 00:00:00' ],
+			"Futur Date"  => [ '2031-12-31', '2031-12-31 00:00:00' ],
+		];
 	}
 
 	/**
