@@ -19,6 +19,13 @@ class Alma_WC_Share_Of_Checkout {
 	const CRON_ACTION = 'share_of_checkout_cron_action';
 
 	/**
+	 * Order helper
+	 *
+	 * @var Alma_WC_Helper_Order
+	 */
+	private $order_helper;
+
+	/**
 	 * Logger.
 	 *
 	 * @var Alma_WC_Logger
@@ -43,9 +50,10 @@ class Alma_WC_Share_Of_Checkout {
 	 * __construct.
 	 */
 	public function __construct() {
-		$this->logger      = new Alma_WC_Logger();
-		$this->helper      = new Alma_WC_Share_Of_Checkout_Helper();
-		$this->date_helper = new Alma_WC_Date_Helper();
+		$this->logger       = new Alma_WC_Logger();
+		$this->order_helper = new Alma_WC_Helper_Order();
+		$this->helper       = new Alma_WC_Share_Of_Checkout_Helper( $this->order_helper );
+		$this->date_helper  = new Alma_WC_Date_Helper();
 	}
 
 	/**
