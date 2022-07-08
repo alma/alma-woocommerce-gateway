@@ -133,7 +133,6 @@ class Alma_WC_Share_Of_Checkout_Helper {
 			$payment_method['payment_method_name'] = $payment_method_name;
 			$orders                                = array();
 			foreach ( $currency_values as $currency => $values ) {
-				$orders   = array();
 				$orders[] = array(
 					'order_count' => $values['order_count'],
 					'amount'      => $values['amount'],
