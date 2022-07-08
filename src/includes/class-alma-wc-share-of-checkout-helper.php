@@ -157,6 +157,7 @@ class Alma_WC_Share_Of_Checkout_Helper {
 		$from                 = $this->get_from_date( $start_date );
 		$to                   = $this->get_to_date( $start_date );
 		$orders_by_date_range = $this->order_helper->get_orders_by_date_range( $from, $to );
+
 		return array(
 			'start_time'      => $from,
 			'end_time'        => $to,

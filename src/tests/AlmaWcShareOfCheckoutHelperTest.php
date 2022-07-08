@@ -5,8 +5,8 @@ use PHPUnit\Framework\TestCase;
 
 class AlmaWcShareOfCheckoutHelperTest extends TestCase {
 
-	const EUR_CURRENCY_CODE = 1;
-	const USD_CURRENCY_CODE = 2;
+	const EUR_CURRENCY_CODE = 'EUR';
+	const USD_CURRENCY_CODE = 'USD';
 
 	/**
 	 * Call protected/private method of a class.
@@ -57,112 +57,69 @@ class AlmaWcShareOfCheckoutHelperTest extends TestCase {
 //		];
 //	}
 
-	public function ordersTotalOrders() {
-		$expectedTotalOrders = [
-			[
-				"total_order_count" => 2,
-				"total_amount" => 15500,
-				"currency" => "EUR"
-			],
-			[
-				"total_order_count" => 2,
-				"total_amount" => 30000,
-				"currency" => "USD"
-			]
-		];
-
-		return [
-			'order total orders' => [
-				self::orders(),
-				$expectedTotalOrders
-			]
-		];
-	}
-
-	public function ordersTotalPaymentMethods() {
-		$expectedTotalPaymentMethods = [
-			[
-				"payment_method_name" => "alma",
-				"orders" => [
-					[
-						"order_count" => 2,
-						"amount" => 15500,
-						"currency" => "EUR"
-					],
-					[
-						"order_count" => 1,
-						"amount" => 10000,
-						"currency" => "USD"
-					]
-				]
-			],
-			[
-				"payment_method_name" => "paypal",
-				"orders" => [
-					[
-						"order_count" => 1,
-						"amount" => 20000,
-						"currency" => "USD"
-					]
-				]
-			]
-		];
-
-		return [
-			'order total payment methods' => [
-				self::orders(),
-				$expectedTotalPaymentMethods
-			]
-		];
-	}
-
-		public function orders()
-		{
-			$ordersMock = [];
-			$ordersFactory = [
-				[
-					'id_currency' => self::EUR_CURRENCY_CODE,
-					'total_paid_tax_incl' => 100.00,
-					'module' => 'alma',
-				],
-				[
-					'id_currency' => self::USD_CURRENCY_CODE,
-					'total_paid_tax_incl' => 200.00,
-					'module' => 'paypal',
-				],
-				[
-					'id_currency' => self::EUR_CURRENCY_CODE,
-					'total_paid_tax_incl' => 55.00,
-					'module' => 'alma',
-				],
-				[
-					'id_currency' => self::USD_CURRENCY_CODE,
-					'total_paid_tax_incl' => 100.00,
-					'module' => 'alma',
-				],
-			];
-
-			foreach($ordersFactory as $orderFactory) {
-				$orderMock = Mockery::mock(Order::class);
-				$orderMock->id_currency = $orderFactory['id_currency'];
-				$orderMock->total_paid_tax_incl = $orderFactory['total_paid_tax_incl'];
-				$orderMock->module = $orderFactory['module'];
-				$ordersMock[] = $orderMock;
-			}
-
-			return $ordersMock;
-		}
-
 	/**
 	 * The provider for the method test_get_payload().
 	 *
 	 * @return array[]
 	 */
-	public function ordersGetPayload()
-	{
-		$expectedPayload = [
-			'start_time' => 1640991600,
-			'end_time' => 1641077999,
+	public function ordersGetPayload() {
+		return [
+			'order get payload' => [
+				self::orders_by_date_range_mock(),
+				self::expectedPayload()
+			]
+		];
+	}
+
+	/**
+	 * Orders by date rang used to build payload.
+	 *
+	 * @return array
+	 */
+	public function orders_by_date_range_mock() {
+		$ordersMock = [];
+		$ordersFactory = [
+			[
+				'id_currency' => self::EUR_CURRENCY_CODE,
+				'total_paid_tax_incl' => 100.00,
+				'module' => 'alma',
+			],
+			[
+				'id_currency' => self::USD_CURRENCY_CODE,
+				'total_paid_tax_incl' => 200.00,
+				'module' => 'paypal',
+			],
+			[
+				'id_currency' => self::EUR_CURRENCY_CODE,
+				'total_paid_tax_incl' => 55.00,
+				'module' => 'alma',
+			],
+			[
+				'id_currency' => self::USD_CURRENCY_CODE,
+				'total_paid_tax_incl' => 100.00,
+				'module' => 'alma',
+			],
+		];
+
+		foreach($ordersFactory as $orderFactory) {
+			$orderMock = Mockery::mock(WC_Order::class);
+			$orderMock->shouldReceive('get_currency')->andReturn($orderFactory['id_currency']);
+			$orderMock->shouldReceive('get_total')->andReturn($orderFactory['total_paid_tax_incl']);
+			$orderMock->shouldReceive('get_payment_method')->andReturn($orderFactory['module']);
+			$ordersMock[] = $orderMock;
+		}
+		return $ordersMock;
+	}
+
+	/**
+	 * Expected payload.
+	 *
+	 * @return array
+	 */
+	public function expectedPayload() {
+		return [
+			'start_time' => '2022-01-01 00:00:00',
+			'end_time' => '2022-01-01 23:59:59',
 			'orders' => [
 				[
 					"total_order_count"=> 2,
@@ -180,15 +137,15 @@ class AlmaWcShareOfCheckoutHelperTest extends TestCase {
 					"payment_method_name" => "alma",
 					"orders" => [
 						[
-							"order_count" => 2,
-							"amount" => 15500,
-							"currency" => "EUR"
-						],
-						[
 							"order_count" => 1,
 							"amount" => 10000,
 							"currency" => "USD"
-						]
+						],
+//						[
+//							"order_count" => 2,
+//							"amount" => 15500,
+//							"currency" => "EUR"
+//						]
 					]
 				],
 				[
@@ -203,13 +160,6 @@ class AlmaWcShareOfCheckoutHelperTest extends TestCase {
 				]
 			],
 		];
-
-		return [
-			'order get payload' => [
-				self::orders(),
-				$expectedPayload
-			]
-		];
 	}
 
 	/**
@@ -223,11 +173,10 @@ class AlmaWcShareOfCheckoutHelperTest extends TestCase {
 		$orderHelperMock->shouldReceive('get_orders_by_date_range')->andReturn($ordersMock);
 //
 		$shareOfCheckoutHelper = new Alma_WC_Share_Of_Checkout_Helper($orderHelperMock);
-		$payload = $shareOfCheckoutHelper->get_payload( '2022-01-01' );
 
 //		$this->assertEquals($expectedPayload, $payload);
 
-		$this->assertEquals(1, 1);
+		$this->assertEquals($expectedPayload, $shareOfCheckoutHelper->get_payload( '2022-01-01' ));
 	}
 
 }
