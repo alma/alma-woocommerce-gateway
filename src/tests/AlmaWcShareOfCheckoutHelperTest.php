@@ -1,7 +1,6 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-//use Mockery;
 
 class AlmaWcShareOfCheckoutHelperTest extends TestCase {
 
@@ -29,7 +28,12 @@ class AlmaWcShareOfCheckoutHelperTest extends TestCase {
 		return $method->invokeArgs($object, $parameters);
 	}
 
-	public function data_provider_start_date() {
+	/**
+	 * Data provider to test "from_date".
+	 *
+	 * @return string[][]
+	 */
+	public function data_provider_from_date() {
 		return [
 			"Normal Date" => [ '2022-07-01', '2022-07-01 00:00:00' ],
 			"Past Date"   => [ '2019-01-01', '2019-01-01 00:00:00' ],
@@ -38,24 +42,39 @@ class AlmaWcShareOfCheckoutHelperTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider data_provider_start_date
+	 * Test "from_date".
+	 *
+	 * @dataProvider data_provider_from_date
 	 */
-//	public function test_get_from_date( $start_date, $expected ) {
-//		$helper = new Alma_WC_Share_Of_Checkout_Helper( new Alma_WC_Helper_Order() );
-//		$result = $this->invokeMethod( $helper, 'get_from_date', array( $start_date ) );
-//		$this->assertEquals( $expected, $result );
-//	}
+	public function test_get_from_date( $from_date, $expected ) {
+		$helper = new Alma_WC_Share_Of_Checkout_Helper( new Alma_WC_Helper_Order() );
+		$result = $this->invokeMethod( $helper, 'get_from_date', array( $from_date ) );
+		$this->assertEquals( $expected, $result );
+	}
 
-	//------------------------------------------------------------------
-	// Tests on get_payload() method.
-	//------------------------------------------------------------------
-//	public function data_provider_get_payload() {
-//		return [
-//			"Date 1" => [ '2022-07-01' ],
-//			"Date 2" => [ '2022-06-30' ],
-//			"Date 3" => [ '2022-06-29' ],
-//		];
-//	}
+	/**
+	 * Data provider to test "to_date".
+	 *
+	 * @return string[][]
+	 */
+	public function data_provider_to_date() {
+		return [
+			"Normal Date" => [ '2022-07-01', '2022-07-01 23:59:59' ],
+			"Past Date"   => [ '2019-01-01', '2019-01-01 23:59:59' ],
+			"Futur Date"  => [ '2031-12-31', '2031-12-31 23:59:59' ],
+		];
+	}
+
+	/**
+	 * Test "to_date".
+	 *
+	 * @dataProvider data_provider_to_date
+	 */
+	public function test_get_to_date( $to_date, $expected ) {
+		$helper = new Alma_WC_Share_Of_Checkout_Helper( new Alma_WC_Helper_Order() );
+		$result = $this->invokeMethod( $helper, 'get_to_date', array( $to_date ) );
+		$this->assertEquals( $expected, $result );
+	}
 
 	/**
 	 * The provider for the method test_get_payload().
@@ -66,7 +85,7 @@ class AlmaWcShareOfCheckoutHelperTest extends TestCase {
 		return [
 			'order get payload' => [
 				self::orders_by_date_range_mock(),
-				self::expectedPayload()
+				self::expected_payload()
 			]
 		];
 	}
@@ -77,7 +96,7 @@ class AlmaWcShareOfCheckoutHelperTest extends TestCase {
 	 * @return array
 	 */
 	public function orders_by_date_range_mock() {
-		$ordersMock = [];
+		$ordersMock    = [];
 		$ordersFactory = [
 			[
 				'id_currency' => self::EUR_CURRENCY_CODE,
@@ -101,11 +120,11 @@ class AlmaWcShareOfCheckoutHelperTest extends TestCase {
 			],
 		];
 
-		foreach($ordersFactory as $orderFactory) {
-			$orderMock = Mockery::mock(WC_Order::class);
-			$orderMock->shouldReceive('get_currency')->andReturn($orderFactory['id_currency']);
-			$orderMock->shouldReceive('get_total')->andReturn($orderFactory['total_paid_tax_incl']);
-			$orderMock->shouldReceive('get_payment_method')->andReturn($orderFactory['module']);
+		foreach( $ordersFactory as $orderFactory ) {
+			$orderMock = Mockery::mock(WC_Order::class );
+			$orderMock->shouldReceive('get_currency' )->andReturn( $orderFactory['id_currency'] );
+			$orderMock->shouldReceive('get_total' )->andReturn( $orderFactory['total_paid_tax_incl'] );
+			$orderMock->shouldReceive('get_payment_method' )->andReturn( $orderFactory['module'] );
 			$ordersMock[] = $orderMock;
 		}
 		return $ordersMock;
@@ -116,7 +135,7 @@ class AlmaWcShareOfCheckoutHelperTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function expectedPayload() {
+	public function expected_payload() {
 		return [
 			'start_time' => '2022-01-01 00:00:00',
 			'end_time' => '2022-01-01 23:59:59',
@@ -137,15 +156,15 @@ class AlmaWcShareOfCheckoutHelperTest extends TestCase {
 					"payment_method_name" => "alma",
 					"orders" => [
 						[
+							"order_count" => 2,
+							"amount" => 15500,
+							"currency" => "EUR"
+						],
+						[
 							"order_count" => 1,
 							"amount" => 10000,
 							"currency" => "USD"
-						],
-//						[
-//							"order_count" => 2,
-//							"amount" => 15500,
-//							"currency" => "EUR"
-//						]
+						]
 					]
 				],
 				[
@@ -164,19 +183,16 @@ class AlmaWcShareOfCheckoutHelperTest extends TestCase {
 
 	/**
 	 * Test get_payload() method from Alma_WC_Share_Of_Checkout_Helper class.
-	 * @dataProvider ordersGetPayload
 	 *
+	 * @dataProvider ordersGetPayload
 	 * @return void
 	 */
-	public function test_get_payload( $ordersMock, $expectedPayload ) {
-		$orderHelperMock = Mockery::mock(Alma_WC_Helper_Order::class);
-		$orderHelperMock->shouldReceive('get_orders_by_date_range')->andReturn($ordersMock);
-//
-		$shareOfCheckoutHelper = new Alma_WC_Share_Of_Checkout_Helper($orderHelperMock);
-
-//		$this->assertEquals($expectedPayload, $payload);
-
-		$this->assertEquals($expectedPayload, $shareOfCheckoutHelper->get_payload( '2022-01-01' ));
+	public function test_get_payload( $orders_by_date_range_mock, $expectedPayload ) {
+		$orderHelperMock       = Mockery::mock(Alma_WC_Helper_Order::class );
+		$orderHelperMock->shouldReceive('get_orders_by_date_range' )->andReturn( $orders_by_date_range_mock );
+		$shareOfCheckoutHelper = new Alma_WC_Share_Of_Checkout_Helper( $orderHelperMock );
+		$random_date = '2022-01-01';
+		$this->assertEquals( $expectedPayload, $shareOfCheckoutHelper->get_payload( $random_date ) );
 	}
 
 }
