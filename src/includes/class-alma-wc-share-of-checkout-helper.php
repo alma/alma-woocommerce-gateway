@@ -32,6 +32,8 @@ class Alma_WC_Share_Of_Checkout_Helper {
 
 	/**
 	 * __construct.
+	 *
+	 * @param Alma_WC_Helper_Order $order_helper Order helper.
 	 */
 	public function __construct( $order_helper ) {
 		$this->order_helper = $order_helper;
