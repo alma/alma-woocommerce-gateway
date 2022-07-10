@@ -1,3 +1,9 @@
+/**
+ * Launch widget injection when document is ready.
+ *
+ * @package Alma_WooCommerce_Gateway
+ */
+
 jQuery( document ).ready(
 	function ( $ ) {
 
