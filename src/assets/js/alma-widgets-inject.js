@@ -19,13 +19,16 @@ jQuery( document ).ready(
 		}
 
 		function getAmountElement() {
-			var amountQuerySelector = settings.amountQuerySelector;
-
+			var amountQuerySelector          = settings.amountQuerySelector;
+			var amountSalePriceQuerySelector = settings.amountSalePriceQuerySelector;
+			if ( document.querySelector( amountSalePriceQuerySelector ) ) {
+				amountQuerySelector = amountSalePriceQuerySelector;
+			}
 			if ( amountQuerySelector ) {
 				return document.querySelector( amountQuerySelector );
 			}
 
-			return null
+			return null;
 		}
 
 		window.AlmaInitWidget = function () {
@@ -59,7 +62,7 @@ jQuery( document ).ready(
 						child = child.nextSibling;
 					}
 				} else {
-					amount = 0
+					amount = parseInt( settings.amount );
 				}
 			}
 
