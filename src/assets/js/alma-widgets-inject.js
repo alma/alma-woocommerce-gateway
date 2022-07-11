@@ -1,5 +1,5 @@
 /**
- * Launch widget injection when document is ready.
+ * Inject payment plan widget.
  *
  * @package Alma_WooCommerce_Gateway
  */
@@ -28,7 +28,7 @@ jQuery( document ).ready(
 					// or its disappearing when some choices are missing. We first try to find an ongoing animation to
 					// update our widget *after* the animation has taken place, so that it uses up-to-date information/DOM
 					// in init.
-					var amountElement = almaWidgetHelper.getAmountElement()
+					var amountElement = almaWidgetHelper.getAmountElement( settings )
 					var timer         = $.timers.find(
 						function ( t ) {
 							return t.elem === jQuery( amountElement ).closest( '.woocommerce-variation' ).get( 0 );
@@ -36,7 +36,7 @@ jQuery( document ).ready(
 					)
 
 					if (timer) {
-						window.setTimeout( almaWidgetHelper.init(), timer.anim.duration )
+						window.setTimeout( almaWidgetHelper.init, timer.anim.duration )
 					} else if ( almaWidgetHelper.isVisible( amountElement ) || ! settings.amountQuerySelector ) {
 						almaWidgetHelper.init();
 					}
@@ -45,12 +45,6 @@ jQuery( document ).ready(
 		}
 	}
 );
-
-/**
- * Inject payment plan widget.
- *
- * @package Alma_WooCommerce_Gateway
- */
 
 /**
  * Alma admin General Helpers.
@@ -70,9 +64,11 @@ function AlmaWidgetHelper() {
 	/**
 	 * Get amount Element.
 	 *
+	 * @param settings
+	 *
 	 * @returns {null|*}
 	 */
-	function getAmountElement() {
+	function getAmountElement( settings ) {
 		var amountQuerySelector          = settings.amountQuerySelector;
 		var amountSalePriceQuerySelector = settings.amountSalePriceQuerySelector;
 		if ( document.querySelector( amountSalePriceQuerySelector ) ) {
@@ -107,23 +103,19 @@ function AlmaWidgetHelper() {
 	/**
 	 * Inits the widget.
 	 *
-	 * @returns Null
+	 * @return void
 	 */
 	var init = function () {
 		// Make sure settings are up-to-date after a potential cart_totals refresh.
 		var settings = getSettings();
-		if ( ! settings ) {
+		if ( ! settings || settings.hasExcludedProducts ) {
 			return;
-		}
-
-		if (settings.hasExcludedProducts) {
-			return null;
 		}
 
 		var merchantId = settings.merchantId;
 		var amount     = parseInt( settings.amount );
 
-		var amountElement = getAmountElement();
+		var amountElement = getAmountElement( settings );
 		if (amountElement) {
 			if (isVisible( amountElement )) {
 				var child = amountElement.firstChild;
