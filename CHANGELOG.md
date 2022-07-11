@@ -1,6 +1,15 @@
 Changelog
 =========
 
+v3.1.0
+------
+
+* feat: implement B2B fields (INT-714 #65)
+* refact: widget injection (INT-589 #57)
+* fix: use sales price to update widget instead regular price (INT-290 / INT-570 #52)
+* feat: refund from woocommerce back-office (INT-510 #69)
+* fix: alma should be hidden on checkout when test key is selected & user is not admin (INT-586 #71)
+
 v3.0.0
 ------
 
