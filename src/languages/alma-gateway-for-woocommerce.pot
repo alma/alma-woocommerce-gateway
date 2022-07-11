@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Alma - Pay in installments or later for WooCommerce\n"
-"POT-Creation-Date: 2022-06-03 15:33+0200\n"
+"POT-Creation-Date: 2022-07-11 18:37+0200\n"
 "PO-Revision-Date: 2021-06-22 13:25+0200\n"
 "Last-Translator: syjust <sy.just@gmail.com>\n"
 "Language-Team: Alma\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.1.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: alma-gateway-for-woocommerce.php\n"
@@ -364,66 +364,66 @@ msgid "Install Alma and boost your sales! It's simple and guaranteed, your cash 
 msgstr ""
 
 #. translators: %s: plan_key alt image.
-#: includes/class-alma-wc-payment-gateway.php:226
+#: includes/class-alma-wc-payment-gateway.php:231
 #, php-format
 msgid "%s installments"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:256
+#: includes/class-alma-wc-payment-gateway.php:261
 msgid "Choose your payment method"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:332
+#: includes/class-alma-wc-payment-gateway.php:337
 msgid "There was an error processing your payment.<br>Please try again or contact us if the problem persists."
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:389
+#: includes/class-alma-wc-payment-gateway.php:394
 msgid "There was an error when validating your payment.<br>Please try again or contact us if the problem persists."
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:511
+#: includes/class-alma-wc-payment-gateway.php:516
 msgid "Included fees:"
 msgstr ""
 
 #. translators: %1$s => today_amount (0), %2$s => total_amount, %3$s => i18n formatted due_date.
-#: includes/class-alma-wc-payment-gateway.php:529
+#: includes/class-alma-wc-payment-gateway.php:534
 #, php-format
 msgid "%1$s today then %2$s on %3$s"
 msgstr ""
 
 #. translators: 'In' refers to a number of months, like in 'In one month' or 'In three months'.
-#: includes/class-alma-wc-payment-gateway.php:566
+#: includes/class-alma-wc-payment-gateway.php:571
 #, php-format
 msgid "In %s month"
 msgid_plural "In %s months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-alma-wc-payment-gateway.php:590
+#: includes/class-alma-wc-payment-gateway.php:595
 msgid "Your credit"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:599
+#: includes/class-alma-wc-payment-gateway.php:604
 msgid "Your cart:"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:609
+#: includes/class-alma-wc-payment-gateway.php:614
 msgid "Credit cost:"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:623
+#: includes/class-alma-wc-payment-gateway.php:628
 msgid "Annual Interest Rate:"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:634
+#: includes/class-alma-wc-payment-gateway.php:639
 msgid "Total:"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:678
+#: includes/class-alma-wc-payment-gateway.php:683
 msgid "enabled"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:681
+#: includes/class-alma-wc-payment-gateway.php:686
 msgid "disabled"
 msgstr ""
 
@@ -437,44 +437,44 @@ msgstr ""
 msgid "At shipping"
 msgstr ""
 
-#: includes/class-alma-wc-plugin.php:232
+#: includes/class-alma-wc-plugin.php:235
 msgid "WooCommerce Gateway Alma plugin can only be bootstrapped once"
 msgstr ""
 
-#: includes/class-alma-wc-plugin.php:314
+#: includes/class-alma-wc-plugin.php:317
 msgid "Alma requires WooCommerce to be activated"
 msgstr ""
 
-#: includes/class-alma-wc-plugin.php:318
+#: includes/class-alma-wc-plugin.php:321
 msgid "Alma requires WooCommerce version 2.6 or greater"
 msgstr ""
 
-#: includes/class-alma-wc-plugin.php:322
+#: includes/class-alma-wc-plugin.php:325
 msgid "Alma requires the cURL PHP extension to be installed on your server"
 msgstr ""
 
-#: includes/class-alma-wc-plugin.php:326
+#: includes/class-alma-wc-plugin.php:329
 msgid "Alma requires the JSON PHP extension to be installed on your server"
 msgstr ""
 
-#: includes/class-alma-wc-plugin.php:329
+#: includes/class-alma-wc-plugin.php:332
 msgid "Alma requires OpenSSL >= 1.0.1 to be installed on your server"
 msgstr ""
 
 #. translators: %s: Admin settings url.
-#: includes/class-alma-wc-plugin.php:386
+#: includes/class-alma-wc-plugin.php:389
 #, php-format
 msgid "Thanks for installing Alma! Start by <a href='%s'>activating Alma's payment method</a>, then set it up to get started."
 msgstr ""
 
 #. translators: %s: Admin settings url.
-#: includes/class-alma-wc-plugin.php:405
+#: includes/class-alma-wc-plugin.php:408
 #, php-format
 msgid "Alma is almost ready. To get started, <a href=\"%s\">fill in your API keys</a>."
 msgstr ""
 
 #. translators: %1$s: Admin settings url, %2$s: Admin logs url.
-#: includes/class-alma-wc-plugin.php:446
+#: includes/class-alma-wc-plugin.php:459
 #, php-format
 msgid ""
 "Error while initializing Alma API client.<br><a href=\"%1$s\">Activate debug mode</a> and <a href=\"%2$s\">check logs</a> for more "
@@ -482,7 +482,7 @@ msgid ""
 msgstr ""
 
 #. translators: %s: Alma dashboard url.
-#: includes/class-alma-wc-plugin.php:460
+#: includes/class-alma-wc-plugin.php:473
 #, php-format
 msgid ""
 "Could not connect to Alma using your API keys.<br>Please double check your keys on your <a href=\"%1$s\" target=\"_blank\">Alma "
@@ -490,35 +490,35 @@ msgid ""
 msgstr ""
 
 #. translators: %s: Error message.
-#: includes/class-alma-wc-plugin.php:468
+#: includes/class-alma-wc-plugin.php:481
 #, php-format
 msgid "Alma encountered an error when fetching merchant status: %s"
 msgstr ""
 
 #. translators: %s: Alma dashboard url.
-#: includes/class-alma-wc-plugin.php:481
+#: includes/class-alma-wc-plugin.php:494
 #, php-format
 msgid ""
 "Your Alma account needs to be activated before you can use Alma on your shop.<br>Go to your <a href=\"%1$s\" target=\"_blank\">Alma "
 "dashboard</a> to activate your account.<br><a href=\"%2$s\">Refresh</a> the page when ready."
 msgstr ""
 
-#: includes/class-alma-wc-plugin.php:577
+#: includes/class-alma-wc-plugin.php:590
 msgid "Settings"
 msgstr ""
 
-#: includes/class-alma-wc-plugin.php:611
+#: includes/class-alma-wc-plugin.php:624
 msgid "Payment validation error: no ID provided.<br>Please try again or contact us if the problem persists."
 msgstr ""
 
 #. translators: %s -> path to add after dashboard url
-#: includes/class-alma-wc-plugin.php:654
+#: includes/class-alma-wc-plugin.php:667
 #, php-format
 msgid "https://dashboard.getalma.eu/%s"
 msgstr ""
 
 #. translators: %s -> path to add after sandbox dashboard url
-#: includes/class-alma-wc-plugin.php:657
+#: includes/class-alma-wc-plugin.php:670
 #, php-format
 msgid "https://dashboard.sandbox.getalma.eu/%s"
 msgstr ""
@@ -535,6 +535,64 @@ msgstr ""
 #: includes/class-alma-wc-product-handler.php:64
 #, php-format
 msgid "Product price (%s): product badge injection failed."
+msgstr ""
+
+#: includes/class-alma-wc-refund-helper.php:90
+msgid "Alma API client init error."
+msgstr ""
+
+#. translators: %s is a username.
+#: includes/class-alma-wc-refund-helper.php:106
+#, php-format
+msgid "Order fully refunded by %s."
+msgstr ""
+
+#. translators: %s is an error message.
+#: includes/class-alma-wc-refund-helper.php:110
+#, php-format
+msgid "Alma full refund error : %s."
+msgstr ""
+
+#: includes/class-alma-wc-refund-helper.php:126
+msgid "Amount cannot be equal to 0 to refund with Alma."
+msgstr ""
+
+#. translators: %s is an order number.
+#: includes/class-alma-wc-refund-helper.php:169
+#, php-format
+msgid "Error while getting alma transaction_id for order_id : %s."
+msgstr ""
+
+#: includes/class-alma-wc-refund.php:54
+msgid "Refund will be operated directly with Alma."
+msgstr ""
+
+#. translators: %s is an amount with currency.
+#: includes/class-alma-wc-refund.php:56
+#, php-format
+msgid "Refund %s with Alma"
+msgstr ""
+
+#. translators: %s is a username.
+#: includes/class-alma-wc-refund.php:107
+#, php-format
+msgid "Order fully refunded via Alma by %s."
+msgstr ""
+
+#: includes/class-alma-wc-refund.php:204
+msgid "Partial refund unavailable due to a connection error."
+msgstr ""
+
+#. translators: %1$s is a username, %2$s is an amount with currency.
+#: includes/class-alma-wc-refund.php:216
+#, php-format
+msgid "%1$s refunded %2$s with Alma."
+msgstr ""
+
+#. translators: %s is an error message.
+#: includes/class-alma-wc-refund.php:219
+#, php-format
+msgid "Alma partial refund error : %s."
 msgstr ""
 
 #: includes/class-alma-wc-settings-helper.php:58
