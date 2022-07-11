@@ -172,7 +172,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 */
 	public function is_available() {
 
-		if ( ! alma_wc_plugin()->is_alma_available_for_this_user() ) {
+		if ( ! alma_wc_plugin()->is_allowed_to_see_alma( wp_get_current_user() ) ) {
 			return false;
 		}
 
