@@ -424,13 +424,23 @@ class Alma_WC_Plugin {
 		}
 
 		// Don't advertise our payment gateway if we're in test mode and current user is not an admin.
-		if ( $this->settings->get_environment() === 'test' && ! current_user_can( 'administrator' ) ) {
+		if ( ! $this->is_allowed_to_see_alma( wp_get_current_user() ) ) {
 			$this->logger->info( 'Not displaying Alma in Test mode to non-admin user' );
-
 			return;
 		}
 
 		$this->init_widget_handlers();
+	}
+
+	/**
+	 * Is Alma available for this user ?
+	 *
+	 * @param WP_User $user The user roles which to test.
+	 *
+	 * @return bool
+	 */
+	public function is_allowed_to_see_alma( WP_User $user ) {
+		return in_array( 'administrator', $user->roles, true ) || 'live' === alma_wc_plugin()->settings->get_environment();
 	}
 
 	/**
