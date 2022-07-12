@@ -148,16 +148,15 @@ class Almapay_WC_Model_Customer {
 	 */
 	public function get_shipping_address() {
 		if ( $this->legacy ) {
-			$customer = wc()->customer;
 
 			return array(
 				'first_name'  => $this->customer->first_name,
 				'last_name'   => $this->customer->last_name,
-				'line1'       => $customer->get_shipping_address(),
-				'line2'       => $customer->get_shipping_address_2(),
-				'postal_code' => $customer->get_shipping_postcode(),
-				'city'        => $customer->get_shipping_city(),
-				'country'     => $customer->get_shipping_country(),
+				'line1'       => wc()->customer->get_shipping_address(),
+				'line2'       => wc()->customer->get_shipping_address_2(),
+				'postal_code' => wc()->customer->get_shipping_postcode(),
+				'city'        => wc()->customer->get_shipping_city(),
+				'country'     => wc()->customer->get_shipping_country(),
 			);
 		} else {
 			return array(
