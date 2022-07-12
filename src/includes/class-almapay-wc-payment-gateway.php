@@ -12,10 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-if ( ! class_exists( 'WC_Payment_Gateway' ) ) {
-	return;
-}
-
 /**
  * Almapay_WC_Payment_Gateway
  */
