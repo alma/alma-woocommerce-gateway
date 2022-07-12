@@ -336,7 +336,7 @@ class Almapay_WC_Payment_Gateway extends WC_Payment_Gateway {
 		}
 		try {
 			$fee_plan_definition = $this->get_fee_plan_definition( $this->checkout_helper->get_chosen_alma_fee_plan() );
-		} catch ( Exception $e ) {
+		} catch ( Almapay_WC_Exception_Fee_Plan_Definition $e ) {
 			$this->logger->log_stack_trace( 'Error while creating payment: ', $e );
 			wc_add_notice( $error_msg, 'error' );
 
@@ -918,13 +918,13 @@ class Almapay_WC_Payment_Gateway extends WC_Payment_Gateway {
 	private function get_fee_plan_definition( $plan_key ) {
 		$definition = array();
 		if ( ! isset( $this->settings[ "installments_count_$plan_key" ] ) ) {
-			throw new Exception( "installments_count_$plan_key not set" );
+			throw new Almapay_WC_Exception_Fee_Plan_Definition( "installments_count_$plan_key not set" );
 		}
 		if ( ! isset( $this->settings[ "deferred_days_$plan_key" ] ) ) {
-			throw new Exception( "deferred_days_$plan_key not set" );
+			throw new Almapay_WC_Exception_Fee_Plan_Definition( "deferred_days_$plan_key not set" );
 		}
 		if ( ! isset( $this->settings[ "deferred_months_$plan_key" ] ) ) {
-			throw new Exception( "deferred_months_$plan_key not set" );
+			throw new Almapay_WC_Exception_Fee_Plan_Definition( "deferred_months_$plan_key not set" );
 		}
 		$definition['installments_count'] = $this->settings[ "installments_count_$plan_key" ];
 		$definition['deferred_days']      = $this->settings[ "deferred_days_$plan_key" ];
