@@ -704,7 +704,7 @@ class Almapay_WC_Plugin {
 
 		return array_values(
 			array_map(
-				function( $plan ) use ( $amount ) {
+				function( $plan ) {
 					unset( $plan['max_amount'] );
 					unset( $plan['min_amount'] );
 					if ( isset( $plan['deferred_months'] ) && 0 === $plan['deferred_months'] ) {
