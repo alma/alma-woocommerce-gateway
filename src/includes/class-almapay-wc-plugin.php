@@ -348,7 +348,7 @@ class Almapay_WC_Plugin {
 	 * @see self::force_check_settings()
 	 */
 	public function check_settings() {
-		if ( ( $this->settings->fully_configured || get_option( 'alma_warnings_handled' ) ) ) {
+		if ( $this->settings->fully_configured || get_option( 'alma_warnings_handled' ) ) {
 			return;
 		}
 
