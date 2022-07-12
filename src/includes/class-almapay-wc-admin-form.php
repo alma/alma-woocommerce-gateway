@@ -131,22 +131,17 @@ class Almapay_WC_Admin_Form {
 	 * @return array  as field_form definition
 	 */
 	private function init_fee_plan_fields( FeePlan $fee_plan, $default_settings, $selected ) {
-		$key                   = $fee_plan->getPlanKey();
-		$min_amount_key        = 'min_amount_' . $key;
-		$section_key           = $key . '_section';
-		$max_amount_key        = 'max_amount_' . $key;
-		$toggle_key            = 'enabled_' . $key;
-		$class                 = 'alma_fee_plan alma_fee_plan_' . $key;
-		$css                   = $selected ? '' : 'display: none;';
-		$default_min_amount    = almapay_wc_price_from_cents( $fee_plan->min_purchase_amount );
-		$default_max_amount    = almapay_wc_price_from_cents( $fee_plan->max_purchase_amount );
-		$merchant_fee_fixed    = almapay_wc_price_from_cents( $fee_plan->merchant_fee_fixed );
-		$merchant_fee_variable = $fee_plan->merchant_fee_variable / 100; // percent.
-		$customer_fee_fixed    = almapay_wc_price_from_cents( $fee_plan->customer_fee_fixed );
-		$customer_fee_variable = $fee_plan->customer_fee_variable / 100; // percent.
-		$customer_lending_rate = $fee_plan->customer_lending_rate / 100; // percent.
-		$default_enabled       = $default_settings['selected_fee_plan'] === $key ? 'yes' : 'no';
-		$custom_attributes     = array(
+		$key                = $fee_plan->getPlanKey();
+		$min_amount_key     = 'min_amount_' . $key;
+		$section_key        = $key . '_section';
+		$max_amount_key     = 'max_amount_' . $key;
+		$toggle_key         = 'enabled_' . $key;
+		$class              = 'alma_fee_plan alma_fee_plan_' . $key;
+		$css                = $selected ? '' : 'display: none;';
+		$default_min_amount = almapay_wc_price_from_cents( $fee_plan->min_purchase_amount );
+		$default_max_amount = almapay_wc_price_from_cents( $fee_plan->max_purchase_amount );
+		$default_enabled    = $default_settings['selected_fee_plan'] === $key ? 'yes' : 'no';
+		$custom_attributes  = array(
 			'required' => 'required',
 			'min'      => $default_min_amount,
 			'max'      => $default_max_amount,
@@ -182,7 +177,7 @@ class Almapay_WC_Admin_Form {
 			$section_key    => array(
 				'title'             => $section_title,
 				'type'              => 'title',
-				'description'       => $this->generate_fee_plan_description( $fee_plan, $default_min_amount, $default_max_amount, $merchant_fee_fixed, $merchant_fee_variable, $customer_fee_fixed, $customer_fee_variable, $customer_lending_rate ),
+				'description'       => $this->generate_fee_plan_description( $fee_plan, $default_min_amount, $default_max_amount ),
 				'class'             => $class,
 				'description_class' => $class,
 				'table_class'       => $class,
@@ -526,23 +521,13 @@ class Almapay_WC_Admin_Form {
 	 * @param FeePlan $fee_plan The fee plan do describe.
 	 * @param float   $min_amount Min amount.
 	 * @param float   $max_amount Max amount.
-	 * @param float   $merchant_fee_fixed Merchant fee fixed.
-	 * @param float   $merchant_fee_variable Merchant fee variable.
-	 * @param float   $customer_fee_fixed Customer fee fixed.
-	 * @param float   $customer_fee_variable Customer fee variable.
-	 * @param float   $customer_lending_rate Customer lending rate.
 	 *
 	 * @return string
 	 */
 	private function generate_fee_plan_description(
 		FeePlan $fee_plan,
 		$min_amount,
-		$max_amount,
-		$merchant_fee_fixed,
-		$merchant_fee_variable,
-		$customer_fee_fixed,
-		$customer_fee_variable,
-		$customer_lending_rate
+		$max_amount
 	) {
 		$you_can_offer = '';
 		if ( $fee_plan->isPnXOnly() ) {
@@ -576,6 +561,13 @@ class Almapay_WC_Admin_Form {
 				);
 			}
 		}
+
+		$merchant_fee_fixed    = almapay_wc_price_from_cents( $fee_plan->merchant_fee_fixed );
+		$merchant_fee_variable = $fee_plan->merchant_fee_variable / 100; // percent.
+		$customer_fee_fixed    = almapay_wc_price_from_cents( $fee_plan->customer_fee_fixed );
+		$customer_fee_variable = $fee_plan->customer_fee_variable / 100; // percent.
+		$customer_lending_rate = $fee_plan->customer_lending_rate / 100; // percent.
+
 		$fees_applied          = __( 'Fees applied to each transaction for this plan:', 'alma-gateway-for-woocommerce' );
 		$you_pay               = $this->generate_fee_to_pay_description( __( 'You pay:', 'alma-gateway-for-woocommerce' ), $merchant_fee_variable, $merchant_fee_fixed );
 		$customer_pays         = $this->generate_fee_to_pay_description( __( 'Customer pays:', 'alma-gateway-for-woocommerce' ), $customer_fee_variable, $customer_fee_fixed );
