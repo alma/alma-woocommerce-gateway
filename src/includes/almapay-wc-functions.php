@@ -79,35 +79,3 @@ function almapay_wc_string_to_bool( $string ) {
 		? $string
 		: ( 'yes' === strtolower( $string ) || 1 === $string || 'true' === strtolower( $string ) || '1' === $string );
 }
-
-/**
- * Check if a plan key match our pattern (then return array with chunks of the pattern)
- * chunks are :
- * - key
- * - kind
- * - installments
- * - deferred_days
- * - deferred_months
- *
- * @param string $plan_key The plan key to test.
- *
- * @return false|array
- */
-function almapay_wc_match_plan_key_pattern( $plan_key ) {
-	$matches = array();
-	if ( preg_match( '/^(general|pos)_([0-9]+)_([0-9]+)_([0-9]+)$/', $plan_key, $matches ) ) {
-
-		return array_combine(
-			array(
-				'key',
-				'kind',
-				'installments',
-				'deferred_days',
-				'deferred_months',
-			),
-			$matches
-		);
-	}
-
-	return false;
-}
