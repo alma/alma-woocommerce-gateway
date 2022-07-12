@@ -148,8 +148,7 @@ class Almapay_WC_Settings {
 		if ( $this->are_settings_loaded ) {
 			return;
 		}
-		$settings                  = (array) get_option( self::OPTIONS_KEY, array() );
-		$this->settings            = array_merge( self::default_settings(), $settings );
+		$this->settings            = array_merge( self::default_settings(), (array) get_option( self::OPTIONS_KEY, array() ) );
 		$this->are_settings_loaded = true;
 	}
 
