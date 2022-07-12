@@ -241,7 +241,6 @@ class Almapay_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$gateway_id = $this->id;
 
 		$eligible_plans = almapay_wc_plugin()->get_eligible_plans_keys_for_cart();
-		usort( $eligible_plans, 'almapay_wc_usort_plans_keys' );
 		$default_plan = self::get_default_plan( $eligible_plans );
 
 		$payment_fields = array();
