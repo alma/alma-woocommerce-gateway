@@ -887,6 +887,8 @@ class Almapay_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 	/**
 	 * Force disable not available fee_plans to prevent showing them in checkout.
+	 *
+	 * @return void
 	 */
 	private function disable_unavailable_fee_plans_config() {
 		$allowed_installments = almapay_wc_plugin()->settings->get_allowed_plans_keys();
@@ -894,11 +896,12 @@ class Almapay_WC_Payment_Gateway extends WC_Payment_Gateway {
 			return;
 		}
 		foreach ( array_keys( $this->settings ) as $key ) {
-			if ( preg_match( self::ENABLED_PLAN_KEY_REGEX, $key, $matches ) ) {
-				// force disable not available fee_plans to prevent showing them in checkout.
-				if ( ! in_array( intval( $matches[1] ), $allowed_installments, true ) ) {
-					$this->settings[ "enabled_${matches[1]}" ] = 'no';
-				}
+			// force disable not available fee_plans to prevent showing them in checkout.
+			if (
+				preg_match( self::ENABLED_PLAN_KEY_REGEX, $key, $matches ) &&
+				! in_array( intval( $matches[1] ), $allowed_installments, true )
+			) {
+				$this->settings[ "enabled_${matches[1]}" ] = 'no';
 			}
 		}
 	}
