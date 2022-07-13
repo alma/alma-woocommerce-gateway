@@ -913,7 +913,7 @@ class Almapay_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 *
 	 * @return array
 	 *
-	 * @throws Exception If required keys not found.
+	 * @throws Almapay_WC_Exception_Fee_Plan_Definition If required keys not found.
 	 */
 	private function get_fee_plan_definition( $plan_key ) {
 		$definition = array();
