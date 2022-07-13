@@ -1,4 +1,7 @@
 <?php
+/*
+ * Launch only this test : vendor/bin/phpunit --bootstrap tests/bootstrap.php tests/AlmaWcShareOfCheckoutHelperTest.php --color --testdox
+ * */
 
 use PHPUnit\Framework\TestCase;
 
