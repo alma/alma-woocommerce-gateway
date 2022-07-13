@@ -728,6 +728,10 @@ class Almapay_WC_Plugin {
 	public function get_eligible_plans_keys_for_cart() {
 		$cart_eligibilities = $this->get_cart_eligibilities();
 
+		if ( null === $cart_eligibilities ) {
+			return array();
+		}
+
 		return array_filter(
 			$this->settings->get_eligible_plans_keys( ( new Almapay_WC_Model_Cart() )->get_total_in_cents() ),
 			function ( $key ) use ( $cart_eligibilities ) {
