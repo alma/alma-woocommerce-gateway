@@ -50,7 +50,7 @@ jobs:
         ref: 'main'
         inputs: >
           {
-            "name": "e2e-${{ github.run_id }}-woocommerce-${{ env.SLUG_VERSION }}",
+            "name": "e2e-${{ github.run_id }}",
             "alma_plugin_branch": "${{ github.head_ref || github.ref_name }}",
             "cms": "woocommerce-${{ matrix.version }}",
             "e2e": "true",
