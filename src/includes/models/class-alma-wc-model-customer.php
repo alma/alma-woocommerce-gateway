@@ -161,6 +161,7 @@ class Alma_WC_Model_Customer {
 				'country'     => $customer->get_shipping_country(),
 			);
 		} else {
+
 			return array(
 				'first_name'  => $this->customer->get_shipping_first_name(),
 				'last_name'   => $this->customer->get_shipping_last_name(),
@@ -180,8 +181,10 @@ class Alma_WC_Model_Customer {
 	 */
 	public function get_shipping_country() {
 		if ( $this->customer ) {
+
 			return $this->get_shipping_address()['country'];
 		}
+
 		return null;
 	}
 
@@ -192,8 +195,10 @@ class Alma_WC_Model_Customer {
 	 */
 	public function get_billing_country() {
 		if ( $this->customer ) {
+
 			return $this->get_billing_address()['country'];
 		}
+
 		return null;
 	}
 }

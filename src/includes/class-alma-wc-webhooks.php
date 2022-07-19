@@ -24,6 +24,7 @@ class Alma_WC_Webhooks {
 	 * @return string
 	 */
 	public static function url_for( $webhook ) {
+
 		return wc()->api_request_url( $webhook );
 	}
 
@@ -35,6 +36,7 @@ class Alma_WC_Webhooks {
 	 * @return string
 	 */
 	public static function action_for( $webhook ) {
+
 		return "woocommerce_api_$webhook";
 	}
 }

@@ -34,6 +34,7 @@ class Alma_WC_Admin_Form {
 		$default_settings = Alma_WC_Settings::default_settings();
 
 		if ( $need_api_key ) {
+
 			return array_merge(
 				self::get_instance()->init_enabled_field( $default_settings ),
 				self::get_instance()->init_api_key_fields( __( '→ Start by filling in your API keys', 'alma-gateway-for-woocommerce' ), $default_settings ),
@@ -69,6 +70,7 @@ class Alma_WC_Admin_Form {
 		);
 
 		if ( ! Alma_WC_Payment_Upon_Trigger::has_merchant_payment_upon_trigger_enabled() ) {
+
 			return array_merge(
 				$title_field,
 				array(
@@ -118,6 +120,7 @@ class Alma_WC_Admin_Form {
 	 * @return string
 	 */
 	private function render_title( $title ) {
+
 		return '<p style="font-weight:normal;">' . $title . '</p>';
 	}
 
@@ -221,6 +224,7 @@ class Alma_WC_Admin_Form {
 	 * @return array[]
 	 */
 	private function init_enabled_field( $default_settings ) {
+
 		return array(
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'alma-gateway-for-woocommerce' ),
@@ -470,6 +474,7 @@ class Alma_WC_Admin_Form {
 			'class'   => 'alma-i18n',
 			'default' => $default,
 		);
+
 		return array( $field_name => array_merge( $field_infos, $additional_infos ) );
 	}
 
@@ -481,6 +486,7 @@ class Alma_WC_Admin_Form {
 	 * @return array
 	 */
 	private function init_debug_fields( $default_settings ) {
+
 		return array(
 			'debug_section' => array(
 				'title' => '<hr>' . __( '→ Debug options', 'alma-gateway-for-woocommerce' ),
@@ -507,6 +513,7 @@ class Alma_WC_Admin_Form {
 		if ( ! self::$instance ) {
 			self::$instance = new self();
 		}
+
 		return self::$instance;
 	}
 
@@ -609,6 +616,7 @@ class Alma_WC_Admin_Form {
 	 */
 	private function generate_fee_to_pay_description( $translation, $fee_variable, $fee_fixed ) {
 		if ( ! $fee_variable && ! $fee_fixed ) {
+
 			return '';
 		}
 

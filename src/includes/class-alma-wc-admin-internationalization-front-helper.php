@@ -24,8 +24,10 @@ class Alma_WC_Admin_Internationalization_Front_Helper {
 	 */
 	public static function is_lang_selected( $code_lang ) {
 		if ( self::get_current_admin_page_language() === $code_lang ) {
+
 			return true;
 		}
+
 		return false;
 	}
 

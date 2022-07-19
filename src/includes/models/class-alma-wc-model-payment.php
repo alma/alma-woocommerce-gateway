@@ -95,8 +95,10 @@ class Alma_WC_Model_Payment {
 	 */
 	public static function get_customer_cancel_url() {
 		if ( version_compare( wc()->version, '2.5.0', '<' ) ) {
+
 			return wc()->cart->get_checkout_url();
 		} else {
+
 			return wc_get_checkout_url();
 		}
 	}

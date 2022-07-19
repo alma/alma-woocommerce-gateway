@@ -50,10 +50,12 @@ class Alma_WC_Payment_Upon_Trigger {
 
 		$order = wc_get_order( $order_id );
 		if ( 'alma' !== $order->get_payment_method() ) {
+
 			return;
 		}
 
 		if ( ! get_post_meta( $order_id, 'alma_payment_upon_trigger_enabled' ) ) {
+
 			return;
 		}
 
@@ -74,12 +76,14 @@ class Alma_WC_Payment_Upon_Trigger {
 
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
+
 			return;
 		}
 
 		$order = wc_get_order( $order_id );
 		if ( ! $order->get_transaction_id() ) {
 			$this->logger->error( 'Error while getting transaction_id on trigger_payment for order_id = ' . $order_id );
+
 			return;
 		}
 
@@ -87,6 +91,7 @@ class Alma_WC_Payment_Upon_Trigger {
 			$payment = $alma->payments->fetch( $order->get_transaction_id() );
 		} catch ( RequestError $e ) {
 			$this->logger->error( sprintf( 'Fail to fetch payment with transaction_id %s for order_id %s ', $order->get_transaction_id(), $order_id ) );
+
 			return;
 		}
 
@@ -114,6 +119,7 @@ class Alma_WC_Payment_Upon_Trigger {
 				self::$order_statuses[ str_replace( 'wc-', '', $status_key ) ] = $status_description;
 			}
 		}
+
 		return self::$order_statuses;
 	}
 
@@ -123,6 +129,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	 * @return string
 	 */
 	public static function get_display_text() {
+
 		return self::get_display_texts_keys_and_values() [ alma_wc_plugin()->settings->payment_upon_trigger_display_text ];
 	}
 
@@ -132,6 +139,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	 * @return array
 	 */
 	public static function get_display_texts_keys_and_values() {
+
 		return array(
 			'at_shipping' => __( 'At shipping', 'alma-gateway-for-woocommerce' ),
 		);
@@ -145,9 +153,11 @@ class Alma_WC_Payment_Upon_Trigger {
 	public static function has_merchant_payment_upon_trigger_enabled() {
 		foreach ( alma_wc_plugin()->settings->get_allowed_fee_plans() as $fee_plan ) {
 			if ( self::is_payment_upon_trigger_enabled_for_fee_plan( $fee_plan ) ) {
+
 				return true;
 			}
 		}
+
 		return false;
 	}
 
@@ -158,6 +168,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	 * @return bool
 	 */
 	public static function is_payment_upon_trigger_enabled_for_fee_plan( $fee_plan ) {
+
 		return $fee_plan->deferred_trigger_limit_days > 0;
 	}
 
@@ -168,6 +179,7 @@ class Alma_WC_Payment_Upon_Trigger {
 	 * @return bool
 	 */
 	public static function does_payment_upon_trigger_apply_for_this_fee_plan( $fee_plan_definition ) {
+
 		return 'yes' === alma_wc_plugin()->settings->payment_upon_trigger_enabled &&
 			in_array( $fee_plan_definition['installments_count'], array( 2, 3, 4 ), true ) &&
 			0 === $fee_plan_definition['deferred_days'] &&

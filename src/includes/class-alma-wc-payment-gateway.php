@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( 'WC_Payment_Gateway' ) ) {
+
 	return;
 }
 
@@ -85,6 +86,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$option = parent::get_option( $key, $empty_value );
 
 		if ( $this->is_amount_plan_key( $key ) ) {
+
 			return strval( alma_wc_price_from_cents( $option ) );
 		}
 
@@ -173,22 +175,27 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	public function is_available() {
 
 		if ( ! alma_wc_plugin()->is_allowed_to_see_alma( wp_get_current_user() ) ) {
+
 			return false;
 		}
 
 		if ( wc()->cart === null ) {
+
 			return parent::is_available();
 		}
 
 		if ( ! alma_wc_plugin()->check_currency() ) {
+
 			return false;
 		}
 
 		if ( ! alma_wc_plugin()->is_there_eligibility_in_cart() ) {
+
 			return false;
 		}
 
 		if ( $this->cart_contains_excluded_category() ) {
+
 			return false;
 		}
 
@@ -316,13 +323,16 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	public function validate_fields() {
 		$alma_fee_plan = $this->checkout_helper->get_chosen_alma_fee_plan();
 		if ( ! $alma_fee_plan ) {
+
 			return false;
 		}
 		$allowed_values = array_map( 'strval', alma_wc_plugin()->get_eligible_plans_keys_for_cart() );
 		if ( ! in_array( $alma_fee_plan, $allowed_values, true ) ) {
 			wc_add_notice( '<strong>Fee plan</strong> is invalid.', 'error' );
+
 			return false;
 		}
+
 		return true;
 	}
 
@@ -438,6 +448,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$eligibilities = alma_wc_plugin()->get_cart_eligibilities();
 
 		if ( ! $eligibilities ) {
+
 			return;
 		}
 		foreach ( $eligibilities as $key => $eligibility ) {
@@ -565,8 +576,10 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 */
 	private function get_plan_upon_trigger_display_text( $plan_index ) {
 		if ( 1 === $plan_index ) {
+
 			return Alma_WC_Payment_Upon_Trigger::get_display_text();
 		}
+
 		// translators: 'In' refers to a number of months, like in 'In one month' or 'In three months'.
 		return sprintf( _n( 'In %s month', 'In %s months', $plan_index - 1, 'alma-gateway-for-woocommerce' ), $plan_index - 1 );
 
@@ -653,9 +666,11 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 */
 	private static function get_default_plan( $plans ) {
 		if ( ! count( $plans ) ) {
+
 			return null;
 		}
 		if ( in_array( Alma_WC_Settings::DEFAULT_FEE_PLAN, $plans, true ) ) {
+
 			return Alma_WC_Settings::DEFAULT_FEE_PLAN;
 		}
 
@@ -688,6 +703,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		</style>
 		<?php
+
 		return parent::generate_select_html( $key, $data );
 	}
 
@@ -788,6 +804,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 */
 	private function cart_contains_excluded_category() {
 		if ( wc()->cart === null ) {
+
 			return false;
 		}
 		if (
@@ -800,6 +817,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 				foreach ( $this->settings['excluded_products_list'] as $category_slug ) {
 					if ( has_term( $category_slug, 'product_cat', $product_id ) ) {
+
 						return true;
 					}
 				}
@@ -818,6 +836,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$eligibilities = alma_wc_plugin()->get_cart_eligibilities();
 
 		if ( ! $eligibilities ) {
+
 			return false;
 		}
 
@@ -863,6 +882,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		} catch ( RequestError $e ) {
 			$this->reset_merchant_settings();
 			alma_wc_plugin()->handle_settings_exception( $e );
+
 			return;
 		}
 		$this->sync_fee_plans_settings();
@@ -892,6 +912,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return boolean
 	 */
 	private function is_amount_plan_key( $key ) {
+
 		return preg_match( self::AMOUNT_PLAN_KEY_REGEX, $key ) > 0;
 	}
 
@@ -901,6 +922,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	private function disable_unavailable_fee_plans_config() {
 		$allowed_installments = alma_wc_plugin()->settings->get_allowed_plans_keys();
 		if ( ! $allowed_installments ) {
+
 			return;
 		}
 		foreach ( array_keys( $this->settings ) as $key ) {
@@ -961,6 +983,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	public function woocommerce_available_payment_gateways( $_available_gateways ) {
 
 		if ( is_admin() ) {
+
 			return $_available_gateways;
 		}
 
@@ -1014,6 +1037,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	private function is_there_available_plan_for_this_gateway( $gateway_id ) {
 		foreach ( alma_wc_plugin()->get_eligible_plans_keys_for_cart() as $plan_key ) {
 			if ( $this->should_display_plan( $plan_key, $gateway_id ) ) {
+
 				return true;
 			}
 		}

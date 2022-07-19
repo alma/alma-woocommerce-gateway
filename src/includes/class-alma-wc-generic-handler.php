@@ -73,11 +73,13 @@ class Alma_WC_Generic_Handler {
 		}
 
 		if ( ! alma_wc_plugin()->check_currency() ) {
+
 			return false;
 		}
 
 		if ( ! count( $this->settings->get_enabled_plans_definitions() ) ) {
 			$this->logger->info( 'No payment plans have been activated - Not displaying Alma' );
+
 			return false;
 		}
 
@@ -104,17 +106,20 @@ class Alma_WC_Generic_Handler {
 	) {
 		if ( $this->is_already_rendered() ) {
 			$this->logger->info( $this->get_eligibility_widget_already_rendered_message() );
+
 			return;
 		}
 
 		if ( ! $this->is_usable() ) {
 			$this->logger->info( __( 'Handler is not usable: badge injection failed.', 'alma-gateway-for-woocommerce' ) );
+
 			return;
 		}
 
 		$merchant_id = $this->settings->merchant_id;
 		if ( empty( $merchant_id ) ) {
 			$this->logger->info( __( 'Settings merchant id not found: badge injection failed.', 'alma-gateway-for-woocommerce' ) );
+
 			return;
 		}
 
@@ -175,6 +180,7 @@ class Alma_WC_Generic_Handler {
 	protected function is_product_excluded( $product_id ) {
 		foreach ( alma_wc_plugin()->settings->excluded_products_list as $category_slug ) {
 			if ( has_term( $category_slug, 'product_cat', $product_id ) ) {
+
 				return true;
 			}
 		}
@@ -188,6 +194,7 @@ class Alma_WC_Generic_Handler {
 	 * @return string|void
 	 */
 	public function get_eligibility_widget_already_rendered_message() {
+
 		return __( 'Alma "Eligibility Widget" (cart or product) already rendered on this page - Not displaying Alma', 'alma-gateway-for-woocommerce' );
 	}
 
@@ -205,13 +212,16 @@ class Alma_WC_Generic_Handler {
 				$plans_settings,
 				function( $plan_definition ) {
 					if ( ! isset( $plan_definition['installments_count'] ) ) { // Widget does not work fine without installments_count.
+
 						return false;
 					}
 					if ( 1 === $plan_definition['installments_count'] &&
 						0 === $plan_definition['deferred_days'] &&
 						0 === $plan_definition['deferred_months'] ) {
+
 						return false;
 					}
+
 					return true;
 				}
 			)

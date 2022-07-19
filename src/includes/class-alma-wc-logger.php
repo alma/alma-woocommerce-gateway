@@ -26,8 +26,10 @@ class Alma_WC_Logger extends AbstractLogger {
 	 */
 	private static function get_logger() {
 		if ( version_compare( wc()->version, '3.0', '<' ) ) {
+
 			return new WC_Logger();
 		} else {
+
 			return wc_get_logger();
 		}
 	}
@@ -43,6 +45,7 @@ class Alma_WC_Logger extends AbstractLogger {
 	 */
 	public function log( $level, $message, array $context = array() ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 		if ( ! is_callable( 'wc' ) || ( alma_wc_plugin()->settings && ! alma_wc_plugin()->settings->is_logging_enabled() ) ) {
+
 			return;
 		}
 

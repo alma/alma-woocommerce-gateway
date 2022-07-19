@@ -27,6 +27,7 @@ class Alma_WC_Shortcodes {
 		add_shortcode(
 			self::CART_SHORTCODE_TAG,
 			function ( $atts, $content = '' ) use ( $handler ) {
+
 				return $this->alma_cart_widget( $handler, $atts, $content );
 			}
 		);
@@ -91,6 +92,7 @@ class Alma_WC_Shortcodes {
 	 */
 	private function render_empty( $shortcode_tag, $content, $atts, $shortcode_content = '' ) {
 		if ( $this->is_debug( $atts ) ) {
+
 			return $this->render( $shortcode_tag, $atts, $content, $shortcode_content );
 		}
 
@@ -108,6 +110,7 @@ class Alma_WC_Shortcodes {
 		add_shortcode(
 			self::PRODUCT_SHORTCODE_TAG,
 			function ( $atts, $content = '' ) use ( $handler ) {
+
 				return $this->alma_product_widget( $handler, $atts, $content );
 			}
 		);
@@ -125,6 +128,7 @@ class Alma_WC_Shortcodes {
 	private function alma_product_widget( Alma_WC_Product_Handler $handler, $atts, $content = '' ) {
 
 		if ( $handler->is_already_rendered() ) {
+
 			return $this->render_empty( self::PRODUCT_SHORTCODE_TAG, $handler->get_eligibility_widget_already_rendered_message(), $atts, $content );
 		}
 
@@ -151,6 +155,7 @@ class Alma_WC_Shortcodes {
 	 * @return bool
 	 */
 	private function is_debug( $atts ) {
+
 		return isset( $atts['debug'] ) && ( filter_var( $atts['debug'], FILTER_VALIDATE_BOOLEAN ) );
 	}
 

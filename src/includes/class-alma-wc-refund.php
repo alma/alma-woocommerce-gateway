@@ -132,6 +132,7 @@ class Alma_WC_Refund {
 	public function gettext( $translation, $text, $domain ) {
 
 		if ( 'woocommerce' !== $domain || ! array_key_exists( $text, $this->admin_texts_to_change ) || ! isset( $_GET['post'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+
 			return $translation;
 		}
 
@@ -140,6 +141,7 @@ class Alma_WC_Refund {
 				$order_id = intval( $_GET['post'] ); // phpcs:ignore WordPress.Security.NonceVerification
 				$order    = wc_get_order( $order_id );
 				if ( $this->helper->is_paid_with_alma( $order ) ) {
+
 					return $translation;
 				}
 				$translation = str_replace( $original_text, $updated_text, $text );
@@ -162,6 +164,7 @@ class Alma_WC_Refund {
 	public function admin_notices() {
 
 		if ( 'shop_order' !== get_current_screen()->id ) {
+
 			return;
 		}
 
@@ -169,6 +172,7 @@ class Alma_WC_Refund {
 		$refund_notices = get_post_meta( $post_id, 'alma_refund_notices', true );
 
 		if ( ! is_array( $refund_notices ) ) {
+
 			return;
 		}
 
@@ -196,12 +200,14 @@ class Alma_WC_Refund {
 		$order  = wc_get_order( $order_id );
 		$refund = new WC_Order_Refund( $refund_id );
 		if ( ! $this->helper->is_partially_refundable( $order, $refund ) ) {
+
 			return;
 		}
 
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
 			$this->helper->add_order_note( $order, 'error', __( 'Partial refund unavailable due to a connection error.', 'alma-gateway-for-woocommerce' ) );
+
 			return;
 		}
 

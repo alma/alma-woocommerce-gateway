@@ -65,6 +65,7 @@ class Alma_WC_Settings {
 	 * @return array
 	 */
 	public static function default_settings() {
+
 		return array(
 			'enabled'                                    => 'yes',
 			'payment_upon_trigger_enabled'               => 'no',
@@ -130,6 +131,7 @@ class Alma_WC_Settings {
 	 * @return bool
 	 */
 	public function __isset( $key ) {
+
 		return array_key_exists( $key, $this->settings );
 	}
 
@@ -147,6 +149,7 @@ class Alma_WC_Settings {
 	 */
 	protected function load() {
 		if ( $this->are_settings_loaded ) {
+
 			return;
 		}
 		$settings                  = (array) get_option( self::OPTIONS_KEY, array() );
@@ -192,6 +195,7 @@ class Alma_WC_Settings {
 	 * @return string
 	 */
 	protected function get_test_api_key() {
+
 		return $this->test_api_key;
 	}
 
@@ -201,6 +205,7 @@ class Alma_WC_Settings {
 	 * @return string
 	 */
 	public function get_active_api_key() {
+
 		return $this->is_live() ? $this->get_live_api_key() : $this->get_test_api_key();
 	}
 
@@ -210,6 +215,7 @@ class Alma_WC_Settings {
 	 * @return bool
 	 */
 	public function need_api_key() {
+
 		return empty( $this->get_active_api_key() );
 	}
 
@@ -219,6 +225,7 @@ class Alma_WC_Settings {
 	 * @return bool
 	 */
 	public function is_enabled() {
+
 		return 'yes' === $this->enabled;
 	}
 
@@ -230,6 +237,7 @@ class Alma_WC_Settings {
 	 * @return bool
 	 */
 	private function is_plan_enabled( $key ) {
+
 		return 'yes' === $this->__get( "enabled_$key" );
 	}
 
@@ -267,6 +275,7 @@ class Alma_WC_Settings {
 
 		if ( Alma_WC_Internationalization::is_site_multilingual() ) {
 			if ( $this->{$key . '_' . get_locale() } ) {
+
 				return $this->{$key . '_' . get_locale() };
 			}
 
@@ -287,6 +296,7 @@ class Alma_WC_Settings {
 	 * @return string
 	 */
 	public function get_title( $payment_method ) {
+
 		return $this->get_i18n( 'title_' . $payment_method );
 	}
 
@@ -298,6 +308,7 @@ class Alma_WC_Settings {
 	 * @return string
 	 */
 	public function get_description( $payment_method ) {
+
 		return $this->get_i18n( 'description_' . $payment_method );
 	}
 
@@ -309,6 +320,7 @@ class Alma_WC_Settings {
 	 * @return int
 	 */
 	public function get_min_amount( $key ) {
+
 		return $this->__get( "min_amount_$key" );
 	}
 
@@ -320,6 +332,7 @@ class Alma_WC_Settings {
 	 * @return int
 	 */
 	public function get_max_amount( $key ) {
+
 		return $this->__get( "max_amount_$key" );
 	}
 
@@ -331,9 +344,11 @@ class Alma_WC_Settings {
 	 * @return array<array> As eligible plans definitions.
 	 */
 	public function get_eligible_plans_definitions( $amount ) {
+
 		return array_filter(
 			$this->get_enabled_plans_definitions(),
 			function( $plan ) use ( $amount ) {
+
 				return $this->is_eligible( $plan, $amount );
 			}
 		);
@@ -353,6 +368,7 @@ class Alma_WC_Settings {
 				$eligible_keys[] = $key;
 			}
 		}
+
 		return $eligible_keys;
 	}
 
@@ -362,6 +378,7 @@ class Alma_WC_Settings {
 	 * @return bool
 	 */
 	public function is_logging_enabled() {
+
 		return 'yes' === $this->debug;
 	}
 
@@ -371,6 +388,7 @@ class Alma_WC_Settings {
 	 * @return string
 	 */
 	public function get_environment() {
+
 		return 'live' === $this->environment ? 'live' : 'test';
 	}
 
@@ -380,6 +398,7 @@ class Alma_WC_Settings {
 	 * @return bool
 	 */
 	public function is_live() {
+
 		return $this->get_environment() === 'live';
 	}
 
@@ -389,6 +408,7 @@ class Alma_WC_Settings {
 	 * @return bool
 	 */
 	public function is_test() {
+
 		return $this->get_environment() === 'test';
 	}
 
@@ -400,9 +420,11 @@ class Alma_WC_Settings {
 	 */
 	public function get_allowed_fee_plans() {
 		if ( $this->need_api_key() ) {
+
 			return array();
 		}
 		if ( $this->allowed_fee_plans ) {
+
 			return $this->allowed_fee_plans;
 		}
 		$this->allowed_fee_plans = array();
@@ -413,11 +435,13 @@ class Alma_WC_Settings {
 			alma_wc_plugin()->handle_settings_exception( $e );
 		}
 		if ( ! $fee_plans ) {
+
 			return array();
 		}
 		$this->allowed_fee_plans = array_filter(
 			$fee_plans,
 			function( $fee_plan ) {
+
 				return $this->is_allowed_fee_plan( $fee_plan );
 			}
 		);
@@ -432,8 +456,10 @@ class Alma_WC_Settings {
 	 * @see get_allowed_fee_plans
 	 */
 	public function get_allowed_plans_keys() {
+
 		return array_map(
 			function( FeePlan $fee_plan ) {
+
 				return $fee_plan->getPlanKey();
 			},
 			$this->get_allowed_fee_plans()
@@ -449,9 +475,11 @@ class Alma_WC_Settings {
 	 */
 	private function is_allowed_fee_plan( FeePlan $fee_plan ) {
 		if ( ! $fee_plan->allowed ) {
+
 			return false;
 		}
 		if ( $fee_plan->isPayLaterOnly() || $fee_plan->isPnXOnly() ) {
+
 			return true;
 		}
 
@@ -466,6 +494,7 @@ class Alma_WC_Settings {
 	 * @return int
 	 */
 	public function get_deferred_days( $key ) {
+
 		return $this->__get( "deferred_days_$key" );
 	}
 
@@ -477,6 +506,7 @@ class Alma_WC_Settings {
 	 * @return int
 	 */
 	public function get_deferred_months( $key ) {
+
 		return $this->__get( "deferred_months_$key" );
 	}
 
@@ -488,6 +518,7 @@ class Alma_WC_Settings {
 	 * @return int
 	 */
 	public function get_installments_count( $key ) {
+
 		return $this->__get( "installments_count_$key" );
 	}
 
@@ -500,6 +531,7 @@ class Alma_WC_Settings {
 	 * @return bool
 	 */
 	protected function is_eligible( $plan, $amount ) {
+
 		return $amount >= $plan['min_amount'] && $amount <= $plan['max_amount'];
 	}
 
@@ -511,9 +543,11 @@ class Alma_WC_Settings {
 	public function has_pay_later() {
 		foreach ( $this->get_enabled_plans_definitions() as $plan_definition ) {
 			if ( $plan_definition['deferred_days'] >= 1 || $plan_definition['deferred_months'] >= 1 ) {
+
 				return true;
 			}
 		}
+
 		return false;
 	}
 
@@ -525,9 +559,11 @@ class Alma_WC_Settings {
 	public function has_pnx_plus_4() {
 		foreach ( $this->get_enabled_plans_definitions() as $plan_definition ) {
 			if ( $plan_definition['installments_count'] > 4 ) {
+
 				return true;
 			}
 		}
+
 		return false;
 	}
 
@@ -537,8 +573,8 @@ class Alma_WC_Settings {
 	 * @return string
 	 */
 	public function get_cart_not_eligible_message_gift_cards() {
+
 		return $this->get_i18n( 'cart_not_eligible_message_gift_cards' );
 	}
-
 
 }

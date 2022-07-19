@@ -38,6 +38,7 @@ class Alma_WC_Checkout_Helper {
 	public function get_chosen_alma_fee_plan() {
 		if ( WC()->cart === null ) {
 			wc_add_notice( '<strong>Fee plan</strong> is required.', 'error' );
+
 			return null;
 		}
 
@@ -53,6 +54,7 @@ class Alma_WC_Checkout_Helper {
 	public function is_alma_payment_method() {
 		$payment_method = $this->check_nonce( 'payment_method', self::CHECKOUT_NONCE );
 		$this->logger->info( sprintf( '%s: %s', __FUNCTION__, $payment_method ) );
+
 		return $payment_method && substr( $payment_method, 0, 5 ) === 'alma_';
 	}
 
@@ -70,6 +72,7 @@ class Alma_WC_Checkout_Helper {
 			&& wp_verify_nonce( $_POST[ $nonce_name ], $nonce_name ) ) {
 
 			$this->logger->info( sprintf( '%s: field:"%s", nonce:"%s", value:"%s"', __FUNCTION__, $field_name, $nonce_name, $_POST[ $field_name ] ) );
+
 			return $_POST[ $field_name ];
 		}
 

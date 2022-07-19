@@ -81,6 +81,7 @@ class Alma_WC_Model_Order {
 	 * @return WC_Order|WC_Order_Refund
 	 */
 	public function get_wc_order() {
+
 		return $this->order;
 	}
 
@@ -90,6 +91,7 @@ class Alma_WC_Model_Order {
 	 * @return int
 	 */
 	public function get_total() {
+
 		return alma_wc_price_to_cents( $this->order->get_total() );
 	}
 
@@ -99,6 +101,7 @@ class Alma_WC_Model_Order {
 	 * @return int
 	 */
 	public function get_id() {
+
 		return $this->order_id;
 	}
 
@@ -109,8 +112,10 @@ class Alma_WC_Model_Order {
 	 */
 	public function get_order_key() {
 		if ( $this->legacy ) {
+
 			return $this->order->order_key;
 		} else {
+
 			return $this->order->get_order_key();
 		}
 	}
@@ -121,6 +126,7 @@ class Alma_WC_Model_Order {
 	 * @return string
 	 */
 	public function get_order_reference() {
+
 		return (string) $this->order->get_order_number();
 	}
 
@@ -131,8 +137,10 @@ class Alma_WC_Model_Order {
 	 */
 	public function has_billing_address() {
 		if ( $this->legacy ) {
+
 			return $this->order->billing_address_1 || $this->order->billing_address_2;
 		} else {
+
 			return $this->order->get_billing_address_1() || $this->order->get_billing_address_2();
 		}
 	}
@@ -144,8 +152,10 @@ class Alma_WC_Model_Order {
 	 */
 	public function has_shipping_address() {
 		if ( $this->legacy ) {
+
 			return $this->order->shipping_address_1 || $this->order->shipping_address_2;
 		} else {
+
 			return $this->order->get_shipping_address_1() || $this->order->get_shipping_address_2();
 		}
 	}
@@ -157,8 +167,10 @@ class Alma_WC_Model_Order {
 	 */
 	public function is_business() {
 		if ( $this->legacy && $this->order->billing_company || ! $this->legacy && $this->order->get_billing_company() ) {
+
 			return true;
 		}
+
 		return false;
 	}
 
@@ -168,6 +180,7 @@ class Alma_WC_Model_Order {
 	 * @return string
 	 */
 	public function get_business_name() {
+
 		return $this->get_billing_address()['company'];
 	}
 
@@ -178,6 +191,7 @@ class Alma_WC_Model_Order {
 	 */
 	public function get_billing_address() {
 		if ( $this->legacy ) {
+
 			return array(
 				'first_name'         => $this->order->billing_first_name,
 				'last_name'          => $this->order->billing_last_name,
@@ -217,6 +231,7 @@ class Alma_WC_Model_Order {
 	 */
 	public function get_shipping_address() {
 		if ( $this->legacy ) {
+
 			return array(
 				'first_name'         => $this->order->shipping_first_name,
 				'last_name'          => $this->order->shipping_last_name,
@@ -251,6 +266,7 @@ class Alma_WC_Model_Order {
 	 * @return string
 	 */
 	public function get_customer_url() {
+
 		return $this->order->get_view_order_url();
 	}
 
@@ -263,12 +279,16 @@ class Alma_WC_Model_Order {
 		$admin_path = 'post.php?post=' . $this->get_id() . '&action=edit';
 
 		if ( version_compare( wc()->version, '2.6.0', '<' ) ) {
+
 			return '';
 		} elseif ( version_compare( wc()->version, '3.0.0', '<' ) ) {
+
 			return admin_url( $admin_path );
 		} elseif ( version_compare( wc()->version, '3.3.0', '<' ) ) {
+
 			return get_admin_url( null, $admin_path );
 		} else {
+
 			return $this->order->get_edit_order_url();
 		}
 	}

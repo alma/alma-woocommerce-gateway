@@ -81,10 +81,12 @@ class Alma_WC_Plugin {
 	 */
 	public function get_merchant() {
 		if ( $this->alma_merchant ) {
+
 			return $this->alma_merchant;
 		}
 		$client = $this->get_alma_client();
 		if ( ! $client ) {
+
 			return null;
 		}
 		$this->alma_merchant = $client->merchants->me();
@@ -266,6 +268,7 @@ class Alma_WC_Plugin {
 	 */
 	public function handle_settings_exception( $exception ) {
 		if ( get_option( 'alma_warnings_handled' ) ) {
+
 			return;
 		}
 
@@ -352,6 +355,7 @@ class Alma_WC_Plugin {
 	 */
 	public function check_settings() {
 		if ( ( $this->settings->fully_configured || get_option( 'alma_warnings_handled' ) ) ) {
+
 			return;
 		}
 
@@ -365,6 +369,7 @@ class Alma_WC_Plugin {
 		$currency = get_woocommerce_currency();
 		if ( 'EUR' !== $currency ) {
 			$this->logger->info( "Currency $currency not supported - Not displaying Alma" );
+
 			return false;
 		}
 
@@ -420,12 +425,14 @@ class Alma_WC_Plugin {
 		add_filter( 'woocommerce_payment_gateways', array( $this, 'add_payment_gateway' ) );
 
 		if ( ! $this->settings->is_enabled() ) {
+
 			return;
 		}
 
 		// Don't advertise our payment gateway if we're in test mode and current user is not an admin.
 		if ( ! $this->is_allowed_to_see_alma( wp_get_current_user() ) ) {
 			$this->logger->info( 'Not displaying Alma in Test mode to non-admin user' );
+
 			return;
 		}
 
@@ -440,6 +447,7 @@ class Alma_WC_Plugin {
 	 * @return bool
 	 */
 	public function is_allowed_to_see_alma( WP_User $user ) {
+
 		return in_array( 'administrator', $user->roles, true ) || 'live' === alma_wc_plugin()->settings->get_environment();
 	}
 
@@ -517,6 +525,7 @@ class Alma_WC_Plugin {
 	 */
 	public function ajax_dismiss_notice() {
 		if ( empty( $_POST['dismiss_action'] ) ) {
+
 			return;
 		}
 
@@ -537,8 +546,10 @@ class Alma_WC_Plugin {
 	 */
 	public function get_admin_setting_url( $alma_section = true ) {
 		if ( $alma_section ) {
+
 			return admin_url( 'admin.php?page=wc-settings&tab=checkout&section=alma' );
 		} else {
+
 			return admin_url( 'admin.php?page=wc-settings&tab=checkout' );
 		}
 	}
@@ -603,6 +614,7 @@ class Alma_WC_Plugin {
 	 * @return string URL to given asset
 	 */
 	public function get_asset_url( $path ) {
+
 		return ALMA_WC_PLUGIN_URL . 'assets/' . $path;
 	}
 
@@ -663,9 +675,11 @@ class Alma_WC_Plugin {
 	 */
 	public function get_alma_dashboard_url( $path = '' ) {
 		if ( $this->settings->is_live() ) {
+
 			/* translators: %s -> path to add after dashboard url */
 			return esc_url( sprintf( __( 'https://dashboard.getalma.eu/%s', 'alma-gateway-for-woocommerce' ), $path ) );
 		}
+
 		/* translators: %s -> path to add after sandbox dashboard url */
 		return esc_url( sprintf( __( 'https://dashboard.sandbox.getalma.eu/%s', 'alma-gateway-for-woocommerce' ), $path ) );
 	}
@@ -702,8 +716,10 @@ class Alma_WC_Plugin {
 	public function get_fee_plans() {
 		$client = $this->get_alma_client();
 		if ( ! $client ) {
+
 			return array();
 		}
+
 		return $client->merchants->feePlans( FeePlan::KIND_GENERAL, 'all', true );
 	}
 
@@ -726,6 +742,7 @@ class Alma_WC_Plugin {
 					if ( isset( $plan['deferred_days'] ) && 0 === $plan['deferred_days'] ) {
 						unset( $plan['deferred_days'] );
 					}
+
 					return $plan;
 				},
 				$this->settings->get_eligible_plans_definitions( $amount )
@@ -744,6 +761,7 @@ class Alma_WC_Plugin {
 		return array_filter(
 			$this->settings->get_eligible_plans_keys( ( new Alma_WC_Model_Cart() )->get_total_in_cents() ),
 			function ( $key ) use ( $cart_eligibilities ) {
+
 				return array_key_exists( $key, $cart_eligibilities );
 			}
 		);
@@ -758,6 +776,7 @@ class Alma_WC_Plugin {
 		if ( ! $this->eligibilities ) {
 			$alma = alma_wc_plugin()->get_alma_client();
 			if ( ! $alma ) {
+
 				return null;
 			}
 
@@ -765,6 +784,7 @@ class Alma_WC_Plugin {
 				$this->eligibilities = $alma->payments->eligibility( Alma_WC_Model_Payment::get_eligibility_payload_from_cart() );
 			} catch ( RequestError $error ) {
 				$this->logger->log_stack_trace( 'Error while checking payment eligibility: ', $error );
+
 				return null;
 			}
 		}
@@ -778,6 +798,7 @@ class Alma_WC_Plugin {
 	 * @return bool
 	 */
 	public function is_there_eligibility_in_cart() {
+
 		return count( $this->get_eligible_plans_keys_for_cart() ) > 0;
 	}
 
@@ -791,6 +812,7 @@ class Alma_WC_Plugin {
 	public function woocommerce_gateway_title( $title, $id ) {
 
 		if ( 'alma' !== substr( $id, 0, 4 ) ) {
+
 			return $title;
 		}
 
@@ -821,6 +843,7 @@ class Alma_WC_Plugin {
 	public function woocommerce_gateway_description( $description, $id ) {
 
 		if ( 'alma' !== substr( $id, 0, 4 ) ) {
+
 			return $description;
 		}
 

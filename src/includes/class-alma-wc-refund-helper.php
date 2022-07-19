@@ -39,6 +39,7 @@ class Alma_WC_Refund_Helper {
 	 * @return int
 	 */
 	public function get_refund_amount( $refund ) {
+
 		return alma_wc_price_to_cents( floatval( $refund->get_amount() ) );
 	}
 
@@ -49,6 +50,7 @@ class Alma_WC_Refund_Helper {
 	 * @return string
 	 */
 	public function get_display_refund_amount( $refund ) {
+
 		return $refund->get_amount() . ' ' . $refund->get_currency();
 	}
 
@@ -82,12 +84,14 @@ class Alma_WC_Refund_Helper {
 	public function make_full_refund( $order, $refund_id = 0 ) {
 
 		if ( '1' === get_post_meta( $order->get_id(), self::FLAG_ORDER_FULLY_REFUNDED, true ) ) {
+
 			return;
 		}
 
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
 			$this->add_order_note( $order, 'error', __( 'Alma API client init error.', 'alma-gateway-for-woocommerce' ) );
+
 			return;
 		}
 
@@ -136,6 +140,7 @@ class Alma_WC_Refund_Helper {
 	 * @return bool
 	 */
 	public function is_fully_refundable( $order ) {
+
 		return $this->is_paid_with_alma( $order ) && $this->has_transaction_id( $order );
 	}
 
@@ -146,6 +151,7 @@ class Alma_WC_Refund_Helper {
 	 * @return bool
 	 */
 	public function is_paid_with_alma( $order ) {
+
 		return in_array(
 			$order->get_payment_method(),
 			array(
@@ -169,8 +175,10 @@ class Alma_WC_Refund_Helper {
 			$error_message = sprintf( __( 'Error while getting alma transaction_id for order_id : %s.', 'alma-gateway-for-woocommerce' ), $order->get_id() );
 			$this->add_order_note( $order, 'error', $error_message );
 			$this->logger->error( $error_message );
+
 			return false;
 		}
+
 		return true;
 	}
 
@@ -182,6 +190,7 @@ class Alma_WC_Refund_Helper {
 	 * @return string
 	 */
 	public function format_refund_comment( $comment ) {
+
 		return self::PREFIX_REFUND_COMMENT . $comment;
 	}
 }

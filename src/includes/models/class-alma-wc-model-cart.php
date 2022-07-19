@@ -37,6 +37,7 @@ class Alma_WC_Model_Cart {
 	 * @see get_total_from_wc_cart
 	 */
 	public function get_total_in_cents() {
+
 		return alma_wc_price_to_cents( $this->get_total_from_wc_cart() );
 	}
 
@@ -47,9 +48,11 @@ class Alma_WC_Model_Cart {
 	 */
 	protected function get_total_from_wc_cart() {
 		if ( ! $this->cart ) {
+
 			return 0;
 		}
 		if ( version_compare( WC()->version, '3.2.0', '<' ) ) {
+
 			return $this->cart->total;
 		}
 

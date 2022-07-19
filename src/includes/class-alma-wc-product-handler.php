@@ -38,6 +38,7 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 		$product = ( $the_product ) ? wc_get_product( $the_product ) : wc_get_product();
 		if ( ! $product ) {
 			$this->logger->info( __( 'Product not found: product badge injection failed.', 'alma-gateway-for-woocommerce' ) );
+
 			return;
 		}
 		if (
@@ -54,6 +55,7 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 
 		if ( ! $product->is_in_stock() ) {
 			$this->logger->info( __( 'Product not in stock: product badge injection failed.', 'alma-gateway-for-woocommerce' ) );
+
 			return;
 		}
 
@@ -62,6 +64,7 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 		if ( ! $price ) {
 			// translators: %s: the product price.
 			$this->logger->info( sprintf( __( 'Product price (%s): product badge injection failed.', 'alma-gateway-for-woocommerce' ), $price ) );
+
 			return;
 		}
 		$amount_query_selector            = null;

@@ -41,6 +41,7 @@ class Alma_WC_Internationalization {
 	 * @return bool
 	 */
 	public static function is_site_multilingual() {
+
 		return self::is_wpml_active();
 	}
 
@@ -50,6 +51,7 @@ class Alma_WC_Internationalization {
 	 * @return bool
 	 */
 	public static function is_wpml_active() {
+
 		return (bool) did_action( 'wpml_loaded' );
 	}
 
@@ -63,6 +65,7 @@ class Alma_WC_Internationalization {
 		foreach ( icl_get_languages() as $infos_lang ) {
 			$languages_list[ self::map_locale( $infos_lang['default_locale'] ) ] = $infos_lang['translated_name'];
 		}
+
 		return $languages_list;
 	}
 
@@ -80,6 +83,7 @@ class Alma_WC_Internationalization {
 		if ( 2 === strlen( $locale ) ) {
 			$locale .= '_' . strtoupper( $locale );
 		}
+
 		return $locale;
 	}
 
@@ -96,6 +100,7 @@ class Alma_WC_Internationalization {
 
 		$mo_path_file = ALMA_WC_PLUGIN_PATH . 'languages/alma-gateway-for-woocommerce-' . $code_lang . '.mo';
 		if ( ! file_exists( $mo_path_file ) ) {
+
 			return $translation;
 		}
 
@@ -109,6 +114,7 @@ class Alma_WC_Internationalization {
 		if ( self::entry_exists( $mo, $string ) ) {
 			$translation = $mo->entries[ $string ]->translations[0];
 		}
+
 		return $translation;
 	}
 
@@ -121,6 +127,7 @@ class Alma_WC_Internationalization {
 	 * @return bool
 	 */
 	private static function entry_exists( $mo, $entry ) {
+
 		return isset( $mo->entries )
 			&& isset( $mo->entries[ $entry ] )
 			&& isset( $mo->entries[ $entry ]->translations )
