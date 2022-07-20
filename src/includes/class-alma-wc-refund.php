@@ -68,7 +68,6 @@ class Alma_WC_Refund {
 		add_action( 'woocommerce_order_fully_refunded', array( $this, 'woocommerce_order_fully_refunded' ), 10, 2 );
 		add_action( 'admin_notices', array( $this, 'admin_notices' ), 10 );
 		add_action( 'woocommerce_order_item_add_action_buttons', array( $this, 'woocommerce_order_item_add_action_buttons' ), 10 );
-		add_filter( 'gettext', array( $this, 'gettext' ), 10, 3 );
 		add_filter( 'woocommerce_new_order_note_data', array( $this, 'woocommerce_new_order_note_data' ), 10, 1 );
 		add_action( 'woocommerce_order_status_changed', array( $this, 'woocommerce_order_status_changed' ), 10, 3 );
 	}
@@ -117,7 +116,11 @@ class Alma_WC_Refund {
 	 */
 	public function woocommerce_order_item_add_action_buttons() {
 		if ( is_object( get_current_screen() ) && 'shop_order' === get_current_screen()->id ) {
-			add_filter( 'gettext', array( $this, 'gettext' ), 10, 3 );
+			$order_id = intval( $_GET['post'] ); // phpcs:ignore WordPress.Security.NonceVerification
+			$order    = wc_get_order( $order_id );
+			if ( $this->helper->is_paid_with_alma( $order ) ) {
+				add_filter( 'gettext', array( $this, 'gettext' ), 10, 3 );
+			}
 		}
 	}
 
@@ -137,11 +140,6 @@ class Alma_WC_Refund {
 
 		foreach ( $this->admin_texts_to_change as $original_text => $updated_text ) {
 			if ( $original_text === $text ) {
-				$order_id = intval( $_GET['post'] ); // phpcs:ignore WordPress.Security.NonceVerification
-				$order    = wc_get_order( $order_id );
-				if ( $this->helper->is_paid_with_alma( $order ) ) {
-					return $translation;
-				}
 				$translation = str_replace( $original_text, $updated_text, $text );
 				$this->number_of_texts_changed++;
 			}
