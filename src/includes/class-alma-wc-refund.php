@@ -129,7 +129,7 @@ class Alma_WC_Refund {
 	 * @param string $translation A text translated.
 	 * @param string $text A text to translate.
 	 * @param string $domain A text domain.
-	 * @return mixed|string
+	 * @return string
 	 */
 	public function gettext( $translation, $text, $domain ) {
 		if ( 'woocommerce' !== $domain || ! array_key_exists( $text, $this->admin_texts_to_change ) || ! isset( $_GET['post'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
@@ -144,7 +144,7 @@ class Alma_WC_Refund {
 		}
 
 		if ( count( $this->admin_texts_to_change ) === $this->number_of_texts_changed ) {
-			remove_filter( 'gettext', array( $this, 'gettext' ), 10 );
+			remove_filter( 'gettext', array( $this, 'gettext' ) );
 		}
 
 		return $translation;
@@ -156,24 +156,11 @@ class Alma_WC_Refund {
 	 * @return void
 	 */
 	public function admin_notices() {
-		global $post_id;
-		$refund_notices = get_post_meta( $post_id, 'alma_refund_notices', true );
-
-		if ( ! is_array( $refund_notices ) ) {
-			return;
+		$order = wc_get_order();
+		if ( $order ) {
+			$this->helper->print_notices( $order );
+			$this->helper->delete_notices( $order );
 		}
-
-		foreach ( $refund_notices as $notice_infos ) {
-			if ( ! is_array( $notice_infos ) || ! isset( $notice_infos['message'] ) ) {
-				continue;
-			}
-			printf(
-				'<div class="notice notice-%s is-dismissible"><p>%s</p></div>',
-				esc_html( $notice_infos['notice_type'] ),
-				esc_html( $notice_infos['message'] )
-			);
-		}
-		delete_post_meta( $post_id, 'alma_refund_notices' );
 	}
 
 	/**
@@ -192,7 +179,7 @@ class Alma_WC_Refund {
 
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
-			$this->helper->add_order_note( $order, 'error', __( 'Partial refund unavailable due to a connection error.', 'alma-gateway-for-woocommerce' ) );
+			$this->helper->add_error_note( $order, __( 'Partial refund unavailable due to a connection error.', 'alma-gateway-for-woocommerce' ) );
 			return;
 		}
 
@@ -203,12 +190,19 @@ class Alma_WC_Refund {
 			$alma->payments->partialRefund( $order->get_transaction_id(), $amount_to_refund, $merchant_reference, $comment );
 
 			$refund = new WC_Order_Refund( $refund_id );
-			/* translators: %1$s is a username, %2$s is an amount with currency. */
-			$this->helper->add_order_note( $order, 'success', sprintf( __( '%1$s refunded %2$s with Alma.', 'alma-gateway-for-woocommerce' ), wp_get_current_user()->display_name, $this->helper->get_display_refund_amount( $refund ) ) );
+			$this->helper->add_success_note(
+				$order,
+				sprintf(
+					/* translators: %1$s is a username, %2$s is an amount with currency. */
+					__( '%1$s refunded %2$s with Alma.', 'alma-gateway-for-woocommerce' ),
+					wp_get_current_user()->display_name,
+					$this->helper->get_display_refund_amount( $refund )
+				)
+			);
 		} catch ( RequestError $e ) {
 			/* translators: %s is an error message. */
 			$error_message = sprintf( __( 'Alma partial refund error : %s.', 'alma-gateway-for-woocommerce' ), $e->getErrorMessage() );
-			$this->helper->add_order_note( $order, 'error', $error_message );
+			$this->helper->add_error_note( $order, $error_message );
 			$this->logger->error( $error_message );
 		}
 	}
