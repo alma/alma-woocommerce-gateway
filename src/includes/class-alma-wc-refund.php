@@ -156,10 +156,6 @@ class Alma_WC_Refund {
 	 * @return void
 	 */
 	public function admin_notices() {
-		if ( 'shop_order' !== get_current_screen()->id ) {
-			return;
-		}
-
 		global $post_id;
 		$refund_notices = get_post_meta( $post_id, 'alma_refund_notices', true );
 
