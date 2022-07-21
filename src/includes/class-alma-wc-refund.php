@@ -115,7 +115,7 @@ class Alma_WC_Refund {
 	}
 
 	/**
-	 * WP action hook "current_screen".
+	 * Adds a filter on "gettext" in the "woocommerce_order_item_add_action_buttons" action hook.
 	 *
 	 * @return void
 	 */
