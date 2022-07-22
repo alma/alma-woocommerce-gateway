@@ -237,7 +237,7 @@ class Alma_WC_Refund_Helper {
 	 * @return void
 	 */
 	public function print_notices( WC_Order $order ) {
-		$refund_notices = get_post_meta( $order->get_id(), 'alma_refund_notices', true );
+		$refund_notices = get_post_meta( $order->get_id(), self::REFUND_NOTICE_META_KEY, true );
 
 		if ( ! is_array( $refund_notices ) ) {
 			return;
