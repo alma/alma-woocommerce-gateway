@@ -144,7 +144,7 @@ class Alma_WC_Refund {
 		}
 
 		if ( count( $this->admin_texts_to_change ) === $this->number_of_texts_changed ) {
-			remove_filter( 'gettext', array( $this, 'gettext' ) );
+			remove_filter( 'gettext', array( $this, 'gettext' ), 10 );
 		}
 
 		return $translation;
