@@ -213,7 +213,7 @@ class Alma_WC_Refund_Helper {
 	 * @return void
 	 */
 	public function add_error_note( WC_Order $order, $message ) {
-		$this->add_error_note( $order, $message );
+		$this->add_order_note( $order, self::NOTICE_TYPE_ERROR, $message );
 	}
 
 	/**
@@ -226,7 +226,7 @@ class Alma_WC_Refund_Helper {
 	 * @return void
 	 */
 	public function add_success_note( WC_Order $order, $message ) {
-		$this->add_success_note( $order, $message );
+		$this->add_order_note( $order, self::NOTICE_TYPE_SUCCESS, $message );
 	}
 
 	/**
