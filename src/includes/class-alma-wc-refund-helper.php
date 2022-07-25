@@ -29,6 +29,13 @@ class Alma_WC_Refund_Helper {
 	private $logger;
 
 	/**
+	 * Order messages
+	 *
+	 * @var array
+	 */
+	private $messages = array();
+
+	/**
 	 * __construct.
 	 */
 	public function __construct() {
@@ -66,6 +73,11 @@ class Alma_WC_Refund_Helper {
 	 * @see add_notice()
 	 */
 	private function add_order_note( $order, $notice_type, $message ) {
+
+		if ( in_array( $message, $this->messages ) ) {
+			return;
+		}
+		$this->messages[] = $message;
 
 		$order->add_order_note( $message );
 
