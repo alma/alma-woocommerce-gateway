@@ -106,7 +106,7 @@ class Alma_WC_Refund {
 	 */
 	public function woocommerce_new_order_note_data( $comment_datas ) {
 		$wc_order = wc_get_order( $comment_datas['comment_post_ID'] );
-		if ( $this->helper->is_paid_with_alma( $wc_order ) && 'Order status set to refunded. To return funds to the customer you will need to issue a refund through your payment gateway.' === $comment_datas['comment_content'] ) {
+		if ( $this->helper->is_fully_refundable( $wc_order ) && 'Order status set to refunded. To return funds to the customer you will need to issue a refund through your payment gateway.' === $comment_datas['comment_content'] ) {
 			/* translators: %s is a username. */
 			$comment_datas['comment_content'] = sprintf( __( 'Order fully refunded via Alma by %s.', 'alma-gateway-for-woocommerce' ), wp_get_current_user()->display_name );
 		}
