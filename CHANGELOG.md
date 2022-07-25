@@ -1,6 +1,13 @@
 Changelog
 =========
 
+v3.1.1
+------
+
+* fix: correct bad button text for refund
+* fix: correcting issue of multiple times the same order note
+* fix: correcting wording issue in case of order not have a transaction_id
+
 v3.1.0
 ------
 
