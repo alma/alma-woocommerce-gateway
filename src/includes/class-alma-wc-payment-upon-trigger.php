@@ -79,26 +79,47 @@ class Alma_WC_Payment_Upon_Trigger {
 
 		$order = wc_get_order( $order_id );
 		if ( ! $order->get_transaction_id() ) {
-			$this->logger->error( 'Error while getting transaction_id on trigger_payment for order_id = ' . $order_id );
+			$this->logger->error( 'Error while getting transaction_id on trigger_payment for the order.', [
+                'Method' => __METHOD__,
+                'OrderId' => $order_id
+            ]);
+
 			return;
 		}
 
 		try {
 			$payment = $alma->payments->fetch( $order->get_transaction_id() );
 		} catch ( RequestError $e ) {
-			$this->logger->error( sprintf( 'Fail to fetch payment with transaction_id %s for order_id %s ', $order->get_transaction_id(), $order_id ) );
+			$this->logger->error( 'Fail to fetch payment with transaction_id for the order.', [
+                'Method' => __METHOD__,
+                'OrderId' => $order_id,
+                'TransactionId'=> $order->get_transaction_id(),
+                'ExceptionMessage' => $e->getMessage()
+            ]);
+
 			return;
 		}
 
 		if ( $payment->deferred_trigger_applied ) {
-			$this->logger->info( 'Order number ' . $order_id . ' was already triggered : -->' . $payment->deferred_trigger_applied . '<--.' );
+			$this->logger->warning( 'This order was already triggered for payments.', [
+                'Method' => __METHOD__,
+                'OrderId' => $order_id,
+                'Triggered' => $payment->deferred_trigger_applied
+            ]);
 		} else {
 			try {
 				$alma->payments->trigger( $order->get_transaction_id() );
 				// translators: %s: An order status (example: "completed").
 				$order->add_order_note( sprintf( __( 'The first customer payment has been triggered, as you updated the order status to "%s".', 'alma-gateway-for-woocommerce' ), $next_status ) );
 			} catch ( RequestError $e ) {
-				$this->logger->log_stack_trace( 'Error while trigger payment for order number : ' . $order_id, $e );
+				$this->logger->log_stack_trace(
+                    'Error while trigger payment for order number.',
+                    $e ,
+                    [
+                        'OrderId' => $order_id,
+                        'Method' => __METHOD__
+                    ]
+                );
 			}
 		}
 	}

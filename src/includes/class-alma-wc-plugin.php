@@ -144,7 +144,7 @@ class Alma_WC_Plugin {
 			$this->alma_client->addUserAgentComponent( 'Alma for WooCommerce', ALMA_WC_VERSION );
 		} catch ( \Exception $e ) {
 			if ( $this->settings->is_logging_enabled() ) {
-				$this->logger->log_stack_trace( 'Error creating Alma API client', $e );
+				$this->logger->log_stack_trace( 'Error creating Alma API client.', $e);
 			}
 		}
 	}
@@ -252,8 +252,13 @@ class Alma_WC_Plugin {
 				add_action( 'admin_notices', array( $this, 'check_settings' ) );
 			}
 		} catch ( Exception $e ) {
-			$this->logger->error( 'Bootstrap error: ' . $e->getMessage() );
-			$this->handle_settings_exception( $e );
+			$this->logger->error( 'Fail to bootstrap.', [
+                'Method' => __METHOD__,
+                'ExceptionMessage' => $e->getMessage(),
+                'ExceptionTraceAsString' => $e->getTraceAsString()
+            ]);
+
+			$this->handle_settings_exception( $e, __METHOD__, false);
 		}
 	}
 
@@ -261,17 +266,24 @@ class Alma_WC_Plugin {
 	 * Handle settings exception.
 	 *
 	 * @param \Exception $exception Exception.
-	 *
+     * @param string $fromMethod Name of the origin function, use for uniq error message
+	 * @param bool $log Boolean to choose login
 	 * @return void
 	 */
-	public function handle_settings_exception( $exception ) {
+	public function handle_settings_exception( $exception, $fromMethod, $log = true) {
 		if ( get_option( 'alma_warnings_handled' ) ) {
 			return;
 		}
 
 		delete_option( 'alma_bootstrap_warning_message_dismissed' );
 		update_option( 'alma_bootstrap_warning_message', $exception->getMessage() );
-		$this->logger->warning( 'Bootstrap warning: ' . $exception->getMessage() );
+
+        if($log) {
+            $this->logger->warning(sprintf('Settings Exception (%s).', $fromMethod), [
+                'ExceptionMessage' => $exception->getMessage(),
+                'ExceptionTraceAsString' => $exception->getTraceAsString()
+            ]);
+        }
 
 		add_action( 'admin_notices', array( $this, 'show_settings_warning' ) );
 
@@ -364,7 +376,9 @@ class Alma_WC_Plugin {
 	public function check_currency() {
 		$currency = get_woocommerce_currency();
 		if ( 'EUR' !== $currency ) {
-			$this->logger->info( "Currency $currency not supported - Not displaying Alma" );
+            $this->logger->warning("Currency not supported - Not displaying by Alma.", [
+                    'Currency' => $currency
+            ]);
 			return false;
 		}
 
@@ -425,7 +439,7 @@ class Alma_WC_Plugin {
 
 		// Don't advertise our payment gateway if we're in test mode and current user is not an admin.
 		if ( ! $this->is_allowed_to_see_alma( wp_get_current_user() ) ) {
-			$this->logger->info( 'Not displaying Alma in Test mode to non-admin user' );
+			$this->logger->info( 'Not displaying Alma in Test mode to non-admin user.' );
 			return;
 		}
 
@@ -618,7 +632,10 @@ class Alma_WC_Plugin {
 		$payment_id = isset( $id ) ? $id : null;
 
 		if ( ! $payment_id ) {
-			$this->logger->error( 'Payment validation webhook called without a payment ID' );
+			$this->logger->error( 'Payment validation webhook called without a payment ID.', [
+                'Method' => __METHOD__,
+                'PID' => $id
+            ]);
 
 			wc_add_notice(
 				__( 'Payment validation error: no ID provided.<br>Please try again or contact us if the problem persists.', 'alma-gateway-for-woocommerce' ),
@@ -688,7 +705,7 @@ class Alma_WC_Plugin {
 
 			$this->settings->save();
 		} catch ( Exception $exception ) {
-			$this->handle_settings_exception( $exception );
+			$this->handle_settings_exception( $exception , __METHOD__);
 		}
 	}
 
@@ -764,7 +781,7 @@ class Alma_WC_Plugin {
 			try {
 				$this->eligibilities = $alma->payments->eligibility( Alma_WC_Model_Payment::get_eligibility_payload_from_cart() );
 			} catch ( RequestError $error ) {
-				$this->logger->log_stack_trace( 'Error while checking payment eligibility: ', $error );
+				$this->logger->log_stack_trace( 'Error while checking payment eligibility.', $error );
 				return null;
 			}
 		}

@@ -344,10 +344,15 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				'result' => 'error',
 			);
 		}
+
 		try {
 			$fee_plan_definition = $this->get_fee_plan_definition( $this->checkout_helper->get_chosen_alma_fee_plan() );
 		} catch ( Exception $e ) {
-			$this->logger->log_stack_trace( 'Error while creating payment: ', $e );
+			$this->logger->log_stack_trace(
+                'Error while creating payment (getting fee plan definition).',
+                 $e,
+                ['OrderId' => $order_id]
+            );
 			wc_add_notice( $error_msg, 'error' );
 
 			return array( 'result' => 'error' );
@@ -358,7 +363,14 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				Alma_WC_Model_Payment::get_payment_payload_from_order( $order_id, $fee_plan_definition )
 			);
 		} catch ( RequestError $e ) {
-			$this->logger->log_stack_trace( 'Error while creating payment: ', $e );
+			$this->logger->log_stack_trace(
+                'Error while creating payment.',
+                $e,
+                [
+                    'OrderId' => $order_id,
+                    'FeePlanDefinition' => $fee_plan_definition
+                ]
+            );
 			wc_add_notice( $error_msg, 'error' );
 
 			return array( 'result' => 'error' );
@@ -862,7 +874,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			$this->settings['merchant_id'] = $merchant->id;
 		} catch ( RequestError $e ) {
 			$this->reset_merchant_settings();
-			alma_wc_plugin()->handle_settings_exception( $e );
+			alma_wc_plugin()->handle_settings_exception( $e, __METHOD__ );
+
 			return;
 		}
 		$this->sync_fee_plans_settings();
