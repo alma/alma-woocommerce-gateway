@@ -72,10 +72,13 @@ class Alma_WC_Checkout_Helper {
 			return $_POST[ $field_name ];
 		}
 
-		$this->logger->error('Nonce not found or wrong.', [
-            'FieldName' => $field_name,
-            'NonceName' => $nonce_name
-        ]);
+		$this->logger->error(
+			'Nonce not found or wrong.',
+			array(
+				'FieldName' => $field_name,
+				'NonceName' => $nonce_name,
+			)
+		);
 
 		return null;
 	}

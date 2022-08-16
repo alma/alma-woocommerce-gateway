@@ -62,12 +62,12 @@ class Alma_WC_Generic_Handler {
 	 */
 	private function is_usable() {
 		if ( ! $this->settings->is_enabled() ) {
-			$this->logger->error( 'Not usable handler: settings are disabled.');
+			$this->logger->error( 'Not usable handler: settings are disabled.' );
 
 			return false;
 		}
 		if ( ! $this->settings->fully_configured ) {
-			$this->logger->error(  'Not usable handler: settings are not fully configured.');
+			$this->logger->error( 'Not usable handler: settings are not fully configured.' );
 
 			return false;
 		}
@@ -77,7 +77,7 @@ class Alma_WC_Generic_Handler {
 		}
 
 		if ( ! count( $this->settings->get_enabled_plans_definitions() ) ) {
-			$this->logger->error( 'No payment plans have been activated - Not displaying Alma.');
+			$this->logger->error( 'No payment plans have been activated - Not displaying Alma.' );
 			return false;
 		}
 
@@ -103,18 +103,18 @@ class Alma_WC_Generic_Handler {
 		$amount_sale_price_query_selector = null
 	) {
 		if ( $this->is_already_rendered() ) {
-			$this->logger->error( 'Alma "Eligibility Widget" (cart or product) is already rendered on this page - Not displaying Alma.');
+			$this->logger->error( 'Alma "Eligibility Widget" (cart or product) is already rendered on this page - Not displaying Alma.' );
 			return;
 		}
 
 		if ( ! $this->is_usable() ) {
-			$this->logger->info('Handler is not usable: badge injection failed.');
+			$this->logger->info( 'Handler is not usable: badge injection failed.' );
 			return;
 		}
 
 		$merchant_id = $this->settings->merchant_id;
 		if ( empty( $merchant_id ) ) {
-			$this->logger->info( 'Settings merchant id not found: badge injection failed.');
+			$this->logger->info( 'Settings merchant id not found: badge injection failed.' );
 			return;
 		}
 

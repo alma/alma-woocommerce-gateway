@@ -201,14 +201,17 @@ class Alma_WC_Refund {
 			);
 		} catch ( RequestError $e ) {
 			/* translators: %s is an error message. */
-			$this->helper->add_error_note( $order, sprintf( __( 'Alma partial refund error : %s.', 'alma-gateway-for-woocommerce' ), $e->getErrorMessage()) );
+			$this->helper->add_error_note( $order, sprintf( __( 'Alma partial refund error : %s.', 'alma-gateway-for-woocommerce' ), $e->getErrorMessage() ) );
 
-            $this->logger->error('Error on Alma partial refund.', [
-                'Method' => __METHOD__,
-                'OrderId' => $order_id,
-                'RefundId' => $refund_id,
-                'ExceptionMessage' => $e->getErrorMessage()
-            ]);
+			$this->logger->error(
+				'Error on Alma partial refund.',
+				array(
+					'Method'           => __METHOD__,
+					'OrderId'          => $order_id,
+					'RefundId'         => $refund_id,
+					'ExceptionMessage' => $e->getErrorMessage(),
+				)
+			);
 		}
 	}
 

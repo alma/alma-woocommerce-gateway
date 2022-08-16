@@ -28,11 +28,14 @@ class Alma_WC_Model_Payment {
 		} catch ( Exception $e ) {
 			$logger = new Alma_WC_Logger();
 
-			$logger->error( 'Error getting payment info from order.' , [
-                'Method' => __METHOD__,
-                'OrderId' => $order_id,
-                'ExceptionMessage' => $e->getMessage()
-            ]);
+			$logger->error(
+				'Error getting payment info from order.',
+				array(
+					'Method'           => __METHOD__,
+					'OrderId'          => $order_id,
+					'ExceptionMessage' => $e->getMessage(),
+				)
+			);
 
 			return array();
 		}

@@ -38,7 +38,7 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 		$product = ( $the_product ) ? wc_get_product( $the_product ) : wc_get_product();
 
 		if ( ! $product ) {
-			$this->logger->warning('Product not found: product badge injection failed.');
+			$this->logger->warning( 'Product not found: product badge injection failed.' );
 			return;
 		}
 
@@ -56,9 +56,9 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 
 		if ( ! $product->is_in_stock() ) {
 			$this->logger->warning(
-                'Product not in stock: product badge injection failed.',
-                ['ProductId' => $product->get_id()]
-            );
+				'Product not in stock: product badge injection failed.',
+				array( 'ProductId' => $product->get_id() )
+			);
 			return;
 		}
 
@@ -66,9 +66,12 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 
 		if ( ! $price ) {
 			// translators: %s: the product price.
-			$this->logger->info( 'Product price unknown, product badge injection failed.', [
-                'ProductId' => $product->get_id()
-            ]);
+			$this->logger->info(
+				'Product price unknown, product badge injection failed.',
+				array(
+					'ProductId' => $product->get_id(),
+				)
+			);
 
 			return;
 		}

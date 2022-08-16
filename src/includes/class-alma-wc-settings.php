@@ -410,7 +410,7 @@ class Alma_WC_Settings {
 		try {
 			$fee_plans = alma_wc_plugin()->get_fee_plans();
 		} catch ( RequestError $e ) {
-			alma_wc_plugin()->handle_settings_exception( $e , __METHOD__);
+			alma_wc_plugin()->handle_settings_exception( $e, __METHOD__ );
 		}
 		if ( ! $fee_plans ) {
 			return array();
