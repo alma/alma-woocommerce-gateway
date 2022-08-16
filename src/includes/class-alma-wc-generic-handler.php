@@ -62,12 +62,12 @@ class Alma_WC_Generic_Handler {
 	 */
 	private function is_usable() {
 		if ( ! $this->settings->is_enabled() ) {
-			$this->logger->error( 'Not usable handler: settings are disabled.' );
+			$this->logger->info( 'Not usable handler: settings are disabled.' );
 
 			return false;
 		}
 		if ( ! $this->settings->fully_configured ) {
-			$this->logger->error( 'Not usable handler: settings are not fully configured.' );
+			$this->logger->info( 'Not usable handler: settings are not fully configured.' );
 
 			return false;
 		}
@@ -77,7 +77,7 @@ class Alma_WC_Generic_Handler {
 		}
 
 		if ( ! count( $this->settings->get_enabled_plans_definitions() ) ) {
-			$this->logger->error( 'No payment plans have been activated - Not displaying Alma.' );
+			$this->logger->info( 'No payment plans have been activated - Not displaying Alma.' );
 			return false;
 		}
 
@@ -103,7 +103,7 @@ class Alma_WC_Generic_Handler {
 		$amount_sale_price_query_selector = null
 	) {
 		if ( $this->is_already_rendered() ) {
-			$this->logger->error( 'Alma "Eligibility Widget" (cart or product) is already rendered on this page - Not displaying Alma.' );
+			$this->logger->info( 'Alma "Eligibility Widget" (cart or product) is already rendered on this page - Not displaying Alma.' );
 			return;
 		}
 
