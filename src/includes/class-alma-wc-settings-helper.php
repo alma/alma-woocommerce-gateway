@@ -32,6 +32,21 @@ class Alma_WC_Settings_Helper {
 	}
 
 	/**
+	 * Gets the default CSS selector for the price element of variable sale products, depending on the version of
+	 * WooCommerce, as WooCommerce 4.4.0 added a `<bdi>` wrapper around the price.
+	 *
+	 * @return string
+	 */
+	public static function default_variable_sale_price_selector() {
+		$selector = 'form.variations_form div.woocommerce-variation-price ins span.woocommerce-Price-amount';
+		if ( version_compare( wc()->version, '4.4.0', '>=' ) ) {
+			$selector .= ' bdi';
+		}
+
+		return $selector;
+	}
+
+	/**
 	 * Gets the default title for pnx plus 4 payment method.
 	 *
 	 * @return string

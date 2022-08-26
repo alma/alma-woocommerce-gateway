@@ -91,6 +91,7 @@ class Alma_WC_Generic_Handler {
 	 * @param int         $amount Amount.
 	 * @param string|null $jquery_update_event Jquery update event.
 	 * @param string|null $amount_query_selector Amount query selector.
+	 * @param string|null $amount_sale_price_query_selector Amount query selector for products with sale variation price.
 	 *
 	 * @return void
 	 */
@@ -98,7 +99,8 @@ class Alma_WC_Generic_Handler {
 		$has_excluded_products,
 		$amount = 0,
 		$jquery_update_event = null,
-		$amount_query_selector = null
+		$amount_query_selector = null,
+		$amount_sale_price_query_selector = null
 	) {
 		if ( $this->is_already_rendered() ) {
 			$this->logger->info( $this->get_eligibility_widget_already_rendered_message() );
@@ -117,17 +119,18 @@ class Alma_WC_Generic_Handler {
 		}
 
 		$widget_settings = array(
-			'hasExcludedProducts' => $has_excluded_products,
-			'merchantId'          => $merchant_id,
-			'apiMode'             => $this->settings->get_environment(),
-			'amount'              => $amount,
-			'enabledPlans'        => $this->filter_plans_definitions( $this->settings->get_enabled_plans_definitions() ),
-			'amountQuerySelector' => $amount_query_selector,
-			'jqueryUpdateEvent'   => $jquery_update_event,
-			'firstRender'         => true,
-			'decimalSeparator'    => wc_get_price_decimal_separator(),
-			'thousandSeparator'   => wc_get_price_thousand_separator(),
-			'locale'              => substr( get_locale(), 0, 2 ),
+			'hasExcludedProducts'          => $has_excluded_products,
+			'merchantId'                   => $merchant_id,
+			'apiMode'                      => $this->settings->get_environment(),
+			'amount'                       => $amount,
+			'enabledPlans'                 => $this->filter_plans_definitions( $this->settings->get_enabled_plans_definitions() ),
+			'amountQuerySelector'          => $amount_query_selector,
+			'amountSalePriceQuerySelector' => $amount_sale_price_query_selector,
+			'jqueryUpdateEvent'            => $jquery_update_event,
+			'firstRender'                  => true,
+			'decimalSeparator'             => wc_get_price_decimal_separator(),
+			'thousandSeparator'            => wc_get_price_thousand_separator(),
+			'locale'                       => substr( get_locale(), 0, 2 ),
 		);
 
 		// Inject JS/CSS required for the eligibility/payment plans info display.

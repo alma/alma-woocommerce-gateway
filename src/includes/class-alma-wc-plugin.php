@@ -199,6 +199,9 @@ class Alma_WC_Plugin {
 		$payment_upon_trigger_helper = new Alma_WC_Payment_Upon_Trigger();
 		add_action( 'woocommerce_order_status_changed', array( $payment_upon_trigger_helper, 'woocommerce_order_status_changed' ), 10, 3 );
 
+		$refund = new Alma_WC_Refund();
+		add_action( 'admin_init', array( $refund, 'admin_init' ), 10 );
+
 		// Launch the "share of checkout".
 		$share_of_checkout = new Alma_WC_Share_Of_Checkout();
 		$share_of_checkout->init();

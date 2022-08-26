@@ -29,6 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property string selected_fee_plan Admin dashboard fee_plan in edition mode.
  * @property string merchant_id Alma merchant ID
  * @property string variable_product_price_query_selector Css query selector
+ * @property string variable_product_sale_price_query_selector Css query selector for variable discounted products
  * @property string variable_product_check_variations_event JS event for product variation change
  * @property array  excluded_products_list Wp Categories excluded slug's list
  * @property string share_of_checkout_enabled Bool for share of checkout acceptance (yes or no)
@@ -82,7 +83,8 @@ class Alma_WC_Settings {
 			'display_cart_eligibility'                => 'yes',
 			'display_product_eligibility'             => 'yes',
 			'variable_product_price_query_selector'   => Alma_WC_Settings_Helper::default_variable_price_selector(),
-			'variable_product_check_variations_event' => self::DEFAULT_CHECK_VARIATIONS_EVENT,
+            'variable_product_sale_price_query_selector' => Alma_WC_Settings_Helper::default_variable_sale_price_selector(),
+            'variable_product_check_variations_event' => self::DEFAULT_CHECK_VARIATIONS_EVENT,
 			'excluded_products_list'                  => array(),
 			'cart_not_eligible_message_gift_cards'    => Alma_WC_Settings_Helper::default_not_eligible_cart_message(),
 			'live_api_key'                            => '',

@@ -282,28 +282,41 @@ class Alma_WC_Admin_Form {
 	private function init_technical_fields( $default_settings ) {
 
 		return array(
-			'technical_section'                       => array(
+			'technical_section'                          => array(
 				'title'       => '<hr>' . __( '→ Technical fields', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'title',
 				'description' => __( 'Specific fields just in case you need it. [<a href="#" id="alma_link_toggle_technical_section">click to open or close</a>]', 'alma-gateway-for-woocommerce' ),
 			),
-			'variable_product_check_variations_event' => array(
+			'variable_product_check_variations_event'    => array(
 				'title'       => __( 'Custom check variations event', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'text',
-				'default'     => $default_settings['variable_product_check_variations_event'],
 				'description' => sprintf(
-					// translators: %1$s is technical information, %2$s is Alma WooCommerce Plugin FAQ doc URL.
+				// translators: %1$s is technical information, %2$s is Alma WooCommerce Plugin FAQ doc URL.
 					__( 'This is the javascript event triggered on variables products page, when the customer change the product variation. Default value is <strong>%1$s</strong>.<br />More technical information on <a href="%2$s" target="_blank">Alma documentation</a>', 'alma-gateway-for-woocommerce' ),
 					Alma_WC_Settings::DEFAULT_CHECK_VARIATIONS_EVENT,
 					'https://docs.getalma.eu/docs/woocommerce-faq'
 				),
+				'default'     => $default_settings['variable_product_check_variations_event'],
 			),
-			'variable_product_price_query_selector'   => array(
+			'variable_product_price_query_selector'      => array(
 				'title'       => __( 'Variable products price query selector', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'text',
-				'description' => __( 'Query selector used to get the price of product with variations', 'alma-gateway-for-woocommerce' ),
-				'desc_tip'    => true,
+				'description' => sprintf(
+				// translators: %s is technical information.
+					__( 'Query selector used to get the price of product with variations. Default value is <strong>%s</strong>.', 'alma-gateway-for-woocommerce' ),
+					$default_settings['variable_product_price_query_selector']
+				),
 				'default'     => $default_settings['variable_product_price_query_selector'],
+			),
+			'variable_product_sale_price_query_selector' => array(
+				'title'       => __( 'Variable products sale price query selector', 'alma-gateway-for-woocommerce' ),
+				'type'        => 'text',
+				'description' => sprintf(
+				// translators: %s is technical information.
+					__( 'Query selector used to get the price of product with <strong>sales variations</strong>. Default value is <strong>%s</strong>.', 'alma-gateway-for-woocommerce' ),
+					$default_settings['variable_product_sale_price_query_selector']
+				),
+				'default'     => $default_settings['title_payment_method_pnx'],
 			),
 		);
 	}

@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 4.4
 Tested up to: 5.9.3
 Requires PHP: 5.6
-Stable tag: 3.0.0
+Stable tag: 3.1.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -65,6 +65,18 @@ To edit the translations, use [Poedit](https://poedit.net/)
 To build extension for production run `./bin/build.sh`
 
 == Changelog ==
+
+= 3.1.1 =
+* fix: correct bad button text for refund
+* fix: correcting issue of multiple times the same order note
+* fix: correcting wording issue in case of order not have a transaction_id
+
+= 3.1.0 =
+* feat: implement B2B fields (INT-714 #65)
+* refact: widget injection (INT-589 #57)
+* fix: use sales price to update widget instead regular price (INT-290 / INT-570 #52)
+* feat: refund from woocommerce back-office (INT-510 #69)
+* fix: alma should be hidden on checkout when test key is selected & user is not admin (INT-586 #71)
 
 = 3.0.0 =
 * feat: add nonce to secure checkout form
