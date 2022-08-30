@@ -185,6 +185,7 @@ class Alma_WC_Plugin {
 		);
 
 		add_action( 'init', array( $this, 'bootstrap' ) );
+		add_action('init',  array( $this, 'check_share_checkout') );
 		add_filter( 'allowed_redirect_hosts', array( $this, 'alma_domains_whitelist' ) );
 
 		add_filter( 'plugin_action_links_' . plugin_basename( ALMA_WC_PLUGIN_FILE ), array( $this, 'plugin_action_links' ) );
@@ -202,8 +203,6 @@ class Alma_WC_Plugin {
 		// Launch the "share of checkout".
 		$share_of_checkout = new Alma_WC_Share_Of_Checkout();
 		$share_of_checkout->init();
-
-		add_action( 'woocommerce_order_status_changed', array( $payment_upon_trigger_helper, 'woocommerce_order_status_changed' ), 10, 3 );
 
 		$refund = new Alma_WC_Refund();
 		add_action( 'admin_init', array( $refund, 'admin_init' ), 10 );
@@ -364,6 +363,25 @@ class Alma_WC_Plugin {
 
 		$this->force_check_settings();
 	}
+
+	/**
+     * Check the share of checkout
+	 * @return void
+	 */
+    public function check_share_checkout() {
+	    if ( !is_admin() ) {
+            return;
+	    }
+
+	    if ( 'yes' === alma_wc_plugin()->settings->share_of_checkout_enabled ) {
+		    return;
+	    }
+	    ( new Alma_WC_Admin_Helper_Check_Legal() )->init();
+	  // add_action( 'admin_notices', array( new Alma_WC_Helper_Admin_View(), 'show_share_checkout_modal2' ) );*
+
+	 //   add_action( 'admin_notices', array( new Alma_WC_Helper_Admin_View() ,'my_checkout_note' ));
+
+    }
 
 	/**
 	 *  Check that Alma is available for the current currency

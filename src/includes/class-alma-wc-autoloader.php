@@ -28,6 +28,14 @@ class Alma_WC_Autoloader {
 	private $include_path;
 
 	/**
+	 * Path to the admin directory.
+	 *
+	 * @var string
+	 */
+	private $admin_path;
+
+
+	/**
 	 * The Constructor.
 	 *
 	 * @throws Exception If sp_autoload_register fail.
@@ -40,6 +48,7 @@ class Alma_WC_Autoloader {
 		spl_autoload_register( array( $this, 'load_class' ) );
 
 		$this->include_path = untrailingslashit( ALMA_WC_PLUGIN_PATH ) . '/includes/';
+		$this->admin_path = untrailingslashit( ALMA_WC_PLUGIN_PATH ) . '/admin/';
 	}
 
 	/**
@@ -95,6 +104,10 @@ class Alma_WC_Autoloader {
 
 		if ( preg_match( '#^alma_wc_helper_#', $class ) ) {
 			$path = $this->include_path . 'helpers/';
+		}
+
+		if ( preg_match( '#^alma_wc_admin_helper_#', $class ) ) {
+			$path = $this->admin_path . 'helpers/';
 		}
 
 		if ( empty( $path ) || ( ! $this->load_file( $path . $file ) && strpos( $class, 'wc_' ) === 0 ) ) {

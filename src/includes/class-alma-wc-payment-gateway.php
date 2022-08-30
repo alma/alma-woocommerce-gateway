@@ -60,11 +60,13 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		$this->title       = $this->get_option( 'title' );
 		$this->description = $this->get_option( 'description' );
+		do_action('show_share_checkout');
 
 		add_action(
 			'woocommerce_update_options_payment_gateways_' . $this->id,
 			array( $this, 'process_admin_options' )
 		);
+
 
 		add_action( 'woocommerce_before_checkout_process', array( $this, 'woocommerce_checkout_process' ), 1 );
 		add_filter( 'woocommerce_available_payment_gateways', array( $this, 'woocommerce_available_payment_gateways' ), 10, 1 );
@@ -123,9 +125,11 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	/**
 	 * Get Alma icon.
 	 *
+     * @deprecated use Alma_WC_Admin_Helper_General::get_icon();
 	 * @return string
 	 */
 	public function get_icon() {
+
 		$icon_url = alma_wc_plugin()->get_asset_url( 'images/alma_logo.svg' );
 		$icon     = '<img src="' . WC_HTTPS::force_https_url( $icon_url ) . '" alt="' . esc_attr( $this->get_title() ) . '" style="width: auto !important; height: 25px !important; border: none !important;">';
 
