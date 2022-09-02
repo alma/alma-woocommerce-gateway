@@ -40,30 +40,38 @@ class Alma_WC_Admin_Helper_Check_Legal {
 
 		ob_start(); ?>
 
-        <div class="notice notice-info" style=" display: flex;background-color:  #E9F4FF;">
-            <div style="width: 86px;height: 50px;margin:15px;"> <?php echo $alma_logo; ?></div>
-            <div style="flex-grow: 1;">
+        <div class="notice notice-info notice-modal-checkout-legal">
+            <div class="modal-checkout-legal-logo"> <?php echo $alma_logo; ?></div>
+            <div>
                 <div>
-                    <h2><?php echo $title; ?></h2>
+                    <h1><?php echo $title; ?></h1>
                 </div>
                 <div>
-                    <div>
-                        <p>By accepting this option, enable Alma to analyse the usage of your payment
-                            methods,<strong>get more informations to perform </strong>and share this data with you.
-                            <br>You can <a href="mailto:support@getalma.eu">unsubscribe and erase your data</a> at any
-                            moment.
-                        </p>
-                        <p>Know more about collected data</p>- total quantity of orders, amounts and currencies<br>-
-                        payment provider for each order<br>
-                    </div>
+                    <p>
+						<?php
+						echo __( 'By accepting this option, enable Alma to analyse the usage of your payment
+                        methods,<strong>get more informations to perform </strong>and share this data with you.', 'alma-gateway-for-woocommerce' );
+						?>
+                        <br>
+						<?php
+						echo __( 'You can <a href="mailto:support@getalma.eu">unsubscribe and erase your data</a> at any
+                        moment.', 'alma-gateway-for-woocommerce' ); ?>
+                    </p>
+                    <p class="legal-checkout-collapsible">
+						<?php echo __( 'Know more about collected data', 'alma-gateway-for-woocommerce' ); ?>
+                        <span id="legal-collapse-chevron" class="legal-checkout-chevron bottom"></span>
+                    </p>
+                    <ul class="legal-checkout-content">
+                        <li> <?php echo __( 'total quantity of orders, amounts and currencies', 'alma-gateway-for-woocommerce' ); ?></li>
+                        <li> <?php echo __( 'payment provider for each order', 'alma-gateway-for-woocommerce' ); ?></li>
+                    </ul>
                 </div>
-                <div>
-                    <div>
-                        <a href="http://woocommerce-6-3-1.local.test/wp-admin/#"
-                           class="components-button is-secondary">REJECT</a>
-                        <a href="http://woocommerce-6-3-1.local.test/wp-admin/#"
-                           class="components-button is-primary">ACCEPT</a>
-                    </div>
+                <div id="legal-checkout-choices">
+                    <a href="http://woocommerce-6-3-1.local.test/wp-admin/#"
+                       class="button-checkout-legal reject-legal"><?php echo __( 'REJECT', 'alma-gateway-for-woocommerce' ); ?></a>
+                    <a href="http://woocommerce-6-3-1.local.test/wp-admin/#"
+                       class="button-checkout-legal accept-legal"><?php  echo  __( 'ACCEPT', 'alma-gateway-for-woocommerce' ); ?></a>
+
                 </div>
             </div>
         </div>

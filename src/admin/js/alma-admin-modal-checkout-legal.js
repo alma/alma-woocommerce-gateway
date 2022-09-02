@@ -1,19 +1,18 @@
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
 
-    var coll = document.getElementsByClassName("btn-legal-checkout-collapse");
+    var coll = jQuery(".legal-checkout-collapsible");
+    var chevron = jQuery('#legal-collapse-chevron');
     var i;
-
     for (i = 0; i < coll.length; i++) {
         coll[i].addEventListener("click", function () {
             this.classList.toggle("active");
             var content = this.nextElementSibling;
             if (content.style.display === "block") {
                 content.style.display = "none";
-
+                chevron.addClass('bottom');
             } else {
                 content.style.display = "block";
-                //document.find(".fa-plus-square").removeClass("chevron bottom").addClass("chevron top"");
-
+                chevron.removeClass('bottom');
             }
         });
     }
