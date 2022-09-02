@@ -20,6 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Alma_WC_Plugin
  */
 class Alma_WC_Plugin {
+
 	/**
 	 * Instance of Alma_Settings.
 	 *
@@ -109,7 +110,7 @@ class Alma_WC_Plugin {
 		);
 
 		add_action( 'init', array( $this, 'bootstrap' ) );
-		add_action( 'init', array( $this, 'check_share_checkout' ) );
+		/** LEGAL CHECKOUT FEATURE add_action( 'init', array( $this, 'check_share_checkout' ) ); */
 		add_filter( 'allowed_redirect_hosts', array( $this, 'alma_domains_whitelist' ) );
 
 		add_filter(
@@ -139,8 +140,10 @@ class Alma_WC_Plugin {
 		);
 
 		// Launch the "share of checkout".
-		$share_of_checkout = new Alma_WC_Share_Of_Checkout();
-		$share_of_checkout->init();
+		/** LEGAL CHECKOUT FEATURE
+		 * $share_of_checkout = new Alma_WC_Share_Of_Checkout();
+		 * $share_of_checkout->init();
+		 */
 
 		$refund = new Alma_WC_Refund();
 		add_action( 'admin_init', array( $refund, 'admin_init' ), 10 );
@@ -700,7 +703,7 @@ class Alma_WC_Plugin {
 	 * it is not a user form submission: Nonce usage is not suitable here.
 	 */
 	private function get_payment_to_validate() {
-		// phpcs:ignore WordPress.Security.NonceVerification
+        // phpcs:ignore WordPress.Security.NonceVerification
 		$id         = sanitize_text_field( $_GET['pid'] );
 		$payment_id = isset( $id ) ? $id : null;
 

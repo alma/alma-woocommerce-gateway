@@ -231,15 +231,16 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return bool
 	 */
 	public function process_admin_options() {
-		$value     = $this->settings;
-		$post_data = $this->get_post_data();
-		if (
-			isset( $post_data['share_of_checkout_enabled'] ) &&
-			! isset( alma_wc_plugin()->settings->share_of_checkout_enabled )
-		) {
-			$value['share_of_checkout_enabled_date'] = gmdate( 'Y-m-d' );
-		}
-
+		$value = $this->settings;
+		/** LEGAL CHECKOUT FEATURE
+		 * $post_data = $this->get_post_data();
+		 * if (
+		 * isset( $post_data['share_of_checkout_enabled'] ) &&
+		 * ! isset( alma_wc_plugin()->settings->share_of_checkout_enabled )
+		 * ) {
+		 * $value['share_of_checkout_enabled_date'] = gmdate( 'Y-m-d' );
+		 * }
+		 */
 		$previously_saved = parent::process_admin_options();
 
 		$this->convert_amounts_to_cents();
@@ -811,7 +812,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			$order = Alma_WC_Payment_Validator::validate_payment( $payment_id );
 		} catch ( Alma_WC_Payment_Validation_Error $e ) {
 			$this->redirect_to_cart_with_error( $error_msg );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->redirect_to_cart_with_error( $e->getMessage() );
 		}
 
@@ -846,7 +847,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	public function validate_payment_from_ipn( $payment_id ) {
 		try {
 			Alma_WC_Payment_Validator::validate_payment( $payment_id );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			status_header( 500 );
 			wp_send_json( array( 'error' => $e->getMessage() ) );
 		}

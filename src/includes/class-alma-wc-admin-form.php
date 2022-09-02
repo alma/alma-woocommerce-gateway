@@ -47,7 +47,9 @@ class Alma_WC_Admin_Form {
 			self::get_instance()->init_general_settings_fields( $default_settings ),
 			self::get_instance()->init_payment_upon_trigger_fields( $default_settings ),
 			self::get_instance()->init_api_key_fields( __( '→ API configuration', 'alma-gateway-for-woocommerce' ), $default_settings ),
-			self::get_instance()->init_share_of_checkout_field( $default_settings ),
+			/** LEGAL CHECKOUT FEATURE
+			 * self::get_instance()->init_share_of_checkout_field( $default_settings ),
+			 * */
 			self::get_instance()->init_technical_fields( $default_settings ),
 			self::get_instance()->init_debug_fields( $default_settings )
 		);
@@ -674,37 +676,6 @@ class Alma_WC_Admin_Form {
 	}
 
 	/**
-	 * Inits share of checkout Admin field.
-	 *
-	 * @param array $default_settings default settings.
-	 *
-	 * @return array[]
-	 */
-	private function init_share_of_checkout_field( $default_settings ) {
-		return array(
-			'share_of_checkout_section' => array(
-				'title'       => '<hr>' . __( '→ Share of checkout configuration', 'alma-gateway-for-woocommerce' ),
-				'type'        => 'title',
-				'description' => __(
-					'By accepting this option, enable Alma to analyse the usage of your payment methods, get more informations to perform and share this data with you.
-<br>You can <a href="mailto:support@getalma.eu">unsubscribe and erase your data</a> at any moment.
-<br><br>Know more about collected data
-<br><br>- total quantity of orders, amounts and currencies
-<br>- payment provider for each order',
-					'alma-gateway-for-woocommerce'
-				),
-			),
-
-			'share_of_checkout_enabled' => array(
-				'title'   => __( 'Activate your data settings ', 'alma-gateway-for-woocommerce' ),
-				'type'    => 'checkbox',
-				'label'   => '&nbsp;',
-				'default' => $default_settings['share_of_checkout_enabled'],
-			),
-		);
-	}
-
-	/**
 	 * Technical fields.
 	 *
 	 * @param array $default_settings as default settings.
@@ -749,6 +720,37 @@ class Alma_WC_Admin_Form {
 					$default_settings['variable_product_sale_price_query_selector']
 				),
 				'default'     => $default_settings['title_payment_method_pnx'],
+			),
+		);
+	}
+
+	/**
+	 * Inits share of checkout Admin field.
+	 *
+	 * @param array $default_settings default settings.
+	 *
+	 * @return array[]
+	 */
+	private function init_share_of_checkout_field( $default_settings ) {
+		return array(
+			'share_of_checkout_section' => array(
+				'title'       => '<hr>' . __( '→ Share of checkout configuration', 'alma-gateway-for-woocommerce' ),
+				'type'        => 'title',
+				'description' => __(
+					'By accepting this option, enable Alma to analyse the usage of your payment methods, get more informations to perform and share this data with you.
+<br>You can <a href="mailto:support@getalma.eu">unsubscribe and erase your data</a> at any moment.
+<br><br>Know more about collected data
+<br><br>- total quantity of orders, amounts and currencies
+<br>- payment provider for each order',
+					'alma-gateway-for-woocommerce'
+				),
+			),
+
+			'share_of_checkout_enabled' => array(
+				'title'   => __( 'Activate your data settings ', 'alma-gateway-for-woocommerce' ),
+				'type'    => 'checkbox',
+				'label'   => '&nbsp;',
+				'default' => $default_settings['share_of_checkout_enabled'],
 			),
 		);
 	}

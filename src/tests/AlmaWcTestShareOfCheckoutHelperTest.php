@@ -5,7 +5,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-class AlmaWcShareOfCheckoutHelperTest extends TestCase {
+class AlmaWcTestShareOfCheckoutHelperTest extends TestCase {
 
 	const EUR_CURRENCY_CODE = 'EUR';
 	const USD_CURRENCY_CODE = 'USD';
@@ -50,8 +50,7 @@ class AlmaWcShareOfCheckoutHelperTest extends TestCase {
 	 * @dataProvider data_provider_from_date
 	 */
 	public function test_get_from_date( $from_date, $expected ) {
-		$helper = new Alma_WC_Admin_Helper_Share_Of_Checkout( new Alma_WC_Helper_Order() );
-		$result = $this->invokeMethod( $helper, 'get_from_date', array( $from_date ) );
+        $result = Alma_WC_Admin_Helper_Share_Of_Checkout::get_from_date($from_date);
 		$this->assertEquals( $expected, $result );
 	}
 
@@ -74,8 +73,7 @@ class AlmaWcShareOfCheckoutHelperTest extends TestCase {
 	 * @dataProvider data_provider_to_date
 	 */
 	public function test_get_to_date( $to_date, $expected ) {
-		$helper = new Alma_WC_Admin_Helper_Share_Of_Checkout( new Alma_WC_Helper_Order() );
-		$result = $this->invokeMethod( $helper, 'get_to_date', array( $to_date ) );
+        $result = Alma_WC_Admin_Helper_Share_Of_Checkout::get_to_date($to_date);
 		$this->assertEquals( $expected, $result );
 	}
 
@@ -191,11 +189,10 @@ class AlmaWcShareOfCheckoutHelperTest extends TestCase {
 	 * @return void
 	 */
 	public function test_get_payload( $orders_by_date_range_mock, $expectedPayload ) {
-		$orderHelperMock       = Mockery::mock(Alma_WC_Helper_Order::class );
+		$orderHelperMock       = Mockery::mock(Alma_WC_Admin_Helper_Order::class );
 		$orderHelperMock->shouldReceive('get_orders_by_date_range' )->andReturn( $orders_by_date_range_mock );
-		$shareOfCheckoutHelper = new Alma_WC_Admin_Helper_Share_Of_Checkout( $orderHelperMock );
 		$random_date = '2022-01-01';
-		$this->assertEquals( $expectedPayload, $shareOfCheckoutHelper->get_payload( $random_date ) );
+		$this->assertEquals( $expectedPayload, Alma_WC_Admin_Helper_Share_Of_Checkout::get_payload( $random_date ) );
 	}
 
 }

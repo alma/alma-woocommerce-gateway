@@ -67,7 +67,7 @@ class Alma_WC_Admin_Helper_Share_Of_Checkout {
 	 *
 	 * @return string
 	 */
-	protected static function get_from_date( $start_date ) {
+	public static function get_from_date( $start_date ) {
 		return $start_date . ' 00:00:00';
 	}
 
@@ -78,7 +78,7 @@ class Alma_WC_Admin_Helper_Share_Of_Checkout {
 	 *
 	 * @return string
 	 */
-	protected static function get_to_date( $start_date ) {
+	public static function get_to_date( $start_date ) {
 		return $start_date . ' 23:59:59';
 	}
 

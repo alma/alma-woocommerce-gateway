@@ -7,5 +7,5 @@ require __DIR__ . '/../includes/alma-wc-functions.php';
 /** LEGAL CHECKOUT FEATURE
  * require __DIR__ . '/../admin/helpers/class-alma-wc-admin-helper-share-of-checkout.php';
  * require __DIR__ .'/../includes/class-alma-wc-logger.php';
- * require __DIR__ .'/../includes/helpers/class-alma-wc-helper-order.php';
+ * require __DIR__ .'/../admin/helpers/class-alma-wc-admin-helper-order.php';
  */
