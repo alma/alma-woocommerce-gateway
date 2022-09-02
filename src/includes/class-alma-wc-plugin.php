@@ -112,10 +112,13 @@ class Alma_WC_Plugin {
 		add_action( 'init', array( $this, 'check_share_checkout' ) );
 		add_filter( 'allowed_redirect_hosts', array( $this, 'alma_domains_whitelist' ) );
 
-		add_filter( 'plugin_action_links_' . plugin_basename( ALMA_WC_PLUGIN_FILE ), array(
-			$this,
-			'plugin_action_links'
-		) );
+		add_filter(
+			'plugin_action_links_' . plugin_basename( ALMA_WC_PLUGIN_FILE ),
+			array(
+				$this,
+				'plugin_action_links',
+			)
+		);
 		add_action( 'wp_ajax_alma_dismiss_notice_message', array( $this, 'ajax_dismiss_notice' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'alma_admin_enqueue_scripts' ) );
 
@@ -125,10 +128,15 @@ class Alma_WC_Plugin {
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
 
 		$payment_upon_trigger_helper = new Alma_WC_Payment_Upon_Trigger();
-		add_action( 'woocommerce_order_status_changed', array(
-			$payment_upon_trigger_helper,
-			'woocommerce_order_status_changed'
-		), 10, 3 );
+		add_action(
+			'woocommerce_order_status_changed',
+			array(
+				$payment_upon_trigger_helper,
+				'woocommerce_order_status_changed',
+			),
+			10,
+			3
+		);
 
 		// Launch the "share of checkout".
 		$share_of_checkout = new Alma_WC_Share_Of_Checkout();
@@ -327,22 +335,22 @@ class Alma_WC_Plugin {
 		$message = get_option( 'alma_bootstrap_warning_message', '' );
 		if ( ! empty( $message ) && ! get_option( 'alma_bootstrap_warning_message_dismissed' ) ) {
 			?>
-            <div class="notice notice-warning is-dismissible alma-dismiss-bootstrap-warning-message">
-                <p>
-                    <strong><?php echo wp_kses_post( $message ); ?></strong>
-                </p>
-            </div>
-            <script>
-                (function ($) {
-                    $('.alma-dismiss-bootstrap-warning-message').on('click', '.notice-dismiss', function () {
-                        jQuery.post("<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>", {
-                            action: "alma_dismiss_notice_message",
-                            dismiss_action: "alma_dismiss_bootstrap_warning_message",
-                            nonce: "<?php echo esc_js( wp_create_nonce( 'alma_dismiss_notice' ) ); ?>"
-                        });
-                    });
-                })(jQuery);
-            </script>
+			<div class="notice notice-warning is-dismissible alma-dismiss-bootstrap-warning-message">
+				<p>
+					<strong><?php echo wp_kses_post( $message ); ?></strong>
+				</p>
+			</div>
+			<script>
+				(function ($) {
+					$('.alma-dismiss-bootstrap-warning-message').on('click', '.notice-dismiss', function () {
+						jQuery.post("<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>", {
+							action: "alma_dismiss_notice_message",
+							dismiss_action: "alma_dismiss_bootstrap_warning_message",
+							nonce: "<?php echo esc_js( wp_create_nonce( 'alma_dismiss_notice' ) ); ?>"
+						});
+					});
+				})(jQuery);
+			</script>
 			<?php
 		}
 	}
@@ -582,6 +590,7 @@ class Alma_WC_Plugin {
 
 	/**
 	 * Check the share of checkout
+	 *
 	 * @return void
 	 */
 	public function check_share_checkout() {
@@ -816,7 +825,7 @@ class Alma_WC_Plugin {
 	/**
 	 * Filter the alma gateway title (visible on checkout page).
 	 *
-	 * @param string $title The original title.
+	 * @param string  $title The original title.
 	 * @param integer $id The payment gateway id.
 	 *
 	 * @return string
@@ -847,7 +856,7 @@ class Alma_WC_Plugin {
 	/**
 	 * Filter the alma gateway description (visible on checkout page).
 	 *
-	 * @param string $description The original description.
+	 * @param string  $description The original description.
 	 * @param integer $id The payment gateway id.
 	 *
 	 * @return string

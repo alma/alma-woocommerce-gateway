@@ -15,11 +15,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Alma_WC_Refund_Helper
  */
 class Alma_WC_Refund_Helper {
-	const PREFIX_REFUND_COMMENT = 'Refund made via WooCommerce back-office - ';
+	const PREFIX_REFUND_COMMENT     = 'Refund made via WooCommerce back-office - ';
 	const FLAG_ORDER_FULLY_REFUNDED = 'alma_order_fully_refunded';
-	const NOTICE_TYPE_ERROR = 'error';
-	const NOTICE_TYPE_SUCCESS = 'success';
-	const REFUND_NOTICE_META_KEY = 'alma_refund_notices';
+	const NOTICE_TYPE_ERROR         = 'error';
+	const NOTICE_TYPE_SUCCESS       = 'success';
+	const REFUND_NOTICE_META_KEY    = 'alma_refund_notices';
 
 	/**
 	 * Logger
@@ -57,7 +57,7 @@ class Alma_WC_Refund_Helper {
 	 * Make full refund.
 	 *
 	 * @param WC_Order $order An order.
-	 * @param integer $refund_id Refund id.
+	 * @param integer  $refund_id Refund id.
 	 *
 	 * @return void
 	 */
@@ -100,7 +100,7 @@ class Alma_WC_Refund_Helper {
 	 * Adds a refund error note to an order + a notice
 	 *
 	 * @param WC_Order $order The order where to add a note & notice.
-	 * @param string $message The message.
+	 * @param string   $message The message.
 	 *
 	 * @return void
 	 * @see add_order_note()
@@ -113,8 +113,8 @@ class Alma_WC_Refund_Helper {
 	 * Adds a refund order note, and a back-office notice.
 	 *
 	 * @param WC_Order $order An order.
-	 * @param string $notice_type Notice type.
-	 * @param string $message Message to display.
+	 * @param string   $notice_type Notice type.
+	 * @param string   $message Message to display.
 	 *
 	 * @return void
 	 * @see add_notice()
@@ -135,8 +135,8 @@ class Alma_WC_Refund_Helper {
 	 * Adds an alma_refund_notices in post_meta
 	 *
 	 * @param WC_Order $order The order where to add a note & notice.
-	 * @param string $notice_type Notice type.
-	 * @param string $message The message.
+	 * @param string   $notice_type Notice type.
+	 * @param string   $message The message.
 	 *
 	 * @return void
 	 */
@@ -164,7 +164,7 @@ class Alma_WC_Refund_Helper {
 	 * Adds a refund success note to an order + a notice
 	 *
 	 * @param WC_Order $order The order where to add a note & notice.
-	 * @param string $message The message.
+	 * @param string   $message The message.
 	 *
 	 * @return void
 	 * @see add_order_note()
@@ -176,7 +176,7 @@ class Alma_WC_Refund_Helper {
 	/**
 	 * Tells if the order is valid for a partial refund.
 	 *
-	 * @param WC_Order $order An order.
+	 * @param WC_Order        $order An order.
 	 * @param WC_Order_Refund $refund A Refund object.
 	 *
 	 * @return bool

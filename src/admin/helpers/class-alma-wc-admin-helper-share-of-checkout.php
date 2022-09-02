@@ -33,6 +33,7 @@ class Alma_WC_Admin_Helper_Share_Of_Checkout {
 
 	/**
 	 * Returns the default date of the last share of checkout.
+	 *
 	 * @return int (timestamp)
 	 */
 	public static function get_default_last_update_date() {

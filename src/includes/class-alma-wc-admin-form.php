@@ -88,7 +88,7 @@ class Alma_WC_Admin_Form {
 	 * Inits test & live api keys fields.
 	 *
 	 * @param string $keys_title as section title.
-	 * @param array $default_settings as default settings.
+	 * @param array  $default_settings as default settings.
 	 *
 	 * @return array[]
 	 */
@@ -243,8 +243,8 @@ class Alma_WC_Admin_Form {
 	 * Inits a fee_plan's fields.
 	 *
 	 * @param FeePlan $fee_plan Fee plan definitions.
-	 * @param array $default_settings Default settings definitions.
-	 * @param bool $selected If this field is currently selected.
+	 * @param array   $default_settings Default settings definitions.
+	 * @param bool    $selected If this field is currently selected.
 	 *
 	 * @return array  as field_form definition
 	 */
@@ -335,13 +335,13 @@ class Alma_WC_Admin_Form {
 	 * Gets fee plan description.
 	 *
 	 * @param FeePlan $fee_plan The fee plan do describe.
-	 * @param float $min_amount Min amount.
-	 * @param float $max_amount Max amount.
-	 * @param float $merchant_fee_fixed Merchant fee fixed.
-	 * @param float $merchant_fee_variable Merchant fee variable.
-	 * @param float $customer_fee_fixed Customer fee fixed.
-	 * @param float $customer_fee_variable Customer fee variable.
-	 * @param float $customer_lending_rate Customer lending rate.
+	 * @param float   $min_amount Min amount.
+	 * @param float   $max_amount Max amount.
+	 * @param float   $merchant_fee_fixed Merchant fee fixed.
+	 * @param float   $merchant_fee_variable Merchant fee variable.
+	 * @param float   $customer_fee_fixed Customer fee fixed.
+	 * @param float   $customer_fee_variable Customer fee variable.
+	 * @param float   $customer_lending_rate Customer lending rate.
 	 *
 	 * @return string
 	 */
@@ -400,8 +400,8 @@ class Alma_WC_Admin_Form {
 	 * If all fees are <= 0 : return an empty string.
 	 *
 	 * @param string $translation as description prefix.
-	 * @param float $fee_variable as variable amount (if any).
-	 * @param float $fee_fixed as fixed amount (if any).
+	 * @param float  $fee_variable as variable amount (if any).
+	 * @param float  $fee_fixed as fixed amount (if any).
 	 *
 	 * @return string
 	 */
@@ -515,7 +515,7 @@ class Alma_WC_Admin_Form {
 	 *
 	 * @param string $payment_method_name The payment method name.
 	 * @param string $title The title.
-	 * @param array $default_settings The defaults settings.
+	 * @param array  $default_settings The defaults settings.
 	 *
 	 * @return array[]
 	 */
@@ -559,7 +559,7 @@ class Alma_WC_Admin_Form {
 	 * Adds all the translated fields for one field.
 	 *
 	 * @param string $field_name The field name.
-	 * @param array $field_infos The information for this field.
+	 * @param array  $field_infos The information for this field.
 	 * @param string $default The default value for the field.
 	 *
 	 * @return array
