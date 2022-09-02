@@ -60,7 +60,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		$this->title       = $this->get_option( 'title' );
 		$this->description = $this->get_option( 'description' );
-		do_action( 'show_share_checkout' );
 
 		add_action(
 			'woocommerce_update_options_payment_gateways_' . $this->id,

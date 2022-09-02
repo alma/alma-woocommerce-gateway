@@ -21,9 +21,9 @@ class Alma_WC_Admin_Helper_General {
 	/**
 	 * Get the html for the image to display
 	 *
-	 * @param string $title the alt attribute
-	 * @param string $id Used for the filter
-	 * @param string $path By default, the alma logo
+	 * @param string $title the alt attribute.
+	 * @param string $id Used for the filter.
+	 * @param string $path By default, the alma logo.
 	 *
 	 * @return string
 	 */
