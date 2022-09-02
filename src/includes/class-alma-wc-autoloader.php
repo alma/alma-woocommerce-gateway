@@ -48,7 +48,7 @@ class Alma_WC_Autoloader {
 		spl_autoload_register( array( $this, 'load_class' ) );
 
 		$this->include_path = untrailingslashit( ALMA_WC_PLUGIN_PATH ) . '/includes/';
-		$this->admin_path = untrailingslashit( ALMA_WC_PLUGIN_PATH ) . '/admin/';
+		$this->admin_path   = untrailingslashit( ALMA_WC_PLUGIN_PATH ) . '/admin/';
 	}
 
 	/**
@@ -57,6 +57,33 @@ class Alma_WC_Autoloader {
 	public static function autoload() {
 		if ( ! self::$instance ) {
 			self::$instance = new self();
+		}
+	}
+
+	/**
+	 * Auto-load WC classes on demand to reduce memory consumption.
+	 *
+	 * @param string $class as class name.
+	 */
+	public function load_class( $class ) {
+		$class = strtolower( $class );
+		$file  = $this->get_file_name_from_class( $class );
+		$path  = '';
+
+		if ( preg_match( '#^alma_wc_model_#', $class ) ) {
+			$path = $this->include_path . 'models/';
+		}
+
+		if ( preg_match( '#^alma_wc_helper_#', $class ) ) {
+			$path = $this->include_path . 'helpers/';
+		}
+
+		if ( preg_match( '#^alma_wc_admin_helper_#', $class ) ) {
+			$path = $this->admin_path . 'helpers/';
+		}
+
+		if ( empty( $path ) || ( ! $this->load_file( $path . $file ) && strpos( $class, 'wc_' ) === 0 ) ) {
+			$this->load_file( $this->include_path . $file );
 		}
 	}
 
@@ -86,32 +113,5 @@ class Alma_WC_Autoloader {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Auto-load WC classes on demand to reduce memory consumption.
-	 *
-	 * @param string $class as class name.
-	 */
-	public function load_class( $class ) {
-		$class = strtolower( $class );
-		$file  = $this->get_file_name_from_class( $class );
-		$path  = '';
-
-		if ( preg_match( '#^alma_wc_model_#', $class ) ) {
-			$path = $this->include_path . 'models/';
-		}
-
-		if ( preg_match( '#^alma_wc_helper_#', $class ) ) {
-			$path = $this->include_path . 'helpers/';
-		}
-
-		if ( preg_match( '#^alma_wc_admin_helper_#', $class ) ) {
-			$path = $this->admin_path . 'helpers/';
-		}
-
-		if ( empty( $path ) || ( ! $this->load_file( $path . $file ) && strpos( $class, 'wc_' ) === 0 ) ) {
-			$this->load_file( $this->include_path . $file );
-		}
 	}
 }

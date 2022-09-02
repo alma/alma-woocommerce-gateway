@@ -5,7 +5,6 @@
  * @package Alma_WC_Helper_Admin_Check_Legal
  */
 
-
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -19,8 +18,8 @@ class Alma_WC_Admin_Helper_Check_Legal {
 
 	/**
 	 * Initialize our hooks.
-     * Display legal notice checkout
-     * Includes the required assets
+	 * Display legal notice checkout
+	 * Includes the required assets
 	 *
 	 * @return void
 	 */
@@ -36,7 +35,7 @@ class Alma_WC_Admin_Helper_Check_Legal {
 	}
 
 	/**
-     * Build and display the modal
+	 * Build and display the modal
 	 * @return void
 	 */
 	public function get_modal_checkout_legal() {
@@ -85,8 +84,8 @@ class Alma_WC_Admin_Helper_Check_Legal {
 	}
 
 	/**
-     * Get the modal title
-     *
+	 * Get the modal title
+	 *
 	 * @return string
 	 */
 	public static function get_modal_title() {

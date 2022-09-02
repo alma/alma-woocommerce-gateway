@@ -21,26 +21,23 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Alma_WC_Plugin {
 	/**
+	 * Instance of Alma_Settings.
+	 *
+	 * @var Alma_WC_Settings
+	 */
+	public $settings;
+	/**
 	 * Eligibilities
 	 *
 	 * @var array<int,Eligibility>|null
 	 */
 	private $eligibilities;
-
 	/**
 	 * Flag to indicate the plugin has been bootstrapped.
 	 *
 	 * @var bool
 	 */
 	private $bootstrapped = false;
-
-	/**
-	 * Instance of Alma_Settings.
-	 *
-	 * @var Alma_WC_Settings
-	 */
-	public $settings;
-
 	/**
 	 * Instance of Alma Api client.
 	 *
@@ -73,41 +70,6 @@ class Alma_WC_Plugin {
 	}
 
 	/**
-	 * Retrieve Merchant from Alma API
-	 *
-	 * @return Merchant|null
-	 *
-	 * @throws RequestError On API exception.
-	 */
-	public function get_merchant() {
-		if ( $this->alma_merchant ) {
-			return $this->alma_merchant;
-		}
-		$client = $this->get_alma_client();
-		if ( ! $client ) {
-			return null;
-		}
-		$this->alma_merchant = $client->merchants->me();
-
-		return $this->alma_merchant;
-	}
-
-	/**
-	 * Init the alma widget handlers :
-	 * - hooked on WooCommerce Cart & Product actions
-	 * - AND add associated shortcodes
-	 */
-	private function init_widget_handlers() {
-		$shortcodes = new Alma_WC_Shortcodes();
-
-		$cart_handler = new Alma_WC_Cart_Handler();
-		$shortcodes->init_cart_widget_shortcode( $cart_handler );
-
-		$product_handler = new Alma_WC_Product_Handler();
-		$shortcodes->init_product_widget_shortcode( $product_handler );
-	}
-
-	/**
 	 * Update plugin to the latest version.
 	 *
 	 * @return void
@@ -122,44 +84,6 @@ class Alma_WC_Plugin {
 		if ( version_compare( ALMA_WC_VERSION, $db_version, '>' ) ) {
 			update_option( 'alma_version', ALMA_WC_VERSION );
 		}
-	}
-
-	/**
-	 * Init alma client.
-	 *
-	 * @return void
-	 */
-	private function init_alma_client() {
-		try {
-			$this->alma_client = new Client(
-				$this->settings->get_active_api_key(),
-				array(
-					'mode'   => $this->settings->get_environment(),
-					'logger' => $this->logger,
-				)
-			);
-
-			$this->alma_client->addUserAgentComponent( 'WordPress', get_bloginfo( 'version' ) );
-			$this->alma_client->addUserAgentComponent( 'WooCommerce', wc()->version );
-			$this->alma_client->addUserAgentComponent( 'Alma for WooCommerce', ALMA_WC_VERSION );
-		} catch ( \Exception $e ) {
-			if ( $this->settings->is_logging_enabled() ) {
-				$this->logger->log_stack_trace( 'Error creating Alma API client', $e );
-			}
-		}
-	}
-
-	/**
-	 * Get alma client.
-	 *
-	 * @return Client|null
-	 */
-	public function get_alma_client() {
-		if ( ! $this->alma_client ) {
-			$this->init_alma_client();
-		}
-
-		return $this->alma_client;
 	}
 
 	/**
@@ -185,10 +109,13 @@ class Alma_WC_Plugin {
 		);
 
 		add_action( 'init', array( $this, 'bootstrap' ) );
-		add_action('init',  array( $this, 'check_share_checkout') );
+		add_action( 'init', array( $this, 'check_share_checkout' ) );
 		add_filter( 'allowed_redirect_hosts', array( $this, 'alma_domains_whitelist' ) );
 
-		add_filter( 'plugin_action_links_' . plugin_basename( ALMA_WC_PLUGIN_FILE ), array( $this, 'plugin_action_links' ) );
+		add_filter( 'plugin_action_links_' . plugin_basename( ALMA_WC_PLUGIN_FILE ), array(
+			$this,
+			'plugin_action_links'
+		) );
 		add_action( 'wp_ajax_alma_dismiss_notice_message', array( $this, 'ajax_dismiss_notice' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'alma_admin_enqueue_scripts' ) );
 
@@ -198,7 +125,10 @@ class Alma_WC_Plugin {
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
 
 		$payment_upon_trigger_helper = new Alma_WC_Payment_Upon_Trigger();
-		add_action( 'woocommerce_order_status_changed', array( $payment_upon_trigger_helper, 'woocommerce_order_status_changed' ), 10, 3 );
+		add_action( 'woocommerce_order_status_changed', array(
+			$payment_upon_trigger_helper,
+			'woocommerce_order_status_changed'
+		), 10, 3 );
 
 		// Launch the "share of checkout".
 		$share_of_checkout = new Alma_WC_Share_Of_Checkout();
@@ -226,6 +156,17 @@ class Alma_WC_Plugin {
 			ALMA_WC_VERSION,
 			true
 		);
+	}
+
+	/**
+	 * Get asset url.
+	 *
+	 * @param string $path Path to asset relative to the plugin's assets directory.
+	 *
+	 * @return string URL to given asset
+	 */
+	public function get_asset_url( $path ) {
+		return ALMA_WC_PLUGIN_URL . 'assets/' . $path;
 	}
 
 	/**
@@ -264,53 +205,12 @@ class Alma_WC_Plugin {
 	}
 
 	/**
-	 * Handle settings exception.
-	 *
-	 * @param \Exception $exception Exception.
+	 * Load plugin textdomain.
 	 *
 	 * @return void
 	 */
-	public function handle_settings_exception( $exception ) {
-		if ( get_option( 'alma_warnings_handled' ) ) {
-			return;
-		}
-
-		delete_option( 'alma_bootstrap_warning_message_dismissed' );
-		update_option( 'alma_bootstrap_warning_message', $exception->getMessage() );
-		$this->logger->warning( 'Bootstrap warning: ' . $exception->getMessage() );
-
-		add_action( 'admin_notices', array( $this, 'show_settings_warning' ) );
-
-		update_option( 'alma_warnings_handled', true );
-	}
-
-	/**
-	 * Show settings warning.
-	 *
-	 * @return void
-	 */
-	public function show_settings_warning() {
-		$message = get_option( 'alma_bootstrap_warning_message', '' );
-		if ( ! empty( $message ) && ! get_option( 'alma_bootstrap_warning_message_dismissed' ) ) {
-			?>
-			<div class="notice notice-warning is-dismissible alma-dismiss-bootstrap-warning-message">
-				<p>
-					<strong><?php echo wp_kses_post( $message ); ?></strong>
-				</p>
-			</div>
-			<script>
-				(function ($) {
-					$('.alma-dismiss-bootstrap-warning-message').on('click', '.notice-dismiss', function () {
-						jQuery.post("<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>", {
-							action: "alma_dismiss_notice_message",
-							dismiss_action: "alma_dismiss_bootstrap_warning_message",
-							nonce: "<?php echo esc_js( wp_create_nonce( 'alma_dismiss_notice' ) ); ?>"
-						});
-					});
-				})(jQuery);
-			</script>
-			<?php
-		}
+	public function load_plugin_textdomain() {
+		load_plugin_textdomain( 'alma-gateway-for-woocommerce', false, plugin_basename( ALMA_WC_PLUGIN_PATH ) . '/languages' );
 	}
 
 	/**
@@ -351,93 +251,6 @@ class Alma_WC_Plugin {
 	}
 
 	/**
-	 * Check settings.
-	 *
-	 * @return void
-	 * @see self::force_check_settings()
-	 */
-	public function check_settings() {
-		if ( ( $this->settings->fully_configured || get_option( 'alma_warnings_handled' ) ) ) {
-			return;
-		}
-
-		$this->force_check_settings();
-	}
-
-	/**
-     * Check the share of checkout
-	 * @return void
-	 */
-    public function check_share_checkout() {
-	    if ( !is_admin() ) {
-            return;
-	    }
-
-	    if ( 'yes' === alma_wc_plugin()->settings->share_of_checkout_enabled ) {
-		    return;
-	    }
-	    ( new Alma_WC_Admin_Helper_Check_Legal() )->init();
-	  // add_action( 'admin_notices', array( new Alma_WC_Helper_Admin_View(), 'show_share_checkout_modal2' ) );*
-
-	 //   add_action( 'admin_notices', array( new Alma_WC_Helper_Admin_View() ,'my_checkout_note' ));
-
-    }
-
-	/**
-	 *  Check that Alma is available for the current currency
-	 */
-	public function check_currency() {
-		$currency = get_woocommerce_currency();
-		if ( 'EUR' !== $currency ) {
-			$this->logger->info( "Currency $currency not supported - Not displaying Alma" );
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Check activation.
-	 *
-	 * @return void
-	 *
-	 * @throws Exception Exception.
-	 */
-	public function check_activation() {
-		$gateway = new Alma_WC_Payment_Gateway();
-		$enabled = $gateway->get_option( 'enabled', 'no' );
-
-		if ( ! alma_wc_string_to_bool( $enabled ) ) {
-			throw new Exception(
-				sprintf(
-					// translators: %s: Admin settings url.
-					__( "Thanks for installing Alma! Start by <a href='%s'>activating Alma's payment method</a>, then set it up to get started.", 'alma-gateway-for-woocommerce' ),
-					esc_url( $this->get_admin_setting_url( false ) )
-				)
-			);
-		}
-	}
-
-	/**
-	 * Check that we have an API key.
-	 * If not, it will throw an exception that will result in a prompt to configure the plugin
-	 *
-	 * @throws Exception Exception.
-	 */
-	public function check_credentials() {
-		if ( $this->settings->need_api_key() ) {
-			$settings_url = $this->get_admin_setting_url();
-			throw new Exception(
-				sprintf(
-					// translators: %s: Admin settings url.
-					__( 'Alma is almost ready. To get started, <a href="%s">fill in your API keys</a>.', 'alma-gateway-for-woocommerce' ),
-					esc_url( $settings_url )
-				)
-			);
-		}
-	}
-
-	/**
 	 * Run the plugin.
 	 */
 	private function run() {
@@ -451,6 +264,7 @@ class Alma_WC_Plugin {
 		// Don't advertise our payment gateway if we're in test mode and current user is not an admin.
 		if ( ! $this->is_allowed_to_see_alma( wp_get_current_user() ) ) {
 			$this->logger->info( 'Not displaying Alma in Test mode to non-admin user' );
+
 			return;
 		}
 
@@ -469,88 +283,126 @@ class Alma_WC_Plugin {
 	}
 
 	/**
-	 * Check merchant status.
-	 *
-	 * @throws Exception Exception.
+	 * Init the alma widget handlers :
+	 * - hooked on WooCommerce Cart & Product actions
+	 * - AND add associated shortcodes
 	 */
-	public function check_merchant_status() {
-		$alma = $this->get_alma_client();
+	private function init_widget_handlers() {
+		$shortcodes = new Alma_WC_Shortcodes();
 
-		$settings_url = $this->get_admin_setting_url();
-		if ( ! $alma ) {
-			throw new Exception(
-				sprintf(
-					// translators: %1$s: Admin settings url, %2$s: Admin logs url.
-					__( 'Error while initializing Alma API client.<br><a href="%1$s">Activate debug mode</a> and <a href="%2$s">check logs</a> for more details.', 'alma-gateway-for-woocommerce' ),
-					esc_url( $settings_url ),
-					esc_url( $this->get_admin_logs_url() )
-				)
-			);
-		}
+		$cart_handler = new Alma_WC_Cart_Handler();
+		$shortcodes->init_cart_widget_shortcode( $cart_handler );
 
-		try {
-			$merchant = $this->get_merchant();
-		} catch ( RequestError $e ) {
-			if ( $e->response && 401 === $e->response->responseCode ) {
-				throw new Exception(
-					sprintf(
-						// translators: %s: Alma dashboard url.
-						__( 'Could not connect to Alma using your API keys.<br>Please double check your keys on your <a href="%1$s" target="_blank">Alma dashboard</a>.', 'alma-gateway-for-woocommerce' ),
-						$this->get_alma_dashboard_url( 'security' )
-					)
-				);
-			} else {
-				throw new Exception(
-					sprintf(
-						// translators: %s: Error message.
-						__( 'Alma encountered an error when fetching merchant status: %s', 'alma-gateway-for-woocommerce' ),
-						$e->getMessage()
-					),
-					$e->getCode(),
-					$e
-				);
-			}
-		}
-
-		if ( ! $merchant->can_create_payments ) {
-			throw new Exception(
-				sprintf(
-					// translators: %s: Alma dashboard url.
-					__( 'Your Alma account needs to be activated before you can use Alma on your shop.<br>Go to your <a href="%1$s" target="_blank">Alma dashboard</a> to activate your account.<br><a href="%2$s">Refresh</a> the page when ready.', 'alma-gateway-for-woocommerce' ),
-					$this->get_alma_dashboard_url( 'settings' ),
-					esc_url( $settings_url )
-				)
-			);
-		}
+		$product_handler = new Alma_WC_Product_Handler();
+		$shortcodes->init_product_widget_shortcode( $product_handler );
 	}
 
 	/**
-	 * Register Alma payment gateway.
+	 * Handle settings exception.
 	 *
-	 * @param string[] $gateways Payment gateways.
+	 * @param \Exception $exception Exception.
 	 *
-	 * @return string[]
+	 * @return void
 	 */
-	public function add_payment_gateway( $gateways ) {
-		$gateways[] = 'Alma_WC_Payment_Gateway';
-
-		return $gateways;
-	}
-
-	/**
-	 * AJAX handler for dismiss notice action.
-	 */
-	public function ajax_dismiss_notice() {
-		if ( empty( $_POST['dismiss_action'] ) ) {
+	public function handle_settings_exception( $exception ) {
+		if ( get_option( 'alma_warnings_handled' ) ) {
 			return;
 		}
 
-		check_ajax_referer( 'alma_dismiss_notice', 'nonce' );
-		if ( 'alma_dismiss_bootstrap_warning_message' === $_POST['dismiss_action'] ) {
-			update_option( 'alma_bootstrap_warning_message_dismissed', true );
+		delete_option( 'alma_bootstrap_warning_message_dismissed' );
+		update_option( 'alma_bootstrap_warning_message', $exception->getMessage() );
+		$this->logger->warning( 'Bootstrap warning: ' . $exception->getMessage() );
+
+		add_action( 'admin_notices', array( $this, 'show_settings_warning' ) );
+
+		update_option( 'alma_warnings_handled', true );
+	}
+
+	/**
+	 * Show settings warning.
+	 *
+	 * @return void
+	 */
+	public function show_settings_warning() {
+		$message = get_option( 'alma_bootstrap_warning_message', '' );
+		if ( ! empty( $message ) && ! get_option( 'alma_bootstrap_warning_message_dismissed' ) ) {
+			?>
+            <div class="notice notice-warning is-dismissible alma-dismiss-bootstrap-warning-message">
+                <p>
+                    <strong><?php echo wp_kses_post( $message ); ?></strong>
+                </p>
+            </div>
+            <script>
+                (function ($) {
+                    $('.alma-dismiss-bootstrap-warning-message').on('click', '.notice-dismiss', function () {
+                        jQuery.post("<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>", {
+                            action: "alma_dismiss_notice_message",
+                            dismiss_action: "alma_dismiss_bootstrap_warning_message",
+                            nonce: "<?php echo esc_js( wp_create_nonce( 'alma_dismiss_notice' ) ); ?>"
+                        });
+                    });
+                })(jQuery);
+            </script>
+			<?php
+		}
+	}
+
+	/**
+	 * Check settings.
+	 *
+	 * @return void
+	 * @see self::force_check_settings()
+	 */
+	public function check_settings() {
+		if ( ( $this->settings->fully_configured || get_option( 'alma_warnings_handled' ) ) ) {
+			return;
 		}
 
-		wp_die();
+		$this->force_check_settings();
+	}
+
+	/**
+	 * Force Check settings.
+	 *
+	 * @return void
+	 */
+	public function force_check_settings() {
+		try {
+			update_option( 'alma_warnings_handled', false );
+			$this->settings->fully_configured = false;
+
+			$this->check_activation();
+			$this->check_credentials();
+			$this->check_merchant_status();
+
+			$this->settings->fully_configured = true;
+
+			$this->settings->save();
+		} catch ( Exception $exception ) {
+			$this->handle_settings_exception( $exception );
+		}
+	}
+
+	/**
+	 * Check activation.
+	 *
+	 * @return void
+	 *
+	 * @throws Exception Exception.
+	 */
+	public function check_activation() {
+		$gateway = new Alma_WC_Payment_Gateway();
+		$enabled = $gateway->get_option( 'enabled', 'no' );
+
+		if ( ! alma_wc_string_to_bool( $enabled ) ) {
+			throw new Exception(
+				sprintf(
+				// translators: %s: Admin settings url.
+					__( "Thanks for installing Alma! Start by <a href='%s'>activating Alma's payment method</a>, then set it up to get started.", 'alma-gateway-for-woocommerce' ),
+					esc_url( $this->get_admin_setting_url( false ) )
+				)
+			);
+		}
 	}
 
 	/**
@@ -569,12 +421,224 @@ class Alma_WC_Plugin {
 	}
 
 	/**
+	 * Check that we have an API key.
+	 * If not, it will throw an exception that will result in a prompt to configure the plugin
+	 *
+	 * @throws Exception Exception.
+	 */
+	public function check_credentials() {
+		if ( $this->settings->need_api_key() ) {
+			$settings_url = $this->get_admin_setting_url();
+			throw new Exception(
+				sprintf(
+				// translators: %s: Admin settings url.
+					__( 'Alma is almost ready. To get started, <a href="%s">fill in your API keys</a>.', 'alma-gateway-for-woocommerce' ),
+					esc_url( $settings_url )
+				)
+			);
+		}
+	}
+
+	/**
+	 * Check merchant status.
+	 *
+	 * @throws Exception Exception.
+	 */
+	public function check_merchant_status() {
+		$alma = $this->get_alma_client();
+
+		$settings_url = $this->get_admin_setting_url();
+		if ( ! $alma ) {
+			throw new Exception(
+				sprintf(
+				// translators: %1$s: Admin settings url, %2$s: Admin logs url.
+					__( 'Error while initializing Alma API client.<br><a href="%1$s">Activate debug mode</a> and <a href="%2$s">check logs</a> for more details.', 'alma-gateway-for-woocommerce' ),
+					esc_url( $settings_url ),
+					esc_url( $this->get_admin_logs_url() )
+				)
+			);
+		}
+
+		try {
+			$merchant = $this->get_merchant();
+		} catch ( RequestError $e ) {
+			if ( $e->response && 401 === $e->response->responseCode ) {
+				throw new Exception(
+					sprintf(
+					// translators: %s: Alma dashboard url.
+						__( 'Could not connect to Alma using your API keys.<br>Please double check your keys on your <a href="%1$s" target="_blank">Alma dashboard</a>.', 'alma-gateway-for-woocommerce' ),
+						$this->get_alma_dashboard_url( 'security' )
+					)
+				);
+			} else {
+				throw new Exception(
+					sprintf(
+					// translators: %s: Error message.
+						__( 'Alma encountered an error when fetching merchant status: %s', 'alma-gateway-for-woocommerce' ),
+						$e->getMessage()
+					),
+					$e->getCode(),
+					$e
+				);
+			}
+		}
+
+		if ( ! $merchant->can_create_payments ) {
+			throw new Exception(
+				sprintf(
+				// translators: %s: Alma dashboard url.
+					__( 'Your Alma account needs to be activated before you can use Alma on your shop.<br>Go to your <a href="%1$s" target="_blank">Alma dashboard</a> to activate your account.<br><a href="%2$s">Refresh</a> the page when ready.', 'alma-gateway-for-woocommerce' ),
+					$this->get_alma_dashboard_url( 'settings' ),
+					esc_url( $settings_url )
+				)
+			);
+		}
+	}
+
+	/**
+	 * Get alma client.
+	 *
+	 * @return Client|null
+	 */
+	public function get_alma_client() {
+		if ( ! $this->alma_client ) {
+			$this->init_alma_client();
+		}
+
+		return $this->alma_client;
+	}
+
+	/**
+	 * Init alma client.
+	 *
+	 * @return void
+	 */
+	private function init_alma_client() {
+		try {
+			$this->alma_client = new Client(
+				$this->settings->get_active_api_key(),
+				array(
+					'mode'   => $this->settings->get_environment(),
+					'logger' => $this->logger,
+				)
+			);
+
+			$this->alma_client->addUserAgentComponent( 'WordPress', get_bloginfo( 'version' ) );
+			$this->alma_client->addUserAgentComponent( 'WooCommerce', wc()->version );
+			$this->alma_client->addUserAgentComponent( 'Alma for WooCommerce', ALMA_WC_VERSION );
+		} catch ( \Exception $e ) {
+			if ( $this->settings->is_logging_enabled() ) {
+				$this->logger->log_stack_trace( 'Error creating Alma API client', $e );
+			}
+		}
+	}
+
+	/**
 	 * Get admin logs url.
 	 *
 	 * @return string
 	 */
 	public function get_admin_logs_url() {
 		return admin_url( 'admin.php?page=wc-status&tab=logs' );
+	}
+
+	/**
+	 * Retrieve Merchant from Alma API
+	 *
+	 * @return Merchant|null
+	 *
+	 * @throws RequestError On API exception.
+	 */
+	public function get_merchant() {
+		if ( $this->alma_merchant ) {
+			return $this->alma_merchant;
+		}
+		$client = $this->get_alma_client();
+		if ( ! $client ) {
+			return null;
+		}
+		$this->alma_merchant = $client->merchants->me();
+
+		return $this->alma_merchant;
+	}
+
+	/**
+	 * Get Alma full URL depends on test or live mode (sandbox or not)
+	 *
+	 * @param string $path as path to add after default scheme://host/ infos.
+	 *
+	 * @return string as full URL
+	 */
+	public function get_alma_dashboard_url( $path = '' ) {
+		if ( $this->settings->is_live() ) {
+			/* translators: %s -> path to add after dashboard url */
+			return esc_url( sprintf( __( 'https://dashboard.getalma.eu/%s', 'alma-gateway-for-woocommerce' ), $path ) );
+		}
+
+		/* translators: %s -> path to add after sandbox dashboard url */
+
+		return esc_url( sprintf( __( 'https://dashboard.sandbox.getalma.eu/%s', 'alma-gateway-for-woocommerce' ), $path ) );
+	}
+
+	/**
+	 * Check the share of checkout
+	 * @return void
+	 */
+	public function check_share_checkout() {
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		if ( 'yes' === alma_wc_plugin()->settings->share_of_checkout_enabled ) {
+			return;
+		}
+
+		( new Alma_WC_Admin_Helper_Check_Legal() )->init();
+	}
+
+	/**
+	 *  Check that Alma is available for the current currency
+	 */
+	public function check_currency() {
+		$currency = get_woocommerce_currency();
+		if ( 'EUR' !== $currency ) {
+			$this->logger->info( "Currency $currency not supported - Not displaying Alma" );
+
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Register Alma payment gateway.
+	 *
+	 * @param string[] $gateways Payment gateways.
+	 *
+	 * @return string[]
+	 */
+	public function add_payment_gateway( $gateways ) {
+		$gateways[] = 'Alma_WC_Payment_Gateway';
+
+		return $gateways;
+	}
+
+	/** HELPERS **/
+
+	/**
+	 * AJAX handler for dismiss notice action.
+	 */
+	public function ajax_dismiss_notice() {
+		if ( empty( $_POST['dismiss_action'] ) ) {
+			return;
+		}
+
+		check_ajax_referer( 'alma_dismiss_notice', 'nonce' );
+		if ( 'alma_dismiss_bootstrap_warning_message' === $_POST['dismiss_action'] ) {
+			update_option( 'alma_bootstrap_warning_message_dismissed', true );
+		}
+
+		wp_die();
 	}
 
 	/**
@@ -589,15 +653,6 @@ class Alma_WC_Plugin {
 		$domains[] = 'pay.sandbox.getalma.eu';
 
 		return $domains;
-	}
-
-	/**
-	 * Load plugin textdomain.
-	 *
-	 * @return void
-	 */
-	public function load_plugin_textdomain() {
-		load_plugin_textdomain( 'alma-gateway-for-woocommerce', false, plugin_basename( ALMA_WC_PLUGIN_PATH ) . '/languages' );
 	}
 
 	/**
@@ -618,17 +673,15 @@ class Alma_WC_Plugin {
 		return array_merge( $plugin_links, $links );
 	}
 
-	/** HELPERS **/
-
 	/**
-	 * Get asset url.
+	 * Handle customer return.
 	 *
-	 * @param string $path Path to asset relative to the plugin's assets directory.
-	 *
-	 * @return string URL to given asset
+	 * @return void
 	 */
-	public function get_asset_url( $path ) {
-		return ALMA_WC_PLUGIN_URL . 'assets/' . $path;
+	public function handle_customer_return() {
+		$payment_id = $this->get_payment_to_validate();
+		$gateway    = new Alma_WC_Payment_Gateway();
+		$gateway->validate_payment_on_customer_return( $payment_id );
 	}
 
 	/**
@@ -658,17 +711,6 @@ class Alma_WC_Plugin {
 	}
 
 	/**
-	 * Handle customer return.
-	 *
-	 * @return void
-	 */
-	public function handle_customer_return() {
-		$payment_id = $this->get_payment_to_validate();
-		$gateway    = new Alma_WC_Payment_Gateway();
-		$gateway->validate_payment_on_customer_return( $payment_id );
-	}
-
-	/**
 	 * Handle ipn callback.
 	 *
 	 * @return void
@@ -677,44 +719,6 @@ class Alma_WC_Plugin {
 		$payment_id = $this->get_payment_to_validate();
 		$gateway    = new Alma_WC_Payment_Gateway();
 		$gateway->validate_payment_from_ipn( $payment_id );
-	}
-
-	/**
-	 * Get Alma full URL depends on test or live mode (sandbox or not)
-	 *
-	 * @param string $path as path to add after default scheme://host/ infos.
-	 *
-	 * @return string as full URL
-	 */
-	public function get_alma_dashboard_url( $path = '' ) {
-		if ( $this->settings->is_live() ) {
-			/* translators: %s -> path to add after dashboard url */
-			return esc_url( sprintf( __( 'https://dashboard.getalma.eu/%s', 'alma-gateway-for-woocommerce' ), $path ) );
-		}
-		/* translators: %s -> path to add after sandbox dashboard url */
-		return esc_url( sprintf( __( 'https://dashboard.sandbox.getalma.eu/%s', 'alma-gateway-for-woocommerce' ), $path ) );
-	}
-
-	/**
-	 * Force Check settings.
-	 *
-	 * @return void
-	 */
-	public function force_check_settings() {
-		try {
-			update_option( 'alma_warnings_handled', false );
-			$this->settings->fully_configured = false;
-
-			$this->check_activation();
-			$this->check_credentials();
-			$this->check_merchant_status();
-
-			$this->settings->fully_configured = true;
-
-			$this->settings->save();
-		} catch ( Exception $exception ) {
-			$this->handle_settings_exception( $exception );
-		}
 	}
 
 	/**
@@ -729,6 +733,7 @@ class Alma_WC_Plugin {
 		if ( ! $client ) {
 			return array();
 		}
+
 		return $client->merchants->feePlans( FeePlan::KIND_GENERAL, 'all', true );
 	}
 
@@ -742,7 +747,7 @@ class Alma_WC_Plugin {
 
 		return array_values(
 			array_map(
-				function( $plan ) use ( $amount ) {
+				function ( $plan ) use ( $amount ) {
 					unset( $plan['max_amount'] );
 					unset( $plan['min_amount'] );
 					if ( isset( $plan['deferred_months'] ) && 0 === $plan['deferred_months'] ) {
@@ -751,11 +756,21 @@ class Alma_WC_Plugin {
 					if ( isset( $plan['deferred_days'] ) && 0 === $plan['deferred_days'] ) {
 						unset( $plan['deferred_days'] );
 					}
+
 					return $plan;
 				},
 				$this->settings->get_eligible_plans_definitions( $amount )
 			)
 		);
+	}
+
+	/**
+	 * Check if cart has eligibilities.
+	 *
+	 * @return bool
+	 */
+	public function is_there_eligibility_in_cart() {
+		return count( $this->get_eligible_plans_keys_for_cart() ) > 0;
 	}
 
 	/**
@@ -790,6 +805,7 @@ class Alma_WC_Plugin {
 				$this->eligibilities = $alma->payments->eligibility( Alma_WC_Model_Payment::get_eligibility_payload_from_cart() );
 			} catch ( RequestError $error ) {
 				$this->logger->log_stack_trace( 'Error while checking payment eligibility: ', $error );
+
 				return null;
 			}
 		}
@@ -798,19 +814,11 @@ class Alma_WC_Plugin {
 	}
 
 	/**
-	 * Check if cart has eligibilities.
-	 *
-	 * @return bool
-	 */
-	public function is_there_eligibility_in_cart() {
-		return count( $this->get_eligible_plans_keys_for_cart() ) > 0;
-	}
-
-	/**
 	 * Filter the alma gateway title (visible on checkout page).
 	 *
-	 * @param string  $title The original title.
+	 * @param string $title The original title.
 	 * @param integer $id The payment gateway id.
+	 *
 	 * @return string
 	 */
 	public function woocommerce_gateway_title( $title, $id ) {
@@ -839,8 +847,9 @@ class Alma_WC_Plugin {
 	/**
 	 * Filter the alma gateway description (visible on checkout page).
 	 *
-	 * @param string  $description The original description.
+	 * @param string $description The original description.
 	 * @param integer $id The payment gateway id.
+	 *
 	 * @return string
 	 */
 	public function woocommerce_gateway_description( $description, $id ) {

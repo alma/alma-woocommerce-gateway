@@ -15,11 +15,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Alma_WC_Refund_Helper
  */
 class Alma_WC_Refund_Helper {
-	const PREFIX_REFUND_COMMENT     = 'Refund made via WooCommerce back-office - ';
+	const PREFIX_REFUND_COMMENT = 'Refund made via WooCommerce back-office - ';
 	const FLAG_ORDER_FULLY_REFUNDED = 'alma_order_fully_refunded';
-	const NOTICE_TYPE_ERROR         = 'error';
-	const NOTICE_TYPE_SUCCESS       = 'success';
-	const REFUND_NOTICE_META_KEY    = 'alma_refund_notices';
+	const NOTICE_TYPE_ERROR = 'error';
+	const NOTICE_TYPE_SUCCESS = 'success';
+	const REFUND_NOTICE_META_KEY = 'alma_refund_notices';
 
 	/**
 	 * Logger
@@ -43,19 +43,10 @@ class Alma_WC_Refund_Helper {
 	}
 
 	/**
-	 * Gets the amount to refund.
-	 *
-	 * @param WC_Order_Refund $refund A Refund object.
-	 * @return int
-	 */
-	public function get_refund_amount( $refund ) {
-		return alma_wc_price_to_cents( floatval( $refund->get_amount() ) );
-	}
-
-	/**
 	 * Gets the amount to refund for display on the page.
 	 *
 	 * @param WC_Order_Refund $refund A Refund object.
+	 *
 	 * @return string
 	 */
 	public function get_display_refund_amount( $refund ) {
@@ -63,32 +54,11 @@ class Alma_WC_Refund_Helper {
 	}
 
 	/**
-	 * Adds a refund order note, and a back-office notice.
-	 *
-	 * @param WC_Order $order An order.
-	 * @param string   $notice_type Notice type.
-	 * @param string   $message Message to display.
-	 *
-	 * @return void
-	 * @see add_notice()
-	 */
-	private function add_order_note( $order, $notice_type, $message ) {
-
-		if ( in_array( $message, $this->messages ) ) {
-			return;
-		}
-		$this->messages[] = $message;
-
-		$order->add_order_note( $message );
-
-		$this->add_notice( $order, $notice_type, $message );
-	}
-
-	/**
 	 * Make full refund.
 	 *
 	 * @param WC_Order $order An order.
-	 * @param integer  $refund_id Refund id.
+	 * @param integer $refund_id Refund id.
+	 *
 	 * @return void
 	 */
 	public function make_full_refund( $order, $refund_id = 0 ) {
@@ -100,6 +70,7 @@ class Alma_WC_Refund_Helper {
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
 			$this->add_error_note( $order, __( 'Alma API client init error.', 'alma-gateway-for-woocommerce' ) );
+
 			return;
 		}
 
@@ -126,10 +97,88 @@ class Alma_WC_Refund_Helper {
 	}
 
 	/**
+	 * Adds a refund error note to an order + a notice
+	 *
+	 * @param WC_Order $order The order where to add a note & notice.
+	 * @param string $message The message.
+	 *
+	 * @return void
+	 * @see add_order_note()
+	 */
+	public function add_error_note( WC_Order $order, $message ) {
+		$this->add_order_note( $order, self::NOTICE_TYPE_ERROR, $message );
+	}
+
+	/**
+	 * Adds a refund order note, and a back-office notice.
+	 *
+	 * @param WC_Order $order An order.
+	 * @param string $notice_type Notice type.
+	 * @param string $message Message to display.
+	 *
+	 * @return void
+	 * @see add_notice()
+	 */
+	private function add_order_note( $order, $notice_type, $message ) {
+
+		if ( in_array( $message, $this->messages ) ) {
+			return;
+		}
+		$this->messages[] = $message;
+
+		$order->add_order_note( $message );
+
+		$this->add_notice( $order, $notice_type, $message );
+	}
+
+	/**
+	 * Adds an alma_refund_notices in post_meta
+	 *
+	 * @param WC_Order $order The order where to add a note & notice.
+	 * @param string $notice_type Notice type.
+	 * @param string $message The message.
+	 *
+	 * @return void
+	 */
+	protected function add_notice( WC_Order $order, $notice_type, $message ) {
+		$refund_notices   = get_post_meta( $order->get_id(), self::REFUND_NOTICE_META_KEY, false );
+		$refund_notices[] = array(
+			'notice_type' => $notice_type,
+			'message'     => $message,
+		);
+		update_post_meta( $order->get_id(), self::REFUND_NOTICE_META_KEY, $refund_notices );
+	}
+
+	/**
+	 * Formats a comment by adding a default refund sentence prefix.
+	 *
+	 * @param string $comment The comment to prefix to.
+	 *
+	 * @return string
+	 */
+	public function format_refund_comment( $comment ) {
+		return self::PREFIX_REFUND_COMMENT . $comment;
+	}
+
+	/**
+	 * Adds a refund success note to an order + a notice
+	 *
+	 * @param WC_Order $order The order where to add a note & notice.
+	 * @param string $message The message.
+	 *
+	 * @return void
+	 * @see add_order_note()
+	 */
+	public function add_success_note( WC_Order $order, $message ) {
+		$this->add_order_note( $order, self::NOTICE_TYPE_SUCCESS, $message );
+	}
+
+	/**
 	 * Tells if the order is valid for a partial refund.
 	 *
-	 * @param WC_Order        $order An order.
+	 * @param WC_Order $order An order.
 	 * @param WC_Order_Refund $refund A Refund object.
+	 *
 	 * @return bool
 	 */
 	public function is_partially_refundable( $order, $refund ) {
@@ -142,9 +191,21 @@ class Alma_WC_Refund_Helper {
 	}
 
 	/**
+	 * Gets the amount to refund.
+	 *
+	 * @param WC_Order_Refund $refund A Refund object.
+	 *
+	 * @return int
+	 */
+	public function get_refund_amount( $refund ) {
+		return alma_wc_price_to_cents( floatval( $refund->get_amount() ) );
+	}
+
+	/**
 	 * Tells if the order is valid for a full refund with Alma.
 	 *
 	 * @param WC_Order $order An order.
+	 *
 	 * @return bool
 	 */
 	public function is_fully_refundable( $order ) {
@@ -155,6 +216,7 @@ class Alma_WC_Refund_Helper {
 	 * Has this order been paid via Alma payment method ?.
 	 *
 	 * @param WC_Order $order An order.
+	 *
 	 * @return bool
 	 */
 	public function is_paid_with_alma( $order ) {
@@ -173,6 +235,7 @@ class Alma_WC_Refund_Helper {
 	 * Has this order a transaction id ?.
 	 *
 	 * @param WC_Order $order An order.
+	 *
 	 * @return bool
 	 */
 	private function has_transaction_id( $order ) {
@@ -181,64 +244,11 @@ class Alma_WC_Refund_Helper {
 			$error_message = sprintf( __( 'Error while getting alma transaction_id for order_id : %s.', 'alma-gateway-for-woocommerce' ), $order->get_id() );
 			$this->add_error_note( $order, $error_message );
 			$this->logger->error( $error_message );
+
 			return false;
 		}
+
 		return true;
-	}
-
-	/**
-	 * Formats a comment by adding a default refund sentence prefix.
-	 *
-	 * @param string $comment The comment to prefix to.
-	 *
-	 * @return string
-	 */
-	public function format_refund_comment( $comment ) {
-		return self::PREFIX_REFUND_COMMENT . $comment;
-	}
-
-	/**
-	 * Adds an alma_refund_notices in post_meta
-	 *
-	 * @param WC_Order $order The order where to add a note & notice.
-	 * @param string   $notice_type Notice type.
-	 * @param string   $message The message.
-	 *
-	 * @return void
-	 */
-	protected function add_notice( WC_Order $order, $notice_type, $message ) {
-		$refund_notices   = get_post_meta( $order->get_id(), self::REFUND_NOTICE_META_KEY, false );
-		$refund_notices[] = array(
-			'notice_type' => $notice_type,
-			'message'     => $message,
-		);
-		update_post_meta( $order->get_id(), self::REFUND_NOTICE_META_KEY, $refund_notices );
-	}
-
-	/**
-	 * Adds a refund error note to an order + a notice
-	 *
-	 * @param WC_Order $order The order where to add a note & notice.
-	 * @param string   $message The message.
-	 *
-	 * @see add_order_note()
-	 * @return void
-	 */
-	public function add_error_note( WC_Order $order, $message ) {
-		$this->add_order_note( $order, self::NOTICE_TYPE_ERROR, $message );
-	}
-
-	/**
-	 * Adds a refund success note to an order + a notice
-	 *
-	 * @param WC_Order $order The order where to add a note & notice.
-	 * @param string   $message The message.
-	 *
-	 * @see add_order_note()
-	 * @return void
-	 */
-	public function add_success_note( WC_Order $order, $message ) {
-		$this->add_order_note( $order, self::NOTICE_TYPE_SUCCESS, $message );
 	}
 
 	/**

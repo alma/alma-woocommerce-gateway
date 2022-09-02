@@ -96,7 +96,7 @@ class Alma_WC_Share_Of_Checkout {
 		$share_of_checkout_enabled_date = alma_wc_plugin()->settings->share_of_checkout_enabled_date;
 		$last_update_date               = $this->helper->get_last_update_date();
 		$from_date                      = max( $last_update_date, $share_of_checkout_enabled_date );
-		$dates_to_share                 = Alma_WC_Admin_Date_Helper::get_dates_in_interval( $from_date );
+		$dates_to_share                 = Alma_WC_Admin_Helper_Date::get_dates_in_interval( $from_date );
 
 		foreach ( $dates_to_share as $date ) {
 			$this->share_day( $date );

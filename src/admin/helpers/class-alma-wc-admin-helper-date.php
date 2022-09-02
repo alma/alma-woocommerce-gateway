@@ -10,9 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Alama_WC_Admin_Date_Helper
+ * Alma_WC_Admin_Helper_Date
  */
-class Alma_WC_Admin_Date_Helper {
+class Alma_WC_Admin_Helper_Date {
 
 	/**
 	 * Gets dates in an interval until yesterday.

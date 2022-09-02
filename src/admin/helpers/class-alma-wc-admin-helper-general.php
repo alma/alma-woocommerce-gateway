@@ -67,6 +67,7 @@ class Alma_WC_Admin_Helper_General {
 		if ( self::get_current_admin_page_language() === $code_lang ) {
 			return true;
 		}
+
 		return false;
 	}
 

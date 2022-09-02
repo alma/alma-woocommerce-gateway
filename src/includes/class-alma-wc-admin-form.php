@@ -54,80 +54,197 @@ class Alma_WC_Admin_Form {
 	}
 
 	/**
-	 * Inits Payment upon trigger fields.
+	 * Inits enabled Admin field.
 	 *
 	 * @param array $default_settings as default settings.
 	 *
 	 * @return array[]
 	 */
-	private function init_payment_upon_trigger_fields( $default_settings ) {
+	private function init_enabled_field( $default_settings ) {
+		return array(
+			'enabled' => array(
+				'title'   => __( 'Enable/Disable', 'alma-gateway-for-woocommerce' ),
+				'type'    => 'checkbox',
+				'label'   => __( 'Enable monthly payments with Alma', 'alma-gateway-for-woocommerce' ),
+				'default' => $default_settings['enabled'],
+			),
+		);
+	}
 
-		$title_field = array(
-			'payment_upon_trigger_section' => array(
-				'title' => '<hr>' . __( '→ Payment upon trigger configuration', 'alma-gateway-for-woocommerce' ),
+	/**
+	 * Singleton static method.
+	 *
+	 * @return Alma_WC_Admin_Form
+	 */
+	private static function get_instance() {
+		if ( ! self::$instance ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
+	 * Inits test & live api keys fields.
+	 *
+	 * @param string $keys_title as section title.
+	 * @param array $default_settings as default settings.
+	 *
+	 * @return array[]
+	 */
+	private function init_api_key_fields( $keys_title, $default_settings ) {
+
+		return array(
+			'keys_section' => array(
+				'title'       => '<hr>' . $keys_title,
+				'type'        => 'title',
+				/* translators: %s Alma security URL */
+				'description' => sprintf( __( 'You can find your API keys on <a href="%s" target="_blank">your Alma dashboard</a>', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_alma_dashboard_url( 'security' ) ),
+			),
+			'live_api_key' => array(
+				'title' => __( 'Live API key', 'alma-gateway-for-woocommerce' ),
+				'type'  => 'text',
+			),
+			'test_api_key' => array(
+				'title' => __( 'Test API key', 'alma-gateway-for-woocommerce' ),
+				'type'  => 'text',
+			),
+			'environment'  => array(
+				'title'       => __( 'API Mode', 'alma-gateway-for-woocommerce' ),
+				'type'        => 'select',
+				'description' => __( 'Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In Test mode, only admins can see Alma on cart/checkout pages.', 'alma-gateway-for-woocommerce' ),
+				'default'     => $default_settings['environment'],
+				'options'     => array(
+					'test' => __( 'Test', 'alma-gateway-for-woocommerce' ),
+					'live' => __( 'Live', 'alma-gateway-for-woocommerce' ),
+				),
+			),
+		);
+	}
+
+	/**
+	 * Inits debug fields.
+	 *
+	 * @param array $default_settings as default settings.
+	 *
+	 * @return array
+	 */
+	private function init_debug_fields( $default_settings ) {
+		return array(
+			'debug_section' => array(
+				'title' => '<hr>' . __( '→ Debug options', 'alma-gateway-for-woocommerce' ),
+				'type'  => 'title',
+			),
+			'debug'         => array(
+				'title'       => __( 'Debug mode', 'alma-gateway-for-woocommerce' ),
+				'type'        => 'checkbox',
+				// translators: %s: Admin logs url.
+				'label'       => __( 'Activate debug mode', 'alma-gateway-for-woocommerce' ) . sprintf( __( '(<a href="%s">Go to logs</a>)', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_admin_logs_url() ),
+				'description' => __( 'Enable logging info and errors to help debug any issue with the plugin', 'alma-gateway-for-woocommerce' ),
+				'desc_tip'    => true,
+				'default'     => $default_settings['debug'],
+			),
+		);
+	}
+
+	/**
+	 * Inits all allowed fee plans admin field.
+	 *
+	 * @param array $default_settings Default settings.
+	 *
+	 * @return array|array[]
+	 */
+	private function init_fee_plans_fields( $default_settings ) {
+		$fee_plans_fields = array();
+		$title_field      = array(
+			'fee_plan_section' => array(
+				'title' => '<hr>' . __( '→ Fee plans configuration', 'alma-gateway-for-woocommerce' ),
 				'type'  => 'title',
 			),
 		);
+		$select_options   = $this->generate_select_options();
+		if ( count( $select_options ) === 0 ) {
+			/* translators: %s: Alma conditions URL */
+			$title_field['fee_plan_section']['description'] = sprintf( __( '⚠ There is no fee plan allowed in your <a href="%s" target="_blank">Alma dashboard</a>.', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_alma_dashboard_url( 'conditions' ) );
 
-		if ( ! Alma_WC_Payment_Upon_Trigger::has_merchant_payment_upon_trigger_enabled() ) {
-			return array_merge(
-				$title_field,
-				array(
-					'payment_upon_trigger_enabling_info' => array(
-						// translators: %1$s: Alma contact email.
-						'title' => $this->render_title( sprintf( __( 'If you are interested in this feature, please get closer to your Alma contact or by sending an email to <a href="mailto:%1$s">%1$s</a>', 'alma-gateway-for-woocommerce' ), 'support@getalma.eu' ) ),
-						'type'  => 'title',
-					),
-				)
+			return $title_field;
+		}
+		$selected_fee_plan = $this->generate_selected_fee_plan_key( $select_options, $default_settings );
+		foreach ( alma_wc_plugin()->settings->get_allowed_fee_plans() as $fee_plan ) {
+			$fee_plans_fields = array_merge(
+				$fee_plans_fields,
+				$this->init_fee_plan_fields( $fee_plan, $default_settings, $selected_fee_plan === $fee_plan->getPlanKey() )
 			);
 		}
 
 		return array_merge(
 			$title_field,
 			array(
-				'payment_upon_trigger_general_info' => array(
-					'title' => $this->render_title( __( 'This option is available only for Alma payment in 2x, 3x and 4x.<br>When it\'s turned on, your clients will pay the first installment at the order status change. When your client order on your website, Alma will only ask for a payment authorization. Only status handled by Alma are available in the menu below. Please contact Alma if you need us to add another status.', 'alma-gateway-for-woocommerce' ) ),
-					'type'  => 'title',
+				'selected_fee_plan' => array(
+					'title'       => __( 'Select a fee plan to update', 'alma-gateway-for-woocommerce' ),
+					'type'        => 'select_alma_fee_plan',
+					/* translators: %s: Alma conditions URL */
+					'description' => sprintf( __( 'Choose which fee plan you want to modify<br>(only your <a href="%s" target="_blank">Alma dashboard</a> available fee plans are shown here).', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_alma_dashboard_url( 'conditions' ) ),
+					'default'     => $selected_fee_plan,
+					'options'     => $select_options,
 				),
-				'payment_upon_trigger_enabled'      => array(
-					'title'   => __( 'Activate the payment upon trigger', 'alma-gateway-for-woocommerce' ),
-					'type'    => 'checkbox',
-					'label'   => '&nbsp;',
-					'default' => $default_settings['enabled'],
-				),
-				'payment_upon_trigger_display_text' => array(
-					'type'        => 'select',
-					'title'       => __( 'Trigger typology', 'alma-gateway-for-woocommerce' ),
-					'description' => __( 'Text that will appear in the payments schedule and in the customer\'s payment authorization email.', 'alma-gateway-for-woocommerce' ),
-					'default'     => $default_settings['payment_upon_trigger_display_text'],
-					'options'     => Alma_WC_Payment_Upon_Trigger::get_display_texts_keys_and_values(),
-				),
-				'payment_upon_trigger_event'        => array(
-					'type'    => 'select',
-					'title'   => __( 'Order status that triggers the first payment', 'alma-gateway-for-woocommerce' ),
-					'default' => $default_settings['payment_upon_trigger_event'],
-					'options' => Alma_WC_Payment_Upon_Trigger::get_order_statuses(),
-				),
-			)
+			),
+			$fee_plans_fields
 		);
 	}
 
 	/**
-	 * Render "title" field type with some special css.
+	 * Generates select options key values for allowed fee_plans.
 	 *
-	 * @param string $title The title text to display.
+	 * @return array
+	 */
+	private function generate_select_options() {
+		$select_options = array();
+		foreach ( alma_wc_plugin()->settings->get_allowed_fee_plans() as $fee_plan ) {
+			$select_label = '';
+			if ( $fee_plan->isPnXOnly() ) {
+				// translators: %d: number of installments.
+				$select_label = sprintf( __( '→ %d-installment payment', 'alma-gateway-for-woocommerce' ), $fee_plan->getInstallmentsCount() );
+			}
+			if ( $fee_plan->isPayLaterOnly() ) {
+				$deferred_months = $fee_plan->getDeferredMonths();
+				$deferred_days   = $fee_plan->getDeferredDays();
+				if ( $deferred_days ) {
+					// translators: %d: number of deferred days.
+					$select_label = sprintf( __( '→ D+%d-deferred payment', 'alma-gateway-for-woocommerce' ), $deferred_days );
+				}
+				if ( $deferred_months ) {
+					// translators: %d: number of deferred months.
+					$select_label = sprintf( __( '→ M+%d-deferred payment', 'alma-gateway-for-woocommerce' ), $deferred_months );
+				}
+			}
+			$select_options[ $fee_plan->getPlanKey() ] = $select_label;
+		}
+
+		return $select_options;
+	}
+
+	/**
+	 * Generates the selected option for current fee_plan_keys options.
+	 *
+	 * @param array $select_options Key,value allowed fee_plan options.
+	 * @param array $default_settings Default settings.
+	 *
 	 * @return string
 	 */
-	private function render_title( $title ) {
-		return '<p style="font-weight:normal;">' . $title . '</p>';
+	private function generate_selected_fee_plan_key( array $select_options, $default_settings ) {
+		$selected_fee_plan   = alma_wc_plugin()->settings->selected_fee_plan ? alma_wc_plugin()->settings->selected_fee_plan : $default_settings['selected_fee_plan'];
+		$select_options_keys = array_keys( $select_options );
+
+		return in_array( $selected_fee_plan, $select_options_keys, true ) ? $selected_fee_plan : $select_options_keys[0];
 	}
 
 	/**
 	 * Inits a fee_plan's fields.
 	 *
 	 * @param FeePlan $fee_plan Fee plan definitions.
-	 * @param array   $default_settings Default settings definitions.
-	 * @param bool    $selected If this field is currently selected.
+	 * @param array $default_settings Default settings definitions.
+	 * @param bool $selected If this field is currently selected.
 	 *
 	 * @return array  as field_form definition
 	 */
@@ -215,185 +332,97 @@ class Alma_WC_Admin_Form {
 	}
 
 	/**
-	 * Inits enabled Admin field.
+	 * Gets fee plan description.
 	 *
-	 * @param array $default_settings as default settings.
+	 * @param FeePlan $fee_plan The fee plan do describe.
+	 * @param float $min_amount Min amount.
+	 * @param float $max_amount Max amount.
+	 * @param float $merchant_fee_fixed Merchant fee fixed.
+	 * @param float $merchant_fee_variable Merchant fee variable.
+	 * @param float $customer_fee_fixed Customer fee fixed.
+	 * @param float $customer_fee_variable Customer fee variable.
+	 * @param float $customer_lending_rate Customer lending rate.
 	 *
-	 * @return array[]
+	 * @return string
 	 */
-	private function init_enabled_field( $default_settings ) {
-		return array(
-			'enabled' => array(
-				'title'   => __( 'Enable/Disable', 'alma-gateway-for-woocommerce' ),
-				'type'    => 'checkbox',
-				'label'   => __( 'Enable monthly payments with Alma', 'alma-gateway-for-woocommerce' ),
-				'default' => $default_settings['enabled'],
-			),
-		);
-	}
-
-	/**
-	 * Inits share of checkout Admin field.
-	 *
-	 * @param array $default_settings default settings.
-	 *
-	 * @return array[]
-	 */
-	private function init_share_of_checkout_field( $default_settings ) {
-		return array(
-			'share_of_checkout_section'      => array(
-				'title' => '<hr>' . __( '→ Share of checkout configuration', 'alma-gateway-for-woocommerce' ),
-				'type'  => 'title',
-				'description' => __(
-					'By accepting this option, enable Alma to analyse the usage of your payment methods, get more informations to perform and share this data with you.
-<br>You can <a href="mailto:support@getalma.eu">unsubscribe and erase your data</a> at any moment.
-<br><br>Know more about collected data
-<br><br>- total quantity of orders, amounts and currencies
-<br>- payment provider for each order',
-					'alma-gateway-for-woocommerce'
-				),
-			),
-
-			'share_of_checkout_enabled'      => array(
-				'title'   => __( 'Activate your data settings ', 'alma-gateway-for-woocommerce' ),
-				'type'    => 'checkbox',
-				'label'   => '&nbsp;',
-				'default' => $default_settings['share_of_checkout_enabled'],
-			),
-		);
-	}
-
-	/**
-	 * Technical fields.
-	 *
-	 * @param array $default_settings as default settings.
-	 *
-	 * @return array[]
-	 */
-	private function init_technical_fields( $default_settings ) {
-
-		return array(
-			'technical_section'                          => array(
-				'title'       => '<hr>' . __( '→ Technical fields', 'alma-gateway-for-woocommerce' ),
-				'type'        => 'title',
-				'description' => __( 'Specific fields just in case you need it. [<a href="#" id="alma_link_toggle_technical_section">click to open or close</a>]', 'alma-gateway-for-woocommerce' ),
-			),
-			'variable_product_check_variations_event'    => array(
-				'title'       => __( 'Custom check variations event', 'alma-gateway-for-woocommerce' ),
-				'type'        => 'text',
-				'description' => sprintf(
-				// translators: %1$s is technical information, %2$s is Alma WooCommerce Plugin FAQ doc URL.
-					__( 'This is the javascript event triggered on variables products page, when the customer change the product variation. Default value is <strong>%1$s</strong>.<br />More technical information on <a href="%2$s" target="_blank">Alma documentation</a>', 'alma-gateway-for-woocommerce' ),
-					Alma_WC_Settings::DEFAULT_CHECK_VARIATIONS_EVENT,
-					'https://docs.getalma.eu/docs/woocommerce-faq'
-				),
-				'default'     => $default_settings['variable_product_check_variations_event'],
-			),
-			'variable_product_price_query_selector'      => array(
-				'title'       => __( 'Variable products price query selector', 'alma-gateway-for-woocommerce' ),
-				'type'        => 'text',
-				'description' => sprintf(
-				// translators: %s is technical information.
-					__( 'Query selector used to get the price of product with variations. Default value is <strong>%s</strong>.', 'alma-gateway-for-woocommerce' ),
-					$default_settings['variable_product_price_query_selector']
-				),
-				'default'     => $default_settings['variable_product_price_query_selector'],
-			),
-			'variable_product_sale_price_query_selector' => array(
-				'title'       => __( 'Variable products sale price query selector', 'alma-gateway-for-woocommerce' ),
-				'type'        => 'text',
-				'description' => sprintf(
-				// translators: %s is technical information.
-					__( 'Query selector used to get the price of product with <strong>sales variations</strong>. Default value is <strong>%s</strong>.', 'alma-gateway-for-woocommerce' ),
-					$default_settings['variable_product_sale_price_query_selector']
-				),
-				'default'     => $default_settings['title_payment_method_pnx'],
-			),
-		);
-	}
-
-	/**
-	 * Inits test & live api keys fields.
-	 *
-	 * @param string $keys_title as section title.
-	 * @param array  $default_settings as default settings.
-	 *
-	 * @return array[]
-	 */
-	private function init_api_key_fields( $keys_title, $default_settings ) {
-
-		return array(
-			'keys_section' => array(
-				'title'       => '<hr>' . $keys_title,
-				'type'        => 'title',
-				/* translators: %s Alma security URL */
-				'description' => sprintf( __( 'You can find your API keys on <a href="%s" target="_blank">your Alma dashboard</a>', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_alma_dashboard_url( 'security' ) ),
-			),
-			'live_api_key' => array(
-				'title' => __( 'Live API key', 'alma-gateway-for-woocommerce' ),
-				'type'  => 'text',
-			),
-			'test_api_key' => array(
-				'title' => __( 'Test API key', 'alma-gateway-for-woocommerce' ),
-				'type'  => 'text',
-			),
-			'environment'  => array(
-				'title'       => __( 'API Mode', 'alma-gateway-for-woocommerce' ),
-				'type'        => 'select',
-				'description' => __( 'Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In Test mode, only admins can see Alma on cart/checkout pages.', 'alma-gateway-for-woocommerce' ),
-				'default'     => $default_settings['environment'],
-				'options'     => array(
-					'test' => __( 'Test', 'alma-gateway-for-woocommerce' ),
-					'live' => __( 'Live', 'alma-gateway-for-woocommerce' ),
-				),
-			),
-		);
-	}
-
-	/**
-	 * Inits all allowed fee plans admin field.
-	 *
-	 * @param array $default_settings Default settings.
-	 *
-	 * @return array|array[]
-	 */
-	private function init_fee_plans_fields( $default_settings ) {
-		$fee_plans_fields = array();
-		$title_field      = array(
-			'fee_plan_section' => array(
-				'title' => '<hr>' . __( '→ Fee plans configuration', 'alma-gateway-for-woocommerce' ),
-				'type'  => 'title',
-			),
-		);
-		$select_options   = $this->generate_select_options();
-		if ( count( $select_options ) === 0 ) {
-			/* translators: %s: Alma conditions URL */
-			$title_field['fee_plan_section']['description'] = sprintf( __( '⚠ There is no fee plan allowed in your <a href="%s" target="_blank">Alma dashboard</a>.', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_alma_dashboard_url( 'conditions' ) );
-
-			return $title_field;
-		}
-		$selected_fee_plan = $this->generate_selected_fee_plan_key( $select_options, $default_settings );
-		foreach ( alma_wc_plugin()->settings->get_allowed_fee_plans() as $fee_plan ) {
-			$fee_plans_fields = array_merge(
-				$fee_plans_fields,
-				$this->init_fee_plan_fields( $fee_plan, $default_settings, $selected_fee_plan === $fee_plan->getPlanKey() )
+	private function generate_fee_plan_description(
+		FeePlan $fee_plan,
+		$min_amount,
+		$max_amount,
+		$merchant_fee_fixed,
+		$merchant_fee_variable,
+		$customer_fee_fixed,
+		$customer_fee_variable,
+		$customer_lending_rate
+	) {
+		$you_can_offer = '';
+		if ( $fee_plan->isPnXOnly() ) {
+			$you_can_offer = sprintf(
+			// translators: %d: number of installments.
+				__( 'You can offer %1$d-installment payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-gateway-for-woocommerce' ),
+				$fee_plan->installments_count,
+				$min_amount,
+				$max_amount
 			);
 		}
+		if ( $fee_plan->isPayLaterOnly() ) {
+			$deferred_days   = $fee_plan->getDeferredDays();
+			$deferred_months = $fee_plan->getDeferredMonths();
+			if ( $deferred_days ) {
+				$you_can_offer = sprintf(
+				// translators: %d: number of deferred days.
+					__( 'You can offer D+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-gateway-for-woocommerce' ),
+					$deferred_days,
+					$min_amount,
+					$max_amount
+				);
+			}
+			if ( $deferred_months ) {
+				$you_can_offer = sprintf(
+				// translators: %d: number of deferred months.
+					__( 'You can offer M+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-gateway-for-woocommerce' ),
+					$deferred_months,
+					$min_amount,
+					$max_amount
+				);
+			}
+		}
+		$fees_applied          = __( 'Fees applied to each transaction for this plan:', 'alma-gateway-for-woocommerce' );
+		$you_pay               = $this->generate_fee_to_pay_description( __( 'You pay:', 'alma-gateway-for-woocommerce' ), $merchant_fee_variable, $merchant_fee_fixed );
+		$customer_pays         = $this->generate_fee_to_pay_description( __( 'Customer pays:', 'alma-gateway-for-woocommerce' ), $customer_fee_variable, $customer_fee_fixed );
+		$customer_lending_pays = $this->generate_fee_to_pay_description( __( 'Customer lending rate:', 'alma-gateway-for-woocommerce' ), $customer_lending_rate, 0 );
 
-		return array_merge(
-			$title_field,
-			array(
-				'selected_fee_plan' => array(
-					'title'       => __( 'Select a fee plan to update', 'alma-gateway-for-woocommerce' ),
-					'type'        => 'select_alma_fee_plan',
-					/* translators: %s: Alma conditions URL */
-					'description' => sprintf( __( 'Choose which fee plan you want to modify<br>(only your <a href="%s" target="_blank">Alma dashboard</a> available fee plans are shown here).', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_alma_dashboard_url( 'conditions' ) ),
-					'default'     => $selected_fee_plan,
-					'options'     => $select_options,
-				),
-			),
-			$fee_plans_fields
-		);
+		return sprintf( '<p>%s<br>%s %s %s %s</p>', $you_can_offer, $fees_applied, $you_pay, $customer_pays, $customer_lending_pays );
+	}
+
+	/**
+	 * Generates a string with % + € OR only % OR only € (depending on parameters given).
+	 * If all fees are <= 0 : return an empty string.
+	 *
+	 * @param string $translation as description prefix.
+	 * @param float $fee_variable as variable amount (if any).
+	 * @param float $fee_fixed as fixed amount (if any).
+	 *
+	 * @return string
+	 */
+	private function generate_fee_to_pay_description( $translation, $fee_variable, $fee_fixed ) {
+		if ( ! $fee_variable && ! $fee_fixed ) {
+			return '';
+		}
+
+		$fees = '';
+		if ( $fee_variable ) {
+			$fees .= $fee_variable . '%';
+		}
+
+		if ( $fee_fixed ) {
+			if ( $fee_variable ) {
+				$fees .= ' + ';
+			}
+			$fees .= $fee_fixed . '€';
+		}
+
+		return sprintf( '<br><b>%s</b> %s', $translation, $fees );
 	}
 
 	/**
@@ -471,238 +500,14 @@ class Alma_WC_Admin_Form {
 	}
 
 	/**
-	 * Adds all the translated fields for one field.
+	 * Render "title" field type with some special css.
 	 *
-	 * @param string $field_name The field name.
-	 * @param array  $field_infos The information for this field.
-	 * @param string $default The default value for the field.
-	 *
-	 * @return array
-	 */
-	private function generate_i18n_field( $field_name, $field_infos, $default ) {
-		if ( Alma_WC_Internationalization::is_site_multilingual() ) {
-			$new_fields = array();
-			$lang_list  = Alma_WC_Internationalization::get_list_languages();
-			foreach ( $lang_list as $code_lang => $label_lang ) {
-				$new_file_key                 = $field_name . '_' . $code_lang;
-				$new_field_infos              = $field_infos;
-				$new_field_infos['type']      = 'text_alma_i18n';
-				$new_field_infos['class']     = $code_lang;
-				$new_field_infos['default']   = Alma_WC_Internationalization::get_translated_text( $default, $code_lang );
-				$new_field_infos['lang_list'] = $lang_list;
-
-				$new_fields[ $new_file_key ] = $new_field_infos;
-			}
-
-			return $new_fields;
-		}
-
-		$additional_infos = array(
-			'type'    => 'text',
-			'class'   => 'alma-i18n',
-			'default' => $default,
-		);
-		return array( $field_name => array_merge( $field_infos, $additional_infos ) );
-	}
-
-	/**
-	 * Inits debug fields.
-	 *
-	 * @param array $default_settings as default settings.
-	 *
-	 * @return array
-	 */
-	private function init_debug_fields( $default_settings ) {
-		return array(
-			'debug_section' => array(
-				'title' => '<hr>' . __( '→ Debug options', 'alma-gateway-for-woocommerce' ),
-				'type'  => 'title',
-			),
-			'debug'         => array(
-				'title'       => __( 'Debug mode', 'alma-gateway-for-woocommerce' ),
-				'type'        => 'checkbox',
-				// translators: %s: Admin logs url.
-				'label'       => __( 'Activate debug mode', 'alma-gateway-for-woocommerce' ) . sprintf( __( '(<a href="%s">Go to logs</a>)', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_admin_logs_url() ),
-				'description' => __( 'Enable logging info and errors to help debug any issue with the plugin', 'alma-gateway-for-woocommerce' ),
-				'desc_tip'    => true,
-				'default'     => $default_settings['debug'],
-			),
-		);
-	}
-
-	/**
-	 * Singleton static method.
-	 *
-	 * @return Alma_WC_Admin_Form
-	 */
-	private static function get_instance() {
-		if ( ! self::$instance ) {
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-
-	/**
-	 * Product categories options.
-	 *
-	 * @return array
-	 */
-	private function generate_categories_options() {
-		$product_categories = get_terms(
-			'product_cat',
-			array(
-				'orderby'    => 'name',
-				'order'      => 'asc',
-				'hide_empty' => false,
-			)
-		);
-
-		$options = array();
-		foreach ( $product_categories as $category ) {
-			$options[ $category->slug ] = $category->name;
-		}
-
-		return $options;
-	}
-
-	/**
-	 * Gets fee plan description.
-	 *
-	 * @param FeePlan $fee_plan The fee plan do describe.
-	 * @param float   $min_amount Min amount.
-	 * @param float   $max_amount Max amount.
-	 * @param float   $merchant_fee_fixed Merchant fee fixed.
-	 * @param float   $merchant_fee_variable Merchant fee variable.
-	 * @param float   $customer_fee_fixed Customer fee fixed.
-	 * @param float   $customer_fee_variable Customer fee variable.
-	 * @param float   $customer_lending_rate Customer lending rate.
+	 * @param string $title The title text to display.
 	 *
 	 * @return string
 	 */
-	private function generate_fee_plan_description(
-		FeePlan $fee_plan,
-		$min_amount,
-		$max_amount,
-		$merchant_fee_fixed,
-		$merchant_fee_variable,
-		$customer_fee_fixed,
-		$customer_fee_variable,
-		$customer_lending_rate
-	) {
-		$you_can_offer = '';
-		if ( $fee_plan->isPnXOnly() ) {
-			$you_can_offer = sprintf(
-				// translators: %d: number of installments.
-				__( 'You can offer %1$d-installment payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-gateway-for-woocommerce' ),
-				$fee_plan->installments_count,
-				$min_amount,
-				$max_amount
-			);
-		}
-		if ( $fee_plan->isPayLaterOnly() ) {
-			$deferred_days   = $fee_plan->getDeferredDays();
-			$deferred_months = $fee_plan->getDeferredMonths();
-			if ( $deferred_days ) {
-				$you_can_offer = sprintf(
-					// translators: %d: number of deferred days.
-					__( 'You can offer D+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-gateway-for-woocommerce' ),
-					$deferred_days,
-					$min_amount,
-					$max_amount
-				);
-			}
-			if ( $deferred_months ) {
-				$you_can_offer = sprintf(
-				// translators: %d: number of deferred months.
-					__( 'You can offer M+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-gateway-for-woocommerce' ),
-					$deferred_months,
-					$min_amount,
-					$max_amount
-				);
-			}
-		}
-		$fees_applied          = __( 'Fees applied to each transaction for this plan:', 'alma-gateway-for-woocommerce' );
-		$you_pay               = $this->generate_fee_to_pay_description( __( 'You pay:', 'alma-gateway-for-woocommerce' ), $merchant_fee_variable, $merchant_fee_fixed );
-		$customer_pays         = $this->generate_fee_to_pay_description( __( 'Customer pays:', 'alma-gateway-for-woocommerce' ), $customer_fee_variable, $customer_fee_fixed );
-		$customer_lending_pays = $this->generate_fee_to_pay_description( __( 'Customer lending rate:', 'alma-gateway-for-woocommerce' ), $customer_lending_rate, 0 );
-
-		return sprintf( '<p>%s<br>%s %s %s %s</p>', $you_can_offer, $fees_applied, $you_pay, $customer_pays, $customer_lending_pays );
-	}
-
-	/**
-	 * Generates a string with % + € OR only % OR only € (depending on parameters given).
-	 * If all fees are <= 0 : return an empty string.
-	 *
-	 * @param string $translation as description prefix.
-	 * @param float  $fee_variable as variable amount (if any).
-	 * @param float  $fee_fixed as fixed amount (if any).
-	 *
-	 * @return string
-	 */
-	private function generate_fee_to_pay_description( $translation, $fee_variable, $fee_fixed ) {
-		if ( ! $fee_variable && ! $fee_fixed ) {
-			return '';
-		}
-
-		$fees = '';
-		if ( $fee_variable ) {
-			$fees .= $fee_variable . '%';
-		}
-
-		if ( $fee_fixed ) {
-			if ( $fee_variable ) {
-				$fees .= ' + ';
-			}
-			$fees .= $fee_fixed . '€';
-		}
-
-		return sprintf( '<br><b>%s</b> %s', $translation, $fees );
-	}
-
-	/**
-	 * Generates select options key values for allowed fee_plans.
-	 *
-	 * @return array
-	 */
-	private function generate_select_options() {
-		$select_options = array();
-		foreach ( alma_wc_plugin()->settings->get_allowed_fee_plans() as $fee_plan ) {
-			$select_label = '';
-			if ( $fee_plan->isPnXOnly() ) {
-				// translators: %d: number of installments.
-				$select_label = sprintf( __( '→ %d-installment payment', 'alma-gateway-for-woocommerce' ), $fee_plan->getInstallmentsCount() );
-			}
-			if ( $fee_plan->isPayLaterOnly() ) {
-				$deferred_months = $fee_plan->getDeferredMonths();
-				$deferred_days   = $fee_plan->getDeferredDays();
-				if ( $deferred_days ) {
-					// translators: %d: number of deferred days.
-					$select_label = sprintf( __( '→ D+%d-deferred payment', 'alma-gateway-for-woocommerce' ), $deferred_days );
-				}
-				if ( $deferred_months ) {
-					// translators: %d: number of deferred months.
-					$select_label = sprintf( __( '→ M+%d-deferred payment', 'alma-gateway-for-woocommerce' ), $deferred_months );
-				}
-			}
-			$select_options[ $fee_plan->getPlanKey() ] = $select_label;
-		}
-
-		return $select_options;
-	}
-
-	/**
-	 * Generates the selected option for current fee_plan_keys options.
-	 *
-	 * @param array $select_options Key,value allowed fee_plan options.
-	 * @param array $default_settings Default settings.
-	 *
-	 * @return string
-	 */
-	private function generate_selected_fee_plan_key( array $select_options, $default_settings ) {
-		$selected_fee_plan   = alma_wc_plugin()->settings->selected_fee_plan ? alma_wc_plugin()->settings->selected_fee_plan : $default_settings['selected_fee_plan'];
-		$select_options_keys = array_keys( $select_options );
-
-		return in_array( $selected_fee_plan, $select_options_keys, true ) ? $selected_fee_plan : $select_options_keys[0];
+	private function render_title( $title ) {
+		return '<p style="font-weight:normal;">' . $title . '</p>';
 	}
 
 	/**
@@ -710,7 +515,7 @@ class Alma_WC_Admin_Form {
 	 *
 	 * @param string $payment_method_name The payment method name.
 	 * @param string $title The title.
-	 * @param array  $default_settings The defaults settings.
+	 * @param array $default_settings The defaults settings.
 	 *
 	 * @return array[]
 	 */
@@ -747,6 +552,204 @@ class Alma_WC_Admin_Form {
 			$fields,
 			$field_payment_method_title,
 			$field_payment_method_description
+		);
+	}
+
+	/**
+	 * Adds all the translated fields for one field.
+	 *
+	 * @param string $field_name The field name.
+	 * @param array $field_infos The information for this field.
+	 * @param string $default The default value for the field.
+	 *
+	 * @return array
+	 */
+	private function generate_i18n_field( $field_name, $field_infos, $default ) {
+		if ( Alma_WC_Internationalization::is_site_multilingual() ) {
+			$new_fields = array();
+			$lang_list  = Alma_WC_Internationalization::get_list_languages();
+			foreach ( $lang_list as $code_lang => $label_lang ) {
+				$new_file_key                 = $field_name . '_' . $code_lang;
+				$new_field_infos              = $field_infos;
+				$new_field_infos['type']      = 'text_alma_i18n';
+				$new_field_infos['class']     = $code_lang;
+				$new_field_infos['default']   = Alma_WC_Internationalization::get_translated_text( $default, $code_lang );
+				$new_field_infos['lang_list'] = $lang_list;
+
+				$new_fields[ $new_file_key ] = $new_field_infos;
+			}
+
+			return $new_fields;
+		}
+
+		$additional_infos = array(
+			'type'    => 'text',
+			'class'   => 'alma-i18n',
+			'default' => $default,
+		);
+
+		return array( $field_name => array_merge( $field_infos, $additional_infos ) );
+	}
+
+	/**
+	 * Product categories options.
+	 *
+	 * @return array
+	 */
+	private function generate_categories_options() {
+		$product_categories = get_terms(
+			'product_cat',
+			array(
+				'orderby'    => 'name',
+				'order'      => 'asc',
+				'hide_empty' => false,
+			)
+		);
+
+		$options = array();
+		foreach ( $product_categories as $category ) {
+			$options[ $category->slug ] = $category->name;
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Inits Payment upon trigger fields.
+	 *
+	 * @param array $default_settings as default settings.
+	 *
+	 * @return array[]
+	 */
+	private function init_payment_upon_trigger_fields( $default_settings ) {
+
+		$title_field = array(
+			'payment_upon_trigger_section' => array(
+				'title' => '<hr>' . __( '→ Payment upon trigger configuration', 'alma-gateway-for-woocommerce' ),
+				'type'  => 'title',
+			),
+		);
+
+		if ( ! Alma_WC_Payment_Upon_Trigger::has_merchant_payment_upon_trigger_enabled() ) {
+			return array_merge(
+				$title_field,
+				array(
+					'payment_upon_trigger_enabling_info' => array(
+						// translators: %1$s: Alma contact email.
+						'title' => $this->render_title( sprintf( __( 'If you are interested in this feature, please get closer to your Alma contact or by sending an email to <a href="mailto:%1$s">%1$s</a>', 'alma-gateway-for-woocommerce' ), 'support@getalma.eu' ) ),
+						'type'  => 'title',
+					),
+				)
+			);
+		}
+
+		return array_merge(
+			$title_field,
+			array(
+				'payment_upon_trigger_general_info' => array(
+					'title' => $this->render_title( __( 'This option is available only for Alma payment in 2x, 3x and 4x.<br>When it\'s turned on, your clients will pay the first installment at the order status change. When your client order on your website, Alma will only ask for a payment authorization. Only status handled by Alma are available in the menu below. Please contact Alma if you need us to add another status.', 'alma-gateway-for-woocommerce' ) ),
+					'type'  => 'title',
+				),
+				'payment_upon_trigger_enabled'      => array(
+					'title'   => __( 'Activate the payment upon trigger', 'alma-gateway-for-woocommerce' ),
+					'type'    => 'checkbox',
+					'label'   => '&nbsp;',
+					'default' => $default_settings['enabled'],
+				),
+				'payment_upon_trigger_display_text' => array(
+					'type'        => 'select',
+					'title'       => __( 'Trigger typology', 'alma-gateway-for-woocommerce' ),
+					'description' => __( 'Text that will appear in the payments schedule and in the customer\'s payment authorization email.', 'alma-gateway-for-woocommerce' ),
+					'default'     => $default_settings['payment_upon_trigger_display_text'],
+					'options'     => Alma_WC_Payment_Upon_Trigger::get_display_texts_keys_and_values(),
+				),
+				'payment_upon_trigger_event'        => array(
+					'type'    => 'select',
+					'title'   => __( 'Order status that triggers the first payment', 'alma-gateway-for-woocommerce' ),
+					'default' => $default_settings['payment_upon_trigger_event'],
+					'options' => Alma_WC_Payment_Upon_Trigger::get_order_statuses(),
+				),
+			)
+		);
+	}
+
+	/**
+	 * Inits share of checkout Admin field.
+	 *
+	 * @param array $default_settings default settings.
+	 *
+	 * @return array[]
+	 */
+	private function init_share_of_checkout_field( $default_settings ) {
+		return array(
+			'share_of_checkout_section' => array(
+				'title'       => '<hr>' . __( '→ Share of checkout configuration', 'alma-gateway-for-woocommerce' ),
+				'type'        => 'title',
+				'description' => __(
+					'By accepting this option, enable Alma to analyse the usage of your payment methods, get more informations to perform and share this data with you.
+<br>You can <a href="mailto:support@getalma.eu">unsubscribe and erase your data</a> at any moment.
+<br><br>Know more about collected data
+<br><br>- total quantity of orders, amounts and currencies
+<br>- payment provider for each order',
+					'alma-gateway-for-woocommerce'
+				),
+			),
+
+			'share_of_checkout_enabled' => array(
+				'title'   => __( 'Activate your data settings ', 'alma-gateway-for-woocommerce' ),
+				'type'    => 'checkbox',
+				'label'   => '&nbsp;',
+				'default' => $default_settings['share_of_checkout_enabled'],
+			),
+		);
+	}
+
+	/**
+	 * Technical fields.
+	 *
+	 * @param array $default_settings as default settings.
+	 *
+	 * @return array[]
+	 */
+	private function init_technical_fields( $default_settings ) {
+
+		return array(
+			'technical_section'                          => array(
+				'title'       => '<hr>' . __( '→ Technical fields', 'alma-gateway-for-woocommerce' ),
+				'type'        => 'title',
+				'description' => __( 'Specific fields just in case you need it. [<a href="#" id="alma_link_toggle_technical_section">click to open or close</a>]', 'alma-gateway-for-woocommerce' ),
+			),
+			'variable_product_check_variations_event'    => array(
+				'title'       => __( 'Custom check variations event', 'alma-gateway-for-woocommerce' ),
+				'type'        => 'text',
+				'description' => sprintf(
+				// translators: %1$s is technical information, %2$s is Alma WooCommerce Plugin FAQ doc URL.
+					__( 'This is the javascript event triggered on variables products page, when the customer change the product variation. Default value is <strong>%1$s</strong>.<br />More technical information on <a href="%2$s" target="_blank">Alma documentation</a>', 'alma-gateway-for-woocommerce' ),
+					Alma_WC_Settings::DEFAULT_CHECK_VARIATIONS_EVENT,
+					'https://docs.getalma.eu/docs/woocommerce-faq'
+				),
+				'default'     => $default_settings['variable_product_check_variations_event'],
+			),
+			'variable_product_price_query_selector'      => array(
+				'title'       => __( 'Variable products price query selector', 'alma-gateway-for-woocommerce' ),
+				'type'        => 'text',
+				'description' => sprintf(
+				// translators: %s is technical information.
+					__( 'Query selector used to get the price of product with variations. Default value is <strong>%s</strong>.', 'alma-gateway-for-woocommerce' ),
+					$default_settings['variable_product_price_query_selector']
+				),
+				'default'     => $default_settings['variable_product_price_query_selector'],
+			),
+			'variable_product_sale_price_query_selector' => array(
+				'title'       => __( 'Variable products sale price query selector', 'alma-gateway-for-woocommerce' ),
+				'type'        => 'text',
+				'description' => sprintf(
+				// translators: %s is technical information.
+					__( 'Query selector used to get the price of product with <strong>sales variations</strong>. Default value is <strong>%s</strong>.', 'alma-gateway-for-woocommerce' ),
+					$default_settings['variable_product_sale_price_query_selector']
+				),
+				'default'     => $default_settings['title_payment_method_pnx'],
+			),
 		);
 	}
 
