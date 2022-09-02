@@ -14,6 +14,7 @@
     display: none;
     overflow: hidden;
     color: #00425D;
+    list-style-type: disc;
 }
 
 .legal-checkout-chevron::before {
@@ -32,10 +33,6 @@
 .legal-checkout-chevron.bottom:before {
     top: 0;
     transform: rotate(135deg);
-}
-
-.legal-checkout-content {
-    list-style-type: disc;
 }
 
 .notice-modal-checkout-legal {

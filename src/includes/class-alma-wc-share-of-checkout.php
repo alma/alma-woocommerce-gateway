@@ -19,13 +19,6 @@ class Alma_WC_Share_Of_Checkout {
 	const CRON_ACTION = 'share_of_checkout_cron_action';
 
 	/**
-	 * Order helper
-	 *
-	 * @var Alma_WC_Helper_Order
-	 */
-	private $order_helper;
-
-	/**
 	 * Logger.
 	 *
 	 * @var Alma_WC_Logger
@@ -45,8 +38,7 @@ class Alma_WC_Share_Of_Checkout {
 	 */
 	public function __construct() {
 		$this->logger       = new Alma_WC_Logger();
-		$this->order_helper = new Alma_WC_Helper_Order();
-		$this->helper       = new Alma_WC_Admin_Helper_Share_Of_Checkout( $this->order_helper );
+		$this->helper       = new Alma_WC_Admin_Helper_Share_Of_Checkout();
 	}
 
 	/**
@@ -94,7 +86,12 @@ class Alma_WC_Share_Of_Checkout {
 		}
 
 		$share_of_checkout_enabled_date = alma_wc_plugin()->settings->share_of_checkout_enabled_date;
-		$last_update_date               = $this->helper->get_last_update_date();
+        try {
+            $last_update_date = Alma_WC_Admin_Helper_Share_Of_Checkout::get_last_update_date();
+        } catch (\Exception $e) {
+            $this->logger->error( 'Error getting getLastUpdateDates for ShareOfCheckout : ' . $e->getMessage() );
+            $last_update_date = Alma_WC_Admin_Helper_Share_Of_Checkout::get_default_last_update_date();
+        }
 		$from_date                      = max( $last_update_date, $share_of_checkout_enabled_date );
 		$dates_to_share                 = Alma_WC_Admin_Helper_Date::get_dates_in_interval( $from_date );
 
@@ -117,7 +114,7 @@ class Alma_WC_Share_Of_Checkout {
 		}
 
 		try {
-			$alma->shareOfCheckout->share( $this->helper->get_payload( $start_time ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName
+			$alma->shareOfCheckout->share(Alma_WC_Admin_Helper_Share_Of_Checkout::get_payload( $start_time ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName
 		} catch ( RequestError $e ) {
 			$this->logger->error( sprintf( 'Alma_WC_Share_Of_Checkout_Helper::share error get message : %s', $e->getMessage() ) );
 		}

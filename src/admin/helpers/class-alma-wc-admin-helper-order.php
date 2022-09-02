@@ -10,22 +10,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Alma_WC_Helper_Order
+ * Alma_WC_Admin_Helper_Order
  */
-class Alma_WC_Helper_Order {
+class Alma_WC_Admin_Helper_Order {
 
 	/**
 	 * Gets the WC orders in a date range.
 	 *
 	 * @param string $from The date from.
 	 * @param string $to The date to.
+	 *
 	 * @return WC_Order[]
 	 */
-	public function get_orders_by_date_range( $from, $to ) {
+	public static function get_orders_by_date_range( $from, $to ) {
 		$args = array(
 			'date_created' => $from . '...' . $to,
 			'type'         => 'shop_order',
 		);
+
 		return wc_get_orders( $args );
 	}
 

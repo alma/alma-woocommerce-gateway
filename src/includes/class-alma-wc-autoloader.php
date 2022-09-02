@@ -74,10 +74,6 @@ class Alma_WC_Autoloader {
 			$path = $this->include_path . 'models/';
 		}
 
-		if ( preg_match( '#^alma_wc_helper_#', $class ) ) {
-			$path = $this->include_path . 'helpers/';
-		}
-
 		if ( preg_match( '#^alma_wc_admin_helper_#', $class ) ) {
 			$path = $this->admin_path . 'helpers/';
 		}

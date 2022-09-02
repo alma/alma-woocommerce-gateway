@@ -90,7 +90,7 @@ class Alma_WC_Settings {
 	public static function default_settings() {
 		return array(
 			'enabled'                                    => 'yes',
-			'payment_upon_trigger_enabled'               => 'no',
+			'payment_upon_trigger_enabled' => 'no',
 			'payment_upon_trigger_event'                 => 'completed',
 			'payment_upon_trigger_display_text'          => 'at_shipping',
 			'selected_fee_plan'                          => self::DEFAULT_FEE_PLAN,
