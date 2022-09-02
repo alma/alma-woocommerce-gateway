@@ -30,7 +30,6 @@ class Alma_WC_Admin_Form {
 	 * @return array
 	 */
 	public static function init_form_fields() {
-		//do_action('show_share_checkout');
 		$need_api_key     = alma_wc_plugin()->settings->need_api_key();
 		$default_settings = Alma_WC_Settings::default_settings();
 

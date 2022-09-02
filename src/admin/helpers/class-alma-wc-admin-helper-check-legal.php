@@ -10,6 +10,8 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Alma_WC_Admin_Helper_Check_Legal
+ *
+ * Display the legal modal checkout
  */
 class Alma_WC_Admin_Helper_Check_Legal {
 
@@ -17,6 +19,8 @@ class Alma_WC_Admin_Helper_Check_Legal {
 
 	/**
 	 * Initialize our hooks.
+     * Display legal notice checkout
+     * Includes the required assets
 	 *
 	 * @return void
 	 */
@@ -32,7 +36,8 @@ class Alma_WC_Admin_Helper_Check_Legal {
 	}
 
 	/**
-	 * @return bool
+     * Build and display the modal
+	 * @return void
 	 */
 	public function get_modal_checkout_legal() {
 		$title     = Alma_WC_Admin_Helper_Check_Legal::get_modal_title();
@@ -70,7 +75,7 @@ class Alma_WC_Admin_Helper_Check_Legal {
                     <a href="http://woocommerce-6-3-1.local.test/wp-admin/#"
                        class="button-checkout-legal reject-legal"><?php echo __( 'REJECT', 'alma-gateway-for-woocommerce' ); ?></a>
                     <a href="http://woocommerce-6-3-1.local.test/wp-admin/#"
-                       class="button-checkout-legal accept-legal"><?php  echo  __( 'ACCEPT', 'alma-gateway-for-woocommerce' ); ?></a>
+                       class="button-checkout-legal accept-legal"><?php echo __( 'ACCEPT', 'alma-gateway-for-woocommerce' ); ?></a>
 
                 </div>
             </div>
@@ -80,9 +85,13 @@ class Alma_WC_Admin_Helper_Check_Legal {
 	}
 
 	/**
-	 * @return string|null
+     * Get the modal title
+     *
+	 * @return string
 	 */
 	public static function get_modal_title() {
 		return __( 'Increase your performance & get insights !', 'alma-gateway-for-woocommerce' );
 	}
+
+
 }

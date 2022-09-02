@@ -5,7 +5,6 @@ jQuery(document).ready(function() {
     var almaAdminGeneralHelper = new AlmaAdminHelper();
     var almaAdminFeePlan = new AlmaAdminFeePlan( almaAdminGeneralHelper );
     almaAdminFeePlan.renderFeePlan();
-    almaAdminGeneralHelper.toggleShareOfCheckoutLink();
     almaAdminFeePlan.initiateAlmaSelectMenuBehaviour();
     almaAdminFeePlan.listenFeePlanCheckboxStatus();
     almaAdminFeePlan.checkInputsOnSubmitActionTriggered();
@@ -63,20 +62,6 @@ function AlmaAdminHelper() {
             jQuery(document).on('click', '#alma_link_toggle_technical_section', function (e) {
                 e.preventDefault();
                 jQuery(this).parent('div').next('table.form-table').toggle('slow');
-            });
-        },
-
-        /**
-         * Show or hide technical fields.
-         */
-        toggleShareOfCheckoutLink: function() {
-            jQuery('.alma-share-checkout-toggle-view').toggle();
-
-            jQuery(document).on('click', '.alma-share-checkout-toggle', function (e) {
-                e.preventDefault();
-                jQuery('.alma-share-checkout-toggle-view').toggle('slow');
-                jQuery('#alma-share-checkout-toggle-arrow-up').prop('style','display:block;');
-                jQuery('#alma-share-checkout-toggle-arrow-down').prop('style', 'display:none;');
             });
         }
     }

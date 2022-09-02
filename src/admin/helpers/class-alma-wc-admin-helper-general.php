@@ -11,14 +11,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Alma_WC_Admin_Helper_General
+ *
+ * Helper for the plugin admin
  */
 class Alma_WC_Admin_Helper_General {
 
 	const PATH_ALMA_LOGO = 'images/alma_logo.svg';
 
 	/**
-	 * @param string $title
-	 * @param string $id
+	 * Get the html for the image to display
+	 *
+	 * @param string $title the alt attribute
+	 * @param string $id Used for the filter
 	 * @param string $path By default, the alma logo
 	 *
 	 * @return string
@@ -31,7 +35,7 @@ class Alma_WC_Admin_Helper_General {
 	}
 
 	/**
-	 * Get asset url.
+	 * Get the admin asset url.
 	 *
 	 * @param string $path Path to asset relative to the plugin's assets directory.
 	 *

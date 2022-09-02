@@ -34,7 +34,7 @@
     transform: rotate(135deg);
 }
 
-ul {
+.legal-checkout-content{
     list-style-type: disc;
 }
 
