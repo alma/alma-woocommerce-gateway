@@ -52,10 +52,10 @@ class Alma_WC_Admin_Helper_Check_Legal {
 		ob_start(); ?>
 
 		<div class="notice notice-info notice-modal-checkout-legal">
-			<div class="modal-checkout-legal-logo"> <?php echo $alma_logo; ?></div>
+			<div class="modal-checkout-legal-logo"> <?php echo wp_kses_post( $alma_logo ); ?></div>
 			<div>
 				<div>
-					<h1><?php esc_html_e( $title ); ?></h1>
+					<h1><?php echo esc_attr( $title ); ?></h1>
 				</div>
 				<div>
 					<p>
@@ -87,17 +87,14 @@ class Alma_WC_Admin_Helper_Check_Legal {
 					</ul>
 				</div>
 				<div id="legal-checkout-choices">
-					<a href="http://woocommerce-6-3-1.local.test/wp-admin/#"
-					   class="button-checkout-legal reject-legal"><?php esc_html_e( 'REJECT', 'alma-gateway-for-woocommerce' ); ?></a>
-					<a href="http://woocommerce-6-3-1.local.test/wp-admin/#"
-					   class="button-checkout-legal accept-legal"><?php esc_html_e( 'ACCEPT', 'alma-gateway-for-woocommerce' ); ?></a>
-
+					<a href="http://woocommerce-6-3-1.local.test/wp-admin/#" class="button-checkout-legal reject-legal"><?php esc_html_e( 'REJECT', 'alma-gateway-for-woocommerce' ); ?></a>
+					<a href="http://woocommerce-6-3-1.local.test/wp-admin/#" class="button-checkout-legal accept-legal"><?php esc_html_e( 'ACCEPT', 'alma-gateway-for-woocommerce' ); ?></a>
 				</div>
 			</div>
 		</div>
 		<?php
 		$data = ob_get_clean();
-		echo $data;
+		echo wp_kses_post( $data );
 	}
 
 	/**

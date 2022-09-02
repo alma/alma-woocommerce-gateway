@@ -46,17 +46,6 @@ class Alma_WC_Admin_Helper_General {
 	}
 
 	/**
-	 * Get the admin partial
-	 *
-	 * @param string $file_name
-	 *
-	 * @return string
-	 */
-	public static function get_admin_partial( $file_name ) {
-		return ALMA_WC_PLUGIN_URL . 'admin/partials/' . $file_name;
-	}
-
-	/**
 	 * Returns if the language code in parameter matches the current admin page language.
 	 *
 	 * @param string $code_lang A language code.

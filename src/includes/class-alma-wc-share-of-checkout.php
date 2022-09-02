@@ -26,19 +26,10 @@ class Alma_WC_Share_Of_Checkout {
 	private $logger;
 
 	/**
-	 * Share of checkout helper.
-	 *
-	 * @var Alma_WC_Admin_Helper_Share_Of_Checkout
-	 */
-	private $helper;
-
-
-	/**
-	 *
+	 * Constructor
 	 */
 	public function __construct() {
 		$this->logger = new Alma_WC_Logger();
-		$this->helper = new Alma_WC_Admin_Helper_Share_Of_Checkout();
 	}
 
 	/**
