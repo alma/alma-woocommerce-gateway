@@ -10,23 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Alma_WC_Date_Helper
+ * Alama_WC_Admin_Date_Helper
  */
-class Alma_WC_Date_Helper {
-
-	/**
-	 * Logger
-	 *
-	 * @var Alma_WC_Logger
-	 */
-	private $logger;
-
-	/**
-	 * __construct.
-	 */
-	public function __construct() {
-		$this->logger = new Alma_WC_Logger();
-	}
+class Alma_WC_Admin_Date_Helper {
 
 	/**
 	 * Gets dates in an interval until yesterday.
@@ -35,7 +21,7 @@ class Alma_WC_Date_Helper {
 	 *
 	 * @return array
 	 */
-	public function get_dates_in_interval( $start_date ) {
+	public static function get_dates_in_interval( $start_date ) {
 		$start_timestamp = strtotime( $start_date );
 
 		$dates_in_interval = array();

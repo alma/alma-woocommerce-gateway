@@ -743,7 +743,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 					<select class="list_lang_title" style="width:auto;margin-left:10px;line-height:28px;">
 					<?php
 					foreach ( $data['lang_list'] as $code => $label ) {
-						$selected = Alma_WC_Admin_Internationalization_Front_Helper::is_lang_selected( esc_attr( $code ) ) ? 'selected="selected"' : '';
+						$selected = Alma_WC_Admin_Helper_General::is_lang_selected( esc_attr( $code ) ) ? 'selected="selected"' : '';
 						print '<option value="' . esc_attr( $code ) . '"' . esc_attr( $selected ) . '>' . esc_attr( $label ) . '</option>';
 					}
 					?>

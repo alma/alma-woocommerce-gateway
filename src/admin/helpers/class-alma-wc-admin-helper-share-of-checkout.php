@@ -12,9 +12,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Alma_WC_Share_Of_Checkout_Helper
+ * Alma_WC_Admin_Helper_Share_Of_Checkout
  */
-class Alma_WC_Share_Of_Checkout_Helper {
+class Alma_WC_Admin_Helper_Share_Of_Checkout {
 
 	/**
 	 * Order helper

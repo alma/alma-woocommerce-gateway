@@ -35,25 +35,18 @@ class Alma_WC_Share_Of_Checkout {
 	/**
 	 * Share of checkout helper.
 	 *
-	 * @var Alma_WC_Share_Of_Checkout_Helper
+	 * @var Alma_WC_Admin_Helper_Share_Of_Checkout
 	 */
 	private $helper;
 
-	/**
-	 * Date helper.
-	 *
-	 * @var Alma_WC_Date_Helper
-	 */
-	private $date_helper;
 
 	/**
-	 * __construct.
+	 *
 	 */
 	public function __construct() {
 		$this->logger       = new Alma_WC_Logger();
 		$this->order_helper = new Alma_WC_Helper_Order();
-		$this->helper       = new Alma_WC_Share_Of_Checkout_Helper( $this->order_helper );
-		$this->date_helper  = new Alma_WC_Date_Helper();
+		$this->helper       = new Alma_WC_Admin_Helper_Share_Of_Checkout( $this->order_helper );
 	}
 
 	/**
@@ -103,7 +96,7 @@ class Alma_WC_Share_Of_Checkout {
 		$share_of_checkout_enabled_date = alma_wc_plugin()->settings->share_of_checkout_enabled_date;
 		$last_update_date               = $this->helper->get_last_update_date();
 		$from_date                      = max( $last_update_date, $share_of_checkout_enabled_date );
-		$dates_to_share                 = $this->date_helper->get_dates_in_interval( $from_date );
+		$dates_to_share                 = Alma_WC_Admin_Date_Helper::get_dates_in_interval( $from_date );
 
 		foreach ( $dates_to_share as $date ) {
 			$this->share_day( $date );
