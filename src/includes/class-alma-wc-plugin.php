@@ -20,12 +20,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Alma_WC_Plugin
  */
 class Alma_WC_Plugin {
+
 	/**
 	 * Eligibilities
 	 *
-	 * @var array<int,Eligibility>|null
+	 * @var Eligibility|Eligibility[]|array
 	 */
-	private $eligibilities;
+	private $eligibilities = array();
 
 	/**
 	 * Flag to indicate the plugin has been bootstrapped.
@@ -736,7 +737,7 @@ class Alma_WC_Plugin {
 	/**
 	 * Get eligible plans keys for current cart.
 	 *
-	 * @return array<string>
+	 * @return string[]
 	 */
 	public function get_eligible_plans_keys_for_cart() {
 		$cart_eligibilities = $this->get_cart_eligibilities();
@@ -744,7 +745,15 @@ class Alma_WC_Plugin {
 		return array_filter(
 			$this->settings->get_eligible_plans_keys( ( new Alma_WC_Model_Cart() )->get_total_in_cents() ),
 			function ( $key ) use ( $cart_eligibilities ) {
-				return array_key_exists( $key, $cart_eligibilities );
+				if ( is_array( $cart_eligibilities ) ) {
+					return array_key_exists( $key, $cart_eligibilities );
+				}
+
+				if ( is_object( $cart_eligibilities ) ) {
+					return property_exists( $cart_eligibilities, $key );
+				}
+
+				$this->logger->error( sprintf( 'Unknown type, must be array or object, found $cart_eligibilities => %s', gettype( $cart_eligibilities ) ) );
 			}
 		);
 	}
@@ -752,20 +761,20 @@ class Alma_WC_Plugin {
 	/**
 	 * Get eligibilities from cart.
 	 *
-	 * @return array<string,Eligibility>|null
+	 * @return Eligibility|Eligibility[]|array
 	 */
 	public function get_cart_eligibilities() {
 		if ( ! $this->eligibilities ) {
 			$alma = alma_wc_plugin()->get_alma_client();
 			if ( ! $alma ) {
-				return null;
+				return array();
 			}
 
 			try {
 				$this->eligibilities = $alma->payments->eligibility( Alma_WC_Model_Payment::get_eligibility_payload_from_cart() );
 			} catch ( RequestError $error ) {
 				$this->logger->log_stack_trace( 'Error while checking payment eligibility: ', $error );
-				return null;
+				return array();
 			}
 		}
 
