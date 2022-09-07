@@ -782,14 +782,14 @@ class Alma_WC_Plugin {
 	/**
 	 * Fix for only having an array as results (see Alma\API\Endpoints\Payments:eligibility())
 	 *
-	 * @param array       $eligibility_payload_from_cart Payment data to check the eligibility for
-	 * @param Eligibility $eligibility The eligibility
+	 * @param array       $eligibility_payload_from_cart Payment data to check the eligibility for.
+	 * @param Eligibility $eligibility The eligibility.
 	 *
 	 * @return array
 	 */
 	protected function format_eligibility_to_array( array $eligibility_payload_from_cart, $eligibility ) {
 		$is_v1_payload = array_key_exists( 'payment', $eligibility_payload_from_cart );
-		$result      = array();
+		$result = array();
 
 		if ( $is_v1_payload ) {
 			$result[ $eligibility->getInstallmentsCount() ] = $eligibility;
