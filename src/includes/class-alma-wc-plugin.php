@@ -745,15 +745,7 @@ class Alma_WC_Plugin {
 		return array_filter(
 			$this->settings->get_eligible_plans_keys( ( new Alma_WC_Model_Cart() )->get_total_in_cents() ),
 			function ( $key ) use ( $cart_eligibilities ) {
-				if ( is_array( $cart_eligibilities ) ) {
-					return array_key_exists( $key, $cart_eligibilities );
-				}
-
-				if ( is_object( $cart_eligibilities ) ) {
-					return property_exists( $cart_eligibilities, $key );
-				}
-
-				$this->logger->error( sprintf( 'Unknown type, must be array or object, found $cart_eligibilities => %s', gettype( $cart_eligibilities ) ) );
+				return array_key_exists( $key, $cart_eligibilities );
 			}
 		);
 	}
@@ -761,7 +753,7 @@ class Alma_WC_Plugin {
 	/**
 	 * Get eligibilities from cart.
 	 *
-	 * @return Eligibility|Eligibility[]|array
+	 * @return Eligibility[]|array
 	 */
 	public function get_cart_eligibilities() {
 		if ( ! $this->eligibilities ) {
@@ -770,17 +762,43 @@ class Alma_WC_Plugin {
 				return array();
 			}
 
+			$eligibility_payload_from_cart = Alma_WC_Model_Payment::get_eligibility_payload_from_cart();
 			try {
-				$this->eligibilities = $alma->payments->eligibility( Alma_WC_Model_Payment::get_eligibility_payload_from_cart() );
+				$this->eligibilities = $alma->payments->eligibility( $eligibility_payload_from_cart );
 			} catch ( RequestError $error ) {
 				$this->logger->log_stack_trace( 'Error while checking payment eligibility: ', $error );
 				return array();
+			}
+
+			// Fix for only having an array as results
+			if ( is_object( $this->eligibilities ) ) {
+				$this->eligibilities = $this->format_eligibility_to_array( $eligibility_payload_from_cart, $this->eligibilities );
 			}
 		}
 
 		return $this->eligibilities;
 	}
 
+	/**
+	 * Fix for only having an array as results (see Alma\API\Endpoints\Payments:eligibility())
+	 *
+	 * @param array       $eligibility_payload_from_cart
+	 * @param Eligibility $eligibility
+	 *
+	 * @return array
+	 */
+	protected function format_eligibility_to_array( array $eligibility_payload_from_cart, $eligibility ) {
+		$iSV1Payload = array_key_exists( 'payment', $eligibility_payload_from_cart );
+		$result      = array();
+
+		if ( $iSV1Payload ) {
+			$result[ $eligibility->getInstallmentsCount() ] = $eligibility;
+		} else {
+			$result[ $eligibility->getPlanKey() ] = $eligibility;
+		}
+
+		return $result;
+	}
 	/**
 	 * Check if cart has eligibilities.
 	 *
