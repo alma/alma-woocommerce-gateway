@@ -762,9 +762,8 @@ class Alma_WC_Plugin {
 				return array();
 			}
 
-			$eligibility_payload_from_cart = Alma_WC_Model_Payment::get_eligibility_payload_from_cart();
 			try {
-				$this->eligibilities = $alma->payments->eligibility( $eligibility_payload_from_cart );
+				$this->eligibilities = $alma->payments->eligibility( Alma_WC_Model_Payment::get_eligibility_payload_from_cart() );
 			} catch ( RequestError $error ) {
 				$this->logger->log_stack_trace( 'Error while checking payment eligibility: ', $error );
 				return array();
@@ -772,7 +771,7 @@ class Alma_WC_Plugin {
 
 			// Fix for only having an array as results.
 			if ( is_object( $this->eligibilities ) ) {
-				$this->eligibilities = $this->format_eligibility_to_array( $eligibility_payload_from_cart, $this->eligibilities );
+				$this->eligibilities = $this->format_eligibility_to_array( $this->eligibilities );
 			}
 		}
 
@@ -782,22 +781,12 @@ class Alma_WC_Plugin {
 	/**
 	 * Fix for only having an array as results (see Alma\API\Endpoints\Payments:eligibility())
 	 *
-	 * @param array       $eligibility_payload_from_cart Payment data to check the eligibility for.
 	 * @param Eligibility $eligibility The eligibility.
 	 *
 	 * @return array
 	 */
-	protected function format_eligibility_to_array( array $eligibility_payload_from_cart, $eligibility ) {
-		$is_v1_payload = array_key_exists( 'payment', $eligibility_payload_from_cart );
-		$result = array();
-
-		if ( $is_v1_payload ) {
-			$result[ $eligibility->getInstallmentsCount() ] = $eligibility;
-		} else {
-			$result[ $eligibility->getPlanKey() ] = $eligibility;
-		}
-
-		return $result;
+	protected function format_eligibility_to_array( $eligibility ) {
+		return array( $eligibility->getPlanKey() => $eligibility );
 	}
 	/**
 	 * Check if cart has eligibilities.
