@@ -74,13 +74,25 @@ class Alma_WC_Logger extends AbstractLogger {
 	 *
 	 * @param string    $message   as base error message to log.
 	 * @param Exception $exception as exception to log.
+	 * @param array     $extra_context as info to add to the context.
 	 */
-	public function log_stack_trace( $message, Exception $exception ) {
+	public function log_stack_trace( $message, Exception $exception, $extra_context = array() ) {
 		$cnt = 0;
+
 		do {
-			$this->error( sprintf( '%s#%s', $message, $cnt ) );
-			$this->error( $exception->getMessage() );
-			$this->error( $exception->getTraceAsString() );
+			$key = sprintf( '%s#%s', $message, $cnt );
+
+			$context = array(
+				'ExceptionMessage'        => $exception->getMessage(),
+				'ExceptionTraceAsAString' => $exception->getTraceAsString(),
+			);
+
+			if ( count( $extra_context ) > 0 ) {
+				$context = array_merge( $extra_context, $context );
+			}
+
+			$this->error( $key, $context );
+
 			$exception = $exception->getPrevious();
 			$cnt++;
 		} while ( $exception );
