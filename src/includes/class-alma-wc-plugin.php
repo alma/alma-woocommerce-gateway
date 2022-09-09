@@ -20,12 +20,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Alma_WC_Plugin
  */
 class Alma_WC_Plugin {
+
 	/**
 	 * Eligibilities
 	 *
-	 * @var array<int,Eligibility>|null
+	 * @var Eligibility|Eligibility[]|array
 	 */
-	private $eligibilities;
+	private $eligibilities = array();
 
 	/**
 	 * Flag to indicate the plugin has been bootstrapped.
@@ -736,7 +737,7 @@ class Alma_WC_Plugin {
 	/**
 	 * Get eligible plans keys for current cart.
 	 *
-	 * @return array<string>
+	 * @return string[]
 	 */
 	public function get_eligible_plans_keys_for_cart() {
 		$cart_eligibilities = $this->get_cart_eligibilities();
@@ -752,26 +753,41 @@ class Alma_WC_Plugin {
 	/**
 	 * Get eligibilities from cart.
 	 *
-	 * @return array<string,Eligibility>|null
+	 * @return Eligibility[]|array
 	 */
 	public function get_cart_eligibilities() {
 		if ( ! $this->eligibilities ) {
 			$alma = alma_wc_plugin()->get_alma_client();
 			if ( ! $alma ) {
-				return null;
+				return array();
 			}
 
 			try {
 				$this->eligibilities = $alma->payments->eligibility( Alma_WC_Model_Payment::get_eligibility_payload_from_cart() );
 			} catch ( RequestError $error ) {
 				$this->logger->log_stack_trace( 'Error while checking payment eligibility: ', $error );
-				return null;
+				return array();
+			}
+
+			// Fix for only having an array as results.
+			if ( is_object( $this->eligibilities ) ) {
+				$this->eligibilities = $this->format_eligibility_to_array( $this->eligibilities );
 			}
 		}
 
 		return $this->eligibilities;
 	}
 
+	/**
+	 * Fix for only having an array as results (see Alma\API\Endpoints\Payments:eligibility())
+	 *
+	 * @param Eligibility $eligibility The eligibility.
+	 *
+	 * @return array
+	 */
+	protected function format_eligibility_to_array( $eligibility ) {
+		return array( $eligibility->getPlanKey() => $eligibility );
+	}
 	/**
 	 * Check if cart has eligibilities.
 	 *
