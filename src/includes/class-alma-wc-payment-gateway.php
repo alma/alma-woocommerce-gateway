@@ -709,12 +709,9 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Output HTML for a single payment field.
+	 * Validate Fields.
 	 *
-	 * @param string  $gateway_id Gateway id.
-	 * @param string  $plan_key Plan key.
-	 * @param boolean $has_radio_button Include a radio button for plan selection.
-	 * @param boolean $is_checked Should the radio button be checked.
+	 * @return bool
 	 */
 	public function validate_fields() {
 		$alma_fee_plan = $this->checkout_helper->get_chosen_alma_fee_plan();
