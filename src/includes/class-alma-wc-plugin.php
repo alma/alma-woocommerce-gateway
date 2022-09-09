@@ -111,7 +111,9 @@ class Alma_WC_Plugin {
 		);
 
 		add_action( 'init', array( $this, 'bootstrap' ) );
-		/** LEGAL CHECKOUT FEATURE add_action( 'init', array( $this, 'check_share_checkout' ) ); */
+		/** LEGAL CHECKOUT FEATURE */
+		add_action( 'init', array( $this, 'check_share_checkout' ) );
+		/** LEGAL CHECKOUT FEATURE */
 		add_filter( 'allowed_redirect_hosts', array( $this, 'alma_domains_whitelist' ) );
 
 		add_filter(
@@ -141,10 +143,10 @@ class Alma_WC_Plugin {
 		);
 
 		// Launch the "share of checkout".
-		/** LEGAL CHECKOUT FEATURE
-		 * $share_of_checkout = new Alma_WC_Share_Of_Checkout();
-		 * $share_of_checkout->init();
-		 */
+		/** LEGAL CHECKOUT FEATURE */
+		$share_of_checkout = new Alma_WC_Share_Of_Checkout();
+		$share_of_checkout->init();
+		/** LEGAL CHECKOUT FEATURE */
 
 		$refund = new Alma_WC_Refund();
 		add_action( 'admin_init', array( $refund, 'admin_init' ), 10 );
@@ -383,7 +385,7 @@ class Alma_WC_Plugin {
 	/**
 	 * Force Check settings.
 	 *
-	 * @return void
+	 * @return bool
 	 */
 	public function check_currency() {
 		$currency = get_woocommerce_currency();

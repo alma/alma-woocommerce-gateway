@@ -47,9 +47,9 @@ class Alma_WC_Admin_Form {
 			self::get_instance()->init_general_settings_fields( $default_settings ),
 			self::get_instance()->init_payment_upon_trigger_fields( $default_settings ),
 			self::get_instance()->init_api_key_fields( __( '→ API configuration', 'alma-gateway-for-woocommerce' ), $default_settings ),
-			/** LEGAL CHECKOUT FEATURE
-			 * self::get_instance()->init_share_of_checkout_field( $default_settings ),
-			 * */
+			/** LEGAL CHECKOUT FEATURE */
+			self::get_instance()->init_share_of_checkout_field( $default_settings ),
+			/** LEGAL CHECKOUT FEATURE */
 			self::get_instance()->init_technical_fields( $default_settings ),
 			self::get_instance()->init_debug_fields( $default_settings )
 		);
