@@ -30,9 +30,10 @@ class Alma_WC_Plugin {
 	/**
 	 * Eligibilities
 	 *
-	 * @var array<int,Eligibility>|null
+	 * @var Eligibility|Eligibility[]|array
 	 */
-	private $eligibilities;
+	private $eligibilities = array();
+
 	/**
 	 * Flag to indicate the plugin has been bootstrapped.
 	 *
@@ -210,8 +211,16 @@ class Alma_WC_Plugin {
 				add_action( 'admin_notices', array( $this, 'check_settings' ) );
 			}
 		} catch ( Exception $e ) {
-			$this->logger->error( 'Bootstrap error: ' . $e->getMessage() );
-			$this->handle_settings_exception( $e );
+			$this->logger->error(
+				'Fail to bootstrap.',
+				array(
+					'Method'                 => __METHOD__,
+					'ExceptionMessage'       => $e->getMessage(),
+					'ExceptionTraceAsString' => $e->getTraceAsString(),
+				)
+			);
+
+			$this->handle_settings_exception( $e, __METHOD__, false );
 		}
 	}
 
@@ -283,17 +292,6 @@ class Alma_WC_Plugin {
 	}
 
 	/**
-	 * Is Alma available for this user ?
-	 *
-	 * @param WP_User $user The user roles which to test.
-	 *
-	 * @return bool
-	 */
-	public function is_allowed_to_see_alma( WP_User $user ) {
-		return in_array( 'administrator', $user->roles, true ) || 'live' === alma_wc_plugin()->settings->get_environment();
-	}
-
-	/**
 	 * Init the alma widget handlers :
 	 * - hooked on WooCommerce Cart & Product actions
 	 * - AND add associated shortcodes
@@ -312,17 +310,27 @@ class Alma_WC_Plugin {
 	 * Handle settings exception.
 	 *
 	 * @param \Exception $exception Exception.
-	 *
+	 * @param string     $from_method Name of the origin function, use for uniq error message.
+	 * @param bool       $log Boolean to choose login.
 	 * @return void
 	 */
-	public function handle_settings_exception( $exception ) {
+	public function handle_settings_exception( $exception, $from_method, $log = true ) {
 		if ( get_option( 'alma_warnings_handled' ) ) {
 			return;
 		}
 
 		delete_option( 'alma_bootstrap_warning_message_dismissed' );
 		update_option( 'alma_bootstrap_warning_message', $exception->getMessage() );
-		$this->logger->warning( 'Bootstrap warning: ' . $exception->getMessage() );
+
+		if ( $log ) {
+			$this->logger->warning(
+				sprintf( 'Settings Exception (%s).', $from_method ),
+				array(
+					'ExceptionMessage'       => $exception->getMessage(),
+					'ExceptionTraceAsString' => $exception->getTraceAsString(),
+				)
+			);
+		}
 
 		add_action( 'admin_notices', array( $this, 'show_settings_warning' ) );
 
@@ -377,6 +385,26 @@ class Alma_WC_Plugin {
 	 *
 	 * @return void
 	 */
+	public function check_currency() {
+		$currency = get_woocommerce_currency();
+		if ( 'EUR' !== $currency ) {
+			$this->logger->warning(
+				'Currency not supported - Not displaying by Alma.',
+				array(
+					'Currency' => $currency,
+				)
+			);
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Force Check settings.
+	 *
+	 * @return void
+	 */
 	public function force_check_settings() {
 		try {
 			update_option( 'alma_warnings_handled', false );
@@ -390,7 +418,7 @@ class Alma_WC_Plugin {
 
 			$this->settings->save();
 		} catch ( Exception $exception ) {
-			$this->handle_settings_exception( $exception );
+			$this->handle_settings_exception( $exception, __METHOD__ );
 		}
 	}
 
@@ -448,6 +476,17 @@ class Alma_WC_Plugin {
 				)
 			);
 		}
+	}
+
+	/**
+	 * Is Alma available for this user ?
+	 *
+	 * @param WP_User $user The user roles which to test.
+	 *
+	 * @return bool
+	 */
+	public function is_allowed_to_see_alma( WP_User $user ) {
+		return in_array( 'administrator', $user->roles, true ) || 'live' === alma_wc_plugin()->settings->get_environment();
 	}
 
 	/**
@@ -574,24 +613,6 @@ class Alma_WC_Plugin {
 	}
 
 	/**
-	 * Get Alma full URL depends on test or live mode (sandbox or not)
-	 *
-	 * @param string $path as path to add after default scheme://host/ infos.
-	 *
-	 * @return string as full URL
-	 */
-	public function get_alma_dashboard_url( $path = '' ) {
-		if ( $this->settings->is_live() ) {
-			/* translators: %s -> path to add after dashboard url */
-			return esc_url( sprintf( __( 'https://dashboard.getalma.eu/%s', 'alma-gateway-for-woocommerce' ), $path ) );
-		}
-
-		/* translators: %s -> path to add after sandbox dashboard url */
-
-		return esc_url( sprintf( __( 'https://dashboard.sandbox.getalma.eu/%s', 'alma-gateway-for-woocommerce' ), $path ) );
-	}
-
-	/**
 	 * Check the share of checkout
 	 *
 	 * @return void
@@ -606,20 +627,6 @@ class Alma_WC_Plugin {
 		}
 
 		( new Alma_WC_Admin_Helper_Check_Legal() )->init();
-	}
-
-	/**
-	 *  Check that Alma is available for the current currency
-	 */
-	public function check_currency() {
-		$currency = get_woocommerce_currency();
-		if ( 'EUR' !== $currency ) {
-			$this->logger->info( "Currency $currency not supported - Not displaying Alma" );
-
-			return false;
-		}
-
-		return true;
 	}
 
 	/**
@@ -708,7 +715,13 @@ class Alma_WC_Plugin {
 		$payment_id = isset( $id ) ? $id : null;
 
 		if ( ! $payment_id ) {
-			$this->logger->error( 'Payment validation webhook called without a payment ID' );
+			$this->logger->error(
+				'Payment validation webhook called without a payment ID.',
+				array(
+					'Method' => __METHOD__,
+					'PID'    => $id,
+				)
+			);
 
 			wc_add_notice(
 				__( 'Payment validation error: no ID provided.<br>Please try again or contact us if the problem persists.', 'alma-gateway-for-woocommerce' ),
@@ -731,6 +744,22 @@ class Alma_WC_Plugin {
 		$payment_id = $this->get_payment_to_validate();
 		$gateway    = new Alma_WC_Payment_Gateway();
 		$gateway->validate_payment_from_ipn( $payment_id );
+	}
+
+	/**
+	 * Get Alma full URL depends on test or live mode (sandbox or not)
+	 *
+	 * @param string $path as path to add after default scheme://host/ infos.
+	 *
+	 * @return string as full URL
+	 */
+	public function get_alma_dashboard_url( $path = '' ) {
+		if ( $this->settings->is_live() ) {
+			/* translators: %s -> path to add after dashboard url */
+			return esc_url( sprintf( __( 'https://dashboard.getalma.eu/%s', 'alma-gateway-for-woocommerce' ), $path ) );
+		}
+		/* translators: %s -> path to add after sandbox dashboard url */
+		return esc_url( sprintf( __( 'https://dashboard.sandbox.getalma.eu/%s', 'alma-gateway-for-woocommerce' ), $path ) );
 	}
 
 	/**
@@ -777,18 +806,9 @@ class Alma_WC_Plugin {
 	}
 
 	/**
-	 * Check if cart has eligibilities.
-	 *
-	 * @return bool
-	 */
-	public function is_there_eligibility_in_cart() {
-		return count( $this->get_eligible_plans_keys_for_cart() ) > 0;
-	}
-
-	/**
 	 * Get eligible plans keys for current cart.
 	 *
-	 * @return array<string>
+	 * @return string[]
 	 */
 	public function get_eligible_plans_keys_for_cart() {
 		$cart_eligibilities = $this->get_cart_eligibilities();
@@ -804,25 +824,48 @@ class Alma_WC_Plugin {
 	/**
 	 * Get eligibilities from cart.
 	 *
-	 * @return array<string,Eligibility>|null
+	 * @return Eligibility[]|array
 	 */
 	public function get_cart_eligibilities() {
 		if ( ! $this->eligibilities ) {
 			$alma = alma_wc_plugin()->get_alma_client();
 			if ( ! $alma ) {
-				return null;
+				return array();
 			}
 
 			try {
 				$this->eligibilities = $alma->payments->eligibility( Alma_WC_Model_Payment::get_eligibility_payload_from_cart() );
 			} catch ( RequestError $error ) {
-				$this->logger->log_stack_trace( 'Error while checking payment eligibility: ', $error );
+				$this->logger->log_stack_trace( 'Error while checking payment eligibility.', $error );
+				return array();
+			}
 
-				return null;
+			// Fix for only having an array as results.
+			if ( is_object( $this->eligibilities ) ) {
+				$this->eligibilities = $this->format_eligibility_to_array( $this->eligibilities );
 			}
 		}
 
 		return $this->eligibilities;
+	}
+
+	/**
+	 * Fix for only having an array as results (see Alma\API\Endpoints\Payments:eligibility())
+	 *
+	 * @param Eligibility $eligibility The eligibility.
+	 *
+	 * @return array
+	 */
+	protected function format_eligibility_to_array( $eligibility ) {
+		return array( $eligibility->getPlanKey() => $eligibility );
+	}
+	/**
+	 * Check if cart has eligibilities.
+	 *
+	 * @return bool
+	 */
+	public function is_there_eligibility_in_cart() {
+		return count( $this->get_eligible_plans_keys_for_cart() ) > 0;
 	}
 
 	/**

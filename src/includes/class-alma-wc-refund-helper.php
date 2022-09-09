@@ -54,6 +54,28 @@ class Alma_WC_Refund_Helper {
 	}
 
 	/**
+	 * Adds a refund order note, and a back-office notice.
+	 *
+	 * @param WC_Order $order An order.
+	 * @param string   $notice_type Notice type.
+	 * @param string   $message Message to display.
+	 *
+	 * @return void
+	 * @see add_notice()
+	 */
+	private function add_order_note( $order, $notice_type, $message ) {
+
+		if ( in_array( $message, $this->messages ) ) {
+			return;
+		}
+		$this->messages[] = $message;
+
+		$order->add_order_note( $message );
+
+		$this->add_notice( $order, $notice_type, $message );
+	}
+
+	/**
 	 * Make full refund.
 	 *
 	 * @param WC_Order $order An order.
@@ -90,9 +112,17 @@ class Alma_WC_Refund_Helper {
 			$this->add_success_note( $order, $order_note );
 		} catch ( RequestError $e ) {
 			/* translators: %s is an error message. */
-			$error_message = sprintf( __( 'Alma full refund error : %s.', 'alma-gateway-for-woocommerce' ), $e->getErrorMessage() );
-			$this->add_error_note( $order, $error_message );
-			$this->logger->error( $error_message );
+			$this->add_error_note( $order, sprintf( __( 'Alma full refund error : %s.', 'alma-gateway-for-woocommerce' ), $e->getErrorMessage() ) );
+
+			$this->logger->error(
+				'Error on Alma full refund.',
+				array(
+					'Method'           => __METHOD__,
+					'OrderId'          => $order->get_id(),
+					'RefundId'         => $refund_id,
+					'ExceptionMessage' => $e->getErrorMessage(),
+				)
+			);
 		}
 	}
 
@@ -107,28 +137,6 @@ class Alma_WC_Refund_Helper {
 	 */
 	public function add_error_note( WC_Order $order, $message ) {
 		$this->add_order_note( $order, self::NOTICE_TYPE_ERROR, $message );
-	}
-
-	/**
-	 * Adds a refund order note, and a back-office notice.
-	 *
-	 * @param WC_Order $order An order.
-	 * @param string   $notice_type Notice type.
-	 * @param string   $message Message to display.
-	 *
-	 * @return void
-	 * @see add_notice()
-	 */
-	private function add_order_note( $order, $notice_type, $message ) {
-
-		if ( in_array( $message, $this->messages ) ) {
-			return;
-		}
-		$this->messages[] = $message;
-
-		$order->add_order_note( $message );
-
-		$this->add_notice( $order, $notice_type, $message );
 	}
 
 	/**
@@ -241,9 +249,15 @@ class Alma_WC_Refund_Helper {
 	private function has_transaction_id( $order ) {
 		if ( ! $order->get_transaction_id() ) {
 			/* translators: %s is an order number. */
-			$error_message = sprintf( __( 'Error while getting alma transaction_id for order_id : %s.', 'alma-gateway-for-woocommerce' ), $order->get_id() );
-			$this->add_error_note( $order, $error_message );
-			$this->logger->error( $error_message );
+			$this->add_error_note( $order, sprintf( __( 'Error while getting alma transaction_id for order_id : %s.', 'alma-gateway-for-woocommerce' ), $order->get_id() ) );
+
+			$this->logger->error(
+				'Error while getting alma transaction_id from an order.',
+				array(
+					'Method'  => __METHOD__,
+					'OrderId' => $order->get_id(),
+				)
+			);
 
 			return false;
 		}

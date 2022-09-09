@@ -36,10 +36,12 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 		$has_excluded_products = false;
 
 		$product = ( $the_product ) ? wc_get_product( $the_product ) : wc_get_product();
+
 		if ( ! $product ) {
-			$this->logger->info( __( 'Product not found: product badge injection failed.', 'alma-gateway-for-woocommerce' ) );
+			$this->logger->warning( 'Product not found: product badge injection failed.' );
 			return;
 		}
+
 		if (
 				isset( alma_wc_plugin()->settings->excluded_products_list ) &&
 				is_array( alma_wc_plugin()->settings->excluded_products_list ) &&
@@ -53,7 +55,10 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 		}
 
 		if ( ! $product->is_in_stock() ) {
-			$this->logger->info( __( 'Product not in stock: product badge injection failed.', 'alma-gateway-for-woocommerce' ) );
+			$this->logger->warning(
+				'Product not in stock: product badge injection failed.',
+				array( 'ProductId' => $product->get_id() )
+			);
 			return;
 		}
 
@@ -61,7 +66,13 @@ class Alma_WC_Product_Handler extends Alma_WC_Generic_Handler {
 
 		if ( ! $price ) {
 			// translators: %s: the product price.
-			$this->logger->info( sprintf( __( 'Product price (%s): product badge injection failed.', 'alma-gateway-for-woocommerce' ), $price ) );
+			$this->logger->info(
+				'Product price unknown, product badge injection failed.',
+				array(
+					'ProductId' => $product->get_id(),
+				)
+			);
+
 			return;
 		}
 		$amount_query_selector            = null;

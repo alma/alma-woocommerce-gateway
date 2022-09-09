@@ -95,55 +95,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * If API is configured with its keys, try to fetch info from merchant account.
-	 */
-	private function update_settings_from_merchant() {
-		if ( alma_wc_plugin()->settings->need_api_key() ) {
-			$this->reset_merchant_settings();
-
-			return;
-		}
-
-		try {
-			$merchant                      = alma_wc_plugin()->get_merchant();
-			$this->settings['merchant_id'] = $merchant->id;
-		} catch ( RequestError $e ) {
-			$this->reset_merchant_settings();
-			alma_wc_plugin()->handle_settings_exception( $e );
-
-			return;
-		}
-		$this->sync_fee_plans_settings();
-
-		$this->disable_unavailable_fee_plans_config();
-	}
-
-	/**
-	 * Reset merchant & amount settings
-	 */
-	private function reset_merchant_settings() {
-		// reset merchant id.
-		$this->settings['merchant_id'] = null;
-		// reset min and max amount for all plans.
-		foreach ( array_keys( $this->settings ) as $key ) {
-			if ( $this->is_amount_plan_key( $key ) ) {
-				$this->settings[ $key ] = null;
-			}
-		}
-	}
-
-	/**
-	 * Check if key match amount key format
-	 *
-	 * @param string $key As setting's key.
-	 *
-	 * @return boolean
-	 */
-	private function is_amount_plan_key( $key ) {
-		return preg_match( self::AMOUNT_PLAN_KEY_REGEX, $key ) > 0;
-	}
-
-	/**
 	 * Sync & Check if 'enabled' & 'min / max amounts' are set & ok according merchant configuration
 	 * Add installments counts & deferred days / months into settings
 	 */
@@ -170,24 +121,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			$this->settings[ "installments_count_$plan_key" ] = $fee_plan->getInstallmentsCount();
 		}
 
-	}
-
-	/**
-	 * Force disable not available fee_plans to prevent showing them in checkout.
-	 */
-	private function disable_unavailable_fee_plans_config() {
-		$allowed_installments = alma_wc_plugin()->settings->get_allowed_plans_keys();
-		if ( ! $allowed_installments ) {
-			return;
-		}
-		foreach ( array_keys( $this->settings ) as $key ) {
-			if ( preg_match( self::ENABLED_PLAN_KEY_REGEX, $key, $matches ) ) {
-				// force disable not available fee_plans to prevent showing them in checkout.
-				if ( ! in_array( intval( $matches[1] ), $allowed_installments, true ) ) {
-					$this->settings[ "enabled_${matches[1]}" ] = 'no';
-				}
-			}
-		}
 	}
 
 	/**
@@ -231,8 +164,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return bool
 	 */
 	public function process_admin_options() {
-		$value = $this->settings;
 		/** LEGAL CHECKOUT FEATURE
+         * $value = $this->settings;
 		 * $post_data = $this->get_post_data();
 		 * if (
 		 * isset( $post_data['share_of_checkout_enabled'] ) &&
@@ -249,23 +182,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		alma_wc_plugin()->force_check_settings();
 
 		return $previously_saved && update_option( $this->get_option_key(), $value );
-	}
-
-	/**
-	 * After settings have been updated, override min/max amounts to convert them to cents.
-	 */
-	private function convert_amounts_to_cents() {
-		$post_data = $this->get_post_data();
-		foreach ( $this->get_form_fields() as $key => $field ) {
-			if ( $this->is_amount_plan_key( $key ) ) {
-				try {
-					$amount                 = $this->get_field_value( $key, $field, $post_data );
-					$this->settings[ $key ] = alma_wc_price_to_cents( $amount );
-				} catch ( Exception $e ) {
-					$this->add_error( $e->getMessage() );
-				}
-			}
-		}
 	}
 
 	/**
@@ -297,55 +213,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		}
 
 		return $this->is_cart_eligible() && parent::is_available();
-	}
-
-	/**
-	 * Check if there is some excluded products into cart
-	 *
-	 * @return bool
-	 */
-	private function cart_contains_excluded_category() {
-		if ( wc()->cart === null ) {
-			return false;
-		}
-		if (
-			array_key_exists( 'excluded_products_list', $this->settings ) &&
-			is_array( $this->settings['excluded_products_list'] ) &&
-			count( $this->settings['excluded_products_list'] ) > 0
-		) {
-			foreach ( WC()->cart->get_cart() as $cart_item ) {
-				$product_id = $cart_item['product_id'];
-
-				foreach ( $this->settings['excluded_products_list'] as $category_slug ) {
-					if ( has_term( $category_slug, 'product_cat', $product_id ) ) {
-						return true;
-					}
-				}
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * Check if cart eligibilities has at least one eligible plan.
-	 *
-	 * @return bool
-	 */
-	private function is_cart_eligible() {
-		$eligibilities = alma_wc_plugin()->get_cart_eligibilities();
-
-		if ( ! $eligibilities ) {
-			return false;
-		}
-
-		$is_eligible = false;
-
-		foreach ( $eligibilities as $plan ) {
-			$is_eligible = $is_eligible || $plan->isEligible; // phpcs:ignore WordPress.NamingConventions.ValidVariableName
-		}
-
-		return $is_eligible;
 	}
 
 	/**
@@ -461,31 +328,165 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$plan_id    = '#' . sprintf( self::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $plan_key );
 		$logo_url   = alma_wc_plugin()->get_asset_url( "images/${plan_key}_logo.svg" );
 		?>
-		<input
-				type="radio"
-				value="<?php echo esc_attr( $plan_key ); ?>"
-				id="<?php echo esc_attr( $gateway_id ); ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
-				name="alma_fee_plan"
-				data-default="<?php echo $is_checked ? '1' : '0'; ?>"
-				style="margin-right: 5px;<?php echo ( ! $has_radio_button ) ? 'display:none;' : ''; ?>"
+        <input
+                type="radio"
+                value="<?php echo esc_attr( $plan_key ); ?>"
+                id="<?php echo esc_attr( $gateway_id ); ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
+                name="alma_fee_plan"
+                data-default="<?php echo $is_checked ? '1' : '0'; ?>"
+                style="margin-right: 5px;<?php echo ( ! $has_radio_button ) ? 'display:none;' : ''; ?>"
 			<?php echo $is_checked ? 'checked' : ''; ?>
-				onchange="if (this.checked) { jQuery( '<?php echo esc_js( $plan_class ); ?>' ).hide(); jQuery(this).closest('li.wc_payment_method').find( '<?php echo esc_js( $plan_id ); ?>' ).show() }"
-		>
-		<label
-				class="checkbox"
-				style="margin-right: 10px; display: inline;"
-				for="<?php echo esc_attr( $gateway_id ); ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
-		>
-			<img src="<?php echo esc_attr( $logo_url ); ?>"
-				 style="float: unset !important; width: auto !important; height: 30px !important;  border: none !important; vertical-align: middle; display: inline-block;"
-				 alt="
+                onchange="if (this.checked) { jQuery( '<?php echo esc_js( $plan_class ); ?>' ).hide(); jQuery(this).closest('li.wc_payment_method').find( '<?php echo esc_js( $plan_id ); ?>' ).show() }"
+        >
+        <label
+                class="checkbox"
+                style="margin-right: 10px; display: inline;"
+                for="<?php echo esc_attr( $gateway_id ); ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
+        >
+            <img src="<?php echo esc_attr( $logo_url ); ?>"
+                 style="float: unset !important; width: auto !important; height: 30px !important;  border: none !important; vertical-align: middle; display: inline-block;"
+                 alt="
 					<?php
-					// translators: %s: plan_key alt image.
-					echo esc_html( sprintf( __( '%s installments', 'alma-gateway-for-woocommerce' ), $plan_key ) );
-					?>
+			     // translators: %s: plan_key alt image.
+			     echo esc_html( sprintf( __( '%s installments', 'alma-gateway-for-woocommerce' ), $plan_key ) );
+			     ?>
 					">
-		</label>
+        </label>
 		<?php
+	}
+
+
+	/**
+	 * Output HTML for a single payment field.
+	 *
+	 * @param string  $gateway_id Gateway id.
+	 * @param string  $plan_key Plan key.
+	 * @param boolean $has_radio_button Include a radio button for plan selection.
+	 * @param boolean $is_checked Should the radio button be checked.
+	 */
+	public function validate_fields() {
+		$alma_fee_plan = $this->checkout_helper->get_chosen_alma_fee_plan();
+		if ( ! $alma_fee_plan ) {
+			return false;
+		}
+		$allowed_values = array_map( 'strval', alma_wc_plugin()->get_eligible_plans_keys_for_cart() );
+		if ( ! in_array( $alma_fee_plan, $allowed_values, true ) ) {
+			wc_add_notice( '<strong>Fee plan</strong> is invalid.', 'error' );
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Process Payment.
+	 *
+	 * @param int $order_id Order ID.
+	 *
+	 * @return array
+	 */
+	public function process_payment( $order_id ) {
+		$error_msg = __( 'There was an error processing your payment.<br>Please try again or contact us if the problem persists.', 'alma-gateway-for-woocommerce' );
+
+		$alma = alma_wc_plugin()->get_alma_client();
+		if ( ! $alma ) {
+			wc_add_notice( $error_msg, 'error' );
+
+			return array(
+				'result' => 'error',
+			);
+		}
+
+		try {
+			$fee_plan_definition = $this->get_fee_plan_definition( $this->checkout_helper->get_chosen_alma_fee_plan() );
+		} catch ( Exception $e ) {
+			$this->logger->log_stack_trace(
+				'Error while creating payment (getting fee plan definition).',
+				$e,
+				array( 'OrderId' => $order_id )
+			);
+			wc_add_notice( $error_msg, 'error' );
+
+			return array( 'result' => 'error' );
+		}
+
+		try {
+			$payment = $alma->payments->create(
+				Alma_WC_Model_Payment::get_payment_payload_from_order( $order_id, $fee_plan_definition )
+			);
+		} catch ( RequestError $e ) {
+			$this->logger->log_stack_trace(
+				'Error while creating payment.',
+				$e,
+				array(
+					'OrderId'           => $order_id,
+					'FeePlanDefinition' => $fee_plan_definition,
+				)
+			);
+			wc_add_notice( $error_msg, 'error' );
+
+			return array( 'result' => 'error' );
+		}
+
+		// Redirect user to our payment page.
+		return array(
+			'result'   => 'success',
+			'redirect' => $payment->url,
+		);
+	}
+
+	/**
+	 * Redirect to cart with error.
+	 *
+	 * @param string $error_msg Error message.
+	 */
+	private function redirect_to_cart_with_error( $error_msg ) {
+		wc_add_notice( $error_msg, 'error' );
+
+		$cart_url = wc_get_cart_url();
+		wp_safe_redirect( $cart_url );
+		exit();
+	}
+
+	/**
+	 * Validate payment on customer return.
+	 *
+	 * @param string $payment_id Payment Id.
+	 */
+	public function validate_payment_on_customer_return( $payment_id ) {
+		$order     = null;
+		$error_msg = __( 'There was an error when validating your payment.<br>Please try again or contact us if the problem persists.', 'alma-gateway-for-woocommerce' );
+		try {
+			$order = Alma_WC_Payment_Validator::validate_payment( $payment_id );
+		} catch ( Alma_WC_Payment_Validation_Error $e ) {
+			$this->redirect_to_cart_with_error( $error_msg );
+		} catch ( \Exception $e ) {
+			$this->redirect_to_cart_with_error( $e->getMessage() );
+		}
+
+		if ( ! $order ) {
+			$this->redirect_to_cart_with_error( $error_msg );
+		}
+
+		// Redirect user to the order confirmation page.
+		$return_url = $this->get_return_url( $order->get_wc_order() );
+		wp_safe_redirect( $return_url );
+		exit();
+	}
+
+	/**
+	 * Validate payment from ipn.
+	 *
+	 * @param string $payment_id Payment Id.
+	 */
+	public function validate_payment_from_ipn( $payment_id ) {
+		try {
+			Alma_WC_Payment_Validator::validate_payment( $payment_id );
+		} catch ( \Exception $e ) {
+			status_header( 500 );
+			wp_send_json( array( 'error' => $e->getMessage() ) );
+		}
+
+		wp_send_json( array( 'success' => true ) );
 	}
 
 	/**
@@ -708,154 +709,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Validate payment fields.
-	 *
-	 * @return bool
-	 */
-	public function validate_fields() {
-		$alma_fee_plan = $this->checkout_helper->get_chosen_alma_fee_plan();
-		if ( ! $alma_fee_plan ) {
-			return false;
-		}
-		$allowed_values = array_map( 'strval', alma_wc_plugin()->get_eligible_plans_keys_for_cart() );
-		if ( ! in_array( $alma_fee_plan, $allowed_values, true ) ) {
-			wc_add_notice( '<strong>Fee plan</strong> is invalid.', 'error' );
-
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Process Payment.
-	 *
-	 * @param int $order_id Order ID.
-	 *
-	 * @return array
-	 */
-	public function process_payment( $order_id ) {
-		$error_msg = __( 'There was an error processing your payment.<br>Please try again or contact us if the problem persists.', 'alma-gateway-for-woocommerce' );
-
-		$alma = alma_wc_plugin()->get_alma_client();
-		if ( ! $alma ) {
-			wc_add_notice( $error_msg, 'error' );
-
-			return array(
-				'result' => 'error',
-			);
-		}
-		try {
-			$fee_plan_definition = $this->get_fee_plan_definition( $this->checkout_helper->get_chosen_alma_fee_plan() );
-		} catch ( Exception $e ) {
-			$this->logger->log_stack_trace( 'Error while creating payment: ', $e );
-			wc_add_notice( $error_msg, 'error' );
-
-			return array( 'result' => 'error' );
-		}
-
-		try {
-			$payment = $alma->payments->create(
-				Alma_WC_Model_Payment::get_payment_payload_from_order( $order_id, $fee_plan_definition )
-			);
-		} catch ( RequestError $e ) {
-			$this->logger->log_stack_trace( 'Error while creating payment: ', $e );
-			wc_add_notice( $error_msg, 'error' );
-
-			return array( 'result' => 'error' );
-		}
-
-		// Redirect user to our payment page.
-		return array(
-			'result'   => 'success',
-			'redirect' => $payment->url,
-		);
-	}
-
-	/**
-	 * Populate array with plan settings.
-	 *
-	 * @param string $plan_key The plan key.
-	 *
-	 * @return array
-	 *
-	 * @throws Exception If required keys not found.
-	 */
-	private function get_fee_plan_definition( $plan_key ) {
-		$definition = array();
-		if ( ! isset( $this->settings[ "installments_count_$plan_key" ] ) ) {
-			throw new Exception( "installments_count_$plan_key not set" );
-		}
-		if ( ! isset( $this->settings[ "deferred_days_$plan_key" ] ) ) {
-			throw new Exception( "deferred_days_$plan_key not set" );
-		}
-		if ( ! isset( $this->settings[ "deferred_months_$plan_key" ] ) ) {
-			throw new Exception( "deferred_months_$plan_key not set" );
-		}
-		$definition['installments_count'] = $this->settings[ "installments_count_$plan_key" ];
-		$definition['deferred_days']      = $this->settings[ "deferred_days_$plan_key" ];
-		$definition['deferred_months']    = $this->settings[ "deferred_months_$plan_key" ];
-		$definition['plan_key']           = $plan_key;
-
-		return $definition;
-	}
-
-	/**
-	 * Validate payment on customer return.
-	 *
-	 * @param string $payment_id Payment Id.
-	 */
-	public function validate_payment_on_customer_return( $payment_id ) {
-		$order     = null;
-		$error_msg = __( 'There was an error when validating your payment.<br>Please try again or contact us if the problem persists.', 'alma-gateway-for-woocommerce' );
-		try {
-			$order = Alma_WC_Payment_Validator::validate_payment( $payment_id );
-		} catch ( Alma_WC_Payment_Validation_Error $e ) {
-			$this->redirect_to_cart_with_error( $error_msg );
-		} catch ( Exception $e ) {
-			$this->redirect_to_cart_with_error( $e->getMessage() );
-		}
-
-		if ( ! $order ) {
-			$this->redirect_to_cart_with_error( $error_msg );
-		}
-
-		// Redirect user to the order confirmation page.
-		$return_url = $this->get_return_url( $order->get_wc_order() );
-		wp_safe_redirect( $return_url );
-		exit();
-	}
-
-	/**
-	 * Redirect to cart with error.
-	 *
-	 * @param string $error_msg Error message.
-	 */
-	private function redirect_to_cart_with_error( $error_msg ) {
-		wc_add_notice( $error_msg, 'error' );
-
-		$cart_url = wc_get_cart_url();
-		wp_safe_redirect( $cart_url );
-		exit();
-	}
-
-	/**
-	 * Validate payment from ipn.
-	 *
-	 * @param string $payment_id Payment Id.
-	 */
-	public function validate_payment_from_ipn( $payment_id ) {
-		try {
-			Alma_WC_Payment_Validator::validate_payment( $payment_id );
-		} catch ( Exception $e ) {
-			status_header( 500 );
-			wp_send_json( array( 'error' => $e->getMessage() ) );
-		}
-
-		wp_send_json( array( 'success' => true ) );
-	}
-
-	/**
 	 * Generate a select `alma_fee` Input HTML (based on `select_alma_fee_plan` field definition).
 	 * Warning: use only one `select_alma_fee_plan` type in your form (script & css are inlined here)
 	 *
@@ -983,6 +836,166 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		<?php
 
 		return ob_get_clean();
+	}
+
+	/**
+	 * Check if there is some excluded products into cart
+	 *
+	 * @return bool
+	 */
+	private function cart_contains_excluded_category() {
+		if ( wc()->cart === null ) {
+			return false;
+		}
+		if (
+			array_key_exists( 'excluded_products_list', $this->settings ) &&
+			is_array( $this->settings['excluded_products_list'] ) &&
+			count( $this->settings['excluded_products_list'] ) > 0
+		) {
+			foreach ( WC()->cart->get_cart() as $cart_item ) {
+				$product_id = $cart_item['product_id'];
+
+				foreach ( $this->settings['excluded_products_list'] as $category_slug ) {
+					if ( has_term( $category_slug, 'product_cat', $product_id ) ) {
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Check if cart eligibilities has at least one eligible plan.
+	 *
+	 * @return bool
+	 */
+	private function is_cart_eligible() {
+		$eligibilities = alma_wc_plugin()->get_cart_eligibilities();
+
+		if ( ! $eligibilities ) {
+			return false;
+		}
+
+		$is_eligible = false;
+
+		foreach ( $eligibilities as $plan ) {
+			$is_eligible = $is_eligible || $plan->isEligible; // phpcs:ignore WordPress.NamingConventions.ValidVariableName
+		}
+
+		return $is_eligible;
+	}
+
+	/**
+	 * After settings have been updated, override min/max amounts to convert them to cents.
+	 */
+	private function convert_amounts_to_cents() {
+		$post_data = $this->get_post_data();
+		foreach ( $this->get_form_fields() as $key => $field ) {
+			if ( $this->is_amount_plan_key( $key ) ) {
+				try {
+					$amount                 = $this->get_field_value( $key, $field, $post_data );
+					$this->settings[ $key ] = alma_wc_price_to_cents( $amount );
+				} catch ( Exception $e ) {
+					$this->add_error( $e->getMessage() );
+				}
+			}
+		}
+	}
+
+	/**
+	 * If API is configured with its keys, try to fetch info from merchant account.
+	 */
+	private function update_settings_from_merchant() {
+		if ( alma_wc_plugin()->settings->need_api_key() ) {
+			$this->reset_merchant_settings();
+
+			return;
+		}
+
+		try {
+			$merchant                      = alma_wc_plugin()->get_merchant();
+			$this->settings['merchant_id'] = $merchant->id;
+		} catch ( RequestError $e ) {
+			$this->reset_merchant_settings();
+			alma_wc_plugin()->handle_settings_exception( $e, __METHOD__ );
+
+			return;
+		}
+		$this->sync_fee_plans_settings();
+
+		$this->disable_unavailable_fee_plans_config();
+	}
+
+	/**
+	 * Reset merchant & amount settings
+	 */
+	private function reset_merchant_settings() {
+		// reset merchant id.
+		$this->settings['merchant_id'] = null;
+		// reset min and max amount for all plans.
+		foreach ( array_keys( $this->settings ) as $key ) {
+			if ( $this->is_amount_plan_key( $key ) ) {
+				$this->settings[ $key ] = null;
+			}
+		}
+	}
+
+	/**
+	 * Check if key match amount key format
+	 *
+	 * @param string $key As setting's key.
+	 *
+	 * @return boolean
+	 */
+	private function is_amount_plan_key( $key ) {
+		return preg_match( self::AMOUNT_PLAN_KEY_REGEX, $key ) > 0;
+	}
+
+	/**
+	 * Force disable not available fee_plans to prevent showing them in checkout.
+	 */
+	private function disable_unavailable_fee_plans_config() {
+		$allowed_installments = alma_wc_plugin()->settings->get_allowed_plans_keys();
+		if ( ! $allowed_installments ) {
+			return;
+		}
+		foreach ( array_keys( $this->settings ) as $key ) {
+			if ( preg_match( self::ENABLED_PLAN_KEY_REGEX, $key, $matches ) ) {
+				// force disable not available fee_plans to prevent showing them in checkout.
+				if ( ! in_array( intval( $matches[1] ), $allowed_installments, true ) ) {
+					$this->settings[ "enabled_${matches[1]}" ] = 'no';
+				}
+			}
+		}
+	}
+
+	/**
+	 * Populate array with plan settings.
+	 *
+	 * @param string $plan_key The plan key.
+	 *
+	 * @return array
+	 *
+	 * @throws Exception If required keys not found.
+	 */
+	private function get_fee_plan_definition( $plan_key ) {
+		$definition = array();
+		if ( ! isset( $this->settings[ "installments_count_$plan_key" ] ) ) {
+			throw new Exception( "installments_count_$plan_key not set" );
+		}
+		if ( ! isset( $this->settings[ "deferred_days_$plan_key" ] ) ) {
+			throw new Exception( "deferred_days_$plan_key not set" );
+		}
+		if ( ! isset( $this->settings[ "deferred_months_$plan_key" ] ) ) {
+			throw new Exception( "deferred_months_$plan_key not set" );
+		}
+		$definition['installments_count'] = $this->settings[ "installments_count_$plan_key" ];
+		$definition['deferred_days']      = $this->settings[ "deferred_days_$plan_key" ];
+		$definition['deferred_months']    = $this->settings[ "deferred_months_$plan_key" ];
+
+		return $definition;
 	}
 
 	/**

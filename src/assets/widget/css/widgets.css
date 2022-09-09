@@ -34,6 +34,17 @@
   --green-100: #ddf8f1;
   --green-300: #9cebd6;
   --green-600: #1dcda3;
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semi-bold: 600;
+  --weight-bold: 700;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-base: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 24px;
+  --spacing-3xl: 32px;
 }
 @font-face {
   font-family: 'Eina04', sans-serif;
@@ -486,7 +497,7 @@
 }
 
 ._2G7Ch {
-  height: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
 }
