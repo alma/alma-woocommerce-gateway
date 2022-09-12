@@ -60,9 +60,9 @@ class Alma_WC_Admin_Helper_Check_Legal {
 				<div>
 					<p>
 						<?php
-						esc_html_e(
+						echo wp_kses_post(
 							'By accepting this option, enable Alma to analyse the usage of your payment
-                        methods,<strong>get more informations to perform </strong>and share this data with you.',
+                        methods, <b>get more informations to perform </b>and share this data with you.',
 							'alma-gateway-for-woocommerce'
 						);
 						?>
