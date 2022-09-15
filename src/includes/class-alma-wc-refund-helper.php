@@ -43,19 +43,10 @@ class Alma_WC_Refund_Helper {
 	}
 
 	/**
-	 * Gets the amount to refund.
-	 *
-	 * @param WC_Order_Refund $refund A Refund object.
-	 * @return int
-	 */
-	public function get_refund_amount( $refund ) {
-		return alma_wc_price_to_cents( floatval( $refund->get_amount() ) );
-	}
-
-	/**
 	 * Gets the amount to refund for display on the page.
 	 *
 	 * @param WC_Order_Refund $refund A Refund object.
+	 *
 	 * @return string
 	 */
 	public function get_display_refund_amount( $refund ) {
@@ -74,7 +65,7 @@ class Alma_WC_Refund_Helper {
 	 */
 	private function add_order_note( $order, $notice_type, $message ) {
 
-		if ( in_array( $message, $this->messages, true ) ) {
+		if ( in_array( $message, $this->messages ) ) {
 			return;
 		}
 		$this->messages[] = $message;
@@ -89,6 +80,7 @@ class Alma_WC_Refund_Helper {
 	 *
 	 * @param WC_Order $order An order.
 	 * @param integer  $refund_id Refund id.
+	 *
 	 * @return void
 	 */
 	public function make_full_refund( $order, $refund_id = 0 ) {
@@ -100,6 +92,7 @@ class Alma_WC_Refund_Helper {
 		$alma = alma_wc_plugin()->get_alma_client();
 		if ( ! $alma ) {
 			$this->add_error_note( $order, __( 'Alma API client init error.', 'alma-gateway-for-woocommerce' ) );
+
 			return;
 		}
 
@@ -134,82 +127,16 @@ class Alma_WC_Refund_Helper {
 	}
 
 	/**
-	 * Tells if the order is valid for a partial refund.
+	 * Adds a refund error note to an order + a notice
 	 *
-	 * @param WC_Order        $order An order.
-	 * @param WC_Order_Refund $refund A Refund object.
-	 * @return bool
+	 * @param WC_Order $order The order where to add a note & notice.
+	 * @param string   $message The message.
+	 *
+	 * @return void
+	 * @see add_order_note()
 	 */
-	public function is_partially_refundable( $order, $refund ) {
-		$has_valid_amount = $this->get_refund_amount( $refund ) > 0;
-		if ( ! $has_valid_amount ) {
-			$this->add_error_note( $order, __( 'Amount cannot be equal to 0 to refund with Alma.', 'alma-gateway-for-woocommerce' ) );
-		}
-
-		return $has_valid_amount && $this->is_fully_refundable( $order );
-	}
-
-	/**
-	 * Tells if the order is valid for a full refund with Alma.
-	 *
-	 * @param WC_Order $order An order.
-	 * @return bool
-	 */
-	public function is_fully_refundable( $order ) {
-		return $this->is_paid_with_alma( $order ) && $this->has_transaction_id( $order );
-	}
-
-	/**
-	 * Has this order been paid via Alma payment method ?.
-	 *
-	 * @param WC_Order $order An order.
-	 * @return bool
-	 */
-	public function is_paid_with_alma( $order ) {
-		return in_array(
-			$order->get_payment_method(),
-			array(
-				Alma_WC_Payment_Gateway::GATEWAY_ID,
-				Alma_WC_Payment_Gateway::ALMA_GATEWAY_PAY_LATER,
-				Alma_WC_Payment_Gateway::ALMA_GATEWAY_PAY_MORE_THAN_FOUR,
-			),
-			true
-		);
-	}
-
-	/**
-	 * Has this order a transaction id ?.
-	 *
-	 * @param WC_Order $order An order.
-	 * @return bool
-	 */
-	private function has_transaction_id( $order ) {
-		if ( ! $order->get_transaction_id() ) {
-			/* translators: %s is an order number. */
-			$this->add_error_note( $order, sprintf( __( 'Error while getting alma transaction_id for order_id : %s.', 'alma-gateway-for-woocommerce' ), $order->get_id() ) );
-
-			$this->logger->error(
-				'Error while getting alma transaction_id from an order.',
-				array(
-					'Method'  => __METHOD__,
-					'OrderId' => $order->get_id(),
-				)
-			);
-
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * Formats a comment by adding a default refund sentence prefix.
-	 *
-	 * @param string $comment The comment to prefix to.
-	 *
-	 * @return string
-	 */
-	public function format_refund_comment( $comment ) {
-		return self::PREFIX_REFUND_COMMENT . $comment;
+	public function add_error_note( WC_Order $order, $message ) {
+		$this->add_order_note( $order, self::NOTICE_TYPE_ERROR, $message );
 	}
 
 	/**
@@ -231,16 +158,14 @@ class Alma_WC_Refund_Helper {
 	}
 
 	/**
-	 * Adds a refund error note to an order + a notice
+	 * Formats a comment by adding a default refund sentence prefix.
 	 *
-	 * @param WC_Order $order The order where to add a note & notice.
-	 * @param string   $message The message.
+	 * @param string $comment The comment to prefix to.
 	 *
-	 * @see add_order_note()
-	 * @return void
+	 * @return string
 	 */
-	public function add_error_note( WC_Order $order, $message ) {
-		$this->add_order_note( $order, self::NOTICE_TYPE_ERROR, $message );
+	public function format_refund_comment( $comment ) {
+		return self::PREFIX_REFUND_COMMENT . $comment;
 	}
 
 	/**
@@ -249,11 +174,95 @@ class Alma_WC_Refund_Helper {
 	 * @param WC_Order $order The order where to add a note & notice.
 	 * @param string   $message The message.
 	 *
-	 * @see add_order_note()
 	 * @return void
+	 * @see add_order_note()
 	 */
 	public function add_success_note( WC_Order $order, $message ) {
 		$this->add_order_note( $order, self::NOTICE_TYPE_SUCCESS, $message );
+	}
+
+	/**
+	 * Tells if the order is valid for a partial refund.
+	 *
+	 * @param WC_Order        $order An order.
+	 * @param WC_Order_Refund $refund A Refund object.
+	 *
+	 * @return bool
+	 */
+	public function is_partially_refundable( $order, $refund ) {
+		$has_valid_amount = $this->get_refund_amount( $refund ) > 0;
+		if ( ! $has_valid_amount ) {
+			$this->add_error_note( $order, __( 'Amount cannot be equal to 0 to refund with Alma.', 'alma-gateway-for-woocommerce' ) );
+		}
+
+		return $has_valid_amount && $this->is_fully_refundable( $order );
+	}
+
+	/**
+	 * Gets the amount to refund.
+	 *
+	 * @param WC_Order_Refund $refund A Refund object.
+	 *
+	 * @return int
+	 */
+	public function get_refund_amount( $refund ) {
+		return alma_wc_price_to_cents( floatval( $refund->get_amount() ) );
+	}
+
+	/**
+	 * Tells if the order is valid for a full refund with Alma.
+	 *
+	 * @param WC_Order $order An order.
+	 *
+	 * @return bool
+	 */
+	public function is_fully_refundable( $order ) {
+		return $this->is_paid_with_alma( $order ) && $this->has_transaction_id( $order );
+	}
+
+	/**
+	 * Has this order been paid via Alma payment method ?.
+	 *
+	 * @param WC_Order $order An order.
+	 *
+	 * @return bool
+	 */
+	public function is_paid_with_alma( $order ) {
+		return in_array(
+			$order->get_payment_method(),
+			array(
+				Alma_WC_Payment_Gateway::GATEWAY_ID,
+				Alma_WC_Payment_Gateway::ALMA_GATEWAY_PAY_LATER,
+				Alma_WC_Payment_Gateway::ALMA_GATEWAY_PAY_MORE_THAN_FOUR,
+			),
+			true
+		);
+	}
+
+	/**
+	 * Has this order a transaction id ?.
+	 *
+	 * @param WC_Order $order An order.
+	 *
+	 * @return bool
+	 */
+	private function has_transaction_id( $order ) {
+		if ( ! $order->get_transaction_id() ) {
+			/* translators: %s is an order number. */
+			$this->add_error_note( $order, sprintf( __( 'Error while getting alma transaction_id for order_id : %s.', 'alma-gateway-for-woocommerce' ), $order->get_id() ) );
+
+			$this->logger->error(
+				'Error while getting alma transaction_id from an order.',
+				array(
+					'Method'  => __METHOD__,
+					'OrderId' => $order->get_id(),
+				)
+			);
+
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
