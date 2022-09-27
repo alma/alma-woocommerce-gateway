@@ -16,4 +16,19 @@ jQuery(document).ready(function () {
             }
         });
     }
+
+
+    jQuery(".button-checkout-legal").on("click", function (e) {
+        e.preventDefault();
+        value =  jQuery(this).data('value');
+
+        var data = {
+            'action': 'legal_alma',
+            'accept': value
+        };
+
+        jQuery.post(ajax_object.ajax_url, data, function() {
+            location.reload();
+        });
+    });
 });

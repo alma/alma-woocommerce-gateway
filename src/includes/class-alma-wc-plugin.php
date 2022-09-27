@@ -111,9 +111,7 @@ class Alma_WC_Plugin {
 		);
 
 		add_action( 'init', array( $this, 'bootstrap' ) );
-		/** LEGAL CHECKOUT FEATURE */
 		add_action( 'init', array( $this, 'check_share_checkout' ) );
-		/** LEGAL CHECKOUT FEATURE */
 		add_filter( 'allowed_redirect_hosts', array( $this, 'alma_domains_whitelist' ) );
 
 		add_filter(
@@ -143,10 +141,8 @@ class Alma_WC_Plugin {
 		);
 
 		// Launch the "share of checkout".
-		/** LEGAL CHECKOUT FEATURE */
 		$share_of_checkout = new Alma_WC_Share_Of_Checkout();
 		$share_of_checkout->init();
-		/** LEGAL CHECKOUT FEATURE */
 
 		$refund = new Alma_WC_Refund();
 		add_action( 'admin_init', array( $refund, 'admin_init' ), 10 );
@@ -624,7 +620,11 @@ class Alma_WC_Plugin {
 			return;
 		}
 
-		if ( 'yes' === alma_wc_plugin()->settings->share_of_checkout_enabled ) {
+		if (
+			! empty( alma_wc_plugin()->settings->share_of_checkout_enabled_date )
+			|| alma_wc_plugin()->settings->need_api_key()
+			|| alma_wc_plugin()->settings->is_test()
+		) {
 			return;
 		}
 

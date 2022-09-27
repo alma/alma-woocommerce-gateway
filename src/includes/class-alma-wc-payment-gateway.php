@@ -28,20 +28,25 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	const ENABLED_PLAN_KEY_REGEX              = '#^enabled_general_([0-9]+_[0-9]+_[0-9]+)$#';
 	const ALMA_GATEWAY_PAY_LATER              = 'alma_pay_later';
 	const ALMA_GATEWAY_PAY_MORE_THAN_FOUR     = 'alma_pnx_plus_4';
+	/**
+	 * Checkout Helper.
+	 *
+	 * @var Alma_WC_Checkout_Helper
+	 */
+	protected $checkout_helper;
 
-
+	/**
+	 * Checkout legal helper.
+	 *
+	 * @var Alma_WC_Admin_Helper_Check_Legal
+	 */
+	protected $admin_helper_check_legal;
 	/**
 	 * Logger
 	 *
 	 * @var Alma_WC_Logger
 	 */
 	private $logger;
-	/**
-	 * Checkout Helper.
-	 *
-	 * @var Alma_WC_Checkout_Helper
-	 */
-	private $checkout_helper;
 
 	/**
 	 * __construct
@@ -52,8 +57,9 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$this->method_title       = __( 'Payment in instalments and deferred with Alma - 2x 3x 4x, D+15 or D+30', 'alma-gateway-for-woocommerce' );
 		$this->method_description = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.', 'alma-gateway-for-woocommerce' );
 
-		$this->logger          = new Alma_WC_Logger();
-		$this->checkout_helper = new Alma_WC_Checkout_Helper();
+		$this->logger                   = new Alma_WC_Logger();
+		$this->checkout_helper          = new Alma_WC_Checkout_Helper();
+		$this->admin_helper_check_legal = new Alma_WC_Admin_Helper_Check_Legal();
 
 		$this->init_form_fields();
 		$this->init_settings();
@@ -231,25 +237,74 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 */
 	public function process_admin_options() {
 		$previously_saved = parent::process_admin_options();
+		set_transient( 'alma-admin-soc-panel', true, 5 );
+		$post_data = $this->get_post_data();
+
+		$this->process_checkout_legal( $post_data );
+
+		// Check if the mode has changed to live (by default in the module you are in test so the legal is not init).
+		if (
+			'live' === $post_data['woocommerce_alma_environment']
+			&& 'test' === alma_wc_plugin()->settings->get_environment()
+		) {
+			$legal = new Alma_WC_Admin_Helper_Check_Legal();
+			$legal->init();
+		}
+
+		if (
+			'test' === $post_data['woocommerce_alma_environment']
+			&& 'live' === alma_wc_plugin()->settings->get_environment()
+		) {
+			delete_transient( 'alma-admin-soc-panel' );
+		}
 
 		$this->convert_amounts_to_cents();
 		$this->update_settings_from_merchant();
 		alma_wc_plugin()->settings->update_from( $this->settings );
 		alma_wc_plugin()->force_check_settings();
 
-		$value = $this->settings;
-		/** LEGAL CHECKOUT FEATURE */
-		$post_data = $this->get_post_data();
+		$values = $this->settings;
+
+		return $previously_saved && update_option( $this->get_option_key(), $values );
+	}
+
+	/**
+	 * Process the checkout legal data.
+	 *
+	 * @param array $post_data The data.
+	 *
+	 * @return void
+	 */
+	protected function process_checkout_legal( $post_data ) {
+		$has_changed = false;
+
 		if (
-			isset( $post_data['share_of_checkout_enabled'] ) &&
-			! isset( alma_wc_plugin()->settings->share_of_checkout_enabled )
+			(
+				isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
+				&& 1 === $post_data['woocommerce_alma_share_of_checkout_enabled']
+				&& 'no' === alma_wc_plugin()->settings->share_of_checkout_enabled
+			)
+			|| (
+				! isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
+				&& 'yes' === alma_wc_plugin()->settings->share_of_checkout_enabled
+			)
 		) {
-			$value['share_of_checkout_enabled_date'] = gmdate( 'Y-m-d' );
+			$has_changed = true;
 		}
 
-		/** LEGAL CHECKOUT FEATURE */
+		if ( 1 === $has_changed ) {
+			$this->settings['share_of_checkout_enabled_date'] = gmdate( 'Y-m-d' );
+			$endpoint = 'removeConsent';
 
-		return $previously_saved && update_option( $this->get_option_key(), $value );
+			if (
+				isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
+				&& 1 === $post_data['woocommerce_alma_share_of_checkout_enabled']
+			) {
+				$endpoint = 'addConsent';
+			}
+
+			$this->admin_helper_check_legal->send_consent( $endpoint );
+		}
 	}
 
 	/**
