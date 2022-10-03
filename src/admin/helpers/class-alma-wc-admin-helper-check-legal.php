@@ -131,7 +131,7 @@ class Alma_WC_Admin_Helper_Check_Legal {
 		}
 
 		try {
-			$alma->shareOfCheckout->$endpoint();
+			$alma->shareOfCheckout->$endpoint(); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		} catch ( \Alma\API\RequestError $e ) {
 			$this->logger->error(
 				sprintf( 'Fail to call share of checkout action %s', $endpoint ),
