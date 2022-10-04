@@ -9,7 +9,7 @@
 use Alma\API\Entities\FeePlan;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	die( 'Not allowed' ); // Exit if accessed directly.
+    die( 'Not allowed' ); // Exit if accessed directly.
 }
 
 /**
@@ -17,177 +17,177 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Alma_WC_Admin_Form {
 
-	/**
-	 * Singleton static property.
-	 *
-	 * @var self
-	 */
-	private static $instance;
+    /**
+     * Singleton static property.
+     *
+     * @var self
+     */
+    private static $instance;
 
-	/**
-	 * Admin Form fields initialization.
-	 *
-	 * @return array
-	 */
-	public static function init_form_fields() {
-		$need_api_key     = alma_wc_plugin()->settings->need_api_key();
-		$default_settings = Alma_WC_Settings::default_settings();
+    /**
+     * Admin Form fields initialization.
+     *
+     * @return array
+     */
+    public static function init_form_fields() {
+        $need_api_key     = alma_wc_plugin()->settings->need_api_key();
+        $default_settings = Alma_WC_Settings::default_settings();
 
-		if ( $need_api_key ) {
-			return array_merge(
-				self::get_instance()->init_enabled_field( $default_settings ),
-				self::get_instance()->init_api_key_fields( __( '→ Start by filling in your API keys', 'alma-gateway-for-woocommerce' ), $default_settings ),
-				self::get_instance()->init_debug_fields( $default_settings )
-			);
-		}
+        if ( $need_api_key ) {
+            return array_merge(
+                self::get_instance()->init_enabled_field( $default_settings ),
+                self::get_instance()->init_api_key_fields( __( '→ Start by filling in your API keys', 'alma-gateway-for-woocommerce' ), $default_settings ),
+                self::get_instance()->init_debug_fields( $default_settings )
+            );
+        }
 
-		return array_merge(
-			self::get_instance()->init_enabled_field( $default_settings ),
-			self::get_instance()->init_fee_plans_fields( $default_settings ),
-			self::get_instance()->init_general_settings_fields( $default_settings ),
-			self::get_instance()->init_payment_upon_trigger_fields( $default_settings ),
-			self::get_instance()->init_api_key_fields( __( '→ API configuration', 'alma-gateway-for-woocommerce' ), $default_settings ),
-			/** LEGAL CHECKOUT FEATURE */
-			self::get_instance()->init_share_of_checkout_field( $default_settings ),
-			/** LEGAL CHECKOUT FEATURE */
-			self::get_instance()->init_technical_fields( $default_settings ),
-			self::get_instance()->init_debug_fields( $default_settings )
-		);
-	}
+        return array_merge(
+            self::get_instance()->init_enabled_field( $default_settings ),
+            self::get_instance()->init_fee_plans_fields( $default_settings ),
+            self::get_instance()->init_general_settings_fields( $default_settings ),
+            self::get_instance()->init_payment_upon_trigger_fields( $default_settings ),
+            self::get_instance()->init_api_key_fields( __( '→ API configuration', 'alma-gateway-for-woocommerce' ), $default_settings ),
+            /** LEGAL CHECKOUT FEATURE */
+            self::get_instance()->init_share_of_checkout_field( $default_settings ),
+            /** LEGAL CHECKOUT FEATURE */
+            self::get_instance()->init_technical_fields( $default_settings ),
+            self::get_instance()->init_debug_fields( $default_settings )
+        );
+    }
 
-	/**
-	 * Inits enabled Admin field.
-	 *
-	 * @param array $default_settings as default settings.
-	 *
-	 * @return array[]
-	 */
-	private function init_enabled_field( $default_settings ) {
-		return array(
-			'enabled' => array(
-				'title'   => __( 'Enable/Disable', 'alma-gateway-for-woocommerce' ),
-				'type'    => 'checkbox',
-				'label'   => __( 'Enable monthly payments with Alma', 'alma-gateway-for-woocommerce' ),
-				'default' => $default_settings['enabled'],
-			),
-		);
-	}
+    /**
+     * Inits enabled Admin field.
+     *
+     * @param array $default_settings as default settings.
+     *
+     * @return array[]
+     */
+    private function init_enabled_field( $default_settings ) {
+        return array(
+            'enabled' => array(
+                'title'   => __( 'Enable/Disable', 'alma-gateway-for-woocommerce' ),
+                'type'    => 'checkbox',
+                'label'   => __( 'Enable monthly payments with Alma', 'alma-gateway-for-woocommerce' ),
+                'default' => $default_settings['enabled'],
+            ),
+        );
+    }
 
-	/**
-	 * Singleton static method.
-	 *
-	 * @return Alma_WC_Admin_Form
-	 */
-	private static function get_instance() {
-		if ( ! self::$instance ) {
-			self::$instance = new self();
-		}
+    /**
+     * Singleton static method.
+     *
+     * @return Alma_WC_Admin_Form
+     */
+    private static function get_instance() {
+        if ( ! self::$instance ) {
+            self::$instance = new self();
+        }
 
-		return self::$instance;
-	}
+        return self::$instance;
+    }
 
-	/**
-	 * Inits test & live api keys fields.
-	 *
-	 * @param string $keys_title as section title.
-	 * @param array  $default_settings as default settings.
-	 *
-	 * @return array[]
-	 */
-	private function init_api_key_fields( $keys_title, $default_settings ) {
+    /**
+     * Inits test & live api keys fields.
+     *
+     * @param string $keys_title as section title.
+     * @param array  $default_settings as default settings.
+     *
+     * @return array[]
+     */
+    private function init_api_key_fields( $keys_title, $default_settings ) {
 
-		return array(
-			'keys_section' => array(
-				'title'       => '<hr>' . $keys_title,
-				'type'        => 'title',
-				/* translators: %s Alma security URL */
-				'description' => sprintf( __( 'You can find your API keys on <a href="%s" target="_blank">your Alma dashboard</a>', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_alma_dashboard_url( 'security' ) ),
-			),
-			'live_api_key' => array(
-				'title' => __( 'Live API key', 'alma-gateway-for-woocommerce' ),
-				'type'  => 'text',
-			),
-			'test_api_key' => array(
-				'title' => __( 'Test API key', 'alma-gateway-for-woocommerce' ),
-				'type'  => 'text',
-			),
-			'environment'  => array(
-				'title'       => __( 'API Mode', 'alma-gateway-for-woocommerce' ),
-				'type'        => 'select',
-				'description' => __( 'Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In Test mode, only admins can see Alma on cart/checkout pages.', 'alma-gateway-for-woocommerce' ),
-				'default'     => $default_settings['environment'],
-				'options'     => array(
-					'test' => __( 'Test', 'alma-gateway-for-woocommerce' ),
-					'live' => __( 'Live', 'alma-gateway-for-woocommerce' ),
-				),
-			),
-		);
-	}
+        return array(
+            'keys_section' => array(
+                'title'       => '<hr>' . $keys_title,
+                'type'        => 'title',
+                /* translators: %s Alma security URL */
+                'description' => sprintf( __( 'You can find your API keys on <a href="%s" target="_blank">your Alma dashboard</a>', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_alma_dashboard_url( 'security' ) ),
+            ),
+            'live_api_key' => array(
+                'title' => __( 'Live API key', 'alma-gateway-for-woocommerce' ),
+                'type'  => 'text',
+            ),
+            'test_api_key' => array(
+                'title' => __( 'Test API key', 'alma-gateway-for-woocommerce' ),
+                'type'  => 'text',
+            ),
+            'environment'  => array(
+                'title'       => __( 'API Mode', 'alma-gateway-for-woocommerce' ),
+                'type'        => 'select',
+                'description' => __( 'Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In Test mode, only admins can see Alma on cart/checkout pages.', 'alma-gateway-for-woocommerce' ),
+                'default'     => $default_settings['environment'],
+                'options'     => array(
+                    'test' => __( 'Test', 'alma-gateway-for-woocommerce' ),
+                    'live' => __( 'Live', 'alma-gateway-for-woocommerce' ),
+                ),
+            ),
+        );
+    }
 
-	/**
-	 * Inits debug fields.
-	 *
-	 * @param array $default_settings as default settings.
-	 *
-	 * @return array
-	 */
-	private function init_debug_fields( $default_settings ) {
-		return array(
-			'debug_section' => array(
-				'title' => '<hr>' . __( '→ Debug options', 'alma-gateway-for-woocommerce' ),
-				'type'  => 'title',
-			),
-			'debug'         => array(
-				'title'       => __( 'Debug mode', 'alma-gateway-for-woocommerce' ),
-				'type'        => 'checkbox',
-				// translators: %s: Admin logs url.
-				'label'       => __( 'Activate debug mode', 'alma-gateway-for-woocommerce' ) . sprintf( __( '(<a href="%s">Go to logs</a>)', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_admin_logs_url() ),
-				'description' => __( 'Enable logging info and errors to help debug any issue with the plugin', 'alma-gateway-for-woocommerce' ),
-				'desc_tip'    => true,
-				'default'     => $default_settings['debug'],
-			),
-		);
-	}
+    /**
+     * Inits debug fields.
+     *
+     * @param array $default_settings as default settings.
+     *
+     * @return array
+     */
+    private function init_debug_fields( $default_settings ) {
+        return array(
+            'debug_section' => array(
+                'title' => '<hr>' . __( '→ Debug options', 'alma-gateway-for-woocommerce' ),
+                'type'  => 'title',
+            ),
+            'debug'         => array(
+                'title'       => __( 'Debug mode', 'alma-gateway-for-woocommerce' ),
+                'type'        => 'checkbox',
+                // translators: %s: Admin logs url.
+                'label'       => __( 'Activate debug mode', 'alma-gateway-for-woocommerce' ) . sprintf( __( '(<a href="%s">Go to logs</a>)', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_admin_logs_url() ),
+                'description' => __( 'Enable logging info and errors to help debug any issue with the plugin', 'alma-gateway-for-woocommerce' ),
+                'desc_tip'    => true,
+                'default'     => $default_settings['debug'],
+            ),
+        );
+    }
 
-	/**
-	 * Inits all allowed fee plans admin field.
-	 *
-	 * @param array $default_settings Default settings.
-	 *
-	 * @return array|array[]
-	 */
-	private function init_fee_plans_fields( $default_settings ) {
-		$fee_plans_fields = array();
-		$title_field      = array(
-			'fee_plan_section' => array(
-				'title' => '<hr>' . __( '→ Fee plans configuration', 'alma-gateway-for-woocommerce' ),
-				'type'  => 'title',
-			),
-		);
-		$select_options   = $this->generate_select_options();
-		if ( count( $select_options ) === 0 ) {
-			/* translators: %s: Alma conditions URL */
-			$title_field['fee_plan_section']['description'] = sprintf( __( '⚠ There is no fee plan allowed in your <a href="%s" target="_blank">Alma dashboard</a>.', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_alma_dashboard_url( 'conditions' ) );
+    /**
+     * Inits all allowed fee plans admin field.
+     *
+     * @param array $default_settings Default settings.
+     *
+     * @return array|array[]
+     */
+    private function init_fee_plans_fields( $default_settings ) {
+        $fee_plans_fields = array();
+        $title_field      = array(
+            'fee_plan_section' => array(
+                'title' => '<hr>' . __( '→ Fee plans configuration', 'alma-gateway-for-woocommerce' ),
+                'type'  => 'title',
+            ),
+        );
+        $select_options   = $this->generate_select_options();
+        if ( count( $select_options ) === 0 ) {
+            /* translators: %s: Alma conditions URL */
+            $title_field['fee_plan_section']['description'] = sprintf( __( '⚠ There is no fee plan allowed in your <a href="%s" target="_blank">Alma dashboard</a>.', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_alma_dashboard_url( 'conditions' ) );
 
-			return $title_field;
-		}
-		$selected_fee_plan = $this->generate_selected_fee_plan_key( $select_options, $default_settings );
-		foreach ( alma_wc_plugin()->settings->get_allowed_fee_plans() as $fee_plan ) {
-			$fee_plans_fields = array_merge(
-				$fee_plans_fields,
-				$this->init_fee_plan_fields( $fee_plan, $default_settings, $selected_fee_plan === $fee_plan->getPlanKey() )
-			);
-		}
+            return $title_field;
+        }
+        $selected_fee_plan = $this->generate_selected_fee_plan_key( $select_options, $default_settings );
+        foreach ( alma_wc_plugin()->settings->get_allowed_fee_plans() as $fee_plan ) {
+            $fee_plans_fields = array_merge(
+                $fee_plans_fields,
+                $this->init_fee_plan_fields( $fee_plan, $default_settings, $selected_fee_plan === $fee_plan->getPlanKey() )
+            );
+        }
 
-		return array_merge(
-			$title_field,
-			array(
-				'selected_fee_plan' => array(
-					'title'       => __( 'Select a fee plan to update', 'alma-gateway-for-woocommerce' ),
-					'type'        => 'select_alma_fee_plan',
-					/* translators: %s: Alma conditions URL */
-					'description' => sprintf( __( 'Choose which fee plan you want to modify<br>(only your <a href="%s" target="_blank">Alma dashboard</a> available fee plans are shown here).', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_alma_dashboard_url( 'conditions' ) ),
-					'default'     => $selected_fee_plan,
+        return array_merge(
+            $title_field,
+            array(
+                'selected_fee_plan' => array(
+                    'title'       => __( 'Select a fee plan to update', 'alma-gateway-for-woocommerce' ),
+                    'type'        => 'select_alma_fee_plan',
+                    /* translators: %s: Alma conditions URL */
+                    'description' => sprintf( __( 'Choose which fee plan you want to modify<br>(only your <a href="%s" target="_blank">Alma dashboard</a> available fee plans are shown here).', 'alma-gateway-for-woocommerce' ), alma_wc_plugin()->get_alma_dashboard_url( 'conditions' ) ),
+        			'default'     => $selected_fee_plan,
 					'options'     => $select_options,
 				),
 			),

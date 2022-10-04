@@ -13,7 +13,7 @@ use Alma\API\Entities\Merchant;
 use Alma\API\RequestError;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	die( 'Not allowed' ); // Exit if accessed directly.
+    die( 'Not allowed' ); // Exit if accessed directly.
 }
 
 /**
@@ -21,277 +21,277 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Alma_WC_Plugin {
 
-	/**
-	 * Instance of Alma_Settings.
-	 *
-	 * @var Alma_WC_Settings
-	 */
-	public $settings;
-	/**
-	 * Eligibilities
-	 *
-	 * @var Eligibility|Eligibility[]|array
-	 */
-	private $eligibilities = array();
+    /**
+     * Instance of Alma_Settings.
+     *
+     * @var Alma_WC_Settings
+     */
+    public $settings;
+    /**
+     * Eligibilities
+     *
+     * @var Eligibility|Eligibility[]|array
+     */
+    private $eligibilities = array();
 
-	/**
-	 * Flag to indicate the plugin has been bootstrapped.
-	 *
-	 * @var bool
-	 */
-	private $bootstrapped = false;
-	/**
-	 * Instance of Alma Api client.
-	 *
-	 * @var Client
-	 */
-	private $alma_client;
+    /**
+     * Flag to indicate the plugin has been bootstrapped.
+     *
+     * @var bool
+     */
+    private $bootstrapped = false;
+    /**
+     * Instance of Alma Api client.
+     *
+     * @var Client
+     */
+    private $alma_client;
 
-	/**
-	 * Instance of WC_Logger.
-	 *
-	 * @var WC_Logger
-	 */
-	private $logger;
+    /**
+     * Instance of WC_Logger.
+     *
+     * @var WC_Logger
+     */
+    private $logger;
 
-	/**
-	 * Instance of current Merchant (if any)
-	 *
-	 * @var Merchant|null
-	 */
-	private $alma_merchant;
+    /**
+     * Instance of current Merchant (if any)
+     *
+     * @var Merchant|null
+     */
+    private $alma_merchant;
 
-	/**
-	 * __construct
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		$this->logger = new Alma_WC_Logger();
-		$this->self_update();
-	}
+    /**
+     * __construct
+     *
+     * @return void
+     */
+    public function __construct() {
+        $this->logger = new Alma_WC_Logger();
+        $this->self_update();
+    }
 
-	/**
-	 * Update plugin to the latest version.
-	 *
-	 * @return void
-	 */
-	private function self_update() {
-		$db_version = get_option( 'alma_version' );
-		if ( ! $db_version ) {
-			update_option( 'alma_version', ALMA_WC_VERSION );
+    /**
+     * Update plugin to the latest version.
+     *
+     * @return void
+     */
+    private function self_update() {
+        $db_version = get_option( 'alma_version' );
+        if ( ! $db_version ) {
+            update_option( 'alma_version', ALMA_WC_VERSION );
 
-			return;
-		}
-		if ( version_compare( ALMA_WC_VERSION, $db_version, '>' ) ) {
-			update_option( 'alma_version', ALMA_WC_VERSION );
-		}
-	}
+            return;
+        }
+        if ( version_compare( ALMA_WC_VERSION, $db_version, '>' ) ) {
+            update_option( 'alma_version', ALMA_WC_VERSION );
+        }
+    }
 
-	/**
-	 * Try running.
-	 *
-	 * @return void
-	 */
-	public function try_running() {
-		add_action(
-			Alma_WC_Webhooks::action_for( Alma_WC_Webhooks::CUSTOMER_RETURN ),
-			array(
-				$this,
-				'handle_customer_return',
-			)
-		);
+    /**
+     * Try running.
+     *
+     * @return void
+     */
+    public function try_running() {
+        add_action(
+            Alma_WC_Webhooks::action_for( Alma_WC_Webhooks::CUSTOMER_RETURN ),
+            array(
+                $this,
+                'handle_customer_return',
+            )
+        );
 
-		add_action(
-			Alma_WC_Webhooks::action_for( Alma_WC_Webhooks::IPN_CALLBACK ),
-			array(
-				$this,
-				'handle_ipn_callback',
-			)
-		);
+        add_action(
+            Alma_WC_Webhooks::action_for( Alma_WC_Webhooks::IPN_CALLBACK ),
+            array(
+                $this,
+                'handle_ipn_callback',
+            )
+        );
 
-		add_action( 'init', array( $this, 'bootstrap' ) );
-		/** LEGAL CHECKOUT FEATURE */
-		add_action( 'init', array( $this, 'check_share_checkout' ) );
-		/** LEGAL CHECKOUT FEATURE */
-		add_filter( 'allowed_redirect_hosts', array( $this, 'alma_domains_whitelist' ) );
+        add_action( 'init', array( $this, 'bootstrap' ) );
+        /** LEGAL CHECKOUT FEATURE */
+        add_action( 'init', array( $this, 'check_share_checkout' ) );
+        /** LEGAL CHECKOUT FEATURE */
+        add_filter( 'allowed_redirect_hosts', array( $this, 'alma_domains_whitelist' ) );
 
-		add_filter(
-			'plugin_action_links_' . plugin_basename( ALMA_WC_PLUGIN_FILE ),
-			array(
-				$this,
-				'plugin_action_links',
-			)
-		);
-		add_action( 'wp_ajax_alma_dismiss_notice_message', array( $this, 'ajax_dismiss_notice' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'alma_admin_enqueue_scripts' ) );
+        add_filter(
+            'plugin_action_links_' . plugin_basename( ALMA_WC_PLUGIN_FILE ),
+            array(
+                $this,
+                'plugin_action_links',
+            )
+        );
+        add_action( 'wp_ajax_alma_dismiss_notice_message', array( $this, 'ajax_dismiss_notice' ) );
+        add_action( 'admin_enqueue_scripts', array( $this, 'alma_admin_enqueue_scripts' ) );
 
-		add_filter( 'woocommerce_gateway_title', array( $this, 'woocommerce_gateway_title' ), 10, 2 );
-		add_filter( 'woocommerce_gateway_description', array( $this, 'woocommerce_gateway_description' ), 10, 2 );
+        add_filter( 'woocommerce_gateway_title', array( $this, 'woocommerce_gateway_title' ), 10, 2 );
+        add_filter( 'woocommerce_gateway_description', array( $this, 'woocommerce_gateway_description' ), 10, 2 );
 
-		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
+        add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
 
-		$payment_upon_trigger_helper = new Alma_WC_Payment_Upon_Trigger();
-		add_action(
-			'woocommerce_order_status_changed',
-			array(
-				$payment_upon_trigger_helper,
-				'woocommerce_order_status_changed',
-			),
-			10,
-			3
-		);
+        $payment_upon_trigger_helper = new Alma_WC_Payment_Upon_Trigger();
+        add_action(
+            'woocommerce_order_status_changed',
+            array(
+                $payment_upon_trigger_helper,
+                'woocommerce_order_status_changed',
+            ),
+            10,
+            3
+        );
 
-		// Launch the "share of checkout".
-		/** LEGAL CHECKOUT FEATURE */
-		$share_of_checkout = new Alma_WC_Share_Of_Checkout();
-		$share_of_checkout->init();
-		/** LEGAL CHECKOUT FEATURE */
+        // Launch the "share of checkout".
+        /** LEGAL CHECKOUT FEATURE */
+        $share_of_checkout = new Alma_WC_Share_Of_Checkout();
+        $share_of_checkout->init();
+        /** LEGAL CHECKOUT FEATURE */
 
-		$refund = new Alma_WC_Refund();
-		add_action( 'admin_init', array( $refund, 'admin_init' ), 10 );
-	}
+        $refund = new Alma_WC_Refund();
+        add_action( 'admin_init', array( $refund, 'admin_init' ), 10 );
+    }
 
-	/**
-	 * Enqueue scripts needed into admin form
-	 */
-	public function alma_admin_enqueue_scripts() {
-		wp_enqueue_style(
-			'alma-admin-styles',
-			alma_wc_plugin()->get_asset_url( 'css/alma-admin.css' ),
-			array(),
-			ALMA_WC_VERSION
-		);
+    /**
+     * Enqueue scripts needed into admin form
+     */
+    public function alma_admin_enqueue_scripts() {
+        wp_enqueue_style(
+            'alma-admin-styles',
+            alma_wc_plugin()->get_asset_url( 'css/alma-admin.css' ),
+            array(),
+            ALMA_WC_VERSION
+        );
 
-		wp_enqueue_script(
-			'alma-admin-scripts',
-			alma_wc_plugin()->get_asset_url( 'js/alma-admin.js' ),
-			array( 'jquery-effects-highlight', 'jquery-ui-selectmenu' ),
-			ALMA_WC_VERSION,
-			true
-		);
-	}
+        wp_enqueue_script(
+            'alma-admin-scripts',
+            alma_wc_plugin()->get_asset_url( 'js/alma-admin.js' ),
+            array( 'jquery-effects-highlight', 'jquery-ui-selectmenu' ),
+            ALMA_WC_VERSION,
+            true
+        );
+    }
 
-	/**
-	 * Get asset url.
-	 *
-	 * @param string $path Path to asset relative to the plugin's assets directory.
-	 *
-	 * @return string URL to given asset
-	 */
-	public function get_asset_url( $path ) {
-		return ALMA_WC_PLUGIN_URL . 'assets/' . $path;
-	}
+    /**
+     * Get asset url.
+     *
+     * @param string $path Path to asset relative to the plugin's assets directory.
+     *
+     * @return string URL to given asset
+     */
+    public function get_asset_url( $path ) {
+        return ALMA_WC_PLUGIN_URL . 'assets/' . $path;
+    }
 
-	/**
-	 * Bootstrap
-	 *
-	 * @return void
-	 *
-	 * @throws \Exception Exception.
-	 */
-	public function bootstrap() {
-		try {
-			if ( $this->bootstrapped ) {
-				throw new Exception( __( 'WooCommerce Gateway Alma plugin can only be bootstrapped once', 'alma-gateway-for-woocommerce' ) );
-			}
+    /**
+     * Bootstrap
+     *
+     * @return void
+     *
+     * @throws \Exception Exception.
+     */
+    public function bootstrap() {
+        try {
+            if ( $this->bootstrapped ) {
+                throw new Exception( __( 'WooCommerce Gateway Alma plugin can only be bootstrapped once', 'alma-gateway-for-woocommerce' ) );
+            }
 
-			$this->load_plugin_textdomain();
+            $this->load_plugin_textdomain();
 
-			delete_option( 'alma_bootstrap_warning_message' );
+            delete_option( 'alma_bootstrap_warning_message' );
 
-			$this->check_dependencies();
+            $this->check_dependencies();
 
-			$this->settings = new Alma_WC_Settings();
+            $this->settings = new Alma_WC_Settings();
 
-			$this->run();
+            $this->run();
 
-			if ( is_admin() ) {
-				// Defer settings check to after potential settings update.
-				update_option( 'alma_warnings_handled', false );
-				$this->settings->save();
-				add_action( 'admin_notices', array( $this, 'check_settings' ) );
-			}
-		} catch ( Exception $e ) {
-			$this->logger->error(
-				'Fail to bootstrap.',
-				array(
-					'Method'                 => __METHOD__,
-					'ExceptionMessage'       => $e->getMessage(),
-					'ExceptionTraceAsString' => $e->getTraceAsString(),
-				)
-			);
+            if ( is_admin() ) {
+                // Defer settings check to after potential settings update.
+                update_option( 'alma_warnings_handled', false );
+                $this->settings->save();
+                add_action( 'admin_notices', array( $this, 'check_settings' ) );
+            }
+        } catch ( Exception $e ) {
+            $this->logger->error(
+                'Fail to bootstrap.',
+                array(
+                    'Method'                 => __METHOD__,
+                    'ExceptionMessage'       => $e->getMessage(),
+                    'ExceptionTraceAsString' => $e->getTraceAsString(),
+                )
+            );
 
-			$this->handle_settings_exception( $e, __METHOD__, false );
-		}
-	}
+            $this->handle_settings_exception( $e, __METHOD__, false );
+        }
+    }
 
-	/**
-	 * Load plugin textdomain.
-	 *
-	 * @return void
-	 */
-	public function load_plugin_textdomain() {
-		load_plugin_textdomain( 'alma-gateway-for-woocommerce', false, plugin_basename( ALMA_WC_PLUGIN_PATH ) . '/languages' );
-	}
+    /**
+     * Load plugin textdomain.
+     *
+     * @return void
+     */
+    public function load_plugin_textdomain() {
+        load_plugin_textdomain( 'alma-gateway-for-woocommerce', false, plugin_basename( ALMA_WC_PLUGIN_PATH ) . '/languages' );
+    }
 
-	/**
-	 * Check dependencies.
-	 *
-	 * @throws Exception Exception.
-	 */
-	protected function check_dependencies() {
-		if ( ! function_exists( 'WC' ) ) {
-			throw new Exception( __( 'Alma requires WooCommerce to be activated', 'alma-gateway-for-woocommerce' ) );
-		}
+    /**
+     * Check dependencies.
+     *
+     * @throws Exception Exception.
+     */
+    protected function check_dependencies() {
+        if ( ! function_exists( 'WC' ) ) {
+            throw new Exception( __( 'Alma requires WooCommerce to be activated', 'alma-gateway-for-woocommerce' ) );
+        }
 
-		if ( version_compare( wc()->version, '2.6', '<' ) ) {
-			throw new Exception( __( 'Alma requires WooCommerce version 2.6 or greater', 'alma-gateway-for-woocommerce' ) );
-		}
+        if ( version_compare( wc()->version, '2.6', '<' ) ) {
+            throw new Exception( __( 'Alma requires WooCommerce version 2.6 or greater', 'alma-gateway-for-woocommerce' ) );
+        }
 
-		if ( ! function_exists( 'curl_init' ) ) {
-			throw new Exception( __( 'Alma requires the cURL PHP extension to be installed on your server', 'alma-gateway-for-woocommerce' ) );
-		}
+        if ( ! function_exists( 'curl_init' ) ) {
+            throw new Exception( __( 'Alma requires the cURL PHP extension to be installed on your server', 'alma-gateway-for-woocommerce' ) );
+        }
 
-		if ( ! function_exists( 'json_decode' ) ) {
-			throw new Exception( __( 'Alma requires the JSON PHP extension to be installed on your server', 'alma-gateway-for-woocommerce' ) );
-		}
+        if ( ! function_exists( 'json_decode' ) ) {
+            throw new Exception( __( 'Alma requires the JSON PHP extension to be installed on your server', 'alma-gateway-for-woocommerce' ) );
+        }
 
-		$openssl_warning = __( 'Alma requires OpenSSL >= 1.0.1 to be installed on your server', 'alma-gateway-for-woocommerce' );
-		if ( ! defined( 'OPENSSL_VERSION_TEXT' ) ) {
-			throw new Exception( $openssl_warning );
-		}
+        $openssl_warning = __( 'Alma requires OpenSSL >= 1.0.1 to be installed on your server', 'alma-gateway-for-woocommerce' );
+        if ( ! defined( 'OPENSSL_VERSION_TEXT' ) ) {
+            throw new Exception( $openssl_warning );
+        }
 
-		preg_match( '/^(?:Libre|Open)SSL ([\d.]+)/', OPENSSL_VERSION_TEXT, $matches );
-		if ( empty( $matches[1] ) ) {
-			throw new Exception( $openssl_warning );
-		}
+        preg_match( '/^(?:Libre|Open)SSL ([\d.]+)/', OPENSSL_VERSION_TEXT, $matches );
+        if ( empty( $matches[1] ) ) {
+            throw new Exception( $openssl_warning );
+        }
 
-		if ( ! version_compare( $matches[1], '1.0.1', '>=' ) ) {
-			throw new Exception( $openssl_warning );
-		}
-	}
+        if ( ! version_compare( $matches[1], '1.0.1', '>=' ) ) {
+            throw new Exception( $openssl_warning );
+        }
+    }
 
-	/**
-	 * Run the plugin.
-	 */
-	private function run() {
+    /**
+     * Run the plugin.
+     */
+    private function run() {
 
-		add_filter( 'woocommerce_payment_gateways', array( $this, 'add_payment_gateway' ) );
+        add_filter( 'woocommerce_payment_gateways', array( $this, 'add_payment_gateway' ) );
 
-		if ( ! $this->settings->is_enabled() ) {
-			return;
-		}
+        if ( ! $this->settings->is_enabled() ) {
+            return;
+        }
 
-		// Don't advertise our payment gateway if we're in test mode and current user is not an admin.
-		if ( ! $this->is_allowed_to_see_alma( wp_get_current_user() ) ) {
-			$this->logger->info( 'Not displaying Alma in Test mode to non-admin user' );
+        // Don't advertise our payment gateway if we're in test mode and current user is not an admin.
+        if ( ! $this->is_allowed_to_see_alma( wp_get_current_user() ) ) {
+            $this->logger->info( 'Not displaying Alma in Test mode to non-admin user' );
 
-			return;
-		}
+            return;
+        }
 
-		$this->init_widget_handlers();
-	}
+        $this->init_widget_handlers();
+    }
 
 	/**
 	 * Init the alma widget handlers :

@@ -6,108 +6,108 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+    exit;
 }
 
 /**
  * Alma Autoloader.
  */
 class Alma_WC_Autoloader {
-	/**
-	 * Singleton (autoloader is loaded if instance is populated)
-	 *
-	 * @var Alma_WC_Autoloader
-	 */
-	private static $instance;
+    /**
+     * Singleton (autoloader is loaded if instance is populated)
+     *
+     * @var Alma_WC_Autoloader
+     */
+    private static $instance;
 
-	/**
-	 * Path to the includes directory.
-	 *
-	 * @var string
-	 */
-	private $include_path;
+    /**
+     * Path to the includes directory.
+     *
+     * @var string
+     */
+    private $include_path;
 
-	/**
-	 * Path to the admin directory.
-	 *
-	 * @var string
-	 */
-	private $admin_path;
+    /**
+     * Path to the admin directory.
+     *
+     * @var string
+     */
+    private $admin_path;
 
 
-	/**
-	 * The Constructor.
-	 *
-	 * @throws Exception If sp_autoload_register fail.
-	 */
-	public function __construct() {
-		if ( function_exists( '__autoload' ) ) {
-			spl_autoload_register( '__autoload' );
-		}
+    /**
+     * The Constructor.
+     *
+     * @throws Exception If sp_autoload_register fail.
+     */
+    public function __construct() {
+        if ( function_exists( '__autoload' ) ) {
+            spl_autoload_register( '__autoload' );
+        }
 
-		spl_autoload_register( array( $this, 'load_class' ) );
+        spl_autoload_register( array( $this, 'load_class' ) );
 
-		$this->include_path = untrailingslashit( ALMA_WC_PLUGIN_PATH ) . '/includes/';
-		$this->admin_path   = untrailingslashit( ALMA_WC_PLUGIN_PATH ) . '/admin/';
-	}
+        $this->include_path = untrailingslashit( ALMA_WC_PLUGIN_PATH ) . '/includes/';
+        $this->admin_path   = untrailingslashit( ALMA_WC_PLUGIN_PATH ) . '/admin/';
+    }
 
-	/**
-	 * Initialise auto loading
-	 */
-	public static function autoload() {
-		if ( ! self::$instance ) {
-			self::$instance = new self();
-		}
-	}
+    /**
+     * Initialise auto loading
+     */
+    public static function autoload() {
+        if ( ! self::$instance ) {
+            self::$instance = new self();
+        }
+    }
 
-	/**
-	 * Auto-load WC classes on demand to reduce memory consumption.
-	 *
-	 * @param string $class as class name.
-	 */
-	public function load_class( $class ) {
-		$class = strtolower( $class );
-		$file  = $this->get_file_name_from_class( $class );
-		$path  = '';
+    /**
+     * Auto-load WC classes on demand to reduce memory consumption.
+     *
+     * @param string $class as class name.
+     */
+    public function load_class( $class ) {
+        $class = strtolower( $class );
+        $file  = $this->get_file_name_from_class( $class );
+        $path  = '';
 
-		if ( preg_match( '#^alma_wc_model_#', $class ) ) {
-			$path = $this->include_path . 'models/';
-		}
+        if ( preg_match( '#^alma_wc_model_#', $class ) ) {
+            $path = $this->include_path . 'models/';
+        }
 
-		if ( preg_match( '#^alma_wc_admin_helper_#', $class ) ) {
-			$path = $this->admin_path . 'helpers/';
-		}
+        if ( preg_match( '#^alma_wc_admin_helper_#', $class ) ) {
+            $path = $this->admin_path . 'helpers/';
+        }
 
-		if ( empty( $path ) || ( ! $this->load_file( $path . $file ) && strpos( $class, 'wc_' ) === 0 ) ) {
-			$this->load_file( $this->include_path . $file );
-		}
-	}
+        if ( empty( $path ) || ( ! $this->load_file( $path . $file ) && strpos( $class, 'wc_' ) === 0 ) ) {
+            $this->load_file( $this->include_path . $file );
+        }
+    }
 
-	/**
-	 * Take a class name and turn it into a file name.
-	 *
-	 * @param string $class as class name.
-	 *
-	 * @return string
-	 */
-	private function get_file_name_from_class( $class ) {
-		return 'class-' . str_replace( '_', '-', $class ) . '.php';
-	}
+    /**
+     * Take a class name and turn it into a file name.
+     *
+     * @param string $class as class name.
+     *
+     * @return string
+     */
+    private function get_file_name_from_class( $class ) {
+        return 'class-' . str_replace( '_', '-', $class ) . '.php';
+    }
 
-	/**
-	 * Include a class file.
-	 *
-	 * @param string $path as php file path.
-	 *
-	 * @return bool successful or not
-	 */
-	private function load_file( $path ) {
-		if ( $path && is_readable( $path ) ) {
-			include_once $path;
+    /**
+     * Include a class file.
+     *
+     * @param string $path as php file path.
+     *
+     * @return bool successful or not
+     */
+    private function load_file( $path ) {
+        if ( $path && is_readable( $path ) ) {
+            include_once $path;
 
-			return true;
-		}
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

@@ -31,20 +31,20 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	die( 'Not allowed' ); // Exit if accessed directly.
+    die( 'Not allowed' ); // Exit if accessed directly.
 }
 
 if ( ! defined( 'ALMA_WC_VERSION' ) ) {
-	define( 'ALMA_WC_VERSION', '3.1.1' );
+    define( 'ALMA_WC_VERSION', '3.1.1' );
 }
 if ( ! defined( 'ALMA_WC_PLUGIN_FILE' ) ) {
-	define( 'ALMA_WC_PLUGIN_FILE', __FILE__ );
+    define( 'ALMA_WC_PLUGIN_FILE', __FILE__ );
 }
 if ( ! defined( 'ALMA_WC_PLUGIN_BASENAME' ) ) {
-	define( 'ALMA_WC_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+    define( 'ALMA_WC_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 }
 if ( ! defined( 'ALMA_WC_PLUGIN_URL' ) ) {
-	define( 'ALMA_WC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+    define( 'ALMA_WC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 }
 
 /**
@@ -54,18 +54,18 @@ if ( ! defined( 'ALMA_WC_PLUGIN_URL' ) ) {
  * @noinspection PhpIncludeInspection
  */
 function alma_wc_plugin() {
-	static $plugin;
+    static $plugin;
 
-	if ( ! isset( $plugin ) ) {
-		require_once ALMA_WC_PLUGIN_PATH . 'includes/alma-wc-functions.php';
-		require_once ALMA_WC_PLUGIN_PATH . 'vendor/autoload.php';
-		require_once ALMA_WC_PLUGIN_PATH . 'includes/class-alma-wc-autoloader.php';
+    if ( ! isset( $plugin ) ) {
+        require_once ALMA_WC_PLUGIN_PATH . 'includes/alma-wc-functions.php';
+        require_once ALMA_WC_PLUGIN_PATH . 'vendor/autoload.php';
+        require_once ALMA_WC_PLUGIN_PATH . 'includes/class-alma-wc-autoloader.php';
 
-		Alma_WC_Autoloader::autoload();
-		$plugin = new Alma_WC_Plugin();
-	}
+        Alma_WC_Autoloader::autoload();
+        $plugin = new Alma_WC_Plugin();
+    }
 
-	return $plugin;
+    return $plugin;
 }
 
 alma_wc_plugin()->try_running();

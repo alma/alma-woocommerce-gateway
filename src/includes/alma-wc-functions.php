@@ -6,7 +6,7 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	die( 'Not allowed' ); // Exit if accessed directly.
+    die( 'Not allowed' ); // Exit if accessed directly.
 }
 
 /**
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return integer
  */
 function alma_wc_price_to_cents( $price ) {
-	return (int) ( round( $price * 100 ) );
+    return (int) ( round( $price * 100 ) );
 }
 
 /**
@@ -28,7 +28,7 @@ function alma_wc_price_to_cents( $price ) {
  * @return float
  */
 function alma_wc_price_from_cents( $price ) {
-	return (float) ( $price / 100 );
+    return (float) ( $price / 100 );
 }
 
 /**
@@ -41,15 +41,15 @@ function alma_wc_price_from_cents( $price ) {
  * @see wc_price()
  */
 function alma_wc_format_percent_from_bps( $bps ) {
-	$decimal_separator  = wc_get_price_decimal_separator();
-	$thousand_separator = wc_get_price_thousand_separator();
-	$decimals           = wc_get_price_decimals();
-	$price_format       = get_woocommerce_price_format();
-	$negative           = $bps < 0;
-	$bps                = number_format( alma_wc_price_from_cents( $bps ), $decimals, $decimal_separator, $thousand_separator );
-	$formatted_bps      = ( $negative ? '-' : '' ) . sprintf( $price_format, '<span class="woocommerce-Price-currencySymbol">&#37;</span>', $bps );
+    $decimal_separator  = wc_get_price_decimal_separator();
+    $thousand_separator = wc_get_price_thousand_separator();
+    $decimals           = wc_get_price_decimals();
+    $price_format       = get_woocommerce_price_format();
+    $negative           = $bps < 0;
+    $bps                = number_format( alma_wc_price_from_cents( $bps ), $decimals, $decimal_separator, $thousand_separator );
+    $formatted_bps      = ( $negative ? '-' : '' ) . sprintf( $price_format, '<span class="woocommerce-Price-currencySymbol">&#37;</span>', $bps );
 
-	return '<span class="woocommerce-Price-amount amount">' . $formatted_bps . '</span>';
+    return '<span class="woocommerce-Price-amount amount">' . $formatted_bps . '</span>';
 }
 
 /**
@@ -63,7 +63,7 @@ function alma_wc_format_percent_from_bps( $bps ) {
  * @see wc_price()
  */
 function alma_wc_format_price_from_cents( $price, $args = array() ) {
-	return wc_price( alma_wc_price_from_cents( $price ), array_merge( array( 'currency' => 'EUR' ), $args ) );
+    return wc_price( alma_wc_price_from_cents( $price ), array_merge( array( 'currency' => 'EUR' ), $args ) );
 }
 
 /**
@@ -75,9 +75,9 @@ function alma_wc_format_price_from_cents( $price, $args = array() ) {
  * @return bool
  */
 function alma_wc_string_to_bool( $string ) {
-	return is_bool( $string )
-		? $string
-		: ( 'yes' === strtolower( $string ) || 1 === $string || 'true' === strtolower( $string ) || '1' === $string );
+    return is_bool( $string )
+        ? $string
+        : ( 'yes' === strtolower( $string ) || 1 === $string || 'true' === strtolower( $string ) || '1' === $string );
 }
 
 /**
@@ -87,41 +87,41 @@ function alma_wc_string_to_bool( $string ) {
  * @param string $plan_key_2 The second plan key to compare to.
  */
 function alma_wc_usort_plans_keys( $plan_key_1, $plan_key_2 ) {
-	if ( $plan_key_1 === $plan_key_2 ) {
-		return 0;
-	}
-	$match_1 = alma_wc_match_plan_key_pattern( $plan_key_1 );
-	$match_2 = alma_wc_match_plan_key_pattern( $plan_key_2 );
-	if ( ! $match_1 || ! $match_2 ) {
-		return 0;
-	}
+    if ( $plan_key_1 === $plan_key_2 ) {
+        return 0;
+    }
+    $match_1 = alma_wc_match_plan_key_pattern( $plan_key_1 );
+    $match_2 = alma_wc_match_plan_key_pattern( $plan_key_2 );
+    if ( ! $match_1 || ! $match_2 ) {
+        return 0;
+    }
 
-	if ( $match_1['deferred_days'] > 0 ) {
-		if ( $match_2['deferred_months'] > 0 ) {
-			return -1;
-		}
-		if ( $match_2['deferred_days'] > 0 ) {
-			if ( $match_1['deferred_days'] < $match_2['deferred_days'] ) {
-				return -1;
-			}
-		}
-		return 1;
-	}
-	if ( $match_1['deferred_months'] > 0 ) {
-		if ( $match_2['deferred_months'] > 0 ) {
-			if ( $match_1['deferred_months'] < $match_2['deferred_months'] ) {
-				return -1;
-			} else {
-				return 1;
-			}
-		}
-		return 1;
-	}
-	if ( $match_1['installments'] < $match_2['installments'] ) {
-		return -1;
-	}
+    if ( $match_1['deferred_days'] > 0 ) {
+        if ( $match_2['deferred_months'] > 0 ) {
+            return -1;
+        }
+        if ( $match_2['deferred_days'] > 0 ) {
+            if ( $match_1['deferred_days'] < $match_2['deferred_days'] ) {
+                return -1;
+            }
+        }
+        return 1;
+    }
+    if ( $match_1['deferred_months'] > 0 ) {
+        if ( $match_2['deferred_months'] > 0 ) {
+            if ( $match_1['deferred_months'] < $match_2['deferred_months'] ) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
+        return 1;
+    }
+    if ( $match_1['installments'] < $match_2['installments'] ) {
+        return -1;
+    }
 
-	return 1;
+    return 1;
 }
 
 /**
@@ -138,20 +138,20 @@ function alma_wc_usort_plans_keys( $plan_key_1, $plan_key_2 ) {
  * @return false|array
  */
 function alma_wc_match_plan_key_pattern( $plan_key ) {
-	$matches = array();
-	if ( preg_match( '/^(general|pos)_([0-9]+)_([0-9]+)_([0-9]+)$/', $plan_key, $matches ) ) {
+    $matches = array();
+    if ( preg_match( '/^(general|pos)_([0-9]+)_([0-9]+)_([0-9]+)$/', $plan_key, $matches ) ) {
 
-		return array_combine(
-			array(
-				'key',
-				'kind',
-				'installments',
-				'deferred_days',
-				'deferred_months',
-			),
-			$matches
-		);
-	}
+        return array_combine(
+            array(
+                'key',
+                'kind',
+                'installments',
+                'deferred_days',
+                'deferred_months',
+            ),
+            $matches
+        );
+    }
 
-	return false;
+    return false;
 }

@@ -3,17 +3,17 @@
 use PHPUnit\Framework\TestCase;
 
 class AlmaWcTestFunctionsTest extends TestCase {
-	public function data_provider() {
-		yield [ 'toto_1_0_0', false ];
-		yield [ 'n importe quoi', false ];
-		yield [
-			'general_1_0_0',
-			[
-				'key'             => 'general_1_0_0',
-				'kind'            => 'general',
-				'installments'    => '1',
-				'deferred_days'   => '0',
-				'deferred_months' => '0',
+    public function data_provider() {
+        yield [ 'toto_1_0_0', false ];
+        yield [ 'n importe quoi', false ];
+        yield [
+            'general_1_0_0',
+            [
+                'key'             => 'general_1_0_0',
+                'kind'            => 'general',
+                'installments'    => '1',
+                'deferred_days'   => '0',
+            	'deferred_months' => '0',
 			]
 		];
 		yield [

@@ -9,202 +9,202 @@
 use Alma\API\RequestError;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	die( 'Not allowed' ); // Exit if accessed directly.
+    die( 'Not allowed' ); // Exit if accessed directly.
 }
 
 if ( ! class_exists( 'WC_Payment_Gateway' ) ) {
-	return;
+    return;
 }
 
 /**
  * Alma_WC_Payment_Gateway
  */
 class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
-	const GATEWAY_ID = 'alma';
+    const GATEWAY_ID = 'alma';
 
-	const ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE = 'alma-payment-plan-table-%s-installments';
-	const ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS   = 'js-alma-payment-plan-table';
-	const AMOUNT_PLAN_KEY_REGEX               = '#^(min|max)_amount_general_[0-9]+_[0-9]+_[0-9]+$#';
-	const ENABLED_PLAN_KEY_REGEX              = '#^enabled_general_([0-9]+_[0-9]+_[0-9]+)$#';
-	const ALMA_GATEWAY_PAY_LATER              = 'alma_pay_later';
-	const ALMA_GATEWAY_PAY_MORE_THAN_FOUR     = 'alma_pnx_plus_4';
+    const ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE = 'alma-payment-plan-table-%s-installments';
+    const ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS   = 'js-alma-payment-plan-table';
+    const AMOUNT_PLAN_KEY_REGEX               = '#^(min|max)_amount_general_[0-9]+_[0-9]+_[0-9]+$#';
+    const ENABLED_PLAN_KEY_REGEX              = '#^enabled_general_([0-9]+_[0-9]+_[0-9]+)$#';
+    const ALMA_GATEWAY_PAY_LATER              = 'alma_pay_later';
+    const ALMA_GATEWAY_PAY_MORE_THAN_FOUR     = 'alma_pnx_plus_4';
 
 
-	/**
-	 * Logger
-	 *
-	 * @var Alma_WC_Logger
-	 */
-	private $logger;
-	/**
-	 * Checkout Helper.
-	 *
-	 * @var Alma_WC_Checkout_Helper
-	 */
-	private $checkout_helper;
+    /**
+     * Logger
+     *
+     * @var Alma_WC_Logger
+     */
+    private $logger;
+    /**
+     * Checkout Helper.
+     *
+     * @var Alma_WC_Checkout_Helper
+     */
+    private $checkout_helper;
 
-	/**
-	 * __construct
-	 */
-	public function __construct() {
-		$this->id                 = self::GATEWAY_ID;
-		$this->has_fields         = true;
-		$this->method_title       = __( 'Payment in instalments and deferred with Alma - 2x 3x 4x, D+15 or D+30', 'alma-gateway-for-woocommerce' );
-		$this->method_description = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.', 'alma-gateway-for-woocommerce' );
+    /**
+     * __construct
+     */
+    public function __construct() {
+        $this->id                 = self::GATEWAY_ID;
+        $this->has_fields         = true;
+        $this->method_title       = __( 'Payment in instalments and deferred with Alma - 2x 3x 4x, D+15 or D+30', 'alma-gateway-for-woocommerce' );
+        $this->method_description = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.', 'alma-gateway-for-woocommerce' );
 
-		$this->logger          = new Alma_WC_Logger();
-		$this->checkout_helper = new Alma_WC_Checkout_Helper();
+        $this->logger          = new Alma_WC_Logger();
+        $this->checkout_helper = new Alma_WC_Checkout_Helper();
 
-		$this->init_form_fields();
-		$this->init_settings();
+        $this->init_form_fields();
+        $this->init_settings();
 
-		$this->title       = $this->get_option( 'title' );
-		$this->description = $this->get_option( 'description' );
+        $this->title       = $this->get_option( 'title' );
+        $this->description = $this->get_option( 'description' );
 
-		add_action(
-			'woocommerce_update_options_payment_gateways_' . $this->id,
-			array( $this, 'process_admin_options' )
-		);
+        add_action(
+            'woocommerce_update_options_payment_gateways_' . $this->id,
+            array( $this, 'process_admin_options' )
+        );
 
-		add_action( 'woocommerce_before_checkout_process', array( $this, 'woocommerce_checkout_process' ), 1 );
-		add_filter(
-			'woocommerce_available_payment_gateways',
-			array(
-				$this,
-				'woocommerce_available_payment_gateways',
-			),
-			10,
-			1
-		);
-	}
+        add_action( 'woocommerce_before_checkout_process', array( $this, 'woocommerce_checkout_process' ), 1 );
+        add_filter(
+            'woocommerce_available_payment_gateways',
+            array(
+                $this,
+                'woocommerce_available_payment_gateways',
+            ),
+            10,
+            1
+        );
+    }
 
-	/**
-	 * Init admin settings form fields.
-	 */
-	public function init_form_fields() {
-		$this->form_fields = Alma_WC_Admin_Form::init_form_fields();
-	}
+    /**
+     * Init admin settings form fields.
+     */
+    public function init_form_fields() {
+        $this->form_fields = Alma_WC_Admin_Form::init_form_fields();
+    }
 
-	/**
-	 * Init settings.
-	 */
-	public function init_settings() {
-		parent::init_settings();
-		$this->update_settings_from_merchant();
-		alma_wc_plugin()->settings->update_from( $this->settings );
-	}
+    /**
+     * Init settings.
+     */
+    public function init_settings() {
+        parent::init_settings();
+        $this->update_settings_from_merchant();
+        alma_wc_plugin()->settings->update_from( $this->settings );
+    }
 
-	/**
-	 * If API is configured with its keys, try to fetch info from merchant account.
-	 */
-	private function update_settings_from_merchant() {
-		if ( alma_wc_plugin()->settings->need_api_key() ) {
-			$this->reset_merchant_settings();
+    /**
+     * If API is configured with its keys, try to fetch info from merchant account.
+     */
+    private function update_settings_from_merchant() {
+        if ( alma_wc_plugin()->settings->need_api_key() ) {
+            $this->reset_merchant_settings();
 
-			return;
-		}
+            return;
+        }
 
-		try {
-			$merchant                      = alma_wc_plugin()->get_merchant();
-			$this->settings['merchant_id'] = $merchant->id;
-		} catch ( RequestError $e ) {
-			$this->reset_merchant_settings();
-			alma_wc_plugin()->handle_settings_exception( $e, __METHOD__ );
+        try {
+            $merchant                      = alma_wc_plugin()->get_merchant();
+            $this->settings['merchant_id'] = $merchant->id;
+        } catch ( RequestError $e ) {
+            $this->reset_merchant_settings();
+            alma_wc_plugin()->handle_settings_exception( $e, __METHOD__ );
 
-			return;
-		}
-		$this->sync_fee_plans_settings();
+            return;
+        }
+        $this->sync_fee_plans_settings();
 
-		$this->disable_unavailable_fee_plans_config();
-	}
+        $this->disable_unavailable_fee_plans_config();
+    }
 
-	/**
-	 * Reset merchant & amount settings
-	 */
-	private function reset_merchant_settings() {
-		// reset merchant id.
-		$this->settings['merchant_id'] = null;
-		// reset min and max amount for all plans.
-		foreach ( array_keys( $this->settings ) as $key ) {
-			if ( $this->is_amount_plan_key( $key ) ) {
-				$this->settings[ $key ] = null;
-			}
-		}
-	}
+    /**
+     * Reset merchant & amount settings
+     */
+    private function reset_merchant_settings() {
+        // reset merchant id.
+        $this->settings['merchant_id'] = null;
+        // reset min and max amount for all plans.
+        foreach ( array_keys( $this->settings ) as $key ) {
+            if ( $this->is_amount_plan_key( $key ) ) {
+                $this->settings[ $key ] = null;
+            }
+        }
+    }
 
-	/**
-	 * Check if key match amount key format
-	 *
-	 * @param string $key As setting's key.
-	 *
-	 * @return boolean
-	 */
-	private function is_amount_plan_key( $key ) {
-		return preg_match( self::AMOUNT_PLAN_KEY_REGEX, $key ) > 0;
-	}
+    /**
+     * Check if key match amount key format
+     *
+     * @param string $key As setting's key.
+     *
+     * @return boolean
+     */
+    private function is_amount_plan_key( $key ) {
+        return preg_match( self::AMOUNT_PLAN_KEY_REGEX, $key ) > 0;
+    }
 
-	/**
-	 * Sync & Check if 'enabled' & 'min / max amounts' are set & ok according merchant configuration
-	 * Add installments counts & deferred days / months into settings
-	 */
-	protected function sync_fee_plans_settings() {
-		foreach ( alma_wc_plugin()->settings->get_allowed_fee_plans() as $fee_plan ) {
-			$plan_key           = $fee_plan->getPlanKey();
-			$default_min_amount = $fee_plan->min_purchase_amount;
-			$default_max_amount = $fee_plan->max_purchase_amount;
-			$min_key            = "min_amount_$plan_key";
-			$max_key            = "max_amount_$plan_key";
-			$enabled_key        = "enabled_$plan_key";
+    /**
+     * Sync & Check if 'enabled' & 'min / max amounts' are set & ok according merchant configuration
+     * Add installments counts & deferred days / months into settings
+     */
+    protected function sync_fee_plans_settings() {
+        foreach ( alma_wc_plugin()->settings->get_allowed_fee_plans() as $fee_plan ) {
+            $plan_key           = $fee_plan->getPlanKey();
+            $default_min_amount = $fee_plan->min_purchase_amount;
+            $default_max_amount = $fee_plan->max_purchase_amount;
+            $min_key            = "min_amount_$plan_key";
+            $max_key            = "max_amount_$plan_key";
+            $enabled_key        = "enabled_$plan_key";
 
-			if ( ! isset( $this->settings[ $min_key ] ) || $this->settings[ $min_key ] < $default_min_amount || $this->settings[ $min_key ] > $default_max_amount ) {
-				$this->settings[ $min_key ] = $default_min_amount;
-			}
-			if ( ! isset( $this->settings[ $max_key ] ) || $this->settings[ $max_key ] > $default_max_amount || $this->settings[ $max_key ] < $default_min_amount ) {
-				$this->settings[ $max_key ] = $default_max_amount;
-			}
-			if ( ! isset( $this->settings[ $enabled_key ] ) ) {
-				$this->settings[ $enabled_key ] = alma_wc_plugin()->settings->default_settings()['selected_fee_plan'] === $plan_key ? 'yes' : 'no';
-			}
-			$this->settings[ "deferred_months_$plan_key" ]    = $fee_plan->getDeferredMonths();
-			$this->settings[ "deferred_days_$plan_key" ]      = $fee_plan->getDeferredDays();
-			$this->settings[ "installments_count_$plan_key" ] = $fee_plan->getInstallmentsCount();
-		}
+            if ( ! isset( $this->settings[ $min_key ] ) || $this->settings[ $min_key ] < $default_min_amount || $this->settings[ $min_key ] > $default_max_amount ) {
+                $this->settings[ $min_key ] = $default_min_amount;
+            }
+            if ( ! isset( $this->settings[ $max_key ] ) || $this->settings[ $max_key ] > $default_max_amount || $this->settings[ $max_key ] < $default_min_amount ) {
+                $this->settings[ $max_key ] = $default_max_amount;
+            }
+            if ( ! isset( $this->settings[ $enabled_key ] ) ) {
+                $this->settings[ $enabled_key ] = alma_wc_plugin()->settings->default_settings()['selected_fee_plan'] === $plan_key ? 'yes' : 'no';
+            }
+            $this->settings[ "deferred_months_$plan_key" ]    = $fee_plan->getDeferredMonths();
+            $this->settings[ "deferred_days_$plan_key" ]      = $fee_plan->getDeferredDays();
+            $this->settings[ "installments_count_$plan_key" ] = $fee_plan->getInstallmentsCount();
+        }
 
-	}
+    }
 
-	/**
-	 * Force disable not available fee_plans to prevent showing them in checkout.
-	 */
-	private function disable_unavailable_fee_plans_config() {
-		$allowed_installments = alma_wc_plugin()->settings->get_allowed_plans_keys();
-		if ( ! $allowed_installments ) {
-			return;
-		}
-		foreach ( array_keys( $this->settings ) as $key ) {
-			if ( preg_match( self::ENABLED_PLAN_KEY_REGEX, $key, $matches ) ) {
-				// force disable not available fee_plans to prevent showing them in checkout.
-				if ( ! in_array( intval( $matches[1] ), $allowed_installments, true ) ) {
-					$this->settings[ "enabled_${matches[1]}" ] = 'no';
-				}
-			}
-		}
-	}
+    /**
+     * Force disable not available fee_plans to prevent showing them in checkout.
+     */
+    private function disable_unavailable_fee_plans_config() {
+        $allowed_installments = alma_wc_plugin()->settings->get_allowed_plans_keys();
+        if ( ! $allowed_installments ) {
+            return;
+        }
+        foreach ( array_keys( $this->settings ) as $key ) {
+            if ( preg_match( self::ENABLED_PLAN_KEY_REGEX, $key, $matches ) ) {
+                // force disable not available fee_plans to prevent showing them in checkout.
+                if ( ! in_array( intval( $matches[1] ), $allowed_installments, true ) ) {
+                    $this->settings[ "enabled_${matches[1]}" ] = 'no';
+                }
+            }
+        }
+    }
 
-	/**
-	 * Get option from DB.
-	 *
-	 * Gets an option from the settings API, using defaults if necessary to prevent undefined notices.
-	 * This is overridden so that values saved in cents in the DB can be shown in euros to the user.
-	 *
-	 * @param string $key Option key.
-	 * @param mixed  $empty_value Value when empty.
-	 *
-	 * @return string The value specified for the option or a default value for the option.
-	 */
-	public function get_option( $key, $empty_value = null ) {
-		$option = parent::get_option( $key, $empty_value );
+    /**
+     * Get option from DB.
+     *
+     * Gets an option from the settings API, using defaults if necessary to prevent undefined notices.
+     * This is overridden so that values saved in cents in the DB can be shown in euros to the user.
+     *
+     * @param string $key Option key.
+     * @param mixed  $empty_value Value when empty.
+     *
+     * @return string The value specified for the option or a default value for the option.
+     */
+    public function get_option( $key, $empty_value = null ) {
+        $option = parent::get_option( $key, $empty_value );
 
-		if ( $this->is_amount_plan_key( $key ) ) {
+    	if ( $this->is_amount_plan_key( $key ) ) {
 			return strval( alma_wc_price_from_cents( $option ) );
 		}
 
