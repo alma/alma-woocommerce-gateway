@@ -31,5 +31,4 @@ class Alma_WC_Admin_Helper_Date {
 
 		return $dates_in_interval;
 	}
-
 }

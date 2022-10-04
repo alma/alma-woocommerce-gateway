@@ -232,5 +232,5 @@ class Alma_WC_Admin_Helper_Check_Legal {
 	public static function get_modal_title() {
 		return __( 'Increase your performance & get insights !', 'alma-gateway-for-woocommerce' );
 	}
-    
+
 }
