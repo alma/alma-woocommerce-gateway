@@ -47,10 +47,7 @@ class Alma_WC_Admin_Helper_Check_Legal {
 		wp_enqueue_script(
 			'alma-admin-scripts-modal-checkout-legal',
 			Alma_WC_Admin_Helper_General::get_asset_admin_url( 'js/alma-admin-modal-checkout-legal.js' ),
-			array(
-				'jquery-effects-highlight',
-				'jquery-ui-selectmenu',
-			),
+			array( 'jquery' ),
 			ALMA_WC_VERSION,
 			true
 		);
