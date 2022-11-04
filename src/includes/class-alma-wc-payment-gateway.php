@@ -284,11 +284,11 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 */
 	protected function process_checkout_legal( $post_data ) {
 		$has_changed = false;
-
+        
 		if (
 			(
 				isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
-				&& 1 === $post_data['woocommerce_alma_share_of_checkout_enabled']
+				&& '1' == $post_data['woocommerce_alma_share_of_checkout_enabled']
 				&& 'no' === alma_wc_plugin()->settings->share_of_checkout_enabled
 			)
 			|| (
@@ -299,20 +299,21 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			$has_changed = true;
 		}
 
-		if ( 1 === $has_changed ) {
+		if ( true === $has_changed ) {
 			$this->settings['share_of_checkout_enabled_date'] = gmdate( 'Y-m-d' );
 			$endpoint = 'removeConsent';
 
 			if (
 				isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
-				&& 1 === $post_data['woocommerce_alma_share_of_checkout_enabled']
+				&& '1' == $post_data['woocommerce_alma_share_of_checkout_enabled']
 			) {
 				$endpoint = 'addConsent';
 			}
 
 			$this->admin_helper_check_legal->send_consent( $endpoint );
 		}
-	}
+
+    }
 
 	/**
 	 * After settings have been updated, override min/max amounts to convert them to cents.
