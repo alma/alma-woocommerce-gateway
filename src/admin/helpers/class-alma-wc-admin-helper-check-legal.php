@@ -67,8 +67,6 @@ class Alma_WC_Admin_Helper_Check_Legal {
 	 * @return void
 	 */
 	public function legal_alma() {
-		$value = null;
-
 		try {
 			set_transient( 'alma-admin-soc-panel', true, 5 );
 			$endpoint = null;
