@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v3.1.2
+------
+
+* fix: widget translations
+* fix: php8 compatibility
+
 v3.1.1
 ------
 

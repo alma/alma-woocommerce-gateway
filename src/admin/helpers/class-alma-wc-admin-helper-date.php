@@ -25,11 +25,11 @@ class Alma_WC_Admin_Helper_Date {
 		$start_timestamp = strtotime( $start_date );
 
 		$dates_in_interval = array();
-		for ( $i = $start_timestamp; time() - $i > 86400; $i = strtotime( '+1 day', $i ) ) {
+		$time              = time();
+		for ( $i = $start_timestamp; $time - $i > 86400; $i = strtotime( '+1 day', $i ) ) {
 			$dates_in_interval[] = gmdate( 'Y-m-d', $i );
 		}
 
 		return $dates_in_interval;
 	}
-
 }

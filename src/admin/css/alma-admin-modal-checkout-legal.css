@@ -30,7 +30,7 @@
 	width: 0.45em;
 }
 
-.legal-checkout-chevron.bottom:before {
+.legal-checkout-chevron.bottom::before {
 	top: 0;
 	transform: rotate(135deg);
 }
@@ -86,14 +86,14 @@
 	border-radius: 2px;
 }
 
-.button-checkout-legal.reject-legal {
+.button-checkout-legal.reject-legal-alma {
 	background-color: white;
 	color: #00425D;
 	border: 1px solid #00425D;
 	margin-right: 10px;
 }
 
-.button-checkout-legal.accept-legal {
+.button-checkout-legal.accept-legal-alma{
 	background-color: #00425D;
 	color: white;
 }

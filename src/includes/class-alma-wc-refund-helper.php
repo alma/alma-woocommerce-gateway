@@ -65,7 +65,7 @@ class Alma_WC_Refund_Helper {
 	 */
 	private function add_order_note( $order, $notice_type, $message ) {
 
-		if ( in_array( $message, $this->messages ) ) {
+		if ( in_array( $message, $this->messages, true ) ) {
 			return;
 		}
 		$this->messages[] = $message;

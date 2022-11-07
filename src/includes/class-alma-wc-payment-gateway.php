@@ -28,20 +28,25 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	const ENABLED_PLAN_KEY_REGEX              = '#^enabled_general_([0-9]+_[0-9]+_[0-9]+)$#';
 	const ALMA_GATEWAY_PAY_LATER              = 'alma_pay_later';
 	const ALMA_GATEWAY_PAY_MORE_THAN_FOUR     = 'alma_pnx_plus_4';
+	/**
+	 * Checkout Helper.
+	 *
+	 * @var Alma_WC_Checkout_Helper
+	 */
+	protected $checkout_helper;
 
-
+	/**
+	 * Checkout legal helper.
+	 *
+	 * @var Alma_WC_Admin_Helper_Check_Legal
+	 */
+	protected $admin_helper_check_legal;
 	/**
 	 * Logger
 	 *
 	 * @var Alma_WC_Logger
 	 */
 	private $logger;
-	/**
-	 * Checkout Helper.
-	 *
-	 * @var Alma_WC_Checkout_Helper
-	 */
-	private $checkout_helper;
 
 	/**
 	 * __construct
@@ -52,8 +57,9 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		$this->method_title       = __( 'Payment in instalments and deferred with Alma - 2x 3x 4x, D+15 or D+30', 'alma-gateway-for-woocommerce' );
 		$this->method_description = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.', 'alma-gateway-for-woocommerce' );
 
-		$this->logger          = new Alma_WC_Logger();
-		$this->checkout_helper = new Alma_WC_Checkout_Helper();
+		$this->logger                   = new Alma_WC_Logger();
+		$this->checkout_helper          = new Alma_WC_Checkout_Helper();
+		$this->admin_helper_check_legal = new Alma_WC_Admin_Helper_Check_Legal();
 
 		$this->init_form_fields();
 		$this->init_settings();
@@ -231,25 +237,82 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 */
 	public function process_admin_options() {
 		$previously_saved = parent::process_admin_options();
+		set_transient( 'alma-admin-soc-panel', true, 5 );
+		$post_data = $this->get_post_data();
+
+		$this->process_checkout_legal( $post_data );
+
+		// Check if the live_api_key has changed.
+		if (
+			alma_wc_plugin()->settings->live_api_key !== $post_data['woocommerce_alma_live_api_key']
+		) {
+			$this->settings['share_of_checkout_enabled_date'] = '';
+		}
+
+		// Check if the mode has changed to live (by default in the module you are in test so the legal is not init).
+		if (
+			'live' === $post_data['woocommerce_alma_environment']
+			&& 'test' === alma_wc_plugin()->settings->get_environment()
+		) {
+			$legal = new Alma_WC_Admin_Helper_Check_Legal();
+			$legal->init();
+		}
+
+		if (
+			'test' === $post_data['woocommerce_alma_environment']
+			&& 'live' === alma_wc_plugin()->settings->get_environment()
+		) {
+			delete_transient( 'alma-admin-soc-panel' );
+		}
 
 		$this->convert_amounts_to_cents();
 		$this->update_settings_from_merchant();
 		alma_wc_plugin()->settings->update_from( $this->settings );
 		alma_wc_plugin()->force_check_settings();
 
-		$value = $this->settings;
-		/** LEGAL CHECKOUT FEATURE */
-		$post_data = $this->get_post_data();
+		$values = $this->settings;
+
+		return $previously_saved && update_option( $this->get_option_key(), $values );
+	}
+
+	/**
+	 * Process the checkout legal data.
+	 *
+	 * @param array $post_data The data.
+	 *
+	 * @return void
+	 */
+	protected function process_checkout_legal( $post_data ) {
+		$has_changed = false;
+
 		if (
-			isset( $post_data['share_of_checkout_enabled'] ) &&
-			! isset( alma_wc_plugin()->settings->share_of_checkout_enabled )
+			(
+				isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
+				&& '1' == $post_data['woocommerce_alma_share_of_checkout_enabled']
+				&& 'no' === alma_wc_plugin()->settings->share_of_checkout_enabled
+			)
+			|| (
+				! isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
+				&& 'yes' === alma_wc_plugin()->settings->share_of_checkout_enabled
+			)
 		) {
-			$value['share_of_checkout_enabled_date'] = gmdate( 'Y-m-d' );
+			$has_changed = true;
 		}
 
-		/** LEGAL CHECKOUT FEATURE */
+		if ( true === $has_changed ) {
+			$this->settings['share_of_checkout_enabled_date'] = gmdate( 'Y-m-d' );
+			$endpoint = 'removeConsent';
 
-		return $previously_saved && update_option( $this->get_option_key(), $value );
+			if (
+				isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
+				&& '1' == $post_data['woocommerce_alma_share_of_checkout_enabled']
+			) {
+				$endpoint = 'addConsent';
+			}
+
+			$this->admin_helper_check_legal->send_consent( $endpoint );
+		}
+
 	}
 
 	/**
@@ -477,9 +540,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				style="margin-right: 10px; display: inline;"
 				for="<?php echo esc_attr( $gateway_id ); ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
 		>
-			<img src="<?php echo esc_attr( $logo_url ); ?>"
-				 style="float: unset !important; width: auto !important; height: 30px !important;  border: none !important; vertical-align: middle; display: inline-block;"
-				 alt="
+			<img src="<?php echo esc_attr( $logo_url ); ?>" style="float: unset !important; width: auto !important; height: 30px !important;  border: none !important; vertical-align: middle; display: inline-block;" alt="
 					<?php
 					// translators: %s: plan_key alt image.
 					echo esc_html( sprintf( __( '%s installments', 'alma-gateway-for-woocommerce' ), $plan_key ) );
@@ -935,10 +996,10 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 					<legend class="screen-reader-text"><span><?php echo wp_kses_post( $data['title'] ); ?></span>
 					</legend>
 					<input class="input-text regular-input alma-i18n <?php echo esc_attr( $data['class'] ); ?>"
-						   type="text" name="<?php echo esc_attr( $field_key ); ?>"
-						   id="<?php echo esc_attr( $field_key ); ?>" style="<?php echo esc_attr( $data['css'] ); ?>"
-						   value="<?php echo esc_attr( $this->get_option( $key ) ); ?>"
-						   placeholder="<?php echo esc_attr( $data['placeholder'] ); ?>" <?php disabled( $data['disabled'] ); ?> <?php echo $this->get_custom_attribute_html( $data ); // phpcs:ignore WordPress.Security.EscapeOutput ?> />
+						type="text" name="<?php echo esc_attr( $field_key ); ?>"
+						id="<?php echo esc_attr( $field_key ); ?>" style="<?php echo esc_attr( $data['css'] ); ?>"
+						value="<?php echo esc_attr( $this->get_option( $key ) ); ?>"
+						placeholder="<?php echo esc_attr( $data['placeholder'] ); ?>" <?php disabled( $data['disabled'] ); ?> <?php echo $this->get_custom_attribute_html( $data ); // phpcs:ignore WordPress.Security.EscapeOutput ?> />
 					<select class="list_lang_title" style="width:auto;margin-left:10px;line-height:28px;">
 						<?php
 						foreach ( $data['lang_list'] as $code => $label ) {
@@ -987,11 +1048,9 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			style="<?php echo esc_attr( $data['css'] ); ?>"
 			id="<?php echo esc_attr( $field_key ); ?>"><?php echo wp_kses_post( $data['title'] ); ?></h3>
 		<?php if ( ! empty( $data['description'] ) ) : ?>
-			<div class="<?php echo esc_attr( $data['description_class'] ); ?>"
-				 style="<?php echo esc_attr( $data['description_css'] ); ?>"><?php echo wp_kses_post( $data['description'] ); ?></div>
+			<div class="<?php echo esc_attr( $data['description_class'] ); ?>" style="<?php echo esc_attr( $data['description_css'] ); ?>"><?php echo wp_kses_post( $data['description'] ); ?></div>
 		<?php endif; ?>
-	<table class="form-table <?php echo esc_attr( $data['table_class'] ); ?>"
-		   style="<?php echo esc_attr( $data['table_css'] ); ?>">
+	<table class="form-table <?php echo esc_attr( $data['table_class'] ); ?>" style="<?php echo esc_attr( $data['table_css'] ); ?>">
 		<?php
 
 		return ob_get_clean();
@@ -1012,18 +1071,18 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	/**
 	 * Filter available_gateways to add "alma_pay_later" and "alma_pnx_plus_4".
 	 *
-	 * @param array $_available_gateways The list of available gateways.
+	 * @param array $available_gateways The list of available gateways.
 	 *
 	 * @return array
 	 */
-	public function woocommerce_available_payment_gateways( $_available_gateways ) {
+	public function woocommerce_available_payment_gateways( $available_gateways ) {
 
 		if ( is_admin() ) {
-			return $_available_gateways;
+			return $available_gateways;
 		}
 
 		$new_available_gateways = array();
-		foreach ( $_available_gateways as $key => $gateway ) {
+		foreach ( $available_gateways as $key => $gateway ) {
 			$new_available_gateways[ $key ] = $gateway;
 
 			if ( 'alma' === $gateway->id ) {

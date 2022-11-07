@@ -67,12 +67,10 @@ class Alma_WC_Share_Of_Checkout {
 	 * @return void
 	 */
 	public function share_days() {
-		$alma = alma_wc_plugin()->get_alma_client();
-		if ( ! $alma ) {
-			return;
-		}
-
-		if ( 'yes' !== alma_wc_plugin()->settings->share_of_checkout_enabled ) {
+		if (
+			alma_wc_plugin()->settings->is_test()
+			|| 'yes' !== alma_wc_plugin()->settings->share_of_checkout_enabled
+		) {
 			return;
 		}
 

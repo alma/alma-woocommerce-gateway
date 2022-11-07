@@ -47,9 +47,7 @@ class Alma_WC_Admin_Form {
 			self::get_instance()->init_general_settings_fields( $default_settings ),
 			self::get_instance()->init_payment_upon_trigger_fields( $default_settings ),
 			self::get_instance()->init_api_key_fields( __( '→ API configuration', 'alma-gateway-for-woocommerce' ), $default_settings ),
-			/** LEGAL CHECKOUT FEATURE */
 			self::get_instance()->init_share_of_checkout_field( $default_settings ),
-			/** LEGAL CHECKOUT FEATURE */
 			self::get_instance()->init_technical_fields( $default_settings ),
 			self::get_instance()->init_debug_fields( $default_settings )
 		);
@@ -649,7 +647,12 @@ class Alma_WC_Admin_Form {
 			$title_field,
 			array(
 				'payment_upon_trigger_general_info' => array(
-					'title' => $this->render_title( __( 'This option is available only for Alma payment in 2x, 3x and 4x.<br>When it\'s turned on, your clients will pay the first installment at the order status change. When your client order on your website, Alma will only ask for a payment authorization. Only status handled by Alma are available in the menu below. Please contact Alma if you need us to add another status.', 'alma-gateway-for-woocommerce' ) ),
+					'title' => $this->render_title(
+						__(
+							'This option is available only for Alma payment in 2x, 3x and 4x.<br>When it\'s turned on, your clients will pay the first installment at the order status change. When your client order on your website, Alma will only ask for a payment authorization. Only status handled by Alma are available in the menu below. Please contact Alma if you need us to add another status.',
+							'alma-gateway-for-woocommerce'
+						)
+					),
 					'type'  => 'title',
 				),
 				'payment_upon_trigger_enabled'      => array(
@@ -732,17 +735,29 @@ class Alma_WC_Admin_Form {
 	 * @return array[]
 	 */
 	private function init_share_of_checkout_field( $default_settings ) {
+		if (
+			empty( alma_wc_plugin()->settings->share_of_checkout_enabled_date )
+			|| alma_wc_plugin()->settings->is_test()
+		) {
+			return array();
+		}
+
 		return array(
 			'share_of_checkout_section' => array(
 				'title'       => '<hr>' . __( '→ Share of checkout configuration', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'title',
-				'description' => __(
-					'By accepting this option, enable Alma to analyse the usage of your payment methods, get more informations to perform and share this data with you.
-<br>You can <a href="mailto:support@getalma.eu">unsubscribe and erase your data</a> at any moment.
-<br><br>Know more about collected data
-<br><br>- total quantity of orders, amounts and currencies
-<br>- payment provider for each order',
-					'alma-gateway-for-woocommerce'
+				'description' => wp_kses_post(
+					__( 'By accepting this option, enable Alma to analyse the usage of your payment methods, get more informations to perform and share this data with you.', 'alma-gateway-for-woocommerce' ) .
+					__( '<br>You can <a href="mailto:support@getalma.eu">erase your data</a> at any moment.', 'alma-gateway-for-woocommerce' ) .
+					'<p class="alma-legal-checkout-collapsible">' .
+					__( 'Know more about collected data', 'alma-gateway-for-woocommerce' ) .
+					'<span id="alma-legal-collapse-chevron" class="alma-legal-checkout-chevron bottom"></span>' .
+					'</p>' .
+					'<ul class="alma-legal-checkout-content"><li>' .
+					__( '- total quantity of orders, amounts and currencies', 'alma-gateway-for-woocommerce' ) .
+					'</li><li>' .
+					__( '- payment provider for each order', 'alma-gateway-for-woocommerce' ) .
+					'</li></ul>'
 				),
 			),
 
@@ -754,6 +769,5 @@ class Alma_WC_Admin_Form {
 			),
 		);
 	}
-
 }
 
