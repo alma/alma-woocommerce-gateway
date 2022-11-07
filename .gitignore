@@ -5,3 +5,5 @@ docker/env.local
 .idea/
 plugins/
 src/composer.lock
+/crowdin.properties
+/crowdin.deb

@@ -190,8 +190,7 @@ class Alma_WC_Admin_Helper_Check_Legal {
 						<?php
 						echo wp_kses_post(
 							__(
-								'You can <a href="mailto:support@getalma.eu">opt out and erase your data</a> at any
-                        moment.',
+								'You can <a href="mailto:support@getalma.eu">opt out and erase your data</a> at any moment.',
 								'alma-gateway-for-woocommerce'
 							)
 						);
