@@ -647,7 +647,12 @@ class Alma_WC_Admin_Form {
 			$title_field,
 			array(
 				'payment_upon_trigger_general_info' => array(
-					'title' => $this->render_title( __( 'This option is available only for Alma payment in 2x, 3x and 4x.<br>When it\'s turned on, your clients will pay the first installment at the order status change. When your client order on your website, Alma will only ask for a payment authorization. Only status handled by Alma are available in the menu below. Please contact Alma if you need us to add another status.', 'alma-gateway-for-woocommerce' ) ),
+					'title' => $this->render_title(
+						__(
+							'This option is available only for Alma payment in 2x, 3x and 4x.<br>When it\'s turned on, your clients will pay the first installment at the order status change. When your client order on your website, Alma will only ask for a payment authorization. Only status handled by Alma are available in the menu below. Please contact Alma if you need us to add another status.',
+							'alma-gateway-for-woocommerce'
+						)
+					),
 					'type'  => 'title',
 				),
 				'payment_upon_trigger_enabled'      => array(
