@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 77e083b1cd468d7c2202d1ff3d20e024\n"
-"POT-Creation-Date: 2022-11-07 11:09+0100\n"
-"PO-Revision-Date: 2022-11-07 10:11\n"
+"POT-Creation-Date: 2022-11-07 11:27+0100\n"
+"PO-Revision-Date: 2022-11-07 10:29\n"
 "Last-Translator: syjust <sy.just@gmail.com>\n"
 "Language-Team: Portuguese\n"
 "MIME-Version: 1.0\n"
@@ -37,7 +37,7 @@ msgstr "Ao aceitar esta opção, permite à Alma analisar a utilização dos seu
 msgid "You can <a href=\"mailto:support@getalma.eu\">opt out and erase your data</a> at any moment."
 msgstr "Pode <a href=\"mailto:support@getalma.eu\">optar por excluir e apagar os seus dados</a> em qualquer momento."
 
-#: admin/helpers/class-alma-wc-admin-helper-check-legal.php:200
+#: admin/helpers/class-alma-wc-admin-helper-check-legal.php:200 includes/class-alma-wc-admin-form.php:748
 msgid "Know more about collected data"
 msgstr "Saber mais sobre os dados recolhidos"
 
@@ -367,11 +367,23 @@ msgstr "Seletor query utilizado para obter o preço do produto com <strong>varia
 msgid "→ Share of checkout configuration"
 msgstr "→ Partilha da configuração da caixa"
 
-#: includes/class-alma-wc-admin-form.php:746
-msgid "By accepting this option, enable Alma to analyse the usage of your payment methods, get more informations to perform and share this data with you.<br>You can <a href=\"mailto:support@getalma.eu\">erase your data</a> at any moment.<p class=\"alma-legal-checkout-collapsible\">Know more about collected data<span id=\"alma-legal-collapse-chevron\" class=\"alma-legal-checkout-chevron bottom\"></span></p><ul class=\"alma-legal-checkout-content\"><li>- total quantity of orders, amounts and currencies</li><li>- payment provider for each order</li></ul>"
-msgstr "Ao aceitar esta opção, permite à Alma analisar a utilização dos seus métodos de pagamento, obter mais informações para executar e partilhar estes dados consigo.<br>Pode <a href=\"mailto:support@getalma.eu\">apagar os seus dados</a> em qualquer momento.<p class=\"alma-legal-checkout-collapsible\">Saiba mais sobre os dados recolhidos<span id=\"alma-legal-collapse-chevron\" class=\"alma-legal-checkout-chevron bottom\"></span></p><ul class=\"alma-legal-checkout-content\"><li>- quantidade total de encomendas, montantes e moedas</li><li>- fornecedor de pagamento para cada encomenda</li></ul>"
+#: includes/class-alma-wc-admin-form.php:745
+msgid "By accepting this option, enable Alma to analyse the usage of your payment methods, get more informations to perform and share this data with you."
+msgstr "Ao aceitar esta opção, permite à Alma analisar a utilização dos seus métodos de pagamento, obter mais informações para executar e partilhar estes dados consigo."
 
-#: includes/class-alma-wc-admin-form.php:762
+#: includes/class-alma-wc-admin-form.php:746
+msgid "<br>You can <a href=\"mailto:support@getalma.eu\">erase your data</a> at any moment."
+msgstr "<br>Pode <a href=\"mailto:support@getalma.eu\">apagar os seus dados</a> em qualquer momento."
+
+#: includes/class-alma-wc-admin-form.php:752
+msgid "- total quantity of orders, amounts and currencies"
+msgstr "- quantidade total de encomendas, montantes e moedas"
+
+#: includes/class-alma-wc-admin-form.php:754
+msgid "- payment provider for each order"
+msgstr "- fornecedor do pagamento para cada encomenda"
+
+#: includes/class-alma-wc-admin-form.php:760
 msgid "Activate your data settings "
 msgstr "Activar as suas definições de dados "
 

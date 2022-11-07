@@ -742,19 +742,17 @@ class Alma_WC_Admin_Form {
 				'title'       => '<hr>' . __( '→ Share of checkout configuration', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'title',
 				'description' => wp_kses_post(
-					__(
-						'By accepting this option, enable Alma to analyse the usage of your payment methods, get more informations to perform and share this data with you.'.
-                        '<br>You can <a href="mailto:support@getalma.eu">erase your data</a> at any moment.'.
-                        '<p class="alma-legal-checkout-collapsible">'.
-                        'Know more about collected data'.
-                        '<span id="alma-legal-collapse-chevron" class="alma-legal-checkout-chevron bottom"></span>'.
-                        '</p>'.
-                        '<ul class="alma-legal-checkout-content">'.
-                        '<li>- total quantity of orders, amounts and currencies</li>'.
-                        '<li>- payment provider for each order</li>'.
-                        '</ul>',
-						'alma-gateway-for-woocommerce'
-					)
+					__( 'By accepting this option, enable Alma to analyse the usage of your payment methods, get more informations to perform and share this data with you.', 'alma-gateway-for-woocommerce' ) .
+					__( '<br>You can <a href="mailto:support@getalma.eu">erase your data</a> at any moment.', 'alma-gateway-for-woocommerce' ) .
+					'<p class="alma-legal-checkout-collapsible">' .
+					__( 'Know more about collected data', 'alma-gateway-for-woocommerce' ) .
+					'<span id="alma-legal-collapse-chevron" class="alma-legal-checkout-chevron bottom"></span>' .
+					'</p>' .
+					'<ul class="alma-legal-checkout-content"><li>' .
+					__( '- total quantity of orders, amounts and currencies', 'alma-gateway-for-woocommerce' ) .
+					'</li><li>' .
+					__( '- payment provider for each order', 'alma-gateway-for-woocommerce' ) .
+					'</li></ul>'
 				),
 			),
 
@@ -766,6 +764,5 @@ class Alma_WC_Admin_Form {
 			),
 		);
 	}
-
 }
 
