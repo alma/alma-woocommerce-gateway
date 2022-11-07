@@ -1071,18 +1071,18 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	/**
 	 * Filter available_gateways to add "alma_pay_later" and "alma_pnx_plus_4".
 	 *
-	 * @param array $_available_gateways The list of available gateways.
+	 * @param array $available_gateways The list of available gateways.
 	 *
 	 * @return array
 	 */
-	public function woocommerce_available_payment_gateways( $_available_gateways ) {
+	public function woocommerce_available_payment_gateways( $available_gateways ) {
 
 		if ( is_admin() ) {
-			return $_available_gateways;
+			return $available_gateways;
 		}
 
 		$new_available_gateways = array();
-		foreach ( $_available_gateways as $key => $gateway ) {
+		foreach ( $available_gateways as $key => $gateway ) {
 			$new_available_gateways[ $key ] = $gateway;
 
 			if ( 'alma' === $gateway->id ) {
