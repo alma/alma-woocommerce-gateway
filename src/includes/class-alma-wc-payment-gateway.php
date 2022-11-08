@@ -300,7 +300,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	/**
 	 * Verify if the soc value has changed.
 	 *
-	 * @param $post_data
+	 * @param array $post_data The data.
 	 *
 	 * @return bool
 	 */

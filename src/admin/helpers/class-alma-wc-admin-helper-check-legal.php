@@ -123,6 +123,7 @@ class Alma_WC_Admin_Helper_Check_Legal {
 	 *
 	 * @param string $value The value to call addConsent/removeConsent.
 	 *
+	 * @throws Exception
 	 * @return bool
 	 */
 	public function send_consent( $value ) {
@@ -135,9 +136,9 @@ class Alma_WC_Admin_Helper_Check_Legal {
 		}
 
 		try {
-			if ( $value === 'yes' ) {
+			if ( 'yes' === $value ) {
 				$alma->shareOfCheckout->addConsent(); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-			} elseif ( $value === 'no' ) {
+			} elseif ( 'no' === $value ) {
 				$alma->shareOfCheckout->removeConsent(); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			} else {
 				throw new Exception( sprintf( 'Wrong value %s for soc consent', $value ) );
@@ -176,11 +177,9 @@ class Alma_WC_Admin_Helper_Check_Legal {
 	 */
 	public function alma_admin_soc__success__message() {
 		return sprintf(
-			__(
-				'The settings have been saved. <a href="%s">Refresh</a> the page when ready.',
-				'alma-gateway-for-woocommerce'
-			),
-			alma_wc_plugin()->get_admin_setting_url()
+		// translators: %s: Admin settings url.
+			__( 'The settings have been saved. <a href="%s">Refresh</a> the page when ready.', 'alma-gateway-for-woocommerce' ),
+			esc_url( alma_wc_plugin()->get_admin_setting_url() )
 		);
 	}
 
