@@ -80,18 +80,18 @@ class Alma_WC_Admin_Helper_Check_Legal {
 					break;
 				default:
 					$this->logger->error( sprintf( 'Share of checkout legal acceptance, wrong value received %s', $value ) );
-					wp_send_json_error( array( 'message' => $this->alma_admin_soc__error__message() ) );
+					wp_send_json_error( array( 'message' => $this->alma_admin_soc_error_message() ) );
 			}
 
 			if ( ! $this->send_consent( $value ) ) {
-				wp_send_json_error( array( 'message' => $this->alma_admin_soc__error__message() ) );
+				wp_send_json_error( array( 'message' => $this->alma_admin_soc_error_message() ) );
 			}
 
 			// Save in BDD.
 			alma_wc_plugin()->settings->share_of_checkout_enabled      = $value;
 			alma_wc_plugin()->settings->share_of_checkout_enabled_date = gmdate( 'Y-m-d' );
 			alma_wc_plugin()->settings->save();
-			wp_send_json_success( array( 'message' => $this->alma_admin_soc__success__message() ) );
+			wp_send_json_success( array( 'message' => $this->alma_admin_soc_success_message() ) );
 		} catch ( \Exception $e ) {
 			$this->logger->error(
 				sprintf( 'Fail to call or save share of checkout value %s', $value ),
@@ -102,7 +102,7 @@ class Alma_WC_Admin_Helper_Check_Legal {
 			);
 			delete_transient( 'alma-admin-soc-panel' );
 
-			wp_send_json_error( array( 'message' => $this->alma_admin_soc__error__message() ) );
+			wp_send_json_error( array( 'message' => $this->alma_admin_soc_error_message() ) );
 		}
 	}
 
@@ -111,7 +111,7 @@ class Alma_WC_Admin_Helper_Check_Legal {
 	 *
 	 * @return string
 	 */
-	public function alma_admin_soc__error__message() {
+	public function alma_admin_soc_error_message() {
 		return __(
 			'Impossible to save the settings, please try again later.',
 			'alma-gateway-for-woocommerce'
@@ -123,7 +123,6 @@ class Alma_WC_Admin_Helper_Check_Legal {
 	 *
 	 * @param string $value The value to call addConsent/removeConsent.
 	 *
-	 * @throws Exception Wrong value exception.
 	 * @return bool
 	 */
 	public function send_consent( $value ) {
@@ -141,21 +140,13 @@ class Alma_WC_Admin_Helper_Check_Legal {
 			} elseif ( 'no' === $value ) {
 				$alma->shareOfCheckout->removeConsent(); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			} else {
-				throw new Exception( sprintf( 'Wrong value %s for soc consent', $value ) );
+				$this->logger->error( sprintf( 'Wrong value %s for soc consent', $value ) );
+
+				return false;
 			}
 		} catch ( \Alma\API\RequestError $e ) {
 			$this->logger->error(
 				sprintf( 'Fail to call share of checkout value %s (Api error)', $value ),
-				array(
-					'message' => $e->getMessage(),
-					'trace'   => $e->getTraceAsString(),
-				)
-			);
-
-			return false;
-		} catch ( Exception $e ) {
-			$this->logger->error(
-				sprintf( 'Fail to call share of checkout value %s (Wrong value)', $value ),
 				array(
 					'message' => $e->getMessage(),
 					'trace'   => $e->getTraceAsString(),
@@ -175,7 +166,7 @@ class Alma_WC_Admin_Helper_Check_Legal {
 	 *
 	 * @return string
 	 */
-	public function alma_admin_soc__success__message() {
+	public function alma_admin_soc_success_message() {
 		return sprintf(
 		// translators: %s: Admin settings url.
 			__( 'The settings have been saved. <a href="%s">Refresh</a> the page when ready.', 'alma-gateway-for-woocommerce' ),
