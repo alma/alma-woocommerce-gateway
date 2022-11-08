@@ -113,7 +113,8 @@ class Alma_WC_Admin_Helper_Check_Legal {
 	 */
 	public function alma_admin_soc__error__message() {
 		return __(
-			'Impossible to save the settings, please try again later.', 'alma-gateway-for-woocommerce'
+			'Impossible to save the settings, please try again later.',
+			'alma-gateway-for-woocommerce'
 		);
 	}
 
@@ -174,8 +175,11 @@ class Alma_WC_Admin_Helper_Check_Legal {
 	 * @return string
 	 */
 	public function alma_admin_soc__success__message() {
-		return sprintf( __(
-			'The settings have been saved. <a href="%s">Refresh</a> the page when ready.', 'alma-gateway-for-woocommerce' ),
+		return sprintf(
+			__(
+				'The settings have been saved. <a href="%s">Refresh</a> the page when ready.',
+				'alma-gateway-for-woocommerce'
+			),
 			alma_wc_plugin()->get_admin_setting_url()
 		);
 	}
@@ -194,14 +198,14 @@ class Alma_WC_Admin_Helper_Check_Legal {
 			ob_start();
 			?>
 
-            <div class="notice notice-info notice-modal-checkout-legal" id="alma-modal-soc">
-                <div class="modal-checkout-legal-logo"> <?php echo wp_kses_post( $alma_logo ); ?></div>
-                <div>
-                    <div>
-                        <h1><?php echo esc_attr( $title ); ?></h1>
-                    </div>
-                    <div>
-                        <p>
+			<div class="notice notice-info notice-modal-checkout-legal" id="alma-modal-soc">
+				<div class="modal-checkout-legal-logo"> <?php echo wp_kses_post( $alma_logo ); ?></div>
+				<div>
+					<div>
+						<h1><?php echo esc_attr( $title ); ?></h1>
+					</div>
+					<div>
+						<p>
 							<?php
 							echo wp_kses_post(
 								__(
@@ -210,7 +214,7 @@ class Alma_WC_Admin_Helper_Check_Legal {
 								)
 							);
 							?>
-                            <br>
+							<br>
 							<?php
 							echo wp_kses_post(
 								__(
@@ -219,24 +223,24 @@ class Alma_WC_Admin_Helper_Check_Legal {
 								)
 							);
 							?>
-                        </p>
-                        <p class="legal-checkout-collapsible">
+						</p>
+						<p class="legal-checkout-collapsible">
 							<?php esc_html_e( 'Know more about collected data', 'alma-gateway-for-woocommerce' ); ?>
-                            <span id="legal-collapse-chevron" class="legal-checkout-chevron bottom"></span>
-                        </p>
-                        <ul class="legal-checkout-content">
-                            <li> <?php esc_html_e( 'total quantity of orders, amounts and currencies', 'alma-gateway-for-woocommerce' ); ?></li>
-                            <li> <?php esc_html_e( 'payment provider for each order', 'alma-gateway-for-woocommerce' ); ?></li>
-                        </ul>
-                    </div>
-                    <div id="legal-checkout-choices">
-                        <button class="button-checkout-legal reject-legal-alma"
-                                data-value="deny"><?php esc_html_e( 'REJECT', 'alma-gateway-for-woocommerce' ); ?></button>
-                        <button class="button-checkout-legal accept-legal-alma"
-                                data-value="accept"><?php esc_html_e( 'ACCEPT', 'alma-gateway-for-woocommerce' ); ?></button>
-                    </div>
-                </div>
-            </div>
+							<span id="legal-collapse-chevron" class="legal-checkout-chevron bottom"></span>
+						</p>
+						<ul class="legal-checkout-content">
+							<li> <?php esc_html_e( 'total quantity of orders, amounts and currencies', 'alma-gateway-for-woocommerce' ); ?></li>
+							<li> <?php esc_html_e( 'payment provider for each order', 'alma-gateway-for-woocommerce' ); ?></li>
+						</ul>
+					</div>
+					<div id="legal-checkout-choices">
+						<button class="button-checkout-legal reject-legal-alma"
+								data-value="deny"><?php esc_html_e( 'REJECT', 'alma-gateway-for-woocommerce' ); ?></button>
+						<button class="button-checkout-legal accept-legal-alma"
+								data-value="accept"><?php esc_html_e( 'ACCEPT', 'alma-gateway-for-woocommerce' ); ?></button>
+					</div>
+				</div>
+			</div>
 			<?php
 			$data = ob_get_clean();
 			echo wp_kses_post( $data );
