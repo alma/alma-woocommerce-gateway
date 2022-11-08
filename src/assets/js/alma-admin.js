@@ -225,16 +225,19 @@ function AlmaAdminFeePlan(helper) {
 }
 
 var collapsible = jQuery(".alma-legal-checkout-collapsible");
-var chevron = jQuery('#alma-legal-collapse-chevron');
 
-collapsible[0].addEventListener("click", function () {
-    this.classList.toggle("active");
-    var content = this.nextElementSibling;
-    if (content.style.display === "block") {
-        content.style.display = "none";
-        chevron.addClass('bottom');
-    } else {
-        content.style.display = "block";
-        chevron.removeClass('bottom');
-    }
-});
+if(collapsible.length) {
+    var chevron = jQuery('#alma-legal-collapse-chevron');
+
+    collapsible[0].addEventListener("click", function () {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+            content.style.display = "none";
+            chevron.addClass('bottom');
+        } else {
+            content.style.display = "block";
+            chevron.removeClass('bottom');
+        }
+    });
+}

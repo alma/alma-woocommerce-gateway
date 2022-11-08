@@ -270,9 +270,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		alma_wc_plugin()->settings->update_from( $this->settings );
 		alma_wc_plugin()->force_check_settings();
 
-		$values = $this->settings;
-
-		return $previously_saved && update_option( $this->get_option_key(), $values );
+		return $previously_saved && update_option( $this->get_option_key(), $this->settings );
 	}
 
 	/**
