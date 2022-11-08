@@ -75,7 +75,7 @@ div.ui-state-active.alma_option_disabled,
 	width: 0.45em;
 }
 
-.alma-legal-checkout-chevron.bottom:before {
+.alma-legal-checkout-chevron.bottom::before {
 	top: 0;
 	transform: rotate(135deg);
 }
