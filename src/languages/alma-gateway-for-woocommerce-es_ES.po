@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 77e083b1cd468d7c2202d1ff3d20e024\n"
 "POT-Creation-Date: 2022-11-08 10:34+0100\n"
-"PO-Revision-Date: 2022-11-08 09:35\n"
+"PO-Revision-Date: 2022-11-08 13:45\n"
 "Last-Translator: syjust <sy.just@gmail.com>\n"
 "Language-Team: Spanish\n"
 "MIME-Version: 1.0\n"
@@ -27,7 +27,7 @@ msgstr ""
 
 #: admin/helpers/class-alma-wc-admin-helper-check-legal.php:116
 msgid "Impossible to save the settings, please try again later."
-msgstr "Imposible guardar los ajustes, por favor inténtelo más tarde."
+msgstr "Imposible guardar los ajustes, por favor, inténtelo más tarde."
 
 #. translators: %s: Admin settings url.
 #: admin/helpers/class-alma-wc-admin-helper-check-legal.php:181
