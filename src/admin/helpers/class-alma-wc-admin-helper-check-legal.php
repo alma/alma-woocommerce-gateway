@@ -123,7 +123,7 @@ class Alma_WC_Admin_Helper_Check_Legal {
 	 *
 	 * @param string $value The value to call addConsent/removeConsent.
 	 *
-	 * @throws Exception
+	 * @throws Exception Wrong value exception.
 	 * @return bool
 	 */
 	public function send_consent( $value ) {
