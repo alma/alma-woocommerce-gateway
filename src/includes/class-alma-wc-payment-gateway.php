@@ -281,23 +281,9 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return void
 	 */
 	protected function process_checkout_legal( $post_data ) {
-		$has_changed = false;
-
-		if (
-			(
-				isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
-				&& '1' == $post_data['woocommerce_alma_share_of_checkout_enabled']
-				&& 'no' === alma_wc_plugin()->settings->share_of_checkout_enabled
-			)
-			|| (
-				! isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
-				&& 'yes' === alma_wc_plugin()->settings->share_of_checkout_enabled
-			)
-		) {
-			$has_changed = true;
+		if ( !$this->soc_has_changed($post_data)) {
+			return;
 		}
-
-		if ( true === $has_changed ) {
 			$this->settings['share_of_checkout_enabled_date'] = gmdate( 'Y-m-d' );
 			$value = 'no';
 
@@ -309,10 +295,33 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			}
 
 			$this->admin_helper_check_legal->send_consent( $value );
-		}
-
 	}
 
+	/**
+     * Verify if the soc value has changed.
+     *
+	 * @param $post_data
+	 *
+	 * @return bool
+	 */
+    protected function soc_has_changed($post_data) {
+
+	    if (
+		    (
+			    isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
+			    && '1' == $post_data['woocommerce_alma_share_of_checkout_enabled']
+			    && 'no' === alma_wc_plugin()->settings->share_of_checkout_enabled
+		    )
+		    || (
+			    ! isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
+			    && 'yes' === alma_wc_plugin()->settings->share_of_checkout_enabled
+		    )
+	    ) {
+		    return true;
+	    }
+
+        return false;
+    }
 	/**
 	 * After settings have been updated, override min/max amounts to convert them to cents.
 	 */
