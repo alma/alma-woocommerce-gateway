@@ -80,18 +80,18 @@ class Alma_WC_Admin_Helper_Check_Legal {
 					break;
 				default:
 					$this->logger->error( sprintf( 'Share of checkout legal acceptance, wrong value received %s', $value ) );
-					wp_send_json_error( array( 'message' => $this->alma_admin_soc_error_message() ) );
+					wp_send_json_error( $this->alma_admin_soc_error_message() );
 			}
 
 			if ( ! $this->send_consent( $value ) ) {
-				wp_send_json_error( array( 'message' => $this->alma_admin_soc_error_message() ) );
+				wp_send_json_error( $this->alma_admin_soc_error_message() );
 			}
 
 			// Save in BDD.
 			alma_wc_plugin()->settings->share_of_checkout_enabled      = $value;
 			alma_wc_plugin()->settings->share_of_checkout_enabled_date = gmdate( 'Y-m-d' );
 			alma_wc_plugin()->settings->save();
-			wp_send_json_success( array( 'message' => $this->alma_admin_soc_success_message() ) );
+			wp_send_json_success( $this->alma_admin_soc_success_message() );
 		} catch ( \Exception $e ) {
 			$this->logger->error(
 				sprintf( 'Fail to call or save share of checkout value %s', $value ),
@@ -102,7 +102,7 @@ class Alma_WC_Admin_Helper_Check_Legal {
 			);
 			delete_transient( 'alma-admin-soc-panel' );
 
-			wp_send_json_error( array( 'message' => $this->alma_admin_soc_error_message() ) );
+			wp_send_json_error( $this->alma_admin_soc_error_message() );
 		}
 	}
 
