@@ -27,18 +27,18 @@ jQuery(document).ready(function () {
             'accept': value
         };
 
-        modalSoc = jQuery('#alma-modal-soc');
+        var modalSoc = jQuery('#alma-modal-soc');
 
         jQuery.post(ajax_object.ajax_url, data, function(response) {
             if( ! response.success) {
-                modal = '<div class="notice notice-error is-dismissible">' +
+                var modal = '<div class="notice notice-error is-dismissible">' +
                     '<p>'+ response.data.message+  ' </p>' +
                     '</div>'
                 modalSoc.before( modal );
             }
 
             if(response.success) {
-                modal = '<div class="notice notice-info is-dismissible">' +
+                var modal = '<div class="notice notice-info is-dismissible">' +
                     '<p>'+ response.data.message+  ' </p>' +
                     '</div>'
                 modalSoc.before( modal );
