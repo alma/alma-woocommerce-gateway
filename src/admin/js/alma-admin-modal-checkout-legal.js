@@ -45,5 +45,4 @@ jQuery(document).ready(function () {
                 modalSoc.before(modal);
             });
     });
-
 });
