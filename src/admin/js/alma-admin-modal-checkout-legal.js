@@ -20,15 +20,28 @@ jQuery(document).ready(function () {
 
     jQuery(".button-checkout-legal").on("click", function (e) {
         e.preventDefault();
-        value =  jQuery(this).data('value');
+        value = jQuery(this).data('value');
 
         var data = {
             'action': 'legal_alma',
             'accept': value
         };
 
-        jQuery.post(ajax_object.ajax_url, data, function() {
-            location.reload();
-        });
+        var modalSoc = jQuery('#alma-modal-soc');
+
+        jQuery.post(ajax_object.ajax_url, data)
+            .done(function (response) {
+                var modal = '<div class="notice notice-info is-dismissible">' +
+                    '<p>' + response.data + ' </p>' +
+                    '</div>'
+                modalSoc.before(modal);
+                modalSoc.remove();
+            })
+            .fail(function (response) {
+                var modal = '<div class="notice notice-error is-dismissible">' +
+                    '<p>' + response.responseJSON.data + ' </p>' +
+                    '</div>'
+                modalSoc.before(modal);
+            });
     });
 });

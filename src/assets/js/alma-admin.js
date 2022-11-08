@@ -1,9 +1,9 @@
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
 
     almaAdminInternationalization();
 
     var almaAdminGeneralHelper = new AlmaAdminHelper();
-    var almaAdminFeePlan = new AlmaAdminFeePlan( almaAdminGeneralHelper );
+    var almaAdminFeePlan = new AlmaAdminFeePlan(almaAdminGeneralHelper);
     almaAdminFeePlan.renderFeePlan();
     almaAdminFeePlan.initiateAlmaSelectMenuBehaviour();
     almaAdminFeePlan.listenFeePlanCheckboxStatus();
@@ -23,7 +23,7 @@ function AlmaAdminHelper() {
          * @param {jQuery} $input A HTML DOM Element.
          * @return {boolean}
          */
-        isBetweenMinMax: function($input) {
+        isBetweenMinMax: function ($input) {
             var val = parseInt($input.val());
             var min = parseInt($input.attr('min'));
             var max = parseInt($input.attr('max'));
@@ -34,7 +34,7 @@ function AlmaAdminHelper() {
          *
          * @param {string} plan A fee plan.
          */
-        scrollToSection: function(plan) {
+        scrollToSection: function (plan) {
             var $section = jQuery('#woocommerce_alma_' + plan + "_section");
             var keyframes = {
                 scrollTop: $section.offset().top - 100 // wc admin have a top bar fixed => -100px
@@ -47,7 +47,7 @@ function AlmaAdminHelper() {
          * @param {jQuery} $checkbox A jQuery checkbox item.
          * @param {jQuery} $items A set of checkbox items.
          */
-        toggleItems: function($checkbox, $items) {
+        toggleItems: function ($checkbox, $items) {
             if ($checkbox.is(':checked')) {
                 $items.addClass('alma_option_enabled').removeClass('alma_option_disabled');
             } else {
@@ -57,7 +57,7 @@ function AlmaAdminHelper() {
         /**
          * Show or hide technical fields.
          */
-        toggleTechnicalConfigFields: function() {
+        toggleTechnicalConfigFields: function () {
             jQuery('#alma_link_toggle_technical_section').parent('div').next('table.form-table').toggle();
             jQuery(document).on('click', '#alma_link_toggle_technical_section', function (e) {
                 e.preventDefault();
@@ -73,7 +73,7 @@ function AlmaAdminHelper() {
 function almaAdminInternationalization() {
     jQuery(document).on('change', '.list_lang_title', function (e) {
         e.preventDefault();
-        var codeLang = jQuery( this ).val();
+        var codeLang = jQuery(this).val();
         jQuery('.list_lang_title option[value=' + codeLang + ']').prop('selected', true);
         var $rowParents = jQuery('.alma-i18n-parent');
         $rowParents.hide();
@@ -85,13 +85,13 @@ function almaAdminInternationalization() {
 /**
  * Alma admin fee plans helper.
  */
-function AlmaAdminFeePlan(helper ) {
+function AlmaAdminFeePlan(helper) {
     /**
      * Decorate / render fee plan select & options.
      *
      * @return void
      */
-    var renderFeePlan = function() {
+    var renderFeePlan = function () {
         jQuery.widget('custom.almaSelectMenu', jQuery.ui.selectmenu, {
             _renderButtonItem: function (item) {
                 return jQuery('<span>', {
@@ -122,7 +122,7 @@ function AlmaAdminFeePlan(helper ) {
      * @param {string} optionValue as plan.
      * @return {string}
      */
-    var getOptionStatusClass = function(optionValue) {
+    var getOptionStatusClass = function (optionValue) {
         return jQuery('#woocommerce_alma_enabled_' + optionValue).is(":checked") ? 'alma_option_enabled' : 'alma_option_disabled';
     }
     /**
@@ -130,7 +130,7 @@ function AlmaAdminFeePlan(helper ) {
      *
      * @return void
      */
-    var initiateAlmaSelectMenuBehaviour = function()  {
+    var initiateAlmaSelectMenuBehaviour = function () {
         if (typeof select_alma_fee_plans_id === 'undefined') {
             return;
         }
@@ -165,7 +165,7 @@ function AlmaAdminFeePlan(helper ) {
      *
      * @return void
      */
-    var listenFeePlanCheckboxStatus = function() {
+    var listenFeePlanCheckboxStatus = function () {
         jQuery('[id^=woocommerce_alma_enabled_]').change(function () {
             var $checkbox = jQuery(this);
             var plan = $checkbox.attr('id').substring(25);
@@ -178,11 +178,11 @@ function AlmaAdminFeePlan(helper ) {
      *
      * @return void
      */
-    var checkInputsOnSubmitActionTriggered = function() {
+    var checkInputsOnSubmitActionTriggered = function () {
         jQuery(document).on('click', 'form button[type=submit]', function (e) {
             var isValid = true;
             var $input = null;
-            jQuery('[id^=woocommerce_alma_min_amount_], [id^=woocommerce_alma_max_amount_]').each(function() {
+            jQuery('[id^=woocommerce_alma_min_amount_], [id^=woocommerce_alma_max_amount_]').each(function () {
                 $input = jQuery(this);
                 isValid &= helper.isBetweenMinMax($input);
                 if (!isValid) {
@@ -192,7 +192,7 @@ function AlmaAdminFeePlan(helper ) {
             if (!isValid) {
                 var plan = $input.attr('id').substring(28);
                 var $select = jQuery('#' + select_alma_fee_plans_id);
-                if ($select.find('option[value='+plan+']').length) {
+                if ($select.find('option[value=' + plan + ']').length) {
                     $select.val(plan);
                     $select.almaSelectMenu('refresh');
                     showPlan(plan);
@@ -207,7 +207,7 @@ function AlmaAdminFeePlan(helper ) {
      *
      * @param {string} plan The selected plan.
      */
-    var showPlan = function(plan) {
+    var showPlan = function (plan) {
         jQuery('.alma_fee_plan').stop(true, true).hide();
         var $sections = jQuery('.alma_fee_plan_' + plan);
         $sections.show().effect('highlight', 1500);
@@ -224,11 +224,12 @@ function AlmaAdminFeePlan(helper ) {
     }
 }
 
-var coll = jQuery(".alma-legal-checkout-collapsible");
-var chevron = jQuery('#alma-legal-collapse-chevron');
-var i;
-for (i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function () {
+var collapsible = jQuery(".alma-legal-checkout-collapsible");
+
+if(collapsible.length) {
+    var chevron = jQuery('#alma-legal-collapse-chevron');
+
+    collapsible[0].addEventListener("click", function () {
         this.classList.toggle("active");
         var content = this.nextElementSibling;
         if (content.style.display === "block") {
