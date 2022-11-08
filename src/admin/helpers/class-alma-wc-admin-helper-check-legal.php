@@ -80,11 +80,11 @@ class Alma_WC_Admin_Helper_Check_Legal {
 					break;
 				default:
 					$this->logger->error( sprintf( 'Share of checkout legal acceptance, wrong value received %s', $value ) );
-					wp_send_json_error( $this->alma_admin_soc_error_message() );
+					wp_send_json_error( $this->alma_admin_soc_error_message(), 400 );
 			}
 
 			if ( ! $this->send_consent( $value ) ) {
-				wp_send_json_error( $this->alma_admin_soc_error_message() );
+				wp_send_json_error( $this->alma_admin_soc_error_message(), 500 );
 			}
 
 			// Save in BDD.
@@ -102,7 +102,7 @@ class Alma_WC_Admin_Helper_Check_Legal {
 			);
 			delete_transient( 'alma-admin-soc-panel' );
 
-			wp_send_json_error( $this->alma_admin_soc_error_message() );
+			wp_send_json_error( $this->alma_admin_soc_error_message(), 500 );
 		}
 	}
 

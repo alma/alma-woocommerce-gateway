@@ -29,8 +29,7 @@ jQuery(document).ready(function () {
 
         var modalSoc = jQuery('#alma-modal-soc');
 
-        jQuery.post(ajax_object.ajax_url, data, function () {
-        })
+        jQuery.post(ajax_object.ajax_url, data)
             .done(function (response) {
                 var modal = '<div class="notice notice-info is-dismissible">' +
                     '<p>' + response.data + ' </p>' +
@@ -40,7 +39,7 @@ jQuery(document).ready(function () {
             })
             .fail(function (response) {
                 var modal = '<div class="notice notice-error is-dismissible">' +
-                    '<p>' + response.data + ' </p>' +
+                    '<p>' + response.responseJSON.data + ' </p>' +
                     '</div>'
                 modalSoc.before(modal);
             });
