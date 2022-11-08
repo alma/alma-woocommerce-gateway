@@ -4,7 +4,7 @@
 # -- the CSS file.
 # -- the fonts.
 
-DIST_URL="https://cdn.jsdelivr.net/npm/@alma/widgets@2.x/dist"
+DIST_URL="https://cdn.jsdelivr.net/npm/@alma/widgets@3.x.x/dist"
 RAW_URL="${DIST_URL}/raw"
 ROOT_DIR="`dirname $0`/.."
 WIDGET_ASSETS_DIR="${ROOT_DIR}/src/assets/widget"
