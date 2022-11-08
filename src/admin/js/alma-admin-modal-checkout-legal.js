@@ -27,8 +27,24 @@ jQuery(document).ready(function () {
             'accept': value
         };
 
-        jQuery.post(ajax_object.ajax_url, data, function() {
-            location.reload();
+        modalSoc = jQuery('#alma-modal-soc');
+
+        jQuery.post(ajax_object.ajax_url, data, function(response) {
+            if( ! response.success) {
+                modal = '<div class="notice notice-error is-dismissible">' +
+                    '<p>'+ response.data.message+  ' </p>' +
+                    '</div>'
+                modalSoc.before( modal );
+            }
+
+            if(response.success) {
+                modal = '<div class="notice notice-info is-dismissible">' +
+                    '<p>'+ response.data.message+  ' </p>' +
+                    '</div>'
+                modalSoc.before( modal );
+                modalSoc.remove();
+            }
         });
     });
+
 });

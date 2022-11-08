@@ -301,16 +301,16 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		if ( true === $has_changed ) {
 			$this->settings['share_of_checkout_enabled_date'] = gmdate( 'Y-m-d' );
-			$endpoint = 'removeConsent';
+			$value = 'no';
 
 			if (
 				isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
 				&& '1' == $post_data['woocommerce_alma_share_of_checkout_enabled']
 			) {
-				$endpoint = 'addConsent';
+				$value = 'yes';
 			}
 
-			$this->admin_helper_check_legal->send_consent( $endpoint );
+			$this->admin_helper_check_legal->send_consent( $value );
 		}
 
 	}
