@@ -18,11 +18,14 @@ js/widgets.umd.js.map
 "
 FONT_FILES="
 css/assets/fonts/Venn-Regular.woff
-css/assets/fonts/Venn-Bold.woff
 css/assets/fonts/Venn-Regular.ttf
+css/assets/fonts/Venn-Regular.eot
+css/assets/fonts/Venn-Bold.woff
 css/assets/fonts/Venn-Bold.ttf
+css/assets/fonts/Venn-Bold.eot
 css/assets/fonts/ArgentCF-DemiBold.woff
 css/assets/fonts/ArgentCF-DemiBold.ttf
+css/assets/fonts/ArgentCF-DemiBold.eot
 "
 
 for raw_file in ${RAW_FILES} ; do
