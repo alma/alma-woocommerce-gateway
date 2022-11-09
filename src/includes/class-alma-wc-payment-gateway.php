@@ -272,7 +272,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		) {
 			$this->settings['share_of_checkout_enabled_date']             = '';
 			$this->settings['woocommerce_alma_share_of_checkout_enabled'] = '';
-			$value = 'no';
 		} elseif (
 			isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
 			&& '1' == $post_data['woocommerce_alma_share_of_checkout_enabled']
