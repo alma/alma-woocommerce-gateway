@@ -61,21 +61,22 @@
 ._GTTk7 {
   margin: 16px 0;
   font-family: 'Argent CF', sans-serif;
-  background-color: var(--soft-blue);
+  background-color: var(--off-white);
   border-radius: 20px;
   padding: 24px;
   z-index: 2;
   position: relative;
 }
+
 ._GTTk7 h3 {
   margin: 4px 0;
 }
+
 ._34s2g {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   font-size: 20px;
-
 }
 
 ._W7qIA {
@@ -267,13 +268,13 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: var(--soft-blue);
+  background-color: var(--soft-orange);
   margin-right: 16px;
   z-index: 1;
 }
 
 ._2Nmkl {
-  background-color: var(--alma-blue);
+  background-color: var(--alma-orange);
 }
 
 ._ezY-3 {
@@ -286,7 +287,7 @@
   }
 
   ._1Z9wr::after {
-    border-left: 2px solid var(--soft-blue);
+    border-left: 2px solid var(--off-white);
     height: 85px;
     margin-left: 4px;
     content: " ";
@@ -341,6 +342,7 @@
   font-family: 'Argent CF', sans-serif;
   font-weight: 600;
   font-size: 32px;
+  min-width: 20px;
   line-height: 110%;
   color: var(--alma-blue);
 }
@@ -395,7 +397,9 @@
 }
 
 ._xW3wt {
-  margin: auto;
+  position: absolute;
+  bottom: 35px;
+  left: 150px;
 }
 
 ._17qNJ {
@@ -424,7 +428,7 @@
   width: 2px;
   /* 120px is a magic number, to avoid seeing the line under the TotalBlock */
   height: calc(100% - 120px);
-  background-color: var(--soft-blue);
+  background-color: var(--off-white);
 }
 
 @media screen and (min-width: 800px) {
@@ -437,7 +441,6 @@
 }
 
 ._2G7Ch {
-  height: 100vh;
   display: flex;
   flex-direction: column;
 }
