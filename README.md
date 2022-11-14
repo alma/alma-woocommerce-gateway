@@ -5,7 +5,7 @@ Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo c
 Requires at least: 4.4
 Tested up to: 5.9.3
 Requires PHP: 5.6
-Stable tag: 3.1.2
+Stable tag: 3.2.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
