@@ -19,6 +19,7 @@ LICENSE  \
 ./src/alma-gateway-for-woocommerce.php \
 ./src/uninstall.php \
 "
+RSYNC_EXCLUDE="--exclude=*.orig --exclude=.DS_Store"
 # }}}
 
 # {{{ function is_that_ok
@@ -78,7 +79,7 @@ export -f preparing_folders
 # {{{ function building_release
 #
 building_release() {
-    rsync -au $TO_SYNC --exclude="*.orig" --exclude=".DS_Store" $TMP_TARGET_DIR/ \
+    rsync -au $TO_SYNC $RSYNC_EXCLUDE $TMP_TARGET_DIR/ \
         && cd $TMP_TARGET_DIR \
         && composer install --no-dev \
         && cd .. \
@@ -90,7 +91,9 @@ export -f building_release
 #
 syncing_subversion() {
     rm -rf $SUBVERSION_DIR/trunk
-    rsync -au $TMP_TARGET_DIR $SUBVERSION_DIR/trunk >/dev/null 2>&1
+    rsync -au $RSYNC_EXCLUDE $TMP_TARGET_DIR/ $SUBVERSION_DIR/trunk >/dev/null 2>&1
+    rm -rf $SUBVERSION_DIR/assets/*
+    rsync -au $RSYNC_EXCLUDE $HERE/.wordpress.org/ $SUBVERSION_DIR/assets >/dev/null 2>&1
 }
 export -f syncing_subversion
 # }}}
