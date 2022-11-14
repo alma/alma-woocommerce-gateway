@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v3.2.0
+------
+
+* feat: rebranding 2022
+
 v3.1.2
 ------
 
