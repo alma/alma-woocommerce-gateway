@@ -39,11 +39,12 @@ Once everything is properly set up, go ahead and switch to \"Live\" mode!
 == Screenshots ==
 
 1. Alma\'s payment method settings
-2. Cart eligibility for monthly payments
-3. Alma badge reinsurance Info
-4. Payment method at checkout
-5. Alma\'s payment page that users are sent to upon order confirmation
-6. Alma\'s payment page SMS verification
+2. Product eligibility for monthly payments
+3. Cart eligibility for monthly payments
+4. Alma badge reinsurance Info
+5. Payment method at checkout
+6. Alma\'s payment page that users are sent to upon order confirmation
+7. Alma\'s payment page SMS verification
 
 == Contributing ==
 
@@ -67,7 +68,6 @@ To build extension for production run `./bin/build.sh`
 == Changelog ==
 
 = 3.2.0 =
-=========
 * feat: rebranding 2022
 
 = 3.1.2 =
