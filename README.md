@@ -134,7 +134,6 @@ the second and following will not be displayed.
 ![Alma badge reinsurance Info](.wordpress.org/screenshot-4.png)
 ![Payment method at checkout](.wordpress.org/screenshot-5.png)
 ![Alma\'s payment page that users are sent to upon order confirmation](.wordpress.org/screenshot-6.png)
-![Alma\'s payment page SMS verification](.wordpress.org/screenshot-7.png)
 
 ## Contributing
 
