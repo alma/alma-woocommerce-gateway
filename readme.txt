@@ -44,7 +44,6 @@ Once everything is properly set up, go ahead and switch to \"Live\" mode!
 4. Alma badge reinsurance Info
 5. Payment method at checkout
 6. Alma\'s payment page that users are sent to upon order confirmation
-7. Alma\'s payment page SMS verification
 
 == Contributing ==
 
