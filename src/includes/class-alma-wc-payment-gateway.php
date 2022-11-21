@@ -242,29 +242,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 
 		$this->process_checkout_legal( $post_data );
 
-		// Check if the live_api_key has changed.
-		if (
-			alma_wc_plugin()->settings->live_api_key !== $post_data['woocommerce_alma_live_api_key']
-		) {
-			$this->settings['share_of_checkout_enabled_date'] = '';
-		}
-
-		// Check if the mode has changed to live (by default in the module you are in test so the legal is not init).
-		if (
-			'live' === $post_data['woocommerce_alma_environment']
-			&& 'test' === alma_wc_plugin()->settings->get_environment()
-		) {
-			$legal = new Alma_WC_Admin_Helper_Check_Legal();
-			$legal->init();
-		}
-
-		if (
-			'test' === $post_data['woocommerce_alma_environment']
-			&& 'live' === alma_wc_plugin()->settings->get_environment()
-		) {
-			delete_transient( 'alma-admin-soc-panel' );
-		}
-
 		$this->convert_amounts_to_cents();
 		$this->update_settings_from_merchant();
 		alma_wc_plugin()->settings->update_from( $this->settings );
@@ -285,10 +262,17 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			return;
 		}
 
+		// By default, remove api consent.
 		$this->settings['share_of_checkout_enabled_date'] = gmdate( 'Y-m-d' );
 		$value = 'no';
 
+		// Check if the live_api_key has changed. Remove the consent.
 		if (
+			alma_wc_plugin()->settings->live_api_key !== $post_data['woocommerce_alma_live_api_key']
+		) {
+			$this->settings['share_of_checkout_enabled_date']             = '';
+			$this->settings['woocommerce_alma_share_of_checkout_enabled'] = '';
+		} elseif (
 			isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
 			&& '1' == $post_data['woocommerce_alma_share_of_checkout_enabled']
 		) {
@@ -296,6 +280,23 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 		}
 
 		$this->admin_helper_check_legal->send_consent( $value );
+
+		// Check if the mode has changed to live (by default in the module you are in test so the legal is not init).
+		if (
+			'live' === $post_data['woocommerce_alma_environment']
+			&& 'test' === alma_wc_plugin()->settings->get_environment()
+		) {
+			$legal = new Alma_WC_Admin_Helper_Check_Legal();
+			$legal->init();
+		}
+
+		if (
+			'test' === $post_data['woocommerce_alma_environment']
+			&& 'live' === alma_wc_plugin()->settings->get_environment()
+		) {
+			delete_transient( 'alma-admin-soc-panel' );
+		}
+
 	}
 
 	/**
@@ -317,6 +318,7 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				! isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
 				&& 'yes' === alma_wc_plugin()->settings->share_of_checkout_enabled
 			)
+			|| alma_wc_plugin()->settings->live_api_key !== $post_data['woocommerce_alma_live_api_key']
 		) {
 			return true;
 		}
