@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 4.4
 Tested up to: 5.9.3
 Requires PHP: 5.6
-Stable tag: 3.1.2
+Stable tag: 3.2.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -39,11 +39,11 @@ Once everything is properly set up, go ahead and switch to \"Live\" mode!
 == Screenshots ==
 
 1. Alma\'s payment method settings
-2. Cart eligibility for monthly payments
-3. Alma badge reinsurance Info
-4. Payment method at checkout
-5. Alma\'s payment page that users are sent to upon order confirmation
-6. Alma\'s payment page SMS verification
+2. Product eligibility for monthly payments
+3. Cart eligibility for monthly payments
+4. Alma badge reinsurance Info
+5. Payment method at checkout
+6. Alma\'s payment page that users are sent to upon order confirmation
 
 == Contributing ==
 
@@ -65,6 +65,9 @@ To edit the translations, use [Poedit](https://poedit.net/)
 To build extension for production run `./bin/build.sh`
 
 == Changelog ==
+
+= 3.2.0 =
+* feat: rebranding 2022
 
 = 3.1.2 =
 * fix: widget translations
