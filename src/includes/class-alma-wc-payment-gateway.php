@@ -262,11 +262,11 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			return;
 		}
 
-		// By default, remove api consent
+		// By default, remove api consent.
 		$this->settings['share_of_checkout_enabled_date'] = gmdate( 'Y-m-d' );
 		$value = 'no';
 
-		// Check if the live_api_key has changed. Remove the consent
+		// Check if the live_api_key has changed. Remove the consent.
 		if (
 			alma_wc_plugin()->settings->live_api_key !== $post_data['woocommerce_alma_live_api_key']
 		) {
