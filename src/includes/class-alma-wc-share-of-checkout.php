@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Alma_WC_Share_Of_Checkout {
 
-	const CRON_ACTION = 'share_of_checkout_cron_action';
+	const CRON_ACTION = 'alma_share_of_checkout_cron_action';
 
 	/**
 	 * Logger.
@@ -45,7 +45,6 @@ class Alma_WC_Share_Of_Checkout {
 	 * @return void
 	 */
 	public function bootstrap() {
-		$this->share_of_checkout_cron_execution_callback();
 		if ( ! wp_next_scheduled( self::CRON_ACTION ) ) {
 			wp_schedule_event( time(), 'daily', self::CRON_ACTION );
 		}

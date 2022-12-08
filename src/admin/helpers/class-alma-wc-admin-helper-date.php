@@ -19,17 +19,27 @@ class Alma_WC_Admin_Helper_Date {
 	 *
 	 * @param string $start_date The share of checkout enabled date by the merchant formatted as yyyy-mm-dd.
 	 *
+	 * @param string $format
+	 *
 	 * @return array
+	 * @throws Exception
 	 */
-	public static function get_dates_in_interval( $start_date ) {
-		$start_timestamp = strtotime( $start_date );
-
+	public static function get_dates_in_interval( $start_date = '2022-12-08', $format = 'Y-m-d' ) {
+		// Declare an empty array.
 		$dates_in_interval = array();
-		$time              = time();
-		for ( $i = $start_timestamp; $time - $i > 86400; $i = strtotime( '+1 day', $i ) ) {
-			$dates_in_interval[] = gmdate( 'Y-m-d', $i );
+
+		// Variable that store the date interval of period 1 day.
+		$interval = new DateInterval( 'P1D' );
+
+		$real_end = new DateTime();
+		$period   = new DatePeriod( new DateTime( $start_date ), $interval, $real_end );
+
+		// Use loop to store date into array.
+		foreach ( $period as $date ) {
+			$dates_in_interval[] = $date->format( $format );
 		}
 
+		// Return the array elements.
 		return $dates_in_interval;
 	}
 }
