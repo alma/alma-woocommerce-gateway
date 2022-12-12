@@ -32,6 +32,7 @@ class Alma_WC_Admin_Helper_Date {
 		$interval = new DateInterval( 'P1D' );
 
 		$real_end = new DateTime();
+		$real_end->modify("-1 day");
 		$period   = new DatePeriod( new DateTime( $start_date ), $interval, $real_end );
 
 		// Use loop to store date into array.
