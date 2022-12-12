@@ -24,7 +24,7 @@ class Alma_WC_Admin_Helper_Date {
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function get_dates_in_interval( $start_date = '2022-12-08', $format = 'Y-m-d' ) {
+	public static function get_dates_in_interval( $start_date, $format = 'Y-m-d' ) {
 		// Declare an empty array.
 		$dates_in_interval = array();
 
