@@ -45,10 +45,10 @@ class Alma_WC_Share_Of_Checkout {
 	 * @return void
 	 */
 	public function bootstrap() {
+		add_action( self::CRON_ACTION, array( $this, 'share_of_checkout_cron_execution_callback' ) );
 		if ( ! wp_next_scheduled( self::CRON_ACTION ) ) {
 			wp_schedule_event( time(), 'daily', self::CRON_ACTION );
 		}
-		add_action( self::CRON_ACTION, array( $this, 'share_of_checkout_cron_execution_callback' ) );
 	}
 
 	/**
