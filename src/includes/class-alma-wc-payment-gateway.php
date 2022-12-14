@@ -66,7 +66,6 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			array( $this, 'process_admin_options' )
 		);
 
-		add_action( 'woocommerce_before_checkout_process', array( $this, 'woocommerce_checkout_process' ), 1 );
 		add_filter( 'woocommerce_available_payment_gateways', array( $this, 'woocommerce_available_payment_gateways' ), 10, 1 );
 	}
 
@@ -314,15 +313,30 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 	 * @return bool
 	 */
 	public function validate_fields() {
+		$error_msg = __( 'There was an error processing your payment.<br>Please try again or contact us if the problem persists.', 'alma-gateway-for-woocommerce' );
+
 		$alma_fee_plan = $this->checkout_helper->get_chosen_alma_fee_plan();
+
 		if ( ! $alma_fee_plan ) {
+			wc_add_notice( $error_msg, 'error' );
+
 			return false;
 		}
+
+		$is_alma_payment = $this->checkout_helper->is_alma_payment_method();
+
+		if ( ! $is_alma_payment ) {
+			wc_add_notice( $error_msg, 'error' );
+			return false;
+		}
+
 		$allowed_values = array_map( 'strval', alma_wc_plugin()->get_eligible_plans_keys_for_cart() );
+
 		if ( ! in_array( $alma_fee_plan, $allowed_values, true ) ) {
 			wc_add_notice( '<strong>Fee plan</strong> is invalid.', 'error' );
 			return false;
 		}
+
 		return true;
 	}
 
@@ -344,8 +358,11 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				'result' => 'error',
 			);
 		}
+
+		// We ignore the nonce verification because process_payment is called after validate_fields
 		try {
-			$fee_plan_definition = $this->get_fee_plan_definition( $this->checkout_helper->get_chosen_alma_fee_plan() );
+			$fee_plan_definition = $this->get_fee_plan_definition( $_POST['alma_fee_plan'] ); // phpcs:ignore WordPress.Security.NonceVerification
+
 		} catch ( Exception $e ) {
 			$this->logger->log_stack_trace( 'Error while creating payment: ', $e );
 			wc_add_notice( $error_msg, 'error' );
