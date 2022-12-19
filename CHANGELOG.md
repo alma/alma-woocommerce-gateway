@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v3.2.1
+------
+
+* feat: update widget
+* fix: nonce double check issue
+
 v3.2.0
 ------
 
