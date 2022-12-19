@@ -1526,12 +1526,17 @@
 
   (function (Locale) {
     Locale["en"] = "en";
+    Locale["fr-FR"] = "fr-FR";
     Locale["fr"] = "fr";
+    Locale["de-DE"] = "de-DE";
     Locale["de"] = "de";
     Locale["it"] = "it";
+    Locale["it-IT"] = "it-IT";
     Locale["es"] = "es";
-    Locale["nl"] = "nl";
+    Locale["es-ES"] = "es-ES";
     Locale["pt"] = "pt";
+    Locale["pt-PT"] = "pt-PT";
+    Locale["nl"] = "nl";
     Locale["nl-NL"] = "nl-NL";
     Locale["nl-BE"] = "nl-BE";
   })(Locale || (Locale = {}));
@@ -6868,7 +6873,11 @@
   };
 
   var getTranslationsByLocale = function getTranslationsByLocale(locale) {
-    switch (locale) {
+    // A CMS plugin can add LCID format like : 'fr-FR' instead of 'fr'.
+    // Instead of specifying all possibilities we just remove the last part of the string.
+    var merchantLocale = locale.slice(0, 2);
+
+    switch (merchantLocale) {
       case Locale.fr:
         return messagesFR;
 
@@ -6885,8 +6894,6 @@
         return messagesPT;
 
       case Locale.nl:
-      case Locale['nl-BE']:
-      case Locale['nl-NL']:
         return messagesNL;
 
       case Locale.en:
@@ -15105,7 +15112,7 @@
     return /*#__PURE__*/react.createElement("div", {
       className: classnames(s.container, STATIC_CUSTOMISATION_CLASSES.summary),
       "data-testid": "modal-summary"
-    }, /*#__PURE__*/react.createElement("h3", {
+    }, /*#__PURE__*/react.createElement("div", {
       className: classnames(s.total, STATIC_CUSTOMISATION_CLASSES.scheduleTotal)
     }, /*#__PURE__*/react.createElement(MemoizedFormattedMessage, {
       tagName: "div",
@@ -19963,7 +19970,7 @@
     })), /*#__PURE__*/react.createElement("div", {
       className: classnames((_cx2 = {}, _cx2[s$4.bold] = index === 0, _cx2))
     }, /*#__PURE__*/react.createElement(FormattedNumber, {
-      value: installment.purchase_amount / 100,
+      value: installment.total_amount / 100,
       style: "currency",
       currency: "EUR"
     })));
@@ -20472,7 +20479,7 @@
     activeOption: prefix$1 + '-active-option'
   };
 
-  var s$d = {"widgetButton":"_TSkFv","logo":"_LJ4nZ","primaryContainer":"_bMClc","paymentPlans":"_17c_S","plan":"_2Kqjn","active":"_3dG_J","monochrome":"_2hx83","notEligible":"_3O1bg","hideBorder":"_3_qcn","info":"_25GrF","loader":"_30j1O","error":"_R0YlN","errorText":"_2kGhu","errorButton":"_73d_Y","pending":"_1ZDMS","clickable":"_UksZa","unClickable":"_1lr-q"};
+  var s$d = {"widgetButton":"_TSkFv","logo":"_LJ4nZ","primaryContainer":"_bMClc","paymentPlans":"_17c_S","plan":"_2Kqjn","active":"_3dG_J","monochrome":"_2hx83","notEligible":"_3O1bg","hideBorder":"_3_qcn","info":"_25GrF","loader":"_30j1O","pending":"_1ZDMS","clickable":"_UksZa","unClickable":"_1lr-q"};
 
   var VERY_LONG_TIME_IN_MS = 1000 * 3600 * 24 * 365;
   var DEFAULT_TRANSITION_TIME = 5500;

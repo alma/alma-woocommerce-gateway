@@ -18,7 +18,6 @@
   --soft-green: #e2f3e1;
   --alma-red: #f00;
   --soft-red: #ffecec;
-  --background: #fefefe;
   --off-white: #f9f9f9;
   --light-gray: #d4d4d4;
   --dark-gray: #8c8c8c;
@@ -143,7 +142,7 @@
   background-color: var(--white);
   color: var(--off-black);
   width: 100%;
-  height: 90vh;
+  height: 83vh;
   position: absolute;
   bottom: 0;
   border-top-left-radius: 20px;
@@ -240,6 +239,8 @@
   cursor: pointer;
   background-color: var(--white);
   transition: all 0.1s ease;
+  color: var(--off-black);
+  padding: initial; /* To avoid CSS surcharge on this. */
 }
 
 ._1l2Oa > button._3rue7 {
@@ -300,6 +301,7 @@
 ._MPKjS {
   padding: 0 24px;
   margin-bottom: 16px;
+  font-family: 'Venn', sans-serif;
 }
 
 ._3a7er {
@@ -329,6 +331,7 @@
   margin-bottom: 40px;
   padding: 0 24px;
   gap: 20px;
+  font-family: 'Venn', sans-serif;
 }
 
 ._1HqCO {
@@ -474,7 +477,7 @@
 ._TSkFv {
   width: 368px;
   max-width: 100%;
-  background-color: transparent;
+  background-color: var(--white);
   border: 1px solid var(--light-gray);
   display: flex;
   flex-direction: column;
@@ -556,24 +559,6 @@
 ._30j1O {
   overflow: hidden;
   align-items: center;
-}
-
-._R0YlN {
-  align-items: center;
-  line-height: 100%;
-}
-
-._2kGhu {
-  font-family: 'Venn', sans-serif;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  color: var(--off-black);
-}
-
-._73d_Y {
-  cursor: pointer;
-  text-decoration: underline;
 }
 
 ._1ZDMS {
