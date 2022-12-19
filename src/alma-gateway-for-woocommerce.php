@@ -3,7 +3,7 @@
  * Plugin Name: Alma - Pay in installments or later for WooCommerce
  * Plugin URI: https://docs.getalma.eu/docs/woocommerce
  * Description: Install Alma and boost your sales! It's simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.
- * Version: 3.2.0
+ * Version: 3.2.1
  * Author: Alma
  * Author URI: https://www.getalma.eu
  * License: GNU General Public License v3.0
@@ -35,7 +35,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'ALMA_WC_VERSION' ) ) {
-	define( 'ALMA_WC_VERSION', '3.2.0' );
+	define( 'ALMA_WC_VERSION', '3.2.1' );
 }
 if ( ! defined( 'ALMA_WC_PLUGIN_FILE' ) ) {
 	define( 'ALMA_WC_PLUGIN_FILE', __FILE__ );
