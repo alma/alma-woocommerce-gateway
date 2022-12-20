@@ -53,7 +53,7 @@ class Alma_WC_Checkout_Helper {
 	public function is_alma_payment_method() {
 		$payment_method = $this->check_nonce( 'payment_method', self::CHECKOUT_NONCE );
 
-		return $payment_method && substr( $payment_method, 0, 5 ) === 'alma_';
+		return $payment_method && substr( $payment_method, 0, 4 ) === 'alma';
 	}
 
 	/**
