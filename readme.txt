@@ -67,8 +67,7 @@ To build extension for production run `./bin/build.sh`
 == Changelog ==
 
 = 3.2.1 =
-=========
-* feat: update widget
+* feat: update widget to 3.0.4
 * fix: nonce double check issue
 
 = 3.2.0 =

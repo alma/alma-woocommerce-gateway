@@ -834,12 +834,16 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			);
 		}
 
-		// We ignore the nonce verification because process_payment is called after validate_fields.
 		try {
+			// We ignore the nonce verification because process_payment is called after validate_fields.
 			$fee_plan_definition = $this->get_fee_plan_definition( $_POST['alma_fee_plan'] ); // phpcs:ignore WordPress.Security.NonceVerification
 
 		} catch ( Exception $e ) {
-			$this->logger->log_stack_trace( 'Error while creating payment: ', $e );
+			$this->logger->log_stack_trace(
+				'Error while creating payment (getting fee plan definition).',
+				$e,
+				array( 'OrderId' => $order_id )
+			);
 			wc_add_notice( $error_msg, 'error' );
 
 			return array( 'result' => 'error' );
@@ -850,7 +854,14 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 				Alma_WC_Model_Payment::get_payment_payload_from_order( $order_id, $fee_plan_definition )
 			);
 		} catch ( RequestError $e ) {
-			$this->logger->log_stack_trace( 'Error while creating payment: ', $e );
+			$this->logger->log_stack_trace(
+				'Error while creating payment.',
+				$e,
+				array(
+					'OrderId'           => $order_id,
+					'FeePlanDefinition' => $fee_plan_definition,
+				)
+			);
 			wc_add_notice( $error_msg, 'error' );
 
 			return array( 'result' => 'error' );
