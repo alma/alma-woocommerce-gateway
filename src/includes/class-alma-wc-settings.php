@@ -34,6 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property array excluded_products_list Wp Categories excluded slug's list
  * @property string share_of_checkout_enabled Bool for share of checkout acceptance (yes or no)
  * @property string share_of_checkout_enabled_date String Date when the marchand did accept the share of checkout
+ * @property string share_of_checkout_last_sharing_date String Date when the api last sent the data soc.
  */
 class Alma_WC_Settings {
 
@@ -115,6 +116,7 @@ class Alma_WC_Settings {
 			'share_of_checkout_enabled'                  => 'no',
 			'debug'                                      => 'yes',
 			'fully_configured'                           => false,
+			'share_of_checkout_last_sharing_date'        => '',
 		);
 	}
 

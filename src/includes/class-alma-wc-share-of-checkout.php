@@ -16,48 +16,61 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Alma_WC_Share_Of_Checkout {
 
-	const CRON_ACTION = 'alma_share_of_checkout_cron_action';
-
 	/**
 	 * Logger.
 	 *
 	 * @var Alma_WC_Logger
 	 */
-	private $logger;
+	protected $logger;
+
+
+	/**
+	 * Db Settings.
+	 *
+	 * @var Alma_WC_Settings
+	 */
+	protected $settings;
 
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->logger = new Alma_WC_Logger();
+		$this->logger   = new Alma_WC_Logger();
+		$this->settings = new Alma_WC_Settings();
 	}
 
 	/**
-	 * Init function.
-	 */
-	public function init() {
-		add_action( 'init', array( $this, 'bootstrap' ) );
-	}
-
-	/**
-	 * Bootstrap function.
+	 * Share of checkout cron execution.
 	 *
 	 * @return void
 	 */
-	public function bootstrap() {
-		add_action( self::CRON_ACTION, array( $this, 'share_of_checkout_cron_execution_callback' ) );
-		if ( ! wp_next_scheduled( self::CRON_ACTION ) ) {
-			wp_schedule_event( time(), 'daily', self::CRON_ACTION );
+	public function send_soc_data() {
+		try {
+			if (
+				$this->settings->is_test()
+				|| 'yes' !== $this->settings->share_of_checkout_enabled
+			) {
+				return;
+			}
+
+			$today             = new DateTime();
+			$last_sharing_date = new DateTime( $this->settings->share_of_checkout_last_sharing_date );
+
+			if (
+				empty( $this->settings->share_of_checkout_last_sharing_date )
+				|| $today > $this->settings->share_of_checkout_last_sharing_date
+			) {
+				$this->share_days();
+
+				$this->settings->share_of_checkout_last_sharing_date = $today->format( 'Y-m-d' );
+				$this->settings->save();
+			}
+		} catch ( \Exception $e ) {
+			$this->logger->error(
+				sprintf( 'An error occured when sending soc data. Message "%s"', $e->getMessage() ),
+				$e->getTrace()
+			);
 		}
-	}
-
-	/**
-	 * Share of checkout cron execution callback.
-	 *
-	 * @return void
-	 */
-	public function share_of_checkout_cron_execution_callback() {
-		$this->share_days();
 	}
 
 	/**
@@ -66,21 +79,17 @@ class Alma_WC_Share_Of_Checkout {
 	 * @return void
 	 */
 	public function share_days() {
-		if (
-			alma_wc_plugin()->settings->is_test()
-			|| 'yes' !== alma_wc_plugin()->settings->share_of_checkout_enabled
-		) {
-			return;
-		}
+		$share_of_checkout_enabled_date = $this->settings->share_of_checkout_enabled_date;
 
-		$share_of_checkout_enabled_date = alma_wc_plugin()->settings->share_of_checkout_enabled_date;
 		try {
 			$last_update_date = Alma_WC_Admin_Helper_Share_Of_Checkout::get_last_update_date();
 		} catch ( \Exception $e ) {
 			$this->logger->error( 'Error getting getLastUpdateDates for ShareOfCheckout : ' . $e->getMessage() );
 			$last_update_date = Alma_WC_Admin_Helper_Share_Of_Checkout::get_default_last_update_date();
 		}
-		$from_date      = max( $last_update_date, $share_of_checkout_enabled_date );
+
+		$from_date = max( $last_update_date, $share_of_checkout_enabled_date );
+
 		$dates_to_share = Alma_WC_Admin_Helper_Date::get_dates_in_interval( $from_date );
 
 		foreach ( $dates_to_share as $date ) {

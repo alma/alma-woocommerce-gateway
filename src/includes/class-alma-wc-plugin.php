@@ -140,10 +140,6 @@ class Alma_WC_Plugin {
 			3
 		);
 
-		// Launch the "share of checkout".
-		$share_of_checkout = new Alma_WC_Share_Of_Checkout();
-		$share_of_checkout->init();
-
 		$refund = new Alma_WC_Refund();
 		add_action( 'admin_init', array( $refund, 'admin_init' ), 10 );
 	}
@@ -208,6 +204,10 @@ class Alma_WC_Plugin {
 				$this->settings->save();
 				add_action( 'admin_notices', array( $this, 'check_settings' ) );
 			}
+
+			// Launch the "share of checkout".
+			$share_of_checkout = new Alma_WC_Share_Of_Checkout();
+			$share_of_checkout->send_soc_data();
 		} catch ( Exception $e ) {
 			$this->logger->error(
 				'Fail to bootstrap.',
