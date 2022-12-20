@@ -834,8 +834,8 @@ class Alma_WC_Payment_Gateway extends WC_Payment_Gateway {
 			);
 		}
 
-		// We ignore the nonce verification because process_payment is called after validate_fields.
 		try {
+			// We ignore the nonce verification because process_payment is called after validate_fields.
 			$fee_plan_definition = $this->get_fee_plan_definition( $_POST['alma_fee_plan'] ); // phpcs:ignore WordPress.Security.NonceVerification
 
 		} catch ( Exception $e ) {

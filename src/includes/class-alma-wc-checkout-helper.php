@@ -52,7 +52,7 @@ class Alma_WC_Checkout_Helper {
 	 */
 	public function is_alma_payment_method() {
 		$payment_method = $this->check_nonce( 'payment_method', self::CHECKOUT_NONCE );
-		$this->logger->info( sprintf( '%s: %s', __FUNCTION__, $payment_method ) );
+
 		return $payment_method && substr( $payment_method, 0, 4 ) === 'alma';
 	}
 
@@ -69,7 +69,6 @@ class Alma_WC_Checkout_Helper {
 			&& isset( $_POST[ $nonce_name ] )
 			&& wp_verify_nonce( $_POST[ $nonce_name ], $nonce_name ) ) {
 
-			$this->logger->info( sprintf( '%s: field:"%s", nonce:"%s", value:"%s"', __FUNCTION__, $field_name, $nonce_name, $_POST[ $field_name ] ) );
 			return $_POST[ $field_name ];
 		}
 
