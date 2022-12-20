@@ -1,6 +1,38 @@
 #!/usr/bin/env bash
-set -Eeuo pipefail
+#TODO: svn checkout, svn add, svn rm, svn update, svn commit (if needed) after svn sync
 QUIET=1
+SYNC_SVN=0
+
+# {{{ function usage
+#
+usage() {
+    echo
+    echo "This script builds an Alma woocommerce plugin ZIP archive and (optionally) sync files with subversion wordpress marketplace working copy."
+    echo
+    echo "USAGE: $0 [OPTIONS]"
+    echo
+    echo "WHERE available OPTIONS are:"
+    echo "    --help | -h)        Prints this message and exit without error."
+    echo "    --sync-svn | -s)    Activates sync Action between freshly built release and wordpress subversion working copy. (very simple for the moment)"
+    echo "    --verbose | -v)     Prints all outputs (this script is pretty quiet by default)"
+    echo
+}
+export -f usage
+# }}}
+
+# {{{ shopt args
+while [[ ! -z "$1" ]] ; do
+    case "$1" in
+        --sync-svn|-s) SYNC_SVN=1 ;;
+        --verbose|-v)  QUIET=0;;
+        --help|-h)     usage ; exit 0;;
+        *) echo "'$1': unmanaged parameter" ; exit 1 ;;
+    esac
+    shift
+done
+# }}}
+
+set -Eeuo pipefail
 
 # {{{ CONSTANTS (working folders & files to sync)
 HERE="`pwd`" # You should be in GIT root folder
@@ -66,13 +98,6 @@ preparing_folders() {
     mkdir -p $DIST
     [[ -d $TMP_TARGET_DIR ]] && rm -rf $TMP_TARGET_DIR
     mkdir -p $TMP_TARGET_DIR
-    if [[ ! -d "$SUBVERSION_DIR" ]] ; then
-        trap - ERR EXIT
-        is_that_ok 1
-        echo "'$SUBVERSION_DIR': Subversion's folder not found !!!"
-        echo "Please clone subversion repository with valid wordpress credentials (\`svn checkout https://plugins.svn.wordpress.org/alma-gateway-for-woocommerce $SUBVERSION_DIR\`)"
-        exit 1
-    fi
 }
 export -f preparing_folders
 # }}}
@@ -90,6 +115,13 @@ export -f building_release
 # {{{ function syncing_subversion
 #
 syncing_subversion() {
+    if [[ ! -d "$SUBVERSION_DIR" ]] ; then
+        trap - ERR EXIT
+        is_that_ok 1
+        echo "'$SUBVERSION_DIR': Subversion's folder not found !!!"
+        echo "Please clone subversion repository with valid wordpress credentials (\`svn checkout https://plugins.svn.wordpress.org/alma-gateway-for-woocommerce $SUBVERSION_DIR\`)"
+        exit 1
+    fi
     rm -rf $SUBVERSION_DIR/trunk
     rsync -au $RSYNC_EXCLUDE $TMP_TARGET_DIR/ $SUBVERSION_DIR/trunk >/dev/null 2>&1
     rm -rf $SUBVERSION_DIR/assets/*
@@ -100,7 +132,9 @@ export -f syncing_subversion
 
 execute preparing_folders 0
 execute building_release $QUIET
-execute syncing_subversion $QUIET
-echo "You can now go into '$SUBVERSION_DIR' folder to finalize deployment on marketplace"
+if [[ $SYNC_SVN -eq 1 ]] ; then
+    execute syncing_subversion $QUIET
+    echo "You can now go into '$SUBVERSION_DIR' folder to finalize deployment on marketplace"
+fi
 
 trap - EXIT
