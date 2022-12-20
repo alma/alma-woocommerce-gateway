@@ -54,11 +54,16 @@ class Alma_WC_Share_Of_Checkout {
 			}
 
 			$today             = new DateTime();
-			$last_sharing_date = new DateTime( $this->settings->share_of_checkout_last_sharing_date );
+
+			$last_sharing_date = null;
+
+			if(!empty($this->settings->share_of_checkout_last_sharing_date)) {
+				$last_sharing_date = new DateTime( $this->settings->share_of_checkout_last_sharing_date );
+			}
 
 			if (
 				empty( $this->settings->share_of_checkout_last_sharing_date )
-				|| $today > $this->settings->share_of_checkout_last_sharing_date
+				|| $today->format('Y-m-d') > $last_sharing_date->format('Y-m-d')
 			) {
 				$this->share_days();
 
