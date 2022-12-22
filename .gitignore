@@ -1,0 +1,9 @@
+dist/
+vendor
+docker/env.local
+.vscode/
+.idea/
+plugins/
+src/composer.lock
+/crowdin.properties
+/crowdin.deb

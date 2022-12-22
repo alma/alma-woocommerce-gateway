@@ -1,0 +1,179 @@
+<?php
+/**
+ * Alma_Payment.
+ *
+ * @package Alma_Gateway_For_Woocommerce
+ * @subpackage Alma_Gateway_For_Woocommerce/includes/models
+ * @namespace Alma_WC\Models
+ */
+
+namespace Alma_WC\Models;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
+use Alma_WC\Helpers\Alma_Tools;
+use Alma_WC\Alma_Logger;
+use Alma_WC\Alma_Payment_Upon_Trigger;
+use Alma_WC\Alma_Settings;
+use Alma_WC\Helpers\Alma_Constants;
+
+/**
+ * Alma_Payment
+ */
+class Alma_Payment {
+
+
+	/**
+	 * The Logger.
+	 *
+	 * @var Alma_Logger
+	 */
+	protected $logger;
+
+	/**
+	 * Payment upon trigger.
+	 *
+	 * @var Alma_Payment_Upon_Trigger
+	 */
+	protected $payment_upon_trigger;
+
+	/**
+	 * The db settings.
+	 *
+	 * @var Alma_Settings
+	 */
+	protected $alma_settings;
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->logger               = new Alma_Logger();
+		$this->payment_upon_trigger = new Alma_Payment_Upon_Trigger();
+		$this->alma_settings        = new Alma_Settings();
+	}
+
+	/**
+	 * Create Eligibility data for Alma API request from WooCommerce Cart.
+	 *
+	 * @return array Payload to request eligibility v2 endpoint.
+	 */
+	public static function get_eligibility_payload_from_cart() {
+		$cart     = new Alma_Cart();
+		$customer = new Alma_Customer();
+		$settings = new Alma_Settings();
+
+		$data = array(
+			'purchase_amount' => $cart->get_total_in_cents(),
+			'queries'         => $settings->get_eligible_plans_for_cart(),
+			'locale'          => apply_filters( 'alma_eligibility_user_locale', get_locale() ),
+		);
+
+		$billing_country  = $customer->get_billing_country();
+		$shipping_country = $customer->get_shipping_country();
+
+		if ( $billing_country ) {
+			$data['billing_address'] = array( 'country' => $billing_country );
+		}
+		if ( $shipping_country ) {
+			$data['shipping_address'] = array( 'country' => $shipping_country );
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Create Payment data for Alma API request from WooCommerce Order.
+	 *
+	 * @param int   $order_id Order ID.
+	 * @param array $fee_plan_definition Fee plan definition.
+	 *
+	 * @return array
+	 */
+	public function get_payment_payload_from_order( $order_id, $fee_plan_definition ) {
+		try {
+			$order = new Alma_Order( $order_id );
+		} catch ( \Exception $e ) {
+			$this->logger->error(
+				'Error getting payment info from order.',
+				array(
+					'Method'           => __METHOD__,
+					'OrderId'          => $order_id,
+					'ExceptionMessage' => $e->getMessage(),
+				)
+			);
+
+			return array();
+		}
+
+		$data = array(
+			'payment' => array(
+				'purchase_amount'     => $order->get_total(),
+				'return_url'          => Alma_Tools::url_for_webhook( Alma_Constants::CUSTOMER_RETURN ),
+				'ipn_callback_url'    => Alma_Tools::url_for_webhook( Alma_Constants::IPN_CALLBACK ),
+				'customer_cancel_url' => self::get_customer_cancel_url(),
+				'installments_count'  => $fee_plan_definition['installments_count'],
+				'deferred_days'       => $fee_plan_definition['deferred_days'],
+				'deferred_months'     => $fee_plan_definition['deferred_months'],
+				'custom_data'         => array(
+					'order_id'  => $order_id,
+					'order_key' => $order->get_order_key(),
+				),
+				'locale'              => apply_filters( 'alma_checkout_payment_user_locale', get_locale() ),
+			),
+			'order'   => array(
+				'merchant_reference' => $order->get_order_reference(),
+				'merchant_url'       => $order->get_merchant_url(),
+				'customer_url'       => $order->get_customer_url(),
+			),
+		);
+
+		if ( $this->payment_upon_trigger->does_payment_upon_trigger_apply_for_this_fee_plan( $fee_plan_definition ) ) {
+			$data['payment']['deferred']             = 'trigger';
+			$data['payment']['deferred_description'] = $this->alma_settings->get_display_text();
+		}
+
+		$data['customer']                = array();
+		$data['customer']['addresses']   = array();
+		$data['customer']['is_business'] = false;
+		if ( $order->has_billing_address() ) {
+			$billing_address                    = $order->get_billing_address();
+			$data['payment']['billing_address'] = $billing_address;
+
+			$data['customer']['first_name']  = $billing_address['first_name'];
+			$data['customer']['last_name']   = $billing_address['last_name'];
+			$data['customer']['email']       = $billing_address['email'];
+			$data['customer']['phone']       = $billing_address['phone'];
+			$data['customer']['addresses'][] = $billing_address;
+
+			if ( $order->is_business() ) {
+				$data['customer']['is_business']   = true;
+				$data['customer']['business_name'] = $order->get_business_name();
+			}
+		}
+
+		if ( $order->has_shipping_address() ) {
+			$shipping_address                    = $order->get_shipping_address();
+			$data['payment']['shipping_address'] = $shipping_address;
+			$data['customer']['addresses'][]     = $shipping_address;
+		}
+
+		return apply_filters( 'alma_get_payment_payload_from_order', $data );
+	}
+
+	/**
+	 * Get customer cancel url.
+	 *
+	 * @return string
+	 * @noinspection PhpDeprecationInspection
+	 */
+	public static function get_customer_cancel_url() {
+		if ( version_compare( wc()->version, '2.5.0', '<' ) ) {
+			return wc()->cart->get_checkout_url();
+		} else {
+			return wc_get_checkout_url();
+		}
+	}
+}
