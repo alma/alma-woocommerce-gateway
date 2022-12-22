@@ -1,0 +1,80 @@
+.alma_fee_plan {
+	padding-left: 6px;
+	border-left: solid 2px lightgrey;
+}
+h3.alma_fee_plan {
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+div.alma_fee_plan,
+.woocommerce table.form-table.alma_fee_plan
+{
+	margin-top: -15px;
+}
+.woocommerce table.form-table.alma_fee_plan tr:first-child th {
+	padding-top: 35px;
+}
+@media(max-width: 782px) {
+	.woocommerce table.form-table.alma_fee_plan th,
+	.woocommerce table.form-table.alma_fee_plan td {
+		padding-left: 6px;
+		border-left: solid 1px lightgrey;
+	}
+	.woocommerce table.form-table.alma_fee_plan,
+	.alma_fee_plan {
+		margin-left: 36px;
+	}
+}
+@media(min-width: 783px) {
+	.woocommerce table.form-table.alma_fee_plan tr:first-child td {
+		padding-top: 30px;
+	}
+	.woocommerce table.form-table.alma_fee_plan th {
+		padding-left: 6px;
+		border-left: solid 2px lightgrey;
+	}
+	.woocommerce table.form-table.alma_fee_plan,
+	.alma_fee_plan {
+		margin-left: 236px;
+	}
+}
+div.ui-state-active.alma_option_enabled,
+.alma_option_enabled {
+	font-weight: bold;
+}
+div.ui-state-active.alma_option_disabled,
+.alma_option_disabled {
+	font-weight: lighter;
+	font-style: italic;
+}
+
+.alma-legal-checkout-collapsible {
+	cursor: pointer;
+	width: 100%;
+	border: none;
+	text-align: left;
+	outline: none;
+	text-decoration: underline;
+}
+
+.alma-legal-checkout-content {
+	display: none;
+	overflow: hidden;
+}
+
+.alma-legal-checkout-chevron::before {
+	border-style: solid;
+	border-width: 0.25em 0.25em 0 0;
+	content: '';
+	display: inline-block;
+	height: 0.45em;
+	left: 0.15em;
+	position: relative;
+	top: 0.15em;	transform: rotate(-45deg);
+	width: 0.45em;
+}
+
+.alma-legal-checkout-chevron.bottom::before {
+	top: 0;
+	transform: rotate(135deg);
+}
