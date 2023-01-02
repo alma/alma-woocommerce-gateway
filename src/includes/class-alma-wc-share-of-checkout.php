@@ -45,6 +45,7 @@ class Alma_WC_Share_Of_Checkout {
 	 * @return void
 	 */
 	public function send_soc_data() {
+		$settings_date = $this->settings->share_of_checkout_last_sharing_date;
 		try {
 			if (
 				$this->settings->is_test()
@@ -57,20 +58,23 @@ class Alma_WC_Share_Of_Checkout {
 
 			$last_sharing_date = null;
 
-			if ( ! empty( $this->settings->share_of_checkout_last_sharing_date ) ) {
-				$last_sharing_date = new DateTime( $this->settings->share_of_checkout_last_sharing_date );
+			if ( ! empty( $settings_date ) ) {
+				$last_sharing_date = new DateTime( $settings_date );
 			}
 
 			if (
-				empty( $this->settings->share_of_checkout_last_sharing_date )
+				empty( $settings_date )
 				|| $today->format( 'Y-m-d' ) > $last_sharing_date->format( 'Y-m-d' )
 			) {
-				$this->share_days();
-
 				$this->settings->share_of_checkout_last_sharing_date = $today->format( 'Y-m-d' );
 				$this->settings->save();
+
+				$this->share_days();
 			}
 		} catch ( \Exception $e ) {
+			$this->settings->share_of_checkout_last_sharing_date = $settings_date;
+			$this->settings->save();
+
 			$this->logger->error(
 				sprintf( 'An error occured when sending soc data. Message "%s"', $e->getMessage() ),
 				$e->getTrace()
