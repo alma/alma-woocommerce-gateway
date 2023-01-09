@@ -160,7 +160,7 @@ sync_font_file() {
 export -f sync_font_file
 # }}}
 
-set -Eeuo pipefail
+set -Eeiuo pipefail
 
 # Running Script
 echo "Preparing Widget folders ..."
