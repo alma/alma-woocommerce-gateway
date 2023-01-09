@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v3.2.2
+------
+
+* feat: update windget to 3.0.5
+
 v3.2.1
 ------
 
