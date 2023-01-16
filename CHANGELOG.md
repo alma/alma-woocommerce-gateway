@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v3.2.2
+------
+
+* feat: update widget to 3.1.0
+
 v3.2.1
 ------
 
