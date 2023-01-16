@@ -4,7 +4,7 @@ Changelog
 v3.2.1
 ------
 
-* feat: update widget
+* feat: update widget to 3.0.4
 * fix: nonce double check issue
 
 v3.2.0
