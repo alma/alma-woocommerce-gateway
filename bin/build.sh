@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#TODO: svn checkout, svn add, svn rm, svn update, svn commit (if needed) after svn sync
+#TODO: svn checkout, svn commit (if needed) after svn sync
 QUIET=1
 SYNC_SVN=0
 
@@ -122,19 +122,35 @@ syncing_subversion() {
         echo "Please clone subversion repository with valid wordpress credentials (\`svn checkout https://plugins.svn.wordpress.org/alma-gateway-for-woocommerce $SUBVERSION_DIR\`)"
         exit 1
     fi
-    rm -rf $SUBVERSION_DIR/trunk
-    rsync -au $RSYNC_EXCLUDE $TMP_TARGET_DIR/ $SUBVERSION_DIR/trunk >/dev/null 2>&1
+    cd $SUBVERSION_DIR
+    svn update
+    rm -rf ./trunk
+    rsync -au $RSYNC_EXCLUDE $TMP_TARGET_DIR/ ./trunk >/dev/null 2>&1
     rm -rf $SUBVERSION_DIR/assets/*
-    rsync -au $RSYNC_EXCLUDE $HERE/.wordpress.org/ $SUBVERSION_DIR/assets >/dev/null 2>&1
+    rsync -au $RSYNC_EXCLUDE $HERE/.wordpress.org/ ./assets >/dev/null 2>&1
+    svn cp trunk tags/$VERSION
+    svn add $(svn status | awk '$1 ~ /\?/ {print $2}') \
+        || quit "Error occurs while adding subversion new files"
+    svn rm $(svn status | awk '$1 ~ /\!/ {print $2}') \
+        || quit "Error occurs while removing subversion deleted files"
+    cd -
 }
 export -f syncing_subversion
 # }}}
+
+VERSION=`grep "Stable tag" $HERE/readme.txt  | awk -F: '{print $2}' | sed 's/ //g'`
+[ -z "$VERSION" ] && quit "VERSION not found in readme.txt (Stable tag)"
 
 execute preparing_folders 0
 execute building_release $QUIET
 if [[ $SYNC_SVN -eq 1 ]] ; then
     execute syncing_subversion $QUIET
-    echo "You can now go into '$SUBVERSION_DIR' folder to finalize deployment on marketplace"
+    echo
+    echo "You can now go on GitHub to create a new release called 'v$VERSION' (https://github.com/alma/alma-woocommerce-gateway/releases/new)"
+    echo "and add it the archive just created ($DIST/alma-gateway-for-woocommerce.zip)."
+    echo
+    echo "Then, you can now go into '$SUBVERSION_DIR' folder to finalize deployment on marketplace"
+    echo
 fi
 
 trap - EXIT
