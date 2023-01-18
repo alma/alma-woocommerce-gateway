@@ -744,7 +744,7 @@ class Alma_WC_Admin_Form {
 
 		return array(
 			'share_of_checkout_section' => array(
-				'title'       => '<hr>' . __( '→ Share of checkout configuration', 'alma-gateway-for-woocommerce' ),
+				'title'       => '<hr>' . __( '→ Increase your performance & get insights !', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'title',
 				'description' => wp_kses_post(
 					__( 'By accepting this option, enable Alma to analyse the usage of your payment methods, get more informations to perform and share this data with you.', 'alma-gateway-for-woocommerce' ) .

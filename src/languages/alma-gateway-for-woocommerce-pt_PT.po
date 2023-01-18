@@ -2,28 +2,28 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 77e083b1cd468d7c2202d1ff3d20e024\n"
 "POT-Creation-Date: 2022-11-08 10:34+0100\n"
-"PO-Revision-Date: 2022-11-08 09:35\n"
+"PO-Revision-Date: 2022-12-30 09:45+0100\n"
 "Last-Translator: syjust <sy.just@gmail.com>\n"
 "Language-Team: Portuguese\n"
+"Language: pt_PT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.2.1\n"
+"X-Generator: Poedit 3.2.2\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: alma-gateway-for-woocommerce.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.js\n"
-"X-Poedit-SearchPathExcluded-1: vendor\n"
 "X-Crowdin-Project: 77e083b1cd468d7c2202d1ff3d20e024\n"
 "X-Crowdin-Project-ID: 17\n"
 "X-Crowdin-Language: pt\n"
 "X-Crowdin-File: /languages/alma-gateway-for-woocommerce.pot\n"
 "X-Crowdin-File-ID: 3021\n"
-"Language: pt_PT\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SearchPathExcluded-1: vendor\n"
 
 #: admin/helpers/class-alma-wc-admin-helper-check-legal.php:116
 msgid "Impossible to save the settings, please try again later."
@@ -43,7 +43,8 @@ msgstr "Ao aceitar esta opção, permite à Alma analisar a utilização dos seu
 msgid "You can <a href=\"mailto:support@getalma.eu\">opt out and erase your data</a> at any moment."
 msgstr "Pode <a href=\"mailto:support@getalma.eu\">optar por excluir e apagar os seus dados</a> em qualquer momento."
 
-#: admin/helpers/class-alma-wc-admin-helper-check-legal.php:227 includes/class-alma-wc-admin-form.php:753
+#: admin/helpers/class-alma-wc-admin-helper-check-legal.php:227
+#: includes/class-alma-wc-admin-form.php:753
 msgid "Know more about collected data"
 msgstr "Saber mais sobre os dados recolhidos"
 
@@ -75,7 +76,8 @@ msgstr "→ Comece por preencher as suas chaves API"
 msgid "→ API configuration"
 msgstr "→ Configuração da API"
 
-#: includes/class-alma-wc-admin-form.php:66 includes/class-alma-wc-admin-form.php:312
+#: includes/class-alma-wc-admin-form.php:66
+#: includes/class-alma-wc-admin-form.php:312
 msgid "Enable/Disable"
 msgstr "Permitir/Não permitir"
 
@@ -156,19 +158,22 @@ msgid "Choose which fee plan you want to modify<br>(only your <a href=\"%s\" tar
 msgstr "Escolha o plano de encargos que quer alterar<br>(apenas os seus planos de encargos disponíveis no <a href=\"%s\" target=\"_blank\">painel de controlo Alma</a> são exibidos aqui)."
 
 #. translators: %d: number of installments.
-#: includes/class-alma-wc-admin-form.php:207 includes/class-alma-wc-admin-form.php:278
+#: includes/class-alma-wc-admin-form.php:207
+#: includes/class-alma-wc-admin-form.php:278
 #, php-format
 msgid "→ %d-installment payment"
 msgstr "→ %d-pagamento em prestações"
 
 #. translators: %d: number of deferred days.
-#: includes/class-alma-wc-admin-form.php:214 includes/class-alma-wc-admin-form.php:287
+#: includes/class-alma-wc-admin-form.php:214
+#: includes/class-alma-wc-admin-form.php:287
 #, php-format
 msgid "→ D+%d-deferred payment"
 msgstr "→ D+%d-pagamento em diferido"
 
 #. translators: %d: number of deferred months.
-#: includes/class-alma-wc-admin-form.php:218 includes/class-alma-wc-admin-form.php:293
+#: includes/class-alma-wc-admin-form.php:218
+#: includes/class-alma-wc-admin-form.php:293
 #, php-format
 msgid "→ M+%d-deferred payment"
 msgstr "→ M+%d-pagamento em diferido"
@@ -659,4 +664,3 @@ msgstr "Alma"
 #. Author URI of the plugin/theme
 msgid "https://www.getalma.eu"
 msgstr "https://www.getalma.eu"
-

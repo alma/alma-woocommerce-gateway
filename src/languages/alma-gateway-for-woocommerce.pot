@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Alma - Pay in installments or later for WooCommerce\n"
-"POT-Creation-Date: 2022-11-08 10:34+0100\n"
+"POT-Creation-Date: 2022-12-30 09:38+0100\n"
 "PO-Revision-Date: 2021-06-22 13:25+0200\n"
 "Last-Translator: syjust <sy.just@gmail.com>\n"
 "Language-Team: Alma\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"X-Generator: Poedit 3.2.1\n"
+"X-Generator: Poedit 3.2.2\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: alma-gateway-for-woocommerce.php\n"
@@ -26,42 +26,42 @@ msgid "Impossible to save the settings, please try again later."
 msgstr ""
 
 #. translators: %s: Admin settings url.
-#: admin/helpers/class-alma-wc-admin-helper-check-legal.php:181
+#: admin/helpers/class-alma-wc-admin-helper-check-legal.php:172
 #, php-format
 msgid "The settings have been saved. <a href=\"%s\">Refresh</a> the page when ready."
 msgstr ""
 
-#: admin/helpers/class-alma-wc-admin-helper-check-legal.php:211
+#: admin/helpers/class-alma-wc-admin-helper-check-legal.php:202
 msgid ""
 "By accepting this option, you enable Alma to analyze the usage of your payment methods and get information in order to improve your "
 "clients’ experience."
 msgstr ""
 
-#: admin/helpers/class-alma-wc-admin-helper-check-legal.php:220
+#: admin/helpers/class-alma-wc-admin-helper-check-legal.php:211
 msgid "You can <a href=\"mailto:support@getalma.eu\">opt out and erase your data</a> at any moment."
 msgstr ""
 
-#: admin/helpers/class-alma-wc-admin-helper-check-legal.php:227 includes/class-alma-wc-admin-form.php:753
+#: admin/helpers/class-alma-wc-admin-helper-check-legal.php:218 includes/class-alma-wc-admin-form.php:753
 msgid "Know more about collected data"
 msgstr ""
 
-#: admin/helpers/class-alma-wc-admin-helper-check-legal.php:231
+#: admin/helpers/class-alma-wc-admin-helper-check-legal.php:222
 msgid "total quantity of orders, amounts and currencies"
 msgstr ""
 
-#: admin/helpers/class-alma-wc-admin-helper-check-legal.php:232
+#: admin/helpers/class-alma-wc-admin-helper-check-legal.php:223
 msgid "payment provider for each order"
 msgstr ""
 
-#: admin/helpers/class-alma-wc-admin-helper-check-legal.php:237
+#: admin/helpers/class-alma-wc-admin-helper-check-legal.php:228
 msgid "REJECT"
 msgstr ""
 
-#: admin/helpers/class-alma-wc-admin-helper-check-legal.php:239
+#: admin/helpers/class-alma-wc-admin-helper-check-legal.php:230
 msgid "ACCEPT"
 msgstr ""
 
-#: admin/helpers/class-alma-wc-admin-helper-check-legal.php:258
+#: admin/helpers/class-alma-wc-admin-helper-check-legal.php:249
 msgid "Increase your performance & get insights !"
 msgstr ""
 
@@ -379,7 +379,7 @@ msgid "Query selector used to get the price of product with <strong>sales variat
 msgstr ""
 
 #: includes/class-alma-wc-admin-form.php:747
-msgid "→ Share of checkout configuration"
+msgid "→ Increase your performance & get insights !"
 msgstr ""
 
 #: includes/class-alma-wc-admin-form.php:750
@@ -417,67 +417,67 @@ msgstr ""
 msgid "Install Alma and boost your sales! It's simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk."
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:445
+#: includes/class-alma-wc-payment-gateway.php:448
 msgid "Choose your payment method"
 msgstr ""
 
 #. translators: %s: plan_key alt image.
-#: includes/class-alma-wc-payment-gateway.php:553
+#: includes/class-alma-wc-payment-gateway.php:558
 #, php-format
 msgid "%s installments"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:647
+#: includes/class-alma-wc-payment-gateway.php:652
 msgid "Included fees:"
 msgstr ""
 
 #. translators: %1$s => today_amount (0), %2$s => total_amount, %3$s => i18n formatted due_date.
-#: includes/class-alma-wc-payment-gateway.php:666
+#: includes/class-alma-wc-payment-gateway.php:671
 #, php-format
 msgid "%1$s today then %2$s on %3$s"
 msgstr ""
 
 #. translators: 'In' refers to a number of months, like in 'In one month' or 'In three months'.
-#: includes/class-alma-wc-payment-gateway.php:705
+#: includes/class-alma-wc-payment-gateway.php:710
 #, php-format
 msgid "In %s month"
 msgid_plural "In %s months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-alma-wc-payment-gateway.php:729
+#: includes/class-alma-wc-payment-gateway.php:734
 msgid "Your credit"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:738
+#: includes/class-alma-wc-payment-gateway.php:743
 msgid "Your cart:"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:748
+#: includes/class-alma-wc-payment-gateway.php:753
 msgid "Credit cost:"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:762
+#: includes/class-alma-wc-payment-gateway.php:767
 msgid "Annual Interest Rate:"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:773
+#: includes/class-alma-wc-payment-gateway.php:778
 msgid "Total:"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:807
+#: includes/class-alma-wc-payment-gateway.php:790 includes/class-alma-wc-payment-gateway.php:826
 msgid "There was an error processing your payment.<br>Please try again or contact us if the problem persists."
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:890
+#: includes/class-alma-wc-payment-gateway.php:911
 msgid "There was an error when validating your payment.<br>Please try again or contact us if the problem persists."
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:956
+#: includes/class-alma-wc-payment-gateway.php:977
 msgid "enabled"
 msgstr ""
 
-#: includes/class-alma-wc-payment-gateway.php:960
+#: includes/class-alma-wc-payment-gateway.php:981
 msgid "disabled"
 msgstr ""
 
@@ -491,7 +491,7 @@ msgstr ""
 msgid "At shipping"
 msgstr ""
 
-#: includes/class-alma-wc-plugin.php:192
+#: includes/class-alma-wc-plugin.php:188
 msgid "WooCommerce Gateway Alma plugin can only be bootstrapped once"
 msgstr ""
 
