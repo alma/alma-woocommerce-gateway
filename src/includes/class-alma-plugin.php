@@ -4,21 +4,21 @@
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes
- * @namespace Alma_WC
+ * @namespace Alma\Woocommerce
  */
 
-namespace Alma_WC;
+namespace Alma\Woocommerce;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-use Alma_WC\Admin\Alma_Notices;
-use Alma_WC\Exceptions\Alma_Requirements;
-use Alma_WC\Helpers\Alma_Constants;
-use Alma_WC\Helpers\Alma_Tools;
-use Alma_WC\Helpers\Alma_Payment;
-use Alma_WC\Helpers\Alma_Assets;
+use Alma\Woocommerce\Admin\Alma_Notices;
+use Alma\Woocommerce\Exceptions\Alma_Requirements;
+use Alma\Woocommerce\Helpers\Alma_Constants;
+use Alma\Woocommerce\Helpers\Alma_Tools;
+use Alma\Woocommerce\Helpers\Alma_Payment;
+use Alma\Woocommerce\Helpers\Alma_Assets;
 
 /**
  * Alma_Plugin.

@@ -6,15 +6,15 @@
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes/exceptions
- * @namespace Alma_WC\Exceptions
+ * @namespace Alma\Woocommerce\Exceptions
  */
 
-namespace Alma_WC\Exceptions;
+namespace Alma\Woocommerce\Exceptions;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-use Alma_WC\Helpers\Alma_Assets;
+use Alma\Woocommerce\Helpers\Alma_Assets;
 
 /**
  * Alma_Activation.

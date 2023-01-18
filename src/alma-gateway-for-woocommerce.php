@@ -62,7 +62,7 @@ require_once plugin_dir_path( __FILE__ ) . 'autoload.php';
 /**
  * Return instance of Alma_Plugin.
  *
- * @return Alma_Plugin
+ * @return  Alma\Woocommerce\Alma_Plugin
  * @noinspection PhpIncludeInspection
  */
 function alma_plugin() {
@@ -70,7 +70,7 @@ function alma_plugin() {
 
 	if ( ! isset( $plugin ) ) {
 
-		$plugin = Alma_WC\Alma_Plugin::get_instance();
+		$plugin = Alma\Woocommerce\Alma_Plugin::get_instance();
 
 	}
 

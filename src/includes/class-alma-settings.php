@@ -4,10 +4,10 @@
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes
- * @namespace Alma_WC
+ * @namespace Alma\Woocommerce
  */
 
-namespace Alma_WC;
+namespace Alma\Woocommerce;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -20,23 +20,23 @@ use Alma\API\Entities\FeePlan;
 use Alma\API\Entities\Payment;
 use Alma\API\ParamsError;
 use Alma\API\RequestError;
-use Alma_WC\Helpers\Alma_Settings as Alma_Helper_Settings;
-use Alma_WC\Exceptions\Alma_Plans_Definition;
-use Alma_WC\Helpers\Alma_General;
-use Alma_WC\Models\Alma_Cart;
-use Alma_WC\Helpers\Alma_Constants;
-use Alma_WC\Models\Alma_Payment;
-use Alma_WC\Helpers\Alma_Internationalization;
-use Alma_WC\Exceptions\Alma_Api_Create_Payments;
-use Alma_WC\Exceptions\Alma_Exception;
-use Alma_WC\Exceptions\Alma_Api_Fetch_Payments;
-use Alma_WC\Exceptions\Alma_Api_Trigger_Payments;
-use Alma_WC\Exceptions\Alma_Api_Full_Refund;
-use Alma_WC\Exceptions\Alma_Api_Partial_Refund;
-use Alma_WC\Exceptions\Alma_Wrong_Credentials;
-use Alma_WC\Exceptions\Alma_Api_Plans;
-use Alma_WC\Exceptions\Alma_Api_Merchants;
-use Alma_WC\Exceptions\Alma_Activation;
+use Alma\Woocommerce\Helpers\Alma_Settings as Alma_Helper_Settings;
+use Alma\Woocommerce\Exceptions\Alma_Plans_Definition;
+use Alma\Woocommerce\Helpers\Alma_General;
+use Alma\Woocommerce\Models\Alma_Cart;
+use Alma\Woocommerce\Helpers\Alma_Constants;
+use Alma\Woocommerce\Models\Alma_Payment;
+use Alma\Woocommerce\Helpers\Alma_Internationalization;
+use Alma\Woocommerce\Exceptions\Alma_Api_Create_Payments;
+use Alma\Woocommerce\Exceptions\Alma_Exception;
+use Alma\Woocommerce\Exceptions\Alma_Api_Fetch_Payments;
+use Alma\Woocommerce\Exceptions\Alma_Api_Trigger_Payments;
+use Alma\Woocommerce\Exceptions\Alma_Api_Full_Refund;
+use Alma\Woocommerce\Exceptions\Alma_Api_Partial_Refund;
+use Alma\Woocommerce\Exceptions\Alma_Wrong_Credentials;
+use Alma\Woocommerce\Exceptions\Alma_Api_Plans;
+use Alma\Woocommerce\Exceptions\Alma_Api_Merchants;
+use Alma\Woocommerce\Exceptions\Alma_Activation;
 
 
 

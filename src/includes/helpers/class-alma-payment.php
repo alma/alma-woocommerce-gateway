@@ -6,10 +6,10 @@
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes/helpers
- * @namespace Alma_WC\Helpers
+ * @namespace Alma\Woocommerce\Helpers
  */
 
-namespace Alma_WC\Helpers;
+namespace Alma\Woocommerce\Helpers;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -20,14 +20,15 @@ use Alma\API\Entities\Instalment;
 use Alma\API\Entities\Payment;
 use Alma\API\ParamsError;
 use Alma\API\RequestError;
-use Alma_WC\Alma_Logger;
-use Alma_WC\Alma_Settings;
-use Alma_WC\Models\Alma_Order;
-use Alma_WC\Exceptions\Alma_Exception_Amount_Mismatch;
-use Alma_WC\Exceptions\Alma_Exception_Api_Fetch_Payments;
-use Alma_WC\Exceptions\Alma_Exception_Build_Order;
-use Alma_WC\Exceptions\Alma_Exception_Incorrect_Payment;
-use Alma_WC\Exceptions\Alma_Exception_Alma;
+use Alma\Woocommerce\Alma_Logger;
+use Alma\Woocommerce\Alma_Settings;
+use Alma\Woocommerce\Models\Alma_Order;
+use Alma\Woocommerce\Exceptions\Alma_Amount_Mismatch;
+use Alma\Woocommerce\Exceptions\Alma_Api_Fetch_Payments;
+use Alma\Woocommerce\Exceptions\Alma_Build_Order;
+use Alma\Woocommerce\Exceptions\Alma_Incorrect_Payment;
+use Alma\Woocommerce\Exceptions\Alma_Exception;
+use Alma\Woocommerce\Helpers\Alma_Constants;
 /**
  * Alma_Payment.
  */
@@ -88,7 +89,7 @@ class Alma_Payment {
 
 			wc_add_notice(
 				__( 'Payment validation error: no ID provided.<br>Please try again or contact us if the problem persists.', 'alma-gateway-for-woocommerce' ),
-				Alma_Helper_Constants::ERROR
+				Alma_Constants::ERROR
 			);
 
 			wp_safe_redirect( wc_get_cart_url() );
@@ -108,10 +109,10 @@ class Alma_Payment {
 			$this->validate_payment( $payment_id );
 		} catch ( \Exception $e ) {
 			status_header( 500 );
-			wp_send_json( array( Alma_Helper_Constants::ERROR => $e->getMessage() ) );
+			wp_send_json( array( Alma_Constants::ERROR => $e->getMessage() ) );
 		}
 
-		wp_send_json( array( Alma_Helper_Constants::SUCCESS => true ) );
+		wp_send_json( array( Alma_Constants::SUCCESS => true ) );
 	}
 
 	/**
@@ -121,13 +122,13 @@ class Alma_Payment {
 	 *
 	 * @return Alma_Order The order.
 	 *
-	 * @throws Alma_Exception_Amount_Mismatch Amount mismatch.
-	 * @throws Alma_Exception_Api_Fetch_Payments Can't fetch payments.
-	 * @throws Alma_Exception_Build_Order    Can't build order.
-	 * @throws Alma_Exception_Incorrect_Payment Issue with payment.
+	 * @throws Alma_Amount_Mismatch Amount mismatch.
+	 * @throws Alma_Api_Fetch_Payments Can't fetch payments.
+	 * @throws Alma_Build_Order    Can't build order.
+	 * @throws Alma_Incorrect_Payment Issue with payment.
 	 * @throws DependenciesError DependenciesError.
 	 * @throws ParamsError ParamsError.
-	 * @throws RequestError|Alma_Exception_Alma RequestError.
+	 * @throws RequestError|Alma_Exception RequestError.
 	 */
 	public function validate_payment( $payment_id ) {
 		$payment = $this->alma_settings->fetch_payment( $payment_id );
@@ -137,13 +138,13 @@ class Alma_Payment {
 			$order->get_order()->has_status(
 				apply_filters(
 					'alma_valid_order_statuses_for_payment_complete',
-					Alma_Helper_Constants::$payment_statuses
+					Alma_Constants::$payment_statuses
 				)
 			)
 		) {
 			if ( $order->get_total() !== $payment->purchase_amount ) {
 				$this->alma_settings->flag_as_fraud( $payment_id, Payment::FRAUD_AMOUNT_MISMATCH );
-				throw new Alma_Exception_Amount_Mismatch( $payment_id, $order->get_id(), $order->get_total(), $payment->purchase_amount );
+				throw new Alma_Amount_Mismatch( $payment_id, $order->get_id(), $order->get_total(), $payment->purchase_amount );
 			}
 
 			$first_instalment = $payment->payment_plan[0];
@@ -154,7 +155,7 @@ class Alma_Payment {
 			) {
 				$this->alma_settings->flag_as_fraud( $payment_id, Payment::FRAUD_STATE_ERROR );
 
-				throw new Alma_Exception_Incorrect_Payment( $payment_id, $order->get_id(), $payment->state, $first_instalment->state );
+				throw new Alma_Incorrect_Payment( $payment_id, $order->get_id(), $payment->state, $first_instalment->state );
 			}
 
 			// If we're down here, everything went OK, and we can validate the order!
@@ -174,13 +175,13 @@ class Alma_Payment {
 	 *
 	 * @return Alma_Order
 	 *
-	 * @throws Alma_Exception_Build_Order Build order issue.
+	 * @throws Alma_Build_Order Build order issue.
 	 */
 	protected function build_order( $order_id, $order_key, $payment_id ) {
 		try {
 			return new Alma_Order( $order_id, $order_key );
 		} catch ( \Exception $e ) {
-			throw new Alma_Exception_Build_Order( $order_id, $order_key, $payment_id );
+			throw new Alma_Build_Order( $order_id, $order_key, $payment_id );
 		}
 	}
 
@@ -239,7 +240,7 @@ class Alma_Payment {
 	 * @param string $error_msg Error message.
 	 */
 	protected function redirect_to_cart_with_error( $error_msg ) {
-		wc_add_notice( $error_msg, Alma_Helper_Constants::ERROR );
+		wc_add_notice( $error_msg, Alma_Constants::ERROR );
 
 		$cart_url = wc_get_cart_url();
 		wp_safe_redirect( $cart_url );

@@ -4,10 +4,10 @@
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes
- * @namespace Alma_WC
+ * @namespace Alma\Woocommerce
  */
 
-namespace Alma_WC;
+namespace Alma\Woocommerce;
 
 use Alma\API\Entities\FeePlan;
 

@@ -4,26 +4,26 @@
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes
- * @namespace Alma_WC
+ * @namespace Alma\Woocommerce
  */
 
-namespace Alma_WC;
+namespace Alma\Woocommerce;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-use Alma_WC\Helpers\Alma_Tools;
-use Alma_WC\Helpers\Alma_Gateway;
-use Alma_WC\Helpers\Alma_Checkout;
-use Alma_WC\Helpers\Alma_General;
-use Alma_WC\Helpers\Alma_Assets;
-use Alma_WC\Helpers\Alma_Constants;
-use Alma_WC\Exceptions\Alma_No_Credentials;
-use Alma_WC\Admin\Helpers\Alma_General as Alma_Admin_Helper_General;
-use Alma_WC\Admin\Helpers\Alma_Form;
-use Alma_WC\Exceptions\Alma_Api_Client;
-use Alma_WC\Exceptions\Alma_Api_Merchants;
-use Alma_WC\Exceptions\Alma_Api_Plans;
+use Alma\Woocommerce\Helpers\Alma_Tools;
+use Alma\Woocommerce\Helpers\Alma_Gateway;
+use Alma\Woocommerce\Helpers\Alma_Checkout;
+use Alma\Woocommerce\Helpers\Alma_General;
+use Alma\Woocommerce\Helpers\Alma_Assets;
+use Alma\Woocommerce\Helpers\Alma_Constants;
+use Alma\Woocommerce\Exceptions\Alma_No_Credentials;
+use Alma\Woocommerce\Admin\Helpers\Alma_General as Alma_Admin_Helper_General;
+use Alma\Woocommerce\Admin\Helpers\Alma_Form;
+use Alma\Woocommerce\Exceptions\Alma_Api_Client;
+use Alma\Woocommerce\Exceptions\Alma_Api_Merchants;
+use Alma\Woocommerce\Exceptions\Alma_Api_Plans;
 
 /**
  * Alma_Payment_Gateway

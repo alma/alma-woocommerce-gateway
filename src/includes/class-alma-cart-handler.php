@@ -4,17 +4,17 @@
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes
- * @namespace Alma_WC
+ * @namespace Alma\Woocommerce
  */
 
-namespace Alma_WC;
+namespace Alma\Woocommerce;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-use Alma_WC\Models\Alma_Cart;
-use Alma_WC\Helpers\Alma_Constants;
+use Alma\Woocommerce\Models\Alma_Cart;
+use Alma\Woocommerce\Helpers\Alma_Constants;
 
 /**
  * Alma_Cart_Handler

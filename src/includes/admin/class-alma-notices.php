@@ -6,16 +6,16 @@
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes/admin
- * @namespace Alma_WC\Admin
+ * @namespace Alma\Woocommerce\Admin
  */
 
-namespace Alma_WC\Admin;
+namespace Alma\Woocommerce\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use Alma_WC\Helpers\Alma_Constants;
+use Alma\Woocommerce\Helpers\Alma_Constants;
 
 /**
  * Class that represents admin notices.

@@ -6,10 +6,10 @@
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes/helpers
- * @namespace Alma_WC\Helpers
+ * @namespace Alma\Woocommerce\Helpers
  */
 
-namespace Alma_WC\Helpers;
+namespace Alma\Woocommerce\Helpers;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

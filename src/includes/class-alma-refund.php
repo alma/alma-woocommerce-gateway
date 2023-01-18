@@ -4,16 +4,16 @@
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes
- * @namespace Alma_WC
+ * @namespace Alma\Woocommerce
  */
 
-namespace Alma_WC;
+namespace Alma\Woocommerce;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-use Alma_WC\Admin\Helpers\Alma_Refund as Alma_Admin_Helper_Refund;
+use Alma\Woocommerce\Admin\Helpers\Alma_Refund as Alma_Admin_Helper_Refund;
 
 /**
  * Alma_Refund

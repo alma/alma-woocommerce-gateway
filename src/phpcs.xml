@@ -85,7 +85,7 @@
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
 			<property name="prefixes" type="array">
-				<element value="Alma_WC"/>
+				<element value="Alma\Woocommerce"/>
 				<element value="alma"/>
 			</property>
 

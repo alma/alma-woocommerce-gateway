@@ -4,16 +4,16 @@
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes
- * @namespace Alma_WC
+ * @namespace Alma\Woocommerce
  */
 
-namespace Alma_WC;
+namespace Alma\Woocommerce;
 
 use Alma\API\Endpoints\Results\Eligibility;
-use Alma_WC\Helpers\Alma_Constants;
-use Alma_WC\Helpers\Alma_Assets;
-use Alma_WC\Helpers\Alma_Tools;
-use Alma_WC\Models\Alma_Cart;
+use Alma\Woocommerce\Helpers\Alma_Constants;
+use Alma\Woocommerce\Helpers\Alma_Assets;
+use Alma\Woocommerce\Helpers\Alma_Tools;
+use Alma\Woocommerce\Models\Alma_Cart;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

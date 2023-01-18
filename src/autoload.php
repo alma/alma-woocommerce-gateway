@@ -16,7 +16,7 @@ spl_autoload_register( 'alma_wc_autoloader' );
  */
 function alma_wc_autoloader( $class_name ) {
 
-	$parent_namespace  = 'Alma_WC';
+	$parent_namespace  = 'Alma\Woocommerce';
 	$classes_subfolder = 'includes';
 
 	if ( false !== strpos( $class_name, $parent_namespace ) ) {

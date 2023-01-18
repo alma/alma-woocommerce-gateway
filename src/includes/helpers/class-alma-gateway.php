@@ -6,17 +6,17 @@
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes/helpers
- * @namespace Alma_WC\Helpers
+ * @namespace Alma\Woocommerce\Helpers
  */
 
-namespace Alma_WC\Helpers;
+namespace Alma\Woocommerce\Helpers;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use Alma_WC\Alma_Logger;
-use Alma_WC\Alma_Settings;
+use Alma\Woocommerce\Alma_Logger;
+use Alma\Woocommerce\Alma_Settings;
 /**
  * Alma_Gateway
  */

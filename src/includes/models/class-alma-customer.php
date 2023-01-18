@@ -4,10 +4,10 @@
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes/models
- * @namespace Alma_WC\Models
+ * @namespace Alma\Woocommerce\Models
  */
 
-namespace Alma_WC\Models;
+namespace Alma\Woocommerce\Models;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
