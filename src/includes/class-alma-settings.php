@@ -20,6 +20,8 @@ use Alma\API\Entities\FeePlan;
 use Alma\API\Entities\Payment;
 use Alma\API\ParamsError;
 use Alma\API\RequestError;
+use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Accept;
+use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Deny;
 use Alma\Woocommerce\Helpers\Alma_Settings as Alma_Helper_Settings;
 use Alma\Woocommerce\Exceptions\Alma_Plans_Definition;
 use Alma\Woocommerce\Helpers\Alma_General;
@@ -37,7 +39,7 @@ use Alma\Woocommerce\Exceptions\Alma_Wrong_Credentials;
 use Alma\Woocommerce\Exceptions\Alma_Api_Plans;
 use Alma\Woocommerce\Exceptions\Alma_Api_Merchants;
 use Alma\Woocommerce\Exceptions\Alma_Activation;
-
+use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout;
 
 
 /**
@@ -369,6 +371,16 @@ class Alma_Settings {
 	}
 
 	/**
+	 * Is using test API.
+	 *
+	 * @return bool
+	 */
+	public function is_test() {
+		return $this->get_environment() === 'test';
+	}
+
+
+	/**
 	 * Gets active environment from setting.
 	 *
 	 * @return string
@@ -434,6 +446,15 @@ class Alma_Settings {
 	}
 
 	/**
+	 * Saves settings.
+	 *
+	 * @return void
+	 */
+	public function save() {
+		update_option( self::OPTIONS_KEY, $this->settings );
+	}
+
+	/**
 	 * Get the alma api client.
 	 *
 	 * @return void
@@ -484,6 +505,60 @@ class Alma_Settings {
 			throw new Alma_Api_Fetch_Payments( $payment_id );
 		}
 	}
+
+	/**
+	 * Share the data for soc.
+	 *
+	 * @param array $data   The payload
+	 *
+	 * @throws Alma_Api_Share_Of_Checkout
+	 */
+	public function send_soc_data( $data ) {
+		try {
+			$this->get_alma_client();
+
+			$this->alma_client->shareOfCheckout->share( $data );
+
+		} catch ( \Exception $e ) {
+			$this->logger->error( sprintf( 'Api : shareOfCheckout, data : "%s", Api message "%s"', json_encode( $data ), $e->getMessage() ) );
+			throw new Alma_Api_Share_Of_Checkout( $data );
+		}
+	}
+
+	/**
+	 * Sent the accept for the soc consent
+	 *
+	 * @throws Alma_Api_Share_Of_Checkout_Accept
+	 */
+	public function accept_soc_consent() {
+		try {
+			$this->get_alma_client();
+
+			$this->alma_client->shareOfCheckout->addConsent();
+
+		} catch ( \Exception $e ) {
+			$this->logger->error( sprintf( 'Api : accept share of shareOfCheckout, Api message "%s"', $e->getMessage() ) );
+			throw new Alma_Api_Share_Of_Checkout_Accept();
+		}
+	}
+
+	/**
+	 * Sent the deny for the consent for soc.
+	 *
+	 * @throws Alma_Api_Share_Of_Checkout_Deny
+	 */
+	public function deny_soc_consent() {
+		try {
+			$this->get_alma_client();
+
+			$this->alma_client->shareOfCheckout->removeConsent();
+
+		} catch ( \Exception $e ) {
+			$this->logger->error( sprintf( 'Api : deny share of shareOfCheckout, Api message "%s"', $e->getMessage() ) );
+			throw new Alma_Api_Share_Of_Checkout_Deny();
+		}
+	}
+
 
 	/**
 	 * Trigger the transaction.
@@ -601,11 +676,8 @@ class Alma_Settings {
 				}
 
 				throw new Alma_Api_Merchants(
-					sprintf(
 					// translators: %s: Error message.
-						__( 'Alma encountered an error when fetching merchant status: %s', 'alma-gateway-for-woocommerce' ),
-						$e->getMessage()
-					),
+					__( 'Alma encountered an error when fetching merchant status, please check your api keys or retry later.', 'alma-gateway-for-woocommerce' ),
 					$e->getCode(),
 					$e
 				);
@@ -950,5 +1022,14 @@ class Alma_Settings {
 		$definition['deferred_months']    = $this->settings[ "deferred_months_$plan_key" ];
 
 		return $definition;
+	}
+
+	/**
+	 * Does need API key ?
+	 *
+	 * @return bool
+	 */
+	public function need_api_key() {
+		return empty( $this->get_active_api_key() );
 	}
 }

@@ -92,11 +92,11 @@ class Alma_Assets {
 	 * @return void
 	 */
 	public function alma_admin_enqueue_scripts() {
-		wp_enqueue_style( 'alma-admin-styles', ALMA_PLUGIN_URL . 'assets/admin/css/alma-admin.css', array(), ALMA_VERSION );
+		wp_enqueue_style( 'alma-admin-styles', ALMA_PLUGIN_URL . 'assets/admin/css/alma.css', array(), ALMA_VERSION );
 
 		wp_enqueue_script(
 			'alma-admin-scripts',
-			ALMA_PLUGIN_URL . 'assets/admin/js/alma-admin.js',
+			ALMA_PLUGIN_URL . 'assets/admin/js/alma.js',
 			array(
 				'jquery',
 				'jquery-effects-highlight',
@@ -107,4 +107,19 @@ class Alma_Assets {
 		);
 	}
 
+	/**
+	 * Get the html for the image to display
+	 *
+	 * @param string $title the alt attribute.
+	 * @param string $id Used for the filter.
+	 * @param string $path By default, the alma logo.
+	 *
+	 * @return string
+	 */
+	public static function get_icon( $title, $id, $path = Alma_Constants::ALMA_LOGO_PATH ) {
+		$icon_url = static::get_asset_url( $path );
+		$icon     = '<img src="' . \WC_HTTPS::force_https_url( $icon_url ) . '" alt="' . esc_attr( $title ) . '" style="width: auto !important; height: 25px !important; border: none !important;">';
+
+		return apply_filters( 'alma_wc_gateway_icon', $icon, $id );
+	}
 }

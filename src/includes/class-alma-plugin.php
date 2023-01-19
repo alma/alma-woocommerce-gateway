@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Alma\Woocommerce\Admin\Alma_Notices;
+use Alma\Woocommerce\Admin\Helpers\Alma_Check_Legal;
 use Alma\Woocommerce\Exceptions\Alma_Requirements;
 use Alma\Woocommerce\Helpers\Alma_Constants;
 use Alma\Woocommerce\Helpers\Alma_Tools;
@@ -118,8 +119,10 @@ class Alma_Plugin {
 		$this->add_hooks();
 		$this->add_badges();
 		$this->add_actions();
-		$this->init_soc();
 
+		// Launch the "share of checkout".
+		$share_of_checkout = new Alma_Share_Of_Checkout();
+		$share_of_checkout->send_soc_data();
 	}
 
 	/**
@@ -200,8 +203,7 @@ class Alma_Plugin {
 	 * @return void
 	 */
 	protected function add_badges() {
-
-			$settings = new Alma_Settings();
+		$settings = new Alma_Settings();
 
 		if (
 				$settings->is_enabled()
@@ -218,7 +220,6 @@ class Alma_Plugin {
 
 			add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
 		}
-
 	}
 
 	/**
@@ -241,25 +242,15 @@ class Alma_Plugin {
 		$refund = new Alma_Refund();
 		add_action( 'admin_init', array( $refund, 'admin_init' ) );
 
-		// add_action( 'init', array( $this, 'check_share_checkout' ) );
+		$check_legal = new Alma_Check_Legal();
+		add_action( 'init', array( $check_legal, 'check_share_checkout' ) );
 	}
 
-	/**
-	 * Init the share of checkout.
-	 *
-	 * @return void
-	 */
-	protected function init_soc() {
-		/**
-		 * // Launch the "share of checkout".
-		 * $share_of_checkout = new Alma_Share_Of_Checkout();
-		 * $share_of_checkout->init();
-		 */
-	}
 
 	/**
 	 * Returns the *Singleton* instance of this class.
-	 * ngleton* instance.
+	 *
+	 * @return Alma_Plugin
 	 */
 	public static function get_instance() {
 		if ( ! self::$instance ) {
