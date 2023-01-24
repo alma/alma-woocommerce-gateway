@@ -28,7 +28,7 @@ use Alma\Woocommerce\Exceptions\Alma_Api_Fetch_Payments;
 use Alma\Woocommerce\Exceptions\Alma_Build_Order;
 use Alma\Woocommerce\Exceptions\Alma_Incorrect_Payment;
 use Alma\Woocommerce\Exceptions\Alma_Exception;
-use Alma\Woocommerce\Helpers\Alma_Constants;
+
 /**
  * Alma_Payment.
  */

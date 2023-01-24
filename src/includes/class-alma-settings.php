@@ -22,6 +22,7 @@ use Alma\API\ParamsError;
 use Alma\API\RequestError;
 use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Accept;
 use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Deny;
+use Alma\Woocommerce\Exceptions\Alma_Api_Soc_Last_Update_Dates;
 use Alma\Woocommerce\Helpers\Alma_Settings as Alma_Helper_Settings;
 use Alma\Woocommerce\Exceptions\Alma_Plans_Definition;
 use Alma\Woocommerce\Helpers\Alma_General;
@@ -41,7 +42,6 @@ use Alma\Woocommerce\Exceptions\Alma_Api_Merchants;
 use Alma\Woocommerce\Exceptions\Alma_Activation;
 use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout;
 
-
 /**
  * Handles settings retrieval from the settings API.
  *
@@ -55,7 +55,7 @@ use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout;
  * @property string display_product_eligibility Wp-bool-eq (yes or no)
  * @property string display_cart_eligibility Wp-bool-eq (yes or no)
  * @property string environment Live or test
- * @property bool fully_configured Flag to indicate setting are fully configured by the plugin
+ * @property bool keys_validity Flag to indicate id the current keys are working
  * @property string selected_fee_plan Admin dashboard fee_plan in edition mode.
  * @property string test_merchant_id Alma TEST merchant ID
  * @property string live_merchant_id Alma LIVE merchant ID
@@ -526,6 +526,25 @@ class Alma_Settings {
 	}
 
 	/**
+	 * Get the last soc date.
+	 *
+	 * @return mixed
+	 *
+	 * @throws Alma_Api_Soc_Last_Update_Dates The api exception.
+	 */
+	public function get_soc_last_updated_date() {
+		try {
+			$this->get_alma_client();
+
+			return $this->alma_client->shareOfCheckout->getLastUpdateDates(); // phpcs:ignore
+		} catch ( \Exception $e ) {
+			$this->logger->error( sprintf( 'Api : getLastUpdateDates shareOfCheckout, Api message "%s"', $e->getMessage() ) );
+			throw new Alma_Api_Soc_Last_Update_Dates();
+		}
+	}
+
+
+	/**
 	 * Sent the accept for the soc consent
 	 *
 	 * @throws Alma_Api_Share_Of_Checkout_Accept The exception.
@@ -671,6 +690,9 @@ class Alma_Settings {
 				$can_create_payment                          = $this->alma_client->merchants->me()->can_create_payments;
 
 			} catch ( \Exception $e ) {
+				$this->__set( 'keys_validity', 'no' );
+				$this->save();
+
 				if ( $e->response && 401 === $e->response->responseCode ) {
 					throw new Alma_Wrong_Credentials( $this->get_environment() );
 				}
@@ -682,6 +704,8 @@ class Alma_Settings {
 					$e
 				);
 			}
+			$this->__set( 'keys_validity', 'yes' );
+			$this->save();
 
 			if ( ! $can_create_payment ) {
 				throw new Alma_Activation( $this->environment );

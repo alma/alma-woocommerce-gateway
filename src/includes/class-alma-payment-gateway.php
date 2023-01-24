@@ -21,7 +21,7 @@ use Alma\Woocommerce\Helpers\Alma_General;
 use Alma\Woocommerce\Helpers\Alma_Assets;
 use Alma\Woocommerce\Helpers\Alma_Constants;
 use Alma\Woocommerce\Exceptions\Alma_No_Credentials;
-use Alma\Woocommerce\Admin\Helpers\Alma_General as Alma_Admin_Helper_General;
+use Alma\Woocommerce\Admin\Helpers\Alma_General as Alma_Admin_General_Helper;
 use Alma\Woocommerce\Admin\Helpers\Alma_Form;
 use Alma\Woocommerce\Exceptions\Alma_Api_Client;
 use Alma\Woocommerce\Exceptions\Alma_Api_Merchants;
@@ -113,10 +113,12 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 		$this->plan_builder       = new Alma_Plan_Builder();
 
 		$this->check_activation();
+
 		$this->check_alma_keys( false );
 		$this->add_filters();
 		$this->add_actions();
 		$this->init_admin_form();
+		$this->check_legal_helper->check_share_checkout();
 	}
 
 		/**
@@ -171,8 +173,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 	/**
 	 * Checks the api keys
 	 *
-	 * @param bool $throw_exception Do we throw the exception.
-	 *
+	 * @param bool $throw_exception Do we want to throw the exception.
 	 * @return void
 	 * @throws Alma_No_Credentials No credentials.
 	 */
@@ -562,9 +563,6 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 		} catch ( \Exception $e ) {
 			$this->logger->error( $e->getMessage() );
 		}
-
-		// Force the reload of all the page, not just the alma section.
-		wp_safe_redirect( $_SERVER['HTTP_REFERER'] );
 	}
 
 	/**
@@ -601,7 +599,6 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 		}
 
 		// By default, remove api consent.
-		$this->alma_settings->settings['share_of_checkout_enabled_date'] = gmdate( 'Y-m-d' );
 		$value = 'no';
 
 		// Check if the live_api_key has changed. Remove the consent.
@@ -614,18 +611,12 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 			isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
 			&& '1' == $post_data['woocommerce_alma_share_of_checkout_enabled']
 		) {
+			$this->alma_settings->settings['share_of_checkout_enabled_date'] = gmdate( 'Y-m-d' );
+
 			$value = 'yes';
 		}
 
 		$this->check_legal_helper->send_consent( $value );
-
-		// Check if the mode has changed to live (by default in the module you are in test so the legal is not init).
-		if (
-			'live' === $post_data['woocommerce_alma_environment']
-			&& 'test' === $this->alma_settings->get_environment()
-		) {
-			$this->check_legal_helper->init();
-		}
 
 		if (
 			'test' === $post_data['woocommerce_alma_environment']
@@ -656,6 +647,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 				&& 'yes' === $this->alma_settings->__get( 'share_of_checkout_enabled' )
 			)
 			|| $this->alma_settings->__get( 'live_api_key' ) !== $post_data['woocommerce_alma_live_api_key']
+			|| $post_data['woocommerce_alma_environment'] !== $this->alma_settings->get_environment()
 		) {
 			return true;
 		}
@@ -787,7 +779,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 					<select class="list_lang_title" style="width:auto;margin-left:10px;line-height:28px;">
 						<?php
 						foreach ( $data['lang_list'] as $code => $label ) {
-							$selected = Alma_Admin_Helper_General::is_lang_selected( esc_attr( $code ) ) ? 'selected="selected"' : '';
+							$selected = Alma_Admin_General_Helper::is_lang_selected( esc_attr( $code ) ) ? 'selected="selected"' : '';
 							print '<option value="' . esc_attr( $code ) . '"' . esc_attr( $selected ) . '>' . esc_attr( $label ) . '</option>';
 						}
 						?>

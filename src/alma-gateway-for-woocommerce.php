@@ -55,7 +55,7 @@ if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins',
 
 require_once ALMA_PLUGIN_PATH . 'vendor/autoload.php';
 
-// Load the autoloader from it's own file.
+// Load the autoloader from its own file.
 require_once plugin_dir_path( __FILE__ ) . 'autoload.php';
 
 

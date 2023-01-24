@@ -55,15 +55,12 @@ class Alma_Check_Legal {
 	 * @return void
 	 */
 	public function check_share_checkout() {
-		if ( ! is_admin() ) {
-			return;
-		}
-
 		if (
-			! empty( $this->settings->__get( 'share_of_checkout_enabled_date' ) )
+			! is_admin()
+			|| ! empty( $this->settings->__get( 'share_of_checkout_enabled_date' ) )
 			|| $this->settings->need_api_key()
 			|| $this->settings->is_test()
-			|| ! $this->settings->get_alma_client()
+			|| 'no' === $this->settings->__get( 'keys_validity' )
 		) {
 			return;
 		}
@@ -82,8 +79,6 @@ class Alma_Check_Legal {
 	public function init() {
 		set_transient( 'alma-admin-soc-panel', true, 5 );
 
-		add_action( 'admin_notices', array( $this, 'get_modal_checkout_legal' ) );
-
 		wp_enqueue_style( 'alma-admin-styles-modal-checkout-legal', Alma_Assets::get_asset_admin_url( 'css/alma-modal-checkout-legal.css' ), array(), ALMA_VERSION );
 
 		wp_enqueue_script(
@@ -101,6 +96,8 @@ class Alma_Check_Legal {
 		);
 
 		add_action( 'wp_ajax_legal_alma', array( $this, 'legal_alma' ) );
+		add_action( 'admin_notices', array( $this, 'get_modal_checkout_legal' ) );
+
 	}
 
 	/**
@@ -109,6 +106,8 @@ class Alma_Check_Legal {
 	 * @return void
 	 */
 	public function legal_alma() {
+		$this->logger->error( 'on est la' );
+
 		try {
 			set_transient( 'alma-admin-soc-panel', true, 5 );
 			$value = sanitize_text_field( $_POST['accept'] ); // phpcs:ignore WordPress.Security.NonceVerification

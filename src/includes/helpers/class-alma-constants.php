@@ -25,7 +25,6 @@ class Alma_Constants {
 
 	const ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE = 'alma-payment-plan-table-%s-installments';
 	const ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS   = 'js-alma-payment-plan-table';
-	const ENABLED_PLAN_KEY_REGEX              = '#^enabled_general_([0-9]+_[0-9]+_[0-9]+)$#';
 	const ALMA_GATEWAY_PAY_LATER              = 'alma_pay_later';
 	const ALMA_GATEWAY_PAY_MORE_THAN_FOUR     = 'alma_pnx_plus_4';
 	const JQUERY_CART_UPDATE_EVENT            = 'updated_cart_totals';

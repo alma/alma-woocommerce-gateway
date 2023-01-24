@@ -57,7 +57,7 @@ class Alma_Settings {
 			'share_of_checkout_enabled'                  => 'no',
 			/** LEGAL CHECKOUT FEATURE */
 			'debug'                                      => 'yes',
-			'fully_configured'                           => false,
+			'keys_validity'                              => 'no',
 		);
 	}
 

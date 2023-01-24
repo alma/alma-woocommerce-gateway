@@ -11,6 +11,10 @@
 
 namespace Alma\Woocommerce\Admin\Helpers;
 
+use Alma\Woocommerce\Alma_Settings;
+use Alma\Woocommerce\Exceptions\Alma_Api_Soc_Last_Update_Dates;
+use Alma\Woocommerce\Helpers\Alma_Tools;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
@@ -25,14 +29,14 @@ class Alma_Share_Of_Checkout {
 	 * @return int (timestamp)
 	 */
 	public static function get_last_update_date() {
+		$alma_settings    = new Alma_Settings();
 		$last_update_date = self::get_default_last_update_date();
 
-		$alma = alma_wc_plugin()->get_alma_client();
-		if ( ! $alma ) {
+		try {
+			$last_update_by_api = $alma_settings->get_soc_last_updated_date();
+		} catch ( Alma_Api_Soc_Last_Update_Dates $e ) {
 			return $last_update_date;
 		}
-
-		$last_update_by_api = $alma->shareOfCheckout->getLastUpdateDates(); // phpcs:ignore
 
 		return gmdate( 'Y-m-d', $last_update_by_api['end_time'] );
 	}
@@ -56,7 +60,7 @@ class Alma_Share_Of_Checkout {
 	public static function get_payload( $start_date ) {
 		$from                 = self::get_from_date( $start_date );
 		$to                   = self::get_to_date( $start_date );
-		$orders_by_date_range = Alma_WC_Admin_Helper_Order::get_orders_by_date_range( $from, $to );
+		$orders_by_date_range = Alma_Order::get_orders_by_date_range( $from, $to );
 
 		return array(
 			'start_time'      => $from,
@@ -106,7 +110,7 @@ class Alma_Share_Of_Checkout {
 				);
 			}
 			$order_currencies[ $order->get_currency() ]['total_order_count'] += 1;
-			$order_currencies[ $order->get_currency() ]['total_amount']      += alma_wc_price_to_cents( $order->get_total() );
+			$order_currencies[ $order->get_currency() ]['total_amount']      += Alma_Tools::alma_price_to_cents( $order->get_total() );
 		}
 
 		return array_values( $order_currencies );
@@ -133,7 +137,7 @@ class Alma_Share_Of_Checkout {
 				);
 			}
 			$payment_methods_currencies[ $order->get_payment_method() ][ $order->get_currency() ]['order_count'] += 1;
-			$payment_methods_currencies[ $order->get_payment_method() ][ $order->get_currency() ]['amount']      += alma_wc_price_to_cents( $order->get_total() );
+			$payment_methods_currencies[ $order->get_payment_method() ][ $order->get_currency() ]['amount']      += Alma_Tools::alma_price_to_cents( $order->get_total() );
 		}
 
 		$payment_methods = array();
