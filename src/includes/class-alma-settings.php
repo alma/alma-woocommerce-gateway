@@ -509,9 +509,9 @@ class Alma_Settings {
 	/**
 	 * Share the data for soc.
 	 *
-	 * @param array $data   The payload
+	 * @param array $data   The payload.
 	 *
-	 * @throws Alma_Api_Share_Of_Checkout
+	 * @throws Alma_Api_Share_Of_Checkout Alma_Api_Share_Of_Checkout exception.
 	 */
 	public function send_soc_data( $data ) {
 		try {
@@ -520,7 +520,7 @@ class Alma_Settings {
 			$this->alma_client->shareOfCheckout->share( $data );
 
 		} catch ( \Exception $e ) {
-			$this->logger->error( sprintf( 'Api : shareOfCheckout, data : "%s", Api message "%s"', json_encode( $data ), $e->getMessage() ) );
+			$this->logger->error( sprintf( 'Api : shareOfCheckout, data : "%s", Api message "%s"', wp_json_encode( $data ), $e->getMessage() ) );
 			throw new Alma_Api_Share_Of_Checkout( $data );
 		}
 	}
@@ -528,7 +528,7 @@ class Alma_Settings {
 	/**
 	 * Sent the accept for the soc consent
 	 *
-	 * @throws Alma_Api_Share_Of_Checkout_Accept
+	 * @throws Alma_Api_Share_Of_Checkout_Accept The exception.
 	 */
 	public function accept_soc_consent() {
 		try {
@@ -545,7 +545,7 @@ class Alma_Settings {
 	/**
 	 * Sent the deny for the consent for soc.
 	 *
-	 * @throws Alma_Api_Share_Of_Checkout_Deny
+	 * @throws Alma_Api_Share_Of_Checkout_Deny The exception.
 	 */
 	public function deny_soc_consent() {
 		try {

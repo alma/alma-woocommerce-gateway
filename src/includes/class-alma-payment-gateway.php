@@ -89,6 +89,8 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 	public $plan_builder;
 
 	/**
+	 * The legal helper.
+	 *
 	 * @var Alma_Check_Legal
 	 */
 	protected $check_legal_helper;
@@ -369,7 +371,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 
 		try {
 			// We ignore the nonce verification because process_payment is called after validate_fields.
-			$fee_plan_definition = $this->alma_settings->get_fee_plan_definition( $_POST['alma_fee_plan'] ); // phpcs:ignore WordPress.Security.NonceVerification
+			$fee_plan_definition = $this->alma_settings->get_fee_plan_definition( $_POST[ Alma_Constants::ALMA_FEE_PLAN ] ); // phpcs:ignore WordPress.Security.NonceVerification
 
 			$payment = $this->alma_settings->create_payments( $order_id, $fee_plan_definition );
 
@@ -393,7 +395,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 	public function validate_fields() {
 		$error_msg = __( 'There was an error processing your payment.<br>Please try again or contact us if the problem persists.', 'alma-gateway-for-woocommerce' );
 
-		$alma_fee_plan = $this->checkout_helper->get_chosen_alma_fee_plan();
+		$alma_fee_plan = $this->checkout_helper->get_chosen_alma_fee_plan( $this->id );
 
 		if ( ! $alma_fee_plan ) {
 			wc_add_notice( $error_msg, Alma_Constants::ERROR );
@@ -401,7 +403,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 			return false;
 		}
 
-		$is_alma_payment = $this->checkout_helper->is_alma_payment_method();
+		$is_alma_payment = $this->checkout_helper->is_alma_payment_method( $this->id );
 
 		if ( ! $is_alma_payment ) {
 			wc_add_notice( $error_msg, Alma_Constants::ERROR );
@@ -531,7 +533,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 
 		$post_data = $this->get_post_data();
 
-		// Manage the soc changes
+		// Manage the soc changes.
 		$this->process_checkout_legal( $post_data );
 
 		// If the mode has changed, or the keys.
@@ -561,8 +563,8 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 			$this->logger->error( $e->getMessage() );
 		}
 
-        // Force the reload of all the page, not just the alma section.
-        wp_redirect($_SERVER['HTTP_REFERER']);
+		// Force the reload of all the page, not just the alma section.
+		wp_safe_redirect( $_SERVER['HTTP_REFERER'] );
 	}
 
 	/**
@@ -574,7 +576,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 	public function clean_credentials( $post_data ) {
 		if (
 			(
-                $this->alma_settings->settings['live_api_key'] !== $post_data['woocommerce_alma_live_api_key']
+				$this->alma_settings->settings['live_api_key'] !== $post_data['woocommerce_alma_live_api_key']
 				&& 'live' === $post_data['woocommerce_alma_environment']
 			)
 			|| (
@@ -701,7 +703,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 	 */
 	public function payment_fields() {
 		echo wp_kses_post( $this->get_description() );
-		$this->checkout_helper->render_nonce_field();
+		$this->checkout_helper->render_nonce_field( $this->id );
 
 		$gateway_id     = $this->id;
 		$eligible_plans = $this->alma_settings->get_eligible_plans_keys_for_cart();

@@ -35,6 +35,8 @@ class Alma_Check_Legal {
 
 
 	/**
+	 * The db settings.
+	 *
 	 * @var Alma_Settings
 	 */
 	protected $settings;
@@ -61,7 +63,7 @@ class Alma_Check_Legal {
 			! empty( $this->settings->__get( 'share_of_checkout_enabled_date' ) )
 			|| $this->settings->need_api_key()
 			|| $this->settings->is_test()
-            || !$this->settings->get_alma_client()
+			|| ! $this->settings->get_alma_client()
 		) {
 			return;
 		}

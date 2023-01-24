@@ -40,15 +40,17 @@ class Alma_Checkout {
 	/**
 	 * Check if alma_fee_plan is set in POST data and verify wp_nonce.
 	 *
+	 * @param string $id The gateway id.
+	 *
 	 * @return null|string
 	 */
-	public function get_chosen_alma_fee_plan() {
+	public function get_chosen_alma_fee_plan( $id ) {
 		if ( WC()->cart === null ) {
 			wc_add_notice( '<strong>Fee plan</strong> is required.', Alma_Constants::ERROR );
 			return null;
 		}
 
-		return $this->check_nonce( 'alma_fee_plan', Alma_Constants::CHECKOUT_NONCE );
+		return $this->check_nonce( Alma_Constants::ALMA_FEE_PLAN, Alma_Constants::CHECKOUT_NONCE . $id );
 	}
 
 	/**
@@ -68,23 +70,26 @@ class Alma_Checkout {
 		}
 
 		$this->logger->error(
-			'Nonce not found or wrong.',
-			array(
-				'FieldName' => $field_name,
-				'NonceName' => $nonce_name,
+			sprintf(
+				'Nonce not found or wrong - FieldName "%s" - NonceName "%s" - FieldName value "%s" - NonceName  value"%s"',
+				$field_name,
+				$nonce_name,
+				$_POST[ $field_name ],
+				$_POST[ $nonce_name ]
 			)
 		);
-
 		return null;
 	}
 
 	/**
 	 * Renders nonce field.
 	 *
+	 * @param string $id The gateway id.
+	 *
 	 * @return void
 	 */
-	public function render_nonce_field() {
-		wp_nonce_field( Alma_Constants::CHECKOUT_NONCE, Alma_Constants::CHECKOUT_NONCE );
+	public function render_nonce_field( $id ) {
+		wp_nonce_field( Alma_Constants::CHECKOUT_NONCE . $id, Alma_Constants::CHECKOUT_NONCE . $id );
 	}
 
 	/**
@@ -95,7 +100,7 @@ class Alma_Checkout {
 	 */
 	public function woocommerce_checkout_process() {
 		if ( $this->is_alma_payment_method() ) {
-			$_POST['payment_method'] = Alma_Constants::GATEWAY_ID;
+			$_POST[ Alma_Constants::PAYMENT_METHOD ] = Alma_Constants::GATEWAY_ID;
 		}
 	}
 
@@ -103,10 +108,12 @@ class Alma_Checkout {
 	 * Check if payment_method is set in POST and is an Alma payment method
 	 * then and verify wp_nonce.
 	 *
+	 * @param string $id The gateway id.
+	 *
 	 * @return bool
 	 */
-	public function is_alma_payment_method() {
-		$payment_method = $this->check_nonce( 'payment_method', Alma_Constants::CHECKOUT_NONCE );
+	public function is_alma_payment_method( $id ) {
+		$payment_method = $this->check_nonce( Alma_Constants::PAYMENT_METHOD, Alma_Constants::CHECKOUT_NONCE . $id );
 
 		return $payment_method && substr( $payment_method, 0, 4 ) === 'alma';
 	}

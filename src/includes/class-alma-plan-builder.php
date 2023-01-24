@@ -56,7 +56,7 @@ class Alma_Plan_Builder {
 				type="radio"
 				value="<?php echo esc_attr( $plan_key ); ?>"
 				id="<?php echo esc_attr( $gateway_id ); ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
-				name="alma_fee_plan"
+				name="<?php echo esc_attr( Alma_Constants::ALMA_FEE_PLAN ); ?>"
 				data-default="<?php echo $is_checked ? '1' : '0'; ?>"
 				style="margin-right: 5px;<?php echo ( ! $has_radio_button ) ? 'display:none;' : ''; ?>"
 			<?php echo $is_checked ? 'checked' : ''; ?>
@@ -85,7 +85,7 @@ class Alma_Plan_Builder {
 	 *
 	 * @param integer $gateway_id Gateway id.
 	 * @param string  $default_plan Plan key.
-	 * @param array   $eligibilities The eligibilities
+	 * @param array   $eligibilities The eligibilities.
 	 *
 	 * @return void
 	 */

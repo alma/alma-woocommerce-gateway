@@ -92,8 +92,8 @@ class Alma_Share_Of_Checkout {
 	 * Does the call to alma API to share the checkout datas.
 	 *
 	 * @return void
-	 * @throws Exceptions\Alma_Api_Share_Of_Checkout
-	 * @throws \Exception
+	 * @throws Exceptions\Alma_Api_Share_Of_Checkout Alma_Api_Share_Of_Checkout_Exception.
+	 * @throws \Exception General Exception.
 	 */
 	public function share_days() {
 		$share_of_checkout_enabled_date = $this->settings->share_of_checkout_enabled_date;

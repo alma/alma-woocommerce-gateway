@@ -24,12 +24,12 @@ class Alma_Api_Share_Of_Checkout extends \Exception {
 	/**
 	 * Contruct.
 	 *
-	 * @param array $data The payload/
+	 * @param array $data The payload.
 	 */
 	public function __construct( $data ) {
 		$message = sprintf(
 			'Error while sharing soc data. Data : "%s"',
-			json_encode( $data )
+			wp_json_encode( $data )
 		);
 
 		parent::__construct( $message );

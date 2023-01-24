@@ -39,7 +39,9 @@ class Alma_Constants {
 	const CUSTOMER_RETURN                = 'alma_customer_return';
 	const IPN_CALLBACK                   = 'alma_ipn_callback';
 	const CHECKOUT_NONCE                 = 'alma_checkout_nonce';
+	const ALMA_FEE_PLAN                  = 'alma_fee_plan';
 	const DEFAULT_FEE_PLAN               = 'general_3_0_0';
+	const PAYMENT_METHOD                 = 'payment_method';
 	const DEFAULT_CHECK_VARIATIONS_EVENT = 'check_variations';
 	const AMOUNT_PLAN_KEY_REGEX          = '#^(min|max)_amount_general_[0-9]+_[0-9]+_[0-9]+$#';
 	const PAYMENT_METHOD_PNX             = 'payment_method_pnx';

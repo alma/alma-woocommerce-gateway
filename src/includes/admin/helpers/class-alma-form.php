@@ -759,7 +759,7 @@ class Alma_Form {
 	 */
 	private function init_share_of_checkout_field( $default_settings ) {
 		if (
-			empty( $this->settings_helper->__get('share_of_checkout_enabled_date') )
+			empty( $this->settings_helper->__get( 'share_of_checkout_enabled_date' ) )
 			|| $this->settings_helper->is_test()
 		) {
 			return array();

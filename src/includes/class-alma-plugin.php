@@ -77,7 +77,7 @@ class Alma_Plugin {
 				// Upgrade to 4.
 				$gateway = new Alma_Payment_Gateway();
 
-				// Manage credentials to match the new settings fields format
+				// Manage credentials to match the new settings fields format.
 				try {
 					$gateway->manage_credentials();
 				} catch ( \Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
