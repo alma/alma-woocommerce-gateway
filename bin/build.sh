@@ -45,9 +45,11 @@ LICENSE  \
 ./src/assets \
 ./src/includes \
 ./src/languages \
+./src/public \
 ./src/tests \
 ./src/composer.json \
 ./src/phpcs.xml \
+./src/autoload.php \
 ./src/alma-gateway-for-woocommerce.php \
 ./src/uninstall.php \
 "

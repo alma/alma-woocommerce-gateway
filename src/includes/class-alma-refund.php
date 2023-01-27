@@ -1,6 +1,6 @@
 <?php
 /**
- * Alma_Refund.
+ * Alma_Refund_Helper.
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes
@@ -13,10 +13,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-use Alma\Woocommerce\Admin\Helpers\Alma_Refund as Alma_Admin_Helper_Refund;
+use Alma\Woocommerce\Admin\Helpers\Alma_Refund_Helper as Alma_Admin_Helper_Refund;
 
 /**
- * Alma_Refund
+ * Alma_Refund_Helper
  */
 class Alma_Refund {
 

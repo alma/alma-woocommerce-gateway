@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Alma\Woocommerce\Models\Alma_Cart;
-use Alma\Woocommerce\Helpers\Alma_Constants;
+use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
 
 /**
  * Alma_Cart_Handler
@@ -60,7 +60,7 @@ class Alma_Cart_Handler extends Alma_Generic_Handler {
 		$cart   = new Alma_Cart();
 		$amount = $cart->get_total_in_cents();
 
-		$this->inject_payment_plan_widget( $has_excluded_products, $amount, Alma_Constants::JQUERY_CART_UPDATE_EVENT );
+		$this->inject_payment_plan_widget( $has_excluded_products, $amount, Alma_Constants_Helper::JQUERY_CART_UPDATE_EVENT );
 	}
 
 }

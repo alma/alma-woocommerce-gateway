@@ -1,6 +1,6 @@
 <?php
 /**
- * Alma_Payment.
+ * Alma_Payment_Helper.
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes/models
@@ -13,14 +13,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-use Alma\Woocommerce\Helpers\Alma_Tools;
+use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
 use Alma\Woocommerce\Alma_Logger;
 use Alma\Woocommerce\Alma_Payment_Upon_Trigger;
 use Alma\Woocommerce\Alma_Settings;
-use Alma\Woocommerce\Helpers\Alma_Constants;
+use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
 
 /**
- * Alma_Payment
+ * Alma_Payment_Helper
  */
 class Alma_Payment {
 
@@ -93,6 +93,7 @@ class Alma_Payment {
 	 * @return array
 	 */
 	public function get_payment_payload_from_order( $order_id, $fee_plan_definition ) {
+
 		try {
 			$order = new Alma_Order( $order_id );
 		} catch ( \Exception $e ) {
@@ -111,8 +112,8 @@ class Alma_Payment {
 		$data = array(
 			'payment' => array(
 				'purchase_amount'     => $order->get_total(),
-				'return_url'          => Alma_Tools::url_for_webhook( Alma_Constants::CUSTOMER_RETURN ),
-				'ipn_callback_url'    => Alma_Tools::url_for_webhook( Alma_Constants::IPN_CALLBACK ),
+				'return_url'          => Alma_Tools_Helper::url_for_webhook( Alma_Constants_Helper::CUSTOMER_RETURN ),
+				'ipn_callback_url'    => Alma_Tools_Helper::url_for_webhook( Alma_Constants_Helper::IPN_CALLBACK ),
 				'customer_cancel_url' => self::get_customer_cancel_url(),
 				'installments_count'  => $fee_plan_definition['installments_count'],
 				'deferred_days'       => $fee_plan_definition['deferred_days'],

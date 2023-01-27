@@ -10,9 +10,9 @@
 namespace Alma\Woocommerce;
 
 use Alma\API\Endpoints\Results\Eligibility;
-use Alma\Woocommerce\Helpers\Alma_Constants;
-use Alma\Woocommerce\Helpers\Alma_Assets;
-use Alma\Woocommerce\Helpers\Alma_Tools;
+use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
+use Alma\Woocommerce\Helpers\Alma_Assets_Helper;
+use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
 use Alma\Woocommerce\Models\Alma_Cart;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -48,15 +48,16 @@ class Alma_Plan_Builder {
 	 * @param boolean $is_checked Should the radio button be checked.
 	 */
 	public function payment_field( $gateway_id, $plan_key, $has_radio_button, $is_checked ) {
-		$plan_class = '.' . Alma_Constants::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS;
-		$plan_id    = '#' . sprintf( Alma_Constants::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $plan_key );
-		$logo_url   = Alma_Assets::get_asset_url( "images/${plan_key}_logo.svg" );
+		$plan_class = '.' . Alma_Constants_Helper::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS;
+		$plan_id    = '#' . sprintf( Alma_Constants_Helper::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $plan_key );
+		$logo_url   = Alma_Assets_Helper::get_asset_url( "images/${plan_key}_logo.svg" );
+
 		?>
 		<input
 				type="radio"
 				value="<?php echo esc_attr( $plan_key ); ?>"
 				id="<?php echo esc_attr( $gateway_id ); ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
-				name="<?php echo esc_attr( Alma_Constants::ALMA_FEE_PLAN ); ?>"
+				name="<?php echo esc_attr( Alma_Constants_Helper::ALMA_FEE_PLAN ); ?>"
 				data-default="<?php echo $is_checked ? '1' : '0'; ?>"
 				style="margin-right: 5px;<?php echo ( ! $has_radio_button ) ? 'display:none;' : ''; ?>"
 			<?php echo $is_checked ? 'checked' : ''; ?>
@@ -90,15 +91,15 @@ class Alma_Plan_Builder {
 	 * @return void
 	 */
 	public function render_payment_plan( $gateway_id, $default_plan, $eligibilities = array() ) {
-		if ( ! $eligibilities ) {
+		if ( empty( $eligibilities ) ) {
+
 			return;
 		}
-
 		foreach ( $eligibilities as $key => $eligibility ) {
 			?>
 			<div
-					id="<?php echo esc_attr( sprintf( Alma_Constants::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $key ) ); ?>"
-					class="<?php echo esc_attr( Alma_Constants::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS ); ?>"
+					id="<?php echo esc_attr( sprintf( Alma_Constants_Helper::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $key ) ); ?>"
+					class="<?php echo esc_attr( Alma_Constants_Helper::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS ); ?>"
 					data-gateway-id="<?php echo esc_attr( $gateway_id ); ?>"
 					style="
 							margin: 0 auto;
@@ -131,7 +132,8 @@ class Alma_Plan_Builder {
 
 		$plan_index   = 1;
 		$payment_plan = $eligibility->paymentPlan; // phpcs:ignore WordPress.NamingConventions.ValidVariableName
-		$plans_count  = count( $payment_plan );
+
+		$plans_count = count( $payment_plan );
 		foreach ( $payment_plan as $step ) {
 			$display_customer_fee = 1 === $plan_index && $eligibility->getInstallmentsCount() <= 4 && $step['customer_fee'] > 0;
 			?>
@@ -168,12 +170,13 @@ class Alma_Plan_Builder {
 						margin: 0 0 4px 0;
 						border-bottom: 1px solid lightgrey;
 						">
-					<span><?php echo esc_html__( 'Included fees:', 'alma-gateway-for-woocommerce' ); ?><?php echo wp_kses_post( Alma_Tools::alma_format_price_from_cents( $step['customer_fee'] ) ); ?></span>
+					<span><?php echo esc_html__( 'Included fees:', 'alma-gateway-for-woocommerce' ); ?><?php echo wp_kses_post( Alma_Tools_Helper::alma_format_price_from_cents( $step['customer_fee'] ) ); ?></span>
 				</p>
 				<?php
 			}
 			$plan_index++;
 		} // end foreach
+
 	}
 
 
@@ -189,8 +192,8 @@ class Alma_Plan_Builder {
 			sprintf(
 			// translators: %1$s => today_amount (0), %2$s => total_amount, %3$s => i18n formatted due_date.
 				__( '%1$s today then %2$s on %3$s', 'alma-gateway-for-woocommerce' ),
-				Alma_Tools::alma_format_price_from_cents( 0 ),
-				Alma_Tools::alma_format_price_from_cents( $step['total_amount'] ),
+				Alma_Tools_Helper::alma_format_price_from_cents( 0 ),
+				Alma_Tools_Helper::alma_format_price_from_cents( $step['total_amount'] ),
 				date_i18n( get_option( 'date_format' ), $step['due_date'] )
 			)
 		);
@@ -211,7 +214,7 @@ class Alma_Plan_Builder {
 		} else {
 			echo '<span>' . esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) ) . '</span>';
 		}
-		echo wp_kses_post( Alma_Tools::alma_format_price_from_cents( $step['total_amount'] ) );
+		echo wp_kses_post( Alma_Tools_Helper::alma_format_price_from_cents( $step['total_amount'] ) );
 	}
 
 	/**
@@ -262,7 +265,7 @@ class Alma_Plan_Builder {
 			border-bottom: 1px solid lightgrey;
 		">
 			<span><?php echo esc_html__( 'Your cart:', 'alma-gateway-for-woocommerce' ); ?></span>
-			<span><?php echo wp_kses_post( Alma_Tools::alma_format_price_from_cents( $cart->get_total_in_cents() ) ); ?></span>
+			<span><?php echo wp_kses_post( Alma_Tools_Helper::alma_format_price_from_cents( $cart->get_total_in_cents() ) ); ?></span>
 		</p>
 		<p style="
 			display: flex;
@@ -272,7 +275,7 @@ class Alma_Plan_Builder {
 			border-bottom: 1px solid lightgrey;
 		">
 			<span><?php echo esc_html__( 'Credit cost:', 'alma-gateway-for-woocommerce' ); ?></span>
-			<span><?php echo wp_kses_post( Alma_Tools::alma_format_price_from_cents( $eligibility->customerTotalCostAmount ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName ?></span>
+			<span><?php echo wp_kses_post( Alma_Tools_Helper::alma_format_price_from_cents( $eligibility->customerTotalCostAmount ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName ?></span>
 		</p>
 		<?php
 		$annual_interest_rate = $eligibility->getAnnualInterestRate();
@@ -286,7 +289,7 @@ class Alma_Plan_Builder {
 				border-bottom: 1px solid lightgrey;
 			">
 				<span><?php echo esc_html__( 'Annual Interest Rate:', 'alma-gateway-for-woocommerce' ); ?></span>
-				<span><?php echo wp_kses_post( Alma_Tools::alma_format_percent_from_bps( $annual_interest_rate ) ); ?></span>
+				<span><?php echo wp_kses_post( Alma_Tools_Helper::alma_format_percent_from_bps( $annual_interest_rate ) ); ?></span>
 			</p>
 		<?php } ?>
 		<p style="
@@ -297,7 +300,7 @@ class Alma_Plan_Builder {
 			font-weight: bold;
 		">
 			<span><?php echo esc_html__( 'Total:', 'alma-gateway-for-woocommerce' ); ?></span>
-			<span><?php echo wp_kses_post( Alma_Tools::alma_format_price_from_cents( $eligibility->getCustomerTotalCostAmount() + $cart->get_total_in_cents() ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName ?></span>
+			<span><?php echo wp_kses_post( Alma_Tools_Helper::alma_format_price_from_cents( $eligibility->getCustomerTotalCostAmount() + $cart->get_total_in_cents() ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName ?></span>
 		</p>
 		<?php
 	}

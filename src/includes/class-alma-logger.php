@@ -18,6 +18,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Alma_Logger.
+ *
+ * @property Alma_Settings $settings
  */
 class Alma_Logger extends AbstractLogger {
 
@@ -34,6 +36,12 @@ class Alma_Logger extends AbstractLogger {
 	 * @return void
 	 */
 	public function log( $level, $message, array $context = array() ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
+		if (
+			! is_callable( 'wc' )
+			|| $this->can_log()
+		) {
+			return;
+		}
 
 		$logger = self::get_logger();
 
@@ -58,6 +66,23 @@ class Alma_Logger extends AbstractLogger {
 		}
 	}
 
+	/**
+	 * Can we log.
+	 *
+	 * @return bool The log action.
+	 */
+	protected function can_log() {
+		$settings = Alma_Settings::get_settings();
+
+		if (
+			empty( $settings )
+			|| 'no' === $settings['debug']
+		) {
+			return false;
+		}
+
+		return true;
+	}
 	/**
 	 * Get logger.
 	 *

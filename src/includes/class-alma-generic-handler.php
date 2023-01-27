@@ -13,9 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-use Alma\Woocommerce\Helpers\Alma_Tools;
-use Alma\Woocommerce\Helpers\Alma_Assets;
-use Alma\Woocommerce\Helpers\Alma_Constants;
+use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
+use Alma\Woocommerce\Helpers\Alma_Assets_Helper;
+use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
 
 /**
  * Alma_Generic_Handler
@@ -44,7 +44,7 @@ class Alma_Generic_Handler {
 	/**
 	 * The tool helper.
 	 *
-	 * @var Alma_Tools
+	 * @var Alma_Tools_Helper
 	 */
 	protected $helper_tools;
 
@@ -56,7 +56,7 @@ class Alma_Generic_Handler {
 	public function __construct() {
 		$this->logger        = new Alma_Logger();
 		$this->alma_settings = new Alma_Settings();
-		$this->helper_tools  = new Alma_Tools();
+		$this->helper_tools  = new Alma_Tools_Helper();
 	}
 
 	/**
@@ -118,13 +118,13 @@ class Alma_Generic_Handler {
 		);
 
 		// Inject JS/CSS required for the eligibility/payment plans info display.
-		$alma_widgets_js_url = Alma_Assets::get_asset_url( 'widget/js/widgets.umd.js' );
+		$alma_widgets_js_url = Alma_Assets_Helper::get_asset_url( 'widget/js/widgets.umd.js' );
 		wp_enqueue_script( 'alma-widgets', $alma_widgets_js_url, array(), ALMA_VERSION, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 
-		$alma_widgets_css_url = Alma_Assets::get_asset_url( 'widget/css/widgets.css' );
+		$alma_widgets_css_url = Alma_Assets_Helper::get_asset_url( 'widget/css/widgets.css' );
 		wp_enqueue_style( 'alma-widgets', $alma_widgets_css_url, array(), ALMA_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 
-		$alma_widgets_injection_url = Alma_Assets::get_asset_url( 'js/alma-widgets-inject.js' );
+		$alma_widgets_injection_url = Alma_Assets_Helper::get_asset_url( 'js/alma-widgets-inject.js' );
 		wp_enqueue_script( 'alma-widgets-injection', $alma_widgets_injection_url, array(), ALMA_VERSION, true );
 
 		?>
@@ -137,7 +137,7 @@ class Alma_Generic_Handler {
 
 			<?php
 			if ( $has_excluded_products ) {
-				$logo_url      = Alma_Assets::get_asset_url( Alma_Constants::ALMA_LOGO_PATH );
+				$logo_url      = Alma_Assets_Helper::get_asset_url( Alma_Constants_Helper::ALMA_LOGO_PATH );
 				$exclusion_msg = $this->get_cart_not_eligible_message_gift_cards();
 				?>
 				<img src="<?php echo esc_attr( $logo_url ); ?>" alt="Alma" style="width: auto !important; height: 25px !important; border: none !important; vertical-align: middle; display: inline-block;">

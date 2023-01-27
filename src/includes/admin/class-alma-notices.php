@@ -15,12 +15,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use Alma\Woocommerce\Helpers\Alma_Constants;
+use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
 
 /**
  * Class that represents admin notices.
  *
- * @since 4.1.0
+ * @since 4.0.0
  */
 class Alma_Notices {
 
@@ -74,7 +74,7 @@ class Alma_Notices {
 
 			if ( $notice['dismissible'] ) {
 				?>
-				<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'alma-gateway-for-woocommerce-hide-notice', $notice_key ), 'wc_alma_hide_notices_nonce', Alma_Constants::NOTICE_NONCE_NAME ) ); ?>"
+				<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'alma-gateway-for-woocommerce-hide-notice', $notice_key ), 'wc_alma_hide_notices_nonce', Alma_Constants_Helper::NOTICE_NONCE_NAME ) ); ?>"
 					class="woocommerce-message-close notice-dismiss"
 					style="position:relative;float:right;padding:9px 9px 9px 9px;text-decoration:none;"></a>
 				<?php
@@ -102,9 +102,9 @@ class Alma_Notices {
 	public function hide_notices() {
 		if (
 			isset( $_GET['alma-gateway-for-woocommerce-hide-notice'] )
-			&& isset( $_GET[ Alma_Constants::NOTICE_NONCE_NAME ] )
+			&& isset( $_GET[ Alma_Constants_Helper::NOTICE_NONCE_NAME ] )
 		) {
-			if ( ! wp_verify_nonce( wc_clean( wp_unslash( $_GET[ Alma_Constants::NOTICE_NONCE_NAME ] ) ), 'wc_alma_hide_notices_nonce' ) ) {
+			if ( ! wp_verify_nonce( wc_clean( wp_unslash( $_GET[ Alma_Constants_Helper::NOTICE_NONCE_NAME ] ) ), 'wc_alma_hide_notices_nonce' ) ) {
 				wp_die( esc_html__( 'Action failed. Please refresh the page and retry.', 'alma-gateway-for-woocommerce' ) );
 			}
 

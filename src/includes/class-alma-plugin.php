@@ -14,12 +14,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Alma\Woocommerce\Admin\Alma_Notices;
-use Alma\Woocommerce\Admin\Helpers\Alma_Check_Legal;
-use Alma\Woocommerce\Exceptions\Alma_Requirements;
-use Alma\Woocommerce\Helpers\Alma_Constants;
-use Alma\Woocommerce\Helpers\Alma_Tools;
-use Alma\Woocommerce\Helpers\Alma_Payment;
-use Alma\Woocommerce\Helpers\Alma_Assets;
+use Alma\Woocommerce\Admin\Helpers\Alma_Check_Legal_Helper;
+use Alma\Woocommerce\Exceptions\Alma_Requirements_Exception;
+use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
+use Alma\Woocommerce\Helpers\Alma_Gateway_Helper;
+use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
+use Alma\Woocommerce\Helpers\Alma_Payment_Helper;
+use Alma\Woocommerce\Helpers\Alma_Assets_Helper;
 
 /**
  * Alma_Plugin.
@@ -91,6 +92,8 @@ class Alma_Plugin {
 			}
 
 			update_option( 'alma_version', ALMA_VERSION );
+			delete_option( 'woocommerce_alma_settings' );
+			delete_option( 'alma_warnings_handled' );
 		}
 	}
 
@@ -129,38 +132,38 @@ class Alma_Plugin {
 	 * Check dependencies.
 	 *
 	 * @return void
-	 * @throws Alma_Requirements   Alma_Requirements.
+	 * @throws Alma_Requirements_Exception   Alma_Requirements_Exception.
 	 */
 	protected function check_dependencies() {
 
 		if ( ! function_exists( 'WC' ) ) {
-			throw new Alma_Requirements( __( 'Alma requires WooCommerce to be activated', 'alma-gateway-for-woocommerce' ) );
+			throw new Alma_Requirements_Exception( __( 'Alma requires WooCommerce to be activated', 'alma-gateway-for-woocommerce' ) );
 		}
 
 		if ( version_compare( wc()->version, '2.6', '<' ) ) {
-			throw new Alma_Requirements( __( 'Alma requires WooCommerce version 2.6 or greater', 'alma-gateway-for-woocommerce' ) );
+			throw new Alma_Requirements_Exception( __( 'Alma requires WooCommerce version 2.6 or greater', 'alma-gateway-for-woocommerce' ) );
 		}
 
 		if ( ! function_exists( 'curl_init' ) ) {
-			throw new Alma_Requirements( __( 'Alma requires the cURL PHP extension to be installed on your server', 'alma-gateway-for-woocommerce' ) );
+			throw new Alma_Requirements_Exception( __( 'Alma requires the cURL PHP extension to be installed on your server', 'alma-gateway-for-woocommerce' ) );
 		}
 
 		if ( ! function_exists( 'json_decode' ) ) {
-			throw new Alma_Requirements( __( 'Alma requires the JSON PHP extension to be installed on your server', 'alma-gateway-for-woocommerce' ) );
+			throw new Alma_Requirements_Exception( __( 'Alma requires the JSON PHP extension to be installed on your server', 'alma-gateway-for-woocommerce' ) );
 		}
 
 		$openssl_warning = __( 'Alma requires OpenSSL >= 1.0.1 to be installed on your server', 'alma-gateway-for-woocommerce' );
 		if ( ! defined( 'OPENSSL_VERSION_TEXT' ) ) {
-			throw new Alma_Requirements( $openssl_warning );
+			throw new Alma_Requirements_Exception( $openssl_warning );
 		}
 
 		preg_match( '/^(?:Libre|Open)SSL ([\d.]+)/', OPENSSL_VERSION_TEXT, $matches );
 		if ( empty( $matches[1] ) ) {
-			throw new Alma_Requirements( $openssl_warning );
+			throw new Alma_Requirements_Exception( $openssl_warning );
 		}
 
 		if ( ! version_compare( $matches[1], '1.0.1', '>=' ) ) {
-			throw new Alma_Requirements( $openssl_warning );
+			throw new Alma_Requirements_Exception( $openssl_warning );
 		}
 	}
 
@@ -181,7 +184,7 @@ class Alma_Plugin {
 	 */
 	protected function add_hooks() {
 		add_action(
-			Alma_Tools::action_for_webhook( Alma_Constants::CUSTOMER_RETURN ),
+			Alma_Tools_Helper::action_for_webhook( Alma_Constants_Helper::CUSTOMER_RETURN ),
 			array(
 				$this,
 				'handle_customer_return',
@@ -189,7 +192,7 @@ class Alma_Plugin {
 		);
 
 		add_action(
-			Alma_Tools::action_for_webhook( Alma_Constants::IPN_CALLBACK ),
+			Alma_Tools_Helper::action_for_webhook( Alma_Constants_Helper::IPN_CALLBACK ),
 			array(
 				$this,
 				'handle_ipn_callback',
@@ -242,7 +245,7 @@ class Alma_Plugin {
 		$refund = new Alma_Refund();
 		add_action( 'admin_init', array( $refund, 'admin_init' ) );
 
-		$check_legal = new Alma_Check_Legal();
+		$check_legal = new Alma_Check_Legal_Helper();
 		add_action( 'init', array( $check_legal, 'check_share_checkout' ) );
 	}
 
@@ -266,7 +269,7 @@ class Alma_Plugin {
 	 * @return void
 	 */
 	public function handle_ipn_callback() {
-		$payment_helper = new Alma_Payment();
+		$payment_helper = new Alma_Payment_Helper();
 		$payment_helper->handle_ipn_callback();
 	}
 
@@ -277,7 +280,7 @@ class Alma_Plugin {
 	 * @return void
 	 */
 	public function handle_customer_return() {
-		$payment_helper = new Alma_Payment();
+		$payment_helper = new Alma_Payment_Helper();
 		$order          = $payment_helper->handle_customer_return();
 
 		// Redirect user to the order confirmation page.
@@ -295,7 +298,7 @@ class Alma_Plugin {
 	 */
 	public function wp_enqueue_scripts() {
 		if ( is_checkout() ) {
-			$alma_checkout = Alma_Assets::get_asset_url( Alma_Constants::ALMA_PATH_CHECKOUT_JS );
+			$alma_checkout = Alma_Assets_Helper::get_asset_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_JS );
 			wp_enqueue_script( 'alma-checkout-page', $alma_checkout, array(), ALMA_VERSION, true );
 		}
 	}

@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-use Alma\Woocommerce\Helpers\Alma_Tools;
+use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
 
 /**
  * Alma_Product_Handler
@@ -95,7 +95,7 @@ class Alma_Product_Handler extends Alma_Generic_Handler {
 
 		$this->inject_payment_plan_widget(
 			$has_excluded_products,
-			Alma_Tools::alma_price_to_cents( $price ),
+			Alma_Tools_Helper::alma_price_to_cents( $price ),
 			$jquery_update_event,
 			$amount_query_selector,
 			$amount_sale_price_query_selector

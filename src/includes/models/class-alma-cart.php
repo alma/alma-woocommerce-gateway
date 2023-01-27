@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-use Alma\Woocommerce\Helpers\Alma_Tools;
+use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
 
 /**
  * Alma_Cart
@@ -44,7 +44,7 @@ class Alma_Cart {
 	 * @see get_total_from_cart
 	 */
 	public function get_total_in_cents() {
-		return Alma_Tools::alma_price_to_cents( $this->get_total_from_cart() );
+		return Alma_Tools_Helper::alma_price_to_cents( $this->get_total_from_cart() );
 	}
 
 	/**
@@ -56,6 +56,7 @@ class Alma_Cart {
 		if ( ! $this->cart ) {
 			return 0;
 		}
+
 		if ( version_compare( WC()->version, '3.2.0', '<' ) ) {
 			return $this->cart->total;
 		}

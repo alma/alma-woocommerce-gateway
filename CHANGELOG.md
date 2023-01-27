@@ -4,10 +4,9 @@ Changelog
 v4.0.0
 ------
 
-* feat: add namespaces
-* fix: other plugins incompatibilities
-* feat: reduce api calls
-* fix: migration between versions of alma module
+* feat: a new start
+* feat: Share of Checkout
+* fix: unique nonce fields
 
 v3.2.2
 ------

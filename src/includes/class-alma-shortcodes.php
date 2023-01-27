@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-use Alma\Woocommerce\Helpers\Alma_Constants;
+use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
 
 /**
  * Class Wc_Alma_Shortcodes
@@ -31,7 +31,7 @@ class Alma_Shortcodes {
 	 */
 	public function init_cart_widget_shortcode( Alma_Cart_Handler $handler ) {
 		add_shortcode(
-			Alma_Constants::CART_SHORTCODE_TAG,
+			Alma_Constants_Helper::CART_SHORTCODE_TAG,
 			function ( $atts, $content = '' ) use ( $handler ) {
 				return $this->alma_cart_widget( $handler, $atts, $content );
 			}
@@ -51,13 +51,13 @@ class Alma_Shortcodes {
 
 		if ( $handler->is_already_rendered() ) {
 
-			return $this->render_empty( Alma_Constants::CART_SHORTCODE_TAG, $handler->get_eligibility_widget_already_rendered_message(), $atts, $content );
+			return $this->render_empty( Alma_Constants_Helper::CART_SHORTCODE_TAG, $handler->get_eligibility_widget_already_rendered_message(), $atts, $content );
 		}
 
 		ob_start();
 		$handler->display_cart_eligibility();
 
-		return $this->render( Alma_Constants::CART_SHORTCODE_TAG, $atts, ob_get_clean(), $content );
+		return $this->render( Alma_Constants_Helper::CART_SHORTCODE_TAG, $atts, ob_get_clean(), $content );
 	}
 
 	/**
@@ -123,7 +123,7 @@ class Alma_Shortcodes {
 	 */
 	public function init_product_widget_shortcode( Alma_Product_Handler $handler ) {
 		add_shortcode(
-			Alma_Constants::PRODUCT_SHORTCODE_TAG,
+			Alma_Constants_Helper::PRODUCT_SHORTCODE_TAG,
 			function ( $atts, $content = '' ) use ( $handler ) {
 				return $this->alma_product_widget( $handler, $atts, $content );
 			}
@@ -142,7 +142,7 @@ class Alma_Shortcodes {
 	protected function alma_product_widget( Alma_Product_Handler $handler, $atts, $content = '' ) {
 
 		if ( $handler->is_already_rendered() ) {
-			return $this->render_empty( Alma_Constants::PRODUCT_SHORTCODE_TAG, $handler->get_eligibility_widget_already_rendered_message(), $atts, $content );
+			return $this->render_empty( Alma_Constants_Helper::PRODUCT_SHORTCODE_TAG, $handler->get_eligibility_widget_already_rendered_message(), $atts, $content );
 		}
 
 		$product = wc_get_product( isset( $atts['id'] ) ? $atts['id'] : false );
@@ -151,13 +151,13 @@ class Alma_Shortcodes {
 			/* translators: %s: #product_id (if any) */
 			$product_not_found_content = sprintf( __( 'Product%s not found - Not displaying Alma', 'alma-gateway-for-woocommerce' ), isset( $atts['id'] ) ? ' with id #' . $atts['id'] : '' );
 
-			return $this->render_empty( Alma_Constants::PRODUCT_SHORTCODE_TAG, $product_not_found_content, $atts, $content );
+			return $this->render_empty( Alma_Constants_Helper::PRODUCT_SHORTCODE_TAG, $product_not_found_content, $atts, $content );
 		}
 
 		ob_start();
 		$handler->inject_payment_plan( $product );
 
-		return $this->render( Alma_Constants::PRODUCT_SHORTCODE_TAG, $atts, ob_get_clean(), $content );
+		return $this->render( Alma_Constants_Helper::PRODUCT_SHORTCODE_TAG, $atts, ob_get_clean(), $content );
 	}
 
 }

@@ -14,11 +14,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 
-use Alma\Woocommerce\Admin\Helpers\Alma_Share_Of_Checkout as Alma_Admin_Helper_Share_Of_Checkout;
-use Alma\Woocommerce\Admin\Helpers\Alma_Date;
+use Alma\Woocommerce\Admin\Helpers\Alma_Share_Of_Checkout_Helper;
+use Alma\Woocommerce\Admin\Helpers\Alma_Date_Helper;
 
 /**
- * Alma_Share_Of_Checkout
+ * Alma_Share_Of_Checkout_Helper
  */
 class Alma_Share_Of_Checkout {
 
@@ -92,25 +92,25 @@ class Alma_Share_Of_Checkout {
 	 * Does the call to alma API to share the checkout datas.
 	 *
 	 * @return void
-	 * @throws Exceptions\Alma_Api_Share_Of_Checkout Alma_Api_Share_Of_Checkout_Exception.
+	 * @throws Exceptions\Alma_Api_Share_Of_Checkout_Exception Alma_Api_Share_Of_Checkout_Exception.
 	 * @throws \Exception General Exception.
 	 */
 	public function share_days() {
 		$share_of_checkout_enabled_date = $this->settings->share_of_checkout_enabled_date;
 
 		try {
-			$last_update_date = Alma_Admin_Helper_Share_Of_Checkout::get_last_update_date();
+			$last_update_date = Alma_Share_Of_Checkout_Helper::get_last_update_date();
 		} catch ( \Exception $e ) {
 			$this->logger->error( 'Error getting getLastUpdateDates for ShareOfCheckout : ' . $e->getMessage() );
-			$last_update_date = Alma_Admin_Helper_Share_Of_Checkout::get_default_last_update_date();
+			$last_update_date = Alma_Share_Of_Checkout_Helper::get_default_last_update_date();
 		}
 
 		$from_date = max( $last_update_date, $share_of_checkout_enabled_date );
 
-		$dates_to_share = Alma_Date::get_dates_in_interval( $from_date );
+		$dates_to_share = Alma_Date_Helper::get_dates_in_interval( $from_date );
 
 		foreach ( $dates_to_share as $date ) {
-			$this->settings->send_soc_data( Alma_Admin_Helper_Share_Of_Checkout::get_payload( $date ) );
+			$this->settings->send_soc_data( Alma_Share_Of_Checkout_Helper::get_payload( $date ) );
 		}
 	}
 }

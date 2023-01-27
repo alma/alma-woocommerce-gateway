@@ -1,6 +1,6 @@
 <?php
 /**
- * Alma_Order.
+ * Alma_Order_Helper.
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes/models
@@ -13,11 +13,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-use Alma\Woocommerce\Exceptions\Alma_No_Order;
-use Alma\Woocommerce\Helpers\Alma_Tools;
+use Alma\Woocommerce\Exceptions\Alma_No_Order_Exception;
+use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
 
 /**
- * Alma_Order
+ * Alma_Order_Helper
  */
 class Alma_Order {
 
@@ -48,7 +48,7 @@ class Alma_Order {
 	 * @param int         $order_id Order Id.
 	 * @param string|null $order_key Order key.
 	 *
-	 * @throws Alma_No_Order No order.
+	 * @throws Alma_No_Order_Exception No order.
 	 */
 	public function __construct( $order_id, $order_key = null ) {
 		$this->legacy = version_compare( wc()->version, '3.0.0', '<' );
@@ -63,7 +63,7 @@ class Alma_Order {
 		}
 
 		if ( ! $this->order || ( $order_key && $this->get_order_key() !== $order_key ) ) {
-			throw new Alma_No_Order( $order_id, $order_key );
+			throw new Alma_No_Order_Exception( $order_id, $order_key );
 		}
 
 		$this->order_id = $order_id;
@@ -109,7 +109,7 @@ class Alma_Order {
 	 * @return int
 	 */
 	public function get_total() {
-		return Alma_Tools::alma_price_to_cents( $this->order->get_total() );
+		return Alma_Tools_Helper::alma_price_to_cents( $this->order->get_total() );
 	}
 
 	/**

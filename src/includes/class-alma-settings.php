@@ -1,6 +1,6 @@
 <?php
 /**
- * Alma_Settings.
+ * Alma_Settings_Helper.
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes
@@ -20,27 +20,27 @@ use Alma\API\Entities\FeePlan;
 use Alma\API\Entities\Payment;
 use Alma\API\ParamsError;
 use Alma\API\RequestError;
-use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Accept;
-use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Deny;
-use Alma\Woocommerce\Exceptions\Alma_Api_Soc_Last_Update_Dates;
-use Alma\Woocommerce\Helpers\Alma_Settings as Alma_Helper_Settings;
-use Alma\Woocommerce\Exceptions\Alma_Plans_Definition;
-use Alma\Woocommerce\Helpers\Alma_General;
+use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Accept_Exception;
+use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Deny_Exception;
+use Alma\Woocommerce\Exceptions\Alma_Api_Soc_Last_Update_Dates_Exception;
+use Alma\Woocommerce\Helpers\Alma_Settings_Helper as Alma_Helper_Settings;
+use Alma\Woocommerce\Exceptions\Alma_Plans_Definition_Exception;
+use Alma\Woocommerce\Helpers\Alma_General_Helper;
 use Alma\Woocommerce\Models\Alma_Cart;
-use Alma\Woocommerce\Helpers\Alma_Constants;
+use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
 use Alma\Woocommerce\Models\Alma_Payment;
-use Alma\Woocommerce\Helpers\Alma_Internationalization;
-use Alma\Woocommerce\Exceptions\Alma_Api_Create_Payments;
+use Alma\Woocommerce\Helpers\Alma_Internationalization_Helper;
+use Alma\Woocommerce\Exceptions\Alma_Api_Create_Payments_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Exception;
-use Alma\Woocommerce\Exceptions\Alma_Api_Fetch_Payments;
-use Alma\Woocommerce\Exceptions\Alma_Api_Trigger_Payments;
-use Alma\Woocommerce\Exceptions\Alma_Api_Full_Refund;
-use Alma\Woocommerce\Exceptions\Alma_Api_Partial_Refund;
-use Alma\Woocommerce\Exceptions\Alma_Wrong_Credentials;
-use Alma\Woocommerce\Exceptions\Alma_Api_Plans;
-use Alma\Woocommerce\Exceptions\Alma_Api_Merchants;
-use Alma\Woocommerce\Exceptions\Alma_Activation;
-use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout;
+use Alma\Woocommerce\Exceptions\Alma_Api_Fetch_Payments_Exception;
+use Alma\Woocommerce\Exceptions\Alma_Api_Trigger_Payments_Exception;
+use Alma\Woocommerce\Exceptions\Alma_Api_Full_Refund_Exception;
+use Alma\Woocommerce\Exceptions\Alma_Api_Partial_Refund_Exception;
+use Alma\Woocommerce\Exceptions\Alma_Wrong_Credentials_Exception;
+use Alma\Woocommerce\Exceptions\Alma_Api_Plans_Exception;
+use Alma\Woocommerce\Exceptions\Alma_Api_Merchants_Exception;
+use Alma\Woocommerce\Exceptions\Alma_Activation_Exception;
+use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Exception;
 
 /**
  * Handles settings retrieval from the settings API.
@@ -131,6 +131,17 @@ class Alma_Settings {
 	}
 
 	/**
+	 * Is logging enabled.
+	 *
+	 * @return bool
+	 */
+	public function is_logging_enabled() {
+		return 'yes' === $this->debug;
+	}
+
+
+
+	/**
 	 * Retrieve the db settings.
 	 *
 	 * @return array
@@ -170,6 +181,22 @@ class Alma_Settings {
 
 		return false;
 	}
+
+	/**
+	 * Tells if the merchant has at least one "pnx" payment method enabled in the WC back-office.
+	 *
+	 * @return bool
+	 */
+	public function has_pnx() {
+		foreach ( $this->get_enabled_plans_definitions() as $plan_definition ) {
+			if ( $plan_definition['installments_count'] <= 4 ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 
 	/**
 	 * Gets enabled plans and configuration summary stored in settings for each enabled plan.
@@ -296,21 +323,6 @@ class Alma_Settings {
 	}
 
 	/**
-	 * Tells if the merchant has at least one "pnx_plus_4" payment method enabled in the WC back-office.
-	 *
-	 * @return bool
-	 */
-	public function has_pnx_plus_4() {
-		foreach ( $this->get_enabled_plans_definitions() as $plan_definition ) {
-			if ( $plan_definition['installments_count'] > 4 ) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
 	 * Is plugin enabled.
 	 *
 	 * @return bool
@@ -338,12 +350,12 @@ class Alma_Settings {
 	 * @return string
 	 */
 	public function get_i18n( $key ) {
-		if ( Alma_Internationalization::is_site_multilingual() ) {
+		if ( Alma_Internationalization_Helper::is_site_multilingual() ) {
 			if ( $this->{$key . '_' . get_locale()} ) {
 				return $this->{$key . '_' . get_locale()};
 			}
 
-			return Alma_Internationalization::get_translated_text(
+			return Alma_Internationalization_Helper::get_translated_text(
 				Alma_Helper_Settings::default_settings()[ $key ],
 				get_locale()
 			);
@@ -428,7 +440,7 @@ class Alma_Settings {
 	 * @param array  $fee_plan_definition The plan definition.
 	 *
 	 * @return Payment
-	 * @throws Alma_Api_Create_Payments Create payment exception.
+	 * @throws Alma_Api_Create_Payments_Exception Create payment exception.
 	 */
 	public function create_payments( $order_id, $fee_plan_definition ) {
 		try {
@@ -441,7 +453,7 @@ class Alma_Settings {
 			return $this->alma_client->payments->create( $payload );
 		} catch ( \Exception $e ) {
 			$this->logger->error( sprintf( 'Api create_payments, order id "%s" , Api message "%s"', $order_id, $e->getMessage() ) );
-			throw new Alma_Api_Create_Payments( $order_id, $fee_plan_definition );
+			throw new Alma_Api_Create_Payments_Exception( $order_id, $fee_plan_definition );
 		}
 	}
 
@@ -492,7 +504,7 @@ class Alma_Settings {
 	 *
 	 * @return Payment
 	 *
-	 * @throws Alma_Api_Fetch_Payments Fetch payment exception.
+	 * @throws Alma_Api_Fetch_Payments_Exception Fetch payment exception.
 	 */
 	public function fetch_payment( $payment_id ) {
 		try {
@@ -502,7 +514,7 @@ class Alma_Settings {
 
 		} catch ( \Exception $e ) {
 			$this->logger->error( sprintf( 'Api fetch_payment, payment id "%s" , Api message "%s"', $payment_id, $e->getMessage() ) );
-			throw new Alma_Api_Fetch_Payments( $payment_id );
+			throw new Alma_Api_Fetch_Payments_Exception( $payment_id );
 		}
 	}
 
@@ -511,7 +523,7 @@ class Alma_Settings {
 	 *
 	 * @param array $data   The payload.
 	 *
-	 * @throws Alma_Api_Share_Of_Checkout Alma_Api_Share_Of_Checkout exception.
+	 * @throws Alma_Api_Share_Of_Checkout_Exception Alma_Api_Share_Of_Checkout_Exception exception.
 	 */
 	public function send_soc_data( $data ) {
 		try {
@@ -521,7 +533,7 @@ class Alma_Settings {
 
 		} catch ( \Exception $e ) {
 			$this->logger->error( sprintf( 'Api : shareOfCheckout, data : "%s", Api message "%s"', wp_json_encode( $data ), $e->getMessage() ) );
-			throw new Alma_Api_Share_Of_Checkout( $data );
+			throw new Alma_Api_Share_Of_Checkout_Exception( $data );
 		}
 	}
 
@@ -530,7 +542,7 @@ class Alma_Settings {
 	 *
 	 * @return mixed
 	 *
-	 * @throws Alma_Api_Soc_Last_Update_Dates The api exception.
+	 * @throws Alma_Api_Soc_Last_Update_Dates_Exception The api exception.
 	 */
 	public function get_soc_last_updated_date() {
 		try {
@@ -539,7 +551,7 @@ class Alma_Settings {
 			return $this->alma_client->shareOfCheckout->getLastUpdateDates(); // phpcs:ignore
 		} catch ( \Exception $e ) {
 			$this->logger->error( sprintf( 'Api : getLastUpdateDates shareOfCheckout, Api message "%s"', $e->getMessage() ) );
-			throw new Alma_Api_Soc_Last_Update_Dates();
+			throw new Alma_Api_Soc_Last_Update_Dates_Exception();
 		}
 	}
 
@@ -547,7 +559,7 @@ class Alma_Settings {
 	/**
 	 * Sent the accept for the soc consent
 	 *
-	 * @throws Alma_Api_Share_Of_Checkout_Accept The exception.
+	 * @throws Alma_Api_Share_Of_Checkout_Accept_Exception The exception.
 	 */
 	public function accept_soc_consent() {
 		try {
@@ -557,14 +569,14 @@ class Alma_Settings {
 
 		} catch ( \Exception $e ) {
 			$this->logger->error( sprintf( 'Api : accept share of shareOfCheckout, Api message "%s"', $e->getMessage() ) );
-			throw new Alma_Api_Share_Of_Checkout_Accept();
+			throw new Alma_Api_Share_Of_Checkout_Accept_Exception();
 		}
 	}
 
 	/**
 	 * Sent the deny for the consent for soc.
 	 *
-	 * @throws Alma_Api_Share_Of_Checkout_Deny The exception.
+	 * @throws Alma_Api_Share_Of_Checkout_Deny_Exception The exception.
 	 */
 	public function deny_soc_consent() {
 		try {
@@ -574,7 +586,7 @@ class Alma_Settings {
 
 		} catch ( \Exception $e ) {
 			$this->logger->error( sprintf( 'Api : deny share of shareOfCheckout, Api message "%s"', $e->getMessage() ) );
-			throw new Alma_Api_Share_Of_Checkout_Deny();
+			throw new Alma_Api_Share_Of_Checkout_Deny_Exception();
 		}
 	}
 
@@ -586,7 +598,7 @@ class Alma_Settings {
 	 *
 	 * @return Payment
 	 *
-	 * @throws Alma_Api_Trigger_Payments Api trigger exception.
+	 * @throws Alma_Api_Trigger_Payments_Exception Api trigger exception.
 	 */
 	public function trigger_payment( $transaction_id ) {
 		try {
@@ -596,7 +608,7 @@ class Alma_Settings {
 
 		} catch ( \Exception $e ) {
 			$this->logger->error( sprintf( 'Api trigger_payment, transaction id "%s" , Api message "%s"', $transaction_id, $e->getMessage() ) );
-			throw new Alma_Api_Trigger_Payments( $transaction_id );
+			throw new Alma_Api_Trigger_Payments_Exception( $transaction_id );
 		}
 	}
 
@@ -608,7 +620,7 @@ class Alma_Settings {
 	 * @param string $comment The comment.
 	 *
 	 * @return void
-	 * @throws Alma_Api_Full_Refund APi refund exception.
+	 * @throws Alma_Api_Full_Refund_Exception APi refund exception.
 	 */
 	public function full_refund( $transaction_id, $merchant_reference, $comment ) {
 		try {
@@ -617,7 +629,7 @@ class Alma_Settings {
 			$this->alma_client->payments->fullRefund( $transaction_id, $merchant_reference, $comment );
 		} catch ( \Exception $e ) {
 			$this->logger->error( sprintf( 'Api full_refund, transaction id "%s" , Api message "%s"', $transaction_id, $e->getMessage() ) );
-			throw new Alma_Api_Full_Refund( $transaction_id, $merchant_reference );
+			throw new Alma_Api_Full_Refund_Exception( $transaction_id, $merchant_reference );
 		}
 	}
 
@@ -630,7 +642,7 @@ class Alma_Settings {
 	 * @param string $comment The comment.
 	 *
 	 * @return void
-	 * @throws Alma_Api_Partial_Refund APi refund exception.
+	 * @throws Alma_Api_Partial_Refund_Exception APi refund exception.
 	 */
 	public function partial_refund( $transaction_id, $amount, $merchant_reference, $comment ) {
 		try {
@@ -639,7 +651,7 @@ class Alma_Settings {
 			$this->alma_client->payments->partialRefund( $transaction_id, $amount, $merchant_reference, $comment );
 		} catch ( \Exception $e ) {
 			$this->logger->error( sprintf( 'Api partialRefund, transaction id "%s" , Api message "%s"', $transaction_id, $e->getMessage() ) );
-			throw new Alma_Api_Partial_Refund( $transaction_id, $merchant_reference, $amount );
+			throw new Alma_Api_Partial_Refund_Exception( $transaction_id, $merchant_reference, $amount );
 		}
 	}
 
@@ -678,9 +690,9 @@ class Alma_Settings {
 	 * Get the merchant id in api.
 	 *
 	 * @return void
-	 * @throws Alma_Activation Alma_Activation.
-	 * @throws Alma_Api_Merchants Alma_Api_Merchants.
-	 * @throws Alma_Wrong_Credentials Alma_Wrong_Credentials.
+	 * @throws Alma_Activation_Exception Alma_Activation_Exception.
+	 * @throws Alma_Api_Merchants_Exception Alma_Api_Merchants_Exception.
+	 * @throws Alma_Wrong_Credentials_Exception Alma_Wrong_Credentials_Exception.
 	 * @throws Alma_Exception General exceptions.
 	 */
 	public function get_alma_merchant_id() {
@@ -694,10 +706,10 @@ class Alma_Settings {
 				$this->save();
 
 				if ( $e->response && 401 === $e->response->responseCode ) {
-					throw new Alma_Wrong_Credentials( $this->get_environment() );
+					throw new Alma_Wrong_Credentials_Exception( $this->get_environment() );
 				}
 
-				throw new Alma_Api_Merchants(
+				throw new Alma_Api_Merchants_Exception(
 					// translators: %s: Error message.
 					__( 'Alma encountered an error when fetching merchant status, please check your api keys or retry later.', 'alma-gateway-for-woocommerce' ),
 					$e->getCode(),
@@ -708,7 +720,7 @@ class Alma_Settings {
 			$this->save();
 
 			if ( ! $can_create_payment ) {
-				throw new Alma_Activation( $this->environment );
+				throw new Alma_Activation_Exception( $this->environment );
 			}
 		} else {
 			throw new Alma_Exception(
@@ -722,7 +734,7 @@ class Alma_Settings {
 	 * Get and manage the fee plans.
 	 *
 	 * @return void
-	 * @throws Alma_Api_Plans Alma_Api_Plans.
+	 * @throws Alma_Api_Plans_Exception Alma_Api_Plans_Exception.
 	 */
 	public function init_allowed_fee_plans() {
 		$fee_plans = $this->get_alma_fee_plans();
@@ -732,7 +744,7 @@ class Alma_Settings {
 
 			alma_plugin()->admin_notices->add_admin_notice( 'error_get_fee', 'notice notice-error', $message, true );
 
-			throw new Alma_Api_Plans( $message );
+			throw new Alma_Api_Plans_Exception( $message );
 		}
 
 		$this->allowed_fee_plans = array_filter(
@@ -759,7 +771,7 @@ class Alma_Settings {
 				$this->settings[ $max_key ] = $default_max_amount;
 			}
 			if ( ! isset( $this->settings[ $enabled_key ] ) ) {
-				$this->settings[ $enabled_key ] = Alma_Constants::DEFAULT_FEE_PLAN === $plan_key ? 'yes' : 'no';
+				$this->settings[ $enabled_key ] = Alma_Constants_Helper::DEFAULT_FEE_PLAN === $plan_key ? 'yes' : 'no';
 			}
 			$this->settings[ "deferred_months_$plan_key" ]    = $fee_plan->getDeferredMonths();
 			$this->settings[ "deferred_days_$plan_key" ]      = $fee_plan->getDeferredDays();
@@ -813,7 +825,7 @@ class Alma_Settings {
 	}
 
 	/**
-	 * Add two alma payment gateways if needed (pay_later and pnx_plus_4)
+	 * Add the alma payment gateways if needed
 	 *
 	 * Fields "title" and "description" will then be overwritten by filters :
 	 * "woocommerce_gateway_title" and "woocommerce_gateway_description".
@@ -825,19 +837,39 @@ class Alma_Settings {
 	public function build_new_available_gateways( $gateway ) {
 		$new_available_gateways = array();
 
-		if ( $this->is_there_available_plan_for_this_gateway( Alma_Constants::ALMA_GATEWAY_PAY_LATER ) ) {
-			$tmp_gateway                                = clone $gateway;
-			$tmp_gateway->id                            = Alma_Constants::ALMA_GATEWAY_PAY_LATER;
-			$new_available_gateways[ $tmp_gateway->id ] = $tmp_gateway;
-		}
+		foreach ( Alma_Constants_Helper::$alma_gateways as $alma_gateway ) {
+			$tmp_gateway     = clone $gateway;
+			$tmp_gateway->id = $alma_gateway;
 
-		if ( $this->is_there_available_plan_for_this_gateway( Alma_Constants::ALMA_GATEWAY_PAY_MORE_THAN_FOUR ) ) {
-			$tmp_gateway                                = clone $gateway;
-			$tmp_gateway->id                            = Alma_Constants::ALMA_GATEWAY_PAY_MORE_THAN_FOUR;
-			$new_available_gateways[ $tmp_gateway->id ] = $tmp_gateway;
+			if (
+				$this->is_there_available_plan_for_this_gateway( $tmp_gateway->id )
+			) {
+				$new_available_gateways[ $tmp_gateway->id ] = $tmp_gateway;
+			}
 		}
 
 		return $new_available_gateways;
+	}
+
+	/**
+	 * Check if cart eligibilities has at least one eligible plan.
+	 *
+	 * @return bool
+	 */
+	public function is_cart_eligible() {
+		$eligibilities = $this->get_cart_eligibilities();
+
+		if ( ! $eligibilities ) {
+			return false;
+		}
+
+		$is_eligible = false;
+
+		foreach ( $eligibilities as $plan ) {
+			$is_eligible = $is_eligible || $plan->isEligible; // phpcs:ignore WordPress.NamingConventions.ValidVariableName
+		}
+
+		return $is_eligible;
 	}
 
 	/**
@@ -847,9 +879,27 @@ class Alma_Settings {
 	 *
 	 * @return bool
 	 */
-	protected function is_there_available_plan_for_this_gateway( $gateway_id ) {
-		foreach ( $this->get_eligible_plans_keys_for_cart() as $plan_key ) {
-			if ( $this->should_display_plan( $plan_key, $gateway_id ) ) {
+	public function is_there_available_plan_for_this_gateway( $gateway_id ) {
+		switch ( $gateway_id ) {
+			case Alma_Constants_Helper::GATEWAY_ID:
+				return $this->has_pnx();
+			case Alma_Constants_Helper::ALMA_GATEWAY_PAY_LATER:
+				return $this->has_pay_later();
+			case Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR:
+				return $this->has_pnx_plus_4();
+			default:
+				return false;
+		}
+	}
+
+	/**
+	 * Tells if the merchant has at least one "pnx_plus_4" payment method enabled in the WC back-office.
+	 *
+	 * @return bool
+	 */
+	public function has_pnx_plus_4() {
+		foreach ( $this->get_enabled_plans_definitions() as $plan_definition ) {
+			if ( $plan_definition['installments_count'] > 4 ) {
 				return true;
 			}
 		}
@@ -860,10 +910,13 @@ class Alma_Settings {
 	/**
 	 * Get eligible plans keys for current cart.
 	 *
+	 * @param array $cart_eligibilities The eligibilities.
 	 * @return string[]
 	 */
-	public function get_eligible_plans_keys_for_cart() {
-		$cart_eligibilities = $this->get_cart_eligibilities();
+	public function get_eligible_plans_keys_for_cart( $cart_eligibilities = array() ) {
+		if ( empty( $cart_eligibilities ) ) {
+			$cart_eligibilities = $this->get_cart_eligibilities();
+		}
 
 		return array_filter(
 			$this->get_eligible_plans_keys( ( new Alma_Cart() )->get_total_in_cents() ),
@@ -938,7 +991,7 @@ class Alma_Settings {
 	 */
 	public function should_display_plan( $plan_key, $gateway_id ) {
 		switch ( $gateway_id ) {
-			case Alma_Constants::GATEWAY_ID:
+			case Alma_Constants_Helper::GATEWAY_ID:
 				$should_display = in_array(
 					$this->get_installments_count( $plan_key ),
 					array(
@@ -949,13 +1002,13 @@ class Alma_Settings {
 					true
 				);
 				break;
-			case Alma_Constants::ALMA_GATEWAY_PAY_LATER:
+			case Alma_Constants_Helper::ALMA_GATEWAY_PAY_LATER:
 				$should_display = (
 					$this->get_installments_count( $plan_key ) === 1
 					&& ( $this->get_deferred_days( $plan_key ) !== 0 || $this->get_deferred_months( $plan_key ) !== 0 )
 				);
 				break;
-			case Alma_Constants::ALMA_GATEWAY_PAY_MORE_THAN_FOUR:
+			case Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR:
 				$should_display = ( $this->get_installments_count( $plan_key ) > 4 );
 				break;
 			default:
@@ -1014,7 +1067,7 @@ class Alma_Settings {
 	 * @return string
 	 */
 	public function get_display_text() {
-		return Alma_General::get_display_texts_keys_and_values() [ $this->payment_upon_trigger_display_text ];
+		return Alma_General_Helper::get_display_texts_keys_and_values() [ $this->payment_upon_trigger_display_text ];
 	}
 
 	/**
@@ -1023,22 +1076,22 @@ class Alma_Settings {
 	 * @param string $plan_key The plan key.
 	 *
 	 * @return array
-	 * @throws Alma_Plans_Definition Alma_Plans_Definition.
+	 * @throws Alma_Plans_Definition_Exception Alma_Plans_Definition_Exception.
 	 */
 	public function get_fee_plan_definition( $plan_key ) {
 
 		$definition = array();
 
 		if ( ! isset( $this->settings[ "installments_count_$plan_key" ] ) ) {
-			throw new Alma_Plans_Definition( "installments_count_$plan_key not set" );
+			throw new Alma_Plans_Definition_Exception( "installments_count_$plan_key not set" );
 		}
 
 		if ( ! isset( $this->settings[ "deferred_days_$plan_key" ] ) ) {
-			throw new Alma_Plans_Definition( "deferred_days_$plan_key not set" );
+			throw new Alma_Plans_Definition_Exception( "deferred_days_$plan_key not set" );
 		}
 
 		if ( ! isset( $this->settings[ "deferred_months_$plan_key" ] ) ) {
-			throw new Alma_Plans_Definition( "deferred_months_$plan_key not set" );
+			throw new Alma_Plans_Definition_Exception( "deferred_months_$plan_key not set" );
 		}
 
 		$definition['installments_count'] = $this->settings[ "installments_count_$plan_key" ];
