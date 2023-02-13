@@ -4,6 +4,11 @@ Changelog
 v4.0.0
 ------
 
+* feat: remove SOC
+
+v4.0.0
+------
+
 * feat: a new start
 * feat: Share of Checkout
 * fix: unique nonce fields
