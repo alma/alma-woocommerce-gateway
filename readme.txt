@@ -67,12 +67,6 @@ To build extension for production run `./bin/build.sh`
 == Changelog ==
 
 = 4.0.0 =
-=========
-
-
-* feat: remove SOC
-
-= 4.0.0 =
 * feat: add namespaces
 * fix: other plugins incompatibilities
 * feat: reduce api calls
