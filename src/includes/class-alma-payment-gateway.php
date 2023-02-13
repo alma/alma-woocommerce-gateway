@@ -13,7 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use Alma\Woocommerce\Admin\Helpers\Alma_Check_Legal_Helper;
 use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
 use Alma\Woocommerce\Helpers\Alma_Gateway_Helper;
 use Alma\Woocommerce\Helpers\Alma_Checkout_Helper;
@@ -89,13 +88,6 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 	public $plan_builder;
 
 	/**
-	 * The legal helper.
-	 *
-	 * @var Alma_Check_Legal_Helper
-	 */
-	protected $check_legal_helper;
-
-	/**
 	 * Constructor for the gateway.
 	 */
 	public function __construct() {
@@ -105,7 +97,6 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 		$this->method_description = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.', 'alma-gateway-for-woocommerce' );
 		$this->logger             = new Alma_Logger();
 		$this->alma_settings      = new Alma_Settings();
-		$this->check_legal_helper = new Alma_Check_Legal_Helper();
 		$this->checkout_helper    = new Alma_Checkout_Helper();
 		$this->gateway_helper     = new Alma_Gateway_Helper();
 		$this->general_helper     = new Alma_General_Helper();
@@ -118,7 +109,6 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 		$this->add_filters();
 		$this->add_actions();
 		$this->init_admin_form();
-		$this->check_legal_helper->check_share_checkout();
 	}
 
 		/**
@@ -573,15 +563,11 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 	 */
 	public function process_admin_options() {
 		$this->init_settings();
-		set_transient( 'alma-admin-soc-panel', true, 5 );
 
 		$post_data = $this->get_post_data();
 
 		// Manage the countries exclusions.
 		$this->update_countries_rules_for_all_alma_gateways( $post_data );
-
-		// Manage the soc changes.
-		$this->process_checkout_legal( $post_data );
 
 		// If the mode has changed, or the keys.
 		$this->clean_credentials( $post_data );
@@ -619,8 +605,8 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 	 */
 	protected function update_countries_rules_for_all_alma_gateways( $post_data ) {
 		if ( isset( $post_data [ Alma_Constants_Helper::WOOCOMMERCE_SETTINGS_COUNTRIES ] ) ) {
-			$data   = get_option( Alma_Constants_Helper::WOOCOMMERCE_SETTINGS_COUNTRIES );
-            
+			$data = get_option( Alma_Constants_Helper::WOOCOMMERCE_SETTINGS_COUNTRIES );
+
 			$values = array(
 				'mode' => $post_data [ Alma_Constants_Helper::WOOCOMMERCE_SETTINGS_COUNTRIES ]['mode'],
 			);
@@ -654,74 +640,6 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 		) {
 			$this->reset_plans();
 		}
-	}
-	/**
-	 * Process the checkout legal data.
-	 *
-	 * @param array $post_data The data.
-	 *
-	 * @return void
-	 */
-	protected function process_checkout_legal( $post_data ) {
-		if ( ! $this->soc_has_changed( $post_data ) ) {
-			return;
-		}
-
-		// By default, remove api consent.
-		$value = 'no';
-
-		// Check if the live_api_key has changed. Remove the consent.
-		if (
-			$this->alma_settings->__get( 'live_api_key' ) !== $post_data['woocommerce_alma_live_api_key']
-		) {
-			$this->alma_settings->settings['share_of_checkout_enabled_date']             = '';
-			$this->alma_settings->settings['woocommerce_alma_share_of_checkout_enabled'] = '';
-		} elseif (
-			isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
-			&& '1' == $post_data['woocommerce_alma_share_of_checkout_enabled']
-		) {
-			$this->alma_settings->settings['share_of_checkout_enabled_date'] = gmdate( 'Y-m-d' );
-
-			$value = 'yes';
-		}
-
-		$this->check_legal_helper->send_consent( $value );
-
-		if (
-			'test' === $post_data['woocommerce_alma_environment']
-			&& 'live' === $this->alma_settings->get_environment()
-		) {
-			delete_transient( 'alma-admin-soc-panel' );
-		}
-
-	}
-
-	/**
-	 * Verify if the soc value has changed.
-	 *
-	 * @param array $post_data The data.
-	 *
-	 * @return bool
-	 */
-	protected function soc_has_changed( $post_data ) {
-
-		if (
-			(
-				isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
-				&& '1' == $post_data['woocommerce_alma_share_of_checkout_enabled']
-				&& 'no' === $this->alma_settings->__get( 'share_of_checkout_enabled' )
-			)
-			|| (
-				! isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
-				&& 'yes' === $this->alma_settings->__get( 'share_of_checkout_enabled' )
-			)
-			|| $this->alma_settings->__get( 'live_api_key' ) !== $post_data['woocommerce_alma_live_api_key']
-			|| $post_data['woocommerce_alma_environment'] !== $this->alma_settings->get_environment()
-		) {
-			return true;
-		}
-
-		return false;
 	}
 
 	/**

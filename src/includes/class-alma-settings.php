@@ -20,9 +20,6 @@ use Alma\API\Entities\FeePlan;
 use Alma\API\Entities\Payment;
 use Alma\API\ParamsError;
 use Alma\API\RequestError;
-use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Accept_Exception;
-use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Deny_Exception;
-use Alma\Woocommerce\Exceptions\Alma_Api_Soc_Last_Update_Dates_Exception;
 use Alma\Woocommerce\Helpers\Alma_Settings_Helper as Alma_Helper_Settings;
 use Alma\Woocommerce\Exceptions\Alma_Plans_Definition_Exception;
 use Alma\Woocommerce\Helpers\Alma_General_Helper;
@@ -40,7 +37,6 @@ use Alma\Woocommerce\Exceptions\Alma_Wrong_Credentials_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Api_Plans_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Api_Merchants_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Activation_Exception;
-use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Exception;
 
 /**
  * Handles settings retrieval from the settings API.
@@ -63,8 +59,6 @@ use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Exception;
  * @property string variable_product_sale_price_query_selector Css query selector for variable discounted products
  * @property string variable_product_check_variations_event JS event for product variation change
  * @property array excluded_products_list Wp Categories excluded slug's list
- * @property string share_of_checkout_enabled Bool for share of checkout acceptance (yes or no)
- * @property string share_of_checkout_enabled_date String Date when the marchand did accept the share of checkout
  */
 class Alma_Settings {
 
@@ -517,79 +511,6 @@ class Alma_Settings {
 			throw new Alma_Api_Fetch_Payments_Exception( $payment_id );
 		}
 	}
-
-	/**
-	 * Share the data for soc.
-	 *
-	 * @param array $data   The payload.
-	 *
-	 * @throws Alma_Api_Share_Of_Checkout_Exception Alma_Api_Share_Of_Checkout_Exception exception.
-	 */
-	public function send_soc_data( $data ) {
-		try {
-			$this->get_alma_client();
-
-			$this->alma_client->shareOfCheckout->share( $data );
-
-		} catch ( \Exception $e ) {
-			$this->logger->error( sprintf( 'Api : shareOfCheckout, data : "%s", Api message "%s"', wp_json_encode( $data ), $e->getMessage() ) );
-			throw new Alma_Api_Share_Of_Checkout_Exception( $data );
-		}
-	}
-
-	/**
-	 * Get the last soc date.
-	 *
-	 * @return mixed
-	 *
-	 * @throws Alma_Api_Soc_Last_Update_Dates_Exception The api exception.
-	 */
-	public function get_soc_last_updated_date() {
-		try {
-			$this->get_alma_client();
-
-			return $this->alma_client->shareOfCheckout->getLastUpdateDates(); // phpcs:ignore
-		} catch ( \Exception $e ) {
-			$this->logger->error( sprintf( 'Api : getLastUpdateDates shareOfCheckout, Api message "%s"', $e->getMessage() ) );
-			throw new Alma_Api_Soc_Last_Update_Dates_Exception();
-		}
-	}
-
-
-	/**
-	 * Sent the accept for the soc consent
-	 *
-	 * @throws Alma_Api_Share_Of_Checkout_Accept_Exception The exception.
-	 */
-	public function accept_soc_consent() {
-		try {
-			$this->get_alma_client();
-
-			$this->alma_client->shareOfCheckout->addConsent();
-
-		} catch ( \Exception $e ) {
-			$this->logger->error( sprintf( 'Api : accept share of shareOfCheckout, Api message "%s"', $e->getMessage() ) );
-			throw new Alma_Api_Share_Of_Checkout_Accept_Exception();
-		}
-	}
-
-	/**
-	 * Sent the deny for the consent for soc.
-	 *
-	 * @throws Alma_Api_Share_Of_Checkout_Deny_Exception The exception.
-	 */
-	public function deny_soc_consent() {
-		try {
-			$this->get_alma_client();
-
-			$this->alma_client->shareOfCheckout->removeConsent();
-
-		} catch ( \Exception $e ) {
-			$this->logger->error( sprintf( 'Api : deny share of shareOfCheckout, Api message "%s"', $e->getMessage() ) );
-			throw new Alma_Api_Share_Of_Checkout_Deny_Exception();
-		}
-	}
-
 
 	/**
 	 * Trigger the transaction.
