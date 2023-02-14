@@ -79,6 +79,7 @@ class Alma_Form_Helper {
 			$this->init_general_settings_fields( $default_settings ),
 			$this->init_payment_upon_trigger_fields( $default_settings ),
 			$this->init_api_key_fields( __( '→ API configuration', 'alma-gateway-for-woocommerce' ), $default_settings ),
+			$this->init_share_of_checkout_field( $default_settings ),
 			$this->init_technical_fields( $default_settings ),
 			$this->init_debug_fields( $default_settings )
 		);
@@ -738,6 +739,49 @@ class Alma_Form_Helper {
 					$default_settings['variable_product_sale_price_query_selector']
 				),
 				'default'     => $default_settings['title_payment_method_pnx'],
+			),
+		);
+	}
+
+	/**
+	 * Inits share of checkout Admin field.
+	 *
+	 * @param array $default_settings default settings.
+	 *
+	 * @return array[]
+	 */
+	private function init_share_of_checkout_field( $default_settings ) {
+		if (
+			empty( $this->settings_helper->__get( 'share_of_checkout_enabled_date' ) )
+			|| $this->settings_helper->is_test()
+		) {
+			return array();
+		}
+
+		return array(
+			'share_of_checkout_section' => array(
+				'title'       => '<hr>' . __( '→ Increase your performance & get insights !', 'alma-gateway-for-woocommerce' ),
+				'type'        => 'title',
+				'description' => wp_kses_post(
+					__( 'By accepting this option, enable Alma to analyse the usage of your payment methods, get more informations to perform and share this data with you.', 'alma-gateway-for-woocommerce' ) .
+					__( '<br>You can <a href="mailto:support@getalma.eu">erase your data</a> at any moment.', 'alma-gateway-for-woocommerce' ) .
+					'<p class="alma-legal-checkout-collapsible">' .
+					__( 'Know more about collected data', 'alma-gateway-for-woocommerce' ) .
+					'<span id="alma-legal-collapse-chevron" class="alma-legal-checkout-chevron bottom"></span>' .
+					'</p>' .
+					'<ul class="alma-legal-checkout-content"><li>' .
+					__( '- total quantity of orders, amounts and currencies', 'alma-gateway-for-woocommerce' ) .
+					'</li><li>' .
+					__( '- payment provider for each order', 'alma-gateway-for-woocommerce' ) .
+					'</li></ul>'
+				),
+			),
+
+			'share_of_checkout_enabled' => array(
+				'title'   => __( 'Activate your data settings ', 'alma-gateway-for-woocommerce' ),
+				'type'    => 'checkbox',
+				'label'   => '&nbsp;',
+				'default' => $default_settings['share_of_checkout_enabled'],
 			),
 		);
 	}
