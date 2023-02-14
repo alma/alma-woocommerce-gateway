@@ -20,6 +20,7 @@ use Alma\API\Entities\FeePlan;
 use Alma\API\Entities\Payment;
 use Alma\API\ParamsError;
 use Alma\API\RequestError;
+use Alma\Woocommerce\Helpers\Alma_Encryptor_Helper;
 use Alma\Woocommerce\Helpers\Alma_Settings_Helper as Alma_Helper_Settings;
 use Alma\Woocommerce\Exceptions\Alma_Plans_Definition_Exception;
 use Alma\Woocommerce\Helpers\Alma_General_Helper;
@@ -100,11 +101,20 @@ class Alma_Settings {
 	 * @var Eligibility|Eligibility[]|array
 	 */
 	protected $eligibilities;
+
+	/**
+	 * The encryptor.
+	 *
+	 * @var Alma_Encryptor_Helper
+	 */
+	public $encryptor_helper;
+
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->logger = new Alma_Logger();
+		$this->logger           = new Alma_Logger();
+		$this->encryptor_helper = new Alma_Encryptor_Helper();
 
 		$this->load_settings();
 	}
@@ -116,7 +126,7 @@ class Alma_Settings {
 	 * @return void
 	 */
 	public function load_settings() {
-		$this->settings = self::get_settings();
+		$this->settings = $this->get_settings();
 
 		// Turn these settings into variables we can use.
 		foreach ( $this->settings as $setting_key => $value ) {
@@ -140,7 +150,7 @@ class Alma_Settings {
 	 *
 	 * @return array
 	 */
-	public static function get_settings() {
+	public function get_settings() {
 		$settings = (array) get_option( self::OPTIONS_KEY, array() );
 
 		if ( ! empty( $settings['allowed_fee_plans'] ) && ! is_array( $settings['allowed_fee_plans'] ) ) {
@@ -401,8 +411,8 @@ class Alma_Settings {
 	 *
 	 * @return string
 	 */
-	protected function get_live_api_key() {
-		return $this->live_api_key;
+	public function get_live_api_key() {
+		return $this->encryptor_helper->decrypt( $this->live_api_key );
 	}
 
 	/**
@@ -410,8 +420,8 @@ class Alma_Settings {
 	 *
 	 * @return string
 	 */
-	protected function get_test_api_key() {
-		return $this->test_api_key;
+	public function get_test_api_key() {
+		return $this->encryptor_helper->decrypt( $this->test_api_key );
 	}
 
 	/**
