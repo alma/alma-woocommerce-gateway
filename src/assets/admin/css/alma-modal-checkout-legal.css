@@ -1,0 +1,99 @@
+.legal-checkout-collapsible {
+	cursor: pointer;
+	padding: 18px;
+	width: 100%;
+	border: none;
+	text-align: left;
+	outline: none;
+	font-size: 15px;
+	text-decoration: underline;
+}
+
+.legal-checkout-content {
+	padding: 0 18px;
+	display: none;
+	overflow: hidden;
+	color: #00425D;
+	list-style-type: disc;
+}
+
+.legal-checkout-chevron::before {
+	border-style: solid;
+	border-width: 0.25em 0.25em 0 0;
+	content: '';
+	display: inline-block;
+	height: 0.45em;
+	left: 0.15em;
+	position: relative;
+	top: 0.15em;
+	transform: rotate(-45deg);
+	width: 0.45em;
+}
+
+.legal-checkout-chevron.bottom::before {
+	top: 0;
+	transform: rotate(135deg);
+}
+
+.notice-modal-checkout-legal {
+	display: flex;
+	background-color: #E9F4FF;
+}
+
+.notice-modal-checkout-legal h1 {
+	color: #00425D;
+	font-weight: bold;
+}
+
+.notice-modal-checkout-legal div p {
+	color: #00425D;
+	font-size: 15px;
+}
+
+.notice-modal-checkout-legal div ul {
+	color: #00425D;
+	font-size: 15px;
+}
+
+.modal-checkout-legal-logo {
+	width: 86px;
+	height: 50px;
+	margin: 15px;
+}
+
+.legal-checkout-choices {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-size: 15px;
+}
+
+.button-checkout-legal {
+	display: inline-flex;
+	text-decoration: none;
+	font-family: inherit;
+	font-weight: 400;
+	font-size: 13px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	cursor: pointer;
+	-webkit-appearance: none;
+	background: none;
+	transition: box-shadow .1s linear;
+	height: 36px;
+	align-items: center;
+	box-sizing: border-box;
+	padding: 6px 12px;
+	border-radius: 2px;
+}
+
+.button-checkout-legal.reject-legal-alma {
+	background-color: white;
+	color: #00425D;
+	border: 1px solid #00425D;
+	margin-right: 10px;
+}
+
+.button-checkout-legal.accept-legal-alma{
+	background-color: #00425D;
+	color: white;
+}
