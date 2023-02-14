@@ -121,11 +121,11 @@ class Alma_Form_Helper {
 			),
 			'live_api_key' => array(
 				'title' => __( 'Live API key', 'alma-gateway-for-woocommerce' ),
-				'type'  => 'text',
+				'type'  => 'password',
 			),
 			'test_api_key' => array(
 				'title' => __( 'Test API key', 'alma-gateway-for-woocommerce' ),
-				'type'  => 'text',
+				'type'  => 'password',
 			),
 			'environment'  => array(
 				'title'       => __( 'API Mode', 'alma-gateway-for-woocommerce' ),
