@@ -715,7 +715,7 @@ class Alma_Form_Helper {
 				// translators: %1$s is technical information, %2$s is Alma WooCommerce Plugin FAQ doc URL.
 					__( 'This is the javascript event triggered on variables products page, when the customer change the product variation. Default value is <strong>%1$s</strong>.<br />More technical information on <a href="%2$s" target="_blank">Alma documentation</a>', 'alma-gateway-for-woocommerce' ),
 					Alma_Constants_Helper::DEFAULT_CHECK_VARIATIONS_EVENT,
-					'https://docs.getalma.eu/docs/woocommerce-faq'
+					'https://docs.almapay.com/docs/woocommerce-faq'
 				),
 				'default'     => $default_settings['variable_product_check_variations_event'],
 			),

@@ -746,8 +746,8 @@ msgid "Alma - Pay in installments or later for WooCommerce"
 msgstr "Alma - Pagamento em prestações ou mais tarde para o WooCommerce"
 
 #. Plugin URI of the plugin/theme
-msgid "https://docs.getalma.eu/docs/woocommerce"
-msgstr "https://docs.getalma.eu/docs/woocommerce"
+msgid "https://docs.almapay.com/docs/woocommerce"
+msgstr "https://docs.almapay.com/docs/woocommerce"
 
 #. Author of the plugin/theme
 msgid "Alma"

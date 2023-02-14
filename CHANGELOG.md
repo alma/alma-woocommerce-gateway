@@ -4,14 +4,11 @@ Changelog
 v4.0.0
 ------
 
-* feat: remove SOC
-
-v4.0.0
-------
-
-* feat: a new start
-* feat: Share of Checkout
 * fix: unique nonce fields
+* fix: compatibility with other plugins
+* fix: reduce api calls
+* feat: add namespaces
+* fix: migration between versions of alma module
 
 v3.2.2
 ------

@@ -657,7 +657,7 @@ msgid "Alma - Pay in installments or later for WooCommerce"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
-msgid "https://docs.getalma.eu/docs/woocommerce"
+msgid "https://docs.almapay.com/docs/woocommerce"
 msgstr ""
 
 #. Author of the plugin/theme
