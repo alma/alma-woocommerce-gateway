@@ -38,7 +38,7 @@ class Alma_Logger extends AbstractLogger {
 	public function log( $level, $message, array $context = array() ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 		if (
 			! is_callable( 'wc' )
-			|| $this->can_log()
+			|| ! $this->can_log()
 		) {
 			return;
 		}
