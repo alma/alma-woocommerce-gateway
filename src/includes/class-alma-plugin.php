@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 use Alma\Woocommerce\Admin\Alma_Notices;
 use Alma\Woocommerce\Exceptions\Alma_Requirements_Exception;
 use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
+use Alma\Woocommerce\Helpers\Alma_Migration_Helper;
 use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
 use Alma\Woocommerce\Helpers\Alma_Payment_Helper;
 use Alma\Woocommerce\Helpers\Alma_Assets_Helper;
@@ -46,11 +47,19 @@ class Alma_Plugin {
 	protected $logger;
 
 	/**
+	 * The migration helper.
+	 *
+	 * @var Alma_Migration_Helper
+	 */
+	protected $migration_helper;
+
+	/**
 	 * Protected constructor to prevent creating a new instance of the
 	 * *Singleton* via the `new` operator from outside of this class.
 	 */
 	protected function __construct() {
-		$this->logger = new Alma_Logger();
+		$this->logger           = new Alma_Logger();
+		$this->migration_helper = new Alma_Migration_Helper();
 		$this->self_update();
 		$this->init();
 	}
@@ -61,38 +70,7 @@ class Alma_Plugin {
 	 * @return void
 	 */
 	protected function self_update() {
-		$db_version = get_option( 'alma_version' );
-
-		if ( version_compare( ALMA_VERSION, $db_version, '!=' ) ) {
-
-			if (
-				$db_version
-				&& version_compare( $db_version, 4, '<' )
-				&& version_compare( ALMA_VERSION, 4, '>=' )
-			) {
-				$old_settings = get_option( 'woocommerce_alma_settings' );
-				update_option( Alma_Settings::OPTIONS_KEY, $old_settings );
-
-				// Upgrade to 4.
-				$gateway = new Alma_Payment_Gateway();
-
-				// Manage credentials to match the new settings fields format.
-				try {
-					$gateway->manage_credentials();
-				} catch ( \Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
-					// We don't care if it fails there is nothing to update.
-				}
-
-				if ( version_compare( $db_version, 3, '<' ) ) {
-					update_option( 'alma_version', ALMA_VERSION );
-					deactivate_plugins( 'alma-woocommerce-gateway/alma-woocommerce-gateway.php', true );
-				}
-			}
-
-			update_option( 'alma_version', ALMA_VERSION );
-			delete_option( 'woocommerce_alma_settings' );
-			delete_option( 'alma_warnings_handled' );
-		}
+		$this->migration_helper->update();
 	}
 
 	/**

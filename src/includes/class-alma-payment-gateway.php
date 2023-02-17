@@ -214,7 +214,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 			'woocommerce_update_options_payment_gateways_' . $this->id,
 			array( $this, 'process_admin_options' )
 		);
-    }
+	}
 
 	/**
 	 *  Add the actions.

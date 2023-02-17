@@ -2,7 +2,7 @@
 /**
  * Alma_Encryptor_Helper.
  *
- * @since 4.0.0
+ * @since 4.1.0
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes/helpers
