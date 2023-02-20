@@ -475,6 +475,7 @@ class Alma_Settings {
 				$this->get_active_api_key(),
 				array(
 					'mode' => $this->get_environment(),
+					'logger' => $this->logger
 				)
 			);
 
