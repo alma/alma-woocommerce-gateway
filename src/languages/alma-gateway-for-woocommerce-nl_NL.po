@@ -1,11 +1,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 77e083b1cd468d7c2202d1ff3d20e024\n"
-"POT-Creation-Date: 2023-02-13 16:03+0100\n"
-"PO-Revision-Date: 2023-02-13 16:04+0100\n"
-"Last-Translator: syjust <sy.just@gmail.com>\n"
+"POT-Creation-Date: 2023-02-20 10:16+0100\n"
+"PO-Revision-Date: 2023-02-20 09:31\n"
+"Last-Translator: \n"
 "Language-Team: Dutch\n"
-"Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15,25 +14,24 @@ msgstr ""
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: alma-gateway-for-woocommerce.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+"X-Poedit-SearchPathExcluded-1: vendor\n"
 "X-Crowdin-Project: 77e083b1cd468d7c2202d1ff3d20e024\n"
 "X-Crowdin-Project-ID: 17\n"
 "X-Crowdin-Language: nl\n"
 "X-Crowdin-File: /languages/alma-gateway-for-woocommerce.pot\n"
 "X-Crowdin-File-ID: 3021\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.js\n"
-"X-Poedit-SearchPathExcluded-1: vendor\n"
+"Language: nl_NL\n"
 
 #: includes/admin/class-alma-notices.php:108
 msgid "Action failed. Please refresh the page and retry."
-msgstr ""
+msgstr "Actie mislukt. Vernieuw de pagina en probeer het opnieuw."
 
 #: includes/admin/class-alma-notices.php:112
 msgid "Cheatin&#8217; huh?"
-msgstr ""
+msgstr "Bedrieger&#8217; huh?"
 
 #: includes/admin/helpers/class-alma-form-helper.php:71
 msgid "→ Start by filling in your API keys"
@@ -55,12 +53,8 @@ msgstr "Gespreid betalen met Alma activeren"
 #. translators: %s Alma security URL
 #: includes/admin/helpers/class-alma-form-helper.php:120
 #, php-format
-msgid ""
-"You can find your API keys on <a href=\"%s\" target=\"_blank\">your Alma "
-"dashboard</a>"
-msgstr ""
-"U vindt u API-sleutels op <a href=\"%s\" target=\"_blank\">uw Alma "
-"dashboard</a>"
+msgid "You can find your API keys on <a href=\"%s\" target=\"_blank\">your Alma dashboard</a>"
+msgstr "U vindt u API-sleutels op <a href=\"%s\" target=\"_blank\">uw Alma dashboard</a>"
 
 #: includes/admin/helpers/class-alma-form-helper.php:123
 msgid "Live API key"
@@ -75,13 +69,8 @@ msgid "API Mode"
 msgstr "Modus van API"
 
 #: includes/admin/helpers/class-alma-form-helper.php:133
-msgid ""
-"Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In "
-"Test mode, only admins can see Alma on cart/checkout pages."
-msgstr ""
-"Gebruik de modus <b>Test</b> totdat u klaar bent om bestellingen met Alma te "
-"accepteren.<br>In de Test-modus zien alleen de boekhouders Alma op de "
-"pagina's van  winkelmandje/bevestiging van de bestelling."
+msgid "Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In Test mode, only admins can see Alma on cart/checkout pages."
+msgstr "Gebruik de modus <b>Test</b> totdat u klaar bent om bestellingen met Alma te accepteren.<br>In de Test-modus zien alleen de boekhouders Alma op de pagina's van  winkelmandje/bevestiging van de bestelling."
 
 #: includes/admin/helpers/class-alma-form-helper.php:136
 msgid "Test"
@@ -111,9 +100,7 @@ msgstr "(<a href=\"%s\">Ga naar logs</a>)"
 
 #: includes/admin/helpers/class-alma-form-helper.php:161
 msgid "Enable logging info and errors to help debug any issue with the plugin"
-msgstr ""
-"Activeert de logboeken met info en fouten waarmee problemen opgelost kunnen "
-"worden met de extensie"
+msgstr "Activeert de logboeken met info en fouten waarmee problemen opgelost kunnen worden met de extensie"
 
 #: includes/admin/helpers/class-alma-form-helper.php:179
 msgid "→ Fee plans configuration"
@@ -122,12 +109,8 @@ msgstr "→ Configuratie tariefplan"
 #. translators: %s: Alma conditions URL
 #: includes/admin/helpers/class-alma-form-helper.php:186
 #, php-format
-msgid ""
-"⚠ There is no fee plan allowed in your <a href=\"%s\" target=\"_blank\">Alma "
-"dashboard</a>."
-msgstr ""
-"⚠ Tariefplan is niet toegestaan in uw <a href=\"%s\" target=\"_blank\">Alma "
-"dashboard</a>."
+msgid "⚠ There is no fee plan allowed in your <a href=\"%s\" target=\"_blank\">Alma dashboard</a>."
+msgstr "⚠ Tariefplan is niet toegestaan in uw <a href=\"%s\" target=\"_blank\">Alma dashboard</a>."
 
 #: includes/admin/helpers/class-alma-form-helper.php:203
 msgid "Select a fee plan to update"
@@ -136,12 +119,8 @@ msgstr "Selecteer een tariefplan om te updaten"
 #. translators: %s: Alma conditions URL
 #: includes/admin/helpers/class-alma-form-helper.php:206
 #, php-format
-msgid ""
-"Choose which fee plan you want to modify<br>(only your <a href=\"%s\" target="
-"\"_blank\">Alma dashboard</a> available fee plans are shown here)."
-msgstr ""
-"Kies het tariefplan dat u wilt wijzigen<br>(alleen de tariefplannen op uw <a "
-"href=\"%s\" target=\"_blank\">Alma dasboard</a> worden hier getoond)."
+msgid "Choose which fee plan you want to modify<br>(only your <a href=\"%s\" target=\"_blank\">Alma dashboard</a> available fee plans are shown here)."
+msgstr "Kies het tariefplan dat u wilt wijzigen<br>(alleen de tariefplannen op uw <a href=\"%s\" target=\"_blank\">Alma dasboard</a> worden hier getoond)."
 
 #. translators: %d: number of installments.
 #: includes/admin/helpers/class-alma-form-helper.php:226
@@ -193,32 +172,20 @@ msgstr "Maximum bedrag (€)"
 #. translators: %d: number of installments.
 #: includes/admin/helpers/class-alma-form-helper.php:381
 #, php-format
-msgid ""
-"You can offer %1$d-installment payments for amounts between <b>%2$d€</b> and "
-"<b>%3$d€</b>."
-msgstr ""
-"U kunt betaling in %1$d keer aanbieden voor bedragen tussen <b>€%2$d</b> en "
-"<b>€%3$d</b>."
+msgid "You can offer %1$d-installment payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>."
+msgstr "U kunt betaling in %1$d keer aanbieden voor bedragen tussen <b>€%2$d</b> en <b>€%3$d</b>."
 
 #. translators: %d: number of deferred days.
 #: includes/admin/helpers/class-alma-form-helper.php:393
 #, php-format
-msgid ""
-"You can offer D+%1$d-deferred payments for amounts between <b>%2$d€</b> and "
-"<b>%3$d€</b>."
-msgstr ""
-"U kunt D+%1$d-uitgestelde betalingen aanbieden voor bedragen tussen <b>%2$d"
-"€</b> en <b>%3$d€</b>."
+msgid "You can offer D+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>."
+msgstr "U kunt D+%1$d-uitgestelde betalingen aanbieden voor bedragen tussen <b>%2$d€</b> en <b>%3$d€</b>."
 
 #. translators: %d: number of deferred months.
 #: includes/admin/helpers/class-alma-form-helper.php:402
 #, php-format
-msgid ""
-"You can offer M+%1$d-deferred payments for amounts between <b>%2$d€</b> and "
-"<b>%3$d€</b>."
-msgstr ""
-"U kunt  M+%1$d-uitgestelde betalingen aanbieden voor bedragen tussen <b>%2$d"
-"€</b> en <b>%3$d€</b>."
+msgid "You can offer M+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>."
+msgstr "U kunt  M+%1$d-uitgestelde betalingen aanbieden voor bedragen tussen <b>%2$d€</b> en <b>%3$d€</b>."
 
 #: includes/admin/helpers/class-alma-form-helper.php:409
 msgid "Fees applied to each transaction for this plan:"
@@ -241,11 +208,8 @@ msgid "→ General configuration"
 msgstr "→ Algemene configuratie"
 
 #: includes/admin/helpers/class-alma-form-helper.php:462
-msgid ""
-"Edit the text displayed when choosing the payment method in your checkout."
-msgstr ""
-"Wijzig de tekst die wordt weergegeven bij het kiezen van de betaalmethode op "
-"de checkout pagina."
+msgid "Edit the text displayed when choosing the payment method in your checkout."
+msgstr "Wijzig de tekst die wordt weergegeven bij het kiezen van de betaalmethode op de checkout pagina."
 
 #: includes/admin/helpers/class-alma-form-helper.php:467
 msgid "Payments in 2, 3 and 4 installments:"
@@ -265,8 +229,7 @@ msgstr "Geschiktheid van producten"
 
 #: includes/admin/helpers/class-alma-form-helper.php:483
 msgid "Display a message about product eligibility for monthly payments"
-msgstr ""
-"Bericht tonen over de geschiktheid voor gespreid betalen van het product"
+msgstr "Bericht tonen over de geschiktheid voor gespreid betalen van het product"
 
 #: includes/admin/helpers/class-alma-form-helper.php:487
 msgid "Cart eligibility notice"
@@ -274,73 +237,47 @@ msgstr "Geschiktheid van het winkelmandje"
 
 #: includes/admin/helpers/class-alma-form-helper.php:489
 msgid "Display a message about cart eligibility for monthly payments"
-msgstr ""
-"Bericht tonen over de geschiktheid voor gespreid betalen van het winkelmandje"
+msgstr "Bericht tonen over de geschiktheid voor gespreid betalen van het winkelmandje"
 
 #: includes/admin/helpers/class-alma-form-helper.php:493
 msgid "Excluded product categories"
 msgstr "Categorieën van uitgesloten producten"
 
 #: includes/admin/helpers/class-alma-form-helper.php:495
-msgid ""
-"Exclude all virtual/downloadable product categories, as you cannot sell them "
-"with Alma"
-msgstr ""
-"Sluit alle categorieën uit van virtuele/downloadbare producten die niet met "
-"Alma verkocht kunnen worden"
+msgid "Exclude all virtual/downloadable product categories, as you cannot sell them with Alma"
+msgstr "Sluit alle categorieën uit van virtuele/downloadbare producten die niet met Alma verkocht kunnen worden"
 
 #: includes/admin/helpers/class-alma-form-helper.php:505
 msgid "Non-eligibility message for excluded products"
 msgstr "Bericht niet-geschiktheid voor uitgesloten product"
 
 #: includes/admin/helpers/class-alma-form-helper.php:506
-msgid ""
-"Message displayed below the cart totals when it contains excluded products"
-msgstr ""
-"Bericht dat wordt getoond onder het totaal van de winkelmand wanneer deze "
-"uitgesloten producten bevat"
+msgid "Message displayed below the cart totals when it contains excluded products"
+msgstr "Bericht dat wordt getoond onder het totaal van de winkelmand wanneer deze uitgesloten producten bevat"
 
 #: includes/admin/helpers/class-alma-form-helper.php:556
 msgid "Title"
 msgstr "Titel"
 
 #: includes/admin/helpers/class-alma-form-helper.php:557
-msgid ""
-"This controls the payment method name which the user sees during checkout."
-msgstr ""
-"Kies de naam van de betalingsmethode die de gebruiker ziet bij de "
-"bevestiging van de bestelling."
+msgid "This controls the payment method name which the user sees during checkout."
+msgstr "Kies de naam van de betalingsmethode die de gebruiker ziet bij de bevestiging van de bestelling."
 
 #: includes/admin/helpers/class-alma-form-helper.php:566
 msgid "Description"
 msgstr "Beschrijving"
 
 #: includes/admin/helpers/class-alma-form-helper.php:568
-msgid ""
-"This controls the payment method description which the user sees during "
-"checkout."
-msgstr ""
-"Kies de beschrijving van de betalingsmethode op de bevestigingspagina van de "
-"bestelling."
+msgid "This controls the payment method description which the user sees during checkout."
+msgstr "Kies de beschrijving van de betalingsmethode op de bevestigingspagina van de bestelling."
 
 #: includes/admin/helpers/class-alma-form-helper.php:655
 msgid "→ Payment upon trigger configuration"
 msgstr "→ Betaling bij trigger configuratie"
 
 #: includes/admin/helpers/class-alma-form-helper.php:669
-msgid ""
-"This option is available only for Alma payment in 2x, 3x and 4x.<br>When "
-"it's turned on, your clients will pay the first installment at the order "
-"status change. When your client order on your website, Alma will only ask "
-"for a payment authorization. Only status handled by Alma are available in "
-"the menu below. Please contact Alma if you need us to add another status."
-msgstr ""
-"Deze optie is alleen beschikbaar voor Alma betaling in 2x, 3x en 4x. "
-"<br>Wanneer deze optie is ingeschakeld, zullen uw klanten de eerste termijn "
-"betalen bij de verandering van de orderstatus. Wanneer uw klant op uw "
-"website bestelt, zal Alma alleen maar om een betalingsautorisatie vragen. "
-"Alleen status behandeld door Alma zijn beschikbaar in het menu hieronder. "
-"Neem contact op met Alma als u wilt dat wij een andere status toevoegen."
+msgid "This option is available only for Alma payment in 2x, 3x and 4x.<br>When it's turned on, your clients will pay the first installment at the order status change. When your client order on your website, Alma will only ask for a payment authorization. Only status handled by Alma are available in the menu below. Please contact Alma if you need us to add another status."
+msgstr "Deze optie is alleen beschikbaar voor Alma betaling in 2x, 3x en 4x. <br>Wanneer deze optie is ingeschakeld, zullen uw klanten de eerste termijn betalen bij de verandering van de orderstatus. Wanneer uw klant op uw website bestelt, zal Alma alleen maar om een betalingsautorisatie vragen. Alleen status behandeld door Alma zijn beschikbaar in het menu hieronder. Neem contact op met Alma als u wilt dat wij een andere status toevoegen."
 
 #: includes/admin/helpers/class-alma-form-helper.php:674
 msgid "Activate the payment upon trigger"
@@ -351,12 +288,8 @@ msgid "Trigger typology"
 msgstr "Trigger"
 
 #: includes/admin/helpers/class-alma-form-helper.php:682
-msgid ""
-"Text that will appear in the payments schedule and in the customer's payment "
-"authorization email."
-msgstr ""
-"Tekst die zal verschijnen in het betalingsschema en in de "
-"betalingsautorisatiemail van de klant."
+msgid "Text that will appear in the payments schedule and in the customer's payment authorization email."
+msgstr "Tekst die zal verschijnen in het betalingsschema en in de betalingsautorisatiemail van de klant."
 
 #: includes/admin/helpers/class-alma-form-helper.php:688
 msgid "Order status that triggers the first payment"
@@ -367,30 +300,18 @@ msgid "→ Technical fields"
 msgstr "→ Technische velden"
 
 #: includes/admin/helpers/class-alma-form-helper.php:709
-msgid ""
-"Specific fields just in case you need it. [<a href=\"#\" id="
-"\"alma_link_toggle_technical_section\">click to open or close</a>]"
-msgstr ""
-"Technische velden indien nodig. [<a href=\"#\" id="
-"\"alma_link_toggle_technical_section\">klik om te openen of te sluiten</a>]"
+msgid "Specific fields just in case you need it. [<a href=\"#\" id=\"alma_link_toggle_technical_section\">click to open or close</a>]"
+msgstr "Technische velden indien nodig. [<a href=\"#\" id=\"alma_link_toggle_technical_section\">klik om te openen of te sluiten</a>]"
 
 #: includes/admin/helpers/class-alma-form-helper.php:712
 msgid "Custom check variations event"
-msgstr "Aangepaste controlevariaties gebeurtenis"
+msgstr "De aangepaste controle variaties worden gecheckt"
 
 #. translators: %1$s is technical information, %2$s is Alma WooCommerce Plugin FAQ doc URL.
 #: includes/admin/helpers/class-alma-form-helper.php:716
 #, php-format
-msgid ""
-"This is the javascript event triggered on variables products page, when the "
-"customer change the product variation. Default value is <strong>%1$s</"
-"strong>.<br />More technical information on <a href=\"%2$s\" target=\"_blank"
-"\">Alma documentation</a>"
-msgstr ""
-"Dit is het javascript event dat getriggerd wordt op variabelen producten "
-"pagina, wanneer de klant de product variatie veranderd. Standaard waarde is "
-"<strong>%1$s</strong>.<br />Meer technische informatie op <a href=\"%2$s\" "
-"target=\"_blank\">Alma documentatie</a>"
+msgid "This is the javascript event triggered on variables products page, when the customer change the product variation. Default value is <strong>%1$s</strong>.<br />More technical information on <a href=\"%2$s\" target=\"_blank\">Alma documentation</a>"
+msgstr "Dit is het JavaScript event dat getriggerd wordt op de variabelen producten pagina, wanneer de klant de productvariatie veranderd. Standaard waarde is <strong>%1$s</strong>.<br /> Meer technische informatie op <a href=\"%2$s\" target=\"_blank\">Alma documentatie</a>"
 
 #: includes/admin/helpers/class-alma-form-helper.php:723
 msgid "Variable products price query selector"
@@ -399,12 +320,8 @@ msgstr "Query selector van de prijzen van variable producten"
 #. translators: %s is technical information.
 #: includes/admin/helpers/class-alma-form-helper.php:727
 #, php-format
-msgid ""
-"Query selector used to get the price of product with variations. Default "
-"value is <strong>%s</strong>."
-msgstr ""
-"Query selector gebruikt om de prijs van een product met variaties te "
-"krijgen. Standaard waarde is <strong>%s</strong>."
+msgid "Query selector used to get the price of product with variations. Default value is <strong>%s</strong>."
+msgstr "Query selector gebruikt om de prijs van een product met variaties te krijgen. Standaard waarde is <strong>%s</strong>."
 
 #: includes/admin/helpers/class-alma-form-helper.php:733
 msgid "Variable products sale price query selector"
@@ -413,12 +330,8 @@ msgstr "Variabele producten verkoopprijs query selector"
 #. translators: %s is technical information.
 #: includes/admin/helpers/class-alma-form-helper.php:737
 #, php-format
-msgid ""
-"Query selector used to get the price of product with <strong>sales "
-"variations</strong>. Default value is <strong>%s</strong>."
-msgstr ""
-"Query selector gebruikt om de prijs te krijgen van product met "
-"<strong>verkoop variaties</strong>. Standaard waarde is <strong>%s</strong>."
+msgid "Query selector used to get the price of product with <strong>sales variations</strong>. Default value is <strong>%s</strong>."
+msgstr "Query selector gebruikt om de prijs te krijgen van product met <strong>verkoop variaties</strong>. Standaard waarde is <strong>%s</strong>."
 
 #. translators: %s is a username.
 #: includes/admin/helpers/class-alma-refund-helper.php:97
@@ -443,67 +356,40 @@ msgid "Error while getting alma transaction_id for order_id : %s."
 msgstr "Fout bij het verkrijgen van alma transaction_id voor order_id : %s."
 
 #: includes/class-alma-generic-handler.php:68
-msgid ""
-"Alma \"Eligibility Widget\" (cart or product) already rendered on this page "
-"- Not displaying Alma"
-msgstr ""
-"\"Badge geschikt\" voor Alma (product of winkelmand) al weergegeven op deze "
-"pagina - Alma wordt niet weergegeven"
+msgid "Alma \"Eligibility Widget\" (cart or product) already rendered on this page - Not displaying Alma"
+msgstr "\"Badge geschikt\" voor Alma (product of winkelmand) al weergegeven op deze pagina - Alma wordt niet weergegeven"
 
 #: includes/class-alma-payment-gateway.php:96
 msgid "Payment in instalments and deferred with Alma - 2x 3x 4x, D+15 or D+30"
-msgstr ""
-"Betalen in termijnen en uitgestelde betalingen met Alma - 2x 3x 4x, D+15 of D"
-"+30"
+msgstr "Betalen in termijnen en uitgestelde betalingen met Alma - 2x 3x 4x, D+15 of D+30"
 
 #. Description of the plugin/theme
 #: includes/class-alma-payment-gateway.php:97
-msgid ""
-"Install Alma and boost your sales! It's simple and guaranteed, your cash "
-"flow is secured. 0 commitment, 0 subscription, 0 risk."
-msgstr ""
-"Installeer Alma en stimuleer uw verkopen! Het is eenvoudig en gegarandeerd, "
-"uw cashflow is beveiligd. geen verplichtingen, geen abonnement, geen risico."
+msgid "Install Alma and boost your sales! It's simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk."
+msgstr "Installeer Alma en stimuleer uw verkopen! Het is eenvoudig en gegarandeerd, uw cashflow is beveiligd. geen verplichtingen, geen abonnement, geen risico."
 
 #. translators: %s: Admin settings url.
 #: includes/class-alma-payment-gateway.php:135
 #, php-format
-msgid ""
-"Thanks for installing Alma! Start by <a href='%s'>activating Alma's payment "
-"method</a>, then set it up to get started."
-msgstr ""
-"Hartelijk dank voor het installeren van Alma! Begin met het <a "
-"href='%s'>activeren van de betalingsmethode Alma</a>, configureer die "
-"vervolgens om te beginnen."
+msgid "Thanks for installing Alma! Start by <a href='%s'>activating Alma's payment method</a>, then set it up to get started."
+msgstr "Hartelijk dank voor het installeren van Alma! Begin met het <a href='%s'>activeren van de betalingsmethode Alma</a>, configureer die vervolgens om te beginnen."
 
 #. translators: %s: Admin settings url.
 #: includes/class-alma-payment-gateway.php:175
 #, php-format
-msgid ""
-"Alma is almost ready. To get started, <a href=\"%s\">fill in your API keys</"
-"a>."
-msgstr ""
-"Alma is bijna klaar. <a href=\"%s\">Voer uw API-sleutels in</a> om te kunnen "
-"beginnen."
+msgid "Alma is almost ready. To get started, <a href=\"%s\">fill in your API keys</a>."
+msgstr "Alma is bijna klaar. <a href=\"%s\">Voer uw API-sleutels in</a> om te kunnen beginnen."
 
 #. translators: %1$s: Admin settings url, %2$s: Admin logs url.
 #: includes/class-alma-payment-gateway.php:349
 #, php-format
-msgid ""
-"Error while initializing Alma API client.<br><a href=\"%1$s\">Activate debug "
-"mode</a> and <a href=\"%2$s\">check logs</a> for more details."
-msgstr ""
-"Initialisatiefout API-client Alma.<br><a href=\"%1$s\">Activeer de debug-"
-"modus</a> en <a href=\"%2$s\">raadpleeg de logs</a> voor meer informatie."
+msgid "Error while initializing Alma API client.<br><a href=\"%1$s\">Activate debug mode</a> and <a href=\"%2$s\">check logs</a> for more details."
+msgstr "Initialisatiefout API-client Alma.<br><a href=\"%1$s\">Activeer de debug-modus</a> en <a href=\"%2$s\">raadpleeg de logs</a> voor meer informatie."
 
 #: includes/class-alma-payment-gateway.php:404
 #: includes/class-alma-payment-gateway.php:430
-msgid ""
-"There was an error processing your payment.<br>Please try again or contact "
-"us if the problem persists."
-msgstr ""
-"Er is iets fout gegaan bij de verwerking van uw betaling.<br>Probeert u het "
-"opnieuw of neem contact met ons op als het probleem blijft bestaan."
+msgid "There was an error processing your payment.<br>Please try again or contact us if the problem persists."
+msgstr "Er is iets fout gegaan bij de verwerking van uw betaling.<br>Probeert u het opnieuw of neem contact met ons op als het probleem blijft bestaan."
 
 #: includes/class-alma-payment-gateway.php:508
 msgid "enabled"
@@ -518,20 +404,14 @@ msgid "Choose your payment method"
 msgstr "Kies u betalingsmethode"
 
 #: includes/class-alma-payment-gateway.php:719
-msgid ""
-"To use this payment option, please ensure your order total meets the minimum "
-"amount required."
-msgstr ""
+msgid "To use this payment option, please ensure your order total meets the minimum amount required."
+msgstr "Om deze betalingsmogelijkheid te gebruiken, moet u ervoor zorgen dat het totaalbedrag van uw bestelling het vereiste minimumbedrag bereikt."
 
 #. translators: %s: An order status (example: "completed").
 #: includes/class-alma-payment-upon-trigger.php:127
 #, php-format
-msgid ""
-"The first customer payment has been triggered, as you updated the order "
-"status to \"%s\"."
-msgstr ""
-"De eerste klantbetaling is getriggerd, omdat u de orderstatus hebt "
-"bijgewerkt naar \"%s\"."
+msgid "The first customer payment has been triggered, as you updated the order status to \"%s\"."
+msgstr "De eerste klantbetaling is getriggerd, omdat u de orderstatus hebt bijgewerkt naar \"%s\"."
 
 #. translators: %s: plan_key alt image.
 #: includes/class-alma-plan-builder.php:76
@@ -587,13 +467,11 @@ msgstr "Voor de plugin Alma is WooCommerce 2.6 of recenter modig"
 
 #: includes/class-alma-plugin.php:142
 msgid "Alma requires the cURL PHP extension to be installed on your server"
-msgstr ""
-"De plugin Alma vereist de installatie van extensie cURL voor PHP op uw server"
+msgstr "De plugin Alma vereist de installatie van extensie cURL voor PHP op uw server"
 
 #: includes/class-alma-plugin.php:146
 msgid "Alma requires the JSON PHP extension to be installed on your server"
-msgstr ""
-"De plugin Alma vereist de installatie van extensie JSON voor PHP op uw server"
+msgstr "De plugin Alma vereist de installatie van extensie JSON voor PHP op uw server"
 
 #: includes/class-alma-plugin.php:149
 msgid "Alma requires OpenSSL >= 1.0.1 to be installed on your server"
@@ -633,35 +511,22 @@ msgstr "Alma fout bij gedeeltelijke terugbetaling : %s."
 
 #. translators: %s: Error message.
 #: includes/class-alma-settings.php:490
-#, fuzzy
-#| msgid "Alma encountered an error when fetching merchant status: %s"
 msgid "Alma encountered an error. No alma client found"
-msgstr ""
-"Alma heeft een fout gevonden tijdens het ophalen van uw verkopergegevens: %s"
+msgstr "Alma kwam een fout tegen. Geen alma client gevonden"
 
 #. translators: %s: Error message.
 #: includes/class-alma-settings.php:635
-#, fuzzy
-#| msgid "Alma encountered an error when fetching merchant status: %s"
-msgid ""
-"Alma encountered an error when fetching merchant status, please check your "
-"api keys or retry later."
-msgstr ""
-"Alma heeft een fout gevonden tijdens het ophalen van uw verkopergegevens: %s"
+msgid "Alma encountered an error when fetching merchant status, please check your api keys or retry later."
+msgstr "Er is een fout opgetreden bij het ophalen van de handelaarstatus, controleer uw api-sleutels of probeer het later opnieuw."
 
 #. translators: %s: Error message.
 #: includes/class-alma-settings.php:649
-#, fuzzy
-#| msgid "Alma API client init error."
 msgid "Alma encountered an error."
-msgstr "Alma API cliënt init fout."
+msgstr "Alma kwam een fout tegen."
 
 #: includes/class-alma-settings.php:664
-#, fuzzy
-#| msgid "Alma encountered an error when fetching merchant status: %s"
 msgid "Alma encountered an error when fetching the fee plans."
-msgstr ""
-"Alma heeft een fout gevonden tijdens het ophalen van uw verkopergegevens: %s"
+msgstr "Alma kreeg een fout bij het ophalen van de tariefplannen."
 
 #. translators: %s: #product_id (if any)
 #: includes/class-alma-shortcodes.php:152
@@ -672,25 +537,14 @@ msgstr "Product%s niet gevonden - Alma wordt niet weergegeven"
 #. translators: %s: Alma dashboard url.
 #: includes/exceptions/class-alma-activation-exception.php:31
 #, php-format
-msgid ""
-"Your Alma account needs to be activated before you can use Alma on your shop."
-"<br>Go to your <a href=\"%1$s\" target=\"_blank\">Alma dashboard</a> to "
-"activate your account.<br><a href=\"%2$s\">Refresh</a> the page when ready."
-msgstr ""
-"Uw Alma-account moet geactiveerd worden voordat u Ama kunt gebruiken in uw "
-"winkel.<br>Ga naar uw <a href=\"%1$s\" target=\"_blank\">dashboard van Alma</"
-"a> om uw account te activeren.<br><a href=\"%2$s\">Vernieuw de pagina</a> "
-"als dat klaar is."
+msgid "Your Alma account needs to be activated before you can use Alma on your shop.<br>Go to your <a href=\"%1$s\" target=\"_blank\">Alma dashboard</a> to activate your account.<br><a href=\"%2$s\">Refresh</a> the page when ready."
+msgstr "Uw Alma-account moet geactiveerd worden voordat u Ama kunt gebruiken in uw winkel.<br>Ga naar uw <a href=\"%1$s\" target=\"_blank\">dashboard van Alma</a> om uw account te activeren.<br><a href=\"%2$s\">Vernieuw de pagina</a> als dat klaar is."
 
 #. translators: %s: Alma dashboard url.
 #: includes/exceptions/class-alma-wrong-credentials-exception.php:34
 #, php-format
-msgid ""
-"Could not connect to Alma using your API keys.<br>Please double check your "
-"keys on your <a href=\"%1$s\" target=\"_blank\">Alma dashboard</a>."
-msgstr ""
-"Kan niet inloggen bij Alma met de opgegeven API-sleutels.<br>Controleer uw "
-"sleutels op uw <a href=\"%1$s\" target=\"_blank\">Alma-dashboard</a>."
+msgid "Could not connect to Alma using your API keys.<br>Please double check your keys on your <a href=\"%1$s\" target=\"_blank\">Alma dashboard</a>."
+msgstr "Kan niet inloggen bij Alma met de opgegeven API-sleutels.<br>Controleer uw sleutels op uw <a href=\"%1$s\" target=\"_blank\">Alma-dashboard</a>."
 
 #. translators: %s -> path to add after dashboard url
 #: includes/helpers/class-alma-assets-helper.php:81
@@ -709,20 +563,12 @@ msgid "At shipping"
 msgstr "Bij verzending"
 
 #: includes/helpers/class-alma-payment-helper.php:91
-msgid ""
-"Payment validation error: no ID provided.<br>Please try again or contact us "
-"if the problem persists."
-msgstr ""
-"Er is iets fout gegaan bij de verwerking van uw betaling.<br>Probeert u het "
-"opnieuw of neem contact met ons op als het probleem blijft bestaan."
+msgid "Payment validation error: no ID provided.<br>Please try again or contact us if the problem persists."
+msgstr "Er is iets fout gegaan bij de verwerking van uw betaling.<br>Probeert u het opnieuw of neem contact met ons op als het probleem blijft bestaan."
 
 #: includes/helpers/class-alma-payment-helper.php:223
-msgid ""
-"There was an error when validating your payment.<br>Please try again or "
-"contact us if the problem persists."
-msgstr ""
-"Er is iets fout gegaan bij de verwerking van uw betaling.<br>Probeert u het "
-"opnieuw of neem contact met ons op als het probleem blijft bestaan."
+msgid "There was an error when validating your payment.<br>Please try again or contact us if the problem persists."
+msgstr "Er is iets fout gegaan bij de verwerking van uw betaling.<br>Probeert u het opnieuw of neem contact met ons op als het probleem blijft bestaan."
 
 #: includes/helpers/class-alma-settings-helper.php:70
 msgid "Pay in installments with Alma"
@@ -742,9 +588,7 @@ msgstr "Spreid uw betalingen met Alma"
 
 #: includes/helpers/class-alma-settings-helper.php:148
 msgid "Some products cannot be paid with monthly or deferred installments"
-msgstr ""
-"Sommige producten kunnen niet met maandelijkse of uitgestelde termijnen "
-"worden betaald"
+msgstr "Sommige producten kunnen niet met maandelijkse of uitgestelde termijnen worden betaald"
 
 #. Plugin Name of the plugin/theme
 msgid "Alma - Pay in installments or later for WooCommerce"
@@ -759,44 +603,6 @@ msgid "Alma"
 msgstr "Alma"
 
 #. Author URI of the plugin/theme
-msgid "https://www.getalma.eu"
-msgstr "https://www.getalma.eu"
+msgid "https://almapay.com"
+msgstr "https://almapay.com"
 
-#~ msgid ""
-#~ "If you are interested in this feature, please get closer to your Alma "
-#~ "contact or by sending an email to <a href=\"mailto:%1$s\">%1$s</a>"
-#~ msgstr ""
-#~ "Als u geïnteresseerd bent in deze functie, neem dan contact op met uw "
-#~ "Alma-contactpersoon of stuur een e-mail naar <a href=\"mailto:%1$s\">"
-#~ "%1$s</a>"
-
-#~ msgid "Not usable handler: not enabled settings."
-#~ msgstr "Geen bruikbare handler: instellingen niet ingeschakeld."
-
-#~ msgid "Not usable handler: settings are not fully configured."
-#~ msgstr ""
-#~ "Geen bruikbare handler: instellingen zijn niet helemaal geconfigureerd."
-
-#~ msgid "Handler is not usable: badge injection failed."
-#~ msgstr "Handler is niet bruikbaar: badge-injectie niet gelukt."
-
-#~ msgid "Settings merchant id not found: badge injection failed."
-#~ msgstr "Instellingen verkoper-id niet gevonden: badge-injectie niet gelukt."
-
-#~ msgid "WooCommerce Gateway Alma plugin can only be bootstrapped once"
-#~ msgstr ""
-#~ "De plugin WooCommerce Alma Gateway kan maar één keer geïnitialiseerd "
-#~ "worden"
-
-#~ msgid "Product not found: product badge injection failed."
-#~ msgstr "Product niet gevonden: productbadge-injectie niet gelukt."
-
-#~ msgid "Product not in stock: product badge injection failed."
-#~ msgstr "Product niet op voorraad: productbadge-injectie niet gelukt."
-
-#~ msgid "Product price (%s): product badge injection failed."
-#~ msgstr "Productprijs (%s): productbadge-injectie niet gelukt."
-
-#~ msgid "Partial refund unavailable due to a connection error."
-#~ msgstr ""
-#~ "Gedeeltelijke terugbetaling niet beschikbaar vanwege een verbindingsfout."
