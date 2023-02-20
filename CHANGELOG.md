@@ -1,6 +1,14 @@
 Changelog
 =========
 
+v4.0.1
+------
+
+* feat: add logger to the client
+* feat: compatibility woocommerce 7.4
+* fix: readme
+* fix: translations
+
 v4.0.0
 ------
 
@@ -9,22 +17,6 @@ v4.0.0
 * fix: reduce api calls
 * feat: add namespaces
 * fix: migration between versions of alma module
-
-v4.0.1
-------
-
-* feat: add logger to the client
-* feat: a new start
-* feat: compatibility woocommerce 7.4
-* feat: remove SOC
-* feat: Share of Checkout
-* feat: Version 4.0
-* fix: readme
-* fix: review changes
-* fix: translations
-* fix: unique nonce fields
-* fix: wordpress version
-* fix: wrong if condition
 
 v3.2.2
 ------

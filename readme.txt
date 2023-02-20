@@ -66,29 +66,18 @@ To build extension for production run `./bin/build.sh`
 
 == Changelog ==
 
+= 4.0.1 =
+* feat: add logger to the client
+* feat: compatibility woocommerce 7.4
+* fix: readme
+* fix: translations
+
 = 4.0.0 =
 * fix: unique nonce fields
 * fix: compatibility with other plugins
 * fix: reduce api calls
 * feat: add namespaces
 * fix: migration between versions of alma module
-
-= 4.0.1 =
-=========
-
-
-* feat: add logger to the client
-* feat: a new start
-* feat: compatibility woocommerce 7.4
-* feat: remove SOC
-* feat: Share of Checkout
-* feat: Version 4.0
-* fix: readme
-* fix: review changes
-* fix: translations
-* fix: unique nonce fields
-* fix: wordpress version
-* fix: wrong if condition
 
 = 3.2.2 =
 * feat: update widget to 3.1.0
