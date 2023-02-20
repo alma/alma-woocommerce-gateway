@@ -239,13 +239,8 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 
 		if (
 			is_admin()
-			&& (
-				empty( $tab )
-				|| 'checkout' == $tab
-			) && (
-				empty( $section )
-				|| Alma_Constants_Helper::GATEWAY_ID == $section
-			)
+			&& 'checkout' == $tab
+			&& Alma_Constants_Helper::GATEWAY_ID == $section
 		) {
 			$this->show_alma_fee_plans = false;
 
