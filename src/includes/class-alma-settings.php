@@ -615,12 +615,17 @@ class Alma_Settings {
 	 * @throws Alma_Api_Merchants_Exception Alma_Api_Merchants_Exception.
 	 * @throws Alma_Wrong_Credentials_Exception Alma_Wrong_Credentials_Exception.
 	 * @throws Alma_Exception General exceptions.
+	 * @throws DependenciesError Dependencies exceptions.
+	 * @throws ParamsError Params exceptions.
 	 */
 	public function get_alma_merchant_id() {
+		$this->get_alma_client();
+
 		if ( ! empty( $this->alma_client ) ) {
+
 			try {
-				$this->{$this->environment . '_merchant_id'} = $this->alma_client->merchants->me()->id;
-				$can_create_payment                          = $this->alma_client->merchants->me()->can_create_payments;
+				$merchant                                    = $this->alma_client->merchants->me();
+				$this->{$this->environment . '_merchant_id'} = $merchant->id;
 
 			} catch ( \Exception $e ) {
 				$this->__set( 'keys_validity', 'no' );
@@ -637,10 +642,11 @@ class Alma_Settings {
 					$e
 				);
 			}
+
 			$this->__set( 'keys_validity', 'yes' );
 			$this->save();
 
-			if ( ! $can_create_payment ) {
+			if ( ! $merchant->can_create_payments ) {
 				throw new Alma_Activation_Exception( $this->environment );
 			}
 		} else {
