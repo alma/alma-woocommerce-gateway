@@ -619,6 +619,7 @@ class Alma_Settings {
 	 * @throws ParamsError Params exceptions.
 	 */
 	public function get_alma_merchant_id() {
+
 		$this->get_alma_client();
 
 		if ( ! empty( $this->alma_client ) ) {
