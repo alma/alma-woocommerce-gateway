@@ -1,6 +1,14 @@
 Changelog
 =========
 
+v4.0.1
+------
+
+* feat: add logger to the client
+* feat: compatibility woocommerce 7.4
+* fix: readme
+* fix: translations
+
 v4.0.0
 ------
 
