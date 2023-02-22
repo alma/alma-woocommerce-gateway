@@ -651,6 +651,9 @@ class Alma_Settings {
 			if ( ! $merchant->can_create_payments ) {
 				throw new Alma_Activation_Exception( $this->environment );
 			}
+
+
+			
 		} else {
 			throw new Alma_Exception(
 			// translators: %s: Error message.
