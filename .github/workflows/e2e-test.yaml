@@ -3,7 +3,7 @@ name: E2E Test
 on:
   pull_request:
     branches:
-      - "master"
+      - "main"
   workflow_dispatch:
 
 jobs:
