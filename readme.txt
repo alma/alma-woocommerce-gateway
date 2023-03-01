@@ -66,17 +66,14 @@ To build extension for production run `./bin/build.sh`
 
 == Changelog ==
 
-= 4.0.1 =
+= 4.1.0 =
 * feat: add logger to the client
 * feat: compatibility woocommerce 7.4
-* fix: readme
-* fix: translations
-
-= 4.0.0 =
+* feat: add namespaces
+* feat: update translation files
 * fix: unique nonce fields
 * fix: compatibility with other plugins
 * fix: reduce api calls
-* feat: add namespaces
 * fix: migration between versions of alma module
 
 = 3.2.2 =
