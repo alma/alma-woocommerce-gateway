@@ -66,6 +66,12 @@ To build extension for production run `./bin/build.sh`
 
 == Changelog ==
 
+= 4.0.1 =
+* feat: add logger to the client
+* feat: compatibility woocommerce 7.4
+* fix: readme
+* fix: translations
+
 = 4.0.0 =
 * fix: unique nonce fields
 * fix: compatibility with other plugins
