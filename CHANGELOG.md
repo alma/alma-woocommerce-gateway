@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v4.0.2
+------
+
+* fix: save alma version in db on fresh install
+* fix: wrong if condition
+
 v4.0.1
 ------
 
@@ -17,37 +23,6 @@ v4.0.0
 * fix: reduce api calls
 * feat: add namespaces
 * fix: migration between versions of alma module
-
-v4.0.2
-------
-
-* feat: 4.0.1
-* feat: add logger to the client
-* feat: add logger to the client
-* feat: a new start
-* feat: change default branch master to main
-* feat: change default branch master to main
-* feat: compatibility woocommerce 7.4
-* feat: compatibility woocommerce 7.4
-* feat: remove SOC
-* feat: Share of Checkout
-* feat: Version 4.0
-* fix: bump-version readme changelog builder
-* fix: readme
-* fix: readme version
-* fix: remove soc
-* fix: review changes
-* fix: save alma version in db on fresh install
-* fix: save alma version in db on fresh install
-* fix: translations
-* fix: unique nonce fields
-* fix: update translations
-* fix: update translations
-* fix: widget script npm min version, default branch & script runtime env
-* fix: woocommerce version
-* fix: wordpress version
-* fix: wrong if condition
-* fix: wrong if condition
 
 v3.2.2
 ------

@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 4.4
 Tested up to: 6.1.1
 Requires PHP: 5.6
-Stable tag: 4.0.1
+Stable tag: 4.0.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -66,6 +66,12 @@ To build extension for production run `./bin/build.sh`
 
 == Changelog ==
 
+= 4.0.2 =
+=========
+
+* fix: save alma version in db on fresh install
+* fix: wrong if condition
+
 = 4.0.1 =
 * feat: add logger to the client
 * feat: compatibility woocommerce 7.4
@@ -78,38 +84,6 @@ To build extension for production run `./bin/build.sh`
 * fix: reduce api calls
 * feat: add namespaces
 * fix: migration between versions of alma module
-
-= 4.0.2 =
-=========
-
-
-* feat: 4.0.1
-* feat: add logger to the client
-* feat: add logger to the client
-* feat: a new start
-* feat: change default branch master to main
-* feat: change default branch master to main
-* feat: compatibility woocommerce 7.4
-* feat: compatibility woocommerce 7.4
-* feat: remove SOC
-* feat: Share of Checkout
-* feat: Version 4.0
-* fix: bump-version readme changelog builder
-* fix: readme
-* fix: readme version
-* fix: remove soc
-* fix: review changes
-* fix: save alma version in db on fresh install
-* fix: save alma version in db on fresh install
-* fix: translations
-* fix: unique nonce fields
-* fix: update translations
-* fix: update translations
-* fix: widget script npm min version, default branch & script runtime env
-* fix: woocommerce version
-* fix: wordpress version
-* fix: wrong if condition
-* fix: wrong if condition
 
 = 3.2.2 =
 * feat: update widget to 3.1.0
