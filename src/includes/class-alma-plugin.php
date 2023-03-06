@@ -93,6 +93,10 @@ class Alma_Plugin {
 			delete_option( 'woocommerce_alma_settings' );
 			delete_option( 'alma_warnings_handled' );
 		}
+
+		if ( ! $db_version ) {
+			update_option( 'alma_version', ALMA_VERSION );
+		}
 	}
 
 	/**
