@@ -474,8 +474,8 @@ class Alma_Settings {
 			$this->alma_client = new Client(
 				$this->get_active_api_key(),
 				array(
-					'mode' => $this->get_environment(),
-					'logger' => $this->logger
+					'mode'   => $this->get_environment(),
+					'logger' => $this->logger,
 				)
 			);
 
