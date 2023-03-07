@@ -50,8 +50,6 @@ class Alma_Constants_Helper {
 	const ALMA_LOGO_PATH                 = 'images/alma_logo.svg';
 	const ALMA_PATH_CHECKOUT_JS          = 'js/alma-checkout.js';
 
-	const WOOCOMMERCE_SETTINGS_COUNTRIES = 'wcml_payment_gateways';
-
 	const ERROR = 'error';
 
 	/**
@@ -64,16 +62,5 @@ class Alma_Constants_Helper {
 		'pending',
 		'failed',
 		'cancelled',
-	);
-
-	/**
-	 * The payment status
-	 *
-	 * @var string[]
-	 */
-	public static $alma_gateways = array(
-		self::GATEWAY_ID,
-		self::ALMA_GATEWAY_PAY_LATER,
-		self::ALMA_GATEWAY_PAY_MORE_THAN_FOUR,
 	);
 }

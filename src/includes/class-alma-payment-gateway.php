@@ -87,6 +87,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 	 */
 	public $plan_builder;
 
+
 	/**
 	 * Constructor for the gateway.
 	 */
@@ -561,9 +562,6 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 
 		$post_data = $this->get_post_data();
 
-		// Manage the countries exclusions.
-		$this->update_countries_rules_for_all_alma_gateways( $post_data );
-
 		// If the mode has changed, or the keys.
 		$this->clean_credentials( $post_data );
 
@@ -592,29 +590,6 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 		}
 	}
 
-	/**
-	 * Copy the countries exclusions/inclusion for all "immaterials alma gateways"
-	 *
-	 * @param array $post_data The form data.
-	 * @return void
-	 */
-	protected function update_countries_rules_for_all_alma_gateways( $post_data ) {
-		if ( isset( $post_data [ Alma_Constants_Helper::WOOCOMMERCE_SETTINGS_COUNTRIES ] ) ) {
-			$data = get_option( Alma_Constants_Helper::WOOCOMMERCE_SETTINGS_COUNTRIES );
-
-			$values = array(
-				'mode' => $post_data [ Alma_Constants_Helper::WOOCOMMERCE_SETTINGS_COUNTRIES ]['mode'],
-			);
-
-			if ( ! empty( $post_data [ Alma_Constants_Helper::WOOCOMMERCE_SETTINGS_COUNTRIES ]['countries'] ) ) {
-				$values['countries'] = explode( ',', $post_data [ Alma_Constants_Helper::WOOCOMMERCE_SETTINGS_COUNTRIES ]['countries'] );
-			}
-
-			$data[ Alma_Constants_Helper::ALMA_GATEWAY_PAY_LATER ]          = $values;
-			$data[ Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR ] = $values;
-			update_option( Alma_Constants_Helper::WOOCOMMERCE_SETTINGS_COUNTRIES, $data );
-		}
-	}
 	/**
 	 * Clean the credentials
 	 *
@@ -677,56 +652,15 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 	 */
 	public function payment_fields() {
 		echo wp_kses_post( $this->get_description() );
-		$this->checkout_helper->render_nonce_field( $this->id );
 
-		$gateway_id = $this->id;
+		$this->checkout_helper->render_nonce_field( $this->id );
 
 		// We get the eligibilites.
 		$eligibilities  = $this->alma_settings->get_cart_eligibilities();
 		$eligible_plans = $this->alma_settings->get_eligible_plans_keys_for_cart( $eligibilities );
-		$payment_fields = array();
+		$default_plan   = $this->gateway_helper->get_default_plan( $eligible_plans );
 
-		foreach ( $eligible_plans as $plan_key ) {
-			if ( $this->alma_settings->should_display_plan( $plan_key, $gateway_id ) ) {
-				$payment_fields[] = $plan_key;
-			} else {
-				unset( $eligibilities[ $plan_key ] );
-			}
-
-			$eligible_plans = $this->alma_settings->get_eligible_plans_keys_for_cart( $eligibilities );
-			$default_plan   = $this->gateway_helper->get_default_plan( $eligible_plans );
-		}
-
-			$is_multiple_plans = count( $payment_fields ) > 1;
-		if ( $is_multiple_plans ) {
-			?>
-				<p><?php echo esc_html__( 'Choose your payment method', 'alma-gateway-for-woocommerce' ); ?><span
-							class="required">*</span></p>
-				<?php
-		} else {
-			?>
-				<br/>
-			<?php
-		}
-
-		if ( empty( $payment_fields ) ) {
-			?>
-				<p><?php echo esc_html__( 'To use this payment option, please ensure your order total meets the minimum amount required.', 'alma-gateway-for-woocommerce' ); ?>
-				<?php
-		} else {
-			foreach ( $payment_fields as $plan_key ) {
-				$this->plan_builder->payment_field( $gateway_id, $plan_key, $is_multiple_plans, $plan_key === $default_plan );
-			}
-
-			?>
-			<p>
-				<?php
-
-				$this->plan_builder->render_payment_plan( $gateway_id, $default_plan, $eligibilities );
-				?>
-			</p>
-			<?php
-		}
+		$this->plan_builder->render_checkout_fields( $eligibilities, $eligible_plans, $default_plan );
 	}
 
 		/**

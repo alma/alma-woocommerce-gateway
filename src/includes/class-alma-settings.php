@@ -1,6 +1,6 @@
 <?php
 /**
- * Alma_Settings_Helper.
+ * Alma_Settings.
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes
@@ -750,33 +750,6 @@ class Alma_Settings {
 	}
 
 	/**
-	 * Add the alma payment gateways if needed
-	 *
-	 * Fields "title" and "description" will then be overwritten by filters :
-	 * "woocommerce_gateway_title" and "woocommerce_gateway_description".
-	 *
-	 * @param object $gateway Alma WC payment gateway.
-	 *
-	 * @return array
-	 */
-	public function build_new_available_gateways( $gateway ) {
-		$new_available_gateways = array();
-
-		foreach ( Alma_Constants_Helper::$alma_gateways as $alma_gateway ) {
-			$tmp_gateway     = clone $gateway;
-			$tmp_gateway->id = $alma_gateway;
-
-			if (
-				$this->is_there_available_plan_for_this_gateway( $tmp_gateway->id )
-			) {
-				$new_available_gateways[ $tmp_gateway->id ] = $tmp_gateway;
-			}
-		}
-
-		return $new_available_gateways;
-	}
-
-	/**
 	 * Check if cart eligibilities has at least one eligible plan.
 	 *
 	 * @return bool
@@ -795,26 +768,6 @@ class Alma_Settings {
 		}
 
 		return $is_eligible;
-	}
-
-	/**
-	 * Test if is there available plan for given payment method
-	 *
-	 * @param string $gateway_id As payment method name.
-	 *
-	 * @return bool
-	 */
-	public function is_there_available_plan_for_this_gateway( $gateway_id ) {
-		switch ( $gateway_id ) {
-			case Alma_Constants_Helper::GATEWAY_ID:
-				return $this->has_pnx();
-			case Alma_Constants_Helper::ALMA_GATEWAY_PAY_LATER:
-				return $this->has_pay_later();
-			case Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR:
-				return $this->has_pnx_plus_4();
-			default:
-				return false;
-		}
 	}
 
 	/**

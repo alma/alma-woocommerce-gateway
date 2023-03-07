@@ -68,17 +68,14 @@ class Alma_Gateway_Helper {
 		foreach ( $available_gateways as $key => $gateway ) {
 
 			if ( 'alma' === $gateway->id ) {
-
 				if ( $has_excluded_products ) {
 					unset( $available_gateways[ $key ] );
 
 					return $available_gateways;
 				}
-
-				$new_available_gateways = array_merge( $new_available_gateways, $this->alma_settings->build_new_available_gateways( $gateway ) );
-			} else {
-				$new_available_gateways[ $key ] = $gateway;
 			}
+
+			$new_available_gateways[ $key ] = $gateway;
 		}
 
 		return $new_available_gateways;
@@ -102,15 +99,22 @@ class Alma_Gateway_Helper {
 			$title = $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PNX );
 		}
 
+		return $title;
+	}
+
+
+	public function get_alma_gateway_title( $id ) {
+		if ( Alma_Constants_Helper::GATEWAY_ID === $id ) {
+			return $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PNX );
+		}
+
 		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_LATER === $id ) {
-			$title = $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PAY_LATER );
+			return $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PAY_LATER );
 		}
 
 		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR === $id ) {
-			$title = $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PNX_PLUS_4 );
+			return $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PNX_PLUS_4 );
 		}
-
-		return $title;
 	}
 
 	/**
@@ -131,22 +135,28 @@ class Alma_Gateway_Helper {
 			$description = $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PNX );
 		}
 
-		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_LATER === $id ) {
-			$description = $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PAY_LATER );
-		}
-
-		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR === $id ) {
-			$description = $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PNX_PLUS_4 );
-		}
-
 		return $description;
 	}
 
-	/**
-	 * Check if cart has eligibilities.
-	 *
-	 * @return bool
-	 */
+	public function get_alma_gateway_description( $id ) {
+		if ( Alma_Constants_Helper::GATEWAY_ID === $id ) {
+			return $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PNX );
+		}
+
+		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_LATER === $id ) {
+			return $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PAY_LATER );
+		}
+
+		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR === $id ) {
+			return $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PNX_PLUS_4 );
+		}
+
+	}
+		/**
+		 * Check if cart has eligibilities.
+		 *
+		 * @return bool
+		 */
 	public function is_there_eligibility_in_cart() {
 		return count( $this->alma_settings->get_eligible_plans_keys_for_cart() ) > 0;
 	}
@@ -160,6 +170,7 @@ class Alma_Gateway_Helper {
 		if ( wc()->cart === null ) {
 			return false;
 		}
+
 		if (
 			property_exists( $this->alma_settings, 'excluded_products_list' )
 			&& is_array( $this->alma_settings->excluded_products_list )
@@ -192,6 +203,7 @@ class Alma_Gateway_Helper {
 		if ( ! count( $plans ) ) {
 			return null;
 		}
+
 		if ( in_array( Alma_Constants_Helper::DEFAULT_FEE_PLAN, $plans, true ) ) {
 			return Alma_Constants_Helper::DEFAULT_FEE_PLAN;
 		}
