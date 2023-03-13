@@ -60,7 +60,7 @@ class Alma_Plan_Builder {
 	}
 
 	public function render_fields( $eligibilities, $eligible_plans, $default_plan = null ) {
-
+        echo '<br><br><b><><><>THE DIFFERENT PLANS<><><></b>';
 		$templates              = new Alma_Template_Loader();
 		$eligible_plans_by_type = $this->order_plans( $eligible_plans );
 
@@ -88,6 +88,7 @@ class Alma_Plan_Builder {
 			}
 		}
 
+        echo '<br><br><><><><b>PAYMENT SCHEDULE PLAN</b><><><><br><br>';
 		foreach ( $eligibilities as $key => $eligibility ) {
 			?>
 			<div

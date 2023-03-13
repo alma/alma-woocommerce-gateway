@@ -104,6 +104,7 @@ class Alma_Gateway_Helper {
 
 
 	public function get_alma_gateway_title( $id ) {
+
 		if ( Alma_Constants_Helper::GATEWAY_ID === $id ) {
 			return $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PNX );
 		}
