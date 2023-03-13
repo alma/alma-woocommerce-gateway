@@ -35,6 +35,8 @@ class Alma_Plan_Builder {
 
 
 	/**
+	 * The gateway helper.
+	 *
 	 * @var Alma_Gateway_Helper
 	 */
 	protected $gateway_helper;
@@ -47,6 +49,12 @@ class Alma_Plan_Builder {
 		$this->gateway_helper = new Alma_Gateway_Helper();
 	}
 
+	/**
+	 * @param $eligibilities
+	 * @param $eligible_plans
+	 * @param $default_plan
+	 * @return void
+	 */
 	public function render_checkout_fields( $eligibilities, $eligible_plans, $default_plan = null ) {
 
 		if ( empty( $eligible_plans ) ) {
@@ -60,7 +68,7 @@ class Alma_Plan_Builder {
 	}
 
 	public function render_fields( $eligibilities, $eligible_plans, $default_plan = null ) {
-        echo '<br><br><b><><><>THE DIFFERENT PLANS<><><></b>';
+		echo '<br><br><b><><><>THE DIFFERENT PLANS<><><></b>';
 		$templates              = new Alma_Template_Loader();
 		$eligible_plans_by_type = $this->order_plans( $eligible_plans );
 
@@ -88,7 +96,7 @@ class Alma_Plan_Builder {
 			}
 		}
 
-        echo '<br><br><><><><b>PAYMENT SCHEDULE PLAN</b><><><><br><br>';
+		echo '<br><br><><><><b>PAYMENT SCHEDULE PLAN</b><><><><br><br>';
 		foreach ( $eligibilities as $key => $eligibility ) {
 			?>
 			<div
