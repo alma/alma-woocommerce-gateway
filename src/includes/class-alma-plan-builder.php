@@ -50,9 +50,11 @@ class Alma_Plan_Builder {
 	}
 
 	/**
-	 * @param array $eligibilities The eligitibilies
-	 * @param array $eligible_plans The eligibles plans
-	 * @param string  $default_plan The default plan
+     * Render the checkout fields.
+     *
+	 * @param array  $eligibilities The eligitibilies
+	 * @param array  $eligible_plans The eligibles plans
+	 * @param string $default_plan The default plan
 	 * @return void
 	 */
 	public function render_checkout_fields( $eligibilities, $eligible_plans, $default_plan = null ) {
