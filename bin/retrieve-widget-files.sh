@@ -63,6 +63,8 @@ usage() {
     echo "   --from-cdn is the default behavior and '$CDN_DIST_URL' is the default CDN url at this time."
     echo "   --from-git-branch will sync & makes npm build by default (you should use --without-build if you want avoid this behavior)."
     echo
+    echo "Version of NPM 8.6 is required to build the widget project"
+    echo
 }
 export -f usage
 # }}}
@@ -89,7 +91,7 @@ export -f set_var_for
 
 #{{{ Getting & Setting default ARGS
 DEFAULT_SYNC_FROM="CDN"
-DEFAULT_GIT_BRANCH="main"
+DEFAULT_GIT_BRANCH="master"
 DEFAULT_BUILD=1
 while [[ ! -z "$1" ]] ; do
     case $1 in
@@ -160,7 +162,7 @@ sync_font_file() {
 export -f sync_font_file
 # }}}
 
-set -Eeiuo pipefail
+set -Eeuo pipefail
 
 # Running Script
 echo "Preparing Widget folders ..."

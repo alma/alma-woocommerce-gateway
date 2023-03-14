@@ -1,9 +1,7 @@
 #!/bin/bash
-set -Eeo pipefail
 
 SEP_CHANGELOG="--------------------------------------------------------------------------------"
-SEP_README="================================================================================"
-VERSION=""
+TARGET_VERSION=""
 FROM_VERSION=""
 LATEST_VERSION="``"
 
@@ -34,7 +32,7 @@ fi
 #
 usage() {
     echo
-    echo "USAGE: $0 target_version [from_version]"
+    echo "USAGE: $0 TARGET_VERSION [FROM_VERSION]"
     echo "   This script will create a version starting by 'v' (ie: v2.7.3),"
     echo "   build a changelog, readme, change plugin version and allow you to edit git add --patch + commit messages"
     echo
@@ -43,7 +41,7 @@ usage() {
     echo "   ~$ $0 2.7.3 2.7.1"
     echo
     echo "NOTES:"
-    echo "   if from_version is ommitted, latest version is searched with \`git tag --list | sort\` command."
+    echo "   if FROM_VERSION is ommitted, latest version is searched with \`git tag --list | sort\` command."
     echo
 }
 export -f usage
@@ -61,26 +59,33 @@ while [[ ! -z "$1" ]] ; do
     case $1 in
         -h|--help) usage ; exit 0 ;;
         *)
-            if [[ -z "$VERSION" ]] ; then
-                VERSION="$1"
+            if [[ -z "$TARGET_VERSION" ]] ; then
+                TARGET_VERSION="$1"
             elif [[ -z "$FROM_VERSION" ]] ; then
                 FROM_VERSION="v$1"
+            else
+                quit "$0 takes only 2 args, what do you want to do with '$1' now?"
             fi
         ;;
     esac
     shift
 done
+set -Eueo pipefail
 
 # TEST ARGS
-[[ -z "$FROM_VERSION" ]] && FROM_VERSION="`get_latest_version`"
-[[ -z "$VERSION" ]] && quit "provide version as first arg"
-[[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || quit "version provided ($VERSION) does not respect expected one => x.x.x (@see https://semver.org/)"
-[[ -z "$FROM_VERSION" ]] && quit "no latest version found. git tag --list return empty version or pattern does not respect the expected one => vx.x.x (@see https://semver.org/)"
-[[ "$FROM_VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || quit "bad latest version found ($FROM_VERSION). git tag --list does not return a valid version pattern like vx.x.x (@see https://semver.org/)"
+[[ -z "$TARGET_VERSION" ]] && quit "You must provide a valid TARGET_VERSION as first arg"
+[[ "$TARGET_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || quit "TARGET_VERSION provided ($TARGET_VERSION) does not respect expected format => x.x.x (@see https://semver.org/)"
+if [[ -z "$FROM_VERSION" ]] ; then
+    FROM_VERSION="`get_latest_version`"
+    [[ -z "$FROM_VERSION" ]] && quit "FROM_VERSION not found. git \`tag --list\` returns an empty version or pattern does not respect the expected one => vx.x.x (@see https://semver.org/)"
+    [[ "$FROM_VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || quit "FROM_VERSION: ($FROM_VERSION) \`git tag --list\` does not respect expected format => vx.x.x (@see https://semver.org/)"
+else
+    [[ "$FROM_VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || quit "FROM_VERSION: provided ($FROM_VERSION) does not respect expected format => vx.x.x (@see https://semver.org/)"
+fi
 
 # CREATE TMP FILES
-TMP_CHANGELOG="`mktemp /tmp/changelog.XXX`"
-TMP_README="`mktemp /tmp/readme.XXX`"
+TMP_CHANGELOG="`mktemp /tmp/changelog.XXXXX`"
+TMP_README="`mktemp /tmp/readme.XXXXX`"
 
 # DECLARE SCRIPT FUNCTIONS
 # {{{ function git_log_since_latest
@@ -146,7 +151,7 @@ export -f bump_version
 edit_change_log() {
     local changelog_file="$1"
     local readme_file="$2"
-    vi $changelog_file
+    ${EDITOR:-vi} $changelog_file
 }
 export -f edit_change_log
 # }}}
@@ -157,28 +162,28 @@ copy_readme_from_changelog() {
     local changelog_file="$2"
     local count_line=`wc -l $changelog_file| awk '{print $1}'`
     title_readme > $readme_file
-    tail -n$(($count_line-2)) $changelog_file >> $readme_file
+    tail -n$(($count_line-3)) $changelog_file >> $readme_file
 }
 export -f copy_readme_from_changelog
 # }}}
 # {{{ function title_readme
 #
 title_readme() {
-    echo -e "= $VERSION =\n${SEP_README:0:$((${#VERSION}+4))}\n#"
+    echo -e "= $TARGET_VERSION ="
 }
 export -f title_readme
 # }}}
 # {{{ function title_changelog
 #
 title_changelog() {
-    echo -e "v$VERSION\n${SEP_CHANGELOG:0:$((${#VERSION}+1))}\n#"
+    echo -e "v$TARGET_VERSION\n${SEP_CHANGELOG:0:$((${#TARGET_VERSION}+1))}\n#"
 }
 export -f title_changelog
 # }}}
 # {{{ function to_bump_or_not_to_bump
 #
 to_bump_or_not_to_bump() {
-    echo "We will bump version 'v$VERSION' (built from 'v$FROM_VERSION') with following changelog:"
+    echo "We will bump version 'v$TARGET_VERSION' (built from '$FROM_VERSION') with following changelog:"
     echo
     cat $TMP_CHANGELOG
     echo
@@ -205,12 +210,12 @@ copy_readme_from_changelog $TMP_README $TMP_CHANGELOG
 update_changelog $TMP_CHANGELOG CHANGELOG.md $FROM_VERSION
 update_changelog $TMP_README readme.txt "= ${FROM_VERSION/v/} ="
 
-bump_stable_tag README.md ${FROM_VERSION/v/} $VERSION
-bump_stable_tag readme.txt ${FROM_VERSION/v/} $VERSION
+bump_stable_tag README.md ${FROM_VERSION/v/} $TARGET_VERSION
+bump_stable_tag readme.txt ${FROM_VERSION/v/} $TARGET_VERSION
 
-bump_version src/alma-gateway-for-woocommerce.php ${FROM_VERSION/v/} $VERSION
+bump_version src/alma-gateway-for-woocommerce.php ${FROM_VERSION/v/} $TARGET_VERSION
 git add --patch
-git commit --message "chore: bump version $VERSION"
+git commit --message "chore: bump version v$TARGET_VERSION"
 git commit --amend
-git tag v$VERSION
-rm $TMP_README $TMP_CHANGELOG
+#git tag v$TARGET_VERSION
+#rm $TMP_README $TMP_CHANGELOG
