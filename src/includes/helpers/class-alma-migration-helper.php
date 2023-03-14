@@ -63,7 +63,7 @@ class Alma_Migration_Helper {
 			&& version_compare( ALMA_VERSION, $db_version, '!=' )
 		) {
 
-			// Si la version en BDD est strictement inférieur à la 4, il faut faire la premiere migratione
+			// Si la version en BDD est strictement inférieur à la 4, il faut faire la premiere migration.
 			if (
 				$db_version
 				&& version_compare( $db_version, '4.0.0', '<' )
