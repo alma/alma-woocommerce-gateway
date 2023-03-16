@@ -63,7 +63,7 @@ class Alma_Refund_Helper {
 	 * @return string The display.
 	 */
 	public function get_display_refund_amount( $refund ) {
-		return $refund->get_amount() . ' class-alma-refund-helper.php' . $refund->get_currency();
+		return $refund->get_amount() . ' ' . $refund->get_currency();
 	}
 
 	/**
