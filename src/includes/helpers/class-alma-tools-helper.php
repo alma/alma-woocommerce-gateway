@@ -241,4 +241,5 @@ class Alma_Tools_Helper {
 
 		return true;
 	}
+
 }

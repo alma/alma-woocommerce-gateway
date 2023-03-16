@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use Alma\Woocommerce\Helpers\Alma_Encryptor_Helper;
 use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
 use Alma\Woocommerce\Helpers\Alma_Gateway_Helper;
 use Alma\Woocommerce\Helpers\Alma_Checkout_Helper;
@@ -87,7 +88,12 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 	 */
 	public $plan_builder;
 
-
+	/**
+	 *  The encryptor.
+	 *
+	 * @var Alma_Encryptor_Helper
+	 */
+		protected $encryption_helper;
 	/**
 	 * Constructor for the gateway.
 	 */
@@ -103,6 +109,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 		$this->general_helper     = new Alma_General_Helper();
 		$this->scripts_helper     = new Alma_Assets_Helper();
 		$this->plan_builder       = new Alma_Plan_Builder();
+		$this->encryption_helper  = new Alma_Encryptor_Helper();
 
 		$this->check_activation();
 
@@ -554,6 +561,22 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 		return ob_get_clean();
 	}
 
+		/**
+		 * Init settings for gateways.
+		 */
+	public function init_settings() {
+		parent::init_settings();
+		$this->enabled = ! empty( $this->settings['enabled'] ) && 'yes' === $this->settings['enabled'] ? 'yes' : 'no';
+
+		if ( ! empty( $this->settings['test_api_key'] ) ) {
+			$this->settings['test_api_key'] = $this->encryption_helper->decrypt( $this->settings['test_api_key'] );
+		}
+
+		if ( ! empty( $this->settings['live_api_key'] ) ) {
+			$this->settings['live_api_key'] = $this->encryption_helper->decrypt( $this->settings['live_api_key'] );
+		}
+	}
+
 	/**
 	 * Processes and saves options.
 	 */
@@ -561,6 +584,9 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 		$this->init_settings();
 
 		$post_data = $this->get_post_data();
+
+		// We encrypt the keys.
+		$post_data = $this->encrypt_keys( $post_data );
 
 		// If the mode has changed, or the keys.
 		$this->clean_credentials( $post_data );
@@ -588,6 +614,24 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 		} catch ( \Exception $e ) {
 			$this->logger->error( $e->getMessage() );
 		}
+	}
+
+	/**
+	 * Encrypt the api keys.
+	 *
+	 * @param array $post_data The form data.
+	 * @return array The form data.
+	 */
+	protected function encrypt_keys( $post_data ) {
+		if ( ! empty( $post_data['woocommerce_alma_live_api_key'] ) ) {
+			$post_data['woocommerce_alma_live_api_key'] = $this->encryption_helper->encrypt( $post_data['woocommerce_alma_live_api_key'] );
+		}
+
+		if ( ! empty( $post_data['woocommerce_alma_test_api_key'] ) ) {
+			$post_data['woocommerce_alma_test_api_key'] = $this->encryption_helper->encrypt( $post_data['woocommerce_alma_test_api_key'] );
+		}
+
+		return $post_data;
 	}
 
 	/**

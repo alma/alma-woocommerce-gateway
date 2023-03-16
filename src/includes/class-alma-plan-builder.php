@@ -50,11 +50,11 @@ class Alma_Plan_Builder {
 	}
 
 	/**
-     * Render the checkout fields.
-     *
-	 * @param array  $eligibilities The eligitibilies
-	 * @param array  $eligible_plans The eligibles plans
-	 * @param string $default_plan The default plan
+	 * Render the checkout fields.
+	 *
+	 * @param array  $eligibilities The eligitibilies.
+	 * @param array  $eligible_plans The eligibles plans.
+	 * @param string $default_plan The default plan.
 	 * @return void
 	 */
 	public function render_checkout_fields( $eligibilities, $eligible_plans, $default_plan = null ) {
@@ -69,6 +69,15 @@ class Alma_Plan_Builder {
 		$this->render_fields( $eligibilities, $eligible_plans, $default_plan );
 	}
 
+	/**
+	 * Render the fields.
+	 *
+	 * @param array  $eligibilities The eligibilities.
+	 * @param array  $eligible_plans The eligible plans.
+	 * @param string $default_plan  The default plans.
+	 * @return void
+	 * @throws Exceptions\Alma_Exception Exception.
+	 */
 	public function render_fields( $eligibilities, $eligible_plans, $default_plan = null ) {
 		echo '<br><br><b><><><>THE DIFFERENT PLANS<><><></b>';
 		$templates              = new Alma_Template_Loader();
@@ -238,6 +247,12 @@ class Alma_Plan_Builder {
 		}
 	}
 
+	/**
+	 * Orders the plans.
+	 *
+	 * @param array $eligible_plans The plans.
+	 * @return array    The sorted plans.
+	 */
 	public function order_plans( $eligible_plans = array() ) {
 		$eligible_plans_by_type = array(
 			Alma_Constants_Helper::GATEWAY_ID             => array(),
@@ -249,12 +264,12 @@ class Alma_Plan_Builder {
 
 		foreach ( $eligible_plans_by_type as $type => $data ) {
 			foreach ( $eligible_plans as $plan ) {
-				$should_display = $this->alma_settings->should_display_plan( $plan, $type );
-				if ( $should_display ) {
+				if ( $this->alma_settings->should_display_plan( $plan, $type ) ) {
 					$result[ $type ][] = $plan;
 				}
 			}
 		}
+
 		return $result;
 	}
 
@@ -272,18 +287,5 @@ class Alma_Plan_Builder {
 
 		// translators: 'In' refers to a number of months, like in 'In one month' or 'In three months'.
 		return sprintf( _n( 'In %s month', 'In %s months', $plan_index - 1, 'alma-gateway-for-woocommerce' ), $plan_index - 1 ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralDomain
-
-	}
-
-
-	/**
-	 * Renders payments timeline for p>4x.
-	 *
-	 * @param object $eligibility The eligibility object.
-	 *
-	 * @return void
-	 */
-	protected function render_payments_timeline( $eligibility ) {
-
 	}
 }

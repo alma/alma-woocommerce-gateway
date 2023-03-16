@@ -1,27 +1,25 @@
 Changelog
 =========
 
-v4.0.2
+v4.1.1
 ------
 
-* fix: save alma version in db on fresh install
-* fix: wrong if condition
+* feat: Encrypt api keys in database
 
-v4.0.1
+v4.1.0
 ------
 
+* feat: compatibility woocommerce 7.5
 * feat: add logger to the client
 * feat: compatibility woocommerce 7.4
+* feat: add namespaces
+* fix: save alma version in db on fresh install
+* fix: wrong if condition
 * fix: readme
 * fix: translations
-
-v4.0.0
-------
-
 * fix: unique nonce fields
 * fix: compatibility with other plugins
 * fix: reduce api calls
-* feat: add namespaces
 * fix: migration between versions of alma module
 
 v3.2.2

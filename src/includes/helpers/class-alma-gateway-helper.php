@@ -17,6 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\Woocommerce\Alma_Logger;
 use Alma\Woocommerce\Alma_Settings;
+use Alma\Woocommerce\Exceptions\Alma_Exception;
+
 /**
  * Alma_Gateway_Helper
  */
@@ -102,7 +104,13 @@ class Alma_Gateway_Helper {
 		return $title;
 	}
 
-
+	/**
+	 * Get the title of the Alma Gateway.
+	 *
+	 * @param string $id The alma gateway type id.
+	 * @return string
+	 * @throws Alma_Exception Exception.
+	 */
 	public function get_alma_gateway_title( $id ) {
 
 		if ( Alma_Constants_Helper::GATEWAY_ID === $id ) {
@@ -116,15 +124,18 @@ class Alma_Gateway_Helper {
 		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR === $id ) {
 			return $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PNX_PLUS_4 );
 		}
+
+		throw new Alma_Exception( sprintf( 'Unknown gateway id : %s', $id ) );
 	}
 
 	/**
-	 * Filter the alma gateway description (visible on checkout page).
+	 * Get the title od the Alma Gateway.
 	 *
-	 * @param string  $description The original description.
-	 * @param integer $id The payment gateway id.
+	 * @param string $description The description.
 	 *
+	 * @param string $id The alma gateway type id.
 	 * @return string
+	 * @throws Alma_Exception Exception.
 	 */
 	public function woocommerce_gateway_description( $description, $id ) {
 
@@ -133,12 +144,19 @@ class Alma_Gateway_Helper {
 		}
 
 		if ( Alma_Constants_Helper::GATEWAY_ID === $id ) {
-			$description = $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PNX );
+			return $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PNX );
 		}
 
 		return $description;
 	}
 
+	/**
+	 * Get the title of the Alma Gateway.
+	 *
+	 * @param string $id The alma gateway type id.
+	 * @return string
+	 * @throws Alma_Exception Exception.
+	 */
 	public function get_alma_gateway_description( $id ) {
 		if ( Alma_Constants_Helper::GATEWAY_ID === $id ) {
 			return $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PNX );
@@ -151,6 +169,8 @@ class Alma_Gateway_Helper {
 		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR === $id ) {
 			return $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PNX_PLUS_4 );
 		}
+
+		throw new Alma_Exception( sprintf( 'Unknown gateway id : %s', $id ) );
 
 	}
 		/**

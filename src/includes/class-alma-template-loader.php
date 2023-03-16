@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Alma_Template_Loader
  */
 class Alma_Template_Loader {
+
 	/**
 	 * Locate template.
 	 *
@@ -28,9 +29,8 @@ class Alma_Template_Loader {
 	 * 2. /themes/theme/$template_name
 	 * 3. /plugins/woocommerce-plugin-templates/templates/$template_name.
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param   string $template_name          Template to load.
+	 * @param   string $subpath          Subdirectories.
 	 */
 	public function locate_template( $template_name, $subpath = '' ) {
 
@@ -40,35 +40,31 @@ class Alma_Template_Loader {
 			$template = ALMA_PLUGIN_PATH . 'public/templates/' . $subpath . '/' . $template_name;
 		}
 
-		return apply_filters( 'wcpt_locate_template', $template, $template_name );
+		return apply_filters( 'alma_locate_template', $template, $template_name );
 	}
 
 	/**
 	 * Get template.
 	 *
-	 * Search for the template and include the file.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @see wcpt_locate_template()
+	 * @see locate_template()
 	 *
 	 * @param string $template_name          Template to load.
 	 * @param array  $args                   Args passed for the template file.
-	 * @param string $string $template_path  Path to templates.
-	 * @param string $default_path           Default path to template files.
+	 * @param string $subpath           Path to template files.
 	 */
 	public function get_template( $template_name, $args = array(), $subpath = '' ) {
 
-		if ( is_array( $args ) && isset( $args ) ) :
-			extract( $args );
-		endif;
+		if ( is_array( $args ) ) {
+			// We master our data. It's not get or post
+			extract( $args ); // phpcs:ignore
+		}
 
 		$template_file = $this->locate_template( $template_name, $subpath );
 
-		if ( ! file_exists( $template_file ) ) :
-			_doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', $template_file ), '1.0.0' );
+		if ( ! file_exists( $template_file ) ) {
+			_doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', $template_file ), '4.2.0' );
 			return;
-		endif;
+		}
 
 		include $template_file;
 
