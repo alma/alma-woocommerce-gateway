@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v4.0.2
+------
+
+* fix: save alma version in db on fresh install
+* fix: wrong if condition
+
 v4.0.1
 ------
 

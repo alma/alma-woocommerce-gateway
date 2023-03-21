@@ -70,7 +70,42 @@ class Alma_Plugin {
 	 * @return void
 	 */
 	protected function self_update() {
-		$this->migration_helper->update();
+		$db_version = get_option( 'alma_version' );
+
+		if ( version_compare( ALMA_VERSION, $db_version, '!=' ) ) {
+
+			if (
+				$db_version
+				&& version_compare( $db_version, 4, '<' )
+				&& version_compare( ALMA_VERSION, 4, '>=' )
+			) {
+				$old_settings = get_option( 'woocommerce_alma_settings' );
+				update_option( Alma_Settings::OPTIONS_KEY, $old_settings );
+
+				// Upgrade to 4.
+				$gateway = new Alma_Payment_Gateway();
+
+				// Manage credentials to match the new settings fields format.
+				try {
+					$gateway->manage_credentials();
+				} catch ( \Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+					// We don't care if it fails there is nothing to update.
+				}
+
+				if ( version_compare( $db_version, 3, '<' ) ) {
+					update_option( 'alma_version', ALMA_VERSION );
+					deactivate_plugins( 'alma-woocommerce-gateway/alma-woocommerce-gateway.php', true );
+				}
+			}
+
+			update_option( 'alma_version', ALMA_VERSION );
+			delete_option( 'woocommerce_alma_settings' );
+			delete_option( 'alma_warnings_handled' );
+		}
+
+		if ( ! $db_version ) {
+			update_option( 'alma_version', ALMA_VERSION );
+		}
 	}
 
 	/**

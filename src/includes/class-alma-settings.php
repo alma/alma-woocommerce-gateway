@@ -52,7 +52,6 @@ use Alma\Woocommerce\Exceptions\Alma_Activation_Exception;
  * @property string display_product_eligibility Wp-bool-eq (yes or no)
  * @property string display_cart_eligibility Wp-bool-eq (yes or no)
  * @property string environment Live or test
- * @property bool keys_validity Flag to indicate id the current keys are working
  * @property string selected_fee_plan Admin dashboard fee_plan in edition mode.
  * @property string test_merchant_id Alma TEST merchant ID
  * @property string live_merchant_id Alma LIVE merchant ID
@@ -640,8 +639,6 @@ class Alma_Settings {
 				$this->{$this->environment . '_merchant_id'} = $merchant->id;
 
 			} catch ( \Exception $e ) {
-				$this->__set( 'keys_validity', 'no' );
-				$this->save();
 
 				if ( $e->response && 401 === $e->response->responseCode ) {
 					throw new Alma_Wrong_Credentials_Exception( $this->get_environment() );
@@ -655,7 +652,6 @@ class Alma_Settings {
 				);
 			}
 
-			$this->__set( 'keys_validity', 'yes' );
 			$this->save();
 
 			if ( ! $merchant->can_create_payments ) {
