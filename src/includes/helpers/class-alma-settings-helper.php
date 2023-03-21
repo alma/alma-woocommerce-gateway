@@ -54,7 +54,6 @@ class Alma_Settings_Helper {
 			'test_api_key'                               => '',
 			'environment'                                => 'test',
 			'debug'                                      => 'yes',
-			'keys_validity'                              => 'no',
 		);
 	}
 
