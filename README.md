@@ -1,13 +1,17 @@
 # Alma - Pay in installments or later for WooCommerce
 
-Contributors: almapayments, olance, syjust, clairealma
-Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo commerce, alma, monthly payments, split payments
-Requires at least: 4.4
-Tested up to: 6.2
-Requires PHP: 5.6
-Stable tag: 4.0.2
-License: GPLv3
-License URI: https://www.gnu.org/licenses/gpl-3.0.html
+- Contributors: almapayments, olance, syjust, clairealma
+- Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo commerce, alma, monthly payments, split payments
+- Requires at least Wordpress: 4.4
+- Requires at least Woocommerce: 3.0.9
+- Tested up to Wordpress: 6.2
+- Tested up to Woocommerce: 7.5.0
+- Requires PHP: 5.6
+- Stable tag: 4.1.0
+- License: GPLv3
+- License URI: https://www.gnu.org/licenses/gpl-3.0.html
+- Support: support@getalma.eu
+- Documentation: https://docs.almapay.com/docs/woocommerce
 
 This plugin adds a new payment method to WooCommerce, which allows you to offer monthly payments to your customer using Alma.
 
