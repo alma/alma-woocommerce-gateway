@@ -65,6 +65,7 @@ use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Exception;
  * @property array excluded_products_list Wp Categories excluded slug's list
  * @property string share_of_checkout_enabled Bool for share of checkout acceptance (yes or no)
  * @property string share_of_checkout_enabled_date String Date when the marchand did accept the share of checkout
+ * @property string share_of_checkout_last_sharing_date String Date when we sent the data to Alma
  */
 class Alma_Settings {
 

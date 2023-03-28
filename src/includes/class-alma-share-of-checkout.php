@@ -54,6 +54,7 @@ class Alma_Share_Of_Checkout {
 	 */
 	public function send_soc_data() {
 		$settings_date = $this->settings->share_of_checkout_last_sharing_date;
+
 		try {
 			if (
 				$this->settings->is_test()
