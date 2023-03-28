@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Alma\Woocommerce\Admin\Alma_Notices;
+use Alma\Woocommerce\Admin\Helpers\Alma_Check_Legal_Helper;
 use Alma\Woocommerce\Exceptions\Alma_Requirements_Exception;
 use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
 use Alma\Woocommerce\Helpers\Alma_Migration_Helper;
@@ -133,6 +134,10 @@ class Alma_Plugin {
 		$this->add_hooks();
 		$this->add_badges();
 		$this->add_actions();
+
+		// Launch the "share of checkout".
+		$share_of_checkout = new Alma_Share_Of_Checkout();
+		$share_of_checkout->send_soc_data();
 	}
 
 	/**
@@ -216,9 +221,9 @@ class Alma_Plugin {
 		$settings = new Alma_Settings();
 
 		if (
-				$settings->is_enabled()
-				&& $settings->is_allowed_to_see_alma( wp_get_current_user() )
-			) {
+			$settings->is_enabled()
+			&& $settings->is_allowed_to_see_alma( wp_get_current_user() )
+		) {
 
 			$shortcodes = new Alma_Shortcodes();
 
@@ -251,6 +256,9 @@ class Alma_Plugin {
 
 		$refund = new Alma_Refund();
 		add_action( 'admin_init', array( $refund, 'admin_init' ) );
+
+		$check_legal = new Alma_Check_Legal_Helper();
+		add_action( 'init', array( $check_legal, 'check_share_checkout' ) );
 	}
 
 
