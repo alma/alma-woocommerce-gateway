@@ -20,6 +20,17 @@ usage() {
 export -f usage
 # }}}
 
+
+# {{{ function quit
+#
+quit() {
+    echo -e "$@"
+    exit 1
+}
+export -f quit
+# }}}
+
+
 # {{{ shopt args
 while [[ ! -z "$1" ]] ; do
     case "$1" in

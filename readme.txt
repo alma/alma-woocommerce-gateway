@@ -66,6 +66,9 @@ To build extension for production run `./bin/build.sh`
 
 == Changelog ==
 
+= 4.1.1 =
+* fix: PHP 8.0 and 8.1 compatibility
+
 = 4.1.0 =
 * feat: compatibility WordPress 6.2
 * feat: add logger to the php client
