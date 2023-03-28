@@ -94,7 +94,6 @@ class Alma_Plugin {
 				}
 			}
 
-
 			update_option( 'alma_version', ALMA_VERSION );
 			delete_option( 'woocommerce_alma_settings' );
 			delete_option( 'alma_warnings_handled' );
