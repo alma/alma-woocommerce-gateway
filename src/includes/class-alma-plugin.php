@@ -61,16 +61,12 @@ class Alma_Plugin {
 	 * @return void
 	 */
 	protected function self_update() {
-		$this->logger->debug( 'self_update' );
-
 		$db_version = get_option( 'alma_version' );
-		$this->logger->debug( '$db_version : ' . $db_version );
 
 		if (
 			$db_version
 			&& version_compare( ALMA_VERSION, $db_version, '!=' )
 		) {
-			$this->logger->debug( 'old db version : ' . $db_version );
 
 			if (
 				$db_version
@@ -79,11 +75,9 @@ class Alma_Plugin {
 			) {
 				$old_settings = get_option( 'woocommerce_alma_settings' );
 				update_option( Alma_Settings::OPTIONS_KEY, $old_settings );
-				$this->logger->debug( 'getting old settings' );
 
 				// Upgrade to 4.
 				$gateway = new Alma_Payment_Gateway();
-				$this->logger->debug( 'initialize gateway' );
 
 				// Manage credentials to match the new settings fields format.
 				try {
@@ -95,26 +89,19 @@ class Alma_Plugin {
 				}
 
 				if ( version_compare( $db_version, 3, '<' ) ) {
-					$this->logger->debug( 'Deactivate for version 2.*' );
 					update_option( 'alma_version', ALMA_VERSION );
 					deactivate_plugins( 'alma-woocommerce-gateway/alma-woocommerce-gateway.php', true );
 				}
 			}
 
-			$this->logger->debug( 'Old plugin settings update and delete' );
-
 			update_option( 'alma_version', ALMA_VERSION );
 			delete_option( 'woocommerce_alma_settings' );
 			delete_option( 'alma_warnings_handled' );
-			$this->logger->debug( 'Old plugin settings update and delete DONE' );
 		}
 
 		if ( ! $db_version ) {
-			$this->logger->debug( 'No previous db version' );
 			update_option( 'alma_version', ALMA_VERSION );
 		}
-
-		$this->logger->debug( 'self_update done' );
 	}
 
 	/**
@@ -369,9 +356,9 @@ class Alma_Plugin {
 	private function __clone() {    }
 
 	/**
-	 * Private unserialize method to prevent unserializing of the *Singleton* instance.
+	 * Public unserialize method to prevent unserializing of the *Singleton* instance.
 	 *
 	 * @return void
 	 */
-	private function __wakeup() {   }
+	public function __wakeup() {   }
 }

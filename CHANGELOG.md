@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v4.1.1
+------
+
+* fix: PHP 8.0 and 8.1 compatibility
+
 v4.1.0
 ------
 
