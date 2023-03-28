@@ -369,9 +369,9 @@ class Alma_Plugin {
 	private function __clone() {    }
 
 	/**
-	 * Private unserialize method to prevent unserializing of the *Singleton* instance.
+	 * Public unserialize method to prevent unserializing of the *Singleton* instance.
 	 *
 	 * @return void
 	 */
-	private function __wakeup() {   }
+	public function __wakeup() {   }
 }
