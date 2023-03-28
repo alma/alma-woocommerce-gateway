@@ -251,7 +251,7 @@ function add_button_show_pwd(button_name) {
 
 }
 function toggle_pwd_field(field) {
-    pass_id = jQuery('input[name="'+field+'"]').attr("id");
+    var pass_id = jQuery('input[name="'+field+'"]').attr("id");
     var x = document.getElementById(pass_id);
     if (x.type === "password") {
         x.type = "text";

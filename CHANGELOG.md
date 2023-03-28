@@ -4,23 +4,22 @@ Changelog
 v4.1.1
 ------
 
-* feat: Encrypt api keys in database
+* fix: PHP 8.0 and 8.1 compatibility
 
 v4.1.0
 ------
 
+* feat: compatibility WordPress 6.2
+* feat: add logger to the php client
 * feat: compatibility woocommerce 7.5
-* feat: add logger to the client
-* feat: compatibility woocommerce 7.4
 * feat: add namespaces
 * fix: save alma version in db on fresh install
-* fix: wrong if condition
-* fix: readme
 * fix: translations
 * fix: unique nonce fields
 * fix: compatibility with other plugins
 * fix: reduce api calls
 * fix: migration between versions of alma module
+* fix: implement best practices Woocommerce and WordPress
 
 v3.2.2
 ------
