@@ -2,7 +2,7 @@
 
 <!-- Describe here the reason for change, and provide a link to the corresponding ClickUp task or Sentry issue. -->
 
-[ClickUp task](https://app.clickup.com/20427503/v/b/4-32476982-2/CLICKUP_ISSUE_ID)
+[ClickUp task](https://app.clickup.com/20427503/v/b/6-140492922-2/CLICKUP_ISSUE_ID)
 
 ### Code changes
 
