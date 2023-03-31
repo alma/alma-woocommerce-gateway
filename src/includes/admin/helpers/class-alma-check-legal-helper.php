@@ -50,7 +50,7 @@ class Alma_Check_Legal_Helper {
 	}
 
 	/**
-	 * Check the share of checkout
+	 * Check the share of checkout availability.
 	 *
 	 * @return void
 	 */

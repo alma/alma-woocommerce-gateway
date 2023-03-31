@@ -48,7 +48,7 @@ class Alma_Share_Of_Checkout {
 	}
 
 	/**
-	 * Share of checkout cron execution.
+	 * Share of checkout execution.
 	 *
 	 * @return void
 	 */
