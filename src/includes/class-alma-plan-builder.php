@@ -79,9 +79,14 @@ class Alma_Plan_Builder {
 	 * @throws Exceptions\Alma_Exception Exception.
 	 */
 	public function render_fields( $eligibilities, $eligible_plans, $default_plan = null ) {
-		echo '<br><br><b><><><>THE DIFFERENT PLANS<><><></b>';
 		$templates              = new Alma_Template_Loader();
 		$eligible_plans_by_type = $this->order_plans( $eligible_plans );
+
+        if(0 === count($eligible_plans_by_type)) {
+            return;
+        }
+
+        echo '<div id="alma_plans_accordion">';
 
 		foreach ( $eligible_plans_by_type as $type => $eligible_plans ) {
 			$templates->get_template(
@@ -105,7 +110,9 @@ class Alma_Plan_Builder {
 					'partials'
 				);
 			}
+			echo '</div>';
 		}
+        echo '</div>';
 
 		echo '<br><br><><><><b>PAYMENT SCHEDULE PLAN</b><><><><br><br>';
 		foreach ( $eligibilities as $key => $eligibility ) {

@@ -9,11 +9,7 @@
  */
 
 ?>
-<br>
-<br>
+<h3>
 <?php echo $title; ?>
-<br>
+</h3><div>
 <?php echo $description; ?>
-<br>
-==============================
-<br>

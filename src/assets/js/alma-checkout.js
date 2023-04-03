@@ -5,6 +5,8 @@
  */
 
 (function ($) {
+
+
 	$( 'body' ).on(
 		'updated_checkout',
 		function() {
@@ -33,6 +35,10 @@
 
 	function render_alma_methods()
 	{
+		jQuery( "#alma_plans_accordion" ).accordion({
+			collapsible: true,
+		});
+
 		var payment_method = $( '.woocommerce-checkout input[name="payment_method"]:checked' ).closest( 'li.wc_payment_method' );
 		if (typeof payment_method.attr( 'data-already-checked' ) != 'undefined') {
 			$( '#' + payment_method.attr( 'data-already-checked' ) ).prop( 'checked', true ).trigger( 'change' );

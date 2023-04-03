@@ -218,7 +218,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 		);
 
 		add_filter( 'woocommerce_gateway_title', array( $this->gateway_helper, 'woocommerce_gateway_title' ), 10, 2 );
-		add_filter( 'woocommerce_gateway_description', array( $this->gateway_helper, 'woocommerce_gateway_description' ), 10, 2 );
+		//add_filter( 'woocommerce_gateway_description', array( $this->gateway_helper, 'woocommerce_gateway_description' ), 10, 2 );
 		add_filter( 'allowed_redirect_hosts', array( $this->general_helper, 'alma_domains_whitelist' ) );
 
 		add_action(
@@ -778,8 +778,6 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 	 * (We have three payment gateways : "alma", "alma_pay_later", and "alma_pnx_plus_4")
 	 */
 	public function payment_fields() {
-		echo wp_kses_post( $this->get_description() );
-
 		$this->checkout_helper->render_nonce_field( $this->id );
 
 		// We get the eligibilites.

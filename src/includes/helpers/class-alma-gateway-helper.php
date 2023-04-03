@@ -92,13 +92,8 @@ class Alma_Gateway_Helper {
 	 * @return string
 	 */
 	public function woocommerce_gateway_title( $title, $id ) {
-
-		if ( Alma_Constants_Helper::GATEWAY_ID !== substr( $id, 0, 4 ) ) {
-			return $title;
-		}
-
 		if ( Alma_Constants_Helper::GATEWAY_ID === $id ) {
-			$title = $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PNX );
+			$title =  __( 'Pay with Alma', 'alma-gateway-for-woocommerce' );
 		}
 
 		return $title;
@@ -126,28 +121,6 @@ class Alma_Gateway_Helper {
 		}
 
 		throw new Alma_Exception( sprintf( 'Unknown gateway id : %s', $id ) );
-	}
-
-	/**
-	 * Get the title od the Alma Gateway.
-	 *
-	 * @param string $description The description.
-	 *
-	 * @param string $id The alma gateway type id.
-	 * @return string
-	 * @throws Alma_Exception Exception.
-	 */
-	public function woocommerce_gateway_description( $description, $id ) {
-
-		if ( Alma_Constants_Helper::GATEWAY_ID !== substr( $id, 0, 4 ) ) {
-			return $description;
-		}
-
-		if ( Alma_Constants_Helper::GATEWAY_ID === $id ) {
-			return $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PNX );
-		}
-
-		return $description;
 	}
 
 	/**
