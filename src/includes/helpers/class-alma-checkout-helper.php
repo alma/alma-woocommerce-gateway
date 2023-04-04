@@ -74,7 +74,7 @@ class Alma_Checkout_Helper {
 				'Nonce not found or wrong - FieldName "%s" - NonceName "%s" - FieldName value "%s" - NonceName  value"%s"',
 				$field_name,
 				$nonce_name,
-				json_encode($_POST)
+				wp_json_encode( $_POST )
 			)
 		);
 

@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v4.1.2
+------
+
+* fix: log error on nonce check
+* feat: update widget version
+
 v4.1.1
 ------
 
