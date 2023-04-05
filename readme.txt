@@ -72,10 +72,6 @@ To build extension for production run `./bin/build.sh`
 
 = 4.1.1 =
 * fix: PHP 8.0 and 8.1 compatibility
-* fix:phpcs
-* fix: remove useless files
-* fix: remove useless files
-* fix: remove useless logs
 
 = 4.1.0 =
 * feat: compatibility WordPress 6.2
