@@ -15,7 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use Alma\Woocommerce\Alma_Logger;
 use Alma\Woocommerce\Alma_Settings;
 /**
  * Alma_Gateway_Helper
