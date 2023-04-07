@@ -13,6 +13,7 @@ namespace Alma\Woocommerce\Admin\Helpers;
 
 use Alma\Woocommerce\Alma_Logger;
 use Alma\Woocommerce\Alma_Settings;
+use Alma\Woocommerce\Alma_Share_Of_Checkout;
 use Alma\Woocommerce\Helpers\Alma_Assets_Helper;
 
 defined( 'ABSPATH' ) || exit;
