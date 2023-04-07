@@ -14,8 +14,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Alma\Woocommerce\Admin\Alma_Notices;
+use Alma\Woocommerce\Admin\Helpers\Alma_Check_Legal_Helper;
 use Alma\Woocommerce\Exceptions\Alma_Requirements_Exception;
 use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
+use Alma\Woocommerce\Helpers\Alma_Migration_Helper;
 use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
 use Alma\Woocommerce\Helpers\Alma_Payment_Helper;
 use Alma\Woocommerce\Helpers\Alma_Assets_Helper;
@@ -46,11 +48,19 @@ class Alma_Plugin {
 	protected $logger;
 
 	/**
+	 * The migration helper.
+	 *
+	 * @var Alma_Migration_Helper
+	 */
+	protected $migration_helper;
+
+	/**
 	 * Protected constructor to prevent creating a new instance of the
 	 * *Singleton* via the `new` operator from outside of this class.
 	 */
 	protected function __construct() {
-		$this->logger = new Alma_Logger();
+		$this->logger           = new Alma_Logger();
+		$this->migration_helper = new Alma_Migration_Helper();
 		$this->self_update();
 		$this->init();
 	}
@@ -63,15 +73,12 @@ class Alma_Plugin {
 	protected function self_update() {
 		$db_version = get_option( 'alma_version' );
 
-		if (
-			$db_version
-			&& version_compare( ALMA_VERSION, $db_version, '!=' )
-		) {
+		if ( version_compare( ALMA_VERSION, $db_version, '!=' ) ) {
 
 			if (
 				$db_version
-				&& version_compare( $db_version, '4.0.0', '<' )
-				&& version_compare( ALMA_VERSION, '4.0.0', '>=' )
+				&& version_compare( $db_version, 4, '<' )
+				&& version_compare( ALMA_VERSION, 4, '>=' )
 			) {
 				$old_settings = get_option( 'woocommerce_alma_settings' );
 				update_option( Alma_Settings::OPTIONS_KEY, $old_settings );
@@ -82,10 +89,8 @@ class Alma_Plugin {
 				// Manage credentials to match the new settings fields format.
 				try {
 					$gateway->manage_credentials();
-					$this->logger->debug( 'manage_credentials' );
 				} catch ( \Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 					// We don't care if it fails there is nothing to update.
-					$this->logger->debug( 'the credentials were wrong' );
 				}
 
 				if ( version_compare( $db_version, 3, '<' ) ) {
@@ -129,6 +134,10 @@ class Alma_Plugin {
 		$this->add_hooks();
 		$this->add_badges();
 		$this->add_actions();
+
+		// Launch the "share of checkout".
+		$share_of_checkout = new Alma_Share_Of_Checkout();
+		$share_of_checkout->send_soc_data();
 	}
 
 	/**
@@ -212,9 +221,9 @@ class Alma_Plugin {
 		$settings = new Alma_Settings();
 
 		if (
-				$settings->is_enabled()
-				&& $settings->is_allowed_to_see_alma( wp_get_current_user() )
-			) {
+			$settings->is_enabled()
+			&& $settings->is_allowed_to_see_alma( wp_get_current_user() )
+		) {
 
 			$shortcodes = new Alma_Shortcodes();
 
@@ -247,6 +256,9 @@ class Alma_Plugin {
 
 		$refund = new Alma_Refund();
 		add_action( 'admin_init', array( $refund, 'admin_init' ) );
+
+		$check_legal = new Alma_Check_Legal_Helper();
+		add_action( 'init', array( $check_legal, 'check_share_checkout' ) );
 	}
 
 

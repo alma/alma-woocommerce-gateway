@@ -20,6 +20,10 @@ use Alma\API\Entities\FeePlan;
 use Alma\API\Entities\Payment;
 use Alma\API\ParamsError;
 use Alma\API\RequestError;
+use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Accept_Exception;
+use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Deny_Exception;
+use Alma\Woocommerce\Exceptions\Alma_Api_Soc_Last_Update_Dates_Exception;
+use Alma\Woocommerce\Helpers\Alma_Encryptor_Helper;
 use Alma\Woocommerce\Helpers\Alma_Settings_Helper as Alma_Helper_Settings;
 use Alma\Woocommerce\Exceptions\Alma_Plans_Definition_Exception;
 use Alma\Woocommerce\Helpers\Alma_General_Helper;
@@ -37,6 +41,7 @@ use Alma\Woocommerce\Exceptions\Alma_Wrong_Credentials_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Api_Plans_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Api_Merchants_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Activation_Exception;
+use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Exception;
 
 /**
  * Handles settings retrieval from the settings API.
@@ -51,6 +56,7 @@ use Alma\Woocommerce\Exceptions\Alma_Activation_Exception;
  * @property string display_product_eligibility Wp-bool-eq (yes or no)
  * @property string display_cart_eligibility Wp-bool-eq (yes or no)
  * @property string environment Live or test
+ * @property bool keys_validity Flag to indicate id the current keys are working
  * @property string selected_fee_plan Admin dashboard fee_plan in edition mode.
  * @property string test_merchant_id Alma TEST merchant ID
  * @property string live_merchant_id Alma LIVE merchant ID
@@ -58,6 +64,9 @@ use Alma\Woocommerce\Exceptions\Alma_Activation_Exception;
  * @property string variable_product_sale_price_query_selector Css query selector for variable discounted products
  * @property string variable_product_check_variations_event JS event for product variation change
  * @property array excluded_products_list Wp Categories excluded slug's list
+ * @property string share_of_checkout_enabled Bool for share of checkout acceptance (yes or no)
+ * @property string share_of_checkout_enabled_date String Date when the marchand did accept the share of checkout
+ * @property string share_of_checkout_last_sharing_date String Date when we sent the data to Alma
  */
 class Alma_Settings {
 
@@ -88,7 +97,7 @@ class Alma_Settings {
 	/**
 	 * The api client.
 	 *
-	 * @var Alma\API\Client
+	 * @var Client
 	 */
 	public $alma_client;
 
@@ -99,11 +108,20 @@ class Alma_Settings {
 	 * @var Eligibility|Eligibility[]|array
 	 */
 	protected $eligibilities;
+
+	/**
+	 * The encryptor.
+	 *
+	 * @var Alma_Encryptor_Helper
+	 */
+	public $encryptor_helper;
+
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->logger = new Alma_Logger();
+		$this->logger           = new Alma_Logger();
+		$this->encryptor_helper = new Alma_Encryptor_Helper();
 
 		$this->load_settings();
 	}
@@ -115,7 +133,7 @@ class Alma_Settings {
 	 * @return void
 	 */
 	public function load_settings() {
-		$this->settings = self::get_settings();
+		$this->settings = $this->get_settings();
 
 		// Turn these settings into variables we can use.
 		foreach ( $this->settings as $setting_key => $value ) {
@@ -139,7 +157,7 @@ class Alma_Settings {
 	 *
 	 * @return array
 	 */
-	public static function get_settings() {
+	public function get_settings() {
 		$settings = (array) get_option( self::OPTIONS_KEY, array() );
 
 		if ( ! empty( $settings['allowed_fee_plans'] ) && ! is_array( $settings['allowed_fee_plans'] ) ) {
@@ -400,8 +418,8 @@ class Alma_Settings {
 	 *
 	 * @return string
 	 */
-	protected function get_live_api_key() {
-		return $this->live_api_key;
+	public function get_live_api_key() {
+		return $this->encryptor_helper->decrypt( $this->live_api_key );
 	}
 
 	/**
@@ -409,8 +427,8 @@ class Alma_Settings {
 	 *
 	 * @return string
 	 */
-	protected function get_test_api_key() {
-		return $this->test_api_key;
+	public function get_test_api_key() {
+		return $this->encryptor_helper->decrypt( $this->test_api_key );
 	}
 
 	/**
@@ -511,6 +529,79 @@ class Alma_Settings {
 			throw new Alma_Api_Fetch_Payments_Exception( $payment_id );
 		}
 	}
+
+	/**
+	 * Share the data for soc.
+	 *
+	 * @param array $data   The payload.
+	 *
+	 * @throws Alma_Api_Share_Of_Checkout_Exception Alma_Api_Share_Of_Checkout_Exception exception.
+	 */
+	public function send_soc_data( $data ) {
+		try {
+			$this->get_alma_client();
+
+			$this->alma_client->shareOfCheckout->share( $data );
+
+		} catch ( \Exception $e ) {
+			$this->logger->error( sprintf( 'Api : shareOfCheckout, data : "%s", Api message "%s"', wp_json_encode( $data ), $e->getMessage() ) );
+			throw new Alma_Api_Share_Of_Checkout_Exception( $data );
+		}
+	}
+
+	/**
+	 * Get the last soc date.
+	 *
+	 * @return array
+	 *
+	 * @throws Alma_Api_Soc_Last_Update_Dates_Exception The api exception.
+	 */
+	public function get_soc_last_updated_date() {
+		try {
+			$this->get_alma_client();
+
+			return $this->alma_client->shareOfCheckout->getLastUpdateDates(); // phpcs:ignore
+		} catch ( \Exception $e ) {
+			$this->logger->error( sprintf( 'Api : getLastUpdateDates shareOfCheckout, Api message "%s"', $e->getMessage() ) );
+			throw new Alma_Api_Soc_Last_Update_Dates_Exception();
+		}
+	}
+
+
+	/**
+	 * Sent the accept for the soc consent
+	 *
+	 * @throws Alma_Api_Share_Of_Checkout_Accept_Exception The exception.
+	 */
+	public function accept_soc_consent() {
+		try {
+			$this->get_alma_client();
+
+			$this->alma_client->shareOfCheckout->addConsent();
+
+		} catch ( \Exception $e ) {
+			$this->logger->error( sprintf( 'Api : accept share of shareOfCheckout, Api message "%s"', $e->getMessage() ) );
+			throw new Alma_Api_Share_Of_Checkout_Accept_Exception();
+		}
+	}
+
+	/**
+	 * Sent the deny for the consent for soc.
+	 *
+	 * @throws Alma_Api_Share_Of_Checkout_Deny_Exception The exception.
+	 */
+	public function deny_soc_consent() {
+		try {
+			$this->get_alma_client();
+
+			$this->alma_client->shareOfCheckout->removeConsent();
+
+		} catch ( \Exception $e ) {
+			$this->logger->error( sprintf( 'Api : deny share of shareOfCheckout, Api message "%s"', $e->getMessage() ) );
+			throw new Alma_Api_Share_Of_Checkout_Deny_Exception();
+		}
+	}
+
 
 	/**
 	 * Trigger the transaction.
@@ -629,6 +720,8 @@ class Alma_Settings {
 				$this->{$this->environment . '_merchant_id'} = $merchant->id;
 
 			} catch ( \Exception $e ) {
+				$this->__set( 'keys_validity', 'no' );
+				$this->save();
 
 				if ( $e->response && 401 === $e->response->responseCode ) {
 					throw new Alma_Wrong_Credentials_Exception( $this->get_environment() );
@@ -641,7 +734,7 @@ class Alma_Settings {
 					$e
 				);
 			}
-
+			$this->__set( 'keys_validity', 'yes' );
 			$this->save();
 
 			if ( ! $merchant->can_create_payments ) {
