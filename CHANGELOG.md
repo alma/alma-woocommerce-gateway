@@ -6,6 +6,9 @@ v4.1.2
 
 * fix: log error on nonce check
 * feat: update widget version
+* feat: encryption api keys in DB
+* feat: Share of checkout
+* feat: update translations
 
 v4.1.1
 ------
