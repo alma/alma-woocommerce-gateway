@@ -778,7 +778,7 @@ class Alma_Form_Helper {
 			),
 
 			'share_of_checkout_enabled' => array(
-				'title'   => __( 'Activate your data settings ', 'alma-gateway-for-woocommerce' ),
+				'title'   => __( 'Activate your data sharing settings ', 'alma-gateway-for-woocommerce' ),
 				'type'    => 'checkbox',
 				'label'   => '&nbsp;',
 				'default' => $default_settings['share_of_checkout_enabled'],

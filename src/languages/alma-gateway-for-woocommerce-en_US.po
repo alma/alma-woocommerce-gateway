@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 77e083b1cd468d7c2202d1ff3d20e024\n"
-"POT-Creation-Date: 2023-04-07 09:45+0200\n"
-"PO-Revision-Date: 2023-04-07 08:50\n"
+"POT-Creation-Date: 2023-04-07 11:09+0200\n"
+"PO-Revision-Date: 2023-04-07 09:11\n"
 "Last-Translator: \n"
 "Language-Team: English\n"
 "MIME-Version: 1.0\n"
@@ -397,7 +397,7 @@ msgid "- payment provider for each order"
 msgstr ""
 
 #: includes/admin/helpers/class-alma-form-helper.php:781
-msgid "Activate your data settings "
+msgid "Activate your data sharing settings "
 msgstr ""
 
 #. translators: %s is a username.
