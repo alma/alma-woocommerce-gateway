@@ -25,19 +25,36 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Alma_Share_Of_Checkout_Helper {
 
 	/**
+	 * The alma settings.
+	 *
+	 * @var Alma_Settings
+	 */
+	protected $alma_settings;
+
+	/**
+	 * The order helper.
+	 *
+	 * @var Alma_Order_Helper
+	 */
+	protected $order_helper;
+
+	/**
+	 * Construct.
+	 */
+	public function __construct() {
+		$this->alma_settings = new Alma_Settings();
+		$this->order_helper  = new Alma_Order_Helper();
+	}
+
+
+	/**
 	 * Returns the date of the last share of checkout.
 	 *
 	 * @return false|string
+	 * @throws Alma_Api_Soc_Last_Update_Dates_Exception Date Exception.
 	 */
-	public static function get_last_update_date() {
-		$alma_settings    = new Alma_Settings();
-		$last_update_date = self::get_default_last_update_date();
-
-		try {
-			$last_update_by_api = $alma_settings->get_soc_last_updated_date();
-		} catch ( Alma_Api_Soc_Last_Update_Dates_Exception $e ) {
-			return $last_update_date;
-		}
+	public function get_last_update_date() {
+		$last_update_by_api = $this->alma_settings->get_soc_last_updated_date();
 
 		return gmdate( 'Y-m-d', $last_update_by_api['end_time'] );
 	}
@@ -47,50 +64,33 @@ class Alma_Share_Of_Checkout_Helper {
 	 *
 	 * @return false|string
 	 */
-	public static function get_default_last_update_date() {
+	public function get_default_last_update_date() {
 		return gmdate( 'Y-m-d', strtotime( '-2 days' ) );
 	}
 
 	/**
 	 * Gets the payload to send to API.
 	 *
-	 * @param string $start_date The start date yyyy-mm-dd formatted.
+	 * @param string $from_date The start date yyyy-mm-dd formatted.
+	 * @param string $end_date The end date yyyy-mm-dd formatted.
 	 *
 	 * @return array
 	 */
-	public static function get_payload( $start_date ) {
-		$from                 = self::get_from_date( $start_date );
-		$to                   = self::get_to_date( $start_date );
-		$orders_by_date_range = Alma_Order_Helper::get_orders_by_date_range( $from, $to );
+	public function get_payload( $from_date, $end_date ) {
+		$orders_by_date_range = $this->order_helper->get_orders_by_date_range( $from_date, $end_date );
+		$from_date            = $from_date . ' 00:00:00';
+		$end_date             = $end_date . ' 23:59:59';
+
+		if ( 0 === count( $orders_by_date_range ) ) {
+			return array();
+		}
 
 		return array(
-			'start_time'      => $from,
-			'end_time'        => $to,
-			'orders'          => self::get_payload_orders( $orders_by_date_range ),
-			'payment_methods' => self::get_payload_payment_methods( $orders_by_date_range ),
+			'start_time'      => $from_date,
+			'end_time'        => $end_date,
+			'orders'          => $this->get_payload_orders( $orders_by_date_range ),
+			'payment_methods' => $this->get_payload_payment_methods( $orders_by_date_range ),
 		);
-	}
-
-	/**
-	 * Get share of checkout "from date". (date BEGIN)
-	 *
-	 * @param string $start_date The start date yyyy-mm-dd formatted.
-	 *
-	 * @return string
-	 */
-	public static function get_from_date( $start_date ) {
-		return $start_date . ' 00:00:00';
-	}
-
-	/**
-	 * Get share of checkout "to date". (date END)
-	 *
-	 * @param string $start_date The start date yyyy-mm-dd formatted.
-	 *
-	 * @return string
-	 */
-	public static function get_to_date( $start_date ) {
-		return $start_date . ' 23:59:59';
 	}
 
 	/**
@@ -100,9 +100,11 @@ class Alma_Share_Of_Checkout_Helper {
 	 *
 	 * @return array
 	 */
-	protected static function get_payload_orders( $orders_by_date_range ) {
+	protected function get_payload_orders( $orders_by_date_range ) {
 		$order_currencies = array();
+
 		foreach ( $orders_by_date_range as $order ) {
+
 			if ( ! isset( $order_currencies[ $order->get_currency() ] ) ) {
 				$order_currencies[ $order->get_currency() ] = array(
 					'total_order_count' => 0,
@@ -110,6 +112,7 @@ class Alma_Share_Of_Checkout_Helper {
 					'currency'          => $order->get_currency(),
 				);
 			}
+
 			$order_currencies[ $order->get_currency() ]['total_order_count'] += 1;
 			$order_currencies[ $order->get_currency() ]['total_amount']      += Alma_Tools_Helper::alma_price_to_cents( $order->get_total() );
 		}
@@ -124,7 +127,7 @@ class Alma_Share_Of_Checkout_Helper {
 	 *
 	 * @return array
 	 */
-	protected static function get_payload_payment_methods( $orders_by_date_range ) {
+	protected function get_payload_payment_methods( $orders_by_date_range ) {
 		$payment_methods_currencies = array();
 		foreach ( $orders_by_date_range as $order ) {
 

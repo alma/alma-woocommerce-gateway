@@ -105,7 +105,7 @@ class Alma_Migration_Helper {
 		try {
 			if (
 				! empty( $settings['live_api_key'] )
-				&& 'sk_live_' === substr( $settings['live_api_key'], 0, 7 )
+				&& 'sk_live_' === substr( $settings['live_api_key'], 0, 8 )
 			) {
 				$settings['live_api_key'] = $this->encryptor_helper->encrypt( $settings['live_api_key'] );
 				$has_changed              = true;
@@ -113,7 +113,7 @@ class Alma_Migration_Helper {
 
 			if (
 				! empty( $settings['test_api_key'] )
-				&& 'sk_test_' === substr( $settings['test_api_key'], 0, 7 )
+				&& 'sk_test_' === substr( $settings['test_api_key'], 0, 8 )
 			) {
 				$settings['test_api_key'] = $this->encryptor_helper->encrypt( $settings['test_api_key'] );
 				$has_changed              = true;

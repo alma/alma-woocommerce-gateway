@@ -61,53 +61,10 @@ class Alma_Plugin {
 	protected function __construct() {
 		$this->logger           = new Alma_Logger();
 		$this->migration_helper = new Alma_Migration_Helper();
-		$this->self_update();
+		$this->migration_helper->update();
 		$this->init();
 	}
 
-	/**
-	 * Update plugin to the latest version.
-	 *
-	 * @return void
-	 */
-	protected function self_update() {
-		$db_version = get_option( 'alma_version' );
-
-		if ( version_compare( ALMA_VERSION, $db_version, '!=' ) ) {
-
-			if (
-				$db_version
-				&& version_compare( $db_version, 4, '<' )
-				&& version_compare( ALMA_VERSION, 4, '>=' )
-			) {
-				$old_settings = get_option( 'woocommerce_alma_settings' );
-				update_option( Alma_Settings::OPTIONS_KEY, $old_settings );
-
-				// Upgrade to 4.
-				$gateway = new Alma_Payment_Gateway();
-
-				// Manage credentials to match the new settings fields format.
-				try {
-					$gateway->manage_credentials();
-				} catch ( \Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
-					// We don't care if it fails there is nothing to update.
-				}
-
-				if ( version_compare( $db_version, 3, '<' ) ) {
-					update_option( 'alma_version', ALMA_VERSION );
-					deactivate_plugins( 'alma-woocommerce-gateway/alma-woocommerce-gateway.php', true );
-				}
-			}
-
-			update_option( 'alma_version', ALMA_VERSION );
-			delete_option( 'woocommerce_alma_settings' );
-			delete_option( 'alma_warnings_handled' );
-		}
-
-		if ( ! $db_version ) {
-			update_option( 'alma_version', ALMA_VERSION );
-		}
-	}
 
 	/**
 	 * Init the plugin after plugins_loaded so environment variables are set.
@@ -134,10 +91,6 @@ class Alma_Plugin {
 		$this->add_hooks();
 		$this->add_badges();
 		$this->add_actions();
-
-		// Launch the "share of checkout".
-		$share_of_checkout = new Alma_Share_Of_Checkout();
-		$share_of_checkout->send_soc_data();
 	}
 
 	/**
@@ -259,6 +212,10 @@ class Alma_Plugin {
 
 		$check_legal = new Alma_Check_Legal_Helper();
 		add_action( 'init', array( $check_legal, 'check_share_checkout' ) );
+
+		// Launch the "share of checkout".
+		$share_of_checkout = new Alma_Share_Of_Checkout();
+		add_action( 'init', array( $share_of_checkout, 'send_soc_data' ) );
 	}
 
 
