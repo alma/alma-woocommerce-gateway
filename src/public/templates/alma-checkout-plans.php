@@ -9,7 +9,12 @@
  */
 
 ?>
-<h3>
-<?php echo $title; ?>
-</h3><div>
+<b>
+	<div class="head">
+		<i class="fas fa-angle-down arrow"></i>
+		<?php echo $title; ?>
+	</div>
+</b>
+
+<div>
 <?php echo $description; ?>

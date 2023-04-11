@@ -50,7 +50,7 @@ class Alma_Constants_Helper {
 	const NOTICE_NONCE_NAME              = 'wc_alma_notice_nonce';
 	const ALMA_LOGO_PATH                 = 'images/alma_logo.svg';
 	const ALMA_PATH_CHECKOUT_JS          = 'js/alma-checkout.js';
-	const ALMA_PATH_ACCORDION_JS          = 'js/alma-accordion.js';
+	const ALMA_PATH_CHECKOUT_CSS          = 'css/alma-checkout.css';
 
 	const ERROR = 'error';
 

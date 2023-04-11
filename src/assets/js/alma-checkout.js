@@ -20,8 +20,23 @@
 		'change',
 		'input[name="alma_fee_plan"]',
 		function() {
+			jQuery( "#alma_plans_accordion" ).accordion({
+				collapsible: true,
+				header: "b"
+			});
+
+			jQuery('.head').click(function(){
+				//jQuery( "#alma-checkout-plan-details" ).hide();
+				jQuery(this).toggleClass('active');
+				jQuery(this).parent().find('.arrow').toggleClass('arrow-animate');
+			});
+
 			if ( $( this ).prop( 'checked' ) ) {
 				$( this ).closest( 'li.wc_payment_method' ).attr( 'data-already-checked', $( this ).attr( 'id' ) );
+				jQuery( "#alma-checkout-plan-details" ).insertAfter( $( this ).parent() )
+				jQuery( "#alma-checkout-plan-details" ).show();
+
+
 			}
 		}
 	);
@@ -35,9 +50,6 @@
 
 	function render_alma_methods()
 	{
-		jQuery( "#alma_plans_accordion" ).accordion({
-			collapsible: true,
-		});
 
 		var payment_method = $( '.woocommerce-checkout input[name="payment_method"]:checked' ).closest( 'li.wc_payment_method' );
 		if (typeof payment_method.attr( 'data-already-checked' ) != 'undefined') {

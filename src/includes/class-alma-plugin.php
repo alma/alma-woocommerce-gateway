@@ -277,6 +277,7 @@ class Alma_Plugin {
 		if ( is_checkout() ) {
 			$alma_checkout = Alma_Assets_Helper::get_asset_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_JS );
 			wp_enqueue_script( 'alma-checkout-page', $alma_checkout, 	array('jquery', 'jquery-ui-core', 'jquery-ui-accordion' ), ALMA_VERSION, true );
+			wp_enqueue_style( 'alma-checkout-page', Alma_Assets_Helper::get_asset_admin_url( 'css/alma-checkout.css' ), array(), ALMA_VERSION );
 
 		}
 	}
