@@ -5,7 +5,7 @@
 - Requires at least Wordpress: 4.4
 - Requires at least Woocommerce: 3.0.9
 - Tested up to Wordpress: 6.2
-- Tested up to Woocommerce: 7.5.0
+- Tested up to Woocommerce: 7.5.1
 - Requires PHP: 5.6
 - Stable tag: 4.2.0
 - License: GPLv3

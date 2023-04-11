@@ -20,8 +20,9 @@ use Alma\API\Entities\FeePlan;
 use Alma\API\Entities\Payment;
 use Alma\API\ParamsError;
 use Alma\API\RequestError;
-use Alma\Woocommerce\Admin\Helpers\Alma_Check_Legal_Helper;
+use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Accept_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Deny_Exception;
+use Alma\Woocommerce\Exceptions\Alma_Api_Soc_Last_Update_Dates_Exception;
 use Alma\Woocommerce\Helpers\Alma_Encryptor_Helper;
 use Alma\Woocommerce\Helpers\Alma_Settings_Helper as Alma_Helper_Settings;
 use Alma\Woocommerce\Exceptions\Alma_Plans_Definition_Exception;
@@ -96,7 +97,7 @@ class Alma_Settings {
 	/**
 	 * The api client.
 	 *
-	 * @var Alma\API\Client
+	 * @var Client
 	 */
 	public $alma_client;
 
@@ -551,7 +552,7 @@ class Alma_Settings {
 	/**
 	 * Get the last soc date.
 	 *
-	 * @return mixed
+	 * @return array
 	 *
 	 * @throws Alma_Api_Soc_Last_Update_Dates_Exception The api exception.
 	 */

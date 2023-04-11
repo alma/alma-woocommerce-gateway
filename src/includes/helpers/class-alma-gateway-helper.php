@@ -15,7 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use Alma\Woocommerce\Alma_Logger;
 use Alma\Woocommerce\Alma_Settings;
 use Alma\Woocommerce\Exceptions\Alma_Exception;
 

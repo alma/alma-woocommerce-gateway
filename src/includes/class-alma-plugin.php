@@ -99,10 +99,6 @@ class Alma_Plugin {
 		$this->add_hooks();
 		$this->add_badges();
 		$this->add_actions();
-
-		// Launch the "share of checkout".
-		$share_of_checkout = new Alma_Share_Of_Checkout();
-		$share_of_checkout->send_soc_data();
 	}
 
 	/**
@@ -224,6 +220,10 @@ class Alma_Plugin {
 
 		$check_legal = new Alma_Check_Legal_Helper();
 		add_action( 'init', array( $check_legal, 'check_share_checkout' ) );
+
+		// Launch the "share of checkout".
+		$share_of_checkout = new Alma_Share_Of_Checkout();
+		add_action( 'init', array( $share_of_checkout, 'send_soc_data' ) );
 	}
 
 

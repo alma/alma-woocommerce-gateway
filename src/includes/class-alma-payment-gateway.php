@@ -94,13 +94,13 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 	 *
 	 * @var Alma_Encryptor_Helper
 	 */
-		protected $encryption_helper;
+	protected $encryption_helper;
 
-			/**
-			 * The legal helper.
-			 *
-			 * @var Alma_Check_Legal_Helper
-			 */
+	/**
+	 * The legal helper.
+	 *
+	 * @var Alma_Check_Legal_Helper
+	 */
 	protected $check_legal_helper;
 
 	/**

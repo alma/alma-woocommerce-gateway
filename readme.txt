@@ -66,6 +66,13 @@ To build extension for production run `./bin/build.sh`
 
 == Changelog ==
 
+= 4.1.2 =
+* fix: log error on nonce check
+* feat: update widget version
+* feat: encryption api keys in DB
+* feat: Share of checkout
+* feat: update translations
+
 = 4.1.1 =
 * fix: PHP 8.0 and 8.1 compatibility
 
