@@ -9,12 +9,9 @@
  */
 
 ?>
-<b>
-	<div class="head">
-		<i class="fas fa-angle-down arrow"></i>
-		<?php echo $title; ?>
-	</div>
-</b>
+<h5 style="font-weight: 400; font-size: 1.1em;">
+	<?php echo $title; ?>
+</h5>
 
 <div>
 <?php echo $description; ?>

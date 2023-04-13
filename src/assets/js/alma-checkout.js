@@ -5,7 +5,23 @@
  */
 
 (function ($) {
-
+	// $( 'body' ).ready(
+	// 	function () {
+	// 		$('.ui-accordion-header').each(function () {
+	// 			var icon = $( this ).find('.fas')[0];
+	// 			if ($( this ).attr("aria-selected") === "false") {
+	// 				icon.classList.add("fa-angle-right");
+	// 				icon.classList.remove("fa-angle-down");
+	// 				console.log(icon);
+	// 			} else {
+	// 				icon.classList.remove("fa-angle-right");
+	// 				icon.classList.add("fa-angle-down");
+	// 				console.log(icon);
+	// 			}
+	// 		})
+	//
+	// 	}
+	// );
 
 	$( 'body' ).on(
 		'updated_checkout',
@@ -20,26 +36,41 @@
 		'change',
 		'input[name="alma_fee_plan"]',
 		function() {
+			var icons = {
+				header: "fas fa-angle-right",
+				activeHeader: "fas fa-angle-down"
+			};
 			jQuery( "#alma_plans_accordion" ).accordion({
 				collapsible: true,
-				header: "b"
-			});
-
-			jQuery('.head').click(function(){
-				//jQuery( "#alma-checkout-plan-details" ).hide();
-				jQuery(this).toggleClass('active');
-				jQuery(this).parent().find('.arrow').toggleClass('arrow-animate');
+				header: "h5",
+				heightStyle: "content",
+				icons: icons
 			});
 
 			if ( $( this ).prop( 'checked' ) ) {
 				$( this ).closest( 'li.wc_payment_method' ).attr( 'data-already-checked', $( this ).attr( 'id' ) );
-				jQuery( "#alma-checkout-plan-details" ).insertAfter( $( this ).parent() )
-				jQuery( "#alma-checkout-plan-details" ).show();
+				jQuery( "#alma-checkout-plan-details" ).insertAfter( $( this ).parent()[0].lastElementChild )
 
 
 			}
 		}
 	);
+
+	// $( 'body' ).on(
+	// 	'click',
+	// 	'.ui-accordion-header',
+	// 	function () {
+	// 		var icon = jQuery(this).find('.fas')[0];
+	// 		if ($(this).attr("aria-selected") === "false") {
+	// 			icon.classList.add("fa-angle-right");
+	// 			icon.classList.remove("fa-angle-down");
+	// 		} else {
+	// 			icon.classList.remove("fa-angle-right");
+	// 			icon.classList.add("fa-angle-down");
+	// 		}
+	//
+	// 	}
+	// );
 
 	$( 'body' ).on(
 		'payment_method_selected',
