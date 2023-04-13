@@ -1,9 +1,9 @@
 # Alma - Pay in installments or later for WooCommerce
 
-- Contributors: almapayments, olance, syjust, clairealma
+- Contributors: almapayments, olance, francois-gomis, clairealma
 - Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo commerce, alma, monthly payments, split payments
 - Requires at least Wordpress: 4.4
-- Requires at least Woocommerce: 3.0.9
+- Requires at least Woocommerce: 3.0.0
 - Tested up to Wordpress: 6.2
 - Tested up to Woocommerce: 7.5.1
 - Requires PHP: 5.6
