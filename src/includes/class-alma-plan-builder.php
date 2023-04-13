@@ -119,7 +119,8 @@ class Alma_Plan_Builder {
 			array(
 				'eligibilities'       => $eligibilities,
 				'default_plan' => $default_plan,
-				'gateway_id' => $type
+				'gateway_id' => $type,
+                'alma_settings' => $this->alma_settings
 			)
 		);
 

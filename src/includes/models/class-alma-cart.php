@@ -63,4 +63,5 @@ class Alma_Cart {
 
 		return $this->cart->get_total( null );
 	}
+
 }

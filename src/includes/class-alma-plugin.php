@@ -113,8 +113,8 @@ class Alma_Plugin {
 			throw new Alma_Requirements_Exception( __( 'Alma requires WooCommerce to be activated', 'alma-gateway-for-woocommerce' ) );
 		}
 
-		if ( version_compare( wc()->version, '2.6', '<' ) ) {
-			throw new Alma_Requirements_Exception( __( 'Alma requires WooCommerce version 2.6 or greater', 'alma-gateway-for-woocommerce' ) );
+		if ( version_compare( wc()->version, '3.0.0', '<' ) ) {
+			throw new Alma_Requirements_Exception( __( 'Alma requires WooCommerce version 3.0.0 or greater', 'alma-gateway-for-woocommerce' ) );
 		}
 
 		if ( ! function_exists( 'curl_init' ) ) {
@@ -320,11 +320,7 @@ class Alma_Plugin {
 	 * @since 1.0.0
 	 */
 	public function get_setting_link() {
-		$use_id_as_section = function_exists( 'WC' ) ? version_compare( WC()->version, '2.6', '>=' ) : false;
-
-		$section_slug = $use_id_as_section ? 'alma' : strtolower( Alma_Payment_Gateway::class );
-
-		return admin_url( 'admin.php?page=wc-settings&tab=checkout&section=' . $section_slug );
+		return admin_url( 'admin.php?page=wc-settings&tab=checkout&section=alma' );
 	}
 
 	/**

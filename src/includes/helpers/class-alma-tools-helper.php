@@ -207,7 +207,7 @@ class Alma_Tools_Helper {
 	 *
 	 * @return string
 	 */
-	public static function url_for_webhook( $webhook ) {
+	public function url_for_webhook( $webhook ) {
 		return wc()->api_request_url( $webhook );
 	}
 

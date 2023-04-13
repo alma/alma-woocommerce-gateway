@@ -46,6 +46,20 @@ class Alma_Payment {
 	 */
 	protected $alma_settings;
 
+    /**
+     * The tool helper.
+     *
+     * @var Alma_Tools_Helper
+     */
+    protected $tool_helper;
+
+    /**
+     * The cart.
+     *
+     * @var Alma_Cart
+     */
+    protected $cart;
+
 	/**
 	 * Constructor.
 	 */
@@ -53,6 +67,8 @@ class Alma_Payment {
 		$this->logger               = new Alma_Logger();
 		$this->payment_upon_trigger = new Alma_Payment_Upon_Trigger();
 		$this->alma_settings        = new Alma_Settings();
+        $this->tool_helper = new Alma_Tools_Helper();
+        $this->cart = new Alma_Cart();
 	}
 
 	/**
@@ -96,85 +112,156 @@ class Alma_Payment {
 
 		try {
 			$order = new Alma_Order( $order_id );
+
+            $data = $this->build_data_for_alma($order, $fee_plan_definition);
+            die(var_dump(json_encode($data)));
+
 		} catch ( \Exception $e ) {
 			$this->logger->error(
-				'Error getting payment info from order.',
-				array(
-					'Method'           => __METHOD__,
-					'OrderId'          => $order_id,
-					'ExceptionMessage' => $e->getMessage(),
-				)
+                sprintf(
+				'Error getting payment info from order id %s. Message : %s',$order_id, $e->getMessage()
+                )
 			);
 
 			return array();
 		}
 
-		$data = array(
-			'payment' => array(
-				'purchase_amount'     => $order->get_total(),
-				'return_url'          => Alma_Tools_Helper::url_for_webhook( Alma_Constants_Helper::CUSTOMER_RETURN ),
-				'ipn_callback_url'    => Alma_Tools_Helper::url_for_webhook( Alma_Constants_Helper::IPN_CALLBACK ),
-				'customer_cancel_url' => self::get_customer_cancel_url(),
-				'installments_count'  => $fee_plan_definition['installments_count'],
-				'deferred_days'       => $fee_plan_definition['deferred_days'],
-				'deferred_months'     => $fee_plan_definition['deferred_months'],
-				'custom_data'         => array(
-					'order_id'  => $order_id,
-					'order_key' => $order->get_order_key(),
-				),
-				'locale'              => apply_filters( 'alma_checkout_payment_user_locale', get_locale() ),
-			),
-			'order'   => array(
-				'merchant_reference' => $order->get_order_reference(),
-				'merchant_url'       => $order->get_merchant_url(),
-				'customer_url'       => $order->get_customer_url(),
-			),
-		);
 
-		if ( $this->payment_upon_trigger->does_payment_upon_trigger_apply_for_this_fee_plan( $fee_plan_definition ) ) {
-			$data['payment']['deferred']             = 'trigger';
-			$data['payment']['deferred_description'] = $this->alma_settings->get_display_text();
-		}
 
-		$data['customer']                = array();
-		$data['customer']['addresses']   = array();
-		$data['customer']['is_business'] = false;
-		if ( $order->has_billing_address() ) {
-			$billing_address                    = $order->get_billing_address();
-			$data['payment']['billing_address'] = $billing_address;
-
-			$data['customer']['first_name']  = $billing_address['first_name'];
-			$data['customer']['last_name']   = $billing_address['last_name'];
-			$data['customer']['email']       = $billing_address['email'];
-			$data['customer']['phone']       = $billing_address['phone'];
-			$data['customer']['addresses'][] = $billing_address;
-
-			if ( $order->is_business() ) {
-				$data['customer']['is_business']   = true;
-				$data['customer']['business_name'] = $order->get_business_name();
-			}
-		}
-
-		if ( $order->has_shipping_address() ) {
-			$shipping_address                    = $order->get_shipping_address();
-			$data['payment']['shipping_address'] = $shipping_address;
-			$data['customer']['addresses'][]     = $shipping_address;
-		}
 
 		return apply_filters( 'alma_get_payment_payload_from_order', $data );
 	}
 
-	/**
-	 * Get customer cancel url.
-	 *
-	 * @return string
-	 * @noinspection PhpDeprecationInspection
-	 */
-	public static function get_customer_cancel_url() {
-		if ( version_compare( wc()->version, '2.5.0', '<' ) ) {
-			return wc()->cart->get_checkout_url();
-		} else {
-			return wc_get_checkout_url();
-		}
-	}
+    /**
+     * Build the data to sent to the Alma Api.
+     *
+     * @param Alma_Order $order The order.
+     * @param array $fee_plan_definition Fee plan definition.
+     * @return array|array[]
+     */
+    protected function build_data_for_alma($order, $fee_plan_definition)
+    {
+        $data = array(
+            'payment' => array(
+                'purchase_amount'     => $order->get_total(),
+                'return_url'          => $this->tool_helper->url_for_webhook( Alma_Constants_Helper::CUSTOMER_RETURN ),
+                'ipn_callback_url'    =>  $this->tool_helper->url_for_webhook( Alma_Constants_Helper::IPN_CALLBACK ),
+                'customer_cancel_url' => wc_get_checkout_url(),
+                'installments_count'  => $fee_plan_definition['installments_count'],
+                'deferred_days'       => $fee_plan_definition['deferred_days'],
+                'deferred_months'     => $fee_plan_definition['deferred_months'],
+                'custom_data'         => array(
+                    'order_id'  => $order->get_id(),
+                    'order_key' => $order->get_order_key(),
+                ),
+                'locale'              => apply_filters( 'alma_checkout_payment_user_locale', get_locale() ),
+                'cart' => array(
+                    'items' => array()
+                )
+            ),
+            'order'   => array(
+                'merchant_reference' => $order->get_order_reference(),
+                'merchant_url'       => $order->get_merchant_url(),
+                'customer_url'       => $order->get_customer_url(),
+            ),
+            'customer' => array(
+                'addresses' => array(),
+                'is_business' => $order->is_business(),
+            )
+        );
+
+        $data = $this->add_upon_trigger_data($data, $fee_plan_definition);
+        $data = $this->add_billing_address_data($data, $order);
+        $data = $this->add_shipping_address_data($data, $order);
+        $data['cart'] = $this->add_products_data($data, $order->get_order());
+
+        return $data;
+    }
+
+
+    /**
+     * @param $data
+     * @param \WC_Order $order
+     * @return array
+     */
+    protected function add_products_data($data, $order)
+    {
+        $items = $order->get_items();
+
+        foreach($items as $item) {
+            $data['items'][] = $this->add_product_data($item);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param \WC_Order_Item $item The item order.
+     *
+     * @return array
+     */
+    protected function add_product_data($item)
+    {
+        /**
+         * @var \WC_Order_Item_Product $product_item The product.
+         */
+        $product = $item->get_product();
+
+
+        $categories = explode(',', wc_get_product_category_list($product->get_id()));
+var_dump($categories);die;
+        return array (
+            'sku' =>$product->get_sku(),
+            'title' =>  $item->get_name(),
+            'quantity' => $item->get_quantity(),
+            'unit_price' => $product->get_price(),
+            'line_price' => $item->get_total(),
+            'categories' =>  $categories,
+            'url' => $product->get_permalink(),
+            'picture_url' =>  wp_get_attachment_url( $product->get_image_id()),
+            'requires_shipping' =>  $product->needs_shipping()
+        );
+    }
+    protected function add_shipping_address_data($data, $order)
+    {
+        // Shipping address
+        if ( $order->has_shipping_address() ) {
+            $shipping_address                    = $order->get_shipping_address();
+            $data['payment']['shipping_address'] = $shipping_address;
+            $data['customer']['addresses'][]     = $shipping_address;
+        }
+
+        return $data;
+    }
+
+    protected function add_billing_address_data($data, $order)
+    {
+        // Billing address
+        if ( $order->has_billing_address() ) {
+            $billing_address                    = $order->get_billing_address();
+            $data['payment']['billing_address'] = $billing_address;
+
+            $data['customer']['first_name']  = $billing_address['first_name'];
+            $data['customer']['last_name']   = $billing_address['last_name'];
+            $data['customer']['email']       = $billing_address['email'];
+            $data['customer']['phone']       = $billing_address['phone'];
+            $data['customer']['addresses'][] = $billing_address;
+
+            if ( $order->is_business() ) {
+                $data['customer']['business_name'] = $order->get_business_name();
+            }
+        }
+
+        return $data;
+    }
+    protected function add_upon_trigger_data($data, $fee_plan_definition)
+    {
+        // Payment upon trigger
+        if ( $this->payment_upon_trigger->does_payment_upon_trigger_apply_for_this_fee_plan( $fee_plan_definition ) ) {
+            $data['payment']['deferred']             = 'trigger';
+            $data['payment']['deferred_description'] = $this->alma_settings->get_display_text();
+        }
+
+        return $data;
+    }
 }

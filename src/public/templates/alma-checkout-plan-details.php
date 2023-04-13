@@ -66,7 +66,7 @@ foreach ($eligibilities as $key => $eligibility ) {
 						)
 					);                      } else {
 					$justify_fees = 'right';
-					if ( 'yes' === $this->alma_settings->payment_upon_trigger_enabled && $eligibility->getInstallmentsCount() <= 4 ) {
+					if ( 'yes' === $alma_settings->payment_upon_trigger_enabled && $eligibility->getInstallmentsCount() <= 4 ) {
 						echo '<span>' . esc_html( $this->get_plan_upon_trigger_display_text( $plan_index ) ) . '</span>';
 					} else {
 						echo '<span>' . esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) ) . '</span>';

@@ -109,15 +109,14 @@ class Alma_Product_Handler extends Alma_Generic_Handler {
 	 * @return integer.
 	 */
 	private function get_price_to_inject_in_widget( $product ) {
+        $price = wc_get_price_including_tax( $product );
 
-		if ( version_compare( wc()->version, '3.0', '>=' ) ) {
-			$price = wc_get_price_including_tax( $product );
-		} else {
-			$price = $product->get_price_including_tax();
-		}
-
-		if ( $product->is_type( 'variable' ) && $product instanceof \WC_Product_Variable ) {
+		if (
+            $product->is_type( 'variable' )
+            && $product instanceof \WC_Product_Variable
+        ) {
 			$price = $product->get_variation_regular_price( 'min', true );
+
 			if ( $product->is_on_sale() ) {
 				$price = $product->get_variation_sale_price( 'min', true );
 			}
@@ -125,5 +124,4 @@ class Alma_Product_Handler extends Alma_Generic_Handler {
 
 		return $price;
 	}
-
 }
