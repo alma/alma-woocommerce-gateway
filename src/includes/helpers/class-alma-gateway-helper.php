@@ -92,7 +92,7 @@ class Alma_Gateway_Helper {
 	 */
 	public function woocommerce_gateway_title( $title, $id ) {
 		if ( Alma_Constants_Helper::GATEWAY_ID === $id ) {
-			$title =  __( 'Deferred or monthly payments', 'alma-gateway-for-woocommerce' );
+			$title = __( 'Deferred or monthly payments', 'alma-gateway-for-woocommerce' );
 		}
 
 		return $title;

@@ -194,6 +194,20 @@ class Alma_Settings {
 	}
 
 	/**
+	 * Is the plan a pnx plus 4 ?
+	 *
+	 * @param array $plan_definition The fee plan.
+	 * @return bool
+	 */
+	public function is_pnx_plus_4( $plan_definition ) {
+		if ( $plan_definition['installments_count'] > 4 ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Tells if the merchant has at least one "pnx" payment method enabled in the WC back-office.
 	 *
 	 * @return bool

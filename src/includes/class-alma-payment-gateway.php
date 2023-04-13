@@ -218,7 +218,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 		);
 
 		add_filter( 'woocommerce_gateway_title', array( $this->gateway_helper, 'woocommerce_gateway_title' ), 10, 2 );
-		//add_filter( 'woocommerce_gateway_description', array( $this->gateway_helper, 'woocommerce_gateway_description' ), 10, 2 );
+		// add_filter( 'woocommerce_gateway_description', array( $this->gateway_helper, 'woocommerce_gateway_description' ), 10, 2 );
 		add_filter( 'allowed_redirect_hosts', array( $this->general_helper, 'alma_domains_whitelist' ) );
 
 		add_action(

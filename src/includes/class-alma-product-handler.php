@@ -109,12 +109,12 @@ class Alma_Product_Handler extends Alma_Generic_Handler {
 	 * @return integer.
 	 */
 	private function get_price_to_inject_in_widget( $product ) {
-        $price = wc_get_price_including_tax( $product );
+		$price = wc_get_price_including_tax( $product );
 
 		if (
-            $product->is_type( 'variable' )
-            && $product instanceof \WC_Product_Variable
-        ) {
+			$product->is_type( 'variable' )
+			&& $product instanceof \WC_Product_Variable
+		) {
 			$price = $product->get_variation_regular_price( 'min', true );
 
 			if ( $product->is_on_sale() ) {

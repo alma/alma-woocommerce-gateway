@@ -82,11 +82,11 @@ class Alma_Plan_Builder {
 		$templates              = new Alma_Template_Loader();
 		$eligible_plans_by_type = $this->order_plans( $eligible_plans );
 
-        if(0 === count($eligible_plans_by_type)) {
-            return;
-        }
+		if ( 0 === count( $eligible_plans_by_type ) ) {
+			return;
+		}
 
-        echo '<div id="alma_plans_accordion">';
+		echo '<div id="alma_plans_accordion">';
 
 		foreach ( $eligible_plans_by_type as $type => $eligible_plans ) {
 			$templates->get_template(
@@ -112,15 +112,15 @@ class Alma_Plan_Builder {
 			}
 			echo '</div>';
 		}
-        echo '</div>';
+		echo '</div>';
 
 		$templates->get_template(
 			'alma-checkout-plan-details.php',
 			array(
-				'eligibilities'       => $eligibilities,
-				'default_plan' => $default_plan,
-				'gateway_id' => $type,
-                'alma_settings' => $this->alma_settings
+				'eligibilities' => $eligibilities,
+				'default_plan'  => $default_plan,
+				'gateway_id'    => $type,
+				'alma_settings' => $this->alma_settings,
 			)
 		);
 

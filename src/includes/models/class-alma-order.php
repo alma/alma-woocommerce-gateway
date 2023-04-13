@@ -66,7 +66,7 @@ class Alma_Order {
 	 * @return string
 	 */
 	public function get_order_key() {
-        return $this->order->get_order_key();
+		return $this->order->get_order_key();
 	}
 
 	/**
@@ -114,7 +114,7 @@ class Alma_Order {
 	 * @return bool
 	 */
 	public function has_billing_address() {
-        return $this->order->get_billing_address_1() || $this->order->get_billing_address_2();
+		return $this->order->get_billing_address_1() || $this->order->get_billing_address_2();
 	}
 
 	/**
@@ -123,7 +123,7 @@ class Alma_Order {
 	 * @return bool
 	 */
 	public function has_shipping_address() {
-        return $this->order->get_shipping_address_1() || $this->order->get_shipping_address_2();
+		return $this->order->get_shipping_address_1() || $this->order->get_shipping_address_2();
 	}
 
 	/**
@@ -154,18 +154,18 @@ class Alma_Order {
 	 */
 	public function get_billing_address() {
 		return array(
-			'first_name'         => $this->order->get_billing_first_name(),
-			'last_name'          => $this->order->get_billing_last_name(),
-			'company'            => $this->order->get_billing_company(),
-			'line1'              => $this->order->get_billing_address_1(),
-			'line2'              => $this->order->get_billing_address_2(),
-			'postal_code'        => $this->order->get_billing_postcode(),
-			'city'               => $this->order->get_billing_city(),
-			'country'            => $this->order->get_billing_country(),
+			'first_name'          => $this->order->get_billing_first_name(),
+			'last_name'           => $this->order->get_billing_last_name(),
+			'company'             => $this->order->get_billing_company(),
+			'line1'               => $this->order->get_billing_address_1(),
+			'line2'               => $this->order->get_billing_address_2(),
+			'postal_code'         => $this->order->get_billing_postcode(),
+			'city'                => $this->order->get_billing_city(),
+			'country'             => $this->order->get_billing_country(),
 			'country_sublocality' => null,
-			'state_province'     => $this->order->get_billing_state(),
-			'email'              => $this->order->get_billing_email(),
-			'phone'              => $this->order->get_billing_phone(),
+			'state_province'      => $this->order->get_billing_state(),
+			'email'               => $this->order->get_billing_email(),
+			'phone'               => $this->order->get_billing_phone(),
 		);
 	}
 
@@ -176,16 +176,16 @@ class Alma_Order {
 	 */
 	public function get_shipping_address() {
 		return array(
-			'first_name'         => $this->order->get_shipping_first_name(),
-			'last_name'          => $this->order->get_shipping_last_name(),
-			'company'            => $this->order->get_shipping_company(),
-			'line1'              => $this->order->get_shipping_address_1(),
-			'line2'              => $this->order->get_shipping_address_2(),
-			'postal_code'        => $this->order->get_shipping_postcode(),
-			'city'               => $this->order->get_shipping_city(),
+			'first_name'          => $this->order->get_shipping_first_name(),
+			'last_name'           => $this->order->get_shipping_last_name(),
+			'company'             => $this->order->get_shipping_company(),
+			'line1'               => $this->order->get_shipping_address_1(),
+			'line2'               => $this->order->get_shipping_address_2(),
+			'postal_code'         => $this->order->get_shipping_postcode(),
+			'city'                => $this->order->get_shipping_city(),
 			'country_sublocality' => null,
-			'state_province'     => $this->order->get_shipping_state(),
-			'country'            => $this->order->get_shipping_country(),
+			'state_province'      => $this->order->get_shipping_state(),
+			'country'             => $this->order->get_shipping_country(),
 		);
 	}
 
@@ -206,11 +206,11 @@ class Alma_Order {
 	public function get_merchant_url() {
 		$admin_path = 'post.php?post=' . $this->get_id() . '&action=edit';
 
-	    if ( version_compare( wc()->version, '3.3.0', '<' ) ) {
+		if ( version_compare( wc()->version, '3.3.0', '<' ) ) {
 			return get_admin_url( null, $admin_path );
 		}
 
-        return $this->order->get_edit_order_url();
+		return $this->order->get_edit_order_url();
 	}
 
 	/**

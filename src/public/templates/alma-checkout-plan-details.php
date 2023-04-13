@@ -17,12 +17,12 @@ use Alma\Woocommerce\Models\Alma_Cart;
 
 <div id="alma-checkout-plan-details">
 	<?php
-foreach ($eligibilities as $key => $eligibility ) {
-	?>
+	foreach ( $eligibilities as $key => $eligibility ) {
+		?>
 	<div
 		id="<?php echo esc_attr( sprintf( Alma_Constants_Helper::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $key ) ); ?>"
 		class="<?php echo esc_attr( Alma_Constants_Helper::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS ); ?>"
-		data-gateway-id="<?php echo esc_attr( $gateway_id); ?>"
+		data-gateway-id="<?php echo esc_attr( $gateway_id ); ?>"
 		style="
 			margin: 0 auto;
 		<?php if ( $key !== $default_plan ) { ?>
@@ -72,7 +72,7 @@ foreach ($eligibilities as $key => $eligibility ) {
 						echo '<span>' . esc_html( date_i18n( get_option( 'date_format' ), $step['due_date'] ) ) . '</span>';
 					}
 					echo wp_kses_post( Alma_Tools_Helper::alma_format_price_from_cents( $step['total_amount'] ) );                      }
-				?>
+					?>
 			</p>
 			<?php if ( $display_customer_fee ) { ?>
 				<p style="
@@ -152,7 +152,7 @@ foreach ($eligibilities as $key => $eligibility ) {
 		}
 		?>
 	</div>
-	<?php
-}
-?>
+		<?php
+	}
+	?>
 </div>

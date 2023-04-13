@@ -43,14 +43,14 @@ class Alma_Constants_Helper {
 	const PAYMENT_METHOD                 = 'payment_method';
 	const DEFAULT_CHECK_VARIATIONS_EVENT = 'check_variations';
 	const AMOUNT_PLAN_KEY_REGEX          = '#^(min|max)_amount_general_[0-9]+_[0-9]+_[0-9]+$#';
-	const GATEWAY_DESCRIPTION             = 'gateway_description';
+	const GATEWAY_DESCRIPTION            = 'gateway_description';
 	const PAYMENT_METHOD_PNX             = 'payment_method_pnx';
 	const PAYMENT_METHOD_PAY_LATER       = 'payment_method_pay_later';
 	const PAYMENT_METHOD_PNX_PLUS_4      = 'payment_method_pnx_plus_4';
 	const NOTICE_NONCE_NAME              = 'wc_alma_notice_nonce';
 	const ALMA_LOGO_PATH                 = 'images/alma_logo.svg';
 	const ALMA_PATH_CHECKOUT_JS          = 'js/alma-checkout.js';
-	const ALMA_PATH_CHECKOUT_CSS          = 'css/alma-checkout.css';
+	const ALMA_PATH_CHECKOUT_CSS         = 'css/alma-checkout.css';
 
 	const ERROR = 'error';
 

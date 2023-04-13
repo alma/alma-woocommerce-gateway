@@ -18,11 +18,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Alma_Customer {
 
-    /**
-     * Customer.
-     *
-     * @var \WC_Customer|null
-     */
+	/**
+	 * Customer.
+	 *
+	 * @var \WC_Customer|null
+	 */
 	protected $customer;
 
 	/**
@@ -31,7 +31,7 @@ class Alma_Customer {
 	 * @return void
 	 */
 	public function __construct() {
-        $this->customer = wc()->customer;
+		$this->customer = wc()->customer;
 	}
 
 	/**
@@ -40,31 +40,31 @@ class Alma_Customer {
 	 * @return array
 	 */
 	public function get_data() {
-        $data = array(
-            'first_name' => $this->customer->get_first_name(),
-            'last_name'  => $this->customer->get_last_name(),
-            'email'      => $this->customer->get_email(),
-            'phone'      => $this->customer->get_billing_phone(),
-        );
+		$data = array(
+			'first_name' => $this->customer->get_first_name(),
+			'last_name'  => $this->customer->get_last_name(),
+			'email'      => $this->customer->get_email(),
+			'phone'      => $this->customer->get_billing_phone(),
+		);
 
-        foreach ( array( 'first_name', 'last_name', 'email', 'phone' ) as $attr ) {
-            $method = "get_billing_$attr";
-            if ( empty( $data[ $attr ] ) && method_exists( $this->customer, $method ) ) {
-                $data[ $attr ] = $this->customer->$method();
-            }
+		foreach ( array( 'first_name', 'last_name', 'email', 'phone' ) as $attr ) {
+			$method = "get_billing_$attr";
+			if ( empty( $data[ $attr ] ) && method_exists( $this->customer, $method ) ) {
+				$data[ $attr ] = $this->customer->$method();
+			}
 
-            $method = "get_shipping_$attr";
-            if ( empty( $data[ $attr ] ) && method_exists( $this->customer, $method ) ) {
-                $data[ $attr ] = $this->customer->$method();
-            }
-        }
+			$method = "get_shipping_$attr";
+			if ( empty( $data[ $attr ] ) && method_exists( $this->customer, $method ) ) {
+				$data[ $attr ] = $this->customer->$method();
+			}
+		}
 
-        $data['addresses'] = array(
-            $this->get_billing_address(),
-            $this->get_shipping_address(),
-        );
+		$data['addresses'] = array(
+			$this->get_billing_address(),
+			$this->get_shipping_address(),
+		);
 
-        return $data;
+		return $data;
 	}
 
 	/**
@@ -105,15 +105,15 @@ class Alma_Customer {
 	 * @return array
 	 */
 	public function get_shipping_address() {
-        return array(
-            'first_name'  => $this->customer->get_shipping_first_name(),
-            'last_name'   => $this->customer->get_shipping_last_name(),
-            'line1'       => $this->customer->get_shipping_address(),
-            'line2'       => $this->customer->get_shipping_address_2(),
-            'postal_code' => $this->customer->get_shipping_postcode(),
-            'city'        => $this->customer->get_shipping_city(),
-            'country'     => $this->customer->get_shipping_country(),
-        );
+		return array(
+			'first_name'  => $this->customer->get_shipping_first_name(),
+			'last_name'   => $this->customer->get_shipping_last_name(),
+			'line1'       => $this->customer->get_shipping_address(),
+			'line2'       => $this->customer->get_shipping_address_2(),
+			'postal_code' => $this->customer->get_shipping_postcode(),
+			'city'        => $this->customer->get_shipping_city(),
+			'country'     => $this->customer->get_shipping_country(),
+		);
 	}
 
 	/**

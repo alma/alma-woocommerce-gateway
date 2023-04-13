@@ -6,21 +6,21 @@
 
 (function ($) {
 	// $( 'body' ).ready(
-	// 	function () {
-	// 		$('.ui-accordion-header').each(function () {
-	// 			var icon = $( this ).find('.fas')[0];
-	// 			if ($( this ).attr("aria-selected") === "false") {
-	// 				icon.classList.add("fa-angle-right");
-	// 				icon.classList.remove("fa-angle-down");
-	// 				console.log(icon);
-	// 			} else {
-	// 				icon.classList.remove("fa-angle-right");
-	// 				icon.classList.add("fa-angle-down");
-	// 				console.log(icon);
-	// 			}
-	// 		})
+	// function () {
+	// $('.ui-accordion-header').each(function () {
+	// var icon = $( this ).find('.fas')[0];
+	// if ($( this ).attr("aria-selected") === "false") {
+	// icon.classList.add("fa-angle-right");
+	// icon.classList.remove("fa-angle-down");
+	// console.log(icon);
+	// } else {
+	// icon.classList.remove("fa-angle-right");
+	// icon.classList.add("fa-angle-down");
+	// console.log(icon);
+	// }
+	// })
 	//
-	// 	}
+	// }
 	// );
 
 	$( 'body' ).on(
@@ -40,36 +40,37 @@
 				header: "fas fa-angle-right",
 				activeHeader: "fas fa-angle-down"
 			};
-			jQuery( "#alma_plans_accordion" ).accordion({
-				collapsible: true,
-				header: "h5",
-				heightStyle: "content",
-				icons: icons
-			});
+			jQuery( "#alma_plans_accordion" ).accordion(
+				{
+					collapsible: true,
+					header: "h5",
+					heightStyle: "content",
+					icons: icons
+				}
+			);
 
 			if ( $( this ).prop( 'checked' ) ) {
 				$( this ).closest( 'li.wc_payment_method' ).attr( 'data-already-checked', $( this ).attr( 'id' ) );
 				jQuery( "#alma-checkout-plan-details" ).insertAfter( $( this ).parent()[0].lastElementChild )
-
 
 			}
 		}
 	);
 
 	// $( 'body' ).on(
-	// 	'click',
-	// 	'.ui-accordion-header',
-	// 	function () {
-	// 		var icon = jQuery(this).find('.fas')[0];
-	// 		if ($(this).attr("aria-selected") === "false") {
-	// 			icon.classList.add("fa-angle-right");
-	// 			icon.classList.remove("fa-angle-down");
-	// 		} else {
-	// 			icon.classList.remove("fa-angle-right");
-	// 			icon.classList.add("fa-angle-down");
-	// 		}
+	// 'click',
+	// '.ui-accordion-header',
+	// function () {
+	// var icon = jQuery(this).find('.fas')[0];
+	// if ($(this).attr("aria-selected") === "false") {
+	// icon.classList.add("fa-angle-right");
+	// icon.classList.remove("fa-angle-down");
+	// } else {
+	// icon.classList.remove("fa-angle-right");
+	// icon.classList.add("fa-angle-down");
+	// }
 	//
-	// 	}
+	// }
 	// );
 
 	$( 'body' ).on(
