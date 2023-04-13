@@ -114,7 +114,7 @@ class Alma_Payment {
 			$order = new Alma_Order( $order_id );
 
             $data = $this->build_data_for_alma($order, $fee_plan_definition);
-            die(var_dump(json_encode($data)));
+        //    die(var_dump(json_encode($data)));
 
 		} catch ( \Exception $e ) {
 			$this->logger->error(
@@ -173,7 +173,8 @@ class Alma_Payment {
         $data = $this->add_upon_trigger_data($data, $fee_plan_definition);
         $data = $this->add_billing_address_data($data, $order);
         $data = $this->add_shipping_address_data($data, $order);
-        $data['cart'] = $this->add_products_data($data, $order->get_order());
+        // > P4X and not deffered
+        $data['payment']['cart'] = $this->add_products_data($data, $order->get_order());
 
         return $data;
     }
