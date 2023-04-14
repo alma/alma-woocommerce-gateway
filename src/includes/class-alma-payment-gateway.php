@@ -103,6 +103,14 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 	 */
 	protected $check_legal_helper;
 
+		/**
+		 * Helper global.
+		 *
+		 * @var Alma_Tools_Helper
+		 */
+	protected $tool_helper;
+
+
 	/**
 	 * Constructor for the gateway.
 	 */
@@ -120,6 +128,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 		$this->scripts_helper     = new Alma_Assets_Helper();
 		$this->plan_builder       = new Alma_Plan_Builder();
 		$this->encryption_helper  = new Alma_Encryptor_Helper();
+		$this->tool_helper        = new Alma_Tools_Helper();
 
 		$this->check_activation();
 
@@ -218,7 +227,6 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 		);
 
 		add_filter( 'woocommerce_gateway_title', array( $this->gateway_helper, 'woocommerce_gateway_title' ), 10, 2 );
-		// add_filter( 'woocommerce_gateway_description', array( $this->gateway_helper, 'woocommerce_gateway_description' ), 10, 2 );
 		add_filter( 'allowed_redirect_hosts', array( $this->general_helper, 'alma_domains_whitelist' ) );
 
 		add_action(
@@ -765,7 +773,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 			if ( Alma_Tools_Helper::is_amount_plan_key( $key ) ) {
 				try {
 					$amount                                = $this->get_field_value( $key, $field, $post_data );
-					$this->alma_settings->settings[ $key ] = Alma_Tools_Helper::alma_price_to_cents( $amount );
+					$this->alma_settings->settings[ $key ] = $this->tool_helper->alma_price_to_cents( $amount );
 				} catch ( \Exception $e ) {
 					$this->add_error( $e->getMessage() );
 				}

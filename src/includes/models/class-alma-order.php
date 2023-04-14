@@ -26,14 +26,22 @@ class Alma_Order {
 	 *
 	 * @var \WC_Order|\WC_Order_Refund
 	 */
-	private $order;
+	protected $order;
 
 	/**
 	 * Order ID
 	 *
 	 * @var int
 	 */
-	private $order_id;
+	protected $order_id;
+
+	/**
+	 * Helper global.
+	 *
+	 * @var Alma_Tools_Helper
+	 */
+	protected $tool_helper;
+
 
 	/**
 	 * Constructor.
@@ -44,8 +52,9 @@ class Alma_Order {
 	 * @throws Alma_No_Order_Exception No order.
 	 */
 	public function __construct( $order_id, $order_key = null ) {
-		$this->order_id = $order_id;
-		$this->order    = wc_get_order( $this->order_id );
+		$this->tool_helper = new Alma_Tools_Helper();
+		$this->order_id    = $order_id;
+		$this->order       = wc_get_order( $this->order_id );
 
 		if ( ! $this->order && $order_key ) {
 			// We have an invalid $order_id, probably because invoice_prefix has changed.
@@ -95,8 +104,8 @@ class Alma_Order {
 	 *
 	 * @return int
 	 */
-	public function get_total() {
-		return Alma_Tools_Helper::alma_price_to_cents( $this->order->get_total() );
+	public function get_total_in_cent() {
+		return $this->tool_helper->alma_price_to_cents( $this->order->get_total() );
 	}
 
 	/**

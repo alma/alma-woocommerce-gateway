@@ -48,11 +48,19 @@ class Alma_Refund_Helper {
 	protected $alma_settings;
 
 	/**
+	 * Helper global.
+	 *
+	 * @var Alma_Tools_Helper
+	 */
+	protected $tool_helper;
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
 		$this->logger        = new Alma_Logger();
 		$this->alma_settings = new Alma_Settings();
+		$this->tool_helper   = new Alma_Tools_Helper();
 	}
 
 	/**
@@ -209,7 +217,7 @@ class Alma_Refund_Helper {
 	 * @return int
 	 */
 	public function get_refund_amount( $refund ) {
-		return Alma_Tools_Helper::alma_price_to_cents( floatval( $refund->get_amount() ) );
+		return $this->tool_helper->alma_price_to_cents( floatval( $refund->get_amount() ) );
 	}
 
 	/**

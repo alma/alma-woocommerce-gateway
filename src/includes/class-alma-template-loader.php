@@ -55,14 +55,14 @@ class Alma_Template_Loader {
 	public function get_template( $template_name, $args = array(), $subpath = '' ) {
 
 		if ( is_array( $args ) ) {
-			// We master our data. It's not get or post
+			// We master our data. It's not get or post.
 			extract( $args ); // phpcs:ignore
 		}
 
 		$template_file = $this->locate_template( $template_name, $subpath );
 
 		if ( ! file_exists( $template_file ) ) {
-			_doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', $template_file ), '4.2.0' );
+			_doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', esc_html( $template_file ) ), '4.2.0' );
 			return;
 		}
 

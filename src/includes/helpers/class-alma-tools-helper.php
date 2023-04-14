@@ -56,7 +56,7 @@ class Alma_Tools_Helper {
 	 *
 	 * @return integer
 	 */
-	public static function alma_price_to_cents( $price ) {
+	public function alma_price_to_cents( $price ) {
 		return (int) ( round( $price * 100 ) );
 	}
 

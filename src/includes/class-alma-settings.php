@@ -473,8 +473,6 @@ class Alma_Settings {
 
 			$payload = $model_payment->get_payment_payload_from_order( $order_id, $fee_plan_definition );
 
-			$this->get_alma_client();
-
 			return $this->alma_client->payments->create( $payload );
 		} catch ( \Exception $e ) {
 			$this->logger->error( sprintf( 'Api create_payments, order id "%s" , Api message "%s"', $order_id, $e->getMessage() ) );

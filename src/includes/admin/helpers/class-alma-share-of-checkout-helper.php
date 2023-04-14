@@ -39,11 +39,20 @@ class Alma_Share_Of_Checkout_Helper {
 	protected $order_helper;
 
 	/**
+	 * Helper global.
+	 *
+	 * @var Alma_Tools_Helper
+	 */
+	protected $tool_helper;
+
+
+	/**
 	 * Construct.
 	 */
 	public function __construct() {
 		$this->alma_settings = new Alma_Settings();
 		$this->order_helper  = new Alma_Order_Helper();
+		$this->tool_helper   = new Alma_Tools_Helper();
 	}
 
 
@@ -114,7 +123,7 @@ class Alma_Share_Of_Checkout_Helper {
 			}
 
 			$order_currencies[ $order->get_currency() ]['total_order_count'] += 1;
-			$order_currencies[ $order->get_currency() ]['total_amount']      += Alma_Tools_Helper::alma_price_to_cents( $order->get_total() );
+			$order_currencies[ $order->get_currency() ]['total_amount']      += $this->tool_helper->alma_price_to_cents( $order->get_total() );
 		}
 
 		return array_values( $order_currencies );
@@ -141,7 +150,7 @@ class Alma_Share_Of_Checkout_Helper {
 				);
 			}
 			$payment_methods_currencies[ $order->get_payment_method() ][ $order->get_currency() ]['order_count'] += 1;
-			$payment_methods_currencies[ $order->get_payment_method() ][ $order->get_currency() ]['amount']      += Alma_Tools_Helper::alma_price_to_cents( $order->get_total() );
+			$payment_methods_currencies[ $order->get_payment_method() ][ $order->get_currency() ]['amount']      += $this->tool_helper->alma_price_to_cents( $order->get_total() );
 		}
 
 		$payment_methods = array();

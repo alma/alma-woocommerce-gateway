@@ -95,7 +95,7 @@ class Alma_Product_Handler extends Alma_Generic_Handler {
 
 		$this->inject_payment_plan_widget(
 			$has_excluded_products,
-			Alma_Tools_Helper::alma_price_to_cents( $price ),
+			$this->helper_tools->alma_price_to_cents( $price ),
 			$jquery_update_event,
 			$amount_query_selector,
 			$amount_sale_price_query_selector

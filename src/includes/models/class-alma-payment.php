@@ -140,7 +140,7 @@ class Alma_Payment {
 	protected function build_data_for_alma( $order, $fee_plan_definition ) {
 		$data = array(
 			'payment'  => array(
-				'purchase_amount'     => $order->get_total(),
+				'purchase_amount'     => $order->get_total_in_cent(),
 				'return_url'          => $this->tool_helper->url_for_webhook( Alma_Constants_Helper::CUSTOMER_RETURN ),
 				'ipn_callback_url'    => $this->tool_helper->url_for_webhook( Alma_Constants_Helper::IPN_CALLBACK ),
 				'customer_cancel_url' => wc_get_checkout_url(),
@@ -180,8 +180,10 @@ class Alma_Payment {
 
 
 	/**
-	 * @param $data
-	 * @param \WC_Order $order
+	 * Add details of the products.
+	 *
+	 * @param array     $data The payload.
+	 * @param \WC_Order $order The order.
 	 * @return array
 	 */
 	protected function add_products_data( $data, $order ) {
@@ -195,32 +197,40 @@ class Alma_Payment {
 	}
 
 	/**
+	 * Add details of one product.
+	 *
 	 * @param \WC_Order_Item $item The item order.
 	 *
 	 * @return array
 	 */
 	protected function add_product_data( $item ) {
-		/**
-		 * @var \WC_Order_Item_Product $product_item The product.
-		 */
+		 // @var \WC_Order_Item_Product $product_item The product.
 		$product = $item->get_product();
 
-		$categories = explode( ',', strip_tags( wc_get_product_category_list( $product->get_id() ) ) );
+		$categories = explode( ',', wp_strip_all_tags( wc_get_product_category_list( $product->get_id() ) ) );
 
 		return array(
 			'sku'               => $product->get_sku(),
 			'title'             => $item->get_name(),
 			'quantity'          => $item->get_quantity(),
-			'unit_price'        => $product->get_price(),
-			'line_price'        => $item->get_total(),
+			'unit_price'        => $this->tool_helper->alma_price_to_cents( $product->get_price() ),
+			'line_price'        => $this->tool_helper->alma_price_to_cents( $item->get_total() ),
 			'categories'        => $categories,
 			'url'               => $product->get_permalink(),
 			'picture_url'       => wp_get_attachment_url( $product->get_image_id() ),
 			'requires_shipping' => $product->needs_shipping(),
 		);
 	}
+
+	/**
+	 * Add shipping address data.
+	 *
+	 * @param array      $data The paypload.
+	 * @param Alma_Order $order The order.
+	 * @return array
+	 */
 	protected function add_shipping_address_data( $data, $order ) {
-		// Shipping address
+		// Shipping address.
 		if ( $order->has_shipping_address() ) {
 			$shipping_address                    = $order->get_shipping_address();
 			$data['payment']['shipping_address'] = $shipping_address;
@@ -230,8 +240,15 @@ class Alma_Payment {
 		return $data;
 	}
 
+	/**
+	 * Add billing address data.
+	 *
+	 * @param array      $data The paypload.
+	 * @param Alma_Order $order The order.
+	 * @return array
+	 */
 	protected function add_billing_address_data( $data, $order ) {
-		// Billing address
+		// Billing address.
 		if ( $order->has_billing_address() ) {
 			$billing_address                    = $order->get_billing_address();
 			$data['payment']['billing_address'] = $billing_address;
@@ -249,8 +266,16 @@ class Alma_Payment {
 
 		return $data;
 	}
+
+	/**
+	 * Add uppon trigger data.
+	 *
+	 * @param array $data The data.
+	 * @param array $fee_plan_definition The plan definition.
+	 * @return array
+	 */
 	protected function add_upon_trigger_data( $data, $fee_plan_definition ) {
-		// Payment upon trigger
+		// Payment upon trigger.
 		if ( $this->payment_upon_trigger->does_payment_upon_trigger_apply_for_this_fee_plan( $fee_plan_definition ) ) {
 			$data['payment']['deferred']             = 'trigger';
 			$data['payment']['deferred_description'] = $this->alma_settings->get_display_text();
