@@ -63,15 +63,17 @@ use Alma\Woocommerce\Models\Alma_Cart;
 							Alma_Tools_Helper::alma_format_price_from_cents( $alma_step['total_amount'] ),
 							date_i18n( get_option( 'date_format' ), $alma_step['due_date'] )
 						)
-					);                      } else {
+					);
+				} else {
 					$alma_justify_fees = 'right';
 					if ( 'yes' === $alma_settings->payment_upon_trigger_enabled && $alma_eligibility->getInstallmentsCount() <= 4 ) {
 						echo '<span>' . esc_html( $this->get_plan_upon_trigger_display_text( $alma_plan_index ) ) . '</span>';
 					} else {
 						echo '<span>' . esc_html( date_i18n( get_option( 'date_format' ), $alma_step['due_date'] ) ) . '</span>';
 					}
-					echo wp_kses_post( Alma_Tools_Helper::alma_format_price_from_cents( $alma_step['total_amount'] ) );                      }
-					?>
+					echo wp_kses_post( Alma_Tools_Helper::alma_format_price_from_cents( $alma_step['total_amount'] ) );
+				}
+				?>
 			</p>
 			<?php if ( $alma_display_customer_fee ) { ?>
 				<p style="

@@ -68,12 +68,13 @@ class Alma_Gateway_Helper {
 
 		foreach ( $available_gateways as $key => $gateway ) {
 
-			if ( 'alma' === $gateway->id ) {
-				if ( $has_excluded_products ) {
-					unset( $available_gateways[ $key ] );
+			if (
+				'alma' === $gateway->id
+				&& $has_excluded_products
+			) {
+				unset( $available_gateways[ $key ] );
 
-					return $available_gateways;
-				}
+				return $available_gateways;
 			}
 
 			$new_available_gateways[ $key ] = $gateway;
