@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
+use Alma\API\Entities\FeePlan;
 use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
 use Alma\Woocommerce\Alma_Logger;
 use Alma\Woocommerce\Alma_Payment_Upon_Trigger;
@@ -103,17 +104,21 @@ class Alma_Payment {
 	/**
 	 * Create Payment data for Alma API request from WooCommerce Order.
 	 *
-	 * @param int   $order_id Order ID.
-	 * @param array $fee_plan_definition Fee plan definition.
+	 * @param int     $order_id Order ID.
+	 * @param FeePlan $fee_plan Fee plan definition.
+	 * @param string  $payment_type The payment type.
 	 *
 	 * @return array
 	 */
-	public function get_payment_payload_from_order( $order_id, $fee_plan_definition ) {
+	public function get_payment_payload_from_order( $order_id, $fee_plan, $payment_type ) {
 
 		try {
 			$order = new Alma_Order( $order_id );
 
-			$data = $this->build_data_for_alma( $order, $fee_plan_definition );
+			$wc_order = $order->get_order();
+			$wc_order->add_order_note( $payment_type );
+
+			$data = $this->build_data_for_alma( $order, $fee_plan );
 
 		} catch ( \Exception $e ) {
 			$this->logger->error(
@@ -134,19 +139,19 @@ class Alma_Payment {
 	 * Build the data to sent to the Alma Api.
 	 *
 	 * @param Alma_Order $order The order.
-	 * @param array      $fee_plan_definition Fee plan definition.
+	 * @param FeePlan    $fee_plan Fee plan definition.
 	 * @return array|array[]
 	 */
-	protected function build_data_for_alma( $order, $fee_plan_definition ) {
+	protected function build_data_for_alma( $order, $fee_plan ) {
 		$data = array(
 			'payment'  => array(
 				'purchase_amount'     => $order->get_total_in_cent(),
 				'return_url'          => $this->tool_helper->url_for_webhook( Alma_Constants_Helper::CUSTOMER_RETURN ),
 				'ipn_callback_url'    => $this->tool_helper->url_for_webhook( Alma_Constants_Helper::IPN_CALLBACK ),
 				'customer_cancel_url' => wc_get_checkout_url(),
-				'installments_count'  => $fee_plan_definition['installments_count'],
-				'deferred_days'       => $fee_plan_definition['deferred_days'],
-				'deferred_months'     => $fee_plan_definition['deferred_months'],
+				'installments_count'  => $fee_plan->getInstallmentsCount(),
+				'deferred_days'       => $fee_plan->getDeferredDays(),
+				'deferred_months'     => $fee_plan->getDeferredMonths(),
 				'custom_data'         => array(
 					'order_id'  => $order->get_id(),
 					'order_key' => $order->get_order_key(),
@@ -167,11 +172,11 @@ class Alma_Payment {
 			),
 		);
 
-		$data = $this->add_upon_trigger_data( $data, $fee_plan_definition );
+		$data = $this->add_upon_trigger_data( $data, $fee_plan );
 		$data = $this->add_billing_address_data( $data, $order );
 		$data = $this->add_shipping_address_data( $data, $order );
 
-		if ( $this->alma_settings->is_pnx_plus_4( $fee_plan_definition ) ) {
+		if ( $this->alma_settings->is_pnx_plus_4( $fee_plan ) ) {
 			$data = $this->add_products_data( $data, $order->get_order() );
 		}
 
@@ -270,13 +275,13 @@ class Alma_Payment {
 	/**
 	 * Add uppon trigger data.
 	 *
-	 * @param array $data The data.
-	 * @param array $fee_plan_definition The plan definition.
+	 * @param array   $data The data.
+	 * @param FeePlan $fee_plan The plan definition.
 	 * @return array
 	 */
-	protected function add_upon_trigger_data( $data, $fee_plan_definition ) {
+	protected function add_upon_trigger_data( $data, $fee_plan ) {
 		// Payment upon trigger.
-		if ( $this->payment_upon_trigger->does_payment_upon_trigger_apply_for_this_fee_plan( $fee_plan_definition ) ) {
+		if ( $this->payment_upon_trigger->does_payment_upon_trigger_apply_for_this_fee_plan( $fee_plan ) ) {
 			$data['payment']['deferred']             = 'trigger';
 			$data['payment']['deferred_description'] = $this->alma_settings->get_display_text();
 		}

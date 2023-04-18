@@ -427,9 +427,8 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 
 		try {
 			// We ignore the nonce verification because process_payment is called after validate_fields.
-			$fee_plan_definition = $this->alma_settings->get_fee_plan_definition( $_POST[ Alma_Constants_Helper::ALMA_FEE_PLAN ] ); // phpcs:ignore WordPress.Security.NonceVerification
-
-			$payment = $this->alma_settings->create_payments( $order_id, $fee_plan_definition );
+			$fee_plan = $this->alma_settings->build_fee_plan( $_POST[ Alma_Constants_Helper::ALMA_FEE_PLAN ] ); // phpcs:ignore WordPress.Security.NonceVerification
+			$payment  = $this->alma_settings->create_payments( $order_id, $fee_plan );
 
 			// Redirect user to our payment page.
 			return array(

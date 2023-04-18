@@ -196,11 +196,11 @@ class Alma_Settings {
 	/**
 	 * Is the plan a pnx plus 4 ?
 	 *
-	 * @param array $plan_definition The fee plan.
+	 * @param FeePlan $fee_plan The fee plan.
 	 * @return bool
 	 */
-	public function is_pnx_plus_4( $plan_definition ) {
-		if ( $plan_definition['installments_count'] > 4 ) {
+	public function is_pnx_plus_4( $fee_plan ) {
+		if ( $fee_plan->getInstallmentsCount() > 4 ) {
 			return true;
 		}
 
@@ -461,23 +461,55 @@ class Alma_Settings {
 	/**
 	 * Call the payment api and create.
 	 *
-	 * @param string $order_id The order id.
-	 * @param array  $fee_plan_definition The plan definition.
+	 * @param string  $order_id The order id.
+	 * @param  FeePlan $fee_plan The fee plan.
 	 *
 	 * @return Payment
 	 * @throws Alma_Api_Create_Payments_Exception Create payment exception.
 	 */
-	public function create_payments( $order_id, $fee_plan_definition ) {
+	public function create_payments( $order_id, $fee_plan ) {
 		try {
 			$model_payment = new Alma_Payment();
+			$payment_type  = $this->get_payment_method( $fee_plan );
 
-			$payload = $model_payment->get_payment_payload_from_order( $order_id, $fee_plan_definition );
+			$payload = $model_payment->get_payment_payload_from_order( $order_id, $fee_plan, $payment_type );
 
 			return $this->alma_client->payments->create( $payload );
 		} catch ( \Exception $e ) {
 			$this->logger->error( sprintf( 'Api create_payments, order id "%s" , Api message "%s"', $order_id, $e->getMessage() ) );
-			throw new Alma_Api_Create_Payments_Exception( $order_id, $fee_plan_definition );
+			throw new Alma_Api_Create_Payments_Exception( $order_id, $fee_plan );
 		}
+	}
+
+	/**
+	 * Get the payment method fee plan title.
+	 *
+	 * @param FeePlan $fee_plan The fee plan.
+	 * @return string
+	 *
+	 * @throws Alma_Plans_Definition_Exception Exception.
+	 */
+	public function get_payment_method( $fee_plan ) {
+		if ( $fee_plan->isPnXOnly() ) {
+			// translators: %d: number of installments.
+			return sprintf( __( 'Selected payment method : %d installment with Alma', 'alma-gateway-for-woocommerce' ), $fee_plan->getInstallmentsCount() );
+		}
+
+		if ( $fee_plan->isPayLaterOnly() ) {
+			$deferred_months = $fee_plan->getDeferredMonths();
+			$deferred_days   = $fee_plan->getDeferredDays();
+
+			if ( $deferred_days ) {
+				// translators: %d: number of deferred days.
+				return sprintf( __( 'Selected payment method : D+%d deferred  with Alma', 'alma-gateway-for-woocommerce' ), $deferred_days );
+			}
+			if ( $deferred_months ) {
+				// translators: %d: number of deferred months.
+				return sprintf( __( 'Selected payment method : M+%d deferred with Alma', 'alma-gateway-for-woocommerce' ), $deferred_months );
+			}
+		}
+
+		throw new Alma_Plans_Definition_Exception();
 	}
 
 	/**
@@ -1083,6 +1115,40 @@ class Alma_Settings {
 
 		return $definition;
 	}
+
+	/**
+	 * Populate fee plan
+	 *
+	 * @param string $plan_key The plan key.
+	 *
+	 * @return FeePlan
+	 * @throws Alma_Plans_Definition_Exception Alma_Plans_Definition_Exception.
+	 */
+	public function build_fee_plan( $plan_key ) {
+
+		if ( ! isset( $this->settings[ "installments_count_$plan_key" ] ) ) {
+			throw new Alma_Plans_Definition_Exception( "installments_count_$plan_key not set" );
+		}
+
+		if ( ! isset( $this->settings[ "deferred_days_$plan_key" ] ) ) {
+			throw new Alma_Plans_Definition_Exception( "deferred_days_$plan_key not set" );
+		}
+
+		if ( ! isset( $this->settings[ "deferred_months_$plan_key" ] ) ) {
+			throw new Alma_Plans_Definition_Exception( "deferred_months_$plan_key not set" );
+		}
+
+		$fee_plan = new FeePlan(
+			array(
+				'installments_count' => $this->settings[ "installments_count_$plan_key" ],
+				'deferred_days'      => $this->settings[ "deferred_days_$plan_key" ],
+				'deferred_months'    => $this->settings[ "deferred_months_$plan_key" ],
+			)
+		);
+
+		return $fee_plan;
+	}
+
 
 	/**
 	 * Does need API key ?

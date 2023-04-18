@@ -220,24 +220,30 @@ class Alma_Form_Helper {
 	 */
 	protected function generate_select_options() {
 		$select_options = array();
+
 		foreach ( $this->settings_helper->allowed_fee_plans as $fee_plan ) {
 			$select_label = '';
+
 			if ( $fee_plan->isPnXOnly() ) {
 				// translators: %d: number of installments.
 				$select_label = sprintf( __( '→ %d-installment payment', 'alma-gateway-for-woocommerce' ), $fee_plan->getInstallmentsCount() );
 			}
+
 			if ( $fee_plan->isPayLaterOnly() ) {
 				$deferred_months = $fee_plan->getDeferredMonths();
 				$deferred_days   = $fee_plan->getDeferredDays();
+
 				if ( $deferred_days ) {
 					// translators: %d: number of deferred days.
 					$select_label = sprintf( __( '→ D+%d-deferred payment', 'alma-gateway-for-woocommerce' ), $deferred_days );
 				}
+
 				if ( $deferred_months ) {
 					// translators: %d: number of deferred months.
 					$select_label = sprintf( __( '→ M+%d-deferred payment', 'alma-gateway-for-woocommerce' ), $deferred_months );
 				}
 			}
+
 			$select_options[ $fee_plan->getPlanKey() ] = $select_label;
 		}
 
