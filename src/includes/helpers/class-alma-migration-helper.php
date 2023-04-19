@@ -72,17 +72,11 @@ class Alma_Migration_Helper {
 	public function manage_versions( $db_version ) {
 		if (
 			$db_version
-			&& version_compare( ALMA_VERSION, $db_version, '!=' )
+			&& version_compare( ALMA_VERSION, $db_version, '>' )
 		) {
-
 			// Si la version en BDD est strictement inférieur à la 4, il faut faire la premiere migration.
-			if (
-				version_compare( $db_version, '4.0.0', '<' )
-				&& version_compare( ALMA_VERSION, '4.0.0', '>=' )
-			) {
-				$this->migrate_keys();
-				$this->manage_version_before_3( $db_version );
-			}
+			$this->migrate_keys();
+			$this->manage_version_before_3( $db_version );
 
 			update_option( 'alma_version', ALMA_VERSION );
 			delete_option( 'woocommerce_alma_settings' );
@@ -97,7 +91,10 @@ class Alma_Migration_Helper {
 	 */
 	protected function migrate_keys() {
 		$old_settings = get_option( 'woocommerce_alma_settings' );
-		update_option( Alma_Settings::OPTIONS_KEY, $old_settings );
+
+		if ( $old_settings ) {
+			update_option( Alma_Settings::OPTIONS_KEY, $old_settings );
+		}
 
 		$settings    = get_option( Alma_Settings::OPTIONS_KEY );
 		$has_changed = false;
