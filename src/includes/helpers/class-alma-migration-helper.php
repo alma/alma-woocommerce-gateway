@@ -58,103 +58,91 @@ class Alma_Migration_Helper {
 			return;
 		}
 
-		if (
-			$db_version
-			&& version_compare( ALMA_VERSION, $db_version, '!=' )
-		) {
-			// Old version (< 4.1.0) to 4.2.0 : migration DB + encrypt key.
-			$this->update_before_4_1_0( $db_version );
-
-			// Last version = 4.1.0 : encrypt keys.
-			$this->update_from_4_0_0( $db_version );
-		}
+		$this->manage_versions( $db_version );
 
 		update_option( 'alma_version', ALMA_VERSION );
 	}
 
 	/**
-	 * Update < 4.1.0
+	 * Manage the migrations.
 	 *
-	 * @param string $db_version The DB version.
-	 *
+	 * @param string $db_version    The db version.
 	 * @return void
 	 */
-	protected function update_from_4_0_0( $db_version ) {
-		// Si la version en BDD est strictement inférieur à la 4.1.0.
+	public function manage_versions( $db_version ) {
 		if (
 			$db_version
-			&& version_compare( $db_version, '4.1.0', '=' )
+			&& version_compare( ALMA_VERSION, $db_version, '>' )
+			&& version_compare( $db_version, '4.1.2', '<=' )
 		) {
-			$this->migrate_api_keys();
+			// Si la version en BDD est strictement inférieur à la 4.1.2
+			$this->migrate_keys();
+			$this->manage_version_before_3( $db_version );
+
+			delete_option( 'woocommerce_alma_settings' );
+			delete_option( 'alma_warnings_handled' );
 		}
 	}
 
 	/**
-	 * Update = 4.1.1
-	 *
-	 * @param string $db_version The DB version.
+	 * Migrate the keys in db.
 	 *
 	 * @return void
 	 */
-	protected function update_before_4_1_0( $db_version ) {
-		// Si la version en BDD est strictement inférieur à la 4.1.0.
-		if (
-			$db_version
-			&& version_compare( $db_version, '4.1.0', '<' )
-			&& version_compare( ALMA_VERSION, '4.2.0', '=' )
-		) {
-			$old_settings = get_option( 'woocommerce_alma_settings' );
+	protected function migrate_keys() {
+		$old_settings = get_option( 'woocommerce_alma_settings' );
+
+		if ( $old_settings ) {
 			update_option( Alma_Settings::OPTIONS_KEY, $old_settings );
-
-			try {
-				$this->migrate_api_keys();
-
-				// Manage credentials to match the new settings fields format.
-				// Upgrade to 4.
-				$gateway = new Alma_Payment_Gateway();
-
-				$gateway->manage_credentials();
-			} catch ( \Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
-				// We don't care if it fails there is nothing to update.
-				$this->logger->info( $e->getMessage() );
-			}
-
-			update_option( 'alma_version', ALMA_VERSION );
-			deactivate_plugins( 'alma-woocommerce-gateway/alma-woocommerce-gateway.php', true );
 		}
 
-		update_option( 'alma_version', ALMA_VERSION );
-		delete_option( 'woocommerce_alma_settings' );
-		delete_option( 'alma_warnings_handled' );
-	}
-
-	/**
-	 * Encrypt the keys
-	 *
-	 * @return void
-	 */
-	protected function migrate_api_keys() {
 		$settings    = get_option( Alma_Settings::OPTIONS_KEY );
 		$has_changed = false;
 
-		if (
-			! empty( $settings['live_api_key'] )
-			&& 'sk_live_' === substr( $settings['live_api_key'], 0, 7 )
-		) {
-			$settings['live_api_key'] = $this->encryptor_helper->encrypt( $settings['live_api_key'] );
-			$has_changed              = true;
-		}
+		try {
+			if (
+				! empty( $settings['live_api_key'] )
+				&& 'sk_live_' === substr( $settings['live_api_key'], 0, 8 )
+			) {
+				$settings['live_api_key'] = $this->encryptor_helper->encrypt( $settings['live_api_key'] );
+				$has_changed              = true;
+			}
 
-		if (
-			! empty( $settings['test_api_key'] )
-			&& 'sk_test_' === substr( $settings['test_api_key'], 0, 7 )
-		) {
-			$settings['test_api_key'] = $this->encryptor_helper->encrypt( $settings['test_api_key'] );
-			$has_changed              = true;
-		}
+			if (
+				! empty( $settings['test_api_key'] )
+				&& 'sk_test_' === substr( $settings['test_api_key'], 0, 8 )
+			) {
+				$settings['test_api_key'] = $this->encryptor_helper->encrypt( $settings['test_api_key'] );
+				$has_changed              = true;
+			}
 
-		if ( $has_changed ) {
-			update_option( Alma_Settings::OPTIONS_KEY, $settings );
+			if ( $has_changed ) {
+				update_option( Alma_Settings::OPTIONS_KEY, $settings );
+			}
+
+			// Manage credentials to match the new settings fields format.
+
+			// Upgrade to 4.
+			$gateway = new Alma_Payment_Gateway();
+
+			$gateway->manage_credentials();
+		} catch ( \Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+			// We don't care if it fails there is nothing to update.
+			$this->logger->info( $e->getMessage() );
 		}
 	}
+
+	/**
+	 * Manage version before 3.* .
+	 *
+	 * @param string $db_version The DB version.
+	 * @return void
+	 */
+	protected function manage_version_before_3( $db_version ) {
+		if ( version_compare( $db_version, 3, '<' ) ) {
+			update_option( 'alma_version', ALMA_VERSION );
+			deactivate_plugins( 'alma-woocommerce-gateway/alma-woocommerce-gateway.php', true );
+		}
+	}
+
 }

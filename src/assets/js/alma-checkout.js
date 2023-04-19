@@ -5,23 +5,6 @@
  */
 
 (function ($) {
-	// $( 'body' ).ready(
-	// function () {
-	// $('.ui-accordion-header').each(function () {
-	// var icon = $( this ).find('.fas')[0];
-	// if ($( this ).attr("aria-selected") === "false") {
-	// icon.classList.add("fa-angle-right");
-	// icon.classList.remove("fa-angle-down");
-	// console.log(icon);
-	// } else {
-	// icon.classList.remove("fa-angle-right");
-	// icon.classList.add("fa-angle-down");
-	// console.log(icon);
-	// }
-	// })
-	//
-	// }
-	// );
 
 	$( 'body' ).on(
 		'updated_checkout',
@@ -57,22 +40,17 @@
 		}
 	);
 
-	// $( 'body' ).on(
-	// 'click',
-	// '.ui-accordion-header',
-	// function () {
-	// var icon = jQuery(this).find('.fas')[0];
-	// if ($(this).attr("aria-selected") === "false") {
-	// icon.classList.add("fa-angle-right");
-	// icon.classList.remove("fa-angle-down");
-	// } else {
-	// icon.classList.remove("fa-angle-right");
-	// icon.classList.add("fa-angle-down");
-	// }
-	//
-	// }
-	// );
+	$( 'body' ).on(
+		'click',
+		'.ui-accordion-header',
+		function () {
+			if ($( this ).attr( "aria-selected" ) === "true") {
+				$( this ).next( "div" ).find( "input:first" ).prop( "checked", true );
+			}
 
+		}
+	);
+.0
 	$( 'body' ).on(
 		'payment_method_selected',
 		function(){
@@ -82,7 +60,6 @@
 
 	function render_alma_methods()
 	{
-
 		var payment_method = $( '.woocommerce-checkout input[name="payment_method"]:checked' ).closest( 'li.wc_payment_method' );
 		if (typeof payment_method.attr( 'data-already-checked' ) != 'undefined') {
 			$( '#' + payment_method.attr( 'data-already-checked' ) ).prop( 'checked', true ).trigger( 'change' );

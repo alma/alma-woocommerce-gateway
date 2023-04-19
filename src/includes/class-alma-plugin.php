@@ -61,18 +61,10 @@ class Alma_Plugin {
 	protected function __construct() {
 		$this->logger           = new Alma_Logger();
 		$this->migration_helper = new Alma_Migration_Helper();
-		$this->self_update();
+		$this->migration_helper->update();
 		$this->init();
 	}
 
-	/**
-	 * Update plugin to the latest version.
-	 *
-	 * @return void
-	 */
-	protected function self_update() {
-		$this->migration_helper->update();
-	}
 
 	/**
 	 * Init the plugin after plugins_loaded so environment variables are set.
