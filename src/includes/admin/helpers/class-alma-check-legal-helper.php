@@ -2,7 +2,7 @@
 /**
  * Alma_Check_Legal_Helper.
  *
- * @since 4.1.2
+ * @since 4.2.0
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes/admin/helpers

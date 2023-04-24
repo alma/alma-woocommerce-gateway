@@ -2,7 +2,7 @@
 /**
  * Alma_Api_Soc_Last_Update_Dates_Exception.
  *
- * @since 4.1.2
+ * @since 4.2.0
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes/exceptions

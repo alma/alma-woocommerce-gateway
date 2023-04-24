@@ -66,7 +66,7 @@ To build extension for production run `./bin/build.sh`
 
 == Changelog ==
 
-= 4.1.2 =
+= 4.2.0 =
 * fix: log error on nonce check
 * feat: update widget version
 * feat: encryption api keys in DB

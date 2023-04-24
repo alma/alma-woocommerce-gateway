@@ -1,7 +1,7 @@
 Changelog
 =========
 
-v4.1.2
+v4.2.0
 ------
 
 * fix: log error on nonce check

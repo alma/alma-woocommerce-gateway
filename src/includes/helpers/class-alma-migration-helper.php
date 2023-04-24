@@ -73,9 +73,8 @@ class Alma_Migration_Helper {
 		if (
 			$db_version
 			&& version_compare( ALMA_VERSION, $db_version, '>' )
-			&& version_compare( $db_version, '4.1.2', '<=' )
 		) {
-			// Si la version en BDD est strictement inférieur à la 4.1.2
+			// Si la version en BDD est strictement inférieur à la 4.2.0
 			$this->migrate_keys();
 			$this->manage_version_before_3( $db_version );
 
