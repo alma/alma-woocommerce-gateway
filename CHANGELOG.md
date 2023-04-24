@@ -1,6 +1,13 @@
 Changelog
 =========
 
+v4.1.2
+------
+
+* fix: nonce error log issue
+* feat: Update widget
+* feat: compatibility with woocommerce 7.6
+
 v4.1.1
 ------
 
