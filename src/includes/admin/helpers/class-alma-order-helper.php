@@ -33,6 +33,7 @@ class Alma_Order_Helper {
 			array(
 				'date_created' => $from . '...' . $to,
 				'type'         => 'shop_order',
+				'status'       => array( 'wc-processing', 'wc-completed' ),
 			)
 		);
 	}

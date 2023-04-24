@@ -125,7 +125,7 @@ class Alma_Migration_Helper {
 			// Upgrade to 4.
 			$gateway = new Alma_Payment_Gateway();
 
-			$gateway->manage_credentials();
+			$gateway->manage_credentials( true );
 		} catch ( \Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			// We don't care if it fails there is nothing to update.
 			$this->logger->info( $e->getMessage() );
