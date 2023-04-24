@@ -327,26 +327,30 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 	/**
 	 *  Manage the credentials, check the clients and manage plans.
 	 *
+	 *  @param bool $check_merchant Call the merchant endpoint.
+	 *
 	 * @return void
 	 * @throws Alma_Api_Client_Exception Client Api exception.
 	 * @throws Alma_Api_Merchants_Exception Merchant Api exception.
 	 * @throws Alma_Api_Plans_Exception  Plans Api exception.
 	 * @throws Alma_No_Credentials_Exception No credentials Api excetption.
 	 */
-	public function manage_credentials() {
+	public function manage_credentials( $check_merchant = false ) {
 		$this->check_alma_keys();
 		$this->init_alma_client();
 
-		// We store the old merchant id.
-		$old_merchant_id = $this->alma_settings->get_active_merchant_id();
+		if ( $check_merchant ) {
+			// We store the old merchant id.
+			$old_merchant_id = $this->alma_settings->get_active_merchant_id();
 
-		$this->init_alma_merchant();
+			$this->init_alma_merchant();
 
-		// If the merchant_id has changed we need to update it in the database.
-		$merchant_id = $this->alma_settings->get_active_merchant_id();
+			// If the merchant_id has changed we need to update it in the database.
+			$merchant_id = $this->alma_settings->get_active_merchant_id();
 
-		if ( $merchant_id !== $old_merchant_id ) {
-			$this->alma_settings->settings[ $this->alma_settings->environment . '_merchant_id' ] = $merchant_id;
+			if ( $merchant_id !== $old_merchant_id ) {
+				$this->alma_settings->settings[ $this->alma_settings->environment . '_merchant_id' ] = $merchant_id;
+			}
 		}
 
 		$this->alma_settings->init_allowed_fee_plans();
@@ -630,7 +634,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 		$this->alma_settings->load_settings();
 
 		try {
-			$this->manage_credentials();
+			$this->manage_credentials( true );
 			$this->alma_settings->load_settings();
 
 		} catch ( \Exception $e ) {
