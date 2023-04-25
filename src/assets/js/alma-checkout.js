@@ -41,16 +41,27 @@
 	);
 
 	$( 'body' ).on(
+		'updated_checkout',
+		function () {
+			var radios = $( '.ui-accordion-header' ).next( "div" ).find( "input:visible" );
+			radios.first().prop( "checked", true ).trigger( 'change' );
+		}
+	);
+
+	$( 'body' ).on(
 		'click',
 		'.ui-accordion-header',
 		function () {
 			if ($( this ).attr( "aria-selected" ) === "true") {
-				$( this ).next( "div" ).find( "input:first" ).prop( "checked", true );
+				var radios = $( this ).next( "div" ).find( "input:visible" );
+				radios.first().prop( "checked", true ).trigger( 'change' );
+				if (radios.length === 1) {
+					radios.first().css( {visibility: 'hidden', position: 'absolute', left: '-9999px'} )
+				}
 			}
-
 		}
 	);
-.0
+
 	$( 'body' ).on(
 		'payment_method_selected',
 		function(){

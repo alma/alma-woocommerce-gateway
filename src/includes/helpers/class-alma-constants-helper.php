@@ -49,6 +49,7 @@ class Alma_Constants_Helper {
 	const PAYMENT_METHOD_PNX_PLUS_4      = 'payment_method_pnx_plus_4';
 	const NOTICE_NONCE_NAME              = 'wc_alma_notice_nonce';
 	const ALMA_LOGO_PATH                 = 'images/alma_logo.svg';
+	const ALMA_SHORT_LOGO_PATH           = 'images/alma_short_logo.svg';
 	const ALMA_PATH_CHECKOUT_JS          = 'js/alma-checkout.js';
 
 	const ERROR = 'error';

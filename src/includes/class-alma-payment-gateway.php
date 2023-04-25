@@ -416,7 +416,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 	 * @return string The icon path.
 	 */
 	public function get_icon() {
-		return Alma_Assets_Helper::get_icon( $this->get_title(), $this->id );
+		return Alma_Assets_Helper::get_icon( $this->get_title(), $this->id, Alma_Constants_Helper::ALMA_SHORT_LOGO_PATH );
 	}
 
 	/**
