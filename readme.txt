@@ -67,11 +67,14 @@ To build extension for production run `./bin/build.sh`
 == Changelog ==
 
 = 4.2.0 =
-* fix: log error on nonce check
-* feat: update widget version
 * feat: encryption api keys in DB
 * feat: Share of checkout
 * feat: update translations
+
+= 4.1.2 =
+* fix: nonce error log issue
+* feat: Update widget
+* feat: compatibility with woocommerce 7.6
 
 = 4.1.1 =
 * fix: PHP 8.0 and 8.1 compatibility
