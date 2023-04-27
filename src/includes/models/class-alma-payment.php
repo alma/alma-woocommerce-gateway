@@ -178,7 +178,7 @@ class Alma_Payment {
 
 		if ( $this->alma_settings->is_pnx_plus_4( $fee_plan ) ) {
 			$data = $this->add_products_data( $data, $order->get_order() );
-        }
+		}
 
 		return $data;
 	}
@@ -209,7 +209,7 @@ class Alma_Payment {
 	 * @return array
 	 */
 	protected function add_product_data( $item ) {
-        // @var \WC_Order_Item_Product $product_item The product.
+		// @var \WC_Order_Item_Product $product_item The product.
 		$product = $item->get_product();
 
 		$categories = explode( ',', wp_strip_all_tags( wc_get_product_category_list( $product->get_id() ) ) );
