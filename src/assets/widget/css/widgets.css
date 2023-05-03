@@ -27,18 +27,18 @@
 /** Venn **/
 @font-face {
   font-family: Venn;
-  src: url('./assets/fonts/Venn-Bold.eot') format('embedded-opentype'),
-    url('./assets/fonts/Venn-Bold.woff') format('woff'),
-    url('./assets/fonts/Venn-Bold.ttf') format('truetype');
+  src: url('https://cdn.almapay.com/fonts/Venn/Venn-Bold.eot') format('embedded-opentype'),
+  url('https://cdn.almapay.com/fonts/Venn/Venn-Bold.woff') format('woff'),
+  url('https://cdn.almapay.com/fonts/Venn/Venn-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: Venn;
-  src: url('./assets/fonts/Venn-Regular.eot?#iefix') format('embedded-opentype'),
-    url('./assets/fonts/Venn-Regular.woff') format('woff'),
-    url('./assets/fonts/Venn-Regular.ttf') format('truetype');
+  src: url('https://cdn.almapay.com/fonts/Venn/Venn-Regular.eot?#iefix') format('embedded-opentype'),
+  url('https://cdn.almapay.com/fonts/Venn/Venn-Regular.woff') format('woff'),
+  url('https://cdn.almapay.com/fonts/Venn/Venn-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -46,10 +46,10 @@
 
 /** Argent **/
 @font-face {
-  font-family: 'Argent CF';
-  src: url('./assets/fonts/ArgentCF-DemiBold.eot') format('embedded-opentype'),
-    url('./assets/fonts/ArgentCF-DemiBold.woff') format('woff'),
-    url('./assets/fonts/ArgentCF-DemiBold.ttf') format('truetype');
+  font-family: Argent;
+  src: url('https://cdn.almapay.com/fonts/Argent/ArgentCF-DemiBold.eot') format('embedded-opentype'),
+  url('https://cdn.almapay.com/fonts/Argent/ArgentCF-DemiBold.woff') format('woff'),
+  url('https://cdn.almapay.com/fonts/Argent/ArgentCF-DemiBold.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -57,7 +57,7 @@
 
 ._GTTk7 {
   margin: 16px 0;
-  font-family: 'Argent CF', sans-serif;
+  font-family: 'Argent', sans-serif;
   background-color: var(--off-white);
   border-radius: 20px;
   padding: 24px;
@@ -231,7 +231,7 @@
   border: 1px solid var(--dark-gray);
   text-transform: lowercase;
   border-radius: 16px;
-  font-family: 'Argent CF', sans-serif;
+  font-family: 'Argent', sans-serif;
   font-size: 20px;
   line-height: 120%;
   font-weight: 600;
@@ -341,7 +341,7 @@
 }
 
 ._3B8wx {
-  font-family: 'Argent CF', sans-serif;
+  font-family: 'Argent', sans-serif;
   font-weight: 600;
   font-size: 32px;
   min-width: 20px;
@@ -365,7 +365,7 @@
 }
 
 ._3ERx- {
-  font-family: 'Argent CF', sans-serif;
+  font-family: 'Argent', sans-serif;
   font-weight: 600;
   font-size: 20px;
   line-height: 130%;
