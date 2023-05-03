@@ -71,7 +71,6 @@ To build extension for production run `./bin/build.sh`
 * feat: Update widget
 * feat: compatibility with woocommerce 7.6
 
-
 = 4.1.1 =
 * fix: PHP 8.0 and 8.1 compatibility
 
