@@ -69,7 +69,10 @@ class Alma_Gateway_Helper {
 		foreach ( $available_gateways as $key => $gateway ) {
 
 			if (
-				'alma' === $gateway->id
+				(
+					Alma_Constants_Helper::GATEWAY_ID === $gateway->id
+					|| Alma_Constants_Helper::GATEWAY_PN_ID === $gateway->id
+				)
 				&& $has_excluded_products
 			) {
 				unset( $available_gateways[ $key ] );
@@ -94,6 +97,10 @@ class Alma_Gateway_Helper {
 	public function woocommerce_gateway_title( $title, $id ) {
 		if ( Alma_Constants_Helper::GATEWAY_ID === $id ) {
 			$title = __( 'Pay with Alma', 'alma-gateway-for-woocommerce' );
+		}
+
+		if ( Alma_Constants_Helper::GATEWAY_PN_ID === $id ) {
+			$title = __( 'Pay Now with Alma', 'alma-gateway-for-woocommerce' );
 		}
 
 		return $title;
