@@ -71,11 +71,10 @@ class Alma_Checkout_Helper {
 
 		$this->logger->error(
 			sprintf(
-				'Nonce not found or wrong - FieldName "%s" - NonceName "%s" - FieldName value "%s" - NonceName  value"%s"',
+				'Nonce not found or wrong - FieldName "%s" - NonceName "%s"  - data "%s"',
 				$field_name,
 				$nonce_name,
-				$_POST[ $field_name ],
-				$_POST[ $nonce_name ]
+				wp_json_encode( $_POST )
 			)
 		);
 		return null;

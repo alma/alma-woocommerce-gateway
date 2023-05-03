@@ -1551,6 +1551,9 @@
     return String(priceFromCents(cents)).replace('.', ',');
   }
   var desktopWidth = 800;
+  var isP1X = function isP1X(plan) {
+    return (plan == null ? void 0 : plan.installments_count) === 1 && (plan == null ? void 0 : plan.deferred_days) === 0 && (plan == null ? void 0 : plan.deferred_months) === 0;
+  };
 
   /* eslint-disable */
 
@@ -6715,23 +6718,28 @@
   	"credit-features.credit-cost-display": "{creditCost} (APR {taegPercentage})",
   	"credit-features.information": "Ein Kredit verpflichtet Sie und muss zurückgezahlt werden. Prüfen Sie Ihre Rückzahlungsfähigkeit, bevor Sie sich verpflichten.",
   	"credit-features.total-credit-cost": "Davon Kreditkosten",
-  	"eligibility-modal.bullet-1": "Wählen Sie <strong>Alma</strong> bei der Bezahlung.",
-  	"eligibility-modal.bullet-2": "Füllen Sie die <strong>angeforderten</strong> Informationen aus.",
-  	"eligibility-modal.bullet-3": "Ihre Zahlung wird <strong>sofort</strong> bestätigt!",
-  	"eligibility-modal.no-eligibility": "Ups, die Simulation hat anscheinend nicht funktioniert.",
-  	"eligibility-modal.title-deferred-plan": "Bezahlen Sie mit Alma in Raten oder später per Kreditkarte.",
-  	"eligibility-modal.title-normal": "Bezahlen Sie mit Alma in mehreren Raten per Kreditkarte.",
+  	"eligibility-modal.bullet-1": "Wählen Sie <strong>Alma</strong> beim Check-out. ",
+  	"eligibility-modal.bullet-2": "Lassen Sie sich führen und bestätigen Sie Ihre Zahlung in <strong>2 Minuten.</strong>",
+  	"eligibility-modal.bullet-3": "<strong>Verlieren Sie nicht die Kontrolle,</strong> indem Sie Ihre Fälligkeitstermine nach Ihrem eigenen Tempo vor- oder zurückverlegen.",
+  	"eligibility-modal.no-eligibility": "Ups, die Prüfung hat anscheinend nicht funktioniert.",
+  	"eligibility-modal.p1x-bullet-1": "Wählen Sie <strong>Alma - 1X</strong> beim Check-out.",
+  	"eligibility-modal.p1x-bullet-2": "Tragen Sie Ihre <strong>Kreditkarteninformationen ein.</strong>",
+  	"eligibility-modal.p1x-bullet-3": "<strong> Ihre Zahlung wird sofort bestätigt! </strong>",
+  	"eligibility-modal.title-deferred-plan": "Zahlen Sie mit Alma in Raten oder später.",
+  	"eligibility-modal.title-normal": "Zahlen Sie mit Alma in mehreren Raten.",
   	"installments.today": "Heute",
   	"installments.total-amount": "Gesamtsumme",
-  	"installments.total-fees": "Davon Kosten (inkl. MwSt.)",
-  	"payment-plan-strings.day-abbreviation": "T{numberOfDeferredDays}",
-  	"payment-plan-strings.default-message": "Bezahlen Sie in Raten mit Alma",
+  	"installments.total-fees": "Davon Kosten",
+  	"payment-plan-strings.day-abbreviation": "T{deferredDays}",
+  	"payment-plan-strings.default-message": "Bezahlen Sie zinsfrei in mehreren Raten mit Alma.",
   	"payment-plan-strings.deferred": "{totalAmount} zu zahlen am {dueDate}",
   	"payment-plan-strings.ineligible-greater-than-max": "Bis zu {maxAmount}",
   	"payment-plan-strings.ineligible-lower-than-min": "Ab {minAmount}",
+  	"payment-plan-strings.month-abbreviation": "M{deferredMonths}",
   	"payment-plan-strings.multiple-installments": "{numberOfRemainingInstallments, plural, one {{firstInstallmentAmount} dann {numberOfRemainingInstallments} x {othersInstallmentAmount}} other {{firstInstallmentAmount} dann {numberOfRemainingInstallments} x {othersInstallmentAmount}}}",
   	"payment-plan-strings.multiple-installments-same-amount": "{installmentsCount} x {totalAmount}",
-  	"payment-plan-strings.no-fee": "(gebührenfrei)"
+  	"payment-plan-strings.no-fee": "(0% Finanzierung)",
+  	"payment-plan-strings.pay-now": "Zahlen Sie jetzt {totalAmount}"
   };
 
   var messagesEN = {
@@ -6739,22 +6747,27 @@
   	"credit-features.information": "A loan commits you and must be repaid. Check your ability to repay before committing yourself.",
   	"credit-features.total-credit-cost": "Of which cost of credit",
   	"eligibility-modal.bullet-1": "Choose <strong>Alma</strong> at checkout.",
-  	"eligibility-modal.bullet-2": "Fill in the <strong>information</strong> requested.",
-  	"eligibility-modal.bullet-3": "The validation of your payment is <strong>instantaneous</strong> !",
+  	"eligibility-modal.bullet-2": "Let us guide you and validate your payment in <strong>2 minutes.</strong>",
+  	"eligibility-modal.bullet-3": "<strong>Stay in control</strong> by moving your deadlines forward or backward at your own pace.",
   	"eligibility-modal.no-eligibility": "Oops, looks like the simulation didn't work.",
+  	"eligibility-modal.p1x-bullet-1": "Choose <strong>Alma - 1X</strong> at checkout.",
+  	"eligibility-modal.p1x-bullet-2": "Fill in your <strong>credit card information.</strong>",
+  	"eligibility-modal.p1x-bullet-3": "<strong>The validation </strong> of your payment is instantaneous!",
   	"eligibility-modal.title-deferred-plan": "Pay in installments or later by credit card with Alma.",
   	"eligibility-modal.title-normal": "Pay in installments by credit card with Alma.",
   	"installments.today": "Today",
   	"installments.total-amount": "Total",
   	"installments.total-fees": "Of which costs (incl. VAT)",
-  	"payment-plan-strings.day-abbreviation": "D{numberOfDeferredDays}",
+  	"payment-plan-strings.day-abbreviation": "D{deferredDays}",
   	"payment-plan-strings.default-message": "Pay in installments with Alma",
-  	"payment-plan-strings.deferred": "{totalAmount} to be paid on {dueDate}",
+  	"payment-plan-strings.deferred": "{totalAmount} to pay the {dueDate}",
   	"payment-plan-strings.ineligible-greater-than-max": "Until {maxAmount}",
   	"payment-plan-strings.ineligible-lower-than-min": "From {minAmount}",
+  	"payment-plan-strings.month-abbreviation": "M{deferredMonths}",
   	"payment-plan-strings.multiple-installments": "{numberOfRemainingInstallments, plural, one {{firstInstallmentAmount} then {numberOfRemainingInstallments} x {othersInstallmentAmount}} other {{firstInstallmentAmount} then {numberOfRemainingInstallments} x {othersInstallmentAmount}}}",
   	"payment-plan-strings.multiple-installments-same-amount": "{installmentsCount} x {totalAmount}",
-  	"payment-plan-strings.no-fee": "(free of charge)"
+  	"payment-plan-strings.no-fee": "(free of charge)",
+  	"payment-plan-strings.pay-now": "Pay now {totalAmount}"
   };
 
   var messagesES = {
@@ -6762,22 +6775,27 @@
   	"credit-features.information": "Un préstamo te compromete y debe ser devuelto. Comprueba tu capacidad financiera antes de comprometerte.",
   	"credit-features.total-credit-cost": "Coste de crédito (incl. en el total)",
   	"eligibility-modal.bullet-1": "Elige <strong>Alma</strong> como método de pago.",
-  	"eligibility-modal.bullet-2": "Completa la <strong>información</strong> solicitada.",
-  	"eligibility-modal.bullet-3": "¡La validación de tu pago es <strong>instantánea</strong> !",
+  	"eligibility-modal.bullet-2": "Déjese guiar y valide su pago en <strong>2 minutos.</strong>",
+  	"eligibility-modal.bullet-3": "<strong>Mantenga el control</strong> adelantando o retrasando los plazos a su propio ritmo.",
   	"eligibility-modal.no-eligibility": "Uy, parece que la simulación no ha funcionado.",
-  	"eligibility-modal.title-deferred-plan": "Pague a plazos o posteriormente con tarjeta de crédito con Alma.",
-  	"eligibility-modal.title-normal": "Pagar a plazos con tarjeta de crédito con Alma.",
+  	"eligibility-modal.p1x-bullet-1": "Elija <strong>Alma - 1X</strong> en la caja.",
+  	"eligibility-modal.p1x-bullet-2": "Introduzca los datos de su tarjeta de crédito en <strong>.</strong>",
+  	"eligibility-modal.p1x-bullet-3": "<strong>¡La validación </strong> de su pago es instantánea!",
+  	"eligibility-modal.title-deferred-plan": "Paga a plazos o posteriormente con tarjeta bancaria con Alma.",
+  	"eligibility-modal.title-normal": "Pagar a plazos con tarjeta bancaria con Alma.",
   	"installments.today": "Hoy",
   	"installments.total-amount": "Total",
   	"installments.total-fees": "De los cuales, costes (IVA incluido)",
-  	"payment-plan-strings.day-abbreviation": "D{numberOfDeferredDays}",
+  	"payment-plan-strings.day-abbreviation": "D{deferredDays}",
   	"payment-plan-strings.default-message": "Pagar a plazos con Alma",
   	"payment-plan-strings.deferred": "{totalAmount} a pagar el {dueDate}",
   	"payment-plan-strings.ineligible-greater-than-max": "Hasta {maxAmount}",
   	"payment-plan-strings.ineligible-lower-than-min": "Desde {minAmount}",
+  	"payment-plan-strings.month-abbreviation": "M{deferredMonths}",
   	"payment-plan-strings.multiple-installments": "{numberOfRemainingInstallments, plural, one {{firstInstallmentAmount} hoy, después {numberOfRemainingInstallments} mensualidad de {othersInstallmentAmount}} other {{firstInstallmentAmount} hoy, después {numberOfRemainingInstallments} mensualidades de {othersInstallmentAmount}}}",
   	"payment-plan-strings.multiple-installments-same-amount": "{installmentsCount} plazos de {totalAmount}",
-  	"payment-plan-strings.no-fee": "(sin intereses)"
+  	"payment-plan-strings.no-fee": "(sin intereses)",
+  	"payment-plan-strings.pay-now": "Pague ahora {totalAmount}"
   };
 
   var messagesFR = {
@@ -6785,68 +6803,83 @@
   	"credit-features.information": "Un crédit vous engage et doit être remboursé. Vérifiez vos capacités de remboursement avant de vous engager.",
   	"credit-features.total-credit-cost": "Dont coût du crédit",
   	"eligibility-modal.bullet-1": "Choisissez <strong>Alma</strong> au moment du paiement.",
-  	"eligibility-modal.bullet-2": "Renseignez les <strong>informations</strong> demandées.",
-  	"eligibility-modal.bullet-3": "La validation de votre paiement est <strong>instantanée</strong> !",
+  	"eligibility-modal.bullet-2": "Laissez-vous guider et validez votre paiement en <strong>2 minutes.</strong>",
+  	"eligibility-modal.bullet-3": "<strong>Gardez le contrôle</strong> en avançant ou reculant vos échéances à votre rythme.",
   	"eligibility-modal.no-eligibility": "Oups, il semblerait que la simulation n'ait pas fonctionné.",
+  	"eligibility-modal.p1x-bullet-1": "Choisissez <strong>Alma - 1X</strong> au moment du paiement.",
+  	"eligibility-modal.p1x-bullet-2": "Renseignez les informations de votre <strong>carte bancaire.</strong>",
+  	"eligibility-modal.p1x-bullet-3": "<strong>La validation </strong> de votre paiement est instantanée !",
   	"eligibility-modal.title-deferred-plan": "Payez en plusieurs fois ou plus tard par carte bancaire avec Alma.",
   	"eligibility-modal.title-normal": "Payez en plusieurs fois par carte bancaire avec Alma.",
   	"installments.today": "Aujourd'hui",
   	"installments.total-amount": "Total",
   	"installments.total-fees": "Dont frais (TTC)",
-  	"payment-plan-strings.day-abbreviation": "J{numberOfDeferredDays}",
+  	"payment-plan-strings.day-abbreviation": "J{deferredDays}",
   	"payment-plan-strings.default-message": "Payez en plusieurs fois avec Alma",
   	"payment-plan-strings.deferred": "{totalAmount} à payer le {dueDate}",
   	"payment-plan-strings.ineligible-greater-than-max": "Jusqu'à {maxAmount}",
   	"payment-plan-strings.ineligible-lower-than-min": "À partir de {minAmount}",
+  	"payment-plan-strings.month-abbreviation": "M{deferredMonths}",
   	"payment-plan-strings.multiple-installments": "{numberOfRemainingInstallments, plural, one {{firstInstallmentAmount} puis {numberOfRemainingInstallments} x {othersInstallmentAmount}} other {{firstInstallmentAmount} puis {numberOfRemainingInstallments} x {othersInstallmentAmount}}}",
   	"payment-plan-strings.multiple-installments-same-amount": "{installmentsCount} x {totalAmount}",
-  	"payment-plan-strings.no-fee": "(sans frais)"
+  	"payment-plan-strings.no-fee": "(sans frais)",
+  	"payment-plan-strings.pay-now": "Payez maintenant {totalAmount}"
   };
 
   var messagesIT = {
   	"credit-features.credit-cost-display": "{creditCost} (TAEG {taegPercentage})",
-  	"credit-features.information": "Un pagamento rateale ti impegna e deve essere ripagato. Verifica la tua capacità di rimborso prima di impegnarti.",
+  	"credit-features.information": "Un pagamento rateale ti impegna e deve essere ripagato. Verifica la tua disponibilità finanziaria prima di impegnarti.",
   	"credit-features.total-credit-cost": "Di cui commissioni",
-  	"eligibility-modal.bullet-1": "Scegli <strong>Alma</strong> alla cassa.",
-  	"eligibility-modal.bullet-2": "Compila le informazioni <strong></strong> richieste.",
-  	"eligibility-modal.bullet-3": "La convalida del pagamento è <strong>istantanea</strong>!",
+  	"eligibility-modal.bullet-1": "Seleziona <strong>Alma</strong> come metodo di pagamento.",
+  	"eligibility-modal.bullet-2": "Segui le istruzioni e completa l'acquisto <strong>in meno di 2 minuti.</strong>",
+  	"eligibility-modal.bullet-3": "<strong>Gestisci il tuo piano di pagamento</strong> e modifica le scadenze secondo le tue esigenze.",
   	"eligibility-modal.no-eligibility": "Ops, sembra che qualcosa non abbia funzionato.",
-  	"eligibility-modal.title-deferred-plan": "Pagate a rate o in seguito con carta di credito con Alma.",
-  	"eligibility-modal.title-normal": "Pagamenti rateali con carta di credito con Alma.",
+  	"eligibility-modal.p1x-bullet-1": "Scegli <strong>Alma - 1X</strong> alla cassa.",
+  	"eligibility-modal.p1x-bullet-2": "Inserisci i dati della tua <strong>carta bancaria.</strong>",
+  	"eligibility-modal.p1x-bullet-3": "Ricevi la conferma di pagamento <strong>istantaneamente!</strong>",
+  	"eligibility-modal.title-deferred-plan": "Paga a rate con Alma, senza registrazione.",
+  	"eligibility-modal.title-normal": "Paga a rate con Alma, senza registrazione.",
   	"installments.today": "Oggi",
   	"installments.total-amount": "Totale",
-  	"installments.total-fees": "Di cui costi (IVA inclusa)",
-  	"payment-plan-strings.day-abbreviation": "G{numberOfDeferredDays}",
-  	"payment-plan-strings.default-message": "Paga a rate con Alma",
+  	"installments.total-fees": "Di cui commissioni",
+  	"payment-plan-strings.day-abbreviation": "G{deferredDays}",
+  	"payment-plan-strings.default-message": "Paga a rate con Alma, senza registrazione.",
   	"payment-plan-strings.deferred": "{totalAmount} da pagare il {dueDate}",
   	"payment-plan-strings.ineligible-greater-than-max": "Disponibile fino a {maxAmount}",
   	"payment-plan-strings.ineligible-lower-than-min": "Pagamento rateale disponibile a partire da {minAmount}",
+  	"payment-plan-strings.month-abbreviation": "M{deferredMonths}",
   	"payment-plan-strings.multiple-installments": "{numberOfRemainingInstallments, plural, one {Oggi paghi {firstInstallmentAmount} poi tra {numberOfRemainingInstallments} mese {othersInstallmentAmount}} other {Oggi paghi {firstInstallmentAmount} poi {numberOfRemainingInstallments} rate mensili di {othersInstallmentAmount}}}",
   	"payment-plan-strings.multiple-installments-same-amount": "In {installmentsCount} rate mensili di {totalAmount}",
-  	"payment-plan-strings.no-fee": "(senza interessi)"
+  	"payment-plan-strings.no-fee": "(senza interessi)",
+  	"payment-plan-strings.pay-now": "Paga ora {totalAmount}"
   };
 
   var messagesNL = {
   	"credit-features.credit-cost-display": "{creditCost} (gemiddeld rente percentage {taegPercentage})",
-  	"credit-features.information": "Een lening bindt je en moet worden terugbetaald. Ga na of u kunt terugbetalen voordat u zich vastlegt.",
-  	"credit-features.total-credit-cost": "Waarvan kosten van krediet",
+  	"credit-features.information": "Een lening is bindend en moet worden terugbetaald. Ga na of je het kunt terugbetalen voordat je jezelf vastlegt.",
+  	"credit-features.total-credit-cost": "Waarvan kredietkosten",
   	"eligibility-modal.bullet-1": "Kies <strong>Alma</strong> bij het afrekenen.",
-  	"eligibility-modal.bullet-2": "Vul de <strong>gevraagde informatie</strong> in.",
-  	"eligibility-modal.bullet-3": "De validatie van uw betaling is <strong>onmiddellijk</strong> !",
+  	"eligibility-modal.bullet-2": "Laat ons je begeleiden en jouw betaling valideren in <strong>2 minuten.</strong>",
+  	"eligibility-modal.bullet-3": "<strong>Behoudt de controle</strong> door jouw deadlines op je eigen tempo vooruit of achteruit te schuiven.",
   	"eligibility-modal.no-eligibility": "Oeps, het lijkt erop dat de simulatie niet werkte.",
-  	"eligibility-modal.title-deferred-plan": "Betaal in termijnen of later per creditcard met Alma.",
-  	"eligibility-modal.title-normal": "Betaal in termijnen met een creditcard bij Alma.",
+  	"eligibility-modal.p1x-bullet-1": "Kies <strong>Alma - 1X</strong> bij het afrekenen.",
+  	"eligibility-modal.p1x-bullet-2": "Vul jouw <strong>creditcardgegevens </strong> in.",
+  	"eligibility-modal.p1x-bullet-3": "<strong>De bevestiging </strong> van jouw betaling is onmiddellijk!",
+  	"eligibility-modal.title-deferred-plan": "Betaal in termijnen of later via iDEAL of per creditcard met Alma.",
+  	"eligibility-modal.title-normal": "Betaal in termijnen met iDEAL of creditcard bij Alma.",
   	"installments.today": "Tegenwoordig",
   	"installments.total-amount": "Totaal",
   	"installments.total-fees": "Waarvan kosten (incl. BTW)",
-  	"payment-plan-strings.day-abbreviation": "D{numberOfDeferredDays}",
+  	"payment-plan-strings.day-abbreviation": "D{deferredDays}",
   	"payment-plan-strings.default-message": "Betaal in termijnen met Alma",
   	"payment-plan-strings.deferred": "{totalAmount} te betalen op {dueDate}",
   	"payment-plan-strings.ineligible-greater-than-max": "Tot {maxAmount}",
   	"payment-plan-strings.ineligible-lower-than-min": "Van {minAmount}",
+  	"payment-plan-strings.month-abbreviation": "M{deferredMonths}",
   	"payment-plan-strings.multiple-installments": "{numberOfRemainingInstallments, plural, one {{firstInstallmentAmount} dan {numberOfRemainingInstallments} x {othersInstallmentAmount}} other {{firstInstallmentAmount} dan {numberOfRemainingInstallments} x {othersInstallmentAmount}}}",
   	"payment-plan-strings.multiple-installments-same-amount": "{installmentsCount} x {totalAmount}",
-  	"payment-plan-strings.no-fee": "(zonder kosten)"
+  	"payment-plan-strings.no-fee": "(zonder kosten)",
+  	"payment-plan-strings.pay-now": "Betaal nu {totalAmount}"
   };
 
   var messagesPT = {
@@ -6854,22 +6887,27 @@
   	"credit-features.information": "Um crédito é um compromisso e deve ser reembolsado. Verifique a sua capacidade de pagar antes de se comprometer.",
   	"credit-features.total-credit-cost": "Incluindo custo do crédito",
   	"eligibility-modal.bullet-1": "Escolha a <strong>Alma</strong> no checkout.",
-  	"eligibility-modal.bullet-2": "Preencha os <strong>dados</strong> solicitados.",
-  	"eligibility-modal.bullet-3": "A validação do seu pagamento é <strong>instantaneamente</strong> !",
+  	"eligibility-modal.bullet-2": "Deixe-nos guiá-lo e validar o seu pagamento em <strong>2 minutos.</strong>",
+  	"eligibility-modal.bullet-3": "<strong>Mantenha-se em controlo</strong> avançando ou recuando os seus prazos ao seu próprio ritmo.",
   	"eligibility-modal.no-eligibility": "Ups, parece que a simulação não funcionou.",
+  	"eligibility-modal.p1x-bullet-1": "Escolher <strong>Alma - 1X</strong> no checkout.",
+  	"eligibility-modal.p1x-bullet-2": "Preencha as informações do seu <strong>cartão de crédito.</strong>",
+  	"eligibility-modal.p1x-bullet-3": "<strong>A validação </strong> do seu pagamento é instantânea!",
   	"eligibility-modal.title-deferred-plan": "Pagar em prestações ou mais tarde por cartão de crédito com Alma.",
   	"eligibility-modal.title-normal": "Pagar em prestações por cartão de crédito com Alma.",
   	"installments.today": "Hoje",
   	"installments.total-amount": "Total",
   	"installments.total-fees": "Dos quais custos (incl. IVA)",
-  	"payment-plan-strings.day-abbreviation": "D{numberOfDeferredDays}",
+  	"payment-plan-strings.day-abbreviation": "D{deferredDays}",
   	"payment-plan-strings.default-message": "Pague em prestações através da Alma",
   	"payment-plan-strings.deferred": "{totalAmount} a pagar em {dueDate}",
   	"payment-plan-strings.ineligible-greater-than-max": "Até {maxAmount}",
   	"payment-plan-strings.ineligible-lower-than-min": "A partir de {minAmount}",
+  	"payment-plan-strings.month-abbreviation": "M{deferredMonths}",
   	"payment-plan-strings.multiple-installments": "{numberOfRemainingInstallments, plural, one {{firstInstallmentAmount} depois {numberOfRemainingInstallments} x {othersInstallmentAmount}} other {{firstInstallmentAmount} depois {numberOfRemainingInstallments} x {othersInstallmentAmount}}}",
   	"payment-plan-strings.multiple-installments-same-amount": "{installmentsCount} x {totalAmount}",
-  	"payment-plan-strings.no-fee": "(sem encargos)"
+  	"payment-plan-strings.no-fee": "(sem encargos)",
+  	"payment-plan-strings.pay-now": "Pague agora {totalAmount}"
   };
 
   var getTranslationsByLocale = function getTranslationsByLocale(locale) {
@@ -14955,18 +14993,16 @@
     return configPlan != null ? configPlan : {};
   };
 
-  var filterELigibility = function filterELigibility(eligibilities, configPlans) {
-    // Remove p1x
-    var filteredEligibilityPlans = eligibilities.filter(function (plan) {
-      return !(plan.installments_count === 1 && plan.deferred_days === 0 && plan.deferred_months === 0);
-    }); // If no configPlans was provided, return eligibility response
-
+  var filterEligibility = function filterEligibility(eligibilities, configPlans) {
+    // Remove P1X if no configuration is provided
     if (!configPlans) {
-      return filteredEligibilityPlans;
+      return eligibilities.filter(function (plan) {
+        return !(plan.installments_count === 1 && plan.deferred_days === 0 && plan.deferred_months === 0);
+      });
     } // Else check if the plan is eligible regarding the related configPlan
 
 
-    return filteredEligibilityPlans.map(function (plan) {
+    return eligibilities.map(function (plan) {
       var eligibilityDeferredDays = (plan.deferred_months ? plan.deferred_months : 0) * 30 + (plan.deferred_days ? plan.deferred_days : 0); // find the related configPlan
 
       var relatedConfigPlan = configPlans.find(function (configPlan) {
@@ -15022,7 +15058,8 @@
           billing_address: billing_address,
           shipping_address: shipping_address
         }, {
-          Authorization: "Alma-Merchant-Auth " + merchantId
+          Authorization: "Alma-Merchant-Auth " + merchantId,
+          'X-Alma-Agent': 'Alma Widget'
         }).then(function (res) {
           setEligibility(res);
           setStatus(apiStatus.SUCCESS);
@@ -15031,7 +15068,7 @@
         });
       }
     }, [status]);
-    return [filterELigibility(eligibility, plans), status];
+    return [filterEligibility(eligibility, plans), status];
   };
 
   var classnames = createCommonjsModule(function (module) {
@@ -19810,14 +19847,23 @@
     var deferred_days = payment.deferred_days,
         deferred_months = payment.deferred_months,
         installmentsCount = payment.installments_count;
-    var deferredDaysCount = deferred_days + deferred_months * 30;
 
-    if (installmentsCount === 1) {
+    if (installmentsCount === 1 && deferred_days) {
       return /*#__PURE__*/react.createElement(MemoizedFormattedMessage, {
         id: "payment-plan-strings.day-abbreviation",
-        defaultMessage: "J{numberOfDeferredDays}",
+        defaultMessage: "J{deferredDays}",
         values: {
-          numberOfDeferredDays: deferredDaysCount > 0 ? "+" + deferredDaysCount : ''
+          deferredDays: "+" + deferred_days
+        }
+      });
+    }
+
+    if (installmentsCount === 1 && deferred_months) {
+      return /*#__PURE__*/react.createElement(MemoizedFormattedMessage, {
+        id: "payment-plan-strings.month-abbreviation",
+        defaultMessage: "M{deferredMonths}",
+        values: {
+          deferredMonths: "+" + deferred_months
         }
       });
     } else {
@@ -19900,6 +19946,21 @@
       var areInstallmentsOfSameAmount = payment_plan == null ? void 0 : payment_plan.every(function (installment, index) {
         return index === 0 || installment.total_amount === payment_plan[0].total_amount;
       });
+
+      if (isP1X(payment)) {
+        return /*#__PURE__*/react.createElement(react.Fragment, null, /*#__PURE__*/react.createElement(MemoizedFormattedMessage, {
+          id: "payment-plan-strings.pay-now",
+          defaultMessage: "Payez maintenant {totalAmount}",
+          values: {
+            totalAmount: /*#__PURE__*/react.createElement(FormattedNumber, {
+              value: priceFromCents(payment_plan[0].total_amount),
+              style: "currency",
+              currency: "EUR"
+            }),
+            installmentsCount: installmentsCount
+          }
+        }), withNoFee(payment));
+      }
 
       if (areInstallmentsOfSameAmount) {
         return /*#__PURE__*/react.createElement(react.Fragment, null, /*#__PURE__*/react.createElement(MemoizedFormattedMessage, {
@@ -20207,53 +20268,82 @@
 
   var s$7 = {"list":"_180ro","listItem":"_1HqCO","bullet":"_3B8wx"};
 
-  var Info = function Info() {
-    return /*#__PURE__*/react.createElement("div", {
-      className: classnames(s$7.list, STATIC_CUSTOMISATION_CLASSES.info),
-      "data-testid": "modal-info-element"
-    }, /*#__PURE__*/react.createElement("div", {
-      className: s$7.listItem
-    }, /*#__PURE__*/react.createElement("div", {
-      className: classnames(s$7.bullet, STATIC_CUSTOMISATION_CLASSES.bullet)
-    }, "1"), /*#__PURE__*/react.createElement("div", {
-      className: STATIC_CUSTOMISATION_CLASSES.infoMessage
-    }, /*#__PURE__*/react.createElement(MemoizedFormattedMessage, {
-      id: "eligibility-modal.bullet-1",
-      defaultMessage: "Choisissez <strong>Alma</strong> au moment du paiement.",
-      values: {
-        strong: function strong() {
-          return /*#__PURE__*/react.createElement("strong", null, [].slice.call(arguments));
+  var Info = function Info(_ref) {
+    var isCurrentPlanP1X = _ref.isCurrentPlanP1X;
+    return (
+      /*#__PURE__*/
+      // TODO: refactor this component into subcomponent to factorise code and be cleaner
+      react.createElement("div", {
+        className: classnames(s$7.list, STATIC_CUSTOMISATION_CLASSES.info),
+        "data-testid": "modal-info-element"
+      }, /*#__PURE__*/react.createElement("div", {
+        className: s$7.listItem
+      }, /*#__PURE__*/react.createElement("div", {
+        className: classnames(s$7.bullet, STATIC_CUSTOMISATION_CLASSES.bullet)
+      }, "1"), /*#__PURE__*/react.createElement("div", {
+        className: STATIC_CUSTOMISATION_CLASSES.infoMessage
+      }, isCurrentPlanP1X ? /*#__PURE__*/react.createElement(MemoizedFormattedMessage, {
+        id: "eligibility-modal.p1x-bullet-1",
+        defaultMessage: "Choisissez <strong>Alma - 1X</strong> au moment du paiement.",
+        values: {
+          strong: function strong() {
+            return /*#__PURE__*/react.createElement("strong", null, [].slice.call(arguments));
+          }
         }
-      }
-    }))), /*#__PURE__*/react.createElement("div", {
-      className: s$7.listItem
-    }, /*#__PURE__*/react.createElement("div", {
-      className: classnames(s$7.bullet, STATIC_CUSTOMISATION_CLASSES.bullet)
-    }, "2"), /*#__PURE__*/react.createElement("div", {
-      className: STATIC_CUSTOMISATION_CLASSES.infoMessage
-    }, /*#__PURE__*/react.createElement(MemoizedFormattedMessage, {
-      id: "eligibility-modal.bullet-2",
-      defaultMessage: "Renseignez les <strong>informations</strong> demand\xE9es.",
-      values: {
-        strong: function strong() {
-          return /*#__PURE__*/react.createElement("strong", null, [].slice.call(arguments));
+      }) : /*#__PURE__*/react.createElement(MemoizedFormattedMessage, {
+        id: "eligibility-modal.bullet-1",
+        defaultMessage: "Choisissez <strong>Alma</strong> au moment du paiement.",
+        values: {
+          strong: function strong() {
+            return /*#__PURE__*/react.createElement("strong", null, [].slice.call(arguments));
+          }
         }
-      }
-    }))), /*#__PURE__*/react.createElement("div", {
-      className: s$7.listItem
-    }, /*#__PURE__*/react.createElement("div", {
-      className: classnames(s$7.bullet, STATIC_CUSTOMISATION_CLASSES.bullet)
-    }, "3"), /*#__PURE__*/react.createElement("div", {
-      className: STATIC_CUSTOMISATION_CLASSES.infoMessage
-    }, /*#__PURE__*/react.createElement(MemoizedFormattedMessage, {
-      id: "eligibility-modal.bullet-3",
-      defaultMessage: "La validation de votre paiement est <strong>instantan\xE9e</strong> !",
-      values: {
-        strong: function strong() {
-          return /*#__PURE__*/react.createElement("strong", null, [].slice.call(arguments));
+      }))), /*#__PURE__*/react.createElement("div", {
+        className: s$7.listItem
+      }, /*#__PURE__*/react.createElement("div", {
+        className: classnames(s$7.bullet, STATIC_CUSTOMISATION_CLASSES.bullet)
+      }, "2"), /*#__PURE__*/react.createElement("div", {
+        className: STATIC_CUSTOMISATION_CLASSES.infoMessage
+      }, isCurrentPlanP1X ? /*#__PURE__*/react.createElement(MemoizedFormattedMessage, {
+        id: "eligibility-modal.p1x-bullet-2",
+        defaultMessage: "Renseignez les informations de votre <strong>carte bancaire.</strong>",
+        values: {
+          strong: function strong() {
+            return /*#__PURE__*/react.createElement("strong", null, [].slice.call(arguments));
+          }
         }
-      }
-    }))));
+      }) : /*#__PURE__*/react.createElement(MemoizedFormattedMessage, {
+        id: "eligibility-modal.bullet-2",
+        defaultMessage: "Laissez-vous guider et validez votre paiement en <strong>2 minutes.</strong>",
+        values: {
+          strong: function strong() {
+            return /*#__PURE__*/react.createElement("strong", null, [].slice.call(arguments));
+          }
+        }
+      }))), /*#__PURE__*/react.createElement("div", {
+        className: s$7.listItem
+      }, /*#__PURE__*/react.createElement("div", {
+        className: classnames(s$7.bullet, STATIC_CUSTOMISATION_CLASSES.bullet)
+      }, "3"), /*#__PURE__*/react.createElement("div", {
+        className: STATIC_CUSTOMISATION_CLASSES.infoMessage
+      }, isCurrentPlanP1X ? /*#__PURE__*/react.createElement(MemoizedFormattedMessage, {
+        id: "eligibility-modal.p1x-bullet-3",
+        defaultMessage: "<strong>La validation </strong> de votre paiement est instantan\xE9e !",
+        values: {
+          strong: function strong() {
+            return /*#__PURE__*/react.createElement("strong", null, [].slice.call(arguments));
+          }
+        }
+      }) : /*#__PURE__*/react.createElement(MemoizedFormattedMessage, {
+        id: "eligibility-modal.bullet-3",
+        defaultMessage: "<strong>Gardez le contr\xF4le</strong> en avan\xE7ant ou reculant vos \xE9ch\xE9ances \xE0 votre rythme.",
+        values: {
+          strong: function strong() {
+            return /*#__PURE__*/react.createElement("strong", null, [].slice.call(arguments));
+          }
+        }
+      }))))
+    );
   };
 
   var s$8 = {"title":"_3ERx-"};
@@ -20277,7 +20367,8 @@
   var DesktopModal = function DesktopModal(_ref) {
     var children = _ref.children,
         isSomePlanDeferred = _ref.isSomePlanDeferred,
-        cards = _ref.cards;
+        cards = _ref.cards,
+        isCurrentPlanP1X = _ref.isCurrentPlanP1X;
     return /*#__PURE__*/react.createElement("div", {
       className: classnames(s$9.container, STATIC_CUSTOMISATION_CLASSES.desktopModal),
       "data-testid": "modal-container"
@@ -20285,7 +20376,9 @@
       className: classnames([s$9.block, s$9.left, STATIC_CUSTOMISATION_CLASSES.leftSide])
     }, /*#__PURE__*/react.createElement(Title, {
       isSomePlanDeferred: isSomePlanDeferred
-    }), /*#__PURE__*/react.createElement(Info, null), cards && /*#__PURE__*/react.createElement(Cards, {
+    }), /*#__PURE__*/react.createElement(Info, {
+      isCurrentPlanP1X: isCurrentPlanP1X
+    }), cards && /*#__PURE__*/react.createElement(Cards, {
       cards: cards
     }), /*#__PURE__*/react.createElement(AlmaLogo, {
       className: s$9.logo,
@@ -20302,13 +20395,16 @@
   var MobileModal = function MobileModal(_ref) {
     var children = _ref.children,
         isSomePlanDeferred = _ref.isSomePlanDeferred,
-        cards = _ref.cards;
+        cards = _ref.cards,
+        isCurrentPlanP1X = _ref.isCurrentPlanP1X;
     return /*#__PURE__*/react.createElement("div", {
       className: classnames(s$b.container, STATIC_CUSTOMISATION_CLASSES.mobileModal),
       "data-testid": "modal-container"
     }, /*#__PURE__*/react.createElement(Title, {
       isSomePlanDeferred: isSomePlanDeferred
-    }), children, /*#__PURE__*/react.createElement(Info, null), cards && /*#__PURE__*/react.createElement(Cards, {
+    }), children, /*#__PURE__*/react.createElement(Info, {
+      isCurrentPlanP1X: isCurrentPlanP1X
+    }), cards && /*#__PURE__*/react.createElement(Cards, {
       cards: cards
     }), /*#__PURE__*/react.createElement(AlmaLogo, {
       className: s$b.logo,
@@ -20345,7 +20441,8 @@
       isOpen: true
     }, /*#__PURE__*/react.createElement(ModalComponent, {
       isSomePlanDeferred: isSomePlanDeferred,
-      cards: cards
+      cards: cards,
+      isCurrentPlanP1X: isP1X(currentPlan)
     }, status === apiStatus.PENDING && /*#__PURE__*/react.createElement("div", {
       className: s$a.loader
     }, /*#__PURE__*/react.createElement(LoadingIndicator, null)), status === apiStatus.SUCCESS && eligiblePlans.length === 0 && /*#__PURE__*/react.createElement("div", {
@@ -20462,7 +20559,9 @@
     var _loop = function _loop(index) {
       var installmentsCount = suggestedPaymentPlanArray[index];
       var planFound = eligibilityPlans.findIndex(function (plan) {
-        return plan.installments_count === installmentsCount && plan.eligible;
+        return plan.installments_count === installmentsCount && plan.eligible && // Remove the PayLater plans from the plan to target, we will code a better solution later
+        // To differentiate P1X from PayLater while using the `suggestedPaymentPlan` property.
+        !plan.deferred_days && !plan.deferred_months;
       });
 
       if (planFound !== -1) {
@@ -20501,7 +20600,7 @@
 
   var s$d = {"widgetButton":"_TSkFv","logo":"_LJ4nZ","primaryContainer":"_bMClc","paymentPlans":"_17c_S","plan":"_2Kqjn","active":"_3dG_J","monochrome":"_2hx83","notEligible":"_3O1bg","hideBorder":"_3_qcn","info":"_25GrF","loader":"_30j1O","pending":"_1ZDMS","clickable":"_UksZa","unClickable":"_1lr-q"};
 
-  var VERY_LONG_TIME_IN_MS = 1000 * 3600 * 24 * 365;
+  var VERY_LONG_TIME_IN_MS = 1000 * 3600;
   var DEFAULT_TRANSITION_TIME = 5500;
 
   var PaymentPlanWidget = function PaymentPlanWidget(_ref) {
@@ -20518,7 +20617,8 @@
         customerShippingCountry = _ref.customerShippingCountry,
         transitionDelay = _ref.transitionDelay,
         _ref$hideBorder = _ref.hideBorder,
-        hideBorder = _ref$hideBorder === void 0 ? false : _ref$hideBorder;
+        hideBorder = _ref$hideBorder === void 0 ? false : _ref$hideBorder,
+        onModalClose = _ref.onModalClose;
 
     var _useFetchEligibility = useFetchEligibility(purchaseAmount, apiData, configPlans, customerBillingCountry, customerShippingCountry),
         eligibilityPlans = _useFetchEligibility[0],
@@ -20543,8 +20643,9 @@
       return setIsOpen(true);
     };
 
-    var closeModal = function closeModal() {
-      return setIsOpen(false);
+    var closeModal = function closeModal(event) {
+      setIsOpen(false);
+      onModalClose && onModalClose(event);
     };
 
     var eligiblePlanKeys = eligibilityPlans.reduce(function (acc, plan, index) {
@@ -20683,7 +20784,8 @@
             customerShippingCountry = options.customerShippingCountry,
             _options$locale = options.locale,
             locale = _options$locale === void 0 ? Locale.en : _options$locale,
-            cards = options.cards;
+            cards = options.cards,
+            onModalClose = options.onModalClose;
 
         if (containerDiv) {
           reactDom.render( /*#__PURE__*/react.createElement(Provider$1, {
@@ -20699,7 +20801,8 @@
             customerBillingCountry: customerBillingCountry,
             customerShippingCountry: customerShippingCountry,
             transitionDelay: transitionDelay,
-            hideBorder: hideBorder
+            hideBorder: hideBorder,
+            onModalClose: onModalClose
           })), document.querySelector(container));
         }
       }
@@ -20713,10 +20816,13 @@
             _locale = _options$locale2 === void 0 ? Locale.en : _options$locale2,
             _customerBillingCountry = options.customerBillingCountry,
             _customerShippingCountry = options.customerShippingCountry,
-            _cards = options.cards;
+            _cards = options.cards,
+            onClose = options.onClose;
 
-        var close = function close() {
-          return containerDiv && reactDom.unmountComponentAtNode(containerDiv);
+        var close = function close(event) {
+          if (!containerDiv) return;
+          reactDom.unmountComponentAtNode(containerDiv);
+          onClose && onClose(event);
         };
 
         var renderModal = function renderModal() {
