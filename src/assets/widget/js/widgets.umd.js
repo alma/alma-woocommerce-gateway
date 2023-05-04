@@ -6856,17 +6856,17 @@
 
   var messagesNL = {
   	"credit-features.credit-cost-display": "{creditCost} (gemiddeld rente percentage {taegPercentage})",
-  	"credit-features.information": "Een lening is bindend en moet worden terugbetaald. Ga na of je het kunt terugbetalen voordat je jezelf vastlegt.",
-  	"credit-features.total-credit-cost": "Waarvan kredietkosten",
+  	"credit-features.information": "Een lening bindt je en moet worden terugbetaald. Ga na of u kunt terugbetalen voordat u zich vastlegt.",
+  	"credit-features.total-credit-cost": "Waarvan kosten van krediet",
   	"eligibility-modal.bullet-1": "Kies <strong>Alma</strong> bij het afrekenen.",
-  	"eligibility-modal.bullet-2": "Laat ons je begeleiden en jouw betaling valideren in <strong>2 minuten.</strong>",
-  	"eligibility-modal.bullet-3": "<strong>Behoudt de controle</strong> door jouw deadlines op je eigen tempo vooruit of achteruit te schuiven.",
+  	"eligibility-modal.bullet-2": "Laat ons u begeleiden en uw betaling valideren in <strong>2 minuten.</strong>",
+  	"eligibility-modal.bullet-3": "<strong>Houd de controle op</strong> door uw deadlines in uw eigen tempo vooruit of achteruit te schuiven.",
   	"eligibility-modal.no-eligibility": "Oeps, het lijkt erop dat de simulatie niet werkte.",
   	"eligibility-modal.p1x-bullet-1": "Kies <strong>Alma - 1X</strong> bij het afrekenen.",
-  	"eligibility-modal.p1x-bullet-2": "Vul jouw <strong>creditcardgegevens </strong> in.",
-  	"eligibility-modal.p1x-bullet-3": "<strong>De bevestiging </strong> van jouw betaling is onmiddellijk!",
-  	"eligibility-modal.title-deferred-plan": "Betaal in termijnen of later via iDEAL of per creditcard met Alma.",
-  	"eligibility-modal.title-normal": "Betaal in termijnen met iDEAL of creditcard bij Alma.",
+  	"eligibility-modal.p1x-bullet-2": "Vul uw <strong>creditcardgegevens in.</strong>",
+  	"eligibility-modal.p1x-bullet-3": "<strong>De validatie </strong> van uw betaling is onmiddellijk!",
+  	"eligibility-modal.title-deferred-plan": "Betaal in termijnen of later per creditcard met Alma.",
+  	"eligibility-modal.title-normal": "Betaal in termijnen met een creditcard bij Alma.",
   	"installments.today": "Tegenwoordig",
   	"installments.total-amount": "Totaal",
   	"installments.total-fees": "Waarvan kosten (incl. BTW)",
@@ -15058,8 +15058,7 @@
           billing_address: billing_address,
           shipping_address: shipping_address
         }, {
-          Authorization: "Alma-Merchant-Auth " + merchantId,
-          'X-Alma-Agent': 'Alma Widget'
+          Authorization: "Alma-Merchant-Auth " + merchantId
         }).then(function (res) {
           setEligibility(res);
           setStatus(apiStatus.SUCCESS);
@@ -20617,8 +20616,7 @@
         customerShippingCountry = _ref.customerShippingCountry,
         transitionDelay = _ref.transitionDelay,
         _ref$hideBorder = _ref.hideBorder,
-        hideBorder = _ref$hideBorder === void 0 ? false : _ref$hideBorder,
-        onModalClose = _ref.onModalClose;
+        hideBorder = _ref$hideBorder === void 0 ? false : _ref$hideBorder;
 
     var _useFetchEligibility = useFetchEligibility(purchaseAmount, apiData, configPlans, customerBillingCountry, customerShippingCountry),
         eligibilityPlans = _useFetchEligibility[0],
@@ -20643,9 +20641,8 @@
       return setIsOpen(true);
     };
 
-    var closeModal = function closeModal(event) {
-      setIsOpen(false);
-      onModalClose && onModalClose(event);
+    var closeModal = function closeModal() {
+      return setIsOpen(false);
     };
 
     var eligiblePlanKeys = eligibilityPlans.reduce(function (acc, plan, index) {
@@ -20784,8 +20781,7 @@
             customerShippingCountry = options.customerShippingCountry,
             _options$locale = options.locale,
             locale = _options$locale === void 0 ? Locale.en : _options$locale,
-            cards = options.cards,
-            onModalClose = options.onModalClose;
+            cards = options.cards;
 
         if (containerDiv) {
           reactDom.render( /*#__PURE__*/react.createElement(Provider$1, {
@@ -20801,8 +20797,7 @@
             customerBillingCountry: customerBillingCountry,
             customerShippingCountry: customerShippingCountry,
             transitionDelay: transitionDelay,
-            hideBorder: hideBorder,
-            onModalClose: onModalClose
+            hideBorder: hideBorder
           })), document.querySelector(container));
         }
       }
@@ -20816,13 +20811,10 @@
             _locale = _options$locale2 === void 0 ? Locale.en : _options$locale2,
             _customerBillingCountry = options.customerBillingCountry,
             _customerShippingCountry = options.customerShippingCountry,
-            _cards = options.cards,
-            onClose = options.onClose;
+            _cards = options.cards;
 
-        var close = function close(event) {
-          if (!containerDiv) return;
-          reactDom.unmountComponentAtNode(containerDiv);
-          onClose && onClose(event);
+        var close = function close() {
+          return containerDiv && reactDom.unmountComponentAtNode(containerDiv);
         };
 
         var renderModal = function renderModal() {

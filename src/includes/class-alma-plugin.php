@@ -282,7 +282,6 @@ class Alma_Plugin {
 	 */
 	public function add_gateways( $gateways ) {
 		$gateways[] = Alma_Payment_Gateway::class;
-		$gateways[] = Alma_Pay_Now_Gateway::class;
 
 		return $gateways;
 	}

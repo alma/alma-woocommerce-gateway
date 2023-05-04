@@ -19,8 +19,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Alma_Constants_Helper
  */
 class Alma_Constants_Helper {
-	const GATEWAY_ID    = 'alma';
-	const GATEWAY_PN_ID = 'alma_pay_now';
+
+
+	const GATEWAY_ID = 'alma';
 
 	const ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE = 'alma-payment-plan-table-%s-installments';
 	const ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS   = 'js-alma-payment-plan-table';

@@ -10,7 +10,6 @@
 namespace Alma\Woocommerce;
 
 use Alma\API\Entities\FeePlan;
-use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -60,7 +59,7 @@ class Alma_Payment_Upon_Trigger {
 	public function woocommerce_order_status_changed( $order_id, $previous_status, $next_status ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 
 		$order = wc_get_order( $order_id );
-		if ( Alma_Constants_Helper::GATEWAY_ID !== $order->get_payment_method() ) {
+		if ( 'alma' !== $order->get_payment_method() ) {
 			return;
 		}
 
