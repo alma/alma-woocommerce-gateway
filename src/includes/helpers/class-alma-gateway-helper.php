@@ -116,6 +116,10 @@ class Alma_Gateway_Helper {
 			return $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PAY_LATER );
 		}
 
+		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_NOW === $id ) {
+			return $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PAY_NOW );
+		}
+
 		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR === $id ) {
 			return $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PNX_PLUS_4 );
 		}
@@ -137,6 +141,10 @@ class Alma_Gateway_Helper {
 
 		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_LATER === $id ) {
 			return $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PAY_LATER );
+		}
+
+		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_NOW === $id ) {
+			return $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PAY_NOW );
 		}
 
 		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR === $id ) {

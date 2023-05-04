@@ -134,6 +134,7 @@ class Alma_Plan_Builder {
 	 */
 	public function order_plans( $eligible_plans = array() ) {
 		$eligible_plans_by_type = array(
+			Alma_Constants_Helper::ALMA_GATEWAY_PAY_NOW   => array(),
 			Alma_Constants_Helper::GATEWAY_ID             => array(),
 			Alma_Constants_Helper::ALMA_GATEWAY_PAY_LATER => array(),
 			Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR => array(),

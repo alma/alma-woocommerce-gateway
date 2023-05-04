@@ -117,7 +117,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 	public function __construct() {
 		$this->id                 = Alma_Constants_Helper::GATEWAY_ID;
 		$this->has_fields         = true;
-		$this->method_title       = __( 'Payment in instalments and deferred with Alma - 2x 3x 4x, D+15 or D+30', 'alma-gateway-for-woocommerce' );
+		$this->method_title       = __( 'Payment in instalments and deferred with Alma - 1x 2x 3x 4x, D+15 or D+30', 'alma-gateway-for-woocommerce' );
 		$this->method_description = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.', 'alma-gateway-for-woocommerce' );
 		$this->logger             = new Alma_Logger();
 		$this->alma_settings      = new Alma_Settings();

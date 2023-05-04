@@ -66,6 +66,9 @@ To build extension for production run `./bin/build.sh`
 
 == Changelog ==
 
+= 4.3.0 =
+* feat: Implement Pay Now
+
 = 4.2.0 =
 * feat: encryption api keys in DB
 * feat: Share of checkout

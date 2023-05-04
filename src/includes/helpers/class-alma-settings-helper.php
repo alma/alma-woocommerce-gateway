@@ -39,6 +39,8 @@ class Alma_Settings_Helper {
 			'enabled_general_3_0_0'                      => 'yes',
 			'title_payment_method_pnx'                   => self::default_pnx_title(),
 			'description_payment_method_pnx'             => self::default_payment_description(),
+			'title_payment_method_pay_now'               => self::default_pay_now_title(),
+			'description_payment_method_pay_now'         => self::default_payment_description(),
 			'title_payment_method_pay_later'             => self::default_pay_later_title(),
 			'description_payment_method_pay_later'       => self::default_payment_description(),
 			'title_payment_method_pnx_plus_4'            => self::default_pnx_plus_4_title(),
@@ -69,6 +71,18 @@ class Alma_Settings_Helper {
 			return 'Pay in installments with Alma';
 		}
 		return __( 'Pay in installments with Alma', 'alma-gateway-for-woocommerce' );
+	}
+
+	/**
+	 * Gets the default title for pnx payment method.
+	 *
+	 * @return string
+	 */
+	public static function default_pay_now_title() {
+		if ( Alma_Internationalization_Helper::is_site_multilingual() ) {
+			return 'Pay Now with Alma';
+		}
+		return __( 'Pay Now with Alma', 'alma-gateway-for-woocommerce' );
 	}
 
 	/**

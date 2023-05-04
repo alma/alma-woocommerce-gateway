@@ -1,6 +1,10 @@
 Changelog
 =========
 
+v4.3.0
+------
+* feat: Implement Pay Now
+
 v4.2.0
 ------
 * feat: encryption api keys in DB
