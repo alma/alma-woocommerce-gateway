@@ -66,8 +66,9 @@ use Alma\Woocommerce\Models\Alma_Cart;
 					);
 				} else {
 					$alma_justify_fees = 'right';
-					if ( 'yes' === $alma_settings->payment_upon_trigger_enabled && $alma_eligibility->getInstallmentsCount() <= 4 ) {
-						echo '<span>' . esc_html( $this->get_plan_upon_trigger_display_text( $alma_plan_index ) ) . '</span>';
+					if ( 'yes' === $upon_trigger_enabled && $alma_eligibility->getInstallmentsCount() <= 4 ) {
+						 /* translators: %s:  term */
+						echo '<span>' . esc_html( sprintf( _n( 'In %s month', 'In %s months', $alma_plan_index - 1, 'alma-gateway-for-woocommerce' ), $alma_plan_index - 1 ) ) . '</span>';
 					} else {
 						echo '<span>' . esc_html( date_i18n( get_option( 'date_format' ), $alma_step['due_date'] ) ) . '</span>';
 					}
