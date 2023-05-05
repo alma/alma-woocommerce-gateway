@@ -101,11 +101,12 @@ class Alma_Plan_Builder {
 				$templates->get_template(
 					'alma-checkout-plan.php',
 					array(
-						'plan_key'   => $plan_key,
-						'is_checked' => $plan_key === $default_plan,
-						'plan_class' => '.' . Alma_Constants_Helper::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS,
-						'plan_id'    => '#' . sprintf( Alma_Constants_Helper::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $plan_key ),
-						'logo_url'   => Alma_Assets_Helper::get_asset_url( "images/${plan_key}_logo.svg" ),
+						'plan_key'             => $plan_key,
+						'is_checked'           => $plan_key === $default_plan,
+						'plan_class'           => '.' . Alma_Constants_Helper::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS,
+						'plan_id'              => '#' . sprintf( Alma_Constants_Helper::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $plan_key ),
+						'logo_url'             => Alma_Assets_Helper::get_asset_url( "images/${plan_key}_logo.svg" ),
+						'upon_trigger_enabled' => $this->alma_settings->payment_upon_trigger_enabled,
 					),
 					'partials'
 				);
@@ -151,21 +152,5 @@ class Alma_Plan_Builder {
 		}
 
 		return $result;
-	}
-
-	/**
-	 * Renders pnx plan with payment upon trigger enabled.
-	 *
-	 * @param integer $plan_index A counter.
-	 *
-	 * @return string
-	 */
-	protected function get_plan_upon_trigger_display_text( $plan_index ) {
-		if ( 1 === $plan_index ) {
-			return $this->alma_settings->get_display_text();
-		}
-
-		// translators: 'In' refers to a number of months, like in 'In one month' or 'In three months'.
-		return sprintf( _n( 'In %s month', 'In %s months', $plan_index - 1, 'alma-gateway-for-woocommerce' ), $plan_index - 1 ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralDomain
 	}
 }
