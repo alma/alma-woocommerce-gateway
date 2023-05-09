@@ -17,7 +17,7 @@
  * @package Alma_Gateway_For_Woocommerce
  *
  * WC requires at least: 2.6
- * WC tested up to: 7.6
+ * WC tested up to: 7.7
  *
  * Alma Payment Gateway for WooCommerce is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

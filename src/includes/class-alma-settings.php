@@ -259,6 +259,8 @@ class Alma_Settings {
 			}
 		}
 
+		uksort( $plans, array( $this->fee_plan_helper, 'alma_usort_plans_keys' ) );
+
 		return $plans;
 	}
 
