@@ -33,7 +33,9 @@ use Alma\Woocommerce\Models\Alma_Cart;
 		$alma_plan_index   = 1;
 		$alma_payment_plan = $alma_eligibility->paymentPlan; // phpcs:ignore WordPress.NamingConventions.ValidVariableName
 
-		$alma_plans_count = count( $alma_payment_plan );
+		if ( is_array( $alma_payment_plan ) ) {
+			$alma_plans_count = count( $alma_payment_plan );
+		}
 		foreach ( $alma_payment_plan as $alma_step ) {
 			$alma_display_customer_fee = 1 === $alma_plan_index && $alma_eligibility->getInstallmentsCount() <= 4 && $alma_step['customer_fee'] > 0;
 			?>
