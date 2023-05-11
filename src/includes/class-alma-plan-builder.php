@@ -92,6 +92,7 @@ class Alma_Plan_Builder {
 			$templates->get_template(
 				'alma-checkout-plans.php',
 				array(
+					'id'          => $type,
 					'title'       => $this->gateway_helper->get_alma_gateway_title( $type ),
 					'description' => $this->gateway_helper->get_alma_gateway_description( $type ),
 				)
