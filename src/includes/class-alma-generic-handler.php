@@ -137,7 +137,7 @@ class Alma_Generic_Handler {
 
 			<?php
 			if ( $has_excluded_products ) {
-				$logo_url      = Alma_Assets_Helper::get_asset_url( Alma_Constants_Helper::ALMA_LOGO_PATH );
+				$logo_url      = Alma_Assets_Helper::get_public_url( Alma_Constants_Helper::ALMA_LOGO_PATH );
 				$exclusion_msg = $this->get_cart_not_eligible_message_gift_cards();
 				?>
 				<img src="<?php echo esc_attr( $logo_url ); ?>" alt="Alma" style="width: auto !important; height: 25px !important; border: none !important; vertical-align: middle; display: inline-block;">

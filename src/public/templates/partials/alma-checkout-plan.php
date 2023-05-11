@@ -25,12 +25,32 @@
 	style="margin-right: 10px; display: inline;"
 	for="<?php echo esc_attr( \Alma\Woocommerce\Helpers\Alma_Constants_Helper::GATEWAY_ID ); ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
 >
-	<img src="<?php echo esc_attr( $logo_url ); ?>"
-		style="float: unset !important; width: auto !important; height: 30px !important;  border: none !important; vertical-align: middle; display: inline-block;"
-		alt="
+
+	<?php
+	if ( \Alma\Woocommerce\Helpers\Alma_Constants_Helper::ALMA_GATEWAY_PAY_NOW == $id ) {
+		?>
+		<img src="<?php echo esc_attr( $logo_url ); ?>"
+			 style="float: unset !important; width: auto !important; height: 30px !important;  border: none !important; vertical-align: middle; display: inline-block;"
+			 alt="
 					<?php
 					// translators: %s: plan_key alt image.
 					echo esc_html( sprintf( __( '%s installments', 'alma-gateway-for-woocommerce' ), $plan_key ) );
 					?>
-					">
+					"/>
+		<?php
+		echo esc_html( $logo_text );
+	} else {
+		?>
+			<img src="<?php echo esc_attr( $logo_url ); ?>"
+				 style="float: unset !important; width: auto !important; height: 30px !important;  border: none !important; vertical-align: middle; display: inline-block;"
+				 alt="
+					<?php
+					// translators: %s: plan_key alt image.
+					echo esc_html( sprintf( __( '%s installments', 'alma-gateway-for-woocommerce' ), $plan_key ) );
+					?>
+					"/>
+		<?php
+
+	}
+	?>
 </label>

@@ -128,6 +128,20 @@ class Alma_Gateway_Helper {
 	}
 
 	/**
+	 * Get the title to replace the icon
+	 *
+	 * @param string $id The alma gateway type id.
+	 * @return string
+	 */
+	public function get_alma_gateway_logo_text( $id ) {
+		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_NOW === $id ) {
+			return __( 'Pay Now', 'alma-gateway-for-woocommerce' );
+		}
+
+		return 'null';
+	}
+
+	/**
 	 * Get the title of the Alma Gateway.
 	 *
 	 * @param string $id The alma gateway type id.
