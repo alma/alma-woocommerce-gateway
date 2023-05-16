@@ -92,13 +92,21 @@ class Alma_Refund_Helper {
 
 		// This text is not translated, as it is just made to be sent to Alma API.
 		$comment = 'Refund made by order status changed to "refunded".';
+
 		if ( $refund_id ) {
 			$refund  = new \WC_Order_Refund( $refund_id );
 			$comment = $refund->get_reason();
 		}
-		try {
 
+		try {
 			$this->alma_settings->full_refund( $order->get_transaction_id(), $merchant_reference, $this->format_refund_comment( $comment ) );
+
+			update_post_meta( $order->get_id(), Alma_Constants_Helper::FLAG_ORDER_FULLY_REFUNDED, '1' );
+
+			/* translators: %s is a username. */
+			$order_note = sprintf( __( 'Order fully refunded by %s.', 'alma-gateway-for-woocommerce' ), wp_get_current_user()->display_name );
+			$this->add_success_note( $order, $order_note );
+
 		} catch ( \Exception $e ) {
 			/* translators: %s is an error message. */
 			$this->add_error_note( $order, sprintf( __( 'Alma full refund error : %s.', 'alma-gateway-for-woocommerce' ), $e->getMessage() ) );

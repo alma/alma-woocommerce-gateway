@@ -196,7 +196,7 @@ class Alma_Check_Legal_Helper {
 	}
 
 	/**
-	 * Get soc error message.
+	 * Get soc success message.
 	 *
 	 * @return string
 	 */
