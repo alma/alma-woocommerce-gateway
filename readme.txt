@@ -3,7 +3,7 @@
 Contributors: almapayments, olance, francois-gomis, clairealma
 Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell, woo commerce, alma, monthly payments, split payments
 Requires at least: 4.4
-Tested up to: 6.2
+Tested up to: 6.2.1
 Requires PHP: 5.6
 Stable tag: 4.2.0
 License: GPLv3
