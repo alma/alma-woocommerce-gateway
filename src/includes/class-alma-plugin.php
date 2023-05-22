@@ -272,6 +272,23 @@ class Alma_Plugin {
 			wp_enqueue_script( 'alma-checkout-page', $alma_checkout, array( 'jquery', 'jquery-ui-core', 'jquery-ui-accordion' ), ALMA_VERSION, true );
 			wp_enqueue_style( 'alma-checkout-page', $alma_checkout_css, array(), ALMA_VERSION );
 
+			$settings_db = get_option( Alma_Settings::OPTIONS_KEY );
+			if ( 'yes' == $settings_db['inpage_enabled'] ) {
+				$alma_checkout_inpage = Alma_Assets_Helper::get_asset_url( 'js/alma-checkout.js' );
+
+				wp_enqueue_script( 'alma-inpage', 'https://cdn.jsdelivr.net/npm/@alma/in-page@1.x/dist/index.umd.js', array(), ALMA_VERSION, true );
+				wp_enqueue_script( 'alma-checkout-inpage', $alma_checkout_inpage, array(), ALMA_VERSION, true );
+
+				wp_localize_script(
+					'alma-checkout-inpage',
+					'ajax_object',
+					array( 'ajax_url' => admin_url( 'admin-ajax.php' ) )
+				);
+
+				$inpage_helper = new Alma_Inpage_Helper();
+
+				add_action( 'wp_ajax_inpage_checkout_alma', array( $inpage_helper, 'inpage_payload_alma' ) );
+			}
 		}
 	}
 

@@ -77,6 +77,7 @@ class Alma_Form_Helper {
 		if ( ! $show_alma_fee_plans ) {
 			return array_merge(
 				$this->init_enabled_field( $default_settings ),
+				$this->init_inpage_enabled_field( $default_settings ),
 				$this->init_api_key_fields( __( '→ Start by filling in your API keys', 'alma-gateway-for-woocommerce' ), $default_settings ),
 				$this->init_debug_fields( $default_settings )
 			);
@@ -84,6 +85,7 @@ class Alma_Form_Helper {
 
 		return array_merge(
 			$this->init_enabled_field( $default_settings ),
+			$this->init_inpage_enabled_field( $default_settings ),
 			$this->init_fee_plans_fields( $default_settings ),
 			$this->init_general_settings_fields( $default_settings ),
 			$this->init_payment_upon_trigger_fields( $default_settings ),
@@ -108,6 +110,24 @@ class Alma_Form_Helper {
 				'type'    => 'checkbox',
 				'label'   => __( 'Enable monthly payments with Alma', 'alma-gateway-for-woocommerce' ),
 				'default' => $default_settings['enabled'],
+			),
+		);
+	}
+
+	/**
+	 * Inits in page enabled Admin field.
+	 *
+	 * @param array $default_settings as default settings.
+	 *
+	 * @return array[]
+	 */
+	public function init_inpage_enabled_field( $default_settings ) {
+		return array(
+			'inpage_enabled' => array(
+				'title'   => __( 'Enable/Disable In Page', 'alma-gateway-for-woocommerce' ),
+				'type'    => 'checkbox',
+				'label'   => __( 'Enable In Page', 'alma-gateway-for-woocommerce' ),
+				'default' => $default_settings['inpage_enabled'],
 			),
 		);
 	}

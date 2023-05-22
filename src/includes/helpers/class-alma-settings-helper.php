@@ -58,6 +58,7 @@ class Alma_Settings_Helper {
 			'share_of_checkout_enabled'                  => 'no',
 			'debug'                                      => 'yes',
 			'keys_validity'                              => 'no',
+			'inpage_enabled'                             => 'no',
 		);
 	}
 

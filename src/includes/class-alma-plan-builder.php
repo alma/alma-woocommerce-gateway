@@ -117,6 +117,9 @@ class Alma_Plan_Builder {
 			echo '</div>';
 		}
 		echo '</div>';
+		if ( 'yes' == $this->alma_settings->inpage_enabled ) {
+			echo '<div id="alma-inpage"></div>';
+		}
 
 		$templates->get_template(
 			'alma-checkout-plan-details.php',
