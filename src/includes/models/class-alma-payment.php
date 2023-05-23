@@ -212,7 +212,7 @@ class Alma_Payment {
 		// @var \WC_Order_Item_Product $product_item The product.
 		$product = $item->get_product();
 
-		$categories = explode( ',', wp_strip_all_tags( wc_get_product_category_list( $product->get_id() ) ) );
+		$categories = explode( ',', wp_strip_all_tags( wc_get_product_category_list( $product->get_id(), ',' ) ) );
 
 		return array(
 			'sku'               => $product->get_sku(),

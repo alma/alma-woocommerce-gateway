@@ -705,6 +705,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 		} elseif (
 			isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
 			&& '1' == $post_data['woocommerce_alma_share_of_checkout_enabled']
+			&& 'live' == $post_data['woocommerce_alma_environment']
 		) {
 			$this->alma_settings->settings['share_of_checkout_enabled_date'] = gmdate( 'Y-m-d' );
 
