@@ -77,6 +77,7 @@ class Alma_Checkout_Helper {
 				wp_json_encode( $_POST )
 			)
 		);
+
 		return null;
 	}
 

@@ -179,13 +179,13 @@ class Alma_Payment_Upon_Trigger {
 	/**
 	 * Tells if a fee plan definition (and not a FeePlan object) should do "payment upon trigger" depending on back-office configuration.
 	 *
-	 * @param array $fee_plan_definition A fee plan definition.
+	 * @param FeePlan $fee_plan A fee plan definition.
 	 * @return bool
 	 */
-	public function does_payment_upon_trigger_apply_for_this_fee_plan( $fee_plan_definition ) {
+	public function does_payment_upon_trigger_apply_for_this_fee_plan( $fee_plan ) {
 		return 'yes' === $this->alma_settings->payment_upon_trigger_enabled &&
-			in_array( $fee_plan_definition['installments_count'], array( 2, 3, 4 ), true ) &&
-			0 === $fee_plan_definition['deferred_days'] &&
-			0 === $fee_plan_definition['deferred_months'];
+			in_array( $fee_plan->getInstallmentsCount(), array( 2, 3, 4 ), true ) &&
+			0 === $fee_plan->getDeferredDays() &&
+			0 === $fee_plan->getDeferredMonths();
 	}
 }

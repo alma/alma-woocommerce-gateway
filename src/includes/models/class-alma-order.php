@@ -22,25 +22,26 @@ use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
 class Alma_Order {
 
 	/**
-	 * Legacy
-	 *
-	 * @var bool
-	 */
-	private $legacy;
-
-	/**
 	 * Order
 	 *
 	 * @var \WC_Order|\WC_Order_Refund
 	 */
-	private $order;
+	protected $order;
 
 	/**
 	 * Order ID
 	 *
 	 * @var int
 	 */
-	private $order_id;
+	protected $order_id;
+
+	/**
+	 * Helper global.
+	 *
+	 * @var Alma_Tools_Helper
+	 */
+	protected $tool_helper;
+
 
 	/**
 	 * Constructor.
@@ -51,10 +52,9 @@ class Alma_Order {
 	 * @throws Alma_No_Order_Exception No order.
 	 */
 	public function __construct( $order_id, $order_key = null ) {
-		$this->legacy = version_compare( wc()->version, '3.0.0', '<' );
-
-		$this->order_id = $order_id;
-		$this->order    = wc_get_order( $this->order_id );
+		$this->tool_helper = new Alma_Tools_Helper();
+		$this->order_id    = $order_id;
+		$this->order       = wc_get_order( $this->order_id );
 
 		if ( ! $this->order && $order_key ) {
 			// We have an invalid $order_id, probably because invoice_prefix has changed.
@@ -75,11 +75,7 @@ class Alma_Order {
 	 * @return string
 	 */
 	public function get_order_key() {
-		if ( $this->legacy ) {
-			return $this->order->order_key;
-		} else {
-			return $this->order->get_order_key();
-		}
+		return $this->order->get_order_key();
 	}
 
 	/**
@@ -108,8 +104,8 @@ class Alma_Order {
 	 *
 	 * @return int
 	 */
-	public function get_total() {
-		return Alma_Tools_Helper::alma_price_to_cents( $this->order->get_total() );
+	public function get_total_in_cent() {
+		return $this->tool_helper->alma_price_to_cents( $this->order->get_total() );
 	}
 
 	/**
@@ -127,11 +123,7 @@ class Alma_Order {
 	 * @return bool
 	 */
 	public function has_billing_address() {
-		if ( $this->legacy ) {
-			return $this->order->billing_address_1 || $this->order->billing_address_2;
-		} else {
-			return $this->order->get_billing_address_1() || $this->order->get_billing_address_2();
-		}
+		return $this->order->get_billing_address_1() || $this->order->get_billing_address_2();
 	}
 
 	/**
@@ -140,11 +132,7 @@ class Alma_Order {
 	 * @return bool
 	 */
 	public function has_shipping_address() {
-		if ( $this->legacy ) {
-			return $this->order->shipping_address_1 || $this->order->shipping_address_2;
-		} else {
-			return $this->order->get_shipping_address_1() || $this->order->get_shipping_address_2();
-		}
+		return $this->order->get_shipping_address_1() || $this->order->get_shipping_address_2();
 	}
 
 	/**
@@ -153,7 +141,7 @@ class Alma_Order {
 	 * @return bool
 	 */
 	public function is_business() {
-		if ( $this->legacy && $this->order->billing_company || ! $this->legacy && $this->order->get_billing_company() ) {
+		if ( $this->order->get_billing_company() ) {
 			return true;
 		}
 		return false;
@@ -174,36 +162,19 @@ class Alma_Order {
 	 * @return array
 	 */
 	public function get_billing_address() {
-		if ( $this->legacy ) {
-			return array(
-				'first_name'         => $this->order->billing_first_name,
-				'last_name'          => $this->order->billing_last_name,
-				'company'            => $this->order->billing_company,
-				'line1'              => $this->order->billing_address_1,
-				'line2'              => $this->order->billing_address_2,
-				'postal_code'        => $this->order->billing_postcode,
-				'city'               => $this->order->billing_city,
-				'country'            => $this->order->billing_country,
-				'county_sublocality' => null,
-				'state_province'     => $this->order->billing_state,
-				'email'              => $this->order->billing_email,
-				'phone'              => $this->order->billing_phone,
-			);
-		}
-
 		return array(
-			'first_name'         => $this->order->get_billing_first_name(),
-			'last_name'          => $this->order->get_billing_last_name(),
-			'company'            => $this->order->get_billing_company(),
-			'line1'              => $this->order->get_billing_address_1(),
-			'line2'              => $this->order->get_billing_address_2(),
-			'postal_code'        => $this->order->get_billing_postcode(),
-			'city'               => $this->order->get_billing_city(),
-			'country'            => $this->order->get_billing_country(),
-			'county_sublocality' => null,
-			'state_province'     => $this->order->get_billing_state(),
-			'email'              => $this->order->get_billing_email(),
-			'phone'              => $this->order->get_billing_phone(),
+			'first_name'          => $this->order->get_billing_first_name(),
+			'last_name'           => $this->order->get_billing_last_name(),
+			'company'             => $this->order->get_billing_company(),
+			'line1'               => $this->order->get_billing_address_1(),
+			'line2'               => $this->order->get_billing_address_2(),
+			'postal_code'         => $this->order->get_billing_postcode(),
+			'city'                => $this->order->get_billing_city(),
+			'country'             => $this->order->get_billing_country(),
+			'country_sublocality' => null,
+			'state_province'      => $this->order->get_billing_state(),
+			'email'               => $this->order->get_billing_email(),
+			'phone'               => $this->order->get_billing_phone(),
 		);
 	}
 
@@ -213,32 +184,17 @@ class Alma_Order {
 	 * @return array
 	 */
 	public function get_shipping_address() {
-		if ( $this->legacy ) {
-			return array(
-				'first_name'         => $this->order->shipping_first_name,
-				'last_name'          => $this->order->shipping_last_name,
-				'company'            => $this->order->shipping_company,
-				'line1'              => $this->order->shipping_address_1,
-				'line2'              => $this->order->shipping_address_2,
-				'postal_code'        => $this->order->shipping_postcode,
-				'city'               => $this->order->shipping_city,
-				'county_sublocality' => null,
-				'state_province'     => $this->order->shipping_state,
-				'country'            => $this->order->shipping_country,
-			);
-		}
-
 		return array(
-			'first_name'         => $this->order->get_shipping_first_name(),
-			'last_name'          => $this->order->get_shipping_last_name(),
-			'company'            => $this->order->get_shipping_company(),
-			'line1'              => $this->order->get_shipping_address_1(),
-			'line2'              => $this->order->get_shipping_address_2(),
-			'postal_code'        => $this->order->get_shipping_postcode(),
-			'city'               => $this->order->get_shipping_city(),
-			'county_sublocality' => null,
-			'state_province'     => $this->order->get_shipping_state(),
-			'country'            => $this->order->get_shipping_country(),
+			'first_name'          => $this->order->get_shipping_first_name(),
+			'last_name'           => $this->order->get_shipping_last_name(),
+			'company'             => $this->order->get_shipping_company(),
+			'line1'               => $this->order->get_shipping_address_1(),
+			'line2'               => $this->order->get_shipping_address_2(),
+			'postal_code'         => $this->order->get_shipping_postcode(),
+			'city'                => $this->order->get_shipping_city(),
+			'country_sublocality' => null,
+			'state_province'      => $this->order->get_shipping_state(),
+			'country'             => $this->order->get_shipping_country(),
 		);
 	}
 
@@ -259,15 +215,11 @@ class Alma_Order {
 	public function get_merchant_url() {
 		$admin_path = 'post.php?post=' . $this->get_id() . '&action=edit';
 
-		if ( version_compare( wc()->version, '2.6.0', '<' ) ) {
-			return '';
-		} elseif ( version_compare( wc()->version, '3.0.0', '<' ) ) {
-			return admin_url( $admin_path );
-		} elseif ( version_compare( wc()->version, '3.3.0', '<' ) ) {
+		if ( version_compare( wc()->version, '3.3.0', '<' ) ) {
 			return get_admin_url( null, $admin_path );
-		} else {
-			return $this->order->get_edit_order_url();
 		}
+
+		return $this->order->get_edit_order_url();
 	}
 
 	/**

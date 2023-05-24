@@ -5,6 +5,7 @@
  */
 
 (function ($) {
+
 	$( 'body' ).on(
 		'updated_checkout',
 		function() {
@@ -18,8 +19,42 @@
 		'change',
 		'input[name="alma_fee_plan"]',
 		function() {
+			var icons = {
+				header: "fas fa-angle-right",
+				activeHeader: "fas fa-angle-down"
+			};
+			jQuery( "#alma_plans_accordion" ).accordion(
+				{
+					collapsible: true,
+					header: "h5",
+					heightStyle: "content",
+					icons: icons
+				}
+			);
+
 			if ( $( this ).prop( 'checked' ) ) {
 				$( this ).closest( 'li.wc_payment_method' ).attr( 'data-already-checked', $( this ).attr( 'id' ) );
+				jQuery( "#alma-checkout-plan-details" ).insertAfter( $( this ).parent()[0].lastElementChild )
+
+			}
+		}
+	);
+
+	$( 'body' ).on(
+		'updated_checkout',
+		function () {
+			var radios = $( '.ui-accordion-header' ).next( "div" ).find( "input:visible" );
+			radios.first().prop( "checked", true ).trigger( 'change' );
+		}
+	);
+
+	$( 'body' ).on(
+		'click',
+		'.ui-accordion-header',
+		function () {
+			if ($( this ).attr( "aria-selected" ) === "true") {
+				var radios = $( this ).next( "div" ).find( "input:visible" );
+				radios.first().prop( "checked", true ).trigger( 'change' );
 			}
 		}
 	);

@@ -56,7 +56,7 @@ class Alma_Tools_Helper {
 	 *
 	 * @return integer
 	 */
-	public static function alma_price_to_cents( $price ) {
+	public function alma_price_to_cents( $price ) {
 		return (int) ( round( $price * 100 ) );
 	}
 
@@ -207,7 +207,7 @@ class Alma_Tools_Helper {
 	 *
 	 * @return string
 	 */
-	public static function url_for_webhook( $webhook ) {
+	public function url_for_webhook( $webhook ) {
 		return wc()->api_request_url( $webhook );
 	}
 
@@ -241,4 +241,5 @@ class Alma_Tools_Helper {
 
 		return true;
 	}
+
 }

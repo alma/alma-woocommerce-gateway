@@ -241,3 +241,21 @@ if(collapsible.length) {
         }
     });
 }
+
+add_button_show_pwd('woocommerce_alma_live_api_key');
+add_button_show_pwd('woocommerce_alma_test_api_key');
+
+function add_button_show_pwd(button_name) {
+    var button = jQuery('#' + button_name );
+    button.after('<button type="button" class="button button-secondary wp-hide-pw hide-if-no-js" data-toggle="0" aria-label="Show password" onclick="toggle_pwd_field(\''+ button_name + '\')"><span class="dashicons dashicons-visibility" aria-hidden="true"></span></button>')
+
+}
+function toggle_pwd_field(field) {
+    var pass_id = jQuery('input[name="'+field+'"]').attr("id");
+    var x = document.getElementById(pass_id);
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}

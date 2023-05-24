@@ -1,11 +1,11 @@
 === Alma - Pay in installments or later for WooCommerce ===
 
-Contributors: almapayments, olance, syjust, clairealma
+Contributors: almapayments, olance, francois-gomis, clairealma
 Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell, woo commerce, alma, monthly payments, split payments
 Requires at least: 4.4
-Tested up to: 6.2
+Tested up to: 6.2.1
 Requires PHP: 5.6
-Stable tag: 4.1.2
+Stable tag: 4.2.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -65,6 +65,11 @@ To edit the translations, use [Poedit](https://poedit.net/)
 To build extension for production run `./bin/build.sh`
 
 == Changelog ==
+
+= 4.2.0 =
+* feat: encryption api keys in DB
+* feat: Share of checkout
+* feat: update translations
 
 = 4.1.2 =
 * fix: nonce error log issue

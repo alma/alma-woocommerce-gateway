@@ -1,12 +1,19 @@
 Changelog
 =========
 
+v4.2.0
+------
+* feat: encryption api keys in DB
+* feat: Share of checkout
+* feat: update translations
+
 v4.1.2
 ------
 
 * fix: nonce error log issue
 * feat: Update widget
 * feat: compatibility with woocommerce 7.6
+
 
 v4.1.1
 ------

@@ -1,6 +1,6 @@
 <?php
 /**
- * Alma_Settings_Helper.
+ * Alma_Settings.
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes
@@ -20,6 +20,10 @@ use Alma\API\Entities\FeePlan;
 use Alma\API\Entities\Payment;
 use Alma\API\ParamsError;
 use Alma\API\RequestError;
+use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Accept_Exception;
+use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Deny_Exception;
+use Alma\Woocommerce\Exceptions\Alma_Api_Soc_Last_Update_Dates_Exception;
+use Alma\Woocommerce\Helpers\Alma_Encryptor_Helper;
 use Alma\Woocommerce\Helpers\Alma_Settings_Helper as Alma_Helper_Settings;
 use Alma\Woocommerce\Exceptions\Alma_Plans_Definition_Exception;
 use Alma\Woocommerce\Helpers\Alma_General_Helper;
@@ -37,6 +41,7 @@ use Alma\Woocommerce\Exceptions\Alma_Wrong_Credentials_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Api_Plans_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Api_Merchants_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Activation_Exception;
+use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Exception;
 
 /**
  * Handles settings retrieval from the settings API.
@@ -51,6 +56,7 @@ use Alma\Woocommerce\Exceptions\Alma_Activation_Exception;
  * @property string display_product_eligibility Wp-bool-eq (yes or no)
  * @property string display_cart_eligibility Wp-bool-eq (yes or no)
  * @property string environment Live or test
+ * @property bool keys_validity Flag to indicate id the current keys are working
  * @property string selected_fee_plan Admin dashboard fee_plan in edition mode.
  * @property string test_merchant_id Alma TEST merchant ID
  * @property string live_merchant_id Alma LIVE merchant ID
@@ -58,6 +64,9 @@ use Alma\Woocommerce\Exceptions\Alma_Activation_Exception;
  * @property string variable_product_sale_price_query_selector Css query selector for variable discounted products
  * @property string variable_product_check_variations_event JS event for product variation change
  * @property array excluded_products_list Wp Categories excluded slug's list
+ * @property string share_of_checkout_enabled Bool for share of checkout acceptance (yes or no)
+ * @property string share_of_checkout_enabled_date String Date when the marchand did accept the share of checkout
+ * @property string share_of_checkout_last_sharing_date String Date when we sent the data to Alma
  */
 class Alma_Settings {
 
@@ -88,7 +97,7 @@ class Alma_Settings {
 	/**
 	 * The api client.
 	 *
-	 * @var Alma\API\Client
+	 * @var Client
 	 */
 	public $alma_client;
 
@@ -99,11 +108,20 @@ class Alma_Settings {
 	 * @var Eligibility|Eligibility[]|array
 	 */
 	protected $eligibilities;
+
+	/**
+	 * The encryptor.
+	 *
+	 * @var Alma_Encryptor_Helper
+	 */
+	public $encryptor_helper;
+
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->logger = new Alma_Logger();
+		$this->logger           = new Alma_Logger();
+		$this->encryptor_helper = new Alma_Encryptor_Helper();
 
 		$this->load_settings();
 	}
@@ -115,7 +133,7 @@ class Alma_Settings {
 	 * @return void
 	 */
 	public function load_settings() {
-		$this->settings = self::get_settings();
+		$this->settings = $this->get_settings();
 
 		// Turn these settings into variables we can use.
 		foreach ( $this->settings as $setting_key => $value ) {
@@ -139,7 +157,7 @@ class Alma_Settings {
 	 *
 	 * @return array
 	 */
-	public static function get_settings() {
+	public function get_settings() {
 		$settings = (array) get_option( self::OPTIONS_KEY, array() );
 
 		if ( ! empty( $settings['allowed_fee_plans'] ) && ! is_array( $settings['allowed_fee_plans'] ) ) {
@@ -170,6 +188,20 @@ class Alma_Settings {
 			if ( $plan_definition['deferred_days'] >= 1 || $plan_definition['deferred_months'] >= 1 ) {
 				return true;
 			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Is the plan a pnx plus 4 ?
+	 *
+	 * @param FeePlan $fee_plan The fee plan.
+	 * @return bool
+	 */
+	public function is_pnx_plus_4( $fee_plan ) {
+		if ( $fee_plan->getInstallmentsCount() > 4 ) {
+			return true;
 		}
 
 		return false;
@@ -400,8 +432,8 @@ class Alma_Settings {
 	 *
 	 * @return string
 	 */
-	protected function get_live_api_key() {
-		return $this->live_api_key;
+	public function get_live_api_key() {
+		return $this->encryptor_helper->decrypt( $this->live_api_key );
 	}
 
 	/**
@@ -409,8 +441,8 @@ class Alma_Settings {
 	 *
 	 * @return string
 	 */
-	protected function get_test_api_key() {
-		return $this->test_api_key;
+	public function get_test_api_key() {
+		return $this->encryptor_helper->decrypt( $this->test_api_key );
 	}
 
 	/**
@@ -429,25 +461,55 @@ class Alma_Settings {
 	/**
 	 * Call the payment api and create.
 	 *
-	 * @param string $order_id The order id.
-	 * @param array  $fee_plan_definition The plan definition.
+	 * @param string  $order_id The order id.
+	 * @param  FeePlan $fee_plan The fee plan.
 	 *
 	 * @return Payment
 	 * @throws Alma_Api_Create_Payments_Exception Create payment exception.
 	 */
-	public function create_payments( $order_id, $fee_plan_definition ) {
+	public function create_payments( $order_id, $fee_plan ) {
 		try {
 			$model_payment = new Alma_Payment();
+			$payment_type  = $this->get_payment_method( $fee_plan );
 
-			$payload = $model_payment->get_payment_payload_from_order( $order_id, $fee_plan_definition );
-
-			$this->get_alma_client();
+			$payload = $model_payment->get_payment_payload_from_order( $order_id, $fee_plan, $payment_type );
 
 			return $this->alma_client->payments->create( $payload );
 		} catch ( \Exception $e ) {
 			$this->logger->error( sprintf( 'Api create_payments, order id "%s" , Api message "%s"', $order_id, $e->getMessage() ) );
-			throw new Alma_Api_Create_Payments_Exception( $order_id, $fee_plan_definition );
+			throw new Alma_Api_Create_Payments_Exception( $order_id, $fee_plan );
 		}
+	}
+
+	/**
+	 * Get the payment method fee plan title.
+	 *
+	 * @param FeePlan $fee_plan The fee plan.
+	 * @return string
+	 *
+	 * @throws Alma_Plans_Definition_Exception Exception.
+	 */
+	public function get_payment_method( $fee_plan ) {
+		if ( $fee_plan->isPnXOnly() ) {
+			// translators: %d: number of installments.
+			return sprintf( __( 'Selected payment method : %d installment with Alma', 'alma-gateway-for-woocommerce' ), $fee_plan->getInstallmentsCount() );
+		}
+
+		if ( $fee_plan->isPayLaterOnly() ) {
+			$deferred_months = $fee_plan->getDeferredMonths();
+			$deferred_days   = $fee_plan->getDeferredDays();
+
+			if ( $deferred_days ) {
+				// translators: %d: number of deferred days.
+				return sprintf( __( 'Selected payment method : D+%d deferred  with Alma', 'alma-gateway-for-woocommerce' ), $deferred_days );
+			}
+			if ( $deferred_months ) {
+				// translators: %d: number of deferred months.
+				return sprintf( __( 'Selected payment method : M+%d deferred with Alma', 'alma-gateway-for-woocommerce' ), $deferred_months );
+			}
+		}
+
+		throw new Alma_Plans_Definition_Exception();
 	}
 
 	/**
@@ -511,6 +573,79 @@ class Alma_Settings {
 			throw new Alma_Api_Fetch_Payments_Exception( $payment_id );
 		}
 	}
+
+	/**
+	 * Share the data for soc.
+	 *
+	 * @param array $data   The payload.
+	 *
+	 * @throws Alma_Api_Share_Of_Checkout_Exception Alma_Api_Share_Of_Checkout_Exception exception.
+	 */
+	public function send_soc_data( $data ) {
+		try {
+			$this->get_alma_client();
+
+			$this->alma_client->shareOfCheckout->share( $data );
+
+		} catch ( \Exception $e ) {
+			$this->logger->error( sprintf( 'Api : shareOfCheckout, data : "%s", Api message "%s"', wp_json_encode( $data ), $e->getMessage() ) );
+			throw new Alma_Api_Share_Of_Checkout_Exception( $data );
+		}
+	}
+
+	/**
+	 * Get the last soc date.
+	 *
+	 * @return array
+	 *
+	 * @throws Alma_Api_Soc_Last_Update_Dates_Exception The api exception.
+	 */
+	public function get_soc_last_updated_date() {
+		try {
+			$this->get_alma_client();
+
+			return $this->alma_client->shareOfCheckout->getLastUpdateDates(); // phpcs:ignore
+		} catch ( \Exception $e ) {
+			$this->logger->error( sprintf( 'Api : getLastUpdateDates shareOfCheckout, Api message "%s"', $e->getMessage() ) );
+			throw new Alma_Api_Soc_Last_Update_Dates_Exception();
+		}
+	}
+
+
+	/**
+	 * Sent the accept for the soc consent
+	 *
+	 * @throws Alma_Api_Share_Of_Checkout_Accept_Exception The exception.
+	 */
+	public function accept_soc_consent() {
+		try {
+			$this->get_alma_client();
+
+			$this->alma_client->shareOfCheckout->addConsent();
+
+		} catch ( \Exception $e ) {
+			$this->logger->error( sprintf( 'Api : accept share of shareOfCheckout, Api message "%s"', $e->getMessage() ) );
+			throw new Alma_Api_Share_Of_Checkout_Accept_Exception();
+		}
+	}
+
+	/**
+	 * Sent the deny for the consent for soc.
+	 *
+	 * @throws Alma_Api_Share_Of_Checkout_Deny_Exception The exception.
+	 */
+	public function deny_soc_consent() {
+		try {
+			$this->get_alma_client();
+
+			$this->alma_client->shareOfCheckout->removeConsent();
+
+		} catch ( \Exception $e ) {
+			$this->logger->error( sprintf( 'Api : deny share of shareOfCheckout, Api message "%s"', $e->getMessage() ) );
+			throw new Alma_Api_Share_Of_Checkout_Deny_Exception();
+		}
+	}
+
 
 	/**
 	 * Trigger the transaction.
@@ -629,6 +764,8 @@ class Alma_Settings {
 				$this->{$this->environment . '_merchant_id'} = $merchant->id;
 
 			} catch ( \Exception $e ) {
+				$this->__set( 'keys_validity', 'no' );
+				$this->save();
 
 				if ( $e->response && 401 === $e->response->responseCode ) {
 					throw new Alma_Wrong_Credentials_Exception( $this->get_environment() );
@@ -641,7 +778,7 @@ class Alma_Settings {
 					$e
 				);
 			}
-
+			$this->__set( 'keys_validity', 'yes' );
 			$this->save();
 
 			if ( ! $merchant->can_create_payments ) {
@@ -750,33 +887,6 @@ class Alma_Settings {
 	}
 
 	/**
-	 * Add the alma payment gateways if needed
-	 *
-	 * Fields "title" and "description" will then be overwritten by filters :
-	 * "woocommerce_gateway_title" and "woocommerce_gateway_description".
-	 *
-	 * @param object $gateway Alma WC payment gateway.
-	 *
-	 * @return array
-	 */
-	public function build_new_available_gateways( $gateway ) {
-		$new_available_gateways = array();
-
-		foreach ( Alma_Constants_Helper::$alma_gateways as $alma_gateway ) {
-			$tmp_gateway     = clone $gateway;
-			$tmp_gateway->id = $alma_gateway;
-
-			if (
-				$this->is_there_available_plan_for_this_gateway( $tmp_gateway->id )
-			) {
-				$new_available_gateways[ $tmp_gateway->id ] = $tmp_gateway;
-			}
-		}
-
-		return $new_available_gateways;
-	}
-
-	/**
 	 * Check if cart eligibilities has at least one eligible plan.
 	 *
 	 * @return bool
@@ -795,26 +905,6 @@ class Alma_Settings {
 		}
 
 		return $is_eligible;
-	}
-
-	/**
-	 * Test if is there available plan for given payment method
-	 *
-	 * @param string $gateway_id As payment method name.
-	 *
-	 * @return bool
-	 */
-	public function is_there_available_plan_for_this_gateway( $gateway_id ) {
-		switch ( $gateway_id ) {
-			case Alma_Constants_Helper::GATEWAY_ID:
-				return $this->has_pnx();
-			case Alma_Constants_Helper::ALMA_GATEWAY_PAY_LATER:
-				return $this->has_pay_later();
-			case Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR:
-				return $this->has_pnx_plus_4();
-			default:
-				return false;
-		}
 	}
 
 	/**
@@ -1025,6 +1115,40 @@ class Alma_Settings {
 
 		return $definition;
 	}
+
+	/**
+	 * Populate fee plan
+	 *
+	 * @param string $plan_key The plan key.
+	 *
+	 * @return FeePlan
+	 * @throws Alma_Plans_Definition_Exception Alma_Plans_Definition_Exception.
+	 */
+	public function build_fee_plan( $plan_key ) {
+
+		if ( ! isset( $this->settings[ "installments_count_$plan_key" ] ) ) {
+			throw new Alma_Plans_Definition_Exception( "installments_count_$plan_key not set" );
+		}
+
+		if ( ! isset( $this->settings[ "deferred_days_$plan_key" ] ) ) {
+			throw new Alma_Plans_Definition_Exception( "deferred_days_$plan_key not set" );
+		}
+
+		if ( ! isset( $this->settings[ "deferred_months_$plan_key" ] ) ) {
+			throw new Alma_Plans_Definition_Exception( "deferred_months_$plan_key not set" );
+		}
+
+		$fee_plan = new FeePlan(
+			array(
+				'installments_count' => $this->settings[ "installments_count_$plan_key" ],
+				'deferred_days'      => $this->settings[ "deferred_days_$plan_key" ],
+				'deferred_months'    => $this->settings[ "deferred_months_$plan_key" ],
+			)
+		);
+
+		return $fee_plan;
+	}
+
 
 	/**
 	 * Does need API key ?

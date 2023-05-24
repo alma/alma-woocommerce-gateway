@@ -14,8 +14,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Alma\Woocommerce\Admin\Alma_Notices;
+use Alma\Woocommerce\Admin\Helpers\Alma_Check_Legal_Helper;
 use Alma\Woocommerce\Exceptions\Alma_Requirements_Exception;
 use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
+use Alma\Woocommerce\Helpers\Alma_Migration_Helper;
 use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
 use Alma\Woocommerce\Helpers\Alma_Payment_Helper;
 use Alma\Woocommerce\Helpers\Alma_Assets_Helper;
@@ -46,63 +48,23 @@ class Alma_Plugin {
 	protected $logger;
 
 	/**
+	 * The migration helper.
+	 *
+	 * @var Alma_Migration_Helper
+	 */
+	protected $migration_helper;
+
+	/**
 	 * Protected constructor to prevent creating a new instance of the
 	 * *Singleton* via the `new` operator from outside of this class.
 	 */
 	protected function __construct() {
-		$this->logger = new Alma_Logger();
-		$this->self_update();
+		$this->logger           = new Alma_Logger();
+		$this->migration_helper = new Alma_Migration_Helper();
+		$this->migration_helper->update();
 		$this->init();
 	}
 
-	/**
-	 * Update plugin to the latest version.
-	 *
-	 * @return void
-	 */
-	protected function self_update() {
-		$db_version = get_option( 'alma_version' );
-
-		if (
-			$db_version
-			&& version_compare( ALMA_VERSION, $db_version, '!=' )
-		) {
-
-			if (
-				$db_version
-				&& version_compare( $db_version, '4.0.0', '<' )
-				&& version_compare( ALMA_VERSION, '4.0.0', '>=' )
-			) {
-				$old_settings = get_option( 'woocommerce_alma_settings' );
-				update_option( Alma_Settings::OPTIONS_KEY, $old_settings );
-
-				// Upgrade to 4.
-				$gateway = new Alma_Payment_Gateway();
-
-				// Manage credentials to match the new settings fields format.
-				try {
-					$gateway->manage_credentials();
-					$this->logger->debug( 'manage_credentials' );
-				} catch ( \Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
-					// We don't care if it fails there is nothing to update.
-					$this->logger->debug( 'the credentials were wrong' );
-				}
-
-				if ( version_compare( $db_version, 3, '<' ) ) {
-					update_option( 'alma_version', ALMA_VERSION );
-					deactivate_plugins( 'alma-woocommerce-gateway/alma-woocommerce-gateway.php', true );
-				}
-			}
-
-			update_option( 'alma_version', ALMA_VERSION );
-			delete_option( 'woocommerce_alma_settings' );
-			delete_option( 'alma_warnings_handled' );
-		}
-
-		if ( ! $db_version ) {
-			update_option( 'alma_version', ALMA_VERSION );
-		}
-	}
 
 	/**
 	 * Init the plugin after plugins_loaded so environment variables are set.
@@ -143,8 +105,8 @@ class Alma_Plugin {
 			throw new Alma_Requirements_Exception( __( 'Alma requires WooCommerce to be activated', 'alma-gateway-for-woocommerce' ) );
 		}
 
-		if ( version_compare( wc()->version, '2.6', '<' ) ) {
-			throw new Alma_Requirements_Exception( __( 'Alma requires WooCommerce version 2.6 or greater', 'alma-gateway-for-woocommerce' ) );
+		if ( version_compare( wc()->version, '3.0.0', '<' ) ) {
+			throw new Alma_Requirements_Exception( __( 'Alma requires WooCommerce version 3.0.0 or greater', 'alma-gateway-for-woocommerce' ) );
 		}
 
 		if ( ! function_exists( 'curl_init' ) ) {
@@ -212,9 +174,9 @@ class Alma_Plugin {
 		$settings = new Alma_Settings();
 
 		if (
-				$settings->is_enabled()
-				&& $settings->is_allowed_to_see_alma( wp_get_current_user() )
-			) {
+			$settings->is_enabled()
+			&& $settings->is_allowed_to_see_alma( wp_get_current_user() )
+		) {
 
 			$shortcodes = new Alma_Shortcodes();
 
@@ -247,6 +209,13 @@ class Alma_Plugin {
 
 		$refund = new Alma_Refund();
 		add_action( 'admin_init', array( $refund, 'admin_init' ) );
+
+		$check_legal = new Alma_Check_Legal_Helper();
+		add_action( 'init', array( $check_legal, 'check_share_checkout' ) );
+
+		// Launch the "share of checkout".
+		$share_of_checkout = new Alma_Share_Of_Checkout();
+		add_action( 'init', array( $share_of_checkout, 'send_soc_data' ) );
 	}
 
 
@@ -299,7 +268,7 @@ class Alma_Plugin {
 	public function wp_enqueue_scripts() {
 		if ( is_checkout() ) {
 			$alma_checkout = Alma_Assets_Helper::get_asset_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_JS );
-			wp_enqueue_script( 'alma-checkout-page', $alma_checkout, array(), ALMA_VERSION, true );
+			wp_enqueue_script( 'alma-checkout-page', $alma_checkout, array( 'jquery', 'jquery-ui-core', 'jquery-ui-accordion' ), ALMA_VERSION, true );
 		}
 	}
 
@@ -341,11 +310,7 @@ class Alma_Plugin {
 	 * @since 1.0.0
 	 */
 	public function get_setting_link() {
-		$use_id_as_section = function_exists( 'WC' ) ? version_compare( WC()->version, '2.6', '>=' ) : false;
-
-		$section_slug = $use_id_as_section ? 'alma' : strtolower( Alma_Payment_Gateway::class );
-
-		return admin_url( 'admin.php?page=wc-settings&tab=checkout&section=' . $section_slug );
+		return admin_url( 'admin.php?page=wc-settings&tab=checkout&section=alma' );
 	}
 
 	/**

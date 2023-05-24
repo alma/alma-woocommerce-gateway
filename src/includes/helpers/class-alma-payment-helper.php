@@ -142,9 +142,9 @@ class Alma_Payment_Helper {
 				)
 			)
 		) {
-			if ( $order->get_total() !== $payment->purchase_amount ) {
+			if ( $order->get_total_in_cent() !== $payment->purchase_amount ) {
 				$this->alma_settings->flag_as_fraud( $payment_id, Payment::FRAUD_AMOUNT_MISMATCH );
-				throw new Alma_Amount_Mismatch_Exception( $payment_id, $order->get_id(), $order->get_total(), $payment->purchase_amount );
+				throw new Alma_Amount_Mismatch_Exception( $payment_id, $order->get_id(), $order->get_total_in_cent(), $payment->purchase_amount );
 			}
 
 			$first_instalment = $payment->payment_plan[0];

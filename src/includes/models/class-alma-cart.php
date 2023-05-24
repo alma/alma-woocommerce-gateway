@@ -25,7 +25,14 @@ class Alma_Cart {
 	 *
 	 * @var \WC_Cart|null
 	 */
-	private $cart;
+	protected $cart;
+
+	/**
+	 * Helper global.
+	 *
+	 * @var Alma_Tools_Helper
+	 */
+	protected $tool_helper;
 
 	/**
 	 * __construct
@@ -33,7 +40,8 @@ class Alma_Cart {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->cart = WC()->cart;
+		$this->cart        = WC()->cart;
+		$this->tool_helper = new Alma_Tools_Helper();
 	}
 
 	/**
@@ -44,7 +52,7 @@ class Alma_Cart {
 	 * @see get_total_from_cart
 	 */
 	public function get_total_in_cents() {
-		return Alma_Tools_Helper::alma_price_to_cents( $this->get_total_from_cart() );
+		return $this->tool_helper->alma_price_to_cents( $this->get_total_from_cart() );
 	}
 
 	/**
@@ -63,4 +71,5 @@ class Alma_Cart {
 
 		return $this->cart->get_total( null );
 	}
+
 }

@@ -15,8 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use Alma\Woocommerce\Alma_Logger;
 use Alma\Woocommerce\Alma_Settings;
+use Alma\Woocommerce\Exceptions\Alma_Exception;
+
 /**
  * Alma_Gateway_Helper
  */
@@ -67,18 +68,16 @@ class Alma_Gateway_Helper {
 
 		foreach ( $available_gateways as $key => $gateway ) {
 
-			if ( 'alma' === $gateway->id ) {
+			if (
+				'alma' === $gateway->id
+				&& $has_excluded_products
+			) {
+				unset( $available_gateways[ $key ] );
 
-				if ( $has_excluded_products ) {
-					unset( $available_gateways[ $key ] );
-
-					return $available_gateways;
-				}
-
-				$new_available_gateways = array_merge( $new_available_gateways, $this->alma_settings->build_new_available_gateways( $gateway ) );
-			} else {
-				$new_available_gateways[ $key ] = $gateway;
+				return $available_gateways;
 			}
+
+			$new_available_gateways[ $key ] = $gateway;
 		}
 
 		return $new_available_gateways;
@@ -93,60 +92,65 @@ class Alma_Gateway_Helper {
 	 * @return string
 	 */
 	public function woocommerce_gateway_title( $title, $id ) {
-
-		if ( Alma_Constants_Helper::GATEWAY_ID !== substr( $id, 0, 4 ) ) {
-			return $title;
-		}
-
 		if ( Alma_Constants_Helper::GATEWAY_ID === $id ) {
-			$title = $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PNX );
-		}
-
-		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_LATER === $id ) {
-			$title = $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PAY_LATER );
-		}
-
-		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR === $id ) {
-			$title = $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PNX_PLUS_4 );
+			$title = __( 'Pay with Alma', 'alma-gateway-for-woocommerce' );
 		}
 
 		return $title;
 	}
 
 	/**
-	 * Filter the alma gateway description (visible on checkout page).
+	 * Get the title of the Alma Gateway.
 	 *
-	 * @param string  $description The original description.
-	 * @param integer $id The payment gateway id.
-	 *
+	 * @param string $id The alma gateway type id.
 	 * @return string
+	 * @throws Alma_Exception Exception.
 	 */
-	public function woocommerce_gateway_description( $description, $id ) {
-
-		if ( Alma_Constants_Helper::GATEWAY_ID !== substr( $id, 0, 4 ) ) {
-			return $description;
-		}
+	public function get_alma_gateway_title( $id ) {
 
 		if ( Alma_Constants_Helper::GATEWAY_ID === $id ) {
-			$description = $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PNX );
+			return $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PNX );
 		}
 
 		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_LATER === $id ) {
-			$description = $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PAY_LATER );
+			return $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PAY_LATER );
 		}
 
 		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR === $id ) {
-			$description = $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PNX_PLUS_4 );
+			return $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PNX_PLUS_4 );
 		}
 
-		return $description;
+		throw new Alma_Exception( sprintf( 'Unknown gateway id : %s', $id ) );
 	}
 
 	/**
-	 * Check if cart has eligibilities.
+	 * Get the title of the Alma Gateway.
 	 *
-	 * @return bool
+	 * @param string $id The alma gateway type id.
+	 * @return string
+	 * @throws Alma_Exception Exception.
 	 */
+	public function get_alma_gateway_description( $id ) {
+		if ( Alma_Constants_Helper::GATEWAY_ID === $id ) {
+			return $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PNX );
+		}
+
+		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_LATER === $id ) {
+			return $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PAY_LATER );
+		}
+
+		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR === $id ) {
+			return $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PNX_PLUS_4 );
+		}
+
+		throw new Alma_Exception( sprintf( 'Unknown gateway id : %s', $id ) );
+
+	}
+		/**
+		 * Check if cart has eligibilities.
+		 *
+		 * @return bool
+		 */
 	public function is_there_eligibility_in_cart() {
 		return count( $this->alma_settings->get_eligible_plans_keys_for_cart() ) > 0;
 	}
@@ -160,6 +164,7 @@ class Alma_Gateway_Helper {
 		if ( wc()->cart === null ) {
 			return false;
 		}
+
 		if (
 			property_exists( $this->alma_settings, 'excluded_products_list' )
 			&& is_array( $this->alma_settings->excluded_products_list )
@@ -192,6 +197,7 @@ class Alma_Gateway_Helper {
 		if ( ! count( $plans ) ) {
 			return null;
 		}
+
 		if ( in_array( Alma_Constants_Helper::DEFAULT_FEE_PLAN, $plans, true ) ) {
 			return Alma_Constants_Helper::DEFAULT_FEE_PLAN;
 		}

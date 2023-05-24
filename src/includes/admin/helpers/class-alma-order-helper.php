@@ -28,13 +28,13 @@ class Alma_Order_Helper {
 	 *
 	 * @return \WC_Order[]
 	 */
-	public static function get_orders_by_date_range( $from, $to ) {
-		$args = array(
-			'date_created' => $from . '...' . $to,
-			'type'         => 'shop_order',
+	public function get_orders_by_date_range( $from, $to ) {
+		return wc_get_orders(
+			array(
+				'date_created' => $from . '...' . $to,
+				'type'         => 'shop_order',
+				'status'       => array( 'wc-processing', 'wc-completed' ),
+			)
 		);
-
-		return wc_get_orders( $args );
 	}
-
 }
