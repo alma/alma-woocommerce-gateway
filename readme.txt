@@ -3,7 +3,7 @@
 Contributors: almapayments, olance, francois-gomis, clairealma
 Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell, woo commerce, alma, monthly payments, split payments
 Requires at least: 4.4
-Tested up to: 6.2.1
+Tested up to: 6.2.2
 Requires PHP: 5.6
 Stable tag: 4.2.0
 License: GPLv3
@@ -70,9 +70,12 @@ To build extension for production run `./bin/build.sh`
 * feat: Implement Pay Now
 
 = 4.2.0 =
-* feat: encryption api keys in DB
-* feat: Share of checkout
-* feat: update translations
+* feat: Share of checkout feature
+* feat: Encryption Key feature in database
+* feat: Gather the gateway in checkout (design)
+* fix: Reduce extended-call data
+* feat: Send basket order details for credit
+* feat: Implement a template system
 
 = 4.1.2 =
 * fix: nonce error log issue
