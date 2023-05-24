@@ -68,7 +68,6 @@ class Alma_Share_Of_Checkout {
 				$this->settings->is_test()
 				|| 'yes' !== $this->settings->share_of_checkout_enabled
 			) {
-				$this->logger->info( sprintf( 'Soc : test mode enabled or no soc allowed %s %s', $this->settings->is_test(), $this->settings->share_of_checkout_enabled ) );
 				return;
 			}
 
@@ -78,10 +77,6 @@ class Alma_Share_Of_Checkout {
 
 			if ( ! empty( $settings_date ) ) {
 				$last_sharing_date = new \DateTime( $settings_date );
-				$this->logger->info( sprintf( 'Soc : last sharing date:  %s', $last_sharing_date->format( 'Y-m-d' ) ) );
-			} else {
-				$this->logger->info( 'Soc : NO last sharing date' );
-
 			}
 
 			if (
@@ -91,8 +86,6 @@ class Alma_Share_Of_Checkout {
 					&& $today->format( 'Y-m-d' ) > $last_sharing_date->format( 'Y-m-d' )
 				)
 			) {
-				$this->logger->info( 'Soc : Send the data to soc init' );
-
 				$this->settings->__set( 'share_of_checkout_last_sharing_date', $today->format( 'Y-m-d' ) );
 				$this->settings->save();
 
@@ -119,8 +112,6 @@ class Alma_Share_Of_Checkout {
 	public function share_days() {
 		$share_of_checkout_enabled_date = $this->settings->share_of_checkout_enabled_date;
 
-		$this->logger->info( sprintf( 'Soc : $share_of_checkout_enabled_date %s', $share_of_checkout_enabled_date ) );
-
 		try {
 			$last_update_date = $this->checkout_helper->get_last_update_date();
 		} catch ( \Exception $e ) {
@@ -128,21 +119,15 @@ class Alma_Share_Of_Checkout {
 			$last_update_date = $this->checkout_helper->get_default_last_update_date();
 		}
 
-		$this->logger->info( sprintf( 'Soc : $last_update_date %s', $last_update_date ) );
-
 		$from_date = max( $last_update_date, $share_of_checkout_enabled_date );
 
 		$end_date = new \DateTime();
 		$end_date->modify( '-1 day' );
 		$end_date = $end_date->format( 'Y-m-d' );
 
-		$this->logger->info( sprintf( 'Soc : $from_date %s $to_date %s', $from_date, $end_date ) );
-
 		$my_soc_data = $this->checkout_helper->get_payload( $from_date, $end_date );
 
 		if ( count( $my_soc_data ) > 0 ) {
-			$this->logger->info( sprintf( 'Soc : $my_soc_data %s', wp_json_encode( $my_soc_data ) ) );
-
 			$this->settings->send_soc_data( $my_soc_data );
 		}
 	}
