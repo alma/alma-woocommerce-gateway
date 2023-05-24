@@ -3,9 +3,12 @@ Changelog
 
 v4.2.0
 ------
-* feat: encryption api keys in DB
-* feat: Share of checkout
-* feat: update translations
+* feat: Share of checkout feature
+* feat: Encryption Key feature in database
+* feat: Gather the gateway in checkout (design)
+* fix: Reduce extended-call data
+* feat: Send basket order details for credit
+* feat: Implement a template system
 
 v4.1.2
 ------
