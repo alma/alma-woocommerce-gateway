@@ -1,6 +1,10 @@
 Changelog
 =========
 
+v4.2.1
+------
+* feat: Allow to customize the gateway title
+
 v4.2.0
 ------
 * feat: Share of checkout feature
