@@ -53,7 +53,6 @@ class Alma_Migration_Helper {
 	 */
 	public function update() {
 		$db_version = get_option( 'alma_version' );
-
 		if ( version_compare( ALMA_VERSION, $db_version, '=' ) ) {
 			return;
 		}
@@ -89,16 +88,17 @@ class Alma_Migration_Helper {
 	 * @return void
 	 */
 	protected function migrate_keys() {
-		$old_settings = get_option( 'woocommerce_alma_settings' );
-
-		if ( $old_settings ) {
-			update_option( Alma_Settings::OPTIONS_KEY, $old_settings );
-		}
-
-		$settings    = get_option( Alma_Settings::OPTIONS_KEY );
-		$has_changed = false;
-
 		try {
+			$old_settings = get_option( 'woocommerce_alma_settings' );
+
+			if ( $old_settings ) {
+				update_option( Alma_Settings::OPTIONS_KEY, $old_settings );
+			}
+
+			$settings = get_option( Alma_Settings::OPTIONS_KEY );
+
+			$has_changed = false;
+
 			if (
 				! empty( $settings['live_api_key'] )
 				&& 'sk_live_' === substr( $settings['live_api_key'], 0, 8 )
@@ -122,7 +122,7 @@ class Alma_Migration_Helper {
 			// Manage credentials to match the new settings fields format.
 
 			// Upgrade to 4.
-			$gateway = new Alma_Payment_Gateway();
+			$gateway = new Alma_Payment_Gateway( false );
 
 			$gateway->manage_credentials( true );
 		} catch ( \Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
