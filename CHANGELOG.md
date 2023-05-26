@@ -1,6 +1,10 @@
 Changelog
 =========
 
+v4.2.3
+------
+* hotfix: don't do the basic gateway checks during update process
+
 v4.2.2
 ------
 * hotfix: Prevent to send multi update thread
