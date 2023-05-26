@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 4.4
 Tested up to: 6.2.2
 Requires PHP: 5.6
-Stable tag: 4.2.2
+Stable tag: 4.2.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -65,6 +65,9 @@ To edit the translations, use [Poedit](https://poedit.net/)
 To build extension for production run `./bin/build.sh`
 
 == Changelog ==
+
+= 4.2.3 =
+* hotfix: don't do the basic gateway checks during update process
 
 = 4.2.2 =
 * hotfix: Prevent to send multi update thread

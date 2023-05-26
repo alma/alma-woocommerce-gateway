@@ -135,7 +135,7 @@ class Alma_Migration_Helper {
 
 			// Manage credentials to match the new settings fields format.
 			// Upgrade to 4.
-			$gateway = new Alma_Payment_Gateway();
+			$gateway = new Alma_Payment_Gateway( false );
 
 			$gateway->manage_credentials( true );
 
