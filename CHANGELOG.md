@@ -1,6 +1,10 @@
 Changelog
 =========
 
+v4.2.1
+------
+* hotfix: Plugin update when the gateway is disabled
+
 v4.2.0
 ------
 * feat: Share of checkout feature
