@@ -1,6 +1,10 @@
 Changelog
 =========
 
+v4.2.2
+------
+* hotfix: Prevent to send multi update thread
+
 v4.2.1
 ------
 * hotfix: Plugin update when the gateway is disabled
