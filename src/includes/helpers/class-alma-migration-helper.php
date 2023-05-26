@@ -47,19 +47,33 @@ class Alma_Migration_Helper {
 		$this->logger           = new Alma_Logger();
 	}
 
-	/** Update the plugin
+	/**
+	 * Update plugin.
 	 *
-	 * @return void
+	 * @return bool Is the migration ok.
 	 */
 	public function update() {
 		$db_version = get_option( 'alma_version' );
-		if ( version_compare( ALMA_VERSION, $db_version, '=' ) ) {
-			return;
+
+		$flag_migration = get_option( 'alma_migration_ongoing' );
+
+		if ( $flag_migration ) {
+			// ongoing or failed migration, don't do anything !
+			return false;
 		}
+
+		if ( version_compare( ALMA_VERSION, $db_version, '=' ) ) {
+			return true;
+		}
+
+		add_option( 'alma_migration_ongoing', ALMA_VERSION );
 
 		$this->manage_versions( $db_version );
 
 		update_option( 'alma_version', ALMA_VERSION );
+		delete_option( 'alma_migration_ongoing' );
+
+		return true;
 	}
 
 	/**
@@ -120,11 +134,11 @@ class Alma_Migration_Helper {
 			}
 
 			// Manage credentials to match the new settings fields format.
-
 			// Upgrade to 4.
-			$gateway = new Alma_Payment_Gateway( false );
+			$gateway = new Alma_Payment_Gateway();
 
 			$gateway->manage_credentials( true );
+
 		} catch ( \Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			// We don't care if it fails there is nothing to update.
 			$this->logger->info( $e->getMessage() );
