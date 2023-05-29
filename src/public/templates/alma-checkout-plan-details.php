@@ -23,7 +23,7 @@ use Alma\Woocommerce\Models\Alma_Cart;
 		class="<?php echo esc_attr( Alma_Constants_Helper::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS ); ?>"
 		data-gateway-id="<?php echo esc_attr( $alma_gateway_id ); ?>"
 		style="
-			margin: 0 auto;
+			margin: 0 auto 15px auto;
 		<?php if ( $alma_key !== $alma_default_plan ) { ?>
 			display: none;
 		<?php } ?>
