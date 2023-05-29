@@ -112,9 +112,12 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 
 
 	/**
-	 * Constructor for the gateway.
+	 * Construct.
+	 *
+	 * @param bool $check_basics Check the basics requirement.
+	 * @throws Alma_No_Credentials_Exception The exception.
 	 */
-	public function __construct() {
+	public function __construct( $check_basics = true ) {
 		$this->id                 = Alma_Constants_Helper::GATEWAY_ID;
 		$this->has_fields         = true;
 		$this->method_title       = __( 'Payment in instalments and deferred with Alma - 2x 3x 4x, D+15 or D+30', 'alma-gateway-for-woocommerce' );
@@ -130,13 +133,15 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 		$this->encryption_helper  = new Alma_Encryptor_Helper();
 		$this->tool_helper        = new Alma_Tools_Helper();
 
-		$this->check_activation();
+		if ( $check_basics ) {
+			$this->check_activation();
 
-		$this->check_alma_keys( false );
-		$this->add_filters();
-		$this->add_actions();
-		$this->init_admin_form();
-		$this->check_legal_helper->check_share_checkout();
+			$this->check_alma_keys( false );
+			$this->add_filters();
+			$this->add_actions();
+			$this->init_admin_form();
+			$this->check_legal_helper->check_share_checkout();
+		}
 	}
 
 		/**
