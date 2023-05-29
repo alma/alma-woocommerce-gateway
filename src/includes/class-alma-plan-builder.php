@@ -119,10 +119,11 @@ class Alma_Plan_Builder {
 		$templates->get_template(
 			'alma-checkout-plan-details.php',
 			array(
-				'alma_eligibilities' => $eligibilities,
-				'alma_default_plan'  => $default_plan,
-				'alma_gateway_id'    => $type,
-				'alma_settings'      => $this->alma_settings,
+				'alma_eligibilities'   => $eligibilities,
+				'alma_default_plan'    => $default_plan,
+				'alma_gateway_id'      => $type,
+				'alma_settings'        => $this->alma_settings,
+				'upon_trigger_enabled' => $this->alma_settings->payment_upon_trigger_enabled,
 			)
 		);
 
