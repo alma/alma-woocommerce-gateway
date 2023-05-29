@@ -46,6 +46,7 @@ class Alma_Constants_Helper {
 	const AMOUNT_PLAN_KEY_REGEX          = '#^(min|max)_amount_general_[0-9]+_[0-9]+_[0-9]+$#';
 	const SORT_PLAN_KEY_REGEX            = '/^(general|pos)_([0-9]+)_([0-9]+)_([0-9]+)$/';
 	const GATEWAY_DESCRIPTION            = 'gateway_description';
+	const GATEWAY_TITLE                  = 'pay_with_alma';
 	const PAYMENT_METHOD_PNX             = 'payment_method_pnx';
 	const PAYMENT_METHOD_PAY_LATER       = 'payment_method_pay_later';
 	const PAYMENT_METHOD_PAY_NOW         = 'payment_method_pay_now';

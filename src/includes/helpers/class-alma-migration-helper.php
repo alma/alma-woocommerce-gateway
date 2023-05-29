@@ -47,20 +47,33 @@ class Alma_Migration_Helper {
 		$this->logger           = new Alma_Logger();
 	}
 
-	/** Update the plugin
+	/**
+	 * Update plugin.
 	 *
-	 * @return void
+	 * @return bool Is the migration ok.
 	 */
 	public function update() {
 		$db_version = get_option( 'alma_version' );
 
-		if ( version_compare( ALMA_VERSION, $db_version, '=' ) ) {
-			return;
+		$flag_migration = get_option( 'alma_migration_ongoing' );
+
+		if ( $flag_migration ) {
+			// ongoing or failed migration, don't do anything !
+			return false;
 		}
+
+		if ( version_compare( ALMA_VERSION, $db_version, '=' ) ) {
+			return true;
+		}
+
+		add_option( 'alma_migration_ongoing', ALMA_VERSION );
 
 		$this->manage_versions( $db_version );
 
 		update_option( 'alma_version', ALMA_VERSION );
+		delete_option( 'alma_migration_ongoing' );
+
+		return true;
 	}
 
 	/**
@@ -89,16 +102,17 @@ class Alma_Migration_Helper {
 	 * @return void
 	 */
 	protected function migrate_keys() {
-		$old_settings = get_option( 'woocommerce_alma_settings' );
-
-		if ( $old_settings ) {
-			update_option( Alma_Settings::OPTIONS_KEY, $old_settings );
-		}
-
-		$settings    = get_option( Alma_Settings::OPTIONS_KEY );
-		$has_changed = false;
-
 		try {
+			$old_settings = get_option( 'woocommerce_alma_settings' );
+
+			if ( $old_settings ) {
+				update_option( Alma_Settings::OPTIONS_KEY, $old_settings );
+			}
+
+			$settings = get_option( Alma_Settings::OPTIONS_KEY );
+
+			$has_changed = false;
+
 			if (
 				! empty( $settings['live_api_key'] )
 				&& 'sk_live_' === substr( $settings['live_api_key'], 0, 8 )
@@ -120,11 +134,11 @@ class Alma_Migration_Helper {
 			}
 
 			// Manage credentials to match the new settings fields format.
-
 			// Upgrade to 4.
-			$gateway = new Alma_Payment_Gateway();
+			$gateway = new Alma_Payment_Gateway( false );
 
 			$gateway->manage_credentials( true );
+
 		} catch ( \Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			// We don't care if it fails there is nothing to update.
 			$this->logger->info( $e->getMessage() );

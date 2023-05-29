@@ -512,7 +512,31 @@ class Alma_Form_Helper {
 			),
 		);
 
-		$fields_pnx = $this->get_custom_fields_payment_method( Alma_Constants_Helper::PAYMENT_METHOD_PNX, __( 'Payments in 2, 3 and 4 installments:', 'alma-gateway-for-woocommerce' ), $default_settings );
+		$title_gateway = array(
+			Alma_Constants_Helper::GATEWAY_TITLE => array(
+				'title' => sprintf(
+					'<h4 style="color:#777;font-size:1.15em;">%s</h4>',
+					__( 'Payment header title:', 'alma-gateway-for-woocommerce' )
+				),
+				'type'  => 'title',
+			),
+		);
+
+		$fields_title_gateway = $this->generate_i18n_field(
+			'title_' . Alma_Constants_Helper::GATEWAY_TITLE,
+			array(
+				'title'       => __( 'Title', 'alma-gateway-for-woocommerce' ),
+				'description' => __( 'This controls the gateway which the user sees during checkout.', 'alma-gateway-for-woocommerce' ),
+				'desc_tip'    => true,
+			),
+			$default_settings[ 'title_' . Alma_Constants_Helper::GATEWAY_TITLE ]
+		);
+
+		$fields_pnx = $this->get_custom_fields_payment_method(
+			Alma_Constants_Helper::PAYMENT_METHOD_PNX,
+			__( 'Payments in 2, 3 and 4 installments:', 'alma-gateway-for-woocommerce' ),
+			$default_settings
+		);
 
 		if ( $this->settings_helper->has_pay_now() ) {
 			$fields_pay_now = $this->get_custom_fields_payment_method( Alma_Constants_Helper::PAYMENT_METHOD_PAY_NOW, __( 'Pay now:', 'alma-gateway-for-woocommerce' ), $default_settings );
@@ -562,6 +586,8 @@ class Alma_Form_Helper {
 		$form = array_merge(
 			$general_settings_fields,
 			$fields_pay_now,
+			$title_gateway,
+			$fields_title_gateway,
 			$fields_pnx,
 			$fields_pay_later,
 			$fields_pnx_plus_4,

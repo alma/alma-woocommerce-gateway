@@ -61,8 +61,13 @@ class Alma_Plugin {
 	protected function __construct() {
 		$this->logger           = new Alma_Logger();
 		$this->migration_helper = new Alma_Migration_Helper();
-		$this->migration_helper->update();
-		$this->init();
+		$migration_success      = $this->migration_helper->update();
+
+		if ( $migration_success ) {
+			$this->init();
+		} else {
+			$this->logger->warning( 'The plugin migration is already inprogress or has failed' );
+		}
 	}
 
 

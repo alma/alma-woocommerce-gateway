@@ -5,6 +5,22 @@ v4.3.0
 ------
 * feat: Implement Pay Now
 
+v4.2.4
+------
+* feat: Allow to customize the gateway title
+
+v4.2.3
+------
+* hotfix: don't do the basic gateway checks during update process
+
+v4.2.2
+------
+* hotfix: Prevent to send multi update thread
+
+v4.2.1
+------
+* hotfix: Plugin update when the gateway is disabled
+
 v4.2.0
 ------
 * feat: Share of checkout feature

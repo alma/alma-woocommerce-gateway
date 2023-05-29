@@ -93,7 +93,7 @@ class Alma_Gateway_Helper {
 	 */
 	public function woocommerce_gateway_title( $title, $id ) {
 		if ( Alma_Constants_Helper::GATEWAY_ID === $id ) {
-			$title = __( 'Pay with Alma', 'alma-gateway-for-woocommerce' );
+			return $this->alma_settings->get_title( Alma_Constants_Helper::GATEWAY_TITLE );
 		}
 
 		return $title;

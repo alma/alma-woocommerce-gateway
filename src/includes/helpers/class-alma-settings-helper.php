@@ -37,6 +37,7 @@ class Alma_Settings_Helper {
 			'payment_upon_trigger_display_text'          => 'at_shipping',
 			'selected_fee_plan'                          => Alma_Constants_Helper::DEFAULT_FEE_PLAN,
 			'enabled_general_3_0_0'                      => 'yes',
+			'title_pay_with_alma'                        => self::default_pay_with_alma(),
 			'title_payment_method_pnx'                   => self::default_pnx_title(),
 			'description_payment_method_pnx'             => self::default_payment_description(),
 			'title_payment_method_pay_now'               => self::default_pay_now_title(),
@@ -60,6 +61,19 @@ class Alma_Settings_Helper {
 			'keys_validity'                              => 'no',
 		);
 	}
+
+	/**
+	 * Gets the default title for the gatewxay
+	 *
+	 * @return string
+	 */
+	public static function default_pay_with_alma() {
+		if ( Alma_Internationalization_Helper::is_site_multilingual() ) {
+			return 'Pay with Alma';
+		}
+		return __( 'Pay with Alma', 'alma-gateway-for-woocommerce' );
+	}
+
 
 	/**
 	 * Gets the default title for pnx payment method.
