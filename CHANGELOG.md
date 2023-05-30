@@ -1,6 +1,10 @@
 Changelog
 =========
 
+v4.2.4
+------
+* feat: Allow to customize the gateway title
+
 v4.2.3
 ------
 * hotfix: don't do the basic gateway checks during update process
