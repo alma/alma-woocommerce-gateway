@@ -42,7 +42,7 @@
 		<?php echo esc_html( $logo_text ); ?>
 		</span>
 	</span>
-	<?php
+		<?php
 	} else {
 		?>
 			<img src="<?php echo esc_attr( $logo_url ); ?>"

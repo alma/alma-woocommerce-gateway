@@ -6,18 +6,18 @@
  */
 
  .pay-now-text {
-    background-color: #1A1A1A;
-    color: #FFFFFF;
-    margin: 6px 0 6px 6px;
-    border: 1px solid #1A1A1A;
-    border-radius: 4px;
-    padding: 2px 7px;
+	background-color: #1A1A1A;
+	color: #FFFFFF;
+	margin: 6px 0 6px 6px;
+	border: 1px solid #1A1A1A;
+	border-radius: 4px;
+	padding: 2px 7px;
  }
 
  .logoContainer {
-    background-color: #FFFFFF;
-    padding: 7px 6px;
-    width: 242px;
-    border: 1px solid #E1E4E6;
-    border-radius: 7px;
+	background-color: #FFFFFF;
+	padding: 7px 6px;
+	width: 242px;
+	border: 1px solid #E1E4E6;
+	border-radius: 7px;
  }
