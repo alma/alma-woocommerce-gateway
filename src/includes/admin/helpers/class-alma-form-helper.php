@@ -585,9 +585,9 @@ class Alma_Form_Helper {
 
 		$form = array_merge(
 			$general_settings_fields,
-			$fields_pay_now,
 			$title_gateway,
 			$fields_title_gateway,
+			$fields_pay_now,
 			$fields_pnx,
 			$fields_pay_later,
 			$fields_pnx_plus_4,
