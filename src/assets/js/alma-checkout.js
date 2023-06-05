@@ -20,8 +20,8 @@
 		'input[name="alma_fee_plan"]',
 		function() {
 			var icons = {
-				header: "fas fa-angle-right",
-				activeHeader: "fas fa-angle-down"
+				header: "alma-angle alma-angle-right",
+				activeHeader: "alma-angle alma-angle-down"
 			};
 			jQuery( "#alma_plans_accordion" ).accordion(
 				{
