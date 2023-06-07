@@ -50,11 +50,25 @@
 
 	$( 'body' ).on(
 		'click',
+		'.payment_method_alma',
+		function (event) {
+			var target = $(event.target);
+        	if (target.is("h5:first, label")) {
+				var firstH5 = $( this ).find("h5:first");
+				var firstDivAfterH5 = firstH5.nextAll("div:first");
+				var firstInputInDiv = firstDivAfterH5.find("input");
+				firstInputInDiv.prop( "checked", true ).trigger( 'change' );
+			}
+		}
+	);
+
+	$( 'body' ).on(
+		'click',
 		'.ui-accordion-header',
 		function () {
 			if ($( this ).attr( "aria-selected" ) === "true") {
-				var radios = $( this ).next( "div" ).find( "input:visible" );
-				radios.first().prop( "checked", true ).trigger( 'change' );
+				var radios = $( this ).next( "div" ).find( "input" );
+				radios.first().prop( "checked", true ).trigger("change");
 			}
 		}
 	);
@@ -63,7 +77,7 @@
 		'payment_method_selected',
 		function(){
 			render_alma_methods();
-		}
+		},
 	);
 
 	function render_alma_methods()
