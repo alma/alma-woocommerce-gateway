@@ -20,8 +20,8 @@
 		'input[name="alma_fee_plan"]',
 		function() {
 			var icons = {
-				header: "fas fa-angle-right",
-				activeHeader: "fas fa-angle-down"
+				header: "alma-angle alma-angle-right",
+				activeHeader: "alma-angle alma-angle-down"
 			};
 			jQuery( "#alma_plans_accordion" ).accordion(
 				{
@@ -50,10 +50,29 @@
 
 	$( 'body' ).on(
 		'click',
+		'.payment_method_alma',
+		function (event) {
+			var target = $( event.target );
+			if (target.is( "h5:first, label" )) {
+				divsAfterH5.each(
+					function(div) {
+						var visibleInputInDiv = $( div ).find( "input:visible:first" );
+						if (visibleInputInDiv.length) {
+							visibleInputInDiv.prop( "checked", true ).trigger( 'change' );
+							return false;
+						}
+					}
+				);
+			}
+		}
+	);
+
+	$( 'body' ).on(
+		'click',
 		'.ui-accordion-header',
 		function () {
 			if ($( this ).attr( "aria-selected" ) === "true") {
-				var radios = $( this ).next( "div" ).find( "input:visible" );
+				var radios = $( this ).next( "div" ).find( "input" );
 				radios.first().prop( "checked", true ).trigger( 'change' );
 			}
 		}
