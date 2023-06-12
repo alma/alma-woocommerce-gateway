@@ -4,11 +4,11 @@ Changelog
 v4.2.5
 ------
 * fix: fix the accordion css on checkout
+* feat: Update widget to 3.3.2
 
 v4.2.4
 ------
 * feat: Allow to customize the gateway title
-* feat: Update widget to 3.3.2
 
 v4.2.3
 ------
