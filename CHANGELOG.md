@@ -5,6 +5,10 @@ v4.3.0
 ------
 * feat: Implement Pay Now
 
+v4.2.5
+------
+* fix: fix the accordion css on checkout
+
 v4.2.4
 ------
 * feat: Allow to customize the gateway title

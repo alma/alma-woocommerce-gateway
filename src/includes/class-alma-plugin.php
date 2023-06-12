@@ -272,11 +272,11 @@ class Alma_Plugin {
 	 */
 	public function wp_enqueue_scripts() {
 		if ( is_checkout() ) {
-			$alma_checkout     = Alma_Assets_Helper::get_asset_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_JS );
 			$alma_checkout_css = Alma_Assets_Helper::get_asset_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_CSS );
-			wp_enqueue_script( 'alma-checkout-page', $alma_checkout, array( 'jquery', 'jquery-ui-core', 'jquery-ui-accordion' ), ALMA_VERSION, true );
-			wp_enqueue_style( 'alma-checkout-page', $alma_checkout_css, array(), ALMA_VERSION );
+			wp_enqueue_style( 'alma-checkout-page-css', $alma_checkout_css, array(), ALMA_VERSION );
 
+			$alma_checkout_js = Alma_Assets_Helper::get_asset_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_JS );
+			wp_enqueue_script( 'alma-checkout-page', $alma_checkout_js, array( 'jquery', 'jquery-ui-core', 'jquery-ui-accordion' ), ALMA_VERSION, true );
 		}
 	}
 
