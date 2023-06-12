@@ -51,7 +51,7 @@ class Alma_Constants_Helper {
 	const ALMA_LOGO_PATH                 = 'images/alma_logo.svg';
 	const ALMA_SHORT_LOGO_PATH           = 'images/alma_short_logo.svg';
 	const ALMA_PATH_CHECKOUT_JS          = 'js/alma-checkout.js';
-	const ALMA_PATH_CHECKOUT_CSS          = 'css/alma-checkout.css';
+	const ALMA_PATH_CHECKOUT_CSS         = 'css/alma-checkout.css';
 
 	const ERROR = 'error';
 

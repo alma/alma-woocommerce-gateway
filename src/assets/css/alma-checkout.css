@@ -1,28 +1,28 @@
 .alma-angle {
-    display: inline-block;
-    position: relative;
-    width: 7px;
-    height: 7px;
-    background: transparent;
-    text-indent: -9999px;
-    border-top: 2px solid #333333;
-    border-left: 2px solid #333333;
-    transition: all 250ms ease-in-out;
-    text-decoration: none;
-    color: transparent;
-    margin-bottom: 3px;
-    margin-right: 3px;
+	display: inline-block;
+	position: relative;
+	width: 7px;
+	height: 7px;
+	background: transparent;
+	text-indent: -9999px;
+	border-top: 2px solid #333333;
+	border-left: 2px solid #333333;
+	transition: all 250ms ease-in-out;
+	text-decoration: none;
+	color: transparent;
+	margin-bottom: 3px;
+	margin-right: 3px;
 
 }
 
 .alma-angle-down {
-    transform: rotate(-135deg);
+	transform: rotate(-135deg);
 }
 
 .alma-angle-right {
-    transform: rotate(135deg);
+	transform: rotate(135deg);
 }
 
 h5 {
-    text-transform: capitalize;
+	text-transform: capitalize;
 }

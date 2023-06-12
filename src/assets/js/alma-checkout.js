@@ -52,15 +52,17 @@
 		'click',
 		'.payment_method_alma',
 		function (event) {
-			var target = $(event.target);
-        	if (target.is("h5:first, label")) {
-				divsAfterH5.each(function(div) {
-					var visibleInputInDiv = $(div).find("input:visible:first");
-					if (visibleInputInDiv.length) {
-						visibleInputInDiv.prop( "checked", true ).trigger( 'change' );
-						return false;
+			var target = $( event.target );
+			if (target.is( "h5:first, label" )) {
+				divsAfterH5.each(
+					function(div) {
+						var visibleInputInDiv = $( div ).find( "input:visible:first" );
+						if (visibleInputInDiv.length) {
+							visibleInputInDiv.prop( "checked", true ).trigger( 'change' );
+							return false;
+						}
 					}
-				});
+				);
 			}
 		}
 	);
