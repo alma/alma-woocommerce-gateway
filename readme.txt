@@ -71,6 +71,7 @@ To build extension for production run `./bin/build.sh`
 
 = 4.2.5 =
 * fix: fix the accordion css on checkout
+* feat: Update widget to 3.3.2
 
 = 4.2.4 =
 * feat: Allow to customize the gateway title

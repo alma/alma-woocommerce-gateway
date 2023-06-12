@@ -33,16 +33,6 @@ class Alma_Assets_Helper {
 	}
 
 	/**
-	 * Get asset public url.
-	 *
-	 * @param string $path Path to asset relative to the plugin's assets directory.
-	 *
-	 * @return string URL to given asset
-	 */
-	public static function get_public_url( $path ) {
-		return ALMA_PLUGIN_URL . 'public/' . $path;
-	}
-	/**
 	 * Get admin logs url.
 	 *
 	 * @return string
@@ -127,7 +117,7 @@ class Alma_Assets_Helper {
 	 * @return string
 	 */
 	public static function get_icon( $title, $id, $path = Alma_Constants_Helper::ALMA_LOGO_PATH ) {
-		$icon_url = static::get_public_url( $path );
+		$icon_url = static::get_asset_url( $path );
 		$icon     = '<img src="' . \WC_HTTPS::force_https_url( $icon_url ) . '" alt="' . esc_attr( $title ) . '" style="width: auto !important; height: 25px !important; border: none !important;">';
 
 		return apply_filters( 'alma_wc_gateway_icon', $icon, $id );

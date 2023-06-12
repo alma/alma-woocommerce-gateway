@@ -1,3 +1,10 @@
+/**
+ * Checkout page.
+ *
+ * @package Alma_Gateway_For_Woocommerce
+ * @since v4.2.5
+ */
+
 .alma-angle {
 	display: inline-block;
 	position: relative;
@@ -26,26 +33,20 @@
 h5 {
 	text-transform: capitalize;
 }
-/**
- * Checkout page.
- *
- * @package Alma_Gateway_For_Woocommerce
- * @since v4.3.0
- */
 
- .pay-now-text {
+.pay-now-text {
 	background-color: #1A1A1A;
 	color: #FFFFFF;
 	margin: 6px 0 6px 6px;
 	border: 1px solid #1A1A1A;
 	border-radius: 4px;
 	padding: 2px 7px;
- }
+}
 
- .logoContainer {
+.logoContainer {
 	background-color: #FFFFFF;
 	padding: 7px 6px;
 	width: 242px;
 	border: 1px solid #E1E4E6;
 	border-radius: 7px;
- }
+}
