@@ -2,13 +2,13 @@
 # This script retrieves
 # -- the JS unminified file to include in web pages to display the Alma widget.
 # -- the CSS file.
-# -- the fonts.
+
 
 #{{{ SCRIPT CONSTANTS
 ROOT_DIR="`dirname $0`/.."
 BUILD_DIR="$ROOT_DIR/dist/widgets"
 WIDGET_ASSETS_DIR="${ROOT_DIR}/src/assets/widget"
-WIDGET_FONT_DIR="${ROOT_DIR}/src/assets/widget/css"
+WIDGET_CSS_DIR="${ROOT_DIR}/src/assets/widget/css"
 
 CDN_DIST_URL="https://cdn.jsdelivr.net/npm/@alma/widgets@3.x.x/dist"
 CDN_RAW_URL="${CDN_DIST_URL}/raw"
@@ -22,17 +22,6 @@ RAW_FILES="
 css/widgets.css
 js/widgets.umd.js
 js/widgets.umd.js.map
-"
-FONT_FILES="
-assets/fonts/Venn-Regular.woff
-assets/fonts/Venn-Regular.ttf
-assets/fonts/Venn-Regular.eot
-assets/fonts/Venn-Bold.woff
-assets/fonts/Venn-Bold.ttf
-assets/fonts/Venn-Bold.eot
-assets/fonts/ArgentCF-DemiBold.woff
-assets/fonts/ArgentCF-DemiBold.ttf
-assets/fonts/ArgentCF-DemiBold.eot
 "
 #}}}
 
@@ -147,27 +136,13 @@ sync_raw_file() {
 }
 export -f sync_raw_file
 # }}}
-# {{{ function sync_font_file
-#
-sync_font_file() {
-    local font_file
-    font_file="$1"
-    echo "Loading font file '${font_file}' from ${SYNC_FROM}"
-    if [[ "${SYNC_FROM}" = "CDN" ]] ; then
-        curl ${CDN_DIST_URL}/${font_file} > ${WIDGET_FONT_DIR}/${font_file} 2>/dev/null
-    else
-        cat ${GIT_WC_DIST_DIR}/${font_file} > ${WIDGET_FONT_DIR}/${font_file}
-    fi
-}
-export -f sync_font_file
-# }}}
 
 set -Eeuo pipefail
 
 # Running Script
 echo "Preparing Widget folders ..."
-mkdir -p $WIDGET_FONT_DIR/assets/fonts ${WIDGET_ASSETS_DIR}/{css/assets/fonts,js}
-find $WIDGET_FONT_DIR/assets/fonts ${WIDGET_ASSETS_DIR}/{css/assets/fonts,js} -type f -exec rm {} \;
+mkdir -p $WIDGET_CSS_DIR ${WIDGET_ASSETS_DIR}/{css,js}
+find $WIDGET_CSS_DIR ${WIDGET_ASSETS_DIR}/{css,js} -type f -exec rm {} \;
 
 if [[ $SYNC_FROM = "GIT" ]] && ( should_i_build ) ; then
     sync_git_and_build
@@ -175,10 +150,6 @@ fi
 
 for raw_file in ${RAW_FILES} ; do
     sync_raw_file "${raw_file}"
-done
-
-for font_file in $FONT_FILES ; do
-    sync_font_file "${font_file}"
 done
 
 exit 0
