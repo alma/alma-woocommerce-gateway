@@ -493,9 +493,10 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 		$tools = new Alma_Tools_Helper();
 
 		if (
-			! $this->alma_settings->is_allowed_to_see_alma( wp_get_current_user() )
-			|| is_admin()
-			|| ! $tools->check_currency()
+			//! $this->alma_settings->is_allowed_to_see_alma( wp_get_current_user() )
+			//|| is_admin() @TODO : restore
+			//||
+			! $tools->check_currency()
 		) {
 			return false;
 		}

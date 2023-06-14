@@ -20,6 +20,20 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Alma_Order_Helper {
 
+    const SHOP_ORDER = 'shop_order';
+
+    const WC_PROCESSING = 'wc-processing';
+
+    const WC_COMPLETED = 'wc-completed';
+
+    /**
+     * @var array The status order completed.
+     */
+    protected static $status_order_completed = array(
+        self::WC_PROCESSING,
+        self::WC_COMPLETED,
+    );
+
 	/**
 	 * Gets the WC orders in a date range.
 	 *
@@ -32,9 +46,28 @@ class Alma_Order_Helper {
 		return wc_get_orders(
 			array(
 				'date_created' => $from . '...' . $to,
-				'type'         => 'shop_order',
-				'status'       => array( 'wc-processing', 'wc-completed' ),
+				'type'         => self::SHOP_ORDER,
+				'status'       => self::$status_order_completed,
 			)
 		);
 	}
+
+    /**
+     * Gets the WC orders by customer id with limit.
+     *
+     * @param int $customer_id The customer id.
+     * @param int $limit The limit.
+     *
+     * @return \WC_Order[]
+     */
+    public function get_orders_by_customer_id( $customer_id, $limit = 10) {
+        return wc_get_orders(
+            array(
+                'customer_id'  => $customer_id,
+                'limit'        => $limit,
+                'type'         => self::SHOP_ORDER,
+                'status'       => self::$status_order_completed,
+            )
+        );
+    }
 }

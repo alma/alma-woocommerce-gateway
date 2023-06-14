@@ -57,9 +57,11 @@ class Alma_Gateway_Helper {
 	 */
 	public function woocommerce_available_payment_gateways( $available_gateways ) {
 
-		if ( is_admin() ) {
+		/*if ( is_admin() ) {
 			return $available_gateways;
 		}
+		@TODO : restore
+		*/
 
 		$product_helper = new Alma_Product_Helper();
 

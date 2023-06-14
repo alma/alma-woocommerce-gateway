@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Alma\API\Entities\FeePlan;
+use Alma\Woocommerce\Admin\Helpers\Alma_Order_Helper;
 use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
 use Alma\Woocommerce\Alma_Logger;
 use Alma\Woocommerce\Alma_Payment_Upon_Trigger;
@@ -61,7 +62,12 @@ class Alma_Payment {
 	 */
 	protected $cart;
 
-	/**
+    /**
+     * @var Alma_Order_Helper
+     */
+    protected $order_helper;
+
+    /**
 	 * Constructor.
 	 */
 	public function __construct() {
@@ -70,6 +76,7 @@ class Alma_Payment {
 		$this->alma_settings        = new Alma_Settings();
 		$this->tool_helper          = new Alma_Tools_Helper();
 		$this->cart                 = new Alma_Cart();
+        $this->order_helper         = new Alma_Order_Helper();
 	}
 
 	/**
@@ -170,6 +177,7 @@ class Alma_Payment {
 				'addresses'   => array(),
 				'is_business' => $order->is_business(),
 			),
+            'website_customer_details' => $this->build_website_customer_details( $order ),
 		);
 
 		$data = $this->add_upon_trigger_data( $data, $fee_plan );
@@ -183,6 +191,81 @@ class Alma_Payment {
 		return $data;
 	}
 
+    /**
+     * Website Customer Details
+     * @param Alma_Order $order The Alma order.
+     * @return void
+     */
+    protected function build_website_customer_details( $alma_order ) {
+        /**
+         * @var \WC_Order $order The WC order.
+         */
+        $order = $alma_order->get_order();
+        $customer_id = $order->get_customer_id();
+        $is_guest = false;
+
+        if('0' == $customer_id) {
+            $is_guest = true;
+        }
+
+        $var_temp =  array(
+            'is_guest' => $is_guest,
+            'previous_orders' => $this->get_previous_orders_details( $customer_id, $is_guest ),
+        );
+var_dump($var_temp);die;
+        return $var_temp;
+    }
+
+    /**
+     * @param $order
+     * @param $is_guest
+     * @return void
+     */
+    protected function get_previous_orders_details( $customer_id, $is_guest = true ) {
+        if ( $is_guest ) {
+            return array();
+        }
+        
+        $orders = $this->order_helper->get_orders_by_customer_id( $customer_id );
+
+        $order_details = array();
+
+        foreach ($orders as $order) {
+            $order_details[] = $this->get_previous_order_details( $order );
+        }
+
+        return $order_details;
+    }
+
+    /**
+     * @param \WC_Order $order The order.
+     * @return array
+     */
+    protected function get_previous_order_details( $order ) {
+        return array(
+            'purchase_amount' => $this->tool_helper->alma_price_to_cents( $order->get_total() ),
+            'payment_method' => $order->get_payment_method(),
+            'shipping_method' => $order->get_shipping_method(),
+            'created' => $order->get_date_created()->getTimestamp(),
+            'items' => $this->get_previous_order_items_details( $order ),
+        );
+    }
+
+    /**
+     * @param \WC_Order $order The order.
+     * @return array
+     */
+    protected function get_previous_order_items_details( $order ) {
+        $items = $order->get_items();
+
+        $item_details = array();
+
+        foreach ( $items as $item ) {
+            $item_details[] = $this->add_product_data( $item );
+        }
+
+        return $item_details;
+    }
 
 	/**
 	 * Add details of the products.
