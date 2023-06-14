@@ -108,7 +108,7 @@ class Alma_Plan_Builder {
 						'is_checked'           => $plan_key === $default_plan,
 						'plan_class'           => '.' . Alma_Constants_Helper::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS,
 						'plan_id'              => '#' . sprintf( Alma_Constants_Helper::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $plan_key ),
-						'logo_url'             => Alma_Assets_Helper::get_asset_url( "images/${plan_key}_logo.svg" ),
+						'logo_url'             => Alma_Assets_Helper::get_asset_url( sprintf( "images/%s_logo.svg", $plan_key ) ),
 						'upon_trigger_enabled' => $this->alma_settings->payment_upon_trigger_enabled,
 					),
 					'partials'
