@@ -319,7 +319,6 @@ class Alma_Form_Helper {
 		$toggle_label  = '';
 
 		if ( $fee_plan->isPayNow() ) {
-			// translators: %d: number of installments.
 			$section_title = __( '→ Pay Now', 'alma-gateway-for-woocommerce' );
 			// translators: %d: number of installments.
 			$toggle_label = sprintf( __( 'Enable %d-installment payments with Alma', 'alma-gateway-for-woocommerce' ), $fee_plan->getInstallmentsCount() );
