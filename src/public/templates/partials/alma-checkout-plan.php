@@ -31,7 +31,7 @@
 		?>
 		<span class="logoContainer" style="margin-top: 10px !important;">
 		<img src="<?php echo esc_attr( $logo_url ); ?>"
-			 style="float: unset !important; width: auto !important; height: 15px !important;  border: none !important; vertical-align: middle; display: inline-block;"
+			 style="float: unset !important; width: auto !important; height: 15px !important;  border: none !important; vertical-align: middle; display: inline-block; margin-left: 2px;"
 			 alt="
 					<?php
 					// translators: %s: plan_key alt image.
