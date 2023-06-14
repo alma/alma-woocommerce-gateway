@@ -7,3 +7,4 @@ plugins/
 src/composer.lock
 /crowdin.properties
 /crowdin.deb
+crowdin.yml

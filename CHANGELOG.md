@@ -4,6 +4,7 @@ Changelog
 v4.3.0
 ------
 * feat: Implement Pay Now
+* feat: Comptatibility woocommerce 7.8.0
 
 v4.2.5
 ------
