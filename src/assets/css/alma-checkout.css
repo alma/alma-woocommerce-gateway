@@ -37,16 +37,17 @@ h5 {
 .pay-now-text {
 	background-color: #1A1A1A;
 	color: #FFFFFF;
-	margin: 6px 0 6px 6px;
+	margin: 2px 2px;
 	border: 1px solid #1A1A1A;
 	border-radius: 4px;
 	padding: 2px 7px;
+	font-size: 10px;
 }
 
 .logoContainer {
 	background-color: #FFFFFF;
-	padding: 7px 6px;
-	width: 242px;
+	padding: 2px 2px 4px 2px;
+	width: fit-content;
 	border: 1px solid #E1E4E6;
 	border-radius: 7px;
 }
