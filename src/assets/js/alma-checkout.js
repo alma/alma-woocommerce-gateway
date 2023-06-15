@@ -54,15 +54,11 @@
 		function (event) {
 			var target = $( event.target );
 			if (target.is( "h5:first, label" )) {
-				divsAfterH5.each(
-					function(div) {
-						var visibleInputInDiv = $( div ).find( "input:visible:first" );
-						if (visibleInputInDiv.length) {
-							visibleInputInDiv.prop( "checked", true ).trigger( 'change' );
-							return false;
-						}
-					}
-				);
+			var firstVisibleDivAfterH5 = $('h5 + div:first'); 
+			var firstVisibleInputInDiv = firstVisibleDivAfterH5.find( "input:first" );
+			if (firstVisibleInputInDiv.length && !firstVisibleInputInDiv.prop("checked")) {
+				firstVisibleInputInDiv.prop( "checked", true ).trigger( 'change' );
+			}
 			}
 		}
 	);
