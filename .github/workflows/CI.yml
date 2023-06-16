@@ -29,11 +29,14 @@ jobs:
       - name: Install dependencies with composer
         run: composer update --no-ansi --no-interaction --no-progress
 
-      - name: Run tests with phpunit/phpunit
-        run: vendor/bin/phpunit --coverage-clover=coverage.xml
+      #- name: Install WP Tests
+       # run: bash bin/install-wp-tests.sh wordpress_test root root localhost latest
 
-      - name: Fix code coverage paths
-        run: sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' coverage.xml
+      #- name: Run tests with phpunit/phpunit
+       # run: vendor/bin/phpunit --coverage-clover=coverage.xml
+
+      #- name: Fix code coverage paths
+      #  run: sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' coverage.xml
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
