@@ -109,102 +109,69 @@ class Alma_Order {
 	}
 
 	/**
-	 * Get order reference.
-	 *
-	 * @return string
-	 */
-	public function get_order_reference() {
-		return (string) $this->order->get_order_number();
-	}
-
-	/**
-	 * Order has billing address.
-	 *
-	 * @return bool
-	 */
-	public function has_billing_address() {
-		return $this->order->get_billing_address_1() || $this->order->get_billing_address_2();
-	}
-
-	/**
-	 * Order has shipping address.
-	 *
-	 * @return bool
-	 */
-	public function has_shipping_address() {
-		return $this->order->get_shipping_address_1() || $this->order->get_shipping_address_2();
-	}
-
-	/**
 	 * Is it an order for a business customer ?.
 	 *
 	 * @return bool
 	 */
-	public function is_business() {
-		if ( $this->order->get_billing_company() ) {
+	public function is_business($wc_order) {
+		if ( $wc_order->get_billing_company() ) {
 			return true;
 		}
-		return false;
-	}
 
-	/**
-	 * Gets the business name of the order.
-	 *
-	 * @return string
-	 */
-	public function get_business_name() {
-		return $this->get_billing_address()['company'];
+		return false;
 	}
 
 	/**
 	 * Get billing address.
 	 *
+	 * @param \WC_Order $wc_order The order.
 	 * @return array
 	 */
-	public function get_billing_address() {
+	public function get_billing_address( $wc_order ) {
+		if ( ! $wc_order->has_billing_address() ) {
+			return array();
+		}
+
 		return array(
-			'first_name'          => $this->order->get_billing_first_name(),
-			'last_name'           => $this->order->get_billing_last_name(),
-			'company'             => $this->order->get_billing_company(),
-			'line1'               => $this->order->get_billing_address_1(),
-			'line2'               => $this->order->get_billing_address_2(),
-			'postal_code'         => $this->order->get_billing_postcode(),
-			'city'                => $this->order->get_billing_city(),
-			'country'             => $this->order->get_billing_country(),
+			'first_name'          => $wc_order->get_billing_first_name(),
+			'last_name'           => $wc_order->get_billing_last_name(),
+			'company'             => $wc_order->get_billing_company(),
+			'line1'               => $wc_order->get_billing_address_1(),
+			'line2'               => $wc_order->get_billing_address_2(),
+			'postal_code'         => $wc_order->get_billing_postcode(),
+			'city'                => $wc_order->get_billing_city(),
+			'country'             => $wc_order->get_billing_country(),
 			'country_sublocality' => null,
-			'state_province'      => $this->order->get_billing_state(),
-			'email'               => $this->order->get_billing_email(),
-			'phone'               => $this->order->get_billing_phone(),
+			'state_province'      => $wc_order->get_billing_state(),
+			'email'               => $wc_order->get_billing_email(),
+			'phone'               => $wc_order->get_billing_phone(),
 		);
 	}
 
 	/**
 	 * Get shipping address.
 	 *
+	 * @param \WC_Order $wc_order The order.
+	 *
 	 * @return array
 	 */
-	public function get_shipping_address() {
-		return array(
-			'first_name'          => $this->order->get_shipping_first_name(),
-			'last_name'           => $this->order->get_shipping_last_name(),
-			'company'             => $this->order->get_shipping_company(),
-			'line1'               => $this->order->get_shipping_address_1(),
-			'line2'               => $this->order->get_shipping_address_2(),
-			'postal_code'         => $this->order->get_shipping_postcode(),
-			'city'                => $this->order->get_shipping_city(),
-			'country_sublocality' => null,
-			'state_province'      => $this->order->get_shipping_state(),
-			'country'             => $this->order->get_shipping_country(),
-		);
-	}
+	public function get_shipping_address( $wc_order ) {
+		if ( ! $wc_order->has_shipping_address() ) {
+			return array();
+		}
 
-	/**
-	 * Get customer order url.
-	 *
-	 * @return string
-	 */
-	public function get_customer_url() {
-		return $this->order->get_view_order_url();
+		return array(
+			'first_name'          => $wc_order->get_shipping_first_name(),
+			'last_name'           => $wc_order->get_shipping_last_name(),
+			'company'             => $wc_order->get_shipping_company(),
+			'line1'               => $wc_order->get_shipping_address_1(),
+			'line2'               => $wc_order->get_shipping_address_2(),
+			'postal_code'         => $wc_order->get_shipping_postcode(),
+			'city'                => $wc_order->get_shipping_city(),
+			'country_sublocality' => null,
+			'state_province'      => $wc_order->get_shipping_state(),
+			'country'             => $wc_order->get_shipping_country(),
+		);
 	}
 
 	/**

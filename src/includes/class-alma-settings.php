@@ -481,10 +481,10 @@ class Alma_Settings {
 	 */
 	public function create_payments( $order_id, $fee_plan ) {
 		try {
-			$model_payment = new Alma_Payment();
+			$alma_payment = new Alma_Payment();
 			$payment_type  = $this->get_payment_method( $fee_plan );
 
-			$payload = $model_payment->get_payment_payload_from_order( $order_id, $fee_plan, $payment_type );
+			$payload = $alma_payment->get_payment_payload_from_order( $order_id, $fee_plan, $payment_type );
 
 			return $this->alma_client->payments->create( $payload );
 		} catch ( \Exception $e ) {
