@@ -255,12 +255,12 @@ class Alma_Plugin {
 	 */
 	public function handle_customer_return() {
 		$payment_helper = new Alma_Payment_Helper();
-		$order          = $payment_helper->handle_customer_return();
+		$wc_order       = $payment_helper->handle_customer_return();
 
 		// Redirect user to the order confirmation page.
 		$alma_gateway = new Alma_Payment_Gateway();
 
-		$return_url = $alma_gateway->get_return_url( $order->get_order() );
+		$return_url = $alma_gateway->get_return_url( $wc_order );
 		wp_safe_redirect( $return_url );
 		exit();
 	}

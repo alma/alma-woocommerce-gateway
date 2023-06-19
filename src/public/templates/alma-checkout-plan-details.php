@@ -10,7 +10,7 @@
 
 use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
 use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
-use Alma\Woocommerce\Models\Alma_Cart;
+use Alma\Woocommerce\Helpers\Alma_Cart_Helper;
 
 ?>
 
@@ -94,7 +94,7 @@ use Alma\Woocommerce\Models\Alma_Cart;
 		} // end foreach
 
 		if ( $alma_eligibility->getInstallmentsCount() > 4 ) {
-			$alma_cart = new Alma_Cart();
+			$alma_cart_helper = new Alma_Cart_Helper();
 			?>
 			<p style="
 			display: flex;
@@ -115,7 +115,7 @@ use Alma\Woocommerce\Models\Alma_Cart;
 			border-bottom: 1px solid lightgrey;
 		">
 				<span><?php echo esc_html__( 'Your cart:', 'alma-gateway-for-woocommerce' ); ?></span>
-				<span><?php echo wp_kses_post( Alma_Tools_Helper::alma_format_price_from_cents( $alma_cart->get_total_in_cents() ) ); ?></span>
+				<span><?php echo wp_kses_post( Alma_Tools_Helper::alma_format_price_from_cents( $alma_cart_helper->get_total_in_cents() ) ); ?></span>
 			</p>
 			<p style="
 			display: flex;

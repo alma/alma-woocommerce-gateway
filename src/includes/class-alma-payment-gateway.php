@@ -15,6 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\Woocommerce\Admin\Helpers\Alma_Check_Legal_Helper;
 use Alma\Woocommerce\Helpers\Alma_Encryptor_Helper;
+use Alma\Woocommerce\Helpers\Alma_Payment_Helper;
 use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
 use Alma\Woocommerce\Helpers\Alma_Gateway_Helper;
 use Alma\Woocommerce\Helpers\Alma_Checkout_Helper;
@@ -103,13 +104,19 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 	 */
 	protected $check_legal_helper;
 
-		/**
-		 * Helper global.
-		 *
-		 * @var Alma_Tools_Helper
-		 */
+	/**
+	 * Helper global.
+	 *
+	 * @var Alma_Tools_Helper
+	 */
 	protected $tool_helper;
 
+	/**
+	 * The payment helper.
+	 *
+	 * @var Alma_Payment_Helper
+	 */
+	protected $alma_payment_helper;
 
 	/**
 	 * Construct.
@@ -118,20 +125,21 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 	 * @throws Alma_No_Credentials_Exception The exception.
 	 */
 	public function __construct( $check_basics = true ) {
-		$this->id                 = Alma_Constants_Helper::GATEWAY_ID;
-		$this->has_fields         = true;
-		$this->method_title       = __( 'Payment in instalments and deferred with Alma - 1x 2x 3x 4x, D+15 or D+30', 'alma-gateway-for-woocommerce' );
-		$this->method_description = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.', 'alma-gateway-for-woocommerce' );
-		$this->logger             = new Alma_Logger();
-		$this->alma_settings      = new Alma_Settings();
-		$this->check_legal_helper = new Alma_Check_Legal_Helper();
-		$this->checkout_helper    = new Alma_Checkout_Helper();
-		$this->gateway_helper     = new Alma_Gateway_Helper();
-		$this->general_helper     = new Alma_General_Helper();
-		$this->scripts_helper     = new Alma_Assets_Helper();
-		$this->plan_builder       = new Alma_Plan_Builder();
-		$this->encryption_helper  = new Alma_Encryptor_Helper();
-		$this->tool_helper        = new Alma_Tools_Helper();
+		$this->id                  = Alma_Constants_Helper::GATEWAY_ID;
+		$this->has_fields          = true;
+		$this->method_title        = __( 'Payment in instalments and deferred with Alma - 1x 2x 3x 4x, D+15 or D+30', 'alma-gateway-for-woocommerce' );
+		$this->method_description  = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.', 'alma-gateway-for-woocommerce' );
+		$this->logger              = new Alma_Logger();
+		$this->alma_settings       = new Alma_Settings();
+		$this->check_legal_helper  = new Alma_Check_Legal_Helper();
+		$this->checkout_helper     = new Alma_Checkout_Helper();
+		$this->gateway_helper      = new Alma_Gateway_Helper();
+		$this->general_helper      = new Alma_General_Helper();
+		$this->scripts_helper      = new Alma_Assets_Helper();
+		$this->plan_builder        = new Alma_Plan_Builder();
+		$this->encryption_helper   = new Alma_Encryptor_Helper();
+		$this->tool_helper         = new Alma_Tools_Helper();
+		$this->alma_payment_helper = new Alma_Payment_Helper();
 
 		if ( $check_basics ) {
 			$this->check_activation();
@@ -437,7 +445,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 		try {
 			// We ignore the nonce verification because process_payment is called after validate_fields.
 			$fee_plan = $this->alma_settings->build_fee_plan( $_POST[ Alma_Constants_Helper::ALMA_FEE_PLAN ] ); // phpcs:ignore WordPress.Security.NonceVerification
-			$payment  = $this->alma_settings->create_payments( $order_id, $fee_plan );
+			$payment  = $this->alma_payment_helper->create_payments( $order_id, $fee_plan );
 
 			// Redirect user to our payment page.
 			return array(

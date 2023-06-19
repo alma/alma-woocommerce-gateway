@@ -77,18 +77,18 @@ class Alma_Refund_Helper {
 	/**
 	 * Make full refund.
 	 *
-	 * @param \WC_Order $order An order.
+	 * @param \WC_Order $wc_order An order.
 	 * @param integer   $refund_id Refund id.
 	 *
 	 * @return void
 	 */
-	public function make_full_refund( $order, $refund_id = 0 ) {
+	public function make_full_refund( $wc_order, $refund_id = 0 ) {
 
-		if ( '1' === get_post_meta( $order->get_id(), Alma_Constants_Helper::FLAG_ORDER_FULLY_REFUNDED, true ) ) {
+		if ( '1' === get_post_meta( $wc_order->get_id(), Alma_Constants_Helper::FLAG_ORDER_FULLY_REFUNDED, true ) ) {
 			return;
 		}
 
-		$merchant_reference = $order->get_order_number();
+		$merchant_reference = $wc_order->get_order_number();
 
 		// This text is not translated, as it is just made to be sent to Alma API.
 		$comment = 'Refund made by order status changed to "refunded".';
@@ -99,23 +99,23 @@ class Alma_Refund_Helper {
 		}
 
 		try {
-			$this->alma_settings->full_refund( $order->get_transaction_id(), $merchant_reference, $this->format_refund_comment( $comment ) );
+			$this->alma_settings->full_refund( $wc_order->get_transaction_id(), $merchant_reference, $this->format_refund_comment( $comment ) );
 
-			update_post_meta( $order->get_id(), Alma_Constants_Helper::FLAG_ORDER_FULLY_REFUNDED, '1' );
+			update_post_meta( $wc_order->get_id(), Alma_Constants_Helper::FLAG_ORDER_FULLY_REFUNDED, '1' );
 
 			/* translators: %s is a username. */
 			$order_note = sprintf( __( 'Order fully refunded by %s.', 'alma-gateway-for-woocommerce' ), wp_get_current_user()->display_name );
-			$this->add_success_note( $order, $order_note );
+			$this->add_success_note( $wc_order, $order_note );
 
 		} catch ( \Exception $e ) {
 			/* translators: %s is an error message. */
-			$this->add_error_note( $order, sprintf( __( 'Alma full refund error : %s.', 'alma-gateway-for-woocommerce' ), $e->getMessage() ) );
+			$this->add_error_note( $wc_order, sprintf( __( 'Alma full refund error : %s.', 'alma-gateway-for-woocommerce' ), $e->getMessage() ) );
 
 			$this->logger->error(
 				'Error on Alma full refund.',
 				array(
 					'Method'           => __METHOD__,
-					'OrderId'          => $order->get_id(),
+					'OrderId'          => $wc_order->get_id(),
 					'RefundId'         => $refund_id,
 					'ExceptionMessage' => $e->getMessage(),
 				)
@@ -137,84 +137,84 @@ class Alma_Refund_Helper {
 	/**
 	 * Adds a refund success note to an order + a notice
 	 *
-	 * @param \WC_Order $order The order where to add a note & notice.
+	 * @param \WC_Order $wc_order The order where to add a note & notice.
 	 * @param string    $message The message.
 	 *
 	 * @return void
 	 * @see add_order_note()
 	 */
-	public function add_success_note( \WC_Order $order, $message ) {
-		$this->add_order_note( $order, Alma_Constants_Helper::SUCCESS, $message );
+	public function add_success_note( \WC_Order $wc_order, $message ) {
+		$this->add_order_note( $wc_order, Alma_Constants_Helper::SUCCESS, $message );
 	}
 
 	/**
 	 * Adds a refund order note, and a back-office notice.
 	 *
-	 * @param \WC_Order $order An order.
+	 * @param \WC_Order $wc_order An order.
 	 * @param string    $notice_type Notice type.
 	 * @param string    $message Message to display.
 	 *
 	 * @return void
 	 * @see add_notice()
 	 */
-	protected function add_order_note( $order, $notice_type, $message ) {
+	protected function add_order_note( $wc_order, $notice_type, $message ) {
 
 		if ( in_array( $message, $this->messages, true ) ) {
 			return;
 		}
 		$this->messages[] = $message;
 
-		$order->add_order_note( $message );
+		$wc_order->add_order_note( $message );
 
-		$this->add_notice( $order, $notice_type, $message );
+		$this->add_notice( $wc_order, $notice_type, $message );
 	}
 
 	/**
 	 * Adds an alma_refund_notices in post_meta
 	 *
-	 * @param \WC_Order $order The order where to add a note & notice.
+	 * @param \WC_Order $wc_order The order where to add a note & notice.
 	 * @param string    $notice_type Notice type.
 	 * @param string    $message The message.
 	 *
 	 * @return void
 	 */
-	protected function add_notice( \WC_Order $order, $notice_type, $message ) {
-		$refund_notices   = get_post_meta( $order->get_id(), Alma_Constants_Helper::REFUND_NOTICE_META_KEY );
+	protected function add_notice( \WC_Order $wc_order, $notice_type, $message ) {
+		$refund_notices   = get_post_meta( $wc_order->get_id(), Alma_Constants_Helper::REFUND_NOTICE_META_KEY );
 		$refund_notices[] = array(
 			'notice_type' => $notice_type,
 			'message'     => $message,
 		);
-		update_post_meta( $order->get_id(), Alma_Constants_Helper::REFUND_NOTICE_META_KEY, $refund_notices );
+		update_post_meta( $wc_order->get_id(), Alma_Constants_Helper::REFUND_NOTICE_META_KEY, $refund_notices );
 	}
 
 	/**
 	 * Adds a refund error note to an order + a notice
 	 *
-	 * @param \WC_Order $order The order where to add a note & notice.
+	 * @param \WC_Order $wc_order The order where to add a note & notice.
 	 * @param string    $message The message.
 	 *
 	 * @return void
 	 * @see add_order_note()
 	 */
-	public function add_error_note( \WC_Order $order, $message ) {
-		$this->add_order_note( $order, Alma_Constants_Helper::ERROR, $message );
+	public function add_error_note( \WC_Order $wc_order, $message ) {
+		$this->add_order_note( $wc_order, Alma_Constants_Helper::ERROR, $message );
 	}
 
 	/**
 	 * Tells if the order is valid for a partial refund.
 	 *
-	 * @param \WC_Order        $order An order.
+	 * @param \WC_Order        $wc_order An order.
 	 * @param \WC_Order_Refund $refund A Refund object.
 	 *
 	 * @return bool
 	 */
-	public function is_partially_refundable( $order, $refund ) {
+	public function is_partially_refundable( $wc_order, $refund ) {
 		$has_valid_amount = $this->get_refund_amount( $refund ) > 0;
 		if ( ! $has_valid_amount ) {
-			$this->add_error_note( $order, __( 'Amount cannot be equal to 0 to refund with Alma.', 'alma-gateway-for-woocommerce' ) );
+			$this->add_error_note( $wc_order, __( 'Amount cannot be equal to 0 to refund with Alma.', 'alma-gateway-for-woocommerce' ) );
 		}
 
-		return $has_valid_amount && $this->is_fully_refundable( $order );
+		return $has_valid_amount && $this->is_fully_refundable( $wc_order );
 	}
 
 	/**
@@ -231,24 +231,24 @@ class Alma_Refund_Helper {
 	/**
 	 * Tells if the order is valid for a full refund with Alma.
 	 *
-	 * @param \WC_Order $order An order.
+	 * @param \WC_Order $wc_order An order.
 	 *
 	 * @return bool
 	 */
-	public function is_fully_refundable( $order ) {
-		return $this->is_paid_with_alma( $order ) && $this->has_transaction_id( $order );
+	public function is_fully_refundable( $wc_order ) {
+		return $this->is_paid_with_alma( $wc_order ) && $this->has_transaction_id( $wc_order );
 	}
 
 	/**
 	 * Has this order been paid via Alma payment method ?.
 	 *
-	 * @param \WC_Order $order An order.
+	 * @param \WC_Order $wc_order An order.
 	 *
 	 * @return bool
 	 */
-	public function is_paid_with_alma( $order ) {
+	public function is_paid_with_alma( $wc_order ) {
 		return in_array(
-			$order->get_payment_method(),
+			$wc_order->get_payment_method(),
 			array(
 				Alma_Constants_Helper::GATEWAY_ID,
 				Alma_Constants_Helper::ALMA_GATEWAY_PAY_LATER,
@@ -262,20 +262,20 @@ class Alma_Refund_Helper {
 	/**
 	 * Has this order a transaction id ?.
 	 *
-	 * @param \WC_Order $order An order.
+	 * @param \WC_Order $wc_order An order.
 	 *
 	 * @return bool
 	 */
-	protected function has_transaction_id( $order ) {
-		if ( ! $order->get_transaction_id() ) {
+	protected function has_transaction_id( $wc_order ) {
+		if ( ! $wc_order->get_transaction_id() ) {
 			/* translators: %s is an order number. */
-			$this->add_error_note( $order, sprintf( __( 'Error while getting alma transaction_id for order_id : %s.', 'alma-gateway-for-woocommerce' ), $order->get_id() ) );
+			$this->add_error_note( $wc_order, sprintf( __( 'Error while getting alma transaction_id for order_id : %s.', 'alma-gateway-for-woocommerce' ), $wc_order->get_id() ) );
 
 			$this->logger->error(
 				'Error while getting alma transaction_id from an order.',
 				array(
 					'Method'  => __METHOD__,
-					'OrderId' => $order->get_id(),
+					'OrderId' => $wc_order->get_id(),
 				)
 			);
 
@@ -288,12 +288,12 @@ class Alma_Refund_Helper {
 	/**
 	 * Print refund notices previously stored as HTML format
 	 *
-	 * @param \WC_Order $order The order linked to the refund notices.
+	 * @param \WC_Order $wc_order The order linked to the refund notices.
 	 *
 	 * @return void
 	 */
-	public function print_notices( \WC_Order $order ) {
-		$refund_notices = get_post_meta( $order->get_id(), Alma_Constants_Helper::REFUND_NOTICE_META_KEY, true );
+	public function print_notices( \WC_Order $wc_order ) {
+		$refund_notices = get_post_meta( $wc_order->get_id(), Alma_Constants_Helper::REFUND_NOTICE_META_KEY, true );
 
 		if ( ! is_array( $refund_notices ) ) {
 			return;
@@ -314,11 +314,11 @@ class Alma_Refund_Helper {
 	/**
 	 * Deletes refund notices.
 	 *
-	 * @param \WC_Order $order The order linked to the refund notices.
+	 * @param \WC_Order $wc_order The order linked to the refund notices.
 	 *
 	 * @return void
 	 */
-	public function delete_notices( \WC_Order $order ) {
-		delete_post_meta( $order->get_id(), Alma_Constants_Helper::REFUND_NOTICE_META_KEY );
+	public function delete_notices( \WC_Order $wc_order ) {
+		delete_post_meta( $wc_order->get_id(), Alma_Constants_Helper::REFUND_NOTICE_META_KEY );
 	}
 }

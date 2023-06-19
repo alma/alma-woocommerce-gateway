@@ -9,12 +9,9 @@
 
 namespace Alma\Woocommerce;
 
-use Alma\API\Endpoints\Results\Eligibility;
 use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
 use Alma\Woocommerce\Helpers\Alma_Assets_Helper;
 use Alma\Woocommerce\Helpers\Alma_Gateway_Helper;
-use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
-use Alma\Woocommerce\Models\Alma_Cart;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

@@ -13,6 +13,7 @@ namespace Alma\Woocommerce\Admin\Helpers;
 
 use Alma\Woocommerce\Alma_Settings;
 use Alma\Woocommerce\Exceptions\Alma_Api_Soc_Last_Update_Dates_Exception;
+use Alma\Woocommerce\Helpers\Alma_Order_Helper;
 use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -111,18 +112,24 @@ class Alma_Share_Of_Checkout_Helper {
 	protected function get_payload_orders( $orders_by_date_range ) {
 		$order_currencies = array();
 
-		foreach ( $orders_by_date_range as $order ) {
+		foreach ( $orders_by_date_range as $wc_order ) {
+			/**
+			 * The wc order.
+			 *
+			 * @var \WC_Order $wc_order The wc order.
+			 */
 
-			if ( ! isset( $order_currencies[ $order->get_currency() ] ) ) {
-				$order_currencies[ $order->get_currency() ] = array(
+			if ( ! isset( $order_currencies[ $wc_order->get_currency() ] ) ) {
+				$order_currencies[ $wc_order->get_currency() ] = array(
 					'total_order_count' => 0,
 					'total_amount'      => 0,
-					'currency'          => $order->get_currency(),
+					'currency'          => $wc_order->get_currency(),
 				);
 			}
 
-			$order_currencies[ $order->get_currency() ]['total_order_count'] += 1;
-			$order_currencies[ $order->get_currency() ]['total_amount']      += $this->tool_helper->alma_price_to_cents( $order->get_total() );
+			$currency = $wc_order->get_currency();
+			$order_currencies[ $currency ]['total_order_count'] += 1;
+			$order_currencies[ $currency ]['total_amount']      += $this->tool_helper->alma_price_to_cents( $order->get_total() );
 		}
 
 		return array_values( $order_currencies );
@@ -137,19 +144,23 @@ class Alma_Share_Of_Checkout_Helper {
 	 */
 	protected function get_payload_payment_methods( $orders_by_date_range ) {
 		$payment_methods_currencies = array();
-		foreach ( $orders_by_date_range as $order ) {
-
-			if ( ! isset( $payment_methods_currencies[ $order->get_payment_method() ] ) ) {
-				$payment_methods_currencies[ $order->get_payment_method() ] = array();
+		foreach ( $orders_by_date_range as $wc_order ) {
+			/**
+			 * The wc order.
+			 *
+			 * @var \WC_Order $wc_order The wc order.
+			 */
+			if ( ! isset( $payment_methods_currencies[ $wc_order->get_payment_method() ] ) ) {
+				$payment_methods_currencies[ $wc_order->get_payment_method() ] = array();
 			}
-			if ( ! isset( $payment_methods_currencies[ $order->get_payment_method() ][ $order->get_currency() ] ) ) {
-				$payment_methods_currencies[ $order->get_payment_method() ][ $order->get_currency() ] = array(
+			if ( ! isset( $payment_methods_currencies[ $wc_order->get_payment_method() ][ $wc_order->get_currency() ] ) ) {
+				$payment_methods_currencies[ $wc_order->get_payment_method() ][ $wc_order->get_currency() ] = array(
 					'order_count' => 0,
 					'amount'      => 0,
 				);
 			}
-			$payment_methods_currencies[ $order->get_payment_method() ][ $order->get_currency() ]['order_count'] += 1;
-			$payment_methods_currencies[ $order->get_payment_method() ][ $order->get_currency() ]['amount']      += $this->tool_helper->alma_price_to_cents( $order->get_total() );
+			$payment_methods_currencies[ $wc_order->get_payment_method() ][ $wc_order->get_currency() ]['order_count'] += 1;
+			$payment_methods_currencies[ $wc_order->get_payment_method() ][ $wc_order->get_currency() ]['amount']      += $this->tool_helper->alma_price_to_cents( $wc_order->get_total() );
 		}
 
 		$payment_methods = array();

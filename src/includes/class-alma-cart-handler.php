@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-use Alma\Woocommerce\Models\Alma_Cart;
+use Alma\Woocommerce\Helpers\Alma_Cart_Helper;
 use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
 
 /**
@@ -57,8 +57,8 @@ class Alma_Cart_Handler extends Alma_Generic_Handler {
 			}
 		}
 
-		$cart   = new Alma_Cart();
-		$amount = $cart->get_total_in_cents();
+		$cart_helper = new Alma_Cart_Helper();
+		$amount      = $cart_helper->get_total_in_cents();
 
 		$this->inject_payment_plan_widget( $has_excluded_products, $amount, Alma_Constants_Helper::JQUERY_CART_UPDATE_EVENT );
 	}

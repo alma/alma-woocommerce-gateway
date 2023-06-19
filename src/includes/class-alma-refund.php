@@ -96,12 +96,12 @@ class Alma_Refund {
 	 * @return void
 	 */
 	public function woocommerce_order_status_changed( $order_id, $previous_status, $next_status ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
-		$order = wc_get_order( $order_id );
+		$wc_order = wc_get_order( $order_id );
 		if (
 			'refunded' === $next_status &&
-			true === $this->helper->is_fully_refundable( $order )
+			true === $this->helper->is_fully_refundable( $wc_order )
 		) {
-			$this->helper->make_full_refund( $order );
+			$this->helper->make_full_refund( $wc_order );
 		}
 	}
 
@@ -165,10 +165,11 @@ class Alma_Refund {
 	 * @return void
 	 */
 	public function admin_notices() {
-		$order = wc_get_order();
-		if ( $order ) {
-			$this->helper->print_notices( $order );
-			$this->helper->delete_notices( $order );
+		$wc_order = wc_get_order();
+
+		if ( $wc_order ) {
+			$this->helper->print_notices( $wc_order );
+			$this->helper->delete_notices( $wc_order );
 		}
 	}
 
@@ -180,21 +181,21 @@ class Alma_Refund {
 	 * @return void
 	 */
 	public function woocommerce_order_partially_refunded( $order_id, $refund_id ) {
-		$order  = wc_get_order( $order_id );
-		$refund = new \WC_Order_Refund( $refund_id );
-		if ( ! $this->helper->is_partially_refundable( $order, $refund ) ) {
+		$wc_order = wc_get_order( $order_id );
+		$refund   = new \WC_Order_Refund( $refund_id );
+		if ( ! $this->helper->is_partially_refundable( $wc_order, $refund ) ) {
 			return;
 		}
 
 		$amount_to_refund   = $this->helper->get_refund_amount( $refund );
-		$merchant_reference = $order->get_order_number();
+		$merchant_reference = $wc_order->get_order_number();
 		$comment            = $this->helper->format_refund_comment( $refund->get_reason() );
 		try {
-			$this->settings_helper->partial_refund( $order->get_transaction_id(), $amount_to_refund, $merchant_reference, $comment );
+			$this->settings_helper->partial_refund( $wc_order->get_transaction_id(), $amount_to_refund, $merchant_reference, $comment );
 
 			$refund = new \WC_Order_Refund( $refund_id );
 			$this->helper->add_success_note(
-				$order,
+				$wc_order,
 				sprintf(
 				/* translators: %1$s is a username, %2$s is an amount with currency. */
 					__( '%1$s refunded %2$s with Alma.', 'alma-gateway-for-woocommerce' ),
@@ -204,7 +205,7 @@ class Alma_Refund {
 			);
 		} catch ( \Exception $e ) {
 			/* translators: %s is an error message. */
-			$this->helper->add_error_note( $order, sprintf( __( 'Alma partial refund error : %s.', 'alma-gateway-for-woocommerce' ), $e->getMessage() ) );
+			$this->helper->add_error_note( $wc_order, sprintf( __( 'Alma partial refund error : %s.', 'alma-gateway-for-woocommerce' ), $e->getMessage() ) );
 
 			$this->logger->error(
 				'Error on Alma partial refund.',
@@ -226,12 +227,12 @@ class Alma_Refund {
 	 * @return void
 	 */
 	public function woocommerce_order_fully_refunded( $order_id, $refund_id ) {
-		$order = wc_get_order( $order_id );
+		$wc_order = wc_get_order( $order_id );
 		if (
-			'refunded' === $order->get_status() &&
-			true === $this->helper->is_fully_refundable( $order )
+			'refunded' === $wc_order->get_status() &&
+			true === $this->helper->is_fully_refundable( $wc_order )
 		) {
-			$this->helper->make_full_refund( $order, $refund_id );
+			$this->helper->make_full_refund( $wc_order, $refund_id );
 		}
 	}
 

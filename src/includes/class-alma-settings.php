@@ -23,16 +23,15 @@ use Alma\API\RequestError;
 use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Accept_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Deny_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Api_Soc_Last_Update_Dates_Exception;
+use Alma\Woocommerce\Helpers\Alma_Cart_Helper;
 use Alma\Woocommerce\Helpers\Alma_Encryptor_Helper;
 use Alma\Woocommerce\Helpers\Alma_Fee_Plan_Helper;
+use Alma\Woocommerce\Helpers\Alma_Payment_Helper;
 use Alma\Woocommerce\Helpers\Alma_Settings_Helper as Alma_Helper_Settings;
 use Alma\Woocommerce\Exceptions\Alma_Plans_Definition_Exception;
 use Alma\Woocommerce\Helpers\Alma_General_Helper;
-use Alma\Woocommerce\Models\Alma_Cart;
 use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
-use Alma\Woocommerce\Models\Alma_Payment;
 use Alma\Woocommerce\Helpers\Alma_Internationalization_Helper;
-use Alma\Woocommerce\Exceptions\Alma_Api_Create_Payments_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Api_Fetch_Payments_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Api_Trigger_Payments_Exception;
@@ -126,12 +125,21 @@ class Alma_Settings {
 	public $fee_plan_helper;
 
 	/**
+	 * The cart helper.
+	 *
+	 * @var Alma_Cart_Helper
+	 */
+	public $cart_helper;
+
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
 		$this->logger           = new Alma_Logger();
 		$this->encryptor_helper = new Alma_Encryptor_Helper();
 		$this->fee_plan_helper  = new Alma_Fee_Plan_Helper();
+		$this->cart_helper      = new Alma_Cart_Helper();
 
 		$this->load_settings();
 	}
@@ -468,60 +476,6 @@ class Alma_Settings {
 		}
 
 		return true;
-	}
-
-	/**
-	 * Call the payment api and create.
-	 *
-	 * @param string  $order_id The order id.
-	 * @param  FeePlan $fee_plan The fee plan.
-	 *
-	 * @return Payment
-	 * @throws Alma_Api_Create_Payments_Exception Create payment exception.
-	 */
-	public function create_payments( $order_id, $fee_plan ) {
-		try {
-			$alma_payment = new Alma_Payment();
-			$payment_type  = $this->get_payment_method( $fee_plan );
-
-			$payload = $alma_payment->get_payment_payload_from_order( $order_id, $fee_plan, $payment_type );
-
-			return $this->alma_client->payments->create( $payload );
-		} catch ( \Exception $e ) {
-			$this->logger->error( sprintf( 'Api create_payments, order id "%s" , Api message "%s"', $order_id, $e->getMessage() ) );
-			throw new Alma_Api_Create_Payments_Exception( $order_id, $fee_plan );
-		}
-	}
-
-	/**
-	 * Get the payment method fee plan title.
-	 *
-	 * @param FeePlan $fee_plan The fee plan.
-	 * @return string
-	 *
-	 * @throws Alma_Plans_Definition_Exception Exception.
-	 */
-	public function get_payment_method( $fee_plan ) {
-		if ( $fee_plan->isPnXOnly() || $fee_plan->isPayNow() ) {
-			// translators: %d: number of installments.
-			return sprintf( __( 'Selected payment method : %d installment with Alma', 'alma-gateway-for-woocommerce' ), $fee_plan->getInstallmentsCount() );
-		}
-
-		if ( $fee_plan->isPayLaterOnly() ) {
-			$deferred_months = $fee_plan->getDeferredMonths();
-			$deferred_days   = $fee_plan->getDeferredDays();
-
-			if ( $deferred_days ) {
-				// translators: %d: number of deferred days.
-				return sprintf( __( 'Selected payment method : D+%d deferred  with Alma', 'alma-gateway-for-woocommerce' ), $deferred_days );
-			}
-			if ( $deferred_months ) {
-				// translators: %d: number of deferred months.
-				return sprintf( __( 'Selected payment method : M+%d deferred with Alma', 'alma-gateway-for-woocommerce' ), $deferred_months );
-			}
-		}
-
-		throw new Alma_Plans_Definition_Exception();
 	}
 
 	/**
@@ -950,7 +904,7 @@ class Alma_Settings {
 		}
 
 		return array_filter(
-			$this->get_eligible_plans_keys( ( new Alma_Cart() )->get_total_in_cents() ),
+			$this->get_eligible_plans_keys( $this->cart_helper->get_total_in_cents() ),
 			function ( $key ) use ( $cart_eligibilities ) {
 				if ( is_array( $cart_eligibilities ) ) {
 					return array_key_exists( $key, $cart_eligibilities );
@@ -971,7 +925,7 @@ class Alma_Settings {
 
 			try {
 				$this->get_alma_client();
-				$this->eligibilities = $this->alma_client->payments->eligibility( Alma_Payment::get_eligibility_payload_from_cart() );
+				$this->eligibilities = $this->alma_client->payments->eligibility( Alma_Payment_Helper::get_eligibility_payload_from_cart() );
 			} catch ( \Exception $error ) {
 				$this->logger->error( $error->getMessage(), $error->getTrace() );
 
@@ -1061,7 +1015,7 @@ class Alma_Settings {
 	 * @return array<array>
 	 */
 	public function get_eligible_plans_for_cart() {
-		$amount = ( new Alma_Cart() )->get_total_in_cents();
+		$amount = $this->cart_helper->get_total_in_cents();
 
 		return array_values(
 			array_map(

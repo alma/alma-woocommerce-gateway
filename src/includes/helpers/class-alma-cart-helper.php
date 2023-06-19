@@ -1,31 +1,26 @@
 <?php
 /**
- * Alma_Cart.
+ * Alma_Cart_Helper.
+ *
+ * @since 4.?
  *
  * @package Alma_Gateway_For_Woocommerce
- * @subpackage Alma_Gateway_For_Woocommerce/includes/models
- * @namespace Alma\Woocommerce\Models
+ * @subpackage Alma_Gateway_For_Woocommerce/includes/helpers
+ * @namespace Alma\Woocommerce\Helpers
  */
 
-namespace Alma\Woocommerce\Models;
+namespace Alma\Woocommerce\Helpers;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
+use Alma\Woocommerce\Alma_Logger;
 
 /**
- * Alma_Cart
+ * Class Alma_Cart_Helper.
  */
-class Alma_Cart {
-
-	/**
-	 * Cart
-	 *
-	 * @var \WC_Cart|null
-	 */
-	protected $cart;
+class Alma_Cart_Helper {
 
 	/**
 	 * Helper global.
@@ -40,7 +35,6 @@ class Alma_Cart {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->cart        = WC()->cart;
 		$this->tool_helper = new Alma_Tools_Helper();
 	}
 
@@ -61,15 +55,14 @@ class Alma_Cart {
 	 * @return float
 	 */
 	protected function get_total_from_cart() {
-		if ( ! $this->cart ) {
+		if ( ! wc()->cart ) {
 			return 0;
 		}
 
 		if ( version_compare( WC()->version, '3.2.0', '<' ) ) {
-			return $this->cart->total;
+			return wc()->cart->total;
 		}
 
-		return $this->cart->get_total( null );
+		return wc()->cart->get_total( null );
 	}
-
 }
