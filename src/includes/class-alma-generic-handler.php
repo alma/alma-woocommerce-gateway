@@ -204,11 +204,7 @@ class Alma_Generic_Handler {
 					if ( ! isset( $plan_definition['installments_count'] ) ) { // Widget does not work fine without installments_count.
 						return false;
 					}
-					if ( 1 === $plan_definition['installments_count'] &&
-						0 === $plan_definition['deferred_days'] &&
-						0 === $plan_definition['deferred_months'] ) {
-						return false;
-					}
+
 					return true;
 				}
 			)

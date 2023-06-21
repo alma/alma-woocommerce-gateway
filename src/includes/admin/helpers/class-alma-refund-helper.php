@@ -253,6 +253,7 @@ class Alma_Refund_Helper {
 				Alma_Constants_Helper::GATEWAY_ID,
 				Alma_Constants_Helper::ALMA_GATEWAY_PAY_LATER,
 				Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR,
+				Alma_Constants_Helper::ALMA_GATEWAY_PAY_NOW,
 			),
 			true
 		);

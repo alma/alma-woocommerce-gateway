@@ -7,7 +7,7 @@
 - Tested up to Wordpress: 6.2.2
 - Tested up to Woocommerce: 7.8.0
 - Requires PHP: 5.6
-- Stable tag: 4.2.5
+- Stable tag: 4.3.0
 - License: GPLv3
 - License URI: https://www.gnu.org/licenses/gpl-3.0.html
 - Support: support@getalma.eu
@@ -31,14 +31,16 @@ You first need to create your merchant account on [dashboard.getalma.eu](https:/
 ### Configuring the plugin
 
 After installing the plugin, go to WooCommerce settings and activate the new Alma payment method.
+
 You should be redirected to the payment method settings upon activation.
 
-Fill in the API keys for your account, which you can find on your dashboard\'s [security page](https://dashboard.getalma.eu/security).
+Fill in the API keys for your account, which you can find on your dashboard's [security page](https://dashboard.getalma.eu/security).
 
-After you save your API keys, you\'ll have access to different settings to control what the plugin should display on the Cart and Checkout pages.
-We advise you to stay in \"Test\" mode until you\'re happy with your configuration and are ready to accept payments from your customers.
+After you save your API keys, you'll have access to different settings to control what the plugin should display on the Cart and Checkout pages.
 
-Once everything is properly set up, go ahead and switch to \"Live\" mode!
+We advise you to stay in "Test" mode until you're happy with your configuration and are ready to accept payments from your customers.
+
+Once everything is properly set up, go ahead and switch to "Live" mode!
 
 ## Shortcodes
 
@@ -56,11 +58,11 @@ There are two shortcodes available:
 
 For the Cart Eligibility
 
-![Alma\'s Cart Eligibility Settings](.wordpress.org/screenshot-shortcode-1.png)
+![Alma's Cart Eligibility Settings](.wordpress.org/screenshot-shortcode-1.png)
 
 For the Product Eligibility
 
-![Alma\'s Cart Eligibility Settings](.wordpress.org/screenshot-shortcode-2.png)
+![Alma's Cart Eligibility Settings](.wordpress.org/screenshot-shortcode-2.png)
 
 ### Usage
 
@@ -120,8 +122,8 @@ function inject_alma_cart_eligibility_into_cart() {
    will explain why the badge is not displayed. Use this option if you don't see the widget on a page you added the
    shortcode in. e.g: `[alma-product-eligibility id=10 debug=on]`
 
-   ![Alma\'s Eligibility Shortcode Debug Rendering](.wordpress.org/screenshot-shortcode-3.png)
-   ![Alma\'s Eligibility Shortcode Debug Rendering](.wordpress.org/screenshot-shortcode-4.png)
+   ![Alma's Eligibility Shortcode Debug Rendering](.wordpress.org/screenshot-shortcode-3.png)
+   ![Alma's Eligibility Shortcode Debug Rendering](.wordpress.org/screenshot-shortcode-4.png)
 
 ### Limitation
 
@@ -132,28 +134,13 @@ the second and following will not be displayed.
 
 ## Screenshots
 
-![Alma\'s payment method settings](.wordpress.org/screenshot-1.png)
+![Alma's payment method settings](.wordpress.org/screenshot-1.png)
 ![Product eligibility for monthly payments](.wordpress.org/screenshot-2.png)
 ![Cart eligibility for monthly payments](.wordpress.org/screenshot-3.png)
 ![Alma badge reinsurance Info](.wordpress.org/screenshot-4.png)
 ![Payment method at checkout](.wordpress.org/screenshot-5.png)
-![Alma\'s payment page that users are sent to upon order confirmation](.wordpress.org/screenshot-6.png)
+![Alma's payment page that users are sent to upon order confirmation](.wordpress.org/screenshot-6.png)
 
-## Contributing
+## Documentation
 
-- Clone the repository from https://github.com/alma/alma-woocommerce-gateway in you wp-content/plugins/alma-gateway-for-woocommerce folder
-- Run `composer install` to install dependencies
-- Create an account on http://dashboard.sandbox.getalma.eu/ to get an API key
-- Fill your API key in plugin settings
-- Visit the shop and add a product to the cart to see Alma in action
-
-### Translations
-
-To edit the translations, use [Poedit](https://poedit.net/)
-
-- Open the `.pot` file and click on `Update from code`, then save
-- Open the `.po` file and click on `Update from code`, add/update the translations, then save
-
-### Build
-
-To build extension for production run `./bin/build.sh`
+You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)

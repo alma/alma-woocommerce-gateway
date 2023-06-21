@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v4.3.0
+------
+* feat: Implement Pay Now
+* feat: Compatibility woocommerce 7.8.0
+* feat: Update Widget to 3.3.3
+
 v4.2.5
 ------
 * fix: fix the accordion css on checkout

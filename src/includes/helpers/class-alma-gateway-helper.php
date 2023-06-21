@@ -116,11 +116,29 @@ class Alma_Gateway_Helper {
 			return $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PAY_LATER );
 		}
 
+		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_NOW === $id ) {
+			return $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PAY_NOW );
+		}
+
 		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR === $id ) {
 			return $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PNX_PLUS_4 );
 		}
 
 		throw new Alma_Exception( sprintf( 'Unknown gateway id : %s', $id ) );
+	}
+
+	/**
+	 * Get the title to replace the icon
+	 *
+	 * @param string $id The alma gateway type id.
+	 * @return string
+	 */
+	public function get_alma_gateway_logo_text( $id ) {
+		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_NOW === $id ) {
+			return __( 'Pay Now', 'alma-gateway-for-woocommerce' );
+		}
+
+		return 'null';
 	}
 
 	/**
@@ -137,6 +155,10 @@ class Alma_Gateway_Helper {
 
 		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_LATER === $id ) {
 			return $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PAY_LATER );
+		}
+
+		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_NOW === $id ) {
+			return $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PAY_NOW );
 		}
 
 		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR === $id ) {

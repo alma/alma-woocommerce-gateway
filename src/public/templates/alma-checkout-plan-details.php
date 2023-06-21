@@ -23,7 +23,7 @@ use Alma\Woocommerce\Models\Alma_Cart;
 		class="<?php echo esc_attr( Alma_Constants_Helper::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS ); ?>"
 		data-gateway-id="<?php echo esc_attr( $alma_gateway_id ); ?>"
 		style="
-			margin: 0 auto;
+			margin: 0 auto 15px auto;
 		<?php if ( $alma_key !== $alma_default_plan ) { ?>
 			display: none;
 		<?php } ?>
@@ -69,7 +69,7 @@ use Alma\Woocommerce\Models\Alma_Cart;
 				} else {
 					$alma_justify_fees = 'right';
 					if ( 'yes' === $upon_trigger_enabled && $alma_eligibility->getInstallmentsCount() <= 4 ) {
-						 /* translators: %s:  term */
+						/* translators: %s:  term */
 						echo '<span>' . esc_html( sprintf( _n( 'In %s month', 'In %s months', $alma_plan_index - 1, 'alma-gateway-for-woocommerce' ), $alma_plan_index - 1 ) ) . '</span>';
 					} else {
 						echo '<span>' . esc_html( date_i18n( get_option( 'date_format' ), $alma_step['due_date'] ) ) . '</span>';

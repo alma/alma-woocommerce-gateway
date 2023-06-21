@@ -24,6 +24,7 @@ use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Accept_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Deny_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Api_Soc_Last_Update_Dates_Exception;
 use Alma\Woocommerce\Helpers\Alma_Encryptor_Helper;
+use Alma\Woocommerce\Helpers\Alma_Fee_Plan_Helper;
 use Alma\Woocommerce\Helpers\Alma_Settings_Helper as Alma_Helper_Settings;
 use Alma\Woocommerce\Exceptions\Alma_Plans_Definition_Exception;
 use Alma\Woocommerce\Helpers\Alma_General_Helper;
@@ -116,12 +117,21 @@ class Alma_Settings {
 	 */
 	public $encryptor_helper;
 
+
+	/**
+	 * The fee plan helper.
+	 *
+	 * @var Alma_Fee_Plan_Helper
+	 */
+	public $fee_plan_helper;
+
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
 		$this->logger           = new Alma_Logger();
 		$this->encryptor_helper = new Alma_Encryptor_Helper();
+		$this->fee_plan_helper  = new Alma_Fee_Plan_Helper();
 
 		$this->load_settings();
 	}
@@ -208,13 +218,13 @@ class Alma_Settings {
 	}
 
 	/**
-	 * Tells if the merchant has at least one "pnx" payment method enabled in the WC back-office.
+	 * Tells if the merchant has pay now payment method enabled in the WC back-office.
 	 *
 	 * @return bool
 	 */
-	public function has_pnx() {
+	public function has_pay_now() {
 		foreach ( $this->get_enabled_plans_definitions() as $plan_definition ) {
-			if ( $plan_definition['installments_count'] <= 4 ) {
+			if ( 1 === $plan_definition['installments_count'] ) {
 				return true;
 			}
 		}
@@ -248,6 +258,8 @@ class Alma_Settings {
 				);
 			}
 		}
+
+		uksort( $plans, array( $this->fee_plan_helper, 'alma_usort_plans_keys' ) );
 
 		return $plans;
 	}
@@ -490,9 +502,13 @@ class Alma_Settings {
 	 * @throws Alma_Plans_Definition_Exception Exception.
 	 */
 	public function get_payment_method( $fee_plan ) {
+		if ( $fee_plan->isPayNow() ) {
+			return __( 'Selected payment method : Pay Now with Alma', 'alma-gateway-for-woocommerce' );
+		}
+
 		if ( $fee_plan->isPnXOnly() ) {
 			// translators: %d: number of installments.
-			return sprintf( __( 'Selected payment method : %d installment with Alma', 'alma-gateway-for-woocommerce' ), $fee_plan->getInstallmentsCount() );
+			return sprintf( __( 'Selected payment method : %d installments with Alma', 'alma-gateway-for-woocommerce' ), $fee_plan->getInstallmentsCount() );
 		}
 
 		if ( $fee_plan->isPayLaterOnly() ) {
@@ -820,7 +836,7 @@ class Alma_Settings {
 
 		foreach ( $this->allowed_fee_plans as $fee_plan ) {
 			$plan_key           = $fee_plan->getPlanKey();
-			$default_min_amount = $fee_plan->min_purchase_amount;
+			$default_min_amount = $this->fee_plan_helper->get_min_purchase_amount( $fee_plan );
 			$default_max_amount = $fee_plan->max_purchase_amount;
 			$min_key            = "min_amount_$plan_key";
 			$max_key            = "max_amount_$plan_key";
@@ -868,7 +884,11 @@ class Alma_Settings {
 		if ( ! $fee_plan->allowed ) {
 			return false;
 		}
-		if ( $fee_plan->isPayLaterOnly() || $fee_plan->isPnXOnly() ) {
+		if (
+			$fee_plan->isPayLaterOnly()
+			|| $fee_plan->isPnXOnly()
+			|| $fee_plan->isPayNow()
+		) {
 			return true;
 		}
 
@@ -1006,6 +1026,12 @@ class Alma_Settings {
 	 */
 	public function should_display_plan( $plan_key, $gateway_id ) {
 		switch ( $gateway_id ) {
+			case Alma_Constants_Helper::ALMA_GATEWAY_PAY_NOW:
+				$should_display = (
+					$this->get_installments_count( $plan_key ) === 1
+					&& ( $this->get_deferred_days( $plan_key ) === 0 && $this->get_deferred_months( $plan_key ) === 0 )
+				);
+				break;
 			case Alma_Constants_Helper::GATEWAY_ID:
 				$should_display = in_array(
 					$this->get_installments_count( $plan_key ),
@@ -1086,36 +1112,6 @@ class Alma_Settings {
 	}
 
 	/**
-	 * Populate array with plan settings.
-	 *
-	 * @param string $plan_key The plan key.
-	 *
-	 * @return array
-	 * @throws Alma_Plans_Definition_Exception Alma_Plans_Definition_Exception.
-	 */
-	public function get_fee_plan_definition( $plan_key ) {
-
-		$definition = array();
-
-		if ( ! isset( $this->settings[ "installments_count_$plan_key" ] ) ) {
-			throw new Alma_Plans_Definition_Exception( "installments_count_$plan_key not set" );
-		}
-
-		if ( ! isset( $this->settings[ "deferred_days_$plan_key" ] ) ) {
-			throw new Alma_Plans_Definition_Exception( "deferred_days_$plan_key not set" );
-		}
-
-		if ( ! isset( $this->settings[ "deferred_months_$plan_key" ] ) ) {
-			throw new Alma_Plans_Definition_Exception( "deferred_months_$plan_key not set" );
-		}
-
-		$definition['installments_count'] = $this->settings[ "installments_count_$plan_key" ];
-		$definition['deferred_days']      = $this->settings[ "deferred_days_$plan_key" ];
-		$definition['deferred_months']    = $this->settings[ "deferred_months_$plan_key" ];
-
-		return $definition;
-	}
-
 	/**
 	 * Populate fee plan
 	 *

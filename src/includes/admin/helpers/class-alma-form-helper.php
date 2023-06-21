@@ -19,6 +19,7 @@ use Alma\API\Entities\FeePlan;
 use Alma\Woocommerce\Helpers\Alma_Assets_Helper;
 use Alma\Woocommerce\Alma_Settings;
 use Alma\Woocommerce\Alma_Payment_Upon_Trigger;
+use Alma\Woocommerce\Helpers\Alma_Fee_Plan_Helper;
 use Alma\Woocommerce\Helpers\Alma_Settings_Helper as Alma_Helper_Settings;
 use Alma\Woocommerce\Helpers\Alma_Internationalization_Helper;
 use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
@@ -46,11 +47,19 @@ class Alma_Form_Helper {
 	protected $payment_upon_trigger;
 
 	/**
+	 * Fee plan helper.
+	 *
+	 * @var Alma_Fee_Plan_Helper
+	 */
+	protected $fee_plan_helper;
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
 		$this->settings_helper      = new Alma_Settings();
 		$this->payment_upon_trigger = new Alma_Payment_Upon_Trigger();
+		$this->fee_plan_helper      = new Alma_Fee_Plan_Helper();
 	}
 
 
@@ -182,12 +191,16 @@ class Alma_Form_Helper {
 			),
 		);
 		$select_options   = $this->generate_select_options();
+
+		uksort( $select_options, array( $this->fee_plan_helper, 'alma_usort_plans_keys' ) );
+
 		if ( count( $select_options ) === 0 ) {
 			/* translators: %s: Alma conditions URL */
 			$title_field['fee_plan_section']['description'] = sprintf( __( '⚠ There is no fee plan allowed in your <a href="%s" target="_blank">Alma dashboard</a>.', 'alma-gateway-for-woocommerce' ), Alma_Assets_Helper::get_alma_dashboard_url( $this->settings_helper->get_environment(), 'conditions' ) );
 
 			return $title_field;
 		}
+
 		$selected_fee_plan = $this->generate_selected_fee_plan_key( $select_options, $default_settings );
 
 		foreach ( $this->settings_helper->allowed_fee_plans as $fee_plan ) {
@@ -227,6 +240,11 @@ class Alma_Form_Helper {
 			if ( $fee_plan->isPnXOnly() ) {
 				// translators: %d: number of installments.
 				$select_label = sprintf( __( '→ %d-installment payment', 'alma-gateway-for-woocommerce' ), $fee_plan->getInstallmentsCount() );
+			}
+
+			if ( $fee_plan->isPayNow() ) {
+				// translators: %d: number of installments.
+				$select_label = __( '→ Pay Now', 'alma-gateway-for-woocommerce' );
 			}
 
 			if ( $fee_plan->isPayLaterOnly() ) {
@@ -282,7 +300,7 @@ class Alma_Form_Helper {
 		$toggle_key            = 'enabled_' . $key;
 		$class                 = 'alma_fee_plan alma_fee_plan_' . $key;
 		$css                   = $selected ? '' : 'display: none;';
-		$default_min_amount    = Alma_Tools_Helper::alma_price_from_cents( $fee_plan->min_purchase_amount );
+		$default_min_amount    = Alma_Tools_Helper::alma_price_from_cents( $this->fee_plan_helper->get_min_purchase_amount( $fee_plan ) );
 		$default_max_amount    = Alma_Tools_Helper::alma_price_from_cents( $fee_plan->max_purchase_amount );
 		$merchant_fee_fixed    = Alma_Tools_Helper::alma_price_from_cents( $fee_plan->merchant_fee_fixed );
 		$merchant_fee_variable = $fee_plan->merchant_fee_variable / 100; // percent.
@@ -299,12 +317,20 @@ class Alma_Form_Helper {
 
 		$section_title = '';
 		$toggle_label  = '';
+
+		if ( $fee_plan->isPayNow() ) {
+			$section_title = __( '→ Pay Now', 'alma-gateway-for-woocommerce' );
+			// translators: %d: number of installments.
+			$toggle_label = sprintf( __( 'Enable %d-installment payments with Alma', 'alma-gateway-for-woocommerce' ), $fee_plan->getInstallmentsCount() );
+		}
+
 		if ( $fee_plan->isPnXOnly() ) {
 			// translators: %d: number of installments.
 			$section_title = sprintf( __( '→ %d-installment payment', 'alma-gateway-for-woocommerce' ), $fee_plan->getInstallmentsCount() );
 			// translators: %d: number of installments.
 			$toggle_label = sprintf( __( 'Enable %d-installment payments with Alma', 'alma-gateway-for-woocommerce' ), $fee_plan->getInstallmentsCount() );
 		}
+
 		if ( $fee_plan->isPayLaterOnly() ) {
 			$deferred_days   = $fee_plan->getDeferredDays();
 			$deferred_months = $fee_plan->getDeferredMonths();
@@ -391,6 +417,17 @@ class Alma_Form_Helper {
 				$max_amount
 			);
 		}
+
+		if ( $fee_plan->isPayNow() ) {
+			$you_can_offer = sprintf(
+			// translators: %d: number of installments.
+				__( 'You can offer instant payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.', 'alma-gateway-for-woocommerce' ),
+				$fee_plan->installments_count,
+				$min_amount,
+				$max_amount
+			);
+		}
+
 		if ( $fee_plan->isPayLaterOnly() ) {
 			$deferred_days   = $fee_plan->getDeferredDays();
 			$deferred_months = $fee_plan->getDeferredMonths();
@@ -459,6 +496,9 @@ class Alma_Form_Helper {
 	 * @return array
 	 */
 	protected function init_general_settings_fields( array $default_settings ) {
+		$fields_pay_later  = array();
+		$fields_pnx_plus_4 = array();
+		$fields_pay_now    = array();
 
 		$general_settings_fields = array(
 			'general_section' => array(
@@ -497,12 +537,14 @@ class Alma_Form_Helper {
 			$default_settings
 		);
 
-		$fields_pay_later = array();
+		if ( $this->settings_helper->has_pay_now() ) {
+			$fields_pay_now = $this->get_custom_fields_payment_method( Alma_Constants_Helper::PAYMENT_METHOD_PAY_NOW, __( 'Pay now:', 'alma-gateway-for-woocommerce' ), $default_settings );
+		}
+
 		if ( $this->settings_helper->has_pay_later() ) {
 			$fields_pay_later = $this->get_custom_fields_payment_method( Alma_Constants_Helper::PAYMENT_METHOD_PAY_LATER, __( 'Deferred Payments:', 'alma-gateway-for-woocommerce' ), $default_settings );
 		}
 
-		$fields_pnx_plus_4 = array();
 		if ( $this->settings_helper->has_pnx_plus_4() ) {
 			$fields_pnx_plus_4 = $this->get_custom_fields_payment_method( Alma_Constants_Helper::PAYMENT_METHOD_PNX_PLUS_4, __( 'Payments in more than 4 installments:', 'alma-gateway-for-woocommerce' ), $default_settings );
 		}
@@ -544,6 +586,7 @@ class Alma_Form_Helper {
 			$general_settings_fields,
 			$title_gateway,
 			$fields_title_gateway,
+			$fields_pay_now,
 			$fields_pnx,
 			$fields_pay_later,
 			$fields_pnx_plus_4,

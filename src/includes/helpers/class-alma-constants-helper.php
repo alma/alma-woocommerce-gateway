@@ -26,6 +26,7 @@ class Alma_Constants_Helper {
 	const ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE = 'alma-payment-plan-table-%s-installments';
 	const ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS   = 'js-alma-payment-plan-table';
 	const ALMA_GATEWAY_PAY_LATER              = 'alma_pay_later';
+	const ALMA_GATEWAY_PAY_NOW                = 'alma_pay_now';
 	const ALMA_GATEWAY_PAY_MORE_THAN_FOUR     = 'alma_pnx_plus_4';
 	const JQUERY_CART_UPDATE_EVENT            = 'updated_cart_totals';
 	const PREFIX_REFUND_COMMENT               = 'Refund made via WooCommerce back-office - ';
@@ -43,9 +44,12 @@ class Alma_Constants_Helper {
 	const PAYMENT_METHOD                 = 'payment_method';
 	const DEFAULT_CHECK_VARIATIONS_EVENT = 'check_variations';
 	const AMOUNT_PLAN_KEY_REGEX          = '#^(min|max)_amount_general_[0-9]+_[0-9]+_[0-9]+$#';
+	const SORT_PLAN_KEY_REGEX            = '/^(general|pos)_([0-9]+)_([0-9]+)_([0-9]+)$/';
+	const GATEWAY_DESCRIPTION            = 'gateway_description';
 	const GATEWAY_TITLE                  = 'pay_with_alma';
 	const PAYMENT_METHOD_PNX             = 'payment_method_pnx';
 	const PAYMENT_METHOD_PAY_LATER       = 'payment_method_pay_later';
+	const PAYMENT_METHOD_PAY_NOW         = 'payment_method_pay_now';
 	const PAYMENT_METHOD_PNX_PLUS_4      = 'payment_method_pnx_plus_4';
 	const NOTICE_NONCE_NAME              = 'wc_alma_notice_nonce';
 	const ALMA_LOGO_PATH                 = 'images/alma_logo.svg';

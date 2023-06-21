@@ -6740,7 +6740,7 @@
   	"payment-plan-strings.multiple-installments": "{numberOfRemainingInstallments, plural, one {{firstInstallmentAmount} dann {numberOfRemainingInstallments} x {othersInstallmentAmount}} other {{firstInstallmentAmount} dann {numberOfRemainingInstallments} x {othersInstallmentAmount}}}",
   	"payment-plan-strings.multiple-installments-same-amount": "{installmentsCount} x {totalAmount}",
   	"payment-plan-strings.no-fee": "(0% Finanzierung)",
-  	"payment-plan-strings.pay-now": "Zahlen Sie jetzt {totalAmount}",
+  	"payment-plan-strings.pay-now": "Jetzt bezahlen {totalAmount}",
   	"payment-plan-strings.pay.now.button": "Jetzt bezahlen"
   };
 
@@ -6752,7 +6752,7 @@
   	"eligibility-modal.bullet-2": "Let us guide you and validate your payment in <strong>2 minutes.</strong>",
   	"eligibility-modal.bullet-3": "<strong>Stay in control</strong> by moving your deadlines forward or backward at your own pace.",
   	"eligibility-modal.no-eligibility": "Oops, looks like the simulation didn't work.",
-  	"eligibility-modal.p1x-bullet-1": "Choose <strong>Alma - Pay Now</strong> at checkout.",
+  	"eligibility-modal.p1x-bullet-1": "Choose <strong>Alma - Pay now</strong> at checkout.",
   	"eligibility-modal.p1x-bullet-2": "Fill in your <strong>credit card information.</strong>",
   	"eligibility-modal.p1x-bullet-3": "<strong>The validation </strong> of your payment is instantaneous!",
   	"eligibility-modal.title-deferred-plan": "Pay in installments or later by credit card with Alma.",
@@ -6771,7 +6771,7 @@
   	"payment-plan-strings.multiple-installments-same-amount": "{installmentsCount} x {totalAmount}",
   	"payment-plan-strings.no-fee": "(free of charge)",
   	"payment-plan-strings.pay-now": "Pay now {totalAmount}",
-  	"payment-plan-strings.pay.now.button": "Pay Now"
+  	"payment-plan-strings.pay.now.button": "Pay now"
   };
 
   var messagesES = {
@@ -6812,7 +6812,7 @@
   	"eligibility-modal.bullet-2": "Laissez-vous guider et validez votre paiement en <strong>2 minutes.</strong>",
   	"eligibility-modal.bullet-3": "<strong>Gardez le contrôle</strong> en avançant ou reculant vos échéances à votre rythme.",
   	"eligibility-modal.no-eligibility": "Oups, il semblerait que la simulation n'ait pas fonctionné.",
-  	"eligibility-modal.p1x-bullet-1": "Choisissez <strong>Alma - Payez maintenant</strong> au moment du paiement.",
+  	"eligibility-modal.p1x-bullet-1": "Choisissez <strong>Alma - Payer maintenant</strong> au moment du paiement.",
   	"eligibility-modal.p1x-bullet-2": "Renseignez les informations de votre <strong>carte bancaire.</strong>",
   	"eligibility-modal.p1x-bullet-3": "<strong>La validation </strong> de votre paiement est instantanée !",
   	"eligibility-modal.title-deferred-plan": "Payez en plusieurs fois ou plus tard par carte bancaire avec Alma.",
@@ -6830,8 +6830,8 @@
   	"payment-plan-strings.multiple-installments": "{numberOfRemainingInstallments, plural, one {{firstInstallmentAmount} puis {numberOfRemainingInstallments} x {othersInstallmentAmount}} other {{firstInstallmentAmount} puis {numberOfRemainingInstallments} x {othersInstallmentAmount}}}",
   	"payment-plan-strings.multiple-installments-same-amount": "{installmentsCount} x {totalAmount}",
   	"payment-plan-strings.no-fee": "(sans frais)",
-  	"payment-plan-strings.pay-now": "Payez maintenant {totalAmount}",
-  	"payment-plan-strings.pay.now.button": "Payez maintenant"
+  	"payment-plan-strings.pay-now": "Payer maintenant {totalAmount}",
+  	"payment-plan-strings.pay.now.button": "Payer maintenant"
   };
 
   var messagesIT = {
@@ -6920,7 +6920,7 @@
   	"payment-plan-strings.multiple-installments": "{numberOfRemainingInstallments, plural, one {{firstInstallmentAmount} depois {numberOfRemainingInstallments} x {othersInstallmentAmount}} other {{firstInstallmentAmount} depois {numberOfRemainingInstallments} x {othersInstallmentAmount}}}",
   	"payment-plan-strings.multiple-installments-same-amount": "{installmentsCount} x {totalAmount}",
   	"payment-plan-strings.no-fee": "(sem encargos)",
-  	"payment-plan-strings.pay-now": "Pague agora {totalAmount}",
+  	"payment-plan-strings.pay-now": "Pagar agora {totalAmount}",
   	"payment-plan-strings.pay.now.button": "Pagar agora"
   };
 
@@ -19865,7 +19865,7 @@
     if (installmentsCount === 1 && !deferred_days && !deferred_months) {
       return /*#__PURE__*/react.createElement(MemoizedFormattedMessage, {
         id: "payment-plan-strings.pay.now.button",
-        defaultMessage: "Payez maintenant"
+        defaultMessage: "Payer maintenant"
       });
     }
 
@@ -19971,7 +19971,7 @@
       if (isP1X(payment)) {
         return /*#__PURE__*/react.createElement(react.Fragment, null, /*#__PURE__*/react.createElement(MemoizedFormattedMessage, {
           id: "payment-plan-strings.pay-now",
-          defaultMessage: "Payez maintenant {totalAmount}",
+          defaultMessage: "Payer maintenant {totalAmount}",
           values: {
             totalAmount: /*#__PURE__*/react.createElement(FormattedNumber, {
               value: priceFromCents(payment_plan[0].total_amount),
@@ -20307,7 +20307,7 @@
         className: STATIC_CUSTOMISATION_CLASSES.infoMessage
       }, isCurrentPlanP1X ? /*#__PURE__*/react.createElement(MemoizedFormattedMessage, {
         id: "eligibility-modal.p1x-bullet-1",
-        defaultMessage: "Choisissez <strong>Alma - Payez maintenant</strong> au moment du paiement.",
+        defaultMessage: "Choisissez <strong>Alma - Payer maintenant</strong> au moment du paiement.",
         values: {
           strong: function strong() {
             return /*#__PURE__*/react.createElement("strong", null, [].slice.call(arguments));
