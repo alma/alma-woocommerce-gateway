@@ -1,6 +1,10 @@
 Changelog
 =========
 
+v4.3.1
+------
+* fix: Warning: Cannot modify header information - headers already sent
+
 v4.3.0
 ------
 * feat: Implement Pay Now

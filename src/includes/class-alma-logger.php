@@ -76,6 +76,7 @@ class Alma_Logger extends AbstractLogger {
 
 		if (
 			empty( $settings )
+			|| ! isset( $settings['debug'] )
 			|| 'no' === $settings['debug']
 		) {
 			return false;
