@@ -67,6 +67,7 @@ class Alma_Migration_Helper {
 		}
 
 		add_option( 'alma_migration_ongoing', ALMA_VERSION );
+		update_option( 'alma_previous_version', $db_version );
 
 		$this->manage_versions( $db_version );
 

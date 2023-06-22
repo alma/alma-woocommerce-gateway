@@ -150,7 +150,7 @@ use Alma\Woocommerce\Helpers\Alma_Cart_Helper;
 			font-weight: bold;
 		">
 				<span><?php echo esc_html__( 'Total:', 'alma-gateway-for-woocommerce' ); ?></span>
-				<span><?php echo wp_kses_post( Alma_Tools_Helper::alma_format_price_from_cents( $alma_eligibility->getCustomerTotalCostAmount() + $alma_cart->get_total_in_cents() ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName ?></span>
+				<span><?php echo wp_kses_post( Alma_Tools_Helper::alma_format_price_from_cents( $alma_eligibility->getCustomerTotalCostAmount() + $alma_cart_helper->get_total_in_cents() ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName ?></span>
 			</p>
 			<?php
 		}
