@@ -591,9 +591,13 @@ class Alma_Payment_Helper {
 	 * @throws Alma_Plans_Definition_Exception Exception.
 	 */
 	public function get_payment_method( $fee_plan ) {
-		if ( $fee_plan->isPnXOnly() || $fee_plan->isPayNow() ) {
+		if ( $fee_plan->isPayNow() ) {
+			return __( 'Selected payment method : Pay Now with Alma', 'alma-gateway-for-woocommerce' );
+		}
+
+		if ( $fee_plan->isPnXOnly() ) {
 			// translators: %d: number of installments.
-			return sprintf( __( 'Selected payment method : %d installment with Alma', 'alma-gateway-for-woocommerce' ), $fee_plan->getInstallmentsCount() );
+			return sprintf( __( 'Selected payment method : %d installments with Alma', 'alma-gateway-for-woocommerce' ), $fee_plan->getInstallmentsCount() );
 		}
 
 		if ( $fee_plan->isPayLaterOnly() ) {
