@@ -158,6 +158,8 @@ class Alma_Form_Helper {
 	 * @return array
 	 */
 	public function init_debug_fields( $default_settings ) {
+		$previous_version = get_option( 'alma_previous_version', 'N/A' );
+
 		return array(
 			'debug_section' => array(
 				'title' => '<hr>' . __( '→ Debug options', 'alma-gateway-for-woocommerce' ),
@@ -168,7 +170,11 @@ class Alma_Form_Helper {
 				'type'        => 'checkbox',
 				// translators: %s: Admin logs url.
 				'label'       => __( 'Activate debug mode', 'alma-gateway-for-woocommerce' ) . sprintf( __( '(<a href="%s">Go to logs</a>)', 'alma-gateway-for-woocommerce' ), Alma_Assets_Helper::get_admin_logs_url() ),
-				'description' => __( 'Enable logging info and errors to help debug any issue with the plugin', 'alma-gateway-for-woocommerce' ),
+				// translators: %s: The previous plugin version if exists.
+				'description' => sprintf(
+					__( 'Enable logging info and errors to help debug any issue with the plugin (previous Alma version : "%s")', 'alma-gateway-for-woocommerce' ),
+					$previous_version
+				),
 				'desc_tip'    => true,
 				'default'     => $default_settings['debug'],
 			),
