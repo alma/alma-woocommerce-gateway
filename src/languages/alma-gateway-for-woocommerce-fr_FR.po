@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 77e083b1cd468d7c2202d1ff3d20e024\n"
-"POT-Creation-Date: 2023-06-14 12:08+0200\n"
-"PO-Revision-Date: 2023-06-14 10:35\n"
+"POT-Creation-Date: 2023-06-15 16:41+0200\n"
+"PO-Revision-Date: 2023-06-15 14:55\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
@@ -550,40 +550,44 @@ msgstr "%1$s remboursé %2$s avec Alma."
 msgid "Alma partial refund error : %s."
 msgstr "Erreur de remboursement partiel d'Alma : %s."
 
+#: includes/class-alma-settings.php:506
+msgid "Selected payment method : Pay Now with Alma"
+msgstr "Mode de paiement sélectionné : Pay Now with Alma"
+
 #. translators: %d: number of installments.
-#: includes/class-alma-settings.php:507
+#: includes/class-alma-settings.php:511
 #, php-format
-msgid "Selected payment method : %d installment with Alma"
-msgstr "Mode de paiement choisi : %d paiement échelonné avec Alma"
+msgid "Selected payment method : %d installments with Alma"
+msgstr "Mode de paiement choisi : %d paiements échelonnés avec Alma"
 
 #. translators: %d: number of deferred days.
-#: includes/class-alma-settings.php:516
+#: includes/class-alma-settings.php:520
 #, php-format
 msgid "Selected payment method : D+%d deferred  with Alma"
 msgstr "Mode de paiement choisi : D+%d différé avec Alma"
 
 #. translators: %d: number of deferred months.
-#: includes/class-alma-settings.php:520
+#: includes/class-alma-settings.php:524
 #, php-format
 msgid "Selected payment method : M+%d deferred with Alma"
 msgstr "Mode de paiement choisi : M+%d différé avec Alma"
 
 #. translators: %s: Error message.
-#: includes/class-alma-settings.php:564
+#: includes/class-alma-settings.php:568
 msgid "Alma encountered an error. No alma client found"
 msgstr "Alma a rencontré une erreur. Aucun client Alma n'a été trouvé"
 
 #. translators: %s: Error message.
-#: includes/class-alma-settings.php:788
+#: includes/class-alma-settings.php:792
 msgid "Alma encountered an error when fetching merchant status, please check your api keys or retry later."
 msgstr "Alma a rencontré une erreur lors de la récupération du statut du commerçant. Veuillez vérifier vos clés api ou réessayer plus tard."
 
 #. translators: %s: Error message.
-#: includes/class-alma-settings.php:802
+#: includes/class-alma-settings.php:806
 msgid "Alma encountered an error."
 msgstr "Alma a rencontré une erreur."
 
-#: includes/class-alma-settings.php:817
+#: includes/class-alma-settings.php:821
 msgid "Alma encountered an error when fetching the fee plans."
 msgstr "Alma a rencontré une erreur en récupérant les plans d'honoraires."
 

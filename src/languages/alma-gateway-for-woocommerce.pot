@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Alma - Pay in installments or later for WooCommerce\n"
-"POT-Creation-Date: 2023-06-14 12:08+0200\n"
+"POT-Creation-Date: 2023-06-20 15:53+0200\n"
 "PO-Revision-Date: 2023-02-13 16:00+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -612,42 +612,46 @@ msgstr ""
 msgid "Alma partial refund error : %s."
 msgstr ""
 
+#: includes/class-alma-settings.php:506
+msgid "Selected payment method : Pay Now with Alma"
+msgstr ""
+
 #. translators: %d: number of installments.
-#: includes/class-alma-settings.php:507
+#: includes/class-alma-settings.php:511
 #, php-format
-msgid "Selected payment method : %d installment with Alma"
+msgid "Selected payment method : %d installments with Alma"
 msgstr ""
 
 #. translators: %d: number of deferred days.
-#: includes/class-alma-settings.php:516
+#: includes/class-alma-settings.php:520
 #, php-format
 msgid "Selected payment method : D+%d deferred  with Alma"
 msgstr ""
 
 #. translators: %d: number of deferred months.
-#: includes/class-alma-settings.php:520
+#: includes/class-alma-settings.php:524
 #, php-format
 msgid "Selected payment method : M+%d deferred with Alma"
 msgstr ""
 
 #. translators: %s: Error message.
-#: includes/class-alma-settings.php:564
+#: includes/class-alma-settings.php:568
 msgid "Alma encountered an error. No alma client found"
 msgstr ""
 
 #. translators: %s: Error message.
-#: includes/class-alma-settings.php:788
+#: includes/class-alma-settings.php:792
 msgid ""
 "Alma encountered an error when fetching merchant status, please check your "
 "api keys or retry later."
 msgstr ""
 
 #. translators: %s: Error message.
-#: includes/class-alma-settings.php:802
+#: includes/class-alma-settings.php:806
 msgid "Alma encountered an error."
 msgstr ""
 
-#: includes/class-alma-settings.php:817
+#: includes/class-alma-settings.php:821
 msgid "Alma encountered an error when fetching the fee plans."
 msgstr ""
 

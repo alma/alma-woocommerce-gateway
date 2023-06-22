@@ -1,10 +1,15 @@
 Changelog
 =========
 
+v4.3.1
+------
+* fix: Warning: Cannot modify header information - headers already sent
+
 v4.3.0
 ------
 * feat: Implement Pay Now
-* feat: Comptatibility woocommerce 7.8.0
+* feat: Compatibility woocommerce 7.8.0
+* feat: Update Widget to 3.3.3
 
 v4.2.5
 ------

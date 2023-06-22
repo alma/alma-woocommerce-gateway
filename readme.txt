@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 4.4
 Tested up to: 6.2.2
 Requires PHP: 5.6
-Stable tag: 4.3.0
+Stable tag: 4.3.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -29,46 +29,35 @@ You first need to create your merchant account on [dashboard.getalma.eu](https:/
 After installing the plugin, go to WooCommerce settings and activate the new Alma payment method.
 You should be redirected to the payment method settings upon activation.
 
-Fill in the API keys for your account, which you can find on your dashboard\'s [security page](https://dashboard.getalma.eu/security).
+Fill in the API keys for your account, which you can find on your dashboard's [security page](https://dashboard.getalma.eu/security).
 
-After you save your API keys, you\'ll have access to different settings to control what the plugin should display on the Cart and Checkout pages.
-We advise you to stay in \"Test\" mode until you\'re happy with your configuration and are ready to accept payments from your customers.
+After you save your API keys, you'll have access to different settings to control what the plugin should display on the Cart and Checkout pages.
+We advise you to stay in "Test" mode until you're happy with your configuration and are ready to accept payments from your customers.
 
-Once everything is properly set up, go ahead and switch to \"Live\" mode!
+Once everything is properly set up, go ahead and switch to "Live" mode!
 
 == Screenshots ==
 
-1. Alma\'s payment method settings
+1. Alma's payment method settings
 2. Product eligibility for monthly payments
 3. Cart eligibility for monthly payments
 4. Alma badge reinsurance Info
 5. Payment method at checkout
-6. Alma\'s payment page that users are sent to upon order confirmation
+6. Alma's payment page that users are sent to upon order confirmation
 
-== Contributing ==
+== Documentation ==
 
-- Clone the repository from [github](https://github.com/alma/alma-woocommerce-gateway) in you wp-content/plugins/alma-gateway-for-woocommerce folder
-- Run `composer install` to install dependencies
-- Create an account on http://dashboard.sandbox.getalma.eu/ to get an API key
-- Fill your API key in plugin settings
-- Visit the shop and add a product to the cart to see Alma in action
-
-= Translations =
-
-To edit the translations, use [Poedit](https://poedit.net/)
-
-- Open the `.pot` file and click on `Update from code`, then save
-- Open the `.po` file and click on `Update from code`, add/update the translations, then save
-
-= Build =
-
-To build extension for production run `./bin/build.sh`
+You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
 
+= 4.3.1 =
+* fix: Warning: Cannot modify header information - headers already sent
+
 = 4.3.0 =
 * feat: Implement Pay Now
-* feat: Comptatibility woocommerce 7.8.0
+* feat: Compatibility woocommerce 7.8.0
+* feat: Update Widget to 3.3.3
 
 = 4.2.5 =
 * fix: fix the accordion css on checkout
