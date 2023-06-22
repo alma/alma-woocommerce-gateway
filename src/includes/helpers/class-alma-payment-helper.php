@@ -187,10 +187,7 @@ class Alma_Payment_Helper {
 
 			$first_instalment = $payment->payment_plan[0];
 
-			if (
-				! in_array( $payment->state, array( Payment::STATE_IN_PROGRESS, Payment::STATE_PAID ), true )
-				|| Instalment::STATE_PAID !== $first_instalment->state
-			) {
+			if ( ! in_array( $payment->state, array( Payment::STATE_IN_PROGRESS, Payment::STATE_PAID ), true ) ) {
 				$this->alma_settings->flag_as_fraud( $payment_id, Payment::FRAUD_STATE_ERROR );
 
 				throw new Alma_Incorrect_Payment_Exception( $payment_id, $wc_order->get_id(), $payment->state, $first_instalment->state );
