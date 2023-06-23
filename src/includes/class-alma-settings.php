@@ -59,7 +59,9 @@ use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Exception;
  * @property bool keys_validity Flag to indicate id the current keys are working
  * @property string selected_fee_plan Admin dashboard fee_plan in edition mode.
  * @property string test_merchant_id Alma TEST merchant ID
+ * @property string test_merchant_name Alma TEST merchant name
  * @property string live_merchant_id Alma LIVE merchant ID
+ * @property string live_merchant_name Alma LIVE merchant name
  * @property string variable_product_price_query_selector Css query selector
  * @property string variable_product_sale_price_query_selector Css query selector for variable discounted products
  * @property string variable_product_check_variations_event JS event for product variation change
@@ -709,6 +711,19 @@ class Alma_Settings {
 	}
 
 	/**
+	 * Get the merchant name in DB.
+	 *
+	 * @return string
+	 */
+	public function get_active_merchant_name() {
+		if ( $this->get_environment() === 'live' ) {
+			return $this->live_merchant_name;
+		}
+
+		return $this->test_merchant_name;
+	}
+
+	/**
 	 * Get the merchant id in api.
 	 *
 	 * @return void
@@ -726,8 +741,9 @@ class Alma_Settings {
 		if ( ! empty( $this->alma_client ) ) {
 
 			try {
-				$merchant                                    = $this->alma_client->merchants->me();
-				$this->{$this->environment . '_merchant_id'} = $merchant->id;
+				$merchant                                      = $this->alma_client->merchants->me();
+				$this->{$this->environment . '_merchant_id'}   = $merchant->id;
+				$this->{$this->environment . '_merchant_name'} = $merchant->name;
 
 			} catch ( \Exception $e ) {
 				$this->__set( 'keys_validity', 'no' );
