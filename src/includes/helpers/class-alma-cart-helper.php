@@ -63,6 +63,15 @@ class Alma_Cart_Helper {
 			return wc()->cart->total;
 		}
 
-		return wc()->cart->get_total( null );
+		$total = wc()->cart->get_total( null );
+
+		if (
+			0 === $total
+			&& ! empty( WC()->session->get( 'cart_totals', null )['total'] )
+		) {
+			$total = WC()->session->get( 'cart_totals', null )['total'];
+		}
+
+		return $total;
 	}
 }
