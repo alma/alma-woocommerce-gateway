@@ -292,7 +292,7 @@ class Alma_Refund_Helper {
 	 *
 	 * @return void
 	 */
-	public function print_notices( \WC_Order $wc_order ) {
+	public function print_notices( $wc_order ) {
 		$refund_notices = get_post_meta( $wc_order->get_id(), Alma_Constants_Helper::REFUND_NOTICE_META_KEY, true );
 
 		if ( ! is_array( $refund_notices ) ) {

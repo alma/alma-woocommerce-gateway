@@ -16,6 +16,14 @@
 	);
 
 	$( 'body' ).on(
+		'click',
+		'a[class="woocommerce-remove-coupon"]',
+		function(){
+			location.reload();
+		}
+	);
+
+	$( 'body' ).on(
 		'change',
 		'input[name="alma_fee_plan"]',
 		function() {

@@ -20,6 +20,7 @@ use Alma\API\Entities\FeePlan;
 use Alma\API\Entities\Payment;
 use Alma\API\ParamsError;
 use Alma\API\RequestError;
+use Alma\Woocommerce\Exceptions\Alma_Api_Create_Payments_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Accept_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Deny_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Api_Soc_Last_Update_Dates_Exception;
@@ -539,6 +540,30 @@ class Alma_Settings {
 		} catch ( \Exception $e ) {
 			$this->logger->error( sprintf( 'Api fetch_payment, payment id "%s" , Api message "%s"', $payment_id, $e->getMessage() ) );
 			throw new Alma_Api_Fetch_Payments_Exception( $payment_id );
+		}
+	}
+
+
+	/**
+	 * Create the payment.
+	 *
+	 * @param array   $payload The payload.
+	 * @param string  $order_id The order id.
+	 * @param  FeePlan $fee_plan The fee plan.
+	 *
+	 * @return Payment
+	 *
+	 * @throws Alma_Api_Create_Payments_Exception Create payment exception.
+	 */
+	public function create_payment( $payload, $order_id, $fee_plan ) {
+		try {
+			$this->get_alma_client();
+
+			return $this->alma_client->payments->create( $payload );
+
+		} catch ( \Exception $e ) {
+			$this->logger->error( sprintf( 'Api create_payments, order id "%s" , Api message "%s"', $order_id, $e->getMessage() ) );
+			throw new Alma_Api_Create_Payments_Exception( $order_id, $fee_plan );
 		}
 	}
 

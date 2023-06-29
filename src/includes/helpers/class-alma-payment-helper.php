@@ -185,12 +185,10 @@ class Alma_Payment_Helper {
 				throw new Alma_Amount_Mismatch_Exception( $payment_id, $wc_order->get_id(), $total_in_cent, $payment->purchase_amount );
 			}
 
-			$first_instalment = $payment->payment_plan[0];
-
 			if ( ! in_array( $payment->state, array( Payment::STATE_IN_PROGRESS, Payment::STATE_PAID ), true ) ) {
 				$this->alma_settings->flag_as_fraud( $payment_id, Payment::FRAUD_STATE_ERROR );
 
-				throw new Alma_Incorrect_Payment_Exception( $payment_id, $wc_order->get_id(), $payment->state, $first_instalment->state );
+				throw new Alma_Incorrect_Payment_Exception( $payment_id, $wc_order->get_id(), $payment->state );
 			}
 
 			// If we're down here, everything went OK, and we can validate the order!
@@ -564,19 +562,18 @@ class Alma_Payment_Helper {
 	 * @param  FeePlan $fee_plan The fee plan.
 	 *
 	 * @return Payment
-	 * @throws Alma_Api_Create_Payments_Exception Create payment exception.
+	 *
+	 * @throws Alma_Api_Create_Payments_Exception Exception.
+	 * @throws Alma_Plans_Definition_Exception Exception.
 	 */
 	public function create_payments( $order_id, $fee_plan ) {
-		try {
-			$payment_type = $this->get_payment_method( $fee_plan );
 
-			$payload = $this->get_payment_payload_from_order( $order_id, $fee_plan, $payment_type );
+		$payment_type = $this->get_payment_method( $fee_plan );
 
-			return $this->alma_settings->alma_client->payments->create( $payload );
-		} catch ( \Exception $e ) {
-			$this->logger->error( sprintf( 'Api create_payments, order id "%s" , Api message "%s"', $order_id, $e->getMessage() ) );
-			throw new Alma_Api_Create_Payments_Exception( $order_id, $fee_plan );
-		}
+		$payload = $this->get_payment_payload_from_order( $order_id, $fee_plan, $payment_type );
+
+		return $this->alma_settings->create_payment( $payload, $order_id, $fee_plan );
+
 	}
 
 	/**
