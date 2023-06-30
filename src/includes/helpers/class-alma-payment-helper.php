@@ -498,7 +498,7 @@ class Alma_Payment_Helper {
 			'payment_method'  => $wc_order->get_payment_method(),
 			'shipping_method' => $wc_order->get_shipping_method(),
 			'created'         => $wc_order->get_date_created()->getTimestamp(),
-			'items'           => $this->get_previous_order_items_details( $wc_order ),
+		// 'items'           => $this->get_previous_order_items_details( $wc_order ),
 		);
 	}
 

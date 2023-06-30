@@ -143,7 +143,7 @@ class Alma_Refund_Helper {
 	 * @return void
 	 * @see add_order_note()
 	 */
-	public function add_success_note( \WC_Order $wc_order, $message ) {
+	public function add_success_note( $wc_order, $message ) {
 		$this->add_order_note( $wc_order, Alma_Constants_Helper::SUCCESS, $message );
 	}
 
@@ -178,7 +178,7 @@ class Alma_Refund_Helper {
 	 *
 	 * @return void
 	 */
-	protected function add_notice( \WC_Order $wc_order, $notice_type, $message ) {
+	protected function add_notice( $wc_order, $notice_type, $message ) {
 		$refund_notices   = get_post_meta( $wc_order->get_id(), Alma_Constants_Helper::REFUND_NOTICE_META_KEY );
 		$refund_notices[] = array(
 			'notice_type' => $notice_type,
@@ -196,7 +196,7 @@ class Alma_Refund_Helper {
 	 * @return void
 	 * @see add_order_note()
 	 */
-	public function add_error_note( \WC_Order $wc_order, $message ) {
+	public function add_error_note( $wc_order, $message ) {
 		$this->add_order_note( $wc_order, Alma_Constants_Helper::ERROR, $message );
 	}
 
@@ -318,7 +318,7 @@ class Alma_Refund_Helper {
 	 *
 	 * @return void
 	 */
-	public function delete_notices( \WC_Order $wc_order ) {
+	public function delete_notices( $wc_order ) {
 		delete_post_meta( $wc_order->get_id(), Alma_Constants_Helper::REFUND_NOTICE_META_KEY );
 	}
 }
