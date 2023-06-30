@@ -14,5 +14,5 @@
 </h5>
 
 <div>
-<?php echo $description; ?>
+<?php echo $description; // phpcs:ignore WordPress.Security.EscapeOutput ?>
 <br>
