@@ -17,7 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\API\DependenciesError;
 use Alma\API\Entities\FeePlan;
-use Alma\API\Entities\Instalment;
 use Alma\API\Entities\Payment;
 use Alma\API\ParamsError;
 use Alma\API\RequestError;
@@ -347,10 +346,9 @@ class Alma_Payment_Helper {
 		$shipping_address = $this->order_helper->get_shipping_address( $wc_order );
 
 		return array(
-			'payment'                  => $this->build_payment_details( $wc_order, $fee_plan, $billing_address, $shipping_address ),
-			'order'                    => $this->build_order_details( $wc_order ),
-			'customer'                 => $this->build_customer_details( $wc_order, $billing_address, $shipping_address ),
-			'website_customer_details' => $this->build_website_customer_details( $wc_order ),
+			'payment'  => $this->build_payment_details( $wc_order, $fee_plan, $billing_address, $shipping_address ),
+			'order'    => $this->build_order_details( $wc_order ),
+			'customer' => $this->build_customer_details( $wc_order, $billing_address, $shipping_address ),
 		);
 	}
 
@@ -442,65 +440,6 @@ class Alma_Payment_Helper {
 		return $data;
 	}
 
-	/**
-	 * Website Customer Details
-	 *
-	 * @param \WC_Order $wc_order The WC order.
-	 * @return array
-	 */
-	protected function build_website_customer_details( $wc_order ) {
-		$customer_id = $wc_order->get_customer_id();
-		$is_guest    = false;
-
-		if ( '0' == $customer_id ) {
-			$is_guest = true;
-		}
-
-		return array(
-			'is_guest'        => $is_guest,
-			'previous_orders' => $this->get_previous_orders_details( $customer_id, $is_guest ),
-		);
-	}
-
-	/**
-	 * Get the previous orders details
-	 *
-	 * @param string  $customer_id The customer id.
-	 * @param boolean $is_guest Is this a guest.
-	 *
-	 * @return array
-	 */
-	protected function get_previous_orders_details( $customer_id, $is_guest = true ) {
-		if ( $is_guest ) {
-			return array();
-		}
-
-		$orders = $this->order_helper->get_orders_by_customer_id( $customer_id );
-
-		$order_details = array();
-
-		foreach ( $orders as $wc_order ) {
-			$order_details[] = $this->get_order_details( $wc_order );
-		}
-
-		return $order_details;
-	}
-
-	/**
-	 * Get the order detail
-	 *
-	 * @param \WC_Order $wc_order The order.
-	 * @return array
-	 */
-	protected function get_order_details( $wc_order ) {
-		return array(
-			'purchase_amount' => $this->tool_helper->alma_price_to_cents( $wc_order->get_total() ),
-			'payment_method'  => $wc_order->get_payment_method(),
-			'shipping_method' => $wc_order->get_shipping_method(),
-			'created'         => $wc_order->get_date_created()->getTimestamp(),
-		// 'items'           => $this->get_previous_order_items_details( $wc_order ),
-		);
-	}
 
 	/**
 	 * Retrieve the X past purchase item details.

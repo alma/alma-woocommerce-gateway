@@ -88,7 +88,6 @@ class Alma_Migration_Helper {
 			$db_version
 			&& version_compare( ALMA_VERSION, $db_version, '>' )
 		) {
-			// Si la version en BDD est strictement inférieur à la 4.2.0.
 			$this->migrate_keys();
 			$this->manage_version_before_3( $db_version );
 
@@ -104,15 +103,17 @@ class Alma_Migration_Helper {
 	 */
 	protected function migrate_keys() {
 		try {
+			$get_credentials = false;
+			$has_changed     = false;
+
 			$old_settings = get_option( 'woocommerce_alma_settings' );
 
 			if ( $old_settings ) {
 				update_option( Alma_Settings::OPTIONS_KEY, $old_settings );
+				$get_credentials = true;
 			}
 
 			$settings = get_option( Alma_Settings::OPTIONS_KEY );
-
-			$has_changed = false;
 
 			if (
 				! empty( $settings['live_api_key'] )
@@ -134,12 +135,12 @@ class Alma_Migration_Helper {
 				update_option( Alma_Settings::OPTIONS_KEY, $settings );
 			}
 
-			// Manage credentials to match the new settings fields format.
-			// Upgrade to 4.
-			$gateway = new Alma_Payment_Gateway( false );
+			if ( $get_credentials ) {
+				// Manage credentials to match the new settings fields format.
+				$gateway = new Alma_Payment_Gateway( false );
 
-			$gateway->manage_credentials( true );
-
+				$gateway->manage_credentials( true );
+			}
 		} catch ( \Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			// We don't care if it fails there is nothing to update.
 			$this->logger->info( $e->getMessage() );
