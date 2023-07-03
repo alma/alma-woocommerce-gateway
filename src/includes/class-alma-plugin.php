@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 use Alma\Woocommerce\Admin\Alma_Notices;
 use Alma\Woocommerce\Admin\Helpers\Alma_Check_Legal_Helper;
 use Alma\Woocommerce\Exceptions\Alma_Requirements_Exception;
+use Alma\Woocommerce\Exceptions\Alma_Version_Deprecated;
 use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
 use Alma\Woocommerce\Helpers\Alma_Migration_Helper;
 use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
@@ -61,12 +62,20 @@ class Alma_Plugin {
 	protected function __construct() {
 		$this->logger           = new Alma_Logger();
 		$this->migration_helper = new Alma_Migration_Helper();
-		$migration_success      = $this->migration_helper->update();
+		$this->admin_notices    = new Alma_Notices();
+
+		try {
+			$migration_success = $this->migration_helper->update();
+		} catch ( Alma_Version_Deprecated $e ) {
+			$this->admin_notices->add_admin_notice( 'alma_version_error', 'notice notice-error', $e->getMessage(), true );
+			$this->logger->error( $e->getMessage() );
+			return;
+		}
 
 		if ( $migration_success ) {
 			$this->init();
 		} else {
-			$this->logger->warning( 'The plugin migration is already inprogress or has failed' );
+			$this->logger->warning( 'The plugin migration is already in progress or has failed' );
 		}
 	}
 
@@ -78,8 +87,6 @@ class Alma_Plugin {
 	 * @version 5.0.0
 	 */
 	public function init() {
-		$this->admin_notices = new Alma_Notices();
-
 		try {
 			$this->check_dependencies();
 		} catch ( \Exception $e ) {

@@ -14,6 +14,7 @@ namespace Alma\Woocommerce\Helpers;
 use Alma\Woocommerce\Alma_Logger;
 use Alma\Woocommerce\Alma_Payment_Gateway;
 use Alma\Woocommerce\Alma_Settings;
+use Alma\Woocommerce\Exceptions\Alma_Version_Deprecated;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -50,6 +51,7 @@ class Alma_Migration_Helper {
 	/**
 	 * Update plugin.
 	 *
+	 * @throws Alma_Version_Deprecated The exception.
 	 * @return bool Is the migration ok.
 	 */
 	public function update() {
@@ -81,6 +83,9 @@ class Alma_Migration_Helper {
 	 * Manage the migrations.
 	 *
 	 * @param string $db_version    The db version.
+	 *
+	 * @throws Alma_Version_Deprecated The exception.
+	 *
 	 * @return void
 	 */
 	public function manage_versions( $db_version ) {
@@ -88,8 +93,8 @@ class Alma_Migration_Helper {
 			$db_version
 			&& version_compare( ALMA_VERSION, $db_version, '>' )
 		) {
-			$this->migrate_keys();
 			$this->manage_version_before_3( $db_version );
+			$this->migrate_keys();
 
 			delete_option( 'woocommerce_alma_settings' );
 			delete_option( 'alma_warnings_handled' );
@@ -151,12 +156,13 @@ class Alma_Migration_Helper {
 	 * Manage version before 3.* .
 	 *
 	 * @param string $db_version The DB version.
+	 *
 	 * @return void
+	 * @throws Alma_Version_Deprecated The exception.
 	 */
 	protected function manage_version_before_3( $db_version ) {
 		if ( version_compare( $db_version, 3, '<' ) ) {
-			update_option( 'alma_version', ALMA_VERSION );
-			deactivate_plugins( 'alma-woocommerce-gateway/alma-woocommerce-gateway.php', true );
+			throw new Alma_Version_Deprecated( $db_version );
 		}
 	}
 
