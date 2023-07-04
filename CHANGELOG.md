@@ -4,12 +4,12 @@ Changelog
 v4.3.2
 ------
 * fix: SEPA deprecated test
-* fix: Price doesn't update itself on coupon removal
 * fix: Restore HTML description in gateway
 * fix: Improve auto-update
 * feat: Add merchant infos in BO
 * feat: Add previous version info in BO
 * feat: Prevent issues with Germanized for WooCommerce
+* feat: Compatibility woocommerce 7.8.2
 
 v4.3.1
 ------
