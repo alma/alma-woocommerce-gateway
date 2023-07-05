@@ -59,6 +59,7 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 * feat: Add previous version info in BO
 * feat: Prevent issues with Germanized for WooCommerce
 * feat: Compatibility woocommerce 7.8.2
+* feat: New widget v3.3.4
 
 = 4.3.1 =
 * fix: Warning: Cannot modify header information - headers already sent

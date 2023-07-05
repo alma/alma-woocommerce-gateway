@@ -10,6 +10,7 @@ v4.3.2
 * feat: Add previous version info in BO
 * feat: Prevent issues with Germanized for WooCommerce
 * feat: Compatibility woocommerce 7.8.2
+* feat: New widget v3.3.4
 
 v4.3.1
 ------
