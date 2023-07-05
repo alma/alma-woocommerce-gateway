@@ -1,6 +1,17 @@
 Changelog
 =========
 
+v4.3.2
+------
+* fix: SEPA deprecated test
+* fix: Restore HTML description in gateway
+* fix: Improve auto-update
+* feat: Add merchant infos in BO
+* feat: Add previous version info in BO
+* feat: Prevent issues with Germanized for WooCommerce
+* feat: Compatibility woocommerce 7.8.2
+* feat: New widget v3.3.4
+
 v4.3.1
 ------
 * fix: Warning: Cannot modify header information - headers already sent

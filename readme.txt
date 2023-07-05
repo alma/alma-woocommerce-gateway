@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 4.4
 Tested up to: 6.2.2
 Requires PHP: 5.6
-Stable tag: 4.3.1
+Stable tag: 4.3.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,16 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+= 4.3.2 =
+* fix: SEPA deprecated test
+* fix: Restore HTML description in gateway
+* fix: Improve auto-update
+* feat: Add merchant infos in BO
+* feat: Add previous version info in BO
+* feat: Prevent issues with Germanized for WooCommerce
+* feat: Compatibility woocommerce 7.8.2
+* feat: New widget v3.3.4
 
 = 4.3.1 =
 * fix: Warning: Cannot modify header information - headers already sent

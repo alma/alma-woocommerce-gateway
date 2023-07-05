@@ -56,7 +56,6 @@ class Alma_Gateway_Helper {
 	 * @return array
 	 */
 	public function woocommerce_available_payment_gateways( $available_gateways ) {
-
 		if ( is_admin() ) {
 			return $available_gateways;
 		}

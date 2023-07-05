@@ -58,8 +58,8 @@ class Alma_Payment_Upon_Trigger {
 	 */
 	public function woocommerce_order_status_changed( $order_id, $previous_status, $next_status ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 
-		$order = wc_get_order( $order_id );
-		if ( 'alma' !== $order->get_payment_method() ) {
+		$wc_order = wc_get_order( $order_id );
+		if ( 'alma' !== $wc_order->get_payment_method() ) {
 			return;
 		}
 
@@ -81,9 +81,9 @@ class Alma_Payment_Upon_Trigger {
 	 * @return void
 	 */
 	protected function trigger_payment( $order_id, $next_status ) {
+		$wc_order = wc_get_order( $order_id );
 
-		$order = wc_get_order( $order_id );
-		if ( ! $order->get_transaction_id() ) {
+		if ( ! $wc_order->get_transaction_id() ) {
 			$this->logger->error(
 				'Error while getting transaction_id on trigger_payment for the order.',
 				array(
@@ -96,14 +96,14 @@ class Alma_Payment_Upon_Trigger {
 		}
 
 		try {
-			$payment = $this->alma_settings->fetch_payment( $order->get_transaction_id() );
+			$payment = $this->alma_settings->fetch_payment( $wc_order->get_transaction_id() );
 		} catch ( \Exception $e ) {
 			$this->logger->error(
 				'Fail to fetch payment with transaction_id for the order.',
 				array(
 					'Method'           => __METHOD__,
 					'OrderId'          => $order_id,
-					'TransactionId'    => $order->get_transaction_id(),
+					'TransactionId'    => $wc_order->get_transaction_id(),
 					'ExceptionMessage' => $e->getMessage(),
 				)
 			);
@@ -122,9 +122,9 @@ class Alma_Payment_Upon_Trigger {
 			);
 		} else {
 			try {
-				$this->alma_settings->trigger_payment( $order->get_transaction_id() );
+				$this->alma_settings->trigger_payment( $wc_order->get_transaction_id() );
 				// translators: %s: An order status (example: "completed").
-				$order->add_order_note( sprintf( __( 'The first customer payment has been triggered, as you updated the order status to "%s".', 'alma-gateway-for-woocommerce' ), $next_status ) );
+				$wc_order->add_order_note( sprintf( __( 'The first customer payment has been triggered, as you updated the order status to "%s".', 'alma-gateway-for-woocommerce' ), $next_status ) );
 			} catch ( \Exception $e ) {
 				$this->logger->log_stack_trace(
 					'Error while trigger payment for order number.',

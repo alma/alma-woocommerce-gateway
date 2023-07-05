@@ -14,6 +14,7 @@ namespace Alma\Woocommerce\Helpers;
 use Alma\Woocommerce\Alma_Logger;
 use Alma\Woocommerce\Alma_Payment_Gateway;
 use Alma\Woocommerce\Alma_Settings;
+use Alma\Woocommerce\Exceptions\Alma_Version_Deprecated;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -50,6 +51,7 @@ class Alma_Migration_Helper {
 	/**
 	 * Update plugin.
 	 *
+	 * @throws Alma_Version_Deprecated The exception.
 	 * @return bool Is the migration ok.
 	 */
 	public function update() {
@@ -67,6 +69,7 @@ class Alma_Migration_Helper {
 		}
 
 		add_option( 'alma_migration_ongoing', ALMA_VERSION );
+		update_option( 'alma_previous_version', $db_version );
 
 		$this->manage_versions( $db_version );
 
@@ -80,6 +83,9 @@ class Alma_Migration_Helper {
 	 * Manage the migrations.
 	 *
 	 * @param string $db_version    The db version.
+	 *
+	 * @throws Alma_Version_Deprecated The exception.
+	 *
 	 * @return void
 	 */
 	public function manage_versions( $db_version ) {
@@ -87,9 +93,8 @@ class Alma_Migration_Helper {
 			$db_version
 			&& version_compare( ALMA_VERSION, $db_version, '>' )
 		) {
-			// Si la version en BDD est strictement inférieur à la 4.2.0.
-			$this->migrate_keys();
 			$this->manage_version_before_3( $db_version );
+			$this->migrate_keys();
 
 			delete_option( 'woocommerce_alma_settings' );
 			delete_option( 'alma_warnings_handled' );
@@ -103,15 +108,17 @@ class Alma_Migration_Helper {
 	 */
 	protected function migrate_keys() {
 		try {
+			$get_credentials = false;
+			$has_changed     = false;
+
 			$old_settings = get_option( 'woocommerce_alma_settings' );
 
 			if ( $old_settings ) {
 				update_option( Alma_Settings::OPTIONS_KEY, $old_settings );
+				$get_credentials = true;
 			}
 
 			$settings = get_option( Alma_Settings::OPTIONS_KEY );
-
-			$has_changed = false;
 
 			if (
 				! empty( $settings['live_api_key'] )
@@ -133,12 +140,12 @@ class Alma_Migration_Helper {
 				update_option( Alma_Settings::OPTIONS_KEY, $settings );
 			}
 
-			// Manage credentials to match the new settings fields format.
-			// Upgrade to 4.
-			$gateway = new Alma_Payment_Gateway( false );
+			if ( $get_credentials ) {
+				// Manage credentials to match the new settings fields format.
+				$gateway = new Alma_Payment_Gateway( false );
 
-			$gateway->manage_credentials( true );
-
+				$gateway->manage_credentials( true );
+			}
 		} catch ( \Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			// We don't care if it fails there is nothing to update.
 			$this->logger->info( $e->getMessage() );
@@ -149,12 +156,13 @@ class Alma_Migration_Helper {
 	 * Manage version before 3.* .
 	 *
 	 * @param string $db_version The DB version.
+	 *
 	 * @return void
+	 * @throws Alma_Version_Deprecated The exception.
 	 */
 	protected function manage_version_before_3( $db_version ) {
 		if ( version_compare( $db_version, 3, '<' ) ) {
-			update_option( 'alma_version', ALMA_VERSION );
-			deactivate_plugins( 'alma-woocommerce-gateway/alma-woocommerce-gateway.php', true );
+			throw new Alma_Version_Deprecated( $db_version );
 		}
 	}
 

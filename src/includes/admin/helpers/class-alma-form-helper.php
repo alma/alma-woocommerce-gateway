@@ -121,6 +121,7 @@ class Alma_Form_Helper {
 	 * @return array[]
 	 */
 	public function init_api_key_fields( $keys_title, $default_settings ) {
+		$merchant_infos_description = $this->get_merchant_infos_description();
 
 		return array(
 			'keys_section' => array(
@@ -140,7 +141,8 @@ class Alma_Form_Helper {
 			'environment'  => array(
 				'title'       => __( 'API Mode', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'select',
-				'description' => __( 'Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In Test mode, only admins can see Alma on cart/checkout pages.', 'alma-gateway-for-woocommerce' ),
+				/* translators: %s Merchant description */
+				'description' => sprintf( __( 'Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In Test mode, only admins can see Alma on cart/checkout pages.<br> %s', 'alma-gateway-for-woocommerce' ), $merchant_infos_description ),
 				'default'     => $default_settings['environment'],
 				'options'     => array(
 					'test' => __( 'Test', 'alma-gateway-for-woocommerce' ),
@@ -151,6 +153,33 @@ class Alma_Form_Helper {
 	}
 
 	/**
+	 * Get the merchant info's description.
+	 *
+	 * @return string
+	 */
+	protected function get_merchant_infos_description() {
+		$key = 'test';
+
+		if ( $this->settings_helper->get_environment() === 'live' ) {
+			$key = 'live';
+		}
+
+		$description = '';
+
+		if ( isset( $this->settings_helper->settings[ $key . '_merchant_id' ] ) ) {
+			/* translators: %s Merchant id */
+			$description .= sprintf( __( '<br>Merchant id : "%s" ', 'alma-gateway-for-woocommerce' ), $this->settings_helper->settings[ $key . '_merchant_id' ] );
+		}
+
+		if ( isset( $this->settings_helper->settings[ $key . '_merchant_name' ] ) ) {
+			/* translators: %s Merchant name */
+			$description .= sprintf( __( '<br>Merchant name : "%s" ', 'alma-gateway-for-woocommerce' ), $this->settings_helper->settings[ $key . '_merchant_name' ] );
+		}
+
+		return $description;
+	}
+
+	/**
 	 * Inits debug fields.
 	 *
 	 * @param array $default_settings as default settings.
@@ -158,6 +187,8 @@ class Alma_Form_Helper {
 	 * @return array
 	 */
 	public function init_debug_fields( $default_settings ) {
+		$previous_version = get_option( 'alma_previous_version', 'N/A' );
+
 		return array(
 			'debug_section' => array(
 				'title' => '<hr>' . __( '→ Debug options', 'alma-gateway-for-woocommerce' ),
@@ -168,7 +199,8 @@ class Alma_Form_Helper {
 				'type'        => 'checkbox',
 				// translators: %s: Admin logs url.
 				'label'       => __( 'Activate debug mode', 'alma-gateway-for-woocommerce' ) . sprintf( __( '(<a href="%s">Go to logs</a>)', 'alma-gateway-for-woocommerce' ), Alma_Assets_Helper::get_admin_logs_url() ),
-				'description' => __( 'Enable logging info and errors to help debug any issue with the plugin', 'alma-gateway-for-woocommerce' ),
+				// translators: %s: The previous plugin version if exists.
+				'description' => sprintf( __( 'Enable logging info and errors to help debug any issue with the plugin (previous Alma version : "%s")', 'alma-gateway-for-woocommerce' ), $previous_version ),
 				'desc_tip'    => true,
 				'default'     => $default_settings['debug'],
 			),
