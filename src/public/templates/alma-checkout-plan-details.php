@@ -30,8 +30,13 @@ use Alma\Woocommerce\Helpers\Alma_Cart_Helper;
 			"
 	>
 		<?php
-		$alma_plan_index   = 1;
+		$alma_plan_index = 1;
+
 		$alma_payment_plan = $alma_eligibility->paymentPlan; // phpcs:ignore WordPress.NamingConventions.ValidVariableName
+
+		if ( is_null( $alma_payment_plan ) ) {
+			$alma_payment_plan = array();
+		}
 
 		if ( is_array( $alma_payment_plan ) ) {
 			$alma_plans_count = count( $alma_payment_plan );
