@@ -140,14 +140,37 @@ class Alma_Payment_Helper {
 	 * @param string $payment_id Payment Id.
 	 */
 	protected function validate_payment_from_ipn( $payment_id ) {
+		$code   = 200;
+		$result = array( Alma_Constants_Helper::SUCCESS => true );
+
 		try {
 			$this->validate_payment( $payment_id );
+		} catch ( Alma_Incorrect_Payment_Exception $e ) {
+			$result = $this->manage_payment_errors( $e, $payment_id );
+		} catch ( Alma_Amount_Mismatch_Exception $e ) {
+			$result = $this->manage_payment_errors( $e, $payment_id );
 		} catch ( \Exception $e ) {
-			status_header( 500 );
-			wp_send_json( array( Alma_Constants_Helper::ERROR => $e->getMessage() ) );
+			$code   = 500;
+			$result = $this->manage_payment_errors( $e, $payment_id );
+		} finally {
+			wp_send_json( $result, $code );
 		}
+	}
 
-		wp_send_json( array( Alma_Constants_Helper::SUCCESS => true ) );
+	/**
+	 * Manage the exceptions.
+	 *
+	 * @param Alma_Incorrect_Payment_Exception|Alma_Amount_Mismatch_Exception|\Exception $exception The exception.
+	 * @param int                                                                        $payment_id The payment id.
+	 *
+	 * @return array
+	 */
+	protected function manage_payment_errors( $exception, $payment_id ) {
+		$message = sprintf( ' %s - Payment id : "%s"', $exception->getMessage(), $payment_id );
+		$result  = array( Alma_Constants_Helper::ERROR => $message );
+		$this->logger->error( $message );
+
+		return $result;
 	}
 
 	/**
@@ -177,18 +200,9 @@ class Alma_Payment_Helper {
 				)
 			)
 		) {
-			$total_in_cent = $this->tool_helper->alma_price_to_cents( $wc_order->get_total() );
+			$this->manage_mismatch( $wc_order, $payment, $payment_id );
 
-			if ( $total_in_cent !== $payment->purchase_amount ) {
-				$this->alma_settings->flag_as_fraud( $payment_id, Payment::FRAUD_AMOUNT_MISMATCH );
-				throw new Alma_Amount_Mismatch_Exception( $payment_id, $wc_order->get_id(), $total_in_cent, $payment->purchase_amount );
-			}
-
-			if ( ! in_array( $payment->state, array( Payment::STATE_IN_PROGRESS, Payment::STATE_PAID ), true ) ) {
-				$this->alma_settings->flag_as_fraud( $payment_id, Payment::FRAUD_STATE_ERROR );
-
-				throw new Alma_Incorrect_Payment_Exception( $payment_id, $wc_order->get_id(), $payment->state );
-			}
+			$this->manage_potential_fraud( $wc_order, $payment, $payment_id );
 
 			// If we're down here, everything went OK, and we can validate the order!
 			$this->order_helper->payment_complete( $wc_order, $payment_id );
@@ -197,6 +211,54 @@ class Alma_Payment_Helper {
 		}
 
 		return $wc_order;
+	}
+
+	/**
+	 * Handle the potentials frauds.
+	 *
+	 * @param \WC_Order $wc_order The order.
+	 * @param Payment   $payment The payment.
+	 * @param int       $payment_id The payment id.
+	 *
+	 * @return void
+	 * @throws Alma_Exception Alma_Exception.
+	 * @throws Alma_Incorrect_Payment_Exception Alma_Incorrect_Payment_Exception.
+	 * @throws DependenciesError DependenciesError.
+	 * @throws ParamsError ParamsError.
+	 * @throws RequestError RequestError.
+	 */
+	protected function manage_potential_fraud( $wc_order, $payment, $payment_id ) {
+		if ( ! in_array( $payment->state, array( Payment::STATE_IN_PROGRESS, Payment::STATE_PAID ), true ) ) {
+			$this->alma_settings->flag_as_fraud( $payment_id, Payment::FRAUD_STATE_ERROR );
+			$wc_order->update_status( 'failed', Payment::FRAUD_STATE_ERROR );
+
+			throw new Alma_Incorrect_Payment_Exception( $payment_id, $wc_order->get_id(), $payment->state );
+		}
+	}
+
+	/**
+	 * Handle the mismatches cases.
+	 *
+	 * @param \WC_Order $wc_order The order.
+	 * @param Payment   $payment The payment.
+	 * @param int       $payment_id The payment id.
+	 *
+	 * @return void
+	 * @throws Alma_Exception Alma_Exception.
+	 * @throws Alma_Incorrect_Payment_Exception Alma_Incorrect_Payment_Exception.
+	 * @throws DependenciesError DependenciesError.
+	 * @throws ParamsError ParamsError.
+	 * @throws RequestError RequestError.
+	 */
+	protected function manage_mismatch( $wc_order, $payment, $payment_id ) {
+		$total_in_cent = $this->tool_helper->alma_price_to_cents( $wc_order->get_total() );
+
+		if ( $total_in_cent !== $payment->id ) {
+			$this->alma_settings->flag_as_fraud( $payment_id, Payment::FRAUD_AMOUNT_MISMATCH );
+			$wc_order->update_status( 'failed', Payment::FRAUD_AMOUNT_MISMATCH );
+
+			throw new Alma_Amount_Mismatch_Exception( $payment_id, $wc_order->get_id(), $total_in_cent, $payment->purchase_amount );
+		}
 	}
 
 	/**
