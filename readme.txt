@@ -51,6 +51,8 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 == Changelog ==
 
+* fix: prevent to call Eligibility api with an amount to 0
+
 = 4.3.2 =
 * fix: SEPA deprecated test
 * fix: Restore HTML description in gateway

@@ -962,6 +962,12 @@ class Alma_Settings {
 	 * @return Eligibility|Eligibility[]|array
 	 */
 	public function get_cart_eligibilities() {
+		$amount = $this->cart_helper->get_total_in_cents();
+
+		if ( 0 === $amount ) {
+			return array();
+		}
+
 		if ( ! $this->eligibilities ) {
 
 			try {
