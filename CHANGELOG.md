@@ -2,6 +2,7 @@ Changelog
 =========
 
 * fix: prevent to call Eligibility api with an amount to 0
+* feat: upgrade PHP client to 1.11.0
 * fix: Change the return code (500 to 200)on Ipn callback when it's a mismatch or potential fraud
 
 v4.3.2
