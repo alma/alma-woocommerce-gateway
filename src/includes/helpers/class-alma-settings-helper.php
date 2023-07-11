@@ -38,6 +38,8 @@ class Alma_Settings_Helper {
 			'selected_fee_plan'                          => Alma_Constants_Helper::DEFAULT_FEE_PLAN,
 			'enabled_general_3_0_0'                      => 'yes',
 			'title_pay_with_alma'                        => self::default_pay_with_alma(),
+			'title_pay_with_alma_in_page'                => self::default_pay_with_alma_in_page(),
+			'description_gateway_description_in_page'    => self::default_pay_with_alma_in_page_description(),
 			'title_payment_method_pnx'                   => self::default_pnx_title(),
 			'description_payment_method_pnx'             => self::default_payment_description(),
 			'title_payment_method_pay_now'               => self::default_pay_now_title(),
@@ -59,6 +61,7 @@ class Alma_Settings_Helper {
 			'share_of_checkout_enabled'                  => 'no',
 			'debug'                                      => 'yes',
 			'keys_validity'                              => 'no',
+			'display_in_page'                            => 'no',
 		);
 	}
 
@@ -74,6 +77,17 @@ class Alma_Settings_Helper {
 		return __( 'Pay with Alma', 'alma-gateway-for-woocommerce' );
 	}
 
+	/**
+	 * Gets the default title for the gatewxay
+	 *
+	 * @return string
+	 */
+	public static function default_pay_with_alma_in_page() {
+		if ( Alma_Internationalization_Helper::is_site_multilingual() ) {
+			return 'Pay with Alma In Page';
+		}
+		return __( 'Pay with Alma In Page', 'alma-gateway-for-woocommerce' );
+	}
 
 	/**
 	 * Gets the default title for pnx payment method.
@@ -123,6 +137,20 @@ class Alma_Settings_Helper {
 		}
 		return __( 'Fast and secure payment by credit card', 'alma-gateway-for-woocommerce' );
 	}
+
+	/**
+	 * Gets the default description for in page
+	 *
+	 * @return string
+	 */
+	public static function default_pay_with_alma_in_page_description() {
+		if ( Alma_Internationalization_Helper::is_site_multilingual() ) {
+			return 'Fast and secure payment by credit card *2 *3 *4';
+		}
+		return __( 'Fast and secure payment by credit card  *2 *3 *4', 'alma-gateway-for-woocommerce' );
+	}
+
+
 
 	/**
 	 * Gets the default title for pay later payment method.

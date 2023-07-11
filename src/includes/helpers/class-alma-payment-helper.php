@@ -109,10 +109,10 @@ class Alma_Payment_Helper {
 	 * PID comes from Alma IPN callback or Alma Checkout page,
 	 * it is not a user form submission: Nonce usage is not suitable here.
 	 */
-	protected function get_payment_to_validate() {
+	protected function get_payment_to_validate($is_in_page = false) {
 		$id         = sanitize_text_field( $_GET['pid'] ); // phpcs:ignore WordPress.Security.NonceVerification
 		$payment_id = isset( $id ) ? $id : null;
-
+		$payment_id = null;
 		if ( ! $payment_id ) {
 			$this->logger->error(
 				'Payment validation webhook called without a payment ID.',
@@ -121,11 +121,14 @@ class Alma_Payment_Helper {
 					'PID'    => $id,
 				)
 			);
-
+			$error_msg = __( 'Payment validation error: no ID provided.<br>Please try again or contact us if the problem persists.', 'alma-gateway-for-woocommerce' );
 			wc_add_notice(
-				__( 'Payment validation error: no ID provided.<br>Please try again or contact us if the problem persists.', 'alma-gateway-for-woocommerce' ),
+				$error_msg,
 				Alma_Constants_Helper::ERROR
 			);
+			if($is_in_page) {
+				wp_send_json_error( $error_msg, 500 );
+			}
 
 			wp_safe_redirect( wc_get_cart_url() );
 			exit();
@@ -280,10 +283,10 @@ class Alma_Payment_Helper {
 	 *
 	 * @return \WC_Order|null
 	 */
-	public function handle_customer_return() {
-		$payment_id = $this->get_payment_to_validate();
+	public function handle_customer_return($is_in_page = false) {
+		$payment_id = $this->get_payment_to_validate($is_in_page);
 
-		return $this->validate_payment_on_customer_return( $payment_id );
+		return $this->validate_payment_on_customer_return( $payment_id, $is_in_page );
 	}
 
 	/**
@@ -293,19 +296,20 @@ class Alma_Payment_Helper {
 	 *
 	 * @return \WC_Order|null
 	 */
-	public function validate_payment_on_customer_return( $payment_id ) {
+	public function validate_payment_on_customer_return( $payment_id , $is_in_page = false) {
 		$wc_order  = null;
 		$error_msg = __( 'There was an error when validating your payment.<br>Please try again or contact us if the problem persists.', 'alma-gateway-for-woocommerce' );
 		try {
 			$wc_order = $this->validate_payment( $payment_id );
 		} catch ( \Exception $e ) {
 			$this->logger->error( $e->getMessage(), $e->getTrace() );
-			$this->redirect_to_cart_with_error( $error_msg );
+			$this->redirect_to_cart_with_error( $error_msg, $is_in_page );
 		}
 
 		if ( ! $wc_order ) {
-			$this->redirect_to_cart_with_error( $error_msg );
+			$this->redirect_to_cart_with_error( $error_msg, $is_in_page );
 		}
+
 
 		return $wc_order;
 	}
@@ -315,10 +319,14 @@ class Alma_Payment_Helper {
 	 *
 	 * @param string $error_msg Error message.
 	 */
-	protected function redirect_to_cart_with_error( $error_msg ) {
+	protected function redirect_to_cart_with_error( $error_msg, $is_in_page = false ) {
 		wc_add_notice( $error_msg, Alma_Constants_Helper::ERROR );
 
 		$cart_url = wc_get_cart_url();
+		if($is_in_page) {
+			wp_send_json_error( $error_msg, 500 );
+		}
+
 		wp_safe_redirect( $cart_url );
 		exit();
 	}
@@ -366,26 +374,24 @@ class Alma_Payment_Helper {
 	/**
 	 * Create Payment data for Alma API request from WooCommerce Order.
 	 *
-	 * @param int     $order_id Order ID.
+	 * @param \WC_Order     $wc_order Order.
 	 * @param FeePlan $fee_plan Fee plan definition.
 	 * @param string  $payment_type The payment type.
 	 *
 	 * @return array
 	 */
-	public function get_payment_payload_from_order( $order_id, $fee_plan, $payment_type ) {
+	public function get_payment_payload_from_order( $wc_order, $fee_plan, $payment_type, $is_in_page = false ) {
 
 		try {
-			$wc_order = $this->order_helper->get_order( $order_id );
-
 			$wc_order->add_order_note( $payment_type );
 
-			$data = $this->build_data_for_alma( $wc_order, $fee_plan );
+			$data = $this->build_data_for_alma( $wc_order, $fee_plan , $is_in_page);
 
 		} catch ( \Exception $e ) {
 			$this->logger->error(
 				sprintf(
 					'Error getting payment info from order id %s. Message : %s',
-					$order_id,
+					$wc_order->get_id(),
 					$e->getMessage()
 				)
 			);
@@ -403,12 +409,12 @@ class Alma_Payment_Helper {
 	 * @param FeePlan   $fee_plan Fee plan definition.
 	 * @return array
 	 */
-	protected function build_data_for_alma( $wc_order, $fee_plan ) {
+	protected function build_data_for_alma( $wc_order, $fee_plan, $is_in_page = false ) {
 		$billing_address  = $this->order_helper->get_billing_address( $wc_order );
 		$shipping_address = $this->order_helper->get_shipping_address( $wc_order );
 
 		return array(
-			'payment'  => $this->build_payment_details( $wc_order, $fee_plan, $billing_address, $shipping_address ),
+			'payment'  => $this->build_payment_details( $wc_order, $fee_plan, $billing_address, $shipping_address, $is_in_page  ),
 			'order'    => $this->build_order_details( $wc_order ),
 			'customer' => $this->build_customer_details( $wc_order, $billing_address, $shipping_address ),
 		);
@@ -423,7 +429,7 @@ class Alma_Payment_Helper {
 	 * @param array     $shipping_address The Shipping address.
 	 * @return array
 	 */
-	protected function build_payment_details( $wc_order, $fee_plan, $billing_address = array(), $shipping_address = array() ) {
+	protected function build_payment_details( $wc_order, $fee_plan, $billing_address = array(), $shipping_address = array(), $is_in_page = false ) {
 
 		$data = array(
 			'purchase_amount'     => $this->tool_helper->alma_price_to_cents( $wc_order->get_total() ),
@@ -450,6 +456,9 @@ class Alma_Payment_Helper {
 			$data['deferred_description'] = $this->alma_settings->get_display_text();
 		}
 
+		if($is_in_page) {
+			$data['origin'] = 'online_in_page';
+		}
 		return $data;
 	}
 
@@ -559,7 +568,7 @@ class Alma_Payment_Helper {
 	/**
 	 * Call the payment api and create.
 	 *
-	 * @param string  $order_id The order id.
+	 * @param \WC_Order  $wc_order The order .
 	 * @param  FeePlan $fee_plan The fee plan.
 	 *
 	 * @return Payment
@@ -567,13 +576,13 @@ class Alma_Payment_Helper {
 	 * @throws Alma_Api_Create_Payments_Exception Exception.
 	 * @throws Alma_Plans_Definition_Exception Exception.
 	 */
-	public function create_payments( $order_id, $fee_plan ) {
+	public function create_payments( $wc_order, $fee_plan , $is_in_page = false) {
 
 		$payment_type = $this->get_payment_method( $fee_plan );
 
-		$payload = $this->get_payment_payload_from_order( $order_id, $fee_plan, $payment_type );
+		$payload = $this->get_payment_payload_from_order( $wc_order, $fee_plan, $payment_type , $is_in_page);
 
-		return $this->alma_settings->create_payment( $payload, $order_id, $fee_plan );
+		return $this->alma_settings->create_payment( $payload, $wc_order, $fee_plan );
 
 	}
 

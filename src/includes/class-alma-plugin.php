@@ -19,6 +19,7 @@ use Alma\Woocommerce\Exceptions\Alma_Requirements_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Version_Deprecated;
 use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
 use Alma\Woocommerce\Helpers\Alma_Migration_Helper;
+use Alma\Woocommerce\Helpers\Alma_Order_Helper;
 use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
 use Alma\Woocommerce\Helpers\Alma_Payment_Helper;
 use Alma\Woocommerce\Helpers\Alma_Assets_Helper;
@@ -199,6 +200,18 @@ class Alma_Plugin {
 			$shortcodes->init_product_widget_shortcode( $product_handler );
 
 			add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
+
+
+			if (
+				! empty( $settings->settings['display_in_page'] )
+				&& $settings->settings['display_in_page'] == 'yes'
+			) {
+				add_action( 'wp_ajax_alma_do_checkout_in_page', array( $this, 'alma_do_checkout_in_page' ) );
+				add_action( 'wp_ajax_nopriv_alma_do_checkout_in_page', array( $this, 'alma_do_checkout_in_page' ) );
+
+				add_action( 'wp_ajax_alma_return_checkout_in_page', array( $this, 'alma_return_checkout_in_page' ) );
+				add_action( 'wp_ajax_nopriv_alma_return_checkout_in_page', array( $this, 'alma_return_checkout_in_page' ) );
+			}
 		}
 	}
 
@@ -260,14 +273,19 @@ class Alma_Plugin {
 	 *
 	 * @return void
 	 */
-	public function handle_customer_return() {
+	public function handle_customer_return($is_in_page = false) {
 		$payment_helper = new Alma_Payment_Helper();
-		$wc_order       = $payment_helper->handle_customer_return();
+		$wc_order       = $payment_helper->handle_customer_return($is_in_page);
 
 		// Redirect user to the order confirmation page.
-		$alma_gateway = new Alma_Payment_Gateway();
+		$alma_gateway = new Alma_Payment_Gateway_Standard();
 
 		$return_url = $alma_gateway->get_return_url( $wc_order );
+
+		if($is_in_page) {
+			return wp_send_json_success(array('url' => $return_url));
+		}
+
 		wp_safe_redirect( $return_url );
 		exit();
 	}
@@ -279,14 +297,111 @@ class Alma_Plugin {
 	 */
 	public function wp_enqueue_scripts() {
 		if ( is_checkout() ) {
+			$settings = new Alma_Settings();
+
 			$alma_checkout_css = Alma_Assets_Helper::get_asset_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_CSS );
 			wp_enqueue_style( 'alma-checkout-page-css', $alma_checkout_css, array(), ALMA_VERSION );
 
 			$alma_checkout_js = Alma_Assets_Helper::get_asset_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_JS );
 			wp_enqueue_script( 'alma-checkout-page', $alma_checkout_js, array( 'jquery', 'jquery-ui-core', 'jquery-ui-accordion' ), ALMA_VERSION, true );
+
+			if (
+				! empty( $settings->settings['display_in_page'] )
+				&& $settings->settings['display_in_page'] == 'yes'
+			){
+				wp_enqueue_script( 'alma-checkout-in-page-cdn', Alma_Constants_Helper::ALMA_PATH_CHECKOUT_CDN_IN_PAGE_JS, array(), ALMA_VERSION, true );
+
+				$alma_checkout_in_page_js = Alma_Assets_Helper::get_asset_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_IN_PAGE_JS );
+				wp_enqueue_script( 'alma-checkout-in-page', $alma_checkout_in_page_js, array( 'jquery', 'jquery-ui-core' ), ALMA_VERSION, true );
+
+				wp_localize_script(
+					'alma-checkout-in-page',
+					'ajax_object',
+					array( 'ajax_url' => admin_url( 'admin-ajax.php' ) )
+				);
+
+			}
 		}
 	}
 
+	public function alma_return_checkout_in_page() {
+		$this->handle_customer_return(true);
+	}
+
+	public function alma_do_checkout_in_page() {
+
+		if( isset($_POST['fields']) && ! empty($_POST['fields']) ) {
+
+			$order    = new \WC_Order();
+			$cart     = WC()->cart;
+			$checkout = WC()->checkout;
+			$data     = [];
+
+			// Loop through posted data array transmitted via jQuery
+			foreach( $_POST['fields'] as $values ){
+				// Set each key / value pairs in an array
+				$data[$values['name']] = $values['value'];
+			}
+
+			$cart_hash          = md5( json_encode( wc_clean( $cart->get_cart_for_session() ) ) . $cart->total );
+			$available_gateways = WC()->payment_gateways->get_available_payment_gateways();
+
+			// Loop through the data array
+			foreach ( $data as $key => $value ) {
+				// Use WC_Order setter methods if they exist
+				if ( is_callable( array( $order, "set_{$key}" ) ) ) {
+					$order->{"set_{$key}"}( $value );
+
+					// Store custom fields prefixed with wither shipping_ or billing_
+				} elseif ( ( 0 === stripos( $key, 'billing_' ) || 0 === stripos( $key, 'shipping_' ) )
+				           && ! in_array( $key, array( 'shipping_method', 'shipping_total', 'shipping_tax' ) ) ) {
+					$order->update_meta_data( '_' . $key, $value );
+				}
+			}
+
+			$order->set_created_via( 'checkout' );
+			$order->set_cart_hash( $cart_hash );
+			$order->set_customer_id( apply_filters( 'woocommerce_checkout_customer_id', isset($_POST['user_id']) ? $_POST['user_id'] : '' ) );
+			$order->set_currency( get_woocommerce_currency() );
+			$order->set_prices_include_tax( 'yes' === get_option( 'woocommerce_prices_include_tax' ) );
+			$order->set_customer_ip_address( \WC_Geolocation::get_ip_address() );
+			$order->set_customer_user_agent( wc_get_user_agent() );
+			$order->set_customer_note( isset( $data['order_comments'] ) ? $data['order_comments'] : '' );
+			$order->set_payment_method( isset( $available_gateways[ $data['payment_method'] ] ) ? $available_gateways[ $data['payment_method'] ]  : $data['payment_method'] );
+			$order->set_shipping_total( $cart->get_shipping_total() );
+			$order->set_discount_total( $cart->get_discount_total() );
+			$order->set_discount_tax( $cart->get_discount_tax() );
+			$order->set_cart_tax( $cart->get_cart_contents_tax() + $cart->get_fee_tax() );
+			$order->set_shipping_tax( $cart->get_shipping_tax() );
+			$order->set_total( $cart->get_total( 'edit' ) );
+
+			$checkout->create_order_line_items( $order, $cart );
+			$checkout->create_order_fee_lines( $order, $cart );
+			$checkout->create_order_shipping_lines( $order, WC()->session->get( 'chosen_shipping_methods' ), WC()->shipping->get_packages() );
+			$checkout->create_order_tax_lines( $order, $cart );
+			$checkout->create_order_coupon_lines( $order, $cart );
+
+
+			do_action( 'woocommerce_checkout_create_order', $order, $data );
+
+			// Save the order.
+			$order_id = $order->save();
+
+			do_action( 'woocommerce_checkout_update_order_meta', $order_id, $data );
+
+			// We ignore the nonce verification because process_payment is called after validate_fields.
+			$settings = new Alma_Settings();
+			$payment_helper = new Alma_Payment_Helper();
+
+			$fee_plan = $settings->build_fee_plan( $_POST[ Alma_Constants_Helper::ALMA_FEE_PLAN_IN_PAGE ] ); // phpcs:ignore WordPress.Security.NonceVerification
+			$payment = $payment_helper->create_payments( $order, $fee_plan , true);
+
+
+
+		}
+		wp_send_json_success(array('payment_id' => $payment->id, 'order_id' => $order_id));
+
+	}
 	/**
 	 * Add the gateway to WC Available Gateways.
 	 *
@@ -296,7 +411,11 @@ class Alma_Plugin {
 	 * @since 1.0.0
 	 */
 	public function add_gateways( $gateways ) {
-		$gateways[] = Alma_Payment_Gateway::class;
+		if ( ! is_admin() ) {
+			$gateways[] = Alma_Payment_Gateway_In_Page::class;
+		}
+
+		$gateways[] = Alma_Payment_Gateway_Standard::class;
 
 		return $gateways;
 	}

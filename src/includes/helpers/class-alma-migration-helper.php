@@ -12,7 +12,7 @@
 namespace Alma\Woocommerce\Helpers;
 
 use Alma\Woocommerce\Alma_Logger;
-use Alma\Woocommerce\Alma_Payment_Gateway;
+use Alma\Woocommerce\Alma_Payment_Gateway_Standard;
 use Alma\Woocommerce\Alma_Settings;
 use Alma\Woocommerce\Exceptions\Alma_Version_Deprecated;
 
@@ -142,7 +142,7 @@ class Alma_Migration_Helper {
 
 			if ( $get_credentials ) {
 				// Manage credentials to match the new settings fields format.
-				$gateway = new Alma_Payment_Gateway( false );
+				$gateway = new Alma_Payment_Gateway_Standard( false );
 
 				$gateway->manage_credentials( true );
 			}

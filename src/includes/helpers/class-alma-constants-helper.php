@@ -21,7 +21,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Alma_Constants_Helper {
 
 
-	const GATEWAY_ID = 'alma';
+	const GATEWAY_ID         = 'alma';
+	const GATEWAY_ID_IN_PAGE = 'alma_in_page';
 
 	const ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE = 'alma-payment-plan-table-%s-installments';
 	const ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS   = 'js-alma-payment-plan-table';
@@ -40,13 +41,15 @@ class Alma_Constants_Helper {
 	const IPN_CALLBACK                   = 'alma_ipn_callback';
 	const CHECKOUT_NONCE                 = 'alma_checkout_nonce';
 	const ALMA_FEE_PLAN                  = 'alma_fee_plan';
+	const ALMA_FEE_PLAN_IN_PAGE          = 'alma_fee_plan_in_page';
 	const DEFAULT_FEE_PLAN               = 'general_3_0_0';
 	const PAYMENT_METHOD                 = 'payment_method';
 	const DEFAULT_CHECK_VARIATIONS_EVENT = 'check_variations';
 	const AMOUNT_PLAN_KEY_REGEX          = '#^(min|max)_amount_general_[0-9]+_[0-9]+_[0-9]+$#';
 	const SORT_PLAN_KEY_REGEX            = '/^(general|pos)_([0-9]+)_([0-9]+)_([0-9]+)$/';
-	const GATEWAY_DESCRIPTION            = 'gateway_description';
+	const GATEWAY_DESCRIPTION_IN_PAGE    = 'gateway_description_in_page';
 	const GATEWAY_TITLE                  = 'pay_with_alma';
+	const GATEWAY_TITLE_IN_PAGE          = 'pay_with_alma_in_page';
 	const PAYMENT_METHOD_PNX             = 'payment_method_pnx';
 	const PAYMENT_METHOD_PAY_LATER       = 'payment_method_pay_later';
 	const PAYMENT_METHOD_PAY_NOW         = 'payment_method_pay_now';
@@ -55,6 +58,8 @@ class Alma_Constants_Helper {
 	const ALMA_LOGO_PATH                 = 'images/alma_logo.svg';
 	const ALMA_SHORT_LOGO_PATH           = 'images/alma_short_logo.svg';
 	const ALMA_PATH_CHECKOUT_JS          = 'js/alma-checkout.js';
+	const ALMA_PATH_CHECKOUT_IN_PAGE_JS          = 'js/alma-checkout-in-page.js';
+	const ALMA_PATH_CHECKOUT_CDN_IN_PAGE_JS  = 'https://cdn.jsdelivr.net/npm/@alma/in-page@2.x/dist/index.umd.js';
 	const ALMA_PATH_CHECKOUT_CSS         = 'css/alma-checkout.css';
 
 	const ERROR = 'error';

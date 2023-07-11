@@ -68,7 +68,10 @@ class Alma_Gateway_Helper {
 		foreach ( $available_gateways as $key => $gateway ) {
 
 			if (
-				'alma' === $gateway->id
+				(
+					Alma_Constants_Helper::GATEWAY_ID === $gateway->id
+					|| Alma_Constants_Helper::GATEWAY_ID_IN_PAGE === $gateway->id
+				)
 				&& $has_excluded_products
 			) {
 				unset( $available_gateways[ $key ] );
@@ -93,6 +96,27 @@ class Alma_Gateway_Helper {
 	public function woocommerce_gateway_title( $title, $id ) {
 		if ( Alma_Constants_Helper::GATEWAY_ID === $id ) {
 			return $this->alma_settings->get_title( Alma_Constants_Helper::GATEWAY_TITLE );
+		}
+
+		if ( Alma_Constants_Helper::GATEWAY_ID_IN_PAGE === $id ) {
+			return $this->alma_settings->get_title( Alma_Constants_Helper::GATEWAY_TITLE_IN_PAGE );
+		}
+
+		return $title;
+	}
+
+	/**
+	 * Filter the alma gateway title (visible on checkout page).
+	 *
+	 * @param string  $title The original title.
+	 * @param integer $id The payment gateway id.
+	 *
+	 * @return string
+	 */
+	public function woocommerce_gateway_description( $title, $id ) {
+
+		if ( Alma_Constants_Helper::GATEWAY_ID_IN_PAGE === $id ) {
+			return $this->alma_settings->get_description( Alma_Constants_Helper::GATEWAY_DESCRIPTION_IN_PAGE );
 		}
 
 		return $title;

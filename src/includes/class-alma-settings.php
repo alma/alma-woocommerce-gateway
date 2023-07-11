@@ -391,6 +391,17 @@ class Alma_Settings {
 	}
 
 	/**
+	 * Gets title for a payment method.
+	 *
+	 * @param string $payment_method The payment method.
+	 *
+	 * @return string
+	 */
+	public function get_description( $payment_method ) {
+		return $this->get_i18n( 'description_' . $payment_method );
+	}
+
+	/**
 	 * Gets a setting value translated.
 	 *
 	 * @param string $key The setting to translate.
@@ -548,22 +559,22 @@ class Alma_Settings {
 	 * Create the payment.
 	 *
 	 * @param array   $payload The payload.
-	 * @param string  $order_id The order id.
+	 * @param \WC_Order  $wc_order The order id.
 	 * @param  FeePlan $fee_plan The fee plan.
 	 *
 	 * @return Payment
 	 *
 	 * @throws Alma_Api_Create_Payments_Exception Create payment exception.
 	 */
-	public function create_payment( $payload, $order_id, $fee_plan ) {
+	public function create_payment( $payload, $wc_order, $fee_plan ) {
 		try {
 			$this->get_alma_client();
 
 			return $this->alma_client->payments->create( $payload );
 
 		} catch ( \Exception $e ) {
-			$this->logger->error( sprintf( 'Api create_payments, order id "%s" , Api message "%s"', $order_id, $e->getMessage() ) );
-			throw new Alma_Api_Create_Payments_Exception( $order_id, $fee_plan );
+			$this->logger->error( sprintf( 'Api create_payments, order id "%s" , Api message "%s"', $wc_order->get_id(), $e->getMessage() ) );
+			throw new Alma_Api_Create_Payments_Exception( $wc_order->get_id(), $fee_plan );
 		}
 	}
 
@@ -1030,15 +1041,15 @@ class Alma_Settings {
 				);
 				break;
 			case Alma_Constants_Helper::GATEWAY_ID:
-				$should_display = in_array(
-					$this->get_installments_count( $plan_key ),
-					array(
-						2,
-						3,
-						4,
-					),
-					true
-				);
+					$should_display = in_array(
+						$this->get_installments_count( $plan_key ),
+						array(
+							2,
+							3,
+							4,
+						),
+						true
+					);
 				break;
 			case Alma_Constants_Helper::ALMA_GATEWAY_PAY_LATER:
 				$should_display = (
