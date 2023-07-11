@@ -1,6 +1,8 @@
 Changelog
 =========
 
+* fix: prevent to call Eligibility api with an amount to 0
+
 v4.3.2
 ------
 * fix: SEPA deprecated test
