@@ -52,6 +52,7 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 == Changelog ==
 
 * fix: prevent to call Eligibility api with an amount to 0
+* feat: upgrade PHP client to 1.11.0
 
 = 4.3.2 =
 * fix: SEPA deprecated test
