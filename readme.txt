@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 4.4
 Tested up to: 6.2.2
 Requires PHP: 5.6
-Stable tag: 4.3.2
+Stable tag: 4.3.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -51,9 +51,12 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 == Changelog ==
 
+= 4.3.3 =
 * fix: prevent to call Eligibility api with an amount to 0
-* feat: upgrade PHP client to 1.11.0
+* fix: wrong variable name
 * fix: Change the return code (500 to 200)on Ipn callback when it's a mismatch or potential fraud
+* feat: upgrade PHP client to 1.11.1
+* feat: Compatibility woocommerce 7.9.0
 
 = 4.3.2 =
 * fix: SEPA deprecated test
