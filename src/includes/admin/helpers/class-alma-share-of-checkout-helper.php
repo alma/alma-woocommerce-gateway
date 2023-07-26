@@ -129,7 +129,7 @@ class Alma_Share_Of_Checkout_Helper {
 
 			$currency = $wc_order->get_currency();
 			$order_currencies[ $currency ]['total_order_count'] += 1;
-			$order_currencies[ $currency ]['total_amount']      += $this->tool_helper->alma_price_to_cents( $order->get_total() );
+			$order_currencies[ $currency ]['total_amount']      += $this->tool_helper->alma_price_to_cents( $wc_order->get_total() );
 		}
 
 		return array_values( $order_currencies );
