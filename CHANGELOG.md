@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v5.0.0
+------
+* feat: In Page checkout
+* feat: Separate the gateways in the checkout page
+
 v4.3.3
 ------
 * fix: prevent to call Eligibility api with an amount to 0
@@ -8,7 +13,7 @@ v4.3.3
 * fix: Change the return code (500 to 200)on Ipn callback when it's a mismatch or potential fraud
 * feat: upgrade PHP client to 1.11.1
 * feat: Compatibility woocommerce 7.9.0
-
+* 
 v4.3.2
 ------
 * fix: SEPA deprecated test

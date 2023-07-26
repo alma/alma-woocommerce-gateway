@@ -12,7 +12,7 @@
 namespace Alma\Woocommerce\Helpers;
 
 use Alma\Woocommerce\Alma_Logger;
-use Alma\Woocommerce\Alma_Payment_Gateway_Standard;
+use Alma\Woocommerce\Gateways\Alma_Payment_Gateway_Standard;
 use Alma\Woocommerce\Alma_Settings;
 use Alma\Woocommerce\Exceptions\Alma_Version_Deprecated;
 

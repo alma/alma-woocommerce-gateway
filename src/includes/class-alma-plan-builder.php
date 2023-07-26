@@ -39,11 +39,19 @@ class Alma_Plan_Builder {
 	protected $gateway_helper;
 
 	/**
+	 * The template loader.
+	 *
+	 * @var Alma_Template_Loader
+	 */
+	protected $template_loader;
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->alma_settings  = new Alma_Settings();
-		$this->gateway_helper = new Alma_Gateway_Helper();
+		$this->alma_settings   = new Alma_Settings();
+		$this->gateway_helper  = new Alma_Gateway_Helper();
+		$this->template_loader = new Alma_Template_Loader();
 	}
 
 	/**
@@ -51,24 +59,73 @@ class Alma_Plan_Builder {
 	 *
 	 * @param array  $eligibilities The eligitibilies.
 	 * @param array  $eligible_plans The eligibles plans.
+	 * @param string $gateway_id The gateway id.
 	 * @param string $default_plan The default plan.
 	 * @return void
+	 *
+	 * @throws Exceptions\Alma_Exception Exception.
 	 */
 	public function render_checkout_fields( $eligibilities, $eligible_plans, $gateway_id, $default_plan = null ) {
 
-		if ( empty( $eligible_plans ) ) {
-			$templates = new Alma_Template_Loader();
-			$templates->get_template( 'alma-checkout-no-plans.php' );
+		if ( empty( $eligible_plans[ $gateway_id ] ) ) {
+			$this->template_loader->get_template( 'alma-checkout-no-plans.php' );
 
 			return;
 		}
 
-		if ( $gateway_id == Alma_Constants_Helper::GATEWAY_ID_IN_PAGE ) {
-			$this->render_fields_in_page( $eligibilities, $eligible_plans, $default_plan );
-
+		if (
+			Alma_Constants_Helper::GATEWAY_ID_IN_PAGE == $gateway_id
+			|| Alma_Constants_Helper::GATEWAY_ID_IN_PAGE_PAY_NOW == $gateway_id
+		) {
+			$this->render_fields_in_page( $eligible_plans, $gateway_id, $default_plan );
 		} else {
-			$this->render_fields( $eligibilities, $eligible_plans, $default_plan );
+			$this->render_fields_classic( $eligibilities, $eligible_plans, $gateway_id, $default_plan );
 		}
+	}
+
+
+	/**
+	 * Render the fields.
+	 *
+	 * @param array  $eligible_plans The eligible plans.
+	 * @param string $gateway_id The gateway id.
+	 * @param string $default_plan  The default plans.
+	 * @return void
+	 * @throws Exceptions\Alma_Exception Exception.
+	 */
+	public function render_fields_in_page( $eligible_plans, $gateway_id, $default_plan = null ) {
+		if ( empty( $eligible_plans ) ) {
+			return;
+		}
+
+		$this->template_loader->get_template(
+			'alma-checkout-plans-classic.php',
+			array(
+				'id'          => $gateway_id,
+				'title'       => $this->gateway_helper->get_alma_gateway_title( $gateway_id ),
+				'description' => $this->gateway_helper->get_alma_gateway_description( $gateway_id ),
+			)
+		);
+
+		foreach ( $eligible_plans[ $gateway_id ] as $plan_key ) {
+			$this->template_loader->get_template(
+				'alma-checkout-plan-in-page.php',
+				array(
+					'id'                   => $gateway_id,
+					'logo_text'            => $this->gateway_helper->get_alma_gateway_logo_text( $gateway_id ),
+					'plan_key'             => $plan_key,
+					'is_checked'           => $plan_key === $default_plan,
+					'plan_class'           => '.' . Alma_Constants_Helper::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS,
+					'plan_id'              => '#' . sprintf( Alma_Constants_Helper::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $plan_key ),
+					'logo_url'             => Alma_Assets_Helper::get_asset_url( sprintf( 'images/%s_logo.svg', $plan_key ) ),
+					'upon_trigger_enabled' => $this->alma_settings->payment_upon_trigger_enabled,
+				),
+				'partials'
+			);
+		}
+			echo '<div id="alma-inpage-' . esc_html( $gateway_id ) . '"></div>';
+			echo '</div>';
+
 	}
 
 	/**
@@ -76,109 +133,47 @@ class Alma_Plan_Builder {
 	 *
 	 * @param array  $eligibilities The eligibilities.
 	 * @param array  $eligible_plans The eligible plans.
+	 * @param string $gateway_id The gateway id.
 	 * @param string $default_plan  The default plans.
 	 * @return void
 	 * @throws Exceptions\Alma_Exception Exception.
 	 */
-	public function render_fields( $eligibilities, $eligible_plans, $default_plan = null ) {
-		$templates              = new Alma_Template_Loader();
-		$eligible_plans_by_type = $this->order_plans( $eligible_plans );
+	public function render_fields_classic( $eligibilities, $eligible_plans, $gateway_id, $default_plan = null ) {
+		$this->template_loader->get_template(
+			'alma-checkout-plans-classic.php',
+			array(
+				'id'          => $gateway_id,
+				'description' => $this->gateway_helper->get_alma_gateway_description( $gateway_id ),
+			)
+		);
 
-		if ( 0 === count( $eligible_plans_by_type ) ) {
-			return;
-		}
-
-		echo '<div id="alma_plans_accordion">';
-
-		foreach ( $eligible_plans_by_type as $type => $eligible_plans ) {
-			$templates->get_template(
-				'alma-checkout-plans.php',
+		foreach ( $eligible_plans[ $gateway_id ] as $plan_key ) {
+			$this->template_loader->get_template(
+				'alma-checkout-plan.php',
 				array(
-					'id'          => $type,
-					'title'       => $this->gateway_helper->get_alma_gateway_title( $type ),
-					'description' => $this->gateway_helper->get_alma_gateway_description( $type ),
-				)
+					'id'                   => $gateway_id,
+					'logo_text'            => $this->gateway_helper->get_alma_gateway_logo_text( $gateway_id ),
+					'plan_key'             => $plan_key,
+					'is_checked'           => $plan_key === $default_plan,
+					'plan_class'           => '.' . Alma_Constants_Helper::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS,
+					'plan_id'              => '#' . sprintf( Alma_Constants_Helper::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $plan_key ),
+					'logo_url'             => Alma_Assets_Helper::get_asset_url( sprintf( 'images/%s_logo.svg', $plan_key ) ),
+					'upon_trigger_enabled' => $this->alma_settings->payment_upon_trigger_enabled,
+				),
+				'partials'
 			);
-
-			foreach ( $eligible_plans as $plan_key ) {
-				$templates->get_template(
-					'alma-checkout-plan.php',
-					array(
-						'id'                   => $type,
-						'logo_text'            => $this->gateway_helper->get_alma_gateway_logo_text( $type ),
-						'plan_key'             => $plan_key,
-						'is_checked'           => $plan_key === $default_plan,
-						'plan_class'           => '.' . Alma_Constants_Helper::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS,
-						'plan_id'              => '#' . sprintf( Alma_Constants_Helper::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $plan_key ),
-						'logo_url'             => Alma_Assets_Helper::get_asset_url( sprintf( 'images/%s_logo.svg', $plan_key ) ),
-						'upon_trigger_enabled' => $this->alma_settings->payment_upon_trigger_enabled,
-					),
-					'partials'
-				);
-			}
-			echo '</div>';
 		}
-		echo '</div>';
 
-		$templates->get_template(
+		$this->template_loader->get_template(
 			'alma-checkout-plan-details.php',
 			array(
 				'alma_eligibilities'   => $eligibilities,
 				'alma_default_plan'    => $default_plan,
-				'alma_gateway_id'      => $type,
+				'alma_gateway_id'      => $gateway_id,
 				'alma_settings'        => $this->alma_settings,
 				'upon_trigger_enabled' => $this->alma_settings->payment_upon_trigger_enabled,
 			)
 		);
-
-	}
-
-	/**
-	 * Render the fields.
-	 *
-	 * @param array  $eligibilities The eligibilities.
-	 * @param array  $eligible_plans The eligible plans.
-	 * @param string $default_plan  The default plans.
-	 * @return void
-	 * @throws Exceptions\Alma_Exception Exception.
-	 */
-	public function render_fields_in_page( $eligibilities, $eligible_plans, $default_plan = null ) {
-		$templates              = new Alma_Template_Loader();
-		$eligible_plans_by_type = $this->order_plans( $eligible_plans );
-
-		if ( 0 === count( $eligible_plans_by_type ) ) {
-			return;
-		}
-
-		foreach ( $eligible_plans_by_type as $type => $eligible_plans ) {
-			$templates->get_template(
-				'alma-checkout-plans-in-page.php',
-				array(
-					'id'          => $type,
-					'title'       => $this->gateway_helper->get_alma_gateway_title( $type ),
-					'description' => $this->gateway_helper->get_alma_gateway_description( $type ),
-				)
-			);
-
-			foreach ( $eligible_plans as $plan_key ) {
-				$templates->get_template(
-					'alma-checkout-plan-in-page.php',
-					array(
-						'id'                   => $type,
-						'logo_text'            => $this->gateway_helper->get_alma_gateway_logo_text( $type ),
-						'plan_key'             => $plan_key,
-						'is_checked'           => $plan_key === $default_plan,
-						'plan_class'           => '.' . Alma_Constants_Helper::ALMA_PAYMENT_PLAN_TABLE_CSS_CLASS,
-						'plan_id'              => '#' . sprintf( Alma_Constants_Helper::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $plan_key ),
-						'logo_url'             => Alma_Assets_Helper::get_asset_url( sprintf( 'images/%s_logo.svg', $plan_key ) ),
-						'upon_trigger_enabled' => $this->alma_settings->payment_upon_trigger_enabled,
-					),
-					'partials'
-				);
-			}
-			echo '<div id="alma-inpage"></div>';
-			echo '</div>';
-		}
 
 	}
 
@@ -190,11 +185,22 @@ class Alma_Plan_Builder {
 	 */
 	public function order_plans( $eligible_plans = array() ) {
 		$eligible_plans_by_type = array(
-			Alma_Constants_Helper::ALMA_GATEWAY_PAY_NOW   => array(),
-			Alma_Constants_Helper::GATEWAY_ID             => array(),
-			Alma_Constants_Helper::ALMA_GATEWAY_PAY_LATER => array(),
-			Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR => array(),
+			Alma_Constants_Helper::GATEWAY_ID_PAY_NOW   => array(),
+			Alma_Constants_Helper::GATEWAY_ID           => array(),
+			Alma_Constants_Helper::GATEWAY_ID_PAY_LATER => array(),
+			Alma_Constants_Helper::GATEWAY_ID_MORE_THAN_FOUR => array(),
 		);
+
+		if (
+			! empty( $this->alma_settings->settings['display_in_page'] )
+			&& 'yes' == $this->alma_settings->settings['display_in_page']
+		) {
+			unset( $eligible_plans_by_type[ Alma_Constants_Helper::GATEWAY_ID ] );
+			unset( $eligible_plans_by_type[ Alma_Constants_Helper::GATEWAY_ID_PAY_NOW ] );
+
+			$eligible_plans_by_type[ Alma_Constants_Helper::GATEWAY_ID_IN_PAGE ]         = array();
+			$eligible_plans_by_type[ Alma_Constants_Helper::GATEWAY_ID_IN_PAGE_PAY_NOW ] = array();
+		}
 
 		$result = array();
 

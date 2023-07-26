@@ -15,6 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use Alma\Woocommerce\Alma_Payment_Upon_Trigger;
 use Alma\Woocommerce\Alma_Settings;
 use Alma\Woocommerce\Exceptions\Alma_Exception;
 
@@ -39,13 +40,20 @@ class Alma_Gateway_Helper {
 	 */
 	protected $payment_helper;
 
+	/**
+	 * The checkout helper
+	 *
+	 * @var Alma_Checkout_Helper
+	 */
+	protected $checkout_helper;
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->alma_settings  = new Alma_Settings();
-		$this->payment_helper = new Alma_Payment_Helper();
+		$this->alma_settings   = new Alma_Settings();
+		$this->payment_helper  = new Alma_Payment_Helper();
+		$this->checkout_helper = new Alma_Checkout_Helper();
 	}
 
 	/**
@@ -68,10 +76,7 @@ class Alma_Gateway_Helper {
 		foreach ( $available_gateways as $key => $gateway ) {
 
 			if (
-				(
-					Alma_Constants_Helper::GATEWAY_ID === $gateway->id
-					|| Alma_Constants_Helper::GATEWAY_ID_IN_PAGE === $gateway->id
-				)
+				in_array( $gateway->id, Alma_Constants_Helper::$gateways_ids )
 				&& $has_excluded_products
 			) {
 				unset( $available_gateways[ $key ] );
@@ -94,12 +99,8 @@ class Alma_Gateway_Helper {
 	 * @return string
 	 */
 	public function woocommerce_gateway_title( $title, $id ) {
-		if ( Alma_Constants_Helper::GATEWAY_ID === $id ) {
-			return $this->alma_settings->get_title( Alma_Constants_Helper::GATEWAY_TITLE );
-		}
-
-		if ( Alma_Constants_Helper::GATEWAY_ID_IN_PAGE === $id ) {
-			return $this->alma_settings->get_title( Alma_Constants_Helper::GATEWAY_TITLE_IN_PAGE );
+		if ( in_array( $id, Alma_Constants_Helper::$gateways_ids ) ) {
+			return $this->alma_settings->get_title( $id );
 		}
 
 		return $title;
@@ -108,15 +109,15 @@ class Alma_Gateway_Helper {
 	/**
 	 * Filter the alma gateway title (visible on checkout page).
 	 *
-	 * @param string  $title The original title.
+	 * @param string  $title The title.
 	 * @param integer $id The payment gateway id.
 	 *
 	 * @return string
 	 */
 	public function woocommerce_gateway_description( $title, $id ) {
 
-		if ( Alma_Constants_Helper::GATEWAY_ID_IN_PAGE === $id ) {
-			return $this->alma_settings->get_description( Alma_Constants_Helper::GATEWAY_DESCRIPTION_IN_PAGE );
+		if ( in_array( $id, Alma_Constants_Helper::$gateways_ids ) ) {
+			return $this->alma_settings->get_description( $id );
 		}
 
 		return $title;
@@ -130,21 +131,8 @@ class Alma_Gateway_Helper {
 	 * @throws Alma_Exception Exception.
 	 */
 	public function get_alma_gateway_title( $id ) {
-
-		if ( Alma_Constants_Helper::GATEWAY_ID === $id ) {
-			return $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PNX );
-		}
-
-		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_LATER === $id ) {
-			return $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PAY_LATER );
-		}
-
-		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_NOW === $id ) {
-			return $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PAY_NOW );
-		}
-
-		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR === $id ) {
-			return $this->alma_settings->get_title( Alma_Constants_Helper::PAYMENT_METHOD_PNX_PLUS_4 );
+		if ( in_array( $id, Alma_Constants_Helper::$gateways_ids ) ) {
+			return $this->alma_settings->get_title( $id );
 		}
 
 		throw new Alma_Exception( sprintf( 'Unknown gateway id : %s', $id ) );
@@ -157,7 +145,11 @@ class Alma_Gateway_Helper {
 	 * @return string
 	 */
 	public function get_alma_gateway_logo_text( $id ) {
-		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_NOW === $id ) {
+		if (
+			Alma_Constants_Helper::GATEWAY_ID_PAY_NOW === $id
+		 || Alma_Constants_Helper::GATEWAY_ID_IN_PAGE_PAY_NOW === $id
+		) {
+
 			return __( 'Pay Now', 'alma-gateway-for-woocommerce' );
 		}
 
@@ -172,20 +164,8 @@ class Alma_Gateway_Helper {
 	 * @throws Alma_Exception Exception.
 	 */
 	public function get_alma_gateway_description( $id ) {
-		if ( Alma_Constants_Helper::GATEWAY_ID === $id ) {
-			return $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PNX );
-		}
-
-		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_LATER === $id ) {
-			return $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PAY_LATER );
-		}
-
-		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_NOW === $id ) {
-			return $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PAY_NOW );
-		}
-
-		if ( Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR === $id ) {
-			return $this->payment_helper->get_description( Alma_Constants_Helper::PAYMENT_METHOD_PNX_PLUS_4 );
+		if ( in_array( $id, Alma_Constants_Helper::$gateways_ids ) ) {
+			return $this->alma_settings->get_description( $id );
 		}
 
 		throw new Alma_Exception( sprintf( 'Unknown gateway id : %s', $id ) );
@@ -248,5 +228,24 @@ class Alma_Gateway_Helper {
 		}
 
 		return array_shift( $plans );
+	}
+
+	/**
+	 *  Add the actions.
+	 *
+	 * @return void
+	 */
+	public function add_actions() {
+		add_action( 'woocommerce_before_checkout_process', array( $this->checkout_helper, 'woocommerce_checkout_process' ), 1 );
+		$payment_upon_trigger_helper = new Alma_Payment_Upon_Trigger();
+		add_action(
+			'woocommerce_order_status_changed',
+			array(
+				$payment_upon_trigger_helper,
+				'woocommerce_order_status_changed',
+			),
+			10,
+			3
+		);
 	}
 }

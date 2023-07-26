@@ -173,6 +173,7 @@ class Alma_Refund {
 		}
 	}
 
+
 	/**
 	 * Action hook for order partial refunded.
 	 *
@@ -183,7 +184,11 @@ class Alma_Refund {
 	public function woocommerce_order_partially_refunded( $order_id, $refund_id ) {
 		$wc_order = wc_get_order( $order_id );
 		$refund   = new \WC_Order_Refund( $refund_id );
-		if ( ! $this->helper->is_partially_refundable( $wc_order, $refund ) ) {
+
+		if (
+			! $this->helper->has_status_refundable( $wc_order )
+			|| ! $this->helper->is_partially_refundable( $wc_order, $refund )
+		) {
 			return;
 		}
 
@@ -228,9 +233,10 @@ class Alma_Refund {
 	 */
 	public function woocommerce_order_fully_refunded( $order_id, $refund_id ) {
 		$wc_order = wc_get_order( $order_id );
+
 		if (
-			'refunded' === $wc_order->get_status() &&
-			true === $this->helper->is_fully_refundable( $wc_order )
+			'refunded' === $wc_order->get_status()
+			&& true === $this->helper->is_fully_refundable( $wc_order )
 		) {
 			$this->helper->make_full_refund( $wc_order, $refund_id );
 		}
