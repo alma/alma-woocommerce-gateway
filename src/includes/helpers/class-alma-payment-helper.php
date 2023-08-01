@@ -253,7 +253,7 @@ class Alma_Payment_Helper {
 	protected function manage_mismatch( $wc_order, $payment, $payment_id ) {
 		$total_in_cent = $this->tool_helper->alma_price_to_cents( $wc_order->get_total() );
 
-		if ( $total_in_cent !== $payment->id ) {
+		if ( $total_in_cent !== $payment->purchase_amount ) {
 			$this->alma_settings->flag_as_fraud( $payment_id, Payment::FRAUD_AMOUNT_MISMATCH );
 			$wc_order->update_status( 'failed', Payment::FRAUD_AMOUNT_MISMATCH );
 
