@@ -55,6 +55,9 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 * feat: In Page checkout
 * feat: Separate the gateways in the checkout page
 
+= 4.3.4 =
+* fix: wrong variable in mismatch
+
 = 4.3.3 =
 * fix: prevent to call Eligibility api with an amount to 0
 * fix: wrong variable name
