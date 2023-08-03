@@ -51,3 +51,7 @@ h5 {
 	border: 1px solid #E1E4E6;
 	border-radius: 7px;
 }
+
+#alma-inpage-alma_in_page_pay_now{
+	display: none;
+}
