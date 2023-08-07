@@ -69,8 +69,10 @@ use phpDocumentor\Reflection\Types\Array_;
  * @property string variable_product_check_variations_event JS event for product variation change
  * @property array excluded_products_list Wp Categories excluded slug's list
  * @property string share_of_checkout_enabled Bool for share of checkout acceptance (yes or no)
- * @property string share_of_checkout_enabled_date String Date when the marchand did accept the share of checkout
+ * @property string share_of_checkout_enabled_date String Date when the merchant did accept the share of checkout
  * @property string share_of_checkout_last_sharing_date String Date when we sent the data to Alma
+ * @property bool display_in_page Bool if In Page is activated
+ * @property bool inpage_allowed Bool if In Page is allowed
  */
 class Alma_Settings {
 
@@ -770,14 +772,20 @@ class Alma_Settings {
 		$this->get_alma_client();
 
 		if ( ! empty( $this->alma_client ) ) {
+			$inpage_allowed = true;
 
 			try {
 				$merchant                                      = $this->alma_client->merchants->me();
 				$this->{$this->environment . '_merchant_id'}   = $merchant->id;
 				$this->{$this->environment . '_merchant_name'} = $merchant->name;
 
+				if ( property_exists( $merchant, 'cms_allow_inpage' ) ) {
+					$inpage_allowed = $merchant->cms_allow_inpage;
+				}
 			} catch ( \Exception $e ) {
 				$this->__set( 'keys_validity', 'no' );
+				$this->manage_cms_allowed_inpage( false );
+
 				$this->save();
 
 				if ( $e->response && 401 === $e->response->responseCode ) {
@@ -791,7 +799,9 @@ class Alma_Settings {
 					$e
 				);
 			}
+
 			$this->__set( 'keys_validity', 'yes' );
+			$this->manage_cms_allowed_inpage( $inpage_allowed );
 			$this->save();
 
 			if ( ! $merchant->can_create_payments ) {
@@ -803,6 +813,22 @@ class Alma_Settings {
 				__( 'Alma encountered an error.', 'alma-gateway-for-woocommerce' )
 			);
 		}
+	}
+
+	/**
+	 * Manage the feature flag and in page activation from merchant payload.
+	 *
+	 * @param bool $inpage_allowed In Page allowed.
+	 * @return void
+	 */
+	protected function manage_cms_allowed_inpage( $inpage_allowed ) {
+		if ( $inpage_allowed ) {
+			$this->__set( 'inpage_allowed', 'yes' );
+			return;
+		}
+
+		$this->__set( 'inpage_allowed', 'no' );
+		$this->__set( 'display_in_page', 'no' );
 	}
 
 	/**

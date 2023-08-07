@@ -64,11 +64,12 @@ class Alma_Settings_Helper {
 			'debug'                                      => 'yes',
 			'keys_validity'                              => 'no',
 			'display_in_page'                            => 'no',
+			'inpage_allowed'                             => 'no',
 		);
 	}
 
 	/**
-	 * Gets the default title for the gatewxay
+	 * Gets the default title for the gateway
 	 *
 	 * @return string
 	 */

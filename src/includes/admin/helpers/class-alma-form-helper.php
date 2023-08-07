@@ -50,14 +50,13 @@ class Alma_Form_Helper {
 			return array_merge(
 				$this->form_fields_helper->init_enabled_field( $default_settings ),
 				$this->form_fields_helper->init_api_key_fields( __( '→ Start by filling in your API keys', 'alma-gateway-for-woocommerce' ), $default_settings ),
-				$this->form_fields_helper->init_display_fields( $default_settings ),
 				$this->form_fields_helper->init_debug_fields( $default_settings )
 			);
 		}
 
 		return array_merge(
 			$this->form_fields_helper->init_enabled_field( $default_settings ),
-			$this->form_fields_helper->init_display_fields( $default_settings ),
+			$this->form_fields_helper->init_inpage_fields( $default_settings ),
 			$this->form_fields_helper->init_fee_plans_fields( $default_settings ),
 			$this->form_fields_helper->init_general_settings_fields( $default_settings ),
 			$this->form_fields_helper->init_payment_upon_trigger_fields( $default_settings ),
