@@ -9,10 +9,8 @@
  */
 
 (function ($) {
-	var regex = /^general_([0-9]+)_[0-9]+_[0-9]+/g;
+	var regex  = /^general_([0-9]+)_[0-9]+_[0-9]+/g;
 	var inPage = undefined;
-
-	$(".payment_method_alma_in_page_pay_now").hide();
 
 	$( 'body' ).on(
 		'updated_checkout',
@@ -57,7 +55,7 @@
 		}
 
 		if (null !== installment) {
-			if( inPage !== undefined) {
+			if ( inPage !== undefined) {
 				inPage.unmount();
 			}
 
