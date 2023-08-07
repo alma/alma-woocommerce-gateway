@@ -73,6 +73,19 @@ class Alma_Plan_Builder {
 			return;
 		}
 
+		if ( empty( $eligible_plans ) ) {
+			return;
+		}
+
+		$this->template_loader->get_template(
+			'alma-checkout-plans-classic.php',
+			array(
+				'id'          => $gateway_id,
+				'title'       => $this->gateway_helper->get_alma_gateway_title( $gateway_id ),
+				'description' => $this->gateway_helper->get_alma_gateway_description( $gateway_id ),
+			)
+		);
+
 		if (
 			Alma_Constants_Helper::GATEWAY_ID_IN_PAGE == $gateway_id
 			|| Alma_Constants_Helper::GATEWAY_ID_IN_PAGE_PAY_NOW == $gateway_id
@@ -94,19 +107,6 @@ class Alma_Plan_Builder {
 	 * @throws Exceptions\Alma_Exception Exception.
 	 */
 	public function render_fields_in_page( $eligible_plans, $gateway_id, $default_plan = null ) {
-		if ( empty( $eligible_plans ) ) {
-			return;
-		}
-
-		$this->template_loader->get_template(
-			'alma-checkout-plans-classic.php',
-			array(
-				'id'          => $gateway_id,
-				'title'       => $this->gateway_helper->get_alma_gateway_title( $gateway_id ),
-				'description' => $this->gateway_helper->get_alma_gateway_description( $gateway_id ),
-			)
-		);
-
 		foreach ( $eligible_plans[ $gateway_id ] as $plan_key ) {
 			$this->template_loader->get_template(
 				'alma-checkout-plan-in-page.php',
@@ -123,9 +123,9 @@ class Alma_Plan_Builder {
 				'partials'
 			);
 		}
-			echo '<div id="alma-inpage-' . esc_html( $gateway_id ) . '"></div>';
-			echo '</div>';
 
+		echo '<div id="alma-inpage-' . esc_html( $gateway_id ) . '"></div>';
+		echo '</div>';
 	}
 
 	/**
@@ -139,13 +139,6 @@ class Alma_Plan_Builder {
 	 * @throws Exceptions\Alma_Exception Exception.
 	 */
 	public function render_fields_classic( $eligibilities, $eligible_plans, $gateway_id, $default_plan = null ) {
-		$this->template_loader->get_template(
-			'alma-checkout-plans-classic.php',
-			array(
-				'id'          => $gateway_id,
-				'description' => $this->gateway_helper->get_alma_gateway_description( $gateway_id ),
-			)
-		);
 
 		foreach ( $eligible_plans[ $gateway_id ] as $plan_key ) {
 			$this->template_loader->get_template(
