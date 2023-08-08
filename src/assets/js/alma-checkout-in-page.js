@@ -111,7 +111,7 @@
 									paymentId:paymentId,
 									onUserCloseModal: () => {
 										cancel_order( orderId );
-										$('.alma-loader-wrapper').remove();
+										$( '.alma-loader-wrapper' ).remove();
 									}
 								}
 							);
