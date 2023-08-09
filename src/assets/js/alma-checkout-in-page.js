@@ -91,6 +91,8 @@
 					'alma_fee_plan_in_page': feePlanChecked
 				};
 
+				add_loader();
+
 				// Create the payment id and order.
 				jQuery.post( ajax_object.ajax_url, data )
 					.done(
@@ -108,7 +110,8 @@
 								{
 									paymentId:paymentId,
 									onUserCloseModal: () => {
-										cancel_order( orderId )
+										cancel_order( orderId );
+										$( '.alma-loader-wrapper' ).remove();
 									}
 								}
 							);
@@ -123,6 +126,12 @@
 			}
 		}
 	);
+
+	function add_loader()
+	{
+		var loading = "<div class='loadingIndicator'><img src='https://cdn.almapay.com/img/animated-logo-a.svg' alt='Loading' /></div>";
+		$( "body" ).append( "<div class='alma-loader-wrapper'>" + loading + "</div>" );
+	}
 
 	function cancel_order(orderId)
 	{
