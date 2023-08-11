@@ -5,6 +5,8 @@ v5.0.0
 ------
 * feat: In Page checkout
 * feat: Separate the gateways in the checkout page
+* feat: Compatibility Woocommerce 8.0.1
+* feat: Compatibility WordPress 6.3
 
 v4.3.4
 ------
