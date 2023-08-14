@@ -20,6 +20,7 @@ use Alma\Woocommerce\Alma_Settings;
 use Alma\Woocommerce\Exceptions\Alma_Api_Create_Payments_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Build_Order_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Create_Payments_Exception;
+use Alma\Woocommerce\Exceptions\Alma_Exception;
 use Alma\Woocommerce\Exceptions\Alma_No_Order_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Plans_Definition_Exception;
 use Alma\Woocommerce\Gateways\Standard\Alma_Payment_Gateway_Standard;
@@ -36,13 +37,12 @@ class Alma_Order_Helper {
 	const WC_COMPLETED = 'wc-completed';
 
 
-
 	/**
 	 * The logger.
 	 *
 	 * @var Alma_Logger
 	 */
-	private $logger;
+	protected $logger;
 
 	/**
 	 * Constructor.
@@ -332,7 +332,8 @@ class Alma_Order_Helper {
 		$order->set_customer_ip_address( \WC_Geolocation::get_ip_address() );
 		$order->set_customer_user_agent( wc_get_user_agent() );
 		$order->set_customer_note( isset( $data['order_comments'] ) ? $data['order_comments'] : '' );
-		$order->set_payment_method( isset( $available_gateways[ $data['payment_method'] ] ) ? $available_gateways[ $data['payment_method'] ] : $data['payment_method'] );
+		$order->set_payment_method( $this->get_alma_gateway_title( $data['payment_method'] ) );
+		$order->set_payment_method_title( $this->get_alma_gateway_title( $data['payment_method'] ) );
 		$order->set_shipping_total( $cart->get_shipping_total() );
 		$order->set_discount_total( $cart->get_discount_total() );
 		$order->set_discount_tax( $cart->get_discount_tax() );
@@ -366,6 +367,23 @@ class Alma_Order_Helper {
 			$order_id,
 		);
 	}
+
+	/**
+	 * Get the title of the Alma Gateway.
+	 *
+	 * @param string $id The alma gateway type id.
+	 * @return string
+	 * @throws Alma_Exception Exception.
+	 */
+	public function get_alma_gateway_title( $id ) {
+		$settings = new Alma_Settings();
+		if ( in_array( $id, Alma_Constants_Helper::$gateways_ids ) ) {
+			return $settings->get_title( $id );
+		}
+
+		throw new Alma_Exception( sprintf( 'Unknown gateway id : %s', $id ) );
+	}
+
 	/**
 	 * Abandonment by the client.
 	 *
