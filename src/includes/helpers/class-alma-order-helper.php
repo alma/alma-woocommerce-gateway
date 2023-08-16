@@ -298,8 +298,7 @@ class Alma_Order_Helper {
 			$data[ $values['name'] ] = $values['value'];
 		}
 
-		$cart_hash          = md5( wp_json_encode( wc_clean( $cart->get_cart_for_session() ) ) . $cart->total );
-		$available_gateways = WC()->payment_gateways->get_available_payment_gateways();
+		$cart_hash = md5( wp_json_encode( wc_clean( $cart->get_cart_for_session() ) ) . $cart->total );
 
 		// Loop through the data array.
 		foreach ( $data as $key => $value ) {
