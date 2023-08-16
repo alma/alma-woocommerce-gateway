@@ -43,6 +43,7 @@ use Alma\Woocommerce\Exceptions\Alma_Api_Plans_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Api_Merchants_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Activation_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Exception;
+use phpDocumentor\Reflection\Types\Array_;
 
 /**
  * Handles settings retrieval from the settings API.
@@ -68,8 +69,10 @@ use Alma\Woocommerce\Exceptions\Alma_Api_Share_Of_Checkout_Exception;
  * @property string variable_product_check_variations_event JS event for product variation change
  * @property array excluded_products_list Wp Categories excluded slug's list
  * @property string share_of_checkout_enabled Bool for share of checkout acceptance (yes or no)
- * @property string share_of_checkout_enabled_date String Date when the marchand did accept the share of checkout
+ * @property string share_of_checkout_enabled_date String Date when the merchant did accept the share of checkout
  * @property string share_of_checkout_last_sharing_date String Date when we sent the data to Alma
+ * @property bool display_in_page Bool if In Page is activated
+ * @property bool inpage_allowed Bool if In Page is allowed
  */
 class Alma_Settings {
 
@@ -391,6 +394,17 @@ class Alma_Settings {
 	}
 
 	/**
+	 * Gets title for a payment method.
+	 *
+	 * @param string $payment_method The payment method.
+	 *
+	 * @return string
+	 */
+	public function get_description( $payment_method ) {
+		return $this->get_i18n( 'description_' . $payment_method );
+	}
+
+	/**
 	 * Gets a setting value translated.
 	 *
 	 * @param string $key The setting to translate.
@@ -402,7 +416,6 @@ class Alma_Settings {
 			if ( $this->{$key . '_' . get_locale()} ) {
 				return $this->{$key . '_' . get_locale()};
 			}
-
 			return Alma_Internationalization_Helper::get_translated_text(
 				Alma_Helper_Settings::default_settings()[ $key ],
 				get_locale()
@@ -547,23 +560,31 @@ class Alma_Settings {
 	/**
 	 * Create the payment.
 	 *
-	 * @param array   $payload The payload.
-	 * @param string  $order_id The order id.
-	 * @param  FeePlan $fee_plan The fee plan.
+	 * @param array     $payload The payload.
+	 * @param \WC_Order $wc_order The order id.
+	 * @param  FeePlan   $fee_plan The fee plan.
 	 *
 	 * @return Payment
 	 *
 	 * @throws Alma_Api_Create_Payments_Exception Create payment exception.
 	 */
-	public function create_payment( $payload, $order_id, $fee_plan ) {
+	public function create_payment( $payload, $wc_order, $fee_plan ) {
 		try {
 			$this->get_alma_client();
 
 			return $this->alma_client->payments->create( $payload );
 
 		} catch ( \Exception $e ) {
-			$this->logger->error( sprintf( 'Api create_payments, order id "%s" , Api message "%s"', $order_id, $e->getMessage() ) );
-			throw new Alma_Api_Create_Payments_Exception( $order_id, $fee_plan );
+			$this->logger->error(
+				sprintf(
+					'Api create_payments, order id "%s" , Api message "%s", Payload "%s", Trace "%s"',
+					$wc_order->get_id(),
+					$e->getMessage(),
+					wp_json_encode( $payload ),
+					$e->getTraceAsString()
+				)
+			);
+			throw new Alma_Api_Create_Payments_Exception( $wc_order->get_id(), $fee_plan, $payload );
 		}
 	}
 
@@ -736,19 +757,6 @@ class Alma_Settings {
 	}
 
 	/**
-	 * Get the merchant name in DB.
-	 *
-	 * @return string
-	 */
-	public function get_active_merchant_name() {
-		if ( $this->get_environment() === 'live' ) {
-			return $this->live_merchant_name;
-		}
-
-		return $this->test_merchant_name;
-	}
-
-	/**
 	 * Get the merchant id in api.
 	 *
 	 * @return void
@@ -764,14 +772,20 @@ class Alma_Settings {
 		$this->get_alma_client();
 
 		if ( ! empty( $this->alma_client ) ) {
+			$inpage_allowed = true;
 
 			try {
 				$merchant                                      = $this->alma_client->merchants->me();
 				$this->{$this->environment . '_merchant_id'}   = $merchant->id;
 				$this->{$this->environment . '_merchant_name'} = $merchant->name;
 
+				if ( property_exists( $merchant, 'cms_allow_inpage' ) ) {
+					$inpage_allowed = $merchant->cms_allow_inpage;
+				}
 			} catch ( \Exception $e ) {
 				$this->__set( 'keys_validity', 'no' );
+				$this->manage_cms_allowed_inpage( false );
+
 				$this->save();
 
 				if ( $e->response && 401 === $e->response->responseCode ) {
@@ -785,7 +799,9 @@ class Alma_Settings {
 					$e
 				);
 			}
+
 			$this->__set( 'keys_validity', 'yes' );
+			$this->manage_cms_allowed_inpage( $inpage_allowed );
 			$this->save();
 
 			if ( ! $merchant->can_create_payments ) {
@@ -797,6 +813,22 @@ class Alma_Settings {
 				__( 'Alma encountered an error.', 'alma-gateway-for-woocommerce' )
 			);
 		}
+	}
+
+	/**
+	 * Manage the feature flag and in page activation from merchant payload.
+	 *
+	 * @param bool $inpage_allowed In Page allowed.
+	 * @return void
+	 */
+	protected function manage_cms_allowed_inpage( $inpage_allowed ) {
+		if ( $inpage_allowed ) {
+			$this->__set( 'inpage_allowed', 'yes' );
+			return;
+		}
+
+		$this->__set( 'inpage_allowed', 'no' );
+		$this->__set( 'display_in_page', 'no' );
 	}
 
 	/**
@@ -898,25 +930,20 @@ class Alma_Settings {
 	}
 
 	/**
-	 * Check if cart eligibilities has at least one eligible plan.
+	 * Tells if the merchant has at least one "pnx_plus_4" payment method enabled in the WC back-office.
 	 *
 	 * @return bool
 	 */
-	public function is_cart_eligible() {
-		$eligibilities = $this->get_cart_eligibilities();
-
-		if ( ! $eligibilities ) {
-			return false;
+	public function has_pnx_4() {
+		foreach ( $this->get_enabled_plans_definitions() as $plan_definition ) {
+			if ( $plan_definition['installments_count'] <= 4 && $plan_definition['installments_count'] > 1 ) {
+				return true;
+			}
 		}
 
-		$is_eligible = false;
-
-		foreach ( $eligibilities as $plan ) {
-			$is_eligible = $is_eligible || $plan->isEligible; // phpcs:ignore WordPress.NamingConventions.ValidVariableName
-		}
-
-		return $is_eligible;
+		return false;
 	}
+
 
 	/**
 	 * Tells if the merchant has at least one "pnx_plus_4" payment method enabled in the WC back-office.
@@ -937,14 +964,15 @@ class Alma_Settings {
 	 * Get eligible plans keys for current cart.
 	 *
 	 * @param array $cart_eligibilities The eligibilities.
-	 * @return string[]
+	 * @return array
 	 */
 	public function get_eligible_plans_keys_for_cart( $cart_eligibilities = array() ) {
+		$alma_plan_builder = new Alma_Plan_Builder();
 		if ( empty( $cart_eligibilities ) ) {
 			$cart_eligibilities = $this->get_cart_eligibilities();
 		}
 
-		return array_filter(
+		$eligibilities = array_filter(
 			$this->get_eligible_plans_keys( $this->cart_helper->get_total_in_cents() ),
 			function ( $key ) use ( $cart_eligibilities ) {
 				if ( is_array( $cart_eligibilities ) ) {
@@ -954,6 +982,8 @@ class Alma_Settings {
 				return property_exists( $cart_eligibilities, $key );
 			}
 		);
+
+		return $alma_plan_builder->order_plans( $eligibilities );
 	}
 
 	/**
@@ -1023,14 +1053,9 @@ class Alma_Settings {
 	 */
 	public function should_display_plan( $plan_key, $gateway_id ) {
 		switch ( $gateway_id ) {
-			case Alma_Constants_Helper::ALMA_GATEWAY_PAY_NOW:
-				$should_display = (
-					$this->get_installments_count( $plan_key ) === 1
-					&& ( $this->get_deferred_days( $plan_key ) === 0 && $this->get_deferred_months( $plan_key ) === 0 )
-				);
-				break;
 			case Alma_Constants_Helper::GATEWAY_ID:
-				$should_display = in_array(
+			case Alma_Constants_Helper::GATEWAY_ID_IN_PAGE:
+				return in_array(
 					$this->get_installments_count( $plan_key ),
 					array(
 						2,
@@ -1039,21 +1064,22 @@ class Alma_Settings {
 					),
 					true
 				);
-				break;
-			case Alma_Constants_Helper::ALMA_GATEWAY_PAY_LATER:
-				$should_display = (
+			case Alma_Constants_Helper::GATEWAY_ID_PAY_NOW:
+			case Alma_Constants_Helper::GATEWAY_ID_IN_PAGE_PAY_NOW:
+				return (
+					$this->get_installments_count( $plan_key ) === 1
+					&& ( $this->get_deferred_days( $plan_key ) === 0 && $this->get_deferred_months( $plan_key ) === 0 )
+				);
+			case Alma_Constants_Helper::GATEWAY_ID_PAY_LATER:
+				return (
 					$this->get_installments_count( $plan_key ) === 1
 					&& ( $this->get_deferred_days( $plan_key ) !== 0 || $this->get_deferred_months( $plan_key ) !== 0 )
 				);
-				break;
-			case Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR:
-				$should_display = ( $this->get_installments_count( $plan_key ) > 4 );
-				break;
+			case Alma_Constants_Helper::GATEWAY_ID_MORE_THAN_FOUR:
+				return ( $this->get_installments_count( $plan_key ) > 4 );
 			default:
 				return false;
 		}
-
-		return $should_display;
 	}
 
 	/**

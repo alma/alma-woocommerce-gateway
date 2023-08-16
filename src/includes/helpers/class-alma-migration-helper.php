@@ -12,9 +12,9 @@
 namespace Alma\Woocommerce\Helpers;
 
 use Alma\Woocommerce\Alma_Logger;
-use Alma\Woocommerce\Alma_Payment_Gateway;
 use Alma\Woocommerce\Alma_Settings;
 use Alma\Woocommerce\Exceptions\Alma_Version_Deprecated;
+use Alma\Woocommerce\Gateways\Standard\Alma_Payment_Gateway_Standard;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -82,7 +82,7 @@ class Alma_Migration_Helper {
 	/**
 	 * Manage the migrations.
 	 *
-	 * @param string $db_version    The db version.
+	 * @param string $db_version The DB version.
 	 *
 	 * @throws Alma_Version_Deprecated The exception.
 	 *
@@ -140,11 +140,16 @@ class Alma_Migration_Helper {
 				update_option( Alma_Settings::OPTIONS_KEY, $settings );
 			}
 
+			// Test if we need to call the api in order to manage the in-page.
+			if ( version_compare( ALMA_VERSION, 5, '>=' ) ) {
+				$get_credentials = true;
+			}
+
 			if ( $get_credentials ) {
 				// Manage credentials to match the new settings fields format.
-				$gateway = new Alma_Payment_Gateway( false );
+				$gateway = new Alma_Payment_Gateway_Standard( false );
 
-				$gateway->manage_credentials( true );
+				$gateway->manage_credentials();
 			}
 		} catch ( \Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			// We don't care if it fails there is nothing to update.

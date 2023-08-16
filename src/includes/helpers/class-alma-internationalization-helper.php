@@ -126,11 +126,52 @@ class Alma_Internationalization_Helper {
 	 *
 	 * @return bool
 	 */
-	private static function entry_exists( $mo, $entry ) {
+	protected static function entry_exists( $mo, $entry ) {
 		return isset( $mo->entries )
 			&& isset( $mo->entries[ $entry ] )
 			&& isset( $mo->entries[ $entry ]->translations )
 			&& isset( $mo->entries[ $entry ]->translations[0] );
+	}
+
+	/**
+	 * Adds all the translated fields for one field.
+	 *
+	 * @param string $field_name The field name.
+	 * @param array  $field_infos The information for this field.
+	 * @param string $default The default value for the field.
+	 *
+	 * @return array
+	 */
+	public static function generate_i18n_field( $field_name, $field_infos, $default ) {
+		$lang_list = self::get_list_languages();
+
+		if (
+			self::is_site_multilingual()
+			&& count( $lang_list ) > 0
+		) {
+			$new_fields = array();
+
+			foreach ( $lang_list as $code_lang => $label_lang ) {
+				$new_file_key                 = $field_name . '_' . $code_lang;
+				$new_field_infos              = $field_infos;
+				$new_field_infos['type']      = 'text_alma_i18n';
+				$new_field_infos['class']     = $code_lang;
+				$new_field_infos['default']   = self::get_translated_text( $default, $code_lang );
+				$new_field_infos['lang_list'] = $lang_list;
+
+				$new_fields[ $new_file_key ] = $new_field_infos;
+			}
+
+			return $new_fields;
+		}
+
+		$additional_infos = array(
+			'type'    => 'text',
+			'class'   => 'alma-i18n',
+			'default' => $default,
+		);
+
+		return array( $field_name => array_merge( $field_infos, $additional_infos ) );
 	}
 
 }

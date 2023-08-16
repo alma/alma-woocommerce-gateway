@@ -14,14 +14,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Alma\Woocommerce\Admin\Alma_Notices;
-use Alma\Woocommerce\Admin\Helpers\Alma_Check_Legal_Helper;
 use Alma\Woocommerce\Exceptions\Alma_Requirements_Exception;
 use Alma\Woocommerce\Exceptions\Alma_Version_Deprecated;
-use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
+use Alma\Woocommerce\Gateways\Inpage\Alma_Payment_Gateway_In_Page;
+use Alma\Woocommerce\Gateways\Standard\Alma_Payment_Gateway_Pay_Later;
+use Alma\Woocommerce\Gateways\Standard\Alma_Payment_Gateway_Pay_More_Than_Four;
+use Alma\Woocommerce\Gateways\Standard\Alma_Payment_Gateway_Pay_Now;
+use Alma\Woocommerce\Gateways\Standard\Alma_Payment_Gateway_Standard;
 use Alma\Woocommerce\Helpers\Alma_Migration_Helper;
-use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
-use Alma\Woocommerce\Helpers\Alma_Payment_Helper;
-use Alma\Woocommerce\Helpers\Alma_Assets_Helper;
+use Alma\Woocommerce\Helpers\Alma_Plugin_Helper;
 
 /**
  * Alma_Plugin.
@@ -30,7 +31,7 @@ class Alma_Plugin {
 
 
 	/**
-	 * The *Singleton* instance of this class
+	 * The *Singleton* instance of this class.
 	 *
 	 * @var Alma_Plugin The instance.
 	 */
@@ -56,6 +57,13 @@ class Alma_Plugin {
 	protected $migration_helper;
 
 	/**
+	 * The plugin helper
+	 *
+	 * @var Alma_Plugin_Helper
+	 */
+	protected $plugin_helper;
+
+	/**
 	 * Protected constructor to prevent creating a new instance of the
 	 * *Singleton* via the `new` operator from outside of this class.
 	 */
@@ -63,6 +71,7 @@ class Alma_Plugin {
 		$this->logger           = new Alma_Logger();
 		$this->migration_helper = new Alma_Migration_Helper();
 		$this->admin_notices    = new Alma_Notices();
+		$this->plugin_helper    = new Alma_Plugin_Helper();
 
 		try {
 			$migration_success = $this->migration_helper->update();
@@ -100,9 +109,9 @@ class Alma_Plugin {
 
 		$this->load_plugin_textdomain();
 
-		$this->add_hooks();
-		$this->add_badges();
-		$this->add_actions();
+		$this->plugin_helper->add_hooks();
+		$this->plugin_helper->add_shortcodes_and_scripts();
+		$this->plugin_helper->add_actions();
 	}
 
 	/**
@@ -154,84 +163,6 @@ class Alma_Plugin {
 	}
 
 	/**
-	 * It’s important to note that adding hooks inside gateway classes may not trigger.
-	 * Gateways are only loaded when needed, such as during checkout and on the settings page in admin.
-	 *
-	 * @return void
-	 */
-	protected function add_hooks() {
-		add_action(
-			Alma_Tools_Helper::action_for_webhook( Alma_Constants_Helper::CUSTOMER_RETURN ),
-			array(
-				$this,
-				'handle_customer_return',
-			)
-		);
-
-		add_action(
-			Alma_Tools_Helper::action_for_webhook( Alma_Constants_Helper::IPN_CALLBACK ),
-			array(
-				$this,
-				'handle_ipn_callback',
-			)
-		);
-	}
-
-	/**
-	 * Add the badges.
-	 *
-	 * @return void
-	 */
-	protected function add_badges() {
-		$settings = new Alma_Settings();
-
-		if (
-			$settings->is_enabled()
-			&& $settings->is_allowed_to_see_alma( wp_get_current_user() )
-		) {
-
-			$shortcodes = new Alma_Shortcodes();
-
-			$cart_handler = new Alma_Cart_Handler();
-			$shortcodes->init_cart_widget_shortcode( $cart_handler );
-
-			$product_handler = new Alma_Product_Handler();
-			$shortcodes->init_product_widget_shortcode( $product_handler );
-
-			add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
-		}
-	}
-
-	/**
-	 * Add the wp actions.
-	 *
-	 * @return void
-	 */
-	protected function add_actions() {
-		$payment_upon_trigger_helper = new Alma_Payment_Upon_Trigger();
-		add_action(
-			'woocommerce_order_status_changed',
-			array(
-				$payment_upon_trigger_helper,
-				'woocommerce_order_status_changed',
-			),
-			10,
-			3
-		);
-
-		$refund = new Alma_Refund();
-		add_action( 'admin_init', array( $refund, 'admin_init' ) );
-
-		$check_legal = new Alma_Check_Legal_Helper();
-		add_action( 'init', array( $check_legal, 'check_share_checkout' ) );
-
-		// Launch the "share of checkout".
-		$share_of_checkout = new Alma_Share_Of_Checkout();
-		add_action( 'init', array( $share_of_checkout, 'send_soc_data' ) );
-	}
-
-
-	/**
 	 * Returns the *Singleton* instance of this class.
 	 *
 	 * @return Alma_Plugin
@@ -245,49 +176,6 @@ class Alma_Plugin {
 	}
 
 	/**
-	 * Handle ipn callback.
-	 *
-	 * @return void
-	 */
-	public function handle_ipn_callback() {
-		$payment_helper = new Alma_Payment_Helper();
-		$payment_helper->handle_ipn_callback();
-	}
-
-
-	/**
-	 * Handle customer return.
-	 *
-	 * @return void
-	 */
-	public function handle_customer_return() {
-		$payment_helper = new Alma_Payment_Helper();
-		$wc_order       = $payment_helper->handle_customer_return();
-
-		// Redirect user to the order confirmation page.
-		$alma_gateway = new Alma_Payment_Gateway();
-
-		$return_url = $alma_gateway->get_return_url( $wc_order );
-		wp_safe_redirect( $return_url );
-		exit();
-	}
-
-	/**
-	 * Inject JS in checkout page.
-	 *
-	 * @return void
-	 */
-	public function wp_enqueue_scripts() {
-		if ( is_checkout() ) {
-			$alma_checkout_css = Alma_Assets_Helper::get_asset_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_CSS );
-			wp_enqueue_style( 'alma-checkout-page-css', $alma_checkout_css, array(), ALMA_VERSION );
-
-			$alma_checkout_js = Alma_Assets_Helper::get_asset_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_JS );
-			wp_enqueue_script( 'alma-checkout-page', $alma_checkout_js, array( 'jquery', 'jquery-ui-core', 'jquery-ui-accordion' ), ALMA_VERSION, true );
-		}
-	}
-
-	/**
 	 * Add the gateway to WC Available Gateways.
 	 *
 	 * @param array $gateways all available WC gateways.
@@ -296,7 +184,18 @@ class Alma_Plugin {
 	 * @since 1.0.0
 	 */
 	public function add_gateways( $gateways ) {
-		$gateways[] = Alma_Payment_Gateway::class;
+		if ( ! is_admin() ) {
+			$gateways[] = \Alma\Woocommerce\Gateways\Inpage\Alma_Payment_Gateway_Pay_Now::class;
+			$gateways[] = Alma_Payment_Gateway_Pay_Now::class;
+		}
+
+		$gateways[] = Alma_Payment_Gateway_Standard::class;
+
+		if ( ! is_admin() ) {
+			$gateways[] = Alma_Payment_Gateway_In_Page::class;
+			$gateways[] = Alma_Payment_Gateway_Pay_More_Than_Four::class;
+			$gateways[] = Alma_Payment_Gateway_Pay_Later::class;
+		}
 
 		return $gateways;
 	}

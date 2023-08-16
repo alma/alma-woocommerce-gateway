@@ -3,9 +3,9 @@
 Contributors: almapayments, olance, francois-gomis, clairealma
 Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell, woo commerce, alma, monthly payments, split payments
 Requires at least: 4.4
-Tested up to: 6.2.2
+Tested up to: 6.3
 Requires PHP: 5.6
-Stable tag: 4.3.4
+Stable tag: 5.0.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,13 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+= 5.0.0 =
+* feat: In Page checkout
+* feat: Separate the gateways in the checkout page
+* feat: Compatibility Woocommerce 8.0.1
+* feat: Compatibility Woocommerce 8.0.2
+* feat: Compatibility WordPress 6.3
 
 = 4.3.4 =
 * fix: wrong variable in mismatch
