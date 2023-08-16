@@ -89,7 +89,7 @@ class Alma_Settings_Helper {
 		if ( Alma_Internationalization_Helper::is_site_multilingual() ) {
 			return Alma_Constants_Helper::PAY_NOW;
 		}
-		return __( 'Pay now by credit card', 'alma-gateway-for-woocommerce' );
+		return __( 'Pay by credit card', 'alma-gateway-for-woocommerce' );
 	}
 
 	/**
@@ -113,7 +113,7 @@ class Alma_Settings_Helper {
 		if ( Alma_Internationalization_Helper::is_site_multilingual() ) {
 			return Alma_Constants_Helper::PAY_NOW;
 		}
-		return __( 'Pay now by credit card', 'alma-gateway-for-woocommerce' );
+		return __( 'Pay by credit card', 'alma-gateway-for-woocommerce' );
 	}
 
 	/**
@@ -175,9 +175,9 @@ class Alma_Settings_Helper {
 	 */
 	public static function default_pay_later_title() {
 		if ( Alma_Internationalization_Helper::is_site_multilingual() ) {
-			return 'Buy now, Pay later';
+			return 'Pay later';
 		}
-		return __( 'Buy now, Pay later', 'alma-gateway-for-woocommerce' );
+		return __( 'Pay later', 'alma-gateway-for-woocommerce' );
 	}
 
 	/**
@@ -187,9 +187,9 @@ class Alma_Settings_Helper {
 	 */
 	public static function default_pnx_plus_4_title() {
 		if ( Alma_Internationalization_Helper::is_site_multilingual() ) {
-			return 'Spread your payments';
+			return 'Pay with financing';
 		}
-		return __( 'Spread your payments', 'alma-gateway-for-woocommerce' );
+		return __( 'Pay with financing', 'alma-gateway-for-woocommerce' );
 	}
 
 	/**

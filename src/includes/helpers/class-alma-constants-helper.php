@@ -60,7 +60,7 @@ class Alma_Constants_Helper {
 	const ALMA_PATH_CHECKOUT_CSS            = 'css/alma-checkout.css';
 	const PAY_IN_INSTALLMENTS               = 'Pay in installments';
 
-	const PAY_NOW = 'Pay now by credit card';
+	const PAY_NOW = 'Pay by credit card';
 
 	const ERROR = 'error';
 
