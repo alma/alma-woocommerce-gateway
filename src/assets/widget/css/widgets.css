@@ -97,25 +97,7 @@
 }
 
 ._31lrj > svg {
-  -webkit-animation: _3NtDa 1.7s ease infinite;
-          animation: _3NtDa 1.7s ease infinite;
-}
-
-@-webkit-keyframes _3NtDa {
-  60% {
- transform: scale(1); }
-
-  70% {
- transform: scale(0.7); }
-
-  80% {
- transform: scale(1); }
-
-  85% {
- transform: scale(0.95); }
-
-  100% {
- transform: scale(1); }
+  animation: _3NtDa 1.7s ease infinite;
 }
 
 @keyframes _3NtDa {
