@@ -57,6 +57,7 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 * feat: Compatibility Woocommerce 8.0.1
 * feat: Compatibility Woocommerce 8.0.2
 * feat: Compatibility WordPress 6.3
+* feat: Update Widget version 3.3.5
 
 = 4.3.4 =
 * fix: wrong variable in mismatch

@@ -15073,7 +15073,7 @@
           shipping_address: shipping_address
         }, {
           Authorization: "Alma-Merchant-Auth " + merchantId,
-          'X-Alma-Agent': 'Alma Widget'
+          'X-Alma-Agent': "Alma Widget/" + "v3.3.5"
         }).then(function (res) {
           setEligibility(res);
           setStatus(apiStatus.SUCCESS);
