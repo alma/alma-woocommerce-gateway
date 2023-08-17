@@ -2,7 +2,7 @@
 /**
  * Alma_Cart_Helper.
  *
- * @since 4.?
+ * @since 4.3.2
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes/helpers

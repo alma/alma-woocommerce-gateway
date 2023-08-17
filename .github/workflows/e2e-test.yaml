@@ -2,7 +2,7 @@
 name: E2E Test
 on:
   pull_request:
-    branches: ["main"]
+    branches: ["main", "develop"]
     types: ["opened", "synchronize", "reopened",  "ready_for_review"]
   workflow_dispatch:
 
@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         version:
-        - 7.9.0
+        - 8.0.2
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
     steps:
@@ -28,7 +28,7 @@ jobs:
         app_id: ${{ secrets.ALMA_UPDATE_CHECKS_APP_ID }}
         private_key: ${{ secrets.ALMA_UPDATE_CHECKS_APP_PEM }}
 
-    - uses: LouisBrunner/checks-action@v1.6.1
+    - uses: LouisBrunner/checks-action@v1.6.2
       id: e2e_status
       with:
         token: ${{ steps.generate_token.outputs.token }}
@@ -63,7 +63,7 @@ jobs:
             "e2e_check_origin" : "${{ github.repository }}"
           }
 
-    - uses: LouisBrunner/checks-action@v1.6.1
+    - uses: LouisBrunner/checks-action@v1.6.2
       if: failure()
       with:
         token: ${{ steps.generate_token.outputs.token }}

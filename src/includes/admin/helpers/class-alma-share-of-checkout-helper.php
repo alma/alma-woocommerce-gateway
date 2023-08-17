@@ -45,14 +45,22 @@ class Alma_Share_Of_Checkout_Helper {
 	 */
 	protected $tool_helper;
 
+	/**
+	 * The legal helper.
+	 *
+	 * @var Alma_Check_Legal_Helper
+	 */
+	protected $check_legal_helper;
+
 
 	/**
 	 * Construct.
 	 */
 	public function __construct() {
-		$this->alma_settings = new Alma_Settings();
-		$this->order_helper  = new Alma_Order_Helper();
-		$this->tool_helper   = new Alma_Tools_Helper();
+		$this->alma_settings      = new Alma_Settings();
+		$this->order_helper       = new Alma_Order_Helper();
+		$this->tool_helper        = new Alma_Tools_Helper();
+		$this->check_legal_helper = new Alma_Check_Legal_Helper();
 	}
 
 
@@ -180,5 +188,73 @@ class Alma_Share_Of_Checkout_Helper {
 		}
 
 		return $payment_methods;
+	}
+
+	/**
+	 * Verify if the soc value has changed.
+	 *
+	 * @param array $post_data The data.
+	 *
+	 * @return bool
+	 */
+	public function soc_has_changed( $post_data ) {
+		if (
+			(
+				isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
+				&& '1' == $post_data['woocommerce_alma_share_of_checkout_enabled']
+				&& 'no' === $this->alma_settings->__get( 'share_of_checkout_enabled' )
+			)
+			|| (
+				! isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
+				&& 'yes' === $this->alma_settings->__get( 'share_of_checkout_enabled' )
+			)
+			|| $this->alma_settings->__get( 'live_api_key' ) !== $post_data['woocommerce_alma_live_api_key']
+			|| $post_data['woocommerce_alma_environment'] !== $this->alma_settings->get_environment()
+		) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Process the checkout legal data.
+	 *
+	 * @param array $post_data The data.
+	 * @param array $settings The settings.
+	 *
+	 * @return array
+	 */
+	public function process_checkout_legal( $post_data, $settings ) {
+
+		// By default, remove api consent.
+		$value = 'no';
+
+		// Check if the live_api_key has changed. Remove the consent.
+		if (
+			$this->alma_settings->__get( 'live_api_key' ) !== $post_data['woocommerce_alma_live_api_key']
+		) {
+			$settings['share_of_checkout_enabled_date']             = '';
+			$settings['woocommerce_alma_share_of_checkout_enabled'] = '';
+		} elseif (
+			isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
+			&& '1' == $post_data['woocommerce_alma_share_of_checkout_enabled']
+			&& 'live' == $post_data['woocommerce_alma_environment']
+		) {
+			$settings['share_of_checkout_enabled_date'] = gmdate( 'Y-m-d' );
+
+			$value = 'yes';
+		}
+
+		$this->check_legal_helper->send_consent( $value );
+
+		if (
+			'test' === $post_data['woocommerce_alma_environment']
+			&& 'live' === $this->alma_settings->get_environment()
+		) {
+			delete_transient( 'alma-admin-soc-panel' );
+		}
+
+		return $settings;
 	}
 }

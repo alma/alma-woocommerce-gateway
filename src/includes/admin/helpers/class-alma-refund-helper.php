@@ -158,10 +158,10 @@ class Alma_Refund_Helper {
 	 * @see add_notice()
 	 */
 	protected function add_order_note( $wc_order, $notice_type, $message ) {
-
 		if ( in_array( $message, $this->messages, true ) ) {
 			return;
 		}
+
 		$this->messages[] = $message;
 
 		$wc_order->add_order_note( $message );
@@ -185,6 +185,28 @@ class Alma_Refund_Helper {
 			'message'     => $message,
 		);
 		update_post_meta( $wc_order->get_id(), Alma_Constants_Helper::REFUND_NOTICE_META_KEY, $refund_notices );
+	}
+
+	/**
+	 * Does the order has a refundable status.
+	 *
+	 * @param \WC_Order $wc_order The order.
+	 *
+	 * @return bool
+	 */
+	public function has_status_refundable( $wc_order ) {
+		if (
+			$wc_order->has_status( 'Pending payment' )
+			|| $wc_order->has_status( 'Failed' )
+			|| $wc_order->has_status( 'Cancelled' )
+			|| $wc_order->has_status( 'Checkout draft' )
+			|| $wc_order->has_status( 'On hold' )
+			|| $wc_order->has_status( 'Authentication required' )
+		) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -236,7 +258,8 @@ class Alma_Refund_Helper {
 	 * @return bool
 	 */
 	public function is_fully_refundable( $wc_order ) {
-		return $this->is_paid_with_alma( $wc_order ) && $this->has_transaction_id( $wc_order );
+		return $this->is_paid_with_alma( $wc_order )
+			   && $this->has_transaction_id( $wc_order );
 	}
 
 	/**
@@ -249,12 +272,7 @@ class Alma_Refund_Helper {
 	public function is_paid_with_alma( $wc_order ) {
 		return in_array(
 			$wc_order->get_payment_method(),
-			array(
-				Alma_Constants_Helper::GATEWAY_ID,
-				Alma_Constants_Helper::ALMA_GATEWAY_PAY_LATER,
-				Alma_Constants_Helper::ALMA_GATEWAY_PAY_MORE_THAN_FOUR,
-				Alma_Constants_Helper::ALMA_GATEWAY_PAY_NOW,
-			),
+			Alma_Constants_Helper::$gateways_ids,
 			true
 		);
 	}
@@ -268,9 +286,6 @@ class Alma_Refund_Helper {
 	 */
 	protected function has_transaction_id( $wc_order ) {
 		if ( ! $wc_order->get_transaction_id() ) {
-			/* translators: %s is an order number. */
-			$this->add_error_note( $wc_order, sprintf( __( 'Error while getting alma transaction_id for order_id : %s.', 'alma-gateway-for-woocommerce' ), $wc_order->get_id() ) );
-
 			$this->logger->error(
 				'Error while getting alma transaction_id from an order.',
 				array(
