@@ -76,7 +76,7 @@ class Alma_Payment_Gateway_In_Page extends Alma_Payment_Gateway {
 
 		if (
 			! empty( $this->alma_settings->settings['display_in_page'] )
-			&& 'no' == $this->alma_settings->settings['display_in_page']
+			&& 'no' === $this->alma_settings->settings['display_in_page']
 		) {
 			return false;
 		}

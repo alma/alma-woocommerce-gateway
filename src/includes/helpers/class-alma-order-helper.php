@@ -312,7 +312,7 @@ class Alma_Order_Helper {
 					0 === stripos( $key, 'billing_' )
 					|| 0 === stripos( $key, 'shipping_' )
 				)
-				&& ! in_array( $key, array( 'shipping_method', 'shipping_total', 'shipping_tax' ) ) ) {
+				&& ! in_array( $key, array( 'shipping_method', 'shipping_total', 'shipping_tax' ), true ) ) {
 				$order->update_meta_data( '_' . $key, $value );
 			}
 		}
@@ -376,7 +376,7 @@ class Alma_Order_Helper {
 	 */
 	public function get_alma_gateway_title( $id ) {
 		$settings = new Alma_Settings();
-		if ( in_array( $id, Alma_Constants_Helper::$gateways_ids ) ) {
+		if ( in_array( $id, Alma_Constants_Helper::$gateways_ids, true ) ) {
 			return $settings->get_title( $id );
 		}
 
