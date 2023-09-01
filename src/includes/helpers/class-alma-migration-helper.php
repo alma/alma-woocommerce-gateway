@@ -93,6 +93,12 @@ class Alma_Migration_Helper {
 			$db_version
 			&& version_compare( ALMA_VERSION, $db_version, '>' )
 		) {
+			$mo_path_file = ALMA_PLUGIN_PATH . 'languages/alma-gateway-for-woocommerce-' . get_locale() . '.mo';
+
+			if ( !is_textdomain_loaded('alma-gateway-for-woocommerce') && file_exists( $mo_path_file  ) ) {
+				load_textdomain( 'alma-gateway-for-woocommerce',$mo_path_file);
+			}
+
 			$this->manage_version_before_3( $db_version );
 			$this->migrate_keys();
 
