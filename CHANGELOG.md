@@ -1,6 +1,7 @@
 Changelog
 =========
 
+* fix: missing shipping information when In Page is activated
 * fix: loading of the translation files
 
 v5.0.0

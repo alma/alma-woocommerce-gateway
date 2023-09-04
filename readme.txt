@@ -51,6 +51,7 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 == Changelog ==
 
+* fix: missing shipping information when In Page is activated
 * fix: loading of the translation files
 
 = 5.0.0 =
