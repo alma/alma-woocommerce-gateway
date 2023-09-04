@@ -319,10 +319,11 @@ class Alma_Order_Helper {
 
 		$order->set_created_via( 'checkout' );
 		$order->set_cart_hash( $cart_hash );
+
 		$order->set_customer_id(
 			apply_filters(
 				'woocommerce_checkout_customer_id', //  phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-				isset( $post_fields['user_id'] ) ? $post_fields['user_id'] : ''
+				isset( $post_fields['user_id'] ) ? $post_fields['user_id'] : get_current_user_id()
 			)
 		);
 

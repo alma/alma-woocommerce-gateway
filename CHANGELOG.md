@@ -1,7 +1,10 @@
 Changelog
 =========
 
+v5.0.1
+------
 * fix: missing shipping information when In Page is activated
+* fix: missing client information when In Page is activated
 * fix: loading of the translation files
 
 v5.0.0
