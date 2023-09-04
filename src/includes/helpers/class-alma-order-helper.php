@@ -342,6 +342,9 @@ class Alma_Order_Helper {
 
 		$checkout->create_order_line_items( $order, $cart );
 		$checkout->create_order_fee_lines( $order, $cart );
+
+		WC()->cart->calculate_shipping();
+
 		$checkout->create_order_shipping_lines( $order, WC()->session->get( 'chosen_shipping_methods' ), WC()->shipping->get_packages() );
 		$checkout->create_order_tax_lines( $order, $cart );
 		$checkout->create_order_coupon_lines( $order, $cart );
