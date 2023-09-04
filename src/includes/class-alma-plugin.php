@@ -73,6 +73,8 @@ class Alma_Plugin {
 		$this->admin_notices    = new Alma_Notices();
 		$this->plugin_helper    = new Alma_Plugin_Helper();
 
+		$this->load_plugin_textdomain();
+
 		try {
 			$migration_success = $this->migration_helper->update();
 		} catch ( Alma_Version_Deprecated $e ) {
@@ -106,8 +108,6 @@ class Alma_Plugin {
 
 		add_filter( 'woocommerce_payment_gateways', array( $this, 'add_gateways' ) );
 		add_filter( 'plugin_action_links_' . plugin_basename( ALMA_PLUGIN_FILE ), array( $this, 'plugin_action_links' ) );
-
-		$this->load_plugin_textdomain();
 
 		$this->plugin_helper->add_hooks();
 		$this->plugin_helper->add_shortcodes_and_scripts();
