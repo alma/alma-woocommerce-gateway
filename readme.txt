@@ -55,6 +55,7 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 * fix: missing client information when In Page is activated
 * fix: missing shipping information when In Page is activated
 * fix: loading of the translation files
+* feat: Compatibility Woocommerce 8.0.3
 
 = 5.0.0 =
 * feat: In Page checkout
