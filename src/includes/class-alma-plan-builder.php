@@ -87,8 +87,8 @@ class Alma_Plan_Builder {
 		);
 
 		if (
-			Alma_Constants_Helper::GATEWAY_ID_IN_PAGE == $gateway_id
-			|| Alma_Constants_Helper::GATEWAY_ID_IN_PAGE_PAY_NOW == $gateway_id
+			Alma_Constants_Helper::GATEWAY_ID_IN_PAGE === $gateway_id
+			|| Alma_Constants_Helper::GATEWAY_ID_IN_PAGE_PAY_NOW === $gateway_id
 		) {
 			$this->render_fields_in_page( $eligible_plans, $gateway_id, $default_plan );
 		} else {
@@ -186,7 +186,7 @@ class Alma_Plan_Builder {
 
 		if (
 			! empty( $this->alma_settings->settings['display_in_page'] )
-			&& 'yes' == $this->alma_settings->settings['display_in_page']
+			&& 'yes' === $this->alma_settings->settings['display_in_page']
 		) {
 			unset( $eligible_plans_by_type[ Alma_Constants_Helper::GATEWAY_ID ] );
 			unset( $eligible_plans_by_type[ Alma_Constants_Helper::GATEWAY_ID_PAY_NOW ] );

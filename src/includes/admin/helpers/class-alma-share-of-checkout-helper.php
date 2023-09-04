@@ -201,7 +201,7 @@ class Alma_Share_Of_Checkout_Helper {
 		if (
 			(
 				isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
-				&& '1' == $post_data['woocommerce_alma_share_of_checkout_enabled']
+				&& '1' === $post_data['woocommerce_alma_share_of_checkout_enabled']
 				&& 'no' === $this->alma_settings->__get( 'share_of_checkout_enabled' )
 			)
 			|| (
@@ -238,8 +238,8 @@ class Alma_Share_Of_Checkout_Helper {
 			$settings['woocommerce_alma_share_of_checkout_enabled'] = '';
 		} elseif (
 			isset( $post_data['woocommerce_alma_share_of_checkout_enabled'] )
-			&& '1' == $post_data['woocommerce_alma_share_of_checkout_enabled']
-			&& 'live' == $post_data['woocommerce_alma_environment']
+			&& '1' === $post_data['woocommerce_alma_share_of_checkout_enabled']
+			&& 'live' === $post_data['woocommerce_alma_environment']
 		) {
 			$settings['share_of_checkout_enabled_date'] = gmdate( 'Y-m-d' );
 

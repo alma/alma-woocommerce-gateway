@@ -87,7 +87,7 @@ class Alma_Plugin_Helper {
 
 			if (
 				! empty( $settings->settings['display_in_page'] )
-				&& 'yes' == $settings->settings['display_in_page']
+				&& 'yes' === $settings->settings['display_in_page']
 			) {
 				$this->add_in_page_actions();
 			}
@@ -166,7 +166,7 @@ class Alma_Plugin_Helper {
 
 			if (
 				! empty( $settings->settings['display_in_page'] )
-				&& 'yes' == $settings->settings['display_in_page']
+				&& 'yes' === $settings->settings['display_in_page']
 			) {
 				$this->enqueue_in_page_scripts();
 			}
@@ -227,7 +227,7 @@ class Alma_Plugin_Helper {
 			foreach ( $query_parts as $args ) {
 				$query_args = explode( '=', $args );
 
-				if ( count( $query_args ) == 2 ) {
+				if ( count( $query_args ) === 2 ) {
 					switch ( $query_args['0'] ) {
 						case 'tab':
 							$tab = $query_args['1'];

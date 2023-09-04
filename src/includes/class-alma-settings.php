@@ -185,7 +185,7 @@ class Alma_Settings {
 		$settings = (array) get_option( self::OPTIONS_KEY, array() );
 
 		if ( ! empty( $settings['allowed_fee_plans'] ) && ! is_array( $settings['allowed_fee_plans'] ) ) {
-			$settings['allowed_fee_plans'] = unserialize( $settings['allowed_fee_plans'] );
+			$settings['allowed_fee_plans'] = unserialize( $settings['allowed_fee_plans'] ); // phpcs:ignore
 		}
 
 		return array_merge( Alma_Helper_Settings::default_settings(), $settings );
@@ -855,7 +855,7 @@ class Alma_Settings {
 			}
 		);
 
-		$this->settings['allowed_fee_plans'] = serialize( $this->allowed_fee_plans );
+		$this->settings['allowed_fee_plans'] = serialize( $this->allowed_fee_plans ); // phpcs:ignore
 
 		foreach ( $this->allowed_fee_plans as $fee_plan ) {
 			$plan_key           = $fee_plan->getPlanKey();

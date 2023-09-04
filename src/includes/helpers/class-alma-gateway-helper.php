@@ -76,7 +76,7 @@ class Alma_Gateway_Helper {
 		foreach ( $available_gateways as $key => $gateway ) {
 
 			if (
-				in_array( $gateway->id, Alma_Constants_Helper::$gateways_ids )
+				in_array( $gateway->id, Alma_Constants_Helper::$gateways_ids, true )
 				&& $has_excluded_products
 			) {
 				unset( $available_gateways[ $key ] );
@@ -99,7 +99,7 @@ class Alma_Gateway_Helper {
 	 * @return string
 	 */
 	public function woocommerce_gateway_title( $title, $id ) {
-		if ( in_array( $id, Alma_Constants_Helper::$gateways_ids ) ) {
+		if ( in_array( $id, Alma_Constants_Helper::$gateways_ids, true ) ) {
 			return $this->alma_settings->get_title( $id );
 		}
 
@@ -116,7 +116,7 @@ class Alma_Gateway_Helper {
 	 */
 	public function woocommerce_gateway_description( $title, $id ) {
 
-		if ( in_array( $id, Alma_Constants_Helper::$gateways_ids ) ) {
+		if ( in_array( $id, Alma_Constants_Helper::$gateways_ids, true ) ) {
 			return $this->alma_settings->get_description( $id );
 		}
 
@@ -131,7 +131,7 @@ class Alma_Gateway_Helper {
 	 * @throws Alma_Exception Exception.
 	 */
 	public function get_alma_gateway_title( $id ) {
-		if ( in_array( $id, Alma_Constants_Helper::$gateways_ids ) ) {
+		if ( in_array( $id, Alma_Constants_Helper::$gateways_ids, true ) ) {
 			return $this->alma_settings->get_title( $id );
 		}
 
@@ -147,7 +147,7 @@ class Alma_Gateway_Helper {
 	public function get_alma_gateway_logo_text( $id ) {
 		if (
 			Alma_Constants_Helper::GATEWAY_ID_PAY_NOW === $id
-		 || Alma_Constants_Helper::GATEWAY_ID_IN_PAGE_PAY_NOW === $id
+			|| Alma_Constants_Helper::GATEWAY_ID_IN_PAGE_PAY_NOW === $id
 		) {
 
 			return __( 'Pay Now', 'alma-gateway-for-woocommerce' );
@@ -164,7 +164,7 @@ class Alma_Gateway_Helper {
 	 * @throws Alma_Exception Exception.
 	 */
 	public function get_alma_gateway_description( $id ) {
-		if ( in_array( $id, Alma_Constants_Helper::$gateways_ids ) ) {
+		if ( in_array( $id, Alma_Constants_Helper::$gateways_ids, true ) ) {
 			return $this->alma_settings->get_description( $id );
 		}
 

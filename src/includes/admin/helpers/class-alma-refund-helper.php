@@ -258,8 +258,7 @@ class Alma_Refund_Helper {
 	 * @return bool
 	 */
 	public function is_fully_refundable( $wc_order ) {
-		return $this->is_paid_with_alma( $wc_order )
-			   && $this->has_transaction_id( $wc_order );
+		return $this->is_paid_with_alma( $wc_order ) && $this->has_transaction_id( $wc_order );
 	}
 
 	/**
