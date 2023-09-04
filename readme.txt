@@ -51,6 +51,8 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 == Changelog ==
 
+* fix: loading of the translation files
+
 = 5.0.0 =
 * feat: In Page checkout
 * feat: Separate the gateways in the checkout page

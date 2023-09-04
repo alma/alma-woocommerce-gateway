@@ -1,6 +1,8 @@
 Changelog
 =========
 
+* fix: loading of the translation files
+
 v5.0.0
 ------
 * feat: In Page checkout
