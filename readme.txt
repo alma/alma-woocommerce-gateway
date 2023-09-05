@@ -51,6 +51,8 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 == Changelog ==
 
+* feat: Compatibility WordPress 6.3.1
+
 = 5.0.1 =
 * fix: missing client information when In Page is activated
 * fix: missing shipping information when In Page is activated

@@ -1,6 +1,8 @@
 Changelog
 =========
 
+* feat: Compatibility WordPress 6.3.1
+
 v5.0.1
 ------
 * fix: missing shipping information when In Page is activated
