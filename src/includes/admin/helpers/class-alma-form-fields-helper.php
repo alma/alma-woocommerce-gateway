@@ -184,7 +184,7 @@ class Alma_Form_Fields_Helper {
 	 * @return array
 	 */
 	public function init_inpage_fields( $default_settings ) {
-		if ( 'yes' == $this->settings_helper->settings['inpage_allowed'] ) {
+		if ( 'yes' === $this->settings_helper->settings['inpage_allowed'] ) {
 			return array(
 				'display_section' => array(
 					'title' => '<hr>' . __( '→ Display options', 'alma-gateway-for-woocommerce' ),
@@ -193,9 +193,8 @@ class Alma_Form_Fields_Helper {
 				'display_in_page' => array(
 					'title'   => __( 'Activate in-page checkout', 'alma-gateway-for-woocommerce' ),
 					'type'    => 'checkbox',
-					'label'   => __( 'Activate this setting if you want in-page checkout for Pay Now, P2X, P3X, and P4X', 'alma-gateway-for-woocommerce' ),
-					// translators: %s: Admin logs url.
-					// translators: %s: The previous plugin version if exists.
+					/* translators: %s: Alma in page doc URL */
+					'label'   => __( 'Activate this setting if you want in-page checkout for Pay Now, P2X, P3X, and P4X', 'alma-gateway-for-woocommerce' ) . '<br>' . sprintf( __( '(Learn more about this feature <a href="%s">here</a>)', 'alma-gateway-for-woocommerce' ), Alma_Assets_Helper::get_in_page_doc_link() ),
 					'default' => $default_settings['display_in_page'],
 				),
 			);
@@ -477,7 +476,7 @@ class Alma_Form_Fields_Helper {
 
 		if (
 			isset( $this->settings_helper->settings['display_in_page'] )
-			&& 'yes' == $this->settings_helper->settings['display_in_page']
+			&& 'yes' === $this->settings_helper->settings['display_in_page']
 		) {
 			$fields_in_page         = $this->get_custom_fields_payment_method( Alma_Constants_Helper::GATEWAY_ID_IN_PAGE, __( 'Payments in 2, 3 and 4 installments:', 'alma-gateway-for-woocommerce' ), $default_settings );
 			$fields_in_page_pay_now = $this->get_custom_fields_payment_method( Alma_Constants_Helper::GATEWAY_ID_IN_PAGE_PAY_NOW, __( 'Pay Now:', 'alma-gateway-for-woocommerce' ), $default_settings );
@@ -485,7 +484,7 @@ class Alma_Form_Fields_Helper {
 
 		if (
 			isset( $this->settings_helper->settings['display_in_page'] )
-			&& 'no' == $this->settings_helper->settings['display_in_page']
+			&& 'no' === $this->settings_helper->settings['display_in_page']
 		) {
 			$fields_pnx = $this->get_custom_fields_payment_method( Alma_Constants_Helper::GATEWAY_ID, __( 'Payments in 2, 3 and 4 installments:', 'alma-gateway-for-woocommerce' ), $default_settings );
 

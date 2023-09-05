@@ -62,7 +62,7 @@ class Alma_Encryptor_Helper {
 
 		$methods = openssl_get_cipher_methods();
 
-		if ( ! in_array( $method, $methods ) && ! empty( $methods ) ) {
+		if ( ! in_array( $method, $methods, true ) && ! empty( $methods ) ) {
 			$this->method = $methods[0];
 		} else {
 			$this->method = $method;
@@ -83,7 +83,7 @@ class Alma_Encryptor_Helper {
 	public function encrypt( $data ) {
 		$data = openssl_encrypt( $data, $this->method, $this->key, OPENSSL_RAW_DATA, $this->iv );
 
-		return base64_encode( $data );
+		return base64_encode( $data ); // phpcs:ignore
 	}
 
 	/**
@@ -100,7 +100,7 @@ class Alma_Encryptor_Helper {
 			return $data;
 		}
 
-		$data = base64_decode( $data );
+		$data = base64_decode( $data ); // phpcs:ignore
 		$data = openssl_decrypt( $data, $this->method, $this->key, OPENSSL_RAW_DATA, $this->iv );
 
 		return $data;

@@ -316,8 +316,8 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 
 		if (
 			is_admin()
-			&& 'checkout' == $tab
-			&& in_array( $section, Alma_Constants_Helper::$gateways_ids )
+			&& 'checkout' === $tab
+			&& in_array( $section, Alma_Constants_Helper::$gateways_ids, true )
 		) {
 			$this->show_alma_fee_plans = false;
 
@@ -584,11 +584,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 				<fieldset>
 					<legend class="screen-reader-text"><span><?php echo wp_kses_post( $data['title'] ); ?></span>
 					</legend>
-					<input class="input-text regular-input alma-i18n <?php echo esc_attr( $data['class'] ); ?>"
-						   type="text" name="<?php echo esc_attr( $field_key ); ?>"
-						   id="<?php echo esc_attr( $field_key ); ?>" style="<?php echo esc_attr( $data['css'] ); ?>"
-						   value="<?php echo esc_attr( $this->get_option( $key ) ); ?>"
-						   placeholder="<?php echo esc_attr( $data['placeholder'] ); ?>" <?php disabled( $data['disabled'] ); ?> <?php echo $this->get_custom_attribute_html( $data ); // phpcs:ignore WordPress.Security.EscapeOutput ?> />
+					<input class="input-text regular-input alma-i18n <?php echo esc_attr( $data['class'] ); ?>" type="text" name="<?php echo esc_attr( $field_key ); ?>" id="<?php echo esc_attr( $field_key ); ?>" style="<?php echo esc_attr( $data['css'] ); ?>" value="<?php echo esc_attr( $this->get_option( $key ) ); ?>" placeholder="<?php echo esc_attr( $data['placeholder'] ); ?>" <?php disabled( $data['disabled'] ); ?> <?php echo $this->get_custom_attribute_html( $data ); // phpcs:ignore WordPress.Security.EscapeOutput ?> />
 					<select class="list_lang_title" style="width:auto;margin-left:10px;line-height:28px;">
 						<?php
 						foreach ( $data['lang_list'] as $code => $label ) {
@@ -728,11 +724,11 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 			style="<?php echo esc_attr( $data['css'] ); ?>"
 			id="<?php echo esc_attr( $field_key ); ?>"><?php echo wp_kses_post( $data['title'] ); ?></h3>
 		<?php if ( ! empty( $data['description'] ) ) : ?>
-			<div class="<?php echo esc_attr( $data['description_class'] ); ?>"
-				 style="<?php echo esc_attr( $data['description_css'] ); ?>"><?php echo wp_kses_post( $data['description'] ); ?></div>
+			<div class="<?php echo esc_attr( $data['description_class'] ); ?>" style="<?php echo esc_attr( $data['description_css'] ); ?>">
+				<?php echo wp_kses_post( $data['description'] ); ?>
+			</div>
 		<?php endif; ?>
-	<table class="form-table <?php echo esc_attr( $data['table_class'] ); ?>"
-		   style="<?php echo esc_attr( $data['table_css'] ); ?>">
+	<table class="form-table <?php echo esc_attr( $data['table_class'] ); ?>" style="<?php echo esc_attr( $data['table_css'] ); ?>">
 		<?php
 
 		return ob_get_clean();

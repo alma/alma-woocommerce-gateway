@@ -312,17 +312,18 @@ class Alma_Order_Helper {
 					0 === stripos( $key, 'billing_' )
 					|| 0 === stripos( $key, 'shipping_' )
 				)
-				&& ! in_array( $key, array( 'shipping_method', 'shipping_total', 'shipping_tax' ) ) ) {
+				&& ! in_array( $key, array( 'shipping_method', 'shipping_total', 'shipping_tax' ), true ) ) {
 				$order->update_meta_data( '_' . $key, $value );
 			}
 		}
 
 		$order->set_created_via( 'checkout' );
 		$order->set_cart_hash( $cart_hash );
+
 		$order->set_customer_id(
 			apply_filters(
 				'woocommerce_checkout_customer_id', //  phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-				isset( $post_fields['user_id'] ) ? $post_fields['user_id'] : ''
+				isset( $post_fields['user_id'] ) ? $post_fields['user_id'] : get_current_user_id()
 			)
 		);
 
@@ -342,6 +343,9 @@ class Alma_Order_Helper {
 
 		$checkout->create_order_line_items( $order, $cart );
 		$checkout->create_order_fee_lines( $order, $cart );
+
+		WC()->cart->calculate_shipping();
+
 		$checkout->create_order_shipping_lines( $order, WC()->session->get( 'chosen_shipping_methods' ), WC()->shipping->get_packages() );
 		$checkout->create_order_tax_lines( $order, $cart );
 		$checkout->create_order_coupon_lines( $order, $cart );
@@ -376,7 +380,7 @@ class Alma_Order_Helper {
 	 */
 	public function get_alma_gateway_title( $id ) {
 		$settings = new Alma_Settings();
-		if ( in_array( $id, Alma_Constants_Helper::$gateways_ids ) ) {
+		if ( in_array( $id, Alma_Constants_Helper::$gateways_ids, true ) ) {
 			return $settings->get_title( $id );
 		}
 
