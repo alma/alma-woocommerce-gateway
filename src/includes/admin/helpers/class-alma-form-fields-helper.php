@@ -193,9 +193,8 @@ class Alma_Form_Fields_Helper {
 				'display_in_page' => array(
 					'title'   => __( 'Activate in-page checkout', 'alma-gateway-for-woocommerce' ),
 					'type'    => 'checkbox',
-					'label'   => __( 'Activate this setting if you want in-page checkout for Pay Now, P2X, P3X, and P4X', 'alma-gateway-for-woocommerce' ),
-					// translators: %s: Admin logs url.
-					// translators: %s: The previous plugin version if exists.
+					/* translators: %s: Alma in page doc URL */
+					'label'   => __( 'Activate this setting if you want in-page checkout for Pay Now, P2X, P3X, and P4X', 'alma-gateway-for-woocommerce' ) . '<br>' . sprintf( __( '(Learn more about this feature <a href="%s">here</a>)', 'alma-gateway-for-woocommerce' ), Alma_Assets_Helper::get_in_page_doc_link() ),
 					'default' => $default_settings['display_in_page'],
 				),
 			);

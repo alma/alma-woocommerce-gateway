@@ -87,6 +87,14 @@ class Alma_Assets_Helper {
 	}
 
 	/**
+	 * Get Alma doc for in page.
+	 *
+	 * @return string
+	 */
+	public static function get_in_page_doc_link() {
+		return esc_url( 'https://docs.almapay.com/docs/in-page-woocommerce' );
+	}
+	/**
 	 *  Enqueue scripts needed into admin form.
 	 *
 	 * @return void

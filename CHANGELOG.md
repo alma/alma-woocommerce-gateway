@@ -1,7 +1,12 @@
 Changelog
 =========
 
+v5.0.1
+------
+* fix: missing shipping information when In Page is activated
+* fix: missing client information when In Page is activated
 * fix: loading of the translation files
+* feat: Compatibility Woocommerce 8.0.3
 
 v5.0.0
 ------

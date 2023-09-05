@@ -16,8 +16,7 @@
 		'updated_checkout',
 		function (event) {
 			if (isAlmaInPageChecked()) {
-				feePlanChecked = $( "input[type='radio'][name='alma_fee_plan_in_page']:checked" ).val();
-				render_installments( feePlanChecked );
+				$( "input[type='radio'][name='alma_fee_plan_in_page']:checked" ).click();
 			}
 		}
 	);
@@ -55,14 +54,19 @@
 		}
 
 		if (null !== installment) {
-			if ( inPage !== undefined) {
+			if (
+				inPage !== undefined
+				&& document.getElementById( 'alma-embedded-iframe' ) !== null
+			) {
 				inPage.unmount();
 			}
+
+			amount = document.getElementsByClassName( "order-total" )["0"].getElementsByClassName( "woocommerce-Price-amount amount" )["0"].innerText.replace( /[^0-9]/g, '' );
 
 			inPage = Alma.InPage.initialize(
 				{
 					merchantId: alma_iframe_params.merchant_id,
-					amountInCents: alma_iframe_params.amount_in_cents,
+					amountInCents: amount,
 					installmentsCount: installment,
 					selector: "#alma-inpage-" + payment_value,
 					environment: alma_iframe_params.environment,
