@@ -36,6 +36,7 @@ class Alma_Checkout extends \WC_Checkout {
 			// Set each key / value pairs in an array.
 			$_POST[ $values['name'] ] = $values['value'];
 		}
+
 		$nonce_value = wc_get_var( $_POST['woocommerce-process-checkout-nonce'], wc_get_var( $_POST['_wpnonce'], '' ) ); // @codingStandardsIgnoreLine.
 
 		if ( empty( $nonce_value ) || ! wp_verify_nonce( $nonce_value, 'woocommerce-process_checkout' ) ) {

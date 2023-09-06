@@ -290,6 +290,7 @@ class Alma_Order_Helper {
 
 		$alma_checkout = new Alma_Checkout();
 		$order         = $alma_checkout->process_checkout( $post_fields );
+
 		// We ignore the nonce verification because process_payment is called after validate_fields.
 		$settings       = new Alma_Settings();
 		$payment_helper = new Alma_Payment_Helper();
