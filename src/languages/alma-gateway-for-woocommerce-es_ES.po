@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 77e083b1cd468d7c2202d1ff3d20e024\n"
-"POT-Creation-Date: 2023-09-06 15:03+0200\n"
-"PO-Revision-Date: 2023-09-06 13:03\n"
+"POT-Creation-Date: 2023-09-07 14:27+0200\n"
+"PO-Revision-Date: 2023-09-07 12:29\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "MIME-Version: 1.0\n"
@@ -514,27 +514,27 @@ msgstr "\"Distintivo de posibilidad de fraccionar el pago\" Alma (producto o ces
 msgid "The first customer payment has been triggered, as you updated the order status to \"%s\"."
 msgstr "El primer pago del cliente se ha activado, ya que ha actualizado el estado del pedido a \"%s\"."
 
-#: includes/class-alma-plugin.php:126
+#: includes/class-alma-plugin.php:125
 msgid "Alma requires WooCommerce to be activated"
 msgstr "WooCommerce debe estar activado para que el plugin Alma funcione"
 
-#: includes/class-alma-plugin.php:130
+#: includes/class-alma-plugin.php:129
 msgid "Alma requires WooCommerce version 3.0.0 or greater"
 msgstr "Alma requiere WooCommerce versión 3.0.0 o superior"
 
-#: includes/class-alma-plugin.php:134
+#: includes/class-alma-plugin.php:133
 msgid "Alma requires the cURL PHP extension to be installed on your server"
 msgstr "El plugin Alma requiere la instalación de la extensión cURL para PHP en tu servidor"
 
-#: includes/class-alma-plugin.php:138
+#: includes/class-alma-plugin.php:137
 msgid "Alma requires the JSON PHP extension to be installed on your server"
 msgstr "El plugin Alma requiere la instalación de la extensión JSON para PHP en tu servidor"
 
-#: includes/class-alma-plugin.php:141
+#: includes/class-alma-plugin.php:140
 msgid "Alma requires OpenSSL >= 1.0.1 to be installed on your server"
 msgstr "El plugin Alma requiere que OpenSSL 1.0.1+ esté instalado en tu servidor"
 
-#: includes/class-alma-plugin.php:214
+#: includes/class-alma-plugin.php:213
 msgid "Settings"
 msgstr "Configuración"
 
@@ -625,16 +625,16 @@ msgstr "¡Gracias por instalar Alma! Empieza por <a href='%s'>activar el método
 msgid "Error while initializing Alma API client.<br><a href=\"%1$s\">Activate debug mode</a> and <a href=\"%2$s\">check logs</a> for more details."
 msgstr "Error de inicialización del cliente de la API Alma.<br><a href=\"%1$s\">Activa el modo de depuración</a> y <a href=\"%2$s\">comprueba los logs</a> para obtener más información."
 
-#: includes/gateways/class-alma-payment-gateway.php:613
-#: includes/gateways/class-alma-payment-gateway.php:639
+#: includes/gateways/class-alma-payment-gateway.php:620
+#: includes/gateways/class-alma-payment-gateway.php:646
 msgid "There was an error processing your payment.<br>Please try again or contact us if the problem persists."
 msgstr "Se ha producido un error al procesar tu pago.<br>Inténtalo de nuevo o ponte en contacto con nosotros si el problema persiste."
 
-#: includes/gateways/class-alma-payment-gateway.php:684
+#: includes/gateways/class-alma-payment-gateway.php:691
 msgid "enabled"
 msgstr "habilitado"
 
-#: includes/gateways/class-alma-payment-gateway.php:688
+#: includes/gateways/class-alma-payment-gateway.php:695
 msgid "disabled"
 msgstr "deshabilitado"
 

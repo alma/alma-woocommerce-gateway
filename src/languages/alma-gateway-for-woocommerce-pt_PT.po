@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 77e083b1cd468d7c2202d1ff3d20e024\n"
-"POT-Creation-Date: 2023-09-06 15:03+0200\n"
-"PO-Revision-Date: 2023-09-06 13:03\n"
+"POT-Creation-Date: 2023-09-07 14:27+0200\n"
+"PO-Revision-Date: 2023-09-07 12:29\n"
 "Last-Translator: \n"
 "Language-Team: Portuguese\n"
 "MIME-Version: 1.0\n"
@@ -474,35 +474,35 @@ msgstr "O montante não pode ser igual a 0 para reembolso com Alma."
 
 #: includes/class-alma-checkout.php:44
 msgid "We were unable to process your order, please try again."
-msgstr ""
+msgstr "Não foi possível processar a sua encomenda, por favor tente novamente."
 
 #. translators: %s: shop cart url
 #: includes/class-alma-checkout.php:54
 #, php-format
 msgid "Sorry, your session has expired. <a href=\"%s\" class=\"wc-backward\">Return to shop</a>"
-msgstr ""
+msgstr "Desculpe, a sua sessão expirou. <a href=\"%s\" class=\"wc-backward\">Regressar à loja</a>"
 
 #: includes/class-alma-checkout.php:85
 msgid "Unable to create order."
-msgstr ""
+msgstr "Não é possível criar uma ordem."
 
 #: includes/class-alma-checkout.php:113
 msgid "Please read and accept the terms and conditions to proceed with your order."
-msgstr ""
+msgstr "Por favor, leia e aceite os termos e condições para prosseguir com a sua encomenda."
 
 #: includes/class-alma-checkout.php:120
 msgid "Please enter an address to continue."
-msgstr ""
+msgstr "Introduza um endereço para continuar."
 
 #. translators: %s: shipping location
 #: includes/class-alma-checkout.php:123
 #, php-format
 msgid "Unfortunately <strong>we do not ship %s</strong>. Please enter an alternative shipping address."
-msgstr ""
+msgstr "Infelizmente <strong>não efectuamos envios para %s</strong>. Por favor, introduza um endereço de envio alternativo."
 
 #: includes/class-alma-checkout.php:129
 msgid "No shipping method has been selected. Please double check your address, or contact us if you need any help."
-msgstr ""
+msgstr "Não foi selecionado nenhum método de envio. Verifique novamente o seu endereço ou contacte-nos se precisar de ajuda."
 
 #: includes/class-alma-generic-handler.php:68
 msgid "Alma \"Eligibility Widget\" (cart or product) already rendered on this page - Not displaying Alma"
@@ -514,27 +514,27 @@ msgstr "Widget de \"Elegibilidade da Alma\" (cesto ou produto) já apresentado n
 msgid "The first customer payment has been triggered, as you updated the order status to \"%s\"."
 msgstr "O primeiro pagamento do cliente foi acionado, ao atualizar o estádio da encomenda para \"%s\"."
 
-#: includes/class-alma-plugin.php:126
+#: includes/class-alma-plugin.php:125
 msgid "Alma requires WooCommerce to be activated"
 msgstr "A Alma requer a ativação do WooCommerce"
 
-#: includes/class-alma-plugin.php:130
+#: includes/class-alma-plugin.php:129
 msgid "Alma requires WooCommerce version 3.0.0 or greater"
 msgstr "O Alma requer a versão 3.0.0 ou superior do WooCommerce"
 
-#: includes/class-alma-plugin.php:134
+#: includes/class-alma-plugin.php:133
 msgid "Alma requires the cURL PHP extension to be installed on your server"
 msgstr "A Alma requer a extensão cURL PHP para ser instalada no seu servidor"
 
-#: includes/class-alma-plugin.php:138
+#: includes/class-alma-plugin.php:137
 msgid "Alma requires the JSON PHP extension to be installed on your server"
 msgstr "A Alma requer a extensão JSON PHP para ser instalada no seu servidor"
 
-#: includes/class-alma-plugin.php:141
+#: includes/class-alma-plugin.php:140
 msgid "Alma requires OpenSSL >= 1.0.1 to be installed on your server"
 msgstr "A Alma requer OpenSSL >= 1.0.1 para ser instalada no seu servidor"
 
-#: includes/class-alma-plugin.php:214
+#: includes/class-alma-plugin.php:213
 msgid "Settings"
 msgstr "Configurações"
 
@@ -625,16 +625,16 @@ msgstr "Obrigado por instalar a Alma! Comece por <a href='%s'>ativar o método d
 msgid "Error while initializing Alma API client.<br><a href=\"%1$s\">Activate debug mode</a> and <a href=\"%2$s\">check logs</a> for more details."
 msgstr "Erro ao inicializar a API do cliente.<br><a href=\"%1$s\">Ativar modo de depuração</a> e <a href=\"%2$s\">verificar acessos (logs)</a> para mais detalhes."
 
-#: includes/gateways/class-alma-payment-gateway.php:613
-#: includes/gateways/class-alma-payment-gateway.php:639
+#: includes/gateways/class-alma-payment-gateway.php:620
+#: includes/gateways/class-alma-payment-gateway.php:646
 msgid "There was an error processing your payment.<br>Please try again or contact us if the problem persists."
 msgstr "Ocorreu um erro no processamento do seu pagamento.<br>Por favor, tente novamente ou contate-nos se o problema persistir."
 
-#: includes/gateways/class-alma-payment-gateway.php:684
+#: includes/gateways/class-alma-payment-gateway.php:691
 msgid "enabled"
 msgstr "permitido"
 
-#: includes/gateways/class-alma-payment-gateway.php:688
+#: includes/gateways/class-alma-payment-gateway.php:695
 msgid "disabled"
 msgstr "não permitido"
 
