@@ -55,9 +55,9 @@ class Alma_Migration_Helper {
 	 * @return bool Is the migration ok.
 	 */
 	public function update() {
-		$db_version = get_option( 'alma_version' );
+		$db_version = alma_get_option( 'alma_version' );
 
-		$flag_migration = get_option( 'alma_migration_ongoing' );
+		$flag_migration = alma_get_option( 'alma_migration_ongoing' );
 
 		if ( $flag_migration ) {
 			// ongoing or failed migration, don't do anything !
@@ -68,13 +68,13 @@ class Alma_Migration_Helper {
 			return true;
 		}
 
-		add_option( 'alma_migration_ongoing', ALMA_VERSION );
-		update_option( 'alma_previous_version', $db_version );
+		alma_add_option( 'alma_migration_ongoing', ALMA_VERSION );
+		alma_update_option( 'alma_previous_version', $db_version );
 
 		$this->manage_versions( $db_version );
 
-		update_option( 'alma_version', ALMA_VERSION );
-		delete_option( 'alma_migration_ongoing' );
+		alma_update_option( 'alma_version', ALMA_VERSION );
+		alma_delete_option( 'alma_migration_ongoing' );
 
 		return true;
 	}
@@ -96,8 +96,8 @@ class Alma_Migration_Helper {
 			$this->manage_version_before_3( $db_version );
 			$this->migrate_keys();
 
-			delete_option( 'woocommerce_alma_settings' );
-			delete_option( 'alma_warnings_handled' );
+			alma_delete_option( 'woocommerce_alma_settings' );
+			alma_delete_option( 'alma_warnings_handled' );
 		}
 	}
 
@@ -111,14 +111,14 @@ class Alma_Migration_Helper {
 			$get_credentials = false;
 			$has_changed     = false;
 
-			$old_settings = get_option( 'woocommerce_alma_settings' );
+			$old_settings = alma_get_option( 'woocommerce_alma_settings' );
 
 			if ( $old_settings ) {
-				update_option( Alma_Settings::OPTIONS_KEY, $old_settings );
+				alma_update_option( Alma_Settings::OPTIONS_KEY, $old_settings );
 				$get_credentials = true;
 			}
 
-			$settings = get_option( Alma_Settings::OPTIONS_KEY );
+			$settings = alma_get_option( Alma_Settings::OPTIONS_KEY );
 
 			if (
 				! empty( $settings['live_api_key'] )
@@ -137,7 +137,7 @@ class Alma_Migration_Helper {
 			}
 
 			if ( $has_changed ) {
-				update_option( Alma_Settings::OPTIONS_KEY, $settings );
+				alma_update_option( Alma_Settings::OPTIONS_KEY, $settings );
 			}
 
 			// Test if we need to call the api in order to manage the in-page.

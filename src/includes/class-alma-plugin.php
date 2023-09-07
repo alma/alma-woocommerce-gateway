@@ -68,13 +68,13 @@ class Alma_Plugin {
 	 * *Singleton* via the `new` operator from outside of this class.
 	 */
 	protected function __construct() {
-		$this->logger           = new Alma_Logger();
+		$this->logger = new Alma_Logger();
+
 		$this->migration_helper = new Alma_Migration_Helper();
 		$this->admin_notices    = new Alma_Notices();
 		$this->plugin_helper    = new Alma_Plugin_Helper();
 
 		$this->load_plugin_textdomain();
-
 		try {
 			$migration_success = $this->migration_helper->update();
 		} catch ( Alma_Version_Deprecated $e ) {
@@ -89,7 +89,6 @@ class Alma_Plugin {
 			$this->logger->warning( 'The plugin migration is already in progress or has failed' );
 		}
 	}
-
 
 	/**
 	 * Init the plugin after plugins_loaded so environment variables are set.

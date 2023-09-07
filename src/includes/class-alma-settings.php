@@ -182,7 +182,7 @@ class Alma_Settings {
 	 * @return array
 	 */
 	public function get_settings() {
-		$settings = (array) get_option( self::OPTIONS_KEY, array() );
+		$settings = (array) alma_get_option( self::OPTIONS_KEY, array() );
 
 		if ( ! empty( $settings['allowed_fee_plans'] ) && ! is_array( $settings['allowed_fee_plans'] ) ) {
 			$settings['allowed_fee_plans'] = unserialize( $settings['allowed_fee_plans'] ); // phpcs:ignore
@@ -500,7 +500,7 @@ class Alma_Settings {
 	 * @return void
 	 */
 	public function save() {
-		update_option( self::OPTIONS_KEY, $this->settings );
+		alma_update_option( self::OPTIONS_KEY, $this->settings );
 	}
 
 	/**

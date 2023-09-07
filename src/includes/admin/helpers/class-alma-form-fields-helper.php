@@ -156,7 +156,7 @@ class Alma_Form_Fields_Helper {
 	 * @return array
 	 */
 	public function init_debug_fields( $default_settings ) {
-		$previous_version = get_option( 'alma_previous_version', 'N/A' );
+		$previous_version = alma_get_option( 'alma_previous_version', 'N/A' );
 
 		return array(
 			'debug_section' => array(

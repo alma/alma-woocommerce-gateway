@@ -1,6 +1,10 @@
 Changelog
 =========
 
+v5.1.0
+------
+* feat : Add multisite support
+
 v5.0.2
 ------
 * fix : In-Page creation order

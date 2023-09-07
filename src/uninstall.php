@@ -10,7 +10,7 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 }
 global $wpdb;
 
-delete_option( 'wc_alma_settings' );
-delete_option( 'alma_version' );
+alma_delete_option( 'wc_alma_settings' );
+alma_delete_option( 'alma_version' );
 $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->options WHERE option_name LIKE %s", $wpdb->esc_like( 'alma_migration_' ) . '%' ) );
 

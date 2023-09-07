@@ -72,7 +72,7 @@ class Alma_Logger extends AbstractLogger {
 	 * @return bool The log action.
 	 */
 	protected function can_log() {
-		$settings = (array) get_option( Alma_Settings::OPTIONS_KEY, array() );
+		$settings = (array) alma_get_option( Alma_Settings::OPTIONS_KEY, array() );
 
 		if (
 			empty( $settings )
