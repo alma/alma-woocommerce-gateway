@@ -15,6 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
+use Alma\Woocommerce\Alma_Checkout;
 use Alma\Woocommerce\Alma_Logger;
 use Alma\Woocommerce\Alma_Settings;
 use Alma\Woocommerce\Exceptions\Alma_Api_Create_Payments_Exception;
@@ -287,75 +288,8 @@ class Alma_Order_Helper {
 		$checkout_helper = new Alma_Checkout_Helper();
 		$checkout_helper->is_alma_payment_method( $post_fields[ Alma_Constants_Helper::PAYMENT_METHOD ] ); // phpcs:ignore WordPress.Security.NonceVerification
 
-		$order    = new \WC_Order();
-		$cart     = WC()->cart;
-		$checkout = WC()->checkout;
-		$data     = array();
-
-		// Loop through posted data array transmitted via jQuery.
-		foreach ( $post_fields['fields'] as $values ) {
-			// Set each key / value pairs in an array.
-			$data[ $values['name'] ] = $values['value'];
-		}
-
-		$cart_hash = md5( wp_json_encode( wc_clean( $cart->get_cart_for_session() ) ) . $cart->total );
-
-		// Loop through the data array.
-		foreach ( $data as $key => $value ) {
-			// Use WC_Order setter methods if they exist.
-			if ( is_callable( array( $order, "set_{$key}" ) ) ) {
-				$order->{"set_{$key}"}( $value );
-
-				// Store custom fields prefixed with wither shipping_ or billing_ .
-			} elseif (
-				(
-					0 === stripos( $key, 'billing_' )
-					|| 0 === stripos( $key, 'shipping_' )
-				)
-				&& ! in_array( $key, array( 'shipping_method', 'shipping_total', 'shipping_tax' ), true ) ) {
-				$order->update_meta_data( '_' . $key, $value );
-			}
-		}
-
-		$order->set_created_via( 'checkout' );
-		$order->set_cart_hash( $cart_hash );
-
-		$order->set_customer_id(
-			apply_filters(
-				'woocommerce_checkout_customer_id', //  phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-				isset( $post_fields['user_id'] ) ? $post_fields['user_id'] : get_current_user_id()
-			)
-		);
-
-		$order->set_currency( get_woocommerce_currency() );
-		$order->set_prices_include_tax( 'yes' === get_option( 'woocommerce_prices_include_tax' ) );
-		$order->set_customer_ip_address( \WC_Geolocation::get_ip_address() );
-		$order->set_customer_user_agent( wc_get_user_agent() );
-		$order->set_customer_note( isset( $data['order_comments'] ) ? $data['order_comments'] : '' );
-		$order->set_payment_method( $this->get_alma_gateway_title( $data['payment_method'] ) );
-		$order->set_payment_method_title( $this->get_alma_gateway_title( $data['payment_method'] ) );
-		$order->set_shipping_total( $cart->get_shipping_total() );
-		$order->set_discount_total( $cart->get_discount_total() );
-		$order->set_discount_tax( $cart->get_discount_tax() );
-		$order->set_cart_tax( $cart->get_cart_contents_tax() + $cart->get_fee_tax() );
-		$order->set_shipping_tax( $cart->get_shipping_tax() );
-		$order->set_total( $cart->get_total( 'edit' ) );
-
-		$checkout->create_order_line_items( $order, $cart );
-		$checkout->create_order_fee_lines( $order, $cart );
-
-		WC()->cart->calculate_shipping();
-
-		$checkout->create_order_shipping_lines( $order, WC()->session->get( 'chosen_shipping_methods' ), WC()->shipping->get_packages() );
-		$checkout->create_order_tax_lines( $order, $cart );
-		$checkout->create_order_coupon_lines( $order, $cart );
-
-		do_action( 'woocommerce_checkout_create_order', $order, $data ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Invoking  core hook for reasons.....
-
-		// Save the order.
-		$order_id = $order->save();
-
-		do_action( 'woocommerce_checkout_update_order_meta', $order_id, $data ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Invoking  core hook for reasons.....
+		$alma_checkout = new Alma_Checkout();
+		$order         = $alma_checkout->process_checkout( $post_fields );
 
 		// We ignore the nonce verification because process_payment is called after validate_fields.
 		$settings       = new Alma_Settings();
@@ -367,7 +301,7 @@ class Alma_Order_Helper {
 
 		return array(
 			$payment->id,
-			$order_id,
+			$order->get_id(),
 		);
 	}
 

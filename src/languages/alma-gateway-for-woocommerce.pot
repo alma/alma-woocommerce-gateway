@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Alma - Pay in installments or later for WooCommerce\n"
-"POT-Creation-Date: 2023-09-04 12:20+0200\n"
+"POT-Creation-Date: 2023-09-06 15:03+0200\n"
 "PO-Revision-Date: 2023-02-13 16:00+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -523,6 +523,45 @@ msgstr ""
 msgid "Amount cannot be equal to 0 to refund with Alma."
 msgstr ""
 
+#: includes/class-alma-checkout.php:44
+msgid "We were unable to process your order, please try again."
+msgstr ""
+
+#. translators: %s: shop cart url
+#: includes/class-alma-checkout.php:54
+#, php-format
+msgid ""
+"Sorry, your session has expired. <a href=\"%s\" class=\"wc-backward\">Return "
+"to shop</a>"
+msgstr ""
+
+#: includes/class-alma-checkout.php:85
+msgid "Unable to create order."
+msgstr ""
+
+#: includes/class-alma-checkout.php:113
+msgid ""
+"Please read and accept the terms and conditions to proceed with your order."
+msgstr ""
+
+#: includes/class-alma-checkout.php:120
+msgid "Please enter an address to continue."
+msgstr ""
+
+#. translators: %s: shipping location
+#: includes/class-alma-checkout.php:123
+#, php-format
+msgid ""
+"Unfortunately <strong>we do not ship %s</strong>. Please enter an "
+"alternative shipping address."
+msgstr ""
+
+#: includes/class-alma-checkout.php:129
+msgid ""
+"No shipping method has been selected. Please double check your address, or "
+"contact us if you need any help."
+msgstr ""
+
 #: includes/class-alma-generic-handler.php:68
 msgid ""
 "Alma \"Eligibility Widget\" (cart or product) already rendered on this page "
@@ -715,13 +754,13 @@ msgstr ""
 msgid "At shipping"
 msgstr ""
 
-#: includes/helpers/class-alma-order-helper.php:270
+#: includes/helpers/class-alma-order-helper.php:271
 msgid ""
 "There was an error creating your payment.<br>Please try again or contact us "
 "if the problem persists."
 msgstr ""
 
-#: includes/helpers/class-alma-order-helper.php:400
+#: includes/helpers/class-alma-order-helper.php:334
 msgid "Abandonment by the client."
 msgstr ""
 

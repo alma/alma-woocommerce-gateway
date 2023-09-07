@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v5.0.2
+------
+* fix : In-Page creation order
+* feat: Compatibility WordPress 6.3.1
+
 v5.0.1
 ------
 * fix: missing shipping information when In Page is activated

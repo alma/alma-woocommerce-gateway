@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 77e083b1cd468d7c2202d1ff3d20e024\n"
-"POT-Creation-Date: 2023-09-04 12:20+0200\n"
-"PO-Revision-Date: 2023-09-04 10:24\n"
+"POT-Creation-Date: 2023-09-06 15:03+0200\n"
+"PO-Revision-Date: 2023-09-06 13:03\n"
 "Last-Translator: \n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
@@ -472,6 +472,38 @@ msgstr "Alma volledige terugbetaling fout : %s."
 msgid "Amount cannot be equal to 0 to refund with Alma."
 msgstr "Bedrag kan niet gelijk zijn aan 0 voor terugbetaling met Alma."
 
+#: includes/class-alma-checkout.php:44
+msgid "We were unable to process your order, please try again."
+msgstr "We konden uw bestelling niet verwerken, probeer het opnieuw."
+
+#. translators: %s: shop cart url
+#: includes/class-alma-checkout.php:54
+#, php-format
+msgid "Sorry, your session has expired. <a href=\"%s\" class=\"wc-backward\">Return to shop</a>"
+msgstr "Sorry, je sessie is verlopen. <a href=\"%s\" class=\"wc-backward\">Terug naar</a>"
+
+#: includes/class-alma-checkout.php:85
+msgid "Unable to create order."
+msgstr "Kan geen bestelling aanmaken."
+
+#: includes/class-alma-checkout.php:113
+msgid "Please read and accept the terms and conditions to proceed with your order."
+msgstr "Lees en accepteer de algemene voorwaarden om door te gaan met je bestelling."
+
+#: includes/class-alma-checkout.php:120
+msgid "Please enter an address to continue."
+msgstr "Voer een adres in om verder te gaan."
+
+#. translators: %s: shipping location
+#: includes/class-alma-checkout.php:123
+#, php-format
+msgid "Unfortunately <strong>we do not ship %s</strong>. Please enter an alternative shipping address."
+msgstr "Helaas <strong>verzenden wij niet %s</strong>. Voer een alternatief verzendadres in."
+
+#: includes/class-alma-checkout.php:129
+msgid "No shipping method has been selected. Please double check your address, or contact us if you need any help."
+msgstr "Er is geen verzendmethode geselecteerd. Controleer je adres of neem contact met ons op als je hulp nodig hebt."
+
 #: includes/class-alma-generic-handler.php:68
 msgid "Alma \"Eligibility Widget\" (cart or product) already rendered on this page - Not displaying Alma"
 msgstr "\"Badge geschikt\" voor Alma (product of winkelmand) al weergegeven op deze pagina - Alma wordt niet weergegeven"
@@ -642,11 +674,11 @@ msgstr "Nu betalen"
 msgid "At shipping"
 msgstr "Bij verzending"
 
-#: includes/helpers/class-alma-order-helper.php:270
+#: includes/helpers/class-alma-order-helper.php:271
 msgid "There was an error creating your payment.<br>Please try again or contact us if the problem persists."
 msgstr "Er is een fout opgetreden bij het aanmaken van je betaling.<br>Probeer het opnieuw of neem contact met ons op als het probleem zich blijft voordoen."
 
-#: includes/helpers/class-alma-order-helper.php:400
+#: includes/helpers/class-alma-order-helper.php:334
 msgid "Abandonment by the client."
 msgstr "Verlaten door de klant."
 
