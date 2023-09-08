@@ -68,7 +68,7 @@ use Alma\Woocommerce\Helpers\Alma_Cart_Helper;
 							__( '%1$s today then %2$s on %3$s', 'alma-gateway-for-woocommerce' ),
 							Alma_Tools_Helper::alma_format_price_from_cents( 0 ),
 							Alma_Tools_Helper::alma_format_price_from_cents( $alma_step['total_amount'] ),
-							date_i18n( alma_get_option( 'date_format' ), $alma_step['due_date'] )
+							date_i18n( get_option( 'date_format' ), $alma_step['due_date'] )
 						)
 					);
 				} else {
@@ -77,7 +77,7 @@ use Alma\Woocommerce\Helpers\Alma_Cart_Helper;
 						/* translators: %s:  term */
 						echo '<span>' . esc_html( sprintf( _n( 'In %s month', 'In %s months', $alma_plan_index - 1, 'alma-gateway-for-woocommerce' ), $alma_plan_index - 1 ) ) . '</span>';
 					} else {
-						echo '<span>' . esc_html( date_i18n( alma_get_option( 'date_format' ), $alma_step['due_date'] ) ) . '</span>';
+						echo '<span>' . esc_html( date_i18n( get_option( 'date_format' ), $alma_step['due_date'] ) ) . '</span>';
 					}
 					echo wp_kses_post( Alma_Tools_Helper::alma_format_price_from_cents( $alma_step['total_amount'] ) );
 				}
