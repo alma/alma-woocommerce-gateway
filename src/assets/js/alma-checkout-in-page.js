@@ -9,7 +9,7 @@
  */
 
 (function ($) {
-	var regex  = /^general_([0-9]{1,2})_[0-9]{1,2}_[0-9]{1,2}/g;
+	var src    = /^general_([0-9]{1,2})_[0-9]{1,2}_[0-9]{1,2}/g;
 	var inPage = undefined;
 
 	$( 'body' ).on(
