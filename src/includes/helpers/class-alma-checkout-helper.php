@@ -92,17 +92,6 @@ class Alma_Checkout_Helper {
 		wp_nonce_field( Alma_Constants_Helper::CHECKOUT_NONCE . $id, Alma_Constants_Helper::CHECKOUT_NONCE . $id );
 	}
 
-	/**
-	 * AJAX when validating the checkout.
-	 * If the payment method used is like "alma_****", then rename it to "alma" and let WC do the payment process.
-	 *
-	 * @return void
-	 */
-	public function woocommerce_checkout_process() {
-		if ( $this->is_alma_payment_method( $_POST[ Alma_Constants_Helper::PAYMENT_METHOD ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			$_POST[ Alma_Constants_Helper::PAYMENT_METHOD ] = Alma_Constants_Helper::GATEWAY_ID;
-		}
-	}
 
 	/**
 	 * Check if payment_method is set in POST and is an Alma payment method

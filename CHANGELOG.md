@@ -1,6 +1,8 @@
 Changelog
 =========
 
+* fix : Incompatibility with Paypal Plugin
+
 v5.0.2
 ------
 * fix : In-Page creation order

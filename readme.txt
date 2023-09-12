@@ -51,6 +51,8 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 == Changelog ==
 
+* fix : Incompatibility with Paypal Plugin
+
 = 5.0.2 =
 * fix : In-Page creation order
 * feat: Compatibility WordPress 6.3.1
