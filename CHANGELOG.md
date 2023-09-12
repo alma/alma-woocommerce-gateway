@@ -1,7 +1,9 @@
 Changelog
 =========
 
-* fix : Incompatibility with Paypal Plugin
+v5.0.3
+------
+* fix : Incompatibility with Woocommerce Paypal Plugin
 
 v5.0.2
 ------
