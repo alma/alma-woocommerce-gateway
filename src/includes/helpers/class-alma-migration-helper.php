@@ -104,7 +104,7 @@ class Alma_Migration_Helper {
 			$this->manage_version_before_3( $db_version );
 			$this->migrate_keys();
 
-			alma_delete_option( 'woocommerce_alma_settings' );
+			delete_option( 'woocommerce_alma_settings' );
 			alma_delete_option( 'alma_warnings_handled' );
 		}
 	}
