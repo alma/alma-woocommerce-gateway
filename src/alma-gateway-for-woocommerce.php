@@ -135,12 +135,11 @@ function alma_add_option( $option, $value ) {
 	return add_option( $option, $value );
 }
 
-
 // Make sure WooCommerce is active.
 if (
 	(
 		is_multisite()
-		&& ! is_plugin_active_for_network( 'woocommerce/woocommerce.php' )
+		&& ! is_plugin_active( 'woocommerce/woocommerce.php' )
 	)
 	||
 	(
