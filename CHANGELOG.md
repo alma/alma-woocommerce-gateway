@@ -1,6 +1,8 @@
 Changelog
 =========
 
+* change : PHP client version 1.11.2
+
 v5.0.3
 ------
 * fix : Incompatibility with Woocommerce Paypal Plugin

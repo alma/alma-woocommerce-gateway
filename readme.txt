@@ -51,6 +51,8 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 == Changelog ==
 
+* change : PHP client version 1.11.2
+
 = 5.0.3 =
 * fix : Incompatibility with Woocommerce Paypal Plugin
 
