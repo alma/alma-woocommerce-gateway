@@ -53,6 +53,7 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 = 5.1.0 =
 * feat : Add multisite support
+* feat: compatibility Woocommerce 8.1.1
 * change : PHP client version 1.11.2
 
 = 5.0.3 =
