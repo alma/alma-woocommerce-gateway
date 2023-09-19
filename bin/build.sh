@@ -2,6 +2,7 @@
 #TODO: svn checkout, svn commit (if needed) after svn sync
 QUIET=1
 SYNC_SVN=0
+PATH_TO_COMPOSER="/usr/bin/php5.6 /usr/local/bin/composer "
 
 # {{{ function usage
 #
@@ -119,7 +120,7 @@ export -f preparing_folders
 building_release() {
     rsync -au $TO_SYNC $RSYNC_EXCLUDE $TMP_TARGET_DIR/ \
         && cd $TMP_TARGET_DIR \
-        && /usr/bin/php5.6 /usr/local/bin/composer install --no-dev \
+        && $PATH_TO_COMPOSER install --no-dev \
         && cd .. \
         && zip -9 -r "$DIST/alma-gateway-for-woocommerce.zip" alma-gateway-for-woocommerce
 }
