@@ -48,8 +48,8 @@ class Alma_Constants_Helper {
 	const PAY_NOW_FEE_PLAN               = 'general_1_0_0';
 	const PAYMENT_METHOD                 = 'payment_method';
 	const DEFAULT_CHECK_VARIATIONS_EVENT = 'check_variations';
-	const AMOUNT_PLAN_KEY_REGEX          = '#^(min|max)_amount_general_[0-9]+_[0-9]+_[0-9]+$#';
-	const SORT_PLAN_KEY_REGEX            = '/^(general|pos)_([0-9]+)_([0-9]+)_([0-9]+)$/';
+	const AMOUNT_PLAN_KEY_REGEX          = '#^(min|max)_amount_general_[0-9]{1,2}_[0-9]{1,2}_[0-9]{1,2}$#';
+	const SORT_PLAN_KEY_REGEX            = '/^(general|pos)_([0-9]{1,2})_([0-9]{1,2})_([0-9]{1,2})$/';
 
 	const NOTICE_NONCE_NAME                 = 'wc_alma_notice_nonce';
 	const ALMA_LOGO_PATH                    = 'images/alma_logo.svg';

@@ -54,6 +54,9 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 = 5.1.0 =
 * feat : Add multisite support
 
+= 5.0.3 =
+* fix : Incompatibility with Woocommerce Paypal Plugin
+
 = 5.0.2 =
 * fix : In-Page creation order
 * feat: Compatibility WordPress 6.3.1

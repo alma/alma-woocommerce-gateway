@@ -236,7 +236,6 @@ class Alma_Gateway_Helper {
 	 * @return void
 	 */
 	public function add_actions() {
-		add_action( 'woocommerce_before_checkout_process', array( $this->checkout_helper, 'woocommerce_checkout_process' ), 1 );
 		$payment_upon_trigger_helper = new Alma_Payment_Upon_Trigger();
 		add_action(
 			'woocommerce_order_status_changed',
