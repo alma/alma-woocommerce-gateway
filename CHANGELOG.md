@@ -1,6 +1,8 @@
 Changelog
 =========
 
+* feat: compatibility Woocommerce 8.1.1
+
 v5.0.3
 ------
 * fix : Incompatibility with Woocommerce Paypal Plugin

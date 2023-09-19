@@ -51,6 +51,8 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 == Changelog ==
 
+* feat: compatibility Woocommerce 8.1.1
+
 = 5.0.3 =
 * fix : Incompatibility with Woocommerce Paypal Plugin
 
