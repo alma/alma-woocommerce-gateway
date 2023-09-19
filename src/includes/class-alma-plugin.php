@@ -75,6 +75,7 @@ class Alma_Plugin {
 		$this->plugin_helper    = new Alma_Plugin_Helper();
 
 		$this->load_plugin_textdomain();
+
 		try {
 			$migration_success = $this->migration_helper->update();
 		} catch ( Alma_Version_Deprecated $e ) {

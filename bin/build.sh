@@ -119,7 +119,7 @@ export -f preparing_folders
 building_release() {
     rsync -au $TO_SYNC $RSYNC_EXCLUDE $TMP_TARGET_DIR/ \
         && cd $TMP_TARGET_DIR \
-        && composer install --no-dev \
+        && /usr/bin/php5.6 /usr/local/bin/composer install --no-dev \
         && cd .. \
         && zip -9 -r "$DIST/alma-gateway-for-woocommerce.zip" alma-gateway-for-woocommerce
 }

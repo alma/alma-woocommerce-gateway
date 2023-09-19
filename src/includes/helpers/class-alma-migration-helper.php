@@ -57,6 +57,10 @@ class Alma_Migration_Helper {
 	public function update() {
 		$db_version = alma_get_option( 'alma_version' );
 
+		if ( ! $db_version ) {
+			$db_version = get_option( 'alma_version' );
+		}
+
 		$flag_migration = alma_get_option( 'alma_migration_ongoing' );
 
 		if ( $flag_migration ) {
@@ -91,7 +95,11 @@ class Alma_Migration_Helper {
 	public function manage_versions( $db_version ) {
 		if (
 			$db_version
-			&& version_compare( ALMA_VERSION, $db_version, '>' )
+			&& version_compare(
+				ALMA_VERSION,
+				$db_version,
+				'>'
+			)
 		) {
 			$this->manage_version_before_3( $db_version );
 			$this->migrate_keys();
@@ -111,7 +119,7 @@ class Alma_Migration_Helper {
 			$get_credentials = false;
 			$has_changed     = false;
 
-			$old_settings = alma_get_option( 'woocommerce_alma_settings' );
+			$old_settings = get_option( 'woocommerce_alma_settings' );
 
 			if ( $old_settings ) {
 				alma_update_option( Alma_Settings::OPTIONS_KEY, $old_settings );
