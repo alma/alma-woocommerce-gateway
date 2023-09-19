@@ -4,6 +4,7 @@ Changelog
 v5.1.0
 ------
 * feat : Add multisite support
+* change : PHP client version 1.11.2
 
 v5.0.3
 ------
