@@ -285,9 +285,6 @@ class Alma_Order_Helper {
 	 * @throws \WC_Data_Exception  Exception.
 	 */
 	protected function create_inpage_order( $post_fields ) {
-		$checkout_helper = new Alma_Checkout_Helper();
-		$checkout_helper->is_alma_payment_method( $post_fields[ Alma_Constants_Helper::PAYMENT_METHOD ] ); // phpcs:ignore WordPress.Security.NonceVerification
-
 		$alma_checkout = new Alma_Checkout();
 		$order         = $alma_checkout->process_checkout();
 
