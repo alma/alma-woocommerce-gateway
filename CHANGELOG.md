@@ -1,7 +1,10 @@
 Changelog
 =========
 
+v5.0.4
+------
 * change : PHP client version 1.11.2
+* fix: compatibility with WC_Checkout::process_checkout()
 
 v5.0.3
 ------

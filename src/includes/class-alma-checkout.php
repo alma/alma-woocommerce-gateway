@@ -26,13 +26,11 @@ class Alma_Checkout extends \WC_Checkout {
 	/**
 	 * Extends \WC_Checkout.
 	 *
-	 * @param array $post_fields The post data.
-	 *
 	 * @return \WC_Order
 	 * @throws Alma_Exception The exception.
 	 */
-	public function process_checkout( $post_fields ) {
-		foreach ( $post_fields['fields'] as $values ) {
+	public function process_checkout() {
+		foreach ( $_POST['fields'] as $values ) { // phpcs:ignore WordPress.Security.NonceVerification
 			// Set each key / value pairs in an array.
 			$_POST[ $values['name'] ] = $values['value'];
 		}

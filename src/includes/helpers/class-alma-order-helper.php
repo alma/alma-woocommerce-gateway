@@ -289,7 +289,7 @@ class Alma_Order_Helper {
 		$checkout_helper->is_alma_payment_method( $post_fields[ Alma_Constants_Helper::PAYMENT_METHOD ] ); // phpcs:ignore WordPress.Security.NonceVerification
 
 		$alma_checkout = new Alma_Checkout();
-		$order         = $alma_checkout->process_checkout( $post_fields );
+		$order         = $alma_checkout->process_checkout();
 
 		// We ignore the nonce verification because process_payment is called after validate_fields.
 		$settings       = new Alma_Settings();
