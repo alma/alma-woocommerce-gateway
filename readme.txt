@@ -51,6 +51,8 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 == Changelog ==
 
+* feature : In Page checkout for all merchants
+
 = 5.0.4 =
 * feat: compatibility Woocommerce 8.1.1
 * change : PHP client version 1.11.2

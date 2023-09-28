@@ -1,6 +1,8 @@
 Changelog
 =========
 
+* feature : In Page checkout for all merchants
+
 v5.0.4
 ------
 * feat: compatibility Woocommerce 8.1.1
