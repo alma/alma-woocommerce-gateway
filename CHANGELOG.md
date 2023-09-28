@@ -3,6 +3,10 @@ Changelog
 
 v5.1.0
 ------
+* feature : In Page checkout for all merchants
+
+v5.1.0
+------
 * feat : Add multisite support
 
 v5.0.4
