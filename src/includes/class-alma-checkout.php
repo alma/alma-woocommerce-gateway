@@ -12,6 +12,8 @@
 namespace Alma\Woocommerce;
 
 use Alma\Woocommerce\Exceptions\Alma_Exception;
+use Alma\Woocommerce\Helpers\Alma_Checkout_Helper;
+use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -26,15 +28,20 @@ class Alma_Checkout extends \WC_Checkout {
 	/**
 	 * Extends \WC_Checkout.
 	 *
-	 * @param array $post_fields The post data.
-	 *
 	 * @return \WC_Order
 	 * @throws Alma_Exception The exception.
 	 */
-	public function process_checkout( $post_fields ) {
-		foreach ( $post_fields['fields'] as $values ) {
+	public function process_checkout() {
+		foreach ( $_POST['fields'] as $values ) { // phpcs:ignore WordPress.Security.NonceVerification
 			// Set each key / value pairs in an array.
 			$_POST[ $values['name'] ] = $values['value'];
+		}
+
+		$checkout_helper = new Alma_Checkout_Helper();
+		$is_alma_payment = $checkout_helper->is_alma_payment_method( $_POST[ Alma_Constants_Helper::PAYMENT_METHOD ] ); // phpcs:ignore WordPress.Security.NonceVerification
+
+		if ( ! $is_alma_payment ) {
+			throw new Alma_Exception( __( 'We were unable to process your order, please try again.', 'alma-gateway-for-woocommerce' ) );
 		}
 
 		$nonce_value = wc_get_var( $_POST['woocommerce-process-checkout-nonce'], wc_get_var( $_POST['_wpnonce'], '' ) ); // @codingStandardsIgnoreLine.

@@ -196,8 +196,7 @@ class Alma_Refund_Helper {
 	 */
 	public function has_status_refundable( $wc_order ) {
 		if (
-			$wc_order->has_status( 'Pending payment' )
-			|| $wc_order->has_status( 'Failed' )
+			$wc_order->has_status( 'Failed' )
 			|| $wc_order->has_status( 'Cancelled' )
 			|| $wc_order->has_status( 'Checkout draft' )
 			|| $wc_order->has_status( 'On hold' )
