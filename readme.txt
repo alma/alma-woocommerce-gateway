@@ -53,8 +53,11 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 = 5.1.0 =
 * feat : Add multisite support
+
+= 5.0.4 =
 * feat: compatibility Woocommerce 8.1.1
 * change : PHP client version 1.11.2
+* fix: compatibility with WC_Checkout::process_checkout()
 
 = 5.0.3 =
 * fix : Incompatibility with Woocommerce Paypal Plugin
