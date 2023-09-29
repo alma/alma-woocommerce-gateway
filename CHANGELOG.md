@@ -1,6 +1,10 @@
 Changelog
 =========
 
+v5.0.5
+------
+* hotfix: fix compatibility betwen In-Page mode and some plugins(colissimo, ...)
+
 v5.0.4
 ------
 * feat: compatibility Woocommerce 8.1.1
