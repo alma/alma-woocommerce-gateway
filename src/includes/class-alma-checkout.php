@@ -34,7 +34,8 @@ class Alma_Checkout extends \WC_Checkout {
 	public function process_checkout() {
 		foreach ( $_POST['fields'] as $values ) { // phpcs:ignore WordPress.Security.NonceVerification
 			// Set each key / value pairs in an array.
-			$_POST[ $values['name'] ] = $values['value'];
+			$_POST[ $values['name'] ]    = $values['value'];
+			$_REQUEST[ $values['name'] ] = $values['value'];
 		}
 
 		$checkout_helper = new Alma_Checkout_Helper();
