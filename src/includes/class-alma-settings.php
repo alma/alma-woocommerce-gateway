@@ -777,7 +777,6 @@ class Alma_Settings {
 				$this->{$this->environment . '_merchant_name'} = $merchant->name;
 			} catch ( \Exception $e ) {
 				$this->__set( 'keys_validity', 'no' );
-				$this->manage_cms_allowed_inpage( false );
 
 				$this->save();
 
