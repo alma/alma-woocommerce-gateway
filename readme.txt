@@ -54,6 +54,9 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 = 5.1.0 =
 * feature : In Page checkout for all merchants
 
+= 5.0.5 =
+* hotfix: fix compatibility betwen In-Page mode and some plugins(colissimo, ...)
+
 = 5.0.4 =
 * feat: compatibility Woocommerce 8.1.1
 * change : PHP client version 1.11.2
