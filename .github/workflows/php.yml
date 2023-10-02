@@ -9,7 +9,7 @@ on:
 
 jobs:
   lint:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     defaults:
       run:
         working-directory: ./src
@@ -30,3 +30,43 @@ jobs:
 
       - name: Lint source code
         run: composer phpcs
+
+
+  test:
+    runs-on: ubuntu-22.04
+    
+    strategy:
+      matrix:
+        include:
+          - version: "7.9.0"
+            wp_version: "6.2.2"
+            php_version: "7.4"
+          # - version: "3.0.9"
+          #   wp_version: "4.7.23"
+          #   php_version: "5.6"
+          # - version: "4.9.5"
+          #   wp_version: 5.3.12"
+          #   php_version: "7.0"
+          # - version: "5.9.1"
+          #   wp_version: "5.6.8"
+          #   php_version: "7.2"
+          # - version: "6.3.1"
+          #   wp_version: "5.9.2"
+          #   php_version: "7.2"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php_version }}
+
+      - run: bash bin/install-wp-tests.sh wordpress_test root '' localhost ${{ matrix.wp_version }}
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest --dev
+        working-directory: ./src
+
+      - name: Test source code
+        run: bash bin/phpunit
