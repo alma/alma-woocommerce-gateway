@@ -268,7 +268,7 @@ class Alma_Order_Helper {
 				$order->update_status( 'failed', $e->getMessage() );
 			}
 
-			wc_add_notice( __( 'There was an error creating your payment.<br>Please try again or contact us if the problem persists.', 'alma-gateway-for-woocommerce' ), Alma_Constants_Helper::ERROR );
+			wc_add_notice( $e->getMessage(), Alma_Constants_Helper::ERROR );
 
 			wp_send_json_error( $e->getMessage(), 500 );
 		}
