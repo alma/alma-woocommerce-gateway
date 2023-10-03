@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 77e083b1cd468d7c2202d1ff3d20e024\n"
-"POT-Creation-Date: 2023-09-06 15:03+0200\n"
-"PO-Revision-Date: 2023-09-06 13:03\n"
+"POT-Creation-Date: 2023-10-03 10:54+0200\n"
+"PO-Revision-Date: 2023-10-03 08:57\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: alma-gateway-for-woocommerce.php\n"
@@ -468,39 +468,47 @@ msgstr "Commande entièrement remboursée par %s."
 msgid "Alma full refund error : %s."
 msgstr "Erreur de remboursement intégral d'Alma : %s."
 
-#: includes/admin/helpers/class-alma-refund-helper.php:236
+#: includes/admin/helpers/class-alma-refund-helper.php:235
 msgid "Amount cannot be equal to 0 to refund with Alma."
 msgstr "Le montant ne peut être égal à 0 pour un remboursement avec Alma."
 
-#: includes/class-alma-checkout.php:44
+#: includes/class-alma-checkout.php:46 includes/class-alma-checkout.php:53
 msgid "We were unable to process your order, please try again."
 msgstr "Nous n'avons pas pu traiter votre commande, veuillez réessayer."
 
 #. translators: %s: shop cart url
-#: includes/class-alma-checkout.php:54
+#: includes/class-alma-checkout.php:63
 #, php-format
 msgid "Sorry, your session has expired. <a href=\"%s\" class=\"wc-backward\">Return to shop</a>"
 msgstr "Désolé, votre session a expiré. <a href=\"%s\" class=\"wc-backward\">Retour à la boutique</a>"
 
-#: includes/class-alma-checkout.php:85
+#: includes/class-alma-checkout.php:72
+msgid "Payment in installments via Alma"
+msgstr "Paiement en plusieurs fois via Alma"
+
+#: includes/class-alma-checkout.php:76
+msgid "Payment by credit cart via Alma"
+msgstr "Paiement par carte de crédit via Alma"
+
+#: includes/class-alma-checkout.php:103
 msgid "Unable to create order."
 msgstr "Impossible de créer une commande."
 
-#: includes/class-alma-checkout.php:113
+#: includes/class-alma-checkout.php:131
 msgid "Please read and accept the terms and conditions to proceed with your order."
 msgstr "Veuillez lire et accepter les termes et conditions pour procéder à votre commande."
 
-#: includes/class-alma-checkout.php:120
+#: includes/class-alma-checkout.php:138
 msgid "Please enter an address to continue."
 msgstr "Veuillez saisir une adresse pour continuer."
 
 #. translators: %s: shipping location
-#: includes/class-alma-checkout.php:123
+#: includes/class-alma-checkout.php:141
 #, php-format
 msgid "Unfortunately <strong>we do not ship %s</strong>. Please enter an alternative shipping address."
 msgstr "Malheureusement <strong>nous ne livrons pas %s</strong>. Veuillez indiquer une autre adresse de livraison."
 
-#: includes/class-alma-checkout.php:129
+#: includes/class-alma-checkout.php:147
 msgid "No shipping method has been selected. Please double check your address, or contact us if you need any help."
 msgstr "Aucune méthode d'expédition n'a été sélectionnée. Veuillez vérifier votre adresse ou nous contacter si vous avez besoin d'aide."
 
@@ -674,11 +682,7 @@ msgstr "Payer maintenant"
 msgid "At shipping"
 msgstr "À l'expédition"
 
-#: includes/helpers/class-alma-order-helper.php:271
-msgid "There was an error creating your payment.<br>Please try again or contact us if the problem persists."
-msgstr "Une erreur s'est produite lors de la création de votre paiement.<br>Veuillez réessayer ou nous contacter si le problème persiste."
-
-#: includes/helpers/class-alma-order-helper.php:334
+#: includes/helpers/class-alma-order-helper.php:331
 msgid "Abandonment by the client."
 msgstr "Abandon par le client."
 
