@@ -30,6 +30,7 @@ class Alma_Checkout extends \WC_Checkout {
 	 *
 	 * @return \WC_Order
 	 * @throws Alma_Exception The exception.
+	 * @throws \Exception Exception.
 	 */
 	public function process_checkout() {
 		foreach ( $_POST['fields'] as $values ) { // phpcs:ignore WordPress.Security.NonceVerification
@@ -67,6 +68,14 @@ class Alma_Checkout extends \WC_Checkout {
 		$errors      = new \WP_Error();
 		$posted_data = $this->get_posted_data();
 
+		if ( Alma_Constants_Helper::GATEWAY_ID_IN_PAGE === $_POST[ Alma_Constants_Helper::PAYMENT_METHOD ] ) {
+			$posted_data[ Alma_Constants_Helper::PAYMENT_METHOD_TITLE ] = __( 'Payment in installments via Alma', 'alma-gateway-for-woocommerce' );
+		}
+
+		if ( Alma_Constants_Helper::GATEWAY_ID_IN_PAGE_PAY_NOW === $_POST[ Alma_Constants_Helper::PAYMENT_METHOD ] ) {
+			$posted_data[ Alma_Constants_Helper::PAYMENT_METHOD_TITLE ] = __( 'Payment by credit cart via Alma', 'alma-gateway-for-woocommerce' );
+		}
+
 		// Update session for customer and totals.
 		$this->update_session( $posted_data );
 
@@ -82,6 +91,7 @@ class Alma_Checkout extends \WC_Checkout {
 			&& 0 === wc_notice_count( 'error' )
 		) {
 			$this->process_customer( $posted_data );
+
 			$order_id = $this->create_order( $posted_data );
 			$order    = wc_get_order( $order_id );
 
