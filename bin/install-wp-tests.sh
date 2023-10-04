@@ -119,6 +119,17 @@ install_test_suite() {
 		sed $ioption "s|localhost|${DB_HOST}|" "$WP_TESTS_DIR"/wp-tests-config.php
 	fi
 
+	if [ ! -f wp-config.php ]; then
+		download https://develop.svn.wordpress.org/${WP_TESTS_TAG}/wp-config-sample.php "$WP_TESTS_DIR"/wp-tests-config.php
+		# remove all forward slashes in the end
+		WP_CORE_DIR=$(echo $WP_CORE_DIR | sed "s:/\+$::")
+		sed $ioption "s:dirname( __FILE__ ) . '/src/':'$WP_CORE_DIR/':" "$WP_TESTS_DIR"/wp-tests-config.php
+		sed $ioption "s/database_name_here/wp/" "$WP_TESTS_DIR"/wp-tests-config.php
+		sed $ioption "s/username_here/$DB_USER/" "$WP_TESTS_DIR"/wp-tests-config.php
+		sed $ioption "s/password_here/$DB_PASS/" "$WP_TESTS_DIR"/wp-tests-config.php
+		sed $ioption "s|localhost|${DB_HOST}|" "$WP_TESTS_DIR"/wp-tests-config.php
+	fi
+
 }
 
 install_db() {
@@ -144,8 +155,8 @@ install_db() {
 	fi
 
 	# create database
-	echo "mysqladmin create $DB_NAME --user=$DB_USER --password=$DB_PASS$EXTRA"
 	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
+	mysqladmin create wp --user="$DB_USER" --password="$DB_PASS"$EXTRA
 }
 
 install_wp
