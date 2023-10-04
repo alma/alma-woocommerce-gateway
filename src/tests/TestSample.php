@@ -1,6 +1,6 @@
 <?php
 /**
- * Class SampleTest
+ * Class TestSample
  *
  * @package Alma_Gateway_For_Woocommerce
  */
@@ -8,7 +8,7 @@
 /**
  * Sample test case.
  */
-class SampleTest extends WP_UnitTestCase {
+class TestSample extends WP_UnitTestCase {
 
 	/**
 	 * A single example test.
