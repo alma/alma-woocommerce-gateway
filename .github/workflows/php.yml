@@ -62,7 +62,7 @@ jobs:
         with:
           php-version: ${{ matrix.php_version }}
       
-      - run: docker run -p 3306:3306  -e MYSQL_ALLOW_EMPTY_PASSWORD=1 -d mysql:latest
+      - run: docker run -p 3306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=1 -d mysql:latest
 
       - run: sleep 10
 
