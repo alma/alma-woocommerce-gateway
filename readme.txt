@@ -53,6 +53,7 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 = 5.1.0 =
 * feature : In Page checkout for all merchants
+* feat: Update Widget version 3.3.6
 
 = 5.0.6 =
 * hotfix: Show form errors on checkout in-page when some information are missing for the form
