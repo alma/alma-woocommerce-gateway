@@ -184,7 +184,6 @@ class Alma_Form_Fields_Helper {
 	 * @return array
 	 */
 	public function init_inpage_fields( $default_settings ) {
-		if ( 'yes' === $this->settings_helper->settings['inpage_allowed'] ) {
 			return array(
 				'display_section' => array(
 					'title' => '<hr>' . __( '→ Display options', 'alma-gateway-for-woocommerce' ),
@@ -198,9 +197,6 @@ class Alma_Form_Fields_Helper {
 					'default' => $default_settings['display_in_page'],
 				),
 			);
-		}
-
-		return array();
 	}
 
 	/**

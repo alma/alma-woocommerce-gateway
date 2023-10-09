@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 4.4
 Tested up to: 6.3
 Requires PHP: 5.6
-Stable tag: 5.0.6
+Stable tag: 5.1.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,10 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+= 5.1.0 =
+* feature : In Page checkout for all merchants
+* feat: Update Widget version 3.3.6
 
 = 5.0.6 =
 * hotfix: Show form errors on checkout in-page when some information are missing for the form
