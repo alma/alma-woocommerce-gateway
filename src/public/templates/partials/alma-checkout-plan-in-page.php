@@ -12,6 +12,7 @@
 
 <input
 	type="radio"
+	style="float: none;"
 	value="<?php echo esc_attr( $plan_key ); ?>"
 	id="<?php echo esc_attr( \Alma\Woocommerce\Helpers\Alma_Constants_Helper::GATEWAY_ID_IN_PAGE ); ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
 	name="<?php echo esc_attr( \Alma\Woocommerce\Helpers\Alma_Constants_Helper::ALMA_FEE_PLAN_IN_PAGE ); ?>"
@@ -21,7 +22,7 @@
 >
 <label
 	class="checkbox"
-	style="margin-right: 10px; display: inline;"
+	style="float:none; margin-right: 10px; display: inline;"
 	for="<?php echo esc_attr( \Alma\Woocommerce\Helpers\Alma_Constants_Helper::GATEWAY_ID_IN_PAGE ); ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
 >
 <?php

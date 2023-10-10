@@ -15073,7 +15073,7 @@
           shipping_address: shipping_address
         }, {
           Authorization: "Alma-Merchant-Auth " + merchantId,
-          'X-Alma-Agent': "Alma Widget/" + "v3.3.5"
+          'X-Alma-Agent': "Alma Widget/" + "v3.3.6"
         }).then(function (res) {
           setEligibility(res);
           setStatus(apiStatus.SUCCESS);
@@ -20546,6 +20546,10 @@
     react.useEffect(function () {
       var timeout;
       var isMounted = true;
+
+      if (transitionDelay === -1) {
+        return;
+      }
 
       if (iterateValues.length !== 0) {
         if (!iterateValues.includes(current) && update) setCurrent(iterateValues[0]);

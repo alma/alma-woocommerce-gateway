@@ -5,9 +5,14 @@ v5.2.0
 ------
 * feat : Add multisite support
 
+v5.1.1
+------
+* fix: css incompatibility with plugin Yith Woocommerce Checkout Manager 
+
 v5.1.0
 ------
 * feature : In Page checkout for all merchants
+* feat: Update Widget version 3.3.6
 
 v5.0.6
 ------
