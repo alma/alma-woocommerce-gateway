@@ -1,6 +1,10 @@
 Changelog
 =========
 
+v5.1.1
+------
+* fix: css incompatibility with plugin Yith Woocommerce Checkout Manager 
+
 v5.1.0
 ------
 * feature : In Page checkout for all merchants
