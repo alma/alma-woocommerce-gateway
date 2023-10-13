@@ -33,21 +33,7 @@ install_db() {
 	local DB_PASS=${WP_TEST_DATABASE_PASSWORD}
 	local DB_HOST=${WP_TEST_DATABASE_HOST}
 
-	# parse DB_HOST for port or socket references
-	local PARTS=(${DB_HOST//\:/ })
-	local DB_HOSTNAME=${PARTS[0]};
-	local DB_SOCK_OR_PORT=${PARTS[1]};
-	local EXTRA=""
-
-	if ! [ -z $DB_HOSTNAME ] ; then
-		if [ $(echo $DB_SOCK_OR_PORT | grep -e '^[0-9]\{1,\}$') ]; then
-			EXTRA=" --host=$DB_HOSTNAME --port=$DB_SOCK_OR_PORT --protocol=tcp"
-		elif ! [ -z $DB_SOCK_OR_PORT ] ; then
-			EXTRA=" --socket=$DB_SOCK_OR_PORT"
-		elif ! [ -z $DB_HOSTNAME ] ; then
-			EXTRA=" --host=$DB_HOSTNAME --protocol=tcp"
-		fi
-	fi
+	local EXTRA=" --host=$DB_HOST --port=$DB_PORT --protocol=tcp"
 
 	# create database
 	if [ $(mysql --user="$DB_USER" --password="$DB_PASS"$EXTRA --execute='show databases;' | grep ^$DB_NAME$) ]
