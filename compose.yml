@@ -1,0 +1,23 @@
+services:
+  mysql:
+    image: mysql:5.6
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: wordpress_test
+
+  test:
+    build:
+      context: .
+      args:
+        WC_VERSION: 8.1.1
+        WP_VERSION: 6.3.1
+    depends_on:
+      - mysql
+    volumes:
+      - ./src:/app/woocommerce/src
+      - /app/woocommerce/src/vendor # do not mount vendor inside container
+    environment:
+      WP_TEST_DATABASE_NAME: wordpress_test
+      WP_TEST_DATABASE_USER: root
+      WP_TEST_DATABASE_PASSWORD: root
+      WP_TEST_DATABASE_HOST: mysql

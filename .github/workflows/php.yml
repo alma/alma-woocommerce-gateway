@@ -44,28 +44,32 @@ jobs:
             wp_version: "6.3.1"
             php_version: "7.4"
 
-    services:
-      database:
-        image: mysql:5.6
-        env:
-          MYSQL_ROOT_PASSWORD: root
-        ports:
-          - 3306:3306
+    # services:
+    #   database:
+    #     image: mysql:5.6
+    #     env:
+    #       MYSQL_ROOT_PASSWORD: root
+    #     ports:
+    #       - 3306:3306
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php_version }}
+      - run: docker compose build --build-arg PHP_VERSION=${{ matrix.php_version }} --build-arg WP_VERSION=${{ matrix.wp_version }} -- build-arg WC_VERSION=${{ matrix.wp_version }}
 
-      - name: Setup wordpress
-        run: bash src/bin/install-wp-tests.sh wordpress_test root root 127.0.0.1 ${{ matrix.wp_version }} ${{ matrix.wc_version }}
+      - run: docker compose run test
 
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest --dev
-        working-directory: ./src
+      # - name: Setup PHP
+      #   uses: shivammathur/setup-php@v2
+      #   with:
+      #     php-version: ${{ matrix.php_version }}
 
-      - name: Test source code
-        run: bash bin/phpunit
+      # - name: Setup wordpress
+      #   run: bash src/bin/install-wp-tests.sh wordpress_test root root 127.0.0.1 ${{ matrix.wp_version }} ${{ matrix.wc_version }}
+
+      # - name: Install dependencies
+      #   run: composer install --prefer-dist --no-progress --no-suggest --dev
+      #   working-directory: ./src
+
+      # - name: Test source code
+      #   run: bash bin/phpunit
