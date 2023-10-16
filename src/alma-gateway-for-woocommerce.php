@@ -12,12 +12,12 @@
  * Domain Path: /languages
  * Requires at least: 4.4
  * Requires PHP: 5.6
- * Tested up to: 6.3.1
+ * Tested up to: 6.3.2
  *
  * @package Alma_Gateway_For_Woocommerce
  *
  * WC requires at least: 2.6
- * WC tested up to: 8.1.1
+ * WC tested up to: 8.2.0
  *
  * Alma Payment Gateway for WooCommerce is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

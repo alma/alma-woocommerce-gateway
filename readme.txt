@@ -53,6 +53,11 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 = 5.2.0 =
 * feat : Add multisite support
+* feat: Compatibility WordPress 6.3.2
+* feat: compatibility Woocommerce 8.2.0
+
+= 5.1.2 =
+* fix: svn marketplace activation issue
 
 = 5.1.1 =
 * fix: css incompatibility with plugin Yith Woocommerce Checkout Manager
