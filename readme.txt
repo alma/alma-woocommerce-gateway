@@ -51,6 +51,8 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 == Changelog ==
 
+* feat: compatibility Woocommerce 8.2.0
+
 = 5.1.1 =
 * fix: css incompatibility with plugin Yith Woocommerce Checkout Manager
 
