@@ -1,6 +1,7 @@
 Changelog
 =========
 
+* feat: compatibility Woocommerce 8.2.0
 * feat: Compatibility WordPress 6.3.1
 
 v5.1.2
