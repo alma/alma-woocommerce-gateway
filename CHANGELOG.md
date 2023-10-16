@@ -1,6 +1,10 @@
 Changelog
 =========
 
+v5.1.3
+------
+* fix: update issues from version 1.* and 2.*
+
 v5.1.2
 ------
 * fix: svn marketplace activation issue
