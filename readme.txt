@@ -53,6 +53,7 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 = 5.1.3 =
 * fix: update issues from version 1.* and 2.*
+* feat: Compatibility WordPress 6.3.2
 * feat: compatibility Woocommerce 8.2.0
 
 = 5.1.2 =
