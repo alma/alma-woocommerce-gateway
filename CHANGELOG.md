@@ -1,6 +1,8 @@
 Changelog
 =========
 
+* feat: Compatibility WordPress 6.3.1
+
 v5.1.1
 ------
 * fix: css incompatibility with plugin Yith Woocommerce Checkout Manager 
