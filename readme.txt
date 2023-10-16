@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 4.4
 Tested up to: 6.3
 Requires PHP: 5.6
-Stable tag: 5.1.1
+Stable tag: 5.1.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -52,6 +52,9 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 == Changelog ==
 
 * feat: compatibility Woocommerce 8.2.0
+
+= 5.1.2 =
+* fix: svn marketplace activation issue
 
 = 5.1.1 =
 * fix: css incompatibility with plugin Yith Woocommerce Checkout Manager
