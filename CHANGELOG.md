@@ -1,11 +1,13 @@
 Changelog
 =========
 
+* feat: compatibility Woocommerce 8.2.0
+
 v5.1.2
 ------
 * fix: svn marketplace activation issue
-
-  v5.1.1
+ 
+v5.1.1
 ------
 * fix: css incompatibility with plugin Yith Woocommerce Checkout Manager 
 
