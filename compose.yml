@@ -4,6 +4,16 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: wordpress_test
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-p$$MYSQL_ROOT_PASSWORD"
+        ]
+      timeout: 10s
+      retries: 10
 
   test:
     build:
@@ -12,7 +22,8 @@ services:
         WC_VERSION: 8.1.1
         WP_VERSION: 6.3.1
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     volumes:
       - ./src:/app/woocommerce/src
       - /app/woocommerce/src/vendor # do not mount vendor inside container

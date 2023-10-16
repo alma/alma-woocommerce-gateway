@@ -1,0 +1,9 @@
+version: 3
+
+tasks:
+  test:
+    desc: Run tests
+    cmds:
+      - docker compose build --build-arg PHP_VERSION=7.4
+      - docker compose run --rm test
+      - docker compose down --remove-orphans
