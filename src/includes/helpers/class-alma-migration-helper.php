@@ -68,6 +68,8 @@ class Alma_Migration_Helper {
 			return true;
 		}
 
+		$this->manage_version_before_3( $db_version );
+
 		add_option( 'alma_migration_ongoing', ALMA_VERSION );
 		update_option( 'alma_previous_version', $db_version );
 
@@ -93,7 +95,6 @@ class Alma_Migration_Helper {
 			$db_version
 			&& version_compare( ALMA_VERSION, $db_version, '>' )
 		) {
-			$this->manage_version_before_3( $db_version );
 			$this->migrate_keys();
 
 			delete_option( 'woocommerce_alma_settings' );
@@ -166,7 +167,11 @@ class Alma_Migration_Helper {
 	 * @throws Alma_Version_Deprecated The exception.
 	 */
 	protected function manage_version_before_3( $db_version ) {
-		if ( version_compare( $db_version, 3, '<' ) ) {
+		if (
+			version_compare( $db_version, 3, '<' )
+			&& get_option( 'woocommerce_alma_settings' )
+		) {
+			// An old version of alma is already running.
 			throw new Alma_Version_Deprecated( $db_version );
 		}
 	}
