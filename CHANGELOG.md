@@ -1,6 +1,8 @@
 Changelog
 =========
 
+* feat: compatibility Woocommerce 8.2.1
+ 
 v5.1.3
 ------
 * fix: update issues from version 1.* and 2.*
