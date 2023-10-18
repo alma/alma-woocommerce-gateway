@@ -1,11 +1,18 @@
 Changelog
 =========
 
+v5.1.3
+------
+* fix: update issues from version 1.* and 2.*
+* feat: compatibility Woocommerce 8.2.0
+* feat: Compatibility WordPress 6.3.1
+* feat: Update Widget version 3.3.8
+
 v5.1.2
 ------
 * fix: svn marketplace activation issue
 
-  v5.1.1
+v5.1.1
 ------
 * fix: css incompatibility with plugin Yith Woocommerce Checkout Manager 
 
