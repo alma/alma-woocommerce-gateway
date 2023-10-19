@@ -51,6 +51,8 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 == Changelog ==
 
+* feat: Compatibility Woocommerce 8.2.1
+
 = 5.1.3 =
 * fix: update issues from version 1.* and 2.*
 * feat: Compatibility WordPress 6.3.2
