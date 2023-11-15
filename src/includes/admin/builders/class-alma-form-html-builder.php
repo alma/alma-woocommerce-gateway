@@ -81,10 +81,11 @@ class Alma_Form_Html_Builder {
 	 * @param string $translation as description prefix.
 	 * @param float  $fee_variable as variable amount (if any).
 	 * @param float  $fee_fixed as fixed amount (if any).
+	 * @param string $fee_description a description).
 	 *
 	 * @return string
 	 */
-	public static function generate_fee_to_pay_description( $translation, $fee_variable, $fee_fixed ) {
+	public static function generate_fee_to_pay_description( $translation, $fee_variable, $fee_fixed, $fee_description = '' ) {
 		if ( ! $fee_variable && ! $fee_fixed ) {
 			return '';
 		}
@@ -101,7 +102,7 @@ class Alma_Form_Html_Builder {
 			$fees .= $fee_fixed . '€';
 		}
 
-		return sprintf( '<br><b>%s</b> %s', $translation, $fees );
+		return sprintf( '<br><b>%s</b> %s %s', $translation, $fees, $fee_description );
 	}
 
 
