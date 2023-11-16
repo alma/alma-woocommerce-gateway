@@ -4,7 +4,11 @@ Changelog
 v5.2.0
 ------
 * feat : Add multisite support
+
+v5.1.4
+------
 * feat: compatibility Woocommerce 8.2.1
+* feat: change fee wording in the BO
  
 v5.1.3
 ------
