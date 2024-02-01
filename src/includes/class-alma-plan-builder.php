@@ -119,6 +119,9 @@ class Alma_Plan_Builder {
 					'plan_id'              => '#' . sprintf( Alma_Constants_Helper::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $plan_key ),
 					'logo_url'             => Alma_Assets_Helper::get_asset_url( sprintf( 'images/%s_logo.svg', $plan_key ) ),
 					'upon_trigger_enabled' => $this->alma_settings->payment_upon_trigger_enabled,
+					'decimal_separator'    => wc_get_price_decimal_separator(),
+					'thousand_separator'   => wc_get_price_thousand_separator(),
+					'decimals'             => wc_get_price_decimals(),
 				),
 				'partials'
 			);
