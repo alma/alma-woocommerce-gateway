@@ -27,7 +27,7 @@
 		function (event) {
 			if (isAlmaInPageChecked()) {
 				feePlanChecked = $( "input[type='radio'][name='alma_fee_plan_in_page']:checked" ).val();
-				render_installments( feePlanChecked );
+				render_installments( feePlanChecked , $( "input[type='radio'][name='alma_fee_plan_in_page']:checked" ) );
 			}
 		}
 	);
@@ -36,11 +36,11 @@
 		'click',
 		'.alma_fee_plan_in_page',
 		function (event) {
-			render_installments( $( this ).prop( 'value' ) );
+			render_installments( $( this ).prop( 'value' ) ,  $( this ) );
 		}
 	);
 
-	function render_installments(value)
+	function render_installments(value, checkbox)
 	{
 		payment_method = $( '.woocommerce-checkout input[name="payment_method"]:checked' );
 		payment_value  = payment_method.attr( 'value' );
@@ -61,7 +61,25 @@
 				inPage.unmount();
 			}
 
+			thousandSeparator = checkbox.data( 'settings-thousand-separator' )
+			decimalSeparator  = checkbox.data( 'settings-decimal-separator' );
+			nbDecimals        = checkbox.data( 'settings-nb-decimals' );
+
 			amount = document.getElementsByClassName( "order-total" )["0"].getElementsByClassName( "woocommerce-Price-amount amount" )["0"].innerText.replace( /[^0-9]/g, '' );
+
+			var amount = amount.replace( ' ', '' )
+				.replace( thousandSeparator, '' )
+				.replace( decimalSeparator, ',' )
+				.replace( /[^\d.]/g, '' )
+
+			switch (nbDecimals) {
+				case 0:
+					amount = amount * 100;
+					break;
+				case 1:
+					amount = amount * 10;
+					break;
+			}
 
 			inPage = Alma.InPage.initialize(
 				{
