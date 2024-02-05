@@ -54,6 +54,7 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 = 5.1.4 =
 * feat: Compatibility Woocommerce 8.2.1
 * feat: change fee wording in the BO
+* fix: In page installment plans
 
 = 5.1.3 =
 * fix: update issues from version 1.* and 2.*

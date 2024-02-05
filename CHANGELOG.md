@@ -5,6 +5,7 @@ v5.1.4
 ------
 * feat: compatibility Woocommerce 8.2.1
 * feat: change fee wording in the BO
+* fix: In page installment plans
  
 v5.1.3
 ------
