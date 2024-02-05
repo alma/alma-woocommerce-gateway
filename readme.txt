@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 4.4
 Tested up to: 6.3
 Requires PHP: 5.6
-Stable tag: 5.1.3
+Stable tag: 5.1.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,11 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+= 5.1.4 =
+* feat: Compatibility Woocommerce 8.2.1
+* feat: change fee wording in the BO
+* fix: In page installment plans
 
 = 5.1.3 =
 * fix: update issues from version 1.* and 2.*
