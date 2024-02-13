@@ -364,7 +364,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 		$this->alma_settings->init_allowed_fee_plans();
 
 		// Save of the fee plans.
-		update_option( $this->get_option_key(), apply_filters( 'woocommerce_settings_api_sanitized_fields_' . $this->id, $this->alma_settings->settings ), 'yes' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		alma_update_option( $this->get_option_key(), apply_filters( 'woocommerce_settings_api_sanitized_fields_' . $this->id, $this->alma_settings->settings ), 'yes' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 	}
 
 	/**
@@ -431,7 +431,14 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 	 * Init settings for gateways.
 	 */
 	public function init_settings() {
-		parent::init_settings();
+		$this->settings = alma_get_option( $this->get_option_key(), null );
+
+		// If there are no settings defined, use defaults.
+		if ( ! is_array( $this->settings ) ) {
+			$form_fields    = $this->get_form_fields();
+			$this->settings = array_merge( array_fill_keys( array_keys( $form_fields ), '' ), wp_list_pluck( $form_fields, 'default' ) );
+		}
+
 		$this->enabled = ! empty( $this->settings['enabled'] ) && 'yes' === $this->settings['enabled'] ? 'yes' : 'no';
 
 		if ( ! empty( $this->settings['test_api_key'] ) ) {
@@ -475,7 +482,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 
 		$this->convert_amounts_to_cents();
 
-		update_option( $this->get_option_key(), apply_filters( 'woocommerce_settings_api_sanitized_fields_' . $this->id, $this->alma_settings->settings ), 'yes' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		alma_update_option( $this->get_option_key(), apply_filters( 'woocommerce_settings_api_sanitized_fields_' . $this->id, $this->alma_settings->settings ), 'yes' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 		$this->alma_settings->load_settings();
 

@@ -115,7 +115,7 @@ class Alma_Notices {
 			$notice = wc_clean( wp_unslash( $_GET['alma-gateway-for-woocommerce-hide-notice'] ) );
 
 			if ( false !== strpos( $notice, '_upe' ) ) {
-				update_option( 'wc_alma_show_' . $notice . '_notice', 'no' );
+				alma_update_option( 'wc_alma_show_' . $notice . '_notice', 'no' );
 			}
 		}
 	}
