@@ -1700,7 +1700,7 @@
       }
 
       function polyfillClassList(ele) {
-        if (!ele || !('innerHTML' in ele)) throw TypeError('Illegal invocation');
+        if (!ele || !('innerText' in ele)) throw TypeError('Illegal invocation');
         ele.detachEvent('onpropertychange', whenPropChanges); // prevent duplicate handler infinite loop
 
         allowTokenListConstruction = 1;
@@ -7398,7 +7398,7 @@
   }
 
   var D = {};
-  "children dangerouslySetInnerHTML defaultValue defaultChecked innerHTML suppressContentEditableWarning suppressHydrationWarning style".split(" ").forEach(function (a) {
+  "children dangerouslySetInnerHTML defaultValue defaultChecked innerText suppressContentEditableWarning suppressHydrationWarning style".split(" ").forEach(function (a) {
     D[a] = new B(a, 0, !1, a, null, !1, !1);
   });
   [["acceptCharset", "accept-charset"], ["className", "class"], ["htmlFor", "for"], ["httpEquiv", "http-equiv"]].forEach(function (a) {
@@ -7932,9 +7932,9 @@
       });
     } : a;
   }(function (a, b) {
-    if (a.namespaceURI !== kb.svg || "innerHTML" in a) a.innerHTML = b;else {
+    if (a.namespaceURI !== kb.svg || "innerText" in a) a.innerText = b;else {
       nb = nb || document.createElement("div");
-      nb.innerHTML = "<svg>" + b.valueOf().toString() + "</svg>";
+      nb.innerText = "<svg>" + b.valueOf().toString() + "</svg>";
 
       for (b = nb.firstChild; a.firstChild;) a.removeChild(a.firstChild);
 
@@ -12217,7 +12217,7 @@
           } else {
             g = 9 === e.nodeType ? e : e.ownerDocument;
             a === kb.html && (a = lb(c));
-            a === kb.html ? "script" === c ? (a = g.createElement("div"), a.innerHTML = "<script>\x3c/script>", a = a.removeChild(a.firstChild)) : "string" === typeof d.is ? a = g.createElement(c, {
+            a === kb.html ? "script" === c ? (a = g.createElement("div"), a.innerText = "<script>\x3c/script>", a = a.removeChild(a.firstChild)) : "string" === typeof d.is ? a = g.createElement(c, {
               is: d.is
             }) : (a = g.createElement(c), "select" === c && (g = a, d.multiple ? g.multiple = !0 : d.size && (g.size = d.size))) : a = g.createElementNS(a, c);
             a[wf] = b;
@@ -15518,7 +15518,7 @@
     function hidesContents(element) {
       var zeroSize = element.offsetWidth <= 0 && element.offsetHeight <= 0; // If the node is empty, this is good enough
 
-      if (zeroSize && !element.innerHTML) return true;
+      if (zeroSize && !element.innerText) return true;
 
       try {
         // Otherwise we need to check some styles
