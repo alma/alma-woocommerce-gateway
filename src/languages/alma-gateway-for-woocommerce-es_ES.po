@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 77e083b1cd468d7c2202d1ff3d20e024\n"
-"POT-Creation-Date: 2023-11-15 12:43+0100\n"
-"PO-Revision-Date: 2023-11-15 11:54\n"
+"POT-Creation-Date: 2024-02-19 10:23+0100\n"
+"PO-Revision-Date: 2024-02-19 09:24\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.1\n"
+"X-Generator: Poedit 3.4.2\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: alma-gateway-for-woocommerce.php\n"
@@ -54,7 +54,7 @@ msgstr "→ Pago aplazado M+%d"
 
 #: includes/admin/class-alma-notices.php:108
 msgid "Action failed. Please refresh the page and retry."
-msgstr "Acción fallida. Por favor, actualice la página y vuelva a intentarlo."
+msgstr "Acción fallida. Por favor, actualiza la página y vuelve a intentarlo."
 
 #: includes/admin/class-alma-notices.php:112
 msgid "Cheatin&#8217; huh?"
@@ -62,7 +62,7 @@ msgstr "Cheatin&#8217; ¿eh?"
 
 #: includes/admin/helpers/class-alma-check-legal-helper.php:158
 msgid "Impossible to save the settings, please try again later."
-msgstr "Imposible guardar los ajustes, por favor inténtelo más tarde."
+msgstr "Imposible guardar los ajustes, por favor inténtalo más tarde."
 
 #. translators: %s: Admin settings url.
 #: includes/admin/helpers/class-alma-check-legal-helper.php:206
@@ -72,14 +72,14 @@ msgstr "Los ajustes se han guardado. <a href=\"%s\">Actualizar</a> la página cu
 
 #: includes/admin/helpers/class-alma-check-legal-helper.php:236
 msgid "By accepting this option, you enable Alma to analyze the usage of your payment methods and get information in order to improve your clients’ experience."
-msgstr "Al aceptar esta opción, usted permite a Alma analizar el uso de sus métodos de pago y obtener información con el fin de mejorar la experiencia de sus clientes."
+msgstr "Al aceptar esta opción, permites a Alma analizar el uso de tus métodos de pago y obtener información con el fin de mejorar la experiencia de tus clientes."
 
 #: includes/admin/helpers/class-alma-check-legal-helper.php:245
 msgid "You can <a href=\"mailto:support@getalma.eu\">opt out and erase your data</a> at any moment."
-msgstr "Usted puede optar por <a href=\"mailto:support@getalma.eu\">y borrar sus datos</a> en cualquier momento."
+msgstr "Puedes optar por <a href=\"mailto:support@getalma.eu\">y borrar tus datos</a> en cualquier momento."
 
 #: includes/admin/helpers/class-alma-check-legal-helper.php:252
-#: includes/admin/helpers/class-alma-form-fields-helper.php:731
+#: includes/admin/helpers/class-alma-form-fields-helper.php:732
 msgid "Know more about collected data"
 msgstr "Más información sobre los datos recogidos"
 
@@ -101,7 +101,7 @@ msgstr "ACEPTAR"
 
 #: includes/admin/helpers/class-alma-check-legal-helper.php:283
 msgid "Increase your performance & get insights !"
-msgstr "Aumente su rendimiento y obtenga información"
+msgstr "Aumenta tu rendimiento y obtén información"
 
 #: includes/admin/helpers/class-alma-form-fields-helper.php:76
 #: includes/admin/helpers/class-alma-form-fields-helper.php:346
@@ -134,7 +134,7 @@ msgstr "Modo de la API"
 #: includes/admin/helpers/class-alma-form-fields-helper.php:114
 #, php-format
 msgid "Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In Test mode, only admins can see Alma on cart/checkout pages.<br> %s"
-msgstr "Utilice <b>Prueba</b> modo hasta que esté listo para tomar pedidos reales con Alma<br>En el modo de prueba, sólo los administradores pueden ver Alma en el carro / páginas de pago.<br> %s"
+msgstr "Utiliza <b>Prueba</b> modo hasta que estés listo para tomar pedidos reales con Alma<br>En el modo de prueba, sólo los administradores pueden ver Alma en el carro / páginas de pago.<br> %s"
 
 #: includes/admin/helpers/class-alma-form-fields-helper.php:117
 msgid "Test"
@@ -178,7 +178,7 @@ msgstr "(<a href=\"%s\">Ir a registros</a>)"
 #: includes/admin/helpers/class-alma-form-fields-helper.php:172
 #, php-format
 msgid "Enable logging info and errors to help debug any issue with the plugin (previous Alma version : \"%s\")"
-msgstr "Habilitar el registro de información y errores para ayudar a depurar cualquier problema con el plugin (versión anterior Alma : \"%s\")"
+msgstr "Habilita el registro de información y errores para ayudar a depurar cualquier problema con el plugin (versión anterior Alma : \"%s\")"
 
 #: includes/admin/helpers/class-alma-form-fields-helper.php:189
 msgid "→ Display options"
@@ -191,7 +191,7 @@ msgstr "Activar el pago integrado"
 #. translators: %s: Alma in page doc URL
 #: includes/admin/helpers/class-alma-form-fields-helper.php:196
 msgid "Activate this setting if you want in-page checkout for Pay Now, P2X, P3X, and P4X"
-msgstr "Active esta opción si desea realizar el pago en la página para Pay Now, P2X, P3X y P4X."
+msgstr "Active esta opción si deseas realizar el pago en la página para Pay Now, P2X, P3X y P4X."
 
 #: includes/admin/helpers/class-alma-form-fields-helper.php:196
 #, php-format
@@ -255,7 +255,7 @@ msgstr "Puedes ofrecer el pago en %1$d cuotas para importes comprendidos entre <
 #: includes/admin/helpers/class-alma-form-fields-helper.php:406
 #, php-format
 msgid "You can offer instant payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>."
-msgstr "Puede ofrecer pagos instantáneos por importes comprendidos entre <b>%2$d€</b> y <b>%3$d€</b>."
+msgstr "Puedes ofrecer pagos instantáneos por importes comprendidos entre <b>%2$d€</b> y <b>%3$d€</b>."
 
 #. translators: %d: number of deferred days.
 #: includes/admin/helpers/class-alma-form-fields-helper.php:419
@@ -281,175 +281,176 @@ msgstr "Tú pagas:"
 msgid "Customer pays:"
 msgstr "El cliente paga:"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:445
+#. translators: %s Link to alma dashboard.
+#: includes/admin/helpers/class-alma-form-fields-helper.php:446
 #, php-format
 msgid "<u>Note</u>: Customer fees are impacted by the usury rate, and will be adapted based on the limitations to comply with regulations. For more information, visit the Configuration page on your <a href=\"%s\" target=\"_blank\">Alma Dashboard</a>."
-msgstr "<u>Nota</u>: Las comisiones de los clientes se ven afectadas por la tasa de usura, y se adaptarán en función de las limitaciones para cumplir con la normativa. Para obtener más información, visite la página de configuración en su <a href=\"%s\" target=\"_blank\">Alma Dashboard</a>."
+msgstr "<u>Nota</u>: Las comisiones de los clientes se ven afectadas por la tasa de usura, y se adaptarán en función de las limitaciones para cumplir con la normativa de cada país. Para obtener más información, visite la página de configuración en su <a href=\"%s\" target=\"_blank\">Alma Dashboard</a>."
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:448
+#: includes/admin/helpers/class-alma-form-fields-helper.php:449
 msgid "Customer lending rate:"
 msgstr "Tipo de préstamo para clientes:"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:477
+#: includes/admin/helpers/class-alma-form-fields-helper.php:478
 msgid "→ General configuration"
 msgstr "→ Configuración general"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:481
+#: includes/admin/helpers/class-alma-form-fields-helper.php:482
 msgid "Edit the text displayed when choosing the payment method in your checkout."
 msgstr "Edita el texto que se muestra al elegir el método de pago en tu caja."
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:490
-#: includes/admin/helpers/class-alma-form-fields-helper.php:498
+#: includes/admin/helpers/class-alma-form-fields-helper.php:491
+#: includes/admin/helpers/class-alma-form-fields-helper.php:499
 msgid "Payments in 2, 3 and 4 installments:"
 msgstr "Pagos en 2, 3 y 4 plazos:"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:491
+#: includes/admin/helpers/class-alma-form-fields-helper.php:492
 msgid "Pay Now:"
-msgstr "Pague ahora:"
+msgstr "Paga ahora:"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:501
+#: includes/admin/helpers/class-alma-form-fields-helper.php:502
 msgid "Pay now:"
 msgstr "Paga ahora:"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:506
+#: includes/admin/helpers/class-alma-form-fields-helper.php:507
 msgid "Payments in more than 4 installments:"
 msgstr "Pagos en más de 4 plazos:"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:510
+#: includes/admin/helpers/class-alma-form-fields-helper.php:511
 msgid "Deferred Payments:"
 msgstr "Pagos diferidos:"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:515
+#: includes/admin/helpers/class-alma-form-fields-helper.php:516
 msgid "Product eligibility notice"
 msgstr "Posibilidad de pagar los productos de manera fraccionada"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:517
+#: includes/admin/helpers/class-alma-form-fields-helper.php:518
 msgid "Display a message about product eligibility for monthly payments"
 msgstr "Mostrar un mensaje indicando si un producto puede pagarse en cuotas"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:521
+#: includes/admin/helpers/class-alma-form-fields-helper.php:522
 msgid "Cart eligibility notice"
 msgstr "Posibilidad de pagar la cesta de manera fraccionada"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:523
+#: includes/admin/helpers/class-alma-form-fields-helper.php:524
 msgid "Display a message about cart eligibility for monthly payments"
 msgstr "Mostrar un mensaje indicando si la cesta puede pagarse en cuotas"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:527
+#: includes/admin/helpers/class-alma-form-fields-helper.php:528
 msgid "Excluded product categories"
 msgstr "Categorías de productos excluidas"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:529
+#: includes/admin/helpers/class-alma-form-fields-helper.php:530
 msgid "Exclude all virtual/downloadable product categories, as you cannot sell them with Alma"
 msgstr "Excluye todas las categorías de productos virtuales/descargables que no pueden venderse con Alma"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:539
+#: includes/admin/helpers/class-alma-form-fields-helper.php:540
 msgid "Non-eligibility message for excluded products"
 msgstr "Mensaje de imposibilidad de fraccionar el pago de los productos excluidos"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:540
+#: includes/admin/helpers/class-alma-form-fields-helper.php:541
 msgid "Message displayed below the cart totals when it contains excluded products"
 msgstr "Mensaje mostrado debajo del total de la cesta si contiene productos excluidos"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:583
+#: includes/admin/helpers/class-alma-form-fields-helper.php:584
 msgid "Title"
 msgstr "Título"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:584
+#: includes/admin/helpers/class-alma-form-fields-helper.php:585
 msgid "This controls the payment method name which the user sees during checkout."
 msgstr "Escoge el nombre del método de pago que el usuario ve durante la validación del pedido."
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:593
+#: includes/admin/helpers/class-alma-form-fields-helper.php:594
 msgid "Description"
 msgstr "Descripción"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:595
+#: includes/admin/helpers/class-alma-form-fields-helper.php:596
 msgid "This controls the payment method description which the user sees during checkout."
 msgstr "Escoge la descripción del método de pago en la página de validación del pedido."
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:618
+#: includes/admin/helpers/class-alma-form-fields-helper.php:619
 msgid "→ Payment upon trigger configuration"
 msgstr "→ Configuración del pago tras el cumplimiento de un evento"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:632
+#: includes/admin/helpers/class-alma-form-fields-helper.php:633
 msgid "This option is available only for Alma payment in 2x, 3x and 4x.<br>When it's turned on, your clients will pay the first installment at the order status change. When your client order on your website, Alma will only ask for a payment authorization. Only status handled by Alma are available in the menu below. Please contact Alma if you need us to add another status."
 msgstr "Esta opción está disponible sólo para el pago de Alma en 2x, 3x y 4x. <br>Cuando está activado, tus clientes pagarán la primera cuota en el cambio de estado del pedido. Cuando tu cliente ordene en tu sitio web, Alma sólo pedirá una autorización de pago. Sólo el estado manejado por Alma está disponible en el menú de abajo. Por favor, ponte en contacto con Alma si necesitas que añadamos otro estado."
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:637
+#: includes/admin/helpers/class-alma-form-fields-helper.php:638
 msgid "Activate the payment upon trigger"
 msgstr "Activar el pago al cumplirse el evento"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:644
+#: includes/admin/helpers/class-alma-form-fields-helper.php:645
 msgid "Trigger typology"
 msgstr "Tipos de eventos"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:645
+#: includes/admin/helpers/class-alma-form-fields-helper.php:646
 msgid "Text that will appear in the payments schedule and in the customer's payment authorization email."
 msgstr "Texto que aparecerá en el calendario de pagos y en el correo electrónico de autorización de pago del cliente."
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:651
+#: includes/admin/helpers/class-alma-form-fields-helper.php:652
 msgid "Order status that triggers the first payment"
 msgstr "Estado del pedido que desencadena el primer pago"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:670
+#: includes/admin/helpers/class-alma-form-fields-helper.php:671
 msgid "→ Technical fields"
 msgstr "→ Campos técnicos"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:672
+#: includes/admin/helpers/class-alma-form-fields-helper.php:673
 msgid "Specific fields just in case you need it. [<a href=\"#\" id=\"alma_link_toggle_technical_section\">click to open or close</a>]"
 msgstr "Campos específicos por si lo necesitas. [<a href=\"#\" id=\"alma_link_toggle_technical_section\">haga clic para abrir o cerrar</a>]"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:675
+#: includes/admin/helpers/class-alma-form-fields-helper.php:676
 msgid "Custom check variations event"
 msgstr "Evento de variaciones de cheques personalizados"
 
 #. translators: %1$s is technical information, %2$s is Alma WooCommerce Plugin FAQ doc URL.
-#: includes/admin/helpers/class-alma-form-fields-helper.php:679
+#: includes/admin/helpers/class-alma-form-fields-helper.php:680
 #, php-format
 msgid "This is the javascript event triggered on variables products page, when the customer change the product variation. Default value is <strong>%1$s</strong>.<br />More technical information on <a href=\"%2$s\" target=\"_blank\">Alma documentation</a>"
 msgstr "Este es el evento javascript que se activa en la página de productos variables, cuando el cliente cambia la variación del producto. El valor por defecto es <strong>%1$s</strong>.<br />Más información técnica en <a href=\"%2$s\" target=\"_blank\">documentación de Alma</a>"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:686
+#: includes/admin/helpers/class-alma-form-fields-helper.php:687
 msgid "Variable products price query selector"
 msgstr "Query selector del precio de los productos variables"
 
 #. translators: %s is technical information.
-#: includes/admin/helpers/class-alma-form-fields-helper.php:690
+#: includes/admin/helpers/class-alma-form-fields-helper.php:691
 #, php-format
 msgid "Query selector used to get the price of product with variations. Default value is <strong>%s</strong>."
 msgstr "Selector de consulta utilizado para obtener el precio del producto con variaciones. El valor por defecto es <strong>%s</strong>."
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:696
+#: includes/admin/helpers/class-alma-form-fields-helper.php:697
 msgid "Variable products sale price query selector"
 msgstr "Selector de consulta de precios de venta de productos variables"
 
 #. translators: %s is technical information.
-#: includes/admin/helpers/class-alma-form-fields-helper.php:700
+#: includes/admin/helpers/class-alma-form-fields-helper.php:701
 #, php-format
 msgid "Query selector used to get the price of product with <strong>sales variations</strong>. Default value is <strong>%s</strong>."
 msgstr "Selector de consulta utilizado para obtener el precio del producto con <strong>variaciones de venta</strong>. El valor por defecto es <strong>%s</strong>."
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:725
+#: includes/admin/helpers/class-alma-form-fields-helper.php:726
 msgid "→ Increase your performance & get insights !"
 msgstr "→ ¡Aumenta tu rendimiento y obtén información!"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:728
-msgid "By accepting this option, enable Alma to analyse the usage of your payment methods, get more informations to perform and share this data with you."
-msgstr "Al aceptar esta opción, permite Alma para analizar el uso de sus métodos de pago, obtener más información para llevar a cabo y compartir estos datos con usted."
-
 #: includes/admin/helpers/class-alma-form-fields-helper.php:729
+msgid "By accepting this option, enable Alma to analyse the usage of your payment methods, get more informations to perform and share this data with you."
+msgstr "Al aceptar esta opción, permites a Alma analizar el uso de tus métodos de pago, obtener más información para llevar a cabo y compartir estos datos contigo."
+
+#: includes/admin/helpers/class-alma-form-fields-helper.php:730
 msgid "<br>You can <a href=\"mailto:support@getalma.eu\">erase your data</a> at any moment."
 msgstr "<br>Puedes <a href=\"mailto:support@getalma.eu\">borrar tus datos</a> en cualquier momento."
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:735
+#: includes/admin/helpers/class-alma-form-fields-helper.php:736
 msgid "- total quantity of orders, amounts and currencies"
 msgstr "- cantidad total de pedidos, importes y monedas"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:737
+#: includes/admin/helpers/class-alma-form-fields-helper.php:738
 msgid "- payment provider for each order"
 msgstr "- proveedor de pago para cada pedido"
 
-#: includes/admin/helpers/class-alma-form-fields-helper.php:743
+#: includes/admin/helpers/class-alma-form-fields-helper.php:744
 msgid "Activate your data sharing settings "
 msgstr "Activar la configuración para compartir datos "
 
@@ -479,13 +480,13 @@ msgstr "El importe no puede ser igual a 0 para el reembolso con Alma."
 
 #: includes/class-alma-checkout.php:46 includes/class-alma-checkout.php:53
 msgid "We were unable to process your order, please try again."
-msgstr "No hemos podido procesar su pedido, inténtelo de nuevo."
+msgstr "No hemos podido procesar tu pedido, inténtelo de nuevo."
 
 #. translators: %s: shop cart url
 #: includes/class-alma-checkout.php:63
 #, php-format
 msgid "Sorry, your session has expired. <a href=\"%s\" class=\"wc-backward\">Return to shop</a>"
-msgstr "Lo sentimos, su sesión ha expirado. <a href=\"%s\" class=\"wc-backward\">Volver a la tienda</a>"
+msgstr "Lo sentimos, tu sesión ha expirado. <a href=\"%s\" class=\"wc-backward\">Volver a la tienda</a>"
 
 #: includes/class-alma-checkout.php:72
 msgid "Payment in installments via Alma"
@@ -501,21 +502,21 @@ msgstr "No se puede crear el pedido."
 
 #: includes/class-alma-checkout.php:131
 msgid "Please read and accept the terms and conditions to proceed with your order."
-msgstr "Por favor, lea y acepte los términos y condiciones para proceder con su pedido."
+msgstr "Por favor, lee y acepta los términos y condiciones para proceder con tu pedido."
 
 #: includes/class-alma-checkout.php:138
 msgid "Please enter an address to continue."
-msgstr "Introduzca una dirección para continuar."
+msgstr "Introduce una dirección para continuar."
 
 #. translators: %s: shipping location
 #: includes/class-alma-checkout.php:141
 #, php-format
 msgid "Unfortunately <strong>we do not ship %s</strong>. Please enter an alternative shipping address."
-msgstr "Lamentablemente <strong>no realizamos envíos a %s</strong>. Introduzca una dirección de envío alternativa."
+msgstr "Lamentablemente <strong>no realizamos envíos a %s</strong>. Introduce una dirección de envío alternativa."
 
 #: includes/class-alma-checkout.php:147
 msgid "No shipping method has been selected. Please double check your address, or contact us if you need any help."
-msgstr "No se ha seleccionado ningún método de envío. Por favor, compruebe su dirección o póngase en contacto con nosotros si necesita ayuda."
+msgstr "No se ha seleccionado ningún método de envío. Por favor, comprueba tu dirección o ponte en contacto con nosotros si necesitas ayuda."
 
 #: includes/class-alma-generic-handler.php:68
 msgid "Alma \"Eligibility Widget\" (cart or product) already rendered on this page - Not displaying Alma"
@@ -587,7 +588,7 @@ msgstr "Alma ha encontrado un error. No se ha encontrado ningún cliente alma"
 #. translators: %s: Error message.
 #: includes/class-alma-settings.php:789
 msgid "Alma encountered an error when fetching merchant status, please check your api keys or retry later."
-msgstr "Alma ha encontrado un error al obtener el estado del comerciante, por favor, compruebe sus claves api o vuelva a intentarlo más tarde."
+msgstr "Alma ha encontrado un error al obtener el estado del comerciante, por favor, comprueba tus claves api o vuelve a intentarlo más tarde."
 
 #. translators: %s: Error message.
 #: includes/class-alma-settings.php:804
@@ -618,7 +619,7 @@ msgstr "Error al crear el pago. No se han enviado datos"
 #: includes/exceptions/class-alma-version-deprecated.php:30
 #, php-format
 msgid "Before installing this version of the Alma plugin, you need to manually remove the old version \"%s\", then deactivate and reactivate the new version"
-msgstr "Antes de instalar esta versión del plugin Alma, es necesario eliminar manualmente la versión antigua \"%s\", a continuación, desactivar y reactivar la nueva versión"
+msgstr "Antes de instalar esta versión del plugin Alma, es necesario eliminar manualmente la versión antigua \"%s\", luego, desactivar y reactivar la nueva versión"
 
 #. translators: %s: Alma dashboard url.
 #: includes/exceptions/class-alma-wrong-credentials-exception.php:34
@@ -701,7 +702,7 @@ msgstr "Se ha producido un error al procesar tu pago.<br>Inténtalo de nuevo o p
 
 #: includes/helpers/class-alma-payment-helper.php:604
 msgid "Selected payment method : Pay Now with Alma"
-msgstr "Forma de pago seleccionada : Pague ahora con Alma"
+msgstr "Forma de pago seleccionada : Paga ahora con Alma"
 
 #. translators: %d: number of installments.
 #: includes/helpers/class-alma-payment-helper.php:609
@@ -729,7 +730,7 @@ msgstr "Pago a plazos"
 #: includes/helpers/class-alma-settings-helper.php:91
 #: includes/helpers/class-alma-settings-helper.php:115
 msgid "Pay by credit card"
-msgstr "Pagar con tarjeta de crédito"
+msgstr "Pagar con tarjeta de bancaria"
 
 #: includes/helpers/class-alma-settings-helper.php:127
 msgid "Fast and secured payments"
@@ -738,7 +739,7 @@ msgstr "Pagos rápidos y seguros"
 #: includes/helpers/class-alma-settings-helper.php:141
 #: includes/helpers/class-alma-settings-helper.php:165
 msgid "Fast and secure payment by credit card."
-msgstr "Pago rápido y seguro con tarjeta de crédito."
+msgstr "Pago rápido y seguro con tarjeta de bancaria."
 
 #: includes/helpers/class-alma-settings-helper.php:153
 msgid "Fast and secure payment by credit card"
@@ -764,7 +765,7 @@ msgstr "Alma está casi lista. Para empezar, <a href=\"%s\">indica tus claves AP
 
 #: public/templates/alma-checkout-no-plans.php:12
 msgid "To use this payment option, please ensure your order total meets the minimum amount required."
-msgstr "Para utilizar esta opción de pago, asegúrese de que el total de su pedido alcanza el importe mínimo requerido."
+msgstr "Para utilizar esta opción de pago, asegúrate de que el total de tu pedido alcanza el importe mínimo requerido."
 
 #. translators: %1$s => today_amount (0), %2$s => total_amount, %3$s => i18n formatted due_date.
 #: public/templates/alma-checkout-plan-details.php:68
@@ -805,8 +806,8 @@ msgid "Total:"
 msgstr "Total:"
 
 #. translators: %s: plan_key alt image.
-#: public/templates/partials/alma-checkout-plan-in-page.php:38
-#: public/templates/partials/alma-checkout-plan-in-page.php:51
+#: public/templates/partials/alma-checkout-plan-in-page.php:41
+#: public/templates/partials/alma-checkout-plan-in-page.php:54
 #: public/templates/partials/alma-checkout-plan.php:36
 #: public/templates/partials/alma-checkout-plan.php:49
 #, php-format
