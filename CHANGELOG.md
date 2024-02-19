@@ -1,6 +1,8 @@
 Changelog
 =========
 
+* fix: widget XSS
+
 v5.1.4
 ------
 * feat: compatibility Woocommerce 8.2.1

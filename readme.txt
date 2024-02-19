@@ -51,6 +51,8 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 == Changelog ==
 
+* fix: widget XSS
+
 = 5.1.4 =
 * feat: Compatibility Woocommerce 8.2.1
 * feat: change fee wording in the BO
