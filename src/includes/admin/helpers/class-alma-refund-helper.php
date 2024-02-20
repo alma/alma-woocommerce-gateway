@@ -180,12 +180,13 @@ class Alma_Refund_Helper {
 	 */
 	protected function add_notice( $wc_order, $notice_type, $message ) {
 		$refund_notices   = $wc_order->get_meta( Alma_Constants_Helper::REFUND_NOTICE_META_KEY );
+		$refund_notices   = json_decode( $refund_notices );
 		$refund_notices[] = array(
 			'notice_type' => $notice_type,
 			'message'     => $message,
 		);
 
-		$wc_order->update_meta_data( Alma_Constants_Helper::REFUND_NOTICE_META_KEY, $refund_notices );
+		$wc_order->update_meta_data( Alma_Constants_Helper::REFUND_NOTICE_META_KEY, wp_json_encode( $refund_notices ) );
 	}
 
 	/**
