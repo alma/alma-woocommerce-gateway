@@ -5,7 +5,7 @@
  */
 
 const settings = window.wc.wcSettings.getSetting( 'alma_data', {} );
-
+console.log(settings);
 	const label   = window.wp.htmlEntities.decodeEntities( settings.title );
 	const Content = () => {
 		return window.wp.htmlEntities.decodeEntities( settings.description );

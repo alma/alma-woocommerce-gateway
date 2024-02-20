@@ -37,12 +37,19 @@ class Alma_Blocks extends AbstractPaymentMethodType {
 	 */
 	protected $gateway_helper;
 
+	/**
+	 * @var Alma_Settings
+	 */
+	protected $alma_settings;
+
 	protected $name = 'alma';// your payment gateway name
 
 	public function initialize() {
 		$this->settings       = get_option( Alma_Settings::OPTIONS_KEY, array() );
 		$this->gateway        = new Alma_Payment_Gateway_Standard();
 		$this->gateway_helper = new Alma_Gateway_Helper();
+		$this->alma_settings       = new Alma_Settings();
+
 	}
 
 	public function is_active() {
@@ -86,9 +93,17 @@ class Alma_Blocks extends AbstractPaymentMethodType {
 	}
 
 	public function get_payment_method_data() {
+		// We get the eligibilites.
+		$eligibilities  = $this->alma_settings->get_cart_eligibilities();
+		$eligible_plans = $this->alma_settings->get_eligible_plans_keys_for_cart( $eligibilities );
+
+		$default_plan = $this->gateway_helper->get_default_plan( $eligible_plans );
+
 		return array(
 			'title'       => $this->gateway_helper->get_alma_gateway_title( $this->gateway->id ),
 			'description' => $this->gateway_helper->get_alma_gateway_description( $this->gateway->id ),
+			'default_plan' => $default_plan,
+			'eligibilities' => $eligibilities
 		);
 	}
 }
