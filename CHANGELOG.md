@@ -1,6 +1,7 @@
 Changelog
 =========
 
+* feature : HPOS compatibility
 * fix: widget XSS
 
 v5.1.4

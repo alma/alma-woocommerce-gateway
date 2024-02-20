@@ -52,6 +52,7 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 == Changelog ==
 
 * fix: widget XSS
+* feature : HPOS compatibility
 
 = 5.1.4 =
 * feat: Compatibility Woocommerce 8.2.1

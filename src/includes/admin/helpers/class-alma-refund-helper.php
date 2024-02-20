@@ -84,7 +84,7 @@ class Alma_Refund_Helper {
 	 */
 	public function make_full_refund( $wc_order, $refund_id = 0 ) {
 
-		if ( '1' === get_post_meta( $wc_order->get_id(), Alma_Constants_Helper::FLAG_ORDER_FULLY_REFUNDED, true ) ) {
+		if ( '1' === $wc_order->get_meta( Alma_Constants_Helper::FLAG_ORDER_FULLY_REFUNDED ) ) {
 			return;
 		}
 
@@ -101,7 +101,7 @@ class Alma_Refund_Helper {
 		try {
 			$this->alma_settings->full_refund( $wc_order->get_transaction_id(), $merchant_reference, $this->format_refund_comment( $comment ) );
 
-			update_post_meta( $wc_order->get_id(), Alma_Constants_Helper::FLAG_ORDER_FULLY_REFUNDED, '1' );
+			$wc_order->update_meta_data( Alma_Constants_Helper::FLAG_ORDER_FULLY_REFUNDED, '1' );
 
 			/* translators: %s is a username. */
 			$order_note = sprintf( __( 'Order fully refunded by %s.', 'alma-gateway-for-woocommerce' ), wp_get_current_user()->display_name );
@@ -179,12 +179,13 @@ class Alma_Refund_Helper {
 	 * @return void
 	 */
 	protected function add_notice( $wc_order, $notice_type, $message ) {
-		$refund_notices   = get_post_meta( $wc_order->get_id(), Alma_Constants_Helper::REFUND_NOTICE_META_KEY );
+		$refund_notices   = $wc_order->get_meta( Alma_Constants_Helper::REFUND_NOTICE_META_KEY );
 		$refund_notices[] = array(
 			'notice_type' => $notice_type,
 			'message'     => $message,
 		);
-		update_post_meta( $wc_order->get_id(), Alma_Constants_Helper::REFUND_NOTICE_META_KEY, $refund_notices );
+
+		$wc_order->update_meta_data( Alma_Constants_Helper::REFUND_NOTICE_META_KEY, $refund_notices );
 	}
 
 	/**
@@ -306,7 +307,7 @@ class Alma_Refund_Helper {
 	 * @return void
 	 */
 	public function print_notices( $wc_order ) {
-		$refund_notices = get_post_meta( $wc_order->get_id(), Alma_Constants_Helper::REFUND_NOTICE_META_KEY, true );
+		$refund_notices = $wc_order->get_meta( Alma_Constants_Helper::REFUND_NOTICE_META_KEY );
 
 		if ( ! is_array( $refund_notices ) ) {
 			return;
@@ -332,6 +333,6 @@ class Alma_Refund_Helper {
 	 * @return void
 	 */
 	public function delete_notices( $wc_order ) {
-		delete_post_meta( $wc_order->get_id(), Alma_Constants_Helper::REFUND_NOTICE_META_KEY );
+		$wc_order->delete_meta_data( Alma_Constants_Helper::REFUND_NOTICE_META_KEY );
 	}
 }
