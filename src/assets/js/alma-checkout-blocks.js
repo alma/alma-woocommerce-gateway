@@ -16,11 +16,9 @@ const settings = window.wc.wcSettings.getSetting( 'alma_data', {} );
 		label: label,
 		content: Object( window.wp.element.createElement )( Content, null ),
 		edit: Object( window.wp.element.createElement )( Content, null ),
+		placeOrderButtonLabel: 'Pay with Alma',
 		canMakePayment: () => true,
-		ariaLabel: label,
-		supports: {
-			features: settings.supports,
-		},
+		ariaLabel: label
 	};
 
 	window.wc.wcBlocksRegistry.registerPaymentMethod( Block_Gateway );
