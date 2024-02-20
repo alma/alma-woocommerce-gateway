@@ -12,6 +12,7 @@
 namespace Alma\Woocommerce\Helpers;
 
 use Alma\Woocommerce\Admin\Helpers\Alma_Check_Legal_Helper;
+use Alma\Woocommerce\Alma_Blocks;
 use Alma\Woocommerce\Alma_Cart_Handler;
 use Alma\Woocommerce\Alma_Payment_Upon_Trigger;
 use Alma\Woocommerce\Alma_Product_Handler;
@@ -150,8 +151,26 @@ class Alma_Plugin_Helper {
 		// Launch the "share of checkout".
 		$share_of_checkout = new Alma_Share_Of_Checkout();
 		add_action( 'init', array( $share_of_checkout, 'send_soc_data' ) );
+
+		add_action( 'woocommerce_blocks_loaded', array( $this, 'alma_register_order_approval_payment_method_type' ) );
 	}
 
+
+	public function alma_register_order_approval_payment_method_type() {
+		// Check if the required class exists
+		if ( ! class_exists( '\Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' ) ) {
+			return;
+		}
+
+		// Hook the registration function to the 'woocommerce_blocks_payment_method_type_registration' action
+		add_action(
+			'woocommerce_blocks_payment_method_type_registration',
+			function ( \Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry $payment_method_registry ) {
+				// Register an instance of Alma_Gateway_Blocks
+				$payment_method_registry->register( new Alma_Blocks() );
+			}
+		);
+	}
 
 	/**
 	 * Inject JS in checkout page.

@@ -56,6 +56,7 @@ class Alma_Constants_Helper {
 	const ALMA_LOGO_PATH                    = 'images/alma_logo.svg';
 	const ALMA_SHORT_LOGO_PATH              = 'images/alma_short_logo.svg';
 	const ALMA_PATH_CHECKOUT_JS             = 'js/alma-checkout.js';
+	const ALMA_PATH_CHECKOUT_BLOCK_JS       = 'js/alma-checkout-blocks.js';
 	const ALMA_PATH_CHECKOUT_IN_PAGE_JS     = 'js/alma-checkout-in-page.js';
 	const ALMA_PATH_CHECKOUT_CDN_IN_PAGE_JS = 'https://cdn.jsdelivr.net/npm/@alma/in-page@2.x/dist/index.umd.js';
 	const ALMA_PATH_CHECKOUT_CSS            = 'css/alma-checkout.css';
