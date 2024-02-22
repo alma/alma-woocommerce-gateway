@@ -1,6 +1,7 @@
 Changelog
 =========
 
+* feat: Update translations
 * fix: widget XSS
 
 v5.1.4
