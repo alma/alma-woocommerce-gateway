@@ -19,7 +19,10 @@ use Alma\Woocommerce\Alma_Refund;
 use Alma\Woocommerce\Alma_Settings;
 use Alma\Woocommerce\Alma_Share_Of_Checkout;
 use Alma\Woocommerce\Alma_Shortcodes;
+use Alma\Woocommerce\Blocks\Standard\Alma_Blocks_Pay_Later;
+use Alma\Woocommerce\Blocks\Standard\Alma_Blocks_Pay_More_Than_Four;
 use Alma\Woocommerce\Blocks\Standard\Alma_Blocks_Standard;
+use Alma\Woocommerce\Blocks\Standard\Alma_Blocks_Pay_Now;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -168,6 +171,9 @@ class Alma_Plugin_Helper {
 			function ( \Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry $payment_method_registry ) {
 				// Register an instance of Alma_Gateway_Blocks
 				$payment_method_registry->register( new Alma_Blocks_Standard() );
+				$payment_method_registry->register( new Alma_Blocks_Pay_Now() );
+                $payment_method_registry->register( new Alma_Blocks_Pay_Later() );
+                $payment_method_registry->register( new Alma_Blocks_Pay_More_Than_Four() );
 			}
 		);
 	}

@@ -12,6 +12,7 @@
 namespace Alma\Woocommerce\Blocks\Standard;
 
 use Alma\Woocommerce\Blocks\Alma_Blocks;
+use Alma\Woocommerce\Gateways\Standard\Alma_Payment_Gateway_Pay_More_Than_Four;
 use Alma\Woocommerce\Gateways\Standard\Alma_Payment_Gateway_Standard;
 use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
 
@@ -24,9 +25,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Alma_Blocks_Standard
  */
-class Alma_Blocks_Standard extends Alma_Blocks {
+class Alma_Blocks_Pay_More_Than_Four extends Alma_Blocks {
 	/**
-	 * @var Alma_Payment_Gateway_Standard
+	 * @var Alma_Payment_Gateway_Pay_More_Than_Four
 	 */
 	protected $gateway;
 
@@ -37,10 +38,10 @@ class Alma_Blocks_Standard extends Alma_Blocks {
 	 *
 	 * @var string
 	 */
-	protected $name = Alma_Constants_Helper::GATEWAY_ID;
+	protected $name = Alma_Constants_Helper::GATEWAY_ID_MORE_THAN_FOUR;
 
 	public function initialize() {
         parent::initialize();;
-		$this->gateway        = new Alma_Payment_Gateway_Standard();
+		$this->gateway        = new Alma_Payment_Gateway_Pay_More_Than_Four();
 	}
 }
