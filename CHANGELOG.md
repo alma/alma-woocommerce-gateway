@@ -1,6 +1,8 @@
 Changelog
 =========
 
+v5.2.0
+------
 * feature : HPOS compatibility
 * feat: Update translations
 * fix: widget XSS
