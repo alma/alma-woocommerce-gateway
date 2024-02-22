@@ -185,7 +185,7 @@ class Alma_Plugin {
 	 */
 	public function add_gateways( $gateways ) {
 		if ( ! is_admin() ) {
-			// $gateways[] = \Alma\Woocommerce\Gateways\Inpage\Alma_Payment_Gateway_Pay_Now::class;
+			 $gateways[] = \Alma\Woocommerce\Gateways\Inpage\Alma_Payment_Gateway_Pay_Now::class;
 			 $gateways[] = Alma_Payment_Gateway_Pay_Now::class;
 		}
 

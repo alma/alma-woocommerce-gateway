@@ -206,13 +206,13 @@ class Alma_Plugin_Helper {
 
 			if ( ! $this->has_woocommerce_blocks() ) {
 				$this->enqueue_checkout_scripts();
+			}
 
-				if (
-					! empty( $settings->settings['display_in_page'] )
-					&& 'yes' === $settings->settings['display_in_page']
-				) {
-					$this->enqueue_in_page_scripts();
-				}
+			if (
+				! empty( $settings->settings['display_in_page'] )
+				&& 'yes' === $settings->settings['display_in_page']
+			) {
+				$this->enqueue_in_page_scripts();
 			}
 		}
 	}
@@ -239,14 +239,19 @@ class Alma_Plugin_Helper {
 	protected function enqueue_in_page_scripts() {
 		wp_enqueue_script( 'alma-checkout-in-page-cdn', Alma_Constants_Helper::ALMA_PATH_CHECKOUT_CDN_IN_PAGE_JS, array(), ALMA_VERSION, true );
 
-		$alma_checkout_in_page_js = Alma_Assets_Helper::get_asset_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_IN_PAGE_JS );
-		wp_enqueue_script( 'alma-checkout-in-page', $alma_checkout_in_page_js, array( 'jquery', 'jquery-ui-core' ), ALMA_VERSION, true );
+		if($this->add_in_page_actions()) {
+			$alma_checkout_in_page_js = Alma_Assets_Helper::get_asset_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_IN_PAGE_JS );
+			wp_enqueue_script( 'alma-checkout-in-page', $alma_checkout_in_page_js, array(
+				'jquery',
+				'jquery-ui-core'
+			), ALMA_VERSION, true );
 
-		wp_localize_script(
-			'alma-checkout-in-page',
-			'ajax_object',
-			array( 'ajax_url' => admin_url( 'admin-ajax.php' ) )
-		);
+			wp_localize_script(
+				'alma-checkout-in-page',
+				'ajax_object',
+				array( 'ajax_url' => admin_url( 'admin-ajax.php' ) )
+			);
+		}
 	}
 
 	/**

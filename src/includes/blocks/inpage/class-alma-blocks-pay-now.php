@@ -45,33 +45,5 @@ class Alma_Blocks_Pay_Now extends Alma_Blocks {
 		$this->gateway = new Alma_Payment_Gateway_Pay_Now();
 	}
 
-	public function get_payment_method_script_handles() {
-		if ( ! wp_script_is( 'alma-blocks-integration-ip-pay-now' ) ) {
-			$asset_path = Alma_Assets_Helper::get_asset_build_url( 'alma-checkout-blocks-ip-pay-now.asset.php' );
 
-			if ( file_exists( $asset_path ) ) {
-				require $asset_path;
-			}
-
-			wp_register_script(
-				'alma-blocks-integration-ip-pay-now',
-				Alma_Assets_Helper::get_asset_build_url( 'alma-checkout-blocks-ip-pay-now.js' ),
-				array(
-					'wc-blocks-registry',
-					'wc-settings',
-					'wp-element',
-					'wp-html-entities',
-					'wp-i18n',
-				),
-				null,
-				true
-			);
-			if ( function_exists( 'wp_set_script_translations' ) ) {
-				wp_set_script_translations( 'alma-blocks-integration-ip-pay-now' );
-
-			}
-		}
-
-		return array( 'alma-blocks-integration-ip-pay-now' );
-	}
 }

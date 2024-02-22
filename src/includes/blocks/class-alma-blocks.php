@@ -54,6 +54,32 @@ class Alma_Blocks extends AbstractPaymentMethodType {
 		return $this->gateway->is_available();
 	}
 
+	public function get_payment_method_script_handles() {
+		$asset_path = Alma_Assets_Helper::get_asset_build_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_BLOCK_PHP );
+
+		if ( file_exists( $asset_path ) ) {
+			require $asset_path;
+		}
+		wp_register_script(
+			'alma-blocks-integration',
+			Alma_Assets_Helper::get_asset_build_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_BLOCK_JS ),
+			array(
+				'wc-blocks-registry',
+				'wc-settings',
+				'wp-element',
+				'wp-html-entities',
+				'wp-i18n'
+			),
+			null,
+			true
+		);
+		if ( function_exists( 'wp_set_script_translations' ) ) {
+			wp_set_script_translations( 'alma-blocks-integration' );
+
+		}
+
+		return array( 'alma-blocks-integration' );
+	}
 
 	public function get_payment_method_data() {
 
