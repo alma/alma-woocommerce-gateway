@@ -12,7 +12,6 @@
 namespace Alma\Woocommerce\Helpers;
 
 use Alma\Woocommerce\Admin\Helpers\Alma_Check_Legal_Helper;
-use Alma\Woocommerce\Alma_Blocks;
 use Alma\Woocommerce\Alma_Cart_Handler;
 use Alma\Woocommerce\Alma_Payment_Upon_Trigger;
 use Alma\Woocommerce\Alma_Product_Handler;
@@ -20,6 +19,7 @@ use Alma\Woocommerce\Alma_Refund;
 use Alma\Woocommerce\Alma_Settings;
 use Alma\Woocommerce\Alma_Share_Of_Checkout;
 use Alma\Woocommerce\Alma_Shortcodes;
+use Alma\Woocommerce\Blocks\Standard\Alma_Blocks_Standard;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -167,7 +167,7 @@ class Alma_Plugin_Helper {
 			'woocommerce_blocks_payment_method_type_registration',
 			function ( \Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry $payment_method_registry ) {
 				// Register an instance of Alma_Gateway_Blocks
-				$payment_method_registry->register( new Alma_Blocks() );
+				$payment_method_registry->register( new Alma_Blocks_Standard() );
 			}
 		);
 	}

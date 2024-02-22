@@ -615,7 +615,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 		try {
 			$wc_order = $this->order_helper->get_order( $order_id );
 			// We ignore the nonce verification because process_payment is called after validate_fields.
-			$fee_plan = $this->alma_settings->build_fee_plan( 'general_3_0_0'); // phpcs:ignore WordPress.Security.NonceVerification
+			$fee_plan = $this->alma_settings->build_fee_plan( $_POST[ Alma_Constants_Helper::ALMA_FEE_PLAN ] ); // phpcs:ignore WordPress.Security.NonceVerification
 			$payment  = $this->alma_payment_helper->create_payments( $wc_order, $fee_plan );
 
 			// Redirect user to our payment page.
@@ -639,7 +639,6 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 		$error_msg = __( 'There was an error processing your payment.<br>Please try again or contact us if the problem persists.', 'alma-gateway-for-woocommerce' );
 
 		$alma_fee_plan = $this->checkout_helper->get_chosen_alma_fee_plan( $this->id );
-		$alma_fee_plan  = 'general_3_0_0';
 
 		if ( ! $alma_fee_plan ) {
 			wc_add_notice( $error_msg, Alma_Constants_Helper::ERROR );
@@ -647,7 +646,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 			return false;
 		}
 
-		$is_alma_payment = $this->checkout_helper->is_alma_payment_method( 'alma');
+		$is_alma_payment = $this->checkout_helper->is_alma_payment_method( $this->id );
 
 		if ( ! $is_alma_payment ) {
 			wc_add_notice( $error_msg, Alma_Constants_Helper::ERROR );

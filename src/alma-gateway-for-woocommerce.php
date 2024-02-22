@@ -85,7 +85,3 @@ function alma_plugin() {
  * Add the plugin.
  */
 add_action( 'plugins_loaded', 'alma_plugin' );
-
-
-
-

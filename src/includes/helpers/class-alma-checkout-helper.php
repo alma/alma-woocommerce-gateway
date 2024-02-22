@@ -62,7 +62,6 @@ class Alma_Checkout_Helper {
 	 * @return string|null
 	 */
 	protected function check_nonce( $field_name, $nonce_name ) {
-		return 'alma';
 		if ( isset( $_POST[ $field_name ] )
 			&& isset( $_POST[ $nonce_name ] )
 			&& wp_verify_nonce( $_POST[ $nonce_name ], $nonce_name ) ) {
@@ -92,6 +91,18 @@ class Alma_Checkout_Helper {
 	public function render_nonce_field( $id ) {
 		wp_nonce_field( Alma_Constants_Helper::CHECKOUT_NONCE . $id, Alma_Constants_Helper::CHECKOUT_NONCE . $id );
 	}
+
+	/**
+	 * Create the nonce value.
+	 *
+	 * @param int $id
+	 *
+	 * @return false|string
+	 */
+	public function create_nonce_value($id) {
+		return wp_create_nonce( Alma_Constants_Helper::CHECKOUT_NONCE . $id ) ;
+	}
+
 
 
 	/**

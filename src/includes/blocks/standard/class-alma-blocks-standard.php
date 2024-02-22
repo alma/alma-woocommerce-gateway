@@ -1,18 +1,21 @@
 <?php
 /**
- * Alma_Checkout.
+ * Alma_Blocks_Standard.
  *
- * @since 5.0.2
+ * @since
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes
  * @namespace Alma\Woocommerce
  */
 
-namespace Alma\Woocommerce;
+namespace Alma\Woocommerce\Blocks\Standard;
 
+use Alma\Woocommerce\Alma_Logger;
+use Alma\Woocommerce\Alma_Settings;
 use Alma\Woocommerce\Gateways\Standard\Alma_Payment_Gateway_Standard;
 use Alma\Woocommerce\Helpers\Alma_Assets_Helper;
+use Alma\Woocommerce\Helpers\Alma_Checkout_Helper;
 use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
 use Alma\Woocommerce\Helpers\Alma_Gateway_Helper;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
@@ -24,9 +27,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 /**
- * Alma_Blocks
+ * Alma_Blocks_Standard
  */
-class Alma_Blocks extends AbstractPaymentMethodType {
+class Alma_Blocks_Standard extends AbstractPaymentMethodType {
 	/**
 	 * @var Alma_Payment_Gateway_Standard
 	 */
@@ -42,13 +45,25 @@ class Alma_Blocks extends AbstractPaymentMethodType {
 	 */
 	protected $alma_settings;
 
-	protected $name = 'alma';// your payment gateway name
+	/**
+	 * @var Alma_Checkout_Helper
+	 */
+	protected $checkout_helper;
+
+
+	/**
+	 * Paiement Gateway name
+	 *
+	 * @var string
+	 */
+	protected $name = Alma_Constants_Helper::GATEWAY_ID;
 
 	public function initialize() {
 		$this->settings       = get_option( Alma_Settings::OPTIONS_KEY, array() );
 		$this->gateway        = new Alma_Payment_Gateway_Standard();
 		$this->gateway_helper = new Alma_Gateway_Helper();
 		$this->alma_settings       = new Alma_Settings();
+		$this->checkout_helper       = new Alma_Checkout_Helper();
 
 	}
 
@@ -57,42 +72,35 @@ class Alma_Blocks extends AbstractPaymentMethodType {
 	}
 
 	public function get_payment_method_script_handles() {
+		$asset_path   = Alma_Assets_Helper::get_asset_build_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_BLOCK_PHP );
 
-		$alma_checkout_js = Alma_Assets_Helper::get_asset_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_BLOCK_JS );
-
+		if ( file_exists( $asset_path ) ) {
+			 require $asset_path;
+		}
 		wp_register_script(
 			'alma-blocks-integration',
-			$alma_checkout_js,
+			Alma_Assets_Helper::get_asset_build_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_BLOCK_JS ),
 			array(
 				'wc-blocks-registry',
 				'wc-settings',
 				'wp-element',
 				'wp-html-entities',
-				'wp-i18n',
-				'jquery',
-				'jquery-ui-core',
+				'wp-i18n'
 			),
 			null,
 			true
 		);
-
 		if ( function_exists( 'wp_set_script_translations' ) ) {
 			wp_set_script_translations( 'alma-blocks-integration' );
 
 		}
-		wp_localize_script(
-			'alma-blocks-integrations',
-			'alma_settings',
-			array(
-				'title'       => $this->gateway->get_title(),
-				'description' => $this->gateway->get_description(),
-			)
-		);
 
 		return array( 'alma-blocks-integration' );
 	}
 
 	public function get_payment_method_data() {
+		$nonce_value = $this->checkout_helper->create_nonce_value( $this->gateway->id  );
+
 		// We get the eligibilites.
 		$eligibilities  = $this->alma_settings->get_cart_eligibilities();
 		$eligible_plans = $this->alma_settings->get_eligible_plans_keys_for_cart( $eligibilities );
@@ -102,8 +110,11 @@ class Alma_Blocks extends AbstractPaymentMethodType {
 		return array(
 			'title'       => $this->gateway_helper->get_alma_gateway_title( $this->gateway->id ),
 			'description' => $this->gateway_helper->get_alma_gateway_description( $this->gateway->id ),
+			'gateway_name' => $this->gateway->id,
 			'default_plan' => $default_plan,
-			'eligibilities' => $eligibilities
+			'eligibilities' => $eligibilities,
+			'nonce_value' => $nonce_value,
+			'label_button' =>  __( 'Pay With Alma', 'alma-gateway-for-woocommerce' )
 		);
 	}
 }

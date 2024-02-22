@@ -33,6 +33,17 @@ class Alma_Assets_Helper {
 	}
 
 	/**
+	 * Get asset url.
+	 *
+	 * @param string $path Path to asset relative to the plugin's assets directory.
+	 *
+	 * @return string URL to given asset
+	 */
+	public static function get_asset_build_url( $path ) {
+		return ALMA_PLUGIN_URL . 'build/' . $path;
+	}
+
+	/**
 	 * Get admin logs url.
 	 *
 	 * @return string
