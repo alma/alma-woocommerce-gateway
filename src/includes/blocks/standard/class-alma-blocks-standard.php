@@ -40,7 +40,8 @@ class Alma_Blocks_Standard extends Alma_Blocks {
 	protected $name = Alma_Constants_Helper::GATEWAY_ID;
 
 	public function initialize() {
-        parent::initialize();;
-		$this->gateway        = new Alma_Payment_Gateway_Standard();
+		parent::initialize();
+
+		$this->gateway = new Alma_Payment_Gateway_Standard();
 	}
 }

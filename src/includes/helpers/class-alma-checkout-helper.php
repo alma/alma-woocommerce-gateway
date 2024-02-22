@@ -99,8 +99,8 @@ class Alma_Checkout_Helper {
 	 *
 	 * @return false|string
 	 */
-	public function create_nonce_value($id) {
-		return wp_create_nonce( Alma_Constants_Helper::CHECKOUT_NONCE . $id ) ;
+	public function create_nonce_value( $id ) {
+		return wp_create_nonce( Alma_Constants_Helper::CHECKOUT_NONCE . $id );
 	}
 
 

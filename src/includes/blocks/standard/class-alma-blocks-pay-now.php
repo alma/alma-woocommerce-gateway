@@ -39,8 +39,8 @@ class Alma_Blocks_Pay_Now extends Alma_Blocks {
 	protected $name = Alma_Constants_Helper::GATEWAY_ID_PAY_NOW;
 
 	public function initialize() {
-        parent::initialize();
+		parent::initialize();
 
-		$this->gateway        = new Alma_Payment_Gateway_Pay_Now();
+		$this->gateway = new Alma_Payment_Gateway_Pay_Now();
 	}
 }

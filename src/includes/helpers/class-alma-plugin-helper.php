@@ -92,6 +92,7 @@ class Alma_Plugin_Helper {
 			if (
 				! empty( $settings->settings['display_in_page'] )
 				&& 'yes' === $settings->settings['display_in_page']
+				&& ! $this->has_woocommerce_blocks()
 			) {
 				$this->add_in_page_actions();
 			}
@@ -155,15 +156,19 @@ class Alma_Plugin_Helper {
 		$share_of_checkout = new Alma_Share_Of_Checkout();
 		add_action( 'init', array( $share_of_checkout, 'send_soc_data' ) );
 
-		add_action( 'woocommerce_blocks_loaded', array( $this, 'alma_register_order_approval_payment_method_type' ) );
+		if ( $this->has_woocommerce_blocks() ) {
+			add_action(
+				'woocommerce_blocks_loaded',
+				array(
+					$this,
+					'alma_register_order_approval_payment_method_type',
+				)
+			);
+		}
 	}
 
 
 	public function alma_register_order_approval_payment_method_type() {
-		// Check if the required class exists
-		if ( ! class_exists( '\Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' ) ) {
-			return;
-		}
 
 		// Hook the registration function to the 'woocommerce_blocks_payment_method_type_registration' action
 		add_action(
@@ -172,10 +177,20 @@ class Alma_Plugin_Helper {
 				// Register an instance of Alma_Gateway_Blocks
 				$payment_method_registry->register( new Alma_Blocks_Standard() );
 				$payment_method_registry->register( new Alma_Blocks_Pay_Now() );
-                $payment_method_registry->register( new Alma_Blocks_Pay_Later() );
-                $payment_method_registry->register( new Alma_Blocks_Pay_More_Than_Four() );
+				$payment_method_registry->register( new Alma_Blocks_Pay_Later() );
+				$payment_method_registry->register( new Alma_Blocks_Pay_More_Than_Four() );
+				$payment_method_registry->register( new \Alma\Woocommerce\Blocks\Inpage\Alma_Blocks_Pay_Now() );
 			}
 		);
+	}
+
+	public function has_woocommerce_blocks() {
+		// Check if the required class exists
+		if ( ! class_exists( '\Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' ) ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -184,16 +199,20 @@ class Alma_Plugin_Helper {
 	 * @return void
 	 */
 	public function wp_enqueue_scripts() {
-		if ( is_checkout() ) {
+		if (
+			is_checkout()
+		) {
 			$settings = new Alma_Settings();
 
-			$this->enqueue_checkout_scripts();
+			if ( ! $this->has_woocommerce_blocks() ) {
+				$this->enqueue_checkout_scripts();
 
-			if (
-				! empty( $settings->settings['display_in_page'] )
-				&& 'yes' === $settings->settings['display_in_page']
-			) {
-				$this->enqueue_in_page_scripts();
+				if (
+					! empty( $settings->settings['display_in_page'] )
+					&& 'yes' === $settings->settings['display_in_page']
+				) {
+					$this->enqueue_in_page_scripts();
+				}
 			}
 		}
 	}

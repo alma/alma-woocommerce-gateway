@@ -19,87 +19,61 @@ use Alma\Woocommerce\Helpers\Alma_Assets_Helper;
 use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
-    die( 'Not allowed' ); // Exit if accessed directly.
+	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
 /**
  * Alma_Blocks
  */
-class Alma_Blocks extends AbstractPaymentMethodType
-{
-    /**
-     * @var Alma_Settings
-     */
-    protected $alma_settings;
+class Alma_Blocks extends AbstractPaymentMethodType {
+
+	/**
+	 * @var Alma_Settings
+	 */
+	protected $alma_settings;
 
 
-    /**
-     * @var Alma_Gateway_Helper
-     */
-    protected $gateway_helper;
+	/**
+	 * @var Alma_Gateway_Helper
+	 */
+	protected $gateway_helper;
 
-    /**
-     * @var Alma_Checkout_Helper
-     */
-    protected $checkout_helper;
+	/**
+	 * @var Alma_Checkout_Helper
+	 */
+	protected $checkout_helper;
 
-    public function initialize()
-    {
-        $this->settings       = get_option( Alma_Settings::OPTIONS_KEY, array() );
-        $this->gateway_helper = new Alma_Gateway_Helper();
-        $this->alma_settings       = new Alma_Settings();
-        $this->checkout_helper       = new Alma_Checkout_Helper();
-    }
+	public function initialize() {
+		$this->settings        = get_option( Alma_Settings::OPTIONS_KEY, array() );
+		$this->gateway_helper  = new Alma_Gateway_Helper();
+		$this->alma_settings   = new Alma_Settings();
+		$this->checkout_helper = new Alma_Checkout_Helper();
+	}
 
-    public function is_active() {
-        return $this->gateway->is_available();
-    }
+	public function is_active() {
+		return $this->gateway->is_available();
+	}
 
-    public function get_payment_method_script_handles() {
-        $asset_path   = Alma_Assets_Helper::get_asset_build_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_BLOCK_PHP );
 
-        if ( file_exists( $asset_path ) ) {
-            require $asset_path;
-        }
-        wp_register_script(
-            'alma-blocks-integration',
-            Alma_Assets_Helper::get_asset_build_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_BLOCK_JS ),
-            array(
-                'wc-blocks-registry',
-                'wc-settings',
-                'wp-element',
-                'wp-html-entities',
-                'wp-i18n'
-            ),
-            null,
-            true
-        );
-        if ( function_exists( 'wp_set_script_translations' ) ) {
-            wp_set_script_translations( 'alma-blocks-integration' );
+	public function get_payment_method_data() {
 
-        }
+		$nonce_value = $this->checkout_helper->create_nonce_value( $this->gateway->id );
 
-        return array( 'alma-blocks-integration' );
-    }
+		// We get the eligibilites.
+		$eligibilities  = $this->alma_settings->get_cart_eligibilities();
+		$eligible_plans = $this->alma_settings->get_eligible_plans_keys_for_cart( $eligibilities );
 
-    public function get_payment_method_data() {
+		$default_plan = $this->gateway_helper->get_default_plan( $eligible_plans );
 
-        $nonce_value = $this->checkout_helper->create_nonce_value( $this->gateway->id  );
-
-        // We get the eligibilites.
-        $eligibilities  = $this->alma_settings->get_cart_eligibilities();
-        $eligible_plans = $this->alma_settings->get_eligible_plans_keys_for_cart( $eligibilities );
-
-        $default_plan = $this->gateway_helper->get_default_plan( $eligible_plans );
-
-        return array(
-            'title'       => $this->gateway_helper->get_alma_gateway_title( $this->gateway->id ),
-            'description' => $this->gateway_helper->get_alma_gateway_description( $this->gateway->id ),
-            'gateway_name' => $this->gateway->id,
-            'default_plan' => $default_plan,
-            'eligibilities' => $eligibilities,
-            'nonce_value' => $nonce_value,
-            'label_button' =>  __( 'Pay With Alma', 'alma-gateway-for-woocommerce' )
-        );
-    }
+		return array(
+			'title'         => $this->gateway_helper->get_alma_gateway_title( $this->gateway->id ),
+			'description'   => $this->gateway_helper->get_alma_gateway_description( $this->gateway->id ),
+			'gateway_name'  => $this->gateway->id,
+			'default_plan'  => $default_plan,
+			'eligibilities' => $eligibilities,
+			'nonce_value'   => $nonce_value,
+			'label_button'  => __( 'Pay With Alma', 'alma-gateway-for-woocommerce' ),
+			'is_in_page'    => $this->gateway_helper->is_in_page_gateway( $this->gateway->id ),
+		);
+	}
 }

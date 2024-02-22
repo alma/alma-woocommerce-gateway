@@ -156,6 +156,13 @@ class Alma_Gateway_Helper {
 		return 'null';
 	}
 
+	public function is_in_page_gateway( $id ) {
+		if ( in_array( $id, Alma_Constants_Helper::$gateways_in_page_ids ) ) {
+			return true;
+		}
+
+		return false;
+	}
 	/**
 	 * Get the title of the Alma Gateway.
 	 *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Alma_Blocks_Standard.
+ * Alma_Blocks_Pay_Now.
  *
  * @since
  *
@@ -9,10 +9,10 @@
  * @namespace Alma\Woocommerce
  */
 
-namespace Alma\Woocommerce\Blocks\Standard;
+namespace Alma\Woocommerce\Blocks\Inpage;
 
 use Alma\Woocommerce\Blocks\Alma_Blocks;
-use Alma\Woocommerce\Gateways\Standard\Alma_Payment_Gateway_Pay_Later;
+use Alma\Woocommerce\Gateways\Inpage\Alma_Payment_Gateway_Pay_Now;
 use Alma\Woocommerce\Helpers\Alma_Assets_Helper;
 use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
 
@@ -23,14 +23,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 /**
- * Alma_Blocks_Standard
+ * Alma_Blocks_Pay_Now
  */
-class Alma_Blocks_Pay_Later extends Alma_Blocks {
+class Alma_Blocks_Pay_Now extends Alma_Blocks {
 	/**
-	 * @var Alma_Payment_Gateway_Pay_Later
+	 * @var Alma_Payment_Gateway_Pay_Now
 	 */
 	protected $gateway;
-
 
 
 	/**
@@ -38,25 +37,25 @@ class Alma_Blocks_Pay_Later extends Alma_Blocks {
 	 *
 	 * @var string
 	 */
-	protected $name = Alma_Constants_Helper::GATEWAY_ID_PAY_LATER;
+	protected $name = Alma_Constants_Helper::GATEWAY_ID_IN_PAGE_PAY_NOW;
 
 	public function initialize() {
 		parent::initialize();
 
-		$this->gateway = new Alma_Payment_Gateway_Pay_Later();
+		$this->gateway = new Alma_Payment_Gateway_Pay_Now();
 	}
 
 	public function get_payment_method_script_handles() {
-		if ( ! wp_script_is( 'alma-blocks-integration-pay-later' ) ) {
-			$asset_path = Alma_Assets_Helper::get_asset_build_url( 'alma-checkout-blocks-pay-later.asset.php' );
+		if ( ! wp_script_is( 'alma-blocks-integration-ip-pay-now' ) ) {
+			$asset_path = Alma_Assets_Helper::get_asset_build_url( 'alma-checkout-blocks-ip-pay-now.asset.php' );
 
 			if ( file_exists( $asset_path ) ) {
 				require $asset_path;
 			}
 
 			wp_register_script(
-				'alma-blocks-integration-pay-later',
-				Alma_Assets_Helper::get_asset_build_url( 'alma-checkout-blocks-pay-later.js' ),
+				'alma-blocks-integration-ip-pay-now',
+				Alma_Assets_Helper::get_asset_build_url( 'alma-checkout-blocks-ip-pay-now.js' ),
 				array(
 					'wc-blocks-registry',
 					'wc-settings',
@@ -68,11 +67,11 @@ class Alma_Blocks_Pay_Later extends Alma_Blocks {
 				true
 			);
 			if ( function_exists( 'wp_set_script_translations' ) ) {
-				wp_set_script_translations( 'alma-blocks-integration-pay-later' );
+				wp_set_script_translations( 'alma-blocks-integration-ip-pay-now' );
 
 			}
 		}
 
-		return array( 'alma-blocks-integration-pay-later' );
+		return array( 'alma-blocks-integration-ip-pay-now' );
 	}
 }
