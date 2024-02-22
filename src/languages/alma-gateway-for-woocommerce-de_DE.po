@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 77e083b1cd468d7c2202d1ff3d20e024\n"
-"POT-Creation-Date: 2024-02-19 10:23+0100\n"
-"PO-Revision-Date: 2024-02-19 09:24\n"
+"POT-Creation-Date: 2024-02-22 09:47+0100\n"
+"PO-Revision-Date: 2024-02-22 08:48\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
@@ -474,7 +474,7 @@ msgstr "Die Bestellung wird von %svollständig erstattet."
 msgid "Alma full refund error : %s."
 msgstr "Alma volle Erstattung Fehler : %s."
 
-#: includes/admin/helpers/class-alma-refund-helper.php:235
+#: includes/admin/helpers/class-alma-refund-helper.php:237
 msgid "Amount cannot be equal to 0 to refund with Alma."
 msgstr "Der Betrag kann nicht gleich 0 sein, um mit Alma zu erstatten."
 
