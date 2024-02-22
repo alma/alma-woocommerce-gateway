@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v5.2.0
+------
+* feature : HPOS compatibility
+* feat: Update translations
+* fix: widget XSS
+
 v5.1.4
 ------
 * feat: compatibility Woocommerce 8.2.1
