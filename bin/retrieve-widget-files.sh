@@ -20,8 +20,8 @@ GIT_WC_RAW_DIR="${GIT_WC_DIST_DIR}/raw"
 
 RAW_FILES="
 css/widgets.css
-js/widgets.umd.js
-js/widgets.umd.js.map
+js/widgets-wc.umd.js
+js/widgets-wc.umd.js.map
 "
 #}}}
 

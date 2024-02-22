@@ -1700,7 +1700,7 @@
       }
 
       function polyfillClassList(ele) {
-        if (!ele || !('innerHTML' in ele)) throw TypeError('Illegal invocation');
+        if (!ele || !('innerText' in ele)) throw TypeError('Illegal invocation');
         ele.detachEvent('onpropertychange', whenPropChanges); // prevent duplicate handler infinite loop
 
         allowTokenListConstruction = 1;
@@ -6868,21 +6868,21 @@
   	"credit-features.credit-cost-display": "{creditCost} (gemiddeld rente percentage {taegPercentage})",
   	"credit-features.information": "Een lening is bindend en moet worden terugbetaald. Ga na of je het kunt terugbetalen voordat je jezelf vastlegt.",
   	"credit-features.total-credit-cost": "Waarvan kredietkosten",
-  	"eligibility-modal.bullet-1": "Kies <strong>Alma</strong> bij het afrekenen om de eerste termijn te voldoen via jouw gewenste betaalmethode.",
-  	"eligibility-modal.bullet-2": "Laat ons je begeleiden om de betaling binnen <strong>1 minuut </strong> te valideren zonder dat je een account hoeft aan te maken.",
+  	"eligibility-modal.bullet-1": "Kies <strong>Alma</strong> bij het afrekenen om de eerste termijnbetaling te voldoen. Dit kan gemakkelijk via jouw favoriete betaalmethode.",
+  	"eligibility-modal.bullet-2": "Betaal gemakkelijk <strong>binnen 1 minuut </strong>. Je hebt hier geen account voor nodig.",
   	"eligibility-modal.bullet-3": "<strong>Behoudt de controle </strong> en bepaal je eigen tempo. Bij Alma schuif je de deadlines gemakkelijk vooruit of achteruit. Zonder bijkomende kosten.",
   	"eligibility-modal.no-eligibility": "Oeps, het lijkt erop dat de simulatie niet werkte.",
-  	"eligibility-modal.p1x-bullet-1": "Kies <strong>Alma - Betaal nu</strong> bij het afrekenen om de eerste termijn te voldoen via jouw gewenste betaalmethode.",
+  	"eligibility-modal.p1x-bullet-1": "Kies <strong>Alma - Betaal nu</strong> bij het afrekenen om de eerste termijnbetaling te voldoen. Dit kan gemakkelijk via jouw favoriete betaalmethode.",
   	"eligibility-modal.p1x-bullet-2": "Vul jouw <strong>gegevens </strong> in",
   	"eligibility-modal.p1x-bullet-3": "<strong>De bevestiging </strong> van jouw betaling is onmiddellijk!",
-  	"eligibility-modal.title-deferred-plan": "Betaal in rentevrije termijnen bij Alma - zonder BKR of CKP registratie.",
-  	"eligibility-modal.title-normal": "Betaal in rentevrije termijnen bij Alma - zonder BKR of CKP registratie.",
+  	"eligibility-modal.title-deferred-plan": "Betaal in termijnen bij Alma - helemaal rentevrij.",
+  	"eligibility-modal.title-normal": "Betaal in termijnen bij Alma - helemaal rentevrij.",
   	"eligibility-modal.title-pay-now": "Betaal met iDEAL of per creditcard bij Alma.",
   	"installments.today": "Vandaag",
   	"installments.total-amount": "Totaal",
   	"installments.total-fees": "Waarvan kosten (incl. BTW)",
   	"payment-plan-strings.day-abbreviation": "D{deferredDays}",
-  	"payment-plan-strings.default-message": "Betaal in rentevrije termijnen bij Alma - zonder BKR of CKP registratie",
+  	"payment-plan-strings.default-message": "Betaal in termijnen bij Alma - helemaal rentevrij",
   	"payment-plan-strings.deferred": "{totalAmount} te betalen op {dueDate}",
   	"payment-plan-strings.ineligible-greater-than-max": "Tot {maxAmount}",
   	"payment-plan-strings.ineligible-lower-than-min": "Vanaf {minAmount}",
@@ -7398,7 +7398,7 @@
   }
 
   var D = {};
-  "children dangerouslySetInnerHTML defaultValue defaultChecked innerHTML suppressContentEditableWarning suppressHydrationWarning style".split(" ").forEach(function (a) {
+  "children dangerouslySetInnerHTML defaultValue defaultChecked innerText suppressContentEditableWarning suppressHydrationWarning style".split(" ").forEach(function (a) {
     D[a] = new B(a, 0, !1, a, null, !1, !1);
   });
   [["acceptCharset", "accept-charset"], ["className", "class"], ["htmlFor", "for"], ["httpEquiv", "http-equiv"]].forEach(function (a) {
@@ -7932,9 +7932,9 @@
       });
     } : a;
   }(function (a, b) {
-    if (a.namespaceURI !== kb.svg || "innerHTML" in a) a.innerHTML = b;else {
+    if (a.namespaceURI !== kb.svg || "innerText" in a) a.innerText = b;else {
       nb = nb || document.createElement("div");
-      nb.innerHTML = "<svg>" + b.valueOf().toString() + "</svg>";
+      nb.innerText = "<svg>" + b.valueOf().toString() + "</svg>";
 
       for (b = nb.firstChild; a.firstChild;) a.removeChild(a.firstChild);
 
@@ -12217,7 +12217,7 @@
           } else {
             g = 9 === e.nodeType ? e : e.ownerDocument;
             a === kb.html && (a = lb(c));
-            a === kb.html ? "script" === c ? (a = g.createElement("div"), a.innerHTML = "<script>\x3c/script>", a = a.removeChild(a.firstChild)) : "string" === typeof d.is ? a = g.createElement(c, {
+            a === kb.html ? "script" === c ? (a = g.createElement("div"), a.innerText = "<script>\x3c/script>", a = a.removeChild(a.firstChild)) : "string" === typeof d.is ? a = g.createElement(c, {
               is: d.is
             }) : (a = g.createElement(c), "select" === c && (g = a, d.multiple ? g.multiple = !0 : d.size && (g.size = d.size))) : a = g.createElementNS(a, c);
             a[wf] = b;
@@ -15073,7 +15073,7 @@
           shipping_address: shipping_address
         }, {
           Authorization: "Alma-Merchant-Auth " + merchantId,
-          'X-Alma-Agent': "Alma Widget/" + "v3.3.8"
+          'X-Alma-Agent': "Alma Widget/" + "v3.3.10"
         }).then(function (res) {
           setEligibility(res);
           setStatus(apiStatus.SUCCESS);
@@ -15518,7 +15518,7 @@
     function hidesContents(element) {
       var zeroSize = element.offsetWidth <= 0 && element.offsetHeight <= 0; // If the node is empty, this is good enough
 
-      if (zeroSize && !element.innerHTML) return true;
+      if (zeroSize && !element.innerText) return true;
 
       try {
         // Otherwise we need to check some styles
@@ -20914,4 +20914,4 @@
   })(exports.Utils || (exports.Utils = {}));
 
 })));
-//# sourceMappingURL=widgets.umd.js.map
+//# sourceMappingURL=widgets-wc.umd.js.map
