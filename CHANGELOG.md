@@ -1,6 +1,7 @@
 Changelog
 =========
 
+* feature : HPOS compatibility
 * feat: Update translations
 * fix: widget XSS
 

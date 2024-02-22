@@ -86,6 +86,19 @@ function alma_plugin() {
  */
 add_action( 'plugins_loaded', 'alma_plugin' );
 
+add_action(
+	'before_woocommerce_init',
+	function() {
+		if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+			/**
+			 * Skip WC class check.
+			 *
+			 * @psalm-suppress UndefinedClass
+			 */
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+		}
+	}
+);
 
 
 

@@ -273,7 +273,7 @@ class Alma_Payment_Helper {
 	 */
 	public function update_order_post_meta_if_deferred_trigger( $payment, $wc_order ) {
 		if ( $payment->deferred_trigger ) {
-			update_post_meta( $wc_order->get_id(), 'alma_payment_upon_trigger_enabled', true );
+			$wc_order->update_meta_data( 'alma_payment_upon_trigger_enabled', true );
 		}
 	}
 
