@@ -108,4 +108,8 @@ class Alma_Payment_Gateway_Pay_Now extends Alma_Payment_Gateway {
 
 		wp_localize_script( 'alma-checkout-in-page', 'alma_iframe_params', $alma_args );
 	}
+
+	public function validate_fields() {
+		return false;
+	}
 } // end \Alma_Pay_Gateway class

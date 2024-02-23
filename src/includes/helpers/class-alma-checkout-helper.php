@@ -114,6 +114,7 @@ class Alma_Checkout_Helper {
 	 * @return bool
 	 */
 	public function is_alma_payment_method( $id ) {
+
 		$payment_method = $this->check_nonce( Alma_Constants_Helper::PAYMENT_METHOD, Alma_Constants_Helper::CHECKOUT_NONCE . $id );
 
 		return $payment_method && substr( $payment_method, 0, 4 ) === 'alma';

@@ -92,7 +92,6 @@ class Alma_Plugin_Helper {
 			if (
 				! empty( $settings->settings['display_in_page'] )
 				&& 'yes' === $settings->settings['display_in_page']
-				&& ! $this->has_woocommerce_blocks()
 			) {
 				$this->add_in_page_actions();
 			}

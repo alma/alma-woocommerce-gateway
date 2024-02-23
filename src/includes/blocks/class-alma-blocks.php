@@ -12,6 +12,7 @@
 namespace Alma\Woocommerce\Blocks;
 
 use Alma\Woocommerce\Alma_Settings;
+use Alma\Woocommerce\Helpers\Alma_Cart_Helper;
 use Alma\Woocommerce\Helpers\Alma_Checkout_Helper;
 use Alma\Woocommerce\Helpers\Alma_Gateway_Helper;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
@@ -43,11 +44,17 @@ class Alma_Blocks extends AbstractPaymentMethodType {
 	 */
 	protected $checkout_helper;
 
+	/**
+	 * @var Alma_Cart_Helper
+	 */
+	protected $cart_helper;
+
 	public function initialize() {
 		$this->settings        = get_option( Alma_Settings::OPTIONS_KEY, array() );
 		$this->gateway_helper  = new Alma_Gateway_Helper();
 		$this->alma_settings   = new Alma_Settings();
 		$this->checkout_helper = new Alma_Checkout_Helper();
+		$this->cart_helper = new Alma_Cart_Helper();
 	}
 
 	public function is_active() {
@@ -64,6 +71,8 @@ class Alma_Blocks extends AbstractPaymentMethodType {
 			'alma-blocks-integration',
 			Alma_Assets_Helper::get_asset_build_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_BLOCK_JS ),
 			array(
+				'jquery',
+				'jquery-ui-core',
 				'wc-blocks-registry',
 				'wc-settings',
 				'wp-element',
@@ -78,6 +87,13 @@ class Alma_Blocks extends AbstractPaymentMethodType {
 
 		}
 
+		if($this->gateway_helper->is_in_page_gateway( $this->gateway->id )) {
+			wp_localize_script(
+				'alma-blocks-integration',
+				'ajax_object',
+				array( 'ajax_url' => admin_url( 'admin-ajax.php' ) )
+			);
+		}
 		return array( 'alma-blocks-integration' );
 	}
 
@@ -91,7 +107,9 @@ class Alma_Blocks extends AbstractPaymentMethodType {
 
 		$default_plan = $this->gateway_helper->get_default_plan( $eligible_plans );
 
-		return array(
+		$is_in_page = $this->gateway_helper->is_in_page_gateway( $this->gateway->id );
+
+		$data =  array(
 			'title'         => $this->gateway_helper->get_alma_gateway_title( $this->gateway->id ),
 			'description'   => $this->gateway_helper->get_alma_gateway_description( $this->gateway->id ),
 			'gateway_name'  => $this->gateway->id,
@@ -99,7 +117,16 @@ class Alma_Blocks extends AbstractPaymentMethodType {
 			'eligibilities' => $eligibilities,
 			'nonce_value'   => $nonce_value,
 			'label_button'  => __( 'Pay With Alma', 'alma-gateway-for-woocommerce' ),
-			'is_in_page'    => $this->gateway_helper->is_in_page_gateway( $this->gateway->id ),
+			'is_in_page'    => $is_in_page,
 		);
+
+		if($is_in_page) {
+			$data['merchant_id']     = $this->alma_settings->get_active_merchant_id();
+			$data['amount_in_cents'] = $this->cart_helper->get_total_in_cents();
+			$data['environment']     = strtoupper( $this->alma_settings->get_environment() );
+			$data['locale']          = strtoupper( substr( get_locale(), 0, 2 ) );
+		}
+
+		return $data;
 	}
 }
