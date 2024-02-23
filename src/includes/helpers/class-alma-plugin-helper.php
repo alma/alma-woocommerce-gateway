@@ -167,13 +167,18 @@ class Alma_Plugin_Helper {
 	}
 
 
+	/**
+	 * Register the blocks.
+	 *
+	 * @return void
+	 */
 	public function alma_register_order_approval_payment_method_type() {
 
-		// Hook the registration function to the 'woocommerce_blocks_payment_method_type_registration' action
+		// Hook the registration function to the 'woocommerce_blocks_payment_method_type_registration' action.
 		add_action(
 			'woocommerce_blocks_payment_method_type_registration',
 			function ( \Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry $payment_method_registry ) {
-				// Register an instance of Alma_Gateway_Blocks
+				// Register an instance of Alma_Gateway_Blocks.
 				$payment_method_registry->register( new Alma_Blocks_Standard() );
 				$payment_method_registry->register( new Alma_Blocks_Pay_Now() );
 				$payment_method_registry->register( new Alma_Blocks_Pay_Later() );
@@ -183,8 +188,13 @@ class Alma_Plugin_Helper {
 		);
 	}
 
+	/**
+	 * Is woocommerce block activated ?
+	 *
+	 * @return bool
+	 */
 	public function has_woocommerce_blocks() {
-		// Check if the required class exists
+		// Check if the required class exists.
 		if ( ! class_exists( '\Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' ) ) {
 			return false;
 		}
@@ -238,12 +248,18 @@ class Alma_Plugin_Helper {
 	protected function enqueue_in_page_scripts() {
 		wp_enqueue_script( 'alma-checkout-in-page-cdn', Alma_Constants_Helper::ALMA_PATH_CHECKOUT_CDN_IN_PAGE_JS, array(), ALMA_VERSION, true );
 
-		if($this->add_in_page_actions()) {
+		if ( $this->add_in_page_actions() ) {
 			$alma_checkout_in_page_js = Alma_Assets_Helper::get_asset_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_IN_PAGE_JS );
-			wp_enqueue_script( 'alma-checkout-in-page', $alma_checkout_in_page_js, array(
-				'jquery',
-				'jquery-ui-core'
-			), ALMA_VERSION, true );
+			wp_enqueue_script(
+				'alma-checkout-in-page',
+				$alma_checkout_in_page_js,
+				array(
+					'jquery',
+					'jquery-ui-core',
+				),
+				ALMA_VERSION,
+				true
+			);
 
 			wp_localize_script(
 				'alma-checkout-in-page',

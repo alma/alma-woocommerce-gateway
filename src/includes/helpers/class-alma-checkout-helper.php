@@ -95,15 +95,13 @@ class Alma_Checkout_Helper {
 	/**
 	 * Create the nonce value.
 	 *
-	 * @param int $id
+	 * @param int $id The gateway id.
 	 *
 	 * @return false|string
 	 */
 	public function create_nonce_value( $id ) {
 		return wp_create_nonce( Alma_Constants_Helper::CHECKOUT_NONCE . $id );
 	}
-
-
 
 	/**
 	 * Check if payment_method is set in POST and is an Alma payment method

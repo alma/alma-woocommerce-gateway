@@ -27,10 +27,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Alma_Checkout extends \WC_Checkout {
 
 	/**
+	 * The plugin helper.
+	 *
 	 * @var Alma_Plugin_Helper
 	 */
 	protected $plugin_helper;
 
+	/**
+	 * Construct.
+	 */
 	public function __construct() {
 		$this->plugin_helper = new Alma_Plugin_Helper();
 	}
@@ -44,21 +49,21 @@ class Alma_Checkout extends \WC_Checkout {
 	 */
 	public function process_checkout() {
 
-		if(
-			isset($_POST['is_woo_block'])
-			&& $_POST['is_woo_block']
+		if (
+			isset( $_POST['is_woo_block'] )
+			&& $_POST['is_woo_block'] // phpcs:ignore WordPress.Security.NonceVerification
 		) {
-			foreach ( $_POST['fields']['billing']  as $key => $value) {
-				$_POST['billing_' . $key]    = $value;
-				$_REQUEST[ 'billing_' . $key] = $value;
+			foreach ( $_POST['fields']['billing']  as $key => $value ) { // phpcs:ignore WordPress.Security.NonceVerification
+				$_POST[ 'billing_' . $key ]    = $value;
+				$_REQUEST[ 'billing_' . $key ] = $value;
 			}
-			unset($_POST['fields']['billing']);
+			unset( $_POST['fields']['billing'] );
 
-			foreach ( $_POST['fields']  as $key => $value) {
-				$_POST[ $key]    = $value;
-				$_REQUEST[$key] = $value;
+			foreach ( $_POST['fields']  as $key => $value ) { // phpcs:ignore WordPress.Security.NonceVerification
+				$_POST[ $key ]    = $value;
+				$_REQUEST[ $key ] = $value;
 			}
-			unset($_POST['fields']);
+			unset( $_POST['fields'] );
 		} else {
 			foreach ( $_POST['fields'] as $values ) { // phpcs:ignore WordPress.Security.NonceVerification
 				// Set each key / value pairs in an array.
@@ -74,7 +79,7 @@ class Alma_Checkout extends \WC_Checkout {
 			throw new Alma_Exception( __( 'We were unable to process your order, please try again.', 'alma-gateway-for-woocommerce' ) );
 		}
 
-		if(! $this->plugin_helper->has_woocommerce_blocks()) {
+		if ( ! $this->plugin_helper->has_woocommerce_blocks() ) {
 			$nonce_value = wc_get_var( $_POST['woocommerce-process-checkout-nonce'], wc_get_var( $_POST['_wpnonce'], '' ) ); // @codingStandardsIgnoreLine.
 
 			if (
