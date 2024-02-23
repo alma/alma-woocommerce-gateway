@@ -40,7 +40,7 @@ import {useEffect} from '@wordpress/element';
 
                             const paymentMethodData = {
 									[nonceKey]: `${settings.nonce_value}`,
-									alma_fee_plan: 'general_1_0_0',
+									alma_fee_plan: 'general_10_0_0',
 									payment_method: settings.gateway_name,
 								}
 
