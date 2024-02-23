@@ -15,6 +15,8 @@ import {useEffect} from '@wordpress/element';
 	var inPage         = undefined;
 	var hasInPage      = false;
 	var billingAddress = {};
+	var shippingAddress = {};
+	var customerNote = '';
 
 	for (const gateway in gateways) {
 		const settings = window.wc.wcSettings.getSetting( `${gateways[gateway]}_data`, null );
@@ -24,9 +26,9 @@ import {useEffect} from '@wordpress/element';
 		}
 		const label   = window.wp.htmlEntities.decodeEntities( settings.title );
 		const Content = (props) => {
+			const {eventRegistration, emitResponse} = props;
 
 			if ( ! settings.is_in_page) {
-				const {eventRegistration, emitResponse} = props;
 				const {onPaymentProcessing}             = eventRegistration;
 				useEffect(
 					() => {
@@ -64,9 +66,16 @@ import {useEffect} from '@wordpress/element';
 
 				return settings.description;
 			}
+
 			console.log( props )
 			// removeEventListener('onCheckoutBeforeProcessing')
 			billingAddress = props.billing.billingAddress
+
+			if (props.shippingData.shippingAddress) {
+				shippingAddress = props.shippingData.shippingAddress
+			}
+
+			// customerNote = props.customerNote
 
 			return <div id='alma-inpage-alma_in_page_pay_now'></div>; // phpcs:ignore
 		};
@@ -139,10 +148,13 @@ import {useEffect} from '@wordpress/element';
 				(event) => {
 					if (isAlmaInPageChecked()) {
 						event.preventDefault();
+						// customer_note + shipping_address +
 						var data = {
 							'action': 'alma_do_checkout_in_page',
 							'fields': {
 								'billing': billingAddress,
+								'shipping': shippingAddress,
+								'customer_note': customerNote,
 								'alma_fee_plan': 'general_1_0_0',
 								'alma_checkout_noncealma_in_page_pay_now': settingsInPage.nonce_value,
 								'payment_method':'alma_in_page_pay_now',
@@ -154,7 +166,6 @@ import {useEffect} from '@wordpress/element';
 							'is_woo_block' : true
 						};
 
-						console.log( data );
 						// add_loader();
 
 						// Create the payment id and order.
