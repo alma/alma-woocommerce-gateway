@@ -1,12 +1,12 @@
 <?php
 /**
- * Alma_Blocks_Standard.
+ * Alma_Blocks_Pay_More_Than_Four.
  *
- * @since
+ * @since 5.3.0
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes
- * @namespace Alma\Woocommerce
+ * @namespace Alma\Woocommerce\Blocks\Standard;
  */
 
 namespace Alma\Woocommerce\Blocks\Standard;
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Alma_Blocks_Standard
+ * Alma_Blocks_Pay_More_Than_Four
  */
 class Alma_Blocks_Pay_More_Than_Four extends Alma_Blocks {
 

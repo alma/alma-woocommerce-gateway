@@ -1,7 +1,10 @@
 /**
  * Checkout blocks page.
  *
+ * @since 5.3.0
+ *
  * @package Alma_Gateway_For_Woocommerce
+ * @subpackage Alma_Gateway_For_Woocommerce/assets
  */
 
 import {useEffect} from '@wordpress/element';

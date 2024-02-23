@@ -2,11 +2,11 @@
 /**
  * Alma_Blocks_Pay_Now.
  *
- * @since
+ * @since 5.3.0
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes
- * @namespace Alma\Woocommerce
+ * @namespace Alma\Woocommerce\Blocks\Inpage
  */
 
 namespace Alma\Woocommerce\Blocks\Inpage;

@@ -2,11 +2,11 @@
 /**
  * Alma_Blocks_Standard.
  *
- * @since
+ * @since 5.3.0
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes
- * @namespace Alma\Woocommerce
+ * @namespace Alma\Woocommerce\Blocks\Standard;
  */
 
 namespace Alma\Woocommerce\Blocks\Standard;
