@@ -92,6 +92,16 @@ class Alma_Checkout_Helper {
 		wp_nonce_field( Alma_Constants_Helper::CHECKOUT_NONCE . $id, Alma_Constants_Helper::CHECKOUT_NONCE . $id );
 	}
 
+	/**
+	 * Create the nonce value.
+	 *
+	 * @param int $id The gateway id.
+	 *
+	 * @return false|string
+	 */
+	public function create_nonce_value( $id ) {
+		return wp_create_nonce( Alma_Constants_Helper::CHECKOUT_NONCE . $id );
+	}
 
 	/**
 	 * Check if payment_method is set in POST and is an Alma payment method
@@ -102,6 +112,7 @@ class Alma_Checkout_Helper {
 	 * @return bool
 	 */
 	public function is_alma_payment_method( $id ) {
+
 		$payment_method = $this->check_nonce( Alma_Constants_Helper::PAYMENT_METHOD, Alma_Constants_Helper::CHECKOUT_NONCE . $id );
 
 		return $payment_method && substr( $payment_method, 0, 4 ) === 'alma';

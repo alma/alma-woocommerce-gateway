@@ -56,6 +56,8 @@ class Alma_Constants_Helper {
 	const ALMA_LOGO_PATH                    = 'images/alma_logo.svg';
 	const ALMA_SHORT_LOGO_PATH              = 'images/alma_short_logo.svg';
 	const ALMA_PATH_CHECKOUT_JS             = 'js/alma-checkout.js';
+	const ALMA_PATH_CHECKOUT_BLOCK_JS       = 'alma-checkout-blocks.js';
+	const ALMA_PATH_CHECKOUT_BLOCK_PHP      = 'alma-checkout-blocks.asset.php';
 	const ALMA_PATH_CHECKOUT_IN_PAGE_JS     = 'js/alma-checkout-in-page.js';
 	const ALMA_PATH_CHECKOUT_CDN_IN_PAGE_JS = 'https://cdn.jsdelivr.net/npm/@alma/in-page@2.x/dist/index.umd.js';
 	const ALMA_PATH_CHECKOUT_CSS            = 'css/alma-checkout.css';
@@ -89,5 +91,15 @@ class Alma_Constants_Helper {
 		self::GATEWAY_ID_IN_PAGE_PAY_NOW,
 		self::GATEWAY_ID_PAY_LATER,
 		self::GATEWAY_ID_MORE_THAN_FOUR,
+	);
+
+	/**
+	 * The gateways.
+	 *
+	 * @var string[]
+	 */
+	public static $gateways_in_page_ids = array(
+		self::GATEWAY_ID_IN_PAGE,
+		self::GATEWAY_ID_IN_PAGE_PAY_NOW,
 	);
 }

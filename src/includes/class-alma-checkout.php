@@ -14,6 +14,7 @@ namespace Alma\Woocommerce;
 use Alma\Woocommerce\Exceptions\Alma_Exception;
 use Alma\Woocommerce\Helpers\Alma_Checkout_Helper;
 use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
+use Alma\Woocommerce\Helpers\Alma_Plugin_Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -26,6 +27,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Alma_Checkout extends \WC_Checkout {
 
 	/**
+	 * The plugin helper.
+	 *
+	 * @var Alma_Plugin_Helper
+	 */
+	protected $plugin_helper;
+
+	/**
+	 * Construct.
+	 */
+	public function __construct() {
+		$this->plugin_helper = new Alma_Plugin_Helper();
+	}
+
+	/**
 	 * Extends \WC_Checkout.
 	 *
 	 * @return \WC_Order
@@ -33,10 +48,28 @@ class Alma_Checkout extends \WC_Checkout {
 	 * @throws \Exception Exception.
 	 */
 	public function process_checkout() {
-		foreach ( $_POST['fields'] as $values ) { // phpcs:ignore WordPress.Security.NonceVerification
-			// Set each key / value pairs in an array.
-			$_POST[ $values['name'] ]    = $values['value'];
-			$_REQUEST[ $values['name'] ] = $values['value'];
+
+		if (
+			isset( $_POST['is_woo_block'] )
+			&& $_POST['is_woo_block'] // phpcs:ignore WordPress.Security.NonceVerification
+		) {
+			foreach ( $_POST['fields']['billing']  as $key => $value ) { // phpcs:ignore WordPress.Security.NonceVerification
+				$_POST[ 'billing_' . $key ]    = $value;
+				$_REQUEST[ 'billing_' . $key ] = $value;
+			}
+			unset( $_POST['fields']['billing'] );
+
+			foreach ( $_POST['fields']  as $key => $value ) { // phpcs:ignore WordPress.Security.NonceVerification
+				$_POST[ $key ]    = $value;
+				$_REQUEST[ $key ] = $value;
+			}
+			unset( $_POST['fields'] );
+		} else {
+			foreach ( $_POST['fields'] as $values ) { // phpcs:ignore WordPress.Security.NonceVerification
+				// Set each key / value pairs in an array.
+				$_POST[ $values['name'] ]    = $values['value'];
+				$_REQUEST[ $values['name'] ] = $values['value'];
+			}
 		}
 
 		$checkout_helper = new Alma_Checkout_Helper();
@@ -46,11 +79,17 @@ class Alma_Checkout extends \WC_Checkout {
 			throw new Alma_Exception( __( 'We were unable to process your order, please try again.', 'alma-gateway-for-woocommerce' ) );
 		}
 
-		$nonce_value = wc_get_var( $_POST['woocommerce-process-checkout-nonce'], wc_get_var( $_POST['_wpnonce'], '' ) ); // @codingStandardsIgnoreLine.
+		if ( ! $this->plugin_helper->has_woocommerce_blocks() ) {
+			$nonce_value = wc_get_var( $_POST['woocommerce-process-checkout-nonce'], wc_get_var( $_POST['_wpnonce'], '' ) ); // @codingStandardsIgnoreLine.
 
-		if ( empty( $nonce_value ) || ! wp_verify_nonce( $nonce_value, 'woocommerce-process_checkout' ) ) {
-			WC()->session->set( 'refresh_totals', true );
-			throw new Alma_Exception( __( 'We were unable to process your order, please try again.', 'alma-gateway-for-woocommerce' ) );
+			if (
+				empty( $nonce_value )
+				||
+				! wp_verify_nonce( $nonce_value, 'woocommerce-process_checkout' )
+			) {
+				WC()->session->set( 'refresh_totals', true );
+				throw new Alma_Exception( __( 'We were unable to process your order, please try again.', 'alma-gateway-for-woocommerce' ) );
+			}
 		}
 
 		wc_maybe_define_constant( 'WOOCOMMERCE_CHECKOUT', true );

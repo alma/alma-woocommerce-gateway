@@ -636,8 +636,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 	 * @return bool
 	 */
 	public function validate_fields() {
-		$error_msg = __( 'There was an error processing your payment.<br>Please try again or contact us if the problem persists.', 'alma-gateway-for-woocommerce' );
-
+		$error_msg     = __( 'There was an error processing your payment.<br>Please try again or contact us if the problem persists.', 'alma-gateway-for-woocommerce' );
 		$alma_fee_plan = $this->checkout_helper->get_chosen_alma_fee_plan( $this->id );
 
 		if ( ! $alma_fee_plan ) {

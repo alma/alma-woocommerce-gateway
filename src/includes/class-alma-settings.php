@@ -901,6 +901,8 @@ class Alma_Settings {
 	 * @return bool
 	 */
 	public function is_allowed_to_see_alma( \WP_User $user ) {
+		// @todo remove
+		return true;
 		return in_array( 'administrator', $user->roles, true ) || 'live' === $this->get_environment();
 	}
 

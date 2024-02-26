@@ -8,3 +8,4 @@ src/composer.lock
 /crowdin.properties
 /crowdin.deb
 crowdin.yml
+node_modules/
