@@ -1,6 +1,8 @@
 Changelog
 =========
 
+* fix: deactivate rendering of Alma payment methods on order pay checkout page
+
 v5.2.0
 ------
 * feature : HPOS compatibility
