@@ -9,7 +9,8 @@
 
 // phpcs:ignoreFile
 
-import {useEffect} from '@wordpress/element';
+import {AlmaBlocks} from './components/alma-blocks-component';
+import {useEffect, useState} from '@wordpress/element';
 
 (function ($) {
 
@@ -27,9 +28,15 @@ import {useEffect} from '@wordpress/element';
             continue;
         }
         const label = window.wp.htmlEntities.decodeEntities(settings.title);
-        const Content = (props) => {
-            const {eventRegistration, emitResponse} = props;
 
+        function Test(props) {
+            const [selectedFeePlan, setSelectedFeePlan] = useState(null)
+
+            useEffect(()=> {
+                console.log("useEffect!", selectedFeePlan)
+            }, [selectedFeePlan])
+
+            const {eventRegistration, emitResponse} = props;
             if (!settings.is_in_page) {
                 const {onPaymentProcessing} = eventRegistration;
                 useEffect(
@@ -41,7 +48,7 @@ import {useEffect} from '@wordpress/element';
                                 const nonceKey = `alma_checkout_nonce${settings.gateway_name}`;
                                 const paymentMethodData = {
                                     [nonceKey]: `${settings.nonce_value}`,
-                                    alma_fee_plan: 'general_10_0_0',
+                                    alma_fee_plan: selectedFeePlan,
                                     payment_method: settings.gateway_name,
                                 }
 
@@ -64,11 +71,11 @@ import {useEffect} from '@wordpress/element';
                         onPaymentProcessing,
                     ]
                 );
-
-                return settings.description;
+                return (
+                    <AlmaBlocks settings={settings} setSelectedFeePlan={setSelectedFeePlan}/>
+                )
             }
 
-            console.log(props)
             // removeEventListener('onCheckoutBeforeProcessing')
             billingAddress = props.billing.billingAddress
 
@@ -79,13 +86,14 @@ import {useEffect} from '@wordpress/element';
             // customerNote = props.customerNote
 
             return <div id='alma-inpage-alma_in_page_pay_now'></div>; // phpcs:ignore
-        };
+
+        }
 
         const Block_Gateway_Alma = {
             name: settings.gateway_name,
             label: label,
-            content: < Content/>, // phpcs:ignore
-            edit: < Content/>,  // phpcs:ignore
+            content: <Test/>, // phpcs:ignore
+            edit: <Test/>,  // phpcs:ignore
             placeOrderButtonLabel: settings.label_button,
             canMakePayment: () => true,
             ariaLabel: label
@@ -96,8 +104,8 @@ import {useEffect} from '@wordpress/element';
         if (settings.is_in_page) {
             hasInPage = true
         }
-
     }
+
 
     window.addEventListener(
         'load',
