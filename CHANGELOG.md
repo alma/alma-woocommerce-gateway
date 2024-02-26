@@ -1,6 +1,8 @@
 Changelog
 =========
 
+* fix: default plan selection
+
 v5.2.0
 ------
 * feature : HPOS compatibility

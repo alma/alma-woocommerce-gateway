@@ -51,6 +51,8 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 == Changelog ==
 
+* fix: default plan selection
+
 = 5.2.0 =
 * feat: Update translations
 * fix: widget XSS
