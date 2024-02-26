@@ -328,7 +328,7 @@ class Alma_Order_Helper {
 			$order_id     = sanitize_text_field( $_POST['order_id'] ); // phpcs:ignore WordPress.Security.NonceVerification
 			$order_helper = new Alma_Order_Helper();
 			$order        = $order_helper->get_order( $order_id );
-			$order->update_status( 'cancelled', __( 'Abandonment by the client.', 'alma-gateway-for-woocommerce' ) );
+			$order->delete( true );
 			wp_send_json_success();
 		} catch ( \Exception $e ) {
 			$this->logger->error( $e->getMessage() );
