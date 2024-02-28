@@ -9,8 +9,11 @@
 
 // phpcs:ignoreFile
 
-import {AlmaBlocks} from './components/alma-blocks-component';
 import {useEffect, useState} from '@wordpress/element';
+import {Badge, Logo} from '@alma/react-components'
+import {AlmaBlocks} from "./components/alma-blocks-component.tsx";
+import '@alma/react-components/style.css';
+import '@alma/react-components/global.css'
 
 (function ($) {
 
@@ -27,12 +30,22 @@ import {useEffect, useState} from '@wordpress/element';
         if (!settings) {
             continue;
         }
+
         const label = window.wp.htmlEntities.decodeEntities(settings.title);
+        const Label = props => {
+            const {PaymentMethodLabel} = props.components;
+            const icon = <Logo style={{width: 'auto', height: '1em'}} logo="alma-orange"/>
+            return <>
+                <PaymentMethodLabel text={settings.title} icon={icon}/>
+                <Badge color={'orange'} label={'toto'}/>
+            </>
+        };
+
 
         function Test(props) {
             const [selectedFeePlan, setSelectedFeePlan] = useState(null)
 
-            useEffect(()=> {
+            useEffect(() => {
                 console.log("useEffect!", selectedFeePlan)
             }, [selectedFeePlan])
 
@@ -91,7 +104,7 @@ import {useEffect, useState} from '@wordpress/element';
 
         const Block_Gateway_Alma = {
             name: settings.gateway_name,
-            label: label,
+            label: <Label/>,
             content: <Test/>, // phpcs:ignore
             edit: <Test/>,  // phpcs:ignore
             placeOrderButtonLabel: settings.label_button,

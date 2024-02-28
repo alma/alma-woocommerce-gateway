@@ -9,3 +9,4 @@ src/composer.lock
 /crowdin.deb
 crowdin.yml
 node_modules/
+.npmrc
