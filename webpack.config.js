@@ -16,18 +16,7 @@ const config = {
         rules: [
             ...defaultConfig.module.rules,
             {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env', '@babel/preset-react']
-                    }
-                }
-            },
-            {
                 test: /\.css$/,
-                exclude: /node_modules/,
                 use: [
                     "style-loader",
                     "css-loader",
@@ -36,9 +25,10 @@ const config = {
                         loader: 'sass-loader',
                     },
                 ],
+                include: path.resolve(__dirname, '../src/build'),
             },
         ],
-    }
+    },
 }
 
 module.exports = config;

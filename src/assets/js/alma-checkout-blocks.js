@@ -10,10 +10,8 @@
 // phpcs:ignoreFile
 
 import {useEffect, useState} from '@wordpress/element';
-import {Badge, Logo} from '@alma/react-components'
+import {Logo} from '@alma/react-components'
 import {AlmaBlocks} from "./components/alma-blocks-component.tsx";
-import '@alma/react-components/style.css';
-import '@alma/react-components/global.css'
 
 (function ($) {
 
@@ -37,7 +35,6 @@ import '@alma/react-components/global.css'
             const icon = <Logo style={{width: 'auto', height: '1em'}} logo="alma-orange"/>
             return <>
                 <PaymentMethodLabel text={settings.title} icon={icon}/>
-                <Badge color={'orange'} label={'toto'}/>
             </>
         };
 
@@ -85,7 +82,7 @@ import '@alma/react-components/global.css'
                     ]
                 );
                 return (
-                    <AlmaBlocks settings={settings} setSelectedFeePlan={setSelectedFeePlan}/>
+                    <AlmaBlocks settings={settings} selectedFeePlan={selectedFeePlan} setSelectedFeePlan={setSelectedFeePlan}/>
                 )
             }
 
