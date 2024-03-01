@@ -94,7 +94,7 @@ class Alma_Blocks extends AbstractPaymentMethodType {
 		wp_enqueue_style('alma-blocks-integration-css', $alma_checkout_blocks_css, array(), ALMA_VERSION);
 
 		$alma_checkout_blocks_react_components_css = Alma_Assets_Helper::get_asset_build_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_BLOCK_REACT_COMPONENTS_CSS );
-		wp_enqueue_style( 'alma-blocks-integration-css', $alma_checkout_blocks_react_components_css, array(), ALMA_VERSION );
+		wp_enqueue_style( 'alma-blocks-integration-react-component-css', $alma_checkout_blocks_react_components_css, array(), ALMA_VERSION );
 
 		wp_register_script(
 			'alma-blocks-integration',
