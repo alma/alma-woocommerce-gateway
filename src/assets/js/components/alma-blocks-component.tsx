@@ -89,7 +89,7 @@ export const AlmaBlocks: React.FC<AlmaBlocksProps> = ({
           error=""
         />
         <div className="alma-card-installments">
-          <Installments feePlan={settings.eligibilities[selectedFeePlan]} />
+          <Installments feePlan={settings.eligibilities[selectedFeePlan]} amountInCents={settings.amount_in_cents} />
         </div>
       </IntlProvider>
     </>

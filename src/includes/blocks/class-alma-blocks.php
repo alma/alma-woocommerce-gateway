@@ -154,11 +154,11 @@ class Alma_Blocks extends AbstractPaymentMethodType {
 			'nonce_value'   => $nonce_value,
 			'label_button'  => __( 'Pay With Alma', 'alma-gateway-for-woocommerce' ),
 			'is_in_page'    => $is_in_page,
+            'amount_in_cents' =>$this->cart_helper->get_total_in_cents()
 		);
 
 		if ( $is_in_page ) {
 			$data['merchant_id']     = $this->alma_settings->get_active_merchant_id();
-			$data['amount_in_cents'] = $this->cart_helper->get_total_in_cents();
 			$data['environment']     = strtoupper( $this->alma_settings->get_environment() );
 			$data['locale']          = strtoupper( substr( get_locale(), 0, 2 ) );
 		}
