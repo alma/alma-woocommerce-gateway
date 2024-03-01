@@ -12,6 +12,7 @@
 import {useEffect, useState} from '@wordpress/element';
 import {Logo} from '@alma/react-components'
 import {AlmaBlocks} from "./components/alma-blocks-component.tsx";
+import '../css/alma-checkout-blocks.css'
 
 (function ($) {
 
@@ -33,20 +34,17 @@ import {AlmaBlocks} from "./components/alma-blocks-component.tsx";
         const Label = props => {
             const {PaymentMethodLabel} = props.components;
             const icon = <Logo style={{width: 'auto', height: '1em'}} logo="alma-orange"/>
-            return <>
-                <PaymentMethodLabel text={settings.title} icon={icon}/>
-            </>
+            const text = <div>{settings.title}</div>
+            return <span className='paymentMethodLabel'>
+                <PaymentMethodLabel text={text} icon={icon}/>
+            </span>
         };
 
 
-        function Test(props) {
-            const [selectedFeePlan, setSelectedFeePlan] = useState(null)
-
-            useEffect(() => {
-                console.log("useEffect!", selectedFeePlan)
-            }, [selectedFeePlan])
-
+        function DisplayAlmaBlocks(props) {
+            const [selectedFeePlan, setSelectedFeePlan] = useState(settings.default_plan[0])
             const {eventRegistration, emitResponse} = props;
+            
             if (!settings.is_in_page) {
                 const {onPaymentProcessing} = eventRegistration;
                 useEffect(
@@ -102,8 +100,8 @@ import {AlmaBlocks} from "./components/alma-blocks-component.tsx";
         const Block_Gateway_Alma = {
             name: settings.gateway_name,
             label: <Label/>,
-            content: <Test/>, // phpcs:ignore
-            edit: <Test/>,  // phpcs:ignore
+            content: <DisplayAlmaBlocks/>, // phpcs:ignore
+            edit: <DisplayAlmaBlocks/>,  // phpcs:ignore
             placeOrderButtonLabel: settings.label_button,
             canMakePayment: () => true,
             ariaLabel: label
@@ -142,7 +140,7 @@ import {AlmaBlocks} from "./components/alma-blocks-component.tsx";
 
             function isAlmaInPageChecked() {
                 // verif that the paiment type method is in page.
-                return true
+                return hasInPage
             }
 
             function add_loader() {
@@ -161,7 +159,7 @@ import {AlmaBlocks} from "./components/alma-blocks-component.tsx";
 
             if (hasInPage) {
                 var settingsInPage = window.wc.wcSettings.getSetting('alma_in_page_pay_now_data', null);
-
+                
                 initializeInpage(settingsInPage);
             }
             document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].addEventListener(

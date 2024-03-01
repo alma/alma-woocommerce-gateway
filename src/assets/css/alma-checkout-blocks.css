@@ -5,3 +5,28 @@
  * @since v4.2.5
  **/
 
+.paymentMethodLabel span {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.paymentMethodLabel span div {
+    font-weight: 700;
+    color: var(--off-black);
+}
+
+.toggleButtonFieldLabel {
+    margin-bottom: 17px;
+}
+
+.toggleButtonField > div:nth-of-type(2) {
+    display: flex;
+    gap: 8px;
+}
+
+.toggleButtonField > div:nth-of-type(2) > button {
+    width: 45px;
+    height: 45px;
+}

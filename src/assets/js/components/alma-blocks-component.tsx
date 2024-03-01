@@ -7,46 +7,91 @@
  * @subpackage Alma_Gateway_For_Woocommerce/assets
  */
 
-import {useState} from '@wordpress/element';
-import '@alma/react-components/style.css';
-import '@alma/react-components/global.css';
-import {ToggleButtonsField} from "@alma/react-components";
+import "@alma/react-components/style.css";
+import "@alma/react-components/global.css";
+import "../../css/alma-checkout-blocks.css";
+import { ToggleButtonsField } from "@alma/react-components";
+import React from "react";
+import { Installments } from "./Installments/Installments";
+import { IntlProvider } from "react-intl";
+
+export type PaymentPlan = {
+  customer_fee: number;
+  due_date: number;
+  purchase_amount: number;
+  total_amount: number;
+  localized_due_date: string;
+};
+
+export type FeePlan = {
+  annualInterestRate?: null | number;
+  constraints?: null | object;
+  customerTotalCostAmount?: number;
+  customerTotalCostBps?: number;
+  deferredDays?: number;
+  deferredMonths?: number;
+  installmentsCount: number;
+  isEligible: boolean;
+  paymentPlan: PaymentPlan[];
+  reasons: null | string;
+};
+
+type Settings = {
+  default_plan: string[];
+  description: string;
+  eligibilities: Record<string, FeePlan>;
+  gateway_name: string;
+  is_in_page: boolean;
+  label_button: string;
+  nonce_value: string;
+  title: string;
+};
 
 type AlmaBlocksProps = {
-    settings: any
-    selectedFeePlan: string
-    setSelectedFeePlan: (value: string) => void
-}
+  settings: Settings;
+  selectedFeePlan: string;
+  setSelectedFeePlan: (value: string) => void;
+};
 
-export const AlmaBlocks: React.FC<AlmaBlocksProps> = ({settings, selectedFeePlan, setSelectedFeePlan}) => {
+export const AlmaBlocks: React.FC<AlmaBlocksProps> = ({
+  settings,
+  selectedFeePlan,
+  setSelectedFeePlan,
+}) => {
+  const labels = {};
+  let values = [];
 
-    const handleClick = (feePlan: any) => {
-        console.log(feePlan);
-        setSelectedFeePlan(`general_${feePlan.installmentsCount}_${feePlan.deferredDays}_${feePlan.deferredMonths}`)
-    }
+  Object.keys(settings.eligibilities).forEach(function (key, index) {
+    values.push(key);
+    labels[key] = settings.eligibilities[key].installmentsCount + "x";
+  });
 
-    const labels = {
-        a: 'j+15',
-        b: '3x',
-        c: '5x',
-        d: '10x',
-        e: '24x',
-    }
+  const handleClick = (optionKey) => {
+    setSelectedFeePlan(optionKey);
+  };
 
-    const values = ['a', 'b', 'c', 'd', 'e']
-
-    console.log('Ca fonciiitonne !!', settings, setSelectedFeePlan)
-    return <>
+  const label = (
+    <div className="toggleButtonFieldLabel">{settings.description}</div>
+  );
+  return (
+    <>
+      <IntlProvider locale="fr">
         <ToggleButtonsField
-            options={values}
-            optionLabel={(v) => labels[v]}
-            optionKey={(v) => v}
-            onChange={(v) => handleClick(v)}
-            value={selectedFeePlan}
-            label={settings?.description}
-            wide={false}
-            size={'md'}
-            error=""
+          className="toggleButtonField"
+          options={values}
+          optionLabel={(key) => labels[key]}
+          optionKey={(key) => key}
+          onChange={(key) => handleClick(key)}
+          value={selectedFeePlan}
+          label={label}
+          wide={false}
+          size={"sm"}
+          error=""
         />
+        <div className="alma-card-installments">
+          <Installments feePlan={settings.eligibilities[selectedFeePlan]} />
+        </div>
+      </IntlProvider>
     </>
-}
+  );
+};
