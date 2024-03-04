@@ -56,7 +56,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  font-size: 14px;
+  font-size: var(--font-sm);
   line-height: 22px;
   width: 100%;
 }
@@ -73,7 +73,7 @@
 
 .errorMessage {
   display: flex;
-  font-size: 14px;
+  font-size: var(--font-sm);
   flex-direction: column;
 
   @mixin row-gap var(--spacing-4);
@@ -93,7 +93,7 @@
   width: auto;
   background-color: var(--off-white) !important;
   padding: var(--spacing-4)!important;
-  border-radius: 20px!important;
+  border-radius: var(--radius-lg)!important;
   display: flex;
   flex-direction: column;
 
