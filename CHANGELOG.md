@@ -1,6 +1,8 @@
 Changelog
 =========
 
+* fix : delete abandoned orders created by In Page
+
 v5.2.0
 ------
 * feature : HPOS compatibility
