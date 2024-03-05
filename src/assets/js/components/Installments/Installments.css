@@ -109,25 +109,25 @@
 
 @media screen and (--min-w-sm) {
   .errorMessage {
-    font-size: var(--font-base);
+	font-size: var(--font-base);
   }
 
   .shortenHugePlan {
-    max-height: 120px;
-    overflow-y: scroll;
-    padding-right: var(--spacing-4);
+	max-height: 120px;
+	overflow-y: scroll;
+	padding-right: var(--spacing-4);
   }
 
   .installments.shortenHugePlan {
-    margin-bottom: 0;
+	margin-bottom: 0;
   }
 
   .separator {
   /* half pixel is used because the separator should be centered with the bullet
   *  And the bullet's width is 4px, and the separator width is 2px. */
-    left: 35.5px;
+	left: 35.5px;
 
-    /* Magic number for the top position to align as best as possible with the 1st bullet */
-    top: 80px;
+	/* Magic number for the top position to align as best as possible with the 1st bullet */
+	top: 80px;
   }
 }

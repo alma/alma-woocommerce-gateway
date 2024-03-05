@@ -57,23 +57,23 @@ class Alma_Blocks extends AbstractPaymentMethodType {
 	 */
 	protected $cart_helper;
 
-    /**
-     * @var Alma_Plan_Builder
-     */
-    protected $alma_plan_builder;
+	/**
+	 * @var Alma_Plan_Builder
+	 */
+	protected $alma_plan_builder;
 
-    /**
+	/**
 	 * Initialize.
 	 *
 	 * @return void
 	 */
 	public function initialize() {
-		$this->settings        = get_option( Alma_Settings::OPTIONS_KEY, array() );
-		$this->gateway_helper  = new Alma_Gateway_Helper();
-		$this->alma_settings   = new Alma_Settings();
-		$this->checkout_helper = new Alma_Checkout_Helper();
-		$this->cart_helper     = new Alma_Cart_Helper();
-        $this->alma_plan_builder = new Alma_Plan_Builder();
+		$this->settings          = get_option( Alma_Settings::OPTIONS_KEY, array() );
+		$this->gateway_helper    = new Alma_Gateway_Helper();
+		$this->alma_settings     = new Alma_Settings();
+		$this->checkout_helper   = new Alma_Checkout_Helper();
+		$this->cart_helper       = new Alma_Cart_Helper();
+		$this->alma_plan_builder = new Alma_Plan_Builder();
 	}
 
 	/**
@@ -98,7 +98,7 @@ class Alma_Blocks extends AbstractPaymentMethodType {
 		}
 
 		$alma_checkout_blocks_css = Alma_Assets_Helper::get_asset_build_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_BLOCK_CSS );
-		wp_enqueue_style('alma-blocks-integration-css', $alma_checkout_blocks_css, array(), ALMA_VERSION);
+		wp_enqueue_style( 'alma-blocks-integration-css', $alma_checkout_blocks_css, array(), ALMA_VERSION );
 
 		$alma_checkout_blocks_react_components_css = Alma_Assets_Helper::get_asset_build_url( Alma_Constants_Helper::ALMA_PATH_CHECKOUT_BLOCK_REACT_COMPONENTS_CSS );
 		wp_enqueue_style( 'alma-blocks-integration-react-component-css', $alma_checkout_blocks_react_components_css, array(), ALMA_VERSION );
@@ -147,28 +147,28 @@ class Alma_Blocks extends AbstractPaymentMethodType {
 		// We get the eligibilites.
 		$eligibilities  = $this->alma_settings->get_cart_eligibilities();
 		$eligible_plans = $this->alma_settings->get_eligible_plans_keys_for_cart( $eligibilities, $this->gateway->id );
-        $plans = $this->alma_plan_builder->getPlansByKeys($eligible_plans, $eligibilities);
+		$plans          = $this->alma_plan_builder->getPlansByKeys( $eligible_plans, $eligibilities );
 
 		$default_plan = $this->gateway_helper->get_default_plan( $eligible_plans );
 
 		$is_in_page = $this->gateway_helper->is_in_page_gateway( $this->gateway->id );
 
 		$data = array(
-			'title'         => $this->gateway_helper->get_alma_gateway_title( $this->gateway->id ),
-			'description'   => $this->gateway_helper->get_alma_gateway_description( $this->gateway->id ),
-			'gateway_name'  => $this->gateway->id,
-			'default_plan'  => $default_plan,
-			'plans' => $plans,
-			'nonce_value'   => $nonce_value,
-			'label_button'  => __( 'Pay With Alma', 'alma-gateway-for-woocommerce' ),
-			'is_in_page'    => $is_in_page,
-            'amount_in_cents' =>$this->cart_helper->get_total_in_cents()
+			'title'           => $this->gateway_helper->get_alma_gateway_title( $this->gateway->id, true ),
+			'description'     => $this->gateway_helper->get_alma_gateway_description( $this->gateway->id, true ),
+			'gateway_name'    => $this->gateway->id,
+			'default_plan'    => $default_plan,
+			'plans'           => $plans,
+			'nonce_value'     => $nonce_value,
+			'label_button'    => __( 'Pay With Alma', 'alma-gateway-for-woocommerce' ),
+			'is_in_page'      => $is_in_page,
+			'amount_in_cents' => $this->cart_helper->get_total_in_cents(),
 		);
 
 		if ( $is_in_page ) {
-			$data['merchant_id']     = $this->alma_settings->get_active_merchant_id();
-			$data['environment']     = strtoupper( $this->alma_settings->get_environment() );
-			$data['locale']          = strtoupper( substr( get_locale(), 0, 2 ) );
+			$data['merchant_id'] = $this->alma_settings->get_active_merchant_id();
+			$data['environment'] = strtoupper( $this->alma_settings->get_environment() );
+			$data['locale']      = strtoupper( substr( get_locale(), 0, 2 ) );
 		}
 
 		return $data;

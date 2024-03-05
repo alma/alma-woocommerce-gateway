@@ -33,10 +33,10 @@
 
 @media screen and (--min-w-sm) {
   .total {
-    font-size: var(--font-lg);
+	font-size: var(--font-lg);
   }
 
   .fees {
-    font-size: var(--font-sm);
+	font-size: var(--font-sm);
   }
 }

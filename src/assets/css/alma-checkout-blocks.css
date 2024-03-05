@@ -13,22 +13,22 @@
 }
 
 .paymentMethodLabel span div {
-    font-weight: 700;
-    color: var(--off-black);
+	font-weight: 700;
+	color: var(--off-black);
 }
 
 .toggleButtonFieldLabel {
-    margin-bottom: 17px;
+	margin-bottom: 17px;
 }
 
 .payNowLabel {
-    margin-bottom: -17px;
-    color: var(--off-black);
+	margin-bottom: -17px;
+	color: var(--off-black);
 }
 
 .toggleButtonField > div:nth-of-type(2) {
-    display: flex;
-    gap: var(--spacing-2);
+	display: flex;
+	gap: var(--spacing-2);
 }
 
 .toggleButtonField > div:nth-of-type(2) > button {
@@ -38,5 +38,5 @@
 }
 
 .payNow {
-    display: none;
+	display: none;
 }

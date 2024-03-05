@@ -126,13 +126,14 @@ class Alma_Gateway_Helper {
 	/**
 	 * Get the title of the Alma Gateway.
 	 *
-	 * @param string $id The alma gateway type id.
+	 * @param string  $id The alma gateway type id.
+	 * @param boolean $is_blocks Are we in blocks ?
 	 * @return string
 	 * @throws Alma_Exception Exception.
 	 */
-	public function get_alma_gateway_title( $id ) {
+	public function get_alma_gateway_title( $id, $is_blocks = false ) {
 		if ( in_array( $id, Alma_Constants_Helper::$gateways_ids, true ) ) {
-			return $this->alma_settings->get_title( $id );
+			return $this->alma_settings->get_title( $id, $is_blocks );
 		}
 
 		throw new Alma_Exception( sprintf( 'Unknown gateway id : %s', $id ) );
@@ -173,13 +174,15 @@ class Alma_Gateway_Helper {
 	/**
 	 * Get the title of the Alma Gateway.
 	 *
-	 * @param string $id The alma gateway type id.
+	 * @param string  $id The alma gateway type id.
+	 * @param boolean $isBlocks Are we in bloks ?
+	 *
 	 * @return string
 	 * @throws Alma_Exception Exception.
 	 */
-	public function get_alma_gateway_description( $id ) {
+	public function get_alma_gateway_description( $id, $isBlocks = false ) {
 		if ( in_array( $id, Alma_Constants_Helper::$gateways_ids, true ) ) {
-			return $this->alma_settings->get_description( $id );
+			return $this->alma_settings->get_description( $id, $isBlocks );
 		}
 
 		throw new Alma_Exception( sprintf( 'Unknown gateway id : %s', $id ) );
