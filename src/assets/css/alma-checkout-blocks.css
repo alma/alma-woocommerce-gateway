@@ -21,6 +21,11 @@
     margin-bottom: 17px;
 }
 
+.payNowLabel {
+    margin-bottom: -17px;
+    color: var(--off-black);
+}
+
 .toggleButtonField > div:nth-of-type(2) {
     display: flex;
     gap: var(--spacing-2);
@@ -29,4 +34,8 @@
 .toggleButtonField > div:nth-of-type(2) > button {
     width: 45px;
     height: 45px;
+}
+
+.payNow {
+    display: none;
 }
