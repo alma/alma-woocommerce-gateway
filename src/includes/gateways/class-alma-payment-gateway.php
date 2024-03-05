@@ -274,7 +274,6 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 			! $this->alma_settings->is_allowed_to_see_alma( wp_get_current_user() )
 			|| is_admin()
 			|| ! $tools->check_currency()
-			|| ! is_checkout()
 			|| is_wc_endpoint_url( 'order-pay' )
 			|| ! empty( $wp->query_vars['order-pay'] )
 		) {
@@ -283,6 +282,7 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 
 		if (
 			wc()->cart === null
+			|| ! is_checkout()
 		) {
 			return parent::is_available();
 		}
