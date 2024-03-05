@@ -10,10 +10,11 @@
 import "@alma/react-components/style.css";
 import "@alma/react-components/global.css";
 import "../../css/alma-checkout-blocks.css";
-import { ToggleButtonsField } from "@alma/react-components";
+import {ToggleButtonsField} from "@alma/react-components";
 import React from "react";
-import { Installments } from "./Installments/Installments";
-import { IntlProvider } from "react-intl";
+import {Installments} from "./Installments/Installments";
+import {FormattedMessage, IntlProvider} from "react-intl";
+import classNames from "classnames";
 
 export type PaymentPlan = {
   customer_fee: number;
@@ -53,11 +54,13 @@ type AlmaBlocksProps = {
   setSelectedFeePlan: (value: string) => void;
 };
 
-export const AlmaBlocks: React.FC<AlmaBlocksProps> = ({
-  settings,
-  selectedFeePlan,
-  setSelectedFeePlan,
-}) => {
+export const AlmaBlocks: React.FC<AlmaBlocksProps> = (
+  {
+    settings,
+    selectedFeePlan,
+    setSelectedFeePlan,
+  }
+) => {
   const labels = {};
   let values = [];
 
@@ -70,26 +73,31 @@ export const AlmaBlocks: React.FC<AlmaBlocksProps> = ({
     setSelectedFeePlan(optionKey);
   };
 
+  const isPayNow = settings.gateway_name === "alma_pay_now";
+
   const label = (
     <div className="toggleButtonFieldLabel">{settings.description}</div>
   );
   return (
     <>
       <IntlProvider locale="fr">
-        <ToggleButtonsField
-          className="toggleButtonField"
-          options={values}
-          optionLabel={(key) => labels[key]}
-          optionKey={(key) => key}
-          onChange={(key) => handleClick(key)}
-          value={selectedFeePlan}
-          label={label}
-          wide={false}
-          size={"sm"}
-          error=""
-        />
+        {isPayNow && <div className={"payNowLabel"}>{label}</div>}
+        <div className={classNames({payNow: isPayNow})}>
+          <ToggleButtonsField
+            className={"toggleButtonField"}
+            options={values}
+            optionLabel={(key) => labels[key]}
+            optionKey={(key) => key}
+            onChange={(key) => handleClick(key)}
+            value={selectedFeePlan}
+            label={label}
+            wide={false}
+            size={"sm"}
+            error=""
+          />
+        </div>
         <div className="alma-card-installments">
-          <Installments feePlan={settings.plans[selectedFeePlan]} amountInCents={settings.amount_in_cents} />
+          <Installments feePlan={settings.plans[selectedFeePlan]} amountInCents={settings.amount_in_cents}/>
         </div>
       </IntlProvider>
     </>
