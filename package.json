@@ -5,7 +5,10 @@
   "main": "src/assets/js/alma-checkout-blocks.js",
   "scripts": {
     "start": "wp-scripts start --webpack-src-dir=src/assets/js/blocks",
-    "build": "wp-scripts build --webpack-src-dir=src/assets/js/blocks"
+    "build": "wp-scripts build --webpack-src-dir=src/assets/js/blocks",
+    "format": "wp-scripts format --webpack-src-dir=src/assets/js/blocks",
+    "lint:css": "wp-scripts lint-style --webpack-src-dir=src/assets/js/blocks",
+    "lint:js": "wp-scripts lint-js --webpack-src-dir=src/assets/js/blocks"
   },
   "repository": {
     "type": "git",
