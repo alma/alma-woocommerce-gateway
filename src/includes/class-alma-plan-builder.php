@@ -216,7 +216,14 @@ class Alma_Plan_Builder {
 		return $result;
 	}
 
-	public function getPlansByKeys( $eligible_plans = array(), $eligibilities = array() ) {
+	/**
+	 * Get the plans by keys.
+	 *
+	 * @param array $eligible_plans Eligible plans.
+	 * @param array $eligibilities Eligibilities.
+	 * @return array
+	 */
+	public function get_plans_by_keys( $eligible_plans = array(), $eligibilities = array() ) {
 		$result = array();
 
 		foreach ( $eligible_plans as $plan_key ) {

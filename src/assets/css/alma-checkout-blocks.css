@@ -6,10 +6,10 @@
  **/
 
 .paymentMethodLabel span {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 0;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: 0;
 }
 
 .paymentMethodLabel span div {
@@ -32,9 +32,9 @@
 }
 
 .toggleButtonField > div:nth-of-type(2) > button {
-    width: 45px;
-    height: 45px;
-    font-size: var(--font-base);
+	width: 45px;
+	height: 45px;
+	font-size: var(--font-base);
 }
 
 .payNow {

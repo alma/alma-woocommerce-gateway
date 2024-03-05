@@ -127,7 +127,7 @@ class Alma_Gateway_Helper {
 	 * Get the title of the Alma Gateway.
 	 *
 	 * @param string  $id The alma gateway type id.
-	 * @param boolean $is_blocks Are we in blocks ?
+	 * @param boolean $is_blocks Are we in blocks.
 	 * @return string
 	 * @throws Alma_Exception Exception.
 	 */
@@ -165,34 +165,36 @@ class Alma_Gateway_Helper {
 	 * @return bool
 	 */
 	public function is_in_page_gateway( $id ) {
-		if ( in_array( $id, Alma_Constants_Helper::$gateways_in_page_ids ) ) {
+		if ( in_array( $id, Alma_Constants_Helper::$gateways_in_page_ids, true ) ) {
 			return true;
 		}
 
 		return false;
 	}
+
 	/**
 	 * Get the title of the Alma Gateway.
 	 *
 	 * @param string  $id The alma gateway type id.
-	 * @param boolean $isBlocks Are we in bloks ?
+	 * @param boolean $is_blocks Are we in blocks.
 	 *
 	 * @return string
 	 * @throws Alma_Exception Exception.
 	 */
-	public function get_alma_gateway_description( $id, $isBlocks = false ) {
+	public function get_alma_gateway_description( $id, $is_blocks = false ) {
 		if ( in_array( $id, Alma_Constants_Helper::$gateways_ids, true ) ) {
-			return $this->alma_settings->get_description( $id, $isBlocks );
+			return $this->alma_settings->get_description( $id, $is_blocks );
 		}
 
 		throw new Alma_Exception( sprintf( 'Unknown gateway id : %s', $id ) );
 
 	}
-		/**
-		 * Check if cart has eligibilities.
-		 *
-		 * @return bool
-		 */
+
+	/**
+	 * Check if cart has eligibilities.
+	 *
+	 * @return bool
+	 */
 	public function is_there_eligibility_in_cart() {
 		return count( $this->alma_settings->get_eligible_plans_keys_for_cart() ) > 0;
 	}
@@ -225,7 +227,6 @@ class Alma_Gateway_Helper {
 
 		return false;
 	}
-
 
 
 	/**

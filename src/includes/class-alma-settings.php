@@ -385,7 +385,7 @@ class Alma_Settings {
 	 * Gets title for a payment method.
 	 *
 	 * @param string $payment_method The payment method.
-	 * @param string $is_blocks Are we in blocks ?
+	 * @param string $is_blocks Are we in blocks.
 	 *
 	 * @return string
 	 */
@@ -401,7 +401,7 @@ class Alma_Settings {
 	 * Gets title for a payment method.
 	 *
 	 * @param string $payment_method The payment method.
-	 * @param string $is_blocks Are we in blocks ?
+	 * @param string $is_blocks Are we in blocks.
 	 *
 	 * @return string
 	 */
@@ -911,8 +911,6 @@ class Alma_Settings {
 	 * @return bool
 	 */
 	public function is_allowed_to_see_alma( \WP_User $user ) {
-		// @todo remove
-		return true;
 		return in_array( 'administrator', $user->roles, true ) || 'live' === $this->get_environment();
 	}
 
@@ -950,7 +948,8 @@ class Alma_Settings {
 	/**
 	 * Get eligible plans keys for current cart.
 	 *
-	 * @param array $cart_eligibilities The eligibilities.
+	 * @param array       $cart_eligibilities The eligibilities.
+	 * @param string|null $gateway_id The gateway id.
 	 * @return array
 	 */
 	public function get_eligible_plans_keys_for_cart( $cart_eligibilities = array(), $gateway_id = null ) {
