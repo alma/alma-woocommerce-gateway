@@ -34,6 +34,7 @@
 .toggleButtonField > div:nth-of-type(2) > button {
     width: 45px;
     height: 45px;
+    font-size: var(--font-base);
 }
 
 .payNow {
