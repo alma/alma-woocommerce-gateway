@@ -268,18 +268,21 @@ class Alma_Payment_Gateway extends \WC_Payment_Gateway {
 	 */
 	public function is_available() {
 		$tools = new Alma_Tools_Helper();
+		global $wp;
 
 		if (
 			! $this->alma_settings->is_allowed_to_see_alma( wp_get_current_user() )
 			|| is_admin()
 			|| ! $tools->check_currency()
+			|| ! is_checkout()
+			|| is_wc_endpoint_url( 'order-pay' )
+			|| ! empty( $wp->query_vars['order-pay'] )
 		) {
 			return false;
 		}
 
 		if (
 			wc()->cart === null
-			|| ! is_checkout()
 		) {
 			return parent::is_available();
 		}

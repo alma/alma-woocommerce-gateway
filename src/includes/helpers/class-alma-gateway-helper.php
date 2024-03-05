@@ -241,7 +241,13 @@ class Alma_Gateway_Helper {
 			return Alma_Constants_Helper::DEFAULT_FEE_PLAN;
 		}
 
-		return array_shift( $plans );
+		$default_plan = array_shift( $plans );
+
+		if ( is_array( $default_plan ) ) {
+			$default_plan = $default_plan[0];
+		}
+
+		return $default_plan;
 	}
 
 	/**
