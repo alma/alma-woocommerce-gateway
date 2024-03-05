@@ -385,10 +385,15 @@ class Alma_Settings {
 	 * Gets title for a payment method.
 	 *
 	 * @param string $payment_method The payment method.
+	 * @param string $is_blocks Are we in blocks ?
 	 *
 	 * @return string
 	 */
-	public function get_title( $payment_method ) {
+	public function get_title( $payment_method, $is_blocks = false ) {
+		if ( $is_blocks ) {
+			return $this->get_i18n( 'title_blocks_' . $payment_method );
+		}
+
 		return $this->get_i18n( 'title_' . $payment_method );
 	}
 
@@ -396,10 +401,15 @@ class Alma_Settings {
 	 * Gets title for a payment method.
 	 *
 	 * @param string $payment_method The payment method.
+	 * @param string $is_blocks Are we in blocks ?
 	 *
 	 * @return string
 	 */
-	public function get_description( $payment_method ) {
+	public function get_description( $payment_method, $is_blocks = false ) {
+		if ( $is_blocks ) {
+			return $this->get_i18n( 'description_blocks_' . $payment_method );
+		}
+
 		return $this->get_i18n( 'description_' . $payment_method );
 	}
 
@@ -960,7 +970,7 @@ class Alma_Settings {
 			}
 		);
 
-		return $alma_plan_builder->order_plans( $eligibilities, $gateway_id);
+		return $alma_plan_builder->order_plans( $eligibilities, $gateway_id );
 	}
 
 	/**

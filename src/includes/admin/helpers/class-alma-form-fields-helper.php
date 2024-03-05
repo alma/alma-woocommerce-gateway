@@ -23,6 +23,7 @@ use Alma\Woocommerce\Helpers\Alma_Fee_Plan_Helper;
 use Alma\Woocommerce\Helpers\Alma_Internationalization_Helper;
 use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
 use Alma\Woocommerce\Helpers\Alma_General_Helper;
+use Alma\Woocommerce\Helpers\Alma_Plugin_Helper;
 use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
 use Alma\Woocommerce\Admin\Builders\Alma_Form_Html_Builder;
 
@@ -54,12 +55,20 @@ class Alma_Form_Fields_Helper {
 	protected $fee_plan_helper;
 
 	/**
+	 * Plugin helper.
+	 *
+	 * @var Alma_Plugin_Helper
+	 */
+	protected $plugin_helper;
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
 		$this->settings_helper      = new Alma_Settings();
 		$this->payment_upon_trigger = new Alma_Payment_Upon_Trigger();
 		$this->fee_plan_helper      = new Alma_Fee_Plan_Helper();
+		$this->plugin_helper        = new Alma_Plugin_Helper();
 	}
 
 
@@ -571,6 +580,12 @@ class Alma_Form_Fields_Helper {
 	 */
 	protected function get_custom_fields_payment_method( $payment_method_name, $title, array $default_settings ) {
 
+		$blocks = '';
+
+		if ( $this->plugin_helper->has_woocommerce_blocks() ) {
+			$blocks = 'blocks_';
+		}
+
 		$fields = array(
 			$payment_method_name => array(
 				'title' => sprintf( '<h4 style="color:#777;font-size:1.15em;">%s</h4>', $title ),
@@ -579,23 +594,23 @@ class Alma_Form_Fields_Helper {
 		);
 
 		$field_payment_method_title = Alma_Internationalization_Helper::generate_i18n_field(
-			'title_' . $payment_method_name,
+			'title_' . $blocks . $payment_method_name,
 			array(
 				'title'       => __( 'Title', 'alma-gateway-for-woocommerce' ),
 				'description' => __( 'This controls the payment method name which the user sees during checkout.', 'alma-gateway-for-woocommerce' ),
 				'desc_tip'    => true,
 			),
-			$default_settings[ 'title_' . $payment_method_name ]
+			$default_settings[ 'title_' . $blocks . $payment_method_name ]
 		);
 
 		$field_payment_method_description = Alma_Internationalization_Helper::generate_i18n_field(
-			'description_' . $payment_method_name,
+			'description_' . $blocks . $payment_method_name,
 			array(
 				'title'       => __( 'Description', 'alma-gateway-for-woocommerce' ),
 				'desc_tip'    => true,
 				'description' => __( 'This controls the payment method description which the user sees during checkout.', 'alma-gateway-for-woocommerce' ),
 			),
-			$default_settings[ 'description_' . $payment_method_name ]
+			$default_settings[ 'description_' . $blocks . $payment_method_name ]
 		);
 
 		return array_merge(

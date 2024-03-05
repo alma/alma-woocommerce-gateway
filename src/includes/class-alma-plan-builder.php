@@ -176,11 +176,11 @@ class Alma_Plan_Builder {
 	/**
 	 * Orders the plans.
 	 *
-	 * @param array $eligible_plans The plans.
+	 * @param array  $eligible_plans The plans.
 	 * @param string $gateway_id The Gateway id.
 	 * @return array    The sorted plans.
 	 */
-	public function order_plans( $eligible_plans = array() , $gateway_id = null) {
+	public function order_plans( $eligible_plans = array(), $gateway_id = null ) {
 		$eligible_plans_by_type = array(
 			Alma_Constants_Helper::GATEWAY_ID_PAY_NOW   => array(),
 			Alma_Constants_Helper::GATEWAY_ID           => array(),
@@ -209,23 +209,22 @@ class Alma_Plan_Builder {
 			}
 		}
 
-        if(null !== $gateway_id) {
-            return $result[$gateway_id];
-        }
+		if ( null !== $gateway_id ) {
+			return $result[ $gateway_id ];
+		}
 
 		return $result;
 	}
 
-    public function getPlansByKeys($eligible_plans = array(), $eligibilities = array() )
-    {
-        $result = array();
+	public function getPlansByKeys( $eligible_plans = array(), $eligibilities = array() ) {
+		$result = array();
 
-        foreach ($eligible_plans as $plan_key){
-            if(isset($eligibilities[$plan_key])) {
-                $result[$plan_key] = $eligibilities[$plan_key];
-            }
-        }
+		foreach ( $eligible_plans as $plan_key ) {
+			if ( isset( $eligibilities[ $plan_key ] ) ) {
+				$result[ $plan_key ] = $eligibilities[ $plan_key ];
+			}
+		}
 
-        return $result;
-    }
+		return $result;
+	}
 }
