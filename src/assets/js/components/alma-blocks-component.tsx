@@ -66,7 +66,11 @@ export const AlmaBlocks: React.FC<AlmaBlocksProps> = (
 
   Object.keys(settings.plans).forEach(function (key, index) {
     values.push(key);
-    labels[key] = settings.plans[key].installmentsCount + "x";
+    if (settings.gateway_name === "alma_pay_later") {
+      labels[key] = "+" + settings.plans[key].deferredDays;
+    } else {
+      labels[key] = settings.plans[key].installmentsCount + "x";
+    }
   });
 
   const handleClick = (optionKey) => {
