@@ -44,12 +44,12 @@ import '../css/alma-checkout-blocks.css'
         function DisplayAlmaBlocks(props) {
             const [selectedFeePlan, setSelectedFeePlan] = useState(settings.default_plan)
             const {eventRegistration, emitResponse} = props;
-            
+
             if (!settings.is_in_page) {
-                const {onPaymentProcessing} = eventRegistration;
+                const {onPaymentSetup} = eventRegistration;
                 useEffect(
                     () => {
-                        const unsubscribe = onPaymentProcessing(
+                        const unsubscribe = onPaymentSetup(
                             async () => {
                                 // Here we can do any processing we need, and then emit a response.
                                 // For example, we might validate a custom field, or perform an AJAX request, and then emit a response indicating it is valid or not.
@@ -76,7 +76,8 @@ import '../css/alma-checkout-blocks.css'
                     [
                         emitResponse.responseTypes.ERROR,
                         emitResponse.responseTypes.SUCCESS,
-                        onPaymentProcessing,
+                        onPaymentSetup,
+                        selectedFeePlan
                     ]
                 );
                 return (
@@ -96,6 +97,7 @@ import '../css/alma-checkout-blocks.css'
             return <div id='alma-inpage-alma_in_page_pay_now'></div>; // phpcs:ignore
 
         }
+
 
         const Block_Gateway_Alma = {
             name: settings.gateway_name,
