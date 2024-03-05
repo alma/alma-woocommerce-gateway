@@ -42,7 +42,7 @@ import '../css/alma-checkout-blocks.css'
 
 
         function DisplayAlmaBlocks(props) {
-            const [selectedFeePlan, setSelectedFeePlan] = useState(settings.default_plan[0])
+            const [selectedFeePlan, setSelectedFeePlan] = useState(settings.default_plan)
             const {eventRegistration, emitResponse} = props;
             
             if (!settings.is_in_page) {

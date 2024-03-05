@@ -943,7 +943,7 @@ class Alma_Settings {
 	 * @param array $cart_eligibilities The eligibilities.
 	 * @return array
 	 */
-	public function get_eligible_plans_keys_for_cart( $cart_eligibilities = array() ) {
+	public function get_eligible_plans_keys_for_cart( $cart_eligibilities = array(), $gateway_id = null ) {
 		$alma_plan_builder = new Alma_Plan_Builder();
 		if ( empty( $cart_eligibilities ) ) {
 			$cart_eligibilities = $this->get_cart_eligibilities();
@@ -960,7 +960,7 @@ class Alma_Settings {
 			}
 		);
 
-		return $alma_plan_builder->order_plans( $eligibilities );
+		return $alma_plan_builder->order_plans( $eligibilities, $gateway_id);
 	}
 
 	/**

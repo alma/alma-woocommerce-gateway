@@ -39,7 +39,7 @@ export type FeePlan = {
 type Settings = {
   default_plan: string[];
   description: string;
-  eligibilities: Record<string, FeePlan>;
+  plans: Record<string, FeePlan>;
   gateway_name: string;
   is_in_page: boolean;
   label_button: string;
@@ -61,9 +61,9 @@ export const AlmaBlocks: React.FC<AlmaBlocksProps> = ({
   const labels = {};
   let values = [];
 
-  Object.keys(settings.eligibilities).forEach(function (key, index) {
+  Object.keys(settings.plans).forEach(function (key, index) {
     values.push(key);
-    labels[key] = settings.eligibilities[key].installmentsCount + "x";
+    labels[key] = settings.plans[key].installmentsCount + "x";
   });
 
   const handleClick = (optionKey) => {
@@ -89,7 +89,7 @@ export const AlmaBlocks: React.FC<AlmaBlocksProps> = ({
           error=""
         />
         <div className="alma-card-installments">
-          <Installments feePlan={settings.eligibilities[selectedFeePlan]} amountInCents={settings.amount_in_cents} />
+          <Installments feePlan={settings.plans[selectedFeePlan]} amountInCents={settings.amount_in_cents} />
         </div>
       </IntlProvider>
     </>

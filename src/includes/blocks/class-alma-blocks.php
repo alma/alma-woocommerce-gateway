@@ -18,6 +18,7 @@ use Alma\Woocommerce\Helpers\Alma_Gateway_Helper;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
 use Alma\Woocommerce\Helpers\Alma_Assets_Helper;
 use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
+use Alma\Woocommerce\Alma_Plan_Builder;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -56,7 +57,12 @@ class Alma_Blocks extends AbstractPaymentMethodType {
 	 */
 	protected $cart_helper;
 
-	/**
+    /**
+     * @var Alma_Plan_Builder
+     */
+    protected $alma_plan_builder;
+
+    /**
 	 * Initialize.
 	 *
 	 * @return void
@@ -67,6 +73,7 @@ class Alma_Blocks extends AbstractPaymentMethodType {
 		$this->alma_settings   = new Alma_Settings();
 		$this->checkout_helper = new Alma_Checkout_Helper();
 		$this->cart_helper     = new Alma_Cart_Helper();
+        $this->alma_plan_builder = new Alma_Plan_Builder();
 	}
 
 	/**
@@ -139,7 +146,8 @@ class Alma_Blocks extends AbstractPaymentMethodType {
 
 		// We get the eligibilites.
 		$eligibilities  = $this->alma_settings->get_cart_eligibilities();
-		$eligible_plans = $this->alma_settings->get_eligible_plans_keys_for_cart( $eligibilities );
+		$eligible_plans = $this->alma_settings->get_eligible_plans_keys_for_cart( $eligibilities, $this->gateway->id );
+        $plans = $this->alma_plan_builder->getPlansByKeys($eligible_plans, $eligibilities);
 
 		$default_plan = $this->gateway_helper->get_default_plan( $eligible_plans );
 
@@ -150,7 +158,7 @@ class Alma_Blocks extends AbstractPaymentMethodType {
 			'description'   => $this->gateway_helper->get_alma_gateway_description( $this->gateway->id ),
 			'gateway_name'  => $this->gateway->id,
 			'default_plan'  => $default_plan,
-			'eligibilities' => $eligibilities,
+			'plans' => $plans,
 			'nonce_value'   => $nonce_value,
 			'label_button'  => __( 'Pay With Alma', 'alma-gateway-for-woocommerce' ),
 			'is_in_page'    => $is_in_page,
