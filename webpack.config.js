@@ -1,5 +1,5 @@
-const path = require( 'path' );
-const defaultConfig = require( '@wordpress/scripts/config/webpack.config');
+const path = require('path');
+const defaultConfig = require('@wordpress/scripts/config/webpack.config');
 
 const config = {
     ...defaultConfig,
@@ -10,6 +10,24 @@ const config = {
     },
     output: {
         path: path.resolve(process.cwd(), 'src', 'build'),
+    },
+    target: 'node',
+    module: {
+        rules: [
+            ...defaultConfig.module.rules,
+            {
+                test: /\.css$/,
+                use: [
+                    "style-loader",
+                    "css-loader",
+                    "postcss-loader",
+                    {
+                        loader: 'sass-loader',
+                    },
+                ],
+                include: path.resolve(__dirname, '../src/build'),
+            },
+        ],
     },
 }
 

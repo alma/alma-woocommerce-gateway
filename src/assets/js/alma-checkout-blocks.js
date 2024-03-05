@@ -9,7 +9,10 @@
 
 // phpcs:ignoreFile
 
-import {useEffect} from '@wordpress/element';
+import {useEffect, useState} from '@wordpress/element';
+import {Logo} from '@alma/react-components'
+import {AlmaBlocks} from "./components/alma-blocks-component.tsx";
+import '../css/alma-checkout-blocks.css'
 
 (function ($) {
 
@@ -26,10 +29,22 @@ import {useEffect} from '@wordpress/element';
         if (!settings) {
             continue;
         }
-        const label = window.wp.htmlEntities.decodeEntities(settings.title);
-        const Content = (props) => {
-            const {eventRegistration, emitResponse} = props;
 
+        const label = window.wp.htmlEntities.decodeEntities(settings.title);
+        const Label = props => {
+            const {PaymentMethodLabel} = props.components;
+            const icon = <Logo style={{width: 'auto', height: '1em'}} logo="alma-orange"/>
+            const text = <div>{settings.title}</div>
+            return <span className='paymentMethodLabel'>
+                <PaymentMethodLabel text={text} icon={icon}/>
+            </span>
+        };
+
+
+        function DisplayAlmaBlocks(props) {
+            const [selectedFeePlan, setSelectedFeePlan] = useState(settings.default_plan)
+            const {eventRegistration, emitResponse} = props;
+            
             if (!settings.is_in_page) {
                 const {onPaymentProcessing} = eventRegistration;
                 useEffect(
@@ -41,7 +56,7 @@ import {useEffect} from '@wordpress/element';
                                 const nonceKey = `alma_checkout_nonce${settings.gateway_name}`;
                                 const paymentMethodData = {
                                     [nonceKey]: `${settings.nonce_value}`,
-                                    alma_fee_plan: 'general_10_0_0',
+                                    alma_fee_plan: selectedFeePlan,
                                     payment_method: settings.gateway_name,
                                 }
 
@@ -64,11 +79,11 @@ import {useEffect} from '@wordpress/element';
                         onPaymentProcessing,
                     ]
                 );
-
-                return settings.description;
+                return (
+                    <AlmaBlocks settings={settings} selectedFeePlan={selectedFeePlan} setSelectedFeePlan={setSelectedFeePlan}/>
+                )
             }
 
-            console.log(props)
             // removeEventListener('onCheckoutBeforeProcessing')
             billingAddress = props.billing.billingAddress
 
@@ -79,13 +94,14 @@ import {useEffect} from '@wordpress/element';
             // customerNote = props.customerNote
 
             return <div id='alma-inpage-alma_in_page_pay_now'></div>; // phpcs:ignore
-        };
+
+        }
 
         const Block_Gateway_Alma = {
             name: settings.gateway_name,
-            label: label,
-            content: < Content/>, // phpcs:ignore
-            edit: < Content/>,  // phpcs:ignore
+            label: <Label/>,
+            content: <DisplayAlmaBlocks/>, // phpcs:ignore
+            edit: <DisplayAlmaBlocks/>,  // phpcs:ignore
             placeOrderButtonLabel: settings.label_button,
             canMakePayment: () => true,
             ariaLabel: label
@@ -96,8 +112,8 @@ import {useEffect} from '@wordpress/element';
         if (settings.is_in_page) {
             hasInPage = true
         }
-
     }
+
 
     window.addEventListener(
         'load',
@@ -124,7 +140,7 @@ import {useEffect} from '@wordpress/element';
 
             function isAlmaInPageChecked() {
                 // verif that the paiment type method is in page.
-                return true
+                return hasInPage
             }
 
             function add_loader() {
@@ -143,7 +159,7 @@ import {useEffect} from '@wordpress/element';
 
             if (hasInPage) {
                 var settingsInPage = window.wc.wcSettings.getSetting('alma_in_page_pay_now_data', null);
-
+                
                 initializeInpage(settingsInPage);
             }
             document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].addEventListener(

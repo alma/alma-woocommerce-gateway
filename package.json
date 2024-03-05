@@ -21,6 +21,15 @@
   },
   "homepage": "https://github.com/alma/alma-woocommerce-gateway#readme",
   "devDependencies": {
-    "@wordpress/scripts": "^27.2.0"
+    "@babel/preset-react": "^7.23.3",
+    "@wordpress/element": "^5.29.0",
+    "@wordpress/scripts": "^27.2.0",
+    "css-loader": "^6.10.0",
+    "style-loader": "^3.3.4"
+  },
+  "dependencies": {
+    "@alma/react-components": "^2.37.1",
+    "postcss": "^8.4.35",
+    "react-intl": "^6.6.2"
   }
 }

@@ -184,6 +184,7 @@ class Alma_Plugin_Helper {
 				$payment_method_registry->register( new Alma_Blocks_Pay_Later() );
 				$payment_method_registry->register( new Alma_Blocks_Pay_More_Than_Four() );
 				$payment_method_registry->register( new \Alma\Woocommerce\Blocks\Inpage\Alma_Blocks_Pay_Now() );
+				$payment_method_registry->register( new \Alma\Woocommerce\Blocks\Inpage\Alma_Blocks_In_Page() );
 			}
 		);
 	}
