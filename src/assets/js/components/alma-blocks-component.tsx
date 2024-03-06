@@ -46,6 +46,7 @@ type Settings = {
   label_button: string;
   nonce_value: string;
   title: string;
+  amount_in_cents: number;
 };
 
 type AlmaBlocksProps = {
@@ -61,15 +62,16 @@ export const AlmaBlocks: React.FC<AlmaBlocksProps> = (
     setSelectedFeePlan,
   }
 ) => {
-  const labels = {};
-  let values = [];
+  const labels: Record<string, string> = {};
+  let values: string[] = [];
 
   Object.keys(settings.plans).forEach(function (key, index) {
     values.push(key);
     if (settings.gateway_name === "alma_pay_later") {
-      if (settings.plans[key].deferredDays > 0){
+      const { deferredDays, deferredMonths } = settings.plans[key];
+      if (deferredDays && deferredDays > 0){
         labels[key] = "D+" + settings.plans[key].deferredDays;
-      } else if (settings.plans[key].deferredMonths > 0){
+      } else if (deferredMonths && deferredMonths > 0){
         labels[key] = "M+" + settings.plans[key].deferredMonths;
       }
     } else {
@@ -77,7 +79,7 @@ export const AlmaBlocks: React.FC<AlmaBlocksProps> = (
     }
   });
 
-  const handleClick = (optionKey) => {
+  const handleClick = (optionKey: string) => {
     setSelectedFeePlan(optionKey);
   };
 
@@ -87,7 +89,7 @@ export const AlmaBlocks: React.FC<AlmaBlocksProps> = (
     <div className="toggleButtonFieldLabel">{settings.description}</div>
   );
   return (
-    <>
+    <div>
       <IntlProvider locale="fr">
         {isPayNow && <div className={"payNowLabel"}>{label}</div>}
         <div className={classNames({payNow: isPayNow})}>
@@ -108,6 +110,6 @@ export const AlmaBlocks: React.FC<AlmaBlocksProps> = (
           <Installments feePlan={settings.plans[selectedFeePlan]} amountInCents={settings.amount_in_cents}/>
         </div>
       </IntlProvider>
-    </>
+    </div>
   );
 };
