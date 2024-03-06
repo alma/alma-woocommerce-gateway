@@ -8,7 +8,8 @@
     "build": "wp-scripts build --webpack-src-dir=src/assets/js/blocks",
     "format": "wp-scripts format --webpack-src-dir=src/assets/js/blocks",
     "lint:css": "wp-scripts lint-style --webpack-src-dir=src/assets/js/blocks",
-    "lint:js": "wp-scripts lint-js --webpack-src-dir=src/assets/js/blocks"
+    "lint:js": "wp-scripts lint-js",
+    "test:unit": "wp-scripts test-unit-js --config jest.config.js"
   },
   "repository": {
     "type": "git",
@@ -22,9 +23,12 @@
   "homepage": "https://github.com/alma/alma-woocommerce-gateway#readme",
   "devDependencies": {
     "@babel/preset-react": "^7.23.3",
+    "@testing-library/react": "^14.2.1",
+    "@types/jest": "^29.5.12",
     "@wordpress/element": "^5.29.0",
     "@wordpress/scripts": "^27.2.0",
     "css-loader": "^6.10.0",
+    "jest-css-modules": "^2.1.0",
     "style-loader": "^3.3.4"
   },
   "dependencies": {

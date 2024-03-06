@@ -10,3 +10,4 @@ src/composer.lock
 crowdin.yml
 node_modules/
 .npmrc
+coverage/
