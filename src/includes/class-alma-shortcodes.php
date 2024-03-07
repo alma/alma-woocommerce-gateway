@@ -100,7 +100,7 @@ class Alma_Shortcodes {
 	 * @return string the rendered eligibility widget to inject
 	 */
 	protected function render( $shortcode_tag, $atts, $alma_content, $shortcode_content = '' ) {
-		$class         = isset( $atts['class'] ) ? $atts['class'] : '';
+		$class         = isset( $atts['class'] ) ? htmlspecialchars($atts['class']) : '';
 		$style         = '';
 		$debug_content = '';
 		if ( $this->is_debug( $atts ) ) {
@@ -110,7 +110,15 @@ class Alma_Shortcodes {
 			$debug_content = sprintf( '<div style="%s">%s</div>', $style_title, $shortcode_tag );
 		}
 
-		return sprintf( '<div class="%s %s" style="%s">%s<div class="alma_wc_content">%s</div>%s</div>', $shortcode_tag, $class, $style, $debug_content, do_shortcode( $shortcode_content ), $alma_content );
+		return sprintf(
+            '<div class="%s %s" style="%s">%s<div class="alma_wc_content">%s</div>%s</div>',
+            $shortcode_tag,
+            $class,
+            $style,
+            $debug_content,
+            do_shortcode( $shortcode_content ),
+            $alma_content
+        );
 
 	}
 
