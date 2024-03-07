@@ -1,6 +1,10 @@
 Changelog
 =========
 
+v5.2.1
+------
+* fix: shortcode widget for XSS injection
+
 v5.2.0
 ------
 * feature : HPOS compatibility
