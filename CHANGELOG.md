@@ -5,6 +5,10 @@ Changelog
 * fix : delete abandoned orders created by In Page
 * fix: default plan selection
 
+v5.2.1
+------
+* fix: shortcode widget for XSS injection
+
 v5.2.0
 ------
 * feature : HPOS compatibility
