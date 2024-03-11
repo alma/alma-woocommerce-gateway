@@ -1046,6 +1046,7 @@ class Alma_Settings {
 					&& ( $this->get_deferred_days( $plan_key ) === 0 && $this->get_deferred_months( $plan_key ) === 0 )
 				);
 			case Alma_Constants_Helper::GATEWAY_ID_PAY_LATER:
+			case Alma_Constants_Helper::GATEWAY_ID_IN_PAGE_PAY_LATER:
 				return (
 					$this->get_installments_count( $plan_key ) === 1
 					&& ( $this->get_deferred_days( $plan_key ) !== 0 || $this->get_deferred_months( $plan_key ) !== 0 )

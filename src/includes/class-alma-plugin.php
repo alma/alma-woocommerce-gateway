@@ -187,6 +187,9 @@ class Alma_Plugin {
 		if ( ! is_admin() ) {
 			$gateways[] = \Alma\Woocommerce\Gateways\Inpage\Alma_Payment_Gateway_Pay_Now::class;
 			$gateways[] = Alma_Payment_Gateway_Pay_Now::class;
+			$gateways[] = \Alma\Woocommerce\Gateways\Inpage\Alma_Payment_Gateway_Pay_Later::class;
+			$gateways[] = Alma_Payment_Gateway_Pay_Later::class;
+
 		}
 
 		$gateways[] = Alma_Payment_Gateway_Standard::class;
@@ -194,7 +197,6 @@ class Alma_Plugin {
 		if ( ! is_admin() ) {
 			$gateways[] = Alma_Payment_Gateway_In_Page::class;
 			$gateways[] = Alma_Payment_Gateway_Pay_More_Than_Four::class;
-			$gateways[] = Alma_Payment_Gateway_Pay_Later::class;
 		}
 
 		return $gateways;

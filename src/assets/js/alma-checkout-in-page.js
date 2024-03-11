@@ -95,7 +95,9 @@
 	}
 
 	function isAlmaInPageChecked() {
-		return $( '#payment_method_alma_in_page' ).is( ':checked' ) || $( '#payment_method_alma_in_page_pay_now' ).is( ':checked' );
+		return $( '#payment_method_alma_in_page' ).is( ':checked' )
+			|| $( '#payment_method_alma_in_page_pay_now' ).is( ':checked' )
+			|| $( '#payment_method_alma_in_page_pay_later' ).is( ':checked' );
 	}
 
 	$( 'body' ).on(
