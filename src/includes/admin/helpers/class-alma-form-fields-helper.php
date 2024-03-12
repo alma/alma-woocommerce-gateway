@@ -184,7 +184,6 @@ class Alma_Form_Fields_Helper {
 	 * @return array
 	 */
 	public function init_inpage_fields( $default_settings ) {
-		if ( 'yes' === $this->settings_helper->settings['inpage_allowed'] ) {
 			return array(
 				'display_section' => array(
 					'title' => '<hr>' . __( '→ Display options', 'alma-gateway-for-woocommerce' ),
@@ -198,9 +197,6 @@ class Alma_Form_Fields_Helper {
 					'default' => $default_settings['display_in_page'],
 				),
 			);
-		}
-
-		return array();
 	}
 
 	/**
@@ -436,10 +432,24 @@ class Alma_Form_Fields_Helper {
 				);
 			}
 		}
-		$fees_applied          = __( 'Fees applied to each transaction for this plan:', 'alma-gateway-for-woocommerce' );
-		$you_pay               = Alma_Form_Html_Builder::generate_fee_to_pay_description( __( 'You pay:', 'alma-gateway-for-woocommerce' ), $merchant_fee_variable, $merchant_fee_fixed );
-		$customer_pays         = Alma_Form_Html_Builder::generate_fee_to_pay_description( __( 'Customer pays:', 'alma-gateway-for-woocommerce' ), $customer_fee_variable, $customer_fee_fixed );
-		$customer_lending_pays = Alma_Form_Html_Builder::generate_fee_to_pay_description( __( 'Customer lending rate:', 'alma-gateway-for-woocommerce' ), $customer_lending_rate, 0 );
+		$fees_applied  = __( 'Fees applied to each transaction for this plan:', 'alma-gateway-for-woocommerce' );
+		$you_pay       = Alma_Form_Html_Builder::generate_fee_to_pay_description(
+			__( 'You pay:', 'alma-gateway-for-woocommerce' ),
+			$merchant_fee_variable,
+			$merchant_fee_fixed
+		);
+		$customer_pays = Alma_Form_Html_Builder::generate_fee_to_pay_description(
+			__( 'Customer pays:', 'alma-gateway-for-woocommerce' ),
+			$customer_fee_variable,
+			$customer_fee_fixed,
+			// translators: %s Link to alma dashboard.
+			'<br>' . sprintf( __( '<u>Note</u>: Customer fees are impacted by the usury rate, and will be adapted based on the limitations to comply with regulations. For more information, visit the Configuration page on your <a href="%s" target="_blank">Alma Dashboard</a>.', 'alma-gateway-for-woocommerce' ), Alma_Assets_Helper::get_alma_dashboard_url( $this->settings_helper->get_environment(), 'conditions' ) )
+		);
+		$customer_lending_pays = Alma_Form_Html_Builder::generate_fee_to_pay_description(
+			__( 'Customer lending rate:', 'alma-gateway-for-woocommerce' ),
+			$customer_lending_rate,
+			0
+		);
 
 		return sprintf( '<p>%s<br>%s %s %s %s</p>', $you_can_offer, $fees_applied, $you_pay, $customer_pays, $customer_lending_pays );
 	}

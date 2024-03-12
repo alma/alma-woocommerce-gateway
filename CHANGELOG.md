@@ -1,6 +1,51 @@
 Changelog
 =========
 
+* fix: deactivate rendering of Alma payment methods on order pay checkout page
+* fix : delete abandoned orders created by In Page
+* fix: default plan selection
+
+v5.2.1
+------
+* fix: shortcode widget for XSS injection
+
+v5.2.0
+------
+* feature : HPOS compatibility
+* feat: Update translations
+* fix: widget XSS
+
+v5.1.4
+------
+* feat: compatibility Woocommerce 8.2.1
+* feat: change fee wording in the BO
+* fix: In page installment plans
+ 
+v5.1.3
+------
+* fix: update issues from version 1.* and 2.*
+* feat: compatibility Woocommerce 8.2.0
+* feat: Compatibility WordPress 6.3.1
+* feat: Update Widget version 3.3.8
+
+v5.1.2
+------
+* fix: svn marketplace activation issue
+
+v5.1.1
+------
+* fix: css incompatibility with plugin Yith Woocommerce Checkout Manager 
+
+v5.1.0
+------
+* feature : In Page checkout for all merchants
+* feat: Update Widget version 3.3.6
+
+v5.0.6
+------
+* hotfix: Show form errors on checkout in-page when some information are missing for the form
+* hotfix: Add method payment description for In Page methods
+
 v5.0.5
 ------
 * hotfix: fix compatibility betwen In-Page mode and some plugins(colissimo, ...)

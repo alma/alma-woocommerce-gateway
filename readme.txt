@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 4.4
 Tested up to: 6.3
 Requires PHP: 5.6
-Stable tag: 5.0.5
+Stable tag: 5.2.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,43 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+* fix: deactivate rendering of Alma payment methods on order pay checkout page
+* fix : delete abandoned orders created by In Page
+* fix: default plan selection
+
+= 5.2.1 =
+* fix: shortcode widget for XSS injection
+
+= 5.2.0 =
+* feat: Update translations
+* fix: widget XSS
+* feature : HPOS compatibility
+
+= 5.1.4 =
+* feat: Compatibility Woocommerce 8.2.1
+* feat: change fee wording in the BO
+* fix: In page installment plans
+
+= 5.1.3 =
+* fix: update issues from version 1.* and 2.*
+* feat: Compatibility WordPress 6.3.2
+* feat: Compatibility Woocommerce 8.2.0
+* feat: Update Widget version 3.3.8
+
+= 5.1.2 =
+* fix: svn marketplace activation issue
+
+= 5.1.1 =
+* fix: css incompatibility with plugin Yith Woocommerce Checkout Manager
+
+= 5.1.0 =
+* feature : In Page checkout for all merchants
+* feat: Update Widget version 3.3.6
+
+= 5.0.6 =
+* hotfix: Show form errors on checkout in-page when some information are missing for the form
+* hotfix: Add method payment description for In Page methods
 
 = 5.0.5 =
 * hotfix: fix compatibility betwen In-Page mode and some plugins(colissimo, ...)

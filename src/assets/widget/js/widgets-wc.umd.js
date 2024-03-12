@@ -1700,7 +1700,7 @@
       }
 
       function polyfillClassList(ele) {
-        if (!ele || !('innerHTML' in ele)) throw TypeError('Illegal invocation');
+        if (!ele || !('innerText' in ele)) throw TypeError('Illegal invocation');
         ele.detachEvent('onpropertychange', whenPropChanges); // prevent duplicate handler infinite loop
 
         allowTokenListConstruction = 1;
@@ -6727,7 +6727,7 @@
   	"eligibility-modal.p1x-bullet-3": "<strong> Ihre Zahlung wird sofort bestätigt! </strong>",
   	"eligibility-modal.title-deferred-plan": "Zahlen Sie mit Alma in Raten oder später.",
   	"eligibility-modal.title-normal": "Zahlen Sie mit Alma in mehreren Raten.",
-  	"eligibility-modal.title-pay-now": "Bezahlen Sie mit Alma bar per Kreditkarte.",
+  	"eligibility-modal.title-pay-now": "Bezahlen Sie auf einmal mit Alma per Kreditkarte.",
   	"installments.today": "Heute",
   	"installments.total-amount": "Gesamtsumme",
   	"installments.total-fees": "Davon Kosten",
@@ -6740,7 +6740,7 @@
   	"payment-plan-strings.multiple-installments": "{numberOfRemainingInstallments, plural, one {{firstInstallmentAmount} dann {numberOfRemainingInstallments} x {othersInstallmentAmount}} other {{firstInstallmentAmount} dann {numberOfRemainingInstallments} x {othersInstallmentAmount}}}",
   	"payment-plan-strings.multiple-installments-same-amount": "{installmentsCount} x {totalAmount}",
   	"payment-plan-strings.no-fee": "(0% Finanzierung)",
-  	"payment-plan-strings.pay-now": "Jetzt bezahlen {totalAmount}",
+  	"payment-plan-strings.pay-now": "Zahlen Sie jetzt {totalAmount}",
   	"payment-plan-strings.pay.now.button": "Jetzt bezahlen"
   };
 
@@ -6779,15 +6779,15 @@
   	"credit-features.information": "Un préstamo te compromete y debe ser devuelto. Comprueba tu capacidad financiera antes de comprometerte.",
   	"credit-features.total-credit-cost": "Coste de crédito (incl. en el total)",
   	"eligibility-modal.bullet-1": "Elige <strong>Alma</strong> como método de pago.",
-  	"eligibility-modal.bullet-2": "Déjese guiar y valide su pago en <strong>2 minutos.</strong>",
-  	"eligibility-modal.bullet-3": "<strong>Mantenga el control</strong> adelantando o retrasando los plazos a su propio ritmo.",
+  	"eligibility-modal.bullet-2": "Déjate guiar y válida tu pago en <strong>2 minutos.</strong>",
+  	"eligibility-modal.bullet-3": "<strong>Mantén el control</strong> adelantando o retrasando los plazos a su propio ritmo.",
   	"eligibility-modal.no-eligibility": "Uy, parece que la simulación no ha funcionado.",
-  	"eligibility-modal.p1x-bullet-1": "Elija <strong>Alma - Pagar ahora</strong> en la caja.",
-  	"eligibility-modal.p1x-bullet-2": "Introduzca los datos de su tarjeta de crédito en <strong>.</strong>",
-  	"eligibility-modal.p1x-bullet-3": "<strong>¡La validación </strong> de su pago es instantánea!",
+  	"eligibility-modal.p1x-bullet-1": "Elije <strong>Alma - Pagar ahora</strong> al momento de la compra.",
+  	"eligibility-modal.p1x-bullet-2": "Introduzca los datos de tu tarjeta bancaria en <strong>.</strong>",
+  	"eligibility-modal.p1x-bullet-3": "<strong>¡La validación </strong> de tu pago es instantánea!",
   	"eligibility-modal.title-deferred-plan": "Paga a plazos o posteriormente con tarjeta bancaria con Alma.",
   	"eligibility-modal.title-normal": "Pagar a plazos con tarjeta bancaria con Alma.",
-  	"eligibility-modal.title-pay-now": "Pague en efectivo con tarjeta de crédito con Alma.",
+  	"eligibility-modal.title-pay-now": "Paga de contado con tu tarjeta bancaria a través de alma.",
   	"installments.today": "Hoy",
   	"installments.total-amount": "Total",
   	"installments.total-fees": "De los cuales, costes (IVA incluido)",
@@ -6847,7 +6847,7 @@
   	"eligibility-modal.p1x-bullet-3": "Ricevi la conferma di pagamento <strong>istantaneamente!</strong>",
   	"eligibility-modal.title-deferred-plan": "Paga a rate con Alma, senza registrazione.",
   	"eligibility-modal.title-normal": "Paga a rate con Alma, senza registrazione.",
-  	"eligibility-modal.title-pay-now": "Pagare in contanti con carta di credito con Alma.",
+  	"eligibility-modal.title-pay-now": "Paga ora con carta tramite Alma.",
   	"installments.today": "Oggi",
   	"installments.total-amount": "Totale",
   	"installments.total-fees": "Di cui commissioni",
@@ -6868,24 +6868,24 @@
   	"credit-features.credit-cost-display": "{creditCost} (gemiddeld rente percentage {taegPercentage})",
   	"credit-features.information": "Een lening is bindend en moet worden terugbetaald. Ga na of je het kunt terugbetalen voordat je jezelf vastlegt.",
   	"credit-features.total-credit-cost": "Waarvan kredietkosten",
-  	"eligibility-modal.bullet-1": "Kies <strong>Alma</strong> bij het afrekenen.",
-  	"eligibility-modal.bullet-2": "Laat ons je begeleiden en jouw betaling valideren in <strong>2 minuten.</strong>",
-  	"eligibility-modal.bullet-3": "<strong>Behoudt de controle</strong> door jouw deadlines op je eigen tempo vooruit of achteruit te schuiven.",
+  	"eligibility-modal.bullet-1": "Kies <strong>Alma</strong> bij het afrekenen om de eerste termijnbetaling te voldoen. Dit kan gemakkelijk via jouw favoriete betaalmethode.",
+  	"eligibility-modal.bullet-2": "Betaal gemakkelijk <strong>binnen 1 minuut </strong>. Je hebt hier geen account voor nodig.",
+  	"eligibility-modal.bullet-3": "<strong>Behoudt de controle </strong> en bepaal je eigen tempo. Bij Alma schuif je de deadlines gemakkelijk vooruit of achteruit. Zonder bijkomende kosten.",
   	"eligibility-modal.no-eligibility": "Oeps, het lijkt erop dat de simulatie niet werkte.",
-  	"eligibility-modal.p1x-bullet-1": "Kies <strong>Alma - Betaal nu</strong> bij het afrekenen.",
-  	"eligibility-modal.p1x-bullet-2": "Vul jouw <strong>creditcardgegevens </strong> in.",
+  	"eligibility-modal.p1x-bullet-1": "Kies <strong>Alma - Betaal nu</strong> bij het afrekenen om de eerste termijnbetaling te voldoen. Dit kan gemakkelijk via jouw favoriete betaalmethode.",
+  	"eligibility-modal.p1x-bullet-2": "Vul jouw <strong>gegevens </strong> in",
   	"eligibility-modal.p1x-bullet-3": "<strong>De bevestiging </strong> van jouw betaling is onmiddellijk!",
-  	"eligibility-modal.title-deferred-plan": "Betaal in termijnen of later via iDEAL of per creditcard met Alma.",
-  	"eligibility-modal.title-normal": "Betaal in termijnen met iDEAL of creditcard bij Alma.",
-  	"eligibility-modal.title-pay-now": "Betaal contant met creditcard bij Alma.",
-  	"installments.today": "Tegenwoordig",
+  	"eligibility-modal.title-deferred-plan": "Betaal in termijnen bij Alma - helemaal rentevrij.",
+  	"eligibility-modal.title-normal": "Betaal in termijnen bij Alma - helemaal rentevrij.",
+  	"eligibility-modal.title-pay-now": "Betaal met iDEAL of per creditcard bij Alma.",
+  	"installments.today": "Vandaag",
   	"installments.total-amount": "Totaal",
   	"installments.total-fees": "Waarvan kosten (incl. BTW)",
   	"payment-plan-strings.day-abbreviation": "D{deferredDays}",
-  	"payment-plan-strings.default-message": "Betaal in termijnen met Alma",
+  	"payment-plan-strings.default-message": "Betaal in termijnen bij Alma - helemaal rentevrij",
   	"payment-plan-strings.deferred": "{totalAmount} te betalen op {dueDate}",
   	"payment-plan-strings.ineligible-greater-than-max": "Tot {maxAmount}",
-  	"payment-plan-strings.ineligible-lower-than-min": "Van {minAmount}",
+  	"payment-plan-strings.ineligible-lower-than-min": "Vanaf {minAmount}",
   	"payment-plan-strings.month-abbreviation": "M{deferredMonths}",
   	"payment-plan-strings.multiple-installments": "{numberOfRemainingInstallments, plural, one {{firstInstallmentAmount} dan {numberOfRemainingInstallments} x {othersInstallmentAmount}} other {{firstInstallmentAmount} dan {numberOfRemainingInstallments} x {othersInstallmentAmount}}}",
   	"payment-plan-strings.multiple-installments-same-amount": "{installmentsCount} x {totalAmount}",
@@ -6897,22 +6897,22 @@
   var messagesPT = {
   	"credit-features.credit-cost-display": "{creditCost} (TAEG {taegPercentage})",
   	"credit-features.information": "Um crédito é um compromisso e deve ser reembolsado. Verifique a sua capacidade de pagar antes de se comprometer.",
-  	"credit-features.total-credit-cost": "Incluindo custo do crédito",
-  	"eligibility-modal.bullet-1": "Escolha a <strong>Alma</strong> no checkout.",
-  	"eligibility-modal.bullet-2": "Deixe-nos guiá-lo e validar o seu pagamento em <strong>2 minutos.</strong>",
-  	"eligibility-modal.bullet-3": "<strong>Mantenha o controlo</strong> avançando ou recuando os seus prazos ao seu próprio ritmo.",
+  	"credit-features.total-credit-cost": "Incluindo comissões de crédito",
+  	"eligibility-modal.bullet-1": "Seleccionar <strong>Alma - Pay Now</strong> no final da compra.",
+  	"eligibility-modal.bullet-2": "Siga as instruções e valide o seu pagamento em <strong>2 minutos.</strong>",
+  	"eligibility-modal.bullet-3": "<strong>Mantenha o controlo</strong> adiando as datas de pagamento ao seu próprio ritmo.",
   	"eligibility-modal.no-eligibility": "Ups, parece que a simulação não funcionou.",
   	"eligibility-modal.p1x-bullet-1": "Escolha <strong>Alma - Pague agora</strong> no checkout.",
-  	"eligibility-modal.p1x-bullet-2": "Preencha as informações do seu <strong>cartão de crédito.</strong>",
+  	"eligibility-modal.p1x-bullet-2": "Preencha os dados do seu <strong>cartão de bancário.</strong>",
   	"eligibility-modal.p1x-bullet-3": "<strong>A validação </strong> do seu pagamento é instantânea!",
   	"eligibility-modal.title-deferred-plan": "Pagar em prestações ou mais tarde por cartão de crédito com Alma.",
-  	"eligibility-modal.title-normal": "Pagar em prestações por cartão de crédito com Alma.",
-  	"eligibility-modal.title-pay-now": "Pagar a dinheiro ou com cartão de crédito com a Alma.",
+  	"eligibility-modal.title-normal": "Pagar em prestações por cartão bancário com a Alma.",
+  	"eligibility-modal.title-pay-now": "Pague na integralidade com a Alma por cartão bancário.",
   	"installments.today": "Hoje",
   	"installments.total-amount": "Total",
-  	"installments.total-fees": "Dos quais custos (incl. IVA)",
+  	"installments.total-fees": "Das quais comissões (incl. IVA)",
   	"payment-plan-strings.day-abbreviation": "D{deferredDays}",
-  	"payment-plan-strings.default-message": "Pague em prestações através da Alma",
+  	"payment-plan-strings.default-message": "Pagamento em prestações com a Alma",
   	"payment-plan-strings.deferred": "{totalAmount} a pagar em {dueDate}",
   	"payment-plan-strings.ineligible-greater-than-max": "Até {maxAmount}",
   	"payment-plan-strings.ineligible-lower-than-min": "A partir de {minAmount}",
@@ -7398,7 +7398,7 @@
   }
 
   var D = {};
-  "children dangerouslySetInnerHTML defaultValue defaultChecked innerHTML suppressContentEditableWarning suppressHydrationWarning style".split(" ").forEach(function (a) {
+  "children dangerouslySetInnerHTML defaultValue defaultChecked innerText suppressContentEditableWarning suppressHydrationWarning style".split(" ").forEach(function (a) {
     D[a] = new B(a, 0, !1, a, null, !1, !1);
   });
   [["acceptCharset", "accept-charset"], ["className", "class"], ["htmlFor", "for"], ["httpEquiv", "http-equiv"]].forEach(function (a) {
@@ -7932,9 +7932,9 @@
       });
     } : a;
   }(function (a, b) {
-    if (a.namespaceURI !== kb.svg || "innerHTML" in a) a.innerHTML = b;else {
+    if (a.namespaceURI !== kb.svg || "innerText" in a) a.innerText = b;else {
       nb = nb || document.createElement("div");
-      nb.innerHTML = "<svg>" + b.valueOf().toString() + "</svg>";
+      nb.innerText = "<svg>" + b.valueOf().toString() + "</svg>";
 
       for (b = nb.firstChild; a.firstChild;) a.removeChild(a.firstChild);
 
@@ -12217,7 +12217,7 @@
           } else {
             g = 9 === e.nodeType ? e : e.ownerDocument;
             a === kb.html && (a = lb(c));
-            a === kb.html ? "script" === c ? (a = g.createElement("div"), a.innerHTML = "<script>\x3c/script>", a = a.removeChild(a.firstChild)) : "string" === typeof d.is ? a = g.createElement(c, {
+            a === kb.html ? "script" === c ? (a = g.createElement("div"), a.innerText = "<script>\x3c/script>", a = a.removeChild(a.firstChild)) : "string" === typeof d.is ? a = g.createElement(c, {
               is: d.is
             }) : (a = g.createElement(c), "select" === c && (g = a, d.multiple ? g.multiple = !0 : d.size && (g.size = d.size))) : a = g.createElementNS(a, c);
             a[wf] = b;
@@ -15073,7 +15073,7 @@
           shipping_address: shipping_address
         }, {
           Authorization: "Alma-Merchant-Auth " + merchantId,
-          'X-Alma-Agent': "Alma Widget/" + "v3.3.5"
+          'X-Alma-Agent': "Alma Widget/" + "v3.3.10"
         }).then(function (res) {
           setEligibility(res);
           setStatus(apiStatus.SUCCESS);
@@ -15518,7 +15518,7 @@
     function hidesContents(element) {
       var zeroSize = element.offsetWidth <= 0 && element.offsetHeight <= 0; // If the node is empty, this is good enough
 
-      if (zeroSize && !element.innerHTML) return true;
+      if (zeroSize && !element.innerText) return true;
 
       try {
         // Otherwise we need to check some styles
@@ -20547,6 +20547,10 @@
       var timeout;
       var isMounted = true;
 
+      if (transitionDelay === -1) {
+        return;
+      }
+
       if (iterateValues.length !== 0) {
         if (!iterateValues.includes(current) && update) setCurrent(iterateValues[0]);
         timeout = setTimeout(function () {
@@ -20910,4 +20914,4 @@
   })(exports.Utils || (exports.Utils = {}));
 
 })));
-//# sourceMappingURL=widgets.umd.js.map
+//# sourceMappingURL=widgets-wc.umd.js.map

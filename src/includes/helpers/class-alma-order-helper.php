@@ -268,7 +268,7 @@ class Alma_Order_Helper {
 				$order->update_status( 'failed', $e->getMessage() );
 			}
 
-			wc_add_notice( __( 'There was an error creating your payment.<br>Please try again or contact us if the problem persists.', 'alma-gateway-for-woocommerce' ), Alma_Constants_Helper::ERROR );
+			wc_add_notice( $e->getMessage(), Alma_Constants_Helper::ERROR );
 
 			wp_send_json_error( $e->getMessage(), 500 );
 		}
@@ -328,7 +328,7 @@ class Alma_Order_Helper {
 			$order_id     = sanitize_text_field( $_POST['order_id'] ); // phpcs:ignore WordPress.Security.NonceVerification
 			$order_helper = new Alma_Order_Helper();
 			$order        = $order_helper->get_order( $order_id );
-			$order->update_status( 'cancelled', __( 'Abandonment by the client.', 'alma-gateway-for-woocommerce' ) );
+			$order->delete( true );
 			wp_send_json_success();
 		} catch ( \Exception $e ) {
 			$this->logger->error( $e->getMessage() );
