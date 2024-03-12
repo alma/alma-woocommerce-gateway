@@ -19,8 +19,8 @@ services:
     build:
       context: .
       args:
-        WC_VERSION: 8.1.1
-        WP_VERSION: 6.3.1
+        WC_VERSION: 8.2.2
+        WP_VERSION: 6.4.1
     depends_on:
       mysql:
         condition: service_healthy
