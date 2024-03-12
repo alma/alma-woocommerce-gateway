@@ -4,6 +4,7 @@ set -ex
 WP_VERSION=$1
 WC_VERSION=$2
 
+TMPDIR="/tmp"
 WP_TESTS_DIR="/tmp/wordpress-tests-lib"
 WP_CORE_DIR="/tmp/wordpress"
 
