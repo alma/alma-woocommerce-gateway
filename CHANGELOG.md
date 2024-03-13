@@ -5,6 +5,8 @@ Changelog
 * fix: deactivate rendering of Alma payment methods on order pay checkout page
 * fix : delete abandoned orders created by In Page
 * fix: default plan selection
+* feature: compatibility Woocommerce 8.2.2
+
 
 v5.2.1
 ------
