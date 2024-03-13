@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 4.4
 Tested up to: 6.3
 Requires PHP: 5.6
-Stable tag: 5.2.0
+Stable tag: 5.2.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -54,6 +54,9 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 * fix: deactivate rendering of Alma payment methods on order pay checkout page
 * fix : delete abandoned orders created by In Page
 * fix: default plan selection
+
+= 5.2.1 =
+* fix: shortcode widget for XSS injection
 
 = 5.2.0 =
 * feat: Update translations
