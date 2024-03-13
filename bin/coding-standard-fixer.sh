@@ -1,5 +1,5 @@
 #!/bin/bash
-/usr/bin/php5.6 src/vendor/bin/phpcbf --standard=src/phpcs.xml src/
+src/vendor/bin/phpcbf --standard=src/phpcs.xml src/
 if [ $? != 0 ]
 then
   echo "Fix the errors with PHPcbf automatic fixer before commit!"
