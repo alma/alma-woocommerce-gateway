@@ -47,13 +47,4 @@ class Alma_Payment_Gateway_Pay_Later extends Alma_Payment_Gateway_Standard {
 		return Alma_Constants_Helper::GATEWAY_ID_PAY_LATER;
 	}
 
-	/**
-	 * Has fields.
-	 *
-	 * @return true
-	 */
-	public function has_fields() {
-		return true;
-	}
-
 } // end \Alma_Pay_Gateway class
