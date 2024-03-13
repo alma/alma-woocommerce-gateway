@@ -8,7 +8,6 @@
 
 use Alma\Woocommerce\Helpers\Alma_Constants_Helper;
 use Alma\Woocommerce\Helpers\Alma_Tools_Helper;
-use WP_UnitTestCase;
 
 class ToolsHelper extends WP_UnitTestCase {
 
