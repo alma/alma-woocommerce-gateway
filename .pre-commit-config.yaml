@@ -9,29 +9,22 @@ repos:
       - id: detect-private-key
       - id: check-merge-conflict
 
-  - repo: local
-    hooks:
-      - id: coding-standard-fixer
-        name: PHP and WordPress coding standards Fixer test
-        language: script
-        entry:  ./bin/coding-standard-fixer.sh
-        stages: [commit]
+  #- repo: local
+   # hooks:
+    #  - id: coding-standard-fixer
+     #   name: PHP and WordPress coding standards Fixer test
+      #  language: script
+       # entry:  ./bin/coding-standard-fixer.sh
+        #stages: [commit]
 
-  - repo: local
-    hooks:
-      - id: coding-standard
-        name: Check the PHP and WordPress coding standards
-        language: script
-        entry:  ./bin/coding-standard.sh
-        stages: [commit]
+  #- repo: local
+   # hooks:
+    #  - id: coding-standard
+   #     name: Check the PHP and WordPress coding standards
+  #      language: script
+ #       entry:  ./bin/coding-standard.sh
+#        stages: [commit]
 
-  - repo: local
-    hooks:
-      - id: php-compatibility
-        name: Check the PHP compatibility
-        language: script
-        entry:  ./bin/php-compatibility.sh
-        stages: [commit]
 
 #  - repo: https://github.com/pre-commit/mirrors-prettier
   #  rev: v3.0.0-alpha.4
