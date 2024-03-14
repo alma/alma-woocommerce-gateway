@@ -54,6 +54,7 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 * fix: deactivate rendering of Alma payment methods on order pay checkout page
 * fix : delete abandoned orders created by In Page
 * fix: default plan selection
+* fix : add flag security for SOC
 
 = 5.2.1 =
 * fix: shortcode widget for XSS injection

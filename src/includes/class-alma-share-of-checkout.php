@@ -71,6 +71,15 @@ class Alma_Share_Of_Checkout {
 				return;
 			}
 
+			$flag_soc = get_option( 'alma_soc_ongoing' );
+
+			if ( $flag_soc ) {
+				// ongoing , don't do anything !
+				return;
+			}
+
+			add_option( 'alma_soc_ongoing', '1' );
+
 			$today = new \DateTime();
 
 			$last_sharing_date = null;
@@ -91,9 +100,13 @@ class Alma_Share_Of_Checkout {
 
 				$this->share_days();
 			}
+
+			delete_option( 'alma_soc_ongoing' );
 		} catch ( \Exception $e ) {
 			$this->settings->__set( 'share_of_checkout_last_sharing_date', $settings_date );
 			$this->settings->save();
+
+			delete_option( 'alma_soc_ongoing' );
 
 			$this->logger->error(
 				sprintf( 'An error occurred when sending soc data. Message "%s"', $e->getMessage() ),
