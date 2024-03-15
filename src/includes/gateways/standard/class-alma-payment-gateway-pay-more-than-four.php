@@ -47,13 +47,4 @@ class Alma_Payment_Gateway_Pay_More_Than_Four extends Alma_Payment_Gateway_Stand
 		return Alma_Constants_Helper::GATEWAY_ID_MORE_THAN_FOUR;
 	}
 
-	/**
-	 * Has fields.
-	 *
-	 * @return true
-	 */
-	public function has_fields() {
-		return true;
-	}
-
 } // end \Alma_Pay_Gateway class
