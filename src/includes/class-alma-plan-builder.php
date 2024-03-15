@@ -89,6 +89,7 @@ class Alma_Plan_Builder {
 		if (
 			Alma_Constants_Helper::GATEWAY_ID_IN_PAGE === $gateway_id
 			|| Alma_Constants_Helper::GATEWAY_ID_IN_PAGE_PAY_NOW === $gateway_id
+			|| Alma_Constants_Helper::GATEWAY_ID_IN_PAGE_PAY_LATER === $gateway_id
 		) {
 			$this->render_fields_in_page( $eligible_plans, $gateway_id, $default_plan );
 		} else {
@@ -193,9 +194,11 @@ class Alma_Plan_Builder {
 		) {
 			unset( $eligible_plans_by_type[ Alma_Constants_Helper::GATEWAY_ID ] );
 			unset( $eligible_plans_by_type[ Alma_Constants_Helper::GATEWAY_ID_PAY_NOW ] );
+			unset( $eligible_plans_by_type[ Alma_Constants_Helper::GATEWAY_ID_PAY_LATER ] );
 
-			$eligible_plans_by_type[ Alma_Constants_Helper::GATEWAY_ID_IN_PAGE ]         = array();
-			$eligible_plans_by_type[ Alma_Constants_Helper::GATEWAY_ID_IN_PAGE_PAY_NOW ] = array();
+			$eligible_plans_by_type[ Alma_Constants_Helper::GATEWAY_ID_IN_PAGE ]           = array();
+			$eligible_plans_by_type[ Alma_Constants_Helper::GATEWAY_ID_IN_PAGE_PAY_NOW ]   = array();
+			$eligible_plans_by_type[ Alma_Constants_Helper::GATEWAY_ID_IN_PAGE_PAY_LATER ] = array();
 		}
 
 		$result = array();

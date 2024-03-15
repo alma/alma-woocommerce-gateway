@@ -193,7 +193,7 @@ class Alma_Form_Fields_Helper {
 					'title'   => __( 'Activate in-page checkout', 'alma-gateway-for-woocommerce' ),
 					'type'    => 'checkbox',
 					/* translators: %s: Alma in page doc URL */
-					'label'   => __( 'Activate this setting if you want in-page checkout for Pay Now, P2X, P3X, and P4X', 'alma-gateway-for-woocommerce' ) . '<br>' . sprintf( __( '(Learn more about this feature <a href="%s">here</a>)', 'alma-gateway-for-woocommerce' ), Alma_Assets_Helper::get_in_page_doc_link() ),
+					'label'   => __( 'Activate this setting if you want in-page checkout for Pay Now, Installment and Deferred payments.', 'alma-gateway-for-woocommerce' ) . '<br>' . sprintf( __( '(Learn more about this feature <a href="%s">here</a>)', 'alma-gateway-for-woocommerce' ), Alma_Assets_Helper::get_in_page_doc_link() ),
 					'default' => $default_settings['display_in_page'],
 				),
 			);
@@ -469,6 +469,7 @@ class Alma_Form_Fields_Helper {
 		$fields_pnx_plus_4                  = array();
 		$fields_in_page                     = array();
 		$fields_in_page_pay_now             = array();
+		$fields_in_page_pay_later           = array();
 		$title_gateway_in_page              = array();
 		$fields_title_gateway_in_page       = array();
 		$fields_description_gateway_in_page = array();
@@ -488,8 +489,14 @@ class Alma_Form_Fields_Helper {
 			isset( $this->settings_helper->settings['display_in_page'] )
 			&& 'yes' === $this->settings_helper->settings['display_in_page']
 		) {
-			$fields_in_page         = $this->get_custom_fields_payment_method( Alma_Constants_Helper::GATEWAY_ID_IN_PAGE, __( 'Payments in 2, 3 and 4 installments:', 'alma-gateway-for-woocommerce' ), $default_settings );
-			$fields_in_page_pay_now = $this->get_custom_fields_payment_method( Alma_Constants_Helper::GATEWAY_ID_IN_PAGE_PAY_NOW, __( 'Pay Now:', 'alma-gateway-for-woocommerce' ), $default_settings );
+			$fields_in_page = $this->get_custom_fields_payment_method( Alma_Constants_Helper::GATEWAY_ID_IN_PAGE, __( 'Payments in 2, 3 and 4 installments:', 'alma-gateway-for-woocommerce' ), $default_settings );
+
+			if ( $this->settings_helper->has_pay_now() ) {
+				$fields_in_page_pay_now = $this->get_custom_fields_payment_method( Alma_Constants_Helper::GATEWAY_ID_IN_PAGE_PAY_NOW, __( 'Pay Now:', 'alma-gateway-for-woocommerce' ), $default_settings );
+			}
+			if ( $this->settings_helper->has_pay_later() ) {
+				$fields_in_page_pay_later = $this->get_custom_fields_payment_method( Alma_Constants_Helper::GATEWAY_ID_IN_PAGE_PAY_LATER, __( 'Deferred Payments:', 'alma-gateway-for-woocommerce' ), $default_settings );
+			}
 		}
 
 		if (
@@ -501,14 +508,14 @@ class Alma_Form_Fields_Helper {
 			if ( $this->settings_helper->has_pay_now() ) {
 				$fields_pay_now = $this->get_custom_fields_payment_method( Alma_Constants_Helper::GATEWAY_ID_PAY_NOW, __( 'Pay now:', 'alma-gateway-for-woocommerce' ), $default_settings );
 			}
+
+			if ( $this->settings_helper->has_pay_later() ) {
+				$fields_pay_later = $this->get_custom_fields_payment_method( Alma_Constants_Helper::GATEWAY_ID_PAY_LATER, __( 'Deferred Payments:', 'alma-gateway-for-woocommerce' ), $default_settings );
+			}
 		}
 
 		if ( $this->settings_helper->has_pnx_plus_4() ) {
 			$fields_pnx_plus_4 = $this->get_custom_fields_payment_method( Alma_Constants_Helper::GATEWAY_ID_MORE_THAN_FOUR, __( 'Payments in more than 4 installments:', 'alma-gateway-for-woocommerce' ), $default_settings );
-		}
-
-		if ( $this->settings_helper->has_pay_later() ) {
-			$fields_pay_later = $this->get_custom_fields_payment_method( Alma_Constants_Helper::GATEWAY_ID_PAY_LATER, __( 'Deferred Payments:', 'alma-gateway-for-woocommerce' ), $default_settings );
 		}
 
 		$general_settings_fields_end = array(
@@ -554,6 +561,7 @@ class Alma_Form_Fields_Helper {
 			$fields_pnx,
 			$fields_in_page,
 			$fields_pay_later,
+			$fields_in_page_pay_later,
 			$fields_pnx_plus_4,
 			$general_settings_fields_end,
 			$field_cart_not_eligible_message_gift_cards

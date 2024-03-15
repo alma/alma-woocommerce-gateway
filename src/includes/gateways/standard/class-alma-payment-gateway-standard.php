@@ -38,22 +38,6 @@ use Alma\Woocommerce\Exceptions\Alma_Api_Plans_Exception;
  */
 class Alma_Payment_Gateway_Standard extends Alma_Payment_Gateway {
 
-
-	/**
-	 * Constructor.
-	 *
-	 * @param boolean $check_basics Basic checks.
-	 *
-	 * @throws Alma_No_Credentials_Exception The exception.
-	 */
-	public function __construct( $check_basics = true ) {
-		$this->id                 = $this->get_gateway_id();
-		$this->has_fields         = $this->has_fields();
-		$this->method_title       = __( 'Payment in instalments and deferred with Alma - 1x 2x 3x 4x, D+15 or D+30', 'alma-gateway-for-woocommerce' );
-		$this->method_description = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.', 'alma-gateway-for-woocommerce' );
-		parent::__construct( $check_basics );
-	}
-
 	/**
 	 * Get the gateway id.
 	 *
@@ -61,15 +45,6 @@ class Alma_Payment_Gateway_Standard extends Alma_Payment_Gateway {
 	 */
 	public function get_gateway_id() {
 		return Alma_Constants_Helper::GATEWAY_ID;
-	}
-
-	/**
-	 * Has fields.
-	 *
-	 * @return true
-	 */
-	public function has_fields() {
-		return true;
 	}
 
 	/**

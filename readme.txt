@@ -51,9 +51,12 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 == Changelog ==
 
+* feature: In page with Deferred payments is available
 * fix: deactivate rendering of Alma payment methods on order pay checkout page
 * fix : delete abandoned orders created by In Page
 * fix: default plan selection
+* feature: compatibility Woocommerce 8.2.2
+* feature: Compatibility WordPress 6.4.1
 * fix : add flag security for SOC
 
 = 5.2.1 =

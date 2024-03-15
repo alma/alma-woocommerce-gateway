@@ -42,6 +42,8 @@ class Alma_Settings_Helper {
 			'description_alma_in_page'                   => self::default_pay_with_alma_in_page_description(),
 			'title_alma_in_page_pay_now'                 => self::default_pay_with_alma_in_page_pay_now(),
 			'description_alma_in_page_pay_now'           => self::default_pay_with_alma_in_page_pay_now_description(),
+			'title_alma_in_page_pay_later'               => self::default_pay_with_alma_in_page_pay_later(),
+			'description_alma_in_page_pay_later'         => self::default_pay_with_alma_in_page_pay_later_description(),
 			'title_alma'                                 => self::default_pnx_title(),
 			'description_alma'                           => self::default_payment_description(),
 			'title_alma_pay_now'                         => self::default_pay_now_title(),
@@ -129,7 +131,7 @@ class Alma_Settings_Helper {
 
 
 	/**
-	 * Gets the default description for all payment methods (pnx, pnx+4, pay later).
+	 * Gets the default description for all payment methods (pnx, pnx+4).
 	 *
 	 * @return string
 	 */
@@ -141,6 +143,18 @@ class Alma_Settings_Helper {
 		return __( 'Fast and secure payment by credit card.', 'alma-gateway-for-woocommerce' );
 	}
 
+	/**
+	 * Gets the default description for all payment methods ( pay later).
+	 *
+	 * @return string
+	 */
+	public static function default_pay_with_alma_in_page_pay_later_description() {
+		if ( Alma_Internationalization_Helper::is_site_multilingual() ) {
+			return 'Fast and secure payment by credit card.';
+		}
+
+		return __( 'Fast and secure payment by credit card.', 'alma-gateway-for-woocommerce' );
+	}
 	/**
 	 * Gets the default description for all payment methods (pnx, pnx+4, pay later).
 	 *
@@ -178,6 +192,19 @@ class Alma_Settings_Helper {
 		}
 		return __( 'Pay later', 'alma-gateway-for-woocommerce' );
 	}
+
+	/**
+	 * Gets the default title for pay later payment method.
+	 *
+	 * @return string
+	 */
+	public static function default_pay_with_alma_in_page_pay_later() {
+		if ( Alma_Internationalization_Helper::is_site_multilingual() ) {
+			return 'Pay later';
+		}
+		return __( 'Pay later', 'alma-gateway-for-woocommerce' );
+	}
+
 
 	/**
 	 * Gets the default title for pnx plus 4 payment method.
