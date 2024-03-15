@@ -4,6 +4,7 @@ Changelog
 * fix: deactivate rendering of Alma payment methods on order pay checkout page
 * fix : delete abandoned orders created by In Page
 * fix: default plan selection
+* feat: add psr4
 
 v5.2.1
 ------

@@ -50,4 +50,5 @@ install_db() {
 }
 
 install_db
-/app/woocommerce/vendor/phpunit/phpunit/phpunit -c /app/woocommerce/phpunit.xml.dist
+
+/app/woocommerce/vendor/phpunit/phpunit/phpunit -c /app/woocommerce/phpunit.xml.dist  -c phpunit.xml.dist --coverage-text

@@ -7,5 +7,6 @@ plugins/
 src/composer.lock
 /crowdin.properties
 /crowdin.deb
+node_modules/
 crowdin.yml
 .phpunit.result.cache
