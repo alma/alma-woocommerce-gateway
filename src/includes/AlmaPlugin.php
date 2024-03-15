@@ -17,7 +17,7 @@ use Alma\Woocommerce\Admin\Services\NoticesService;
 use Alma\Woocommerce\Exceptions\RequirementsException;
 use Alma\Woocommerce\Exceptions\VersionDeprecated;
 use Alma\Woocommerce\Gateways\Inpage\InPageGateway;
-use Alma\Woocommerce\Gateways\Standard\PayLaterGateway;
+use Alma\Woocommerce\Gateways\Inpage\PayLaterGateway;
 use Alma\Woocommerce\Gateways\Standard\PayMoreThanFourGateway;
 use Alma\Woocommerce\Gateways\Standard\PayNowGateway;
 use Alma\Woocommerce\Gateways\Standard\StandardGateway;
@@ -187,16 +187,13 @@ class AlmaPlugin {
 		if ( ! is_admin() ) {
 			$gateways[] = \Alma\Woocommerce\Gateways\Inpage\PayNowGateway::class;
 			$gateways[] = PayNowGateway::class;
-		}
-
-		$gateways[] = StandardGateway::class;
-
-		if ( ! is_admin() ) {
 			$gateways[] = InPageGateway::class;
 			$gateways[] = PayMoreThanFourGateway::class;
 			$gateways[] = PayLaterGateway::class;
+			$gateways[] = \Alma\Woocommerce\Gateways\Standard\PayLaterGateway::class;
 		}
 
+		$gateways[] = StandardGateway::class;
 		return $gateways;
 	}
 

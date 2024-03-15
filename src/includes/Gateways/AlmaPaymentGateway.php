@@ -32,11 +32,11 @@ use Alma\Woocommerce\Helpers\OrderHelper;
 use Alma\Woocommerce\Helpers\PaymentHelper;
 use Alma\Woocommerce\Helpers\PluginHelper;
 use Alma\Woocommerce\Helpers\SettingsHelper;
+use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
 use Alma\Woocommerce\Helpers\PlanBuilderHelper;
 use Alma\Woocommerce\Helpers\TemplateLoaderHelper;
 use Alma\Woocommerce\AlmaSettings;
-
 /**
  * AlmaPaymentGateway
  */
@@ -155,6 +155,13 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 	public $plugin_helper;
 
 	/**
+	 * The cart helper.
+	 *
+	 * @var CartHelper
+	 */
+	protected $cart_helper;
+
+	/**
 	 * Construct.
 	 *
 	 * @param bool $check_basics Check the basics requirement.
@@ -176,6 +183,9 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 		$this->template_loader     = new TemplateLoaderHelper();
 		$this->soc_helper          = new ShareOfCheckoutHelper();
 		$this->plugin_helper       = new PluginHelper();
+		$this->id                  = $this->get_gateway_id();
+		$this->method_title        = __( 'Payment in instalments and deferred with Alma - 2x 3x 4x', 'alma-gateway-for-woocommerce' );
+		$this->method_description  = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.', 'alma-gateway-for-woocommerce' );
 
 		if ( $check_basics ) {
 			$this->check_activation();
@@ -738,5 +748,13 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 	}
 
 
+	/**
+	 * Has fields.
+	 *
+	 * @return true
+	 */
+	public function has_fields() {
+		return true;
+	}
 
 }

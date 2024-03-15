@@ -20,12 +20,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class ConstantsHelper {
 
-	const GATEWAY_ID                 = 'alma';
-	const GATEWAY_ID_PAY_NOW         = 'alma_pay_now';
-	const GATEWAY_ID_PAY_LATER       = 'alma_pay_later';
-	const GATEWAY_ID_MORE_THAN_FOUR  = 'alma_pnx_plus_4';
-	const GATEWAY_ID_IN_PAGE         = 'alma_in_page';
-	const GATEWAY_ID_IN_PAGE_PAY_NOW = 'alma_in_page_pay_now';
+	const GATEWAY_ID                   = 'alma';
+	const GATEWAY_ID_PAY_NOW           = 'alma_pay_now';
+	const GATEWAY_ID_PAY_LATER         = 'alma_pay_later';
+	const GATEWAY_ID_MORE_THAN_FOUR    = 'alma_pnx_plus_4';
+	const GATEWAY_ID_IN_PAGE           = 'alma_in_page';
+	const GATEWAY_ID_IN_PAGE_PAY_NOW   = 'alma_in_page_pay_now';
+	const GATEWAY_ID_IN_PAGE_PAY_LATER = 'alma_in_page_pay_later';
 
 	const JQUERY_CART_UPDATE_EVENT = 'updated_cart_totals';
 
@@ -88,6 +89,7 @@ class ConstantsHelper {
 		self::GATEWAY_ID_PAY_NOW,
 		self::GATEWAY_ID_IN_PAGE_PAY_NOW,
 		self::GATEWAY_ID_PAY_LATER,
+		self::GATEWAY_ID_IN_PAGE_PAY_LATER,
 		self::GATEWAY_ID_MORE_THAN_FOUR,
 	);
 }

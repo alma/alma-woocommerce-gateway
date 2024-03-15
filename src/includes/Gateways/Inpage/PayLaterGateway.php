@@ -1,6 +1,6 @@
 <?php
 /**
- * InPageGatewayTrait.
+ * PayLaterGateway.
  *
  * @since 5.0.0
  *
@@ -20,10 +20,9 @@ use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Traits\InPageGatewayTrait;
 
 /**
- * InPageGatewayTrait
+ * PayLaterGateway
  */
-class InPageGateway extends AlmaPaymentGateway {
-
+class PayLaterGateway extends AlmaPaymentGateway {
 
 	use InPageGatewayTrait;
 
@@ -33,6 +32,7 @@ class InPageGateway extends AlmaPaymentGateway {
 	 * @return string
 	 */
 	public function get_gateway_id() {
-		return ConstantsHelper::GATEWAY_ID_IN_PAGE;
+		return ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_LATER;
 	}
+
 }
