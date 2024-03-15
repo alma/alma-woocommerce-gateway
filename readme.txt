@@ -57,6 +57,7 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 * fix: default plan selection
 * feature: compatibility Woocommerce 8.2.2
 * feature: Compatibility WordPress 6.4.1
+* fix : add flag security for SOC
 
 = 5.2.1 =
 * fix: shortcode widget for XSS injection
