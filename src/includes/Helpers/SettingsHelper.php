@@ -148,7 +148,7 @@ class SettingsHelper {
 	 * @return string
 	 */
 	public static function default_pay_with_alma_in_page_pay_later_description() {
-		if ( Alma_Internationalization_Helper::is_site_multilingual() ) {
+		if ( InternationalizationHelper::is_site_multilingual() ) {
 			return 'Fast and secure payment by credit card.';
 		}
 
@@ -198,7 +198,7 @@ class SettingsHelper {
 	 * @return string
 	 */
 	public static function default_pay_with_alma_in_page_pay_later() {
-		if ( Alma_Internationalization_Helper::is_site_multilingual() ) {
+		if ( InternationalizationHelper::is_site_multilingual() ) {
 			return 'Pay later';
 		}
 		return __( 'Pay later', 'alma-gateway-for-woocommerce' );
