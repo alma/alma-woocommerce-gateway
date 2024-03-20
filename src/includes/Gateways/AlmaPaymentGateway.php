@@ -183,6 +183,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 		$this->template_loader     = new TemplateLoaderHelper();
 		$this->soc_helper          = new ShareOfCheckoutHelper();
 		$this->plugin_helper       = new PluginHelper();
+		$this->cart_helper         = new CartHelper();
 		$this->id                  = $this->get_gateway_id();
 		$this->method_title        = __( 'Payment in instalments and deferred with Alma - 2x 3x 4x', 'alma-gateway-for-woocommerce' );
 		$this->method_description  = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.', 'alma-gateway-for-woocommerce' );
