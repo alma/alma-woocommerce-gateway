@@ -37,7 +37,7 @@ class PayLaterBlock extends AlmaBlock {
 	 *
 	 * @var string
 	 */
-	protected $name = ConstantsHelper::GATEWAY_ID_IN_PAGE;
+	protected $name = ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_LATER;
 
 	/**
 	 * Initialize.

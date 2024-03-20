@@ -16,7 +16,7 @@ import '../css/alma-checkout-blocks.css'
 
 (function ($) {
 
-    const gateways = ['alma_in_page_pay_now', 'alma', 'alma_pay_later', 'alma_pay_now', 'alma_pnx_plus_4', 'alma_pa'];
+    const gateways = ['alma_pay_now',  'alma_in_page_pay_now', 'alma', 'alma_in_page', 'alma_pay_later', 'alma_in_page_pay_later', 'alma_pnx_plus_4'];
     var inPage = undefined;
     var hasInPage = false;
     var billingAddress = {};
@@ -85,6 +85,118 @@ import '../css/alma-checkout-blocks.css'
                 )
             }
 
+            if(settings.is_in_page ||(gateway === 'alma_in_page')){
+                window.addEventListener(
+                    'load',
+                    (event) => {
+                        function initializeInpage(settingsInPage) {
+                            if (
+                                inPage !== undefined
+                                && document.getElementById('alma-embedded-iframe') !== null
+                            ) {
+                                inPage.unmount();
+                            }
+
+                            inPage = Alma.InPage.initialize(
+                                {
+                                    merchantId: settingsInPage.merchant_id,
+                                    amountInCents: settingsInPage.amount_in_cents,
+                                    installmentsCount: '1',
+                                    selector: "#alma-inpage-alma_in_page",
+                                    environment: settingsInPage.environment,
+                                    locale: settingsInPage.locale,
+                                }
+                            );
+                        }
+
+                        function isAlmaInPageChecked() {
+                            // verif that the paiment type method is in page.
+                            return hasInPage
+                        }
+
+                        function add_loader() {
+                            var loading = "<div class='loadingIndicator'><img src='https://cdn.almapay.com/img/animated-logo-a.svg' alt='Loading' /></div>";
+                            $("body").append("<div class='alma-loader-wrapper'>" + loading + "</div>");
+                        }
+
+                        function cancel_order(orderId) {
+                            var data = {
+                                'action': 'alma_cancel_order_in_page',
+                                'order_id': orderId
+                            };
+
+                            jQuery.post(ajax_object.ajax_url, JSON.stringify(data))
+                        }
+
+                        if (hasInPage) {
+                            var settingsInPage = window.wc.wcSettings.getSetting('alma_in_page_data', null);
+                            console.log(settingsInPage)
+
+                            initializeInpage(settingsInPage);
+                        }
+                        document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].addEventListener(
+                            "click",
+                            (event) => {
+                                if (isAlmaInPageChecked()) {
+                                    console.log($( 'wc-block-checkout__form' ).serializeArray(), 'OUI ICICICIOQJOSIDJ')
+                                    event.stopPropagation()
+                                    // customer_note + shipping_address +
+                                    var data = {
+                                        'action': 'alma_do_checkout_in_page',
+                                        'fields': {
+                                            'billing': billingAddress,
+                                            'shipping': shippingAddress,
+                                            'customer_note': customerNote,
+                                            'alma_fee_plan': 'general_1_0_0',
+                                            'alma_checkout_noncealma_in_page_pay_now': settingsInPage.nonce_value,
+                                            'payment_method': 'alma_in_page_pay_now',
+                                        },
+                                        'alma_checkout_noncealma_in_page_pay_now': settingsInPage.nonce_value,
+                                        'woocommerce-process-checkout-nonce': settingsInPage.woocommerce_process_checkout_nonce,
+                                        'payment_method': 'alma_in_page_pay_now',
+                                        'alma_fee_plan': 'general_1_0_0',
+                                        'alma_fee_plan_in_page': 'general_1_0_0',
+                                        'is_woo_block': true
+                                    };
+                                    console.log(JSON.stringify(data))
+                                    // add_loader();
+
+                                    // Create the payment id and order.
+                                    jQuery.post(ajax_object.ajax_url, data)
+                                        .done(
+                                            function (response) {
+                                                var paymentId = response.data.payment_id;
+                                                var orderId = response.data.order_id;
+
+                                                // Start the payment.
+                                                inPage.startPayment(
+                                                    {
+                                                        paymentId: paymentId,
+                                                        onUserCloseModal: () => {
+                                                            cancel_order(orderId);
+                                                            $('.alma-loader-wrapper').remove();
+                                                        }
+                                                    }
+                                                );
+                                            }
+                                        )
+                                        .fail(
+                                            function (response) {
+                                                location.reload();
+                                            }
+                                        );
+
+                                }
+                            }
+                        );
+                    }
+                )
+                return <>
+                    <AlmaBlocks settings={settings} selectedFeePlan={selectedFeePlan} setSelectedFeePlan={setSelectedFeePlan}/>
+                    <div id='alma-inpage-alma_in_page'></div>
+                </>
+            }
+
             // removeEventListener('onCheckoutBeforeProcessing')
             billingAddress = props.billing.billingAddress
 
@@ -93,9 +205,6 @@ import '../css/alma-checkout-blocks.css'
             }
 
             // customerNote = props.customerNote
-
-            return <div id='alma-inpage-alma_in_page_pay_now'></div>; // phpcs:ignore
-
         }
 
 
@@ -116,106 +225,4 @@ import '../css/alma-checkout-blocks.css'
         }
     }
 
-
-    window.addEventListener(
-        'load',
-        (event) => {
-            function initializeInpage(settingsInPage) {
-                if (
-                    inPage !== undefined
-                    && document.getElementById('alma-embedded-iframe') !== null
-                ) {
-                    inPage.unmount();
-                }
-
-                inPage = Alma.InPage.initialize(
-                    {
-                        merchantId: settingsInPage.merchant_id,
-                        amountInCents: settingsInPage.amount_in_cents,
-                        installmentsCount: '1',
-                        selector: "#alma-inpage-alma_in_page_pay_now",
-                        environment: settingsInPage.environment,
-                        locale: settingsInPage.locale,
-                    }
-                );
-            }
-
-            function isAlmaInPageChecked() {
-                // verif that the paiment type method is in page.
-                return hasInPage
-            }
-
-            function add_loader() {
-                var loading = "<div class='loadingIndicator'><img src='https://cdn.almapay.com/img/animated-logo-a.svg' alt='Loading' /></div>";
-                $("body").append("<div class='alma-loader-wrapper'>" + loading + "</div>");
-            }
-
-            function cancel_order(orderId) {
-                var data = {
-                    'action': 'alma_cancel_order_in_page',
-                    'order_id': orderId
-                };
-
-                jQuery.post(ajax_object.ajax_url, data)
-            }
-
-            if (hasInPage) {
-                var settingsInPage = window.wc.wcSettings.getSetting('alma_in_page_pay_now_data', null);
-                
-                initializeInpage(settingsInPage);
-            }
-            document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].addEventListener(
-                "click",
-                (event) => {
-                    if (isAlmaInPageChecked()) {
-                        event.stopPropagation()
-                        // customer_note + shipping_address +
-                        var data = {
-                            'action': 'alma_do_checkout_in_page',
-                            'fields': {
-                                'billing': billingAddress,
-                                'shipping': shippingAddress,
-                                'customer_note': customerNote,
-                                'alma_fee_plan': 'general_1_0_0',
-                                'alma_checkout_noncealma_in_page_pay_now': settingsInPage.nonce_value,
-                                'payment_method': 'alma_in_page_pay_now',
-                            },
-                            'woocommerce-process-checkout-nonce': settingsInPage.woocommerce_process_checkout_nonce,
-                            'payment_method': 'alma_in_page_pay_now',
-                            'alma_fee_plan': 'general_1_0_0',
-                            'alma_fee_plan_in_page': 'general_1_0_0',
-                            'is_woo_block': true
-                        };
-
-                        // add_loader();
-
-                        // Create the payment id and order.
-                        jQuery.post(ajax_object.ajax_url, data)
-                            .done(
-                                function (response) {
-                                    var paymentId = response.data.payment_id;
-                                    var orderId = response.data.order_id;
-
-                                    // Start the payment.
-                                    inPage.startPayment(
-                                        {
-                                            paymentId: paymentId,
-                                            onUserCloseModal: () => {
-                                                cancel_order(orderId);
-                                                $('.alma-loader-wrapper').remove();
-                                            }
-                                        }
-                                    );
-                                }
-                            )
-                            .fail(
-                                function (response) {
-                                    location.reload();
-                                }
-                            );
-                    }
-                }
-            );
-        }
-    )
 })(jQuery);

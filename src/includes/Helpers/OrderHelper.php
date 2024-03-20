@@ -285,7 +285,8 @@ class OrderHelper {
 	 */
 	protected function create_inpage_order( $post_fields ) {
 		$alma_checkout = new CheckoutService();
-		$order         = $alma_checkout->process_checkout();
+		// var_dump($post_fields);die;.
+		$order = $alma_checkout->process_checkout();
 
 		// We ignore the nonce verification because process_payment is called after validate_fields.
 		$settings       = new AlmaSettings();
