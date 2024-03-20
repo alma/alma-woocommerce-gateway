@@ -33,8 +33,13 @@ RUN docker-php-ext-configure gd `cat /app/gd.config` \
     && docker-php-ext-install xsl \
     && docker-php-ext-install sockets
 
+RUN pecl install xdebug-3.1.3 \
+    && docker-php-ext-enable xdebug \
+    && echo "xdebug.mode=coverage" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 WORKDIR /app/woocommerce
+CMD [ "php", "-S", "0.0.0.0:8000"]
 
 # Composer install
 COPY --from=composer /usr/bin/composer /usr/bin/composer

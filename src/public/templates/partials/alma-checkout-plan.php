@@ -13,21 +13,21 @@
 <input
 	type="radio"
 	value="<?php echo esc_attr( $plan_key ); ?>"
-	id="<?php echo esc_attr( \Alma\Woocommerce\Helpers\Alma_Constants_Helper::GATEWAY_ID ); ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
-	name="<?php echo esc_attr( \Alma\Woocommerce\Helpers\Alma_Constants_Helper::ALMA_FEE_PLAN ); ?>"
+	id="<?php echo esc_attr( \Alma\Woocommerce\Helpers\ConstantsHelper::GATEWAY_ID ); ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
+	name="<?php echo esc_attr( \Alma\Woocommerce\Helpers\ConstantsHelper::ALMA_FEE_PLAN ); ?>"
 	data-default="<?php echo $is_checked ? '1' : '0'; ?>"
-	style="<?php echo ( \Alma\Woocommerce\Helpers\Alma_Constants_Helper::GATEWAY_ID_PAY_NOW === $id ) ? 'margin: 18px -1px;' : 'margin-right: -1px;'; ?>; vertical-align: middle;float: none; "
+	style="<?php echo ( \Alma\Woocommerce\Helpers\ConstantsHelper::GATEWAY_ID_PAY_NOW === $id ) ? 'margin: 18px -1px;' : 'margin-right: -1px;'; ?>; vertical-align: middle;float: none; "
 	<?php echo $is_checked ? 'checked' : ''; ?>
 	onchange="if (this.checked) { jQuery( '<?php echo esc_js( $plan_class ); ?>' ).hide(); jQuery(this).closest('li.wc_payment_method').find( '<?php echo esc_js( $plan_id ); ?>' ).show() }"
 >
 <label
 	class="checkbox"
 	style="float: none; margin-right: 10px; display: inline;"
-	for="<?php echo esc_attr( \Alma\Woocommerce\Helpers\Alma_Constants_Helper::GATEWAY_ID ); ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
+	for="<?php echo esc_attr( \Alma\Woocommerce\Helpers\ConstantsHelper::GATEWAY_ID ); ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
 >
 
 	<?php
-	if ( \Alma\Woocommerce\Helpers\Alma_Constants_Helper::GATEWAY_ID_PAY_NOW === $id ) {
+	if ( \Alma\Woocommerce\Helpers\ConstantsHelper::GATEWAY_ID_PAY_NOW === $id ) {
 		?>
 		<span class="logoContainer" style="margin-top: 10px !important;">
 		<img src="<?php echo esc_attr( $logo_url ); ?>" style="float: unset !important; width: auto !important; height: 15px !important;  border: none !important; vertical-align: middle; display: inline-block; margin-left: 2px;" alt="

@@ -58,14 +58,11 @@ if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins',
 
 require_once ALMA_PLUGIN_PATH . 'vendor/autoload.php';
 
-// Load the autoloader from its own file.
-require_once plugin_dir_path( __FILE__ ) . 'autoload.php';
-
 
 /**
- * Return instance of Alma_Plugin.
+ * Return instance of AlmaPlugin.
  *
- * @return  Alma\Woocommerce\Alma_Plugin
+ * @return  Alma\Woocommerce\AlmaPlugin
  * @noinspection PhpIncludeInspection
  */
 function alma_plugin() {
@@ -73,7 +70,7 @@ function alma_plugin() {
 
 	if ( ! isset( $plugin ) ) {
 
-		$plugin = Alma\Woocommerce\Alma_Plugin::get_instance();
+		$plugin = Alma\Woocommerce\AlmaPlugin::get_instance();
 
 	}
 

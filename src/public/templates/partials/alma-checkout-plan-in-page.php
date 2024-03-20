@@ -14,8 +14,8 @@
 	type="radio"
 	style="float: none;"
 	value="<?php echo esc_attr( $plan_key ); ?>"
-	id="<?php echo esc_attr( \Alma\Woocommerce\Helpers\Alma_Constants_Helper::GATEWAY_ID_IN_PAGE ); ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
-	name="<?php echo esc_attr( \Alma\Woocommerce\Helpers\Alma_Constants_Helper::ALMA_FEE_PLAN_IN_PAGE ); ?>"
+	id="<?php echo esc_attr( \Alma\Woocommerce\Helpers\ConstantsHelper::GATEWAY_ID_IN_PAGE ); ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
+	name="<?php echo esc_attr( \Alma\Woocommerce\Helpers\ConstantsHelper::ALMA_FEE_PLAN_IN_PAGE ); ?>"
 	class="alma_fee_plan_in_page"
 	data-default="<?php echo $is_checked ? '1' : '0'; ?>"
 	data-settings-decimal-separator="<?php echo esc_attr( $decimal_separator ); ?>"
@@ -26,12 +26,12 @@
 <label
 	class="checkbox"
 	style="float:none; margin-right: 10px; display: inline;"
-	for="<?php echo esc_attr( \Alma\Woocommerce\Helpers\Alma_Constants_Helper::GATEWAY_ID_IN_PAGE ); ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
+	for="<?php echo esc_attr( \Alma\Woocommerce\Helpers\ConstantsHelper::GATEWAY_ID_IN_PAGE ); ?>_alma_fee_plan_<?php echo esc_attr( $plan_key ); ?>"
 >
 <?php
 if (
-		Alma\Woocommerce\Helpers\Alma_Constants_Helper::GATEWAY_ID_PAY_NOW === $id
-		|| \Alma\Woocommerce\Helpers\Alma_Constants_Helper::PAY_NOW_FEE_PLAN === $plan_key
+		Alma\Woocommerce\Helpers\ConstantsHelper::GATEWAY_ID_PAY_NOW === $id
+		|| \Alma\Woocommerce\Helpers\ConstantsHelper::PAY_NOW_FEE_PLAN === $plan_key
 	) {
 	?>
 		<span class="logoContainer" style="margin-top: 10px !important;">

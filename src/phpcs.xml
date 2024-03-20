@@ -43,6 +43,7 @@
 		<exclude name="WordPress.WhiteSpace.ControlStructureSpacing"/>
 		<exclude name="WordPress.Security.EscapeOutput"/>
 		-->
+		<exclude name="WordPress.Files.FileName" />
 	</rule>
 
 	<!-- Let's also check that everything is properly documented. -->
