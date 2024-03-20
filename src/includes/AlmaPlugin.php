@@ -208,7 +208,7 @@ class AlmaPlugin {
 		$setting_link = $this->get_setting_link();
 
 		$plugin_links = array(
-			'<a href="' . $setting_link . '">' . __( 'AlmaSettings', 'alma-gateway-for-woocommerce' ) . '</a>',
+			'<a href="' . $setting_link . '">' . __( 'Settings', 'alma-gateway-for-woocommerce' ) . '</a>',
 		);
 
 		return array_merge( $plugin_links, $links );
