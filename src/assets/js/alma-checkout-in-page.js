@@ -9,7 +9,7 @@
  */
 
 (function ($) {
-	var regex  = /^general_([0-9]{1,2})_[0-9]{1,2}_[0-9]{1,2}/g;
+	var regex  = /^general_([0-9]{1,2})_([0-9]{1,2})_([0-9]{1,2})/g;
 	var inPage = undefined;
 
 	$( 'body' ).on(
@@ -50,7 +50,9 @@
 		installment = null;
 
 		for (const match of matches) {
-			installment = match[1];
+			installment    = match[1];
+			deferredDays   = match[2];
+			deferredMonths = match[3];
 		}
 
 		if (null !== installment) {
@@ -86,6 +88,8 @@
 					merchantId: alma_iframe_params.merchant_id,
 					amountInCents: amount,
 					installmentsCount: installment,
+					deferredDays: deferredDays,
+					deferredMonths: deferredMonths,
 					selector: "#alma-inpage-" + payment_value,
 					environment: alma_iframe_params.environment,
 					locale: alma_iframe_params.locale,
@@ -95,7 +99,9 @@
 	}
 
 	function isAlmaInPageChecked() {
-		return $( '#payment_method_alma_in_page' ).is( ':checked' ) || $( '#payment_method_alma_in_page_pay_now' ).is( ':checked' );
+		return $( '#payment_method_alma_in_page' ).is( ':checked' )
+			|| $( '#payment_method_alma_in_page_pay_now' ).is( ':checked' )
+			|| $( '#payment_method_alma_in_page_pay_later' ).is( ':checked' );
 	}
 
 	$( 'body' ).on(

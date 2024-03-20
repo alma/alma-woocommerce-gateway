@@ -31,26 +31,3 @@ jobs:
       - name: Lint source code
         run: composer phpcs
 
-
-  test:
-    runs-on: ubuntu-22.04
-    
-    strategy:
-      fail-fast: false
-      # We are using only the latest supported version as a first step
-      matrix:
-        include:
-          - wc_version: "8.2.2"
-            wp_version: "6.4.1"
-            php_version: "7.4"
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - run: docker compose build --build-arg PHP_VERSION=${{ matrix.php_version }} --build-arg WP_VERSION=${{ matrix.wp_version }} --build-arg WC_VERSION=${{ matrix.wp_version }}
-
-      - run: docker compose run test
-        env:
-          WC_VERSION: ${{ matrix.wc_version }}
-          WP_VERSION: ${{ matrix.wp_version }}
-

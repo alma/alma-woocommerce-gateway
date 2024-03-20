@@ -549,7 +549,7 @@ msgid "Alma requires OpenSSL >= 1.0.1 to be installed on your server"
 msgstr "El plugin Alma requiere que OpenSSL 1.0.1+ esté instalado en tu servidor"
 
 #: includes/class-alma-plugin.php:214
-msgid "Settings"
+msgid "AlmaSettings"
 msgstr "Configuración"
 
 #: includes/class-alma-refund.php:63

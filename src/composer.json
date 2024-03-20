@@ -18,7 +18,18 @@
         "symfony/var-dumper": "*",
         "woocommerce/woocommerce": "*",
         "wp-coding-standards/wpcs": "^2.3",
-        "yoast/phpunit-polyfills": "^2.0"
+        "yoast/phpunit-polyfills": "^2.0",
+        "ext-simplexml": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Alma\\Woocommerce\\": "includes/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Alma\\Woocommerce\\Tests\\": "tests/"
+        }
     },
     "extra": {
         "installer-disable": [

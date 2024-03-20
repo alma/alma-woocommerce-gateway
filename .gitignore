@@ -7,6 +7,7 @@ plugins/
 src/composer.lock
 /crowdin.properties
 /crowdin.deb
+node_modules/
 crowdin.yml
 node_modules/
 .npmrc
