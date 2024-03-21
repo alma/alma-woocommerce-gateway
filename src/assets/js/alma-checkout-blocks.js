@@ -40,10 +40,19 @@ import '../css/alma-checkout-blocks.css'
             </span>
         };
 
-
         function DisplayAlmaBlocks(props) {
             const [selectedFeePlan, setSelectedFeePlan] = useState(settings.default_plan)
             const {eventRegistration, emitResponse} = props;
+
+            useEffect(() =>  {
+                // removeEventListener('onCheckoutBeforeProcessing')
+                billingAddress = props.billing.billingAddress
+        
+                if (props.shippingData.shippingAddress) {
+                    shippingAddress = props.shippingData.shippingAddress
+                }
+                console.log("coucou", billingAddress,shippingAddress)
+            }, [props]);
 
             if (!settings.is_in_page) {
                 const {onPaymentSetup} = eventRegistration;
@@ -134,6 +143,7 @@ import '../css/alma-checkout-blocks.css'
 
                             initializeInpage(settingsInPage);
                         }
+                        
                         document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].addEventListener(
                             "click",
                             (event) => {
@@ -165,6 +175,7 @@ import '../css/alma-checkout-blocks.css'
                                     jQuery.post(ajax_object.ajax_url, data)
                                         .done(
                                             function (response) {
+                                                console.log("ici",response)
                                                 var paymentId = response.data.payment_id;
                                                 var orderId = response.data.order_id;
 
@@ -196,14 +207,6 @@ import '../css/alma-checkout-blocks.css'
                     <div id='alma-inpage-alma_in_page'></div>
                 </>
             }
-
-            // removeEventListener('onCheckoutBeforeProcessing')
-            billingAddress = props.billing.billingAddress
-
-            if (props.shippingData.shippingAddress) {
-                shippingAddress = props.shippingData.shippingAddress
-            }
-
             // customerNote = props.customerNote
         }
 
