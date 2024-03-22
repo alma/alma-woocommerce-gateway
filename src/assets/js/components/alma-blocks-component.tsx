@@ -10,10 +10,10 @@
 import "@alma/react-components/style.css";
 import "@alma/react-components/global.css";
 import "../../css/alma-checkout-blocks.css";
-import {ToggleButtonsField} from "@alma/react-components";
+import { ToggleButtonsField } from "@alma/react-components";
 import React from "react";
-import {Installments} from "./Installments/Installments";
-import {FormattedMessage, IntlProvider} from "react-intl";
+import { Installments } from "./Installments/Installments";
+import { FormattedMessage, IntlProvider } from "react-intl";
 import classNames from "classnames";
 
 export type PaymentPlan = {
@@ -46,30 +46,34 @@ type Settings = {
   label_button: string;
   nonce_value: string;
   title: string;
+  amount_in_cents: number;
 };
 
 type AlmaBlocksProps = {
   settings: Settings;
   selectedFeePlan: string;
   setSelectedFeePlan: (value: string) => void;
+  hasInPage: boolean;
 };
 
-export const AlmaBlocks: React.FC<AlmaBlocksProps> = (
-  {
-    settings,
-    selectedFeePlan,
-    setSelectedFeePlan,
-  }
-) => {
+export const AlmaBlocks: React.FC<AlmaBlocksProps> = ({
+  settings,
+  selectedFeePlan,
+  setSelectedFeePlan,
+  hasInPage,
+}) => {
   const labels = {};
   let values = [];
 
   Object.keys(settings.plans).forEach(function (key, index) {
     values.push(key);
-    if (settings.gateway_name === "alma_pay_later") {
-      if (settings.plans[key].deferredDays > 0){
+    if (
+      settings.gateway_name === "alma_pay_later" ||
+      settings.gateway_name === "alma_in_page_pay_later"
+    ) {
+      if (settings.plans[key].deferredDays > 0) {
         labels[key] = "D+" + settings.plans[key].deferredDays;
-      } else if (settings.plans[key].deferredMonths > 0){
+      } else if (settings.plans[key].deferredMonths > 0) {
         labels[key] = "M+" + settings.plans[key].deferredMonths;
       }
     } else {
@@ -90,7 +94,7 @@ export const AlmaBlocks: React.FC<AlmaBlocksProps> = (
     <>
       <IntlProvider locale="fr">
         {isPayNow && <div className={"payNowLabel"}>{label}</div>}
-        <div className={classNames({payNow: isPayNow})}>
+        <div className={classNames({ payNow: isPayNow })}>
           <ToggleButtonsField
             className={"toggleButtonField"}
             options={values}
@@ -104,9 +108,14 @@ export const AlmaBlocks: React.FC<AlmaBlocksProps> = (
             error=""
           />
         </div>
-        <div className="alma-card-installments">
-          <Installments feePlan={settings.plans[selectedFeePlan]} amountInCents={settings.amount_in_cents}/>
-        </div>
+        {!hasInPage && (
+          <div className="alma-card-installments">
+            <Installments
+              feePlan={settings.plans[selectedFeePlan]}
+              amountInCents={settings.amount_in_cents}
+            />
+          </div>
+        )}
       </IntlProvider>
     </>
   );

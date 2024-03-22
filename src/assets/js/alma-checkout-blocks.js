@@ -44,6 +44,34 @@ import '../css/alma-checkout-blocks.css'
             const [selectedFeePlan, setSelectedFeePlan] = useState(settings.default_plan)
             const {eventRegistration, emitResponse} = props;
 
+            // There cannot be two iframes in the same page, so this is the function to unmount it
+        function initializeInpage(settingsInPage) {
+            if (
+                inPage !== undefined
+                && document.getElementById('alma-embedded-iframe') !== null
+            ) {
+                inPage.unmount();
+            }
+
+            console.log(settings.plans[selectedFeePlan].paymentPlan[0].purchase_amount, 'settingsInPage')
+
+            inPage = Alma.InPage.initialize(
+                {
+                    merchantId: settingsInPage.merchant_id,
+                    amountInCents: settings.amount_in_cents,
+                    installmentsCount: settings.plans[selectedFeePlan].installmentsCount,
+                    selector: "#alma-inpage-alma_in_page",
+                    environment: settingsInPage.environment,
+                    locale: settingsInPage.locale,
+                }
+            );
+        }
+
+            // Each time the settings change, we need to unmout the iframe and remount it with the new settings
+            useEffect(() => {
+                initializeInpage(settings)
+            }, [settings, selectedFeePlan])
+
             useEffect(() =>  {
                 // removeEventListener('onCheckoutBeforeProcessing')
                 billingAddress = props.billing.billingAddress
@@ -51,7 +79,6 @@ import '../css/alma-checkout-blocks.css'
                 if (props.shippingData.shippingAddress) {
                     shippingAddress = props.shippingData.shippingAddress
                 }
-                console.log("coucou", billingAddress,shippingAddress)
             }, [props]);
 
             if (!settings.is_in_page) {
@@ -90,7 +117,7 @@ import '../css/alma-checkout-blocks.css'
                     ]
                 );
                 return (
-                    <AlmaBlocks settings={settings} selectedFeePlan={selectedFeePlan} setSelectedFeePlan={setSelectedFeePlan}/>
+                    <AlmaBlocks hasInPage={settings.is_in_page} settings={settings} selectedFeePlan={selectedFeePlan} setSelectedFeePlan={setSelectedFeePlan}/>
                 )
             }
 
@@ -98,25 +125,6 @@ import '../css/alma-checkout-blocks.css'
                 window.addEventListener(
                     'load',
                     (event) => {
-                        function initializeInpage(settingsInPage) {
-                            if (
-                                inPage !== undefined
-                                && document.getElementById('alma-embedded-iframe') !== null
-                            ) {
-                                inPage.unmount();
-                            }
-
-                            inPage = Alma.InPage.initialize(
-                                {
-                                    merchantId: settingsInPage.merchant_id,
-                                    amountInCents: settingsInPage.amount_in_cents,
-                                    installmentsCount: '1',
-                                    selector: "#alma-inpage-alma_in_page",
-                                    environment: settingsInPage.environment,
-                                    locale: settingsInPage.locale,
-                                }
-                            );
-                        }
 
                         function isAlmaInPageChecked() {
                             // verif that the paiment type method is in page.
@@ -140,16 +148,16 @@ import '../css/alma-checkout-blocks.css'
 
                         if (hasInPage) {
                             var settingsInPage = window.wc.wcSettings.getSetting('alma_in_page_data', null);
-                            console.log(settingsInPage)
 
                             initializeInpage(settingsInPage);
                         }
+
+                        const almaCheckoutNonce = `alma_checkout_nonce${settings.gateway_name}`;
                         
                         document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].addEventListener(
                             "click",
                             (event) => {
                                 if (isAlmaInPageChecked()) {
-                                    console.log($( 'wc-block-checkout__form' ).serializeArray(), 'OUI ICICICIOQJOSIDJ')
                                     event.stopPropagation()
                                     // customer_note + shipping_address +
                                     var data = {
@@ -158,25 +166,23 @@ import '../css/alma-checkout-blocks.css'
                                             'billing': billingAddress,
                                             'shipping': shippingAddress,
                                             'customer_note': customerNote,
-                                            'alma_fee_plan': 'general_1_0_0',
-                                            'alma_checkout_noncealma_in_page_pay_now': settingsInPage.nonce_value,
-                                            'payment_method': 'alma_in_page_pay_now',
+                                            'alma_fee_plan': selectedFeePlan,
+                                            almaCheckoutNonce: settingsInPage.nonce_value,
+                                            'payment_method': settings.gateway_name,
                                         },
-                                        'alma_checkout_noncealma_in_page_pay_now': settingsInPage.nonce_value,
+                                        almaCheckoutNonce: settingsInPage.nonce_value,
                                         'woocommerce-process-checkout-nonce': settingsInPage.woocommerce_process_checkout_nonce,
-                                        'payment_method': 'alma_in_page_pay_now',
-                                        'alma_fee_plan': 'general_1_0_0',
-                                        'alma_fee_plan_in_page': 'general_1_0_0',
+                                        'payment_method': settings.gateway_name,
+                                        'alma_fee_plan': selectedFeePlan,
+                                        'alma_fee_plan_in_page': selectedFeePlan,
                                         'is_woo_block': true
                                     };
-                                    console.log(JSON.stringify(data))
                                     // add_loader();
 
                                     // Create the payment id and order.
                                     jQuery.post(ajax_object.ajax_url, data)
                                         .done(
                                             function (response) {
-                                                console.log("ici",response)
                                                 var paymentId = response.data.payment_id;
                                                 var orderId = response.data.order_id;
 
@@ -204,7 +210,7 @@ import '../css/alma-checkout-blocks.css'
                     }
                 )
                 return <>
-                    <AlmaBlocks settings={settings} selectedFeePlan={selectedFeePlan} setSelectedFeePlan={setSelectedFeePlan}/>
+                    <AlmaBlocks hasInPage={settings.is_in_page} settings={settings} selectedFeePlan={selectedFeePlan} setSelectedFeePlan={setSelectedFeePlan}/>
                     <div id='alma-inpage-alma_in_page'></div>
                 </>
             }
