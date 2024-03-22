@@ -247,7 +247,7 @@ class PluginHelper {
 	protected function enqueue_in_page_scripts() {
 		wp_enqueue_script( 'alma-checkout-in-page-cdn', ConstantsHelper::ALMA_PATH_CHECKOUT_CDN_IN_PAGE_JS, array(), ALMA_VERSION, true );
 
-		if ( $this->add_in_page_actions() ) {
+		if ( ! $this->has_woocommerce_blocks() ) {
 			$alma_checkout_in_page_js = AssetsHelper::get_asset_url( ConstantsHelper::ALMA_PATH_CHECKOUT_IN_PAGE_JS );
 			wp_enqueue_script(
 				'alma-checkout-in-page',
