@@ -96,7 +96,7 @@ class AlmaBlock extends AbstractPaymentMethodType {
 		$asset_path = AssetsHelper::get_asset_build_url( ConstantsHelper::ALMA_PATH_CHECKOUT_BLOCK_PHP );
 
 		if ( file_exists( $asset_path ) ) {
-			require $asset_path;
+			require_once $asset_path;
 		}
 
 		$alma_checkout_blocks_css = AssetsHelper::get_asset_build_url( ConstantsHelper::ALMA_PATH_CHECKOUT_BLOCK_CSS );
