@@ -137,6 +137,7 @@ import '../css/alma-checkout-blocks.css'
                             jQuery.post(ajax_object.ajax_url, JSON.stringify(data))
                         }
 
+
                         if (hasInPage) {
                             var settingsInPage = window.wc.wcSettings.getSetting('alma_in_page_data', null);
                             console.log(settingsInPage)

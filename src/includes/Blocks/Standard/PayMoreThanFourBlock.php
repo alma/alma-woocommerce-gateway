@@ -39,6 +39,15 @@ class PayMoreThanFourBlock extends AlmaBlock {
 	protected $name = ConstantsHelper::GATEWAY_ID_MORE_THAN_FOUR;
 
 	/**
+	 * Get the gateway id.
+	 *
+	 * @return string
+	 */
+	public function get_gateway_id() {
+		return ConstantsHelper::GATEWAY_ID_MORE_THAN_FOUR;
+	}
+
+	/**
 	 * Initialize.
 	 *
 	 * @return void

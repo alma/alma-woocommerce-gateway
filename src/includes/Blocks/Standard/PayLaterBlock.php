@@ -39,6 +39,15 @@ class PayLaterBlock extends AlmaBlock {
 	protected $name = ConstantsHelper::GATEWAY_ID_PAY_LATER;
 
 	/**
+	 * Get the gateway id.
+	 *
+	 * @return string
+	 */
+	public function get_gateway_id() {
+		return ConstantsHelper::GATEWAY_ID_PAY_LATER;
+	}
+
+	/**
 	 * Initialize.
 	 *
 	 * @return void

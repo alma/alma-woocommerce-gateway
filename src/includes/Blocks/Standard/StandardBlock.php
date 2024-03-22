@@ -39,6 +39,15 @@ class StandardBlock extends AlmaBlock {
 	protected $name = ConstantsHelper::GATEWAY_ID;
 
 	/**
+	 * Get the gateway id.
+	 *
+	 * @return string
+	 */
+	public function get_gateway_id() {
+		return ConstantsHelper::GATEWAY_ID;
+	}
+
+	/**
 	 * Initialize.
 	 *
 	 * @return void

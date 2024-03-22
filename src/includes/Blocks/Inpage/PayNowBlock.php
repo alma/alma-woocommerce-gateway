@@ -40,6 +40,15 @@ class PayNowBlock extends AlmaBlock {
 	protected $name = ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_NOW;
 
 	/**
+	 * Get the gateway id.
+	 *
+	 * @return string
+	 */
+	public function get_gateway_id() {
+		return ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_NOW;
+	}
+
+	/**
 	 * Initialize.
 	 *
 	 * @return void

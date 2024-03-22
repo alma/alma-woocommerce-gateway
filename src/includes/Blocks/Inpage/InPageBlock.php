@@ -39,6 +39,16 @@ class InPageBlock extends AlmaBlock {
 	 */
 	protected $name = ConstantsHelper::GATEWAY_ID_IN_PAGE;
 
+
+	/**
+	 * Get the gateway id.
+	 *
+	 * @return string
+	 */
+	public function get_gateway_id() {
+		return ConstantsHelper::GATEWAY_ID_IN_PAGE;
+	}
+
 	/**
 	 * Initialize.
 	 *

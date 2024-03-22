@@ -144,21 +144,23 @@ class AlmaBlock extends AbstractPaymentMethodType {
 	 */
 	public function get_payment_method_data() {
 
-		$nonce_value = $this->checkout_helper->create_nonce_value( $this->gateway->id );
+		$gateway_id = $this->get_gateway_id();
+
+		$nonce_value = $this->checkout_helper->create_nonce_value( $gateway_id );
 
 		// We get the eligibilites.
 		$eligibilities  = $this->alma_settings->get_cart_eligibilities();
-		$eligible_plans = $this->alma_settings->get_eligible_plans_keys_for_cart( $eligibilities, $this->gateway->id );
+		$eligible_plans = $this->alma_settings->get_eligible_plans_keys_for_cart( $eligibilities, $gateway_id );
 		$plans          = $this->alma_plan_builder->get_plans_by_keys( $eligible_plans, $eligibilities );
 
 		$default_plan = $this->gateway_helper->get_default_plan( $eligible_plans );
 
-		$is_in_page = $this->gateway_helper->is_in_page_gateway( $this->gateway->id );
+		$is_in_page = $this->gateway_helper->is_in_page_gateway( $gateway_id );
 
 		$data = array(
-			'title'           => $this->gateway_helper->get_alma_gateway_title( $this->gateway->id, true ),
-			'description'     => $this->gateway_helper->get_alma_gateway_description( $this->gateway->id, true ),
-			'gateway_name'    => $this->gateway->id,
+			'title'           => $this->gateway_helper->get_alma_gateway_title( $gateway_id, true ),
+			'description'     => $this->gateway_helper->get_alma_gateway_description( $gateway_id, true ),
+			'gateway_name'    => $gateway_id,
 			'default_plan'    => $default_plan,
 			'plans'           => $plans,
 			'nonce_value'     => $nonce_value,

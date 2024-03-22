@@ -105,5 +105,6 @@ class ConstantsHelper {
 	public static $gateways_in_page_ids = array(
 		self::GATEWAY_ID_IN_PAGE,
 		self::GATEWAY_ID_IN_PAGE_PAY_NOW,
+		self::GATEWAY_ID_IN_PAGE_PAY_LATER,
 	);
 }

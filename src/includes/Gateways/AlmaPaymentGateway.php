@@ -668,6 +668,14 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 		$allowed_values = $this->alma_settings->get_eligible_plans_keys_for_cart();
 
 		if ( ! in_array( $alma_fee_plan, $allowed_values[ $this->id ], true ) ) {
+			$this->logger->error(
+				sprintf(
+					'Fee plan is invalid : %s, allowed values : %s, gateway id : %s',
+					$alma_fee_plan,
+					json_encode( $allowed_values ),
+					$this->id
+				)
+			);
 			wc_add_notice( '<strong>Fee plan</strong> is invalid.', ConstantsHelper::ERROR );
 
 			return false;
