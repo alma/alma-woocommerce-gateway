@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 4.4
 Tested up to: 6.3
 Requires PHP: 5.6
-Stable tag: 5.2.1
+Stable tag: 5.3.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -52,12 +52,12 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 == Changelog ==
 
 * feature: In page with Deferred payments is available
-* fix: deactivate rendering of Alma payment methods on order pay checkout page
-* fix : delete abandoned orders created by In Page
-* fix: default plan selection
 * feature: compatibility Woocommerce 8.2.2
 * feature: Compatibility WordPress 6.4.1
 * feature: add psr4
+* fix: deactivate rendering of Alma payment methods on order pay checkout page
+* fix : delete abandoned orders created by In Page
+* fix: default plan selection
 * fix : add flag security for SOC
 
 = 5.2.1 =
