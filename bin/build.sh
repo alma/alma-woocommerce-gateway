@@ -61,7 +61,6 @@ LICENSE  \
 ./src/tests \
 ./src/composer.json \
 ./src/phpcs.xml \
-./src/autoload.php \
 ./src/alma-gateway-for-woocommerce.php \
 ./src/uninstall.php \
 "

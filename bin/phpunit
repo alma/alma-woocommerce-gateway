@@ -1,2 +1,2 @@
 #!/bin/bash
-src/vendor/phpunit/phpunit/phpunit --bootstrap src/tests/bootstrap.php $@ src/tests
+src/vendor/phpunit/phpunit/phpunit -c src/phpunit.xml.dist

@@ -29,6 +29,15 @@ require_once "{$_tests_dir}/includes/functions.php";
  * Manually load the plugin being tested.
  */
 function _manually_load_plugin() {
+	$_tests_dir = rtrim( sys_get_temp_dir(), '/\\' ) . '/wordpress-tests-lib';
+
+	# We must manually load th plugin ourselves, as it won't be installed traditionnaly with the WP CLI
+	require_once "{$_tests_dir}/woocommerce/woocommerce.php";
+
+	# Because we do not use WP CLI, we have to add the plugin manually to this list for our gateway to work.
+	# This is probably a dirty hack that should be removed if a better option is found.
+	update_option( 'active_plugins', array("woocommerce/woocommerce.php") );
+
 	require dirname( dirname( __FILE__ ) ) . '/alma-gateway-for-woocommerce.php';
 }
 

@@ -3,7 +3,7 @@
  * Plugin Name: Alma - Pay in installments or later for WooCommerce
  * Plugin URI: https://docs.almapay.com/docs/woocommerce
  * Description: Install Alma and boost your sales! It's simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.
- * Version: 5.2.1
+ * Version: 5.3.0
  * Author: Alma
  * Author URI: https://almapay.com
  * License: GNU General Public License v3.0
@@ -12,12 +12,12 @@
  * Domain Path: /languages
  * Requires at least: 4.4
  * Requires PHP: 5.6
- * Tested up to: 6.3.2
+ * Tested up to: 6.4.1
  *
  * @package Alma_Gateway_For_Woocommerce
  *
  * WC requires at least: 2.6
- * WC tested up to: 8.2.1
+ * WC tested up to: 8.2.2
  *
  * Alma Payment Gateway for WooCommerce is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'ALMA_VERSION' ) ) {
-	define( 'ALMA_VERSION', '5.2.1' );
+	define( 'ALMA_VERSION', '5.3.0' );
 }
 if ( ! defined( 'ALMA_PLUGIN_FILE' ) ) {
 	define( 'ALMA_PLUGIN_FILE', __FILE__ );
@@ -58,14 +58,11 @@ if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins',
 
 require_once ALMA_PLUGIN_PATH . 'vendor/autoload.php';
 
-// Load the autoloader from its own file.
-require_once plugin_dir_path( __FILE__ ) . 'autoload.php';
-
 
 /**
- * Return instance of Alma_Plugin.
+ * Return instance of AlmaPlugin.
  *
- * @return  Alma\Woocommerce\Alma_Plugin
+ * @return  Alma\Woocommerce\AlmaPlugin
  * @noinspection PhpIncludeInspection
  */
 function alma_plugin() {
@@ -73,7 +70,7 @@ function alma_plugin() {
 
 	if ( ! isset( $plugin ) ) {
 
-		$plugin = Alma\Woocommerce\Alma_Plugin::get_instance();
+		$plugin = Alma\Woocommerce\AlmaPlugin::get_instance();
 
 	}
 
