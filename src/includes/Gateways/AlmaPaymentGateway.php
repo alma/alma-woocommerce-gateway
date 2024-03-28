@@ -285,7 +285,6 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 			! $this->alma_settings->is_allowed_to_see_alma( wp_get_current_user() )
 			|| is_admin()
 			|| ! $tools->check_currency()
-			|| ! is_checkout()
 			|| is_wc_endpoint_url( 'order-pay' )
 			|| ! empty( $wp->query_vars['order-pay'] )
 		) {
@@ -294,6 +293,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 
 		if (
 			wc()->cart === null
+			|| ! is_checkout()
 		) {
 			return parent::is_available();
 		}
@@ -628,6 +628,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 
 		try {
 			$wc_order = $this->order_helper->get_order( $order_id );
+
 			// We ignore the nonce verification because process_payment is called after validate_fields.
 			$fee_plan = $this->alma_settings->build_fee_plan( $_POST[ ConstantsHelper::ALMA_FEE_PLAN ] ); // phpcs:ignore WordPress.Security.NonceVerification
 			$payment  = $this->alma_payment_helper->create_payments( $wc_order, $fee_plan );
@@ -650,8 +651,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 	 * @return bool
 	 */
 	public function validate_fields() {
-		$error_msg = __( 'There was an error processing your payment.<br>Please try again or contact us if the problem persists.', 'alma-gateway-for-woocommerce' );
-
+		$error_msg     = __( 'There was an error processing your payment.<br>Please try again or contact us if the problem persists.', 'alma-gateway-for-woocommerce' );
 		$alma_fee_plan = $this->checkout_helper->get_chosen_alma_fee_plan( $this->id );
 
 		if ( ! $alma_fee_plan ) {
@@ -669,6 +669,14 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 		$allowed_values = $this->alma_settings->get_eligible_plans_keys_for_cart();
 
 		if ( ! in_array( $alma_fee_plan, $allowed_values[ $this->id ], true ) ) {
+			$this->logger->error(
+				sprintf(
+					'Fee plan is invalid : %s, allowed values : %s, gateway id : %s',
+					$alma_fee_plan,
+					wp_json_encode( $allowed_values ),
+					$this->id
+				)
+			);
 			wc_add_notice( '<strong>Fee plan</strong> is invalid.', ConstantsHelper::ERROR );
 
 			return false;

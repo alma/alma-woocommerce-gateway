@@ -62,10 +62,11 @@ class CheckoutHelper {
 	 * @return string|null
 	 */
 	protected function check_nonce( $field_name, $nonce_name ) {
-		if ( isset( $_POST[ $field_name ] )
+		if (
+			isset( $_POST[ $field_name ] )
 			&& isset( $_POST[ $nonce_name ] )
-			&& wp_verify_nonce( $_POST[ $nonce_name ], $nonce_name ) ) {
-
+			&& wp_verify_nonce( $_POST[ $nonce_name ], $nonce_name )
+		) {
 			return $_POST[ $field_name ];
 		}
 
@@ -77,8 +78,6 @@ class CheckoutHelper {
 				wp_json_encode( $_POST )
 			)
 		);
-
-		return null;
 	}
 
 	/**
@@ -92,6 +91,16 @@ class CheckoutHelper {
 		wp_nonce_field( ConstantsHelper::CHECKOUT_NONCE . $id, ConstantsHelper::CHECKOUT_NONCE . $id );
 	}
 
+	/**
+	 * Create the nonce value.
+	 *
+	 * @param int $id The gateway id.
+	 *
+	 * @return false|string
+	 */
+	public function create_nonce_value( $id ) {
+		return wp_create_nonce( ConstantsHelper::CHECKOUT_NONCE . $id );
+	}
 
 	/**
 	 * Check if payment_method is set in POST and is an Alma payment method

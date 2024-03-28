@@ -5,20 +5,19 @@
  */
 
 (function ($) {
-
-	$( 'body' ).on(
-		'updated_checkout',
-		function() {
-			var selectedPaymentMethod = $( '.woocommerce-checkout input[name="payment_method"]:checked' );
-			var fee_plans             = selectedPaymentMethod.find( 'input[name="alma_fee_plan"]' );
-			fee_plans.first().prop( 'checked', true ).trigger( 'change' );
-		}
-	);
-
 	$( 'body' ).on(
 		'change',
 		'input[name="alma_fee_plan"]',
 		function() {
+
+			$( 'body' ).on(
+				'updated_checkout',
+				function() {
+					var selectedPaymentMethod = $( '.woocommerce-checkout input[name="payment_method"]:checked' );
+					var fee_plans             = selectedPaymentMethod.find( 'input[name="alma_fee_plan"]' );
+					fee_plans.first().prop( 'checked', true ).trigger( 'change' );
+				}
+			);
 
 			if ( $( this ).prop( 'checked' ) ) {
 				$( this ).closest( 'li.wc_payment_method' ).attr( 'data-already-checked', $( this ).attr( 'id' ) );	$( 'body' ).on(

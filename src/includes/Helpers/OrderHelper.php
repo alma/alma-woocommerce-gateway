@@ -20,7 +20,6 @@ use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Exceptions\ApiCreatePaymentsException;
 use Alma\Woocommerce\Exceptions\BuildOrderException;
 use Alma\Woocommerce\Exceptions\CreatePaymentsException;
-use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Exceptions\PlansDefinitionException;
 use Alma\Woocommerce\Gateways\Standard\StandardGateway;
 use Alma\Woocommerce\Services\CheckoutService;
@@ -29,6 +28,8 @@ use Alma\Woocommerce\Services\CheckoutService;
  * Class OrderHelper.
  */
 class OrderHelper {
+
+
 
 	const SHOP_ORDER = 'shop_order';
 
@@ -285,7 +286,8 @@ class OrderHelper {
 	 */
 	protected function create_inpage_order( $post_fields ) {
 		$alma_checkout = new CheckoutService();
-		$order         = $alma_checkout->process_checkout();
+
+		$order = $alma_checkout->process_checkout();
 
 		// We ignore the nonce verification because process_payment is called after validate_fields.
 		$settings       = new AlmaSettings();
@@ -301,21 +303,6 @@ class OrderHelper {
 		);
 	}
 
-	/**
-	 * Get the title of the Alma Gateway.
-	 *
-	 * @param string $id The alma gateway type id.
-	 * @return string
-	 * @throws AlmaException Exception.
-	 */
-	public function get_alma_gateway_title( $id ) {
-		$settings = new AlmaSettings();
-		if ( in_array( $id, ConstantsHelper::$gateways_ids, true ) ) {
-			return $settings->get_title( $id );
-		}
-
-		throw new AlmaException( sprintf( 'Unknown gateway id : %s', $id ) );
-	}
 
 	/**
 	 * Abandonment by the client.

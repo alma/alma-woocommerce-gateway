@@ -383,10 +383,15 @@ class AlmaSettings {
 	 * Gets title for a payment method.
 	 *
 	 * @param string $payment_method The payment method.
+	 * @param string $is_blocks Are we in blocks.
 	 *
 	 * @return string
 	 */
-	public function get_title( $payment_method ) {
+	public function get_title( $payment_method, $is_blocks = false ) {
+		if ( $is_blocks ) {
+			return $this->get_i18n( 'title_blocks_' . $payment_method );
+		}
+
 		return $this->get_i18n( 'title_' . $payment_method );
 	}
 
@@ -394,10 +399,15 @@ class AlmaSettings {
 	 * Gets title for a payment method.
 	 *
 	 * @param string $payment_method The payment method.
+	 * @param string $is_blocks Are we in blocks.
 	 *
 	 * @return string
 	 */
-	public function get_description( $payment_method ) {
+	public function get_description( $payment_method, $is_blocks = false ) {
+		if ( $is_blocks ) {
+			return $this->get_i18n( 'description_blocks_' . $payment_method );
+		}
+
 		return $this->get_i18n( 'description_' . $payment_method );
 	}
 
@@ -899,6 +909,7 @@ class AlmaSettings {
 	 * @return bool
 	 */
 	public function is_allowed_to_see_alma( \WP_User $user ) {
+		return true;
 		return in_array( 'administrator', $user->roles, true ) || 'live' === $this->get_environment();
 	}
 
@@ -936,10 +947,11 @@ class AlmaSettings {
 	/**
 	 * Get eligible plans keys for current cart.
 	 *
-	 * @param array $cart_eligibilities The eligibilities.
+	 * @param array       $cart_eligibilities The eligibilities.
+	 * @param string|null $gateway_id The gateway id.
 	 * @return array
 	 */
-	public function get_eligible_plans_keys_for_cart( $cart_eligibilities = array() ) {
+	public function get_eligible_plans_keys_for_cart( $cart_eligibilities = array(), $gateway_id = null ) {
 		$alma_plan_builder = new PlanBuilderHelper();
 		if ( empty( $cart_eligibilities ) ) {
 			$cart_eligibilities = $this->get_cart_eligibilities();
@@ -956,7 +968,7 @@ class AlmaSettings {
 			}
 		);
 
-		return $alma_plan_builder->order_plans( $eligibilities );
+		return $alma_plan_builder->order_plans( $eligibilities, $gateway_id );
 	}
 
 	/**

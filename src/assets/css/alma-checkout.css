@@ -3,7 +3,7 @@
  *
  * @package Alma_Gateway_For_Woocommerce
  * @since v4.2.5
- */
+ **/
 
 .alma-angle {
 	display: inline-block;
@@ -19,7 +19,6 @@
 	color: transparent;
 	margin-bottom: 3px;
 	margin-right: 3px;
-
 }
 
 .alma-angle-down {
