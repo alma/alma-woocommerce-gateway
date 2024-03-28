@@ -55,19 +55,6 @@ class CheckoutService extends \WC_Checkout {
 			isset( $_POST['is_woo_block'] )
 			&& $_POST['is_woo_block'] // phpcs:ignore WordPress.Security.NonceVerification
 		) {
-			foreach ( $_POST['fields']['billing'] as $key => $value ) { // phpcs:ignore WordPress.Security.NonceVerification
-				$_POST[ 'billing_' . $key ]    = $value;
-				$_REQUEST[ 'billing_' . $key ] = $value;
-			}
-			unset( $_POST['fields']['billing'] );
-
-			foreach ( $_POST['fields']['shipping'] as $key => $value ) { // phpcs:ignore WordPress.Security.NonceVerification
-				$_POST[ 'billing_' . $key ]    = $value;
-				$_REQUEST[ 'billing_' . $key ] = $value;
-			}
-
-			unset( $_POST['fields']['shipping'] );
-
 			foreach ( $_POST['fields']['billing_address'] as $key => $value ) { // phpcs:ignore WordPress.Security.NonceVerification
 				$_POST[ 'billing_' . $key ]    = $value;
 				$_REQUEST[ 'billing_' . $key ] = $value;
