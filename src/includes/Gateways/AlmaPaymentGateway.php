@@ -673,7 +673,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 				sprintf(
 					'Fee plan is invalid : %s, allowed values : %s, gateway id : %s',
 					$alma_fee_plan,
-					json_encode( $allowed_values ),
+					wp_json_encode( $allowed_values ),
 					$this->id
 				)
 			);

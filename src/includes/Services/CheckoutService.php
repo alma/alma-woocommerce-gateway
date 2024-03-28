@@ -17,16 +17,16 @@ use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\PluginHelper;
 
 
-if (!defined('ABSPATH')) {
-	die ('Not allowed'); // Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
 
 /**
  * CheckoutService
  */
-class CheckoutService extends \WC_Checkout
-{
+class CheckoutService extends \WC_Checkout {
+
 
 
 	/**
@@ -39,8 +39,7 @@ class CheckoutService extends \WC_Checkout
 	/**
 	 * Construct.
 	 */
-	public function __construct()
-	{
+	public function __construct() {
 		$this->plugin_helper = new PluginHelper();
 	}
 
@@ -51,109 +50,132 @@ class CheckoutService extends \WC_Checkout
 	 * @throws AlmaException The exception.
 	 * @throws \Exception Exception.
 	 */
-	public function process_checkout()
-	{
+	public function process_checkout() {
 		if (
-			isset ($_POST['is_woo_block'])
+			isset( $_POST['is_woo_block'] )
 			&& $_POST['is_woo_block'] // phpcs:ignore WordPress.Security.NonceVerification
 		) {
-			foreach ($_POST['fields']['billing'] as $key => $value) { // phpcs:ignore WordPress.Security.NonceVerification
-				$_POST['billing_' . $key] = $value;
-				$_REQUEST['billing_' . $key] = $value;
+			foreach ( $_POST['fields']['billing'] as $key => $value ) { // phpcs:ignore WordPress.Security.NonceVerification
+				$_POST[ 'billing_' . $key ]    = $value;
+				$_REQUEST[ 'billing_' . $key ] = $value;
 			}
-			unset($_POST['fields']['billing']);
+			unset( $_POST['fields']['billing'] );
 
-			foreach ($_POST['fields'] as $key => $value) { // phpcs:ignore WordPress.Security.NonceVerification
-				$_POST[$key] = $value;
-				$_REQUEST[$key] = $value;
+			foreach ( $_POST['fields']['shipping'] as $key => $value ) { // phpcs:ignore WordPress.Security.NonceVerification
+				$_POST[ 'billing_' . $key ]    = $value;
+				$_REQUEST[ 'billing_' . $key ] = $value;
 			}
-			unset($_POST['fields']);
+
+			unset( $_POST['fields']['shipping'] );
+
+			foreach ( $_POST['fields']['billing_address'] as $key => $value ) { // phpcs:ignore WordPress.Security.NonceVerification
+				$_POST[ 'billing_' . $key ]    = $value;
+				$_REQUEST[ 'billing_' . $key ] = $value;
+			}
+			unset( $_POST['fields']['billing_address'] );
+
+			foreach ( $_POST['fields']['shipping_address'] as $key => $value ) { // phpcs:ignore WordPress.Security.NonceVerification
+				$_POST[ 'billing_' . $key ]    = $value;
+				$_REQUEST[ 'billing_' . $key ] = $value;
+			}
+
+			unset( $_POST['fields']['shipping_address'] );
+
+			if ( isset( $_POST['fields']['orderNotes'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+				$_POST['order_comments']    = $_POST['fields']['orderNotes']; // phpcs:ignore WordPress.Security.NonceVerification
+				$_REQUEST['order_comments'] = $_POST['fields']['orderNotes']; // phpcs:ignore WordPress.Security.NonceVerification
+			}
+
+			foreach ( $_POST['fields'] as $key => $value ) { // phpcs:ignore WordPress.Security.NonceVerification
+				$_POST[ $key ]    = $value;
+				$_REQUEST[ $key ] = $value;
+			}
+			unset( $_POST['fields'] );
 		} else {
-			foreach ($_POST['fields'] as $values) { // phpcs:ignore WordPress.Security.NonceVerification
+			foreach ( $_POST['fields'] as $values ) { // phpcs:ignore WordPress.Security.NonceVerification
 				// Set each key / value pairs in an array.
-				$_POST[$values['name']] = $values['value'];
-				$_REQUEST[$values['name']] = $values['value'];
+				$_POST[ $values['name'] ]    = $values['value'];
+				$_REQUEST[ $values['name'] ] = $values['value'];
 			}
 		}
 
 		$checkout_helper = new CheckoutHelper();
-		$is_alma_payment = $checkout_helper->is_alma_payment_method($_POST[ConstantsHelper::PAYMENT_METHOD]); // phpcs:ignore WordPress.Security.NonceVerification
+		$is_alma_payment = $checkout_helper->is_alma_payment_method( $_POST[ ConstantsHelper::PAYMENT_METHOD ] ); // phpcs:ignore WordPress.Security.NonceVerification
 
-		if (!$is_alma_payment) {
-			throw new AlmaException(__('We were unable to process your order, please try again.', 'alma-gateway-for-woocommerce'));
+		if ( ! $is_alma_payment ) {
+			throw new AlmaException( __( 'We were unable to process your order, please try again.', 'alma-gateway-for-woocommerce' ) );
 		}
-		if (!$this->plugin_helper->has_woocommerce_blocks()) {
+		if ( ! $this->plugin_helper->has_woocommerce_blocks() ) {
 			$nonce_value = wc_get_var($_POST['woocommerce-process-checkout-nonce'], wc_get_var($_POST['_wpnonce'], '')); // @codingStandardsIgnoreLine.
 
 			if (
-				empty ($nonce_value)
-				||
-				!wp_verify_nonce($nonce_value, 'woocommerce-process_checkout')
+			empty( $nonce_value )
+			||
+			! wp_verify_nonce( $nonce_value, 'woocommerce-process_checkout' )
 			) {
-				WC()->session->set('refresh_totals', true);
-				throw new AlmaException(__('We were unable to process your order, please try again.', 'alma-gateway-for-woocommerce'));
+				WC()->session->set( 'refresh_totals', true );
+				throw new AlmaException( __( 'We were unable to process your order, please try again.', 'alma-gateway-for-woocommerce' ) );
 			}
 		}
 
-		wc_maybe_define_constant('WOOCOMMERCE_CHECKOUT', true);
-		wc_set_time_limit(0);
+		wc_maybe_define_constant( 'WOOCOMMERCE_CHECKOUT', true );
+		wc_set_time_limit( 0 );
 
 		do_action('woocommerce_before_checkout_process'); // phpcs:ignore
 
-		if (WC()->cart->is_empty()) {
+		if ( WC()->cart->is_empty() ) {
 			/* translators: %s: shop cart url */
-			throw new AlmaException(sprintf(__('Sorry, your session has expired. <a href="%s" class="wc-backward">Return to shop</a>', 'alma-gateway-for-woocommerce'), esc_url(wc_get_page_permalink('shop'))));
+			throw new AlmaException( sprintf( __( 'Sorry, your session has expired. <a href="%s" class="wc-backward">Return to shop</a>', 'alma-gateway-for-woocommerce' ), esc_url( wc_get_page_permalink( 'shop' ) ) ) );
 		}
 
 		do_action('woocommerce_checkout_process'); // phpcs:ignore
 
-		$errors = new \WP_Error();
+		$errors      = new \WP_Error();
 		$posted_data = $this->get_posted_data();
-		var_dump($_POST);
-		die();
-		if (ConstantsHelper::GATEWAY_ID_IN_PAGE === $_POST[ConstantsHelper::PAYMENT_METHOD]) {
-			$posted_data[ConstantsHelper::PAYMENT_METHOD_TITLE] = __('Payment in installments via Alma', 'alma-gateway-for-woocommerce');
+
+		if ( ConstantsHelper::GATEWAY_ID_IN_PAGE === $_POST[ ConstantsHelper::PAYMENT_METHOD ] ) {
+			$posted_data[ ConstantsHelper::PAYMENT_METHOD_TITLE ] = __( 'Payment in installments via Alma', 'alma-gateway-for-woocommerce' );
 		}
 
-		if (ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_NOW === $_POST[ConstantsHelper::PAYMENT_METHOD]) {
-			$posted_data[ConstantsHelper::PAYMENT_METHOD_TITLE] = __('Payment by credit cart via Alma', 'alma-gateway-for-woocommerce');
+		if ( ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_NOW === $_POST[ ConstantsHelper::PAYMENT_METHOD ] ) {
+			$posted_data[ ConstantsHelper::PAYMENT_METHOD_TITLE ] = __( 'Payment by credit cart via Alma', 'alma-gateway-for-woocommerce' );
 		}
-		if (ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_LATER === $_POST[ConstantsHelper::PAYMENT_METHOD]) {
-			$posted_data[ConstantsHelper::PAYMENT_METHOD_TITLE] = __('Pay Later via Alma', 'alma-gateway-for-woocommerce');
+		if ( ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_LATER === $_POST[ ConstantsHelper::PAYMENT_METHOD ] ) {
+			$posted_data[ ConstantsHelper::PAYMENT_METHOD_TITLE ] = __( 'Pay Later via Alma', 'alma-gateway-for-woocommerce' );
 		}
 
 		// Update session for customer and totals.
-		$this->update_session($posted_data);
+		$this->update_session( $posted_data );
 
 		// Validate posted data and cart items before proceeding.
-		$this->validate_checkout($posted_data, $errors);
+		$this->validate_checkout( $posted_data, $errors );
 
-		foreach ($errors->get_error_messages() as $message) {
-			wc_add_notice($message, 'error');
+		foreach ( $errors->get_error_messages() as $message ) {
+			wc_add_notice( $message, 'error' );
 		}
 
 		if (
-			empty ($posted_data['woocommerce_checkout_update_totals'])
-			&& 0 === wc_notice_count('error')
+			empty( $posted_data['woocommerce_checkout_update_totals'] )
+			&& 0 === wc_notice_count( 'error' )
 		) {
-			$this->process_customer($posted_data);
+			$this->process_customer( $posted_data );
 
-			$order_id = $this->create_order($posted_data);
-			$order = wc_get_order($order_id);
+			$order_id = $this->create_order( $posted_data );
+			$order    = wc_get_order( $order_id );
 
-			if (is_wp_error($order_id)) {
-				throw new AlmaException($order_id->get_error_message());
+			if ( is_wp_error( $order_id ) ) {
+				throw new AlmaException( $order_id->get_error_message() );
 			}
 
-			if (!$order) {
-				throw new AlmaException(__('Unable to create order.', 'alma-gateway-for-woocommerce'));
+			if ( ! $order ) {
+				throw new AlmaException( __( 'Unable to create order.', 'alma-gateway-for-woocommerce' ) );
 			}
 
 			do_action('woocommerce_checkout_order_processed', $order_id, $posted_data, $order); // phpcs:ignore
 			return $order;
 		}
 
-		throw new AlmaException('An error occurred');
+		throw new AlmaException( 'An error occurred' );
 	}
 
 	/**
@@ -164,33 +186,32 @@ class CheckoutService extends \WC_Checkout
 	 *
 	 * @return void
 	 */
-	protected function validate_checkout(&$data, &$errors)
-	{
-		$this->validate_posted_data($data, $errors);
+	protected function validate_checkout( &$data, &$errors ) {
+		$this->validate_posted_data( $data, $errors );
 		$this->check_cart_items();
 
 		if (
-			empty ($data['woocommerce_checkout_update_totals'])
-			&& empty ($data['terms'])
-			&& !empty ($_POST['terms-field']) // phpcs:ignore WordPress.Security.NonceVerification
+			empty( $data['woocommerce_checkout_update_totals'] )
+			&& empty( $data['terms'] )
+			&& ! empty( $_POST['terms-field'] ) // phpcs:ignore WordPress.Security.NonceVerification
 		) { // WPCS: input var ok, CSRF ok.
-			$errors->add('terms', __('Please read and accept the terms and conditions to proceed with your order.', 'alma-gateway-for-woocommerce'));
+			$errors->add( 'terms', __( 'Please read and accept the terms and conditions to proceed with your order.', 'alma-gateway-for-woocommerce' ) );
 		}
 
-		if (WC()->cart->needs_shipping()) {
+		if ( WC()->cart->needs_shipping() ) {
 			$shipping_country = WC()->customer->get_shipping_country();
 
-			if (empty ($shipping_country)) {
-				$errors->add('shipping', __('Please enter an address to continue.', 'alma-gateway-for-woocommerce'));
-			} elseif (!in_array(WC()->customer->get_shipping_country(), array_keys(WC()->countries->get_shipping_countries()), true)) {
+			if ( empty( $shipping_country ) ) {
+				$errors->add( 'shipping', __( 'Please enter an address to continue.', 'alma-gateway-for-woocommerce' ) );
+			} elseif ( ! in_array( WC()->customer->get_shipping_country(), array_keys( WC()->countries->get_shipping_countries() ), true ) ) {
 				/* translators: %s: shipping location */
-				$errors->add('shipping', sprintf(__('Unfortunately <strong>we do not ship %s</strong>. Please enter an alternative shipping address.', 'alma-gateway-for-woocommerce'), WC()->countries->shipping_to_prefix() . ' ' . WC()->customer->get_shipping_country()));
+				$errors->add( 'shipping', sprintf( __( 'Unfortunately <strong>we do not ship %s</strong>. Please enter an alternative shipping address.', 'alma-gateway-for-woocommerce' ), WC()->countries->shipping_to_prefix() . ' ' . WC()->customer->get_shipping_country() ) );
 			} else {
-				$chosen_shipping_methods = WC()->session->get('chosen_shipping_methods');
+				$chosen_shipping_methods = WC()->session->get( 'chosen_shipping_methods' );
 
-				foreach (WC()->shipping->get_packages() as $i => $package) {
-					if (!isset ($chosen_shipping_methods[$i], $package['rates'][$chosen_shipping_methods[$i]])) {
-						$errors->add('shipping', __('No shipping method has been selected. Please double check your address, or contact us if you need any help.', 'alma-gateway-for-woocommerce'));
+				foreach ( WC()->shipping->get_packages() as $i => $package ) {
+					if ( ! isset( $chosen_shipping_methods[ $i ], $package['rates'][ $chosen_shipping_methods[ $i ] ] ) ) {
+						$errors->add( 'shipping', __( 'No shipping method has been selected. Please double check your address, or contact us if you need any help.', 'alma-gateway-for-woocommerce' ) );
 					}
 				}
 			}
