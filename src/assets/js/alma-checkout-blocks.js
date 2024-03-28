@@ -10,7 +10,7 @@
 // phpcs:ignoreFile
 
 import { useEffect, useState } from '@wordpress/element';
-import { useSelect } from '@wordpress/data';
+import { useSelect, select } from '@wordpress/data';
 import { Logo } from '@alma/react-components';
 import { AlmaBlocks } from "./components/alma-blocks-component.tsx";
 import '../css/alma-checkout-blocks.css';
@@ -19,9 +19,7 @@ import '../css/alma-checkout-blocks.css';
     const gateways = ['alma_pay_now', 'alma_in_page_pay_now', 'alma', 'alma_in_page', 'alma_pay_later', 'alma_in_page_pay_later', 'alma_pnx_plus_4'];
     var inPage = undefined;
     var hasInPage = false;
-    var billingAddress = {};
-    var shippingAddress = {};
-    var customerNote = '';
+    var propsData = null;
 
     $.each(gateways, function (index, gateway) {
         const settings = window.wc.wcSettings.getSetting(`${gateway}_data`, null);
@@ -46,44 +44,46 @@ import '../css/alma-checkout-blocks.css';
             const { onCheckoutValidationBeforeProcessing
             } = eventRegistration;
 
-            console.log(props)
-            const { CHECKOUT_STORE_KEY } = window.wc.wcBlocksData
-            const {
-                hasError: checkoutHasError,
-                redirectUrl,
-                isProcessing: checkoutIsProcessing,
-                isBeforeProcessing: checkoutIsBeforeProcessing,
-                isComplete: checkoutIsComplete,
-                orderNotes,
-                shouldCreateAccount,
-                extensionData,
-                customerId,
-            } = useSelect( ( select ) => {
-                const store = select( CHECKOUT_STORE_KEY );
-                const data = {
-                    hasError: store.hasError(),
-                    redirectUrl: store.getRedirectUrl(),
-                    isProcessing: store.isProcessing(),
-                    isBeforeProcessing: store.isBeforeProcessing(),
-                    isComplete: store.isComplete(),
-                    orderNotes: store.getOrderNotes(),
-                    shouldCreateAccount: store.getShouldCreateAccount(),
-                    extensionData: store.getExtensionData(),
-                    customerId: store.getCustomerId(),
-                };
-                console.log('data',data)
-                return data
-            } );
+            propsData = props
 
-            console.log('other data', {       hasError: checkoutHasError,
-                redirectUrl,
-                isProcessing: checkoutIsProcessing,
-                isBeforeProcessing: checkoutIsBeforeProcessing,
-                isComplete: checkoutIsComplete,
-                orderNotes,
-                shouldCreateAccount,
-                extensionData,
-                customerId})
+            console.log(props, 'coucou PROPS')
+            // const { CHECKOUT_STORE_KEY } = window.wc.wcBlocksData
+            // const {
+            //     hasError: checkoutHasError,
+            //     redirectUrl,
+            //     isProcessing: checkoutIsProcessing,
+            //     isBeforeProcessing: checkoutIsBeforeProcessing,
+            //     isComplete: checkoutIsComplete,
+            //     orderNotes,
+            //     shouldCreateAccount,
+            //     extensionData,
+            //     customerId,
+            // } = useSelect( ( select ) => {
+            //     const store = select( CHECKOUT_STORE_KEY );
+            //     const data = {
+            //         hasError: store.hasError(),
+            //         redirectUrl: store.getRedirectUrl(),
+            //         isProcessing: store.isProcessing(),
+            //         isBeforeProcessing: store.isBeforeProcessing(),
+            //         isComplete: store.isComplete(),
+            //         orderNotes: store.getOrderNotes(),
+            //         shouldCreateAccount: store.getShouldCreateAccount(),
+            //         extensionData: store.getExtensionData(),
+            //         customerId: store.getCustomerId(),
+            //     };
+            //     console.log('data',data)
+            //     return data
+            // } );
+
+            // console.log('other data', {       hasError: checkoutHasError,
+            //     redirectUrl,
+            //     isProcessing: checkoutIsProcessing,
+            //     isBeforeProcessing: checkoutIsBeforeProcessing,
+            //     isComplete: checkoutIsComplete,
+            //     orderNotes,
+            //     shouldCreateAccount,
+            //     extensionData,
+            //     customerId})
 
             useEffect( () => {
                 const unsubscribe = onCheckoutValidationBeforeProcessing
@@ -127,14 +127,14 @@ import '../css/alma-checkout-blocks.css';
                     }
             }, [settings, selectedFeePlan])
 
-            useEffect(() => {
-                // removeEventListener('onCheckoutBeforeProcessing')
-                billingAddress = props.billing.billingAddress
+            // useEffect(() => {
+            //     // removeEventListener('onCheckoutBeforeProcessing')
+            //     // billingAddress = props.billing.billingAddress
 
-                if (props.shippingData.shippingAddress) {
-                    shippingAddress = props.shippingData.shippingAddress
-                }
-            }, [props]);
+            //     if (props.shippingData.shippingAddress) {
+            //         shippingAddress = props.shippingData.shippingAddress
+            //     }
+            // }, [props]);
 
             if (
                 settings.gateway_name === 'alma_in_page_pay_now'
@@ -151,7 +151,7 @@ import '../css/alma-checkout-blocks.css';
 
 
                         // // todo ne devrait pas etre dans la boucle
-                        // addActionToPaymentButton()
+                        addActionToPaymentButton()
                     }
                 )
                 return <>
@@ -226,23 +226,40 @@ import '../css/alma-checkout-blocks.css';
     }
     );
 
-    // $('body').on(
-    //     'change',
-    //     'input[type=\'radio\'][name=\'radio-control-wc-payment-method-options\']',
-    //     function () {
-    //         document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].removeEventListener("click", addActionToPaymentButtonListener);
-    //         addActionToPaymentButton()
-    //     }
-    // );
-    //
-    // const addActionToPaymentButton = () => {
-    //     document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].addEventListener(
-    //         "click",
-    //         addActionToPaymentButtonListener
-    //     );
-    // }
+    $('body').on(
+        'change',
+        'input[type=\'radio\'][name=\'radio-control-wc-payment-method-options\']',
+        function () {
+            document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].removeEventListener("click", addActionToPaymentButtonListener);
+            addActionToPaymentButton()
+        }
+    );
+    
+    const addActionToPaymentButton = () => {
+        document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].addEventListener(
+            "click",
+            addActionToPaymentButtonListener
+        );
+    }
 
-    const addActionToPaymentButtonListener = (event) => {
+    const addActionToPaymentButtonListener = ( event) => {
+        const { CHECKOUT_STORE_KEY } = window.wc.wcBlocksData
+                const store = select( CHECKOUT_STORE_KEY );
+                const dataTest = {
+                    hasError: store.hasError(),
+                    redirectUrl: store.getRedirectUrl(),
+                    isProcessing: store.isProcessing(),
+                    isBeforeProcessing: store.isBeforeProcessing(),
+                    isComplete: store.isComplete(),
+                    orderNotes: store.getOrderNotes(),
+                    shouldCreateAccount: store.getShouldCreateAccount(),
+                    extensionData: store.getExtensionData(),
+                    customerId: store.getCustomerId(),
+                };
+                console.log('data',dataTest)
+                // return data
+             
+
         const gateway = $("input[type='radio'][name='radio-control-wc-payment-method-options']:checked").val();
 
         const settings = window.wc.wcSettings.getSetting(`${gateway}_data`, null);
@@ -256,13 +273,17 @@ import '../css/alma-checkout-blocks.css';
             || settings.gateway_name === 'alma_in_page'
         ) {
             event.stopPropagation()
+            console.log(propsData, 'propsData')
+            console.log(dataTest, 'dataTest')
+            const {shouldCreateAccount, ...restOfDataTest} = dataTest
             // customer_note + shipping_address +
             var data = {
                 'action': 'alma_do_checkout_in_page',
                 'fields': {
-                    'billing': billingAddress,
-                    'shipping': shippingAddress,
-                    'customer_note': customerNote,
+                    'shipping_address': propsData.shippingData.shippingAddress,
+                    'billing_address': {...propsData.billing.billingAddress},
+                    ...restOfDataTest,
+                    'createaccount': dataTest.shouldCreateAccount,
                     'alma_fee_plan': settings.default_plan,
                     [almaCheckoutNonce]: settings.nonce_value,
                     'payment_method': settings.gateway_name,
@@ -274,6 +295,8 @@ import '../css/alma-checkout-blocks.css';
                 'alma_fee_plan_in_page': settings.default_plan,
                 'is_woo_block': true
             };
+
+            console.log(data, 'data')
             // add_loader();
 
             // Create the payment id and order.
