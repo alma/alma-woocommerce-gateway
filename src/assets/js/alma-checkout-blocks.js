@@ -10,6 +10,7 @@
 // phpcs:ignoreFile
 
 import { useEffect, useState } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 import { Logo } from '@alma/react-components';
 import { AlmaBlocks } from "./components/alma-blocks-component.tsx";
 import '../css/alma-checkout-blocks.css';
@@ -42,6 +43,59 @@ import '../css/alma-checkout-blocks.css';
         function DisplayAlmaBlocks(props) {
             const [selectedFeePlan, setSelectedFeePlan] = useState(settings.default_plan)
             const { eventRegistration, emitResponse } = props;
+            const { onCheckoutValidationBeforeProcessing
+            } = eventRegistration;
+
+            console.log(props)
+            const { CHECKOUT_STORE_KEY } = window.wc.wcBlocksData
+            const {
+                hasError: checkoutHasError,
+                redirectUrl,
+                isProcessing: checkoutIsProcessing,
+                isBeforeProcessing: checkoutIsBeforeProcessing,
+                isComplete: checkoutIsComplete,
+                orderNotes,
+                shouldCreateAccount,
+                extensionData,
+                customerId,
+            } = useSelect( ( select ) => {
+                const store = select( CHECKOUT_STORE_KEY );
+                const data = {
+                    hasError: store.hasError(),
+                    redirectUrl: store.getRedirectUrl(),
+                    isProcessing: store.isProcessing(),
+                    isBeforeProcessing: store.isBeforeProcessing(),
+                    isComplete: store.isComplete(),
+                    orderNotes: store.getOrderNotes(),
+                    shouldCreateAccount: store.getShouldCreateAccount(),
+                    extensionData: store.getExtensionData(),
+                    customerId: store.getCustomerId(),
+                };
+                console.log('data',data)
+                return data
+            } );
+
+            console.log('other data', {       hasError: checkoutHasError,
+                redirectUrl,
+                isProcessing: checkoutIsProcessing,
+                isBeforeProcessing: checkoutIsBeforeProcessing,
+                isComplete: checkoutIsComplete,
+                orderNotes,
+                shouldCreateAccount,
+                extensionData,
+                customerId})
+
+            useEffect( () => {
+                const unsubscribe = onCheckoutValidationBeforeProcessing
+                ( (coucou) => {
+                    console.log('onCheckoutValidationBeforeProcessing', coucou)
+                    return true
+                } );
+                return unsubscribe;
+            }, [ onCheckoutValidationBeforeProcessing
+            ] );
+
+
 
             // There cannot be two iframes in the same page, so this is the function to unmount it
             function initializeInpage(settingsInPage) {
@@ -96,8 +150,8 @@ import '../css/alma-checkout-blocks.css';
                         }
 
 
-                        // todo ne devrait pas etre dans la boucle
-                        addActionToPaymentButton()
+                        // // todo ne devrait pas etre dans la boucle
+                        // addActionToPaymentButton()
                     }
                 )
                 return <>
@@ -172,21 +226,21 @@ import '../css/alma-checkout-blocks.css';
     }
     );
 
-    $('body').on(
-        'change',
-        'input[type=\'radio\'][name=\'radio-control-wc-payment-method-options\']',
-        function () {
-            document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].removeEventListener("click", addActionToPaymentButtonListener);
-            addActionToPaymentButton()
-        }
-    );
-
-    const addActionToPaymentButton = () => {
-        document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].addEventListener(
-            "click",
-            addActionToPaymentButtonListener
-        );
-    }
+    // $('body').on(
+    //     'change',
+    //     'input[type=\'radio\'][name=\'radio-control-wc-payment-method-options\']',
+    //     function () {
+    //         document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].removeEventListener("click", addActionToPaymentButtonListener);
+    //         addActionToPaymentButton()
+    //     }
+    // );
+    //
+    // const addActionToPaymentButton = () => {
+    //     document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].addEventListener(
+    //         "click",
+    //         addActionToPaymentButtonListener
+    //     );
+    // }
 
     const addActionToPaymentButtonListener = (event) => {
         const gateway = $("input[type='radio'][name='radio-control-wc-payment-method-options']:checked").val();
