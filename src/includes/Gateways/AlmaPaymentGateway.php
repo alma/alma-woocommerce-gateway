@@ -286,7 +286,9 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 			|| is_admin()
 			|| ! $tools->check_currency()
 			|| is_wc_endpoint_url( 'order-pay' )
+			|| is_wc_endpoint_url( 'cart' )
 			|| ! empty( $wp->query_vars['order-pay'] )
+			|| is_cart()
 		) {
 			return false;
 		}

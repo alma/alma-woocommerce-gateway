@@ -151,7 +151,8 @@ class AlmaBlock extends AbstractPaymentMethodType {
 		// We get the eligibilites.
 		$eligibilities  = $this->alma_settings->get_cart_eligibilities();
 		$eligible_plans = $this->alma_settings->get_eligible_plans_keys_for_cart( $eligibilities, $gateway_id );
-		$plans          = $this->alma_plan_builder->get_plans_by_keys( $eligible_plans, $eligibilities );
+
+		$plans = $this->alma_plan_builder->get_plans_by_keys( $eligible_plans, $eligibilities );
 
 		$default_plan = $this->gateway_helper->get_default_plan( $eligible_plans );
 
