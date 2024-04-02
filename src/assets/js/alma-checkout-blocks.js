@@ -20,6 +20,7 @@ import '../css/alma-checkout-blocks.css';
     var inPage = undefined;
     var hasInPage = false;
     var propsData = null;
+    var globalSelectedFeePlan = null;
 
     $.each(gateways, function (index, gateway) {
         const settings = window.wc.wcSettings.getSetting(`${gateway}_data`, null);
@@ -46,44 +47,9 @@ import '../css/alma-checkout-blocks.css';
 
             propsData = props
 
-            console.log(props, 'coucou PROPS')
-            // const { CHECKOUT_STORE_KEY } = window.wc.wcBlocksData
-            // const {
-            //     hasError: checkoutHasError,
-            //     redirectUrl,
-            //     isProcessing: checkoutIsProcessing,
-            //     isBeforeProcessing: checkoutIsBeforeProcessing,
-            //     isComplete: checkoutIsComplete,
-            //     orderNotes,
-            //     shouldCreateAccount,
-            //     extensionData,
-            //     customerId,
-            // } = useSelect( ( select ) => {
-            //     const store = select( CHECKOUT_STORE_KEY );
-            //     const data = {
-            //         hasError: store.hasError(),
-            //         redirectUrl: store.getRedirectUrl(),
-            //         isProcessing: store.isProcessing(),
-            //         isBeforeProcessing: store.isBeforeProcessing(),
-            //         isComplete: store.isComplete(),
-            //         orderNotes: store.getOrderNotes(),
-            //         shouldCreateAccount: store.getShouldCreateAccount(),
-            //         extensionData: store.getExtensionData(),
-            //         customerId: store.getCustomerId(),
-            //     };
-            //     console.log('data',data)
-            //     return data
-            // } );
-
-            // console.log('other data', {       hasError: checkoutHasError,
-            //     redirectUrl,
-            //     isProcessing: checkoutIsProcessing,
-            //     isBeforeProcessing: checkoutIsBeforeProcessing,
-            //     isComplete: checkoutIsComplete,
-            //     orderNotes,
-            //     shouldCreateAccount,
-            //     extensionData,
-            //     customerId})
+            useEffect(() => {
+                globalSelectedFeePlan = selectedFeePlan;
+            }, [selectedFeePlan]);
 
             useEffect( () => {
                 const unsubscribe = onCheckoutValidationBeforeProcessing
@@ -276,6 +242,20 @@ import '../css/alma-checkout-blocks.css';
             console.log(propsData, 'propsData')
             console.log(dataTest, 'dataTest')
             const {shouldCreateAccount, ...restOfDataTest} = dataTest
+
+            function isDifferentAddress(billing, shipping) {
+                for (const key in billing) {
+                  if (billing[key] !== shipping[key]) {
+                    return true;
+                  }
+                }
+                return false;
+            }
+            const areShippingAndBillingAddressDifferent = isDifferentAddress(propsData.shippingData.shippingAddress, propsData.billing.billingAddress)
+
+
+            const {shippingRates, ...restOfPropsData} = propsData
+
             // customer_note + shipping_address +
             var data = {
                 'action': 'alma_do_checkout_in_page',
@@ -283,16 +263,18 @@ import '../css/alma-checkout-blocks.css';
                     'shipping_address': propsData.shippingData.shippingAddress,
                     'billing_address': {...propsData.billing.billingAddress},
                     ...restOfDataTest,
+                    'ship-to-different-address': areShippingAndBillingAddressDifferent,
                     'createaccount': dataTest.shouldCreateAccount,
-                    'alma_fee_plan': settings.default_plan,
+                    // 'shipping_rate': restOfPropsData.shippingRates,
+                    'alma_fee_plan': globalSelectedFeePlan,
                     [almaCheckoutNonce]: settings.nonce_value,
                     'payment_method': settings.gateway_name,
                 },
                 [almaCheckoutNonce]: settings.nonce_value,
                 'woocommerce-process-checkout-nonce': settings.woocommerce_process_checkout_nonce,
                 'payment_method': settings.gateway_name,
-                'alma_fee_plan': settings.default_plan,
-                'alma_fee_plan_in_page': settings.default_plan,
+                'alma_fee_plan': globalSelectedFeePlan,
+                'alma_fee_plan_in_page': globalSelectedFeePlan,
                 'is_woo_block': true
             };
 
