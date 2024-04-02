@@ -11,6 +11,7 @@
 - License: GPLv3
 - License URI: https://www.gnu.org/licenses/gpl-3.0.html
 - Support: support@getalma.eu
+- Security Support: security@almapay.com
 - Documentation: https://docs.almapay.com/docs/woocommerce
 
 This plugin adds a new payment method to WooCommerce, which allows you to offer monthly payments to your customer using Alma.
