@@ -46,10 +46,18 @@ class OrderHelper {
 	protected $logger;
 
 	/**
+	 * The checkout service.
+	 *
+	 * @var CheckoutService
+	 */
+	protected $checkout_service;
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->logger = new AlmaLogger();
+		$this->logger           = new AlmaLogger();
+		$this->checkout_service = new CheckoutService();
 	}
 
 
@@ -248,7 +256,7 @@ class OrderHelper {
 				isset( $_POST['fields'] ) // phpcs:ignore WordPress.Security.NonceVerification
 				&& ! empty( $_POST['fields'] ) // phpcs:ignore WordPress.Security.NonceVerification
 			) {
-
+				throw new CreatePaymentsException();
 				list($payment_id, $order_id) = $this->create_inpage_order( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification
 
 				wp_send_json_success(
@@ -270,7 +278,7 @@ class OrderHelper {
 
 			wc_add_notice( $e->getMessage(), ConstantsHelper::ERROR );
 
-			wp_send_json_error( $e->getMessage(), 500 );
+			$this->checkout_service->send_ajax_failure_response();
 		}
 	}
 
