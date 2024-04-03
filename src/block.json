@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "alma-gateway-for-woocommerce/widget",
+  "version": "0.1.0",
+  "title": "Alma notice",
+  "category": "widgets",
+  "icon": "heart",
+  "description": "Example block scaffolded with Create Block tool.",
+  "supports": {
+    "html": false,
+    "layout": true
+  },
+  "textdomain": "like-button",
+  "render": "file:./render.php",
+  "usesContext": [
+    "postType",
+    "postId",
+    "commentId"
+  ],
+  "blockHooks": {
+    "core/column": "lastChild"
+  }
+}
