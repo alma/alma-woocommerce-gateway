@@ -65,8 +65,8 @@ class CheckoutService extends \WC_Checkout
 			unset($_POST['fields']['billing_address']);
 
 			foreach ($_POST['fields']['shipping_address'] as $key => $value) { // phpcs:ignore WordPress.Security.NonceVerification
-				$_POST['billing_' . $key] = $value;
-				$_REQUEST['billing_' . $key] = $value;
+				$_POST['shipping_' . $key] = $value;
+				$_REQUEST['shipping_' . $key] = $value;
 			}
 
 			unset($_POST['fields']['shipping_address']);
@@ -90,6 +90,7 @@ class CheckoutService extends \WC_Checkout
 				$_REQUEST[$values['name']] = $values['value'];
 			}
 		}
+
 
 		$checkout_helper = new CheckoutHelper();
 		$is_alma_payment = $checkout_helper->is_alma_payment_method($_POST[ConstantsHelper::PAYMENT_METHOD]); // phpcs:ignore WordPress.Security.NonceVerification
@@ -169,6 +170,7 @@ class CheckoutService extends \WC_Checkout
 
 		throw new AlmaException('An error occurred');
 	}
+
 
 	/**
 	 * Validate checkout.

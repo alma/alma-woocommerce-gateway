@@ -263,7 +263,7 @@ import '../css/alma-checkout-blocks.css';
                     'shipping_address': propsData.shippingData.shippingAddress,
                     'billing_address': {...propsData.billing.billingAddress},
                     ...restOfDataTest,
-                    'ship-to-different-address': areShippingAndBillingAddressDifferent,
+                    'ship_to_different_address': areShippingAndBillingAddressDifferent,
                     'createaccount': dataTest.shouldCreateAccount,
                     // 'shipping_rate': restOfPropsData.shippingRates,
                     'alma_fee_plan': globalSelectedFeePlan,
