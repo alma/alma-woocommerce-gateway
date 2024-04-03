@@ -53,8 +53,7 @@ import '../css/alma-checkout-blocks.css';
 
             useEffect( () => {
                 const unsubscribe = onCheckoutValidationBeforeProcessing
-                ( (coucou) => {
-                    console.log('onCheckoutValidationBeforeProcessing', coucou)
+                ( () => {
                     return true
                 } );
                 return unsubscribe;
@@ -88,35 +87,20 @@ import '../css/alma-checkout-blocks.css';
                 if (
                     settings.gateway_name === 'alma_in_page_pay_now'
                     || settings.gateway_name === 'alma_in_page_pay_later'
-                    || settings.gateway_name === 'alma_in_page') {
-                initializeInpage(settings)
-                    }
+                    || settings.gateway_name === 'alma_in_page'
+                ) {
+                    initializeInpage(settings)
+                }
             }, [settings, selectedFeePlan])
-
-            // useEffect(() => {
-            //     // removeEventListener('onCheckoutBeforeProcessing')
-            //     // billingAddress = props.billing.billingAddress
-
-            //     if (props.shippingData.shippingAddress) {
-            //         shippingAddress = props.shippingData.shippingAddress
-            //     }
-            // }, [props]);
 
             if (
                 settings.gateway_name === 'alma_in_page_pay_now'
                 || settings.gateway_name === 'alma_in_page_pay_later'
-                || settings.gateway_name === 'alma_in_page') {
+                || settings.gateway_name === 'alma_in_page'
+            ) {
                 window.addEventListener(
                     'load',
                     (event) => {
-
-                        function add_loader() {
-                            var loading = "<div class='loadingIndicator'><img src='https://cdn.almapay.com/img/animated-logo-a.svg' alt='Loading' /></div>";
-                            $("body").append("<div class='alma-loader-wrapper'>" + loading + "</div>");
-                        }
-
-
-                        // // todo ne devrait pas etre dans la boucle
                         addActionToPaymentButton()
                     }
                 )
@@ -168,8 +152,6 @@ import '../css/alma-checkout-blocks.css';
 
                 )
             }
-
-            // customerNote = props.customerNote
         }
 
 
@@ -192,6 +174,13 @@ import '../css/alma-checkout-blocks.css';
     }
     );
 
+    $('body').on(
+        'load',
+        function () {
+            document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].removeEventListener("click", addActionToPaymentButtonListener);
+            addActionToPaymentButton()
+        }
+    );
     $('body').on(
         'change',
         'input[type=\'radio\'][name=\'radio-control-wc-payment-method-options\']',
@@ -221,10 +210,7 @@ import '../css/alma-checkout-blocks.css';
                     shouldCreateAccount: store.getShouldCreateAccount(),
                     extensionData: store.getExtensionData(),
                     customerId: store.getCustomerId(),
-                };
-                console.log('data',dataTest)
-                // return data
-             
+                };             
 
         const gateway = $("input[type='radio'][name='radio-control-wc-payment-method-options']:checked").val();
 
@@ -232,15 +218,12 @@ import '../css/alma-checkout-blocks.css';
 
         const almaCheckoutNonce = `alma_checkout_nonce${settings.gateway_name}`;
 
-        // @todo replace settings.default_plan by selected fee plan
         if (
             settings.gateway_name === 'alma_in_page_pay_now'
             || settings.gateway_name === 'alma_in_page_pay_later'
             || settings.gateway_name === 'alma_in_page'
         ) {
             event.stopPropagation()
-            console.log(propsData, 'propsData')
-            console.log(dataTest, 'dataTest')
             const {shouldCreateAccount, ...restOfDataTest} = dataTest
 
             function isDifferentAddress(billing, shipping) {
@@ -256,7 +239,6 @@ import '../css/alma-checkout-blocks.css';
 
             const {shippingRates, ...restOfPropsData} = propsData
 
-            // customer_note + shipping_address +
             var data = {
                 'action': 'alma_do_checkout_in_page',
                 'fields': {
@@ -265,7 +247,6 @@ import '../css/alma-checkout-blocks.css';
                     ...restOfDataTest,
                     'ship_to_different_address': areShippingAndBillingAddressDifferent,
                     'createaccount': dataTest.shouldCreateAccount,
-                    // 'shipping_rate': restOfPropsData.shippingRates,
                     'alma_fee_plan': globalSelectedFeePlan,
                     [almaCheckoutNonce]: settings.nonce_value,
                     'payment_method': settings.gateway_name,
@@ -277,9 +258,10 @@ import '../css/alma-checkout-blocks.css';
                 'alma_fee_plan_in_page': globalSelectedFeePlan,
                 'is_woo_block': true
             };
-
-            console.log(data, 'data')
-            // add_loader();
+      
+                var loading = "<div class='loadingIndicator'><img src='https://cdn.almapay.com/img/animated-logo-a.svg' alt='Loading' /></div>";
+                $("body").append("<div class='alma-loader-wrapper'>" + loading + "</div>");
+   
 
             // Create the payment id and order.
             jQuery.post(ajax_object.ajax_url, data)
@@ -302,21 +284,21 @@ import '../css/alma-checkout-blocks.css';
                 )
                 .fail(
                     function (response) {
-                        location.reload();
+                        $('.alma-loader-wrapper').remove();
+                        // location.reload();
                     }
                 );
 
         }
     };
 
-    // TODO : fix cancel
     function cancel_order(orderId) {
         var data = {
             'action': 'alma_cancel_order_in_page',
             'order_id': orderId
         };
 
-        jQuery.post(ajax_object.ajax_url, JSON.stringify(data))
+        jQuery.post(ajax_object.ajax_url, data)
     }
 
 })(jQuery);
