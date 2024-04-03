@@ -302,7 +302,7 @@ import '../css/alma-checkout-blocks.css';
                 )
                 .fail(
                     function (response) {
-                      //  location.reload();
+                        location.reload();
                     }
                 );
 
