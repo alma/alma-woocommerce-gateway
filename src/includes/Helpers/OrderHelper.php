@@ -29,9 +29,6 @@ use Alma\Woocommerce\Services\CheckoutService;
  */
 class OrderHelper {
 
-
-
-
 	const SHOP_ORDER = 'shop_order';
 
 	const WC_PROCESSING = 'wc-processing';
@@ -47,10 +44,19 @@ class OrderHelper {
 	protected $logger;
 
 	/**
+	 * The block helper.
+	 *
+	 * @var BlockHelper
+	 */
+	protected $block_helper;
+
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->logger = new AlmaLogger();
+		$this->logger       = new AlmaLogger();
+		$this->block_helper = new BlockHelper();
 	}
 
 
@@ -269,10 +275,14 @@ class OrderHelper {
 				$order->update_status( 'failed', $e->getMessage() );
 			}
 
-			wc_add_notice( $e->getMessage(), ConstantsHelper::ERROR );			wp_send_json_error( $e->getMessage(), 500 );
+			wc_add_notice( $e->getMessage(), ConstantsHelper::ERROR );
+			wp_send_json_error( $e->getMessage(), 500 );
 
-			if($this->){}
-			$this->send_ajax_failure_response();
+			if ( $this->block_helper->has_woocommerce_blocks() ) {
+				$this->send_ajax_failure_response();
+			}
+
+			wp_send_json_error( $e->getMessage(), 500 );
 		}
 	}
 

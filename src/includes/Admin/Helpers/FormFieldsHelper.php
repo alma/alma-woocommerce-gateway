@@ -18,6 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 use Alma\API\Entities\FeePlan;
 use Alma\Woocommerce\Admin\Builders\FormHtmlBuilder;
 use Alma\Woocommerce\Helpers\AssetsHelper;
+use Alma\Woocommerce\Helpers\BlockHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\FeePlanHelper;
 use Alma\Woocommerce\Helpers\GeneralHelper;
@@ -63,6 +64,14 @@ class FormFieldsHelper {
 	protected $plugin_helper;
 
 	/**
+	 * Block helper.
+	 *
+	 * @var BlockHelper
+	 */
+	protected $block_helper;
+
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
@@ -70,7 +79,7 @@ class FormFieldsHelper {
 		$this->payment_upon_trigger = new PaymentUponTriggerService();
 		$this->fee_plan_helper      = new FeePlanHelper();
 		$this->plugin_helper        = new PluginHelper();
-
+		$this->block_helper         = new BlockHelper();
 	}
 
 
@@ -592,7 +601,7 @@ class FormFieldsHelper {
 
 		$blocks = '';
 
-		if ( $this->plugin_helper->has_woocommerce_blocks() ) {
+		if ( $this->block_helper->has_woocommerce_blocks() ) {
 			$blocks = 'blocks_';
 		}
 

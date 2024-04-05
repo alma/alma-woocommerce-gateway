@@ -11,7 +11,7 @@
 
 namespace Alma\Woocommerce\Helpers;
 
-if (!defined('ABSPATH')) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
@@ -22,8 +22,8 @@ use Alma\Woocommerce\AlmaSettings;
 /**
  * GatewayHelper
  */
-class GatewayHelper
-{
+class GatewayHelper {
+
 
 
 
@@ -51,10 +51,9 @@ class GatewayHelper
 	/**
 	 * Constructor.
 	 */
-	public function __construct()
-	{
-		$this->alma_settings = new AlmaSettings();
-		$this->payment_helper = new PaymentHelper();
+	public function __construct() {
+		$this->alma_settings   = new AlmaSettings();
+		$this->payment_helper  = new PaymentHelper();
 		$this->checkout_helper = new CheckoutHelper();
 	}
 
@@ -65,29 +64,28 @@ class GatewayHelper
 	 *
 	 * @return array
 	 */
-	public function woocommerce_available_payment_gateways($available_gateways)
-	{
-		if (is_admin()) {
+	public function woocommerce_available_payment_gateways( $available_gateways ) {
+		if ( is_admin() ) {
 			return $available_gateways;
 		}
 
 		$product_helper = new ProductHelper();
 
-		$has_excluded_products = $product_helper->cart_has_excluded_product();
+		$has_excluded_products  = $product_helper->cart_has_excluded_product();
 		$new_available_gateways = array();
 
-		foreach ($available_gateways as $key => $gateway) {
+		foreach ( $available_gateways as $key => $gateway ) {
 
 			if (
-				in_array($gateway->id, ConstantsHelper::$gateways_ids, true)
+				in_array( $gateway->id, ConstantsHelper::$gateways_ids, true )
 				&& $has_excluded_products
 			) {
-				unset($available_gateways[$key]);
+				unset( $available_gateways[ $key ] );
 
 				return $available_gateways;
 			}
 
-			$new_available_gateways[$key] = $gateway;
+			$new_available_gateways[ $key ] = $gateway;
 		}
 
 		return $new_available_gateways;
@@ -101,10 +99,9 @@ class GatewayHelper
 	 *
 	 * @return string
 	 */
-	public function woocommerce_gateway_title($title, $id)
-	{
-		if (in_array($id, ConstantsHelper::$gateways_ids, true)) {
-			return $this->alma_settings->get_title($id);
+	public function woocommerce_gateway_title( $title, $id ) {
+		if ( in_array( $id, ConstantsHelper::$gateways_ids, true ) ) {
+			return $this->alma_settings->get_title( $id );
 		}
 
 		return $title;
@@ -118,11 +115,10 @@ class GatewayHelper
 	 *
 	 * @return string
 	 */
-	public function woocommerce_gateway_description($title, $id)
-	{
+	public function woocommerce_gateway_description( $title, $id ) {
 
-		if (in_array($id, ConstantsHelper::$gateways_ids, true)) {
-			return $this->alma_settings->get_description($id);
+		if ( in_array( $id, ConstantsHelper::$gateways_ids, true ) ) {
+			return $this->alma_settings->get_description( $id );
 		}
 
 		return $title;
@@ -136,13 +132,12 @@ class GatewayHelper
 	 * @return string
 	 * @throws AlmaException Exception.
 	 */
-	public function get_alma_gateway_title($id, $is_blocks = false)
-	{
-		if (in_array($id, ConstantsHelper::$gateways_ids, true)) {
-			return $this->alma_settings->get_title($id, $is_blocks);
+	public function get_alma_gateway_title( $id, $is_blocks = false ) {
+		if ( in_array( $id, ConstantsHelper::$gateways_ids, true ) ) {
+			return $this->alma_settings->get_title( $id, $is_blocks );
 		}
 
-		throw new AlmaException(sprintf('Unknown gateway id : %s', $id));
+		throw new AlmaException( sprintf( 'Unknown gateway id : %s', $id ) );
 	}
 
 	/**
@@ -151,14 +146,13 @@ class GatewayHelper
 	 * @param string $id The alma gateway type id.
 	 * @return string
 	 */
-	public function get_alma_gateway_logo_text($id)
-	{
+	public function get_alma_gateway_logo_text( $id ) {
 		if (
 			ConstantsHelper::GATEWAY_ID_PAY_NOW === $id
 			|| ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_NOW === $id
 		) {
 
-			return __('Pay Now', 'alma-gateway-for-woocommerce');
+			return __( 'Pay Now', 'alma-gateway-for-woocommerce' );
 		}
 
 		return 'null';
@@ -171,9 +165,8 @@ class GatewayHelper
 	 *
 	 * @return bool
 	 */
-	public function is_in_page_gateway($id)
-	{
-		if (in_array($id, ConstantsHelper::$gateways_in_page_ids, true)) {
+	public function is_in_page_gateway( $id ) {
+		if ( in_array( $id, ConstantsHelper::$gateways_in_page_ids, true ) ) {
 			return true;
 		}
 
@@ -189,13 +182,12 @@ class GatewayHelper
 	 * @return string
 	 * @throws AlmaException Exception.
 	 */
-	public function get_alma_gateway_description($id, $is_blocks = false)
-	{
-		if (in_array($id, ConstantsHelper::$gateways_ids, true)) {
-			return $this->alma_settings->get_description($id, $is_blocks);
+	public function get_alma_gateway_description( $id, $is_blocks = false ) {
+		if ( in_array( $id, ConstantsHelper::$gateways_ids, true ) ) {
+			return $this->alma_settings->get_description( $id, $is_blocks );
 		}
 
-		throw new AlmaException(sprintf('Unknown gateway id : %s', $id));
+		throw new AlmaException( sprintf( 'Unknown gateway id : %s', $id ) );
 
 	}
 
@@ -204,9 +196,8 @@ class GatewayHelper
 	 *
 	 * @return bool
 	 */
-	public function is_there_eligibility_in_cart()
-	{
-		return count($this->alma_settings->get_eligible_plans_keys_for_cart()) > 0;
+	public function is_there_eligibility_in_cart() {
+		return count( $this->alma_settings->get_eligible_plans_keys_for_cart() ) > 0;
 	}
 
 	/**
@@ -214,22 +205,21 @@ class GatewayHelper
 	 *
 	 * @return bool
 	 */
-	public function cart_contains_excluded_category()
-	{
-		if (wc()->cart === null) {
+	public function cart_contains_excluded_category() {
+		if ( wc()->cart === null ) {
 			return false;
 		}
 
 		if (
-			property_exists($this->alma_settings, 'excluded_products_list')
-			&& is_array($this->alma_settings->excluded_products_list)
-			&& count($this->alma_settings->excluded_products_list) > 0
+			property_exists( $this->alma_settings, 'excluded_products_list' )
+			&& is_array( $this->alma_settings->excluded_products_list )
+			&& count( $this->alma_settings->excluded_products_list ) > 0
 		) {
-			foreach (WC()->cart->get_cart() as $cart_item) {
+			foreach ( WC()->cart->get_cart() as $cart_item ) {
 				$product_id = $cart_item['product_id'];
 
-				foreach ($this->alma_settings->excluded_products_list as $category_slug) {
-					if (has_term($category_slug, 'product_cat', $product_id)) {
+				foreach ( $this->alma_settings->excluded_products_list as $category_slug ) {
+					if ( has_term( $category_slug, 'product_cat', $product_id ) ) {
 						return true;
 					}
 				}
@@ -247,19 +237,18 @@ class GatewayHelper
 	 *
 	 * @return string|null
 	 */
-	public function get_default_plan($plans)
-	{
-		if (!count($plans)) {
+	public function get_default_plan( $plans ) {
+		if ( ! count( $plans ) ) {
 			return null;
 		}
 
-		if (in_array(ConstantsHelper::DEFAULT_FEE_PLAN, $plans, true)) {
+		if ( in_array( ConstantsHelper::DEFAULT_FEE_PLAN, $plans, true ) ) {
 			return ConstantsHelper::DEFAULT_FEE_PLAN;
 		}
 
-		$default_plan = array_shift($plans);
+		$default_plan = array_shift( $plans );
 
-		if (is_array($default_plan)) {
+		if ( is_array( $default_plan ) ) {
 			$default_plan = $default_plan[0];
 		}
 
@@ -271,8 +260,7 @@ class GatewayHelper
 	 *
 	 * @return void
 	 */
-	public function add_actions()
-	{
+	public function add_actions() {
 		$payment_upon_trigger_helper = new PaymentUponTriggerService();
 		add_action(
 			'woocommerce_order_status_changed',
