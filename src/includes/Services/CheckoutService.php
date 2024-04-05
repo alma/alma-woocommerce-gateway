@@ -12,6 +12,7 @@
 namespace Alma\Woocommerce\Services;
 
 use Alma\Woocommerce\Exceptions\AlmaException;
+use Alma\Woocommerce\Helpers\BlockHelper;
 use Alma\Woocommerce\Helpers\CheckoutHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\PluginHelper;
@@ -27,9 +28,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class CheckoutService extends \WC_Checkout {
 
-
-
-
 	/**
 	 * The plugin helper.
 	 *
@@ -38,20 +36,30 @@ class CheckoutService extends \WC_Checkout {
 	protected $plugin_helper;
 
 	/**
+	 * The block helper.
+	 *
+	 * @var BlockHelper
+	 */
+	protected $block_helper;
+
+	/**
 	 * Construct.
 	 */
 	public function __construct() {
 		$this->plugin_helper = new PluginHelper();
+		$this->block_helper  = new BlockHelper();
 	}
 
 	/**
 	 * Extends \WC_Checkout.
 	 *
+	 * @param array $post_fields The post fields.
+	 *
 	 * @return \WC_Order
 	 * @throws AlmaException The exception.
 	 * @throws \Exception Exception.
 	 */
-	public function process_checkout() {
+	public function process_checkout( $post_fields ) {
 		if (
 			isset( $_POST['is_woo_block'] )
 			&& $_POST['is_woo_block'] // phpcs:ignore WordPress.Security.NonceVerification
@@ -87,14 +95,13 @@ class CheckoutService extends \WC_Checkout {
 				$_REQUEST[ $values['name'] ] = $values['value'];
 			}
 		}
-
 		$checkout_helper = new CheckoutHelper();
 		$is_alma_payment = $checkout_helper->is_alma_payment_method( $_POST[ ConstantsHelper::PAYMENT_METHOD ] ); // phpcs:ignore WordPress.Security.NonceVerification
 
 		if ( ! $is_alma_payment ) {
 			throw new AlmaException( __( 'We were unable to process your order, please try again.', 'alma-gateway-for-woocommerce' ) );
 		}
-		if ( ! $this->plugin_helper->has_woocommerce_blocks() ) {
+		if ( ! $this->block_helper->has_woocommerce_blocks() ) {
 			$nonce_value = wc_get_var($_POST['woocommerce-process-checkout-nonce'], wc_get_var($_POST['_wpnonce'], '')); // @codingStandardsIgnoreLine.
 
 			if (
@@ -151,6 +158,10 @@ class CheckoutService extends \WC_Checkout {
 
 			$order_id = $this->create_order( $posted_data );
 			$order    = wc_get_order( $order_id );
+
+			if ( isset( $post_fields['fields']['extensionData']['woocommerce/order-attribution'] ) ) {
+                do_action( 'woocommerce_order_save_attribution_data', $order, $post_fields['fields']['extensionData']['woocommerce/order-attribution'] ); // phpcs:ignore
+			}
 
 			if ( is_wp_error( $order_id ) ) {
 				throw new AlmaException( $order_id->get_error_message() );

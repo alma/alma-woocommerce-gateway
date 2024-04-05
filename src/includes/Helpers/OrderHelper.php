@@ -29,9 +29,6 @@ use Alma\Woocommerce\Services\CheckoutService;
  */
 class OrderHelper {
 
-
-
-
 	const SHOP_ORDER = 'shop_order';
 
 	const WC_PROCESSING = 'wc-processing';
@@ -47,10 +44,19 @@ class OrderHelper {
 	protected $logger;
 
 	/**
+	 * The block helper.
+	 *
+	 * @var BlockHelper
+	 */
+	protected $block_helper;
+
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->logger = new AlmaLogger();
+		$this->logger       = new AlmaLogger();
+		$this->block_helper = new BlockHelper();
 	}
 
 
@@ -270,7 +276,13 @@ class OrderHelper {
 			}
 
 			wc_add_notice( $e->getMessage(), ConstantsHelper::ERROR );
-			$this->send_ajax_failure_response();
+			wp_send_json_error( $e->getMessage(), 500 );
+
+			if ( $this->block_helper->has_woocommerce_blocks() ) {
+				$this->send_ajax_failure_response();
+			}
+
+			wp_send_json_error( $e->getMessage(), 500 );
 		}
 	}
 
@@ -311,7 +323,7 @@ class OrderHelper {
 	protected function create_inpage_order( $post_fields ) {
 		$alma_checkout = new CheckoutService();
 
-		$order = $alma_checkout->process_checkout();
+		$order = $alma_checkout->process_checkout( $post_fields );
 
 		// We ignore the nonce verification because process_payment is called after validate_fields.
 		$settings       = new AlmaSettings();

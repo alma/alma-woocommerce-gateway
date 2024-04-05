@@ -26,6 +26,7 @@ class GatewayHelper {
 
 
 
+
 	/**
 	 * The settings.
 	 *

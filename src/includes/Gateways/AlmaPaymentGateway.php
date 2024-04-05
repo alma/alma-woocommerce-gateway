@@ -37,10 +37,12 @@ use Alma\Woocommerce\Helpers\ToolsHelper;
 use Alma\Woocommerce\Helpers\PlanBuilderHelper;
 use Alma\Woocommerce\Helpers\TemplateLoaderHelper;
 use Alma\Woocommerce\AlmaSettings;
+
 /**
  * AlmaPaymentGateway
  */
 class AlmaPaymentGateway extends \WC_Payment_Gateway {
+
 
 	/**
 	 * The logger.
@@ -327,7 +329,6 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 	 * @return void
 	 */
 	public function init_admin_form() {
-
 		list($tab, $section) = $this->plugin_helper->get_tab_and_section();
 
 		if (
@@ -594,13 +595,23 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 		?>
 		<tr valign="top" class="alma-i18n-parent" style="display:none;">
 			<th scope="row" class="titledesc">
-				<label for="<?php echo esc_attr( $field_key ); ?>"><?php echo wp_kses_post( $data['title'] ); ?><?php echo $this->get_tooltip_html( $data ); // phpcs:ignore WordPress.Security.EscapeOutput ?></label>
+				<label for="<?php echo esc_attr( $field_key ); ?>">
+					<?php echo wp_kses_post( $data['title'] ); ?>
+					<?php echo $this->get_tooltip_html( $data ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+				</label>
 			</th>
 			<td class="forminp">
 				<fieldset>
-					<legend class="screen-reader-text"><span><?php echo wp_kses_post( $data['title'] ); ?></span>
+					<legend class="screen-reader-text"><span>
+							<?php echo wp_kses_post( $data['title'] ); ?>
+						</span>
 					</legend>
-					<input class="input-text regular-input alma-i18n <?php echo esc_attr( $data['class'] ); ?>" type="text" name="<?php echo esc_attr( $field_key ); ?>" id="<?php echo esc_attr( $field_key ); ?>" style="<?php echo esc_attr( $data['css'] ); ?>" value="<?php echo esc_attr( $this->get_option( $key ) ); ?>" placeholder="<?php echo esc_attr( $data['placeholder'] ); ?>" <?php disabled( $data['disabled'] ); ?> <?php echo $this->get_custom_attribute_html( $data ); // phpcs:ignore WordPress.Security.EscapeOutput ?> />
+					<input class="input-text regular-input alma-i18n <?php echo esc_attr( $data['class'] ); ?>" type="text"
+						name="<?php echo esc_attr( $field_key ); ?>" id="<?php echo esc_attr( $field_key ); ?>"
+						style="<?php echo esc_attr( $data['css'] ); ?>"
+						value="<?php echo esc_attr( $this->get_option( $key ) ); ?>"
+						placeholder="<?php echo esc_attr( $data['placeholder'] ); ?>" <?php disabled( $data['disabled'] ); ?>
+						<?php echo $this->get_custom_attribute_html( $data ); // phpcs:ignore WordPress.Security.EscapeOutput ?> />
 					<select class="list_lang_title" style="width:auto;margin-left:10px;line-height:28px;">
 						<?php
 						foreach ( $data['lang_list'] as $code => $label ) {
@@ -711,7 +722,6 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 			.alma_option_disabled::after {
 				content: ' (<?php echo esc_attr__( 'disabled', 'alma-gateway-for-woocommerce' ); ?>)';
 			}
-
 		</style>
 		<?php
 		return parent::generate_select_html( $key, $data );
@@ -745,17 +755,20 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 		?>
 		</table>
 		<h3 class="wc-settings-sub-title <?php echo esc_attr( $data['class'] ); ?>"
-			style="<?php echo esc_attr( $data['css'] ); ?>"
-			id="<?php echo esc_attr( $field_key ); ?>"><?php echo wp_kses_post( $data['title'] ); ?></h3>
+			style="<?php echo esc_attr( $data['css'] ); ?>" id="<?php echo esc_attr( $field_key ); ?>">
+			<?php echo wp_kses_post( $data['title'] ); ?>
+		</h3>
 		<?php if ( ! empty( $data['description'] ) ) : ?>
-			<div class="<?php echo esc_attr( $data['description_class'] ); ?>" style="<?php echo esc_attr( $data['description_css'] ); ?>">
+			<div class="<?php echo esc_attr( $data['description_class'] ); ?>"
+				style="<?php echo esc_attr( $data['description_css'] ); ?>">
 				<?php echo wp_kses_post( $data['description'] ); ?>
 			</div>
 		<?php endif; ?>
-	<table class="form-table <?php echo esc_attr( $data['table_class'] ); ?>" style="<?php echo esc_attr( $data['table_css'] ); ?>">
-		<?php
+		<table class="form-table <?php echo esc_attr( $data['table_class'] ); ?>"
+			style="<?php echo esc_attr( $data['table_css'] ); ?>">
+			<?php
 
-		return ob_get_clean();
+			return ob_get_clean();
 	}
 
 

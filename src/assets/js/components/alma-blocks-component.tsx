@@ -94,8 +94,9 @@ export const AlmaBlocks: React.FC<AlmaBlocksProps> = ({
     <>
       <IntlProvider locale="fr">
         {isPayNow && <div className={"payNowLabel"}>{label}</div>}
-        <div className={classNames({ payNow: isPayNow })}>
-          <ToggleButtonsField
+        <div className={"buttonsContainer"}>
+          <div className={classNames({ payNow: isPayNow })}>
+            <ToggleButtonsField
             className={"toggleButtonField"}
             options={values}
             optionLabel={(key) => labels[key]}
@@ -106,7 +107,8 @@ export const AlmaBlocks: React.FC<AlmaBlocksProps> = ({
             wide={false}
             size={"sm"}
             error=""
-          />
+            />
+          </div>
         </div>
         {!hasInPage && (
           <div className="alma-card-installments">

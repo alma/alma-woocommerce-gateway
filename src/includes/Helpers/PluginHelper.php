@@ -32,6 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class PluginHelper {
 
+
 	/**
 	 * The order helper
 	 *
@@ -39,12 +40,20 @@ class PluginHelper {
 	 */
 	protected $order_helper;
 
+	/**
+	 * The block helper
+	 *
+	 * @var BlockHelper
+	 */
+	protected $block_helper;
+
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
 		$this->order_helper = new OrderHelper();
+		$this->block_helper = new BlockHelper();
 	}
 
 	/**
@@ -153,8 +162,7 @@ class PluginHelper {
 		// Launch the "share of checkout".
 		$share_of_checkout = new ShareOfCheckoutService();
 		add_action( 'init', array( $share_of_checkout, 'send_soc_data' ) );
-
-		if ( $this->has_woocommerce_blocks() ) {
+		if ( $this->block_helper->has_woocommerce_blocks() ) {
 			add_action(
 				'woocommerce_blocks_loaded',
 				array(
@@ -172,7 +180,6 @@ class PluginHelper {
 	 * @return void
 	 */
 	public function alma_register_order_approval_payment_method_type() {
-
 		// Hook the registration function to the 'woocommerce_blocks_payment_method_type_registration' action.
 		add_action(
 			'woocommerce_blocks_payment_method_type_registration',
@@ -189,19 +196,6 @@ class PluginHelper {
 		);
 	}
 
-	/**
-	 * Is woocommerce block activated ?
-	 *
-	 * @return bool
-	 */
-	public function has_woocommerce_blocks() {
-		// Check if the required class exists.
-		if ( ! class_exists( '\Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' ) ) {
-			return false;
-		}
-
-		return true;
-	}
 
 	/**
 	 * Inject JS in checkout page.
@@ -247,7 +241,7 @@ class PluginHelper {
 	protected function enqueue_in_page_scripts() {
 		wp_enqueue_script( 'alma-checkout-in-page-cdn', ConstantsHelper::ALMA_PATH_CHECKOUT_CDN_IN_PAGE_JS, array(), ALMA_VERSION, true );
 
-		if ( ! $this->has_woocommerce_blocks() ) {
+		if ( ! $this->block_helper->has_woocommerce_blocks() ) {
 			$alma_checkout_in_page_js = AssetsHelper::get_asset_url( ConstantsHelper::ALMA_PATH_CHECKOUT_IN_PAGE_JS );
 			wp_enqueue_script(
 				'alma-checkout-in-page',

@@ -70,12 +70,15 @@ import '../css/alma-checkout-blocks.css';
                 ) {
                     inPage.unmount();
                 }
+
                 inPage = Alma.InPage.initialize(
                     {
                         merchantId: settingsInPage.merchant_id,
                         amountInCents: settings.amount_in_cents,
                         installmentsCount: settings.plans[selectedFeePlan].installmentsCount,
                         selector: "#alma-inpage-alma_in_page",
+                        deferredDays: settings.plans[selectedFeePlan].deferredDays,
+					    deferredMonths: settings.plans[selectedFeePlan].deferredMonths,
                         environment: settingsInPage.environment,
                         locale: settingsInPage.locale,
                     }
@@ -285,7 +288,7 @@ import '../css/alma-checkout-blocks.css';
                 .fail(
                     function (response) {
                         $('.alma-loader-wrapper').remove();
-                        // location.reload();
+                        location.reload();
                     }
                 );
 
