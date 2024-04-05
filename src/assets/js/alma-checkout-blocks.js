@@ -288,7 +288,7 @@ import '../css/alma-checkout-blocks.css';
                 .fail(
                     function (response) {
                         $('.alma-loader-wrapper').remove();
-                        // location.reload();
+                        location.reload();
                     }
                 );
 
