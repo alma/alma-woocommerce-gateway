@@ -55,11 +55,5 @@
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "automattic/jetpack-autoloader": true
         }
-    },
-    "repositories": {
-        "alma/alma-php-client": {
-            "type": "path",
-            "url": "/app/alma/alma-php-client"
-        }
     }
 }
