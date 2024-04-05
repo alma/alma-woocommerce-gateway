@@ -158,6 +158,9 @@ class CheckoutService extends \WC_Checkout {
 			$order_id = $this->create_order( $posted_data );
 			$order    = wc_get_order( $order_id );
 
+			$order->add_meta_data( 'source_type', 'Direct' );
+			$order->save();
+
 			if ( is_wp_error( $order_id ) ) {
 				throw new AlmaException( $order_id->get_error_message() );
 			}
