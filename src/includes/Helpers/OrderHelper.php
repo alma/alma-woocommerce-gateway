@@ -269,7 +269,9 @@ class OrderHelper {
 				$order->update_status( 'failed', $e->getMessage() );
 			}
 
-			wc_add_notice( $e->getMessage(), ConstantsHelper::ERROR );
+			wc_add_notice( $e->getMessage(), ConstantsHelper::ERROR );			wp_send_json_error( $e->getMessage(), 500 );
+
+			if($this->){}
 			$this->send_ajax_failure_response();
 		}
 	}
