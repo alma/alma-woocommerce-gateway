@@ -251,11 +251,11 @@ class OrderHelper
 	}
 
 	/**
-   get_id())	 *  Create the order and the payment id for In page.
-		*
-		* @throws CreatePaymentsException Exception.
-		* @return void
-		*/
+	  get_id())	 *  Create the order and the payment id for In page.
+		   *
+		   * @throws CreatePaymentsException Exception.
+		   * @return void
+		   */
 	public function alma_do_checkout_in_page()
 	{
 		$order = null;
@@ -264,8 +264,6 @@ class OrderHelper
 		 */
 
 		$order = wc_get_order('94');
-	var_dump($order->get_meta_data( ));
-		die;
 		// The nonce verification is done in   is_alma_payment_method.
 		try {
 			if (
