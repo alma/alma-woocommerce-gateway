@@ -11,12 +11,13 @@
 
 namespace Alma\Woocommerce\Helpers;
 
-if (!defined('ABSPATH')) {
-	die('Not allowed'); // Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Exceptions\ApiCreatePaymentsException;
 use Alma\Woocommerce\Exceptions\BuildOrderException;
 use Alma\Woocommerce\Exceptions\CreatePaymentsException;
@@ -27,8 +28,8 @@ use Alma\Woocommerce\Services\CheckoutService;
 /**
  * Class OrderHelper.
  */
-class OrderHelper
-{
+class OrderHelper {
+
 
 	const SHOP_ORDER = 'shop_order';
 
@@ -55,9 +56,8 @@ class OrderHelper
 	/**
 	 * Constructor.
 	 */
-	public function __construct()
-	{
-		$this->logger = new AlmaLogger();
+	public function __construct() {
+		 $this->logger      = new AlmaLogger();
 		$this->block_helper = new BlockHelper();
 	}
 
@@ -80,13 +80,12 @@ class OrderHelper
 	 *
 	 * @return \WC_Order[]
 	 */
-	public function get_orders_by_date_range($from, $to)
-	{
+	public function get_orders_by_date_range( $from, $to ) {
 		return wc_get_orders(
 			array(
 				'date_created' => $from . '...' . $to,
-				'type' => self::SHOP_ORDER,
-				'status' => self::$status_order_completed,
+				'type'         => self::SHOP_ORDER,
+				'status'       => self::$status_order_completed,
 			)
 		);
 	}
@@ -99,14 +98,13 @@ class OrderHelper
 	 *
 	 * @return \WC_Order[]
 	 */
-	public function get_orders_by_customer_id($customer_id, $limit = 10)
-	{
+	public function get_orders_by_customer_id( $customer_id, $limit = 10 ) {
 		return wc_get_orders(
 			array(
 				'customer_id' => $customer_id,
-				'limit' => $limit,
-				'type' => self::SHOP_ORDER,
-				'status' => self::$status_order_completed,
+				'limit'       => $limit,
+				'type'        => self::SHOP_ORDER,
+				'status'      => self::$status_order_completed,
 			)
 		);
 	}
@@ -117,12 +115,11 @@ class OrderHelper
 	 * @param \WC_Order $wc_order The WC order.
 	 * @return string
 	 */
-	public function get_merchant_url($wc_order)
-	{
+	public function get_merchant_url( $wc_order ) {
 		$admin_path = 'post.php?post=' . $wc_order->get_id() . '&action=edit';
 
-		if (version_compare(wc()->version, '3.3.0', '<')) {
-			return get_admin_url(null, $admin_path);
+		if ( version_compare( wc()->version, '3.3.0', '<' ) ) {
+			return get_admin_url( null, $admin_path );
 		}
 
 		return $wc_order->get_edit_order_url();
@@ -135,23 +132,22 @@ class OrderHelper
 	 *
 	 * @return array
 	 */
-	public function get_shipping_address($wc_order)
-	{
-		if (!$wc_order->has_shipping_address()) {
+	public function get_shipping_address( $wc_order ) {
+		if ( ! $wc_order->has_shipping_address() ) {
 			return array();
 		}
 
 		return array(
-			'first_name' => $wc_order->get_shipping_first_name(),
-			'last_name' => $wc_order->get_shipping_last_name(),
-			'company' => $wc_order->get_shipping_company(),
-			'line1' => $wc_order->get_shipping_address_1(),
-			'line2' => $wc_order->get_shipping_address_2(),
-			'postal_code' => $wc_order->get_shipping_postcode(),
-			'city' => $wc_order->get_shipping_city(),
+			'first_name'          => $wc_order->get_shipping_first_name(),
+			'last_name'           => $wc_order->get_shipping_last_name(),
+			'company'             => $wc_order->get_shipping_company(),
+			'line1'               => $wc_order->get_shipping_address_1(),
+			'line2'               => $wc_order->get_shipping_address_2(),
+			'postal_code'         => $wc_order->get_shipping_postcode(),
+			'city'                => $wc_order->get_shipping_city(),
 			'country_sublocality' => null,
-			'state_province' => $wc_order->get_shipping_state(),
-			'country' => $wc_order->get_shipping_country(),
+			'state_province'      => $wc_order->get_shipping_state(),
+			'country'             => $wc_order->get_shipping_country(),
 		);
 	}
 
@@ -162,25 +158,24 @@ class OrderHelper
 	 * @param \WC_Order $wc_order The order.
 	 * @return array
 	 */
-	public function get_billing_address($wc_order)
-	{
-		if (!$wc_order->has_billing_address()) {
+	public function get_billing_address( $wc_order ) {
+		if ( ! $wc_order->has_billing_address() ) {
 			return array();
 		}
 
 		return array(
-			'first_name' => $wc_order->get_billing_first_name(),
-			'last_name' => $wc_order->get_billing_last_name(),
-			'company' => $wc_order->get_billing_company(),
-			'line1' => $wc_order->get_billing_address_1(),
-			'line2' => $wc_order->get_billing_address_2(),
-			'postal_code' => $wc_order->get_billing_postcode(),
-			'city' => $wc_order->get_billing_city(),
-			'country' => $wc_order->get_billing_country(),
+			'first_name'          => $wc_order->get_billing_first_name(),
+			'last_name'           => $wc_order->get_billing_last_name(),
+			'company'             => $wc_order->get_billing_company(),
+			'line1'               => $wc_order->get_billing_address_1(),
+			'line2'               => $wc_order->get_billing_address_2(),
+			'postal_code'         => $wc_order->get_billing_postcode(),
+			'city'                => $wc_order->get_billing_city(),
+			'country'             => $wc_order->get_billing_country(),
 			'country_sublocality' => null,
-			'state_province' => $wc_order->get_billing_state(),
-			'email' => $wc_order->get_billing_email(),
-			'phone' => $wc_order->get_billing_phone(),
+			'state_province'      => $wc_order->get_billing_state(),
+			'email'               => $wc_order->get_billing_email(),
+			'phone'               => $wc_order->get_billing_phone(),
 		);
 	}
 
@@ -191,9 +186,8 @@ class OrderHelper
 	 *
 	 * @return bool
 	 */
-	public function is_business($wc_order)
-	{
-		if ($wc_order->get_billing_company()) {
+	public function is_business( $wc_order ) {
+		if ( $wc_order->get_billing_company() ) {
 			return true;
 		}
 
@@ -208,9 +202,8 @@ class OrderHelper
 	 *
 	 * @return void
 	 */
-	public function payment_complete($wc_order, $payment_id)
-	{
-		$wc_order->payment_complete($payment_id);
+	public function payment_complete( $wc_order, $payment_id ) {
+		$wc_order->payment_complete( $payment_id );
 		wc()->cart->empty_cart();
 	}
 
@@ -224,77 +217,82 @@ class OrderHelper
 	 * @return bool|\WC_Order|\WC_Refund
 	 * @throws BuildOrderException Error on building order.
 	 */
-	public function get_order($order_id, $order_key = null, $payment_id = null)
-	{
-		$wc_order = wc_get_order($order_id);
+	public function get_order( $order_id, $order_key = null, $payment_id = null ) {
+		$wc_order = wc_get_order( $order_id );
 
 		if (
-			!$wc_order
+			! $wc_order
 			&& $order_key
 		) {
 			// We have an invalid $order_id, probably because invoice_prefix has changed.
-			$order_id = wc_get_order_id_by_order_key($order_key);
-			$wc_order = wc_get_order($order_id);
+			$order_id = wc_get_order_id_by_order_key( $order_key );
+			$wc_order = wc_get_order( $order_id );
 		}
 
 		if (
-			!$wc_order
+			! $wc_order
 			|| (
 				$order_key
 				&& $wc_order->get_order_key() !== $order_key
 			)
 		) {
-			throw new BuildOrderException($order_id, $order_key, $payment_id);
+			throw new BuildOrderException( $order_id, $order_key, $payment_id );
 		}
 
 		return $wc_order;
 	}
 
 	/**
-																			  get_id())	 *  Create the order and the payment id for In page.
-																				   *
-																				   * @throws CreatePaymentsException Exception.
-																				   * @return void
-																				   */
-	public function alma_do_checkout_in_page()
-	{
+	 *  Create the order and the payment id for In page.
+	 *
+	 * @return void
+	 */
+	public function alma_do_checkout_in_page() {
 		$order = null;
 		/**
+		 * Order
+		 *
 		 * @var \WC_Order $order;
 		 */
 
-		// $order = wc_get_order('93');
-		// var_dump($order->get_meta_data());
-		// die;
+		if (
+			! isset( $_POST['fields'] ) // phpcs:ignore WordPress.Security.NonceVerification
+			|| empty( $_POST['fields'] ) // phpcs:ignore WordPress.Security.NonceVerification
+		) {
+			$this->return_error( __( 'Invalid data', 'alma-gateway-for-woocommerce' ) );
+		}
+
 		// The nonce verification is done in   is_alma_payment_method.
 		try {
-			if (
-				isset($_POST['fields']) // phpcs:ignore WordPress.Security.NonceVerification
-				&& !empty($_POST['fields']) // phpcs:ignore WordPress.Security.NonceVerification
-			) {
+			list($payment_id, $order_id) = $this->create_inpage_order( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification
 
-				list($payment_id, $order_id) = $this->create_inpage_order($_POST); // phpcs:ignore WordPress.Security.NonceVerification
+			wp_send_json_success(
+				array(
+					'payment_id' => $payment_id,
+					'order_id'   => $order_id,
+				)
+			);
 
-				wp_send_json_success(
-					array(
-						'payment_id' => $payment_id,
-						'order_id' => $order_id,
-					)
-				);
+		} catch ( AlmaException $e ) {
+			$this->logger->error( $e->getMessage(), $e->getTrace() );
+
+			if ( $order ) {
+				$order->update_status( 'failed', $e->getMessage() );
 			}
 
-			throw new CreatePaymentsException();
-
-		} catch (\Exception $e) {
-			$this->logger->error($e->getMessage(), $e->getTrace());
-
-			if ($order) {
-				$order->update_status('failed', $e->getMessage());
-			}
-
-			wc_add_notice($e->getMessage(), ConstantsHelper::ERROR);
-			wp_send_json_error($e->getMessage(), 500);
+			$this->return_error( $e->getMessage() );
 		}
+	}
+
+	/**
+	 * Return error
+	 *
+	 * @param string $message message.
+	 * @return void
+	 */
+	private function return_error( $message ) {
+		wc_add_notice( $message, ConstantsHelper::ERROR );
+		wp_send_json_error( $message, 500 );
 	}
 
 	/**
@@ -302,24 +300,23 @@ class OrderHelper
 	 *
 	 * @return void
 	 */
-	protected function send_ajax_failure_response()
-	{
-		if (is_ajax()) {
+	protected function send_ajax_failure_response() {
+		if ( is_ajax() ) {
 			// Only print notices if not reloading the checkout, otherwise they're lost in the page reload.
-			if (!isset(WC()->session->reload_checkout)) {
-				$messages = wc_print_notices(true);
+			if ( ! isset( WC()->session->reload_checkout ) ) {
+				$messages = wc_print_notices( true );
 			}
 
 			$response = array(
-				'result' => 'failure',
-				'messages' => isset($messages) ? $messages : '',
-				'refresh' => isset(WC()->session->refresh_totals),
-				'reload' => isset(WC()->session->reload_checkout),
+				'result'   => 'failure',
+				'messages' => isset( $messages ) ? $messages : '',
+				'refresh'  => isset( WC()->session->refresh_totals ),
+				'reload'   => isset( WC()->session->reload_checkout ),
 			);
 
-			unset(WC()->session->refresh_totals, WC()->session->reload_checkout);
+			unset( WC()->session->refresh_totals, WC()->session->reload_checkout );
 
-			wp_send_json($response);
+			wp_send_json( $response );
 		}
 	}
 	/**
@@ -330,35 +327,42 @@ class OrderHelper
 	 * @return array
 	 * @throws ApiCreatePaymentsException Exception.
 	 * @throws PlansDefinitionException  Exception.
-	 * @throws \WC_Data_Exception  Exception.
+	 * @throws CreatePaymentsException  Exception.
 	 */
-	protected function create_inpage_order($post_fields)
-	{
-		$alma_checkout = new CheckoutService();
-		$wc_checkout = new \WC_Checkout();
-		try {
-			var_dump($post_fields['fields']);
-			die;
-			$order_id = $wc_checkout->create_order($post_fields['fields']);
-			$order = wc_get_order($order_id);
-
-		} catch (\Exception $e) {
-			$logger = new AlmaLogger();
-			$logger->error($e->getMessage());
-		}
-		$order = $alma_checkout->process_checkout();
-
-		// We ignore the nonce verification because process_payment is called after validate_fields.
-		$settings = new AlmaSettings();
+	protected function create_inpage_order( $post_fields ) {
+		$wc_checkout    = new \WC_Checkout();
+		$settings       = new AlmaSettings();
 		$payment_helper = new PaymentHelper();
 
-		$fee_plan = $settings->build_fee_plan($post_fields[ConstantsHelper::ALMA_FEE_PLAN_IN_PAGE]);
+		try {
+			$order_id = $wc_checkout->create_order( $post_fields['fields'] );
+		} catch ( \Exception $e ) {
+			$logger = new AlmaLogger();
+			$logger->error( $e->getMessage() );
+			throw new CreatePaymentsException();
+		}
 
-		$payment = $payment_helper->create_payments($order, $fee_plan, true);
+		$order = wc_get_order( $order_id );
+		if ( ! $order ) {
+			throw new CreatePaymentsException();
+		}
+
+		if ( ! empty( $post_fields['fields'] ) && ! empty( $post_fields['fields']['extensionData'] ) ) {
+			$params = $post_fields['fields']['extensionData']['woocommerce/order-attribution'];
+			if ( ! empty( $params ) ) {
+				do_action( 'woocommerce_order_save_attribution_data', $order, $params ); // phpcs:ignore
+			}
+		}
+
+		// We ignore the nonce verification because process_payment is called after validate_fields.
+		$fee_plan = $settings->build_fee_plan( $post_fields[ ConstantsHelper::ALMA_FEE_PLAN_IN_PAGE ] );
+		$payment  = $payment_helper->create_payments( $order, $fee_plan, true );
+
 		return array(
 			$payment->id,
 			$order->get_id(),
 		);
+
 	}
 
 
@@ -367,17 +371,16 @@ class OrderHelper
 	 *
 	 * @return void
 	 */
-	public function alma_cancel_order_in_page()
-	{
+	public function alma_cancel_order_in_page() {
 		try {
-			$order_id = sanitize_text_field($_POST['order_id']); // phpcs:ignore WordPress.Security.NonceVerification
+			$order_id     = sanitize_text_field( $_POST['order_id'] ); // phpcs:ignore WordPress.Security.NonceVerification
 			$order_helper = new OrderHelper();
-			$order = $order_helper->get_order($order_id);
-			$order->delete(true);
+			$order        = $order_helper->get_order( $order_id );
+			$order->delete( true );
 			wp_send_json_success();
-		} catch (\Exception $e) {
-			$this->logger->error($e->getMessage());
-			wp_send_json_error($e->getMessage(), 500);
+		} catch ( \Exception $e ) {
+			$this->logger->error( $e->getMessage() );
+			wp_send_json_error( $e->getMessage(), 500 );
 
 		}
 	}
@@ -387,17 +390,16 @@ class OrderHelper
 	 *
 	 * @return void|null
 	 */
-	public function handle_customer_return()
-	{
+	public function handle_customer_return() {
 		$payment_helper = new PaymentHelper();
-		$wc_order = $payment_helper->handle_customer_return();
+		$wc_order       = $payment_helper->handle_customer_return();
 
 		// Redirect user to the order confirmation page.
 		$alma_gateway = new StandardGateway();
 
-		$return_url = $alma_gateway->get_return_url($wc_order);
+		$return_url = $alma_gateway->get_return_url( $wc_order );
 
-		wp_safe_redirect($return_url);
+		wp_safe_redirect( $return_url );
 		exit();
 	}
 
@@ -406,9 +408,8 @@ class OrderHelper
 	 *
 	 * @return void
 	 */
-	public function handle_ipn_callback()
-	{
-		$payment_helper = new PaymentHelper();
+	public function handle_ipn_callback() {
+		 $payment_helper = new PaymentHelper();
 		$payment_helper->handle_ipn_callback();
 	}
 }
