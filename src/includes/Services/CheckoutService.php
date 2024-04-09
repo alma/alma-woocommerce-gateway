@@ -53,11 +53,13 @@ class CheckoutService extends \WC_Checkout {
 	/**
 	 * Extends \WC_Checkout.
 	 *
+	 * @param array $post_fields The post fields.
+	 *
 	 * @return \WC_Order
 	 * @throws AlmaException The exception.
 	 * @throws \Exception Exception.
 	 */
-	public function process_checkout() {
+	public function process_checkout( $post_fields ) {
 		if (
 			isset( $_POST['is_woo_block'] )
 			&& $_POST['is_woo_block'] // phpcs:ignore WordPress.Security.NonceVerification
@@ -93,7 +95,6 @@ class CheckoutService extends \WC_Checkout {
 				$_REQUEST[ $values['name'] ] = $values['value'];
 			}
 		}
-
 		$checkout_helper = new CheckoutHelper();
 		$is_alma_payment = $checkout_helper->is_alma_payment_method( $_POST[ ConstantsHelper::PAYMENT_METHOD ] ); // phpcs:ignore WordPress.Security.NonceVerification
 
@@ -158,8 +159,9 @@ class CheckoutService extends \WC_Checkout {
 			$order_id = $this->create_order( $posted_data );
 			$order    = wc_get_order( $order_id );
 
-			$order->add_meta_data( 'source_type', 'Direct' );
-			$order->save();
+			if ( isset( $post_fields['fields']['extensionData']['woocommerce/order-attribution'] ) ) {
+                do_action( 'woocommerce_order_save_attribution_data', $order, $post_fields['fields']['extensionData']['woocommerce/order-attribution'] ); // phpcs:ignore
+			}
 
 			if ( is_wp_error( $order_id ) ) {
 				throw new AlmaException( $order_id->get_error_message() );
