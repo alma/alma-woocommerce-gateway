@@ -213,6 +213,10 @@ class PlanBuilderHelper {
 		}
 
 		if ( null !== $gateway_id ) {
+			if ( ! isset( $result[ $gateway_id ] ) ) {
+				return array();
+			}
+
 			return $result[ $gateway_id ];
 		}
 
