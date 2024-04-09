@@ -5,6 +5,10 @@
  * @since v4.2.5
  **/
 
+.buttonsContainer {
+	margin-bottom: 10px;
+}
+
 .paymentMethodLabel span {
 	display: flex;
 	flex-direction: row;
