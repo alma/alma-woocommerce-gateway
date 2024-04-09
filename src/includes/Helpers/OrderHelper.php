@@ -251,11 +251,11 @@ class OrderHelper
 	}
 
 	/**
-																			  get_id())	 *  Create the order and the payment id for In page.
-																				   *
-																				   * @throws CreatePaymentsException Exception.
-																				   * @return void
-																				   */
+	  get_id())	 *  Create the order and the payment id for In page.
+		   *
+		   * @throws CreatePaymentsException Exception.
+		   * @return void
+		   */
 	public function alma_do_checkout_in_page()
 	{
 		$order = null;
@@ -263,9 +263,7 @@ class OrderHelper
 		 * @var \WC_Order $order;
 		 */
 
-		// $order = wc_get_order('93');
-		// var_dump($order->get_meta_data());
-		// die;
+		$order = wc_get_order('94');
 		// The nonce verification is done in   is_alma_payment_method.
 		try {
 			if (
@@ -335,17 +333,7 @@ class OrderHelper
 	protected function create_inpage_order($post_fields)
 	{
 		$alma_checkout = new CheckoutService();
-		$wc_checkout = new \WC_Checkout();
-		try {
-			var_dump($post_fields['fields']);
-			die;
-			$order_id = $wc_checkout->create_order($post_fields['fields']);
-			$order = wc_get_order($order_id);
 
-		} catch (\Exception $e) {
-			$logger = new AlmaLogger();
-			$logger->error($e->getMessage());
-		}
 		$order = $alma_checkout->process_checkout();
 
 		// We ignore the nonce verification because process_payment is called after validate_fields.
@@ -355,6 +343,7 @@ class OrderHelper
 		$fee_plan = $settings->build_fee_plan($post_fields[ConstantsHelper::ALMA_FEE_PLAN_IN_PAGE]);
 
 		$payment = $payment_helper->create_payments($order, $fee_plan, true);
+
 		return array(
 			$payment->id,
 			$order->get_id(),
