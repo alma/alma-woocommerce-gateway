@@ -72,6 +72,7 @@ use Alma\Woocommerce\Helpers\PlanBuilderHelper;
  * @property string share_of_checkout_enabled_date String Date when the merchant did accept the share of checkout
  * @property string share_of_checkout_last_sharing_date String Date when we sent the data to Alma
  * @property bool display_in_page Bool if In Page is activated
+ * @property string display_checkout_blocks Bool if display checkout blocks is activated
  */
 class AlmaSettings {
 
@@ -163,6 +164,13 @@ class AlmaSettings {
 			$this->$setting_key = $value;
 		}
 	}
+
+    /**
+     * @return bool
+     */
+    public function is_blocks_enabled() {
+        return 'yes' ===  $this->display_checkout_blocks;
+    }
 
 	/**
 	 * Is logging enabled.

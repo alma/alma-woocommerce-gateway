@@ -216,6 +216,13 @@ class FormFieldsHelper {
 					'label'   => __( 'Activate this setting if you want in-page checkout for Pay Now, Installment and Deferred payments.', 'alma-gateway-for-woocommerce' ) . '<br>' . sprintf( __( '(Learn more about this feature <a href="%s">here</a>)', 'alma-gateway-for-woocommerce' ), AssetsHelper::get_in_page_doc_link() ),
 					'default' => $default_settings['display_in_page'],
 				),
+                'display_checkout_blocks' => array(
+                    'title'   => __( 'Activate block in checkout', 'alma-gateway-for-woocommerce' ),
+                    'type'    => 'checkbox',
+                    /* translators: %s: Alma checkout blocks display*/
+                    'label'   => __( 'Enable this setting if your theme uses blocks on the checkout page.', 'alma-gateway-for-woocommerce' ),
+                    'default' => $default_settings['display_checkout_blocks'],
+                ),
 			);
 	}
 
