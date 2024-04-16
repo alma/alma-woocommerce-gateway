@@ -79,6 +79,7 @@ class SettingsHelper {
 			'debug'                                      => 'yes',
 			'keys_validity'                              => 'no',
 			'display_in_page'                            => 'no',
+			'use_blocks_template'                        => 'no',
 		);
 	}
 
