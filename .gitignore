@@ -12,3 +12,4 @@ crowdin.yml
 node_modules/
 .npmrc
 .phpunit.result.cache
+package-lock.json
