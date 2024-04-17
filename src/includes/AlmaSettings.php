@@ -72,6 +72,7 @@ use Alma\Woocommerce\Helpers\PlanBuilderHelper;
  * @property string share_of_checkout_enabled_date String Date when the merchant did accept the share of checkout
  * @property string share_of_checkout_last_sharing_date String Date when we sent the data to Alma
  * @property bool display_in_page Bool if In Page is activated
+ * @property bool use_blocks_template Bool if we want to use a blocks template
  */
 class AlmaSettings {
 
@@ -165,12 +166,12 @@ class AlmaSettings {
 	}
 
 	/**
-	 * Is logging enabled.
+	 * Is blocks template enabled.
 	 *
 	 * @return bool
 	 */
-	public function is_logging_enabled() {
-		return 'yes' === $this->debug;
+	public function is_blocks_template_enabled() {
+		return 'yes' === $this->use_blocks_template;
 	}
 
 	/**

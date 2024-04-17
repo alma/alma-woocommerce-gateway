@@ -105,6 +105,17 @@ class AssetsHelper {
 	public static function get_in_page_doc_link() {
 		return esc_url( 'https://docs.almapay.com/docs/in-page-woocommerce' );
 	}
+
+
+	/**
+	 * Get Blocks doc.
+	 *
+	 * @return string
+	 */
+	public static function get_blocks_doc_link() {
+		return esc_url( 'https://woocommerce.com/document/woocommerce-blocks/#template-blocks' );
+	}
+
 	/**
 	 *  Enqueue scripts needed into admin form.
 	 *

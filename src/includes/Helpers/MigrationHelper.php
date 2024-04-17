@@ -137,6 +137,11 @@ class MigrationHelper {
 				$has_changed              = true;
 			}
 
+			if ( ! isset( $settings['use_blocks_template'] ) ) {
+				$settings['use_blocks_template'] = 'no';
+				$has_changed                     = true;
+			}
+
 			if ( $has_changed ) {
 				update_option( AlmaSettings::OPTIONS_KEY, $settings );
 			}
