@@ -37,34 +37,34 @@ class SettingsHelper {
 			'payment_upon_trigger_display_text'          => 'at_shipping',
 			'selected_fee_plan'                          => ConstantsHelper::DEFAULT_FEE_PLAN,
 			'enabled_general_3_0_0'                      => 'yes',
-			'title_alma_in_page'                         => self::default_pay_with_alma_in_page(),
-			'description_alma_in_page'                   => self::default_pay_with_alma_in_page_description(),
-			'title_alma_in_page_pay_now'                 => self::default_pay_with_alma_in_page_pay_now(),
-			'description_alma_in_page_pay_now'           => self::default_pay_with_alma_in_page_pay_now_description(),
-			'title_alma_in_page_pay_later'               => self::default_pay_with_alma_in_page_pay_later(),
-			'description_alma_in_page_pay_later'         => self::default_pay_with_alma_in_page_pay_later_description(),
+			'title_alma_in_page'                         => self::default_pnx_title(),
+			'description_alma_in_page'                   => self::default_payment_description(),
+			'title_alma_in_page_pay_now'                 => self::default_pay_now_title(),
+			'description_alma_in_page_pay_now'           => self::default_description(),
+			'title_alma_in_page_pay_later'               => self::default_pay_later_title(),
+			'description_alma_in_page_pay_later'         => self::default_payment_description(),
 			'title_alma'                                 => self::default_pnx_title(),
 			'description_alma'                           => self::default_payment_description(),
 			'title_alma_pay_now'                         => self::default_pay_now_title(),
-			'description_alma_pay_now'                   => self::default_pay_now_description(),
+			'description_alma_pay_now'                   => self::default_description(),
 			'title_alma_pay_later'                       => self::default_pay_later_title(),
 			'description_alma_pay_later'                 => self::default_payment_description(),
 			'title_alma_pnx_plus_4'                      => self::default_pnx_plus_4_title(),
 			'description_alma_pnx_plus_4'                => self::default_payment_description(),
-			'title_blocks_alma_in_page'                  => self::default_blocks_pay_with_alma_in_page(),
-			'description_blocks_alma_in_page'            => self::default_blocks_pay_with_alma_in_page_description(),
-			'title_blocks_alma_in_page_pay_now'          => self::default_blocks_pay_with_alma_in_page_pay_now(),
-			'description_blocks_alma_in_page_pay_now'    => self::default_blocks_pay_with_alma_in_page_pay_now_description(),
-			'title_blocks_alma_in_page_pay_later'        => self::default_blocks_pay_with_alma_in_page_pay_later(),
-			'description_blocks_alma_in_page_pay_later'  => self::default_blocks_pay_with_alma_in_page_pay_later_description(),
-			'title_blocks_alma'                          => self::default_blocks_pnx_title(),
-			'description_blocks_alma'                    => self::default_blocks_payment_description(),
-			'title_blocks_alma_pay_now'                  => self::default_blocks_pay_now_title(),
-			'description_blocks_alma_pay_now'            => self::default_blocks_pay_now_description(),
-			'title_blocks_alma_pay_later'                => self::default_blocks_pay_later_title(),
-			'description_blocks_alma_pay_later'          => self::default_blocks_payment_description(),
-			'title_blocks_alma_pnx_plus_4'               => self::default_blocks_pnx_plus_4_title(),
-			'description_blocks_alma_pnx_plus_4'         => self::default_blocks_payment_description(),
+			'title_blocks_alma_in_page'                  => self::default_pnx_title(),
+			'description_blocks_alma_in_page'            => self::default_payment_description(),
+			'title_blocks_alma_in_page_pay_now'          => self::default_pay_now_title(),
+			'description_blocks_alma_in_page_pay_now'    => self::default_description(),
+			'title_blocks_alma_in_page_pay_later'        => self::default_pay_later_title(),
+			'description_blocks_alma_in_page_pay_later'  => self::default_payment_description(),
+			'title_blocks_alma'                          => self::default_pnx_title(),
+			'description_blocks_alma'                    => self::default_payment_description(),
+			'title_blocks_alma_pay_now'                  => self::default_pay_now_title(),
+			'description_blocks_alma_pay_now'            => self::default_description(),
+			'title_blocks_alma_pay_later'                => self::default_pay_later_title(),
+			'description_blocks_alma_pay_later'          => self::default_payment_description(),
+			'title_blocks_alma_pnx_plus_4'               => self::default_pnx_plus_4_title(),
+			'description_blocks_alma_pnx_plus_4'         => self::default_payment_description(),
 			'display_cart_eligibility'                   => 'yes',
 			'display_product_eligibility'                => 'yes',
 			'variable_product_price_query_selector'      => self::default_variable_price_selector(),
@@ -83,54 +83,6 @@ class SettingsHelper {
 		);
 	}
 
-	/**
-	 * Gets the default title for the gateway
-	 *
-	 * @return string
-	 */
-	public static function default_pay_with_alma_in_page() {
-		if ( InternationalizationHelper::is_site_multilingual() ) {
-			return ConstantsHelper::PAY_IN_INSTALLMENTS;
-		}
-		return __( 'Pay in installments', 'alma-gateway-for-woocommerce' );
-	}
-
-	/**
-	 * Gets the default title for the gateway
-	 *
-	 * @return string
-	 */
-	public static function default_blocks_pay_with_alma_in_page() {
-		if ( InternationalizationHelper::is_site_multilingual() ) {
-			return ConstantsHelper::PAY_IN_INSTALLMENTS;
-		}
-		return __( 'Pay in installments', 'alma-gateway-for-woocommerce' );
-	}
-
-	/**
-	 * Gets the default title for the gatewxay
-	 *
-	 * @return string
-	 */
-	public static function default_pay_with_alma_in_page_pay_now() {
-		if ( InternationalizationHelper::is_site_multilingual() ) {
-			return ConstantsHelper::PAY_NOW;
-		}
-		return __( 'Pay by credit card', 'alma-gateway-for-woocommerce' );
-	}
-
-	/**
-	 * Gets the default title for the gatewxay
-	 *
-	 * @return string
-	 */
-	public static function default_blocks_pay_with_alma_in_page_pay_now() {
-		if ( InternationalizationHelper::is_site_multilingual() ) {
-			return ConstantsHelper::PAY_NOW;
-		}
-		return __( 'Pay by credit card', 'alma-gateway-for-woocommerce' );
-	}
-
 
 	/**
 	 * Gets the default title for pnx payment method.
@@ -138,18 +90,6 @@ class SettingsHelper {
 	 * @return string
 	 */
 	public static function default_pnx_title() {
-		if ( InternationalizationHelper::is_site_multilingual() ) {
-			return ConstantsHelper::PAY_IN_INSTALLMENTS;
-		}
-		return __( 'Pay in installments', 'alma-gateway-for-woocommerce' );
-	}
-
-	/**
-	 * Gets the default title for pnx payment method.
-	 *
-	 * @return string
-	 */
-	public static function default_blocks_pnx_title() {
 		if ( InternationalizationHelper::is_site_multilingual() ) {
 			return ConstantsHelper::PAY_IN_INSTALLMENTS;
 		}
@@ -170,92 +110,17 @@ class SettingsHelper {
 	}
 
 	/**
-	 * Gets the default title for pnx payment method.
-	 *
-	 * @return string
-	 */
-	public static function default_blocks_pay_now_title() {
-		if ( InternationalizationHelper::is_site_multilingual() ) {
-			return ConstantsHelper::PAY_NOW;
-		}
-		return __( 'Pay by credit card', 'alma-gateway-for-woocommerce' );
-	}
-
-	/**
 	 * Gets the default description for all payment methods (pnx, pnx+4, pay later).
 	 *
 	 * @return string
 	 */
-	public static function default_pay_now_description() {
+	public static function default_description() {
 		if ( InternationalizationHelper::is_site_multilingual() ) {
 			return 'Fast and secured payments';
 		}
 		return __( 'Fast and secured payments', 'alma-gateway-for-woocommerce' );
 	}
 
-	/**
-	 * Gets the default description for all payment methods (pnx, pnx+4, pay later).
-	 *
-	 * @return string
-	 */
-	public static function default_blocks_pay_now_description() {
-		if ( InternationalizationHelper::is_site_multilingual() ) {
-			return 'Fast and secured payments';
-		}
-		return __( 'Fast and secured payments', 'alma-gateway-for-woocommerce' );
-	}
-
-	/**
-	 * Gets the default description for all payment methods (pnx, pnx+4).
-	 *
-	 * @return string
-	 */
-	public static function default_pay_with_alma_in_page_pay_now_description() {
-		if ( InternationalizationHelper::is_site_multilingual() ) {
-			return 'Fast and secure payment by credit card.';
-		}
-
-		return __( 'Fast and secure payment by credit card.', 'alma-gateway-for-woocommerce' );
-	}
-
-	/**
-	 * Gets the default description for all payment methods ( pay later).
-	 *
-	 * @return string
-	 */
-	public static function default_pay_with_alma_in_page_pay_later_description() {
-		if ( InternationalizationHelper::is_site_multilingual() ) {
-			return 'Fast and secure payment by credit card.';
-		}
-
-		return __( 'Fast and secure payment by credit card.', 'alma-gateway-for-woocommerce' );
-	}
-
-	/**
-	 * Gets the default description for all payment methods ( pay later).
-	 *
-	 * @return string
-	 */
-	public static function default_blocks_pay_with_alma_in_page_pay_later_description() {
-		if ( InternationalizationHelper::is_site_multilingual() ) {
-			return 'Fast and secure payment by credit card.';
-		}
-
-		return __( 'Fast and secure payment by credit card.', 'alma-gateway-for-woocommerce' );
-	}
-
-	/**
-	 * Gets the default description for all payment methods (pnx, pnx+4, pay later).
-	 *
-	 * @return string
-	 */
-	public static function default_blocks_pay_with_alma_in_page_pay_now_description() {
-		if ( InternationalizationHelper::is_site_multilingual() ) {
-			return 'Fast and secure payment by credit card.';
-		}
-
-		return __( 'Fast and secure payment by credit card.', 'alma-gateway-for-woocommerce' );
-	}
 	/**
 	 * Gets the default description for all payment methods (pnx, pnx+4, pay later).
 	 *
@@ -268,42 +133,6 @@ class SettingsHelper {
 		return __( 'Fast and secure payment by credit card', 'alma-gateway-for-woocommerce' );
 	}
 
-	/**
-	 * Gets the default description for all payment methods (pnx, pnx+4, pay later).
-	 *
-	 * @return string
-	 */
-	public static function default_blocks_payment_description() {
-		if ( InternationalizationHelper::is_site_multilingual() ) {
-			return 'Fast and secure payment by credit card';
-		}
-		return __( 'Fast and secure payment by credit card', 'alma-gateway-for-woocommerce' );
-	}
-
-	/**
-	 * Gets the default description for in page
-	 *
-	 * @return string
-	 */
-	public static function default_pay_with_alma_in_page_description() {
-		if ( InternationalizationHelper::is_site_multilingual() ) {
-			return 'Fast and secure payment by credit card.';
-		}
-		return __( 'Fast and secure payment by credit card.', 'alma-gateway-for-woocommerce' );
-	}
-
-	/**
-	 * Gets the default description for in page
-	 *
-	 * @return string
-	 */
-	public static function default_blocks_pay_with_alma_in_page_description() {
-		if ( InternationalizationHelper::is_site_multilingual() ) {
-			return 'Fast and secure payment by credit card.';
-		}
-		return __( 'Fast and secure payment by credit card.', 'alma-gateway-for-woocommerce' );
-	}
-
 
 	/**
 	 * Gets the default title for pay later payment method.
@@ -312,48 +141,10 @@ class SettingsHelper {
 	 */
 	public static function default_pay_later_title() {
 		if ( InternationalizationHelper::is_site_multilingual() ) {
-			return 'Pay later';
+			return ConstantsHelper::PAY_LATER;
 		}
 		return __( 'Pay later', 'alma-gateway-for-woocommerce' );
 	}
-
-	/**
-	 * Gets the default title for pay later payment method.
-	 *
-	 * @return string
-	 */
-	public static function default_pay_with_alma_in_page_pay_later() {
-		if ( InternationalizationHelper::is_site_multilingual() ) {
-			return 'Pay later';
-		}
-		return __( 'Pay later', 'alma-gateway-for-woocommerce' );
-	}
-
-	/**
-	 * Gets the default title for pay later payment method.
-	 *
-	 * @return string
-	 */
-	public static function default_blocks_pay_with_alma_in_page_pay_later() {
-		if ( InternationalizationHelper::is_site_multilingual() ) {
-			return 'Pay later';
-		}
-		return __( 'Pay later', 'alma-gateway-for-woocommerce' );
-	}
-
-
-	/**
-	 * Gets the default title for pay later payment method.
-	 *
-	 * @return string
-	 */
-	public static function default_blocks_pay_later_title() {
-		if ( InternationalizationHelper::is_site_multilingual() ) {
-			return 'Pay later';
-		}
-		return __( 'Pay later', 'alma-gateway-for-woocommerce' );
-	}
-
 
 	/**
 	 * Gets the default title for pnx plus 4 payment method.
@@ -362,23 +153,10 @@ class SettingsHelper {
 	 */
 	public static function default_pnx_plus_4_title() {
 		if ( InternationalizationHelper::is_site_multilingual() ) {
-			return 'Pay with financing';
+			return ConstantsHelper::PAY_BY_FINANCING;
 		}
 		return __( 'Pay with financing', 'alma-gateway-for-woocommerce' );
 	}
-
-	/**
-	 * Gets the default title for pnx plus 4 payment method.
-	 *
-	 * @return string
-	 */
-	public static function default_blocks_pnx_plus_4_title() {
-		if ( InternationalizationHelper::is_site_multilingual() ) {
-			return 'Pay with financing';
-		}
-		return __( 'Pay with financing', 'alma-gateway-for-woocommerce' );
-	}
-
 
 	/**
 	 * Gets the default CSS selector for the price element of variable products, depending on the version of

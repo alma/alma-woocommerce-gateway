@@ -65,6 +65,8 @@ class ConstantsHelper {
 	const ALMA_PATH_CHECKOUT_CDN_IN_PAGE_JS             = 'https://cdn.jsdelivr.net/npm/@alma/in-page@2.x/dist/index.umd.js';
 	const ALMA_PATH_CHECKOUT_CSS                        = 'css/alma-checkout.css';
 	const PAY_IN_INSTALLMENTS                           = 'Pay in installments';
+	const PAY_LATER                                     = 'Pay later';
+	const PAY_BY_FINANCING                              = 'Pay with financing';
 
 	const PAY_NOW = 'Pay by credit card';
 
