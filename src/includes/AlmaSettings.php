@@ -910,7 +910,7 @@ class AlmaSettings {
 	 * @return bool
 	 */
 	public function is_allowed_to_see_alma( \WP_User $user ) {
-		return in_array( 'administrator', $user->roles, true ) || 'live' === $this->get_environment();
+		return true;
 	}
 
 	/**
