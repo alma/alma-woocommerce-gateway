@@ -188,7 +188,13 @@ class CheckoutService extends \WC_Checkout {
 	 * @return void
 	 */
 	protected function validate_checkout( &$data, &$errors ) {
+		// Hack to bypass the inconsistence between form phone number optionnal and the theme settings.
+		// The requirement check is done already on form filling.
+		$before = get_option( 'woocommerce_checkout_phone_field' );
+		update_option( 'woocommerce_checkout_phone_field', 'hidden' );
 		$this->validate_posted_data( $data, $errors );
+		update_option( 'woocommerce_checkout_phone_field', $before );
+
 		$this->check_cart_items();
 
 		if (
