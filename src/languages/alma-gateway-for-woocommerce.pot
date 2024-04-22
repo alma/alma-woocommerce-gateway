@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Alma - Pay in installments or later for WooCommerce\n"
-"POT-Creation-Date: 2024-04-17 15:38+0200\n"
+"POT-Creation-Date: 2024-04-22 14:39+0200\n"
 "PO-Revision-Date: 2023-02-13 16:00+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -682,6 +682,14 @@ msgstr ""
 msgid "https://dashboard.sandbox.getalma.eu/%s"
 msgstr ""
 
+#: includes/Helpers/AssetsHelper.php:140
+msgid ""
+"Are you sure you want to enable compatibility with the Order Validation "
+"Block? Please note that this WooCommerce Block may not be fully compatible "
+"with all themes, potentially resulting in bugs. If you encounter any issues "
+"with the Alma payment functionality, we recommend deactivating this setting."
+msgstr ""
+
 #: includes/Helpers/GatewayHelper.php:155
 msgid "Pay Now"
 msgstr ""
@@ -795,24 +803,24 @@ msgstr ""
 msgid "Unable to create order."
 msgstr ""
 
-#: includes/Services/CheckoutService.php:199
+#: includes/Services/CheckoutService.php:205
 msgid ""
 "Please read and accept the terms and conditions to proceed with your order."
 msgstr ""
 
-#: includes/Services/CheckoutService.php:206
+#: includes/Services/CheckoutService.php:212
 msgid "Please enter an address to continue."
 msgstr ""
 
 #. translators: %s: shipping location
-#: includes/Services/CheckoutService.php:209
+#: includes/Services/CheckoutService.php:215
 #, php-format
 msgid ""
 "Unfortunately <strong>we do not ship %s</strong>. Please enter an "
 "alternative shipping address."
 msgstr ""
 
-#: includes/Services/CheckoutService.php:215
+#: includes/Services/CheckoutService.php:221
 msgid ""
 "No shipping method has been selected. Please double check your address, or "
 "contact us if you need any help."

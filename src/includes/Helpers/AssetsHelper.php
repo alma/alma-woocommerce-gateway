@@ -135,6 +135,15 @@ class AssetsHelper {
 			ALMA_VERSION,
 			true
 		);
+
+		wp_localize_script(
+			'alma-admin-scripts',
+			'alma_admin_params',
+			array(
+				'block_confirmation' => __( 'Are you sure you want to enable compatibility with the Order Validation Block? Please note that this WooCommerce Block may not be fully compatible with all themes, potentially resulting in bugs. If you encounter any issues with the Alma payment functionality, we recommend deactivating this setting.', 'alma-gateway-for-woocommerce' ),
+			)
+		);
+
 	}
 
 	/**
