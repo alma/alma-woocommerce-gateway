@@ -59,7 +59,7 @@ class CheckoutService extends \WC_Checkout {
 	 * @throws AlmaException The exception.
 	 * @throws \Exception Exception.
 	 */
-	public function process_checkout( $post_fields ) {
+	public function process_checkout_alma( $post_fields ) {
 		if (
 			isset( $_POST['is_woo_block'] )
 			&& $_POST['is_woo_block'] // phpcs:ignore WordPress.Security.NonceVerification
