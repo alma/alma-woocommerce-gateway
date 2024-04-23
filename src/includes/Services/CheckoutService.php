@@ -134,7 +134,7 @@ class CheckoutService extends \WC_Checkout {
 		}
 
 		if ( ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_NOW === $_POST[ ConstantsHelper::PAYMENT_METHOD ] ) {
-			$posted_data[ ConstantsHelper::PAYMENT_METHOD_TITLE ] = __( 'Payment by credit cart via Alma', 'alma-gateway-for-woocommerce' );
+			$posted_data[ ConstantsHelper::PAYMENT_METHOD_TITLE ] = __( 'Payment by credit card via Alma', 'alma-gateway-for-woocommerce' );
 		}
 		if ( ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_LATER === $_POST[ ConstantsHelper::PAYMENT_METHOD ] ) {
 			$posted_data[ ConstantsHelper::PAYMENT_METHOD_TITLE ] = __( 'Pay Later via Alma', 'alma-gateway-for-woocommerce' );

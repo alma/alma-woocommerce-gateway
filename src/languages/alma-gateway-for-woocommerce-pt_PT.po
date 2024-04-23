@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 77e083b1cd468d7c2202d1ff3d20e024\n"
-"POT-Creation-Date: 2024-04-22 14:39+0200\n"
-"PO-Revision-Date: 2024-04-22 12:40\n"
+"POT-Creation-Date: 2024-04-23 10:19+0200\n"
+"PO-Revision-Date: 2024-04-23 08:20\n"
 "Last-Translator: \n"
 "Language-Team: Portuguese\n"
 "MIME-Version: 1.0\n"
@@ -608,7 +608,7 @@ msgstr "https://dashboard.getalma.eu/%s"
 msgid "https://dashboard.sandbox.getalma.eu/%s"
 msgstr "https://dashboard.sandbox.getalma.eu/%s"
 
-#: includes/Helpers/AssetsHelper.php:140
+#: includes/Helpers/AssetsHelper.php:143
 msgid "Are you sure you want to enable compatibility with the Order Validation Block? Please note that this WooCommerce Block may not be fully compatible with all themes, potentially resulting in bugs. If you encounter any issues with the Alma payment functionality, we recommend deactivating this setting."
 msgstr "Tem a certeza de que pretende ativar a compatibilidade com o bloco de validação de encomendas? Tenha em atenção que este bloco do WooCommerce pode não ser totalmente compatível com todos os temas, o que pode resultar em erros. Se tiver algum problema com a funcionalidade de pagamento do Alma, recomendamos que desactive esta definição."
 
@@ -706,7 +706,7 @@ msgid "Payment in installments via Alma"
 msgstr "Pagamento em prestações via Alma"
 
 #: includes/Services/CheckoutService.php:137
-msgid "Payment by credit cart via Alma"
+msgid "Payment by credit card via Alma"
 msgstr "Pagamento por cartão de crédito via Alma"
 
 #: includes/Services/CheckoutService.php:140
