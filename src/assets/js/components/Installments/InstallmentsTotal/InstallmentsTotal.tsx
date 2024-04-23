@@ -16,7 +16,7 @@ export const InstallmentsTotal: React.FC<Props> = ({totalAmount, customerFees}) 
                 </div>
                 <div>
                     <FormattedNumber
-                        value={totalAmount / 100}
+                        value={totalAmountIncludingFees / 100}
                         style="currency"
                         currency="EUR"
                     />
