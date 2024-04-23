@@ -1,3 +1,10 @@
+/**
+ * Admin page.
+ *
+ *
+ * @param global alma_admin_params alma_admin_params params.
+ *
+ */
 jQuery(document).ready(function () {
 
     almaAdminInternationalization();
@@ -10,6 +17,23 @@ jQuery(document).ready(function () {
     almaAdminFeePlan.checkInputsOnSubmitActionTriggered();
     almaAdminGeneralHelper.toggleTechnicalConfigFields();
 
+    var checkboxBlock = jQuery('#woocommerce_alma_use_blocks_template');
+    var modal = '<div id="info-checkbox" class="notice notice-warning is-dismissible">' +
+        '<p>' + alma_admin_params.block_confirmation+ ' </p>' +
+        '</div>'
+
+    checkboxBlock.on("click", function (e) {
+        isChecked = document.getElementById('woocommerce_alma_use_blocks_template').checked
+        infoCheckbox = document.getElementById("info-checkbox")
+
+        if(null ===  infoCheckbox && isChecked) {
+            checkboxBlock.before(modal);
+        }
+
+        if(null !== infoCheckbox && !isChecked) {
+            infoCheckbox.remove()
+        }
+    });
 });
 
 /**
