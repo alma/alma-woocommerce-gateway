@@ -33,11 +33,11 @@
 	width: 2px;
 
 	/* Magic number for the top position to align as best as possible with the 1st bullet */
-	top: 25px;
+	top: 35px;
 
 	/* half pixel is used because the separator should be centered with the bullet
 	*  And the bullet's width is 4px, and the separator width is 2px. */
-	left: 3.65px;
+	left: 11.65px;
 
 	/* We want the separator to be 100% long, minus +/- the height of the footer, so it does not exceed */
 	height: calc(100% - 50px);

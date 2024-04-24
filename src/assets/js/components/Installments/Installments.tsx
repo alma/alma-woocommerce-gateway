@@ -10,7 +10,7 @@ type InstallmentsProps = {
 
 export const Installments: React.FC<InstallmentsProps> = ({feePlan, amountInCents}) => {
   return (
-    <CardTemplate data-testid="cardInstallments" padding="none" header={null}>
+    <CardTemplate data-testid="cardInstallments" padding={"sm"} header={null}>
       <InstallmentsContent feePlan={feePlan} amountInCents={amountInCents}/>
     </CardTemplate>
   );
