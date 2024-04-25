@@ -21,10 +21,10 @@ class ToolsHelperTest extends WP_UnitTestCase {
 	/**
 	 * @var ToolsHelper
 	 */
-	protected $toolsHelper;
+	protected $tools_helper;
 
 	public function setup() {
-		$this->toolsHelper = new ToolsHelper();
+		$this->tools_helper = new ToolsHelper();
 	}
 
 	/**
@@ -48,7 +48,7 @@ class ToolsHelperTest extends WP_UnitTestCase {
 	 */
 	public function test_alma_price_to_cents() {
 
-		$result = $this->toolsHelper->alma_price_to_cents( '1.0999' );
+		$result = $this->tools_helper->alma_price_to_cents( '1.0999' );
 		$this->assertEquals( $result, 110 );
 	}
 
@@ -124,7 +124,7 @@ class ToolsHelperTest extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_url_for_webhook() {
-		$result = $this->toolsHelper->url_for_webhook( ConstantsHelper::CUSTOMER_RETURN );
+		$result = $this->tools_helper->url_for_webhook( ConstantsHelper::CUSTOMER_RETURN );
 		$this->assertEquals( $result, 'http://example.org/?wc-api=alma_customer_return' );
 	}
 
