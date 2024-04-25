@@ -26,6 +26,7 @@ class GatewayHelper {
 
 
 
+
 	/**
 	 * The settings.
 	 *
@@ -126,13 +127,14 @@ class GatewayHelper {
 	/**
 	 * Get the title of the Alma Gateway.
 	 *
-	 * @param string $id The alma gateway type id.
+	 * @param string  $id The alma gateway type id.
+	 * @param boolean $is_blocks Are we in blocks.
 	 * @return string
 	 * @throws AlmaException Exception.
 	 */
-	public function get_alma_gateway_title( $id ) {
+	public function get_alma_gateway_title( $id, $is_blocks = false ) {
 		if ( in_array( $id, ConstantsHelper::$gateways_ids, true ) ) {
-			return $this->alma_settings->get_title( $id );
+			return $this->alma_settings->get_title( $id, $is_blocks );
 		}
 
 		throw new AlmaException( sprintf( 'Unknown gateway id : %s', $id ) );
@@ -157,25 +159,43 @@ class GatewayHelper {
 	}
 
 	/**
+	 * Are we in page gateway?
+	 *
+	 * @param string $id The gateway id.
+	 *
+	 * @return bool
+	 */
+	public function is_in_page_gateway( $id ) {
+		if ( in_array( $id, ConstantsHelper::$gateways_in_page_ids, true ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Get the title of the Alma Gateway.
 	 *
-	 * @param string $id The alma gateway type id.
+	 * @param string  $id The alma gateway type id.
+	 * @param boolean $is_blocks Are we in blocks.
+	 *
 	 * @return string
 	 * @throws AlmaException Exception.
 	 */
-	public function get_alma_gateway_description( $id ) {
+	public function get_alma_gateway_description( $id, $is_blocks = false ) {
 		if ( in_array( $id, ConstantsHelper::$gateways_ids, true ) ) {
-			return $this->alma_settings->get_description( $id );
+			return $this->alma_settings->get_description( $id, $is_blocks );
 		}
 
 		throw new AlmaException( sprintf( 'Unknown gateway id : %s', $id ) );
 
 	}
-		/**
-		 * Check if cart has eligibilities.
-		 *
-		 * @return bool
-		 */
+
+	/**
+	 * Check if cart has eligibilities.
+	 *
+	 * @return bool
+	 */
 	public function is_there_eligibility_in_cart() {
 		return count( $this->alma_settings->get_eligible_plans_keys_for_cart() ) > 0;
 	}
@@ -208,7 +228,6 @@ class GatewayHelper {
 
 		return false;
 	}
-
 
 
 	/**

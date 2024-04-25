@@ -1,0 +1,10 @@
+"project_id" : "17"
+"api_token" : "CROWDIN_ALMA_TOKEN"
+"base_path" : "src/"
+"base_url" : "https://almapay.crowdin.com"
+"preserve_hierarchy": true
+
+files:
+  -
+    source: /languages/alma-gateway-for-woocommerce.pot
+    translation: /languages/alma-gateway-for-woocommerce-%locale_with_underscore%.po

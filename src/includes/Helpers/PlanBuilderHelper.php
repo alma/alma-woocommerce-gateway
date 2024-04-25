@@ -22,6 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class PlanBuilderHelper {
 
 
+
 	/**
 	 * The settings.
 	 *
@@ -176,10 +177,11 @@ class PlanBuilderHelper {
 	/**
 	 * Orders the plans.
 	 *
-	 * @param array $eligible_plans The plans.
+	 * @param array  $eligible_plans The plans.
+	 * @param string $gateway_id The Gateway id.
 	 * @return array    The sorted plans.
 	 */
-	public function order_plans( $eligible_plans = array() ) {
+	public function order_plans( $eligible_plans = array(), $gateway_id = null ) {
 		$eligible_plans_by_type = array(
 			ConstantsHelper::GATEWAY_ID_PAY_NOW        => array(),
 			ConstantsHelper::GATEWAY_ID                => array(),
@@ -207,6 +209,33 @@ class PlanBuilderHelper {
 				if ( $this->alma_settings->should_display_plan( $plan, $type ) ) {
 					$result[ $type ][] = $plan;
 				}
+			}
+		}
+
+		if ( null !== $gateway_id ) {
+			if ( ! isset( $result[ $gateway_id ] ) ) {
+				return array();
+			}
+
+			return $result[ $gateway_id ];
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Get the plans by keys.
+	 *
+	 * @param array $eligible_plans Eligible plans.
+	 * @param array $eligibilities Eligibilities.
+	 * @return array
+	 */
+	public function get_plans_by_keys( $eligible_plans = array(), $eligibilities = array() ) {
+		$result = array();
+
+		foreach ( $eligible_plans as $plan_key ) {
+			if ( isset( $eligibilities[ $plan_key ] ) ) {
+				$result[ $plan_key ] = $eligibilities[ $plan_key ];
 			}
 		}
 

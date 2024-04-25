@@ -1,0 +1,46 @@
+/**
+ * Checkout page.
+ *
+ * @package Alma_Gateway_For_Woocommerce
+ * @since v4.2.5
+ **/
+
+.buttonsContainer {
+	margin-bottom: 10px;
+}
+
+.paymentMethodLabel span {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: 0;
+}
+
+.paymentMethodLabel span div {
+	font-weight: 700;
+	color: var(--off-black);
+}
+
+.toggleButtonFieldLabel {
+	margin-bottom: 17px;
+}
+
+.payNowLabel {
+	margin-bottom: -17px;
+	color: var(--off-black);
+}
+
+.toggleButtonField > div:nth-of-type(2) {
+	display: flex;
+	gap: var(--spacing-2);
+}
+
+.toggleButtonField > div:nth-of-type(2) > button {
+	width: 45px;
+	height: 45px;
+	font-size: var(--font-base);
+}
+
+.payNow {
+	display: none;
+}
