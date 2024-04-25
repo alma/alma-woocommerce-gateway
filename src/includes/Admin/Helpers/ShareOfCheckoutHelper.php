@@ -14,9 +14,9 @@ namespace Alma\Woocommerce\Admin\Helpers;
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Exceptions\ApiSocLastUpdateDatesException;
-use Alma\Woocommerce\Helpers\CurrencyHelper;
+use Alma\Woocommerce\Factories\CurrencyFactory;
+use Alma\Woocommerce\Factories\PriceFactory;
 use Alma\Woocommerce\Helpers\OrderHelper;
-use Alma\Woocommerce\Helpers\PriceHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -62,7 +62,7 @@ class ShareOfCheckoutHelper {
 	public function __construct() {
 		$this->alma_settings      = new AlmaSettings();
 		$this->order_helper       = new OrderHelper();
-		$this->tool_helper        = new ToolsHelper( new AlmaLogger(), new PriceHelper(), new CurrencyHelper() );
+		$this->tool_helper        = new ToolsHelper( new AlmaLogger(), new PriceFactory(), new CurrencyFactory() );
 		$this->check_legal_helper = new CheckLegalHelper();
 	}
 

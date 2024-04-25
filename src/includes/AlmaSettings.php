@@ -21,6 +21,7 @@ use Alma\API\Entities\Payment;
 use Alma\API\ParamsError;
 use Alma\API\RequestError;
 use Alma\Woocommerce\Exceptions\ActivationException;
+use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Exceptions\ApiCreatePaymentsException;
 use Alma\Woocommerce\Exceptions\ApiFetchPaymentsException;
 use Alma\Woocommerce\Exceptions\ApiFullRefundException;
@@ -32,23 +33,22 @@ use Alma\Woocommerce\Exceptions\ApiShareOfCheckoutDenyException;
 use Alma\Woocommerce\Exceptions\ApiShareOfCheckoutException;
 use Alma\Woocommerce\Exceptions\ApiSocLastUpdateDatesException;
 use Alma\Woocommerce\Exceptions\ApiTriggerPaymentsException;
-use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Exceptions\PlansDefinitionException;
 use Alma\Woocommerce\Exceptions\WrongCredentialsException;
+use Alma\Woocommerce\Factories\CurrencyFactory;
+use Alma\Woocommerce\Factories\PriceFactory;
+use Alma\Woocommerce\Factories\SessionFactory;
+use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
-use Alma\Woocommerce\Helpers\CurrencyHelper;
 use Alma\Woocommerce\Helpers\EncryptorHelper;
 use Alma\Woocommerce\Helpers\FeePlanHelper;
 use Alma\Woocommerce\Helpers\GeneralHelper;
 use Alma\Woocommerce\Helpers\InternationalizationHelper;
 use Alma\Woocommerce\Helpers\PaymentHelper;
-use Alma\Woocommerce\Helpers\PriceHelper;
-use Alma\Woocommerce\Helpers\SessionHelper;
-use Alma\Woocommerce\Helpers\SettingsHelper as AlmaHelperSettings;
 use Alma\Woocommerce\Helpers\PlanBuilderHelper;
+use Alma\Woocommerce\Helpers\SettingsHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
-use Alma\Woocommerce\Helpers\VersionHelper;
 
 /**
  * Handles settings retrieval from the settings API.
@@ -142,23 +142,34 @@ class AlmaSettings {
 	 */
 	public $cart_helper;
 
+	/**
+	 * Internalionalization Helper.
+	 *
+	 * @var InternationalizationHelper
+	 */
+	protected $internationalization_helper;
+
+	/**
+	 * Settings Helper.
+	 *
+	 * @var SettingsHelper
+	 */
+	protected $settings_helper;
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->logger           = new AlmaLogger();
-		$this->encryptor_helper = new EncryptorHelper();
-		$this->fee_plan_helper  = new FeePlanHelper();
-		$this->cart_helper      = new CartHelper(
-			new ToolsHelper(
-				$this->logger,
-				new PriceHelper(),
-				new CurrencyHelper()
-			),
-			new SessionHelper(),
-			new VersionHelper()
-		);
+		$this->logger                      = new AlmaLogger();
+		$this->encryptor_helper            = new EncryptorHelper();
+		$this->fee_plan_helper             = new FeePlanHelper();
+		$this->internationalization_helper = new InternationalizationHelper();
+
+		$version_helper = new VersionFactory();
+		$tools_helper   = new ToolsHelper( $this->logger, new PriceFactory(), new CurrencyFactory() );
+
+		$this->settings_helper = new SettingsHelper( $this->internationalization_helper, $version_helper, $tools_helper );
+		$this->cart_helper     = new CartHelper( $tools_helper, new SessionFactory(), $version_helper );
 
 		$this->load_settings();
 	}
@@ -199,7 +210,7 @@ class AlmaSettings {
 			$settings['allowed_fee_plans'] = unserialize( $settings['allowed_fee_plans'] ); // phpcs:ignore
 		}
 
-		return array_merge( AlmaHelperSettings::default_settings(), $settings );
+		return array_merge( $this->settings_helper->default_settings(), $settings );
 	}
 
 	/**
@@ -433,12 +444,12 @@ class AlmaSettings {
 	 * @return string
 	 */
 	public function get_i18n( $key ) {
-		if ( InternationalizationHelper::is_site_multilingual() ) {
+		if ( $this->internationalization_helper->is_site_multilingual() ) {
 			if ( $this->{$key . '_' . get_locale()} ) {
 				return $this->{$key . '_' . get_locale()};
 			}
-			return InternationalizationHelper::get_translated_text(
-				AlmaHelperSettings::default_settings()[ $key ],
+			return $this->internationalization_helper->get_translated_text(
+				$this->settings_helper->default_settings()[ $key ],
 				get_locale()
 			);
 		}

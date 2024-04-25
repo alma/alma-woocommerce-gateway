@@ -1,24 +1,24 @@
 <?php
 /**
- * PriceHelper.
+ * PriceFactory.
  *
  * @since 5.4.0
  *
  * @package Alma_Gateway_For_Woocommerce
- * @subpackage Alma_Gateway_For_Woocommerce/includes/Helpers
- * @namespace Alma\Woocommerce\Helpers
+ * @subpackage Alma_Gateway_For_Woocommerce/includes/Factories
+ * @namespace Alma\Woocommerce\Factories
  */
 
-namespace Alma\Woocommerce\Helpers;
+namespace Alma\Woocommerce\Factories;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * Class PriceHelper
+ * Class PriceFactory
  */
-class PriceHelper {
+class PriceFactory {
 
 	/**
 	 * Get Woocommerce decimal separator.

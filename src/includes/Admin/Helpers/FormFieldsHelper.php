@@ -18,18 +18,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 use Alma\API\Entities\FeePlan;
 use Alma\Woocommerce\Admin\Builders\FormHtmlBuilder;
 use Alma\Woocommerce\AlmaLogger;
+use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Factories\CurrencyFactory;
+use Alma\Woocommerce\Factories\PriceFactory;
 use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\BlockHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
-use Alma\Woocommerce\Helpers\CurrencyHelper;
 use Alma\Woocommerce\Helpers\FeePlanHelper;
 use Alma\Woocommerce\Helpers\GeneralHelper;
 use Alma\Woocommerce\Helpers\InternationalizationHelper;
-use Alma\Woocommerce\Helpers\PriceHelper;
+use Alma\Woocommerce\Helpers\PluginHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
 use Alma\Woocommerce\Services\PaymentUponTriggerService;
-use Alma\Woocommerce\AlmaSettings;
-use Alma\Woocommerce\Helpers\PluginHelper;
 
 
 /**
@@ -81,15 +81,23 @@ class FormFieldsHelper {
 	protected $tools_helper;
 
 	/**
+	 * Internationalization Helper.
+	 *
+	 * @var InternationalizationHelper
+	 */
+	protected $internalionalization_helper;
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->settings_helper      = new AlmaSettings();
-		$this->payment_upon_trigger = new PaymentUponTriggerService();
-		$this->fee_plan_helper      = new FeePlanHelper();
-		$this->plugin_helper        = new PluginHelper();
-		$this->block_helper         = new BlockHelper();
-		$this->tools_helper         = new ToolsHelper( new AlmaLogger(), new PriceHelper(), new CurrencyHelper() );
+		$this->settings_helper             = new AlmaSettings();
+		$this->payment_upon_trigger        = new PaymentUponTriggerService();
+		$this->fee_plan_helper             = new FeePlanHelper();
+		$this->plugin_helper               = new PluginHelper();
+		$this->block_helper                = new BlockHelper();
+		$this->tools_helper                = new ToolsHelper( new AlmaLogger(), new PriceFactory(), new CurrencyFactory() );
+		$this->internalionalization_helper = new InternationalizationHelper();
 	}
 
 
@@ -578,7 +586,7 @@ class FormFieldsHelper {
 			),
 		);
 
-		$field_cart_not_eligible_message_gift_cards = InternationalizationHelper::generate_i18n_field(
+		$field_cart_not_eligible_message_gift_cards = $this->internalionalization_helper->generate_i18n_field(
 			'cart_not_eligible_message_gift_cards',
 			array(
 				'title'       => __( 'Non-eligibility message for excluded products', 'alma-gateway-for-woocommerce' ),
@@ -629,7 +637,7 @@ class FormFieldsHelper {
 			),
 		);
 
-		$field_payment_method_title = InternationalizationHelper::generate_i18n_field(
+		$field_payment_method_title = $this->internalionalization_helper->generate_i18n_field(
 			'title_' . $blocks . $payment_method_name,
 			array(
 				'title'       => __( 'Title', 'alma-gateway-for-woocommerce' ),
@@ -639,7 +647,7 @@ class FormFieldsHelper {
 			$default_settings[ 'title_' . $blocks . $payment_method_name ]
 		);
 
-		$field_payment_method_description = InternationalizationHelper::generate_i18n_field(
+		$field_payment_method_description = $this->internalionalization_helper->generate_i18n_field(
 			'description_' . $blocks . $payment_method_name,
 			array(
 				'title'       => __( 'Description', 'alma-gateway-for-woocommerce' ),

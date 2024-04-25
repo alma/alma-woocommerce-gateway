@@ -1,24 +1,24 @@
 <?php
 /**
- * VersionHelper.
+ * VersionFactory.
  *
  * @since 5.4.0
  *
  * @package Alma_Gateway_For_Woocommerce
- * @subpackage Alma_Gateway_For_Woocommerce/includes/Helpers
- * @namespace Alma\Woocommerce\Helpers
+ * @subpackage Alma_Gateway_For_Woocommerce/includes/Factories
+ * @namespace Alma\Woocommerce\Factories
  */
 
-namespace Alma\Woocommerce\Helpers;
+namespace Alma\Woocommerce\Factories;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
 /**
- * Class VersionHelper.
+ * Class VersionFactory.
  */
-class VersionHelper {
+class VersionFactory {
 	/**
 	 * Get version.
 	 *

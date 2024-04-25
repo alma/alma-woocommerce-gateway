@@ -8,21 +8,21 @@
  * @subpackage Alma_Gateway_For_Woocommerce/public/templates/partials
  */
 
+use Alma\Woocommerce\AlmaLogger;
+use Alma\Woocommerce\Factories\CurrencyFactory;
+use Alma\Woocommerce\Factories\PriceFactory;
+use Alma\Woocommerce\Factories\SessionFactory;
+use Alma\Woocommerce\Factories\VersionFactory;
+use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
-use Alma\Woocommerce\Helpers\CartHelper;
-use Alma\Woocommerce\Helpers\SessionHelper;
-use Alma\Woocommerce\Helpers\VersionHelper;
-use Alma\Woocommerce\Helpers\PriceHelper;
-use Alma\Woocommerce\AlmaLogger;
-use Alma\Woocommerce\Helpers\CurrencyHelper;
 
 /**
  * The tools helper
  *
  * @var ToolsHelper $tools_helper
  */
-$tools_helper = new ToolsHelper( new AlmaLogger(), new PriceHelper(), new CurrencyHelper() ); // phpcs:ignore
+$tools_helper = new ToolsHelper( new AlmaLogger(), new PriceFactory(), new CurrencyFactory() ); // phpcs:ignore
 ?>
 
 <div id="alma-checkout-plan-details">
@@ -110,7 +110,7 @@ $tools_helper = new ToolsHelper( new AlmaLogger(), new PriceHelper(), new Curren
 		} // end foreach
 
 		if ( $alma_eligibility->getInstallmentsCount() > 4 ) {
-			$alma_cart_helper = new CartHelper( $tools_helper, new SessionHelper(), new VersionHelper() );
+			$alma_cart_helper = new CartHelper( $tools_helper, new SessionFactory(), new VersionFactory() );
 			?>
 			<p style="
 			display: flex;

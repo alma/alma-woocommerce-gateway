@@ -16,6 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Alma\Woocommerce\AlmaLogger;
+use Alma\Woocommerce\Factories\CurrencyFactory;
+use Alma\Woocommerce\Factories\PriceFactory;
 
 /**
  * ToolsHelper.
@@ -33,7 +35,7 @@ class ToolsHelper {
 	/**
 	 * Price Helper.
 	 *
-	 * @var PriceHelper
+	 * @var PriceFactory
 	 */
 	protected $price_helper;
 
@@ -41,16 +43,16 @@ class ToolsHelper {
 	/**
 	 * Currency Helper.
 	 *
-	 * @var CurrencyHelper
+	 * @var CurrencyFactory
 	 */
 	protected $currency_helper;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param AlmaLogger     $logger  The logger.
-	 * @param PriceHelper    $price_helper The price helper.
-	 * @param  CurrencyHelper $currency_helper  The currency helper.
+	 * @param AlmaLogger      $logger  The logger.
+	 * @param PriceFactory    $price_helper The price helper.
+	 * @param  CurrencyFactory $currency_helper  The currency helper.
 	 *
 	 * @codeCoverageIgnore
 	 */

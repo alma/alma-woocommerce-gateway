@@ -18,29 +18,30 @@ use Alma\Woocommerce\Admin\Helpers\FormHelper;
 use Alma\Woocommerce\Admin\Helpers\GeneralHelper as AdminGeneralHelper;
 use Alma\Woocommerce\Admin\Helpers\ShareOfCheckoutHelper;
 use Alma\Woocommerce\AlmaLogger;
+use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Exceptions\ApiClientException;
 use Alma\Woocommerce\Exceptions\ApiMerchantsException;
 use Alma\Woocommerce\Exceptions\ApiPlansException;
 use Alma\Woocommerce\Exceptions\NoCredentialsException;
+use Alma\Woocommerce\Factories\CurrencyFactory;
+use Alma\Woocommerce\Factories\PriceFactory;
+use Alma\Woocommerce\Factories\SessionFactory;
+use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Helpers\AssetsHelper;
+use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\CheckoutHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
-use Alma\Woocommerce\Helpers\CurrencyHelper;
 use Alma\Woocommerce\Helpers\EncryptorHelper;
 use Alma\Woocommerce\Helpers\GatewayHelper;
 use Alma\Woocommerce\Helpers\GeneralHelper;
+use Alma\Woocommerce\Helpers\InternationalizationHelper;
 use Alma\Woocommerce\Helpers\OrderHelper;
 use Alma\Woocommerce\Helpers\PaymentHelper;
-use Alma\Woocommerce\Helpers\PluginHelper;
-use Alma\Woocommerce\Helpers\PriceHelper;
-use Alma\Woocommerce\Helpers\SessionHelper;
-use Alma\Woocommerce\Helpers\SettingsHelper;
-use Alma\Woocommerce\Helpers\CartHelper;
-use Alma\Woocommerce\Helpers\ToolsHelper;
 use Alma\Woocommerce\Helpers\PlanBuilderHelper;
+use Alma\Woocommerce\Helpers\PluginHelper;
+use Alma\Woocommerce\Helpers\SettingsHelper;
 use Alma\Woocommerce\Helpers\TemplateLoaderHelper;
-use Alma\Woocommerce\AlmaSettings;
-use Alma\Woocommerce\Helpers\VersionHelper;
+use Alma\Woocommerce\Helpers\ToolsHelper;
 
 /**
  * AlmaPaymentGateway
@@ -168,6 +169,13 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 	protected $cart_helper;
 
 	/**
+	 * The settings helper.
+	 *
+	 * @var SettingsHelper
+	 */
+	protected $settings_helper;
+
+	/**
 	 * Construct.
 	 *
 	 * @param bool $check_basics Check the basics requirement.
@@ -183,13 +191,15 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 		$this->scripts_helper      = new AssetsHelper();
 		$this->plan_builder        = new PlanBuilderHelper();
 		$this->encryption_helper   = new EncryptorHelper();
-		$this->tool_helper         = new ToolsHelper( $this->logger, new PriceHelper(), new CurrencyHelper() );
+		$this->tool_helper         = new ToolsHelper( $this->logger, new PriceFactory(), new CurrencyFactory() );
 		$this->alma_payment_helper = new PaymentHelper();
 		$this->order_helper        = new OrderHelper();
 		$this->template_loader     = new TemplateLoaderHelper();
 		$this->soc_helper          = new ShareOfCheckoutHelper();
 		$this->plugin_helper       = new PluginHelper();
-		$this->cart_helper         = new CartHelper( $this->tool_helper, new SessionHelper(), new VersionHelper() );
+		$version_helper            = new VersionFactory();
+		$this->settings_helper     = new SettingsHelper( new InternationalizationHelper(), $version_helper, $this->tool_helper );
+		$this->cart_helper         = new CartHelper( $this->tool_helper, new SessionFactory(), $version_helper );
 		$this->id                  = $this->get_gateway_id();
 		$this->method_title        = __( 'Payment in instalments and deferred with Alma - 2x 3x 4x', 'alma-gateway-for-woocommerce' );
 		$this->method_description  = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.', 'alma-gateway-for-woocommerce' );
@@ -197,7 +207,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 		if ( $check_basics ) {
 			$this->check_activation();
 
-			SettingsHelper::check_alma_keys( $this->alma_settings->has_keys(), false );
+			$this->settings_helper->check_alma_keys( $this->alma_settings->has_keys(), false );
 			$this->add_filters();
 			$this->gateway_helper->add_actions();
 			$this->init_admin_form();
@@ -365,7 +375,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 	 * @throws NoCredentialsException No credentials Api excetption.
 	 */
 	public function manage_credentials() {
-		SettingsHelper::check_alma_keys( $this->alma_settings->has_keys() );
+		$this->settings_helper->check_alma_keys( $this->alma_settings->has_keys() );
 
 		$this->init_alma_client();
 
@@ -544,8 +554,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 			)
 			|| $this->alma_settings->settings['environment'] !== $post_data['woocommerce_alma_environment']
 		) {
-			$settings_helper               = new SettingsHelper();
-			$this->alma_settings->settings = $settings_helper->reset_plans( $this->alma_settings->settings );
+			$this->alma_settings->settings = $this->settings_helper->reset_plans( $this->alma_settings->settings );
 		}
 	}
 
@@ -579,6 +588,8 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 	 * @noinspection PhpUnused
 	 */
 	public function generate_text_alma_i18n_html( $key, $data ) {
+		$admin_general_helper = new AdminGeneralHelper();
+
 		$field_key = $this->get_field_key( $key );
 		$defaults  = array(
 			'title'             => '',
@@ -619,7 +630,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 					<select class="list_lang_title" style="width:auto;margin-left:10px;line-height:28px;">
 						<?php
 						foreach ( $data['lang_list'] as $code => $label ) {
-							$selected = AdminGeneralHelper::is_lang_selected( esc_attr( $code ) ) ? 'selected="selected"' : '';
+							$selected = $admin_general_helper->is_lang_selected( esc_attr( $code ) ) ? 'selected="selected"' : '';
 							print '<option value="' . esc_attr( $code ) . '"' . esc_attr( $selected ) . '>' . esc_attr( $label ) . '</option>';
 						}
 						?>

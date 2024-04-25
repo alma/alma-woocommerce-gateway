@@ -11,6 +11,9 @@
 
 namespace Alma\Woocommerce\Helpers;
 
+use Alma\Woocommerce\Factories\SessionFactory;
+use Alma\Woocommerce\Factories\VersionFactory;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
@@ -30,7 +33,7 @@ class CartHelper {
 	/**
 	 * Helper Session.
 	 *
-	 * @var SessionHelper
+	 * @var SessionFactory
 	 */
 	protected $session_helper;
 
@@ -38,7 +41,7 @@ class CartHelper {
 	/**
 	 * Helper Version.
 	 *
-	 * @var VersionHelper
+	 * @var VersionFactory
 	 */
 	protected $version_helper;
 
@@ -47,9 +50,10 @@ class CartHelper {
 	 * Constructor.
 	 *
 	 * @codeCoverageIgnore
-	 * @param ToolsHelper   $tools_helper The tool Helper.
-	 * @param SessionHelper $session_helper The session Helper.
-	 * @param VersionHelper $version_helper The version Helper.
+	 *
+	 * @param ToolsHelper    $tools_helper The tool Helper.
+	 * @param SessionFactory $session_helper The session Helper.
+	 * @param VersionFactory $version_helper The version Helper.
 	 */
 	public function __construct( $tools_helper, $session_helper, $version_helper ) {
 		$this->tools_helper   = $tools_helper;
