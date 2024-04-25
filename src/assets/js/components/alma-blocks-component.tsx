@@ -13,7 +13,7 @@ import "../../css/alma-checkout-blocks.css";
 import { ToggleButtonsField } from "@alma/react-components";
 import React from "react";
 import { Installments } from "./Installments/Installments";
-import { FormattedMessage, IntlProvider } from "react-intl";
+import { IntlProvider } from "react-intl";
 import classNames from "classnames";
 
 export type PaymentPlan = {
@@ -54,6 +54,7 @@ type AlmaBlocksProps = {
   selectedFeePlan: string;
   setSelectedFeePlan: (value: string) => void;
   hasInPage: boolean;
+  totalPrice: number
 };
 
 export const AlmaBlocks: React.FC<AlmaBlocksProps> = ({
@@ -61,6 +62,7 @@ export const AlmaBlocks: React.FC<AlmaBlocksProps> = ({
   selectedFeePlan,
   setSelectedFeePlan,
   hasInPage,
+  totalPrice
 }) => {
   const labels = {};
   let values = [];
@@ -91,7 +93,6 @@ export const AlmaBlocks: React.FC<AlmaBlocksProps> = ({
     <div className="toggleButtonFieldLabel">{settings.description}</div>
   );
   return (
-    <>
       <IntlProvider locale="fr">
         {isPayNow && <div className={"payNowLabel"}>{label}</div>}
         <div className={"buttonsContainer"}>
@@ -114,11 +115,10 @@ export const AlmaBlocks: React.FC<AlmaBlocksProps> = ({
           <div className="alma-card-installments">
             <Installments
               feePlan={settings.plans[selectedFeePlan]}
-              amountInCents={settings.amount_in_cents}
+              amountInCents={totalPrice}
             />
           </div>
         )}
       </IntlProvider>
-    </>
   );
 };
