@@ -27,7 +27,7 @@ class CartHelperTest extends WP_UnitTestCase {
 	 */
 	public function test_get_total_from_cart() {
 		// Test Empty Cart
-		$cart_helper = \Mockery::mock(CartHelper::class, [new ToolsHelper(), new SessionHelper(), new VersionHelper()])->makePartial();;
+		$cart_helper = \Mockery::mock(CartHelper::class, [new ToolsHelper(), new SessionHelper(), new VersionHelper()])->makePartial();
 		$cart_helper->shouldReceive('get_cart')
 		        ->andReturn(null);
 
@@ -112,7 +112,7 @@ class CartHelperTest extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_get_total_in_cents() {
-		$cart_helper = \Mockery::mock(CartHelper::class, [new ToolsHelper(), new SessionHelper(), new VersionHelper()])->makePartial();;
+		$cart_helper = \Mockery::mock(CartHelper::class, [new ToolsHelper(), new SessionHelper(), new VersionHelper()])->makePartial();
 		$cart_helper->shouldReceive('get_total_from_cart')
 		            ->andReturn('4.000');
 
