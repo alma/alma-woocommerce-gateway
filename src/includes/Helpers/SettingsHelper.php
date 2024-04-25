@@ -11,6 +11,7 @@
 
 namespace Alma\Woocommerce\Helpers;
 
+use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\Exceptions\NoCredentialsException;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -207,9 +208,10 @@ class SettingsHelper {
 	 *
 	 * @return mixed
 	 */
-	public static function reset_plans( $alma_settings ) {
+	public function reset_plans( $alma_settings ) {
+		$tools_helper = new ToolsHelper( new AlmaLogger(), new PriceHelper(), new CurrencyHelper() );
 		foreach ( array_keys( $alma_settings ) as $key ) {
-			if ( ToolsHelper::is_amount_plan_key( $key ) ) {
+			if ( $tools_helper->is_amount_plan_key( $key ) ) {
 				$alma_settings[ $key ] = null;
 			}
 		}

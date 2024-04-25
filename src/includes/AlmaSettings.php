@@ -37,11 +37,13 @@ use Alma\Woocommerce\Exceptions\PlansDefinitionException;
 use Alma\Woocommerce\Exceptions\WrongCredentialsException;
 use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
+use Alma\Woocommerce\Helpers\CurrencyHelper;
 use Alma\Woocommerce\Helpers\EncryptorHelper;
 use Alma\Woocommerce\Helpers\FeePlanHelper;
 use Alma\Woocommerce\Helpers\GeneralHelper;
 use Alma\Woocommerce\Helpers\InternationalizationHelper;
 use Alma\Woocommerce\Helpers\PaymentHelper;
+use Alma\Woocommerce\Helpers\PriceHelper;
 use Alma\Woocommerce\Helpers\SessionHelper;
 use Alma\Woocommerce\Helpers\SettingsHelper as AlmaHelperSettings;
 use Alma\Woocommerce\Helpers\PlanBuilderHelper;
@@ -148,7 +150,15 @@ class AlmaSettings {
 		$this->logger           = new AlmaLogger();
 		$this->encryptor_helper = new EncryptorHelper();
 		$this->fee_plan_helper  = new FeePlanHelper();
-		$this->cart_helper      = new CartHelper( new ToolsHelper(), new SessionHelper(), new VersionHelper() );
+		$this->cart_helper      = new CartHelper(
+			new ToolsHelper(
+				$this->logger,
+				new PriceHelper(),
+				new CurrencyHelper()
+			),
+			new SessionHelper(),
+			new VersionHelper()
+		);
 
 		$this->load_settings();
 	}

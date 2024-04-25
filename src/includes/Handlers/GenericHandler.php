@@ -17,6 +17,8 @@ use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
+use Alma\Woocommerce\Helpers\CurrencyHelper;
+use Alma\Woocommerce\Helpers\PriceHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
 
 /**
@@ -58,7 +60,7 @@ class GenericHandler {
 	public function __construct() {
 		$this->logger        = new AlmaLogger();
 		$this->alma_settings = new AlmaSettings();
-		$this->helper_tools  = new ToolsHelper();
+		$this->helper_tools  = new ToolsHelper( $this->logger, new PriceHelper(), new CurrencyHelper() );
 	}
 
 	/**

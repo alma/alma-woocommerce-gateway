@@ -15,6 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
+use Alma\Woocommerce\Helpers\CurrencyHelper;
+use Alma\Woocommerce\Helpers\PriceHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\AlmaLogger;
@@ -60,7 +62,7 @@ class RefundHelper {
 	public function __construct() {
 		$this->logger        = new AlmaLogger();
 		$this->alma_settings = new AlmaSettings();
-		$this->tool_helper   = new ToolsHelper();
+		$this->tool_helper   = new ToolsHelper( $this->logger, new PriceHelper(), new CurrencyHelper() );
 	}
 
 	/**

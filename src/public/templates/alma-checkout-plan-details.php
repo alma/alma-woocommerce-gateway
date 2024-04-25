@@ -13,7 +13,16 @@ use Alma\Woocommerce\Helpers\ToolsHelper;
 use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\SessionHelper;
 use Alma\Woocommerce\Helpers\VersionHelper;
+use Alma\Woocommerce\Helpers\PriceHelper;
+use Alma\Woocommerce\AlmaLogger;
+use Alma\Woocommerce\Helpers\CurrencyHelper;
 
+/**
+ * The tools helper
+ *
+ * @var ToolsHelper $tools_helper
+ */
+$tools_helper = new ToolsHelper( new AlmaLogger(), new PriceHelper(), new CurrencyHelper() ); // phpcs:ignore
 ?>
 
 <div id="alma-checkout-plan-details">
@@ -68,8 +77,8 @@ use Alma\Woocommerce\Helpers\VersionHelper;
 						sprintf(
 						// translators: %1$s => today_amount (0), %2$s => total_amount, %3$s => i18n formatted due_date.
 							__( '%1$s today then %2$s on %3$s', 'alma-gateway-for-woocommerce' ),
-							ToolsHelper::alma_format_price_from_cents( 0 ),
-							ToolsHelper::alma_format_price_from_cents( $alma_step['total_amount'] ),
+							$tools_helper->alma_format_price_from_cents( 0 ),
+							$tools_helper->alma_format_price_from_cents( $alma_step['total_amount'] ),
 							date_i18n( get_option( 'date_format' ), $alma_step['due_date'] )
 						)
 					);
@@ -81,7 +90,7 @@ use Alma\Woocommerce\Helpers\VersionHelper;
 					} else {
 						echo '<span>' . esc_html( date_i18n( get_option( 'date_format' ), $alma_step['due_date'] ) ) . '</span>';
 					}
-					echo wp_kses_post( ToolsHelper::alma_format_price_from_cents( $alma_step['total_amount'] ) );
+					echo wp_kses_post( $tools_helper->alma_format_price_from_cents( $alma_step['total_amount'] ) );
 				}
 				?>
 			</p>
@@ -93,7 +102,7 @@ use Alma\Woocommerce\Helpers\VersionHelper;
 					margin: 0 0 4px 0;
 					border-bottom: 1px solid lightgrey;
 					">
-					<span><?php echo esc_html__( 'Included fees:', 'alma-gateway-for-woocommerce' ); ?><?php echo wp_kses_post( ToolsHelper::alma_format_price_from_cents( $alma_step['customer_fee'] ) ); ?></span>
+					<span><?php echo esc_html__( 'Included fees:', 'alma-gateway-for-woocommerce' ); ?><?php echo wp_kses_post( $tools_helper->alma_format_price_from_cents( $alma_step['customer_fee'] ) ); ?></span>
 				</p>
 				<?php
 			}
@@ -101,7 +110,7 @@ use Alma\Woocommerce\Helpers\VersionHelper;
 		} // end foreach
 
 		if ( $alma_eligibility->getInstallmentsCount() > 4 ) {
-			$alma_cart_helper = new CartHelper( new ToolsHelper(), new SessionHelper(), new VersionHelper() );
+			$alma_cart_helper = new CartHelper( $tools_helper, new SessionHelper(), new VersionHelper() );
 			?>
 			<p style="
 			display: flex;
@@ -122,7 +131,7 @@ use Alma\Woocommerce\Helpers\VersionHelper;
 			border-bottom: 1px solid lightgrey;
 		">
 				<span><?php echo esc_html__( 'Your cart:', 'alma-gateway-for-woocommerce' ); ?></span>
-				<span><?php echo wp_kses_post( ToolsHelper::alma_format_price_from_cents( $alma_cart_helper->get_total_in_cents() ) ); ?></span>
+				<span><?php echo wp_kses_post( $tools_helper->alma_format_price_from_cents( $alma_cart_helper->get_total_in_cents() ) ); ?></span>
 			</p>
 			<p style="
 			display: flex;
@@ -132,7 +141,7 @@ use Alma\Woocommerce\Helpers\VersionHelper;
 			border-bottom: 1px solid lightgrey;
 		">
 				<span><?php echo esc_html__( 'Credit cost:', 'alma-gateway-for-woocommerce' ); ?></span>
-				<span><?php echo wp_kses_post( ToolsHelper::alma_format_price_from_cents( $alma_eligibility->customerTotalCostAmount ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName ?></span>
+				<span><?php echo wp_kses_post( $tools_helper->alma_format_price_from_cents( $alma_eligibility->customerTotalCostAmount ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName ?></span>
 			</p>
 			<?php
 			$alma_annual_interest_rate = $alma_eligibility->getAnnualInterestRate();
@@ -146,7 +155,7 @@ use Alma\Woocommerce\Helpers\VersionHelper;
 				border-bottom: 1px solid lightgrey;
 			">
 					<span><?php echo esc_html__( 'Annual Interest Rate:', 'alma-gateway-for-woocommerce' ); ?></span>
-					<span><?php echo wp_kses_post( ToolsHelper::alma_format_percent_from_bps( $alma_annual_interest_rate ) ); ?></span>
+					<span><?php echo wp_kses_post( $this->tools_helper->alma_format_percent_from_bps( $alma_annual_interest_rate ) ); ?></span>
 				</p>
 			<?php } ?>
 			<p style="
@@ -157,7 +166,7 @@ use Alma\Woocommerce\Helpers\VersionHelper;
 			font-weight: bold;
 		">
 				<span><?php echo esc_html__( 'Total:', 'alma-gateway-for-woocommerce' ); ?></span>
-				<span><?php echo wp_kses_post( ToolsHelper::alma_format_price_from_cents( $alma_eligibility->getCustomerTotalCostAmount() + $alma_cart_helper->get_total_in_cents() ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName ?></span>
+				<span><?php echo wp_kses_post( $tools_helper->alma_format_price_from_cents( $alma_eligibility->getCustomerTotalCostAmount() + $alma_cart_helper->get_total_in_cents() ) ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName ?></span>
 			</p>
 			<?php
 		}

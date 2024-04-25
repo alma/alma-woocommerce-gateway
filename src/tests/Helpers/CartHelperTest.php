@@ -9,7 +9,10 @@
 
 namespace Alma\Woocommerce\Tests\Helpers;
 
+use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\Helpers\CartHelper;
+use Alma\Woocommerce\Helpers\CurrencyHelper;
+use Alma\Woocommerce\Helpers\PriceHelper;
 use Alma\Woocommerce\Helpers\SessionHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
 use Alma\Woocommerce\Helpers\VersionHelper;
@@ -19,7 +22,33 @@ use WP_UnitTestCase;
  * @covers \Alma\Woocommerce\Helpers\CartHelper
  */
 class CartHelperTest extends WP_UnitTestCase {
+	/**
+	 * The session helper.
+	 *
+	 * @var SessionHelper
+	 */
+	protected $session_helper;
 
+	/**
+	 * The version helper.
+	 *
+	 * @var VersionHelper
+	 */
+	protected $version_helper;
+
+
+	/**
+	 * The tools helper.
+	 *
+	 * @var ToolsHelper
+	 */
+	protected $tools_helper;
+
+	public function setUp() {
+		$this->session_helper = new SessionHelper();
+		$this->version_helper = new VersionHelper();
+		$this->tools_helper = new ToolsHelper(new AlmaLogger(), new PriceHelper(), new CurrencyHelper());
+	}
 	/**
 	 * @covers \Alma\Woocommerce\Helpers\CartHelper::get_total_from_cart
 	 *
@@ -27,7 +56,11 @@ class CartHelperTest extends WP_UnitTestCase {
 	 */
 	public function test_get_total_from_cart() {
 		// Test Empty Cart
-		$cart_helper = \Mockery::mock(CartHelper::class, [new ToolsHelper(), new SessionHelper(), new VersionHelper()])->makePartial();
+		$cart_helper = \Mockery::mock(CartHelper::class, [
+			$this->tools_helper,
+			$this->session_helper,
+			$this->version_helper
+		])->makePartial();
 		$cart_helper->shouldReceive('get_cart')
 		        ->andReturn(null);
 
@@ -39,7 +72,7 @@ class CartHelperTest extends WP_UnitTestCase {
 		$version_helper->shouldReceive('get_version')
 			->andReturn('2.0.0');
 
-		$cart_helper = \Mockery::mock(CartHelper::class, [new ToolsHelper(), new SessionHelper(), $version_helper])->makePartial();
+		$cart_helper = \Mockery::mock(CartHelper::class, [$this->tools_helper, $this->session_helper, $version_helper])->makePartial();
 		$cart = new \stdClass();
 		$cart->total = '1.0000';
 
@@ -50,7 +83,7 @@ class CartHelperTest extends WP_UnitTestCase {
 
 		// Test Cart version >3.2.0 and cart total not null
 
-		$cart_helper = \Mockery::mock(CartHelper::class, [new ToolsHelper(), new SessionHelper(), new VersionHelper()])->makePartial();
+		$cart_helper = \Mockery::mock(CartHelper::class, [$this->tools_helper, $this->session_helper, $this->version_helper])->makePartial();
 
 		$wc_cart = \Mockery::mock(\WC_Cart::class);
 		$wc_cart->shouldReceive('get_total')
@@ -71,7 +104,7 @@ class CartHelperTest extends WP_UnitTestCase {
 		$session_helper->shouldReceive('get_session')
 		               ->andReturn($session);
 
-		$cart_helper = \Mockery::mock(CartHelper::class, [new ToolsHelper(), $session_helper, new VersionHelper()])->makePartial();
+		$cart_helper = \Mockery::mock(CartHelper::class, [$this->tools_helper, $session_helper, $this->version_helper])->makePartial();
 
 
 		$wc_cart = \Mockery::mock(\WC_Cart::class);
@@ -92,7 +125,7 @@ class CartHelperTest extends WP_UnitTestCase {
 		$session_helper->shouldReceive('get_session')
 		               ->andReturn($session);
 
-		$cart_helper = \Mockery::mock(CartHelper::class, [new ToolsHelper(),$session_helper, new VersionHelper()])->makePartial();
+		$cart_helper = \Mockery::mock(CartHelper::class, [$this->tools_helper,$session_helper, $this->version_helper])->makePartial();
 
 		$wc_cart = \Mockery::mock(\WC_Cart::class);
 		$wc_cart->shouldReceive('get_total')
@@ -112,7 +145,7 @@ class CartHelperTest extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_get_total_in_cents() {
-		$cart_helper = \Mockery::mock(CartHelper::class, [new ToolsHelper(), new SessionHelper(), new VersionHelper()])->makePartial();
+		$cart_helper = \Mockery::mock(CartHelper::class, [$this->tools_helper, $this->session_helper, $this->version_helper])->makePartial();
 		$cart_helper->shouldReceive('get_total_from_cart')
 		            ->andReturn('4.000');
 
