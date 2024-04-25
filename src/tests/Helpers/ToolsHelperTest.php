@@ -7,8 +7,11 @@
  * @package Alma_Gateway_For_Woocommerce
  */
 
+namespace Alma\Woocommerce\Tests\Helpers;
+
 use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
+use WP_UnitTestCase;
 
 /**
  * @covers \Alma\Woocommerce\Helpers\ToolsHelper
@@ -20,9 +23,7 @@ class ToolsHelperTest extends WP_UnitTestCase {
 	 */
 	protected $toolsHelper;
 
-	public function __construct() {
-		parent::__construct();
-
+	public function setup() {
 		$this->toolsHelper = new ToolsHelper();
 	}
 

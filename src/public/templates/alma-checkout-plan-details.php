@@ -11,6 +11,8 @@
 use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
 use Alma\Woocommerce\Helpers\CartHelper;
+use Alma\Woocommerce\Helpers\SessionHelper;
+use Alma\Woocommerce\Helpers\VersionHelper;
 
 ?>
 
@@ -99,7 +101,7 @@ use Alma\Woocommerce\Helpers\CartHelper;
 		} // end foreach
 
 		if ( $alma_eligibility->getInstallmentsCount() > 4 ) {
-			$alma_cart_helper = new CartHelper();
+			$alma_cart_helper = new CartHelper( new ToolsHelper(), new SessionHelper(), new VersionHelper() );
 			?>
 			<p style="
 			display: flex;

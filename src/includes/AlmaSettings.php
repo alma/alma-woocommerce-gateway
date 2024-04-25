@@ -42,8 +42,11 @@ use Alma\Woocommerce\Helpers\FeePlanHelper;
 use Alma\Woocommerce\Helpers\GeneralHelper;
 use Alma\Woocommerce\Helpers\InternationalizationHelper;
 use Alma\Woocommerce\Helpers\PaymentHelper;
+use Alma\Woocommerce\Helpers\SessionHelper;
 use Alma\Woocommerce\Helpers\SettingsHelper as AlmaHelperSettings;
 use Alma\Woocommerce\Helpers\PlanBuilderHelper;
+use Alma\Woocommerce\Helpers\ToolsHelper;
+use Alma\Woocommerce\Helpers\VersionHelper;
 
 /**
  * Handles settings retrieval from the settings API.
@@ -145,7 +148,7 @@ class AlmaSettings {
 		$this->logger           = new AlmaLogger();
 		$this->encryptor_helper = new EncryptorHelper();
 		$this->fee_plan_helper  = new FeePlanHelper();
-		$this->cart_helper      = new CartHelper();
+		$this->cart_helper      = new CartHelper( new ToolsHelper(), new SessionHelper(), new VersionHelper() );
 
 		$this->load_settings();
 	}

@@ -15,6 +15,9 @@ use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\CheckoutHelper;
 use Alma\Woocommerce\Helpers\GatewayHelper;
+use Alma\Woocommerce\Helpers\SessionHelper;
+use Alma\Woocommerce\Helpers\ToolsHelper;
+use Alma\Woocommerce\Helpers\VersionHelper;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
 use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
@@ -74,7 +77,7 @@ class AlmaBlock extends AbstractPaymentMethodType {
 		$this->gateway_helper    = new GatewayHelper();
 		$this->alma_settings     = new AlmaSettings();
 		$this->checkout_helper   = new CheckoutHelper();
-		$this->cart_helper       = new CartHelper();
+		$this->cart_helper       = new CartHelper( new ToolsHelper(), new SessionHelper(), new VersionHelper() );
 		$this->alma_plan_builder = new PlanBuilderHelper();
 	}
 
