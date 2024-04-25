@@ -33,6 +33,17 @@ class AssetsHelper {
 	}
 
 	/**
+	 * Get asset url.
+	 *
+	 * @param string $path Path to asset relative to the plugin's assets directory.
+	 *
+	 * @return string URL to given asset
+	 */
+	public static function get_asset_build_url( $path ) {
+		return ALMA_PLUGIN_URL . 'build/' . $path;
+	}
+
+	/**
 	 * Get admin logs url.
 	 *
 	 * @return string
@@ -94,6 +105,17 @@ class AssetsHelper {
 	public static function get_in_page_doc_link() {
 		return esc_url( 'https://docs.almapay.com/docs/in-page-woocommerce' );
 	}
+
+
+	/**
+	 * Get Blocks doc.
+	 *
+	 * @return string
+	 */
+	public static function get_blocks_doc_link() {
+		return esc_url( 'https://woocommerce.com/document/woocommerce-blocks/#template-blocks' );
+	}
+
 	/**
 	 *  Enqueue scripts needed into admin form.
 	 *
@@ -113,6 +135,15 @@ class AssetsHelper {
 			ALMA_VERSION,
 			true
 		);
+
+		wp_localize_script(
+			'alma-admin-scripts',
+			'alma_admin_params',
+			array(
+				'block_confirmation' => __( 'Are you sure you want to enable compatibility with the Order Validation Block? Please note that this WooCommerce Block may not be fully compatible with all themes, potentially resulting in bugs. If you encounter any issues with the Alma payment functionality, we recommend deactivating this setting.', 'alma-gateway-for-woocommerce' ),
+			)
+		);
+
 	}
 
 	/**

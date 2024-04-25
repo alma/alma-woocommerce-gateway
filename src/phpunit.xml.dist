@@ -5,12 +5,9 @@
       <directory suffix=".php">./tests/</directory>
     </testsuite>
   </testsuites>
-  <coverage>
-    <include>
-      <directory suffix=".php">./src/includes/</directory>
-    </include>
-    <exclude>
-      <directory suffix=".php">./src/vendor/</directory>
-    </exclude>
-  </coverage>
+  <filter>
+    <whitelist processUncoveredFilesFromWhitelist="true">
+      <directory suffix=".php">./includes</directory>
+    </whitelist>
+  </filter>
 </phpunit>

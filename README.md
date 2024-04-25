@@ -4,10 +4,10 @@
 - Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo commerce, alma, monthly payments, split payments
 - Requires at least Wordpress: 4.4
 - Requires at least Woocommerce: 3.0.0
-- Tested up to Wordpress: 6.4.1
-- Tested up to Woocommerce: 8.2.2
+- Tested up to Wordpress: 6.4.2
+- Tested up to Woocommerce: 8.7.0
 - Requires PHP: 5.6
-- Stable tag: 5.3.0
+- Stable tag: 5.4.0
 - License: GPLv3
 - License URI: https://www.gnu.org/licenses/gpl-3.0.html
 - Support: support@getalma.eu

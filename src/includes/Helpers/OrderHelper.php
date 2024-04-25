@@ -20,7 +20,6 @@ use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Exceptions\ApiCreatePaymentsException;
 use Alma\Woocommerce\Exceptions\BuildOrderException;
 use Alma\Woocommerce\Exceptions\CreatePaymentsException;
-use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Exceptions\PlansDefinitionException;
 use Alma\Woocommerce\Gateways\Standard\StandardGateway;
 use Alma\Woocommerce\Services\CheckoutService;
@@ -45,10 +44,19 @@ class OrderHelper {
 	protected $logger;
 
 	/**
+	 * The block helper.
+	 *
+	 * @var BlockHelper
+	 */
+	protected $block_helper;
+
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->logger = new AlmaLogger();
+		$this->logger       = new AlmaLogger();
+		$this->block_helper = new BlockHelper();
 	}
 
 
@@ -268,11 +276,40 @@ class OrderHelper {
 			}
 
 			wc_add_notice( $e->getMessage(), ConstantsHelper::ERROR );
+			wp_send_json_error( $e->getMessage(), 500 );
+
+			if ( $this->block_helper->has_woocommerce_blocks() ) {
+				$this->send_ajax_failure_response();
+			}
 
 			wp_send_json_error( $e->getMessage(), 500 );
 		}
 	}
 
+	/**
+	 * Send Ajax failure response.
+	 *
+	 * @return void
+	 */
+	protected function send_ajax_failure_response() {
+		if ( is_ajax() ) {
+			// Only print notices if not reloading the checkout, otherwise they're lost in the page reload.
+			if ( ! isset( WC()->session->reload_checkout ) ) {
+				$messages = wc_print_notices( true );
+			}
+
+			$response = array(
+				'result'   => 'failure',
+				'messages' => isset( $messages ) ? $messages : '',
+				'refresh'  => isset( WC()->session->refresh_totals ),
+				'reload'   => isset( WC()->session->reload_checkout ),
+			);
+
+			unset( WC()->session->refresh_totals, WC()->session->reload_checkout );
+
+			wp_send_json( $response );
+		}
+	}
 	/**
 	 * Create the order for in page.
 	 *
@@ -285,7 +322,8 @@ class OrderHelper {
 	 */
 	protected function create_inpage_order( $post_fields ) {
 		$alma_checkout = new CheckoutService();
-		$order         = $alma_checkout->process_checkout();
+
+		$order = $alma_checkout->process_checkout_alma( $post_fields );
 
 		// We ignore the nonce verification because process_payment is called after validate_fields.
 		$settings       = new AlmaSettings();
@@ -301,21 +339,6 @@ class OrderHelper {
 		);
 	}
 
-	/**
-	 * Get the title of the Alma Gateway.
-	 *
-	 * @param string $id The alma gateway type id.
-	 * @return string
-	 * @throws AlmaException Exception.
-	 */
-	public function get_alma_gateway_title( $id ) {
-		$settings = new AlmaSettings();
-		if ( in_array( $id, ConstantsHelper::$gateways_ids, true ) ) {
-			return $settings->get_title( $id );
-		}
-
-		throw new AlmaException( sprintf( 'Unknown gateway id : %s', $id ) );
-	}
 
 	/**
 	 * Abandonment by the client.

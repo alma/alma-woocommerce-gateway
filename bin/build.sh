@@ -55,6 +55,7 @@ TO_SYNC=" \
 readme.txt \
 LICENSE  \
 ./src/assets \
+./src/build \
 ./src/includes \
 ./src/languages \
 ./src/public \

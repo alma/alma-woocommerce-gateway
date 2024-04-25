@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v5.4.0
+------
+* feature: Compatibility Woocommerce Blocks
+* feature: compatibility Woocommerce 8.7.0
+* feature: Compatibility WordPress 6.4.2
+
 v5.3.0
 ------
 * feature: In page with Deferred payments is available
