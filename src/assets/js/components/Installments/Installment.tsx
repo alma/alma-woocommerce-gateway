@@ -4,10 +4,11 @@ import classNames from "classnames";
 
 type Props = {
   installment: any;
+  totalAmountInEuros: number;
 };
 
 export const Installment: React.FC<Props> = ({
-  installment: { total_amount, purchase_amount, due_date, localized_due_date },
+  installment: { due_date, localized_due_date }, totalAmountInEuros
 }: Props) => {
   const date = new Date(due_date * 1000);
   const isToday = localized_due_date === "today";
@@ -32,7 +33,7 @@ export const Installment: React.FC<Props> = ({
         )}
         <div>
           <FormattedNumber
-            value={total_amount / 100}
+            value={totalAmountInEuros}
             style="currency"
             currency="EUR"
           />
