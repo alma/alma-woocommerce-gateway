@@ -62,25 +62,25 @@ class ToolsHelperTest extends WP_UnitTestCase {
 	 */
 	public function test_alma_format_percent_from_bps() {
 		// BPS positive
-		$priceHelper = \Mockery::mock(PriceFactory::class);
-		$priceHelper->shouldReceive('get_woo_decimals')->andReturn('2');
-		$priceHelper->shouldReceive('get_woo_decimal_separator')->andReturn(',');
-		$priceHelper->shouldReceive('get_woo_thousand_separator')->andReturn('.');
-		$priceHelper->shouldReceive('get_woo_format')->andReturn('%2$s&nbsp;%1$s');
+		$price_helper = \Mockery::mock(PriceFactory::class);
+		$price_helper->shouldReceive('get_woo_decimals')->andReturn('2');
+		$price_helper->shouldReceive('get_woo_decimal_separator')->andReturn(',');
+		$price_helper->shouldReceive('get_woo_thousand_separator')->andReturn('.');
+		$price_helper->shouldReceive('get_woo_format')->andReturn('%2$s&nbsp;%1$s');
 
-		$toolsHelper = new ToolsHelper(new AlmaLogger(), $priceHelper, new CurrencyFactory());
-		$result = $toolsHelper->alma_format_percent_from_bps( '100000' );
+		$tools_helper = new ToolsHelper(new AlmaLogger(), $price_helper, new CurrencyFactory());
+		$result = $tools_helper->alma_format_percent_from_bps( '100000' );
 		$this->assertEquals( '<span class="woocommerce-Price-amount amount">1.000,00&nbsp;<span class="woocommerce-Price-currencySymbol">&#37;</span></span>', $result );
 
 		// BPS negative
-		$priceHelper = \Mockery::mock(PriceFactory::class);
-		$priceHelper->shouldReceive('get_woo_decimals')->andReturn('3');
-		$priceHelper->shouldReceive('get_woo_decimal_separator')->andReturn(' ');
-		$priceHelper->shouldReceive('get_woo_thousand_separator')->andReturn(' ');
-		$priceHelper->shouldReceive('get_woo_format')->andReturn('%2$s&nbsp;%1$s');
+		$price_helper = \Mockery::mock(PriceFactory::class);
+		$price_helper->shouldReceive('get_woo_decimals')->andReturn('3');
+		$price_helper->shouldReceive('get_woo_decimal_separator')->andReturn(' ');
+		$price_helper->shouldReceive('get_woo_thousand_separator')->andReturn(' ');
+		$price_helper->shouldReceive('get_woo_format')->andReturn('%2$s&nbsp;%1$s');
 
-		$toolsHelper = new ToolsHelper(new AlmaLogger(), $priceHelper, new CurrencyFactory());
-		$result = $toolsHelper->alma_format_percent_from_bps( '-200000' );
+		$tools_helper = new ToolsHelper(new AlmaLogger(), $price_helper, new CurrencyFactory());
+		$result = $tools_helper->alma_format_percent_from_bps( '-200000' );
 		$this->assertEquals( '<span class="woocommerce-Price-amount amount">-2 000 000&nbsp;<span class="woocommerce-Price-currencySymbol">&#37;</span></span>', $result );
 	}
 
@@ -162,23 +162,23 @@ class ToolsHelperTest extends WP_UnitTestCase {
 	 */
 	public function test_check_currency() {
 		// Test Euros
-		$currencyHelper = \Mockery::mock(CurrencyFactory::class);
-		$currencyHelper->shouldReceive('get_currency')->andReturn('EUR');
-		$toolsHelper = new ToolsHelper(new AlmaLogger(), new PriceFactory(), $currencyHelper);
+		$currency_helper = \Mockery::mock(CurrencyFactory::class);
+		$currency_helper->shouldReceive('get_currency')->andReturn('EUR');
+		$tools_helper = new ToolsHelper(new AlmaLogger(), new PriceFactory(), $currency_helper);
 
-		$this->assertTrue($toolsHelper->check_currency());
+		$this->assertTrue($tools_helper->check_currency());
 
 		// Test not Euros
-		$currencyHelper = \Mockery::mock(CurrencyFactory::class);
-		$currencyHelper->shouldReceive('get_currency')->andReturn('DOL');
+		$currency_helper = \Mockery::mock(CurrencyFactory::class);
+		$currency_helper->shouldReceive('get_currency')->andReturn('DOL');
 
 		$logger = \Mockery::mock(AlmaLogger::class);
 		                  $logger->shouldReceive('warning')
 		                  ->with('Currency not supported - Not displaying by Alma.', array('Currency' => 'DOL'));
 
-		$toolsHelper = new ToolsHelper($logger, new PriceFactory(), $currencyHelper);
+		$tools_helper = new ToolsHelper($logger, new PriceFactory(), $currency_helper);
 
-		$this->assertFalse($toolsHelper->check_currency());
+		$this->assertFalse($tools_helper->check_currency());
 
 	}
 }
