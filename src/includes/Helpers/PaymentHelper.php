@@ -21,15 +21,19 @@ use Alma\API\Entities\Payment;
 use Alma\API\ParamsError;
 use Alma\API\RequestError;
 use Alma\Woocommerce\AlmaLogger;
+use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Exceptions\AmountMismatchException;
 use Alma\Woocommerce\Exceptions\ApiCreatePaymentsException;
 use Alma\Woocommerce\Exceptions\ApiFetchPaymentsException;
 use Alma\Woocommerce\Exceptions\BuildOrderException;
-use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Exceptions\IncorrectPaymentException;
 use Alma\Woocommerce\Exceptions\PlansDefinitionException;
+use Alma\Woocommerce\Factories\CurrencyFactory;
+use Alma\Woocommerce\Factories\PriceFactory;
+use Alma\Woocommerce\Factories\SessionFactory;
+use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Services\PaymentUponTriggerService;
-use Alma\Woocommerce\AlmaSettings;
 
 /**
  * PaymentHelper.
@@ -88,8 +92,8 @@ class PaymentHelper {
 		$this->logger               = new AlmaLogger();
 		$this->payment_upon_trigger = new PaymentUponTriggerService();
 		$this->alma_settings        = new AlmaSettings();
-		$this->tool_helper          = new ToolsHelper( $this->logger, new PriceHelper(), new CurrencyHelper() );
-		$this->cart_helper          = new CartHelper( $this->tool_helper, new SessionHelper(), new VersionHelper() );
+		$this->tool_helper          = new ToolsHelper( $this->logger, new PriceFactory(), new CurrencyFactory() );
+		$this->cart_helper          = new CartHelper( $this->tool_helper, new SessionFactory(), new VersionFactory() );
 		$this->order_helper         = new OrderHelper();
 	}
 
@@ -350,11 +354,11 @@ class PaymentHelper {
 		$cart_helper     = new CartHelper(
 			new ToolsHelper(
 				new AlmaLogger(),
-				new PriceHelper(),
-				new CurrencyHelper()
+				new PriceFactory(),
+				new CurrencyFactory()
 			),
-			new SessionHelper(),
-			new VersionHelper()
+			new SessionFactory(),
+			new VersionFactory()
 		);
 		$customer_helper = new CustomerHelper();
 		$settings        = new AlmaSettings();

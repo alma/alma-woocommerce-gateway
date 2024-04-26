@@ -14,13 +14,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Alma\Woocommerce\AlmaLogger;
+use Alma\Woocommerce\Factories\CurrencyFactory;
+use Alma\Woocommerce\Factories\PriceFactory;
+use Alma\Woocommerce\Factories\SessionFactory;
+use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
-use Alma\Woocommerce\Helpers\CurrencyHelper;
-use Alma\Woocommerce\Helpers\PriceHelper;
-use Alma\Woocommerce\Helpers\SessionHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
-use Alma\Woocommerce\Helpers\VersionHelper;
 
 /**
  * CartHandler
@@ -66,11 +66,11 @@ class CartHandler extends GenericHandler {
 		$cart_helper = new CartHelper(
 			new ToolsHelper(
 				new AlmaLogger(),
-				new PriceHelper(),
-				new CurrencyHelper()
+				new PriceFactory(),
+				new CurrencyFactory()
 			),
-			new SessionHelper(),
-			new VersionHelper()
+			new SessionFactory(),
+			new VersionFactory()
 		);
 		$amount      = $cart_helper->get_total_in_cents();
 

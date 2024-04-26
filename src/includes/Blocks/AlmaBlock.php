@@ -13,18 +13,18 @@ namespace Alma\Woocommerce\Blocks;
 
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Factories\CurrencyFactory;
+use Alma\Woocommerce\Factories\PriceFactory;
+use Alma\Woocommerce\Factories\SessionFactory;
+use Alma\Woocommerce\Factories\VersionFactory;
+use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\CheckoutHelper;
-use Alma\Woocommerce\Helpers\CurrencyHelper;
-use Alma\Woocommerce\Helpers\GatewayHelper;
-use Alma\Woocommerce\Helpers\PriceHelper;
-use Alma\Woocommerce\Helpers\SessionHelper;
-use Alma\Woocommerce\Helpers\ToolsHelper;
-use Alma\Woocommerce\Helpers\VersionHelper;
-use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
-use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
+use Alma\Woocommerce\Helpers\GatewayHelper;
 use Alma\Woocommerce\Helpers\PlanBuilderHelper;
+use Alma\Woocommerce\Helpers\ToolsHelper;
+use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -83,11 +83,11 @@ class AlmaBlock extends AbstractPaymentMethodType {
 		$this->cart_helper       = new CartHelper(
 			new ToolsHelper(
 				new AlmaLogger(),
-				new PriceHelper(),
-				new CurrencyHelper()
+				new PriceFactory(),
+				new CurrencyFactory()
 			),
-			new SessionHelper(),
-			new VersionHelper()
+			new SessionFactory(),
+			new VersionFactory()
 		);
 		$this->alma_plan_builder = new PlanBuilderHelper();
 	}

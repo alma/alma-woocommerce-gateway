@@ -10,12 +10,12 @@
 namespace Alma\Woocommerce\Tests\Helpers;
 
 use Alma\Woocommerce\AlmaLogger;
+use Alma\Woocommerce\Factories\CurrencyFactory;
+use Alma\Woocommerce\Factories\PriceFactory;
+use Alma\Woocommerce\Factories\SessionFactory;
+use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Helpers\CartHelper;
-use Alma\Woocommerce\Helpers\CurrencyHelper;
-use Alma\Woocommerce\Helpers\PriceHelper;
-use Alma\Woocommerce\Helpers\SessionHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
-use Alma\Woocommerce\Helpers\VersionHelper;
 use WP_UnitTestCase;
 
 /**
@@ -25,14 +25,14 @@ class CartHelperTest extends WP_UnitTestCase {
 	/**
 	 * The session helper.
 	 *
-	 * @var SessionHelper
+	 * @var SessionFactory
 	 */
 	protected $session_helper;
 
 	/**
 	 * The version helper.
 	 *
-	 * @var VersionHelper
+	 * @var VersionFactory
 	 */
 	protected $version_helper;
 
@@ -45,9 +45,9 @@ class CartHelperTest extends WP_UnitTestCase {
 	protected $tools_helper;
 
 	public function setUp() {
-		$this->session_helper = new SessionHelper();
-		$this->version_helper = new VersionHelper();
-		$this->tools_helper = new ToolsHelper(new AlmaLogger(), new PriceHelper(), new CurrencyHelper());
+		$this->session_helper = new SessionFactory();
+		$this->version_helper = new VersionFactory();
+		$this->tools_helper = new ToolsHelper(new AlmaLogger(), new PriceFactory(), new CurrencyFactory());
 	}
 	/**
 	 * @covers \Alma\Woocommerce\Helpers\CartHelper::get_total_from_cart
@@ -68,7 +68,7 @@ class CartHelperTest extends WP_UnitTestCase {
 
 
 		// Test Cart version < 3.2.0
-		$version_helper = \Mockery::mock(VersionHelper::class);
+		$version_helper = \Mockery::mock(VersionFactory::class);
 		$version_helper->shouldReceive('get_version')
 			->andReturn('2.0.0');
 
@@ -100,7 +100,7 @@ class CartHelperTest extends WP_UnitTestCase {
 		$session->shouldReceive('get', ['cart_totals'])
 		        ->andReturn(null);
 
-		$session_helper = \Mockery::mock(SessionHelper::class);
+		$session_helper = \Mockery::mock(SessionFactory::class);
 		$session_helper->shouldReceive('get_session')
 		               ->andReturn($session);
 
@@ -121,7 +121,7 @@ class CartHelperTest extends WP_UnitTestCase {
 		$session->shouldReceive('get', ['cart_totals'])
 		         ->andReturn(array('total' => '3.000'));
 
-		$session_helper = \Mockery::mock(SessionHelper::class);
+		$session_helper = \Mockery::mock(SessionFactory::class);
 		$session_helper->shouldReceive('get_session')
 		               ->andReturn($session);
 

@@ -26,16 +26,16 @@ class InternationalizationHelper {
 	 *
 	 * @var array
 	 */
-	private static $languages = array();
+	private $languages = array();
 
 	/**
 	 * Load languages list.
 	 *
 	 * @return array
 	 */
-	public static function get_list_languages() {
-		if ( self::is_wpml_active() ) {
-			return self::get_wpml_list_languages();
+	public function get_list_languages() {
+		if ( $this->is_wpml_active() ) {
+			return $this->get_wpml_list_languages();
 		}
 
 		return array();
@@ -46,7 +46,7 @@ class InternationalizationHelper {
 	 *
 	 * @return bool
 	 */
-	public static function is_wpml_active() {
+	public function is_wpml_active() {
 		return (bool) did_action( 'wpml_loaded' );
 	}
 
@@ -55,10 +55,10 @@ class InternationalizationHelper {
 	 *
 	 * @return array
 	 */
-	public static function get_wpml_list_languages() {
+	public function get_wpml_list_languages() {
 		$languages_list = array();
 		foreach ( icl_get_languages() as $infos_lang ) {
-			$languages_list[ self::map_locale( $infos_lang['default_locale'] ) ] = $infos_lang['translated_name'];
+			$languages_list[ $this->map_locale( $infos_lang['default_locale'] ) ] = $infos_lang['translated_name'];
 		}
 		return $languages_list;
 	}
@@ -72,7 +72,7 @@ class InternationalizationHelper {
 	 *
 	 * @return string $locale The locale formatted on WordPress way.
 	 */
-	public static function map_locale( $locale ) {
+	public function map_locale( $locale ) {
 		$locale = str_replace( '-', '_', $locale );
 		if ( 2 === strlen( $locale ) ) {
 			$locale .= '_' . strtoupper( $locale );
@@ -85,8 +85,8 @@ class InternationalizationHelper {
 	 *
 	 * @return bool
 	 */
-	public static function is_site_multilingual() {
-		return self::is_wpml_active();
+	public function is_site_multilingual() {
+		return $this->is_wpml_active();
 	}
 
 	/**
@@ -97,7 +97,7 @@ class InternationalizationHelper {
 	 *
 	 * @return string
 	 */
-	public static function get_translated_text( $string, $code_lang ) {
+	public function get_translated_text( $string, $code_lang ) {
 		$translation = $string;
 
 		$mo_path_file = ALMA_PLUGIN_PATH . 'languages/alma-gateway-for-woocommerce-' . $code_lang . '.mo';
@@ -105,14 +105,14 @@ class InternationalizationHelper {
 			return $translation;
 		}
 
-		if ( ! isset( self::$languages[ $code_lang ] ) ) {
+		if ( ! isset( $this->languages[ $code_lang ] ) ) {
 			$mo = new \MO();
 			$mo->import_from_file( $mo_path_file );
-			self::$languages[ $code_lang ] = $mo;
+			$this->languages[ $code_lang ] = $mo;
 		}
-		$mo = self::$languages[ $code_lang ];
+		$mo = $this->languages[ $code_lang ];
 
-		if ( self::entry_exists( $mo, $string ) ) {
+		if ( $this->entry_exists( $mo, $string ) ) {
 			$translation = $mo->entries[ $string ]->translations[0];
 		}
 		return $translation;
@@ -126,7 +126,7 @@ class InternationalizationHelper {
 	 *
 	 * @return bool
 	 */
-	protected static function entry_exists( $mo, $entry ) {
+	protected function entry_exists( $mo, $entry ) {
 		return isset( $mo->entries )
 			&& isset( $mo->entries[ $entry ] )
 			&& isset( $mo->entries[ $entry ]->translations )
@@ -142,11 +142,11 @@ class InternationalizationHelper {
 	 *
 	 * @return array
 	 */
-	public static function generate_i18n_field( $field_name, $field_infos, $default ) {
-		$lang_list = self::get_list_languages();
+	public function generate_i18n_field( $field_name, $field_infos, $default ) {
+		$lang_list = $this->get_list_languages();
 
 		if (
-			self::is_site_multilingual()
+			$this->is_site_multilingual()
 			&& count( $lang_list ) > 0
 		) {
 			$new_fields = array();
@@ -156,7 +156,7 @@ class InternationalizationHelper {
 				$new_field_infos              = $field_infos;
 				$new_field_infos['type']      = 'text_alma_i18n';
 				$new_field_infos['class']     = $code_lang;
-				$new_field_infos['default']   = self::get_translated_text( $default, $code_lang );
+				$new_field_infos['default']   = $this->get_translated_text( $default, $code_lang );
 				$new_field_infos['lang_list'] = $lang_list;
 
 				$new_fields[ $new_file_key ] = $new_field_infos;
