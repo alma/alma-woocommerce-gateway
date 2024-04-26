@@ -25,12 +25,14 @@ use Alma\Woocommerce\Exceptions\NoCredentialsException;
 use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\CheckoutHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
+use Alma\Woocommerce\Helpers\CurrencyHelper;
 use Alma\Woocommerce\Helpers\EncryptorHelper;
 use Alma\Woocommerce\Helpers\GatewayHelper;
 use Alma\Woocommerce\Helpers\GeneralHelper;
 use Alma\Woocommerce\Helpers\OrderHelper;
 use Alma\Woocommerce\Helpers\PaymentHelper;
 use Alma\Woocommerce\Helpers\PluginHelper;
+use Alma\Woocommerce\Helpers\PriceHelper;
 use Alma\Woocommerce\Helpers\SessionHelper;
 use Alma\Woocommerce\Helpers\SettingsHelper;
 use Alma\Woocommerce\Helpers\CartHelper;
@@ -181,7 +183,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 		$this->scripts_helper      = new AssetsHelper();
 		$this->plan_builder        = new PlanBuilderHelper();
 		$this->encryption_helper   = new EncryptorHelper();
-		$this->tool_helper         = new ToolsHelper();
+		$this->tool_helper         = new ToolsHelper( $this->logger, new PriceHelper(), new CurrencyHelper() );
 		$this->alma_payment_helper = new PaymentHelper();
 		$this->order_helper        = new OrderHelper();
 		$this->template_loader     = new TemplateLoaderHelper();
@@ -269,8 +271,8 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 	public function get_option( $key, $empty_value = null ) {
 		$option = parent::get_option( $key, $empty_value );
 
-		if ( ToolsHelper::is_amount_plan_key( $key ) ) {
-			return strval( ToolsHelper::alma_price_from_cents( $option ) );
+		if ( $this->tool_helper->is_amount_plan_key( $key ) ) {
+			return strval( $this->tool_helper->alma_price_from_cents( $option ) );
 		}
 
 		return $option;
@@ -282,13 +284,12 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 	 * @return bool Is available.
 	 */
 	public function is_available() {
-		$tools = new ToolsHelper();
 		global $wp;
 
 		if (
 			! $this->alma_settings->is_allowed_to_see_alma( wp_get_current_user() )
 			|| is_admin()
-			|| ! $tools->check_currency()
+			|| ! $this->tool_helper->check_currency()
 			|| is_wc_endpoint_url( 'order-pay' )
 			|| is_wc_endpoint_url( 'cart' )
 			|| ! empty( $wp->query_vars['order-pay'] )
@@ -543,7 +544,8 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 			)
 			|| $this->alma_settings->settings['environment'] !== $post_data['woocommerce_alma_environment']
 		) {
-			$this->alma_settings->settings = SettingsHelper::reset_plans( $this->alma_settings->settings );
+			$settings_helper               = new SettingsHelper();
+			$this->alma_settings->settings = $settings_helper->reset_plans( $this->alma_settings->settings );
 		}
 	}
 
@@ -554,7 +556,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 		$post_data = $this->get_post_data();
 
 		foreach ( $this->get_form_fields() as $key => $field ) {
-			if ( ToolsHelper::is_amount_plan_key( $key ) ) {
+			if ( $this->tool_helper->is_amount_plan_key( $key ) ) {
 				try {
 					$amount                                = $this->get_field_value( $key, $field, $post_data );
 					$this->alma_settings->settings[ $key ] = $this->tool_helper->alma_price_to_cents( $amount );

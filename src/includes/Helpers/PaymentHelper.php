@@ -88,7 +88,7 @@ class PaymentHelper {
 		$this->logger               = new AlmaLogger();
 		$this->payment_upon_trigger = new PaymentUponTriggerService();
 		$this->alma_settings        = new AlmaSettings();
-		$this->tool_helper          = new ToolsHelper();
+		$this->tool_helper          = new ToolsHelper( $this->logger, new PriceHelper(), new CurrencyHelper() );
 		$this->cart_helper          = new CartHelper( $this->tool_helper, new SessionHelper(), new VersionHelper() );
 		$this->order_helper         = new OrderHelper();
 	}
@@ -347,7 +347,15 @@ class PaymentHelper {
 	 * @return array Payload to request eligibility v2 endpoint.
 	 */
 	public static function get_eligibility_payload_from_cart() {
-		$cart_helper     = new CartHelper( new ToolsHelper(), new SessionHelper(), new VersionHelper() );
+		$cart_helper     = new CartHelper(
+			new ToolsHelper(
+				new AlmaLogger(),
+				new PriceHelper(),
+				new CurrencyHelper()
+			),
+			new SessionHelper(),
+			new VersionHelper()
+		);
 		$customer_helper = new CustomerHelper();
 		$settings        = new AlmaSettings();
 
