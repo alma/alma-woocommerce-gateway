@@ -42,11 +42,19 @@ class CheckLegalHelper {
 	protected $settings;
 
 	/**
+	 * The asset helper.
+	 *
+	 * @var AssetsHelper
+	 */
+	protected $asset_helper;
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->logger   = new AlmaLogger();
-		$this->settings = new AlmaSettings();
+		$this->logger       = new AlmaLogger();
+		$this->settings     = new AlmaSettings();
+		$this->asset_helper = new AssetsHelper();
 	}
 
 	/**
@@ -203,7 +211,7 @@ class CheckLegalHelper {
 		return sprintf(
 		// translators: %s: Admin settings url.
 			__( 'The settings have been saved. <a href="%s">Refresh</a> the page when ready.', 'alma-gateway-for-woocommerce' ),
-			esc_url( AssetsHelper::get_admin_setting_url() )
+			esc_url( $this->asset_helper->get_admin_setting_url() )
 		);
 	}
 

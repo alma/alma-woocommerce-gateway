@@ -17,8 +17,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\Factories\CurrencyFactory;
+use Alma\Woocommerce\Factories\PluginFactory;
 use Alma\Woocommerce\Factories\PriceFactory;
 use Alma\Woocommerce\Factories\VersionFactory;
+use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\InternationalizationHelper;
 use Alma\Woocommerce\Helpers\SettingsHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
@@ -52,7 +54,9 @@ class FormHelper {
 		$this->settings_helper    = new SettingsHelper(
 			new InternationalizationHelper(),
 			new VersionFactory(),
-			new ToolsHelper( new AlmaLogger(), new PriceFactory(), new CurrencyFactory() )
+			new ToolsHelper( new AlmaLogger(), new PriceFactory(), new CurrencyFactory() ),
+			new AssetsHelper(),
+			new PluginFactory()
 		);
 	}
 

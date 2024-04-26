@@ -12,6 +12,7 @@
 namespace Alma\Woocommerce\Helpers;
 
 use Alma\Woocommerce\Exceptions\NoCredentialsException;
+use Alma\Woocommerce\Factories\PluginFactory;
 use Alma\Woocommerce\Factories\VersionFactory;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -37,7 +38,7 @@ class SettingsHelper {
 	 *
 	 * @var VersionFactory
 	 */
-	protected $version_helper;
+	protected $version_factory;
 
 	/**
 	 * Tools Helper.
@@ -46,6 +47,21 @@ class SettingsHelper {
 	 */
 	protected $tools_helper;
 
+	/**
+	 * Asset Helper.
+	 *
+	 * @var AssetsHelper
+	 */
+	protected $assets_helper;
+
+
+	/**
+	 * Plugin Factory.
+	 *
+	 * @var PluginFactory
+	 */
+	protected $plugin_factory;
+
 
 	/**
 	 * Constructor.
@@ -53,13 +69,17 @@ class SettingsHelper {
 	 * @codeCoverageIgnore
 	 *
 	 * @param InternationalizationHelper $internationalization_helper The internationalization helper.
-	 * @param VersionFactory             $version_helper The version helper.
+	 * @param VersionFactory             $version_factory The version helper.
 	 * @param ToolsHelper                $tools_helper The tools helper.
+	 * @param AssetsHelper               $assets_helper The asset helper.
+	 * @param PluginFactory              $plugin_factory The plugin factory.
 	 */
-	public function __construct( $internationalization_helper, $version_helper, $tools_helper ) {
+	public function __construct( $internationalization_helper, $version_factory, $tools_helper, $assets_helper, $plugin_factory ) {
 		$this->internationalization_helper = $internationalization_helper;
-		$this->version_helper              = $version_helper;
+		$this->version_factory             = $version_factory;
 		$this->tools_helper                = $tools_helper;
+		$this->assets_helper               = $assets_helper;
+		$this->plugin_factory              = $plugin_factory;
 	}
 	/**
 	 * Get default settings.
@@ -203,7 +223,7 @@ class SettingsHelper {
 	 */
 	public function default_variable_price_selector() {
 		$selector = 'form.variations_form div.woocommerce-variation-price span.woocommerce-Price-amount';
-		if ( version_compare( $this->version_helper->get_version(), '4.4.0', '>=' ) ) {
+		if ( version_compare( $this->version_factory->get_version(), '4.4.0', '>=' ) ) {
 			$selector .= ' bdi';
 		}
 
@@ -218,7 +238,7 @@ class SettingsHelper {
 	 */
 	public function default_variable_sale_price_selector() {
 		$selector = 'form.variations_form div.woocommerce-variation-price ins span.woocommerce-Price-amount';
-		if ( version_compare( $this->version_helper->get_version(), '4.4.0', '>=' ) ) {
+		if ( version_compare( $this->version_factory->get_version(), '4.4.0', '>=' ) ) {
 			$selector .= ' bdi';
 		}
 
@@ -273,10 +293,10 @@ class SettingsHelper {
 			$message = sprintf(
 			// translators: %s: Admin settings url.
 				__( 'Alma is almost ready. To get started, <a href="%s">fill in your API keys</a>.', 'alma-gateway-for-woocommerce' ),
-				esc_url( AssetsHelper::get_admin_setting_url() )
+				esc_url( $this->assets_helper->get_admin_setting_url() )
 			);
 
-			alma_plugin()->admin_notices->add_admin_notice( 'no_alma_keys', 'notice notice-warning', $message );
+			$this->plugin_factory->add_admin_notice( 'no_alma_keys', 'notice notice-warning', $message );
 
 			if ( $throw_exception ) {
 				throw new NoCredentialsException( $message );

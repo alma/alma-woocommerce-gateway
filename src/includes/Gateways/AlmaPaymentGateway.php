@@ -24,6 +24,7 @@ use Alma\Woocommerce\Exceptions\ApiMerchantsException;
 use Alma\Woocommerce\Exceptions\ApiPlansException;
 use Alma\Woocommerce\Exceptions\NoCredentialsException;
 use Alma\Woocommerce\Factories\CurrencyFactory;
+use Alma\Woocommerce\Factories\PluginFactory;
 use Alma\Woocommerce\Factories\PriceFactory;
 use Alma\Woocommerce\Factories\SessionFactory;
 use Alma\Woocommerce\Factories\VersionFactory;
@@ -175,6 +176,14 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 	 */
 	protected $settings_helper;
 
+
+	/**
+	 * The asset helper.
+	 *
+	 * @var AssetsHelper
+	 */
+	protected $asset_helper;
+
 	/**
 	 * Construct.
 	 *
@@ -197,9 +206,16 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 		$this->template_loader     = new TemplateLoaderHelper();
 		$this->soc_helper          = new ShareOfCheckoutHelper();
 		$this->plugin_helper       = new PluginHelper();
-		$version_helper            = new VersionFactory();
-		$this->settings_helper     = new SettingsHelper( new InternationalizationHelper(), $version_helper, $this->tool_helper );
-		$this->cart_helper         = new CartHelper( $this->tool_helper, new SessionFactory(), $version_helper );
+		$this->asset_helper        = new AssetsHelper();
+		$version_factory           = new VersionFactory();
+		$this->settings_helper     = new SettingsHelper(
+			new InternationalizationHelper(),
+			$version_factory,
+			$this->tool_helper,
+			$this->asset_helper,
+			new PluginFactory()
+		);
+		$this->cart_helper         = new CartHelper( $this->tool_helper, new SessionFactory(), $version_factory );
 		$this->id                  = $this->get_gateway_id();
 		$this->method_title        = __( 'Payment in instalments and deferred with Alma - 2x 3x 4x', 'alma-gateway-for-woocommerce' );
 		$this->method_description  = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.', 'alma-gateway-for-woocommerce' );
@@ -261,7 +277,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 			$message = sprintf(
 				// translators: %s: Admin settings url.
 				__( "Thanks for installing Alma! Start by <a href='%s'>activating Alma's payment method</a>, then set it up to get started.", 'alma-gateway-for-woocommerce' ),
-				esc_url( AssetsHelper::get_admin_setting_url( false ) )
+				esc_url( $this->asset_helper->get_admin_setting_url( false ) )
 			);
 			alma_plugin()->admin_notices->add_admin_notice( 'no_alma_enabled', 'notice notice-warning', $message );
 		}
@@ -411,7 +427,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 			$message = sprintf(
 			// translators: %1$s: Admin settings url, %2$s: Admin logs url.
 				__( 'Error while initializing Alma API client.<br><a href="%1$s">Activate debug mode</a> and <a href="%2$s">check logs</a> for more details.', 'alma-gateway-for-woocommerce' ),
-				esc_url( AssetsHelper::get_admin_setting_url() ),
+				esc_url( $this->asset_helper->get_admin_setting_url() ),
 				esc_url( AssetsHelper::get_admin_logs_url() )
 			);
 

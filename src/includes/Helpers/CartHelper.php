@@ -35,7 +35,7 @@ class CartHelper {
 	 *
 	 * @var SessionFactory
 	 */
-	protected $session_helper;
+	protected $session_factory;
 
 
 	/**
@@ -43,7 +43,7 @@ class CartHelper {
 	 *
 	 * @var VersionFactory
 	 */
-	protected $version_helper;
+	protected $version_factory;
 
 
 	/**
@@ -52,13 +52,13 @@ class CartHelper {
 	 * @codeCoverageIgnore
 	 *
 	 * @param ToolsHelper    $tools_helper The tool Helper.
-	 * @param SessionFactory $session_helper The session Helper.
-	 * @param VersionFactory $version_helper The version Helper.
+	 * @param SessionFactory $session_factory The session Helper.
+	 * @param VersionFactory $version_factory The version Helper.
 	 */
-	public function __construct( $tools_helper, $session_helper, $version_helper ) {
-		$this->tools_helper   = $tools_helper;
-		$this->session_helper = $session_helper;
-		$this->version_helper = $version_helper;
+	public function __construct( $tools_helper, $session_factory, $version_factory ) {
+		$this->tools_helper    = $tools_helper;
+		$this->session_factory = $session_factory;
+		$this->version_factory = $version_factory;
 	}
 
 	/**
@@ -84,13 +84,13 @@ class CartHelper {
 			return 0;
 		}
 
-		if ( version_compare( $this->version_helper->get_version(), '3.2.0', '<' ) ) {
+		if ( version_compare( $this->version_factory->get_version(), '3.2.0', '<' ) ) {
 			return $cart->total;
 		}
 
 		$total = $cart->get_total( null );
 
-		$session       = $this->session_helper->get_session();
+		$session       = $this->session_factory->get_session();
 		$session_total = $session->get( 'cart_totals', null );
 
 		if (

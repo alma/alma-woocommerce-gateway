@@ -37,7 +37,7 @@ class ToolsHelper {
 	 *
 	 * @var PriceFactory
 	 */
-	protected $price_helper;
+	protected $price_factory;
 
 
 	/**
@@ -45,21 +45,21 @@ class ToolsHelper {
 	 *
 	 * @var CurrencyFactory
 	 */
-	protected $currency_helper;
+	protected $currency_factory;
 
 	/**
 	 * Constructor.
 	 *
 	 * @param AlmaLogger      $logger  The logger.
-	 * @param PriceFactory    $price_helper The price helper.
-	 * @param  CurrencyFactory $currency_helper  The currency helper.
+	 * @param PriceFactory    $price_factory The price helper.
+	 * @param  CurrencyFactory $currency_factory  The currency helper.
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function __construct( $logger, $price_helper, $currency_helper ) {
-		$this->logger          = $logger;
-		$this->price_helper    = $price_helper;
-		$this->currency_helper = $currency_helper;
+	public function __construct( $logger, $price_factory, $currency_factory ) {
+		$this->logger           = $logger;
+		$this->price_factory    = $price_factory;
+		$this->currency_factory = $currency_factory;
 	}
 
 	/**
@@ -97,13 +97,13 @@ class ToolsHelper {
 	public function alma_format_percent_from_bps( $bps ) {
 		$bps = number_format(
 			$this->alma_price_from_cents( $bps ),
-			$this->price_helper->get_woo_decimals(),
-			$this->price_helper->get_woo_decimal_separator(),
-			$this->price_helper->get_woo_thousand_separator()
+			$this->price_factory->get_woo_decimals(),
+			$this->price_factory->get_woo_decimal_separator(),
+			$this->price_factory->get_woo_thousand_separator()
 		);
 
 		$formatted_bps = sprintf(
-			$this->price_helper->get_woo_format(),
+			$this->price_factory->get_woo_format(),
 			'<span class="woocommerce-Price-currencySymbol">&#37;</span>',
 			$bps
 		);
@@ -179,7 +179,7 @@ class ToolsHelper {
 	 * @return bool
 	 */
 	public function check_currency() {
-		$currency = $this->currency_helper->get_currency();
+		$currency = $this->currency_factory->get_currency();
 
 		if ( 'EUR' !== $currency ) {
 			$this->logger->warning(
