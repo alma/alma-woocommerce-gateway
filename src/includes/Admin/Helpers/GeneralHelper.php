@@ -23,14 +23,27 @@ use Alma\Woocommerce\Helpers\InternationalizationHelper;
 class GeneralHelper {
 
 	/**
+	 * Internalionalization Helper.
+	 *
+	 * @var InternationalizationHelper
+	 */
+	protected $internalization_helper;
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->internalization_helper = new InternationalizationHelper();
+	}
+	/**
 	 * Returns if the language code in parameter matches the current admin page language.
 	 *
 	 * @param string $code_lang A language code.
 	 *
 	 * @return bool
 	 */
-	public static function is_lang_selected( $code_lang ) {
-		if ( self::get_current_admin_page_language() === $code_lang ) {
+	public function is_lang_selected( $code_lang ) {
+		if ( $this->get_current_admin_page_language() === $code_lang ) {
 			return true;
 		}
 
@@ -42,14 +55,14 @@ class GeneralHelper {
 	 *
 	 * @return string
 	 */
-	public static function get_current_admin_page_language() {
+	public function get_current_admin_page_language() {
 		$current_admin_page_language = get_locale();
 
 		if ( defined( 'ICL_LANGUAGE_CODE' ) ) {
 			$current_admin_page_language = \ICL_LANGUAGE_CODE;
 		}
 
-		return InternationalizationHelper::map_locale( $current_admin_page_language );
+		return $this->internalization_helper->map_locale( $current_admin_page_language );
 	}
 }
 

@@ -70,7 +70,7 @@ class AssetsHelper {
 	 *
 	 * @return string
 	 */
-	public static function get_admin_setting_url( $alma_section = true ) {
+	public function get_admin_setting_url( $alma_section = true ) {
 		if ( $alma_section ) {
 			return admin_url( 'admin.php?page=wc-settings&tab=checkout&section=alma' );
 		}

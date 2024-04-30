@@ -15,10 +15,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-use Alma\Woocommerce\Helpers\ToolsHelper;
-use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\AlmaLogger;
+use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Factories\CurrencyFactory;
+use Alma\Woocommerce\Factories\PriceFactory;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
+use Alma\Woocommerce\Helpers\ToolsHelper;
 
 /**
  * RefundHelper
@@ -60,7 +62,7 @@ class RefundHelper {
 	public function __construct() {
 		$this->logger        = new AlmaLogger();
 		$this->alma_settings = new AlmaSettings();
-		$this->tool_helper   = new ToolsHelper();
+		$this->tool_helper   = new ToolsHelper( $this->logger, new PriceFactory(), new CurrencyFactory() );
 	}
 
 	/**

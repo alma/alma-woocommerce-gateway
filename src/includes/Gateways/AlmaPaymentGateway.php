@@ -18,25 +18,31 @@ use Alma\Woocommerce\Admin\Helpers\FormHelper;
 use Alma\Woocommerce\Admin\Helpers\GeneralHelper as AdminGeneralHelper;
 use Alma\Woocommerce\Admin\Helpers\ShareOfCheckoutHelper;
 use Alma\Woocommerce\AlmaLogger;
+use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Exceptions\ApiClientException;
 use Alma\Woocommerce\Exceptions\ApiMerchantsException;
 use Alma\Woocommerce\Exceptions\ApiPlansException;
 use Alma\Woocommerce\Exceptions\NoCredentialsException;
+use Alma\Woocommerce\Factories\CurrencyFactory;
+use Alma\Woocommerce\Factories\PluginFactory;
+use Alma\Woocommerce\Factories\PriceFactory;
+use Alma\Woocommerce\Factories\SessionFactory;
+use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Helpers\AssetsHelper;
+use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\CheckoutHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\EncryptorHelper;
 use Alma\Woocommerce\Helpers\GatewayHelper;
 use Alma\Woocommerce\Helpers\GeneralHelper;
+use Alma\Woocommerce\Helpers\InternationalizationHelper;
 use Alma\Woocommerce\Helpers\OrderHelper;
 use Alma\Woocommerce\Helpers\PaymentHelper;
+use Alma\Woocommerce\Helpers\PlanBuilderHelper;
 use Alma\Woocommerce\Helpers\PluginHelper;
 use Alma\Woocommerce\Helpers\SettingsHelper;
-use Alma\Woocommerce\Helpers\CartHelper;
-use Alma\Woocommerce\Helpers\ToolsHelper;
-use Alma\Woocommerce\Helpers\PlanBuilderHelper;
 use Alma\Woocommerce\Helpers\TemplateLoaderHelper;
-use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Helpers\ToolsHelper;
 
 /**
  * AlmaPaymentGateway
@@ -164,6 +170,21 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 	protected $cart_helper;
 
 	/**
+	 * The settings helper.
+	 *
+	 * @var SettingsHelper
+	 */
+	protected $settings_helper;
+
+
+	/**
+	 * The asset helper.
+	 *
+	 * @var AssetsHelper
+	 */
+	protected $asset_helper;
+
+	/**
 	 * Construct.
 	 *
 	 * @param bool $check_basics Check the basics requirement.
@@ -179,13 +200,22 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 		$this->scripts_helper      = new AssetsHelper();
 		$this->plan_builder        = new PlanBuilderHelper();
 		$this->encryption_helper   = new EncryptorHelper();
-		$this->tool_helper         = new ToolsHelper();
+		$this->tool_helper         = new ToolsHelper( $this->logger, new PriceFactory(), new CurrencyFactory() );
 		$this->alma_payment_helper = new PaymentHelper();
 		$this->order_helper        = new OrderHelper();
 		$this->template_loader     = new TemplateLoaderHelper();
 		$this->soc_helper          = new ShareOfCheckoutHelper();
 		$this->plugin_helper       = new PluginHelper();
-		$this->cart_helper         = new CartHelper();
+		$this->asset_helper        = new AssetsHelper();
+		$version_factory           = new VersionFactory();
+		$this->settings_helper     = new SettingsHelper(
+			new InternationalizationHelper(),
+			$version_factory,
+			$this->tool_helper,
+			$this->asset_helper,
+			new PluginFactory()
+		);
+		$this->cart_helper         = new CartHelper( $this->tool_helper, new SessionFactory(), $version_factory );
 		$this->id                  = $this->get_gateway_id();
 		$this->method_title        = __( 'Payment in instalments and deferred with Alma - 2x 3x 4x', 'alma-gateway-for-woocommerce' );
 		$this->method_description  = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.', 'alma-gateway-for-woocommerce' );
@@ -193,7 +223,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 		if ( $check_basics ) {
 			$this->check_activation();
 
-			SettingsHelper::check_alma_keys( $this->alma_settings->has_keys(), false );
+			$this->settings_helper->check_alma_keys( $this->alma_settings->has_keys(), false );
 			$this->add_filters();
 			$this->gateway_helper->add_actions();
 			$this->init_admin_form();
@@ -247,7 +277,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 			$message = sprintf(
 				// translators: %s: Admin settings url.
 				__( "Thanks for installing Alma! Start by <a href='%s'>activating Alma's payment method</a>, then set it up to get started.", 'alma-gateway-for-woocommerce' ),
-				esc_url( AssetsHelper::get_admin_setting_url( false ) )
+				esc_url( $this->asset_helper->get_admin_setting_url( false ) )
 			);
 			alma_plugin()->admin_notices->add_admin_notice( 'no_alma_enabled', 'notice notice-warning', $message );
 		}
@@ -267,8 +297,8 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 	public function get_option( $key, $empty_value = null ) {
 		$option = parent::get_option( $key, $empty_value );
 
-		if ( ToolsHelper::is_amount_plan_key( $key ) ) {
-			return strval( ToolsHelper::alma_price_from_cents( $option ) );
+		if ( $this->tool_helper->is_amount_plan_key( $key ) ) {
+			return strval( $this->tool_helper->alma_price_from_cents( $option ) );
 		}
 
 		return $option;
@@ -280,13 +310,12 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 	 * @return bool Is available.
 	 */
 	public function is_available() {
-		$tools = new ToolsHelper();
 		global $wp;
 
 		if (
 			! $this->alma_settings->is_allowed_to_see_alma( wp_get_current_user() )
 			|| is_admin()
-			|| ! $tools->check_currency()
+			|| ! $this->tool_helper->check_currency()
 			|| is_wc_endpoint_url( 'order-pay' )
 			|| is_wc_endpoint_url( 'cart' )
 			|| ! empty( $wp->query_vars['order-pay'] )
@@ -362,7 +391,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 	 * @throws NoCredentialsException No credentials Api excetption.
 	 */
 	public function manage_credentials() {
-		SettingsHelper::check_alma_keys( $this->alma_settings->has_keys() );
+		$this->settings_helper->check_alma_keys( $this->alma_settings->has_keys() );
 
 		$this->init_alma_client();
 
@@ -398,7 +427,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 			$message = sprintf(
 			// translators: %1$s: Admin settings url, %2$s: Admin logs url.
 				__( 'Error while initializing Alma API client.<br><a href="%1$s">Activate debug mode</a> and <a href="%2$s">check logs</a> for more details.', 'alma-gateway-for-woocommerce' ),
-				esc_url( AssetsHelper::get_admin_setting_url() ),
+				esc_url( $this->asset_helper->get_admin_setting_url() ),
 				esc_url( AssetsHelper::get_admin_logs_url() )
 			);
 
@@ -541,7 +570,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 			)
 			|| $this->alma_settings->settings['environment'] !== $post_data['woocommerce_alma_environment']
 		) {
-			$this->alma_settings->settings = SettingsHelper::reset_plans( $this->alma_settings->settings );
+			$this->alma_settings->settings = $this->settings_helper->reset_plans( $this->alma_settings->settings );
 		}
 	}
 
@@ -552,7 +581,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 		$post_data = $this->get_post_data();
 
 		foreach ( $this->get_form_fields() as $key => $field ) {
-			if ( ToolsHelper::is_amount_plan_key( $key ) ) {
+			if ( $this->tool_helper->is_amount_plan_key( $key ) ) {
 				try {
 					$amount                                = $this->get_field_value( $key, $field, $post_data );
 					$this->alma_settings->settings[ $key ] = $this->tool_helper->alma_price_to_cents( $amount );
@@ -575,6 +604,8 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 	 * @noinspection PhpUnused
 	 */
 	public function generate_text_alma_i18n_html( $key, $data ) {
+		$admin_general_helper = new AdminGeneralHelper();
+
 		$field_key = $this->get_field_key( $key );
 		$defaults  = array(
 			'title'             => '',
@@ -615,7 +646,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 					<select class="list_lang_title" style="width:auto;margin-left:10px;line-height:28px;">
 						<?php
 						foreach ( $data['lang_list'] as $code => $label ) {
-							$selected = AdminGeneralHelper::is_lang_selected( esc_attr( $code ) ) ? 'selected="selected"' : '';
+							$selected = $admin_general_helper->is_lang_selected( esc_attr( $code ) ) ? 'selected="selected"' : '';
 							print '<option value="' . esc_attr( $code ) . '"' . esc_attr( $selected ) . '>' . esc_attr( $label ) . '</option>';
 						}
 						?>

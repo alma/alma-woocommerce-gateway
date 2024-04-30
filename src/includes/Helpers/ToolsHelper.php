@@ -16,6 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Alma\Woocommerce\AlmaLogger;
+use Alma\Woocommerce\Factories\CurrencyFactory;
+use Alma\Woocommerce\Factories\PriceFactory;
 
 /**
  * ToolsHelper.
@@ -31,10 +33,33 @@ class ToolsHelper {
 	protected $logger;
 
 	/**
-	 * Constructor.
+	 * Price Helper.
+	 *
+	 * @var PriceFactory
 	 */
-	public function __construct() {
-		$this->logger = new AlmaLogger();
+	protected $price_factory;
+
+
+	/**
+	 * Currency Helper.
+	 *
+	 * @var CurrencyFactory
+	 */
+	protected $currency_factory;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param AlmaLogger      $logger  The logger.
+	 * @param PriceFactory    $price_factory The price helper.
+	 * @param  CurrencyFactory $currency_factory  The currency helper.
+	 *
+	 * @codeCoverageIgnore
+	 */
+	public function __construct( $logger, $price_factory, $currency_factory ) {
+		$this->logger           = $logger;
+		$this->price_factory    = $price_factory;
+		$this->currency_factory = $currency_factory;
 	}
 
 	/**
@@ -44,7 +69,7 @@ class ToolsHelper {
 	 *
 	 * @return boolean
 	 */
-	public static function is_amount_plan_key( $key ) {
+	public function is_amount_plan_key( $key ) {
 		return preg_match( ConstantsHelper::AMOUNT_PLAN_KEY_REGEX, $key ) > 0;
 	}
 
@@ -69,16 +94,21 @@ class ToolsHelper {
 	 *
 	 * @see wc_price()
 	 */
-	public static function alma_format_percent_from_bps( $bps ) {
-		$decimal_separator  = wc_get_price_decimal_separator();
-		$thousand_separator = wc_get_price_thousand_separator();
-		$decimals           = wc_get_price_decimals();
-		$price_format       = get_woocommerce_price_format();
-		$negative           = $bps < 0;
-		$bps                = number_format( self::alma_price_from_cents( $bps ), $decimals, $decimal_separator, $thousand_separator );
-		$formatted_bps      = ( $negative ? '-' : '' ) . sprintf( $price_format, '<span class="woocommerce-Price-currencySymbol">&#37;</span>', $bps );
+	public function alma_format_percent_from_bps( $bps ) {
+		$bps = number_format(
+			$this->alma_price_from_cents( $bps ),
+			$this->price_factory->get_woo_decimals(),
+			$this->price_factory->get_woo_decimal_separator(),
+			$this->price_factory->get_woo_thousand_separator()
+		);
 
-		return '<span class="woocommerce-Price-amount amount">' . $formatted_bps . '</span>';
+		$formatted_bps = sprintf(
+			$this->price_factory->get_woo_format(),
+			'<span class="woocommerce-Price-currencySymbol">&#37;</span>',
+			$bps
+		);
+
+		return sprintf( '<span class="woocommerce-Price-amount amount">%s</span>', $formatted_bps );
 	}
 
 	/**
@@ -88,7 +118,7 @@ class ToolsHelper {
 	 *
 	 * @return float
 	 */
-	public static function alma_price_from_cents( $price ) {
+	public function alma_price_from_cents( $price ) {
 		return (float) ( $price / 100 );
 	}
 
@@ -102,8 +132,8 @@ class ToolsHelper {
 	 *
 	 * @see wc_price()
 	 */
-	public static function alma_format_price_from_cents( $price, $args = array() ) {
-		return wc_price( self::alma_price_from_cents( $price ), array_merge( array( 'currency' => 'EUR' ), $args ) );
+	public function alma_format_price_from_cents( $price, $args = array() ) {
+		return wc_price( $this->alma_price_from_cents( $price ), array_merge( array( 'currency' => 'EUR' ), $args ) );
 	}
 
 	/**
@@ -149,7 +179,8 @@ class ToolsHelper {
 	 * @return bool
 	 */
 	public function check_currency() {
-		$currency = get_woocommerce_currency();
+		$currency = $this->currency_factory->get_currency();
+
 		if ( 'EUR' !== $currency ) {
 			$this->logger->warning(
 				'Currency not supported - Not displaying by Alma.',

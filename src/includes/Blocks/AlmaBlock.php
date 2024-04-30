@@ -11,14 +11,20 @@
 
 namespace Alma\Woocommerce\Blocks;
 
+use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Factories\CurrencyFactory;
+use Alma\Woocommerce\Factories\PriceFactory;
+use Alma\Woocommerce\Factories\SessionFactory;
+use Alma\Woocommerce\Factories\VersionFactory;
+use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\CheckoutHelper;
-use Alma\Woocommerce\Helpers\GatewayHelper;
-use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
-use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
+use Alma\Woocommerce\Helpers\GatewayHelper;
 use Alma\Woocommerce\Helpers\PlanBuilderHelper;
+use Alma\Woocommerce\Helpers\ToolsHelper;
+use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -74,7 +80,15 @@ class AlmaBlock extends AbstractPaymentMethodType {
 		$this->gateway_helper    = new GatewayHelper();
 		$this->alma_settings     = new AlmaSettings();
 		$this->checkout_helper   = new CheckoutHelper();
-		$this->cart_helper       = new CartHelper();
+		$this->cart_helper       = new CartHelper(
+			new ToolsHelper(
+				new AlmaLogger(),
+				new PriceFactory(),
+				new CurrencyFactory()
+			),
+			new SessionFactory(),
+			new VersionFactory()
+		);
 		$this->alma_plan_builder = new PlanBuilderHelper();
 	}
 
