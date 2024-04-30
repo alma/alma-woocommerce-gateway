@@ -44,7 +44,7 @@ class CartHelperTest extends WP_UnitTestCase {
 	 */
 	protected $tools_helper;
 
-	public function setUp() {
+	public function set_up() {
 		$this->session_helper = new SessionFactory();
 		$this->version_helper = new VersionFactory();
 		$this->tools_helper = new ToolsHelper(new AlmaLogger(), new PriceFactory(), new CurrencyFactory());

@@ -26,7 +26,7 @@ class ToolsHelperTest extends WP_UnitTestCase {
 	 */
 	protected $tools_helper;
 
-	public function setUp() {
+	public function set_up() {
 		$this->tools_helper = new ToolsHelper(new AlmaLogger(), new PriceFactory(), new CurrencyFactory());
 	}
 

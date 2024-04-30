@@ -116,7 +116,7 @@ class SettingsHelperTest extends WP_UnitTestCase {
 	 */
 	protected $internalionatisation_helper;
 
-	public function setUp() {
+	public function set_up() {
 		$this->tools_helper = new ToolsHelper(new AlmaLogger(), new PriceFactory(), new CurrencyFactory());
 		$this->asset_helper = new AssetsHelper();
 		$this->plugin_factory = new PluginFactory();
