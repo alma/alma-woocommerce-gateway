@@ -19,6 +19,7 @@ use Alma\API\Entities\FeePlan;
 use Alma\Woocommerce\Admin\Builders\FormHtmlBuilder;
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Builders\ToolsHelperBuilder;
 use Alma\Woocommerce\Factories\CurrencyFactory;
 use Alma\Woocommerce\Factories\PriceFactory;
 use Alma\Woocommerce\Helpers\AssetsHelper;
@@ -96,7 +97,8 @@ class FormFieldsHelper {
 		$this->fee_plan_helper             = new FeePlanHelper();
 		$this->plugin_helper               = new PluginHelper();
 		$this->block_helper                = new BlockHelper();
-		$this->tools_helper                = new ToolsHelper( new AlmaLogger(), new PriceFactory(), new CurrencyFactory() );
+		$tools_helper_builder              = new ToolsHelperBuilder();
+		$this->tools_helper                = $tools_helper_builder->get_instance();
 		$this->internalionalization_helper = new InternationalizationHelper();
 	}
 

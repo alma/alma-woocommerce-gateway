@@ -20,6 +20,9 @@ use Alma\API\Entities\FeePlan;
 use Alma\API\Entities\Payment;
 use Alma\API\ParamsError;
 use Alma\API\RequestError;
+use Alma\Woocommerce\Builders\CartHelperBuilder;
+use Alma\Woocommerce\Builders\SettingsHelperBuilder;
+use Alma\Woocommerce\Builders\ToolsHelperBuilder;
 use Alma\Woocommerce\Exceptions\ActivationException;
 use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Exceptions\ApiCreatePaymentsException;
@@ -35,6 +38,7 @@ use Alma\Woocommerce\Exceptions\ApiSocLastUpdateDatesException;
 use Alma\Woocommerce\Exceptions\ApiTriggerPaymentsException;
 use Alma\Woocommerce\Exceptions\PlansDefinitionException;
 use Alma\Woocommerce\Exceptions\WrongCredentialsException;
+use Alma\Woocommerce\Factories\CartFactory;
 use Alma\Woocommerce\Factories\CurrencyFactory;
 use Alma\Woocommerce\Factories\PluginFactory;
 use Alma\Woocommerce\Factories\PriceFactory;
@@ -167,17 +171,11 @@ class AlmaSettings {
 		$this->fee_plan_helper             = new FeePlanHelper();
 		$this->internationalization_helper = new InternationalizationHelper();
 
-		$version_factory = new VersionFactory();
-		$tools_helper    = new ToolsHelper( $this->logger, new PriceFactory(), new CurrencyFactory() );
+		$settings_helper_builder = new SettingsHelperBuilder();
+		$this->settings_helper   = $settings_helper_builder->get_instance();
 
-		$this->settings_helper = new SettingsHelper(
-			$this->internationalization_helper,
-			$version_factory,
-			$tools_helper,
-			new AssetsHelper(),
-			new PluginFactory()
-		);
-		$this->cart_helper     = new CartHelper( $tools_helper, new SessionFactory(), $version_factory );
+		$cart_helper_builder = new CartHelperBuilder();
+		$this->cart_helper   = $cart_helper_builder->get_instance();
 
 		$this->load_settings();
 	}

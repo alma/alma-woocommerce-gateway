@@ -23,7 +23,6 @@ class PriceFactory {
 	/**
 	 * Get Woocommerce decimal separator.
 	 *
-	 * @codeCoverageIgnore
 	 * @return string
 	 */
 	public function get_woo_decimal_separator() {
@@ -33,7 +32,6 @@ class PriceFactory {
 	/**
 	 * Get Woocommerce thousand separator.
 	 *
-	 * @codeCoverageIgnore
 	 * @return string
 	 */
 	public function get_woo_thousand_separator() {
@@ -43,7 +41,6 @@ class PriceFactory {
 	/**
 	 *  Get Woocommerce decimals
 	 *
-	 * @codeCoverageIgnore
 	 * @return int
 	 */
 	public function get_woo_decimals() {
@@ -53,7 +50,6 @@ class PriceFactory {
 	/**
 	 *  Get Woocommerce format
 	 *
-	 * @codeCoverageIgnore
 	 * @return string
 	 */
 	public function get_woo_format() {

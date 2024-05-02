@@ -16,6 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Alma\Woocommerce\AlmaLogger;
+use Alma\Woocommerce\Builders\SettingsHelperBuilder;
+use Alma\Woocommerce\Builders\ToolsHelperBuilder;
 use Alma\Woocommerce\Factories\CurrencyFactory;
 use Alma\Woocommerce\Factories\PluginFactory;
 use Alma\Woocommerce\Factories\PriceFactory;
@@ -50,14 +52,11 @@ class FormHelper {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->form_fields_helper = new FormFieldsHelper();
-		$this->settings_helper    = new SettingsHelper(
-			new InternationalizationHelper(),
-			new VersionFactory(),
-			new ToolsHelper( new AlmaLogger(), new PriceFactory(), new CurrencyFactory() ),
-			new AssetsHelper(),
-			new PluginFactory()
-		);
+		$this->form_fields_helper          = new FormFieldsHelper();
+		$this->internalionalization_helper = new InternationalizationHelper();
+
+		$settings_helper_builder = new SettingsHelperBuilder();
+		$this->settings_helper   = $settings_helper_builder->get_instance();
 	}
 
 	/**

@@ -23,7 +23,6 @@ class SessionFactory {
 	/**
 	 * Get woocommerce session.
 	 *
-	 * @codeCoverageIgnore
 	 * @return \WC_Session|\WC_Session_Handler|null
 	 */
 	public function get_session() {

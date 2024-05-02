@@ -22,7 +22,6 @@ class CurrencyFactory {
 	/**
 	 * Get currency.
 	 *
-	 * @codeCoverageIgnore
 	 * @return string
 	 */
 	public function get_currency() {

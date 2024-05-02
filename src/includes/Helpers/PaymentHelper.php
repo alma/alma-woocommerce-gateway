@@ -22,6 +22,8 @@ use Alma\API\ParamsError;
 use Alma\API\RequestError;
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Builders\CartHelperBuilder;
+use Alma\Woocommerce\Builders\ToolsHelperBuilder;
 use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Exceptions\AmountMismatchException;
 use Alma\Woocommerce\Exceptions\ApiCreatePaymentsException;
@@ -29,6 +31,7 @@ use Alma\Woocommerce\Exceptions\ApiFetchPaymentsException;
 use Alma\Woocommerce\Exceptions\BuildOrderException;
 use Alma\Woocommerce\Exceptions\IncorrectPaymentException;
 use Alma\Woocommerce\Exceptions\PlansDefinitionException;
+use Alma\Woocommerce\Factories\CartFactory;
 use Alma\Woocommerce\Factories\CurrencyFactory;
 use Alma\Woocommerce\Factories\PriceFactory;
 use Alma\Woocommerce\Factories\SessionFactory;
@@ -92,9 +95,14 @@ class PaymentHelper {
 		$this->logger               = new AlmaLogger();
 		$this->payment_upon_trigger = new PaymentUponTriggerService();
 		$this->alma_settings        = new AlmaSettings();
-		$this->tool_helper          = new ToolsHelper( $this->logger, new PriceFactory(), new CurrencyFactory() );
-		$this->cart_helper          = new CartHelper( $this->tool_helper, new SessionFactory(), new VersionFactory() );
-		$this->order_helper         = new OrderHelper();
+
+		$tools_helper_builder = new ToolsHelperBuilder();
+		$this->helper_tools   = $tools_helper_builder->get_instance();
+
+		$cart_helper_builder = new CartHelperBuilder();
+		$this->cart_helper   = $cart_helper_builder->get_instance();
+
+		$this->order_helper = new OrderHelper();
 	}
 
 	/**
@@ -351,15 +359,9 @@ class PaymentHelper {
 	 * @return array Payload to request eligibility v2 endpoint.
 	 */
 	public static function get_eligibility_payload_from_cart() {
-		$cart_helper     = new CartHelper(
-			new ToolsHelper(
-				new AlmaLogger(),
-				new PriceFactory(),
-				new CurrencyFactory()
-			),
-			new SessionFactory(),
-			new VersionFactory()
-		);
+		$cart_helper_builder = new CartHelperBuilder();
+		$cart_helper         = $cart_helper_builder->get_instance();
+
 		$customer_helper = new CustomerHelper();
 		$settings        = new AlmaSettings();
 

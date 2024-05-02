@@ -19,10 +19,14 @@ use Alma\Woocommerce\Admin\Helpers\GeneralHelper as AdminGeneralHelper;
 use Alma\Woocommerce\Admin\Helpers\ShareOfCheckoutHelper;
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Builders\CartHelperBuilder;
+use Alma\Woocommerce\Builders\SettingsHelperBuilder;
+use Alma\Woocommerce\Builders\ToolsHelperBuilder;
 use Alma\Woocommerce\Exceptions\ApiClientException;
 use Alma\Woocommerce\Exceptions\ApiMerchantsException;
 use Alma\Woocommerce\Exceptions\ApiPlansException;
 use Alma\Woocommerce\Exceptions\NoCredentialsException;
+use Alma\Woocommerce\Factories\CartFactory;
 use Alma\Woocommerce\Factories\CurrencyFactory;
 use Alma\Woocommerce\Factories\PluginFactory;
 use Alma\Woocommerce\Factories\PriceFactory;
@@ -200,25 +204,24 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 		$this->scripts_helper      = new AssetsHelper();
 		$this->plan_builder        = new PlanBuilderHelper();
 		$this->encryption_helper   = new EncryptorHelper();
-		$this->tool_helper         = new ToolsHelper( $this->logger, new PriceFactory(), new CurrencyFactory() );
+		$tools_helper_builder      = new ToolsHelperBuilder();
+		$this->tool_helper         = $tools_helper_builder->get_instance();
 		$this->alma_payment_helper = new PaymentHelper();
 		$this->order_helper        = new OrderHelper();
 		$this->template_loader     = new TemplateLoaderHelper();
 		$this->soc_helper          = new ShareOfCheckoutHelper();
 		$this->plugin_helper       = new PluginHelper();
 		$this->asset_helper        = new AssetsHelper();
-		$version_factory           = new VersionFactory();
-		$this->settings_helper     = new SettingsHelper(
-			new InternationalizationHelper(),
-			$version_factory,
-			$this->tool_helper,
-			$this->asset_helper,
-			new PluginFactory()
-		);
-		$this->cart_helper         = new CartHelper( $this->tool_helper, new SessionFactory(), $version_factory );
-		$this->id                  = $this->get_gateway_id();
-		$this->method_title        = __( 'Payment in instalments and deferred with Alma - 2x 3x 4x', 'alma-gateway-for-woocommerce' );
-		$this->method_description  = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.', 'alma-gateway-for-woocommerce' );
+
+		$settings_helper_builder = new SettingsHelperBuilder();
+		$this->settings_helper   = $settings_helper_builder->get_instance();
+
+		$cart_helper_builder = new CartHelperBuilder();
+		$this->cart_helper   = $cart_helper_builder->get_instance();
+
+		$this->id                 = $this->get_gateway_id();
+		$this->method_title       = __( 'Payment in instalments and deferred with Alma - 2x 3x 4x', 'alma-gateway-for-woocommerce' );
+		$this->method_description = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.', 'alma-gateway-for-woocommerce' );
 
 		if ( $check_basics ) {
 			$this->check_activation();

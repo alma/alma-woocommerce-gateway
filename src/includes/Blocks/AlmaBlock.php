@@ -13,6 +13,8 @@ namespace Alma\Woocommerce\Blocks;
 
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Builders\CartHelperBuilder;
+use Alma\Woocommerce\Factories\CartFactory;
 use Alma\Woocommerce\Factories\CurrencyFactory;
 use Alma\Woocommerce\Factories\PriceFactory;
 use Alma\Woocommerce\Factories\SessionFactory;
@@ -76,19 +78,13 @@ class AlmaBlock extends AbstractPaymentMethodType {
 	 * @return void
 	 */
 	public function initialize() {
-		$this->settings          = get_option( AlmaSettings::OPTIONS_KEY, array() );
-		$this->gateway_helper    = new GatewayHelper();
-		$this->alma_settings     = new AlmaSettings();
-		$this->checkout_helper   = new CheckoutHelper();
-		$this->cart_helper       = new CartHelper(
-			new ToolsHelper(
-				new AlmaLogger(),
-				new PriceFactory(),
-				new CurrencyFactory()
-			),
-			new SessionFactory(),
-			new VersionFactory()
-		);
+		$this->settings        = get_option( AlmaSettings::OPTIONS_KEY, array() );
+		$this->gateway_helper  = new GatewayHelper();
+		$this->alma_settings   = new AlmaSettings();
+		$this->checkout_helper = new CheckoutHelper();
+		$cart_helper_builder   = new CartHelperBuilder();
+		$this->cart_helper     = $cart_helper_builder->get_instance();
+
 		$this->alma_plan_builder = new PlanBuilderHelper();
 	}
 
