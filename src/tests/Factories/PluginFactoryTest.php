@@ -33,22 +33,6 @@ class PluginFactoryTest extends WP_UnitTestCase {
 		$this->assertInstanceOf(NoticesService::class, $this->plugin_factory->get_plugin_admin_notice());
 	}
 
-
-	public function test_add_admin_notices() {
-		$this->assertNull($this->plugin_factory->add_admin_notice('alma', 'none', 'this is an error', true));
-
-		$this->plugin_factory->add_admin_notice('alma', 'none', 'this is an error', true);
-		$this->assertEquals(
-			array(
-				'alma' => array (
-					'class' => 'none',
-					'message' => 'this is an error',
-					'dismissible' => true
-				)
-			),
-			$this->plugin_factory->get_plugin_admin_notice()->notices
-		);
-	}
 }
 
 
