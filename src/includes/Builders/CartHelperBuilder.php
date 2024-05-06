@@ -31,6 +31,7 @@ class CartHelperBuilder {
 	 * @return CartHelper
 	 */
 	public function get_instance() {
+		// dqsdqsdsqdsqdsqdsq.
 		return new CartHelper(
 			$this->get_tools_helper(),
 			$this->get_session_factory(),
