@@ -68,6 +68,11 @@ class CartHelperBuilderTest extends WP_UnitTestCase {
 		$this->assertInstanceOf(CartFactory::class, $this->cart_helper_builder->get_cart_factory());
 		$this->assertInstanceOf(CartFactory::class, $this->cart_helper_builder->get_cart_factory(new CartFactory()));
 	}
+
+	public function test_get_alma_settings() {
+		$this->assertInstanceOf(AlmaSettings::class, $this->cart_helper_builder->get_alma_settings());
+		$this->assertInstanceOf(AlmaSettings::class, $this->cart_helper_builder->get_alma_settings(new AlmaSettings()));
+	}
 }
 
 

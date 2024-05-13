@@ -12,6 +12,7 @@
 namespace Alma\Woocommerce\Traits;
 
 use Alma\Woocommerce\AlmaLogger;
+use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Factories\CartFactory;
 use Alma\Woocommerce\Factories\CurrencyFactory;
 use Alma\Woocommerce\Factories\CustomerFactory;
@@ -20,6 +21,7 @@ use Alma\Woocommerce\Factories\PriceFactory;
 use Alma\Woocommerce\Factories\SessionFactory;
 use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Helpers\AssetsHelper;
+use Alma\Woocommerce\Helpers\CustomerHelper;
 use Alma\Woocommerce\Helpers\InternationalizationHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
 
@@ -205,5 +207,33 @@ trait BuilderTrait {
 		return new CustomerFactory();
 	}
 
+	/**
+	 * AlmaSettings.
+	 *
+	 * @param AlmaSettings|null $alma_settings The alma settings.
+	 *
+	 * @return AlmaSettings
+	 */
+	public function get_alma_settings( $alma_settings = null ) {
+		if ( $alma_settings ) {
+			return $alma_settings;
+		}
 
+		return new AlmaSettings();
+	}
+
+	/**
+	 * CustomerHelper.
+	 *
+	 * @param CustomerHelper|null $customer_helper The customer helper.
+	 *
+	 * @return CustomerHelper
+	 */
+	public function get_customer_helper( $customer_helper = null ) {
+		if ( $customer_helper ) {
+			return $customer_helper;
+		}
+
+		return new CustomerHelper( $this->get_customer_factory() );
+	}
 }

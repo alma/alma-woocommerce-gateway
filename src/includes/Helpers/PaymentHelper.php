@@ -355,37 +355,6 @@ class PaymentHelper {
 	}
 
 	/**
-	 * Create Eligibility data for Alma API request from WooCommerce Cart.
-	 *
-	 * @return array Payload to request eligibility v2 endpoint.
-	 */
-	public function get_eligibility_payload_from_cart() {
-		$cart_helper_builder = new CartHelperBuilder();
-		$cart_helper         = $cart_helper_builder->get_instance();
-
-		$customer_helper_builder = new CustomerHelperBuilder();
-		$customer_helper         = $customer_helper_builder->get_instance();
-
-		$data = array(
-			'purchase_amount' => $cart_helper->get_total_in_cents(),
-			'queries'         => $cart_helper->get_eligible_plans_for_cart(),
-			'locale'          => apply_filters( 'alma_eligibility_user_locale', get_locale() ),
-		);
-
-		$billing_country  = $customer_helper->get_billing_country();
-		$shipping_country = $customer_helper->get_shipping_country();
-
-		if ( $billing_country ) {
-			$data['billing_address'] = array( 'country' => $billing_country );
-		}
-		if ( $shipping_country ) {
-			$data['shipping_address'] = array( 'country' => $shipping_country );
-		}
-
-		return $data;
-	}
-
-	/**
 	 * Create Payment data for Alma API request from WooCommerce Order.
 	 *
 	 * @param \WC_Order $wc_order Order.

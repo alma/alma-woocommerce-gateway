@@ -42,6 +42,7 @@ class StandardGateway extends AlmaPaymentGateway {
 		// We get the eligibilites.
 		$eligibilities  = $this->cart_helper->get_cart_eligibilities();
 		$eligible_plans = $this->cart_helper->get_eligible_plans_keys_for_cart( $eligibilities );
+		$eligible_plans = $this->alma_plan_builder->order_plans( $eligible_plans );
 
 		$default_plan = $this->gateway_helper->get_default_plan( $eligible_plans );
 

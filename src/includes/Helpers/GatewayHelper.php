@@ -15,6 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use Alma\Woocommerce\Builders\CartHelperBuilder;
 use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Services\PaymentUponTriggerService;
 use Alma\Woocommerce\AlmaSettings;
@@ -197,7 +198,10 @@ class GatewayHelper {
 	 * @return bool
 	 */
 	public function is_there_eligibility_in_cart() {
-		return count( $this->cart_helper->get_eligible_plans_keys_for_cart() ) > 0;
+		$cart_helper_builder = new CartHelperBuilder();
+		$cart_helper         = $cart_helper_builder->get_instance();
+
+		return count( $cart_helper->get_eligible_plans_keys_for_cart() ) > 0;
 	}
 
 	/**

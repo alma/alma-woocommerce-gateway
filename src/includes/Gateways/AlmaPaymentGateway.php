@@ -212,6 +212,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 		$this->soc_helper          = new ShareOfCheckoutHelper();
 		$this->plugin_helper       = new PluginHelper();
 		$this->asset_helper        = new AssetsHelper();
+		$this->alma_plan_builder   = new PlanBuilderHelper();
 
 		$settings_helper_builder = new SettingsHelperBuilder();
 		$this->settings_helper   = $settings_helper_builder->get_instance();
@@ -344,6 +345,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 
 		$eligibilities  = $this->cart_helper->get_cart_eligibilities();
 		$eligible_plans = $this->cart_helper->get_eligible_plans_keys_for_cart( $eligibilities );
+		$eligible_plans = $this->alma_plan_builder->order_plans( $eligible_plans );
 
 		$is_eligible = false;
 
@@ -714,6 +716,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 			return false;
 		}
 		$allowed_values = $this->cart_helper->get_eligible_plans_keys_for_cart();
+		$allowed_values = $this->alma_plan_builder->order_plans( $allowed_values );
 
 		if ( ! in_array( $alma_fee_plan, $allowed_values[ $this->id ], true ) ) {
 			$this->logger->error(
