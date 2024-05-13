@@ -23,6 +23,7 @@ use Alma\API\RequestError;
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Builders\CartHelperBuilder;
+use Alma\Woocommerce\Builders\CustomerHelperBuilder;
 use Alma\Woocommerce\Builders\ToolsHelperBuilder;
 use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Exceptions\AmountMismatchException;
@@ -358,16 +359,16 @@ class PaymentHelper {
 	 *
 	 * @return array Payload to request eligibility v2 endpoint.
 	 */
-	public static function get_eligibility_payload_from_cart() {
+	public function get_eligibility_payload_from_cart() {
 		$cart_helper_builder = new CartHelperBuilder();
 		$cart_helper         = $cart_helper_builder->get_instance();
 
-		$customer_helper = new CustomerHelper();
-		$settings        = new AlmaSettings();
+		$customer_helper_builder = new CustomerHelperBuilder();
+		$customer_helper         = $customer_helper_builder->get_instance();
 
 		$data = array(
 			'purchase_amount' => $cart_helper->get_total_in_cents(),
-			'queries'         => $settings->get_eligible_plans_for_cart(),
+			'queries'         => $cart_helper->get_eligible_plans_for_cart(),
 			'locale'          => apply_filters( 'alma_eligibility_user_locale', get_locale() ),
 		);
 

@@ -197,7 +197,7 @@ class GatewayHelper {
 	 * @return bool
 	 */
 	public function is_there_eligibility_in_cart() {
-		return count( $this->alma_settings->get_eligible_plans_keys_for_cart() ) > 0;
+		return count( $this->cart_helper->get_eligible_plans_keys_for_cart() ) > 0;
 	}
 
 	/**

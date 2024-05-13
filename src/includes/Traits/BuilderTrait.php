@@ -14,6 +14,7 @@ namespace Alma\Woocommerce\Traits;
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\Factories\CartFactory;
 use Alma\Woocommerce\Factories\CurrencyFactory;
+use Alma\Woocommerce\Factories\CustomerFactory;
 use Alma\Woocommerce\Factories\PluginFactory;
 use Alma\Woocommerce\Factories\PriceFactory;
 use Alma\Woocommerce\Factories\SessionFactory;
@@ -188,4 +189,21 @@ trait BuilderTrait {
 
 		return new PluginFactory();
 	}
+
+	/**
+	 * Customer Factory.
+	 *
+	 * @param CustomerFactory|null $customer_factory The customer factory.
+	 *
+	 * @return CustomerFactory
+	 */
+	public function get_customer_factory( $customer_factory = null ) {
+		if ( $customer_factory ) {
+			return $customer_factory;
+		}
+
+		return new CustomerFactory();
+	}
+
+
 }

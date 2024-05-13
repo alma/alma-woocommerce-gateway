@@ -342,8 +342,8 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 			return false;
 		}
 
-		$eligibilities  = $this->alma_settings->get_cart_eligibilities();
-		$eligible_plans = $this->alma_settings->get_eligible_plans_keys_for_cart( $eligibilities );
+		$eligibilities  = $this->cart_helper->get_cart_eligibilities();
+		$eligible_plans = $this->cart_helper->get_eligible_plans_keys_for_cart( $eligibilities );
 
 		$is_eligible = false;
 
@@ -713,7 +713,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 			wc_add_notice( $error_msg, ConstantsHelper::ERROR );
 			return false;
 		}
-		$allowed_values = $this->alma_settings->get_eligible_plans_keys_for_cart();
+		$allowed_values = $this->cart_helper->get_eligible_plans_keys_for_cart();
 
 		if ( ! in_array( $alma_fee_plan, $allowed_values[ $this->id ], true ) ) {
 			$this->logger->error(

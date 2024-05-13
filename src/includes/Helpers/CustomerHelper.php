@@ -11,6 +11,8 @@
 
 namespace Alma\Woocommerce\Helpers;
 
+use Alma\Woocommerce\Factories\CustomerFactory;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
@@ -21,27 +23,41 @@ if ( ! defined( 'ABSPATH' ) ) {
 class CustomerHelper {
 
 	/**
+	 * Customer Factory.
+	 *
+	 * @var CustomerFactory The customer factory.
+	 */
+	protected $customer_factory;
+	/**
+	 * Construct.
+	 *
+	 * @param CustomerFactory $customer_factory The customer factory.
+	 */
+	public function __construct( $customer_factory ) {
+		$this->customer_factory = $customer_factory;
+	}
+	/**
 	 * Get data.
 	 *
 	 * @return array
 	 */
 	public function get_data() {
 		$data = array(
-			'first_name' => wc()->customer->get_first_name(),
-			'last_name'  => wc()->customer->get_last_name(),
-			'email'      => wc()->customer->get_email(),
-			'phone'      => wc()->customer->get_billing_phone(),
+			'first_name' => $this->customer_factory->get_first_name(),
+			'last_name'  => $this->customer_factory->get_last_name(),
+			'email'      => $this->customer_factory->get_email(),
+			'phone'      => $this->customer_factory->get_billing_phone(),
 		);
 
 		foreach ( array( 'first_name', 'last_name', 'email', 'phone' ) as $attr ) {
 			$method = "get_billing_$attr";
-			if ( empty( $data[ $attr ] ) && method_exists( wc()->customer, $method ) ) {
-				$data[ $attr ] = wc()->customer->$method();
+			if ( empty( $data[ $attr ] ) && method_exists( $this->customer_factory->get_customer(), $method ) ) {
+				$data[ $attr ] = $this->customer_factory->get_customer()->$method();
 			}
 
 			$method = "get_shipping_$attr";
-			if ( empty( $data[ $attr ] ) && method_exists( wc()->customer, $method ) ) {
-				$data[ $attr ] = wc()->customer->$method();
+			if ( empty( $data[ $attr ] ) && method_exists( $this->customer_factory->get_customer(), $method ) ) {
+				$data[ $attr ] = $this->customer_factory->get_customer()->$method();
 			}
 		}
 
@@ -60,15 +76,15 @@ class CustomerHelper {
 	 */
 	public function get_billing_address() {
 		return array(
-			'first_name'  => wc()->customer->get_billing_first_name(),
-			'last_name'   => wc()->customer->get_billing_last_name(),
-			'line1'       => wc()->customer->get_billing_address(),
-			'line2'       => wc()->customer->get_billing_address_2(),
-			'postal_code' => wc()->customer->get_billing_postcode(),
-			'city'        => wc()->customer->get_billing_city(),
-			'country'     => wc()->customer->get_billing_country(),
-			'email'       => wc()->customer->get_billing_email(),
-			'phone'       => wc()->customer->get_billing_phone(),
+			'first_name'  => $this->customer_factory->get_billing_first_name(),
+			'last_name'   => $this->customer_factory->get_billing_last_name(),
+			'line1'       => $this->customer_factory->get_billing_address(),
+			'line2'       => $this->customer_factory->get_billing_address_2(),
+			'postal_code' => $this->customer_factory->get_billing_postcode(),
+			'city'        => $this->customer_factory->get_billing_city(),
+			'country'     => $this->customer_factory->get_billing_country(),
+			'email'       => $this->customer_factory->get_billing_email(),
+			'phone'       => $this->customer_factory->get_billing_phone(),
 		);
 	}
 
@@ -78,7 +94,7 @@ class CustomerHelper {
 	 * @return string|null
 	 */
 	public function get_billing_country() {
-		if ( wc()->customer ) {
+		if ( $this->customer_factory->get_customer() ) {
 			return $this->get_billing_address()['country'];
 		}
 
@@ -92,13 +108,13 @@ class CustomerHelper {
 	 */
 	public function get_shipping_address() {
 		return array(
-			'first_name'  => wc()->customer->get_shipping_first_name(),
-			'last_name'   => wc()->customer->get_shipping_last_name(),
-			'line1'       => wc()->customer->get_shipping_address(),
-			'line2'       => wc()->customer->get_shipping_address_2(),
-			'postal_code' => wc()->customer->get_shipping_postcode(),
-			'city'        => wc()->customer->get_shipping_city(),
-			'country'     => wc()->customer->get_shipping_country(),
+			'first_name'  => $this->customer_factory->get_shipping_first_name(),
+			'last_name'   => $this->customer_factory->get_shipping_last_name(),
+			'line1'       => $this->customer_factory->get_shipping_address(),
+			'line2'       => $this->customer_factory->get_shipping_address_2(),
+			'postal_code' => $this->customer_factory->get_shipping_postcode(),
+			'city'        => $this->customer_factory->get_shipping_city(),
+			'country'     => $this->customer_factory->get_customer()->get_shipping_country(),
 		);
 	}
 
@@ -108,7 +124,7 @@ class CustomerHelper {
 	 * @return string|null
 	 */
 	public function get_shipping_country() {
-		if ( wc()->customer ) {
+		if ( $this->customer_factory->get_customer() ) {
 			return $this->get_shipping_address()['country'];
 		}
 
