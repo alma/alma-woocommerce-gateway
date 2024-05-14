@@ -39,13 +39,20 @@ class FormHelper {
 	 */
 	protected $settings_helper;
 
+	/**
+	 * The internationalization Helper.
+	 *
+	 * @var InternationalizationHelper
+	 */
+	protected $internationalization_helper;
+
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
 		$this->form_fields_helper          = new FormFieldsHelper();
-		$this->internalionalization_helper = new InternationalizationHelper();
+		$this->internationalization_helper = new InternationalizationHelper();
 
 		$settings_helper_builder = new SettingsHelperBuilder();
 		$this->settings_helper   = $settings_helper_builder->get_instance();

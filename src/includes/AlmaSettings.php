@@ -37,7 +37,6 @@ use Alma\Woocommerce\Exceptions\PlansDefinitionException;
 use Alma\Woocommerce\Exceptions\WrongCredentialsException;
 use Alma\Woocommerce\Factories\PluginFactory;
 use Alma\Woocommerce\Factories\VersionFactory;
-use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\EncryptorHelper;
 use Alma\Woocommerce\Helpers\FeePlanHelper;
@@ -107,7 +106,6 @@ class AlmaSettings {
 	public $alma_client;
 
 
-
 	/**
 	 * The encryptor.
 	 *
@@ -124,14 +122,7 @@ class AlmaSettings {
 	public $fee_plan_helper;
 
 	/**
-	 * The cart helper.
-	 *
-	 * @var CartHelper
-	 */
-	public $cart_helper;
-
-	/**
-	 * Internalionalization Helper.
+	 * Internationalization Helper.
 	 *
 	 * @var InternationalizationHelper
 	 */
