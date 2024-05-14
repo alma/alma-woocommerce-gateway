@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\Woocommerce\Gateways\AlmaPaymentGateway;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
+use mysql_xdevapi\Exception;
 
 /**
  * StandardGateway
@@ -33,8 +34,11 @@ class StandardGateway extends AlmaPaymentGateway {
 	}
 
 	/**
-	 * Custom payment fields for a payment gateway.
-	 * (We have three payment gateways : "alma", "alma_pay_later", and "alma_pnx_plus_4")
+	 *  Custom payment fields for a payment gateway.
+	 *  (We have three payment gateways : "alma", "alma_pay_later", and "alma_pnx_plus_4")
+	 *
+	 * @return void
+	 * @throws \Alma\Woocommerce\Exceptions\AlmaException The alma Exception.
 	 */
 	public function payment_fields() {
 		$this->checkout_helper->render_nonce_field( $this->id );

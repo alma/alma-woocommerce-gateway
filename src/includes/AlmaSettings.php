@@ -15,12 +15,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\API\Client;
 use Alma\API\DependenciesError;
-use Alma\API\Endpoints\Results\Eligibility;
 use Alma\API\Entities\FeePlan;
 use Alma\API\Entities\Payment;
 use Alma\API\ParamsError;
 use Alma\API\RequestError;
-use Alma\Woocommerce\Builders\CartHelperBuilder;
 use Alma\Woocommerce\Builders\SettingsHelperBuilder;
 use Alma\Woocommerce\Exceptions\ActivationException;
 use Alma\Woocommerce\Exceptions\AlmaException;
@@ -43,7 +41,6 @@ use Alma\Woocommerce\Helpers\EncryptorHelper;
 use Alma\Woocommerce\Helpers\FeePlanHelper;
 use Alma\Woocommerce\Helpers\GeneralHelper;
 use Alma\Woocommerce\Helpers\InternationalizationHelper;
-use Alma\Woocommerce\Helpers\PaymentHelper;
 use Alma\Woocommerce\Helpers\SettingsHelper;
 
 /**
@@ -133,7 +130,7 @@ class AlmaSettings {
 	public $cart_helper;
 
 	/**
-	 * Internalionalization Helper.
+	 * Internationalization Helper.
 	 *
 	 * @var InternationalizationHelper
 	 */
