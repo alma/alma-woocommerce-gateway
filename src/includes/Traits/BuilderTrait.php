@@ -14,6 +14,7 @@ namespace Alma\Woocommerce\Traits;
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Factories\CartFactory;
+use Alma\Woocommerce\Factories\CoreFactory;
 use Alma\Woocommerce\Factories\CurrencyFactory;
 use Alma\Woocommerce\Factories\CustomerFactory;
 use Alma\Woocommerce\Factories\PHPFactory;
@@ -251,5 +252,20 @@ trait BuilderTrait {
 		}
 
 		return new PHPFactory();
+	}
+
+	/**
+	 *  The core factory.
+	 *
+	 * @param CoreFactory $core_factory The core factory.
+	 *
+	 * @return CoreFactory|null
+	 */
+	public function get_core_factory( $core_factory = null ) {
+		if ( $core_factory ) {
+			return $core_factory;
+		}
+
+		return new CoreFactory();
 	}
 }

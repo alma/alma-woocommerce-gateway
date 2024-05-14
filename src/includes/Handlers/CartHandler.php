@@ -15,7 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
 use Alma\Woocommerce\Factories\CartFactory;
-use Alma\Woocommerce\Factories\PluginFactory;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
 
 /**
@@ -24,11 +23,13 @@ use Alma\Woocommerce\Helpers\ConstantsHelper;
 class CartHandler extends GenericHandler {
 
 	/**
-	 * The plugin factory.
+	 * The cart factory.
 	 *
-	 * @var PluginFactory
+	 * @var CartFactory
 	 */
-	protected $plugin_factory;
+	protected $cart_factory;
+
+
 
 	/**
 	 * __construct
@@ -55,7 +56,7 @@ class CartHandler extends GenericHandler {
 			is_array( $this->alma_settings->excluded_products_list ) &&
 			count( $this->alma_settings->excluded_products_list ) > 0
 		) {
-			$cart_items = $this->cart_factory->get_cart()->get_cart();
+			$cart_items = $this->cart_factory->get_cart_items();
 
 			foreach ( $cart_items as $cart_item ) {
 				$product_id = $cart_item['product_id'];

@@ -32,6 +32,13 @@ class CartFactoryTest extends WP_UnitTestCase {
 		$this->assertInstanceOf(\WC_Cart::class, $this->cart_factory->get_cart());
 	}
 
+	public function test_get_cart_items() {
+		$cart_factory = \Mockery::mock(CartFactory::class)->makePartial();
+		$cart_factory->shouldReceive('get_cart')->andReturn(null);
+
+		$this->assertEquals(array(), $this->cart_factory->get_cart_items());
+	}
+
 }
 
 
