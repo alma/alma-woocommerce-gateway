@@ -19,6 +19,7 @@ use Alma\Woocommerce\Factories\PriceFactory;
 use Alma\Woocommerce\Factories\SessionFactory;
 use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Helpers\CartHelper;
+use Alma\Woocommerce\Helpers\CustomerHelper;
 use Alma\Woocommerce\Helpers\PaymentHelper;
 use Alma\Woocommerce\Helpers\PlanBuilderHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
@@ -73,6 +74,13 @@ class CartHelperBuilderTest extends WP_UnitTestCase {
 		$this->assertInstanceOf(AlmaSettings::class, $this->cart_helper_builder->get_alma_settings());
 		$this->assertInstanceOf(AlmaSettings::class, $this->cart_helper_builder->get_alma_settings(new AlmaSettings()));
 	}
+
+	public function test_get_customer_helper() {
+		$this->assertInstanceOf(CustomerHelper::class, $this->cart_helper_builder->get_customer_helper());
+		$this->assertInstanceOf(CustomerHelper::class, $this->cart_helper_builder->get_customer_helper(\Mockery::mock(CustomerHelper::class)));
+	}
+
+
 }
 
 

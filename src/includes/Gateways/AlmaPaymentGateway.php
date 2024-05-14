@@ -26,12 +26,6 @@ use Alma\Woocommerce\Exceptions\ApiClientException;
 use Alma\Woocommerce\Exceptions\ApiMerchantsException;
 use Alma\Woocommerce\Exceptions\ApiPlansException;
 use Alma\Woocommerce\Exceptions\NoCredentialsException;
-use Alma\Woocommerce\Factories\CartFactory;
-use Alma\Woocommerce\Factories\CurrencyFactory;
-use Alma\Woocommerce\Factories\PluginFactory;
-use Alma\Woocommerce\Factories\PriceFactory;
-use Alma\Woocommerce\Factories\SessionFactory;
-use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\CheckoutHelper;
@@ -39,7 +33,6 @@ use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\EncryptorHelper;
 use Alma\Woocommerce\Helpers\GatewayHelper;
 use Alma\Woocommerce\Helpers\GeneralHelper;
-use Alma\Woocommerce\Helpers\InternationalizationHelper;
 use Alma\Woocommerce\Helpers\OrderHelper;
 use Alma\Woocommerce\Helpers\PaymentHelper;
 use Alma\Woocommerce\Helpers\PlanBuilderHelper;
@@ -251,7 +244,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 		);
 
 		add_filter( 'woocommerce_gateway_title', array( $this->gateway_helper, 'woocommerce_gateway_title' ), 10, 2 );
-		add_filter( 'allowed_redirect_hosts', array( $this->general_helper, 'alma_domains_whitelist' ) );
+		add_filter( 'allowed_redirect_hosts', array( $this->asset_helper, 'alma_domains_whitelist' ) );
 
 		add_action(
 			'woocommerce_update_options_payment_gateways_' . $this->id,
