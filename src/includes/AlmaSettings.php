@@ -22,7 +22,6 @@ use Alma\API\ParamsError;
 use Alma\API\RequestError;
 use Alma\Woocommerce\Builders\CartHelperBuilder;
 use Alma\Woocommerce\Builders\SettingsHelperBuilder;
-use Alma\Woocommerce\Builders\ToolsHelperBuilder;
 use Alma\Woocommerce\Exceptions\ActivationException;
 use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Exceptions\ApiCreatePaymentsException;
@@ -38,13 +37,6 @@ use Alma\Woocommerce\Exceptions\ApiSocLastUpdateDatesException;
 use Alma\Woocommerce\Exceptions\ApiTriggerPaymentsException;
 use Alma\Woocommerce\Exceptions\PlansDefinitionException;
 use Alma\Woocommerce\Exceptions\WrongCredentialsException;
-use Alma\Woocommerce\Factories\CartFactory;
-use Alma\Woocommerce\Factories\CurrencyFactory;
-use Alma\Woocommerce\Factories\PluginFactory;
-use Alma\Woocommerce\Factories\PriceFactory;
-use Alma\Woocommerce\Factories\SessionFactory;
-use Alma\Woocommerce\Factories\VersionFactory;
-use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\EncryptorHelper;
@@ -54,7 +46,6 @@ use Alma\Woocommerce\Helpers\InternationalizationHelper;
 use Alma\Woocommerce\Helpers\PaymentHelper;
 use Alma\Woocommerce\Helpers\PlanBuilderHelper;
 use Alma\Woocommerce\Helpers\SettingsHelper;
-use Alma\Woocommerce\Helpers\ToolsHelper;
 
 /**
  * Handles settings retrieval from the settings API.
@@ -149,7 +140,7 @@ class AlmaSettings {
 	public $cart_helper;
 
 	/**
-	 * Internalionalization Helper.
+	 * Internationalization Helper.
 	 *
 	 * @var InternationalizationHelper
 	 */
