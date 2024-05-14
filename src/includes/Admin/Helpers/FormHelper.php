@@ -15,17 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-use Alma\Woocommerce\AlmaLogger;
-use Alma\Woocommerce\Builders\SettingsHelperBuilder;
-use Alma\Woocommerce\Builders\ToolsHelperBuilder;
-use Alma\Woocommerce\Factories\CurrencyFactory;
-use Alma\Woocommerce\Factories\PluginFactory;
-use Alma\Woocommerce\Factories\PriceFactory;
-use Alma\Woocommerce\Factories\VersionFactory;
-use Alma\Woocommerce\Helpers\AssetsHelper;
+use Alma\Woocommerce\Builders\Helpers\SettingsHelperBuilder;
 use Alma\Woocommerce\Helpers\InternationalizationHelper;
 use Alma\Woocommerce\Helpers\SettingsHelper;
-use Alma\Woocommerce\Helpers\ToolsHelper;
 
 /**
  * FormHelper.

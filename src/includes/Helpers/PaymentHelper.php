@@ -22,9 +22,8 @@ use Alma\API\ParamsError;
 use Alma\API\RequestError;
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
-use Alma\Woocommerce\Builders\CartHelperBuilder;
-use Alma\Woocommerce\Builders\CustomerHelperBuilder;
-use Alma\Woocommerce\Builders\ToolsHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
 use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Exceptions\AmountMismatchException;
 use Alma\Woocommerce\Exceptions\ApiCreatePaymentsException;
@@ -32,11 +31,6 @@ use Alma\Woocommerce\Exceptions\ApiFetchPaymentsException;
 use Alma\Woocommerce\Exceptions\BuildOrderException;
 use Alma\Woocommerce\Exceptions\IncorrectPaymentException;
 use Alma\Woocommerce\Exceptions\PlansDefinitionException;
-use Alma\Woocommerce\Factories\CartFactory;
-use Alma\Woocommerce\Factories\CurrencyFactory;
-use Alma\Woocommerce\Factories\PriceFactory;
-use Alma\Woocommerce\Factories\SessionFactory;
-use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Services\PaymentUponTriggerService;
 
 /**

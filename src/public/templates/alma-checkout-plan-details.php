@@ -8,14 +8,8 @@
  * @subpackage Alma_Gateway_For_Woocommerce/public/templates/partials
  */
 
-use Alma\Woocommerce\AlmaLogger;
-use Alma\Woocommerce\Builders\CartHelperBuilder;
-use Alma\Woocommerce\Builders\ToolsHelperBuilder;
-use Alma\Woocommerce\Factories\CurrencyFactory;
-use Alma\Woocommerce\Factories\PriceFactory;
-use Alma\Woocommerce\Factories\SessionFactory;
-use Alma\Woocommerce\Factories\VersionFactory;
-use Alma\Woocommerce\Helpers\CartHelper;
+use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
 

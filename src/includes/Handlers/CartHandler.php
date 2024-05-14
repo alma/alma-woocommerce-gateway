@@ -13,23 +13,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-use Alma\Woocommerce\AlmaLogger;
-use Alma\Woocommerce\Builders\CartHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
 use Alma\Woocommerce\Factories\CartFactory;
-use Alma\Woocommerce\Factories\CurrencyFactory;
-use Alma\Woocommerce\Factories\PriceFactory;
-use Alma\Woocommerce\Factories\SessionFactory;
-use Alma\Woocommerce\Factories\VersionFactory;
-use Alma\Woocommerce\Helpers\CartHelper;
+use Alma\Woocommerce\Factories\PluginFactory;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
-use Alma\Woocommerce\Helpers\ToolsHelper;
 
 /**
  * CartHandler
  */
 class CartHandler extends GenericHandler {
 
-
+	/**
+	 * The plugin factory.
+	 *
+	 * @var PluginFactory
+	 */
+	protected $plugin_factory;
 
 	/**
 	 * __construct
@@ -38,6 +37,7 @@ class CartHandler extends GenericHandler {
 	 */
 	public function __construct() {
 		parent::__construct();
+		$this->cart_factory = new CartFactory();
 
 		if ( 'yes' === $this->alma_settings->display_cart_eligibility ) {
 			add_action( 'woocommerce_cart_totals_after_order_total', array( $this, 'display_cart_eligibility' ) );
@@ -55,7 +55,9 @@ class CartHandler extends GenericHandler {
 			is_array( $this->alma_settings->excluded_products_list ) &&
 			count( $this->alma_settings->excluded_products_list ) > 0
 		) {
-			foreach ( WC()->cart->get_cart() as $cart_item ) {
+			$cart_items = $this->cart_factory->get_cart()->get_cart();
+
+			foreach ( $cart_items as $cart_item ) {
 				$product_id = $cart_item['product_id'];
 
 				if ( $this->is_product_excluded( $product_id ) ) {

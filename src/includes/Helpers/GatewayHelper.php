@@ -15,10 +15,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use Alma\Woocommerce\Builders\CartHelperBuilder;
-use Alma\Woocommerce\Exceptions\AlmaException;
-use Alma\Woocommerce\Services\PaymentUponTriggerService;
 use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
+use Alma\Woocommerce\Exceptions\AlmaException;
+use Alma\Woocommerce\Factories\CartFactory;
+use Alma\Woocommerce\Services\PaymentUponTriggerService;
 
 /**
  * GatewayHelper
@@ -50,12 +51,22 @@ class GatewayHelper {
 	protected $checkout_helper;
 
 	/**
+	 * The cart factory.
+	 *
+	 * @var CartFactory
+	 */
+	protected $cart_factory;
+
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
 		$this->alma_settings   = new AlmaSettings();
 		$this->payment_helper  = new PaymentHelper();
 		$this->checkout_helper = new CheckoutHelper();
+		$this->cart_factory    = new CartFactory();
+
 	}
 
 	/**
@@ -210,7 +221,7 @@ class GatewayHelper {
 	 * @return bool
 	 */
 	public function cart_contains_excluded_category() {
-		if ( wc()->cart === null ) {
+		if ( $this->cart_factory->get_cart() === null ) {
 			return false;
 		}
 
@@ -219,7 +230,9 @@ class GatewayHelper {
 			&& is_array( $this->alma_settings->excluded_products_list )
 			&& count( $this->alma_settings->excluded_products_list ) > 0
 		) {
-			foreach ( WC()->cart->get_cart() as $cart_item ) {
+			$cart_items = $this->cart_factory->get_cart()->get_cart();
+
+			foreach ( $cart_items as $cart_item ) {
 				$product_id = $cart_item['product_id'];
 
 				foreach ( $this->alma_settings->excluded_products_list as $category_slug ) {

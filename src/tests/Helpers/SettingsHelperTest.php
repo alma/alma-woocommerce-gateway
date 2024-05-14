@@ -9,17 +9,10 @@
 
 namespace Alma\Woocommerce\Tests\Helpers;
 
-use Alma\Woocommerce\AlmaLogger;
-use Alma\Woocommerce\Builders\SettingsHelperBuilder;
-use Alma\Woocommerce\Exceptions\NoCredentialsException;
-use Alma\Woocommerce\Factories\CurrencyFactory;
-use Alma\Woocommerce\Factories\PluginFactory;
-use Alma\Woocommerce\Factories\PriceFactory;
+use Alma\Woocommerce\Builders\Helpers\SettingsHelperBuilder;
 use Alma\Woocommerce\Factories\VersionFactory;
-use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\InternationalizationHelper;
 use Alma\Woocommerce\Helpers\SettingsHelper;
-use Alma\Woocommerce\Helpers\ToolsHelper;
 use WP_UnitTestCase;
 
 /**

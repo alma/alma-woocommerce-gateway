@@ -19,7 +19,7 @@ use Alma\API\Entities\FeePlan;
 use Alma\API\Entities\Payment;
 use Alma\API\ParamsError;
 use Alma\API\RequestError;
-use Alma\Woocommerce\Builders\SettingsHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\SettingsHelperBuilder;
 use Alma\Woocommerce\Exceptions\ActivationException;
 use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Exceptions\ApiCreatePaymentsException;
@@ -35,13 +35,13 @@ use Alma\Woocommerce\Exceptions\ApiSocLastUpdateDatesException;
 use Alma\Woocommerce\Exceptions\ApiTriggerPaymentsException;
 use Alma\Woocommerce\Exceptions\PlansDefinitionException;
 use Alma\Woocommerce\Exceptions\WrongCredentialsException;
+use Alma\Woocommerce\Factories\PluginFactory;
+use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\EncryptorHelper;
 use Alma\Woocommerce\Helpers\FeePlanHelper;
-use Alma\Woocommerce\Helpers\GeneralHelper;
 use Alma\Woocommerce\Helpers\InternationalizationHelper;
-use Alma\Woocommerce\Helpers\PaymentHelper;
 use Alma\Woocommerce\Helpers\SettingsHelper;
 
 /**
@@ -144,6 +144,20 @@ class AlmaSettings {
 	 */
 	protected $settings_helper;
 
+	/**
+	 * The version factory.
+	 *
+	 * @var VersionFactory
+	 */
+	protected $version_factory;
+
+
+	/**
+	 * The plugin factory.
+	 *
+	 * @var PluginFactory
+	 */
+	protected $plugin_factory;
 
 	/**
 	 * Constructor.
@@ -153,6 +167,8 @@ class AlmaSettings {
 		$this->encryptor_helper            = new EncryptorHelper();
 		$this->fee_plan_helper             = new FeePlanHelper();
 		$this->internationalization_helper = new InternationalizationHelper();
+		$this->version_factory             = new VersionFactory();
+		$this->plugin_factory              = new PluginFactory();
 
 		$settings_helper_builder = new SettingsHelperBuilder();
 		$this->settings_helper   = $settings_helper_builder->get_instance();
@@ -541,7 +557,7 @@ class AlmaSettings {
 			);
 
 			$this->alma_client->addUserAgentComponent( 'WordPress', get_bloginfo( 'version' ) );
-			$this->alma_client->addUserAgentComponent( 'WooCommerce', wc()->version );
+			$this->alma_client->addUserAgentComponent( 'WooCommerce', $this->version_factory->get_version() );
 			$this->alma_client->addUserAgentComponent( 'Alma for WooCommerce', ALMA_VERSION );
 
 			return;
@@ -837,7 +853,7 @@ class AlmaSettings {
 		if ( ! count( $fee_plans ) ) {
 			$message = __( 'Alma encountered an error when fetching the fee plans.', 'alma-gateway-for-woocommerce' );
 
-			alma_plugin()->admin_notices->add_admin_notice( 'error_get_fee', 'notice notice-error', $message, true );
+			$this->plugin_factory->add_admin_notice( 'error_get_fee', 'notice notice-error', $message, true );
 
 			throw new ApiPlansException( $message );
 		}

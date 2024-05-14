@@ -10,7 +10,7 @@
 namespace Alma\Woocommerce\Tests\Helpers;
 
 use Alma\Woocommerce\AlmaLogger;
-use Alma\Woocommerce\Builders\ToolsHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
 use Alma\Woocommerce\Factories\CurrencyFactory;
 use Alma\Woocommerce\Factories\PriceFactory;
 use Alma\Woocommerce\Helpers\ConstantsHelper;

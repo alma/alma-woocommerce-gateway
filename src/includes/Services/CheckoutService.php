@@ -11,7 +11,11 @@
 
 namespace Alma\Woocommerce\Services;
 
+use Alma\Woocommerce\Builders\Factories\CustomerFactoryBuilder;
 use Alma\Woocommerce\Exceptions\AlmaException;
+use Alma\Woocommerce\Factories\CartFactory;
+use Alma\Woocommerce\Factories\CustomerFactory;
+use Alma\Woocommerce\Factories\SessionFactory;
 use Alma\Woocommerce\Helpers\BlockHelper;
 use Alma\Woocommerce\Helpers\CheckoutHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
@@ -43,11 +47,37 @@ class CheckoutService extends \WC_Checkout {
 	protected $block_helper;
 
 	/**
+	 * The customer factory.
+	 *
+	 * @var CustomerFactory
+	 */
+	protected $customer_factory;
+
+	/**
+	 * The session factory.
+	 *
+	 * @var SessionFactory
+	 */
+	protected $session_factory;
+
+	/**
+	 * The cart factory.
+	 *
+	 * @var CartFactory
+	 */
+	protected $cart_factory;
+
+	/**
 	 * Construct.
 	 */
 	public function __construct() {
-		$this->plugin_helper = new PluginHelper();
-		$this->block_helper  = new BlockHelper();
+		$this->plugin_helper      = new PluginHelper();
+		$this->block_helper       = new BlockHelper();
+		$customer_factory_builder = new CustomerFactoryBuilder();
+		$this->customer_factory   = $customer_factory_builder->get_instance();
+		$this->session_factory    = new SessionFactory();
+		$this->cart_factory       = new CartFactory();
+
 	}
 
 	/**
@@ -101,6 +131,9 @@ class CheckoutService extends \WC_Checkout {
 		if ( ! $is_alma_payment ) {
 			throw new AlmaException( __( 'We were unable to process your order, please try again.', 'alma-gateway-for-woocommerce' ) );
 		}
+
+		$session = $this->session_factory->get_session();
+
 		if ( ! $this->block_helper->has_woocommerce_blocks() ) {
 			$nonce_value = wc_get_var($_POST['woocommerce-process-checkout-nonce'], wc_get_var($_POST['_wpnonce'], '')); // @codingStandardsIgnoreLine.
 
@@ -109,7 +142,7 @@ class CheckoutService extends \WC_Checkout {
 			||
 			! wp_verify_nonce( $nonce_value, 'woocommerce-process_checkout' )
 			) {
-				WC()->session->set( 'refresh_totals', true );
+				$session->set( 'refresh_totals', true );
 				throw new AlmaException( __( 'We were unable to process your order, please try again.', 'alma-gateway-for-woocommerce' ) );
 			}
 		}
@@ -119,7 +152,7 @@ class CheckoutService extends \WC_Checkout {
 
 		do_action('woocommerce_before_checkout_process'); // phpcs:ignore
 
-		if ( WC()->cart->is_empty() ) {
+		if ( $this->cart_factory->get_cart()->is_empty() ) {
 			/* translators: %s: shop cart url */
 			throw new AlmaException( sprintf( __( 'Sorry, your session has expired. <a href="%s" class="wc-backward">Return to shop</a>', 'alma-gateway-for-woocommerce' ), esc_url( wc_get_page_permalink( 'shop' ) ) ) );
 		}
@@ -205,16 +238,18 @@ class CheckoutService extends \WC_Checkout {
 			$errors->add( 'terms', __( 'Please read and accept the terms and conditions to proceed with your order.', 'alma-gateway-for-woocommerce' ) );
 		}
 
-		if ( WC()->cart->needs_shipping() ) {
-			$shipping_country = WC()->customer->get_shipping_country();
+		if ( $this->cart_factory->get_cart()->needs_shipping() ) {
+			$shipping_country = $this->customer_factory->get_shipping_country();
 
 			if ( empty( $shipping_country ) ) {
 				$errors->add( 'shipping', __( 'Please enter an address to continue.', 'alma-gateway-for-woocommerce' ) );
-			} elseif ( ! in_array( WC()->customer->get_shipping_country(), array_keys( WC()->countries->get_shipping_countries() ), true ) ) {
+			} elseif ( ! in_array( $this->customer_factory->get_shipping_country(), array_keys( WC()->countries->get_shipping_countries() ), true ) ) {
 				/* translators: %s: shipping location */
-				$errors->add( 'shipping', sprintf( __( 'Unfortunately <strong>we do not ship %s</strong>. Please enter an alternative shipping address.', 'alma-gateway-for-woocommerce' ), WC()->countries->shipping_to_prefix() . ' ' . WC()->customer->get_shipping_country() ) );
+				$errors->add( 'shipping', sprintf( __( 'Unfortunately <strong>we do not ship %s</strong>. Please enter an alternative shipping address.', 'alma-gateway-for-woocommerce' ), WC()->countries->shipping_to_prefix() . ' ' . $this->customer_factory->get_shipping_country() ) );
 			} else {
-				$chosen_shipping_methods = WC()->session->get( 'chosen_shipping_methods' );
+				$session = $this->session_factory->get_session();
+
+				$chosen_shipping_methods = $session->get( 'chosen_shipping_methods' );
 
 				foreach ( WC()->shipping->get_packages() as $i => $package ) {
 					if ( ! isset( $chosen_shipping_methods[ $i ], $package['rates'][ $chosen_shipping_methods[ $i ] ] ) ) {
