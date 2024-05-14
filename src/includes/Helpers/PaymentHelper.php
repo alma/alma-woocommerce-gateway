@@ -23,7 +23,6 @@ use Alma\API\RequestError;
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Builders\CartHelperBuilder;
-use Alma\Woocommerce\Builders\CustomerHelperBuilder;
 use Alma\Woocommerce\Builders\ToolsHelperBuilder;
 use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Exceptions\AmountMismatchException;
