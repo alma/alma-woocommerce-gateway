@@ -49,16 +49,14 @@ class CustomerHelper {
 			'phone'      => $this->customer_factory->get_billing_phone(),
 		);
 
-		foreach ( array( 'first_name', 'last_name', 'email', 'phone' ) as $attr ) {
+		$array_keys = array_keys( $data );
+
+		foreach ( $array_keys as $attr ) {
 			$method = "get_billing_$attr";
-			if ( empty( $data[ $attr ] ) && method_exists( $this->customer_factory->get_customer(), $method ) ) {
-				$data[ $attr ] = $this->customer_factory->get_customer()->$method();
-			}
+			$data   = $this->get_customer_data( $method, $data, $attr );
 
 			$method = "get_shipping_$attr";
-			if ( empty( $data[ $attr ] ) && method_exists( $this->customer_factory->get_customer(), $method ) ) {
-				$data[ $attr ] = $this->customer_factory->get_customer()->$method();
-			}
+			$data   = $this->get_customer_data( $method, $data, $attr );
 		}
 
 		$data['addresses'] = array(
@@ -68,6 +66,31 @@ class CustomerHelper {
 
 		return $data;
 	}
+
+	/**
+	 * Get customer data.
+	 *
+	 * @param string $method The method.
+	 * @param array  $data The array.
+	 * @param string $attr The field name.
+	 *
+	 * @return mixed
+	 */
+	public function get_customer_data( $method, $data, $attr ) {
+
+		if (
+			empty( $data[ $attr ] )
+		) {
+			$result = $this->customer_factory->call_method( $method );
+
+			if ( false !== $result ) {
+				$data[ $attr ] = $result;
+			}
+		}
+
+		return $data;
+	}
+
 
 	/**
 	 * Get billing address.
@@ -88,18 +111,6 @@ class CustomerHelper {
 		);
 	}
 
-	/**
-	 * Gets billing country if customer exists.
-	 *
-	 * @return string|null
-	 */
-	public function get_billing_country() {
-		if ( $this->customer_factory->get_customer() ) {
-			return $this->get_billing_address()['country'];
-		}
-
-		return null;
-	}
 
 	/**
 	 * Gets shipping address.
@@ -114,20 +125,7 @@ class CustomerHelper {
 			'line2'       => $this->customer_factory->get_shipping_address_2(),
 			'postal_code' => $this->customer_factory->get_shipping_postcode(),
 			'city'        => $this->customer_factory->get_shipping_city(),
-			'country'     => $this->customer_factory->get_customer()->get_shipping_country(),
+			'country'     => $this->customer_factory->get_shipping_country(),
 		);
-	}
-
-	/**
-	 * Gets shipping country if customer exists.
-	 *
-	 * @return string|null
-	 */
-	public function get_shipping_country() {
-		if ( $this->customer_factory->get_customer() ) {
-			return $this->get_shipping_address()['country'];
-		}
-
-		return null;
 	}
 }

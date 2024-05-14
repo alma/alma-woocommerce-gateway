@@ -21,6 +21,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 class CustomerFactory {
 
 	/**
+	 * The php factory.
+	 *
+	 * @var PHPFactory
+	 */
+	protected $php_factory;
+
+	/**
+	 * Construct.
+	 *
+	 * @param PHPFactory $php_factory The php factory.
+	 */
+	public function __construct( $php_factory ) {
+		$this->php_factory = $php_factory;
+	}
+	/**
 	 * Get the customer.
 	 *
 	 * @return \WC_Customer|null
@@ -307,6 +322,26 @@ class CustomerFactory {
 		}
 
 		return $customer->get_billing_email();
+	}
+
+	/**
+	 * Call a method.
+	 *
+	 * @param string $method The method.
+	 *
+	 * @return null|string|false
+	 */
+	public function call_method( $method ) {
+		$customer = $this->get_customer();
+		if ( ! $customer ) {
+			return false;
+		}
+
+		if ( $this->php_factory->method_exists( $customer, $method ) ) {
+			return $customer->$method();
+		}
+
+		return false;
 	}
 
 }

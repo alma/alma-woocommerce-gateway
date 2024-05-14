@@ -13,6 +13,7 @@ namespace Alma\Woocommerce\Tests\Builders;
 use Alma\Woocommerce\Builders\CustomerHelperBuilder;
 use Alma\Woocommerce\Factories\CustomerFactory;
 
+use Alma\Woocommerce\Factories\PHPFactory;
 use Alma\Woocommerce\Helpers\CustomerHelper;
 use WP_UnitTestCase;
 
@@ -39,7 +40,7 @@ class CustomerHelperBuilderTest extends WP_UnitTestCase {
 	public function test_get_customer_factory() {
 		$this->assertInstanceOf(CustomerFactory::class, $this->customer_helper_builder->get_customer_factory());
 		$this->assertInstanceOf(CustomerFactory::class, $this->customer_helper_builder->get_customer_factory(
-			new CustomerFactory()
+			new CustomerFactory(new PHPFactory())
 		));
 	}
 }

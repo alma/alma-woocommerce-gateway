@@ -16,6 +16,7 @@ use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Factories\CartFactory;
 use Alma\Woocommerce\Factories\CurrencyFactory;
 use Alma\Woocommerce\Factories\CustomerFactory;
+use Alma\Woocommerce\Factories\PHPFactory;
 use Alma\Woocommerce\Factories\PluginFactory;
 use Alma\Woocommerce\Factories\PriceFactory;
 use Alma\Woocommerce\Factories\SessionFactory;
@@ -204,7 +205,7 @@ trait BuilderTrait {
 			return $customer_factory;
 		}
 
-		return new CustomerFactory();
+		return new CustomerFactory( new PHPFactory() );
 	}
 
 	/**

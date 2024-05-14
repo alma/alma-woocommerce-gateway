@@ -246,8 +246,8 @@ class CartHelper {
 			'locale'          => apply_filters( 'alma_eligibility_user_locale', get_locale() ),
 		);
 
-		$billing_country  = $this->customer_helper->get_billing_country();
-		$shipping_country = $this->customer_helper->get_shipping_country();
+		$billing_country  = $this->customer_helper->get_billing_address()['country'];
+		$shipping_country = $this->customer_helper->get_shipping_address()['country'];
 
 		if ( $billing_country ) {
 			$data['billing_address'] = array( 'country' => $billing_country );
