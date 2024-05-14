@@ -35,11 +35,9 @@ use Alma\Woocommerce\Exceptions\ApiSocLastUpdateDatesException;
 use Alma\Woocommerce\Exceptions\ApiTriggerPaymentsException;
 use Alma\Woocommerce\Exceptions\PlansDefinitionException;
 use Alma\Woocommerce\Exceptions\WrongCredentialsException;
-use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\EncryptorHelper;
 use Alma\Woocommerce\Helpers\FeePlanHelper;
-use Alma\Woocommerce\Helpers\GeneralHelper;
 use Alma\Woocommerce\Helpers\InternationalizationHelper;
 use Alma\Woocommerce\Helpers\SettingsHelper;
 
@@ -106,7 +104,6 @@ class AlmaSettings {
 	public $alma_client;
 
 
-
 	/**
 	 * The encryptor.
 	 *
@@ -121,13 +118,6 @@ class AlmaSettings {
 	 * @var FeePlanHelper
 	 */
 	public $fee_plan_helper;
-
-	/**
-	 * The cart helper.
-	 *
-	 * @var CartHelper
-	 */
-	public $cart_helper;
 
 	/**
 	 * Internationalization Helper.
