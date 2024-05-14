@@ -41,7 +41,7 @@ class CustomerFactoryTest extends WP_UnitTestCase {
 		$this->customer->set_first_name('FirstName');
 		$this->customer->set_last_name('LastName');
 		$this->customer->set_email('firstname@alma.com');
-		$this->customer->set_billing_phone('+33000000000');
+		$this->customer->set_billing_phone('33000000000');
 		$this->customer->set_billing_first_name('BillingFirstName');
 		$this->customer->set_shipping_first_name('ShippingFirstName');
 		$this->customer->set_billing_last_name('BillingLastName');
@@ -112,7 +112,7 @@ class CustomerFactoryTest extends WP_UnitTestCase {
 		$customer_factory = Mockery::mock( CustomerFactory::class )->makePartial();
 		$customer_factory->shouldReceive('get_customer')->andReturn($this->customer);
 
-		$this->assertEquals('+33000000000', $customer_factory->get_billing_phone());
+		$this->assertEquals('33000000000', $customer_factory->get_billing_phone());
 	}
 
 	public function test_get_billing_first_name() {
