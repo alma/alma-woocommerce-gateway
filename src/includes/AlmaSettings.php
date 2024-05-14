@@ -133,7 +133,7 @@ class AlmaSettings {
 	public $cart_helper;
 
 	/**
-	 * Internalionalization Helper.
+	 * Internationalization Helper.
 	 *
 	 * @var InternationalizationHelper
 	 */

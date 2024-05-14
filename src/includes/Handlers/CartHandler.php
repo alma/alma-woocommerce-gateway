@@ -13,23 +13,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\Builders\CartHelperBuilder;
-use Alma\Woocommerce\Factories\CartFactory;
-use Alma\Woocommerce\Factories\CurrencyFactory;
-use Alma\Woocommerce\Factories\PriceFactory;
-use Alma\Woocommerce\Factories\SessionFactory;
-use Alma\Woocommerce\Factories\VersionFactory;
-use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
-use Alma\Woocommerce\Helpers\ToolsHelper;
 
 /**
  * CartHandler
  */
 class CartHandler extends GenericHandler {
-
-
 
 	/**
 	 * __construct
