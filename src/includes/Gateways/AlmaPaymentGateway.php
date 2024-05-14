@@ -191,6 +191,13 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 	protected $cart_factory;
 
 	/**
+	 * Alma plan builder.
+	 *
+	 * @var PlanBuilderHelper
+	 */
+	protected $alma_plan_builder;
+
+	/**
 	 * Construct.
 	 *
 	 * @param bool $check_basics Check the basics requirement.

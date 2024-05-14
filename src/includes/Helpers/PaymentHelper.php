@@ -82,6 +82,13 @@ class PaymentHelper {
 	 */
 	protected $cart_helper;
 
+	/**
+	 * The tool helper.
+	 *
+	 * @var ToolsHelper
+	 */
+	protected $helper_tools;
+
 
 	/**
 	 * Contructor.
