@@ -17,11 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\API\Entities\FeePlan;
 use Alma\Woocommerce\Admin\Builders\FormHtmlBuilder;
-use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Builders\ToolsHelperBuilder;
-use Alma\Woocommerce\Factories\CurrencyFactory;
-use Alma\Woocommerce\Factories\PriceFactory;
 use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\BlockHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
@@ -86,7 +83,7 @@ class FormFieldsHelper {
 	 *
 	 * @var InternationalizationHelper
 	 */
-	protected $internalionalization_helper;
+	protected $internationalization_helper;
 
 	/**
 	 * Constructor.
@@ -99,7 +96,7 @@ class FormFieldsHelper {
 		$this->block_helper                = new BlockHelper();
 		$tools_helper_builder              = new ToolsHelperBuilder();
 		$this->tools_helper                = $tools_helper_builder->get_instance();
-		$this->internalionalization_helper = new InternationalizationHelper();
+		$this->internationalization_helper = new InternationalizationHelper();
 	}
 
 
@@ -588,7 +585,7 @@ class FormFieldsHelper {
 			),
 		);
 
-		$field_cart_not_eligible_message_gift_cards = $this->internalionalization_helper->generate_i18n_field(
+		$field_cart_not_eligible_message_gift_cards = $this->internationalization_helper->generate_i18n_field(
 			'cart_not_eligible_message_gift_cards',
 			array(
 				'title'       => __( 'Non-eligibility message for excluded products', 'alma-gateway-for-woocommerce' ),
@@ -639,7 +636,7 @@ class FormFieldsHelper {
 			),
 		);
 
-		$field_payment_method_title = $this->internalionalization_helper->generate_i18n_field(
+		$field_payment_method_title = $this->internationalization_helper->generate_i18n_field(
 			'title_' . $blocks . $payment_method_name,
 			array(
 				'title'       => __( 'Title', 'alma-gateway-for-woocommerce' ),
@@ -649,7 +646,7 @@ class FormFieldsHelper {
 			$default_settings[ 'title_' . $blocks . $payment_method_name ]
 		);
 
-		$field_payment_method_description = $this->internalionalization_helper->generate_i18n_field(
+		$field_payment_method_description = $this->internationalization_helper->generate_i18n_field(
 			'description_' . $blocks . $payment_method_name,
 			array(
 				'title'       => __( 'Description', 'alma-gateway-for-woocommerce' ),

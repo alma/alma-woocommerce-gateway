@@ -41,7 +41,6 @@ use Alma\Woocommerce\Helpers\EncryptorHelper;
 use Alma\Woocommerce\Helpers\FeePlanHelper;
 use Alma\Woocommerce\Helpers\GeneralHelper;
 use Alma\Woocommerce\Helpers\InternationalizationHelper;
-use Alma\Woocommerce\Helpers\PaymentHelper;
 use Alma\Woocommerce\Helpers\SettingsHelper;
 
 /**
@@ -131,7 +130,7 @@ class AlmaSettings {
 	public $cart_helper;
 
 	/**
-	 * Internalionalization Helper.
+	 * Internationalization Helper.
 	 *
 	 * @var InternationalizationHelper
 	 */
