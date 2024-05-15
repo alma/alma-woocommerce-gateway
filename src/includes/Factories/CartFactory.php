@@ -1,6 +1,6 @@
 <?php
 /**
- * VersionFactory.
+ * CartFactory.
  *
  * @since 5.4.0
  *
@@ -16,15 +16,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class VersionFactory.
+ * Class CartFactory.
  */
-class VersionFactory {
+class CartFactory {
+
 	/**
-	 * Get version.
+	 * Get Wc cart
 	 *
-	 * @return string
+	 * @return \WC_Cart|null
 	 */
-	public function get_version() {
-		return WC()->version;
+	public function get_cart() {
+		return wc()->cart;
 	}
 }

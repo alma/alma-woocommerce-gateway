@@ -37,6 +37,8 @@ class PluginFactory {
 	 * @param string $message The message.
 	 * @param bool   $dismissible Is this dismissible.
 	 *
+	 * @codeCoverageIgnore
+	 *
 	 * @return void
 	 */
 	public function add_admin_notice( $slug, $class, $message, $dismissible = false ) {

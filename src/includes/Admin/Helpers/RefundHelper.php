@@ -17,8 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
-use Alma\Woocommerce\Factories\CurrencyFactory;
-use Alma\Woocommerce\Factories\PriceFactory;
+use Alma\Woocommerce\Builders\ToolsHelperBuilder;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
 
@@ -60,9 +59,10 @@ class RefundHelper {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->logger        = new AlmaLogger();
-		$this->alma_settings = new AlmaSettings();
-		$this->tool_helper   = new ToolsHelper( $this->logger, new PriceFactory(), new CurrencyFactory() );
+		$this->logger         = new AlmaLogger();
+		$this->alma_settings  = new AlmaSettings();
+		$tools_helper_builder = new ToolsHelperBuilder();
+		$this->tool_helper    = $tools_helper_builder->get_instance();
 	}
 
 	/**

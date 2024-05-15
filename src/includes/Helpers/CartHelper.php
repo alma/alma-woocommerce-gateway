@@ -11,6 +11,7 @@
 
 namespace Alma\Woocommerce\Helpers;
 
+use Alma\Woocommerce\Factories\CartFactory;
 use Alma\Woocommerce\Factories\SessionFactory;
 use Alma\Woocommerce\Factories\VersionFactory;
 
@@ -39,11 +40,18 @@ class CartHelper {
 
 
 	/**
-	 * Helper Version.
+	 * Factory Version.
 	 *
 	 * @var VersionFactory
 	 */
 	protected $version_factory;
+
+	/**
+	 * Factory Cart.
+	 *
+	 * @var CartFactory
+	 */
+	protected $cart_factory;
 
 
 	/**
@@ -54,11 +62,13 @@ class CartHelper {
 	 * @param ToolsHelper    $tools_helper The tool Helper.
 	 * @param SessionFactory $session_factory The session Helper.
 	 * @param VersionFactory $version_factory The version Helper.
+	 * @param CartFactory    $cart_factory The cart Helper.
 	 */
-	public function __construct( $tools_helper, $session_factory, $version_factory ) {
+	public function __construct( $tools_helper, $session_factory, $version_factory, $cart_factory ) {
 		$this->tools_helper    = $tools_helper;
 		$this->session_factory = $session_factory;
 		$this->version_factory = $version_factory;
+		$this->cart_factory    = $cart_factory;
 	}
 
 	/**
@@ -78,7 +88,7 @@ class CartHelper {
 	 * @return float
 	 */
 	public function get_total_from_cart() {
-		$cart = $this->get_cart();
+		$cart = $this->cart_factory->get_cart();
 
 		if ( ! $cart ) {
 			return 0;
@@ -104,15 +114,5 @@ class CartHelper {
 		}
 
 		return $total;
-	}
-
-	/**
-	 * Get Wc cart
-	 *
-	 * @codeCoverageIgnore
-	 * @return \WC_Cart|null
-	 */
-	public function get_cart() {
-		return wc()->cart;
 	}
 }

@@ -10,6 +10,9 @@
 namespace Alma\Woocommerce\Tests\Helpers;
 
 use Alma\Woocommerce\AlmaLogger;
+use Alma\Woocommerce\Builders\CartHelperBuilder;
+use Alma\Woocommerce\Builders\ToolsHelperBuilder;
+use Alma\Woocommerce\Factories\CartFactory;
 use Alma\Woocommerce\Factories\CurrencyFactory;
 use Alma\Woocommerce\Factories\PriceFactory;
 use Alma\Woocommerce\Factories\SessionFactory;
@@ -23,74 +26,60 @@ use WP_UnitTestCase;
  */
 class CartHelperTest extends WP_UnitTestCase {
 	/**
-	 * The session helper.
-	 *
-	 * @var SessionFactory
-	 */
-	protected $session_helper;
-
-	/**
-	 * The version helper.
-	 *
-	 * @var VersionFactory
-	 */
-	protected $version_helper;
-
-
-	/**
-	 * The tools helper.
-	 *
-	 * @var ToolsHelper
-	 */
-	protected $tools_helper;
-
-	public function set_up() {
-		$this->session_helper = new SessionFactory();
-		$this->version_helper = new VersionFactory();
-		$this->tools_helper = new ToolsHelper(new AlmaLogger(), new PriceFactory(), new CurrencyFactory());
-	}
-	/**
 	 * @covers \Alma\Woocommerce\Helpers\CartHelper::get_total_from_cart
 	 *
 	 * @return void
 	 */
 	public function test_get_total_from_cart() {
 		// Test Empty Cart
-		$cart_helper = \Mockery::mock(CartHelper::class, [
-			$this->tools_helper,
-			$this->session_helper,
-			$this->version_helper
-		])->makePartial();
-		$cart_helper->shouldReceive('get_cart')
-		        ->andReturn(null);
+		$cart_factory = \Mockery::mock(CartFactory::class);
+		$cart_factory->shouldReceive('get_cart')
+		             ->andReturn(null);
+		$cart_helper_builder = \Mockery::mock(CartHelperBuilder::class)->makePartial();
+		$cart_helper_builder->shouldReceive('get_cart_factory')
+				->andReturn($cart_factory);
+
+		$cart_helper = $cart_helper_builder->get_instance();
 
 		$this->assertEquals('0', $cart_helper->get_total_from_cart());
 
-
 		// Test Cart version < 3.2.0
-		$version_helper = \Mockery::mock(VersionFactory::class);
-		$version_helper->shouldReceive('get_version')
+		$version_factory = \Mockery::mock(VersionFactory::class);
+		$version_factory->shouldReceive('get_version')
 			->andReturn('2.0.0');
 
-		$cart_helper = \Mockery::mock(CartHelper::class, [$this->tools_helper, $this->session_helper, $version_helper])->makePartial();
 		$cart = new \stdClass();
 		$cart->total = '1.0000';
 
-		$cart_helper->shouldReceive('get_cart')
-		           ->andReturn($cart);
+		$cart_factory = \Mockery::mock(CartFactory::class);
+		$cart_factory->shouldReceive('get_cart')
+		             ->andReturn($cart);
+
+		$cart_helper_builder = \Mockery::mock(CartHelperBuilder::class)->makePartial();
+		$cart_helper_builder->shouldReceive('get_cart_factory')
+		                    ->andReturn($cart_factory);
+		$cart_helper_builder->shouldReceive('get_version_factory')
+		                    ->andReturn($version_factory);
+
+		$cart_helper = $cart_helper_builder->get_instance();
 
 		$this->assertEquals('1.0000', $cart_helper->get_total_from_cart());
 
 		// Test Cart version >3.2.0 and cart total not null
 
-		$cart_helper = \Mockery::mock(CartHelper::class, [$this->tools_helper, $this->session_helper, $this->version_helper])->makePartial();
-
 		$wc_cart = \Mockery::mock(\WC_Cart::class);
 		$wc_cart->shouldReceive('get_total')
-		              ->andReturn('2.0000');
+		        ->andReturn('2.0000');
 
-		$cart_helper->shouldReceive('get_cart')
-		           ->andReturn($wc_cart);
+		$cart_factory = \Mockery::mock(CartFactory::class);
+		$cart_factory->shouldReceive('get_cart')
+		             ->andReturn($wc_cart);
+
+		$cart_helper_builder = \Mockery::mock(CartHelperBuilder::class)->makePartial();
+		$cart_helper_builder->shouldReceive('get_cart_factory')
+		                    ->andReturn($cart_factory);
+
+		$cart_helper = $cart_helper_builder->get_instance();
 
 		$this->assertEquals('2.0000', $cart_helper->get_total_from_cart());
 
@@ -100,19 +89,27 @@ class CartHelperTest extends WP_UnitTestCase {
 		$session->shouldReceive('get', ['cart_totals'])
 		        ->andReturn(null);
 
-		$session_helper = \Mockery::mock(SessionFactory::class);
-		$session_helper->shouldReceive('get_session')
+		$session_factory = \Mockery::mock(SessionFactory::class);
+		$session_factory->shouldReceive('get_session')
 		               ->andReturn($session);
-
-		$cart_helper = \Mockery::mock(CartHelper::class, [$this->tools_helper, $session_helper, $this->version_helper])->makePartial();
 
 
 		$wc_cart = \Mockery::mock(\WC_Cart::class);
 		$wc_cart->shouldReceive('get_total')
 		        ->andReturn('0');
 
-		$cart_helper->shouldReceive('get_cart')
-		           ->andReturn($wc_cart);
+		$cart_factory = \Mockery::mock(CartFactory::class);
+		$cart_factory->shouldReceive('get_cart')
+		             ->andReturn($wc_cart);
+
+		$cart_helper_builder = \Mockery::mock(CartHelperBuilder::class)->makePartial();
+		$cart_helper_builder->shouldReceive('get_cart_factory')
+		                    ->andReturn($cart_factory);
+		$cart_helper_builder->shouldReceive('get_session_factory')
+		                    ->andReturn($session_factory);
+
+		$cart_helper = $cart_helper_builder->get_instance();
+
 
 		$this->assertEquals(0, $cart_helper->get_total_from_cart());
 
@@ -121,18 +118,26 @@ class CartHelperTest extends WP_UnitTestCase {
 		$session->shouldReceive('get', ['cart_totals'])
 		         ->andReturn(array('total' => '3.000'));
 
-		$session_helper = \Mockery::mock(SessionFactory::class);
-		$session_helper->shouldReceive('get_session')
+		$session_factory = \Mockery::mock(SessionFactory::class);
+		$session_factory->shouldReceive('get_session')
 		               ->andReturn($session);
-
-		$cart_helper = \Mockery::mock(CartHelper::class, [$this->tools_helper,$session_helper, $this->version_helper])->makePartial();
 
 		$wc_cart = \Mockery::mock(\WC_Cart::class);
 		$wc_cart->shouldReceive('get_total')
 		        ->andReturn('0');
 
-		$cart_helper->shouldReceive('get_cart')
-		            ->andReturn($wc_cart);
+		$cart_factory = \Mockery::mock(CartFactory::class);
+		$cart_factory->shouldReceive('get_cart')
+		             ->andReturn($wc_cart);
+
+		$cart_helper_builder = \Mockery::mock(CartHelperBuilder::class)->makePartial();
+		$cart_helper_builder->shouldReceive('get_cart_factory')
+		                    ->andReturn($cart_factory);
+		$cart_helper_builder->shouldReceive('get_session_factory')
+		                    ->andReturn($session_factory);
+
+		$cart_helper = $cart_helper_builder->get_instance();
+
 
 		$this->assertEquals('3.000', $cart_helper->get_total_from_cart());
 
@@ -145,7 +150,17 @@ class CartHelperTest extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_get_total_in_cents() {
-		$cart_helper = \Mockery::mock(CartHelper::class, [$this->tools_helper, $this->session_helper, $this->version_helper])->makePartial();
+		$tools_helper_builder = new ToolsHelperBuilder();
+		$tools_helper = $tools_helper_builder->get_tools_helper();
+
+		$cart_helper = \Mockery::mock(
+			CartHelper::class,
+			[
+				$tools_helper,
+				new SessionFactory(),
+				new VersionFactory(),
+				new CartFactory()
+			])->makePartial();
 		$cart_helper->shouldReceive('get_total_from_cart')
 		            ->andReturn('4.000');
 
