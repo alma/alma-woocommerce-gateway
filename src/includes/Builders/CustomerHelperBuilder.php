@@ -1,6 +1,6 @@
 <?php
 /**
- * CartHelperBuilder.
+ * CustomerHelperBuilder.
  *
  * @since 5.4.0
  *
@@ -12,6 +12,7 @@
 namespace Alma\Woocommerce\Builders;
 
 use Alma\Woocommerce\Helpers\CartHelper;
+use Alma\Woocommerce\Helpers\CustomerHelper;
 use Alma\Woocommerce\Traits\BuilderTrait;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -19,26 +20,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class CartHelperBuilder.
+ * Class CustomerHelperBuilder.
  */
-class CartHelperBuilder {
+class CustomerHelperBuilder {
 
 	use BuilderTrait;
 
 	/**
-	 * Cart Helper.
+	 * Customer Helper.
 	 *
-	 * @return CartHelper
+	 * @return CustomerHelper
 	 */
 	public function get_instance() {
-		return new CartHelper(
-			$this->get_tools_helper(),
-			$this->get_session_factory(),
-			$this->get_version_factory(),
-			$this->get_cart_factory(),
-			$this->get_alma_settings(),
-			$this->get_alma_logger(),
-			$this->get_customer_helper()
-		);
+		return new CustomerHelper( $this->get_customer_factory() );
 	}
 }

@@ -10,6 +10,7 @@
 namespace Alma\Woocommerce\Tests\Helpers;
 
 use Alma\Woocommerce\AlmaLogger;
+use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Builders\CartHelperBuilder;
 use Alma\Woocommerce\Builders\ToolsHelperBuilder;
 use Alma\Woocommerce\Factories\CartFactory;
@@ -18,6 +19,7 @@ use Alma\Woocommerce\Factories\PriceFactory;
 use Alma\Woocommerce\Factories\SessionFactory;
 use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Helpers\CartHelper;
+use Alma\Woocommerce\Helpers\CustomerHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
 use WP_UnitTestCase;
 
@@ -159,7 +161,10 @@ class CartHelperTest extends WP_UnitTestCase {
 				$tools_helper,
 				new SessionFactory(),
 				new VersionFactory(),
-				new CartFactory()
+				new CartFactory(),
+				new AlmaSettings(),
+				new AlmaLogger(),
+				\Mockery::mock(CustomerHelper::class)
 			])->makePartial();
 		$cart_helper->shouldReceive('get_total_from_cart')
 		            ->andReturn('4.000');

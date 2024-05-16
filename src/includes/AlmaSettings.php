@@ -15,12 +15,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\API\Client;
 use Alma\API\DependenciesError;
-use Alma\API\Endpoints\Results\Eligibility;
 use Alma\API\Entities\FeePlan;
 use Alma\API\Entities\Payment;
 use Alma\API\ParamsError;
 use Alma\API\RequestError;
-use Alma\Woocommerce\Builders\CartHelperBuilder;
 use Alma\Woocommerce\Builders\SettingsHelperBuilder;
 use Alma\Woocommerce\Exceptions\ActivationException;
 use Alma\Woocommerce\Exceptions\AlmaException;
@@ -43,8 +41,6 @@ use Alma\Woocommerce\Helpers\EncryptorHelper;
 use Alma\Woocommerce\Helpers\FeePlanHelper;
 use Alma\Woocommerce\Helpers\GeneralHelper;
 use Alma\Woocommerce\Helpers\InternationalizationHelper;
-use Alma\Woocommerce\Helpers\PaymentHelper;
-use Alma\Woocommerce\Helpers\PlanBuilderHelper;
 use Alma\Woocommerce\Helpers\SettingsHelper;
 
 /**
@@ -110,12 +106,6 @@ class AlmaSettings {
 	public $alma_client;
 
 
-	/**
-	 * Eligibilities
-	 *
-	 * @var Eligibility|Eligibility[]|array
-	 */
-	protected $eligibilities;
 
 	/**
 	 * The encryptor.
@@ -153,6 +143,7 @@ class AlmaSettings {
 	 */
 	protected $settings_helper;
 
+
 	/**
 	 * Constructor.
 	 */
@@ -164,9 +155,6 @@ class AlmaSettings {
 
 		$settings_helper_builder = new SettingsHelperBuilder();
 		$this->settings_helper   = $settings_helper_builder->get_instance();
-
-		$cart_helper_builder = new CartHelperBuilder();
-		$this->cart_helper   = $cart_helper_builder->get_instance();
 
 		$this->load_settings();
 	}
@@ -966,60 +954,6 @@ class AlmaSettings {
 	}
 
 	/**
-	 * Get eligible plans keys for current cart.
-	 *
-	 * @param array       $cart_eligibilities The eligibilities.
-	 * @param string|null $gateway_id The gateway id.
-	 * @return array
-	 */
-	public function get_eligible_plans_keys_for_cart( $cart_eligibilities = array(), $gateway_id = null ) {
-		$alma_plan_builder = new PlanBuilderHelper();
-		if ( empty( $cart_eligibilities ) ) {
-			$cart_eligibilities = $this->get_cart_eligibilities();
-		}
-
-		$eligibilities = array_filter(
-			$this->get_eligible_plans_keys( $this->cart_helper->get_total_in_cents() ),
-			function ( $key ) use ( $cart_eligibilities ) {
-				if ( is_array( $cart_eligibilities ) ) {
-					return array_key_exists( $key, $cart_eligibilities );
-				}
-
-				return property_exists( $cart_eligibilities, $key );
-			}
-		);
-
-		return $alma_plan_builder->order_plans( $eligibilities, $gateway_id );
-	}
-
-	/**
-	 * Get eligibilities from cart.
-	 *
-	 * @return Eligibility|Eligibility[]|array
-	 */
-	public function get_cart_eligibilities() {
-		$amount = $this->cart_helper->get_total_in_cents();
-
-		if ( 0 === $amount ) {
-			return array();
-		}
-
-		if ( ! $this->eligibilities ) {
-
-			try {
-				$this->get_alma_client();
-				$this->eligibilities = $this->alma_client->payments->eligibility( PaymentHelper::get_eligibility_payload_from_cart() );
-			} catch ( \Exception $error ) {
-				$this->logger->error( $error->getMessage(), $error->getTrace() );
-
-				return array();
-			}
-		}
-
-		return $this->eligibilities;
-	}
-
-	/**
 	 * Gets eligible plans keys for amount.
 	 *
 	 * @param int $amount the amount to pay.
@@ -1087,33 +1021,6 @@ class AlmaSettings {
 			default:
 				return false;
 		}
-	}
-
-	/**
-	 * Get Eligibility / Payment formatted eligible plans definitions for current cart.
-	 *
-	 * @return array<array>
-	 */
-	public function get_eligible_plans_for_cart() {
-		$amount = $this->cart_helper->get_total_in_cents();
-
-		return array_values(
-			array_map(
-				function ( $plan ) use ( $amount ) {
-					unset( $plan['max_amount'] );
-					unset( $plan['min_amount'] );
-					if ( isset( $plan['deferred_months'] ) && 0 === $plan['deferred_months'] ) {
-						unset( $plan['deferred_months'] );
-					}
-					if ( isset( $plan['deferred_days'] ) && 0 === $plan['deferred_days'] ) {
-						unset( $plan['deferred_days'] );
-					}
-
-					return $plan;
-				},
-				$this->get_eligible_plans_definitions( $amount )
-			)
-		);
 	}
 
 	/**
