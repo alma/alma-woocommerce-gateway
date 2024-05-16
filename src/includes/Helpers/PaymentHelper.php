@@ -82,13 +82,6 @@ class PaymentHelper {
 	 */
 	protected $cart_helper;
 
-	/**
-	 * The tool helper.
-	 *
-	 * @var ToolsHelper
-	 */
-	protected $helper_tools;
-
 
 	/**
 	 * Contructor.
@@ -99,7 +92,7 @@ class PaymentHelper {
 		$this->alma_settings        = new AlmaSettings();
 
 		$tools_helper_builder = new ToolsHelperBuilder();
-		$this->helper_tools   = $tools_helper_builder->get_instance();
+		$this->tool_helper    = $tools_helper_builder->get_instance();
 
 		$cart_helper_builder = new CartHelperBuilder();
 		$this->cart_helper   = $cart_helper_builder->get_instance();
@@ -419,7 +412,6 @@ class PaymentHelper {
 	 * @return array
 	 */
 	protected function build_payment_details( $wc_order, $fee_plan, $billing_address = array(), $shipping_address = array(), $is_in_page = false ) {
-
 		$data = array(
 			'purchase_amount'     => $this->tool_helper->alma_price_to_cents( $wc_order->get_total() ),
 			'return_url'          => $this->tool_helper->url_for_webhook( ConstantsHelper::CUSTOMER_RETURN ),

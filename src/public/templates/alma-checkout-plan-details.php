@@ -154,7 +154,7 @@ $alma_tools_helper         = $alma_tools_helper_builder->get_instance();
 				border-bottom: 1px solid lightgrey;
 			">
 					<span><?php echo esc_html__( 'Annual Interest Rate:', 'alma-gateway-for-woocommerce' ); ?></span>
-					<span><?php echo wp_kses_post( $this->tools_helper->alma_format_percent_from_bps( $alma_annual_interest_rate ) ); ?></span>
+					<span><?php echo wp_kses_post( $alma_tools_helper->alma_format_percent_from_bps( $alma_annual_interest_rate ) ); ?></span>
 				</p>
 			<?php } ?>
 			<p style="

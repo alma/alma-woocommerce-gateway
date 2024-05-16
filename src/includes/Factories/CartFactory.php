@@ -28,4 +28,19 @@ class CartFactory {
 	public function get_cart() {
 		return wc()->cart;
 	}
+
+	/**
+	 * Get the cart items
+	 *
+	 * @return array
+	 */
+	public function get_cart_items() {
+		$cart = $this->get_cart();
+
+		if ( ! $cart ) {
+			return array();
+		}
+
+		return $cart->get_cart();
+	}
 }

@@ -17,8 +17,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\ProductHelperBuilder;
 use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Factories\CartFactory;
+use Alma\Woocommerce\Factories\CoreFactory;
 use Alma\Woocommerce\Services\PaymentUponTriggerService;
 
 /**
@@ -59,14 +61,29 @@ class GatewayHelper {
 
 
 	/**
+	 * The product helper.
+	 *
+	 * @var ProductHelper
+	 */
+	protected $product_helper;
+	/**
+	 * The core factory.
+	 *
+	 * @var CoreFactory
+	 */
+	protected $core_factory;
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->alma_settings   = new AlmaSettings();
-		$this->payment_helper  = new PaymentHelper();
-		$this->checkout_helper = new CheckoutHelper();
-		$this->cart_factory    = new CartFactory();
-
+		$this->alma_settings    = new AlmaSettings();
+		$this->payment_helper   = new PaymentHelper();
+		$this->checkout_helper  = new CheckoutHelper();
+		$this->cart_factory     = new CartFactory();
+		$product_helper_builder = new ProductHelperBuilder();
+		$this->product_helper   = $product_helper_builder->get_instance();
+		$this->core_factory     = new CoreFactory();
 	}
 
 	/**
@@ -81,9 +98,7 @@ class GatewayHelper {
 			return $available_gateways;
 		}
 
-		$product_helper = new ProductHelper();
-
-		$has_excluded_products  = $product_helper->cart_has_excluded_product();
+		$has_excluded_products  = $this->product_helper->cart_has_excluded_product();
 		$new_available_gateways = array();
 
 		foreach ( $available_gateways as $key => $gateway ) {
@@ -230,13 +245,13 @@ class GatewayHelper {
 			&& is_array( $this->alma_settings->excluded_products_list )
 			&& count( $this->alma_settings->excluded_products_list ) > 0
 		) {
-			$cart_items = $this->cart_factory->get_cart()->get_cart();
+			$cart_items = $this->cart_factory->get_cart_items();
 
 			foreach ( $cart_items as $cart_item ) {
 				$product_id = $cart_item['product_id'];
 
 				foreach ( $this->alma_settings->excluded_products_list as $category_slug ) {
-					if ( has_term( $category_slug, 'product_cat', $product_id ) ) {
+					if ( $this->core_factory->has_term( $category_slug, 'product_cat', $product_id ) ) {
 						return true;
 					}
 				}
