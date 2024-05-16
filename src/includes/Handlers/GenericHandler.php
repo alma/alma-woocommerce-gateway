@@ -15,7 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
-use Alma\Woocommerce\Builders\ToolsHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
+use Alma\Woocommerce\Factories\PriceFactory;
 use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
@@ -51,6 +52,14 @@ class GenericHandler {
 	 */
 	protected $helper_tools;
 
+
+	/**
+	 * The price factory.
+	 *
+	 * @var PriceFactory
+	 */
+	protected $price_factory;
+
 	/**
 	 * __construct
 	 *
@@ -61,6 +70,7 @@ class GenericHandler {
 		$this->alma_settings  = new AlmaSettings();
 		$tools_helper_builder = new ToolsHelperBuilder();
 		$this->helper_tools   = $tools_helper_builder->get_instance();
+		$this->price_factory  = new PriceFactory();
 	}
 
 	/**
@@ -116,8 +126,8 @@ class GenericHandler {
 			'amountSalePriceQuerySelector' => $amount_sale_price_query_selector,
 			'jqueryUpdateEvent'            => $jquery_update_event,
 			'firstRender'                  => true,
-			'decimalSeparator'             => wc_get_price_decimal_separator(),
-			'thousandSeparator'            => wc_get_price_thousand_separator(),
+			'decimalSeparator'             => $this->price_factory->get_woo_decimal_separator(),
+			'thousandSeparator'            => $this->price_factory->get_woo_thousand_separator(),
 			'locale'                       => substr( get_locale(), 0, 2 ),
 		);
 

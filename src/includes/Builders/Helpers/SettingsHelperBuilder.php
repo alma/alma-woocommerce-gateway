@@ -5,11 +5,11 @@
  * @since 5.4.0
  *
  * @package Alma_Gateway_For_Woocommerce
- * @subpackage Alma_Gateway_For_Woocommerce/includes/Builders
- * @namespace Alma\Woocommerce\Builders
+ * @subpackage Alma_Gateway_For_Woocommerce/includes/Builders/Helpers
+ * * @namespace Alma\Woocommerce\Builders\Helpers
  */
 
-namespace Alma\Woocommerce\Builders;
+namespace Alma\Woocommerce\Builders\Helpers;
 
 use Alma\Woocommerce\Helpers\SettingsHelper;
 use Alma\Woocommerce\Traits\BuilderTrait;

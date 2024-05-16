@@ -237,4 +237,19 @@ trait BuilderTrait {
 
 		return new CustomerHelper( $this->get_customer_factory() );
 	}
+
+	/**
+	 *  PHPFactory.
+	 *
+	 * @param PHPFactory $php_factory The PHP factory.
+	 *
+	 * @return PHPFactory|null
+	 */
+	public function get_php_factory( $php_factory = null ) {
+		if ( $php_factory ) {
+			return $php_factory;
+		}
+
+		return new PHPFactory();
+	}
 }

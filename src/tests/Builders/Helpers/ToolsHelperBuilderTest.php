@@ -2,23 +2,23 @@
 /**
  * Class ToolsHelperBuilderTest
  *
- * @covers \Alma\Woocommerce\Builders\ToolsHelperBuilder
+ * @covers \Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder
  *
  * @package Alma_Gateway_For_Woocommerce
  */
 
-namespace Alma\Woocommerce\Tests\Builders;
+namespace Alma\Woocommerce\Tests\Builders\Helpers;
 
 
 use Alma\Woocommerce\AlmaLogger;
+use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
 use Alma\Woocommerce\Factories\CurrencyFactory;
 use Alma\Woocommerce\Factories\PriceFactory;
 use Alma\Woocommerce\Helpers\ToolsHelper;
 use WP_UnitTestCase;
-use Alma\Woocommerce\Builders\ToolsHelperBuilder;
 
 /**
- * @covers \Alma\Woocommerce\Builders\ToolsHelperBuilder
+ * @covers \Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder
  */
 class ToolsHelperBuilderTest extends WP_UnitTestCase {
 

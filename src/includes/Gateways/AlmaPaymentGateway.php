@@ -19,13 +19,15 @@ use Alma\Woocommerce\Admin\Helpers\GeneralHelper as AdminGeneralHelper;
 use Alma\Woocommerce\Admin\Helpers\ShareOfCheckoutHelper;
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
-use Alma\Woocommerce\Builders\CartHelperBuilder;
-use Alma\Woocommerce\Builders\SettingsHelperBuilder;
-use Alma\Woocommerce\Builders\ToolsHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\SettingsHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
 use Alma\Woocommerce\Exceptions\ApiClientException;
 use Alma\Woocommerce\Exceptions\ApiMerchantsException;
 use Alma\Woocommerce\Exceptions\ApiPlansException;
 use Alma\Woocommerce\Exceptions\NoCredentialsException;
+use Alma\Woocommerce\Factories\CartFactory;
+use Alma\Woocommerce\Factories\PluginFactory;
 use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\CheckoutHelper;
@@ -173,6 +175,21 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 	 */
 	protected $asset_helper;
 
+
+	/**
+	 * The plugin factory.
+	 *
+	 * @var PluginFactory
+	 */
+	protected $plugin_factory;
+
+	/**
+	 * The cart factory.
+	 *
+	 * @var CartFactory
+	 */
+	protected $cart_factory;
+
 	/**
 	 * Alma plan builder.
 	 *
@@ -204,6 +221,8 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 		$this->plugin_helper       = new PluginHelper();
 		$this->asset_helper        = new AssetsHelper();
 		$this->alma_plan_builder   = new PlanBuilderHelper();
+		$this->plugin_factory      = new PluginFactory();
+		$this->cart_factory        = new CartFactory();
 
 		$settings_helper_builder = new SettingsHelperBuilder();
 		$this->settings_helper   = $settings_helper_builder->get_instance();
@@ -274,7 +293,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 				__( "Thanks for installing Alma! Start by <a href='%s'>activating Alma's payment method</a>, then set it up to get started.", 'alma-gateway-for-woocommerce' ),
 				esc_url( $this->asset_helper->get_admin_setting_url( false ) )
 			);
-			alma_plugin()->admin_notices->add_admin_notice( 'no_alma_enabled', 'notice notice-warning', $message );
+			$this->plugin_factory->add_admin_notice( 'no_alma_enabled', 'notice notice-warning', $message );
 		}
 	}
 
@@ -320,7 +339,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 		}
 
 		if (
-			wc()->cart === null
+			$this->cart_factory->get_cart() === null
 			|| ! is_checkout()
 		) {
 			return parent::is_available();
@@ -427,7 +446,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 				esc_url( AssetsHelper::get_admin_logs_url() )
 			);
 
-			alma_plugin()->admin_notices->add_admin_notice( 'client_keys_build', 'notice notice-error', $message );
+			$this->plugin_factory->add_admin_notice( 'client_keys_build', 'notice notice-error', $message );
 
 			throw new ApiClientException( $message );
 		}
@@ -444,7 +463,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 			// We try to get the merchants.
 			$this->alma_settings->get_alma_merchant_id();
 		} catch ( \Exception $e ) {
-			alma_plugin()->admin_notices->add_admin_notice( 'error_keys', 'notice notice-error', $e->getMessage(), true );
+			$this->plugin_factory->add_admin_notice( 'error_keys', 'notice notice-error', $e->getMessage(), true );
 			throw new ApiMerchantsException( $e );
 		}
 

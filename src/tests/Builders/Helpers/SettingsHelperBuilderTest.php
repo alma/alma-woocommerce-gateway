@@ -2,16 +2,16 @@
 /**
  * Class SettingsHelperBuilderTest
  *
- * @covers \Alma\Woocommerce\Builders\SettingsHelperBuilder
+ * @covers \Alma\Woocommerce\Builders\Helpers\SettingsHelperBuilder
  *
  * @package Alma_Gateway_For_Woocommerce
  */
 
-namespace Alma\Woocommerce\Tests\Builders;
+namespace Alma\Woocommerce\Tests\Builders\Helpers;
 
 
 use Alma\Woocommerce\AlmaLogger;
-use Alma\Woocommerce\Builders\SettingsHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\SettingsHelperBuilder;
 use Alma\Woocommerce\Factories\CurrencyFactory;
 use Alma\Woocommerce\Factories\PluginFactory;
 use Alma\Woocommerce\Factories\PriceFactory;
@@ -23,7 +23,7 @@ use Alma\Woocommerce\Helpers\ToolsHelper;
 use WP_UnitTestCase;
 
 /**
- * @covers \Alma\Woocommerce\Builders\SettingsHelperBuilder
+ * @covers \Alma\Woocommerce\Builders\Helpers\SettingsHelperBuilder
  */
 class SettingsHelperBuilderTest extends WP_UnitTestCase {
 

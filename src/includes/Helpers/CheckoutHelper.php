@@ -16,6 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Alma\Woocommerce\AlmaLogger;
+use Alma\Woocommerce\Factories\CartFactory;
+use Alma\Woocommerce\Factories\PluginFactory;
 
 /**
  * Class CheckoutHelper.
@@ -31,10 +33,19 @@ class CheckoutHelper {
 	private $logger;
 
 	/**
+	 * The cart factory.
+	 *
+	 * @var CartFactory
+	 */
+	protected $cart_factory;
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->logger = new AlmaLogger();
+		$this->logger       = new AlmaLogger();
+		$this->cart_factory = new CartFactory();
+
 	}
 
 	/**
@@ -45,7 +56,7 @@ class CheckoutHelper {
 	 * @return null|string
 	 */
 	public function get_chosen_alma_fee_plan( $id ) {
-		if ( WC()->cart === null ) {
+		if ( $this->cart_factory->get_cart() === null ) {
 			wc_add_notice( '<strong>Fee plan</strong> is required.', ConstantsHelper::ERROR );
 			return null;
 		}

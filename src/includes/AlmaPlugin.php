@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 use Alma\Woocommerce\Admin\Services\NoticesService;
 use Alma\Woocommerce\Exceptions\RequirementsException;
 use Alma\Woocommerce\Exceptions\VersionDeprecated;
+use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Gateways\Inpage\InPageGateway;
 use Alma\Woocommerce\Gateways\Inpage\PayLaterGateway;
 use Alma\Woocommerce\Gateways\Standard\PayMoreThanFourGateway;
@@ -64,6 +65,13 @@ class AlmaPlugin {
 	protected $plugin_helper;
 
 	/**
+	 * The version factory.
+	 *
+	 * @var VersionFactory
+	 */
+	protected $version_factory;
+
+	/**
 	 * Protected constructor to prevent creating a new instance of the
 	 * *Singleton* via the `new` operator from outside of this class.
 	 */
@@ -72,6 +80,7 @@ class AlmaPlugin {
 		$this->migration_helper = new MigrationHelper();
 		$this->admin_notices    = new NoticesService();
 		$this->plugin_helper    = new PluginHelper();
+		$this->version_factory  = new VersionFactory();
 
 		$this->load_plugin_textdomain();
 
@@ -126,7 +135,7 @@ class AlmaPlugin {
 			throw new RequirementsException( __( 'Alma requires WooCommerce to be activated', 'alma-gateway-for-woocommerce' ) );
 		}
 
-		if ( version_compare( wc()->version, '3.0.0', '<' ) ) {
+		if ( version_compare( $this->version_factory->get_version(), '3.0.0', '<' ) ) {
 			throw new RequirementsException( __( 'Alma requires WooCommerce version 3.0.0 or greater', 'alma-gateway-for-woocommerce' ) );
 		}
 

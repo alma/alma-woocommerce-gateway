@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-use Alma\Woocommerce\Builders\SettingsHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\SettingsHelperBuilder;
 use Alma\Woocommerce\Helpers\InternationalizationHelper;
 use Alma\Woocommerce\Helpers\SettingsHelper;
 

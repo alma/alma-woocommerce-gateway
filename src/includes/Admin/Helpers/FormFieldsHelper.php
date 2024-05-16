@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 use Alma\API\Entities\FeePlan;
 use Alma\Woocommerce\Admin\Builders\FormHtmlBuilder;
 use Alma\Woocommerce\AlmaSettings;
-use Alma\Woocommerce\Builders\ToolsHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
 use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\BlockHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;

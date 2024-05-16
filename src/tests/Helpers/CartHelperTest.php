@@ -11,16 +11,13 @@ namespace Alma\Woocommerce\Tests\Helpers;
 
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
-use Alma\Woocommerce\Builders\CartHelperBuilder;
-use Alma\Woocommerce\Builders\ToolsHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
 use Alma\Woocommerce\Factories\CartFactory;
-use Alma\Woocommerce\Factories\CurrencyFactory;
-use Alma\Woocommerce\Factories\PriceFactory;
 use Alma\Woocommerce\Factories\SessionFactory;
 use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\CustomerHelper;
-use Alma\Woocommerce\Helpers\ToolsHelper;
 use WP_UnitTestCase;
 
 /**

@@ -18,6 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Factories\CartFactory;
 
 /**
  * Class CheckoutHelper.
@@ -40,6 +41,13 @@ class ProductHelper {
 	 */
 	protected $alma_settings;
 
+	/**
+	 * The cart factory.
+	 *
+	 * @var CartFactory
+	 */
+	protected $cart_factory;
+
 
 	/**
 	 * Constructor.
@@ -47,6 +55,8 @@ class ProductHelper {
 	public function __construct() {
 		$this->logger        = new AlmaLogger();
 		$this->alma_settings = new AlmaSettings();
+		$this->cart_factory  = new CartFactory();
+
 	}
 
 	/**
@@ -58,13 +68,14 @@ class ProductHelper {
 		$has_excluded_products = false;
 
 		if (
-			wc()->cart === null
+			$this->cart_factory->get_cart() === null
 			|| ! $this->has_excluded_categories()
 		) {
 			return $has_excluded_products;
 		}
 
-		foreach ( WC()->cart->get_cart() as $cart_item ) {
+		$cart_items = $this->cart_factory->get_cart()->get_cart();
+		foreach ( $cart_items as $cart_item ) {
 			$product_id = $cart_item['product_id'];
 
 			if ( $this->is_product_excluded( $product_id ) ) {

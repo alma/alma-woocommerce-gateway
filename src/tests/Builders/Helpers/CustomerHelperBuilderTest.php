@@ -2,23 +2,22 @@
 /**
  * Class CartHelperBuilderTest
  *
- * @covers \Alma\Woocommerce\Builders\CartHelperBuilder
+ * @covers \Alma\Woocommerce\Builders\Helpers\CartHelperBuilder
  *
  * @package Alma_Gateway_For_Woocommerce
  */
 
-namespace Alma\Woocommerce\Tests\Builders;
+namespace Alma\Woocommerce\Tests\Builders\Helpers;
 
 
-use Alma\Woocommerce\Builders\CustomerHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\CustomerHelperBuilder;
 use Alma\Woocommerce\Factories\CustomerFactory;
-
 use Alma\Woocommerce\Factories\PHPFactory;
 use Alma\Woocommerce\Helpers\CustomerHelper;
 use WP_UnitTestCase;
 
 /**
- * @covers \Alma\Woocommerce\Builders\CustomerHelperBuilder
+ * @covers \Alma\Woocommerce\Builders\Helpers\CustomerHelperBuilder
  */
 class CustomerHelperBuilderTest extends WP_UnitTestCase {
 

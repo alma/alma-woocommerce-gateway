@@ -9,6 +9,7 @@
 
 namespace Alma\Woocommerce;
 
+use Alma\Woocommerce\Factories\VersionFactory;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LogLevel;
 
@@ -27,6 +28,20 @@ class AlmaLogger extends AbstractLogger {
 	const LOG_HANDLE = 'alma';
 
 	/**
+	 * The version factory.
+	 *
+	 * @var VersionFactory
+	 */
+	protected $version_factory;
+
+
+	/**
+	 * Construct.
+	 */
+	public function __construct() {
+		$this->version_factory = new VersionFactory();
+	}
+	/**
 	 * Logs with an arbitrary level.
 	 *
 	 * @param string $level Log level.
@@ -43,7 +58,7 @@ class AlmaLogger extends AbstractLogger {
 			return;
 		}
 
-		$logger = self::get_logger();
+		$logger = $this->get_logger();
 
 		$levels = array(
 			LogLevel::DEBUG     => 'debug',
@@ -56,7 +71,7 @@ class AlmaLogger extends AbstractLogger {
 			LogLevel::EMERGENCY => 'emergency',
 		);
 
-		if ( version_compare( \wc()->version, '3.0', '<' ) ) {
+		if ( version_compare( $this->version_factory->get_version(), '3.0', '<' ) ) {
 			$level   = strtoupper( $levels[ $level ] );
 			$message = "[$level] " . $message;
 			$logger->add( self::LOG_HANDLE, $message );
@@ -89,12 +104,12 @@ class AlmaLogger extends AbstractLogger {
 	 *
 	 * @return \WC_Logger
 	 */
-	private static function get_logger() {
-		if ( version_compare( \wc()->version, '3.0', '<' ) ) {
+	private function get_logger() {
+		if ( version_compare( $this->version_factory->get_version(), '3.0', '<' ) ) {
 			return new \WC_Logger();
-		} else {
-			return \wc_get_logger();
 		}
+
+		return \wc_get_logger();
 	}
 
 	/**

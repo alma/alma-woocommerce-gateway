@@ -12,7 +12,7 @@
 namespace Alma\Woocommerce\Blocks;
 
 use Alma\Woocommerce\AlmaSettings;
-use Alma\Woocommerce\Builders\CartHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
 use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\CheckoutHelper;

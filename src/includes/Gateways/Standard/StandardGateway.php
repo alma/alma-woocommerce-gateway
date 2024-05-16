@@ -17,7 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\Woocommerce\Gateways\AlmaPaymentGateway;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
-use mysql_xdevapi\Exception;
 
 /**
  * StandardGateway

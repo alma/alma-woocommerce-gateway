@@ -11,6 +11,7 @@ namespace Alma\Woocommerce\Helpers;
 
 use Alma\Woocommerce\Exceptions;
 use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Factories\PriceFactory;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -45,6 +46,14 @@ class PlanBuilderHelper {
 	 */
 	protected $template_loader;
 
+
+	/**
+	 * The price factory.
+	 *
+	 * @var PriceFactory
+	 */
+	protected $price_factory;
+
 	/**
 	 * Constructor.
 	 */
@@ -52,6 +61,8 @@ class PlanBuilderHelper {
 		$this->alma_settings   = new AlmaSettings();
 		$this->gateway_helper  = new GatewayHelper();
 		$this->template_loader = new TemplateLoaderHelper();
+		$this->price_factory   = new PriceFactory();
+
 	}
 
 	/**
@@ -120,9 +131,9 @@ class PlanBuilderHelper {
 					'plan_id'              => '#' . sprintf( ConstantsHelper::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $plan_key ),
 					'logo_url'             => AssetsHelper::get_asset_url( sprintf( 'images/%s_logo.svg', $plan_key ) ),
 					'upon_trigger_enabled' => $this->alma_settings->payment_upon_trigger_enabled,
-					'decimal_separator'    => wc_get_price_decimal_separator(),
-					'thousand_separator'   => wc_get_price_thousand_separator(),
-					'decimals'             => wc_get_price_decimals(),
+					'decimal_separator'    => $this->price_factory->get_woo_decimal_separator(),
+					'thousand_separator'   => $this->price_factory->get_woo_thousand_separator(),
+					'decimals'             => $this->price_factory->get_woo_decimals(),
 				),
 				'partials'
 			);

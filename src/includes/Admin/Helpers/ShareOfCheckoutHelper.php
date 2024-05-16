@@ -12,7 +12,7 @@
 namespace Alma\Woocommerce\Admin\Helpers;
 
 use Alma\Woocommerce\AlmaSettings;
-use Alma\Woocommerce\Builders\ToolsHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
 use Alma\Woocommerce\Exceptions\ApiSocLastUpdateDatesException;
 use Alma\Woocommerce\Helpers\OrderHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
