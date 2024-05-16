@@ -161,4 +161,18 @@ class AssetsHelper {
 
 		return apply_filters( 'alma_wc_gateway_icon', $icon, $id );
 	}
+
+	/**
+	 * Allow Alma domains for redirect.
+	 *
+	 * @param string[] $domains Whitelisted domains for `wp_safe_redirect`.
+	 *
+	 * @return string[]
+	 */
+	public function alma_domains_whitelist( $domains ) {
+		$domains[] = 'pay.getalma.eu';
+		$domains[] = 'pay.sandbox.getalma.eu';
+
+		return $domains;
+	}
 }

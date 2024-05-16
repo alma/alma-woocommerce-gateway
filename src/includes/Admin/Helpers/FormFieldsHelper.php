@@ -23,7 +23,6 @@ use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\BlockHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\FeePlanHelper;
-use Alma\Woocommerce\Helpers\GeneralHelper;
 use Alma\Woocommerce\Helpers\InternationalizationHelper;
 use Alma\Woocommerce\Helpers\PluginHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
@@ -703,7 +702,7 @@ class FormFieldsHelper {
 					'title'       => __( 'Trigger typology', 'alma-gateway-for-woocommerce' ),
 					'description' => __( 'Text that will appear in the payments schedule and in the customer\'s payment authorization email.', 'alma-gateway-for-woocommerce' ),
 					'default'     => $default_settings['payment_upon_trigger_display_text'],
-					'options'     => GeneralHelper::get_display_texts_keys_and_values(),
+					'options'     => $this->internalionalization_helper->get_display_texts_keys_and_values(),
 				),
 				'payment_upon_trigger_event'        => array(
 					'type'    => 'select',

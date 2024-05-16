@@ -174,4 +174,15 @@ class InternationalizationHelper {
 		return array( $field_name => array_merge( $field_infos, $additional_infos ) );
 	}
 
+	/**
+	 * Returns the list of texts proposed to be displayed on front-office.
+	 *
+	 * @return array
+	 */
+	public function get_display_texts_keys_and_values() {
+		return array(
+			'at_shipping' => __( 'At shipping', 'alma-gateway-for-woocommerce' ),
+		);
+	}
+
 }
