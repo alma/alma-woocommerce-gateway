@@ -13,6 +13,7 @@ namespace Alma\Woocommerce\Blocks;
 
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\GatewayHelperBuilder;
 use Alma\Woocommerce\Builders\Helpers\PlanHelperBuilder;
 use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\CartHelper;
@@ -72,12 +73,13 @@ class AlmaBlock extends AbstractPaymentMethodType {
 	 * @return void
 	 */
 	public function initialize() {
-		$this->settings        = get_option( AlmaSettings::OPTIONS_KEY, array() );
-		$this->gateway_helper  = new GatewayHelper();
-		$this->alma_settings   = new AlmaSettings();
-		$this->checkout_helper = new CheckoutHelper();
-		$cart_helper_builder   = new CartHelperBuilder();
-		$this->cart_helper     = $cart_helper_builder->get_instance();
+		$this->settings         = get_option( AlmaSettings::OPTIONS_KEY, array() );
+		$gateway_helper_builder = new GatewayHelperBuilder();
+		$this->gateway_helper   = $gateway_helper_builder->get_instance();
+		$this->alma_settings    = new AlmaSettings();
+		$this->checkout_helper  = new CheckoutHelper();
+		$cart_helper_builder    = new CartHelperBuilder();
+		$this->cart_helper      = $cart_helper_builder->get_instance();
 
 		$alma_plan_builder      = new PlanHelperBuilder();
 		$this->alma_plan_helper = $alma_plan_builder->get_instance();

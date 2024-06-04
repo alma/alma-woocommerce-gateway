@@ -23,9 +23,14 @@ use Alma\Woocommerce\Factories\PriceFactory;
 use Alma\Woocommerce\Factories\SessionFactory;
 use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Helpers\AssetsHelper;
+use Alma\Woocommerce\Helpers\CartHelper;
+use Alma\Woocommerce\Helpers\CheckoutHelper;
 use Alma\Woocommerce\Helpers\CustomerHelper;
 use Alma\Woocommerce\Helpers\GatewayHelper;
 use Alma\Woocommerce\Helpers\InternationalizationHelper;
+use Alma\Woocommerce\Helpers\PaymentHelper;
+use Alma\Woocommerce\Helpers\PHPHelper;
+use Alma\Woocommerce\Helpers\ProductHelper;
 use Alma\Woocommerce\Helpers\TemplateLoaderHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
 
@@ -283,7 +288,16 @@ trait BuilderTrait {
 			return $gateway_helper;
 		}
 
-		return new GatewayHelper();
+		return new GatewayHelper(
+			$this->get_alma_settings(),
+			$this->get_payment_helper(),
+			$this->get_checkout_helper(),
+			$this->get_cart_factory(),
+			$this->get_product_helper(),
+			$this->get_core_factory(),
+			$this->get_cart_helper(),
+			$this->get_php_helper()
+		);
 	}
 
 	/**
@@ -299,6 +313,93 @@ trait BuilderTrait {
 		}
 
 		return new TemplateLoaderHelper();
+	}
+
+	/**
+	 * PaymentHelper.
+	 *
+	 * @param PaymentHelper|null $payment_helper The payment helper.
+	 *
+	 * @return PaymentHelper
+	 */
+	public function get_payment_helper( $payment_helper = null ) {
+		if ( $payment_helper ) {
+			return $payment_helper;
+		}
+
+		return new PaymentHelper();
+	}
+
+	/**
+	 * CheckoutHelper.
+	 *
+	 * @param CheckoutHelper|null $checkout_helper The checkout helper.
+	 *
+	 * @return CheckoutHelper
+	 */
+	public function get_checkout_helper( $checkout_helper = null ) {
+		if ( $checkout_helper ) {
+			return $checkout_helper;
+		}
+
+		return new CheckoutHelper();
+	}
+
+	/**
+	 * ProductHelper.
+	 *
+	 * @param ProductHelper|null $product_helper The product helper.
+	 *
+	 * @return ProductHelper
+	 */
+	public function get_product_helper( $product_helper = null ) {
+		if ( $product_helper ) {
+			return $product_helper;
+		}
+
+		return new ProductHelper(
+			$this->get_alma_logger(),
+			$this->get_alma_settings(),
+			$this->get_cart_factory(),
+			$this->get_core_factory()
+		);
+	}
+	/**
+	 * CartHelper.
+	 *
+	 * @param CartHelper|null $cart_helper The cart helper.
+	 *
+	 * @return CartHelper
+	 */
+	public function get_cart_helper( $cart_helper = null ) {
+		if ( $cart_helper ) {
+			return $cart_helper;
+		}
+
+		return new CartHelper(
+			$this->get_tools_helper(),
+			$this->get_session_factory(),
+			$this->get_version_factory(),
+			$this->get_cart_factory(),
+			$this->get_alma_settings(),
+			$this->get_alma_logger(),
+			$this->get_customer_helper()
+		);
+	}
+
+	/**
+	 * PHPHelper.
+	 *
+	 * @param PHPHelper|null $php_helper The php helper.
+	 *
+	 * @return PHPHelper
+	 */
+	public function get_php_helper( $php_helper = null ) {
+		if ( $php_helper ) {
+			return $php_helper;
+		}
+
+		return new PHPHelper();
 	}
 
 }
