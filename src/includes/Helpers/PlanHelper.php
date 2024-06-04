@@ -1,6 +1,6 @@
 <?php
 /**
- * PlanBuilderHelper.
+ * PlanHelper.
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes
@@ -18,9 +18,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * PlanBuilderHelper
+ * PlanHelper
  */
-class PlanBuilderHelper {
+class PlanHelper {
 
 
 
@@ -56,12 +56,17 @@ class PlanBuilderHelper {
 
 	/**
 	 * Constructor.
+	 *
+	 * @param AlmaSettings         $alma_settings The alma settings.
+	 * @param GatewayHelper        $gateway_helper  The gateway helper.
+	 * @param TemplateLoaderHelper $template_loader The template loader.
+	 * @param PriceFactory         $price_factory The price factory.
 	 */
-	public function __construct() {
-		$this->alma_settings   = new AlmaSettings();
-		$this->gateway_helper  = new GatewayHelper();
-		$this->template_loader = new TemplateLoaderHelper();
-		$this->price_factory   = new PriceFactory();
+	public function __construct( $alma_settings, $gateway_helper, $template_loader, $price_factory ) {
+		$this->alma_settings   = $alma_settings;
+		$this->gateway_helper  = $gateway_helper;
+		$this->template_loader = $template_loader;
+		$this->price_factory   = $price_factory;
 
 	}
 
@@ -154,7 +159,6 @@ class PlanBuilderHelper {
 	 * @throws Exceptions\AlmaException Exception.
 	 */
 	public function render_fields_classic( $eligibilities, $eligible_plans, $gateway_id, $default_plan = null ) {
-
 		foreach ( $eligible_plans[ $gateway_id ] as $plan_key ) {
 			$this->template_loader->get_template(
 				'alma-checkout-plan.php',
@@ -243,7 +247,6 @@ class PlanBuilderHelper {
 	 */
 	public function get_plans_by_keys( $eligible_plans = array(), $eligibilities = array() ) {
 		$result = array();
-
 		foreach ( $eligible_plans as $plan_key ) {
 			if ( isset( $eligibilities[ $plan_key ] ) ) {
 				$result[ $plan_key ] = $eligibilities[ $plan_key ];
