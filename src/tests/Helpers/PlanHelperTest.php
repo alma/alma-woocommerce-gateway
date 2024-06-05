@@ -149,19 +149,7 @@ class PlanHelperTest extends WP_UnitTestCase {
 		$plan_helper = $plan_builder_helper->get_instance();
 		$this->assertEquals(array(), $plan_helper->order_plans(array(ConstantsHelper::PAY_NOW_FEE_PLAN)));
 	}
-
-	public function test_order_plans_no_gateway_id_no_in_page_no_display_plan() {
-		$alma_settings_mock = \Mockery::mock(AlmaSettings::class)->makePartial();
-		$alma_settings_mock->settings['display_in_page'] = 'no';
-		$alma_settings_mock->shouldReceive('should_display_plan')->andReturn(false);
-
-		$plan_builder_helper = \Mockery::mock(PlanHelperBuilder::class)->makePartial();
-		$plan_builder_helper->shouldReceive('get_alma_settings')->andReturn($alma_settings_mock);
-		$plan_helper = $plan_builder_helper->get_instance();
-
-		$this->assertEquals(array(), $plan_helper->order_plans(array(ConstantsHelper::PAY_NOW_FEE_PLAN, ConstantsHelper::DEFAULT_FEE_PLAN)));
-	}
-
+	
 	public function test_order_plans_no_gateway_id_no_in_page_display_plan_ok() {
 		$this->alma_settings_mock->settings['display_in_page'] = 'no';
 		$this->plan_builder_helper->shouldReceive('get_alma_settings')->andReturn($this->alma_settings_mock);

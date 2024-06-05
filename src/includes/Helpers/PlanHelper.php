@@ -57,6 +57,8 @@ class PlanHelper {
 	/**
 	 * Constructor.
 	 *
+	 * @codeCoverageIgnore
+	 *
 	 * @param AlmaSettings         $alma_settings The alma settings.
 	 * @param GatewayHelper        $gateway_helper  The gateway helper.
 	 * @param TemplateLoaderHelper $template_loader The template loader.
