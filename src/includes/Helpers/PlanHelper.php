@@ -87,7 +87,6 @@ class PlanHelper {
 
 		if ( empty( $eligible_plans[ $gateway_id ] ) ) {
 			$this->template_loader->get_template( 'alma-checkout-no-plans.php' );
-
 			return;
 		}
 

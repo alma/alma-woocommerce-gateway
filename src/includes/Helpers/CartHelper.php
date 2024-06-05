@@ -14,6 +14,7 @@ namespace Alma\Woocommerce\Helpers;
 use Alma\API\Endpoints\Results\Eligibility;
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Factories\CartFactory;
 use Alma\Woocommerce\Factories\SessionFactory;
 use Alma\Woocommerce\Factories\VersionFactory;
@@ -155,7 +156,9 @@ class CartHelper {
 	/**
 	 * Get eligibilities from cart.
 	 *
-	 * @return Eligibility|Eligibility[]|array
+	 * @return Eligibility|array
+	 *
+	 * @throws AlmaException Exception.
 	 */
 	public function get_cart_eligibilities() {
 
@@ -176,6 +179,12 @@ class CartHelper {
 
 				return array();
 			}
+
+			if ( is_array( $this->eligibilities ) ) {
+				$this->alma_logger->error( 'Eligibilities must be an array' );
+
+				return array();
+			}
 		}
 
 		return $this->eligibilities;
@@ -184,7 +193,7 @@ class CartHelper {
 	/**
 	 * Get eligible plans keys for current cart.
 	 *
-	 * @param array $cart_eligibilities The eligibilities.
+	 * @param array|Eligibility $cart_eligibilities The eligibilities.
 	 * @return array
 	 */
 	public function get_eligible_plans_keys_for_cart( $cart_eligibilities = array() ) {
