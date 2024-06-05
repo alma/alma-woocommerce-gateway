@@ -118,7 +118,6 @@ class PlanHelperTest extends WP_UnitTestCase {
 	}
 
 	public function test_get_plans_by_keys() {
-		$elegibility = \Mockery::mock(Eligibility::class);
 		$this->assertEquals(
 			array( ConstantsHelper::PAY_NOW_FEE_PLAN => $this->eligibility_mock ),
 			$this->alma_plan_helper->get_plans_by_keys(
