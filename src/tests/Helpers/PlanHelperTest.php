@@ -133,7 +133,7 @@ class PlanHelperTest extends WP_UnitTestCase {
 	}
 
 	public function test_order_plans_empty_array() {
-		$this->assertEquals(array(), $this->alma_plan_helper->order_plans(array()));
+		$this->assertEquals(array(), $this->alma_plan_helper->order_plans());
 	}
 	public function test_order_plans_empty_plans() {
 		$this->assertEquals(array(), $this->alma_plan_helper->order_plans(array(), ConstantsHelper::GATEWAY_ID));
@@ -149,7 +149,7 @@ class PlanHelperTest extends WP_UnitTestCase {
 		$plan_helper = $plan_builder_helper->get_instance();
 		$this->assertEquals(array(), $plan_helper->order_plans(array(ConstantsHelper::PAY_NOW_FEE_PLAN)));
 	}
-	
+
 	public function test_order_plans_no_gateway_id_no_in_page_display_plan_ok() {
 		$this->alma_settings_mock->settings['display_in_page'] = 'no';
 		$this->plan_builder_helper->shouldReceive('get_alma_settings')->andReturn($this->alma_settings_mock);
