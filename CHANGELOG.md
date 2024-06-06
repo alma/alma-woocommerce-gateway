@@ -2,7 +2,7 @@ Changelog
 =========
 
 * feature: compatibility Woocommerce 8.9.2
-* feature: Compatibility WordPress 6.5.2
+* feature: Compatibility WordPress 6.5.4
 
 v5.4.0
 ------
