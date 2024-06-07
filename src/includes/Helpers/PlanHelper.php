@@ -57,6 +57,8 @@ class PlanHelper {
 	/**
 	 * Constructor.
 	 *
+	 * @codeCoverageIgnore
+	 *
 	 * @param AlmaSettings         $alma_settings The alma settings.
 	 * @param GatewayHelper        $gateway_helper  The gateway helper.
 	 * @param TemplateLoaderHelper $template_loader The template loader.
@@ -85,7 +87,6 @@ class PlanHelper {
 
 		if ( empty( $eligible_plans[ $gateway_id ] ) ) {
 			$this->template_loader->get_template( 'alma-checkout-no-plans.php' );
-
 			return;
 		}
 

@@ -43,8 +43,7 @@ trait InPageGatewayTrait {
 		$this->checkout_helper->render_nonce_field( $this->id );
 
 		// We get the eligibilites.
-		$eligibilities = $this->cart_helper->get_cart_eligibilities();
-
+		$eligibilities  = $this->cart_helper->get_cart_eligibilities();
 		$eligible_plans = $this->cart_helper->get_eligible_plans_keys_for_cart( $eligibilities );
 		$eligible_plans = $this->alma_plan_helper->order_plans( $eligible_plans );
 

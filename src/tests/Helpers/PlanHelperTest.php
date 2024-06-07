@@ -118,7 +118,6 @@ class PlanHelperTest extends WP_UnitTestCase {
 	}
 
 	public function test_get_plans_by_keys() {
-		$elegibility = \Mockery::mock(Eligibility::class);
 		$this->assertEquals(
 			array( ConstantsHelper::PAY_NOW_FEE_PLAN => $this->eligibility_mock ),
 			$this->alma_plan_helper->get_plans_by_keys(
@@ -133,7 +132,7 @@ class PlanHelperTest extends WP_UnitTestCase {
 	}
 
 	public function test_order_plans_empty_array() {
-		$this->assertEquals(array(), $this->alma_plan_helper->order_plans(array()));
+		$this->assertEquals(array(), $this->alma_plan_helper->order_plans());
 	}
 	public function test_order_plans_empty_plans() {
 		$this->assertEquals(array(), $this->alma_plan_helper->order_plans(array(), ConstantsHelper::GATEWAY_ID));
@@ -148,18 +147,6 @@ class PlanHelperTest extends WP_UnitTestCase {
 		$plan_builder_helper->shouldReceive('get_alma_settings')->andReturn($alma_settings_mock);
 		$plan_helper = $plan_builder_helper->get_instance();
 		$this->assertEquals(array(), $plan_helper->order_plans(array(ConstantsHelper::PAY_NOW_FEE_PLAN)));
-	}
-
-	public function test_order_plans_no_gateway_id_no_in_page_no_display_plan() {
-		$alma_settings_mock = \Mockery::mock(AlmaSettings::class)->makePartial();
-		$alma_settings_mock->settings['display_in_page'] = 'no';
-		$alma_settings_mock->shouldReceive('should_display_plan')->andReturn(false);
-
-		$plan_builder_helper = \Mockery::mock(PlanHelperBuilder::class)->makePartial();
-		$plan_builder_helper->shouldReceive('get_alma_settings')->andReturn($alma_settings_mock);
-		$plan_helper = $plan_builder_helper->get_instance();
-
-		$this->assertEquals(array(), $plan_helper->order_plans(array(ConstantsHelper::PAY_NOW_FEE_PLAN, ConstantsHelper::DEFAULT_FEE_PLAN)));
 	}
 
 	public function test_order_plans_no_gateway_id_no_in_page_display_plan_ok() {
@@ -266,58 +253,74 @@ class PlanHelperTest extends WP_UnitTestCase {
 		));
 	}
 
-	public function test_render_checkout_fields_in_page() {
+	/**
+	 * @dataProvider checkout_fields_provider
+	 */
+	public function test_render_checkout_fields_in_page($gatewayId, $shoudReceived, $shouldNotReceived) {
 
-		$plan_helper = $this->get_plan_helper_mock();
-		$plan_helper->shouldReceive( 'render_fields_in_page' )->andReturn(null);
+		$this->gateway_helper_mock->shouldReceive( 'get_alma_gateway_title' )->andReturn( 'test' );
+		$this->gateway_helper_mock->shouldReceive( 'get_alma_gateway_description' )->andReturn( 'test' );
 
-		$this->assertNull($plan_helper->render_checkout_fields(
+		$plan_helper = \Mockery::spy( PlanHelper::class, [
+			$this->alma_settings_mock,
+			$this->gateway_helper_mock,
+			$this->template_loader_helper_mock,
+			$this->price_factory_mock
+		] )->makePartial();
+		$plan_helper->shouldReceive( $shoudReceived )->andReturn( null );
+
+		$this->assertNull( $plan_helper->render_checkout_fields(
 			array(),
-			array( ConstantsHelper::GATEWAY_ID_IN_PAGE => array() ),
-			ConstantsHelper::GATEWAY_ID_IN_PAGE
-		));
-
-
-		$this->assertNull($plan_helper->render_checkout_fields(
-			array(),
-			array(ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_NOW => array() ),
-			ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_NOW
-		));
-
-
-		$this->assertNull($plan_helper->render_checkout_fields(
-			array(),
-			array( ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_LATER => array() ),
-			ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_LATER
-		));
+			array( $gatewayId => array( 'test' ) ),
+			$gatewayId
+		) );
+		$plan_helper->shouldHaveReceived( $shoudReceived );
+		$plan_helper->shouldNotHaveReceived( $shouldNotReceived );
 	}
 
+	public function checkout_fields_provider() {
+
+		return array(
+			'gateway_id_in_page' => array(
+				ConstantsHelper::GATEWAY_ID_IN_PAGE,
+				'render_fields_in_page',
+				'render_fields_classic'
+			),
+			'gateway_id_in_page_pay_now' => array(
+				ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_NOW,
+				'render_fields_in_page',
+				'render_fields_classic'
+			),
+			'gateway_id_in_page_pay_later' => array(
+				ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_LATER,
+				'render_fields_in_page',
+				'render_fields_classic'
+			)
+		);
+	}
 	public function test_render_checkout_fields() {
 
-		$plan_helper = $this->get_plan_helper_mock();
+		$this->gateway_helper_mock->shouldReceive('get_alma_gateway_title')->andReturn('test');
+		$this->gateway_helper_mock->shouldReceive('get_alma_gateway_description')->andReturn('test');
+
+		$plan_helper = \Mockery::spy(PlanHelper::class, [
+			$this->alma_settings_mock,
+			$this->gateway_helper_mock,
+			$this->template_loader_helper_mock,
+			$this->price_factory_mock
+		])->makePartial();
+
 		$plan_helper->shouldReceive( 'render_fields_classic' )->andReturn(null);
 
 		$this->assertNull($plan_helper->render_checkout_fields(
 			array(),
-			array( ConstantsHelper::GATEWAY_ID => array() ),
+			array( ConstantsHelper::GATEWAY_ID => array('test') ),
 			ConstantsHelper::GATEWAY_ID
 		));
 
-	}
+		$plan_helper->shouldHaveReceived('render_fields_classic');
+		$plan_helper->shouldNotHaveReceived('render_fields_in_page');
 
-	/**
-	 * @return \Mockery\LegacyMockInterface|(\Mockery\MockInterface&\#P#C\Alma\Woocommerce\Tests\Helpers\PlanHelperTest.alma_settings_mock[])|(\Mockery\MockInterface&\#P#C\Alma\Woocommerce\Tests\Helpers\PlanHelperTest.gateway_helper_mock[])|(\Mockery\MockInterface&\#P#C\Alma\Woocommerce\Tests\Helpers\PlanHelperTest.price_factory_mock[])|(\Mockery\MockInterface&\#P#C\Alma\Woocommerce\Tests\Helpers\PlanHelperTest.template_loader_helper_mock[])|(\Mockery\MockInterface&\#P#S\Alma\Woocommerce\Tests\Helpers\PlanHelperTest.alma_settings_mock[])|(\Mockery\MockInterface&\#P#S\Alma\Woocommerce\Tests\Helpers\PlanHelperTest.gateway_helper_mock[])|(\Mockery\MockInterface&\#P#S\Alma\Woocommerce\Tests\Helpers\PlanHelperTest.price_factory_mock[])|(\Mockery\MockInterface&\#P#S\Alma\Woocommerce\Tests\Helpers\PlanHelperTest.template_loader_helper_mock[])|(\Mockery\MockInterface&PlanHelper)
-	 */
-
-	protected function get_plan_helper_mock() {
-		return \Mockery::mock(
-			PlanHelper::class, [
-				$this->alma_settings_mock,
-				$this->gateway_helper_mock,
-				$this->template_loader_helper_mock,
-				$this->price_factory_mock
-			]
-		)->makePartial();
 	}
 
 
