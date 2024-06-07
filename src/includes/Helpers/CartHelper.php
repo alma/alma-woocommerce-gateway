@@ -156,9 +156,7 @@ class CartHelper {
 	/**
 	 * Get eligibilities from cart.
 	 *
-	 * @return Eligibility|array
-	 *
-	 * @throws AlmaException Exception.
+	 * @return Eligibility[]|array
 	 */
 	public function get_cart_eligibilities() {
 
@@ -180,7 +178,7 @@ class CartHelper {
 				return array();
 			}
 
-			if ( is_array( $this->eligibilities ) ) {
+			if ( ! is_array( $this->eligibilities ) ) {
 				$this->alma_logger->error( 'Eligibilities must be an array' );
 
 				return array();
@@ -193,7 +191,7 @@ class CartHelper {
 	/**
 	 * Get eligible plans keys for current cart.
 	 *
-	 * @param array|Eligibility $cart_eligibilities The eligibilities.
+	 * @param array|Eligibility[] $cart_eligibilities The eligibilities.
 	 * @return array
 	 */
 	public function get_eligible_plans_keys_for_cart( $cart_eligibilities = array() ) {
