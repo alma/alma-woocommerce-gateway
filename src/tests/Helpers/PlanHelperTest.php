@@ -256,7 +256,7 @@ class PlanHelperTest extends WP_UnitTestCase {
 	/**
 	 * @dataProvider checkout_fields_provider
 	 */
-	public function test_render_checkout_fields_in_page($gatewayId, $shoudReceived, $shouldNotReceived) {
+	public function test_render_checkout_fields_in_page($gateway_id, $shoud_received, $should_not_received) {
 
 		$this->gateway_helper_mock->shouldReceive( 'get_alma_gateway_title' )->andReturn( 'test' );
 		$this->gateway_helper_mock->shouldReceive( 'get_alma_gateway_description' )->andReturn( 'test' );
@@ -267,15 +267,15 @@ class PlanHelperTest extends WP_UnitTestCase {
 			$this->template_loader_helper_mock,
 			$this->price_factory_mock
 		] )->makePartial();
-		$plan_helper->shouldReceive( $shoudReceived )->andReturn( null );
+		$plan_helper->shouldReceive( $shoud_received )->andReturn( null );
 
 		$this->assertNull( $plan_helper->render_checkout_fields(
 			array(),
-			array( $gatewayId => array( 'test' ) ),
-			$gatewayId
+			array( $gateway_id => array( 'test' ) ),
+			$gateway_id
 		) );
-		$plan_helper->shouldHaveReceived( $shoudReceived );
-		$plan_helper->shouldNotHaveReceived( $shouldNotReceived );
+		$plan_helper->shouldHaveReceived( $shoud_received );
+		$plan_helper->shouldNotHaveReceived( $should_not_received );
 	}
 
 	public function checkout_fields_provider() {
