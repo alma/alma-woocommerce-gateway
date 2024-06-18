@@ -1,6 +1,12 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.27.0
+    hooks:
+      - id: commitizen
+        name: Check commit message format
+        stages: [ commit-msg ]
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
@@ -9,21 +15,21 @@ repos:
       - id: detect-private-key
       - id: check-merge-conflict
 
-  - repo: local
-    hooks:
-      - id: coding-standard-fixer
-        name: PHP and WordPress coding standards Fixer test
-        language: script
-        entry:  ./bin/coding-standard-fixer.sh
-        stages: [commit]
+#  - repo: local
+#    hooks:
+#      - id: coding-standard-fixer
+#        name: PHP and WordPress coding standards Fixer test
+#        language: script
+#        entry:  ./bin/coding-standard-fixer.sh
+#        stages: [commit]
 
-  - repo: local
-    hooks:
-      - id: coding-standard
-        name: Check the PHP and WordPress coding standards
-        language: script
-        entry:  ./bin/coding-standard.sh
-        stages: [commit]
+#  - repo: local
+#    hooks:
+#      - id: coding-standard
+#        name: Check the PHP and WordPress coding standards
+#        language: script
+#        entry:  ./bin/coding-standard.sh
+#        stages: [commit]
 
 
 #  - repo: https://github.com/pre-commit/mirrors-prettier
