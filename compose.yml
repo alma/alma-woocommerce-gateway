@@ -14,7 +14,7 @@ services:
           "-p$$MYSQL_ROOT_PASSWORD",
         ]
       timeout: 2s
-      retries: 20
+      retries: 30
 
   test:
     build:

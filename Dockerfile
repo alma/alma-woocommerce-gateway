@@ -42,12 +42,13 @@ RUN pecl install xdebug-3.1.3 \
 # Create non-root user
 RUN useradd -ms /bin/bash phpuser
 WORKDIR /home/phpuser
+USER phpuser
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
-COPY --chown=phpuser ./src/ ./
-
-USER phpuser
+COPY --chown=phpuser ./src/composer.json ./
 RUN composer install --prefer-dist --no-progress
+
+COPY --chown=phpuser ./src/ ./
 
 ARG WP_VERSION
 ARG WC_VERSION
