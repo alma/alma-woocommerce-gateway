@@ -2,15 +2,20 @@ name: Continuous Integration
 
 on:
   push:
-    branches: [main,develop]
+    branches:
+      - main
+      - develop
   pull_request:
-    branches: [main,develop]
+    branches:
+      - main
+      - develop
   workflow_dispatch: ~
 
 jobs:
   test:
+    name: Run tests
     runs-on: ubuntu-22.04
-    
+
     strategy:
       fail-fast: false
       # We are using only the latest supported version as a first step
@@ -20,13 +25,21 @@ jobs:
             wp_version: "6.4.1"
             php_version: "7.4"
 
+    env:
+      PHP_VERSION: ${{ matrix.php_version }}
+      WC_VERSION: ${{ matrix.wc_version }}
+      WP_VERSION: ${{ matrix.wp_version }}
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          show-progress: false
 
-      - run: docker compose build --build-arg PHP_VERSION=${{ matrix.php_version }} --build-arg WP_VERSION=${{ matrix.wp_version }} --build-arg WC_VERSION=${{ matrix.wp_version }}
+      - name: Build test container
+        run: docker compose build
 
-      - run: docker compose run test
-        env:
-          WC_VERSION: ${{ matrix.wc_version }}
-          WP_VERSION: ${{ matrix.wp_version }}
+      - name: Run tests
+        run: docker compose run test
 
