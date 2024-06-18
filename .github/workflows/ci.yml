@@ -38,7 +38,14 @@ jobs:
           show-progress: false
 
       - name: Build test container
-        run: docker compose build
+        uses: docker/bake-action@v5
+        with:
+          files: compose.yml
+          load: true
+          targets: test
+          set: |
+            test.cache-from=type=gha
+            test.cache-to=type=gha
 
       - name: Run tests
         run: docker compose run test
