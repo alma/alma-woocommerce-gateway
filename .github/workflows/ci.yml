@@ -37,6 +37,9 @@ jobs:
           persist-credentials: false
           show-progress: false
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Build test container
         uses: docker/bake-action@v5
         with:
