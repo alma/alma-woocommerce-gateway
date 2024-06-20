@@ -426,7 +426,7 @@ class PaymentHelper {
 			),
 			'locale'              => apply_filters( 'alma_checkout_payment_user_locale', get_locale() ),
 			'cart'                => array(
-				'items' => $this->get_previous_order_items_details( $wc_order ),
+				'items' => $this->get_order_items_details( $wc_order ),
 			),
 			'billing_address'     => $billing_address,
 			'shipping_address'    => $shipping_address,
@@ -494,12 +494,12 @@ class PaymentHelper {
 
 
 	/**
-	 * Retrieve the X past purchase item details.
+	 * Retrieve the purchase item details.
 	 *
 	 * @param \WC_Order $wc_order The order.
 	 * @return array
 	 */
-	protected function get_previous_order_items_details( $wc_order ) {
+	protected function get_order_items_details( $wc_order ) {
 		$items = $wc_order->get_items();
 
 		$item_details = array();
