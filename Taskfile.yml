@@ -18,3 +18,105 @@ tasks:
     cmds:
       - docker compose run --rm test
       - docker compose down --remove-orphans
+
+  install-tools:
+    desc: Composer install of tools
+    sources:
+      - alma/composer.json
+      - alma/composer.lock
+    cmds:
+      - composer install --optimize-autoloader --working-dir=src
+
+  lint:
+    dir: src
+    desc: Run linter
+    deps:
+      - install-tools
+    cmds:
+      - composer exec phpcs -- .
+
+  lint:fix:
+    dir: src
+    desc: Run linter
+    deps:
+      - install-tools
+    cmds:
+      - composer exec phpcbf -- .
+
+  php-compatibility:
+    desc: Check compatibility code
+    deps:
+      - install-tools
+    cmds:
+      - php ./alma/vendor/bin/phpcs -p alma --standard=PHPCompatibility -s --runtime-set testVersion 5.6-8.1 --ignore=\*/vendor/\*
+
+  crowdin:
+    internal: true
+    preconditions:
+      - sh: which crowdin
+        msg: Crowdin CLI is required
+
+  crowdin:download:
+    desc: Download translations from Crowdin
+    deps:
+      - crowdin
+    cmds:
+      - crowdin download
+      - ./bin/compile-translaions.sh
+
+  crowdin:upload:
+    desc: Upload translations to Crowdin
+    deps:
+      - crowdin
+    cmds:
+      - crowdin upload sources
+
+  gh-cli:
+    internal: true
+    preconditions:
+      - sh: gh --version
+        msg: |
+          ⚠️ This task requires `gh` (Github CLI).
+          Please check out: https://github.com/cli/cli#installation
+          You'll need a personal access token to authenticate with `gh`.
+          Please check out: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic
+          Then, run `gh auth login` or set the GITHUB_TOKEN environment variable with your personal access token.
+
+  release:
+    deps:
+      - gh-cli
+    desc: Create a release pull request
+    cmds:
+      - gh workflow run release-pull-request.yml
+      - cmd: sleep 2
+        silent: true
+      - cmd: echo "Release pull request created, check out https://github.com/alma/{{.REPOSITORY}}/pulls?q=is%3Aopen+is%3Apr+label%3Arelease"
+        silent: true
+      - cmd: echo "If no pull request is created, check out https://github.com/alma/{{.REPOSITORY}}/actions/workflows/release-pull-request.yml"
+        silent: true
+      - cmd: echo "Please, review and merge the pull request."
+        silent: true
+      - cmd: echo "After merging, the release will be automatically created."
+        silent: true
+
+  hotfix:
+    deps:
+      - gh-cli
+    desc: Create a hotfix pull request
+    preconditions:
+      - sh: test -n "{{.CHANGELOG_MESSAGE}}"
+        msg: |
+          ⚠️ This task requires a changelog message.
+          Please provide a changelog message. Example: `task hotfix CHANGELOG_MESSAGE='This is a message'`.
+    cmds:
+      - gh workflow run hotfix-pull-request.yml -F changelog-message='{{.CHANGELOG_MESSAGE}}'
+      - cmd: sleep 2
+        silent: true
+      - cmd: echo "Hotfix pull request created, check out https://github.com/alma/{{.REPOSITORY}}/pulls?q=is%3Aopen+is%3Apr+label%3Ahotfix"
+        silent: true
+      - cmd: echo "If no pull request is created, check out https://github.com/alma/{{.REPOSITORY}}/actions/workflows/hotfix-pull-request.yml"
+        silent: true
+      - cmd: echo "Please, review and merge the pull request."
+        silent: true
+      - cmd: echo "After merging, the release will be automatically created."
+        silent: true
