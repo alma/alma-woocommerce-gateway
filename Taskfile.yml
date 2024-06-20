@@ -6,6 +6,8 @@ env:
   WP_VERSION: '{{ .WP_VERSION | default "6.4.1" }}'
 
 tasks:
+
+
   build:
     desc: Build test container
     cmds:
@@ -19,11 +21,17 @@ tasks:
       - docker compose run --rm test
       - docker compose down --remove-orphans
 
-  install-tools:
+  install:pre-commit:
+    desc: Install pre-commit hooks
+    cmds:
+      - pre-commit install --hook-type commit-msg
+      - pre-commit install
+
+  install:tools:
     desc: Composer install of tools
     sources:
-      - alma/composer.json
-      - alma/composer.lock
+      - src/composer.json
+      - src/composer.lock
     cmds:
       - composer install --optimize-autoloader --working-dir=src
 
@@ -31,7 +39,7 @@ tasks:
     dir: src
     desc: Run linter
     deps:
-      - install-tools
+      - install:tools
     cmds:
       - composer exec phpcs -- .
 
@@ -39,16 +47,17 @@ tasks:
     dir: src
     desc: Run linter
     deps:
-      - install-tools
+      - install:tools
     cmds:
       - composer exec phpcbf -- .
 
   php-compatibility:
+    dir: src
     desc: Check compatibility code
     deps:
-      - install-tools
+      - install:tools
     cmds:
-      - php ./alma/vendor/bin/phpcs -p alma --standard=PHPCompatibility -s --runtime-set testVersion 5.6-8.1 --ignore=\*/vendor/\*
+      - composer exec phpcs -- -p . --standard=PHPCompatibility -s --runtime-set testVersion 5.6-8.1 --ignore=\*/vendor/\*
 
   crowdin:
     internal: true
