@@ -20,6 +20,7 @@ use Alma\Woocommerce\Admin\Helpers\ShareOfCheckoutHelper;
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\GatewayHelperBuilder;
 use Alma\Woocommerce\Builders\Helpers\PlanHelperBuilder;
 use Alma\Woocommerce\Builders\Helpers\SettingsHelperBuilder;
 use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
@@ -202,7 +203,8 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 		$this->alma_settings       = new AlmaSettings();
 		$this->check_legal_helper  = new CheckLegalHelper();
 		$this->checkout_helper     = new CheckoutHelper();
-		$this->gateway_helper      = new GatewayHelper();
+		$gateway_helper_builder    = new GatewayHelperBuilder();
+		$this->gateway_helper      = $gateway_helper_builder->get_instance();
 		$this->scripts_helper      = new AssetsHelper();
 		$this->encryption_helper   = new EncryptorHelper();
 		$tools_helper_builder      = new ToolsHelperBuilder();

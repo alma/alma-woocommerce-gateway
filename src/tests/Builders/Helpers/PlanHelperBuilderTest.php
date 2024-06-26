@@ -38,7 +38,9 @@ class PlanHelperBuilderTest extends WP_UnitTestCase {
 
 	public function test_get_gateway_helper() {
 		$this->assertInstanceOf(GatewayHelper::class, $this->plan_helper_builder->get_gateway_helper());
-		$this->assertInstanceOf(GatewayHelper::class, $this->plan_helper_builder->get_gateway_helper(new GatewayHelper()));
+		$this->assertInstanceOf(GatewayHelper::class, $this->plan_helper_builder->get_gateway_helper(
+			\Mockery::mock(GatewayHelper::class)
+		));
 	}
 
 	public function test_get_template_loader_helper() {
