@@ -20,6 +20,7 @@ use Alma\Woocommerce\Admin\Helpers\ShareOfCheckoutHelper;
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\PlanHelperBuilder;
 use Alma\Woocommerce\Builders\Helpers\SettingsHelperBuilder;
 use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
 use Alma\Woocommerce\Exceptions\ApiClientException;
@@ -36,7 +37,7 @@ use Alma\Woocommerce\Helpers\EncryptorHelper;
 use Alma\Woocommerce\Helpers\GatewayHelper;
 use Alma\Woocommerce\Helpers\OrderHelper;
 use Alma\Woocommerce\Helpers\PaymentHelper;
-use Alma\Woocommerce\Helpers\PlanBuilderHelper;
+use Alma\Woocommerce\Helpers\PlanHelper;
 use Alma\Woocommerce\Helpers\PluginHelper;
 use Alma\Woocommerce\Helpers\SettingsHelper;
 use Alma\Woocommerce\Helpers\TemplateLoaderHelper;
@@ -89,13 +90,6 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 	 * @var AssetsHelper
 	 */
 	public $scripts_helper;
-
-	/**
-	 * The plan builder.
-	 *
-	 * @var PlanBuilderHelper
-	 */
-	public $plan_builder;
 
 	/**
 	 *  The encryptor.
@@ -193,9 +187,9 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 	/**
 	 * Alma plan builder.
 	 *
-	 * @var PlanBuilderHelper
+	 * @var PlanHelper
 	 */
-	protected $alma_plan_builder;
+	protected $alma_plan_helper;
 
 	/**
 	 * Construct.
@@ -210,7 +204,6 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 		$this->checkout_helper     = new CheckoutHelper();
 		$this->gateway_helper      = new GatewayHelper();
 		$this->scripts_helper      = new AssetsHelper();
-		$this->plan_builder        = new PlanBuilderHelper();
 		$this->encryption_helper   = new EncryptorHelper();
 		$tools_helper_builder      = new ToolsHelperBuilder();
 		$this->tool_helper         = $tools_helper_builder->get_instance();
@@ -220,9 +213,11 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 		$this->soc_helper          = new ShareOfCheckoutHelper();
 		$this->plugin_helper       = new PluginHelper();
 		$this->asset_helper        = new AssetsHelper();
-		$this->alma_plan_builder   = new PlanBuilderHelper();
-		$this->plugin_factory      = new PluginFactory();
-		$this->cart_factory        = new CartFactory();
+		$alma_plan_builder         = new PlanHelperBuilder();
+		$this->alma_plan_helper    = $alma_plan_builder->get_instance();
+
+		$this->plugin_factory = new PluginFactory();
+		$this->cart_factory   = new CartFactory();
 
 		$settings_helper_builder = new SettingsHelperBuilder();
 		$this->settings_helper   = $settings_helper_builder->get_instance();
@@ -355,7 +350,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 
 		$eligibilities  = $this->cart_helper->get_cart_eligibilities();
 		$eligible_plans = $this->cart_helper->get_eligible_plans_keys_for_cart( $eligibilities );
-		$eligible_plans = $this->alma_plan_builder->order_plans( $eligible_plans );
+		$eligible_plans = $this->alma_plan_helper->order_plans( $eligible_plans );
 
 		$is_eligible = false;
 
@@ -726,7 +721,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 			return false;
 		}
 		$allowed_values = $this->cart_helper->get_eligible_plans_keys_for_cart();
-		$allowed_values = $this->alma_plan_builder->order_plans( $allowed_values );
+		$allowed_values = $this->alma_plan_helper->order_plans( $allowed_values );
 
 		if ( ! in_array( $alma_fee_plan, $allowed_values[ $this->id ], true ) ) {
 			$this->logger->error(

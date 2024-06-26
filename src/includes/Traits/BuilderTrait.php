@@ -24,7 +24,9 @@ use Alma\Woocommerce\Factories\SessionFactory;
 use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\CustomerHelper;
+use Alma\Woocommerce\Helpers\GatewayHelper;
 use Alma\Woocommerce\Helpers\InternationalizationHelper;
+use Alma\Woocommerce\Helpers\TemplateLoaderHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -268,4 +270,35 @@ trait BuilderTrait {
 
 		return new CoreFactory();
 	}
+
+	/**
+	 * GatewayHelper.
+	 *
+	 * @param GatewayHelper|null $gateway_helper The gateway helper.
+	 *
+	 * @return GatewayHelper
+	 */
+	public function get_gateway_helper( $gateway_helper = null ) {
+		if ( $gateway_helper ) {
+			return $gateway_helper;
+		}
+
+		return new GatewayHelper();
+	}
+
+	/**
+	 * TemplateLoaderHelper.
+	 *
+	 * @param TemplateLoaderHelper|null $template_loader_helper The template loader helper.
+	 *
+	 * @return TemplateLoaderHelper
+	 */
+	public function get_template_loader_helper( $template_loader_helper = null ) {
+		if ( $template_loader_helper ) {
+			return $template_loader_helper;
+		}
+
+		return new TemplateLoaderHelper();
+	}
+
 }
