@@ -62,7 +62,7 @@ class PlanHelperTest extends WP_UnitTestCase {
 	public function set_up() {
 		$this->alma_settings_mock = \Mockery::mock(AlmaSettings::class)->makePartial();
 		$this->alma_settings_mock->shouldReceive('should_display_plan')->with(ConstantsHelper::DEFAULT_FEE_PLAN, ConstantsHelper::GATEWAY_ID_MORE_THAN_FOUR)->andReturn(false);
-		$this->alma_settings_mock->shouldReceive('should_display_plan')->with(ConstantsHelper::PAY_NOW_FEE_PLAN, ConstantsHelper::GATEWAY_ID_MORE_THAN_FOUR)->andReturn(false);
+		$this->alma_settings_mock->shouldReceive('should_display_plan')->with(Constantsfeature/ecom-1699-woocommerce-add-unit-tests-on-gatewayhelperHelper::PAY_NOW_FEE_PLAN, ConstantsHelper::GATEWAY_ID_MORE_THAN_FOUR)->andReturn(false);
 		$this->alma_settings_mock->shouldReceive('should_display_plan')->with(ConstantsHelper::DEFAULT_FEE_PLAN, ConstantsHelper::GATEWAY_ID_PAY_LATER)->andReturn(false);
 		$this->alma_settings_mock->shouldReceive('should_display_plan')->with(ConstantsHelper::PAY_NOW_FEE_PLAN, ConstantsHelper::GATEWAY_ID_PAY_LATER)->andReturn(false);
 		$this->alma_settings_mock->shouldReceive('should_display_plan')->with(ConstantsHelper::PAY_NOW_FEE_PLAN, ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_LATER)->andReturn(false);
@@ -331,5 +331,6 @@ class PlanHelperTest extends WP_UnitTestCase {
 		$this->gateway_helper_mock =null;
 		$this->template_loader_helper_mock =null;
 		$this->price_factory_mock =null;
+		\Mockery::close();
 	}
 }
