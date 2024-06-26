@@ -51,6 +51,8 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 == Changelog ==
 
+* feature: compatibility Woocommerce 9.0.2
+* feature: Compatibility WordPress 6.5.5
 * feature: compatibility Woocommerce 8.9.2
 * feature: Compatibility WordPress 6.5.4
 
