@@ -426,7 +426,7 @@ class PaymentHelper {
 			),
 			'locale'              => apply_filters( 'alma_checkout_payment_user_locale', get_locale() ),
 			'cart'                => array(
-				'items' => $this->get_previous_order_items_details( $wc_order, $fee_plan, true ),
+				'items' => $this->get_order_items_details( $wc_order ),
 			),
 			'billing_address'     => $billing_address,
 			'shipping_address'    => $shipping_address,
@@ -494,21 +494,12 @@ class PaymentHelper {
 
 
 	/**
-	 * Retrieve the X past purchase item details.
+	 * Retrieve the purchase item details.
 	 *
 	 * @param \WC_Order $wc_order The order.
-	 * @param FeePlan   $fee_plan The Fee Plan.
-	 * @param bool      $check_credit Check for payment payload if we are in credit.
 	 * @return array
 	 */
-	protected function get_previous_order_items_details( $wc_order, $fee_plan = array(), $check_credit = false ) {
-		if (
-			$check_credit
-			&& ! $this->alma_settings->is_pnx_plus_4( $fee_plan )
-		) {
-			return array();
-		}
-
+	protected function get_order_items_details( $wc_order ) {
 		$items = $wc_order->get_items();
 
 		$item_details = array();

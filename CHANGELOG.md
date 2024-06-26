@@ -1,9 +1,9 @@
 Changelog
 =========
 
-* feature: compatibility Woocommerce 8.8.2
-* feature: Compatibility WordPress 6.5
-* 
+* feature: compatibility Woocommerce 8.9.2
+* feature: Compatibility WordPress 6.5.4
+
 v5.4.0
 ------
 * feature: Compatibility Woocommerce Blocks
