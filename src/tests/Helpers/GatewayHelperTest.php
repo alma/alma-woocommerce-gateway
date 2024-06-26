@@ -100,6 +100,7 @@ class GatewayHelperTest extends WP_UnitTestCase {
 		$this->cart_helper = null;
 		$this->cart_factory = null;
 		$this->php_helper = null;
+		\Mockery::close();
 	}
 
 	public function test_woocommerce_available_payment_gateways_is_admin() {
