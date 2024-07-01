@@ -11,7 +11,7 @@ updates:
       interval: monthly
     open-pull-requests-limit: 0  # only allow vulnerabilities
     groups:
-      python-vulnerabilities:
+      php-vulnerabilities:
         applies-to: security-updates
         patterns:
           - "*"
