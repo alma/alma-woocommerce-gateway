@@ -12,6 +12,36 @@ on:
   workflow_dispatch: ~
 
 jobs:
+
+  lint:
+    name: Lint code
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: ./src
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          show-progress: false
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
+          tools: composer:v2
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Lint code
+        run: composer phpcs
+
   test:
     name: Run tests
     runs-on: ubuntu-22.04
