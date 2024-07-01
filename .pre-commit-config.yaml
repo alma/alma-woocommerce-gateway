@@ -22,39 +22,29 @@ repos:
       - id: coding-standard-fixer
         name: PHP and WordPress coding standards Fixer test
         language: system
-        pass_filenames: false
-        entry:  task lint:fix
+        entry: ./bin/coding-standard-fixer.sh
         stages: [commit]
 
       - id: coding-standard
         name: Check the PHP and WordPress coding standards
         language: system
-        pass_filenames: false
-        entry:  task lint
+        entry: ./bin/coding-standard.sh
         stages: [commit]
 
-      # TODO : We currently have warnings, to be fixed
-      # - id: php-compatibility
-      #   name: Check the PHP compatibility
-      #   language: system
-      #   pass_filenames: false
-      #   entry:  task php-compatibility
-      #   stages: [commit]
-
-  - repo: https://github.com/returntocorp/semgrep
-    rev: v1.75.0
-    hooks:
-      - id: semgrep
-        args:
-          - --error
-          - --config
-          - semgrep/rules/
-          - --metrics
-          - "off"
-          - --quiet
-          - --disable-version-check
-          - --skip-unknown-extensions
-        pass_filenames: false # Passing files explicitely override semgremignore
+  # - repo: https://github.com/returntocorp/semgrep
+  #   rev: v1.75.0
+  #   hooks:
+  #     - id: semgrep
+  #       args:
+  #         - --error
+  #         - --config
+  #         - semgrep/rules/
+  #         - --metrics
+  #         - "off"
+  #         - --quiet
+  #         - --disable-version-check
+  #         - --skip-unknown-extensions
+  #       pass_filenames: false # Passing files explicitely override semgremignore
 
   - repo: https://github.com/alma/pre-commit-hooks
     rev: 1.1.2

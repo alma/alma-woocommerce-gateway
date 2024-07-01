@@ -2,7 +2,8 @@
 #TODO: svn checkout, svn commit (if needed) after svn sync
 QUIET=1
 SYNC_SVN=0
-PATH_TO_COMPOSER="/usr/bin/php5.6 /usr/local/bin/composer "
+# Read PATH_TO_COMPOSER from env if provided, otherwise use default
+[ -z "$PATH_TO_COMPOSER" ] && PATH_TO_COMPOSER="/usr/bin/php5.6 /usr/local/bin/composer "
 
 # {{{ function usage
 #

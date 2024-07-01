@@ -8,56 +8,58 @@ env:
 
 tasks:
 
-  build:
+  build:test:
     desc: Build test container
     cmds:
-      - docker compose build
+      - docker compose build test
+
+  build:php5-6:
+    desc: Build test container
+    cmds:
+      - docker compose build php5-6
 
   test:
     desc: Run tests
     deps:
-      - build
+      - build:test
     cmds:
       - docker compose run --rm test
       - docker compose down --remove-orphans
 
-  install:pre-commit:
+  pre-commit:install:
     desc: Install pre-commit hooks
     cmds:
       - pre-commit install --hook-type commit-msg
       - pre-commit install
 
-  install:tools:
-    desc: Composer install of tools
-    sources:
-      - src/composer.json
-      - src/composer.lock
-    cmds:
-      - composer install --optimize-autoloader --working-dir=src
-
   lint:
-    dir: src
     desc: Run linter
     deps:
-      - install:tools
+      - build:php5-6
     cmds:
-      - composer exec phpcs -- .
+      - docker compose run --rm php5-6 php ./src/vendor/bin/phpcs src
 
   lint:fix:
-    dir: src
-    desc: Run linter
+    desc: Run linter with autofix
     deps:
-      - install:tools
+      - build:php5-6
     cmds:
-      - composer exec phpcbf -- .
+      - docker compose run --rm php5-6 php ./src/vendor/bin/phpcbf src
 
   php-compatibility:
-    dir: src
     desc: Check compatibility code
     deps:
-      - install:tools
+      - build:php5-6
     cmds:
-      - composer exec phpcs -- -p . --standard=PHPCompatibility -s --runtime-set testVersion 5.6-8.1 --ignore=\*/vendor/\*
+      - docker compose run --rm php5-6 php ./src/vendor/bin/phpcs -p src --standard=PHPCompatibility -s --runtime-set testVersion 5.6-8.1 --ignore=\*/vendor/\*
+
+  dist:
+    desc: Build zip file
+    deps:
+      - build:php5-6
+    cmds:
+      - rm -rf ./dist
+      - docker compose run --rm php5-6 ./bin/build.sh
 
   crowdin:
     internal: true
@@ -71,7 +73,7 @@ tasks:
       - crowdin
     cmds:
       - crowdin download
-      - ./bin/compile-translaions.sh
+      - ./bin/compile-translations.sh
 
   crowdin:upload:
     desc: Upload translations to Crowdin

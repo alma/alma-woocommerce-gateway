@@ -35,3 +35,15 @@ services:
       WP_TEST_DATABASE_USER: root
       WP_TEST_DATABASE_PASSWORD: root
       WP_TEST_DATABASE_HOST: mysql
+    entrypoint: ./bin/entrypoint.sh
+
+  php5-6:
+    build:
+      context: ./
+      dockerfile: Dockerfile.legacy
+    user: ${UID:-1000}:${GID:-1000}
+    volumes:
+      - ./:/home/phpuser
+      - /home/phpuser/src/vendor # do not mount vendor inside container
+    environment:
+      PATH_TO_COMPOSER: /usr/bin/composer
