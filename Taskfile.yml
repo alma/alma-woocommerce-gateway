@@ -37,21 +37,21 @@ tasks:
     deps:
       - build:php5-6
     cmds:
-      - docker compose run --rm php5-6 php ./src/vendor/bin/phpcs src
+      - docker compose run --rm php5-6 php ./src/vendor/bin/phpcs --standard=src/phpcs.xml src
 
   lint:fix:
     desc: Run linter with autofix
     deps:
       - build:php5-6
     cmds:
-      - docker compose run --rm php5-6 php ./src/vendor/bin/phpcbf src
+      - docker compose run --rm php5-6 php ./src/vendor/bin/phpcbf --standard=src/phpcs.xml src
 
   php-compatibility:
     desc: Check compatibility code
     deps:
       - build:php5-6
     cmds:
-      - docker compose run --rm php5-6 php ./src/vendor/bin/phpcs -p src --standard=PHPCompatibility -s --runtime-set testVersion 5.6-8.1 --ignore=\*/vendor/\*
+      - docker compose run --rm php5-6 php ./src/vendor/bin/phpcs -d memory_limit=512M -p src --standard=PHPCompatibility -s --runtime-set testVersion 5.6-8.1 --ignore='*/vendor/*,src/build/*'
 
   dist:
     desc: Build zip file
