@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 4.4
 Tested up to: 6.3
 Requires PHP: 5.6
-Stable tag: 5.4.0
+Stable tag: 5.4.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,24 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+## v5.4.1 - 2024-07-03
+
+- Improve docker build to be faster, non-root and add parameters
+- Add commit name rule
+- compatibility woocommerce 8.9.2
+- [DEX-866] Add infos in PR about E2E tests run status
+- [DEVX] Fix task test for mac m1 users
+- [Review 6] add tests on product helper
+- [Review 5 ] use factories
+- [Review 4] add unit tests on general helper
+- [Review 3] Add unit tests on feeplanhelper
+- [Review 2] Add unit tests on customerhelper + refacto
+- [Review 1] add builder factories + test
+- Add unit tests on carthelper
+- compatibility woocommerce 8.8.2 wordpress 6.5
+- Woocommerce add unit tests on settingshelper
+- woocommerce complete unit tests to complete 100 on
 
 * feature: compatibility Woocommerce 8.9.2
 * feature: Compatibility WordPress 6.5.4
