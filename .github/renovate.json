@@ -7,7 +7,8 @@
   "extends": [
     "github>alma/renovate:github-actions",
     "github>alma/renovate:confidence-badges",
-    "github>alma/renovate:pre-commit"
+    "github>alma/renovate:pre-commit",
+    "github>alma/renovate:vulnerabilities"
   ],
   "dependencyDashboard": true,
   "reviewers": ["team:squad-e-commerce-integrations"],
@@ -24,6 +25,12 @@
     {
       "matchManagers": ["github-actions"],
       "matchPackageNames": ["LoveToKnow/slackify-markdown-action"],
+      "enabled": false
+    },
+    {
+      "description": "PHP and composer versions in Dockerfiles must be freezed",
+      "matchManagers": ["dockerfile"],
+      "matchDepNames": ["php", "composer"],
       "enabled": false
     }
   ]
