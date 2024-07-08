@@ -34,4 +34,15 @@ class CoreFactory {
 	public function has_term( $term = '', $taxonomy = '', $post = null ) {
 		return has_term( $term, $taxonomy, $post );
 	}
+
+	/**
+	 * Detect is admin mode.
+	 *
+	 * @codeCoverageIgnore
+	 *
+	 * @return bool
+	 */
+	public function is_admin() {
+		return is_admin();
+	}
 }
