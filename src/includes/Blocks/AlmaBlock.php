@@ -13,12 +13,13 @@ namespace Alma\Woocommerce\Blocks;
 
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\PlanHelperBuilder;
 use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\CheckoutHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\GatewayHelper;
-use Alma\Woocommerce\Helpers\PlanBuilderHelper;
+use Alma\Woocommerce\Helpers\PlanHelper;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -61,9 +62,9 @@ class AlmaBlock extends AbstractPaymentMethodType {
 	/**
 	 * The plan builder.
 	 *
-	 * @var PlanBuilderHelper
+	 * @var PlanHelper
 	 */
-	protected $alma_plan_builder;
+	protected $alma_plan_helper;
 
 	/**
 	 * Initialize.
@@ -78,7 +79,8 @@ class AlmaBlock extends AbstractPaymentMethodType {
 		$cart_helper_builder   = new CartHelperBuilder();
 		$this->cart_helper     = $cart_helper_builder->get_instance();
 
-		$this->alma_plan_builder = new PlanBuilderHelper();
+		$alma_plan_builder      = new PlanHelperBuilder();
+		$this->alma_plan_helper = $alma_plan_builder->get_instance();
 	}
 
 	/**
@@ -154,9 +156,9 @@ class AlmaBlock extends AbstractPaymentMethodType {
 		// We get the eligibilites.
 		$eligibilities          = $this->cart_helper->get_cart_eligibilities();
 		$eligible_plans         = $this->cart_helper->get_eligible_plans_keys_for_cart( $eligibilities );
-		$eligible_plans_ordered = $this->alma_plan_builder->order_plans( $eligible_plans, $gateway_id );
+		$eligible_plans_ordered = $this->alma_plan_helper->order_plans( $eligible_plans, $gateway_id );
 
-		$plans = $this->alma_plan_builder->get_plans_by_keys( $eligible_plans_ordered, $eligibilities );
+		$plans = $this->alma_plan_helper->get_plans_by_keys( $eligible_plans_ordered, $eligibilities );
 
 		$default_plan = $this->gateway_helper->get_default_plan( $eligible_plans_ordered );
 
