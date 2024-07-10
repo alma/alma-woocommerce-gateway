@@ -23,11 +23,6 @@
       "groupName": "docker updates"
     },
     {
-      "matchManagers": ["github-actions"],
-      "matchPackageNames": ["LoveToKnow/slackify-markdown-action"],
-      "enabled": false
-    },
-    {
       "description": "PHP and composer versions in Dockerfiles must be freezed",
       "matchManagers": ["dockerfile"],
       "matchDepNames": ["php", "composer"],
