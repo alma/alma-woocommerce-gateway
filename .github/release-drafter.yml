@@ -1,0 +1,44 @@
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+
+template: |
+  ## Changes
+
+  $CHANGES
+
+  ### Contributors
+
+  $CONTRIBUTORS
+
+categories:
+  - title: '🚀 New Features'
+    labels:
+      - 'type: feature'
+  - title: '🐛 Bug Fixes'
+    labels:
+      - 'type: bugfix'
+      - 'type: hotfix'
+
+exclude-labels:
+  - 'skip-changelog'
+  - 'type: chore'
+  - 'type: ci'
+  - 'type: refactor'
+  - 'type: test'
+  - 'type: docs'
+  - 'type: security'
+  - 'type: devx'
+change-template: '- $TITLE (#$NUMBER)'
+change-title-escapes: '\<*_&#@`'
+version-resolver:
+  major:
+    labels:
+      - 'major'
+  minor:
+    labels:
+      - 'minor'
+      - 'type: feature'
+  patch:
+    labels:
+      - 'patch'
+  default: patch
