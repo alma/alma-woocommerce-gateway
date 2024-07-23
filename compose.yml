@@ -1,6 +1,7 @@
 services:
   mysql:
-    image: mysql:5.6
+    image: mysql:lts
+    platform: linux/amd64
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: wordpress_test
@@ -10,25 +11,39 @@ services:
           "CMD",
           "mysqladmin",
           "ping",
-          "-p$$MYSQL_ROOT_PASSWORD"
+          "-p$$MYSQL_ROOT_PASSWORD",
         ]
-      timeout: 10s
-      retries: 10
+      timeout: 2s
+      retries: 30
 
   test:
     build:
       context: .
       args:
-        WC_VERSION: 8.2.2
-        WP_VERSION: 6.4.1
+        PHP_VERSION: ${PHP_VERSION}
+        WC_VERSION: ${WC_VERSION}
+        WP_VERSION: ${WP_VERSION}
+    user: ${UID:-1000}:${GID:-1000}
     depends_on:
       mysql:
         condition: service_healthy
     volumes:
-      - ./src:/app/woocommerce/src
-      - /app/woocommerce/src/vendor # do not mount vendor inside container
+      - ./src:/home/phpuser
+      - /home/phpuser/vendor # do not mount vendor inside container
     environment:
       WP_TEST_DATABASE_NAME: wordpress_test
       WP_TEST_DATABASE_USER: root
       WP_TEST_DATABASE_PASSWORD: root
       WP_TEST_DATABASE_HOST: mysql
+    entrypoint: ./bin/entrypoint.sh
+
+  php5-6:
+    build:
+      context: ./
+      dockerfile: Dockerfile.legacy
+    user: ${UID:-1000}:${GID:-1000}
+    volumes:
+      - ./:/home/phpuser
+      - /home/phpuser/src/vendor # do not mount vendor inside container
+    environment:
+      PATH_TO_COMPOSER: /usr/bin/composer

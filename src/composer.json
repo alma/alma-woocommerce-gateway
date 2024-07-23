@@ -54,6 +54,7 @@
             "composer/installers": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "automattic/jetpack-autoloader": true
-        }
+        },
+        "lock": false
     }
 }

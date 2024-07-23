@@ -1,3 +1,8 @@
-* claire.bonachera@getalma.eu
-* francois.gomis@getalma.eu
-* benjamin.freoua@getalma.eu
+# Grant ownership of all files by default to the ECOM integrations squad
+*                           @alma/squad-e-commerce-integrations
+
+# Grant DevX ownership of Github workflows and actions
+.github                     @alma/squad-devx
+
+# Grant DevX ownership of Taskfile
+Taskfile.yml                @alma/squad-devx
