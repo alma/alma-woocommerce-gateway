@@ -21,6 +21,9 @@ use Alma\Woocommerce\Exceptions\ApiCreatePaymentsException;
 use Alma\Woocommerce\Exceptions\BuildOrderException;
 use Alma\Woocommerce\Exceptions\CreatePaymentsException;
 use Alma\Woocommerce\Exceptions\PlansDefinitionException;
+use Alma\Woocommerce\Factories\CartFactory;
+use Alma\Woocommerce\Factories\SessionFactory;
+use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Gateways\Standard\StandardGateway;
 use Alma\Woocommerce\Services\CheckoutService;
 
@@ -50,13 +53,38 @@ class OrderHelper {
 	 */
 	protected $block_helper;
 
+	/**
+	 * The session factory.
+	 *
+	 * @var SessionFactory
+	 */
+	protected $session_factory;
+
+	/**
+	 * The version factory.
+	 *
+	 * @var VersionFactory
+	 */
+	protected $version_factory;
+
+	/**
+	 * The cart factory.
+	 *
+	 * @var CartFactory
+	 */
+	protected $cart_factory;
+
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->logger       = new AlmaLogger();
-		$this->block_helper = new BlockHelper();
+		$this->logger          = new AlmaLogger();
+		$this->block_helper    = new BlockHelper();
+		$this->session_factory = new SessionFactory();
+		$this->version_factory = new VersionFactory();
+		$this->cart_factory    = new CartFactory();
+
 	}
 
 
@@ -116,7 +144,7 @@ class OrderHelper {
 	public function get_merchant_url( $wc_order ) {
 		$admin_path = 'post.php?post=' . $wc_order->get_id() . '&action=edit';
 
-		if ( version_compare( wc()->version, '3.3.0', '<' ) ) {
+		if ( version_compare( $this->version_factory->get_version(), '3.3.0', '<' ) ) {
 			return get_admin_url( null, $admin_path );
 		}
 
@@ -202,7 +230,7 @@ class OrderHelper {
 	 */
 	public function payment_complete( $wc_order, $payment_id ) {
 		$wc_order->payment_complete( $payment_id );
-		wc()->cart->empty_cart();
+		$this->cart_factory->get_cart()->empty_cart();
 	}
 
 	/**
@@ -292,20 +320,22 @@ class OrderHelper {
 	 * @return void
 	 */
 	protected function send_ajax_failure_response() {
+		$session = $this->session_factory->get_session();
+
 		if ( is_ajax() ) {
 			// Only print notices if not reloading the checkout, otherwise they're lost in the page reload.
-			if ( ! isset( WC()->session->reload_checkout ) ) {
+			if ( ! isset( $session->reload_checkout ) ) {
 				$messages = wc_print_notices( true );
 			}
 
 			$response = array(
 				'result'   => 'failure',
 				'messages' => isset( $messages ) ? $messages : '',
-				'refresh'  => isset( WC()->session->refresh_totals ),
-				'reload'   => isset( WC()->session->reload_checkout ),
+				'refresh'  => isset( $session->refresh_totals ),
+				'reload'   => isset( $session->reload_checkout ),
 			);
 
-			unset( WC()->session->refresh_totals, WC()->session->reload_checkout );
+			unset( $session->refresh_totals, $session->reload_checkout );
 
 			wp_send_json( $response );
 		}

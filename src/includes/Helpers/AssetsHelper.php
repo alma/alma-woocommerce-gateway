@@ -70,7 +70,7 @@ class AssetsHelper {
 	 *
 	 * @return string
 	 */
-	public static function get_admin_setting_url( $alma_section = true ) {
+	public function get_admin_setting_url( $alma_section = true ) {
 		if ( $alma_section ) {
 			return admin_url( 'admin.php?page=wc-settings&tab=checkout&section=alma' );
 		}
@@ -160,5 +160,19 @@ class AssetsHelper {
 		$icon     = '<img src="' . \WC_HTTPS::force_https_url( $icon_url ) . '" alt="' . esc_attr( $title ) . '" style="width: auto !important; height: 25px !important; border: none !important;">';
 
 		return apply_filters( 'alma_wc_gateway_icon', $icon, $id );
+	}
+
+	/**
+	 * Allow Alma domains for redirect.
+	 *
+	 * @param string[] $domains Whitelisted domains for `wp_safe_redirect`.
+	 *
+	 * @return string[]
+	 */
+	public function alma_domains_whitelist( $domains ) {
+		$domains[] = 'pay.getalma.eu';
+		$domains[] = 'pay.sandbox.getalma.eu';
+
+		return $domains;
 	}
 }

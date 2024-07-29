@@ -12,13 +12,16 @@
 namespace Alma\Woocommerce\Blocks;
 
 use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\GatewayHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\PlanHelperBuilder;
+use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\CheckoutHelper;
-use Alma\Woocommerce\Helpers\GatewayHelper;
-use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
-use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
-use Alma\Woocommerce\Helpers\PlanBuilderHelper;
+use Alma\Woocommerce\Helpers\GatewayHelper;
+use Alma\Woocommerce\Helpers\PlanHelper;
+use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -60,9 +63,9 @@ class AlmaBlock extends AbstractPaymentMethodType {
 	/**
 	 * The plan builder.
 	 *
-	 * @var PlanBuilderHelper
+	 * @var PlanHelper
 	 */
-	protected $alma_plan_builder;
+	protected $alma_plan_helper;
 
 	/**
 	 * Initialize.
@@ -70,12 +73,16 @@ class AlmaBlock extends AbstractPaymentMethodType {
 	 * @return void
 	 */
 	public function initialize() {
-		$this->settings          = get_option( AlmaSettings::OPTIONS_KEY, array() );
-		$this->gateway_helper    = new GatewayHelper();
-		$this->alma_settings     = new AlmaSettings();
-		$this->checkout_helper   = new CheckoutHelper();
-		$this->cart_helper       = new CartHelper();
-		$this->alma_plan_builder = new PlanBuilderHelper();
+		$this->settings         = get_option( AlmaSettings::OPTIONS_KEY, array() );
+		$gateway_helper_builder = new GatewayHelperBuilder();
+		$this->gateway_helper   = $gateway_helper_builder->get_instance();
+		$this->alma_settings    = new AlmaSettings();
+		$this->checkout_helper  = new CheckoutHelper();
+		$cart_helper_builder    = new CartHelperBuilder();
+		$this->cart_helper      = $cart_helper_builder->get_instance();
+
+		$alma_plan_builder      = new PlanHelperBuilder();
+		$this->alma_plan_helper = $alma_plan_builder->get_instance();
 	}
 
 	/**
@@ -149,12 +156,13 @@ class AlmaBlock extends AbstractPaymentMethodType {
 		$nonce_value = $this->checkout_helper->create_nonce_value( $gateway_id );
 
 		// We get the eligibilites.
-		$eligibilities  = $this->alma_settings->get_cart_eligibilities();
-		$eligible_plans = $this->alma_settings->get_eligible_plans_keys_for_cart( $eligibilities, $gateway_id );
+		$eligibilities          = $this->cart_helper->get_cart_eligibilities();
+		$eligible_plans         = $this->cart_helper->get_eligible_plans_keys_for_cart( $eligibilities );
+		$eligible_plans_ordered = $this->alma_plan_helper->order_plans( $eligible_plans, $gateway_id );
 
-		$plans = $this->alma_plan_builder->get_plans_by_keys( $eligible_plans, $eligibilities );
+		$plans = $this->alma_plan_helper->get_plans_by_keys( $eligible_plans_ordered, $eligibilities );
 
-		$default_plan = $this->gateway_helper->get_default_plan( $eligible_plans );
+		$default_plan = $this->gateway_helper->get_default_plan( $eligible_plans_ordered );
 
 		$is_in_page = $this->gateway_helper->is_in_page_gateway( $gateway_id );
 

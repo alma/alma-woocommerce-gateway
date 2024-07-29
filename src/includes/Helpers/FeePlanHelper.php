@@ -94,13 +94,13 @@ class FeePlanHelper {
 	 * - deferred_months
 	 *
 	 * @param string $plan_key The plan key to test.
+	 * @param string $regex The regex.
 	 *
 	 * @return false|array
 	 */
-	public function alma_match_plan_key_pattern( $plan_key ) {
+	public function alma_match_plan_key_pattern( $plan_key, $regex = ConstantsHelper::SORT_PLAN_KEY_REGEX ) {
 		$matches = array();
-		if ( preg_match( ConstantsHelper::SORT_PLAN_KEY_REGEX, $plan_key, $matches ) ) {
-
+		if ( preg_match( $regex, $plan_key, $matches ) ) {
 			return array_combine(
 				array(
 					'key',

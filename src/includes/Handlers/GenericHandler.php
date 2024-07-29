@@ -15,6 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
+use Alma\Woocommerce\Factories\CoreFactory;
+use Alma\Woocommerce\Factories\PriceFactory;
 use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
@@ -50,15 +53,32 @@ class GenericHandler {
 	 */
 	protected $helper_tools;
 
+
+	/**
+	 * The core factory.
+	 *
+	 * @var CoreFactory
+	 */
+	protected $core_factory;
+	/**
+	 * The price factory.
+	 *
+	 * @var PriceFactory
+	 */
+	protected $price_factory;
+
 	/**
 	 * __construct
 	 *
 	 * @return void
 	 */
 	public function __construct() {
-		$this->logger        = new AlmaLogger();
-		$this->alma_settings = new AlmaSettings();
-		$this->helper_tools  = new ToolsHelper();
+		$this->logger         = new AlmaLogger();
+		$this->alma_settings  = new AlmaSettings();
+		$tools_helper_builder = new ToolsHelperBuilder();
+		$this->helper_tools   = $tools_helper_builder->get_instance();
+		$this->price_factory  = new PriceFactory();
+		$this->core_factory   = new CoreFactory();
 	}
 
 	/**
@@ -114,8 +134,8 @@ class GenericHandler {
 			'amountSalePriceQuerySelector' => $amount_sale_price_query_selector,
 			'jqueryUpdateEvent'            => $jquery_update_event,
 			'firstRender'                  => true,
-			'decimalSeparator'             => wc_get_price_decimal_separator(),
-			'thousandSeparator'            => wc_get_price_thousand_separator(),
+			'decimalSeparator'             => $this->price_factory->get_woo_decimal_separator(),
+			'thousandSeparator'            => $this->price_factory->get_woo_thousand_separator(),
 			'locale'                       => substr( get_locale(), 0, 2 ),
 		);
 
@@ -231,7 +251,7 @@ class GenericHandler {
 	 */
 	protected function is_product_excluded( $product_id ) {
 		foreach ( $this->alma_settings->excluded_products_list as $category_slug ) {
-			if ( has_term( $category_slug, 'product_cat', $product_id ) ) {
+			if ( $this->core_factory->has_term( $category_slug, 'product_cat', $product_id ) ) {
 				return true;
 			}
 		}

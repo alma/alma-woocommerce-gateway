@@ -18,6 +18,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Factories\CartFactory;
+use Alma\Woocommerce\Factories\CoreFactory;
 
 /**
  * Class CheckoutHelper.
@@ -40,13 +42,36 @@ class ProductHelper {
 	 */
 	protected $alma_settings;
 
+	/**
+	 * The cart factory.
+	 *
+	 * @var CartFactory
+	 */
+	protected $cart_factory;
 
 	/**
-	 * Constructor.
+	 * The core factory.
+	 *
+	 * @var CoreFactory
 	 */
-	public function __construct() {
-		$this->logger        = new AlmaLogger();
-		$this->alma_settings = new AlmaSettings();
+	protected $core_factory;
+
+
+	/**
+	 *
+	 * Construct.
+	 *
+	 * @param AlmaLogger   $alma_logger The alma logger.
+	 * @param AlmaSettings $alma_settings The alma settings.
+	 * @param CartFactory  $cart_factory    The cart factory.
+	 * @param CoreFactory  $core_factory The core factory.
+	 */
+	public function __construct( $alma_logger, $alma_settings, $cart_factory, $core_factory ) {
+		$this->logger        = $alma_logger;
+		$this->alma_settings = $alma_settings;
+		$this->cart_factory  = $cart_factory;
+		$this->core_factory  = $core_factory;
+
 	}
 
 	/**
@@ -58,13 +83,14 @@ class ProductHelper {
 		$has_excluded_products = false;
 
 		if (
-			wc()->cart === null
+			$this->cart_factory->get_cart() === null
 			|| ! $this->has_excluded_categories()
 		) {
 			return $has_excluded_products;
 		}
 
-		foreach ( WC()->cart->get_cart() as $cart_item ) {
+		$cart_items = $this->cart_factory->get_cart_items();
+		foreach ( $cart_items as $cart_item ) {
 			$product_id = $cart_item['product_id'];
 
 			if ( $this->is_product_excluded( $product_id ) ) {
@@ -102,7 +128,7 @@ class ProductHelper {
 	 */
 	public function is_product_excluded( $product_id ) {
 		foreach ( $this->alma_settings->excluded_products_list as $category_slug ) {
-			if ( has_term( $category_slug, 'product_cat', $product_id ) ) {
+			if ( $this->core_factory->has_term( $category_slug, 'product_cat', $product_id ) ) {
 				return true;
 			}
 		}

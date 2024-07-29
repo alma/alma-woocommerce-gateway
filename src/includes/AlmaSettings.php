@@ -15,12 +15,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\API\Client;
 use Alma\API\DependenciesError;
-use Alma\API\Endpoints\Results\Eligibility;
 use Alma\API\Entities\FeePlan;
 use Alma\API\Entities\Payment;
 use Alma\API\ParamsError;
 use Alma\API\RequestError;
+use Alma\Woocommerce\Builders\Helpers\SettingsHelperBuilder;
 use Alma\Woocommerce\Exceptions\ActivationException;
+use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Exceptions\ApiCreatePaymentsException;
 use Alma\Woocommerce\Exceptions\ApiFetchPaymentsException;
 use Alma\Woocommerce\Exceptions\ApiFullRefundException;
@@ -32,18 +33,15 @@ use Alma\Woocommerce\Exceptions\ApiShareOfCheckoutDenyException;
 use Alma\Woocommerce\Exceptions\ApiShareOfCheckoutException;
 use Alma\Woocommerce\Exceptions\ApiSocLastUpdateDatesException;
 use Alma\Woocommerce\Exceptions\ApiTriggerPaymentsException;
-use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Exceptions\PlansDefinitionException;
 use Alma\Woocommerce\Exceptions\WrongCredentialsException;
-use Alma\Woocommerce\Helpers\CartHelper;
+use Alma\Woocommerce\Factories\PluginFactory;
+use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\EncryptorHelper;
 use Alma\Woocommerce\Helpers\FeePlanHelper;
-use Alma\Woocommerce\Helpers\GeneralHelper;
 use Alma\Woocommerce\Helpers\InternationalizationHelper;
-use Alma\Woocommerce\Helpers\PaymentHelper;
-use Alma\Woocommerce\Helpers\SettingsHelper as AlmaHelperSettings;
-use Alma\Woocommerce\Helpers\PlanBuilderHelper;
+use Alma\Woocommerce\Helpers\SettingsHelper;
 
 /**
  * Handles settings retrieval from the settings API.
@@ -109,13 +107,6 @@ class AlmaSettings {
 
 
 	/**
-	 * Eligibilities
-	 *
-	 * @var Eligibility|Eligibility[]|array
-	 */
-	protected $eligibilities;
-
-	/**
 	 * The encryptor.
 	 *
 	 * @var EncryptorHelper
@@ -131,21 +122,47 @@ class AlmaSettings {
 	public $fee_plan_helper;
 
 	/**
-	 * The cart helper.
+	 * Internationalization Helper.
 	 *
-	 * @var CartHelper
+	 * @var InternationalizationHelper
 	 */
-	public $cart_helper;
+	protected $internationalization_helper;
 
+	/**
+	 * Settings Helper.
+	 *
+	 * @var SettingsHelper
+	 */
+	protected $settings_helper;
+
+	/**
+	 * The version factory.
+	 *
+	 * @var VersionFactory
+	 */
+	protected $version_factory;
+
+
+	/**
+	 * The plugin factory.
+	 *
+	 * @var PluginFactory
+	 */
+	protected $plugin_factory;
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->logger           = new AlmaLogger();
-		$this->encryptor_helper = new EncryptorHelper();
-		$this->fee_plan_helper  = new FeePlanHelper();
-		$this->cart_helper      = new CartHelper();
+		$this->logger                      = new AlmaLogger();
+		$this->encryptor_helper            = new EncryptorHelper();
+		$this->fee_plan_helper             = new FeePlanHelper();
+		$this->internationalization_helper = new InternationalizationHelper();
+		$this->version_factory             = new VersionFactory();
+		$this->plugin_factory              = new PluginFactory();
+
+		$settings_helper_builder = new SettingsHelperBuilder();
+		$this->settings_helper   = $settings_helper_builder->get_instance();
 
 		$this->load_settings();
 	}
@@ -186,7 +203,7 @@ class AlmaSettings {
 			$settings['allowed_fee_plans'] = unserialize( $settings['allowed_fee_plans'] ); // phpcs:ignore
 		}
 
-		return array_merge( AlmaHelperSettings::default_settings(), $settings );
+		return array_merge( $this->settings_helper->default_settings(), $settings );
 	}
 
 	/**
@@ -420,12 +437,12 @@ class AlmaSettings {
 	 * @return string
 	 */
 	public function get_i18n( $key ) {
-		if ( InternationalizationHelper::is_site_multilingual() ) {
+		if ( $this->internationalization_helper->is_site_multilingual() ) {
 			if ( $this->{$key . '_' . get_locale()} ) {
 				return $this->{$key . '_' . get_locale()};
 			}
-			return InternationalizationHelper::get_translated_text(
-				AlmaHelperSettings::default_settings()[ $key ],
+			return $this->internationalization_helper->get_translated_text(
+				$this->settings_helper->default_settings()[ $key ],
 				get_locale()
 			);
 		}
@@ -531,7 +548,7 @@ class AlmaSettings {
 			);
 
 			$this->alma_client->addUserAgentComponent( 'WordPress', get_bloginfo( 'version' ) );
-			$this->alma_client->addUserAgentComponent( 'WooCommerce', wc()->version );
+			$this->alma_client->addUserAgentComponent( 'WooCommerce', $this->version_factory->get_version() );
 			$this->alma_client->addUserAgentComponent( 'Alma for WooCommerce', ALMA_VERSION );
 
 			return;
@@ -827,7 +844,7 @@ class AlmaSettings {
 		if ( ! count( $fee_plans ) ) {
 			$message = __( 'Alma encountered an error when fetching the fee plans.', 'alma-gateway-for-woocommerce' );
 
-			alma_plugin()->admin_notices->add_admin_notice( 'error_get_fee', 'notice notice-error', $message, true );
+			$this->plugin_factory->add_admin_notice( 'error_get_fee', 'notice notice-error', $message, true );
 
 			throw new ApiPlansException( $message );
 		}
@@ -945,60 +962,6 @@ class AlmaSettings {
 	}
 
 	/**
-	 * Get eligible plans keys for current cart.
-	 *
-	 * @param array       $cart_eligibilities The eligibilities.
-	 * @param string|null $gateway_id The gateway id.
-	 * @return array
-	 */
-	public function get_eligible_plans_keys_for_cart( $cart_eligibilities = array(), $gateway_id = null ) {
-		$alma_plan_builder = new PlanBuilderHelper();
-		if ( empty( $cart_eligibilities ) ) {
-			$cart_eligibilities = $this->get_cart_eligibilities();
-		}
-
-		$eligibilities = array_filter(
-			$this->get_eligible_plans_keys( $this->cart_helper->get_total_in_cents() ),
-			function ( $key ) use ( $cart_eligibilities ) {
-				if ( is_array( $cart_eligibilities ) ) {
-					return array_key_exists( $key, $cart_eligibilities );
-				}
-
-				return property_exists( $cart_eligibilities, $key );
-			}
-		);
-
-		return $alma_plan_builder->order_plans( $eligibilities, $gateway_id );
-	}
-
-	/**
-	 * Get eligibilities from cart.
-	 *
-	 * @return Eligibility|Eligibility[]|array
-	 */
-	public function get_cart_eligibilities() {
-		$amount = $this->cart_helper->get_total_in_cents();
-
-		if ( 0 === $amount ) {
-			return array();
-		}
-
-		if ( ! $this->eligibilities ) {
-
-			try {
-				$this->get_alma_client();
-				$this->eligibilities = $this->alma_client->payments->eligibility( PaymentHelper::get_eligibility_payload_from_cart() );
-			} catch ( \Exception $error ) {
-				$this->logger->error( $error->getMessage(), $error->getTrace() );
-
-				return array();
-			}
-		}
-
-		return $this->eligibilities;
-	}
-
-	/**
 	 * Gets eligible plans keys for amount.
 	 *
 	 * @param int $amount the amount to pay.
@@ -1069,33 +1032,6 @@ class AlmaSettings {
 	}
 
 	/**
-	 * Get Eligibility / Payment formatted eligible plans definitions for current cart.
-	 *
-	 * @return array<array>
-	 */
-	public function get_eligible_plans_for_cart() {
-		$amount = $this->cart_helper->get_total_in_cents();
-
-		return array_values(
-			array_map(
-				function ( $plan ) use ( $amount ) {
-					unset( $plan['max_amount'] );
-					unset( $plan['min_amount'] );
-					if ( isset( $plan['deferred_months'] ) && 0 === $plan['deferred_months'] ) {
-						unset( $plan['deferred_months'] );
-					}
-					if ( isset( $plan['deferred_days'] ) && 0 === $plan['deferred_days'] ) {
-						unset( $plan['deferred_days'] );
-					}
-
-					return $plan;
-				},
-				$this->get_eligible_plans_definitions( $amount )
-			)
-		);
-	}
-
-	/**
 	 * Gets eligible plans definitions for amount.
 	 *
 	 * @param int $amount The amount to pay.
@@ -1117,7 +1053,7 @@ class AlmaSettings {
 	 * @return string
 	 */
 	public function get_display_text() {
-		return GeneralHelper::get_display_texts_keys_and_values() [ $this->payment_upon_trigger_display_text ];
+		return $this->internationalization_helper->get_display_texts_keys_and_values() [ $this->payment_upon_trigger_display_text ];
 	}
 
 	/**

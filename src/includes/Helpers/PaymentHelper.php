@@ -21,15 +21,17 @@ use Alma\API\Entities\Payment;
 use Alma\API\ParamsError;
 use Alma\API\RequestError;
 use Alma\Woocommerce\AlmaLogger;
+use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
+use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Exceptions\AmountMismatchException;
 use Alma\Woocommerce\Exceptions\ApiCreatePaymentsException;
 use Alma\Woocommerce\Exceptions\ApiFetchPaymentsException;
 use Alma\Woocommerce\Exceptions\BuildOrderException;
-use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Exceptions\IncorrectPaymentException;
 use Alma\Woocommerce\Exceptions\PlansDefinitionException;
 use Alma\Woocommerce\Services\PaymentUponTriggerService;
-use Alma\Woocommerce\AlmaSettings;
 
 /**
  * PaymentHelper.
@@ -88,9 +90,14 @@ class PaymentHelper {
 		$this->logger               = new AlmaLogger();
 		$this->payment_upon_trigger = new PaymentUponTriggerService();
 		$this->alma_settings        = new AlmaSettings();
-		$this->tool_helper          = new ToolsHelper();
-		$this->cart_helper          = new CartHelper();
-		$this->order_helper         = new OrderHelper();
+
+		$tools_helper_builder = new ToolsHelperBuilder();
+		$this->tool_helper    = $tools_helper_builder->get_instance();
+
+		$cart_helper_builder = new CartHelperBuilder();
+		$this->cart_helper   = $cart_helper_builder->get_instance();
+
+		$this->order_helper = new OrderHelper();
 	}
 
 	/**
@@ -342,35 +349,6 @@ class PaymentHelper {
 	}
 
 	/**
-	 * Create Eligibility data for Alma API request from WooCommerce Cart.
-	 *
-	 * @return array Payload to request eligibility v2 endpoint.
-	 */
-	public static function get_eligibility_payload_from_cart() {
-		$cart_helper     = new CartHelper();
-		$customer_helper = new CustomerHelper();
-		$settings        = new AlmaSettings();
-
-		$data = array(
-			'purchase_amount' => $cart_helper->get_total_in_cents(),
-			'queries'         => $settings->get_eligible_plans_for_cart(),
-			'locale'          => apply_filters( 'alma_eligibility_user_locale', get_locale() ),
-		);
-
-		$billing_country  = $customer_helper->get_billing_country();
-		$shipping_country = $customer_helper->get_shipping_country();
-
-		if ( $billing_country ) {
-			$data['billing_address'] = array( 'country' => $billing_country );
-		}
-		if ( $shipping_country ) {
-			$data['shipping_address'] = array( 'country' => $shipping_country );
-		}
-
-		return $data;
-	}
-
-	/**
 	 * Create Payment data for Alma API request from WooCommerce Order.
 	 *
 	 * @param \WC_Order $wc_order Order.
@@ -434,7 +412,6 @@ class PaymentHelper {
 	 * @return array
 	 */
 	protected function build_payment_details( $wc_order, $fee_plan, $billing_address = array(), $shipping_address = array(), $is_in_page = false ) {
-
 		$data = array(
 			'purchase_amount'     => $this->tool_helper->alma_price_to_cents( $wc_order->get_total() ),
 			'return_url'          => $this->tool_helper->url_for_webhook( ConstantsHelper::CUSTOMER_RETURN ),
@@ -449,7 +426,7 @@ class PaymentHelper {
 			),
 			'locale'              => apply_filters( 'alma_checkout_payment_user_locale', get_locale() ),
 			'cart'                => array(
-				'items' => $this->get_previous_order_items_details( $wc_order, $fee_plan, true ),
+				'items' => $this->get_order_items_details( $wc_order ),
 			),
 			'billing_address'     => $billing_address,
 			'shipping_address'    => $shipping_address,
@@ -517,21 +494,12 @@ class PaymentHelper {
 
 
 	/**
-	 * Retrieve the X past purchase item details.
+	 * Retrieve the purchase item details.
 	 *
 	 * @param \WC_Order $wc_order The order.
-	 * @param FeePlan   $fee_plan The Fee Plan.
-	 * @param bool      $check_credit Check for payment payload if we are in credit.
 	 * @return array
 	 */
-	protected function get_previous_order_items_details( $wc_order, $fee_plan = array(), $check_credit = false ) {
-		if (
-			$check_credit
-			&& ! $this->alma_settings->is_pnx_plus_4( $fee_plan )
-		) {
-			return array();
-		}
-
+	protected function get_order_items_details( $wc_order ) {
 		$items = $wc_order->get_items();
 
 		$item_details = array();

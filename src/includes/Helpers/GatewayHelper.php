@@ -15,9 +15,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use Alma\Woocommerce\Exceptions\AlmaException;
-use Alma\Woocommerce\Services\PaymentUponTriggerService;
 use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\ProductHelperBuilder;
+use Alma\Woocommerce\Exceptions\AlmaException;
+use Alma\Woocommerce\Factories\CartFactory;
+use Alma\Woocommerce\Factories\CoreFactory;
+use Alma\Woocommerce\Services\PaymentUponTriggerService;
 
 /**
  * GatewayHelper
@@ -49,12 +53,63 @@ class GatewayHelper {
 	protected $checkout_helper;
 
 	/**
-	 * Constructor.
+	 * The cart factory.
+	 *
+	 * @var CartFactory
 	 */
-	public function __construct() {
-		$this->alma_settings   = new AlmaSettings();
-		$this->payment_helper  = new PaymentHelper();
-		$this->checkout_helper = new CheckoutHelper();
+	protected $cart_factory;
+
+
+	/**
+	 * The product helper.
+	 *
+	 * @var ProductHelper
+	 */
+	protected $product_helper;
+	/**
+	 * The core factory.
+	 *
+	 * @var CoreFactory
+	 */
+	protected $core_factory;
+
+
+	/**
+	 * The cart helper.
+	 *
+	 * @var CartHelper
+	 */
+	protected $cart_helper;
+
+	/**
+	 * The php helper.
+	 *
+	 * @var PHPHelper
+	 */
+	protected $php_helper;
+
+
+	/**
+	 * Constructor.
+	 *
+	 * @param AlmaSettings   $alma_settings  The settings.
+	 * @param PaymentHelper  $payment_helper The payment helper.
+	 * @param CheckoutHelper $checkout_helper The checkout helper.
+	 * @param CartFactory    $cart_factory The factory cart.
+	 * @param ProductHelper  $product_helper The product helper.
+	 * @param CoreFactory    $core_factory The core factory.
+	 * @param CartHelper     $cart_helper The cart helper.
+	 * @param PHPHelper      $php_helper The php helper.
+	 */
+	public function __construct( $alma_settings, $payment_helper, $checkout_helper, $cart_factory, $product_helper, $core_factory, $cart_helper, $php_helper ) {
+		$this->alma_settings   = $alma_settings;
+		$this->payment_helper  = $payment_helper;
+		$this->checkout_helper = $checkout_helper;
+		$this->cart_factory    = $cart_factory;
+		$this->product_helper  = $product_helper;
+		$this->core_factory    = $core_factory;
+		$this->cart_helper     = $cart_helper;
+		$this->php_helper      = $php_helper;
 	}
 
 	/**
@@ -65,13 +120,11 @@ class GatewayHelper {
 	 * @return array
 	 */
 	public function woocommerce_available_payment_gateways( $available_gateways ) {
-		if ( is_admin() ) {
+		if ( $this->core_factory->is_admin() ) {
 			return $available_gateways;
 		}
 
-		$product_helper = new ProductHelper();
-
-		$has_excluded_products  = $product_helper->cart_has_excluded_product();
+		$has_excluded_products  = $this->product_helper->cart_has_excluded_product();
 		$new_available_gateways = array();
 
 		foreach ( $available_gateways as $key => $gateway ) {
@@ -197,7 +250,7 @@ class GatewayHelper {
 	 * @return bool
 	 */
 	public function is_there_eligibility_in_cart() {
-		return count( $this->alma_settings->get_eligible_plans_keys_for_cart() ) > 0;
+		return count( $this->cart_helper->get_eligible_plans_keys_for_cart() ) > 0;
 	}
 
 	/**
@@ -206,20 +259,22 @@ class GatewayHelper {
 	 * @return bool
 	 */
 	public function cart_contains_excluded_category() {
-		if ( wc()->cart === null ) {
+		if ( $this->cart_factory->get_cart() === null ) {
 			return false;
 		}
 
 		if (
-			property_exists( $this->alma_settings, 'excluded_products_list' )
+			$this->php_helper->property_exists( $this->alma_settings, 'excluded_products_list' )
 			&& is_array( $this->alma_settings->excluded_products_list )
 			&& count( $this->alma_settings->excluded_products_list ) > 0
 		) {
-			foreach ( WC()->cart->get_cart() as $cart_item ) {
+			$cart_items = $this->cart_factory->get_cart_items();
+
+			foreach ( $cart_items as $cart_item ) {
 				$product_id = $cart_item['product_id'];
 
 				foreach ( $this->alma_settings->excluded_products_list as $category_slug ) {
-					if ( has_term( $category_slug, 'product_cat', $product_id ) ) {
+					if ( $this->core_factory->has_term( $category_slug, 'product_cat', $product_id ) ) {
 						return true;
 					}
 				}
@@ -233,7 +288,7 @@ class GatewayHelper {
 	/**
 	 * Gets default plan according to eligible pnx list.
 	 *
-	 * @param string[] $plans the list of eligible pnx.
+	 * @param array $plans the list of eligible pnx.
 	 *
 	 * @return string|null
 	 */
@@ -258,6 +313,7 @@ class GatewayHelper {
 	/**
 	 *  Add the actions.
 	 *
+	 * @codeCoverageIgnore Add the actions for obsolete payment upon trigger.
 	 * @return void
 	 */
 	public function add_actions() {

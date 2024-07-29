@@ -17,16 +17,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\API\Entities\FeePlan;
 use Alma\Woocommerce\Admin\Builders\FormHtmlBuilder;
+use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
 use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\BlockHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\FeePlanHelper;
-use Alma\Woocommerce\Helpers\GeneralHelper;
 use Alma\Woocommerce\Helpers\InternationalizationHelper;
+use Alma\Woocommerce\Helpers\PluginHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
 use Alma\Woocommerce\Services\PaymentUponTriggerService;
-use Alma\Woocommerce\AlmaSettings;
-use Alma\Woocommerce\Helpers\PluginHelper;
 
 
 /**
@@ -70,16 +70,32 @@ class FormFieldsHelper {
 	 */
 	protected $block_helper;
 
+	/**
+	 * Tools helper.
+	 *
+	 * @var ToolsHelper
+	 */
+	protected $tools_helper;
+
+	/**
+	 * Internationalization Helper.
+	 *
+	 * @var InternationalizationHelper
+	 */
+	protected $internationalization_helper;
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->settings_helper      = new AlmaSettings();
-		$this->payment_upon_trigger = new PaymentUponTriggerService();
-		$this->fee_plan_helper      = new FeePlanHelper();
-		$this->plugin_helper        = new PluginHelper();
-		$this->block_helper         = new BlockHelper();
+		$this->settings_helper             = new AlmaSettings();
+		$this->payment_upon_trigger        = new PaymentUponTriggerService();
+		$this->fee_plan_helper             = new FeePlanHelper();
+		$this->plugin_helper               = new PluginHelper();
+		$this->block_helper                = new BlockHelper();
+		$tools_helper_builder              = new ToolsHelperBuilder();
+		$this->tools_helper                = $tools_helper_builder->get_instance();
+		$this->internationalization_helper = new InternationalizationHelper();
 	}
 
 
@@ -309,11 +325,11 @@ class FormFieldsHelper {
 		$toggle_key            = 'enabled_' . $key;
 		$class                 = 'alma_fee_plan alma_fee_plan_' . $key;
 		$css                   = $selected ? '' : 'display: none;';
-		$default_min_amount    = ToolsHelper::alma_price_from_cents( $this->fee_plan_helper->get_min_purchase_amount( $fee_plan ) );
-		$default_max_amount    = ToolsHelper::alma_price_from_cents( $fee_plan->max_purchase_amount );
-		$merchant_fee_fixed    = ToolsHelper::alma_price_from_cents( $fee_plan->merchant_fee_fixed );
+		$default_min_amount    = $this->tools_helper->alma_price_from_cents( $this->fee_plan_helper->get_min_purchase_amount( $fee_plan ) );
+		$default_max_amount    = $this->tools_helper->alma_price_from_cents( $fee_plan->max_purchase_amount );
+		$merchant_fee_fixed    = $this->tools_helper->alma_price_from_cents( $fee_plan->merchant_fee_fixed );
 		$merchant_fee_variable = $fee_plan->merchant_fee_variable / 100; // percent.
-		$customer_fee_fixed    = ToolsHelper::alma_price_from_cents( $fee_plan->customer_fee_fixed );
+		$customer_fee_fixed    = $this->tools_helper->alma_price_from_cents( $fee_plan->customer_fee_fixed );
 		$customer_fee_variable = $fee_plan->customer_fee_variable / 100; // percent.
 		$customer_lending_rate = $fee_plan->customer_lending_rate / 100; // percent.
 		$default_enabled       = $default_settings['selected_fee_plan'] === $key ? 'yes' : 'no';
@@ -568,7 +584,7 @@ class FormFieldsHelper {
 			),
 		);
 
-		$field_cart_not_eligible_message_gift_cards = InternationalizationHelper::generate_i18n_field(
+		$field_cart_not_eligible_message_gift_cards = $this->internationalization_helper->generate_i18n_field(
 			'cart_not_eligible_message_gift_cards',
 			array(
 				'title'       => __( 'Non-eligibility message for excluded products', 'alma-gateway-for-woocommerce' ),
@@ -619,7 +635,7 @@ class FormFieldsHelper {
 			),
 		);
 
-		$field_payment_method_title = InternationalizationHelper::generate_i18n_field(
+		$field_payment_method_title = $this->internationalization_helper->generate_i18n_field(
 			'title_' . $blocks . $payment_method_name,
 			array(
 				'title'       => __( 'Title', 'alma-gateway-for-woocommerce' ),
@@ -629,7 +645,7 @@ class FormFieldsHelper {
 			$default_settings[ 'title_' . $blocks . $payment_method_name ]
 		);
 
-		$field_payment_method_description = InternationalizationHelper::generate_i18n_field(
+		$field_payment_method_description = $this->internationalization_helper->generate_i18n_field(
 			'description_' . $blocks . $payment_method_name,
 			array(
 				'title'       => __( 'Description', 'alma-gateway-for-woocommerce' ),
@@ -686,7 +702,7 @@ class FormFieldsHelper {
 					'title'       => __( 'Trigger typology', 'alma-gateway-for-woocommerce' ),
 					'description' => __( 'Text that will appear in the payments schedule and in the customer\'s payment authorization email.', 'alma-gateway-for-woocommerce' ),
 					'default'     => $default_settings['payment_upon_trigger_display_text'],
-					'options'     => GeneralHelper::get_display_texts_keys_and_values(),
+					'options'     => $this->internalionalization_helper->get_display_texts_keys_and_values(),
 				),
 				'payment_upon_trigger_event'        => array(
 					'type'    => 'select',

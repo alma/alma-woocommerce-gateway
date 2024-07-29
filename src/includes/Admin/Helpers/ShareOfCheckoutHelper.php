@@ -12,6 +12,7 @@
 namespace Alma\Woocommerce\Admin\Helpers;
 
 use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
 use Alma\Woocommerce\Exceptions\ApiSocLastUpdateDatesException;
 use Alma\Woocommerce\Helpers\OrderHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
@@ -59,7 +60,8 @@ class ShareOfCheckoutHelper {
 	public function __construct() {
 		$this->alma_settings      = new AlmaSettings();
 		$this->order_helper       = new OrderHelper();
-		$this->tool_helper        = new ToolsHelper();
+		$tools_helper_builder     = new ToolsHelperBuilder();
+		$this->tool_helper        = $tools_helper_builder->get_instance();
 		$this->check_legal_helper = new CheckLegalHelper();
 	}
 

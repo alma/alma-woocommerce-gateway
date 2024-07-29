@@ -1,6 +1,6 @@
 <?php
 /**
- * PlanBuilderHelper.
+ * PlanHelper.
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes
@@ -11,15 +11,16 @@ namespace Alma\Woocommerce\Helpers;
 
 use Alma\Woocommerce\Exceptions;
 use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Factories\PriceFactory;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * PlanBuilderHelper
+ * PlanHelper
  */
-class PlanBuilderHelper {
+class PlanHelper {
 
 
 
@@ -45,13 +46,30 @@ class PlanBuilderHelper {
 	 */
 	protected $template_loader;
 
+
+	/**
+	 * The price factory.
+	 *
+	 * @var PriceFactory
+	 */
+	protected $price_factory;
+
 	/**
 	 * Constructor.
+	 *
+	 * @codeCoverageIgnore
+	 *
+	 * @param AlmaSettings         $alma_settings The alma settings.
+	 * @param GatewayHelper        $gateway_helper  The gateway helper.
+	 * @param TemplateLoaderHelper $template_loader The template loader.
+	 * @param PriceFactory         $price_factory The price factory.
 	 */
-	public function __construct() {
-		$this->alma_settings   = new AlmaSettings();
-		$this->gateway_helper  = new GatewayHelper();
-		$this->template_loader = new TemplateLoaderHelper();
+	public function __construct( $alma_settings, $gateway_helper, $template_loader, $price_factory ) {
+		$this->alma_settings   = $alma_settings;
+		$this->gateway_helper  = $gateway_helper;
+		$this->template_loader = $template_loader;
+		$this->price_factory   = $price_factory;
+
 	}
 
 	/**
@@ -69,7 +87,6 @@ class PlanBuilderHelper {
 
 		if ( empty( $eligible_plans[ $gateway_id ] ) ) {
 			$this->template_loader->get_template( 'alma-checkout-no-plans.php' );
-
 			return;
 		}
 
@@ -120,9 +137,9 @@ class PlanBuilderHelper {
 					'plan_id'              => '#' . sprintf( ConstantsHelper::ALMA_PAYMENT_PLAN_TABLE_ID_TEMPLATE, $plan_key ),
 					'logo_url'             => AssetsHelper::get_asset_url( sprintf( 'images/%s_logo.svg', $plan_key ) ),
 					'upon_trigger_enabled' => $this->alma_settings->payment_upon_trigger_enabled,
-					'decimal_separator'    => wc_get_price_decimal_separator(),
-					'thousand_separator'   => wc_get_price_thousand_separator(),
-					'decimals'             => wc_get_price_decimals(),
+					'decimal_separator'    => $this->price_factory->get_woo_decimal_separator(),
+					'thousand_separator'   => $this->price_factory->get_woo_thousand_separator(),
+					'decimals'             => $this->price_factory->get_woo_decimals(),
 				),
 				'partials'
 			);
@@ -143,7 +160,6 @@ class PlanBuilderHelper {
 	 * @throws Exceptions\AlmaException Exception.
 	 */
 	public function render_fields_classic( $eligibilities, $eligible_plans, $gateway_id, $default_plan = null ) {
-
 		foreach ( $eligible_plans[ $gateway_id ] as $plan_key ) {
 			$this->template_loader->get_template(
 				'alma-checkout-plan.php',
@@ -232,7 +248,6 @@ class PlanBuilderHelper {
 	 */
 	public function get_plans_by_keys( $eligible_plans = array(), $eligibilities = array() ) {
 		$result = array();
-
 		foreach ( $eligible_plans as $plan_key ) {
 			if ( isset( $eligibilities[ $plan_key ] ) ) {
 				$result[ $plan_key ] = $eligibilities[ $plan_key ];

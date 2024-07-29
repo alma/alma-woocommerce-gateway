@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 4.4
 Tested up to: 6.3
 Requires PHP: 5.6
-Stable tag: 5.4.0
+Stable tag: 5.5.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,21 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+## v5.5.0 - 2024-07-29
+
+### Changes
+
+### 🚀 New Features
+
+- feature: Compatibility woocommerce 9.0.2 wordpress 6.5.5 (#269)
+- feature: Gather cart data from pnx and deferred payments (#265)
+- feature: Compatibility woocommerce 8.9.2 (#260)
+- feature: Compatibility woocommerce 8.8.2 wordpress 6.5 (#248)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @ClaireAlma, @FranceBe, @carine-bonnafous, @gdraynz, @joyet-simon and @remic-alma
 
 v5.4.0
 ------

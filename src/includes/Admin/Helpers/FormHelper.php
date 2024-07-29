@@ -15,7 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-use Alma\Woocommerce\Helpers\SettingsHelper as AlmaHelperSettings;
+use Alma\Woocommerce\Builders\Helpers\SettingsHelperBuilder;
+use Alma\Woocommerce\Helpers\InternationalizationHelper;
+use Alma\Woocommerce\Helpers\SettingsHelper;
 
 /**
  * FormHelper.
@@ -29,11 +31,31 @@ class FormHelper {
 	 */
 	protected $form_fields_helper;
 
+
+	/**
+	 * The Settings Helper.
+	 *
+	 * @var SettingsHelper
+	 */
+	protected $settings_helper;
+
+	/**
+	 * The internationalization Helper.
+	 *
+	 * @var InternationalizationHelper
+	 */
+	protected $internationalization_helper;
+
+
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->form_fields_helper = new FormFieldsHelper();
+		$this->form_fields_helper          = new FormFieldsHelper();
+		$this->internationalization_helper = new InternationalizationHelper();
+
+		$settings_helper_builder = new SettingsHelperBuilder();
+		$this->settings_helper   = $settings_helper_builder->get_instance();
 	}
 
 	/**
@@ -44,7 +66,7 @@ class FormHelper {
 	 * @return array[]
 	 */
 	public function init_form_fields( $show_alma_fee_plans ) {
-		$default_settings = AlmaHelperSettings::default_settings();
+		$default_settings = $this->settings_helper->default_settings();
 
 		if ( ! $show_alma_fee_plans ) {
 			return array_merge(
