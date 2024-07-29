@@ -1,20 +1,15 @@
 # Changelog
 
-* feature: compatibility Woocommerce 9.0.2
-* feature: Compatibility WordPress 6.5.5
-* feature: compatibility Woocommerce 8.9.2
-* feature: Compatibility WordPress 6.5.4
-
 ## v5.5.0 - 2024-07-29
 
 ### Changes
 
 ### 🚀 New Features
 
-- feat: compatibility woocommerce 9.0.2 wordpress 6.5.5 (#269)
-- Gather cart data from pnx and deferred payments (#265)
-- compatibility woocommerce 8.9.2 (#260)
-- compatibility woocommerce 8.8.2 wordpress 6.5 (#248)
+- feature: Compatibility woocommerce 9.0.2 wordpress 6.5.5 (#269)
+- feature: Gather cart data from pnx and deferred payments (#265)
+- feature: Compatibility woocommerce 8.9.2 (#260)
+- feature: Compatibility woocommerce 8.8.2 wordpress 6.5 (#248)
 
 #### Contributors
 
