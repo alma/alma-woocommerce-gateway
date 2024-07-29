@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 4.4
 Tested up to: 6.3
 Requires PHP: 5.6
-Stable tag: 5.4.0
+Stable tag: 5.4.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,37 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+## v5.4.1 - 2024-07-29
+
+### Changes
+
+- [DEX-891] Update tasks, pre-commits & release workflow (#267)
+- feat: compatibility woocommerce 9.0.2 wordpress 6.5.5 (#269)
+- add unit tests for gateway helper (#258)
+- add tests on plan helper (#257)
+- Gather cart data from pnx and deferred payments (#265)
+- [Security] Update deprecated Aqua scanner options (#256)
+- Improve docker build to be faster, non-root and add parameters (#266)
+- Add commit name rule (#263)
+- compatibility woocommerce 8.9.2 (#260)
+- [DEX-866] Add infos in PR about E2E tests run status (#259)
+- [DEVX] Fix task test for mac m1 users (#255)
+- [Review 6] add tests on product helper (#254)
+- [Review 5 ] use factories (#253)
+- [Review 4] add unit tests on general helper (#252)
+- [Review 3] Add unit tests on feeplanhelper (#251)
+- [Review 2] Add unit tests on customerhelper + refacto (#250)
+- [Review 1] add builder factories + test (#249)
+- Add unit tests on carthelper (#245)
+- compatibility woocommerce 8.8.2 wordpress 6.5 (#248)
+- Woocommerce add unit tests on settingshelper (#247)
+- woocommerce complete unit tests to complete 100 on (#246)
+- Release V5.4.0 (#244)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @ClaireAlma, @FranceBe, @carine-bonnafous, @gdraynz, @joyet-simon and @remic-alma
 
 * feature: compatibility Woocommerce 9.0.2
 * feature: Compatibility WordPress 6.5.5
