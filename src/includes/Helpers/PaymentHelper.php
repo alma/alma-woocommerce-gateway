@@ -524,11 +524,6 @@ class PaymentHelper {
 
 		$categories = explode( ',', wp_strip_all_tags( wc_get_product_category_list( $product->get_id(), ',' ) ) );
 
-		$picture_url = wp_get_attachment_url( $product->get_image_id() );
-		if ( false === $picture_url ) {
-			$picture_url = '';
-		}
-
 		return array(
 			'sku'               => $product->get_sku(),
 			'title'             => $item->get_name(),
@@ -537,7 +532,7 @@ class PaymentHelper {
 			'line_price'        => $this->tool_helper->alma_price_to_cents( $item->get_total() ),
 			'categories'        => $categories,
 			'url'               => $product->get_permalink(),
-			'picture_url'       => $picture_url,
+			'picture_url'       => wp_get_attachment_url( $product->get_image_id() ) ? wp_get_attachment_url( $product->get_image_id() ) : '',
 			'requires_shipping' => $product->needs_shipping(),
 		);
 	}
