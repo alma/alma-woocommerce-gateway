@@ -82,12 +82,12 @@ class PaymentHelper {
 	 */
 	protected $cart_helper;
 
-    /**
-     * Product helper.
-     *
-     * @var ProductHelper
-     */
-    protected $product_helper;
+	/**
+	 * Product helper.
+	 *
+	 * @var ProductHelper
+	 */
+	protected $product_helper;
 
 	/**
 	 * Contructor.
@@ -105,8 +105,8 @@ class PaymentHelper {
 
 		$this->order_helper = new OrderHelper();
 
-        $product_helper_builder = new ProductHelperBuilder();
-        $this->product_helper = $product_helper_builder->get_instance();
+		$product_helper_builder = new ProductHelperBuilder();
+		$this->product_helper   = $product_helper_builder->get_instance();
 	}
 
 	/**
