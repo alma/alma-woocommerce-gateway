@@ -23,6 +23,7 @@ use Alma\API\RequestError;
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\ProductHelperBuilder;
 use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
 use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Exceptions\AmountMismatchException;
@@ -37,7 +38,6 @@ use Alma\Woocommerce\Services\PaymentUponTriggerService;
  * PaymentHelper.
  */
 class PaymentHelper {
-
 
 	/**
 	 * The logger.
@@ -82,6 +82,12 @@ class PaymentHelper {
 	 */
 	protected $cart_helper;
 
+	/**
+	 * Product helper.
+	 *
+	 * @var ProductHelper
+	 */
+	protected $product_helper;
 
 	/**
 	 * Contructor.
@@ -98,6 +104,9 @@ class PaymentHelper {
 		$this->cart_helper   = $cart_helper_builder->get_instance();
 
 		$this->order_helper = new OrderHelper();
+
+		$product_helper_builder = new ProductHelperBuilder();
+		$this->product_helper   = $product_helper_builder->get_instance();
 	}
 
 	/**
@@ -532,7 +541,7 @@ class PaymentHelper {
 			'line_price'        => $this->tool_helper->alma_price_to_cents( $item->get_total() ),
 			'categories'        => $categories,
 			'url'               => $product->get_permalink(),
-			'picture_url'       => wp_get_attachment_url( $product->get_image_id() ),
+			'picture_url'       => $this->product_helper->get_attachment_url( $product->get_image_id() ),
 			'requires_shipping' => $product->needs_shipping(),
 		);
 	}

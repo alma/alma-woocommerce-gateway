@@ -135,4 +135,14 @@ class ProductHelper {
 
 		return false;
 	}
+
+	/**
+	 * Return attachment url or empty string
+	 *
+	 * @param int $attachment_id Attachment ID.
+	 * @return string
+	 */
+	public function get_attachment_url( $attachment_id = 0 ) {
+		return wp_get_attachment_url( $attachment_id ) ? wp_get_attachment_url( $attachment_id ) : '';
+	}
 }
