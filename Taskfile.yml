@@ -16,7 +16,7 @@ tasks:
   build:php5-6:
     desc: Build test container
     cmds:
-      - docker compose build php5-6
+      - docker compose build --build-arg UID="$(id -u)" php5-6
 
   test:
     desc: Run tests

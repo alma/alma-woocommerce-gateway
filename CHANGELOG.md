@@ -1,5 +1,21 @@
 # Changelog
 
+## v5.6.0 - 2024-09-16
+
+### Changes
+
+### 🚀 New Features
+
+- feat: compatibility woocommerce 9.2.3 wordpress 6.6.1 (#278)
+
+### 🐛 Bug Fixes
+
+- fix: force picture_url to string (#277)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @Francois-Gomis, @alma-create-pr-with-team-review and @joyet-simon
+
 ## v5.5.0 - 2024-07-29
 
 ### Changes

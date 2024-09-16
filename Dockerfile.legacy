@@ -1,6 +1,8 @@
 FROM composer:2.2 AS composer
 FROM php:5.6-fpm
 
+ARG UID
+
 #ENV PHP_MEMORY_LIMIT=1024M
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -21,7 +23,7 @@ RUN apt update && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 # Create non-root user
-RUN useradd -ms /bin/bash phpuser
+RUN useradd -u ${UID} -ms /bin/bash phpuser
 WORKDIR /home/phpuser
 USER phpuser
 

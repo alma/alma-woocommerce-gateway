@@ -41,7 +41,6 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile.legacy
-    user: ${UID:-1000}:${GID:-1000}
     volumes:
       - ./:/home/phpuser
       - /home/phpuser/src/vendor # do not mount vendor inside container
