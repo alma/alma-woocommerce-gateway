@@ -11,6 +11,7 @@
 
 namespace Alma\Woocommerce\Traits;
 
+use Alma\API\Lib\PaymentValidator;
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Factories\CartFactory;
@@ -401,5 +402,9 @@ trait BuilderTrait {
 
 		return new PHPHelper();
 	}
+
+    public function get_payment_validator(){
+        return new PaymentValidator();
+    }
 
 }
