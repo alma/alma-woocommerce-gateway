@@ -403,8 +403,13 @@ trait BuilderTrait {
 		return new PHPHelper();
 	}
 
-    public function get_payment_validator(){
-        return new PaymentValidator();
-    }
+	/**
+	 * PaymentValidator.
+	 *
+	 * @return PaymentValidator
+	 */
+	public function get_payment_validator() {
+		return new PaymentValidator();
+	}
 
 }

@@ -11,8 +11,10 @@
 
 namespace Alma\Woocommerce\Exceptions;
 
+/**
+ * Class AlmaInvalidSignatureException.
+ */
+class AlmaInvalidSignatureException extends AlmaException {
 
-class AlmaInvalidSignatureException extends AlmaException
-{
 
 }
