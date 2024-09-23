@@ -24,6 +24,7 @@ use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
 use Alma\Woocommerce\Builders\Helpers\ProductHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\SecurityHelperBuilder;
 use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
 use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Exceptions\AmountMismatchException;
@@ -89,6 +90,10 @@ class PaymentHelper
      * @var ProductHelper
      */
     protected $product_helper;
+    /**
+     * @var SecurityHelper
+     */
+    protected $security_helper;
 
     /**
      * Contructor.
@@ -100,7 +105,8 @@ class PaymentHelper
         $tool_helper = null,
         $cart_helper = null,
         $order_helper = null,
-        $product_helper = null
+        $product_helper = null,
+        $security_helper = null
     )
     {
         $this->logger = isset($logger) ? $logger : new AlmaLogger();
@@ -108,8 +114,9 @@ class PaymentHelper
         $this->alma_settings = isset($settings) ? $settings : new AlmaSettings();
         $this->tool_helper = isset($tool_helper) ? $tool_helper : (new ToolsHelperBuilder())->get_instance();
         $this->cart_helper = isset($cart_helper) ? $tool_helper : (new CartHelperBuilder())->get_instance();
-        $this->order_helper = isset($order_helper) ? $order_helper :new OrderHelper();
+        $this->order_helper = isset($order_helper) ? $order_helper : new OrderHelper();
         $this->product_helper = isset($product_helper) ? $product_helper : (new ProductHelperBuilder())->get_instance();
+        $this->security_helper = isset($security_helper) ? $security_helper : (new SecurityHelperBuilder())->get_instance();
     }
 
     /**
