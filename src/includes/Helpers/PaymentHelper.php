@@ -147,7 +147,7 @@ class PaymentHelper {
 			);
 			$this->logger->info( '[ALMA] IPN signature is valid' );
 		} catch ( AlmaInvalidSignatureException $e ) {
-			$this->logger->error( '[ALMA] IPN signature is invalid' );
+			$this->logger->error( $e->getMessage() );
 			wp_send_json( array( 'error' => $e->getMessage() ), 500 );
 		}
 
