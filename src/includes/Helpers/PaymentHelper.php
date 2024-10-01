@@ -140,10 +140,17 @@ class PaymentHelper {
 		$payment_id = $this->get_payment_to_validate();
 
 		try {
+			$signature = $_SERVER['HTTP_X_ALMA_SIGNATURE'];
+		} catch ( \Exception $e ) {
+			$this->logger->error( 'No signature provided in IPN callback' );
+			wp_send_json( array( 'error' => 'No signature provided in IPN callback' ), 500 );
+		}
+
+		try {
 			$this->security_helper->validate_ipn_signature(
 				$payment_id,
 				$this->alma_settings->get_active_api_key(),
-				$_SERVER['HTTP_X_ALMA_SIGNATURE']
+				$signature
 			);
 			$this->logger->info( '[ALMA] IPN signature is valid' );
 		} catch ( AlmaInvalidSignatureException $e ) {
