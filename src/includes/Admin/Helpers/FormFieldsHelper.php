@@ -516,6 +516,7 @@ class FormFieldsHelper {
 		$title_gateway_in_page              = array();
 		$fields_title_gateway_in_page       = array();
 		$fields_description_gateway_in_page = array();
+		$fields_in_page_pnx_plus_4          = array();
 
 		$general_settings_fields = array(
 			'general_section' => array(
@@ -539,6 +540,9 @@ class FormFieldsHelper {
 			}
 			if ( $this->settings_helper->has_pay_later() ) {
 				$fields_in_page_pay_later = $this->get_custom_fields_payment_method( ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_LATER, __( 'Deferred Payments:', 'alma-gateway-for-woocommerce' ), $default_settings );
+			}
+			if ( $this->settings_helper->has_pnx_plus_4() ) {
+				$fields_in_page_pnx_plus_4 = $this->get_custom_fields_payment_method( ConstantsHelper::GATEWAY_ID_IN_PAGE_MORE_THAN_FOUR, __( 'Payments in more than 4 installments:', 'alma-gateway-for-woocommerce' ), $default_settings );
 			}
 		}
 
@@ -606,6 +610,7 @@ class FormFieldsHelper {
 			$fields_pay_later,
 			$fields_in_page_pay_later,
 			$fields_pnx_plus_4,
+			$fields_in_page_pnx_plus_4,
 			$general_settings_fields_end,
 			$field_cart_not_eligible_message_gift_cards
 		);

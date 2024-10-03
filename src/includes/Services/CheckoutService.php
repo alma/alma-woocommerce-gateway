@@ -172,6 +172,9 @@ class CheckoutService extends \WC_Checkout {
 		if ( ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_LATER === $_POST[ ConstantsHelper::PAYMENT_METHOD ] ) {
 			$posted_data[ ConstantsHelper::PAYMENT_METHOD_TITLE ] = __( 'Pay Later via Alma', 'alma-gateway-for-woocommerce' );
 		}
+		if ( ConstantsHelper::GATEWAY_ID_IN_PAGE_MORE_THAN_FOUR === $_POST[ ConstantsHelper::PAYMENT_METHOD ] ) {
+			$posted_data[ ConstantsHelper::PAYMENT_METHOD_TITLE ] = __( 'Payments in more than 4 installments', 'alma-gateway-for-woocommerce' );
+		}
 
 		// Update session for customer and totals.
 		$this->update_session( $posted_data );

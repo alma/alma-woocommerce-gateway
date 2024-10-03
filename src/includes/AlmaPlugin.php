@@ -18,7 +18,10 @@ use Alma\Woocommerce\Exceptions\RequirementsException;
 use Alma\Woocommerce\Exceptions\VersionDeprecated;
 use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Gateways\Inpage\InPageGateway;
-use Alma\Woocommerce\Gateways\Inpage\PayLaterGateway;
+use Alma\Woocommerce\Gateways\Inpage\PayLaterGateway as InPagePayLaterGateway;
+use Alma\Woocommerce\Gateways\Inpage\PayMoreThanFourGateway as InPagePayMoreThanFourGateway;
+use Alma\Woocommerce\Gateways\Inpage\PayNowGateway as InPagePayNowGateway;
+use Alma\Woocommerce\Gateways\Standard\PayLaterGateway;
 use Alma\Woocommerce\Gateways\Standard\PayMoreThanFourGateway;
 use Alma\Woocommerce\Gateways\Standard\PayNowGateway;
 use Alma\Woocommerce\Gateways\Standard\StandardGateway;
@@ -194,12 +197,13 @@ class AlmaPlugin {
 	 */
 	public function add_gateways( $gateways ) {
 		if ( ! is_admin() ) {
-			$gateways[] = \Alma\Woocommerce\Gateways\Inpage\PayNowGateway::class;
+			$gateways[] = InPagePayNowGateway::class;
 			$gateways[] = PayNowGateway::class;
 			$gateways[] = InPageGateway::class;
 			$gateways[] = PayMoreThanFourGateway::class;
+			$gateways[] = InPagePayLaterGateway::class;
+			$gateways[] = InPagePayMoreThanFourGateway::class;
 			$gateways[] = PayLaterGateway::class;
-			$gateways[] = \Alma\Woocommerce\Gateways\Standard\PayLaterGateway::class;
 		}
 
 		$gateways[] = StandardGateway::class;
