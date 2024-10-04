@@ -1024,6 +1024,7 @@ class AlmaSettings {
 					$this->get_installments_count( $plan_key ) === 1
 					&& ( $this->get_deferred_days( $plan_key ) !== 0 || $this->get_deferred_months( $plan_key ) !== 0 )
 				);
+			case ConstantsHelper::GATEWAY_ID_IN_PAGE_MORE_THAN_FOUR:
 			case ConstantsHelper::GATEWAY_ID_MORE_THAN_FOUR:
 				return ( $this->get_installments_count( $plan_key ) > 4 );
 			default:
