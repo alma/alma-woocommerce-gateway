@@ -25,6 +25,7 @@ use Alma\Woocommerce\Traits\InPageGatewayTrait;
 class PayMoreThanFourGateway extends AlmaPaymentGateway {
 
 	use InPageGatewayTrait;
+
 	/**
 	 * Get the gateway id.
 	 *
@@ -33,7 +34,5 @@ class PayMoreThanFourGateway extends AlmaPaymentGateway {
 	public function get_gateway_id() {
 		return ConstantsHelper::GATEWAY_ID_IN_PAGE_MORE_THAN_FOUR;
 	}
-
-
 
 }
