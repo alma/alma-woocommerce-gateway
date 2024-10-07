@@ -50,11 +50,16 @@ class PaymentHelperTest extends WP_UnitTestCase
             $security_helper
         );
     }
-    protected function tearDown()
+
+    public function tear_down()
     {
+        parent::tear_down();
         \Mockery::close();
     }
 
-
-
+    public function test()
+    {
+        // TODO: Need to add test or remove this Test file
+        $this->assertTrue(true);
+    }
 }
