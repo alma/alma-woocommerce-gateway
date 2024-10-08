@@ -24,6 +24,7 @@ use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
 use Alma\Woocommerce\Builders\Helpers\ProductHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\SecurityHelperBuilder;
 use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
 use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Exceptions\AmountMismatchException;
@@ -32,12 +33,14 @@ use Alma\Woocommerce\Exceptions\ApiFetchPaymentsException;
 use Alma\Woocommerce\Exceptions\BuildOrderException;
 use Alma\Woocommerce\Exceptions\IncorrectPaymentException;
 use Alma\Woocommerce\Exceptions\PlansDefinitionException;
+use Alma\Woocommerce\Exceptions\AlmaInvalidSignatureException;
 use Alma\Woocommerce\Services\PaymentUponTriggerService;
 
 /**
  * PaymentHelper.
  */
 class PaymentHelper {
+
 
 	/**
 	 * The logger.
@@ -90,23 +93,42 @@ class PaymentHelper {
 	protected $product_helper;
 
 	/**
-	 * Contructor.
+	 * Security helper.
+	 *
+	 * @var SecurityHelper
 	 */
-	public function __construct() {
-		$this->logger               = new AlmaLogger();
-		$this->payment_upon_trigger = new PaymentUponTriggerService();
-		$this->alma_settings        = new AlmaSettings();
+	protected $security_helper;
 
-		$tools_helper_builder = new ToolsHelperBuilder();
-		$this->tool_helper    = $tools_helper_builder->get_instance();
-
-		$cart_helper_builder = new CartHelperBuilder();
-		$this->cart_helper   = $cart_helper_builder->get_instance();
-
-		$this->order_helper = new OrderHelper();
-
-		$product_helper_builder = new ProductHelperBuilder();
-		$this->product_helper   = $product_helper_builder->get_instance();
+	/**
+	 * PaymentHelper constructor.
+	 *
+	 * @param AlmaLogger|null                $logger The logger.
+	 * @param PaymentUponTriggerService|null $trigger The payment upon trigger service.
+	 * @param AlmaSettings|null              $settings The settings.
+	 * @param ToolsHelper|null               $tool_helper The tool helper.
+	 * @param CartHelper|null                $cart_helper The cart helper.
+	 * @param OrderHelper|null               $order_helper The order helper.
+	 * @param ProductHelper|null             $product_helper The product helper.
+	 * @param SecurityHelper|null            $security_helper The security helper.
+	 */
+	public function __construct(
+		$logger = null,
+		$trigger = null,
+		$settings = null,
+		$tool_helper = null,
+		$cart_helper = null,
+		$order_helper = null,
+		$product_helper = null,
+		$security_helper = null
+	) {
+		$this->logger               = isset( $logger ) ? $logger : new AlmaLogger();
+		$this->payment_upon_trigger = isset( $trigger ) ? $trigger : new PaymentUponTriggerService();
+		$this->alma_settings        = isset( $settings ) ? $settings : new AlmaSettings();
+		$this->tool_helper          = isset( $tool_helper ) ? $tool_helper : ( new ToolsHelperBuilder() )->get_instance();
+		$this->cart_helper          = isset( $cart_helper ) ? $tool_helper : ( new CartHelperBuilder() )->get_instance();
+		$this->order_helper         = isset( $order_helper ) ? $order_helper : new OrderHelper();
+		$this->product_helper       = isset( $product_helper ) ? $product_helper : ( new ProductHelperBuilder() )->get_instance();
+		$this->security_helper      = isset( $security_helper ) ? $security_helper : ( new SecurityHelperBuilder() )->get_instance();
 	}
 
 	/**
@@ -116,11 +138,29 @@ class PaymentHelper {
 	 */
 	public function handle_ipn_callback() {
 		$payment_id = $this->get_payment_to_validate();
+
+		if ( ! array_key_exists( 'HTTP_X_ALMA_SIGNATURE', $_SERVER ) ) {
+			$this->logger->error( 'Header key X-Alma-Signature doesn\'t exist' );
+			wp_send_json( array( 'error' => 'Header key X-Alma-Signature doesn\'t exist' ), 500 );
+		}
+
+		try {
+			$this->security_helper->validate_ipn_signature(
+				$payment_id,
+				$this->alma_settings->get_active_api_key(),
+				$_SERVER['HTTP_X_ALMA_SIGNATURE']
+			);
+			$this->logger->info( '[ALMA] IPN signature is valid' );
+		} catch ( AlmaInvalidSignatureException $e ) {
+			$this->logger->error( $e->getMessage() );
+			wp_send_json( array( 'error' => $e->getMessage() ), 500 );
+		}
+
 		$this->validate_payment_from_ipn( $payment_id );
 	}
 
 	/**
-	 * Webhooks handlers
+	 * Webhooks handlers.
 	 *
 	 * PID comes from Alma IPN callback or Alma Checkout page,
 	 * it is not a user form submission: Nonce usage is not suitable here.
@@ -373,7 +413,6 @@ class PaymentHelper {
 			$wc_order->add_order_note( $payment_type );
 
 			$data = $this->build_data_for_alma( $wc_order, $fee_plan, $is_in_page );
-
 		} catch ( \Exception $e ) {
 			$this->logger->error(
 				sprintf(
@@ -550,7 +589,7 @@ class PaymentHelper {
 	 * Call the payment api and create.
 	 *
 	 * @param \WC_Order $wc_order The order .
-	 * @param  FeePlan   $fee_plan The fee plan.
+	 * @param FeePlan   $fee_plan The fee plan.
 	 * @param boolean   $is_in_page In Page mode.
 	 *
 	 * @return Payment
@@ -565,7 +604,6 @@ class PaymentHelper {
 		$payload = $this->get_payment_payload_from_order( $wc_order, $fee_plan, $payment_type, $is_in_page );
 
 		return $this->alma_settings->create_payment( $payload, $wc_order, $fee_plan );
-
 	}
 
 	/**
@@ -602,5 +640,4 @@ class PaymentHelper {
 
 		throw new PlansDefinitionException();
 	}
-
 }

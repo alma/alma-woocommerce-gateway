@@ -100,6 +100,8 @@ class SettingsHelper {
 			'description_alma_in_page_pay_now'           => $this->default_description(),
 			'title_alma_in_page_pay_later'               => $this->default_pay_later_title(),
 			'description_alma_in_page_pay_later'         => $this->default_payment_description(),
+			'title_alma_in_page_pnx_plus_4'              => $this->default_pnx_plus_4_title(),
+			'description_alma_in_page_pnx_plus_4'        => $this->default_payment_description(),
 			'title_alma'                                 => $this->default_pnx_title(),
 			'description_alma'                           => $this->default_payment_description(),
 			'title_alma_pay_now'                         => $this->default_pay_now_title(),
