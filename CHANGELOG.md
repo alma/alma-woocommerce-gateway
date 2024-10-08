@@ -1,5 +1,18 @@
 # Changelog
 
+## v5.7.0 - 2024-10-07
+
+### Changes
+
+### 🚀 New Features
+
+- Integrate credit on in page (#282)
+- Add hmac verification on ipn (#281)
+
+#### Contributors
+
+@Francois-Gomis, @alma-create-pr-with-team-review and @joyet-simon
+
 ## v5.6.0 - 2024-09-16
 
 ### Changes

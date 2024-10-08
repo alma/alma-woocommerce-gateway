@@ -42,11 +42,11 @@ class SecurityHelperTest extends WP_UnitTestCase
         );
     }
 
-    protected function tearDown()
+    public function tear_down()
     {
+        parent::tear_down();
         \Mockery::close(); // Ferme Mockery après chaque test
     }
-
 
     public function test_validate_ipn_throw_Invalide_signature_exception_for_bad_params()
     {
@@ -58,14 +58,12 @@ class SecurityHelperTest extends WP_UnitTestCase
         $this->security_helper->validate_ipn_signature($payment_id, $api_key, $signature);
     }
 
-
     public function test_validate_ipn_signature()
     {
         $signature = 'good_signature';
         $payment_id = 'valid_payment_id';
         $api_key = 'valid_api_key';
         $this->payment_validator->shouldReceive('isHmacValidated')->with($payment_id, $api_key, $signature)->andReturn(true);
-        $this->security_helper->validate_ipn_signature($payment_id, $api_key, $signature);
+        $this->assertNull($this->security_helper->validate_ipn_signature($payment_id, $api_key, $signature));
     }
-
 }
