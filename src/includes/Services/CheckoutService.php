@@ -80,15 +80,14 @@ class CheckoutService extends \WC_Checkout {
 
 	}
 
-	/**
-	 * Extends \WC_Checkout.
-	 *
-	 * @param array $post_fields The post fields.
-	 *
-	 * @return \WC_Order
-	 * @throws AlmaException The exception.
-	 * @throws \Exception Exception.
-	 */
+    /**
+     * Extends \WC_Checkout.
+     *
+     * @param array $post_fields The post fields.
+     *
+     * @return bool|void|\WC_Order|\WC_Order_Refund
+     * @throws AlmaException The exception.
+     */
 	public function process_checkout_alma( $post_fields ) {
 		if (
 			isset( $_POST['is_woo_block'] )
@@ -182,13 +181,16 @@ class CheckoutService extends \WC_Checkout {
 		// Validate posted data and cart items before proceeding.
 		$this->validate_checkout( $posted_data, $errors );
 
-		foreach ( $errors->get_error_messages() as $message ) {
-			wc_add_notice( $message, 'error' );
-		}
+        if ( ! empty($errors->get_error_messages()) ) {
+            foreach ($errors->get_error_messages() as $message) {
+                wc_add_notice($message, 'error');
+            }
+
+            throw new AlmaException( sprintf( 'An error occurred. Notice: %s', wp_json_encode(wc_get_notices('error')) ) );
+        }
 
 		if (
 			empty( $posted_data['woocommerce_checkout_update_totals'] )
-			&& 0 === wc_notice_count( 'error' )
 		) {
 			$this->process_customer( $posted_data );
 
@@ -210,10 +212,7 @@ class CheckoutService extends \WC_Checkout {
 			do_action('woocommerce_checkout_order_processed', $order_id, $posted_data, $order); // phpcs:ignore
 			return $order;
 		}
-
-		throw new AlmaException( 'An error occurred' );
 	}
-
 
 	/**
 	 * Validate checkout.
