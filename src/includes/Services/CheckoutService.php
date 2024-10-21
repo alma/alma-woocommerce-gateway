@@ -87,7 +87,7 @@ class CheckoutService extends \WC_Checkout {
 	 *
 	 * @return bool|void|\WC_Order|\WC_Order_Refund
 	 * @throws AlmaException The exception.
-	 * @throws \Exception
+	 * @throws \Exception The exception.
 	 */
 	public function process_checkout_alma( $post_fields ) {
 		if (
@@ -182,12 +182,12 @@ class CheckoutService extends \WC_Checkout {
 		// Validate posted data and cart items before proceeding.
 		$this->validate_checkout( $posted_data, $errors );
 
-		if ( count($errors->get_error_messages()) > 0 ) {
-			foreach ($errors->get_error_messages() as $message) {
-				wc_add_notice($message, 'error');
+		if ( count( $errors->get_error_messages() ) > 0 ) {
+			foreach ( $errors->get_error_messages() as $message ) {
+				wc_add_notice( $message, 'error' );
 			}
 
-			throw new AlmaException( sprintf( 'An error occurred. Notice: %s', wp_json_encode(wc_get_notices('error')) ) );
+			throw new AlmaException( sprintf( 'An error occurred. Notice: %s', wp_json_encode( wc_get_notices( 'error' ) ) ) );
 		}
 
 		if (
