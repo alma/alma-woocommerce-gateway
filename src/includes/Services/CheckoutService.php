@@ -267,3 +267,4 @@ class CheckoutService extends \WC_Checkout {
 	}
 
 }
+
