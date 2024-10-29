@@ -2,28 +2,28 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 77e083b1cd468d7c2202d1ff3d20e024\n"
 "POT-Creation-Date: 2024-04-23 10:19+0200\n"
-"PO-Revision-Date: 2024-04-23 08:20\n"
+"PO-Revision-Date: 2024-10-29 19:21+0100\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
+"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.5\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: alma-gateway-for-woocommerce.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.min.js\n"
-"X-Poedit-SearchPathExcluded-1: vendor\n"
 "X-Crowdin-Project: 77e083b1cd468d7c2202d1ff3d20e024\n"
 "X-Crowdin-Project-ID: 17\n"
 "X-Crowdin-Language: fr\n"
 "X-Crowdin-File: /languages/alma-gateway-for-woocommerce.pot\n"
 "X-Crowdin-File-ID: 3021\n"
-"Language: fr_FR\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+"X-Poedit-SearchPathExcluded-1: vendor\n"
 
 #. translators: %d: number of installments.
 #: includes/Admin/Builders/FormHtmlBuilder.php:37
@@ -182,8 +182,8 @@ msgstr "Activer le paiement sans redirection avec In-page"
 
 #. translators: %s: Alma in page doc URL
 #: includes/Admin/Helpers/FormFieldsHelper.php:216
-msgid "Activate this setting if you want in-page checkout for Pay Now, Installment and Deferred payments."
-msgstr "Activez ce paramètre si vous souhaitez que les paiements immédiats, échelonnés et différés fassent l'objet d'une vérification sur la page."
+msgid "Enable this setting if you want in-page payments (no redirection) for all Alma payment methods."
+msgstr "Activez ce paramètre si vous souhaitez un paiement sans redirection (in-page) pour toutes les méthodes de paiement Alma."
 
 #: includes/Admin/Helpers/FormFieldsHelper.php:216
 #: includes/Admin/Helpers/FormFieldsHelper.php:223
@@ -198,7 +198,7 @@ msgstr "Activer la compatibilité avec les thèmes des modèles de blocs"
 #. translators: %s: Woocommerce doc URL
 #: includes/Admin/Helpers/FormFieldsHelper.php:223
 msgid "Activate this setting if you use a Blocks template Checkout page"
-msgstr "Activez ce paramètre si vous utilisez un modèle de bloc pour la page de paiement."
+msgstr "Activez ce paramètre si vous utilisez un modèle de bloc pour la page de paiement"
 
 #: includes/Admin/Helpers/FormFieldsHelper.php:240
 msgid "→ Fee plans configuration"
@@ -495,7 +495,7 @@ msgstr "WooCommerce doit être activé pour que le plugin Alma fonctionne"
 
 #: includes/AlmaPlugin.php:130
 msgid "Alma requires WooCommerce version 3.0.0 or greater"
-msgstr "Alma nécessite la version 3.0.0 de WooCommerce ou une version plus récente."
+msgstr "Alma nécessite la version 3.0.0 de WooCommerce ou une version plus récente"
 
 #: includes/AlmaPlugin.php:134
 msgid "Alma requires the cURL PHP extension to be installed on your server"
@@ -550,7 +550,7 @@ msgstr "Erreur lors de la création du paiement. Aucune donnée envoyée"
 #: includes/Exceptions/VersionDeprecated.php:30
 #, php-format
 msgid "Before installing this version of the Alma plugin, you need to manually remove the old version \"%s\", then deactivate and reactivate the new version"
-msgstr "Avant d'installer cette version du plugin Alma, vous devez supprimer manuellement l'ancienne version \"%s\", puis désactiver et réactiver la nouvelle version."
+msgstr "Avant d'installer cette version du plugin Alma, vous devez supprimer manuellement l'ancienne version \"%s\", puis désactiver et réactiver la nouvelle version"
 
 #. translators: %s: Alma dashboard url.
 #: includes/Exceptions/WrongCredentialsException.php:34
@@ -610,7 +610,8 @@ msgstr "https://dashboard.sandbox.getalma.eu/%s"
 
 #: includes/Helpers/AssetsHelper.php:143
 msgid "Are you sure you want to enable compatibility with the Order Validation Block? Please note that this WooCommerce Block may not be fully compatible with all themes, potentially resulting in bugs. If you encounter any issues with the Alma payment functionality, we recommend deactivating this setting."
-msgstr "Êtes-vous sûr de vouloir activer la compatibilité avec le Block de Validation de Commande ?\n"
+msgstr ""
+"Êtes-vous sûr de vouloir activer la compatibilité avec le Block de Validation de Commande ?\n"
 "Ce Bloc WooCommerce pourraient ne pas être entièrement compatibles avec certains thèmes, ce qui pourrait entraîner des bugs. En cas de problèmes avec la fonctionnalité de paiement Alma, nous vous recommandons de désactiver cette option."
 
 #: includes/Helpers/GatewayHelper.php:155
@@ -836,4 +837,3 @@ msgstr "Alma"
 #. Author URI of the plugin/theme
 msgid "https://almapay.com"
 msgstr "https://almapay.com"
-
