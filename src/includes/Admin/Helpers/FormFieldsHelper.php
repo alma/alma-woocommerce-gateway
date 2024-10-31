@@ -229,7 +229,7 @@ class FormFieldsHelper {
 					'title'   => __( 'Activate in-page checkout', 'alma-gateway-for-woocommerce' ),
 					'type'    => 'checkbox',
 					/* translators: %s: Alma in page doc URL */
-					'label'   => __( 'Activate this setting if you want in-page checkout for Pay Now, Installment and Deferred payments.', 'alma-gateway-for-woocommerce' ) . '<br>' . sprintf( __( '(Learn more about this feature <a href="%s">here</a>)', 'alma-gateway-for-woocommerce' ), AssetsHelper::get_in_page_doc_link() ),
+					'label'   => __( 'Enable this setting if you want in-page payments (no redirection) for all Alma payment methods.', 'alma-gateway-for-woocommerce' ) . '<br>' . sprintf( __( '(Learn more about this feature <a href="%s">here</a>)', 'alma-gateway-for-woocommerce' ), AssetsHelper::get_in_page_doc_link() ),
 					'default' => $default_settings['display_in_page'],
 				),
 				'use_blocks_template' => array(
