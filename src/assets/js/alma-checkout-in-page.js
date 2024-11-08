@@ -58,7 +58,7 @@
 		if (null !== installment) {
 			if (
 				inPage !== undefined
-				&& document.getElementById( 'alma-embedded-iframe' ) !== null
+				&& document.querySelector( '[id^=alma-embedded-iframe]' ) !== null
 			) {
 				inPage.unmount();
 			}
