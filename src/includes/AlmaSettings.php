@@ -1100,4 +1100,40 @@ class AlmaSettings {
 	public function need_api_key() {
 		return empty( $this->get_active_api_key() );
 	}
+
+	/**
+	 * Get the variable product price query selector.
+	 *
+	 * @return string
+	 */
+	public function get_variable_product_price_query_selector() {
+		if ( ! empty( $this->variable_product_price_query_selector ) ) {
+			return $this->variable_product_price_query_selector;
+		}
+		return $this->settings_helper->default_variable_price_selector();
+	}
+
+	/**
+	 * Get the variable product check variations event.
+	 *
+	 * @return string
+	 */
+	public function get_variable_product_check_variations_event() {
+		if ( ! empty( $this->variable_product_check_variations_event ) ) {
+			return $this->variable_product_check_variations_event;
+		}
+		return ConstantsHelper::DEFAULT_CHECK_VARIATIONS_EVENT;
+	}
+
+	/**
+	 * Get the variable product sale price query selector.
+	 *
+	 * @return string
+	 */
+	public function get_variable_product_sale_price_query_selector() {
+		if ( ! empty( $this->variable_product_sale_price_query_selector ) ) {
+			return $this->variable_product_sale_price_query_selector;
+		}
+		return $this->settings_helper->default_variable_sale_price_selector();
+	}
 }

@@ -86,9 +86,9 @@ class ProductHandler extends GenericHandler {
 		$is_variable_product = $product->get_type() === 'variable';
 
 		if ( $is_variable_product ) {
-			$jquery_update_event              = $this->alma_settings->variable_product_check_variations_event;
-			$amount_query_selector            = $this->alma_settings->variable_product_price_query_selector;
-			$amount_sale_price_query_selector = $this->alma_settings->variable_product_sale_price_query_selector;
+			$jquery_update_event              = $this->alma_settings->get_variable_product_check_variations_event();
+			$amount_query_selector            = $this->alma_settings->get_variable_product_price_query_selector();
+			$amount_sale_price_query_selector = $this->alma_settings->get_variable_product_sale_price_query_selector();
 		}
 
 		$this->inject_payment_plan_widget(
