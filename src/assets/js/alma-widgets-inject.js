@@ -5,22 +5,22 @@
  */
 
 jQuery( document ).ready(
-	function ($) {
+	function ( $ ) {
 
 		var almaWidgetHelper = new AlmaWidgetHelper();
 		var settings         = almaWidgetHelper.getSettings();
-		if ( ! settings) {
+		if ( ! settings ) {
 			return;
 		}
 
 		var jqueryUpdateEvent = settings.jqueryUpdateEvent;
 		var firstRender       = settings.firstRender;
 
-		if (firstRender) {
+		if ( firstRender ) {
 			almaWidgetHelper.init();
 		}
 
-		if (jqueryUpdateEvent) {
+		if ( jqueryUpdateEvent ) {
 			$( document.body ).on(
 				jqueryUpdateEvent,
 				function () {
@@ -30,14 +30,14 @@ jQuery( document ).ready(
 					// in init.
 					var amountElement = almaWidgetHelper.getAmountElement( settings )
 					var timer         = $.timers.find(
-						function (t) {
+						function ( t ) {
 							return t.elem === jQuery( amountElement ).closest( '.woocommerce-variation' ).get( 0 );
 						}
 					)
 
 					if (timer) {
 						window.setTimeout( almaWidgetHelper.init, timer.anim.duration )
-					} else if (almaWidgetHelper.isVisible( amountElement ) || ! settings.amountQuerySelector) {
+					} else if ( almaWidgetHelper.isVisible( amountElement ) || ! settings.amountQuerySelector ) {
 						almaWidgetHelper.init();
 					}
 				}
@@ -57,8 +57,8 @@ function AlmaWidgetHelper() {
 	 * @param elem
 	 * @returns {boolean}
 	 */
-	var isVisible = function (elem) {
-		return ! ! (elem && (elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length));
+	var isVisible = function( elem ) {
+		return ! ! ( elem && ( elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length ) );
 	}
 
 	/**
@@ -68,13 +68,13 @@ function AlmaWidgetHelper() {
 	 *
 	 * @returns {null|*}
 	 */
-	function getAmountElement(settings) {
+	function getAmountElement( settings ) {
 		var amountQuerySelector          = settings.amountQuerySelector;
 		var amountSalePriceQuerySelector = settings.amountSalePriceQuerySelector;
-		if (document.querySelector( amountSalePriceQuerySelector )) {
+		if ( document.querySelector( amountSalePriceQuerySelector ) ) {
 			amountQuerySelector = amountSalePriceQuerySelector;
 		}
-		if (amountQuerySelector) {
+		if ( amountQuerySelector ) {
 			return document.querySelector( amountQuerySelector );
 		}
 
@@ -86,7 +86,7 @@ function AlmaWidgetHelper() {
 	 *
 	 * @returns String
 	 */
-	var getPaymentPlansContainerId = function () {
+	var getPaymentPlansContainerId = function() {
 		return '#alma-payment-plans';
 	}
 
@@ -95,7 +95,7 @@ function AlmaWidgetHelper() {
 	 *
 	 * @returns {null|*}
 	 */
-	var getSettings = function () {
+	var getSettings = function() {
 		var paymentPlansContainerId = getPaymentPlansContainerId();
 		return jQuery( paymentPlansContainerId ).data( 'settings' );
 	}
@@ -108,7 +108,7 @@ function AlmaWidgetHelper() {
 	var init = function () {
 		// Make sure settings are up-to-date after a potential cart_totals refresh.
 		var settings = getSettings();
-		if ( ! settings || settings.hasExcludedProducts) {
+		if ( ! settings || settings.hasExcludedProducts ) {
 			return;
 		}
 
@@ -120,7 +120,7 @@ function AlmaWidgetHelper() {
 			if (isVisible( amountElement )) {
 				var child = amountElement.firstChild;
 				while (child) {
-					if (child.nodeType === (Node.TEXT_NODE || 3)) {
+					if (child.nodeType === ( Node.TEXT_NODE || 3 )) {
 						var strAmount = child.data
 							.replace( settings.thousandSeparator, '' )
 							.replace( settings.decimalSeparator, '.' )
@@ -149,7 +149,7 @@ function AlmaWidgetHelper() {
 				locale: settings.locale, // [optional, default: en]
 				hideIfNotEligible: false,
 				plans: settings.enabledPlans.map(
-					function (plan) {
+					function ( plan ) {
 						return {
 							installmentsCount: plan.installments_count,
 							minAmount: plan.min_amount,
