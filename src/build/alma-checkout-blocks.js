@@ -25005,9 +25005,9 @@ const InstallmentsContent = ({
     className: "footer"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_InstallmentsTotal_InstallmentsTotal__WEBPACK_IMPORTED_MODULE_3__.InstallmentsTotal, {
     totalAmount: amountInCents,
-    customerFees: feePlan.paymentPlan[0].customer_fee
+    customerFees: customerFees
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_InstallmentsTotal_InstallmentsTotalFees__WEBPACK_IMPORTED_MODULE_4__.InstallmentsTotalFees, {
-    customerFees: feePlan.paymentPlan[0].customer_fee
+    customerFees: customerFees
   }))));
 };
 
@@ -25065,7 +25065,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _InstallmentsTotal_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./InstallmentsTotal.css */ "./src/assets/js/components/Installments/InstallmentsTotal/InstallmentsTotal.css");
-/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/index.js");
+/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/index.js");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
+
 
 
 
@@ -25074,9 +25077,9 @@ const InstallmentsTotalFees = ({
   customerFees
 }) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
   className: "fees"
-}, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Payment costs"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+}, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Payment costs', 'alma-gateway-for-woocommerce')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
   className: "feesNumbers"
-}, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_intl__WEBPACK_IMPORTED_MODULE_2__.FormattedNumber, {
+}, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_intl__WEBPACK_IMPORTED_MODULE_3__.FormattedNumber, {
   value: customerFees / 100,
   style: "currency",
   currency: "EUR"

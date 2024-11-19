@@ -37,10 +37,10 @@ export const InstallmentsContent: React.FC<InstallmentsContentProps> = ({
         <CardFooter className={"footer"}>
           <InstallmentsTotal
             totalAmount={amountInCents}
-            customerFees={feePlan.paymentPlan[0].customer_fee}
+            customerFees={customerFees}
           />
           <InstallmentsTotalFees
-            customerFees={feePlan.paymentPlan[0].customer_fee}
+            customerFees={customerFees}
           />
         </CardFooter>
       </div>

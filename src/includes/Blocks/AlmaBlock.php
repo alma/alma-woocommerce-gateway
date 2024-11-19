@@ -113,34 +113,35 @@ class AlmaBlock extends AbstractPaymentMethodType {
 		wp_enqueue_style( 'alma-blocks-integration-react-component-css', $alma_checkout_blocks_react_components_css, array(), ALMA_VERSION );
 
 		wp_register_script(
-			'alma-blocks-integration',
+			'alma-checkout-blocks',
 			AssetsHelper::get_asset_build_url( ConstantsHelper::ALMA_PATH_CHECKOUT_BLOCK_JS ),
 			array(
 				'jquery',
+				'wp-i18n',
 				'jquery-ui-core',
 				'wc-blocks-registry',
 				'wc-settings',
 				'wp-element',
 				'wp-html-entities',
-				'wp-i18n',
 			),
 			ALMA_VERSION,
 			true
 		);
+        wp_enqueue_script('alma-checkout-blocks');
 
 		if ( function_exists( 'wp_set_script_translations' ) ) {
-			wp_set_script_translations( 'alma-blocks-integration', 'alma-gateway-for-woocommerce', plugin_dir_path( __FILE__ ) . 'languages' );
+			wp_set_script_translations( 'alma-checkout-blocks', 'alma-gateway-for-woocommerce', plugin_dir_path( dirname(__FILE__, 2) ) . 'languages' );
 		}
 
 		if ( $this->gateway_helper->is_in_page_gateway( $this->gateway->id ) ) {
 			wp_localize_script(
-				'alma-blocks-integration',
+				'alma-checkout-blocks',
 				'ajax_object',
 				array( 'ajax_url' => admin_url( 'admin-ajax.php' ) )
 			);
 		}
 
-		return array( 'alma-blocks-integration' );
+		return array( 'alma-checkout-blocks' );
 	}
 
 	/**
