@@ -1,5 +1,5 @@
 "project_id" : "17"
-"api_token" : "CROWDIN_ALMA_TOKEN"
+"api_token_env" : "CROWDIN_ALMA_TOKEN"
 "base_path" : "src/"
 "base_url" : "https://almapay.crowdin.com"
 "preserve_hierarchy": true

@@ -21,16 +21,15 @@ export const InstallmentsContent: React.FC<InstallmentsContentProps> = ({
   const centsToEuros = (cents : number) => {
     return cents /100
   }
-
     return (
     <>
       <div className={"separator"} />
       <div className={"installments"}>
         {feePlan.paymentPlan.map((installment: PaymentPlan, index: number) => (
           <Installment
-            key={`${installment.due_date}-${installment.customer_fee}-${installment.purchase_amount}`}
+            key={index}
             installment={installment}
-            totalAmountInEuros={index === 0 ? centsToEuros(amountInCents) + centsToEuros(customerFees) : centsToEuros(amountInCents)}
+            totalAmountInEuros={centsToEuros(installment.total_amount)}
           />
         ))}
       </div>

@@ -1,6 +1,7 @@
 import React from "react";
-import { FormattedDate, FormattedMessage, FormattedNumber } from "react-intl";
+import { FormattedDate, FormattedNumber } from "react-intl";
 import classNames from "classnames";
+import {__} from "@wordpress/i18n";
 
 type Props = {
   installment: any;
@@ -8,10 +9,14 @@ type Props = {
 };
 
 export const Installment: React.FC<Props> = ({
-  installment: { due_date, localized_due_date }, totalAmountInEuros
+  installment: { due_date }, totalAmountInEuros
 }: Props) => {
   const date = new Date(due_date * 1000);
-  const isToday = localized_due_date === "today";
+  const dateToday = new Date();
+  const dateTodayWithoutHour = new Intl.DateTimeFormat().format(dateToday);
+  const dateWithoutHour = new Intl.DateTimeFormat().format(date);
+
+  const isToday = dateWithoutHour === dateTodayWithoutHour;
 
   return (
     <div
@@ -22,7 +27,7 @@ export const Installment: React.FC<Props> = ({
       <div className={classNames("bullet", { firstBullet: isToday })} />
       <div className={"installment"} data-testid="installment">
         {isToday ? (
-          <FormattedMessage id="installments.today" defaultMessage="Today" />
+            __( 'Today', 'alma-gateway-for-woocommerce' )
         ) : (
           <FormattedDate
             value={date}
