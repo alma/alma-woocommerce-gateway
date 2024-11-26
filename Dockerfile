@@ -1,4 +1,4 @@
-ARG PHP_VERSION
+ARG PHP_VERSION=latest
 
 FROM composer:2 AS composer
 FROM php:${PHP_VERSION}
