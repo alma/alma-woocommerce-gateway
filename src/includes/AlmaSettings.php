@@ -874,9 +874,9 @@ class AlmaSettings {
 			if ( ! isset( $this->settings[ $enabled_key ] ) ) {
 				$this->settings[ $enabled_key ] = ConstantsHelper::DEFAULT_FEE_PLAN === $plan_key ? 'yes' : 'no';
 			}
-			$this->settings["deferred_months_$plan_key"]    = $fee_plan->getDeferredMonths();
-			$this->settings["deferred_days_$plan_key"]      = $fee_plan->getDeferredDays();
-			$this->settings["installments_count_$plan_key"] = $fee_plan->getInstallmentsCount();
+			$this->settings[ "deferred_months_$plan_key" ]    = $fee_plan->getDeferredMonths();
+			$this->settings[ "deferred_days_$plan_key" ]      = $fee_plan->getDeferredDays();
+			$this->settings[ "installments_count_$plan_key" ] = $fee_plan->getInstallmentsCount();
 		}
 	}
 
@@ -1015,12 +1015,12 @@ class AlmaSettings {
 			case ConstantsHelper::GATEWAY_ID_PAY_NOW:
 			case ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_NOW:
 				$display_plan = $this->get_installments_count( $plan_key ) === 1
-				                && ( $this->get_deferred_days( $plan_key ) === 0 && $this->get_deferred_months( $plan_key ) === 0 );
+								&& ( $this->get_deferred_days( $plan_key ) === 0 && $this->get_deferred_months( $plan_key ) === 0 );
 				break;
 			case ConstantsHelper::GATEWAY_ID_PAY_LATER:
 			case ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_LATER:
 				$display_plan = $this->get_installments_count( $plan_key ) === 1
-				                && ( $this->get_deferred_days( $plan_key ) !== 0 || $this->get_deferred_months( $plan_key ) !== 0 );
+								&& ( $this->get_deferred_days( $plan_key ) !== 0 || $this->get_deferred_months( $plan_key ) !== 0 );
 				break;
 			case ConstantsHelper::GATEWAY_ID_IN_PAGE_MORE_THAN_FOUR:
 			case ConstantsHelper::GATEWAY_ID_MORE_THAN_FOUR:
@@ -1069,23 +1069,23 @@ class AlmaSettings {
 	 */
 	public function build_fee_plan( $plan_key ) {
 
-		if ( ! isset( $this->settings["installments_count_$plan_key"] ) ) {
+		if ( ! isset( $this->settings[ "installments_count_$plan_key" ] ) ) {
 			throw new PlansDefinitionException( "installments_count_$plan_key not set" );
 		}
 
-		if ( ! isset( $this->settings["deferred_days_$plan_key"] ) ) {
+		if ( ! isset( $this->settings[ "deferred_days_$plan_key" ] ) ) {
 			throw new PlansDefinitionException( "deferred_days_$plan_key not set" );
 		}
 
-		if ( ! isset( $this->settings["deferred_months_$plan_key"] ) ) {
+		if ( ! isset( $this->settings[ "deferred_months_$plan_key" ] ) ) {
 			throw new PlansDefinitionException( "deferred_months_$plan_key not set" );
 		}
 
 		return new FeePlan(
 			array(
-				'installments_count' => $this->settings["installments_count_$plan_key"],
-				'deferred_days'      => $this->settings["deferred_days_$plan_key"],
-				'deferred_months'    => $this->settings["deferred_months_$plan_key"],
+				'installments_count' => $this->settings[ "installments_count_$plan_key" ],
+				'deferred_days'      => $this->settings[ "deferred_days_$plan_key" ],
+				'deferred_months'    => $this->settings[ "deferred_months_$plan_key" ],
 			)
 		);
 	}
