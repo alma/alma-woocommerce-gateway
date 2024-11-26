@@ -42,6 +42,9 @@ use Alma\Woocommerce\Helpers\EncryptorHelper;
 use Alma\Woocommerce\Helpers\FeePlanHelper;
 use Alma\Woocommerce\Helpers\InternationalizationHelper;
 use Alma\Woocommerce\Helpers\SettingsHelper;
+use Exception;
+use WC_Order;
+use WP_User;
 
 /**
  * Handles settings retrieval from the settings API.
@@ -183,15 +186,6 @@ class AlmaSettings {
 	}
 
 	/**
-	 * Is blocks template enabled.
-	 *
-	 * @return bool
-	 */
-	public function is_blocks_template_enabled() {
-		return 'yes' === $this->use_blocks_template;
-	}
-
-	/**
 	 * Retrieve the db settings.
 	 *
 	 * @return array
@@ -204,6 +198,15 @@ class AlmaSettings {
 		}
 
 		return array_merge( $this->settings_helper->default_settings(), $settings );
+	}
+
+	/**
+	 * Is blocks template enabled.
+	 *
+	 * @return bool
+	 */
+	public function is_blocks_template_enabled() {
+		return 'yes' === $this->use_blocks_template;
 	}
 
 	/**
@@ -231,36 +234,6 @@ class AlmaSettings {
 
 		return false;
 	}
-
-	/**
-	 * Is the plan a pnx plus 4 ?
-	 *
-	 * @param FeePlan $fee_plan The fee plan.
-	 * @return bool
-	 */
-	public function is_pnx_plus_4( $fee_plan ) {
-		if ( $fee_plan->getInstallmentsCount() > 4 ) {
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Tells if the merchant has pay now payment method enabled in the WC back-office.
-	 *
-	 * @return bool
-	 */
-	public function has_pay_now() {
-		foreach ( $this->get_enabled_plans_definitions() as $plan_definition ) {
-			if ( 1 === $plan_definition['installments_count'] ) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 
 	/**
 	 * Gets enabled plans and configuration summary stored in settings for each enabled plan.
@@ -325,7 +298,7 @@ class AlmaSettings {
 	 * __set.
 	 *
 	 * @param string $key Key.
-	 * @param mixed  $value Value.
+	 * @param mixed $value Value.
 	 *
 	 * @return void
 	 */
@@ -389,6 +362,36 @@ class AlmaSettings {
 	}
 
 	/**
+	 * Is the plan a pnx plus 4 ?
+	 *
+	 * @param FeePlan $fee_plan The fee plan.
+	 *
+	 * @return bool
+	 */
+	public function is_pnx_plus_4( $fee_plan ) {
+		if ( $fee_plan->getInstallmentsCount() > 4 ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Tells if the merchant has pay now payment method enabled in the WC back-office.
+	 *
+	 * @return bool
+	 */
+	public function has_pay_now() {
+		foreach ( $this->get_enabled_plans_definitions() as $plan_definition ) {
+			if ( 1 === $plan_definition['installments_count'] ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Is plugin enabled.
 	 *
 	 * @return bool
@@ -414,6 +417,28 @@ class AlmaSettings {
 	}
 
 	/**
+	 * Gets a setting value translated.
+	 *
+	 * @param string $key The setting to translate.
+	 *
+	 * @return string
+	 */
+	public function get_i18n( $key ) {
+		if ( $this->internationalization_helper->is_site_multilingual() ) {
+			if ( $this->{$key . '_' . get_locale()} ) {
+				return $this->{$key . '_' . get_locale()};
+			}
+
+			return $this->internationalization_helper->get_translated_text(
+				$this->settings_helper->default_settings()[ $key ],
+				get_locale()
+			);
+		}
+
+		return $this->{$key};
+	}
+
+	/**
 	 * Gets title for a payment method.
 	 *
 	 * @param string $payment_method The payment method.
@@ -430,24 +455,34 @@ class AlmaSettings {
 	}
 
 	/**
-	 * Gets a setting value translated.
+	 * Is using test API.
 	 *
-	 * @param string $key The setting to translate.
+	 * @return bool
+	 */
+	public function is_test() {
+		return $this->get_environment() === 'test';
+	}
+
+	/**
+	 * Gets active environment from setting.
 	 *
 	 * @return string
 	 */
-	public function get_i18n( $key ) {
-		if ( $this->internationalization_helper->is_site_multilingual() ) {
-			if ( $this->{$key . '_' . get_locale()} ) {
-				return $this->{$key . '_' . get_locale()};
-			}
-			return $this->internationalization_helper->get_translated_text(
-				$this->settings_helper->default_settings()[ $key ],
-				get_locale()
-			);
+	public function get_environment() {
+		return 'live' === $this->environment ? 'live' : 'test';
+	}
+
+	/**
+	 * Check if we have keys for the active environment.
+	 *
+	 * @return bool
+	 */
+	public function has_keys() {
+		if ( empty( $this->get_active_api_key() ) ) {
+			return false;
 		}
 
-		return $this->{$key};
+		return true;
 	}
 
 	/**
@@ -469,26 +504,6 @@ class AlmaSettings {
 	}
 
 	/**
-	 * Is using test API.
-	 *
-	 * @return bool
-	 */
-	public function is_test() {
-		return $this->get_environment() === 'test';
-	}
-
-
-	/**
-	 * Gets active environment from setting.
-	 *
-	 * @return string
-	 */
-	public function get_environment() {
-		return 'live' === $this->environment ? 'live' : 'test';
-	}
-
-
-	/**
 	 * Gets API key for live environment.
 	 *
 	 * @return string
@@ -507,25 +522,24 @@ class AlmaSettings {
 	}
 
 	/**
-	 * Check if we have keys for the active environment.
+	 * Fetch the payment.
 	 *
-	 * @return bool
+	 * @param string $payment_id The payment id.
+	 *
+	 * @return Payment
+	 *
+	 * @throws ApiFetchPaymentsException Fetch payment exception.
 	 */
-	public function has_keys() {
-		if ( empty( $this->get_active_api_key() ) ) {
-			return false;
+	public function fetch_payment( $payment_id ) {
+		try {
+			$this->get_alma_client();
+
+			return $this->alma_client->payments->fetch( $payment_id );
+
+		} catch ( Exception $e ) {
+			$this->logger->error( sprintf( 'Api fetch_payment, payment id "%s" , Api message "%s"', $payment_id, $e->getMessage() ) );
+			throw new ApiFetchPaymentsException( $payment_id );
 		}
-
-		return true;
-	}
-
-	/**
-	 * Saves settings.
-	 *
-	 * @return void
-	 */
-	public function save() {
-		update_option( self::OPTIONS_KEY, $this->settings );
 	}
 
 	/**
@@ -561,33 +575,11 @@ class AlmaSettings {
 	}
 
 	/**
-	 * Fetch the payment.
-	 *
-	 * @param string $payment_id The payment id.
-	 *
-	 * @return Payment
-	 *
-	 * @throws ApiFetchPaymentsException Fetch payment exception.
-	 */
-	public function fetch_payment( $payment_id ) {
-		try {
-			$this->get_alma_client();
-
-			return $this->alma_client->payments->fetch( $payment_id );
-
-		} catch ( \Exception $e ) {
-			$this->logger->error( sprintf( 'Api fetch_payment, payment id "%s" , Api message "%s"', $payment_id, $e->getMessage() ) );
-			throw new ApiFetchPaymentsException( $payment_id );
-		}
-	}
-
-
-	/**
 	 * Create the payment.
 	 *
-	 * @param array     $payload The payload.
-	 * @param \WC_Order $wc_order The order id.
-	 * @param  FeePlan   $fee_plan The fee plan.
+	 * @param array $payload The payload.
+	 * @param WC_Order $wc_order The order id.
+	 * @param FeePlan $fee_plan The fee plan.
 	 *
 	 * @return Payment
 	 *
@@ -599,7 +591,7 @@ class AlmaSettings {
 
 			return $this->alma_client->payments->create( $payload );
 
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->logger->error(
 				sprintf(
 					'Api create_payments, order id "%s" , Api message "%s", Payload "%s", Trace "%s"',
@@ -616,7 +608,7 @@ class AlmaSettings {
 	/**
 	 * Share the data for soc.
 	 *
-	 * @param array $data   The payload.
+	 * @param array $data The payload.
 	 *
 	 * @throws ApiShareOfCheckoutException ApiShareOfCheckoutException exception.
 	 */
@@ -626,7 +618,7 @@ class AlmaSettings {
 
 			$this->alma_client->shareOfCheckout->share( $data );
 
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->logger->error( sprintf( 'Api : shareOfCheckout, data : "%s", Api message "%s"', wp_json_encode( $data ), $e->getMessage() ) );
 			throw new ApiShareOfCheckoutException( $data );
 		}
@@ -644,12 +636,11 @@ class AlmaSettings {
 			$this->get_alma_client();
 
 			return $this->alma_client->shareOfCheckout->getLastUpdateDates(); // phpcs:ignore
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->logger->error( sprintf( 'Api : getLastUpdateDates shareOfCheckout, Api message "%s"', $e->getMessage() ) );
 			throw new ApiSocLastUpdateDatesException();
 		}
 	}
-
 
 	/**
 	 * Sent the accept for the soc consent
@@ -662,7 +653,7 @@ class AlmaSettings {
 
 			$this->alma_client->shareOfCheckout->addConsent();
 
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->logger->error( sprintf( 'Api : accept share of shareOfCheckout, Api message "%s"', $e->getMessage() ) );
 			throw new ApiShareOfCheckoutAcceptException();
 		}
@@ -679,12 +670,11 @@ class AlmaSettings {
 
 			$this->alma_client->shareOfCheckout->removeConsent();
 
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->logger->error( sprintf( 'Api : deny share of shareOfCheckout, Api message "%s"', $e->getMessage() ) );
 			throw new ApiShareOfCheckoutDenyException();
 		}
 	}
-
 
 	/**
 	 * Trigger the transaction.
@@ -701,7 +691,7 @@ class AlmaSettings {
 
 			return $this->alma_client->payments->trigger( $transaction_id );
 
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->logger->error( sprintf( 'Api trigger_payment, transaction id "%s" , Api message "%s"', $transaction_id, $e->getMessage() ) );
 			throw new ApiTriggerPaymentsException( $transaction_id );
 		}
@@ -722,7 +712,7 @@ class AlmaSettings {
 			$this->get_alma_client();
 
 			$this->alma_client->payments->fullRefund( $transaction_id, $merchant_reference, $comment );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->logger->error( sprintf( 'Api full_refund, transaction id "%s" , Api message "%s"', $transaction_id, $e->getMessage() ) );
 			throw new ApiFullRefundException( $transaction_id, $merchant_reference );
 		}
@@ -744,7 +734,7 @@ class AlmaSettings {
 			$this->get_alma_client();
 
 			$this->alma_client->payments->partialRefund( $transaction_id, $amount, $merchant_reference, $comment );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->logger->error( sprintf( 'Api partialRefund, transaction id "%s" , Api message "%s"', $transaction_id, $e->getMessage() ) );
 			throw new ApiPartialRefundException( $transaction_id, $merchant_reference, $amount );
 		}
@@ -801,7 +791,7 @@ class AlmaSettings {
 				$merchant                                      = $this->alma_client->merchants->me();
 				$this->{$this->environment . '_merchant_id'}   = $merchant->id;
 				$this->{$this->environment . '_merchant_name'} = $merchant->name;
-			} catch ( \Exception $e ) {
+			} catch ( Exception $e ) {
 				$this->__set( 'keys_validity', 'no' );
 
 				$this->save();
@@ -811,7 +801,7 @@ class AlmaSettings {
 				}
 
 				throw new ApiMerchantsException(
-					// translators: %s: Error message.
+				// translators: %s: Error message.
 					__( 'Alma encountered an error when fetching merchant status, please check your api keys or retry later.', 'alma-gateway-for-woocommerce' ),
 					$e->getCode(),
 					$e
@@ -830,6 +820,15 @@ class AlmaSettings {
 				__( 'Alma encountered an error.', 'alma-gateway-for-woocommerce' )
 			);
 		}
+	}
+
+	/**
+	 * Saves settings.
+	 *
+	 * @return void
+	 */
+	public function save() {
+		update_option( self::OPTIONS_KEY, $this->settings );
 	}
 
 	/**
@@ -875,9 +874,9 @@ class AlmaSettings {
 			if ( ! isset( $this->settings[ $enabled_key ] ) ) {
 				$this->settings[ $enabled_key ] = ConstantsHelper::DEFAULT_FEE_PLAN === $plan_key ? 'yes' : 'no';
 			}
-			$this->settings[ "deferred_months_$plan_key" ]    = $fee_plan->getDeferredMonths();
-			$this->settings[ "deferred_days_$plan_key" ]      = $fee_plan->getDeferredDays();
-			$this->settings[ "installments_count_$plan_key" ] = $fee_plan->getInstallmentsCount();
+			$this->settings["deferred_months_$plan_key"]    = $fee_plan->getDeferredMonths();
+			$this->settings["deferred_days_$plan_key"]      = $fee_plan->getDeferredDays();
+			$this->settings["installments_count_$plan_key"] = $fee_plan->getInstallmentsCount();
 		}
 	}
 
@@ -890,7 +889,7 @@ class AlmaSettings {
 	public function get_alma_fee_plans() {
 		try {
 			return $this->alma_client->merchants->feePlans( FeePlan::KIND_GENERAL, 'all', true );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->logger->error( $e->getMessage(), $e->getTrace() );
 		}
 
@@ -922,11 +921,11 @@ class AlmaSettings {
 	/**
 	 * Is Alma available for this user ?
 	 *
-	 * @param \WP_User $user The user roles which to test.
+	 * @param WP_User $user The user roles which to test.
 	 *
 	 * @return bool
 	 */
-	public function is_allowed_to_see_alma( \WP_User $user ) {
+	public function is_allowed_to_see_alma( WP_User $user ) {
 		return in_array( 'administrator', $user->roles, true ) || 'live' === $this->get_environment();
 	}
 
@@ -983,7 +982,7 @@ class AlmaSettings {
 	 * Checks if a plan is eligible.
 	 *
 	 * @param array $plan Plan definition.
-	 * @param int   $amount Price.
+	 * @param int $amount Price.
 	 *
 	 * @return bool
 	 */
@@ -1003,7 +1002,7 @@ class AlmaSettings {
 		switch ( $gateway_id ) {
 			case ConstantsHelper::GATEWAY_ID:
 			case ConstantsHelper::GATEWAY_ID_IN_PAGE:
-				return in_array(
+				$display_plan = in_array(
 					$this->get_installments_count( $plan_key ),
 					array(
 						2,
@@ -1012,24 +1011,26 @@ class AlmaSettings {
 					),
 					true
 				);
+				break;
 			case ConstantsHelper::GATEWAY_ID_PAY_NOW:
 			case ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_NOW:
-				return (
-					$this->get_installments_count( $plan_key ) === 1
-					&& ( $this->get_deferred_days( $plan_key ) === 0 && $this->get_deferred_months( $plan_key ) === 0 )
-				);
+				$display_plan = $this->get_installments_count( $plan_key ) === 1
+				                && ( $this->get_deferred_days( $plan_key ) === 0 && $this->get_deferred_months( $plan_key ) === 0 );
+				break;
 			case ConstantsHelper::GATEWAY_ID_PAY_LATER:
 			case ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_LATER:
-				return (
-					$this->get_installments_count( $plan_key ) === 1
-					&& ( $this->get_deferred_days( $plan_key ) !== 0 || $this->get_deferred_months( $plan_key ) !== 0 )
-				);
+				$display_plan = $this->get_installments_count( $plan_key ) === 1
+				                && ( $this->get_deferred_days( $plan_key ) !== 0 || $this->get_deferred_months( $plan_key ) !== 0 );
+				break;
 			case ConstantsHelper::GATEWAY_ID_IN_PAGE_MORE_THAN_FOUR:
 			case ConstantsHelper::GATEWAY_ID_MORE_THAN_FOUR:
-				return ( $this->get_installments_count( $plan_key ) > 4 );
+				$display_plan = $this->get_installments_count( $plan_key ) > 4;
+				break;
 			default:
-				return false;
+				$display_plan = false;
 		}
+
+		return $display_plan;
 	}
 
 	/**
@@ -1058,7 +1059,7 @@ class AlmaSettings {
 	}
 
 	/**
-	/**
+	 * /**
 	 * Populate fee plan
 	 *
 	 * @param string $plan_key The plan key.
@@ -1068,27 +1069,25 @@ class AlmaSettings {
 	 */
 	public function build_fee_plan( $plan_key ) {
 
-		if ( ! isset( $this->settings[ "installments_count_$plan_key" ] ) ) {
+		if ( ! isset( $this->settings["installments_count_$plan_key"] ) ) {
 			throw new PlansDefinitionException( "installments_count_$plan_key not set" );
 		}
 
-		if ( ! isset( $this->settings[ "deferred_days_$plan_key" ] ) ) {
+		if ( ! isset( $this->settings["deferred_days_$plan_key"] ) ) {
 			throw new PlansDefinitionException( "deferred_days_$plan_key not set" );
 		}
 
-		if ( ! isset( $this->settings[ "deferred_months_$plan_key" ] ) ) {
+		if ( ! isset( $this->settings["deferred_months_$plan_key"] ) ) {
 			throw new PlansDefinitionException( "deferred_months_$plan_key not set" );
 		}
 
-		$fee_plan = new FeePlan(
+		return new FeePlan(
 			array(
-				'installments_count' => $this->settings[ "installments_count_$plan_key" ],
-				'deferred_days'      => $this->settings[ "deferred_days_$plan_key" ],
-				'deferred_months'    => $this->settings[ "deferred_months_$plan_key" ],
+				'installments_count' => $this->settings["installments_count_$plan_key"],
+				'deferred_days'      => $this->settings["deferred_days_$plan_key"],
+				'deferred_months'    => $this->settings["deferred_months_$plan_key"],
 			)
 		);
-
-		return $fee_plan;
 	}
 
 
