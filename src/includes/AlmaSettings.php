@@ -59,7 +59,7 @@ use WP_User;
  * @property string display_product_eligibility Wp-bool-eq (yes or no)
  * @property string display_cart_eligibility Wp-bool-eq (yes or no)
  * @property string environment Live or test
- * @property bool keys_validity Flag to indicate id the current keys are working
+ * @property bool   keys_validity Flag to indicate id the current keys are working
  * @property string selected_fee_plan Admin dashboard fee_plan in edition mode.
  * @property string test_merchant_id Alma TEST merchant ID
  * @property string test_merchant_name Alma TEST merchant name
@@ -68,12 +68,12 @@ use WP_User;
  * @property string variable_product_price_query_selector Css query selector
  * @property string variable_product_sale_price_query_selector Css query selector for variable discounted products
  * @property string variable_product_check_variations_event JS event for product variation change
- * @property array excluded_products_list Wp Categories excluded slug's list
+ * @property array  excluded_products_list Wp Categories excluded slug's list
  * @property string share_of_checkout_enabled Bool for share of checkout acceptance (yes or no)
  * @property string share_of_checkout_enabled_date String Date when the merchant did accept the share of checkout
  * @property string share_of_checkout_last_sharing_date String Date when we sent the data to Alma
- * @property bool display_in_page Bool if In Page is activated
- * @property bool use_blocks_template Bool if we want to use a blocks template
+ * @property bool   display_in_page Bool if In Page is activated
+ * @property bool   use_blocks_template Bool if we want to use a blocks template
  */
 class AlmaSettings {
 
@@ -298,7 +298,7 @@ class AlmaSettings {
 	 * __set.
 	 *
 	 * @param string $key Key.
-	 * @param mixed $value Value.
+	 * @param mixed  $value Value.
 	 *
 	 * @return void
 	 */
@@ -577,9 +577,9 @@ class AlmaSettings {
 	/**
 	 * Create the payment.
 	 *
-	 * @param array $payload The payload.
+	 * @param array    $payload The payload.
 	 * @param WC_Order $wc_order The order id.
-	 * @param FeePlan $fee_plan The fee plan.
+	 * @param FeePlan  $fee_plan The fee plan.
 	 *
 	 * @return Payment
 	 *
@@ -982,7 +982,7 @@ class AlmaSettings {
 	 * Checks if a plan is eligible.
 	 *
 	 * @param array $plan Plan definition.
-	 * @param int $amount Price.
+	 * @param int   $amount Price.
 	 *
 	 * @return bool
 	 */
