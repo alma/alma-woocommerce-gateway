@@ -141,7 +141,7 @@ class PaymentHelper {
 
 		if ( ! array_key_exists( 'HTTP_X_ALMA_SIGNATURE', $_SERVER ) ) {
 			$this->logger->error( 'Header key X-Alma-Signature doesn\'t exist' );
-			wp_send_json( array( 'error' => 'Header key X-Alma-Signature doesn\'t exist' ), 500 );
+			wp_send_json( array( 'error' => 'Header key X-Alma-Signature doesn\'t exist' ), 403 );
 		}
 
 		try {
@@ -153,7 +153,7 @@ class PaymentHelper {
 			$this->logger->info( '[ALMA] IPN signature is valid' );
 		} catch ( AlmaInvalidSignatureException $e ) {
 			$this->logger->error( $e->getMessage() );
-			wp_send_json( array( 'error' => $e->getMessage() ), 500 );
+			wp_send_json( array( 'error' => $e->getMessage() ), 403 );
 		}
 
 		$this->validate_payment_from_ipn( $payment_id );

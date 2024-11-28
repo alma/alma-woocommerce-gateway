@@ -59,4 +59,24 @@ class SecurityHelper {
 			throw new AlmaInvalidSignatureException( '[ALMA] Invalid signature' );
 		}
 	}
+
+	/**
+	 * Validate the collect data signature
+	 *
+	 * @param string $merchant_id merchant id.
+	 * @param string $api_key The API key.
+	 * @param string $signature The signature.
+	 *
+	 * @return void
+	 *
+	 * @throws AlmaInvalidSignatureException If the signature is invalid.
+	 */
+	public function validate_collect_data_signature( $merchant_id, $api_key, $signature ) {
+		if ( empty( $merchant_id ) || empty( $api_key ) || empty( $signature ) ) {
+			throw new AlmaInvalidSignatureException( sprintf( '[ALMA] Missing required parameters, merchant_id: %s, api_key: %s, signature: %s', $merchant_id, $api_key, $signature ) );
+		}
+		if ( ! $this->payment_validator->isHmacValidated( $merchant_id, $api_key, $signature ) ) {
+			throw new AlmaInvalidSignatureException( '[ALMA] Invalid signature' );
+		}
+	}
 }

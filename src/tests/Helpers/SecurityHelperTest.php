@@ -48,7 +48,7 @@ class SecurityHelperTest extends WP_UnitTestCase
         \Mockery::close(); // Ferme Mockery après chaque test
     }
 
-    public function test_validate_ipn_throw_Invalide_signature_exception_for_bad_params()
+    public function test_validate_ipn_throw_invalid_signature_exception_for_bad_params()
     {
         $signature = 'bad_signature';
         $payment_id = 'payment_id';
@@ -65,5 +65,24 @@ class SecurityHelperTest extends WP_UnitTestCase
         $api_key = 'valid_api_key';
         $this->payment_validator->shouldReceive('isHmacValidated')->with($payment_id, $api_key, $signature)->andReturn(true);
         $this->assertNull($this->security_helper->validate_ipn_signature($payment_id, $api_key, $signature));
+    }
+
+    public function test_validate_collect_data_signature_throw_invalid_signature_exception_for_bad_params()
+    {
+        $signature = 'bad_signature';
+        $merchant_id = 'merchant_id';
+        $api_key = 'api_key';
+        $this->payment_validator->shouldReceive('isHmacValidated')->andReturn(false);
+        $this->expectException(AlmaInvalidSignatureException::class);
+        $this->security_helper->validate_collect_data_signature($merchant_id, $api_key, $signature);
+    }
+
+    public function test_validate_collect_data_signature()
+    {
+        $signature = 'good_signature';
+        $merchant_id = 'valid_merchant_id';
+        $api_key = 'valid_api_key';
+        $this->payment_validator->shouldReceive('isHmacValidated')->with($merchant_id, $api_key, $signature)->andReturn(true);
+        $this->assertNull($this->security_helper->validate_collect_data_signature($merchant_id, $api_key, $signature));
     }
 }

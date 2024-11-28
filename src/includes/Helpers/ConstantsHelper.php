@@ -73,6 +73,8 @@ class ConstantsHelper {
 
 	const ERROR = 'error';
 
+	const COLLECT_URL = 'alma_collect_data_url';
+
 	/**
 	 * The payment status
 	 *
