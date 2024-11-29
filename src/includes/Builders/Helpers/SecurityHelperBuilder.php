@@ -31,8 +31,7 @@ class SecurityHelperBuilder {
 	 */
 	public function get_instance() {
 		return new SecurityHelper(
-			$this->get_alma_logger(),
-			$this->get_payment_validator()
+			$this->get_alma_logger()
 		);
 	}
 }

@@ -121,7 +121,11 @@ class CollectCmsDataService {
 		}
 
 		try {
-			$this->security_helper->validate_collect_data_signature( $this->alma_settings->get_active_merchant_id(), $this->alma_settings->get_active_api_key(), $_SERVER['HTTP_X_ALMA_SIGNATURE'] );
+			$this->security_helper->validate_collect_data_signature(
+				$this->alma_settings->get_active_merchant_id(),
+				$this->alma_settings->get_active_api_key(),
+				$_SERVER['HTTP_X_ALMA_SIGNATURE']
+			);
 			$this->functions_proxy->send_http_response( $this->payload_formatter->formatConfigurationPayload( $this->get_cms_info(), $this->get_cms_features() ), 200 );
 		} catch ( AlmaInvalidSignatureException $e ) {
 			$this->alma_logger->error( $e->getMessage() );
@@ -135,15 +139,6 @@ class CollectCmsDataService {
 	 * @return CmsFeatures
 	 */
 	private function get_cms_features() {
-		try {
-			$this->alma_settings->get_alma_client();
-		} catch ( DependenciesError $e ) {
-			$this->alma_logger->warning( $e->getMessage() );
-		} catch ( ParamsError $e ) {
-			$this->alma_logger->warning( $e->getMessage() );
-		} catch ( AlmaException $e ) {
-			$this->alma_logger->warning( $e->getMessage() );
-		}
 		return new CmsFeatures(
 			array(
 				'alma_enabled'             => $this->alma_settings->is_enabled(),

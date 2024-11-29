@@ -19,7 +19,7 @@ class ThemeProxy {
 	 *
 	 * @return WP_Theme
 	 */
-	public function get_theme() {
+	private function get_theme() {
 		return wp_get_theme();
 	}
 

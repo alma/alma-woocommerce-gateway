@@ -7,7 +7,8 @@
 
 namespace Alma\Woocommerce\Helpers;
 
-use Alma\API\Lib\PaymentValidator;
+use Alma\API\Lib\RequestUtils;
+use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\Exceptions\AlmaInvalidSignatureException;
 
 /**
@@ -23,21 +24,12 @@ class SecurityHelper {
 	protected $logger;
 
 	/**
-	 * The payment validator.
-	 *
-	 * @var PaymentValidator
-	 */
-	protected $payment_validator;
-
-	/**
 	 * SecurityHelper constructor.
 	 *
-	 * @param AlmaLogger       $logger The logger.
-	 * @param PaymentValidator $payment_validator The payment validator.
+	 * @param AlmaLogger $logger The logger.
 	 */
-	public function __construct( $logger, $payment_validator ) {
-		$this->logger            = $logger;
-		$this->payment_validator = $payment_validator;
+	public function __construct( $logger ) {
+		$this->logger = $logger;
 	}
 
 	/**
@@ -53,9 +45,11 @@ class SecurityHelper {
 	 */
 	public function validate_ipn_signature( $payment_id, $api_key, $signature ) {
 		if ( empty( $payment_id ) || empty( $api_key ) || empty( $signature ) ) {
-			throw new AlmaInvalidSignatureException( sprintf( '[ALMA] Missing required parameters, payment_id: %s, api_key: %s, signature: %s', $payment_id, $api_key, $signature ) );
+			throw new AlmaInvalidSignatureException(
+				sprintf( '[ALMA] Missing required parameters, payment_id: %s, api_key: %s, signature: %s', $payment_id, $api_key, $signature )
+			);
 		}
-		if ( ! $this->payment_validator->isHmacValidated( $payment_id, $api_key, $signature ) ) {
+		if ( ! RequestUtils::isHmacValidated( $payment_id, $api_key, $signature ) ) {
 			throw new AlmaInvalidSignatureException( '[ALMA] Invalid signature' );
 		}
 	}
@@ -73,9 +67,11 @@ class SecurityHelper {
 	 */
 	public function validate_collect_data_signature( $merchant_id, $api_key, $signature ) {
 		if ( empty( $merchant_id ) || empty( $api_key ) || empty( $signature ) ) {
-			throw new AlmaInvalidSignatureException( sprintf( '[ALMA] Missing required parameters, merchant_id: %s, api_key: %s, signature: %s', $merchant_id, $api_key, $signature ) );
+			throw new AlmaInvalidSignatureException(
+				sprintf( '[ALMA] Missing required parameters, merchant_id: %s, api_key: %s, signature: %s', $merchant_id, $api_key, $signature )
+			);
 		}
-		if ( ! $this->payment_validator->isHmacValidated( $merchant_id, $api_key, $signature ) ) {
+		if ( ! RequestUtils::isHmacValidated( $merchant_id, $api_key, $signature ) ) {
 			throw new AlmaInvalidSignatureException( '[ALMA] Invalid signature' );
 		}
 	}
