@@ -14,10 +14,10 @@ namespace Alma\Woocommerce\Helpers;
 use Alma\API\Endpoints\Results\Eligibility;
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
-use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Factories\CartFactory;
 use Alma\Woocommerce\Factories\SessionFactory;
 use Alma\Woocommerce\Factories\VersionFactory;
+use Exception;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -27,7 +27,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class CartHelper.
  */
 class CartHelper {
-
 	/**
 	 * Helper global.
 	 *
@@ -109,6 +108,65 @@ class CartHelper {
 	}
 
 	/**
+	 * Get eligible plans keys for current cart.
+	 *
+	 * @param array|Eligibility[] $cart_eligibilities The eligibilities.
+	 *
+	 * @return array
+	 */
+	public function get_eligible_plans_keys_for_cart( $cart_eligibilities = array() ) {
+		if ( empty( $cart_eligibilities ) ) {
+			$cart_eligibilities = $this->get_cart_eligibilities();
+		}
+
+		return array_filter(
+			$this->alma_settings->get_eligible_plans_keys( $this->get_total_in_cents() ),
+			function ( $key ) use ( $cart_eligibilities ) {
+				if ( is_array( $cart_eligibilities ) ) {
+					return array_key_exists( $key, $cart_eligibilities );
+				}
+
+				return property_exists( $cart_eligibilities, $key );
+			}
+		);
+	}
+
+	/**
+	 * Get eligibilities from cart.
+	 *
+	 * @return Eligibility[]|array
+	 */
+	public function get_cart_eligibilities() {
+
+		$amount = $this->get_total_in_cents();
+
+		if ( 0 === $amount ) {
+			return array();
+		}
+
+		if ( ! $this->eligibilities ) {
+
+			try {
+				$this->alma_settings->get_alma_client();
+				$payload             = $this->get_eligibility_payload_from_cart();
+				$this->eligibilities = $this->alma_settings->alma_client->payments->eligibility( $payload );
+			} catch ( Exception $error ) {
+				$this->alma_logger->error( $error->getMessage(), $error->getTrace() );
+
+				return array();
+			}
+
+			if ( ! is_array( $this->eligibilities ) ) {
+				$this->alma_logger->error( 'Eligibilities must be an array' );
+
+				return array();
+			}
+		}
+
+		return $this->eligibilities;
+	}
+
+	/**
 	 * Get cart total in cents.
 	 *
 	 * @return integer
@@ -154,93 +212,6 @@ class CartHelper {
 	}
 
 	/**
-	 * Get eligibilities from cart.
-	 *
-	 * @return Eligibility[]|array
-	 */
-	public function get_cart_eligibilities() {
-
-		$amount = $this->get_total_in_cents();
-
-		if ( 0 === $amount ) {
-			return array();
-		}
-
-		if ( ! $this->eligibilities ) {
-
-			try {
-				$this->alma_settings->get_alma_client();
-				$payload             = $this->get_eligibility_payload_from_cart();
-				$this->eligibilities = $this->alma_settings->alma_client->payments->eligibility( $payload );
-			} catch ( \Exception $error ) {
-				$this->alma_logger->error( $error->getMessage(), $error->getTrace() );
-
-				return array();
-			}
-
-			if ( ! is_array( $this->eligibilities ) ) {
-				$this->alma_logger->error( 'Eligibilities must be an array' );
-
-				return array();
-			}
-		}
-
-		return $this->eligibilities;
-	}
-
-	/**
-	 * Get eligible plans keys for current cart.
-	 *
-	 * @param array|Eligibility[] $cart_eligibilities The eligibilities.
-	 * @return array
-	 */
-	public function get_eligible_plans_keys_for_cart( $cart_eligibilities = array() ) {
-		if ( empty( $cart_eligibilities ) ) {
-			$cart_eligibilities = $this->get_cart_eligibilities();
-		}
-
-		$eligibilities = array_filter(
-			$this->alma_settings->get_eligible_plans_keys( $this->get_total_in_cents() ),
-			function ( $key ) use ( $cart_eligibilities ) {
-				if ( is_array( $cart_eligibilities ) ) {
-					return array_key_exists( $key, $cart_eligibilities );
-				}
-
-				return property_exists( $cart_eligibilities, $key );
-			}
-		);
-
-		return $eligibilities;
-	}
-
-	/**
-	 * Get Eligibility / Payment formatted eligible plans definitions for current cart.
-	 *
-	 * @return array<array>
-	 */
-	public function get_eligible_plans_for_cart() {
-		$amount = $this->get_total_in_cents();
-
-		return array_values(
-			array_map(
-				function ( $plan ) use ( $amount ) {
-					unset( $plan['max_amount'] );
-					unset( $plan['min_amount'] );
-					if ( isset( $plan['deferred_months'] ) && 0 === $plan['deferred_months'] ) {
-						unset( $plan['deferred_months'] );
-					}
-					if ( isset( $plan['deferred_days'] ) && 0 === $plan['deferred_days'] ) {
-						unset( $plan['deferred_days'] );
-					}
-
-					return $plan;
-				},
-				$this->alma_settings->get_eligible_plans_definitions( $amount )
-			)
-		);
-	}
-
-	/**
 	 * Create Eligibility data for Alma API request from WooCommerce Cart.
 	 *
 	 * @return array Payload to request eligibility v2 endpoint.
@@ -264,5 +235,32 @@ class CartHelper {
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Get Eligibility / Payment formatted eligible plans definitions for current cart.
+	 *
+	 * @return array<array>
+	 */
+	public function get_eligible_plans_for_cart() {
+		$amount = $this->get_total_in_cents();
+
+		return array_values(
+			array_map(
+				function ( $plan ) {
+					unset( $plan['max_amount'] );
+					unset( $plan['min_amount'] );
+					if ( isset( $plan['deferred_months'] ) && 0 === $plan['deferred_months'] ) {
+						unset( $plan['deferred_months'] );
+					}
+					if ( isset( $plan['deferred_days'] ) && 0 === $plan['deferred_days'] ) {
+						unset( $plan['deferred_days'] );
+					}
+
+					return $plan;
+				},
+				$this->alma_settings->get_eligible_plans_definitions( $amount )
+			)
+		);
 	}
 }
