@@ -89,7 +89,7 @@ class PluginHelper {
 		);
 
 		add_action(
-			ToolsHelper::action_for_webhook( ConstantsHelper::COLLECT_URL ),
+			ToolsHelper::action_for_webhook( CollectCmsDataService::COLLECT_URL ),
 			array(
 				$this->collect_cms_data_service,
 				'handle_collect_cms_data',

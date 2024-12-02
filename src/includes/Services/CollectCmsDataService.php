@@ -13,14 +13,16 @@ use Alma\API\Client;
 use Alma\API\DependenciesError;
 use Alma\API\Entities\MerchantData\CmsFeatures;
 use Alma\API\Entities\MerchantData\CmsInfo;
+use Alma\API\Exceptions\AlmaException;
 use Alma\API\Lib\PayloadFormatter;
 use Alma\API\ParamsError;
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Builders\Helpers\SecurityHelperBuilder;
-use Alma\Woocommerce\Exceptions\AlmaException;
+use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
 use Alma\Woocommerce\Exceptions\AlmaInvalidSignatureException;
 use Alma\Woocommerce\Helpers\SecurityHelper;
+use Alma\Woocommerce\Helpers\ToolsHelper;
 use Alma\Woocommerce\WcProxy\FunctionsProxy;
 use Alma\Woocommerce\WcProxy\OptionProxy;
 use Alma\Woocommerce\WcProxy\ThemeProxy;
@@ -29,6 +31,8 @@ use Alma\Woocommerce\WcProxy\ThemeProxy;
  * CollectCmsDataService
  */
 class CollectCmsDataService {
+
+	const COLLECT_URL = 'alma_collect_data_url';
 
 	/**
 	 * Alma Settings.
@@ -80,6 +84,13 @@ class CollectCmsDataService {
 	protected $functions_proxy;
 
 	/**
+	 * Tool Helper.
+	 *
+	 * @var ToolsHelper
+	 */
+	protected $tools_helper;
+
+	/**
 	 * CollectCmsDataService constructor.
 	 *
 	 * @param AlmaSettings     $alma_settings Alma Settings.
@@ -89,6 +100,7 @@ class CollectCmsDataService {
 	 * @param OptionProxy      $option_proxy Option Proxy.
 	 * @param ThemeProxy       $theme_proxy Theme Proxy.
 	 * @param FunctionsProxy   $functions_proxy Functions Proxy.
+	 * @param ToolsHelper      $tools_helper Tools Helper.
 	 */
 	public function __construct(
 		$alma_settings = null,
@@ -97,7 +109,8 @@ class CollectCmsDataService {
 		$security_helper = null,
 		$option_proxy = null,
 		$theme_proxy = null,
-		$functions_proxy = null
+		$functions_proxy = null,
+		$tools_helper = null
 	) {
 		$this->alma_settings     = isset( $alma_settings ) ? $alma_settings : new AlmaSettings();
 		$this->alma_logger       = isset( $alma_logger ) ? $alma_logger : new AlmaLogger();
@@ -106,6 +119,27 @@ class CollectCmsDataService {
 		$this->option_proxy      = isset( $option_proxy ) ? $option_proxy : new OptionProxy();
 		$this->theme_proxy       = isset( $theme_proxy ) ? $theme_proxy : new ThemeProxy();
 		$this->functions_proxy   = isset( $functions_proxy ) ? $functions_proxy : new FunctionsProxy();
+		$this->tools_helper      = isset( $tools_helper ) ? $tools_helper : ( new ToolsHelperBuilder() )->get_instance();
+	}
+
+	/**
+	 * Send collect config url to Alma
+	 *
+	 * @return void
+	 */
+	public function send_url() {
+		try {
+			$this->alma_settings->get_alma_client();
+			$this->alma_settings->alma_client->configuration->sendIntegrationsConfigurationsUrl( $this->tools_helper->url_for_webhook( self::COLLECT_URL ) );
+		} catch ( AlmaException $e ) {
+			$this->alma_logger->warning( 'Error while sending integrations configurations URL to Alma: ' . $e->getMessage() );
+		} catch ( DependenciesError $e ) {
+			$this->alma_logger->warning( $e->getMessage() );
+		} catch ( ParamsError $e ) {
+			$this->alma_logger->warning( $e->getMessage() );
+		} catch ( \Alma\Woocommerce\Exceptions\AlmaException $e ) {
+			$this->alma_logger->warning( $e->getMessage() );
+		}
 	}
 
 	/**
@@ -146,7 +180,7 @@ class CollectCmsDataService {
 				'widget_product_activated' => 'yes' === $this->alma_settings->display_product_eligibility,
 				'used_fee_plans'           => $this->format_fee_plans(),
 				'in_page_activated'        => $this->alma_settings->display_in_page,
-				'log_activated'            => $this->alma_settings->debug,
+				'log_activated'            => 'yes' === $this->alma_settings->debug,
 				'excluded_categories'      => $this->alma_settings->excluded_products_list,
 				'is_multisite'             => is_multisite(),
 			)
@@ -159,13 +193,11 @@ class CollectCmsDataService {
 	 * @return CmsInfo
 	 */
 	private function get_cms_info() {
-		$active_plugins = $this->option_proxy->get_option( 'active_plugins' );
-
 		return new CmsInfo(
 			array(
 				'cms_name'              => 'WooCommerce',
 				'cms_version'           => $this->option_proxy->get_option( 'woocommerce_version' ),
-				'third_parties_plugins' => $this->format_third_party_modules( $active_plugins ),
+				'third_parties_plugins' => $this->format_third_party_modules(),
 				'theme_name'            => $this->theme_proxy->get_name(),
 				'theme_version'         => $this->theme_proxy->get_version(),
 				'language_name'         => 'PHP',
@@ -180,10 +212,10 @@ class CollectCmsDataService {
 	/**
 	 * Format third party modules.
 	 *
-	 * @param array $active_plugins active plugins.
 	 * @return array
 	 */
-	private function format_third_party_modules( $active_plugins ) {
+	private function format_third_party_modules() {
+		$active_plugins      = $this->option_proxy->get_option( 'active_plugins' );
 		$third_party_modules = array();
 		foreach ( $active_plugins as $plugin_data ) {
 			$third_party_modules[] = array( 'name' => $plugin_data );

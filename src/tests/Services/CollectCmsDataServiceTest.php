@@ -3,6 +3,7 @@
 namespace Alma\Woocommerce\Tests\Services;
 
 use Alma\API\Client;
+use Alma\API\Endpoints\Configuration;
 use Alma\API\Entities\FeePlan;
 use Alma\API\Entities\MerchantData\CmsFeatures;
 use Alma\API\Entities\MerchantData\CmsInfo;
@@ -12,11 +13,13 @@ use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Exceptions\AlmaInvalidSignatureException;
 use Alma\Woocommerce\Helpers\FeePlanHelper;
 use Alma\Woocommerce\Helpers\SecurityHelper;
+use Alma\Woocommerce\Helpers\ToolsHelper;
 use Alma\Woocommerce\Services\CollectCmsDataService;
 use Alma\Woocommerce\WcProxy\FunctionsProxy;
 use Alma\Woocommerce\WcProxy\OptionProxy;
 use Alma\Woocommerce\WcProxy\ThemeProxy;
 use WP_UnitTestCase;
+use function PHPUnit\Framework\assertNull;
 
 class CollectCmsDataServiceTest extends WP_UnitTestCase
 {
@@ -29,6 +32,7 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase
     protected $theme_proxy_mock;
     protected $functions_proxy_mock;
     protected $fee_plan_mock;
+    protected $tools_helper_mock;
 
     public function set_up()
     {
@@ -38,7 +42,7 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase
         $this->alma_settings_mock->display_cart_eligibility = 'yes';
         $this->alma_settings_mock->display_product_eligibility = 'no';
         $this->alma_settings_mock->display_in_page = false;
-        $this->alma_settings_mock->debug = true;
+        $this->alma_settings_mock->debug = "yes";
         $this->alma_settings_mock->method('is_plan_enabled')->willReturn(true);
         $this->alma_settings_mock->method('get_min_amount')->willReturn(0);
         $this->alma_settings_mock->method('get_max_amount')->willReturn(1000);
@@ -59,6 +63,7 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase
         $this->theme_proxy_mock->method('get_name')->willReturn('Storefront');
         $this->theme_proxy_mock->method('get_version')->willReturn('v.4.5');
         $this->functions_proxy_mock = $this->createMock(FunctionsProxy::class);
+        $this->tools_helper_mock = $this->createMock(ToolsHelper::class);
 
         $this->collect_cms_data_service = new CollectCmsDataService(
             $this->alma_settings_mock,
@@ -67,8 +72,26 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase
             $this->security_helper_mock,
             $this->option_proxy_mock,
             $this->theme_proxy_mock,
-            $this->functions_proxy_mock
+            $this->functions_proxy_mock,
+            $this->tools_helper_mock
         );
+    }
+
+    public function test_send_url()
+    {
+        $this->alma_settings_mock->alma_client = $this->createMock(Client::class);
+        $this->alma_settings_mock->alma_client->configuration = $this->createMock(Configuration::class);
+
+        $this->tools_helper_mock->expects($this->once())
+            ->method('url_for_webhook')
+            ->with(CollectCmsDataService::COLLECT_URL)
+            ->willReturn('http://example.com/woocommerce_api_alma_collect_data_url');
+
+        $this->alma_settings_mock->alma_client->configuration->expects($this->once())
+            ->method('sendIntegrationsConfigurationsUrl')
+            ->with('http://example.com/woocommerce_api_alma_collect_data_url');
+
+        assertNull($this->collect_cms_data_service->send_url());
     }
 
     public function test_handle_collect_cms_data_without_signature_header()

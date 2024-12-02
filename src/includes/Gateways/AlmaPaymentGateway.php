@@ -43,7 +43,7 @@ use Alma\Woocommerce\Helpers\PluginHelper;
 use Alma\Woocommerce\Helpers\SettingsHelper;
 use Alma\Woocommerce\Helpers\TemplateLoaderHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
-use Alma\Woocommerce\Services\IntegrationConfigurationUrlService;
+use Alma\Woocommerce\Services\CollectCmsDataService;
 
 /**
  * AlmaPaymentGateway
@@ -194,11 +194,11 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 	protected $alma_plan_helper;
 
 	/**
-	 * The integration configuration url service.
+	 * Collect CMS data service.
 	 *
-	 * @var IntegrationConfigurationUrlService
+	 * @var CollectCmsDataService
 	 */
-	protected $integration_configuration_url_service;
+	protected $collect_cms_data_service;
 
 	/**
 	 * Construct.
@@ -207,25 +207,25 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 	 * @throws NoCredentialsException The exception.
 	 */
 	public function __construct( $check_basics = true ) {
-		$this->logger                                = new AlmaLogger();
-		$this->alma_settings                         = new AlmaSettings();
-		$this->check_legal_helper                    = new CheckLegalHelper();
-		$this->checkout_helper                       = new CheckoutHelper();
-		$gateway_helper_builder                      = new GatewayHelperBuilder();
-		$this->gateway_helper                        = $gateway_helper_builder->get_instance();
-		$this->scripts_helper                        = new AssetsHelper();
-		$this->encryption_helper                     = new EncryptorHelper();
-		$tools_helper_builder                        = new ToolsHelperBuilder();
-		$this->tool_helper                           = $tools_helper_builder->get_instance();
-		$this->alma_payment_helper                   = new PaymentHelper();
-		$this->order_helper                          = new OrderHelper();
-		$this->template_loader                       = new TemplateLoaderHelper();
-		$this->soc_helper                            = new ShareOfCheckoutHelper();
-		$this->plugin_helper                         = new PluginHelper();
-		$this->asset_helper                          = new AssetsHelper();
-		$alma_plan_builder                           = new PlanHelperBuilder();
-		$this->alma_plan_helper                      = $alma_plan_builder->get_instance();
-		$this->integration_configuration_url_service = new IntegrationConfigurationUrlService( $this->alma_settings, $this->tool_helper, $this->logger );
+		$this->logger                   = new AlmaLogger();
+		$this->alma_settings            = new AlmaSettings();
+		$this->check_legal_helper       = new CheckLegalHelper();
+		$this->checkout_helper          = new CheckoutHelper();
+		$gateway_helper_builder         = new GatewayHelperBuilder();
+		$this->gateway_helper           = $gateway_helper_builder->get_instance();
+		$this->scripts_helper           = new AssetsHelper();
+		$this->encryption_helper        = new EncryptorHelper();
+		$tools_helper_builder           = new ToolsHelperBuilder();
+		$this->tool_helper              = $tools_helper_builder->get_instance();
+		$this->alma_payment_helper      = new PaymentHelper();
+		$this->order_helper             = new OrderHelper();
+		$this->template_loader          = new TemplateLoaderHelper();
+		$this->soc_helper               = new ShareOfCheckoutHelper();
+		$this->plugin_helper            = new PluginHelper();
+		$this->asset_helper             = new AssetsHelper();
+		$alma_plan_builder              = new PlanHelperBuilder();
+		$this->alma_plan_helper         = $alma_plan_builder->get_instance();
+		$this->collect_cms_data_service = new CollectCmsDataService();
 
 		$this->plugin_factory = new PluginFactory();
 		$this->cart_factory   = new CartFactory();
@@ -429,7 +429,7 @@ class AlmaPaymentGateway extends \WC_Payment_Gateway {
 		}
 
 		$this->alma_settings->init_allowed_fee_plans();
-		$this->integration_configuration_url_service->send();
+		$this->collect_cms_data_service->send_url();
 
 		// Save of the fee plans.
 		update_option( $this->get_option_key(), apply_filters( 'woocommerce_settings_api_sanitized_fields_' . $this->id, $this->alma_settings->settings ), 'yes' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound

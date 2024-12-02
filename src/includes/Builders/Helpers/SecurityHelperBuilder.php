@@ -7,7 +7,6 @@
 
 namespace Alma\Woocommerce\Builders\Helpers;
 
-use Alma\Woocommerce\Helpers\ProductHelper;
 use Alma\Woocommerce\Helpers\SecurityHelper;
 use Alma\Woocommerce\Traits\BuilderTrait;
 
