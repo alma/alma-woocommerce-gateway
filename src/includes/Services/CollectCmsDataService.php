@@ -134,11 +134,11 @@ class CollectCmsDataService {
 		} catch ( AlmaException $e ) {
 			$this->alma_logger->warning( 'Error while sending integrations configurations URL to Alma: ' . $e->getMessage() );
 		} catch ( DependenciesError $e ) {
-			$this->alma_logger->warning( $e->getMessage() );
+			$this->alma_logger->warning( 'Dependencies error: ' . $e->getMessage() );
 		} catch ( ParamsError $e ) {
-			$this->alma_logger->warning( $e->getMessage() );
+			$this->alma_logger->warning( 'Params Error: ' . $e->getMessage() );
 		} catch ( \Alma\Woocommerce\Exceptions\AlmaException $e ) {
-			$this->alma_logger->warning( $e->getMessage() );
+			$this->alma_logger->warning( 'Alma exception: ' . $e->getMessage() );
 		}
 	}
 
