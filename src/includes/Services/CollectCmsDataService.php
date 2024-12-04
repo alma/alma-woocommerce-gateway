@@ -227,13 +227,13 @@ class CollectCmsDataService {
 	/**
 	 * Format fee plans.
 	 *
-	 * @return array
+	 * @return array | null
 	 */
 	private function format_fee_plans() {
 		$plans = array();
 
 		if ( empty( $this->alma_settings->allowed_fee_plans ) ) {
-			return $plans;
+			return null;
 		}
 
 		foreach ( $this->alma_settings->allowed_fee_plans as $fee_plan ) {
