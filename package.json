@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@alma/react-components": "^2.37.1",
+    "@wordpress/i18n": "^5.12.0",
     "postcss": "^8.4.35",
     "react-intl": "^6.6.2"
   }
