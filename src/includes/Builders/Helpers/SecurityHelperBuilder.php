@@ -7,7 +7,6 @@
 
 namespace Alma\Woocommerce\Builders\Helpers;
 
-use Alma\Woocommerce\Helpers\ProductHelper;
 use Alma\Woocommerce\Helpers\SecurityHelper;
 use Alma\Woocommerce\Traits\BuilderTrait;
 
@@ -31,8 +30,7 @@ class SecurityHelperBuilder {
 	 */
 	public function get_instance() {
 		return new SecurityHelper(
-			$this->get_alma_logger(),
-			$this->get_payment_validator()
+			$this->get_alma_logger()
 		);
 	}
 }
