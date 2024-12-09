@@ -20,6 +20,7 @@ use Alma\Woocommerce\Blocks\Standard\StandardBlock;
 use Alma\Woocommerce\Handlers\CartHandler;
 use Alma\Woocommerce\Handlers\ProductHandler;
 use Alma\Woocommerce\Services\CollectCmsDataService;
+use Alma\Woocommerce\Services\OrderStatusService;
 use Alma\Woocommerce\Services\PaymentUponTriggerService;
 use Alma\Woocommerce\Services\RefundService;
 use Alma\Woocommerce\Services\ShareOfCheckoutService;
@@ -169,6 +170,17 @@ class PluginHelper {
 			10,
 			3
 		);
+		$order_status_service = new OrderStatusService();
+		add_action(
+			'woocommerce_order_status_changed',
+			array(
+				$order_status_service,
+				'send_order_status',
+			),
+			10,
+			3
+		);
+
 
 		$refund = new RefundService();
 		add_action( 'admin_init', array( $refund, 'admin_init' ) );
