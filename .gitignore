@@ -14,3 +14,8 @@ node_modules/
 .phpunit.result.cache
 package-lock.json
 .task/
+.DS_Store
+.composer/
+src/.DS_Store
+src/.composer/
+src/.subversion/
