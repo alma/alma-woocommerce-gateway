@@ -181,7 +181,6 @@ class PluginHelper {
 			3
 		);
 
-
 		$refund = new RefundService();
 		add_action( 'admin_init', array( $refund, 'admin_init' ) );
 

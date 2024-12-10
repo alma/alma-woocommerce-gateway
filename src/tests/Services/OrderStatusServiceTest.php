@@ -182,12 +182,13 @@ class OrderStatusServiceTest extends WP_UnitTestCase
 
 	/**
 	 * @dataProvider order_status_is_shipped_data_provider
-	 * @param $status
-	 * @param $is_shipped
+	 * @param string $status
+	 * @param bool | null $is_shipped
+	 * @param string $method
 	 * @return void
 	 * @throws NoOrderException
 	 */
-	public function test_send_order_status($status, $is_shipped)
+	public function test_send_order_status($status, $is_shipped, $method)
 	{
 		$alma_payment_id = 'payment_12435';
 		$wc_order_number = 'ref12345';
@@ -201,7 +202,7 @@ class OrderStatusServiceTest extends WP_UnitTestCase
 			->expects($this->once())
 			->method('get_order_payment_method')
 			->with($this->order_mock)
-			->willReturn('alma');
+			->willReturn($method);
 
 		$this->order_proxy_mock
 			->expects($this->once())
@@ -244,32 +245,44 @@ class OrderStatusServiceTest extends WP_UnitTestCase
 	{
 		return [
 			"with pending payment status" => [
-				"status" => "Pending payment",
-				"is_shipped" => false
+				"status" => "pending",
+				"is_shipped" => false,
+				"method" => "alma"
 			],
 			"with on hold status" => [
-				"status" => "On hold",
-				"is_shipped" => false
+				"status" => "on-hold",
+				"is_shipped" => false,
+				"method" => "alma_in_page"
 			],
 			"with Processing status" => [
-				"status" => "Processing",
-				"is_shipped" => false
+				"status" => "processing",
+				"is_shipped" => false,
+				"method" => "alma"
 			],
 			"with Completed status" => [
-				"status" => "Completed",
-				"is_shipped" => true
+				"status" => "completed",
+				"is_shipped" => true,
+				"method" => "alma_in_page"
 			],
 			"with Failed status" => [
-				"status" => "Failed",
-				"is_shipped" => false
+				"status" => "failed",
+				"is_shipped" => false,
+				"method" => "alma"
 			],
 			"with Refunded status" => [
-				"status" => "Refunded",
-				"is_shipped" => false
+				"status" => "refunded",
+				"is_shipped" => false,
+				"method" => "alma"
+			],
+			"with Checkout Draft status" => [
+				"status" => "checkout-draft",
+				"is_shipped" => false,
+				"method" => "alma"
 			],
 			"with an unknown status" => [
-				"status" => "Other status",
-				"is_shipped" => null
+				"status" => "other",
+				"is_shipped" => null,
+				"method" => "alma"
 			],
 		];
 	}
