@@ -95,13 +95,14 @@ add_action(
 add_action(
 	'before_woocommerce_init',
 	function () {
-		if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+		if ( class_exists( FeaturesUtil::class ) ) {
 			/**
 			 * Skip WC class check.
 			 *
 			 * @psalm-suppress UndefinedClass
 			 */
 			FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+			FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
 		}
 	}
 );
