@@ -13,6 +13,7 @@ namespace Alma\Woocommerce\Helpers;
 
 use Alma\Woocommerce\Admin\Helpers\CheckLegalHelper;
 use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Blocks\Inpage\InPageBlock;
 use Alma\Woocommerce\Blocks\Standard\PayLaterBlock;
 use Alma\Woocommerce\Blocks\Standard\PayMoreThanFourBlock;
 use Alma\Woocommerce\Blocks\Standard\PayNowBlock;
@@ -23,6 +24,7 @@ use Alma\Woocommerce\Services\CollectCmsDataService;
 use Alma\Woocommerce\Services\PaymentUponTriggerService;
 use Alma\Woocommerce\Services\RefundService;
 use Alma\Woocommerce\Services\ShareOfCheckoutService;
+use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -32,7 +34,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * PluginHelper
  */
 class PluginHelper {
-
 
 	/**
 	 * The order helper
@@ -146,10 +147,22 @@ class PluginHelper {
 	 */
 	protected function add_in_page_actions() {
 		add_action( 'wp_ajax_alma_do_checkout_in_page', array( $this->order_helper, 'alma_do_checkout_in_page' ) );
-		add_action( 'wp_ajax_nopriv_alma_do_checkout_in_page', array( $this->order_helper, 'alma_do_checkout_in_page' ) );
+		add_action(
+			'wp_ajax_nopriv_alma_do_checkout_in_page',
+			array(
+				$this->order_helper,
+				'alma_do_checkout_in_page',
+			)
+		);
 
 		add_action( 'wp_ajax_alma_cancel_order_in_page', array( $this->order_helper, 'alma_cancel_order_in_page' ) );
-		add_action( 'wp_ajax_nopriv_alma_cancel_order_in_page', array( $this->order_helper, 'alma_cancel_order_in_page' ) );
+		add_action(
+			'wp_ajax_nopriv_alma_cancel_order_in_page',
+			array(
+				$this->order_helper,
+				'alma_cancel_order_in_page',
+			)
+		);
 	}
 
 
@@ -179,7 +192,7 @@ class PluginHelper {
 		// Launch the "share of checkout".
 		$share_of_checkout = new ShareOfCheckoutService();
 		add_action( 'init', array( $share_of_checkout, 'send_soc_data' ) );
-		if ( $this->block_helper->has_woocommerce_blocks() ) {
+		if ( $this->block_helper->has_woocommerce_checkout_blocks() ) {
 			add_action(
 				'woocommerce_blocks_loaded',
 				array(
@@ -200,14 +213,14 @@ class PluginHelper {
 		// Hook the registration function to the 'woocommerce_blocks_payment_method_type_registration' action.
 		add_action(
 			'woocommerce_blocks_payment_method_type_registration',
-			function ( \Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry $payment_method_registry ) {
+			function ( PaymentMethodRegistry $payment_method_registry ) {
 				// Register an instance of Alma_Gateway_Blocks.
 				$payment_method_registry->register( new StandardBlock() );
 				$payment_method_registry->register( new PayNowBlock() );
 				$payment_method_registry->register( new PayLaterBlock() );
 				$payment_method_registry->register( new PayMoreThanFourBlock() );
 				$payment_method_registry->register( new \Alma\Woocommerce\Blocks\Inpage\PayNowBlock() );
-				$payment_method_registry->register( new \Alma\Woocommerce\Blocks\Inpage\InPageBlock() );
+				$payment_method_registry->register( new InPageBlock() );
 				$payment_method_registry->register( new \Alma\Woocommerce\Blocks\Inpage\PayLaterBlock() );
 			}
 		);
@@ -246,7 +259,17 @@ class PluginHelper {
 		wp_enqueue_style( 'alma-checkout-page-css', $alma_checkout_css, array(), ALMA_VERSION );
 
 		$alma_checkout_js = AssetsHelper::get_asset_url( ConstantsHelper::ALMA_PATH_CHECKOUT_JS );
-		wp_enqueue_script( 'alma-checkout-page', $alma_checkout_js, array( 'jquery', 'jquery-ui-core', 'jquery-ui-accordion' ), ALMA_VERSION, true );
+		wp_enqueue_script(
+			'alma-checkout-page',
+			$alma_checkout_js,
+			array(
+				'jquery',
+				'jquery-ui-core',
+				'jquery-ui-accordion',
+			),
+			ALMA_VERSION,
+			true
+		);
 
 	}
 
@@ -258,7 +281,7 @@ class PluginHelper {
 	protected function enqueue_in_page_scripts() {
 		wp_enqueue_script( 'alma-checkout-in-page-cdn', ConstantsHelper::ALMA_PATH_CHECKOUT_CDN_IN_PAGE_JS, array(), ALMA_VERSION, true );
 
-		if ( ! $this->block_helper->has_woocommerce_blocks() ) {
+		if ( ! $this->block_helper->has_woocommerce_checkout_blocks() ) {
 			$alma_checkout_in_page_js = AssetsHelper::get_asset_url( ConstantsHelper::ALMA_PATH_CHECKOUT_IN_PAGE_JS );
 			wp_enqueue_script(
 				'alma-checkout-in-page',
