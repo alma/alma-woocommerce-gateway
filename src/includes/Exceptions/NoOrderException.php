@@ -27,7 +27,7 @@ class NoOrderException extends AlmaException {
 	 * @param string $order_id The order id.
 	 * @param string $order_key The order key.
 	 */
-	public function __construct( $order_id, $order_key ) {
+	public function __construct( $order_id, $order_key = '' ) {
 
 		parent::__construct( sprintf( "Can't find order '%s' (key: %s). Order Keys do not match.", $order_id, $order_key ) );
 	}
