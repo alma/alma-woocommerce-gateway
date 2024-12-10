@@ -56,7 +56,7 @@ use WP_User;
  * @property string test_api_key Test api key
  * @property string enabled Wp-bool-eq (yes or no)
  * @property string environment Live or test
- * @property bool keys_validity Flag to indicate id the current keys are working
+ * @property bool   keys_validity Flag to indicate id the current keys are working
  * @property string test_merchant_id Alma TEST merchant ID
  * @property string test_merchant_name Alma TEST merchant name
  * @property string live_merchant_id Alma LIVE merchant ID
@@ -67,7 +67,7 @@ use WP_User;
  * @property string share_of_checkout_enabled Bool for share of checkout acceptance (yes or no)
  * @property string share_of_checkout_enabled_date String Date when the merchant did accept the share of checkout
  * @property string share_of_checkout_last_sharing_date String Date when we sent the data to Alma
- * @property bool use_blocks_template Bool if we want to use a blocks template
+ * @property string use_blocks_template "yes" if we want to use a blocks template or "no" if we don't want
  */
 class AlmaSettings {
 
@@ -239,6 +239,7 @@ class AlmaSettings {
 	 * Is blocks template enabled.
 	 *
 	 * @return bool
+	 * @deprecated this information should come from template
 	 */
 	public function is_blocks_template_enabled() {
 		return 'yes' === $this->use_blocks_template;
@@ -1144,6 +1145,7 @@ class AlmaSettings {
 		if ( ! empty( $this->variable_product_price_query_selector ) ) {
 			return $this->variable_product_price_query_selector;
 		}
+
 		return $this->settings_helper->default_variable_price_selector();
 	}
 
@@ -1156,6 +1158,7 @@ class AlmaSettings {
 		if ( ! empty( $this->variable_product_check_variations_event ) ) {
 			return $this->variable_product_check_variations_event;
 		}
+
 		return ConstantsHelper::DEFAULT_CHECK_VARIATIONS_EVENT;
 	}
 
@@ -1168,6 +1171,7 @@ class AlmaSettings {
 		if ( ! empty( $this->variable_product_sale_price_query_selector ) ) {
 			return $this->variable_product_sale_price_query_selector;
 		}
+
 		return $this->settings_helper->default_variable_sale_price_selector();
 	}
 }
