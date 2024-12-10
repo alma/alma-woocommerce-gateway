@@ -1,4 +1,9 @@
 <?php
+/**
+ * Order proxy.
+ *
+ * @package Alma\Woocommerce\WcProxy
+ */
 
 namespace Alma\Woocommerce\WcProxy;
 
@@ -7,12 +12,18 @@ use Alma\Woocommerce\Exceptions\RequirementsException;
 use \WC_Order;
 use \WC_Order_Refund;
 
+/**
+ * Order proxy.
+ */
 class OrderProxy {
 
 	/**
-	 * @param int $order_id
-	 * @return WC_Order | WC_Order_Refund
-	 * @throws NoOrderException
+	 * Get order by id.
+	 *
+	 * @param int $order_id Order id.
+	 * @return WC_Order | WC_Order_Refund Order.
+	 *
+	 * @throws NoOrderException No order exception.
 	 */
 	public function get_order_by_id( $order_id ) {
 		$order = wc_get_order( $order_id );
@@ -23,7 +34,10 @@ class OrderProxy {
 	}
 
 	/**
-	 * @param WC_Order | WC_Order_Refund $order
+	 * Get order by reference.
+	 *
+	 * @param WC_Order | WC_Order_Refund $order Order.
+	 *
 	 * @return mixed
 	 */
 	public function get_order_payment_method( $order ) {
@@ -31,7 +45,10 @@ class OrderProxy {
 	}
 
 	/**
-	 * @param WC_Order | WC_Order_Refund $order
+	 * Get order by reference.
+	 *
+	 * @param WC_Order | WC_Order_Refund $order Order.
+	 *
 	 * @return string
 	 */
 	public function get_display_order_reference( $order ) {
@@ -39,10 +56,13 @@ class OrderProxy {
 	}
 
 	/**
-	 * @param WC_Order | WC_Order_Refund $order
+	 * Get order by reference.
+	 *
+	 * @param WC_Order | WC_Order_Refund $order Order.
 	 *
 	 * @return string
-	 * @throws RequirementsException
+	 *
+	 * @throws RequirementsException Requirements exception.
 	 */
 	public function get_alma_payment_id( $order ) {
 		if ( empty( $order->get_transaction_id() ) ) {

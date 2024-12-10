@@ -1,6 +1,8 @@
 <?php
 /**
+ * Order status service.
  *
+ * @package Alma\Woocommerce\Services
  */
 
 namespace Alma\Woocommerce\Services;
@@ -17,43 +19,60 @@ use Alma\Woocommerce\Exceptions\NoOrderException;
 use Alma\Woocommerce\Exceptions\RequirementsException;
 use Alma\Woocommerce\WcProxy\OrderProxy;
 use \WC_Order;
-use \WC_Order_Refund;
 
+/**
+ * Order status service.
+ */
 class OrderStatusService {
 
 
 	/**
+	 * Alma settings.
+	 *
 	 * @var AlmaSettings
 	 */
 	private $alma_settings;
+
 	/**
+	 * Alma logger.
+	 *
 	 * @var AlmaLogger
 	 */
 	private $alma_logger;
+
 	/**
+	 * Order proxy.
+	 *
 	 * @var OrderProxy
 	 */
 	private $order_proxy;
 
+	/**
+	 * OrderStatusService constructor.
+	 *
+	 * @param AlmaSettings $alma_settings Alma settings.
+	 * @param OrderProxy   $order_proxy Order proxy.
+	 * @param AlmaLogger   $alma_logger Alma logger.
+	 */
 	public function __construct(
 		$alma_settings = null,
 		$order_proxy = null,
 		$alma_logger = null
 	) {
-		 $this->alma_settings = isset( $alma_settings ) ? $alma_settings : new AlmaSettings();
-		$this->order_proxy    = isset( $order_proxy ) ? $order_proxy : new OrderProxy();
+		$this->alma_settings = isset( $alma_settings ) ? $alma_settings : new AlmaSettings();
+		$this->order_proxy   = isset( $order_proxy ) ? $order_proxy : new OrderProxy();
 
 		$this->alma_logger = isset( $alma_logger ) ? $alma_logger : new AlmaLogger();
 	}
 
 	/**
-	 * Send order status to Alma
+	 * Send order status to Alma.
 	 *
-	 * @param int    $order_id order id
-	 * @param string $old_status old order status
-	 * @param string $new_status new order status
+	 * @param int    $order_id order id.
+	 * @param string $old_status old order status.
+	 * @param string $new_status new order status.
+	 *
 	 * @return void
-	 * @throws NoOrderException
 	 */
 	public function send_order_status( $order_id, $old_status, $new_status ) {
 		try {
