@@ -107,5 +107,13 @@ add_action(
 	}
 );
 
-
+/**
+ * Init alma-gateway-for-woocommerce/checkout_block
+ */
+add_action(
+	'init',
+	function () {
+		register_block_type( __DIR__ . '/build' );
+	}
+);
 
