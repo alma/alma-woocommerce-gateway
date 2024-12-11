@@ -14,6 +14,8 @@ namespace Alma\Woocommerce\Helpers;
 use Alma\Woocommerce\Admin\Helpers\CheckLegalHelper;
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Blocks\Inpage\InPageBlock;
+use Alma\Woocommerce\Blocks\Inpage\PayLaterBlock as InpagePayLaterBlock;
+use Alma\Woocommerce\Blocks\Inpage\PayNowBlock as InpagePayNowBlock;
 use Alma\Woocommerce\Blocks\Standard\PayLaterBlock;
 use Alma\Woocommerce\Blocks\Standard\PayMoreThanFourBlock;
 use Alma\Woocommerce\Blocks\Standard\PayNowBlock;
@@ -210,7 +212,6 @@ class PluginHelper {
 	 * @return void
 	 */
 	public function alma_register_order_approval_payment_method_type() {
-		// Hook the registration function to the 'woocommerce_blocks_payment_method_type_registration' action.
 		add_action(
 			'woocommerce_blocks_payment_method_type_registration',
 			function ( PaymentMethodRegistry $payment_method_registry ) {
@@ -219,9 +220,9 @@ class PluginHelper {
 				$payment_method_registry->register( new PayNowBlock() );
 				$payment_method_registry->register( new PayLaterBlock() );
 				$payment_method_registry->register( new PayMoreThanFourBlock() );
-				$payment_method_registry->register( new \Alma\Woocommerce\Blocks\Inpage\PayNowBlock() );
+				$payment_method_registry->register( new InpagePayNowBlock() );
 				$payment_method_registry->register( new InPageBlock() );
-				$payment_method_registry->register( new \Alma\Woocommerce\Blocks\Inpage\PayLaterBlock() );
+				$payment_method_registry->register( new InpagePayLaterBlock() );
 			}
 		);
 	}
