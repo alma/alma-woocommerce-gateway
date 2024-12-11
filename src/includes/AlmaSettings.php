@@ -67,7 +67,6 @@ use WP_User;
  * @property string share_of_checkout_enabled Bool for share of checkout acceptance (yes or no)
  * @property string share_of_checkout_enabled_date String Date when the merchant did accept the share of checkout
  * @property string share_of_checkout_last_sharing_date String Date when we sent the data to Alma
- * @property string use_blocks_template "yes" if we want to use a blocks template or "no" if we don't want
  */
 class AlmaSettings {
 
@@ -233,16 +232,6 @@ class AlmaSettings {
 		}
 
 		return array_merge( $this->settings_helper->default_settings(), $settings );
-	}
-
-	/**
-	 * Is blocks template enabled.
-	 *
-	 * @return bool
-	 * @deprecated this information should come from template
-	 */
-	public function is_blocks_template_enabled() {
-		return 'yes' === $this->use_blocks_template;
 	}
 
 	/**

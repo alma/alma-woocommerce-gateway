@@ -221,23 +221,16 @@ class FormFieldsHelper {
 	 */
 	public function init_inpage_fields( $default_settings ) {
 		return array(
-			'display_section'     => array(
+			'display_section' => array(
 				'title' => '<hr>' . __( '→ Display options', 'alma-gateway-for-woocommerce' ),
 				'type'  => 'title',
 			),
-			'display_in_page'     => array(
+			'display_in_page' => array(
 				'title'   => __( 'Activate in-page checkout', 'alma-gateway-for-woocommerce' ),
 				'type'    => 'checkbox',
 				/* translators: %s: Alma in page doc URL */
 				'label'   => __( 'Enable this setting if you want in-page payments (no redirection) for all Alma payment methods.', 'alma-gateway-for-woocommerce' ) . '<br>' . sprintf( __( '(Learn more about this feature <a href="%s">here</a>)', 'alma-gateway-for-woocommerce' ), AssetsHelper::get_in_page_doc_link() ),
 				'default' => $default_settings['display_in_page'],
-			),
-			'use_blocks_template' => array(
-				'title'   => __( 'Activate compatibility with Blocks templates themes', 'alma-gateway-for-woocommerce' ),
-				'type'    => 'checkbox',
-				/* translators: %s: Woocommerce doc URL */
-				'label'   => __( 'Activate this setting if you use a Blocks template Checkout page', 'alma-gateway-for-woocommerce' ) . '<br>' . sprintf( __( '(Learn more about this feature <a href="%s">here</a>)', 'alma-gateway-for-woocommerce' ), AssetsHelper::get_blocks_doc_link() ),
-				'default' => $default_settings['use_blocks_template'],
 			),
 		);
 	}

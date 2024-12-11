@@ -38,25 +38,6 @@ class BlockHelper {
 	}
 
 	/**
-	 * Is woocommerce block activated?
-	 *
-	 * @deprecated decision can't come from flag, but from template compatibility
-	 * is_blocks_template_enabled settings will be removed soon.
-	 * @return bool
-	 */
-	public function has_woocommerce_blocks() {
-		// Check if the required class exists.
-		if (
-			! class_exists( '\Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' )
-			|| ! $this->alma_settings->is_blocks_template_enabled()
-		) {
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
 	 * Conditional function that check if Cart page use Cart Blocks
 	 */
 	public function has_woocommerce_cart_blocks() {
