@@ -9,7 +9,6 @@
 
 namespace Alma\Woocommerce\Tests\Helpers;
 
-use Alma\API\Lib\PaymentValidator;
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\Exceptions\AlmaInvalidSignatureException;
 use Alma\Woocommerce\Helpers\PaymentHelper;
@@ -26,19 +25,13 @@ class SecurityHelperTest extends WP_UnitTestCase
      * @var PaymentHelper
      */
     protected $logger;
-    /**
-     * @var PaymentValidator
-     */
-    protected $payment_validator;
 
     public function set_up()
     {
         $this->logger = \Mockery::mock(AlmaLogger::class);
-        $this->payment_validator = \Mockery::mock(PaymentValidator::class);
 
         $this->security_helper = new SecurityHelper(
-            $this->logger,
-            $this->payment_validator
+            $this->logger
         );
     }
 
@@ -48,22 +41,37 @@ class SecurityHelperTest extends WP_UnitTestCase
         \Mockery::close(); // Ferme Mockery après chaque test
     }
 
-    public function test_validate_ipn_throw_Invalide_signature_exception_for_bad_params()
+    public function test_validate_ipn_throw_invalid_signature_exception_for_bad_params()
     {
         $signature = 'bad_signature';
         $payment_id = 'payment_id';
         $api_key = 'api_key';
-        $this->payment_validator->shouldReceive('isHmacValidated')->andReturn(false);
         $this->expectException(AlmaInvalidSignatureException::class);
         $this->security_helper->validate_ipn_signature($payment_id, $api_key, $signature);
     }
 
     public function test_validate_ipn_signature()
     {
-        $signature = 'good_signature';
-        $payment_id = 'valid_payment_id';
-        $api_key = 'valid_api_key';
-        $this->payment_validator->shouldReceive('isHmacValidated')->with($payment_id, $api_key, $signature)->andReturn(true);
+        $signature = '3dcb1255e432da08a2bd65df2963659bb0b362888500e18c8cf6c5d5958db752';
+        $payment_id = 'payment_xxxxx';
+        $api_key = 'sk_test_xxxxx';
         $this->assertNull($this->security_helper->validate_ipn_signature($payment_id, $api_key, $signature));
+    }
+
+    public function test_validate_collect_data_signature_throw_invalid_signature_exception_for_bad_params()
+    {
+        $signature = 'bad_signature';
+        $merchant_id = 'merchant_id';
+        $api_key = 'api_key';
+        $this->expectException(AlmaInvalidSignatureException::class);
+        $this->security_helper->validate_collect_data_signature($merchant_id, $api_key, $signature);
+    }
+
+    public function test_validate_collect_data_signature()
+    {
+        $signature = '7d572bbfbedb1bde72378691973a67ff52fb56cd9d18b1f0ab3c7e88b119b9d3';
+        $merchant_id = 'merchant_xxxxxx';
+        $api_key = 'sk_test_xxxxx';
+        $this->assertNull($this->security_helper->validate_collect_data_signature($merchant_id, $api_key, $signature));
     }
 }

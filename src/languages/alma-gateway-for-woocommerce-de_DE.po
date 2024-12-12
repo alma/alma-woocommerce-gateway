@@ -2,28 +2,28 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 77e083b1cd468d7c2202d1ff3d20e024\n"
 "POT-Creation-Date: 2024-04-23 10:19+0200\n"
-"PO-Revision-Date: 2024-04-23 08:20\n"
+"PO-Revision-Date: 2024-10-29 19:24+0100\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.5\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: alma-gateway-for-woocommerce.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.min.js\n"
-"X-Poedit-SearchPathExcluded-1: vendor\n"
 "X-Crowdin-Project: 77e083b1cd468d7c2202d1ff3d20e024\n"
 "X-Crowdin-Project-ID: 17\n"
 "X-Crowdin-Language: de\n"
 "X-Crowdin-File: /languages/alma-gateway-for-woocommerce.pot\n"
 "X-Crowdin-File-ID: 3021\n"
-"Language: de_DE\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+"X-Poedit-SearchPathExcluded-1: vendor\n"
 
 #. translators: %d: number of installments.
 #: includes/Admin/Builders/FormHtmlBuilder.php:37
@@ -140,13 +140,13 @@ msgstr "Live"
 #: includes/Admin/Helpers/FormFieldsHelper.php:160
 #, php-format
 msgid "<br>Merchant id : \"%s\" "
-msgstr "<br>Merchant id : \"%s\""
+msgstr "<br>Merchant id : \"%s\" "
 
 #. translators: %s Merchant name
 #: includes/Admin/Helpers/FormFieldsHelper.php:165
 #, php-format
 msgid "<br>Merchant name : \"%s\" "
-msgstr "<br>Merchant name : \"%s\""
+msgstr "<br>Merchant name : \"%s\" "
 
 #: includes/Admin/Helpers/FormFieldsHelper.php:183
 msgid "→ Debug options"
@@ -182,8 +182,8 @@ msgstr "In-Page-Kaufabwicklung aktivieren"
 
 #. translators: %s: Alma in page doc URL
 #: includes/Admin/Helpers/FormFieldsHelper.php:216
-msgid "Activate this setting if you want in-page checkout for Pay Now, Installment and Deferred payments."
-msgstr "Activate this setting if you want in-page checkout for Pay Now, Installment and Deferred payments."
+msgid "Enable this setting if you want in-page payments (no redirection) for all Alma payment methods."
+msgstr "Aktivieren Sie diese Einstellung, wenn Sie In-Page-Zahlungen (keine Weiterleitung) für alle Alma-Zahlungsmethoden wünschen."
 
 #: includes/Admin/Helpers/FormFieldsHelper.php:216
 #: includes/Admin/Helpers/FormFieldsHelper.php:223
@@ -455,7 +455,7 @@ msgstr "- payment provider for each order"
 
 #: includes/Admin/Helpers/FormFieldsHelper.php:785
 msgid "Activate your data sharing settings "
-msgstr "Activate your data sharing settings"
+msgstr "Activate your data sharing settings "
 
 #: includes/Admin/Helpers/FormHelper.php:52
 msgid "→ Start by filling in your API keys"
@@ -835,4 +835,3 @@ msgstr "Alma"
 #. Author URI of the plugin/theme
 msgid "https://almapay.com"
 msgstr "https://almapay.com"
-

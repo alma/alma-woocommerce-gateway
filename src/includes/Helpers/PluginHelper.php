@@ -13,15 +13,17 @@ namespace Alma\Woocommerce\Helpers;
 
 use Alma\Woocommerce\Admin\Helpers\CheckLegalHelper;
 use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Blocks\Standard\PayLaterBlock;
+use Alma\Woocommerce\Blocks\Standard\PayMoreThanFourBlock;
+use Alma\Woocommerce\Blocks\Standard\PayNowBlock;
+use Alma\Woocommerce\Blocks\Standard\StandardBlock;
 use Alma\Woocommerce\Handlers\CartHandler;
 use Alma\Woocommerce\Handlers\ProductHandler;
+use Alma\Woocommerce\Services\CollectCmsDataService;
+use Alma\Woocommerce\Services\OrderStatusService;
 use Alma\Woocommerce\Services\PaymentUponTriggerService;
 use Alma\Woocommerce\Services\RefundService;
 use Alma\Woocommerce\Services\ShareOfCheckoutService;
-use Alma\Woocommerce\Blocks\Standard\PayLaterBlock;
-use Alma\Woocommerce\Blocks\Standard\PayMoreThanFourBlock;
-use Alma\Woocommerce\Blocks\Standard\StandardBlock;
-use Alma\Woocommerce\Blocks\Standard\PayNowBlock;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -47,13 +49,21 @@ class PluginHelper {
 	 */
 	protected $block_helper;
 
+	/**
+	 * The collect cms data helper
+	 *
+	 * @var CollectCmsDataService
+	 */
+	protected $collect_cms_data_service;
+
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->order_helper = new OrderHelper();
-		$this->block_helper = new BlockHelper();
+		$this->order_helper             = new OrderHelper();
+		$this->block_helper             = new BlockHelper();
+		$this->collect_cms_data_service = new CollectCmsDataService();
 	}
 
 	/**
@@ -76,6 +86,14 @@ class PluginHelper {
 			array(
 				$this->order_helper,
 				'handle_ipn_callback',
+			)
+		);
+
+		add_action(
+			ToolsHelper::action_for_webhook( CollectCmsDataService::COLLECT_URL ),
+			array(
+				$this->collect_cms_data_service,
+				'handle_collect_cms_data',
 			)
 		);
 	}
@@ -148,6 +166,16 @@ class PluginHelper {
 			array(
 				$payment_upon_trigger_helper,
 				'woocommerce_order_status_changed',
+			),
+			10,
+			3
+		);
+		$order_status_service = new OrderStatusService();
+		add_action(
+			'woocommerce_order_status_changed',
+			array(
+				$order_status_service,
+				'send_order_status',
 			),
 			10,
 			3

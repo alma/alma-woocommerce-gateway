@@ -27,6 +27,7 @@ use Alma\Woocommerce\Gateways\Standard\PayNowGateway;
 use Alma\Woocommerce\Gateways\Standard\StandardGateway;
 use Alma\Woocommerce\Helpers\MigrationHelper;
 use Alma\Woocommerce\Helpers\PluginHelper;
+use Exception;
 
 /**
  * AlmaPlugin.
@@ -85,13 +86,12 @@ class AlmaPlugin {
 		$this->plugin_helper    = new PluginHelper();
 		$this->version_factory  = new VersionFactory();
 
-		$this->load_plugin_textdomain();
-
 		try {
 			$migration_success = $this->migration_helper->update();
 		} catch ( VersionDeprecated $e ) {
 			$this->admin_notices->add_admin_notice( 'alma_version_error', 'notice notice-error', $e->getMessage(), true );
 			$this->logger->error( $e->getMessage() );
+
 			return;
 		}
 
@@ -102,7 +102,6 @@ class AlmaPlugin {
 		}
 	}
 
-
 	/**
 	 * Init the plugin after plugins_loaded so environment variables are set.
 	 *
@@ -112,19 +111,26 @@ class AlmaPlugin {
 	public function init() {
 		try {
 			$this->check_dependencies();
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->admin_notices->add_admin_notice( 'alma_global_error', 'notice notice-error', $e->getMessage(), true );
 			$this->logger->error( $e->getMessage() );
+
 			return;
 		}
 
 		add_filter( 'woocommerce_payment_gateways', array( $this, 'add_gateways' ) );
-		add_filter( 'plugin_action_links_' . plugin_basename( ALMA_PLUGIN_FILE ), array( $this, 'plugin_action_links' ) );
-
+		add_filter(
+			'plugin_action_links_' . plugin_basename( ALMA_PLUGIN_FILE ),
+			array(
+				$this,
+				'plugin_action_links',
+			)
+		);
 		$this->plugin_helper->add_hooks();
 		$this->plugin_helper->add_shortcodes_and_scripts();
 		$this->plugin_helper->add_actions();
 	}
+
 
 	/**
 	 * Check dependencies.
@@ -166,15 +172,6 @@ class AlmaPlugin {
 	}
 
 	/**
-	 * Load plugin textdomain.
-	 *
-	 * @return void
-	 */
-	public function load_plugin_textdomain() {
-		load_plugin_textdomain( 'alma-gateway-for-woocommerce', false, plugin_basename( ALMA_PLUGIN_PATH ) . '/languages' );
-	}
-
-	/**
 	 * Returns the *Singleton* instance of this class.
 	 *
 	 * @return AlmaPlugin
@@ -207,6 +204,7 @@ class AlmaPlugin {
 		}
 
 		$gateways[] = StandardGateway::class;
+
 		return $gateways;
 	}
 
@@ -238,16 +236,18 @@ class AlmaPlugin {
 	}
 
 	/**
-	 * Private clone method to prevent cloning of the instance of the *Singleton* instance.
-	 *
-	 * @return void
-	 */
-	private function __clone() {    }
-
-	/**
 	 * Public unserialize method to prevent unserializing of the *Singleton* instance.
 	 *
 	 * @return void
 	 */
-	public function __wakeup() {   }
+	public function __wakeup() {
+	}
+
+	/**
+	 * Private clone method to prevent cloning of the instance of the *Singleton* instance.
+	 *
+	 * @return void
+	 */
+	private function __clone() {
+	}
 }
