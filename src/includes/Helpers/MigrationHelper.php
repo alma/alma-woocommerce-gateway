@@ -15,6 +15,7 @@ use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Exceptions\VersionDeprecated;
 use Alma\Woocommerce\Gateways\Standard\StandardGateway;
+use Exception;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -51,8 +52,8 @@ class MigrationHelper {
 	/**
 	 * Update plugin.
 	 *
-	 * @throws VersionDeprecated The exception.
 	 * @return bool Is the migration ok.
+	 * @throws VersionDeprecated The exception.
 	 */
 	public function update() {
 		$db_version = get_option( 'alma_version' );
@@ -82,13 +83,30 @@ class MigrationHelper {
 	}
 
 	/**
+	 * Manage version before 3.* .
+	 *
+	 * @param string $db_version The DB version.
+	 *
+	 * @return void
+	 * @throws VersionDeprecated The exception.
+	 */
+	protected function manage_version_before_3( $db_version ) {
+		if (
+			version_compare( $db_version, 3, '<' )
+			&& get_option( 'woocommerce_alma_settings' )
+		) {
+			// An old version of alma is already running.
+			throw new VersionDeprecated( $db_version );
+		}
+	}
+
+	/**
 	 * Manage the migrations.
 	 *
 	 * @param string $db_version The DB version.
 	 *
-	 * @throws VersionDeprecated The exception.
-	 *
 	 * @return void
+	 * @throws VersionDeprecated The exception.
 	 */
 	public function manage_versions( $db_version ) {
 		if (
@@ -137,9 +155,9 @@ class MigrationHelper {
 				$has_changed              = true;
 			}
 
-			if ( ! isset( $settings['use_blocks_template'] ) ) {
-				$settings['use_blocks_template'] = 'no';
-				$has_changed                     = true;
+			if ( isset( $settings['use_blocks_template'] ) ) {
+				unset( $settings['use_blocks_template'] );
+				$has_changed = true;
 			}
 
 			if ( $has_changed ) {
@@ -157,27 +175,9 @@ class MigrationHelper {
 
 				$gateway->manage_credentials();
 			}
-		} catch ( \Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+		} catch ( Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			// We don't care if it fails there is nothing to update.
 			$this->logger->info( $e->getMessage() );
-		}
-	}
-
-	/**
-	 * Manage version before 3.* .
-	 *
-	 * @param string $db_version The DB version.
-	 *
-	 * @return void
-	 * @throws VersionDeprecated The exception.
-	 */
-	protected function manage_version_before_3( $db_version ) {
-		if (
-			version_compare( $db_version, 3, '<' )
-			&& get_option( 'woocommerce_alma_settings' )
-		) {
-			// An old version of alma is already running.
-			throw new VersionDeprecated( $db_version );
 		}
 	}
 

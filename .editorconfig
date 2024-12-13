@@ -23,5 +23,9 @@ trim_trailing_whitespace = false
 indent_style = space
 indent_size = 2
 
+[*.js]
+trim_trailing_whitespace = false
+indent_style = space
+
 [*.json]
 indent_style = tab

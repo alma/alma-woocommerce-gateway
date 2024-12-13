@@ -25,13 +25,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class PayLaterBlock extends AlmaBlock {
 
 	/**
-	 * The Gateway.
-	 *
-	 * @var PayLaterGateway
-	 */
-	protected $gateway;
-
-	/**
 	 * Paiement Gateway name.
 	 *
 	 * @var string

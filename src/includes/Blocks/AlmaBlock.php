@@ -15,6 +15,8 @@ use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
 use Alma\Woocommerce\Builders\Helpers\GatewayHelperBuilder;
 use Alma\Woocommerce\Builders\Helpers\PlanHelperBuilder;
+use Alma\Woocommerce\Exceptions\AlmaException;
+use Alma\Woocommerce\Gateways\Standard\StandardGateway;
 use Alma\Woocommerce\Helpers\AssetsHelper;
 use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\CheckoutHelper;
@@ -68,6 +70,13 @@ class AlmaBlock extends AbstractPaymentMethodType {
 	protected $alma_plan_helper;
 
 	/**
+	 * The gateway.
+	 *
+	 * @var StandardGateway
+	 */
+	protected $gateway;
+
+	/**
 	 * Initialize.
 	 *
 	 * @return void
@@ -80,7 +89,6 @@ class AlmaBlock extends AbstractPaymentMethodType {
 		$this->checkout_helper  = new CheckoutHelper();
 		$cart_helper_builder    = new CartHelperBuilder();
 		$this->cart_helper      = $cart_helper_builder->get_instance();
-
 		$alma_plan_builder      = new PlanHelperBuilder();
 		$this->alma_plan_helper = $alma_plan_builder->get_instance();
 	}
@@ -95,7 +103,7 @@ class AlmaBlock extends AbstractPaymentMethodType {
 	}
 
 	/**
-	 * Reggister the script.
+	 * Register the script.
 	 *
 	 * @return string[]
 	 */
@@ -147,7 +155,7 @@ class AlmaBlock extends AbstractPaymentMethodType {
 	 * Send data to the js.
 	 *
 	 * @return array
-	 * @throws \Alma\Woocommerce\Exceptions\AlmaException Exception.
+	 * @throws AlmaException Exception.
 	 */
 	public function get_payment_method_data() {
 
