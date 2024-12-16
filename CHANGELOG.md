@@ -4,7 +4,7 @@
 
 ### 🐛 Bug Fixes
 
-Hotfix: compatibility for Woocommerce version 6.1.0
+Hotfix: compatibility for Woocommerce version under 6.1.0
 
 ## v5.8.0 - 2024-12-12
 
