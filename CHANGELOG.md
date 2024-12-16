@@ -1,5 +1,11 @@
 # Changelog
 
+## v5.8.1 - 2024-12-16
+
+### 🐛 Bug Fixes
+
+Hotfix: compatibility for Woocommerce version 6.1.0
+
 ## v5.8.0 - 2024-12-12
 
 ### Changes
