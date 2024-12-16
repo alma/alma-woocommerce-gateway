@@ -10,10 +10,35 @@ if [ ! -x "$PHP_PATH" ]; then
     exit 1
 fi
 
+# Get PHP version
+PHP_VERSION=$($PHP_PATH -v | head -n 1 | awk '{print $2}')
+PHP_MAJOR=$(echo "$PHP_VERSION" | cut -d. -f1) # Extract major version
+PHP_MINOR=$(echo "$PHP_VERSION" | cut -d. -f2) # Extract minor version
+
+# Check if PHP version is exactly 5.6.x
+if [[ "$PHP_MAJOR" -eq 5 && "$PHP_MINOR" -eq 6 ]]; then
+    echo "PHP version is $PHP_VERSION (compatible)."
+else
+    echo "PHP version is $PHP_VERSION. Only PHP 5.6.x is supported."
+    exit 1
+fi
+
 if [ ! -x "$COMPOSER_PATH" ]; then
     echo "Can't find or execute Composer on : $PHP_PATH $COMPOSER_PATH"
     exit 1
 fi
+
+# Get Composer version
+COMPOSER_VERSION=$($COMPOSER_PATH --version | awk '{print $3}' | cut -d. -f1,2) # Extract major.minor version
+
+# Check if Composer version is exactly 2.2.x
+if [[ "$COMPOSER_VERSION" == "2.2" ]]; then
+    echo "Composer version is $COMPOSER_VERSION (compatible)."
+else
+    echo "Composer version is $COMPOSER_VERSION. Only Composer 2.2.x (LTS) is supported."
+    exit 1
+fi
+
 PATH_TO_COMPOSER="$PHP_PATH $COMPOSER_PATH"
 echo "PATH_TO_COMPOSER is: $PATH_TO_COMPOSER"
 
