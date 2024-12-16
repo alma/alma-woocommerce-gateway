@@ -189,7 +189,7 @@ syncing_subversion() {
     fi
     files=$(svn status | awk '$1 ~ /\!/ {print $2}')
     if [ -n "$files" ]; then
-        svn add $files || quit "Error occurs while removing subversion files"
+        svn rm $files || quit "Error occurs while removing subversion files"
     else
         echo "No files to delete."
     fi
