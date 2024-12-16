@@ -2,8 +2,20 @@
 #TODO: svn checkout, svn commit (if needed) after svn sync
 QUIET=1
 SYNC_SVN=0
-# Read PATH_TO_COMPOSER from env if provided, otherwise use default
-[ -z "$PATH_TO_COMPOSER" ] && PATH_TO_COMPOSER="/usr/bin/php5.6 /usr/local/bin/composer "
+# Define the path to Composer and PHP
+PHP_PATH=$(which php 2>/dev/null)
+COMPOSER_PATH=$(which composer 2>/dev/null)
+if [ ! -x "$PHP_PATH" ]; then
+    echo "Can't find or execute PHP on: $PHP_PATH"
+    exit 1
+fi
+
+if [ ! -x "$COMPOSER_PATH" ]; then
+    echo "Can't find or execute Composer on : $PHP_PATH $COMPOSER_PATH"
+    exit 1
+fi
+PATH_TO_COMPOSER="$PHP_PATH $COMPOSER_PATH"
+echo "PATH_TO_COMPOSER is: $PATH_TO_COMPOSER"
 
 # {{{ function usage
 #
@@ -133,7 +145,7 @@ syncing_subversion() {
     if [[ ! -d "$SUBVERSION_DIR" ]] ; then
         trap - ERR EXIT
         is_that_ok 1
-        echo "'$SUBVERSION_DIR': Subversion's folder not found !!!"
+        echo "'$SUBVERSION_DIR': Subversion's folder not found!"
         echo "Please clone subversion repository with valid wordpress credentials (\`svn checkout https://plugins.svn.wordpress.org/alma-gateway-for-woocommerce $SUBVERSION_DIR\`)"
         exit 1
     fi
@@ -144,10 +156,18 @@ syncing_subversion() {
     rm -rf $SUBVERSION_DIR/assets/*
     rsync -au $RSYNC_EXCLUDE $HERE/.wordpress.org/ ./assets >/dev/null 2>&1
     svn cp trunk tags/$VERSION
-    svn add $(svn status | awk '$1 ~ /\?/ {print $2}') \
-        || quit "Error occurs while adding subversion new files"
-    svn rm $(svn status | awk '$1 ~ /\!/ {print $2}') \
-        || quit "Error occurs while removing subversion deleted files"
+    files=$(svn status | awk '$1 ~ /\?/ {print $2}')
+    if [ -n "$files" ]; then
+        svn add $files || quit "Error occurs while adding subversion new files"
+    else
+        echo "No new files to add."
+    fi
+    files=$(svn status | awk '$1 ~ /\!/ {print $2}')
+    if [ -n "$files" ]; then
+        svn add $files || quit "Error occurs while removing subversion files"
+    else
+        echo "No files to delete."
+    fi
     cd -
 }
 export -f syncing_subversion
