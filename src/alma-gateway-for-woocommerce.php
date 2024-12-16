@@ -33,8 +33,6 @@
  * along with Alma Payment Gateway for WooCommerce. If not, see https://www.gnu.org/licenses/gpl-3.0.html.
  */
 
-use Automattic\WooCommerce\Utilities\FeaturesUtil;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
@@ -92,6 +90,9 @@ add_action(
 	}
 );
 
+/**
+ * Init custom_order_tables if available in Woocommerce version.
+ */
 add_action(
 	'before_woocommerce_init',
 	function () {
@@ -101,7 +102,7 @@ add_action(
 			 *
 			 * @psalm-suppress UndefinedClass
 			 */
-			FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
 		}
 	}
 );
