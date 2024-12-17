@@ -81,7 +81,7 @@ class CheckoutHelper {
 			return $_POST[ $field_name ];
 		}
 
-		$this->logger->error(
+		$this->logger->warning(
 			sprintf(
 				'Nonce not found or wrong - FieldName "%s" - NonceName "%s"  - data "%s"',
 				$field_name,
