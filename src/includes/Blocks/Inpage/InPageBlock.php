@@ -25,14 +25,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class InPageBlock extends AlmaBlock {
 
 	/**
-	 * The Gateway.
-	 *
-	 * @var InPageGateway
-	 */
-	protected $gateway;
-
-
-	/**
 	 * Paiement Gateway name.
 	 *
 	 * @var string

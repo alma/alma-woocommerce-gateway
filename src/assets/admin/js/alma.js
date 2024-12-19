@@ -16,24 +16,6 @@ jQuery(document).ready(function () {
     almaAdminFeePlan.listenFeePlanCheckboxStatus();
     almaAdminFeePlan.checkInputsOnSubmitActionTriggered();
     almaAdminGeneralHelper.toggleTechnicalConfigFields();
-
-    var checkboxBlock = jQuery('#woocommerce_alma_use_blocks_template');
-    var modal = '<div id="info-checkbox" class="notice notice-warning is-dismissible">' +
-        '<p>' + alma_admin_params.block_confirmation+ ' </p>' +
-        '</div>'
-
-    checkboxBlock.on("click", function (e) {
-        isChecked = document.getElementById('woocommerce_alma_use_blocks_template').checked
-        infoCheckbox = document.getElementById("info-checkbox")
-
-        if(null ===  infoCheckbox && isChecked) {
-            checkboxBlock.before(modal);
-        }
-
-        if(null !== infoCheckbox && !isChecked) {
-            infoCheckbox.remove()
-        }
-    });
 });
 
 /**
@@ -250,7 +232,7 @@ function AlmaAdminFeePlan(helper) {
 
 var collapsible = jQuery(".alma-legal-checkout-collapsible");
 
-if(collapsible.length) {
+if (collapsible.length) {
     var chevron = jQuery('#alma-legal-collapse-chevron');
 
     collapsible[0].addEventListener("click", function () {
@@ -270,12 +252,13 @@ add_button_show_pwd('woocommerce_alma_live_api_key');
 add_button_show_pwd('woocommerce_alma_test_api_key');
 
 function add_button_show_pwd(button_name) {
-    var button = jQuery('#' + button_name );
-    button.after('<button type="button" class="button button-secondary wp-hide-pw hide-if-no-js" data-toggle="0" aria-label="Show password" onclick="toggle_pwd_field(\''+ button_name + '\')"><span class="dashicons dashicons-visibility" aria-hidden="true"></span></button>')
+    var button = jQuery('#' + button_name);
+    button.after('<button type="button" class="button button-secondary wp-hide-pw hide-if-no-js" data-toggle="0" aria-label="Show password" onclick="toggle_pwd_field(\'' + button_name + '\')"><span class="dashicons dashicons-visibility" aria-hidden="true"></span></button>')
 
 }
+
 function toggle_pwd_field(field) {
-    var pass_id = jQuery('input[name="'+field+'"]').attr("id");
+    var pass_id = jQuery('input[name="' + field + '"]').attr("id");
     var x = document.getElementById(pass_id);
     if (x.type === "password") {
         x.type = "text";

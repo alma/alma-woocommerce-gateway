@@ -220,26 +220,19 @@ class FormFieldsHelper {
 	 * @return array
 	 */
 	public function init_inpage_fields( $default_settings ) {
-			return array(
-				'display_section'     => array(
-					'title' => '<hr>' . __( '→ Display options', 'alma-gateway-for-woocommerce' ),
-					'type'  => 'title',
-				),
-				'display_in_page'     => array(
-					'title'   => __( 'Activate in-page checkout', 'alma-gateway-for-woocommerce' ),
-					'type'    => 'checkbox',
-					/* translators: %s: Alma in page doc URL */
-					'label'   => __( 'Enable this setting if you want in-page payments (no redirection) for all Alma payment methods.', 'alma-gateway-for-woocommerce' ) . '<br>' . sprintf( __( '(Learn more about this feature <a href="%s">here</a>)', 'alma-gateway-for-woocommerce' ), AssetsHelper::get_in_page_doc_link() ),
-					'default' => $default_settings['display_in_page'],
-				),
-				'use_blocks_template' => array(
-					'title'   => __( 'Activate compatibility with Blocks templates themes', 'alma-gateway-for-woocommerce' ),
-					'type'    => 'checkbox',
-					/* translators: %s: Woocommerce doc URL */
-					'label'   => __( 'Activate this setting if you use a Blocks template Checkout page', 'alma-gateway-for-woocommerce' ) . '<br>' . sprintf( __( '(Learn more about this feature <a href="%s">here</a>)', 'alma-gateway-for-woocommerce' ), AssetsHelper::get_blocks_doc_link() ),
-					'default' => $default_settings['use_blocks_template'],
-				),
-			);
+		return array(
+			'display_section' => array(
+				'title' => '<hr>' . __( '→ Display options', 'alma-gateway-for-woocommerce' ),
+				'type'  => 'title',
+			),
+			'display_in_page' => array(
+				'title'   => __( 'Activate in-page checkout', 'alma-gateway-for-woocommerce' ),
+				'type'    => 'checkbox',
+				/* translators: %s: Alma in page doc URL */
+				'label'   => __( 'Enable this setting if you want in-page payments (no redirection) for all Alma payment methods.', 'alma-gateway-for-woocommerce' ) . '<br>' . sprintf( __( '(Learn more about this feature <a href="%s">here</a>)', 'alma-gateway-for-woocommerce' ), AssetsHelper::get_in_page_doc_link() ),
+				'default' => $default_settings['display_in_page'],
+			),
+		);
 	}
 
 	/**
@@ -424,13 +417,13 @@ class FormFieldsHelper {
 	 */
 	protected function generate_fee_plan_description(
 		FeePlan $fee_plan,
-				$min_amount,
-				$max_amount,
-				$merchant_fee_fixed,
-				$merchant_fee_variable,
-				$customer_fee_fixed,
-				$customer_fee_variable,
-				$customer_lending_rate
+		$min_amount,
+		$max_amount,
+		$merchant_fee_fixed,
+		$merchant_fee_variable,
+		$customer_fee_fixed,
+		$customer_fee_variable,
+		$customer_lending_rate
 	) {
 		$you_can_offer = '';
 		if ( $fee_plan->isPnXOnly() ) {
@@ -629,7 +622,7 @@ class FormFieldsHelper {
 
 		$blocks = '';
 
-		if ( $this->block_helper->has_woocommerce_blocks() ) {
+		if ( $this->block_helper->has_woocommerce_checkout_blocks() ) {
 			$blocks = 'blocks_';
 		}
 

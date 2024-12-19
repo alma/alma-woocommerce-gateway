@@ -26,6 +26,10 @@ use Alma\Woocommerce\Factories\SessionFactory;
 use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Gateways\Standard\StandardGateway;
 use Alma\Woocommerce\Services\CheckoutService;
+use Exception;
+use WC_Data_Exception;
+use WC_Order;
+use WC_Refund;
 
 /**
  * Class OrderHelper.
@@ -37,43 +41,45 @@ class OrderHelper {
 	const WC_PROCESSING = 'wc-processing';
 
 	const WC_COMPLETED = 'wc-completed';
-
-
+	/**
+	 * The status for complete orders.
+	 *
+	 * @var array The status order completed.
+	 */
+	protected static $status_order_completed = array(
+		self::WC_PROCESSING,
+		self::WC_COMPLETED,
+	);
 	/**
 	 * The logger.
 	 *
 	 * @var AlmaLogger
 	 */
 	protected $logger;
-
 	/**
 	 * The block helper.
 	 *
 	 * @var BlockHelper
 	 */
 	protected $block_helper;
-
 	/**
 	 * The session factory.
 	 *
 	 * @var SessionFactory
 	 */
 	protected $session_factory;
-
 	/**
 	 * The version factory.
 	 *
 	 * @var VersionFactory
 	 */
 	protected $version_factory;
-
 	/**
 	 * The cart factory.
 	 *
 	 * @var CartFactory
 	 */
 	protected $cart_factory;
-
 
 	/**
 	 * Constructor.
@@ -87,24 +93,13 @@ class OrderHelper {
 
 	}
 
-
-	/**
-	 * The status for complete orders.
-	 *
-	 * @var array The status order completed.
-	 */
-	protected static $status_order_completed = array(
-		self::WC_PROCESSING,
-		self::WC_COMPLETED,
-	);
-
 	/**
 	 * Gets the WC orders in a date range.
 	 *
 	 * @param string $from The date from.
 	 * @param string $to The date to.
 	 *
-	 * @return \WC_Order[]
+	 * @return WC_Order[]
 	 */
 	public function get_orders_by_date_range( $from, $to ) {
 		return wc_get_orders(
@@ -122,7 +117,7 @@ class OrderHelper {
 	 * @param int $customer_id The customer id.
 	 * @param int $limit The limit.
 	 *
-	 * @return \WC_Order[]
+	 * @return WC_Order[]
 	 */
 	public function get_orders_by_customer_id( $customer_id, $limit = 10 ) {
 		return wc_get_orders(
@@ -138,7 +133,8 @@ class OrderHelper {
 	/**
 	 * Get merchant order url.
 	 *
-	 * @param \WC_Order $wc_order The WC order.
+	 * @param WC_Order $wc_order The WC order.
+	 *
 	 * @return string
 	 */
 	public function get_merchant_url( $wc_order ) {
@@ -154,7 +150,7 @@ class OrderHelper {
 	/**
 	 * Get shipping address.
 	 *
-	 * @param \WC_Order $wc_order The order.
+	 * @param WC_Order $wc_order The order.
 	 *
 	 * @return array
 	 */
@@ -181,7 +177,8 @@ class OrderHelper {
 	/**
 	 * Get billing address.
 	 *
-	 * @param \WC_Order $wc_order The order.
+	 * @param WC_Order $wc_order The order.
+	 *
 	 * @return array
 	 */
 	public function get_billing_address( $wc_order ) {
@@ -208,7 +205,7 @@ class OrderHelper {
 	/**
 	 * Are we a business company.
 	 *
-	 * @param \WC_Order $wc_order The wc_order.
+	 * @param WC_Order $wc_order The wc_order.
 	 *
 	 * @return bool
 	 */
@@ -223,8 +220,8 @@ class OrderHelper {
 	/**
 	 * Payment complete.
 	 *
-	 * @param \WC_Order $wc_order The WC_order.
-	 * @param string    $payment_id Payment Id.
+	 * @param WC_Order $wc_order The WC_order.
+	 * @param string   $payment_id Payment Id.
 	 *
 	 * @return void
 	 */
@@ -234,45 +231,10 @@ class OrderHelper {
 	}
 
 	/**
-	 * Get the order.
-	 *
-	 * @param string $order_id The order id.
-	 * @param string $order_key The order key.
-	 * @param string $payment_id The payment id.
-	 *
-	 * @return bool|\WC_Order|\WC_Refund
-	 * @throws BuildOrderException Error on building order.
-	 */
-	public function get_order( $order_id, $order_key = null, $payment_id = null ) {
-		$wc_order = wc_get_order( $order_id );
-
-		if (
-			! $wc_order
-			&& $order_key
-		) {
-			// We have an invalid $order_id, probably because invoice_prefix has changed.
-			$order_id = wc_get_order_id_by_order_key( $order_key );
-			$wc_order = wc_get_order( $order_id );
-		}
-
-		if (
-			! $wc_order
-			|| (
-				$order_key
-				&& $wc_order->get_order_key() !== $order_key
-			)
-		) {
-			throw new BuildOrderException( $order_id, $order_key, $payment_id );
-		}
-
-		return $wc_order;
-	}
-
-	/**
 	 *  Create the order and the payment id for In page.
 	 *
-	 * @throws CreatePaymentsException Exception.
 	 * @return void
+	 * @throws CreatePaymentsException Exception.
 	 */
 	public function alma_do_checkout_in_page() {
 		$order = null;
@@ -284,7 +246,7 @@ class OrderHelper {
 				&& ! empty( $_POST['fields'] ) // phpcs:ignore WordPress.Security.NonceVerification
 			) {
 
-				list($payment_id, $order_id) = $this->create_inpage_order( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification
+				list( $payment_id, $order_id ) = $this->create_inpage_order( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification
 
 				wp_send_json_success(
 					array(
@@ -296,7 +258,7 @@ class OrderHelper {
 
 			throw new CreatePaymentsException();
 
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->logger->error( $e->getMessage(), $e->getTrace() );
 
 			if ( $order ) {
@@ -306,12 +268,41 @@ class OrderHelper {
 			wc_add_notice( $e->getMessage(), ConstantsHelper::ERROR );
 			wp_send_json_error( $e->getMessage(), 500 );
 
-			if ( $this->block_helper->has_woocommerce_blocks() ) {
+			if ( $this->block_helper->has_woocommerce_checkout_blocks() ) {
 				$this->send_ajax_failure_response();
 			}
 
 			wp_send_json_error( $e->getMessage(), 500 );
 		}
+	}
+
+	/**
+	 * Create the order for in page.
+	 *
+	 * @param array $post_fields The data to process.
+	 *
+	 * @return array
+	 * @throws ApiCreatePaymentsException Exception.
+	 * @throws PlansDefinitionException  Exception.
+	 * @throws WC_Data_Exception  Exception.
+	 */
+	protected function create_inpage_order( $post_fields ) {
+		$alma_checkout = new CheckoutService();
+
+		$order = $alma_checkout->process_checkout_alma( $post_fields );
+
+		// We ignore the nonce verification because process_payment is called after validate_fields.
+		$settings       = new AlmaSettings();
+		$payment_helper = new PaymentHelper();
+
+		$fee_plan = $settings->build_fee_plan( $post_fields[ ConstantsHelper::ALMA_FEE_PLAN_IN_PAGE ] );
+
+		$payment = $payment_helper->create_payments( $order, $fee_plan, true );
+
+		return array(
+			$payment->id,
+			$order->get_id(),
+		);
 	}
 
 	/**
@@ -340,35 +331,6 @@ class OrderHelper {
 			wp_send_json( $response );
 		}
 	}
-	/**
-	 * Create the order for in page.
-	 *
-	 * @param array $post_fields The data to process.
-	 *
-	 * @return array
-	 * @throws ApiCreatePaymentsException Exception.
-	 * @throws PlansDefinitionException  Exception.
-	 * @throws \WC_Data_Exception  Exception.
-	 */
-	protected function create_inpage_order( $post_fields ) {
-		$alma_checkout = new CheckoutService();
-
-		$order = $alma_checkout->process_checkout_alma( $post_fields );
-
-		// We ignore the nonce verification because process_payment is called after validate_fields.
-		$settings       = new AlmaSettings();
-		$payment_helper = new PaymentHelper();
-
-		$fee_plan = $settings->build_fee_plan( $post_fields[ ConstantsHelper::ALMA_FEE_PLAN_IN_PAGE ] );
-
-		$payment = $payment_helper->create_payments( $order, $fee_plan, true );
-
-		return array(
-			$payment->id,
-			$order->get_id(),
-		);
-	}
-
 
 	/**
 	 * Abandonment by the client.
@@ -383,11 +345,46 @@ class OrderHelper {
 			$order->update_status( 'cancelled', 'Cancelled by customer' );
 			$order->delete( true );
 			wp_send_json_success();
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->logger->error( $e->getMessage() );
 			wp_send_json_error( $e->getMessage(), 500 );
 
 		}
+	}
+
+	/**
+	 * Get the order.
+	 *
+	 * @param string $order_id The order id.
+	 * @param string $order_key The order key.
+	 * @param string $payment_id The payment id.
+	 *
+	 * @return bool|WC_Order|WC_Refund
+	 * @throws BuildOrderException Error on building order.
+	 */
+	public function get_order( $order_id, $order_key = null, $payment_id = null ) {
+		$wc_order = wc_get_order( $order_id );
+
+		if (
+			! $wc_order
+			&& $order_key
+		) {
+			// We have an invalid $order_id, probably because invoice_prefix has changed.
+			$order_id = wc_get_order_id_by_order_key( $order_key );
+			$wc_order = wc_get_order( $order_id );
+		}
+
+		if (
+			! $wc_order
+			|| (
+				$order_key
+				&& $wc_order->get_order_key() !== $order_key
+			)
+		) {
+			throw new BuildOrderException( $order_id, $order_key, $payment_id );
+		}
+
+		return $wc_order;
 	}
 
 	/**

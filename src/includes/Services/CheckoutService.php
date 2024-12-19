@@ -20,6 +20,11 @@ use Alma\Woocommerce\Helpers\BlockHelper;
 use Alma\Woocommerce\Helpers\CheckoutHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\PluginHelper;
+use Exception;
+use WC_Checkout;
+use WC_Order;
+use WC_Order_Refund;
+use WP_Error;
 
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -30,7 +35,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * CheckoutService
  */
-class CheckoutService extends \WC_Checkout {
+class CheckoutService extends WC_Checkout {
 
 	/**
 	 * The plugin helper.
@@ -85,9 +90,9 @@ class CheckoutService extends \WC_Checkout {
 	 *
 	 * @param array $post_fields The post fields.
 	 *
-	 * @return bool|void|\WC_Order|\WC_Order_Refund
+	 * @return bool|void|WC_Order|WC_Order_Refund
 	 * @throws AlmaException The exception.
-	 * @throws \Exception The exception.
+	 * @throws Exception The exception.
 	 */
 	public function process_checkout_alma( $post_fields ) {
 		if (
@@ -134,13 +139,13 @@ class CheckoutService extends \WC_Checkout {
 
 		$session = $this->session_factory->get_session();
 
-		if ( ! $this->block_helper->has_woocommerce_blocks() ) {
-			$nonce_value = wc_get_var($_POST['woocommerce-process-checkout-nonce'], wc_get_var($_POST['_wpnonce'], '')); // @codingStandardsIgnoreLine.
+		if ( ! $this->block_helper->has_woocommerce_checkout_blocks() ) {
+			$nonce_value = wc_get_var( $_POST['woocommerce-process-checkout-nonce'], wc_get_var( $_POST['_wpnonce'], '' ) ); // @codingStandardsIgnoreLine.
 
 			if (
-			empty( $nonce_value )
-			||
-			! wp_verify_nonce( $nonce_value, 'woocommerce-process_checkout' )
+				empty( $nonce_value )
+				||
+				! wp_verify_nonce( $nonce_value, 'woocommerce-process_checkout' )
 			) {
 				$session->set( 'refresh_totals', true );
 				throw new AlmaException( __( 'We were unable to process your order, please try again.', 'alma-gateway-for-woocommerce' ) );
@@ -150,16 +155,16 @@ class CheckoutService extends \WC_Checkout {
 		wc_maybe_define_constant( 'WOOCOMMERCE_CHECKOUT', true );
 		wc_set_time_limit( 0 );
 
-		do_action('woocommerce_before_checkout_process'); // phpcs:ignore
+		do_action( 'woocommerce_before_checkout_process' ); // phpcs:ignore
 
 		if ( $this->cart_factory->get_cart()->is_empty() ) {
 			/* translators: %s: shop cart url */
 			throw new AlmaException( sprintf( __( 'Sorry, your session has expired. <a href="%s" class="wc-backward">Return to shop</a>', 'alma-gateway-for-woocommerce' ), esc_url( wc_get_page_permalink( 'shop' ) ) ) );
 		}
 
-		do_action('woocommerce_checkout_process'); // phpcs:ignore
+		do_action( 'woocommerce_checkout_process' ); // phpcs:ignore
 
-		$errors      = new \WP_Error();
+		$errors      = new WP_Error();
 		$posted_data = $this->get_posted_data();
 
 		if ( ConstantsHelper::GATEWAY_ID_IN_PAGE === $_POST[ ConstantsHelper::PAYMENT_METHOD ] ) {
@@ -200,7 +205,7 @@ class CheckoutService extends \WC_Checkout {
 			$order    = wc_get_order( $order_id );
 
 			if ( isset( $post_fields['fields']['extensionData']['woocommerce/order-attribution'] ) ) {
-                do_action( 'woocommerce_order_save_attribution_data', $order, $post_fields['fields']['extensionData']['woocommerce/order-attribution'] ); // phpcs:ignore
+				do_action( 'woocommerce_order_save_attribution_data', $order, $post_fields['fields']['extensionData']['woocommerce/order-attribution'] ); // phpcs:ignore
 			}
 
 			if ( is_wp_error( $order_id ) ) {
@@ -211,7 +216,8 @@ class CheckoutService extends \WC_Checkout {
 				throw new AlmaException( __( 'Unable to create order.', 'alma-gateway-for-woocommerce' ) );
 			}
 
-			do_action('woocommerce_checkout_order_processed', $order_id, $posted_data, $order); // phpcs:ignore
+			do_action( 'woocommerce_checkout_order_processed', $order_id, $posted_data, $order ); // phpcs:ignore
+
 			return $order;
 		}
 	}
@@ -263,7 +269,7 @@ class CheckoutService extends \WC_Checkout {
 			}
 		}
 
-		do_action('woocommerce_after_checkout_validation', $data, $errors); // phpcs:ignore
+		do_action( 'woocommerce_after_checkout_validation', $data, $errors ); // phpcs:ignore
 	}
 
 }

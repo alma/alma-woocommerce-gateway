@@ -28,9 +28,9 @@ export const InstallmentsContent: React.FC<InstallmentsContentProps> = ({
       <div className={"installments"}>
         {feePlan.paymentPlan.map((installment: PaymentPlan, index: number) => (
           <Installment
-            key={`${installment.due_date}-${installment.customer_fee}-${installment.purchase_amount}`}
+            key={index}
             installment={installment}
-            totalAmountInEuros={index === 0 ? centsToEuros(amountInCents) + centsToEuros(customerFees) : centsToEuros(amountInCents)}
+            totalAmountInEuros={centsToEuros(installment.total_amount)}
           />
         ))}
       </div>
@@ -38,10 +38,10 @@ export const InstallmentsContent: React.FC<InstallmentsContentProps> = ({
         <CardFooter className={"footer"}>
           <InstallmentsTotal
             totalAmount={amountInCents}
-            customerFees={feePlan.paymentPlan[0].customer_fee}
+            customerFees={customerFees}
           />
           <InstallmentsTotalFees
-            customerFees={feePlan.paymentPlan[0].customer_fee}
+            customerFees={customerFees}
           />
         </CardFooter>
       </div>
