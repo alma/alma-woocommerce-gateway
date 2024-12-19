@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 4.4
 Tested up to: 6.3
 Requires PHP: 5.6
-Stable tag: 5.7.0
+Stable tag: 5.8.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,37 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+## v5.8.1 - 2024-12-16
+
+### 🐛 Bug Fixes
+
+Hotfix: compatibility for Woocommerce version under 6.1.0
+
+## v5.8.0 - 2024-12-12
+
+### Changes
+
+- Feature/ecom 2261 translations loaded to early in woocommerce plugin (#298)
+- Add editor config and sonarcloud config (#292)
+
+### 🚀 New Features
+
+- Implement add order status to order change (#299)
+- Add gather cms data (#297)
+- Feature/ecom 2212 sonarcloud configuration (#296)
+- Update widget version to 3.4.0 (#295)
+- Add getter for product variable config (#290)
+- fix: Change wording for In-Page configuration (#288)
+
+### 🐛 Bug Fixes
+
+- fix: in page unmount (#289)
+- fix: avoid blocking in-page if a notice is returned (#287)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @CamilleFljt, @Francois-Gomis, @alma-create-pr-with-team-review, @gdraynz, @joyet-simon, @webaaz and Martin Supiot
 
 ## v5.7.0 - 2024-10-07
 

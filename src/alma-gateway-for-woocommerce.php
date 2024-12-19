@@ -3,7 +3,7 @@
  * Plugin Name: Alma - Pay in installments or later for WooCommerce
  * Plugin URI: https://docs.almapay.com/docs/woocommerce
  * Description: Install Alma and boost your sales! It's simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.
- * Version: 5.7.0
+ * Version: 5.8.1
  * Author: Alma
  * Author URI: https://almapay.com
  * License: GNU General Public License v3.0
@@ -33,14 +33,12 @@
  * along with Alma Payment Gateway for WooCommerce. If not, see https://www.gnu.org/licenses/gpl-3.0.html.
  */
 
-use Automattic\WooCommerce\Utilities\FeaturesUtil;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
 if ( ! defined( 'ALMA_VERSION' ) ) {
-	define( 'ALMA_VERSION', '5.7.0' );
+	define( 'ALMA_VERSION', '5.8.1' );
 }
 if ( ! defined( 'ALMA_PLUGIN_FILE' ) ) {
 	define( 'ALMA_PLUGIN_FILE', __FILE__ );
@@ -92,6 +90,9 @@ add_action(
 	}
 );
 
+/**
+ * Init custom_order_tables if available in Woocommerce version.
+ */
 add_action(
 	'before_woocommerce_init',
 	function () {
@@ -101,8 +102,8 @@ add_action(
 			 *
 			 * @psalm-suppress UndefinedClass
 			 */
-			FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
-			FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
 		}
 	}
 );
