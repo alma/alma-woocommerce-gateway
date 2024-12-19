@@ -444,7 +444,6 @@ class AlmaPaymentGateway extends WC_Payment_Gateway {
 
 		if (
 			! $this->alma_settings->is_allowed_to_see_alma( wp_get_current_user() )
-			|| is_admin()
 			|| ! $this->tool_helper->check_currency()
 			|| is_wc_endpoint_url( 'order-pay' )
 			|| is_wc_endpoint_url( 'cart' )
@@ -466,9 +465,6 @@ class AlmaPaymentGateway extends WC_Payment_Gateway {
 			|| $this->gateway_helper->cart_contains_excluded_category()
 
 		) {
-			$this->logger->info( 'is->gateway_helper->is_there_eligibility_in_cart' );
-			$this->logger->info( $this->gateway_helper->is_there_eligibility_in_cart() );
-
 			return false;
 		}
 
@@ -477,8 +473,6 @@ class AlmaPaymentGateway extends WC_Payment_Gateway {
 		$eligible_plans = $this->alma_plan_helper->order_plans( $eligible_plans );
 
 		$is_eligible = false;
-		$this->logger->info( 'this id' );
-		$this->logger->info( $this->id );
 		if ( ! empty( $eligible_plans[ $this->id ] ) ) {
 			$is_eligible = true;
 		}
