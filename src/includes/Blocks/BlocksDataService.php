@@ -94,7 +94,7 @@ class BlocksDataService {
 		$response = [
 			'success'     => true,
 			'eligibility' => $this->format_eligibility_for_blocks( $eligibilities ),
-			'cart_total'  => [ 'cart_total' => (float) WC()->cart->get_total( '' ) ],
+			'cart_total'  => (float) WC()->cart->get_total( '' ),
 		];
 		// Send JSON response
 		$this->function_proxy->send_http_response( $response );

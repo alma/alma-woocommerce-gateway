@@ -59,7 +59,7 @@ class BlocksDataServiceTest extends WP_UnitTestCase {
 		$this->alma_client_service
 			->expects( $this->once() )
 			->method( 'get_eligibility' )
-			->with( WC()->cart, $client_mock )
+			->with( $client_mock, WC()->cart )
 			->willReturn( $this->eligibility_array() );
 
 		$this->function_proxy
@@ -126,7 +126,7 @@ class BlocksDataServiceTest extends WP_UnitTestCase {
 				],
 				'alma_pnx_plus_4' => []
 			],
-			'cart_total'  => [ 'cart_total' => (float) WC()->cart->get_total( '' ) ]
+			'cart_total'  => (float) WC()->cart->get_total( '' )
 		];
 	}
 
