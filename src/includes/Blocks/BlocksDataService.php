@@ -80,7 +80,7 @@ class BlocksDataService {
 	public function get_blocks_data() {
 		try {
 			$almaClient    = $this->alma_client_service->get_alma_client();
-			$eligibilities = $this->alma_client_service->get_eligibility( WC()->cart, $almaClient );
+			$eligibilities = $this->alma_client_service->get_eligibility( $almaClient, WC()->cart );
 		} catch ( ApiClientException $e ) {
 			$this->logger->info( 'Impossible to set Alma client: ' . $e->getMessage() );
 			$this->function_proxy->send_http_error_response( [
