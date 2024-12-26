@@ -23,6 +23,9 @@ use Alma\Woocommerce\Services\AlmaClientService;
 use Alma\Woocommerce\WcProxy\FunctionsProxy;
 
 class BlocksDataService {
+
+	const WEBHOOK_PATH = 'alma_blocks_data';
+
 	/**
 	 * @var AlmaClientService
 	 */
@@ -61,7 +64,7 @@ class BlocksDataService {
 	 */
 	public function init_hooks() {
 		add_action(
-			ToolsHelper::action_for_webhook( AlmaBlock::WEBHOOK_PATH ),
+			ToolsHelper::action_for_webhook( self::WEBHOOK_PATH ),
 			array(
 				$this,
 				'get_blocks_data',
