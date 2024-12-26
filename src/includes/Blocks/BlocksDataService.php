@@ -36,16 +36,29 @@ class BlocksDataService {
 	 */
 	private $function_proxy;
 
+	/**
+	 * Block data service - Webhook for blocks data
+	 *
+	 * @param $alma_client_service
+	 * @param $function_proxy
+	 * @param $logger
+	 */
 	public function __construct(
 		$alma_client_service = null,
 		$function_proxy = null,
 		$logger = null
 	) {
-		$this->init_alma_client_service( $alma_client_service );
-		$this->init_function_proxy( $function_proxy );
-		$this->init_alma_logger( $logger );
+		$this->alma_client_service = $this->init_alma_client_service( $alma_client_service );
+		$this->function_proxy      = $this->init_function_proxy( $function_proxy );
+		$this->logger              = $this->init_alma_logger( $logger );
 	}
 
+	/**
+	 * Init webhook alma_blocks_data
+	 * No test need a proxy to test
+	 *
+	 * @return void
+	 */
 	public function init_hooks() {
 		add_action(
 			ToolsHelper::action_for_webhook( AlmaBlock::WEBHOOK_PATH ),
@@ -56,6 +69,11 @@ class BlocksDataService {
 		);
 	}
 
+	/**
+	 * Send HTTP Response to AJAX call for eligibility in checkout page
+	 *
+	 * @return void
+	 */
 	public function get_blocks_data() {
 		try {
 			$almaClient    = $this->alma_client_service->get_alma_client();
@@ -65,6 +83,9 @@ class BlocksDataService {
 			$this->function_proxy->send_http_error_response( [
 				'success' => false,
 			], 500 );
+
+			// wp_send_json_error make die but return is used on test
+			return;
 		}
 
 		$response = [
@@ -76,6 +97,13 @@ class BlocksDataService {
 		$this->function_proxy->send_http_response( $response );
 	}
 
+	/**
+	 * Format eligibility with gateway for frontend blocks
+	 *
+	 * @param $eligibilities
+	 *
+	 * @return array|array[]
+	 */
 	private function format_eligibility_for_blocks( $eligibilities ) {
 		$gateways = [
 			PayNowGateway::GATEWAY_ID          => [],
@@ -110,6 +138,11 @@ class BlocksDataService {
 		return $gateways;
 	}
 
+	/**
+	 * @param Eligibility $eligibility
+	 *
+	 * @return array
+	 */
 	private function format_plan_content_for_blocks( $eligibility ) {
 		return [
 			'paymentPlan'             => $eligibility->getPaymentPlan(),
@@ -122,32 +155,44 @@ class BlocksDataService {
 	 *
 	 * @param AlmaClientService|null $alma_client_service
 	 *
-	 * @return void
+	 * @return AlmaClientService
 	 */
 	private function init_alma_client_service( $alma_client_service ) {
 		if ( ! isset( $alma_client_service ) ) {
 			$alma_client_service = new AlmaClientService();
 		}
-		$this->alma_client_service = $alma_client_service;
+
+		return $alma_client_service;
 	}
 
 	/**
-	 * @param $logger
+	 * Init Alma Logger
 	 *
-	 * @return void
+	 * @param AlmaLogger|null $logger
+	 *
+	 * @return AlmaLogger
 	 */
 	private function init_alma_logger( $logger ) {
 		if ( ! isset( $logger ) ) {
 			$logger = new AlmaLogger();
 		}
-		$this->logger = $logger;
+
+		return $logger;
 	}
 
+	/**
+	 * Init function proxy
+	 *
+	 * @param FunctionsProxy|null $function_proxy
+	 *
+	 * @return FunctionsProxy
+	 */
 	private function init_function_proxy( $function_proxy ) {
 		if ( ! isset( $function_proxy ) ) {
 			$function_proxy = new FunctionsProxy();
 		}
-		$this->function_proxy = $function_proxy;
+
+		return $function_proxy;
 	}
 
 }

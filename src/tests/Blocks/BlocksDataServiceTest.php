@@ -2,9 +2,11 @@
 
 namespace Alma\Woocommerce\Tests\Blocks;
 
+use Alma\API\Client;
 use Alma\API\Endpoints\Results\Eligibility;
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\Blocks\BlocksDataService;
+use Alma\Woocommerce\Exceptions\ApiClientException;
 use Alma\Woocommerce\Services\AlmaClientService;
 use Alma\Woocommerce\WcProxy\FunctionsProxy;
 use WP_UnitTestCase;
@@ -27,10 +29,39 @@ class BlocksDataServiceTest extends WP_UnitTestCase {
 		);
 	}
 
-	public function test_get_blocks_data() {
+	public function test_get_blocks_with_error_in_client() {
 		$this->alma_client_service
+			->expects( $this->once() )
+			->method( 'get_alma_client' )
+			->willThrowException( new ApiClientException( 'Api key not set' ) );
+		$this->function_proxy
+			->expects( $this->once() )
+			->method( 'send_http_error_response' )
+			->with(
+				[
+					'success' => false,
+				], 500
+			);
+		$this->assertNull( $this->blocks_data_service->get_blocks_data() );
+	}
+
+	/**
+	 * Test blocks data return without error
+	 *
+	 * @return void
+	 */
+	public function test_get_blocks_data() {
+		$client_mock = $this->createMock( Client::class );
+		$this->alma_client_service
+			->expects( $this->once() )
+			->method( 'get_alma_client' )
+			->willReturn( $client_mock );
+		$this->alma_client_service
+			->expects( $this->once() )
 			->method( 'get_eligibility' )
+			->with( WC()->cart, $client_mock )
 			->willReturn( $this->eligibility_array() );
+
 		$this->function_proxy
 			->expects( $this->once() )
 			->method( 'send_http_response' )
