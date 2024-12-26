@@ -122,6 +122,8 @@ class AlmaClientService {
 	}
 
 	/**
+	 * Generate Payload for eligibility depending on cart
+	 *
 	 * @param \WC_Cart $cart
 	 *
 	 * @return array
