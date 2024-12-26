@@ -11,10 +11,12 @@
 
 namespace Alma\Woocommerce\Blocks;
 
+use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
 use Alma\Woocommerce\Builders\Helpers\GatewayHelperBuilder;
 use Alma\Woocommerce\Builders\Helpers\PlanHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
 use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Gateways\Standard\StandardGateway;
 use Alma\Woocommerce\Helpers\AssetsHelper;
@@ -23,6 +25,7 @@ use Alma\Woocommerce\Helpers\CheckoutHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\GatewayHelper;
 use Alma\Woocommerce\Helpers\PlanHelper;
+use Alma\Woocommerce\Helpers\ToolsHelper;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -75,6 +78,14 @@ class AlmaBlock extends AbstractPaymentMethodType {
 	 * @var StandardGateway
 	 */
 	protected $gateway;
+	/**
+	 * @var AlmaLogger
+	 */
+	private $logger;
+	/**
+	 * @var ToolsHelper
+	 */
+	private $tools_helper;
 
 	/**
 	 * Initialize.
@@ -91,6 +102,9 @@ class AlmaBlock extends AbstractPaymentMethodType {
 		$this->cart_helper      = $cart_helper_builder->get_instance();
 		$alma_plan_builder      = new PlanHelperBuilder();
 		$this->alma_plan_helper = $alma_plan_builder->get_instance();
+		$this->logger           = new AlmaLogger();
+		$tools_helper_builder   = new ToolsHelperBuilder();
+		$this->tools_helper     = $tools_helper_builder->get_instance();
 	}
 
 	/**
@@ -135,6 +149,24 @@ class AlmaBlock extends AbstractPaymentMethodType {
 			ALMA_VERSION,
 			true
 		);
+		// Passer la base URL au JavaScript
+		wp_localize_script( 'alma-blocks-integration', 'BlocksData', [
+			'url' => $this->tools_helper->url_for_webhook( BlocksDataService::WEBHOOK_PATH ),
+		] );
+
+
+		wp_enqueue_script(
+			'alma-store',
+			AssetsHelper::get_asset_build_url( 'alma-store.js' ),
+			array(
+				'wp-data',
+				'wp-element',
+				'wc-blocks'
+			),
+			ALMA_VERSION,
+			true
+		);
+
 
 		if ( function_exists( 'wp_set_script_translations' ) ) {
 			wp_set_script_translations( 'alma-blocks-integration' );
