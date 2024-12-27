@@ -14,6 +14,10 @@ namespace Alma\Woocommerce\Blocks;
 use Alma\API\Endpoints\Results\Eligibility;
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\Exceptions\ApiClientException;
+use Alma\Woocommerce\Gateways\Inpage\InPageGateway;
+use Alma\Woocommerce\Gateways\Inpage\PayLaterGateway as InPagePayLaterGateway;
+use Alma\Woocommerce\Gateways\Inpage\PayMoreThanFourGateway as InPagePayMoreThanFourGateway;
+use Alma\Woocommerce\Gateways\Inpage\PayNowGateway as InPagePayNowGateway;
 use Alma\Woocommerce\Gateways\Standard\PayMoreThanFourGateway;
 use Alma\Woocommerce\Gateways\Standard\PayLaterGateway;
 use Alma\Woocommerce\Gateways\Standard\PayNowGateway;
@@ -108,11 +112,27 @@ class BlocksDataService {
 	 * @return array|array[]
 	 */
 	private function format_eligibility_for_blocks( $eligibilities ) {
-		$gateways = [
-			PayNowGateway::GATEWAY_ID          => [],
-			StandardGateway::GATEWAY_ID        => [],
-			PayLaterGateway::GATEWAY_ID        => [],
-			PayMoreThanFourGateway::GATEWAY_ID => []
+		$in_page_activated = $this->alma_client_service->in_page_is_activated();
+		$gateways_keys     = [
+			'redirect' => [
+				'pay_now'      => PayNowGateway::GATEWAY_ID,
+				'installments' => StandardGateway::GATEWAY_ID,
+				'pay_later'    => PayLaterGateway::GATEWAY_ID,
+				'credit'       => PayMoreThanFourGateway::GATEWAY_ID,
+			],
+			'in_page'  => [
+				'pay_now'      => InPagePayNowGateway::GATEWAY_ID,
+				'installments' => InPageGateway::GATEWAY_ID,
+				'pay_later'    => InPagePayLaterGateway::GATEWAY_ID,
+				'credit'       => InPagePayMoreThanFourGateway::GATEWAY_ID,
+			],
+		];
+		$gateway_mode      = $in_page_activated ? 'in_page' : 'redirect';
+		$gateways          = [
+			$gateways_keys[ $gateway_mode ]['pay_now']      => [],
+			$gateways_keys[ $gateway_mode ]['installments'] => [],
+			$gateways_keys[ $gateway_mode ]['pay_later']    => [],
+			$gateways_keys[ $gateway_mode ]['credit']       => [],
 		];
 		foreach ( $eligibilities as $plan_key => $eligibility ) {
 			/** @var Eligibility $eligibility */
@@ -122,19 +142,19 @@ class BlocksDataService {
 
 			// Pay now
 			if ( $installment_count === 1 && $deferred_months === 0 && $deferred_days === 0 ) {
-				$gateways[ PayNowGateway::GATEWAY_ID ][ $plan_key ] = $this->format_plan_content_for_blocks( $eligibility );
+				$gateways[ $gateways_keys[ $gateway_mode ]['pay_now'] ][ $plan_key ] = $this->format_plan_content_for_blocks( $eligibility );
 			}
 			// Pay in installments
 			if ( $installment_count >= 1 && $installment_count <= 4 && $deferred_months === 0 && $deferred_days === 0 ) {
-				$gateways[ StandardGateway::GATEWAY_ID ][ $plan_key ] = $this->format_plan_content_for_blocks( $eligibility );
+				$gateways[ $gateways_keys[ $gateway_mode ]['installments'] ][ $plan_key ] = $this->format_plan_content_for_blocks( $eligibility );
 			}
 			// Pay in credit
 			if ( $installment_count > 4 && $deferred_months === 0 && $deferred_days === 0 ) {
-				$gateways[ PayMoreThanFourGateway::GATEWAY_ID ][ $plan_key ] = $this->format_plan_content_for_blocks( $eligibility );
+				$gateways[ $gateways_keys[ $gateway_mode ]['credit'] ][ $plan_key ] = $this->format_plan_content_for_blocks( $eligibility );
 			}
 			// Pay later
 			if ( $installment_count === 1 && ( $deferred_months > 0 || $deferred_days > 0 ) ) {
-				$gateways[ PayLaterGateway::GATEWAY_ID ][ $plan_key ] = $this->format_plan_content_for_blocks( $eligibility );
+				$gateways[ $gateways_keys[ $gateway_mode ]['pay_later'] ][ $plan_key ] = $this->format_plan_content_for_blocks( $eligibility );
 			}
 		}
 
@@ -148,8 +168,13 @@ class BlocksDataService {
 	 */
 	private function format_plan_content_for_blocks( $eligibility ) {
 		return [
+			'planKey'                 => $eligibility->getPlanKey(),
 			'paymentPlan'             => $eligibility->getPaymentPlan(),
 			'customerTotalCostAmount' => $eligibility->getCustomerTotalCostAmount(),
+			'installmentsCount'       => $eligibility->getInstallmentsCount(),
+			'deferredDays'            => $eligibility->getDeferredDays(),
+			'deferredMonths'          => $eligibility->getDeferredMonths(),
+			'annualInterestRate'      => $eligibility->getAnnualInterestRate(),
 		];
 	}
 

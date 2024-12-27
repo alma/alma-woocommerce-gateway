@@ -122,6 +122,20 @@ class AlmaClientService {
 	}
 
 	/**
+	 * Is the in page feature is activated - Need to move in other setting class
+	 *
+	 * @return bool
+	 */
+	public function in_page_is_activated() {
+		$setting = $this->get_alma_settings();
+		if ( isset( $setting['display_in_page'] ) ) {
+			return $setting['display_in_page'] === 'yes';
+		}
+
+		return false;
+	}
+
+	/**
 	 * Generate Payload for eligibility depending on cart
 	 *
 	 * @param \WC_Cart $cart
@@ -167,6 +181,7 @@ class AlmaClientService {
 	private function get_active_api_key() {
 		return $this->get_mode() === 'live' ? $this->get_live_api_key() : $this->get_test_api_key();
 	}
+
 
 	/**
 	 * Return alma mode test|live set in DB
