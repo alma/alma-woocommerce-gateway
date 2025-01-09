@@ -3,7 +3,7 @@ import {useEffect, useState} from '@wordpress/element';
 import {AlmaBlocks} from "./alma-blocks-component.tsx";
 
 export const DisplayAlmaBlocks = (props) => {
-    const {eventRegistration, emitResponse, settings, gateway, store_key} = props;
+    const {eventRegistration, emitResponse, settings, gateway, store_key, isPayNow} = props;
     const {onPaymentSetup} = eventRegistration;
 
     const {CART_STORE_KEY} = window.wc.wcBlocksData
@@ -62,6 +62,7 @@ export const DisplayAlmaBlocks = (props) => {
 
     return isLoading ? <div></div> : <AlmaBlocks
         hasInPage={settings.is_in_page}
+        isPayNow={isPayNow}
         totalPrice={cartTotal.total_price}
         settings={settings}
         selectedFeePlan={plan.planKey}

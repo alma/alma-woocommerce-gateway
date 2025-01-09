@@ -3,7 +3,7 @@ import {useEffect, useState} from '@wordpress/element';
 import {AlmaBlocks} from "./alma-blocks-component.tsx";
 
 export const DisplayAlmaInPageBlocks = (props) => {
-    const {settings, gateway, store_key, setInPage} = props;
+    const {settings, gateway, store_key, setInPage, isPayNow} = props;
 
     const {CART_STORE_KEY} = window.wc.wcBlocksData
     const {cartTotal} = useSelect((select) => ({
@@ -63,16 +63,17 @@ export const DisplayAlmaInPageBlocks = (props) => {
         }
     }, [selectedFeePlan, cartTotal, isLoading])
 
-
+    const displayInstallments = isPayNow ? 'none' : 'block';
     return isLoading ? <div></div> : <><AlmaBlocks
         hasInPage={settings.is_in_page}
+        isPayNow={isPayNow}
         totalPrice={cartTotal.total_price}
         settings={settings}
         selectedFeePlan={plan.planKey}
         setSelectedFeePlan={setSelectedFeePlan}
         plans={eligibility[gateway]}
     />
-        <div id="alma-inpage-alma_in_page"></div>
+        <div id="alma-inpage-alma_in_page" style={{display: displayInstallments}}></div>
     </>
 
 }

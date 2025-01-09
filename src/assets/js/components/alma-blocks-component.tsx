@@ -54,6 +54,7 @@ type AlmaBlocksProps = {
     selectedFeePlan: string;
     setSelectedFeePlan: (value: string) => void;
     hasInPage: boolean;
+    isPayNow: boolean;
     totalPrice: number
 };
 
@@ -63,6 +64,7 @@ export const AlmaBlocks: React.FC<AlmaBlocksProps> = (
             selectedFeePlan,
             setSelectedFeePlan,
             hasInPage,
+            isPayNow,
             totalPrice,
             plans
         }
@@ -88,8 +90,6 @@ export const AlmaBlocks: React.FC<AlmaBlocksProps> = (
     const handleClick = (optionKey) => {
         setSelectedFeePlan(optionKey);
     };
-
-    const isPayNow = settings.gateway_name === "alma_pay_now";
 
     const label = (
             <div className="toggleButtonFieldLabel">{settings.description}</div>

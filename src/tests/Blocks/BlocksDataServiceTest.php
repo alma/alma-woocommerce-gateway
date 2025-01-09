@@ -100,7 +100,27 @@ class BlocksDataServiceTest extends WP_UnitTestCase {
 		return [
 			'success'     => true,
 			'eligibility' => [
-				'alma_pay_now'    => [],
+				'alma_pay_now'    => [
+					'general_1_0_0' => [
+						'paymentPlan'             => [
+							[
+								"due_date"              => 1735208969,
+								"total_amount"          => 5500,
+								"customer_fee"          => 0,
+								"customer_interest"     => 0,
+								"purchase_amount"       => 5500,
+								"localized_due_date"    => "today",
+								"time_delta_from_start" => null
+							]
+						],
+						"planKey"                 => "general_1_0_0",
+						"installmentsCount"       => 1,
+						"deferredDays"            => 0,
+						"deferredMonths"          => 0,
+						"customerTotalCostAmount" => 0,
+						"annualInterestRate"      => 0
+					]
+				],
 				'alma'            => [
 					'general_3_0_0' => [
 						'paymentPlan'             => [
@@ -171,7 +191,27 @@ class BlocksDataServiceTest extends WP_UnitTestCase {
 		return [
 			'success'     => true,
 			'eligibility' => [
-				'alma_in_page_pay_now'    => [],
+				'alma_in_page_pay_now'    => [
+					'general_1_0_0' => [
+						'paymentPlan'             => [
+							[
+								"due_date"              => 1735208969,
+								"total_amount"          => 5500,
+								"customer_fee"          => 0,
+								"customer_interest"     => 0,
+								"purchase_amount"       => 5500,
+								"localized_due_date"    => "today",
+								"time_delta_from_start" => null
+							]
+						],
+						"planKey"                 => "general_1_0_0",
+						"installmentsCount"       => 1,
+						"deferredDays"            => 0,
+						"deferredMonths"          => 0,
+						"customerTotalCostAmount" => 0,
+						"annualInterestRate"      => 0
+					]
+				],
 				'alma_in_page'            => [
 					'general_3_0_0' => [
 						'paymentPlan'             => [
@@ -259,6 +299,28 @@ class BlocksDataServiceTest extends WP_UnitTestCase {
 				    ],
 				    "installments_count":1,
 				    "deferred_days":15,
+				    "deferred_months":0,
+				    "customer_total_cost_amount":0,
+				    "customer_total_cost_bps":0,
+				    "annual_interest_rate":0
+				  },
+				  "general_1_0_0":{
+				    "is_eligible":true,
+				    "reasons":null,
+				    "constraints":null,
+				    "payment_plan":[
+				      {
+				        "due_date":1735208969,
+				        "total_amount":5500,
+				        "customer_fee":0,
+				        "customer_interest":0,
+				        "purchase_amount":5500,
+				        "localized_due_date":"today",
+				        "time_delta_from_start":null
+				      }
+				    ],
+				    "installments_count":1,
+				    "deferred_days":0,
 				    "deferred_months":0,
 				    "customer_total_cost_amount":0,
 				    "customer_total_cost_bps":0,

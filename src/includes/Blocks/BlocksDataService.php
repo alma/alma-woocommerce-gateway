@@ -145,7 +145,7 @@ class BlocksDataService {
 				$gateways[ $gateways_keys[ $gateway_mode ]['pay_now'] ][ $plan_key ] = $this->format_plan_content_for_blocks( $eligibility );
 			}
 			// Pay in installments
-			if ( $installment_count >= 1 && $installment_count <= 4 && $deferred_months === 0 && $deferred_days === 0 ) {
+			if ( $installment_count > 1 && $installment_count <= 4 && $deferred_months === 0 && $deferred_days === 0 ) {
 				$gateways[ $gateways_keys[ $gateway_mode ]['installments'] ][ $plan_key ] = $this->format_plan_content_for_blocks( $eligibility );
 			}
 			// Pay in credit

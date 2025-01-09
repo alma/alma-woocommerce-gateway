@@ -75,9 +75,11 @@ import '../css/alma-checkout-blocks.css';
         const setInPage = (inPageInstance) => {
             inPage = inPageInstance
         }
+        const isPayNow = (settings.gateway_name === "alma_pay_now" || settings.gateway_name === "alma_in_page_pay_now");
 
         return is_in_page ? (
             <DisplayAlmaInPageBlocks
+                isPayNow={isPayNow}
                 store_key={store_key}
                 settings={settings}
                 cartTotal={cartTotal}
@@ -86,6 +88,7 @@ import '../css/alma-checkout-blocks.css';
             />
         ) : (
             <DisplayAlmaBlocks
+                isPayNow={isPayNow}
                 store_key={store_key}
                 settings={settings}
                 cartTotal={cartTotal}
