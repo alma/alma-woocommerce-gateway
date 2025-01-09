@@ -135,6 +135,10 @@ class BlocksDataService {
 			$gateways_keys[ $gateway_mode ]['credit']       => [],
 		];
 		foreach ( $eligibilities as $plan_key => $eligibility ) {
+
+			if ( ! $eligibility->isEligible() ) {
+				continue;
+			}
 			/** @var Eligibility $eligibility */
 			$installment_count = $eligibility->getInstallmentsCount();
 			$deferred_days     = $eligibility->getDeferredDays();
