@@ -82,7 +82,6 @@ import '../css/alma-checkout-blocks.css';
                 isPayNow={isPayNow}
                 store_key={store_key}
                 settings={settings}
-                cartTotal={cartTotal}
                 gateway={gateway}
                 setInPage={setInPage}
             />
@@ -91,7 +90,6 @@ import '../css/alma-checkout-blocks.css';
                 isPayNow={isPayNow}
                 store_key={store_key}
                 settings={settings}
-                cartTotal={cartTotal}
                 gateway={gateway}
             />
         )
