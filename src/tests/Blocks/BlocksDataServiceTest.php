@@ -283,7 +283,7 @@ class BlocksDataServiceTest extends WP_UnitTestCase {
 		(
 			'{
 				  "general_1_15_0":{
-				    "is_eligible":true,
+				    "eligible":true,
 				    "reasons":null,
 				    "constraints":null,
 				    "payment_plan":[
@@ -305,7 +305,7 @@ class BlocksDataServiceTest extends WP_UnitTestCase {
 				    "annual_interest_rate":0
 				  },
 				  "general_1_0_0":{
-				    "is_eligible":true,
+				    "eligible":true,
 				    "reasons":null,
 				    "constraints":null,
 				    "payment_plan":[
@@ -327,7 +327,7 @@ class BlocksDataServiceTest extends WP_UnitTestCase {
 				    "annual_interest_rate":0
 				  },
 				  "general_3_0_0":{
-				    "is_eligible":true,
+				    "eligible":true,
 				    "reasons":null,
 				    "constraints":null,
 				    "payment_plan":[
@@ -365,6 +365,18 @@ class BlocksDataServiceTest extends WP_UnitTestCase {
 				    "customer_total_cost_amount":273,
 				    "customer_total_cost_bps":165,
 				    "annual_interest_rate":2230
+				  },
+				  "general_10_0_0":{
+				    "eligible":false,
+				    "reasons":null,
+				    "constraints":null,
+				    "payment_plan":[],
+				    "installments_count":10,
+				    "deferred_days":0,
+				    "deferred_months":0,
+				    "customer_total_cost_amount":0,
+				    "customer_total_cost_bps":0,
+				    "annual_interest_rate":0
 				  }
 			}'
 			, true );

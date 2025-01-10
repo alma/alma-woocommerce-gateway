@@ -85,6 +85,7 @@ class BlocksDataService {
 		try {
 			$almaClient    = $this->alma_client_service->get_alma_client();
 			$eligibilities = $this->alma_client_service->get_eligibility( $almaClient, WC()->cart );
+
 		} catch ( ApiClientException $e ) {
 			$this->logger->info( 'Impossible to set Alma client: ' . $e->getMessage() );
 			$this->function_proxy->send_http_error_response( [
@@ -100,6 +101,7 @@ class BlocksDataService {
 			'eligibility' => $this->format_eligibility_for_blocks( $eligibilities ),
 			'cart_total'  => (float) WC()->cart->get_total( '' ),
 		];
+
 		// Send JSON response
 		$this->function_proxy->send_http_response( $response );
 	}
@@ -136,10 +138,10 @@ class BlocksDataService {
 		];
 		foreach ( $eligibilities as $plan_key => $eligibility ) {
 
+			/** @var Eligibility $eligibility */
 			if ( ! $eligibility->isEligible() ) {
 				continue;
 			}
-			/** @var Eligibility $eligibility */
 			$installment_count = $eligibility->getInstallmentsCount();
 			$deferred_days     = $eligibility->getDeferredDays();
 			$deferred_months   = $eligibility->getDeferredMonths();
