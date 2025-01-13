@@ -15,6 +15,7 @@ use Alma\Woocommerce\Admin\Helpers\CheckLegalHelper;
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Blocks\Inpage\InPageBlock;
 use Alma\Woocommerce\Blocks\Inpage\PayLaterBlock as InpagePayLaterBlock;
+use Alma\Woocommerce\Blocks\Inpage\PayMoreThanFourBlock as InPagePayMoreThanFourBlock;
 use Alma\Woocommerce\Blocks\Inpage\PayNowBlock as InpagePayNowBlock;
 use Alma\Woocommerce\Blocks\Standard\PayLaterBlock;
 use Alma\Woocommerce\Blocks\Standard\PayMoreThanFourBlock;
@@ -234,6 +235,7 @@ class PluginHelper {
 				$payment_method_registry->register( new InpagePayNowBlock() );
 				$payment_method_registry->register( new InPageBlock() );
 				$payment_method_registry->register( new InpagePayLaterBlock() );
+				$payment_method_registry->register( new InPagePayMoreThanFourBlock() );
 			}
 		);
 	}

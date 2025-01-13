@@ -22,6 +22,8 @@ use Alma\Woocommerce\Helpers\ConstantsHelper;
  */
 class PayLaterGateway extends StandardGateway {
 
+	const GATEWAY_ID = 'alma_pay_later';
+
 	/**
 	 * Get the gateway id.
 	 *
