@@ -23,25 +23,31 @@ import './alma-checkout-blocks.css';
 
     const CartObserver = () => {
         // Subscribe to the cart total
-        const {cartTotal} = useSelect((select) => ({
-            cartTotal: select(CART_STORE_KEY).getCartTotals()
+        const {cartTotal, shippingRates} = useSelect((select) => ({
+            cartTotal: select(CART_STORE_KEY).getCartTotals().total_price,
+            shippingRates: select(CART_STORE_KEY).getShippingRates()
         }), []);
 
         // Subscribe to the eligibility
-        const {eligibility} = useSelect(
+        const {isLoading} = useSelect(
             (select) => ({
-                eligibility: select(store_key).getAlmaEligibility()
+                isLoading: select(store_key).isLoading(),
             }), []
         );
 
         // Use the cart total to fetch the new eligibility
         useEffect(() => {
+            console.log('cartTotal', cartTotal)
             // BlockData is a global variable defined in the PHP file with the wp_localize_script function
             fetchAlmaEligibility(store_key, BlocksData.url)
-        }, [cartTotal]);
+        }, [cartTotal, shippingRates]);
 
         // Register the payment gateway blocks
         useEffect(() => {
+            if (isLoading) {
+                return
+            }
+            const eligibility = select(store_key).getAlmaEligibility()
             // For each gateway in eligibility result, we register a block
             for (const gateway in eligibility) {
                 const settings = window.wc.wcSettings.getSetting(`${gateway}_data`, null)
@@ -66,8 +72,7 @@ import './alma-checkout-blocks.css';
 
                 window.wc.wcBlocksRegistry.registerPaymentMethod(Block_Gateway_Alma);
             }
-        }, [eligibility]);
-        return null
+        }, [isLoading]);
     };
 
     const getContentBlock = (is_in_page, settings, cartTotal, gateway) => {
