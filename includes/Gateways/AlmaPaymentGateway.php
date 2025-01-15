@@ -813,13 +813,15 @@ class AlmaPaymentGateway extends WC_Payment_Gateway {
 			<?php echo wp_kses_post( $data['title'] ); ?>
 		</h3>
 		<?php if ( ! empty( $data['description'] ) ) : ?>
-			<div class="<?php echo esc_attr( $data['description_class'] ); ?>"
-				 style="<?php echo esc_attr( $data['description_css'] ); ?>">
+			<div
+				class="<?php echo esc_attr( $data['description_class'] ); ?>"
+				style="<?php echo esc_attr( $data['description_css'] ); ?>">
 				<?php echo wp_kses_post( $data['description'] ); ?>
 			</div>
 		<?php endif; ?>
-	<table class="form-table <?php echo esc_attr( $data['table_class'] ); ?>"
-		   style="<?php echo esc_attr( $data['table_css'] ); ?>">
+	<table
+		class="form-table <?php echo esc_attr( $data['table_class'] ); ?>"
+		style="<?php echo esc_attr( $data['table_css'] ); ?>">
 		<?php
 
 		return ob_get_clean();

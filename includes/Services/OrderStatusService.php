@@ -18,7 +18,7 @@ use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Exceptions\NoOrderException;
 use Alma\Woocommerce\Exceptions\RequirementsException;
 use Alma\Woocommerce\WcProxy\OrderProxy;
-use \WC_Order;
+use WC_Order;
 
 /**
  * Order status service.
@@ -74,11 +74,12 @@ class OrderStatusService {
 	 *
 	 * @return void
 	 */
-	public function send_order_status( $order_id, $old_status, $new_status ) {
+	public function send_order_status( $order_id, $old_status, $new_status ) {// phpcs:ignore
 		try {
 			$order = $this->order_proxy->get_order_by_id( $order_id );
 		} catch ( NoOrderException $e ) {
 			$this->alma_logger->error( 'Send order status no order : ' . $e->getMessage() );
+
 			return;
 		}
 
@@ -90,6 +91,7 @@ class OrderStatusService {
 			$alma_payment_id = $this->order_proxy->get_alma_payment_id( $order );
 		} catch ( RequirementsException $e ) {
 			$this->alma_logger->warning( 'Send order Status RequirementsException : ' . $e->getMessage() );
+
 			return;
 		}
 
@@ -109,6 +111,7 @@ class OrderStatusService {
 	 */
 	private function is_alma_order( $order ) {
 		$payment_method = $this->order_proxy->get_order_payment_method( $order );
+
 		return 'alma' === $payment_method || 'alma_in_page' === $payment_method;
 	}
 
@@ -122,39 +125,19 @@ class OrderStatusService {
 			$this->alma_settings->get_alma_client();
 		} catch ( DependenciesError $e ) {
 			$this->alma_logger->info( 'Send order Status DependenciesError : ' . $e->getMessage() );
+
 			return false;
 		} catch ( ParamsError $e ) {
 			$this->alma_logger->info( 'Send order Status ParamsError : ' . $e->getMessage() );
+
 			return false;
 		} catch ( AlmaException $e ) {
 			$this->alma_logger->info( 'Send order Status AlmaException : ' . $e->getMessage() );
+
 			return false;
 		}
-		return true;
-	}
 
-	/**
-	 * Check if the order is shipped.
-	 *
-	 * @param string $status Order status.
-	 *
-	 * @return bool | null
-	 */
-	private function is_shipped( $status ) {
-		switch ( $status ) {
-			case 'pending':
-			case 'on-hold':
-			case 'processing':
-			case 'failed':
-			case 'refunded':
-			case 'cancelled':
-			case 'checkout-draft':
-				return false;
-			case 'completed':
-				return true;
-			default:
-				return null;
-		}
+		return true;
 	}
 
 	/**
@@ -180,6 +163,30 @@ class OrderStatusService {
 			$this->alma_logger->error( 'Send order Status RequestError : ' . $e->getMessage() );
 		} catch ( RequestException $e ) {
 			$this->alma_logger->error( 'Send order Status RequestException : ' . $e->getMessage() );
+		}
+	}
+
+	/**
+	 * Check if the order is shipped.
+	 *
+	 * @param string $status Order status.
+	 *
+	 * @return bool | null
+	 */
+	private function is_shipped( $status ) {
+		switch ( $status ) {
+			case 'pending':
+			case 'on-hold':
+			case 'processing':
+			case 'failed':
+			case 'refunded':
+			case 'cancelled':
+			case 'checkout-draft':
+				return false;
+			case 'completed':
+				return true;
+			default:
+				return null;
 		}
 	}
 }

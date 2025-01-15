@@ -192,7 +192,7 @@ class AlmaSettings {
 	 * Constructor.
 	 */
 	public function __construct() {
-		 $this->logger                     = new AlmaLogger();
+		$this->logger                      = new AlmaLogger();
 		$this->encryptor_helper            = new EncryptorHelper();
 		$this->fee_plan_helper             = new FeePlanHelper();
 		$this->internationalization_helper = new InternationalizationHelper();
@@ -229,7 +229,7 @@ class AlmaSettings {
 		$settings = (array) get_option( self::OPTIONS_KEY, array() );
 
 		if ( ! empty( $settings['allowed_fee_plans'] ) && ! is_array( $settings['allowed_fee_plans'] ) ) {
-			$settings['allowed_fee_plans'] = unserialize($settings['allowed_fee_plans']); // phpcs:ignore
+			$settings['allowed_fee_plans'] = unserialize( $settings['allowed_fee_plans'] ); // phpcs:ignore
 		}
 
 		return array_merge( $this->settings_helper->default_settings(), $settings );
@@ -410,9 +410,9 @@ class AlmaSettings {
 	public function has_pay_now() {
 		foreach ( $this->get_enabled_plans_definitions() as $plan_definition ) {
 			if (
-			   1 === $plan_definition['installments_count'] &&
-			   0 === $plan_definition['deferred_days'] &&
-			   0 === $plan_definition['deferred_months']
+				1 === $plan_definition['installments_count']
+				&& 0 === $plan_definition['deferred_days']
+				&& 0 === $plan_definition['deferred_months']
 			) {
 				return true;
 			}
@@ -490,7 +490,7 @@ class AlmaSettings {
 	 * @return bool
 	 */
 	public function is_test() {
-		 return $this->get_environment() === 'test';
+		return $this->get_environment() === 'test';
 	}
 
 	/**
@@ -499,7 +499,7 @@ class AlmaSettings {
 	 * @return string
 	 */
 	public function get_environment() {
-		 return 'live' === $this->environment ? 'live' : 'test';
+		return 'live' === $this->environment ? 'live' : 'test';
 	}
 
 	/**
@@ -530,7 +530,7 @@ class AlmaSettings {
 	 * @return bool
 	 */
 	public function is_live() {
-		 return $this->get_environment() === 'live';
+		return $this->get_environment() === 'live';
 	}
 
 	/**
@@ -884,7 +884,7 @@ class AlmaSettings {
 			}
 		);
 
-		$this->settings['allowed_fee_plans'] = serialize($this->allowed_fee_plans); // phpcs:ignore
+		$this->settings['allowed_fee_plans'] = serialize( $this->allowed_fee_plans ); // phpcs:ignore
 
 		foreach ( $this->allowed_fee_plans as $fee_plan ) {
 			$plan_key           = $fee_plan->getPlanKey();
@@ -1044,12 +1044,12 @@ class AlmaSettings {
 			case ConstantsHelper::GATEWAY_ID_PAY_NOW:
 			case ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_NOW:
 				$display_plan = $this->get_installments_count( $plan_key ) === 1
-					&& ( $this->get_deferred_days( $plan_key ) === 0 && $this->get_deferred_months( $plan_key ) === 0 );
+								&& ( $this->get_deferred_days( $plan_key ) === 0 && $this->get_deferred_months( $plan_key ) === 0 );
 				break;
 			case ConstantsHelper::GATEWAY_ID_PAY_LATER:
 			case ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_LATER:
 				$display_plan = $this->get_installments_count( $plan_key ) === 1
-					&& ( $this->get_deferred_days( $plan_key ) !== 0 || $this->get_deferred_months( $plan_key ) !== 0 );
+								&& ( $this->get_deferred_days( $plan_key ) !== 0 || $this->get_deferred_months( $plan_key ) !== 0 );
 				break;
 			case ConstantsHelper::GATEWAY_ID_IN_PAGE_MORE_THAN_FOUR:
 			case ConstantsHelper::GATEWAY_ID_MORE_THAN_FOUR:

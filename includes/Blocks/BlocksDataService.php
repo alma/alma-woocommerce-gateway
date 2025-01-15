@@ -18,8 +18,8 @@ use Alma\Woocommerce\Gateways\Inpage\InPageGateway;
 use Alma\Woocommerce\Gateways\Inpage\PayLaterGateway as InPagePayLaterGateway;
 use Alma\Woocommerce\Gateways\Inpage\PayMoreThanFourGateway as InPagePayMoreThanFourGateway;
 use Alma\Woocommerce\Gateways\Inpage\PayNowGateway as InPagePayNowGateway;
-use Alma\Woocommerce\Gateways\Standard\PayMoreThanFourGateway;
 use Alma\Woocommerce\Gateways\Standard\PayLaterGateway;
+use Alma\Woocommerce\Gateways\Standard\PayMoreThanFourGateway;
 use Alma\Woocommerce\Gateways\Standard\PayNowGateway;
 use Alma\Woocommerce\Gateways\Standard\StandardGateway;
 use Alma\Woocommerce\Helpers\ToolsHelper;
@@ -61,6 +61,51 @@ class BlocksDataService {
 	}
 
 	/**
+	 * Init alma client service
+	 *
+	 * @param AlmaClientService|null $alma_client_service
+	 *
+	 * @return AlmaClientService
+	 */
+	private function init_alma_client_service( $alma_client_service ) {
+		if ( ! isset( $alma_client_service ) ) {
+			$alma_client_service = new AlmaClientService();
+		}
+
+		return $alma_client_service;
+	}
+
+	/**
+	 * Init function proxy
+	 *
+	 * @param FunctionsProxy|null $function_proxy
+	 *
+	 * @return FunctionsProxy
+	 */
+	private function init_function_proxy( $function_proxy ) {
+		if ( ! isset( $function_proxy ) ) {
+			$function_proxy = new FunctionsProxy();
+		}
+
+		return $function_proxy;
+	}
+
+	/**
+	 * Init Alma Logger
+	 *
+	 * @param AlmaLogger|null $logger
+	 *
+	 * @return AlmaLogger
+	 */
+	private function init_alma_logger( $logger ) {
+		if ( ! isset( $logger ) ) {
+			$logger = new AlmaLogger();
+		}
+
+		return $logger;
+	}
+
+	/**
 	 * Init webhook alma_blocks_data
 	 * No test need a proxy to test
 	 *
@@ -83,8 +128,8 @@ class BlocksDataService {
 	 */
 	public function get_blocks_data() {
 		try {
-			$almaClient    = $this->alma_client_service->get_alma_client();
-			$eligibilities = $this->alma_client_service->get_eligibility( $almaClient, WC()->cart );
+			$alma_client   = $this->alma_client_service->get_alma_client();
+			$eligibilities = $this->alma_client_service->get_eligibility( $alma_client, WC()->cart );
 
 		} catch ( ApiClientException $e ) {
 			$this->logger->info( 'Impossible to set Alma client: ' . $e->getMessage() );
@@ -150,19 +195,19 @@ class BlocksDataService {
 			$deferred_months   = $eligibility->getDeferredMonths();
 
 			// Pay now
-			if ( $installment_count === 1 && $deferred_months === 0 && $deferred_days === 0 ) {
+			if ( $installment_count === 1 && $deferred_months === 0 && $deferred_days === 0 ) {//phpcs:ignore
 				$gateways[ $gateways_keys[ $gateway_mode ]['pay_now'] ][ $plan_key ] = $this->format_plan_content_for_blocks( $eligibility );
 			}
 			// Pay in installments
-			if ( $installment_count > 1 && $installment_count <= 4 && $deferred_months === 0 && $deferred_days === 0 ) {
+			if ( $installment_count > 1 && $installment_count <= 4 && $deferred_months === 0 && $deferred_days === 0 ) {//phpcs:ignore
 				$gateways[ $gateways_keys[ $gateway_mode ]['installments'] ][ $plan_key ] = $this->format_plan_content_for_blocks( $eligibility );
 			}
 			// Pay in credit
-			if ( $installment_count > 4 && $deferred_months === 0 && $deferred_days === 0 ) {
+			if ( $installment_count > 4 && $deferred_months === 0 && $deferred_days === 0 ) {//phpcs:ignore
 				$gateways[ $gateways_keys[ $gateway_mode ]['credit'] ][ $plan_key ] = $this->format_plan_content_for_blocks( $eligibility );
 			}
 			// Pay later
-			if ( $installment_count === 1 && ( $deferred_months > 0 || $deferred_days > 0 ) ) {
+			if ( $installment_count === 1 && ( $deferred_months > 0 || $deferred_days > 0 ) ) {//phpcs:ignore
 				$gateways[ $gateways_keys[ $gateway_mode ]['pay_later'] ][ $plan_key ] = $this->format_plan_content_for_blocks( $eligibility );
 			}
 		}
@@ -185,51 +230,6 @@ class BlocksDataService {
 			'deferredMonths'          => $eligibility->getDeferredMonths(),
 			'annualInterestRate'      => $eligibility->getAnnualInterestRate(),
 		);
-	}
-
-	/**
-	 * Init alma client service
-	 *
-	 * @param AlmaClientService|null $alma_client_service
-	 *
-	 * @return AlmaClientService
-	 */
-	private function init_alma_client_service( $alma_client_service ) {
-		if ( ! isset( $alma_client_service ) ) {
-			$alma_client_service = new AlmaClientService();
-		}
-
-		return $alma_client_service;
-	}
-
-	/**
-	 * Init Alma Logger
-	 *
-	 * @param AlmaLogger|null $logger
-	 *
-	 * @return AlmaLogger
-	 */
-	private function init_alma_logger( $logger ) {
-		if ( ! isset( $logger ) ) {
-			$logger = new AlmaLogger();
-		}
-
-		return $logger;
-	}
-
-	/**
-	 * Init function proxy
-	 *
-	 * @param FunctionsProxy|null $function_proxy
-	 *
-	 * @return FunctionsProxy
-	 */
-	private function init_function_proxy( $function_proxy ) {
-		if ( ! isset( $function_proxy ) ) {
-			$function_proxy = new FunctionsProxy();
-		}
-
-		return $function_proxy;
 	}
 
 }

@@ -25,37 +25,40 @@ use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\EncryptorHelper;
 use Alma\Woocommerce\WcProxy\OptionProxy;
 
+/**
+ * Class AlmaClientService
+ */
 class AlmaClientService {
 
 	/**
-	 * @var EncryptorHelper
+	 * @var EncryptorHelper EncryptorHelper
 	 */
 	private $encryptor_helper;
 	/**
-	 * @var AlmaLogger
+	 * @var AlmaLogger AlmaLogger
 	 */
 	private $logger;
 	/**
-	 * @var VersionFactory
+	 * @var VersionFactory VersionFactory
 	 */
 	private $version_factory;
 	/**
-	 * @var CartHelper|null
+	 * @var CartHelper|null CartHelper
 	 */
 	private $cart_helper;
 	/**
-	 * @var OptionProxy
+	 * @var OptionProxy OptionProxy
 	 */
 	private $option_proxy;
 
 	/**
 	 * Alma client Service - Use to connect with Alma API
 	 *
-	 * @param      $encryption_helper
-	 * @param      $version_factory
-	 * @param      $cart_helper
-	 * @param      $option_proxy
-	 * @param      $logger
+	 * @param $encryption_helper EncryptorHelper Encryption helper
+	 * @param $version_factory VersionFactory Version factory
+	 * @param $cart_helper CartHelper Cart helper
+	 * @param $option_proxy OptionProxy Option proxy
+	 * @param $logger AlmaLogger Alma logger
 	 */
 	public function __construct(
 		$encryption_helper = null,
@@ -69,174 +72,6 @@ class AlmaClientService {
 		$this->cart_helper      = $this->init_cart_helper( $cart_helper );
 		$this->option_proxy     = $this->init_option_proxy( $option_proxy );
 		$this->logger           = $this->init_alma_logger( $logger );
-	}
-
-	/**
-	 * Get Alma client with the current API KEY and mode
-	 *
-	 * @return Client
-	 * @throws ApiClientException
-	 */
-	public function get_alma_client() {
-		try {
-			$alma_client = new Client(
-				$this->get_active_api_key(),
-				array(
-					'mode'   => $this->get_mode(),
-					'logger' => $this->logger,
-				)
-			);
-		} catch ( DependenciesError $e ) {
-			throw new ApiClientException( $e->getMessage() );
-		} catch ( ParamsError $e ) {
-			throw new ApiClientException( $e->getMessage() );
-		}
-
-		$alma_client->addUserAgentComponent( 'WordPress', get_bloginfo( 'version' ) );
-		$alma_client->addUserAgentComponent( 'WooCommerce', $this->version_factory->get_version() );
-		$alma_client->addUserAgentComponent( 'Alma for WooCommerce', ALMA_VERSION );
-
-		return $alma_client;
-	}
-
-
-	/**
-	 * Get alma Eligibility from cart
-	 *
-	 * @param Client $alma_client
-	 *
-	 * @return Eligibility[] | []
-	 */
-	public function get_eligibility( $alma_client, $cart ) {
-		try {
-			$payload     = $this->get_eligibility_payload_from_cart( $cart );
-			$eligibility = $alma_client->payments->eligibility( $payload, true );
-		} catch ( RequestError $e ) {
-			$this->logger->error( 'Error in get eligibility : ' . $e->getMessage() );
-
-			return array();
-		}
-
-		return $eligibility;
-	}
-
-	/**
-	 * Is the in page feature is activated - Need to move in other setting class
-	 *
-	 * @return bool
-	 */
-	public function in_page_is_activated() {
-		$setting = $this->get_alma_settings();
-		if ( isset( $setting['display_in_page'] ) ) {
-			return $setting['display_in_page'] === 'yes';
-		}
-
-		return false;
-	}
-
-	/**
-	 * Generate Payload for eligibility depending on cart
-	 *
-	 * @param \WC_Cart $cart
-	 *
-	 * @return array
-	 */
-	private function get_eligibility_payload_from_cart( $cart ) {
-		$data = array(
-			'purchase_amount' => (int) ( round( (float) $cart->get_total( '' ) * 100 ) ),
-			'queries'         => $this->cart_helper->get_eligible_plans_for_cart(),
-			'locale'          => apply_filters( 'alma_eligibility_user_locale', get_locale() ),
-		);
-
-		$billing_country  = $cart->get_customer()->get_billing_country();
-		$shipping_country = $cart->get_customer()->get_shipping_country();
-
-		if ( $billing_country ) {
-			$data['billing_address'] = array( 'country' => $billing_country );
-		}
-		if ( $shipping_country ) {
-			$data['shipping_address'] = array( 'country' => $shipping_country );
-		}
-
-		return $data;
-	}
-
-
-	/**
-	 * Get the alma setting in DB
-	 *
-	 * @return array
-	 */
-	private function get_alma_settings() {
-		return (array) $this->option_proxy->get_option( AlmaSettings::OPTIONS_KEY, array() );
-	}
-
-	/**
-	 * Get active decrypted API key depending on mode
-	 *
-	 * @return string
-	 * @throws ApiClientException
-	 */
-	private function get_active_api_key() {
-		return $this->get_mode() === 'live' ? $this->get_live_api_key() : $this->get_test_api_key();
-	}
-
-
-	/**
-	 * Return alma mode test|live set in DB
-	 *
-	 * @return string
-	 * @throws ApiClientException
-	 */
-	private function get_mode() {
-		$setting = $this->get_alma_settings();
-		if ( isset( $setting['environment'] ) ) {
-			return $setting['environment'] === 'live' ? 'live' : 'test';
-		}
-		throw new ApiClientException( 'No mode set' );
-	}
-
-	/**
-	 * Gets API key for live environment.
-	 *
-	 * @return string
-	 * @throws ApiClientException
-	 */
-	private function get_live_api_key() {
-		$setting = $this->get_alma_settings();
-		if ( isset( $setting['live_api_key'] ) ) {
-			return $this->encryptor_helper->decrypt( $setting['live_api_key'] );
-		}
-		throw new ApiClientException( 'Live api key not set' );
-	}
-
-	/**
-	 * Gets API key for test environment.
-	 *
-	 * @return string
-	 * @throws ApiClientException
-	 */
-	private function get_test_api_key() {
-		$setting = $this->get_alma_settings();
-		if ( isset( $setting['test_api_key'] ) ) {
-			return $this->encryptor_helper->decrypt( $setting['test_api_key'] );
-		}
-		throw new ApiClientException( 'Test api key not set' );
-	}
-
-	/**
-	 * Init Alma logger
-	 *
-	 * @param AlmaLogger|null $logger
-	 *
-	 * @return AlmaLogger
-	 */
-	private function init_alma_logger( $logger ) {
-		if ( ! isset( $logger ) ) {
-			$logger = new AlmaLogger();
-		}
-
-		return $logger;
 	}
 
 	/**
@@ -298,5 +133,170 @@ class AlmaClientService {
 		}
 
 		return $option_proxy;
+	}
+
+	/**
+	 * Init Alma logger
+	 *
+	 * @param AlmaLogger|null $logger
+	 *
+	 * @return AlmaLogger
+	 */
+	private function init_alma_logger( $logger ) {
+		if ( ! isset( $logger ) ) {
+			$logger = new AlmaLogger();
+		}
+
+		return $logger;
+	}
+
+	/**
+	 * Get Alma client with the current API KEY and mode
+	 *
+	 * @return Client
+	 * @throws ApiClientException
+	 */
+	public function get_alma_client() {
+		try {
+			$alma_client = new Client(
+				$this->get_active_api_key(),
+				array(
+					'mode'   => $this->get_mode(),
+					'logger' => $this->logger,
+				)
+			);
+		} catch ( DependenciesError $e ) {
+			throw new ApiClientException( $e->getMessage() );
+		} catch ( ParamsError $e ) {
+			throw new ApiClientException( $e->getMessage() );
+		}
+
+		$alma_client->addUserAgentComponent( 'WordPress', get_bloginfo( 'version' ) );
+		$alma_client->addUserAgentComponent( 'WooCommerce', $this->version_factory->get_version() );
+		$alma_client->addUserAgentComponent( 'Alma for WooCommerce', ALMA_VERSION );
+
+		return $alma_client;
+	}
+
+	/**
+	 * Get active decrypted API key depending on mode
+	 *
+	 * @return string
+	 * @throws ApiClientException
+	 */
+	private function get_active_api_key() {
+		return 'live' === $this->get_mode() ? $this->get_live_api_key() : $this->get_test_api_key();
+	}
+
+	/**
+	 * Return alma mode test|live set in DB
+	 *
+	 * @return string
+	 * @throws ApiClientException
+	 */
+	private function get_mode() {
+		$setting = $this->get_alma_settings();
+		if ( isset( $setting['environment'] ) ) {
+			return 'live' === $setting['environment'] ? 'live' : 'test';
+		}
+		throw new ApiClientException( 'No mode set' );
+	}
+
+	/**
+	 * Get the alma setting in DB
+	 *
+	 * @return array
+	 */
+	private function get_alma_settings() {
+		return (array) $this->option_proxy->get_option( AlmaSettings::OPTIONS_KEY, array() );
+	}
+
+	/**
+	 * Gets API key for live environment.
+	 *
+	 * @return string
+	 * @throws ApiClientException
+	 */
+	private function get_live_api_key() {
+		$setting = $this->get_alma_settings();
+		if ( isset( $setting['live_api_key'] ) ) {
+			return $this->encryptor_helper->decrypt( $setting['live_api_key'] );
+		}
+		throw new ApiClientException( 'Live api key not set' );
+	}
+
+	/**
+	 * Gets API key for test environment.
+	 *
+	 * @return string
+	 * @throws ApiClientException
+	 */
+	private function get_test_api_key() {
+		$setting = $this->get_alma_settings();
+		if ( isset( $setting['test_api_key'] ) ) {
+			return $this->encryptor_helper->decrypt( $setting['test_api_key'] );
+		}
+		throw new ApiClientException( 'Test api key not set' );
+	}
+
+	/**
+	 * Get alma Eligibility from cart
+	 *
+	 * @param Client $alma_client
+	 *
+	 * @return Eligibility[] | []
+	 */
+	public function get_eligibility( $alma_client, $cart ) {
+		try {
+			$payload     = $this->get_eligibility_payload_from_cart( $cart );
+			$eligibility = $alma_client->payments->eligibility( $payload, true );
+		} catch ( RequestError $e ) {
+			$this->logger->error( 'Error in get eligibility : ' . $e->getMessage() );
+
+			return array();
+		}
+
+		return $eligibility;
+	}
+
+	/**
+	 * Generate Payload for eligibility depending on cart
+	 *
+	 * @param \WC_Cart $cart
+	 *
+	 * @return array
+	 */
+	private function get_eligibility_payload_from_cart( $cart ) {
+		$data = array(
+			'purchase_amount' => (int) ( round( (float) $cart->get_total( '' ) * 100 ) ),
+			'queries'         => $this->cart_helper->get_eligible_plans_for_cart(),
+			'locale'          => apply_filters( 'alma_eligibility_user_locale', get_locale() ),
+		);
+
+		$billing_country  = $cart->get_customer()->get_billing_country();
+		$shipping_country = $cart->get_customer()->get_shipping_country();
+
+		if ( $billing_country ) {
+			$data['billing_address'] = array( 'country' => $billing_country );
+		}
+		if ( $shipping_country ) {
+			$data['shipping_address'] = array( 'country' => $shipping_country );
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Is the in page feature is activated - Need to move in other setting class
+	 *
+	 * @return bool
+	 */
+	public function in_page_is_activated() {
+		$setting = $this->get_alma_settings();
+		if ( isset( $setting['display_in_page'] ) ) {
+			return 'yes' === $setting['display_in_page'];
+		}
+
+		return false;
 	}
 }

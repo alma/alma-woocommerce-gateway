@@ -468,13 +468,13 @@ class FormFieldsHelper {
 				);
 			}
 		}
-		$fees_applied          = __( 'Fees applied to each transaction for this plan:', 'alma-gateway-for-woocommerce' );
-		$you_pay               = FormHtmlBuilder::generate_fee_to_pay_description(
+		$fees_applied  = __( 'Fees applied to each transaction for this plan:', 'alma-gateway-for-woocommerce' );
+		$you_pay       = FormHtmlBuilder::generate_fee_to_pay_description(
 			__( 'You pay:', 'alma-gateway-for-woocommerce' ),
 			$merchant_fee_variable,
 			$merchant_fee_fixed
 		);
-		$customer_pays         = FormHtmlBuilder::generate_fee_to_pay_description(
+		$customer_pays = FormHtmlBuilder::generate_fee_to_pay_description(
 			__( 'Customer pays:', 'alma-gateway-for-woocommerce' ),
 			$customer_fee_variable,
 			$customer_fee_fixed,
