@@ -42,9 +42,9 @@ changelog=$(echo "$changelog" | sed ':a;N;$!ba;s/\n/\\n/g')
 sed -i -E "/== Changelog ==/a \\\n$changelog" $filepath
 
 ####################
-# Update file ./src/alma-gateway-for-woocommerce.php
+# Update file ./alma-gateway-for-woocommerce.php
 ####################
-filepath="./src/alma-gateway-for-woocommerce.php"
+filepath="./alma-gateway-for-woocommerce.php"
 # Update "ALMA_VERSION" constant
 sed -i -E "s/'ALMA_VERSION', '[0-9\.]+'/'ALMA_VERSION', '$version'/g" $filepath
 # Update "Version" info

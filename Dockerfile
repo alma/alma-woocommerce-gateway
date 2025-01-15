@@ -45,7 +45,7 @@ WORKDIR /home/phpuser
 USER phpuser
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
-COPY --chown=phpuser ./src/composer.json ./
+COPY --chown=phpuser composer.json ./
 RUN composer install --prefer-dist --no-progress
 
 COPY --chown=phpuser ./src/ ./

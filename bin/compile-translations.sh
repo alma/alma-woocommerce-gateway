@@ -4,7 +4,7 @@
 
 MSGFMT="`which msgfmt`"
 ROOT_DIR="`dirname $0`/.."
-TRANS_SRC_DIR="$ROOT_DIR/src/languages"
+TRANS_SRC_DIR="$ROOT_DIR/languages"
 TRANS_EXT="po"
 COMP_EXT="mo"
 TRANS_PREFIX="alma-gateway-for-woocommerce"
