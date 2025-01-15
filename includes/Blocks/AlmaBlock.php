@@ -147,19 +147,7 @@ class AlmaBlock extends AbstractPaymentMethodType {
 				'url' => $this->tools_helper->url_for_webhook( BlocksDataService::WEBHOOK_PATH ),
 			)
 		);
-
-		wp_enqueue_script(
-			'alma-store',
-			AssetsHelper::get_asset_build_url( 'alma-store.js' ),
-			array(
-				'wp-data',
-				'wp-element',
-				'wc-blocks',
-			),
-			ALMA_VERSION,
-			true
-		);
-
+		
 		if ( function_exists( 'wp_set_script_translations' ) ) {
 			wp_set_script_translations( 'alma-blocks-integration' );
 		}

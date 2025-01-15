@@ -1,0 +1,279 @@
+/*!*********************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/@alma/react-components/dist/global.css ***!
+  \*********************************************************************************************************************************************************************************************************/
+html {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family-venn), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--off-black);
+  background-color: var(--off-white);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  outline: none;
+}
+
+/* https://stackoverflow.com/a/42508425 (modified because buttons & checkboxes kept blueing) */
+* {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  touch-action: manipulation;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+button {
+  cursor: pointer;
+}
+
+
+a {
+  color: var(--off-black);
+}
+
+/*!******************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./src/alma-checkout-block/alma-checkout-blocks.css ***!
+  \******************************************************************************************************************************************************************************************************/
+/**
+ * Checkout page.
+ *
+ * @package Alma_Gateway_For_Woocommerce
+ * @since v4.2.5
+ **/
+
+.buttonsContainer {
+	margin-bottom: 10px;
+}
+
+.paymentMethodLabel span {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: 0;
+}
+
+.paymentMethodLabel span div {
+	font-weight: 700;
+	color: var(--off-black);
+}
+
+.toggleButtonFieldLabel {
+	margin-bottom: 17px;
+}
+
+.payNowLabel {
+	margin-bottom: -17px;
+	color: var(--off-black);
+}
+
+.toggleButtonField > div:nth-of-type(2) {
+	display: flex;
+	gap: var(--spacing-2);
+}
+
+.toggleButtonField > div:nth-of-type(2) > button {
+	width: 45px;
+	height: 45px;
+	font-size: var(--font-base);
+}
+
+.payNow {
+	display: none;
+}
+
+/*!*********************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotal.css ***!
+  \*********************************************************************************************************************************************************************************************************************************************/
+.total {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	font-family: var(--font-family-argent-cf), var(--font-family-sans-serif);
+	font-size: var(--font-base);
+	line-height: 150%;
+	font-weight: var(--weight-semi-bold);
+	color: var(--off-black);
+}
+
+.fees {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	font-family: var(--font-family-venn), var(--font-family-sans-serif);
+	font-weight: var(--weight-semi-bold);
+	font-size: var(--font-xs);
+	line-height: 14px;
+}
+
+.feesNumbers {
+	display: flex;
+	flex-direction: row;
+
+	@mixin column-gap var(--spacing-1);
+}
+
+.discountedFees {
+	text-decoration: line-through;
+	color: #819098;
+}
+
+@media screen and (--min-w-sm) {
+	.total {
+		font-size: var(--font-lg);
+	}
+
+	.fees {
+		font-size: var(--font-sm);
+	}
+}
+
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./src/alma-checkout-block/components/Installments/Installments.css ***!
+  \**********************************************************************************************************************************************************************************************************************/
+.bullet {
+	margin-top: 6px;
+	margin-right: 6px;
+	width: 10px;
+	height: 10px;
+	background-color: var(--soft-orange);
+	border-radius: 50%;
+	flex-shrink: 0;
+	z-index: 1;
+}
+
+.installmentContent {
+	display: flex;
+	flex-shrink: 0;
+}
+
+.alma-card-installments {
+	margin-top: 10px;
+}
+
+.firstBullet {
+	background-color: var(--alma-orange);
+	z-index: 1;
+}
+
+.firstInstallmentContent {
+	font-weight: 700;
+	color: var(--off-black);
+}
+
+.separator {
+	position: absolute;
+	width: 2px;
+
+	/* Magic number for the top position to align as best as possible with the 1st bullet */
+	top: 35px;
+
+	/* half pixel is used because the separator should be centered with the bullet
+	*  And the bullet's width is 4px, and the separator width is 2px. */
+	left: 11.65px;
+
+	/* We want the separator to be 100% long, minus +/- the height of the footer, so it does not exceed */
+	height: calc(100% - 50px);
+	background-color: var(--off-white);
+}
+
+.installments {
+	margin-bottom: var(--spacing-4);
+	display: flex;
+	flex-direction: column;
+
+	@mixin row-gap var(--spacing-1);
+}
+
+.installment {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	font-size: var(--font-sm);
+	line-height: 22px;
+	width: 100%;
+}
+
+.hasBreadcrumb {
+	margin-left: calc(var(--spacing-4));
+}
+
+.firstInstallment {
+	font-weight: var(--weight-semi-bold);
+	font-family: var(--font-family-venn), var(--font-family-sans-serif);
+	font-size: var(--font-base);
+}
+
+.errorMessage {
+	display: flex;
+	font-size: var(--font-sm);
+	flex-direction: column;
+
+	@mixin row-gap var(--spacing-4);
+}
+
+.errorMessage > button {
+	margin-top: var(--spacing-4);
+}
+
+.logo {
+	width: 50px;
+}
+
+.footer {
+	/* important needed for chrome 49 */
+	margin: 0 !important;
+	width: auto;
+	background-color: var(--off-white) !important;
+	padding: var(--spacing-4) !important;
+	border-radius: var(--radius-lg) !important;
+	display: flex;
+	flex-direction: column;
+
+	@mixin row-gap var(--spacing-1);
+}
+
+.footerCard {
+	display: flex;
+	flex-direction: column;
+
+	@mixin row-gap var(--spacing-6);
+}
+
+@media screen and (--min-w-sm) {
+	.errorMessage {
+		font-size: var(--font-base);
+	}
+
+	.shortenHugePlan {
+		max-height: 120px;
+		overflow-y: scroll;
+		padding-right: var(--spacing-4);
+	}
+
+	.installments.shortenHugePlan {
+		margin-bottom: 0;
+	}
+
+	.separator {
+		/* half pixel is used because the separator should be centered with the bullet
+		*  And the bullet's width is 4px, and the separator width is 2px. */
+		left: 35.5px;
+
+		/* Magic number for the top position to align as best as possible with the 1st bullet */
+		top: 80px;
+	}
+}
+
+
+/*# sourceMappingURL=alma-checkout-blocks.css.map*/

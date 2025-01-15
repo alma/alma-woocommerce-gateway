@@ -8,7 +8,7 @@
  */
 
 // phpcs:ignoreFile
-
+import {store_key} from "../stores/alma-eligibility-store";
 import {useEffect} from '@wordpress/element';
 import {select, useSelect} from '@wordpress/data';
 import {fetchAlmaEligibility} from "./hooks/fetchAlmaEligibility";
@@ -18,7 +18,6 @@ import {DisplayAlmaInPageBlocks} from "./components/DisplayAlmaInPageBlocks";
 import './alma-checkout-blocks.css';
 
 (function ($) {
-    const store_key = 'alma/alma-store'
     var inPage = undefined;
     const {CART_STORE_KEY} = window.wc.wcBlocksData
 
