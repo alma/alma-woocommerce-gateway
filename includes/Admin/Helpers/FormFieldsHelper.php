@@ -203,7 +203,7 @@ class FormFieldsHelper {
 				'title'       => __( 'Debug mode', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'checkbox',
 				// translators: %s: Admin logs url.
-				'label'       => FormFieldsHelper . php__( 'Activate debug mode', 'alma-gateway-for-woocommerce' ) . sprintf( __( '(<a href="%s">Go to logs</a>)', 'alma-gateway-for-woocommerce' ), AssetsHelper::get_admin_logs_url() ),
+				'label'       => __( 'Activate debug mode', 'alma-gateway-for-woocommerce' ) . sprintf( __( '(<a href="%s">Go to logs</a>)', 'alma-gateway-for-woocommerce' ), AssetsHelper::get_admin_logs_url() ),
 				// translators: %s: The previous plugin version if exists.
 				'description' => sprintf( __( 'Enable logging info and errors to help debug any issue with the plugin (previous Alma version : "%s")', 'alma-gateway-for-woocommerce' ), $previous_version ),
 				'desc_tip'    => true,
@@ -468,13 +468,13 @@ class FormFieldsHelper {
 				);
 			}
 		}
-		$fees_applied  = __( 'Fees applied to each transaction for this plan:', 'alma-gateway-for-woocommerce' );
-		$you_pay       = FormHtmlBuilder::generate_fee_to_pay_description(
+		$fees_applied          = __( 'Fees applied to each transaction for this plan:', 'alma-gateway-for-woocommerce' );
+		$you_pay               = FormHtmlBuilder::generate_fee_to_pay_description(
 			__( 'You pay:', 'alma-gateway-for-woocommerce' ),
 			$merchant_fee_variable,
 			$merchant_fee_fixed
 		);
-		$customer_pays = FormHtmlBuilder::generate_fee_to_pay_description(
+		$customer_pays         = FormHtmlBuilder::generate_fee_to_pay_description(
 			__( 'Customer pays:', 'alma-gateway-for-woocommerce' ),
 			$customer_fee_variable,
 			$customer_fee_fixed,
