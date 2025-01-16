@@ -122,7 +122,6 @@ class AlmaBlock extends AbstractPaymentMethodType {
 			require_once $asset_path;
 		}
 
-
 		$alma_checkout_blocks_css = AssetsHelper::get_asset_build_url( ConstantsHelper::ALMA_PATH_CHECKOUT_BLOCK_CSS );
 		wp_enqueue_style( 'alma-blocks-integration-css', $alma_checkout_blocks_css, array(), ALMA_VERSION );
 
@@ -150,7 +149,7 @@ class AlmaBlock extends AbstractPaymentMethodType {
 			'BlocksData',
 			array(
 				'url'              => $this->tools_helper->url_for_webhook( BlocksDataService::WEBHOOK_PATH ),
-				'init_eligibility' => $this->block_data_service->format_eligibility_for_blocks( [] )
+				'init_eligibility' => $this->block_data_service->format_eligibility_for_blocks( array() ),
 			)
 		);
 

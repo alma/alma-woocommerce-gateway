@@ -18,7 +18,7 @@
     "symfony/var-dumper": "*",
     "woocommerce/woocommerce": "*",
     "wp-coding-standards/wpcs": "^2.3",
-    "yoast/phpunit-polyfills": "^2.0",
+    "yoast/phpunit-polyfills": "*",
     "ext-simplexml": "*"
   },
   "autoload": {
@@ -56,11 +56,5 @@
       "automattic/jetpack-autoloader": true
     },
     "lock": false
-  },
-  "repositories": {
-    "alma/alma-php-client": {
-      "type": "path",
-      "url": "/app/alma/alma-php-client"
-    }
   }
 }

@@ -161,7 +161,7 @@ class BlocksDataService {
 	 *
 	 * @return array|array[]
 	 */
-	private function format_eligibility_for_blocks( $eligibilities ) {
+	public function format_eligibility_for_blocks( $eligibilities ) {
 		$in_page_activated = $this->alma_client_service->in_page_is_activated();
 		$gateways_keys     = array(
 			'redirect' => array(
