@@ -19,7 +19,7 @@ import './alma-checkout-blocks.css';
 
 (function ($) {
     var inPage = undefined;
-    const {CART_STORE_KEY} = window.wc.wcBlocksData
+    const {CART_STORE_KEY, CHECKOUT_STORE_KEY} = window.wc.wcBlocksData
     const CartObserver = () => {
         // Subscribe to the cart total
         const {cartTotal, shippingRates} = useSelect((select) => ({
