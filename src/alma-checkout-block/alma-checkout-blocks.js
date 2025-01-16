@@ -19,7 +19,7 @@ import './alma-checkout-blocks.css';
 
 (function ($) {
     var inPage = undefined;
-    const {CART_STORE_KEY, PAYMENT_STORE_KEY} = window.wc.wcBlocksData
+    const {CART_STORE_KEY} = window.wc.wcBlocksData
     const CartObserver = () => {
         // Subscribe to the cart total
         const {cartTotal, shippingRates} = useSelect((select) => ({
@@ -33,6 +33,9 @@ import './alma-checkout-blocks.css';
                 isLoading: select(store_key).isLoading(),
             }), []
         );
+        const {isCalculating} = useSelect((select) => ({
+            isCalculating: select(CHECKOUT_STORE_KEY).isCalculating(),
+        }), []);
 
         // Use the cart total to fetch the new eligibility
         useEffect(() => {
@@ -42,13 +45,13 @@ import './alma-checkout-blocks.css';
 
         // Register the payment gateway blocks
         useEffect(() => {
-            if (isLoading) {
+            if (isCalculating && isLoading) {
                 return
             }
             const eligibility = select(store_key).getAlmaEligibility()
             // For each gateway in eligibility result, we register a block
             register_payment_gateway(eligibility, cartTotal)
-        }, [isLoading]);
+        }, [isCalculating, isLoading]);
     };
 
     const register_payment_gateway = (eligibility, cartTotal, init = false) => {
@@ -69,7 +72,6 @@ import './alma-checkout-blocks.css';
                 canMakePayment: () => init ? true : gatewayCanMakePayment(eligibility[gateway]),
                 ariaLabel: settings.title,
             }
-
             window.wc.wcBlocksRegistry.registerPaymentMethod(Block_Gateway_Alma);
         }
     }
