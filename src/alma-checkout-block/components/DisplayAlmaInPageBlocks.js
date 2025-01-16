@@ -20,12 +20,15 @@ export const DisplayAlmaInPageBlocks = (props) => {
     // Init default plan
     let default_plan = ''
 
-    if (Object.keys(eligibility[gateway]).length > 0) {
+    if (!isLoading && Object.keys(eligibility[gateway]).length > 0) {
         // default plan is the first plan
         default_plan = Object.keys(eligibility[gateway])[0]
     }
 
     const [selectedFeePlan, setSelectedFeePlan] = useState(default_plan);
+    const plan = !isLoading
+        ? eligibility[gateway]?.[selectedFeePlan] ?? eligibility[gateway]?.[default_plan]
+        : null;
 
     useEffect(() => {
         // Transfer the selected fee plan to the alma redux store
@@ -33,7 +36,6 @@ export const DisplayAlmaInPageBlocks = (props) => {
 
     }, [selectedFeePlan])
 
-    let plan = eligibility[gateway][selectedFeePlan] ?? eligibility[gateway][default_plan]
 
     let inPage = undefined;
 
@@ -44,6 +46,7 @@ export const DisplayAlmaInPageBlocks = (props) => {
         ) {
             inPage.unmount();
         }
+
         inPage = Alma.InPage.initialize({
             merchantId: settingsInPage.merchant_id,
             amountInCents: total_price,
@@ -58,7 +61,8 @@ export const DisplayAlmaInPageBlocks = (props) => {
     }
 
     useEffect(() => {
-        if (!isLoading) {
+        if (!isLoading && plan) {
+            setSelectedFeePlan(plan.planKey);
             initializeInpage(settings, cartTotal.total_price)
         }
     }, [selectedFeePlan, cartTotal, isLoading])

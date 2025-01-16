@@ -10,7 +10,7 @@
 // phpcs:ignoreFile
 import {store_key} from "../stores/alma-eligibility-store";
 import {useEffect} from '@wordpress/element';
-import {select, useSelect} from '@wordpress/data';
+import {dispatch, select, useSelect} from '@wordpress/data';
 import {fetchAlmaEligibility} from "./hooks/fetchAlmaEligibility";
 import {Label} from "./components/Label";
 import {DisplayAlmaBlocks} from "./components/DisplayAlmaBlocks";
@@ -19,8 +19,7 @@ import './alma-checkout-blocks.css';
 
 (function ($) {
     var inPage = undefined;
-    const {CART_STORE_KEY} = window.wc.wcBlocksData
-
+    const {CART_STORE_KEY, PAYMENT_STORE_KEY} = window.wc.wcBlocksData
     const CartObserver = () => {
         // Subscribe to the cart total
         const {cartTotal, shippingRates} = useSelect((select) => ({
@@ -37,7 +36,6 @@ import './alma-checkout-blocks.css';
 
         // Use the cart total to fetch the new eligibility
         useEffect(() => {
-            console.log('cartTotal', cartTotal)
             // BlockData is a global variable defined in the PHP file with the wp_localize_script function
             fetchAlmaEligibility(store_key, BlocksData.url)
         }, [cartTotal, shippingRates]);
@@ -49,31 +47,32 @@ import './alma-checkout-blocks.css';
             }
             const eligibility = select(store_key).getAlmaEligibility()
             // For each gateway in eligibility result, we register a block
-            for (const gateway in eligibility) {
-                const settings = window.wc.wcSettings.getSetting(`${gateway}_data`, null)
-                const is_in_page = settings.is_in_page
-                const blockContent = getContentBlock(is_in_page, settings, cartTotal, gateway)
-
-                const Block_Gateway_Alma = {
-                    name: settings.gateway_name,
-                    label: (
-                        <Label
-                            title={window.wp.htmlEntities.decodeEntities(settings.title)}
-                        />
-                    ),
-                    content: blockContent,
-                    edit: blockContent,
-                    placeOrderButtonLabel: settings.label_button,
-                    canMakePayment: () => {
-                        return gatewayCanMakePayment(eligibility[gateway])
-                    },
-                    ariaLabel: settings.title,
-                }
-
-                window.wc.wcBlocksRegistry.registerPaymentMethod(Block_Gateway_Alma);
-            }
+            register_payment_gateway(eligibility, cartTotal)
         }, [isLoading]);
     };
+
+    const register_payment_gateway = (eligibility, cartTotal, init = false) => {
+        // For each gateway in eligibility result, we register a block
+        for (const gateway in eligibility) {
+            const settings = window.wc.wcSettings.getSetting(`${gateway}_data`, null)
+            const blockContent = getContentBlock(settings.is_in_page, settings, cartTotal, gateway)
+            const Block_Gateway_Alma = {
+                name: settings.gateway_name,
+                label: (
+                    <Label
+                        title={window.wp.htmlEntities.decodeEntities(settings.title)}
+                    />
+                ),
+                content: blockContent,
+                edit: blockContent,
+                placeOrderButtonLabel: settings.label_button,
+                canMakePayment: () => init ? true : gatewayCanMakePayment(eligibility[gateway]),
+                ariaLabel: settings.title,
+            }
+
+            window.wc.wcBlocksRegistry.registerPaymentMethod(Block_Gateway_Alma);
+        }
+    }
 
     const getContentBlock = (is_in_page, settings, cartTotal, gateway) => {
         const setInPage = (inPageInstance) => {
@@ -238,4 +237,9 @@ import './alma-checkout-blocks.css';
         jQuery.post(ajax_object.ajax_url, data)
     }
 
+    function init_checkout_blocks() {
+        register_payment_gateway(BlocksData['init_eligibility'], 0, true)
+    }
+
+    init_checkout_blocks()
 })(jQuery);

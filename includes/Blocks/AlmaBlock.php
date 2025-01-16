@@ -80,19 +80,23 @@ class AlmaBlock extends AbstractPaymentMethodType {
 	 */
 	private $tools_helper;
 
+	private $block_data_service;
+
 	/**
 	 * Initialize.
 	 *
 	 * @return void
 	 */
 	public function initialize() {
-		$this->settings         = get_option( AlmaSettings::OPTIONS_KEY, array() );
-		$gateway_helper_builder = new GatewayHelperBuilder();
-		$this->gateway_helper   = $gateway_helper_builder->get_instance();
-		$this->alma_settings    = new AlmaSettings();
-		$this->checkout_helper  = new CheckoutHelper();
-		$tools_helper_builder   = new ToolsHelperBuilder();
-		$this->tools_helper     = $tools_helper_builder->get_instance();
+		$this->settings           = get_option( AlmaSettings::OPTIONS_KEY, array() );
+		$gateway_helper_builder   = new GatewayHelperBuilder();
+		$this->gateway_helper     = $gateway_helper_builder->get_instance();
+		$this->alma_settings      = new AlmaSettings();
+		$this->checkout_helper    = new CheckoutHelper();
+		$tools_helper_builder     = new ToolsHelperBuilder();
+		$this->tools_helper       = $tools_helper_builder->get_instance();
+		$this->block_data_service = new BlocksDataService();
+		$this->logger             = new AlmaLogger();
 	}
 
 	/**
@@ -117,6 +121,7 @@ class AlmaBlock extends AbstractPaymentMethodType {
 		if ( file_exists( $asset_path ) ) {
 			require_once $asset_path;
 		}
+
 
 		$alma_checkout_blocks_css = AssetsHelper::get_asset_build_url( ConstantsHelper::ALMA_PATH_CHECKOUT_BLOCK_CSS );
 		wp_enqueue_style( 'alma-blocks-integration-css', $alma_checkout_blocks_css, array(), ALMA_VERSION );
@@ -144,7 +149,8 @@ class AlmaBlock extends AbstractPaymentMethodType {
 			'alma-blocks-integration',
 			'BlocksData',
 			array(
-				'url' => $this->tools_helper->url_for_webhook( BlocksDataService::WEBHOOK_PATH ),
+				'url'              => $this->tools_helper->url_for_webhook( BlocksDataService::WEBHOOK_PATH ),
+				'init_eligibility' => $this->block_data_service->format_eligibility_for_blocks( [] )
 			)
 		);
 
