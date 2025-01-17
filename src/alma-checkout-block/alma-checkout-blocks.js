@@ -26,10 +26,10 @@ import './alma-checkout-blocks.css';
             cartTotal: select(CART_STORE_KEY).getCartTotals().total_price,
             shippingRates: select(CART_STORE_KEY).getShippingRates()
         }), []);
-
         // Subscribe to the eligibility
-        const {isLoading} = useSelect(
+        const {eligibility, isLoading} = useSelect(
             (select) => ({
+                eligibility: select(store_key).getAlmaEligibility(),
                 isLoading: select(store_key).isLoading(),
             }), []
         );
@@ -43,39 +43,49 @@ import './alma-checkout-blocks.css';
             fetchAlmaEligibility(store_key, BlocksData.url)
         }, [cartTotal, shippingRates]);
 
+
         // Register the payment gateway blocks
-        useEffect(() => {
-            if (isCalculating && isLoading) {
-                return
-            }
-            const eligibility = select(store_key).getAlmaEligibility()
+        if (!isCalculating && !isLoading) {
             // For each gateway in eligibility result, we register a block
+            // before registering the payment gateway, we reset the payment gateways to force gutenberg reload
+            reset_payment_gateways(eligibility)
             register_payment_gateway(eligibility, cartTotal)
-        }, [isCalculating, isLoading]);
+        }
+
     };
+    const reset_payment_gateways = (eligibility) => {
+        for (const gateway in eligibility) {
+            const settings = window.wc.wcSettings.getSetting(`${gateway}_data`, null)
+            const Block_Gateway_Alma = generateGatewayBlock(settings, <></>, gateway, false)
+            window.wc.wcBlocksRegistry.registerPaymentMethod(Block_Gateway_Alma);
+        }
+    }
 
     const register_payment_gateway = (eligibility, cartTotal, init = false) => {
         // For each gateway in eligibility result, we register a block
         for (const gateway in eligibility) {
             const settings = window.wc.wcSettings.getSetting(`${gateway}_data`, null)
             const blockContent = getContentBlock(settings.is_in_page, settings, cartTotal, gateway)
-            const Block_Gateway_Alma = {
-                name: settings.gateway_name,
-                label: (
-                    <Label
-                        title={window.wp.htmlEntities.decodeEntities(settings.title)}
-                    />
-                ),
-                content: blockContent,
-                edit: blockContent,
-                placeOrderButtonLabel: settings.label_button,
-                canMakePayment: () => init ? true : gatewayCanMakePayment(eligibility[gateway]),
-                ariaLabel: settings.title,
-            }
+            const Block_Gateway_Alma = generateGatewayBlock(settings, blockContent, gateway, init ? true : gatewayCanMakePayment(eligibility[gateway]))
             window.wc.wcBlocksRegistry.registerPaymentMethod(Block_Gateway_Alma);
         }
     }
 
+    const generateGatewayBlock = (settings, blockContent, gateway, canMakePayment) => {
+        return {
+            name: settings.gateway_name,
+            label: (
+                <Label
+                    title={window.wp.htmlEntities.decodeEntities(settings.title)}
+                />
+            ),
+            content: blockContent,
+            edit: blockContent,
+            placeOrderButtonLabel: settings.label_button,
+            canMakePayment: () => canMakePayment,
+            ariaLabel: settings.title,
+        }
+    }
     const getContentBlock = (is_in_page, settings, cartTotal, gateway) => {
         const setInPage = (inPageInstance) => {
             inPage = inPageInstance
