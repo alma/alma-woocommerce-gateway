@@ -5,31 +5,31 @@
     <description>A custom set of rules to check for Alma Woocommerce Gateway</description>
 
     <!-- Exclude WP Core folders and files from being checked. -->
-    <exclude-pattern>/docroot/wp-admin/*</exclude-pattern>
-    <exclude-pattern>/docroot/wp-includes/*</exclude-pattern>
-    <exclude-pattern>/docroot/wp-*.php</exclude-pattern>
-    <exclude-pattern>/docroot/index.php</exclude-pattern>
-    <exclude-pattern>/docroot/xmlrpc.php</exclude-pattern>
-    <exclude-pattern>/docroot/wp-content/plugins/*</exclude-pattern>
+    <exclude-pattern>*/wp-admin/*</exclude-pattern>
+    <exclude-pattern>*/wp-includes/*</exclude-pattern>
+    <exclude-pattern>*/wp-*.php</exclude-pattern>
+    <exclude-pattern>*/index.php</exclude-pattern>
+    <exclude-pattern>*/xmlrpc.php</exclude-pattern>
+    <exclude-pattern>*/wp-content/plugins/*</exclude-pattern>
 
     <!-- Exclude tests. -->
-    <exclude-pattern>/tests/*</exclude-pattern>
+    <exclude-pattern>*/tests/*</exclude-pattern>
 
     <!-- Exclude widget -->
-    <exclude-pattern>/assets/widget/*</exclude-pattern>
+    <exclude-pattern>*/assets/widget/*</exclude-pattern>
 
     <!-- Exclude the Composer Vendor directory. -->
-    <exclude-pattern>/vendor/*</exclude-pattern>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
 
     <!-- Exclude the Node Modules directory. -->
-    <exclude-pattern>/node_modules/*</exclude-pattern>
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
 
     <!-- Exclude minified Javascript files. -->
     <exclude-pattern>*.min.js</exclude-pattern>
     <exclude-pattern>*.js</exclude-pattern>
 
     <!-- Exclude build -->
-    <exclude-pattern>/build/*</exclude-pattern>
+    <exclude-pattern>*/build/*</exclude-pattern>
 
     <!-- Include the WordPress-Extra standard. -->
     <rule ref="WordPress-Extra">

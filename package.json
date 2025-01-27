@@ -25,6 +25,7 @@
     "@wordpress/data": "^10.16.0",
     "@wordpress/element": "^6.16.0",
     "@wordpress/scripts": "^30.9.0",
+    "@woocommerce/settings": "^1.0.0",
     "css-loader": "^6.10.0",
     "style-loader": "^3.3.4"
   },

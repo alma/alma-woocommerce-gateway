@@ -200,25 +200,25 @@
 
 @media screen and (min-width: 800px) {
   ._D8SjB {
-    border-radius: 8px;
-    width: 800px;
-    height: 550px;
-    position: relative;
-    padding-top: 0;
+	border-radius: 8px;
+	width: 800px;
+	height: 550px;
+	position: relative;
+	padding-top: 0;
   }
 
   ._1GP2F {
-    max-height: 100vh;
-    overflow: hidden;
+	max-height: 100vh;
+	overflow: hidden;
   }
 
   ._ocM9x {
-    padding: 32px;
+	padding: 32px;
   }
 }
 
 ._bplXm {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 ._1l2Oa {
   display: flex;
@@ -293,17 +293,17 @@
 
 @media screen and (min-width: 800px) {
   ._z2Uiv {
-    font-size: var(--font-base);
+	font-size: var(--font-base);
   }
 
   ._1Z9wr::after {
-    border-left: 2px solid var(--off-white);
-    height: 18px;
-    margin-left: 4px;
-    content: " ";
-    position: absolute;
-    z-index: 0;
-    margin-top: 10px;
+	border-left: 2px solid var(--off-white);
+	height: 18px;
+	margin-left: 4px;
+	content: " ";
+	position: absolute;
+	z-index: 0;
+	margin-top: 10px;
   }
 }
 
@@ -315,8 +315,8 @@
 
 @media (min-width: 800px) {
   ._MPKjS {
-    overflow-y: auto;
-    margin: 0;
+	overflow-y: auto;
+	margin: 0;
   }
 }
 
@@ -364,8 +364,8 @@
 
 @media (min-width: 800px) {
   ._180ro {
-    margin: 0;
-    padding: 0;
+	margin: 0;
+	padding: 0;
   }
 }
 
@@ -380,7 +380,7 @@
 
 @media (min-width: 800px) {
   ._3ERx- {
-    font-size: 24px;
+	font-size: 24px;
   }
 }
 
@@ -440,10 +440,10 @@
 
 @media screen and (min-width: 800px) {
   ._2u9rj {
-    overflow: auto;
+	overflow: auto;
   }
   ._VRdAU {
-    display: none;
+	display: none;
   }
 }
 

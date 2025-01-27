@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "title": "Widget block for Alma Gateway",
+  "name": "alma-gateway-for-woocommerce/alma-widget-block",
+  "version": "0.1.0",
+  "category": "woocommerce",
+  "keywords": [
+    "alma",
+    "widget"
+  ],
+  "editorScript": "file:./alma-widget-block.js",
+  "viewScript": "file:./alma-widget-block-view.js",
+  "style": "file:./alma-widget-block.css",
+  "parent": [
+    "woocommerce/cart-order-summary-block",
+    "woocommerce/cart-totals-block",
+    "woocommerce/cart-items-block"
+  ],
+  "supports": {
+    "html": false,
+    "multiple": false,
+    "reusable": false,
+    "align": [
+      "left",
+      "right",
+      "full"
+    ]
+  }
+}

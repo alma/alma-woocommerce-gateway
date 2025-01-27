@@ -33,6 +33,9 @@
  * along with Alma Payment Gateway for WooCommerce. If not, see https://www.gnu.org/licenses/gpl-3.0.html.
  */
 
+use Alma\Woocommerce\Blocks\AlmaWidgetBlock;
+use Automattic\WooCommerce\Utilities\FeaturesUtil;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
@@ -102,8 +105,30 @@ add_action(
 			 *
 			 * @psalm-suppress UndefinedClass
 			 */
-			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
-			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
+			FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+			FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
 		}
+	}
+);
+
+add_action(
+	'init',
+	function () {
+		register_block_type_from_metadata( __DIR__ . '/build/alma-widget-block' );
+	}
+);
+
+/**
+ * Register the Alma widget block.
+ */
+add_action(
+	'woocommerce_blocks_loaded',
+	function () {
+		add_action(
+			'woocommerce_blocks_cart_block_registration',
+			function ( $integration_registry ) {
+				$integration_registry->register( new AlmaWidgetBlock() );
+			}
+		);
 	}
 );
