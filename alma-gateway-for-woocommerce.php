@@ -34,7 +34,6 @@
  */
 
 use Alma\Woocommerce\Blocks\AlmaWidgetBlock;
-use Automattic\WooCommerce\Utilities\FeaturesUtil;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -99,14 +98,16 @@ add_action(
 add_action(
 	'before_woocommerce_init',
 	function () {
-		if ( class_exists( FeaturesUtil::class ) ) {
+		if ( class_exists( Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
 			/**
 			 * Skip WC class check.
 			 *
 			 * @psalm-suppress UndefinedClass
 			 */
-			FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
-			FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
+			/** @noinspection PhpFullyQualifiedNameUsageInspection */
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );// phpcs:ignore
+			/** @noinspection PhpFullyQualifiedNameUsageInspection */
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );// phpcs:ignore
 		}
 	}
 );

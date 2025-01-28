@@ -73,7 +73,7 @@ class RefundHelper {
 	 * @return string The display.
 	 */
 	public function get_display_refund_amount( $refund ) {
-		return $refund->get_amount() . ' RefundHelper.php' . $refund->get_currency();
+		return $refund->get_amount() . ' ' . $refund->get_currency();
 	}
 
 	/**
