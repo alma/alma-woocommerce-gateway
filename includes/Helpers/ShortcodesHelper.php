@@ -113,10 +113,6 @@ class ShortcodesHelper {
 
 	}
 
-	public function init_cart_widget_block( CartHandler $cart_handler ) {
-
-	}
-
 	/**
 	 * Init product widget shortcode
 	 *

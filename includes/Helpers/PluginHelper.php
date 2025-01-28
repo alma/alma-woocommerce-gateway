@@ -103,7 +103,7 @@ class PluginHelper {
 	}
 
 	/**
-	 * Add the shorcodes and scripts.
+	 * Add the shortcodes and scripts.
 	 *
 	 * @return void
 	 */
@@ -137,11 +137,7 @@ class PluginHelper {
 		$shortcodes = new ShortcodesHelper();
 
 		$cart_handler = new CartHandler();
-		if ( $this->block_helper->has_woocommerce_cart_blocks() ) {
-			$shortcodes->init_cart_widget_shortcode( $cart_handler );
-		} else {
-			$shortcodes->init_cart_widget_block( $cart_handler );
-		}
+		$shortcodes->init_cart_widget_shortcode( $cart_handler );
 
 		$product_handler = new ProductHandler();
 		$shortcodes->init_product_widget_shortcode( $product_handler );

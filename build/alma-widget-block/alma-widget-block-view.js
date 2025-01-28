@@ -3,15 +3,26 @@
   !*** ./src/alma-widget-block/alma-widget-block-view.js ***!
   \*********************************************************/
 (function ($) {
-  $(document).ready(() => {
+  const almaWidgetDivId = '#alma-widget';
+  function waitAlmaWidgetDiv(selector) {
+    return new Promise(resolve => {
+      const observer = new MutationObserver(() => {
+        if ($(selector).length > 0) {
+          resolve($(selector));
+          observer.disconnect();
+        }
+      });
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    });
+  }
+  waitAlmaWidgetDiv(almaWidgetDivId).then(() => {
     const data = window.wc.wcSettings.getSetting(`alma-widget-block_data`, null);
-    let widget = Alma.Widgets.initialize(data.merchant_id,
-    // ID marchand
-    data.environment // mode de l'API (LIVE ou TEST)
-    );
-    console.log(widget);
+    let widget = Alma.Widgets.initialize(data.merchant_id, Alma.ApiMode[data.environment]);
     widget.add(Alma.Widgets.PaymentPlans, {
-      container: '#alma-widget',
+      container: almaWidgetDivId,
       purchaseAmount: 45000,
       locale: 'fr',
       hideIfNotEligible: false,
@@ -30,7 +41,6 @@
         maxAmount: 50000
       }]
     });
-    console.log(widget);
   });
 })(jQuery);
 /******/ })()

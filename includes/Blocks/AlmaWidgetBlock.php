@@ -44,15 +44,19 @@ class AlmaWidgetBlock implements IntegrationInterface {
 	 * @return void
 	 */
 	public function initialize() {
+		wp_enqueue_style(
+			'alma-widget-block-frontend',
+			'https://cdn.jsdelivr.net/npm/@alma/widgets@3.x.x/dist/widgets.min.css',
+			array(),
+			'3.x.x'
+		);
 		$this->register_block_frontend_scripts();
 		$this->register_block_editor_scripts();
 	}
 
 	private function register_block_frontend_scripts() {
 		$script_path       = '/build/alma-widget-block/alma-widget-block-view.js';
-		$style_path        = '/build/alma-widget-block/alma-widget-block.css';
 		$script_url        = ALMA_PLUGIN_URL . $script_path;
-		$style_url         = ALMA_PLUGIN_URL . $style_path;
 		$script_asset_path = ALMA_PLUGIN_PATH . '/build/alma-widget-block/alma-widget-block-view.asset.php';
 		$script_asset      = file_exists( $script_asset_path )
 			? require $script_asset_path // NOSONAR - build PHP script with no class.
@@ -60,18 +64,6 @@ class AlmaWidgetBlock implements IntegrationInterface {
 				'dependencies' => array(),
 				'version'      => $this->get_file_version( $script_asset_path ),
 			);
-		wp_enqueue_style(
-			'alma-widget-block-frontend',
-			$style_url,
-			array(),
-			$this->get_file_version( $style_path )
-		);
-		wp_register_style(
-			'alma-widget-block-frontend',
-			'https://cdn.jsdelivr.net/npm/@alma/widgets@3.x.x/dist/widgets.min.css',
-			array(),
-			'3.x.x'
-		);
 		wp_register_script(
 			'alma-widget-block-frontend',
 			'https://cdn.jsdelivr.net/npm/@alma/widgets@3.x.x/dist/widgets.umd.js',
@@ -110,9 +102,7 @@ class AlmaWidgetBlock implements IntegrationInterface {
 
 	private function register_block_editor_scripts() {
 		$script_path       = '/build/alma-widget-block/alma-widget-block.js';
-		$style_path        = '/build/alma-widget-block/alma-widget-block.css';
 		$script_url        = ALMA_PLUGIN_URL . $script_path;
-		$style_url         = ALMA_PLUGIN_URL . $style_path;
 		$script_asset_path = ALMA_PLUGIN_PATH . '/build/alma-widget-block/alma-widget-block.asset.php';
 		$script_asset      = file_exists( $script_asset_path )
 			? require $script_asset_path // NOSONAR - build PHP script with no class.
@@ -120,18 +110,6 @@ class AlmaWidgetBlock implements IntegrationInterface {
 				'dependencies' => array(),
 				'version'      => $this->get_file_version( $script_asset_path ),
 			);
-		wp_enqueue_style(
-			'alma-widget-block-editor',
-			$style_url,
-			array(),
-			$this->get_file_version( $style_path )
-		);
-		wp_register_style(
-			'alma-widget-block-editor',
-			'https://cdn.jsdelivr.net/npm/@alma/widgets@3.x.x/dist/widgets.min.css',
-			array(),
-			'3.x.x'
-		);
 		wp_register_script(
 			'alma-widget-block-editor',
 			'https://cdn.jsdelivr.net/npm/@alma/widgets@3.x.x/dist/widgets.umd.js',
@@ -169,7 +147,7 @@ class AlmaWidgetBlock implements IntegrationInterface {
 	public function get_script_data() {
 		return array(
 			'merchant_id' => $this->alma_settings->get_active_merchant_id(),
-			'environment' => $this->alma_settings->get_environment(),
+			'environment' => strtoupper( $this->alma_settings->get_environment() ),
 		);
 	}
 }
