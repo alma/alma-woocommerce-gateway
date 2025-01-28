@@ -36,10 +36,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   DropdownMultipleField: () => (/* binding */ DropdownMultipleField),
 /* harmony export */   ErrorMessage: () => (/* binding */ ErrorMessage),
 /* harmony export */   Field: () => (/* binding */ Field),
+/* harmony export */   FileDropZone: () => (/* binding */ FileDropZone),
 /* harmony export */   Header: () => (/* binding */ Header),
-/* harmony export */   HotToast: () => (/* reexport safe */ react_hot_toast__WEBPACK_IMPORTED_MODULE_5__.toast),
 /* harmony export */   Icon: () => (/* binding */ Icon),
-/* harmony export */   IconClickable: () => (/* binding */ IconClickable),
 /* harmony export */   IconName: () => (/* binding */ IconName),
 /* harmony export */   IconNumber: () => (/* binding */ IconNumber),
 /* harmony export */   IconPaymentMethod: () => (/* binding */ IconPaymentMethod),
@@ -66,17 +65,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   SwitchField: () => (/* binding */ SwitchField),
 /* harmony export */   Tag: () => (/* binding */ Tag),
 /* harmony export */   TextField: () => (/* binding */ TextField),
-/* harmony export */   Toaster: () => (/* binding */ Toaster),
+/* harmony export */   Toaster: () => (/* reexport safe */ react_hot_toast__WEBPACK_IMPORTED_MODULE_5__.Toaster),
 /* harmony export */   ToggleButton: () => (/* binding */ ToggleButton),
 /* harmony export */   ToggleButtonsField: () => (/* binding */ ToggleButtonsField),
 /* harmony export */   ToggleButtonsGroup: () => (/* binding */ ToggleButtonsGroup),
 /* harmony export */   TranslationsProvider: () => (/* binding */ TranslationsProvider),
 /* harmony export */   isCountry: () => (/* binding */ isCountry),
 /* harmony export */   isDefined: () => (/* binding */ isDefined),
-/* harmony export */   toast: () => (/* binding */ toast2),
+/* harmony export */   toast: () => (/* reexport safe */ react_hot_toast__WEBPACK_IMPORTED_MODULE_5__["default"]),
+/* harmony export */   toastMessage: () => (/* binding */ toastMessage),
 /* harmony export */   useElementSize: () => (/* binding */ useElementSize),
-/* harmony export */   usePortalTarget: () => (/* binding */ usePortalTarget),
-/* harmony export */   useToaster: () => (/* reexport safe */ react_hot_toast__WEBPACK_IMPORTED_MODULE_5__.useToaster)
+/* harmony export */   usePortalTarget: () => (/* binding */ usePortalTarget)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -89,9 +88,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var no_scroll__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(no_scroll__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var react_modal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-modal */ "./node_modules/react-modal/lib/index.js");
 /* harmony import */ var react_modal__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_modal__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var react_select__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-select */ "./node_modules/react-select/dist/index-641ee5b8.esm.js");
+/* harmony import */ var react_select__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-select */ "./node_modules/react-select/dist/index-a301f526.esm.js");
 /* harmony import */ var react_select__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-select */ "./node_modules/react-select/dist/react-select.esm.js");
 /* harmony import */ var react_hot_toast__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-hot-toast */ "./node_modules/react-hot-toast/dist/index.mjs");
+/* harmony import */ var react_dropzone__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-dropzone */ "./node_modules/react-dropzone/dist/es/index.js");
+
 
 
 
@@ -103,11 +104,11 @@ __webpack_require__.r(__webpack_exports__);
 
 var variables = "";
 var fonts = "";
-const accountContainer = "_accountContainer_1hpkt_1";
-const circle = "_circle_1hpkt_22";
-const initial = "_initial_1hpkt_34";
-const text = "_text_1hpkt_46";
-var s$I = {
+const accountContainer = "_accountContainer_cvmqo_1";
+const circle = "_circle_cvmqo_22";
+const initial = "_initial_cvmqo_34";
+const text = "_text_cvmqo_45";
+var s$J = {
   accountContainer,
   circle,
   initial,
@@ -121,13 +122,13 @@ const AccountButton = ({
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     type: "button",
     ...buttonProps,
-    className: s$I.accountContainer
+    className: s$J.accountContainer
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$I.circle
+    className: s$J.circle
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$I.initial
+    className: s$J.initial
   }, initial2)), firstName && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$I.text
+    className: s$J.text
   }, firstName));
 };
 function isDefined(value2) {
@@ -2044,7 +2045,7 @@ const ClockIcon = ({
   d: "M12 3.75C7.44365 3.75 3.75 7.44365 3.75 12C3.75 16.5563 7.44365 20.25 12 20.25C16.5563 20.25 20.25 16.5563 20.25 12C20.25 7.44365 16.5563 3.75 12 3.75ZM2.25 12C2.25 6.61522 6.61522 2.25 12 2.25C17.3848 2.25 21.75 6.61522 21.75 12C21.75 17.3848 17.3848 21.75 12 21.75C6.61522 21.75 2.25 17.3848 2.25 12ZM12 5.25C12.4142 5.25 12.75 5.58579 12.75 6V11.25H16.5C16.9142 11.25 17.25 11.5858 17.25 12C17.25 12.4142 16.9142 12.75 16.5 12.75H12C11.5858 12.75 11.25 12.4142 11.25 12V6C11.25 5.58579 11.5858 5.25 12 5.25Z",
   fill: color
 }));
-const CloseIcon$1 = ({
+const CloseIcon = ({
   color = "currentColor",
   title: title2,
   ...svgProps
@@ -5361,8 +5362,24 @@ const TickIcon = ({
   xmlns: "http://www.w3.org/2000/svg",
   ...svgProps
 }, title2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("title", null, title2), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("path", {
-  id: "vector",
-  d: "M17.4411 6.39046C17.7022 5.98733 18.23 5.87864 18.6208 6.14784C19.012 6.41733 19.1177 6.96351 18.8569 7.36775L18.8554 7.37017L11.2886 18.6095C11.1471 18.8281 10.9183 18.9698 10.6649 18.9957C10.4111 19.0217 10.1594 18.9287 9.97905 18.7423L5.24935 13.8552C4.91688 13.5116 4.91688 12.9546 5.24935 12.6111C5.58182 12.2675 6.12087 12.2675 6.45334 12.6111L10.4513 16.7422L17.4411 6.39046Z",
+  d: "M18.0022 5.24946C18.2782 4.83703 18.8362 4.72583 19.2493 5.00124C19.6629 5.27696 19.7747 5.83574 19.4989 6.24932L19.4973 6.25179L11.4981 17.7506C11.3485 17.9742 11.1066 18.1192 10.8388 18.1457C10.5705 18.1723 10.3044 18.0771 10.1137 17.8865L5.1137 12.8865C4.76223 12.535 4.76223 11.9652 5.1137 11.6137C5.46517 11.2622 6.03502 11.2622 6.38649 11.6137L10.613 15.8402L18.0022 5.24946Z",
+  fill: color
+}));
+const TickIconAlt = ({
+  color = "currentColor",
+  title: title2,
+  ...svgProps
+}) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("svg", {
+  width: "8",
+  height: "6",
+  viewBox: "0 0 24 24",
+  fill: "none",
+  xmlns: "http://www.w3.org/2000/svg",
+  ...svgProps
+}, title2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("title", null, title2), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("path", {
+  fillRule: "evenodd",
+  clipRule: "evenodd",
+  d: "M15.7071 9.29289C16.0976 9.68342 16.0976 10.3166 15.7071 10.7071L11.7071 14.7071C11.3166 15.0976 10.6834 15.0976 10.2929 14.7071L8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929C8.68342 10.9024 9.31658 10.9024 9.70711 11.2929L11 12.5858L14.2929 9.29289C14.6834 8.90237 15.3166 8.90237 15.7071 9.29289Z",
   fill: color
 }));
 const TickBadgeIcon = ({
@@ -6016,17 +6033,17 @@ const WrenchScrewdriverIcon = ({
   d: "M3.21969 1.71969C3.46304 1.47634 3.84078 1.42983 4.13589 1.6069L7.88589 3.8569C8.11179 3.99244 8.25002 4.23657 8.25002 4.50002V5.59837L11.7331 9.08149C11.9972 8.61018 12.0824 7.94893 12.0188 7.1973C12.0064 7.0497 12 6.90051 12 6.75002C12 3.85052 14.3505 1.50002 17.25 1.50002C18.019 1.50002 18.7514 1.66584 19.4115 1.96439C19.6358 2.06586 19.7961 2.27099 19.8403 2.51324C19.8844 2.75548 19.8069 3.00397 19.6327 3.17808L16.6793 6.13157C16.9068 6.66508 17.3351 7.09338 17.8686 7.32091L20.822 4.36748C20.9962 4.19336 21.2447 4.1158 21.4869 4.15997C21.7291 4.20414 21.9343 4.36441 22.0357 4.58878C22.3342 5.24885 22.5 5.98108 22.5 6.75002C22.5 9.64951 20.1495 12 17.25 12C17.0995 12 16.9503 11.9937 16.8027 11.9812C16.7988 11.9809 16.7948 11.9805 16.7909 11.9802L21.5303 16.7197C22.8588 18.0481 22.8588 20.2019 21.5303 21.5303C20.2019 22.8588 18.0481 22.8588 16.7197 21.5303L11.4732 16.2838L7.34328 21.2987C6.71686 22.0593 5.7831 22.5 4.7977 22.5C2.97644 22.5 1.50002 21.0236 1.50002 19.2023C1.50002 18.2169 1.94068 17.2832 2.70134 16.6567L8.90017 11.5518L5.59837 8.25002H4.50002C4.23657 8.25002 3.99244 8.11179 3.8569 7.88589L1.6069 4.13589C1.42983 3.84078 1.47634 3.46304 1.71969 3.21969L3.21969 1.71969ZM10.0635 10.5938L10.6451 10.1148L6.96969 6.43936C6.82903 6.2987 6.75002 6.10794 6.75002 5.90903V4.92466L3.86628 3.19442L3.19442 3.86628L4.92466 6.75002H5.90903C6.10794 6.75002 6.2987 6.82903 6.43936 6.96969L10.0635 10.5938ZM12.4312 15.1205L17.7803 20.4697C18.523 21.2123 19.727 21.2123 20.4697 20.4697C21.2123 19.727 21.2123 18.523 20.4697 17.7803L14.9421 12.2528C14.7641 12.3489 14.6147 12.4691 14.4944 12.6151L12.4312 15.1205ZM17.25 3.00002C15.1789 3.00002 13.5 4.67895 13.5 6.75002C13.5 6.85829 13.5046 6.96532 13.5135 7.07095C13.6093 8.2046 13.4712 9.73061 12.3385 10.6635L3.6549 17.8146C3.24024 18.1561 3.00002 18.6652 3.00002 19.2023C3.00002 20.1952 3.80487 21 4.7977 21C5.33488 21 5.8439 20.7598 6.18539 20.3451L13.3365 11.6616C13.768 11.1377 14.3316 10.8268 14.9089 10.6546C15.5778 10.4551 16.2921 10.4327 16.9291 10.4865C17.0347 10.4954 17.1417 10.5 17.25 10.5C19.3211 10.5 21 8.82108 21 6.75002C21 6.60915 20.9923 6.47022 20.9772 6.33361L18.6065 8.70431C18.4239 8.88695 18.1601 8.96276 17.9084 8.90497C16.5126 8.58455 15.4156 7.48758 15.0952 6.09179C15.0374 5.84005 15.1132 5.57629 15.2959 5.39365L17.6667 3.02284C17.53 3.00776 17.391 3.00002 17.25 3.00002ZM15.2197 15.2197C15.5126 14.9268 15.9875 14.9268 16.2803 15.2197L18.9053 17.8447C19.1982 18.1376 19.1982 18.6125 18.9053 18.9053C18.6125 19.1982 18.1376 19.1982 17.8447 18.9053L15.2197 16.2803C14.9268 15.9875 14.9268 15.5126 15.2197 15.2197ZM4.11725 19.1251C4.11725 18.7108 4.45304 18.3751 4.86725 18.3751H4.87475C5.28896 18.3751 5.62475 18.7108 5.62475 19.1251V19.1326C5.62475 19.5468 5.28896 19.8826 4.87475 19.8826H4.86725C4.45304 19.8826 4.11725 19.5468 4.11725 19.1326V19.1251Z",
   fill: color
 }));
-const iconStyle = "_iconStyle_nb126_2";
-const container$a = "_container_nb126_8";
-const row$1 = "_row_nb126_15";
-const deprecated = "_deprecated_nb126_29";
-const copyFeedBack = "_copyFeedBack_nb126_33";
-const nameAndIcon = "_nameAndIcon_nb126_37";
-const name = "_name_nb126_37";
-const searchContainer = "_searchContainer_nb126_54";
-var s$H = {
+const iconStyle = "_iconStyle_1c8b6_2";
+const container$9 = "_container_1c8b6_8";
+const row$1 = "_row_1c8b6_15";
+const deprecated = "_deprecated_1c8b6_29";
+const copyFeedBack = "_copyFeedBack_1c8b6_33";
+const nameAndIcon = "_nameAndIcon_1c8b6_37";
+const name = "_name_1c8b6_37";
+const searchContainer = "_searchContainer_1c8b6_54";
+var s$I = {
   iconStyle,
-  container: container$a,
+  container: container$9,
   row: row$1,
   deprecated,
   copyFeedBack,
@@ -6034,29 +6051,6 @@ var s$H = {
   name,
   searchContainer
 };
-const PercentIcon = ({
-  color = "currentColor",
-  title: title2,
-  ...svgProps
-}) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("svg", {
-  width: "24",
-  height: "24",
-  viewBox: "0 0 24 24",
-  fill: "none",
-  xmlns: "http://www.w3.org/2000/svg",
-  ...svgProps
-}, title2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("title", null, title2), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("path", {
-  fillRule: "evenodd",
-  clipRule: "evenodd",
-  d: "M19.0865 5.74665C19.4154 6.07551 19.4154 6.6087 19.0865 6.93756L6.77075 19.2534C6.44189 19.5822 5.9087 19.5822 5.57984 19.2534C5.25097 18.9245 5.25097 18.3913 5.57984 18.0624L17.8956 5.74665C18.2245 5.41778 18.7577 5.41778 19.0865 5.74665Z",
-  fill: "#1A1A1A"
-}), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("path", {
-  d: "M19.4385 17.8947C19.4385 19.0574 18.496 20 17.3333 20C16.1705 20 15.228 19.0574 15.228 17.8947C15.228 16.732 16.1705 15.7895 17.3333 15.7895C18.496 15.7895 19.4385 16.732 19.4385 17.8947Z",
-  fill: "#1A1A1A"
-}), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("path", {
-  d: "M8.79036 7.69402C8.79036 8.85672 7.8478 9.79928 6.6851 9.79928C5.52239 9.79928 4.57983 8.85672 4.57983 7.69402C4.57983 6.53131 5.52239 5.58875 6.6851 5.58875C7.8478 5.58875 8.79036 6.53131 8.79036 7.69402Z",
-  fill: "#1A1A1A"
-}));
 const Icon = ({
   className,
   icon: icon2,
@@ -6151,7 +6145,7 @@ const Icon = ({
     "clipboard-document-check": ClipboardDocumentCheckIcon,
     "clipboard-document-list": ClipboardDocumentListIcon,
     clock: ClockIcon,
-    close: CloseIcon$1,
+    close: CloseIcon,
     "close-circle": CloseCircleIcon,
     cloud: CloudIcon,
     "cloud-arrow-down": CloudArrowDownIcon,
@@ -6235,7 +6229,6 @@ const Icon = ({
     "pause-circle": PauseCircleIcon,
     pencil: PencilIcon,
     "pencil-square": PencilSquareIcon,
-    percent: PercentIcon,
     phone: PhoneIcon,
     "phone-arrow-down-left": PhoneArrowDownLeftIcon,
     "phone-arrow-up-right": PhoneArrowUpRightIcon,
@@ -6294,6 +6287,7 @@ const Icon = ({
     tablet: TabletIcon,
     tag: TagIcon,
     tick: TickIcon,
+    "tick-alt": TickIconAlt,
     "tick-badge": TickBadgeIcon,
     "tick-circle": TickCircleIcon,
     ticket: TicketIcon,
@@ -6322,7 +6316,7 @@ const Icon = ({
   };
   const IconComponent = (_a = iconComponentFor[icon2]) != null ? _a : AlmaIcon;
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(IconComponent, {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$H.iconStyle),
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$I.iconStyle),
     title: title2,
     "aria-hidden": title2 ? void 0 : "true",
     isfilled: isFilled == null ? void 0 : isFilled.toString(),
@@ -6499,7 +6493,6 @@ var IconName = /* @__PURE__ */ ((IconName2) => {
   IconName2["pause-circle"] = "pause-circle";
   IconName2["pencil"] = "pencil";
   IconName2["pencil-square"] = "pencil-square";
-  IconName2["percent"] = "percent";
   IconName2["phone"] = "phone";
   IconName2["phone-arrow-down-left"] = "phone-arrow-down-left";
   IconName2["phone-arrow-up-right"] = "phone-arrow-up-right";
@@ -6558,6 +6551,7 @@ var IconName = /* @__PURE__ */ ((IconName2) => {
   IconName2["tablet"] = "tablet";
   IconName2["tag"] = "tag";
   IconName2["tick"] = "tick";
+  IconName2["tick-alt"] = "tick-alt";
   IconName2["tick-badge"] = "tick-badge";
   IconName2["tick-circle"] = "tick-circle";
   IconName2["ticket"] = "ticket";
@@ -6585,32 +6579,32 @@ var IconName = /* @__PURE__ */ ((IconName2) => {
   IconName2["wrench-screwdriver"] = "wrench-screwdriver";
   return IconName2;
 })(IconName || {});
-const inputContainer = "_inputContainer_gpuib_1";
-const regularBorder$2 = "_regularBorder_gpuib_13";
-const lightBorder$2 = "_lightBorder_gpuib_17";
-const sm$6 = "_sm_gpuib_21";
-const md$7 = "_md_gpuib_28";
-const input = "_input_gpuib_1";
-const disabled$8 = "_disabled_gpuib_61";
-const error$4 = "_error_gpuib_73";
-const unit = "_unit_gpuib_77";
-const clear$1 = "_clear_gpuib_84";
-const icon$3 = "_icon_gpuib_96";
-const blurButton = "_blurButton_gpuib_120";
-const beforeInput = "_beforeInput_gpuib_131";
-const afterInput = "_afterInput_gpuib_136";
-var s$G = {
+const inputContainer = "_inputContainer_zl7aa_1";
+const regularBorder$2 = "_regularBorder_zl7aa_13";
+const lightBorder$2 = "_lightBorder_zl7aa_17";
+const sm$6 = "_sm_zl7aa_21";
+const md$7 = "_md_zl7aa_28";
+const input = "_input_zl7aa_1";
+const disabled$a = "_disabled_zl7aa_61";
+const error$4 = "_error_zl7aa_73";
+const unit = "_unit_zl7aa_77";
+const clear$1 = "_clear_zl7aa_84";
+const icon$4 = "_icon_zl7aa_96";
+const blurButton = "_blurButton_zl7aa_120";
+const beforeInput = "_beforeInput_zl7aa_131";
+const afterInput = "_afterInput_zl7aa_136";
+var s$H = {
   inputContainer,
   regularBorder: regularBorder$2,
   lightBorder: lightBorder$2,
   sm: sm$6,
   md: md$7,
   input,
-  disabled: disabled$8,
+  disabled: disabled$a,
   error: error$4,
   unit,
   clear: clear$1,
-  icon: icon$3,
+  icon: icon$4,
   blurButton,
   beforeInput,
   afterInput
@@ -6686,21 +6680,21 @@ const Input$2 = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef(
     );
     return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(
-        s$G.inputContainer,
-        { [s$G.error]: error2 },
-        { [s$G.disabled]: disabled2 },
-        { [s$G.hasSuffix]: unit2 || iconRight2 || shouldDisplayClearIcon },
-        s$G[inputHeight],
-        s$G[`${borderColor}Border`],
+        s$H.inputContainer,
+        { [s$H.error]: error2 },
+        { [s$H.disabled]: disabled2 },
+        { [s$H.hasSuffix]: unit2 || iconRight2 || shouldDisplayClearIcon },
+        s$H[inputHeight],
+        s$H[`${borderColor}Border`],
         className
       ),
       "data-testid": "input-test"
     }, iconLeft2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: iconLeft2,
-      className: s$G.icon,
+      className: s$H.icon,
       color: iconColorLeft ? `var(${iconColorLeft})` : "var(--alma-orange)"
     }), beforeInput2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$G.beforeInput,
+      className: s$H.beforeInput,
       ...beforeInputProps
     }, beforeInput2), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
       name: id,
@@ -6711,40 +6705,40 @@ const Input$2 = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef(
       readOnly: readOnly2,
       value: value2,
       ...otherProps,
-      className: s$G.input,
+      className: s$H.input,
       type,
       onFocus,
       onBlur
     }), unit2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$G.unit),
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$H.unit),
       style: { color: `var(${getUnitTextAndColor(unit2).color})` }
     }, getUnitTextAndColor(unit2).unit), shouldDisplayClearIcon ? /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
       type: "button",
       onClick: onClearClick,
       onMouseDown: onMouseDownPreventBlur,
-      className: s$G.clear,
+      className: s$H.clear,
       "data-testid": "clear-input"
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: IconName["close-circle"],
       color: "var(--alma-orange)"
     })) : shouldDisplayRightIcon && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: iconRight2,
-      className: s$G.icon,
+      className: s$H.icon,
       color: iconColorRight ? `var(${iconColorRight})` : "var(--alma-orange)"
     }), afterInput2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$G.afterInput,
+      className: s$H.afterInput,
       ...afterInputProps
     }, afterInput2), shouldDisplayBlurButton && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$G.blurButton,
+      className: s$H.blurButton,
       onClick: onBlur
     }, blurButtonMessage)));
   }
 );
 Input$2.displayName = "Input";
-const suggestionsList$1 = "_suggestionsList_xkeiy_1";
-const suggestion$1 = "_suggestion_xkeiy_1";
-const suggestionHighlighted$1 = "_suggestionHighlighted_xkeiy_19";
-var s$F = {
+const suggestionsList$1 = "_suggestionsList_1g3lz_1";
+const suggestion$1 = "_suggestion_1g3lz_1";
+const suggestionHighlighted$1 = "_suggestionHighlighted_1g3lz_19";
+var s$G = {
   suggestionsList: suggestionsList$1,
   suggestion: suggestion$1,
   suggestionHighlighted: suggestionHighlighted$1
@@ -6820,7 +6814,7 @@ const Autocomplete = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
         }
       });
       return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-        className: s$F.autocomplete
+        className: s$G.autocomplete
       }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Input$2, {
         ...inputProps,
         value: value2,
@@ -6835,7 +6829,7 @@ const Autocomplete = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       }, (0,react_dom__WEBPACK_IMPORTED_MODULE_2__.createPortal)(
         /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", {
           ...getMenuProps({
-            className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$F.suggestionsList, suggestionsListClassName),
+            className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$G.suggestionsList, suggestionsListClassName),
             style: {
               left: elementSize.left,
               top: elementSize.top,
@@ -6849,9 +6843,9 @@ const Autocomplete = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
             index,
             item,
             className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(
-              s$F.suggestion,
+              s$G.suggestion,
               {
-                [s$F.suggestionHighlighted]: highlightedIndex === index
+                [s$G.suggestionHighlighted]: highlightedIndex === index
               },
               suggestionClassName
             )
@@ -6862,12 +6856,12 @@ const Autocomplete = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
     });
   }
 );
-const errorMessage = "_errorMessage_1sxgf_1";
-var s$E = {
+const errorMessage = "_errorMessage_18q4c_1";
+var s$F = {
   errorMessage
 };
 const ErrorMessage = ({ children: children2 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: s$E.errorMessage,
+  className: s$F.errorMessage,
   "data-testid": "field-error-message"
 }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
   icon: IconName["warning"],
@@ -6875,14 +6869,14 @@ const ErrorMessage = ({ children: children2 }) => /* @__PURE__ */ react__WEBPACK
   width: "16px",
   height: "16px"
 }), children2);
-const labelContainer = "_labelContainer_1iesd_1";
-const label$3 = "_label_1iesd_1";
-const disabled$7 = "_disabled_1iesd_18";
-const error$3 = "_error_1iesd_22";
-var s$D = {
+const labelContainer = "_labelContainer_994d1_1";
+const label$3 = "_label_994d1_1";
+const disabled$9 = "_disabled_994d1_18";
+const error$3 = "_error_994d1_22";
+var s$E = {
   labelContainer,
   label: label$3,
-  disabled: disabled$7,
+  disabled: disabled$9,
   error: error$3
 };
 const Label = ({
@@ -6892,20 +6886,20 @@ const Label = ({
   error: error2,
   ...props
 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: s$D.labelContainer,
+  className: s$E.labelContainer,
   "data-testid": "input-label"
 }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
   ...props,
-  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$D.label, className, { [s$D.disabled]: disabled2, [s$D.error]: error2 })
+  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$E.label, className, { [s$E.disabled]: disabled2, [s$E.error]: error2 })
 }, children2));
-const legendMessage = "_legendMessage_16ifm_1";
-const lg$5 = "_lg_16ifm_10";
-const disabled$6 = "_disabled_16ifm_14";
-const light = "_light_16ifm_18";
-var s$C = {
+const legendMessage = "_legendMessage_sb2ig_1";
+const lg$5 = "_lg_sb2ig_10";
+const disabled$8 = "_disabled_sb2ig_14";
+const light = "_light_sb2ig_18";
+var s$D = {
   legendMessage,
   lg: lg$5,
-  disabled: disabled$6,
+  disabled: disabled$8,
   light
 };
 const LegendMessage = ({
@@ -6914,11 +6908,11 @@ const LegendMessage = ({
   disabled: disabled2 = false,
   light: light2 = false
 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$C.legendMessage, s$C[size], { [s$C.disabled]: disabled2, [s$C.light]: light2 })
+  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$D.legendMessage, s$D[size], { [s$D.disabled]: disabled2, [s$D.light]: light2 })
 }, children2);
-const container$9 = "_container_1qn1j_1";
-var s$B = {
-  container: container$9
+const container$8 = "_container_1qn1j_1";
+var s$C = {
+  container: container$8
 };
 const Field = ({
   htmlFor,
@@ -6931,7 +6925,7 @@ const Field = ({
   legend,
   ...otherProps
 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$B.container, className),
+  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$C.container, className),
   ...otherProps
 }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Label, {
   htmlFor,
@@ -6966,11 +6960,11 @@ const AutocompleteField = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
     }));
   }
 );
-const suggestionsList = "_suggestionsList_1hnlf_1";
-const suggestion = "_suggestion_1hnlf_1";
-const suggestionHighlighted = "_suggestionHighlighted_1hnlf_19";
-const hasBefore = "_hasBefore_1hnlf_23";
-var s$A = {
+const suggestionsList = "_suggestionsList_2cqmh_1";
+const suggestion = "_suggestion_2cqmh_1";
+const suggestionHighlighted = "_suggestionHighlighted_2cqmh_19";
+const hasBefore = "_hasBefore_2cqmh_23";
+var s$B = {
   suggestionsList,
   suggestion,
   suggestionHighlighted,
@@ -7060,7 +7054,7 @@ const AutocompleteSelect = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
         }
       });
       return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-        className: s$A.autocomplete
+        className: s$B.autocomplete
       }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Input$2, {
         ...inputProps,
         autoComplete: "off",
@@ -7080,7 +7074,7 @@ const AutocompleteSelect = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       }, (0,react_dom__WEBPACK_IMPORTED_MODULE_2__.createPortal)(
         /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", {
           ...getMenuProps({
-            className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$A.suggestionsList, suggestionsListClassName),
+            className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$B.suggestionsList, suggestionsListClassName),
             style: {
               left: elementSize.left,
               top: elementSize.top,
@@ -7094,10 +7088,10 @@ const AutocompleteSelect = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
             index,
             item,
             className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(
-              s$A.suggestion,
+              s$B.suggestion,
               {
-                [s$A.suggestionHighlighted]: highlightedIndex === index,
-                [s$A.hasBefore]: itemBefore
+                [s$B.suggestionHighlighted]: highlightedIndex === index,
+                [s$B.hasBefore]: itemBefore
               },
               suggestionClassName
             )
@@ -7135,22 +7129,24 @@ const AutocompleteSelectField = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef
     }));
   }
 );
-const badge$1 = "_badge_1ci1p_1";
-const green$4 = "_green_1ci1p_23";
-const red$5 = "_red_1ci1p_28";
-const orange$4 = "_orange_1ci1p_33";
-const yellow$6 = "_yellow_1ci1p_38";
-const blue$5 = "_blue_1ci1p_43";
-const grey$1 = "_grey_1ci1p_48";
-const white$1 = "_white_1ci1p_52";
-var s$z = {
+const badge$1 = "_badge_1xi8g_1";
+const green$4 = "_green_1xi8g_23";
+const isColored$1 = "_isColored_1xi8g_27";
+const red$6 = "_red_1xi8g_31";
+const orange$5 = "_orange_1xi8g_39";
+const yellow$7 = "_yellow_1xi8g_47";
+const blue$6 = "_blue_1xi8g_55";
+const grey$1 = "_grey_1xi8g_63";
+const white$1 = "_white_1xi8g_67";
+var s$A = {
   badge: badge$1,
-  "padding-lg": "_padding-lg_1ci1p_18",
+  "padding-lg": "_padding-lg_1xi8g_18",
   green: green$4,
-  red: red$5,
-  orange: orange$4,
-  yellow: yellow$6,
-  blue: blue$5,
+  isColored: isColored$1,
+  red: red$6,
+  orange: orange$5,
+  yellow: yellow$7,
+  blue: blue$6,
   grey: grey$1,
   white: white$1
 };
@@ -7168,6 +7164,7 @@ const Badge = ({
   label: label2,
   className,
   icon: icon2 = iconName$1[color],
+  isColored: isColored2 = false,
   padding = "sm",
   iconTitle
 }) => {
@@ -7176,7 +7173,13 @@ const Badge = ({
   const iconTitleLeft = selectLeft(iconTitle);
   const iconTitleRight = selectRight(iconTitle);
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$z.badge, s$z[color], s$z[`padding-${padding}`], className)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(
+      s$A.badge,
+      s$A[color],
+      { [s$A.isColored]: isColored2 },
+      s$A[`padding-${padding}`],
+      className
+    )
   }, iconLeft2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
     icon: iconLeft2,
     title: iconTitleLeft,
@@ -7201,35 +7204,27 @@ const TranslationsProvider = ({ translations, children: children2 }) => /* @__PU
   value: translations
 }, children2);
 const useTranslations = () => (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(TranslationsContext);
-const container$8 = "_container_1rrdt_1";
-const title$2 = "_title_1rrdt_10";
-const screenReader = "_screenReader_1rrdt_10";
-const content$5 = "_content_1rrdt_24";
-const info$1 = "_info_1rrdt_32";
-const success$1 = "_success_1rrdt_40";
-const error$2 = "_error_1rrdt_48";
-const warning$1 = "_warning_1rrdt_56";
-const tiny$3 = "_tiny_1rrdt_64";
-const small$4 = "_small_1rrdt_76";
-const big$2 = "_big_1rrdt_84";
-const cta = "_cta_1rrdt_110";
-const ctaRight = "_ctaRight_1rrdt_122";
-const hasNoDescription = "_hasNoDescription_1rrdt_127";
-var s$y = {
-  container: container$8,
+const container$7 = "_container_kdvy4_1";
+const title$2 = "_title_kdvy4_13";
+const screenReader = "_screenReader_kdvy4_19";
+const content$5 = "_content_kdvy4_40";
+const info = "_info_kdvy4_48";
+const success = "_success_kdvy4_56";
+const error$2 = "_error_kdvy4_64";
+const warning = "_warning_kdvy4_72";
+const cta = "_cta_kdvy4_80";
+const close = "_close_kdvy4_84";
+var s$z = {
+  container: container$7,
   title: title$2,
   screenReader,
   content: content$5,
-  info: info$1,
-  success: success$1,
+  info,
+  success,
   error: error$2,
-  warning: warning$1,
-  tiny: tiny$3,
-  small: small$4,
-  big: big$2,
+  warning,
   cta,
-  ctaRight,
-  hasNoDescription
+  close
 };
 const iconName = {
   info: IconName.info,
@@ -7243,7 +7238,6 @@ const Banner = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
   ({
     id,
     type,
-    size = "big",
     title: title2,
     children: children2,
     className,
@@ -7251,16 +7245,14 @@ const Banner = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
     iconIsFilled = true,
     iconTitle,
     button: button2,
-    buttonPlacement = "end",
+    onClose,
     ...otherProps
   }, ref) => {
-    const { [type]: screenReaderType } = useTranslations();
+    const { close: close2, [type]: screenReaderType } = useTranslations();
     const ariaTitleId = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => `${id != null ? id : nextId()}-aria-title`, [id]);
     return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       id,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$y.container, className, s$y[type], s$y[size], {
-        [s$y.hasNoDescription]: !children2 || !children2 && !button2
-      }),
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$z.container, className, s$z[type]),
       role: type === "error" ? "alert" : "note",
       "aria-live": type === "error" ? "assertive" : "polite",
       "aria-labelledby": title2 ? ariaTitleId : void 0,
@@ -7271,67 +7263,71 @@ const Banner = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       title: iconTitle,
       isFilled: iconIsFilled
     }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$y.content
+      className: s$z.content
     }, title2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       id: ariaTitleId,
-      className: s$y.title,
+      className: s$z.title,
       "aria-hidden": "true"
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$y.screenReader
-    }, screenReaderType, ": "), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, title2)), children2, button2 && buttonPlacement === "end" && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$y.cta
-    }, button2)), button2 && buttonPlacement === "right" && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$y.ctaRight
-    }, button2));
+      className: s$z.screenReader
+    }, screenReaderType, ": "), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, title2)), children2, button2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: s$z.cta
+    }, button2)), onClose && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+      type: "button",
+      className: s$z.close,
+      onClick: onClose,
+      "aria-label": close2
+    }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
+      icon: "close"
+    })));
   }
 );
 Banner.displayName = "Banner";
-const container$7 = "_container_1h22b_1";
+const container$6 = "_container_1h22b_1";
 const dot = "_dot_1h22b_8";
 const one = "_one_1h22b_15";
-const bounce$1 = "_bounce_1h22b_1";
+const bounce$2 = "_bounce_1h22b_1";
 const two = "_two_1h22b_19";
 const three = "_three_1h22b_23";
-var s$x = {
-  container: container$7,
+var s$y = {
+  container: container$6,
   dot,
   one,
   "change-color": "_change-color_1h22b_1",
-  bounce: bounce$1,
+  bounce: bounce$2,
   two,
   three
 };
 const LoadingDots = ({ className, ...options }) => {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     "data-testid": "loading-dots",
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$x.container, className)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$y.container, className)
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$x.dot, s$x.one)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$y.dot, s$y.one)
   }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$x.dot, s$x.two)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$y.dot, s$y.two)
   }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$x.dot, s$x.three)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$y.dot, s$y.three)
   }));
 };
-const button = "_button_kkqya_2";
-const onlyIcon = "_onlyIcon_kkqya_23";
-const content$4 = "_content_kkqya_27";
-const iconLeft = "_iconLeft_kkqya_39";
-const iconRight = "_iconRight_kkqya_47";
-const progressive = "_progressive_kkqya_57";
-const progress$1 = "_progress_kkqya_57";
-const progression = "_progression_kkqya_1";
-const isLoading = "_isLoading_kkqya_79";
-const isValidated = "_isValidated_kkqya_79";
-const link = "_link_kkqya_84";
-const secondary = "_secondary_kkqya_104";
-const isWithFeedback = "_isWithFeedback_kkqya_115";
-const small$3 = "_small_kkqya_195";
-const isDisabled = "_isDisabled_kkqya_220";
-const block$1 = "_block_kkqya_235";
-const tiny$2 = "_tiny_kkqya_258";
-const dotsLoading = "_dotsLoading_kkqya_299";
-var s$w = {
+const button = "_button_1bs7m_2";
+const onlyIcon = "_onlyIcon_1bs7m_23";
+const content$4 = "_content_1bs7m_27";
+const iconLeft = "_iconLeft_1bs7m_39";
+const iconRight = "_iconRight_1bs7m_47";
+const progressive = "_progressive_1bs7m_57";
+const progress$1 = "_progress_1bs7m_57";
+const progression = "_progression_1bs7m_1";
+const isLoading = "_isLoading_1bs7m_79";
+const isValidated = "_isValidated_1bs7m_79";
+const link = "_link_1bs7m_84";
+const secondary = "_secondary_1bs7m_104";
+const isWithFeedback = "_isWithFeedback_1bs7m_115";
+const small$1 = "_small_1bs7m_196";
+const isDisabled = "_isDisabled_1bs7m_221";
+const block$1 = "_block_1bs7m_236";
+const dotsLoading = "_dotsLoading_1bs7m_276";
+var s$x = {
   button,
   onlyIcon,
   content: content$4,
@@ -7343,17 +7339,16 @@ var s$w = {
   isLoading,
   isValidated,
   link,
-  "link-red": "_link-red_kkqya_84",
-  "primary-white": "_primary-white_kkqya_94",
+  "link-red": "_link-red_1bs7m_84",
+  "primary-white": "_primary-white_1bs7m_94",
   secondary,
   isWithFeedback,
-  "secondary-white": "_secondary-white_kkqya_125",
-  "primary-destructive": "_primary-destructive_kkqya_143",
-  "secondary-destructive": "_secondary-destructive_kkqya_153",
-  small: small$3,
+  "secondary-white": "_secondary-white_1bs7m_126",
+  "primary-destructive": "_primary-destructive_1bs7m_144",
+  "secondary-destructive": "_secondary-destructive_1bs7m_154",
+  small: small$1,
   isDisabled,
   block: block$1,
-  tiny: tiny$2,
   dotsLoading
 };
 function Button({
@@ -7362,7 +7357,7 @@ function Button({
   as = "button",
   color = "primary",
   block: block2 = false,
-  size = "regular",
+  small: small2 = false,
   isLoading: isLoading2 = false,
   iconTitle,
   icon: icon2,
@@ -7382,47 +7377,47 @@ function Button({
   const isProgressive = color === "progressive" && !isLoading2 && !disabled2 && !isValidated2;
   const commonProps = {
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(
-      s$w.button,
-      s$w[color],
-      s$w[size],
+      s$x.button,
+      s$x[color],
       {
-        [s$w.block]: block2,
-        [s$w.isLoading]: isLoading2,
-        [s$w.isDisabled]: disabled2,
-        [s$w.isWithFeedback]: isWithFeedback2,
-        [s$w.isWithFeedback]: isWithFeedback2,
-        [s$w.isValidated]: isValidated2,
-        [s$w.onlyIcon]: !children2
+        [s$x.block]: block2,
+        [s$x.small]: small2,
+        [s$x.isLoading]: isLoading2,
+        [s$x.isDisabled]: disabled2,
+        [s$x.isWithFeedback]: isWithFeedback2,
+        [s$x.isWithFeedback]: isWithFeedback2,
+        [s$x.isValidated]: isValidated2,
+        [s$x.onlyIcon]: !children2
       },
       className
     ),
     children: /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, isLoading2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(LoadingDots, {
-      className: s$w.dotsLoading
+      className: s$x.dotsLoading
     }), isValidated2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: IconName.tick,
       color: "var(--white)"
     }), iconLeft2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: iconLeft2,
       title: iconTitleLeft,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$w.iconLeft, { [s$w.onlyIcon]: !children2 }),
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$x.iconLeft, { [s$x.onlyIcon]: !children2 }),
       color: iconColorLeft ? `var(${iconColorLeft})` : "currentColor"
     }), isProgressive && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: s$w.progress,
+      className: s$x.progress,
       style: { animationDuration: `${progressiveDuration}s` }
     }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$w.content, {
-        [s$w.isLoading]: isLoading2,
-        [s$w.isValidated]: isValidated2
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$x.content, {
+        [s$x.isLoading]: isLoading2,
+        [s$x.isValidated]: isValidated2
       })
     }, children2), iconRight2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: iconRight2,
       title: iconTitleRight,
-      className: s$w.iconRight,
+      className: s$x.iconRight,
       color: iconColorRight ? `var(${iconColorRight})` : "currentColor"
     }), isWithFeedback2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: selectLeft(icon2) || IconName["arrow-right"],
       title: selectLeft(iconTitle),
-      className: s$w.iconRight,
+      className: s$x.iconRight,
       color: iconColorLeft ? `var(${iconColorLeft})` : "currentColor"
     }))
   };
@@ -7440,10 +7435,10 @@ function Button({
   });
 }
 const loadingIndicator = "_loadingIndicator_rleli_1";
-const bounce = "_bounce_rleli_1";
-var s$v = {
+const bounce$1 = "_bounce_rleli_1";
+var s$w = {
   loadingIndicator,
-  bounce
+  bounce: bounce$1
 };
 const AlmaWhiteLogo = ({
   ...svgProps
@@ -7619,47 +7614,47 @@ const Logo = ({ logo, ...svgProps }) => {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, (_a = logoByProps[logo]) != null ? _a : /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(AlmaBlackLogo, null));
 };
 const LoadingIndicator = ({ className }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$v.loadingIndicator, className),
+  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$w.loadingIndicator, className),
   "data-testid": "loader"
 }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Logo, {
   logo: "alma-a"
 }));
-const card$1 = "_card_ab6li_1";
-const shadow = "_shadow_ab6li_8";
-const blue$4 = "_blue_ab6li_13";
-const orange$3 = "_orange_ab6li_17";
-const yellow$5 = "_yellow_ab6li_26";
-const red$4 = "_red_ab6li_30";
-const gray = "_gray_ab6li_34";
-const blueBorder = "_blueBorder_ab6li_42";
-const orangeBorder = "_orangeBorder_ab6li_46";
-const yellowBorder = "_yellowBorder_ab6li_54";
-const redBorder = "_redBorder_ab6li_58";
-const grayBorder = "_grayBorder_ab6li_62";
-const loader = "_loader_ab6li_70";
-const footerSection = "_footerSection_ab6li_86";
-const none = "_none_ab6li_106";
-const sm$5 = "_sm_ab6li_110";
-const md$6 = "_md_ab6li_116";
-const lg$4 = "_lg_ab6li_122";
-const adaptToScreenSize = "_adaptToScreenSize_ab6li_136";
-var s$u = {
+const card$1 = "_card_1thup_1";
+const shadow = "_shadow_1thup_8";
+const blue$5 = "_blue_1thup_13";
+const orange$4 = "_orange_1thup_17";
+const yellow$6 = "_yellow_1thup_26";
+const red$5 = "_red_1thup_30";
+const gray$1 = "_gray_1thup_34";
+const blueBorder = "_blueBorder_1thup_42";
+const orangeBorder = "_orangeBorder_1thup_46";
+const yellowBorder = "_yellowBorder_1thup_54";
+const redBorder = "_redBorder_1thup_58";
+const grayBorder = "_grayBorder_1thup_62";
+const loader = "_loader_1thup_70";
+const footerSection = "_footerSection_1thup_86";
+const none = "_none_1thup_106";
+const sm$5 = "_sm_1thup_110";
+const md$6 = "_md_1thup_116";
+const lg$4 = "_lg_1thup_122";
+const adaptToScreenSize = "_adaptToScreenSize_1thup_136";
+var s$v = {
   card: card$1,
   shadow,
-  blue: blue$4,
-  orange: orange$3,
-  "light-orange": "_light-orange_ab6li_21",
-  yellow: yellow$5,
-  red: red$4,
-  gray,
-  "light-gray": "_light-gray_ab6li_38",
+  blue: blue$5,
+  orange: orange$4,
+  "light-orange": "_light-orange_1thup_21",
+  yellow: yellow$6,
+  red: red$5,
+  gray: gray$1,
+  "light-gray": "_light-gray_1thup_38",
   blueBorder,
   orangeBorder,
-  "light-orangeBorder": "_light-orangeBorder_ab6li_50",
+  "light-orangeBorder": "_light-orangeBorder_1thup_50",
   yellowBorder,
   redBorder,
   grayBorder,
-  "dark-grayBorder": "_dark-grayBorder_ab6li_66",
+  "dark-grayBorder": "_dark-grayBorder_1thup_66",
   loader,
   footerSection,
   none,
@@ -7681,31 +7676,31 @@ const Card = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
     ...otherProps
   }, ref) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(
-      s$u.card,
-      s$u[padding],
-      s$u[color],
+      s$v.card,
+      s$v[padding],
+      s$v[color],
       {
-        [s$u.shadow]: shadow2,
-        [s$u[`${borderColor}Border`]]: borderColor,
-        [s$u.adaptToScreenSize]: adaptToScreenSize2
+        [s$v.shadow]: shadow2,
+        [s$v[`${borderColor}Border`]]: borderColor,
+        [s$v.adaptToScreenSize]: adaptToScreenSize2
       },
       className
     ),
     ...otherProps,
     ref
   }, children2, isLoading2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$u.loader
+    className: s$v.loader
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(LoadingIndicator, null)))
 );
 Card.displayName = "Card";
 const CardFooter = ({ children: children2, className, ...otherProps }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$u.footerSection, className),
+  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$v.footerSection, className),
   ...otherProps,
   "data-testid": "footerSection"
 }, children2);
 const blockHeader = "_blockHeader_1d7ym_1";
 const description$3 = "_description_1d7ym_8";
-var s$t = {
+var s$u = {
   blockHeader,
   description: description$3
 };
@@ -7717,7 +7712,7 @@ const CardTemplate = ({
 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Card, {
   ...otherProps
 }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: s$t.blockHeader
+  className: s$u.blockHeader
 }, header2, corner && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, corner)), children2);
 const collapsibleTitle = "_collapsibleTitle_1wo6z_1";
 const title$1 = "_title_1wo6z_13";
@@ -7726,7 +7721,7 @@ const isOpen = "_isOpen_1wo6z_40";
 const collapsibleContent = "_collapsibleContent_1wo6z_48";
 const innerCollaspibleContent = "_innerCollaspibleContent_1wo6z_54";
 const inhibitTransition = "_inhibitTransition_1wo6z_58";
-var s$s = {
+var s$t = {
   collapsibleTitle,
   title: title$1,
   block,
@@ -7760,31 +7755,31 @@ const Collapsible = ({
     className,
     ...otherProps
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$s.collapsibleTitle, {
-      [s$s.isOpen]: !collapsed,
-      [s$s.block]: block2
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$t.collapsibleTitle, {
+      [s$t.isOpen]: !collapsed,
+      [s$t.block]: block2
     }),
     onClick: () => onCollapse(collapsed),
     onKeyDown: (e) => [" ", "Enter"].includes(e.key) && onCollapse(collapsed),
     role: "button",
     tabIndex: 0
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$s.title
+    className: s$t.title
   }, title2), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
     icon: IconName["chevron-down"],
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()({
-      [s$s.block]: block2
+      [s$t.block]: block2
     }),
     color: chevronColor != null ? chevronColor : "currentColor"
   })), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$s.collapsibleContent, {
-      [s$s.isOpen]: !collapsed,
-      [s$s.inhibitTransition]: heightChanging
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$t.collapsibleContent, {
+      [s$t.isOpen]: !collapsed,
+      [s$t.inhibitTransition]: heightChanging
     }),
     style: collapsed ? { maxHeight: 0 } : { maxHeight: height === 0 ? "auto" : height }
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     ref: sizingElementRef,
-    className: s$s.innerCollaspibleContent
+    className: s$t.innerCollaspibleContent
   }, children2)));
 };
 const CardTemplateCollapsible = ({
@@ -7805,29 +7800,29 @@ const CardTemplateCollapsible = ({
   chevronColor,
   block: true,
   title: /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, header2, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$t.description
+    className: s$u.description
   }, description2))
 }, children2)));
-const container$6 = "_container_w1e6e_1";
-const overlay$1 = "_overlay_w1e6e_8";
-const header$2 = "_header_w1e6e_16";
-const panelHeader = "_panelHeader_w1e6e_20";
-const card = "_card_w1e6e_24";
-const fullscreen = "_fullscreen_w1e6e_40";
-const body$1 = "_body_w1e6e_45";
-const slideIn$1 = "_slideIn_w1e6e_49";
-const slidein = "_slidein_w1e6e_1";
-const slideOut$1 = "_slideOut_w1e6e_53";
-const slideout = "_slideout_w1e6e_1";
-const fadeIn$1 = "_fadeIn_w1e6e_57";
-const fadein = "_fadein_w1e6e_1";
-const fadeOut$1 = "_fadeOut_w1e6e_61";
-const fadeout = "_fadeout_w1e6e_1";
-const closeButton$1 = "_closeButton_w1e6e_66";
-var s$r = {
-  container: container$6,
+const container$5 = "_container_1dq0e_1";
+const overlay$1 = "_overlay_1dq0e_8";
+const header$3 = "_header_1dq0e_16";
+const panelHeader = "_panelHeader_1dq0e_20";
+const card = "_card_1dq0e_24";
+const fullscreen = "_fullscreen_1dq0e_39";
+const body$1 = "_body_1dq0e_44";
+const slideIn$1 = "_slideIn_1dq0e_48";
+const slidein = "_slidein_1dq0e_1";
+const slideOut$1 = "_slideOut_1dq0e_52";
+const slideout = "_slideout_1dq0e_1";
+const fadeIn$1 = "_fadeIn_1dq0e_56";
+const fadein = "_fadein_1dq0e_1";
+const fadeOut$1 = "_fadeOut_1dq0e_60";
+const fadeout = "_fadeout_1dq0e_1";
+const closeButton$1 = "_closeButton_1dq0e_64";
+var s$s = {
+  container: container$5,
   overlay: overlay$1,
-  header: header$2,
+  header: header$3,
   panelHeader,
   card,
   fullscreen,
@@ -7842,24 +7837,25 @@ var s$r = {
   fadeout,
   closeButton: closeButton$1
 };
-const overlay = "_overlay_1pp66_1";
-const md$5 = "_md_1pp66_9";
-const lg$3 = "_lg_1pp66_13";
-const isOverlayOpen = "_isOverlayOpen_1pp66_17";
-const modal = "_modal_1pp66_21";
-const top = "_top_1pp66_31";
-const center = "_center_1pp66_35";
-const xlPadding = "_xlPadding_1pp66_40";
-const content$3 = "_content_1pp66_40";
-const lgPadding = "_lgPadding_1pp66_44";
-const contentScrollable = "_contentScrollable_1pp66_48";
-const closeButton = "_closeButton_1pp66_56";
-const slideIn = "_slideIn_1pp66_75";
-const slideOut = "_slideOut_1pp66_83";
-const fadeIn = "_fadeIn_1pp66_91";
-const fadeOut = "_fadeOut_1pp66_95";
-const sm$4 = "_sm_1pp66_178";
-var s$q = {
+const overlay = "_overlay_1q98p_1";
+const md$5 = "_md_1q98p_9";
+const lg$3 = "_lg_1q98p_13";
+const isOverlayOpen = "_isOverlayOpen_1q98p_17";
+const modal = "_modal_1q98p_21";
+const top = "_top_1q98p_31";
+const center = "_center_1q98p_35";
+const xlPadding = "_xlPadding_1q98p_40";
+const content$3 = "_content_1q98p_40";
+const lgPadding = "_lgPadding_1q98p_44";
+const contentScrollable = "_contentScrollable_1q98p_48";
+const header$2 = "_header_1q98p_56";
+const closeButton = "_closeButton_1q98p_64";
+const slideIn = "_slideIn_1q98p_76";
+const slideOut = "_slideOut_1q98p_84";
+const fadeIn = "_fadeIn_1q98p_92";
+const fadeOut = "_fadeOut_1q98p_96";
+const sm$4 = "_sm_1q98p_179";
+var s$r = {
   overlay,
   md: md$5,
   lg: lg$3,
@@ -7871,78 +7867,20 @@ var s$q = {
   content: content$3,
   lgPadding,
   contentScrollable,
+  header: header$2,
   closeButton,
   slideIn,
-  "slide-in": "_slide-in_1pp66_1",
-  "slide-in-center": "_slide-in-center_1pp66_1",
+  "slide-in": "_slide-in_1q98p_1",
+  "slide-in-center": "_slide-in-center_1q98p_1",
   slideOut,
-  "slide-out": "_slide-out_1pp66_1",
-  "slide-out-center": "_slide-out-center_1pp66_1",
+  "slide-out": "_slide-out_1q98p_1",
+  "slide-out-center": "_slide-out-center_1q98p_1",
   fadeIn,
-  "fade-in": "_fade-in_1pp66_1",
+  "fade-in": "_fade-in_1q98p_1",
   fadeOut,
-  "fade-out": "_fade-out_1pp66_1",
+  "fade-out": "_fade-out_1q98p_1",
   sm: sm$4
 };
-function CloseIcon() {
-  return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("svg", {
-    width: "72",
-    height: "72",
-    viewBox: "0 0 72 72",
-    fill: "none",
-    xmlns: "http://www.w3.org/2000/svg"
-  }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("g", {
-    filter: "url(#filter0_d_12596_6540)"
-  }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("circle", {
-    cx: "36",
-    cy: "36",
-    r: "20",
-    fill: "white"
-  })), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("path", {
-    fillRule: "evenodd",
-    clipRule: "evenodd",
-    d: "M29.4697 29.4697C29.7626 29.1768 30.2374 29.1768 30.5303 29.4697L36 34.9393L41.4697 29.4697C41.7626 29.1768 42.2374 29.1768 42.5303 29.4697C42.8232 29.7626 42.8232 30.2374 42.5303 30.5303L37.0607 36L42.5303 41.4697C42.8232 41.7626 42.8232 42.2374 42.5303 42.5303C42.2374 42.8232 41.7626 42.8232 41.4697 42.5303L36 37.0607L30.5303 42.5303C30.2374 42.8232 29.7626 42.8232 29.4697 42.5303C29.1768 42.2374 29.1768 41.7626 29.4697 41.4697L34.9393 36L29.4697 30.5303C29.1768 30.2374 29.1768 29.7626 29.4697 29.4697Z",
-    fill: "#1A1A1A"
-  }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("defs", null, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("filter", {
-    id: "filter0_d_12596_6540",
-    x: "0",
-    y: "0",
-    width: "72",
-    height: "72",
-    filterUnits: "userSpaceOnUse",
-    colorInterpolationFilters: "sRGB"
-  }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("feFlood", {
-    floodOpacity: "0",
-    result: "BackgroundImageFix"
-  }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("feColorMatrix", {
-    in: "SourceAlpha",
-    type: "matrix",
-    values: "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0",
-    result: "hardAlpha"
-  }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("feMorphology", {
-    radius: "4",
-    operator: "dilate",
-    in: "SourceAlpha",
-    result: "effect1_dropShadow_12596_6540"
-  }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("feOffset", null), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("feGaussianBlur", {
-    stdDeviation: "6"
-  }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("feComposite", {
-    in2: "hardAlpha",
-    operator: "out"
-  }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("feColorMatrix", {
-    type: "matrix",
-    values: "0 0 0 0 0.160784 0 0 0 0 0.0588235 0 0 0 0 0.0313726 0 0 0 0.04 0"
-  }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("feBlend", {
-    mode: "normal",
-    in2: "BackgroundImageFix",
-    result: "effect1_dropShadow_12596_6540"
-  }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("feBlend", {
-    mode: "normal",
-    in: "SourceGraphic",
-    in2: "effect1_dropShadow_12596_6540",
-    result: "shape"
-  }))));
-}
 const Modal = ({
   children: children2,
   isOpen: isOpen2,
@@ -7967,14 +7905,14 @@ const Modal = ({
     }, 300);
   }, [onClose]);
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react_modal__WEBPACK_IMPORTED_MODULE_4___default()), {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$q.modal, className, s$q[`${size}`], s$q[`${position}`], s$q[`${padding}Padding`], {
-      [s$q.isOpen]: isOpen2,
-      [s$q.slideIn]: isOpen2,
-      [s$q.slideOut]: closingAnimation
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$r.modal, className, s$r[`${size}`], s$r[`${position}`], s$r[`${padding}Padding`], {
+      [s$r.isOpen]: isOpen2,
+      [s$r.slideIn]: isOpen2,
+      [s$r.slideOut]: closingAnimation
     }),
-    overlayClassName: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$q.overlay, s$q[`${overlayzIndex}`], s$q.fadeIn, {
-      [s$q.isOverlayOpen]: isOpen2 && !closingAnimation,
-      [s$q.fadeOut]: closingAnimation
+    overlayClassName: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$r.overlay, s$r[`${overlayzIndex}`], s$r.fadeIn, {
+      [s$r.isOverlayOpen]: isOpen2 && !closingAnimation,
+      [s$r.fadeOut]: closingAnimation
     }),
     onAfterOpen: () => no_scroll__WEBPACK_IMPORTED_MODULE_3___default().on(),
     onAfterClose: () => no_scroll__WEBPACK_IMPORTED_MODULE_3___default().off(),
@@ -7983,13 +7921,18 @@ const Modal = ({
     ariaHideApp: false,
     testId: "reactModal",
     ...props
+  }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: s$r.header
   }, closeIcon && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     onClick: onRequestClose,
-    className: s$q.closeButton,
+    className: s$r.closeButton,
     "data-testid": "modal-close-button",
     "aria-label": closeLabel
-  }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(CloseIcon, null)), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$q.content, contentClassName, { [s$q.contentScrollable]: scrollable })
+  }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
+    icon: "close",
+    color: "var(--off-black)"
+  }))), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$r.content, contentClassName, { [s$r.contentScrollable]: scrollable })
   }, children2));
 };
 const CardTemplatePanel = ({
@@ -8000,7 +7943,6 @@ const CardTemplatePanel = ({
   isModal,
   isFullScreen,
   modalSize,
-  modalPosition,
   closeIcon = true,
   shouldCloseOnOverlayClick = true,
   ...otherProps
@@ -8028,60 +7970,61 @@ const CardTemplatePanel = ({
     size: modalSize,
     closeIcon,
     scrollable: true,
-    shouldCloseOnOverlayClick,
-    position: modalPosition
+    shouldCloseOnOverlayClick
   }, title2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$r.header
+    className: s$s.header
   }, title2), children2) : /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$r.container
+    className: s$s.container
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Card, {
     "data-testid": "card-panel",
     ...otherProps,
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$r.card, {
-      [s$r.slideIn]: isOpen2,
-      [s$r.slideOut]: closingAnimation,
-      [s$r.fullscreen]: isFullScreen
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$s.card, {
+      [s$s.slideIn]: isOpen2,
+      [s$s.slideOut]: closingAnimation,
+      [s$s.fullscreen]: isFullScreen
     })
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$r.panelHeader
+    className: s$s.panelHeader
   }, title2, closeIcon && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    className: s$s.closeButton,
     onClick: () => setClosingAnimation(true),
-    className: s$r.closeButton,
     "data-testid": "card-panel-close-button"
-  }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(CloseIcon, null))), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$r.body
+  }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
+    width: 16,
+    "data-testid": "card-panel-close-icon",
+    icon: IconName["close"]
+  }))), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: s$s.body
   }, children2)), !isFullScreen && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    "data-testid": "card-overlay",
-    onClick: () => setClosingAnimation(true),
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$r.overlay, { [s$r.fadeIn]: isOpen2, [s$r.fadeOut]: closingAnimation })
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$s.overlay, { [s$s.fadeIn]: isOpen2, [s$s.fadeOut]: closingAnimation })
   }))));
 };
-const circleStepper = "_circleStepper_16uv0_1";
-const steps = "_steps_16uv0_14";
-const green$3 = "_green_16uv0_20";
-const blue$3 = "_blue_16uv0_24";
-const red$3 = "_red_16uv0_28";
-const yellow$4 = "_yellow_16uv0_32";
-var s$p = {
+const circleStepper = "_circleStepper_1xj9j_1";
+const steps = "_steps_1xj9j_14";
+const green$3 = "_green_1xj9j_20";
+const blue$4 = "_blue_1xj9j_24";
+const red$4 = "_red_1xj9j_28";
+const yellow$5 = "_yellow_1xj9j_32";
+var s$q = {
   circleStepper,
   steps,
   green: green$3,
-  blue: blue$3,
-  red: red$3,
-  yellow: yellow$4
+  blue: blue$4,
+  red: red$4,
+  yellow: yellow$5
 };
-const progressCircle = "_progressCircle_es814_1";
-const complete = "_complete_es814_7";
-const backgroundGreen = "_backgroundGreen_es814_11";
-const backgroundRed = "_backgroundRed_es814_15";
-const backgroundYellow = "_backgroundYellow_es814_19";
-const backgroundBlue = "_backgroundBlue_es814_23";
-const green$2 = "_green_es814_27";
-const yellow$3 = "_yellow_es814_31";
-const red$2 = "_red_es814_35";
-const blue$2 = "_blue_es814_39";
-const progressRing = "_progressRing_es814_43";
-var s$o = {
+const progressCircle = "_progressCircle_1d6gj_1";
+const complete = "_complete_1d6gj_7";
+const backgroundGreen = "_backgroundGreen_1d6gj_11";
+const backgroundRed = "_backgroundRed_1d6gj_15";
+const backgroundYellow = "_backgroundYellow_1d6gj_19";
+const backgroundBlue = "_backgroundBlue_1d6gj_23";
+const green$2 = "_green_1d6gj_27";
+const yellow$4 = "_yellow_1d6gj_31";
+const red$3 = "_red_1d6gj_35";
+const blue$3 = "_blue_1d6gj_39";
+const progressRing = "_progressRing_1d6gj_43";
+var s$p = {
   progressCircle,
   complete,
   backgroundGreen,
@@ -8089,9 +8032,9 @@ var s$o = {
   backgroundYellow,
   backgroundBlue,
   green: green$2,
-  yellow: yellow$3,
-  red: red$2,
-  blue: blue$2,
+  yellow: yellow$4,
+  red: red$3,
+  blue: blue$3,
   progressRing
 };
 const PROGRESS_CIRCLE_RADIUS = 26;
@@ -8105,21 +8048,21 @@ const ProgressCircle = ({
     width: "56",
     height: "56",
     viewBox: "0 0 56 56",
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$o.progressCircle, className)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$p.progressCircle, className)
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("circle", {
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()({
-      [s$o.backgroundGreen]: color === "green",
-      [s$o.backgroundBlue]: color === "blue",
-      [s$o.backgroundYellow]: color === "yellow",
-      [s$o.backgroundRed]: color === "red",
-      [s$o.complete]: progress2 === 1 && color === "green"
+      [s$p.backgroundGreen]: color === "green",
+      [s$p.backgroundBlue]: color === "blue",
+      [s$p.backgroundYellow]: color === "yellow",
+      [s$p.backgroundRed]: color === "red",
+      [s$p.complete]: progress2 === 1 && color === "green"
     }),
     strokeWidth: "1.5",
     r: PROGRESS_CIRCLE_RADIUS,
     cx: PROGRESS_CIRCLE_RADIUS + 2,
     cy: PROGRESS_CIRCLE_RADIUS + 2
   }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("circle", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$o.progressRing, s$o[color]),
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$p.progressRing, s$p[color]),
     strokeWidth: "3",
     strokeLinecap: "round",
     strokeDasharray: `${circumference}`,
@@ -8136,23 +8079,23 @@ const CircleStepper = ({
 }) => {
   const progress2 = steps2 > 0 ? activeStep / steps2 : 0;
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    className: s$p.circleStepper
+    className: s$q.circleStepper
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ProgressCircle, {
     progress: progress2,
     color
   }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$p.steps, s$p[color])
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$q.steps, s$q[color])
   }, activeStep, "/", steps2));
 };
-const inCard$1 = "_inCard_1onvk_1";
-const checked = "_checked_1onvk_11";
-const readOnly$1 = "_readOnly_1onvk_16";
-const disabled$5 = "_disabled_1onvk_17";
-var s$n = {
+const inCard$1 = "_inCard_1nt6j_1";
+const checked = "_checked_1nt6j_15";
+const readOnly$3 = "_readOnly_1nt6j_20";
+const disabled$7 = "_disabled_1nt6j_21";
+var s$o = {
   inCard: inCard$1,
   checked,
-  readOnly: readOnly$1,
-  disabled: disabled$5
+  readOnly: readOnly$3,
+  disabled: disabled$7
 };
 const InCardContainer = ({
   children: children2,
@@ -8166,11 +8109,11 @@ const InCardContainer = ({
 }) => {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, {
-      [s$n.error]: error2,
-      [s$n.inCard]: inCard2,
-      [s$n.disabled]: disabled2,
-      [s$n.readOnly]: readOnly2,
-      [s$n.checked]: checked2
+      [s$o.error]: error2,
+      [s$o.inCard]: inCard2,
+      [s$o.disabled]: disabled2,
+      [s$o.readOnly]: readOnly2,
+      [s$o.checked]: checked2
     }),
     ...inCard2 && {
       onClick: (e) => {
@@ -8182,69 +8125,42 @@ const InCardContainer = ({
     }
   }, children2);
 };
-const container$5 = "_container_x5a1w_1";
-const icon$2 = "_icon_x5a1w_13";
-const description$2 = "_description_x5a1w_18";
-const textContainer = "_textContainer_x5a1w_22";
-const additionalMessage$1 = "_additionalMessage_x5a1w_26";
-const reverse = "_reverse_x5a1w_37";
-const iconVerticalAlignTop = "_iconVerticalAlignTop_x5a1w_37";
-const checkboxContainer = "_checkboxContainer_x5a1w_57";
-const tickContainer = "_tickContainer_x5a1w_57";
-const tick = "_tick_x5a1w_57";
-const radioButtonContainer = "_radioButtonContainer_x5a1w_81";
-const checkbox$1 = "_checkbox_x5a1w_57";
-const label$2 = "_label_x5a1w_104";
-const radio = "_radio_x5a1w_81";
-const orange$2 = "_orange_x5a1w_128";
-const yellow$2 = "_yellow_x5a1w_133";
-const disabledContainer = "_disabledContainer_x5a1w_138";
-const readOnlyContainer = "_readOnlyContainer_x5a1w_139";
-var s$m = {
-  container: container$5,
-  icon: icon$2,
+const container$4 = "_container_14qn8_1";
+const icon$3 = "_icon_14qn8_7";
+const reverse$1 = "_reverse_14qn8_14";
+const description$2 = "_description_14qn8_32";
+const additionalMessage$2 = "_additionalMessage_14qn8_36";
+const tick$1 = "_tick_14qn8_46";
+const tickContainer$1 = "_tickContainer_14qn8_51";
+const checkbox$1 = "_checkbox_14qn8_70";
+const readOnly$2 = "_readOnly_14qn8_112";
+var s$n = {
+  container: container$4,
+  icon: icon$3,
+  reverse: reverse$1,
   description: description$2,
-  textContainer,
-  additionalMessage: additionalMessage$1,
-  reverse,
-  iconVerticalAlignTop,
-  checkboxContainer,
-  tickContainer,
-  tick,
-  radioButtonContainer,
+  additionalMessage: additionalMessage$2,
+  tick: tick$1,
+  tickContainer: tickContainer$1,
   checkbox: checkbox$1,
-  label: label$2,
-  radio,
-  orange: orange$2,
-  yellow: yellow$2,
-  disabledContainer,
-  readOnlyContainer
+  readOnly: readOnly$2
 };
-const InputVariant = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
+const Checkbox = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
   ({
     id,
     label: label2,
     className,
-    name: name2,
     error: error2,
     checked: checked2,
-    value: value2,
     onChange: onChange2,
     description: description2,
-    disabled: disabled2,
+    disabled: disabled2 = false,
     readOnly: readOnly2 = false,
-    icon: icon2,
-    image,
-    color = "orange",
     inCard: inCard2 = false,
-    direction = "row",
-    iconSize = 24,
-    iconVerticalAlign = "top",
-    inputType,
-    ...props
+    icon: icon2,
+    direction = "row"
   }, ref) => {
     const innerLabelRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
-    const imageSize = 40;
     return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InCardContainer, {
       onParentClick: () => {
         var _a;
@@ -8255,80 +8171,67 @@ const InputVariant = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       readOnly: readOnly2,
       inCard: inCard2,
       checked: checked2,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$m.container, {
-        [s$m.reverse]: direction === "row-reverse",
-        [s$m.checkboxContainer]: inputType === "checkbox",
-        [s$m.radioButtonContainer]: inputType === "radio",
-        [s$m.readOnlyContainer]: readOnly2,
-        [s$m.disabledContainer]: disabled2
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$n.container, {
+        [s$n.reverse]: direction === "row-reverse"
       })
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
-      ...props,
       disabled: disabled2,
       readOnly: readOnly2,
-      type: inputType,
+      type: "checkbox",
       id,
-      name: name2,
-      value: value2,
+      name: id,
       ref,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$m[color], s$m[inputType]),
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$n.checkbox, { [s$n.readOnly]: readOnly2 }),
       checked: checked2,
       onChange: onChange2
     }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$m.tickContainer)
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$n.tickContainer, {
+        [s$n.readOnly]: readOnly2
+      })
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
-      icon: IconName.tick,
+      icon: IconName["tick-alt"],
       color: "white",
-      className: s$m.tick
+      className: s$n.tick
     }))), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$m.description
+      className: s$n.description
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
       ref: innerLabelRef,
       htmlFor: id,
-      "data-testid": id,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$m.label)
+      "data-testid": id
     }, label2), description2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$m.additionalMessage
+      className: s$n.additionalMessage
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, description2)), error2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$m.additionalMessage
-    }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ErrorMessage, null, error2))), inCard2 && (icon2 || image) && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$m.icon, {
-        [s$m.iconVerticalAlignTop]: direction === "row-reverse" && iconVerticalAlign === "top"
-      }),
-      "data-testid": "incard-visual-element",
-      style: { width: icon2 ? iconSize : imageSize, height: icon2 ? iconSize : imageSize }
-    }, icon2 != null ? icon2 : image));
+      className: s$n.additionalMessage
+    }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ErrorMessage, null, error2))), inCard2 && icon2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: s$n.icon,
+      "data-testid": "checkbox-icon"
+    }, icon2));
   }
 );
-InputVariant.displayName = "InputVariant";
-const Checkbox = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(({ ...props }) => /* @__PURE__ */ React.createElement(InputVariant, {
-  inputType: "checkbox",
-  ...props
-}));
 Checkbox.displayName = "Checkbox";
-const container$4 = "_container_axs2v_1";
-const selectContainer = "_selectContainer_axs2v_6";
-const regularBorder$1 = "_regularBorder_axs2v_25";
-const lightBorder$1 = "_lightBorder_axs2v_29";
-const sm$3 = "_sm_axs2v_33";
-const md$4 = "_md_axs2v_39";
-const multipleContainer = "_multipleContainer_axs2v_44";
-const disabled$4 = "_disabled_axs2v_59";
-const placeholder = "_placeholder_axs2v_65";
-const select = "_select_axs2v_6";
-const error$1 = "_error_axs2v_104";
-const tags = "_tags_axs2v_123";
-const multipleOptions = "_multipleOptions_axs2v_132";
-const multipleOptionsActive = "_multipleOptionsActive_axs2v_161";
-var s$l = {
-  container: container$4,
+const container$3 = "_container_ffse8_1";
+const selectContainer = "_selectContainer_ffse8_6";
+const regularBorder$1 = "_regularBorder_ffse8_25";
+const lightBorder$1 = "_lightBorder_ffse8_29";
+const sm$3 = "_sm_ffse8_33";
+const md$4 = "_md_ffse8_39";
+const multipleContainer = "_multipleContainer_ffse8_44";
+const disabled$6 = "_disabled_ffse8_59";
+const placeholder = "_placeholder_ffse8_65";
+const select = "_select_ffse8_6";
+const error$1 = "_error_ffse8_104";
+const tags = "_tags_ffse8_118";
+const multipleOptions = "_multipleOptions_ffse8_127";
+const multipleOptionsActive = "_multipleOptionsActive_ffse8_156";
+var s$m = {
+  container: container$3,
   selectContainer,
   regularBorder: regularBorder$1,
   lightBorder: lightBorder$1,
   sm: sm$3,
   md: md$4,
   multipleContainer,
-  disabled: disabled$4,
+  disabled: disabled$6,
   placeholder,
   select,
   error: error$1,
@@ -8365,26 +8268,11 @@ const Dropdown = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       }
       return selectProps.placeholder || "";
     }, [currentSelectedIndex, options, selectProps.placeholder]);
-    const groupedOptions = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
-      const groups = {};
-      const ungroupedOptions = [];
-      options.forEach((option) => {
-        if (option.group) {
-          if (!groups[option.group]) {
-            groups[option.group] = [];
-          }
-          groups[option.group].push(option);
-        } else {
-          ungroupedOptions.push(option);
-        }
-      });
-      return { groups, ungroupedOptions };
-    }, [options]);
     return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$l.selectContainer, s$l[inputHeight], s$l[`${borderColor}Border`], {
-        [s$l.error]: error2,
-        [s$l.disabled]: disabled2,
-        [s$l.placeholder]: currentSelectedIndex === -1
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$m.selectContainer, s$m[inputHeight], s$m[`${borderColor}Border`], {
+        [s$m.error]: error2,
+        [s$m.disabled]: disabled2,
+        [s$m.placeholder]: currentSelectedIndex === -1
       })
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       "aria-hidden": "true"
@@ -8392,17 +8280,11 @@ const Dropdown = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       ...selectProps,
       id,
       name: name2,
-      className: s$l.select,
+      className: s$m.select,
       value: currentValue,
       ref,
       disabled: disabled2
-    }, (!currentValue || allowEmptyOption) && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", null, selectProps.placeholder || ""), Object.keys(groupedOptions.groups).map((group) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("optgroup", {
-      key: group,
-      label: group
-    }, groupedOptions.groups[group].map((option) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
-      key: option.value,
-      value: option.value
-    }, option.label)))), groupedOptions.ungroupedOptions.map((option) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
+    }, (!currentValue || allowEmptyOption) && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", null, selectProps.placeholder || ""), options.map((option) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
       key: option.value,
       value: option.value
     }, option.label))), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
@@ -8445,13 +8327,13 @@ const DropdownField = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
   }))
 );
 DropdownField.displayName = "DropdownField";
-const tag = "_tag_1i5p6_1";
-const closeBtn = "_closeBtn_1i5p6_23";
-const small$2 = "_small_1i5p6_33";
-var s$k = {
+const tag = "_tag_1htzz_1";
+const closeBtn = "_closeBtn_1htzz_23";
+const small = "_small_1htzz_33";
+var s$l = {
   tag,
   closeBtn,
-  small: small$2
+  small
 };
 const Tag = ({
   label: label2,
@@ -8463,16 +8345,16 @@ const Tag = ({
 }) => {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     ...otherProps,
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$k.tag, { [s$k.small]: small2 }, className)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$l.tag, { [s$l.small]: small2 }, className)
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, label2), onClose && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-    className: s$k.closeBtn,
+    className: s$l.closeBtn,
     onClick: onClose,
     "aria-label": "Close"
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
     width: small2 ? 12 : 16,
     height: small2 ? 12 : 16,
     icon: "close",
-    color: "var(--colors-text-primary)"
+    color: "var(--off-black)"
   })));
 };
 const selectorKeysCode = [
@@ -8576,7 +8458,7 @@ const DropdownMultiple = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
     };
     return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       ref,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$l.container),
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$m.container),
       ...props
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       ref: selectRef,
@@ -8585,22 +8467,22 @@ const DropdownMultiple = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       tabIndex: 0,
       className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(
         className,
-        s$l.selectContainer,
-        s$l.multipleContainer,
-        s$l[inputHeight],
-        s$l[`${borderColor}Border`],
+        s$m.selectContainer,
+        s$m.multipleContainer,
+        s$m[inputHeight],
+        s$m[`${borderColor}Border`],
         {
-          [s$l.error]: error2,
-          [s$l.disabled]: disabled2
+          [s$m.error]: error2,
+          [s$m.disabled]: disabled2
         }
       ),
       onClick: toggleShowOptions,
       onKeyDown: onKeyDown2,
       "data-testid": "dropdown-multiple-container"
     }, value2.length ? /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$l.tags
+      className: s$m.tags
     }, value2.map((key, index) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Tag, {
-      className: s$l.tag,
+      className: s$m.tag,
       key,
       label: optionsMap[key].label,
       onKeyDown: (e) => {
@@ -8614,7 +8496,7 @@ const DropdownMultiple = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       color: chevronColor ? `var(${chevronColor})` : "var(--alma-orange)"
     })), !disabled2 && showOptions && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", {
       ref: optionsRef,
-      className: s$l.multipleOptions
+      className: s$m.multipleOptions
     }, options.map((option, index) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", {
       key: `${option.label}-${index}`,
       role: "option",
@@ -8657,12 +8539,12 @@ const DropdownMultipleField = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
   }))
 );
 DropdownMultipleField.displayName = "DropdownMultipleField";
-const header$1 = "_header_1mfwy_2";
-const xl = "_xl_1mfwy_9";
-const lg$2 = "_lg_1mfwy_14";
-const md$3 = "_md_1mfwy_19";
-const sm$2 = "_sm_1mfwy_24";
-var s$j = {
+const header$1 = "_header_df0mz_2";
+const xl = "_xl_df0mz_9";
+const lg$2 = "_lg_df0mz_14";
+const md$3 = "_md_df0mz_19";
+const sm$2 = "_sm_df0mz_24";
+var s$k = {
   header: header$1,
   xl,
   lg: lg$2,
@@ -8684,64 +8566,66 @@ function Header({
 }) {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Component, {
     ...props,
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$j.header, s$j[size])
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$k.header, s$k[size])
   }, children2);
 }
-const pill$1 = "_pill_eu0aw_1";
-const md$2 = "_md_eu0aw_9";
-const lg$1 = "_lg_eu0aw_14";
-const green$1 = "_green_eu0aw_29";
-const red$1 = "_red_eu0aw_34";
-const orange$1 = "_orange_eu0aw_39";
-const yellow$1 = "_yellow_eu0aw_44";
-const blue$1 = "_blue_eu0aw_49";
-const grey = "_grey_eu0aw_54";
-const white = "_white_eu0aw_58";
-var s$i = {
+const pill$1 = "_pill_xxc8g_1";
+const md$2 = "_md_xxc8g_9";
+const lg$1 = "_lg_xxc8g_14";
+const green$1 = "_green_xxc8g_29";
+const isColored = "_isColored_xxc8g_33";
+const red$2 = "_red_xxc8g_37";
+const orange$3 = "_orange_xxc8g_45";
+const yellow$3 = "_yellow_xxc8g_53";
+const blue$2 = "_blue_xxc8g_61";
+const grey = "_grey_xxc8g_69";
+const white = "_white_xxc8g_73";
+var s$j = {
   pill: pill$1,
   md: md$2,
   lg: lg$1,
   green: green$1,
-  red: red$1,
-  orange: orange$1,
-  yellow: yellow$1,
-  blue: blue$1,
+  isColored,
+  red: red$2,
+  orange: orange$3,
+  yellow: yellow$3,
+  blue: blue$2,
   grey,
   white
 };
 const IconPill = ({
   icon: icon2 = IconName.alma,
   color = "blue",
-  isOutlined = false,
+  isColored: isColored2 = false,
   iconTitle,
   className,
   iconSize = "md"
 }) => {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$i.pill, s$i[color], s$i[iconSize], className)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$j.pill, s$j[color], { [s$j.isColored]: isColored2 }, s$j[iconSize], className)
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
     icon: icon2,
-    isFilled: !isOutlined,
+    isFilled: true,
     title: iconTitle
   }));
 };
 const pill = "_pill_19qvu_1";
 const green = "_green_19qvu_13";
-const blue = "_blue_19qvu_17";
-const red = "_red_19qvu_21";
-const orange = "_orange_19qvu_25";
-const yellow = "_yellow_19qvu_29";
-var s$h = {
+const blue$1 = "_blue_19qvu_17";
+const red$1 = "_red_19qvu_21";
+const orange$2 = "_orange_19qvu_25";
+const yellow$2 = "_yellow_19qvu_29";
+var s$i = {
   pill,
   green,
-  blue,
-  red,
-  orange,
-  yellow
+  blue: blue$1,
+  red: red$1,
+  orange: orange$2,
+  yellow: yellow$2
 };
 const IconNumber = ({ number, color = "blue", className }) => {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$h.pill, s$h[color], className)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$i.pill, s$i[color], className)
   }, number);
 };
 const AmexCardIcon = ({ title: title2, ...svgProps }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("svg", {
@@ -9332,7 +9216,7 @@ const CustomControl = ({
 const optionIconWrapper = "_optionIconWrapper_1u30q_1";
 const optionContainer = "_optionContainer_1u30q_8";
 const iconDirectWrapper = "_iconDirectWrapper_1u30q_15";
-var s$g = {
+var s$h = {
   optionIconWrapper,
   optionContainer,
   iconDirectWrapper
@@ -9349,11 +9233,11 @@ const CustomOption = ({ isSelected, data, children: children2, ...props }) => {
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
       "data-testid": "option",
       key: props.innerProps.key,
-      className: s$g.optionContainer
+      className: s$h.optionContainer
     }, isDataWithIcon(data) ? /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$g.optionIconWrapper
+      className: s$h.optionIconWrapper
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$g.iconDirectWrapper
+      className: s$h.iconDirectWrapper
     }, data.icon), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, children2)) : /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, children2), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: "tick-circle",
       isFilled: true,
@@ -9369,9 +9253,9 @@ const CustomOption = ({ isSelected, data, children: children2, ...props }) => {
     "data-testid": "option",
     key: props.innerProps.key
   }, isDataWithIcon(data) ? /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$g.optionIconWrapper
+    className: s$h.optionIconWrapper
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$g.iconDirectWrapper
+    className: s$h.iconDirectWrapper
   }, data.icon), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, children2)) : /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, children2)));
 };
 const CustomSingleValue = ({ children: children2, data, ...props }) => {
@@ -9379,9 +9263,9 @@ const CustomSingleValue = ({ children: children2, data, ...props }) => {
     data,
     ...props
   }, isDataWithIcon(data) ? /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$g.optionIconWrapper
+    className: s$h.optionIconWrapper
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$g.iconDirectWrapper
+    className: s$h.iconDirectWrapper
   }, data.icon), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, children2)) : /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, children2));
 };
 const AlmaSelect = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
@@ -9492,9 +9376,9 @@ const LanguageSelector = ({
     ...props
   }));
 };
-const list = "_list_1aqty_1";
-const children = "_children_1aqty_16";
-var s$f = {
+const list = "_list_15p6u_1";
+const children = "_children_15p6u_16";
+var s$g = {
   list,
   children
 };
@@ -9502,18 +9386,18 @@ const List = ({ children: children2, title: title2, className }) => {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Card, {
     color: "light-gray",
     padding: "none",
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$f.list, className),
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$g.list, className),
     "data-testid": "list"
   }, title2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     "data-testid": "list-title"
   }, title2), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$f.children
+    className: s$g.children
   }, children2));
 };
 const actionsModal = "_actionsModal_wiwsq_1";
 const actions = "_actions_wiwsq_1";
 const content$2 = "_content_wiwsq_17";
-var s$e = {
+var s$f = {
   actionsModal,
   actions,
   content: content$2
@@ -9528,17 +9412,17 @@ const ActionsModal = ({
 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Modal, {
   isOpen: isOpen2,
   onClose,
-  contentClassName: s$e.actionsModal,
+  contentClassName: s$f.actionsModal,
   ...otherProps
 }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: s$e.content
+  className: s$f.content
 }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Header, {
   size: "md",
   as: "h2"
 }, header2), children2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, children2)), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: s$e.actions
+  className: s$f.actions
 }, actions2));
-var metadata$1 = { "version": 4, "country_calling_codes": { "1": ["US", "AG", "AI", "AS", "BB", "BM", "BS", "CA", "DM", "DO", "GD", "GU", "JM", "KN", "KY", "LC", "MP", "MS", "PR", "SX", "TC", "TT", "VC", "VG", "VI"], "7": ["RU", "KZ"], "20": ["EG"], "27": ["ZA"], "30": ["GR"], "31": ["NL"], "32": ["BE"], "33": ["FR"], "34": ["ES"], "36": ["HU"], "39": ["IT", "VA"], "40": ["RO"], "41": ["CH"], "43": ["AT"], "44": ["GB", "GG", "IM", "JE"], "45": ["DK"], "46": ["SE"], "47": ["NO", "SJ"], "48": ["PL"], "49": ["DE"], "51": ["PE"], "52": ["MX"], "53": ["CU"], "54": ["AR"], "55": ["BR"], "56": ["CL"], "57": ["CO"], "58": ["VE"], "60": ["MY"], "61": ["AU", "CC", "CX"], "62": ["ID"], "63": ["PH"], "64": ["NZ"], "65": ["SG"], "66": ["TH"], "81": ["JP"], "82": ["KR"], "84": ["VN"], "86": ["CN"], "90": ["TR"], "91": ["IN"], "92": ["PK"], "93": ["AF"], "94": ["LK"], "95": ["MM"], "98": ["IR"], "211": ["SS"], "212": ["MA", "EH"], "213": ["DZ"], "216": ["TN"], "218": ["LY"], "220": ["GM"], "221": ["SN"], "222": ["MR"], "223": ["ML"], "224": ["GN"], "225": ["CI"], "226": ["BF"], "227": ["NE"], "228": ["TG"], "229": ["BJ"], "230": ["MU"], "231": ["LR"], "232": ["SL"], "233": ["GH"], "234": ["NG"], "235": ["TD"], "236": ["CF"], "237": ["CM"], "238": ["CV"], "239": ["ST"], "240": ["GQ"], "241": ["GA"], "242": ["CG"], "243": ["CD"], "244": ["AO"], "245": ["GW"], "246": ["IO"], "247": ["AC"], "248": ["SC"], "249": ["SD"], "250": ["RW"], "251": ["ET"], "252": ["SO"], "253": ["DJ"], "254": ["KE"], "255": ["TZ"], "256": ["UG"], "257": ["BI"], "258": ["MZ"], "260": ["ZM"], "261": ["MG"], "262": ["RE", "YT"], "263": ["ZW"], "264": ["NA"], "265": ["MW"], "266": ["LS"], "267": ["BW"], "268": ["SZ"], "269": ["KM"], "290": ["SH", "TA"], "291": ["ER"], "297": ["AW"], "298": ["FO"], "299": ["GL"], "350": ["GI"], "351": ["PT"], "352": ["LU"], "353": ["IE"], "354": ["IS"], "355": ["AL"], "356": ["MT"], "357": ["CY"], "358": ["FI", "AX"], "359": ["BG"], "370": ["LT"], "371": ["LV"], "372": ["EE"], "373": ["MD"], "374": ["AM"], "375": ["BY"], "376": ["AD"], "377": ["MC"], "378": ["SM"], "380": ["UA"], "381": ["RS"], "382": ["ME"], "383": ["XK"], "385": ["HR"], "386": ["SI"], "387": ["BA"], "389": ["MK"], "420": ["CZ"], "421": ["SK"], "423": ["LI"], "500": ["FK"], "501": ["BZ"], "502": ["GT"], "503": ["SV"], "504": ["HN"], "505": ["NI"], "506": ["CR"], "507": ["PA"], "508": ["PM"], "509": ["HT"], "590": ["GP", "BL", "MF"], "591": ["BO"], "592": ["GY"], "593": ["EC"], "594": ["GF"], "595": ["PY"], "596": ["MQ"], "597": ["SR"], "598": ["UY"], "599": ["CW", "BQ"], "670": ["TL"], "672": ["NF"], "673": ["BN"], "674": ["NR"], "675": ["PG"], "676": ["TO"], "677": ["SB"], "678": ["VU"], "679": ["FJ"], "680": ["PW"], "681": ["WF"], "682": ["CK"], "683": ["NU"], "685": ["WS"], "686": ["KI"], "687": ["NC"], "688": ["TV"], "689": ["PF"], "690": ["TK"], "691": ["FM"], "692": ["MH"], "850": ["KP"], "852": ["HK"], "853": ["MO"], "855": ["KH"], "856": ["LA"], "880": ["BD"], "886": ["TW"], "960": ["MV"], "961": ["LB"], "962": ["JO"], "963": ["SY"], "964": ["IQ"], "965": ["KW"], "966": ["SA"], "967": ["YE"], "968": ["OM"], "970": ["PS"], "971": ["AE"], "972": ["IL"], "973": ["BH"], "974": ["QA"], "975": ["BT"], "976": ["MN"], "977": ["NP"], "992": ["TJ"], "993": ["TM"], "994": ["AZ"], "995": ["GE"], "996": ["KG"], "998": ["UZ"] }, "countries": { "AC": ["247", "00", "(?:[01589]\\d|[46])\\d{4}", [5, 6], 0, 0, 0, 0, 0, 0, 0, [["6[2-467]\\d{3}", [5]], ["4\\d{4}", [5]], 0, 0, 0, 0, ["(?:0[1-9]|[1589]\\d)\\d{4}", [6]]]], "AD": ["376", "00", "(?:1|6\\d)\\d{7}|[135-9]\\d{5}", [6, 8, 9], [["(\\d{3})(\\d{3})", "$1 $2", ["[135-9]"]], ["(\\d{4})(\\d{4})", "$1 $2", ["1"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["6"]]], 0, 0, 0, 0, 0, 0, [["[78]\\d{5}", [6]], ["690\\d{6}|[356]\\d{5}", [6, 9]], ["180[02]\\d{4}", [8]], ["[19]\\d{5}", [6]]]], "AE": ["971", "00", "(?:[4-7]\\d|9[0-689])\\d{7}|800\\d{2,9}|[2-4679]\\d{7}", [5, 6, 7, 8, 9, 10, 11, 12], [["(\\d{3})(\\d{2,9})", "$1 $2", ["60|8"]], ["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["[236]|[479][2-8]"], "0$1"], ["(\\d{3})(\\d)(\\d{5})", "$1 $2 $3", ["[479]"]], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["5"], "0$1"]], "0", 0, 0, 0, 0, 0, [["[2-4679][2-8]\\d{6}", [8]], ["5[024-68]\\d{7}", [9]], ["400\\d{6}|800\\d{2,9}"], ["900[02]\\d{5}", [9]], 0, 0, ["600[25]\\d{5}", [9]], 0, 0, ["700[05]\\d{5}", [9]]]], "AF": ["93", "00", "[2-7]\\d{8}", [9], [["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[2-7]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:[25][0-8]|[34][0-4]|6[0-5])[2-9]\\d{6}"], ["7\\d{8}"]]], "AG": ["1", "011", "(?:268|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([457]\\d{6})$|1", "268$1", 0, "268", [["268(?:4(?:6[0-38]|84)|56[0-2])\\d{4}"], ["268(?:464|7(?:1[3-9]|[28]\\d|3[0246]|64|7[0-689]))\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], 0, 0, ["26840[69]\\d{4}"], ["26848[01]\\d{4}"]]], "AI": ["1", "011", "(?:264|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2457]\\d{6})$|1", "264$1", 0, "264", [["264(?:292|4(?:6[12]|9[78]))\\d{4}"], ["264(?:235|4(?:69|76)|5(?:3[6-9]|8[1-4])|7(?:29|72))\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], 0, 0, ["264724\\d{4}"]]], "AL": ["355", "00", "(?:700\\d\\d|900)\\d{3}|8\\d{5,7}|(?:[2-5]|6\\d)\\d{7}", [6, 7, 8, 9], [["(\\d{3})(\\d{3,4})", "$1 $2", ["80|9"], "0$1"], ["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["4[2-6]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[2358][2-5]|4"], "0$1"], ["(\\d{3})(\\d{5})", "$1 $2", ["[23578]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["6"], "0$1"]], "0", 0, 0, 0, 0, 0, [["4505[0-2]\\d{3}|(?:[2358][16-9]\\d[2-9]|4410)\\d{4}|(?:[2358][2-5][2-9]|4(?:[2-57-9][2-9]|6\\d))\\d{5}", [8]], ["6(?:[78][2-9]|9\\d)\\d{6}", [9]], ["800\\d{4}", [7]], ["900[1-9]\\d\\d", [6]], ["700[2-9]\\d{4}", [8]], 0, 0, 0, 0, ["808[1-9]\\d\\d", [6]]]], "AM": ["374", "00", "(?:[1-489]\\d|55|60|77)\\d{6}", [8], [["(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["[89]0"], "0 $1"], ["(\\d{3})(\\d{5})", "$1 $2", ["2|3[12]"], "(0$1)"], ["(\\d{2})(\\d{6})", "$1 $2", ["1|47"], "(0$1)"], ["(\\d{2})(\\d{6})", "$1 $2", ["[3-9]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:(?:1[0-25]|47)\\d|2(?:2[2-46]|3[1-8]|4[2-69]|5[2-7]|6[1-9]|8[1-7])|3[12]2)\\d{5}"], ["(?:33|4[1349]|55|77|88|9[13-9])\\d{6}"], ["800\\d{5}"], ["90[016]\\d{5}"], 0, 0, 0, 0, ["60(?:2[78]|3[5-9]|4[02-9]|5[0-46-9]|[6-8]\\d|9[0-2])\\d{4}"], ["80[1-4]\\d{5}"]]], "AO": ["244", "00", "[29]\\d{8}", [9], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[29]"]]], 0, 0, 0, 0, 0, 0, [["2\\d(?:[0134][25-9]|[25-9]\\d)\\d{5}"], ["9[1-79]\\d{7}"]]], "AR": ["54", "00", "(?:11|[89]\\d\\d)\\d{8}|[2368]\\d{9}", [10, 11], [["(\\d{4})(\\d{2})(\\d{4})", "$1 $2-$3", ["2(?:2[024-9]|3[0-59]|47|6[245]|9[02-8])|3(?:3[28]|4[03-9]|5[2-46-8]|7[1-578]|8[2-9])", "2(?:[23]02|6(?:[25]|4[6-8])|9(?:[02356]|4[02568]|72|8[23]))|3(?:3[28]|4(?:[04679]|3[5-8]|5[4-68]|8[2379])|5(?:[2467]|3[237]|8[2-5])|7[1-578]|8(?:[2469]|3[2578]|5[4-8]|7[36-8]|8[5-8]))|2(?:2[24-9]|3[1-59]|47)", "2(?:[23]02|6(?:[25]|4(?:64|[78]))|9(?:[02356]|4(?:[0268]|5[2-6])|72|8[23]))|3(?:3[28]|4(?:[04679]|3[78]|5(?:4[46]|8)|8[2379])|5(?:[2467]|3[237]|8[23])|7[1-578]|8(?:[2469]|3[278]|5[56][46]|86[3-6]))|2(?:2[24-9]|3[1-59]|47)|38(?:[58][78]|7[378])|3(?:4[35][56]|58[45]|8(?:[38]5|54|76))[4-6]", "2(?:[23]02|6(?:[25]|4(?:64|[78]))|9(?:[02356]|4(?:[0268]|5[2-6])|72|8[23]))|3(?:3[28]|4(?:[04679]|3(?:5(?:4[0-25689]|[56])|[78])|58|8[2379])|5(?:[2467]|3[237]|8(?:[23]|4(?:[45]|60)|5(?:4[0-39]|5|64)))|7[1-578]|8(?:[2469]|3[278]|54(?:4|5[13-7]|6[89])|86[3-6]))|2(?:2[24-9]|3[1-59]|47)|38(?:[58][78]|7[378])|3(?:454|85[56])[46]|3(?:4(?:36|5[56])|8(?:[38]5|76))[4-6]"], "0$1", 1], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2-$3", ["1"], "0$1", 1], ["(\\d{3})(\\d{3})(\\d{4})", "$1-$2-$3", ["[68]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2-$3", ["[23]"], "0$1", 1], ["(\\d)(\\d{4})(\\d{2})(\\d{4})", "$2 15-$3-$4", ["9(?:2[2-469]|3[3-578])", "9(?:2(?:2[024-9]|3[0-59]|47|6[245]|9[02-8])|3(?:3[28]|4[03-9]|5[2-46-8]|7[1-578]|8[2-9]))", "9(?:2(?:[23]02|6(?:[25]|4[6-8])|9(?:[02356]|4[02568]|72|8[23]))|3(?:3[28]|4(?:[04679]|3[5-8]|5[4-68]|8[2379])|5(?:[2467]|3[237]|8[2-5])|7[1-578]|8(?:[2469]|3[2578]|5[4-8]|7[36-8]|8[5-8])))|92(?:2[24-9]|3[1-59]|47)", "9(?:2(?:[23]02|6(?:[25]|4(?:64|[78]))|9(?:[02356]|4(?:[0268]|5[2-6])|72|8[23]))|3(?:3[28]|4(?:[04679]|3[78]|5(?:4[46]|8)|8[2379])|5(?:[2467]|3[237]|8[23])|7[1-578]|8(?:[2469]|3[278]|5(?:[56][46]|[78])|7[378]|8(?:6[3-6]|[78]))))|92(?:2[24-9]|3[1-59]|47)|93(?:4[35][56]|58[45]|8(?:[38]5|54|76))[4-6]", "9(?:2(?:[23]02|6(?:[25]|4(?:64|[78]))|9(?:[02356]|4(?:[0268]|5[2-6])|72|8[23]))|3(?:3[28]|4(?:[04679]|3(?:5(?:4[0-25689]|[56])|[78])|5(?:4[46]|8)|8[2379])|5(?:[2467]|3[237]|8(?:[23]|4(?:[45]|60)|5(?:4[0-39]|5|64)))|7[1-578]|8(?:[2469]|3[278]|5(?:4(?:4|5[13-7]|6[89])|[56][46]|[78])|7[378]|8(?:6[3-6]|[78]))))|92(?:2[24-9]|3[1-59]|47)|93(?:4(?:36|5[56])|8(?:[38]5|76))[4-6]"], "0$1", 0, "$1 $2 $3-$4"], ["(\\d)(\\d{2})(\\d{4})(\\d{4})", "$2 15-$3-$4", ["91"], "0$1", 0, "$1 $2 $3-$4"], ["(\\d{3})(\\d{3})(\\d{5})", "$1-$2-$3", ["8"], "0$1"], ["(\\d)(\\d{3})(\\d{3})(\\d{4})", "$2 15-$3-$4", ["9"], "0$1", 0, "$1 $2 $3-$4"]], "0", 0, "0?(?:(11|2(?:2(?:02?|[13]|2[13-79]|4[1-6]|5[2457]|6[124-8]|7[1-4]|8[13-6]|9[1267])|3(?:02?|1[467]|2[03-6]|3[13-8]|[49][2-6]|5[2-8]|[67])|4(?:7[3-578]|9)|6(?:[0136]|2[24-6]|4[6-8]?|5[15-8])|80|9(?:0[1-3]|[19]|2\\d|3[1-6]|4[02568]?|5[2-4]|6[2-46]|72?|8[23]?))|3(?:3(?:2[79]|6|8[2578])|4(?:0[0-24-9]|[12]|3[5-8]?|4[24-7]|5[4-68]?|6[02-9]|7[126]|8[2379]?|9[1-36-8])|5(?:1|2[1245]|3[237]?|4[1-46-9]|6[2-4]|7[1-6]|8[2-5]?)|6[24]|7(?:[069]|1[1568]|2[15]|3[145]|4[13]|5[14-8]|7[2-57]|8[126])|8(?:[01]|2[15-7]|3[2578]?|4[13-6]|5[4-8]?|6[1-357-9]|7[36-8]?|8[5-8]?|9[124])))15)?", "9$1", 0, 0, [["3(?:7(?:1[15]|81)|8(?:21|4[16]|69|9[12]))[46]\\d{5}|(?:(?:11[1-8]|670)\\d|2(?:21[2-6]|(?:3[06]|49)4|6(?:04|1[2-8])|9[17][4-6])|3(?:(?:36|64)4|4(?:1[2-8]|[25][4-6]|84)|5(?:1[2-9]|[38][4-6])|8(?:[17][2-6]|3[4-6]|8[3-68])))\\d{6}|(?:2(?:23|64|99)|3(?:43|85))[3-6]\\d{6}|(?:2(?:657|9(?:54|66))|3(?:487|7(?:55|77)|865))[2-8]\\d{5}|(?:2(?:[28]0|37|6[36]|9[48])|3(?:62|7[069]|80))[45]\\d{6}|(?:2(?:2(?:2[59]|44|52)|3(?:26|44)|47[35]|9(?:[07]2|2[26]|34|46))|3327)[45]\\d{5}|(?:2(?:2(?:62|81)|320|622|9(?:42|83))|3(?:329|4(?:62|76|89)|564))[2-6]\\d{5}|(?:2(?:284|3(?:02|23)|477|920)|3(?:4(?:46|[89]2)|541|878))[2-7]\\d{5}|2(?:2(?:21|4[23]|6[145]|7[1-4]|8[356]|9[267])|3(?:16|3[13-8]|43|5[346-8]|9[3-5])|6(?:2[46]|4[78]|5[1568])|9(?:03|2[1457-9]|3[1356]|4[08]|[56][23]|82))4\\d{5}|(?:2(?:257|3(?:24|46|92)|9(?:01|23|64))|3(?:4(?:42|71)|5(?:25|37|4[347]|71)|7(?:18|35|5[17])))[3-6]\\d{5}|(?:2(?:2(?:02|2[3467]|4[156]|5[45]|6[6-8]|91)|3(?:1[47]|25|[45][25]|96)|47[48]|625|932)|3(?:38[2578]|4(?:0[0-24-9]|3[78]|4[457]|58|6[03-9]|72|83|9[136-8])|5(?:2[124]|[368][23]|4[2689]|7[2-6])|7(?:16|2[15]|3[14]|4[13]|5[468]|7[2-5]|8[26])|8(?:2[5-7]|3[278]|4[3-5]|5[78]|6[1-378]|[78]7|94)))[4-6]\\d{5}", [10]], ["93(?:7(?:1[15]|81)|8(?:21|4[16]|69|9[12]))[46]\\d{5}|(?:675\\d|9(?:11[1-8]\\d|2(?:21[2-6]|(?:3[06]|49)4|6(?:04|1[2-8])|9[17][4-6])|3(?:(?:36|64)4|4(?:1[2-8]|[25][4-6]|84)|5(?:1[2-9]|[38][4-6])|8(?:[17][2-6]|3[4-6]|8[3-68]))))\\d{6}|9(?:2(?:23|64|99)|3(?:43|85))[3-6]\\d{6}|9(?:2(?:657|9(?:54|66))|3(?:487|7(?:55|77)|865))[2-8]\\d{5}|9(?:2(?:[28]0|37|6[36]|9[48])|3(?:62|7[069]|80))[45]\\d{6}|9(?:2(?:2(?:2[59]|44|52)|3(?:26|44)|47[35]|9(?:[07]2|2[26]|34|46))|3327)[45]\\d{5}|9(?:2(?:2(?:62|81)|320|622|9(?:42|83))|3(?:329|4(?:62|76|89)|564))[2-6]\\d{5}|9(?:2(?:284|3(?:02|23)|477|920)|3(?:4(?:46|[89]2)|541|878))[2-7]\\d{5}|92(?:2(?:21|4[23]|6[145]|7[1-4]|8[356]|9[267])|3(?:16|3[13-8]|43|5[346-8]|9[3-5])|6(?:2[46]|4[78]|5[1568])|9(?:03|2[1457-9]|3[1356]|4[08]|[56][23]|82))4\\d{5}|9(?:2(?:257|3(?:24|46|92)|9(?:01|23|64))|3(?:4(?:42|71)|5(?:25|37|4[347]|71)|7(?:18|35|5[17])))[3-6]\\d{5}|9(?:2(?:2(?:02|2[3467]|4[156]|5[45]|6[6-8]|91)|3(?:1[47]|25|[45][25]|96)|47[48]|625|932)|3(?:38[2578]|4(?:0[0-24-9]|3[78]|4[457]|58|6[03-9]|72|83|9[136-8])|5(?:2[124]|[368][23]|4[2689]|7[2-6])|7(?:16|2[15]|3[14]|4[13]|5[468]|7[2-5]|8[26])|8(?:2[5-7]|3[278]|4[3-5]|5[78]|6[1-378]|[78]7|94)))[4-6]\\d{5}"], ["800\\d{7,8}"], ["60[04579]\\d{7}", [10]], 0, 0, ["810\\d{7}", [10]]]], "AS": ["1", "011", "(?:[58]\\d\\d|684|900)\\d{7}", [10], 0, "1", 0, "([267]\\d{6})$|1", "684$1", 0, "684", [["6846(?:22|33|44|55|77|88|9[19])\\d{4}"], ["684(?:2(?:48|5[2468]|7[26])|7(?:3[13]|70|82))\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "AT": ["43", "00", "1\\d{3,12}|2\\d{6,12}|43(?:(?:0\\d|5[02-9])\\d{3,9}|2\\d{4,5}|[3467]\\d{4}|8\\d{4,6}|9\\d{4,7})|5\\d{4,12}|8\\d{7,12}|9\\d{8,12}|(?:[367]\\d|4[0-24-9])\\d{4,11}", [4, 5, 6, 7, 8, 9, 10, 11, 12, 13], [["(\\d)(\\d{3,12})", "$1 $2", ["1(?:11|[2-9])"], "0$1"], ["(\\d{3})(\\d{2})", "$1 $2", ["517"], "0$1"], ["(\\d{2})(\\d{3,5})", "$1 $2", ["5[079]"], "0$1"], ["(\\d{3})(\\d{3,10})", "$1 $2", ["(?:31|4)6|51|6(?:5[0-3579]|[6-9])|7(?:20|32|8)|[89]"], "0$1"], ["(\\d{4})(\\d{3,9})", "$1 $2", ["[2-467]|5[2-6]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["5"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4,7})", "$1 $2 $3", ["5"], "0$1"]], "0", 0, 0, 0, 0, 0, [["1(?:11\\d|[2-9]\\d{3,11})|(?:316|463|(?:51|66|73)2)\\d{3,10}|(?:2(?:1[467]|2[13-8]|5[2357]|6[1-46-8]|7[1-8]|8[124-7]|9[1458])|3(?:1[1-578]|3[23568]|4[5-7]|5[1378]|6[1-38]|8[3-68])|4(?:2[1-8]|35|7[1368]|8[2457])|5(?:2[1-8]|3[357]|4[147]|5[12578]|6[37])|6(?:13|2[1-47]|4[135-8]|5[468])|7(?:2[1-8]|35|4[13478]|5[68]|6[16-8]|7[1-6]|9[45]))\\d{4,10}"], ["6(?:5[0-3579]|6[013-9]|[7-9]\\d)\\d{4,10}", [7, 8, 9, 10, 11, 12, 13]], ["800\\d{6,10}", [9, 10, 11, 12, 13]], ["(?:8[69][2-68]|9(?:0[01]|3[019]))\\d{6,10}", [9, 10, 11, 12, 13]], 0, 0, 0, 0, ["5(?:0[1-9]|17|[79]\\d)\\d{2,10}|7[28]0\\d{6,10}", [5, 6, 7, 8, 9, 10, 11, 12, 13]], ["8(?:10|2[018])\\d{6,10}|828\\d{5}", [8, 9, 10, 11, 12, 13]]]], "AU": ["61", "001[14-689]|14(?:1[14]|34|4[17]|[56]6|7[47]|88)0011", "1(?:[0-79]\\d{7}(?:\\d(?:\\d{2})?)?|8[0-24-9]\\d{7})|[2-478]\\d{8}|1\\d{4,7}", [5, 6, 7, 8, 9, 10, 12], [["(\\d{2})(\\d{3,4})", "$1 $2", ["16"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2,4})", "$1 $2 $3", ["16"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["14|4"], "0$1"], ["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["[2378]"], "(0$1)"], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["1(?:30|[89])"]]], "0", 0, "(183[12])|0", 0, 0, 0, [["(?:(?:(?:2(?:[0-26-9]\\d|3[0-8]|4[02-9]|5[0135-9])|7(?:[013-57-9]\\d|2[0-8]))\\d|3(?:(?:[0-3589]\\d|6[1-9]|7[0-35-9])\\d|4(?:[0-578]\\d|90)))\\d\\d|8(?:51(?:0(?:0[03-9]|[12479]\\d|3[2-9]|5[0-8]|6[1-9]|8[0-7])|1(?:[0235689]\\d|1[0-69]|4[0-589]|7[0-47-9])|2(?:0[0-79]|[18][13579]|2[14-9]|3[0-46-9]|[4-6]\\d|7[89]|9[0-4])|3\\d\\d)|(?:6[0-8]|[78]\\d)\\d{3}|9(?:[02-9]\\d{3}|1(?:(?:[0-58]\\d|6[0135-9])\\d|7(?:0[0-24-9]|[1-9]\\d)|9(?:[0-46-9]\\d|5[0-79])))))\\d{3}", [9]], ["4(?:79[01]|83[0-389]|94[0-4])\\d{5}|4(?:[0-36]\\d|4[047-9]|5[0-25-9]|7[02-8]|8[0-24-9]|9[0-37-9])\\d{6}", [9]], ["180(?:0\\d{3}|2)\\d{3}", [7, 10]], ["190[0-26]\\d{6}", [10]], 0, 0, 0, ["163\\d{2,6}", [5, 6, 7, 8, 9]], ["14(?:5(?:1[0458]|[23][458])|71\\d)\\d{4}", [9]], ["13(?:00\\d{6}(?:\\d{2})?|45[0-4]\\d{3})|13\\d{4}", [6, 8, 10, 12]]], "0011"], "AW": ["297", "00", "(?:[25-79]\\d\\d|800)\\d{4}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[25-9]"]]], 0, 0, 0, 0, 0, 0, [["5(?:2\\d|8[1-9])\\d{4}"], ["(?:290|5[69]\\d|6(?:[03]0|22|4[0-2]|[69]\\d)|7(?:[34]\\d|7[07])|9(?:6[45]|9[4-8]))\\d{4}"], ["800\\d{4}"], ["900\\d{4}"], 0, 0, 0, 0, ["(?:28\\d|501)\\d{4}"]]], "AX": ["358", "00|99(?:[01469]|5(?:[14]1|3[23]|5[59]|77|88|9[09]))", "2\\d{4,9}|35\\d{4,5}|(?:60\\d\\d|800)\\d{4,6}|7\\d{5,11}|(?:[14]\\d|3[0-46-9]|50)\\d{4,8}", [5, 6, 7, 8, 9, 10, 11, 12], 0, "0", 0, 0, 0, 0, "18", [["18[1-8]\\d{3,6}", [6, 7, 8, 9]], ["4946\\d{2,6}|(?:4[0-8]|50)\\d{4,8}", [6, 7, 8, 9, 10]], ["800\\d{4,6}", [7, 8, 9]], ["[67]00\\d{5,6}", [8, 9]], 0, 0, ["20\\d{4,8}|60[12]\\d{5,6}|7(?:099\\d{4,5}|5[03-9]\\d{3,7})|20[2-59]\\d\\d|(?:606|7(?:0[78]|1|3\\d))\\d{7}|(?:10|29|3[09]|70[1-5]\\d)\\d{4,8}"]], "00"], "AZ": ["994", "00", "365\\d{6}|(?:[124579]\\d|60|88)\\d{7}", [9], [["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["90"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["1[28]|2|365|46", "1[28]|2|365[45]|46", "1[28]|2|365(?:4|5[02])|46"], "(0$1)"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[13-9]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2[12]428|3655[02])\\d{4}|(?:2(?:22[0-79]|63[0-28])|3654)\\d{5}|(?:(?:1[28]|46)\\d|2(?:[014-6]2|[23]3))\\d{6}"], ["36554\\d{4}|(?:[16]0|4[04]|5[015]|7[07]|99)\\d{7}"], ["88\\d{7}"], ["900200\\d{3}"]]], "BA": ["387", "00", "6\\d{8}|(?:[35689]\\d|49|70)\\d{6}", [8, 9], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["6[1-3]|[7-9]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2-$3", ["[3-5]|6[56]"], "0$1"], ["(\\d{2})(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3 $4", ["6"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:3(?:[05-79][2-9]|1[4579]|[23][24-9]|4[2-4689]|8[2457-9])|49[2-579]|5(?:0[2-49]|[13][2-9]|[268][2-4679]|4[4689]|5[2-79]|7[2-69]|9[2-4689]))\\d{5}", [8]], ["6040\\d{5}|6(?:03|[1-356]|44|7\\d)\\d{6}"], ["8[08]\\d{6}", [8]], ["9[0246]\\d{6}", [8]], 0, 0, ["703[235]0\\d{3}|70(?:2[0-5]|3[0146]|[56]0)\\d{4}", [8]], 0, 0, ["8[12]\\d{6}", [8]]]], "BB": ["1", "011", "(?:246|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2-9]\\d{6})$|1", "246$1", 0, "246", [["246521[0369]\\d{3}|246(?:2(?:2[78]|7[0-4])|4(?:1[024-6]|2\\d|3[2-9])|5(?:20|[34]\\d|54|7[1-3])|6(?:2\\d|38)|7[35]7|9(?:1[89]|63))\\d{4}"], ["246(?:(?:2(?:[3568]\\d|4[0-57-9])|3(?:5[2-9]|6[0-6])|4(?:46|5\\d)|69[5-7]|8(?:[2-5]\\d|83))\\d|52(?:1[147]|20))\\d{3}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["(?:246976|900[2-9]\\d\\d)\\d{4}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], 0, ["246(?:292|367|4(?:1[7-9]|3[01]|4[47-9]|67)|7(?:1[2-9]|2\\d|3[016]|53))\\d{4}"], 0, ["24631\\d{5}"]]], "BD": ["880", "00", "[1-469]\\d{9}|8[0-79]\\d{7,8}|[2-79]\\d{8}|[2-9]\\d{7}|[3-9]\\d{6}|[57-9]\\d{5}", [6, 7, 8, 9, 10], [["(\\d{2})(\\d{4,6})", "$1-$2", ["31[5-8]|[459]1"], "0$1"], ["(\\d{3})(\\d{3,7})", "$1-$2", ["3(?:[67]|8[013-9])|4(?:6[168]|7|[89][18])|5(?:6[128]|9)|6(?:[15]|28|4[14])|7[2-589]|8(?:0[014-9]|[12])|9[358]|(?:3[2-5]|4[235]|5[2-578]|6[0389]|76|8[3-7]|9[24])1|(?:44|66)[01346-9]"], "0$1"], ["(\\d{4})(\\d{3,6})", "$1-$2", ["[13-9]|2[23]"], "0$1"], ["(\\d)(\\d{7,8})", "$1-$2", ["2"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:4(?:31\\d\\d|423)|5222)\\d{3}(?:\\d{2})?|8332[6-9]\\d\\d|(?:3(?:03[56]|224)|4(?:22[25]|653))\\d{3,4}|(?:3(?:42[47]|529|823)|4(?:027|525|65(?:28|8))|562|6257|7(?:1(?:5[3-5]|6[12]|7[156]|89)|22[589]56|32|42675|52(?:[25689](?:56|8)|[347]8)|71(?:6[1267]|75|89)|92374)|82(?:2[59]|32)56|9(?:03[23]56|23(?:256|373)|31|5(?:1|2[4589]56)))\\d{3}|(?:3(?:02[348]|22[35]|324|422)|4(?:22[67]|32[236-9]|6(?:2[46]|5[57])|953)|5526|6(?:024|6655)|81)\\d{4,5}|(?:2(?:7(?:1[0-267]|2[0-289]|3[0-29]|4[01]|5[1-3]|6[013]|7[0178]|91)|8(?:0[125]|1[1-6]|2[0157-9]|3[1-69]|41|6[1-35]|7[1-5]|8[1-8]|9[0-6])|9(?:0[0-2]|1[0-4]|2[568]|3[3-6]|5[5-7]|6[0136-9]|7[0-7]|8[014-9]))|3(?:0(?:2[025-79]|3[2-4])|181|22[12]|32[2356]|824)|4(?:02[09]|22[348]|32[045]|523|6(?:27|54))|666(?:22|53)|7(?:22[57-9]|42[56]|82[35])8|8(?:0[124-9]|2(?:181|2[02-4679]8)|4[12]|[5-7]2)|9(?:[04]2|2(?:2|328)|81))\\d{4}|(?:2(?:[23]\\d|[45])\\d\\d|3(?:1(?:2[5-7]|[5-7])|425|822)|4(?:033|1\\d|[257]1|332|4(?:2[246]|5[25])|6(?:2[35]|56|62)|8(?:23|54)|92[2-5])|5(?:02[03489]|22[457]|32[35-79]|42[46]|6(?:[18]|53)|724|826)|6(?:023|2(?:2[2-5]|5[3-5]|8)|32[3478]|42[34]|52[47]|6(?:[18]|6(?:2[34]|5[24]))|[78]2[2-5]|92[2-6])|7(?:02|21\\d|[3-589]1|6[12]|72[24])|8(?:217|3[12]|[5-7]1)|9[24]1)\\d{5}|(?:(?:3[2-8]|5[2-57-9]|6[03-589])1|4[4689][18])\\d{5}|[59]1\\d{5}"], ["(?:1[13-9]\\d|644)\\d{7}|(?:3[78]|44|66)[02-9]\\d{7}", [10]], ["80[03]\\d{7}", [10]], 0, 0, 0, 0, 0, ["96(?:0[469]|1[0-47]|3[389]|43|6[69]|7[78])\\d{6}", [10]]]], "BE": ["32", "00", "4\\d{8}|[1-9]\\d{7}", [8, 9], [["(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["(?:80|9)0"], "0$1"], ["(\\d)(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[239]|4[23]"], "0$1"], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[15-8]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["4"], "0$1"]], "0", 0, 0, 0, 0, 0, [["80[2-8]\\d{5}|(?:1[0-69]|[23][2-8]|4[23]|5\\d|6[013-57-9]|71|8[1-79]|9[2-4])\\d{6}", [8]], ["4[5-9]\\d{7}", [9]], ["800[1-9]\\d{4}", [8]], ["(?:70(?:2[0-57]|3[04-7]|44|6[4-69]|7[0579])|90\\d\\d)\\d{4}", [8]], 0, 0, ["78(?:0[57]|1[014-8]|2[25]|3[15-8]|48|[56]0|7[06-8]|9\\d)\\d{4}", [8]], 0, 0, ["7879\\d{4}", [8]]]], "BF": ["226", "00", "[025-7]\\d{7}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[025-7]"]]], 0, 0, 0, 0, 0, 0, [["2(?:0(?:49|5[23]|6[5-7]|9[016-9])|4(?:4[569]|5[4-6]|6[5-7]|7[0179])|5(?:[34]\\d|50|6[5-7]))\\d{4}"], ["(?:0[1-7]|5[0-8]|[67]\\d)\\d{6}"]]], "BG": ["359", "00", "00800\\d{7}|[2-7]\\d{6,7}|[89]\\d{6,8}|2\\d{5}", [6, 7, 8, 9, 12], [["(\\d)(\\d)(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["2"], "0$1"], ["(\\d{3})(\\d{4})", "$1 $2", ["43[1-6]|70[1-9]"], "0$1"], ["(\\d)(\\d{3})(\\d{3,4})", "$1 $2 $3", ["2"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2,3})", "$1 $2 $3", ["[356]|4[124-7]|7[1-9]|8[1-6]|9[1-7]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["(?:70|8)0"], "0$1"], ["(\\d{3})(\\d{3})(\\d{2})", "$1 $2 $3", ["43[1-7]|7"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[48]|9[08]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["9"], "0$1"]], "0", 0, 0, 0, 0, 0, [["2\\d{5,7}|(?:43[1-6]|70[1-9])\\d{4,5}|(?:[36]\\d|4[124-7]|[57][1-9]|8[1-6]|9[1-7])\\d{5,6}", [6, 7, 8]], ["(?:43[07-9]|99[69]\\d)\\d{5}|(?:8[7-9]|98)\\d{7}", [8, 9]], ["(?:00800\\d\\d|800)\\d{5}", [8, 12]], ["90\\d{6}", [8]], 0, 0, 0, 0, 0, ["700\\d{5}", [8]]]], "BH": ["973", "00", "[136-9]\\d{7}", [8], [["(\\d{4})(\\d{4})", "$1 $2", ["[13679]|8[02-4679]"]]], 0, 0, 0, 0, 0, 0, [["(?:1(?:3[1356]|6[0156]|7\\d)\\d|6(?:1[16]\\d|500|6(?:0\\d|3[12]|44|55|7[7-9]|88)|9[69][69])|7(?:[07]\\d\\d|1(?:11|78)))\\d{4}"], ["(?:3(?:[0-79]\\d|8[0-57-9])\\d|6(?:3(?:00|33|6[16])|441|6(?:3[03-9]|[69]\\d|7[0-689])))\\d{4}"], ["8[02369]\\d{6}"], ["(?:87|9[0-8])\\d{6}"], 0, 0, 0, 0, 0, ["84\\d{6}"]]], "BI": ["257", "00", "(?:[267]\\d|31)\\d{6}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[2367]"]]], 0, 0, 0, 0, 0, 0, [["(?:22|31)\\d{6}"], ["(?:29|[67][125-9])\\d{6}"]]], "BJ": ["229", "00", "(?:01\\d|[24-689])\\d{7}", [8, 10], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[24-689]"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4 $5", ["0"]]], 0, 0, 0, 0, 0, 0, [["2090\\d{4}|(?:012\\d\\d|2(?:02|1[037]|2[45]|3[68]|4\\d))\\d{5}"], ["(?:01(?:2[5-9]|[4-69]\\d)|4[0-8]|[56]\\d|9[013-9])\\d{6}"], 0, 0, 0, 0, ["81\\d{6}", [8]], 0, ["857[58]\\d{4}", [8]]]], "BL": ["590", "00", "(?:590\\d|7090)\\d{5}|(?:69|80|9\\d)\\d{7}", [9], 0, "0", 0, 0, 0, 0, 0, [["590(?:2[7-9]|3[3-7]|5[12]|87)\\d{4}"], ["(?:69(?:0\\d\\d|1(?:2[2-9]|3[0-5])|4(?:0[89]|1[2-6]|9\\d)|6(?:1[016-9]|5[0-4]|[67]\\d))|7090[0-4])\\d{4}"], ["80[0-5]\\d{6}"], 0, 0, 0, 0, 0, ["9(?:(?:39[5-7]|76[018])\\d|475[0-5])\\d{4}"]]], "BM": ["1", "011", "(?:441|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2-9]\\d{6})$|1", "441$1", 0, "441", [["441(?:[46]\\d\\d|5(?:4\\d|60|89))\\d{4}"], ["441(?:[2378]\\d|5[0-39]|9[02])\\d{5}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "BN": ["673", "00", "[2-578]\\d{6}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[2-578]"]]], 0, 0, 0, 0, 0, 0, [["22[0-7]\\d{4}|(?:2[013-9]|[34]\\d|5[0-25-9])\\d{5}"], ["(?:22[89]|[78]\\d\\d)\\d{4}"], 0, 0, 0, 0, 0, 0, ["5[34]\\d{5}"]]], "BO": ["591", "00(?:1\\d)?", "8001\\d{5}|(?:[2-467]\\d|50)\\d{6}", [8, 9], [["(\\d)(\\d{7})", "$1 $2", ["[235]|4[46]"]], ["(\\d{8})", "$1", ["[67]"]], ["(\\d{3})(\\d{2})(\\d{4})", "$1 $2 $3", ["8"]]], "0", 0, "0(1\\d)?", 0, 0, 0, [["(?:2(?:2\\d\\d|5(?:11|[258]\\d|9[67])|6(?:12|2\\d|9[34])|8(?:2[34]|39|62))|3(?:3\\d\\d|4(?:6\\d|8[24])|8(?:25|42|5[257]|86|9[25])|9(?:[27]\\d|3[2-4]|4[248]|5[24]|6[2-6]))|4(?:4\\d\\d|6(?:11|[24689]\\d|72)))\\d{4}", [8]], ["[67]\\d{7}", [8]], ["8001[07]\\d{4}", [9]], 0, 0, 0, 0, 0, ["50\\d{6}", [8]]]], "BQ": ["599", "00", "(?:[34]1|7\\d)\\d{5}", [7], 0, 0, 0, 0, 0, 0, "[347]", [["(?:318[023]|41(?:6[023]|70)|7(?:1[578]|2[05]|50)\\d)\\d{3}"], ["(?:31(?:8[14-8]|9[14578])|416[14-9]|7(?:0[01]|7[07]|8\\d|9[056])\\d)\\d{3}"]]], "BR": ["55", "00(?:1[245]|2[1-35]|31|4[13]|[56]5|99)", "(?:[1-46-9]\\d\\d|5(?:[0-46-9]\\d|5[0-46-9]))\\d{8}|[1-9]\\d{9}|[3589]\\d{8}|[34]\\d{7}", [8, 9, 10, 11], [["(\\d{4})(\\d{4})", "$1-$2", ["300|4(?:0[02]|37)", "4(?:02|37)0|[34]00"]], ["(\\d{3})(\\d{2,3})(\\d{4})", "$1 $2 $3", ["(?:[358]|90)0"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2-$3", ["(?:[14689][1-9]|2[12478]|3[1-578]|5[13-5]|7[13-579])[2-57]"], "($1)"], ["(\\d{2})(\\d{5})(\\d{4})", "$1 $2-$3", ["[16][1-9]|[2-57-9]"], "($1)"]], "0", 0, "(?:0|90)(?:(1[245]|2[1-35]|31|4[13]|[56]5|99)(\\d{10,11}))?", "$2", 0, 0, [["(?:[14689][1-9]|2[12478]|3[1-578]|5[13-5]|7[13-579])[2-5]\\d{7}", [10]], ["(?:[14689][1-9]|2[12478]|3[1-578]|5[13-5]|7[13-579])(?:7|9\\d)\\d{7}", [10, 11]], ["800\\d{6,7}", [9, 10]], ["300\\d{6}|[59]00\\d{6,7}", [9, 10]], 0, 0, 0, 0, 0, ["(?:30[03]\\d{3}|4(?:0(?:0\\d|20)|370))\\d{4}|300\\d{5}", [8, 10]]]], "BS": ["1", "011", "(?:242|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([3-8]\\d{6})$|1", "242$1", 0, "242", [["242(?:3(?:02|[236][1-9]|4[0-24-9]|5[0-68]|7[347]|8[0-4]|9[2-467])|461|502|6(?:0[1-5]|12|2[013]|[45]0|7[67]|8[78]|9[89])|7(?:02|88))\\d{4}"], ["242(?:3(?:5[79]|7[56]|95)|4(?:[23][1-9]|4[1-35-9]|5[1-8]|6[2-8]|7\\d|81)|5(?:2[45]|3[35]|44|5[1-46-9]|65|77)|6[34]6|7(?:27|38)|8(?:0[1-9]|1[02-9]|2\\d|3[0-4]|[89]9))\\d{4}"], ["242300\\d{4}|8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], 0, ["242225\\d{4}"]]], "BT": ["975", "00", "[17]\\d{7}|[2-8]\\d{6}", [7, 8], [["(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["[2-68]|7[246]"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["1[67]|7"]]], 0, 0, 0, 0, 0, 0, [["(?:2[3-6]|[34][5-7]|5[236]|6[2-46]|7[246]|8[2-4])\\d{5}", [7]], ["(?:1[67]|77)\\d{6}", [8]]]], "BW": ["267", "00", "(?:0800|(?:[37]|800)\\d)\\d{6}|(?:[2-6]\\d|90)\\d{5}", [7, 8, 10], [["(\\d{2})(\\d{5})", "$1 $2", ["90"]], ["(\\d{3})(\\d{4})", "$1 $2", ["[24-6]|3[15-9]"]], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[37]"]], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["0"]], ["(\\d{3})(\\d{4})(\\d{3})", "$1 $2 $3", ["8"]]], 0, 0, 0, 0, 0, 0, [["(?:2(?:4[0-48]|6[0-24]|9[0578])|3(?:1[0-35-9]|55|[69]\\d|7[013]|81)|4(?:6[03]|7[1267]|9[0-5])|5(?:3[03489]|4[0489]|7[1-47]|88|9[0-49])|6(?:2[1-35]|5[149]|8[013467]))\\d{4}", [7]], ["(?:321|7[1-8]\\d)\\d{5}", [8]], ["(?:0800|800\\d)\\d{6}", [10]], ["90\\d{5}", [7]], 0, 0, 0, 0, ["79(?:1(?:[0-2]\\d|3[0-3])|2[0-7]\\d)\\d{3}", [8]]]], "BY": ["375", "810", "(?:[12]\\d|33|44|902)\\d{7}|8(?:0[0-79]\\d{5,7}|[1-7]\\d{9})|8(?:1[0-489]|[5-79]\\d)\\d{7}|8[1-79]\\d{6,7}|8[0-79]\\d{5}|8\\d{5}", [6, 7, 8, 9, 10, 11], [["(\\d{3})(\\d{3})", "$1 $2", ["800"], "8 $1"], ["(\\d{3})(\\d{2})(\\d{2,4})", "$1 $2 $3", ["800"], "8 $1"], ["(\\d{4})(\\d{2})(\\d{3})", "$1 $2-$3", ["1(?:5[169]|6[3-5]|7[179])|2(?:1[35]|2[34]|3[3-5])", "1(?:5[169]|6(?:3[1-3]|4|5[125])|7(?:1[3-9]|7[0-24-6]|9[2-7]))|2(?:1[35]|2[34]|3[3-5])"], "8 0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2-$3-$4", ["1(?:[56]|7[467])|2[1-3]"], "8 0$1"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2-$3-$4", ["[1-4]"], "8 0$1"], ["(\\d{3})(\\d{3,4})(\\d{4})", "$1 $2 $3", ["[89]"], "8 $1"]], "8", 0, "0|80?", 0, 0, 0, [["(?:1(?:5(?:1[1-5]|[24]\\d|6[2-4]|9[1-7])|6(?:[235]\\d|4[1-7])|7\\d\\d)|2(?:1(?:[246]\\d|3[0-35-9]|5[1-9])|2(?:[235]\\d|4[0-8])|3(?:[26]\\d|3[02-79]|4[024-7]|5[03-7])))\\d{5}", [9]], ["(?:2(?:5[5-79]|9[1-9])|(?:33|44)\\d)\\d{6}", [9]], ["800\\d{3,7}|8(?:0[13]|20\\d)\\d{7}"], ["(?:810|902)\\d{7}", [10]], 0, 0, 0, 0, ["249\\d{6}", [9]]], "8~10"], "BZ": ["501", "00", "(?:0800\\d|[2-8])\\d{6}", [7, 11], [["(\\d{3})(\\d{4})", "$1-$2", ["[2-8]"]], ["(\\d)(\\d{3})(\\d{4})(\\d{3})", "$1-$2-$3-$4", ["0"]]], 0, 0, 0, 0, 0, 0, [["(?:2(?:[02]\\d|36|[68]0)|[3-58](?:[02]\\d|[68]0)|7(?:[02]\\d|32|[68]0))\\d{4}", [7]], ["6[0-35-7]\\d{5}", [7]], ["0800\\d{7}", [11]]]], "CA": ["1", "011", "[2-9]\\d{9}|3\\d{6}", [7, 10], 0, "1", 0, 0, 0, 0, 0, [["(?:2(?:04|[23]6|[48]9|50|63)|3(?:06|43|54|6[578]|82)|4(?:03|1[68]|[26]8|3[178]|50|74)|5(?:06|1[49]|48|79|8[147])|6(?:04|[18]3|39|47|72)|7(?:0[59]|42|53|78|8[02])|8(?:[06]7|19|25|7[39])|9(?:0[25]|42))[2-9]\\d{6}", [10]], ["", [10]], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}", [10]], ["900[2-9]\\d{6}", [10]], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|(?:5(?:00|2[125-9]|33|44|66|77|88)|6(?:22|33))[2-9]\\d{6}", [10]], 0, ["310\\d{4}", [7]], 0, ["600[2-9]\\d{6}", [10]]]], "CC": ["61", "001[14-689]|14(?:1[14]|34|4[17]|[56]6|7[47]|88)0011", "1(?:[0-79]\\d{8}(?:\\d{2})?|8[0-24-9]\\d{7})|[148]\\d{8}|1\\d{5,7}", [6, 7, 8, 9, 10, 12], 0, "0", 0, "([59]\\d{7})$|0", "8$1", 0, 0, [["8(?:51(?:0(?:02|31|60|89)|1(?:18|76)|223)|91(?:0(?:1[0-2]|29)|1(?:[28]2|50|79)|2(?:10|64)|3(?:[06]8|22)|4[29]8|62\\d|70[23]|959))\\d{3}", [9]], ["4(?:79[01]|83[0-389]|94[0-4])\\d{5}|4(?:[0-36]\\d|4[047-9]|5[0-25-9]|7[02-8]|8[0-24-9]|9[0-37-9])\\d{6}", [9]], ["180(?:0\\d{3}|2)\\d{3}", [7, 10]], ["190[0-26]\\d{6}", [10]], 0, 0, 0, 0, ["14(?:5(?:1[0458]|[23][458])|71\\d)\\d{4}", [9]], ["13(?:00\\d{6}(?:\\d{2})?|45[0-4]\\d{3})|13\\d{4}", [6, 8, 10, 12]]], "0011"], "CD": ["243", "00", "(?:(?:[189]|5\\d)\\d|2)\\d{7}|[1-68]\\d{6}", [7, 8, 9, 10], [["(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3", ["88"], "0$1"], ["(\\d{2})(\\d{5})", "$1 $2", ["[1-6]"], "0$1"], ["(\\d{2})(\\d{2})(\\d{4})", "$1 $2 $3", ["2"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[89]"], "0$1"], ["(\\d{2})(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["5"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:(?:12|573)\\d\\d|276)\\d{5}|[1-6]\\d{6}"], ["88\\d{5}|(?:8[0-69]|9[017-9])\\d{7}", [7, 9]]]], "CF": ["236", "00", "(?:[27]\\d{3}|8776)\\d{4}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[278]"]]], 0, 0, 0, 0, 0, 0, [["2[12]\\d{6}"], ["7[024-7]\\d{6}"], 0, ["8776\\d{4}"]]], "CG": ["242", "00", "222\\d{6}|(?:0\\d|80)\\d{7}", [9], [["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["8"]], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[02]"]]], 0, 0, 0, 0, 0, 0, [["222[1-589]\\d{5}"], ["026(?:1[0-5]|6[6-9])\\d{4}|0(?:[14-6]\\d\\d|2(?:40|5[5-8]|6[07-9]))\\d{5}"], 0, ["80[0-2]\\d{6}"]]], "CH": ["41", "00", "8\\d{11}|[2-9]\\d{8}", [9, 12], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["8[047]|90"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[2-79]|81"], "0$1"], ["(\\d{3})(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4 $5", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2[12467]|3[1-4]|4[134]|5[256]|6[12]|[7-9]1)\\d{7}", [9]], ["(?:6[89]|7[235-9])\\d{7}", [9]], ["800\\d{6}", [9]], ["90[016]\\d{6}", [9]], ["878\\d{6}", [9]], ["860\\d{9}", [12]], ["5[18]\\d{7}", [9]], ["74[0248]\\d{6}", [9]], 0, ["84[0248]\\d{6}", [9]]]], "CI": ["225", "00", "[02]\\d{9}", [10], [["(\\d{2})(\\d{2})(\\d)(\\d{5})", "$1 $2 $3 $4", ["2"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{4})", "$1 $2 $3 $4", ["0"]]], 0, 0, 0, 0, 0, 0, [["2(?:[15]\\d{3}|7(?:2(?:0[23]|1[2357]|2[245]|3[45]|4[3-5])|3(?:06|1[69]|[2-6]7)))\\d{5}"], ["0[157]\\d{8}"]]], "CK": ["682", "00", "[2-578]\\d{4}", [5], [["(\\d{2})(\\d{3})", "$1 $2", ["[2-578]"]]], 0, 0, 0, 0, 0, 0, [["(?:2\\d|3[13-7]|4[1-5])\\d{3}"], ["[578]\\d{4}"]]], "CL": ["56", "(?:0|1(?:1[0-69]|2[02-5]|5[13-58]|69|7[0167]|8[018]))0", "12300\\d{6}|6\\d{9,10}|[2-9]\\d{8}", [9, 10, 11], [["(\\d{5})(\\d{4})", "$1 $2", ["219", "2196"], "($1)"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["44"]], ["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["2[1-36]"], "($1)"], ["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["9[2-9]"]], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["3[2-5]|[47]|5[1-3578]|6[13-57]|8(?:0[1-9]|[1-9])"], "($1)"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["60|8"]], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"]], ["(\\d{3})(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3 $4", ["60"]]], 0, 0, 0, 0, 0, 0, [["2(?:1982[0-6]|3314[05-9])\\d{3}|(?:2(?:1(?:160|962)|3(?:2\\d\\d|3(?:[03467]\\d|1[0-35-9]|2[1-9]|5[0-24-9]|8[0-3])|600)|646[59])|80[1-9]\\d\\d|9(?:3(?:[0-57-9]\\d\\d|6(?:0[02-9]|[1-9]\\d))|6(?:[0-8]\\d\\d|9(?:[02-79]\\d|1[05-9]))|7[1-9]\\d\\d|9(?:[03-9]\\d\\d|1(?:[0235-9]\\d|4[0-24-9])|2(?:[0-79]\\d|8[0-46-9]))))\\d{4}|(?:22|3[2-5]|[47][1-35]|5[1-3578]|6[13-57]|8[1-9]|9[2458])\\d{7}", [9]], ["", [9]], ["(?:123|8)00\\d{6}", [9, 11]], 0, 0, 0, 0, 0, ["44\\d{7}", [9]], ["600\\d{7,8}", [10, 11]]]], "CM": ["237", "00", "[26]\\d{8}|88\\d{6,7}", [8, 9], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["88"]], ["(\\d)(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4 $5", ["[26]|88"]]], 0, 0, 0, 0, 0, 0, [["2(?:22|33)\\d{6}", [9]], ["(?:24[23]|6(?:[25-9]\\d|40))\\d{6}", [9]], ["88\\d{6,7}"]]], "CN": ["86", "00|1(?:[12]\\d|79)\\d\\d00", "(?:(?:1[03-689]|2\\d)\\d\\d|6)\\d{8}|1\\d{10}|[126]\\d{6}(?:\\d(?:\\d{2})?)?|86\\d{5,6}|(?:[3-579]\\d|8[0-57-9])\\d{5,9}", [7, 8, 9, 10, 11, 12], [["(\\d{2})(\\d{5,6})", "$1 $2", ["(?:10|2[0-57-9])[19]|3(?:[157]|35|49|9[1-68])|4(?:1[124-9]|2[179]|6[47-9]|7|8[23])|5(?:[1357]|2[37]|4[36]|6[1-46]|80)|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:07|1[236-8]|2[5-7]|[37]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|3|4[13]|5[1-5]|7[0-79]|9[0-35-9])|(?:4[35]|59|85)[1-9]", "(?:10|2[0-57-9])(?:1[02]|9[56])|8078|(?:3(?:[157]\\d|35|49|9[1-68])|4(?:1[124-9]|2[179]|[35][1-9]|6[47-9]|7\\d|8[23])|5(?:[1357]\\d|2[37]|4[36]|6[1-46]|80|9[1-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]\\d|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:1[236-8]|2[5-7]|[37]\\d|5[1-9]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|3\\d|4[13]|5[1-5]|7[0-79]|9[0-35-9]))1", "10(?:1(?:0|23)|9[56])|2[0-57-9](?:1(?:00|23)|9[56])|80781|(?:3(?:[157]\\d|35|49|9[1-68])|4(?:1[124-9]|2[179]|[35][1-9]|6[47-9]|7\\d|8[23])|5(?:[1357]\\d|2[37]|4[36]|6[1-46]|80|9[1-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]\\d|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:1[236-8]|2[5-7]|[37]\\d|5[1-9]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|3\\d|4[13]|5[1-5]|7[0-79]|9[0-35-9]))12", "10(?:1(?:0|23)|9[56])|2[0-57-9](?:1(?:00|23)|9[56])|807812|(?:3(?:[157]\\d|35|49|9[1-68])|4(?:1[124-9]|2[179]|[35][1-9]|6[47-9]|7\\d|8[23])|5(?:[1357]\\d|2[37]|4[36]|6[1-46]|80|9[1-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]\\d|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:1[236-8]|2[5-7]|[37]\\d|5[1-9]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|3\\d|4[13]|5[1-5]|7[0-79]|9[0-35-9]))123", "10(?:1(?:0|23)|9[56])|2[0-57-9](?:1(?:00|23)|9[56])|(?:3(?:[157]\\d|35|49|9[1-68])|4(?:1[124-9]|2[179]|[35][1-9]|6[47-9]|7\\d|8[23])|5(?:[1357]\\d|2[37]|4[36]|6[1-46]|80|9[1-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]\\d|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:078|1[236-8]|2[5-7]|[37]\\d|5[1-9]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|3\\d|4[13]|5[1-5]|7[0-79]|9[0-35-9]))123"], "0$1"], ["(\\d{3})(\\d{5,6})", "$1 $2", ["3(?:[157]|35|49|9[1-68])|4(?:[17]|2[179]|6[47-9]|8[23])|5(?:[1357]|2[37]|4[36]|6[1-46]|80)|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:1[236-8]|2[5-7]|[37]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|[379]|4[13]|5[1-5])|(?:4[35]|59|85)[1-9]", "(?:3(?:[157]\\d|35|49|9[1-68])|4(?:[17]\\d|2[179]|[35][1-9]|6[47-9]|8[23])|5(?:[1357]\\d|2[37]|4[36]|6[1-46]|80|9[1-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]\\d|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:1[236-8]|2[5-7]|[37]\\d|5[1-9]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|[379]\\d|4[13]|5[1-5]))[19]", "85[23](?:10|95)|(?:3(?:[157]\\d|35|49|9[1-68])|4(?:[17]\\d|2[179]|[35][1-9]|6[47-9]|8[23])|5(?:[1357]\\d|2[37]|4[36]|6[1-46]|80|9[1-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]\\d|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:1[236-8]|2[5-7]|[37]\\d|5[14-9]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|[379]\\d|4[13]|5[1-5]))(?:10|9[56])", "85[23](?:100|95)|(?:3(?:[157]\\d|35|49|9[1-68])|4(?:[17]\\d|2[179]|[35][1-9]|6[47-9]|8[23])|5(?:[1357]\\d|2[37]|4[36]|6[1-46]|80|9[1-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]\\d|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:1[236-8]|2[5-7]|[37]\\d|5[14-9]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|[379]\\d|4[13]|5[1-5]))(?:100|9[56])"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["(?:4|80)0"]], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["10|2(?:[02-57-9]|1[1-9])", "10|2(?:[02-57-9]|1[1-9])", "10[0-79]|2(?:[02-57-9]|1[1-79])|(?:10|21)8(?:0[1-9]|[1-9])"], "0$1", 1], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["3(?:[3-59]|7[02-68])|4(?:[26-8]|3[3-9]|5[2-9])|5(?:3[03-9]|[468]|7[028]|9[2-46-9])|6|7(?:[0-247]|3[04-9]|5[0-4689]|6[2368])|8(?:[1-358]|9[1-7])|9(?:[013479]|5[1-5])|(?:[34]1|55|79|87)[02-9]"], "0$1", 1], ["(\\d{3})(\\d{7,8})", "$1 $2", ["9"]], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["80"], "0$1", 1], ["(\\d{3})(\\d{4})(\\d{4})", "$1 $2 $3", ["[3-578]"], "0$1", 1], ["(\\d{3})(\\d{4})(\\d{4})", "$1 $2 $3", ["1[3-9]"]], ["(\\d{2})(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3 $4", ["[12]"], "0$1", 1]], "0", 0, "(1(?:[12]\\d|79)\\d\\d)|0", 0, 0, 0, [["(?:10(?:[02-79]\\d\\d|[18](?:0[1-9]|[1-9]\\d))|2(?:[02-57-9]\\d{3}|1(?:[18](?:0[1-9]|[1-9]\\d)|[2-79]\\d\\d))|(?:41[03]|8078|9(?:78|94))\\d\\d)\\d{5}|(?:10|2[0-57-9])(?:1(?:00|23)\\d\\d|95\\d{3,4})|(?:41[03]|9(?:78|94))(?:100\\d\\d|95\\d{3,4})|8078123|(?:43[35]|754|851)\\d{7,8}|(?:43[35]|754|851)(?:1(?:00\\d|23)\\d|95\\d{3,4})|(?:3(?:11|7[179])|4(?:[15]1|3[12])|5(?:1\\d|2[37]|3[12]|51|7[13-79]|9[15])|7(?:[39]1|5[57]|6[09])|8(?:71|98))(?:[02-8]\\d{7}|1(?:0(?:0\\d\\d(?:\\d{3})?|[1-9]\\d{5})|[13-9]\\d{6}|2(?:[0-24-9]\\d{5}|3\\d(?:\\d{4})?))|9(?:[0-46-9]\\d{6}|5\\d{3}(?:\\d(?:\\d{2})?)?))|(?:3(?:1[02-9]|35|49|5\\d|7[02-68]|9[1-68])|4(?:1[24-9]|2[179]|3[46-9]|5[2-9]|6[47-9]|7\\d|8[23])|5(?:3[03-9]|4[36]|5[02-9]|6[1-46]|7[028]|80|9[2-46-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[17]\\d|2[248]|3[04-9]|4[3-6]|5[0-3689]|6[2368]|9[02-9])|8(?:1[236-8]|2[5-7]|3\\d|5[2-9]|7[02-9]|8[36-8]|9[1-7])|9(?:0[1-3689]|1[1-79]|3\\d|4[13]|5[1-5]|7[0-79]|9[0-35-9]))(?:[02-8]\\d{6}|1(?:0(?:0\\d\\d(?:\\d{2})?|[1-9]\\d{4})|[13-9]\\d{5}|2(?:[0-24-9]\\d{4}|3\\d(?:\\d{3})?))|9(?:[0-46-9]\\d{5}|5\\d{3,5}))", [7, 8, 9, 10, 11]], ["1740[0-5]\\d{6}|1(?:[38]\\d|4[57]|[59][0-35-9]|6[25-7]|7[0-35-8])\\d{8}", [11]], ["(?:(?:10|21)8|8)00\\d{7}", [10, 12]], ["16[08]\\d{5}", [8]], 0, 0, 0, 0, 0, ["10(?:10\\d{4}|96\\d{3,4})|400\\d{7}|950\\d{7,8}|(?:2[0-57-9]|3(?:[157]\\d|35|49|9[1-68])|4(?:[17]\\d|2[179]|[35][1-9]|6[47-9]|8[23])|5(?:[1357]\\d|2[37]|4[36]|6[1-46]|80|9[1-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]\\d|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:1[236-8]|2[5-7]|[37]\\d|5[14-9]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|[379]\\d|4[13]|5[1-5]))96\\d{3,4}", [7, 8, 9, 10, 11]]], "00"], "CO": ["57", "00(?:4(?:[14]4|56)|[579])", "(?:46|60\\d\\d)\\d{6}|(?:1\\d|[39])\\d{9}", [8, 10, 11], [["(\\d{4})(\\d{4})", "$1 $2", ["46"]], ["(\\d{3})(\\d{7})", "$1 $2", ["6|90"], "($1)"], ["(\\d{3})(\\d{7})", "$1 $2", ["3[0-357]|91"]], ["(\\d)(\\d{3})(\\d{7})", "$1-$2-$3", ["1"], "0$1", 0, "$1 $2 $3"]], "0", 0, "0([3579]|4(?:[14]4|56))?", 0, 0, 0, [["601055(?:[0-4]\\d|50)\\d\\d|6010(?:[0-4]\\d|5[0-4])\\d{4}|(?:46|60(?:[124-7][2-9]|8[1-9]))\\d{6}", [8, 10]], ["333301[0-5]\\d{3}|3333(?:00|2[5-9]|[3-9]\\d)\\d{4}|(?:3(?:24[1-9]|3(?:00|3[0-24-9]))|9101)\\d{6}|3(?:0[0-5]|1\\d|2[0-3]|5[01]|70)\\d{7}", [10]], ["1800\\d{7}", [11]], ["(?:19(?:0[01]|4[78])|901)\\d{7}", [10, 11]]]], "CR": ["506", "00", "(?:8\\d|90)\\d{8}|(?:[24-8]\\d{3}|3005)\\d{4}", [8, 10], [["(\\d{4})(\\d{4})", "$1 $2", ["[2-7]|8[3-9]"]], ["(\\d{3})(\\d{3})(\\d{4})", "$1-$2-$3", ["[89]"]]], 0, 0, "(19(?:0[0-2468]|1[09]|20|66|77|99))", 0, 0, 0, [["210[7-9]\\d{4}|2(?:[024-7]\\d|1[1-9])\\d{5}", [8]], ["(?:3005\\d|6500[01])\\d{3}|(?:5[07]|6[0-4]|7[0-3]|8[3-9])\\d{6}", [8]], ["800\\d{7}", [10]], ["90[059]\\d{7}", [10]], 0, 0, 0, 0, ["(?:210[0-6]|4\\d{3}|5100)\\d{4}", [8]]]], "CU": ["53", "119", "(?:[2-7]|8\\d\\d)\\d{7}|[2-47]\\d{6}|[34]\\d{5}", [6, 7, 8, 10], [["(\\d{2})(\\d{4,6})", "$1 $2", ["2[1-4]|[34]"], "(0$1)"], ["(\\d)(\\d{6,7})", "$1 $2", ["7"], "(0$1)"], ["(\\d)(\\d{7})", "$1 $2", ["[56]"], "0$1"], ["(\\d{3})(\\d{7})", "$1 $2", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:3[23]|4[89])\\d{4,6}|(?:31|4[36]|8(?:0[25]|78)\\d)\\d{6}|(?:2[1-4]|4[1257]|7\\d)\\d{5,6}"], ["(?:5\\d|6[2-4])\\d{6}", [8]], ["800\\d{7}", [10]], 0, 0, 0, 0, 0, 0, ["807\\d{7}", [10]]]], "CV": ["238", "0", "(?:[2-59]\\d\\d|800)\\d{4}", [7], [["(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3", ["[2-589]"]]], 0, 0, 0, 0, 0, 0, [["2(?:2[1-7]|3[0-8]|4[12]|5[1256]|6\\d|7[1-3]|8[1-5])\\d{4}"], ["(?:36|5[1-389]|9\\d)\\d{5}"], ["800\\d{4}"], 0, 0, 0, 0, 0, ["(?:3[3-5]|4[356])\\d{5}"]]], "CW": ["599", "00", "(?:[34]1|60|(?:7|9\\d)\\d)\\d{5}", [7, 8], [["(\\d{3})(\\d{4})", "$1 $2", ["[3467]"]], ["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["9[4-8]"]]], 0, 0, 0, 0, 0, "[69]", [["9(?:4(?:3[0-5]|4[14]|6\\d)|50\\d|7(?:2[014]|3[02-9]|4[4-9]|6[357]|77|8[7-9])|8(?:3[39]|[46]\\d|7[01]|8[57-9]))\\d{4}"], ["953[01]\\d{4}|9(?:5[12467]|6[5-9])\\d{5}"], 0, 0, 0, 0, 0, ["955\\d{5}", [8]], 0, ["60[0-2]\\d{4}", [7]]]], "CX": ["61", "001[14-689]|14(?:1[14]|34|4[17]|[56]6|7[47]|88)0011", "1(?:[0-79]\\d{8}(?:\\d{2})?|8[0-24-9]\\d{7})|[148]\\d{8}|1\\d{5,7}", [6, 7, 8, 9, 10, 12], 0, "0", 0, "([59]\\d{7})$|0", "8$1", 0, 0, [["8(?:51(?:0(?:01|30|59|88)|1(?:17|46|75)|2(?:22|35))|91(?:00[6-9]|1(?:[28]1|49|78)|2(?:09|63)|3(?:12|26|75)|4(?:56|97)|64\\d|7(?:0[01]|1[0-2])|958))\\d{3}", [9]], ["4(?:79[01]|83[0-389]|94[0-4])\\d{5}|4(?:[0-36]\\d|4[047-9]|5[0-25-9]|7[02-8]|8[0-24-9]|9[0-37-9])\\d{6}", [9]], ["180(?:0\\d{3}|2)\\d{3}", [7, 10]], ["190[0-26]\\d{6}", [10]], 0, 0, 0, 0, ["14(?:5(?:1[0458]|[23][458])|71\\d)\\d{4}", [9]], ["13(?:00\\d{6}(?:\\d{2})?|45[0-4]\\d{3})|13\\d{4}", [6, 8, 10, 12]]], "0011"], "CY": ["357", "00", "(?:[279]\\d|[58]0)\\d{6}", [8], [["(\\d{2})(\\d{6})", "$1 $2", ["[257-9]"]]], 0, 0, 0, 0, 0, 0, [["2[2-6]\\d{6}"], ["9(?:10|[4-79]\\d)\\d{5}"], ["800\\d{5}"], ["90[09]\\d{5}"], ["700\\d{5}"], 0, ["(?:50|77)\\d{6}"], 0, 0, ["80[1-9]\\d{5}"]]], "CZ": ["420", "00", "(?:[2-578]\\d|60)\\d{7}|9\\d{8,11}", [9, 10, 11, 12], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[2-8]|9[015-7]"]], ["(\\d{2})(\\d{3})(\\d{3})(\\d{2})", "$1 $2 $3 $4", ["96"]], ["(\\d{2})(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["9"]], ["(\\d{3})(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["9"]]], 0, 0, 0, 0, 0, 0, [["(?:2\\d|3[1257-9]|4[16-9]|5[13-9])\\d{7}", [9]], ["(?:60[1-8]\\d|7(?:0(?:[2-5]\\d|60)|19[01]|[2379]\\d\\d))\\d{5}", [9]], ["800\\d{6}", [9]], ["9(?:0[05689]|76)\\d{6}", [9]], ["70[01]\\d{6}", [9]], ["9(?:3\\d{9}|6\\d{7,10})"], ["9(?:5\\d|7[2-4])\\d{6}", [9]], 0, ["9[17]0\\d{6}", [9]], ["8[134]\\d{7}", [9]]]], "DE": ["49", "00", "[2579]\\d{5,14}|49(?:[34]0|69|8\\d)\\d\\d?|49(?:37|49|60|7[089]|9\\d)\\d{1,3}|49(?:2[024-9]|3[2-689]|7[1-7])\\d{1,8}|(?:1|[368]\\d|4[0-8])\\d{3,13}|49(?:[015]\\d|2[13]|31|[46][1-8])\\d{1,9}", [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], [["(\\d{2})(\\d{3,13})", "$1 $2", ["3[02]|40|[68]9"], "0$1"], ["(\\d{3})(\\d{3,12})", "$1 $2", ["2(?:0[1-389]|1[124]|2[18]|3[14])|3(?:[35-9][15]|4[015])|906|(?:2[4-9]|4[2-9]|[579][1-9]|[68][1-8])1", "2(?:0[1-389]|12[0-8])|3(?:[35-9][15]|4[015])|906|2(?:[13][14]|2[18])|(?:2[4-9]|4[2-9]|[579][1-9]|[68][1-8])1"], "0$1"], ["(\\d{4})(\\d{2,11})", "$1 $2", ["[24-6]|3(?:[3569][02-46-9]|4[2-4679]|7[2-467]|8[2-46-8])|70[2-8]|8(?:0[2-9]|[1-8])|90[7-9]|[79][1-9]", "[24-6]|3(?:3(?:0[1-467]|2[127-9]|3[124578]|7[1257-9]|8[1256]|9[145])|4(?:2[135]|4[13578]|9[1346])|5(?:0[14]|2[1-3589]|6[1-4]|7[13468]|8[13568])|6(?:2[1-489]|3[124-6]|6[13]|7[12579]|8[1-356]|9[135])|7(?:2[1-7]|4[145]|6[1-5]|7[1-4])|8(?:21|3[1468]|6|7[1467]|8[136])|9(?:0[12479]|2[1358]|4[134679]|6[1-9]|7[136]|8[147]|9[1468]))|70[2-8]|8(?:0[2-9]|[1-8])|90[7-9]|[79][1-9]|3[68]4[1347]|3(?:47|60)[1356]|3(?:3[46]|46|5[49])[1246]|3[4579]3[1357]"], "0$1"], ["(\\d{3})(\\d{4})", "$1 $2", ["138"], "0$1"], ["(\\d{5})(\\d{2,10})", "$1 $2", ["3"], "0$1"], ["(\\d{3})(\\d{5,11})", "$1 $2", ["181"], "0$1"], ["(\\d{3})(\\d)(\\d{4,10})", "$1 $2 $3", ["1(?:3|80)|9"], "0$1"], ["(\\d{3})(\\d{7,8})", "$1 $2", ["1[67]"], "0$1"], ["(\\d{3})(\\d{7,12})", "$1 $2", ["8"], "0$1"], ["(\\d{5})(\\d{6})", "$1 $2", ["185", "1850", "18500"], "0$1"], ["(\\d{3})(\\d{4})(\\d{4})", "$1 $2 $3", ["7"], "0$1"], ["(\\d{4})(\\d{7})", "$1 $2", ["18[68]"], "0$1"], ["(\\d{4})(\\d{7})", "$1 $2", ["15[1279]"], "0$1"], ["(\\d{5})(\\d{6})", "$1 $2", ["15[03568]", "15(?:[0568]|31)"], "0$1"], ["(\\d{3})(\\d{8})", "$1 $2", ["18"], "0$1"], ["(\\d{3})(\\d{2})(\\d{7,8})", "$1 $2 $3", ["1(?:6[023]|7)"], "0$1"], ["(\\d{4})(\\d{2})(\\d{7})", "$1 $2 $3", ["15[279]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{8})", "$1 $2 $3", ["15"], "0$1"]], "0", 0, 0, 0, 0, 0, [["32\\d{9,11}|49[1-6]\\d{10}|322\\d{6}|49[0-7]\\d{3,9}|(?:[34]0|[68]9)\\d{3,13}|(?:2(?:0[1-689]|[1-3569]\\d|4[0-8]|7[1-7]|8[0-7])|3(?:[3569]\\d|4[0-79]|7[1-7]|8[1-8])|4(?:1[02-9]|[2-48]\\d|5[0-6]|6[0-8]|7[0-79])|5(?:0[2-8]|[124-6]\\d|[38][0-8]|[79][0-7])|6(?:0[02-9]|[1-358]\\d|[47][0-8]|6[1-9])|7(?:0[2-8]|1[1-9]|[27][0-7]|3\\d|[4-6][0-8]|8[0-5]|9[013-7])|8(?:0[2-9]|1[0-79]|2\\d|3[0-46-9]|4[0-6]|5[013-9]|6[1-8]|7[0-8]|8[0-24-6])|9(?:0[6-9]|[1-4]\\d|[589][0-7]|6[0-8]|7[0-467]))\\d{3,12}", [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]], ["16[023]\\d{7,8}|1(?:5310|7[0-57-9]\\d)\\d{6}|1(?:5[0-25-9]|76)\\d{8}", [10, 11]], ["800\\d{7,12}", [10, 11, 12, 13, 14, 15]], ["(?:137[7-9]|900(?:[135]|9\\d))\\d{6}", [10, 11]], ["700\\d{8}", [11]], ["1(?:6(?:013|255|399)|7(?:(?:[015]1|[69]3)3|[2-4]55|[78]99))\\d{7,8}|15(?:(?:[03-68]00|113)\\d|2\\d55|7\\d99|9\\d33)\\d{7}", [12, 13]], ["18(?:1\\d{5,11}|[2-9]\\d{8})", [8, 9, 10, 11, 12, 13, 14]], ["16(?:4\\d{1,10}|[89]\\d{1,11})", [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]], 0, ["180\\d{5,11}|13(?:7[1-6]\\d\\d|8)\\d{4}", [7, 8, 9, 10, 11, 12, 13, 14]]]], "DJ": ["253", "00", "(?:2\\d|77)\\d{6}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[27]"]]], 0, 0, 0, 0, 0, 0, [["2(?:1[2-5]|7[45])\\d{5}"], ["77\\d{6}"]]], "DK": ["45", "00", "[2-9]\\d{7}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[2-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:(?:2\\d|9[1-46-9])\\d|3(?:[0-37]\\d|4[013]|5[0-58]|6[01347-9]|8[0-8]|9[0-79])|4(?:[0-25]\\d|[34][02-9]|6[013-579]|7[013579]|8[0-47]|9[0-27])|5(?:[0-36]\\d|4[0146-9]|5[03-57-9]|7[0568]|8[0-358]|9[0-69])|6(?:[013578]\\d|2[0-68]|4[02-8]|6[01689]|9[015689])|7(?:[0-69]\\d|7[03-9]|8[0147])|8(?:[16-9]\\d|2[0-58]))\\d{5}"], ["(?:[2-7]\\d|8[126-9]|9[1-46-9])\\d{6}"], ["80\\d{6}"], ["90\\d{6}"]]], "DM": ["1", "011", "(?:[58]\\d\\d|767|900)\\d{7}", [10], 0, "1", 0, "([2-7]\\d{6})$|1", "767$1", 0, "767", [["767(?:2(?:55|66)|4(?:2[01]|4[0-25-9])|50[0-4])\\d{4}"], ["767(?:2(?:[2-4689]5|7[5-7])|31[5-7]|61[1-8]|70[1-6])\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "DO": ["1", "011", "(?:[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, 0, 0, 0, "8001|8[024]9", [["8(?:[04]9[2-9]\\d\\d|29(?:2(?:[0-59]\\d|6[04-9]|7[0-27]|8[0237-9])|3(?:[0-35-9]\\d|4[7-9])|[45]\\d\\d|6(?:[0-27-9]\\d|[3-5][1-9]|6[0135-8])|7(?:0[013-9]|[1-37]\\d|4[1-35689]|5[1-4689]|6[1-57-9]|8[1-79]|9[1-8])|8(?:0[146-9]|1[0-48]|[248]\\d|3[1-79]|5[01589]|6[013-68]|7[124-8]|9[0-8])|9(?:[0-24]\\d|3[02-46-9]|5[0-79]|60|7[0169]|8[57-9]|9[02-9])))\\d{4}"], ["8[024]9[2-9]\\d{6}"], ["8(?:00(?:14|[2-9]\\d)|(?:33|44|55|66|77|88)[2-9]\\d)\\d{5}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "DZ": ["213", "00", "(?:[1-4]|[5-79]\\d|80)\\d{7}", [8, 9], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[1-4]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["9"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[5-8]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["9619\\d{5}|(?:1\\d|2[013-79]|3[0-8]|4[013-689])\\d{6}"], ["(?:5(?:4[0-29]|5\\d|6[0-3])|6(?:[569]\\d|7[0-6])|7[7-9]\\d)\\d{6}", [9]], ["800\\d{6}", [9]], ["80[3-689]1\\d{5}", [9]], 0, 0, 0, 0, ["98[23]\\d{6}", [9]], ["80[12]1\\d{5}", [9]]]], "EC": ["593", "00", "1\\d{9,10}|(?:[2-7]|9\\d)\\d{7}", [8, 9, 10, 11], [["(\\d)(\\d{3})(\\d{4})", "$1 $2-$3", ["[2-7]"], "(0$1)", 0, "$1-$2-$3"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["9"], "0$1"], ["(\\d{4})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["1"]]], "0", 0, 0, 0, 0, 0, [["[2-7][2-7]\\d{6}", [8]], ["964[0-2]\\d{5}|9(?:39|[57][89]|6[0-36-9]|[89]\\d)\\d{6}", [9]], ["1800\\d{7}|1[78]00\\d{6}", [10, 11]], 0, 0, 0, 0, 0, ["[2-7]890\\d{4}", [8]]]], "EE": ["372", "00", "8\\d{9}|[4578]\\d{7}|(?:[3-8]\\d|90)\\d{5}", [7, 8, 10], [["(\\d{3})(\\d{4})", "$1 $2", ["[369]|4[3-8]|5(?:[0-2]|5[0-478]|6[45])|7[1-9]|88", "[369]|4[3-8]|5(?:[02]|1(?:[0-8]|95)|5[0-478]|6(?:4[0-4]|5[1-589]))|7[1-9]|88"]], ["(\\d{4})(\\d{3,4})", "$1 $2", ["[45]|8(?:00|[1-49])", "[45]|8(?:00[1-9]|[1-49])"]], ["(\\d{2})(\\d{2})(\\d{4})", "$1 $2 $3", ["7"]], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["8"]]], 0, 0, 0, 0, 0, 0, [["(?:3[23589]|4[3-8]|6\\d|7[1-9]|88)\\d{5}", [7]], ["(?:5\\d{5}|8(?:1(?:0(?:0(?:00|[178]\\d)|[3-9]\\d\\d)|(?:1(?:0[2-6]|1\\d)|(?:2[0-59]|[3-79]\\d)\\d)\\d)|2(?:0(?:0(?:00|4\\d)|(?:19|[2-7]\\d)\\d)|(?:(?:[124-69]\\d|3[5-9])\\d|7(?:[0-79]\\d|8[13-9])|8(?:[2-6]\\d|7[01]))\\d)|[349]\\d{4}))\\d\\d|5(?:(?:[02]\\d|5[0-478])\\d|1(?:[0-8]\\d|95)|6(?:4[0-4]|5[1-589]))\\d{3}", [7, 8]], ["800(?:(?:0\\d\\d|1)\\d|[2-9])\\d{3}"], ["(?:40\\d\\d|900)\\d{4}", [7, 8]], ["70[0-2]\\d{5}", [8]]]], "EG": ["20", "00", "[189]\\d{8,9}|[24-6]\\d{8}|[135]\\d{7}", [8, 9, 10], [["(\\d)(\\d{7,8})", "$1 $2", ["[23]"], "0$1"], ["(\\d{2})(\\d{6,7})", "$1 $2", ["1[35]|[4-6]|8[2468]|9[235-7]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[89]"], "0$1"], ["(\\d{2})(\\d{8})", "$1 $2", ["1"], "0$1"]], "0", 0, 0, 0, 0, 0, [["13[23]\\d{6}|(?:15|57)\\d{6,7}|(?:2\\d|3|4[05-8]|5[05]|6[24-689]|8[2468]|9[235-7])\\d{7}", [8, 9]], ["1[0-25]\\d{8}", [10]], ["800\\d{7}", [10]], ["900\\d{7}", [10]]]], "EH": ["212", "00", "[5-8]\\d{8}", [9], 0, "0", 0, 0, 0, 0, "528[89]", [["528[89]\\d{5}"], ["(?:6(?:[0-79]\\d|8[0-247-9])|7(?:[0167]\\d|2[0-4]|5[01]|8[0-3]))\\d{6}"], ["80[0-7]\\d{6}"], ["89\\d{7}"], 0, 0, 0, 0, ["(?:592(?:4[0-2]|93)|80[89]\\d\\d)\\d{4}"]]], "ER": ["291", "00", "[178]\\d{6}", [7], [["(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["[178]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1(?:1[12568]|[24]0|55|6[146])|8\\d\\d)\\d{4}"], ["(?:17[1-3]|7\\d\\d)\\d{4}"]]], "ES": ["34", "00", "[5-9]\\d{8}", [9], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[89]00"]], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[5-9]"]]], 0, 0, 0, 0, 0, 0, [["96906(?:0[0-8]|1[1-9]|[2-9]\\d)\\d\\d|9(?:69(?:0[0-57-9]|[1-9]\\d)|73(?:[0-8]\\d|9[1-9]))\\d{4}|(?:8(?:[1356]\\d|[28][0-8]|[47][1-9])|9(?:[135]\\d|[268][0-8]|4[1-9]|7[124-9]))\\d{6}"], ["(?:590[16]00\\d|9(?:6906(?:09|10)|7390\\d\\d))\\d\\d|(?:6\\d|7[1-48])\\d{7}"], ["[89]00\\d{6}"], ["80[367]\\d{6}"], ["70\\d{7}"], 0, ["51\\d{7}"], 0, 0, ["90[12]\\d{6}"]]], "ET": ["251", "00", "(?:11|[2-579]\\d)\\d{7}", [9], [["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[1-579]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["11667[01]\\d{3}|(?:11(?:1(?:1[124]|2[2-7]|3[1-5]|5[5-8]|8[6-8])|2(?:13|3[6-8]|5[89]|7[05-9]|8[2-6])|3(?:2[01]|3[0-289]|4[1289]|7[1-4]|87)|4(?:1[69]|3[2-49]|4[0-3]|6[5-8]|7\\d)|5(?:1[578]|44|5[0-4])|6(?:1[578]|2[69]|39|4[5-7]|5[0-5]|6[0-59]|8[015-8]))|2(?:2(?:11[1-9]|22[0-7]|33\\d|44[1467]|66[1-68])|5(?:11[124-6]|33[2-8]|44[1467]|55[14]|66[1-3679]|77[124-79]|880))|3(?:3(?:11[0-46-8]|(?:22|55)[0-6]|33[0134689]|44[04]|66[01467])|4(?:44[0-8]|55[0-69]|66[0-3]|77[1-5]))|4(?:6(?:119|22[0-24-7]|33[1-5]|44[13-69]|55[14-689]|660|88[1-4])|7(?:(?:11|22)[1-9]|33[13-7]|44[13-6]|55[1-689]))|5(?:7(?:227|55[05]|(?:66|77)[14-8])|8(?:11[149]|22[013-79]|33[0-68]|44[013-8]|550|66[1-5]|77\\d)))\\d{4}"], ["700[1-9]\\d{5}|(?:7(?:0[1-9]|1[0-8]|22|77|86|99)|9\\d\\d)\\d{6}"]]], "FI": ["358", "00|99(?:[01469]|5(?:[14]1|3[23]|5[59]|77|88|9[09]))", "[1-35689]\\d{4}|7\\d{10,11}|(?:[124-7]\\d|3[0-46-9])\\d{8}|[1-9]\\d{5,8}", [5, 6, 7, 8, 9, 10, 11, 12], [["(\\d{5})", "$1", ["20[2-59]"], "0$1"], ["(\\d{3})(\\d{3,7})", "$1 $2", ["(?:[1-3]0|[68])0|70[07-9]"], "0$1"], ["(\\d{2})(\\d{4,8})", "$1 $2", ["[14]|2[09]|50|7[135]"], "0$1"], ["(\\d{2})(\\d{6,10})", "$1 $2", ["7"], "0$1"], ["(\\d)(\\d{4,9})", "$1 $2", ["(?:19|[2568])[1-8]|3(?:0[1-9]|[1-9])|9"], "0$1"]], "0", 0, 0, 0, 0, "1[03-79]|[2-9]", [["1[3-7][1-8]\\d{3,6}|(?:19[1-8]|[23568][1-8]\\d|9(?:00|[1-8]\\d))\\d{2,6}", [5, 6, 7, 8, 9]], ["4946\\d{2,6}|(?:4[0-8]|50)\\d{4,8}", [6, 7, 8, 9, 10]], ["800\\d{4,6}", [7, 8, 9]], ["[67]00\\d{5,6}", [8, 9]], 0, 0, ["20\\d{4,8}|60[12]\\d{5,6}|7(?:099\\d{4,5}|5[03-9]\\d{3,7})|20[2-59]\\d\\d|(?:606|7(?:0[78]|1|3\\d))\\d{7}|(?:10|29|3[09]|70[1-5]\\d)\\d{4,8}"]], "00"], "FJ": ["679", "0(?:0|52)", "45\\d{5}|(?:0800\\d|[235-9])\\d{6}", [7, 11], [["(\\d{3})(\\d{4})", "$1 $2", ["[235-9]|45"]], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["0"]]], 0, 0, 0, 0, 0, 0, [["603\\d{4}|(?:3[0-5]|6[25-7]|8[58])\\d{5}", [7]], ["(?:[279]\\d|45|5[01568]|8[034679])\\d{5}", [7]], ["0800\\d{7}", [11]]], "00"], "FK": ["500", "00", "[2-7]\\d{4}", [5], 0, 0, 0, 0, 0, 0, 0, [["[2-47]\\d{4}"], ["[56]\\d{4}"]]], "FM": ["691", "00", "(?:[39]\\d\\d|820)\\d{4}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[389]"]]], 0, 0, 0, 0, 0, 0, [["31(?:00[67]|208|309)\\d\\d|(?:3(?:[2357]0[1-9]|602|804|905)|(?:820|9[2-6]\\d)\\d)\\d{3}"], ["31(?:00[67]|208|309)\\d\\d|(?:3(?:[2357]0[1-9]|602|804|905)|(?:820|9[2-7]\\d)\\d)\\d{3}"]]], "FO": ["298", "00", "[2-9]\\d{5}", [6], [["(\\d{6})", "$1", ["[2-9]"]]], 0, 0, "(10(?:01|[12]0|88))", 0, 0, 0, [["(?:20|[34]\\d|8[19])\\d{4}"], ["(?:[27][1-9]|5\\d|9[16])\\d{4}"], ["80[257-9]\\d{3}"], ["90(?:[13-5][15-7]|2[125-7]|9\\d)\\d\\d"], 0, 0, 0, 0, ["(?:6[0-36]|88)\\d{4}"]]], "FR": ["33", "00", "[1-9]\\d{8}", [9], [["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["8"], "0 $1"], ["(\\d)(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4 $5", ["[1-79]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:26[013-9]|59[1-35-9])\\d{6}|(?:[13]\\d|2[0-57-9]|4[1-9]|5[0-8])\\d{7}"], ["(?:6(?:[0-24-8]\\d|3[0-8]|9[589])|7[3-9]\\d)\\d{6}"], ["80[0-5]\\d{6}"], ["836(?:0[0-36-9]|[1-9]\\d)\\d{4}|8(?:1[2-9]|2[2-47-9]|3[0-57-9]|[569]\\d|8[0-35-9])\\d{6}"], 0, 0, ["80[6-9]\\d{6}"], 0, ["9\\d{8}"], ["8(?:1[01]|2[0156]|4[024]|84)\\d{6}"]]], "GA": ["241", "00", "(?:[067]\\d|11)\\d{6}|[2-7]\\d{6}", [7, 8], [["(\\d)(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[2-7]"], "0$1"], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["0"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["11|[67]"], "0$1"]], 0, 0, "0(11\\d{6}|60\\d{6}|61\\d{6}|6[256]\\d{6}|7[467]\\d{6})", "$1", 0, 0, [["[01]1\\d{6}", [8]], ["(?:(?:0[2-7]|7[467])\\d|6(?:0[0-4]|10|[256]\\d))\\d{5}|[2-7]\\d{6}"]]], "GB": ["44", "00", "[1-357-9]\\d{9}|[18]\\d{8}|8\\d{6}", [7, 9, 10], [["(\\d{3})(\\d{4})", "$1 $2", ["800", "8001", "80011", "800111", "8001111"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3", ["845", "8454", "84546", "845464"], "0$1"], ["(\\d{3})(\\d{6})", "$1 $2", ["800"], "0$1"], ["(\\d{5})(\\d{4,5})", "$1 $2", ["1(?:38|5[23]|69|76|94)", "1(?:(?:38|69)7|5(?:24|39)|768|946)", "1(?:3873|5(?:242|39[4-6])|(?:697|768)[347]|9467)"], "0$1"], ["(\\d{4})(\\d{5,6})", "$1 $2", ["1(?:[2-69][02-9]|[78])"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["[25]|7(?:0|6[02-9])", "[25]|7(?:0|6(?:[03-9]|2[356]))"], "0$1"], ["(\\d{4})(\\d{6})", "$1 $2", ["7"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[1389]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1(?:1(?:3(?:[0-58]\\d\\d|73[0-35])|4(?:(?:[0-5]\\d|70)\\d|69[7-9])|(?:(?:5[0-26-9]|[78][0-49])\\d|6(?:[0-4]\\d|50))\\d)|(?:2(?:(?:0[024-9]|2[3-9]|3[3-79]|4[1-689]|[58][02-9]|6[0-47-9]|7[013-9]|9\\d)\\d|1(?:[0-7]\\d|8[0-3]))|(?:3(?:0\\d|1[0-8]|[25][02-9]|3[02-579]|[468][0-46-9]|7[1-35-79]|9[2-578])|4(?:0[03-9]|[137]\\d|[28][02-57-9]|4[02-69]|5[0-8]|[69][0-79])|5(?:0[1-35-9]|[16]\\d|2[024-9]|3[015689]|4[02-9]|5[03-9]|7[0-35-9]|8[0-468]|9[0-57-9])|6(?:0[034689]|1\\d|2[0-35689]|[38][013-9]|4[1-467]|5[0-69]|6[13-9]|7[0-8]|9[0-24578])|7(?:0[0246-9]|2\\d|3[0236-8]|4[03-9]|5[0-46-9]|6[013-9]|7[0-35-9]|8[024-9]|9[02-9])|8(?:0[35-9]|2[1-57-9]|3[02-578]|4[0-578]|5[124-9]|6[2-69]|7\\d|8[02-9]|9[02569])|9(?:0[02-589]|[18]\\d|2[02-689]|3[1-57-9]|4[2-9]|5[0-579]|6[2-47-9]|7[0-24578]|9[2-57]))\\d)\\d)|2(?:0[013478]|3[0189]|4[017]|8[0-46-9]|9[0-2])\\d{3})\\d{4}|1(?:2(?:0(?:46[1-4]|87[2-9])|545[1-79]|76(?:2\\d|3[1-8]|6[1-6])|9(?:7(?:2[0-4]|3[2-5])|8(?:2[2-8]|7[0-47-9]|8[3-5])))|3(?:6(?:38[2-5]|47[23])|8(?:47[04-9]|64[0157-9]))|4(?:044[1-7]|20(?:2[23]|8\\d)|6(?:0(?:30|5[2-57]|6[1-8]|7[2-8])|140)|8(?:052|87[1-3]))|5(?:2(?:4(?:3[2-79]|6\\d)|76\\d)|6(?:26[06-9]|686))|6(?:06(?:4\\d|7[4-79])|295[5-7]|35[34]\\d|47(?:24|61)|59(?:5[08]|6[67]|74)|9(?:55[0-4]|77[23]))|7(?:26(?:6[13-9]|7[0-7])|(?:442|688)\\d|50(?:2[0-3]|[3-68]2|76))|8(?:27[56]\\d|37(?:5[2-5]|8[239])|843[2-58])|9(?:0(?:0(?:6[1-8]|85)|52\\d)|3583|4(?:66[1-8]|9(?:2[01]|81))|63(?:23|3[1-4])|9561))\\d{3}", [9, 10]], ["7(?:457[0-57-9]|700[01]|911[028])\\d{5}|7(?:[1-3]\\d\\d|4(?:[0-46-9]\\d|5[0-689])|5(?:0[0-8]|[13-9]\\d|2[0-35-9])|7(?:0[1-9]|[1-7]\\d|8[02-9]|9[0-689])|8(?:[014-9]\\d|[23][0-8])|9(?:[024-9]\\d|1[02-9]|3[0-689]))\\d{6}", [10]], ["80[08]\\d{7}|800\\d{6}|8001111"], ["(?:8(?:4[2-5]|7[0-3])|9(?:[01]\\d|8[2-49]))\\d{7}|845464\\d", [7, 10]], ["70\\d{8}", [10]], 0, ["(?:3[0347]|55)\\d{8}", [10]], ["76(?:464|652)\\d{5}|76(?:0[0-28]|2[356]|34|4[01347]|5[49]|6[0-369]|77|8[14]|9[139])\\d{6}", [10]], ["56\\d{8}", [10]]], 0, " x"], "GD": ["1", "011", "(?:473|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2-9]\\d{6})$|1", "473$1", 0, "473", [["473(?:2(?:3[0-2]|69)|3(?:2[89]|86)|4(?:[06]8|3[5-9]|4[0-4]|5[579]|73|90)|63[68]|7(?:58|84)|800|938)\\d{4}"], ["473(?:4(?:0[2-79]|1[04-9]|2[0-5]|49|5[68])|5(?:2[01]|3[3-8])|901)\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "GE": ["995", "00", "(?:[3-57]\\d\\d|800)\\d{6}", [9], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["70"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["32"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[57]"]], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[348]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:3(?:[256]\\d|4[124-9]|7[0-4])|4(?:1\\d|2[2-7]|3[1-79]|4[2-8]|7[239]|9[1-7]))\\d{6}"], ["5(?:(?:(?:0555|1(?:[17]77|555))[5-9]|757(?:7[7-9]|8[01]))\\d|22252[0-4])\\d\\d|5(?:0(?:0[17]0|505)|1(?:0[01]0|1(?:07|33|51))|2(?:0[02]0|2[25]2)|3(?:0[03]0|3[35]3)|(?:40[04]|900)0|5222)[0-4]\\d{3}|(?:5(?:0(?:0(?:0\\d|11|22|3[0-6]|44|5[05]|77|88|9[09])|(?:[14]\\d|77)\\d|22[02])|1(?:1(?:[03][01]|[124]\\d|5[2-6]|7[0-4])|4\\d\\d)|[23]555|4(?:4\\d\\d|555)|5(?:[0157-9]\\d\\d|200|333|444)|6[89]\\d\\d|7(?:[0147-9]\\d\\d|5(?:00|[57]5))|8(?:0(?:[018]\\d|2[0-4])|5(?:55|8[89])|8(?:55|88))|9(?:090|[1-35-9]\\d\\d))|790\\d\\d)\\d{4}"], ["800\\d{6}"], 0, 0, 0, 0, 0, ["70[67]\\d{6}"]]], "GF": ["594", "00", "(?:[56]94\\d|7093)\\d{5}|(?:80|9\\d)\\d{7}", [9], [["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[5-7]|9[47]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[89]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["594(?:[02-49]\\d|1[0-5]|5[6-9]|6[0-3]|80)\\d{4}"], ["(?:694(?:[0-249]\\d|3[0-8])|7093[0-3])\\d{4}"], ["80[0-5]\\d{6}"], 0, 0, 0, 0, 0, ["9(?:(?:396|76\\d)\\d|476[0-5])\\d{4}"]]], "GG": ["44", "00", "(?:1481|[357-9]\\d{3})\\d{6}|8\\d{6}(?:\\d{2})?", [7, 9, 10], 0, "0", 0, "([25-9]\\d{5})$|0", "1481$1", 0, 0, [["1481[25-9]\\d{5}", [10]], ["7(?:(?:781|839)\\d|911[17])\\d{5}", [10]], ["80[08]\\d{7}|800\\d{6}|8001111"], ["(?:8(?:4[2-5]|7[0-3])|9(?:[01]\\d|8[0-3]))\\d{7}|845464\\d", [7, 10]], ["70\\d{8}", [10]], 0, ["(?:3[0347]|55)\\d{8}", [10]], ["76(?:464|652)\\d{5}|76(?:0[0-28]|2[356]|34|4[01347]|5[49]|6[0-369]|77|8[14]|9[139])\\d{6}", [10]], ["56\\d{8}", [10]]]], "GH": ["233", "00", "(?:[235]\\d{3}|800)\\d{5}", [8, 9], [["(\\d{3})(\\d{5})", "$1 $2", ["8"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[235]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["3082[0-5]\\d{4}|3(?:0(?:[237]\\d|8[01])|[167](?:2[0-6]|7\\d|80)|2(?:2[0-5]|7\\d|80)|3(?:2[0-3]|7\\d|80)|4(?:2[013-9]|3[01]|7\\d|80)|5(?:2[0-7]|7\\d|80)|8(?:2[0-2]|7\\d|80)|9(?:[28]0|7\\d))\\d{5}", [9]], ["(?:2(?:[0346-9]\\d|5[67])|5(?:[03-7]\\d|9[1-9]))\\d{6}", [9]], ["800\\d{5}", [8]]]], "GI": ["350", "00", "(?:[25]\\d|60)\\d{6}", [8], [["(\\d{3})(\\d{5})", "$1 $2", ["2"]]], 0, 0, 0, 0, 0, 0, [["2190[0-2]\\d{3}|2(?:0(?:[02]\\d|3[01])|16[24-9]|2[2-5]\\d)\\d{4}"], ["5251[0-4]\\d{3}|(?:5(?:[146-8]\\d\\d|250)|60(?:1[01]|6\\d))\\d{4}"]]], "GL": ["299", "00", "(?:19|[2-689]\\d|70)\\d{4}", [6], [["(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3", ["19|[2-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:19|3[1-7]|[68][1-9]|70|9\\d)\\d{4}"], ["[245]\\d{5}"], ["80\\d{4}"], 0, 0, 0, 0, 0, ["3[89]\\d{4}"]]], "GM": ["220", "00", "[2-9]\\d{6}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[2-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:4(?:[23]\\d\\d|4(?:1[024679]|[6-9]\\d))|5(?:5(?:3\\d|4[0-7])|6[67]\\d|7(?:1[04]|2[035]|3[58]|48))|8\\d{3})\\d{3}"], ["(?:[23679]\\d|4[015]|5[0-489])\\d{5}"]]], "GN": ["224", "00", "722\\d{6}|(?:3|6\\d)\\d{7}", [8, 9], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["3"]], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[67]"]]], 0, 0, 0, 0, 0, 0, [["3(?:0(?:24|3[12]|4[1-35-7]|5[13]|6[189]|[78]1|9[1478])|1\\d\\d)\\d{4}", [8]], ["6[0-356]\\d{7}", [9]], 0, 0, 0, 0, 0, 0, ["722\\d{6}", [9]]]], "GP": ["590", "00", "(?:590\\d|7090)\\d{5}|(?:69|80|9\\d)\\d{7}", [9], [["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[5-79]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["590(?:0[1-68]|[14][0-24-9]|2[0-68]|3[1-9]|5[3-579]|[68][0-689]|7[08]|9\\d)\\d{4}"], ["(?:69(?:0\\d\\d|1(?:2[2-9]|3[0-5])|4(?:0[89]|1[2-6]|9\\d)|6(?:1[016-9]|5[0-4]|[67]\\d))|7090[0-4])\\d{4}"], ["80[0-5]\\d{6}"], 0, 0, 0, 0, 0, ["9(?:(?:39[5-7]|76[018])\\d|475[0-5])\\d{4}"]]], "GQ": ["240", "00", "222\\d{6}|(?:3\\d|55|[89]0)\\d{7}", [9], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[235]"]], ["(\\d{3})(\\d{6})", "$1 $2", ["[89]"]]], 0, 0, 0, 0, 0, 0, [["33[0-24-9]\\d[46]\\d{4}|3(?:33|5\\d)\\d[7-9]\\d{4}"], ["(?:222|55\\d)\\d{6}"], ["80\\d[1-9]\\d{5}"], ["90\\d[1-9]\\d{5}"]]], "GR": ["30", "00", "5005000\\d{3}|8\\d{9,11}|(?:[269]\\d|70)\\d{8}", [10, 11, 12], [["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["21|7"]], ["(\\d{4})(\\d{6})", "$1 $2", ["2(?:2|3[2-57-9]|4[2-469]|5[2-59]|6[2-9]|7[2-69]|8[2-49])|5"]], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[2689]"]], ["(\\d{3})(\\d{3,4})(\\d{5})", "$1 $2 $3", ["8"]]], 0, 0, 0, 0, 0, 0, [["2(?:1\\d\\d|2(?:2[1-46-9]|[36][1-8]|4[1-7]|5[1-4]|7[1-5]|[89][1-9])|3(?:1\\d|2[1-57]|[35][1-3]|4[13]|7[1-7]|8[124-6]|9[1-79])|4(?:1\\d|2[1-8]|3[1-4]|4[13-5]|6[1-578]|9[1-5])|5(?:1\\d|[29][1-4]|3[1-5]|4[124]|5[1-6])|6(?:1\\d|[269][1-6]|3[1245]|4[1-7]|5[13-9]|7[14]|8[1-5])|7(?:1\\d|2[1-5]|3[1-6]|4[1-7]|5[1-57]|6[135]|9[125-7])|8(?:1\\d|2[1-5]|[34][1-4]|9[1-57]))\\d{6}", [10]], ["68[57-9]\\d{7}|(?:69|94)\\d{8}", [10]], ["800\\d{7,9}"], ["90[19]\\d{7}", [10]], ["70\\d{8}", [10]], 0, ["5005000\\d{3}", [10]], 0, 0, ["8(?:0[16]|12|[27]5|50)\\d{7}", [10]]]], "GT": ["502", "00", "80\\d{6}|(?:1\\d{3}|[2-7])\\d{7}", [8, 11], [["(\\d{4})(\\d{4})", "$1 $2", ["[2-8]"]], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"]]], 0, 0, 0, 0, 0, 0, [["[267][2-9]\\d{6}", [8]], ["(?:[3-5]\\d\\d|80[0-4])\\d{5}", [8]], ["18[01]\\d{8}", [11]], ["19\\d{9}", [11]]]], "GU": ["1", "011", "(?:[58]\\d\\d|671|900)\\d{7}", [10], 0, "1", 0, "([2-9]\\d{6})$|1", "671$1", 0, "671", [["671(?:2\\d\\d|3(?:00|3[39]|4[349]|55|6[26])|4(?:00|56|7[1-9]|8[02-9])|5(?:55|6[2-5]|88)|6(?:3[2-578]|4[24-9]|5[34]|78|8[235-9])|7(?:[0479]7|2[0167]|3[45]|8[7-9])|8(?:[2-57-9]8|6[478])|9(?:2[29]|6[79]|7[1279]|8[7-9]|9[78]))\\d{4}"], [""], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "GW": ["245", "00", "[49]\\d{8}|4\\d{6}", [7, 9], [["(\\d{3})(\\d{4})", "$1 $2", ["40"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[49]"]]], 0, 0, 0, 0, 0, 0, [["443\\d{6}", [9]], ["9(?:5\\d|6[569]|77)\\d{6}", [9]], 0, 0, 0, 0, 0, 0, ["40\\d{5}", [7]]]], "GY": ["592", "001", "(?:[2-8]\\d{3}|9008)\\d{3}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[2-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:2(?:1[6-9]|2[0-35-9]|3[1-4]|5[3-9]|6\\d|7[0-79])|3(?:2[25-9]|3\\d)|4(?:4[0-24]|5[56])|50[0-6]|77[1-57])\\d{4}"], ["510\\d{4}|(?:6\\d|7[0-5])\\d{5}"], ["(?:289|8(?:00|6[28]|88|99))\\d{4}"], ["9008\\d{3}"], 0, 0, 0, 0, ["515\\d{4}"]]], "HK": ["852", "00(?:30|5[09]|[126-9]?)", "8[0-46-9]\\d{6,7}|9\\d{4,7}|(?:[2-7]|9\\d{3})\\d{7}", [5, 6, 7, 8, 9, 11], [["(\\d{3})(\\d{2,5})", "$1 $2", ["900", "9003"]], ["(\\d{4})(\\d{4})", "$1 $2", ["[2-7]|8[1-4]|9(?:0[1-9]|[1-8])"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["8"]], ["(\\d{3})(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["9"]]], 0, 0, 0, 0, 0, 0, [["(?:2(?:[13-9]\\d|2[013-9])\\d|3(?:(?:[1569][0-24-9]|4[0-246-9]|7[0-24-69])\\d|8(?:4[0-8]|[579]\\d|6[0-2]))|58(?:0[1-9]|1[2-9]))\\d{4}", [8]], ["(?:4(?:44[0-25-9]|6(?:1[0-7]|4[0-57-9]|6[0-4])|7(?:4[0-2]|6[0-5]))|5(?:73[0-6]|95[0-8])|6(?:26[013-8]|66[0-3])|70(?:7[1-8]|8[0-4])|84(?:4[0-2]|8[0-35-9])|9(?:29[013-9]|39[014-9]|59[0-4]|899))\\d{4}|(?:4(?:4[0-35-9]|6[02357-9]|7[05])|5(?:[1-59][0-46-9]|6[0-4689]|7[0-246-9])|6(?:0[1-9]|[13-59]\\d|[268][0-57-9]|7[0-79])|70[1-49]|84[0-39]|9(?:0[1-9]|1[02-9]|[2358][0-8]|[467]\\d))\\d{5}", [8]], ["800\\d{6}", [9]], ["900(?:[0-24-9]\\d{7}|3\\d{1,4})", [5, 6, 7, 8, 11]], ["8(?:1[0-4679]\\d|2(?:[0-36]\\d|7[0-4])|3(?:[034]\\d|2[09]|70))\\d{4}", [8]], 0, ["30(?:0[1-9]|[15-7]\\d|2[047]|89)\\d{4}", [8]], ["7(?:1(?:0[0-38]|1[0-3679]|3[013]|69|9[0136])|2(?:[02389]\\d|1[18]|7[27-9])|3(?:[0-38]\\d|7[0-369]|9[2357-9])|47\\d|5(?:[178]\\d|5[0-5])|6(?:0[0-7]|2[236-9]|[35]\\d)|7(?:[27]\\d|8[7-9])|8(?:[23689]\\d|7[1-9])|9(?:[025]\\d|6[0-246-8]|7[0-36-9]|8[238]))\\d{4}", [8]]], "00"], "HN": ["504", "00", "8\\d{10}|[237-9]\\d{7}", [8, 11], [["(\\d{4})(\\d{4})", "$1-$2", ["[237-9]"]]], 0, 0, 0, 0, 0, 0, [["2(?:2(?:0[0-59]|1[1-9]|[23]\\d|4[02-7]|5[57]|6[245]|7[0135689]|8[01346-9]|9[0-2])|4(?:0[578]|2[3-59]|3[13-9]|4[0-68]|5[1-3589])|5(?:0[2357-9]|1[1-356]|4[03-5]|5\\d|6[014-69]|7[04]|80)|6(?:[056]\\d|17|2[067]|3[047]|4[0-378]|[78][0-8]|9[01])|7(?:0[5-79]|6[46-9]|7[02-9]|8[034]|91)|8(?:79|8[0-357-9]|9[1-57-9]))\\d{4}", [8]], ["[37-9]\\d{7}", [8]], ["8002\\d{7}", [11]]]], "HR": ["385", "00", "(?:[24-69]\\d|3[0-79])\\d{7}|80\\d{5,7}|[1-79]\\d{7}|6\\d{5,6}", [6, 7, 8, 9], [["(\\d{2})(\\d{2})(\\d{2,3})", "$1 $2 $3", ["6[01]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2,3})", "$1 $2 $3", ["8"], "0$1"], ["(\\d)(\\d{4})(\\d{3})", "$1 $2 $3", ["1"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["6|7[245]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["9"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[2-57]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["1\\d{7}|(?:2[0-3]|3[1-5]|4[02-47-9]|5[1-3])\\d{6,7}", [8, 9]], ["9(?:(?:0[1-9]|[12589]\\d)\\d\\d|7(?:[0679]\\d\\d|5(?:[01]\\d|44|55|77|9[5-79])))\\d{4}|98\\d{6}", [8, 9]], ["80\\d{5,7}", [7, 8, 9]], ["6[01459]\\d{6}|6[01]\\d{4,5}", [6, 7, 8]], ["7[45]\\d{6}", [8]], 0, ["62\\d{6,7}|72\\d{6}", [8, 9]]]], "HT": ["509", "00", "(?:[2-489]\\d|55)\\d{6}", [8], [["(\\d{2})(\\d{2})(\\d{4})", "$1 $2 $3", ["[2-589]"]]], 0, 0, 0, 0, 0, 0, [["2(?:2\\d|5[1-5]|81|9[149])\\d{5}"], ["(?:[34]\\d|55)\\d{6}"], ["8\\d{7}"], 0, 0, 0, 0, 0, ["9(?:[67][0-4]|8[0-3589]|9\\d)\\d{5}"]]], "HU": ["36", "00", "[235-7]\\d{8}|[1-9]\\d{7}", [8, 9], [["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["1"], "(06 $1)"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[27][2-9]|3[2-7]|4[24-9]|5[2-79]|6|8[2-57-9]|9[2-69]"], "(06 $1)"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[2-9]"], "06 $1"]], "06", 0, 0, 0, 0, 0, [["(?:1\\d|[27][2-9]|3[2-7]|4[24-9]|5[2-79]|6[23689]|8[2-57-9]|9[2-69])\\d{6}", [8]], ["(?:[257]0|3[01])\\d{7}", [9]], ["(?:[48]0\\d|680[29])\\d{5}"], ["9[01]\\d{6}", [8]], 0, 0, ["38\\d{7}", [9]], 0, ["21\\d{7}", [9]]]], "ID": ["62", "00[89]", "00[1-9]\\d{9,14}|(?:[1-36]|8\\d{5})\\d{6}|00\\d{9}|[1-9]\\d{8,10}|[2-9]\\d{7}", [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17], [["(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["15"]], ["(\\d{2})(\\d{5,9})", "$1 $2", ["2[124]|[36]1"], "(0$1)"], ["(\\d{3})(\\d{5,7})", "$1 $2", ["800"], "0$1"], ["(\\d{3})(\\d{5,8})", "$1 $2", ["[2-79]"], "(0$1)"], ["(\\d{3})(\\d{3,4})(\\d{3})", "$1-$2-$3", ["8[1-35-9]"], "0$1"], ["(\\d{3})(\\d{6,8})", "$1 $2", ["1"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["804"], "0$1"], ["(\\d{3})(\\d)(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["80"], "0$1"], ["(\\d{3})(\\d{4})(\\d{4,5})", "$1-$2-$3", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["2[124]\\d{7,8}|619\\d{8}|2(?:1(?:14|500)|2\\d{3})\\d{3}|61\\d{5,8}|(?:2(?:[35][1-4]|6[0-8]|7[1-6]|8\\d|9[1-8])|3(?:1|[25][1-8]|3[1-68]|4[1-3]|6[1-3568]|7[0-469]|8\\d)|4(?:0[1-589]|1[01347-9]|2[0-36-8]|3[0-24-68]|43|5[1-378]|6[1-5]|7[134]|8[1245])|5(?:1[1-35-9]|2[25-8]|3[124-9]|4[1-3589]|5[1-46]|6[1-8])|6(?:[25]\\d|3[1-69]|4[1-6])|7(?:02|[125][1-9]|[36]\\d|4[1-8]|7[0-36-9])|9(?:0[12]|1[013-8]|2[0-479]|5[125-8]|6[23679]|7[159]|8[01346]))\\d{5,8}", [7, 8, 9, 10, 11]], ["8[1-35-9]\\d{7,10}", [9, 10, 11, 12]], ["00(?:1803\\d{5,11}|7803\\d{7})|(?:177\\d|800)\\d{5,7}", [8, 9, 10, 11, 12, 13, 14, 15, 16, 17]], ["809\\d{7}", [10]], 0, 0, ["(?:1500|8071\\d{3})\\d{3}", [7, 10]], 0, 0, ["804\\d{7}", [10]]]], "IE": ["353", "00", "(?:1\\d|[2569])\\d{6,8}|4\\d{6,9}|7\\d{8}|8\\d{8,9}", [7, 8, 9, 10], [["(\\d{2})(\\d{5})", "$1 $2", ["2[24-9]|47|58|6[237-9]|9[35-9]"], "(0$1)"], ["(\\d{3})(\\d{5})", "$1 $2", ["[45]0"], "(0$1)"], ["(\\d)(\\d{3,4})(\\d{4})", "$1 $2 $3", ["1"], "(0$1)"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[2569]|4[1-69]|7[14]"], "(0$1)"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["70"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["81"], "(0$1)"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[78]"], "0$1"], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["1"]], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["4"], "(0$1)"], ["(\\d{2})(\\d)(\\d{3})(\\d{4})", "$1 $2 $3 $4", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1\\d|21)\\d{6,7}|(?:2[24-9]|4(?:0[24]|5\\d|7)|5(?:0[45]|1\\d|8)|6(?:1\\d|[237-9])|9(?:1\\d|[35-9]))\\d{5}|(?:23|4(?:[1-469]|8\\d)|5[23679]|6[4-6]|7[14]|9[04])\\d{7}"], ["8(?:22|[35-9]\\d)\\d{6}", [9]], ["1800\\d{6}", [10]], ["15(?:1[2-8]|[2-8]0|9[089])\\d{6}", [10]], ["700\\d{6}", [9]], ["88210[1-9]\\d{4}|8(?:[35-79]5\\d\\d|8(?:[013-9]\\d\\d|2(?:[01][1-9]|[2-9]\\d)))\\d{5}", [10]], ["818\\d{6}", [9]], 0, ["76\\d{7}", [9]], ["18[59]0\\d{6}", [10]]]], "IL": ["972", "0(?:0|1[2-9])", "1\\d{6}(?:\\d{3,5})?|[57]\\d{8}|[1-489]\\d{7}", [7, 8, 9, 10, 11, 12], [["(\\d{4})(\\d{3})", "$1-$2", ["125"]], ["(\\d{4})(\\d{2})(\\d{2})", "$1-$2-$3", ["121"]], ["(\\d)(\\d{3})(\\d{4})", "$1-$2-$3", ["[2-489]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1-$2-$3", ["[57]"], "0$1"], ["(\\d{4})(\\d{3})(\\d{3})", "$1-$2-$3", ["12"]], ["(\\d{4})(\\d{6})", "$1-$2", ["159"]], ["(\\d)(\\d{3})(\\d{3})(\\d{3})", "$1-$2-$3-$4", ["1[7-9]"]], ["(\\d{3})(\\d{1,2})(\\d{3})(\\d{4})", "$1-$2 $3-$4", ["15"]]], "0", 0, 0, 0, 0, 0, [["153\\d{8,9}|29[1-9]\\d{5}|(?:2[0-8]|[3489]\\d)\\d{6}", [8, 11, 12]], ["55(?:410|57[0-289])\\d{4}|5(?:(?:[0-2][02-9]|[36]\\d|[49][2-9]|8[3-7])\\d|5(?:01|2\\d|3[0-3]|4[34]|5[0-25689]|6[6-8]|7[0-267]|8[7-9]|9[1-9]))\\d{5}", [9]], ["1(?:255|80[019]\\d{3})\\d{3}", [7, 10]], ["1212\\d{4}|1(?:200|9(?:0[0-2]|19))\\d{6}", [8, 10]], 0, ["151\\d{8,9}", [11, 12]], ["1599\\d{6}", [10]], 0, ["7(?:38(?:0\\d|5[0-2569]|88)|8(?:33|55|77|81)\\d)\\d{4}|7(?:18|2[23]|3[237]|47|6[258]|7\\d|82|9[2-9])\\d{6}", [9]], ["1700\\d{6}", [10]]]], "IM": ["44", "00", "1624\\d{6}|(?:[3578]\\d|90)\\d{8}", [10], 0, "0", 0, "([25-8]\\d{5})$|0", "1624$1", 0, "74576|(?:16|7[56])24", [["1624(?:230|[5-8]\\d\\d)\\d{3}"], ["76245[06]\\d{4}|7(?:4576|[59]24\\d|624[0-4689])\\d{5}"], ["808162\\d{4}"], ["8(?:440[49]06|72299\\d)\\d{3}|(?:8(?:45|70)|90[0167])624\\d{4}"], ["70\\d{8}"], 0, ["3440[49]06\\d{3}|(?:3(?:08162|3\\d{4}|45624|7(?:0624|2299))|55\\d{4})\\d{4}"], 0, ["56\\d{8}"]]], "IN": ["91", "00", "(?:000800|[2-9]\\d\\d)\\d{7}|1\\d{7,12}", [8, 9, 10, 11, 12, 13], [["(\\d{8})", "$1", ["5(?:0|2[23]|3[03]|[67]1|88)", "5(?:0|2(?:21|3)|3(?:0|3[23])|616|717|888)", "5(?:0|2(?:21|3)|3(?:0|3[23])|616|717|8888)"], 0, 1], ["(\\d{4})(\\d{4,5})", "$1 $2", ["180", "1800"], 0, 1], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["140"], 0, 1], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["11|2[02]|33|4[04]|79[1-7]|80[2-46]", "11|2[02]|33|4[04]|79(?:[1-6]|7[19])|80(?:[2-4]|6[0-589])", "11|2[02]|33|4[04]|79(?:[124-6]|3(?:[02-9]|1[0-24-9])|7(?:1|9[1-6]))|80(?:[2-4]|6[0-589])"], "0$1", 1], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["1(?:2[0-249]|3[0-25]|4[145]|[68]|7[1257])|2(?:1[257]|3[013]|4[01]|5[0137]|6[0158]|78|8[1568])|3(?:26|4[1-3]|5[34]|6[01489]|7[02-46]|8[159])|4(?:1[36]|2[1-47]|5[12]|6[0-26-9]|7[0-24-9]|8[013-57]|9[014-7])|5(?:1[025]|22|[36][25]|4[28]|5[12]|[78]1)|6(?:12|[2-4]1|5[17]|6[13]|80)|7(?:12|3[134]|4[47]|61|88)|8(?:16|2[014]|3[126]|6[136]|7[078]|8[34]|91)|(?:43|59|75)[15]|(?:1[59]|29|67|72)[14]", "1(?:2[0-24]|3[0-25]|4[145]|[59][14]|6[1-9]|7[1257]|8[1-57-9])|2(?:1[257]|3[013]|4[01]|5[0137]|6[058]|78|8[1568]|9[14])|3(?:26|4[1-3]|5[34]|6[01489]|7[02-46]|8[159])|4(?:1[36]|2[1-47]|3[15]|5[12]|6[0-26-9]|7[0-24-9]|8[013-57]|9[014-7])|5(?:1[025]|22|[36][25]|4[28]|[578]1|9[15])|674|7(?:(?:2[14]|3[34]|5[15])[2-6]|61[346]|88[0-8])|8(?:70[2-6]|84[235-7]|91[3-7])|(?:1(?:29|60|8[06])|261|552|6(?:12|[2-47]1|5[17]|6[13]|80)|7(?:12|31|4[47])|8(?:16|2[014]|3[126]|6[136]|7[78]|83))[2-7]", "1(?:2[0-24]|3[0-25]|4[145]|[59][14]|6[1-9]|7[1257]|8[1-57-9])|2(?:1[257]|3[013]|4[01]|5[0137]|6[058]|78|8[1568]|9[14])|3(?:26|4[1-3]|5[34]|6[01489]|7[02-46]|8[159])|4(?:1[36]|2[1-47]|3[15]|5[12]|6[0-26-9]|7[0-24-9]|8[013-57]|9[014-7])|5(?:1[025]|22|[36][25]|4[28]|[578]1|9[15])|6(?:12(?:[2-6]|7[0-8])|74[2-7])|7(?:(?:2[14]|5[15])[2-6]|3171|61[346]|88(?:[2-7]|82))|8(?:70[2-6]|84(?:[2356]|7[19])|91(?:[3-6]|7[19]))|73[134][2-6]|(?:74[47]|8(?:16|2[014]|3[126]|6[136]|7[78]|83))(?:[2-6]|7[19])|(?:1(?:29|60|8[06])|261|552|6(?:[2-4]1|5[17]|6[13]|7(?:1|4[0189])|80)|7(?:12|88[01]))[2-7]"], "0$1", 1], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["1(?:[2-479]|5[0235-9])|[2-5]|6(?:1[1358]|2[2457-9]|3[2-5]|4[235-7]|5[2-689]|6[24578]|7[235689]|8[1-6])|7(?:1[013-9]|28|3[129]|4[1-35689]|5[29]|6[02-5]|70)|807", "1(?:[2-479]|5[0235-9])|[2-5]|6(?:1[1358]|2(?:[2457]|84|95)|3(?:[2-4]|55)|4[235-7]|5[2-689]|6[24578]|7[235689]|8[1-6])|7(?:1(?:[013-8]|9[6-9])|28[6-8]|3(?:17|2[0-49]|9[2-57])|4(?:1[2-4]|[29][0-7]|3[0-8]|[56]|8[0-24-7])|5(?:2[1-3]|9[0-6])|6(?:0[5689]|2[5-9]|3[02-8]|4|5[0-367])|70[13-7])|807[19]", "1(?:[2-479]|5(?:[0236-9]|5[013-9]))|[2-5]|6(?:2(?:84|95)|355|83)|73179|807(?:1|9[1-3])|(?:1552|6(?:1[1358]|2[2457]|3[2-4]|4[235-7]|5[2-689]|6[24578]|7[235689]|8[124-6])\\d|7(?:1(?:[013-8]\\d|9[6-9])|28[6-8]|3(?:2[0-49]|9[2-57])|4(?:1[2-4]|[29][0-7]|3[0-8]|[56]\\d|8[0-24-7])|5(?:2[1-3]|9[0-6])|6(?:0[5689]|2[5-9]|3[02-8]|4\\d|5[0-367])|70[13-7]))[2-7]"], "0$1", 1], ["(\\d{5})(\\d{5})", "$1 $2", ["[6-9]"], "0$1", 1], ["(\\d{4})(\\d{2,4})(\\d{4})", "$1 $2 $3", ["1(?:6|8[06])", "1(?:6|8[06]0)"], 0, 1], ["(\\d{4})(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["18"], 0, 1]], "0", 0, 0, 0, 0, 0, [["2717(?:[2-7]\\d|95)\\d{4}|(?:271[0-689]|782[0-6])[2-7]\\d{5}|(?:170[24]|2(?:(?:[02][2-79]|90)\\d|80[13468])|(?:3(?:23|80)|683|79[1-7])\\d|4(?:20[24]|72[2-8])|552[1-7])\\d{6}|(?:11|33|4[04]|80)[2-7]\\d{7}|(?:342|674|788)(?:[0189][2-7]|[2-7]\\d)\\d{5}|(?:1(?:2[0-249]|3[0-25]|4[145]|[59][14]|6[014]|7[1257]|8[01346])|2(?:1[257]|3[013]|4[01]|5[0137]|6[0158]|78|8[1568]|9[14])|3(?:26|4[13]|5[34]|6[01489]|7[02-46]|8[159])|4(?:1[36]|2[1-47]|3[15]|5[12]|6[0-26-9]|7[014-9]|8[013-57]|9[014-7])|5(?:1[025]|22|[36][25]|4[28]|[578]1|9[15])|6(?:12|[2-47]1|5[17]|6[13]|80)|7(?:12|2[14]|3[134]|4[47]|5[15]|[67]1)|8(?:16|2[014]|3[126]|6[136]|7[078]|8[34]|91))[2-7]\\d{6}|(?:1(?:2[35-8]|3[346-9]|4[236-9]|[59][0235-9]|6[235-9]|7[34689]|8[257-9])|2(?:1[134689]|3[24-8]|4[2-8]|5[25689]|6[2-4679]|7[3-79]|8[2-479]|9[235-9])|3(?:01|1[79]|2[1245]|4[5-8]|5[125689]|6[235-7]|7[157-9]|8[2-46-8])|4(?:1[14578]|2[5689]|3[2-467]|5[4-7]|6[35]|73|8[2689]|9[2389])|5(?:[16][146-9]|2[14-8]|3[1346]|4[14-69]|5[46]|7[2-4]|8[2-8]|9[246])|6(?:1[1358]|2[2457]|3[2-4]|4[235-7]|5[2-689]|6[24578]|7[235689]|8[124-6])|7(?:1[013-9]|2[0235-9]|3[2679]|4[1-35689]|5[2-46-9]|[67][02-9]|8[013-7]|9[089])|8(?:1[1357-9]|2[235-8]|3[03-57-9]|4[0-24-9]|5\\d|6[2457-9]|7[1-6]|8[1256]|9[2-4]))\\d[2-7]\\d{5}", [10]], ["(?:61279|7(?:887[02-9]|9(?:313|79[07-9]))|8(?:079[04-9]|(?:84|91)7[02-8]))\\d{5}|(?:6(?:12|[2-47]1|5[17]|6[13]|80)[0189]|7(?:1(?:2[0189]|9[0-5])|2(?:[14][017-9]|8[0-59])|3(?:2[5-8]|[34][017-9]|9[016-9])|4(?:1[015-9]|[29][89]|39|8[389])|5(?:[15][017-9]|2[04-9]|9[7-9])|6(?:0[0-47]|1[0-257-9]|2[0-4]|3[19]|5[4589])|70[0289]|88[089]|97[02-8])|8(?:0(?:6[67]|7[02-8])|70[017-9]|84[01489]|91[0-289]))\\d{6}|(?:7(?:31|4[47])|8(?:16|2[014]|3[126]|6[136]|7[78]|83))(?:[0189]\\d|7[02-8])\\d{5}|(?:6(?:[09]\\d|1[04679]|2[03689]|3[05-9]|4[0489]|50|6[069]|7[07]|8[7-9])|7(?:0\\d|2[0235-79]|3[05-8]|40|5[0346-8]|6[6-9]|7[1-9]|8[0-79]|9[089])|8(?:0[01589]|1[0-57-9]|2[235-9]|3[03-57-9]|[45]\\d|6[02457-9]|7[1-69]|8[0-25-9]|9[02-9])|9\\d\\d)\\d{7}|(?:6(?:(?:1[1358]|2[2457]|3[2-4]|4[235-7]|5[2-689]|6[24578]|8[124-6])\\d|7(?:[235689]\\d|4[0189]))|7(?:1(?:[013-8]\\d|9[6-9])|28[6-8]|3(?:2[0-49]|9[2-5])|4(?:1[2-4]|[29][0-7]|3[0-8]|[56]\\d|8[0-24-7])|5(?:2[1-3]|9[0-6])|6(?:0[5689]|2[5-9]|3[02-8]|4\\d|5[0-367])|70[13-7]|881))[0189]\\d{5}", [10]], ["000800\\d{7}|1(?:600\\d{6}|80(?:0\\d{4,9}|3\\d{9}))"], ["186[12]\\d{9}", [13]], 0, 0, ["140\\d{7}", [10]], 0, 0, ["1860\\d{7}", [11]]]], "IO": ["246", "00", "3\\d{6}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["3"]]], 0, 0, 0, 0, 0, 0, [["37\\d{5}"], ["38\\d{5}"]]], "IQ": ["964", "00", "(?:1|7\\d\\d)\\d{7}|[2-6]\\d{7,8}", [8, 9, 10], [["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["1"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[2-6]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["7"], "0$1"]], "0", 0, 0, 0, 0, 0, [["1\\d{7}|(?:2[13-5]|3[02367]|4[023]|5[03]|6[026])\\d{6,7}", [8, 9]], ["7[3-9]\\d{8}", [10]]]], "IR": ["98", "00", "[1-9]\\d{9}|(?:[1-8]\\d\\d|9)\\d{3,4}", [4, 5, 6, 7, 10], [["(\\d{4,5})", "$1", ["96"], "0$1"], ["(\\d{2})(\\d{4,5})", "$1 $2", ["(?:1[137]|2[13-68]|3[1458]|4[145]|5[1468]|6[16]|7[1467]|8[13467])[12689]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["9"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["[1-8]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1[137]|2[13-68]|3[1458]|4[145]|5[1468]|6[16]|7[1467]|8[13467])(?:[03-57]\\d{7}|[16]\\d{3}(?:\\d{4})?|[289]\\d{3}(?:\\d(?:\\d{3})?)?)|94(?:000[09]|(?:12\\d|30[0-2])\\d|2(?:121|[2689]0\\d)|4(?:111|40\\d))\\d{4}", [6, 7, 10]], ["9(?:(?:0(?:[0-35]\\d|4[4-6])|(?:[13]\\d|2[0-3])\\d)\\d|9(?:[0-46]\\d\\d|5[15]0|8(?:[12]\\d|88)|9(?:0[0-3]|[19]\\d|21|69|77|8[7-9])))\\d{5}", [10]], 0, 0, 0, 0, ["96(?:0[12]|2[16-8]|3(?:08|[14]5|[23]|66)|4(?:0|80)|5[01]|6[89]|86|9[19])", [4, 5]]]], "IS": ["354", "00|1(?:0(?:01|[12]0)|100)", "(?:38\\d|[4-9])\\d{6}", [7, 9], [["(\\d{3})(\\d{4})", "$1 $2", ["[4-9]"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["3"]]], 0, 0, 0, 0, 0, 0, [["(?:4(?:1[0-24-69]|2[0-7]|[37][0-8]|4[0-24589]|5[0-68]|6\\d|8[0-36-8])|5(?:05|[156]\\d|2[02578]|3[0-579]|4[03-7]|7[0-2578]|8[0-35-9]|9[013-689])|872)\\d{4}", [7]], ["(?:38[589]\\d\\d|6(?:1[1-8]|2[0-6]|3[026-9]|4[014679]|5[0159]|6[0-69]|70|8[06-8]|9\\d)|7(?:5[057]|[6-9]\\d)|8(?:2[0-59]|[3-69]\\d|8[238]))\\d{4}"], ["80[0-8]\\d{4}", [7]], ["90(?:0\\d|1[5-79]|2[015-79]|3[135-79]|4[125-7]|5[25-79]|7[1-37]|8[0-35-7])\\d{3}", [7]], 0, ["(?:689|8(?:7[18]|80)|95[48])\\d{4}", [7]], ["809\\d{4}", [7]], 0, ["49[0-24-79]\\d{4}", [7]]], "00"], "IT": ["39", "00", "0\\d{5,10}|1\\d{8,10}|3(?:[0-8]\\d{7,10}|9\\d{7,8})|(?:43|55|70)\\d{8}|8\\d{5}(?:\\d{2,4})?", [6, 7, 8, 9, 10, 11, 12], [["(\\d{2})(\\d{4,6})", "$1 $2", ["0[26]"]], ["(\\d{3})(\\d{3,6})", "$1 $2", ["0[13-57-9][0159]|8(?:03|4[17]|9[2-5])", "0[13-57-9][0159]|8(?:03|4[17]|9(?:2|3[04]|[45][0-4]))"]], ["(\\d{4})(\\d{2,6})", "$1 $2", ["0(?:[13-579][2-46-8]|8[236-8])"]], ["(\\d{4})(\\d{4})", "$1 $2", ["894"]], ["(\\d{2})(\\d{3,4})(\\d{4})", "$1 $2 $3", ["0[26]|5"]], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["1(?:44|[679])|[378]|43"]], ["(\\d{3})(\\d{3,4})(\\d{4})", "$1 $2 $3", ["0[13-57-9][0159]|14"]], ["(\\d{2})(\\d{4})(\\d{5})", "$1 $2 $3", ["0[26]"]], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["0"]], ["(\\d{3})(\\d{4})(\\d{4,5})", "$1 $2 $3", ["3"]]], 0, 0, 0, 0, 0, 0, [["0669[0-79]\\d{1,6}|0(?:1(?:[0159]\\d|[27][1-5]|31|4[1-4]|6[1356]|8[2-57])|2\\d\\d|3(?:[0159]\\d|2[1-4]|3[12]|[48][1-6]|6[2-59]|7[1-7])|4(?:[0159]\\d|[23][1-9]|4[245]|6[1-5]|7[1-4]|81)|5(?:[0159]\\d|2[1-5]|3[2-6]|4[1-79]|6[4-6]|7[1-578]|8[3-8])|6(?:[0-57-9]\\d|6[0-8])|7(?:[0159]\\d|2[12]|3[1-7]|4[2-46]|6[13569]|7[13-6]|8[1-59])|8(?:[0159]\\d|2[3-578]|3[1-356]|[6-8][1-5])|9(?:[0159]\\d|[238][1-5]|4[12]|6[1-8]|7[1-6]))\\d{2,7}", [6, 7, 8, 9, 10, 11]], ["3[2-9]\\d{7,8}|(?:31|43)\\d{8}", [9, 10]], ["80(?:0\\d{3}|3)\\d{3}", [6, 9]], ["(?:0878\\d{3}|89(?:2\\d|3[04]|4(?:[0-4]|[5-9]\\d\\d)|5[0-4]))\\d\\d|(?:1(?:44|6[346])|89(?:38|5[5-9]|9))\\d{6}", [6, 8, 9, 10]], ["1(?:78\\d|99)\\d{6}", [9, 10]], ["3[2-8]\\d{9,10}", [11, 12]], 0, 0, ["55\\d{8}", [10]], ["84(?:[08]\\d{3}|[17])\\d{3}", [6, 9]]]], "JE": ["44", "00", "1534\\d{6}|(?:[3578]\\d|90)\\d{8}", [10], 0, "0", 0, "([0-24-8]\\d{5})$|0", "1534$1", 0, 0, [["1534[0-24-8]\\d{5}"], ["7(?:(?:(?:50|82)9|937)\\d|7(?:00[378]|97\\d))\\d{5}"], ["80(?:07(?:35|81)|8901)\\d{4}"], ["(?:8(?:4(?:4(?:4(?:05|42|69)|703)|5(?:041|800))|7(?:0002|1206))|90(?:066[59]|1810|71(?:07|55)))\\d{4}"], ["701511\\d{4}"], 0, ["(?:3(?:0(?:07(?:35|81)|8901)|3\\d{4}|4(?:4(?:4(?:05|42|69)|703)|5(?:041|800))|7(?:0002|1206))|55\\d{4})\\d{4}"], ["76(?:464|652)\\d{5}|76(?:0[0-28]|2[356]|34|4[01347]|5[49]|6[0-369]|77|8[14]|9[139])\\d{6}"], ["56\\d{8}"]]], "JM": ["1", "011", "(?:[58]\\d\\d|658|900)\\d{7}", [10], 0, "1", 0, 0, 0, 0, "658|876", [["8766060\\d{3}|(?:658(?:2(?:[0-8]\\d|9[0-46-9])|[3-9]\\d\\d)|876(?:52[35]|6(?:0[1-3579]|1[0235-9]|[23]\\d|40|5[06]|6[2-589]|7[0-25-9]|8[04]|9[4-9])|7(?:0[2-689]|[1-6]\\d|8[056]|9[45])|9(?:0[1-8]|1[02378]|[2-8]\\d|9[2-468])))\\d{4}"], ["(?:658295|876(?:2(?:0[1-9]|[13-9]\\d|2[013-9])|[348]\\d\\d|5(?:0[1-9]|[1-9]\\d)|6(?:4[89]|6[67])|7(?:0[07]|7\\d|8[1-47-9]|9[0-36-9])|9(?:[01]9|9[0579])))\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "JO": ["962", "00", "(?:(?:[2689]|7\\d)\\d|32|53)\\d{6}", [8, 9], [["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["[2356]|87"], "(0$1)"], ["(\\d{3})(\\d{5,6})", "$1 $2", ["[89]"], "0$1"], ["(\\d{2})(\\d{7})", "$1 $2", ["70"], "0$1"], ["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["7"], "0$1"]], "0", 0, 0, 0, 0, 0, [["87(?:000|90[01])\\d{3}|(?:2(?:6(?:2[0-35-9]|3[0-578]|4[24-7]|5[0-24-8]|[6-8][023]|9[0-3])|7(?:0[1-79]|10|2[014-7]|3[0-689]|4[019]|5[0-3578]))|32(?:0[1-69]|1[1-35-7]|2[024-7]|3\\d|4[0-3]|[5-7][023])|53(?:0[0-3]|[13][023]|2[0-59]|49|5[0-35-9]|6[15]|7[45]|8[1-6]|9[0-36-9])|6(?:2(?:[05]0|22)|3(?:00|33)|4(?:0[0-25]|1[2-7]|2[0569]|[38][07-9]|4[025689]|6[0-589]|7\\d|9[0-2])|5(?:[01][056]|2[034]|3[0-57-9]|4[178]|5[0-69]|6[0-35-9]|7[1-379]|8[0-68]|9[0239]))|87(?:20|7[078]|99))\\d{4}", [8]], ["7(?:[78][0-25-9]|9\\d)\\d{6}", [9]], ["80\\d{6}", [8]], ["9\\d{7}", [8]], ["70\\d{7}", [9]], 0, ["8(?:10|8\\d)\\d{5}", [8]], ["74(?:66|77)\\d{5}", [9]], 0, ["85\\d{6}", [8]]]], "JP": ["81", "010", "00[1-9]\\d{6,14}|[257-9]\\d{9}|(?:00|[1-9]\\d\\d)\\d{6}", [8, 9, 10, 11, 12, 13, 14, 15, 16, 17], [["(\\d{3})(\\d{3})(\\d{3})", "$1-$2-$3", ["(?:12|57|99)0"], "0$1"], ["(\\d{4})(\\d)(\\d{4})", "$1-$2-$3", ["1(?:26|3[79]|4[56]|5[4-68]|6[3-5])|499|5(?:76|97)|746|8(?:3[89]|47|51)|9(?:80|9[16])", "1(?:267|3(?:7[247]|9[278])|466|5(?:47|58|64)|6(?:3[245]|48|5[4-68]))|499[2468]|5(?:76|97)9|7468|8(?:3(?:8[7-9]|96)|477|51[2-9])|9(?:802|9(?:1[23]|69))|1(?:45|58)[67]", "1(?:267|3(?:7[247]|9[278])|466|5(?:47|58|64)|6(?:3[245]|48|5[4-68]))|499[2468]|5(?:769|979[2-69])|7468|8(?:3(?:8[7-9]|96[2457-9])|477|51[2-9])|9(?:802|9(?:1[23]|69))|1(?:45|58)[67]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1-$2-$3", ["60"], "0$1"], ["(\\d)(\\d{4})(\\d{4})", "$1-$2-$3", ["[36]|4(?:2[09]|7[01])", "[36]|4(?:2(?:0|9[02-69])|7(?:0[019]|1))"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1-$2-$3", ["1(?:1|5[45]|77|88|9[69])|2(?:2[1-37]|3[0-269]|4[59]|5|6[24]|7[1-358]|8[1369]|9[0-38])|4(?:[28][1-9]|3[0-57]|[45]|6[248]|7[2-579]|9[29])|5(?:2|3[0459]|4[0-369]|5[29]|8[02389]|9[0-389])|7(?:2[02-46-9]|34|[58]|6[0249]|7[57]|9[2-6])|8(?:2[124589]|3[26-9]|49|51|6|7[0-468]|8[68]|9[019])|9(?:[23][1-9]|4[15]|5[138]|6[1-3]|7[156]|8[189]|9[1-489])", "1(?:1|5(?:4[018]|5[017])|77|88|9[69])|2(?:2(?:[127]|3[014-9])|3[0-269]|4[59]|5(?:[1-3]|5[0-69]|9[19])|62|7(?:[1-35]|8[0189])|8(?:[16]|3[0134]|9[0-5])|9(?:[028]|17))|4(?:2(?:[13-79]|8[014-6])|3[0-57]|[45]|6[248]|7[2-47]|8[1-9]|9[29])|5(?:2|3(?:[045]|9[0-8])|4[0-369]|5[29]|8[02389]|9[0-3])|7(?:2[02-46-9]|34|[58]|6[0249]|7[57]|9(?:[23]|4[0-59]|5[01569]|6[0167]))|8(?:2(?:[1258]|4[0-39]|9[0-2469])|3(?:[29]|60)|49|51|6(?:[0-24]|36|5[0-3589]|7[23]|9[01459])|7[0-468]|8[68])|9(?:[23][1-9]|4[15]|5[138]|6[1-3]|7[156]|8[189]|9(?:[1289]|3[34]|4[0178]))|(?:264|837)[016-9]|2(?:57|93)[015-9]|(?:25[0468]|422|838)[01]|(?:47[59]|59[89]|8(?:6[68]|9))[019]", "1(?:1|5(?:4[018]|5[017])|77|88|9[69])|2(?:2[127]|3[0-269]|4[59]|5(?:[1-3]|5[0-69]|9(?:17|99))|6(?:2|4[016-9])|7(?:[1-35]|8[0189])|8(?:[16]|3[0134]|9[0-5])|9(?:[028]|17))|4(?:2(?:[13-79]|8[014-6])|3[0-57]|[45]|6[248]|7[2-47]|9[29])|5(?:2|3(?:[045]|9(?:[0-58]|6[4-9]|7[0-35689]))|4[0-369]|5[29]|8[02389]|9[0-3])|7(?:2[02-46-9]|34|[58]|6[0249]|7[57]|9(?:[23]|4[0-59]|5[01569]|6[0167]))|8(?:2(?:[1258]|4[0-39]|9[0169])|3(?:[29]|60|7(?:[017-9]|6[6-8]))|49|51|6(?:[0-24]|36[2-57-9]|5(?:[0-389]|5[23])|6(?:[01]|9[178])|7(?:2[2-468]|3[78])|9[0145])|7[0-468]|8[68])|9(?:4[15]|5[138]|7[156]|8[189]|9(?:[1289]|3(?:31|4[357])|4[0178]))|(?:8294|96)[1-3]|2(?:57|93)[015-9]|(?:223|8699)[014-9]|(?:25[0468]|422|838)[01]|(?:48|8292|9[23])[1-9]|(?:47[59]|59[89]|8(?:68|9))[019]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{4})", "$1-$2-$3", ["[14]|[289][2-9]|5[3-9]|7[2-4679]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1-$2-$3", ["800"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4})", "$1-$2-$3", ["[257-9]"], "0$1"]], "0", 0, "(000[259]\\d{6})$|(?:(?:003768)0?)|0", "$1", 0, 0, [["(?:1(?:1[235-8]|2[3-6]|3[3-9]|4[2-6]|[58][2-8]|6[2-7]|7[2-9]|9[1-9])|(?:2[2-9]|[36][1-9])\\d|4(?:[2-578]\\d|6[02-8]|9[2-59])|5(?:[2-589]\\d|6[1-9]|7[2-8])|7(?:[25-9]\\d|3[4-9]|4[02-9])|8(?:[2679]\\d|3[2-9]|4[5-9]|5[1-9]|8[03-9])|9(?:[2-58]\\d|[679][1-9]))\\d{6}", [9]], ["[7-9]0[1-9]\\d{7}", [10]], ["00777(?:[01]|5\\d)\\d\\d|(?:00(?:7778|882[1245])|(?:120|800\\d)\\d\\d)\\d{4}|00(?:37|66|78)\\d{6,13}"], ["990\\d{6}", [9]], ["60\\d{7}", [9]], 0, ["570\\d{6}", [9]], ["20\\d{8}", [10]], ["50[1-9]\\d{7}", [10]]]], "KE": ["254", "000", "(?:[17]\\d\\d|900)\\d{6}|(?:2|80)0\\d{6,7}|[4-6]\\d{6,8}", [7, 8, 9, 10], [["(\\d{2})(\\d{5,7})", "$1 $2", ["[24-6]"], "0$1"], ["(\\d{3})(\\d{6})", "$1 $2", ["[17]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[89]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:4[245]|5[1-79]|6[01457-9])\\d{5,7}|(?:4[136]|5[08]|62)\\d{7}|(?:[24]0|66)\\d{6,7}", [7, 8, 9]], ["(?:1(?:0[0-8]|1[0-7]|2[014]|30)|7\\d\\d)\\d{6}", [9]], ["800[02-8]\\d{5,6}", [9, 10]], ["900[02-9]\\d{5}", [9]]]], "KG": ["996", "00", "8\\d{9}|[235-9]\\d{8}", [9, 10], [["(\\d{4})(\\d{5})", "$1 $2", ["3(?:1[346]|[24-79])"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[235-79]|88"], "0$1"], ["(\\d{3})(\\d{3})(\\d)(\\d{2,3})", "$1 $2 $3 $4", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["312(?:5[0-79]\\d|9(?:[0-689]\\d|7[0-24-9]))\\d{3}|(?:3(?:1(?:2[0-46-8]|3[1-9]|47|[56]\\d)|2(?:22|3[0-479]|6[0-7])|4(?:22|5[6-9]|6\\d)|5(?:22|3[4-7]|59|6\\d)|6(?:22|5[35-7]|6\\d)|7(?:22|3[468]|4[1-9]|59|[67]\\d)|9(?:22|4[1-8]|6\\d))|6(?:09|12|2[2-4])\\d)\\d{5}", [9]], ["312(?:58\\d|973)\\d{3}|(?:2(?:0[0-35]|2\\d)|5[0-24-7]\\d|600|7(?:[07]\\d|55)|88[08]|9(?:12|9[05-9]))\\d{6}", [9]], ["800\\d{6,7}"]]], "KH": ["855", "00[14-9]", "1\\d{9}|[1-9]\\d{7,8}", [8, 9, 10], [["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[1-9]"], "0$1"], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["1"]]], "0", 0, 0, 0, 0, 0, [["23(?:4(?:[2-4]|[56]\\d)|[568]\\d\\d)\\d{4}|23[236-9]\\d{5}|(?:2[4-6]|3[2-6]|4[2-4]|[5-7][2-5])(?:(?:[237-9]|4[56]|5\\d)\\d{5}|6\\d{5,6})", [8, 9]], ["(?:(?:1[28]|3[18]|9[67])\\d|6[016-9]|7(?:[07-9]|[16]\\d)|8(?:[013-79]|8\\d))\\d{6}|(?:1\\d|9[0-57-9])\\d{6}|(?:2[3-6]|3[2-6]|4[2-4]|[5-7][2-5])48\\d{5}", [8, 9]], ["1800(?:1\\d|2[019])\\d{4}", [10]], ["1900(?:1\\d|2[09])\\d{4}", [10]]]], "KI": ["686", "00", "(?:[37]\\d|6[0-79])\\d{6}|(?:[2-48]\\d|50)\\d{3}", [5, 8], 0, "0", 0, 0, 0, 0, 0, [["(?:[24]\\d|3[1-9]|50|65(?:02[12]|12[56]|22[89]|[3-5]00)|7(?:27\\d\\d|3100|5(?:02[12]|12[56]|22[89]|[34](?:00|81)|500))|8[0-5])\\d{3}"], ["(?:6200[01]|7(?:310[1-9]|5(?:02[03-9]|12[0-47-9]|22[0-7]|[34](?:0[1-9]|8[02-9])|50[1-9])))\\d{3}|(?:63\\d\\d|7(?:(?:[0146-9]\\d|2[0-689])\\d|3(?:[02-9]\\d|1[1-9])|5(?:[0-2][013-9]|[34][1-79]|5[1-9]|[6-9]\\d)))\\d{4}", [8]], 0, 0, 0, 0, 0, 0, ["30(?:0[01]\\d\\d|12(?:11|20))\\d\\d", [8]]]], "KM": ["269", "00", "[3478]\\d{6}", [7], [["(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3", ["[3478]"]]], 0, 0, 0, 0, 0, 0, [["7[4-7]\\d{5}"], ["[34]\\d{6}"], 0, ["8\\d{6}"]]], "KN": ["1", "011", "(?:[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2-7]\\d{6})$|1", "869$1", 0, "869", [["869(?:2(?:29|36)|302|4(?:6[015-9]|70)|56[5-7])\\d{4}"], ["869(?:48[89]|55[6-8]|66\\d|76[02-7])\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "KP": ["850", "00|99", "85\\d{6}|(?:19\\d|[2-7])\\d{7}", [8, 10], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["8"], "0$1"], ["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["[2-7]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:(?:195|2)\\d|3[19]|4[159]|5[37]|6[17]|7[39]|85)\\d{6}"], ["19[1-3]\\d{7}", [10]]]], "KR": ["82", "00(?:[125689]|3(?:[46]5|91)|7(?:00|27|3|55|6[126]))", "00[1-9]\\d{8,11}|(?:[12]|5\\d{3})\\d{7}|[13-6]\\d{9}|(?:[1-6]\\d|80)\\d{7}|[3-6]\\d{4,5}|(?:00|7)0\\d{8}", [5, 6, 8, 9, 10, 11, 12, 13, 14], [["(\\d{2})(\\d{3,4})", "$1-$2", ["(?:3[1-3]|[46][1-4]|5[1-5])1"], "0$1"], ["(\\d{4})(\\d{4})", "$1-$2", ["1"]], ["(\\d)(\\d{3,4})(\\d{4})", "$1-$2-$3", ["2"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1-$2-$3", ["[36]0|8"], "0$1"], ["(\\d{2})(\\d{3,4})(\\d{4})", "$1-$2-$3", ["[1346]|5[1-5]"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4})", "$1-$2-$3", ["[57]"], "0$1"], ["(\\d{2})(\\d{5})(\\d{4})", "$1-$2-$3", ["5"], "0$1"]], "0", 0, "0(8(?:[1-46-8]|5\\d\\d))?", 0, 0, 0, [["(?:2|3[1-3]|[46][1-4]|5[1-5])[1-9]\\d{6,7}|(?:3[1-3]|[46][1-4]|5[1-5])1\\d{2,3}", [5, 6, 8, 9, 10]], ["1(?:05(?:[0-8]\\d|9[0-6])|22[13]\\d)\\d{4,5}|1(?:0[0-46-9]|[16-9]\\d|2[013-9])\\d{6,7}", [9, 10]], ["00(?:308\\d{6,7}|798\\d{7,9})|(?:00368|[38]0)\\d{7}", [9, 11, 12, 13, 14]], ["60[2-9]\\d{6}", [9]], ["50\\d{8,9}", [10, 11]], 0, ["1(?:5(?:22|33|44|66|77|88|99)|6(?:[07]0|44|6[0168]|88)|8(?:00|33|55|77|99))\\d{4}", [8]], ["15\\d{7,8}", [9, 10]], ["70\\d{8}", [10]]]], "KW": ["965", "00", "18\\d{5}|(?:[2569]\\d|41)\\d{6}", [7, 8], [["(\\d{4})(\\d{3,4})", "$1 $2", ["[169]|2(?:[235]|4[1-35-9])|52"]], ["(\\d{3})(\\d{5})", "$1 $2", ["[245]"]]], 0, 0, 0, 0, 0, 0, [["2(?:[23]\\d\\d|4(?:[1-35-9]\\d|44)|5(?:0[034]|[2-46]\\d|5[1-3]|7[1-7]))\\d{4}", [8]], ["(?:41\\d\\d|5(?:(?:[05]\\d|1[0-7]|6[56])\\d|2(?:22|5[25])|7(?:55|77)|88[58])|6(?:(?:0[034679]|5[015-9]|6\\d)\\d|1(?:00|11|6[16])|2[26]2|3[36]3|4[46]4|7(?:0[013-9]|[67]\\d)|8[68]8|9(?:[069]\\d|3[039]))|9(?:(?:[04679]\\d|8[057-9])\\d|1(?:1[01]|99)|2(?:00|2\\d)|3(?:00|3[03])|5(?:00|5\\d)))\\d{4}", [8]], ["18\\d{5}", [7]]]], "KY": ["1", "011", "(?:345|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2-9]\\d{6})$|1", "345$1", 0, "345", [["345(?:2(?:22|3[23]|44|66)|333|444|6(?:23|38|40)|7(?:30|4[35-79]|6[6-9]|77)|8(?:00|1[45]|[48]8)|9(?:14|4[035-9]))\\d{4}"], ["345(?:32[1-9]|42[0-4]|5(?:1[67]|2[5-79]|4[6-9]|50|76)|649|82[56]|9(?:1[679]|2[2-9]|3[06-9]|90))\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["(?:345976|900[2-9]\\d\\d)\\d{4}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], 0, 0, ["345849\\d{4}"]]], "KZ": ["7", "810", "(?:33622|8\\d{8})\\d{5}|[78]\\d{9}", [10, 14], 0, "8", 0, 0, 0, 0, "33|7", [["(?:33622|7(?:1(?:0(?:[23]\\d|4[0-3]|59|63)|1(?:[23]\\d|4[0-79]|59)|2(?:[23]\\d|59)|3(?:2\\d|3[0-79]|4[0-35-9]|59)|4(?:[24]\\d|3[013-9]|5[1-9]|97)|5(?:2\\d|3[1-9]|4[0-7]|59)|6(?:[2-4]\\d|5[19]|61)|72\\d|8(?:[27]\\d|3[1-46-9]|4[0-5]|59))|2(?:1(?:[23]\\d|4[46-9]|5[3469])|2(?:2\\d|3[0679]|46|5[12679])|3(?:[2-4]\\d|5[139])|4(?:2\\d|3[1-35-9]|59)|5(?:[23]\\d|4[0-8]|59|61)|6(?:2\\d|3[1-9]|4[0-4]|59)|7(?:[2379]\\d|40|5[279])|8(?:[23]\\d|4[0-3]|59)|9(?:2\\d|3[124578]|59))))\\d{5}", [10]], ["7(?:0[0-25-8]|47|6[0-4]|7[15-8]|85)\\d{7}", [10]], ["8(?:00|108\\d{3})\\d{7}"], ["809\\d{7}", [10]], ["808\\d{7}", [10]], 0, 0, 0, ["751\\d{7}", [10]]], "8~10"], "LA": ["856", "00", "[23]\\d{9}|3\\d{8}|(?:[235-8]\\d|41)\\d{6}", [8, 9, 10], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["2[13]|3[14]|[4-8]"], "0$1"], ["(\\d{2})(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3 $4", ["30[0135-9]"], "0$1"], ["(\\d{2})(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["[23]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2[13]|[35-7][14]|41|8[1468])\\d{6}", [8]], ["208[78]\\d{6}|(?:20[23579]|30[24])\\d{7}", [10]], 0, 0, 0, 0, ["30[0135-9]\\d{6}", [9]]]], "LB": ["961", "00", "[27-9]\\d{7}|[13-9]\\d{6}", [7, 8], [["(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["[13-69]|7(?:[2-57]|62|8[0-7]|9[04-9])|8[02-9]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[27-9]"]]], "0", 0, 0, 0, 0, 0, [["7(?:62|8[0-7]|9[04-9])\\d{4}|(?:[14-69]\\d|2(?:[14-69]\\d|[78][1-9])|7[2-57]|8[02-9])\\d{5}"], ["793(?:[01]\\d|2[0-4])\\d{3}|(?:(?:3|81)\\d|7(?:[01]\\d|6[013-9]|8[89]|9[12]))\\d{5}"], 0, ["9[01]\\d{6}", [8]], 0, 0, 0, 0, 0, ["80\\d{6}", [8]]]], "LC": ["1", "011", "(?:[58]\\d\\d|758|900)\\d{7}", [10], 0, "1", 0, "([2-8]\\d{6})$|1", "758$1", 0, "758", [["758(?:234|4(?:30|5\\d|6[2-9]|8[0-2])|57[0-2]|(?:63|75)8)\\d{4}"], ["758(?:28[4-7]|384|4(?:6[01]|8[4-9])|5(?:1[89]|20|84)|7(?:1[2-9]|2\\d|3[0-3])|812)\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "LI": ["423", "00", "[68]\\d{8}|(?:[2378]\\d|90)\\d{5}", [7, 9], [["(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3", ["[2379]|8(?:0[09]|7)", "[2379]|8(?:0(?:02|9)|7)"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["8"]], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["69"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["6"]]], "0", 0, "(1001)|0", 0, 0, 0, [["(?:2(?:01|1[27]|2[02]|3\\d|6[02-578]|96)|3(?:[24]0|33|7[0135-7]|8[048]|9[0269]))\\d{4}", [7]], ["(?:6(?:(?:4[5-9]|5[0-469])\\d|6(?:[024-6]\\d|[17]0|3[7-9]))\\d|7(?:[37-9]\\d|42|56))\\d{4}"], ["8002[28]\\d\\d|80(?:05\\d|9)\\d{4}"], ["90(?:02[258]|1(?:23|3[14])|66[136])\\d\\d", [7]], 0, ["697(?:42|56|[78]\\d)\\d{4}", [9]], ["870(?:28|87)\\d\\d", [7]]]], "LK": ["94", "00", "[1-9]\\d{8}", [9], [["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["7"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[1-689]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:12[2-9]|602|8[12]\\d|9(?:1\\d|22|9[245]))\\d{6}|(?:11|2[13-7]|3[1-8]|4[157]|5[12457]|6[35-7])[2-57]\\d{6}"], ["7(?:[0-25-8]\\d|4[0-4])\\d{6}"], 0, 0, 0, 0, ["1973\\d{5}"]]], "LR": ["231", "00", "(?:[245]\\d|33|77|88)\\d{7}|(?:2\\d|[4-6])\\d{6}", [7, 8, 9], [["(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["4[67]|[56]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["2"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[2-578]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["2\\d{7}", [8]], ["(?:(?:(?:22|33)0|555|(?:77|88)\\d)\\d|4(?:240|[67]))\\d{5}|[56]\\d{6}", [7, 9]], 0, ["332(?:02|[34]\\d)\\d{4}", [9]]]], "LS": ["266", "00", "(?:[256]\\d\\d|800)\\d{5}", [8], [["(\\d{4})(\\d{4})", "$1 $2", ["[2568]"]]], 0, 0, 0, 0, 0, 0, [["2\\d{7}"], ["[56]\\d{7}"], ["800[1256]\\d{4}"]]], "LT": ["370", "00", "(?:[3469]\\d|52|[78]0)\\d{6}", [8], [["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["52[0-7]"], "(0-$1)", 1], ["(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["[7-9]"], "0 $1", 1], ["(\\d{2})(\\d{6})", "$1 $2", ["37|4(?:[15]|6[1-8])"], "(0-$1)", 1], ["(\\d{3})(\\d{5})", "$1 $2", ["[3-6]"], "(0-$1)", 1]], "0", 0, "[08]", 0, 0, 0, [["(?:3[1478]|4[124-6]|52)\\d{6}"], ["6\\d{7}"], ["80[02]\\d{5}"], ["9(?:0[0239]|10)\\d{5}"], ["70[05]\\d{5}"], 0, ["70[67]\\d{5}"], 0, ["[89]01\\d{5}"], ["808\\d{5}"]]], "LU": ["352", "00", "35[013-9]\\d{4,8}|6\\d{8}|35\\d{2,4}|(?:[2457-9]\\d|3[0-46-9])\\d{2,9}", [4, 5, 6, 7, 8, 9, 10, 11], [["(\\d{2})(\\d{3})", "$1 $2", ["2(?:0[2-689]|[2-9])|[3-57]|8(?:0[2-9]|[13-9])|9(?:0[89]|[2-579])"]], ["(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3", ["2(?:0[2-689]|[2-9])|[3-57]|8(?:0[2-9]|[13-9])|9(?:0[89]|[2-579])"]], ["(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3", ["20[2-689]"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{1,2})", "$1 $2 $3 $4", ["2(?:[0367]|4[3-8])"]], ["(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["80[01]|90[015]"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3 $4", ["20"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["6"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{1,2})", "$1 $2 $3 $4 $5", ["2(?:[0367]|4[3-8])"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{1,5})", "$1 $2 $3 $4", ["[3-57]|8[13-9]|9(?:0[89]|[2-579])|(?:2|80)[2-9]"]]], 0, 0, "(15(?:0[06]|1[12]|[35]5|4[04]|6[26]|77|88|99)\\d)", 0, 0, 0, [["(?:35[013-9]|80[2-9]|90[89])\\d{1,8}|(?:2[2-9]|3[0-46-9]|[457]\\d|8[13-9]|9[2-579])\\d{2,9}"], ["6(?:[269][18]|5[1568]|7[189]|81)\\d{6}", [9]], ["800\\d{5}", [8]], ["90[015]\\d{5}", [8]], 0, 0, 0, 0, ["20(?:1\\d{5}|[2-689]\\d{1,7})", [4, 5, 6, 7, 8, 9, 10]], ["801\\d{5}", [8]]]], "LV": ["371", "00", "(?:[268]\\d|90)\\d{6}", [8], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[269]|8[01]"]]], 0, 0, 0, 0, 0, 0, [["6\\d{7}"], ["23(?:23[0-57-9]|33[0238])\\d{3}|2(?:[0-24-9]\\d\\d|3(?:0[07]|[14-9]\\d|2[024-9]|3[0-24-9]))\\d{4}"], ["80\\d{6}"], ["90\\d{6}"], 0, 0, 0, 0, 0, ["81\\d{6}"]]], "LY": ["218", "00", "[2-9]\\d{8}", [9], [["(\\d{2})(\\d{7})", "$1-$2", ["[2-9]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2(?:0[56]|[1-6]\\d|7[124579]|8[124])|3(?:1\\d|2[2356])|4(?:[17]\\d|2[1-357]|5[2-4]|8[124])|5(?:[1347]\\d|2[1-469]|5[13-5]|8[1-4])|6(?:[1-479]\\d|5[2-57]|8[1-5])|7(?:[13]\\d|2[13-79])|8(?:[124]\\d|5[124]|84))\\d{6}"], ["9[1-6]\\d{7}"]]], "MA": ["212", "00", "[5-8]\\d{8}", [9], [["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["5[45]"], "0$1"], ["(\\d{4})(\\d{5})", "$1-$2", ["5(?:2[2-46-9]|3[3-9]|9)|8(?:0[89]|92)"], "0$1"], ["(\\d{2})(\\d{7})", "$1-$2", ["8"], "0$1"], ["(\\d{3})(\\d{6})", "$1-$2", ["[5-7]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["5(?:2(?:[0-25-79]\\d|3[1-578]|4[02-46-8]|8[0235-7])|3(?:[0-47]\\d|5[02-9]|6[02-8]|8[014-9]|9[3-9])|(?:4[067]|5[03])\\d)\\d{5}"], ["(?:6(?:[0-79]\\d|8[0-247-9])|7(?:[0167]\\d|2[0-4]|5[01]|8[0-3]))\\d{6}"], ["80[0-7]\\d{6}"], ["89\\d{7}"], 0, 0, 0, 0, ["(?:592(?:4[0-2]|93)|80[89]\\d\\d)\\d{4}"]]], "MC": ["377", "00", "(?:[3489]|6\\d)\\d{7}", [8, 9], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["4"], "0$1"], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[389]"]], ["(\\d)(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4 $5", ["6"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:870|9[2-47-9]\\d)\\d{5}", [8]], ["4(?:[469]\\d|5[1-9])\\d{5}|(?:3|6\\d)\\d{7}"], ["(?:800|90\\d)\\d{5}", [8]]]], "MD": ["373", "00", "(?:[235-7]\\d|[89]0)\\d{6}", [8], [["(\\d{3})(\\d{5})", "$1 $2", ["[89]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["22|3"], "0$1"], ["(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["[25-7]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:(?:2[1-9]|3[1-79])\\d|5(?:33|5[257]))\\d{5}"], ["562\\d{5}|(?:6\\d|7[16-9])\\d{6}"], ["800\\d{5}"], ["90[056]\\d{5}"], 0, 0, ["803\\d{5}"], 0, ["3[08]\\d{6}"], ["808\\d{5}"]]], "ME": ["382", "00", "(?:20|[3-79]\\d)\\d{6}|80\\d{6,7}", [8, 9], [["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[2-9]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:20[2-8]|3(?:[0-2][2-7]|3[24-7])|4(?:0[2-467]|1[2467])|5(?:0[2467]|1[24-7]|2[2-467]))\\d{5}", [8]], ["6(?:[07-9]\\d|3[024]|6[0-25])\\d{5}", [8]], ["80(?:[0-2578]|9\\d)\\d{5}"], ["9(?:4[1568]|5[178])\\d{5}", [8]], 0, 0, ["77[1-9]\\d{5}", [8]], 0, ["78[1-49]\\d{5}", [8]]]], "MF": ["590", "00", "(?:590\\d|7090)\\d{5}|(?:69|80|9\\d)\\d{7}", [9], 0, "0", 0, 0, 0, 0, 0, [["590(?:0[079]|[14]3|[27][79]|3[03-7]|5[0-268]|87)\\d{4}"], ["(?:69(?:0\\d\\d|1(?:2[2-9]|3[0-5])|4(?:0[89]|1[2-6]|9\\d)|6(?:1[016-9]|5[0-4]|[67]\\d))|7090[0-4])\\d{4}"], ["80[0-5]\\d{6}"], 0, 0, 0, 0, 0, ["9(?:(?:39[5-7]|76[018])\\d|475[0-5])\\d{4}"]]], "MG": ["261", "00", "[23]\\d{8}", [9], [["(\\d{2})(\\d{2})(\\d{3})(\\d{2})", "$1 $2 $3 $4", ["[23]"], "0$1"]], "0", 0, "([24-9]\\d{6})$|0", "20$1", 0, 0, [["2072[29]\\d{4}|20(?:2\\d|4[47]|5[3467]|6[279]|7[356]|8[268]|9[2457])\\d{5}"], ["3[2-47-9]\\d{7}"], 0, 0, 0, 0, 0, 0, ["22\\d{7}"]]], "MH": ["692", "011", "329\\d{4}|(?:[256]\\d|45)\\d{5}", [7], [["(\\d{3})(\\d{4})", "$1-$2", ["[2-6]"]]], "1", 0, 0, 0, 0, 0, [["(?:247|528|625)\\d{4}"], ["(?:(?:23|54)5|329|45[35-8])\\d{4}"], 0, 0, 0, 0, 0, 0, ["635\\d{4}"]]], "MK": ["389", "00", "[2-578]\\d{7}", [8], [["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["2|34[47]|4(?:[37]7|5[47]|64)"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[347]"], "0$1"], ["(\\d{3})(\\d)(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[58]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:(?:2(?:62|77)0|3444)\\d|4[56]440)\\d{3}|(?:34|4[357])700\\d{3}|(?:2(?:[0-3]\\d|5[0-578]|6[01]|82)|3(?:1[3-68]|[23][2-68]|4[23568])|4(?:[23][2-68]|4[3-68]|5[2568]|6[25-8]|7[24-68]|8[4-68]))\\d{5}"], ["7(?:3555|(?:474|9[019]7)7)\\d{3}|7(?:[0-25-8]\\d\\d|3(?:[1-48]\\d|6[01]|7[01578])|4(?:2\\d|60|7[01578])|9(?:[2-4]\\d|5[01]|7[015]))\\d{4}"], ["800\\d{5}"], ["5\\d{7}"], 0, 0, 0, 0, 0, ["8(?:0[1-9]|[1-9]\\d)\\d{5}"]]], "ML": ["223", "00", "[24-9]\\d{7}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[24-9]"]]], 0, 0, 0, 0, 0, 0, [["2(?:07[0-8]|12[67])\\d{4}|(?:2(?:02|1[4-689])|4(?:0[0-4]|4[1-39]))\\d{5}"], ["2(?:0(?:01|79)|17\\d)\\d{4}|(?:5[01]|[679]\\d|8[2-49])\\d{6}"], ["80\\d{6}"]]], "MM": ["95", "00", "1\\d{5,7}|95\\d{6}|(?:[4-7]|9[0-46-9])\\d{6,8}|(?:2|8\\d)\\d{5,8}", [6, 7, 8, 9, 10], [["(\\d)(\\d{2})(\\d{3})", "$1 $2 $3", ["16|2"], "0$1"], ["(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3", ["4(?:[2-46]|5[3-5])|5|6(?:[1-689]|7[235-7])|7(?:[0-4]|5[2-7])|8[1-5]|(?:60|86)[23]"], "0$1"], ["(\\d)(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[12]|452|678|86", "[12]|452|6788|86"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[4-7]|8[1-35]"], "0$1"], ["(\\d)(\\d{3})(\\d{4,6})", "$1 $2 $3", ["9(?:2[0-4]|[35-9]|4[137-9])"], "0$1"], ["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["2"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["8"], "0$1"], ["(\\d)(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["92"], "0$1"], ["(\\d)(\\d{5})(\\d{4})", "$1 $2 $3", ["9"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1(?:(?:12|[28]\\d|3[56]|7[3-6]|9[0-6])\\d|4(?:2[29]|62|7[0-2]|83)|6)|2(?:2(?:00|8[34])|4(?:0\\d|[26]2|7[0-2]|83)|51\\d\\d)|4(?:2(?:2\\d\\d|48[013])|3(?:20\\d|4(?:70|83)|56)|420\\d|5(?:2\\d|470))|6(?:0(?:[23]|88\\d)|(?:124|[56]2\\d)\\d|2472|3(?:20\\d|470)|4(?:2[04]\\d|472)|7(?:3\\d\\d|4[67]0|8(?:[01459]\\d|8))))\\d{4}|5(?:2(?:2\\d{5,6}|47[02]\\d{4})|(?:3472|4(?:2(?:1|86)|470)|522\\d|6(?:20\\d|483)|7(?:20\\d|48[01])|8(?:20\\d|47[02])|9(?:20\\d|470))\\d{4})|7(?:(?:0470|4(?:25\\d|470)|5(?:202|470|96\\d))\\d{4}|1(?:20\\d{4,5}|4(?:70|83)\\d{4}))|8(?:1(?:2\\d{5,6}|4(?:10|7[01]\\d)\\d{3})|2(?:2\\d{5,6}|(?:320|490\\d)\\d{3})|(?:3(?:2\\d\\d|470)|4[24-7]|5(?:(?:2\\d|51)\\d|4(?:[1-35-9]\\d|4[0-57-9]))|6[23])\\d{4})|(?:1[2-6]\\d|4(?:2[24-8]|3[2-7]|[46][2-6]|5[3-5])|5(?:[27][2-8]|3[2-68]|4[24-8]|5[23]|6[2-4]|8[24-7]|9[2-7])|6(?:[19]20|42[03-6]|(?:52|7[45])\\d)|7(?:[04][24-8]|[15][2-7]|22|3[2-4])|8(?:1[2-689]|2[2-8]|(?:[35]2|64)\\d))\\d{4}|25\\d{5,6}|(?:2[2-9]|6(?:1[2356]|[24][2-6]|3[24-6]|5[2-4]|6[2-8]|7[235-7]|8[245]|9[24])|8(?:3[24]|5[245]))\\d{4}", [6, 7, 8, 9]], ["(?:17[01]|9(?:2(?:[0-4]|[56]\\d\\d)|(?:3(?:[0-36]|4\\d)|(?:6\\d|8[89]|9[4-8])\\d|7(?:3|40|[5-9]\\d))\\d|4(?:(?:[0245]\\d|[1379])\\d|88)|5[0-6])\\d)\\d{4}|9[69]1\\d{6}|9(?:[68]\\d|9[089])\\d{5}", [7, 8, 9, 10]], ["80080(?:0[1-9]|2\\d)\\d{3}", [10]], 0, 0, 0, 0, 0, ["1333\\d{4}|[12]468\\d{4}", [8]]]], "MN": ["976", "001", "[12]\\d{7,9}|[5-9]\\d{7}", [8, 9, 10], [["(\\d{2})(\\d{2})(\\d{4})", "$1 $2 $3", ["[12]1"], "0$1"], ["(\\d{4})(\\d{4})", "$1 $2", ["[5-9]"]], ["(\\d{3})(\\d{5,6})", "$1 $2", ["[12]2[1-3]"], "0$1"], ["(\\d{4})(\\d{5,6})", "$1 $2", ["[12](?:27|3[2-8]|4[2-68]|5[1-4689])", "[12](?:27|3[2-8]|4[2-68]|5[1-4689])[0-3]"], "0$1"], ["(\\d{5})(\\d{4,5})", "$1 $2", ["[12]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["[12]2[1-3]\\d{5,6}|(?:(?:[12](?:1|27)|5[368])\\d\\d|7(?:0(?:[0-5]\\d|7[078]|80)|128))\\d{4}|[12](?:3[2-8]|4[2-68]|5[1-4689])\\d{6,7}"], ["(?:83[01]|92[039])\\d{5}|(?:5[05]|6[069]|8[015689]|9[013-9])\\d{6}", [8]], 0, 0, 0, 0, 0, 0, ["712[0-79]\\d{4}|7(?:1[013-9]|[25-9]\\d)\\d{5}", [8]]]], "MO": ["853", "00", "0800\\d{3}|(?:28|[68]\\d)\\d{6}", [7, 8], [["(\\d{4})(\\d{3})", "$1 $2", ["0"]], ["(\\d{4})(\\d{4})", "$1 $2", ["[268]"]]], 0, 0, 0, 0, 0, 0, [["(?:28[2-9]|8(?:11|[2-57-9]\\d))\\d{5}", [8]], ["6800[0-79]\\d{3}|6(?:[235]\\d\\d|6(?:0[0-5]|[1-9]\\d)|8(?:0[1-9]|[14-8]\\d|2[5-9]|[39][0-4]))\\d{4}", [8]], ["0800\\d{3}", [7]]]], "MP": ["1", "011", "[58]\\d{9}|(?:67|90)0\\d{7}", [10], 0, "1", 0, "([2-9]\\d{6})$|1", "670$1", 0, "670", [["670(?:2(?:3[3-7]|56|8[4-8])|32[1-38]|4(?:33|8[348])|5(?:32|55|88)|6(?:64|70|82)|78[3589]|8[3-9]8|989)\\d{4}"], [""], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "MQ": ["596", "00", "(?:596\\d|7091)\\d{5}|(?:69|[89]\\d)\\d{7}", [9], [["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[5-79]|8(?:0[6-9]|[36])"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:596(?:[03-7]\\d|1[05]|2[7-9]|8[0-39]|9[04-9])|80[6-9]\\d\\d|9(?:477[6-9]|767[4589]))\\d{4}"], ["(?:69[67]\\d\\d|7091[0-3])\\d{4}"], ["80[0-5]\\d{6}"], ["8[129]\\d{7}"], 0, 0, 0, 0, ["9(?:397[0-3]|477[0-5]|76(?:6\\d|7[0-367]))\\d{4}"]]], "MR": ["222", "00", "(?:[2-4]\\d\\d|800)\\d{5}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[2-48]"]]], 0, 0, 0, 0, 0, 0, [["(?:25[08]|35\\d|45[1-7])\\d{5}"], ["[2-4][0-46-9]\\d{6}"], ["800\\d{5}"]]], "MS": ["1", "011", "(?:[58]\\d\\d|664|900)\\d{7}", [10], 0, "1", 0, "([34]\\d{6})$|1", "664$1", 0, "664", [["6644(?:1[0-3]|91)\\d{4}"], ["664(?:3(?:49|9[1-6])|49[2-6])\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "MT": ["356", "00", "3550\\d{4}|(?:[2579]\\d\\d|800)\\d{5}", [8], [["(\\d{4})(\\d{4})", "$1 $2", ["[2357-9]"]]], 0, 0, 0, 0, 0, 0, [["20(?:3[1-4]|6[059])\\d{4}|2(?:0[19]|[1-357]\\d|60)\\d{5}"], ["(?:7(?:210|[79]\\d\\d)|9(?:[29]\\d\\d|69[67]|8(?:1[1-3]|89|97)))\\d{4}"], ["800(?:02|[3467]\\d)\\d{3}"], ["5(?:0(?:0(?:37|43)|(?:6\\d|70|9[0168])\\d)|[12]\\d0[1-5])\\d{3}"], 0, 0, ["501\\d{5}"], ["7117\\d{4}"], ["3550\\d{4}"]]], "MU": ["230", "0(?:0|[24-7]0|3[03])", "(?:[57]|8\\d\\d)\\d{7}|[2-468]\\d{6}", [7, 8, 10], [["(\\d{3})(\\d{4})", "$1 $2", ["[2-46]|8[013]"]], ["(\\d{4})(\\d{4})", "$1 $2", ["[57]"]], ["(\\d{5})(\\d{5})", "$1 $2", ["8"]]], 0, 0, 0, 0, 0, 0, [["(?:2(?:[0346-8]\\d|1[0-7])|4(?:[013568]\\d|2[4-8]|71)|54(?:[3-5]\\d|71)|6\\d\\d|8(?:14|3[129]))\\d{4}", [7, 8]], ["5(?:4(?:2[1-389]|7[1-9])|87[15-8])\\d{4}|(?:5(?:2[5-9]|4[3-689]|[57]\\d|8[0-689]|9[0-8])|7(?:0[0-4]|3[013]))\\d{5}", [8]], ["802\\d{7}|80[0-2]\\d{4}", [7, 10]], ["30\\d{5}", [7]], 0, 0, 0, 0, ["3(?:20|9\\d)\\d{4}", [7]]], "020"], "MV": ["960", "0(?:0|19)", "(?:800|9[0-57-9]\\d)\\d{7}|[34679]\\d{6}", [7, 10], [["(\\d{3})(\\d{4})", "$1-$2", ["[34679]"]], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[89]"]]], 0, 0, 0, 0, 0, 0, [["(?:3(?:0[0-4]|3[0-59])|6(?:[58][024689]|6[024-68]|7[02468]))\\d{4}", [7]], ["(?:46[46]|[79]\\d\\d)\\d{4}", [7]], ["800\\d{7}", [10]], ["900\\d{7}", [10]], 0, 0, ["4(?:0[01]|50)\\d{4}", [7]]], "00"], "MW": ["265", "00", "(?:[1289]\\d|31|77)\\d{7}|1\\d{6}", [7, 9], [["(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["1[2-9]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["2"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[137-9]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1[2-9]|2[12]\\d\\d)\\d{5}"], ["111\\d{6}|(?:31|77|[89][89])\\d{7}", [9]]]], "MX": ["52", "0[09]", "[2-9]\\d{9}", [10], [["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["33|5[56]|81"]], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[2-9]"]]], 0, 0, 0, 0, 0, 0, [["657[12]\\d{6}|(?:2(?:0[01]|2\\d|3[1-35-8]|4[13-9]|7[1-689]|8[1-578]|9[467])|3(?:1[1-79]|[2458][1-9]|3\\d|7[1-8]|9[1-5])|4(?:1[1-57-9]|[267][1-9]|3[1-8]|[45]\\d|8[1-35-9]|9[2-689])|5(?:[56]\\d|88|9[1-79])|6(?:1[2-68]|[2-4][1-9]|5[1-3689]|6[0-57-9]|7[1-7]|8[67]|9[4-8])|7(?:[1346][1-9]|[27]\\d|5[13-9]|8[1-69]|9[17])|8(?:1\\d|2[13-689]|3[1-6]|4[124-6]|6[1246-9]|7[0-378]|9[12479])|9(?:1[346-9]|2[1-4]|3[2-46-8]|5[1348]|[69]\\d|7[12]|8[1-8]))\\d{7}"], ["657[12]\\d{6}|(?:2(?:2\\d|3[1-35-8]|4[13-9]|7[1-689]|8[1-578]|9[467])|3(?:1[1-79]|[2458][1-9]|3\\d|7[1-8]|9[1-5])|4(?:1[1-57-9]|[267][1-9]|3[1-8]|[45]\\d|8[1-35-9]|9[2-689])|5(?:[56]\\d|88|9[1-79])|6(?:1[2-68]|[2-4][1-9]|5[1-3689]|6[0-57-9]|7[1-7]|8[67]|9[4-8])|7(?:[1346][1-9]|[27]\\d|5[13-9]|8[1-69]|9[17])|8(?:1\\d|2[13-689]|3[1-6]|4[124-6]|6[1246-9]|7[0-378]|9[12479])|9(?:1[346-9]|2[1-4]|3[2-46-8]|5[1348]|[69]\\d|7[12]|8[1-8]))\\d{7}"], ["8(?:00|88)\\d{7}"], ["900\\d{7}"], ["500\\d{7}"], 0, 0, 0, 0, ["300\\d{7}"]], "00"], "MY": ["60", "00", "1\\d{8,9}|(?:3\\d|[4-9])\\d{7}", [8, 9, 10], [["(\\d)(\\d{3})(\\d{4})", "$1-$2 $3", ["[4-79]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1-$2 $3", ["1(?:[02469]|[378][1-9]|53)|8", "1(?:[02469]|[37][1-9]|53|8(?:[1-46-9]|5[7-9]))|8"], "0$1"], ["(\\d)(\\d{4})(\\d{4})", "$1-$2 $3", ["3"], "0$1"], ["(\\d)(\\d{3})(\\d{2})(\\d{4})", "$1-$2-$3-$4", ["1(?:[367]|80)"]], ["(\\d{3})(\\d{3})(\\d{4})", "$1-$2 $3", ["15"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4})", "$1-$2 $3", ["1"], "0$1"]], "0", 0, 0, 0, 0, 0, [["4270\\d{4}|(?:3(?:2[0-36-9]|3[0-368]|4[0-278]|5[0-24-8]|6[0-467]|7[1246-9]|8\\d|9[0-57])\\d|4(?:2[0-689]|[3-79]\\d|8[1-35689])|5(?:2[0-589]|[3468]\\d|5[0-489]|7[1-9]|9[23])|6(?:2[2-9]|3[1357-9]|[46]\\d|5[0-6]|7[0-35-9]|85|9[015-8])|7(?:[2579]\\d|3[03-68]|4[0-8]|6[5-9]|8[0-35-9])|8(?:[24][2-8]|3[2-5]|5[2-7]|6[2-589]|7[2-578]|[89][2-9])|9(?:0[57]|13|[25-7]\\d|[3489][0-8]))\\d{5}", [8, 9]], ["1(?:1888[689]|4400|8(?:47|8[27])[0-4])\\d{4}|1(?:0(?:[23568]\\d|4[0-6]|7[016-9]|9[0-8])|1(?:[1-5]\\d\\d|6(?:0[5-9]|[1-9]\\d)|7(?:[0-4]\\d|5[0-7]))|(?:[269]\\d|[37][1-9]|4[235-9])\\d|5(?:31|9\\d\\d)|8(?:1[23]|[236]\\d|4[06]|5(?:46|[7-9])|7[016-9]|8[01]|9[0-8]))\\d{5}", [9, 10]], ["1[378]00\\d{6}", [10]], ["1600\\d{6}", [10]], 0, 0, 0, 0, ["15(?:4(?:6[0-4]\\d|8(?:0[125]|[17]\\d|21|3[01]|4[01589]|5[014]|6[02]))|6(?:32[0-6]|78\\d))\\d{4}", [10]]]], "MZ": ["258", "00", "(?:2|8\\d)\\d{7}", [8, 9], [["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["2|8[2-79]"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["8"]]], 0, 0, 0, 0, 0, 0, [["2(?:[1346]\\d|5[0-2]|[78][12]|93)\\d{5}", [8]], ["8[2-79]\\d{7}", [9]], ["800\\d{6}", [9]]]], "NA": ["264", "00", "[68]\\d{7,8}", [8, 9], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["88"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["6"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["87"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["64426\\d{3}|6(?:1(?:2[2-7]|3[01378]|4[0-4])|254|32[0237]|4(?:27|41|5[25])|52[236-8]|626|7(?:2[2-4]|30))\\d{4,5}|6(?:1(?:(?:0\\d|2[0189]|3[24-69]|4[5-9])\\d|17|69|7[014])|2(?:17|5[0-36-8]|69|70)|3(?:17|2[14-689]|34|6[289]|7[01]|81)|4(?:17|2[0-2]|4[06]|5[0137]|69|7[01])|5(?:17|2[0459]|69|7[01])|6(?:17|25|38|42|69|7[01])|7(?:17|2[569]|3[13]|6[89]|7[01]))\\d{4}"], ["(?:60|8[1245])\\d{7}", [9]], ["80\\d{7}", [9]], ["8701\\d{5}", [9]], 0, 0, 0, 0, ["8(?:3\\d\\d|86)\\d{5}"]]], "NC": ["687", "00", "(?:050|[2-57-9]\\d\\d)\\d{3}", [6], [["(\\d{2})(\\d{2})(\\d{2})", "$1.$2.$3", ["[02-57-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:2[03-9]|3[0-5]|4[1-7]|88)\\d{4}"], ["(?:5[0-4]|[79]\\d|8[0-79])\\d{4}"], ["050\\d{3}"], ["36\\d{4}"]]], "NE": ["227", "00", "[027-9]\\d{7}", [8], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["08"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[089]|2[013]|7[0467]"]]], 0, 0, 0, 0, 0, 0, [["2(?:0(?:20|3[1-8]|4[13-5]|5[14]|6[14578]|7[1-578])|1(?:4[145]|5[14]|6[14-68]|7[169]|88))\\d{4}"], ["(?:23|7[0467]|[89]\\d)\\d{6}"], ["08\\d{6}"], ["09\\d{6}"]]], "NF": ["672", "00", "[13]\\d{5}", [6], [["(\\d{2})(\\d{4})", "$1 $2", ["1[0-3]"]], ["(\\d)(\\d{5})", "$1 $2", ["[13]"]]], 0, 0, "([0-258]\\d{4})$", "3$1", 0, 0, [["(?:1(?:06|17|28|39)|3[0-2]\\d)\\d{3}"], ["(?:14|3[58])\\d{4}"]]], "NG": ["234", "009", "38\\d{6}|[78]\\d{9,13}|(?:20|9\\d)\\d{8}", [8, 10, 11, 12, 13, 14], [["(\\d{2})(\\d{3})(\\d{2,3})", "$1 $2 $3", ["3"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[7-9]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["20[129]"], "0$1"], ["(\\d{4})(\\d{2})(\\d{4})", "$1 $2 $3", ["2"], "0$1"], ["(\\d{3})(\\d{4})(\\d{4,5})", "$1 $2 $3", ["[78]"], "0$1"], ["(\\d{3})(\\d{5})(\\d{5,6})", "$1 $2 $3", ["[78]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:20(?:[1259]\\d|3[013-9]|4[1-8]|6[024-689]|7[1-79]|8[2-9])|38)\\d{6}", [8, 10]], ["(?:702[0-24-9]|819[01])\\d{6}|(?:7(?:0[13-9]|[12]\\d)|8(?:0[1-9]|1[0-8])|9(?:0[1-9]|1[1-6]))\\d{7}", [10]], ["800\\d{7,11}", [10, 11, 12, 13, 14]], 0, 0, 0, ["700\\d{7,11}", [10, 11, 12, 13, 14]]]], "NI": ["505", "00", "(?:1800|[25-8]\\d{3})\\d{4}", [8], [["(\\d{4})(\\d{4})", "$1 $2", ["[125-8]"]]], 0, 0, 0, 0, 0, 0, [["2\\d{7}"], ["(?:5(?:5[0-7]|[78]\\d)|6(?:20|3[035]|4[045]|5[05]|77|8[1-9]|9[059])|(?:7[5-8]|8\\d)\\d)\\d{5}"], ["1800\\d{4}"]]], "NL": ["31", "00", "(?:[124-7]\\d\\d|3(?:[02-9]\\d|1[0-8]))\\d{6}|8\\d{6,9}|9\\d{6,10}|1\\d{4,5}", [5, 6, 7, 8, 9, 10, 11], [["(\\d{3})(\\d{4,7})", "$1 $2", ["[89]0"], "0$1"], ["(\\d{2})(\\d{7})", "$1 $2", ["66"], "0$1"], ["(\\d)(\\d{8})", "$1 $2", ["6"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["1[16-8]|2[259]|3[124]|4[17-9]|5[124679]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[1-578]|91"], "0$1"], ["(\\d{3})(\\d{3})(\\d{5})", "$1 $2 $3", ["9"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1(?:[035]\\d|1[13-578]|6[124-8]|7[24]|8[0-467])|2(?:[0346]\\d|2[2-46-9]|5[125]|9[479])|3(?:[03568]\\d|1[3-8]|2[01]|4[1-8])|4(?:[0356]\\d|1[1-368]|7[58]|8[15-8]|9[23579])|5(?:[0358]\\d|[19][1-9]|2[1-57-9]|4[13-8]|6[126]|7[0-3578])|7\\d\\d)\\d{6}", [9]], ["(?:6[1-58]|970\\d)\\d{7}", [9, 11]], ["800\\d{4,7}", [7, 8, 9, 10]], ["90[069]\\d{4,7}", [7, 8, 9, 10]], 0, 0, ["140(?:1[035]|2[0346]|3[03568]|4[0356]|5[0358]|8[458])|(?:140(?:1[16-8]|2[259]|3[124]|4[17-9]|5[124679]|7)|8[478]\\d{6})\\d", [5, 6, 9]], ["66\\d{7}", [9]], ["(?:85|91)\\d{7}", [9]]]], "NO": ["47", "00", "(?:0|[2-9]\\d{3})\\d{4}", [5, 8], [["(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["8"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[2-79]"]]], 0, 0, 0, 0, 0, "[02-689]|7[0-8]", [["(?:2[1-4]|3[1-3578]|5[1-35-7]|6[1-4679]|7[0-8])\\d{6}", [8]], ["(?:4[015-8]|9\\d)\\d{6}", [8]], ["80[01]\\d{5}", [8]], ["82[09]\\d{5}", [8]], ["880\\d{5}", [8]], ["81[23]\\d{5}", [8]], ["(?:0[235-9]|81(?:0(?:0[7-9]|1\\d)|5\\d\\d))\\d{3}"], 0, ["85[0-5]\\d{5}", [8]], ["810(?:0[0-6]|[2-8]\\d)\\d{3}", [8]]]], "NP": ["977", "00", "(?:1\\d|9)\\d{9}|[1-9]\\d{7}", [8, 10, 11], [["(\\d)(\\d{7})", "$1-$2", ["1[2-6]"], "0$1"], ["(\\d{2})(\\d{6})", "$1-$2", ["1[01]|[2-8]|9(?:[1-59]|[67][2-6])"], "0$1"], ["(\\d{3})(\\d{7})", "$1-$2", ["9"]]], "0", 0, 0, 0, 0, 0, [["(?:1[0-6]\\d|99[02-6])\\d{5}|(?:2[13-79]|3[135-8]|4[146-9]|5[135-7]|6[13-9]|7[15-9]|8[1-46-9]|9[1-7])[2-6]\\d{5}", [8]], ["9(?:00|6[0-3]|7[024-6]|8[0-24-68])\\d{7}", [10]], ["1(?:66001|800\\d\\d)\\d{5}", [11]]]], "NR": ["674", "00", "(?:444|(?:55|8\\d)\\d|666)\\d{4}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[4-68]"]]], 0, 0, 0, 0, 0, 0, [["444\\d{4}"], ["(?:55[3-9]|666|8\\d\\d)\\d{4}"]]], "NU": ["683", "00", "(?:[4-7]|888\\d)\\d{3}", [4, 7], [["(\\d{3})(\\d{4})", "$1 $2", ["8"]]], 0, 0, 0, 0, 0, 0, [["[47]\\d{3}", [4]], ["(?:[56]|888[1-9])\\d{3}"]]], "NZ": ["64", "0(?:0|161)", "[1289]\\d{9}|50\\d{5}(?:\\d{2,3})?|[27-9]\\d{7,8}|(?:[34]\\d|6[0-35-9])\\d{6}|8\\d{4,6}", [5, 6, 7, 8, 9, 10], [["(\\d{2})(\\d{3,8})", "$1 $2", ["8[1-79]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2,3})", "$1 $2 $3", ["50[036-8]|8|90", "50(?:[0367]|88)|8|90"], "0$1"], ["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["24|[346]|7[2-57-9]|9[2-9]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["2(?:10|74)|[589]"], "0$1"], ["(\\d{2})(\\d{3,4})(\\d{4})", "$1 $2 $3", ["1|2[028]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,5})", "$1 $2 $3", ["2(?:[169]|7[0-35-9])|7"], "0$1"]], "0", 0, 0, 0, 0, 0, [["240\\d{5}|(?:3[2-79]|[49][2-9]|6[235-9]|7[2-57-9])\\d{6}", [8]], ["2(?:[0-27-9]\\d|6)\\d{6,7}|2(?:1\\d|75)\\d{5}", [8, 9, 10]], ["508\\d{6,7}|80\\d{6,8}", [8, 9, 10]], ["(?:1[13-57-9]\\d{5}|50(?:0[08]|30|66|77|88))\\d{3}|90\\d{6,8}", [7, 8, 9, 10]], ["70\\d{7}", [9]], 0, ["8(?:1[16-9]|22|3\\d|4[045]|5[459]|6[235-9]|7[0-3579]|90)\\d{2,7}"]], "00"], "OM": ["968", "00", "(?:1505|[279]\\d{3}|500)\\d{4}|800\\d{5,6}", [7, 8, 9], [["(\\d{3})(\\d{4,6})", "$1 $2", ["[58]"]], ["(\\d{2})(\\d{6})", "$1 $2", ["2"]], ["(\\d{4})(\\d{4})", "$1 $2", ["[179]"]]], 0, 0, 0, 0, 0, 0, [["2[1-6]\\d{6}", [8]], ["(?:1505|90[1-9]\\d)\\d{4}|(?:7[126-9]|9[1-9])\\d{6}", [8]], ["8007\\d{4,5}|(?:500|800[05])\\d{4}"], ["900\\d{5}", [8]]]], "PA": ["507", "00", "(?:00800|8\\d{3})\\d{6}|[68]\\d{7}|[1-57-9]\\d{6}", [7, 8, 10, 11], [["(\\d{3})(\\d{4})", "$1-$2", ["[1-57-9]"]], ["(\\d{4})(\\d{4})", "$1-$2", ["[68]"]], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["8"]]], 0, 0, 0, 0, 0, 0, [["(?:1(?:0\\d|1[479]|2[37]|3[0137]|4[17]|5[05]|6[058]|7[0167]|8[2358]|9[1389])|2(?:[0235-79]\\d|1[0-7]|4[013-9]|8[02-9])|3(?:[07-9]\\d|1[0-7]|2[0-5]|33|4[0-79]|5[0-35]|6[068])|4(?:00|3[0-579]|4\\d|7[0-57-9])|5(?:[01]\\d|2[0-7]|[56]0|79)|7(?:0[09]|2[0-26-8]|3[03]|4[04]|5[05-9]|6[0156]|7[0-24-9]|8[5-9]|90)|8(?:09|2[89]|3\\d|4[0-24-689]|5[014]|8[02])|9(?:0[5-9]|1[0135-8]|2[036-9]|3[35-79]|40|5[0457-9]|6[05-9]|7[04-9]|8[35-8]|9\\d))\\d{4}", [7]], ["(?:1[16]1|21[89]|6\\d{3}|8(?:1[01]|7[23]))\\d{4}", [7, 8]], ["800\\d{4,5}|(?:00800|800\\d)\\d{6}"], ["(?:8(?:22|55|60|7[78]|86)|9(?:00|81))\\d{4}", [7]]]], "PE": ["51", "00|19(?:1[124]|77|90)00", "(?:[14-8]|9\\d)\\d{7}", [8, 9], [["(\\d{3})(\\d{5})", "$1 $2", ["80"], "(0$1)"], ["(\\d)(\\d{7})", "$1 $2", ["1"], "(0$1)"], ["(\\d{2})(\\d{6})", "$1 $2", ["[4-8]"], "(0$1)"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["9"]]], "0", 0, 0, 0, 0, 0, [["(?:(?:(?:4[34]|5[14])[0-8]|687)\\d|7(?:173|(?:3[0-8]|55)\\d)|8(?:10[05689]|6(?:0[06-9]|1[6-9]|29)|7(?:0[0569]|[56]0)))\\d{4}|(?:1[0-8]|4[12]|5[236]|6[1-7]|7[246]|8[2-4])\\d{6}", [8]], ["9\\d{8}", [9]], ["800\\d{5}", [8]], ["805\\d{5}", [8]], ["80[24]\\d{5}", [8]], 0, 0, 0, 0, ["801\\d{5}", [8]]], "00", " Anexo "], "PF": ["689", "00", "4\\d{5}(?:\\d{2})?|8\\d{7,8}", [6, 8, 9], [["(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3", ["44"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["4|8[7-9]"]], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["8"]]], 0, 0, 0, 0, 0, 0, [["4(?:0[4-689]|9[4-68])\\d{5}", [8]], ["8[7-9]\\d{6}", [8]], ["80[0-5]\\d{6}", [9]], 0, 0, 0, ["44\\d{4}", [6]], 0, ["499\\d{5}", [8]]]], "PG": ["675", "00|140[1-3]", "(?:180|[78]\\d{3})\\d{4}|(?:[2-589]\\d|64)\\d{5}", [7, 8], [["(\\d{3})(\\d{4})", "$1 $2", ["18|[2-69]|85"]], ["(\\d{4})(\\d{4})", "$1 $2", ["[78]"]]], 0, 0, 0, 0, 0, 0, [["(?:(?:3[0-2]|4[257]|5[34]|9[78])\\d|64[1-9]|85[02-46-9])\\d{4}", [7]], ["(?:7\\d|8[1-38])\\d{6}", [8]], ["180\\d{4}", [7]], 0, 0, 0, 0, ["27[01]\\d{4}", [7]], ["2(?:0[0-57]|7[568])\\d{4}", [7]]], "00"], "PH": ["63", "00", "(?:[2-7]|9\\d)\\d{8}|2\\d{5}|(?:1800|8)\\d{7,9}", [6, 8, 9, 10, 11, 12, 13], [["(\\d)(\\d{5})", "$1 $2", ["2"], "(0$1)"], ["(\\d{4})(\\d{4,6})", "$1 $2", ["3(?:23|39|46)|4(?:2[3-6]|[35]9|4[26]|76)|544|88[245]|(?:52|64|86)2", "3(?:230|397|461)|4(?:2(?:35|[46]4|51)|396|4(?:22|63)|59[347]|76[15])|5(?:221|446)|642[23]|8(?:622|8(?:[24]2|5[13]))"], "(0$1)"], ["(\\d{5})(\\d{4})", "$1 $2", ["346|4(?:27|9[35])|883", "3469|4(?:279|9(?:30|56))|8834"], "(0$1)"], ["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["2"], "(0$1)"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[3-7]|8[2-8]"], "(0$1)"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[89]"], "0$1"], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"]], ["(\\d{4})(\\d{1,2})(\\d{3})(\\d{4})", "$1 $2 $3 $4", ["1"]]], "0", 0, 0, 0, 0, 0, [["(?:(?:2[3-8]|3[2-68]|4[2-9]|5[2-6]|6[2-58]|7[24578])\\d{3}|88(?:22\\d\\d|42))\\d{4}|(?:2|8[2-8]\\d\\d)\\d{5}", [6, 8, 9, 10]], ["(?:8(?:1[37]|9[5-8])|9(?:0[5-9]|1[0-24-9]|[235-7]\\d|4[2-9]|8[135-9]|9[1-9]))\\d{7}", [10]], ["1800\\d{7,9}", [11, 12, 13]]]], "PK": ["92", "00", "122\\d{6}|[24-8]\\d{10,11}|9(?:[013-9]\\d{8,10}|2(?:[01]\\d\\d|2(?:[06-8]\\d|1[01]))\\d{7})|(?:[2-8]\\d{3}|92(?:[0-7]\\d|8[1-9]))\\d{6}|[24-9]\\d{8}|[89]\\d{7}", [8, 9, 10, 11, 12], [["(\\d{3})(\\d{3})(\\d{2,7})", "$1 $2 $3", ["[89]0"], "0$1"], ["(\\d{4})(\\d{5})", "$1 $2", ["1"]], ["(\\d{3})(\\d{6,7})", "$1 $2", ["2(?:3[2358]|4[2-4]|9[2-8])|45[3479]|54[2-467]|60[468]|72[236]|8(?:2[2-689]|3[23578]|4[3478]|5[2356])|9(?:2[2-8]|3[27-9]|4[2-6]|6[3569]|9[25-8])", "9(?:2[3-8]|98)|(?:2(?:3[2358]|4[2-4]|9[2-8])|45[3479]|54[2-467]|60[468]|72[236]|8(?:2[2-689]|3[23578]|4[3478]|5[2356])|9(?:22|3[27-9]|4[2-6]|6[3569]|9[25-7]))[2-9]"], "(0$1)"], ["(\\d{2})(\\d{7,8})", "$1 $2", ["(?:2[125]|4[0-246-9]|5[1-35-7]|6[1-8]|7[14]|8[16]|91)[2-9]"], "(0$1)"], ["(\\d{5})(\\d{5})", "$1 $2", ["58"], "(0$1)"], ["(\\d{3})(\\d{7})", "$1 $2", ["3"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["2[125]|4[0-246-9]|5[1-35-7]|6[1-8]|7[14]|8[16]|91"], "(0$1)"], ["(\\d{3})(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["[24-9]"], "(0$1)"]], "0", 0, 0, 0, 0, 0, [["(?:(?:21|42)[2-9]|58[126])\\d{7}|(?:2[25]|4[0146-9]|5[1-35-7]|6[1-8]|7[14]|8[16]|91)[2-9]\\d{6,7}|(?:2(?:3[2358]|4[2-4]|9[2-8])|45[3479]|54[2-467]|60[468]|72[236]|8(?:2[2-689]|3[23578]|4[3478]|5[2356])|9(?:2[2-8]|3[27-9]|4[2-6]|6[3569]|9[25-8]))[2-9]\\d{5,6}", [9, 10]], ["3(?:[0-247]\\d|3[0-79]|55|64)\\d{7}", [10]], ["800\\d{5}(?:\\d{3})?", [8, 11]], ["900\\d{5}", [8]], ["122\\d{6}", [9]], 0, ["(?:2(?:[125]|3[2358]|4[2-4]|9[2-8])|4(?:[0-246-9]|5[3479])|5(?:[1-35-7]|4[2-467])|6(?:0[468]|[1-8])|7(?:[14]|2[236])|8(?:[16]|2[2-689]|3[23578]|4[3478]|5[2356])|9(?:1|22|3[27-9]|4[2-6]|6[3569]|9[2-7]))111\\d{6}", [11, 12]]]], "PL": ["48", "00", "(?:6|8\\d\\d)\\d{7}|[1-9]\\d{6}(?:\\d{2})?|[26]\\d{5}", [6, 7, 8, 9, 10], [["(\\d{5})", "$1", ["19"]], ["(\\d{3})(\\d{3})", "$1 $2", ["11|20|64"]], ["(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3", ["(?:1[2-8]|2[2-69]|3[2-4]|4[1-468]|5[24-689]|6[1-3578]|7[14-7]|8[1-79]|9[145])1", "(?:1[2-8]|2[2-69]|3[2-4]|4[1-468]|5[24-689]|6[1-3578]|7[14-7]|8[1-79]|9[145])19"]], ["(\\d{3})(\\d{2})(\\d{2,3})", "$1 $2 $3", ["64"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["21|39|45|5[0137]|6[0469]|7[02389]|8(?:0[14]|8)"]], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["1[2-8]|[2-7]|8[1-79]|9[145]"]], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["8"]]], 0, 0, 0, 0, 0, 0, [["47\\d{7}|(?:1[2-8]|2[2-69]|3[2-4]|4[1-468]|5[24-689]|6[1-3578]|7[14-7]|8[1-79]|9[145])(?:[02-9]\\d{6}|1(?:[0-8]\\d{5}|9\\d{3}(?:\\d{2})?))", [7, 9]], ["21(?:1[013-5]|2\\d|3[4-9])\\d{5}|(?:45|5[0137]|6[069]|7[2389]|88)\\d{7}", [9]], ["800\\d{6,7}", [9, 10]], ["70[01346-8]\\d{6}", [9]], 0, 0, ["804\\d{6}", [9]], ["64\\d{4,7}", [6, 7, 8, 9]], ["39\\d{7}", [9]], ["801\\d{6}", [9]]]], "PM": ["508", "00", "[45]\\d{5}|(?:708|8\\d\\d)\\d{6}", [6, 9], [["(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3", ["[45]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["7"]], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:4[1-35-9]|5[0-47-9]|80[6-9]\\d\\d)\\d{4}"], ["(?:4[02-489]|5[02-9]|708(?:4[0-5]|5[0-6]))\\d{4}"], ["80[0-5]\\d{6}", [9]], ["8[129]\\d{7}", [9]]]], "PR": ["1", "011", "(?:[589]\\d\\d|787)\\d{7}", [10], 0, "1", 0, 0, 0, 0, "787|939", [["(?:787|939)[2-9]\\d{6}"], [""], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "PS": ["970", "00", "[2489]2\\d{6}|(?:1\\d|5)\\d{8}", [8, 9, 10], [["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["[2489]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["5"], "0$1"], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["1"]]], "0", 0, 0, 0, 0, 0, [["(?:22[2-47-9]|42[45]|82[014-68]|92[3569])\\d{5}", [8]], ["5[69]\\d{7}", [9]], ["1800\\d{6}", [10]], 0, 0, 0, 0, 0, 0, ["1700\\d{6}", [10]]]], "PT": ["351", "00", "1693\\d{5}|(?:[26-9]\\d|30)\\d{7}", [9], [["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["2[12]"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["16|[236-9]"]]], 0, 0, 0, 0, 0, 0, [["2(?:[12]\\d|3[1-689]|4[1-59]|[57][1-9]|6[1-35689]|8[1-69]|9[1256])\\d{6}"], ["6(?:[06]92(?:30|9\\d)|[35]92(?:[049]\\d|3[034]))\\d{3}|(?:(?:16|6[0356])93|9(?:[1-36]\\d\\d|480))\\d{5}"], ["80[02]\\d{6}"], ["(?:6(?:0[178]|4[68])\\d|76(?:0[1-57]|1[2-47]|2[237]))\\d{5}"], ["884[0-4689]\\d{5}"], ["600\\d{6}|6[06]92(?:0\\d|3[349]|49)\\d{3}"], ["70(?:38[01]|596|(?:7\\d|8[17])\\d)\\d{4}"], ["6(?:222\\d|8988)\\d{4}"], ["30\\d{7}"], ["80(?:8\\d|9[1579])\\d{5}"]]], "PW": ["680", "01[12]", "(?:[24-8]\\d\\d|345|900)\\d{4}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[2-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:2(?:55|77)|345|488|5(?:35|44|87)|6(?:22|54|79)|7(?:33|47)|8(?:24|55|76)|900)\\d{4}"], ["(?:(?:46|83)[0-5]|6[2-4689]0)\\d{4}|(?:45|77|88)\\d{5}"]]], "PY": ["595", "00", "59\\d{4,6}|9\\d{5,10}|(?:[2-46-8]\\d|5[0-8])\\d{4,7}", [6, 7, 8, 9, 10, 11], [["(\\d{3})(\\d{3,6})", "$1 $2", ["[2-9]0"], "0$1"], ["(\\d{2})(\\d{5})", "$1 $2", ["[26]1|3[289]|4[1246-8]|7[1-3]|8[1-36]"], "(0$1)"], ["(\\d{3})(\\d{4,5})", "$1 $2", ["2[279]|3[13-5]|4[359]|5|6(?:[34]|7[1-46-8])|7[46-8]|85"], "(0$1)"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["2[14-68]|3[26-9]|4[1246-8]|6(?:1|75)|7[1-35]|8[1-36]"], "(0$1)"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["87"]], ["(\\d{3})(\\d{6})", "$1 $2", ["9(?:[5-79]|8[1-7])"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[2-8]"], "0$1"], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["9"]]], "0", 0, 0, 0, 0, 0, [["(?:[26]1|3[289]|4[1246-8]|7[1-3]|8[1-36])\\d{5,7}|(?:2(?:2[4-68]|[4-68]\\d|7[15]|9[1-5])|3(?:18|3[167]|4[2357]|51|[67]\\d)|4(?:3[12]|5[13]|9[1-47])|5(?:[1-4]\\d|5[02-4])|6(?:3[1-3]|44|7[1-8])|7(?:4[0-4]|5\\d|6[1-578]|75|8[0-8])|858)\\d{5,6}", [7, 8, 9]], ["9(?:51|6[129]|7[1-6]|8[1-7]|9[1-5])\\d{6}", [9]], ["9800\\d{5,7}", [9, 10, 11]], 0, 0, 0, ["[2-9]0\\d{4,7}", [6, 7, 8, 9]], 0, ["8700[0-4]\\d{4}", [9]]]], "QA": ["974", "00", "800\\d{4}|(?:2|800)\\d{6}|(?:0080|[3-7])\\d{7}", [7, 8, 9, 11], [["(\\d{3})(\\d{4})", "$1 $2", ["2[16]|8"]], ["(\\d{4})(\\d{4})", "$1 $2", ["[3-7]"]]], 0, 0, 0, 0, 0, 0, [["4(?:1111|2022)\\d{3}|4(?:[04]\\d\\d|14[0-6]|999)\\d{4}", [8]], ["[35-7]\\d{7}", [8]], ["800\\d{4}|(?:0080[01]|800)\\d{6}", [7, 9, 11]], 0, 0, 0, 0, ["2[16]\\d{5}", [7]]]], "RE": ["262", "00", "709\\d{6}|(?:26|[689]\\d)\\d{7}", [9], [["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[26-9]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["26(?:2\\d\\d|3(?:0\\d|1[0-6]))\\d{4}"], ["(?:69(?:2\\d\\d|3(?:[06][0-6]|1[013]|2[0-2]|3[0-39]|4\\d|5[0-5]|7[0-37]|8[0-8]|9[0-479]))|7092[0-3])\\d{4}"], ["80\\d{7}"], ["89[1-37-9]\\d{6}"], 0, 0, 0, 0, ["9(?:399[0-3]|479[0-5]|76(?:2[278]|3[0-37]))\\d{4}"], ["8(?:1[019]|2[0156]|84|90)\\d{6}"]]], "RO": ["40", "00", "(?:[236-8]\\d|90)\\d{7}|[23]\\d{5}", [6, 9], [["(\\d{3})(\\d{3})", "$1 $2", ["2[3-6]", "2[3-6]\\d9"], "0$1"], ["(\\d{2})(\\d{4})", "$1 $2", ["219|31"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[23]1"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[236-9]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["[23][13-6]\\d{7}|(?:2(?:19\\d|[3-6]\\d9)|31\\d\\d)\\d\\d"], ["(?:630|702)0\\d{5}|(?:6(?:00|2\\d)|7(?:0[013-9]|1[0-3]|[2-7]\\d|8[03-8]|9[0-39]))\\d{6}", [9]], ["800\\d{6}", [9]], ["90[0136]\\d{6}", [9]], 0, 0, ["(?:37\\d|80[578])\\d{6}", [9]], 0, 0, ["801\\d{6}", [9]]], 0, " int "], "RS": ["381", "00", "38[02-9]\\d{6,9}|6\\d{7,9}|90\\d{4,8}|38\\d{5,6}|(?:7\\d\\d|800)\\d{3,9}|(?:[12]\\d|3[0-79])\\d{5,10}", [6, 7, 8, 9, 10, 11, 12], [["(\\d{3})(\\d{3,9})", "$1 $2", ["(?:2[389]|39)0|[7-9]"], "0$1"], ["(\\d{2})(\\d{5,10})", "$1 $2", ["[1-36]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:11[1-9]\\d|(?:2[389]|39)(?:0[2-9]|[2-9]\\d))\\d{3,8}|(?:1[02-9]|2[0-24-7]|3[0-8])[2-9]\\d{4,9}", [7, 8, 9, 10, 11, 12]], ["6(?:[0-689]|7\\d)\\d{6,7}", [8, 9, 10]], ["800\\d{3,9}"], ["(?:78\\d|90[0169])\\d{3,7}", [6, 7, 8, 9, 10]], 0, 0, ["7[06]\\d{4,10}"]]], "RU": ["7", "810", "8\\d{13}|[347-9]\\d{9}", [10, 14], [["(\\d{4})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["7(?:1[0-8]|2[1-9])", "7(?:1(?:[0-356]2|4[29]|7|8[27])|2(?:1[23]|[2-9]2))", "7(?:1(?:[0-356]2|4[29]|7|8[27])|2(?:13[03-69]|62[013-9]))|72[1-57-9]2"], "8 ($1)", 1], ["(\\d{5})(\\d)(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["7(?:1[0-68]|2[1-9])", "7(?:1(?:[06][3-6]|[18]|2[35]|[3-5][3-5])|2(?:[13][3-5]|[24-689]|7[457]))", "7(?:1(?:0(?:[356]|4[023])|[18]|2(?:3[013-9]|5)|3[45]|43[013-79]|5(?:3[1-8]|4[1-7]|5)|6(?:3[0-35-9]|[4-6]))|2(?:1(?:3[178]|[45])|[24-689]|3[35]|7[457]))|7(?:14|23)4[0-8]|71(?:33|45)[1-79]"], "8 ($1)", 1], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["7"], "8 ($1)", 1], ["(\\d{3})(\\d{3})(\\d{2})(\\d{2})", "$1 $2-$3-$4", ["[349]|8(?:[02-7]|1[1-8])"], "8 ($1)", 1], ["(\\d{4})(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["8"], "8 ($1)"]], "8", 0, 0, 0, 0, "3[04-689]|[489]", [["(?:3(?:0[12]|4[1-35-79]|5[1-3]|65|8[1-58]|9[0145])|4(?:01|1[1356]|2[13467]|7[1-5]|8[1-7]|9[1-689])|8(?:1[1-8]|2[01]|3[13-6]|4[0-8]|5[15]|6[1-35-79]|7[1-37-9]))\\d{7}", [10]], ["9\\d{9}", [10]], ["8(?:0[04]|108\\d{3})\\d{7}"], ["80[39]\\d{7}", [10]], ["808\\d{7}", [10]]], "8~10"], "RW": ["250", "00", "(?:06|[27]\\d\\d|[89]00)\\d{6}", [8, 9], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["0"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["2"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[7-9]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:06|2[23568]\\d)\\d{6}"], ["7[237-9]\\d{7}", [9]], ["800\\d{6}", [9]], ["900\\d{6}", [9]]]], "SA": ["966", "00", "92\\d{7}|(?:[15]|8\\d)\\d{8}", [9, 10], [["(\\d{4})(\\d{5})", "$1 $2", ["9"]], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["5"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["81"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["8"]]], "0", 0, 0, 0, 0, 0, [["1(?:1\\d|2[24-8]|3[35-8]|4[3-68]|6[2-5]|7[235-7])\\d{6}", [9]], ["579[01]\\d{5}|5(?:[013-689]\\d|7[0-8])\\d{6}", [9]], ["800\\d{7}", [10]], ["925\\d{6}", [9]], 0, 0, ["811\\d{7}", [10]], 0, 0, ["920\\d{6}", [9]]]], "SB": ["677", "0[01]", "[6-9]\\d{6}|[1-6]\\d{4}", [5, 7], [["(\\d{2})(\\d{5})", "$1 $2", ["6[89]|7|8[4-9]|9(?:[1-8]|9[0-8])"]]], 0, 0, 0, 0, 0, 0, [["(?:1[4-79]|[23]\\d|4[0-2]|5[03]|6[0-37])\\d{3}", [5]], ["48\\d{3}|(?:(?:6[89]|7[1-9]|8[4-9])\\d|9(?:1[2-9]|2[013-9]|3[0-2]|[46]\\d|5[0-46-9]|7[0-689]|8[0-79]|9[0-8]))\\d{4}"], ["1[38]\\d{3}", [5]], 0, 0, 0, 0, 0, ["5[12]\\d{3}", [5]]]], "SC": ["248", "010|0[0-2]", "(?:[2489]\\d|64)\\d{5}", [7], [["(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["[246]|9[57]"]]], 0, 0, 0, 0, 0, 0, [["4[2-46]\\d{5}"], ["2[125-8]\\d{5}"], ["800[08]\\d{3}"], ["85\\d{5}"], 0, 0, 0, 0, ["971\\d{4}|(?:64|95)\\d{5}"]], "00"], "SD": ["249", "00", "[19]\\d{8}", [9], [["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[19]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["1(?:5\\d|8[35-7])\\d{6}"], ["(?:1[0-2]|9[0-3569])\\d{7}"]]], "SE": ["46", "00", "(?:[26]\\d\\d|9)\\d{9}|[1-9]\\d{8}|[1-689]\\d{7}|[1-4689]\\d{6}|2\\d{5}", [6, 7, 8, 9, 10, 12], [["(\\d{2})(\\d{2,3})(\\d{2})", "$1-$2 $3", ["20"], "0$1", 0, "$1 $2 $3"], ["(\\d{3})(\\d{4})", "$1-$2", ["9(?:00|39|44|9)"], "0$1", 0, "$1 $2"], ["(\\d{2})(\\d{3})(\\d{2})", "$1-$2 $3", ["[12][136]|3[356]|4[0246]|6[03]|90[1-9]"], "0$1", 0, "$1 $2 $3"], ["(\\d)(\\d{2,3})(\\d{2})(\\d{2})", "$1-$2 $3 $4", ["8"], "0$1", 0, "$1 $2 $3 $4"], ["(\\d{3})(\\d{2,3})(\\d{2})", "$1-$2 $3", ["1[2457]|2(?:[247-9]|5[0138])|3[0247-9]|4[1357-9]|5[0-35-9]|6(?:[125689]|4[02-57]|7[0-2])|9(?:[125-8]|3[02-5]|4[0-3])"], "0$1", 0, "$1 $2 $3"], ["(\\d{3})(\\d{2,3})(\\d{3})", "$1-$2 $3", ["9(?:00|39|44)"], "0$1", 0, "$1 $2 $3"], ["(\\d{2})(\\d{2,3})(\\d{2})(\\d{2})", "$1-$2 $3 $4", ["1[13689]|2[0136]|3[1356]|4[0246]|54|6[03]|90[1-9]"], "0$1", 0, "$1 $2 $3 $4"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1-$2 $3 $4", ["10|7"], "0$1", 0, "$1 $2 $3 $4"], ["(\\d)(\\d{3})(\\d{3})(\\d{2})", "$1-$2 $3 $4", ["8"], "0$1", 0, "$1 $2 $3 $4"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1-$2 $3 $4", ["[13-5]|2(?:[247-9]|5[0138])|6(?:[124-689]|7[0-2])|9(?:[125-8]|3[02-5]|4[0-3])"], "0$1", 0, "$1 $2 $3 $4"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{3})", "$1-$2 $3 $4", ["9"], "0$1", 0, "$1 $2 $3 $4"], ["(\\d{3})(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1-$2 $3 $4 $5", ["[26]"], "0$1", 0, "$1 $2 $3 $4 $5"]], "0", 0, 0, 0, 0, 0, [["(?:(?:[12][136]|3[356]|4[0246]|6[03]|8\\d)\\d|90[1-9])\\d{4,6}|(?:1(?:2[0-35]|4[0-4]|5[0-25-9]|7[13-6]|[89]\\d)|2(?:2[0-7]|4[0136-8]|5[0138]|7[018]|8[01]|9[0-57])|3(?:0[0-4]|1\\d|2[0-25]|4[056]|7[0-2]|8[0-3]|9[023])|4(?:1[013-8]|3[0135]|5[14-79]|7[0-246-9]|8[0156]|9[0-689])|5(?:0[0-6]|[15][0-5]|2[0-68]|3[0-4]|4\\d|6[03-5]|7[013]|8[0-79]|9[01])|6(?:1[1-3]|2[0-4]|4[02-57]|5[0-37]|6[0-3]|7[0-2]|8[0247]|9[0-356])|9(?:1[0-68]|2\\d|3[02-5]|4[0-3]|5[0-4]|[68][01]|7[0135-8]))\\d{5,6}", [7, 8, 9]], ["7[02369]\\d{7}", [9]], ["20\\d{4,7}", [6, 7, 8, 9]], ["649\\d{6}|99[1-59]\\d{4}(?:\\d{3})?|9(?:00|39|44)[1-8]\\d{3,6}", [7, 8, 9, 10]], ["75[1-8]\\d{6}", [9]], ["(?:25[245]|67[3-68])\\d{9}", [12]], ["10[1-8]\\d{6}", [9]], ["74[02-9]\\d{6}", [9]], 0, ["77[0-7]\\d{6}", [9]]]], "SG": ["65", "0[0-3]\\d", "(?:(?:1\\d|8)\\d\\d|7000)\\d{7}|[3689]\\d{7}", [8, 10, 11], [["(\\d{4})(\\d{4})", "$1 $2", ["[369]|8(?:0[1-9]|[1-9])"]], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["8"]], ["(\\d{4})(\\d{4})(\\d{3})", "$1 $2 $3", ["7"]], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"]]], 0, 0, 0, 0, 0, 0, [["662[0-24-9]\\d{4}|6(?:[0-578]\\d|6[013-57-9]|9[0-35-9])\\d{5}", [8]], ["896[0-4]\\d{4}|(?:8(?:0[1-9]|[1-8]\\d|9[0-5])|9[0-8]\\d)\\d{5}", [8]], ["(?:18|8)00\\d{7}", [10, 11]], ["1900\\d{7}", [11]], 0, 0, ["7000\\d{7}", [11]], 0, ["(?:3[12]\\d|666)\\d{5}", [8]]]], "SH": ["290", "00", "(?:[256]\\d|8)\\d{3}", [4, 5], 0, 0, 0, 0, 0, 0, "[256]", [["2(?:[0-57-9]\\d|6[4-9])\\d\\d"], ["[56]\\d{4}", [5]], 0, 0, 0, 0, 0, 0, ["262\\d\\d", [5]]]], "SI": ["386", "00|10(?:22|66|88|99)", "[1-7]\\d{7}|8\\d{4,7}|90\\d{4,6}", [5, 6, 7, 8], [["(\\d{2})(\\d{3,6})", "$1 $2", ["8[09]|9"], "0$1"], ["(\\d{3})(\\d{5})", "$1 $2", ["59|8"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[37][01]|4[0139]|51|6"], "0$1"], ["(\\d)(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[1-57]"], "(0$1)"]], "0", 0, 0, 0, 0, 0, [["(?:[1-357][2-8]|4[24-8])\\d{6}", [8]], ["65(?:[178]\\d|5[56]|6[01])\\d{4}|(?:[37][01]|4[0139]|51|6[489])\\d{6}", [8]], ["80\\d{4,6}", [6, 7, 8]], ["89[1-3]\\d{2,5}|90\\d{4,6}"], 0, 0, 0, 0, ["(?:59\\d\\d|8(?:1(?:[67]\\d|8[0-589])|2(?:0\\d|2[0-37-9]|8[0-2489])|3[389]\\d))\\d{4}", [8]]], "00"], "SJ": ["47", "00", "0\\d{4}|(?:[489]\\d|79)\\d{6}", [5, 8], 0, 0, 0, 0, 0, 0, "79", [["79\\d{6}", [8]], ["(?:4[015-8]|9\\d)\\d{6}", [8]], ["80[01]\\d{5}", [8]], ["82[09]\\d{5}", [8]], ["880\\d{5}", [8]], ["81[23]\\d{5}", [8]], ["(?:0[235-9]|81(?:0(?:0[7-9]|1\\d)|5\\d\\d))\\d{3}"], 0, ["85[0-5]\\d{5}", [8]], ["810(?:0[0-6]|[2-8]\\d)\\d{3}", [8]]]], "SK": ["421", "00", "[2-689]\\d{8}|[2-59]\\d{6}|[2-5]\\d{5}", [6, 7, 9], [["(\\d)(\\d{2})(\\d{3,4})", "$1 $2 $3", ["21"], "0$1"], ["(\\d{2})(\\d{2})(\\d{2,3})", "$1 $2 $3", ["[3-5][1-8]1", "[3-5][1-8]1[67]"], "0$1"], ["(\\d)(\\d{3})(\\d{3})(\\d{2})", "$1/$2 $3 $4", ["2"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[689]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1/$2 $3 $4", ["[3-5]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2(?:16|[2-9]\\d{3})|(?:(?:[3-5][1-8]\\d|819)\\d|601[1-5])\\d)\\d{4}|(?:2|[3-5][1-8])1[67]\\d{3}|[3-5][1-8]16\\d\\d"], ["909[1-9]\\d{5}|9(?:0[1-8]|1[0-24-9]|4[03-57-9]|5\\d)\\d{6}", [9]], ["800\\d{6}", [9]], ["9(?:00|[78]\\d)\\d{6}", [9]], 0, 0, ["96\\d{7}", [9]], ["9090\\d{3}", [7]], ["6(?:02|5[0-4]|9[0-6])\\d{6}", [9]], ["8[5-9]\\d{7}", [9]]]], "SL": ["232", "00", "(?:[237-9]\\d|66)\\d{6}", [8], [["(\\d{2})(\\d{6})", "$1 $2", ["[236-9]"], "(0$1)"]], "0", 0, 0, 0, 0, 0, [["22[2-4][2-9]\\d{4}"], ["(?:25|3[0-5]|66|7[2-9]|8[08]|9[09])\\d{6}"]]], "SM": ["378", "00", "(?:0549|[5-7]\\d)\\d{6}", [8, 10], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[5-7]"]], ["(\\d{4})(\\d{6})", "$1 $2", ["0"]]], 0, 0, "([89]\\d{5})$", "0549$1", 0, 0, [["0549(?:8[0157-9]|9\\d)\\d{4}", [10]], ["6[16]\\d{6}", [8]], 0, ["7[178]\\d{6}", [8]], 0, 0, 0, 0, ["5[158]\\d{6}", [8]]]], "SN": ["221", "00", "(?:[378]\\d|93)\\d{7}", [9], [["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["8"]], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[379]"]]], 0, 0, 0, 0, 0, 0, [["3(?:0(?:1[0-2]|80)|282|3(?:8[1-9]|9[3-9])|611)\\d{5}"], ["7(?:(?:[06-8]\\d|[19]0|21)\\d|5(?:0[01]|[19]0|2[25]|3[36]|[4-7]\\d|8[35]))\\d{5}"], ["800\\d{6}"], ["88[4689]\\d{6}"], 0, 0, 0, 0, ["(?:3(?:392|9[01]\\d)\\d|93(?:3[13]0|929))\\d{4}"], ["81[02468]\\d{6}"]]], "SO": ["252", "00", "[346-9]\\d{8}|[12679]\\d{7}|[1-5]\\d{6}|[1348]\\d{5}", [6, 7, 8, 9], [["(\\d{2})(\\d{4})", "$1 $2", ["8[125]"]], ["(\\d{6})", "$1", ["[134]"]], ["(\\d)(\\d{6})", "$1 $2", ["[15]|2[0-79]|3[0-46-8]|4[0-7]"]], ["(\\d)(\\d{7})", "$1 $2", ["(?:2|90)4|[67]"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[348]|64|79|90"]], ["(\\d{2})(\\d{5,7})", "$1 $2", ["1|28|6[0-35-9]|77|9[2-9]"]]], "0", 0, 0, 0, 0, 0, [["(?:1\\d|2[0-79]|3[0-46-8]|4[0-7]|5[57-9])\\d{5}|(?:[134]\\d|8[125])\\d{4}", [6, 7]], ["(?:(?:15|(?:3[59]|4[89]|6\\d|7[79]|8[08])\\d|9(?:0\\d|[2-9]))\\d|2(?:4\\d|8))\\d{5}|(?:[67]\\d\\d|904)\\d{5}", [7, 8, 9]]]], "SR": ["597", "00", "(?:[2-5]|68|[78]\\d)\\d{5}", [6, 7], [["(\\d{2})(\\d{2})(\\d{2})", "$1-$2-$3", ["56"]], ["(\\d{3})(\\d{3})", "$1-$2", ["[2-5]"]], ["(\\d{3})(\\d{4})", "$1-$2", ["[6-8]"]]], 0, 0, 0, 0, 0, 0, [["(?:2[1-3]|3[0-7]|(?:4|68)\\d|5[2-58])\\d{4}"], ["(?:7[124-7]|8[124-9])\\d{5}", [7]], 0, 0, 0, 0, 0, 0, ["56\\d{4}", [6]]]], "SS": ["211", "00", "[19]\\d{8}", [9], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[19]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["1[89]\\d{7}"], ["(?:12|9[1257-9])\\d{7}"]]], "ST": ["239", "00", "(?:22|9\\d)\\d{5}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[29]"]]], 0, 0, 0, 0, 0, 0, [["22\\d{5}"], ["900[5-9]\\d{3}|9(?:0[1-9]|[89]\\d)\\d{4}"]]], "SV": ["503", "00", "[267]\\d{7}|(?:80\\d|900)\\d{4}(?:\\d{4})?", [7, 8, 11], [["(\\d{3})(\\d{4})", "$1 $2", ["[89]"]], ["(\\d{4})(\\d{4})", "$1 $2", ["[267]"]], ["(\\d{3})(\\d{4})(\\d{4})", "$1 $2 $3", ["[89]"]]], 0, 0, 0, 0, 0, 0, [["2(?:79(?:0[0347-9]|[1-9]\\d)|89(?:0[024589]|[1-9]\\d))\\d{3}|2(?:[1-69]\\d|[78][0-8])\\d{5}", [8]], ["[67]\\d{7}", [8]], ["800\\d{8}|80[01]\\d{4}", [7, 11]], ["900\\d{4}(?:\\d{4})?", [7, 11]]]], "SX": ["1", "011", "7215\\d{6}|(?:[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "(5\\d{6})$|1", "721$1", 0, "721", [["7215(?:4[2-8]|8[239]|9[056])\\d{4}"], ["7215(?:1[02]|2\\d|5[034679]|8[014-8])\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "SY": ["963", "00", "[1-359]\\d{8}|[1-5]\\d{7}", [8, 9], [["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[1-4]|5[1-3]"], "0$1", 1], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[59]"], "0$1", 1]], "0", 0, 0, 0, 0, 0, [["21\\d{6,7}|(?:1(?:[14]\\d|[2356])|2[235]|3(?:[13]\\d|4)|4[134]|5[1-3])\\d{6}"], ["(?:50|9[1-689])\\d{7}", [9]]]], "SZ": ["268", "00", "0800\\d{4}|(?:[237]\\d|900)\\d{6}", [8, 9], [["(\\d{4})(\\d{4})", "$1 $2", ["[0237]"]], ["(\\d{5})(\\d{4})", "$1 $2", ["9"]]], 0, 0, 0, 0, 0, 0, [["[23][2-5]\\d{6}", [8]], ["7[6-9]\\d{6}", [8]], ["0800\\d{4}", [8]], ["900\\d{6}", [9]], 0, 0, 0, 0, ["70\\d{6}", [8]]]], "TA": ["290", "00", "8\\d{3}", [4], 0, 0, 0, 0, 0, 0, "8", [["8\\d{3}"]]], "TC": ["1", "011", "(?:[58]\\d\\d|649|900)\\d{7}", [10], 0, "1", 0, "([2-479]\\d{6})$|1", "649$1", 0, "649", [["649(?:266|712|9(?:4\\d|50))\\d{4}"], ["649(?:2(?:3[129]|4[1-79])|3\\d\\d|4[34][1-3])\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], 0, 0, 0, ["649(?:71[01]|966)\\d{4}"]]], "TD": ["235", "00|16", "(?:22|[689]\\d|77)\\d{6}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[26-9]"]]], 0, 0, 0, 0, 0, 0, [["22(?:[37-9]0|5[0-5]|6[89])\\d{4}"], ["(?:[69]\\d|77|8[56])\\d{6}"]], "00"], "TG": ["228", "00", "[279]\\d{7}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[279]"]]], 0, 0, 0, 0, 0, 0, [["2(?:2[2-7]|3[23]|4[45]|55|6[67]|77)\\d{5}"], ["(?:7[0-29]|9[0-36-9])\\d{6}"]]], "TH": ["66", "00[1-9]", "(?:001800|[2-57]|[689]\\d)\\d{7}|1\\d{7,9}", [8, 9, 10, 13], [["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["2"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[13-9]"], "0$1"], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["1"]]], "0", 0, 0, 0, 0, 0, [["(?:1[0689]|2\\d|3[2-9]|4[2-5]|5[2-6]|7[3-7])\\d{6}", [8]], ["67(?:1[0-8]|2[4-7])\\d{5}|(?:14|6[1-6]|[89]\\d)\\d{7}", [9]], ["(?:001800\\d|1800)\\d{6}", [10, 13]], ["1900\\d{6}", [10]], 0, 0, 0, 0, ["6[08]\\d{7}", [9]]]], "TJ": ["992", "810", "[0-57-9]\\d{8}", [9], [["(\\d{6})(\\d)(\\d{2})", "$1 $2 $3", ["331", "3317"]], ["(\\d{3})(\\d{2})(\\d{4})", "$1 $2 $3", ["44[02-479]|[34]7"]], ["(\\d{4})(\\d)(\\d{4})", "$1 $2 $3", ["3(?:[1245]|3[12])"]], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[0-57-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:3(?:1[3-5]|2[245]|3[12]|4[24-7]|5[25]|72)|4(?:46|74|87))\\d{6}"], ["(?:33[03-9]|4(?:1[18]|4[02-479])|81[1-9])\\d{6}|(?:[09]\\d|1[0178]|2[02]|[34]0|5[05]|7[01578]|8[078])\\d{7}"]], "8~10"], "TK": ["690", "00", "[2-47]\\d{3,6}", [4, 5, 6, 7], 0, 0, 0, 0, 0, 0, 0, [["(?:2[2-4]|[34]\\d)\\d{2,5}"], ["7[2-4]\\d{2,5}"]]], "TL": ["670", "00", "7\\d{7}|(?:[2-47]\\d|[89]0)\\d{5}", [7, 8], [["(\\d{3})(\\d{4})", "$1 $2", ["[2-489]|70"]], ["(\\d{4})(\\d{4})", "$1 $2", ["7"]]], 0, 0, 0, 0, 0, 0, [["(?:2[1-5]|3[1-9]|4[1-4])\\d{5}", [7]], ["7[2-8]\\d{6}", [8]], ["80\\d{5}", [7]], ["90\\d{5}", [7]], ["70\\d{5}", [7]]]], "TM": ["993", "810", "(?:[1-6]\\d|71)\\d{6}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2-$3-$4", ["12"], "(8 $1)"], ["(\\d{3})(\\d)(\\d{2})(\\d{2})", "$1 $2-$3-$4", ["[1-5]"], "(8 $1)"], ["(\\d{2})(\\d{6})", "$1 $2", ["[67]"], "8 $1"]], "8", 0, 0, 0, 0, 0, [["(?:1(?:2\\d|3[1-9])|2(?:22|4[0-35-8])|3(?:22|4[03-9])|4(?:22|3[128]|4\\d|6[15])|5(?:22|5[7-9]|6[014-689]))\\d{5}"], ["(?:6\\d|71)\\d{6}"]], "8~10"], "TN": ["216", "00", "[2-57-9]\\d{7}", [8], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[2-57-9]"]]], 0, 0, 0, 0, 0, 0, [["81200\\d{3}|(?:3[0-2]|7\\d)\\d{6}"], ["3(?:001|[12]40)\\d{4}|(?:(?:[259]\\d|4[0-8])\\d|3(?:1[1-35]|6[0-4]|91))\\d{5}"], ["8010\\d{4}"], ["88\\d{6}"], 0, 0, 0, 0, 0, ["8[12]10\\d{4}"]]], "TO": ["676", "00", "(?:0800|(?:[5-8]\\d\\d|999)\\d)\\d{3}|[2-8]\\d{4}", [5, 7], [["(\\d{2})(\\d{3})", "$1-$2", ["[2-4]|50|6[09]|7[0-24-69]|8[05]"]], ["(\\d{4})(\\d{3})", "$1 $2", ["0"]], ["(\\d{3})(\\d{4})", "$1 $2", ["[5-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:2\\d|3[0-8]|4[0-4]|50|6[09]|7[0-24-69]|8[05])\\d{3}", [5]], ["(?:5(?:4[0-5]|5[4-6])|6(?:[09]\\d|3[02]|8[15-9])|(?:7\\d|8[46-9])\\d|999)\\d{4}", [7]], ["0800\\d{3}", [7]], 0, 0, 0, 0, 0, ["55[0-37-9]\\d{4}", [7]]]], "TR": ["90", "00", "4\\d{6}|8\\d{11,12}|(?:[2-58]\\d\\d|900)\\d{7}", [7, 10, 12, 13], [["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["512|8[01589]|90"], "0$1", 1], ["(\\d{3})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["5(?:[0-59]|61)", "5(?:[0-59]|61[06])", "5(?:[0-59]|61[06]1)"], "0$1", 1], ["(\\d{3})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[24][1-8]|3[1-9]"], "(0$1)", 1], ["(\\d{3})(\\d{3})(\\d{6,7})", "$1 $2 $3", ["80"], "0$1", 1]], "0", 0, 0, 0, 0, 0, [["(?:2(?:[13][26]|[28][2468]|[45][268]|[67][246])|3(?:[13][28]|[24-6][2468]|[78][02468]|92)|4(?:[16][246]|[23578][2468]|4[26]))\\d{7}", [10]], ["561(?:011|61\\d)\\d{4}|5(?:0[15-7]|1[06]|24|[34]\\d|5[1-59]|9[46])\\d{7}", [10]], ["8(?:00\\d{7}(?:\\d{2,3})?|11\\d{7})", [10, 12, 13]], ["(?:8[89]8|900)\\d{7}", [10]], ["592(?:21[12]|461)\\d{4}", [10]], 0, ["444\\d{4}", [7]], ["512\\d{7}", [10]], ["850\\d{7}", [10]]]], "TT": ["1", "011", "(?:[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2-46-8]\\d{6})$|1", "868$1", 0, "868", [["868(?:2(?:01|1[5-9]|[23]\\d|4[0-2])|6(?:0[7-9]|1[02-8]|2[1-9]|[3-69]\\d|7[0-79])|82[124])\\d{4}"], ["868(?:(?:2[5-9]|3\\d)\\d|4(?:3[0-6]|[6-9]\\d)|6(?:20|78|8\\d)|7(?:0[1-9]|1[02-9]|[2-9]\\d))\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], ["868619\\d{4}"]]], "TV": ["688", "00", "(?:2|7\\d\\d|90)\\d{4}", [5, 6, 7], [["(\\d{2})(\\d{3})", "$1 $2", ["2"]], ["(\\d{2})(\\d{4})", "$1 $2", ["90"]], ["(\\d{2})(\\d{5})", "$1 $2", ["7"]]], 0, 0, 0, 0, 0, 0, [["2[02-9]\\d{3}", [5]], ["(?:7[01]\\d|90)\\d{4}", [6, 7]]]], "TW": ["886", "0(?:0[25-79]|19)", "[2-689]\\d{8}|7\\d{9,10}|[2-8]\\d{7}|2\\d{6}", [7, 8, 9, 10, 11], [["(\\d{2})(\\d)(\\d{4})", "$1 $2 $3", ["202"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[258]0"], "0$1"], ["(\\d)(\\d{3,4})(\\d{4})", "$1 $2 $3", ["[23568]|4(?:0[02-48]|[1-47-9])|7[1-9]", "[23568]|4(?:0[2-48]|[1-47-9])|(?:400|7)[1-9]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[49]"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4,5})", "$1 $2 $3", ["7"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2[2-8]\\d|370|55[01]|7[1-9])\\d{6}|4(?:(?:0(?:0[1-9]|[2-48]\\d)|1[023]\\d)\\d{4,5}|(?:[239]\\d\\d|4(?:0[56]|12|49))\\d{5})|6(?:[01]\\d{7}|4(?:0[56]|12|24|4[09])\\d{4,5})|8(?:(?:2(?:3\\d|4[0-269]|[578]0|66)|36[24-9]|90\\d\\d)\\d{4}|4(?:0[56]|12|24|4[09])\\d{4,5})|(?:2(?:2(?:0\\d\\d|4(?:0[68]|[249]0|3[0-467]|5[0-25-9]|6[0235689]))|(?:3(?:[09]\\d|1[0-4])|(?:4\\d|5[0-49]|6[0-29]|7[0-5])\\d)\\d)|(?:(?:3[2-9]|5[2-8]|6[0-35-79]|8[7-9])\\d\\d|4(?:2(?:[089]\\d|7[1-9])|(?:3[0-4]|[78]\\d|9[01])\\d))\\d)\\d{3}", [8, 9]], ["(?:40001[0-2]|9[0-8]\\d{4})\\d{3}", [9]], ["80[0-79]\\d{6}|800\\d{5}", [8, 9]], ["20(?:[013-9]\\d\\d|2)\\d{4}", [7, 9]], ["99\\d{7}", [9]], 0, ["50[0-46-9]\\d{6}", [9]], 0, ["7010(?:[0-2679]\\d|3[0-7]|8[0-5])\\d{5}|70\\d{8}", [10, 11]]], 0, "#"], "TZ": ["255", "00[056]", "(?:[25-8]\\d|41|90)\\d{7}", [9], [["(\\d{3})(\\d{2})(\\d{4})", "$1 $2 $3", ["[89]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[24]"], "0$1"], ["(\\d{2})(\\d{7})", "$1 $2", ["5"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[67]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["2[2-8]\\d{7}"], ["(?:6[125-9]|7[13-9])\\d{7}"], ["80[08]\\d{6}"], ["90\\d{7}"], 0, 0, 0, 0, ["41\\d{7}"], ["8(?:40|6[01])\\d{6}"]]], "UA": ["380", "00", "[89]\\d{9}|[3-9]\\d{8}", [9, 10], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["6[12][29]|(?:3[1-8]|4[136-8]|5[12457]|6[49])2|(?:56|65)[24]", "6[12][29]|(?:35|4[1378]|5[12457]|6[49])2|(?:56|65)[24]|(?:3[1-46-8]|46)2[013-9]"], "0$1"], ["(\\d{4})(\\d{5})", "$1 $2", ["3[1-8]|4(?:[1367]|[45][6-9]|8[4-6])|5(?:[1-5]|6[0135689]|7[4-6])|6(?:[12][3-7]|[459])", "3[1-8]|4(?:[1367]|[45][6-9]|8[4-6])|5(?:[1-5]|6(?:[015689]|3[02389])|7[4-6])|6(?:[12][3-7]|[459])"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[3-7]|89|9[1-9]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[89]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:3[1-8]|4[13-8]|5[1-7]|6[12459])\\d{7}", [9]], ["790\\d{6}|(?:39|50|6[36-8]|7[1-357]|9[1-9])\\d{7}", [9]], ["800[1-8]\\d{5,6}"], ["900[239]\\d{5,6}"], 0, 0, 0, 0, ["89[1-579]\\d{6}", [9]]], "0~0"], "UG": ["256", "00[057]", "800\\d{6}|(?:[29]0|[347]\\d)\\d{7}", [9], [["(\\d{4})(\\d{5})", "$1 $2", ["202", "2024"], "0$1"], ["(\\d{3})(\\d{6})", "$1 $2", ["[27-9]|4(?:6[45]|[7-9])"], "0$1"], ["(\\d{2})(\\d{7})", "$1 $2", ["[34]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["20(?:(?:240|30[67])\\d|6(?:00[0-2]|30[0-4]))\\d{3}|(?:20(?:[017]\\d|2[5-9]|3[1-4]|5[0-4]|6[15-9])|[34]\\d{3})\\d{5}"], ["72[48]0\\d{5}|7(?:[015-8]\\d|2[067]|36|4[0-6]|9[89])\\d{6}"], ["800[1-3]\\d{5}"], ["90[1-3]\\d{6}"]]], "US": ["1", "011", "[2-9]\\d{9}|3\\d{6}", [10], [["(\\d{3})(\\d{4})", "$1-$2", ["310"], 0, 1], ["(\\d{3})(\\d{3})(\\d{4})", "($1) $2-$3", ["[2-9]"], 0, 1, "$1-$2-$3"]], "1", 0, 0, 0, 0, 0, [["(?:3052(?:0[0-8]|[1-9]\\d)|5056(?:[0-35-9]\\d|4[468])|7302[0-4]\\d)\\d{4}|(?:305[3-9]|472[24]|505[2-57-9]|7306|983[2-47-9])\\d{6}|(?:2(?:0[1-35-9]|1[02-9]|2[03-57-9]|3[1459]|4[08]|5[1-46]|6[0279]|7[0269]|8[13])|3(?:0[1-47-9]|1[02-9]|2[0135-79]|3[0-24679]|4[167]|5[0-2]|6[01349]|8[056])|4(?:0[124-9]|1[02-579]|2[3-5]|3[0245]|4[023578]|58|6[349]|7[0589]|8[04])|5(?:0[1-47-9]|1[0235-8]|20|3[0149]|4[01]|5[179]|6[1-47]|7[0-5]|8[0256])|6(?:0[1-35-9]|1[024-9]|2[03689]|3[016]|4[0156]|5[01679]|6[0-279]|78|8[0-29])|7(?:0[1-46-8]|1[2-9]|2[04-8]|3[1247]|4[037]|5[47]|6[02359]|7[0-59]|8[156])|8(?:0[1-68]|1[02-8]|2[068]|3[0-2589]|4[03578]|5[046-9]|6[02-5]|7[028])|9(?:0[1346-9]|1[02-9]|2[0589]|3[0146-8]|4[01357-9]|5[12469]|7[0-389]|8[04-69]))[2-9]\\d{6}"], [""], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], 0, 0, 0, ["305209\\d{4}"]]], "UY": ["598", "0(?:0|1[3-9]\\d)", "0004\\d{2,9}|[1249]\\d{7}|(?:[49]\\d|80)\\d{5}", [6, 7, 8, 9, 10, 11, 12, 13], [["(\\d{3})(\\d{3,4})", "$1 $2", ["0"]], ["(\\d{3})(\\d{4})", "$1 $2", ["[49]0|8"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["9"], "0$1"], ["(\\d{4})(\\d{4})", "$1 $2", ["[124]"]], ["(\\d{3})(\\d{3})(\\d{2,4})", "$1 $2 $3", ["0"]], ["(\\d{3})(\\d{3})(\\d{3})(\\d{2,4})", "$1 $2 $3 $4", ["0"]]], "0", 0, 0, 0, 0, 0, [["(?:1(?:770|9(?:20|[89]7))|(?:2\\d|4[2-7])\\d\\d)\\d{4}", [8]], ["9[1-9]\\d{6}", [8]], ["0004\\d{2,9}|(?:405|80[05])\\d{4}"], ["90[0-8]\\d{4}", [7]]], "00", " int. "], "UZ": ["998", "00", "(?:20|33|[5-79]\\d|88)\\d{7}", [9], [["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[235-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:55\\d\\d|6(?:1(?:22|3[124]|4[1-4]|5[1-3578]|64)|2(?:22|3[0-57-9]|41)|5(?:22|3[3-7]|5[024-8])|[69]\\d\\d|7(?:[23]\\d|7[69]))|7(?:0(?:5[4-9]|6[0146]|7[124-6]|9[135-8])|(?:1[12]|[68]\\d)\\d|2(?:22|3[13-57-9]|4[1-3579]|5[14])|3(?:2\\d|3[1578]|4[1-35-7]|5[1-57]|61)|4(?:2\\d|3[1-579]|7[1-79])|5(?:22|5[1-9]|6[1457])|9(?:22|5[1-9])))\\d{5}"], ["(?:(?:[25]0|33|88|9[0-57-9])\\d{3}|6(?:1(?:2(?:2[01]|98)|35[0-4]|50\\d|61[23]|7(?:[01][017]|4\\d|55|9[5-9]))|2(?:(?:11|7\\d)\\d|2(?:[12]1|9[01379])|5(?:[126]\\d|3[0-4]))|5(?:19[01]|2(?:27|9[26])|(?:30|59|7\\d)\\d)|6(?:2(?:1[5-9]|2[0367]|38|41|52|60)|(?:3[79]|9[0-3])\\d|4(?:56|83)|7(?:[07]\\d|1[017]|3[07]|4[047]|5[057]|67|8[0178]|9[79]))|7(?:2(?:24|3[237]|4[5-9]|7[15-8])|5(?:7[12]|8[0589])|7(?:0\\d|[39][07])|9(?:0\\d|7[079])))|7(?:[07]\\d{3}|1(?:13[01]|6(?:0[47]|1[67]|66)|71[3-69]|98\\d)|2(?:2(?:2[79]|95)|3(?:2[5-9]|6[0-6])|57\\d|7(?:0\\d|1[17]|2[27]|3[37]|44|5[057]|66|88))|3(?:2(?:1[0-6]|21|3[469]|7[159])|(?:33|9[4-6])\\d|5(?:0[0-4]|5[579]|9\\d)|7(?:[0-3579]\\d|4[0467]|6[67]|8[078]))|4(?:2(?:29|5[0257]|6[0-7]|7[1-57])|5(?:1[0-4]|8\\d|9[5-9])|7(?:0\\d|1[024589]|2[0-27]|3[0137]|[46][07]|5[01]|7[5-9]|9[079])|9(?:7[015-9]|[89]\\d))|5(?:112|2(?:0\\d|2[29]|[49]4)|3[1568]\\d|52[6-9]|7(?:0[01578]|1[017]|[23]7|4[047]|[5-7]\\d|8[78]|9[079]))|9(?:22[128]|3(?:2[0-4]|7\\d)|57[02569]|7(?:2[05-9]|3[37]|4\\d|60|7[2579]|87|9[07]))))\\d{4}"]]], "VA": ["39", "00", "0\\d{5,10}|3[0-8]\\d{7,10}|55\\d{8}|8\\d{5}(?:\\d{2,4})?|(?:1\\d|39)\\d{7,8}", [6, 7, 8, 9, 10, 11, 12], 0, 0, 0, 0, 0, 0, "06698", [["06698\\d{1,6}", [6, 7, 8, 9, 10, 11]], ["3[1-9]\\d{8}|3[2-9]\\d{7}", [9, 10]], ["80(?:0\\d{3}|3)\\d{3}", [6, 9]], ["(?:0878\\d{3}|89(?:2\\d|3[04]|4(?:[0-4]|[5-9]\\d\\d)|5[0-4]))\\d\\d|(?:1(?:44|6[346])|89(?:38|5[5-9]|9))\\d{6}", [6, 8, 9, 10]], ["1(?:78\\d|99)\\d{6}", [9, 10]], ["3[2-8]\\d{9,10}", [11, 12]], 0, 0, ["55\\d{8}", [10]], ["84(?:[08]\\d{3}|[17])\\d{3}", [6, 9]]]], "VC": ["1", "011", "(?:[58]\\d\\d|784|900)\\d{7}", [10], 0, "1", 0, "([2-7]\\d{6})$|1", "784$1", 0, "784", [["784(?:266|3(?:6[6-9]|7\\d|8[0-6])|4(?:38|5[0-36-8]|8[0-8])|5(?:55|7[0-2]|93)|638|784)\\d{4}"], ["784(?:4(?:3[0-5]|5[45]|89|9[0-8])|5(?:2[6-9]|3[0-4])|720)\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], 0, 0, 0, ["78451[0-2]\\d{4}"]]], "VE": ["58", "00", "[68]00\\d{7}|(?:[24]\\d|[59]0)\\d{8}", [10], [["(\\d{3})(\\d{7})", "$1-$2", ["[24-689]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2(?:12|3[457-9]|[467]\\d|[58][1-9]|9[1-6])|[4-6]00)\\d{7}"], ["4(?:1[24-8]|2[46])\\d{7}"], ["800\\d{7}"], ["90[01]\\d{7}"], 0, 0, ["501\\d{7}"]]], "VG": ["1", "011", "(?:284|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2-578]\\d{6})$|1", "284$1", 0, "284", [["284(?:229|4(?:22|9[45])|774|8(?:52|6[459]))\\d{4}"], ["284(?:245|3(?:0[0-3]|4[0-7]|68|9[34])|4(?:4[0-6]|68|9[69])|5(?:4[0-7]|68|9[69]))\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "VI": ["1", "011", "[58]\\d{9}|(?:34|90)0\\d{7}", [10], 0, "1", 0, "([2-9]\\d{6})$|1", "340$1", 0, "340", [["340(?:2(?:0\\d|10|2[06-8]|4[49]|77)|3(?:32|44)|4(?:2[23]|44|7[34]|89)|5(?:1[34]|55)|6(?:2[56]|4[23]|77|9[023])|7(?:1[2-57-9]|2[57]|7\\d)|884|998)\\d{4}"], [""], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "VN": ["84", "00", "[12]\\d{9}|[135-9]\\d{8}|[16]\\d{7}|[16-8]\\d{6}", [7, 8, 9, 10], [["(\\d{2})(\\d{5})", "$1 $2", ["80"], "0$1", 1], ["(\\d{4})(\\d{4,6})", "$1 $2", ["1"], 0, 1], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["6"], "0$1", 1], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[357-9]"], "0$1", 1], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["2[48]"], "0$1", 1], ["(\\d{3})(\\d{4})(\\d{3})", "$1 $2 $3", ["2"], "0$1", 1]], "0", 0, 0, 0, 0, 0, [["2(?:0[3-9]|1[0-689]|2[0-25-9]|[38][2-9]|4[2-8]|5[124-9]|6[0-39]|7[0-7]|9[0-4679])\\d{7}", [10]], ["(?:5(?:2[238]|59)|89[6-9]|99[013-9])\\d{6}|(?:3\\d|5[1689]|7[06-9]|8[1-8]|9[0-8])\\d{7}", [9]], ["1800\\d{4,6}|12(?:0[13]|28)\\d{4}", [8, 9, 10]], ["1900\\d{4,6}", [8, 9, 10]], 0, 0, ["(?:[17]99|80\\d)\\d{4}|69\\d{5,6}", [7, 8]], 0, ["672\\d{6}", [9]]]], "VU": ["678", "00", "[57-9]\\d{6}|(?:[238]\\d|48)\\d{3}", [5, 7], [["(\\d{3})(\\d{4})", "$1 $2", ["[57-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:38[0-8]|48[4-9])\\d\\d|(?:2[02-9]|3[4-7]|88)\\d{3}", [5]], ["(?:[58]\\d|7[013-7])\\d{5}", [7]], ["81[18]\\d\\d", [5]], 0, 0, 0, ["(?:3[03]|900\\d)\\d{3}"], 0, ["9(?:0[1-9]|1[01])\\d{4}", [7]]]], "WF": ["681", "00", "(?:40|72|8\\d{4})\\d{4}|[89]\\d{5}", [6, 9], [["(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3", ["[47-9]"]], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["8"]]], 0, 0, 0, 0, 0, 0, [["72\\d{4}", [6]], ["(?:72|8[23])\\d{4}", [6]], ["80[0-5]\\d{6}", [9]], 0, 0, ["[48]0\\d{4}", [6]], 0, 0, ["9[23]\\d{4}", [6]]]], "WS": ["685", "0", "(?:[2-6]|8\\d{5})\\d{4}|[78]\\d{6}|[68]\\d{5}", [5, 6, 7, 10], [["(\\d{5})", "$1", ["[2-5]|6[1-9]"]], ["(\\d{3})(\\d{3,7})", "$1 $2", ["[68]"]], ["(\\d{2})(\\d{5})", "$1 $2", ["7"]]], 0, 0, 0, 0, 0, 0, [["6[1-9]\\d{3}|(?:[2-5]|60)\\d{4}", [5, 6]], ["(?:7[1-35-7]|8(?:[3-7]|9\\d{3}))\\d{5}", [7, 10]], ["800\\d{3}", [6]]]], "XK": ["383", "00", "2\\d{7,8}|3\\d{7,11}|(?:4\\d\\d|[89]00)\\d{5}", [8, 9, 10, 11, 12], [["(\\d{3})(\\d{5})", "$1 $2", ["[89]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[2-4]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["2|39"], "0$1"], ["(\\d{2})(\\d{7,10})", "$1 $2", ["3"], "0$1"]], "0", 0, 0, 0, 0, 0, [["38\\d{6,10}|(?:2[89]|39)(?:0\\d{5,6}|[1-9]\\d{5})"], ["4[3-9]\\d{6}", [8]], ["800\\d{5}", [8]], ["900\\d{5}", [8]]]], "YE": ["967", "00", "(?:1|7\\d)\\d{7}|[1-7]\\d{6}", [7, 8, 9], [["(\\d)(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[1-6]|7(?:[24-6]|8[0-7])"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["7"], "0$1"]], "0", 0, 0, 0, 0, 0, [["78[0-7]\\d{4}|17\\d{6}|(?:[12][2-68]|3[2358]|4[2-58]|5[2-6]|6[3-58]|7[24-6])\\d{5}", [7, 8]], ["7[01378]\\d{7}", [9]]]], "YT": ["262", "00", "7093\\d{5}|(?:80|9\\d)\\d{7}|(?:26|63)9\\d{6}", [9], 0, "0", 0, 0, 0, 0, 0, [["269(?:0[0-467]|15|5[0-4]|6\\d|[78]0)\\d{4}"], ["(?:639(?:0[0-79]|1[019]|[267]\\d|3[09]|40|5[05-9]|9[04-79])|7093[5-7])\\d{4}"], ["80\\d{7}"], 0, 0, 0, 0, 0, ["9(?:(?:39|47)8[01]|769\\d)\\d{4}"]]], "ZA": ["27", "00", "[1-79]\\d{8}|8\\d{4,9}", [5, 6, 7, 8, 9, 10], [["(\\d{2})(\\d{3,4})", "$1 $2", ["8[1-4]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2,3})", "$1 $2 $3", ["8[1-4]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["860"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[1-9]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2(?:0330|4302)|52087)0\\d{3}|(?:1[0-8]|2[1-378]|3[1-69]|4\\d|5[1346-8])\\d{7}", [9]], ["(?:1(?:3492[0-25]|4495[0235]|549(?:20|5[01]))|4[34]492[01])\\d{3}|8[1-4]\\d{3,7}|(?:2[27]|47|54)4950\\d{3}|(?:1(?:049[2-4]|9[12]\\d\\d)|(?:6\\d\\d|7(?:[0-46-9]\\d|5[0-4]))\\d\\d|8(?:5\\d{3}|7(?:08[67]|158|28[5-9]|310)))\\d{4}|(?:1[6-8]|28|3[2-69]|4[025689]|5[36-8])4920\\d{3}|(?:12|[2-5]1)492\\d{4}", [5, 6, 7, 8, 9]], ["80\\d{7}", [9]], ["(?:86[2-9]|9[0-2]\\d)\\d{6}", [9]], 0, 0, ["861\\d{6,7}", [9, 10]], 0, ["87(?:08[0-589]|15[0-79]|28[0-4]|31[1-9])\\d{4}|87(?:[02][0-79]|1[0-46-9]|3[02-9]|[4-9]\\d)\\d{5}", [9]], ["860\\d{6}", [9]]]], "ZM": ["260", "00", "800\\d{6}|(?:21|63|[79]\\d)\\d{7}", [9], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[28]"], "0$1"], ["(\\d{2})(\\d{7})", "$1 $2", ["[79]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["21[1-8]\\d{6}"], ["(?:7[5-79]|9[5-8])\\d{7}"], ["800\\d{6}"], 0, 0, 0, 0, 0, ["63\\d{7}"]]], "ZW": ["263", "00", "2(?:[0-57-9]\\d{6,8}|6[0-24-9]\\d{6,7})|[38]\\d{9}|[35-8]\\d{8}|[3-6]\\d{7}|[1-689]\\d{6}|[1-3569]\\d{5}|[1356]\\d{4}", [5, 6, 7, 8, 9, 10], [["(\\d{3})(\\d{3,5})", "$1 $2", ["2(?:0[45]|2[278]|[49]8)|3(?:[09]8|17)|6(?:[29]8|37|75)|[23][78]|(?:33|5[15]|6[68])[78]"], "0$1"], ["(\\d)(\\d{3})(\\d{2,4})", "$1 $2 $3", ["[49]"], "0$1"], ["(\\d{3})(\\d{4})", "$1 $2", ["80"], "0$1"], ["(\\d{2})(\\d{7})", "$1 $2", ["24|8[13-59]|(?:2[05-79]|39|5[45]|6[15-8])2", "2(?:02[014]|4|[56]20|[79]2)|392|5(?:42|525)|6(?:[16-8]21|52[013])|8[13-59]"], "(0$1)"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["7"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["2(?:1[39]|2[0157]|[378]|[56][14])|3(?:12|29)", "2(?:1[39]|2[0157]|[378]|[56][14])|3(?:123|29)"], "0$1"], ["(\\d{4})(\\d{6})", "$1 $2", ["8"], "0$1"], ["(\\d{2})(\\d{3,5})", "$1 $2", ["1|2(?:0[0-36-9]|12|29|[56])|3(?:1[0-689]|[24-6])|5(?:[0236-9]|1[2-4])|6(?:[013-59]|7[0-46-9])|(?:33|55|6[68])[0-69]|(?:29|3[09]|62)[0-79]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["29[013-9]|39|54"], "0$1"], ["(\\d{4})(\\d{3,5})", "$1 $2", ["(?:25|54)8", "258|5483"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1(?:(?:3\\d|9)\\d|[4-8])|2(?:(?:(?:0(?:2[014]|5)|(?:2[0157]|31|84|9)\\d\\d|[56](?:[14]\\d\\d|20)|7(?:[089]|2[03]|[35]\\d\\d))\\d|4(?:2\\d\\d|8))\\d|1(?:2|[39]\\d{4}))|3(?:(?:123|(?:29\\d|92)\\d)\\d\\d|7(?:[19]|[56]\\d))|5(?:0|1[2-478]|26|[37]2|4(?:2\\d{3}|83)|5(?:25\\d\\d|[78])|[689]\\d)|6(?:(?:[16-8]21|28|52[013])\\d\\d|[39])|8(?:[1349]28|523)\\d\\d)\\d{3}|(?:4\\d\\d|9[2-9])\\d{4,5}|(?:(?:2(?:(?:(?:0|8[146])\\d|7[1-7])\\d|2(?:[278]\\d|92)|58(?:2\\d|3))|3(?:[26]|9\\d{3})|5(?:4\\d|5)\\d\\d)\\d|6(?:(?:(?:[0-246]|[78]\\d)\\d|37)\\d|5[2-8]))\\d\\d|(?:2(?:[569]\\d|8[2-57-9])|3(?:[013-59]\\d|8[37])|6[89]8)\\d{3}"], ["7(?:[1278]\\d|3[1-9])\\d{6}", [9]], ["80(?:[01]\\d|20|8[0-8])\\d{3}", [7]], 0, 0, 0, 0, 0, ["86(?:1[12]|22|30|44|55|77|8[368])\\d{6}", [10]]]] }, "nonGeographic": { "800": ["800", 0, "(?:00|[1-9]\\d)\\d{6}", [8], [["(\\d{4})(\\d{4})", "$1 $2", ["\\d"]]], 0, 0, 0, 0, 0, 0, [0, 0, ["(?:00|[1-9]\\d)\\d{6}"]]], "808": ["808", 0, "[1-9]\\d{7}", [8], [["(\\d{4})(\\d{4})", "$1 $2", ["[1-9]"]]], 0, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0, 0, 0, 0, 0, ["[1-9]\\d{7}"]]], "870": ["870", 0, "7\\d{11}|[235-7]\\d{8}", [9, 12], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[235-7]"]]], 0, 0, 0, 0, 0, 0, [0, ["(?:[356]|774[45])\\d{8}|7[6-8]\\d{7}"], 0, 0, 0, 0, 0, 0, ["2\\d{8}", [9]]]], "878": ["878", 0, "10\\d{10}", [12], [["(\\d{2})(\\d{5})(\\d{5})", "$1 $2 $3", ["1"]]], 0, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0, 0, 0, 0, ["10\\d{10}"]]], "881": ["881", 0, "6\\d{9}|[0-36-9]\\d{8}", [9, 10], [["(\\d)(\\d{3})(\\d{5})", "$1 $2 $3", ["[0-37-9]"]], ["(\\d)(\\d{3})(\\d{5,6})", "$1 $2 $3", ["6"]]], 0, 0, 0, 0, 0, 0, [0, ["6\\d{9}|[0-36-9]\\d{8}"]]], "882": ["882", 0, "[13]\\d{6}(?:\\d{2,5})?|[19]\\d{7}|(?:[25]\\d\\d|4)\\d{7}(?:\\d{2})?", [7, 8, 9, 10, 11, 12], [["(\\d{2})(\\d{5})", "$1 $2", ["16|342"]], ["(\\d{2})(\\d{6})", "$1 $2", ["49"]], ["(\\d{2})(\\d{2})(\\d{4})", "$1 $2 $3", ["1[36]|9"]], ["(\\d{2})(\\d{4})(\\d{3})", "$1 $2 $3", ["3[23]"]], ["(\\d{2})(\\d{3,4})(\\d{4})", "$1 $2 $3", ["16"]], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["10|23|3(?:[15]|4[57])|4|51"]], ["(\\d{3})(\\d{4})(\\d{4})", "$1 $2 $3", ["34"]], ["(\\d{2})(\\d{4,5})(\\d{5})", "$1 $2 $3", ["[1-35]"]]], 0, 0, 0, 0, 0, 0, [0, ["342\\d{4}|(?:337|49)\\d{6}|(?:3(?:2|47|7\\d{3})|50\\d{3})\\d{7}", [7, 8, 9, 10, 12]], 0, 0, 0, ["348[57]\\d{7}", [11]], 0, 0, ["1(?:3(?:0[0347]|[13][0139]|2[035]|4[013568]|6[0459]|7[06]|8[15-8]|9[0689])\\d{4}|6\\d{5,10})|(?:345\\d|9[89])\\d{6}|(?:10|2(?:3|85\\d)|3(?:[15]|[69]\\d\\d)|4[15-8]|51)\\d{8}"]]], "883": ["883", 0, "(?:[1-4]\\d|51)\\d{6,10}", [8, 9, 10, 11, 12], [["(\\d{3})(\\d{3})(\\d{2,8})", "$1 $2 $3", ["[14]|2[24-689]|3[02-689]|51[24-9]"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["510"]], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["21"]], ["(\\d{4})(\\d{4})(\\d{4})", "$1 $2 $3", ["51[13]"]], ["(\\d{3})(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["[235]"]]], 0, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0, 0, 0, 0, ["(?:2(?:00\\d\\d|10)|(?:370[1-9]|51\\d0)\\d)\\d{7}|51(?:00\\d{5}|[24-9]0\\d{4,7})|(?:1[0-79]|2[24-689]|3[02-689]|4[0-4])0\\d{5,9}"]]], "888": ["888", 0, "\\d{11}", [11], [["(\\d{3})(\\d{3})(\\d{5})", "$1 $2 $3"]], 0, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0, 0, ["\\d{11}"]]], "979": ["979", 0, "[1359]\\d{8}", [9], [["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["[1359]"]]], 0, 0, 0, 0, 0, 0, [0, 0, 0, ["[1359]\\d{8}"]]] } };
+var metadata$1 = { "version": 4, "country_calling_codes": { "1": ["US", "AG", "AI", "AS", "BB", "BM", "BS", "CA", "DM", "DO", "GD", "GU", "JM", "KN", "KY", "LC", "MP", "MS", "PR", "SX", "TC", "TT", "VC", "VG", "VI"], "7": ["RU", "KZ"], "20": ["EG"], "27": ["ZA"], "30": ["GR"], "31": ["NL"], "32": ["BE"], "33": ["FR"], "34": ["ES"], "36": ["HU"], "39": ["IT", "VA"], "40": ["RO"], "41": ["CH"], "43": ["AT"], "44": ["GB", "GG", "IM", "JE"], "45": ["DK"], "46": ["SE"], "47": ["NO", "SJ"], "48": ["PL"], "49": ["DE"], "51": ["PE"], "52": ["MX"], "53": ["CU"], "54": ["AR"], "55": ["BR"], "56": ["CL"], "57": ["CO"], "58": ["VE"], "60": ["MY"], "61": ["AU", "CC", "CX"], "62": ["ID"], "63": ["PH"], "64": ["NZ"], "65": ["SG"], "66": ["TH"], "81": ["JP"], "82": ["KR"], "84": ["VN"], "86": ["CN"], "90": ["TR"], "91": ["IN"], "92": ["PK"], "93": ["AF"], "94": ["LK"], "95": ["MM"], "98": ["IR"], "211": ["SS"], "212": ["MA", "EH"], "213": ["DZ"], "216": ["TN"], "218": ["LY"], "220": ["GM"], "221": ["SN"], "222": ["MR"], "223": ["ML"], "224": ["GN"], "225": ["CI"], "226": ["BF"], "227": ["NE"], "228": ["TG"], "229": ["BJ"], "230": ["MU"], "231": ["LR"], "232": ["SL"], "233": ["GH"], "234": ["NG"], "235": ["TD"], "236": ["CF"], "237": ["CM"], "238": ["CV"], "239": ["ST"], "240": ["GQ"], "241": ["GA"], "242": ["CG"], "243": ["CD"], "244": ["AO"], "245": ["GW"], "246": ["IO"], "247": ["AC"], "248": ["SC"], "249": ["SD"], "250": ["RW"], "251": ["ET"], "252": ["SO"], "253": ["DJ"], "254": ["KE"], "255": ["TZ"], "256": ["UG"], "257": ["BI"], "258": ["MZ"], "260": ["ZM"], "261": ["MG"], "262": ["RE", "YT"], "263": ["ZW"], "264": ["NA"], "265": ["MW"], "266": ["LS"], "267": ["BW"], "268": ["SZ"], "269": ["KM"], "290": ["SH", "TA"], "291": ["ER"], "297": ["AW"], "298": ["FO"], "299": ["GL"], "350": ["GI"], "351": ["PT"], "352": ["LU"], "353": ["IE"], "354": ["IS"], "355": ["AL"], "356": ["MT"], "357": ["CY"], "358": ["FI", "AX"], "359": ["BG"], "370": ["LT"], "371": ["LV"], "372": ["EE"], "373": ["MD"], "374": ["AM"], "375": ["BY"], "376": ["AD"], "377": ["MC"], "378": ["SM"], "380": ["UA"], "381": ["RS"], "382": ["ME"], "383": ["XK"], "385": ["HR"], "386": ["SI"], "387": ["BA"], "389": ["MK"], "420": ["CZ"], "421": ["SK"], "423": ["LI"], "500": ["FK"], "501": ["BZ"], "502": ["GT"], "503": ["SV"], "504": ["HN"], "505": ["NI"], "506": ["CR"], "507": ["PA"], "508": ["PM"], "509": ["HT"], "590": ["GP", "BL", "MF"], "591": ["BO"], "592": ["GY"], "593": ["EC"], "594": ["GF"], "595": ["PY"], "596": ["MQ"], "597": ["SR"], "598": ["UY"], "599": ["CW", "BQ"], "670": ["TL"], "672": ["NF"], "673": ["BN"], "674": ["NR"], "675": ["PG"], "676": ["TO"], "677": ["SB"], "678": ["VU"], "679": ["FJ"], "680": ["PW"], "681": ["WF"], "682": ["CK"], "683": ["NU"], "685": ["WS"], "686": ["KI"], "687": ["NC"], "688": ["TV"], "689": ["PF"], "690": ["TK"], "691": ["FM"], "692": ["MH"], "850": ["KP"], "852": ["HK"], "853": ["MO"], "855": ["KH"], "856": ["LA"], "880": ["BD"], "886": ["TW"], "960": ["MV"], "961": ["LB"], "962": ["JO"], "963": ["SY"], "964": ["IQ"], "965": ["KW"], "966": ["SA"], "967": ["YE"], "968": ["OM"], "970": ["PS"], "971": ["AE"], "972": ["IL"], "973": ["BH"], "974": ["QA"], "975": ["BT"], "976": ["MN"], "977": ["NP"], "992": ["TJ"], "993": ["TM"], "994": ["AZ"], "995": ["GE"], "996": ["KG"], "998": ["UZ"] }, "countries": { "AC": ["247", "00", "(?:[01589]\\d|[46])\\d{4}", [5, 6], 0, 0, 0, 0, 0, 0, 0, [["6[2-467]\\d{3}", [5]], ["4\\d{4}", [5]], 0, 0, 0, 0, ["(?:0[1-9]|[1589]\\d)\\d{4}", [6]]]], "AD": ["376", "00", "(?:1|6\\d)\\d{7}|[135-9]\\d{5}", [6, 8, 9], [["(\\d{3})(\\d{3})", "$1 $2", ["[135-9]"]], ["(\\d{4})(\\d{4})", "$1 $2", ["1"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["6"]]], 0, 0, 0, 0, 0, 0, [["[78]\\d{5}", [6]], ["690\\d{6}|[356]\\d{5}", [6, 9]], ["180[02]\\d{4}", [8]], ["[19]\\d{5}", [6]]]], "AE": ["971", "00", "(?:[4-7]\\d|9[0-689])\\d{7}|800\\d{2,9}|[2-4679]\\d{7}", [5, 6, 7, 8, 9, 10, 11, 12], [["(\\d{3})(\\d{2,9})", "$1 $2", ["60|8"]], ["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["[236]|[479][2-8]"], "0$1"], ["(\\d{3})(\\d)(\\d{5})", "$1 $2 $3", ["[479]"]], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["5"], "0$1"]], "0", 0, 0, 0, 0, 0, [["[2-4679][2-8]\\d{6}", [8]], ["5[024-68]\\d{7}", [9]], ["400\\d{6}|800\\d{2,9}"], ["900[02]\\d{5}", [9]], 0, 0, ["600[25]\\d{5}", [9]], 0, 0, ["700[05]\\d{5}", [9]]]], "AF": ["93", "00", "[2-7]\\d{8}", [9], [["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[2-7]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:[25][0-8]|[34][0-4]|6[0-5])[2-9]\\d{6}"], ["7\\d{8}"]]], "AG": ["1", "011", "(?:268|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([457]\\d{6})$|1", "268$1", 0, "268", [["268(?:4(?:6[0-38]|84)|56[0-2])\\d{4}"], ["268(?:464|7(?:1[3-9]|[28]\\d|3[0246]|64|7[0-689]))\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], 0, 0, ["26840[69]\\d{4}"], ["26848[01]\\d{4}"]]], "AI": ["1", "011", "(?:264|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2457]\\d{6})$|1", "264$1", 0, "264", [["264(?:292|4(?:6[12]|9[78]))\\d{4}"], ["264(?:235|4(?:69|76)|5(?:3[6-9]|8[1-4])|7(?:29|72))\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], 0, 0, ["264724\\d{4}"]]], "AL": ["355", "00", "(?:700\\d\\d|900)\\d{3}|8\\d{5,7}|(?:[2-5]|6\\d)\\d{7}", [6, 7, 8, 9], [["(\\d{3})(\\d{3,4})", "$1 $2", ["80|9"], "0$1"], ["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["4[2-6]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[2358][2-5]|4"], "0$1"], ["(\\d{3})(\\d{5})", "$1 $2", ["[23578]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["6"], "0$1"]], "0", 0, 0, 0, 0, 0, [["4505[0-2]\\d{3}|(?:[2358][16-9]\\d[2-9]|4410)\\d{4}|(?:[2358][2-5][2-9]|4(?:[2-57-9][2-9]|6\\d))\\d{5}", [8]], ["6(?:[78][2-9]|9\\d)\\d{6}", [9]], ["800\\d{4}", [7]], ["900[1-9]\\d\\d", [6]], ["700[2-9]\\d{4}", [8]], 0, 0, 0, 0, ["808[1-9]\\d\\d", [6]]]], "AM": ["374", "00", "(?:[1-489]\\d|55|60|77)\\d{6}", [8], [["(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["[89]0"], "0 $1"], ["(\\d{3})(\\d{5})", "$1 $2", ["2|3[12]"], "(0$1)"], ["(\\d{2})(\\d{6})", "$1 $2", ["1|47"], "(0$1)"], ["(\\d{2})(\\d{6})", "$1 $2", ["[3-9]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:(?:1[0-25]|47)\\d|2(?:2[2-46]|3[1-8]|4[2-69]|5[2-7]|6[1-9]|8[1-7])|3[12]2)\\d{5}"], ["(?:33|4[1349]|55|77|88|9[13-9])\\d{6}"], ["800\\d{5}"], ["90[016]\\d{5}"], 0, 0, 0, 0, ["60(?:2[78]|3[5-9]|4[02-9]|5[0-46-9]|[6-8]\\d|9[0-2])\\d{4}"], ["80[1-4]\\d{5}"]]], "AO": ["244", "00", "[29]\\d{8}", [9], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[29]"]]], 0, 0, 0, 0, 0, 0, [["2\\d(?:[0134][25-9]|[25-9]\\d)\\d{5}"], ["9[1-59]\\d{7}"]]], "AR": ["54", "00", "(?:11|[89]\\d\\d)\\d{8}|[2368]\\d{9}", [10, 11], [["(\\d{4})(\\d{2})(\\d{4})", "$1 $2-$3", ["2(?:2[024-9]|3[0-59]|47|6[245]|9[02-8])|3(?:3[28]|4[03-9]|5[2-46-8]|7[1-578]|8[2-9])", "2(?:[23]02|6(?:[25]|4[6-8])|9(?:[02356]|4[02568]|72|8[23]))|3(?:3[28]|4(?:[04679]|3[5-8]|5[4-68]|8[2379])|5(?:[2467]|3[237]|8[2-5])|7[1-578]|8(?:[2469]|3[2578]|5[4-8]|7[36-8]|8[5-8]))|2(?:2[24-9]|3[1-59]|47)", "2(?:[23]02|6(?:[25]|4(?:64|[78]))|9(?:[02356]|4(?:[0268]|5[2-6])|72|8[23]))|3(?:3[28]|4(?:[04679]|3[78]|5(?:4[46]|8)|8[2379])|5(?:[2467]|3[237]|8[23])|7[1-578]|8(?:[2469]|3[278]|5[56][46]|86[3-6]))|2(?:2[24-9]|3[1-59]|47)|38(?:[58][78]|7[378])|3(?:4[35][56]|58[45]|8(?:[38]5|54|76))[4-6]", "2(?:[23]02|6(?:[25]|4(?:64|[78]))|9(?:[02356]|4(?:[0268]|5[2-6])|72|8[23]))|3(?:3[28]|4(?:[04679]|3(?:5(?:4[0-25689]|[56])|[78])|58|8[2379])|5(?:[2467]|3[237]|8(?:[23]|4(?:[45]|60)|5(?:4[0-39]|5|64)))|7[1-578]|8(?:[2469]|3[278]|54(?:4|5[13-7]|6[89])|86[3-6]))|2(?:2[24-9]|3[1-59]|47)|38(?:[58][78]|7[378])|3(?:454|85[56])[46]|3(?:4(?:36|5[56])|8(?:[38]5|76))[4-6]"], "0$1", 1], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2-$3", ["1"], "0$1", 1], ["(\\d{3})(\\d{3})(\\d{4})", "$1-$2-$3", ["[68]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2-$3", ["[23]"], "0$1", 1], ["(\\d)(\\d{4})(\\d{2})(\\d{4})", "$2 15-$3-$4", ["9(?:2[2-469]|3[3-578])", "9(?:2(?:2[024-9]|3[0-59]|47|6[245]|9[02-8])|3(?:3[28]|4[03-9]|5[2-46-8]|7[1-578]|8[2-9]))", "9(?:2(?:[23]02|6(?:[25]|4[6-8])|9(?:[02356]|4[02568]|72|8[23]))|3(?:3[28]|4(?:[04679]|3[5-8]|5[4-68]|8[2379])|5(?:[2467]|3[237]|8[2-5])|7[1-578]|8(?:[2469]|3[2578]|5[4-8]|7[36-8]|8[5-8])))|92(?:2[24-9]|3[1-59]|47)", "9(?:2(?:[23]02|6(?:[25]|4(?:64|[78]))|9(?:[02356]|4(?:[0268]|5[2-6])|72|8[23]))|3(?:3[28]|4(?:[04679]|3[78]|5(?:4[46]|8)|8[2379])|5(?:[2467]|3[237]|8[23])|7[1-578]|8(?:[2469]|3[278]|5(?:[56][46]|[78])|7[378]|8(?:6[3-6]|[78]))))|92(?:2[24-9]|3[1-59]|47)|93(?:4[35][56]|58[45]|8(?:[38]5|54|76))[4-6]", "9(?:2(?:[23]02|6(?:[25]|4(?:64|[78]))|9(?:[02356]|4(?:[0268]|5[2-6])|72|8[23]))|3(?:3[28]|4(?:[04679]|3(?:5(?:4[0-25689]|[56])|[78])|5(?:4[46]|8)|8[2379])|5(?:[2467]|3[237]|8(?:[23]|4(?:[45]|60)|5(?:4[0-39]|5|64)))|7[1-578]|8(?:[2469]|3[278]|5(?:4(?:4|5[13-7]|6[89])|[56][46]|[78])|7[378]|8(?:6[3-6]|[78]))))|92(?:2[24-9]|3[1-59]|47)|93(?:4(?:36|5[56])|8(?:[38]5|76))[4-6]"], "0$1", 0, "$1 $2 $3-$4"], ["(\\d)(\\d{2})(\\d{4})(\\d{4})", "$2 15-$3-$4", ["91"], "0$1", 0, "$1 $2 $3-$4"], ["(\\d{3})(\\d{3})(\\d{5})", "$1-$2-$3", ["8"], "0$1"], ["(\\d)(\\d{3})(\\d{3})(\\d{4})", "$2 15-$3-$4", ["9"], "0$1", 0, "$1 $2 $3-$4"]], "0", 0, "0?(?:(11|2(?:2(?:02?|[13]|2[13-79]|4[1-6]|5[2457]|6[124-8]|7[1-4]|8[13-6]|9[1267])|3(?:02?|1[467]|2[03-6]|3[13-8]|[49][2-6]|5[2-8]|[67])|4(?:7[3-578]|9)|6(?:[0136]|2[24-6]|4[6-8]?|5[15-8])|80|9(?:0[1-3]|[19]|2\\d|3[1-6]|4[02568]?|5[2-4]|6[2-46]|72?|8[23]?))|3(?:3(?:2[79]|6|8[2578])|4(?:0[0-24-9]|[12]|3[5-8]?|4[24-7]|5[4-68]?|6[02-9]|7[126]|8[2379]?|9[1-36-8])|5(?:1|2[1245]|3[237]?|4[1-46-9]|6[2-4]|7[1-6]|8[2-5]?)|6[24]|7(?:[069]|1[1568]|2[15]|3[145]|4[13]|5[14-8]|7[2-57]|8[126])|8(?:[01]|2[15-7]|3[2578]?|4[13-6]|5[4-8]?|6[1-357-9]|7[36-8]?|8[5-8]?|9[124])))15)?", "9$1", 0, 0, [["3888[013-9]\\d{5}|3(?:7(?:1[15]|81)|8(?:21|4[16]|69|9[12]))[46]\\d{5}|(?:29(?:54|66)|3(?:7(?:55|77)|865))[2-8]\\d{5}|(?:2(?:2(?:2[59]|44|52)|3(?:26|44)|473|9(?:[07]2|2[26]|34|46))|3327)[45]\\d{5}|(?:2(?:284|3(?:02|23)|657|920)|3(?:4(?:8[27]|92)|541|878))[2-7]\\d{5}|(?:2(?:(?:26|62)2|320|477|9(?:42|83))|3(?:329|4(?:[47]6|62|89)|564))[2-6]\\d{5}|(?:(?:11[1-8]|670)\\d|2(?:2(?:0[45]|1[2-6]|3[3-6])|3(?:[06]4|7[45])|494|6(?:04|1[2-8]|[36][45]|4[3-6])|80[45]|9(?:[17][4-6]|[48][45]|9[3-6]))|3(?:364|4(?:1[2-8]|[235][4-6]|84)|5(?:1[2-9]|[38][4-6])|6(?:2[45]|44)|7[069][45]|8(?:0[45]|[17][2-6]|3[4-6]|[58][3-6])))\\d{6}|2(?:2(?:21|4[23]|6[145]|7[1-4]|8[356]|9[267])|3(?:16|3[13-8]|43|5[346-8]|9[3-5])|475|6(?:2[46]|4[78]|5[1568])|9(?:03|2[1457-9]|3[1356]|4[08]|[56][23]|82))4\\d{5}|(?:2(?:2(?:57|81)|3(?:24|46|92)|9(?:01|23|64))|3(?:4(?:42|71)|5(?:25|37|4[347]|71)|7(?:18|5[17])))[3-6]\\d{5}|(?:2(?:2(?:02|2[3467]|4[156]|5[45]|6[6-8]|91)|3(?:1[47]|25|[45][25]|96)|47[48]|625|932)|3(?:38[2578]|4(?:0[0-24-9]|3[78]|4[457]|58|6[03-9]|72|83|9[136-8])|5(?:2[124]|[368][23]|4[2689]|7[2-6])|7(?:16|2[15]|3[145]|4[13]|5[468]|7[2-5]|8[26])|8(?:2[5-7]|3[278]|4[3-5]|5[78]|6[1-378]|[78]7|94)))[4-6]\\d{5}", [10]], ["93(?:7(?:1[15]|81)[46]|8(?:(?:21|4[16]|69|9[12])[46]|88[013-9]))\\d{5}|9(?:29(?:54|66)|3(?:7(?:55|77)|865))[2-8]\\d{5}|9(?:2(?:2(?:2[59]|44|52)|3(?:26|44)|473|9(?:[07]2|2[26]|34|46))|3327)[45]\\d{5}|9(?:2(?:284|3(?:02|23)|657|920)|3(?:4(?:8[27]|92)|541|878))[2-7]\\d{5}|9(?:2(?:(?:26|62)2|320|477|9(?:42|83))|3(?:329|4(?:[47]6|62|89)|564))[2-6]\\d{5}|(?:675\\d|9(?:11[1-8]\\d|2(?:2(?:0[45]|1[2-6]|3[3-6])|3(?:[06]4|7[45])|494|6(?:04|1[2-8]|[36][45]|4[3-6])|80[45]|9(?:[17][4-6]|[48][45]|9[3-6]))|3(?:364|4(?:1[2-8]|[235][4-6]|84)|5(?:1[2-9]|[38][4-6])|6(?:2[45]|44)|7[069][45]|8(?:0[45]|[17][2-6]|3[4-6]|[58][3-6]))))\\d{6}|92(?:2(?:21|4[23]|6[145]|7[1-4]|8[356]|9[267])|3(?:16|3[13-8]|43|5[346-8]|9[3-5])|475|6(?:2[46]|4[78]|5[1568])|9(?:03|2[1457-9]|3[1356]|4[08]|[56][23]|82))4\\d{5}|9(?:2(?:2(?:57|81)|3(?:24|46|92)|9(?:01|23|64))|3(?:4(?:42|71)|5(?:25|37|4[347]|71)|7(?:18|5[17])))[3-6]\\d{5}|9(?:2(?:2(?:02|2[3467]|4[156]|5[45]|6[6-8]|91)|3(?:1[47]|25|[45][25]|96)|47[48]|625|932)|3(?:38[2578]|4(?:0[0-24-9]|3[78]|4[457]|58|6[03-9]|72|83|9[136-8])|5(?:2[124]|[368][23]|4[2689]|7[2-6])|7(?:16|2[15]|3[145]|4[13]|5[468]|7[2-5]|8[26])|8(?:2[5-7]|3[278]|4[3-5]|5[78]|6[1-378]|[78]7|94)))[4-6]\\d{5}"], ["800\\d{7,8}"], ["60[04579]\\d{7}", [10]], 0, 0, ["810\\d{7}", [10]]]], "AS": ["1", "011", "(?:[58]\\d\\d|684|900)\\d{7}", [10], 0, "1", 0, "([267]\\d{6})$|1", "684$1", 0, "684", [["6846(?:22|33|44|55|77|88|9[19])\\d{4}"], ["684(?:2(?:48|5[2468]|7[26])|7(?:3[13]|70|82))\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "AT": ["43", "00", "1\\d{3,12}|2\\d{6,12}|43(?:(?:0\\d|5[02-9])\\d{3,9}|2\\d{4,5}|[3467]\\d{4}|8\\d{4,6}|9\\d{4,7})|5\\d{4,12}|8\\d{7,12}|9\\d{8,12}|(?:[367]\\d|4[0-24-9])\\d{4,11}", [4, 5, 6, 7, 8, 9, 10, 11, 12, 13], [["(\\d)(\\d{3,12})", "$1 $2", ["1(?:11|[2-9])"], "0$1"], ["(\\d{3})(\\d{2})", "$1 $2", ["517"], "0$1"], ["(\\d{2})(\\d{3,5})", "$1 $2", ["5[079]"], "0$1"], ["(\\d{3})(\\d{3,10})", "$1 $2", ["(?:31|4)6|51|6(?:5[0-3579]|[6-9])|7(?:20|32|8)|[89]"], "0$1"], ["(\\d{4})(\\d{3,9})", "$1 $2", ["[2-467]|5[2-6]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["5"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4,7})", "$1 $2 $3", ["5"], "0$1"]], "0", 0, 0, 0, 0, 0, [["1(?:11\\d|[2-9]\\d{3,11})|(?:316|463|(?:51|66|73)2)\\d{3,10}|(?:2(?:1[467]|2[13-8]|5[2357]|6[1-46-8]|7[1-8]|8[124-7]|9[1458])|3(?:1[1-578]|3[23568]|4[5-7]|5[1378]|6[1-38]|8[3-68])|4(?:2[1-8]|35|7[1368]|8[2457])|5(?:2[1-8]|3[357]|4[147]|5[12578]|6[37])|6(?:13|2[1-47]|4[135-8]|5[468])|7(?:2[1-8]|35|4[13478]|5[68]|6[16-8]|7[1-6]|9[45]))\\d{4,10}"], ["6(?:5[0-3579]|6[013-9]|[7-9]\\d)\\d{4,10}", [7, 8, 9, 10, 11, 12, 13]], ["800\\d{6,10}", [9, 10, 11, 12, 13]], ["(?:8[69][2-68]|9(?:0[01]|3[019]))\\d{6,10}", [9, 10, 11, 12, 13]], 0, 0, 0, 0, ["5(?:0[1-9]|17|[79]\\d)\\d{2,10}|7[28]0\\d{6,10}", [5, 6, 7, 8, 9, 10, 11, 12, 13]], ["8(?:10|2[018])\\d{6,10}|828\\d{5}", [8, 9, 10, 11, 12, 13]]]], "AU": ["61", "001[14-689]|14(?:1[14]|34|4[17]|[56]6|7[47]|88)0011", "1(?:[0-79]\\d{7}(?:\\d(?:\\d{2})?)?|8[0-24-9]\\d{7})|[2-478]\\d{8}|1\\d{4,7}", [5, 6, 7, 8, 9, 10, 12], [["(\\d{2})(\\d{3,4})", "$1 $2", ["16"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2,4})", "$1 $2 $3", ["16"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["14|4"], "0$1"], ["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["[2378]"], "(0$1)"], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["1(?:30|[89])"]]], "0", 0, "(183[12])|0", 0, 0, 0, [["(?:(?:2(?:[0-26-9]\\d|3[0-8]|4[02-9]|5[0135-9])|3(?:[0-3589]\\d|4[0-578]|6[1-9]|7[0-35-9])|7(?:[013-57-9]\\d|2[0-8]))\\d{3}|8(?:51(?:0(?:0[03-9]|[12479]\\d|3[2-9]|5[0-8]|6[1-9]|8[0-7])|1(?:[0235689]\\d|1[0-69]|4[0-589]|7[0-47-9])|2(?:0[0-79]|[18][13579]|2[14-9]|3[0-46-9]|[4-6]\\d|7[89]|9[0-4]))|(?:6[0-8]|[78]\\d)\\d{3}|9(?:[02-9]\\d{3}|1(?:(?:[0-58]\\d|6[0135-9])\\d|7(?:0[0-24-9]|[1-9]\\d)|9(?:[0-46-9]\\d|5[0-79])))))\\d{3}", [9]], ["4(?:(?:79|94)[01]|83[0-389])\\d{5}|4(?:[0-3]\\d|4[047-9]|5[0-25-9]|6[0-26-9]|7[02-8]|8[0-24-9]|9[0-37-9])\\d{6}", [9]], ["180(?:0\\d{3}|2)\\d{3}", [7, 10]], ["190[0-26]\\d{6}", [10]], 0, 0, 0, ["163\\d{2,6}", [5, 6, 7, 8, 9]], ["14(?:5(?:1[0458]|[23][458])|71\\d)\\d{4}", [9]], ["13(?:00\\d{6}(?:\\d{2})?|45[0-4]\\d{3})|13\\d{4}", [6, 8, 10, 12]]], "0011"], "AW": ["297", "00", "(?:[25-79]\\d\\d|800)\\d{4}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[25-9]"]]], 0, 0, 0, 0, 0, 0, [["5(?:2\\d|8[1-9])\\d{4}"], ["(?:290|5[69]\\d|6(?:[03]0|22|4[0-2]|[69]\\d)|7(?:[34]\\d|7[07])|9(?:6[45]|9[4-8]))\\d{4}"], ["800\\d{4}"], ["900\\d{4}"], 0, 0, 0, 0, ["(?:28\\d|501)\\d{4}"]]], "AX": ["358", "00|99(?:[01469]|5(?:[14]1|3[23]|5[59]|77|88|9[09]))", "2\\d{4,9}|35\\d{4,5}|(?:60\\d\\d|800)\\d{4,6}|7\\d{5,11}|(?:[14]\\d|3[0-46-9]|50)\\d{4,8}", [5, 6, 7, 8, 9, 10, 11, 12], 0, "0", 0, 0, 0, 0, "18", [["18[1-8]\\d{3,6}", [6, 7, 8, 9]], ["4946\\d{2,6}|(?:4[0-8]|50)\\d{4,8}", [6, 7, 8, 9, 10]], ["800\\d{4,6}", [7, 8, 9]], ["[67]00\\d{5,6}", [8, 9]], 0, 0, ["20\\d{4,8}|60[12]\\d{5,6}|7(?:099\\d{4,5}|5[03-9]\\d{3,7})|20[2-59]\\d\\d|(?:606|7(?:0[78]|1|3\\d))\\d{7}|(?:10|29|3[09]|70[1-5]\\d)\\d{4,8}"]], "00"], "AZ": ["994", "00", "365\\d{6}|(?:[124579]\\d|60|88)\\d{7}", [9], [["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["90"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["1[28]|2|365|46", "1[28]|2|365[45]|46", "1[28]|2|365(?:4|5[02])|46"], "(0$1)"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[13-9]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2[12]428|3655[02])\\d{4}|(?:2(?:22[0-79]|63[0-28])|3654)\\d{5}|(?:(?:1[28]|46)\\d|2(?:[014-6]2|[23]3))\\d{6}"], ["36554\\d{4}|(?:[16]0|4[04]|5[015]|7[07]|99)\\d{7}"], ["88\\d{7}"], ["900200\\d{3}"]]], "BA": ["387", "00", "6\\d{8}|(?:[35689]\\d|49|70)\\d{6}", [8, 9], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["6[1-3]|[7-9]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2-$3", ["[3-5]|6[56]"], "0$1"], ["(\\d{2})(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3 $4", ["6"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:3(?:[05-79][2-9]|1[4579]|[23][24-9]|4[2-4689]|8[2457-9])|49[2-579]|5(?:0[2-49]|[13][2-9]|[268][2-4679]|4[4689]|5[2-79]|7[2-69]|9[2-4689]))\\d{5}", [8]], ["6040\\d{5}|6(?:03|[1-356]|44|7\\d)\\d{6}"], ["8[08]\\d{6}", [8]], ["9[0246]\\d{6}", [8]], 0, 0, ["703[235]0\\d{3}|70(?:2[0-5]|3[0146]|[56]0)\\d{4}", [8]], 0, 0, ["8[12]\\d{6}", [8]]]], "BB": ["1", "011", "(?:246|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2-9]\\d{6})$|1", "246$1", 0, "246", [["246521[0369]\\d{3}|246(?:2(?:2[78]|7[0-4])|4(?:1[024-6]|2\\d|3[2-9])|5(?:20|[34]\\d|54|7[1-3])|6(?:2\\d|38)|7[35]7|9(?:1[89]|63))\\d{4}"], ["246(?:(?:2(?:[3568]\\d|4[0-57-9])|3(?:5[2-9]|6[0-6])|4(?:46|5\\d)|69[5-7]|8(?:[2-5]\\d|83))\\d|52(?:1[147]|20))\\d{3}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["(?:246976|900[2-9]\\d\\d)\\d{4}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], 0, ["246(?:292|367|4(?:1[7-9]|3[01]|4[47-9]|67)|7(?:1[2-9]|2\\d|3[016]|53))\\d{4}"], 0, ["24631\\d{5}"]]], "BD": ["880", "00", "[1-469]\\d{9}|8[0-79]\\d{7,8}|[2-79]\\d{8}|[2-9]\\d{7}|[3-9]\\d{6}|[57-9]\\d{5}", [6, 7, 8, 9, 10], [["(\\d{2})(\\d{4,6})", "$1-$2", ["31[5-8]|[459]1"], "0$1"], ["(\\d{3})(\\d{3,7})", "$1-$2", ["3(?:[67]|8[013-9])|4(?:6[168]|7|[89][18])|5(?:6[128]|9)|6(?:[15]|28|4[14])|7[2-589]|8(?:0[014-9]|[12])|9[358]|(?:3[2-5]|4[235]|5[2-578]|6[0389]|76|8[3-7]|9[24])1|(?:44|66)[01346-9]"], "0$1"], ["(\\d{4})(\\d{3,6})", "$1-$2", ["[13-9]|22"], "0$1"], ["(\\d)(\\d{7,8})", "$1-$2", ["2"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:4(?:31\\d\\d|423)|5222)\\d{3}(?:\\d{2})?|8332[6-9]\\d\\d|(?:3(?:03[56]|224)|4(?:22[25]|653))\\d{3,4}|(?:3(?:42[47]|529|823)|4(?:027|525|65(?:28|8))|562|6257|7(?:1(?:5[3-5]|6[12]|7[156]|89)|22[589]56|32|42675|52(?:[25689](?:56|8)|[347]8)|71(?:6[1267]|75|89)|92374)|82(?:2[59]|32)56|9(?:03[23]56|23(?:256|373)|31|5(?:1|2[4589]56)))\\d{3}|(?:3(?:02[348]|22[35]|324|422)|4(?:22[67]|32[236-9]|6(?:2[46]|5[57])|953)|5526|6(?:024|6655)|81)\\d{4,5}|(?:2(?:7(?:1[0-267]|2[0-289]|3[0-29]|4[01]|5[1-3]|6[013]|7[0178]|91)|8(?:0[125]|1[1-6]|2[0157-9]|3[1-69]|41|6[1-35]|7[1-5]|8[1-8]|9[0-6])|9(?:0[0-2]|1[0-4]|2[568]|3[3-6]|5[5-7]|6[0136-9]|7[0-7]|8[014-9]))|3(?:0(?:2[025-79]|3[2-4])|181|22[12]|32[2356]|824)|4(?:02[09]|22[348]|32[045]|523|6(?:27|54))|666(?:22|53)|7(?:22[57-9]|42[56]|82[35])8|8(?:0[124-9]|2(?:181|2[02-4679]8)|4[12]|[5-7]2)|9(?:[04]2|2(?:2|328)|81))\\d{4}|(?:2(?:222|[45]\\d)\\d|3(?:1(?:2[5-7]|[5-7])|425|822)|4(?:033|1\\d|[257]1|332|4(?:2[246]|5[25])|6(?:2[35]|56|62)|8(?:23|54)|92[2-5])|5(?:02[03489]|22[457]|32[35-79]|42[46]|6(?:[18]|53)|724|826)|6(?:023|2(?:2[2-5]|5[3-5]|8)|32[3478]|42[34]|52[47]|6(?:[18]|6(?:2[34]|5[24]))|[78]2[2-5]|92[2-6])|7(?:02|21\\d|[3-589]1|6[12]|72[24])|8(?:217|3[12]|[5-7]1)|9[24]1)\\d{5}|(?:(?:3[2-8]|5[2-57-9]|6[03-589])1|4[4689][18])\\d{5}|[59]1\\d{5}"], ["(?:1[13-9]\\d|644)\\d{7}|(?:3[78]|44|66)[02-9]\\d{7}", [10]], ["80[03]\\d{7}", [10]], 0, 0, 0, 0, 0, ["96(?:0[469]|1[0-47]|3[389]|43|6[69]|7[78])\\d{6}", [10]]]], "BE": ["32", "00", "4\\d{8}|[1-9]\\d{7}", [8, 9], [["(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["(?:80|9)0"], "0$1"], ["(\\d)(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[239]|4[23]"], "0$1"], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[15-8]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["4"], "0$1"]], "0", 0, 0, 0, 0, 0, [["80[2-8]\\d{5}|(?:1[0-69]|[23][2-8]|4[23]|5\\d|6[013-57-9]|71|8[1-79]|9[2-4])\\d{6}", [8]], ["4[5-9]\\d{7}", [9]], ["800[1-9]\\d{4}", [8]], ["(?:70(?:2[0-57]|3[04-7]|44|6[4-69]|7[0579])|90\\d\\d)\\d{4}", [8]], 0, 0, ["78(?:0[57]|1[014-8]|2[25]|3[15-8]|48|[56]0|7[06-8]|9\\d)\\d{4}", [8]], 0, 0, ["7879\\d{4}", [8]]]], "BF": ["226", "00", "[025-7]\\d{7}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[025-7]"]]], 0, 0, 0, 0, 0, 0, [["2(?:0(?:49|5[23]|6[5-7]|9[016-9])|4(?:4[569]|5[4-6]|6[5-7]|7[0179])|5(?:[34]\\d|50|6[5-7]))\\d{4}"], ["(?:0[1-35-7]|5[0-8]|[67]\\d)\\d{6}"]]], "BG": ["359", "00", "00800\\d{7}|[2-7]\\d{6,7}|[89]\\d{6,8}|2\\d{5}", [6, 7, 8, 9, 12], [["(\\d)(\\d)(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["2"], "0$1"], ["(\\d{3})(\\d{4})", "$1 $2", ["43[1-6]|70[1-9]"], "0$1"], ["(\\d)(\\d{3})(\\d{3,4})", "$1 $2 $3", ["2"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2,3})", "$1 $2 $3", ["[356]|4[124-7]|7[1-9]|8[1-6]|9[1-7]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["(?:70|8)0"], "0$1"], ["(\\d{3})(\\d{3})(\\d{2})", "$1 $2 $3", ["43[1-7]|7"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[48]|9[08]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["9"], "0$1"]], "0", 0, 0, 0, 0, 0, [["2\\d{5,7}|(?:43[1-6]|70[1-9])\\d{4,5}|(?:[36]\\d|4[124-7]|[57][1-9]|8[1-6]|9[1-7])\\d{5,6}", [6, 7, 8]], ["(?:43[07-9]|99[69]\\d)\\d{5}|(?:8[7-9]|98)\\d{7}", [8, 9]], ["(?:00800\\d\\d|800)\\d{5}", [8, 12]], ["90\\d{6}", [8]], 0, 0, 0, 0, 0, ["700\\d{5}", [8]]]], "BH": ["973", "00", "[136-9]\\d{7}", [8], [["(\\d{4})(\\d{4})", "$1 $2", ["[13679]|8[02-4679]"]]], 0, 0, 0, 0, 0, 0, [["(?:1(?:3[1356]|6[0156]|7\\d)\\d|6(?:1[16]\\d|500|6(?:0\\d|3[12]|44|7[7-9]|88)|9[69][69])|7(?:[07]\\d\\d|1(?:11|78)))\\d{4}"], ["(?:3(?:[0-79]\\d|8[0-57-9])\\d|6(?:3(?:00|33|6[16])|441|6(?:3[03-9]|[69]\\d|7[0-6])))\\d{4}"], ["8[02369]\\d{6}"], ["(?:87|9[0-8])\\d{6}"], 0, 0, 0, 0, 0, ["84\\d{6}"]]], "BI": ["257", "00", "(?:[267]\\d|31)\\d{6}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[2367]"]]], 0, 0, 0, 0, 0, 0, [["(?:22|31)\\d{6}"], ["(?:29|[67][125-9])\\d{6}"]]], "BJ": ["229", "00", "[24-689]\\d{7}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[24-689]"]]], 0, 0, 0, 0, 0, 0, [["2(?:02|1[037]|2[45]|3[68]|4\\d)\\d{5}"], ["(?:4[0-356]|[56]\\d|9[013-9])\\d{6}"], 0, 0, 0, 0, ["81\\d{6}"], 0, ["857[58]\\d{4}"]]], "BL": ["590", "00", "590\\d{6}|(?:69|80|9\\d)\\d{7}", [9], 0, "0", 0, 0, 0, 0, 0, [["590(?:2[7-9]|3[3-7]|5[12]|87)\\d{4}"], ["69(?:0\\d\\d|1(?:2[2-9]|3[0-5]))\\d{4}"], ["80[0-5]\\d{6}"], 0, 0, 0, 0, 0, ["9(?:(?:395|76[018])\\d|475[0-5])\\d{4}"]]], "BM": ["1", "011", "(?:441|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2-9]\\d{6})$|1", "441$1", 0, "441", [["441(?:[46]\\d\\d|5(?:4\\d|60|89))\\d{4}"], ["441(?:[2378]\\d|5[0-39]|92)\\d{5}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "BN": ["673", "00", "[2-578]\\d{6}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[2-578]"]]], 0, 0, 0, 0, 0, 0, [["22[0-7]\\d{4}|(?:2[013-9]|[34]\\d|5[0-25-9])\\d{5}"], ["(?:22[89]|[78]\\d\\d)\\d{4}"], 0, 0, 0, 0, 0, 0, ["5[34]\\d{5}"]]], "BO": ["591", "00(?:1\\d)?", "(?:[2-467]\\d\\d|8001)\\d{5}", [8, 9], [["(\\d)(\\d{7})", "$1 $2", ["[23]|4[46]"]], ["(\\d{8})", "$1", ["[67]"]], ["(\\d{3})(\\d{2})(\\d{4})", "$1 $2 $3", ["8"]]], "0", 0, "0(1\\d)?", 0, 0, 0, [["(?:2(?:2\\d\\d|5(?:11|[258]\\d|9[67])|6(?:12|2\\d|9[34])|8(?:2[34]|39|62))|3(?:3\\d\\d|4(?:6\\d|8[24])|8(?:25|42|5[257]|86|9[25])|9(?:[27]\\d|3[2-4]|4[248]|5[24]|6[2-6]))|4(?:4\\d\\d|6(?:11|[24689]\\d|72)))\\d{4}", [8]], ["[67]\\d{7}", [8]], ["8001[07]\\d{4}", [9]]]], "BQ": ["599", "00", "(?:[34]1|7\\d)\\d{5}", [7], 0, 0, 0, 0, 0, 0, "[347]", [["(?:318[023]|41(?:6[023]|70)|7(?:1[578]|2[05]|50)\\d)\\d{3}"], ["(?:31(?:8[14-8]|9[14578])|416[14-9]|7(?:0[01]|7[07]|8\\d|9[056])\\d)\\d{3}"]]], "BR": ["55", "00(?:1[245]|2[1-35]|31|4[13]|[56]5|99)", "(?:[1-46-9]\\d\\d|5(?:[0-46-9]\\d|5[0-46-9]))\\d{8}|[1-9]\\d{9}|[3589]\\d{8}|[34]\\d{7}", [8, 9, 10, 11], [["(\\d{4})(\\d{4})", "$1-$2", ["300|4(?:0[02]|37)", "4(?:02|37)0|[34]00"]], ["(\\d{3})(\\d{2,3})(\\d{4})", "$1 $2 $3", ["(?:[358]|90)0"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2-$3", ["(?:[14689][1-9]|2[12478]|3[1-578]|5[13-5]|7[13-579])[2-57]"], "($1)"], ["(\\d{2})(\\d{5})(\\d{4})", "$1 $2-$3", ["[16][1-9]|[2-57-9]"], "($1)"]], "0", 0, "(?:0|90)(?:(1[245]|2[1-35]|31|4[13]|[56]5|99)(\\d{10,11}))?", "$2", 0, 0, [["(?:[14689][1-9]|2[12478]|3[1-578]|5[13-5]|7[13-579])[2-5]\\d{7}", [10]], ["(?:[14689][1-9]|2[12478]|3[1-578]|5[13-5]|7[13-579])(?:7|9\\d)\\d{7}", [10, 11]], ["800\\d{6,7}", [9, 10]], ["300\\d{6}|[59]00\\d{6,7}", [9, 10]], 0, 0, 0, 0, 0, ["(?:30[03]\\d{3}|4(?:0(?:0\\d|20)|370))\\d{4}|300\\d{5}", [8, 10]]]], "BS": ["1", "011", "(?:242|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([3-8]\\d{6})$|1", "242$1", 0, "242", [["242(?:3(?:02|[236][1-9]|4[0-24-9]|5[0-68]|7[347]|8[0-4]|9[2-467])|461|502|6(?:0[1-5]|12|2[013]|[45]0|7[67]|8[78]|9[89])|7(?:02|88))\\d{4}"], ["242(?:3(?:5[79]|7[56]|95)|4(?:[23][1-9]|4[1-35-9]|5[1-8]|6[2-8]|7\\d|81)|5(?:2[45]|3[35]|44|5[1-46-9]|65|77)|6[34]6|7(?:27|38)|8(?:0[1-9]|1[02-9]|2\\d|[89]9))\\d{4}"], ["242300\\d{4}|8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], 0, ["242225\\d{4}"]]], "BT": ["975", "00", "[17]\\d{7}|[2-8]\\d{6}", [7, 8], [["(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["[2-68]|7[246]"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["1[67]|7"]]], 0, 0, 0, 0, 0, 0, [["(?:2[3-6]|[34][5-7]|5[236]|6[2-46]|7[246]|8[2-4])\\d{5}", [7]], ["(?:1[67]|77)\\d{6}", [8]]]], "BW": ["267", "00", "(?:0800|(?:[37]|800)\\d)\\d{6}|(?:[2-6]\\d|90)\\d{5}", [7, 8, 10], [["(\\d{2})(\\d{5})", "$1 $2", ["90"]], ["(\\d{3})(\\d{4})", "$1 $2", ["[24-6]|3[15-9]"]], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[37]"]], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["0"]], ["(\\d{3})(\\d{4})(\\d{3})", "$1 $2 $3", ["8"]]], 0, 0, 0, 0, 0, 0, [["(?:2(?:4[0-48]|6[0-24]|9[0578])|3(?:1[0-35-9]|55|[69]\\d|7[013]|81)|4(?:6[03]|7[1267]|9[0-5])|5(?:3[03489]|4[0489]|7[1-47]|88|9[0-49])|6(?:2[1-35]|5[149]|8[067]))\\d{4}", [7]], ["(?:321|7[1-8]\\d)\\d{5}", [8]], ["(?:0800|800\\d)\\d{6}", [10]], ["90\\d{5}", [7]], 0, 0, 0, 0, ["79(?:1(?:[01]\\d|2[0-8])|2[0-7]\\d)\\d{3}", [8]]]], "BY": ["375", "810", "(?:[12]\\d|33|44|902)\\d{7}|8(?:0[0-79]\\d{5,7}|[1-7]\\d{9})|8(?:1[0-489]|[5-79]\\d)\\d{7}|8[1-79]\\d{6,7}|8[0-79]\\d{5}|8\\d{5}", [6, 7, 8, 9, 10, 11], [["(\\d{3})(\\d{3})", "$1 $2", ["800"], "8 $1"], ["(\\d{3})(\\d{2})(\\d{2,4})", "$1 $2 $3", ["800"], "8 $1"], ["(\\d{4})(\\d{2})(\\d{3})", "$1 $2-$3", ["1(?:5[169]|6[3-5]|7[179])|2(?:1[35]|2[34]|3[3-5])", "1(?:5[169]|6(?:3[1-3]|4|5[125])|7(?:1[3-9]|7[0-24-6]|9[2-7]))|2(?:1[35]|2[34]|3[3-5])"], "8 0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2-$3-$4", ["1(?:[56]|7[467])|2[1-3]"], "8 0$1"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2-$3-$4", ["[1-4]"], "8 0$1"], ["(\\d{3})(\\d{3,4})(\\d{4})", "$1 $2 $3", ["[89]"], "8 $1"]], "8", 0, "0|80?", 0, 0, 0, [["(?:1(?:5(?:1[1-5]|[24]\\d|6[2-4]|9[1-7])|6(?:[235]\\d|4[1-7])|7\\d\\d)|2(?:1(?:[246]\\d|3[0-35-9]|5[1-9])|2(?:[235]\\d|4[0-8])|3(?:[26]\\d|3[02-79]|4[024-7]|5[03-7])))\\d{5}", [9]], ["(?:2(?:5[5-79]|9[1-9])|(?:33|44)\\d)\\d{6}", [9]], ["800\\d{3,7}|8(?:0[13]|20\\d)\\d{7}"], ["(?:810|902)\\d{7}", [10]], 0, 0, 0, 0, ["249\\d{6}", [9]]], "8~10"], "BZ": ["501", "00", "(?:0800\\d|[2-8])\\d{6}", [7, 11], [["(\\d{3})(\\d{4})", "$1-$2", ["[2-8]"]], ["(\\d)(\\d{3})(\\d{4})(\\d{3})", "$1-$2-$3-$4", ["0"]]], 0, 0, 0, 0, 0, 0, [["(?:2(?:[02]\\d|36|[68]0)|[3-58](?:[02]\\d|[68]0)|7(?:[02]\\d|32|[68]0))\\d{4}", [7]], ["6[0-35-7]\\d{5}", [7]], ["0800\\d{7}", [11]]]], "CA": ["1", "011", "(?:[2-8]\\d|90)\\d{8}|3\\d{6}", [7, 10], 0, "1", 0, 0, 0, 0, 0, [["(?:2(?:04|[23]6|[48]9|50|63)|3(?:06|43|54|6[578]|82)|4(?:03|1[68]|[26]8|3[178]|50|74)|5(?:06|1[49]|48|79|8[147])|6(?:04|[18]3|39|47|72)|7(?:0[59]|42|53|78|8[02])|8(?:[06]7|19|25|73)|90[25])[2-9]\\d{6}", [10]], ["", [10]], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}", [10]], ["900[2-9]\\d{6}", [10]], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|(?:5(?:00|2[125-9]|33|44|66|77|88)|622)[2-9]\\d{6}", [10]], 0, ["310\\d{4}", [7]], 0, ["600[2-9]\\d{6}", [10]]]], "CC": ["61", "001[14-689]|14(?:1[14]|34|4[17]|[56]6|7[47]|88)0011", "1(?:[0-79]\\d{8}(?:\\d{2})?|8[0-24-9]\\d{7})|[148]\\d{8}|1\\d{5,7}", [6, 7, 8, 9, 10, 12], 0, "0", 0, "([59]\\d{7})$|0", "8$1", 0, 0, [["8(?:51(?:0(?:02|31|60|89)|1(?:18|76)|223)|91(?:0(?:1[0-2]|29)|1(?:[28]2|50|79)|2(?:10|64)|3(?:[06]8|22)|4[29]8|62\\d|70[23]|959))\\d{3}", [9]], ["4(?:(?:79|94)[01]|83[0-389])\\d{5}|4(?:[0-3]\\d|4[047-9]|5[0-25-9]|6[0-26-9]|7[02-8]|8[0-24-9]|9[0-37-9])\\d{6}", [9]], ["180(?:0\\d{3}|2)\\d{3}", [7, 10]], ["190[0-26]\\d{6}", [10]], 0, 0, 0, 0, ["14(?:5(?:1[0458]|[23][458])|71\\d)\\d{4}", [9]], ["13(?:00\\d{6}(?:\\d{2})?|45[0-4]\\d{3})|13\\d{4}", [6, 8, 10, 12]]], "0011"], "CD": ["243", "00", "[189]\\d{8}|[1-68]\\d{6}", [7, 9], [["(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3", ["88"], "0$1"], ["(\\d{2})(\\d{5})", "$1 $2", ["[1-6]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[89]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["12\\d{7}|[1-6]\\d{6}"], ["88\\d{5}|(?:8[0-59]|9[017-9])\\d{7}"]]], "CF": ["236", "00", "(?:[27]\\d{3}|8776)\\d{4}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[278]"]]], 0, 0, 0, 0, 0, 0, [["2[12]\\d{6}"], ["7[024-7]\\d{6}"], 0, ["8776\\d{4}"]]], "CG": ["242", "00", "222\\d{6}|(?:0\\d|80)\\d{7}", [9], [["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["8"]], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[02]"]]], 0, 0, 0, 0, 0, 0, [["222[1-589]\\d{5}"], ["026(?:1[0-5]|6[6-9])\\d{4}|0(?:[14-6]\\d\\d|2(?:40|5[5-8]|6[07-9]))\\d{5}"], 0, ["80[0-2]\\d{6}"]]], "CH": ["41", "00", "8\\d{11}|[2-9]\\d{8}", [9], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["8[047]|90"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[2-79]|81"], "0$1"], ["(\\d{3})(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4 $5", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2[12467]|3[1-4]|4[134]|5[256]|6[12]|[7-9]1)\\d{7}"], ["7[35-9]\\d{7}"], ["800\\d{6}"], ["90[016]\\d{6}"], ["878\\d{6}"], 0, ["5[18]\\d{7}"], ["74[0248]\\d{6}"], 0, ["84[0248]\\d{6}"]]], "CI": ["225", "00", "[02]\\d{9}", [10], [["(\\d{2})(\\d{2})(\\d)(\\d{5})", "$1 $2 $3 $4", ["2"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{4})", "$1 $2 $3 $4", ["0"]]], 0, 0, 0, 0, 0, 0, [["2(?:[15]\\d{3}|7(?:2(?:0[23]|1[2357]|2[245]|3[45]|4[3-5])|3(?:06|1[69]|[2-6]7)))\\d{5}"], ["0[157]\\d{8}"]]], "CK": ["682", "00", "[2-578]\\d{4}", [5], [["(\\d{2})(\\d{3})", "$1 $2", ["[2-578]"]]], 0, 0, 0, 0, 0, 0, [["(?:2\\d|3[13-7]|4[1-5])\\d{3}"], ["[578]\\d{4}"]]], "CL": ["56", "(?:0|1(?:1[0-69]|2[02-5]|5[13-58]|69|7[0167]|8[018]))0", "12300\\d{6}|6\\d{9,10}|[2-9]\\d{8}", [9, 10, 11], [["(\\d{5})(\\d{4})", "$1 $2", ["219", "2196"], "($1)"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["44"]], ["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["2[1-36]"], "($1)"], ["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["9[2-9]"]], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["3[2-5]|[47]|5[1-3578]|6[13-57]|8(?:0[1-9]|[1-9])"], "($1)"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["60|8"]], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"]], ["(\\d{3})(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3 $4", ["60"]]], 0, 0, 0, 0, 0, 0, [["2(?:1982[0-6]|3314[05-9])\\d{3}|(?:2(?:1(?:160|962)|3(?:2\\d\\d|3(?:[03467]\\d|1[0-35-9]|2[1-9]|5[0-24-9]|8[0-3])|600)|646[59])|80[1-9]\\d\\d|9(?:3(?:[0-57-9]\\d\\d|6(?:0[02-9]|[1-9]\\d))|6(?:[0-8]\\d\\d|9(?:[02-79]\\d|1[05-9]))|7[1-9]\\d\\d|9(?:[03-9]\\d\\d|1(?:[0235-9]\\d|4[0-24-9])|2(?:[0-79]\\d|8[0-46-9]))))\\d{4}|(?:22|3[2-5]|[47][1-35]|5[1-3578]|6[13-57]|8[1-9]|9[2458])\\d{7}", [9]], ["", [9]], ["(?:123|8)00\\d{6}", [9, 11]], 0, 0, 0, 0, 0, ["44\\d{7}", [9]], ["600\\d{7,8}", [10, 11]]]], "CM": ["237", "00", "[26]\\d{8}|88\\d{6,7}", [8, 9], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["88"]], ["(\\d)(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4 $5", ["[26]|88"]]], 0, 0, 0, 0, 0, 0, [["2(?:22|33)\\d{6}", [9]], ["(?:24[23]|6[25-9]\\d)\\d{6}", [9]], ["88\\d{6,7}"]]], "CN": ["86", "00|1(?:[12]\\d|79)\\d\\d00", "1[127]\\d{8,9}|2\\d{9}(?:\\d{2})?|[12]\\d{6,7}|86\\d{6}|(?:1[03-689]\\d|6)\\d{7,9}|(?:[3-579]\\d|8[0-57-9])\\d{6,9}", [7, 8, 9, 10, 11, 12], [["(\\d{2})(\\d{5,6})", "$1 $2", ["(?:10|2[0-57-9])[19]", "(?:10|2[0-57-9])(?:10|9[56])", "10(?:10|9[56])|2[0-57-9](?:100|9[56])"], "0$1"], ["(\\d{3})(\\d{5,6})", "$1 $2", ["3(?:[157]|35|49|9[1-68])|4(?:[17]|2[179]|6[47-9]|8[23])|5(?:[1357]|2[37]|4[36]|6[1-46]|80)|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:1[236-8]|2[5-7]|[37]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|[379]|4[13]|5[1-5])|(?:4[35]|59|85)[1-9]", "(?:3(?:[157]\\d|35|49|9[1-68])|4(?:[17]\\d|2[179]|[35][1-9]|6[47-9]|8[23])|5(?:[1357]\\d|2[37]|4[36]|6[1-46]|80|9[1-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]\\d|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:1[236-8]|2[5-7]|[37]\\d|5[1-9]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|[379]\\d|4[13]|5[1-5]))[19]", "85[23](?:10|95)|(?:3(?:[157]\\d|35|49|9[1-68])|4(?:[17]\\d|2[179]|[35][1-9]|6[47-9]|8[23])|5(?:[1357]\\d|2[37]|4[36]|6[1-46]|80|9[1-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]\\d|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:1[236-8]|2[5-7]|[37]\\d|5[14-9]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|[379]\\d|4[13]|5[1-5]))(?:10|9[56])", "85[23](?:100|95)|(?:3(?:[157]\\d|35|49|9[1-68])|4(?:[17]\\d|2[179]|[35][1-9]|6[47-9]|8[23])|5(?:[1357]\\d|2[37]|4[36]|6[1-46]|80|9[1-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]\\d|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:1[236-8]|2[5-7]|[37]\\d|5[14-9]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|[379]\\d|4[13]|5[1-5]))(?:100|9[56])"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["(?:4|80)0"]], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["10|2(?:[02-57-9]|1[1-9])", "10|2(?:[02-57-9]|1[1-9])", "10[0-79]|2(?:[02-57-9]|1[1-79])|(?:10|21)8(?:0[1-9]|[1-9])"], "0$1", 1], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["3(?:[3-59]|7[02-68])|4(?:[26-8]|3[3-9]|5[2-9])|5(?:3[03-9]|[468]|7[028]|9[2-46-9])|6|7(?:[0-247]|3[04-9]|5[0-4689]|6[2368])|8(?:[1-358]|9[1-7])|9(?:[013479]|5[1-5])|(?:[34]1|55|79|87)[02-9]"], "0$1", 1], ["(\\d{3})(\\d{7,8})", "$1 $2", ["9"]], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["80"], "0$1", 1], ["(\\d{3})(\\d{4})(\\d{4})", "$1 $2 $3", ["[3-578]"], "0$1", 1], ["(\\d{3})(\\d{4})(\\d{4})", "$1 $2 $3", ["1[3-9]"]], ["(\\d{2})(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3 $4", ["[12]"], "0$1", 1]], "0", 0, "(1(?:[12]\\d|79)\\d\\d)|0", 0, 0, 0, [["(?:10(?:[02-79]\\d\\d|[18](?:0[1-9]|[1-9]\\d))|21(?:[18](?:0[1-9]|[1-9]\\d)|[2-79]\\d\\d))\\d{5}|(?:43[35]|754)\\d{7,8}|8(?:078\\d{7}|51\\d{7,8})|(?:10|(?:2|85)1|43[35]|754)(?:100\\d\\d|95\\d{3,4})|(?:2[02-57-9]|3(?:11|7[179])|4(?:[15]1|3[12])|5(?:1\\d|2[37]|3[12]|51|7[13-79]|9[15])|7(?:[39]1|5[57]|6[09])|8(?:71|98))(?:[02-8]\\d{7}|1(?:0(?:0\\d\\d(?:\\d{3})?|[1-9]\\d{5})|[1-9]\\d{6})|9(?:[0-46-9]\\d{6}|5\\d{3}(?:\\d(?:\\d{2})?)?))|(?:3(?:1[02-9]|35|49|5\\d|7[02-68]|9[1-68])|4(?:1[02-9]|2[179]|3[46-9]|5[2-9]|6[47-9]|7\\d|8[23])|5(?:3[03-9]|4[36]|5[02-9]|6[1-46]|7[028]|80|9[2-46-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[17]\\d|2[248]|3[04-9]|4[3-6]|5[0-3689]|6[2368]|9[02-9])|8(?:1[236-8]|2[5-7]|3\\d|5[2-9]|7[02-9]|8[36-8]|9[1-7])|9(?:0[1-3689]|1[1-79]|[379]\\d|4[13]|5[1-5]))(?:[02-8]\\d{6}|1(?:0(?:0\\d\\d(?:\\d{2})?|[1-9]\\d{4})|[1-9]\\d{5})|9(?:[0-46-9]\\d{5}|5\\d{3,5}))", [7, 8, 9, 10, 11]], ["1740[0-5]\\d{6}|1(?:[38]\\d|4[57]|[59][0-35-9]|6[25-7]|7[0-35-8])\\d{8}", [11]], ["(?:(?:10|21)8|8)00\\d{7}", [10, 12]], ["16[08]\\d{5}", [8]], 0, 0, 0, 0, 0, ["10(?:10\\d{4}|96\\d{3,4})|400\\d{7}|950\\d{7,8}|(?:2[0-57-9]|3(?:[157]\\d|35|49|9[1-68])|4(?:[17]\\d|2[179]|[35][1-9]|6[47-9]|8[23])|5(?:[1357]\\d|2[37]|4[36]|6[1-46]|80|9[1-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]\\d|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:1[236-8]|2[5-7]|[37]\\d|5[14-9]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|[379]\\d|4[13]|5[1-5]))96\\d{3,4}", [7, 8, 9, 10, 11]]], "00"], "CO": ["57", "00(?:4(?:[14]4|56)|[579])", "(?:60\\d\\d|9101)\\d{6}|(?:1\\d|3)\\d{9}", [10, 11], [["(\\d{3})(\\d{7})", "$1 $2", ["6"], "($1)"], ["(\\d{3})(\\d{7})", "$1 $2", ["3[0-357]|91"]], ["(\\d)(\\d{3})(\\d{7})", "$1-$2-$3", ["1"], "0$1", 0, "$1 $2 $3"]], "0", 0, "0([3579]|4(?:[14]4|56))?", 0, 0, 0, [["601055(?:[0-4]\\d|50)\\d\\d|6010(?:[0-4]\\d|5[0-4])\\d{4}|60(?:[124-7][2-9]|8[1-9])\\d{6}", [10]], ["333301[0-5]\\d{3}|3333(?:00|2[5-9]|[3-9]\\d)\\d{4}|(?:3(?:24[1-9]|3(?:00|3[0-24-9]))|9101)\\d{6}|3(?:0[0-5]|1\\d|2[0-3]|5[01]|70)\\d{7}", [10]], ["1800\\d{7}", [11]], ["19(?:0[01]|4[78])\\d{7}", [11]]]], "CR": ["506", "00", "(?:8\\d|90)\\d{8}|(?:[24-8]\\d{3}|3005)\\d{4}", [8, 10], [["(\\d{4})(\\d{4})", "$1 $2", ["[2-7]|8[3-9]"]], ["(\\d{3})(\\d{3})(\\d{4})", "$1-$2-$3", ["[89]"]]], 0, 0, "(19(?:0[0-2468]|1[09]|20|66|77|99))", 0, 0, 0, [["210[7-9]\\d{4}|2(?:[024-7]\\d|1[1-9])\\d{5}", [8]], ["(?:3005\\d|6500[01])\\d{3}|(?:5[07]|6[0-4]|7[0-3]|8[3-9])\\d{6}", [8]], ["800\\d{7}", [10]], ["90[059]\\d{7}", [10]], 0, 0, 0, 0, ["(?:210[0-6]|4\\d{3}|5100)\\d{4}", [8]]]], "CU": ["53", "119", "[27]\\d{6,7}|[34]\\d{5,7}|63\\d{6}|(?:5|8\\d\\d)\\d{7}", [6, 7, 8, 10], [["(\\d{2})(\\d{4,6})", "$1 $2", ["2[1-4]|[34]"], "(0$1)"], ["(\\d)(\\d{6,7})", "$1 $2", ["7"], "(0$1)"], ["(\\d)(\\d{7})", "$1 $2", ["[56]"], "0$1"], ["(\\d{3})(\\d{7})", "$1 $2", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:3[23]|4[89])\\d{4,6}|(?:31|4[36]|8(?:0[25]|78)\\d)\\d{6}|(?:2[1-4]|4[1257]|7\\d)\\d{5,6}"], ["(?:5\\d|63)\\d{6}", [8]], ["800\\d{7}", [10]], 0, 0, 0, 0, 0, 0, ["807\\d{7}", [10]]]], "CV": ["238", "0", "(?:[2-59]\\d\\d|800)\\d{4}", [7], [["(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3", ["[2-589]"]]], 0, 0, 0, 0, 0, 0, [["2(?:2[1-7]|3[0-8]|4[12]|5[1256]|6\\d|7[1-3]|8[1-5])\\d{4}"], ["(?:36|5[1-389]|9\\d)\\d{5}"], ["800\\d{4}"], 0, 0, 0, 0, 0, ["(?:3[3-5]|4[356])\\d{5}"]]], "CW": ["599", "00", "(?:[34]1|60|(?:7|9\\d)\\d)\\d{5}", [7, 8], [["(\\d{3})(\\d{4})", "$1 $2", ["[3467]"]], ["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["9[4-8]"]]], 0, 0, 0, 0, 0, "[69]", [["9(?:4(?:3[0-5]|4[14]|6\\d)|50\\d|7(?:2[014]|3[02-9]|4[4-9]|6[357]|77|8[7-9])|8(?:3[39]|[46]\\d|7[01]|8[57-9]))\\d{4}"], ["953[01]\\d{4}|9(?:5[12467]|6[5-9])\\d{5}"], 0, 0, 0, 0, 0, ["955\\d{5}", [8]], 0, ["60[0-2]\\d{4}", [7]]]], "CX": ["61", "001[14-689]|14(?:1[14]|34|4[17]|[56]6|7[47]|88)0011", "1(?:[0-79]\\d{8}(?:\\d{2})?|8[0-24-9]\\d{7})|[148]\\d{8}|1\\d{5,7}", [6, 7, 8, 9, 10, 12], 0, "0", 0, "([59]\\d{7})$|0", "8$1", 0, 0, [["8(?:51(?:0(?:01|30|59|88)|1(?:17|46|75)|2(?:22|35))|91(?:00[6-9]|1(?:[28]1|49|78)|2(?:09|63)|3(?:12|26|75)|4(?:56|97)|64\\d|7(?:0[01]|1[0-2])|958))\\d{3}", [9]], ["4(?:(?:79|94)[01]|83[0-389])\\d{5}|4(?:[0-3]\\d|4[047-9]|5[0-25-9]|6[0-26-9]|7[02-8]|8[0-24-9]|9[0-37-9])\\d{6}", [9]], ["180(?:0\\d{3}|2)\\d{3}", [7, 10]], ["190[0-26]\\d{6}", [10]], 0, 0, 0, 0, ["14(?:5(?:1[0458]|[23][458])|71\\d)\\d{4}", [9]], ["13(?:00\\d{6}(?:\\d{2})?|45[0-4]\\d{3})|13\\d{4}", [6, 8, 10, 12]]], "0011"], "CY": ["357", "00", "(?:[279]\\d|[58]0)\\d{6}", [8], [["(\\d{2})(\\d{6})", "$1 $2", ["[257-9]"]]], 0, 0, 0, 0, 0, 0, [["2[2-6]\\d{6}"], ["9(?:10|[4-79]\\d)\\d{5}"], ["800\\d{5}"], ["90[09]\\d{5}"], ["700\\d{5}"], 0, ["(?:50|77)\\d{6}"], 0, 0, ["80[1-9]\\d{5}"]]], "CZ": ["420", "00", "(?:[2-578]\\d|60)\\d{7}|9\\d{8,11}", [9], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[2-8]|9[015-7]"]], ["(\\d{2})(\\d{3})(\\d{3})(\\d{2})", "$1 $2 $3 $4", ["96"]], ["(\\d{2})(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["9"]], ["(\\d{3})(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["9"]]], 0, 0, 0, 0, 0, 0, [["(?:2\\d|3[1257-9]|4[16-9]|5[13-9])\\d{7}"], ["(?:60[1-8]|7(?:0[2-5]|[2379]\\d))\\d{6}"], ["800\\d{6}"], ["9(?:0[05689]|76)\\d{6}"], ["70[01]\\d{6}"], 0, ["9(?:5\\d|7[2-4])\\d{6}"], 0, ["9[17]0\\d{6}"], ["8[134]\\d{7}"]]], "DE": ["49", "00", "[2579]\\d{5,14}|49(?:[34]0|69|8\\d)\\d\\d?|49(?:37|49|60|7[089]|9\\d)\\d{1,3}|49(?:2[024-9]|3[2-689]|7[1-7])\\d{1,8}|(?:1|[368]\\d|4[0-8])\\d{3,13}|49(?:[015]\\d|2[13]|31|[46][1-8])\\d{1,9}", [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], [["(\\d{2})(\\d{3,13})", "$1 $2", ["3[02]|40|[68]9"], "0$1"], ["(\\d{3})(\\d{3,12})", "$1 $2", ["2(?:0[1-389]|1[124]|2[18]|3[14])|3(?:[35-9][15]|4[015])|906|(?:2[4-9]|4[2-9]|[579][1-9]|[68][1-8])1", "2(?:0[1-389]|12[0-8])|3(?:[35-9][15]|4[015])|906|2(?:[13][14]|2[18])|(?:2[4-9]|4[2-9]|[579][1-9]|[68][1-8])1"], "0$1"], ["(\\d{4})(\\d{2,11})", "$1 $2", ["[24-6]|3(?:[3569][02-46-9]|4[2-4679]|7[2-467]|8[2-46-8])|70[2-8]|8(?:0[2-9]|[1-8])|90[7-9]|[79][1-9]", "[24-6]|3(?:3(?:0[1-467]|2[127-9]|3[124578]|7[1257-9]|8[1256]|9[145])|4(?:2[135]|4[13578]|9[1346])|5(?:0[14]|2[1-3589]|6[1-4]|7[13468]|8[13568])|6(?:2[1-489]|3[124-6]|6[13]|7[12579]|8[1-356]|9[135])|7(?:2[1-7]|4[145]|6[1-5]|7[1-4])|8(?:21|3[1468]|6|7[1467]|8[136])|9(?:0[12479]|2[1358]|4[134679]|6[1-9]|7[136]|8[147]|9[1468]))|70[2-8]|8(?:0[2-9]|[1-8])|90[7-9]|[79][1-9]|3[68]4[1347]|3(?:47|60)[1356]|3(?:3[46]|46|5[49])[1246]|3[4579]3[1357]"], "0$1"], ["(\\d{3})(\\d{4})", "$1 $2", ["138"], "0$1"], ["(\\d{5})(\\d{2,10})", "$1 $2", ["3"], "0$1"], ["(\\d{3})(\\d{5,11})", "$1 $2", ["181"], "0$1"], ["(\\d{3})(\\d)(\\d{4,10})", "$1 $2 $3", ["1(?:3|80)|9"], "0$1"], ["(\\d{3})(\\d{7,8})", "$1 $2", ["1[67]"], "0$1"], ["(\\d{3})(\\d{7,12})", "$1 $2", ["8"], "0$1"], ["(\\d{5})(\\d{6})", "$1 $2", ["185", "1850", "18500"], "0$1"], ["(\\d{3})(\\d{4})(\\d{4})", "$1 $2 $3", ["7"], "0$1"], ["(\\d{4})(\\d{7})", "$1 $2", ["18[68]"], "0$1"], ["(\\d{5})(\\d{6})", "$1 $2", ["15[0568]"], "0$1"], ["(\\d{4})(\\d{7})", "$1 $2", ["15[1279]"], "0$1"], ["(\\d{3})(\\d{8})", "$1 $2", ["18"], "0$1"], ["(\\d{3})(\\d{2})(\\d{7,8})", "$1 $2 $3", ["1(?:6[023]|7)"], "0$1"], ["(\\d{4})(\\d{2})(\\d{7})", "$1 $2 $3", ["15[279]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{8})", "$1 $2 $3", ["15"], "0$1"]], "0", 0, 0, 0, 0, 0, [["32\\d{9,11}|49[1-6]\\d{10}|322\\d{6}|49[0-7]\\d{3,9}|(?:[34]0|[68]9)\\d{3,13}|(?:2(?:0[1-689]|[1-3569]\\d|4[0-8]|7[1-7]|8[0-7])|3(?:[3569]\\d|4[0-79]|7[1-7]|8[1-8])|4(?:1[02-9]|[2-48]\\d|5[0-6]|6[0-8]|7[0-79])|5(?:0[2-8]|[124-6]\\d|[38][0-8]|[79][0-7])|6(?:0[02-9]|[1-358]\\d|[47][0-8]|6[1-9])|7(?:0[2-8]|1[1-9]|[27][0-7]|3\\d|[4-6][0-8]|8[0-5]|9[013-7])|8(?:0[2-9]|1[0-79]|2\\d|3[0-46-9]|4[0-6]|5[013-9]|6[1-8]|7[0-8]|8[0-24-6])|9(?:0[6-9]|[1-4]\\d|[589][0-7]|6[0-8]|7[0-467]))\\d{3,12}", [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]], ["15[0-25-9]\\d{8}|1(?:6[023]|7\\d)\\d{7,8}", [10, 11]], ["800\\d{7,12}", [10, 11, 12, 13, 14, 15]], ["(?:137[7-9]|900(?:[135]|9\\d))\\d{6}", [10, 11]], ["700\\d{8}", [11]], 0, ["18(?:1\\d{5,11}|[2-9]\\d{8})", [8, 9, 10, 11, 12, 13, 14]], ["16(?:4\\d{1,10}|[89]\\d{1,11})", [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]], 0, ["180\\d{5,11}|13(?:7[1-6]\\d\\d|8)\\d{4}", [7, 8, 9, 10, 11, 12, 13, 14]]]], "DJ": ["253", "00", "(?:2\\d|77)\\d{6}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[27]"]]], 0, 0, 0, 0, 0, 0, [["2(?:1[2-5]|7[45])\\d{5}"], ["77\\d{6}"]]], "DK": ["45", "00", "[2-9]\\d{7}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[2-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:[2-7]\\d|8[126-9]|9[1-46-9])\\d{6}"], [""], ["80\\d{6}"], ["90\\d{6}"]]], "DM": ["1", "011", "(?:[58]\\d\\d|767|900)\\d{7}", [10], 0, "1", 0, "([2-7]\\d{6})$|1", "767$1", 0, "767", [["767(?:2(?:55|66)|4(?:2[01]|4[0-25-9])|50[0-4])\\d{4}"], ["767(?:2(?:[2-4689]5|7[5-7])|31[5-7]|61[1-8]|70[1-6])\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "DO": ["1", "011", "(?:[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, 0, 0, 0, "8001|8[024]9", [["8(?:[04]9[2-9]\\d\\d|29(?:2(?:[0-59]\\d|6[04-9]|7[0-27]|8[0237-9])|3(?:[0-35-9]\\d|4[7-9])|[45]\\d\\d|6(?:[0-27-9]\\d|[3-5][1-9]|6[0135-8])|7(?:0[013-9]|[1-37]\\d|4[1-35689]|5[1-4689]|6[1-57-9]|8[1-79]|9[1-8])|8(?:0[146-9]|1[0-48]|[248]\\d|3[1-79]|5[01589]|6[013-68]|7[124-8]|9[0-8])|9(?:[0-24]\\d|3[02-46-9]|5[0-79]|60|7[0169]|8[57-9]|9[02-9])))\\d{4}"], ["8[024]9[2-9]\\d{6}"], ["8(?:00(?:14|[2-9]\\d)|(?:33|44|55|66|77|88)[2-9]\\d)\\d{5}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "DZ": ["213", "00", "(?:[1-4]|[5-79]\\d|80)\\d{7}", [8, 9], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[1-4]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["9"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[5-8]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["9619\\d{5}|(?:1\\d|2[013-79]|3[0-8]|4[013-689])\\d{6}"], ["(?:5(?:4[0-29]|5\\d|6[0-2])|6(?:[569]\\d|7[0-6])|7[7-9]\\d)\\d{6}", [9]], ["800\\d{6}", [9]], ["80[3-689]1\\d{5}", [9]], 0, 0, 0, 0, ["98[23]\\d{6}", [9]], ["80[12]1\\d{5}", [9]]]], "EC": ["593", "00", "1\\d{9,10}|(?:[2-7]|9\\d)\\d{7}", [8, 9, 10, 11], [["(\\d)(\\d{3})(\\d{4})", "$1 $2-$3", ["[2-7]"], "(0$1)", 0, "$1-$2-$3"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["9"], "0$1"], ["(\\d{4})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["1"]]], "0", 0, 0, 0, 0, 0, [["[2-7][2-7]\\d{6}", [8]], ["964[0-2]\\d{5}|9(?:39|[57][89]|6[0-36-9]|[89]\\d)\\d{6}", [9]], ["1800\\d{7}|1[78]00\\d{6}", [10, 11]], 0, 0, 0, 0, 0, ["[2-7]890\\d{4}", [8]]]], "EE": ["372", "00", "8\\d{9}|[4578]\\d{7}|(?:[3-8]\\d|90)\\d{5}", [7, 8, 10], [["(\\d{3})(\\d{4})", "$1 $2", ["[369]|4[3-8]|5(?:[0-2]|5[0-478]|6[45])|7[1-9]|88", "[369]|4[3-8]|5(?:[02]|1(?:[0-8]|95)|5[0-478]|6(?:4[0-4]|5[1-589]))|7[1-9]|88"]], ["(\\d{4})(\\d{3,4})", "$1 $2", ["[45]|8(?:00|[1-49])", "[45]|8(?:00[1-9]|[1-49])"]], ["(\\d{2})(\\d{2})(\\d{4})", "$1 $2 $3", ["7"]], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["8"]]], 0, 0, 0, 0, 0, 0, [["(?:3[23589]|4[3-8]|6\\d|7[1-9]|88)\\d{5}", [7]], ["(?:5\\d{5}|8(?:1(?:0(?:0(?:00|[178]\\d)|[3-9]\\d\\d)|(?:1(?:0[236]|1\\d)|(?:2[0-59]|[3-79]\\d)\\d)\\d)|2(?:0(?:000|(?:19|[2-7]\\d)\\d)|(?:(?:[124-6]\\d|3[5-9])\\d|7(?:[0-79]\\d|8[13-9])|8(?:[2-6]\\d|7[01]))\\d)|[349]\\d{4}))\\d\\d|5(?:(?:[02]\\d|5[0-478])\\d|1(?:[0-8]\\d|95)|6(?:4[0-4]|5[1-589]))\\d{3}", [7, 8]], ["800(?:(?:0\\d\\d|1)\\d|[2-9])\\d{3}"], ["(?:40\\d\\d|900)\\d{4}", [7, 8]], ["70[0-2]\\d{5}", [8]]]], "EG": ["20", "00", "[189]\\d{8,9}|[24-6]\\d{8}|[135]\\d{7}", [8, 9, 10], [["(\\d)(\\d{7,8})", "$1 $2", ["[23]"], "0$1"], ["(\\d{2})(\\d{6,7})", "$1 $2", ["1[35]|[4-6]|8[2468]|9[235-7]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[89]"], "0$1"], ["(\\d{2})(\\d{8})", "$1 $2", ["1"], "0$1"]], "0", 0, 0, 0, 0, 0, [["13[23]\\d{6}|(?:15|57)\\d{6,7}|(?:2[2-4]|3|4[05-8]|5[05]|6[24-689]|8[2468]|9[235-7])\\d{7}", [8, 9]], ["1[0-25]\\d{8}", [10]], ["800\\d{7}", [10]], ["900\\d{7}", [10]]]], "EH": ["212", "00", "[5-8]\\d{8}", [9], 0, "0", 0, 0, 0, 0, "528[89]", [["528[89]\\d{5}"], ["(?:6(?:[0-79]\\d|8[0-247-9])|7(?:[017]\\d|2[0-2]|6[0-8]|8[0-3]))\\d{6}"], ["80\\d{7}"], ["89\\d{7}"], 0, 0, 0, 0, ["592(?:4[0-2]|93)\\d{4}"]]], "ER": ["291", "00", "[178]\\d{6}", [7], [["(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["[178]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1(?:1[12568]|[24]0|55|6[146])|8\\d\\d)\\d{4}"], ["(?:17[1-3]|7\\d\\d)\\d{4}"]]], "ES": ["34", "00", "[5-9]\\d{8}", [9], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[89]00"]], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[5-9]"]]], 0, 0, 0, 0, 0, 0, [["96906(?:0[0-8]|1[1-9]|[2-9]\\d)\\d\\d|9(?:69(?:0[0-57-9]|[1-9]\\d)|73(?:[0-8]\\d|9[1-9]))\\d{4}|(?:8(?:[1356]\\d|[28][0-8]|[47][1-9])|9(?:[135]\\d|[268][0-8]|4[1-9]|7[124-9]))\\d{6}"], ["(?:590[16]00\\d|9(?:6906(?:09|10)|7390\\d\\d))\\d\\d|(?:6\\d|7[1-48])\\d{7}"], ["[89]00\\d{6}"], ["80[367]\\d{6}"], ["70\\d{7}"], 0, ["51\\d{7}"], 0, 0, ["90[12]\\d{6}"]]], "ET": ["251", "00", "(?:11|[2-579]\\d)\\d{7}", [9], [["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[1-579]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["11667[01]\\d{3}|(?:11(?:1(?:1[124]|2[2-7]|3[1-5]|5[5-8]|8[6-8])|2(?:13|3[6-8]|5[89]|7[05-9]|8[2-6])|3(?:2[01]|3[0-289]|4[1289]|7[1-4]|87)|4(?:1[69]|3[2-49]|4[0-3]|6[5-8])|5(?:1[578]|44|5[0-4])|6(?:1[578]|2[69]|39|4[5-7]|5[0-5]|6[0-59]|8[015-8]))|2(?:2(?:11[1-9]|22[0-7]|33\\d|44[1467]|66[1-68])|5(?:11[124-6]|33[2-8]|44[1467]|55[14]|66[1-3679]|77[124-79]|880))|3(?:3(?:11[0-46-8]|(?:22|55)[0-6]|33[0134689]|44[04]|66[01467])|4(?:44[0-8]|55[0-69]|66[0-3]|77[1-5]))|4(?:6(?:119|22[0-24-7]|33[1-5]|44[13-69]|55[14-689]|660|88[1-4])|7(?:(?:11|22)[1-9]|33[13-7]|44[13-6]|55[1-689]))|5(?:7(?:227|55[05]|(?:66|77)[14-8])|8(?:11[149]|22[013-79]|33[0-68]|44[013-8]|550|66[1-5]|77\\d)))\\d{4}"], ["700[1-9]\\d{5}|(?:7(?:0[1-9]|1[0-8]|22|77|86|99)|9\\d\\d)\\d{6}"]]], "FI": ["358", "00|99(?:[01469]|5(?:[14]1|3[23]|5[59]|77|88|9[09]))", "[1-35689]\\d{4}|7\\d{10,11}|(?:[124-7]\\d|3[0-46-9])\\d{8}|[1-9]\\d{5,8}", [5, 6, 7, 8, 9, 10, 11, 12], [["(\\d)(\\d{4,9})", "$1 $2", ["[2568][1-8]|3(?:0[1-9]|[1-9])|9"], "0$1"], ["(\\d{3})(\\d{3,7})", "$1 $2", ["[12]00|[368]|70[07-9]"], "0$1"], ["(\\d{2})(\\d{4,8})", "$1 $2", ["[1245]|7[135]"], "0$1"], ["(\\d{2})(\\d{6,10})", "$1 $2", ["7"], "0$1"]], "0", 0, 0, 0, 0, "1[03-79]|[2-9]", [["(?:1[3-79][1-8]|[235689][1-8]\\d)\\d{2,6}", [5, 6, 7, 8, 9]], ["4946\\d{2,6}|(?:4[0-8]|50)\\d{4,8}", [6, 7, 8, 9, 10]], ["800\\d{4,6}", [7, 8, 9]], ["[67]00\\d{5,6}", [8, 9]], 0, 0, ["20\\d{4,8}|60[12]\\d{5,6}|7(?:099\\d{4,5}|5[03-9]\\d{3,7})|20[2-59]\\d\\d|(?:606|7(?:0[78]|1|3\\d))\\d{7}|(?:10|29|3[09]|70[1-5]\\d)\\d{4,8}"]], "00"], "FJ": ["679", "0(?:0|52)", "45\\d{5}|(?:0800\\d|[235-9])\\d{6}", [7, 11], [["(\\d{3})(\\d{4})", "$1 $2", ["[235-9]|45"]], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["0"]]], 0, 0, 0, 0, 0, 0, [["603\\d{4}|(?:3[0-5]|6[25-7]|8[58])\\d{5}", [7]], ["(?:[279]\\d|45|5[01568]|8[034679])\\d{5}", [7]], ["0800\\d{7}", [11]]], "00"], "FK": ["500", "00", "[2-7]\\d{4}", [5], 0, 0, 0, 0, 0, 0, 0, [["[2-47]\\d{4}"], ["[56]\\d{4}"]]], "FM": ["691", "00", "(?:[39]\\d\\d|820)\\d{4}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[389]"]]], 0, 0, 0, 0, 0, 0, [["31(?:00[67]|208|309)\\d\\d|(?:3(?:[2357]0[1-9]|602|804|905)|(?:820|9[2-6]\\d)\\d)\\d{3}"], ["31(?:00[67]|208|309)\\d\\d|(?:3(?:[2357]0[1-9]|602|804|905)|(?:820|9[2-7]\\d)\\d)\\d{3}"]]], "FO": ["298", "00", "[2-9]\\d{5}", [6], [["(\\d{6})", "$1", ["[2-9]"]]], 0, 0, "(10(?:01|[12]0|88))", 0, 0, 0, [["(?:20|[34]\\d|8[19])\\d{4}"], ["(?:[27][1-9]|5\\d|9[16])\\d{4}"], ["80[257-9]\\d{3}"], ["90(?:[13-5][15-7]|2[125-7]|9\\d)\\d\\d"], 0, 0, 0, 0, ["(?:6[0-36]|88)\\d{4}"]]], "FR": ["33", "00", "[1-9]\\d{8}", [9], [["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["8"], "0 $1"], ["(\\d)(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4 $5", ["[1-79]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["59[1-9]\\d{6}|(?:[1-3]\\d|4[1-9]|5[0-8])\\d{7}"], ["(?:6(?:[0-24-8]\\d|3[0-8]|9[589])|7[3-9]\\d)\\d{6}"], ["80[0-5]\\d{6}"], ["836(?:0[0-36-9]|[1-9]\\d)\\d{4}|8(?:1[2-9]|2[2-47-9]|3[0-57-9]|[569]\\d|8[0-35-9])\\d{6}"], 0, 0, ["80[6-9]\\d{6}"], 0, ["9\\d{8}"], ["8(?:1[01]|2[0156]|4[02]|84)\\d{6}"]]], "GA": ["241", "00", "(?:[067]\\d|11)\\d{6}|[2-7]\\d{6}", [7, 8], [["(\\d)(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[2-7]"], "0$1"], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["0"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["11|[67]"], "0$1"]], 0, 0, "0(11\\d{6}|60\\d{6}|61\\d{6}|6[256]\\d{6}|7[467]\\d{6})", "$1", 0, 0, [["[01]1\\d{6}", [8]], ["(?:(?:0[2-7]|7[467])\\d|6(?:0[0-4]|10|[256]\\d))\\d{5}|[2-7]\\d{6}"]]], "GB": ["44", "00", "[1-357-9]\\d{9}|[18]\\d{8}|8\\d{6}", [7, 9, 10], [["(\\d{3})(\\d{4})", "$1 $2", ["800", "8001", "80011", "800111", "8001111"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3", ["845", "8454", "84546", "845464"], "0$1"], ["(\\d{3})(\\d{6})", "$1 $2", ["800"], "0$1"], ["(\\d{5})(\\d{4,5})", "$1 $2", ["1(?:38|5[23]|69|76|94)", "1(?:(?:38|69)7|5(?:24|39)|768|946)", "1(?:3873|5(?:242|39[4-6])|(?:697|768)[347]|9467)"], "0$1"], ["(\\d{4})(\\d{5,6})", "$1 $2", ["1(?:[2-69][02-9]|[78])"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["[25]|7(?:0|6[02-9])", "[25]|7(?:0|6(?:[03-9]|2[356]))"], "0$1"], ["(\\d{4})(\\d{6})", "$1 $2", ["7"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[1389]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1(?:1(?:3(?:[0-58]\\d\\d|73[0235])|4(?:[0-5]\\d\\d|69[7-9]|70[0-79])|(?:(?:5[0-26-9]|[78][0-49])\\d|6(?:[0-4]\\d|50))\\d)|(?:2(?:(?:0[024-9]|2[3-9]|3[3-79]|4[1-689]|[58][02-9]|6[0-47-9]|7[013-9]|9\\d)\\d|1(?:[0-7]\\d|8[0-2]))|(?:3(?:0\\d|1[0-8]|[25][02-9]|3[02-579]|[468][0-46-9]|7[1-35-79]|9[2-578])|4(?:0[03-9]|[137]\\d|[28][02-57-9]|4[02-69]|5[0-8]|[69][0-79])|5(?:0[1-35-9]|[16]\\d|2[024-9]|3[015689]|4[02-9]|5[03-9]|7[0-35-9]|8[0-468]|9[0-57-9])|6(?:0[034689]|1\\d|2[0-35689]|[38][013-9]|4[1-467]|5[0-69]|6[13-9]|7[0-8]|9[0-24578])|7(?:0[0246-9]|2\\d|3[0236-8]|4[03-9]|5[0-46-9]|6[013-9]|7[0-35-9]|8[024-9]|9[02-9])|8(?:0[35-9]|2[1-57-9]|3[02-578]|4[0-578]|5[124-9]|6[2-69]|7\\d|8[02-9]|9[02569])|9(?:0[02-589]|[18]\\d|2[02-689]|3[1-57-9]|4[2-9]|5[0-579]|6[2-47-9]|7[0-24578]|9[2-57]))\\d)\\d)|2(?:0[013478]|3[0189]|4[017]|8[0-46-9]|9[0-2])\\d{3})\\d{4}|1(?:2(?:0(?:46[1-4]|87[2-9])|545[1-79]|76(?:2\\d|3[1-8]|6[1-6])|9(?:7(?:2[0-4]|3[2-5])|8(?:2[2-8]|7[0-47-9]|8[3-5])))|3(?:6(?:38[2-5]|47[23])|8(?:47[04-9]|64[0157-9]))|4(?:044[1-7]|20(?:2[23]|8\\d)|6(?:0(?:30|5[2-57]|6[1-8]|7[2-8])|140)|8(?:052|87[1-3]))|5(?:2(?:4(?:3[2-79]|6\\d)|76\\d)|6(?:26[06-9]|686))|6(?:06(?:4\\d|7[4-79])|295[5-7]|35[34]\\d|47(?:24|61)|59(?:5[08]|6[67]|74)|9(?:55[0-4]|77[23]))|7(?:26(?:6[13-9]|7[0-7])|(?:442|688)\\d|50(?:2[0-3]|[3-68]2|76))|8(?:27[56]\\d|37(?:5[2-5]|8[239])|843[2-58])|9(?:0(?:0(?:6[1-8]|85)|52\\d)|3583|4(?:66[1-8]|9(?:2[01]|81))|63(?:23|3[1-4])|9561))\\d{3}", [9, 10]], ["7(?:457[0-57-9]|700[01]|911[028])\\d{5}|7(?:[1-3]\\d\\d|4(?:[0-46-9]\\d|5[0-689])|5(?:0[0-8]|[13-9]\\d|2[0-35-9])|7(?:0[1-9]|[1-7]\\d|8[02-9]|9[0-689])|8(?:[014-9]\\d|[23][0-8])|9(?:[024-9]\\d|1[02-9]|3[0-689]))\\d{6}", [10]], ["80[08]\\d{7}|800\\d{6}|8001111"], ["(?:8(?:4[2-5]|7[0-3])|9(?:[01]\\d|8[2-49]))\\d{7}|845464\\d", [7, 10]], ["70\\d{8}", [10]], 0, ["(?:3[0347]|55)\\d{8}", [10]], ["76(?:464|652)\\d{5}|76(?:0[0-28]|2[356]|34|4[01347]|5[49]|6[0-369]|77|8[14]|9[139])\\d{6}", [10]], ["56\\d{8}", [10]]], 0, " x"], "GD": ["1", "011", "(?:473|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2-9]\\d{6})$|1", "473$1", 0, "473", [["473(?:2(?:3[0-2]|69)|3(?:2[89]|86)|4(?:[06]8|3[5-9]|4[0-49]|5[5-79]|73|90)|63[68]|7(?:58|84)|800|938)\\d{4}"], ["473(?:4(?:0[2-79]|1[04-9]|2[0-5]|58)|5(?:2[01]|3[3-8])|901)\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "GE": ["995", "00", "(?:[3-57]\\d\\d|800)\\d{6}", [9], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["70"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["32"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[57]"]], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[348]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:3(?:[256]\\d|4[124-9]|7[0-4])|4(?:1\\d|2[2-7]|3[1-79]|4[2-8]|7[239]|9[1-7]))\\d{6}"], ["5(?:(?:(?:0555|1(?:[17]77|555))[5-9]|757(?:7[7-9]|8[01]))\\d|22252[0-4])\\d\\d|(?:5(?:00(?:0\\d|11|22|33|44|5[05]|77|88|99)|1(?:1(?:00|[124]\\d|3[01])|4\\d\\d)|(?:44|68)\\d\\d|5(?:[0157-9]\\d\\d|200)|7(?:[0147-9]\\d\\d|5(?:00|[57]5))|8(?:0(?:[018]\\d|2[0-4])|58[89]|8(?:55|88))|9(?:090|[1-35-9]\\d\\d))|790\\d\\d)\\d{4}|5(?:0(?:070|505)|1(?:0[01]0|1(?:07|33|51))|2(?:0[02]0|2[25]2)|3(?:0[03]0|3[35]3)|(?:40[04]|900)0|5222)[0-4]\\d{3}"], ["800\\d{6}"], 0, 0, 0, 0, 0, ["70[67]\\d{6}"]]], "GF": ["594", "00", "[56]94\\d{6}|(?:80|9\\d)\\d{7}", [9], [["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[56]|9[47]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[89]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["594(?:[02-49]\\d|1[0-4]|5[6-9]|6[0-3]|80)\\d{4}"], ["694(?:[0-249]\\d|3[0-8])\\d{4}"], ["80[0-5]\\d{6}"], 0, 0, 0, 0, 0, ["9(?:(?:396|76\\d)\\d|476[0-5])\\d{4}"]]], "GG": ["44", "00", "(?:1481|[357-9]\\d{3})\\d{6}|8\\d{6}(?:\\d{2})?", [7, 9, 10], 0, "0", 0, "([25-9]\\d{5})$|0", "1481$1", 0, 0, [["1481[25-9]\\d{5}", [10]], ["7(?:(?:781|839)\\d|911[17])\\d{5}", [10]], ["80[08]\\d{7}|800\\d{6}|8001111"], ["(?:8(?:4[2-5]|7[0-3])|9(?:[01]\\d|8[0-3]))\\d{7}|845464\\d", [7, 10]], ["70\\d{8}", [10]], 0, ["(?:3[0347]|55)\\d{8}", [10]], ["76(?:464|652)\\d{5}|76(?:0[0-28]|2[356]|34|4[01347]|5[49]|6[0-369]|77|8[14]|9[139])\\d{6}", [10]], ["56\\d{8}", [10]]]], "GH": ["233", "00", "(?:[235]\\d{3}|800)\\d{5}", [8, 9], [["(\\d{3})(\\d{5})", "$1 $2", ["8"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[235]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["3082[0-5]\\d{4}|3(?:0(?:[237]\\d|8[01])|[167](?:2[0-6]|7\\d|80)|2(?:2[0-5]|7\\d|80)|3(?:2[0-3]|7\\d|80)|4(?:2[013-9]|3[01]|7\\d|80)|5(?:2[0-7]|7\\d|80)|8(?:2[0-2]|7\\d|80)|9(?:[28]0|7\\d))\\d{5}", [9]], ["(?:2(?:[0346-9]\\d|5[67])|5(?:[03-7]\\d|9[1-9]))\\d{6}", [9]], ["800\\d{5}", [8]]]], "GI": ["350", "00", "(?:[25]\\d|60)\\d{6}", [8], [["(\\d{3})(\\d{5})", "$1 $2", ["2"]]], 0, 0, 0, 0, 0, 0, [["2190[0-2]\\d{3}|2(?:0(?:[02]\\d|3[01])|16[24-9]|2[2-5]\\d)\\d{4}"], ["5251[0-4]\\d{3}|(?:5(?:[146-8]\\d\\d|250)|60(?:1[01]|6\\d))\\d{4}"]]], "GL": ["299", "00", "(?:19|[2-689]\\d|70)\\d{4}", [6], [["(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3", ["19|[2-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:19|3[1-7]|[68][1-9]|70|9\\d)\\d{4}"], ["[245]\\d{5}"], ["80\\d{4}"], 0, 0, 0, 0, 0, ["3[89]\\d{4}"]]], "GM": ["220", "00", "[2-9]\\d{6}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[2-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:4(?:[23]\\d\\d|4(?:1[024679]|[6-9]\\d))|5(?:5(?:3\\d|4[0-7])|6[67]\\d|7(?:1[04]|2[035]|3[58]|48))|8\\d{3})\\d{3}"], ["(?:[23679]\\d|5[0-489])\\d{5}"]]], "GN": ["224", "00", "722\\d{6}|(?:3|6\\d)\\d{7}", [8, 9], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["3"]], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[67]"]]], 0, 0, 0, 0, 0, 0, [["3(?:0(?:24|3[12]|4[1-35-7]|5[13]|6[189]|[78]1|9[1478])|1\\d\\d)\\d{4}", [8]], ["6[0-356]\\d{7}", [9]], 0, 0, 0, 0, 0, 0, ["722\\d{6}", [9]]]], "GP": ["590", "00", "590\\d{6}|(?:69|80|9\\d)\\d{7}", [9], [["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[569]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["590(?:0[1-68]|[14][0-24-9]|2[0-68]|3[1-9]|5[3-579]|[68][0-689]|7[08]|9\\d)\\d{4}"], ["69(?:0\\d\\d|1(?:2[2-9]|3[0-5]))\\d{4}"], ["80[0-5]\\d{6}"], 0, 0, 0, 0, 0, ["9(?:(?:395|76[018])\\d|475[0-5])\\d{4}"]]], "GQ": ["240", "00", "222\\d{6}|(?:3\\d|55|[89]0)\\d{7}", [9], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[235]"]], ["(\\d{3})(\\d{6})", "$1 $2", ["[89]"]]], 0, 0, 0, 0, 0, 0, [["33[0-24-9]\\d[46]\\d{4}|3(?:33|5\\d)\\d[7-9]\\d{4}"], ["(?:222|55\\d)\\d{6}"], ["80\\d[1-9]\\d{5}"], ["90\\d[1-9]\\d{5}"]]], "GR": ["30", "00", "5005000\\d{3}|8\\d{9,11}|(?:[269]\\d|70)\\d{8}", [10, 11, 12], [["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["21|7"]], ["(\\d{4})(\\d{6})", "$1 $2", ["2(?:2|3[2-57-9]|4[2-469]|5[2-59]|6[2-9]|7[2-69]|8[2-49])|5"]], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[2689]"]], ["(\\d{3})(\\d{3,4})(\\d{5})", "$1 $2 $3", ["8"]]], 0, 0, 0, 0, 0, 0, [["2(?:1\\d\\d|2(?:2[1-46-9]|[36][1-8]|4[1-7]|5[1-4]|7[1-5]|[89][1-9])|3(?:1\\d|2[1-57]|[35][1-3]|4[13]|7[1-7]|8[124-6]|9[1-79])|4(?:1\\d|2[1-8]|3[1-4]|4[13-5]|6[1-578]|9[1-5])|5(?:1\\d|[29][1-4]|3[1-5]|4[124]|5[1-6])|6(?:1\\d|[269][1-6]|3[1245]|4[1-7]|5[13-9]|7[14]|8[1-5])|7(?:1\\d|2[1-5]|3[1-6]|4[1-7]|5[1-57]|6[135]|9[125-7])|8(?:1\\d|2[1-5]|[34][1-4]|9[1-57]))\\d{6}", [10]], ["68[57-9]\\d{7}|(?:69|94)\\d{8}", [10]], ["800\\d{7,9}"], ["90[19]\\d{7}", [10]], ["70\\d{8}", [10]], 0, ["5005000\\d{3}", [10]], 0, 0, ["8(?:0[16]|12|[27]5|50)\\d{7}", [10]]]], "GT": ["502", "00", "80\\d{6}|(?:1\\d{3}|[2-7])\\d{7}", [8, 11], [["(\\d{4})(\\d{4})", "$1 $2", ["[2-8]"]], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"]]], 0, 0, 0, 0, 0, 0, [["[267][2-9]\\d{6}", [8]], ["(?:[3-5]\\d\\d|80[0-4])\\d{5}", [8]], ["18[01]\\d{8}", [11]], ["19\\d{9}", [11]]]], "GU": ["1", "011", "(?:[58]\\d\\d|671|900)\\d{7}", [10], 0, "1", 0, "([3-9]\\d{6})$|1", "671$1", 0, "671", [["671(?:3(?:00|3[39]|4[349]|55|6[26])|4(?:00|56|7[1-9]|8[02-46-9])|5(?:55|6[2-5]|88)|6(?:3[2-578]|4[24-9]|5[34]|78|8[235-9])|7(?:[0479]7|2[0167]|3[45]|8[7-9])|8(?:[2-57-9]8|6[48])|9(?:2[29]|6[79]|7[1279]|8[7-9]|9[78]))\\d{4}"], [""], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "GW": ["245", "00", "[49]\\d{8}|4\\d{6}", [7, 9], [["(\\d{3})(\\d{4})", "$1 $2", ["40"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[49]"]]], 0, 0, 0, 0, 0, 0, [["443\\d{6}", [9]], ["9(?:5\\d|6[569]|77)\\d{6}", [9]], 0, 0, 0, 0, 0, 0, ["40\\d{5}", [7]]]], "GY": ["592", "001", "9008\\d{3}|(?:[2-467]\\d\\d|510|862)\\d{4}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[2-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:2(?:1[6-9]|2[0-35-9]|3[1-4]|5[3-9]|6\\d|7[0-24-79])|3(?:2[25-9]|3\\d)|4(?:4[0-24]|5[56])|77[1-57])\\d{4}"], ["(?:510|6\\d\\d|7(?:0\\d|1[0-8]|25|49))\\d{4}"], ["(?:289|862)\\d{4}"], ["9008\\d{3}"]]], "HK": ["852", "00(?:30|5[09]|[126-9]?)", "8[0-46-9]\\d{6,7}|9\\d{4,7}|(?:[2-7]|9\\d{3})\\d{7}", [5, 6, 7, 8, 9, 11], [["(\\d{3})(\\d{2,5})", "$1 $2", ["900", "9003"]], ["(\\d{4})(\\d{4})", "$1 $2", ["[2-7]|8[1-4]|9(?:0[1-9]|[1-8])"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["8"]], ["(\\d{3})(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["9"]]], 0, 0, 0, 0, 0, 0, [["(?:2(?:[13-9]\\d|2[013-9])\\d|3(?:(?:[1569][0-24-9]|4[0-246-9]|7[0-24-69])\\d|8(?:[45][0-8]|6[01]|9\\d))|58(?:0[1-9]|1[2-9]))\\d{4}", [8]], ["(?:4(?:44[5-9]|6(?:0[0-7]|1[0-6]|4[0-57-9]|6[0-4]))|573[0-6]|6(?:26[013-8]|66[0-3])|70(?:7[1-5]|8[0-4])|848[0-25-9]|9(?:29[013-9]|59[0-4]))\\d{4}|(?:4(?:4[01]|6[23578])|5(?:[1-59][0-46-9]|6[0-4689]|7[0-246-9])|6(?:0[1-9]|[13-59]\\d|[268][0-57-9]|7[0-79])|84[09]|9(?:0[1-9]|1[02-9]|[2358][0-8]|[467]\\d))\\d{5}", [8]], ["800\\d{6}", [9]], ["900(?:[0-24-9]\\d{7}|3\\d{1,4})", [5, 6, 7, 8, 11]], ["8(?:1[0-4679]\\d|2(?:[0-36]\\d|7[0-4])|3(?:[034]\\d|2[09]|70))\\d{4}", [8]], 0, ["30(?:0[1-9]|[15-7]\\d|2[047]|89)\\d{4}", [8]], ["7(?:1(?:0[0-38]|1[0-3679]|3[013]|69|9[0136])|2(?:[02389]\\d|1[18]|7[27-9])|3(?:[0-38]\\d|7[0-369]|9[2357-9])|47\\d|5(?:[178]\\d|5[0-5])|6(?:0[0-7]|2[236-9]|[35]\\d)|7(?:[27]\\d|8[7-9])|8(?:[23689]\\d|7[1-9])|9(?:[025]\\d|6[0-246-8]|7[0-36-9]|8[238]))\\d{4}", [8]]], "00"], "HN": ["504", "00", "8\\d{10}|[237-9]\\d{7}", [8, 11], [["(\\d{4})(\\d{4})", "$1-$2", ["[237-9]"]]], 0, 0, 0, 0, 0, 0, [["2(?:2(?:0[0-59]|1[1-9]|[23]\\d|4[02-6]|5[57]|6[245]|7[0135689]|8[01346-9]|9[0-2])|4(?:0[578]|2[3-59]|3[13-9]|4[0-68]|5[1-3589])|5(?:0[2357-9]|1[1-356]|4[03-5]|5\\d|6[014-69]|7[04]|80)|6(?:[056]\\d|17|2[067]|3[047]|4[0-378]|[78][0-8]|9[01])|7(?:0[5-79]|6[46-9]|7[02-9]|8[034]|91)|8(?:79|8[0-357-9]|9[1-57-9]))\\d{4}", [8]], ["[37-9]\\d{7}", [8]], ["8002\\d{7}", [11]]]], "HR": ["385", "00", "(?:[24-69]\\d|3[0-79])\\d{7}|80\\d{5,7}|[1-79]\\d{7}|6\\d{5,6}", [6, 7, 8, 9], [["(\\d{2})(\\d{2})(\\d{2,3})", "$1 $2 $3", ["6[01]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2,3})", "$1 $2 $3", ["8"], "0$1"], ["(\\d)(\\d{4})(\\d{3})", "$1 $2 $3", ["1"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[67]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["9"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[2-5]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["1\\d{7}|(?:2[0-3]|3[1-5]|4[02-47-9]|5[1-3])\\d{6,7}", [8, 9]], ["9(?:(?:0[1-9]|[12589]\\d)\\d\\d|7(?:[0679]\\d\\d|5(?:[01]\\d|44|77|9[67])))\\d{4}|98\\d{6}", [8, 9]], ["80\\d{5,7}", [7, 8, 9]], ["6[01459]\\d{6}|6[01]\\d{4,5}", [6, 7, 8]], ["7[45]\\d{6}", [8]], 0, ["62\\d{6,7}|72\\d{6}", [8, 9]]]], "HT": ["509", "00", "(?:[2-489]\\d|55)\\d{6}", [8], [["(\\d{2})(\\d{2})(\\d{4})", "$1 $2 $3", ["[2-589]"]]], 0, 0, 0, 0, 0, 0, [["2(?:2\\d|5[1-5]|81|9[149])\\d{5}"], ["(?:[34]\\d|55)\\d{6}"], ["8\\d{7}"], 0, 0, 0, 0, 0, ["9(?:[67][0-4]|8[0-3589]|9\\d)\\d{5}"]]], "HU": ["36", "00", "[235-7]\\d{8}|[1-9]\\d{7}", [8, 9], [["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["1"], "(06 $1)"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[27][2-9]|3[2-7]|4[24-9]|5[2-79]|6|8[2-57-9]|9[2-69]"], "(06 $1)"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[2-9]"], "06 $1"]], "06", 0, 0, 0, 0, 0, [["(?:1\\d|[27][2-9]|3[2-7]|4[24-9]|5[2-79]|6[23689]|8[2-57-9]|9[2-69])\\d{6}", [8]], ["(?:[257]0|3[01])\\d{7}", [9]], ["(?:[48]0\\d|680[29])\\d{5}"], ["9[01]\\d{6}", [8]], 0, 0, ["38\\d{7}", [9]], 0, ["21\\d{7}", [9]]]], "ID": ["62", "00[89]", "(?:(?:00[1-9]|8\\d)\\d{4}|[1-36])\\d{6}|00\\d{10}|[1-9]\\d{8,10}|[2-9]\\d{7}", [7, 8, 9, 10, 11, 12, 13], [["(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["15"]], ["(\\d{2})(\\d{5,9})", "$1 $2", ["2[124]|[36]1"], "(0$1)"], ["(\\d{3})(\\d{5,7})", "$1 $2", ["800"], "0$1"], ["(\\d{3})(\\d{5,8})", "$1 $2", ["[2-79]"], "(0$1)"], ["(\\d{3})(\\d{3,4})(\\d{3})", "$1-$2-$3", ["8[1-35-9]"], "0$1"], ["(\\d{3})(\\d{6,8})", "$1 $2", ["1"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["804"], "0$1"], ["(\\d{3})(\\d)(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["80"], "0$1"], ["(\\d{3})(\\d{4})(\\d{4,5})", "$1-$2-$3", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["2[124]\\d{7,8}|619\\d{8}|2(?:1(?:14|500)|2\\d{3})\\d{3}|61\\d{5,8}|(?:2(?:[35][1-4]|6[0-8]|7[1-6]|8\\d|9[1-8])|3(?:1|[25][1-8]|3[1-68]|4[1-3]|6[1-3568]|7[0-469]|8\\d)|4(?:0[1-589]|1[01347-9]|2[0-36-8]|3[0-24-68]|43|5[1-378]|6[1-5]|7[134]|8[1245])|5(?:1[1-35-9]|2[25-8]|3[124-9]|4[1-3589]|5[1-46]|6[1-8])|6(?:[25]\\d|3[1-69]|4[1-6])|7(?:02|[125][1-9]|[36]\\d|4[1-8]|7[0-36-9])|9(?:0[12]|1[013-8]|2[0-479]|5[125-8]|6[23679]|7[159]|8[01346]))\\d{5,8}", [7, 8, 9, 10, 11]], ["8[1-35-9]\\d{7,10}", [9, 10, 11, 12]], ["00[17]803\\d{7}|(?:177\\d|800)\\d{5,7}|001803\\d{6}", [8, 9, 10, 11, 12, 13]], ["809\\d{7}", [10]], 0, 0, ["(?:1500|8071\\d{3})\\d{3}", [7, 10]], 0, 0, ["804\\d{7}", [10]]]], "IE": ["353", "00", "(?:1\\d|[2569])\\d{6,8}|4\\d{6,9}|7\\d{8}|8\\d{8,9}", [7, 8, 9, 10], [["(\\d{2})(\\d{5})", "$1 $2", ["2[24-9]|47|58|6[237-9]|9[35-9]"], "(0$1)"], ["(\\d{3})(\\d{5})", "$1 $2", ["[45]0"], "(0$1)"], ["(\\d)(\\d{3,4})(\\d{4})", "$1 $2 $3", ["1"], "(0$1)"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[2569]|4[1-69]|7[14]"], "(0$1)"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["70"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["81"], "(0$1)"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[78]"], "0$1"], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["1"]], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["4"], "(0$1)"], ["(\\d{2})(\\d)(\\d{3})(\\d{4})", "$1 $2 $3 $4", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1\\d|21)\\d{6,7}|(?:2[24-9]|4(?:0[24]|5\\d|7)|5(?:0[45]|1\\d|8)|6(?:1\\d|[237-9])|9(?:1\\d|[35-9]))\\d{5}|(?:23|4(?:[1-469]|8\\d)|5[23679]|6[4-6]|7[14]|9[04])\\d{7}"], ["8(?:22|[35-9]\\d)\\d{6}", [9]], ["1800\\d{6}", [10]], ["15(?:1[2-8]|[2-8]0|9[089])\\d{6}", [10]], ["700\\d{6}", [9]], 0, ["818\\d{6}", [9]], 0, ["76\\d{7}", [9]], ["18[59]0\\d{6}", [10]]]], "IL": ["972", "0(?:0|1[2-9])", "1\\d{6}(?:\\d{3,5})?|[57]\\d{8}|[1-489]\\d{7}", [7, 8, 9, 10, 11, 12], [["(\\d{4})(\\d{3})", "$1-$2", ["125"]], ["(\\d{4})(\\d{2})(\\d{2})", "$1-$2-$3", ["121"]], ["(\\d)(\\d{3})(\\d{4})", "$1-$2-$3", ["[2-489]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1-$2-$3", ["[57]"], "0$1"], ["(\\d{4})(\\d{3})(\\d{3})", "$1-$2-$3", ["12"]], ["(\\d{4})(\\d{6})", "$1-$2", ["159"]], ["(\\d)(\\d{3})(\\d{3})(\\d{3})", "$1-$2-$3-$4", ["1[7-9]"]], ["(\\d{3})(\\d{1,2})(\\d{3})(\\d{4})", "$1-$2 $3-$4", ["15"]]], "0", 0, 0, 0, 0, 0, [["153\\d{8,9}|29[1-9]\\d{5}|(?:2[0-8]|[3489]\\d)\\d{6}", [8, 11, 12]], ["55410\\d{4}|5(?:(?:[02][02-9]|[149][2-9]|[36]\\d|8[3-7])\\d|5(?:01|2\\d|3[0-3]|4[34]|5[0-25689]|6[6-8]|7[0-267]|8[7-9]|9[1-9]))\\d{5}", [9]], ["1(?:255|80[019]\\d{3})\\d{3}", [7, 10]], ["1212\\d{4}|1(?:200|9(?:0[0-2]|19))\\d{6}", [8, 10]], 0, 0, ["1599\\d{6}", [10]], 0, ["7(?:38(?:0\\d|5[09]|88)|8(?:33|55|77|81)\\d)\\d{4}|7(?:18|2[23]|3[237]|47|6[258]|7\\d|82|9[2-9])\\d{6}", [9]], ["1700\\d{6}", [10]]]], "IM": ["44", "00", "1624\\d{6}|(?:[3578]\\d|90)\\d{8}", [10], 0, "0", 0, "([25-8]\\d{5})$|0", "1624$1", 0, "74576|(?:16|7[56])24", [["1624(?:230|[5-8]\\d\\d)\\d{3}"], ["76245[06]\\d{4}|7(?:4576|[59]24\\d|624[0-4689])\\d{5}"], ["808162\\d{4}"], ["8(?:440[49]06|72299\\d)\\d{3}|(?:8(?:45|70)|90[0167])624\\d{4}"], ["70\\d{8}"], 0, ["3440[49]06\\d{3}|(?:3(?:08162|3\\d{4}|45624|7(?:0624|2299))|55\\d{4})\\d{4}"], 0, ["56\\d{8}"]]], "IN": ["91", "00", "(?:000800|[2-9]\\d\\d)\\d{7}|1\\d{7,12}", [8, 9, 10, 11, 12, 13], [["(\\d{8})", "$1", ["5(?:0|2[23]|3[03]|[67]1|88)", "5(?:0|2(?:21|3)|3(?:0|3[23])|616|717|888)", "5(?:0|2(?:21|3)|3(?:0|3[23])|616|717|8888)"], 0, 1], ["(\\d{4})(\\d{4,5})", "$1 $2", ["180", "1800"], 0, 1], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["140"], 0, 1], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["11|2[02]|33|4[04]|79[1-7]|80[2-46]", "11|2[02]|33|4[04]|79(?:[1-6]|7[19])|80(?:[2-4]|6[0-589])", "11|2[02]|33|4[04]|79(?:[124-6]|3(?:[02-9]|1[0-24-9])|7(?:1|9[1-6]))|80(?:[2-4]|6[0-589])"], "0$1", 1], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["1(?:2[0-249]|3[0-25]|4[145]|[68]|7[1257])|2(?:1[257]|3[013]|4[01]|5[0137]|6[0158]|78|8[1568])|3(?:26|4[1-3]|5[34]|6[01489]|7[02-46]|8[159])|4(?:1[36]|2[1-47]|5[12]|6[0-26-9]|7[0-24-9]|8[013-57]|9[014-7])|5(?:1[025]|22|[36][25]|4[28]|5[12]|[78]1)|6(?:12|[2-4]1|5[17]|6[13]|80)|7(?:12|3[134]|4[47]|61|88)|8(?:16|2[014]|3[126]|6[136]|7[078]|8[34]|91)|(?:43|59|75)[15]|(?:1[59]|29|67|72)[14]", "1(?:2[0-24]|3[0-25]|4[145]|[59][14]|6[1-9]|7[1257]|8[1-57-9])|2(?:1[257]|3[013]|4[01]|5[0137]|6[058]|78|8[1568]|9[14])|3(?:26|4[1-3]|5[34]|6[01489]|7[02-46]|8[159])|4(?:1[36]|2[1-47]|3[15]|5[12]|6[0-26-9]|7[0-24-9]|8[013-57]|9[014-7])|5(?:1[025]|22|[36][25]|4[28]|[578]1|9[15])|674|7(?:(?:2[14]|3[34]|5[15])[2-6]|61[346]|88[0-8])|8(?:70[2-6]|84[235-7]|91[3-7])|(?:1(?:29|60|8[06])|261|552|6(?:12|[2-47]1|5[17]|6[13]|80)|7(?:12|31|4[47])|8(?:16|2[014]|3[126]|6[136]|7[78]|83))[2-7]", "1(?:2[0-24]|3[0-25]|4[145]|[59][14]|6[1-9]|7[1257]|8[1-57-9])|2(?:1[257]|3[013]|4[01]|5[0137]|6[058]|78|8[1568]|9[14])|3(?:26|4[1-3]|5[34]|6[01489]|7[02-46]|8[159])|4(?:1[36]|2[1-47]|3[15]|5[12]|6[0-26-9]|7[0-24-9]|8[013-57]|9[014-7])|5(?:1[025]|22|[36][25]|4[28]|[578]1|9[15])|6(?:12(?:[2-6]|7[0-8])|74[2-7])|7(?:(?:2[14]|5[15])[2-6]|3171|61[346]|88(?:[2-7]|82))|8(?:70[2-6]|84(?:[2356]|7[19])|91(?:[3-6]|7[19]))|73[134][2-6]|(?:74[47]|8(?:16|2[014]|3[126]|6[136]|7[78]|83))(?:[2-6]|7[19])|(?:1(?:29|60|8[06])|261|552|6(?:[2-4]1|5[17]|6[13]|7(?:1|4[0189])|80)|7(?:12|88[01]))[2-7]"], "0$1", 1], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["1(?:[2-479]|5[0235-9])|[2-5]|6(?:1[1358]|2[2457-9]|3[2-5]|4[235-7]|5[2-689]|6[24578]|7[235689]|8[1-6])|7(?:1[013-9]|28|3[129]|4[1-35689]|5[29]|6[02-5]|70)|807", "1(?:[2-479]|5[0235-9])|[2-5]|6(?:1[1358]|2(?:[2457]|84|95)|3(?:[2-4]|55)|4[235-7]|5[2-689]|6[24578]|7[235689]|8[1-6])|7(?:1(?:[013-8]|9[6-9])|28[6-8]|3(?:17|2[0-49]|9[2-57])|4(?:1[2-4]|[29][0-7]|3[0-8]|[56]|8[0-24-7])|5(?:2[1-3]|9[0-6])|6(?:0[5689]|2[5-9]|3[02-8]|4|5[0-367])|70[13-7])|807[19]", "1(?:[2-479]|5(?:[0236-9]|5[013-9]))|[2-5]|6(?:2(?:84|95)|355|83)|73179|807(?:1|9[1-3])|(?:1552|6(?:1[1358]|2[2457]|3[2-4]|4[235-7]|5[2-689]|6[24578]|7[235689]|8[124-6])\\d|7(?:1(?:[013-8]\\d|9[6-9])|28[6-8]|3(?:2[0-49]|9[2-57])|4(?:1[2-4]|[29][0-7]|3[0-8]|[56]\\d|8[0-24-7])|5(?:2[1-3]|9[0-6])|6(?:0[5689]|2[5-9]|3[02-8]|4\\d|5[0-367])|70[13-7]))[2-7]"], "0$1", 1], ["(\\d{5})(\\d{5})", "$1 $2", ["[6-9]"], "0$1", 1], ["(\\d{4})(\\d{2,4})(\\d{4})", "$1 $2 $3", ["1(?:6|8[06])", "1(?:6|8[06]0)"], 0, 1], ["(\\d{4})(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["18"], 0, 1]], "0", 0, 0, 0, 0, 0, [["2717(?:[2-7]\\d|95)\\d{4}|(?:271[0-689]|782[0-6])[2-7]\\d{5}|(?:170[24]|2(?:(?:[02][2-79]|90)\\d|80[13468])|(?:3(?:23|80)|683|79[1-7])\\d|4(?:20[24]|72[2-8])|552[1-7])\\d{6}|(?:11|33|4[04]|80)[2-7]\\d{7}|(?:342|674|788)(?:[0189][2-7]|[2-7]\\d)\\d{5}|(?:1(?:2[0-249]|3[0-25]|4[145]|[59][14]|6[014]|7[1257]|8[01346])|2(?:1[257]|3[013]|4[01]|5[0137]|6[0158]|78|8[1568]|9[14])|3(?:26|4[13]|5[34]|6[01489]|7[02-46]|8[159])|4(?:1[36]|2[1-47]|3[15]|5[12]|6[0-26-9]|7[014-9]|8[013-57]|9[014-7])|5(?:1[025]|22|[36][25]|4[28]|[578]1|9[15])|6(?:12|[2-47]1|5[17]|6[13]|80)|7(?:12|2[14]|3[134]|4[47]|5[15]|[67]1)|8(?:16|2[014]|3[126]|6[136]|7[078]|8[34]|91))[2-7]\\d{6}|(?:1(?:2[35-8]|3[346-9]|4[236-9]|[59][0235-9]|6[235-9]|7[34689]|8[257-9])|2(?:1[134689]|3[24-8]|4[2-8]|5[25689]|6[2-4679]|7[3-79]|8[2-479]|9[235-9])|3(?:01|1[79]|2[1245]|4[5-8]|5[125689]|6[235-7]|7[157-9]|8[2-46-8])|4(?:1[14578]|2[5689]|3[2-467]|5[4-7]|6[35]|73|8[2689]|9[2389])|5(?:[16][146-9]|2[14-8]|3[1346]|4[14-69]|5[46]|7[2-4]|8[2-8]|9[246])|6(?:1[1358]|2[2457]|3[2-4]|4[235-7]|5[2-689]|6[24578]|7[235689]|8[124-6])|7(?:1[013-9]|2[0235-9]|3[2679]|4[1-35689]|5[2-46-9]|[67][02-9]|8[013-7]|9[089])|8(?:1[1357-9]|2[235-8]|3[03-57-9]|4[0-24-9]|5\\d|6[2457-9]|7[1-6]|8[1256]|9[2-4]))\\d[2-7]\\d{5}", [10]], ["(?:61279|7(?:887[02-9]|9(?:313|79[07-9]))|8(?:079[04-9]|(?:84|91)7[02-8]))\\d{5}|(?:6(?:12|[2-47]1|5[17]|6[13]|80)[0189]|7(?:1(?:2[0189]|9[0-5])|2(?:[14][017-9]|8[0-59])|3(?:2[5-8]|[34][017-9]|9[016-9])|4(?:1[015-9]|[29][89]|39|8[389])|5(?:[15][017-9]|2[04-9]|9[7-9])|6(?:0[0-47]|1[0-257-9]|2[0-4]|3[19]|5[4589])|70[0289]|88[089]|97[02-8])|8(?:0(?:6[67]|7[02-8])|70[017-9]|84[01489]|91[0-289]))\\d{6}|(?:7(?:31|4[47])|8(?:16|2[014]|3[126]|6[136]|7[78]|83))(?:[0189]\\d|7[02-8])\\d{5}|(?:6(?:[09]\\d|1[04679]|2[03689]|3[05-9]|4[0489]|50|6[069]|7[07]|8[7-9])|7(?:0\\d|2[0235-79]|3[05-8]|40|5[0346-8]|6[6-9]|7[1-9]|8[0-79]|9[089])|8(?:0[01589]|1[0-57-9]|2[235-9]|3[03-57-9]|[45]\\d|6[02457-9]|7[1-69]|8[0-25-9]|9[02-9])|9\\d\\d)\\d{7}|(?:6(?:(?:1[1358]|2[2457]|3[2-4]|4[235-7]|5[2-689]|6[24578]|8[124-6])\\d|7(?:[235689]\\d|4[0189]))|7(?:1(?:[013-8]\\d|9[6-9])|28[6-8]|3(?:2[0-49]|9[2-5])|4(?:1[2-4]|[29][0-7]|3[0-8]|[56]\\d|8[0-24-7])|5(?:2[1-3]|9[0-6])|6(?:0[5689]|2[5-9]|3[02-8]|4\\d|5[0-367])|70[13-7]|881))[0189]\\d{5}", [10]], ["000800\\d{7}|1(?:600\\d{6}|80(?:0\\d{4,9}|3\\d{9}))"], ["186[12]\\d{9}", [13]], 0, 0, ["140\\d{7}", [10]], 0, 0, ["1860\\d{7}", [11]]]], "IO": ["246", "00", "3\\d{6}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["3"]]], 0, 0, 0, 0, 0, 0, [["37\\d{5}"], ["38\\d{5}"]]], "IQ": ["964", "00", "(?:1|7\\d\\d)\\d{7}|[2-6]\\d{7,8}", [8, 9, 10], [["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["1"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[2-6]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["7"], "0$1"]], "0", 0, 0, 0, 0, 0, [["1\\d{7}|(?:2[13-5]|3[02367]|4[023]|5[03]|6[026])\\d{6,7}", [8, 9]], ["7[3-9]\\d{8}", [10]]]], "IR": ["98", "00", "[1-9]\\d{9}|(?:[1-8]\\d\\d|9)\\d{3,4}", [4, 5, 6, 7, 10], [["(\\d{4,5})", "$1", ["96"], "0$1"], ["(\\d{2})(\\d{4,5})", "$1 $2", ["(?:1[137]|2[13-68]|3[1458]|4[145]|5[1468]|6[16]|7[1467]|8[13467])[12689]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["9"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["[1-8]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1[137]|2[13-68]|3[1458]|4[145]|5[1468]|6[16]|7[1467]|8[13467])(?:[03-57]\\d{7}|[16]\\d{3}(?:\\d{4})?|[289]\\d{3}(?:\\d(?:\\d{3})?)?)|94(?:000[09]|2(?:121|[2689]0\\d)|30[0-2]\\d|4(?:111|40\\d))\\d{4}", [6, 7, 10]], ["9(?:(?:0(?:[0-35]\\d|4[4-6])|(?:[13]\\d|2[0-3])\\d)\\d|9(?:[0-46]\\d\\d|5[15]0|8(?:[12]\\d|88)|9(?:0[0-3]|[19]\\d|21|69|77|8[7-9])))\\d{5}", [10]], 0, 0, 0, 0, ["96(?:0[12]|2[16-8]|3(?:08|[14]5|[23]|66)|4(?:0|80)|5[01]|6[89]|86|9[19])", [4, 5]]]], "IS": ["354", "00|1(?:0(?:01|[12]0)|100)", "(?:38\\d|[4-9])\\d{6}", [7, 9], [["(\\d{3})(\\d{4})", "$1 $2", ["[4-9]"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["3"]]], 0, 0, 0, 0, 0, 0, [["(?:4(?:1[0-24-69]|2[0-7]|[37][0-8]|4[0-24589]|5[0-68]|6\\d|8[0-36-8])|5(?:05|[156]\\d|2[02578]|3[0-579]|4[03-7]|7[0-2578]|8[0-35-9]|9[013-689])|872)\\d{4}", [7]], ["(?:38[589]\\d\\d|6(?:1[1-8]|2[0-6]|3[026-9]|4[014679]|5[0159]|6[0-69]|70|8[06-8]|9\\d)|7(?:5[057]|[6-9]\\d)|8(?:2[0-59]|[3-69]\\d|8[238]))\\d{4}"], ["80[0-8]\\d{4}", [7]], ["90(?:0\\d|1[5-79]|2[015-79]|3[135-79]|4[125-7]|5[25-79]|7[1-37]|8[0-35-7])\\d{3}", [7]], 0, 0, ["809\\d{4}", [7]], 0, ["49[0-24-79]\\d{4}", [7]]], "00"], "IT": ["39", "00", "0\\d{5,10}|1\\d{8,10}|3(?:[0-8]\\d{7,10}|9\\d{7,8})|(?:55|70)\\d{8}|8\\d{5}(?:\\d{2,4})?", [6, 7, 8, 9, 10, 11], [["(\\d{2})(\\d{4,6})", "$1 $2", ["0[26]"]], ["(\\d{3})(\\d{3,6})", "$1 $2", ["0[13-57-9][0159]|8(?:03|4[17]|9[2-5])", "0[13-57-9][0159]|8(?:03|4[17]|9(?:2|3[04]|[45][0-4]))"]], ["(\\d{4})(\\d{2,6})", "$1 $2", ["0(?:[13-579][2-46-8]|8[236-8])"]], ["(\\d{4})(\\d{4})", "$1 $2", ["894"]], ["(\\d{2})(\\d{3,4})(\\d{4})", "$1 $2 $3", ["0[26]|5"]], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["1(?:44|[679])|[378]"]], ["(\\d{3})(\\d{3,4})(\\d{4})", "$1 $2 $3", ["0[13-57-9][0159]|14"]], ["(\\d{2})(\\d{4})(\\d{5})", "$1 $2 $3", ["0[26]"]], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["0"]], ["(\\d{3})(\\d{4})(\\d{4,5})", "$1 $2 $3", ["3"]]], 0, 0, 0, 0, 0, 0, [["0669[0-79]\\d{1,6}|0(?:1(?:[0159]\\d|[27][1-5]|31|4[1-4]|6[1356]|8[2-57])|2\\d\\d|3(?:[0159]\\d|2[1-4]|3[12]|[48][1-6]|6[2-59]|7[1-7])|4(?:[0159]\\d|[23][1-9]|4[245]|6[1-5]|7[1-4]|81)|5(?:[0159]\\d|2[1-5]|3[2-6]|4[1-79]|6[4-6]|7[1-578]|8[3-8])|6(?:[0-57-9]\\d|6[0-8])|7(?:[0159]\\d|2[12]|3[1-7]|4[2-46]|6[13569]|7[13-6]|8[1-59])|8(?:[0159]\\d|2[3-578]|3[1-356]|[6-8][1-5])|9(?:[0159]\\d|[238][1-5]|4[12]|6[1-8]|7[1-6]))\\d{2,7}"], ["3[1-9]\\d{8}|3[2-9]\\d{7}", [9, 10]], ["80(?:0\\d{3}|3)\\d{3}", [6, 9]], ["(?:0878\\d{3}|89(?:2\\d|3[04]|4(?:[0-4]|[5-9]\\d\\d)|5[0-4]))\\d\\d|(?:1(?:44|6[346])|89(?:38|5[5-9]|9))\\d{6}", [6, 8, 9, 10]], ["1(?:78\\d|99)\\d{6}", [9, 10]], 0, 0, 0, ["55\\d{8}", [10]], ["84(?:[08]\\d{3}|[17])\\d{3}", [6, 9]]]], "JE": ["44", "00", "1534\\d{6}|(?:[3578]\\d|90)\\d{8}", [10], 0, "0", 0, "([0-24-8]\\d{5})$|0", "1534$1", 0, 0, [["1534[0-24-8]\\d{5}"], ["7(?:(?:(?:50|82)9|937)\\d|7(?:00[378]|97[7-9]))\\d{5}"], ["80(?:07(?:35|81)|8901)\\d{4}"], ["(?:8(?:4(?:4(?:4(?:05|42|69)|703)|5(?:041|800))|7(?:0002|1206))|90(?:066[59]|1810|71(?:07|55)))\\d{4}"], ["701511\\d{4}"], 0, ["(?:3(?:0(?:07(?:35|81)|8901)|3\\d{4}|4(?:4(?:4(?:05|42|69)|703)|5(?:041|800))|7(?:0002|1206))|55\\d{4})\\d{4}"], ["76(?:464|652)\\d{5}|76(?:0[0-28]|2[356]|34|4[01347]|5[49]|6[0-369]|77|8[14]|9[139])\\d{6}"], ["56\\d{8}"]]], "JM": ["1", "011", "(?:[58]\\d\\d|658|900)\\d{7}", [10], 0, "1", 0, 0, 0, 0, "658|876", [["8766060\\d{3}|(?:658(?:2(?:[0-8]\\d|9[0-46-9])|[3-9]\\d\\d)|876(?:52[35]|6(?:0[1-3579]|1[0235-9]|[23]\\d|40|5[06]|6[2-589]|7[0-25-9]|8[04]|9[4-9])|7(?:0[2-689]|[1-6]\\d|8[056]|9[45])|9(?:0[1-8]|1[02378]|[2-8]\\d|9[2-468])))\\d{4}"], ["(?:658295|876(?:2(?:0[1-9]|[13-9]\\d|2[013-9])|[348]\\d\\d|5(?:0[1-9]|[1-9]\\d)|6(?:4[89]|6[67])|7(?:0[07]|7\\d|8[1-47-9]|9[0-36-9])|9(?:[01]9|9[0579])))\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "JO": ["962", "00", "(?:(?:[2689]|7\\d)\\d|32|53)\\d{6}", [8, 9], [["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["[2356]|87"], "(0$1)"], ["(\\d{3})(\\d{5,6})", "$1 $2", ["[89]"], "0$1"], ["(\\d{2})(\\d{7})", "$1 $2", ["70"], "0$1"], ["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["7"], "0$1"]], "0", 0, 0, 0, 0, 0, [["87(?:000|90[01])\\d{3}|(?:2(?:6(?:2[0-35-9]|3[0-578]|4[24-7]|5[0-24-8]|[6-8][023]|9[0-3])|7(?:0[1-79]|10|2[014-7]|3[0-689]|4[019]|5[0-3578]))|32(?:0[1-69]|1[1-35-7]|2[024-7]|3\\d|4[0-3]|[5-7][023])|53(?:0[0-3]|[13][023]|2[0-59]|49|5[0-35-9]|6[15]|7[45]|8[1-6]|9[0-36-9])|6(?:2(?:[05]0|22)|3(?:00|33)|4(?:0[0-25]|1[2-7]|2[0569]|[38][07-9]|4[025689]|6[0-589]|7\\d|9[0-2])|5(?:[01][056]|2[034]|3[0-57-9]|4[178]|5[0-69]|6[0-35-9]|7[1-379]|8[0-68]|9[0239]))|87(?:20|7[078]|99))\\d{4}", [8]], ["7(?:[78][0-25-9]|9\\d)\\d{6}", [9]], ["80\\d{6}", [8]], ["9\\d{7}", [8]], ["70\\d{7}", [9]], 0, ["8(?:10|8\\d)\\d{5}", [8]], ["74(?:66|77)\\d{5}", [9]], 0, ["85\\d{6}", [8]]]], "JP": ["81", "010", "00[1-9]\\d{6,14}|[257-9]\\d{9}|(?:00|[1-9]\\d\\d)\\d{6}", [8, 9, 10, 11, 12, 13, 14, 15, 16, 17], [["(\\d{3})(\\d{3})(\\d{3})", "$1-$2-$3", ["(?:12|57|99)0"], "0$1"], ["(\\d{4})(\\d)(\\d{4})", "$1-$2-$3", ["1(?:26|3[79]|4[56]|5[4-68]|6[3-5])|499|5(?:76|97)|746|8(?:3[89]|47|51)|9(?:80|9[16])", "1(?:267|3(?:7[247]|9[278])|466|5(?:47|58|64)|6(?:3[245]|48|5[4-68]))|499[2468]|5(?:76|97)9|7468|8(?:3(?:8[7-9]|96)|477|51[2-9])|9(?:802|9(?:1[23]|69))|1(?:45|58)[67]", "1(?:267|3(?:7[247]|9[278])|466|5(?:47|58|64)|6(?:3[245]|48|5[4-68]))|499[2468]|5(?:769|979[2-69])|7468|8(?:3(?:8[7-9]|96[2457-9])|477|51[2-9])|9(?:802|9(?:1[23]|69))|1(?:45|58)[67]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1-$2-$3", ["60"], "0$1"], ["(\\d)(\\d{4})(\\d{4})", "$1-$2-$3", ["[36]|4(?:2[09]|7[01])", "[36]|4(?:2(?:0|9[02-69])|7(?:0[019]|1))"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1-$2-$3", ["1(?:1|5[45]|77|88|9[69])|2(?:2[1-37]|3[0-269]|4[59]|5|6[24]|7[1-358]|8[1369]|9[0-38])|4(?:[28][1-9]|3[0-57]|[45]|6[248]|7[2-579]|9[29])|5(?:2|3[0459]|4[0-369]|5[29]|8[02389]|9[0-389])|7(?:2[02-46-9]|34|[58]|6[0249]|7[57]|9[2-6])|8(?:2[124589]|3[26-9]|49|51|6|7[0-468]|8[68]|9[019])|9(?:[23][1-9]|4[15]|5[138]|6[1-3]|7[156]|8[189]|9[1-489])", "1(?:1|5(?:4[018]|5[017])|77|88|9[69])|2(?:2(?:[127]|3[014-9])|3[0-269]|4[59]|5(?:[1-3]|5[0-69]|9[19])|62|7(?:[1-35]|8[0189])|8(?:[16]|3[0134]|9[0-5])|9(?:[028]|17))|4(?:2(?:[13-79]|8[014-6])|3[0-57]|[45]|6[248]|7[2-47]|8[1-9]|9[29])|5(?:2|3(?:[045]|9[0-8])|4[0-369]|5[29]|8[02389]|9[0-3])|7(?:2[02-46-9]|34|[58]|6[0249]|7[57]|9(?:[23]|4[0-59]|5[01569]|6[0167]))|8(?:2(?:[1258]|4[0-39]|9[0-2469])|3(?:[29]|60)|49|51|6(?:[0-24]|36|5[0-3589]|7[23]|9[01459])|7[0-468]|8[68])|9(?:[23][1-9]|4[15]|5[138]|6[1-3]|7[156]|8[189]|9(?:[1289]|3[34]|4[0178]))|(?:264|837)[016-9]|2(?:57|93)[015-9]|(?:25[0468]|422|838)[01]|(?:47[59]|59[89]|8(?:6[68]|9))[019]", "1(?:1|5(?:4[018]|5[017])|77|88|9[69])|2(?:2[127]|3[0-269]|4[59]|5(?:[1-3]|5[0-69]|9(?:17|99))|6(?:2|4[016-9])|7(?:[1-35]|8[0189])|8(?:[16]|3[0134]|9[0-5])|9(?:[028]|17))|4(?:2(?:[13-79]|8[014-6])|3[0-57]|[45]|6[248]|7[2-47]|9[29])|5(?:2|3(?:[045]|9(?:[0-58]|6[4-9]|7[0-35689]))|4[0-369]|5[29]|8[02389]|9[0-3])|7(?:2[02-46-9]|34|[58]|6[0249]|7[57]|9(?:[23]|4[0-59]|5[01569]|6[0167]))|8(?:2(?:[1258]|4[0-39]|9[0169])|3(?:[29]|60|7(?:[017-9]|6[6-8]))|49|51|6(?:[0-24]|36[2-57-9]|5(?:[0-389]|5[23])|6(?:[01]|9[178])|7(?:2[2-468]|3[78])|9[0145])|7[0-468]|8[68])|9(?:4[15]|5[138]|7[156]|8[189]|9(?:[1289]|3(?:31|4[357])|4[0178]))|(?:8294|96)[1-3]|2(?:57|93)[015-9]|(?:223|8699)[014-9]|(?:25[0468]|422|838)[01]|(?:48|8292|9[23])[1-9]|(?:47[59]|59[89]|8(?:68|9))[019]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{4})", "$1-$2-$3", ["[14]|[289][2-9]|5[3-9]|7[2-4679]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1-$2-$3", ["800"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4})", "$1-$2-$3", ["[257-9]"], "0$1"]], "0", 0, "(000[259]\\d{6})$|(?:(?:003768)0?)|0", "$1", 0, 0, [["(?:1(?:1[235-8]|2[3-6]|3[3-9]|4[2-6]|[58][2-8]|6[2-7]|7[2-9]|9[1-9])|(?:2[2-9]|[36][1-9])\\d|4(?:[2-578]\\d|6[02-8]|9[2-59])|5(?:[2-589]\\d|6[1-9]|7[2-8])|7(?:[25-9]\\d|3[4-9]|4[02-9])|8(?:[2679]\\d|3[2-9]|4[5-9]|5[1-9]|8[03-9])|9(?:[2-58]\\d|[679][1-9]))\\d{6}", [9]], ["[7-9]0[1-9]\\d{7}", [10]], ["00777(?:[01]|5\\d)\\d\\d|(?:00(?:7778|882[1245])|(?:120|800\\d)\\d\\d)\\d{4}|00(?:37|66|78)\\d{6,13}"], ["990\\d{6}", [9]], ["60\\d{7}", [9]], 0, ["570\\d{6}", [9]], ["20\\d{8}", [10]], ["50[1-9]\\d{7}", [10]]]], "KE": ["254", "000", "(?:[17]\\d\\d|900)\\d{6}|(?:2|80)0\\d{6,7}|[4-6]\\d{6,8}", [7, 8, 9, 10], [["(\\d{2})(\\d{5,7})", "$1 $2", ["[24-6]"], "0$1"], ["(\\d{3})(\\d{6})", "$1 $2", ["[17]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[89]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:4[245]|5[1-79]|6[01457-9])\\d{5,7}|(?:4[136]|5[08]|62)\\d{7}|(?:[24]0|66)\\d{6,7}", [7, 8, 9]], ["(?:1(?:0[0-6]|1[0-5]|2[014]|30)|7\\d\\d)\\d{6}", [9]], ["800[2-8]\\d{5,6}", [9, 10]], ["900[02-9]\\d{5}", [9]]]], "KG": ["996", "00", "8\\d{9}|[235-9]\\d{8}", [9, 10], [["(\\d{4})(\\d{5})", "$1 $2", ["3(?:1[346]|[24-79])"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[235-79]|88"], "0$1"], ["(\\d{3})(\\d{3})(\\d)(\\d{2,3})", "$1 $2 $3 $4", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["312(?:5[0-79]\\d|9(?:[0-689]\\d|7[0-24-9]))\\d{3}|(?:3(?:1(?:2[0-46-8]|3[1-9]|47|[56]\\d)|2(?:22|3[0-479]|6[0-7])|4(?:22|5[6-9]|6\\d)|5(?:22|3[4-7]|59|6\\d)|6(?:22|5[35-7]|6\\d)|7(?:22|3[468]|4[1-9]|59|[67]\\d)|9(?:22|4[1-8]|6\\d))|6(?:09|12|2[2-4])\\d)\\d{5}", [9]], ["312(?:58\\d|973)\\d{3}|(?:2(?:0[0-35]|2\\d)|5[0-24-7]\\d|600|7(?:[07]\\d|55)|88[08]|9(?:12|9[05-9]))\\d{6}", [9]], ["800\\d{6,7}"]]], "KH": ["855", "00[14-9]", "1\\d{9}|[1-9]\\d{7,8}", [8, 9, 10], [["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[1-9]"], "0$1"], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["1"]]], "0", 0, 0, 0, 0, 0, [["23(?:4(?:[2-4]|[56]\\d)|[568]\\d\\d)\\d{4}|23[236-9]\\d{5}|(?:2[4-6]|3[2-6]|4[2-4]|[5-7][2-5])(?:(?:[237-9]|4[56]|5\\d)\\d{5}|6\\d{5,6})", [8, 9]], ["(?:(?:1[28]|3[18]|9[67])\\d|6[016-9]|7(?:[07-9]|[16]\\d)|8(?:[013-79]|8\\d))\\d{6}|(?:1\\d|9[0-57-9])\\d{6}|(?:2[3-6]|3[2-6]|4[2-4]|[5-7][2-5])48\\d{5}", [8, 9]], ["1800(?:1\\d|2[019])\\d{4}", [10]], ["1900(?:1\\d|2[09])\\d{4}", [10]]]], "KI": ["686", "00", "(?:[37]\\d|6[0-79])\\d{6}|(?:[2-48]\\d|50)\\d{3}", [5, 8], 0, "0", 0, 0, 0, 0, 0, [["(?:[24]\\d|3[1-9]|50|65(?:02[12]|12[56]|22[89]|[3-5]00)|7(?:27\\d\\d|3100|5(?:02[12]|12[56]|22[89]|[34](?:00|81)|500))|8[0-5])\\d{3}"], ["(?:6200[01]|7(?:310[1-9]|5(?:02[03-9]|12[0-47-9]|22[0-7]|[34](?:0[1-9]|8[02-9])|50[1-9])))\\d{3}|(?:63\\d\\d|7(?:(?:[0146-9]\\d|2[0-689])\\d|3(?:[02-9]\\d|1[1-9])|5(?:[0-2][013-9]|[34][1-79]|5[1-9]|[6-9]\\d)))\\d{4}", [8]], 0, 0, 0, 0, 0, 0, ["30(?:0[01]\\d\\d|12(?:11|20))\\d\\d", [8]]]], "KM": ["269", "00", "[3478]\\d{6}", [7], [["(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3", ["[3478]"]]], 0, 0, 0, 0, 0, 0, [["7[4-7]\\d{5}"], ["[34]\\d{6}"], 0, ["8\\d{6}"]]], "KN": ["1", "011", "(?:[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2-7]\\d{6})$|1", "869$1", 0, "869", [["869(?:2(?:29|36)|302|4(?:6[015-9]|70)|56[5-7])\\d{4}"], ["869(?:48[89]|55[6-8]|66\\d|76[02-7])\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "KP": ["850", "00|99", "85\\d{6}|(?:19\\d|[2-7])\\d{7}", [8, 10], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["8"], "0$1"], ["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["[2-7]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:(?:195|2)\\d|3[19]|4[159]|5[37]|6[17]|7[39]|85)\\d{6}"], ["19[1-3]\\d{7}", [10]]]], "KR": ["82", "00(?:[125689]|3(?:[46]5|91)|7(?:00|27|3|55|6[126]))", "00[1-9]\\d{8,11}|(?:[12]|5\\d{3})\\d{7}|[13-6]\\d{9}|(?:[1-6]\\d|80)\\d{7}|[3-6]\\d{4,5}|(?:00|7)0\\d{8}", [5, 6, 8, 9, 10, 11, 12, 13, 14], [["(\\d{2})(\\d{3,4})", "$1-$2", ["(?:3[1-3]|[46][1-4]|5[1-5])1"], "0$1"], ["(\\d{4})(\\d{4})", "$1-$2", ["1"]], ["(\\d)(\\d{3,4})(\\d{4})", "$1-$2-$3", ["2"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1-$2-$3", ["60|8"], "0$1"], ["(\\d{2})(\\d{3,4})(\\d{4})", "$1-$2-$3", ["[1346]|5[1-5]"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4})", "$1-$2-$3", ["[57]"], "0$1"], ["(\\d{2})(\\d{5})(\\d{4})", "$1-$2-$3", ["5"], "0$1"]], "0", 0, "0(8(?:[1-46-8]|5\\d\\d))?", 0, 0, 0, [["(?:2|3[1-3]|[46][1-4]|5[1-5])[1-9]\\d{6,7}|(?:3[1-3]|[46][1-4]|5[1-5])1\\d{2,3}", [5, 6, 8, 9, 10]], ["1(?:05(?:[0-8]\\d|9[0-6])|22[13]\\d)\\d{4,5}|1(?:0[0-46-9]|[16-9]\\d|2[013-9])\\d{6,7}", [9, 10]], ["00(?:308\\d{6,7}|798\\d{7,9})|(?:00368|80)\\d{7}", [9, 11, 12, 13, 14]], ["60[2-9]\\d{6}", [9]], ["50\\d{8,9}", [10, 11]], 0, ["1(?:5(?:22|33|44|66|77|88|99)|6(?:[07]0|44|6[168]|88)|8(?:00|33|55|77|99))\\d{4}", [8]], ["15\\d{7,8}", [9, 10]], ["70\\d{8}", [10]]]], "KW": ["965", "00", "18\\d{5}|(?:[2569]\\d|41)\\d{6}", [7, 8], [["(\\d{4})(\\d{3,4})", "$1 $2", ["[169]|2(?:[235]|4[1-35-9])|52"]], ["(\\d{3})(\\d{5})", "$1 $2", ["[245]"]]], 0, 0, 0, 0, 0, 0, [["2(?:[23]\\d\\d|4(?:[1-35-9]\\d|44)|5(?:0[034]|[2-46]\\d|5[1-3]|7[1-7]))\\d{4}", [8]], ["(?:41\\d\\d|5(?:(?:[05]\\d|1[0-7]|6[56])\\d|2(?:22|5[25])|7(?:55|77)|88[58])|6(?:(?:0[034679]|5[015-9]|6\\d)\\d|1(?:00|11|66)|222|3[36]3|444|7(?:0[013-9]|[67]\\d)|888|9(?:[069]\\d|3[039]))|9(?:(?:0[09]|[4679]\\d|8[057-9])\\d|1(?:1[01]|99)|2(?:00|2\\d)|3(?:00|3[03])|5(?:00|5\\d)))\\d{4}", [8]], ["18\\d{5}", [7]]]], "KY": ["1", "011", "(?:345|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2-9]\\d{6})$|1", "345$1", 0, "345", [["345(?:2(?:22|3[23]|44|66)|333|444|6(?:23|38|40)|7(?:30|4[35-79]|6[6-9]|77)|8(?:00|1[45]|[48]8)|9(?:14|4[035-9]))\\d{4}"], ["345(?:32[1-9]|42[0-4]|5(?:1[67]|2[5-79]|4[6-9]|50|76)|649|82[56]|9(?:1[679]|2[2-9]|3[06-9]|90))\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["(?:345976|900[2-9]\\d\\d)\\d{4}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], 0, 0, ["345849\\d{4}"]]], "KZ": ["7", "810", "(?:33622|8\\d{8})\\d{5}|[78]\\d{9}", [10, 14], 0, "8", 0, 0, 0, 0, "33|7", [["(?:33622|7(?:1(?:0(?:[23]\\d|4[0-3]|59|63)|1(?:[23]\\d|4[0-79]|59)|2(?:[23]\\d|59)|3(?:2\\d|3[0-79]|4[0-35-9]|59)|4(?:[24]\\d|3[013-9]|5[1-9]|97)|5(?:2\\d|3[1-9]|4[0-7]|59)|6(?:[2-4]\\d|5[19]|61)|72\\d|8(?:[27]\\d|3[1-46-9]|4[0-5]|59))|2(?:1(?:[23]\\d|4[46-9]|5[3469])|2(?:2\\d|3[0679]|46|5[12679])|3(?:[2-4]\\d|5[139])|4(?:2\\d|3[1-35-9]|59)|5(?:[23]\\d|4[0-8]|59|61)|6(?:2\\d|3[1-9]|4[0-4]|59)|7(?:[2379]\\d|40|5[279])|8(?:[23]\\d|4[0-3]|59)|9(?:2\\d|3[124578]|59))))\\d{5}", [10]], ["7(?:0[0-25-8]|47|6[0-4]|7[15-8]|85)\\d{7}", [10]], ["8(?:00|108\\d{3})\\d{7}"], ["809\\d{7}", [10]], ["808\\d{7}", [10]], 0, 0, 0, ["751\\d{7}", [10]]], "8~10"], "LA": ["856", "00", "[23]\\d{9}|3\\d{8}|(?:[235-8]\\d|41)\\d{6}", [8, 9, 10], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["2[13]|3[14]|[4-8]"], "0$1"], ["(\\d{2})(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3 $4", ["30[013-9]"], "0$1"], ["(\\d{2})(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["[23]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2[13]|[35-7][14]|41|8[1468])\\d{6}", [8]], ["(?:20(?:[2359]\\d|7[6-8]|88)|302\\d)\\d{6}", [10]], 0, 0, 0, 0, ["30[013-9]\\d{6}", [9]]]], "LB": ["961", "00", "[27-9]\\d{7}|[13-9]\\d{6}", [7, 8], [["(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["[13-69]|7(?:[2-57]|62|8[0-7]|9[04-9])|8[02-9]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[27-9]"]]], "0", 0, 0, 0, 0, 0, [["7(?:62|8[0-7]|9[04-9])\\d{4}|(?:[14-69]\\d|2(?:[14-69]\\d|[78][1-9])|7[2-57]|8[02-9])\\d{5}"], ["793(?:[01]\\d|2[0-4])\\d{3}|(?:(?:3|81)\\d|7(?:[01]\\d|6[013-9]|8[89]|9[12]))\\d{5}"], 0, ["9[01]\\d{6}", [8]], 0, 0, 0, 0, 0, ["80\\d{6}", [8]]]], "LC": ["1", "011", "(?:[58]\\d\\d|758|900)\\d{7}", [10], 0, "1", 0, "([2-8]\\d{6})$|1", "758$1", 0, "758", [["758(?:234|4(?:30|5\\d|6[2-9]|8[0-2])|57[0-2]|(?:63|75)8)\\d{4}"], ["758(?:28[4-7]|384|4(?:6[01]|8[4-9])|5(?:1[89]|20|84)|7(?:1[2-9]|2\\d|3[0-3])|812)\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "LI": ["423", "00", "[68]\\d{8}|(?:[2378]\\d|90)\\d{5}", [7, 9], [["(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3", ["[2379]|8(?:0[09]|7)", "[2379]|8(?:0(?:02|9)|7)"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["8"]], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["69"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["6"]]], "0", 0, "(1001)|0", 0, 0, 0, [["(?:2(?:01|1[27]|2[02]|3\\d|6[02-578]|96)|3(?:[24]0|33|7[0135-7]|8[048]|9[0269]))\\d{4}", [7]], ["(?:6(?:(?:4[5-9]|5[0-469])\\d|6(?:[0245]\\d|[17]0|3[7-9]))\\d|7(?:[37-9]\\d|42|56))\\d{4}"], ["8002[28]\\d\\d|80(?:05\\d|9)\\d{4}"], ["90(?:02[258]|1(?:23|3[14])|66[136])\\d\\d", [7]], 0, 0, ["870(?:28|87)\\d\\d", [7]]]], "LK": ["94", "00", "[1-9]\\d{8}", [9], [["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["7"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[1-689]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:12[2-9]|602|8[12]\\d|9(?:1\\d|22|9[245]))\\d{6}|(?:11|2[13-7]|3[1-8]|4[157]|5[12457]|6[35-7])[2-57]\\d{6}"], ["7(?:[0-25-8]\\d|4[0-4])\\d{6}"], 0, 0, 0, 0, ["1973\\d{5}"]]], "LR": ["231", "00", "(?:[25]\\d|33|77|88)\\d{7}|(?:2\\d|[4-6])\\d{6}", [7, 8, 9], [["(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["[4-6]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["2"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[23578]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["2\\d{7}", [8]], ["(?:(?:(?:22|33)0|555|(?:77|88)\\d)\\d|4[67])\\d{5}|[56]\\d{6}", [7, 9]], 0, ["332(?:02|[34]\\d)\\d{4}", [9]]]], "LS": ["266", "00", "(?:[256]\\d\\d|800)\\d{5}", [8], [["(\\d{4})(\\d{4})", "$1 $2", ["[2568]"]]], 0, 0, 0, 0, 0, 0, [["2\\d{7}"], ["[56]\\d{7}"], ["800[256]\\d{4}"]]], "LT": ["370", "00", "(?:[3469]\\d|52|[78]0)\\d{6}", [8], [["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["52[0-7]"], "(8-$1)", 1], ["(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["[7-9]"], "8 $1", 1], ["(\\d{2})(\\d{6})", "$1 $2", ["37|4(?:[15]|6[1-8])"], "(8-$1)", 1], ["(\\d{3})(\\d{5})", "$1 $2", ["[3-6]"], "(8-$1)", 1]], "8", 0, "[08]", 0, 0, 0, [["(?:3[1478]|4[124-6]|52)\\d{6}"], ["6\\d{7}"], ["80[02]\\d{5}"], ["9(?:0[0239]|10)\\d{5}"], ["70[05]\\d{5}"], 0, ["70[67]\\d{5}"], 0, ["[89]01\\d{5}"], ["808\\d{5}"]]], "LU": ["352", "00", "35[013-9]\\d{4,8}|6\\d{8}|35\\d{2,4}|(?:[2457-9]\\d|3[0-46-9])\\d{2,9}", [4, 5, 6, 7, 8, 9, 10, 11], [["(\\d{2})(\\d{3})", "$1 $2", ["2(?:0[2-689]|[2-9])|[3-57]|8(?:0[2-9]|[13-9])|9(?:0[89]|[2-579])"]], ["(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3", ["2(?:0[2-689]|[2-9])|[3-57]|8(?:0[2-9]|[13-9])|9(?:0[89]|[2-579])"]], ["(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3", ["20[2-689]"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{1,2})", "$1 $2 $3 $4", ["2(?:[0367]|4[3-8])"]], ["(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["80[01]|90[015]"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3 $4", ["20"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["6"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{1,2})", "$1 $2 $3 $4 $5", ["2(?:[0367]|4[3-8])"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{1,5})", "$1 $2 $3 $4", ["[3-57]|8[13-9]|9(?:0[89]|[2-579])|(?:2|80)[2-9]"]]], 0, 0, "(15(?:0[06]|1[12]|[35]5|4[04]|6[26]|77|88|99)\\d)", 0, 0, 0, [["(?:35[013-9]|80[2-9]|90[89])\\d{1,8}|(?:2[2-9]|3[0-46-9]|[457]\\d|8[13-9]|9[2-579])\\d{2,9}"], ["6(?:[269][18]|5[1568]|7[189]|81)\\d{6}", [9]], ["800\\d{5}", [8]], ["90[015]\\d{5}", [8]], 0, 0, 0, 0, ["20(?:1\\d{5}|[2-689]\\d{1,7})", [4, 5, 6, 7, 8, 9, 10]], ["801\\d{5}", [8]]]], "LV": ["371", "00", "(?:[268]\\d|90)\\d{6}", [8], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[269]|8[01]"]]], 0, 0, 0, 0, 0, 0, [["6\\d{7}"], ["23(?:23[0-57-9]|33[0238])\\d{3}|2(?:[0-24-9]\\d\\d|3(?:0[07]|[14-9]\\d|2[024-9]|3[0-24-9]))\\d{4}"], ["80\\d{6}"], ["90\\d{6}"], 0, 0, 0, 0, 0, ["81\\d{6}"]]], "LY": ["218", "00", "[2-9]\\d{8}", [9], [["(\\d{2})(\\d{7})", "$1-$2", ["[2-9]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2(?:0[56]|[1-6]\\d|7[124579]|8[124])|3(?:1\\d|2[2356])|4(?:[17]\\d|2[1-357]|5[2-4]|8[124])|5(?:[1347]\\d|2[1-469]|5[13-5]|8[1-4])|6(?:[1-479]\\d|5[2-57]|8[1-5])|7(?:[13]\\d|2[13-79])|8(?:[124]\\d|5[124]|84))\\d{6}"], ["9[1-6]\\d{7}"]]], "MA": ["212", "00", "[5-8]\\d{8}", [9], [["(\\d{5})(\\d{4})", "$1-$2", ["5(?:29|38)", "5(?:29[1289]|389)", "529(?:1[1-46-9]|2[013-8]|90)|5(?:298|389)[0-46-9]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["5[45]"], "0$1"], ["(\\d{4})(\\d{5})", "$1-$2", ["5(?:2[2-489]|3[5-9]|9)|892", "5(?:2(?:[2-49]|8[235-9])|3[5-9]|9)|892"], "0$1"], ["(\\d{2})(\\d{7})", "$1-$2", ["8"], "0$1"], ["(\\d{3})(\\d{6})", "$1-$2", ["[5-7]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["5293[01]\\d{4}|5(?:2(?:[0-25-7]\\d|3[1-578]|4[02-46-8]|8[0235-7]|9[0-289])|3(?:[0-47]\\d|5[02-9]|6[02-8]|8[0189]|9[3-9])|(?:4[067]|5[03])\\d)\\d{5}"], ["(?:6(?:[0-79]\\d|8[0-247-9])|7(?:[017]\\d|2[0-2]|6[0-8]|8[0-3]))\\d{6}"], ["80\\d{7}"], ["89\\d{7}"], 0, 0, 0, 0, ["592(?:4[0-2]|93)\\d{4}"]]], "MC": ["377", "00", "(?:[3489]|6\\d)\\d{7}", [8, 9], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["4"], "0$1"], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[389]"]], ["(\\d)(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4 $5", ["6"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:870|9[2-47-9]\\d)\\d{5}", [8]], ["4(?:[46]\\d|5[1-9])\\d{5}|(?:3|6\\d)\\d{7}"], ["(?:800|90\\d)\\d{5}", [8]]]], "MD": ["373", "00", "(?:[235-7]\\d|[89]0)\\d{6}", [8], [["(\\d{3})(\\d{5})", "$1 $2", ["[89]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["22|3"], "0$1"], ["(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["[25-7]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:(?:2[1-9]|3[1-79])\\d|5(?:33|5[257]))\\d{5}"], ["562\\d{5}|(?:6\\d|7[16-9])\\d{6}"], ["800\\d{5}"], ["90[056]\\d{5}"], 0, 0, ["803\\d{5}"], 0, ["3[08]\\d{6}"], ["808\\d{5}"]]], "ME": ["382", "00", "(?:20|[3-79]\\d)\\d{6}|80\\d{6,7}", [8, 9], [["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[2-9]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:20[2-8]|3(?:[0-2][2-7]|3[24-7])|4(?:0[2-467]|1[2467])|5(?:0[2467]|1[24-7]|2[2-467]))\\d{5}", [8]], ["6(?:[07-9]\\d|3[024]|6[0-25])\\d{5}", [8]], ["80(?:[0-2578]|9\\d)\\d{5}"], ["9(?:4[1568]|5[178])\\d{5}", [8]], 0, 0, ["77[1-9]\\d{5}", [8]], 0, ["78[1-49]\\d{5}", [8]]]], "MF": ["590", "00", "590\\d{6}|(?:69|80|9\\d)\\d{7}", [9], 0, "0", 0, 0, 0, 0, 0, [["590(?:0[079]|[14]3|[27][79]|3[03-7]|5[0-268]|87)\\d{4}"], ["69(?:0\\d\\d|1(?:2[2-9]|3[0-5]))\\d{4}"], ["80[0-5]\\d{6}"], 0, 0, 0, 0, 0, ["9(?:(?:395|76[018])\\d|475[0-5])\\d{4}"]]], "MG": ["261", "00", "[23]\\d{8}", [9], [["(\\d{2})(\\d{2})(\\d{3})(\\d{2})", "$1 $2 $3 $4", ["[23]"], "0$1"]], "0", 0, "([24-9]\\d{6})$|0", "20$1", 0, 0, [["2072[29]\\d{4}|20(?:2\\d|4[47]|5[3467]|6[279]|7[35]|8[268]|9[245])\\d{5}"], ["3[2-47-9]\\d{7}"], 0, 0, 0, 0, 0, 0, ["22\\d{7}"]]], "MH": ["692", "011", "329\\d{4}|(?:[256]\\d|45)\\d{5}", [7], [["(\\d{3})(\\d{4})", "$1-$2", ["[2-6]"]]], "1", 0, 0, 0, 0, 0, [["(?:247|45[78]|528|625)\\d{4}"], ["(?:(?:23|54)5|329|45[356])\\d{4}"], 0, 0, 0, 0, 0, 0, ["635\\d{4}"]]], "MK": ["389", "00", "[2-578]\\d{7}", [8], [["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["2|34[47]|4(?:[37]7|5[47]|64)"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[347]"], "0$1"], ["(\\d{3})(\\d)(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[58]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:(?:2(?:62|77)0|3444)\\d|4[56]440)\\d{3}|(?:34|4[357])700\\d{3}|(?:2(?:[0-3]\\d|5[0-578]|6[01]|82)|3(?:1[3-68]|[23][2-68]|4[23568])|4(?:[23][2-68]|4[3-68]|5[2568]|6[25-8]|7[24-68]|8[4-68]))\\d{5}"], ["7(?:3555|(?:474|9[019]7)7)\\d{3}|7(?:[0-25-8]\\d\\d|3(?:[1-48]\\d|60|7[01578])|4(?:2\\d|60|7[01578])|9(?:[2-4]\\d|5[01]|7[015]))\\d{4}"], ["800\\d{5}"], ["5\\d{7}"], 0, 0, 0, 0, 0, ["8(?:0[1-9]|[1-9]\\d)\\d{5}"]]], "ML": ["223", "00", "[24-9]\\d{7}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[24-9]"]]], 0, 0, 0, 0, 0, 0, [["2(?:07[0-8]|12[67])\\d{4}|(?:2(?:02|1[4-689])|4(?:0[0-4]|4[1-39]))\\d{5}"], ["2(?:0(?:01|79)|17\\d)\\d{4}|(?:5[01]|[679]\\d|8[2-49])\\d{6}"], ["80\\d{6}"]]], "MM": ["95", "00", "1\\d{5,7}|95\\d{6}|(?:[4-7]|9[0-46-9])\\d{6,8}|(?:2|8\\d)\\d{5,8}", [6, 7, 8, 9, 10], [["(\\d)(\\d{2})(\\d{3})", "$1 $2 $3", ["16|2"], "0$1"], ["(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3", ["[45]|6(?:0[23]|[1-689]|7[235-7])|7(?:[0-4]|5[2-7])|8[1-6]"], "0$1"], ["(\\d)(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[12]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[4-7]|8[1-35]"], "0$1"], ["(\\d)(\\d{3})(\\d{4,6})", "$1 $2 $3", ["9(?:2[0-4]|[35-9]|4[137-9])"], "0$1"], ["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["2"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["8"], "0$1"], ["(\\d)(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["92"], "0$1"], ["(\\d)(\\d{5})(\\d{4})", "$1 $2 $3", ["9"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1(?:(?:2\\d|3[56]|[89][0-6])\\d|4(?:2[29]|62|7[0-2]|83)|6)|2(?:2(?:00|8[34])|4(?:0\\d|[26]2|7[0-2]|83)|51\\d\\d)|4(?:2(?:2\\d\\d|48[013])|3(?:20\\d|4(?:70|83)|56)|420\\d|5470)|6(?:0(?:[23]|88\\d)|(?:124|[56]2\\d)\\d|2472|3(?:20\\d|470)|4(?:2[04]\\d|472)|7(?:(?:3\\d|8[01459])\\d|4[67]0)))\\d{4}|5(?:2(?:2\\d{5,6}|47[02]\\d{4})|(?:3472|4(?:2(?:1|86)|470)|522\\d|6(?:20\\d|483)|7(?:20\\d|48[01])|8(?:20\\d|47[02])|9(?:20\\d|470))\\d{4})|7(?:(?:0470|4(?:25\\d|470)|5(?:202|470|96\\d))\\d{4}|1(?:20\\d{4,5}|4(?:70|83)\\d{4}))|8(?:1(?:2\\d{5,6}|4(?:10|7[01]\\d)\\d{3})|2(?:2\\d{5,6}|(?:320|490\\d)\\d{3})|(?:3(?:2\\d\\d|470)|4[24-7]|5(?:(?:2\\d|51)\\d|4(?:[1-35-9]\\d|4[0-57-9]))|6[23])\\d{4})|(?:1[2-6]\\d|4(?:2[24-8]|3[2-7]|[46][2-6]|5[3-5])|5(?:[27][2-8]|3[2-68]|4[24-8]|5[23]|6[2-4]|8[24-7]|9[2-7])|6(?:[19]20|42[03-6]|(?:52|7[45])\\d)|7(?:[04][24-8]|[15][2-7]|22|3[2-4])|8(?:1[2-689]|2[2-8]|[35]2\\d))\\d{4}|25\\d{5,6}|(?:2[2-9]|6(?:1[2356]|[24][2-6]|3[24-6]|5[2-4]|6[2-8]|7[235-7]|8[245]|9[24])|8(?:3[24]|5[245]))\\d{4}", [6, 7, 8, 9]], ["(?:17[01]|9(?:2(?:[0-4]|[56]\\d\\d)|(?:3(?:[0-36]|4\\d)|(?:6\\d|8[89]|9[4-8])\\d|7(?:3|40|[5-9]\\d))\\d|4(?:(?:[0245]\\d|[1379])\\d|88)|5[0-6])\\d)\\d{4}|9[69]1\\d{6}|9(?:[68]\\d|9[089])\\d{5}", [7, 8, 9, 10]], ["80080(?:0[1-9]|2\\d)\\d{3}", [10]], 0, 0, 0, 0, 0, ["1333\\d{4}|[12]468\\d{4}", [8]]]], "MN": ["976", "001", "[12]\\d{7,9}|[5-9]\\d{7}", [8, 9, 10], [["(\\d{2})(\\d{2})(\\d{4})", "$1 $2 $3", ["[12]1"], "0$1"], ["(\\d{4})(\\d{4})", "$1 $2", ["[5-9]"]], ["(\\d{3})(\\d{5,6})", "$1 $2", ["[12]2[1-3]"], "0$1"], ["(\\d{4})(\\d{5,6})", "$1 $2", ["[12](?:27|3[2-8]|4[2-68]|5[1-4689])", "[12](?:27|3[2-8]|4[2-68]|5[1-4689])[0-3]"], "0$1"], ["(\\d{5})(\\d{4,5})", "$1 $2", ["[12]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["[12]2[1-3]\\d{5,6}|(?:(?:[12](?:1|27)|5[368])\\d\\d|7(?:0(?:[0-5]\\d|7[078]|80)|128))\\d{4}|[12](?:3[2-8]|4[2-68]|5[1-4689])\\d{6,7}"], ["(?:83[01]|92[039])\\d{5}|(?:5[05]|6[069]|8[015689]|9[013-9])\\d{6}", [8]], 0, 0, 0, 0, 0, 0, ["712[0-79]\\d{4}|7(?:1[013-9]|[25-9]\\d)\\d{5}", [8]]]], "MO": ["853", "00", "0800\\d{3}|(?:28|[68]\\d)\\d{6}", [7, 8], [["(\\d{4})(\\d{3})", "$1 $2", ["0"]], ["(\\d{4})(\\d{4})", "$1 $2", ["[268]"]]], 0, 0, 0, 0, 0, 0, [["(?:28[2-9]|8(?:11|[2-57-9]\\d))\\d{5}", [8]], ["6800[0-79]\\d{3}|6(?:[235]\\d\\d|6(?:0[0-5]|[1-9]\\d)|8(?:0[1-9]|[14-8]\\d|2[5-9]|[39][0-4]))\\d{4}", [8]], ["0800\\d{3}", [7]]]], "MP": ["1", "011", "[58]\\d{9}|(?:67|90)0\\d{7}", [10], 0, "1", 0, "([2-9]\\d{6})$|1", "670$1", 0, "670", [["670(?:2(?:3[3-7]|56|8[4-8])|32[1-38]|4(?:33|8[348])|5(?:32|55|88)|6(?:64|70|82)|78[3589]|8[3-9]8|989)\\d{4}"], [""], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "MQ": ["596", "00", "596\\d{6}|(?:69|80|9\\d)\\d{7}", [9], [["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[569]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["596(?:[03-7]\\d|10|2[7-9]|8[0-39]|9[04-9])\\d{4}"], ["69(?:6(?:[0-46-9]\\d|5[0-6])|727)\\d{4}"], ["80[0-5]\\d{6}"], 0, 0, 0, 0, 0, ["9(?:397[0-2]|477[0-5]|76(?:6\\d|7[0-367]))\\d{4}"]]], "MR": ["222", "00", "(?:[2-4]\\d\\d|800)\\d{5}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[2-48]"]]], 0, 0, 0, 0, 0, 0, [["(?:25[08]|35\\d|45[1-7])\\d{5}"], ["[2-4][0-46-9]\\d{6}"], ["800\\d{5}"]]], "MS": ["1", "011", "(?:[58]\\d\\d|664|900)\\d{7}", [10], 0, "1", 0, "([34]\\d{6})$|1", "664$1", 0, "664", [["6644(?:1[0-3]|91)\\d{4}"], ["664(?:3(?:49|9[1-6])|49[2-6])\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "MT": ["356", "00", "3550\\d{4}|(?:[2579]\\d\\d|800)\\d{5}", [8], [["(\\d{4})(\\d{4})", "$1 $2", ["[2357-9]"]]], 0, 0, 0, 0, 0, 0, [["20(?:3[1-4]|6[059])\\d{4}|2(?:0[19]|[1-357]\\d|60)\\d{5}"], ["(?:7(?:210|[79]\\d\\d)|9(?:[29]\\d\\d|69[67]|8(?:1[1-3]|89|97)))\\d{4}"], ["800(?:02|[3467]\\d)\\d{3}"], ["5(?:0(?:0(?:37|43)|(?:6\\d|70|9[0168])\\d)|[12]\\d0[1-5])\\d{3}"], 0, 0, ["501\\d{5}"], ["7117\\d{4}"], ["3550\\d{4}"]]], "MU": ["230", "0(?:0|[24-7]0|3[03])", "(?:[57]|8\\d\\d)\\d{7}|[2-468]\\d{6}", [7, 8, 10], [["(\\d{3})(\\d{4})", "$1 $2", ["[2-46]|8[013]"]], ["(\\d{4})(\\d{4})", "$1 $2", ["[57]"]], ["(\\d{5})(\\d{5})", "$1 $2", ["8"]]], 0, 0, 0, 0, 0, 0, [["(?:2(?:[0346-8]\\d|1[0-7])|4(?:[013568]\\d|2[4-8])|54(?:[3-5]\\d|71)|6\\d\\d|8(?:14|3[129]))\\d{4}", [7, 8]], ["5(?:4(?:2[1-389]|7[1-9])|87[15-8])\\d{4}|(?:5(?:2[5-9]|4[3-689]|[57]\\d|8[0-689]|9[0-8])|7(?:0[0-3]|3[013]))\\d{5}", [8]], ["802\\d{7}|80[0-2]\\d{4}", [7, 10]], ["30\\d{5}", [7]], 0, 0, 0, 0, ["3(?:20|9\\d)\\d{4}", [7]]], "020"], "MV": ["960", "0(?:0|19)", "(?:800|9[0-57-9]\\d)\\d{7}|[34679]\\d{6}", [7, 10], [["(\\d{3})(\\d{4})", "$1-$2", ["[34679]"]], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[89]"]]], 0, 0, 0, 0, 0, 0, [["(?:3(?:0[0-3]|3[0-59])|6(?:[58][024689]|6[024-68]|7[02468]))\\d{4}", [7]], ["(?:46[46]|[79]\\d\\d)\\d{4}", [7]], ["800\\d{7}", [10]], ["900\\d{7}", [10]], 0, 0, ["4(?:0[01]|50)\\d{4}", [7]]], "00"], "MW": ["265", "00", "(?:[1289]\\d|31|77)\\d{7}|1\\d{6}", [7, 9], [["(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["1[2-9]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["2"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[137-9]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1[2-9]|2[12]\\d\\d)\\d{5}"], ["111\\d{6}|(?:31|77|[89][89])\\d{7}", [9]]]], "MX": ["52", "0[09]", "1(?:(?:[27]2|44|87|99)[1-9]|65[0-689])\\d{7}|(?:1(?:[01]\\d|2[13-9]|[35][1-9]|4[0-35-9]|6[0-46-9]|7[013-9]|8[1-69]|9[1-8])|[2-9]\\d)\\d{8}", [10, 11], [["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["33|5[56]|81"], 0, 1], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[2-9]"], 0, 1], ["(\\d)(\\d{2})(\\d{4})(\\d{4})", "$2 $3 $4", ["1(?:33|5[56]|81)"], 0, 1], ["(\\d)(\\d{3})(\\d{3})(\\d{4})", "$2 $3 $4", ["1"], 0, 1]], "01", 0, "0(?:[12]|4[45])|1", 0, 0, 0, [["657[12]\\d{6}|(?:2(?:0[01]|2\\d|3[1-35-8]|4[13-9]|7[1-689]|8[1-578]|9[467])|3(?:1[1-79]|[2458][1-9]|3\\d|7[1-8]|9[1-5])|4(?:1[1-57-9]|[25-7][1-9]|3[1-8]|4\\d|8[1-35-9]|9[2-689])|5(?:[56]\\d|88|9[1-79])|6(?:1[2-68]|[2-4][1-9]|5[1-3689]|6[1-57-9]|7[1-7]|8[67]|9[4-8])|7(?:[13467][1-9]|2\\d|5[13-9]|8[1-69]|9[17])|8(?:1\\d|2[13-689]|3[1-6]|4[124-6]|6[1246-9]|7[0-378]|9[12479])|9(?:1[346-9]|2[1-4]|3[2-46-8]|5[1348]|6[1-9]|7[12]|8[1-8]|9\\d))\\d{7}", [10]], ["657[12]\\d{6}|(?:1(?:2(?:2[1-9]|3[1-35-8]|4[13-9]|7[1-689]|8[1-578]|9[467])|3(?:1[1-79]|[2458][1-9]|3\\d|7[1-8]|9[1-5])|4(?:1[1-57-9]|[24-7][1-9]|3[1-8]|8[1-35-9]|9[2-689])|5(?:[56]\\d|88|9[1-79])|6(?:1[2-68]|[2-4][1-9]|5[1-3689]|6[1-57-9]|7[1-7]|8[67]|9[4-8])|7(?:[1-467][1-9]|5[13-9]|8[1-69]|9[17])|8(?:1\\d|2[13-689]|3[1-6]|4[124-6]|6[1246-9]|7[1-378]|9[12479])|9(?:1[346-9]|2[1-4]|3[2-46-8]|5[1348]|[69][1-9]|7[12]|8[1-8]))|2(?:2\\d|3[1-35-8]|4[13-9]|7[1-689]|8[1-578]|9[467])|3(?:1[1-79]|[2458][1-9]|3\\d|7[1-8]|9[1-5])|4(?:1[1-57-9]|[25-7][1-9]|3[1-8]|4\\d|8[1-35-9]|9[2-689])|5(?:[56]\\d|88|9[1-79])|6(?:1[2-68]|[2-4][1-9]|5[1-3689]|6[1-57-9]|7[1-7]|8[67]|9[4-8])|7(?:[13467][1-9]|2\\d|5[13-9]|8[1-69]|9[17])|8(?:1\\d|2[13-689]|3[1-6]|4[124-6]|6[1246-9]|7[0-378]|9[12479])|9(?:1[346-9]|2[1-4]|3[2-46-8]|5[1348]|6[1-9]|7[12]|8[1-8]|9\\d))\\d{7}"], ["8(?:00|88)\\d{7}", [10]], ["900\\d{7}", [10]], ["500\\d{7}", [10]], 0, 0, 0, 0, ["300\\d{7}", [10]]], "00"], "MY": ["60", "00", "1\\d{8,9}|(?:3\\d|[4-9])\\d{7}", [8, 9, 10], [["(\\d)(\\d{3})(\\d{4})", "$1-$2 $3", ["[4-79]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1-$2 $3", ["1(?:[02469]|[378][1-9]|53)|8", "1(?:[02469]|[37][1-9]|53|8(?:[1-46-9]|5[7-9]))|8"], "0$1"], ["(\\d)(\\d{4})(\\d{4})", "$1-$2 $3", ["3"], "0$1"], ["(\\d)(\\d{3})(\\d{2})(\\d{4})", "$1-$2-$3-$4", ["1(?:[367]|80)"]], ["(\\d{3})(\\d{3})(\\d{4})", "$1-$2 $3", ["15"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4})", "$1-$2 $3", ["1"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:3(?:2[0-36-9]|3[0-368]|4[0-278]|5[0-24-8]|6[0-467]|7[1246-9]|8\\d|9[0-57])\\d|4(?:2[0-689]|[3-79]\\d|8[1-35689])|5(?:2[0-589]|[3468]\\d|5[0-489]|7[1-9]|9[23])|6(?:2[2-9]|3[1357-9]|[46]\\d|5[0-6]|7[0-35-9]|85|9[015-8])|7(?:[2579]\\d|3[03-68]|4[0-8]|6[5-9]|8[0-35-9])|8(?:[24][2-8]|3[2-5]|5[2-7]|6[2-589]|7[2-578]|[89][2-9])|9(?:0[57]|13|[25-7]\\d|[3489][0-8]))\\d{5}", [8, 9]], ["1(?:1888[689]|4400|8(?:47|8[27])[0-4])\\d{4}|1(?:0(?:[23568]\\d|4[0-6]|7[016-9]|9[0-8])|1(?:[1-5]\\d\\d|6(?:0[5-9]|[1-9]\\d)|7(?:[0-4]\\d|5[0-7]))|(?:[269]\\d|[37][1-9]|4[235-9])\\d|5(?:31|9\\d\\d)|8(?:1[23]|[236]\\d|4[06]|5(?:46|[7-9])|7[016-9]|8[01]|9[0-8]))\\d{5}", [9, 10]], ["1[378]00\\d{6}", [10]], ["1600\\d{6}", [10]], 0, 0, 0, 0, ["15(?:4(?:6[0-4]\\d|8(?:0[125]|[17]\\d|21|3[01]|4[01589]|5[014]|6[02]))|6(?:32[0-6]|78\\d))\\d{4}", [10]]]], "MZ": ["258", "00", "(?:2|8\\d)\\d{7}", [8, 9], [["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["2|8[2-79]"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["8"]]], 0, 0, 0, 0, 0, 0, [["2(?:[1346]\\d|5[0-2]|[78][12]|93)\\d{5}", [8]], ["8[2-79]\\d{7}", [9]], ["800\\d{6}", [9]]]], "NA": ["264", "00", "[68]\\d{7,8}", [8, 9], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["88"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["6"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["87"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["64426\\d{3}|6(?:1(?:2[2-7]|3[01378]|4[0-4])|254|32[0237]|4(?:27|41|5[25])|52[236-8]|626|7(?:2[2-4]|30))\\d{4,5}|6(?:1(?:(?:0\\d|2[0189]|3[24-69]|4[5-9])\\d|17|69|7[014])|2(?:17|5[0-36-8]|69|70)|3(?:17|2[14-689]|34|6[289]|7[01]|81)|4(?:17|2[0-2]|4[06]|5[0137]|69|7[01])|5(?:17|2[0459]|69|7[01])|6(?:17|25|38|42|69|7[01])|7(?:17|2[569]|3[13]|6[89]|7[01]))\\d{4}"], ["(?:60|8[1245])\\d{7}", [9]], ["80\\d{7}", [9]], ["8701\\d{5}", [9]], 0, 0, 0, 0, ["8(?:3\\d\\d|86)\\d{5}"]]], "NC": ["687", "00", "(?:050|[2-57-9]\\d\\d)\\d{3}", [6], [["(\\d{2})(\\d{2})(\\d{2})", "$1.$2.$3", ["[02-57-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:2[03-9]|3[0-5]|4[1-7]|88)\\d{4}"], ["(?:5[0-4]|[79]\\d|8[0-79])\\d{4}"], ["050\\d{3}"], ["36\\d{4}"]]], "NE": ["227", "00", "[027-9]\\d{7}", [8], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["08"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[089]|2[013]|7[047]"]]], 0, 0, 0, 0, 0, 0, [["2(?:0(?:20|3[1-8]|4[13-5]|5[14]|6[14578]|7[1-578])|1(?:4[145]|5[14]|6[14-68]|7[169]|88))\\d{4}"], ["(?:23|7[047]|[89]\\d)\\d{6}"], ["08\\d{6}"], ["09\\d{6}"]]], "NF": ["672", "00", "[13]\\d{5}", [6], [["(\\d{2})(\\d{4})", "$1 $2", ["1[0-3]"]], ["(\\d)(\\d{5})", "$1 $2", ["[13]"]]], 0, 0, "([0-258]\\d{4})$", "3$1", 0, 0, [["(?:1(?:06|17|28|39)|3[0-2]\\d)\\d{3}"], ["(?:14|3[58])\\d{4}"]]], "NG": ["234", "009", "(?:[124-7]|9\\d{3})\\d{6}|[1-9]\\d{7}|[78]\\d{9,13}", [7, 8, 10, 11, 12, 13, 14], [["(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3", ["78"], "0$1"], ["(\\d)(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[12]|9(?:0[3-9]|[1-9])"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2,3})", "$1 $2 $3", ["[3-7]|8[2-9]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[7-9]"], "0$1"], ["(\\d{3})(\\d{4})(\\d{4,5})", "$1 $2 $3", ["[78]"], "0$1"], ["(\\d{3})(\\d{5})(\\d{5,6})", "$1 $2 $3", ["[78]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:(?:[1-356]\\d|4[02-8]|8[2-9])\\d|9(?:0[3-9]|[1-9]\\d))\\d{5}|7(?:0(?:[013-689]\\d|2[0-24-9])\\d{3,4}|[1-79]\\d{6})|(?:[12]\\d|4[147]|5[14579]|6[1578]|7[1-3578])\\d{5}", [7, 8]], ["(?:702[0-24-9]|819[01])\\d{6}|(?:70[13-689]|8(?:0[1-9]|1[0-8])|9(?:0[1-9]|1[1-356]))\\d{7}", [10]], ["800\\d{7,11}", [10, 11, 12, 13, 14]], 0, 0, 0, ["700\\d{7,11}", [10, 11, 12, 13, 14]]]], "NI": ["505", "00", "(?:1800|[25-8]\\d{3})\\d{4}", [8], [["(\\d{4})(\\d{4})", "$1 $2", ["[125-8]"]]], 0, 0, 0, 0, 0, 0, [["2\\d{7}"], ["(?:5(?:5[0-7]|[78]\\d)|6(?:20|3[035]|4[045]|5[05]|77|8[1-9]|9[059])|(?:7[5-8]|8\\d)\\d)\\d{5}"], ["1800\\d{4}"]]], "NL": ["31", "00", "(?:[124-7]\\d\\d|3(?:[02-9]\\d|1[0-8]))\\d{6}|8\\d{6,9}|9\\d{6,10}|1\\d{4,5}", [5, 6, 7, 8, 9, 10, 11], [["(\\d{3})(\\d{4,7})", "$1 $2", ["[89]0"], "0$1"], ["(\\d{2})(\\d{7})", "$1 $2", ["66"], "0$1"], ["(\\d)(\\d{8})", "$1 $2", ["6"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["1[16-8]|2[259]|3[124]|4[17-9]|5[124679]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[1-578]|91"], "0$1"], ["(\\d{3})(\\d{3})(\\d{5})", "$1 $2 $3", ["9"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1(?:[035]\\d|1[13-578]|6[124-8]|7[24]|8[0-467])|2(?:[0346]\\d|2[2-46-9]|5[125]|9[479])|3(?:[03568]\\d|1[3-8]|2[01]|4[1-8])|4(?:[0356]\\d|1[1-368]|7[58]|8[15-8]|9[23579])|5(?:[0358]\\d|[19][1-9]|2[1-57-9]|4[13-8]|6[126]|7[0-3578])|7\\d\\d)\\d{6}", [9]], ["(?:6[1-58]|970\\d)\\d{7}", [9, 11]], ["800\\d{4,7}", [7, 8, 9, 10]], ["90[069]\\d{4,7}", [7, 8, 9, 10]], 0, 0, ["140(?:1[035]|2[0346]|3[03568]|4[0356]|5[0358]|8[458])|(?:140(?:1[16-8]|2[259]|3[124]|4[17-9]|5[124679]|7)|8[478]\\d{6})\\d", [5, 6, 9]], ["66\\d{7}", [9]], ["(?:85|91)\\d{7}", [9]]]], "NO": ["47", "00", "(?:0|[2-9]\\d{3})\\d{4}", [5, 8], [["(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["8"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[2-79]"]]], 0, 0, 0, 0, 0, "[02-689]|7[0-8]", [["(?:2[1-4]|3[1-3578]|5[1-35-7]|6[1-4679]|7[0-8])\\d{6}", [8]], ["(?:4[015-8]|9\\d)\\d{6}", [8]], ["80[01]\\d{5}", [8]], ["82[09]\\d{5}", [8]], ["880\\d{5}", [8]], 0, ["(?:0[2-9]|81(?:0(?:0[7-9]|1\\d)|5\\d\\d))\\d{3}"], 0, ["85[0-5]\\d{5}", [8]], ["810(?:0[0-6]|[2-8]\\d)\\d{3}", [8]]]], "NP": ["977", "00", "(?:1\\d|9)\\d{9}|[1-9]\\d{7}", [8, 10, 11], [["(\\d)(\\d{7})", "$1-$2", ["1[2-6]"], "0$1"], ["(\\d{2})(\\d{6})", "$1-$2", ["1[01]|[2-8]|9(?:[1-59]|[67][2-6])"], "0$1"], ["(\\d{3})(\\d{7})", "$1-$2", ["9"]]], "0", 0, 0, 0, 0, 0, [["(?:1[0-6]\\d|99[02-6])\\d{5}|(?:2[13-79]|3[135-8]|4[146-9]|5[135-7]|6[13-9]|7[15-9]|8[1-46-9]|9[1-7])[2-6]\\d{5}", [8]], ["9(?:6[0-3]|7[024-6]|8[0-24-68])\\d{7}", [10]], ["1(?:66001|800\\d\\d)\\d{5}", [11]]]], "NR": ["674", "00", "(?:444|(?:55|8\\d)\\d|666)\\d{4}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[4-68]"]]], 0, 0, 0, 0, 0, 0, [["444\\d{4}"], ["(?:55[3-9]|666|8\\d\\d)\\d{4}"]]], "NU": ["683", "00", "(?:[47]|888\\d)\\d{3}", [4, 7], [["(\\d{3})(\\d{4})", "$1 $2", ["8"]]], 0, 0, 0, 0, 0, 0, [["[47]\\d{3}", [4]], ["888[1-9]\\d{3}", [7]]]], "NZ": ["64", "0(?:0|161)", "[1289]\\d{9}|50\\d{5}(?:\\d{2,3})?|[27-9]\\d{7,8}|(?:[34]\\d|6[0-35-9])\\d{6}|8\\d{4,6}", [5, 6, 7, 8, 9, 10], [["(\\d{2})(\\d{3,8})", "$1 $2", ["8[1-79]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2,3})", "$1 $2 $3", ["50[036-8]|8|90", "50(?:[0367]|88)|8|90"], "0$1"], ["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["24|[346]|7[2-57-9]|9[2-9]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["2(?:10|74)|[589]"], "0$1"], ["(\\d{2})(\\d{3,4})(\\d{4})", "$1 $2 $3", ["1|2[028]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,5})", "$1 $2 $3", ["2(?:[169]|7[0-35-9])|7"], "0$1"]], "0", 0, 0, 0, 0, 0, [["24099\\d{3}|(?:3[2-79]|[49][2-9]|6[235-9]|7[2-57-9])\\d{6}", [8]], ["2(?:[0-27-9]\\d|6)\\d{6,7}|2(?:1\\d|75)\\d{5}", [8, 9, 10]], ["508\\d{6,7}|80\\d{6,8}", [8, 9, 10]], ["(?:1[13-57-9]\\d{5}|50(?:0[08]|30|66|77|88))\\d{3}|90\\d{6,8}", [7, 8, 9, 10]], ["70\\d{7}", [9]], 0, ["8(?:1[16-9]|22|3\\d|4[045]|5[459]|6[235-9]|7[0-3579]|90)\\d{2,7}"]], "00"], "OM": ["968", "00", "(?:1505|[279]\\d{3}|500)\\d{4}|800\\d{5,6}", [7, 8, 9], [["(\\d{3})(\\d{4,6})", "$1 $2", ["[58]"]], ["(\\d{2})(\\d{6})", "$1 $2", ["2"]], ["(\\d{4})(\\d{4})", "$1 $2", ["[179]"]]], 0, 0, 0, 0, 0, 0, [["2[1-6]\\d{6}", [8]], ["1505\\d{4}|(?:7(?:[1289]\\d|6[89]|7[0-5])|9(?:0[1-9]|[1-9]\\d))\\d{5}", [8]], ["8007\\d{4,5}|(?:500|800[05])\\d{4}"], ["900\\d{5}", [8]]]], "PA": ["507", "00", "(?:00800|8\\d{3})\\d{6}|[68]\\d{7}|[1-57-9]\\d{6}", [7, 8, 10, 11], [["(\\d{3})(\\d{4})", "$1-$2", ["[1-57-9]"]], ["(\\d{4})(\\d{4})", "$1-$2", ["[68]"]], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["8"]]], 0, 0, 0, 0, 0, 0, [["(?:1(?:0\\d|1[479]|2[37]|3[0137]|4[17]|5[05]|6[058]|7[0167]|8[2358]|9[1389])|2(?:[0235-79]\\d|1[0-7]|4[013-9]|8[02-9])|3(?:[089]\\d|1[0-7]|2[0-5]|33|4[0-79]|5[0-35]|6[068]|7[0-8])|4(?:00|3[0-579]|4\\d|7[0-57-9])|5(?:[01]\\d|2[0-7]|[56]0|79)|7(?:0[09]|2[0-26-8]|3[03]|4[04]|5[05-9]|6[0156]|7[0-24-9]|8[5-9]|90)|8(?:09|2[89]|3\\d|4[0-24-689]|5[014]|8[02])|9(?:0[5-9]|1[0135-8]|2[036-9]|3[35-79]|40|5[0457-9]|6[05-9]|7[04-9]|8[35-8]|9\\d))\\d{4}", [7]], ["(?:1[16]1|21[89]|6\\d{3}|8(?:1[01]|7[23]))\\d{4}", [7, 8]], ["800\\d{4,5}|(?:00800|800\\d)\\d{6}"], ["(?:8(?:22|55|60|7[78]|86)|9(?:00|81))\\d{4}", [7]]]], "PE": ["51", "00|19(?:1[124]|77|90)00", "(?:[14-8]|9\\d)\\d{7}", [8, 9], [["(\\d{3})(\\d{5})", "$1 $2", ["80"], "(0$1)"], ["(\\d)(\\d{7})", "$1 $2", ["1"], "(0$1)"], ["(\\d{2})(\\d{6})", "$1 $2", ["[4-8]"], "(0$1)"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["9"]]], "0", 0, 0, 0, 0, 0, [["(?:(?:4[34]|5[14])[0-8]\\d|7(?:173|3[0-8]\\d)|8(?:10[05689]|6(?:0[06-9]|1[6-9]|29)|7(?:0[569]|[56]0)))\\d{4}|(?:1[0-8]|4[12]|5[236]|6[1-7]|7[246]|8[2-4])\\d{6}", [8]], ["9\\d{8}", [9]], ["800\\d{5}", [8]], ["805\\d{5}", [8]], ["80[24]\\d{5}", [8]], 0, 0, 0, 0, ["801\\d{5}", [8]]], "00", " Anexo "], "PF": ["689", "00", "4\\d{5}(?:\\d{2})?|8\\d{7,8}", [6, 8, 9], [["(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3", ["44"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["4|8[7-9]"]], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["8"]]], 0, 0, 0, 0, 0, 0, [["4(?:0[4-689]|9[4-68])\\d{5}", [8]], ["8[7-9]\\d{6}", [8]], ["80[0-5]\\d{6}", [9]], 0, 0, 0, ["44\\d{4}", [6]], 0, ["499\\d{5}", [8]]]], "PG": ["675", "00|140[1-3]", "(?:180|[78]\\d{3})\\d{4}|(?:[2-589]\\d|64)\\d{5}", [7, 8], [["(\\d{3})(\\d{4})", "$1 $2", ["18|[2-69]|85"]], ["(\\d{4})(\\d{4})", "$1 $2", ["[78]"]]], 0, 0, 0, 0, 0, 0, [["(?:(?:3[0-2]|4[257]|5[34]|9[78])\\d|64[1-9]|85[02-46-9])\\d{4}", [7]], ["(?:7\\d|8[128])\\d{6}", [8]], ["180\\d{4}", [7]], 0, 0, 0, 0, ["27[01]\\d{4}", [7]], ["2(?:0[0-57]|7[568])\\d{4}", [7]]], "00"], "PH": ["63", "00", "(?:[2-7]|9\\d)\\d{8}|2\\d{5}|(?:1800|8)\\d{7,9}", [6, 8, 9, 10, 11, 12, 13], [["(\\d)(\\d{5})", "$1 $2", ["2"], "(0$1)"], ["(\\d{4})(\\d{4,6})", "$1 $2", ["3(?:23|39|46)|4(?:2[3-6]|[35]9|4[26]|76)|544|88[245]|(?:52|64|86)2", "3(?:230|397|461)|4(?:2(?:35|[46]4|51)|396|4(?:22|63)|59[347]|76[15])|5(?:221|446)|642[23]|8(?:622|8(?:[24]2|5[13]))"], "(0$1)"], ["(\\d{5})(\\d{4})", "$1 $2", ["346|4(?:27|9[35])|883", "3469|4(?:279|9(?:30|56))|8834"], "(0$1)"], ["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["2"], "(0$1)"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[3-7]|8[2-8]"], "(0$1)"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[89]"], "0$1"], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"]], ["(\\d{4})(\\d{1,2})(\\d{3})(\\d{4})", "$1 $2 $3 $4", ["1"]]], "0", 0, 0, 0, 0, 0, [["(?:(?:2[3-8]|3[2-68]|4[2-9]|5[2-6]|6[2-58]|7[24578])\\d{3}|88(?:22\\d\\d|42))\\d{4}|(?:2|8[2-8]\\d\\d)\\d{5}", [6, 8, 9, 10]], ["(?:8(?:1[37]|9[5-8])|9(?:0[5-9]|1[0-24-9]|[235-7]\\d|4[2-9]|8[135-9]|9[1-9]))\\d{7}", [10]], ["1800\\d{7,9}", [11, 12, 13]]]], "PK": ["92", "00", "122\\d{6}|[24-8]\\d{10,11}|9(?:[013-9]\\d{8,10}|2(?:[01]\\d\\d|2(?:[06-8]\\d|1[01]))\\d{7})|(?:[2-8]\\d{3}|92(?:[0-7]\\d|8[1-9]))\\d{6}|[24-9]\\d{8}|[89]\\d{7}", [8, 9, 10, 11, 12], [["(\\d{3})(\\d{3})(\\d{2,7})", "$1 $2 $3", ["[89]0"], "0$1"], ["(\\d{4})(\\d{5})", "$1 $2", ["1"]], ["(\\d{3})(\\d{6,7})", "$1 $2", ["2(?:3[2358]|4[2-4]|9[2-8])|45[3479]|54[2-467]|60[468]|72[236]|8(?:2[2-689]|3[23578]|4[3478]|5[2356])|9(?:2[2-8]|3[27-9]|4[2-6]|6[3569]|9[25-8])", "9(?:2[3-8]|98)|(?:2(?:3[2358]|4[2-4]|9[2-8])|45[3479]|54[2-467]|60[468]|72[236]|8(?:2[2-689]|3[23578]|4[3478]|5[2356])|9(?:22|3[27-9]|4[2-6]|6[3569]|9[25-7]))[2-9]"], "(0$1)"], ["(\\d{2})(\\d{7,8})", "$1 $2", ["(?:2[125]|4[0-246-9]|5[1-35-7]|6[1-8]|7[14]|8[16]|91)[2-9]"], "(0$1)"], ["(\\d{5})(\\d{5})", "$1 $2", ["58"], "(0$1)"], ["(\\d{3})(\\d{7})", "$1 $2", ["3"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["2[125]|4[0-246-9]|5[1-35-7]|6[1-8]|7[14]|8[16]|91"], "(0$1)"], ["(\\d{3})(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["[24-9]"], "(0$1)"]], "0", 0, 0, 0, 0, 0, [["(?:(?:21|42)[2-9]|58[126])\\d{7}|(?:2[25]|4[0146-9]|5[1-35-7]|6[1-8]|7[14]|8[16]|91)[2-9]\\d{6,7}|(?:2(?:3[2358]|4[2-4]|9[2-8])|45[3479]|54[2-467]|60[468]|72[236]|8(?:2[2-689]|3[23578]|4[3478]|5[2356])|9(?:2[2-8]|3[27-9]|4[2-6]|6[3569]|9[25-8]))[2-9]\\d{5,6}", [9, 10]], ["3(?:[0-24]\\d|3[0-79]|55|64)\\d{7}", [10]], ["800\\d{5}(?:\\d{3})?", [8, 11]], ["900\\d{5}", [8]], ["122\\d{6}", [9]], 0, ["(?:2(?:[125]|3[2358]|4[2-4]|9[2-8])|4(?:[0-246-9]|5[3479])|5(?:[1-35-7]|4[2-467])|6(?:0[468]|[1-8])|7(?:[14]|2[236])|8(?:[16]|2[2-689]|3[23578]|4[3478]|5[2356])|9(?:1|22|3[27-9]|4[2-6]|6[3569]|9[2-7]))111\\d{6}", [11, 12]]]], "PL": ["48", "00", "(?:6|8\\d\\d)\\d{7}|[1-9]\\d{6}(?:\\d{2})?|[26]\\d{5}", [6, 7, 8, 9, 10], [["(\\d{5})", "$1", ["19"]], ["(\\d{3})(\\d{3})", "$1 $2", ["11|20|64"]], ["(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3", ["(?:1[2-8]|2[2-69]|3[2-4]|4[1-468]|5[24-689]|6[1-3578]|7[14-7]|8[1-79]|9[145])1", "(?:1[2-8]|2[2-69]|3[2-4]|4[1-468]|5[24-689]|6[1-3578]|7[14-7]|8[1-79]|9[145])19"]], ["(\\d{3})(\\d{2})(\\d{2,3})", "$1 $2 $3", ["64"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["21|39|45|5[0137]|6[0469]|7[02389]|8(?:0[14]|8)"]], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["1[2-8]|[2-7]|8[1-79]|9[145]"]], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["8"]]], 0, 0, 0, 0, 0, 0, [["47\\d{7}|(?:1[2-8]|2[2-69]|3[2-4]|4[1-468]|5[24-689]|6[1-3578]|7[14-7]|8[1-79]|9[145])(?:[02-9]\\d{6}|1(?:[0-8]\\d{5}|9\\d{3}(?:\\d{2})?))", [7, 9]], ["21(?:1(?:[145]\\d|3[1-5])|2\\d\\d)\\d{4}|(?:45|5[0137]|6[069]|7[2389]|88)\\d{7}", [9]], ["800\\d{6,7}", [9, 10]], ["70[01346-8]\\d{6}", [9]], 0, 0, ["804\\d{6}", [9]], ["64\\d{4,7}", [6, 7, 8, 9]], ["39\\d{7}", [9]], ["801\\d{6}", [9]]]], "PM": ["508", "00", "[45]\\d{5}|(?:708|80\\d)\\d{6}", [6, 9], [["(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3", ["[45]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["7"]], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:4[1-35-7]|5[01])\\d{4}", [6]], ["(?:4[02-4]|5[056]|708[45][0-5])\\d{4}"], ["80[0-5]\\d{6}", [9]]]], "PR": ["1", "011", "(?:[589]\\d\\d|787)\\d{7}", [10], 0, "1", 0, 0, 0, 0, "787|939", [["(?:787|939)[2-9]\\d{6}"], [""], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "PS": ["970", "00", "[2489]2\\d{6}|(?:1\\d|5)\\d{8}", [8, 9, 10], [["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["[2489]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["5"], "0$1"], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["1"]]], "0", 0, 0, 0, 0, 0, [["(?:22[2-47-9]|42[45]|82[014-68]|92[3569])\\d{5}", [8]], ["5[69]\\d{7}", [9]], ["1800\\d{6}", [10]], 0, 0, 0, 0, 0, 0, ["1700\\d{6}", [10]]]], "PT": ["351", "00", "1693\\d{5}|(?:[26-9]\\d|30)\\d{7}", [9], [["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["2[12]"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["16|[236-9]"]]], 0, 0, 0, 0, 0, 0, [["2(?:[12]\\d|3[1-689]|4[1-59]|[57][1-9]|6[1-35689]|8[1-69]|9[1256])\\d{6}"], ["6(?:[06]92(?:30|9\\d)|[35]92(?:3[03]|9\\d))\\d{3}|(?:(?:16|6[0356])93|9(?:[1-36]\\d\\d|480))\\d{5}"], ["80[02]\\d{6}"], ["(?:6(?:0[178]|4[68])\\d|76(?:0[1-57]|1[2-47]|2[237]))\\d{5}"], ["884[0-4689]\\d{5}"], 0, ["70(?:38[01]|596|(?:7\\d|8[17])\\d)\\d{4}"], ["6222\\d{5}"], ["30\\d{7}"], ["80(?:8\\d|9[1579])\\d{5}"]]], "PW": ["680", "01[12]", "(?:[24-8]\\d\\d|345|900)\\d{4}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[2-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:2(?:55|77)|345|488|5(?:35|44|87)|6(?:22|54|79)|7(?:33|47)|8(?:24|55|76)|900)\\d{4}"], ["(?:(?:46|83)[0-5]|6[2-4689]0)\\d{4}|(?:45|77|88)\\d{5}"]]], "PY": ["595", "00", "59\\d{4,6}|9\\d{5,10}|(?:[2-46-8]\\d|5[0-8])\\d{4,7}", [6, 7, 8, 9, 10, 11], [["(\\d{3})(\\d{3,6})", "$1 $2", ["[2-9]0"], "0$1"], ["(\\d{2})(\\d{5})", "$1 $2", ["[26]1|3[289]|4[1246-8]|7[1-3]|8[1-36]"], "(0$1)"], ["(\\d{3})(\\d{4,5})", "$1 $2", ["2[279]|3[13-5]|4[359]|5|6(?:[34]|7[1-46-8])|7[46-8]|85"], "(0$1)"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["2[14-68]|3[26-9]|4[1246-8]|6(?:1|75)|7[1-35]|8[1-36]"], "(0$1)"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["87"]], ["(\\d{3})(\\d{6})", "$1 $2", ["9(?:[5-79]|8[1-6])"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[2-8]"], "0$1"], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["9"]]], "0", 0, 0, 0, 0, 0, [["(?:[26]1|3[289]|4[1246-8]|7[1-3]|8[1-36])\\d{5,7}|(?:2(?:2[4-68]|[4-68]\\d|7[15]|9[1-5])|3(?:18|3[167]|4[2357]|51|[67]\\d)|4(?:3[12]|5[13]|9[1-47])|5(?:[1-4]\\d|5[02-4])|6(?:3[1-3]|44|7[1-8])|7(?:4[0-4]|5\\d|6[1-578]|75|8[0-8])|858)\\d{5,6}", [7, 8, 9]], ["9(?:51|6[129]|[78][1-6]|9[1-5])\\d{6}", [9]], ["9800\\d{5,7}", [9, 10, 11]], 0, 0, 0, ["[2-9]0\\d{4,7}", [6, 7, 8, 9]], 0, ["8700[0-4]\\d{4}", [9]]]], "QA": ["974", "00", "800\\d{4}|(?:2|800)\\d{6}|(?:0080|[3-7])\\d{7}", [7, 8, 9, 11], [["(\\d{3})(\\d{4})", "$1 $2", ["2[16]|8"]], ["(\\d{4})(\\d{4})", "$1 $2", ["[3-7]"]]], 0, 0, 0, 0, 0, 0, [["4(?:1111|2022)\\d{3}|4(?:[04]\\d\\d|14[0-6]|999)\\d{4}", [8]], ["[35-7]\\d{7}", [8]], ["800\\d{4}|(?:0080[01]|800)\\d{6}", [7, 9, 11]], 0, 0, 0, 0, ["2[16]\\d{5}", [7]]]], "RE": ["262", "00", "(?:26|[689]\\d)\\d{7}", [9], [["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[2689]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["26(?:2\\d\\d|3(?:0\\d|1[0-6]))\\d{4}"], ["69(?:2\\d\\d|3(?:[06][0-6]|1[013]|2[0-2]|3[0-39]|4\\d|5[0-5]|7[0-37]|8[0-8]|9[0-479]))\\d{4}"], ["80\\d{7}"], ["89[1-37-9]\\d{6}"], 0, 0, 0, 0, ["9(?:399[0-3]|479[0-5]|76(?:2[27]|3[0-37]))\\d{4}"], ["8(?:1[019]|2[0156]|84|90)\\d{6}"]]], "RO": ["40", "00", "(?:[2378]\\d|90)\\d{7}|[23]\\d{5}", [6, 9], [["(\\d{3})(\\d{3})", "$1 $2", ["2[3-6]", "2[3-6]\\d9"], "0$1"], ["(\\d{2})(\\d{4})", "$1 $2", ["219|31"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[23]1"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[237-9]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["[23][13-6]\\d{7}|(?:2(?:19\\d|[3-6]\\d9)|31\\d\\d)\\d\\d"], ["7020\\d{5}|7(?:0[013-9]|1[0-3]|[2-7]\\d|8[03-8]|9[0-29])\\d{6}", [9]], ["800\\d{6}", [9]], ["90[0136]\\d{6}", [9]], 0, 0, ["(?:37\\d|80[578])\\d{6}", [9]], 0, 0, ["801\\d{6}", [9]]], 0, " int "], "RS": ["381", "00", "38[02-9]\\d{6,9}|6\\d{7,9}|90\\d{4,8}|38\\d{5,6}|(?:7\\d\\d|800)\\d{3,9}|(?:[12]\\d|3[0-79])\\d{5,10}", [6, 7, 8, 9, 10, 11, 12], [["(\\d{3})(\\d{3,9})", "$1 $2", ["(?:2[389]|39)0|[7-9]"], "0$1"], ["(\\d{2})(\\d{5,10})", "$1 $2", ["[1-36]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:11[1-9]\\d|(?:2[389]|39)(?:0[2-9]|[2-9]\\d))\\d{3,8}|(?:1[02-9]|2[0-24-7]|3[0-8])[2-9]\\d{4,9}", [7, 8, 9, 10, 11, 12]], ["6(?:[0-689]|7\\d)\\d{6,7}", [8, 9, 10]], ["800\\d{3,9}"], ["(?:78\\d|90[0169])\\d{3,7}", [6, 7, 8, 9, 10]], 0, 0, ["7[06]\\d{4,10}"]]], "RU": ["7", "810", "8\\d{13}|[347-9]\\d{9}", [10, 14], [["(\\d{4})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["7(?:1[0-8]|2[1-9])", "7(?:1(?:[0-356]2|4[29]|7|8[27])|2(?:1[23]|[2-9]2))", "7(?:1(?:[0-356]2|4[29]|7|8[27])|2(?:13[03-69]|62[013-9]))|72[1-57-9]2"], "8 ($1)", 1], ["(\\d{5})(\\d)(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["7(?:1[0-68]|2[1-9])", "7(?:1(?:[06][3-6]|[18]|2[35]|[3-5][3-5])|2(?:[13][3-5]|[24-689]|7[457]))", "7(?:1(?:0(?:[356]|4[023])|[18]|2(?:3[013-9]|5)|3[45]|43[013-79]|5(?:3[1-8]|4[1-7]|5)|6(?:3[0-35-9]|[4-6]))|2(?:1(?:3[178]|[45])|[24-689]|3[35]|7[457]))|7(?:14|23)4[0-8]|71(?:33|45)[1-79]"], "8 ($1)", 1], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["7"], "8 ($1)", 1], ["(\\d{3})(\\d{3})(\\d{2})(\\d{2})", "$1 $2-$3-$4", ["[349]|8(?:[02-7]|1[1-8])"], "8 ($1)", 1], ["(\\d{4})(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["8"], "8 ($1)"]], "8", 0, 0, 0, 0, "3[04-689]|[489]", [["(?:3(?:0[12]|4[1-35-79]|5[1-3]|65|8[1-58]|9[0145])|4(?:01|1[1356]|2[13467]|7[1-5]|8[1-7]|9[1-689])|8(?:1[1-8]|2[01]|3[13-6]|4[0-8]|5[15]|6[1-35-79]|7[1-37-9]))\\d{7}", [10]], ["9\\d{9}", [10]], ["8(?:0[04]|108\\d{3})\\d{7}"], ["80[39]\\d{7}", [10]], ["808\\d{7}", [10]]], "8~10"], "RW": ["250", "00", "(?:06|[27]\\d\\d|[89]00)\\d{6}", [8, 9], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["0"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["2"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[7-9]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:06|2[23568]\\d)\\d{6}"], ["7[237-9]\\d{7}", [9]], ["800\\d{6}", [9]], ["900\\d{6}", [9]]]], "SA": ["966", "00", "92\\d{7}|(?:[15]|8\\d)\\d{8}", [9, 10], [["(\\d{4})(\\d{5})", "$1 $2", ["9"]], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["5"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["81"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["8"]]], "0", 0, 0, 0, 0, 0, [["1(?:1\\d|2[24-8]|3[35-8]|4[3-68]|6[2-5]|7[235-7])\\d{6}", [9]], ["579[01]\\d{5}|5(?:[013-689]\\d|7[0-8])\\d{6}", [9]], ["800\\d{7}", [10]], ["925\\d{6}", [9]], 0, 0, ["811\\d{7}", [10]], 0, 0, ["920\\d{6}", [9]]]], "SB": ["677", "0[01]", "(?:[1-6]|[7-9]\\d\\d)\\d{4}", [5, 7], [["(\\d{2})(\\d{5})", "$1 $2", ["7|8[4-9]|9(?:[1-8]|9[0-8])"]]], 0, 0, 0, 0, 0, 0, [["(?:1[4-79]|[23]\\d|4[0-2]|5[03]|6[0-37])\\d{3}", [5]], ["48\\d{3}|(?:(?:7[1-9]|8[4-9])\\d|9(?:1[2-9]|2[013-9]|3[0-2]|[46]\\d|5[0-46-9]|7[0-689]|8[0-79]|9[0-8]))\\d{4}"], ["1[38]\\d{3}", [5]], 0, 0, 0, 0, 0, ["5[12]\\d{3}", [5]]]], "SC": ["248", "010|0[0-2]", "800\\d{4}|(?:[249]\\d|64)\\d{5}", [7], [["(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["[246]|9[57]"]]], 0, 0, 0, 0, 0, 0, [["4[2-46]\\d{5}"], ["2[125-8]\\d{5}"], ["800[08]\\d{3}"], 0, 0, 0, 0, 0, ["971\\d{4}|(?:64|95)\\d{5}"]], "00"], "SD": ["249", "00", "[19]\\d{8}", [9], [["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[19]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["1(?:5\\d|8[35-7])\\d{6}"], ["(?:1[0-2]|9[0-3569])\\d{7}"]]], "SE": ["46", "00", "(?:[26]\\d\\d|9)\\d{9}|[1-9]\\d{8}|[1-689]\\d{7}|[1-4689]\\d{6}|2\\d{5}", [6, 7, 8, 9, 10], [["(\\d{2})(\\d{2,3})(\\d{2})", "$1-$2 $3", ["20"], "0$1", 0, "$1 $2 $3"], ["(\\d{3})(\\d{4})", "$1-$2", ["9(?:00|39|44|9)"], "0$1", 0, "$1 $2"], ["(\\d{2})(\\d{3})(\\d{2})", "$1-$2 $3", ["[12][136]|3[356]|4[0246]|6[03]|90[1-9]"], "0$1", 0, "$1 $2 $3"], ["(\\d)(\\d{2,3})(\\d{2})(\\d{2})", "$1-$2 $3 $4", ["8"], "0$1", 0, "$1 $2 $3 $4"], ["(\\d{3})(\\d{2,3})(\\d{2})", "$1-$2 $3", ["1[2457]|2(?:[247-9]|5[0138])|3[0247-9]|4[1357-9]|5[0-35-9]|6(?:[125689]|4[02-57]|7[0-2])|9(?:[125-8]|3[02-5]|4[0-3])"], "0$1", 0, "$1 $2 $3"], ["(\\d{3})(\\d{2,3})(\\d{3})", "$1-$2 $3", ["9(?:00|39|44)"], "0$1", 0, "$1 $2 $3"], ["(\\d{2})(\\d{2,3})(\\d{2})(\\d{2})", "$1-$2 $3 $4", ["1[13689]|2[0136]|3[1356]|4[0246]|54|6[03]|90[1-9]"], "0$1", 0, "$1 $2 $3 $4"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1-$2 $3 $4", ["10|7"], "0$1", 0, "$1 $2 $3 $4"], ["(\\d)(\\d{3})(\\d{3})(\\d{2})", "$1-$2 $3 $4", ["8"], "0$1", 0, "$1 $2 $3 $4"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1-$2 $3 $4", ["[13-5]|2(?:[247-9]|5[0138])|6(?:[124-689]|7[0-2])|9(?:[125-8]|3[02-5]|4[0-3])"], "0$1", 0, "$1 $2 $3 $4"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{3})", "$1-$2 $3 $4", ["9"], "0$1", 0, "$1 $2 $3 $4"], ["(\\d{3})(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1-$2 $3 $4 $5", ["[26]"], "0$1", 0, "$1 $2 $3 $4 $5"]], "0", 0, 0, 0, 0, 0, [["(?:(?:[12][136]|3[356]|4[0246]|6[03]|8\\d)\\d|90[1-9])\\d{4,6}|(?:1(?:2[0-35]|4[0-4]|5[0-25-9]|7[13-6]|[89]\\d)|2(?:2[0-7]|4[0136-8]|5[0138]|7[018]|8[01]|9[0-57])|3(?:0[0-4]|1\\d|2[0-25]|4[056]|7[0-2]|8[0-3]|9[023])|4(?:1[013-8]|3[0135]|5[14-79]|7[0-246-9]|8[0156]|9[0-689])|5(?:0[0-6]|[15][0-5]|2[0-68]|3[0-4]|4\\d|6[03-5]|7[013]|8[0-79]|9[01])|6(?:1[1-3]|2[0-4]|4[02-57]|5[0-37]|6[0-3]|7[0-2]|8[0247]|9[0-356])|9(?:1[0-68]|2\\d|3[02-5]|4[0-3]|5[0-4]|[68][01]|7[0135-8]))\\d{5,6}", [7, 8, 9]], ["7[02369]\\d{7}", [9]], ["20\\d{4,7}", [6, 7, 8, 9]], ["649\\d{6}|99[1-59]\\d{4}(?:\\d{3})?|9(?:00|39|44)[1-8]\\d{3,6}", [7, 8, 9, 10]], ["75[1-8]\\d{6}", [9]], 0, ["10[1-8]\\d{6}", [9]], ["74[02-9]\\d{6}", [9]], 0, ["77[0-7]\\d{6}", [9]]]], "SG": ["65", "0[0-3]\\d", "(?:(?:1\\d|8)\\d\\d|7000)\\d{7}|[3689]\\d{7}", [8, 10, 11], [["(\\d{4})(\\d{4})", "$1 $2", ["[369]|8(?:0[1-8]|[1-9])"]], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["8"]], ["(\\d{4})(\\d{4})(\\d{3})", "$1 $2 $3", ["7"]], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"]]], 0, 0, 0, 0, 0, 0, [["662[0-24-9]\\d{4}|6(?:[0-578]\\d|6[013-57-9]|9[0-35-9])\\d{5}", [8]], ["8(?:08[01]|95[0-2])\\d{4}|(?:8(?:0[1-7]|[1-8]\\d|9[0-4])|9[0-8]\\d)\\d{5}", [8]], ["(?:18|8)00\\d{7}", [10, 11]], ["1900\\d{7}", [11]], 0, 0, ["7000\\d{7}", [11]], 0, ["(?:3[12]\\d|666)\\d{5}", [8]]]], "SH": ["290", "00", "(?:[256]\\d|8)\\d{3}", [4, 5], 0, 0, 0, 0, 0, 0, "[256]", [["2(?:[0-57-9]\\d|6[4-9])\\d\\d"], ["[56]\\d{4}", [5]], 0, 0, 0, 0, 0, 0, ["262\\d\\d", [5]]]], "SI": ["386", "00|10(?:22|66|88|99)", "[1-7]\\d{7}|8\\d{4,7}|90\\d{4,6}", [5, 6, 7, 8], [["(\\d{2})(\\d{3,6})", "$1 $2", ["8[09]|9"], "0$1"], ["(\\d{3})(\\d{5})", "$1 $2", ["59|8"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[37][01]|4[0139]|51|6"], "0$1"], ["(\\d)(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[1-57]"], "(0$1)"]], "0", 0, 0, 0, 0, 0, [["(?:[1-357][2-8]|4[24-8])\\d{6}", [8]], ["65(?:[178]\\d|5[56]|6[01])\\d{4}|(?:[37][01]|4[0139]|51|6[489])\\d{6}", [8]], ["80\\d{4,6}", [6, 7, 8]], ["89[1-3]\\d{2,5}|90\\d{4,6}"], 0, 0, 0, 0, ["(?:59\\d\\d|8(?:1(?:[67]\\d|8[0-589])|2(?:0\\d|2[0-37-9]|8[0-2489])|3[389]\\d))\\d{4}", [8]]], "00"], "SJ": ["47", "00", "0\\d{4}|(?:[489]\\d|79)\\d{6}", [5, 8], 0, 0, 0, 0, 0, 0, "79", [["79\\d{6}", [8]], ["(?:4[015-8]|9\\d)\\d{6}", [8]], ["80[01]\\d{5}", [8]], ["82[09]\\d{5}", [8]], ["880\\d{5}", [8]], 0, ["(?:0[2-9]|81(?:0(?:0[7-9]|1\\d)|5\\d\\d))\\d{3}"], 0, ["85[0-5]\\d{5}", [8]], ["810(?:0[0-6]|[2-8]\\d)\\d{3}", [8]]]], "SK": ["421", "00", "[2-689]\\d{8}|[2-59]\\d{6}|[2-5]\\d{5}", [6, 7, 9], [["(\\d)(\\d{2})(\\d{3,4})", "$1 $2 $3", ["21"], "0$1"], ["(\\d{2})(\\d{2})(\\d{2,3})", "$1 $2 $3", ["[3-5][1-8]1", "[3-5][1-8]1[67]"], "0$1"], ["(\\d)(\\d{3})(\\d{3})(\\d{2})", "$1/$2 $3 $4", ["2"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[689]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1/$2 $3 $4", ["[3-5]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2(?:16|[2-9]\\d{3})|(?:(?:[3-5][1-8]\\d|819)\\d|601[1-5])\\d)\\d{4}|(?:2|[3-5][1-8])1[67]\\d{3}|[3-5][1-8]16\\d\\d"], ["909[1-9]\\d{5}|9(?:0[1-8]|1[0-24-9]|4[03-57-9]|5\\d)\\d{6}", [9]], ["800\\d{6}", [9]], ["9(?:00|[78]\\d)\\d{6}", [9]], 0, 0, ["96\\d{7}", [9]], ["9090\\d{3}", [7]], ["6(?:02|5[0-4]|9[0-6])\\d{6}", [9]], ["8[5-9]\\d{7}", [9]]]], "SL": ["232", "00", "(?:[237-9]\\d|66)\\d{6}", [8], [["(\\d{2})(\\d{6})", "$1 $2", ["[236-9]"], "(0$1)"]], "0", 0, 0, 0, 0, 0, [["22[2-4][2-9]\\d{4}"], ["(?:25|3[0-5]|66|7[2-9]|8[08]|9[09])\\d{6}"]]], "SM": ["378", "00", "(?:0549|[5-7]\\d)\\d{6}", [8, 10], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[5-7]"]], ["(\\d{4})(\\d{6})", "$1 $2", ["0"]]], 0, 0, "([89]\\d{5})$", "0549$1", 0, 0, [["0549(?:8[0157-9]|9\\d)\\d{4}", [10]], ["6[16]\\d{6}", [8]], 0, ["7[178]\\d{6}", [8]], 0, 0, 0, 0, ["5[158]\\d{6}", [8]]]], "SN": ["221", "00", "(?:[378]\\d|93)\\d{7}", [9], [["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["8"]], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[379]"]]], 0, 0, 0, 0, 0, 0, [["3(?:0(?:1[0-2]|80)|282|3(?:8[1-9]|9[3-9])|611)\\d{5}"], ["7(?:(?:[06-8]\\d|21|90)\\d|5(?:01|[19]0|25|[38]3|[4-7]\\d))\\d{5}"], ["800\\d{6}"], ["88[4689]\\d{6}"], 0, 0, 0, 0, ["(?:3(?:392|9[01]\\d)\\d|93(?:3[13]0|929))\\d{4}"], ["81[02468]\\d{6}"]]], "SO": ["252", "00", "[346-9]\\d{8}|[12679]\\d{7}|[1-5]\\d{6}|[1348]\\d{5}", [6, 7, 8, 9], [["(\\d{2})(\\d{4})", "$1 $2", ["8[125]"]], ["(\\d{6})", "$1", ["[134]"]], ["(\\d)(\\d{6})", "$1 $2", ["[15]|2[0-79]|3[0-46-8]|4[0-7]"]], ["(\\d)(\\d{7})", "$1 $2", ["(?:2|90)4|[67]"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[348]|64|79|90"]], ["(\\d{2})(\\d{5,7})", "$1 $2", ["1|28|6[0-35-9]|77|9[2-9]"]]], "0", 0, 0, 0, 0, 0, [["(?:1\\d|2[0-79]|3[0-46-8]|4[0-7]|5[57-9])\\d{5}|(?:[134]\\d|8[125])\\d{4}", [6, 7]], ["(?:(?:15|(?:3[59]|4[89]|6\\d|7[79]|8[08])\\d|9(?:0\\d|[2-9]))\\d|2(?:4\\d|8))\\d{5}|(?:[67]\\d\\d|904)\\d{5}", [7, 8, 9]]]], "SR": ["597", "00", "(?:[2-5]|68|[78]\\d)\\d{5}", [6, 7], [["(\\d{2})(\\d{2})(\\d{2})", "$1-$2-$3", ["56"]], ["(\\d{3})(\\d{3})", "$1-$2", ["[2-5]"]], ["(\\d{3})(\\d{4})", "$1-$2", ["[6-8]"]]], 0, 0, 0, 0, 0, 0, [["(?:2[1-3]|3[0-7]|(?:4|68)\\d|5[2-58])\\d{4}"], ["(?:7[124-7]|8[124-9])\\d{5}", [7]], 0, 0, 0, 0, 0, 0, ["56\\d{4}", [6]]]], "SS": ["211", "00", "[19]\\d{8}", [9], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[19]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["1[89]\\d{7}"], ["(?:12|9[1257-9])\\d{7}"]]], "ST": ["239", "00", "(?:22|9\\d)\\d{5}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[29]"]]], 0, 0, 0, 0, 0, 0, [["22\\d{5}"], ["900[5-9]\\d{3}|9(?:0[1-9]|[89]\\d)\\d{4}"]]], "SV": ["503", "00", "[267]\\d{7}|[89]00\\d{4}(?:\\d{4})?", [7, 8, 11], [["(\\d{3})(\\d{4})", "$1 $2", ["[89]"]], ["(\\d{4})(\\d{4})", "$1 $2", ["[267]"]], ["(\\d{3})(\\d{4})(\\d{4})", "$1 $2 $3", ["[89]"]]], 0, 0, 0, 0, 0, 0, [["2(?:79(?:0[0347-9]|[1-9]\\d)|89(?:0[024589]|[1-9]\\d))\\d{3}|2(?:[1-69]\\d|[78][0-8])\\d{5}", [8]], ["[67]\\d{7}", [8]], ["800\\d{4}(?:\\d{4})?", [7, 11]], ["900\\d{4}(?:\\d{4})?", [7, 11]]]], "SX": ["1", "011", "7215\\d{6}|(?:[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "(5\\d{6})$|1", "721$1", 0, "721", [["7215(?:4[2-8]|8[239]|9[056])\\d{4}"], ["7215(?:1[02]|2\\d|5[034679]|8[014-8])\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "SY": ["963", "00", "[1-39]\\d{8}|[1-5]\\d{7}", [8, 9], [["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[1-5]"], "0$1", 1], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["9"], "0$1", 1]], "0", 0, 0, 0, 0, 0, [["21\\d{6,7}|(?:1(?:[14]\\d|[2356])|2[235]|3(?:[13]\\d|4)|4[134]|5[1-3])\\d{6}"], ["9[1-689]\\d{7}", [9]]]], "SZ": ["268", "00", "0800\\d{4}|(?:[237]\\d|900)\\d{6}", [8, 9], [["(\\d{4})(\\d{4})", "$1 $2", ["[0237]"]], ["(\\d{5})(\\d{4})", "$1 $2", ["9"]]], 0, 0, 0, 0, 0, 0, [["[23][2-5]\\d{6}", [8]], ["7[6-9]\\d{6}", [8]], ["0800\\d{4}", [8]], ["900\\d{6}", [9]], 0, 0, 0, 0, ["70\\d{6}", [8]]]], "TA": ["290", "00", "8\\d{3}", [4], 0, 0, 0, 0, 0, 0, "8", [["8\\d{3}"]]], "TC": ["1", "011", "(?:[58]\\d\\d|649|900)\\d{7}", [10], 0, "1", 0, "([2-479]\\d{6})$|1", "649$1", 0, "649", [["649(?:266|712|9(?:4\\d|50))\\d{4}"], ["649(?:2(?:3[129]|4[1-79])|3\\d\\d|4[34][1-3])\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], 0, 0, 0, ["649(?:71[01]|966)\\d{4}"]]], "TD": ["235", "00|16", "(?:22|[69]\\d|77)\\d{6}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[2679]"]]], 0, 0, 0, 0, 0, 0, [["22(?:[37-9]0|5[0-5]|6[89])\\d{4}"], ["(?:6[0235689]|77|9\\d)\\d{6}"]], "00"], "TG": ["228", "00", "[279]\\d{7}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[279]"]]], 0, 0, 0, 0, 0, 0, [["2(?:2[2-7]|3[23]|4[45]|55|6[67]|77)\\d{5}"], ["(?:7[019]|9[0-36-9])\\d{6}"]]], "TH": ["66", "00[1-9]", "(?:001800|[2-57]|[689]\\d)\\d{7}|1\\d{7,9}", [8, 9, 10, 13], [["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["2"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[13-9]"], "0$1"], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["1"]]], "0", 0, 0, 0, 0, 0, [["(?:1[0689]|2\\d|3[2-9]|4[2-5]|5[2-6]|7[3-7])\\d{6}", [8]], ["671[0-8]\\d{5}|(?:14|6[1-6]|[89]\\d)\\d{7}", [9]], ["(?:001800\\d|1800)\\d{6}", [10, 13]], ["1900\\d{6}", [10]], 0, 0, 0, 0, ["6[08]\\d{7}", [9]]]], "TJ": ["992", "810", "[0-57-9]\\d{8}", [9], [["(\\d{6})(\\d)(\\d{2})", "$1 $2 $3", ["331", "3317"]], ["(\\d{3})(\\d{2})(\\d{4})", "$1 $2 $3", ["44[04]|[34]7"]], ["(\\d{4})(\\d)(\\d{4})", "$1 $2 $3", ["3[1-5]"]], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[0-57-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:3(?:1[3-5]|2[245]|3[12]|4[24-7]|5[25]|72)|4(?:4[046]|74|87))\\d{6}"], ["(?:41[18]|81[1-9])\\d{6}|(?:0[0-57-9]|1[017]|2[02]|[34]0|5[05]|7[0178]|8[078]|9\\d)\\d{7}"]], "8~10"], "TK": ["690", "00", "[2-47]\\d{3,6}", [4, 5, 6, 7], 0, 0, 0, 0, 0, 0, 0, [["(?:2[2-4]|[34]\\d)\\d{2,5}"], ["7[2-4]\\d{2,5}"]]], "TL": ["670", "00", "7\\d{7}|(?:[2-47]\\d|[89]0)\\d{5}", [7, 8], [["(\\d{3})(\\d{4})", "$1 $2", ["[2-489]|70"]], ["(\\d{4})(\\d{4})", "$1 $2", ["7"]]], 0, 0, 0, 0, 0, 0, [["(?:2[1-5]|3[1-9]|4[1-4])\\d{5}", [7]], ["7[2-8]\\d{6}", [8]], ["80\\d{5}", [7]], ["90\\d{5}", [7]], ["70\\d{5}", [7]]]], "TM": ["993", "810", "[1-6]\\d{7}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2-$3-$4", ["12"], "(8 $1)"], ["(\\d{3})(\\d)(\\d{2})(\\d{2})", "$1 $2-$3-$4", ["[1-5]"], "(8 $1)"], ["(\\d{2})(\\d{6})", "$1 $2", ["6"], "8 $1"]], "8", 0, 0, 0, 0, 0, [["(?:1(?:2\\d|3[1-9])|2(?:22|4[0-35-8])|3(?:22|4[03-9])|4(?:22|3[128]|4\\d|6[15])|5(?:22|5[7-9]|6[014-689]))\\d{5}"], ["6\\d{7}"]], "8~10"], "TN": ["216", "00", "[2-57-9]\\d{7}", [8], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[2-57-9]"]]], 0, 0, 0, 0, 0, 0, [["81200\\d{3}|(?:3[0-2]|7\\d)\\d{6}"], ["3(?:001|[12]40)\\d{4}|(?:(?:[259]\\d|4[0-8])\\d|3(?:1[1-35]|6[0-4]|91))\\d{5}"], ["8010\\d{4}"], ["88\\d{6}"], 0, 0, 0, 0, 0, ["8[12]10\\d{4}"]]], "TO": ["676", "00", "(?:0800|(?:[5-8]\\d\\d|999)\\d)\\d{3}|[2-8]\\d{4}", [5, 7], [["(\\d{2})(\\d{3})", "$1-$2", ["[2-4]|50|6[09]|7[0-24-69]|8[05]"]], ["(\\d{4})(\\d{3})", "$1 $2", ["0"]], ["(\\d{3})(\\d{4})", "$1 $2", ["[5-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:2\\d|3[0-8]|4[0-4]|50|6[09]|7[0-24-69]|8[05])\\d{3}", [5]], ["(?:55[4-6]|6(?:[09]\\d|3[02]|8[15-9])|(?:7\\d|8[46-9])\\d|999)\\d{4}", [7]], ["0800\\d{3}", [7]], 0, 0, 0, 0, 0, ["55[0-37-9]\\d{4}", [7]]]], "TR": ["90", "00", "4\\d{6}|8\\d{11,12}|(?:[2-58]\\d\\d|900)\\d{7}", [7, 10, 12, 13], [["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["512|8[01589]|90"], "0$1", 1], ["(\\d{3})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["5(?:[0-59]|61)", "5(?:[0-59]|61[06])", "5(?:[0-59]|61[06]1)"], "0$1", 1], ["(\\d{3})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[24][1-8]|3[1-9]"], "(0$1)", 1], ["(\\d{3})(\\d{3})(\\d{6,7})", "$1 $2 $3", ["80"], "0$1", 1]], "0", 0, 0, 0, 0, 0, [["(?:2(?:[13][26]|[28][2468]|[45][268]|[67][246])|3(?:[13][28]|[24-6][2468]|[78][02468]|92)|4(?:[16][246]|[23578][2468]|4[26]))\\d{7}", [10]], ["561(?:011|61\\d)\\d{4}|5(?:0[15-7]|1[06]|24|[34]\\d|5[1-59]|9[46])\\d{7}", [10]], ["8(?:00\\d{7}(?:\\d{2,3})?|11\\d{7})", [10, 12, 13]], ["(?:8[89]8|900)\\d{7}", [10]], ["592(?:21[12]|461)\\d{4}", [10]], 0, ["444\\d{4}", [7]], ["512\\d{7}", [10]], ["850\\d{7}", [10]]]], "TT": ["1", "011", "(?:[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2-46-8]\\d{6})$|1", "868$1", 0, "868", [["868(?:2(?:01|1[5-9]|[23]\\d|4[0-2])|6(?:0[7-9]|1[02-8]|2[1-9]|[3-69]\\d|7[0-79])|82[124])\\d{4}"], ["868(?:(?:2[5-9]|3\\d)\\d|4(?:3[0-6]|[6-9]\\d)|6(?:20|78|8\\d)|7(?:0[1-9]|1[02-9]|[2-9]\\d))\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "TV": ["688", "00", "(?:2|7\\d\\d|90)\\d{4}", [5, 6, 7], [["(\\d{2})(\\d{3})", "$1 $2", ["2"]], ["(\\d{2})(\\d{4})", "$1 $2", ["90"]], ["(\\d{2})(\\d{5})", "$1 $2", ["7"]]], 0, 0, 0, 0, 0, 0, [["2[02-9]\\d{3}", [5]], ["(?:7[01]\\d|90)\\d{4}", [6, 7]]]], "TW": ["886", "0(?:0[25-79]|19)", "[2-689]\\d{8}|7\\d{9,10}|[2-8]\\d{7}|2\\d{6}", [7, 8, 9, 10, 11], [["(\\d{2})(\\d)(\\d{4})", "$1 $2 $3", ["202"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[258]0"], "0$1"], ["(\\d)(\\d{3,4})(\\d{4})", "$1 $2 $3", ["[23568]|4(?:0[02-48]|[1-47-9])|7[1-9]", "[23568]|4(?:0[2-48]|[1-47-9])|(?:400|7)[1-9]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[49]"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4,5})", "$1 $2 $3", ["7"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2[2-8]\\d|370|55[01]|7[1-9])\\d{6}|4(?:(?:0(?:0[1-9]|[2-48]\\d)|1[023]\\d)\\d{4,5}|(?:[239]\\d\\d|4(?:0[56]|12|49))\\d{5})|6(?:[01]\\d{7}|4(?:0[56]|12|24|4[09])\\d{4,5})|8(?:(?:2(?:3\\d|4[0-269]|[578]0|66)|36[24-9]|90\\d\\d)\\d{4}|4(?:0[56]|12|24|4[09])\\d{4,5})|(?:2(?:2(?:0\\d\\d|4(?:0[68]|[249]0|3[0-467]|5[0-25-9]|6[0235689]))|(?:3(?:[09]\\d|1[0-4])|(?:4\\d|5[0-49]|6[0-29]|7[0-5])\\d)\\d)|(?:(?:3[2-9]|5[2-8]|6[0-35-79]|8[7-9])\\d\\d|4(?:2(?:[089]\\d|7[1-9])|(?:3[0-4]|[78]\\d|9[01])\\d))\\d)\\d{3}", [8, 9]], ["(?:40001[0-2]|9[0-8]\\d{4})\\d{3}", [9]], ["80[0-79]\\d{6}|800\\d{5}", [8, 9]], ["20(?:[013-9]\\d\\d|2)\\d{4}", [7, 9]], ["99\\d{7}", [9]], 0, ["50[0-46-9]\\d{6}", [9]], 0, ["7010(?:[0-2679]\\d|3[0-7]|8[0-5])\\d{5}|70\\d{8}", [10, 11]]], 0, "#"], "TZ": ["255", "00[056]", "(?:[25-8]\\d|41|90)\\d{7}", [9], [["(\\d{3})(\\d{2})(\\d{4})", "$1 $2 $3", ["[89]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[24]"], "0$1"], ["(\\d{2})(\\d{7})", "$1 $2", ["5"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[67]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["2[2-8]\\d{7}"], ["77[2-9]\\d{6}|(?:6[125-9]|7[13-689])\\d{7}"], ["80[08]\\d{6}"], ["90\\d{7}"], 0, 0, 0, 0, ["41\\d{7}"], ["8(?:40|6[01])\\d{6}"]]], "UA": ["380", "00", "[89]\\d{9}|[3-9]\\d{8}", [9, 10], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["6[12][29]|(?:3[1-8]|4[136-8]|5[12457]|6[49])2|(?:56|65)[24]", "6[12][29]|(?:35|4[1378]|5[12457]|6[49])2|(?:56|65)[24]|(?:3[1-46-8]|46)2[013-9]"], "0$1"], ["(\\d{4})(\\d{5})", "$1 $2", ["3[1-8]|4(?:[1367]|[45][6-9]|8[4-6])|5(?:[1-5]|6[0135689]|7[4-6])|6(?:[12][3-7]|[459])", "3[1-8]|4(?:[1367]|[45][6-9]|8[4-6])|5(?:[1-5]|6(?:[015689]|3[02389])|7[4-6])|6(?:[12][3-7]|[459])"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[3-7]|89|9[1-9]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[89]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:3[1-8]|4[13-8]|5[1-7]|6[12459])\\d{7}", [9]], ["(?:39|50|6[36-8]|7[1-3]|9[1-9])\\d{7}", [9]], ["800[1-8]\\d{5,6}"], ["900[239]\\d{5,6}"], 0, 0, 0, 0, ["89[1-579]\\d{6}", [9]]], "0~0"], "UG": ["256", "00[057]", "800\\d{6}|(?:[29]0|[347]\\d)\\d{7}", [9], [["(\\d{4})(\\d{5})", "$1 $2", ["202", "2024"], "0$1"], ["(\\d{3})(\\d{6})", "$1 $2", ["[27-9]|4(?:6[45]|[7-9])"], "0$1"], ["(\\d{2})(\\d{7})", "$1 $2", ["[34]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["20(?:(?:240|30[67])\\d|6(?:00[0-2]|30[0-4]))\\d{3}|(?:20(?:[017]\\d|2[5-9]|32|5[0-4]|6[15-9])|[34]\\d{3})\\d{5}"], ["726[01]\\d{5}|7(?:[015-8]\\d|20|36|4[0-4]|9[89])\\d{6}"], ["800[1-3]\\d{5}"], ["90[1-3]\\d{6}"]]], "US": ["1", "011", "[2-9]\\d{9}|3\\d{6}", [10], [["(\\d{3})(\\d{4})", "$1-$2", ["310"], 0, 1], ["(\\d{3})(\\d{3})(\\d{4})", "($1) $2-$3", ["[2-9]"], 0, 1, "$1-$2-$3"]], "1", 0, 0, 0, 0, 0, [["5056(?:[0-35-9]\\d|4[468])\\d{4}|(?:4722|505[2-57-9]|983[29])\\d{6}|(?:2(?:0[1-35-9]|1[02-9]|2[03-589]|3[149]|4[08]|5[1-46]|6[0279]|7[0269]|8[13])|3(?:0[1-57-9]|1[02-9]|2[01356]|3[0-24679]|4[167]|5[0-2]|6[014]|8[056])|4(?:0[124-9]|1[02-579]|2[3-5]|3[0245]|4[023578]|58|6[349]|7[0589]|8[04])|5(?:0[1-47-9]|1[0235-8]|20|3[0149]|4[01]|5[179]|6[1-47]|7[0-5]|8[0256])|6(?:0[1-35-9]|1[024-9]|2[03689]|[34][016]|5[01679]|6[0-279]|78|8[0-29])|7(?:0[1-46-8]|1[2-9]|2[04-7]|3[1247]|4[037]|5[47]|6[02359]|7[0-59]|8[156])|8(?:0[1-68]|1[02-8]|2[068]|3[0-2589]|4[03578]|5[046-9]|6[02-5]|7[028])|9(?:0[1346-9]|1[02-9]|2[0589]|3[0146-8]|4[01357-9]|5[12469]|7[0-389]|8[04-69]))[2-9]\\d{6}"], [""], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "UY": ["598", "0(?:0|1[3-9]\\d)", "0004\\d{2,9}|[1249]\\d{7}|(?:[49]\\d|80)\\d{5}", [6, 7, 8, 9, 10, 11, 12, 13], [["(\\d{3})(\\d{3,4})", "$1 $2", ["0"]], ["(\\d{3})(\\d{4})", "$1 $2", ["[49]0|8"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["9"], "0$1"], ["(\\d{4})(\\d{4})", "$1 $2", ["[124]"]], ["(\\d{3})(\\d{3})(\\d{2,4})", "$1 $2 $3", ["0"]], ["(\\d{3})(\\d{3})(\\d{3})(\\d{2,4})", "$1 $2 $3 $4", ["0"]]], "0", 0, 0, 0, 0, 0, [["(?:1(?:770|9(?:20|87))|(?:2\\d|4[2-7])\\d\\d)\\d{4}", [8]], ["9[1-9]\\d{6}", [8]], ["0004\\d{2,9}|(?:405|80[05])\\d{4}"], ["90[0-8]\\d{4}", [7]]], "00", " int. "], "UZ": ["998", "810", "(?:20|33|[5-79]\\d|88)\\d{7}", [9], [["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[235-9]"], "8 $1"]], "8", 0, 0, 0, 0, 0, [["(?:55\\d\\d|6(?:1(?:22|3[124]|4[1-4]|5[1-3578]|64)|2(?:22|3[0-57-9]|41)|5(?:22|3[3-7]|5[024-8])|6\\d\\d|7(?:[23]\\d|7[69])|9(?:22|4[1-8]|6[135]))|7(?:0(?:5[4-9]|6[0146]|7[124-6]|9[135-8])|(?:1[12]|[68]\\d)\\d|2(?:22|3[13-57-9]|4[1-3579]|5[14])|3(?:2\\d|3[1578]|4[1-35-7]|5[1-57]|61)|4(?:2\\d|3[1-579]|7[1-79])|5(?:22|5[1-9]|6[1457])|9(?:22|5[1-9])))\\d{5}"], ["(?:(?:[25]0|33|88|9[0-57-9])\\d{3}|6(?:1(?:2(?:2[01]|98)|35[0-4]|50\\d|61[23]|7(?:[01][017]|4\\d|55|9[5-9]))|2(?:(?:11|7\\d)\\d|2(?:[12]1|9[01379])|5(?:[126]\\d|3[0-4]))|5(?:19[01]|2(?:27|9[26])|(?:30|59|7\\d)\\d)|6(?:2(?:1[5-9]|2[0367]|38|41|52|60)|(?:3[79]|9[0-3])\\d|4(?:56|83)|7(?:[07]\\d|1[017]|3[07]|4[047]|5[057]|67|8[0178]|9[79]))|7(?:2(?:24|3[237]|4[5-9]|7[15-8])|5(?:7[12]|8[0589])|7(?:0\\d|[39][07])|9(?:0\\d|7[079]))|9(?:2(?:1[1267]|3[01]|5\\d|7[0-4])|(?:5[67]|7\\d)\\d|6(?:2[0-26]|8\\d)))|7(?:[07]\\d{3}|1(?:13[01]|6(?:0[47]|1[67]|66)|71[3-69]|98\\d)|2(?:2(?:2[79]|95)|3(?:2[5-9]|6[0-6])|57\\d|7(?:0\\d|1[17]|2[27]|3[37]|44|5[057]|66|88))|3(?:2(?:1[0-6]|21|3[469]|7[159])|(?:33|9[4-6])\\d|5(?:0[0-4]|5[579]|9\\d)|7(?:[0-3579]\\d|4[0467]|6[67]|8[078]))|4(?:2(?:29|5[0257]|6[0-7]|7[1-57])|5(?:1[0-4]|8\\d|9[5-9])|7(?:0\\d|1[024589]|2[0-27]|3[0137]|[46][07]|5[01]|7[5-9]|9[079])|9(?:7[015-9]|[89]\\d))|5(?:112|2(?:0\\d|2[29]|[49]4)|3[1568]\\d|52[6-9]|7(?:0[01578]|1[017]|[23]7|4[047]|[5-7]\\d|8[78]|9[079]))|9(?:22[128]|3(?:2[0-4]|7\\d)|57[02569]|7(?:2[05-9]|3[37]|4\\d|60|7[2579]|87|9[07]))))\\d{4}"]], "8~10"], "VA": ["39", "00", "0\\d{5,10}|3[0-8]\\d{7,10}|55\\d{8}|8\\d{5}(?:\\d{2,4})?|(?:1\\d|39)\\d{7,8}", [6, 7, 8, 9, 10, 11], 0, 0, 0, 0, 0, 0, "06698", [["06698\\d{1,6}"], ["3[1-9]\\d{8}|3[2-9]\\d{7}", [9, 10]], ["80(?:0\\d{3}|3)\\d{3}", [6, 9]], ["(?:0878\\d{3}|89(?:2\\d|3[04]|4(?:[0-4]|[5-9]\\d\\d)|5[0-4]))\\d\\d|(?:1(?:44|6[346])|89(?:38|5[5-9]|9))\\d{6}", [6, 8, 9, 10]], ["1(?:78\\d|99)\\d{6}", [9, 10]], 0, 0, 0, ["55\\d{8}", [10]], ["84(?:[08]\\d{3}|[17])\\d{3}", [6, 9]]]], "VC": ["1", "011", "(?:[58]\\d\\d|784|900)\\d{7}", [10], 0, "1", 0, "([2-7]\\d{6})$|1", "784$1", 0, "784", [["784(?:266|3(?:6[6-9]|7\\d|8[0-6])|4(?:38|5[0-36-8]|8[0-8])|5(?:55|7[0-2]|93)|638|784)\\d{4}"], ["784(?:4(?:3[0-5]|5[45]|89|9[0-8])|5(?:2[6-9]|3[0-4])|720)\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], 0, 0, 0, ["78451[0-2]\\d{4}"]]], "VE": ["58", "00", "[68]00\\d{7}|(?:[24]\\d|[59]0)\\d{8}", [10], [["(\\d{3})(\\d{7})", "$1-$2", ["[24-689]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2(?:12|3[457-9]|[467]\\d|[58][1-9]|9[1-6])|[4-6]00)\\d{7}"], ["4(?:1[24-8]|2[46])\\d{7}"], ["800\\d{7}"], ["90[01]\\d{7}"], 0, 0, ["501\\d{7}"]]], "VG": ["1", "011", "(?:284|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2-578]\\d{6})$|1", "284$1", 0, "284", [["284(?:229|4(?:22|9[45])|774|8(?:52|6[459]))\\d{4}"], ["284(?:245|3(?:0[0-3]|4[0-7]|68|9[34])|4(?:4[0-6]|68|9[69])|5(?:4[0-7]|68|9[69]))\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "VI": ["1", "011", "[58]\\d{9}|(?:34|90)0\\d{7}", [10], 0, "1", 0, "([2-9]\\d{6})$|1", "340$1", 0, "340", [["340(?:2(?:0[0-368]|2[06-8]|4[49]|77)|3(?:32|44)|4(?:2[23]|44|7[34]|89)|5(?:1[34]|55)|6(?:2[56]|4[23]|77|9[023])|7(?:1[2-57-9]|2[57]|7\\d)|884|998)\\d{4}"], [""], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "VN": ["84", "00", "[12]\\d{9}|[135-9]\\d{8}|[16]\\d{7}|[16-8]\\d{6}", [7, 8, 9, 10], [["(\\d{2})(\\d{5})", "$1 $2", ["80"], "0$1", 1], ["(\\d{4})(\\d{4,6})", "$1 $2", ["1"], 0, 1], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["6"], "0$1", 1], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[357-9]"], "0$1", 1], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["2[48]"], "0$1", 1], ["(\\d{3})(\\d{4})(\\d{3})", "$1 $2 $3", ["2"], "0$1", 1]], "0", 0, 0, 0, 0, 0, [["2(?:0[3-9]|1[0-689]|2[0-25-9]|[38][2-9]|4[2-8]|5[124-9]|6[0-39]|7[0-7]|9[0-4679])\\d{7}", [10]], ["(?:5(?:2[238]|59)|89[6-9]|99[013-9])\\d{6}|(?:3\\d|5[689]|7[06-9]|8[1-8]|9[0-8])\\d{7}", [9]], ["1800\\d{4,6}|12(?:0[13]|28)\\d{4}", [8, 9, 10]], ["1900\\d{4,6}", [8, 9, 10]], 0, 0, ["(?:[17]99|80\\d)\\d{4}|69\\d{5,6}", [7, 8]], 0, ["672\\d{6}", [9]]]], "VU": ["678", "00", "[57-9]\\d{6}|(?:[238]\\d|48)\\d{3}", [5, 7], [["(\\d{3})(\\d{4})", "$1 $2", ["[57-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:38[0-8]|48[4-9])\\d\\d|(?:2[02-9]|3[4-7]|88)\\d{3}", [5]], ["(?:[58]\\d|7[013-7])\\d{5}", [7]], ["81[18]\\d\\d", [5]], 0, 0, 0, ["(?:3[03]|900\\d)\\d{3}"], 0, ["9(?:0[1-9]|1[01])\\d{4}", [7]]]], "WF": ["681", "00", "(?:40|72)\\d{4}|8\\d{5}(?:\\d{3})?", [6, 9], [["(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3", ["[478]"]], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["8"]]], 0, 0, 0, 0, 0, 0, [["72\\d{4}", [6]], ["(?:72|8[23])\\d{4}", [6]], ["80[0-5]\\d{6}", [9]]]], "WS": ["685", "0", "(?:[2-6]|8\\d{5})\\d{4}|[78]\\d{6}|[68]\\d{5}", [5, 6, 7, 10], [["(\\d{5})", "$1", ["[2-5]|6[1-9]"]], ["(\\d{3})(\\d{3,7})", "$1 $2", ["[68]"]], ["(\\d{2})(\\d{5})", "$1 $2", ["7"]]], 0, 0, 0, 0, 0, 0, [["6[1-9]\\d{3}|(?:[2-5]|60)\\d{4}", [5, 6]], ["(?:7[1-35-7]|8(?:[3-7]|9\\d{3}))\\d{5}", [7, 10]], ["800\\d{3}", [6]]]], "XK": ["383", "00", "[23]\\d{7,8}|(?:4\\d\\d|[89]00)\\d{5}", [8, 9], [["(\\d{3})(\\d{5})", "$1 $2", ["[89]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[2-4]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[23]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2[89]|39)0\\d{6}|[23][89]\\d{6}"], ["4[3-9]\\d{6}", [8]], ["800\\d{5}", [8]], ["900\\d{5}", [8]]]], "YE": ["967", "00", "(?:1|7\\d)\\d{7}|[1-7]\\d{6}", [7, 8, 9], [["(\\d)(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[1-6]|7(?:[24-6]|8[0-7])"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["7"], "0$1"]], "0", 0, 0, 0, 0, 0, [["78[0-7]\\d{4}|17\\d{6}|(?:[12][2-68]|3[2358]|4[2-58]|5[2-6]|6[3-58]|7[24-6])\\d{5}", [7, 8]], ["7[01378]\\d{7}", [9]]]], "YT": ["262", "00", "(?:80|9\\d)\\d{7}|(?:26|63)9\\d{6}", [9], 0, "0", 0, 0, 0, 0, 0, [["269(?:0[0-467]|5[0-4]|6\\d|[78]0)\\d{4}"], ["639(?:0[0-79]|1[019]|[267]\\d|3[09]|40|5[05-9]|9[04-79])\\d{4}"], ["80\\d{7}"], 0, 0, 0, 0, 0, ["9(?:(?:39|47)8[01]|769\\d)\\d{4}"]]], "ZA": ["27", "00", "[1-79]\\d{8}|8\\d{4,9}", [5, 6, 7, 8, 9, 10], [["(\\d{2})(\\d{3,4})", "$1 $2", ["8[1-4]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2,3})", "$1 $2 $3", ["8[1-4]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["860"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[1-9]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2(?:0330|4302)|52087)0\\d{3}|(?:1[0-8]|2[1-378]|3[1-69]|4\\d|5[1346-8])\\d{7}", [9]], ["(?:1(?:3492[0-25]|4495[0235]|549(?:20|5[01]))|4[34]492[01])\\d{3}|8[1-4]\\d{3,7}|(?:2[27]|47|54)4950\\d{3}|(?:1(?:049[2-4]|9[12]\\d\\d)|(?:6\\d|7[0-46-9])\\d{3}|8(?:5\\d{3}|7(?:08[67]|158|28[5-9]|310)))\\d{4}|(?:1[6-8]|28|3[2-69]|4[025689]|5[36-8])4920\\d{3}|(?:12|[2-5]1)492\\d{4}", [5, 6, 7, 8, 9]], ["80\\d{7}", [9]], ["(?:86[2-9]|9[0-2]\\d)\\d{6}", [9]], 0, 0, ["861\\d{6,7}", [9, 10]], 0, ["87(?:08[0-589]|15[0-79]|28[0-4]|31[1-9])\\d{4}|87(?:[02][0-79]|1[0-46-9]|3[02-9]|[4-9]\\d)\\d{5}", [9]], ["860\\d{6}", [9]]]], "ZM": ["260", "00", "800\\d{6}|(?:21|63|[79]\\d)\\d{7}", [9], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[28]"], "0$1"], ["(\\d{2})(\\d{7})", "$1 $2", ["[79]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["21[1-8]\\d{6}"], ["(?:7[5-79]|9[5-8])\\d{7}"], ["800\\d{6}"], 0, 0, 0, 0, 0, ["63\\d{7}"]]], "ZW": ["263", "00", "2(?:[0-57-9]\\d{6,8}|6[0-24-9]\\d{6,7})|[38]\\d{9}|[35-8]\\d{8}|[3-6]\\d{7}|[1-689]\\d{6}|[1-3569]\\d{5}|[1356]\\d{4}", [5, 6, 7, 8, 9, 10], [["(\\d{3})(\\d{3,5})", "$1 $2", ["2(?:0[45]|2[278]|[49]8)|3(?:[09]8|17)|6(?:[29]8|37|75)|[23][78]|(?:33|5[15]|6[68])[78]"], "0$1"], ["(\\d)(\\d{3})(\\d{2,4})", "$1 $2 $3", ["[49]"], "0$1"], ["(\\d{3})(\\d{4})", "$1 $2", ["80"], "0$1"], ["(\\d{2})(\\d{7})", "$1 $2", ["24|8[13-59]|(?:2[05-79]|39|5[45]|6[15-8])2", "2(?:02[014]|4|[56]20|[79]2)|392|5(?:42|525)|6(?:[16-8]21|52[013])|8[13-59]"], "(0$1)"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["7"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["2(?:1[39]|2[0157]|[378]|[56][14])|3(?:12|29)", "2(?:1[39]|2[0157]|[378]|[56][14])|3(?:123|29)"], "0$1"], ["(\\d{4})(\\d{6})", "$1 $2", ["8"], "0$1"], ["(\\d{2})(\\d{3,5})", "$1 $2", ["1|2(?:0[0-36-9]|12|29|[56])|3(?:1[0-689]|[24-6])|5(?:[0236-9]|1[2-4])|6(?:[013-59]|7[0-46-9])|(?:33|55|6[68])[0-69]|(?:29|3[09]|62)[0-79]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["29[013-9]|39|54"], "0$1"], ["(\\d{4})(\\d{3,5})", "$1 $2", ["(?:25|54)8", "258|5483"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1(?:(?:3\\d|9)\\d|[4-8])|2(?:(?:(?:0(?:2[014]|5)|(?:2[0157]|31|84|9)\\d\\d|[56](?:[14]\\d\\d|20)|7(?:[089]|2[03]|[35]\\d\\d))\\d|4(?:2\\d\\d|8))\\d|1(?:2|[39]\\d{4}))|3(?:(?:123|(?:29\\d|92)\\d)\\d\\d|7(?:[19]|[56]\\d))|5(?:0|1[2-478]|26|[37]2|4(?:2\\d{3}|83)|5(?:25\\d\\d|[78])|[689]\\d)|6(?:(?:[16-8]21|28|52[013])\\d\\d|[39])|8(?:[1349]28|523)\\d\\d)\\d{3}|(?:4\\d\\d|9[2-9])\\d{4,5}|(?:(?:2(?:(?:(?:0|8[146])\\d|7[1-7])\\d|2(?:[278]\\d|92)|58(?:2\\d|3))|3(?:[26]|9\\d{3})|5(?:4\\d|5)\\d\\d)\\d|6(?:(?:(?:[0-246]|[78]\\d)\\d|37)\\d|5[2-8]))\\d\\d|(?:2(?:[569]\\d|8[2-57-9])|3(?:[013-59]\\d|8[37])|6[89]8)\\d{3}"], ["7(?:[178]\\d|3[1-9])\\d{6}", [9]], ["80(?:[01]\\d|20|8[0-8])\\d{3}", [7]], 0, 0, 0, 0, 0, ["86(?:1[12]|22|30|44|55|77|8[368])\\d{6}", [10]]]] }, "nonGeographic": { "800": ["800", 0, "(?:00|[1-9]\\d)\\d{6}", [8], [["(\\d{4})(\\d{4})", "$1 $2", ["\\d"]]], 0, 0, 0, 0, 0, 0, [0, 0, ["(?:00|[1-9]\\d)\\d{6}"]]], "808": ["808", 0, "[1-9]\\d{7}", [8], [["(\\d{4})(\\d{4})", "$1 $2", ["[1-9]"]]], 0, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0, 0, 0, 0, 0, ["[1-9]\\d{7}"]]], "870": ["870", 0, "7\\d{11}|[35-7]\\d{8}", [9, 12], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[35-7]"]]], 0, 0, 0, 0, 0, 0, [0, ["(?:[356]|774[45])\\d{8}|7[6-8]\\d{7}"]]], "878": ["878", 0, "10\\d{10}", [12], [["(\\d{2})(\\d{5})(\\d{5})", "$1 $2 $3", ["1"]]], 0, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0, 0, 0, 0, ["10\\d{10}"]]], "881": ["881", 0, "6\\d{9}|[0-36-9]\\d{8}", [9, 10], [["(\\d)(\\d{3})(\\d{5})", "$1 $2 $3", ["[0-37-9]"]], ["(\\d)(\\d{3})(\\d{5,6})", "$1 $2 $3", ["6"]]], 0, 0, 0, 0, 0, 0, [0, ["6\\d{9}|[0-36-9]\\d{8}"]]], "882": ["882", 0, "[13]\\d{6}(?:\\d{2,5})?|[19]\\d{7}|(?:[25]\\d\\d|4)\\d{7}(?:\\d{2})?", [7, 8, 9, 10, 11, 12], [["(\\d{2})(\\d{5})", "$1 $2", ["16|342"]], ["(\\d{2})(\\d{6})", "$1 $2", ["49"]], ["(\\d{2})(\\d{2})(\\d{4})", "$1 $2 $3", ["1[36]|9"]], ["(\\d{2})(\\d{4})(\\d{3})", "$1 $2 $3", ["3[23]"]], ["(\\d{2})(\\d{3,4})(\\d{4})", "$1 $2 $3", ["16"]], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["10|23|3(?:[15]|4[57])|4|51"]], ["(\\d{3})(\\d{4})(\\d{4})", "$1 $2 $3", ["34"]], ["(\\d{2})(\\d{4,5})(\\d{5})", "$1 $2 $3", ["[1-35]"]]], 0, 0, 0, 0, 0, 0, [0, ["342\\d{4}|(?:337|49)\\d{6}|(?:3(?:2|47|7\\d{3})|50\\d{3})\\d{7}", [7, 8, 9, 10, 12]], 0, 0, 0, 0, 0, 0, ["1(?:3(?:0[0347]|[13][0139]|2[035]|4[013568]|6[0459]|7[06]|8[15-8]|9[0689])\\d{4}|6\\d{5,10})|(?:345\\d|9[89])\\d{6}|(?:10|2(?:3|85\\d)|3(?:[15]|[69]\\d\\d)|4[15-8]|51)\\d{8}"]]], "883": ["883", 0, "(?:[1-4]\\d|51)\\d{6,10}", [8, 9, 10, 11, 12], [["(\\d{3})(\\d{3})(\\d{2,8})", "$1 $2 $3", ["[14]|2[24-689]|3[02-689]|51[24-9]"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["510"]], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["21"]], ["(\\d{4})(\\d{4})(\\d{4})", "$1 $2 $3", ["51[13]"]], ["(\\d{3})(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["[235]"]]], 0, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0, 0, 0, 0, ["(?:2(?:00\\d\\d|10)|(?:370[1-9]|51\\d0)\\d)\\d{7}|51(?:00\\d{5}|[24-9]0\\d{4,7})|(?:1[013-79]|2[24-689]|3[02-689]|4[0-4])0\\d{5,9}"]]], "888": ["888", 0, "\\d{11}", [11], [["(\\d{3})(\\d{3})(\\d{5})", "$1 $2 $3"]], 0, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0, 0, ["\\d{11}"]]], "979": ["979", 0, "[1359]\\d{8}", [9], [["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["[1359]"]]], 0, 0, 0, 0, 0, 0, [0, 0, 0, ["[1359]\\d{8}"]]] } };
 var propTypes = { exports: {} };
 var ReactPropTypesSecret$1 = "SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED";
 var ReactPropTypesSecret_1 = ReactPropTypesSecret$1;
@@ -9611,12 +9495,11 @@ function edit(value2, caret, operation) {
   };
 }
 function parse$1(text2, caret_position, parse_character) {
-  var context = {};
   var value2 = "";
   var focused_input_character_index = 0;
   var index = 0;
   while (index < text2.length) {
-    var character = parse_character(text2[index], value2, context);
+    var character = parse_character(text2[index], value2);
     if (character !== void 0) {
       value2 += character;
       if (caret_position !== void 0) {
@@ -9637,69 +9520,6 @@ function parse$1(text2, caret_position, parse_character) {
     caret: focused_input_character_index
   };
   return result2;
-}
-function _createForOfIteratorHelperLoose$d(o, allowArrayLike) {
-  var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
-  if (it)
-    return (it = it.call(o)).next.bind(it);
-  if (Array.isArray(o) || (it = _unsupportedIterableToArray$g(o)) || allowArrayLike && o && typeof o.length === "number") {
-    if (it)
-      o = it;
-    var i = 0;
-    return function() {
-      if (i >= o.length)
-        return { done: true };
-      return { done: false, value: o[i++] };
-    };
-  }
-  throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-function _unsupportedIterableToArray$g(o, minLen) {
-  if (!o)
-    return;
-  if (typeof o === "string")
-    return _arrayLikeToArray$g(o, minLen);
-  var n = Object.prototype.toString.call(o).slice(8, -1);
-  if (n === "Object" && o.constructor)
-    n = o.constructor.name;
-  if (n === "Map" || n === "Set")
-    return Array.from(o);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
-    return _arrayLikeToArray$g(o, minLen);
-}
-function _arrayLikeToArray$g(arr, len) {
-  if (len == null || len > arr.length)
-    len = arr.length;
-  for (var i = 0, arr2 = new Array(len); i < len; i++) {
-    arr2[i] = arr[i];
-  }
-  return arr2;
-}
-function count_occurences(symbol, string) {
-  var count = 0;
-  for (var _iterator = _createForOfIteratorHelperLoose$d(string.split("")), _step; !(_step = _iterator()).done; ) {
-    var character = _step.value;
-    if (character === symbol) {
-      count++;
-    }
-  }
-  return count;
-}
-function closeBraces(retained_template, template) {
-  var placeholder2 = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : "x";
-  var empty_placeholder = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : " ";
-  var cut_before = retained_template.length;
-  var opening_braces = count_occurences("(", retained_template);
-  var closing_braces = count_occurences(")", retained_template);
-  var dangling_braces = opening_braces - closing_braces;
-  while (dangling_braces > 0 && cut_before < template.length) {
-    retained_template += template[cut_before].replace(placeholder2, empty_placeholder);
-    if (template[cut_before] === ")") {
-      dangling_braces--;
-    }
-    cut_before++;
-  }
-  return retained_template;
 }
 function _createForOfIteratorHelperLoose$c(o, allowArrayLike) {
   var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
@@ -9738,6 +9558,69 @@ function _arrayLikeToArray$f(arr, len) {
   }
   return arr2;
 }
+function count_occurences(symbol, string) {
+  var count = 0;
+  for (var _iterator = _createForOfIteratorHelperLoose$c(string.split("")), _step; !(_step = _iterator()).done; ) {
+    var character = _step.value;
+    if (character === symbol) {
+      count++;
+    }
+  }
+  return count;
+}
+function closeBraces(retained_template, template) {
+  var placeholder2 = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : "x";
+  var empty_placeholder = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : " ";
+  var cut_before = retained_template.length;
+  var opening_braces = count_occurences("(", retained_template);
+  var closing_braces = count_occurences(")", retained_template);
+  var dangling_braces = opening_braces - closing_braces;
+  while (dangling_braces > 0 && cut_before < template.length) {
+    retained_template += template[cut_before].replace(placeholder2, empty_placeholder);
+    if (template[cut_before] === ")") {
+      dangling_braces--;
+    }
+    cut_before++;
+  }
+  return retained_template;
+}
+function _createForOfIteratorHelperLoose$b(o, allowArrayLike) {
+  var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
+  if (it)
+    return (it = it.call(o)).next.bind(it);
+  if (Array.isArray(o) || (it = _unsupportedIterableToArray$e(o)) || allowArrayLike && o && typeof o.length === "number") {
+    if (it)
+      o = it;
+    var i = 0;
+    return function() {
+      if (i >= o.length)
+        return { done: true };
+      return { done: false, value: o[i++] };
+    };
+  }
+  throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+function _unsupportedIterableToArray$e(o, minLen) {
+  if (!o)
+    return;
+  if (typeof o === "string")
+    return _arrayLikeToArray$e(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor)
+    n = o.constructor.name;
+  if (n === "Map" || n === "Set")
+    return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
+    return _arrayLikeToArray$e(o, minLen);
+}
+function _arrayLikeToArray$e(arr, len) {
+  if (len == null || len > arr.length)
+    len = arr.length;
+  for (var i = 0, arr2 = new Array(len); i < len; i++) {
+    arr2[i] = arr[i];
+  }
+  return arr2;
+}
 function template_formatter(template) {
   var placeholder2 = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : "x";
   var should_close_braces = arguments.length > 2 ? arguments[2] : void 0;
@@ -9758,7 +9641,7 @@ function template_formatter(template) {
     }
     var value_character_index = 0;
     var filled_in_template = "";
-    for (var _iterator = _createForOfIteratorHelperLoose$c(template.split("")), _step; !(_step = _iterator()).done; ) {
+    for (var _iterator = _createForOfIteratorHelperLoose$b(template.split("")), _step; !(_step = _iterator()).done; ) {
       var character = _step.value;
       if (character !== placeholder2) {
         filled_in_template += character;
@@ -9842,7 +9725,7 @@ function getOperation(event) {
       return "Delete";
   }
 }
-function getCaretPosition$1(element) {
+function getCaretPosition(element) {
   return element.selectionStart;
 }
 function setCaretPosition(element, caret_position) {
@@ -9890,7 +9773,7 @@ function eraseSelection(input2, selection) {
   setCaretPosition(input2, selection.start);
 }
 function formatInputText(input2, _parse, _format, operation, on_change) {
-  var _parse2 = parse$1(input2.value, getCaretPosition$1(input2), _parse), value2 = _parse2.value, caret = _parse2.caret;
+  var _parse2 = parse$1(input2.value, getCaretPosition(input2), _parse), value2 = _parse2.value, caret = _parse2.caret;
   if (operation) {
     var newValueAndCaret = edit(value2, caret, operation);
     value2 = newValueAndCaret.value;
@@ -9970,9 +9853,6 @@ function Input(_ref, ref) {
     if (onKeyDown$1) {
       onKeyDown$1(event);
     }
-    if (event.defaultPrevented) {
-      return;
-    }
     return onKeyDown(event, internalRef.current, parse2, format2, onChange$1);
   }, [internalRef, parse2, format2, onChange$1, onKeyDown$1]);
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputComponent, _extends$8({}, rest, {
@@ -10002,13 +9882,13 @@ var Input$1 = Input;
 function isEmptyValue(value2) {
   return value2 === void 0 || value2 === null;
 }
-function _typeof$3(obj) {
+function _typeof$2(obj) {
   "@babel/helpers - typeof";
-  return _typeof$3 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj2) {
+  return _typeof$2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj2) {
     return typeof obj2;
   } : function(obj2) {
     return obj2 && "function" == typeof Symbol && obj2.constructor === Symbol && obj2 !== Symbol.prototype ? "symbol" : typeof obj2;
-  }, _typeof$3(obj);
+  }, _typeof$2(obj);
 }
 function _defineProperties$9(target, props) {
   for (var i = 0; i < props.length; i++) {
@@ -10042,7 +9922,7 @@ function _inherits$1(subClass, superClass) {
   if (superClass)
     _setPrototypeOf$1(subClass, superClass);
 }
-function _createSuper(Derived) {
+function _createSuper$1(Derived) {
   var hasNativeReflectConstruct = _isNativeReflectConstruct$1();
   return function _createSuperInternal() {
     var Super = _getPrototypeOf$1(Derived), result2;
@@ -10056,7 +9936,7 @@ function _createSuper(Derived) {
   };
 }
 function _possibleConstructorReturn$1(self, call2) {
-  if (call2 && (_typeof$3(call2) === "object" || typeof call2 === "function")) {
+  if (call2 && (_typeof$2(call2) === "object" || typeof call2 === "function")) {
     return call2;
   } else if (call2 !== void 0) {
     throw new TypeError("Derived constructors may only return object or undefined");
@@ -10139,7 +10019,7 @@ function _getPrototypeOf$1(o) {
 }
 var ParseError = /* @__PURE__ */ function(_Error) {
   _inherits$1(ParseError2, _Error);
-  var _super = _createSuper(ParseError2);
+  var _super = _createSuper$1(ParseError2);
   function ParseError2(code) {
     var _this;
     _classCallCheck$9(this, ParseError2);
@@ -10188,13 +10068,13 @@ var objectConstructor = {}.constructor;
 function isObject(object) {
   return object !== void 0 && object !== null && object.constructor === objectConstructor;
 }
-function _typeof$2(obj) {
+function _typeof$1(obj) {
   "@babel/helpers - typeof";
-  return _typeof$2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj2) {
+  return _typeof$1 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj2) {
     return typeof obj2;
   } : function(obj2) {
     return obj2 && "function" == typeof Symbol && obj2.constructor === Symbol && obj2 !== Symbol.prototype ? "symbol" : typeof obj2;
-  }, _typeof$2(obj);
+  }, _typeof$1(obj);
 }
 function _classCallCheck$8(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -10665,7 +10545,7 @@ function validateMetadata(metadata2) {
   }
 }
 var typeOf = function typeOf2(_) {
-  return _typeof$2(_);
+  return _typeof$1(_);
 };
 function getCountryCallingCode(country, metadata2) {
   metadata2 = new Metadata(metadata2);
@@ -10754,11 +10634,11 @@ function extractExtension(number) {
     i++;
   }
 }
-function _createForOfIteratorHelperLoose$b(o, allowArrayLike) {
+function _createForOfIteratorHelperLoose$a(o, allowArrayLike) {
   var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
   if (it)
     return (it = it.call(o)).next.bind(it);
-  if (Array.isArray(o) || (it = _unsupportedIterableToArray$e(o)) || allowArrayLike && o && typeof o.length === "number") {
+  if (Array.isArray(o) || (it = _unsupportedIterableToArray$d(o)) || allowArrayLike && o && typeof o.length === "number") {
     if (it)
       o = it;
     var i = 0;
@@ -10770,20 +10650,20 @@ function _createForOfIteratorHelperLoose$b(o, allowArrayLike) {
   }
   throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$e(o, minLen) {
+function _unsupportedIterableToArray$d(o, minLen) {
   if (!o)
     return;
   if (typeof o === "string")
-    return _arrayLikeToArray$e(o, minLen);
+    return _arrayLikeToArray$d(o, minLen);
   var n = Object.prototype.toString.call(o).slice(8, -1);
   if (n === "Object" && o.constructor)
     n = o.constructor.name;
   if (n === "Map" || n === "Set")
     return Array.from(o);
   if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
-    return _arrayLikeToArray$e(o, minLen);
+    return _arrayLikeToArray$d(o, minLen);
 }
-function _arrayLikeToArray$e(arr, len) {
+function _arrayLikeToArray$d(arr, len) {
   if (len == null || len > arr.length)
     len = arr.length;
   for (var i = 0, arr2 = new Array(len); i < len; i++) {
@@ -10838,7 +10718,7 @@ function parseDigit(character) {
 }
 function parseDigits(string) {
   var result2 = "";
-  for (var _iterator = _createForOfIteratorHelperLoose$b(string.split("")), _step; !(_step = _iterator()).done; ) {
+  for (var _iterator = _createForOfIteratorHelperLoose$a(string.split("")), _step; !(_step = _iterator()).done; ) {
     var character = _step.value;
     var digit = parseDigit(character);
     if (digit) {
@@ -10846,63 +10726,6 @@ function parseDigits(string) {
     }
   }
   return result2;
-}
-function _createForOfIteratorHelperLoose$a(o, allowArrayLike) {
-  var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
-  if (it)
-    return (it = it.call(o)).next.bind(it);
-  if (Array.isArray(o) || (it = _unsupportedIterableToArray$d(o)) || allowArrayLike && o && typeof o.length === "number") {
-    if (it)
-      o = it;
-    var i = 0;
-    return function() {
-      if (i >= o.length)
-        return { done: true };
-      return { done: false, value: o[i++] };
-    };
-  }
-  throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-function _unsupportedIterableToArray$d(o, minLen) {
-  if (!o)
-    return;
-  if (typeof o === "string")
-    return _arrayLikeToArray$d(o, minLen);
-  var n = Object.prototype.toString.call(o).slice(8, -1);
-  if (n === "Object" && o.constructor)
-    n = o.constructor.name;
-  if (n === "Map" || n === "Set")
-    return Array.from(o);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
-    return _arrayLikeToArray$d(o, minLen);
-}
-function _arrayLikeToArray$d(arr, len) {
-  if (len == null || len > arr.length)
-    len = arr.length;
-  for (var i = 0, arr2 = new Array(len); i < len; i++) {
-    arr2[i] = arr[i];
-  }
-  return arr2;
-}
-function parseIncompletePhoneNumber(string) {
-  var result2 = "";
-  for (var _iterator = _createForOfIteratorHelperLoose$a(string.split("")), _step; !(_step = _iterator()).done; ) {
-    var character = _step.value;
-    result2 += parsePhoneNumberCharacter(character, result2) || "";
-  }
-  return result2;
-}
-function parsePhoneNumberCharacter(character, prevParsedCharacters, emitEvent) {
-  if (character === "+") {
-    if (prevParsedCharacters) {
-      if (typeof emitEvent === "function") {
-        emitEvent("end");
-      }
-      return;
-    }
-    return "+";
-  }
-  return parseDigit(character);
 }
 function _createForOfIteratorHelperLoose$9(o, allowArrayLike) {
   var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
@@ -10941,9 +10764,63 @@ function _arrayLikeToArray$c(arr, len) {
   }
   return arr2;
 }
+function parseIncompletePhoneNumber(string) {
+  var result2 = "";
+  for (var _iterator = _createForOfIteratorHelperLoose$9(string.split("")), _step; !(_step = _iterator()).done; ) {
+    var character = _step.value;
+    result2 += parsePhoneNumberCharacter(character, result2) || "";
+  }
+  return result2;
+}
+function parsePhoneNumberCharacter(character, prevParsedCharacters) {
+  if (character === "+") {
+    if (prevParsedCharacters) {
+      return;
+    }
+    return "+";
+  }
+  return parseDigit(character);
+}
+function _createForOfIteratorHelperLoose$8(o, allowArrayLike) {
+  var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
+  if (it)
+    return (it = it.call(o)).next.bind(it);
+  if (Array.isArray(o) || (it = _unsupportedIterableToArray$b(o)) || allowArrayLike && o && typeof o.length === "number") {
+    if (it)
+      o = it;
+    var i = 0;
+    return function() {
+      if (i >= o.length)
+        return { done: true };
+      return { done: false, value: o[i++] };
+    };
+  }
+  throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+function _unsupportedIterableToArray$b(o, minLen) {
+  if (!o)
+    return;
+  if (typeof o === "string")
+    return _arrayLikeToArray$b(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor)
+    n = o.constructor.name;
+  if (n === "Map" || n === "Set")
+    return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
+    return _arrayLikeToArray$b(o, minLen);
+}
+function _arrayLikeToArray$b(arr, len) {
+  if (len == null || len > arr.length)
+    len = arr.length;
+  for (var i = 0, arr2 = new Array(len); i < len; i++) {
+    arr2[i] = arr[i];
+  }
+  return arr2;
+}
 function mergeArrays(a, b) {
   var merged = a.slice();
-  for (var _iterator = _createForOfIteratorHelperLoose$9(b), _step; !(_step = _iterator()).done; ) {
+  for (var _iterator = _createForOfIteratorHelperLoose$8(b), _step; !(_step = _iterator()).done; ) {
     var element = _step.value;
     if (a.indexOf(element) < 0) {
       merged.push(element);
@@ -11034,11 +10911,11 @@ function matchesEntirely(text2, regular_expression) {
   text2 = text2 || "";
   return new RegExp("^(?:" + regular_expression + ")$").test(text2);
 }
-function _createForOfIteratorHelperLoose$8(o, allowArrayLike) {
+function _createForOfIteratorHelperLoose$7(o, allowArrayLike) {
   var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
   if (it)
     return (it = it.call(o)).next.bind(it);
-  if (Array.isArray(o) || (it = _unsupportedIterableToArray$b(o)) || allowArrayLike && o && typeof o.length === "number") {
+  if (Array.isArray(o) || (it = _unsupportedIterableToArray$a(o)) || allowArrayLike && o && typeof o.length === "number") {
     if (it)
       o = it;
     var i = 0;
@@ -11050,20 +10927,20 @@ function _createForOfIteratorHelperLoose$8(o, allowArrayLike) {
   }
   throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$b(o, minLen) {
+function _unsupportedIterableToArray$a(o, minLen) {
   if (!o)
     return;
   if (typeof o === "string")
-    return _arrayLikeToArray$b(o, minLen);
+    return _arrayLikeToArray$a(o, minLen);
   var n = Object.prototype.toString.call(o).slice(8, -1);
   if (n === "Object" && o.constructor)
     n = o.constructor.name;
   if (n === "Map" || n === "Set")
     return Array.from(o);
   if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
-    return _arrayLikeToArray$b(o, minLen);
+    return _arrayLikeToArray$a(o, minLen);
 }
-function _arrayLikeToArray$b(arr, len) {
+function _arrayLikeToArray$a(arr, len) {
   if (len == null || len > arr.length)
     len = arr.length;
   for (var i = 0, arr2 = new Array(len); i < len; i++) {
@@ -11095,7 +10972,7 @@ function getNumberType(input2, options, metadata2) {
     }
     return "FIXED_LINE";
   }
-  for (var _iterator = _createForOfIteratorHelperLoose$8(NON_FIXED_LINE_PHONE_TYPES), _step; !(_step = _iterator()).done; ) {
+  for (var _iterator = _createForOfIteratorHelperLoose$7(NON_FIXED_LINE_PHONE_TYPES), _step; !(_step = _iterator()).done; ) {
     var type = _step.value;
     if (isNumberTypeEqualTo(nationalNumber, type, metadata2)) {
       return type;
@@ -11175,11 +11052,11 @@ function formatRFC3966(_ref) {
   }
   return "tel:".concat(number).concat(ext ? ";ext=" + ext : "");
 }
-function _createForOfIteratorHelperLoose$7(o, allowArrayLike) {
+function _createForOfIteratorHelperLoose$6(o, allowArrayLike) {
   var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
   if (it)
     return (it = it.call(o)).next.bind(it);
-  if (Array.isArray(o) || (it = _unsupportedIterableToArray$a(o)) || allowArrayLike && o && typeof o.length === "number") {
+  if (Array.isArray(o) || (it = _unsupportedIterableToArray$9(o)) || allowArrayLike && o && typeof o.length === "number") {
     if (it)
       o = it;
     var i = 0;
@@ -11191,20 +11068,20 @@ function _createForOfIteratorHelperLoose$7(o, allowArrayLike) {
   }
   throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$a(o, minLen) {
+function _unsupportedIterableToArray$9(o, minLen) {
   if (!o)
     return;
   if (typeof o === "string")
-    return _arrayLikeToArray$a(o, minLen);
+    return _arrayLikeToArray$9(o, minLen);
   var n = Object.prototype.toString.call(o).slice(8, -1);
   if (n === "Object" && o.constructor)
     n = o.constructor.name;
   if (n === "Map" || n === "Set")
     return Array.from(o);
   if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
-    return _arrayLikeToArray$a(o, minLen);
+    return _arrayLikeToArray$9(o, minLen);
 }
-function _arrayLikeToArray$a(arr, len) {
+function _arrayLikeToArray$9(arr, len) {
   if (len == null || len > arr.length)
     len = arr.length;
   for (var i = 0, arr2 = new Array(len); i < len; i++) {
@@ -11309,7 +11186,7 @@ function formatNationalNumber$1(number, carrierCode, formatAs, metadata2, option
   });
 }
 function chooseFormatForNumber(availableFormats, nationalNnumber) {
-  for (var _iterator = _createForOfIteratorHelperLoose$7(availableFormats), _step; !(_step = _iterator()).done; ) {
+  for (var _iterator = _createForOfIteratorHelperLoose$6(availableFormats), _step; !(_step = _iterator()).done; ) {
     var format2 = _step.value;
     if (format2.leadingDigitsPatterns().length > 0) {
       var lastLeadingDigitsPattern = format2.leadingDigitsPatterns()[format2.leadingDigitsPatterns().length - 1];
@@ -11665,11 +11542,11 @@ function extractCountryCallingCode(number, country, callingCode, metadata2) {
   }
   return {};
 }
-function _createForOfIteratorHelperLoose$6(o, allowArrayLike) {
+function _createForOfIteratorHelperLoose$5(o, allowArrayLike) {
   var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
   if (it)
     return (it = it.call(o)).next.bind(it);
-  if (Array.isArray(o) || (it = _unsupportedIterableToArray$9(o)) || allowArrayLike && o && typeof o.length === "number") {
+  if (Array.isArray(o) || (it = _unsupportedIterableToArray$8(o)) || allowArrayLike && o && typeof o.length === "number") {
     if (it)
       o = it;
     var i = 0;
@@ -11681,20 +11558,20 @@ function _createForOfIteratorHelperLoose$6(o, allowArrayLike) {
   }
   throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$9(o, minLen) {
+function _unsupportedIterableToArray$8(o, minLen) {
   if (!o)
     return;
   if (typeof o === "string")
-    return _arrayLikeToArray$9(o, minLen);
+    return _arrayLikeToArray$8(o, minLen);
   var n = Object.prototype.toString.call(o).slice(8, -1);
   if (n === "Object" && o.constructor)
     n = o.constructor.name;
   if (n === "Map" || n === "Set")
     return Array.from(o);
   if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
-    return _arrayLikeToArray$9(o, minLen);
+    return _arrayLikeToArray$8(o, minLen);
 }
-function _arrayLikeToArray$9(arr, len) {
+function _arrayLikeToArray$8(arr, len) {
   if (len == null || len > arr.length)
     len = arr.length;
   for (var i = 0, arr2 = new Array(len); i < len; i++) {
@@ -11703,11 +11580,10 @@ function _arrayLikeToArray$9(arr, len) {
   return arr2;
 }
 function getCountryByNationalNumber(nationalPhoneNumber, _ref) {
-  var countries = _ref.countries;
-  _ref.defaultCountry;
-  var metadata2 = _ref.metadata;
+  var countries = _ref.countries, defaultCountry = _ref.defaultCountry, metadata2 = _ref.metadata;
   metadata2 = new Metadata(metadata2);
-  for (var _iterator = _createForOfIteratorHelperLoose$6(countries), _step; !(_step = _iterator()).done; ) {
+  var matchingCountries = [];
+  for (var _iterator = _createForOfIteratorHelperLoose$5(countries), _step; !(_step = _iterator()).done; ) {
     var country = _step.value;
     metadata2.country(country);
     if (metadata2.leadingDigits()) {
@@ -11718,8 +11594,18 @@ function getCountryByNationalNumber(nationalPhoneNumber, _ref) {
       phone: nationalPhoneNumber,
       country
     }, void 0, metadata2.metadata)) {
-      return country;
+      if (defaultCountry) {
+        if (country === defaultCountry) {
+          return country;
+        }
+        matchingCountries.push(country);
+      } else {
+        return country;
+      }
     }
+  }
+  if (matchingCountries.length > 0) {
+    return matchingCountries[0];
   }
 }
 var USE_NON_GEOGRAPHIC_COUNTRY_CODE = false;
@@ -12042,25 +11928,25 @@ function _defineProperty$4(obj, key, value2) {
   return obj;
 }
 function _slicedToArray$2(arr, i) {
-  return _arrayWithHoles$2(arr) || _iterableToArrayLimit$2(arr, i) || _unsupportedIterableToArray$8(arr, i) || _nonIterableRest$2();
+  return _arrayWithHoles$2(arr) || _iterableToArrayLimit$2(arr, i) || _unsupportedIterableToArray$7(arr, i) || _nonIterableRest$2();
 }
 function _nonIterableRest$2() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$8(o, minLen) {
+function _unsupportedIterableToArray$7(o, minLen) {
   if (!o)
     return;
   if (typeof o === "string")
-    return _arrayLikeToArray$8(o, minLen);
+    return _arrayLikeToArray$7(o, minLen);
   var n = Object.prototype.toString.call(o).slice(8, -1);
   if (n === "Object" && o.constructor)
     n = o.constructor.name;
   if (n === "Map" || n === "Set")
     return Array.from(o);
   if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
-    return _arrayLikeToArray$8(o, minLen);
+    return _arrayLikeToArray$7(o, minLen);
 }
-function _arrayLikeToArray$8(arr, len) {
+function _arrayLikeToArray$7(arr, len) {
   if (len == null || len > arr.length)
     len = arr.length;
   for (var i = 0, arr2 = new Array(len); i < len; i++) {
@@ -12337,11 +12223,11 @@ var AsYouTypeState = /* @__PURE__ */ function() {
   }]);
   return AsYouTypeState2;
 }();
-function _createForOfIteratorHelperLoose$5(o, allowArrayLike) {
+function _createForOfIteratorHelperLoose$4(o, allowArrayLike) {
   var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
   if (it)
     return (it = it.call(o)).next.bind(it);
-  if (Array.isArray(o) || (it = _unsupportedIterableToArray$7(o)) || allowArrayLike && o && typeof o.length === "number") {
+  if (Array.isArray(o) || (it = _unsupportedIterableToArray$6(o)) || allowArrayLike && o && typeof o.length === "number") {
     if (it)
       o = it;
     var i = 0;
@@ -12353,20 +12239,20 @@ function _createForOfIteratorHelperLoose$5(o, allowArrayLike) {
   }
   throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$7(o, minLen) {
+function _unsupportedIterableToArray$6(o, minLen) {
   if (!o)
     return;
   if (typeof o === "string")
-    return _arrayLikeToArray$7(o, minLen);
+    return _arrayLikeToArray$6(o, minLen);
   var n = Object.prototype.toString.call(o).slice(8, -1);
   if (n === "Object" && o.constructor)
     n = o.constructor.name;
   if (n === "Map" || n === "Set")
     return Array.from(o);
   if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
-    return _arrayLikeToArray$7(o, minLen);
+    return _arrayLikeToArray$6(o, minLen);
 }
-function _arrayLikeToArray$7(arr, len) {
+function _arrayLikeToArray$6(arr, len) {
   if (len == null || len > arr.length)
     len = arr.length;
   for (var i = 0, arr2 = new Array(len); i < len; i++) {
@@ -12418,7 +12304,7 @@ function stripNonPairedParens(string) {
   return cleared_string;
 }
 function populateTemplateWithDigits(template, position, digits) {
-  for (var _iterator2 = _createForOfIteratorHelperLoose$5(digits.split("")), _step2; !(_step2 = _iterator2()).done; ) {
+  for (var _iterator2 = _createForOfIteratorHelperLoose$4(digits.split("")), _step2; !(_step2 = _iterator2()).done; ) {
     var digit = _step2.value;
     if (template.slice(position + 1).search(DIGIT_PLACEHOLDER_MATCHER) < 0) {
       return;
@@ -12677,11 +12563,11 @@ function expandSingleElementArray(array) {
   }
   return array;
 }
-function _createForOfIteratorHelperLoose$4(o, allowArrayLike) {
+function _createForOfIteratorHelperLoose$3(o, allowArrayLike) {
   var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
   if (it)
     return (it = it.call(o)).next.bind(it);
-  if (Array.isArray(o) || (it = _unsupportedIterableToArray$6(o)) || allowArrayLike && o && typeof o.length === "number") {
+  if (Array.isArray(o) || (it = _unsupportedIterableToArray$5(o)) || allowArrayLike && o && typeof o.length === "number") {
     if (it)
       o = it;
     var i = 0;
@@ -12693,20 +12579,20 @@ function _createForOfIteratorHelperLoose$4(o, allowArrayLike) {
   }
   throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$6(o, minLen) {
+function _unsupportedIterableToArray$5(o, minLen) {
   if (!o)
     return;
   if (typeof o === "string")
-    return _arrayLikeToArray$6(o, minLen);
+    return _arrayLikeToArray$5(o, minLen);
   var n = Object.prototype.toString.call(o).slice(8, -1);
   if (n === "Object" && o.constructor)
     n = o.constructor.name;
   if (n === "Map" || n === "Set")
     return Array.from(o);
   if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
-    return _arrayLikeToArray$6(o, minLen);
+    return _arrayLikeToArray$5(o, minLen);
 }
-function _arrayLikeToArray$6(arr, len) {
+function _arrayLikeToArray$5(arr, len) {
   if (len == null || len > arr.length)
     len = arr.length;
   for (var i = 0, arr2 = new Array(len); i < len; i++) {
@@ -12840,7 +12726,7 @@ function _match(characters, tree, last) {
   switch (tree.op) {
     case "|":
       var partialMatch;
-      for (var _iterator = _createForOfIteratorHelperLoose$4(tree.args), _step; !(_step = _iterator()).done; ) {
+      for (var _iterator = _createForOfIteratorHelperLoose$3(tree.args), _step; !(_step = _iterator()).done; ) {
         var branch = _step.value;
         var _result = _match(characters, branch, last);
         if (_result) {
@@ -12867,7 +12753,7 @@ function _match(characters, tree, last) {
       }
       return;
     case "[]":
-      for (var _iterator2 = _createForOfIteratorHelperLoose$4(tree.args), _step2; !(_step2 = _iterator2()).done; ) {
+      for (var _iterator2 = _createForOfIteratorHelperLoose$3(tree.args), _step2; !(_step2 = _iterator2()).done; ) {
         var _char = _step2.value;
         if (characters[0] === _char) {
           if (characters.length === 1) {
@@ -12892,11 +12778,11 @@ function _match(characters, tree, last) {
       throw new Error("Unsupported instruction tree: ".concat(tree));
   }
 }
-function _createForOfIteratorHelperLoose$3(o, allowArrayLike) {
+function _createForOfIteratorHelperLoose$2(o, allowArrayLike) {
   var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
   if (it)
     return (it = it.call(o)).next.bind(it);
-  if (Array.isArray(o) || (it = _unsupportedIterableToArray$5(o)) || allowArrayLike && o && typeof o.length === "number") {
+  if (Array.isArray(o) || (it = _unsupportedIterableToArray$4(o)) || allowArrayLike && o && typeof o.length === "number") {
     if (it)
       o = it;
     var i = 0;
@@ -12908,20 +12794,20 @@ function _createForOfIteratorHelperLoose$3(o, allowArrayLike) {
   }
   throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$5(o, minLen) {
+function _unsupportedIterableToArray$4(o, minLen) {
   if (!o)
     return;
   if (typeof o === "string")
-    return _arrayLikeToArray$5(o, minLen);
+    return _arrayLikeToArray$4(o, minLen);
   var n = Object.prototype.toString.call(o).slice(8, -1);
   if (n === "Object" && o.constructor)
     n = o.constructor.name;
   if (n === "Map" || n === "Set")
     return Array.from(o);
   if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
-    return _arrayLikeToArray$5(o, minLen);
+    return _arrayLikeToArray$4(o, minLen);
 }
-function _arrayLikeToArray$5(arr, len) {
+function _arrayLikeToArray$4(arr, len) {
   if (len == null || len > arr.length)
     len = arr.length;
   for (var i = 0, arr2 = new Array(len); i < len; i++) {
@@ -13001,7 +12887,7 @@ var AsYouTypeFormatter = /* @__PURE__ */ function() {
     value: function format2(nextDigits, state) {
       var _this = this;
       if (canFormatCompleteNumber(state.nationalSignificantNumber, this.metadata)) {
-        for (var _iterator = _createForOfIteratorHelperLoose$3(this.matchingFormats), _step; !(_step = _iterator()).done; ) {
+        for (var _iterator = _createForOfIteratorHelperLoose$2(this.matchingFormats), _step; !(_step = _iterator()).done; ) {
           var format3 = _step.value;
           var formattedCompleteNumber = formatCompleteNumber(state, format3, {
             metadata: this.metadata,
@@ -13115,7 +13001,7 @@ var AsYouTypeFormatter = /* @__PURE__ */ function() {
         _this3.chosenFormat = format2;
         return "break";
       };
-      for (var _iterator2 = _createForOfIteratorHelperLoose$3(this.matchingFormats.slice()), _step2; !(_step2 = _iterator2()).done; ) {
+      for (var _iterator2 = _createForOfIteratorHelperLoose$2(this.matchingFormats.slice()), _step2; !(_step2 = _iterator2()).done; ) {
         var _ret = _loop();
         if (_ret === "break")
           break;
@@ -13267,25 +13153,25 @@ var AsYouTypeFormatter = /* @__PURE__ */ function() {
   return AsYouTypeFormatter2;
 }();
 function _slicedToArray$1(arr, i) {
-  return _arrayWithHoles$1(arr) || _iterableToArrayLimit$1(arr, i) || _unsupportedIterableToArray$4(arr, i) || _nonIterableRest$1();
+  return _arrayWithHoles$1(arr) || _iterableToArrayLimit$1(arr, i) || _unsupportedIterableToArray$3(arr, i) || _nonIterableRest$1();
 }
 function _nonIterableRest$1() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$4(o, minLen) {
+function _unsupportedIterableToArray$3(o, minLen) {
   if (!o)
     return;
   if (typeof o === "string")
-    return _arrayLikeToArray$4(o, minLen);
+    return _arrayLikeToArray$3(o, minLen);
   var n = Object.prototype.toString.call(o).slice(8, -1);
   if (n === "Object" && o.constructor)
     n = o.constructor.name;
   if (n === "Map" || n === "Set")
     return Array.from(o);
   if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
-    return _arrayLikeToArray$4(o, minLen);
+    return _arrayLikeToArray$3(o, minLen);
 }
-function _arrayLikeToArray$4(arr, len) {
+function _arrayLikeToArray$3(arr, len) {
   if (len == null || len > arr.length)
     len = arr.length;
   for (var i = 0, arr2 = new Array(len); i < len; i++) {
@@ -13600,25 +13486,25 @@ function extractFormattedDigitsAndPlus(text2) {
   return [formattedDigits, hasPlus];
 }
 function _slicedToArray(arr, i) {
-  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray$3(arr, i) || _nonIterableRest();
+  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray$2(arr, i) || _nonIterableRest();
 }
 function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$3(o, minLen) {
+function _unsupportedIterableToArray$2(o, minLen) {
   if (!o)
     return;
   if (typeof o === "string")
-    return _arrayLikeToArray$3(o, minLen);
+    return _arrayLikeToArray$2(o, minLen);
   var n = Object.prototype.toString.call(o).slice(8, -1);
   if (n === "Object" && o.constructor)
     n = o.constructor.name;
   if (n === "Map" || n === "Set")
     return Array.from(o);
   if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
-    return _arrayLikeToArray$3(o, minLen);
+    return _arrayLikeToArray$2(o, minLen);
 }
-function _arrayLikeToArray$3(arr, len) {
+function _arrayLikeToArray$2(arr, len) {
   if (len == null || len > arr.length)
     len = arr.length;
   for (var i = 0, arr2 = new Array(len); i < len; i++) {
@@ -13972,11 +13858,11 @@ function formatIncompletePhoneNumber(value2, optionsOrDefaultCountry, metadata2)
   }
   return new AsYouType(optionsOrDefaultCountry, metadata2).input(value2);
 }
-function getPrefixForFormattingValueAsPhoneNumber(_ref) {
-  var inputFormat = _ref.inputFormat, country = _ref.country, metadata2 = _ref.metadata;
-  return inputFormat === "NATIONAL_PART_OF_INTERNATIONAL" ? "+".concat(getCountryCallingCode(country, metadata2)) : "";
+function getInputValuePrefix(_ref) {
+  var country = _ref.country, international = _ref.international, withCountryCallingCode = _ref.withCountryCallingCode, metadata2 = _ref.metadata;
+  return country && international && !withCountryCallingCode ? "+".concat(getCountryCallingCode(country, metadata2)) : "";
 }
-function removePrefixFromFormattedPhoneNumber(value2, prefix) {
+function removeInputValuePrefix(value2, prefix) {
   if (prefix) {
     value2 = value2.slice(prefix.length);
     if (value2[0] === " ") {
@@ -13985,43 +13871,7 @@ function removePrefixFromFormattedPhoneNumber(value2, prefix) {
   }
   return value2;
 }
-function parsePhoneNumberCharacter_(character, prevParsedCharacters, context) {
-  if (context && context.ignoreRest) {
-    return;
-  }
-  var emitEvent = function emitEvent2(eventName) {
-    if (context) {
-      switch (eventName) {
-        case "end":
-          context.ignoreRest = true;
-          break;
-      }
-    }
-  };
-  return parsePhoneNumberCharacter(character, prevParsedCharacters, emitEvent);
-}
-function useInputKeyDownHandler(_ref) {
-  var onKeyDown2 = _ref.onKeyDown, inputFormat = _ref.inputFormat;
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function(event) {
-    if (event.keyCode === BACKSPACE_KEY_CODE && inputFormat === "INTERNATIONAL") {
-      if (event.target instanceof HTMLInputElement) {
-        if (getCaretPosition(event.target) === LEADING_PLUS.length) {
-          event.preventDefault();
-          return;
-        }
-      }
-    }
-    if (onKeyDown2) {
-      onKeyDown2(event);
-    }
-  }, [onKeyDown2, inputFormat]);
-}
-function getCaretPosition(element) {
-  return element.selectionStart;
-}
-var BACKSPACE_KEY_CODE = 8;
-var LEADING_PLUS = "+";
-var _excluded$7 = ["onKeyDown", "country", "inputFormat", "metadata", "international", "withCountryCallingCode"];
+var _excluded$7 = ["country", "international", "withCountryCallingCode", "metadata"];
 function _extends$7() {
   _extends$7 = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
@@ -14070,23 +13920,21 @@ function _objectWithoutPropertiesLoose$7(source, excluded) {
 }
 function createInput$1(defaultMetadata) {
   function InputSmart2(_ref, ref) {
-    var onKeyDown2 = _ref.onKeyDown, country = _ref.country, inputFormat = _ref.inputFormat, _ref$metadata = _ref.metadata, metadata2 = _ref$metadata === void 0 ? defaultMetadata : _ref$metadata;
-    _ref.international;
-    _ref.withCountryCallingCode;
-    var rest = _objectWithoutProperties$7(_ref, _excluded$7);
+    var country = _ref.country, international = _ref.international, withCountryCallingCode = _ref.withCountryCallingCode, _ref$metadata = _ref.metadata, metadata2 = _ref$metadata === void 0 ? defaultMetadata : _ref$metadata, rest = _objectWithoutProperties$7(_ref, _excluded$7);
     var format2 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function(value2) {
       var formatter = new AsYouType(country, metadata2);
-      var prefix = getPrefixForFormattingValueAsPhoneNumber({
-        inputFormat,
+      var prefix = getInputValuePrefix({
         country,
+        international,
+        withCountryCallingCode,
         metadata: metadata2
       });
       var text2 = formatter.input(prefix + value2);
       var template = formatter.getTemplate();
       if (prefix) {
-        text2 = removePrefixFromFormattedPhoneNumber(text2, prefix);
+        text2 = removeInputValuePrefix(text2, prefix);
         if (template) {
-          template = removePrefixFromFormattedPhoneNumber(template, prefix);
+          template = removeInputValuePrefix(template, prefix);
         }
       }
       return {
@@ -14094,30 +13942,25 @@ function createInput$1(defaultMetadata) {
         template
       };
     }, [country, metadata2]);
-    var _onKeyDown = useInputKeyDownHandler({
-      onKeyDown: onKeyDown2,
-      inputFormat
-    });
     return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Input$1, _extends$7({}, rest, {
       ref,
-      parse: parsePhoneNumberCharacter_,
-      format: format2,
-      onKeyDown: _onKeyDown
+      parse: parsePhoneNumberCharacter,
+      format: format2
     }));
   }
   InputSmart2 = /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef(InputSmart2);
   InputSmart2.propTypes = {
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-    onKeyDown: PropTypes.func,
     country: PropTypes.string,
-    inputFormat: PropTypes.oneOf(["INTERNATIONAL", "NATIONAL_PART_OF_INTERNATIONAL", "NATIONAL", "INTERNATIONAL_OR_NATIONAL"]).isRequired,
+    international: PropTypes.bool,
+    withCountryCallingCode: PropTypes.bool,
     metadata: PropTypes.object
   };
   return InputSmart2;
 }
 var InputSmart = createInput$1();
-var _excluded$6 = ["value", "onChange", "onKeyDown", "country", "inputFormat", "metadata", "inputComponent", "international", "withCountryCallingCode"];
+var _excluded$6 = ["value", "onChange", "country", "international", "withCountryCallingCode", "metadata", "inputComponent"];
 function _extends$6() {
   _extends$6 = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
@@ -14166,13 +14009,11 @@ function _objectWithoutPropertiesLoose$6(source, excluded) {
 }
 function createInput(defaultMetadata) {
   function InputBasic2(_ref, ref) {
-    var value2 = _ref.value, onChange2 = _ref.onChange, onKeyDown2 = _ref.onKeyDown, country = _ref.country, inputFormat = _ref.inputFormat, _ref$metadata = _ref.metadata, metadata2 = _ref$metadata === void 0 ? defaultMetadata : _ref$metadata, _ref$inputComponent = _ref.inputComponent, Input2 = _ref$inputComponent === void 0 ? "input" : _ref$inputComponent;
-    _ref.international;
-    _ref.withCountryCallingCode;
-    var rest = _objectWithoutProperties$6(_ref, _excluded$6);
-    var prefix = getPrefixForFormattingValueAsPhoneNumber({
-      inputFormat,
+    var value2 = _ref.value, onChange2 = _ref.onChange, country = _ref.country, international = _ref.international, withCountryCallingCode = _ref.withCountryCallingCode, _ref$metadata = _ref.metadata, metadata2 = _ref$metadata === void 0 ? defaultMetadata : _ref$metadata, _ref$inputComponent = _ref.inputComponent, Input2 = _ref$inputComponent === void 0 ? "input" : _ref$inputComponent, rest = _objectWithoutProperties$6(_ref, _excluded$6);
+    var prefix = getInputValuePrefix({
       country,
+      international,
+      withCountryCallingCode,
       metadata: metadata2
     });
     var _onChange = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function(event) {
@@ -14185,24 +14026,19 @@ function createInput(defaultMetadata) {
       }
       onChange2(newValue);
     }, [prefix, value2, onChange2, country, metadata2]);
-    var _onKeyDown = useInputKeyDownHandler({
-      onKeyDown: onKeyDown2,
-      inputFormat
-    });
     return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Input2, _extends$6({}, rest, {
       ref,
       value: format(prefix, value2, country, metadata2),
-      onChange: _onChange,
-      onKeyDown: _onKeyDown
+      onChange: _onChange
     }));
   }
   InputBasic2 = /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef(InputBasic2);
   InputBasic2.propTypes = {
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-    onKeyDown: PropTypes.func,
     country: PropTypes.string,
-    inputFormat: PropTypes.oneOf(["INTERNATIONAL", "NATIONAL_PART_OF_INTERNATIONAL", "NATIONAL", "INTERNATIONAL_OR_NATIONAL"]).isRequired,
+    international: PropTypes.bool,
+    withCountryCallingCode: PropTypes.bool,
     metadata: PropTypes.object,
     inputComponent: PropTypes.elementType
   };
@@ -14210,7 +14046,7 @@ function createInput(defaultMetadata) {
 }
 var InputBasic = createInput();
 function format(prefix, value2, country, metadata2) {
-  return removePrefixFromFormattedPhoneNumber(formatIncompletePhoneNumber(prefix + value2, country, metadata2), prefix);
+  return removeInputValuePrefix(formatIncompletePhoneNumber(prefix + value2, country, metadata2), prefix);
 }
 function getCountryFlag(country) {
   return getRegionalIndicatorSymbol(country[0]) + getRegionalIndicatorSymbol(country[1]);
@@ -14219,11 +14055,11 @@ function getRegionalIndicatorSymbol(letter) {
   return String.fromCodePoint(127462 - 65 + letter.toUpperCase().charCodeAt(0));
 }
 var _excluded$5 = ["value", "onChange", "options", "disabled", "readOnly"], _excluded2$1 = ["value", "options", "className", "iconComponent", "getIconAspectRatio", "arrowComponent", "unicodeFlags"];
-function _createForOfIteratorHelperLoose$2(o, allowArrayLike) {
+function _createForOfIteratorHelperLoose$1(o, allowArrayLike) {
   var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
   if (it)
     return (it = it.call(o)).next.bind(it);
-  if (Array.isArray(o) || (it = _unsupportedIterableToArray$2(o)) || allowArrayLike && o && typeof o.length === "number") {
+  if (Array.isArray(o) || (it = _unsupportedIterableToArray$1(o)) || allowArrayLike && o && typeof o.length === "number") {
     if (it)
       o = it;
     var i = 0;
@@ -14235,24 +14071,25 @@ function _createForOfIteratorHelperLoose$2(o, allowArrayLike) {
   }
   throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$2(o, minLen) {
+function _unsupportedIterableToArray$1(o, minLen) {
   if (!o)
     return;
   if (typeof o === "string")
-    return _arrayLikeToArray$2(o, minLen);
+    return _arrayLikeToArray$1(o, minLen);
   var n = Object.prototype.toString.call(o).slice(8, -1);
   if (n === "Object" && o.constructor)
     n = o.constructor.name;
   if (n === "Map" || n === "Set")
     return Array.from(o);
   if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
-    return _arrayLikeToArray$2(o, minLen);
+    return _arrayLikeToArray$1(o, minLen);
 }
-function _arrayLikeToArray$2(arr, len) {
+function _arrayLikeToArray$1(arr, len) {
   if (len == null || len > arr.length)
     len = arr.length;
-  for (var i = 0, arr2 = new Array(len); i < len; i++)
+  for (var i = 0, arr2 = new Array(len); i < len; i++) {
     arr2[i] = arr[i];
+  }
   return arr2;
 }
 function _extends$5() {
@@ -14354,14 +14191,14 @@ function CountrySelectWithIcon(_ref3) {
     value: value2,
     options,
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()("PhoneInputCountrySelect", className)
-  })), selectedOption && (unicodeFlags && value2 ? /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  })), unicodeFlags && value2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "PhoneInputCountryIconUnicode"
-  }, getCountryFlag(value2)) : /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon2, {
+  }, getCountryFlag(value2)), !(unicodeFlags && value2) && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon2, {
     "aria-hidden": true,
     country: value2,
-    label: selectedOption.label,
+    label: selectedOption && selectedOption.label,
     aspectRatio: unicodeFlags ? 1 : void 0
-  })), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Arrow, null));
+  }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Arrow, null));
 }
 CountrySelectWithIcon.propTypes = {
   iconComponent: PropTypes.elementType,
@@ -14374,20 +14211,12 @@ function DefaultArrowComponent() {
   });
 }
 function getSelectedOption(options, value2) {
-  for (var _iterator = _createForOfIteratorHelperLoose$2(options), _step; !(_step = _iterator()).done; ) {
+  for (var _iterator = _createForOfIteratorHelperLoose$1(options), _step; !(_step = _iterator()).done; ) {
     var option = _step.value;
-    if (!option.divider) {
-      if (isSameOptionValue(option.value, value2)) {
-        return option;
-      }
+    if (!option.divider && option.value === value2) {
+      return option;
     }
   }
-}
-function isSameOptionValue(value1, value2) {
-  if (value1 === void 0 || value1 === null) {
-    return value2 === void 0 || value2 === null;
-  }
-  return value1 === value2;
 }
 var _excluded$4 = ["country", "countryName", "flags", "flagUrl"];
 function _extends$4() {
@@ -14595,35 +14424,11 @@ function InternationalIcon1x1(_ref3) {
 InternationalIcon1x1.propTypes = {
   title: PropTypes.string.isRequired
 };
-function isE164Number(value2) {
-  if (value2.length < 2) {
-    return false;
-  }
-  if (value2[0] !== "+") {
-    return false;
-  }
-  var i = 1;
-  while (i < value2.length) {
-    var character = value2.charCodeAt(i);
-    if (character >= 48 && character <= 57)
-      ;
-    else {
-      return false;
-    }
-    i++;
-  }
-  return true;
-}
-function validateE164Number(value2) {
-  if (!isE164Number(value2)) {
-    console.error("[react-phone-number-input] Expected the initial `value` to be a E.164 phone number. Got", value2);
-  }
-}
-function _createForOfIteratorHelperLoose$1(o, allowArrayLike) {
+function _createForOfIteratorHelperLoose(o, allowArrayLike) {
   var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
   if (it)
     return (it = it.call(o)).next.bind(it);
-  if (Array.isArray(o) || (it = _unsupportedIterableToArray$1(o)) || allowArrayLike && o && typeof o.length === "number") {
+  if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
     if (it)
       o = it;
     var i = 0;
@@ -14635,24 +14440,25 @@ function _createForOfIteratorHelperLoose$1(o, allowArrayLike) {
   }
   throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$1(o, minLen) {
+function _unsupportedIterableToArray(o, minLen) {
   if (!o)
     return;
   if (typeof o === "string")
-    return _arrayLikeToArray$1(o, minLen);
+    return _arrayLikeToArray(o, minLen);
   var n = Object.prototype.toString.call(o).slice(8, -1);
   if (n === "Object" && o.constructor)
     n = o.constructor.name;
   if (n === "Map" || n === "Set")
     return Array.from(o);
   if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
-    return _arrayLikeToArray$1(o, minLen);
+    return _arrayLikeToArray(o, minLen);
 }
-function _arrayLikeToArray$1(arr, len) {
+function _arrayLikeToArray(arr, len) {
   if (len == null || len > arr.length)
     len = arr.length;
-  for (var i = 0, arr2 = new Array(len); i < len; i++)
+  for (var i = 0, arr2 = new Array(len); i < len; i++) {
     arr2[i] = arr[i];
+  }
   return arr2;
 }
 function sortCountryOptions(options, order) {
@@ -14662,7 +14468,7 @@ function sortCountryOptions(options, order) {
   var optionsOnTop = [];
   var optionsOnBottom = [];
   var appendTo = optionsOnTop;
-  var _loop = function _loop2() {
+  for (var _iterator = _createForOfIteratorHelperLoose(order), _step; !(_step = _iterator()).done; ) {
     var element = _step.value;
     if (element === "|") {
       appendTo.push({
@@ -14671,22 +14477,21 @@ function sortCountryOptions(options, order) {
     } else if (element === "..." || element === "\u2026") {
       appendTo = optionsOnBottom;
     } else {
-      var countryCode;
-      if (element === "\u{1F310}") {
-        countryCode = void 0;
-      } else {
-        countryCode = element;
-      }
-      var index = options.indexOf(options.filter(function(option2) {
-        return option2.value === countryCode;
-      })[0]);
-      var option = options[index];
-      options.splice(index, 1);
-      appendTo.push(option);
+      (function() {
+        var countryCode = void 0;
+        if (element === "\u{1F310}") {
+          countryCode = void 0;
+        } else {
+          countryCode = element;
+        }
+        var index = options.indexOf(options.filter(function(option2) {
+          return option2.value === countryCode;
+        })[0]);
+        var option = options[index];
+        options.splice(index, 1);
+        appendTo.push(option);
+      })();
     }
-  };
-  for (var _iterator = _createForOfIteratorHelperLoose$1(order), _step; !(_step = _iterator()).done; ) {
-    _loop();
   }
   return optionsOnTop.concat(options).concat(optionsOnBottom);
 }
@@ -14808,57 +14613,6 @@ createCountryIconComponent({
   flagComponent: FlagComponent,
   internationalIcon: InternationalIcon
 });
-function _createForOfIteratorHelperLoose(o, allowArrayLike) {
-  var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
-  if (it)
-    return (it = it.call(o)).next.bind(it);
-  if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
-    if (it)
-      o = it;
-    var i = 0;
-    return function() {
-      if (i >= o.length)
-        return { done: true };
-      return { done: false, value: o[i++] };
-    };
-  }
-  throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-function _unsupportedIterableToArray(o, minLen) {
-  if (!o)
-    return;
-  if (typeof o === "string")
-    return _arrayLikeToArray(o, minLen);
-  var n = Object.prototype.toString.call(o).slice(8, -1);
-  if (n === "Object" && o.constructor)
-    n = o.constructor.name;
-  if (n === "Map" || n === "Set")
-    return Array.from(o);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
-    return _arrayLikeToArray(o, minLen);
-}
-function _arrayLikeToArray(arr, len) {
-  if (len == null || len > arr.length)
-    len = arr.length;
-  for (var i = 0, arr2 = new Array(len); i < len; i++)
-    arr2[i] = arr[i];
-  return arr2;
-}
-function setRefsValue(refs, value2) {
-  for (var _iterator = _createForOfIteratorHelperLoose(refs), _step; !(_step = _iterator()).done; ) {
-    var ref = _step.value;
-    if (ref) {
-      setRefValue(ref, value2);
-    }
-  }
-}
-function setRefValue(ref, value2) {
-  if (typeof ref === "function") {
-    ref(value2);
-  } else {
-    ref.current = value2;
-  }
-}
 var metadata = PropTypes.shape({
   country_calling_codes: PropTypes.object.isRequired,
   countries: PropTypes.object.isRequired
@@ -14992,38 +14746,20 @@ function getMaxNumberLength(country, metadata2) {
   return metadata2.numberingPlan.possibleLengths()[metadata2.numberingPlan.possibleLengths().length - 1];
 }
 function getCountryForPartialE164Number(partialE164Number, _ref4) {
-  var country = _ref4.country, countries = _ref4.countries, defaultCountry = _ref4.defaultCountry, latestCountrySelectedByUser = _ref4.latestCountrySelectedByUser, required = _ref4.required, metadata2 = _ref4.metadata;
+  var country = _ref4.country, countries = _ref4.countries, required = _ref4.required, metadata2 = _ref4.metadata;
   if (partialE164Number === "+") {
     return country;
   }
   var derived_country = getCountryFromPossiblyIncompleteInternationalPhoneNumber(partialE164Number, metadata2);
-  if (derived_country) {
-    if (!countries || countries.indexOf(derived_country) >= 0) {
-      return derived_country;
-    } else {
-      return void 0;
-    }
-  } else if (country) {
-    if (couldNumberBelongToCountry(partialE164Number, country, metadata2)) {
-      if (latestCountrySelectedByUser && couldNumberBelongToCountry(partialE164Number, latestCountrySelectedByUser, metadata2)) {
-        return latestCountrySelectedByUser;
-      } else if (defaultCountry && couldNumberBelongToCountry(partialE164Number, defaultCountry, metadata2)) {
-        return defaultCountry;
-      } else {
-        if (!required) {
-          return void 0;
-        }
-      }
-    } else {
-      if (!required) {
-        return void 0;
-      }
-    }
+  if (derived_country && (!countries || countries.indexOf(derived_country) >= 0)) {
+    return derived_country;
+  } else if (country && !required && !couldNumberBelongToCountry(partialE164Number, country, metadata2)) {
+    return void 0;
   }
   return country;
 }
 function onPhoneDigitsChange(phoneDigits, _ref5) {
-  var prevPhoneDigits = _ref5.prevPhoneDigits, country = _ref5.country, defaultCountry = _ref5.defaultCountry, latestCountrySelectedByUser = _ref5.latestCountrySelectedByUser, countryRequired = _ref5.countryRequired, getAnyCountry = _ref5.getAnyCountry, countries = _ref5.countries, international = _ref5.international, limitMaxLength = _ref5.limitMaxLength, countryCallingCodeEditable = _ref5.countryCallingCodeEditable, metadata2 = _ref5.metadata;
+  var prevPhoneDigits = _ref5.prevPhoneDigits, country = _ref5.country, defaultCountry = _ref5.defaultCountry, countryRequired = _ref5.countryRequired, getAnyCountry = _ref5.getAnyCountry, countries = _ref5.countries, international = _ref5.international, limitMaxLength = _ref5.limitMaxLength, countryCallingCodeEditable = _ref5.countryCallingCodeEditable, metadata2 = _ref5.metadata;
   if (international && countryCallingCodeEditable === false) {
     if (country) {
       var prefix = getInternationalPhoneNumberPrefix(country, metadata2);
@@ -15081,9 +14817,6 @@ function onPhoneDigitsChange(phoneDigits, _ref5) {
     country = getCountryForPartialE164Number(value2, {
       country,
       countries,
-      defaultCountry,
-      latestCountrySelectedByUser,
-      required: false,
       metadata: metadata2
     });
     if (international === false && country && phoneDigits && phoneDigits[0] === "+") {
@@ -15173,37 +14906,28 @@ function getInitialPhoneDigits(_ref6) {
   }
   return value2;
 }
-function _typeof$1(o) {
-  "@babel/helpers - typeof";
-  return _typeof$1 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o2) {
-    return typeof o2;
-  } : function(o2) {
-    return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
-  }, _typeof$1(o);
-}
-function ownKeys$1(e, r) {
-  var t = Object.keys(e);
+function ownKeys$1(object, enumerableOnly) {
+  var keys = Object.keys(object);
   if (Object.getOwnPropertySymbols) {
-    var o = Object.getOwnPropertySymbols(e);
-    r && (o = o.filter(function(r2) {
-      return Object.getOwnPropertyDescriptor(e, r2).enumerable;
-    })), t.push.apply(t, o);
+    var symbols = Object.getOwnPropertySymbols(object);
+    enumerableOnly && (symbols = symbols.filter(function(sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    })), keys.push.apply(keys, symbols);
   }
-  return t;
+  return keys;
 }
-function _objectSpread$1(e) {
-  for (var r = 1; r < arguments.length; r++) {
-    var t = null != arguments[r] ? arguments[r] : {};
-    r % 2 ? ownKeys$1(Object(t), true).forEach(function(r2) {
-      _defineProperty$1(e, r2, t[r2]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$1(Object(t)).forEach(function(r2) {
-      Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
+function _objectSpread$1(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = null != arguments[i] ? arguments[i] : {};
+    i % 2 ? ownKeys$1(Object(source), true).forEach(function(key) {
+      _defineProperty$1(target, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$1(Object(source)).forEach(function(key) {
+      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return e;
+  return target;
 }
 function _defineProperty$1(obj, key, value2) {
-  key = _toPropertyKey$1(key);
   if (key in obj) {
     Object.defineProperty(obj, key, { value: value2, enumerable: true, configurable: true, writable: true });
   } else {
@@ -15211,27 +14935,11 @@ function _defineProperty$1(obj, key, value2) {
   }
   return obj;
 }
-function _toPropertyKey$1(t) {
-  var i = _toPrimitive$1(t, "string");
-  return "symbol" == _typeof$1(i) ? i : i + "";
-}
-function _toPrimitive$1(t, r) {
-  if ("object" != _typeof$1(t) || !t)
-    return t;
-  var e = t[Symbol.toPrimitive];
-  if (void 0 !== e) {
-    var i = e.call(t, r || "default");
-    if ("object" != _typeof$1(i))
-      return i;
-    throw new TypeError("@@toPrimitive must return a primitive value.");
-  }
-  return ("string" === r ? String : Number)(t);
-}
 function getPhoneInputWithCountryStateUpdateFromNewProps(props, prevProps, state) {
   var metadata2 = props.metadata, countries = props.countries, newDefaultCountry = props.defaultCountry, newValue = props.value, newReset = props.reset, international = props.international, displayInitialValueAsLocalNumber = props.displayInitialValueAsLocalNumber, initialValueFormat = props.initialValueFormat;
   var prevDefaultCountry = prevProps.defaultCountry, prevValue = prevProps.value, prevReset = prevProps.reset;
   state.country;
-  var value2 = state.value, hasUserSelectedACountry = state.hasUserSelectedACountry, latestCountrySelectedByUser = state.latestCountrySelectedByUser;
+  var value2 = state.value, hasUserSelectedACountry = state.hasUserSelectedACountry;
   var _getInitialPhoneDigits = function _getInitialPhoneDigits2(parameters) {
     return getInitialPhoneDigits(_objectSpread$1(_objectSpread$1({}, parameters), {}, {
       international,
@@ -15247,7 +14955,6 @@ function getPhoneInputWithCountryStateUpdateFromNewProps(props, prevProps, state
       }),
       value: void 0,
       country: newDefaultCountry,
-      latestCountrySelectedByUser: void 0,
       hasUserSelectedACountry: void 0
     };
   }
@@ -15273,9 +14980,6 @@ function getPhoneInputWithCountryStateUpdateFromNewProps(props, prevProps, state
     var phoneNumber;
     var parsedCountry;
     if (newValue) {
-      if (newValue) {
-        validateE164Number(newValue);
-      }
       phoneNumber = parsePhoneNumber(newValue, metadata2);
       var supportedCountries = getSupportedCountries(countries, metadata2);
       if (phoneNumber && phoneNumber.country) {
@@ -15297,27 +15001,13 @@ function getPhoneInputWithCountryStateUpdateFromNewProps(props, prevProps, state
         }
       }
     }
-    var userCountrySelectionHistoryStateUpdate;
-    if (newValue) {
-      if (latestCountrySelectedByUser) {
-        var couldNewValueCorrespondToLatestCountrySelectedByUser = parsedCountry ? latestCountrySelectedByUser === parsedCountry : couldNumberBelongToCountry(newValue, latestCountrySelectedByUser, metadata2);
-        if (couldNewValueCorrespondToLatestCountrySelectedByUser) {
-          if (!parsedCountry) {
-            parsedCountry = latestCountrySelectedByUser;
-          }
-        } else {
-          userCountrySelectionHistoryStateUpdate = {
-            latestCountrySelectedByUser: void 0
-          };
-        }
-      }
-    } else {
-      userCountrySelectionHistoryStateUpdate = {
-        latestCountrySelectedByUser: void 0,
+    var hasUserSelectedACountryUpdate;
+    if (!newValue) {
+      hasUserSelectedACountryUpdate = {
         hasUserSelectedACountry: void 0
       };
     }
-    return _objectSpread$1(_objectSpread$1({}, userCountrySelectionHistoryStateUpdate), {}, {
+    return _objectSpread$1(_objectSpread$1({}, hasUserSelectedACountryUpdate), {}, {
       phoneDigits: _getInitialPhoneDigits({
         phoneNumber,
         value: newValue,
@@ -15337,35 +15027,35 @@ function valuesAreEqual(value1, value2) {
   }
   return value1 === value2;
 }
-var _excluded$1 = ["name", "disabled", "readOnly", "autoComplete", "style", "className", "inputRef", "inputComponent", "numberInputProps", "smartCaret", "countrySelectComponent", "countrySelectProps", "containerComponent", "containerComponentProps", "defaultCountry", "countries", "countryOptionsOrder", "labels", "flags", "flagComponent", "flagUrl", "addInternationalOption", "internationalIcon", "displayInitialValueAsLocalNumber", "initialValueFormat", "onCountryChange", "limitMaxLength", "countryCallingCodeEditable", "focusInputOnCountrySelection", "reset", "metadata", "international", "locales"];
-function _typeof(o) {
+function _typeof(obj) {
   "@babel/helpers - typeof";
-  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o2) {
-    return typeof o2;
-  } : function(o2) {
-    return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
-  }, _typeof(o);
+  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj2) {
+    return typeof obj2;
+  } : function(obj2) {
+    return obj2 && "function" == typeof Symbol && obj2.constructor === Symbol && obj2 !== Symbol.prototype ? "symbol" : typeof obj2;
+  }, _typeof(obj);
 }
-function ownKeys(e, r) {
-  var t = Object.keys(e);
+var _excluded$1 = ["name", "disabled", "readOnly", "autoComplete", "style", "className", "inputRef", "inputComponent", "numberInputProps", "smartCaret", "countrySelectComponent", "countrySelectProps", "containerComponent", "defaultCountry", "countries", "countryOptionsOrder", "labels", "flags", "flagComponent", "flagUrl", "addInternationalOption", "internationalIcon", "displayInitialValueAsLocalNumber", "initialValueFormat", "onCountryChange", "limitMaxLength", "countryCallingCodeEditable", "focusInputOnCountrySelection", "reset", "metadata", "international", "locales"];
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
   if (Object.getOwnPropertySymbols) {
-    var o = Object.getOwnPropertySymbols(e);
-    r && (o = o.filter(function(r2) {
-      return Object.getOwnPropertyDescriptor(e, r2).enumerable;
-    })), t.push.apply(t, o);
+    var symbols = Object.getOwnPropertySymbols(object);
+    enumerableOnly && (symbols = symbols.filter(function(sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    })), keys.push.apply(keys, symbols);
   }
-  return t;
+  return keys;
 }
-function _objectSpread(e) {
-  for (var r = 1; r < arguments.length; r++) {
-    var t = null != arguments[r] ? arguments[r] : {};
-    r % 2 ? ownKeys(Object(t), true).forEach(function(r2) {
-      _defineProperty(e, r2, t[r2]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function(r2) {
-      Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
+function _objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = null != arguments[i] ? arguments[i] : {};
+    i % 2 ? ownKeys(Object(source), true).forEach(function(key) {
+      _defineProperty(target, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function(key) {
+      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return e;
+  return target;
 }
 function _extends$1() {
   _extends$1 = Object.assign ? Object.assign.bind() : function(target) {
@@ -15425,7 +15115,7 @@ function _defineProperties(target, props) {
     descriptor.configurable = true;
     if ("value" in descriptor)
       descriptor.writable = true;
-    Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor);
+    Object.defineProperty(target, descriptor.key, descriptor);
   }
 }
 function _createClass(Constructor, protoProps, staticProps) {
@@ -15435,39 +15125,6 @@ function _createClass(Constructor, protoProps, staticProps) {
     _defineProperties(Constructor, staticProps);
   Object.defineProperty(Constructor, "prototype", { writable: false });
   return Constructor;
-}
-function _callSuper(t, o, e) {
-  return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e));
-}
-function _possibleConstructorReturn(self, call2) {
-  if (call2 && (_typeof(call2) === "object" || typeof call2 === "function")) {
-    return call2;
-  } else if (call2 !== void 0) {
-    throw new TypeError("Derived constructors may only return object or undefined");
-  }
-  return _assertThisInitialized(self);
-}
-function _assertThisInitialized(self) {
-  if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-  return self;
-}
-function _isNativeReflectConstruct() {
-  try {
-    var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {
-    }));
-  } catch (t2) {
-  }
-  return (_isNativeReflectConstruct = function _isNativeReflectConstruct2() {
-    return !!t;
-  })();
-}
-function _getPrototypeOf(o) {
-  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf2(o2) {
-    return o2.__proto__ || Object.getPrototypeOf(o2);
-  };
-  return _getPrototypeOf(o);
 }
 function _inherits(subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
@@ -15485,8 +15142,55 @@ function _setPrototypeOf(o, p) {
   };
   return _setPrototypeOf(o, p);
 }
+function _createSuper(Derived) {
+  var hasNativeReflectConstruct = _isNativeReflectConstruct();
+  return function _createSuperInternal() {
+    var Super = _getPrototypeOf(Derived), result2;
+    if (hasNativeReflectConstruct) {
+      var NewTarget = _getPrototypeOf(this).constructor;
+      result2 = Reflect.construct(Super, arguments, NewTarget);
+    } else {
+      result2 = Super.apply(this, arguments);
+    }
+    return _possibleConstructorReturn(this, result2);
+  };
+}
+function _possibleConstructorReturn(self, call2) {
+  if (call2 && (_typeof(call2) === "object" || typeof call2 === "function")) {
+    return call2;
+  } else if (call2 !== void 0) {
+    throw new TypeError("Derived constructors may only return object or undefined");
+  }
+  return _assertThisInitialized(self);
+}
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+  return self;
+}
+function _isNativeReflectConstruct() {
+  if (typeof Reflect === "undefined" || !Reflect.construct)
+    return false;
+  if (Reflect.construct.sham)
+    return false;
+  if (typeof Proxy === "function")
+    return true;
+  try {
+    Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {
+    }));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf2(o2) {
+    return o2.__proto__ || Object.getPrototypeOf(o2);
+  };
+  return _getPrototypeOf(o);
+}
 function _defineProperty(obj, key, value2) {
-  key = _toPropertyKey(key);
   if (key in obj) {
     Object.defineProperty(obj, key, { value: value2, enumerable: true, configurable: true, writable: true });
   } else {
@@ -15494,35 +15198,29 @@ function _defineProperty(obj, key, value2) {
   }
   return obj;
 }
-function _toPropertyKey(t) {
-  var i = _toPrimitive(t, "string");
-  return "symbol" == _typeof(i) ? i : i + "";
-}
-function _toPrimitive(t, r) {
-  if ("object" != _typeof(t) || !t)
-    return t;
-  var e = t[Symbol.toPrimitive];
-  if (void 0 !== e) {
-    var i = e.call(t, r || "default");
-    if ("object" != _typeof(i))
-      return i;
-    throw new TypeError("@@toPrimitive must return a primitive value.");
-  }
-  return ("string" === r ? String : Number)(t);
-}
 var PhoneNumberInput_ = /* @__PURE__ */ function(_React$PureComponent) {
+  _inherits(PhoneNumberInput_2, _React$PureComponent);
+  var _super = _createSuper(PhoneNumberInput_2);
   function PhoneNumberInput_2(props) {
     var _this;
     _classCallCheck(this, PhoneNumberInput_2);
-    _this = _callSuper(this, PhoneNumberInput_2, [props]);
-    _defineProperty(_this, "setInputRef", function(instance) {
-      setRefsValue([_this.props.inputRef, _this.inputRef], instance);
+    _this = _super.call(this, props);
+    _defineProperty(_assertThisInitialized(_this), "setInputRef", function(instance) {
+      _this.inputRef.current = instance;
+      var ref = _this.props.inputRef;
+      if (ref) {
+        if (typeof ref === "function") {
+          ref(instance);
+        } else {
+          ref.current = instance;
+        }
+      }
     });
-    _defineProperty(_this, "isCountrySupportedWithError", function(country) {
+    _defineProperty(_assertThisInitialized(_this), "isCountrySupportedWithError", function(country) {
       var metadata2 = _this.props.metadata;
       return isCountrySupportedWithError(country, metadata2);
     });
-    _defineProperty(_this, "onCountryChange", function(newCountry) {
+    _defineProperty(_assertThisInitialized(_this), "onCountryChange", function(newCountry) {
       var _this$props = _this.props, international = _this$props.international, metadata2 = _this$props.metadata, onChange2 = _this$props.onChange, focusInputOnCountrySelection = _this$props.focusInputOnCountrySelection;
       var _this$state = _this.state, prevPhoneDigits = _this$state.phoneDigits, prevCountry = _this$state.country;
       var newPhoneDigits = getPhoneDigitsForNewCountry(prevPhoneDigits, {
@@ -15537,7 +15235,6 @@ var PhoneNumberInput_ = /* @__PURE__ */ function(_React$PureComponent) {
       }
       _this.setState({
         country: newCountry,
-        latestCountrySelectedByUser: newCountry,
         hasUserSelectedACountry: true,
         phoneDigits: newPhoneDigits,
         value: newValue
@@ -15545,15 +15242,14 @@ var PhoneNumberInput_ = /* @__PURE__ */ function(_React$PureComponent) {
         onChange2(newValue);
       });
     });
-    _defineProperty(_this, "onChange", function(_phoneDigits) {
+    _defineProperty(_assertThisInitialized(_this), "onChange", function(_phoneDigits) {
       var _this$props2 = _this.props, defaultCountry = _this$props2.defaultCountry, onChange2 = _this$props2.onChange, addInternationalOption = _this$props2.addInternationalOption, international = _this$props2.international, limitMaxLength = _this$props2.limitMaxLength, countryCallingCodeEditable = _this$props2.countryCallingCodeEditable, metadata2 = _this$props2.metadata;
-      var _this$state2 = _this.state, countries = _this$state2.countries, prevPhoneDigits = _this$state2.phoneDigits, currentlySelectedCountry = _this$state2.country, latestCountrySelectedByUser = _this$state2.latestCountrySelectedByUser;
+      var _this$state2 = _this.state, countries = _this$state2.countries, prevPhoneDigits = _this$state2.phoneDigits, currentlySelectedCountry = _this$state2.country;
       var _onPhoneDigitsChange = onPhoneDigitsChange(_phoneDigits, {
         prevPhoneDigits,
         country: currentlySelectedCountry,
         countryRequired: !addInternationalOption,
         defaultCountry,
-        latestCountrySelectedByUser,
         getAnyCountry: function getAnyCountry() {
           return _this.getFirstSupportedCountry({
             countries
@@ -15570,9 +15266,6 @@ var PhoneNumberInput_ = /* @__PURE__ */ function(_React$PureComponent) {
         value: value2,
         country
       };
-      if (latestCountrySelectedByUser && value2 && !couldNumberBelongToCountry(value2, latestCountrySelectedByUser, metadata2)) {
-        stateUpdate.latestCountrySelectedByUser = void 0;
-      }
       if (countryCallingCodeEditable === false) {
         if (!value2 && phoneDigits === _this.state.phoneDigits) {
           stateUpdate.forceRerender = {};
@@ -15585,31 +15278,31 @@ var PhoneNumberInput_ = /* @__PURE__ */ function(_React$PureComponent) {
         }
       );
     });
-    _defineProperty(_this, "_onFocus", function() {
+    _defineProperty(_assertThisInitialized(_this), "_onFocus", function() {
       return _this.setState({
         isFocused: true
       });
     });
-    _defineProperty(_this, "_onBlur", function() {
+    _defineProperty(_assertThisInitialized(_this), "_onBlur", function() {
       return _this.setState({
         isFocused: false
       });
     });
-    _defineProperty(_this, "onFocus", function(event) {
+    _defineProperty(_assertThisInitialized(_this), "onFocus", function(event) {
       _this._onFocus();
       var onFocus = _this.props.onFocus;
       if (onFocus) {
         onFocus(event);
       }
     });
-    _defineProperty(_this, "onBlur", function(event) {
+    _defineProperty(_assertThisInitialized(_this), "onBlur", function(event) {
       var onBlur = _this.props.onBlur;
       _this._onBlur();
       if (onBlur) {
         onBlur(event);
       }
     });
-    _defineProperty(_this, "onCountryFocus", function(event) {
+    _defineProperty(_assertThisInitialized(_this), "onCountryFocus", function(event) {
       _this._onFocus();
       var countrySelectProps = _this.props.countrySelectProps;
       if (countrySelectProps) {
@@ -15619,7 +15312,7 @@ var PhoneNumberInput_ = /* @__PURE__ */ function(_React$PureComponent) {
         }
       }
     });
-    _defineProperty(_this, "onCountryBlur", function(event) {
+    _defineProperty(_assertThisInitialized(_this), "onCountryBlur", function(event) {
       _this._onBlur();
       var countrySelectProps = _this.props.countrySelectProps;
       if (countrySelectProps) {
@@ -15638,9 +15331,6 @@ var PhoneNumberInput_ = /* @__PURE__ */ function(_React$PureComponent) {
       if (!_this.isCountrySupportedWithError(_defaultCountry)) {
         _defaultCountry = void 0;
       }
-    }
-    if (_value) {
-      validateE164Number(_value);
     }
     _countries = getSupportedCountries(_countries, _metadata);
     var phoneNumber = parsePhoneNumber(_value, _metadata);
@@ -15674,8 +15364,7 @@ var PhoneNumberInput_ = /* @__PURE__ */ function(_React$PureComponent) {
     };
     return _this;
   }
-  _inherits(PhoneNumberInput_2, _React$PureComponent);
-  return _createClass(PhoneNumberInput_2, [{
+  _createClass(PhoneNumberInput_2, [{
     key: "componentDidMount",
     value: function componentDidMount() {
       var onCountryChange = this.props.onCountryChange;
@@ -15738,7 +15427,7 @@ var PhoneNumberInput_ = /* @__PURE__ */ function(_React$PureComponent) {
     value: function render() {
       var _this$props6 = this.props, name2 = _this$props6.name, disabled2 = _this$props6.disabled, readOnly2 = _this$props6.readOnly, autoComplete = _this$props6.autoComplete, style2 = _this$props6.style, className = _this$props6.className;
       _this$props6.inputRef;
-      var inputComponent = _this$props6.inputComponent, numberInputProps = _this$props6.numberInputProps, smartCaret = _this$props6.smartCaret, CountrySelectComponent = _this$props6.countrySelectComponent, countrySelectProps = _this$props6.countrySelectProps, ContainerComponent = _this$props6.containerComponent, containerComponentProps = _this$props6.containerComponentProps;
+      var inputComponent = _this$props6.inputComponent, numberInputProps = _this$props6.numberInputProps, smartCaret = _this$props6.smartCaret, CountrySelectComponent = _this$props6.countrySelectComponent, countrySelectProps = _this$props6.countrySelectProps, ContainerComponent = _this$props6.containerComponent;
       _this$props6.defaultCountry;
       _this$props6.countries;
       _this$props6.countryOptionsOrder;
@@ -15755,7 +15444,8 @@ var PhoneNumberInput_ = /* @__PURE__ */ function(_React$PureComponent) {
       _this$props6.countryCallingCodeEditable;
       _this$props6.focusInputOnCountrySelection;
       _this$props6.reset;
-      var metadata2 = _this$props6.metadata, international = _this$props6.international;
+      var metadata2 = _this$props6.metadata;
+      _this$props6.international;
       _this$props6.locales;
       var rest = _objectWithoutProperties$1(_this$props6, _excluded$1);
       var _this$state3 = this.state, country = _this$state3.country, countries = _this$state3.countries, phoneDigits = _this$state3.phoneDigits, isFocused = _this$state3.isFocused;
@@ -15763,14 +15453,14 @@ var PhoneNumberInput_ = /* @__PURE__ */ function(_React$PureComponent) {
       var countrySelectOptions = this.getCountrySelectOptions({
         countries
       });
-      return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ContainerComponent, _extends$1({
+      return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ContainerComponent, {
         style: style2,
         className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, "PhoneInput", {
           "PhoneInput--focus": isFocused,
           "PhoneInput--disabled": disabled2,
           "PhoneInput--readOnly": readOnly2
         })
-      }, containerComponentProps), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(CountrySelectComponent, _extends$1({
+      }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(CountrySelectComponent, _extends$1({
         name: name2 ? "".concat(name2, "Country") : void 0,
         "aria-label": labels2.country
       }, countrySelectProps, {
@@ -15787,9 +15477,6 @@ var PhoneNumberInput_ = /* @__PURE__ */ function(_React$PureComponent) {
         type: "tel",
         autoComplete
       }, numberInputProps, rest, {
-        inputFormat: international === true ? "INTERNATIONAL" : international === false ? "NATIONAL" : "INTERNATIONAL_OR_NATIONAL",
-        international: international ? true : void 0,
-        withCountryCallingCode: international ? true : void 0,
         name: name2,
         metadata: metadata2,
         country,
@@ -15811,6 +15498,7 @@ var PhoneNumberInput_ = /* @__PURE__ */ function(_React$PureComponent) {
       }, getPhoneInputWithCountryStateUpdateFromNewProps(props, state.props, state));
     }
   }]);
+  return PhoneNumberInput_2;
 }((react__WEBPACK_IMPORTED_MODULE_0___default().PureComponent));
 var PhoneNumberInput$1 = /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef(function(props, ref) {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(PhoneNumberInput_, _extends$1({}, withDefaultProps(props), {
@@ -15842,9 +15530,8 @@ PhoneNumberInput$1.propTypes = {
   countrySelectComponent: PropTypes.elementType,
   countrySelectProps: PropTypes.object,
   inputComponent: PropTypes.elementType,
-  numberInputProps: PropTypes.object,
   containerComponent: PropTypes.elementType,
-  containerComponentProps: PropTypes.object,
+  numberInputProps: PropTypes.object,
   smartCaret: PropTypes.bool,
   international: PropTypes.bool,
   limitMaxLength: PropTypes.bool,
@@ -16225,23 +15912,23 @@ function isValidPhoneNumber() {
 function isSupportedCountry() {
   return call(isSupportedCountry$1, arguments);
 }
-const phoneNumberInput = "_phoneNumberInput_1as8a_5";
-const regularBorder = "_regularBorder_1as8a_16";
-const lightBorder = "_lightBorder_1as8a_20";
-const sm$1 = "_sm_1as8a_24";
-const md$1 = "_md_1as8a_31";
-const disabled$3 = "_disabled_1as8a_68";
-const phoneNumberArrow = "_phoneNumberArrow_1as8a_78";
-const errorBorder = "_errorBorder_1as8a_90";
-const phoneInputContainer = "_phoneInputContainer_1as8a_94";
-const clear = "_clear_1as8a_98";
-var s$d = {
+const phoneNumberInput = "_phoneNumberInput_1xdcq_5";
+const regularBorder = "_regularBorder_1xdcq_16";
+const lightBorder = "_lightBorder_1xdcq_20";
+const sm$1 = "_sm_1xdcq_24";
+const md$1 = "_md_1xdcq_31";
+const disabled$5 = "_disabled_1xdcq_68";
+const phoneNumberArrow = "_phoneNumberArrow_1xdcq_78";
+const errorBorder = "_errorBorder_1xdcq_90";
+const phoneInputContainer = "_phoneInputContainer_1xdcq_94";
+const clear = "_clear_1xdcq_98";
+var s$e = {
   phoneNumberInput,
   regularBorder,
   lightBorder,
   sm: sm$1,
   md: md$1,
-  disabled: disabled$3,
+  disabled: disabled$5,
   phoneNumberArrow,
   errorBorder,
   phoneInputContainer,
@@ -16306,7 +15993,7 @@ const PhoneNumberInput = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef
     );
     const shouldDisplayClearIcon = onClearClick && isFocused && isDirty && !readOnly2;
     return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$d.phoneInputContainer
+      className: s$e.phoneInputContainer
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(PhoneInput, {
       ref: setRef,
       addInternationalOption: false,
@@ -16317,7 +16004,7 @@ const PhoneNumberInput = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef
       countrySelectProps: {
         "aria-label": countrySelectAriaLabel,
         arrowComponent: () => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
-          className: s$d.phoneNumberArrow,
+          className: s$e.phoneNumberArrow,
           icon: "chevron-down",
           width: 17,
           height: 17,
@@ -16326,9 +16013,9 @@ const PhoneNumberInput = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef
       },
       "data-testid": "phone-number-verification-input",
       id,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$d.phoneNumberInput, s$d[inputHeight], s$d[`${borderColor}Border`], {
-        [s$d.disabled]: otherProps.disabled,
-        [s$d.errorBorder]: isError
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$e.phoneNumberInput, s$e[inputHeight], s$e[`${borderColor}Border`], {
+        [s$e.disabled]: otherProps.disabled,
+        [s$e.errorBorder]: isError
       }),
       inputMode: "tel",
       countryCallingCodeEditable: false,
@@ -16340,7 +16027,7 @@ const PhoneNumberInput = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef
       type: "button",
       onClick: onClearClick,
       onMouseDown: onMouseDownPreventBlur,
-      className: s$d.clear,
+      className: s$e.clear,
       "data-testid": "clear-input"
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: IconName["close-circle"],
@@ -16367,12 +16054,12 @@ const PhoneNumberField = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef
   }))
 );
 PhoneNumberField.displayName = "PhoneNumberField";
-const container$3 = "_container_exreo_1";
-const progress = "_progress_exreo_9";
-const progressBarContainer = "_progressBarContainer_exreo_17";
-const progressBarTitle = "_progressBarTitle_exreo_24";
-var s$c = {
-  container: container$3,
+const container$2 = "_container_1945q_1";
+const progress = "_progress_1945q_9";
+const progressBarContainer = "_progressBarContainer_1945q_17";
+const progressBarTitle = "_progressBarTitle_1945q_24";
+var s$d = {
+  container: container$2,
   progress,
   progressBarContainer,
   progressBarTitle
@@ -16384,28 +16071,127 @@ const ProgressBar = ({
   ...divProps
 }) => {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$c.progressBarContainer, className),
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$d.progressBarContainer, className),
     ...divProps
   }, title2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$c.progressBarTitle
+    className: s$d.progressBarTitle
   }, title2), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$c.container,
+    className: s$d.container,
     role: "progressbar",
     "aria-valuenow": progress2
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$c.progress,
+    className: s$d.progress,
     style: { width: `${progress2}%` }
   })));
 };
-const RadioButton = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(({ ...props }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputVariant, {
-  inputType: "radio",
-  ...props
-}));
+const radioButton = "_radioButton_1hfhd_1";
+const reverse = "_reverse_1hfhd_9";
+const tickContainer = "_tickContainer_1hfhd_13";
+const icon$2 = "_icon_1hfhd_22";
+const iconVerticalAlignTop = "_iconVerticalAlignTop_1hfhd_27";
+const tick = "_tick_1hfhd_13";
+const radio = "_radio_1hfhd_1";
+const textContainer = "_textContainer_1hfhd_41";
+const label$2 = "_label_1hfhd_45";
+const disabled$4 = "_disabled_1hfhd_57";
+const readOnly$1 = "_readOnly_1hfhd_58";
+const orange$1 = "_orange_1hfhd_77";
+const yellow$1 = "_yellow_1hfhd_82";
+const additionalMessage$1 = "_additionalMessage_1hfhd_98";
+var s$c = {
+  radioButton,
+  reverse,
+  tickContainer,
+  icon: icon$2,
+  iconVerticalAlignTop,
+  tick,
+  radio,
+  textContainer,
+  label: label$2,
+  disabled: disabled$4,
+  readOnly: readOnly$1,
+  orange: orange$1,
+  yellow: yellow$1,
+  additionalMessage: additionalMessage$1
+};
+const RadioButton = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
+  ({
+    id,
+    label: label2,
+    className,
+    name: name2,
+    error: error2,
+    checked: checked2,
+    value: value2,
+    onChange: onChange2,
+    description: description2,
+    disabled: disabled2,
+    readOnly: readOnly2 = false,
+    icon: icon2,
+    color = "orange",
+    inCard: inCard2 = false,
+    direction = "row",
+    iconSize = 24,
+    iconVerticalAlign = "top",
+    ...props
+  }, ref) => {
+    const innerLabelRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+    return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InCardContainer, {
+      onParentClick: () => {
+        var _a;
+        return (_a = innerLabelRef == null ? void 0 : innerLabelRef.current) == null ? void 0 : _a.click();
+      },
+      error: error2,
+      disabled: disabled2,
+      readOnly: readOnly2,
+      inCard: inCard2,
+      checked: checked2,
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$c.radioButton, { [s$c.reverse]: direction === "row-reverse" }, className)
+    }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$c.tickContainer)
+    }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+      ...props,
+      type: "radio",
+      id,
+      name: name2,
+      checked: checked2,
+      value: value2,
+      readOnly: readOnly2,
+      onChange: onChange2,
+      disabled: disabled2,
+      ref,
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$c.radio, s$c[color], { [s$c.readOnly]: readOnly2 })
+    }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
+      icon: IconName["tick-alt"],
+      color: "white",
+      className: s$c.tick,
+      width: "18",
+      height: "18"
+    })), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: s$c.textContainer
+    }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+      htmlFor: id,
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$c.label, { [s$c.disabled]: disabled2, [s$c.readOnly]: readOnly2 }),
+      role: props["aria-label"] ? "none" : void 0,
+      ref: innerLabelRef
+    }, label2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      "aria-hidden": props["aria-label"] ? "true" : void 0
+    }, label2)), description2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: s$c.additionalMessage
+    }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, description2)), error2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: s$c.additionalMessage
+    }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ErrorMessage, null, error2))), inCard2 && icon2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$c.icon, { [s$c.iconVerticalAlignTop]: iconVerticalAlign === "top" }),
+      "data-testid": "radiobutton-icon",
+      style: { width: iconSize, height: iconSize }
+    }, icon2));
+  }
+);
 RadioButton.displayName = "RadioButton";
-const loading = "_loading_17wzl_1";
+const loading$1 = "_loading_17wzl_1";
 const spin = "_spin_17wzl_1";
 var s$b = {
-  loading,
+  loading: loading$1,
   spin
 };
 const Spinner = ({ color = "currentColor", title: title2 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("svg", {
@@ -16422,10 +16208,10 @@ const Spinner = ({ color = "currentColor", title: title2 }) => /* @__PURE__ */ r
   stroke: color,
   strokeWidth: "11"
 }));
-const sliderContainer = "_sliderContainer_6dtvk_1";
-const slider = "_slider_6dtvk_1";
-const checkbox = "_checkbox_6dtvk_36";
-const readOnly = "_readOnly_6dtvk_54";
+const sliderContainer = "_sliderContainer_zrtii_1";
+const slider = "_slider_zrtii_1";
+const checkbox = "_checkbox_zrtii_36";
+const readOnly = "_readOnly_zrtii_54";
 var s$a = {
   sliderContainer,
   slider,
@@ -16451,22 +16237,22 @@ const Switch = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
   }
 );
 Switch.displayName = "Switch";
-const container$2 = "_container_npjda_1";
-const switchWithLabel = "_switchWithLabel_npjda_7";
-const textBlock = "_textBlock_npjda_13";
-const icon$1 = "_icon_npjda_17";
-const switchLabel = "_switchLabel_npjda_24";
-const disabled$2 = "_disabled_npjda_33";
-const additionalMessage = "_additionalMessage_npjda_37";
-const inCard = "_inCard_npjda_47";
-const right = "_right_npjda_52";
+const container$1 = "_container_2tl8x_1";
+const switchWithLabel = "_switchWithLabel_2tl8x_7";
+const textBlock = "_textBlock_2tl8x_13";
+const icon$1 = "_icon_2tl8x_17";
+const switchLabel = "_switchLabel_2tl8x_24";
+const disabled$3 = "_disabled_2tl8x_33";
+const additionalMessage = "_additionalMessage_2tl8x_37";
+const inCard = "_inCard_2tl8x_47";
+const right = "_right_2tl8x_52";
 var s$9 = {
-  container: container$2,
+  container: container$1,
   switchWithLabel,
   textBlock,
   icon: icon$1,
   switchLabel,
-  disabled: disabled$2,
+  disabled: disabled$3,
   additionalMessage,
   inCard,
   right
@@ -16616,20 +16402,20 @@ const PasswordField = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef(
   }
 );
 PasswordField.displayName = "PasswordField";
-const toggleButton = "_toggleButton_tv9p0_1";
-const sm = "_sm_tv9p0_18";
-const md = "_md_tv9p0_25";
-const lg = "_lg_tv9p0_30";
-const active = "_active_tv9p0_42";
-const disabled$1 = "_disabled_tv9p0_42";
-const wide = "_wide_tv9p0_65";
+const toggleButton = "_toggleButton_17l1n_1";
+const sm = "_sm_17l1n_18";
+const md = "_md_17l1n_25";
+const lg = "_lg_17l1n_30";
+const active = "_active_17l1n_42";
+const disabled$2 = "_disabled_17l1n_42";
+const wide = "_wide_17l1n_65";
 var s$7 = {
   toggleButton,
   sm,
   md,
   lg,
   active,
-  disabled: disabled$1,
+  disabled: disabled$2,
   wide
 };
 const ToggleButton = ({
@@ -16654,8 +16440,70 @@ const ToggleButton = ({
   type,
   ...props
 }, children2);
-const toggleButtonsGroup = "_toggleButtonsGroup_th522_3";
+const toastContainer = "_toastContainer_15z2v_15";
+const visible = "_visible_15z2v_25";
+const bounce = "_bounce_15z2v_1";
 var s$6 = {
+  toastContainer,
+  visible,
+  bounce
+};
+const ToastContainer = ({ visible: visible2, children: children2 }) => {
+  const [show, setShow] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    let timer;
+    if (show !== visible2) {
+      if (!show) {
+        timer = setTimeout(() => setShow(visible2), 25);
+      } else {
+        setShow(visible2);
+      }
+    }
+    return () => clearTimeout(timer);
+  }, [show, visible2]);
+  return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    "data-testid": "toast-container",
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$6.toastContainer, { [s$6.visible]: show })
+  }, children2);
+};
+const toastMessage = ({
+  message,
+  duration,
+  position = "bottom-center",
+  style: style2,
+  className,
+  ariaProps,
+  id,
+  onClose,
+  closable = false,
+  ...otherProps
+}) => {
+  react_hot_toast__WEBPACK_IMPORTED_MODULE_5__["default"].custom(
+    ({ visible: visible2, id: toastId }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ToastContainer, {
+      visible: visible2
+    }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Banner, {
+      ...closable ? {
+        ...otherProps,
+        onClose: (e) => {
+          react_hot_toast__WEBPACK_IMPORTED_MODULE_5__["default"].dismiss(toastId);
+          if (onClose) {
+            onClose(e);
+          }
+        }
+      } : { ...otherProps }
+    }, message)),
+    {
+      duration,
+      position,
+      className,
+      ariaProps,
+      id,
+      style: style2
+    }
+  );
+};
+const toggleButtonsGroup = "_toggleButtonsGroup_th522_3";
+var s$5 = {
   toggleButtonsGroup
 };
 function ToggleButtonsGroup({
@@ -16668,8 +16516,7 @@ function ToggleButtonsGroup({
   id,
   disabled: disabled2,
   wide: wide2 = false,
-  className,
-  dataTestId
+  className
 }) {
   const compareKeys = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(
     (item) => value2 !== void 0 && optionKey(item) === optionKey(value2),
@@ -16685,16 +16532,14 @@ function ToggleButtonsGroup({
   );
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     id,
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$6.toggleButtonsGroup, className),
-    ...dataTestId && { "data-testid": dataTestId }
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$5.toggleButtonsGroup, className)
   }, options.map((item) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ToggleButton, {
     key: optionKey(item),
     active: compareKeys(item),
     onClick: () => onSelect(item),
     disabled: disabled2,
     wide: wide2,
-    size,
-    id: `toggle-button-option-${optionKey(item)}`
+    size
   }, optionLabel(item))));
 }
 function ToggleButtonsField({
@@ -16711,8 +16556,7 @@ function ToggleButtonsField({
   size = "md",
   lightLegend = false,
   wide: wide2 = false,
-  id,
-  dataTestId
+  id
 }) {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Field, {
     label: label2,
@@ -16730,17 +16574,113 @@ function ToggleButtonsField({
     id,
     wide: wide2,
     size,
-    disabled: disabled2,
-    dataTestId
+    disabled: disabled2
   }));
 }
-const bulletItem = "_bulletItem_mxahq_1";
-const content$1 = "_content_mxahq_9";
-const label$1 = "_label_mxahq_16";
-const icon = "_icon_mxahq_24";
-const description$1 = "_description_mxahq_34";
-const inline = "_inline_mxahq_38";
-var s$5 = {
+const fileDropZone = "_fileDropZone_9e8fn_1";
+const dragActive = "_dragActive_9e8fn_15";
+const disabled$1 = "_disabled_9e8fn_20";
+const dropZoneContent = "_dropZoneContent_9e8fn_24";
+const fileItem = "_fileItem_9e8fn_34";
+const blue = "_blue_9e8fn_67";
+const orange = "_orange_9e8fn_71";
+const yellow = "_yellow_9e8fn_75";
+const red = "_red_9e8fn_79";
+const gray = "_gray_9e8fn_83";
+const loading = "_loading_9e8fn_87";
+var s$4 = {
+  fileDropZone,
+  dragActive,
+  disabled: disabled$1,
+  dropZoneContent,
+  fileItem,
+  blue,
+  orange,
+  yellow,
+  red,
+  gray,
+  loading
+};
+const FileDropZoneItem = ({
+  children: children2,
+  onRemove,
+  loading: loading2 = false,
+  removeLabel,
+  loadingLabel,
+  readOnly: readOnly2 = false,
+  borderColor = "gray",
+  className,
+  ...otherProps
+}) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$4.fileItem, s$4[borderColor], className),
+  onClick: (e) => e.stopPropagation(),
+  ...otherProps
+}, loading2 ? /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+  className: s$4.loading
+}, loadingLabel || "Loading..."), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Spinner, null)) : /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, children2), onRemove && !readOnly2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+  className: s$4.itemRemoveBtn,
+  onClick: (e) => {
+    e.stopPropagation();
+    onRemove();
+  },
+  "aria-label": removeLabel || "remove"
+}, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
+  icon: "trash"
+}))));
+const FileDropZoneLink = ({
+  color,
+  onClick,
+  children: children2,
+  ...props
+}) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Button, {
+  color: color === "red" ? "link-red" : "link",
+  onClick: (e) => {
+    if (onClick) {
+      e.stopPropagation();
+      onClick(e);
+    }
+  },
+  ...props
+}, children2);
+const FileDropZoneRoot = ({
+  options,
+  onDrop,
+  children: children2,
+  disabled: disabled2,
+  className,
+  ...props
+}) => {
+  const { getRootProps, getInputProps, ...state } = (0,react_dropzone__WEBPACK_IMPORTED_MODULE_9__.useDropzone)({
+    ...options,
+    onDrop,
+    disabled: disabled2
+  });
+  const { isDragActive } = state;
+  return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    ...getRootProps(),
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(
+      s$4.fileDropZone,
+      { [s$4.dragActive]: isDragActive, [s$4.disabled]: disabled2 },
+      className
+    )
+  }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    ...getInputProps(props)
+  }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: s$4.dropZoneContent
+  }, typeof children2 === "function" ? children2(state) : children2));
+};
+const FileDropZone = {
+  Root: FileDropZoneRoot,
+  Item: FileDropZoneItem,
+  Link: FileDropZoneLink
+};
+const bulletItem = "_bulletItem_zggli_1";
+const content$1 = "_content_zggli_9";
+const label$1 = "_label_zggli_16";
+const icon = "_icon_zggli_24";
+const description$1 = "_description_zggli_34";
+const inline = "_inline_zggli_38";
+var s$3 = {
   bulletItem,
   content: content$1,
   label: label$1,
@@ -16757,32 +16697,32 @@ const BulletItem = ({
   iconColor,
   ...props
 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$5.bulletItem, className),
+  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$3.bulletItem, className),
   ...props
 }, !inline2 && (typeof iconName2 === "number" ? /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", {
   style: iconColor ? { color: `var(${iconColor})` } : { color: "var(--alma-blue)" },
-  className: s$5.icon
+  className: s$3.icon
 }, iconName2) : /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
-  className: s$5.icon,
+  className: s$3.icon,
   icon: iconName2,
   "data-testid": "bullet-side-icon",
   color: iconColor ? `var(${iconColor})` : "var(--alma-blue)"
 })), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: s$5.content
+  className: s$3.content
 }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-  className: s$5.label
+  className: s$3.label
 }, inline2 && (typeof iconName2 === "number" ? /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", {
   style: iconColor ? { color: `var(${iconColor})` } : { color: "var(--alma-blue)" },
-  className: s$5.icon
+  className: s$3.icon
 }, iconName2) : /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
-  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$5.icon, { [s$5.iconInline]: inline2 }),
+  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$3.icon, { [s$3.iconInline]: inline2 }),
   icon: iconName2,
   "data-testid": "bullet-inline-icon",
   color: iconColor ? `var(${iconColor})` : "var(--alma-blue)"
 })), label2), description2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$5.description, { [s$5.inline]: inline2 })
+  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$3.description, { [s$3.inline]: inline2 })
 }, description2)));
-const container$1 = "_container_qi4u0_1";
+const container = "_container_qi4u0_1";
 const header = "_header_qi4u0_12";
 const titleWrapper = "_titleWrapper_qi4u0_27";
 const body = "_body_qi4u0_36";
@@ -16792,8 +16732,8 @@ const label = "_label_qi4u0_62";
 const value = "_value_qi4u0_73";
 const headerChildren = "_headerChildren_qi4u0_82";
 const ctaContainer = "_ctaContainer_qi4u0_86";
-var s$4 = {
-  container: container$1,
+var s$2 = {
+  container,
   header,
   titleWrapper,
   body,
@@ -16805,24 +16745,14 @@ var s$4 = {
   ctaContainer
 };
 const BasicTableRow = ({ id, label: label2, value: value2 }) => {
-  const displayColumnValues = (value22) => {
-    if (Array.isArray(value22)) {
-      return value22.map((val) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-        className: s$4.value,
-        key: val
-      }, val));
-    } else {
-      return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-        className: s$4.value
-      }, value22);
-    }
-  };
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$4.row,
+    className: s$2.row,
     key: id
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$4.label
-  }, label2), displayColumnValues(value2));
+    className: s$2.label
+  }, label2), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: s$2.value
+  }, value2));
 };
 const BasicTable = ({
   title: title2,
@@ -16833,61 +16763,55 @@ const BasicTable = ({
   cta: cta2
 }) => {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$4.container
+    className: s$2.container
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$4.header
+    className: s$2.header
   }, iconPill ? /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$4.titleWrapper
+    className: s$2.titleWrapper
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(IconPill, {
     ...iconPill,
     iconSize: "lg"
   }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Header, null, title2)) : /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Header, null, title2), headerChildren2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$4.headerChildren
+    className: s$2.headerChildren
   }, headerChildren2)), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$4.body
+    className: s$2.body
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$4.rowsWrapper
+    className: s$2.rowsWrapper
   }, content2.map(({ id, label: label2, value: value2 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(BasicTableRow, {
     key: id,
     id,
     label: label2,
     value: value2
   }))), bottomChildren && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$4.bottomChildren
+    className: s$2.bottomChildren
   }, bottomChildren), cta2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$4.ctaContainer
+    className: s$2.ctaContainer
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Button, {
     ...cta2,
-    size: "small"
+    small: true
   }))));
 };
-const menuEntryParent = "_menuEntryParent_1af2n_1";
-const menuEntry = "_menuEntry_1af2n_1";
-const tiny$1 = "_tiny_1af2n_21";
-const small$1 = "_small_1af2n_29";
-const big$1 = "_big_1af2n_33";
-const selected = "_selected_1af2n_37";
-const disabled = "_disabled_1af2n_50";
-const leftIconTop = "_leftIconTop_1af2n_60";
-const leftIconCenter = "_leftIconCenter_1af2n_66";
-const leftIcon = "_leftIcon_1af2n_60";
-const content = "_content_1af2n_87";
-const title = "_title_1af2n_94";
-const titleDisabled = "_titleDisabled_1af2n_99";
-const description = "_description_1af2n_104";
-const badge = "_badge_1af2n_109";
-const rightIcon = "_rightIcon_1af2n_113";
-var s$3 = {
+const menuEntryParent = "_menuEntryParent_udzzu_1";
+const menuEntry = "_menuEntry_udzzu_1";
+const selected = "_selected_udzzu_23";
+const disabled = "_disabled_udzzu_36";
+const error = "_error_udzzu_42";
+const leftIconTop = "_leftIconTop_udzzu_50";
+const leftIconCenter = "_leftIconCenter_udzzu_56";
+const content = "_content_udzzu_62";
+const title = "_title_udzzu_69";
+const titleDisabled = "_titleDisabled_udzzu_74";
+const description = "_description_udzzu_79";
+const badge = "_badge_udzzu_84";
+const rightIcon = "_rightIcon_udzzu_88";
+var s$1 = {
   menuEntryParent,
   menuEntry,
-  tiny: tiny$1,
-  small: small$1,
-  big: big$1,
   selected,
   disabled,
+  error,
   leftIconTop,
   leftIconCenter,
-  leftIcon,
   content,
   title,
   titleDisabled,
@@ -16898,11 +16822,10 @@ var s$3 = {
 const MenuEntry = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
   ({
     className,
-    leftIcon: leftIcon2,
+    leftIcon,
     isAlignTop = false,
     title: title2,
     description: description2,
-    size = "big",
     badgeProps,
     rightIcon: rightIcon2,
     isSelected,
@@ -16911,7 +16834,7 @@ const MenuEntry = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
     onClick,
     ...otherProps
   }, ref) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$3.menuEntryParent, className),
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$1.menuEntryParent, className),
     onClick: () => {
       onClick && onClick();
     },
@@ -16920,257 +16843,61 @@ const MenuEntry = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
     ...otherProps,
     ref
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$3.menuEntry, s$3[size], {
-      [s$3.selected]: isSelected,
-      [s$3.disabled]: isDisabled2,
-      [s$3.error]: isError
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$1.menuEntry, {
+      [s$1.selected]: isSelected,
+      [s$1.disabled]: isDisabled2,
+      [s$1.error]: isError
     })
-  }, leftIcon2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$3.leftIcon, isAlignTop ? s$3.leftIconTop : s$3.leftIconCenter)
-  }, leftIcon2), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$3.content
+  }, leftIcon && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: `${isAlignTop ? s$1.leftIconTop : s$1.leftIconCenter}`
+  }, leftIcon), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: s$1.content
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: `${isDisabled2 ? s$3.titleDisabled : s$3.title}`
+    className: `${isDisabled2 ? s$1.titleDisabled : s$1.title}`
   }, title2), description2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$3.description
+    className: s$1.description
   }, description2)), badgeProps && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$3.badge
+    className: s$1.badge
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Badge, {
     color: badgeProps.color,
     label: badgeProps.label,
     className: badgeProps.className,
     icon: badgeProps.icon,
     iconTitle: badgeProps.iconTitle,
+    isColored: badgeProps.isColored,
     padding: badgeProps.padding
   })), rightIcon2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
     icon: rightIcon2,
-    className: s$3.rightIcon
+    className: s$1.rightIcon
   })))
 );
 MenuEntry.displayName = "MenuEntry";
-const menu = "_menu_xi98q_1";
-const tiny = "_tiny_xi98q_6";
-const menuTitle = "_menuTitle_xi98q_10";
-const entriesContainer = "_entriesContainer_xi98q_19";
-const small = "_small_xi98q_29";
-const big = "_big_xi98q_33";
-var s$2 = {
+const menu = "_menu_15l0s_1";
+const menuTitle = "_menuTitle_15l0s_6";
+var s = {
   menu,
-  tiny,
-  menuTitle,
-  entriesContainer,
-  small,
-  big
+  menuTitle
 };
 const Menu = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
-  ({ className, title: title2, size = "big", children: children2, ...otherProps }, ref) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$2.menu, className, { [s$2.tiny]: size === "tiny" }),
+  ({ className, title: title2, children: children2, ...otherProps }, ref) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s.menu, className),
     ...otherProps,
     ref
   }, title2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$2.menuTitle, s$2[size])
-  }, title2), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$2.entriesContainer
-  }, children2))
+    className: s.menuTitle
+  }, title2), children2)
 );
 Menu.displayName = "Menu";
-const iconClickable = "_iconClickable_op07t_1";
-var s$1 = {
-  iconClickable
-};
-const IconClickable = ({
-  icon: icon2,
-  title: title2,
-  isActive,
-  ...svgProps
-}) => {
-  var _a, _b, _c;
-  const state = isActive ? "active" : "inactive";
-  const iconByProps = {
-    heart: {
-      active: /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
-        isFilled: true,
-        icon: IconName.heart,
-        className: s$1.iconClickable,
-        title: title2,
-        ...svgProps
-      }),
-      inactive: /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
-        icon: IconName.heart,
-        className: s$1.iconClickable,
-        title: title2,
-        ...svgProps
-      })
-    },
-    bookmark: {
-      active: /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
-        icon: IconName.bookmark,
-        className: s$1.iconClickable,
-        title: title2,
-        isFilled: true,
-        ...svgProps
-      }),
-      inactive: /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
-        icon: IconName.bookmark,
-        className: s$1.iconClickable,
-        title: title2,
-        ...svgProps
-      })
-    },
-    sparks: {
-      active: /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
-        isFilled: true,
-        icon: IconName.sparks,
-        className: s$1.iconClickable,
-        title: title2,
-        ...svgProps
-      }),
-      inactive: /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
-        icon: IconName.sparks,
-        className: s$1.iconClickable,
-        title: title2,
-        ...svgProps
-      })
-    }
-  };
-  return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, (_c = (_a = iconByProps[icon2]) == null ? void 0 : _a[state]) != null ? _c : (_b = iconByProps.heart) == null ? void 0 : _b[state]);
-};
-const container = "_container_1se7e_1";
-const close = "_close_1se7e_20";
-const success = "_success_1se7e_36";
-const error = "_error_1se7e_40";
-const warning = "_warning_1se7e_44";
-const info = "_info_1se7e_48";
-const hidden = "_hidden_1se7e_52";
-const visible = "_visible_1se7e_57";
-var s = {
-  container,
-  close,
-  success,
-  error,
-  warning,
-  info,
-  hidden,
-  "toastr-close": "_toastr-close_1se7e_1",
-  visible,
-  "toastr-open": "_toastr-open_1se7e_1"
-};
-const Toaster = ({ duration = 3e3 }) => {
-  return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hot_toast__WEBPACK_IMPORTED_MODULE_5__.Toaster, {
-    position: "bottom-center",
-    toastOptions: {
-      duration,
-      style: {
-        color: "black",
-        border: "4px solid white",
-        borderRadius: "16px"
-      }
-    }
-  });
-};
-const toast2 = {
-  success: (message, options) => {
-    react_hot_toast__WEBPACK_IMPORTED_MODULE_5__.toast.custom(
-      (t) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ToasterElement, {
-        t,
-        type: "success",
-        icon: /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
-          icon: IconName["tick-circle"],
-          isFilled: true,
-          color: "var(--colors-icon-success)"
-        }),
-        message,
-        closeable: true
-      }),
-      { ...options }
-    );
-  },
-  error: (message, options) => {
-    react_hot_toast__WEBPACK_IMPORTED_MODULE_5__.toast.custom(
-      (t) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ToasterElement, {
-        t,
-        type: "error",
-        icon: /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
-          icon: IconName["close-circle"],
-          isFilled: true,
-          color: "var(--colors-icon-error)"
-        }),
-        message,
-        closeable: true
-      }),
-      { ...options }
-    );
-  },
-  warning: (message, options) => {
-    react_hot_toast__WEBPACK_IMPORTED_MODULE_5__.toast.custom(
-      (t) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ToasterElement, {
-        t,
-        type: "warning",
-        icon: /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
-          icon: IconName.warning,
-          isFilled: true,
-          color: "var(--colors-icon-warning)"
-        }),
-        message,
-        closeable: true
-      }),
-      { ...options }
-    );
-  },
-  info: (message, options) => {
-    react_hot_toast__WEBPACK_IMPORTED_MODULE_5__.toast.custom(
-      (t) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ToasterElement, {
-        t,
-        type: "info",
-        icon: /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
-          icon: IconName.info,
-          isFilled: true,
-          color: "var(--colors-icon-info)"
-        }),
-        message,
-        closeable: true
-      }),
-      { ...options }
-    );
-  }
-};
-const ToasterElement = ({
-  t,
-  type,
-  message,
-  icon: icon2,
-  closeable
-}) => {
-  return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s[type], s.container, {
-      [s.visible]: t.visible,
-      [s.hidden]: !t.visible
-    }),
-    onClick: () => closeable && react_hot_toast__WEBPACK_IMPORTED_MODULE_5__.toast.dismiss(t.id),
-    "data-testid": "toast-container"
-  }, icon2 && icon2, message, closeable && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-    type: "button",
-    className: s.close,
-    onClick: (e) => {
-      e.stopPropagation();
-      react_hot_toast__WEBPACK_IMPORTED_MODULE_5__.toast.dismiss(t.id);
-    }
-  }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
-    icon: IconName.close,
-    height: 16,
-    width: 16
-  })));
-};
 
 //# sourceMappingURL=lib.es.js.map
 
 
 /***/ }),
 
-/***/ "./node_modules/@emotion/cache/dist/emotion-cache.browser.development.esm.js":
-/*!***********************************************************************************!*\
-  !*** ./node_modules/@emotion/cache/dist/emotion-cache.browser.development.esm.js ***!
-  \***********************************************************************************/
+/***/ "./node_modules/@emotion/cache/dist/emotion-cache.browser.esm.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@emotion/cache/dist/emotion-cache.browser.esm.js ***!
+  \***********************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -17178,7 +16905,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ createCache)
 /* harmony export */ });
-/* harmony import */ var _emotion_sheet__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @emotion/sheet */ "./node_modules/@emotion/sheet/dist/emotion-sheet.development.esm.js");
+/* harmony import */ var _emotion_sheet__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @emotion/sheet */ "./node_modules/@emotion/sheet/dist/emotion-sheet.browser.esm.js");
 /* harmony import */ var stylis__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! stylis */ "./node_modules/stylis/src/Tokenizer.js");
 /* harmony import */ var stylis__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! stylis */ "./node_modules/stylis/src/Utility.js");
 /* harmony import */ var stylis__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! stylis */ "./node_modules/stylis/src/Enum.js");
@@ -17270,8 +16997,8 @@ var compat = function compat(element) {
     return;
   }
 
-  var value = element.value;
-  var parent = element.parent;
+  var value = element.value,
+      parent = element.parent;
   var isImplicitRule = element.column === parent.column && element.line === parent.line;
 
   while (parent.type !== 'rule') {
@@ -17638,22 +17365,11 @@ var prefixer = function prefixer(element, index, children, callback) {
 };
 
 var defaultStylisPlugins = [prefixer];
-var getSourceMap;
-
-{
-  var sourceMapPattern = /\/\*#\ssourceMappingURL=data:application\/json;\S+\s+\*\//g;
-
-  getSourceMap = function getSourceMap(styles) {
-    var matches = styles.match(sourceMapPattern);
-    if (!matches) return;
-    return matches[matches.length - 1];
-  };
-}
 
 var createCache = function createCache(options) {
   var key = options.key;
 
-  if (!key) {
+  if ( true && !key) {
     throw new Error("You have to configure `key` for your cache. Please make sure it's unique (and not equal to 'css') as it's used for linking styles to your cache.\n" + "If multiple caches share the same key they might \"fight\" for each other's style elements.");
   }
 
@@ -17675,7 +17391,6 @@ var createCache = function createCache(options) {
       if (dataEmotionAttribute.indexOf(' ') === -1) {
         return;
       }
-
       document.head.appendChild(node);
       node.setAttribute('data-s', '');
     });
@@ -17683,7 +17398,8 @@ var createCache = function createCache(options) {
 
   var stylisPlugins = options.stylisPlugins || defaultStylisPlugins;
 
-  {
+  if (true) {
+    // $FlowFixMe
     if (/[^a-z-]/.test(key)) {
       throw new Error("Emotion key must only contain lower case alphabetical characters and - but \"" + key + "\" was passed");
     }
@@ -17698,7 +17414,7 @@ var createCache = function createCache(options) {
     Array.prototype.forEach.call( // this means we will ignore elements which don't have a space in them which
     // means that the style elements we're looking at are only Emotion 11 server-rendered style elements
     document.querySelectorAll("style[data-emotion^=\"" + key + " \"]"), function (node) {
-      var attrib = node.getAttribute("data-emotion").split(' ');
+      var attrib = node.getAttribute("data-emotion").split(' '); // $FlowFixMe
 
       for (var i = 1; i < attrib.length; i++) {
         inserted[attrib[i]] = true;
@@ -17712,7 +17428,7 @@ var createCache = function createCache(options) {
 
   var omnipresentPlugins = [compat, removeLabel];
 
-  {
+  if (true) {
     omnipresentPlugins.push(createUnsafeSelectorsAlarm({
       get compat() {
         return cache.compat;
@@ -17723,7 +17439,7 @@ var createCache = function createCache(options) {
 
   {
     var currentSheet;
-    var finalizingPlugins = [stylis__WEBPACK_IMPORTED_MODULE_6__.stringify, function (element) {
+    var finalizingPlugins = [stylis__WEBPACK_IMPORTED_MODULE_6__.stringify,  true ? function (element) {
       if (!element.root) {
         if (element["return"]) {
           currentSheet.insert(element["return"]);
@@ -17733,7 +17449,7 @@ var createCache = function createCache(options) {
           currentSheet.insert(element.value + "{}");
         }
       }
-    } ];
+    } : 0];
     var serializer = (0,stylis__WEBPACK_IMPORTED_MODULE_7__.middleware)(omnipresentPlugins.concat(stylisPlugins, finalizingPlugins));
 
     var stylis = function stylis(styles) {
@@ -17743,16 +17459,12 @@ var createCache = function createCache(options) {
     _insert = function insert(selector, serialized, sheet, shouldCache) {
       currentSheet = sheet;
 
-      if (getSourceMap) {
-        var sourceMap = getSourceMap(serialized.styles);
-
-        if (sourceMap) {
-          currentSheet = {
-            insert: function insert(rule) {
-              sheet.insert(rule + sourceMap);
-            }
-          };
-        }
+      if ( true && serialized.map !== undefined) {
+        currentSheet = {
+          insert: function insert(rule) {
+            sheet.insert(rule + serialized.map);
+          }
+        };
       }
 
       stylis(selector ? selector + "{" + serialized.styles + "}" : serialized.styles);
@@ -17881,10 +17593,10 @@ function memoize(fn) {
 
 /***/ }),
 
-/***/ "./node_modules/@emotion/react/_isolated-hnrs/dist/emotion-react-_isolated-hnrs.browser.development.esm.js":
-/*!*****************************************************************************************************************!*\
-  !*** ./node_modules/@emotion/react/_isolated-hnrs/dist/emotion-react-_isolated-hnrs.browser.development.esm.js ***!
-  \*****************************************************************************************************************/
+/***/ "./node_modules/@emotion/react/_isolated-hnrs/dist/emotion-react-_isolated-hnrs.browser.esm.js":
+/*!*****************************************************************************************************!*\
+  !*** ./node_modules/@emotion/react/_isolated-hnrs/dist/emotion-react-_isolated-hnrs.browser.esm.js ***!
+  \*****************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -17909,10 +17621,10 @@ var hoistNonReactStatics = (function (targetComponent, sourceComponent) {
 
 /***/ }),
 
-/***/ "./node_modules/@emotion/react/dist/emotion-element-489459f2.browser.development.esm.js":
-/*!**********************************************************************************************!*\
-  !*** ./node_modules/@emotion/react/dist/emotion-element-489459f2.browser.development.esm.js ***!
-  \**********************************************************************************************/
+/***/ "./node_modules/@emotion/react/dist/emotion-element-c39617d8.browser.esm.js":
+/*!**********************************************************************************!*\
+  !*** ./node_modules/@emotion/react/dist/emotion-element-c39617d8.browser.esm.js ***!
+  \**********************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -17925,18 +17637,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   a: () => (/* binding */ ThemeProvider),
 /* harmony export */   b: () => (/* binding */ withTheme),
 /* harmony export */   c: () => (/* binding */ createEmotionProps),
-/* harmony export */   h: () => (/* binding */ hasOwn),
+/* harmony export */   h: () => (/* binding */ hasOwnProperty),
+/* harmony export */   i: () => (/* binding */ isBrowser),
 /* harmony export */   u: () => (/* binding */ useTheme),
 /* harmony export */   w: () => (/* binding */ withEmotionCache)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _emotion_cache__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @emotion/cache */ "./node_modules/@emotion/cache/dist/emotion-cache.browser.development.esm.js");
+/* harmony import */ var _emotion_cache__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @emotion/cache */ "./node_modules/@emotion/cache/dist/emotion-cache.browser.esm.js");
 /* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/esm/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
 /* harmony import */ var _emotion_weak_memoize__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @emotion/weak-memoize */ "./node_modules/@emotion/weak-memoize/dist/emotion-weak-memoize.esm.js");
-/* harmony import */ var _isolated_hnrs_dist_emotion_react_isolated_hnrs_browser_development_esm_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../_isolated-hnrs/dist/emotion-react-_isolated-hnrs.browser.development.esm.js */ "./node_modules/@emotion/react/_isolated-hnrs/dist/emotion-react-_isolated-hnrs.browser.development.esm.js");
+/* harmony import */ var _isolated_hnrs_dist_emotion_react_isolated_hnrs_browser_esm_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../_isolated-hnrs/dist/emotion-react-_isolated-hnrs.browser.esm.js */ "./node_modules/@emotion/react/_isolated-hnrs/dist/emotion-react-_isolated-hnrs.browser.esm.js");
 /* harmony import */ var _emotion_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @emotion/utils */ "./node_modules/@emotion/utils/dist/emotion-utils.browser.esm.js");
-/* harmony import */ var _emotion_serialize__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @emotion/serialize */ "./node_modules/@emotion/serialize/dist/emotion-serialize.development.esm.js");
+/* harmony import */ var _emotion_serialize__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @emotion/serialize */ "./node_modules/@emotion/serialize/dist/emotion-serialize.browser.esm.js");
 /* harmony import */ var _emotion_use_insertion_effect_with_fallbacks__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @emotion/use-insertion-effect-with-fallbacks */ "./node_modules/@emotion/use-insertion-effect-with-fallbacks/dist/emotion-use-insertion-effect-with-fallbacks.browser.esm.js");
 
 
@@ -17948,6 +17661,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var isBrowser = "object" !== 'undefined';
+var hasOwnProperty = {}.hasOwnProperty;
+
 var EmotionCacheContext = /* #__PURE__ */react__WEBPACK_IMPORTED_MODULE_0__.createContext( // we're doing this to avoid preconstruct's dead code elimination in this one case
 // because this module is primarily intended for the browser and node
 // but it's also required in react native and similar environments sometimes
@@ -17958,7 +17674,7 @@ typeof HTMLElement !== 'undefined' ? /* #__PURE__ */(0,_emotion_cache__WEBPACK_I
   key: 'css'
 }) : null);
 
-{
+if (true) {
   EmotionCacheContext.displayName = 'EmotionCacheContext';
 }
 
@@ -17968,6 +17684,7 @@ var __unsafe_useEmotionCache = function useEmotionCache() {
 };
 
 var withEmotionCache = function withEmotionCache(func) {
+  // $FlowFixMe
   return /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(function (props, ref) {
     // the cache will never be null in the browser
     var cache = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(EmotionCacheContext);
@@ -17975,9 +17692,33 @@ var withEmotionCache = function withEmotionCache(func) {
   });
 };
 
+if (!isBrowser) {
+  withEmotionCache = function withEmotionCache(func) {
+    return function (props) {
+      var cache = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(EmotionCacheContext);
+
+      if (cache === null) {
+        // yes, we're potentially creating this on every render
+        // it doesn't actually matter though since it's only on the server
+        // so there will only every be a single render
+        // that could change in the future because of suspense and etc. but for now,
+        // this works and i don't want to optimise for a future thing that we aren't sure about
+        cache = (0,_emotion_cache__WEBPACK_IMPORTED_MODULE_1__["default"])({
+          key: 'css'
+        });
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(EmotionCacheContext.Provider, {
+          value: cache
+        }, func(props, cache));
+      } else {
+        return func(props, cache);
+      }
+    };
+  };
+}
+
 var ThemeContext = /* #__PURE__ */react__WEBPACK_IMPORTED_MODULE_0__.createContext({});
 
-{
+if (true) {
   ThemeContext.displayName = 'EmotionThemeContext';
 }
 
@@ -17989,14 +17730,14 @@ var getTheme = function getTheme(outerTheme, theme) {
   if (typeof theme === 'function') {
     var mergedTheme = theme(outerTheme);
 
-    if ((mergedTheme == null || typeof mergedTheme !== 'object' || Array.isArray(mergedTheme))) {
+    if ( true && (mergedTheme == null || typeof mergedTheme !== 'object' || Array.isArray(mergedTheme))) {
       throw new Error('[ThemeProvider] Please return an object from your theme function, i.e. theme={() => ({})}!');
     }
 
     return mergedTheme;
   }
 
-  if ((theme == null || typeof theme !== 'object' || Array.isArray(theme))) {
+  if ( true && (theme == null || typeof theme !== 'object' || Array.isArray(theme))) {
     throw new Error('[ThemeProvider] Please make your theme prop a plain object');
   }
 
@@ -18021,18 +17762,20 @@ var ThemeProvider = function ThemeProvider(props) {
 };
 function withTheme(Component) {
   var componentName = Component.displayName || Component.name || 'Component';
-  var WithTheme = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function render(props, ref) {
+
+  var render = function render(props, ref) {
     var theme = react__WEBPACK_IMPORTED_MODULE_0__.useContext(ThemeContext);
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Component, (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_2__["default"])({
       theme: theme,
       ref: ref
     }, props));
-  });
-  WithTheme.displayName = "WithTheme(" + componentName + ")";
-  return (0,_isolated_hnrs_dist_emotion_react_isolated_hnrs_browser_development_esm_js__WEBPACK_IMPORTED_MODULE_7__["default"])(WithTheme, Component);
-}
+  }; // $FlowFixMe
 
-var hasOwn = {}.hasOwnProperty;
+
+  var WithTheme = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(render);
+  WithTheme.displayName = "WithTheme(" + componentName + ")";
+  return (0,_isolated_hnrs_dist_emotion_react_isolated_hnrs_browser_esm_js__WEBPACK_IMPORTED_MODULE_7__["default"])(WithTheme, Component);
+}
 
 var getLastPart = function getLastPart(functionName) {
   // The match may be something like 'Object.createEmotionProps' or
@@ -18080,27 +17823,23 @@ var getLabelFromStackTrace = function getLabelFromStackTrace(stackTrace) {
 var typePropName = '__EMOTION_TYPE_PLEASE_DO_NOT_USE__';
 var labelPropName = '__EMOTION_LABEL_PLEASE_DO_NOT_USE__';
 var createEmotionProps = function createEmotionProps(type, props) {
-  if (typeof props.css === 'string' && // check if there is a css declaration
+  if ( true && typeof props.css === 'string' && // check if there is a css declaration
   props.css.indexOf(':') !== -1) {
     throw new Error("Strings are not allowed as css prop values, please wrap it in a css template literal from '@emotion/react' like this: css`" + props.css + "`");
   }
 
   var newProps = {};
 
-  for (var _key in props) {
-    if (hasOwn.call(props, _key)) {
-      newProps[_key] = props[_key];
+  for (var key in props) {
+    if (hasOwnProperty.call(props, key)) {
+      newProps[key] = props[key];
     }
   }
 
-  newProps[typePropName] = type; // Runtime labeling is an opt-in feature because:
-  // - It causes hydration warnings when using Safari and SSR
-  // - It can degrade performance if there are a huge number of elements
-  //
-  // Even if the flag is set, we still don't compute the label if it has already
-  // been determined by the Babel plugin.
+  newProps[typePropName] = type; // For performance, only call getLabelFromStackTrace in development and when
+  // the label hasn't already been computed
 
-  if (typeof globalThis !== 'undefined' && !!globalThis.EMOTION_RUNTIME_AUTO_LABEL && !!props.css && (typeof props.css !== 'object' || !('name' in props.css) || typeof props.css.name !== 'string' || props.css.name.indexOf('-') === -1)) {
+  if ( true && !!props.css && (typeof props.css !== 'object' || typeof props.css.name !== 'string' || props.css.name.indexOf('-') === -1)) {
     var label = getLabelFromStackTrace(new Error().stack);
     if (label) newProps[labelPropName] = label;
   }
@@ -18141,7 +17880,7 @@ var Emotion = /* #__PURE__ */withEmotionCache(function (props, cache, ref) {
 
   var serialized = (0,_emotion_serialize__WEBPACK_IMPORTED_MODULE_5__.serializeStyles)(registeredStyles, undefined, react__WEBPACK_IMPORTED_MODULE_0__.useContext(ThemeContext));
 
-  if (serialized.name.indexOf('-') === -1) {
+  if ( true && serialized.name.indexOf('-') === -1) {
     var labelFromStack = props[labelPropName];
 
     if (labelFromStack) {
@@ -18152,18 +17891,14 @@ var Emotion = /* #__PURE__ */withEmotionCache(function (props, cache, ref) {
   className += cache.key + "-" + serialized.name;
   var newProps = {};
 
-  for (var _key2 in props) {
-    if (hasOwn.call(props, _key2) && _key2 !== 'css' && _key2 !== typePropName && (_key2 !== labelPropName)) {
-      newProps[_key2] = props[_key2];
+  for (var key in props) {
+    if (hasOwnProperty.call(props, key) && key !== 'css' && key !== typePropName && ( false || key !== labelPropName)) {
+      newProps[key] = props[key];
     }
   }
 
+  newProps.ref = ref;
   newProps.className = className;
-
-  if (ref) {
-    newProps.ref = ref;
-  }
-
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Insertion, {
     cache: cache,
     serialized: serialized,
@@ -18171,7 +17906,7 @@ var Emotion = /* #__PURE__ */withEmotionCache(function (props, cache, ref) {
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(WrappedComponent, newProps));
 });
 
-{
+if (true) {
   Emotion.displayName = 'EmotionCssPropInternal';
 }
 
@@ -18182,36 +17917,36 @@ var Emotion$1 = Emotion;
 
 /***/ }),
 
-/***/ "./node_modules/@emotion/react/dist/emotion-react.browser.development.esm.js":
-/*!***********************************************************************************!*\
-  !*** ./node_modules/@emotion/react/dist/emotion-react.browser.development.esm.js ***!
-  \***********************************************************************************/
+/***/ "./node_modules/@emotion/react/dist/emotion-react.browser.esm.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@emotion/react/dist/emotion-react.browser.esm.js ***!
+  \***********************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   CacheProvider: () => (/* reexport safe */ _emotion_element_489459f2_browser_development_esm_js__WEBPACK_IMPORTED_MODULE_0__.C),
+/* harmony export */   CacheProvider: () => (/* reexport safe */ _emotion_element_c39617d8_browser_esm_js__WEBPACK_IMPORTED_MODULE_0__.C),
 /* harmony export */   ClassNames: () => (/* binding */ ClassNames),
 /* harmony export */   Global: () => (/* binding */ Global),
-/* harmony export */   ThemeContext: () => (/* reexport safe */ _emotion_element_489459f2_browser_development_esm_js__WEBPACK_IMPORTED_MODULE_0__.T),
-/* harmony export */   ThemeProvider: () => (/* reexport safe */ _emotion_element_489459f2_browser_development_esm_js__WEBPACK_IMPORTED_MODULE_0__.a),
-/* harmony export */   __unsafe_useEmotionCache: () => (/* reexport safe */ _emotion_element_489459f2_browser_development_esm_js__WEBPACK_IMPORTED_MODULE_0__._),
+/* harmony export */   ThemeContext: () => (/* reexport safe */ _emotion_element_c39617d8_browser_esm_js__WEBPACK_IMPORTED_MODULE_0__.T),
+/* harmony export */   ThemeProvider: () => (/* reexport safe */ _emotion_element_c39617d8_browser_esm_js__WEBPACK_IMPORTED_MODULE_0__.a),
+/* harmony export */   __unsafe_useEmotionCache: () => (/* reexport safe */ _emotion_element_c39617d8_browser_esm_js__WEBPACK_IMPORTED_MODULE_0__._),
 /* harmony export */   createElement: () => (/* binding */ jsx),
 /* harmony export */   css: () => (/* binding */ css),
 /* harmony export */   jsx: () => (/* binding */ jsx),
 /* harmony export */   keyframes: () => (/* binding */ keyframes),
-/* harmony export */   useTheme: () => (/* reexport safe */ _emotion_element_489459f2_browser_development_esm_js__WEBPACK_IMPORTED_MODULE_0__.u),
-/* harmony export */   withEmotionCache: () => (/* reexport safe */ _emotion_element_489459f2_browser_development_esm_js__WEBPACK_IMPORTED_MODULE_0__.w),
-/* harmony export */   withTheme: () => (/* reexport safe */ _emotion_element_489459f2_browser_development_esm_js__WEBPACK_IMPORTED_MODULE_0__.b)
+/* harmony export */   useTheme: () => (/* reexport safe */ _emotion_element_c39617d8_browser_esm_js__WEBPACK_IMPORTED_MODULE_0__.u),
+/* harmony export */   withEmotionCache: () => (/* reexport safe */ _emotion_element_c39617d8_browser_esm_js__WEBPACK_IMPORTED_MODULE_0__.w),
+/* harmony export */   withTheme: () => (/* reexport safe */ _emotion_element_c39617d8_browser_esm_js__WEBPACK_IMPORTED_MODULE_0__.b)
 /* harmony export */ });
-/* harmony import */ var _emotion_element_489459f2_browser_development_esm_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./emotion-element-489459f2.browser.development.esm.js */ "./node_modules/@emotion/react/dist/emotion-element-489459f2.browser.development.esm.js");
+/* harmony import */ var _emotion_element_c39617d8_browser_esm_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./emotion-element-c39617d8.browser.esm.js */ "./node_modules/@emotion/react/dist/emotion-element-c39617d8.browser.esm.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _emotion_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @emotion/utils */ "./node_modules/@emotion/utils/dist/emotion-utils.browser.esm.js");
 /* harmony import */ var _emotion_use_insertion_effect_with_fallbacks__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @emotion/use-insertion-effect-with-fallbacks */ "./node_modules/@emotion/use-insertion-effect-with-fallbacks/dist/emotion-use-insertion-effect-with-fallbacks.browser.esm.js");
-/* harmony import */ var _emotion_serialize__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @emotion/serialize */ "./node_modules/@emotion/serialize/dist/emotion-serialize.development.esm.js");
-/* harmony import */ var _emotion_cache__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @emotion/cache */ "./node_modules/@emotion/cache/dist/emotion-cache.browser.development.esm.js");
+/* harmony import */ var _emotion_serialize__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @emotion/serialize */ "./node_modules/@emotion/serialize/dist/emotion-serialize.browser.esm.js");
+/* harmony import */ var _emotion_cache__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @emotion/cache */ "./node_modules/@emotion/cache/dist/emotion-cache.browser.esm.js");
 /* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime/helpers/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
 /* harmony import */ var _emotion_weak_memoize__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @emotion/weak-memoize */ "./node_modules/@emotion/weak-memoize/dist/emotion-weak-memoize.esm.js");
 /* harmony import */ var hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! hoist-non-react-statics */ "./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js");
@@ -18228,228 +17963,48 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var isDevelopment = true;
-
 var pkg = {
 	name: "@emotion/react",
-	version: "11.14.0",
+	version: "11.11.3",
 	main: "dist/emotion-react.cjs.js",
 	module: "dist/emotion-react.esm.js",
-	types: "dist/emotion-react.cjs.d.ts",
+	browser: {
+		"./dist/emotion-react.esm.js": "./dist/emotion-react.browser.esm.js"
+	},
 	exports: {
 		".": {
-			types: {
-				"import": "./dist/emotion-react.cjs.mjs",
-				"default": "./dist/emotion-react.cjs.js"
+			module: {
+				worker: "./dist/emotion-react.worker.esm.js",
+				browser: "./dist/emotion-react.browser.esm.js",
+				"default": "./dist/emotion-react.esm.js"
 			},
-			development: {
-				"edge-light": {
-					module: "./dist/emotion-react.development.edge-light.esm.js",
-					"import": "./dist/emotion-react.development.edge-light.cjs.mjs",
-					"default": "./dist/emotion-react.development.edge-light.cjs.js"
-				},
-				worker: {
-					module: "./dist/emotion-react.development.edge-light.esm.js",
-					"import": "./dist/emotion-react.development.edge-light.cjs.mjs",
-					"default": "./dist/emotion-react.development.edge-light.cjs.js"
-				},
-				workerd: {
-					module: "./dist/emotion-react.development.edge-light.esm.js",
-					"import": "./dist/emotion-react.development.edge-light.cjs.mjs",
-					"default": "./dist/emotion-react.development.edge-light.cjs.js"
-				},
-				browser: {
-					module: "./dist/emotion-react.browser.development.esm.js",
-					"import": "./dist/emotion-react.browser.development.cjs.mjs",
-					"default": "./dist/emotion-react.browser.development.cjs.js"
-				},
-				module: "./dist/emotion-react.development.esm.js",
-				"import": "./dist/emotion-react.development.cjs.mjs",
-				"default": "./dist/emotion-react.development.cjs.js"
-			},
-			"edge-light": {
-				module: "./dist/emotion-react.edge-light.esm.js",
-				"import": "./dist/emotion-react.edge-light.cjs.mjs",
-				"default": "./dist/emotion-react.edge-light.cjs.js"
-			},
-			worker: {
-				module: "./dist/emotion-react.edge-light.esm.js",
-				"import": "./dist/emotion-react.edge-light.cjs.mjs",
-				"default": "./dist/emotion-react.edge-light.cjs.js"
-			},
-			workerd: {
-				module: "./dist/emotion-react.edge-light.esm.js",
-				"import": "./dist/emotion-react.edge-light.cjs.mjs",
-				"default": "./dist/emotion-react.edge-light.cjs.js"
-			},
-			browser: {
-				module: "./dist/emotion-react.browser.esm.js",
-				"import": "./dist/emotion-react.browser.cjs.mjs",
-				"default": "./dist/emotion-react.browser.cjs.js"
-			},
-			module: "./dist/emotion-react.esm.js",
 			"import": "./dist/emotion-react.cjs.mjs",
 			"default": "./dist/emotion-react.cjs.js"
 		},
 		"./jsx-runtime": {
-			types: {
-				"import": "./jsx-runtime/dist/emotion-react-jsx-runtime.cjs.mjs",
-				"default": "./jsx-runtime/dist/emotion-react-jsx-runtime.cjs.js"
+			module: {
+				worker: "./jsx-runtime/dist/emotion-react-jsx-runtime.worker.esm.js",
+				browser: "./jsx-runtime/dist/emotion-react-jsx-runtime.browser.esm.js",
+				"default": "./jsx-runtime/dist/emotion-react-jsx-runtime.esm.js"
 			},
-			development: {
-				"edge-light": {
-					module: "./jsx-runtime/dist/emotion-react-jsx-runtime.development.edge-light.esm.js",
-					"import": "./jsx-runtime/dist/emotion-react-jsx-runtime.development.edge-light.cjs.mjs",
-					"default": "./jsx-runtime/dist/emotion-react-jsx-runtime.development.edge-light.cjs.js"
-				},
-				worker: {
-					module: "./jsx-runtime/dist/emotion-react-jsx-runtime.development.edge-light.esm.js",
-					"import": "./jsx-runtime/dist/emotion-react-jsx-runtime.development.edge-light.cjs.mjs",
-					"default": "./jsx-runtime/dist/emotion-react-jsx-runtime.development.edge-light.cjs.js"
-				},
-				workerd: {
-					module: "./jsx-runtime/dist/emotion-react-jsx-runtime.development.edge-light.esm.js",
-					"import": "./jsx-runtime/dist/emotion-react-jsx-runtime.development.edge-light.cjs.mjs",
-					"default": "./jsx-runtime/dist/emotion-react-jsx-runtime.development.edge-light.cjs.js"
-				},
-				browser: {
-					module: "./jsx-runtime/dist/emotion-react-jsx-runtime.browser.development.esm.js",
-					"import": "./jsx-runtime/dist/emotion-react-jsx-runtime.browser.development.cjs.mjs",
-					"default": "./jsx-runtime/dist/emotion-react-jsx-runtime.browser.development.cjs.js"
-				},
-				module: "./jsx-runtime/dist/emotion-react-jsx-runtime.development.esm.js",
-				"import": "./jsx-runtime/dist/emotion-react-jsx-runtime.development.cjs.mjs",
-				"default": "./jsx-runtime/dist/emotion-react-jsx-runtime.development.cjs.js"
-			},
-			"edge-light": {
-				module: "./jsx-runtime/dist/emotion-react-jsx-runtime.edge-light.esm.js",
-				"import": "./jsx-runtime/dist/emotion-react-jsx-runtime.edge-light.cjs.mjs",
-				"default": "./jsx-runtime/dist/emotion-react-jsx-runtime.edge-light.cjs.js"
-			},
-			worker: {
-				module: "./jsx-runtime/dist/emotion-react-jsx-runtime.edge-light.esm.js",
-				"import": "./jsx-runtime/dist/emotion-react-jsx-runtime.edge-light.cjs.mjs",
-				"default": "./jsx-runtime/dist/emotion-react-jsx-runtime.edge-light.cjs.js"
-			},
-			workerd: {
-				module: "./jsx-runtime/dist/emotion-react-jsx-runtime.edge-light.esm.js",
-				"import": "./jsx-runtime/dist/emotion-react-jsx-runtime.edge-light.cjs.mjs",
-				"default": "./jsx-runtime/dist/emotion-react-jsx-runtime.edge-light.cjs.js"
-			},
-			browser: {
-				module: "./jsx-runtime/dist/emotion-react-jsx-runtime.browser.esm.js",
-				"import": "./jsx-runtime/dist/emotion-react-jsx-runtime.browser.cjs.mjs",
-				"default": "./jsx-runtime/dist/emotion-react-jsx-runtime.browser.cjs.js"
-			},
-			module: "./jsx-runtime/dist/emotion-react-jsx-runtime.esm.js",
 			"import": "./jsx-runtime/dist/emotion-react-jsx-runtime.cjs.mjs",
 			"default": "./jsx-runtime/dist/emotion-react-jsx-runtime.cjs.js"
 		},
 		"./_isolated-hnrs": {
-			types: {
-				"import": "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.cjs.mjs",
-				"default": "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.cjs.js"
+			module: {
+				worker: "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.worker.esm.js",
+				browser: "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.browser.esm.js",
+				"default": "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.esm.js"
 			},
-			development: {
-				"edge-light": {
-					module: "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.development.edge-light.esm.js",
-					"import": "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.development.edge-light.cjs.mjs",
-					"default": "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.development.edge-light.cjs.js"
-				},
-				worker: {
-					module: "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.development.edge-light.esm.js",
-					"import": "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.development.edge-light.cjs.mjs",
-					"default": "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.development.edge-light.cjs.js"
-				},
-				workerd: {
-					module: "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.development.edge-light.esm.js",
-					"import": "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.development.edge-light.cjs.mjs",
-					"default": "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.development.edge-light.cjs.js"
-				},
-				browser: {
-					module: "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.browser.development.esm.js",
-					"import": "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.browser.development.cjs.mjs",
-					"default": "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.browser.development.cjs.js"
-				},
-				module: "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.development.esm.js",
-				"import": "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.development.cjs.mjs",
-				"default": "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.development.cjs.js"
-			},
-			"edge-light": {
-				module: "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.edge-light.esm.js",
-				"import": "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.edge-light.cjs.mjs",
-				"default": "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.edge-light.cjs.js"
-			},
-			worker: {
-				module: "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.edge-light.esm.js",
-				"import": "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.edge-light.cjs.mjs",
-				"default": "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.edge-light.cjs.js"
-			},
-			workerd: {
-				module: "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.edge-light.esm.js",
-				"import": "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.edge-light.cjs.mjs",
-				"default": "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.edge-light.cjs.js"
-			},
-			browser: {
-				module: "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.browser.esm.js",
-				"import": "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.browser.cjs.mjs",
-				"default": "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.browser.cjs.js"
-			},
-			module: "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.esm.js",
 			"import": "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.cjs.mjs",
 			"default": "./_isolated-hnrs/dist/emotion-react-_isolated-hnrs.cjs.js"
 		},
 		"./jsx-dev-runtime": {
-			types: {
-				"import": "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.cjs.mjs",
-				"default": "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.cjs.js"
+			module: {
+				worker: "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.worker.esm.js",
+				browser: "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.browser.esm.js",
+				"default": "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.esm.js"
 			},
-			development: {
-				"edge-light": {
-					module: "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.development.edge-light.esm.js",
-					"import": "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.development.edge-light.cjs.mjs",
-					"default": "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.development.edge-light.cjs.js"
-				},
-				worker: {
-					module: "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.development.edge-light.esm.js",
-					"import": "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.development.edge-light.cjs.mjs",
-					"default": "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.development.edge-light.cjs.js"
-				},
-				workerd: {
-					module: "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.development.edge-light.esm.js",
-					"import": "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.development.edge-light.cjs.mjs",
-					"default": "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.development.edge-light.cjs.js"
-				},
-				browser: {
-					module: "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.browser.development.esm.js",
-					"import": "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.browser.development.cjs.mjs",
-					"default": "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.browser.development.cjs.js"
-				},
-				module: "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.development.esm.js",
-				"import": "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.development.cjs.mjs",
-				"default": "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.development.cjs.js"
-			},
-			"edge-light": {
-				module: "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.edge-light.esm.js",
-				"import": "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.edge-light.cjs.mjs",
-				"default": "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.edge-light.cjs.js"
-			},
-			worker: {
-				module: "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.edge-light.esm.js",
-				"import": "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.edge-light.cjs.mjs",
-				"default": "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.edge-light.cjs.js"
-			},
-			workerd: {
-				module: "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.edge-light.esm.js",
-				"import": "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.edge-light.cjs.mjs",
-				"default": "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.edge-light.cjs.js"
-			},
-			browser: {
-				module: "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.browser.esm.js",
-				"import": "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.browser.cjs.mjs",
-				"default": "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.browser.cjs.js"
-			},
-			module: "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.esm.js",
 			"import": "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.cjs.mjs",
 			"default": "./jsx-dev-runtime/dist/emotion-react-jsx-dev-runtime.cjs.js"
 		},
@@ -18463,26 +18018,14 @@ var pkg = {
 			"default": "./macro.js"
 		}
 	},
-	imports: {
-		"#is-development": {
-			development: "./src/conditions/true.ts",
-			"default": "./src/conditions/false.ts"
-		},
-		"#is-browser": {
-			"edge-light": "./src/conditions/false.ts",
-			workerd: "./src/conditions/false.ts",
-			worker: "./src/conditions/false.ts",
-			browser: "./src/conditions/true.ts",
-			"default": "./src/conditions/is-browser.ts"
-		}
-	},
+	types: "types/index.d.ts",
 	files: [
 		"src",
 		"dist",
 		"jsx-runtime",
 		"jsx-dev-runtime",
 		"_isolated-hnrs",
-		"types/css-prop.d.ts",
+		"types/*.d.ts",
 		"macro.*"
 	],
 	sideEffects: false,
@@ -18493,12 +18036,12 @@ var pkg = {
 	},
 	dependencies: {
 		"@babel/runtime": "^7.18.3",
-		"@emotion/babel-plugin": "^11.13.5",
-		"@emotion/cache": "^11.14.0",
-		"@emotion/serialize": "^1.3.3",
-		"@emotion/use-insertion-effect-with-fallbacks": "^1.2.0",
-		"@emotion/utils": "^1.4.2",
-		"@emotion/weak-memoize": "^0.4.0",
+		"@emotion/babel-plugin": "^11.11.0",
+		"@emotion/cache": "^11.11.0",
+		"@emotion/serialize": "^1.1.3",
+		"@emotion/use-insertion-effect-with-fallbacks": "^1.0.1",
+		"@emotion/utils": "^1.2.1",
+		"@emotion/weak-memoize": "^0.3.1",
 		"hoist-non-react-statics": "^3.3.1"
 	},
 	peerDependencies: {
@@ -18511,15 +18054,14 @@ var pkg = {
 	},
 	devDependencies: {
 		"@definitelytyped/dtslint": "0.0.112",
-		"@emotion/css": "11.13.5",
-		"@emotion/css-prettifier": "1.2.0",
+		"@emotion/css": "11.11.2",
+		"@emotion/css-prettifier": "1.1.3",
 		"@emotion/server": "11.11.0",
-		"@emotion/styled": "11.14.0",
-		"@types/hoist-non-react-statics": "^3.3.5",
+		"@emotion/styled": "11.11.0",
 		"html-tag-names": "^1.1.2",
 		react: "16.14.0",
 		"svg-tag-names": "^1.1.1",
-		typescript: "^5.4.5"
+		typescript: "^4.5.5"
 	},
 	repository: "https://github.com/emotion-js/emotion/tree/main/packages/react",
 	publishConfig: {
@@ -18528,13 +18070,17 @@ var pkg = {
 	"umd:main": "dist/emotion-react.umd.min.js",
 	preconstruct: {
 		entrypoints: [
-			"./index.ts",
-			"./jsx-runtime.ts",
-			"./jsx-dev-runtime.ts",
-			"./_isolated-hnrs.ts"
+			"./index.js",
+			"./jsx-runtime.js",
+			"./jsx-dev-runtime.js",
+			"./_isolated-hnrs.js"
 		],
 		umdName: "emotionReact",
 		exports: {
+			envConditions: [
+				"browser",
+				"worker"
+			],
 			extra: {
 				"./types/css-prop": "./types/css-prop.d.ts",
 				"./macro": {
@@ -18550,47 +18096,70 @@ var pkg = {
 };
 
 var jsx = function jsx(type, props) {
-  // eslint-disable-next-line prefer-rest-params
   var args = arguments;
 
-  if (props == null || !_emotion_element_489459f2_browser_development_esm_js__WEBPACK_IMPORTED_MODULE_0__.h.call(props, 'css')) {
+  if (props == null || !_emotion_element_c39617d8_browser_esm_js__WEBPACK_IMPORTED_MODULE_0__.h.call(props, 'css')) {
+    // $FlowFixMe
     return react__WEBPACK_IMPORTED_MODULE_1__.createElement.apply(undefined, args);
   }
 
   var argsLength = args.length;
   var createElementArgArray = new Array(argsLength);
-  createElementArgArray[0] = _emotion_element_489459f2_browser_development_esm_js__WEBPACK_IMPORTED_MODULE_0__.E;
-  createElementArgArray[1] = (0,_emotion_element_489459f2_browser_development_esm_js__WEBPACK_IMPORTED_MODULE_0__.c)(type, props);
+  createElementArgArray[0] = _emotion_element_c39617d8_browser_esm_js__WEBPACK_IMPORTED_MODULE_0__.E;
+  createElementArgArray[1] = (0,_emotion_element_c39617d8_browser_esm_js__WEBPACK_IMPORTED_MODULE_0__.c)(type, props);
 
   for (var i = 2; i < argsLength; i++) {
     createElementArgArray[i] = args[i];
-  }
+  } // $FlowFixMe
+
 
   return react__WEBPACK_IMPORTED_MODULE_1__.createElement.apply(null, createElementArgArray);
 };
-
-(function (_jsx) {
-  var JSX;
-
-  (function (_JSX) {})(JSX || (JSX = _jsx.JSX || (_jsx.JSX = {})));
-})(jsx || (jsx = {}));
 
 var warnedAboutCssPropForGlobal = false; // maintain place over rerenders.
 // initial render from browser, insertBefore context.sheet.tags[0] or if a style hasn't been inserted there yet, appendChild
 // initial client-side render from SSR, use place of hydrating tag
 
-var Global = /* #__PURE__ */(0,_emotion_element_489459f2_browser_development_esm_js__WEBPACK_IMPORTED_MODULE_0__.w)(function (props, cache) {
-  if (!warnedAboutCssPropForGlobal && ( // check for className as well since the user is
+var Global = /* #__PURE__ */(0,_emotion_element_c39617d8_browser_esm_js__WEBPACK_IMPORTED_MODULE_0__.w)(function (props, cache) {
+  if ( true && !warnedAboutCssPropForGlobal && ( // check for className as well since the user is
   // probably using the custom createElement which
   // means it will be turned into a className prop
-  // I don't really want to add it to the type since it shouldn't be used
-  'className' in props && props.className || 'css' in props && props.css)) {
+  // $FlowFixMe I don't really want to add it to the type since it shouldn't be used
+  props.className || props.css)) {
     console.error("It looks like you're using the css prop on Global, did you mean to use the styles prop instead?");
     warnedAboutCssPropForGlobal = true;
   }
 
   var styles = props.styles;
-  var serialized = (0,_emotion_serialize__WEBPACK_IMPORTED_MODULE_4__.serializeStyles)([styles], undefined, react__WEBPACK_IMPORTED_MODULE_1__.useContext(_emotion_element_489459f2_browser_development_esm_js__WEBPACK_IMPORTED_MODULE_0__.T));
+  var serialized = (0,_emotion_serialize__WEBPACK_IMPORTED_MODULE_4__.serializeStyles)([styles], undefined, react__WEBPACK_IMPORTED_MODULE_1__.useContext(_emotion_element_c39617d8_browser_esm_js__WEBPACK_IMPORTED_MODULE_0__.T));
+
+  if (!_emotion_element_c39617d8_browser_esm_js__WEBPACK_IMPORTED_MODULE_0__.i) {
+    var _ref;
+
+    var serializedNames = serialized.name;
+    var serializedStyles = serialized.styles;
+    var next = serialized.next;
+
+    while (next !== undefined) {
+      serializedNames += ' ' + next.name;
+      serializedStyles += next.styles;
+      next = next.next;
+    }
+
+    var shouldCache = cache.compat === true;
+    var rules = cache.insert("", {
+      name: serializedNames,
+      styles: serializedStyles
+    }, cache.sheet, shouldCache);
+
+    if (shouldCache) {
+      return null;
+    }
+
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement("style", (_ref = {}, _ref["data-emotion"] = cache.key + "-global " + serializedNames, _ref.dangerouslySetInnerHTML = {
+      __html: rules
+    }, _ref.nonce = cache.sheet.nonce, _ref));
+  } // yes, i know these hooks are used conditionally
   // but it is based on a constant that will never change at runtime
   // it's effectively like having two implementations and switching them out
   // so it's not actually breaking anything
@@ -18606,7 +18175,8 @@ var Global = /* #__PURE__ */(0,_emotion_element_489459f2_browser_development_esm
       container: cache.sheet.container,
       speedy: cache.sheet.isSpeedy
     });
-    var rehydrating = false;
+    var rehydrating = false; // $FlowFixMe
+
     var node = document.querySelector("style[data-emotion=\"" + key + " " + serialized.name + "\"]");
 
     if (cache.sheet.tags.length) {
@@ -18652,7 +18222,7 @@ var Global = /* #__PURE__ */(0,_emotion_element_489459f2_browser_development_esm
   return null;
 });
 
-{
+if (true) {
   Global.displayName = 'EmotionGlobal';
 }
 
@@ -18664,9 +18234,10 @@ function css() {
   return (0,_emotion_serialize__WEBPACK_IMPORTED_MODULE_4__.serializeStyles)(args);
 }
 
-function keyframes() {
+var keyframes = function keyframes() {
   var insertable = css.apply(void 0, arguments);
-  var name = "animation-" + insertable.name;
+  var name = "animation-" + insertable.name; // $FlowFixMe
+
   return {
     name: name,
     styles: "@keyframes " + name + "{" + insertable.styles + "}",
@@ -18675,7 +18246,7 @@ function keyframes() {
       return "_EMO_" + this.name + "_" + this.styles + "_EMO_";
     }
   };
-}
+};
 
 var classnames = function classnames(args) {
   var len = args.length;
@@ -18696,7 +18267,7 @@ var classnames = function classnames(args) {
           if (Array.isArray(arg)) {
             toAdd = classnames(arg);
           } else {
-            if (arg.styles !== undefined && arg.name !== undefined) {
+            if ( true && arg.styles !== undefined && arg.name !== undefined) {
               console.error('You have passed styles created with `css` from `@emotion/react` package to the `cx`.\n' + '`cx` is meant to compose class names (strings) so you should convert those styles to a class name by passing them to the `css` received from <ClassNames/> component.');
             }
 
@@ -18752,12 +18323,12 @@ var Insertion = function Insertion(_ref) {
   return null;
 };
 
-var ClassNames = /* #__PURE__ */(0,_emotion_element_489459f2_browser_development_esm_js__WEBPACK_IMPORTED_MODULE_0__.w)(function (props, cache) {
+var ClassNames = /* #__PURE__ */(0,_emotion_element_c39617d8_browser_esm_js__WEBPACK_IMPORTED_MODULE_0__.w)(function (props, cache) {
   var hasRendered = false;
   var serializedArr = [];
 
   var css = function css() {
-    if (hasRendered && isDevelopment) {
+    if (hasRendered && "development" !== 'production') {
       throw new Error('css can only be used during render');
     }
 
@@ -18773,7 +18344,7 @@ var ClassNames = /* #__PURE__ */(0,_emotion_element_489459f2_browser_development
   };
 
   var cx = function cx() {
-    if (hasRendered && isDevelopment) {
+    if (hasRendered && "development" !== 'production') {
       throw new Error('cx can only be used during render');
     }
 
@@ -18787,7 +18358,7 @@ var ClassNames = /* #__PURE__ */(0,_emotion_element_489459f2_browser_development
   var content = {
     css: css,
     cx: cx,
-    theme: react__WEBPACK_IMPORTED_MODULE_1__.useContext(_emotion_element_489459f2_browser_development_esm_js__WEBPACK_IMPORTED_MODULE_0__.T)
+    theme: react__WEBPACK_IMPORTED_MODULE_1__.useContext(_emotion_element_c39617d8_browser_esm_js__WEBPACK_IMPORTED_MODULE_0__.T)
   };
   var ele = props.children(content);
   hasRendered = true;
@@ -18797,18 +18368,19 @@ var ClassNames = /* #__PURE__ */(0,_emotion_element_489459f2_browser_development
   }), ele);
 });
 
-{
+if (true) {
   ClassNames.displayName = 'EmotionClassNames';
 }
 
-{
-  var isBrowser = typeof document !== 'undefined'; // #1727, #2905 for some reason Jest and Vitest evaluate modules twice if some consuming module gets mocked
+if (true) {
+  var isBrowser = "object" !== 'undefined'; // #1727, #2905 for some reason Jest and Vitest evaluate modules twice if some consuming module gets mocked
 
   var isTestEnv = typeof jest !== 'undefined' || typeof vi !== 'undefined';
 
   if (isBrowser && !isTestEnv) {
     // globalThis has wide browser support - https://caniuse.com/?search=globalThis, Node.js 12 and later
-    var globalContext = typeof globalThis !== 'undefined' ? globalThis // eslint-disable-line no-undef
+    var globalContext = // $FlowIgnore
+    typeof globalThis !== 'undefined' ? globalThis // eslint-disable-line no-undef
     : isBrowser ? window : __webpack_require__.g;
     var globalKey = "__EMOTION_REACT_" + pkg.version.split('.')[0] + "__";
 
@@ -18825,10 +18397,10 @@ var ClassNames = /* #__PURE__ */(0,_emotion_element_489459f2_browser_development
 
 /***/ }),
 
-/***/ "./node_modules/@emotion/serialize/dist/emotion-serialize.development.esm.js":
-/*!***********************************************************************************!*\
-  !*** ./node_modules/@emotion/serialize/dist/emotion-serialize.development.esm.js ***!
-  \***********************************************************************************/
+/***/ "./node_modules/@emotion/serialize/dist/emotion-serialize.browser.esm.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/@emotion/serialize/dist/emotion-serialize.browser.esm.js ***!
+  \*******************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -18842,8 +18414,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-var isDevelopment = true;
 
 var ILLEGAL_ESCAPE_SEQUENCE_ERROR = "You have illegal escape sequence in your template literal, most likely inside content's property value.\nBecause you write your CSS inside a JavaScript string you actually have to do double escaping, so for example \"content: '\\00d7';\" should become \"content: '\\\\00d7';\".\nYou can read more about this here:\nhttps://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#ES2018_revision_of_illegal_escape_sequences";
 var UNDEFINED_AS_OBJECT_KEY_ERROR = "You have passed in falsy value as style object's key (can happen when in example you pass unexported component as computed key).";
@@ -18887,7 +18457,7 @@ var processStyleValue = function processStyleValue(key, value) {
   return value;
 };
 
-{
+if (true) {
   var contentValuePattern = /(var|attr|counters?|url|element|(((repeating-)?(linear|radial))|conic)-gradient)\(|(no-)?(open|close)-quote/;
   var contentValues = ['normal', 'none', 'initial', 'inherit', 'unset'];
   var oldProcessStyleValue = processStyleValue;
@@ -18922,14 +18492,12 @@ function handleInterpolation(mergedProps, registered, interpolation) {
     return '';
   }
 
-  var componentSelector = interpolation;
-
-  if (componentSelector.__emotion_styles !== undefined) {
-    if (String(componentSelector) === 'NO_COMPONENT_SELECTOR') {
+  if (interpolation.__emotion_styles !== undefined) {
+    if ( true && interpolation.toString() === 'NO_COMPONENT_SELECTOR') {
       throw new Error(noComponentSelectorMessage);
     }
 
-    return componentSelector;
+    return interpolation;
   }
 
   switch (typeof interpolation) {
@@ -18940,21 +18508,17 @@ function handleInterpolation(mergedProps, registered, interpolation) {
 
     case 'object':
       {
-        var keyframes = interpolation;
-
-        if (keyframes.anim === 1) {
+        if (interpolation.anim === 1) {
           cursor = {
-            name: keyframes.name,
-            styles: keyframes.styles,
+            name: interpolation.name,
+            styles: interpolation.styles,
             next: cursor
           };
-          return keyframes.name;
+          return interpolation.name;
         }
 
-        var serializedStyles = interpolation;
-
-        if (serializedStyles.styles !== undefined) {
-          var next = serializedStyles.next;
+        if (interpolation.styles !== undefined) {
+          var next = interpolation.next;
 
           if (next !== undefined) {
             // not the most efficient thing ever but this is a pretty rare case
@@ -18969,7 +18533,12 @@ function handleInterpolation(mergedProps, registered, interpolation) {
             }
           }
 
-          var styles = serializedStyles.styles + ";";
+          var styles = interpolation.styles + ";";
+
+          if ( true && interpolation.map !== undefined) {
+            styles += interpolation.map;
+          }
+
           return styles;
         }
 
@@ -18983,7 +18552,7 @@ function handleInterpolation(mergedProps, registered, interpolation) {
           var result = interpolation(mergedProps);
           cursor = previousCursor;
           return handleInterpolation(mergedProps, registered, result);
-        } else {
+        } else if (true) {
           console.error('Functions that are interpolated in css calls will be stringified.\n' + 'If you want to have a css call based on props, create a function that returns a css call like this\n' + 'let dynamicStyle = (props) => css`color: ${props.color}`\n' + 'It can be called directly with props or interpolated in a styled call like this\n' + "let SomeComponent = styled('div')`${dynamicStyle}`");
         }
 
@@ -18991,16 +18560,16 @@ function handleInterpolation(mergedProps, registered, interpolation) {
       }
 
     case 'string':
-      {
+      if (true) {
         var matched = [];
-        var replaced = interpolation.replace(animationRegex, function (_match, _p1, p2) {
+        var replaced = interpolation.replace(animationRegex, function (match, p1, p2) {
           var fakeVarName = "animation" + matched.length;
           matched.push("const " + fakeVarName + " = keyframes`" + p2.replace(/^@keyframes animation-\w+/, '') + "`");
           return "${" + fakeVarName + "}";
         });
 
         if (matched.length) {
-          console.error("`keyframes` output got interpolated into plain string, please wrap it with `css`.\n\nInstead of doing this:\n\n" + [].concat(matched, ["`" + replaced + "`"]).join('\n') + "\n\nYou should wrap it with `css` like this:\n\ncss`" + replaced + "`");
+          console.error('`keyframes` output got interpolated into plain string, please wrap it with `css`.\n\n' + 'Instead of doing this:\n\n' + [].concat(matched, ["`" + replaced + "`"]).join('\n') + '\n\nYou should wrap it with `css` like this:\n\n' + ("css`" + replaced + "`"));
         }
       }
 
@@ -19008,14 +18577,12 @@ function handleInterpolation(mergedProps, registered, interpolation) {
   } // finalize string values (regular strings and functions interpolated into css calls)
 
 
-  var asString = interpolation;
-
   if (registered == null) {
-    return asString;
+    return interpolation;
   }
 
-  var cached = registered[asString];
-  return cached !== undefined ? cached : asString;
+  var cached = registered[interpolation];
+  return cached !== undefined ? cached : interpolation;
 }
 
 function createStringFromObject(mergedProps, registered, obj) {
@@ -19026,46 +18593,44 @@ function createStringFromObject(mergedProps, registered, obj) {
       string += handleInterpolation(mergedProps, registered, obj[i]) + ";";
     }
   } else {
-    for (var key in obj) {
-      var value = obj[key];
+    for (var _key in obj) {
+      var value = obj[_key];
 
       if (typeof value !== 'object') {
-        var asString = value;
-
-        if (registered != null && registered[asString] !== undefined) {
-          string += key + "{" + registered[asString] + "}";
-        } else if (isProcessableValue(asString)) {
-          string += processStyleName(key) + ":" + processStyleValue(key, asString) + ";";
+        if (registered != null && registered[value] !== undefined) {
+          string += _key + "{" + registered[value] + "}";
+        } else if (isProcessableValue(value)) {
+          string += processStyleName(_key) + ":" + processStyleValue(_key, value) + ";";
         }
       } else {
-        if (key === 'NO_COMPONENT_SELECTOR' && isDevelopment) {
+        if (_key === 'NO_COMPONENT_SELECTOR' && "development" !== 'production') {
           throw new Error(noComponentSelectorMessage);
         }
 
         if (Array.isArray(value) && typeof value[0] === 'string' && (registered == null || registered[value[0]] === undefined)) {
           for (var _i = 0; _i < value.length; _i++) {
             if (isProcessableValue(value[_i])) {
-              string += processStyleName(key) + ":" + processStyleValue(key, value[_i]) + ";";
+              string += processStyleName(_key) + ":" + processStyleValue(_key, value[_i]) + ";";
             }
           }
         } else {
           var interpolated = handleInterpolation(mergedProps, registered, value);
 
-          switch (key) {
+          switch (_key) {
             case 'animation':
             case 'animationName':
               {
-                string += processStyleName(key) + ":" + interpolated + ";";
+                string += processStyleName(_key) + ":" + interpolated + ";";
                 break;
               }
 
             default:
               {
-                if (key === 'undefined') {
+                if ( true && _key === 'undefined') {
                   console.error(UNDEFINED_AS_OBJECT_KEY_ERROR);
                 }
 
-                string += key + "{" + interpolated + "}";
+                string += _key + "{" + interpolated + "}";
               }
           }
         }
@@ -19076,11 +18641,17 @@ function createStringFromObject(mergedProps, registered, obj) {
   return string;
 }
 
-var labelPattern = /label:\s*([^\s;{]+)\s*(;|$)/g; // this is the cursor for keyframes
+var labelPattern = /label:\s*([^\s;\n{]+)\s*(;|$)/g;
+var sourceMapPattern;
+
+if (true) {
+  sourceMapPattern = /\/\*#\ssourceMappingURL=data:application\/json;\S+\s+\*\//g;
+} // this is the cursor for keyframes
 // keyframes are stored on the SerializedStyles object as a linked list
 
+
 var cursor;
-function serializeStyles(args, registered, mergedProps) {
+var serializeStyles = function serializeStyles(args, registered, mergedProps) {
   if (args.length === 1 && typeof args[0] === 'object' && args[0] !== null && args[0].styles !== undefined) {
     return args[0];
   }
@@ -19094,13 +18665,11 @@ function serializeStyles(args, registered, mergedProps) {
     stringMode = false;
     styles += handleInterpolation(mergedProps, registered, strings);
   } else {
-    var asTemplateStringsArr = strings;
-
-    if (asTemplateStringsArr[0] === undefined) {
+    if ( true && strings[0] === undefined) {
       console.error(ILLEGAL_ESCAPE_SEQUENCE_ERROR);
     }
 
-    styles += asTemplateStringsArr[0];
+    styles += strings[0];
   } // we start at 1 since we've already handled the first arg
 
 
@@ -19108,14 +18677,21 @@ function serializeStyles(args, registered, mergedProps) {
     styles += handleInterpolation(mergedProps, registered, args[i]);
 
     if (stringMode) {
-      var templateStringsArr = strings;
-
-      if (templateStringsArr[i] === undefined) {
+      if ( true && strings[i] === undefined) {
         console.error(ILLEGAL_ESCAPE_SEQUENCE_ERROR);
       }
 
-      styles += templateStringsArr[i];
+      styles += strings[i];
     }
+  }
+
+  var sourceMap;
+
+  if (true) {
+    styles = styles.replace(sourceMapPattern, function (match) {
+      sourceMap = match;
+      return '';
+    });
   } // using a global regex with .exec is stateful so lastIndex has to be reset each time
 
 
@@ -19124,33 +18700,41 @@ function serializeStyles(args, registered, mergedProps) {
   var match; // https://esbench.com/bench/5b809c2cf2949800a0f61fb5
 
   while ((match = labelPattern.exec(styles)) !== null) {
-    identifierName += '-' + match[1];
+    identifierName += '-' + // $FlowFixMe we know it's not null
+    match[1];
   }
 
   var name = (0,_emotion_hash__WEBPACK_IMPORTED_MODULE_0__["default"])(styles) + identifierName;
 
-  {
-    var devStyles = {
+  if (true) {
+    // $FlowFixMe SerializedStyles type doesn't have toString property (and we don't want to add it)
+    return {
       name: name,
       styles: styles,
+      map: sourceMap,
       next: cursor,
       toString: function toString() {
         return "You have tried to stringify object returned from `css` function. It isn't supposed to be used directly (e.g. as value of the `className` prop), but rather handed to emotion so it can handle it (e.g. as value of `css` prop).";
       }
     };
-    return devStyles;
   }
-}
+
+  return {
+    name: name,
+    styles: styles,
+    next: cursor
+  };
+};
 
 
 
 
 /***/ }),
 
-/***/ "./node_modules/@emotion/sheet/dist/emotion-sheet.development.esm.js":
-/*!***************************************************************************!*\
-  !*** ./node_modules/@emotion/sheet/dist/emotion-sheet.development.esm.js ***!
-  \***************************************************************************/
+/***/ "./node_modules/@emotion/sheet/dist/emotion-sheet.browser.esm.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@emotion/sheet/dist/emotion-sheet.browser.esm.js ***!
+  \***********************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -19158,8 +18742,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   StyleSheet: () => (/* binding */ StyleSheet)
 /* harmony export */ });
-var isDevelopment = true;
-
 /*
 
 Based off glamor's StyleSheet, thanks Sunil ❤️
@@ -19182,9 +18764,10 @@ styleSheet.flush()
 - empties the stylesheet of all its contents
 
 */
-
+// $FlowFixMe
 function sheetForTag(tag) {
   if (tag.sheet) {
+    // $FlowFixMe
     return tag.sheet;
   } // this weirdness brought to you by firefox
 
@@ -19193,13 +18776,10 @@ function sheetForTag(tag) {
 
   for (var i = 0; i < document.styleSheets.length; i++) {
     if (document.styleSheets[i].ownerNode === tag) {
+      // $FlowFixMe
       return document.styleSheets[i];
     }
-  } // this function should always return with a value
-  // TS can't understand it though so we make it stop complaining here
-
-
-  return undefined;
+  }
 }
 
 function createStyleElement(options) {
@@ -19240,7 +18820,7 @@ var StyleSheet = /*#__PURE__*/function () {
       _this.tags.push(tag);
     };
 
-    this.isSpeedy = options.speedy === undefined ? !isDevelopment : options.speedy;
+    this.isSpeedy = options.speedy === undefined ? "development" === 'production' : options.speedy;
     this.tags = [];
     this.ctr = 0;
     this.nonce = options.nonce; // key is the value of the data-emotion attribute, it's used to identify different sheets
@@ -19268,7 +18848,7 @@ var StyleSheet = /*#__PURE__*/function () {
 
     var tag = this.tags[this.tags.length - 1];
 
-    {
+    if (true) {
       var isImportRule = rule.charCodeAt(0) === 64 && rule.charCodeAt(1) === 105;
 
       if (isImportRule && this._alreadyInsertedOrderInsensitiveRule) {
@@ -19277,7 +18857,6 @@ var StyleSheet = /*#__PURE__*/function () {
         // so we report this error at all times
         console.error("You're attempting to insert the following rule:\n" + rule + '\n\n`@import` rules must be before all other types of rules in a stylesheet but other rules have already been inserted. Please ensure that `@import` rules are before all other rules.');
       }
-
       this._alreadyInsertedOrderInsensitiveRule = this._alreadyInsertedOrderInsensitiveRule || !isImportRule;
     }
 
@@ -19289,7 +18868,7 @@ var StyleSheet = /*#__PURE__*/function () {
         // the big drawback is that the css won't be editable in devtools
         sheet.insertRule(rule, sheet.cssRules.length);
       } catch (e) {
-        if (!/:(-moz-placeholder|-moz-focus-inner|-moz-focusring|-ms-input-placeholder|-moz-read-write|-moz-read-only|-ms-clear|-ms-expand|-ms-reveal){/.test(rule)) {
+        if ( true && !/:(-moz-placeholder|-moz-focus-inner|-moz-focusring|-ms-input-placeholder|-moz-read-write|-moz-read-only|-ms-clear|-ms-expand|-ms-reveal){/.test(rule)) {
           console.error("There was a problem inserting the following rule: \"" + rule + "\"", e);
         }
       }
@@ -19301,15 +18880,14 @@ var StyleSheet = /*#__PURE__*/function () {
   };
 
   _proto.flush = function flush() {
+    // $FlowFixMe
     this.tags.forEach(function (tag) {
-      var _tag$parentNode;
-
-      return (_tag$parentNode = tag.parentNode) == null ? void 0 : _tag$parentNode.removeChild(tag);
+      return tag.parentNode && tag.parentNode.removeChild(tag);
     });
     this.tags = [];
     this.ctr = 0;
 
-    {
+    if (true) {
       this._alreadyInsertedOrderInsensitiveRule = false;
     }
   };
@@ -19367,7 +18945,6 @@ var unitlessKeys = {
   opacity: 1,
   order: 1,
   orphans: 1,
-  scale: 1,
   tabSize: 1,
   widows: 1,
   zIndex: 1,
@@ -19431,14 +19008,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   insertStyles: () => (/* binding */ insertStyles),
 /* harmony export */   registerStyles: () => (/* binding */ registerStyles)
 /* harmony export */ });
-var isBrowser = true;
-
+var isBrowser = "object" !== 'undefined';
 function getRegisteredStyles(registered, registeredStyles, classNames) {
   var rawClassName = '';
   classNames.split(' ').forEach(function (className) {
     if (registered[className] !== undefined) {
       registeredStyles.push(registered[className] + ";");
-    } else if (className) {
+    } else {
       rawClassName += className + " ";
     }
   });
@@ -19492,11 +19068,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ weakMemoize)
 /* harmony export */ });
 var weakMemoize = function weakMemoize(func) {
+  // $FlowFixMe flow doesn't include all non-primitive types as allowed for weakmaps
   var cache = new WeakMap();
   return function (arg) {
     if (cache.has(arg)) {
-      // Use non-null assertion because we just checked that the cache `has` it
-      // This allows us to remove `undefined` from the return value
+      // $FlowFixMe
       return cache.get(arg);
     }
 
@@ -19521,12 +19097,6 @@ var weakMemoize = function weakMemoize(func) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   UNICODE_EXTENSION_SEQUENCE_REGEX: () => (/* binding */ UNICODE_EXTENSION_SEQUENCE_REGEX),
-/* harmony export */   createDataProperty: () => (/* binding */ createDataProperty),
-/* harmony export */   createMemoizedDateTimeFormat: () => (/* binding */ createMemoizedDateTimeFormat),
-/* harmony export */   createMemoizedListFormat: () => (/* binding */ createMemoizedListFormat),
-/* harmony export */   createMemoizedLocale: () => (/* binding */ createMemoizedLocale),
-/* harmony export */   createMemoizedNumberFormat: () => (/* binding */ createMemoizedNumberFormat),
-/* harmony export */   createMemoizedPluralRules: () => (/* binding */ createMemoizedPluralRules),
 /* harmony export */   defineProperty: () => (/* binding */ defineProperty),
 /* harmony export */   getInternalSlot: () => (/* binding */ getInternalSlot),
 /* harmony export */   getMagnitude: () => (/* binding */ getMagnitude),
@@ -19537,10 +19107,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   setInternalSlot: () => (/* binding */ setInternalSlot),
 /* harmony export */   setMultiInternalSlots: () => (/* binding */ setMultiInternalSlots)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
-/* harmony import */ var _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @formatjs/fast-memoize */ "./node_modules/@formatjs/fast-memoize/lib/index.js");
-
-
 /**
  * Cannot do Math.log(x) / Math.log(10) bc if IEEE floating point issue
  * @param x number
@@ -19612,20 +19178,6 @@ function defineProperty(target, name, _a) {
         value: value,
     });
 }
-/**
- * 7.3.5 CreateDataProperty
- * @param target
- * @param name
- * @param value
- */
-function createDataProperty(target, name, value) {
-    Object.defineProperty(target, name, {
-        configurable: true,
-        enumerable: true,
-        writable: true,
-        value: value,
-    });
-}
 var UNICODE_EXTENSION_SEQUENCE_REGEX = /-u(?:-[0-9a-z]{2,8})+/gi;
 function invariant(condition, message, Err) {
     if (Err === void 0) { Err = Error; }
@@ -19633,56 +19185,6 @@ function invariant(condition, message, Err) {
         throw new Err(message);
     }
 }
-var createMemoizedNumberFormat = (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
-    var _a;
-    var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i] = arguments[_i];
-    }
-    return new ((_a = Intl.NumberFormat).bind.apply(_a, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([void 0], args, false)))();
-}, {
-    strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
-});
-var createMemoizedDateTimeFormat = (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
-    var _a;
-    var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i] = arguments[_i];
-    }
-    return new ((_a = Intl.DateTimeFormat).bind.apply(_a, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([void 0], args, false)))();
-}, {
-    strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
-});
-var createMemoizedPluralRules = (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
-    var _a;
-    var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i] = arguments[_i];
-    }
-    return new ((_a = Intl.PluralRules).bind.apply(_a, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([void 0], args, false)))();
-}, {
-    strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
-});
-var createMemoizedLocale = (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
-    var _a;
-    var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i] = arguments[_i];
-    }
-    return new ((_a = Intl.Locale).bind.apply(_a, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([void 0], args, false)))();
-}, {
-    strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
-});
-var createMemoizedListFormat = (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
-    var _a;
-    var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i] = arguments[_i];
-    }
-    return new ((_a = Intl.ListFormat).bind.apply(_a, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([void 0], args, false)))();
-}, {
-    strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
-});
 
 
 /***/ }),
@@ -19777,7 +19279,7 @@ var strategies = {
     variadic: strategyVariadic,
     monadic: strategyMonadic,
 };
-//# sourceMappingURL=index.js.map
+
 
 /***/ }),
 
@@ -21372,12 +20874,6 @@ var timeData = {
         "H",
         "h"
     ],
-    "419": [
-        "h",
-        "H",
-        "hB",
-        "hb"
-    ],
     "AC": [
         "H",
         "h",
@@ -21426,8 +20922,8 @@ var timeData = {
         "hB"
     ],
     "AR": [
-        "h",
         "H",
+        "h",
         "hB",
         "hb"
     ],
@@ -21517,9 +21013,9 @@ var timeData = {
         "H"
     ],
     "BO": [
-        "h",
         "H",
         "hB",
+        "h",
         "hb"
     ],
     "BQ": [
@@ -21596,8 +21092,8 @@ var timeData = {
         "hB"
     ],
     "CL": [
-        "h",
         "H",
+        "h",
         "hB",
         "hb"
     ],
@@ -21622,14 +21118,14 @@ var timeData = {
         "H"
     ],
     "CR": [
-        "h",
         "H",
+        "h",
         "hB",
         "hb"
     ],
     "CU": [
-        "h",
         "H",
+        "h",
         "hB",
         "hb"
     ],
@@ -21698,9 +21194,9 @@ var timeData = {
         "hb"
     ],
     "EC": [
-        "h",
         "H",
         "hB",
+        "h",
         "hb"
     ],
     "EE": [
@@ -21836,8 +21332,8 @@ var timeData = {
         "hB"
     ],
     "GT": [
-        "h",
         "H",
+        "h",
         "hB",
         "hb"
     ],
@@ -21864,8 +21360,8 @@ var timeData = {
         "H"
     ],
     "HN": [
-        "h",
         "H",
+        "h",
         "hB",
         "hb"
     ],
@@ -22179,8 +21675,8 @@ var timeData = {
         "hB"
     ],
     "MX": [
-        "h",
         "H",
+        "h",
         "hB",
         "hb"
     ],
@@ -22220,8 +21716,8 @@ var timeData = {
         "hB"
     ],
     "NI": [
-        "h",
         "H",
+        "h",
         "hB",
         "hb"
     ],
@@ -22269,9 +21765,9 @@ var timeData = {
         "hb"
     ],
     "PE": [
-        "h",
         "H",
         "hB",
+        "h",
         "hb"
     ],
     "PF": [
@@ -22329,8 +21825,8 @@ var timeData = {
         "H"
     ],
     "PY": [
-        "h",
         "H",
+        "h",
         "hB",
         "hb"
     ],
@@ -22443,8 +21939,8 @@ var timeData = {
         "hB"
     ],
     "SV": [
-        "h",
         "H",
+        "h",
         "hB",
         "hb"
     ],
@@ -22566,8 +22062,8 @@ var timeData = {
         "hB"
     ],
     "UY": [
-        "h",
         "H",
+        "h",
         "hB",
         "hb"
     ],
@@ -22675,25 +22171,19 @@ var timeData = {
         "H",
         "hB"
     ],
-    "en-HK": [
-        "h",
-        "hb",
-        "H",
-        "hB"
-    ],
-    "en-IL": [
+    "es-BO": [
         "H",
         "h",
-        "hb",
-        "hB"
-    ],
-    "en-MY": [
-        "h",
-        "hb",
-        "H",
-        "hB"
+        "hB",
+        "hb"
     ],
     "es-BR": [
+        "H",
+        "h",
+        "hB",
+        "hb"
+    ],
+    "es-EC": [
         "H",
         "h",
         "hB",
@@ -22706,6 +22196,12 @@ var timeData = {
         "hb"
     ],
     "es-GQ": [
+        "H",
+        "h",
+        "hB",
+        "hb"
+    ],
+    "es-PE": [
         "H",
         "h",
         "hB",
@@ -24354,8 +23850,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   IntlMessageFormat: () => (/* binding */ IntlMessageFormat)
 /* harmony export */ });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
-/* harmony import */ var _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @formatjs/fast-memoize */ "./node_modules/@formatjs/fast-memoize/lib/index.js");
-/* harmony import */ var _formatjs_icu_messageformat_parser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @formatjs/icu-messageformat-parser */ "./node_modules/@formatjs/icu-messageformat-parser/lib/index.js");
+/* harmony import */ var _formatjs_icu_messageformat_parser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @formatjs/icu-messageformat-parser */ "./node_modules/@formatjs/icu-messageformat-parser/lib/index.js");
+/* harmony import */ var _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @formatjs/fast-memoize */ "./node_modules/@formatjs/fast-memoize/lib/index.js");
 /* harmony import */ var _formatters__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./formatters */ "./node_modules/@formatjs/intl/node_modules/intl-messageformat/lib/src/formatters.js");
 /*
 Copyright (c) 2014, Yahoo! Inc. All rights reserved.
@@ -24406,7 +23902,7 @@ function createDefaultFormatters(cache) {
         pluralRules: {},
     }; }
     return {
-        getNumberFormat: (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
+        getNumberFormat: (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_1__.memoize)(function () {
             var _a;
             var args = [];
             for (var _i = 0; _i < arguments.length; _i++) {
@@ -24415,9 +23911,9 @@ function createDefaultFormatters(cache) {
             return new ((_a = Intl.NumberFormat).bind.apply(_a, (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__spreadArray)([void 0], args, false)))();
         }, {
             cache: createFastMemoizeCache(cache.number),
-            strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
+            strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_1__.strategies.variadic,
         }),
-        getDateTimeFormat: (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
+        getDateTimeFormat: (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_1__.memoize)(function () {
             var _a;
             var args = [];
             for (var _i = 0; _i < arguments.length; _i++) {
@@ -24426,9 +23922,9 @@ function createDefaultFormatters(cache) {
             return new ((_a = Intl.DateTimeFormat).bind.apply(_a, (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__spreadArray)([void 0], args, false)))();
         }, {
             cache: createFastMemoizeCache(cache.dateTime),
-            strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
+            strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_1__.strategies.variadic,
         }),
-        getPluralRules: (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
+        getPluralRules: (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_1__.memoize)(function () {
             var _a;
             var args = [];
             for (var _i = 0; _i < arguments.length; _i++) {
@@ -24437,14 +23933,14 @@ function createDefaultFormatters(cache) {
             return new ((_a = Intl.PluralRules).bind.apply(_a, (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__spreadArray)([void 0], args, false)))();
         }, {
             cache: createFastMemoizeCache(cache.pluralRules),
-            strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
+            strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_1__.strategies.variadic,
         }),
     };
 }
 var IntlMessageFormat = /** @class */ (function () {
     function IntlMessageFormat(message, locales, overrideFormats, opts) {
-        if (locales === void 0) { locales = IntlMessageFormat.defaultLocale; }
         var _this = this;
+        if (locales === void 0) { locales = IntlMessageFormat.defaultLocale; }
         this.formatterCache = {
             number: {},
             dateTime: {},
@@ -24529,7 +24025,7 @@ var IntlMessageFormat = /** @class */ (function () {
         }
         return new Intl.Locale(typeof locales === 'string' ? locales : locales[0]);
     };
-    IntlMessageFormat.__parse = _formatjs_icu_messageformat_parser__WEBPACK_IMPORTED_MODULE_1__.parse;
+    IntlMessageFormat.__parse = _formatjs_icu_messageformat_parser__WEBPACK_IMPORTED_MODULE_0__.parse;
     // Default format options used as the prototype of the `formats` provided to the
     // constructor. These are used when constructing the internal Intl.NumberFormat
     // and Intl.DateTimeFormat instances.
@@ -24863,6 +24359,42 @@ originalMessage) {
 
 /***/ }),
 
+/***/ "./node_modules/attr-accept/dist/es/index.js":
+/*!***************************************************!*\
+  !*** ./node_modules/attr-accept/dist/es/index.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+exports["default"] = function (file, acceptedFiles) {
+  if (file && acceptedFiles) {
+    var acceptedFilesArray = Array.isArray(acceptedFiles) ? acceptedFiles : acceptedFiles.split(',');
+    var fileName = file.name || '';
+    var mimeType = (file.type || '').toLowerCase();
+    var baseMimeType = mimeType.replace(/\/.*$/, '');
+    return acceptedFilesArray.some(function (type) {
+      var validType = type.trim().toLowerCase();
+
+      if (validType.charAt(0) === '.') {
+        return fileName.toLowerCase().endsWith(validType);
+      } else if (validType.endsWith('/*')) {
+        // This is something like a image/* mime type
+        return baseMimeType === validType.replace(/\/.*$/, '');
+      }
+
+      return mimeType === validType;
+    });
+  }
+
+  return true;
+};
+
+/***/ }),
+
 /***/ "./src/alma-checkout-block/alma-checkout-blocks.js":
 /*!*********************************************************!*\
   !*** ./src/alma-checkout-block/alma-checkout-blocks.js ***!
@@ -24871,18 +24403,19 @@ originalMessage) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../stores/alma-eligibility-store */ "./src/stores/alma-eligibility-store.js");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _hooks_fetchAlmaEligibility__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./hooks/fetchAlmaEligibility */ "./src/alma-checkout-block/hooks/fetchAlmaEligibility.js");
-/* harmony import */ var _components_Label__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/Label */ "./src/alma-checkout-block/components/Label.js");
-/* harmony import */ var _components_DisplayAlmaBlocks__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/DisplayAlmaBlocks */ "./src/alma-checkout-block/components/DisplayAlmaBlocks.js");
-/* harmony import */ var _components_DisplayAlmaInPageBlocks__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/DisplayAlmaInPageBlocks */ "./src/alma-checkout-block/components/DisplayAlmaInPageBlocks.js");
-/* harmony import */ var _alma_checkout_blocks_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./alma-checkout-blocks.css */ "./src/alma-checkout-block/alma-checkout-blocks.css");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../stores/alma-eligibility-store */ "./src/stores/alma-eligibility-store.js");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _hooks_fetchAlmaEligibility__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./hooks/fetchAlmaEligibility */ "./src/alma-checkout-block/hooks/fetchAlmaEligibility.js");
+/* harmony import */ var _components_Label__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/Label */ "./src/alma-checkout-block/components/Label.js");
+/* harmony import */ var _components_DisplayAlmaBlocks__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/DisplayAlmaBlocks */ "./src/alma-checkout-block/components/DisplayAlmaBlocks.js");
+/* harmony import */ var _components_DisplayAlmaInPageBlocks__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/DisplayAlmaInPageBlocks */ "./src/alma-checkout-block/components/DisplayAlmaInPageBlocks.js");
+/* harmony import */ var _alma_checkout_blocks_css__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./alma-checkout-blocks.css */ "./src/alma-checkout-block/alma-checkout-blocks.css");
+
 /**
  * Checkout blocks page.
  *
@@ -24893,7 +24426,6 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 // phpcs:ignoreFile
-
 
 
 
@@ -24913,7 +24445,7 @@ __webpack_require__.r(__webpack_exports__);
     const {
       cartTotal,
       shippingRates
-    } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(select => ({
+    } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => ({
       cartTotal: select(CART_STORE_KEY).getCartTotals().total_price,
       shippingRates: select(CART_STORE_KEY).getShippingRates()
     }), []);
@@ -24921,20 +24453,20 @@ __webpack_require__.r(__webpack_exports__);
     const {
       eligibility,
       isLoading
-    } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(select => ({
-      eligibility: select(_stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_0__.store_key).getAlmaEligibility(),
-      isLoading: select(_stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_0__.store_key).isLoading()
+    } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => ({
+      eligibility: select(_stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_1__.store_key).getAlmaEligibility(),
+      isLoading: select(_stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_1__.store_key).isLoading()
     }), []);
     const {
       isCalculating
-    } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(select => ({
+    } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => ({
       isCalculating: select(CHECKOUT_STORE_KEY).isCalculating()
     }), []);
 
     // Use the cart total to fetch the new eligibility
-    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
       // BlockData is a global variable defined in the PHP file with the wp_localize_script function
-      (0,_hooks_fetchAlmaEligibility__WEBPACK_IMPORTED_MODULE_3__.fetchAlmaEligibility)(_stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_0__.store_key, BlocksData.url);
+      (0,_hooks_fetchAlmaEligibility__WEBPACK_IMPORTED_MODULE_4__.fetchAlmaEligibility)(_stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_1__.store_key, BlocksData.url);
     }, [cartTotal, shippingRates]);
 
     // Register the payment gateway blocks
@@ -24948,7 +24480,7 @@ __webpack_require__.r(__webpack_exports__);
   const reset_payment_gateways = eligibility => {
     for (const gateway in eligibility) {
       const settings = window.wc.wcSettings.getSetting(`${gateway}_data`, null);
-      const Block_Gateway_Alma = generateGatewayBlock(settings, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.Fragment, {}), gateway, false);
+      const Block_Gateway_Alma = generateGatewayBlock(settings, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null), gateway, false);
       window.wc.wcBlocksRegistry.registerPaymentMethod(Block_Gateway_Alma);
     }
   };
@@ -24964,7 +24496,7 @@ __webpack_require__.r(__webpack_exports__);
   const generateGatewayBlock = (settings, blockContent, gateway, canMakePayment) => {
     return {
       name: settings.gateway_name,
-      label: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_Label__WEBPACK_IMPORTED_MODULE_4__.Label, {
+      label: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_Label__WEBPACK_IMPORTED_MODULE_5__.Label, {
         title: window.wp.htmlEntities.decodeEntities(settings.title)
       }),
       content: blockContent,
@@ -24979,15 +24511,15 @@ __webpack_require__.r(__webpack_exports__);
       inPage = inPageInstance;
     };
     const isPayNow = settings.gateway_name === "alma_pay_now" || settings.gateway_name === "alma_in_page_pay_now";
-    return is_in_page ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_DisplayAlmaInPageBlocks__WEBPACK_IMPORTED_MODULE_6__.DisplayAlmaInPageBlocks, {
+    return is_in_page ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_DisplayAlmaInPageBlocks__WEBPACK_IMPORTED_MODULE_7__.DisplayAlmaInPageBlocks, {
       isPayNow: isPayNow,
-      store_key: _stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_0__.store_key,
+      store_key: _stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_1__.store_key,
       settings: settings,
       gateway: gateway,
       setInPage: setInPage
-    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_DisplayAlmaBlocks__WEBPACK_IMPORTED_MODULE_5__.DisplayAlmaBlocks, {
+    }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_DisplayAlmaBlocks__WEBPACK_IMPORTED_MODULE_6__.DisplayAlmaBlocks, {
       isPayNow: isPayNow,
-      store_key: _stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_0__.store_key,
+      store_key: _stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_1__.store_key,
       settings: settings,
       gateway: gateway
     });
@@ -25002,7 +24534,7 @@ __webpack_require__.r(__webpack_exports__);
   const mountReactComponent = () => {
     const rootDiv = document.createElement('div');
     document.body.appendChild(rootDiv);
-    ReactDOM.render(/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(CartObserver, {}), rootDiv);
+    ReactDOM.render((0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(CartObserver, null), rootDiv);
   };
   $(document).ready(() => {
     mountReactComponent();
@@ -25019,9 +24551,9 @@ __webpack_require__.r(__webpack_exports__);
       CHECKOUT_STORE_KEY,
       CART_STORE_KEY
     } = window.wc.wcBlocksData;
-    const store = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.select)(CHECKOUT_STORE_KEY);
-    const cartStore = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.select)(CART_STORE_KEY);
-    const almaStore = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.select)(_stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_0__.store_key);
+    const store = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.select)(CHECKOUT_STORE_KEY);
+    const cartStore = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.select)(CART_STORE_KEY);
+    const almaStore = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.select)(_stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_1__.store_key);
     const dataTest = {
       hasError: store.hasError(),
       redirectUrl: store.getRedirectUrl(),
@@ -25120,13 +24652,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   DisplayAlmaBlocks: () => (/* binding */ DisplayAlmaBlocks)
 /* harmony export */ });
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _alma_blocks_component_tsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./alma-blocks-component.tsx */ "./src/alma-checkout-block/components/alma-blocks-component.tsx");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _alma_blocks_component_tsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./alma-blocks-component.tsx */ "./src/alma-checkout-block/components/alma-blocks-component.tsx");
 
 
 
@@ -25149,13 +24681,13 @@ const DisplayAlmaBlocks = props => {
   } = window.wc.wcBlocksData;
   const {
     cartTotal
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.useSelect)(select => ({
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
     cartTotal: select(CART_STORE_KEY).getCartTotals()
   }), []);
   const {
     eligibility,
     isLoading
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.useSelect)(select => ({
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
     eligibility: select(store_key).getAlmaEligibility(),
     isLoading: select(store_key).isLoading()
   }), []);
@@ -25165,11 +24697,11 @@ const DisplayAlmaBlocks = props => {
   if (!isLoading && Object.keys(eligibility[gateway] || {}).length > 0) {
     default_plan = Object.keys(eligibility[gateway])[0];
   }
-  const [selectedFeePlan, setSelectedFeePlan] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(default_plan);
+  const [selectedFeePlan, setSelectedFeePlan] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(default_plan);
   const plan = !isLoading ? (_eligibility$gateway$ = eligibility[gateway]?.[selectedFeePlan]) !== null && _eligibility$gateway$ !== void 0 ? _eligibility$gateway$ : eligibility[gateway]?.[default_plan] : null;
 
   // Always define useEffect, regardless of `isLoading`
-  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
     if (isLoading || !plan) return; // Skip if still loading or no plan
 
     const unsubscribe = onPaymentSetup(() => {
@@ -25192,7 +24724,7 @@ const DisplayAlmaBlocks = props => {
       unsubscribe();
     };
   }, [eligibility, onPaymentSetup, selectedFeePlan, plan, isLoading]);
-  return isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {}) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_alma_blocks_component_tsx__WEBPACK_IMPORTED_MODULE_2__.AlmaBlocks, {
+  return isLoading ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_alma_blocks_component_tsx__WEBPACK_IMPORTED_MODULE_3__.AlmaBlocks, {
     hasInPage: settings.is_in_page,
     isPayNow: isPayNow,
     totalPrice: cartTotal.total_price,
@@ -25216,13 +24748,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   DisplayAlmaInPageBlocks: () => (/* binding */ DisplayAlmaInPageBlocks)
 /* harmony export */ });
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _alma_blocks_component_tsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./alma-blocks-component.tsx */ "./src/alma-checkout-block/components/alma-blocks-component.tsx");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _alma_blocks_component_tsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./alma-blocks-component.tsx */ "./src/alma-checkout-block/components/alma-blocks-component.tsx");
 
 
 
@@ -25241,13 +24773,13 @@ const DisplayAlmaInPageBlocks = props => {
   } = window.wc.wcBlocksData;
   const {
     cartTotal
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.useSelect)(select => ({
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
     cartTotal: select(CART_STORE_KEY).getCartTotals()
   }), []);
   const {
     eligibility,
     isLoading
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.useSelect)(select => ({
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
     eligibility: select(store_key).getAlmaEligibility(),
     isLoading: select(store_key).isLoading()
   }), []);
@@ -25258,11 +24790,11 @@ const DisplayAlmaInPageBlocks = props => {
     // default plan is the first plan
     default_plan = Object.keys(eligibility[gateway])[0];
   }
-  const [selectedFeePlan, setSelectedFeePlan] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(default_plan);
+  const [selectedFeePlan, setSelectedFeePlan] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(default_plan);
   const plan = !isLoading ? (_eligibility$gateway$ = eligibility[gateway]?.[selectedFeePlan]) !== null && _eligibility$gateway$ !== void 0 ? _eligibility$gateway$ : eligibility[gateway]?.[default_plan] : null;
-  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
     // Transfer the selected fee plan to the alma redux store
-    (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.dispatch)(store_key).setSelectedFeePlan(selectedFeePlan);
+    (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.dispatch)(store_key).setSelectedFeePlan(selectedFeePlan);
   }, [selectedFeePlan]);
   let inPage = undefined;
   function initializeInpage(settingsInPage, total_price) {
@@ -25281,29 +24813,27 @@ const DisplayAlmaInPageBlocks = props => {
     });
     setInPage(inPage);
   }
-  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
     if (!isLoading && plan) {
       setSelectedFeePlan(plan.planKey);
       initializeInpage(settings, cartTotal.total_price);
     }
   }, [selectedFeePlan, cartTotal, isLoading]);
   const displayInstallments = isPayNow ? 'none' : 'block';
-  return isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {}) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_alma_blocks_component_tsx__WEBPACK_IMPORTED_MODULE_2__.AlmaBlocks, {
-      hasInPage: settings.is_in_page,
-      isPayNow: isPayNow,
-      totalPrice: cartTotal.total_price,
-      settings: settings,
-      selectedFeePlan: plan.planKey,
-      setSelectedFeePlan: setSelectedFeePlan,
-      plans: eligibility[gateway]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-      id: "alma-inpage-alma_in_page",
-      style: {
-        display: displayInstallments
-      }
-    })]
-  });
+  return isLoading ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_alma_blocks_component_tsx__WEBPACK_IMPORTED_MODULE_3__.AlmaBlocks, {
+    hasInPage: settings.is_in_page,
+    isPayNow: isPayNow,
+    totalPrice: cartTotal.total_price,
+    settings: settings,
+    selectedFeePlan: plan.planKey,
+    setSelectedFeePlan: setSelectedFeePlan,
+    plans: eligibility[gateway]
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    id: "alma-inpage-alma_in_page",
+    style: {
+      display: displayInstallments
+    }
+  }));
 };
 
 /***/ }),
@@ -25321,12 +24851,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/src/components/message.js");
-/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/index.js");
+/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/src/components/message.js");
+/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/index.js");
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__);
 
 
 
@@ -25340,34 +24868,30 @@ const Installment = ({
 }) => {
   const date = new Date(due_date * 1000);
   const isToday = localized_due_date === "today";
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()("installmentContent", {
       firstInstallmentContent: isToday
-    }),
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()("bullet", {
-        firstBullet: isToday
-      })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-      className: "installment",
-      "data-testid": "installment",
-      children: [isToday ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_intl__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        id: "installments.today",
-        defaultMessage: "Today"
-      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_intl__WEBPACK_IMPORTED_MODULE_4__.FormattedDate, {
-        value: date,
-        day: "numeric",
-        month: "long",
-        year: "numeric"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_intl__WEBPACK_IMPORTED_MODULE_4__.FormattedNumber, {
-          value: totalAmountInEuros,
-          style: "currency",
-          currency: "EUR"
-        })
-      })]
-    })]
-  });
+    })
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()("bullet", {
+      firstBullet: isToday
+    })
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "installment",
+    "data-testid": "installment"
+  }, isToday ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_intl__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    id: "installments.today",
+    defaultMessage: "Today"
+  }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_intl__WEBPACK_IMPORTED_MODULE_3__.FormattedDate, {
+    value: date,
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_intl__WEBPACK_IMPORTED_MODULE_3__.FormattedNumber, {
+    value: totalAmountInEuros,
+    style: "currency",
+    currency: "EUR"
+  }))));
 };
 
 /***/ }),
@@ -25383,12 +24907,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Installments: () => (/* binding */ Installments)
 /* harmony export */ });
-/* harmony import */ var _alma_react_components__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @alma/react-components */ "./node_modules/@alma/react-components/dist/lib.es.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _alma_react_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @alma/react-components */ "./node_modules/@alma/react-components/dist/lib.es.js");
 /* harmony import */ var _InstallmentsContent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InstallmentsContent */ "./src/alma-checkout-block/components/Installments/InstallmentsContent.tsx");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__);
 
 
 
@@ -25397,15 +24919,14 @@ const Installments = ({
   feePlan,
   amountInCents
 }) => {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_alma_react_components__WEBPACK_IMPORTED_MODULE_0__.CardTemplate, {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_alma_react_components__WEBPACK_IMPORTED_MODULE_1__.CardTemplate, {
     "data-testid": "cardInstallments",
     padding: "sm",
-    header: null,
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_InstallmentsContent__WEBPACK_IMPORTED_MODULE_2__.InstallmentsContent, {
-      feePlan: feePlan,
-      amountInCents: amountInCents
-    })
-  });
+    header: null
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_InstallmentsContent__WEBPACK_IMPORTED_MODULE_2__.InstallmentsContent, {
+    feePlan: feePlan,
+    amountInCents: amountInCents
+  }));
 };
 
 /***/ }),
@@ -25428,8 +24949,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _InstallmentsTotal_InstallmentsTotal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./InstallmentsTotal/InstallmentsTotal */ "./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotal.tsx");
 /* harmony import */ var _InstallmentsTotal_InstallmentsTotalFees__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./InstallmentsTotal/InstallmentsTotalFees */ "./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotalFees.tsx");
 /* harmony import */ var _Installments_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Installments.css */ "./src/alma-checkout-block/components/Installments/Installments.css");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__);
 
 
 
@@ -25448,28 +24967,24 @@ const InstallmentsContent = ({
   const centsToEuros = cents => {
     return cents / 100;
   };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-      className: "separator"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-      className: "installments",
-      children: feePlan.paymentPlan.map((installment, index) => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Installment__WEBPACK_IMPORTED_MODULE_1__.Installment, {
-        installment: installment,
-        totalAmountInEuros: centsToEuros(installment.total_amount)
-      }, index))
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-      className: "footerCard",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(_alma_react_components__WEBPACK_IMPORTED_MODULE_2__.CardFooter, {
-        className: "footer",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_InstallmentsTotal_InstallmentsTotal__WEBPACK_IMPORTED_MODULE_3__.InstallmentsTotal, {
-          totalAmount: amountInCents,
-          customerFees: customerFees
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_InstallmentsTotal_InstallmentsTotalFees__WEBPACK_IMPORTED_MODULE_4__.InstallmentsTotalFees, {
-          customerFees: customerFees
-        })]
-      })
-    })]
-  });
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "separator"
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "installments"
+  }, feePlan.paymentPlan.map((installment, index) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Installment__WEBPACK_IMPORTED_MODULE_1__.Installment, {
+    key: index,
+    installment: installment,
+    totalAmountInEuros: centsToEuros(installment.total_amount)
+  }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "footerCard"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_alma_react_components__WEBPACK_IMPORTED_MODULE_2__.CardFooter, {
+    className: "footer"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_InstallmentsTotal_InstallmentsTotal__WEBPACK_IMPORTED_MODULE_3__.InstallmentsTotal, {
+    totalAmount: amountInCents,
+    customerFees: customerFees
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_InstallmentsTotal_InstallmentsTotalFees__WEBPACK_IMPORTED_MODULE_4__.InstallmentsTotalFees, {
+    customerFees: customerFees
+  }))));
 };
 
 /***/ }),
@@ -25487,11 +25002,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/src/components/message.js");
-/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/index.js");
+/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/src/components/message.js");
+/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/index.js");
 /* harmony import */ var _InstallmentsTotal_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./InstallmentsTotal.css */ "./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotal.css");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__);
 
 
 
@@ -25501,21 +25014,16 @@ const InstallmentsTotal = ({
   customerFees
 }) => {
   const totalAmountIncludingFees = totalAmount / 100 + customerFees / 100;
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-    className: "total",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_intl__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        id: "installments.total",
-        defaultMessage: "Total TTC"
-      })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_intl__WEBPACK_IMPORTED_MODULE_4__.FormattedNumber, {
-        value: totalAmountIncludingFees,
-        style: "currency",
-        currency: "EUR"
-      })
-    })]
-  });
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "total"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_intl__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    id: "installments.total",
+    defaultMessage: "Total TTC"
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_intl__WEBPACK_IMPORTED_MODULE_3__.FormattedNumber, {
+    value: totalAmountIncludingFees,
+    style: "currency",
+    currency: "EUR"
+  })));
 };
 
 /***/ }),
@@ -25534,28 +25042,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _InstallmentsTotal_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./InstallmentsTotal.css */ "./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotal.css");
-/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/index.js");
 
 
 
 
 const InstallmentsTotalFees = ({
   customerFees
-}) => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-  className: "fees",
-  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-    children: "Payment costs"
-  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-    className: "feesNumbers",
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_intl__WEBPACK_IMPORTED_MODULE_3__.FormattedNumber, {
-      value: customerFees / 100,
-      style: "currency",
-      currency: "EUR"
-    })
-  })]
-});
+}) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  className: "fees"
+}, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Payment costs"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  className: "feesNumbers"
+}, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_intl__WEBPACK_IMPORTED_MODULE_2__.FormattedNumber, {
+  value: customerFees / 100,
+  style: "currency",
+  currency: "EUR"
+})));
 
 /***/ }),
 
@@ -25570,9 +25072,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Label: () => (/* binding */ Label)
 /* harmony export */ });
-/* harmony import */ var _alma_react_components__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @alma/react-components */ "./node_modules/@alma/react-components/dist/lib.es.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _alma_react_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @alma/react-components */ "./node_modules/@alma/react-components/dist/lib.es.js");
 
 
 const Label = props => {
@@ -25583,23 +25085,20 @@ const Label = props => {
   const {
     PaymentMethodLabel
   } = components;
-  const icon = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_alma_react_components__WEBPACK_IMPORTED_MODULE_0__.Logo, {
+  const icon = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_alma_react_components__WEBPACK_IMPORTED_MODULE_1__.Logo, {
     style: {
       width: 'auto',
       height: '1em'
     },
     logo: "alma-orange"
   });
-  const text = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
-    children: [" ", title, " "]
-  });
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
-    className: "paymentMethodLabel",
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(PaymentMethodLabel, {
-      text: text,
-      icon: icon
-    })
-  });
+  const text = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, " ", title, " ");
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "paymentMethodLabel"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(PaymentMethodLabel, {
+    text: text,
+    icon: icon
+  }));
 };
 
 /***/ }),
@@ -25615,18 +25114,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AlmaBlocks: () => (/* binding */ AlmaBlocks)
 /* harmony export */ });
-/* harmony import */ var _alma_react_components_style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @alma/react-components/style.css */ "./node_modules/@alma/react-components/dist/style.css");
-/* harmony import */ var _alma_react_components_global_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @alma/react-components/global.css */ "./node_modules/@alma/react-components/dist/global.css");
-/* harmony import */ var _alma_checkout_blocks_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../alma-checkout-blocks.css */ "./src/alma-checkout-block/alma-checkout-blocks.css");
-/* harmony import */ var _alma_react_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @alma/react-components */ "./node_modules/@alma/react-components/dist/lib.es.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _alma_react_components_style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @alma/react-components/style.css */ "./node_modules/@alma/react-components/dist/style.css");
+/* harmony import */ var _alma_react_components_global_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @alma/react-components/global.css */ "./node_modules/@alma/react-components/dist/global.css");
+/* harmony import */ var _alma_checkout_blocks_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../alma-checkout-blocks.css */ "./src/alma-checkout-block/alma-checkout-blocks.css");
+/* harmony import */ var _alma_react_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @alma/react-components */ "./node_modules/@alma/react-components/dist/lib.es.js");
 /* harmony import */ var _Installments_Installments__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Installments/Installments */ "./src/alma-checkout-block/components/Installments/Installments.tsx");
-/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/src/components/provider.js");
+/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/src/components/provider.js");
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__);
+
 /**
  * Checkout blocks component.
  *
@@ -25635,7 +25133,6 @@ __webpack_require__.r(__webpack_exports__);
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/assets
  */
-
 
 
 
@@ -25671,42 +25168,36 @@ const AlmaBlocks = ({
   const handleClick = optionKey => {
     setSelectedFeePlan(optionKey);
   };
-  const label = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-    className: "toggleButtonFieldLabel",
-    children: settings.description
-  });
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(react_intl__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    locale: "fr",
-    children: [isPayNow && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-      className: "payNowLabel",
-      children: label
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-      className: "buttonsContainer",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-        className: classnames__WEBPACK_IMPORTED_MODULE_6___default()({
-          payNow: isPayNow
-        }),
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_alma_react_components__WEBPACK_IMPORTED_MODULE_3__.ToggleButtonsField, {
-          className: "toggleButtonField",
-          options: values,
-          optionLabel: key => labels[key],
-          optionKey: key => key,
-          onChange: key => handleClick(key),
-          value: selectedFeePlan,
-          label: label,
-          wide: false,
-          size: "sm",
-          error: ""
-        })
-      })
-    }), !hasInPage && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-      className: "alma-card-installments",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Installments_Installments__WEBPACK_IMPORTED_MODULE_5__.Installments, {
-        feePlan: plans[selectedFeePlan],
-        amountInCents: totalPrice
-      })
-    })]
-  });
+  const label = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "toggleButtonFieldLabel"
+  }, settings.description);
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_intl__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    locale: "fr"
+  }, isPayNow && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "payNowLabel"
+  }, label), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "buttonsContainer"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: classnames__WEBPACK_IMPORTED_MODULE_6___default()({
+      payNow: isPayNow
+    })
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_alma_react_components__WEBPACK_IMPORTED_MODULE_4__.ToggleButtonsField, {
+    className: "toggleButtonField",
+    options: values,
+    optionLabel: key => labels[key],
+    optionKey: key => key,
+    onChange: key => handleClick(key),
+    value: selectedFeePlan,
+    label: label,
+    wide: false,
+    size: "sm",
+    error: ""
+  }))), !hasInPage && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "alma-card-installments"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Installments_Installments__WEBPACK_IMPORTED_MODULE_5__.Installments, {
+    feePlan: plans[selectedFeePlan],
+    amountInCents: totalPrice
+  })));
 };
 
 /***/ }),
@@ -25852,7 +25343,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_is__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-is */ "./node_modules/react-is/index.js");
+/* harmony import */ var react_is__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-is */ "./node_modules/downshift/node_modules/react-is/index.js");
 /* harmony import */ var compute_scroll_into_view__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! compute-scroll-into-view */ "./node_modules/compute-scroll-into-view/dist/index.mjs");
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
 
@@ -30181,6 +29672,259 @@ function useMultipleSelection(userProps) {
 
 /***/ }),
 
+/***/ "./node_modules/downshift/node_modules/react-is/cjs/react-is.development.js":
+/*!**********************************************************************************!*\
+  !*** ./node_modules/downshift/node_modules/react-is/cjs/react-is.development.js ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+/** @license React v17.0.2
+ * react-is.development.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+if (true) {
+  (function() {
+'use strict';
+
+// ATTENTION
+// When adding new symbols to this file,
+// Please consider also adding to 'react-devtools-shared/src/backend/ReactSymbols'
+// The Symbol used to tag the ReactElement-like types. If there is no native Symbol
+// nor polyfill, then a plain number is used for performance.
+var REACT_ELEMENT_TYPE = 0xeac7;
+var REACT_PORTAL_TYPE = 0xeaca;
+var REACT_FRAGMENT_TYPE = 0xeacb;
+var REACT_STRICT_MODE_TYPE = 0xeacc;
+var REACT_PROFILER_TYPE = 0xead2;
+var REACT_PROVIDER_TYPE = 0xeacd;
+var REACT_CONTEXT_TYPE = 0xeace;
+var REACT_FORWARD_REF_TYPE = 0xead0;
+var REACT_SUSPENSE_TYPE = 0xead1;
+var REACT_SUSPENSE_LIST_TYPE = 0xead8;
+var REACT_MEMO_TYPE = 0xead3;
+var REACT_LAZY_TYPE = 0xead4;
+var REACT_BLOCK_TYPE = 0xead9;
+var REACT_SERVER_BLOCK_TYPE = 0xeada;
+var REACT_FUNDAMENTAL_TYPE = 0xead5;
+var REACT_SCOPE_TYPE = 0xead7;
+var REACT_OPAQUE_ID_TYPE = 0xeae0;
+var REACT_DEBUG_TRACING_MODE_TYPE = 0xeae1;
+var REACT_OFFSCREEN_TYPE = 0xeae2;
+var REACT_LEGACY_HIDDEN_TYPE = 0xeae3;
+
+if (typeof Symbol === 'function' && Symbol.for) {
+  var symbolFor = Symbol.for;
+  REACT_ELEMENT_TYPE = symbolFor('react.element');
+  REACT_PORTAL_TYPE = symbolFor('react.portal');
+  REACT_FRAGMENT_TYPE = symbolFor('react.fragment');
+  REACT_STRICT_MODE_TYPE = symbolFor('react.strict_mode');
+  REACT_PROFILER_TYPE = symbolFor('react.profiler');
+  REACT_PROVIDER_TYPE = symbolFor('react.provider');
+  REACT_CONTEXT_TYPE = symbolFor('react.context');
+  REACT_FORWARD_REF_TYPE = symbolFor('react.forward_ref');
+  REACT_SUSPENSE_TYPE = symbolFor('react.suspense');
+  REACT_SUSPENSE_LIST_TYPE = symbolFor('react.suspense_list');
+  REACT_MEMO_TYPE = symbolFor('react.memo');
+  REACT_LAZY_TYPE = symbolFor('react.lazy');
+  REACT_BLOCK_TYPE = symbolFor('react.block');
+  REACT_SERVER_BLOCK_TYPE = symbolFor('react.server.block');
+  REACT_FUNDAMENTAL_TYPE = symbolFor('react.fundamental');
+  REACT_SCOPE_TYPE = symbolFor('react.scope');
+  REACT_OPAQUE_ID_TYPE = symbolFor('react.opaque.id');
+  REACT_DEBUG_TRACING_MODE_TYPE = symbolFor('react.debug_trace_mode');
+  REACT_OFFSCREEN_TYPE = symbolFor('react.offscreen');
+  REACT_LEGACY_HIDDEN_TYPE = symbolFor('react.legacy_hidden');
+}
+
+// Filter certain DOM attributes (e.g. src, href) if their values are empty strings.
+
+var enableScopeAPI = false; // Experimental Create Event Handle API.
+
+function isValidElementType(type) {
+  if (typeof type === 'string' || typeof type === 'function') {
+    return true;
+  } // Note: typeof might be other than 'symbol' or 'number' (e.g. if it's a polyfill).
+
+
+  if (type === REACT_FRAGMENT_TYPE || type === REACT_PROFILER_TYPE || type === REACT_DEBUG_TRACING_MODE_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || type === REACT_LEGACY_HIDDEN_TYPE || enableScopeAPI ) {
+    return true;
+  }
+
+  if (typeof type === 'object' && type !== null) {
+    if (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_BLOCK_TYPE || type[0] === REACT_SERVER_BLOCK_TYPE) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function typeOf(object) {
+  if (typeof object === 'object' && object !== null) {
+    var $$typeof = object.$$typeof;
+
+    switch ($$typeof) {
+      case REACT_ELEMENT_TYPE:
+        var type = object.type;
+
+        switch (type) {
+          case REACT_FRAGMENT_TYPE:
+          case REACT_PROFILER_TYPE:
+          case REACT_STRICT_MODE_TYPE:
+          case REACT_SUSPENSE_TYPE:
+          case REACT_SUSPENSE_LIST_TYPE:
+            return type;
+
+          default:
+            var $$typeofType = type && type.$$typeof;
+
+            switch ($$typeofType) {
+              case REACT_CONTEXT_TYPE:
+              case REACT_FORWARD_REF_TYPE:
+              case REACT_LAZY_TYPE:
+              case REACT_MEMO_TYPE:
+              case REACT_PROVIDER_TYPE:
+                return $$typeofType;
+
+              default:
+                return $$typeof;
+            }
+
+        }
+
+      case REACT_PORTAL_TYPE:
+        return $$typeof;
+    }
+  }
+
+  return undefined;
+}
+var ContextConsumer = REACT_CONTEXT_TYPE;
+var ContextProvider = REACT_PROVIDER_TYPE;
+var Element = REACT_ELEMENT_TYPE;
+var ForwardRef = REACT_FORWARD_REF_TYPE;
+var Fragment = REACT_FRAGMENT_TYPE;
+var Lazy = REACT_LAZY_TYPE;
+var Memo = REACT_MEMO_TYPE;
+var Portal = REACT_PORTAL_TYPE;
+var Profiler = REACT_PROFILER_TYPE;
+var StrictMode = REACT_STRICT_MODE_TYPE;
+var Suspense = REACT_SUSPENSE_TYPE;
+var hasWarnedAboutDeprecatedIsAsyncMode = false;
+var hasWarnedAboutDeprecatedIsConcurrentMode = false; // AsyncMode should be deprecated
+
+function isAsyncMode(object) {
+  {
+    if (!hasWarnedAboutDeprecatedIsAsyncMode) {
+      hasWarnedAboutDeprecatedIsAsyncMode = true; // Using console['warn'] to evade Babel and ESLint
+
+      console['warn']('The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 18+.');
+    }
+  }
+
+  return false;
+}
+function isConcurrentMode(object) {
+  {
+    if (!hasWarnedAboutDeprecatedIsConcurrentMode) {
+      hasWarnedAboutDeprecatedIsConcurrentMode = true; // Using console['warn'] to evade Babel and ESLint
+
+      console['warn']('The ReactIs.isConcurrentMode() alias has been deprecated, ' + 'and will be removed in React 18+.');
+    }
+  }
+
+  return false;
+}
+function isContextConsumer(object) {
+  return typeOf(object) === REACT_CONTEXT_TYPE;
+}
+function isContextProvider(object) {
+  return typeOf(object) === REACT_PROVIDER_TYPE;
+}
+function isElement(object) {
+  return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+}
+function isForwardRef(object) {
+  return typeOf(object) === REACT_FORWARD_REF_TYPE;
+}
+function isFragment(object) {
+  return typeOf(object) === REACT_FRAGMENT_TYPE;
+}
+function isLazy(object) {
+  return typeOf(object) === REACT_LAZY_TYPE;
+}
+function isMemo(object) {
+  return typeOf(object) === REACT_MEMO_TYPE;
+}
+function isPortal(object) {
+  return typeOf(object) === REACT_PORTAL_TYPE;
+}
+function isProfiler(object) {
+  return typeOf(object) === REACT_PROFILER_TYPE;
+}
+function isStrictMode(object) {
+  return typeOf(object) === REACT_STRICT_MODE_TYPE;
+}
+function isSuspense(object) {
+  return typeOf(object) === REACT_SUSPENSE_TYPE;
+}
+
+exports.ContextConsumer = ContextConsumer;
+exports.ContextProvider = ContextProvider;
+exports.Element = Element;
+exports.ForwardRef = ForwardRef;
+exports.Fragment = Fragment;
+exports.Lazy = Lazy;
+exports.Memo = Memo;
+exports.Portal = Portal;
+exports.Profiler = Profiler;
+exports.StrictMode = StrictMode;
+exports.Suspense = Suspense;
+exports.isAsyncMode = isAsyncMode;
+exports.isConcurrentMode = isConcurrentMode;
+exports.isContextConsumer = isContextConsumer;
+exports.isContextProvider = isContextProvider;
+exports.isElement = isElement;
+exports.isForwardRef = isForwardRef;
+exports.isFragment = isFragment;
+exports.isLazy = isLazy;
+exports.isMemo = isMemo;
+exports.isPortal = isPortal;
+exports.isProfiler = isProfiler;
+exports.isStrictMode = isStrictMode;
+exports.isSuspense = isSuspense;
+exports.isValidElementType = isValidElementType;
+exports.typeOf = typeOf;
+  })();
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/downshift/node_modules/react-is/index.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/downshift/node_modules/react-is/index.js ***!
+  \***************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+if (false) {} else {
+  module.exports = __webpack_require__(/*! ./cjs/react-is.development.js */ "./node_modules/downshift/node_modules/react-is/cjs/react-is.development.js");
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/exenv/index.js":
 /*!*************************************!*\
   !*** ./node_modules/exenv/index.js ***!
@@ -30225,6 +29969,372 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 }());
 
+
+/***/ }),
+
+/***/ "./node_modules/file-selector/dist/es5/file-selector.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/file-selector/dist/es5/file-selector.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   fromEvent: () => (/* binding */ fromEvent)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
+/* harmony import */ var _file__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./file */ "./node_modules/file-selector/dist/es5/file.js");
+
+
+var FILES_TO_IGNORE = [
+    // Thumbnail cache files for macOS and Windows
+    '.DS_Store',
+    'Thumbs.db' // Windows
+];
+/**
+ * Convert a DragEvent's DataTrasfer object to a list of File objects
+ * NOTE: If some of the items are folders,
+ * everything will be flattened and placed in the same list but the paths will be kept as a {path} property.
+ *
+ * EXPERIMENTAL: A list of https://developer.mozilla.org/en-US/docs/Web/API/FileSystemHandle objects can also be passed as an arg
+ * and a list of File objects will be returned.
+ *
+ * @param evt
+ */
+function fromEvent(evt) {
+    return (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__awaiter)(this, void 0, void 0, function () {
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__generator)(this, function (_a) {
+            if (isObject(evt) && isDataTransfer(evt.dataTransfer)) {
+                return [2 /*return*/, getDataTransferFiles(evt.dataTransfer, evt.type)];
+            }
+            else if (isChangeEvt(evt)) {
+                return [2 /*return*/, getInputFiles(evt)];
+            }
+            else if (Array.isArray(evt) && evt.every(function (item) { return 'getFile' in item && typeof item.getFile === 'function'; })) {
+                return [2 /*return*/, getFsHandleFiles(evt)];
+            }
+            return [2 /*return*/, []];
+        });
+    });
+}
+function isDataTransfer(value) {
+    return isObject(value);
+}
+function isChangeEvt(value) {
+    return isObject(value) && isObject(value.target);
+}
+function isObject(v) {
+    return typeof v === 'object' && v !== null;
+}
+function getInputFiles(evt) {
+    return fromList(evt.target.files).map(function (file) { return (0,_file__WEBPACK_IMPORTED_MODULE_0__.toFileWithPath)(file); });
+}
+// Ee expect each handle to be https://developer.mozilla.org/en-US/docs/Web/API/FileSystemFileHandle
+function getFsHandleFiles(handles) {
+    return (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__awaiter)(this, void 0, void 0, function () {
+        var files;
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__generator)(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, Promise.all(handles.map(function (h) { return h.getFile(); }))];
+                case 1:
+                    files = _a.sent();
+                    return [2 /*return*/, files.map(function (file) { return (0,_file__WEBPACK_IMPORTED_MODULE_0__.toFileWithPath)(file); })];
+            }
+        });
+    });
+}
+function getDataTransferFiles(dt, type) {
+    return (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__awaiter)(this, void 0, void 0, function () {
+        var items, files;
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__generator)(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!dt.items) return [3 /*break*/, 2];
+                    items = fromList(dt.items)
+                        .filter(function (item) { return item.kind === 'file'; });
+                    // According to https://html.spec.whatwg.org/multipage/dnd.html#dndevents,
+                    // only 'dragstart' and 'drop' has access to the data (source node)
+                    if (type !== 'drop') {
+                        return [2 /*return*/, items];
+                    }
+                    return [4 /*yield*/, Promise.all(items.map(toFilePromises))];
+                case 1:
+                    files = _a.sent();
+                    return [2 /*return*/, noIgnoredFiles(flatten(files))];
+                case 2: return [2 /*return*/, noIgnoredFiles(fromList(dt.files)
+                        .map(function (file) { return (0,_file__WEBPACK_IMPORTED_MODULE_0__.toFileWithPath)(file); }))];
+            }
+        });
+    });
+}
+function noIgnoredFiles(files) {
+    return files.filter(function (file) { return FILES_TO_IGNORE.indexOf(file.name) === -1; });
+}
+// IE11 does not support Array.from()
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from#Browser_compatibility
+// https://developer.mozilla.org/en-US/docs/Web/API/FileList
+// https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItemList
+function fromList(items) {
+    if (items === null) {
+        return [];
+    }
+    var files = [];
+    // tslint:disable: prefer-for-of
+    for (var i = 0; i < items.length; i++) {
+        var file = items[i];
+        files.push(file);
+    }
+    return files;
+}
+// https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem
+function toFilePromises(item) {
+    if (typeof item.webkitGetAsEntry !== 'function') {
+        return fromDataTransferItem(item);
+    }
+    var entry = item.webkitGetAsEntry();
+    // Safari supports dropping an image node from a different window and can be retrieved using
+    // the DataTransferItem.getAsFile() API
+    // NOTE: FileSystemEntry.file() throws if trying to get the file
+    if (entry && entry.isDirectory) {
+        return fromDirEntry(entry);
+    }
+    return fromDataTransferItem(item);
+}
+function flatten(items) {
+    return items.reduce(function (acc, files) { return (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([], (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__read)(acc), false), (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__read)((Array.isArray(files) ? flatten(files) : [files])), false); }, []);
+}
+function fromDataTransferItem(item) {
+    var file = item.getAsFile();
+    if (!file) {
+        return Promise.reject("".concat(item, " is not a File"));
+    }
+    var fwp = (0,_file__WEBPACK_IMPORTED_MODULE_0__.toFileWithPath)(file);
+    return Promise.resolve(fwp);
+}
+// https://developer.mozilla.org/en-US/docs/Web/API/FileSystemEntry
+function fromEntry(entry) {
+    return (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__awaiter)(this, void 0, void 0, function () {
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__generator)(this, function (_a) {
+            return [2 /*return*/, entry.isDirectory ? fromDirEntry(entry) : fromFileEntry(entry)];
+        });
+    });
+}
+// https://developer.mozilla.org/en-US/docs/Web/API/FileSystemDirectoryEntry
+function fromDirEntry(entry) {
+    var reader = entry.createReader();
+    return new Promise(function (resolve, reject) {
+        var entries = [];
+        function readEntries() {
+            var _this = this;
+            // https://developer.mozilla.org/en-US/docs/Web/API/FileSystemDirectoryEntry/createReader
+            // https://developer.mozilla.org/en-US/docs/Web/API/FileSystemDirectoryReader/readEntries
+            reader.readEntries(function (batch) { return (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__awaiter)(_this, void 0, void 0, function () {
+                var files, err_1, items;
+                return (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__generator)(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            if (!!batch.length) return [3 /*break*/, 5];
+                            _a.label = 1;
+                        case 1:
+                            _a.trys.push([1, 3, , 4]);
+                            return [4 /*yield*/, Promise.all(entries)];
+                        case 2:
+                            files = _a.sent();
+                            resolve(files);
+                            return [3 /*break*/, 4];
+                        case 3:
+                            err_1 = _a.sent();
+                            reject(err_1);
+                            return [3 /*break*/, 4];
+                        case 4: return [3 /*break*/, 6];
+                        case 5:
+                            items = Promise.all(batch.map(fromEntry));
+                            entries.push(items);
+                            // Continue reading
+                            readEntries();
+                            _a.label = 6;
+                        case 6: return [2 /*return*/];
+                    }
+                });
+            }); }, function (err) {
+                reject(err);
+            });
+        }
+        readEntries();
+    });
+}
+// https://developer.mozilla.org/en-US/docs/Web/API/FileSystemFileEntry
+function fromFileEntry(entry) {
+    return (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__awaiter)(this, void 0, void 0, function () {
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__generator)(this, function (_a) {
+            return [2 /*return*/, new Promise(function (resolve, reject) {
+                    entry.file(function (file) {
+                        var fwp = (0,_file__WEBPACK_IMPORTED_MODULE_0__.toFileWithPath)(file, entry.fullPath);
+                        resolve(fwp);
+                    }, function (err) {
+                        reject(err);
+                    });
+                })];
+        });
+    });
+}
+//# sourceMappingURL=file-selector.js.map
+
+/***/ }),
+
+/***/ "./node_modules/file-selector/dist/es5/file.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/file-selector/dist/es5/file.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   COMMON_MIME_TYPES: () => (/* binding */ COMMON_MIME_TYPES),
+/* harmony export */   toFileWithPath: () => (/* binding */ toFileWithPath)
+/* harmony export */ });
+var COMMON_MIME_TYPES = new Map([
+    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
+    ['aac', 'audio/aac'],
+    ['abw', 'application/x-abiword'],
+    ['arc', 'application/x-freearc'],
+    ['avif', 'image/avif'],
+    ['avi', 'video/x-msvideo'],
+    ['azw', 'application/vnd.amazon.ebook'],
+    ['bin', 'application/octet-stream'],
+    ['bmp', 'image/bmp'],
+    ['bz', 'application/x-bzip'],
+    ['bz2', 'application/x-bzip2'],
+    ['cda', 'application/x-cdf'],
+    ['csh', 'application/x-csh'],
+    ['css', 'text/css'],
+    ['csv', 'text/csv'],
+    ['doc', 'application/msword'],
+    ['docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+    ['eot', 'application/vnd.ms-fontobject'],
+    ['epub', 'application/epub+zip'],
+    ['gz', 'application/gzip'],
+    ['gif', 'image/gif'],
+    ['heic', 'image/heic'],
+    ['heif', 'image/heif'],
+    ['htm', 'text/html'],
+    ['html', 'text/html'],
+    ['ico', 'image/vnd.microsoft.icon'],
+    ['ics', 'text/calendar'],
+    ['jar', 'application/java-archive'],
+    ['jpeg', 'image/jpeg'],
+    ['jpg', 'image/jpeg'],
+    ['js', 'text/javascript'],
+    ['json', 'application/json'],
+    ['jsonld', 'application/ld+json'],
+    ['mid', 'audio/midi'],
+    ['midi', 'audio/midi'],
+    ['mjs', 'text/javascript'],
+    ['mp3', 'audio/mpeg'],
+    ['mp4', 'video/mp4'],
+    ['mpeg', 'video/mpeg'],
+    ['mpkg', 'application/vnd.apple.installer+xml'],
+    ['odp', 'application/vnd.oasis.opendocument.presentation'],
+    ['ods', 'application/vnd.oasis.opendocument.spreadsheet'],
+    ['odt', 'application/vnd.oasis.opendocument.text'],
+    ['oga', 'audio/ogg'],
+    ['ogv', 'video/ogg'],
+    ['ogx', 'application/ogg'],
+    ['opus', 'audio/opus'],
+    ['otf', 'font/otf'],
+    ['png', 'image/png'],
+    ['pdf', 'application/pdf'],
+    ['php', 'application/x-httpd-php'],
+    ['ppt', 'application/vnd.ms-powerpoint'],
+    ['pptx', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'],
+    ['rar', 'application/vnd.rar'],
+    ['rtf', 'application/rtf'],
+    ['sh', 'application/x-sh'],
+    ['svg', 'image/svg+xml'],
+    ['swf', 'application/x-shockwave-flash'],
+    ['tar', 'application/x-tar'],
+    ['tif', 'image/tiff'],
+    ['tiff', 'image/tiff'],
+    ['ts', 'video/mp2t'],
+    ['ttf', 'font/ttf'],
+    ['txt', 'text/plain'],
+    ['vsd', 'application/vnd.visio'],
+    ['wav', 'audio/wav'],
+    ['weba', 'audio/webm'],
+    ['webm', 'video/webm'],
+    ['webp', 'image/webp'],
+    ['woff', 'font/woff'],
+    ['woff2', 'font/woff2'],
+    ['xhtml', 'application/xhtml+xml'],
+    ['xls', 'application/vnd.ms-excel'],
+    ['xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+    ['xml', 'application/xml'],
+    ['xul', 'application/vnd.mozilla.xul+xml'],
+    ['zip', 'application/zip'],
+    ['7z', 'application/x-7z-compressed'],
+    // Others
+    ['mkv', 'video/x-matroska'],
+    ['mov', 'video/quicktime'],
+    ['msg', 'application/vnd.ms-outlook']
+]);
+function toFileWithPath(file, path) {
+    var f = withMimeType(file);
+    if (typeof f.path !== 'string') { // on electron, path is already set to the absolute path
+        var webkitRelativePath = file.webkitRelativePath;
+        Object.defineProperty(f, 'path', {
+            value: typeof path === 'string'
+                ? path
+                // If <input webkitdirectory> is set,
+                // the File will have a {webkitRelativePath} property
+                // https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/webkitdirectory
+                : typeof webkitRelativePath === 'string' && webkitRelativePath.length > 0
+                    ? webkitRelativePath
+                    : file.name,
+            writable: false,
+            configurable: false,
+            enumerable: true
+        });
+    }
+    return f;
+}
+function withMimeType(file) {
+    var name = file.name;
+    var hasExtension = name && name.lastIndexOf('.') !== -1;
+    if (hasExtension && !file.type) {
+        var ext = name.split('.')
+            .pop().toLowerCase();
+        var type = COMMON_MIME_TYPES.get(ext);
+        if (type) {
+            Object.defineProperty(file, 'type', {
+                value: type,
+                writable: false,
+                configurable: false,
+                enumerable: true
+            });
+        }
+    }
+    return file;
+}
+//# sourceMappingURL=file.js.map
+
+/***/ }),
+
+/***/ "./node_modules/file-selector/dist/es5/index.js":
+/*!******************************************************!*\
+  !*** ./node_modules/file-selector/dist/es5/index.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   fromEvent: () => (/* reexport safe */ _file_selector__WEBPACK_IMPORTED_MODULE_0__.fromEvent)
+/* harmony export */ });
+/* harmony import */ var _file_selector__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./file-selector */ "./node_modules/file-selector/dist/es5/file-selector.js");
+
+//# sourceMappingURL=index.js.map
 
 /***/ }),
 
@@ -31861,6 +31971,1366 @@ if (false) {} else {
 
 /***/ }),
 
+/***/ "./node_modules/react-dropzone/dist/es/index.js":
+/*!******************************************************!*\
+  !*** ./node_modules/react-dropzone/dist/es/index.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ErrorCode: () => (/* reexport safe */ _utils_index__WEBPACK_IMPORTED_MODULE_3__.ErrorCode),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   useDropzone: () => (/* binding */ useDropzone)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var file_selector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! file-selector */ "./node_modules/file-selector/dist/es5/index.js");
+/* harmony import */ var _utils_index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils */ "./node_modules/react-dropzone/dist/es/utils/index.js");
+var _excluded = ["children"],
+    _excluded2 = ["open"],
+    _excluded3 = ["refKey", "role", "onKeyDown", "onFocus", "onBlur", "onClick", "onDragEnter", "onDragOver", "onDragLeave", "onDrop"],
+    _excluded4 = ["refKey", "onChange", "onClick"];
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
+/* eslint prefer-template: 0 */
+
+
+
+
+/**
+ * Convenience wrapper component for the `useDropzone` hook
+ *
+ * ```jsx
+ * <Dropzone>
+ *   {({getRootProps, getInputProps}) => (
+ *     <div {...getRootProps()}>
+ *       <input {...getInputProps()} />
+ *       <p>Drag 'n' drop some files here, or click to select files</p>
+ *     </div>
+ *   )}
+ * </Dropzone>
+ * ```
+ */
+
+var Dropzone = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(function (_ref, ref) {
+  var children = _ref.children,
+      params = _objectWithoutProperties(_ref, _excluded);
+
+  var _useDropzone = useDropzone(params),
+      open = _useDropzone.open,
+      props = _objectWithoutProperties(_useDropzone, _excluded2);
+
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useImperativeHandle)(ref, function () {
+    return {
+      open: open
+    };
+  }, [open]); // TODO: Figure out why react-styleguidist cannot create docs if we don't return a jsx element
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, children(_objectSpread(_objectSpread({}, props), {}, {
+    open: open
+  })));
+});
+Dropzone.displayName = "Dropzone"; // Add default props for react-docgen
+
+var defaultProps = {
+  disabled: false,
+  getFilesFromEvent: file_selector__WEBPACK_IMPORTED_MODULE_1__.fromEvent,
+  maxSize: Infinity,
+  minSize: 0,
+  multiple: true,
+  maxFiles: 0,
+  preventDropOnDocument: true,
+  noClick: false,
+  noKeyboard: false,
+  noDrag: false,
+  noDragEventsBubbling: false,
+  validator: null,
+  useFsAccessApi: true,
+  autoFocus: false
+};
+Dropzone.defaultProps = defaultProps;
+Dropzone.propTypes = {
+  /**
+   * Render function that exposes the dropzone state and prop getter fns
+   *
+   * @param {object} params
+   * @param {Function} params.getRootProps Returns the props you should apply to the root drop container you render
+   * @param {Function} params.getInputProps Returns the props you should apply to hidden file input you render
+   * @param {Function} params.open Open the native file selection dialog
+   * @param {boolean} params.isFocused Dropzone area is in focus
+   * @param {boolean} params.isFileDialogActive File dialog is opened
+   * @param {boolean} params.isDragActive Active drag is in progress
+   * @param {boolean} params.isDragAccept Dragged files are accepted
+   * @param {boolean} params.isDragReject Some dragged files are rejected
+   * @param {File[]} params.acceptedFiles Accepted files
+   * @param {FileRejection[]} params.fileRejections Rejected files and why they were rejected
+   */
+  children: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().func),
+
+  /**
+   * Set accepted file types.
+   * Checkout https://developer.mozilla.org/en-US/docs/Web/API/window/showOpenFilePicker types option for more information.
+   * Keep in mind that mime type determination is not reliable across platforms. CSV files,
+   * for example, are reported as text/plain under macOS but as application/vnd.ms-excel under
+   * Windows. In some cases there might not be a mime type set at all (https://github.com/react-dropzone/react-dropzone/issues/276).
+   */
+  accept: prop_types__WEBPACK_IMPORTED_MODULE_2___default().objectOf(prop_types__WEBPACK_IMPORTED_MODULE_2___default().arrayOf((prop_types__WEBPACK_IMPORTED_MODULE_2___default().string))),
+
+  /**
+   * Allow drag 'n' drop (or selection from the file dialog) of multiple files
+   */
+  multiple: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().bool),
+
+  /**
+   * If false, allow dropped items to take over the current browser window
+   */
+  preventDropOnDocument: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().bool),
+
+  /**
+   * If true, disables click to open the native file selection dialog
+   */
+  noClick: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().bool),
+
+  /**
+   * If true, disables SPACE/ENTER to open the native file selection dialog.
+   * Note that it also stops tracking the focus state.
+   */
+  noKeyboard: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().bool),
+
+  /**
+   * If true, disables drag 'n' drop
+   */
+  noDrag: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().bool),
+
+  /**
+   * If true, stops drag event propagation to parents
+   */
+  noDragEventsBubbling: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().bool),
+
+  /**
+   * Minimum file size (in bytes)
+   */
+  minSize: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().number),
+
+  /**
+   * Maximum file size (in bytes)
+   */
+  maxSize: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().number),
+
+  /**
+   * Maximum accepted number of files
+   * The default value is 0 which means there is no limitation to how many files are accepted.
+   */
+  maxFiles: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().number),
+
+  /**
+   * Enable/disable the dropzone
+   */
+  disabled: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().bool),
+
+  /**
+   * Use this to provide a custom file aggregator
+   *
+   * @param {(DragEvent|Event)} event A drag event or input change event (if files were selected via the file dialog)
+   */
+  getFilesFromEvent: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().func),
+
+  /**
+   * Cb for when closing the file dialog with no selection
+   */
+  onFileDialogCancel: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().func),
+
+  /**
+   * Cb for when opening the file dialog
+   */
+  onFileDialogOpen: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().func),
+
+  /**
+   * Set to true to use the https://developer.mozilla.org/en-US/docs/Web/API/File_System_Access_API
+   * to open the file picker instead of using an `<input type="file">` click event.
+   */
+  useFsAccessApi: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().bool),
+
+  /**
+   * Set to true to focus the root element on render
+   */
+  autoFocus: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().bool),
+
+  /**
+   * Cb for when the `dragenter` event occurs.
+   *
+   * @param {DragEvent} event
+   */
+  onDragEnter: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().func),
+
+  /**
+   * Cb for when the `dragleave` event occurs
+   *
+   * @param {DragEvent} event
+   */
+  onDragLeave: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().func),
+
+  /**
+   * Cb for when the `dragover` event occurs
+   *
+   * @param {DragEvent} event
+   */
+  onDragOver: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().func),
+
+  /**
+   * Cb for when the `drop` event occurs.
+   * Note that this callback is invoked after the `getFilesFromEvent` callback is done.
+   *
+   * Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and `maxSize` props.
+   * `accept` must be a valid [MIME type](http://www.iana.org/assignments/media-types/media-types.xhtml) according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file) or a valid file extension.
+   * If `multiple` is set to false and additional files are dropped,
+   * all files besides the first will be rejected.
+   * Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
+   *
+   * Note that the `onDrop` callback will always be invoked regardless if the dropped files were accepted or rejected.
+   * If you'd like to react to a specific scenario, use the `onDropAccepted`/`onDropRejected` props.
+   *
+   * `onDrop` will provide you with an array of [File](https://developer.mozilla.org/en-US/docs/Web/API/File) objects which you can then process and send to a server.
+   * For example, with [SuperAgent](https://github.com/visionmedia/superagent) as a http/ajax library:
+   *
+   * ```js
+   * function onDrop(acceptedFiles) {
+   *   const req = request.post('/upload')
+   *   acceptedFiles.forEach(file => {
+   *     req.attach(file.name, file)
+   *   })
+   *   req.end(callback)
+   * }
+   * ```
+   *
+   * @param {File[]} acceptedFiles
+   * @param {FileRejection[]} fileRejections
+   * @param {(DragEvent|Event)} event A drag event or input change event (if files were selected via the file dialog)
+   */
+  onDrop: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().func),
+
+  /**
+   * Cb for when the `drop` event occurs.
+   * Note that if no files are accepted, this callback is not invoked.
+   *
+   * @param {File[]} files
+   * @param {(DragEvent|Event)} event
+   */
+  onDropAccepted: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().func),
+
+  /**
+   * Cb for when the `drop` event occurs.
+   * Note that if no files are rejected, this callback is not invoked.
+   *
+   * @param {FileRejection[]} fileRejections
+   * @param {(DragEvent|Event)} event
+   */
+  onDropRejected: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().func),
+
+  /**
+   * Cb for when there's some error from any of the promises.
+   *
+   * @param {Error} error
+   */
+  onError: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().func),
+
+  /**
+   * Custom validation function. It must return null if there's no errors.
+   * @param {File} file
+   * @returns {FileError|FileError[]|null}
+   */
+  validator: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().func)
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Dropzone);
+/**
+ * A function that is invoked for the `dragenter`,
+ * `dragover` and `dragleave` events.
+ * It is not invoked if the items are not files (such as link, text, etc.).
+ *
+ * @callback dragCb
+ * @param {DragEvent} event
+ */
+
+/**
+ * A function that is invoked for the `drop` or input change event.
+ * It is not invoked if the items are not files (such as link, text, etc.).
+ *
+ * @callback dropCb
+ * @param {File[]} acceptedFiles List of accepted files
+ * @param {FileRejection[]} fileRejections List of rejected files and why they were rejected
+ * @param {(DragEvent|Event)} event A drag event or input change event (if files were selected via the file dialog)
+ */
+
+/**
+ * A function that is invoked for the `drop` or input change event.
+ * It is not invoked if the items are files (such as link, text, etc.).
+ *
+ * @callback dropAcceptedCb
+ * @param {File[]} files List of accepted files that meet the given criteria
+ * (`accept`, `multiple`, `minSize`, `maxSize`)
+ * @param {(DragEvent|Event)} event A drag event or input change event (if files were selected via the file dialog)
+ */
+
+/**
+ * A function that is invoked for the `drop` or input change event.
+ *
+ * @callback dropRejectedCb
+ * @param {File[]} files List of rejected files that do not meet the given criteria
+ * (`accept`, `multiple`, `minSize`, `maxSize`)
+ * @param {(DragEvent|Event)} event A drag event or input change event (if files were selected via the file dialog)
+ */
+
+/**
+ * A function that is used aggregate files,
+ * in a asynchronous fashion, from drag or input change events.
+ *
+ * @callback getFilesFromEvent
+ * @param {(DragEvent|Event)} event A drag event or input change event (if files were selected via the file dialog)
+ * @returns {(File[]|Promise<File[]>)}
+ */
+
+/**
+ * An object with the current dropzone state.
+ *
+ * @typedef {object} DropzoneState
+ * @property {boolean} isFocused Dropzone area is in focus
+ * @property {boolean} isFileDialogActive File dialog is opened
+ * @property {boolean} isDragActive Active drag is in progress
+ * @property {boolean} isDragAccept Dragged files are accepted
+ * @property {boolean} isDragReject Some dragged files are rejected
+ * @property {File[]} acceptedFiles Accepted files
+ * @property {FileRejection[]} fileRejections Rejected files and why they were rejected
+ */
+
+/**
+ * An object with the dropzone methods.
+ *
+ * @typedef {object} DropzoneMethods
+ * @property {Function} getRootProps Returns the props you should apply to the root drop container you render
+ * @property {Function} getInputProps Returns the props you should apply to hidden file input you render
+ * @property {Function} open Open the native file selection dialog
+ */
+
+var initialState = {
+  isFocused: false,
+  isFileDialogActive: false,
+  isDragActive: false,
+  isDragAccept: false,
+  isDragReject: false,
+  acceptedFiles: [],
+  fileRejections: []
+};
+/**
+ * A React hook that creates a drag 'n' drop area.
+ *
+ * ```jsx
+ * function MyDropzone(props) {
+ *   const {getRootProps, getInputProps} = useDropzone({
+ *     onDrop: acceptedFiles => {
+ *       // do something with the File objects, e.g. upload to some server
+ *     }
+ *   });
+ *   return (
+ *     <div {...getRootProps()}>
+ *       <input {...getInputProps()} />
+ *       <p>Drag and drop some files here, or click to select files</p>
+ *     </div>
+ *   )
+ * }
+ * ```
+ *
+ * @function useDropzone
+ *
+ * @param {object} props
+ * @param {import("./utils").AcceptProp} [props.accept] Set accepted file types.
+ * Checkout https://developer.mozilla.org/en-US/docs/Web/API/window/showOpenFilePicker types option for more information.
+ * Keep in mind that mime type determination is not reliable across platforms. CSV files,
+ * for example, are reported as text/plain under macOS but as application/vnd.ms-excel under
+ * Windows. In some cases there might not be a mime type set at all (https://github.com/react-dropzone/react-dropzone/issues/276).
+ * @param {boolean} [props.multiple=true] Allow drag 'n' drop (or selection from the file dialog) of multiple files
+ * @param {boolean} [props.preventDropOnDocument=true] If false, allow dropped items to take over the current browser window
+ * @param {boolean} [props.noClick=false] If true, disables click to open the native file selection dialog
+ * @param {boolean} [props.noKeyboard=false] If true, disables SPACE/ENTER to open the native file selection dialog.
+ * Note that it also stops tracking the focus state.
+ * @param {boolean} [props.noDrag=false] If true, disables drag 'n' drop
+ * @param {boolean} [props.noDragEventsBubbling=false] If true, stops drag event propagation to parents
+ * @param {number} [props.minSize=0] Minimum file size (in bytes)
+ * @param {number} [props.maxSize=Infinity] Maximum file size (in bytes)
+ * @param {boolean} [props.disabled=false] Enable/disable the dropzone
+ * @param {getFilesFromEvent} [props.getFilesFromEvent] Use this to provide a custom file aggregator
+ * @param {Function} [props.onFileDialogCancel] Cb for when closing the file dialog with no selection
+ * @param {boolean} [props.useFsAccessApi] Set to true to use the https://developer.mozilla.org/en-US/docs/Web/API/File_System_Access_API
+ * to open the file picker instead of using an `<input type="file">` click event.
+ * @param {boolean} autoFocus Set to true to auto focus the root element.
+ * @param {Function} [props.onFileDialogOpen] Cb for when opening the file dialog
+ * @param {dragCb} [props.onDragEnter] Cb for when the `dragenter` event occurs.
+ * @param {dragCb} [props.onDragLeave] Cb for when the `dragleave` event occurs
+ * @param {dragCb} [props.onDragOver] Cb for when the `dragover` event occurs
+ * @param {dropCb} [props.onDrop] Cb for when the `drop` event occurs.
+ * Note that this callback is invoked after the `getFilesFromEvent` callback is done.
+ *
+ * Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and `maxSize` props.
+ * `accept` must be an object with keys as a valid [MIME type](http://www.iana.org/assignments/media-types/media-types.xhtml) according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file) and the value an array of file extensions (optional).
+ * If `multiple` is set to false and additional files are dropped,
+ * all files besides the first will be rejected.
+ * Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
+ *
+ * Note that the `onDrop` callback will always be invoked regardless if the dropped files were accepted or rejected.
+ * If you'd like to react to a specific scenario, use the `onDropAccepted`/`onDropRejected` props.
+ *
+ * `onDrop` will provide you with an array of [File](https://developer.mozilla.org/en-US/docs/Web/API/File) objects which you can then process and send to a server.
+ * For example, with [SuperAgent](https://github.com/visionmedia/superagent) as a http/ajax library:
+ *
+ * ```js
+ * function onDrop(acceptedFiles) {
+ *   const req = request.post('/upload')
+ *   acceptedFiles.forEach(file => {
+ *     req.attach(file.name, file)
+ *   })
+ *   req.end(callback)
+ * }
+ * ```
+ * @param {dropAcceptedCb} [props.onDropAccepted]
+ * @param {dropRejectedCb} [props.onDropRejected]
+ * @param {(error: Error) => void} [props.onError]
+ *
+ * @returns {DropzoneState & DropzoneMethods}
+ */
+
+function useDropzone() {
+  var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  var _defaultProps$props = _objectSpread(_objectSpread({}, defaultProps), props),
+      accept = _defaultProps$props.accept,
+      disabled = _defaultProps$props.disabled,
+      getFilesFromEvent = _defaultProps$props.getFilesFromEvent,
+      maxSize = _defaultProps$props.maxSize,
+      minSize = _defaultProps$props.minSize,
+      multiple = _defaultProps$props.multiple,
+      maxFiles = _defaultProps$props.maxFiles,
+      onDragEnter = _defaultProps$props.onDragEnter,
+      onDragLeave = _defaultProps$props.onDragLeave,
+      onDragOver = _defaultProps$props.onDragOver,
+      onDrop = _defaultProps$props.onDrop,
+      onDropAccepted = _defaultProps$props.onDropAccepted,
+      onDropRejected = _defaultProps$props.onDropRejected,
+      onFileDialogCancel = _defaultProps$props.onFileDialogCancel,
+      onFileDialogOpen = _defaultProps$props.onFileDialogOpen,
+      useFsAccessApi = _defaultProps$props.useFsAccessApi,
+      autoFocus = _defaultProps$props.autoFocus,
+      preventDropOnDocument = _defaultProps$props.preventDropOnDocument,
+      noClick = _defaultProps$props.noClick,
+      noKeyboard = _defaultProps$props.noKeyboard,
+      noDrag = _defaultProps$props.noDrag,
+      noDragEventsBubbling = _defaultProps$props.noDragEventsBubbling,
+      onError = _defaultProps$props.onError,
+      validator = _defaultProps$props.validator;
+
+  var acceptAttr = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
+    return (0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.acceptPropAsAcceptAttr)(accept);
+  }, [accept]);
+  var pickerTypes = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
+    return (0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.pickerOptionsFromAccept)(accept);
+  }, [accept]);
+  var onFileDialogOpenCb = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
+    return typeof onFileDialogOpen === "function" ? onFileDialogOpen : noop;
+  }, [onFileDialogOpen]);
+  var onFileDialogCancelCb = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
+    return typeof onFileDialogCancel === "function" ? onFileDialogCancel : noop;
+  }, [onFileDialogCancel]);
+  /**
+   * @constant
+   * @type {React.MutableRefObject<HTMLElement>}
+   */
+
+  var rootRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  var inputRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+
+  var _useReducer = (0,react__WEBPACK_IMPORTED_MODULE_0__.useReducer)(reducer, initialState),
+      _useReducer2 = _slicedToArray(_useReducer, 2),
+      state = _useReducer2[0],
+      dispatch = _useReducer2[1];
+
+  var isFocused = state.isFocused,
+      isFileDialogActive = state.isFileDialogActive;
+  var fsAccessApiWorksRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(typeof window !== "undefined" && window.isSecureContext && useFsAccessApi && (0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.canUseFileSystemAccessAPI)()); // Update file dialog active state when the window is focused on
+
+  var onWindowFocus = function onWindowFocus() {
+    // Execute the timeout only if the file dialog is opened in the browser
+    if (!fsAccessApiWorksRef.current && isFileDialogActive) {
+      setTimeout(function () {
+        if (inputRef.current) {
+          var files = inputRef.current.files;
+
+          if (!files.length) {
+            dispatch({
+              type: "closeDialog"
+            });
+            onFileDialogCancelCb();
+          }
+        }
+      }, 300);
+    }
+  };
+
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    window.addEventListener("focus", onWindowFocus, false);
+    return function () {
+      window.removeEventListener("focus", onWindowFocus, false);
+    };
+  }, [inputRef, isFileDialogActive, onFileDialogCancelCb, fsAccessApiWorksRef]);
+  var dragTargetsRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)([]);
+
+  var onDocumentDrop = function onDocumentDrop(event) {
+    if (rootRef.current && rootRef.current.contains(event.target)) {
+      // If we intercepted an event for our instance, let it propagate down to the instance's onDrop handler
+      return;
+    }
+
+    event.preventDefault();
+    dragTargetsRef.current = [];
+  };
+
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    if (preventDropOnDocument) {
+      document.addEventListener("dragover", _utils_index__WEBPACK_IMPORTED_MODULE_3__.onDocumentDragOver, false);
+      document.addEventListener("drop", onDocumentDrop, false);
+    }
+
+    return function () {
+      if (preventDropOnDocument) {
+        document.removeEventListener("dragover", _utils_index__WEBPACK_IMPORTED_MODULE_3__.onDocumentDragOver);
+        document.removeEventListener("drop", onDocumentDrop);
+      }
+    };
+  }, [rootRef, preventDropOnDocument]); // Auto focus the root when autoFocus is true
+
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    if (!disabled && autoFocus && rootRef.current) {
+      rootRef.current.focus();
+    }
+
+    return function () {};
+  }, [rootRef, autoFocus, disabled]);
+  var onErrCb = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function (e) {
+    if (onError) {
+      onError(e);
+    } else {
+      // Let the user know something's gone wrong if they haven't provided the onError cb.
+      console.error(e);
+    }
+  }, [onError]);
+  var onDragEnterCb = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function (event) {
+    event.preventDefault(); // Persist here because we need the event later after getFilesFromEvent() is done
+
+    event.persist();
+    stopPropagation(event);
+    dragTargetsRef.current = [].concat(_toConsumableArray(dragTargetsRef.current), [event.target]);
+
+    if ((0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.isEvtWithFiles)(event)) {
+      Promise.resolve(getFilesFromEvent(event)).then(function (files) {
+        if ((0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.isPropagationStopped)(event) && !noDragEventsBubbling) {
+          return;
+        }
+
+        var fileCount = files.length;
+        var isDragAccept = fileCount > 0 && (0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.allFilesAccepted)({
+          files: files,
+          accept: acceptAttr,
+          minSize: minSize,
+          maxSize: maxSize,
+          multiple: multiple,
+          maxFiles: maxFiles,
+          validator: validator
+        });
+        var isDragReject = fileCount > 0 && !isDragAccept;
+        dispatch({
+          isDragAccept: isDragAccept,
+          isDragReject: isDragReject,
+          isDragActive: true,
+          type: "setDraggedFiles"
+        });
+
+        if (onDragEnter) {
+          onDragEnter(event);
+        }
+      }).catch(function (e) {
+        return onErrCb(e);
+      });
+    }
+  }, [getFilesFromEvent, onDragEnter, onErrCb, noDragEventsBubbling, acceptAttr, minSize, maxSize, multiple, maxFiles, validator]);
+  var onDragOverCb = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function (event) {
+    event.preventDefault();
+    event.persist();
+    stopPropagation(event);
+    var hasFiles = (0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.isEvtWithFiles)(event);
+
+    if (hasFiles && event.dataTransfer) {
+      try {
+        event.dataTransfer.dropEffect = "copy";
+      } catch (_unused) {}
+      /* eslint-disable-line no-empty */
+
+    }
+
+    if (hasFiles && onDragOver) {
+      onDragOver(event);
+    }
+
+    return false;
+  }, [onDragOver, noDragEventsBubbling]);
+  var onDragLeaveCb = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function (event) {
+    event.preventDefault();
+    event.persist();
+    stopPropagation(event); // Only deactivate once the dropzone and all children have been left
+
+    var targets = dragTargetsRef.current.filter(function (target) {
+      return rootRef.current && rootRef.current.contains(target);
+    }); // Make sure to remove a target present multiple times only once
+    // (Firefox may fire dragenter/dragleave multiple times on the same element)
+
+    var targetIdx = targets.indexOf(event.target);
+
+    if (targetIdx !== -1) {
+      targets.splice(targetIdx, 1);
+    }
+
+    dragTargetsRef.current = targets;
+
+    if (targets.length > 0) {
+      return;
+    }
+
+    dispatch({
+      type: "setDraggedFiles",
+      isDragActive: false,
+      isDragAccept: false,
+      isDragReject: false
+    });
+
+    if ((0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.isEvtWithFiles)(event) && onDragLeave) {
+      onDragLeave(event);
+    }
+  }, [rootRef, onDragLeave, noDragEventsBubbling]);
+  var setFiles = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function (files, event) {
+    var acceptedFiles = [];
+    var fileRejections = [];
+    files.forEach(function (file) {
+      var _fileAccepted = (0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.fileAccepted)(file, acceptAttr),
+          _fileAccepted2 = _slicedToArray(_fileAccepted, 2),
+          accepted = _fileAccepted2[0],
+          acceptError = _fileAccepted2[1];
+
+      var _fileMatchSize = (0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.fileMatchSize)(file, minSize, maxSize),
+          _fileMatchSize2 = _slicedToArray(_fileMatchSize, 2),
+          sizeMatch = _fileMatchSize2[0],
+          sizeError = _fileMatchSize2[1];
+
+      var customErrors = validator ? validator(file) : null;
+
+      if (accepted && sizeMatch && !customErrors) {
+        acceptedFiles.push(file);
+      } else {
+        var errors = [acceptError, sizeError];
+
+        if (customErrors) {
+          errors = errors.concat(customErrors);
+        }
+
+        fileRejections.push({
+          file: file,
+          errors: errors.filter(function (e) {
+            return e;
+          })
+        });
+      }
+    });
+
+    if (!multiple && acceptedFiles.length > 1 || multiple && maxFiles >= 1 && acceptedFiles.length > maxFiles) {
+      // Reject everything and empty accepted files
+      acceptedFiles.forEach(function (file) {
+        fileRejections.push({
+          file: file,
+          errors: [_utils_index__WEBPACK_IMPORTED_MODULE_3__.TOO_MANY_FILES_REJECTION]
+        });
+      });
+      acceptedFiles.splice(0);
+    }
+
+    dispatch({
+      acceptedFiles: acceptedFiles,
+      fileRejections: fileRejections,
+      type: "setFiles"
+    });
+
+    if (onDrop) {
+      onDrop(acceptedFiles, fileRejections, event);
+    }
+
+    if (fileRejections.length > 0 && onDropRejected) {
+      onDropRejected(fileRejections, event);
+    }
+
+    if (acceptedFiles.length > 0 && onDropAccepted) {
+      onDropAccepted(acceptedFiles, event);
+    }
+  }, [dispatch, multiple, acceptAttr, minSize, maxSize, maxFiles, onDrop, onDropAccepted, onDropRejected, validator]);
+  var onDropCb = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function (event) {
+    event.preventDefault(); // Persist here because we need the event later after getFilesFromEvent() is done
+
+    event.persist();
+    stopPropagation(event);
+    dragTargetsRef.current = [];
+
+    if ((0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.isEvtWithFiles)(event)) {
+      Promise.resolve(getFilesFromEvent(event)).then(function (files) {
+        if ((0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.isPropagationStopped)(event) && !noDragEventsBubbling) {
+          return;
+        }
+
+        setFiles(files, event);
+      }).catch(function (e) {
+        return onErrCb(e);
+      });
+    }
+
+    dispatch({
+      type: "reset"
+    });
+  }, [getFilesFromEvent, setFiles, onErrCb, noDragEventsBubbling]); // Fn for opening the file dialog programmatically
+
+  var openFileDialog = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function () {
+    // No point to use FS access APIs if context is not secure
+    // https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts#feature_detection
+    if (fsAccessApiWorksRef.current) {
+      dispatch({
+        type: "openDialog"
+      });
+      onFileDialogOpenCb(); // https://developer.mozilla.org/en-US/docs/Web/API/window/showOpenFilePicker
+
+      var opts = {
+        multiple: multiple,
+        types: pickerTypes
+      };
+      window.showOpenFilePicker(opts).then(function (handles) {
+        return getFilesFromEvent(handles);
+      }).then(function (files) {
+        setFiles(files, null);
+        dispatch({
+          type: "closeDialog"
+        });
+      }).catch(function (e) {
+        // AbortError means the user canceled
+        if ((0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.isAbort)(e)) {
+          onFileDialogCancelCb(e);
+          dispatch({
+            type: "closeDialog"
+          });
+        } else if ((0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.isSecurityError)(e)) {
+          fsAccessApiWorksRef.current = false; // CORS, so cannot use this API
+          // Try using the input
+
+          if (inputRef.current) {
+            inputRef.current.value = null;
+            inputRef.current.click();
+          } else {
+            onErrCb(new Error("Cannot open the file picker because the https://developer.mozilla.org/en-US/docs/Web/API/File_System_Access_API is not supported and no <input> was provided."));
+          }
+        } else {
+          onErrCb(e);
+        }
+      });
+      return;
+    }
+
+    if (inputRef.current) {
+      dispatch({
+        type: "openDialog"
+      });
+      onFileDialogOpenCb();
+      inputRef.current.value = null;
+      inputRef.current.click();
+    }
+  }, [dispatch, onFileDialogOpenCb, onFileDialogCancelCb, useFsAccessApi, setFiles, onErrCb, pickerTypes, multiple]); // Cb to open the file dialog when SPACE/ENTER occurs on the dropzone
+
+  var onKeyDownCb = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function (event) {
+    // Ignore keyboard events bubbling up the DOM tree
+    if (!rootRef.current || !rootRef.current.isEqualNode(event.target)) {
+      return;
+    }
+
+    if (event.key === " " || event.key === "Enter" || event.keyCode === 32 || event.keyCode === 13) {
+      event.preventDefault();
+      openFileDialog();
+    }
+  }, [rootRef, openFileDialog]); // Update focus state for the dropzone
+
+  var onFocusCb = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function () {
+    dispatch({
+      type: "focus"
+    });
+  }, []);
+  var onBlurCb = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function () {
+    dispatch({
+      type: "blur"
+    });
+  }, []); // Cb to open the file dialog when click occurs on the dropzone
+
+  var onClickCb = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function () {
+    if (noClick) {
+      return;
+    } // In IE11/Edge the file-browser dialog is blocking, therefore, use setTimeout()
+    // to ensure React can handle state changes
+    // See: https://github.com/react-dropzone/react-dropzone/issues/450
+
+
+    if ((0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.isIeOrEdge)()) {
+      setTimeout(openFileDialog, 0);
+    } else {
+      openFileDialog();
+    }
+  }, [noClick, openFileDialog]);
+
+  var composeHandler = function composeHandler(fn) {
+    return disabled ? null : fn;
+  };
+
+  var composeKeyboardHandler = function composeKeyboardHandler(fn) {
+    return noKeyboard ? null : composeHandler(fn);
+  };
+
+  var composeDragHandler = function composeDragHandler(fn) {
+    return noDrag ? null : composeHandler(fn);
+  };
+
+  var stopPropagation = function stopPropagation(event) {
+    if (noDragEventsBubbling) {
+      event.stopPropagation();
+    }
+  };
+
+  var getRootProps = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
+    return function () {
+      var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          _ref2$refKey = _ref2.refKey,
+          refKey = _ref2$refKey === void 0 ? "ref" : _ref2$refKey,
+          role = _ref2.role,
+          onKeyDown = _ref2.onKeyDown,
+          onFocus = _ref2.onFocus,
+          onBlur = _ref2.onBlur,
+          onClick = _ref2.onClick,
+          onDragEnter = _ref2.onDragEnter,
+          onDragOver = _ref2.onDragOver,
+          onDragLeave = _ref2.onDragLeave,
+          onDrop = _ref2.onDrop,
+          rest = _objectWithoutProperties(_ref2, _excluded3);
+
+      return _objectSpread(_objectSpread(_defineProperty({
+        onKeyDown: composeKeyboardHandler((0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.composeEventHandlers)(onKeyDown, onKeyDownCb)),
+        onFocus: composeKeyboardHandler((0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.composeEventHandlers)(onFocus, onFocusCb)),
+        onBlur: composeKeyboardHandler((0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.composeEventHandlers)(onBlur, onBlurCb)),
+        onClick: composeHandler((0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.composeEventHandlers)(onClick, onClickCb)),
+        onDragEnter: composeDragHandler((0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.composeEventHandlers)(onDragEnter, onDragEnterCb)),
+        onDragOver: composeDragHandler((0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.composeEventHandlers)(onDragOver, onDragOverCb)),
+        onDragLeave: composeDragHandler((0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.composeEventHandlers)(onDragLeave, onDragLeaveCb)),
+        onDrop: composeDragHandler((0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.composeEventHandlers)(onDrop, onDropCb)),
+        role: typeof role === "string" && role !== "" ? role : "presentation"
+      }, refKey, rootRef), !disabled && !noKeyboard ? {
+        tabIndex: 0
+      } : {}), rest);
+    };
+  }, [rootRef, onKeyDownCb, onFocusCb, onBlurCb, onClickCb, onDragEnterCb, onDragOverCb, onDragLeaveCb, onDropCb, noKeyboard, noDrag, disabled]);
+  var onInputElementClick = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function (event) {
+    event.stopPropagation();
+  }, []);
+  var getInputProps = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
+    return function () {
+      var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          _ref3$refKey = _ref3.refKey,
+          refKey = _ref3$refKey === void 0 ? "ref" : _ref3$refKey,
+          onChange = _ref3.onChange,
+          onClick = _ref3.onClick,
+          rest = _objectWithoutProperties(_ref3, _excluded4);
+
+      var inputProps = _defineProperty({
+        accept: acceptAttr,
+        multiple: multiple,
+        type: "file",
+        style: {
+          display: "none"
+        },
+        onChange: composeHandler((0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.composeEventHandlers)(onChange, onDropCb)),
+        onClick: composeHandler((0,_utils_index__WEBPACK_IMPORTED_MODULE_3__.composeEventHandlers)(onClick, onInputElementClick)),
+        tabIndex: -1
+      }, refKey, inputRef);
+
+      return _objectSpread(_objectSpread({}, inputProps), rest);
+    };
+  }, [inputRef, accept, multiple, onDropCb, disabled]);
+  return _objectSpread(_objectSpread({}, state), {}, {
+    isFocused: isFocused && !disabled,
+    getRootProps: getRootProps,
+    getInputProps: getInputProps,
+    rootRef: rootRef,
+    inputRef: inputRef,
+    open: composeHandler(openFileDialog)
+  });
+}
+/**
+ * @param {DropzoneState} state
+ * @param {{type: string} & DropzoneState} action
+ * @returns {DropzoneState}
+ */
+
+function reducer(state, action) {
+  /* istanbul ignore next */
+  switch (action.type) {
+    case "focus":
+      return _objectSpread(_objectSpread({}, state), {}, {
+        isFocused: true
+      });
+
+    case "blur":
+      return _objectSpread(_objectSpread({}, state), {}, {
+        isFocused: false
+      });
+
+    case "openDialog":
+      return _objectSpread(_objectSpread({}, initialState), {}, {
+        isFileDialogActive: true
+      });
+
+    case "closeDialog":
+      return _objectSpread(_objectSpread({}, state), {}, {
+        isFileDialogActive: false
+      });
+
+    case "setDraggedFiles":
+      return _objectSpread(_objectSpread({}, state), {}, {
+        isDragActive: action.isDragActive,
+        isDragAccept: action.isDragAccept,
+        isDragReject: action.isDragReject
+      });
+
+    case "setFiles":
+      return _objectSpread(_objectSpread({}, state), {}, {
+        acceptedFiles: action.acceptedFiles,
+        fileRejections: action.fileRejections
+      });
+
+    case "reset":
+      return _objectSpread({}, initialState);
+
+    default:
+      return state;
+  }
+}
+
+function noop() {}
+
+
+
+/***/ }),
+
+/***/ "./node_modules/react-dropzone/dist/es/utils/index.js":
+/*!************************************************************!*\
+  !*** ./node_modules/react-dropzone/dist/es/utils/index.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ErrorCode: () => (/* binding */ ErrorCode),
+/* harmony export */   FILE_INVALID_TYPE: () => (/* binding */ FILE_INVALID_TYPE),
+/* harmony export */   FILE_TOO_LARGE: () => (/* binding */ FILE_TOO_LARGE),
+/* harmony export */   FILE_TOO_SMALL: () => (/* binding */ FILE_TOO_SMALL),
+/* harmony export */   TOO_MANY_FILES: () => (/* binding */ TOO_MANY_FILES),
+/* harmony export */   TOO_MANY_FILES_REJECTION: () => (/* binding */ TOO_MANY_FILES_REJECTION),
+/* harmony export */   acceptPropAsAcceptAttr: () => (/* binding */ acceptPropAsAcceptAttr),
+/* harmony export */   allFilesAccepted: () => (/* binding */ allFilesAccepted),
+/* harmony export */   canUseFileSystemAccessAPI: () => (/* binding */ canUseFileSystemAccessAPI),
+/* harmony export */   composeEventHandlers: () => (/* binding */ composeEventHandlers),
+/* harmony export */   fileAccepted: () => (/* binding */ fileAccepted),
+/* harmony export */   fileMatchSize: () => (/* binding */ fileMatchSize),
+/* harmony export */   getInvalidTypeRejectionErr: () => (/* binding */ getInvalidTypeRejectionErr),
+/* harmony export */   getTooLargeRejectionErr: () => (/* binding */ getTooLargeRejectionErr),
+/* harmony export */   getTooSmallRejectionErr: () => (/* binding */ getTooSmallRejectionErr),
+/* harmony export */   isAbort: () => (/* binding */ isAbort),
+/* harmony export */   isEvtWithFiles: () => (/* binding */ isEvtWithFiles),
+/* harmony export */   isExt: () => (/* binding */ isExt),
+/* harmony export */   isIeOrEdge: () => (/* binding */ isIeOrEdge),
+/* harmony export */   isKindFile: () => (/* binding */ isKindFile),
+/* harmony export */   isMIMEType: () => (/* binding */ isMIMEType),
+/* harmony export */   isPropagationStopped: () => (/* binding */ isPropagationStopped),
+/* harmony export */   isSecurityError: () => (/* binding */ isSecurityError),
+/* harmony export */   onDocumentDragOver: () => (/* binding */ onDocumentDragOver),
+/* harmony export */   pickerOptionsFromAccept: () => (/* binding */ pickerOptionsFromAccept)
+/* harmony export */ });
+/* harmony import */ var attr_accept__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! attr-accept */ "./node_modules/attr-accept/dist/es/index.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+ // Error codes
+
+var FILE_INVALID_TYPE = "file-invalid-type";
+var FILE_TOO_LARGE = "file-too-large";
+var FILE_TOO_SMALL = "file-too-small";
+var TOO_MANY_FILES = "too-many-files";
+var ErrorCode = {
+  FileInvalidType: FILE_INVALID_TYPE,
+  FileTooLarge: FILE_TOO_LARGE,
+  FileTooSmall: FILE_TOO_SMALL,
+  TooManyFiles: TOO_MANY_FILES
+}; // File Errors
+
+var getInvalidTypeRejectionErr = function getInvalidTypeRejectionErr(accept) {
+  accept = Array.isArray(accept) && accept.length === 1 ? accept[0] : accept;
+  var messageSuffix = Array.isArray(accept) ? "one of ".concat(accept.join(", ")) : accept;
+  return {
+    code: FILE_INVALID_TYPE,
+    message: "File type must be ".concat(messageSuffix)
+  };
+};
+var getTooLargeRejectionErr = function getTooLargeRejectionErr(maxSize) {
+  return {
+    code: FILE_TOO_LARGE,
+    message: "File is larger than ".concat(maxSize, " ").concat(maxSize === 1 ? "byte" : "bytes")
+  };
+};
+var getTooSmallRejectionErr = function getTooSmallRejectionErr(minSize) {
+  return {
+    code: FILE_TOO_SMALL,
+    message: "File is smaller than ".concat(minSize, " ").concat(minSize === 1 ? "byte" : "bytes")
+  };
+};
+var TOO_MANY_FILES_REJECTION = {
+  code: TOO_MANY_FILES,
+  message: "Too many files"
+}; // Firefox versions prior to 53 return a bogus MIME type for every file drag, so dragovers with
+// that MIME type will always be accepted
+
+function fileAccepted(file, accept) {
+  var isAcceptable = file.type === "application/x-moz-file" || (0,attr_accept__WEBPACK_IMPORTED_MODULE_0__["default"])(file, accept);
+  return [isAcceptable, isAcceptable ? null : getInvalidTypeRejectionErr(accept)];
+}
+function fileMatchSize(file, minSize, maxSize) {
+  if (isDefined(file.size)) {
+    if (isDefined(minSize) && isDefined(maxSize)) {
+      if (file.size > maxSize) return [false, getTooLargeRejectionErr(maxSize)];
+      if (file.size < minSize) return [false, getTooSmallRejectionErr(minSize)];
+    } else if (isDefined(minSize) && file.size < minSize) return [false, getTooSmallRejectionErr(minSize)];else if (isDefined(maxSize) && file.size > maxSize) return [false, getTooLargeRejectionErr(maxSize)];
+  }
+
+  return [true, null];
+}
+
+function isDefined(value) {
+  return value !== undefined && value !== null;
+}
+/**
+ *
+ * @param {object} options
+ * @param {File[]} options.files
+ * @param {string|string[]} [options.accept]
+ * @param {number} [options.minSize]
+ * @param {number} [options.maxSize]
+ * @param {boolean} [options.multiple]
+ * @param {number} [options.maxFiles]
+ * @param {(f: File) => FileError|FileError[]|null} [options.validator]
+ * @returns
+ */
+
+
+function allFilesAccepted(_ref) {
+  var files = _ref.files,
+      accept = _ref.accept,
+      minSize = _ref.minSize,
+      maxSize = _ref.maxSize,
+      multiple = _ref.multiple,
+      maxFiles = _ref.maxFiles,
+      validator = _ref.validator;
+
+  if (!multiple && files.length > 1 || multiple && maxFiles >= 1 && files.length > maxFiles) {
+    return false;
+  }
+
+  return files.every(function (file) {
+    var _fileAccepted = fileAccepted(file, accept),
+        _fileAccepted2 = _slicedToArray(_fileAccepted, 1),
+        accepted = _fileAccepted2[0];
+
+    var _fileMatchSize = fileMatchSize(file, minSize, maxSize),
+        _fileMatchSize2 = _slicedToArray(_fileMatchSize, 1),
+        sizeMatch = _fileMatchSize2[0];
+
+    var customErrors = validator ? validator(file) : null;
+    return accepted && sizeMatch && !customErrors;
+  });
+} // React's synthetic events has event.isPropagationStopped,
+// but to remain compatibility with other libs (Preact) fall back
+// to check event.cancelBubble
+
+function isPropagationStopped(event) {
+  if (typeof event.isPropagationStopped === "function") {
+    return event.isPropagationStopped();
+  } else if (typeof event.cancelBubble !== "undefined") {
+    return event.cancelBubble;
+  }
+
+  return false;
+}
+function isEvtWithFiles(event) {
+  if (!event.dataTransfer) {
+    return !!event.target && !!event.target.files;
+  } // https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/types
+  // https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types#file
+
+
+  return Array.prototype.some.call(event.dataTransfer.types, function (type) {
+    return type === "Files" || type === "application/x-moz-file";
+  });
+}
+function isKindFile(item) {
+  return _typeof(item) === "object" && item !== null && item.kind === "file";
+} // allow the entire document to be a drag target
+
+function onDocumentDragOver(event) {
+  event.preventDefault();
+}
+
+function isIe(userAgent) {
+  return userAgent.indexOf("MSIE") !== -1 || userAgent.indexOf("Trident/") !== -1;
+}
+
+function isEdge(userAgent) {
+  return userAgent.indexOf("Edge/") !== -1;
+}
+
+function isIeOrEdge() {
+  var userAgent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : window.navigator.userAgent;
+  return isIe(userAgent) || isEdge(userAgent);
+}
+/**
+ * This is intended to be used to compose event handlers
+ * They are executed in order until one of them calls `event.isPropagationStopped()`.
+ * Note that the check is done on the first invoke too,
+ * meaning that if propagation was stopped before invoking the fns,
+ * no handlers will be executed.
+ *
+ * @param {Function} fns the event hanlder functions
+ * @return {Function} the event handler to add to an element
+ */
+
+function composeEventHandlers() {
+  for (var _len = arguments.length, fns = new Array(_len), _key = 0; _key < _len; _key++) {
+    fns[_key] = arguments[_key];
+  }
+
+  return function (event) {
+    for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+      args[_key2 - 1] = arguments[_key2];
+    }
+
+    return fns.some(function (fn) {
+      if (!isPropagationStopped(event) && fn) {
+        fn.apply(void 0, [event].concat(args));
+      }
+
+      return isPropagationStopped(event);
+    });
+  };
+}
+/**
+ * canUseFileSystemAccessAPI checks if the [File System Access API](https://developer.mozilla.org/en-US/docs/Web/API/File_System_Access_API)
+ * is supported by the browser.
+ * @returns {boolean}
+ */
+
+function canUseFileSystemAccessAPI() {
+  return "showOpenFilePicker" in window;
+}
+/**
+ * Convert the `{accept}` dropzone prop to the
+ * `{types}` option for https://developer.mozilla.org/en-US/docs/Web/API/window/showOpenFilePicker
+ *
+ * @param {AcceptProp} accept
+ * @returns {{accept: string[]}[]}
+ */
+
+function pickerOptionsFromAccept(accept) {
+  if (isDefined(accept)) {
+    var acceptForPicker = Object.entries(accept).filter(function (_ref2) {
+      var _ref3 = _slicedToArray(_ref2, 2),
+          mimeType = _ref3[0],
+          ext = _ref3[1];
+
+      var ok = true;
+
+      if (!isMIMEType(mimeType)) {
+        console.warn("Skipped \"".concat(mimeType, "\" because it is not a valid MIME type. Check https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types for a list of valid MIME types."));
+        ok = false;
+      }
+
+      if (!Array.isArray(ext) || !ext.every(isExt)) {
+        console.warn("Skipped \"".concat(mimeType, "\" because an invalid file extension was provided."));
+        ok = false;
+      }
+
+      return ok;
+    }).reduce(function (agg, _ref4) {
+      var _ref5 = _slicedToArray(_ref4, 2),
+          mimeType = _ref5[0],
+          ext = _ref5[1];
+
+      return _objectSpread(_objectSpread({}, agg), {}, _defineProperty({}, mimeType, ext));
+    }, {});
+    return [{
+      // description is required due to https://crbug.com/1264708
+      description: "Files",
+      accept: acceptForPicker
+    }];
+  }
+
+  return accept;
+}
+/**
+ * Convert the `{accept}` dropzone prop to an array of MIME types/extensions.
+ * @param {AcceptProp} accept
+ * @returns {string}
+ */
+
+function acceptPropAsAcceptAttr(accept) {
+  if (isDefined(accept)) {
+    return Object.entries(accept).reduce(function (a, _ref6) {
+      var _ref7 = _slicedToArray(_ref6, 2),
+          mimeType = _ref7[0],
+          ext = _ref7[1];
+
+      return [].concat(_toConsumableArray(a), [mimeType], _toConsumableArray(ext));
+    }, []) // Silently discard invalid entries as pickerOptionsFromAccept warns about these
+    .filter(function (v) {
+      return isMIMEType(v) || isExt(v);
+    }).join(",");
+  }
+
+  return undefined;
+}
+/**
+ * Check if v is an exception caused by aborting a request (e.g window.showOpenFilePicker()).
+ *
+ * See https://developer.mozilla.org/en-US/docs/Web/API/DOMException.
+ * @param {any} v
+ * @returns {boolean} True if v is an abort exception.
+ */
+
+function isAbort(v) {
+  return v instanceof DOMException && (v.name === "AbortError" || v.code === v.ABORT_ERR);
+}
+/**
+ * Check if v is a security error.
+ *
+ * See https://developer.mozilla.org/en-US/docs/Web/API/DOMException.
+ * @param {any} v
+ * @returns {boolean} True if v is a security error.
+ */
+
+function isSecurityError(v) {
+  return v instanceof DOMException && (v.name === "SecurityError" || v.code === v.SECURITY_ERR);
+}
+/**
+ * Check if v is a MIME type string.
+ *
+ * See accepted format: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#unique_file_type_specifiers.
+ *
+ * @param {string} v
+ */
+
+function isMIMEType(v) {
+  return v === "audio/*" || v === "video/*" || v === "image/*" || v === "text/*" || /\w+\/[-+.\w]+/g.test(v);
+}
+/**
+ * Check if v is a file extension.
+ * @param {string} v
+ */
+
+function isExt(v) {
+  return /^.*\.[\w]+$/.test(v);
+}
+/**
+ * @typedef {Object.<string, string[]>} AcceptProp
+ */
+
+/**
+ * @typedef {object} FileError
+ * @property {string} message
+ * @property {ErrorCode|string} code
+ */
+
+/**
+ * @typedef {"file-invalid-type"|"file-too-large"|"file-too-small"|"too-many-files"} ErrorCode
+ */
+
+/***/ }),
+
 /***/ "./node_modules/react-intl/lib/index.js":
 /*!**********************************************!*\
   !*** ./node_modules/react-intl/lib/index.js ***!
@@ -32158,10 +33628,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ injectIntl)
 /* harmony export */ });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
-/* harmony import */ var hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! hoist-non-react-statics */ "./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js");
-/* harmony import */ var hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! hoist-non-react-statics */ "./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js");
+/* harmony import */ var hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./node_modules/react-intl/lib/src/utils.js");
 
 
@@ -32174,29 +33644,27 @@ function getDisplayName(Component) {
 // might exist
 var IntlContext = typeof window !== 'undefined' && !window.__REACT_INTL_BYPASS_GLOBAL_CONTEXT__
     ? window.__REACT_INTL_CONTEXT__ ||
-        (window.__REACT_INTL_CONTEXT__ = react__WEBPACK_IMPORTED_MODULE_1__.createContext(null))
-    : react__WEBPACK_IMPORTED_MODULE_1__.createContext(null);
+        (window.__REACT_INTL_CONTEXT__ = react__WEBPACK_IMPORTED_MODULE_0__.createContext(null))
+    : react__WEBPACK_IMPORTED_MODULE_0__.createContext(null);
 var IntlConsumer = IntlContext.Consumer, IntlProvider = IntlContext.Provider;
 var Provider = IntlProvider;
 var Context = IntlContext;
 function injectIntl(WrappedComponent, options) {
     var _a = options || {}, _b = _a.intlPropName, intlPropName = _b === void 0 ? 'intl' : _b, _c = _a.forwardRef, forwardRef = _c === void 0 ? false : _c, _d = _a.enforceContext, enforceContext = _d === void 0 ? true : _d;
-    var WithIntl = function (props) { return (react__WEBPACK_IMPORTED_MODULE_1__.createElement(IntlConsumer, null, function (intl) {
+    var WithIntl = function (props) { return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(IntlConsumer, null, function (intl) {
         var _a;
         if (enforceContext) {
             (0,_utils__WEBPACK_IMPORTED_MODULE_2__.invariantIntlContext)(intl);
         }
         var intlProp = (_a = {}, _a[intlPropName] = intl, _a);
-        return (react__WEBPACK_IMPORTED_MODULE_1__.createElement(WrappedComponent, (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__assign)({}, props, intlProp, { ref: forwardRef ? props.forwardedRef : null })));
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(WrappedComponent, (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__assign)({}, props, intlProp, { ref: forwardRef ? props.forwardedRef : null })));
     })); };
     WithIntl.displayName = "injectIntl(".concat(getDisplayName(WrappedComponent), ")");
     WithIntl.WrappedComponent = WrappedComponent;
     if (forwardRef) {
-        return hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_0___default()(
-        // @ts-expect-error
-        react__WEBPACK_IMPORTED_MODULE_1__.forwardRef(function (props, ref) { return (react__WEBPACK_IMPORTED_MODULE_1__.createElement(WithIntl, (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__assign)({}, props, { forwardedRef: ref }))); }), WrappedComponent);
+        return hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_1___default()(react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (props, ref) { return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(WithIntl, (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__assign)({}, props, { forwardedRef: ref }))); }), WrappedComponent);
     }
-    return hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_0___default()(WithIntl, WrappedComponent);
+    return hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_1___default()(WithIntl, WrappedComponent);
 }
 
 
@@ -32216,8 +33684,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./node_modules/react-intl/lib/src/utils.js");
 /* harmony import */ var _useIntl__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./useIntl */ "./node_modules/react-intl/lib/src/components/useIntl.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./node_modules/react-intl/lib/src/utils.js");
 /*
  * Copyright 2015, Yahoo Inc.
  * Copyrights licensed under the New BSD License.
@@ -32537,8 +34005,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./node_modules/react-intl/lib/src/utils.js");
 /* harmony import */ var _injectIntl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./injectIntl */ "./node_modules/react-intl/lib/src/components/injectIntl.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./node_modules/react-intl/lib/src/utils.js");
 
 
 
@@ -32876,259 +34344,6 @@ originalMessage) {
         }
     }
     return mergeLiteral(result);
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/react-is/cjs/react-is.development.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/react-is/cjs/react-is.development.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-/** @license React v17.0.2
- * react-is.development.js
- *
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
-if (true) {
-  (function() {
-'use strict';
-
-// ATTENTION
-// When adding new symbols to this file,
-// Please consider also adding to 'react-devtools-shared/src/backend/ReactSymbols'
-// The Symbol used to tag the ReactElement-like types. If there is no native Symbol
-// nor polyfill, then a plain number is used for performance.
-var REACT_ELEMENT_TYPE = 0xeac7;
-var REACT_PORTAL_TYPE = 0xeaca;
-var REACT_FRAGMENT_TYPE = 0xeacb;
-var REACT_STRICT_MODE_TYPE = 0xeacc;
-var REACT_PROFILER_TYPE = 0xead2;
-var REACT_PROVIDER_TYPE = 0xeacd;
-var REACT_CONTEXT_TYPE = 0xeace;
-var REACT_FORWARD_REF_TYPE = 0xead0;
-var REACT_SUSPENSE_TYPE = 0xead1;
-var REACT_SUSPENSE_LIST_TYPE = 0xead8;
-var REACT_MEMO_TYPE = 0xead3;
-var REACT_LAZY_TYPE = 0xead4;
-var REACT_BLOCK_TYPE = 0xead9;
-var REACT_SERVER_BLOCK_TYPE = 0xeada;
-var REACT_FUNDAMENTAL_TYPE = 0xead5;
-var REACT_SCOPE_TYPE = 0xead7;
-var REACT_OPAQUE_ID_TYPE = 0xeae0;
-var REACT_DEBUG_TRACING_MODE_TYPE = 0xeae1;
-var REACT_OFFSCREEN_TYPE = 0xeae2;
-var REACT_LEGACY_HIDDEN_TYPE = 0xeae3;
-
-if (typeof Symbol === 'function' && Symbol.for) {
-  var symbolFor = Symbol.for;
-  REACT_ELEMENT_TYPE = symbolFor('react.element');
-  REACT_PORTAL_TYPE = symbolFor('react.portal');
-  REACT_FRAGMENT_TYPE = symbolFor('react.fragment');
-  REACT_STRICT_MODE_TYPE = symbolFor('react.strict_mode');
-  REACT_PROFILER_TYPE = symbolFor('react.profiler');
-  REACT_PROVIDER_TYPE = symbolFor('react.provider');
-  REACT_CONTEXT_TYPE = symbolFor('react.context');
-  REACT_FORWARD_REF_TYPE = symbolFor('react.forward_ref');
-  REACT_SUSPENSE_TYPE = symbolFor('react.suspense');
-  REACT_SUSPENSE_LIST_TYPE = symbolFor('react.suspense_list');
-  REACT_MEMO_TYPE = symbolFor('react.memo');
-  REACT_LAZY_TYPE = symbolFor('react.lazy');
-  REACT_BLOCK_TYPE = symbolFor('react.block');
-  REACT_SERVER_BLOCK_TYPE = symbolFor('react.server.block');
-  REACT_FUNDAMENTAL_TYPE = symbolFor('react.fundamental');
-  REACT_SCOPE_TYPE = symbolFor('react.scope');
-  REACT_OPAQUE_ID_TYPE = symbolFor('react.opaque.id');
-  REACT_DEBUG_TRACING_MODE_TYPE = symbolFor('react.debug_trace_mode');
-  REACT_OFFSCREEN_TYPE = symbolFor('react.offscreen');
-  REACT_LEGACY_HIDDEN_TYPE = symbolFor('react.legacy_hidden');
-}
-
-// Filter certain DOM attributes (e.g. src, href) if their values are empty strings.
-
-var enableScopeAPI = false; // Experimental Create Event Handle API.
-
-function isValidElementType(type) {
-  if (typeof type === 'string' || typeof type === 'function') {
-    return true;
-  } // Note: typeof might be other than 'symbol' or 'number' (e.g. if it's a polyfill).
-
-
-  if (type === REACT_FRAGMENT_TYPE || type === REACT_PROFILER_TYPE || type === REACT_DEBUG_TRACING_MODE_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || type === REACT_LEGACY_HIDDEN_TYPE || enableScopeAPI ) {
-    return true;
-  }
-
-  if (typeof type === 'object' && type !== null) {
-    if (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_BLOCK_TYPE || type[0] === REACT_SERVER_BLOCK_TYPE) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-function typeOf(object) {
-  if (typeof object === 'object' && object !== null) {
-    var $$typeof = object.$$typeof;
-
-    switch ($$typeof) {
-      case REACT_ELEMENT_TYPE:
-        var type = object.type;
-
-        switch (type) {
-          case REACT_FRAGMENT_TYPE:
-          case REACT_PROFILER_TYPE:
-          case REACT_STRICT_MODE_TYPE:
-          case REACT_SUSPENSE_TYPE:
-          case REACT_SUSPENSE_LIST_TYPE:
-            return type;
-
-          default:
-            var $$typeofType = type && type.$$typeof;
-
-            switch ($$typeofType) {
-              case REACT_CONTEXT_TYPE:
-              case REACT_FORWARD_REF_TYPE:
-              case REACT_LAZY_TYPE:
-              case REACT_MEMO_TYPE:
-              case REACT_PROVIDER_TYPE:
-                return $$typeofType;
-
-              default:
-                return $$typeof;
-            }
-
-        }
-
-      case REACT_PORTAL_TYPE:
-        return $$typeof;
-    }
-  }
-
-  return undefined;
-}
-var ContextConsumer = REACT_CONTEXT_TYPE;
-var ContextProvider = REACT_PROVIDER_TYPE;
-var Element = REACT_ELEMENT_TYPE;
-var ForwardRef = REACT_FORWARD_REF_TYPE;
-var Fragment = REACT_FRAGMENT_TYPE;
-var Lazy = REACT_LAZY_TYPE;
-var Memo = REACT_MEMO_TYPE;
-var Portal = REACT_PORTAL_TYPE;
-var Profiler = REACT_PROFILER_TYPE;
-var StrictMode = REACT_STRICT_MODE_TYPE;
-var Suspense = REACT_SUSPENSE_TYPE;
-var hasWarnedAboutDeprecatedIsAsyncMode = false;
-var hasWarnedAboutDeprecatedIsConcurrentMode = false; // AsyncMode should be deprecated
-
-function isAsyncMode(object) {
-  {
-    if (!hasWarnedAboutDeprecatedIsAsyncMode) {
-      hasWarnedAboutDeprecatedIsAsyncMode = true; // Using console['warn'] to evade Babel and ESLint
-
-      console['warn']('The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 18+.');
-    }
-  }
-
-  return false;
-}
-function isConcurrentMode(object) {
-  {
-    if (!hasWarnedAboutDeprecatedIsConcurrentMode) {
-      hasWarnedAboutDeprecatedIsConcurrentMode = true; // Using console['warn'] to evade Babel and ESLint
-
-      console['warn']('The ReactIs.isConcurrentMode() alias has been deprecated, ' + 'and will be removed in React 18+.');
-    }
-  }
-
-  return false;
-}
-function isContextConsumer(object) {
-  return typeOf(object) === REACT_CONTEXT_TYPE;
-}
-function isContextProvider(object) {
-  return typeOf(object) === REACT_PROVIDER_TYPE;
-}
-function isElement(object) {
-  return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
-}
-function isForwardRef(object) {
-  return typeOf(object) === REACT_FORWARD_REF_TYPE;
-}
-function isFragment(object) {
-  return typeOf(object) === REACT_FRAGMENT_TYPE;
-}
-function isLazy(object) {
-  return typeOf(object) === REACT_LAZY_TYPE;
-}
-function isMemo(object) {
-  return typeOf(object) === REACT_MEMO_TYPE;
-}
-function isPortal(object) {
-  return typeOf(object) === REACT_PORTAL_TYPE;
-}
-function isProfiler(object) {
-  return typeOf(object) === REACT_PROFILER_TYPE;
-}
-function isStrictMode(object) {
-  return typeOf(object) === REACT_STRICT_MODE_TYPE;
-}
-function isSuspense(object) {
-  return typeOf(object) === REACT_SUSPENSE_TYPE;
-}
-
-exports.ContextConsumer = ContextConsumer;
-exports.ContextProvider = ContextProvider;
-exports.Element = Element;
-exports.ForwardRef = ForwardRef;
-exports.Fragment = Fragment;
-exports.Lazy = Lazy;
-exports.Memo = Memo;
-exports.Portal = Portal;
-exports.Profiler = Profiler;
-exports.StrictMode = StrictMode;
-exports.Suspense = Suspense;
-exports.isAsyncMode = isAsyncMode;
-exports.isConcurrentMode = isConcurrentMode;
-exports.isContextConsumer = isContextConsumer;
-exports.isContextProvider = isContextProvider;
-exports.isElement = isElement;
-exports.isForwardRef = isForwardRef;
-exports.isFragment = isFragment;
-exports.isLazy = isLazy;
-exports.isMemo = isMemo;
-exports.isPortal = isPortal;
-exports.isProfiler = isProfiler;
-exports.isStrictMode = isStrictMode;
-exports.isSuspense = isSuspense;
-exports.isValidElementType = isValidElementType;
-exports.typeOf = typeOf;
-  })();
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/react-is/index.js":
-/*!****************************************!*\
-  !*** ./node_modules/react-is/index.js ***!
-  \****************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-
-if (false) {} else {
-  module.exports = __webpack_require__(/*! ./cjs/react-is.development.js */ "./node_modules/react-is/cjs/react-is.development.js");
 }
 
 
@@ -34847,8 +36062,7 @@ exports["default"] = findTabbableDescendants;
 var DISPLAY_NONE = "none";
 var DISPLAY_CONTENTS = "contents";
 
-// match the whole word to prevent fuzzy searching
-var tabbableNode = /^(input|select|textarea|button|object|iframe)$/;
+var tabbableNode = /input|select|textarea|button|object|iframe/;
 
 function isNotOverflowing(element, style) {
   return style.getPropertyValue("overflow") !== "visible" ||
@@ -34936,9 +36150,9 @@ module.exports = exports["default"];
 
 /***/ }),
 
-/***/ "./node_modules/react-select/dist/Select-aab027f3.esm.js":
+/***/ "./node_modules/react-select/dist/Select-49a62830.esm.js":
 /*!***************************************************************!*\
-  !*** ./node_modules/react-select/dist/Select-aab027f3.esm.js ***!
+  !*** ./node_modules/react-select/dist/Select-49a62830.esm.js ***!
   \***************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -34962,8 +36176,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime/helpers/esm/toConsumableArray */ "./node_modules/@babel/runtime/helpers/esm/toConsumableArray.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./index-641ee5b8.esm.js */ "./node_modules/react-select/dist/index-641ee5b8.esm.js");
-/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @emotion/react */ "./node_modules/@emotion/react/dist/emotion-react.browser.development.esm.js");
+/* harmony import */ var _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./index-a301f526.esm.js */ "./node_modules/react-select/dist/index-a301f526.esm.js");
+/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @emotion/react */ "./node_modules/@emotion/react/dist/emotion-react.browser.esm.js");
 /* harmony import */ var memoize_one__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! memoize-one */ "./node_modules/memoize-one/dist/memoize-one.esm.js");
 /* harmony import */ var _babel_runtime_helpers_esm_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime/helpers/esm/objectWithoutProperties */ "./node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js");
 
@@ -34986,7 +36200,7 @@ function _EMOTION_STRINGIFIED_CSS_ERROR__$2() { return "You have tried to string
 var _ref =  false ? 0 : {
   name: "1f43avz-a11yText-A11yText",
   styles: "label:a11yText;z-index:9999;border:0;clip:rect(1px, 1px, 1px, 1px);height:1px;width:1px;position:absolute;overflow:hidden;padding:0;white-space:nowrap;label:A11yText;",
-  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkExMXlUZXh0LnRzeCJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFPSSIsImZpbGUiOiJBMTF5VGV4dC50c3giLCJzb3VyY2VzQ29udGVudCI6WyIvKiogQGpzeCBqc3ggKi9cbmltcG9ydCB7IEpTWCB9IGZyb20gJ3JlYWN0JztcbmltcG9ydCB7IGpzeCB9IGZyb20gJ0BlbW90aW9uL3JlYWN0JztcblxuLy8gQXNzaXN0aXZlIHRleHQgdG8gZGVzY3JpYmUgdmlzdWFsIGVsZW1lbnRzLiBIaWRkZW4gZm9yIHNpZ2h0ZWQgdXNlcnMuXG5jb25zdCBBMTF5VGV4dCA9IChwcm9wczogSlNYLkludHJpbnNpY0VsZW1lbnRzWydzcGFuJ10pID0+IChcbiAgPHNwYW5cbiAgICBjc3M9e3tcbiAgICAgIGxhYmVsOiAnYTExeVRleHQnLFxuICAgICAgekluZGV4OiA5OTk5LFxuICAgICAgYm9yZGVyOiAwLFxuICAgICAgY2xpcDogJ3JlY3QoMXB4LCAxcHgsIDFweCwgMXB4KScsXG4gICAgICBoZWlnaHQ6IDEsXG4gICAgICB3aWR0aDogMSxcbiAgICAgIHBvc2l0aW9uOiAnYWJzb2x1dGUnLFxuICAgICAgb3ZlcmZsb3c6ICdoaWRkZW4nLFxuICAgICAgcGFkZGluZzogMCxcbiAgICAgIHdoaXRlU3BhY2U6ICdub3dyYXAnLFxuICAgIH19XG4gICAgey4uLnByb3BzfVxuICAvPlxuKTtcblxuZXhwb3J0IGRlZmF1bHQgQTExeVRleHQ7XG4iXX0= */",
+  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkExMXlUZXh0LnRzeCJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFNSSIsImZpbGUiOiJBMTF5VGV4dC50c3giLCJzb3VyY2VzQ29udGVudCI6WyIvKiogQGpzeCBqc3ggKi9cbmltcG9ydCB7IGpzeCB9IGZyb20gJ0BlbW90aW9uL3JlYWN0JztcblxuLy8gQXNzaXN0aXZlIHRleHQgdG8gZGVzY3JpYmUgdmlzdWFsIGVsZW1lbnRzLiBIaWRkZW4gZm9yIHNpZ2h0ZWQgdXNlcnMuXG5jb25zdCBBMTF5VGV4dCA9IChwcm9wczogSlNYLkludHJpbnNpY0VsZW1lbnRzWydzcGFuJ10pID0+IChcbiAgPHNwYW5cbiAgICBjc3M9e3tcbiAgICAgIGxhYmVsOiAnYTExeVRleHQnLFxuICAgICAgekluZGV4OiA5OTk5LFxuICAgICAgYm9yZGVyOiAwLFxuICAgICAgY2xpcDogJ3JlY3QoMXB4LCAxcHgsIDFweCwgMXB4KScsXG4gICAgICBoZWlnaHQ6IDEsXG4gICAgICB3aWR0aDogMSxcbiAgICAgIHBvc2l0aW9uOiAnYWJzb2x1dGUnLFxuICAgICAgb3ZlcmZsb3c6ICdoaWRkZW4nLFxuICAgICAgcGFkZGluZzogMCxcbiAgICAgIHdoaXRlU3BhY2U6ICdub3dyYXAnLFxuICAgIH19XG4gICAgey4uLnByb3BzfVxuICAvPlxuKTtcblxuZXhwb3J0IGRlZmF1bHQgQTExeVRleHQ7XG4iXX0= */",
   toString: _EMOTION_STRINGIFIED_CSS_ERROR__$2
 };
 var A11yText = function A11yText(props) {
@@ -35506,7 +36720,7 @@ function DummyInput(_ref) {
   var innerRef = _ref.innerRef,
     props = (0,_babel_runtime_helpers_esm_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_8__["default"])(_ref, _excluded);
   // Remove animation props not meant for HTML elements
-  var filteredProps = (0,_index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.r)(props, 'onExited', 'in', 'enter', 'exit', 'appear');
+  var filteredProps = (0,_index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.r)(props, 'onExited', 'in', 'enter', 'exit', 'appear');
   return (0,_emotion_react__WEBPACK_IMPORTED_MODULE_9__.jsx)("input", (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({
     ref: innerRef
   }, filteredProps, {
@@ -35530,7 +36744,7 @@ function DummyInput(_ref) {
       opacity: 0,
       position: 'relative',
       transform: 'scale(.01)'
-    },  false ? 0 : ";label:DummyInput;",  false ? 0 : "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkR1bW15SW5wdXQudHN4Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQXlCTSIsImZpbGUiOiJEdW1teUlucHV0LnRzeCIsInNvdXJjZXNDb250ZW50IjpbIi8qKiBAanN4IGpzeCAqL1xuaW1wb3J0IHsgSlNYLCBSZWYgfSBmcm9tICdyZWFjdCc7XG5pbXBvcnQgeyBqc3ggfSBmcm9tICdAZW1vdGlvbi9yZWFjdCc7XG5pbXBvcnQgeyByZW1vdmVQcm9wcyB9IGZyb20gJy4uL3V0aWxzJztcblxuZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gRHVtbXlJbnB1dCh7XG4gIGlubmVyUmVmLFxuICAuLi5wcm9wc1xufTogSlNYLkludHJpbnNpY0VsZW1lbnRzWydpbnB1dCddICYge1xuICByZWFkb25seSBpbm5lclJlZjogUmVmPEhUTUxJbnB1dEVsZW1lbnQ+O1xufSkge1xuICAvLyBSZW1vdmUgYW5pbWF0aW9uIHByb3BzIG5vdCBtZWFudCBmb3IgSFRNTCBlbGVtZW50c1xuICBjb25zdCBmaWx0ZXJlZFByb3BzID0gcmVtb3ZlUHJvcHMoXG4gICAgcHJvcHMsXG4gICAgJ29uRXhpdGVkJyxcbiAgICAnaW4nLFxuICAgICdlbnRlcicsXG4gICAgJ2V4aXQnLFxuICAgICdhcHBlYXInXG4gICk7XG5cbiAgcmV0dXJuIChcbiAgICA8aW5wdXRcbiAgICAgIHJlZj17aW5uZXJSZWZ9XG4gICAgICB7Li4uZmlsdGVyZWRQcm9wc31cbiAgICAgIGNzcz17e1xuICAgICAgICBsYWJlbDogJ2R1bW15SW5wdXQnLFxuICAgICAgICAvLyBnZXQgcmlkIG9mIGFueSBkZWZhdWx0IHN0eWxlc1xuICAgICAgICBiYWNrZ3JvdW5kOiAwLFxuICAgICAgICBib3JkZXI6IDAsXG4gICAgICAgIC8vIGltcG9ydGFudCEgdGhpcyBoaWRlcyB0aGUgZmxhc2hpbmcgY3Vyc29yXG4gICAgICAgIGNhcmV0Q29sb3I6ICd0cmFuc3BhcmVudCcsXG4gICAgICAgIGZvbnRTaXplOiAnaW5oZXJpdCcsXG4gICAgICAgIGdyaWRBcmVhOiAnMSAvIDEgLyAyIC8gMycsXG4gICAgICAgIG91dGxpbmU6IDAsXG4gICAgICAgIHBhZGRpbmc6IDAsXG4gICAgICAgIC8vIGltcG9ydGFudCEgd2l0aG91dCBgd2lkdGhgIGJyb3dzZXJzIHdvbid0IGFsbG93IGZvY3VzXG4gICAgICAgIHdpZHRoOiAxLFxuXG4gICAgICAgIC8vIHJlbW92ZSBjdXJzb3Igb24gZGVza3RvcFxuICAgICAgICBjb2xvcjogJ3RyYW5zcGFyZW50JyxcblxuICAgICAgICAvLyByZW1vdmUgY3Vyc29yIG9uIG1vYmlsZSB3aGlsc3QgbWFpbnRhaW5pbmcgXCJzY3JvbGwgaW50byB2aWV3XCIgYmVoYXZpb3VyXG4gICAgICAgIGxlZnQ6IC0xMDAsXG4gICAgICAgIG9wYWNpdHk6IDAsXG4gICAgICAgIHBvc2l0aW9uOiAncmVsYXRpdmUnLFxuICAgICAgICB0cmFuc2Zvcm06ICdzY2FsZSguMDEpJyxcbiAgICAgIH19XG4gICAgLz5cbiAgKTtcbn1cbiJdfQ== */")
+    },  false ? 0 : ";label:DummyInput;",  false ? 0 : "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkR1bW15SW5wdXQudHN4Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQXlCTSIsImZpbGUiOiJEdW1teUlucHV0LnRzeCIsInNvdXJjZXNDb250ZW50IjpbIi8qKiBAanN4IGpzeCAqL1xuaW1wb3J0IHsgUmVmIH0gZnJvbSAncmVhY3QnO1xuaW1wb3J0IHsganN4IH0gZnJvbSAnQGVtb3Rpb24vcmVhY3QnO1xuaW1wb3J0IHsgcmVtb3ZlUHJvcHMgfSBmcm9tICcuLi91dGlscyc7XG5cbmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIER1bW15SW5wdXQoe1xuICBpbm5lclJlZixcbiAgLi4ucHJvcHNcbn06IEpTWC5JbnRyaW5zaWNFbGVtZW50c1snaW5wdXQnXSAmIHtcbiAgcmVhZG9ubHkgaW5uZXJSZWY6IFJlZjxIVE1MSW5wdXRFbGVtZW50Pjtcbn0pIHtcbiAgLy8gUmVtb3ZlIGFuaW1hdGlvbiBwcm9wcyBub3QgbWVhbnQgZm9yIEhUTUwgZWxlbWVudHNcbiAgY29uc3QgZmlsdGVyZWRQcm9wcyA9IHJlbW92ZVByb3BzKFxuICAgIHByb3BzLFxuICAgICdvbkV4aXRlZCcsXG4gICAgJ2luJyxcbiAgICAnZW50ZXInLFxuICAgICdleGl0JyxcbiAgICAnYXBwZWFyJ1xuICApO1xuXG4gIHJldHVybiAoXG4gICAgPGlucHV0XG4gICAgICByZWY9e2lubmVyUmVmfVxuICAgICAgey4uLmZpbHRlcmVkUHJvcHN9XG4gICAgICBjc3M9e3tcbiAgICAgICAgbGFiZWw6ICdkdW1teUlucHV0JyxcbiAgICAgICAgLy8gZ2V0IHJpZCBvZiBhbnkgZGVmYXVsdCBzdHlsZXNcbiAgICAgICAgYmFja2dyb3VuZDogMCxcbiAgICAgICAgYm9yZGVyOiAwLFxuICAgICAgICAvLyBpbXBvcnRhbnQhIHRoaXMgaGlkZXMgdGhlIGZsYXNoaW5nIGN1cnNvclxuICAgICAgICBjYXJldENvbG9yOiAndHJhbnNwYXJlbnQnLFxuICAgICAgICBmb250U2l6ZTogJ2luaGVyaXQnLFxuICAgICAgICBncmlkQXJlYTogJzEgLyAxIC8gMiAvIDMnLFxuICAgICAgICBvdXRsaW5lOiAwLFxuICAgICAgICBwYWRkaW5nOiAwLFxuICAgICAgICAvLyBpbXBvcnRhbnQhIHdpdGhvdXQgYHdpZHRoYCBicm93c2VycyB3b24ndCBhbGxvdyBmb2N1c1xuICAgICAgICB3aWR0aDogMSxcblxuICAgICAgICAvLyByZW1vdmUgY3Vyc29yIG9uIGRlc2t0b3BcbiAgICAgICAgY29sb3I6ICd0cmFuc3BhcmVudCcsXG5cbiAgICAgICAgLy8gcmVtb3ZlIGN1cnNvciBvbiBtb2JpbGUgd2hpbHN0IG1haW50YWluaW5nIFwic2Nyb2xsIGludG8gdmlld1wiIGJlaGF2aW91clxuICAgICAgICBsZWZ0OiAtMTAwLFxuICAgICAgICBvcGFjaXR5OiAwLFxuICAgICAgICBwb3NpdGlvbjogJ3JlbGF0aXZlJyxcbiAgICAgICAgdHJhbnNmb3JtOiAnc2NhbGUoLjAxKScsXG4gICAgICB9fVxuICAgIC8+XG4gICk7XG59XG4iXX0= */")
   }));
 }
 
@@ -35607,7 +36821,7 @@ function useScrollCapture(_ref) {
   var startListening = (0,react__WEBPACK_IMPORTED_MODULE_7__.useCallback)(function (el) {
     // bail early if no element is available to attach to
     if (!el) return;
-    var notPassive = _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.s ? {
+    var notPassive = _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.s ? {
       passive: false
     } : false;
     el.addEventListener('wheel', onWheel, notPassive);
@@ -35643,7 +36857,7 @@ var LOCK_STYLES = {
   height: '100%'
 };
 function preventTouchMove(e) {
-  if (e.cancelable) e.preventDefault();
+  e.preventDefault();
 }
 function allowTouchMove(e) {
   e.stopPropagation();
@@ -35862,28 +37076,28 @@ var isOptionDisabled = function isOptionDisabled(option) {
 };
 
 var defaultStyles = {
-  clearIndicator: _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.a,
-  container: _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.b,
-  control: _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.d,
-  dropdownIndicator: _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.e,
-  group: _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.g,
-  groupHeading: _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.f,
-  indicatorsContainer: _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.i,
-  indicatorSeparator: _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.h,
-  input: _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.j,
-  loadingIndicator: _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.l,
-  loadingMessage: _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.k,
-  menu: _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.m,
-  menuList: _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.n,
-  menuPortal: _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.o,
-  multiValue: _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.p,
-  multiValueLabel: _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.q,
-  multiValueRemove: _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.t,
-  noOptionsMessage: _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.u,
-  option: _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.v,
-  placeholder: _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.w,
-  singleValue: _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.x,
-  valueContainer: _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.y
+  clearIndicator: _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.a,
+  container: _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.b,
+  control: _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.d,
+  dropdownIndicator: _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.e,
+  group: _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.g,
+  groupHeading: _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.f,
+  indicatorsContainer: _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.i,
+  indicatorSeparator: _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.h,
+  input: _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.j,
+  loadingIndicator: _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.l,
+  loadingMessage: _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.k,
+  menu: _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.m,
+  menuList: _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.n,
+  menuPortal: _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.o,
+  multiValue: _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.p,
+  multiValueLabel: _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.q,
+  multiValueRemove: _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.t,
+  noOptionsMessage: _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.u,
+  option: _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.v,
+  placeholder: _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.w,
+  singleValue: _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.x,
+  valueContainer: _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.y
 };
 // Merge Utility
 // Allows consumers to extend a base Select with additional styles
@@ -35947,8 +37161,8 @@ var defaultTheme = {
 var defaultProps = {
   'aria-live': 'polite',
   backspaceRemovesValue: true,
-  blurInputOnSelect: (0,_index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.z)(),
-  captureMenuScroll: !(0,_index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.z)(),
+  blurInputOnSelect: (0,_index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.z)(),
+  captureMenuScroll: !(0,_index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.z)(),
   classNames: {},
   closeMenuOnSelect: true,
   closeMenuOnScroll: false,
@@ -35974,7 +37188,7 @@ var defaultProps = {
   menuPlacement: 'bottom',
   menuPosition: 'absolute',
   menuShouldBlockScroll: false,
-  menuShouldScrollIntoView: !(0,_index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.A)(),
+  menuShouldScrollIntoView: !(0,_index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.A)(),
   noOptionsMessage: function noOptionsMessage() {
     return 'No options';
   },
@@ -36024,7 +37238,7 @@ function buildCategorizedOptions(props, selectValue) {
     }
     var categorizedOption = toCategorizedOption(props, groupOrOption, selectValue, groupOrOptionIndex);
     return isFocusable(props, categorizedOption) ? categorizedOption : undefined;
-  }).filter(_index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.K);
+  }).filter(_index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.K);
 }
 function buildFocusableOptionsFromCategorizedOptions(categorizedOptions) {
   return categorizedOptions.reduce(function (optionsAccumulator, categorizedOption) {
@@ -36231,18 +37445,18 @@ var Select = /*#__PURE__*/function (_Component) {
       var isDisabled = _this.isOptionDisabled(newValue, selectValue);
       if (deselected) {
         var candidate = _this.getOptionValue(newValue);
-        _this.setValue((0,_index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.B)(selectValue.filter(function (i) {
+        _this.setValue((0,_index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.B)(selectValue.filter(function (i) {
           return _this.getOptionValue(i) !== candidate;
         })), 'deselect-option', newValue);
       } else if (!isDisabled) {
         // Select option if option is not disabled
         if (isMulti) {
-          _this.setValue((0,_index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.B)([].concat((0,_babel_runtime_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_6__["default"])(selectValue), [newValue])), 'select-option', newValue);
+          _this.setValue((0,_index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.B)([].concat((0,_babel_runtime_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_6__["default"])(selectValue), [newValue])), 'select-option', newValue);
         } else {
-          _this.setValue((0,_index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.C)(newValue), 'select-option');
+          _this.setValue((0,_index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.C)(newValue), 'select-option');
         }
       } else {
-        _this.ariaOnChange((0,_index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.C)(newValue), {
+        _this.ariaOnChange((0,_index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.C)(newValue), {
           action: 'select-option',
           option: newValue,
           name: name
@@ -36260,7 +37474,7 @@ var Select = /*#__PURE__*/function (_Component) {
       var newValueArray = selectValue.filter(function (i) {
         return _this.getOptionValue(i) !== candidate;
       });
-      var newValue = (0,_index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.D)(isMulti, newValueArray, newValueArray[0] || null);
+      var newValue = (0,_index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.D)(isMulti, newValueArray, newValueArray[0] || null);
       _this.onChange(newValue, {
         action: 'remove-value',
         removedValue: removedValue
@@ -36269,7 +37483,7 @@ var Select = /*#__PURE__*/function (_Component) {
     };
     _this.clearValue = function () {
       var selectValue = _this.state.selectValue;
-      _this.onChange((0,_index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.D)(_this.props.isMulti, [], null), {
+      _this.onChange((0,_index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.D)(_this.props.isMulti, [], null), {
         action: 'clear',
         removedValues: selectValue
       });
@@ -36279,13 +37493,11 @@ var Select = /*#__PURE__*/function (_Component) {
       var selectValue = _this.state.selectValue;
       var lastSelectedValue = selectValue[selectValue.length - 1];
       var newValueArray = selectValue.slice(0, selectValue.length - 1);
-      var newValue = (0,_index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.D)(isMulti, newValueArray, newValueArray[0] || null);
-      if (lastSelectedValue) {
-        _this.onChange(newValue, {
-          action: 'pop-value',
-          removedValue: lastSelectedValue
-        });
-      }
+      var newValue = (0,_index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.D)(isMulti, newValueArray, newValueArray[0] || null);
+      _this.onChange(newValue, {
+        action: 'pop-value',
+        removedValue: lastSelectedValue
+      });
     };
     _this.getFocusedOptionId = function (focusedOption) {
       return getFocusedOptionId(_this.state.focusableOptionsWithIds, focusedOption);
@@ -36300,7 +37512,7 @@ var Select = /*#__PURE__*/function (_Component) {
       for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
         args[_key] = arguments[_key];
       }
-      return _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.E.apply(void 0, [_this.props.classNamePrefix].concat(args));
+      return _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.E.apply(void 0, [_this.props.classNamePrefix].concat(args));
     };
     _this.getOptionLabel = function (data) {
       return getOptionLabel(_this.props, data);
@@ -36323,7 +37535,7 @@ var Select = /*#__PURE__*/function (_Component) {
       return "".concat(_this.state.instancePrefix, "-").concat(element);
     };
     _this.getComponents = function () {
-      return (0,_index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.F)(_this.props);
+      return (0,_index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.F)(_this.props);
     };
     _this.buildCategorizedOptions = function () {
       return buildCategorizedOptions(_this.props, _this.state.selectValue);
@@ -36417,7 +37629,7 @@ var Select = /*#__PURE__*/function (_Component) {
     };
     _this.onScroll = function (event) {
       if (typeof _this.props.closeMenuOnScroll === 'boolean') {
-        if (event.target instanceof HTMLElement && (0,_index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.G)(event.target)) {
+        if (event.target instanceof HTMLElement && (0,_index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.G)(event.target)) {
           _this.props.onMenuClose();
         }
       } else if (typeof _this.props.closeMenuOnScroll === 'function') {
@@ -36678,7 +37890,7 @@ var Select = /*#__PURE__*/function (_Component) {
       event.preventDefault();
     };
     _this.state.instancePrefix = 'react-select-' + (_this.props.instanceId || ++instanceId);
-    _this.state.selectValue = (0,_index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.H)(_props.value);
+    _this.state.selectValue = (0,_index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.H)(_props.value);
     // Set focusedOption if menuIsOpen is set on init (e.g. defaultMenuIsOpen)
     if (_props.menuIsOpen && _this.state.selectValue.length) {
       var focusableOptionsWithIds = _this.getFocusableOptionsWithIds();
@@ -36705,7 +37917,7 @@ var Select = /*#__PURE__*/function (_Component) {
 
       // Scroll focusedOption into view if menuIsOpen is set on mount (e.g. defaultMenuIsOpen)
       if (this.props.menuIsOpen && this.state.focusedOption && this.menuListRef && this.focusedOptionRef) {
-        (0,_index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.I)(this.menuListRef, this.focusedOptionRef);
+        (0,_index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.I)(this.menuListRef, this.focusedOptionRef);
       }
     }
   }, {
@@ -36738,7 +37950,7 @@ var Select = /*#__PURE__*/function (_Component) {
 
       // scroll the focused option into view if necessary
       if (this.menuListRef && this.focusedOptionRef && this.scrollToFocusedOptionOnUpdate) {
-        (0,_index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.I)(this.menuListRef, this.focusedOptionRef);
+        (0,_index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.I)(this.menuListRef, this.focusedOptionRef);
         this.scrollToFocusedOptionOnUpdate = false;
       }
     }
@@ -37102,7 +38314,7 @@ var Select = /*#__PURE__*/function (_Component) {
           id: id,
           innerRef: this.getInputRef,
           onBlur: this.onInputBlur,
-          onChange: _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.J,
+          onChange: _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.J,
           onFocus: this.onInputFocus,
           disabled: isDisabled,
           tabIndex: tabIndex,
@@ -37397,7 +38609,7 @@ var Select = /*#__PURE__*/function (_Component) {
         menuPosition: menuPosition,
         menuShouldScrollIntoView: menuShouldScrollIntoView
       };
-      var menuElement = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_7__.createElement(_index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.M, (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, commonProps, menuPlacementProps), function (_ref4) {
+      var menuElement = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_7__.createElement(_index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.M, (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, commonProps, menuPlacementProps), function (_ref4) {
         var ref = _ref4.ref,
           _ref4$placerProps = _ref4.placerProps,
           placement = _ref4$placerProps.placement,
@@ -37570,7 +38782,7 @@ var Select = /*#__PURE__*/function (_Component) {
         menuIsOpen = props.menuIsOpen,
         inputValue = props.inputValue,
         isMulti = props.isMulti;
-      var selectValue = (0,_index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.H)(value);
+      var selectValue = (0,_index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.H)(value);
       var newMenuOptionsState = {};
       if (prevProps && (value !== prevProps.value || options !== prevProps.options || menuIsOpen !== prevProps.menuIsOpen || inputValue !== prevProps.inputValue)) {
         var focusableOptions = menuIsOpen ? buildFocusableOptions(props, selectValue) : [];
@@ -37598,7 +38810,7 @@ var Select = /*#__PURE__*/function (_Component) {
         // If `value` or `defaultValue` props are not empty then announce them
         // when the Select is initially focused
         newAriaSelection = {
-          value: (0,_index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_11__.D)(isMulti, selectValue, selectValue[0] || null),
+          value: (0,_index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_11__.D)(isMulti, selectValue, selectValue[0] || null),
           options: selectValue,
           action: 'initial-input-focus'
         };
@@ -37626,9 +38838,9 @@ Select.defaultProps = defaultProps;
 
 /***/ }),
 
-/***/ "./node_modules/react-select/dist/index-641ee5b8.esm.js":
+/***/ "./node_modules/react-select/dist/index-a301f526.esm.js":
 /*!**************************************************************!*\
-  !*** ./node_modules/react-select/dist/index-641ee5b8.esm.js ***!
+  !*** ./node_modules/react-select/dist/index-a301f526.esm.js ***!
   \**************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -37677,7 +38889,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/objectSpread2 */ "./node_modules/@babel/runtime/helpers/esm/objectSpread2.js");
 /* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/esm/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
-/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @emotion/react */ "./node_modules/@emotion/react/dist/emotion-react.browser.development.esm.js");
+/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @emotion/react */ "./node_modules/@emotion/react/dist/emotion-react.browser.esm.js");
 /* harmony import */ var _babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/esm/slicedToArray */ "./node_modules/@babel/runtime/helpers/esm/slicedToArray.js");
 /* harmony import */ var _babel_runtime_helpers_esm_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/esm/objectWithoutProperties */ "./node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js");
 /* harmony import */ var _babel_runtime_helpers_esm_typeof__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/esm/typeof */ "./node_modules/@babel/runtime/helpers/esm/typeof.js");
@@ -38508,7 +39720,7 @@ function _EMOTION_STRINGIFIED_CSS_ERROR__() { return "You have tried to stringif
 var _ref2 =  false ? 0 : {
   name: "tj5bde-Svg",
   styles: "display:inline-block;fill:currentColor;line-height:1;stroke:currentColor;stroke-width:0;label:Svg;",
-  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluZGljYXRvcnMudHN4Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQXlCSSIsImZpbGUiOiJpbmRpY2F0b3JzLnRzeCIsInNvdXJjZXNDb250ZW50IjpbIi8qKiBAanN4IGpzeCAqL1xuaW1wb3J0IHsgSlNYLCBSZWFjdE5vZGUgfSBmcm9tICdyZWFjdCc7XG5pbXBvcnQgeyBqc3gsIGtleWZyYW1lcyB9IGZyb20gJ0BlbW90aW9uL3JlYWN0JztcblxuaW1wb3J0IHtcbiAgQ29tbW9uUHJvcHNBbmRDbGFzc05hbWUsXG4gIENTU09iamVjdFdpdGhMYWJlbCxcbiAgR3JvdXBCYXNlLFxufSBmcm9tICcuLi90eXBlcyc7XG5pbXBvcnQgeyBnZXRTdHlsZVByb3BzIH0gZnJvbSAnLi4vdXRpbHMnO1xuXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cbi8vIERyb3Bkb3duICYgQ2xlYXIgSWNvbnNcbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuXG5jb25zdCBTdmcgPSAoe1xuICBzaXplLFxuICAuLi5wcm9wc1xufTogSlNYLkludHJpbnNpY0VsZW1lbnRzWydzdmcnXSAmIHsgc2l6ZTogbnVtYmVyIH0pID0+IChcbiAgPHN2Z1xuICAgIGhlaWdodD17c2l6ZX1cbiAgICB3aWR0aD17c2l6ZX1cbiAgICB2aWV3Qm94PVwiMCAwIDIwIDIwXCJcbiAgICBhcmlhLWhpZGRlbj1cInRydWVcIlxuICAgIGZvY3VzYWJsZT1cImZhbHNlXCJcbiAgICBjc3M9e3tcbiAgICAgIGRpc3BsYXk6ICdpbmxpbmUtYmxvY2snLFxuICAgICAgZmlsbDogJ2N1cnJlbnRDb2xvcicsXG4gICAgICBsaW5lSGVpZ2h0OiAxLFxuICAgICAgc3Ryb2tlOiAnY3VycmVudENvbG9yJyxcbiAgICAgIHN0cm9rZVdpZHRoOiAwLFxuICAgIH19XG4gICAgey4uLnByb3BzfVxuICAvPlxuKTtcblxuZXhwb3J0IHR5cGUgQ3Jvc3NJY29uUHJvcHMgPSBKU1guSW50cmluc2ljRWxlbWVudHNbJ3N2ZyddICYgeyBzaXplPzogbnVtYmVyIH07XG5leHBvcnQgY29uc3QgQ3Jvc3NJY29uID0gKHByb3BzOiBDcm9zc0ljb25Qcm9wcykgPT4gKFxuICA8U3ZnIHNpemU9ezIwfSB7Li4ucHJvcHN9PlxuICAgIDxwYXRoIGQ9XCJNMTQuMzQ4IDE0Ljg0OWMtMC40NjkgMC40NjktMS4yMjkgMC40NjktMS42OTcgMGwtMi42NTEtMy4wMzAtMi42NTEgMy4wMjljLTAuNDY5IDAuNDY5LTEuMjI5IDAuNDY5LTEuNjk3IDAtMC40NjktMC40NjktMC40NjktMS4yMjkgMC0xLjY5N2wyLjc1OC0zLjE1LTIuNzU5LTMuMTUyYy0wLjQ2OS0wLjQ2OS0wLjQ2OS0xLjIyOCAwLTEuNjk3czEuMjI4LTAuNDY5IDEuNjk3IDBsMi42NTIgMy4wMzEgMi42NTEtMy4wMzFjMC40NjktMC40NjkgMS4yMjgtMC40NjkgMS42OTcgMHMwLjQ2OSAxLjIyOSAwIDEuNjk3bC0yLjc1OCAzLjE1MiAyLjc1OCAzLjE1YzAuNDY5IDAuNDY5IDAuNDY5IDEuMjI5IDAgMS42OTh6XCIgLz5cbiAgPC9Tdmc+XG4pO1xuZXhwb3J0IHR5cGUgRG93bkNoZXZyb25Qcm9wcyA9IEpTWC5JbnRyaW5zaWNFbGVtZW50c1snc3ZnJ10gJiB7IHNpemU/OiBudW1iZXIgfTtcbmV4cG9ydCBjb25zdCBEb3duQ2hldnJvbiA9IChwcm9wczogRG93bkNoZXZyb25Qcm9wcykgPT4gKFxuICA8U3ZnIHNpemU9ezIwfSB7Li4ucHJvcHN9PlxuICAgIDxwYXRoIGQ9XCJNNC41MTYgNy41NDhjMC40MzYtMC40NDYgMS4wNDMtMC40ODEgMS41NzYgMGwzLjkwOCAzLjc0NyAzLjkwOC0zLjc0N2MwLjUzMy0wLjQ4MSAxLjE0MS0wLjQ0NiAxLjU3NCAwIDAuNDM2IDAuNDQ1IDAuNDA4IDEuMTk3IDAgMS42MTUtMC40MDYgMC40MTgtNC42OTUgNC41MDItNC42OTUgNC41MDItMC4yMTcgMC4yMjMtMC41MDIgMC4zMzUtMC43ODcgMC4zMzVzLTAuNTctMC4xMTItMC43ODktMC4zMzVjMCAwLTQuMjg3LTQuMDg0LTQuNjk1LTQuNTAycy0wLjQzNi0xLjE3IDAtMS42MTV6XCIgLz5cbiAgPC9Tdmc+XG4pO1xuXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cbi8vIERyb3Bkb3duICYgQ2xlYXIgQnV0dG9uc1xuLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG5cbmV4cG9ydCBpbnRlcmZhY2UgRHJvcGRvd25JbmRpY2F0b3JQcm9wczxcbiAgT3B0aW9uID0gdW5rbm93bixcbiAgSXNNdWx0aSBleHRlbmRzIGJvb2xlYW4gPSBib29sZWFuLFxuICBHcm91cCBleHRlbmRzIEdyb3VwQmFzZTxPcHRpb24+ID0gR3JvdXBCYXNlPE9wdGlvbj5cbj4gZXh0ZW5kcyBDb21tb25Qcm9wc0FuZENsYXNzTmFtZTxPcHRpb24sIElzTXVsdGksIEdyb3VwPiB7XG4gIC8qKiBUaGUgY2hpbGRyZW4gdG8gYmUgcmVuZGVyZWQgaW5zaWRlIHRoZSBpbmRpY2F0b3IuICovXG4gIGNoaWxkcmVuPzogUmVhY3ROb2RlO1xuICAvKiogUHJvcHMgdGhhdCB3aWxsIGJlIHBhc3NlZCBvbiB0byB0aGUgY2hpbGRyZW4uICovXG4gIGlubmVyUHJvcHM6IEpTWC5JbnRyaW5zaWNFbGVtZW50c1snZGl2J107XG4gIC8qKiBUaGUgZm9jdXNlZCBzdGF0ZSBvZiB0aGUgc2VsZWN0LiAqL1xuICBpc0ZvY3VzZWQ6IGJvb2xlYW47XG4gIGlzRGlzYWJsZWQ6IGJvb2xlYW47XG59XG5cbmNvbnN0IGJhc2VDU1MgPSA8XG4gIE9wdGlvbixcbiAgSXNNdWx0aSBleHRlbmRzIGJvb2xlYW4sXG4gIEdyb3VwIGV4dGVuZHMgR3JvdXBCYXNlPE9wdGlvbj5cbj4oXG4gIHtcbiAgICBpc0ZvY3VzZWQsXG4gICAgdGhlbWU6IHtcbiAgICAgIHNwYWNpbmc6IHsgYmFzZVVuaXQgfSxcbiAgICAgIGNvbG9ycyxcbiAgICB9LFxuICB9OlxuICAgIHwgRHJvcGRvd25JbmRpY2F0b3JQcm9wczxPcHRpb24sIElzTXVsdGksIEdyb3VwPlxuICAgIHwgQ2xlYXJJbmRpY2F0b3JQcm9wczxPcHRpb24sIElzTXVsdGksIEdyb3VwPixcbiAgdW5zdHlsZWQ6IGJvb2xlYW5cbik6IENTU09iamVjdFdpdGhMYWJlbCA9PiAoe1xuICBsYWJlbDogJ2luZGljYXRvckNvbnRhaW5lcicsXG4gIGRpc3BsYXk6ICdmbGV4JyxcbiAgdHJhbnNpdGlvbjogJ2NvbG9yIDE1MG1zJyxcbiAgLi4uKHVuc3R5bGVkXG4gICAgPyB7fVxuICAgIDoge1xuICAgICAgICBjb2xvcjogaXNGb2N1c2VkID8gY29sb3JzLm5ldXRyYWw2MCA6IGNvbG9ycy5uZXV0cmFsMjAsXG4gICAgICAgIHBhZGRpbmc6IGJhc2VVbml0ICogMixcbiAgICAgICAgJzpob3Zlcic6IHtcbiAgICAgICAgICBjb2xvcjogaXNGb2N1c2VkID8gY29sb3JzLm5ldXRyYWw4MCA6IGNvbG9ycy5uZXV0cmFsNDAsXG4gICAgICAgIH0sXG4gICAgICB9KSxcbn0pO1xuXG5leHBvcnQgY29uc3QgZHJvcGRvd25JbmRpY2F0b3JDU1MgPSBiYXNlQ1NTO1xuZXhwb3J0IGNvbnN0IERyb3Bkb3duSW5kaWNhdG9yID0gPFxuICBPcHRpb24sXG4gIElzTXVsdGkgZXh0ZW5kcyBib29sZWFuLFxuICBHcm91cCBleHRlbmRzIEdyb3VwQmFzZTxPcHRpb24+XG4+KFxuICBwcm9wczogRHJvcGRvd25JbmRpY2F0b3JQcm9wczxPcHRpb24sIElzTXVsdGksIEdyb3VwPlxuKSA9PiB7XG4gIGNvbnN0IHsgY2hpbGRyZW4sIGlubmVyUHJvcHMgfSA9IHByb3BzO1xuICByZXR1cm4gKFxuICAgIDxkaXZcbiAgICAgIHsuLi5nZXRTdHlsZVByb3BzKHByb3BzLCAnZHJvcGRvd25JbmRpY2F0b3InLCB7XG4gICAgICAgIGluZGljYXRvcjogdHJ1ZSxcbiAgICAgICAgJ2Ryb3Bkb3duLWluZGljYXRvcic6IHRydWUsXG4gICAgICB9KX1cbiAgICAgIHsuLi5pbm5lclByb3BzfVxuICAgID5cbiAgICAgIHtjaGlsZHJlbiB8fCA8RG93bkNoZXZyb24gLz59XG4gICAgPC9kaXY+XG4gICk7XG59O1xuXG5leHBvcnQgaW50ZXJmYWNlIENsZWFySW5kaWNhdG9yUHJvcHM8XG4gIE9wdGlvbiA9IHVua25vd24sXG4gIElzTXVsdGkgZXh0ZW5kcyBib29sZWFuID0gYm9vbGVhbixcbiAgR3JvdXAgZXh0ZW5kcyBHcm91cEJhc2U8T3B0aW9uPiA9IEdyb3VwQmFzZTxPcHRpb24+XG4+IGV4dGVuZHMgQ29tbW9uUHJvcHNBbmRDbGFzc05hbWU8T3B0aW9uLCBJc011bHRpLCBHcm91cD4ge1xuICAvKiogVGhlIGNoaWxkcmVuIHRvIGJlIHJlbmRlcmVkIGluc2lkZSB0aGUgaW5kaWNhdG9yLiAqL1xuICBjaGlsZHJlbj86IFJlYWN0Tm9kZTtcbiAgLyoqIFByb3BzIHRoYXQgd2lsbCBiZSBwYXNzZWQgb24gdG8gdGhlIGNoaWxkcmVuLiAqL1xuICBpbm5lclByb3BzOiBKU1guSW50cmluc2ljRWxlbWVudHNbJ2RpdiddO1xuICAvKiogVGhlIGZvY3VzZWQgc3RhdGUgb2YgdGhlIHNlbGVjdC4gKi9cbiAgaXNGb2N1c2VkOiBib29sZWFuO1xufVxuXG5leHBvcnQgY29uc3QgY2xlYXJJbmRpY2F0b3JDU1MgPSBiYXNlQ1NTO1xuZXhwb3J0IGNvbnN0IENsZWFySW5kaWNhdG9yID0gPFxuICBPcHRpb24sXG4gIElzTXVsdGkgZXh0ZW5kcyBib29sZWFuLFxuICBHcm91cCBleHRlbmRzIEdyb3VwQmFzZTxPcHRpb24+XG4+KFxuICBwcm9wczogQ2xlYXJJbmRpY2F0b3JQcm9wczxPcHRpb24sIElzTXVsdGksIEdyb3VwPlxuKSA9PiB7XG4gIGNvbnN0IHsgY2hpbGRyZW4sIGlubmVyUHJvcHMgfSA9IHByb3BzO1xuICByZXR1cm4gKFxuICAgIDxkaXZcbiAgICAgIHsuLi5nZXRTdHlsZVByb3BzKHByb3BzLCAnY2xlYXJJbmRpY2F0b3InLCB7XG4gICAgICAgIGluZGljYXRvcjogdHJ1ZSxcbiAgICAgICAgJ2NsZWFyLWluZGljYXRvcic6IHRydWUsXG4gICAgICB9KX1cbiAgICAgIHsuLi5pbm5lclByb3BzfVxuICAgID5cbiAgICAgIHtjaGlsZHJlbiB8fCA8Q3Jvc3NJY29uIC8+fVxuICAgIDwvZGl2PlxuICApO1xufTtcblxuLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG4vLyBTZXBhcmF0b3Jcbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuXG5leHBvcnQgaW50ZXJmYWNlIEluZGljYXRvclNlcGFyYXRvclByb3BzPFxuICBPcHRpb24gPSB1bmtub3duLFxuICBJc011bHRpIGV4dGVuZHMgYm9vbGVhbiA9IGJvb2xlYW4sXG4gIEdyb3VwIGV4dGVuZHMgR3JvdXBCYXNlPE9wdGlvbj4gPSBHcm91cEJhc2U8T3B0aW9uPlxuPiBleHRlbmRzIENvbW1vblByb3BzQW5kQ2xhc3NOYW1lPE9wdGlvbiwgSXNNdWx0aSwgR3JvdXA+IHtcbiAgaXNEaXNhYmxlZDogYm9vbGVhbjtcbiAgaXNGb2N1c2VkOiBib29sZWFuO1xuICBpbm5lclByb3BzPzogSlNYLkludHJpbnNpY0VsZW1lbnRzWydzcGFuJ107XG59XG5cbmV4cG9ydCBjb25zdCBpbmRpY2F0b3JTZXBhcmF0b3JDU1MgPSA8XG4gIE9wdGlvbixcbiAgSXNNdWx0aSBleHRlbmRzIGJvb2xlYW4sXG4gIEdyb3VwIGV4dGVuZHMgR3JvdXBCYXNlPE9wdGlvbj5cbj4oXG4gIHtcbiAgICBpc0Rpc2FibGVkLFxuICAgIHRoZW1lOiB7XG4gICAgICBzcGFjaW5nOiB7IGJhc2VVbml0IH0sXG4gICAgICBjb2xvcnMsXG4gICAgfSxcbiAgfTogSW5kaWNhdG9yU2VwYXJhdG9yUHJvcHM8T3B0aW9uLCBJc011bHRpLCBHcm91cD4sXG4gIHVuc3R5bGVkOiBib29sZWFuXG4pOiBDU1NPYmplY3RXaXRoTGFiZWwgPT4gKHtcbiAgbGFiZWw6ICdpbmRpY2F0b3JTZXBhcmF0b3InLFxuICBhbGlnblNlbGY6ICdzdHJldGNoJyxcbiAgd2lkdGg6IDEsXG4gIC4uLih1bnN0eWxlZFxuICAgID8ge31cbiAgICA6IHtcbiAgICAgICAgYmFja2dyb3VuZENvbG9yOiBpc0Rpc2FibGVkID8gY29sb3JzLm5ldXRyYWwxMCA6IGNvbG9ycy5uZXV0cmFsMjAsXG4gICAgICAgIG1hcmdpbkJvdHRvbTogYmFzZVVuaXQgKiAyLFxuICAgICAgICBtYXJnaW5Ub3A6IGJhc2VVbml0ICogMixcbiAgICAgIH0pLFxufSk7XG5cbmV4cG9ydCBjb25zdCBJbmRpY2F0b3JTZXBhcmF0b3IgPSA8XG4gIE9wdGlvbixcbiAgSXNNdWx0aSBleHRlbmRzIGJvb2xlYW4sXG4gIEdyb3VwIGV4dGVuZHMgR3JvdXBCYXNlPE9wdGlvbj5cbj4oXG4gIHByb3BzOiBJbmRpY2F0b3JTZXBhcmF0b3JQcm9wczxPcHRpb24sIElzTXVsdGksIEdyb3VwPlxuKSA9PiB7XG4gIGNvbnN0IHsgaW5uZXJQcm9wcyB9ID0gcHJvcHM7XG4gIHJldHVybiAoXG4gICAgPHNwYW5cbiAgICAgIHsuLi5pbm5lclByb3BzfVxuICAgICAgey4uLmdldFN0eWxlUHJvcHMocHJvcHMsICdpbmRpY2F0b3JTZXBhcmF0b3InLCB7XG4gICAgICAgICdpbmRpY2F0b3Itc2VwYXJhdG9yJzogdHJ1ZSxcbiAgICAgIH0pfVxuICAgIC8+XG4gICk7XG59O1xuXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cbi8vIExvYWRpbmdcbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuXG5jb25zdCBsb2FkaW5nRG90QW5pbWF0aW9ucyA9IGtleWZyYW1lc2BcbiAgMCUsIDgwJSwgMTAwJSB7IG9wYWNpdHk6IDA7IH1cbiAgNDAlIHsgb3BhY2l0eTogMTsgfVxuYDtcblxuZXhwb3J0IGNvbnN0IGxvYWRpbmdJbmRpY2F0b3JDU1MgPSA8XG4gIE9wdGlvbixcbiAgSXNNdWx0aSBleHRlbmRzIGJvb2xlYW4sXG4gIEdyb3VwIGV4dGVuZHMgR3JvdXBCYXNlPE9wdGlvbj5cbj4oXG4gIHtcbiAgICBpc0ZvY3VzZWQsXG4gICAgc2l6ZSxcbiAgICB0aGVtZToge1xuICAgICAgY29sb3JzLFxuICAgICAgc3BhY2luZzogeyBiYXNlVW5pdCB9LFxuICAgIH0sXG4gIH06IExvYWRpbmdJbmRpY2F0b3JQcm9wczxPcHRpb24sIElzTXVsdGksIEdyb3VwPixcbiAgdW5zdHlsZWQ6IGJvb2xlYW5cbik6IENTU09iamVjdFdpdGhMYWJlbCA9PiAoe1xuICBsYWJlbDogJ2xvYWRpbmdJbmRpY2F0b3InLFxuICBkaXNwbGF5OiAnZmxleCcsXG4gIHRyYW5zaXRpb246ICdjb2xvciAxNTBtcycsXG4gIGFsaWduU2VsZjogJ2NlbnRlcicsXG4gIGZvbnRTaXplOiBzaXplLFxuICBsaW5lSGVpZ2h0OiAxLFxuICBtYXJnaW5SaWdodDogc2l6ZSxcbiAgdGV4dEFsaWduOiAnY2VudGVyJyxcbiAgdmVydGljYWxBbGlnbjogJ21pZGRsZScsXG4gIC4uLih1bnN0eWxlZFxuICAgID8ge31cbiAgICA6IHtcbiAgICAgICAgY29sb3I6IGlzRm9jdXNlZCA/IGNvbG9ycy5uZXV0cmFsNjAgOiBjb2xvcnMubmV1dHJhbDIwLFxuICAgICAgICBwYWRkaW5nOiBiYXNlVW5pdCAqIDIsXG4gICAgICB9KSxcbn0pO1xuXG5pbnRlcmZhY2UgTG9hZGluZ0RvdFByb3BzIHtcbiAgZGVsYXk6IG51bWJlcjtcbiAgb2Zmc2V0OiBib29sZWFuO1xufVxuY29uc3QgTG9hZGluZ0RvdCA9ICh7IGRlbGF5LCBvZmZzZXQgfTogTG9hZGluZ0RvdFByb3BzKSA9PiAoXG4gIDxzcGFuXG4gICAgY3NzPXt7XG4gICAgICBhbmltYXRpb246IGAke2xvYWRpbmdEb3RBbmltYXRpb25zfSAxcyBlYXNlLWluLW91dCAke2RlbGF5fW1zIGluZmluaXRlO2AsXG4gICAgICBiYWNrZ3JvdW5kQ29sb3I6ICdjdXJyZW50Q29sb3InLFxuICAgICAgYm9yZGVyUmFkaXVzOiAnMWVtJyxcbiAgICAgIGRpc3BsYXk6ICdpbmxpbmUtYmxvY2snLFxuICAgICAgbWFyZ2luTGVmdDogb2Zmc2V0ID8gJzFlbScgOiB1bmRlZmluZWQsXG4gICAgICBoZWlnaHQ6ICcxZW0nLFxuICAgICAgdmVydGljYWxBbGlnbjogJ3RvcCcsXG4gICAgICB3aWR0aDogJzFlbScsXG4gICAgfX1cbiAgLz5cbik7XG5cbmV4cG9ydCBpbnRlcmZhY2UgTG9hZGluZ0luZGljYXRvclByb3BzPFxuICBPcHRpb24gPSB1bmtub3duLFxuICBJc011bHRpIGV4dGVuZHMgYm9vbGVhbiA9IGJvb2xlYW4sXG4gIEdyb3VwIGV4dGVuZHMgR3JvdXBCYXNlPE9wdGlvbj4gPSBHcm91cEJhc2U8T3B0aW9uPlxuPiBleHRlbmRzIENvbW1vblByb3BzQW5kQ2xhc3NOYW1lPE9wdGlvbiwgSXNNdWx0aSwgR3JvdXA+IHtcbiAgLyoqIFByb3BzIHRoYXQgd2lsbCBiZSBwYXNzZWQgb24gdG8gdGhlIGNoaWxkcmVuLiAqL1xuICBpbm5lclByb3BzOiBKU1guSW50cmluc2ljRWxlbWVudHNbJ2RpdiddO1xuICAvKiogVGhlIGZvY3VzZWQgc3RhdGUgb2YgdGhlIHNlbGVjdC4gKi9cbiAgaXNGb2N1c2VkOiBib29sZWFuO1xuICBpc0Rpc2FibGVkOiBib29sZWFuO1xuICAvKiogU2V0IHNpemUgb2YgdGhlIGNvbnRhaW5lci4gKi9cbiAgc2l6ZTogbnVtYmVyO1xufVxuZXhwb3J0IGNvbnN0IExvYWRpbmdJbmRpY2F0b3IgPSA8XG4gIE9wdGlvbixcbiAgSXNNdWx0aSBleHRlbmRzIGJvb2xlYW4sXG4gIEdyb3VwIGV4dGVuZHMgR3JvdXBCYXNlPE9wdGlvbj5cbj4oe1xuICBpbm5lclByb3BzLFxuICBpc1J0bCxcbiAgc2l6ZSA9IDQsXG4gIC4uLnJlc3RQcm9wc1xufTogTG9hZGluZ0luZGljYXRvclByb3BzPE9wdGlvbiwgSXNNdWx0aSwgR3JvdXA+KSA9PiB7XG4gIHJldHVybiAoXG4gICAgPGRpdlxuICAgICAgey4uLmdldFN0eWxlUHJvcHMoXG4gICAgICAgIHsgLi4ucmVzdFByb3BzLCBpbm5lclByb3BzLCBpc1J0bCwgc2l6ZSB9LFxuICAgICAgICAnbG9hZGluZ0luZGljYXRvcicsXG4gICAgICAgIHtcbiAgICAgICAgICBpbmRpY2F0b3I6IHRydWUsXG4gICAgICAgICAgJ2xvYWRpbmctaW5kaWNhdG9yJzogdHJ1ZSxcbiAgICAgICAgfVxuICAgICAgKX1cbiAgICAgIHsuLi5pbm5lclByb3BzfVxuICAgID5cbiAgICAgIDxMb2FkaW5nRG90IGRlbGF5PXswfSBvZmZzZXQ9e2lzUnRsfSAvPlxuICAgICAgPExvYWRpbmdEb3QgZGVsYXk9ezE2MH0gb2Zmc2V0IC8+XG4gICAgICA8TG9hZGluZ0RvdCBkZWxheT17MzIwfSBvZmZzZXQ9eyFpc1J0bH0gLz5cbiAgICA8L2Rpdj5cbiAgKTtcbn07XG4iXX0= */",
+  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluZGljYXRvcnMudHN4Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQXlCSSIsImZpbGUiOiJpbmRpY2F0b3JzLnRzeCIsInNvdXJjZXNDb250ZW50IjpbIi8qKiBAanN4IGpzeCAqL1xuaW1wb3J0IHsgUmVhY3ROb2RlIH0gZnJvbSAncmVhY3QnO1xuaW1wb3J0IHsganN4LCBrZXlmcmFtZXMgfSBmcm9tICdAZW1vdGlvbi9yZWFjdCc7XG5cbmltcG9ydCB7XG4gIENvbW1vblByb3BzQW5kQ2xhc3NOYW1lLFxuICBDU1NPYmplY3RXaXRoTGFiZWwsXG4gIEdyb3VwQmFzZSxcbn0gZnJvbSAnLi4vdHlwZXMnO1xuaW1wb3J0IHsgZ2V0U3R5bGVQcm9wcyB9IGZyb20gJy4uL3V0aWxzJztcblxuLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG4vLyBEcm9wZG93biAmIENsZWFyIEljb25zXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cblxuY29uc3QgU3ZnID0gKHtcbiAgc2l6ZSxcbiAgLi4ucHJvcHNcbn06IEpTWC5JbnRyaW5zaWNFbGVtZW50c1snc3ZnJ10gJiB7IHNpemU6IG51bWJlciB9KSA9PiAoXG4gIDxzdmdcbiAgICBoZWlnaHQ9e3NpemV9XG4gICAgd2lkdGg9e3NpemV9XG4gICAgdmlld0JveD1cIjAgMCAyMCAyMFwiXG4gICAgYXJpYS1oaWRkZW49XCJ0cnVlXCJcbiAgICBmb2N1c2FibGU9XCJmYWxzZVwiXG4gICAgY3NzPXt7XG4gICAgICBkaXNwbGF5OiAnaW5saW5lLWJsb2NrJyxcbiAgICAgIGZpbGw6ICdjdXJyZW50Q29sb3InLFxuICAgICAgbGluZUhlaWdodDogMSxcbiAgICAgIHN0cm9rZTogJ2N1cnJlbnRDb2xvcicsXG4gICAgICBzdHJva2VXaWR0aDogMCxcbiAgICB9fVxuICAgIHsuLi5wcm9wc31cbiAgLz5cbik7XG5cbmV4cG9ydCB0eXBlIENyb3NzSWNvblByb3BzID0gSlNYLkludHJpbnNpY0VsZW1lbnRzWydzdmcnXSAmIHsgc2l6ZT86IG51bWJlciB9O1xuZXhwb3J0IGNvbnN0IENyb3NzSWNvbiA9IChwcm9wczogQ3Jvc3NJY29uUHJvcHMpID0+IChcbiAgPFN2ZyBzaXplPXsyMH0gey4uLnByb3BzfT5cbiAgICA8cGF0aCBkPVwiTTE0LjM0OCAxNC44NDljLTAuNDY5IDAuNDY5LTEuMjI5IDAuNDY5LTEuNjk3IDBsLTIuNjUxLTMuMDMwLTIuNjUxIDMuMDI5Yy0wLjQ2OSAwLjQ2OS0xLjIyOSAwLjQ2OS0xLjY5NyAwLTAuNDY5LTAuNDY5LTAuNDY5LTEuMjI5IDAtMS42OTdsMi43NTgtMy4xNS0yLjc1OS0zLjE1MmMtMC40NjktMC40NjktMC40NjktMS4yMjggMC0xLjY5N3MxLjIyOC0wLjQ2OSAxLjY5NyAwbDIuNjUyIDMuMDMxIDIuNjUxLTMuMDMxYzAuNDY5LTAuNDY5IDEuMjI4LTAuNDY5IDEuNjk3IDBzMC40NjkgMS4yMjkgMCAxLjY5N2wtMi43NTggMy4xNTIgMi43NTggMy4xNWMwLjQ2OSAwLjQ2OSAwLjQ2OSAxLjIyOSAwIDEuNjk4elwiIC8+XG4gIDwvU3ZnPlxuKTtcbmV4cG9ydCB0eXBlIERvd25DaGV2cm9uUHJvcHMgPSBKU1guSW50cmluc2ljRWxlbWVudHNbJ3N2ZyddICYgeyBzaXplPzogbnVtYmVyIH07XG5leHBvcnQgY29uc3QgRG93bkNoZXZyb24gPSAocHJvcHM6IERvd25DaGV2cm9uUHJvcHMpID0+IChcbiAgPFN2ZyBzaXplPXsyMH0gey4uLnByb3BzfT5cbiAgICA8cGF0aCBkPVwiTTQuNTE2IDcuNTQ4YzAuNDM2LTAuNDQ2IDEuMDQzLTAuNDgxIDEuNTc2IDBsMy45MDggMy43NDcgMy45MDgtMy43NDdjMC41MzMtMC40ODEgMS4xNDEtMC40NDYgMS41NzQgMCAwLjQzNiAwLjQ0NSAwLjQwOCAxLjE5NyAwIDEuNjE1LTAuNDA2IDAuNDE4LTQuNjk1IDQuNTAyLTQuNjk1IDQuNTAyLTAuMjE3IDAuMjIzLTAuNTAyIDAuMzM1LTAuNzg3IDAuMzM1cy0wLjU3LTAuMTEyLTAuNzg5LTAuMzM1YzAgMC00LjI4Ny00LjA4NC00LjY5NS00LjUwMnMtMC40MzYtMS4xNyAwLTEuNjE1elwiIC8+XG4gIDwvU3ZnPlxuKTtcblxuLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG4vLyBEcm9wZG93biAmIENsZWFyIEJ1dHRvbnNcbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuXG5leHBvcnQgaW50ZXJmYWNlIERyb3Bkb3duSW5kaWNhdG9yUHJvcHM8XG4gIE9wdGlvbiA9IHVua25vd24sXG4gIElzTXVsdGkgZXh0ZW5kcyBib29sZWFuID0gYm9vbGVhbixcbiAgR3JvdXAgZXh0ZW5kcyBHcm91cEJhc2U8T3B0aW9uPiA9IEdyb3VwQmFzZTxPcHRpb24+XG4+IGV4dGVuZHMgQ29tbW9uUHJvcHNBbmRDbGFzc05hbWU8T3B0aW9uLCBJc011bHRpLCBHcm91cD4ge1xuICAvKiogVGhlIGNoaWxkcmVuIHRvIGJlIHJlbmRlcmVkIGluc2lkZSB0aGUgaW5kaWNhdG9yLiAqL1xuICBjaGlsZHJlbj86IFJlYWN0Tm9kZTtcbiAgLyoqIFByb3BzIHRoYXQgd2lsbCBiZSBwYXNzZWQgb24gdG8gdGhlIGNoaWxkcmVuLiAqL1xuICBpbm5lclByb3BzOiBKU1guSW50cmluc2ljRWxlbWVudHNbJ2RpdiddO1xuICAvKiogVGhlIGZvY3VzZWQgc3RhdGUgb2YgdGhlIHNlbGVjdC4gKi9cbiAgaXNGb2N1c2VkOiBib29sZWFuO1xuICBpc0Rpc2FibGVkOiBib29sZWFuO1xufVxuXG5jb25zdCBiYXNlQ1NTID0gPFxuICBPcHRpb24sXG4gIElzTXVsdGkgZXh0ZW5kcyBib29sZWFuLFxuICBHcm91cCBleHRlbmRzIEdyb3VwQmFzZTxPcHRpb24+XG4+KFxuICB7XG4gICAgaXNGb2N1c2VkLFxuICAgIHRoZW1lOiB7XG4gICAgICBzcGFjaW5nOiB7IGJhc2VVbml0IH0sXG4gICAgICBjb2xvcnMsXG4gICAgfSxcbiAgfTpcbiAgICB8IERyb3Bkb3duSW5kaWNhdG9yUHJvcHM8T3B0aW9uLCBJc011bHRpLCBHcm91cD5cbiAgICB8IENsZWFySW5kaWNhdG9yUHJvcHM8T3B0aW9uLCBJc011bHRpLCBHcm91cD4sXG4gIHVuc3R5bGVkOiBib29sZWFuXG4pOiBDU1NPYmplY3RXaXRoTGFiZWwgPT4gKHtcbiAgbGFiZWw6ICdpbmRpY2F0b3JDb250YWluZXInLFxuICBkaXNwbGF5OiAnZmxleCcsXG4gIHRyYW5zaXRpb246ICdjb2xvciAxNTBtcycsXG4gIC4uLih1bnN0eWxlZFxuICAgID8ge31cbiAgICA6IHtcbiAgICAgICAgY29sb3I6IGlzRm9jdXNlZCA/IGNvbG9ycy5uZXV0cmFsNjAgOiBjb2xvcnMubmV1dHJhbDIwLFxuICAgICAgICBwYWRkaW5nOiBiYXNlVW5pdCAqIDIsXG4gICAgICAgICc6aG92ZXInOiB7XG4gICAgICAgICAgY29sb3I6IGlzRm9jdXNlZCA/IGNvbG9ycy5uZXV0cmFsODAgOiBjb2xvcnMubmV1dHJhbDQwLFxuICAgICAgICB9LFxuICAgICAgfSksXG59KTtcblxuZXhwb3J0IGNvbnN0IGRyb3Bkb3duSW5kaWNhdG9yQ1NTID0gYmFzZUNTUztcbmV4cG9ydCBjb25zdCBEcm9wZG93bkluZGljYXRvciA9IDxcbiAgT3B0aW9uLFxuICBJc011bHRpIGV4dGVuZHMgYm9vbGVhbixcbiAgR3JvdXAgZXh0ZW5kcyBHcm91cEJhc2U8T3B0aW9uPlxuPihcbiAgcHJvcHM6IERyb3Bkb3duSW5kaWNhdG9yUHJvcHM8T3B0aW9uLCBJc011bHRpLCBHcm91cD5cbikgPT4ge1xuICBjb25zdCB7IGNoaWxkcmVuLCBpbm5lclByb3BzIH0gPSBwcm9wcztcbiAgcmV0dXJuIChcbiAgICA8ZGl2XG4gICAgICB7Li4uZ2V0U3R5bGVQcm9wcyhwcm9wcywgJ2Ryb3Bkb3duSW5kaWNhdG9yJywge1xuICAgICAgICBpbmRpY2F0b3I6IHRydWUsXG4gICAgICAgICdkcm9wZG93bi1pbmRpY2F0b3InOiB0cnVlLFxuICAgICAgfSl9XG4gICAgICB7Li4uaW5uZXJQcm9wc31cbiAgICA+XG4gICAgICB7Y2hpbGRyZW4gfHwgPERvd25DaGV2cm9uIC8+fVxuICAgIDwvZGl2PlxuICApO1xufTtcblxuZXhwb3J0IGludGVyZmFjZSBDbGVhckluZGljYXRvclByb3BzPFxuICBPcHRpb24gPSB1bmtub3duLFxuICBJc011bHRpIGV4dGVuZHMgYm9vbGVhbiA9IGJvb2xlYW4sXG4gIEdyb3VwIGV4dGVuZHMgR3JvdXBCYXNlPE9wdGlvbj4gPSBHcm91cEJhc2U8T3B0aW9uPlxuPiBleHRlbmRzIENvbW1vblByb3BzQW5kQ2xhc3NOYW1lPE9wdGlvbiwgSXNNdWx0aSwgR3JvdXA+IHtcbiAgLyoqIFRoZSBjaGlsZHJlbiB0byBiZSByZW5kZXJlZCBpbnNpZGUgdGhlIGluZGljYXRvci4gKi9cbiAgY2hpbGRyZW4/OiBSZWFjdE5vZGU7XG4gIC8qKiBQcm9wcyB0aGF0IHdpbGwgYmUgcGFzc2VkIG9uIHRvIHRoZSBjaGlsZHJlbi4gKi9cbiAgaW5uZXJQcm9wczogSlNYLkludHJpbnNpY0VsZW1lbnRzWydkaXYnXTtcbiAgLyoqIFRoZSBmb2N1c2VkIHN0YXRlIG9mIHRoZSBzZWxlY3QuICovXG4gIGlzRm9jdXNlZDogYm9vbGVhbjtcbn1cblxuZXhwb3J0IGNvbnN0IGNsZWFySW5kaWNhdG9yQ1NTID0gYmFzZUNTUztcbmV4cG9ydCBjb25zdCBDbGVhckluZGljYXRvciA9IDxcbiAgT3B0aW9uLFxuICBJc011bHRpIGV4dGVuZHMgYm9vbGVhbixcbiAgR3JvdXAgZXh0ZW5kcyBHcm91cEJhc2U8T3B0aW9uPlxuPihcbiAgcHJvcHM6IENsZWFySW5kaWNhdG9yUHJvcHM8T3B0aW9uLCBJc011bHRpLCBHcm91cD5cbikgPT4ge1xuICBjb25zdCB7IGNoaWxkcmVuLCBpbm5lclByb3BzIH0gPSBwcm9wcztcbiAgcmV0dXJuIChcbiAgICA8ZGl2XG4gICAgICB7Li4uZ2V0U3R5bGVQcm9wcyhwcm9wcywgJ2NsZWFySW5kaWNhdG9yJywge1xuICAgICAgICBpbmRpY2F0b3I6IHRydWUsXG4gICAgICAgICdjbGVhci1pbmRpY2F0b3InOiB0cnVlLFxuICAgICAgfSl9XG4gICAgICB7Li4uaW5uZXJQcm9wc31cbiAgICA+XG4gICAgICB7Y2hpbGRyZW4gfHwgPENyb3NzSWNvbiAvPn1cbiAgICA8L2Rpdj5cbiAgKTtcbn07XG5cbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuLy8gU2VwYXJhdG9yXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cblxuZXhwb3J0IGludGVyZmFjZSBJbmRpY2F0b3JTZXBhcmF0b3JQcm9wczxcbiAgT3B0aW9uID0gdW5rbm93bixcbiAgSXNNdWx0aSBleHRlbmRzIGJvb2xlYW4gPSBib29sZWFuLFxuICBHcm91cCBleHRlbmRzIEdyb3VwQmFzZTxPcHRpb24+ID0gR3JvdXBCYXNlPE9wdGlvbj5cbj4gZXh0ZW5kcyBDb21tb25Qcm9wc0FuZENsYXNzTmFtZTxPcHRpb24sIElzTXVsdGksIEdyb3VwPiB7XG4gIGlzRGlzYWJsZWQ6IGJvb2xlYW47XG4gIGlzRm9jdXNlZDogYm9vbGVhbjtcbiAgaW5uZXJQcm9wcz86IEpTWC5JbnRyaW5zaWNFbGVtZW50c1snc3BhbiddO1xufVxuXG5leHBvcnQgY29uc3QgaW5kaWNhdG9yU2VwYXJhdG9yQ1NTID0gPFxuICBPcHRpb24sXG4gIElzTXVsdGkgZXh0ZW5kcyBib29sZWFuLFxuICBHcm91cCBleHRlbmRzIEdyb3VwQmFzZTxPcHRpb24+XG4+KFxuICB7XG4gICAgaXNEaXNhYmxlZCxcbiAgICB0aGVtZToge1xuICAgICAgc3BhY2luZzogeyBiYXNlVW5pdCB9LFxuICAgICAgY29sb3JzLFxuICAgIH0sXG4gIH06IEluZGljYXRvclNlcGFyYXRvclByb3BzPE9wdGlvbiwgSXNNdWx0aSwgR3JvdXA+LFxuICB1bnN0eWxlZDogYm9vbGVhblxuKTogQ1NTT2JqZWN0V2l0aExhYmVsID0+ICh7XG4gIGxhYmVsOiAnaW5kaWNhdG9yU2VwYXJhdG9yJyxcbiAgYWxpZ25TZWxmOiAnc3RyZXRjaCcsXG4gIHdpZHRoOiAxLFxuICAuLi4odW5zdHlsZWRcbiAgICA/IHt9XG4gICAgOiB7XG4gICAgICAgIGJhY2tncm91bmRDb2xvcjogaXNEaXNhYmxlZCA/IGNvbG9ycy5uZXV0cmFsMTAgOiBjb2xvcnMubmV1dHJhbDIwLFxuICAgICAgICBtYXJnaW5Cb3R0b206IGJhc2VVbml0ICogMixcbiAgICAgICAgbWFyZ2luVG9wOiBiYXNlVW5pdCAqIDIsXG4gICAgICB9KSxcbn0pO1xuXG5leHBvcnQgY29uc3QgSW5kaWNhdG9yU2VwYXJhdG9yID0gPFxuICBPcHRpb24sXG4gIElzTXVsdGkgZXh0ZW5kcyBib29sZWFuLFxuICBHcm91cCBleHRlbmRzIEdyb3VwQmFzZTxPcHRpb24+XG4+KFxuICBwcm9wczogSW5kaWNhdG9yU2VwYXJhdG9yUHJvcHM8T3B0aW9uLCBJc011bHRpLCBHcm91cD5cbikgPT4ge1xuICBjb25zdCB7IGlubmVyUHJvcHMgfSA9IHByb3BzO1xuICByZXR1cm4gKFxuICAgIDxzcGFuXG4gICAgICB7Li4uaW5uZXJQcm9wc31cbiAgICAgIHsuLi5nZXRTdHlsZVByb3BzKHByb3BzLCAnaW5kaWNhdG9yU2VwYXJhdG9yJywge1xuICAgICAgICAnaW5kaWNhdG9yLXNlcGFyYXRvcic6IHRydWUsXG4gICAgICB9KX1cbiAgICAvPlxuICApO1xufTtcblxuLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG4vLyBMb2FkaW5nXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cblxuY29uc3QgbG9hZGluZ0RvdEFuaW1hdGlvbnMgPSBrZXlmcmFtZXNgXG4gIDAlLCA4MCUsIDEwMCUgeyBvcGFjaXR5OiAwOyB9XG4gIDQwJSB7IG9wYWNpdHk6IDE7IH1cbmA7XG5cbmV4cG9ydCBjb25zdCBsb2FkaW5nSW5kaWNhdG9yQ1NTID0gPFxuICBPcHRpb24sXG4gIElzTXVsdGkgZXh0ZW5kcyBib29sZWFuLFxuICBHcm91cCBleHRlbmRzIEdyb3VwQmFzZTxPcHRpb24+XG4+KFxuICB7XG4gICAgaXNGb2N1c2VkLFxuICAgIHNpemUsXG4gICAgdGhlbWU6IHtcbiAgICAgIGNvbG9ycyxcbiAgICAgIHNwYWNpbmc6IHsgYmFzZVVuaXQgfSxcbiAgICB9LFxuICB9OiBMb2FkaW5nSW5kaWNhdG9yUHJvcHM8T3B0aW9uLCBJc011bHRpLCBHcm91cD4sXG4gIHVuc3R5bGVkOiBib29sZWFuXG4pOiBDU1NPYmplY3RXaXRoTGFiZWwgPT4gKHtcbiAgbGFiZWw6ICdsb2FkaW5nSW5kaWNhdG9yJyxcbiAgZGlzcGxheTogJ2ZsZXgnLFxuICB0cmFuc2l0aW9uOiAnY29sb3IgMTUwbXMnLFxuICBhbGlnblNlbGY6ICdjZW50ZXInLFxuICBmb250U2l6ZTogc2l6ZSxcbiAgbGluZUhlaWdodDogMSxcbiAgbWFyZ2luUmlnaHQ6IHNpemUsXG4gIHRleHRBbGlnbjogJ2NlbnRlcicsXG4gIHZlcnRpY2FsQWxpZ246ICdtaWRkbGUnLFxuICAuLi4odW5zdHlsZWRcbiAgICA/IHt9XG4gICAgOiB7XG4gICAgICAgIGNvbG9yOiBpc0ZvY3VzZWQgPyBjb2xvcnMubmV1dHJhbDYwIDogY29sb3JzLm5ldXRyYWwyMCxcbiAgICAgICAgcGFkZGluZzogYmFzZVVuaXQgKiAyLFxuICAgICAgfSksXG59KTtcblxuaW50ZXJmYWNlIExvYWRpbmdEb3RQcm9wcyB7XG4gIGRlbGF5OiBudW1iZXI7XG4gIG9mZnNldDogYm9vbGVhbjtcbn1cbmNvbnN0IExvYWRpbmdEb3QgPSAoeyBkZWxheSwgb2Zmc2V0IH06IExvYWRpbmdEb3RQcm9wcykgPT4gKFxuICA8c3BhblxuICAgIGNzcz17e1xuICAgICAgYW5pbWF0aW9uOiBgJHtsb2FkaW5nRG90QW5pbWF0aW9uc30gMXMgZWFzZS1pbi1vdXQgJHtkZWxheX1tcyBpbmZpbml0ZTtgLFxuICAgICAgYmFja2dyb3VuZENvbG9yOiAnY3VycmVudENvbG9yJyxcbiAgICAgIGJvcmRlclJhZGl1czogJzFlbScsXG4gICAgICBkaXNwbGF5OiAnaW5saW5lLWJsb2NrJyxcbiAgICAgIG1hcmdpbkxlZnQ6IG9mZnNldCA/ICcxZW0nIDogdW5kZWZpbmVkLFxuICAgICAgaGVpZ2h0OiAnMWVtJyxcbiAgICAgIHZlcnRpY2FsQWxpZ246ICd0b3AnLFxuICAgICAgd2lkdGg6ICcxZW0nLFxuICAgIH19XG4gIC8+XG4pO1xuXG5leHBvcnQgaW50ZXJmYWNlIExvYWRpbmdJbmRpY2F0b3JQcm9wczxcbiAgT3B0aW9uID0gdW5rbm93bixcbiAgSXNNdWx0aSBleHRlbmRzIGJvb2xlYW4gPSBib29sZWFuLFxuICBHcm91cCBleHRlbmRzIEdyb3VwQmFzZTxPcHRpb24+ID0gR3JvdXBCYXNlPE9wdGlvbj5cbj4gZXh0ZW5kcyBDb21tb25Qcm9wc0FuZENsYXNzTmFtZTxPcHRpb24sIElzTXVsdGksIEdyb3VwPiB7XG4gIC8qKiBQcm9wcyB0aGF0IHdpbGwgYmUgcGFzc2VkIG9uIHRvIHRoZSBjaGlsZHJlbi4gKi9cbiAgaW5uZXJQcm9wczogSlNYLkludHJpbnNpY0VsZW1lbnRzWydkaXYnXTtcbiAgLyoqIFRoZSBmb2N1c2VkIHN0YXRlIG9mIHRoZSBzZWxlY3QuICovXG4gIGlzRm9jdXNlZDogYm9vbGVhbjtcbiAgaXNEaXNhYmxlZDogYm9vbGVhbjtcbiAgLyoqIFNldCBzaXplIG9mIHRoZSBjb250YWluZXIuICovXG4gIHNpemU6IG51bWJlcjtcbn1cbmV4cG9ydCBjb25zdCBMb2FkaW5nSW5kaWNhdG9yID0gPFxuICBPcHRpb24sXG4gIElzTXVsdGkgZXh0ZW5kcyBib29sZWFuLFxuICBHcm91cCBleHRlbmRzIEdyb3VwQmFzZTxPcHRpb24+XG4+KHtcbiAgaW5uZXJQcm9wcyxcbiAgaXNSdGwsXG4gIHNpemUgPSA0LFxuICAuLi5yZXN0UHJvcHNcbn06IExvYWRpbmdJbmRpY2F0b3JQcm9wczxPcHRpb24sIElzTXVsdGksIEdyb3VwPikgPT4ge1xuICByZXR1cm4gKFxuICAgIDxkaXZcbiAgICAgIHsuLi5nZXRTdHlsZVByb3BzKFxuICAgICAgICB7IC4uLnJlc3RQcm9wcywgaW5uZXJQcm9wcywgaXNSdGwsIHNpemUgfSxcbiAgICAgICAgJ2xvYWRpbmdJbmRpY2F0b3InLFxuICAgICAgICB7XG4gICAgICAgICAgaW5kaWNhdG9yOiB0cnVlLFxuICAgICAgICAgICdsb2FkaW5nLWluZGljYXRvcic6IHRydWUsXG4gICAgICAgIH1cbiAgICAgICl9XG4gICAgICB7Li4uaW5uZXJQcm9wc31cbiAgICA+XG4gICAgICA8TG9hZGluZ0RvdCBkZWxheT17MH0gb2Zmc2V0PXtpc1J0bH0gLz5cbiAgICAgIDxMb2FkaW5nRG90IGRlbGF5PXsxNjB9IG9mZnNldCAvPlxuICAgICAgPExvYWRpbmdEb3QgZGVsYXk9ezMyMH0gb2Zmc2V0PXshaXNSdGx9IC8+XG4gICAgPC9kaXY+XG4gICk7XG59O1xuIl19 */",
   toString: _EMOTION_STRINGIFIED_CSS_ERROR__
 };
 var Svg = function Svg(_ref) {
@@ -38643,7 +39855,7 @@ var LoadingDot = function LoadingDot(_ref6) {
       height: '1em',
       verticalAlign: 'top',
       width: '1em'
-    },  false ? 0 : ";label:LoadingDot;",  false ? 0 : "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluZGljYXRvcnMudHN4Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQW1RSSIsImZpbGUiOiJpbmRpY2F0b3JzLnRzeCIsInNvdXJjZXNDb250ZW50IjpbIi8qKiBAanN4IGpzeCAqL1xuaW1wb3J0IHsgSlNYLCBSZWFjdE5vZGUgfSBmcm9tICdyZWFjdCc7XG5pbXBvcnQgeyBqc3gsIGtleWZyYW1lcyB9IGZyb20gJ0BlbW90aW9uL3JlYWN0JztcblxuaW1wb3J0IHtcbiAgQ29tbW9uUHJvcHNBbmRDbGFzc05hbWUsXG4gIENTU09iamVjdFdpdGhMYWJlbCxcbiAgR3JvdXBCYXNlLFxufSBmcm9tICcuLi90eXBlcyc7XG5pbXBvcnQgeyBnZXRTdHlsZVByb3BzIH0gZnJvbSAnLi4vdXRpbHMnO1xuXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cbi8vIERyb3Bkb3duICYgQ2xlYXIgSWNvbnNcbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuXG5jb25zdCBTdmcgPSAoe1xuICBzaXplLFxuICAuLi5wcm9wc1xufTogSlNYLkludHJpbnNpY0VsZW1lbnRzWydzdmcnXSAmIHsgc2l6ZTogbnVtYmVyIH0pID0+IChcbiAgPHN2Z1xuICAgIGhlaWdodD17c2l6ZX1cbiAgICB3aWR0aD17c2l6ZX1cbiAgICB2aWV3Qm94PVwiMCAwIDIwIDIwXCJcbiAgICBhcmlhLWhpZGRlbj1cInRydWVcIlxuICAgIGZvY3VzYWJsZT1cImZhbHNlXCJcbiAgICBjc3M9e3tcbiAgICAgIGRpc3BsYXk6ICdpbmxpbmUtYmxvY2snLFxuICAgICAgZmlsbDogJ2N1cnJlbnRDb2xvcicsXG4gICAgICBsaW5lSGVpZ2h0OiAxLFxuICAgICAgc3Ryb2tlOiAnY3VycmVudENvbG9yJyxcbiAgICAgIHN0cm9rZVdpZHRoOiAwLFxuICAgIH19XG4gICAgey4uLnByb3BzfVxuICAvPlxuKTtcblxuZXhwb3J0IHR5cGUgQ3Jvc3NJY29uUHJvcHMgPSBKU1guSW50cmluc2ljRWxlbWVudHNbJ3N2ZyddICYgeyBzaXplPzogbnVtYmVyIH07XG5leHBvcnQgY29uc3QgQ3Jvc3NJY29uID0gKHByb3BzOiBDcm9zc0ljb25Qcm9wcykgPT4gKFxuICA8U3ZnIHNpemU9ezIwfSB7Li4ucHJvcHN9PlxuICAgIDxwYXRoIGQ9XCJNMTQuMzQ4IDE0Ljg0OWMtMC40NjkgMC40NjktMS4yMjkgMC40NjktMS42OTcgMGwtMi42NTEtMy4wMzAtMi42NTEgMy4wMjljLTAuNDY5IDAuNDY5LTEuMjI5IDAuNDY5LTEuNjk3IDAtMC40NjktMC40NjktMC40NjktMS4yMjkgMC0xLjY5N2wyLjc1OC0zLjE1LTIuNzU5LTMuMTUyYy0wLjQ2OS0wLjQ2OS0wLjQ2OS0xLjIyOCAwLTEuNjk3czEuMjI4LTAuNDY5IDEuNjk3IDBsMi42NTIgMy4wMzEgMi42NTEtMy4wMzFjMC40NjktMC40NjkgMS4yMjgtMC40NjkgMS42OTcgMHMwLjQ2OSAxLjIyOSAwIDEuNjk3bC0yLjc1OCAzLjE1MiAyLjc1OCAzLjE1YzAuNDY5IDAuNDY5IDAuNDY5IDEuMjI5IDAgMS42OTh6XCIgLz5cbiAgPC9Tdmc+XG4pO1xuZXhwb3J0IHR5cGUgRG93bkNoZXZyb25Qcm9wcyA9IEpTWC5JbnRyaW5zaWNFbGVtZW50c1snc3ZnJ10gJiB7IHNpemU/OiBudW1iZXIgfTtcbmV4cG9ydCBjb25zdCBEb3duQ2hldnJvbiA9IChwcm9wczogRG93bkNoZXZyb25Qcm9wcykgPT4gKFxuICA8U3ZnIHNpemU9ezIwfSB7Li4ucHJvcHN9PlxuICAgIDxwYXRoIGQ9XCJNNC41MTYgNy41NDhjMC40MzYtMC40NDYgMS4wNDMtMC40ODEgMS41NzYgMGwzLjkwOCAzLjc0NyAzLjkwOC0zLjc0N2MwLjUzMy0wLjQ4MSAxLjE0MS0wLjQ0NiAxLjU3NCAwIDAuNDM2IDAuNDQ1IDAuNDA4IDEuMTk3IDAgMS42MTUtMC40MDYgMC40MTgtNC42OTUgNC41MDItNC42OTUgNC41MDItMC4yMTcgMC4yMjMtMC41MDIgMC4zMzUtMC43ODcgMC4zMzVzLTAuNTctMC4xMTItMC43ODktMC4zMzVjMCAwLTQuMjg3LTQuMDg0LTQuNjk1LTQuNTAycy0wLjQzNi0xLjE3IDAtMS42MTV6XCIgLz5cbiAgPC9Tdmc+XG4pO1xuXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cbi8vIERyb3Bkb3duICYgQ2xlYXIgQnV0dG9uc1xuLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG5cbmV4cG9ydCBpbnRlcmZhY2UgRHJvcGRvd25JbmRpY2F0b3JQcm9wczxcbiAgT3B0aW9uID0gdW5rbm93bixcbiAgSXNNdWx0aSBleHRlbmRzIGJvb2xlYW4gPSBib29sZWFuLFxuICBHcm91cCBleHRlbmRzIEdyb3VwQmFzZTxPcHRpb24+ID0gR3JvdXBCYXNlPE9wdGlvbj5cbj4gZXh0ZW5kcyBDb21tb25Qcm9wc0FuZENsYXNzTmFtZTxPcHRpb24sIElzTXVsdGksIEdyb3VwPiB7XG4gIC8qKiBUaGUgY2hpbGRyZW4gdG8gYmUgcmVuZGVyZWQgaW5zaWRlIHRoZSBpbmRpY2F0b3IuICovXG4gIGNoaWxkcmVuPzogUmVhY3ROb2RlO1xuICAvKiogUHJvcHMgdGhhdCB3aWxsIGJlIHBhc3NlZCBvbiB0byB0aGUgY2hpbGRyZW4uICovXG4gIGlubmVyUHJvcHM6IEpTWC5JbnRyaW5zaWNFbGVtZW50c1snZGl2J107XG4gIC8qKiBUaGUgZm9jdXNlZCBzdGF0ZSBvZiB0aGUgc2VsZWN0LiAqL1xuICBpc0ZvY3VzZWQ6IGJvb2xlYW47XG4gIGlzRGlzYWJsZWQ6IGJvb2xlYW47XG59XG5cbmNvbnN0IGJhc2VDU1MgPSA8XG4gIE9wdGlvbixcbiAgSXNNdWx0aSBleHRlbmRzIGJvb2xlYW4sXG4gIEdyb3VwIGV4dGVuZHMgR3JvdXBCYXNlPE9wdGlvbj5cbj4oXG4gIHtcbiAgICBpc0ZvY3VzZWQsXG4gICAgdGhlbWU6IHtcbiAgICAgIHNwYWNpbmc6IHsgYmFzZVVuaXQgfSxcbiAgICAgIGNvbG9ycyxcbiAgICB9LFxuICB9OlxuICAgIHwgRHJvcGRvd25JbmRpY2F0b3JQcm9wczxPcHRpb24sIElzTXVsdGksIEdyb3VwPlxuICAgIHwgQ2xlYXJJbmRpY2F0b3JQcm9wczxPcHRpb24sIElzTXVsdGksIEdyb3VwPixcbiAgdW5zdHlsZWQ6IGJvb2xlYW5cbik6IENTU09iamVjdFdpdGhMYWJlbCA9PiAoe1xuICBsYWJlbDogJ2luZGljYXRvckNvbnRhaW5lcicsXG4gIGRpc3BsYXk6ICdmbGV4JyxcbiAgdHJhbnNpdGlvbjogJ2NvbG9yIDE1MG1zJyxcbiAgLi4uKHVuc3R5bGVkXG4gICAgPyB7fVxuICAgIDoge1xuICAgICAgICBjb2xvcjogaXNGb2N1c2VkID8gY29sb3JzLm5ldXRyYWw2MCA6IGNvbG9ycy5uZXV0cmFsMjAsXG4gICAgICAgIHBhZGRpbmc6IGJhc2VVbml0ICogMixcbiAgICAgICAgJzpob3Zlcic6IHtcbiAgICAgICAgICBjb2xvcjogaXNGb2N1c2VkID8gY29sb3JzLm5ldXRyYWw4MCA6IGNvbG9ycy5uZXV0cmFsNDAsXG4gICAgICAgIH0sXG4gICAgICB9KSxcbn0pO1xuXG5leHBvcnQgY29uc3QgZHJvcGRvd25JbmRpY2F0b3JDU1MgPSBiYXNlQ1NTO1xuZXhwb3J0IGNvbnN0IERyb3Bkb3duSW5kaWNhdG9yID0gPFxuICBPcHRpb24sXG4gIElzTXVsdGkgZXh0ZW5kcyBib29sZWFuLFxuICBHcm91cCBleHRlbmRzIEdyb3VwQmFzZTxPcHRpb24+XG4+KFxuICBwcm9wczogRHJvcGRvd25JbmRpY2F0b3JQcm9wczxPcHRpb24sIElzTXVsdGksIEdyb3VwPlxuKSA9PiB7XG4gIGNvbnN0IHsgY2hpbGRyZW4sIGlubmVyUHJvcHMgfSA9IHByb3BzO1xuICByZXR1cm4gKFxuICAgIDxkaXZcbiAgICAgIHsuLi5nZXRTdHlsZVByb3BzKHByb3BzLCAnZHJvcGRvd25JbmRpY2F0b3InLCB7XG4gICAgICAgIGluZGljYXRvcjogdHJ1ZSxcbiAgICAgICAgJ2Ryb3Bkb3duLWluZGljYXRvcic6IHRydWUsXG4gICAgICB9KX1cbiAgICAgIHsuLi5pbm5lclByb3BzfVxuICAgID5cbiAgICAgIHtjaGlsZHJlbiB8fCA8RG93bkNoZXZyb24gLz59XG4gICAgPC9kaXY+XG4gICk7XG59O1xuXG5leHBvcnQgaW50ZXJmYWNlIENsZWFySW5kaWNhdG9yUHJvcHM8XG4gIE9wdGlvbiA9IHVua25vd24sXG4gIElzTXVsdGkgZXh0ZW5kcyBib29sZWFuID0gYm9vbGVhbixcbiAgR3JvdXAgZXh0ZW5kcyBHcm91cEJhc2U8T3B0aW9uPiA9IEdyb3VwQmFzZTxPcHRpb24+XG4+IGV4dGVuZHMgQ29tbW9uUHJvcHNBbmRDbGFzc05hbWU8T3B0aW9uLCBJc011bHRpLCBHcm91cD4ge1xuICAvKiogVGhlIGNoaWxkcmVuIHRvIGJlIHJlbmRlcmVkIGluc2lkZSB0aGUgaW5kaWNhdG9yLiAqL1xuICBjaGlsZHJlbj86IFJlYWN0Tm9kZTtcbiAgLyoqIFByb3BzIHRoYXQgd2lsbCBiZSBwYXNzZWQgb24gdG8gdGhlIGNoaWxkcmVuLiAqL1xuICBpbm5lclByb3BzOiBKU1guSW50cmluc2ljRWxlbWVudHNbJ2RpdiddO1xuICAvKiogVGhlIGZvY3VzZWQgc3RhdGUgb2YgdGhlIHNlbGVjdC4gKi9cbiAgaXNGb2N1c2VkOiBib29sZWFuO1xufVxuXG5leHBvcnQgY29uc3QgY2xlYXJJbmRpY2F0b3JDU1MgPSBiYXNlQ1NTO1xuZXhwb3J0IGNvbnN0IENsZWFySW5kaWNhdG9yID0gPFxuICBPcHRpb24sXG4gIElzTXVsdGkgZXh0ZW5kcyBib29sZWFuLFxuICBHcm91cCBleHRlbmRzIEdyb3VwQmFzZTxPcHRpb24+XG4+KFxuICBwcm9wczogQ2xlYXJJbmRpY2F0b3JQcm9wczxPcHRpb24sIElzTXVsdGksIEdyb3VwPlxuKSA9PiB7XG4gIGNvbnN0IHsgY2hpbGRyZW4sIGlubmVyUHJvcHMgfSA9IHByb3BzO1xuICByZXR1cm4gKFxuICAgIDxkaXZcbiAgICAgIHsuLi5nZXRTdHlsZVByb3BzKHByb3BzLCAnY2xlYXJJbmRpY2F0b3InLCB7XG4gICAgICAgIGluZGljYXRvcjogdHJ1ZSxcbiAgICAgICAgJ2NsZWFyLWluZGljYXRvcic6IHRydWUsXG4gICAgICB9KX1cbiAgICAgIHsuLi5pbm5lclByb3BzfVxuICAgID5cbiAgICAgIHtjaGlsZHJlbiB8fCA8Q3Jvc3NJY29uIC8+fVxuICAgIDwvZGl2PlxuICApO1xufTtcblxuLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG4vLyBTZXBhcmF0b3Jcbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuXG5leHBvcnQgaW50ZXJmYWNlIEluZGljYXRvclNlcGFyYXRvclByb3BzPFxuICBPcHRpb24gPSB1bmtub3duLFxuICBJc011bHRpIGV4dGVuZHMgYm9vbGVhbiA9IGJvb2xlYW4sXG4gIEdyb3VwIGV4dGVuZHMgR3JvdXBCYXNlPE9wdGlvbj4gPSBHcm91cEJhc2U8T3B0aW9uPlxuPiBleHRlbmRzIENvbW1vblByb3BzQW5kQ2xhc3NOYW1lPE9wdGlvbiwgSXNNdWx0aSwgR3JvdXA+IHtcbiAgaXNEaXNhYmxlZDogYm9vbGVhbjtcbiAgaXNGb2N1c2VkOiBib29sZWFuO1xuICBpbm5lclByb3BzPzogSlNYLkludHJpbnNpY0VsZW1lbnRzWydzcGFuJ107XG59XG5cbmV4cG9ydCBjb25zdCBpbmRpY2F0b3JTZXBhcmF0b3JDU1MgPSA8XG4gIE9wdGlvbixcbiAgSXNNdWx0aSBleHRlbmRzIGJvb2xlYW4sXG4gIEdyb3VwIGV4dGVuZHMgR3JvdXBCYXNlPE9wdGlvbj5cbj4oXG4gIHtcbiAgICBpc0Rpc2FibGVkLFxuICAgIHRoZW1lOiB7XG4gICAgICBzcGFjaW5nOiB7IGJhc2VVbml0IH0sXG4gICAgICBjb2xvcnMsXG4gICAgfSxcbiAgfTogSW5kaWNhdG9yU2VwYXJhdG9yUHJvcHM8T3B0aW9uLCBJc011bHRpLCBHcm91cD4sXG4gIHVuc3R5bGVkOiBib29sZWFuXG4pOiBDU1NPYmplY3RXaXRoTGFiZWwgPT4gKHtcbiAgbGFiZWw6ICdpbmRpY2F0b3JTZXBhcmF0b3InLFxuICBhbGlnblNlbGY6ICdzdHJldGNoJyxcbiAgd2lkdGg6IDEsXG4gIC4uLih1bnN0eWxlZFxuICAgID8ge31cbiAgICA6IHtcbiAgICAgICAgYmFja2dyb3VuZENvbG9yOiBpc0Rpc2FibGVkID8gY29sb3JzLm5ldXRyYWwxMCA6IGNvbG9ycy5uZXV0cmFsMjAsXG4gICAgICAgIG1hcmdpbkJvdHRvbTogYmFzZVVuaXQgKiAyLFxuICAgICAgICBtYXJnaW5Ub3A6IGJhc2VVbml0ICogMixcbiAgICAgIH0pLFxufSk7XG5cbmV4cG9ydCBjb25zdCBJbmRpY2F0b3JTZXBhcmF0b3IgPSA8XG4gIE9wdGlvbixcbiAgSXNNdWx0aSBleHRlbmRzIGJvb2xlYW4sXG4gIEdyb3VwIGV4dGVuZHMgR3JvdXBCYXNlPE9wdGlvbj5cbj4oXG4gIHByb3BzOiBJbmRpY2F0b3JTZXBhcmF0b3JQcm9wczxPcHRpb24sIElzTXVsdGksIEdyb3VwPlxuKSA9PiB7XG4gIGNvbnN0IHsgaW5uZXJQcm9wcyB9ID0gcHJvcHM7XG4gIHJldHVybiAoXG4gICAgPHNwYW5cbiAgICAgIHsuLi5pbm5lclByb3BzfVxuICAgICAgey4uLmdldFN0eWxlUHJvcHMocHJvcHMsICdpbmRpY2F0b3JTZXBhcmF0b3InLCB7XG4gICAgICAgICdpbmRpY2F0b3Itc2VwYXJhdG9yJzogdHJ1ZSxcbiAgICAgIH0pfVxuICAgIC8+XG4gICk7XG59O1xuXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cbi8vIExvYWRpbmdcbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuXG5jb25zdCBsb2FkaW5nRG90QW5pbWF0aW9ucyA9IGtleWZyYW1lc2BcbiAgMCUsIDgwJSwgMTAwJSB7IG9wYWNpdHk6IDA7IH1cbiAgNDAlIHsgb3BhY2l0eTogMTsgfVxuYDtcblxuZXhwb3J0IGNvbnN0IGxvYWRpbmdJbmRpY2F0b3JDU1MgPSA8XG4gIE9wdGlvbixcbiAgSXNNdWx0aSBleHRlbmRzIGJvb2xlYW4sXG4gIEdyb3VwIGV4dGVuZHMgR3JvdXBCYXNlPE9wdGlvbj5cbj4oXG4gIHtcbiAgICBpc0ZvY3VzZWQsXG4gICAgc2l6ZSxcbiAgICB0aGVtZToge1xuICAgICAgY29sb3JzLFxuICAgICAgc3BhY2luZzogeyBiYXNlVW5pdCB9LFxuICAgIH0sXG4gIH06IExvYWRpbmdJbmRpY2F0b3JQcm9wczxPcHRpb24sIElzTXVsdGksIEdyb3VwPixcbiAgdW5zdHlsZWQ6IGJvb2xlYW5cbik6IENTU09iamVjdFdpdGhMYWJlbCA9PiAoe1xuICBsYWJlbDogJ2xvYWRpbmdJbmRpY2F0b3InLFxuICBkaXNwbGF5OiAnZmxleCcsXG4gIHRyYW5zaXRpb246ICdjb2xvciAxNTBtcycsXG4gIGFsaWduU2VsZjogJ2NlbnRlcicsXG4gIGZvbnRTaXplOiBzaXplLFxuICBsaW5lSGVpZ2h0OiAxLFxuICBtYXJnaW5SaWdodDogc2l6ZSxcbiAgdGV4dEFsaWduOiAnY2VudGVyJyxcbiAgdmVydGljYWxBbGlnbjogJ21pZGRsZScsXG4gIC4uLih1bnN0eWxlZFxuICAgID8ge31cbiAgICA6IHtcbiAgICAgICAgY29sb3I6IGlzRm9jdXNlZCA/IGNvbG9ycy5uZXV0cmFsNjAgOiBjb2xvcnMubmV1dHJhbDIwLFxuICAgICAgICBwYWRkaW5nOiBiYXNlVW5pdCAqIDIsXG4gICAgICB9KSxcbn0pO1xuXG5pbnRlcmZhY2UgTG9hZGluZ0RvdFByb3BzIHtcbiAgZGVsYXk6IG51bWJlcjtcbiAgb2Zmc2V0OiBib29sZWFuO1xufVxuY29uc3QgTG9hZGluZ0RvdCA9ICh7IGRlbGF5LCBvZmZzZXQgfTogTG9hZGluZ0RvdFByb3BzKSA9PiAoXG4gIDxzcGFuXG4gICAgY3NzPXt7XG4gICAgICBhbmltYXRpb246IGAke2xvYWRpbmdEb3RBbmltYXRpb25zfSAxcyBlYXNlLWluLW91dCAke2RlbGF5fW1zIGluZmluaXRlO2AsXG4gICAgICBiYWNrZ3JvdW5kQ29sb3I6ICdjdXJyZW50Q29sb3InLFxuICAgICAgYm9yZGVyUmFkaXVzOiAnMWVtJyxcbiAgICAgIGRpc3BsYXk6ICdpbmxpbmUtYmxvY2snLFxuICAgICAgbWFyZ2luTGVmdDogb2Zmc2V0ID8gJzFlbScgOiB1bmRlZmluZWQsXG4gICAgICBoZWlnaHQ6ICcxZW0nLFxuICAgICAgdmVydGljYWxBbGlnbjogJ3RvcCcsXG4gICAgICB3aWR0aDogJzFlbScsXG4gICAgfX1cbiAgLz5cbik7XG5cbmV4cG9ydCBpbnRlcmZhY2UgTG9hZGluZ0luZGljYXRvclByb3BzPFxuICBPcHRpb24gPSB1bmtub3duLFxuICBJc011bHRpIGV4dGVuZHMgYm9vbGVhbiA9IGJvb2xlYW4sXG4gIEdyb3VwIGV4dGVuZHMgR3JvdXBCYXNlPE9wdGlvbj4gPSBHcm91cEJhc2U8T3B0aW9uPlxuPiBleHRlbmRzIENvbW1vblByb3BzQW5kQ2xhc3NOYW1lPE9wdGlvbiwgSXNNdWx0aSwgR3JvdXA+IHtcbiAgLyoqIFByb3BzIHRoYXQgd2lsbCBiZSBwYXNzZWQgb24gdG8gdGhlIGNoaWxkcmVuLiAqL1xuICBpbm5lclByb3BzOiBKU1guSW50cmluc2ljRWxlbWVudHNbJ2RpdiddO1xuICAvKiogVGhlIGZvY3VzZWQgc3RhdGUgb2YgdGhlIHNlbGVjdC4gKi9cbiAgaXNGb2N1c2VkOiBib29sZWFuO1xuICBpc0Rpc2FibGVkOiBib29sZWFuO1xuICAvKiogU2V0IHNpemUgb2YgdGhlIGNvbnRhaW5lci4gKi9cbiAgc2l6ZTogbnVtYmVyO1xufVxuZXhwb3J0IGNvbnN0IExvYWRpbmdJbmRpY2F0b3IgPSA8XG4gIE9wdGlvbixcbiAgSXNNdWx0aSBleHRlbmRzIGJvb2xlYW4sXG4gIEdyb3VwIGV4dGVuZHMgR3JvdXBCYXNlPE9wdGlvbj5cbj4oe1xuICBpbm5lclByb3BzLFxuICBpc1J0bCxcbiAgc2l6ZSA9IDQsXG4gIC4uLnJlc3RQcm9wc1xufTogTG9hZGluZ0luZGljYXRvclByb3BzPE9wdGlvbiwgSXNNdWx0aSwgR3JvdXA+KSA9PiB7XG4gIHJldHVybiAoXG4gICAgPGRpdlxuICAgICAgey4uLmdldFN0eWxlUHJvcHMoXG4gICAgICAgIHsgLi4ucmVzdFByb3BzLCBpbm5lclByb3BzLCBpc1J0bCwgc2l6ZSB9LFxuICAgICAgICAnbG9hZGluZ0luZGljYXRvcicsXG4gICAgICAgIHtcbiAgICAgICAgICBpbmRpY2F0b3I6IHRydWUsXG4gICAgICAgICAgJ2xvYWRpbmctaW5kaWNhdG9yJzogdHJ1ZSxcbiAgICAgICAgfVxuICAgICAgKX1cbiAgICAgIHsuLi5pbm5lclByb3BzfVxuICAgID5cbiAgICAgIDxMb2FkaW5nRG90IGRlbGF5PXswfSBvZmZzZXQ9e2lzUnRsfSAvPlxuICAgICAgPExvYWRpbmdEb3QgZGVsYXk9ezE2MH0gb2Zmc2V0IC8+XG4gICAgICA8TG9hZGluZ0RvdCBkZWxheT17MzIwfSBvZmZzZXQ9eyFpc1J0bH0gLz5cbiAgICA8L2Rpdj5cbiAgKTtcbn07XG4iXX0= */")
+    },  false ? 0 : ";label:LoadingDot;",  false ? 0 : "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluZGljYXRvcnMudHN4Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQW1RSSIsImZpbGUiOiJpbmRpY2F0b3JzLnRzeCIsInNvdXJjZXNDb250ZW50IjpbIi8qKiBAanN4IGpzeCAqL1xuaW1wb3J0IHsgUmVhY3ROb2RlIH0gZnJvbSAncmVhY3QnO1xuaW1wb3J0IHsganN4LCBrZXlmcmFtZXMgfSBmcm9tICdAZW1vdGlvbi9yZWFjdCc7XG5cbmltcG9ydCB7XG4gIENvbW1vblByb3BzQW5kQ2xhc3NOYW1lLFxuICBDU1NPYmplY3RXaXRoTGFiZWwsXG4gIEdyb3VwQmFzZSxcbn0gZnJvbSAnLi4vdHlwZXMnO1xuaW1wb3J0IHsgZ2V0U3R5bGVQcm9wcyB9IGZyb20gJy4uL3V0aWxzJztcblxuLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG4vLyBEcm9wZG93biAmIENsZWFyIEljb25zXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cblxuY29uc3QgU3ZnID0gKHtcbiAgc2l6ZSxcbiAgLi4ucHJvcHNcbn06IEpTWC5JbnRyaW5zaWNFbGVtZW50c1snc3ZnJ10gJiB7IHNpemU6IG51bWJlciB9KSA9PiAoXG4gIDxzdmdcbiAgICBoZWlnaHQ9e3NpemV9XG4gICAgd2lkdGg9e3NpemV9XG4gICAgdmlld0JveD1cIjAgMCAyMCAyMFwiXG4gICAgYXJpYS1oaWRkZW49XCJ0cnVlXCJcbiAgICBmb2N1c2FibGU9XCJmYWxzZVwiXG4gICAgY3NzPXt7XG4gICAgICBkaXNwbGF5OiAnaW5saW5lLWJsb2NrJyxcbiAgICAgIGZpbGw6ICdjdXJyZW50Q29sb3InLFxuICAgICAgbGluZUhlaWdodDogMSxcbiAgICAgIHN0cm9rZTogJ2N1cnJlbnRDb2xvcicsXG4gICAgICBzdHJva2VXaWR0aDogMCxcbiAgICB9fVxuICAgIHsuLi5wcm9wc31cbiAgLz5cbik7XG5cbmV4cG9ydCB0eXBlIENyb3NzSWNvblByb3BzID0gSlNYLkludHJpbnNpY0VsZW1lbnRzWydzdmcnXSAmIHsgc2l6ZT86IG51bWJlciB9O1xuZXhwb3J0IGNvbnN0IENyb3NzSWNvbiA9IChwcm9wczogQ3Jvc3NJY29uUHJvcHMpID0+IChcbiAgPFN2ZyBzaXplPXsyMH0gey4uLnByb3BzfT5cbiAgICA8cGF0aCBkPVwiTTE0LjM0OCAxNC44NDljLTAuNDY5IDAuNDY5LTEuMjI5IDAuNDY5LTEuNjk3IDBsLTIuNjUxLTMuMDMwLTIuNjUxIDMuMDI5Yy0wLjQ2OSAwLjQ2OS0xLjIyOSAwLjQ2OS0xLjY5NyAwLTAuNDY5LTAuNDY5LTAuNDY5LTEuMjI5IDAtMS42OTdsMi43NTgtMy4xNS0yLjc1OS0zLjE1MmMtMC40NjktMC40NjktMC40NjktMS4yMjggMC0xLjY5N3MxLjIyOC0wLjQ2OSAxLjY5NyAwbDIuNjUyIDMuMDMxIDIuNjUxLTMuMDMxYzAuNDY5LTAuNDY5IDEuMjI4LTAuNDY5IDEuNjk3IDBzMC40NjkgMS4yMjkgMCAxLjY5N2wtMi43NTggMy4xNTIgMi43NTggMy4xNWMwLjQ2OSAwLjQ2OSAwLjQ2OSAxLjIyOSAwIDEuNjk4elwiIC8+XG4gIDwvU3ZnPlxuKTtcbmV4cG9ydCB0eXBlIERvd25DaGV2cm9uUHJvcHMgPSBKU1guSW50cmluc2ljRWxlbWVudHNbJ3N2ZyddICYgeyBzaXplPzogbnVtYmVyIH07XG5leHBvcnQgY29uc3QgRG93bkNoZXZyb24gPSAocHJvcHM6IERvd25DaGV2cm9uUHJvcHMpID0+IChcbiAgPFN2ZyBzaXplPXsyMH0gey4uLnByb3BzfT5cbiAgICA8cGF0aCBkPVwiTTQuNTE2IDcuNTQ4YzAuNDM2LTAuNDQ2IDEuMDQzLTAuNDgxIDEuNTc2IDBsMy45MDggMy43NDcgMy45MDgtMy43NDdjMC41MzMtMC40ODEgMS4xNDEtMC40NDYgMS41NzQgMCAwLjQzNiAwLjQ0NSAwLjQwOCAxLjE5NyAwIDEuNjE1LTAuNDA2IDAuNDE4LTQuNjk1IDQuNTAyLTQuNjk1IDQuNTAyLTAuMjE3IDAuMjIzLTAuNTAyIDAuMzM1LTAuNzg3IDAuMzM1cy0wLjU3LTAuMTEyLTAuNzg5LTAuMzM1YzAgMC00LjI4Ny00LjA4NC00LjY5NS00LjUwMnMtMC40MzYtMS4xNyAwLTEuNjE1elwiIC8+XG4gIDwvU3ZnPlxuKTtcblxuLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG4vLyBEcm9wZG93biAmIENsZWFyIEJ1dHRvbnNcbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuXG5leHBvcnQgaW50ZXJmYWNlIERyb3Bkb3duSW5kaWNhdG9yUHJvcHM8XG4gIE9wdGlvbiA9IHVua25vd24sXG4gIElzTXVsdGkgZXh0ZW5kcyBib29sZWFuID0gYm9vbGVhbixcbiAgR3JvdXAgZXh0ZW5kcyBHcm91cEJhc2U8T3B0aW9uPiA9IEdyb3VwQmFzZTxPcHRpb24+XG4+IGV4dGVuZHMgQ29tbW9uUHJvcHNBbmRDbGFzc05hbWU8T3B0aW9uLCBJc011bHRpLCBHcm91cD4ge1xuICAvKiogVGhlIGNoaWxkcmVuIHRvIGJlIHJlbmRlcmVkIGluc2lkZSB0aGUgaW5kaWNhdG9yLiAqL1xuICBjaGlsZHJlbj86IFJlYWN0Tm9kZTtcbiAgLyoqIFByb3BzIHRoYXQgd2lsbCBiZSBwYXNzZWQgb24gdG8gdGhlIGNoaWxkcmVuLiAqL1xuICBpbm5lclByb3BzOiBKU1guSW50cmluc2ljRWxlbWVudHNbJ2RpdiddO1xuICAvKiogVGhlIGZvY3VzZWQgc3RhdGUgb2YgdGhlIHNlbGVjdC4gKi9cbiAgaXNGb2N1c2VkOiBib29sZWFuO1xuICBpc0Rpc2FibGVkOiBib29sZWFuO1xufVxuXG5jb25zdCBiYXNlQ1NTID0gPFxuICBPcHRpb24sXG4gIElzTXVsdGkgZXh0ZW5kcyBib29sZWFuLFxuICBHcm91cCBleHRlbmRzIEdyb3VwQmFzZTxPcHRpb24+XG4+KFxuICB7XG4gICAgaXNGb2N1c2VkLFxuICAgIHRoZW1lOiB7XG4gICAgICBzcGFjaW5nOiB7IGJhc2VVbml0IH0sXG4gICAgICBjb2xvcnMsXG4gICAgfSxcbiAgfTpcbiAgICB8IERyb3Bkb3duSW5kaWNhdG9yUHJvcHM8T3B0aW9uLCBJc011bHRpLCBHcm91cD5cbiAgICB8IENsZWFySW5kaWNhdG9yUHJvcHM8T3B0aW9uLCBJc011bHRpLCBHcm91cD4sXG4gIHVuc3R5bGVkOiBib29sZWFuXG4pOiBDU1NPYmplY3RXaXRoTGFiZWwgPT4gKHtcbiAgbGFiZWw6ICdpbmRpY2F0b3JDb250YWluZXInLFxuICBkaXNwbGF5OiAnZmxleCcsXG4gIHRyYW5zaXRpb246ICdjb2xvciAxNTBtcycsXG4gIC4uLih1bnN0eWxlZFxuICAgID8ge31cbiAgICA6IHtcbiAgICAgICAgY29sb3I6IGlzRm9jdXNlZCA/IGNvbG9ycy5uZXV0cmFsNjAgOiBjb2xvcnMubmV1dHJhbDIwLFxuICAgICAgICBwYWRkaW5nOiBiYXNlVW5pdCAqIDIsXG4gICAgICAgICc6aG92ZXInOiB7XG4gICAgICAgICAgY29sb3I6IGlzRm9jdXNlZCA/IGNvbG9ycy5uZXV0cmFsODAgOiBjb2xvcnMubmV1dHJhbDQwLFxuICAgICAgICB9LFxuICAgICAgfSksXG59KTtcblxuZXhwb3J0IGNvbnN0IGRyb3Bkb3duSW5kaWNhdG9yQ1NTID0gYmFzZUNTUztcbmV4cG9ydCBjb25zdCBEcm9wZG93bkluZGljYXRvciA9IDxcbiAgT3B0aW9uLFxuICBJc011bHRpIGV4dGVuZHMgYm9vbGVhbixcbiAgR3JvdXAgZXh0ZW5kcyBHcm91cEJhc2U8T3B0aW9uPlxuPihcbiAgcHJvcHM6IERyb3Bkb3duSW5kaWNhdG9yUHJvcHM8T3B0aW9uLCBJc011bHRpLCBHcm91cD5cbikgPT4ge1xuICBjb25zdCB7IGNoaWxkcmVuLCBpbm5lclByb3BzIH0gPSBwcm9wcztcbiAgcmV0dXJuIChcbiAgICA8ZGl2XG4gICAgICB7Li4uZ2V0U3R5bGVQcm9wcyhwcm9wcywgJ2Ryb3Bkb3duSW5kaWNhdG9yJywge1xuICAgICAgICBpbmRpY2F0b3I6IHRydWUsXG4gICAgICAgICdkcm9wZG93bi1pbmRpY2F0b3InOiB0cnVlLFxuICAgICAgfSl9XG4gICAgICB7Li4uaW5uZXJQcm9wc31cbiAgICA+XG4gICAgICB7Y2hpbGRyZW4gfHwgPERvd25DaGV2cm9uIC8+fVxuICAgIDwvZGl2PlxuICApO1xufTtcblxuZXhwb3J0IGludGVyZmFjZSBDbGVhckluZGljYXRvclByb3BzPFxuICBPcHRpb24gPSB1bmtub3duLFxuICBJc011bHRpIGV4dGVuZHMgYm9vbGVhbiA9IGJvb2xlYW4sXG4gIEdyb3VwIGV4dGVuZHMgR3JvdXBCYXNlPE9wdGlvbj4gPSBHcm91cEJhc2U8T3B0aW9uPlxuPiBleHRlbmRzIENvbW1vblByb3BzQW5kQ2xhc3NOYW1lPE9wdGlvbiwgSXNNdWx0aSwgR3JvdXA+IHtcbiAgLyoqIFRoZSBjaGlsZHJlbiB0byBiZSByZW5kZXJlZCBpbnNpZGUgdGhlIGluZGljYXRvci4gKi9cbiAgY2hpbGRyZW4/OiBSZWFjdE5vZGU7XG4gIC8qKiBQcm9wcyB0aGF0IHdpbGwgYmUgcGFzc2VkIG9uIHRvIHRoZSBjaGlsZHJlbi4gKi9cbiAgaW5uZXJQcm9wczogSlNYLkludHJpbnNpY0VsZW1lbnRzWydkaXYnXTtcbiAgLyoqIFRoZSBmb2N1c2VkIHN0YXRlIG9mIHRoZSBzZWxlY3QuICovXG4gIGlzRm9jdXNlZDogYm9vbGVhbjtcbn1cblxuZXhwb3J0IGNvbnN0IGNsZWFySW5kaWNhdG9yQ1NTID0gYmFzZUNTUztcbmV4cG9ydCBjb25zdCBDbGVhckluZGljYXRvciA9IDxcbiAgT3B0aW9uLFxuICBJc011bHRpIGV4dGVuZHMgYm9vbGVhbixcbiAgR3JvdXAgZXh0ZW5kcyBHcm91cEJhc2U8T3B0aW9uPlxuPihcbiAgcHJvcHM6IENsZWFySW5kaWNhdG9yUHJvcHM8T3B0aW9uLCBJc011bHRpLCBHcm91cD5cbikgPT4ge1xuICBjb25zdCB7IGNoaWxkcmVuLCBpbm5lclByb3BzIH0gPSBwcm9wcztcbiAgcmV0dXJuIChcbiAgICA8ZGl2XG4gICAgICB7Li4uZ2V0U3R5bGVQcm9wcyhwcm9wcywgJ2NsZWFySW5kaWNhdG9yJywge1xuICAgICAgICBpbmRpY2F0b3I6IHRydWUsXG4gICAgICAgICdjbGVhci1pbmRpY2F0b3InOiB0cnVlLFxuICAgICAgfSl9XG4gICAgICB7Li4uaW5uZXJQcm9wc31cbiAgICA+XG4gICAgICB7Y2hpbGRyZW4gfHwgPENyb3NzSWNvbiAvPn1cbiAgICA8L2Rpdj5cbiAgKTtcbn07XG5cbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuLy8gU2VwYXJhdG9yXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cblxuZXhwb3J0IGludGVyZmFjZSBJbmRpY2F0b3JTZXBhcmF0b3JQcm9wczxcbiAgT3B0aW9uID0gdW5rbm93bixcbiAgSXNNdWx0aSBleHRlbmRzIGJvb2xlYW4gPSBib29sZWFuLFxuICBHcm91cCBleHRlbmRzIEdyb3VwQmFzZTxPcHRpb24+ID0gR3JvdXBCYXNlPE9wdGlvbj5cbj4gZXh0ZW5kcyBDb21tb25Qcm9wc0FuZENsYXNzTmFtZTxPcHRpb24sIElzTXVsdGksIEdyb3VwPiB7XG4gIGlzRGlzYWJsZWQ6IGJvb2xlYW47XG4gIGlzRm9jdXNlZDogYm9vbGVhbjtcbiAgaW5uZXJQcm9wcz86IEpTWC5JbnRyaW5zaWNFbGVtZW50c1snc3BhbiddO1xufVxuXG5leHBvcnQgY29uc3QgaW5kaWNhdG9yU2VwYXJhdG9yQ1NTID0gPFxuICBPcHRpb24sXG4gIElzTXVsdGkgZXh0ZW5kcyBib29sZWFuLFxuICBHcm91cCBleHRlbmRzIEdyb3VwQmFzZTxPcHRpb24+XG4+KFxuICB7XG4gICAgaXNEaXNhYmxlZCxcbiAgICB0aGVtZToge1xuICAgICAgc3BhY2luZzogeyBiYXNlVW5pdCB9LFxuICAgICAgY29sb3JzLFxuICAgIH0sXG4gIH06IEluZGljYXRvclNlcGFyYXRvclByb3BzPE9wdGlvbiwgSXNNdWx0aSwgR3JvdXA+LFxuICB1bnN0eWxlZDogYm9vbGVhblxuKTogQ1NTT2JqZWN0V2l0aExhYmVsID0+ICh7XG4gIGxhYmVsOiAnaW5kaWNhdG9yU2VwYXJhdG9yJyxcbiAgYWxpZ25TZWxmOiAnc3RyZXRjaCcsXG4gIHdpZHRoOiAxLFxuICAuLi4odW5zdHlsZWRcbiAgICA/IHt9XG4gICAgOiB7XG4gICAgICAgIGJhY2tncm91bmRDb2xvcjogaXNEaXNhYmxlZCA/IGNvbG9ycy5uZXV0cmFsMTAgOiBjb2xvcnMubmV1dHJhbDIwLFxuICAgICAgICBtYXJnaW5Cb3R0b206IGJhc2VVbml0ICogMixcbiAgICAgICAgbWFyZ2luVG9wOiBiYXNlVW5pdCAqIDIsXG4gICAgICB9KSxcbn0pO1xuXG5leHBvcnQgY29uc3QgSW5kaWNhdG9yU2VwYXJhdG9yID0gPFxuICBPcHRpb24sXG4gIElzTXVsdGkgZXh0ZW5kcyBib29sZWFuLFxuICBHcm91cCBleHRlbmRzIEdyb3VwQmFzZTxPcHRpb24+XG4+KFxuICBwcm9wczogSW5kaWNhdG9yU2VwYXJhdG9yUHJvcHM8T3B0aW9uLCBJc011bHRpLCBHcm91cD5cbikgPT4ge1xuICBjb25zdCB7IGlubmVyUHJvcHMgfSA9IHByb3BzO1xuICByZXR1cm4gKFxuICAgIDxzcGFuXG4gICAgICB7Li4uaW5uZXJQcm9wc31cbiAgICAgIHsuLi5nZXRTdHlsZVByb3BzKHByb3BzLCAnaW5kaWNhdG9yU2VwYXJhdG9yJywge1xuICAgICAgICAnaW5kaWNhdG9yLXNlcGFyYXRvcic6IHRydWUsXG4gICAgICB9KX1cbiAgICAvPlxuICApO1xufTtcblxuLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG4vLyBMb2FkaW5nXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cblxuY29uc3QgbG9hZGluZ0RvdEFuaW1hdGlvbnMgPSBrZXlmcmFtZXNgXG4gIDAlLCA4MCUsIDEwMCUgeyBvcGFjaXR5OiAwOyB9XG4gIDQwJSB7IG9wYWNpdHk6IDE7IH1cbmA7XG5cbmV4cG9ydCBjb25zdCBsb2FkaW5nSW5kaWNhdG9yQ1NTID0gPFxuICBPcHRpb24sXG4gIElzTXVsdGkgZXh0ZW5kcyBib29sZWFuLFxuICBHcm91cCBleHRlbmRzIEdyb3VwQmFzZTxPcHRpb24+XG4+KFxuICB7XG4gICAgaXNGb2N1c2VkLFxuICAgIHNpemUsXG4gICAgdGhlbWU6IHtcbiAgICAgIGNvbG9ycyxcbiAgICAgIHNwYWNpbmc6IHsgYmFzZVVuaXQgfSxcbiAgICB9LFxuICB9OiBMb2FkaW5nSW5kaWNhdG9yUHJvcHM8T3B0aW9uLCBJc011bHRpLCBHcm91cD4sXG4gIHVuc3R5bGVkOiBib29sZWFuXG4pOiBDU1NPYmplY3RXaXRoTGFiZWwgPT4gKHtcbiAgbGFiZWw6ICdsb2FkaW5nSW5kaWNhdG9yJyxcbiAgZGlzcGxheTogJ2ZsZXgnLFxuICB0cmFuc2l0aW9uOiAnY29sb3IgMTUwbXMnLFxuICBhbGlnblNlbGY6ICdjZW50ZXInLFxuICBmb250U2l6ZTogc2l6ZSxcbiAgbGluZUhlaWdodDogMSxcbiAgbWFyZ2luUmlnaHQ6IHNpemUsXG4gIHRleHRBbGlnbjogJ2NlbnRlcicsXG4gIHZlcnRpY2FsQWxpZ246ICdtaWRkbGUnLFxuICAuLi4odW5zdHlsZWRcbiAgICA/IHt9XG4gICAgOiB7XG4gICAgICAgIGNvbG9yOiBpc0ZvY3VzZWQgPyBjb2xvcnMubmV1dHJhbDYwIDogY29sb3JzLm5ldXRyYWwyMCxcbiAgICAgICAgcGFkZGluZzogYmFzZVVuaXQgKiAyLFxuICAgICAgfSksXG59KTtcblxuaW50ZXJmYWNlIExvYWRpbmdEb3RQcm9wcyB7XG4gIGRlbGF5OiBudW1iZXI7XG4gIG9mZnNldDogYm9vbGVhbjtcbn1cbmNvbnN0IExvYWRpbmdEb3QgPSAoeyBkZWxheSwgb2Zmc2V0IH06IExvYWRpbmdEb3RQcm9wcykgPT4gKFxuICA8c3BhblxuICAgIGNzcz17e1xuICAgICAgYW5pbWF0aW9uOiBgJHtsb2FkaW5nRG90QW5pbWF0aW9uc30gMXMgZWFzZS1pbi1vdXQgJHtkZWxheX1tcyBpbmZpbml0ZTtgLFxuICAgICAgYmFja2dyb3VuZENvbG9yOiAnY3VycmVudENvbG9yJyxcbiAgICAgIGJvcmRlclJhZGl1czogJzFlbScsXG4gICAgICBkaXNwbGF5OiAnaW5saW5lLWJsb2NrJyxcbiAgICAgIG1hcmdpbkxlZnQ6IG9mZnNldCA/ICcxZW0nIDogdW5kZWZpbmVkLFxuICAgICAgaGVpZ2h0OiAnMWVtJyxcbiAgICAgIHZlcnRpY2FsQWxpZ246ICd0b3AnLFxuICAgICAgd2lkdGg6ICcxZW0nLFxuICAgIH19XG4gIC8+XG4pO1xuXG5leHBvcnQgaW50ZXJmYWNlIExvYWRpbmdJbmRpY2F0b3JQcm9wczxcbiAgT3B0aW9uID0gdW5rbm93bixcbiAgSXNNdWx0aSBleHRlbmRzIGJvb2xlYW4gPSBib29sZWFuLFxuICBHcm91cCBleHRlbmRzIEdyb3VwQmFzZTxPcHRpb24+ID0gR3JvdXBCYXNlPE9wdGlvbj5cbj4gZXh0ZW5kcyBDb21tb25Qcm9wc0FuZENsYXNzTmFtZTxPcHRpb24sIElzTXVsdGksIEdyb3VwPiB7XG4gIC8qKiBQcm9wcyB0aGF0IHdpbGwgYmUgcGFzc2VkIG9uIHRvIHRoZSBjaGlsZHJlbi4gKi9cbiAgaW5uZXJQcm9wczogSlNYLkludHJpbnNpY0VsZW1lbnRzWydkaXYnXTtcbiAgLyoqIFRoZSBmb2N1c2VkIHN0YXRlIG9mIHRoZSBzZWxlY3QuICovXG4gIGlzRm9jdXNlZDogYm9vbGVhbjtcbiAgaXNEaXNhYmxlZDogYm9vbGVhbjtcbiAgLyoqIFNldCBzaXplIG9mIHRoZSBjb250YWluZXIuICovXG4gIHNpemU6IG51bWJlcjtcbn1cbmV4cG9ydCBjb25zdCBMb2FkaW5nSW5kaWNhdG9yID0gPFxuICBPcHRpb24sXG4gIElzTXVsdGkgZXh0ZW5kcyBib29sZWFuLFxuICBHcm91cCBleHRlbmRzIEdyb3VwQmFzZTxPcHRpb24+XG4+KHtcbiAgaW5uZXJQcm9wcyxcbiAgaXNSdGwsXG4gIHNpemUgPSA0LFxuICAuLi5yZXN0UHJvcHNcbn06IExvYWRpbmdJbmRpY2F0b3JQcm9wczxPcHRpb24sIElzTXVsdGksIEdyb3VwPikgPT4ge1xuICByZXR1cm4gKFxuICAgIDxkaXZcbiAgICAgIHsuLi5nZXRTdHlsZVByb3BzKFxuICAgICAgICB7IC4uLnJlc3RQcm9wcywgaW5uZXJQcm9wcywgaXNSdGwsIHNpemUgfSxcbiAgICAgICAgJ2xvYWRpbmdJbmRpY2F0b3InLFxuICAgICAgICB7XG4gICAgICAgICAgaW5kaWNhdG9yOiB0cnVlLFxuICAgICAgICAgICdsb2FkaW5nLWluZGljYXRvcic6IHRydWUsXG4gICAgICAgIH1cbiAgICAgICl9XG4gICAgICB7Li4uaW5uZXJQcm9wc31cbiAgICA+XG4gICAgICA8TG9hZGluZ0RvdCBkZWxheT17MH0gb2Zmc2V0PXtpc1J0bH0gLz5cbiAgICAgIDxMb2FkaW5nRG90IGRlbGF5PXsxNjB9IG9mZnNldCAvPlxuICAgICAgPExvYWRpbmdEb3QgZGVsYXk9ezMyMH0gb2Zmc2V0PXshaXNSdGx9IC8+XG4gICAgPC9kaXY+XG4gICk7XG59O1xuIl19 */")
   });
 };
 var LoadingIndicator = function LoadingIndicator(_ref7) {
@@ -39095,21 +40307,21 @@ var defaultComponents = function defaultComponents(props) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   NonceProvider: () => (/* binding */ NonceProvider),
-/* harmony export */   components: () => (/* reexport safe */ _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_5__.c),
-/* harmony export */   createFilter: () => (/* reexport safe */ _Select_aab027f3_esm_js__WEBPACK_IMPORTED_MODULE_3__.c),
+/* harmony export */   components: () => (/* reexport safe */ _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_5__.c),
+/* harmony export */   createFilter: () => (/* reexport safe */ _Select_49a62830_esm_js__WEBPACK_IMPORTED_MODULE_3__.c),
 /* harmony export */   "default": () => (/* binding */ StateManagedSelect$1),
-/* harmony export */   defaultTheme: () => (/* reexport safe */ _Select_aab027f3_esm_js__WEBPACK_IMPORTED_MODULE_3__.d),
-/* harmony export */   mergeStyles: () => (/* reexport safe */ _Select_aab027f3_esm_js__WEBPACK_IMPORTED_MODULE_3__.m),
+/* harmony export */   defaultTheme: () => (/* reexport safe */ _Select_49a62830_esm_js__WEBPACK_IMPORTED_MODULE_3__.d),
+/* harmony export */   mergeStyles: () => (/* reexport safe */ _Select_49a62830_esm_js__WEBPACK_IMPORTED_MODULE_3__.m),
 /* harmony export */   useStateManager: () => (/* reexport safe */ _useStateManager_7e1e8489_esm_js__WEBPACK_IMPORTED_MODULE_0__.u)
 /* harmony export */ });
 /* harmony import */ var _useStateManager_7e1e8489_esm_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./useStateManager-7e1e8489.esm.js */ "./node_modules/react-select/dist/useStateManager-7e1e8489.esm.js");
 /* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/esm/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _Select_aab027f3_esm_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Select-aab027f3.esm.js */ "./node_modules/react-select/dist/Select-aab027f3.esm.js");
-/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @emotion/react */ "./node_modules/@emotion/react/dist/emotion-element-489459f2.browser.development.esm.js");
-/* harmony import */ var _emotion_cache__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @emotion/cache */ "./node_modules/@emotion/cache/dist/emotion-cache.browser.development.esm.js");
-/* harmony import */ var _index_641ee5b8_esm_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./index-641ee5b8.esm.js */ "./node_modules/react-select/dist/index-641ee5b8.esm.js");
+/* harmony import */ var _Select_49a62830_esm_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Select-49a62830.esm.js */ "./node_modules/react-select/dist/Select-49a62830.esm.js");
+/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @emotion/react */ "./node_modules/@emotion/react/dist/emotion-element-c39617d8.browser.esm.js");
+/* harmony import */ var _emotion_cache__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @emotion/cache */ "./node_modules/@emotion/cache/dist/emotion-cache.browser.esm.js");
+/* harmony import */ var _index_a301f526_esm_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./index-a301f526.esm.js */ "./node_modules/react-select/dist/index-a301f526.esm.js");
 /* harmony import */ var _babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime/helpers/objectSpread2 */ "./node_modules/@babel/runtime/helpers/esm/objectSpread2.js");
 /* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "./node_modules/@babel/runtime/helpers/esm/slicedToArray.js");
 /* harmony import */ var _babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "./node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js");
@@ -39152,7 +40364,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var StateManagedSelect = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_2__.forwardRef)(function (props, ref) {
   var baseSelectProps = (0,_useStateManager_7e1e8489_esm_js__WEBPACK_IMPORTED_MODULE_0__.u)(props);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_Select_aab027f3_esm_js__WEBPACK_IMPORTED_MODULE_3__.S, (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__["default"])({
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_Select_49a62830_esm_js__WEBPACK_IMPORTED_MODULE_3__.S, (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__["default"])({
     ref: ref
   }, baseSelectProps));
 });
@@ -39280,15 +40492,15 @@ function useStateManager(_ref) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ index)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 
 
-var index = react__WEBPACK_IMPORTED_MODULE_0__.useLayoutEffect ;
+var index =  react__WEBPACK_IMPORTED_MODULE_0__.useLayoutEffect ;
 
-
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (index);
 
 
 /***/ }),
@@ -39385,17 +40597,6 @@ module.exports = window["React"];
 
 "use strict";
 module.exports = window["ReactDOM"];
-
-/***/ }),
-
-/***/ "react/jsx-runtime":
-/*!**********************************!*\
-  !*** external "ReactJSXRuntime" ***!
-  \**********************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = window["ReactJSXRuntime"];
 
 /***/ }),
 
@@ -39518,12 +40719,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ _arrayLikeToArray)
 /* harmony export */ });
-function _arrayLikeToArray(r, a) {
-  (null == a || a > r.length) && (a = r.length);
-  for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e];
-  return n;
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+  return arr2;
 }
-
 
 /***/ }),
 
@@ -39538,10 +40738,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ _arrayWithHoles)
 /* harmony export */ });
-function _arrayWithHoles(r) {
-  if (Array.isArray(r)) return r;
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
 }
-
 
 /***/ }),
 
@@ -39558,10 +40757,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arrayLikeToArray.js */ "./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js");
 
-function _arrayWithoutHoles(r) {
-  if (Array.isArray(r)) return (0,_arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r);
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) return (0,_arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__["default"])(arr);
 }
-
 
 /***/ }),
 
@@ -39576,11 +40774,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ _assertThisInitialized)
 /* harmony export */ });
-function _assertThisInitialized(e) {
-  if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  return e;
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+  return self;
 }
-
 
 /***/ }),
 
@@ -39595,10 +40794,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ _classCallCheck)
 /* harmony export */ });
-function _classCallCheck(a, n) {
-  if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function");
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
 }
-
 
 /***/ }),
 
@@ -39615,18 +40815,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./toPropertyKey.js */ "./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js");
 
-function _defineProperties(e, r) {
-  for (var t = 0; t < r.length; t++) {
-    var o = r[t];
-    o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, (0,_toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__["default"])(o.key), o);
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, (0,_toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__["default"])(descriptor.key), descriptor);
   }
 }
-function _createClass(e, r, t) {
-  return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", {
-    writable: !1
-  }), e;
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  Object.defineProperty(Constructor, "prototype", {
+    writable: false
+  });
+  return Constructor;
 }
-
 
 /***/ }),
 
@@ -39647,19 +40852,20 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function _createSuper(t) {
-  var r = (0,_isNativeReflectConstruct_js__WEBPACK_IMPORTED_MODULE_1__["default"])();
-  return function () {
-    var e,
-      o = (0,_getPrototypeOf_js__WEBPACK_IMPORTED_MODULE_0__["default"])(t);
-    if (r) {
-      var s = (0,_getPrototypeOf_js__WEBPACK_IMPORTED_MODULE_0__["default"])(this).constructor;
-      e = Reflect.construct(o, arguments, s);
-    } else e = o.apply(this, arguments);
-    return (0,_possibleConstructorReturn_js__WEBPACK_IMPORTED_MODULE_2__["default"])(this, e);
+function _createSuper(Derived) {
+  var hasNativeReflectConstruct = (0,_isNativeReflectConstruct_js__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  return function _createSuperInternal() {
+    var Super = (0,_getPrototypeOf_js__WEBPACK_IMPORTED_MODULE_0__["default"])(Derived),
+      result;
+    if (hasNativeReflectConstruct) {
+      var NewTarget = (0,_getPrototypeOf_js__WEBPACK_IMPORTED_MODULE_0__["default"])(this).constructor;
+      result = Reflect.construct(Super, arguments, NewTarget);
+    } else {
+      result = Super.apply(this, arguments);
+    }
+    return (0,_possibleConstructorReturn_js__WEBPACK_IMPORTED_MODULE_2__["default"])(this, result);
   };
 }
-
 
 /***/ }),
 
@@ -39676,15 +40882,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./toPropertyKey.js */ "./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js");
 
-function _defineProperty(e, r, t) {
-  return (r = (0,_toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r)) in e ? Object.defineProperty(e, r, {
-    value: t,
-    enumerable: !0,
-    configurable: !0,
-    writable: !0
-  }) : e[r] = t, e;
+function _defineProperty(obj, key, value) {
+  key = (0,_toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__["default"])(key);
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+  return obj;
 }
-
 
 /***/ }),
 
@@ -39700,15 +40911,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ _extends)
 /* harmony export */ });
 function _extends() {
-  return _extends = Object.assign ? Object.assign.bind() : function (n) {
-    for (var e = 1; e < arguments.length; e++) {
-      var t = arguments[e];
-      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
+  _extends = Object.assign ? Object.assign.bind() : function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
     }
-    return n;
-  }, _extends.apply(null, arguments);
+    return target;
+  };
+  return _extends.apply(this, arguments);
 }
-
 
 /***/ }),
 
@@ -39723,12 +40938,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ _getPrototypeOf)
 /* harmony export */ });
-function _getPrototypeOf(t) {
-  return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) {
-    return t.__proto__ || Object.getPrototypeOf(t);
-  }, _getPrototypeOf(t);
+function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) {
+    return o.__proto__ || Object.getPrototypeOf(o);
+  };
+  return _getPrototypeOf(o);
 }
-
 
 /***/ }),
 
@@ -39745,19 +40960,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _setPrototypeOf_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./setPrototypeOf.js */ "./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js");
 
-function _inherits(t, e) {
-  if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function");
-  t.prototype = Object.create(e && e.prototype, {
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
+  }
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
     constructor: {
-      value: t,
-      writable: !0,
-      configurable: !0
+      value: subClass,
+      writable: true,
+      configurable: true
     }
-  }), Object.defineProperty(t, "prototype", {
-    writable: !1
-  }), e && (0,_setPrototypeOf_js__WEBPACK_IMPORTED_MODULE_0__["default"])(t, e);
+  });
+  Object.defineProperty(subClass, "prototype", {
+    writable: false
+  });
+  if (superClass) (0,_setPrototypeOf_js__WEBPACK_IMPORTED_MODULE_0__["default"])(subClass, superClass);
 }
-
 
 /***/ }),
 
@@ -39781,7 +40999,6 @@ function _isNativeReflectConstruct() {
   })();
 }
 
-
 /***/ }),
 
 /***/ "./node_modules/@babel/runtime/helpers/esm/iterableToArray.js":
@@ -39795,10 +41012,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ _iterableToArray)
 /* harmony export */ });
-function _iterableToArray(r) {
-  if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r);
+function _iterableToArray(iter) {
+  if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
 }
-
 
 /***/ }),
 
@@ -39841,7 +41057,6 @@ function _iterableToArrayLimit(r, l) {
   }
 }
 
-
 /***/ }),
 
 /***/ "./node_modules/@babel/runtime/helpers/esm/nonIterableRest.js":
@@ -39859,7 +41074,6 @@ function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
-
 /***/ }),
 
 /***/ "./node_modules/@babel/runtime/helpers/esm/nonIterableSpread.js":
@@ -39876,7 +41090,6 @@ __webpack_require__.r(__webpack_exports__);
 function _nonIterableSpread() {
   throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-
 
 /***/ }),
 
@@ -39915,7 +41128,6 @@ function _objectSpread2(e) {
   return e;
 }
 
-
 /***/ }),
 
 /***/ "./node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js":
@@ -39931,18 +41143,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _objectWithoutPropertiesLoose_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./objectWithoutPropertiesLoose.js */ "./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js");
 
-function _objectWithoutProperties(e, t) {
-  if (null == e) return {};
-  var o,
-    r,
-    i = (0,_objectWithoutPropertiesLoose_js__WEBPACK_IMPORTED_MODULE_0__["default"])(e, t);
+function _objectWithoutProperties(source, excluded) {
+  if (source == null) return {};
+  var target = (0,_objectWithoutPropertiesLoose_js__WEBPACK_IMPORTED_MODULE_0__["default"])(source, excluded);
+  var key, i;
   if (Object.getOwnPropertySymbols) {
-    var s = Object.getOwnPropertySymbols(e);
-    for (r = 0; r < s.length; r++) o = s[r], t.includes(o) || {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
+    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+    for (i = 0; i < sourceSymbolKeys.length; i++) {
+      key = sourceSymbolKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+      target[key] = source[key];
+    }
   }
-  return i;
+  return target;
 }
-
 
 /***/ }),
 
@@ -39957,16 +41172,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ _objectWithoutPropertiesLoose)
 /* harmony export */ });
-function _objectWithoutPropertiesLoose(r, e) {
-  if (null == r) return {};
-  var t = {};
-  for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
-    if (e.includes(n)) continue;
-    t[n] = r[n];
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
   }
-  return t;
+  return target;
 }
-
 
 /***/ }),
 
@@ -39985,12 +41202,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _assertThisInitialized_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./assertThisInitialized.js */ "./node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js");
 
 
-function _possibleConstructorReturn(t, e) {
-  if (e && ("object" == (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(e) || "function" == typeof e)) return e;
-  if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined");
-  return (0,_assertThisInitialized_js__WEBPACK_IMPORTED_MODULE_1__["default"])(t);
+function _possibleConstructorReturn(self, call) {
+  if (call && ((0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(call) === "object" || typeof call === "function")) {
+    return call;
+  } else if (call !== void 0) {
+    throw new TypeError("Derived constructors may only return object or undefined");
+  }
+  return (0,_assertThisInitialized_js__WEBPACK_IMPORTED_MODULE_1__["default"])(self);
 }
-
 
 /***/ }),
 
@@ -40005,12 +41224,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ _setPrototypeOf)
 /* harmony export */ });
-function _setPrototypeOf(t, e) {
-  return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) {
-    return t.__proto__ = e, t;
-  }, _setPrototypeOf(t, e);
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+  return _setPrototypeOf(o, p);
 }
-
 
 /***/ }),
 
@@ -40033,10 +41253,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function _slicedToArray(r, e) {
-  return (0,_arrayWithHoles_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r) || (0,_iterableToArrayLimit_js__WEBPACK_IMPORTED_MODULE_1__["default"])(r, e) || (0,_unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__["default"])(r, e) || (0,_nonIterableRest_js__WEBPACK_IMPORTED_MODULE_3__["default"])();
+function _slicedToArray(arr, i) {
+  return (0,_arrayWithHoles_js__WEBPACK_IMPORTED_MODULE_0__["default"])(arr) || (0,_iterableToArrayLimit_js__WEBPACK_IMPORTED_MODULE_1__["default"])(arr, i) || (0,_unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__["default"])(arr, i) || (0,_nonIterableRest_js__WEBPACK_IMPORTED_MODULE_3__["default"])();
 }
-
 
 /***/ }),
 
@@ -40051,14 +41270,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ _taggedTemplateLiteral)
 /* harmony export */ });
-function _taggedTemplateLiteral(e, t) {
-  return t || (t = e.slice(0)), Object.freeze(Object.defineProperties(e, {
+function _taggedTemplateLiteral(strings, raw) {
+  if (!raw) {
+    raw = strings.slice(0);
+  }
+  return Object.freeze(Object.defineProperties(strings, {
     raw: {
-      value: Object.freeze(t)
+      value: Object.freeze(raw)
     }
   }));
 }
-
 
 /***/ }),
 
@@ -40081,10 +41302,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function _toConsumableArray(r) {
-  return (0,_arrayWithoutHoles_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r) || (0,_iterableToArray_js__WEBPACK_IMPORTED_MODULE_1__["default"])(r) || (0,_unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__["default"])(r) || (0,_nonIterableSpread_js__WEBPACK_IMPORTED_MODULE_3__["default"])();
+function _toConsumableArray(arr) {
+  return (0,_arrayWithoutHoles_js__WEBPACK_IMPORTED_MODULE_0__["default"])(arr) || (0,_iterableToArray_js__WEBPACK_IMPORTED_MODULE_1__["default"])(arr) || (0,_unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__["default"])(arr) || (0,_nonIterableSpread_js__WEBPACK_IMPORTED_MODULE_3__["default"])();
 }
-
 
 /***/ }),
 
@@ -40112,7 +41332,6 @@ function toPrimitive(t, r) {
   return ("string" === r ? String : Number)(t);
 }
 
-
 /***/ }),
 
 /***/ "./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js":
@@ -40132,9 +41351,8 @@ __webpack_require__.r(__webpack_exports__);
 
 function toPropertyKey(t) {
   var i = (0,_toPrimitive_js__WEBPACK_IMPORTED_MODULE_1__["default"])(t, "string");
-  return "symbol" == (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(i) ? i : i + "";
+  return "symbol" == (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(i) ? i : String(i);
 }
-
 
 /***/ }),
 
@@ -40159,7 +41377,6 @@ function _typeof(o) {
   }, _typeof(o);
 }
 
-
 /***/ }),
 
 /***/ "./node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js":
@@ -40175,14 +41392,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arrayLikeToArray.js */ "./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js");
 
-function _unsupportedIterableToArray(r, a) {
-  if (r) {
-    if ("string" == typeof r) return (0,_arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r, a);
-    var t = {}.toString.call(r).slice(8, -1);
-    return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? (0,_arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r, a) : void 0;
-  }
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return (0,_arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__["default"])(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return (0,_arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__["default"])(o, minLen);
 }
-
 
 /***/ }),
 
@@ -40397,10 +41614,9 @@ async function detectOverflow(state, options) {
     strategy
   }));
   const rect = elementContext === 'floating' ? {
+    ...rects.floating,
     x,
-    y,
-    width: rects.floating.width,
-    height: rects.floating.height
+    y
   } : rects.reference;
   const offsetParent = await (platform.getOffsetParent == null ? void 0 : platform.getOffsetParent(elements.floating));
   const offsetScale = (await (platform.isElement == null ? void 0 : platform.isElement(offsetParent))) ? (await (platform.getScale == null ? void 0 : platform.getScale(offsetParent))) || {
@@ -40650,12 +41866,10 @@ const flip = function (options) {
         return {};
       }
       const side = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement);
-      const initialSideAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(initialPlacement);
       const isBasePlacement = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(initialPlacement) === initialPlacement;
       const rtl = await (platform.isRTL == null ? void 0 : platform.isRTL(elements.floating));
       const fallbackPlacements = specifiedFallbackPlacements || (isBasePlacement || !flipAlignment ? [(0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getOppositePlacement)(initialPlacement)] : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getExpandedPlacements)(initialPlacement));
-      const hasFallbackAxisSideDirection = fallbackAxisSideDirection !== 'none';
-      if (!specifiedFallbackPlacements && hasFallbackAxisSideDirection) {
+      if (!specifiedFallbackPlacements && fallbackAxisSideDirection !== 'none') {
         fallbackPlacements.push(...(0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getOppositeAxisPlacements)(initialPlacement, flipAlignment, fallbackAxisSideDirection, rtl));
       }
       const placements = [initialPlacement, ...fallbackPlacements];
@@ -40701,17 +41915,8 @@ const flip = function (options) {
           switch (fallbackStrategy) {
             case 'bestFit':
               {
-                var _overflowsData$filter2;
-                const placement = (_overflowsData$filter2 = overflowsData.filter(d => {
-                  if (hasFallbackAxisSideDirection) {
-                    const currentSideAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(d.placement);
-                    return currentSideAxis === initialSideAxis ||
-                    // Create a bias to the `y` side axis due to horizontal
-                    // reading directions favoring greater width.
-                    currentSideAxis === 'y';
-                  }
-                  return true;
-                }).map(d => [d.placement, d.overflows.filter(overflow => overflow > 0).reduce((acc, overflow) => acc + overflow, 0)]).sort((a, b) => a[1] - b[1])[0]) == null ? void 0 : _overflowsData$filter2[0];
+                var _overflowsData$map$so;
+                const placement = (_overflowsData$map$so = overflowsData.map(d => [d.placement, d.overflows.filter(overflow => overflow > 0).reduce((acc, overflow) => acc + overflow, 0)]).sort((a, b) => a[1] - b[1])[0]) == null ? void 0 : _overflowsData$map$so[0];
                 if (placement) {
                   resetPlacement = placement;
                 }
@@ -40951,8 +42156,6 @@ async function convertValueToCoords(state, options) {
   const mainAxisMulti = ['left', 'top'].includes(side) ? -1 : 1;
   const crossAxisMulti = rtl && isVertical ? -1 : 1;
   const rawValue = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
-
-  // eslint-disable-next-line prefer-const
   let {
     mainAxis,
     crossAxis,
@@ -40962,9 +42165,10 @@ async function convertValueToCoords(state, options) {
     crossAxis: 0,
     alignmentAxis: null
   } : {
-    mainAxis: rawValue.mainAxis || 0,
-    crossAxis: rawValue.crossAxis || 0,
-    alignmentAxis: rawValue.alignmentAxis
+    mainAxis: 0,
+    crossAxis: 0,
+    alignmentAxis: null,
+    ...rawValue
   };
   if (alignment && typeof alignmentAxis === 'number') {
     crossAxis = alignment === 'end' ? alignmentAxis * -1 : alignmentAxis;
@@ -41086,11 +42290,7 @@ const shift = function (options) {
         ...limitedCoords,
         data: {
           x: limitedCoords.x - x,
-          y: limitedCoords.y - y,
-          enabled: {
-            [mainAxis]: checkMainAxis,
-            [crossAxis]: checkCrossAxis
-          }
+          y: limitedCoords.y - y
         }
       };
     }
@@ -41179,7 +42379,6 @@ const size = function (options) {
     name: 'size',
     options,
     async fn(state) {
-      var _state$middlewareData, _state$middlewareData2;
       const {
         placement,
         rects,
@@ -41207,18 +42406,17 @@ const size = function (options) {
         widthSide = side;
         heightSide = alignment === 'end' ? 'top' : 'bottom';
       }
-      const maximumClippingHeight = height - overflow.top - overflow.bottom;
-      const maximumClippingWidth = width - overflow.left - overflow.right;
-      const overflowAvailableHeight = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(height - overflow[heightSide], maximumClippingHeight);
-      const overflowAvailableWidth = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(width - overflow[widthSide], maximumClippingWidth);
+      const overflowAvailableHeight = height - overflow[heightSide];
+      const overflowAvailableWidth = width - overflow[widthSide];
       const noShift = !state.middlewareData.shift;
       let availableHeight = overflowAvailableHeight;
       let availableWidth = overflowAvailableWidth;
-      if ((_state$middlewareData = state.middlewareData.shift) != null && _state$middlewareData.enabled.x) {
-        availableWidth = maximumClippingWidth;
-      }
-      if ((_state$middlewareData2 = state.middlewareData.shift) != null && _state$middlewareData2.enabled.y) {
-        availableHeight = maximumClippingHeight;
+      if (isYAxis) {
+        const maximumClippingWidth = width - overflow.left - overflow.right;
+        availableWidth = alignment || noShift ? (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(overflowAvailableWidth, maximumClippingWidth) : maximumClippingWidth;
+      } else {
+        const maximumClippingHeight = height - overflow.top - overflow.bottom;
+        availableHeight = alignment || noShift ? (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(overflowAvailableHeight, maximumClippingHeight) : maximumClippingHeight;
       }
       if (noShift && !alignment) {
         const xMin = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(overflow.left, 0);
@@ -41267,35 +42465,36 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   autoPlacement: () => (/* binding */ autoPlacement),
 /* harmony export */   autoUpdate: () => (/* binding */ autoUpdate),
 /* harmony export */   computePosition: () => (/* binding */ computePosition),
-/* harmony export */   detectOverflow: () => (/* binding */ detectOverflow),
+/* harmony export */   detectOverflow: () => (/* reexport safe */ _floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.detectOverflow),
 /* harmony export */   flip: () => (/* binding */ flip),
-/* harmony export */   getOverflowAncestors: () => (/* reexport safe */ _floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getOverflowAncestors),
+/* harmony export */   getOverflowAncestors: () => (/* reexport safe */ _floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getOverflowAncestors),
 /* harmony export */   hide: () => (/* binding */ hide),
 /* harmony export */   inline: () => (/* binding */ inline),
 /* harmony export */   limitShift: () => (/* binding */ limitShift),
-/* harmony export */   offset: () => (/* binding */ offset),
+/* harmony export */   offset: () => (/* reexport safe */ _floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.offset),
 /* harmony export */   platform: () => (/* binding */ platform),
 /* harmony export */   shift: () => (/* binding */ shift),
 /* harmony export */   size: () => (/* binding */ size)
 /* harmony export */ });
-/* harmony import */ var _floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @floating-ui/utils */ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.mjs");
-/* harmony import */ var _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @floating-ui/core */ "./node_modules/@floating-ui/core/dist/floating-ui.core.mjs");
-/* harmony import */ var _floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @floating-ui/utils/dom */ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.dom.mjs");
+/* harmony import */ var _floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @floating-ui/utils */ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.mjs");
+/* harmony import */ var _floating_ui_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @floating-ui/core */ "./node_modules/@floating-ui/core/dist/floating-ui.core.mjs");
+/* harmony import */ var _floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @floating-ui/utils/dom */ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.dom.mjs");
+
 
 
 
 
 
 function getCssDimensions(element) {
-  const css = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(element);
+  const css = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getComputedStyle)(element);
   // In testing environments, the `width` and `height` properties are empty
   // strings for SVG elements, returning NaN. Fallback to `0` in this case.
   let width = parseFloat(css.width) || 0;
   let height = parseFloat(css.height) || 0;
-  const hasOffset = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(element);
+  const hasOffset = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isHTMLElement)(element);
   const offsetWidth = hasOffset ? element.offsetWidth : width;
   const offsetHeight = hasOffset ? element.offsetHeight : height;
-  const shouldFallback = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.round)(width) !== offsetWidth || (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.round)(height) !== offsetHeight;
+  const shouldFallback = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.round)(width) !== offsetWidth || (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.round)(height) !== offsetHeight;
   if (shouldFallback) {
     width = offsetWidth;
     height = offsetHeight;
@@ -41308,13 +42507,13 @@ function getCssDimensions(element) {
 }
 
 function unwrapElement(element) {
-  return !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(element) ? element.contextElement : element;
+  return !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isElement)(element) ? element.contextElement : element;
 }
 
 function getScale(element) {
   const domElement = unwrapElement(element);
-  if (!(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(domElement)) {
-    return (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(1);
+  if (!(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isHTMLElement)(domElement)) {
+    return (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.createCoords)(1);
   }
   const rect = domElement.getBoundingClientRect();
   const {
@@ -41322,8 +42521,8 @@ function getScale(element) {
     height,
     $
   } = getCssDimensions(domElement);
-  let x = ($ ? (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.round)(rect.width) : rect.width) / width;
-  let y = ($ ? (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.round)(rect.height) : rect.height) / height;
+  let x = ($ ? (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.round)(rect.width) : rect.width) / width;
+  let y = ($ ? (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.round)(rect.height) : rect.height) / height;
 
   // 0, NaN, or Infinity should always fallback to 1.
 
@@ -41339,10 +42538,10 @@ function getScale(element) {
   };
 }
 
-const noOffsets = /*#__PURE__*/(0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
+const noOffsets = /*#__PURE__*/(0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.createCoords)(0);
 function getVisualOffsets(element) {
-  const win = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(element);
-  if (!(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isWebKit)() || !win.visualViewport) {
+  const win = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getWindow)(element);
+  if (!(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isWebKit)() || !win.visualViewport) {
     return noOffsets;
   }
   return {
@@ -41354,7 +42553,7 @@ function shouldAddVisualOffsets(element, isFixed, floatingOffsetParent) {
   if (isFixed === void 0) {
     isFixed = false;
   }
-  if (!floatingOffsetParent || isFixed && floatingOffsetParent !== (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(element)) {
+  if (!floatingOffsetParent || isFixed && floatingOffsetParent !== (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getWindow)(element)) {
     return false;
   }
   return isFixed;
@@ -41369,30 +42568,30 @@ function getBoundingClientRect(element, includeScale, isFixedStrategy, offsetPar
   }
   const clientRect = element.getBoundingClientRect();
   const domElement = unwrapElement(element);
-  let scale = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(1);
+  let scale = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.createCoords)(1);
   if (includeScale) {
     if (offsetParent) {
-      if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(offsetParent)) {
+      if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isElement)(offsetParent)) {
         scale = getScale(offsetParent);
       }
     } else {
       scale = getScale(element);
     }
   }
-  const visualOffsets = shouldAddVisualOffsets(domElement, isFixedStrategy, offsetParent) ? getVisualOffsets(domElement) : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
+  const visualOffsets = shouldAddVisualOffsets(domElement, isFixedStrategy, offsetParent) ? getVisualOffsets(domElement) : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.createCoords)(0);
   let x = (clientRect.left + visualOffsets.x) / scale.x;
   let y = (clientRect.top + visualOffsets.y) / scale.y;
   let width = clientRect.width / scale.x;
   let height = clientRect.height / scale.y;
   if (domElement) {
-    const win = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(domElement);
-    const offsetWin = offsetParent && (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(offsetParent) ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(offsetParent) : offsetParent;
+    const win = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getWindow)(domElement);
+    const offsetWin = offsetParent && (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isElement)(offsetParent) ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getWindow)(offsetParent) : offsetParent;
     let currentWin = win;
-    let currentIFrame = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getFrameElement)(currentWin);
+    let currentIFrame = currentWin.frameElement;
     while (currentIFrame && offsetParent && offsetWin !== currentWin) {
       const iframeScale = getScale(currentIFrame);
       const iframeRect = currentIFrame.getBoundingClientRect();
-      const css = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(currentIFrame);
+      const css = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getComputedStyle)(currentIFrame);
       const left = iframeRect.left + (currentIFrame.clientLeft + parseFloat(css.paddingLeft)) * iframeScale.x;
       const top = iframeRect.top + (currentIFrame.clientTop + parseFloat(css.paddingTop)) * iframeScale.y;
       x *= iframeScale.x;
@@ -41401,11 +42600,11 @@ function getBoundingClientRect(element, includeScale, isFixedStrategy, offsetPar
       height *= iframeScale.y;
       x += left;
       y += top;
-      currentWin = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(currentIFrame);
-      currentIFrame = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getFrameElement)(currentWin);
+      currentWin = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getWindow)(currentIFrame);
+      currentIFrame = currentWin.frameElement;
     }
   }
-  return (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.rectToClientRect)({
+  return (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.rectToClientRect)({
     width,
     height,
     x,
@@ -41413,29 +42612,15 @@ function getBoundingClientRect(element, includeScale, isFixedStrategy, offsetPar
   });
 }
 
-// If <html> has a CSS width greater than the viewport, then this will be
-// incorrect for RTL.
-function getWindowScrollBarX(element, rect) {
-  const leftScroll = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeScroll)(element).scrollLeft;
-  if (!rect) {
-    return getBoundingClientRect((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element)).left + leftScroll;
-  }
-  return rect.left + leftScroll;
-}
-
-function getHTMLOffset(documentElement, scroll, ignoreScrollbarX) {
-  if (ignoreScrollbarX === void 0) {
-    ignoreScrollbarX = false;
-  }
-  const htmlRect = documentElement.getBoundingClientRect();
-  const x = htmlRect.left + scroll.scrollLeft - (ignoreScrollbarX ? 0 :
-  // RTL <body> scrollbar.
-  getWindowScrollBarX(documentElement, htmlRect));
-  const y = htmlRect.top + scroll.scrollTop;
-  return {
-    x,
-    y
-  };
+const topLayerSelectors = [':popover-open', ':modal'];
+function isTopLayer(floating) {
+  return topLayerSelectors.some(selector => {
+    try {
+      return floating.matches(selector);
+    } catch (e) {
+      return false;
+    }
+  });
 }
 
 function convertOffsetParentRelativeRectToViewportRelativeRect(_ref) {
@@ -41446,8 +42631,8 @@ function convertOffsetParentRelativeRectToViewportRelativeRect(_ref) {
     strategy
   } = _ref;
   const isFixed = strategy === 'fixed';
-  const documentElement = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(offsetParent);
-  const topLayer = elements ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isTopLayer)(elements.floating) : false;
+  const documentElement = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getDocumentElement)(offsetParent);
+  const topLayer = elements ? isTopLayer(elements.floating) : false;
   if (offsetParent === documentElement || topLayer && isFixed) {
     return rect;
   }
@@ -41455,26 +42640,25 @@ function convertOffsetParentRelativeRectToViewportRelativeRect(_ref) {
     scrollLeft: 0,
     scrollTop: 0
   };
-  let scale = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(1);
-  const offsets = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
-  const isOffsetParentAnElement = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(offsetParent);
+  let scale = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.createCoords)(1);
+  const offsets = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.createCoords)(0);
+  const isOffsetParentAnElement = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isHTMLElement)(offsetParent);
   if (isOffsetParentAnElement || !isOffsetParentAnElement && !isFixed) {
-    if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeName)(offsetParent) !== 'body' || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isOverflowElement)(documentElement)) {
-      scroll = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeScroll)(offsetParent);
+    if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getNodeName)(offsetParent) !== 'body' || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isOverflowElement)(documentElement)) {
+      scroll = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getNodeScroll)(offsetParent);
     }
-    if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(offsetParent)) {
+    if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isHTMLElement)(offsetParent)) {
       const offsetRect = getBoundingClientRect(offsetParent);
       scale = getScale(offsetParent);
       offsets.x = offsetRect.x + offsetParent.clientLeft;
       offsets.y = offsetRect.y + offsetParent.clientTop;
     }
   }
-  const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll, true) : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
   return {
     width: rect.width * scale.x,
     height: rect.height * scale.y,
-    x: rect.x * scale.x - scroll.scrollLeft * scale.x + offsets.x + htmlOffset.x,
-    y: rect.y * scale.y - scroll.scrollTop * scale.y + offsets.y + htmlOffset.y
+    x: rect.x * scale.x - scroll.scrollLeft * scale.x + offsets.x,
+    y: rect.y * scale.y - scroll.scrollTop * scale.y + offsets.y
   };
 }
 
@@ -41482,18 +42666,24 @@ function getClientRects(element) {
   return Array.from(element.getClientRects());
 }
 
+function getWindowScrollBarX(element) {
+  // If <html> has a CSS width greater than the viewport, then this will be
+  // incorrect for RTL.
+  return getBoundingClientRect((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getDocumentElement)(element)).left + (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getNodeScroll)(element).scrollLeft;
+}
+
 // Gets the entire size of the scrollable document area, even extending outside
 // of the `<html>` and `<body>` rect bounds if horizontally scrollable.
 function getDocumentRect(element) {
-  const html = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element);
-  const scroll = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeScroll)(element);
+  const html = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getDocumentElement)(element);
+  const scroll = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getNodeScroll)(element);
   const body = element.ownerDocument.body;
-  const width = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(html.scrollWidth, html.clientWidth, body.scrollWidth, body.clientWidth);
-  const height = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(html.scrollHeight, html.clientHeight, body.scrollHeight, body.clientHeight);
+  const width = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.max)(html.scrollWidth, html.clientWidth, body.scrollWidth, body.clientWidth);
+  const height = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.max)(html.scrollHeight, html.clientHeight, body.scrollHeight, body.clientHeight);
   let x = -scroll.scrollLeft + getWindowScrollBarX(element);
   const y = -scroll.scrollTop;
-  if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(body).direction === 'rtl') {
-    x += (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(html.clientWidth, body.clientWidth) - width;
+  if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getComputedStyle)(body).direction === 'rtl') {
+    x += (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.max)(html.clientWidth, body.clientWidth) - width;
   }
   return {
     width,
@@ -41504,8 +42694,8 @@ function getDocumentRect(element) {
 }
 
 function getViewportRect(element, strategy) {
-  const win = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(element);
-  const html = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element);
+  const win = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getWindow)(element);
+  const html = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getDocumentElement)(element);
   const visualViewport = win.visualViewport;
   let width = html.clientWidth;
   let height = html.clientHeight;
@@ -41514,7 +42704,7 @@ function getViewportRect(element, strategy) {
   if (visualViewport) {
     width = visualViewport.width;
     height = visualViewport.height;
-    const visualViewportBased = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isWebKit)();
+    const visualViewportBased = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isWebKit)();
     if (!visualViewportBased || visualViewportBased && strategy === 'fixed') {
       x = visualViewport.offsetLeft;
       y = visualViewport.offsetTop;
@@ -41533,7 +42723,7 @@ function getInnerBoundingClientRect(element, strategy) {
   const clientRect = getBoundingClientRect(element, true, strategy === 'fixed');
   const top = clientRect.top + element.clientTop;
   const left = clientRect.left + element.clientLeft;
-  const scale = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(element) ? getScale(element) : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(1);
+  const scale = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isHTMLElement)(element) ? getScale(element) : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.createCoords)(1);
   const width = element.clientWidth * scale.x;
   const height = element.clientHeight * scale.y;
   const x = left * scale.x;
@@ -41550,26 +42740,25 @@ function getClientRectFromClippingAncestor(element, clippingAncestor, strategy) 
   if (clippingAncestor === 'viewport') {
     rect = getViewportRect(element, strategy);
   } else if (clippingAncestor === 'document') {
-    rect = getDocumentRect((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element));
-  } else if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(clippingAncestor)) {
+    rect = getDocumentRect((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getDocumentElement)(element));
+  } else if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isElement)(clippingAncestor)) {
     rect = getInnerBoundingClientRect(clippingAncestor, strategy);
   } else {
     const visualOffsets = getVisualOffsets(element);
     rect = {
+      ...clippingAncestor,
       x: clippingAncestor.x - visualOffsets.x,
-      y: clippingAncestor.y - visualOffsets.y,
-      width: clippingAncestor.width,
-      height: clippingAncestor.height
+      y: clippingAncestor.y - visualOffsets.y
     };
   }
-  return (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.rectToClientRect)(rect);
+  return (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.rectToClientRect)(rect);
 }
 function hasFixedPositionAncestor(element, stopNode) {
-  const parentNode = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getParentNode)(element);
-  if (parentNode === stopNode || !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(parentNode) || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isLastTraversableNode)(parentNode)) {
+  const parentNode = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getParentNode)(element);
+  if (parentNode === stopNode || !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isElement)(parentNode) || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isLastTraversableNode)(parentNode)) {
     return false;
   }
-  return (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(parentNode).position === 'fixed' || hasFixedPositionAncestor(parentNode, stopNode);
+  return (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getComputedStyle)(parentNode).position === 'fixed' || hasFixedPositionAncestor(parentNode, stopNode);
 }
 
 // A "clipping ancestor" is an `overflow` element with the characteristic of
@@ -41580,19 +42769,19 @@ function getClippingElementAncestors(element, cache) {
   if (cachedResult) {
     return cachedResult;
   }
-  let result = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getOverflowAncestors)(element, [], false).filter(el => (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(el) && (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeName)(el) !== 'body');
+  let result = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getOverflowAncestors)(element, [], false).filter(el => (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isElement)(el) && (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getNodeName)(el) !== 'body');
   let currentContainingBlockComputedStyle = null;
-  const elementIsFixed = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(element).position === 'fixed';
-  let currentNode = elementIsFixed ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getParentNode)(element) : element;
+  const elementIsFixed = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getComputedStyle)(element).position === 'fixed';
+  let currentNode = elementIsFixed ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getParentNode)(element) : element;
 
   // https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
-  while ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(currentNode) && !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isLastTraversableNode)(currentNode)) {
-    const computedStyle = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(currentNode);
-    const currentNodeIsContaining = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isContainingBlock)(currentNode);
+  while ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isElement)(currentNode) && !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isLastTraversableNode)(currentNode)) {
+    const computedStyle = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getComputedStyle)(currentNode);
+    const currentNodeIsContaining = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isContainingBlock)(currentNode);
     if (!currentNodeIsContaining && computedStyle.position === 'fixed') {
       currentContainingBlockComputedStyle = null;
     }
-    const shouldDropCurrentNode = elementIsFixed ? !currentNodeIsContaining && !currentContainingBlockComputedStyle : !currentNodeIsContaining && computedStyle.position === 'static' && !!currentContainingBlockComputedStyle && ['absolute', 'fixed'].includes(currentContainingBlockComputedStyle.position) || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isOverflowElement)(currentNode) && !currentNodeIsContaining && hasFixedPositionAncestor(element, currentNode);
+    const shouldDropCurrentNode = elementIsFixed ? !currentNodeIsContaining && !currentContainingBlockComputedStyle : !currentNodeIsContaining && computedStyle.position === 'static' && !!currentContainingBlockComputedStyle && ['absolute', 'fixed'].includes(currentContainingBlockComputedStyle.position) || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isOverflowElement)(currentNode) && !currentNodeIsContaining && hasFixedPositionAncestor(element, currentNode);
     if (shouldDropCurrentNode) {
       // Drop non-containing blocks.
       result = result.filter(ancestor => ancestor !== currentNode);
@@ -41600,7 +42789,7 @@ function getClippingElementAncestors(element, cache) {
       // Record last containing block for next iteration.
       currentContainingBlockComputedStyle = computedStyle;
     }
-    currentNode = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getParentNode)(currentNode);
+    currentNode = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getParentNode)(currentNode);
   }
   cache.set(element, result);
   return result;
@@ -41615,15 +42804,15 @@ function getClippingRect(_ref) {
     rootBoundary,
     strategy
   } = _ref;
-  const elementClippingAncestors = boundary === 'clippingAncestors' ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isTopLayer)(element) ? [] : getClippingElementAncestors(element, this._c) : [].concat(boundary);
+  const elementClippingAncestors = boundary === 'clippingAncestors' ? getClippingElementAncestors(element, this._c) : [].concat(boundary);
   const clippingAncestors = [...elementClippingAncestors, rootBoundary];
   const firstClippingAncestor = clippingAncestors[0];
   const clippingRect = clippingAncestors.reduce((accRect, clippingAncestor) => {
     const rect = getClientRectFromClippingAncestor(element, clippingAncestor, strategy);
-    accRect.top = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(rect.top, accRect.top);
-    accRect.right = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.min)(rect.right, accRect.right);
-    accRect.bottom = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.min)(rect.bottom, accRect.bottom);
-    accRect.left = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(rect.left, accRect.left);
+    accRect.top = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.max)(rect.top, accRect.top);
+    accRect.right = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.min)(rect.right, accRect.right);
+    accRect.bottom = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.min)(rect.bottom, accRect.bottom);
+    accRect.left = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.max)(rect.left, accRect.left);
     return accRect;
   }, getClientRectFromClippingAncestor(element, firstClippingAncestor, strategy));
   return {
@@ -41646,32 +42835,29 @@ function getDimensions(element) {
 }
 
 function getRectRelativeToOffsetParent(element, offsetParent, strategy) {
-  const isOffsetParentAnElement = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(offsetParent);
-  const documentElement = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(offsetParent);
+  const isOffsetParentAnElement = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isHTMLElement)(offsetParent);
+  const documentElement = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getDocumentElement)(offsetParent);
   const isFixed = strategy === 'fixed';
   const rect = getBoundingClientRect(element, true, isFixed, offsetParent);
   let scroll = {
     scrollLeft: 0,
     scrollTop: 0
   };
-  const offsets = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
+  const offsets = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.createCoords)(0);
   if (isOffsetParentAnElement || !isOffsetParentAnElement && !isFixed) {
-    if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeName)(offsetParent) !== 'body' || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isOverflowElement)(documentElement)) {
-      scroll = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeScroll)(offsetParent);
+    if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getNodeName)(offsetParent) !== 'body' || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isOverflowElement)(documentElement)) {
+      scroll = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getNodeScroll)(offsetParent);
     }
     if (isOffsetParentAnElement) {
       const offsetRect = getBoundingClientRect(offsetParent, true, isFixed, offsetParent);
       offsets.x = offsetRect.x + offsetParent.clientLeft;
       offsets.y = offsetRect.y + offsetParent.clientTop;
     } else if (documentElement) {
-      // If the <body> scrollbar appears on the left (e.g. RTL systems). Use
-      // Firefox with layout.scrollbar.side = 3 in about:config to test this.
       offsets.x = getWindowScrollBarX(documentElement);
     }
   }
-  const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll) : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
-  const x = rect.left + scroll.scrollLeft - offsets.x - htmlOffset.x;
-  const y = rect.top + scroll.scrollTop - offsets.y - htmlOffset.y;
+  const x = rect.left + scroll.scrollLeft - offsets.x;
+  const y = rect.top + scroll.scrollTop - offsets.y;
   return {
     x,
     y,
@@ -41680,97 +42866,68 @@ function getRectRelativeToOffsetParent(element, offsetParent, strategy) {
   };
 }
 
-function isStaticPositioned(element) {
-  return (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(element).position === 'static';
-}
-
 function getTrueOffsetParent(element, polyfill) {
-  if (!(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(element) || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(element).position === 'fixed') {
+  if (!(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isHTMLElement)(element) || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getComputedStyle)(element).position === 'fixed') {
     return null;
   }
   if (polyfill) {
     return polyfill(element);
   }
-  let rawOffsetParent = element.offsetParent;
-
-  // Firefox returns the <html> element as the offsetParent if it's non-static,
-  // while Chrome and Safari return the <body> element. The <body> element must
-  // be used to perform the correct calculations even if the <html> element is
-  // non-static.
-  if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element) === rawOffsetParent) {
-    rawOffsetParent = rawOffsetParent.ownerDocument.body;
-  }
-  return rawOffsetParent;
+  return element.offsetParent;
 }
 
 // Gets the closest ancestor positioned element. Handles some edge cases,
 // such as table ancestors and cross browser bugs.
 function getOffsetParent(element, polyfill) {
-  const win = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(element);
-  if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isTopLayer)(element)) {
-    return win;
-  }
-  if (!(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(element)) {
-    let svgOffsetParent = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getParentNode)(element);
-    while (svgOffsetParent && !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isLastTraversableNode)(svgOffsetParent)) {
-      if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(svgOffsetParent) && !isStaticPositioned(svgOffsetParent)) {
-        return svgOffsetParent;
-      }
-      svgOffsetParent = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getParentNode)(svgOffsetParent);
-    }
-    return win;
+  const window = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getWindow)(element);
+  if (!(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isHTMLElement)(element) || isTopLayer(element)) {
+    return window;
   }
   let offsetParent = getTrueOffsetParent(element, polyfill);
-  while (offsetParent && (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isTableElement)(offsetParent) && isStaticPositioned(offsetParent)) {
+  while (offsetParent && (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isTableElement)(offsetParent) && (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getComputedStyle)(offsetParent).position === 'static') {
     offsetParent = getTrueOffsetParent(offsetParent, polyfill);
   }
-  if (offsetParent && (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isLastTraversableNode)(offsetParent) && isStaticPositioned(offsetParent) && !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isContainingBlock)(offsetParent)) {
-    return win;
+  if (offsetParent && ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getNodeName)(offsetParent) === 'html' || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getNodeName)(offsetParent) === 'body' && (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getComputedStyle)(offsetParent).position === 'static' && !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isContainingBlock)(offsetParent))) {
+    return window;
   }
-  return offsetParent || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getContainingBlock)(element) || win;
+  return offsetParent || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getContainingBlock)(element) || window;
 }
 
 const getElementRects = async function (data) {
   const getOffsetParentFn = this.getOffsetParent || getOffsetParent;
   const getDimensionsFn = this.getDimensions;
-  const floatingDimensions = await getDimensionsFn(data.floating);
   return {
     reference: getRectRelativeToOffsetParent(data.reference, await getOffsetParentFn(data.floating), data.strategy),
     floating: {
       x: 0,
       y: 0,
-      width: floatingDimensions.width,
-      height: floatingDimensions.height
+      ...(await getDimensionsFn(data.floating))
     }
   };
 };
 
 function isRTL(element) {
-  return (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(element).direction === 'rtl';
+  return (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getComputedStyle)(element).direction === 'rtl';
 }
 
 const platform = {
   convertOffsetParentRelativeRectToViewportRelativeRect,
-  getDocumentElement: _floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement,
+  getDocumentElement: _floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getDocumentElement,
   getClippingRect,
   getOffsetParent,
   getElementRects,
   getClientRects,
   getDimensions,
   getScale,
-  isElement: _floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement,
+  isElement: _floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.isElement,
   isRTL
 };
-
-function rectsAreEqual(a, b) {
-  return a.x === b.x && a.y === b.y && a.width === b.width && a.height === b.height;
-}
 
 // https://samthor.au/2021/observing-dom/
 function observeMove(element, onMove) {
   let io = null;
   let timeoutId;
-  const root = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element);
+  const root = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getDocumentElement)(element);
   function cleanup() {
     var _io;
     clearTimeout(timeoutId);
@@ -41785,27 +42942,26 @@ function observeMove(element, onMove) {
       threshold = 1;
     }
     cleanup();
-    const elementRectForRootMargin = element.getBoundingClientRect();
     const {
       left,
       top,
       width,
       height
-    } = elementRectForRootMargin;
+    } = element.getBoundingClientRect();
     if (!skip) {
       onMove();
     }
     if (!width || !height) {
       return;
     }
-    const insetTop = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.floor)(top);
-    const insetRight = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.floor)(root.clientWidth - (left + width));
-    const insetBottom = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.floor)(root.clientHeight - (top + height));
-    const insetLeft = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.floor)(left);
+    const insetTop = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.floor)(top);
+    const insetRight = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.floor)(root.clientWidth - (left + width));
+    const insetBottom = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.floor)(root.clientHeight - (top + height));
+    const insetLeft = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.floor)(left);
     const rootMargin = -insetTop + "px " + -insetRight + "px " + -insetBottom + "px " + -insetLeft + "px";
     const options = {
       rootMargin,
-      threshold: (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(0, (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.min)(1, threshold)) || 1
+      threshold: (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.max)(0, (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_2__.min)(1, threshold)) || 1
     };
     let isFirstUpdate = true;
     function handleObserve(entries) {
@@ -41815,24 +42971,12 @@ function observeMove(element, onMove) {
           return refresh();
         }
         if (!ratio) {
-          // If the reference is clipped, the ratio is 0. Throttle the refresh
-          // to prevent an infinite loop of updates.
           timeoutId = setTimeout(() => {
             refresh(false, 1e-7);
-          }, 1000);
+          }, 100);
         } else {
           refresh(false, ratio);
         }
-      }
-      if (ratio === 1 && !rectsAreEqual(elementRectForRootMargin, element.getBoundingClientRect())) {
-        // It's possible that even though the ratio is reported as 1, the
-        // element is not actually fully within the IntersectionObserver's root
-        // area anymore. This can happen under performance constraints. This may
-        // be a bug in the browser's IntersectionObserver implementation. To
-        // work around this, we compare the element's bounding rect now with
-        // what it was at the time we created the IntersectionObserver. If they
-        // are not equal then the element moved, so we refresh.
-        refresh();
       }
       isFirstUpdate = false;
     }
@@ -41874,7 +43018,7 @@ function autoUpdate(reference, floating, update, options) {
     animationFrame = false
   } = options;
   const referenceEl = unwrapElement(reference);
-  const ancestors = ancestorScroll || ancestorResize ? [...(referenceEl ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getOverflowAncestors)(referenceEl) : []), ...(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getOverflowAncestors)(floating)] : [];
+  const ancestors = ancestorScroll || ancestorResize ? [...(referenceEl ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getOverflowAncestors)(referenceEl) : []), ...(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_1__.getOverflowAncestors)(floating)] : [];
   ancestors.forEach(ancestor => {
     ancestorScroll && ancestor.addEventListener('scroll', update, {
       passive: true
@@ -41911,7 +43055,7 @@ function autoUpdate(reference, floating, update, options) {
   }
   function frameLoop() {
     const nextRefRect = getBoundingClientRect(reference);
-    if (prevRefRect && !rectsAreEqual(prevRefRect, nextRefRect)) {
+    if (prevRefRect && (nextRefRect.x !== prevRefRect.x || nextRefRect.y !== prevRefRect.y || nextRefRect.width !== prevRefRect.width || nextRefRect.height !== prevRefRect.height)) {
       update();
     }
     prevRefRect = nextRefRect;
@@ -41934,38 +43078,19 @@ function autoUpdate(reference, floating, update, options) {
 }
 
 /**
- * Resolves with an object of overflow side offsets that determine how much the
- * element is overflowing a given clipping boundary on each side.
- * - positive = overflowing the boundary by that number of pixels
- * - negative = how many pixels left before it will overflow
- * - 0 = lies flush with the boundary
- * @see https://floating-ui.com/docs/detectOverflow
- */
-const detectOverflow = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.detectOverflow;
-
-/**
- * Modifies the placement by translating the floating element along the
- * specified axes.
- * A number (shorthand for `mainAxis` or distance), or an axes configuration
- * object may be passed.
- * @see https://floating-ui.com/docs/offset
- */
-const offset = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.offset;
-
-/**
  * Optimizes the visibility of the floating element by choosing the placement
  * that has the most space available automatically, without needing to specify a
  * preferred placement. Alternative to `flip`.
  * @see https://floating-ui.com/docs/autoPlacement
  */
-const autoPlacement = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.autoPlacement;
+const autoPlacement = _floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.autoPlacement;
 
 /**
  * Optimizes the visibility of the floating element by shifting it in order to
  * keep it in view when it will overflow the clipping boundary.
  * @see https://floating-ui.com/docs/shift
  */
-const shift = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.shift;
+const shift = _floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.shift;
 
 /**
  * Optimizes the visibility of the floating element by flipping the `placement`
@@ -41973,7 +43098,7 @@ const shift = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.shift;
  * clipping boundary. Alternative to `autoPlacement`.
  * @see https://floating-ui.com/docs/flip
  */
-const flip = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.flip;
+const flip = _floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.flip;
 
 /**
  * Provides data that allows you to change the size of the floating element —
@@ -41981,33 +43106,33 @@ const flip = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.flip;
  * width of the reference element.
  * @see https://floating-ui.com/docs/size
  */
-const size = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.size;
+const size = _floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.size;
 
 /**
  * Provides data to hide the floating element in applicable situations, such as
  * when it is not in the same clipping context as the reference element.
  * @see https://floating-ui.com/docs/hide
  */
-const hide = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.hide;
+const hide = _floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.hide;
 
 /**
  * Provides data to position an inner element of the floating element so that it
  * appears centered to the reference element.
  * @see https://floating-ui.com/docs/arrow
  */
-const arrow = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.arrow;
+const arrow = _floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.arrow;
 
 /**
  * Provides improved positioning for inline reference elements that can span
  * over multiple lines, such as hyperlinks or range selections.
  * @see https://floating-ui.com/docs/inline
  */
-const inline = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.inline;
+const inline = _floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.inline;
 
 /**
  * Built-in `limiter` that will stop `shift()` at a certain point.
  */
-const limitShift = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.limitShift;
+const limitShift = _floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.limitShift;
 
 /**
  * Computes the `x` and `y` coordinates that will place the floating element
@@ -42026,7 +43151,7 @@ const computePosition = (reference, floating, options) => {
     ...mergedOptions.platform,
     _c: cache
   };
-  return (0,_floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.computePosition)(reference, floating, {
+  return (0,_floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.computePosition)(reference, floating, {
     ...mergedOptions,
     platform: platformWithCache
   });
@@ -42049,7 +43174,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   getComputedStyle: () => (/* binding */ getComputedStyle),
 /* harmony export */   getContainingBlock: () => (/* binding */ getContainingBlock),
 /* harmony export */   getDocumentElement: () => (/* binding */ getDocumentElement),
-/* harmony export */   getFrameElement: () => (/* binding */ getFrameElement),
 /* harmony export */   getNearestOverflowAncestor: () => (/* binding */ getNearestOverflowAncestor),
 /* harmony export */   getNodeName: () => (/* binding */ getNodeName),
 /* harmony export */   getNodeScroll: () => (/* binding */ getNodeScroll),
@@ -42064,12 +43188,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   isOverflowElement: () => (/* binding */ isOverflowElement),
 /* harmony export */   isShadowRoot: () => (/* binding */ isShadowRoot),
 /* harmony export */   isTableElement: () => (/* binding */ isTableElement),
-/* harmony export */   isTopLayer: () => (/* binding */ isTopLayer),
 /* harmony export */   isWebKit: () => (/* binding */ isWebKit)
 /* harmony export */ });
-function hasWindow() {
-  return typeof window !== 'undefined';
-}
 function getNodeName(node) {
   if (isNode(node)) {
     return (node.nodeName || '').toLowerCase();
@@ -42088,25 +43208,17 @@ function getDocumentElement(node) {
   return (_ref = (isNode(node) ? node.ownerDocument : node.document) || window.document) == null ? void 0 : _ref.documentElement;
 }
 function isNode(value) {
-  if (!hasWindow()) {
-    return false;
-  }
   return value instanceof Node || value instanceof getWindow(value).Node;
 }
 function isElement(value) {
-  if (!hasWindow()) {
-    return false;
-  }
   return value instanceof Element || value instanceof getWindow(value).Element;
 }
 function isHTMLElement(value) {
-  if (!hasWindow()) {
-    return false;
-  }
   return value instanceof HTMLElement || value instanceof getWindow(value).HTMLElement;
 }
 function isShadowRoot(value) {
-  if (!hasWindow() || typeof ShadowRoot === 'undefined') {
+  // Browsers without `ShadowRoot` support.
+  if (typeof ShadowRoot === 'undefined') {
     return false;
   }
   return value instanceof ShadowRoot || value instanceof getWindow(value).ShadowRoot;
@@ -42123,32 +43235,21 @@ function isOverflowElement(element) {
 function isTableElement(element) {
   return ['table', 'td', 'th'].includes(getNodeName(element));
 }
-function isTopLayer(element) {
-  return [':popover-open', ':modal'].some(selector => {
-    try {
-      return element.matches(selector);
-    } catch (e) {
-      return false;
-    }
-  });
-}
-function isContainingBlock(elementOrCss) {
+function isContainingBlock(element) {
   const webkit = isWebKit();
-  const css = isElement(elementOrCss) ? getComputedStyle(elementOrCss) : elementOrCss;
+  const css = getComputedStyle(element);
 
   // https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
-  // https://drafts.csswg.org/css-transforms-2/#individual-transforms
-  return ['transform', 'translate', 'scale', 'rotate', 'perspective'].some(value => css[value] ? css[value] !== 'none' : false) || (css.containerType ? css.containerType !== 'normal' : false) || !webkit && (css.backdropFilter ? css.backdropFilter !== 'none' : false) || !webkit && (css.filter ? css.filter !== 'none' : false) || ['transform', 'translate', 'scale', 'rotate', 'perspective', 'filter'].some(value => (css.willChange || '').includes(value)) || ['paint', 'layout', 'strict', 'content'].some(value => (css.contain || '').includes(value));
+  return css.transform !== 'none' || css.perspective !== 'none' || (css.containerType ? css.containerType !== 'normal' : false) || !webkit && (css.backdropFilter ? css.backdropFilter !== 'none' : false) || !webkit && (css.filter ? css.filter !== 'none' : false) || ['transform', 'perspective', 'filter'].some(value => (css.willChange || '').includes(value)) || ['paint', 'layout', 'strict', 'content'].some(value => (css.contain || '').includes(value));
 }
 function getContainingBlock(element) {
   let currentNode = getParentNode(element);
   while (isHTMLElement(currentNode) && !isLastTraversableNode(currentNode)) {
     if (isContainingBlock(currentNode)) {
       return currentNode;
-    } else if (isTopLayer(currentNode)) {
-      return null;
+    } else {
+      currentNode = getParentNode(currentNode);
     }
-    currentNode = getParentNode(currentNode);
   }
   return null;
 }
@@ -42170,8 +43271,8 @@ function getNodeScroll(element) {
     };
   }
   return {
-    scrollLeft: element.scrollX,
-    scrollTop: element.scrollY
+    scrollLeft: element.pageXOffset,
+    scrollTop: element.pageYOffset
   };
 }
 function getParentNode(node) {
@@ -42211,13 +43312,9 @@ function getOverflowAncestors(node, list, traverseIframes) {
   const isBody = scrollableAncestor === ((_node$ownerDocument2 = node.ownerDocument) == null ? void 0 : _node$ownerDocument2.body);
   const win = getWindow(scrollableAncestor);
   if (isBody) {
-    const frameElement = getFrameElement(win);
-    return list.concat(win, win.visualViewport || [], isOverflowElement(scrollableAncestor) ? scrollableAncestor : [], frameElement && traverseIframes ? getOverflowAncestors(frameElement) : []);
+    return list.concat(win, win.visualViewport || [], isOverflowElement(scrollableAncestor) ? scrollableAncestor : [], win.frameElement && traverseIframes ? getOverflowAncestors(win.frameElement) : []);
   }
   return list.concat(scrollableAncestor, getOverflowAncestors(scrollableAncestor, [], traverseIframes));
-}
-function getFrameElement(win) {
-  return win.parent && Object.getPrototypeOf(win.parent) ? win.frameElement : null;
 }
 
 
@@ -42378,21 +43475,12 @@ function getPaddingObject(padding) {
   };
 }
 function rectToClientRect(rect) {
-  const {
-    x,
-    y,
-    width,
-    height
-  } = rect;
   return {
-    width,
-    height,
-    top: y,
-    left: x,
-    right: x + width,
-    bottom: y + height,
-    x,
-    y
+    ...rect,
+    top: rect.y,
+    left: rect.x,
+    right: rect.x + rect.width,
+    bottom: rect.y + rect.height
   };
 }
 
@@ -42434,7 +43522,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   setup: () => (/* binding */ m),
 /* harmony export */   styled: () => (/* binding */ j)
 /* harmony export */ });
-let e={data:""},t=t=>"object"==typeof window?((t?t.querySelector("#_goober"):window._goober)||Object.assign((t||document.head).appendChild(document.createElement("style")),{innerHTML:" ",id:"_goober"})).firstChild:t||e,r=e=>{let r=t(e),l=r.data;return r.data="",l},l=/(?:([\u0080-\uFFFF\w-%@]+) *:? *([^{;]+?);|([^;}{]*?) *{)|(}\s*)/g,a=/\/\*[^]*?\*\/|  +/g,n=/\n+/g,o=(e,t)=>{let r="",l="",a="";for(let n in e){let c=e[n];"@"==n[0]?"i"==n[1]?r=n+" "+c+";":l+="f"==n[1]?o(c,n):n+"{"+o(c,"k"==n[1]?"":t)+"}":"object"==typeof c?l+=o(c,t?t.replace(/([^,])+/g,e=>n.replace(/([^,]*:\S+\([^)]*\))|([^,])+/g,t=>/&/.test(t)?t.replace(/&/g,e):e?e+" "+t:t)):n):null!=c&&(n=/^--/.test(n)?n:n.replace(/[A-Z]/g,"-$&").toLowerCase(),a+=o.p?o.p(n,c):n+":"+c+";")}return r+(t&&a?t+"{"+a+"}":a)+l},c={},s=e=>{if("object"==typeof e){let t="";for(let r in e)t+=r+s(e[r]);return t}return e},i=(e,t,r,i,p)=>{let u=s(e),d=c[u]||(c[u]=(e=>{let t=0,r=11;for(;t<e.length;)r=101*r+e.charCodeAt(t++)>>>0;return"go"+r})(u));if(!c[d]){let t=u!==e?e:(e=>{let t,r,o=[{}];for(;t=l.exec(e.replace(a,""));)t[4]?o.shift():t[3]?(r=t[3].replace(n," ").trim(),o.unshift(o[0][r]=o[0][r]||{})):o[0][t[1]]=t[2].replace(n," ").trim();return o[0]})(e);c[d]=o(p?{["@keyframes "+d]:t}:t,r?"":"."+d)}let f=r&&c.g?c.g:null;return r&&(c.g=c[d]),((e,t,r,l)=>{l?t.data=t.data.replace(l,e):-1===t.data.indexOf(e)&&(t.data=r?e+t.data:t.data+e)})(c[d],t,i,f),d},p=(e,t,r)=>e.reduce((e,l,a)=>{let n=t[a];if(n&&n.call){let e=n(r),t=e&&e.props&&e.props.className||/^go/.test(e)&&e;n=t?"."+t:e&&"object"==typeof e?e.props?"":o(e,""):!1===e?"":e}return e+l+(null==n?"":n)},"");function u(e){let r=this||{},l=e.call?e(r.p):e;return i(l.unshift?l.raw?p(l,[].slice.call(arguments,1),r.p):l.reduce((e,t)=>Object.assign(e,t&&t.call?t(r.p):t),{}):l,t(r.target),r.g,r.o,r.k)}let d,f,g,b=u.bind({g:1}),h=u.bind({k:1});function m(e,t,r,l){o.p=t,d=e,f=r,g=l}function j(e,t){let r=this||{};return function(){let l=arguments;function a(n,o){let c=Object.assign({},n),s=c.className||a.className;r.p=Object.assign({theme:f&&f()},c),r.o=/ *go\d+/.test(s),c.className=u.apply(r,l)+(s?" "+s:""),t&&(c.ref=o);let i=e;return e[0]&&(i=c.as||e,delete c.as),g&&i[0]&&g(c),d(i,c)}return t?t(a):a}}
+let e={data:""},t=t=>"object"==typeof window?((t?t.querySelector("#_goober"):window._goober)||Object.assign((t||document.head).appendChild(document.createElement("style")),{innerHTML:" ",id:"_goober"})).firstChild:t||e,r=e=>{let r=t(e),l=r.data;return r.data="",l},l=/(?:([\u0080-\uFFFF\w-%@]+) *:? *([^{;]+?);|([^;}{]*?) *{)|(}\s*)/g,a=/\/\*[^]*?\*\/|  +/g,n=/\n+/g,o=(e,t)=>{let r="",l="",a="";for(let n in e){let c=e[n];"@"==n[0]?"i"==n[1]?r=n+" "+c+";":l+="f"==n[1]?o(c,n):n+"{"+o(c,"k"==n[1]?"":t)+"}":"object"==typeof c?l+=o(c,t?t.replace(/([^,])+/g,e=>n.replace(/(^:.*)|([^,])+/g,t=>/&/.test(t)?t.replace(/&/g,e):e?e+" "+t:t)):n):null!=c&&(n=/^--/.test(n)?n:n.replace(/[A-Z]/g,"-$&").toLowerCase(),a+=o.p?o.p(n,c):n+":"+c+";")}return r+(t&&a?t+"{"+a+"}":a)+l},c={},s=e=>{if("object"==typeof e){let t="";for(let r in e)t+=r+s(e[r]);return t}return e},i=(e,t,r,i,p)=>{let u=s(e),d=c[u]||(c[u]=(e=>{let t=0,r=11;for(;t<e.length;)r=101*r+e.charCodeAt(t++)>>>0;return"go"+r})(u));if(!c[d]){let t=u!==e?e:(e=>{let t,r,o=[{}];for(;t=l.exec(e.replace(a,""));)t[4]?o.shift():t[3]?(r=t[3].replace(n," ").trim(),o.unshift(o[0][r]=o[0][r]||{})):o[0][t[1]]=t[2].replace(n," ").trim();return o[0]})(e);c[d]=o(p?{["@keyframes "+d]:t}:t,r?"":"."+d)}let f=r&&c.g?c.g:null;return r&&(c.g=c[d]),((e,t,r,l)=>{l?t.data=t.data.replace(l,e):-1===t.data.indexOf(e)&&(t.data=r?e+t.data:t.data+e)})(c[d],t,i,f),d},p=(e,t,r)=>e.reduce((e,l,a)=>{let n=t[a];if(n&&n.call){let e=n(r),t=e&&e.props&&e.props.className||/^go/.test(e)&&e;n=t?"."+t:e&&"object"==typeof e?e.props?"":o(e,""):!1===e?"":e}return e+l+(null==n?"":n)},"");function u(e){let r=this||{},l=e.call?e(r.p):e;return i(l.unshift?l.raw?p(l,[].slice.call(arguments,1),r.p):l.reduce((e,t)=>Object.assign(e,t&&t.call?t(r.p):t),{}):l,t(r.target),r.g,r.o,r.k)}let d,f,g,b=u.bind({g:1}),h=u.bind({k:1});function m(e,t,r,l){o.p=t,d=e,f=r,g=l}function j(e,t){let r=this||{};return function(){let l=arguments;function a(n,o){let c=Object.assign({},n),s=c.className||a.className;r.p=Object.assign({theme:f&&f()},c),r.o=/ *go\d+/.test(s),c.className=u.apply(r,l)+(s?" "+s:""),t&&(c.ref=o);let i=e;return e[0]&&(i=c.as||e,delete c.as),g&&i[0]&&g(c),d(i,c)}return t?t(a):a}}
 
 
 /***/ }),
@@ -42448,22 +43536,22 @@ let e={data:""},t=t=>"object"==typeof window?((t?t.querySelector("#_goober"):win
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   CheckmarkIcon: () => (/* binding */ _),
-/* harmony export */   ErrorIcon: () => (/* binding */ k),
+/* harmony export */   CheckmarkIcon: () => (/* binding */ w),
+/* harmony export */   ErrorIcon: () => (/* binding */ _),
 /* harmony export */   LoaderIcon: () => (/* binding */ V),
-/* harmony export */   ToastBar: () => (/* binding */ C),
+/* harmony export */   ToastBar: () => (/* binding */ F),
 /* harmony export */   ToastIcon: () => (/* binding */ M),
-/* harmony export */   Toaster: () => (/* binding */ De),
-/* harmony export */   "default": () => (/* binding */ kt),
-/* harmony export */   resolveValue: () => (/* binding */ f),
-/* harmony export */   toast: () => (/* binding */ c),
-/* harmony export */   useToaster: () => (/* binding */ O),
-/* harmony export */   useToasterStore: () => (/* binding */ D)
+/* harmony export */   Toaster: () => (/* binding */ Ie),
+/* harmony export */   "default": () => (/* binding */ _t),
+/* harmony export */   resolveValue: () => (/* binding */ T),
+/* harmony export */   toast: () => (/* binding */ n),
+/* harmony export */   useToaster: () => (/* binding */ D),
+/* harmony export */   useToasterStore: () => (/* binding */ I)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var goober__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! goober */ "./node_modules/goober/dist/goober.modern.js");
 "use client";
-var W=e=>typeof e=="function",f=(e,t)=>W(e)?e(t):e;var F=(()=>{let e=0;return()=>(++e).toString()})(),S=(()=>{let e;return()=>{if(e===void 0&&typeof window<"u"){let t=matchMedia("(prefers-reduced-motion: reduce)");e=!t||t.matches}return e}})();var J=20;var U=(e,t)=>{switch(t.type){case 0:return{...e,toasts:[t.toast,...e.toasts].slice(0,J)};case 1:return{...e,toasts:e.toasts.map(r=>r.id===t.toast.id?{...r,...t.toast}:r)};case 2:let{toast:o}=t;return U(e,{type:e.toasts.find(r=>r.id===o.id)?1:0,toast:o});case 3:let{toastId:a}=t;return{...e,toasts:e.toasts.map(r=>r.id===a||a===void 0?{...r,dismissed:!0,visible:!1}:r)};case 4:return t.toastId===void 0?{...e,toasts:[]}:{...e,toasts:e.toasts.filter(r=>r.id!==t.toastId)};case 5:return{...e,pausedAt:t.time};case 6:let s=t.time-(e.pausedAt||0);return{...e,pausedAt:void 0,toasts:e.toasts.map(r=>({...r,pauseDuration:r.pauseDuration+s}))}}},A=[],P={toasts:[],pausedAt:void 0},u=e=>{P=U(P,e),A.forEach(t=>{t(P)})},Q={blank:4e3,error:4e3,success:2e3,loading:1/0,custom:4e3},D=(e={})=>{let[t,o]=(0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(P);(0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(()=>(A.push(o),()=>{let s=A.indexOf(o);s>-1&&A.splice(s,1)}),[t]);let a=t.toasts.map(s=>{var r,n,i;return{...e,...e[s.type],...s,removeDelay:s.removeDelay||((r=e[s.type])==null?void 0:r.removeDelay)||(e==null?void 0:e.removeDelay),duration:s.duration||((n=e[s.type])==null?void 0:n.duration)||(e==null?void 0:e.duration)||Q[s.type],style:{...e.style,...(i=e[s.type])==null?void 0:i.style,...s.style}}});return{...t,toasts:a}};var Y=(e,t="blank",o)=>({createdAt:Date.now(),visible:!0,dismissed:!1,type:t,ariaProps:{role:"status","aria-live":"polite"},message:e,pauseDuration:0,...o,id:(o==null?void 0:o.id)||F()}),h=e=>(t,o)=>{let a=Y(t,e,o);return u({type:2,toast:a}),a.id},c=(e,t)=>h("blank")(e,t);c.error=h("error");c.success=h("success");c.loading=h("loading");c.custom=h("custom");c.dismiss=e=>{u({type:3,toastId:e})};c.remove=e=>u({type:4,toastId:e});c.promise=(e,t,o)=>{let a=c.loading(t.loading,{...o,...o==null?void 0:o.loading});return typeof e=="function"&&(e=e()),e.then(s=>{let r=t.success?f(t.success,s):void 0;return r?c.success(r,{id:a,...o,...o==null?void 0:o.success}):c.dismiss(a),s}).catch(s=>{let r=t.error?f(t.error,s):void 0;r?c.error(r,{id:a,...o,...o==null?void 0:o.error}):c.dismiss(a)}),e};var q=(e,t)=>{u({type:1,toast:{id:e,height:t}})},G=()=>{u({type:5,time:Date.now()})},x=new Map,K=1e3,Z=(e,t=K)=>{if(x.has(e))return;let o=setTimeout(()=>{x.delete(e),u({type:4,toastId:e})},t);x.set(e,o)},O=e=>{let{toasts:t,pausedAt:o}=D(e);(0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(()=>{if(o)return;let r=Date.now(),n=t.map(i=>{if(i.duration===1/0)return;let d=(i.duration||0)+i.pauseDuration-(r-i.createdAt);if(d<0){i.visible&&c.dismiss(i.id);return}return setTimeout(()=>c.dismiss(i.id),d)});return()=>{n.forEach(i=>i&&clearTimeout(i))}},[t,o]);let a=(0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(()=>{o&&u({type:6,time:Date.now()})},[o]),s=(0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)((r,n)=>{let{reverseOrder:i=!1,gutter:d=8,defaultPosition:p}=n||{},g=t.filter(m=>(m.position||p)===(r.position||p)&&m.height),E=g.findIndex(m=>m.id===r.id),b=g.filter((m,R)=>R<E&&m.visible).length;return g.filter(m=>m.visible).slice(...i?[b+1]:[0,b]).reduce((m,R)=>m+(R.height||0)+d,0)},[t]);return (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(()=>{t.forEach(r=>{if(r.dismissed)Z(r.id,r.removeDelay);else{let n=x.get(r.id);n&&(clearTimeout(n),x.delete(r.id))}})},[t]),{toasts:t,handlers:{updateHeight:q,startPause:G,endPause:a,calculateOffset:s}}};var te=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
+var W=e=>typeof e=="function",T=(e,t)=>W(e)?e(t):e;var U=(()=>{let e=0;return()=>(++e).toString()})(),b=(()=>{let e;return()=>{if(e===void 0&&typeof window<"u"){let t=matchMedia("(prefers-reduced-motion: reduce)");e=!t||t.matches}return e}})();var Q=20;var S=new Map,X=1e3,$=e=>{if(S.has(e))return;let t=setTimeout(()=>{S.delete(e),u({type:4,toastId:e})},X);S.set(e,t)},J=e=>{let t=S.get(e);t&&clearTimeout(t)},v=(e,t)=>{switch(t.type){case 0:return{...e,toasts:[t.toast,...e.toasts].slice(0,Q)};case 1:return t.toast.id&&J(t.toast.id),{...e,toasts:e.toasts.map(r=>r.id===t.toast.id?{...r,...t.toast}:r)};case 2:let{toast:o}=t;return e.toasts.find(r=>r.id===o.id)?v(e,{type:1,toast:o}):v(e,{type:0,toast:o});case 3:let{toastId:s}=t;return s?$(s):e.toasts.forEach(r=>{$(r.id)}),{...e,toasts:e.toasts.map(r=>r.id===s||s===void 0?{...r,visible:!1}:r)};case 4:return t.toastId===void 0?{...e,toasts:[]}:{...e,toasts:e.toasts.filter(r=>r.id!==t.toastId)};case 5:return{...e,pausedAt:t.time};case 6:let a=t.time-(e.pausedAt||0);return{...e,pausedAt:void 0,toasts:e.toasts.map(r=>({...r,pauseDuration:r.pauseDuration+a}))}}},A=[],P={toasts:[],pausedAt:void 0},u=e=>{P=v(P,e),A.forEach(t=>{t(P)})},Y={blank:4e3,error:4e3,success:2e3,loading:1/0,custom:4e3},I=(e={})=>{let[t,o]=(0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(P);(0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(()=>(A.push(o),()=>{let a=A.indexOf(o);a>-1&&A.splice(a,1)}),[t]);let s=t.toasts.map(a=>{var r,c;return{...e,...e[a.type],...a,duration:a.duration||((r=e[a.type])==null?void 0:r.duration)||(e==null?void 0:e.duration)||Y[a.type],style:{...e.style,...(c=e[a.type])==null?void 0:c.style,...a.style}}});return{...t,toasts:s}};var G=(e,t="blank",o)=>({createdAt:Date.now(),visible:!0,type:t,ariaProps:{role:"status","aria-live":"polite"},message:e,pauseDuration:0,...o,id:(o==null?void 0:o.id)||U()}),h=e=>(t,o)=>{let s=G(t,e,o);return u({type:2,toast:s}),s.id},n=(e,t)=>h("blank")(e,t);n.error=h("error");n.success=h("success");n.loading=h("loading");n.custom=h("custom");n.dismiss=e=>{u({type:3,toastId:e})};n.remove=e=>u({type:4,toastId:e});n.promise=(e,t,o)=>{let s=n.loading(t.loading,{...o,...o==null?void 0:o.loading});return e.then(a=>(n.success(T(t.success,a),{id:s,...o,...o==null?void 0:o.success}),a)).catch(a=>{n.error(T(t.error,a),{id:s,...o,...o==null?void 0:o.error})}),e};var Z=(e,t)=>{u({type:1,toast:{id:e,height:t}})},ee=()=>{u({type:5,time:Date.now()})},D=e=>{let{toasts:t,pausedAt:o}=I(e);(0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(()=>{if(o)return;let r=Date.now(),c=t.map(i=>{if(i.duration===1/0)return;let d=(i.duration||0)+i.pauseDuration-(r-i.createdAt);if(d<0){i.visible&&n.dismiss(i.id);return}return setTimeout(()=>n.dismiss(i.id),d)});return()=>{c.forEach(i=>i&&clearTimeout(i))}},[t,o]);let s=(0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(()=>{o&&u({type:6,time:Date.now()})},[o]),a=(0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)((r,c)=>{let{reverseOrder:i=!1,gutter:d=8,defaultPosition:p}=c||{},g=t.filter(m=>(m.position||p)===(r.position||p)&&m.height),E=g.findIndex(m=>m.id===r.id),x=g.filter((m,R)=>R<E&&m.visible).length;return g.filter(m=>m.visible).slice(...i?[x+1]:[0,x]).reduce((m,R)=>m+(R.height||0)+d,0)},[t]);return{toasts:t,handlers:{updateHeight:Z,startPause:ee,endPause:s,calculateOffset:a}}};var oe=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
 from {
   transform: scale(0) rotate(45deg);
 	opacity: 0;
@@ -42471,7 +43559,7 @@ from {
 to {
  transform: scale(1) rotate(45deg);
   opacity: 1;
-}`,oe=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
+}`,re=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
 from {
   transform: scale(0);
   opacity: 0;
@@ -42479,7 +43567,7 @@ from {
 to {
   transform: scale(1);
   opacity: 1;
-}`,re=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
+}`,se=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
 from {
   transform: scale(0) rotate(90deg);
 	opacity: 0;
@@ -42487,7 +43575,7 @@ from {
 to {
   transform: scale(1) rotate(90deg);
 	opacity: 1;
-}`,k=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
+}`,_=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
   width: 20px;
   opacity: 0;
   height: 20px;
@@ -42496,14 +43584,14 @@ to {
   position: relative;
   transform: rotate(45deg);
 
-  animation: ${te} 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+  animation: ${oe} 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)
     forwards;
   animation-delay: 100ms;
 
   &:after,
   &:before {
     content: '';
-    animation: ${oe} 0.15s ease-out forwards;
+    animation: ${re} 0.15s ease-out forwards;
     animation-delay: 150ms;
     position: absolute;
     border-radius: 3px;
@@ -42516,11 +43604,11 @@ to {
   }
 
   &:before {
-    animation: ${re} 0.15s ease-out forwards;
+    animation: ${se} 0.15s ease-out forwards;
     animation-delay: 180ms;
     transform: rotate(90deg);
   }
-`;var ie=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
+`;var ne=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
   from {
     transform: rotate(0deg);
   }
@@ -42535,8 +43623,8 @@ to {
   border-radius: 100%;
   border-color: ${e=>e.secondary||"#e0e0e0"};
   border-right-color: ${e=>e.primary||"#616161"};
-  animation: ${ie} 1s linear infinite;
-`;var ce=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
+  animation: ${ne} 1s linear infinite;
+`;var pe=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
 from {
   transform: scale(0) rotate(45deg);
 	opacity: 0;
@@ -42544,7 +43632,7 @@ from {
 to {
   transform: scale(1) rotate(45deg);
 	opacity: 1;
-}`,pe=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
+}`,de=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
 0% {
 	height: 0;
 	width: 0;
@@ -42558,7 +43646,7 @@ to {
 100% {
   opacity: 1;
   height: 10px;
-}`,_=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
+}`,w=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
   width: 20px;
   opacity: 0;
   height: 20px;
@@ -42567,13 +43655,13 @@ to {
   position: relative;
   transform: rotate(45deg);
 
-  animation: ${ce} 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+  animation: ${pe} 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)
     forwards;
   animation-delay: 100ms;
   &:after {
     content: '';
     box-sizing: border-box;
-    animation: ${pe} 0.2s ease-out forwards;
+    animation: ${de} 0.2s ease-out forwards;
     opacity: 0;
     animation-delay: 200ms;
     position: absolute;
@@ -42585,16 +43673,16 @@ to {
     height: 10px;
     width: 6px;
   }
-`;var me=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
+`;var ue=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
   position: absolute;
-`,ue=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
+`,le=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   min-width: 20px;
   min-height: 20px;
-`,le=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
+`,Te=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
 from {
   transform: scale(0.6);
   opacity: 0.4;
@@ -42607,15 +43695,15 @@ to {
   transform: scale(0.6);
   opacity: 0.4;
   min-width: 20px;
-  animation: ${le} 0.3s 0.12s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+  animation: ${Te} 0.3s 0.12s cubic-bezier(0.175, 0.885, 0.32, 1.275)
     forwards;
-`,M=({toast:e})=>{let{icon:t,type:o,iconTheme:a}=e;return t!==void 0?typeof t=="string"?react__WEBPACK_IMPORTED_MODULE_0__.createElement(fe,null,t):t:o==="blank"?null:react__WEBPACK_IMPORTED_MODULE_0__.createElement(ue,null,react__WEBPACK_IMPORTED_MODULE_0__.createElement(V,{...a}),o!=="loading"&&react__WEBPACK_IMPORTED_MODULE_0__.createElement(me,null,o==="error"?react__WEBPACK_IMPORTED_MODULE_0__.createElement(k,{...a}):react__WEBPACK_IMPORTED_MODULE_0__.createElement(_,{...a})))};var Te=e=>`
+`,M=({toast:e})=>{let{icon:t,type:o,iconTheme:s}=e;return t!==void 0?typeof t=="string"?react__WEBPACK_IMPORTED_MODULE_0__.createElement(fe,null,t):t:o==="blank"?null:react__WEBPACK_IMPORTED_MODULE_0__.createElement(le,null,react__WEBPACK_IMPORTED_MODULE_0__.createElement(V,{...s}),o!=="loading"&&react__WEBPACK_IMPORTED_MODULE_0__.createElement(ue,null,o==="error"?react__WEBPACK_IMPORTED_MODULE_0__.createElement(_,{...s}):react__WEBPACK_IMPORTED_MODULE_0__.createElement(w,{...s})))};var ye=e=>`
 0% {transform: translate3d(0,${e*-200}%,0) scale(.6); opacity:.5;}
 100% {transform: translate3d(0,0,0) scale(1); opacity:1;}
-`,ye=e=>`
+`,ge=e=>`
 0% {transform: translate3d(0,0,-1px) scale(1); opacity:1;}
 100% {transform: translate3d(0,${e*-150}%,-1px) scale(.6); opacity:0;}
-`,ge="0%{opacity:0;} 100%{opacity:1;}",he="0%{opacity:1;} 100%{opacity:0;}",xe=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
+`,he="0%{opacity:0;} 100%{opacity:1;}",xe="0%{opacity:1;} 100%{opacity:0;}",be=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
   display: flex;
   align-items: center;
   background: #fff;
@@ -42627,19 +43715,19 @@ to {
   pointer-events: auto;
   padding: 8px 10px;
   border-radius: 8px;
-`,be=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
+`,Se=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
   display: flex;
   justify-content: center;
   margin: 4px 10px;
   color: inherit;
   flex: 1 1 auto;
   white-space: pre-line;
-`,Se=(e,t)=>{let a=e.includes("top")?1:-1,[s,r]=S()?[ge,he]:[Te(a),ye(a)];return{animation:t?`${(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)(s)} 0.35s cubic-bezier(.21,1.02,.73,1) forwards`:`${(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)(r)} 0.4s forwards cubic-bezier(.06,.71,.55,1)`}},C=react__WEBPACK_IMPORTED_MODULE_0__.memo(({toast:e,position:t,style:o,children:a})=>{let s=e.height?Se(e.position||t||"top-center",e.visible):{opacity:0},r=react__WEBPACK_IMPORTED_MODULE_0__.createElement(M,{toast:e}),n=react__WEBPACK_IMPORTED_MODULE_0__.createElement(be,{...e.ariaProps},f(e.message,e));return react__WEBPACK_IMPORTED_MODULE_0__.createElement(xe,{className:e.className,style:{...s,...o,...e.style}},typeof a=="function"?a({icon:r,message:n}):react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment,null,r,n))});(0,goober__WEBPACK_IMPORTED_MODULE_1__.setup)(react__WEBPACK_IMPORTED_MODULE_0__.createElement);var ve=({id:e,className:t,style:o,onHeightUpdate:a,children:s})=>{let r=react__WEBPACK_IMPORTED_MODULE_0__.useCallback(n=>{if(n){let i=()=>{let d=n.getBoundingClientRect().height;a(e,d)};i(),new MutationObserver(i).observe(n,{subtree:!0,childList:!0,characterData:!0})}},[e,a]);return react__WEBPACK_IMPORTED_MODULE_0__.createElement("div",{ref:r,className:t,style:o},s)},Ee=(e,t)=>{let o=e.includes("top"),a=o?{top:0}:{bottom:0},s=e.includes("center")?{justifyContent:"center"}:e.includes("right")?{justifyContent:"flex-end"}:{};return{left:0,right:0,display:"flex",position:"absolute",transition:S()?void 0:"all 230ms cubic-bezier(.21,1.02,.73,1)",transform:`translateY(${t*(o?1:-1)}px)`,...a,...s}},Re=(0,goober__WEBPACK_IMPORTED_MODULE_1__.css)`
+`,Ae=(e,t)=>{let s=e.includes("top")?1:-1,[a,r]=b()?[he,xe]:[ye(s),ge(s)];return{animation:t?`${(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)(a)} 0.35s cubic-bezier(.21,1.02,.73,1) forwards`:`${(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)(r)} 0.4s forwards cubic-bezier(.06,.71,.55,1)`}},F=react__WEBPACK_IMPORTED_MODULE_0__.memo(({toast:e,position:t,style:o,children:s})=>{let a=e.height?Ae(e.position||t||"top-center",e.visible):{opacity:0},r=react__WEBPACK_IMPORTED_MODULE_0__.createElement(M,{toast:e}),c=react__WEBPACK_IMPORTED_MODULE_0__.createElement(Se,{...e.ariaProps},T(e.message,e));return react__WEBPACK_IMPORTED_MODULE_0__.createElement(be,{className:e.className,style:{...a,...o,...e.style}},typeof s=="function"?s({icon:r,message:c}):react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment,null,r,c))});(0,goober__WEBPACK_IMPORTED_MODULE_1__.setup)(react__WEBPACK_IMPORTED_MODULE_0__.createElement);var Ee=({id:e,className:t,style:o,onHeightUpdate:s,children:a})=>{let r=react__WEBPACK_IMPORTED_MODULE_0__.useCallback(c=>{if(c){let i=()=>{let d=c.getBoundingClientRect().height;s(e,d)};i(),new MutationObserver(i).observe(c,{subtree:!0,childList:!0,characterData:!0})}},[e,s]);return react__WEBPACK_IMPORTED_MODULE_0__.createElement("div",{ref:r,className:t,style:o},a)},Re=(e,t)=>{let o=e.includes("top"),s=o?{top:0}:{bottom:0},a=e.includes("center")?{justifyContent:"center"}:e.includes("right")?{justifyContent:"flex-end"}:{};return{left:0,right:0,display:"flex",position:"absolute",transition:b()?void 0:"all 230ms cubic-bezier(.21,1.02,.73,1)",transform:`translateY(${t*(o?1:-1)}px)`,...s,...a}},ve=(0,goober__WEBPACK_IMPORTED_MODULE_1__.css)`
   z-index: 9999;
   > * {
     pointer-events: auto;
   }
-`,v=16,De=({reverseOrder:e,position:t="top-center",toastOptions:o,gutter:a,children:s,containerStyle:r,containerClassName:n})=>{let{toasts:i,handlers:d}=O(o);return react__WEBPACK_IMPORTED_MODULE_0__.createElement("div",{id:"_rht_toaster",style:{position:"fixed",zIndex:9999,top:v,left:v,right:v,bottom:v,pointerEvents:"none",...r},className:n,onMouseEnter:d.startPause,onMouseLeave:d.endPause},i.map(p=>{let g=p.position||t,E=d.calculateOffset(p,{reverseOrder:e,gutter:a,defaultPosition:t}),b=Ee(g,E);return react__WEBPACK_IMPORTED_MODULE_0__.createElement(ve,{id:p.id,key:p.id,onHeightUpdate:d.updateHeight,className:p.visible?Re:"",style:b},p.type==="custom"?f(p.message,p):s?s(p):react__WEBPACK_IMPORTED_MODULE_0__.createElement(C,{toast:p,position:g}))}))};var kt=c;
+`,O=16,Ie=({reverseOrder:e,position:t="top-center",toastOptions:o,gutter:s,children:a,containerStyle:r,containerClassName:c})=>{let{toasts:i,handlers:d}=D(o);return react__WEBPACK_IMPORTED_MODULE_0__.createElement("div",{style:{position:"fixed",zIndex:9999,top:O,left:O,right:O,bottom:O,pointerEvents:"none",...r},className:c,onMouseEnter:d.startPause,onMouseLeave:d.endPause},i.map(p=>{let g=p.position||t,E=d.calculateOffset(p,{reverseOrder:e,gutter:s,defaultPosition:t}),x=Re(g,E);return react__WEBPACK_IMPORTED_MODULE_0__.createElement(Ee,{id:p.id,key:p.id,onHeightUpdate:d.updateHeight,className:p.visible?ve:"",style:x},p.type==="custom"?T(p.message,p):a?a(p):react__WEBPACK_IMPORTED_MODULE_0__.createElement(F,{toast:p,position:g}))}))};var _t=n;
 //# sourceMappingURL=index.mjs.map
 
 /***/ }),
@@ -43721,7 +44809,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   __propKey: () => (/* binding */ __propKey),
 /* harmony export */   __read: () => (/* binding */ __read),
 /* harmony export */   __rest: () => (/* binding */ __rest),
-/* harmony export */   __rewriteRelativeImportExtension: () => (/* binding */ __rewriteRelativeImportExtension),
 /* harmony export */   __runInitializers: () => (/* binding */ __runInitializers),
 /* harmony export */   __setFunctionName: () => (/* binding */ __setFunctionName),
 /* harmony export */   __spread: () => (/* binding */ __spread),
@@ -43744,7 +44831,7 @@ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
-/* global Reflect, Promise, SuppressedError, Symbol, Iterator */
+/* global Reflect, Promise, SuppressedError, Symbol */
 
 var extendStatics = function(d, b) {
   extendStatics = Object.setPrototypeOf ||
@@ -43855,8 +44942,8 @@ function __awaiter(thisArg, _arguments, P, generator) {
 }
 
 function __generator(thisArg, body) {
-  var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
-  return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+  var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+  return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
   function verb(n) { return function (v) { return step([n, v]); }; }
   function step(op) {
       if (f) throw new TypeError("Generator is already executing.");
@@ -43960,9 +45047,8 @@ function __await(v) {
 function __asyncGenerator(thisArg, _arguments, generator) {
   if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
   var g = generator.apply(thisArg, _arguments || []), i, q = [];
-  return i = Object.create((typeof AsyncIterator === "function" ? AsyncIterator : Object).prototype), verb("next"), verb("throw"), verb("return", awaitReturn), i[Symbol.asyncIterator] = function () { return this; }, i;
-  function awaitReturn(f) { return function (v) { return Promise.resolve(v).then(f, reject); }; }
-  function verb(n, f) { if (g[n]) { i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; if (f) i[n] = f(i[n]); } }
+  return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+  function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
   function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
   function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
   function fulfill(value) { resume("next", value); }
@@ -43995,19 +45081,10 @@ var __setModuleDefault = Object.create ? (function(o, v) {
   o["default"] = v;
 };
 
-var ownKeys = function(o) {
-  ownKeys = Object.getOwnPropertyNames || function (o) {
-    var ar = [];
-    for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-    return ar;
-  };
-  return ownKeys(o);
-};
-
 function __importStar(mod) {
   if (mod && mod.__esModule) return mod;
   var result = {};
-  if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+  if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
   __setModuleDefault(result, mod);
   return result;
 }
@@ -44037,18 +45114,16 @@ function __classPrivateFieldIn(state, receiver) {
 function __addDisposableResource(env, value, async) {
   if (value !== null && value !== void 0) {
     if (typeof value !== "object" && typeof value !== "function") throw new TypeError("Object expected.");
-    var dispose, inner;
+    var dispose;
     if (async) {
-      if (!Symbol.asyncDispose) throw new TypeError("Symbol.asyncDispose is not defined.");
-      dispose = value[Symbol.asyncDispose];
+        if (!Symbol.asyncDispose) throw new TypeError("Symbol.asyncDispose is not defined.");
+        dispose = value[Symbol.asyncDispose];
     }
     if (dispose === void 0) {
-      if (!Symbol.dispose) throw new TypeError("Symbol.dispose is not defined.");
-      dispose = value[Symbol.dispose];
-      if (async) inner = dispose;
+        if (!Symbol.dispose) throw new TypeError("Symbol.dispose is not defined.");
+        dispose = value[Symbol.dispose];
     }
     if (typeof dispose !== "function") throw new TypeError("Object not disposable.");
-    if (inner) dispose = function() { try { inner.call(this); } catch (e) { return Promise.reject(e); } };
     env.stack.push({ value: value, dispose: dispose, async: async });
   }
   else if (async) {
@@ -44067,34 +45142,20 @@ function __disposeResources(env) {
     env.error = env.hasError ? new _SuppressedError(e, env.error, "An error was suppressed during disposal.") : e;
     env.hasError = true;
   }
-  var r, s = 0;
   function next() {
-    while (r = env.stack.pop()) {
+    while (env.stack.length) {
+      var rec = env.stack.pop();
       try {
-        if (!r.async && s === 1) return s = 0, env.stack.push(r), Promise.resolve().then(next);
-        if (r.dispose) {
-          var result = r.dispose.call(r.value);
-          if (r.async) return s |= 2, Promise.resolve(result).then(next, function(e) { fail(e); return next(); });
-        }
-        else s |= 1;
+        var result = rec.dispose && rec.dispose.call(rec.value);
+        if (rec.async) return Promise.resolve(result).then(next, function(e) { fail(e); return next(); });
       }
       catch (e) {
-        fail(e);
+          fail(e);
       }
     }
-    if (s === 1) return env.hasError ? Promise.reject(env.error) : Promise.resolve();
     if (env.hasError) throw env.error;
   }
   return next();
-}
-
-function __rewriteRelativeImportExtension(path, preserveJsx) {
-  if (typeof path === "string" && /^\.\.?\//.test(path)) {
-      return path.replace(/\.(tsx)$|((?:\.d)?)((?:\.[^./]+?)?)\.([cm]?)ts$/i, function (m, tsx, d, ext, cm) {
-          return tsx ? preserveJsx ? ".jsx" : ".js" : d && (!ext || !cm) ? m : (d + ext + "." + cm.toLowerCase() + "js");
-      });
-  }
-  return path;
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -44103,10 +45164,6 @@ function __rewriteRelativeImportExtension(path, preserveJsx) {
   __rest,
   __decorate,
   __param,
-  __esDecorate,
-  __runInitializers,
-  __propKey,
-  __setFunctionName,
   __metadata,
   __awaiter,
   __generator,
@@ -44129,7 +45186,6 @@ function __rewriteRelativeImportExtension(path, preserveJsx) {
   __classPrivateFieldIn,
   __addDisposableResource,
   __disposeResources,
-  __rewriteRelativeImportExtension,
 });
 
 

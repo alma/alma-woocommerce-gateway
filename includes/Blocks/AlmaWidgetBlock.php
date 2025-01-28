@@ -12,6 +12,8 @@
 namespace Alma\Woocommerce\Blocks;
 
 use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
+use Alma\Woocommerce\Helpers\CartHelper;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -29,6 +31,10 @@ class AlmaWidgetBlock implements IntegrationInterface {
 	 * @var AlmaSettings
 	 */
 	protected $alma_settings;
+	/**
+	 * @var CartHelper
+	 */
+	private $cart_helper;
 
 	public function __construct() {
 		$this->alma_settings = new AlmaSettings();
@@ -44,6 +50,8 @@ class AlmaWidgetBlock implements IntegrationInterface {
 	 * @return void
 	 */
 	public function initialize() {
+		$cart_helper_builder = new CartHelperBuilder();
+		$this->cart_helper   = $cart_helper_builder->get_instance();
 		wp_enqueue_style(
 			'alma-widget-block-frontend',
 			'https://cdn.jsdelivr.net/npm/@alma/widgets@3.x.x/dist/widgets.min.css',
@@ -140,6 +148,28 @@ class AlmaWidgetBlock implements IntegrationInterface {
 	}
 
 	/**
+	 * Filter & format enabled plans to match data-settings.enabledPlans allowed value.
+	 *
+	 * @param array $plans_settings Plans definitions to filter & format.
+	 *
+	 * @return array
+	 */
+	protected function filter_plans_definitions( $plans_settings ) {
+		return array_values( // Remove plan_keys from enabled plans definitions.
+			array_filter(
+				$plans_settings,
+				function ( $plan_definition ) {
+					if ( ! isset( $plan_definition['installments_count'] ) ) { // Widget does not work fine without installments_count.
+						return false;
+					}
+
+					return true;
+				}
+			)
+		);
+	}
+
+	/**
 	 * Send data to the js.
 	 *
 	 * @return array
@@ -148,6 +178,9 @@ class AlmaWidgetBlock implements IntegrationInterface {
 		return array(
 			'merchant_id' => $this->alma_settings->get_active_merchant_id(),
 			'environment' => strtoupper( $this->alma_settings->get_environment() ),
+			'plans'       => $this->filter_plans_definitions( $this->alma_settings->get_enabled_plans_definitions() ),
+			'amount'      => $this->cart_helper->get_total_in_cents(),
+			'locale'      => substr( get_locale(), 0, 2 ),
 		);
 	}
 }

@@ -1,4 +1,5 @@
 /******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
 /*!*********************************************************!*\
   !*** ./src/alma-widget-block/alma-widget-block-view.js ***!
   \*********************************************************/
@@ -18,30 +19,28 @@
       });
     });
   }
-  waitAlmaWidgetDiv(almaWidgetDivId).then(() => {
-    const data = window.wc.wcSettings.getSetting(`alma-widget-block_data`, null);
-    let widget = Alma.Widgets.initialize(data.merchant_id, Alma.ApiMode[data.environment]);
-    widget.add(Alma.Widgets.PaymentPlans, {
-      container: almaWidgetDivId,
-      purchaseAmount: 45000,
-      locale: 'fr',
-      hideIfNotEligible: false,
-      plans: [{
-        installmentsCount: 1,
-        deferredDays: 30,
-        minAmount: 5000,
-        maxAmount: 50000
-      }, {
-        installmentsCount: 3,
-        minAmount: 5000,
-        maxAmount: 50000
-      }, {
-        installmentsCount: 4,
-        minAmount: 5000,
-        maxAmount: 50000
-      }]
+  function addAlmaWidget() {
+    waitAlmaWidgetDiv(almaWidgetDivId).then(() => {
+      const data = window.wc.wcSettings.getSetting(`alma-widget-block_data`, null);
+      let widget = Alma.Widgets.initialize(data.merchant_id, Alma.ApiMode[data.environment]);
+      widget.add(Alma.Widgets.PaymentPlans, {
+        container: almaWidgetDivId,
+        purchaseAmount: data.amount,
+        locale: data.locale,
+        hideIfNotEligible: false,
+        plans: data.plans.map(function (plan) {
+          return {
+            installmentsCount: plan.installments_count,
+            minAmount: plan.min_amount,
+            maxAmount: plan.max_amount,
+            deferredDays: plan.deferred_days,
+            deferredMonths: plan.deferred_months
+          };
+        })
+      });
     });
-  });
+  }
+  addAlmaWidget();
 })(jQuery);
 /******/ })()
 ;
