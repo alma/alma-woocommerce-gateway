@@ -1,5 +1,8 @@
+import {render} from '@wordpress/element';
+import AlmaWidget from './AlmaWidget';
+
 (function ($) {
-    const almaWidgetDivId = '#alma-widget';
+    const almaWidgetDivId = 'alma-widget-container';
 
     function waitAlmaWidgetDiv(selector) {
         return new Promise((resolve) => {
@@ -15,30 +18,11 @@
     }
 
     function addAlmaWidget() {
-        waitAlmaWidgetDiv(almaWidgetDivId).then(() => {
-            const data = window.wc.wcSettings.getSetting(`alma-widget-block_data`, null);
-            let widget = Alma.Widgets.initialize(
-                data.merchant_id,
-                Alma.ApiMode[data.environment],
-            );
-
-            widget.add(Alma.Widgets.PaymentPlans, {
-                container: almaWidgetDivId,
-                purchaseAmount: data.amount,
-                locale: data.locale,
-                hideIfNotEligible: false,
-                plans: data.plans.map(
-                    function (plan) {
-                        return {
-                            installmentsCount: plan.installments_count,
-                            minAmount: plan.min_amount,
-                            maxAmount: plan.max_amount,
-                            deferredDays: plan.deferred_days,
-                            deferredMonths: plan.deferred_months
-                        }
-                    }
-                ),
-            });
+        waitAlmaWidgetDiv('#' + almaWidgetDivId).then(() => {
+            const almaContainer = document.getElementById(almaWidgetDivId);
+            if (almaContainer) {
+                render(<AlmaWidget/>, almaContainer);
+            }
         });
     }
 

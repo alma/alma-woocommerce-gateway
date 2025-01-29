@@ -1,8 +1,8 @@
 import {registerBlockType} from '@wordpress/blocks';
-import {useBlockProps} from '@wordpress/block-editor';
 import metadata from './block.json';
 import './alma-widget-block.css';
-import {Edit} from './edit';
+import Edit from './edit';
+import Save from './save';
 
 const almaIcon = (
     <svg width="451" height="512" viewBox="0 0 451 512" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -12,13 +12,9 @@ const almaIcon = (
     </svg>
 );
 
-// const edit = (attributes) => <div id="alma-widget" {...useBlockProps()}>Widget ALMA</div>;
-const edit = () => <div id="alma-widget-editor" {...useBlockProps()}><Edit/></div>;
-const save = () => <div id="alma-widget" {...useBlockProps.save()}></div>;
-
 registerBlockType(metadata.name, {
     category: metadata.category,
     icon: almaIcon,
-    edit: edit,
-    save,
+    edit: Edit,
+    save: Save,
 });
