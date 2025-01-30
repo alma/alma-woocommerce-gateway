@@ -1,5 +1,6 @@
 import {render} from '@wordpress/element';
 import AlmaWidget from './AlmaWidget';
+import './alma-widget-block-view.css';
 
 (function ($) {
     const almaWidgetDivId = 'alma-widget-container';

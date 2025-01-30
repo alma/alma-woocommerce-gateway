@@ -13,6 +13,7 @@
   "editorScript": "file:./alma-widget-block.js",
   "editorStyle": "file:./alma-widget-block.css",
   "viewScript": "file:./alma-widget-block-view.js",
+  "viewStyle": "file:./alma-widget-block-view.css",
   "parent": [
     "woocommerce/cart-order-summary-block",
     "woocommerce/cart-totals-block",

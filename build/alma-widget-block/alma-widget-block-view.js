@@ -62,6 +62,18 @@ const AlmaWidget = () => {
 
 /***/ }),
 
+/***/ "./src/alma-widget-block/alma-widget-block-view.css":
+/*!**********************************************************!*\
+  !*** ./src/alma-widget-block/alma-widget-block-view.css ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
 /***/ "react/jsx-runtime":
 /*!**********************************!*\
   !*** external "ReactJSXRuntime" ***!
@@ -170,8 +182,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _AlmaWidget__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AlmaWidget */ "./src/alma-widget-block/AlmaWidget.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _alma_widget_block_view_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./alma-widget-block-view.css */ "./src/alma-widget-block/alma-widget-block-view.css");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__);
+
 
 
 
@@ -195,7 +209,7 @@ __webpack_require__.r(__webpack_exports__);
     waitAlmaWidgetDiv('#' + almaWidgetDivId).then(() => {
       const almaContainer = document.getElementById(almaWidgetDivId);
       if (almaContainer) {
-        (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.render)(/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_AlmaWidget__WEBPACK_IMPORTED_MODULE_1__["default"], {}), almaContainer);
+        (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.render)(/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_AlmaWidget__WEBPACK_IMPORTED_MODULE_1__["default"], {}), almaContainer);
       }
     });
   }

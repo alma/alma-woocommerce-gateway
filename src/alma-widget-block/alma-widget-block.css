@@ -1,9 +1,5 @@
 /* Source: src/alma-widget-block/alma-widget-block.css */
 .wp-block-alma-gateway-for-woocommerce-alma-widget-block {
-}
-
-.wp-block-alma-gateway-for-woocommerce-alma-widget-block > div {
-	width: 368px;
 	max-width: 100%;
 	background-color: var(--white);
 	border: 1px solid var(--light-gray);
@@ -15,23 +11,23 @@
 	cursor: pointer;
 }
 
-.wp-block-alma-gateway-for-woocommerce-alma-widget-block > div > div {
+.wp-block-alma-gateway-for-woocommerce-alma-widget-block > div {
 	display: flex;
 	flex-direction: row;
 	align-items: flex-start;
 }
 
-.wp-block-alma-gateway-for-woocommerce-alma-widget-block > div > div > svg {
+.wp-block-alma-gateway-for-woocommerce-alma-widget-block > div > svg {
 	margin-right: 12px;
 }
 
-.wp-block-alma-gateway-for-woocommerce-alma-widget-block > div > div > div {
+.wp-block-alma-gateway-for-woocommerce-alma-widget-block > div > div {
 	gap: 8px;
 	max-width: 310px;
 	flex-wrap: wrap;
 }
 
-.wp-block-alma-gateway-for-woocommerce-alma-widget-block > div > div > div > div {
+.wp-block-alma-gateway-for-woocommerce-alma-widget-block > div > div > div {
 	font-family: Venn, sans-serif;
 	color: var(--off-black);
 	border-radius: 4px;
@@ -47,17 +43,17 @@
 	margin: 2px;
 }
 
-.wp-block-alma-gateway-for-woocommerce-alma-widget-block > div > div > div > div:nth-child(1) {
+.wp-block-alma-gateway-for-woocommerce-alma-widget-block > div > div > div:nth-child(1) {
 	color: var(--dark-gray);
 }
 
-.wp-block-alma-gateway-for-woocommerce-alma-widget-block > div > div > div > div:nth-child(3) {
+.wp-block-alma-gateway-for-woocommerce-alma-widget-block > div > div > div:nth-child(3) {
 	color: var(--white);
 	background: var(--alma-orange);
 	margin: 6px;
 }
 
-.wp-block-alma-gateway-for-woocommerce-alma-widget-block > div > div > div:last-child {
+.wp-block-alma-gateway-for-woocommerce-alma-widget-block > div > div:last-child {
 	font-family: Venn, sans-serif;
 	font-size: 12px;
 	line-height: 180%;

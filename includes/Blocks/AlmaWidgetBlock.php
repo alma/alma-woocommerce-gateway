@@ -54,12 +54,34 @@ class AlmaWidgetBlock implements IntegrationInterface {
 		$this->cart_helper   = $cart_helper_builder->get_instance();
 		wp_enqueue_style(
 			'alma-widget-block-frontend',
+			ALMA_PLUGIN_URL . '/build/alma-widget-block/alma-widget-block-view.css',
+			array(),
+			$this->get_file_version( ALMA_PLUGIN_URL . '/build/alma-widget-block/alma-widget-block-view.css' )
+		);
+		wp_enqueue_style(
+			'alma-widget-block-frontend-cdn',
 			'https://cdn.jsdelivr.net/npm/@alma/widgets@3.x.x/dist/widgets.min.css',
 			array(),
 			'3.x.x'
 		);
+
 		$this->register_block_frontend_scripts();
 		$this->register_block_editor_scripts();
+	}
+
+	/**
+	 * Get the file modified time as a cache buster if we're in dev mode.
+	 *
+	 * @param string $file Local path to the file.
+	 *
+	 * @return string The cache buster value to use for the given file.
+	 */
+	protected function get_file_version( $file ) {
+		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG && file_exists( $file ) ) {
+			return filemtime( $file );
+		}
+
+		return ALMA_VERSION;
 	}
 
 	private function register_block_frontend_scripts() {
@@ -91,21 +113,6 @@ class AlmaWidgetBlock implements IntegrationInterface {
 			'alma-gateway-for-woocommerce',
 			ALMA_PLUGIN_PATH . '/languages'
 		);
-	}
-
-	/**
-	 * Get the file modified time as a cache buster if we're in dev mode.
-	 *
-	 * @param string $file Local path to the file.
-	 *
-	 * @return string The cache buster value to use for the given file.
-	 */
-	protected function get_file_version( $file ) {
-		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG && file_exists( $file ) ) {
-			return filemtime( $file );
-		}
-
-		return ALMA_VERSION;
 	}
 
 	private function register_block_editor_scripts() {
@@ -148,6 +155,21 @@ class AlmaWidgetBlock implements IntegrationInterface {
 	}
 
 	/**
+	 * Send data to the js.
+	 *
+	 * @return array
+	 */
+	public function get_script_data() {
+		return array(
+			'merchant_id' => $this->alma_settings->get_active_merchant_id(),
+			'environment' => strtoupper( $this->alma_settings->get_environment() ),
+			'plans'       => $this->filter_plans_definitions( $this->alma_settings->get_enabled_plans_definitions() ),
+			'amount'      => $this->cart_helper->get_total_in_cents(),
+			'locale'      => substr( get_locale(), 0, 2 ),
+		);
+	}
+
+	/**
 	 * Filter & format enabled plans to match data-settings.enabledPlans allowed value.
 	 *
 	 * @param array $plans_settings Plans definitions to filter & format.
@@ -166,21 +188,6 @@ class AlmaWidgetBlock implements IntegrationInterface {
 					return true;
 				}
 			)
-		);
-	}
-
-	/**
-	 * Send data to the js.
-	 *
-	 * @return array
-	 */
-	public function get_script_data() {
-		return array(
-			'merchant_id' => $this->alma_settings->get_active_merchant_id(),
-			'environment' => strtoupper( $this->alma_settings->get_environment() ),
-			'plans'       => $this->filter_plans_definitions( $this->alma_settings->get_enabled_plans_definitions() ),
-			'amount'      => $this->cart_helper->get_total_in_cents(),
-			'locale'      => substr( get_locale(), 0, 2 ),
 		);
 	}
 }
