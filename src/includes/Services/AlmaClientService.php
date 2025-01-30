@@ -25,25 +25,38 @@ use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\EncryptorHelper;
 use Alma\Woocommerce\WcProxy\OptionProxy;
 
+/**
+ * AlmaClientService
+ */
 class AlmaClientService {
 
 	/**
+	 * Encryptor Helper.
+	 *
 	 * @var EncryptorHelper
 	 */
 	private $encryptor_helper;
 	/**
+	 * Alma Logger.
+	 *
 	 * @var AlmaLogger
 	 */
 	private $logger;
 	/**
+	 * Version Factory.
+	 *
 	 * @var VersionFactory
 	 */
 	private $version_factory;
 	/**
+	 * Cart Helper.
+	 *
 	 * @var CartHelper|null
 	 */
 	private $cart_helper;
 	/**
+	 * Option Proxy.
+	 *
 	 * @var OptionProxy
 	 */
 	private $option_proxy;
@@ -51,11 +64,11 @@ class AlmaClientService {
 	/**
 	 * Alma client Service - Use to connect with Alma API
 	 *
-	 * @param      $encryption_helper
-	 * @param      $version_factory
-	 * @param      $cart_helper
-	 * @param      $option_proxy
-	 * @param      $logger
+	 * @param EncryptorHelper $encryption_helper Encryptor Helper.
+	 * @param VersionFactory  $version_factory Version Factory.
+	 * @param CartHelper      $cart_helper Cart Helper.
+	 * @param OptionProxy     $option_proxy Option Proxy.
+	 * @param AlmaLogger      $logger Alma Logger.
 	 */
 	public function __construct(
 		$encryption_helper = null,
@@ -75,7 +88,7 @@ class AlmaClientService {
 	 * Get Alma client with the current API KEY and mode
 	 *
 	 * @return Client
-	 * @throws ApiClientException
+	 * @throws ApiClientException If error in API client creation.
 	 */
 	public function get_alma_client() {
 		try {
@@ -92,7 +105,6 @@ class AlmaClientService {
 			throw new ApiClientException( $e->getMessage() );
 		}
 
-
 		$alma_client->addUserAgentComponent( 'WordPress', get_bloginfo( 'version' ) );
 		$alma_client->addUserAgentComponent( 'WooCommerce', $this->version_factory->get_version() );
 		$alma_client->addUserAgentComponent( 'Alma for WooCommerce', ALMA_VERSION );
@@ -104,7 +116,8 @@ class AlmaClientService {
 	/**
 	 * Get alma Eligibility from cart
 	 *
-	 * @param Client $alma_client
+	 * @param Client   $alma_client Alma Client.
+	 * @param \WC_Cart $cart Cart.
 	 *
 	 * @return Eligibility[] | []
 	 */
@@ -115,7 +128,7 @@ class AlmaClientService {
 		} catch ( RequestError $e ) {
 			$this->logger->error( 'Error in get eligibility : ' . $e->getMessage() );
 
-			return [];
+			return array();
 		}
 
 		return $eligibility;
@@ -129,7 +142,7 @@ class AlmaClientService {
 	public function in_page_is_activated() {
 		$setting = $this->get_alma_settings();
 		if ( isset( $setting['display_in_page'] ) ) {
-			return $setting['display_in_page'] === 'yes';
+			return 'yes' === $setting['display_in_page'];
 		}
 
 		return false;
@@ -138,7 +151,7 @@ class AlmaClientService {
 	/**
 	 * Generate Payload for eligibility depending on cart
 	 *
-	 * @param \WC_Cart $cart
+	 * @param \WC_Cart $cart Cart.
 	 *
 	 * @return array
 	 */
@@ -176,7 +189,7 @@ class AlmaClientService {
 	 * Get active decrypted API key depending on mode
 	 *
 	 * @return string
-	 * @throws ApiClientException
+	 * @throws ApiClientException If error in API client creation.
 	 */
 	private function get_active_api_key() {
 		return $this->get_mode() === 'live' ? $this->get_live_api_key() : $this->get_test_api_key();
@@ -187,12 +200,12 @@ class AlmaClientService {
 	 * Return alma mode test|live set in DB
 	 *
 	 * @return string
-	 * @throws ApiClientException
+	 * @throws ApiClientException If error in API client creation.
 	 */
 	private function get_mode() {
 		$setting = $this->get_alma_settings();
 		if ( isset( $setting['environment'] ) ) {
-			return $setting['environment'] === 'live' ? 'live' : 'test';
+			return 'live' === $setting['environment'] ? 'live' : 'test';
 		}
 		throw new ApiClientException( 'No mode set' );
 	}
@@ -201,7 +214,7 @@ class AlmaClientService {
 	 * Gets API key for live environment.
 	 *
 	 * @return string
-	 * @throws ApiClientException
+	 * @throws ApiClientException If error in API client creation.
 	 */
 	private function get_live_api_key() {
 		$setting = $this->get_alma_settings();
@@ -215,7 +228,7 @@ class AlmaClientService {
 	 * Gets API key for test environment.
 	 *
 	 * @return string
-	 * @throws ApiClientException
+	 * @throws ApiClientException If error in API client creation.
 	 */
 	private function get_test_api_key() {
 		$setting = $this->get_alma_settings();
@@ -228,7 +241,7 @@ class AlmaClientService {
 	/**
 	 * Init Alma logger
 	 *
-	 * @param AlmaLogger|null $logger
+	 * @param AlmaLogger|null $logger Alma Logger.
 	 *
 	 * @return AlmaLogger
 	 */
@@ -243,7 +256,7 @@ class AlmaClientService {
 	/**
 	 * Init encryptor helper
 	 *
-	 * @param EncryptorHelper|null $encryptor_helper
+	 * @param EncryptorHelper|null $encryptor_helper Encryptor Helper.
 	 *
 	 * @return EncryptorHelper
 	 */
@@ -258,7 +271,7 @@ class AlmaClientService {
 	/**
 	 * Init version factory
 	 *
-	 * @param VersionFactory|null $version_factory
+	 * @param VersionFactory|null $version_factory Version Factory.
 	 *
 	 * @return VersionFactory
 	 */
@@ -273,7 +286,7 @@ class AlmaClientService {
 	/**
 	 * Init cart helper
 	 *
-	 * @param CartHelper|null $cart_helper
+	 * @param CartHelper|null $cart_helper Cart Helper.
 	 *
 	 * @return CartHelper
 	 */
@@ -289,7 +302,7 @@ class AlmaClientService {
 	/**
 	 * Init option proxy
 	 *
-	 * @param OptionProxy|null $option_proxy
+	 * @param OptionProxy|null $option_proxy Option Proxy.
 	 *
 	 * @return OptionProxy
 	 */

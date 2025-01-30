@@ -72,10 +72,14 @@ class AlmaBlock extends AbstractPaymentMethodType {
 	 */
 	protected $gateway;
 	/**
+	 * Alma logger.
+	 *
 	 * @var AlmaLogger
 	 */
 	private $logger;
 	/**
+	 * Tools helper.
+	 *
 	 * @var ToolsHelper
 	 */
 	private $tools_helper;
@@ -102,7 +106,7 @@ class AlmaBlock extends AbstractPaymentMethodType {
 	 */
 	public function is_active() {
 		// TODO need to check if no side effects
-		//return $this->gateway->is_available();
+		// return $this->gateway->is_available();.
 		return true;
 	}
 
@@ -139,11 +143,14 @@ class AlmaBlock extends AbstractPaymentMethodType {
 			ALMA_VERSION,
 			true
 		);
-		// Passer la base URL au JavaScript
-		wp_localize_script( 'alma-blocks-integration', 'BlocksData', [
-			'url' => $this->tools_helper->url_for_webhook( BlocksDataService::WEBHOOK_PATH ),
-		] );
-
+		// Passer la base URL au JavaScript.
+		wp_localize_script(
+			'alma-blocks-integration',
+			'BlocksData',
+			array(
+				'url' => $this->tools_helper->url_for_webhook( BlocksDataService::WEBHOOK_PATH ),
+			)
+		);
 
 		wp_enqueue_script(
 			'alma-store',
@@ -151,12 +158,11 @@ class AlmaBlock extends AbstractPaymentMethodType {
 			array(
 				'wp-data',
 				'wp-element',
-				'wc-blocks'
+				'wc-blocks',
 			),
 			ALMA_VERSION,
 			true
 		);
-
 
 		if ( function_exists( 'wp_set_script_translations' ) ) {
 			wp_set_script_translations( 'alma-blocks-integration' );
