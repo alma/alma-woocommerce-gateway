@@ -105,8 +105,6 @@ class AlmaBlock extends AbstractPaymentMethodType {
 	 * @return mixed
 	 */
 	public function is_active() {
-		// TODO need to check if no side effects
-		// return $this->gateway->is_available();.
 		return true;
 	}
 
