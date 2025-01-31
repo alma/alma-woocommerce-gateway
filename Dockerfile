@@ -45,10 +45,8 @@ WORKDIR /home/phpuser
 USER phpuser
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
-COPY --chown=phpuser composer.json ./
+COPY --chown=phpuser ./ ./
 RUN composer install --prefer-dist --no-progress
-
-COPY --chown=phpuser ./src/ ./
 
 ARG WP_VERSION
 ARG WC_VERSION
