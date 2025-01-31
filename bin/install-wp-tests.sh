@@ -53,8 +53,8 @@ install_test_suite() {
 		download https://develop.svn.wordpress.org/${WP_TESTS_TAG}/wp-tests-config-sample.php "$WP_TESTS_DIR"/wp-tests-config.php
 		# remove all forward slashes in the end
 		WP_CORE_DIR=$(echo $WP_CORE_DIR | sed "s:/\+$::")
-		sed -i "s:dirname( __FILE__ ) . '/':'$WP_CORE_DIR/':" "$WP_TESTS_DIR"/wp-tests-config.php
-		sed -i "s:__DIR__ . '/':'$WP_CORE_DIR/':" "$WP_TESTS_DIR"/wp-tests-config.php
+		sed -i "s:dirname( __FILE__ ) . '/src/':'$WP_CORE_DIR/':" "$WP_TESTS_DIR"/wp-tests-config.php
+    sed -i "s:__DIR__ . '/src/':'$WP_CORE_DIR/':" "$WP_TESTS_DIR"/wp-tests-config.php
 	fi
 
 	download https://downloads.wordpress.org/plugin/woocommerce."${WC_VERSION}".zip $TMPDIR/woocommerce.zip
