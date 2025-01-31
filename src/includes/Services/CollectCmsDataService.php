@@ -173,6 +173,7 @@ class CollectCmsDataService {
 	 * @return CmsFeatures
 	 */
 	private function get_cms_features() {
+		$auto_update_plugins = $this->option_proxy->get_option( 'auto_update_plugins', array() );
 		return new CmsFeatures(
 			array(
 				'alma_enabled'             => $this->alma_settings->is_enabled(),
@@ -183,6 +184,9 @@ class CollectCmsDataService {
 				'log_activated'            => 'yes' === $this->alma_settings->debug,
 				'excluded_categories'      => $this->alma_settings->excluded_products_list,
 				'is_multisite'             => is_multisite(),
+				'specific_features'        => array(
+					( in_array( 'alma-woocommerce-gateway/alma-gateway-for-woocommerce.php', $auto_update_plugins, true ) ) ? 'auto_update' : null,
+				),
 			)
 		);
 	}
