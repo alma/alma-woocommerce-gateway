@@ -38,6 +38,8 @@ class AlmaWidgetBlock implements IntegrationInterface {
 
 	public function __construct() {
 		$this->alma_settings = new AlmaSettings();
+		$cart_helper_builder = new CartHelperBuilder();
+		$this->cart_helper   = $cart_helper_builder->get_instance();
 	}
 
 	public function get_name() {
@@ -50,8 +52,6 @@ class AlmaWidgetBlock implements IntegrationInterface {
 	 * @return void
 	 */
 	public function initialize() {
-		$cart_helper_builder = new CartHelperBuilder();
-		$this->cart_helper   = $cart_helper_builder->get_instance();
 		wp_enqueue_style(
 			'alma-widget-block-frontend',
 			ALMA_PLUGIN_URL . '/build/alma-widget-block/alma-widget-block-view.css',
@@ -161,11 +161,12 @@ class AlmaWidgetBlock implements IntegrationInterface {
 	 */
 	public function get_script_data() {
 		return array(
-			'merchant_id' => $this->alma_settings->get_active_merchant_id(),
-			'environment' => strtoupper( $this->alma_settings->get_environment() ),
-			'plans'       => $this->filter_plans_definitions( $this->alma_settings->get_enabled_plans_definitions() ),
-			'amount'      => $this->cart_helper->get_total_in_cents(),
-			'locale'      => substr( get_locale(), 0, 2 ),
+			'merchant_id'       => $this->alma_settings->get_active_merchant_id(),
+			'environment'       => strtoupper( $this->alma_settings->get_environment() ),
+			'plans'             => $this->filter_plans_definitions( $this->alma_settings->get_enabled_plans_definitions() ),
+			'amount'            => $this->cart_helper->get_total_in_cents(),
+			'locale'            => substr( get_locale(), 0, 2 ),
+			'must_be_displayed' => $this->must_be_displayed(),
 		);
 	}
 
@@ -189,5 +190,9 @@ class AlmaWidgetBlock implements IntegrationInterface {
 				}
 			)
 		);
+	}
+
+	private function must_be_displayed() {
+		return $this->alma_settings->has_keys() && $this->alma_settings->is_enabled() && 'yes' === $this->alma_settings->display_cart_eligibility;
 	}
 }

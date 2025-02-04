@@ -2,6 +2,9 @@ import {useEffect} from '@wordpress/element';
 import {useSelect} from '@wordpress/data';
 
 const AlmaWidget = () => {
+    if (!window.wc.wcSettings.getSetting(`alma-widget-block_data`, null).must_be_displayed) {
+        return null;
+    }
     const {CART_STORE_KEY} = window.wc.wcBlocksData
 
     const total = useSelect((select) => {

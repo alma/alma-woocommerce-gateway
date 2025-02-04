@@ -11,7 +11,7 @@ body {
     Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: var(--colors-text-primary);
+  color: var(--off-black);
   background-color: var(--off-white);
 }
 
@@ -37,8 +37,9 @@ button {
   cursor: pointer;
 }
 
+
 a {
-  color: var(--colors-text-primary);
+  color: var(--off-black);
 }
 
 /*!******************************************************************************************************************************************************************************************************!*\
