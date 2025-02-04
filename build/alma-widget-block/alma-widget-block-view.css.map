@@ -1,1 +1,0 @@
-{"version":3,"file":"alma-widget-block/alma-widget-block-view.css","mappings":";;;AAAA;CACC,sBAAsB;AACvB","sources":["webpack://alma-woocommerce-gateway/./src/alma-widget-block/alma-widget-block-view.css"],"sourcesContent":["#alma-widget .alma-payment-plans-container {\n\twidth: 100% !important;\n}\n"],"names":[],"sourceRoot":""}
