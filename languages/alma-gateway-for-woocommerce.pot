@@ -1,538 +1,461 @@
-#, fuzzy
+# Copyright (C) 2025 Alma
+# This file is distributed under the GNU General Public License v3.0.
 msgid ""
 msgstr ""
-"Project-Id-Version: Alma - Pay in installments or later for WooCommerce\n"
-"POT-Creation-Date: 2024-04-23 10:19+0200\n"
-"PO-Revision-Date: 2023-02-13 16:00+0100\n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"Project-Id-Version: Alma - Pay in installments or later for WooCommerce 5.8.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/alma-woocommerce-gateway\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"X-Generator: Poedit 3.4.2\n"
-"X-Poedit-Basepath: ..\n"
-"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
-"X-Poedit-WPHeader: alma-gateway-for-woocommerce.php\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.min.js\n"
-"X-Poedit-SearchPathExcluded-1: vendor\n"
+"POT-Creation-Date: 2025-02-04T14:37:21+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.11.0\n"
+"X-Domain: alma-gateway-for-woocommerce\n"
+
+#. Plugin Name of the plugin
+#: alma-gateway-for-woocommerce.php
+msgid "Alma - Pay in installments or later for WooCommerce"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: alma-gateway-for-woocommerce.php
+msgid "https://docs.almapay.com/docs/woocommerce"
+msgstr ""
+
+#. Description of the plugin
+#: alma-gateway-for-woocommerce.php
+#: includes/Gateways/AlmaPaymentGateway.php:235
+msgid "Install Alma and boost your sales! It's simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk."
+msgstr ""
+
+#. Author of the plugin
+#: alma-gateway-for-woocommerce.php
+msgid "Alma"
+msgstr ""
+
+#. Author URI of the plugin
+#: alma-gateway-for-woocommerce.php
+msgid "https://almapay.com"
+msgstr ""
 
 #. translators: %d: number of installments.
 #: includes/Admin/Builders/FormHtmlBuilder.php:37
-#: includes/Admin/Helpers/FormFieldsHelper.php:338
-#, php-format
+#: includes/Admin/Helpers/FormFieldsHelper.php:347
 msgid "→ %d-installment payment"
 msgstr ""
 
 #. translators: %d: number of installments.
 #: includes/Admin/Builders/FormHtmlBuilder.php:42
-#: includes/Admin/Helpers/FormFieldsHelper.php:331
+#: includes/Admin/Helpers/FormFieldsHelper.php:340
 msgid "→ Pay Now"
 msgstr ""
 
 #. translators: %d: number of deferred days.
 #: includes/Admin/Builders/FormHtmlBuilder.php:51
-#: includes/Admin/Helpers/FormFieldsHelper.php:348
-#, php-format
+#: includes/Admin/Helpers/FormFieldsHelper.php:357
 msgid "→ D+%d-deferred payment"
 msgstr ""
 
 #. translators: %d: number of deferred months.
 #: includes/Admin/Builders/FormHtmlBuilder.php:56
-#: includes/Admin/Helpers/FormFieldsHelper.php:354
-#, php-format
+#: includes/Admin/Helpers/FormFieldsHelper.php:363
 msgid "→ M+%d-deferred payment"
 msgstr ""
 
-#: includes/Admin/Helpers/CheckLegalHelper.php:157
+#: includes/Admin/Helpers/CheckLegalHelper.php:164
 msgid "Impossible to save the settings, please try again later."
 msgstr ""
 
 #. translators: %s: Admin settings url.
-#: includes/Admin/Helpers/CheckLegalHelper.php:205
-#, php-format
-msgid ""
-"The settings have been saved. <a href=\"%s\">Refresh</a> the page when ready."
+#: includes/Admin/Helpers/CheckLegalHelper.php:213
+msgid "The settings have been saved. <a href=\"%s\">Refresh</a> the page when ready."
 msgstr ""
 
-#: includes/Admin/Helpers/CheckLegalHelper.php:235
-msgid ""
-"By accepting this option, you enable Alma to analyze the usage of your "
-"payment methods and get information in order to improve your clients’ "
-"experience."
-msgstr ""
-
-#: includes/Admin/Helpers/CheckLegalHelper.php:244
-msgid ""
-"You can <a href=\"mailto:support@getalma.eu\">opt out and erase your data</"
-"a> at any moment."
+#: includes/Admin/Helpers/CheckLegalHelper.php:242
+msgid "By accepting this option, you enable Alma to analyze the usage of your payment methods and get information in order to improve your clients’ experience."
 msgstr ""
 
 #: includes/Admin/Helpers/CheckLegalHelper.php:251
-#: includes/Admin/Helpers/FormFieldsHelper.php:773
+msgid "You can <a href=\"mailto:support@getalma.eu\">opt out and erase your data</a> at any moment."
+msgstr ""
+
+#: includes/Admin/Helpers/CheckLegalHelper.php:259
+#: includes/Admin/Helpers/FormFieldsHelper.php:787
 msgid "Know more about collected data"
 msgstr ""
 
-#: includes/Admin/Helpers/CheckLegalHelper.php:255
+#: includes/Admin/Helpers/CheckLegalHelper.php:263
 msgid "total quantity of orders, amounts and currencies"
 msgstr ""
 
-#: includes/Admin/Helpers/CheckLegalHelper.php:256
+#: includes/Admin/Helpers/CheckLegalHelper.php:264
 msgid "payment provider for each order"
 msgstr ""
 
-#: includes/Admin/Helpers/CheckLegalHelper.php:261
+#: includes/Admin/Helpers/CheckLegalHelper.php:269
 msgid "REJECT"
 msgstr ""
 
-#: includes/Admin/Helpers/CheckLegalHelper.php:263
+#: includes/Admin/Helpers/CheckLegalHelper.php:271
 msgid "ACCEPT"
 msgstr ""
 
-#: includes/Admin/Helpers/CheckLegalHelper.php:282
+#: includes/Admin/Helpers/CheckLegalHelper.php:290
 msgid "Increase your performance & get insights !"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:96
-#: includes/Admin/Helpers/FormFieldsHelper.php:373
+#: includes/Admin/Helpers/FormFieldsHelper.php:112
+#: includes/Admin/Helpers/FormFieldsHelper.php:382
 msgid "Enable/Disable"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:98
+#: includes/Admin/Helpers/FormFieldsHelper.php:114
 msgid "Enable monthly payments with Alma"
 msgstr ""
 
 #. translators: %s Alma security URL
-#: includes/Admin/Helpers/FormFieldsHelper.php:120
-#, php-format
-msgid ""
-"You can find your API keys on <a href=\"%s\" target=\"_blank\">your Alma "
-"dashboard</a>"
+#: includes/Admin/Helpers/FormFieldsHelper.php:136
+msgid "You can find your API keys on <a href=\"%s\" target=\"_blank\">your Alma dashboard</a>"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:123
+#: includes/Admin/Helpers/FormFieldsHelper.php:139
 msgid "Live API key"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:127
+#: includes/Admin/Helpers/FormFieldsHelper.php:143
 msgid "Test API key"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:131
+#: includes/Admin/Helpers/FormFieldsHelper.php:147
 msgid "API Mode"
 msgstr ""
 
 #. translators: %s Merchant description
-#: includes/Admin/Helpers/FormFieldsHelper.php:134
-#, php-format
-msgid ""
-"Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In "
-"Test mode, only admins can see Alma on cart/checkout pages.<br> %s"
+#: includes/Admin/Helpers/FormFieldsHelper.php:150
+msgid "Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In Test mode, only admins can see Alma on cart/checkout pages.<br> %s"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:137
+#: includes/Admin/Helpers/FormFieldsHelper.php:153
 msgid "Test"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:138
+#: includes/Admin/Helpers/FormFieldsHelper.php:154
 msgid "Live"
 msgstr ""
 
 #. translators: %s Merchant id
-#: includes/Admin/Helpers/FormFieldsHelper.php:160
-#, php-format
+#: includes/Admin/Helpers/FormFieldsHelper.php:176
 msgid "<br>Merchant id : \"%s\" "
 msgstr ""
 
 #. translators: %s Merchant name
-#: includes/Admin/Helpers/FormFieldsHelper.php:165
-#, php-format
+#: includes/Admin/Helpers/FormFieldsHelper.php:181
 msgid "<br>Merchant name : \"%s\" "
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:183
+#: includes/Admin/Helpers/FormFieldsHelper.php:199
 msgid "→ Debug options"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:187
+#: includes/Admin/Helpers/FormFieldsHelper.php:203
 msgid "Debug mode"
 msgstr ""
 
 #. translators: %s: Admin logs url.
-#: includes/Admin/Helpers/FormFieldsHelper.php:190
+#: includes/Admin/Helpers/FormFieldsHelper.php:206
 msgid "Activate debug mode"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:190
-#, php-format
+#. translators: %s: Admin logs url.
+#: includes/Admin/Helpers/FormFieldsHelper.php:206
 msgid "(<a href=\"%s\">Go to logs</a>)"
 msgstr ""
 
 #. translators: %s: The previous plugin version if exists.
-#: includes/Admin/Helpers/FormFieldsHelper.php:192
-#, php-format
-msgid ""
-"Enable logging info and errors to help debug any issue with the plugin "
-"(previous Alma version : \"%s\")"
+#: includes/Admin/Helpers/FormFieldsHelper.php:208
+msgid "Enable logging info and errors to help debug any issue with the plugin (previous Alma version : \"%s\")"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:209
+#: includes/Admin/Helpers/FormFieldsHelper.php:225
 msgid "→ Display options"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:213
+#: includes/Admin/Helpers/FormFieldsHelper.php:229
 msgid "Activate in-page checkout"
 msgstr ""
 
 #. translators: %s: Alma in page doc URL
-#: includes/Admin/Helpers/FormFieldsHelper.php:216
-msgid ""
-"Activate this setting if you want in-page checkout for Pay Now, Installment "
-"and Deferred payments."
+#: includes/Admin/Helpers/FormFieldsHelper.php:232
+msgid "Enable this setting if you want in-page payments (no redirection) for all Alma payment methods."
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:216
-#: includes/Admin/Helpers/FormFieldsHelper.php:223
-#, php-format
+#. translators: %s: Alma in page doc URL
+#: includes/Admin/Helpers/FormFieldsHelper.php:232
 msgid "(Learn more about this feature <a href=\"%s\">here</a>)"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:220
-msgid "Activate compatibility with Blocks templates themes"
-msgstr ""
-
-#. translators: %s: Woocommerce doc URL
-#: includes/Admin/Helpers/FormFieldsHelper.php:223
-msgid "Activate this setting if you use a Blocks template Checkout page"
-msgstr ""
-
-#: includes/Admin/Helpers/FormFieldsHelper.php:240
+#: includes/Admin/Helpers/FormFieldsHelper.php:249
 msgid "→ Fee plans configuration"
 msgstr ""
 
 #. translators: %s: Alma conditions URL
-#: includes/Admin/Helpers/FormFieldsHelper.php:250
-#, php-format
-msgid ""
-"⚠ There is no fee plan allowed in your <a href=\"%s\" target=\"_blank\">Alma "
-"dashboard</a>."
+#: includes/Admin/Helpers/FormFieldsHelper.php:259
+msgid "⚠ There is no fee plan allowed in your <a href=\"%s\" target=\"_blank\">Alma dashboard</a>."
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:268
+#: includes/Admin/Helpers/FormFieldsHelper.php:277
 msgid "Select a fee plan to update"
 msgstr ""
 
 #. translators: %s: Alma conditions URL
-#: includes/Admin/Helpers/FormFieldsHelper.php:271
-#, php-format
-msgid ""
-"Choose which fee plan you want to modify<br>(only your <a href=\"%s\" target="
-"\"_blank\">Alma dashboard</a> available fee plans are shown here)."
+#: includes/Admin/Helpers/FormFieldsHelper.php:280
+msgid "Choose which fee plan you want to modify<br>(only your <a href=\"%s\" target=\"_blank\">Alma dashboard</a> available fee plans are shown here)."
 msgstr ""
 
 #. translators: %d: number of installments.
-#: includes/Admin/Helpers/FormFieldsHelper.php:333
-#: includes/Admin/Helpers/FormFieldsHelper.php:340
-#, php-format
+#: includes/Admin/Helpers/FormFieldsHelper.php:342
+#: includes/Admin/Helpers/FormFieldsHelper.php:349
 msgid "Enable %d-installment payments with Alma"
 msgstr ""
 
 #. translators: %d: number of deferred days.
-#: includes/Admin/Helpers/FormFieldsHelper.php:350
-#, php-format
+#: includes/Admin/Helpers/FormFieldsHelper.php:359
 msgid "Enable D+%d-deferred payments with Alma"
 msgstr ""
 
 #. translators: %d: number of deferred months.
-#: includes/Admin/Helpers/FormFieldsHelper.php:356
-#, php-format
+#: includes/Admin/Helpers/FormFieldsHelper.php:365
 msgid "Enable M+%d-deferred payments with Alma"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:379
+#: includes/Admin/Helpers/FormFieldsHelper.php:388
 msgid "Minimum amount"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:386
+#: includes/Admin/Helpers/FormFieldsHelper.php:395
 msgid "Maximum amount"
 msgstr ""
 
 #. translators: %d: number of installments.
-#: includes/Admin/Helpers/FormFieldsHelper.php:423
-#, php-format
-msgid ""
-"You can offer %1$d-installment payments for amounts between <b>%2$d€</b> and "
-"<b>%3$d€</b>."
+#: includes/Admin/Helpers/FormFieldsHelper.php:432
+msgid "You can offer %1$d-installment payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>."
 msgstr ""
 
 #. translators: %d: number of installments.
-#: includes/Admin/Helpers/FormFieldsHelper.php:433
-#, php-format
-msgid ""
-"You can offer instant payments for amounts between <b>%2$d€</b> and <b>%3$d"
-"€</b>."
+#: includes/Admin/Helpers/FormFieldsHelper.php:442
+msgid "You can offer instant payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>."
 msgstr ""
 
 #. translators: %d: number of deferred days.
-#: includes/Admin/Helpers/FormFieldsHelper.php:446
-#, php-format
-msgid ""
-"You can offer D+%1$d-deferred payments for amounts between <b>%2$d€</b> and "
-"<b>%3$d€</b>."
+#: includes/Admin/Helpers/FormFieldsHelper.php:455
+msgid "You can offer D+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>."
 msgstr ""
 
 #. translators: %d: number of deferred months.
-#: includes/Admin/Helpers/FormFieldsHelper.php:455
-#, php-format
-msgid ""
-"You can offer M+%1$d-deferred payments for amounts between <b>%2$d€</b> and "
-"<b>%3$d€</b>."
+#: includes/Admin/Helpers/FormFieldsHelper.php:464
+msgid "You can offer M+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>."
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:462
+#: includes/Admin/Helpers/FormFieldsHelper.php:471
 msgid "Fees applied to each transaction for this plan:"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:464
+#: includes/Admin/Helpers/FormFieldsHelper.php:473
 msgid "You pay:"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:469
+#: includes/Admin/Helpers/FormFieldsHelper.php:478
 msgid "Customer pays:"
 msgstr ""
 
 #. translators: %s Link to alma dashboard.
-#: includes/Admin/Helpers/FormFieldsHelper.php:473
-#, php-format
-msgid ""
-"<u>Note</u>: Customer fees are impacted by the usury rate, and will be "
-"adapted based on the limitations to comply with regulations. For more "
-"information, visit the Configuration page on your <a href=\"%s\" target="
-"\"_blank\">Alma Dashboard</a>."
+#: includes/Admin/Helpers/FormFieldsHelper.php:482
+msgid "<u>Note</u>: Customer fees are impacted by the usury rate, and will be adapted based on the limitations to comply with regulations. For more information, visit the Configuration page on your <a href=\"%s\" target=\"_blank\">Alma Dashboard</a>."
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:476
+#: includes/Admin/Helpers/FormFieldsHelper.php:485
 msgid "Customer lending rate:"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:506
+#: includes/Admin/Helpers/FormFieldsHelper.php:516
 msgid "→ General configuration"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:510
-msgid ""
-"Edit the text displayed when choosing the payment method in your checkout."
+#: includes/Admin/Helpers/FormFieldsHelper.php:520
+msgid "Edit the text displayed when choosing the payment method in your checkout."
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:519
-#: includes/Admin/Helpers/FormFieldsHelper.php:533
+#: includes/Admin/Helpers/FormFieldsHelper.php:529
+#: includes/Admin/Helpers/FormFieldsHelper.php:546
 msgid "Payments in 2, 3 and 4 installments:"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:522
+#: includes/Admin/Helpers/FormFieldsHelper.php:532
 msgid "Pay Now:"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:525
-#: includes/Admin/Helpers/FormFieldsHelper.php:540
+#: includes/Admin/Helpers/FormFieldsHelper.php:535
+#: includes/Admin/Helpers/FormFieldsHelper.php:553
 msgid "Deferred Payments:"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:536
-msgid "Pay now:"
-msgstr ""
-
-#: includes/Admin/Helpers/FormFieldsHelper.php:545
+#: includes/Admin/Helpers/FormFieldsHelper.php:538
+#: includes/Admin/Helpers/FormFieldsHelper.php:558
 msgid "Payments in more than 4 installments:"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:550
-msgid "Product eligibility notice"
+#: includes/Admin/Helpers/FormFieldsHelper.php:549
+msgid "Pay now:"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:552
-msgid "Display a message about product eligibility for monthly payments"
+#: includes/Admin/Helpers/FormFieldsHelper.php:563
+msgid "Product eligibility"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:556
-msgid "Cart eligibility notice"
+#: includes/Admin/Helpers/FormFieldsHelper.php:565
+msgid "Display widget on product page"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:558
-msgid "Display a message about cart eligibility for monthly payments"
+#: includes/Admin/Helpers/FormFieldsHelper.php:569
+msgid "Cart eligibility"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:562
-msgid "Excluded product categories"
-msgstr ""
-
-#: includes/Admin/Helpers/FormFieldsHelper.php:564
-msgid ""
-"Exclude all virtual/downloadable product categories, as you cannot sell them "
-"with Alma"
-msgstr ""
-
-#: includes/Admin/Helpers/FormFieldsHelper.php:574
-msgid "Non-eligibility message for excluded products"
+#: includes/Admin/Helpers/FormFieldsHelper.php:571
+msgid "Display widget on cart page"
 msgstr ""
 
 #: includes/Admin/Helpers/FormFieldsHelper.php:575
-msgid ""
-"Message displayed below the cart totals when it contains excluded products"
+msgid "Excluded product categories"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:625
+#: includes/Admin/Helpers/FormFieldsHelper.php:577
+msgid "Exclude all virtual/downloadable product categories, as you cannot sell them with Alma"
+msgstr ""
+
+#: includes/Admin/Helpers/FormFieldsHelper.php:587
+msgid "Non-eligibility message for excluded products"
+msgstr ""
+
+#: includes/Admin/Helpers/FormFieldsHelper.php:588
+msgid "Message displayed below the cart totals when it contains excluded products"
+msgstr ""
+
+#: includes/Admin/Helpers/FormFieldsHelper.php:639
 msgid "Title"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:626
-msgid ""
-"This controls the payment method name which the user sees during checkout."
+#: includes/Admin/Helpers/FormFieldsHelper.php:640
+msgid "This controls the payment method name which the user sees during checkout."
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:635
+#: includes/Admin/Helpers/FormFieldsHelper.php:649
 msgid "Description"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:637
-msgid ""
-"This controls the payment method description which the user sees during "
-"checkout."
-msgstr ""
-
-#: includes/Admin/Helpers/FormFieldsHelper.php:660
-msgid "→ Payment upon trigger configuration"
+#: includes/Admin/Helpers/FormFieldsHelper.php:651
+msgid "This controls the payment method description which the user sees during checkout."
 msgstr ""
 
 #: includes/Admin/Helpers/FormFieldsHelper.php:674
-msgid ""
-"This option is available only for Alma payment in 2x, 3x and 4x.<br>When "
-"it's turned on, your clients will pay the first installment at the order "
-"status change. When your client order on your website, Alma will only ask "
-"for a payment authorization. Only status handled by Alma are available in "
-"the menu below. Please contact Alma if you need us to add another status."
+msgid "→ Payment upon trigger configuration"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:679
-msgid "Activate the payment upon trigger"
-msgstr ""
-
-#: includes/Admin/Helpers/FormFieldsHelper.php:686
-msgid "Trigger typology"
-msgstr ""
-
-#: includes/Admin/Helpers/FormFieldsHelper.php:687
-msgid ""
-"Text that will appear in the payments schedule and in the customer's payment "
-"authorization email."
+#: includes/Admin/Helpers/FormFieldsHelper.php:688
+msgid "This option is available only for Alma payment in 2x, 3x and 4x.<br>When it's turned on, your clients will pay the first installment at the order status change. When your client order on your website, Alma will only ask for a payment authorization. Only status handled by Alma are available in the menu below. Please contact Alma if you need us to add another status."
 msgstr ""
 
 #: includes/Admin/Helpers/FormFieldsHelper.php:693
+msgid "Activate the payment upon trigger"
+msgstr ""
+
+#: includes/Admin/Helpers/FormFieldsHelper.php:700
+msgid "Trigger typology"
+msgstr ""
+
+#: includes/Admin/Helpers/FormFieldsHelper.php:701
+msgid "Text that will appear in the payments schedule and in the customer's payment authorization email."
+msgstr ""
+
+#: includes/Admin/Helpers/FormFieldsHelper.php:707
 msgid "Order status that triggers the first payment"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:712
+#: includes/Admin/Helpers/FormFieldsHelper.php:726
 msgid "→ Technical fields"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:714
-msgid ""
-"Specific fields just in case you need it. [<a href=\"#\" id="
-"\"alma_link_toggle_technical_section\">click to open or close</a>]"
+#: includes/Admin/Helpers/FormFieldsHelper.php:728
+msgid "Specific fields just in case you need it. [<a href=\"#\" id=\"alma_link_toggle_technical_section\">click to open or close</a>]"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:717
+#: includes/Admin/Helpers/FormFieldsHelper.php:731
 msgid "Custom check variations event"
 msgstr ""
 
 #. translators: %1$s is technical information, %2$s is Alma WooCommerce Plugin FAQ doc URL.
-#: includes/Admin/Helpers/FormFieldsHelper.php:721
-#, php-format
-msgid ""
-"This is the javascript event triggered on variables products page, when the "
-"customer change the product variation. Default value is <strong>%1$s</"
-"strong>.<br />More technical information on <a href=\"%2$s\" target=\"_blank"
-"\">Alma documentation</a>"
+#: includes/Admin/Helpers/FormFieldsHelper.php:735
+msgid "This is the javascript event triggered on variables products page, when the customer change the product variation. Default value is <strong>%1$s</strong>.<br />More technical information on <a href=\"%2$s\" target=\"_blank\">Alma documentation</a>"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:728
+#: includes/Admin/Helpers/FormFieldsHelper.php:742
 msgid "Variable products price query selector"
 msgstr ""
 
 #. translators: %s is technical information.
-#: includes/Admin/Helpers/FormFieldsHelper.php:732
-#, php-format
-msgid ""
-"Query selector used to get the price of product with variations. Default "
-"value is <strong>%s</strong>."
+#: includes/Admin/Helpers/FormFieldsHelper.php:746
+msgid "Query selector used to get the price of product with variations. Default value is <strong>%s</strong>."
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:738
+#: includes/Admin/Helpers/FormFieldsHelper.php:752
 msgid "Variable products sale price query selector"
 msgstr ""
 
 #. translators: %s is technical information.
-#: includes/Admin/Helpers/FormFieldsHelper.php:742
-#, php-format
-msgid ""
-"Query selector used to get the price of product with <strong>sales "
-"variations</strong>. Default value is <strong>%s</strong>."
+#: includes/Admin/Helpers/FormFieldsHelper.php:756
+msgid "Query selector used to get the price of product with <strong>sales variations</strong>. Default value is <strong>%s</strong>."
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:767
+#: includes/Admin/Helpers/FormFieldsHelper.php:781
 msgid "→ Increase your performance & get insights !"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:770
-msgid ""
-"By accepting this option, enable Alma to analyse the usage of your payment "
-"methods, get more informations to perform and share this data with you."
+#: includes/Admin/Helpers/FormFieldsHelper.php:785
+msgid "<br>You can <a href=\"mailto:support@getalma.eu\">erase your data</a> at any moment."
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:771
-msgid ""
-"<br>You can <a href=\"mailto:support@getalma.eu\">erase your data</a> at any "
-"moment."
-msgstr ""
-
-#: includes/Admin/Helpers/FormFieldsHelper.php:777
+#: includes/Admin/Helpers/FormFieldsHelper.php:791
 msgid "- total quantity of orders, amounts and currencies"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:779
+#: includes/Admin/Helpers/FormFieldsHelper.php:793
 msgid "- payment provider for each order"
 msgstr ""
 
-#: includes/Admin/Helpers/FormFieldsHelper.php:785
+#: includes/Admin/Helpers/FormFieldsHelper.php:799
 msgid "Activate your data sharing settings "
 msgstr ""
 
-#: includes/Admin/Helpers/FormHelper.php:52
+#: includes/Admin/Helpers/FormHelper.php:74
 msgid "→ Start by filling in your API keys"
 msgstr ""
 
-#: includes/Admin/Helpers/FormHelper.php:63
+#: includes/Admin/Helpers/FormHelper.php:85
 msgid "→ API configuration"
 msgstr ""
 
 #. translators: %s is a username.
-#: includes/Admin/Helpers/RefundHelper.php:107
-#, php-format
+#: includes/Admin/Helpers/RefundHelper.php:109
 msgid "Order fully refunded by %s."
 msgstr ""
 
 #. translators: %s is an error message.
-#: includes/Admin/Helpers/RefundHelper.php:112
-#, php-format
+#: includes/Admin/Helpers/RefundHelper.php:114
 msgid "Alma full refund error : %s."
 msgstr ""
 
-#: includes/Admin/Helpers/RefundHelper.php:237
+#: includes/Admin/Helpers/RefundHelper.php:239
 msgid "Amount cannot be equal to 0 to refund with Alma."
 msgstr ""
 
@@ -544,62 +467,56 @@ msgstr ""
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: includes/AlmaPlugin.php:126
+#: includes/AlmaPlugin.php:152
 msgid "Alma requires WooCommerce to be activated"
 msgstr ""
 
-#: includes/AlmaPlugin.php:130
+#: includes/AlmaPlugin.php:156
 msgid "Alma requires WooCommerce version 3.0.0 or greater"
 msgstr ""
 
-#: includes/AlmaPlugin.php:134
+#: includes/AlmaPlugin.php:160
 msgid "Alma requires the cURL PHP extension to be installed on your server"
 msgstr ""
 
-#: includes/AlmaPlugin.php:138
+#: includes/AlmaPlugin.php:164
 msgid "Alma requires the JSON PHP extension to be installed on your server"
 msgstr ""
 
-#: includes/AlmaPlugin.php:141
+#: includes/AlmaPlugin.php:167
 msgid "Alma requires OpenSSL >= 1.0.1 to be installed on your server"
 msgstr ""
 
-#: includes/AlmaPlugin.php:211
+#: includes/AlmaPlugin.php:230
 msgid "Settings"
 msgstr ""
 
 #. translators: %s: Error message.
-#: includes/AlmaSettings.php:542
+#: includes/AlmaSettings.php:603
 msgid "Alma encountered an error. No alma client found"
 msgstr ""
 
 #. translators: %s: Error message.
-#: includes/AlmaSettings.php:798
-msgid ""
-"Alma encountered an error when fetching merchant status, please check your "
-"api keys or retry later."
+#: includes/AlmaSettings.php:834
+msgid "Alma encountered an error when fetching merchant status, please check your api keys or retry later."
 msgstr ""
 
 #. translators: %s: Error message.
-#: includes/AlmaSettings.php:813
+#: includes/AlmaSettings.php:849
 msgid "Alma encountered an error."
 msgstr ""
 
-#: includes/AlmaSettings.php:828
+#: includes/AlmaSettings.php:873
 msgid "Alma encountered an error when fetching the fee plans."
 msgstr ""
 
-#: includes/Blocks/AlmaBlock.php:168
+#: includes/Blocks/AlmaBlock.php:190
 msgid "Pay With Alma"
 msgstr ""
 
 #. translators: %s: Alma dashboard url.
-#: includes/Exceptions/ActivationException.php:31
-#, php-format
-msgid ""
-"Your Alma account needs to be activated before you can use Alma on your shop."
-"<br>Go to your <a href=\"%1$s\" target=\"_blank\">Alma dashboard</a> to "
-"activate your account.<br><a href=\"%2$s\">Refresh</a> the page when ready."
+#: includes/Exceptions/ActivationException.php:33
+msgid "Your Alma account needs to be activated before you can use Alma on your shop.<br>Go to your <a href=\"%1$s\" target=\"_blank\">Alma dashboard</a> to activate your account.<br><a href=\"%2$s\">Refresh</a> the page when ready."
 msgstr ""
 
 #: includes/Exceptions/CreatePaymentsException.php:28
@@ -608,230 +525,181 @@ msgstr ""
 
 #. translators: %s: Alma dashboard url.
 #: includes/Exceptions/VersionDeprecated.php:30
-#, php-format
-msgid ""
-"Before installing this version of the Alma plugin, you need to manually "
-"remove the old version \"%s\", then deactivate and reactivate the new version"
+msgid "Before installing this version of the Alma plugin, you need to manually remove the old version \"%s\", then deactivate and reactivate the new version"
 msgstr ""
 
 #. translators: %s: Alma dashboard url.
 #: includes/Exceptions/WrongCredentialsException.php:34
-#, php-format
-msgid ""
-"Could not connect to Alma using your API keys.<br>Please double check your "
-"keys on your <a href=\"%1$s\" target=\"_blank\">Alma dashboard</a>."
+msgid "Could not connect to Alma using your API keys.<br>Please double check your keys on your <a href=\"%1$s\" target=\"_blank\">Alma dashboard</a>."
 msgstr ""
 
-#: includes/Gateways/AlmaPaymentGateway.php:190
+#: includes/Gateways/AlmaPaymentGateway.php:234
 msgid "Payment in instalments and deferred with Alma - 2x 3x 4x"
 msgstr ""
 
-#. Description of the plugin/theme
-#: includes/Gateways/AlmaPaymentGateway.php:191
-msgid ""
-"Install Alma and boost your sales! It's simple and guaranteed, your cash "
-"flow is secured. 0 commitment, 0 subscription, 0 risk."
-msgstr ""
-
 #. translators: %s: Admin settings url.
-#: includes/Gateways/AlmaPaymentGateway.php:249
-#, php-format
-msgid ""
-"Thanks for installing Alma! Start by <a href='%s'>activating Alma's payment "
-"method</a>, then set it up to get started."
+#: includes/Gateways/AlmaPaymentGateway.php:259
+msgid "Thanks for installing Alma! Start by <a href='%s'>activating Alma's payment method</a>, then set it up to get started."
 msgstr ""
 
 #. translators: %1$s: Admin settings url, %2$s: Admin logs url.
-#: includes/Gateways/AlmaPaymentGateway.php:400
-#, php-format
-msgid ""
-"Error while initializing Alma API client.<br><a href=\"%1$s\">Activate debug "
-"mode</a> and <a href=\"%2$s\">check logs</a> for more details."
+#: includes/Gateways/AlmaPaymentGateway.php:385
+msgid "Error while initializing Alma API client.<br><a href=\"%1$s\">Activate debug mode</a> and <a href=\"%2$s\">check logs</a> for more details."
 msgstr ""
 
-#: includes/Gateways/AlmaPaymentGateway.php:640
-#: includes/Gateways/AlmaPaymentGateway.php:667
-msgid ""
-"There was an error processing your payment.<br>Please try again or contact "
-"us if the problem persists."
-msgstr ""
-
+#: includes/Gateways/AlmaPaymentGateway.php:691
 #: includes/Gateways/AlmaPaymentGateway.php:719
+msgid "There was an error processing your payment.<br>Please try again or contact us if the problem persists."
+msgstr ""
+
+#: includes/Gateways/AlmaPaymentGateway.php:773
 msgid "enabled"
 msgstr ""
 
-#: includes/Gateways/AlmaPaymentGateway.php:723
+#: includes/Gateways/AlmaPaymentGateway.php:777
 msgid "disabled"
 msgstr ""
 
-#: includes/Handlers/GenericHandler.php:70
-msgid ""
-"Alma \"Eligibility Widget\" (cart or product) already rendered on this page "
-"- Not displaying Alma"
+#: includes/Handlers/GenericHandler.php:90
+msgid "Alma \"Eligibility Widget\" (cart or product) already rendered on this page - Not displaying Alma"
 msgstr ""
 
 #. translators: %s -> path to add after dashboard url
 #: includes/Helpers/AssetsHelper.php:92
-#, php-format
 msgid "https://dashboard.getalma.eu/%s"
 msgstr ""
 
-#. translators: %s -> path to add after sandbox dashboard url
 #: includes/Helpers/AssetsHelper.php:97
-#, php-format
 msgid "https://dashboard.sandbox.getalma.eu/%s"
 msgstr ""
 
 #: includes/Helpers/AssetsHelper.php:143
-msgid ""
-"Are you sure you want to enable compatibility with the Order Validation "
-"Block? Please note that this WooCommerce Block may not be fully compatible "
-"with all themes, potentially resulting in bugs. If you encounter any issues "
-"with the Alma payment functionality, we recommend deactivating this setting."
+msgid "Are you sure you want to enable compatibility with the Order Validation Block? Please note that this WooCommerce Block may not be fully compatible with all themes, potentially resulting in bugs. If you encounter any issues with the Alma payment functionality, we recommend deactivating this setting."
 msgstr ""
 
-#: includes/Helpers/GatewayHelper.php:155
+#: includes/Helpers/GatewayHelper.php:208
 msgid "Pay Now"
 msgstr ""
 
-#: includes/Helpers/GeneralHelper.php:31
+#: includes/Helpers/InternationalizationHelper.php:184
 msgid "At shipping"
 msgstr ""
 
-#: includes/Helpers/PaymentHelper.php:126
-msgid ""
-"Payment validation error: no ID provided.<br>Please try again or contact us "
-"if the problem persists."
+#: includes/Helpers/PaymentHelper.php:182
+msgid "Payment validation error: no ID provided.<br>Please try again or contact us if the problem persists."
 msgstr ""
 
-#: includes/Helpers/PaymentHelper.php:299
-msgid ""
-"There was an error when validating your payment.<br>Please try again or "
-"contact us if the problem persists."
+#: includes/Helpers/PaymentHelper.php:355
+msgid "There was an error when validating your payment.<br>Please try again or contact us if the problem persists."
 msgstr ""
 
-#: includes/Helpers/PaymentHelper.php:604
+#: includes/Helpers/PaymentHelper.php:619
 msgid "Selected payment method : Pay Now with Alma"
 msgstr ""
 
 #. translators: %d: number of installments.
-#: includes/Helpers/PaymentHelper.php:609
-#, php-format
+#: includes/Helpers/PaymentHelper.php:624
 msgid "Selected payment method : %d installments with Alma"
 msgstr ""
 
 #. translators: %d: number of deferred days.
-#: includes/Helpers/PaymentHelper.php:618
-#, php-format
+#: includes/Helpers/PaymentHelper.php:633
 msgid "Selected payment method : D+%d deferred  with Alma"
 msgstr ""
 
 #. translators: %d: number of deferred months.
-#: includes/Helpers/PaymentHelper.php:622
-#, php-format
+#: includes/Helpers/PaymentHelper.php:637
 msgid "Selected payment method : M+%d deferred with Alma"
 msgstr ""
 
-#: includes/Helpers/SettingsHelper.php:96
+#: includes/Helpers/SettingsHelper.php:158
 msgid "Pay in installments"
 msgstr ""
 
-#: includes/Helpers/SettingsHelper.php:109
-msgid "Pay by credit card"
-msgstr ""
-
-#: includes/Helpers/SettingsHelper.php:121
-msgid "Fast and secured payments"
-msgstr ""
-
-#: includes/Helpers/SettingsHelper.php:133
+#: includes/Helpers/SettingsHelper.php:171
 msgid "Fast and secure payment by credit card"
 msgstr ""
 
-#: includes/Helpers/SettingsHelper.php:146
+#: includes/Helpers/SettingsHelper.php:184
+msgid "Pay by credit card"
+msgstr ""
+
+#: includes/Helpers/SettingsHelper.php:197
+msgid "Fast and secured payments"
+msgstr ""
+
+#: includes/Helpers/SettingsHelper.php:210
 msgid "Pay later"
 msgstr ""
 
-#: includes/Helpers/SettingsHelper.php:158
+#: includes/Helpers/SettingsHelper.php:223
 msgid "Pay with financing"
 msgstr ""
 
-#: includes/Helpers/SettingsHelper.php:200
+#: includes/Helpers/SettingsHelper.php:266
 msgid "Some products cannot be paid with monthly or deferred installments"
 msgstr ""
 
 #. translators: %s: Admin settings url.
-#: includes/Helpers/SettingsHelper.php:238
-#, php-format
-msgid ""
-"Alma is almost ready. To get started, <a href=\"%s\">fill in your API keys</"
-"a>."
+#: includes/Helpers/SettingsHelper.php:304
+msgid "Alma is almost ready. To get started, <a href=\"%s\">fill in your API keys</a>."
 msgstr ""
 
 #. translators: %s: #product_id (if any)
-#: includes/Helpers/ShortcodesHelper.php:153
-#, php-format
+#: includes/Helpers/ShortcodesHelper.php:151
 msgid "Product%s not found - Not displaying Alma"
 msgstr ""
 
-#: includes/Services/CheckoutService.php:102
-#: includes/Services/CheckoutService.php:113
+#: includes/Services/CheckoutService.php:137
+#: includes/Services/CheckoutService.php:151
 msgid "We were unable to process your order, please try again."
 msgstr ""
 
 #. translators: %s: shop cart url
-#: includes/Services/CheckoutService.php:124
-#, php-format
-msgid ""
-"Sorry, your session has expired. <a href=\"%s\" class=\"wc-backward\">Return "
-"to shop</a>"
-msgstr ""
-
-#: includes/Services/CheckoutService.php:133
-msgid "Payment in installments via Alma"
-msgstr ""
-
-#: includes/Services/CheckoutService.php:137
-msgid "Payment by credit card via Alma"
-msgstr ""
-
-#: includes/Services/CheckoutService.php:140
-msgid "Pay Later via Alma"
+#: includes/Services/CheckoutService.php:162
+msgid "Sorry, your session has expired. <a href=\"%s\" class=\"wc-backward\">Return to shop</a>"
 msgstr ""
 
 #: includes/Services/CheckoutService.php:171
+msgid "Payment in installments via Alma"
+msgstr ""
+
+#: includes/Services/CheckoutService.php:175
+msgid "Payment by credit card via Alma"
+msgstr ""
+
+#: includes/Services/CheckoutService.php:178
+msgid "Pay Later via Alma"
+msgstr ""
+
+#: includes/Services/CheckoutService.php:181
+msgid "Payments in more than 4 installments"
+msgstr ""
+
+#: includes/Services/CheckoutService.php:216
 msgid "Unable to create order."
 msgstr ""
 
-#: includes/Services/CheckoutService.php:205
-msgid ""
-"Please read and accept the terms and conditions to proceed with your order."
+#: includes/Services/CheckoutService.php:248
+msgid "Please read and accept the terms and conditions to proceed with your order."
 msgstr ""
 
-#: includes/Services/CheckoutService.php:212
+#: includes/Services/CheckoutService.php:255
 msgid "Please enter an address to continue."
 msgstr ""
 
 #. translators: %s: shipping location
-#: includes/Services/CheckoutService.php:215
-#, php-format
-msgid ""
-"Unfortunately <strong>we do not ship %s</strong>. Please enter an "
-"alternative shipping address."
+#: includes/Services/CheckoutService.php:258
+msgid "Unfortunately <strong>we do not ship %s</strong>. Please enter an alternative shipping address."
 msgstr ""
 
-#: includes/Services/CheckoutService.php:221
-msgid ""
-"No shipping method has been selected. Please double check your address, or "
-"contact us if you need any help."
+#: includes/Services/CheckoutService.php:266
+msgid "No shipping method has been selected. Please double check your address, or contact us if you need any help."
 msgstr ""
 
 #. translators: %s: An order status (example: "completed").
 #: includes/Services/PaymentUponTriggerService.php:129
-#, php-format
-msgid ""
-"The first customer payment has been triggered, as you updated the order "
-"status to \"%s\"."
+msgid "The first customer payment has been triggered, as you updated the order status to \"%s\"."
 msgstr ""
 
 #: includes/Services/RefundService.php:67
@@ -840,69 +708,61 @@ msgstr ""
 
 #. translators: %s is an amount with currency.
 #: includes/Services/RefundService.php:69
-#, php-format
 msgid "Refund %s with Alma"
 msgstr ""
 
 #. translators: %s is a username.
 #: includes/Services/RefundService.php:124
-#, php-format
 msgid "Order fully refunded via Alma by %s."
 msgstr ""
 
 #. translators: %1$s is a username, %2$s is an amount with currency.
 #: includes/Services/RefundService.php:210
-#, php-format
 msgid "%1$s refunded %2$s with Alma."
 msgstr ""
 
 #. translators: %s is an error message.
 #: includes/Services/RefundService.php:217
-#, php-format
 msgid "Alma partial refund error : %s."
 msgstr ""
 
 #: public/templates/alma-checkout-no-plans.php:12
-msgid ""
-"To use this payment option, please ensure your order total meets the minimum "
-"amount required."
+msgid "To use this payment option, please ensure your order total meets the minimum amount required."
 msgstr ""
 
 #. translators: %1$s => today_amount (0), %2$s => total_amount, %3$s => i18n formatted due_date.
-#: public/templates/alma-checkout-plan-details.php:68
-#, php-format
+#: public/templates/alma-checkout-plan-details.php:76
 msgid "%1$s today then %2$s on %3$s"
 msgstr ""
 
 #. translators: %s:  term
-#: public/templates/alma-checkout-plan-details.php:78
-#, php-format
+#: public/templates/alma-checkout-plan-details.php:86
 msgid "In %s month"
 msgid_plural "In %s months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/templates/alma-checkout-plan-details.php:94
+#: public/templates/alma-checkout-plan-details.php:102
 msgid "Included fees:"
 msgstr ""
 
-#: public/templates/alma-checkout-plan-details.php:113
+#: public/templates/alma-checkout-plan-details.php:123
 msgid "Your credit"
 msgstr ""
 
-#: public/templates/alma-checkout-plan-details.php:122
+#: public/templates/alma-checkout-plan-details.php:132
 msgid "Your cart:"
 msgstr ""
 
-#: public/templates/alma-checkout-plan-details.php:132
+#: public/templates/alma-checkout-plan-details.php:142
 msgid "Credit cost:"
 msgstr ""
 
-#: public/templates/alma-checkout-plan-details.php:146
+#: public/templates/alma-checkout-plan-details.php:156
 msgid "Annual Interest Rate:"
 msgstr ""
 
-#: public/templates/alma-checkout-plan-details.php:157
+#: public/templates/alma-checkout-plan-details.php:167
 msgid "Total:"
 msgstr ""
 
@@ -911,22 +771,29 @@ msgstr ""
 #: public/templates/partials/alma-checkout-plan-in-page.php:54
 #: public/templates/partials/alma-checkout-plan.php:36
 #: public/templates/partials/alma-checkout-plan.php:49
-#, php-format
 msgid "%s installments"
 msgstr ""
 
-#. Plugin Name of the plugin/theme
-msgid "Alma - Pay in installments or later for WooCommerce"
+#: build/alma-widget-block/block.json
+#: src/alma-widget-block/block.json
+msgctxt "block title"
+msgid "Widget block for Alma Gateway"
 msgstr ""
 
-#. Plugin URI of the plugin/theme
-msgid "https://docs.almapay.com/docs/woocommerce"
+#: build/alma-widget-block/block.json
+#: src/alma-widget-block/block.json
+msgctxt "block description"
+msgid "A block that displays the Alma widget"
 msgstr ""
 
-#. Author of the plugin/theme
-msgid "Alma"
+#: build/alma-widget-block/block.json
+#: src/alma-widget-block/block.json
+msgctxt "block keyword"
+msgid "alma"
 msgstr ""
 
-#. Author URI of the plugin/theme
-msgid "https://almapay.com"
+#: build/alma-widget-block/block.json
+#: src/alma-widget-block/block.json
+msgctxt "block keyword"
+msgid "widget"
 msgstr ""

@@ -560,15 +560,15 @@ class FormFieldsHelper {
 
 		$general_settings_fields_end = array(
 			'display_product_eligibility' => array(
-				'title'   => __( 'Product eligibility notice', 'alma-gateway-for-woocommerce' ),
+				'title'   => __( 'Product eligibility', 'alma-gateway-for-woocommerce' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Display a message about product eligibility for monthly payments', 'alma-gateway-for-woocommerce' ),
+				'label'   => __( 'Display widget on product page', 'alma-gateway-for-woocommerce' ),
 				'default' => $default_settings['display_product_eligibility'],
 			),
 			'display_cart_eligibility'    => array(
-				'title'   => __( 'Cart eligibility notice', 'alma-gateway-for-woocommerce' ),
+				'title'   => __( 'Cart eligibility', 'alma-gateway-for-woocommerce' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Display a message about cart eligibility for monthly payments', 'alma-gateway-for-woocommerce' ),
+				'label'   => __( 'Display widget on cart page', 'alma-gateway-for-woocommerce' ),
 				'default' => $default_settings['display_cart_eligibility'],
 			),
 			'excluded_products_list'      => array(
