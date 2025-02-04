@@ -161,12 +161,12 @@ class AlmaWidgetBlock implements IntegrationInterface {
 	 */
 	public function get_script_data() {
 		return array(
-			'merchant_id'       => $this->alma_settings->get_active_merchant_id(),
-			'environment'       => strtoupper( $this->alma_settings->get_environment() ),
-			'plans'             => $this->filter_plans_definitions( $this->alma_settings->get_enabled_plans_definitions() ),
-			'amount'            => $this->cart_helper->get_total_in_cents(),
-			'locale'            => substr( get_locale(), 0, 2 ),
-			'must_be_displayed' => $this->must_be_displayed(),
+			'merchant_id'      => $this->alma_settings->get_active_merchant_id(),
+			'environment'      => strtoupper( $this->alma_settings->get_environment() ),
+			'plans'            => $this->filter_plans_definitions( $this->alma_settings->get_enabled_plans_definitions() ),
+			'amount'           => $this->cart_helper->get_total_in_cents(),
+			'locale'           => substr( get_locale(), 0, 2 ),
+			'can_be_displayed' => $this->can_be_displayed(),
 		);
 	}
 
@@ -192,7 +192,7 @@ class AlmaWidgetBlock implements IntegrationInterface {
 		);
 	}
 
-	private function must_be_displayed() {
+	private function can_be_displayed() {
 		return $this->alma_settings->has_keys() && $this->alma_settings->is_enabled() && 'yes' === $this->alma_settings->display_cart_eligibility;
 	}
 }
