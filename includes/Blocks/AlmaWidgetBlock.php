@@ -13,6 +13,7 @@ namespace Alma\Woocommerce\Blocks;
 
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
+use Alma\Woocommerce\Builders\Helpers\GatewayHelperBuilder;
 use Alma\Woocommerce\Helpers\CartHelper;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
 
@@ -35,11 +36,18 @@ class AlmaWidgetBlock implements IntegrationInterface {
 	 * @var CartHelper
 	 */
 	private $cart_helper;
+	/**
+	 * The gateway helper.
+	 * @var GatewayHelper
+	 */
+	private $gateway_helper;
 
 	public function __construct() {
-		$this->alma_settings = new AlmaSettings();
-		$cart_helper_builder = new CartHelperBuilder();
-		$this->cart_helper   = $cart_helper_builder->get_instance();
+		$this->alma_settings    = new AlmaSettings();
+		$cart_helper_builder    = new CartHelperBuilder();
+		$this->cart_helper      = $cart_helper_builder->get_instance();
+		$gateway_helper_builder = new GatewayHelperBuilder();
+		$this->gateway_helper   = $gateway_helper_builder->get_instance();
 	}
 
 	public function get_name() {
@@ -193,6 +201,9 @@ class AlmaWidgetBlock implements IntegrationInterface {
 	}
 
 	private function can_be_displayed() {
-		return $this->alma_settings->has_keys() && $this->alma_settings->is_enabled() && 'yes' === $this->alma_settings->display_cart_eligibility;
+		return $this->alma_settings->has_keys()
+			   && $this->alma_settings->is_enabled()
+			   && 'yes' === $this->alma_settings->display_cart_eligibility
+			&& ! $this->gateway_helper->cart_contains_excluded_category();
 	}
 }
