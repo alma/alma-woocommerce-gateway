@@ -54,6 +54,11 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase
         $this->security_helper_mock = $this->createMock(SecurityHelper::class);
         $this->payload_formatter_mock = $this->createMock(PayloadFormatter::class);
         $this->option_proxy_mock = $this->createMock(OptionProxy::class);
+        $valueMap = [
+            ['active_plugins', false, []],
+            ['woocommerce_version', false, 'v.4.2'],
+        ];
+        $this->option_proxy_mock->method('get_option')->willReturnMap($valueMap);
         $this->theme_proxy_mock = $this->createMock(ThemeProxy::class);
         $this->theme_proxy_mock->method('get_name')->willReturn('Storefront');
         $this->theme_proxy_mock->method('get_version')->willReturn('v.4.5');
@@ -125,22 +130,12 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase
 
     }
 
-	/**
-	 * @dataProvider get_auto_update_plugins_settings
-	 */
-    public function test_handle_collect_cms_data_with_valid_signature($specific_features, $auto_update_plugins)
+    public function test_handle_collect_cms_data_with_valid_signature()
     {
         $_SERVER['HTTP_X_ALMA_SIGNATURE'] = 'valid_signature';
 
         $this->security_helper_mock->expects($this->once())
             ->method('validate_collect_data_signature');
-
-	    $valueMap = [
-		    ['active_plugins', false, []],
-		    ['woocommerce_version', false, 'v.4.2'],
-		    ['auto_update_plugins', [], $auto_update_plugins]
-	    ];
-	    $this->option_proxy_mock->method('get_option')->willReturnMap($valueMap);
 
         $cms_info = new CmsInfo([
             'cms_name' => 'WooCommerce',
@@ -164,7 +159,6 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase
             'log_activated' => true,
             'excluded_categories' => [],
             'is_multisite' => is_multisite(),
-            'specific_features' => $specific_features,
         ]);
 
         $payload_formatter_return = [
@@ -182,21 +176,4 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase
 
         $this->assertNull($this->collect_cms_data_service->handle_collect_cms_data());
     }
-
-	public function get_auto_update_plugins_settings() {
-		return [
-			'Auto update plugins key does not exist' => [
-				'specific_features' => [null],
-				'auto_update_plugins' => []
-			],
-			'Auto update plugins key exists and nor contain Alma plugin' => [
-				'specific_features' => [null],
-				'auto_update_plugins' => ['woocommerce/woocommerce.php']
-			],
-			'Auto update plugins key exists and contain Alma plugin' => [
-				'specific_features' => ['auto_update'],
-				'auto_update_plugins' => ['woocommerce/woocommerce.php', 'alma-woocommerce-gateway/alma-gateway-for-woocommerce.php']
-			]
-		];
-	}
 }
