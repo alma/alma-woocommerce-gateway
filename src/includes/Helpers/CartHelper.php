@@ -250,7 +250,7 @@ class CartHelper {
 				function ( $plan ) {
 					unset( $plan['max_amount'] );
 					unset( $plan['min_amount'] );
-
+					
 					return $plan;
 				},
 				$this->alma_settings->get_eligible_plans_definitions( $amount )

@@ -76,8 +76,6 @@ class AlmaPlugin {
 	 */
 	protected $version_factory;
 	/**
-	 * Blocks data service.
-	 *
 	 * @var BlocksDataService
 	 */
 	private $blocks_data_service;
