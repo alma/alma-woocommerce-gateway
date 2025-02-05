@@ -195,19 +195,19 @@ class BlocksDataService {
 			$deferred_months   = $eligibility->getDeferredMonths();
 
 			// Pay now
-			if ( $installment_count === 1 && $deferred_months === 0 && $deferred_days === 0 ) {//phpcs:ignore
+			if ( 1 === $installment_count && 0 === $deferred_months && 0 === $deferred_days ) {
 				$gateways[ $gateways_keys[ $gateway_mode ]['pay_now'] ][ $plan_key ] = $this->format_plan_content_for_blocks( $eligibility );
 			}
 			// Pay in installments
-			if ( $installment_count > 1 && $installment_count <= 4 && $deferred_months === 0 && $deferred_days === 0 ) {//phpcs:ignore
+			if ( 1 < $installment_count && 4 >= $installment_count && 0 === $deferred_months && 0 === $deferred_days ) {
 				$gateways[ $gateways_keys[ $gateway_mode ]['installments'] ][ $plan_key ] = $this->format_plan_content_for_blocks( $eligibility );
 			}
 			// Pay in credit
-			if ( $installment_count > 4 && $deferred_months === 0 && $deferred_days === 0 ) {//phpcs:ignore
+			if ( 4 < $installment_count && 0 === $deferred_months && 0 === $deferred_days ) {
 				$gateways[ $gateways_keys[ $gateway_mode ]['credit'] ][ $plan_key ] = $this->format_plan_content_for_blocks( $eligibility );
 			}
 			// Pay later
-			if ( $installment_count === 1 && ( $deferred_months > 0 || $deferred_days > 0 ) ) {//phpcs:ignore
+			if ( 1 === $installment_count && ( 0 < $deferred_months || 0 < $deferred_days ) ) {
 				$gateways[ $gateways_keys[ $gateway_mode ]['pay_later'] ][ $plan_key ] = $this->format_plan_content_for_blocks( $eligibility );
 			}
 		}
