@@ -781,7 +781,7 @@ class FormFieldsHelper {
 				'title'       => '<hr>' . __( '→ Increase your performance & get insights !', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'title',
 				'description' => wp_kses_post(
-					FormFieldsHelper . php__( 'By accepting this option, enable Alma to analyse the usage of your payment methods, get more informations to perform and share this data with you.', 'alma-gateway-for-woocommerce' ) .
+					__( 'By accepting this option, enable Alma to analyse the usage of your payment methods, get more informations to perform and share this data with you.', 'alma-gateway-for-woocommerce' ) .
 					__( '<br>You can <a href="mailto:support@getalma.eu">erase your data</a> at any moment.', 'alma-gateway-for-woocommerce' ) .
 					'<p class="alma-legal-checkout-collapsible">' .
 					__( 'Know more about collected data', 'alma-gateway-for-woocommerce' ) .

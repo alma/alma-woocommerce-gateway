@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-02-04T14:37:21+00:00\n"
+"POT-Creation-Date: 2025-02-05T09:50:25+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: alma-gateway-for-woocommerce\n"
@@ -419,6 +419,10 @@ msgstr ""
 
 #: includes/Admin/Helpers/FormFieldsHelper.php:781
 msgid "→ Increase your performance & get insights !"
+msgstr ""
+
+#: includes/Admin/Helpers/FormFieldsHelper.php:784
+msgid "By accepting this option, enable Alma to analyse the usage of your payment methods, get more informations to perform and share this data with you."
 msgstr ""
 
 #: includes/Admin/Helpers/FormFieldsHelper.php:785

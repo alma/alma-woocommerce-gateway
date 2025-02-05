@@ -32,6 +32,7 @@
     "style-loader": "^3.3.4"
   },
   "dependencies": {
+    "@wordpress/i18n": "^5.16.0",
     "@alma/react-components": "^3.6.1",
     "postcss": "^8.4.35",
     "react-intl": "^6.6.2"

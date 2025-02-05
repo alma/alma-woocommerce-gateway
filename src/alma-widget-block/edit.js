@@ -1,4 +1,5 @@
 import {useBlockProps} from '@wordpress/block-editor';
+import {__} from '@wordpress/i18n';
 
 import './alma-widget-block.css';
 
@@ -12,12 +13,12 @@ const Edit = () => {
                         fill="var(--off-black)"></path>
                 </svg>
                 <div>
-                    <div>J+30</div>
+                    <div>{__('J+30')}</div>
                     <div>3x</div>
                     <div>4x</div>
                 </div>
             </div>
-            <div>4 x 112,50&nbsp;€ (sans frais)</div>
+            <div>4 x 112,50&nbsp;€&nbsp;({__('sans frais')})</div>
         </div>
     );
 };
