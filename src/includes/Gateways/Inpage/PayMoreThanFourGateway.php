@@ -24,7 +24,6 @@ use Alma\Woocommerce\Traits\InPageGatewayTrait;
  */
 class PayMoreThanFourGateway extends AlmaPaymentGateway {
 
-	const GATEWAY_ID = 'alma_in_page_pnx_plus_4';
 	use InPageGatewayTrait;
 
 	/**

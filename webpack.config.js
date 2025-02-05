@@ -5,7 +5,6 @@ const config = {
     ...defaultConfig,
     entry: {
         'alma-checkout-blocks': path.resolve(process.cwd(), 'src', 'assets', 'js', 'alma-checkout-blocks.js'),
-        'alma-store': path.resolve(process.cwd(), 'src', 'assets', 'js', 'stores', 'alma-store.js'),
         // 'alma-checkout-blocks-pay-later': path.resolve(process.cwd(), 'src', 'assets', 'js', 'alma-checkout-blocks-pay-later.js'),
         // 'alma-checkout-blocks-pay-more-than-four': path.resolve(process.cwd(), 'src', 'assets', 'js', 'alma-checkout-blocks-pay-more-than-four.js'),
     },

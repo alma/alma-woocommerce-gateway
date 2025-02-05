@@ -23,8 +23,6 @@ use Alma\Woocommerce\Helpers\ConstantsHelper;
  */
 class StandardGateway extends AlmaPaymentGateway {
 
-	const GATEWAY_ID = 'alma';
-
 	/**
 	 * Get the gateway id.
 	 *
