@@ -14,7 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Alma\Woocommerce\Admin\Services\NoticesService;
-use Alma\Woocommerce\Blocks\BlocksDataService;
 use Alma\Woocommerce\Exceptions\RequirementsException;
 use Alma\Woocommerce\Exceptions\VersionDeprecated;
 use Alma\Woocommerce\Factories\VersionFactory;
@@ -75,10 +74,6 @@ class AlmaPlugin {
 	 * @var VersionFactory
 	 */
 	protected $version_factory;
-	/**
-	 * @var BlocksDataService
-	 */
-	private $blocks_data_service;
 
 	/**
 	 * Protected constructor to prevent creating a new instance of the
@@ -90,8 +85,6 @@ class AlmaPlugin {
 		$this->admin_notices    = new NoticesService();
 		$this->plugin_helper    = new PluginHelper();
 		$this->version_factory  = new VersionFactory();
-
-		$this->blocks_data_service = new BlocksDataService();
 
 		try {
 			$migration_success = $this->migration_helper->update();
@@ -136,7 +129,6 @@ class AlmaPlugin {
 		$this->plugin_helper->add_hooks();
 		$this->plugin_helper->add_shortcodes_and_scripts();
 		$this->plugin_helper->add_actions();
-		$this->blocks_data_service->init_hooks();
 	}
 
 

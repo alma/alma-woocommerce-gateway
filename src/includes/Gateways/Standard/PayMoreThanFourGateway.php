@@ -22,8 +22,6 @@ use Alma\Woocommerce\Helpers\ConstantsHelper;
  */
 class PayMoreThanFourGateway extends StandardGateway {
 
-	const GATEWAY_ID = 'alma_pnx_plus_4';
-	
 	/**
 	 * Get the gateway id.
 	 *

@@ -24,8 +24,6 @@ use Alma\Woocommerce\Traits\InPageGatewayTrait;
  */
 class PayNowGateway extends AlmaPaymentGateway {
 
-	const GATEWAY_ID = 'alma_in_page_pay_now';
-	
 	use InPageGatewayTrait;
 
 	/**

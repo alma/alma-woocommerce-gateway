@@ -55,8 +55,6 @@ class SettingsHelperTest extends WP_UnitTestCase {
 		'description_blocks_alma_pay_later'          => 'Fast and secure payment by credit card',
 		'title_blocks_alma_pnx_plus_4'               => 'Pay with financing',
 		'description_blocks_alma_pnx_plus_4'         => 'Fast and secure payment by credit card',
-		'title_blocks_alma_in_page_pnx_plus_4'       => 'Pay with financing',
-		'description_blocks_alma_in_page_pnx_plus_4' => 'Fast and secure payment by credit card',
 		'display_cart_eligibility'                   => 'yes',
 		'display_product_eligibility'                => 'yes',
 		'variable_product_price_query_selector'      => 'form.variations_form div.woocommerce-variation-price span.woocommerce-Price-amount',
