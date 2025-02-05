@@ -44,7 +44,9 @@ RUN useradd -ms /bin/bash phpuser
 WORKDIR /home/phpuser
 USER phpuser
 
+COPY --chown=phpuser ./composer.json ./
 COPY --from=composer /usr/bin/composer /usr/bin/composer
+
 COPY --chown=phpuser ./ ./
 RUN composer install --prefer-dist --no-progress
 
