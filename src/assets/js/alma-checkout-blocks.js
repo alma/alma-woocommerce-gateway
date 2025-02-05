@@ -10,173 +10,109 @@
 // phpcs:ignoreFile
 
 import {useEffect, useState} from '@wordpress/element';
-import {select} from '@wordpress/data';
-import {Logo} from '@alma/react-components';
-import {AlmaBlocks} from "./components/alma-blocks-component.tsx";
+import {select, useSelect} from '@wordpress/data';
+import {fetchAlmaEligibility} from "./hooks/fetchAlmaEligibility";
+import {Label} from "./components/Label";
+import {DisplayAlmaBlocks} from "./components/DisplayAlmaBlocks";
+import {DisplayAlmaInPageBlocks} from "./components/DisplayAlmaInPageBlocks";
 import '../css/alma-checkout-blocks.css';
 
 (function ($) {
-    const gateways = ['alma_pay_now', 'alma_in_page_pay_now', 'alma', 'alma_in_page', 'alma_pay_later', 'alma_in_page_pay_later', 'alma_pnx_plus_4'];
+    const store_key = 'alma/alma-store'
     var inPage = undefined;
-    var propsData = null;
-    var globalSelectedFeePlan = null;
+    const {CART_STORE_KEY} = window.wc.wcBlocksData
 
-    $.each(gateways, function (index, gateway) {
-            const settings = window.wc.wcSettings.getSetting(`${gateway}_data`, null);
+    const CartObserver = () => {
+        // Subscribe to the cart total
+        const {cartTotal} = useSelect((select) => ({
+            cartTotal: select(CART_STORE_KEY).getCartTotals()
+        }), []);
 
-            if (!settings) {
-                return
-            }
+        // Subscribe to the eligibility
+        const {eligibility} = useSelect(
+            (select) => ({
+                eligibility: select(store_key).getAlmaEligibility()
+            }), []
+        );
 
-            const label = window.wp.htmlEntities.decodeEntities(settings.title);
-            const Label = props => {
-                const {PaymentMethodLabel} = props.components;
-                const icon = <Logo style={{width: 'auto', height: '1em'}} logo="alma-orange"/>
-                const text = <div>{settings.title}</div>
-                return <span className='paymentMethodLabel'>
-                <PaymentMethodLabel text={text} icon={icon}/>
-            </span>
-            }
+        // Use the cart total to fetch the new eligibility
+        useEffect(() => {
+            // BlockData is a global variable defined in the PHP file with the wp_localize_script function
+            fetchAlmaEligibility(store_key, BlocksData.url)
+        }, [cartTotal]);
 
-            function DisplayAlmaBlocks(props) {
-                const {CART_STORE_KEY} = window.wc.wcBlocksData
-                const cartStore = select(CART_STORE_KEY)
-                const {total_price} = (cartStore.getCartTotals())
-                const [selectedFeePlan, setSelectedFeePlan] = useState(settings.default_plan)
-                const {eventRegistration, emitResponse} = props;
-                const {
-                    onCheckoutValidationBeforeProcessing
-                } = eventRegistration;
-                propsData = props
+        // Register the payment gateway blocks
+        useEffect(() => {
+            // For each gateway in eligibility result, we register a block
+            for (const gateway in eligibility) {
+                const settings = window.wc.wcSettings.getSetting(`${gateway}_data`, null)
+                const is_in_page = settings.is_in_page
+                const blockContent = getContentBlock(is_in_page, settings, cartTotal, gateway)
 
-                useEffect(() => {
-                    globalSelectedFeePlan = selectedFeePlan;
-                }, [selectedFeePlan]);
-
-                useEffect(() => {
-                    const unsubscribe = onCheckoutValidationBeforeProcessing(() => {
-                        return true
-                    });
-                    return unsubscribe;
-                }, [onCheckoutValidationBeforeProcessing
-                ]);
-
-
-                // There cannot be two iframes in the same page, so this is the function to unmount it
-                function initializeInpage(settingsInPage) {
-                    if (
-                        inPage !== undefined
-                        && document.getElementById('alma-embedded-iframe') !== null
-                    ) {
-                        inPage.unmount();
-                    }
-
-                    inPage = Alma.InPage.initialize({
-                        merchantId: settingsInPage.merchant_id,
-                        amountInCents: total_price,
-                        installmentsCount: settings.plans[selectedFeePlan].installmentsCount,
-                        selector: "#alma-inpage-alma_in_page",
-                        deferredDays: settings.plans[selectedFeePlan].deferredDays,
-                        deferredMonths: settings.plans[selectedFeePlan].deferredMonths,
-                        environment: settingsInPage.environment,
-                        locale: settingsInPage.locale,
-                    });
+                const Block_Gateway_Alma = {
+                    name: settings.gateway_name,
+                    label: (
+                        <Label
+                            title={window.wp.htmlEntities.decodeEntities(settings.title)}
+                        />
+                    ),
+                    content: blockContent,
+                    edit: blockContent,
+                    placeOrderButtonLabel: settings.label_button,
+                    canMakePayment: () => {
+                        return gatewayCanMakePayment(eligibility[gateway])
+                    },
+                    ariaLabel: settings.title,
                 }
 
-                // Each time the settings change, we need to unmout the iframe and remount it with the new settings
-                useEffect(() => {
-                    if (
-                        settings.gateway_name === 'alma_in_page_pay_now'
-                        || settings.gateway_name === 'alma_in_page_pay_later'
-                        || settings.gateway_name === 'alma_in_page'
-                    ) {
-                        initializeInpage(settings)
-                    }
-                }, [settings, selectedFeePlan, total_price])
-
-                if (
-                    settings.gateway_name === 'alma_in_page_pay_now'
-                    || settings.gateway_name === 'alma_in_page_pay_later'
-                    || settings.gateway_name === 'alma_in_page'
-                ) {
-                    window.addEventListener(
-                        'load',
-                        (event) => {
-                            addActionToPaymentButton()
-                        }
-                    )
-                    return <>
-                        <AlmaBlocks hasInPage={settings.is_in_page} totalPrice={total_price} settings={settings}
-                                    selectedFeePlan={selectedFeePlan}
-                                    setSelectedFeePlan={setSelectedFeePlan}/>
-                        <div id='alma-inpage-alma_in_page'></div>
-                    </>
-                } else {
-                    const {onPaymentSetup} = eventRegistration;
-                    useEffect(
-                        () => {
-                            const unsubscribe = onPaymentSetup(
-                                async () => {
-                                    // Here we can do any processing we need, and then emit a response.
-                                    // For example, we might validate a custom field, or perform an AJAX request, and then emit a response indicating it is valid or not.
-                                    const nonceKey = `alma_checkout_nonce${settings.gateway_name}`;
-                                    const paymentMethodData = {
-                                        [nonceKey]: `${settings.nonce_value}`,
-                                        alma_fee_plan: selectedFeePlan,
-                                        payment_method: settings.gateway_name,
-                                    }
-
-                                    return {
-                                        type: emitResponse.responseTypes.SUCCESS,
-                                        meta: {
-                                            paymentMethodData
-                                        }
-                                    };
-                                }
-                            );
-                            // Unsubscribes when this component is unmounted.
-                            return () => {
-                                unsubscribe();
-                            };
-                        },
-                        [
-                            emitResponse.responseTypes.ERROR,
-                            emitResponse.responseTypes.SUCCESS,
-                            onPaymentSetup,
-                            selectedFeePlan
-                        ]
-                    );
-                    return (
-                        <AlmaBlocks hasInPage={settings.is_in_page} totalPrice={total_price} settings={settings}
-                                    selectedFeePlan={selectedFeePlan}
-                                    setSelectedFeePlan={setSelectedFeePlan}/>
-
-                    )
-                }
+                window.wc.wcBlocksRegistry.registerPaymentMethod(Block_Gateway_Alma);
             }
+        }, [eligibility]);
+        return null
+    };
 
-
-            const Block_Gateway_Alma = {
-                name: settings.gateway_name,
-                label: <Label/>,
-                content: <DisplayAlmaBlocks/>, // phpcs:ignore
-                edit: <DisplayAlmaBlocks/>,  // phpcs:ignore
-                placeOrderButtonLabel: settings.label_button,
-                canMakePayment: () => true,
-                ariaLabel: label
-            };
-
-            window.wc.wcBlocksRegistry.registerPaymentMethod(Block_Gateway_Alma);
+    const getContentBlock = (is_in_page, settings, cartTotal, gateway) => {
+        const setInPage = (inPageInstance) => {
+            inPage = inPageInstance
         }
-    );
+        const isPayNow = (settings.gateway_name === "alma_pay_now" || settings.gateway_name === "alma_in_page_pay_now");
 
-    $('body').on(
-        'load',
-        function () {
-            document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].removeEventListener("click", addActionToPaymentButtonListener);
-            addActionToPaymentButton()
+        return is_in_page ? (
+            <DisplayAlmaInPageBlocks
+                isPayNow={isPayNow}
+                store_key={store_key}
+                settings={settings}
+                gateway={gateway}
+                setInPage={setInPage}
+            />
+        ) : (
+            <DisplayAlmaBlocks
+                isPayNow={isPayNow}
+                store_key={store_key}
+                settings={settings}
+                gateway={gateway}
+            />
+        )
+    }
+    const gatewayCanMakePayment = (gateway_eligibility) => {
+        let canMakePayment = true
+        if (Object.keys(gateway_eligibility).length === 0) {
+            canMakePayment = false
         }
-    );
+        return canMakePayment
+    }
+
+    const mountReactComponent = () => {
+        const rootDiv = document.createElement('div');
+        document.body.appendChild(rootDiv);
+
+        ReactDOM.render(<CartObserver/>, rootDiv);
+    };
+
+    $(document).ready(() => {
+        mountReactComponent();
+    });
+
     $('body').on(
         'change',
         'input[type=\'radio\'][name=\'radio-control-wc-payment-method-options\']',
@@ -194,8 +130,10 @@ import '../css/alma-checkout-blocks.css';
     }
 
     const addActionToPaymentButtonListener = (event) => {
-        const {CHECKOUT_STORE_KEY} = window.wc.wcBlocksData
+        const {CHECKOUT_STORE_KEY, CART_STORE_KEY} = window.wc.wcBlocksData
         const store = select(CHECKOUT_STORE_KEY);
+        const cartStore = select(CART_STORE_KEY);
+        const almaStore = select(store_key);
         const dataTest = {
             hasError: store.hasError(),
             redirectUrl: store.getRedirectUrl(),
@@ -218,6 +156,7 @@ import '../css/alma-checkout-blocks.css';
             settings.gateway_name === 'alma_in_page_pay_now'
             || settings.gateway_name === 'alma_in_page_pay_later'
             || settings.gateway_name === 'alma_in_page'
+            || settings.gateway_name === 'alma_in_page_pnx_plus_4'
         ) {
             event.stopPropagation()
             const {shouldCreateAccount, ...restOfDataTest} = dataTest
@@ -231,25 +170,25 @@ import '../css/alma-checkout-blocks.css';
                 return false;
             }
 
-            const areShippingAndBillingAddressDifferent = isDifferentAddress(propsData.shippingData.shippingAddress, propsData.billing.billingAddress)
-            
+            const areShippingAndBillingAddressDifferent = isDifferentAddress(cartStore.getCustomerData().shippingAddress, cartStore.getCustomerData().billingAddress)
+
             var data = {
                 'action': 'alma_do_checkout_in_page',
                 'fields': {
-                    'shipping_address': propsData.shippingData.shippingAddress,
-                    'billing_address': {...propsData.billing.billingAddress},
+                    'shipping_address': cartStore.getCustomerData().shippingAddress,
+                    'billing_address': {...cartStore.getCustomerData().billingAddress},
                     ...restOfDataTest,
                     'ship_to_different_address': areShippingAndBillingAddressDifferent,
                     'createaccount': dataTest.shouldCreateAccount,
-                    'alma_fee_plan': globalSelectedFeePlan,
+                    'alma_fee_plan': almaStore.getSelectedFeePlan(),
                     [almaCheckoutNonce]: settings.nonce_value,
                     'payment_method': settings.gateway_name,
                 },
                 [almaCheckoutNonce]: settings.nonce_value,
                 'woocommerce-process-checkout-nonce': settings.woocommerce_process_checkout_nonce,
                 'payment_method': settings.gateway_name,
-                'alma_fee_plan': globalSelectedFeePlan,
-                'alma_fee_plan_in_page': globalSelectedFeePlan,
+                'alma_fee_plan': almaStore.getSelectedFeePlan(),
+                'alma_fee_plan_in_page': almaStore.getSelectedFeePlan(),
                 'is_woo_block': true
             };
 

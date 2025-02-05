@@ -125,6 +125,8 @@ class SettingsHelper {
 			'description_blocks_alma_pay_later'          => $this->default_payment_description(),
 			'title_blocks_alma_pnx_plus_4'               => $this->default_pnx_plus_4_title(),
 			'description_blocks_alma_pnx_plus_4'         => $this->default_payment_description(),
+			'title_blocks_alma_in_page_pnx_plus_4'       => $this->default_pnx_plus_4_title(),
+			'description_blocks_alma_in_page_pnx_plus_4' => $this->default_payment_description(),
 			'display_cart_eligibility'                   => 'yes',
 			'display_product_eligibility'                => 'yes',
 			'variable_product_price_query_selector'      => $this->default_variable_price_selector(),
