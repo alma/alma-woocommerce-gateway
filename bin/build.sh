@@ -92,16 +92,16 @@ DIST="$HERE/dist/"
 TO_SYNC=" \
 readme.txt \
 LICENSE  \
-./src/assets \
-./src/build \
-./src/includes \
-./src/languages \
-./src/public \
-./src/tests \
-./src/composer.json \
-./src/phpcs.xml \
-./src/alma-gateway-for-woocommerce.php \
-./src/uninstall.php \
+./assets \
+./build \
+./includes \
+./languages \
+./public \
+./tests \
+./composer.json \
+./phpcs.xml \
+./alma-gateway-for-woocommerce.php \
+./uninstall.php \
 "
 RSYNC_EXCLUDE="--exclude=*.orig --exclude=.DS_Store"
 # }}}

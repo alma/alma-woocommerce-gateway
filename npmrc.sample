@@ -1,5 +1,3 @@
-@alma:registry=https://npm.pkg.github.com
-registry=https://registry.npmjs.org
-//npm.pkg.github.com/:_authToken=NPM_AUTH_TOKEN
-
+@alma:registry=https://europe-npm.pkg.dev/lyrical-carver-335213/internal-npm-packages/
+//europe-npm.pkg.dev/lyrical-carver-335213/internal-npm-packages/:always-auth=true
 engine-strict=true

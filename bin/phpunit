@@ -1,2 +1,2 @@
 #!/bin/bash
-src/vendor/phpunit/phpunit/phpunit -c src/phpunit.xml.dist
+vendor/phpunit/phpunit/phpunit -c phpunit.xml.dist
