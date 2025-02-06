@@ -1,5 +1,29 @@
 # Changelog
 
+## v5.9.0 - 2025-02-06
+
+### Changes
+
+- Revert "Revert "Feature/ecom 2090 bug block is not reloaded when country is not eligible"" (#315)
+- Revert "Feature/ecom 2090 bug block is not reloaded when country is not eligible" (#314)
+- Revert "Add auto_update in specific_features for gather cms data" (#313)
+
+### 🚀 New Features
+
+- Collect auto_update plugins for gather cms data (#316)
+- Feature/woo-commerce blocks (#310)
+- Add auto_update in specific_features for gather cms data (#312)
+- Feature/ecom 2090 bug block is not reloaded when country is not eligible (#309)
+- Fix error when no file to add or remove on release (#305)
+- Feature/ecom 2209 bug fix woocommerce checkout blocks feature (#300)
+- feat: Cancel order before delete (#308)
+- Change check nonce log lvl (#307)
+- Fix has pay now method (#306)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @Francois-Gomis, @carine-bonnafous, @joyet-simon, @webaaz and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+
 ## v5.8.1 - 2024-12-16
 
 ### 🐛 Bug Fixes
