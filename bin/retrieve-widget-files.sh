@@ -7,8 +7,8 @@
 #{{{ SCRIPT CONSTANTS
 ROOT_DIR="`dirname $0`/.."
 BUILD_DIR="$ROOT_DIR/dist/widgets"
-WIDGET_ASSETS_DIR="${ROOT_DIR}/src/assets/widget"
-WIDGET_CSS_DIR="${ROOT_DIR}/src/assets/widget/css"
+WIDGET_ASSETS_DIR="${ROOT_DIR}/assets/widget"
+WIDGET_CSS_DIR="${ROOT_DIR}/assets/widget/css"
 
 CDN_DIST_URL="https://cdn.jsdelivr.net/npm/@alma/widgets@3.x.x/dist"
 CDN_RAW_URL="${CDN_DIST_URL}/raw"

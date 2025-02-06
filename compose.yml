@@ -28,7 +28,7 @@ services:
       mysql:
         condition: service_healthy
     volumes:
-      - ./src:/home/phpuser
+      - ./:/home/phpuser
       - /home/phpuser/vendor # do not mount vendor inside container
     environment:
       WP_TEST_DATABASE_NAME: wordpress_test

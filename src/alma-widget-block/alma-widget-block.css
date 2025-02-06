@@ -1,0 +1,61 @@
+/* Source: src/alma-widget-block/alma-widget-block.css */
+.wp-block-alma-gateway-for-woocommerce-alma-widget-block {
+	max-width: 100%;
+	background-color: var(--white);
+	border: 1px solid var(--light-gray);
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: 12px;
+	gap: 8px;
+	cursor: pointer;
+}
+
+.wp-block-alma-gateway-for-woocommerce-alma-widget-block > div {
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+}
+
+.wp-block-alma-gateway-for-woocommerce-alma-widget-block > div > svg {
+	margin-right: 12px;
+}
+
+.wp-block-alma-gateway-for-woocommerce-alma-widget-block > div > div {
+	gap: 8px;
+	max-width: 310px;
+	flex-wrap: wrap;
+}
+
+.wp-block-alma-gateway-for-woocommerce-alma-widget-block > div > div > div {
+	font-family: Venn, sans-serif;
+	color: var(--off-black);
+	border-radius: 4px;
+	font-weight: 700;
+	font-size: 12px;
+	display: inline;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	height: 24px;
+	min-width: 24px;
+	padding: 2px 10px;
+	margin: 2px;
+}
+
+.wp-block-alma-gateway-for-woocommerce-alma-widget-block > div > div > div:nth-child(1) {
+	color: var(--dark-gray);
+}
+
+.wp-block-alma-gateway-for-woocommerce-alma-widget-block > div > div > div:nth-child(3) {
+	color: var(--white);
+	background: var(--alma-orange);
+	margin: 6px;
+}
+
+.wp-block-alma-gateway-for-woocommerce-alma-widget-block > div > div:last-child {
+	font-family: Venn, sans-serif;
+	font-size: 12px;
+	line-height: 180%;
+	color: var(--off-black);
+}
