@@ -44,8 +44,8 @@
     }
   ],
   "scripts": {
-    "phpcs": "vendor/bin/phpcs --standard=phpcssrcxml .",
-    "phpcbf": "vendor/bin/phpcbf --standard=phpcssrcxml .",
+    "phpcs": "vendor/bin/phpcs --standard=phpcs.xml .",
+    "phpcbf": "vendor/bin/phpcbf --standard=phpcs.xml .",
     "php-compatibility": "vendor/bin/phpcs -p src --standard=PHPCompatibility -s --runtime-set testVersion 5.6-8.1 --ignore=\\*/vendor/\\*"
   },
   "config": {
