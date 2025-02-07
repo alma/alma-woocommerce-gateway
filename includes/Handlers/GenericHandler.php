@@ -110,17 +110,20 @@ class GenericHandler {
 	) {
 		if ( $this->is_already_rendered() ) {
 			$this->logger->info( 'Alma "Eligibility Widget" (cart or product) is already rendered on this page - Not displaying Alma.' );
+
 			return;
 		}
 
 		if ( ! $this->is_usable() ) {
 			$this->logger->info( 'Handler is not usable: badge injection failed.' );
+
 			return;
 		}
 
 		$merchant_id = $this->alma_settings->get_active_merchant_id();
 		if ( empty( $merchant_id ) ) {
 			$this->logger->info( 'AlmaSettings merchant id not found: badge injection failed.' );
+
 			return;
 		}
 
@@ -140,11 +143,20 @@ class GenericHandler {
 		);
 
 		// Inject JS/CSS required for the eligibility/payment plans info display.
-		$alma_widgets_js_url = AssetsHelper::get_asset_url( 'widget/js/widgets-wc.umd.js' );
-		wp_enqueue_script( 'alma-widgets', $alma_widgets_js_url, array(), ALMA_VERSION, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+		wp_enqueue_script(
+			'alma-widgets',
+			'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.umd.js',
+			array(),
+			'4.x.x',
+			true
+		);
 
-		$alma_widgets_css_url = AssetsHelper::get_asset_url( 'widget/css/widgets.css' );
-		wp_enqueue_style( 'alma-widgets', $alma_widgets_css_url, array(), ALMA_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+		wp_enqueue_style(
+			'alma-widgets',
+			'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.min.css',
+			array(),
+			'4.x.x'
+		);
 
 		$alma_widgets_injection_url = AssetsHelper::get_asset_url( 'js/alma-widgets-inject.js' );
 		wp_enqueue_script( 'alma-widgets-injection', $alma_widgets_injection_url, array(), ALMA_VERSION, true );
@@ -162,7 +174,8 @@ class GenericHandler {
 				$logo_url      = AssetsHelper::get_asset_url( ConstantsHelper::ALMA_LOGO_PATH );
 				$exclusion_msg = $this->get_cart_not_eligible_message_gift_cards();
 				?>
-				<img src="<?php echo esc_attr( $logo_url ); ?>" alt="Alma" style="width: auto !important; height: 25px !important; border: none !important; vertical-align: middle; display: inline-block;">
+				<img src="<?php echo esc_attr( $logo_url ); ?>" alt="Alma"
+					 style="width: auto !important; height: 25px !important; border: none !important; vertical-align: middle; display: inline-block;">
 				<span style="text-transform: initial"><?php echo wp_kses_post( $exclusion_msg ); ?></span>
 				<?php
 			}
@@ -205,6 +218,7 @@ class GenericHandler {
 
 		if ( ! count( $this->alma_settings->get_enabled_plans_definitions() ) ) {
 			$this->logger->info( 'No payment plans have been activated - Not displaying Alma.' );
+
 			return false;
 		}
 

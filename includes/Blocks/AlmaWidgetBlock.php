@@ -68,9 +68,9 @@ class AlmaWidgetBlock implements IntegrationInterface {
 		);
 		wp_enqueue_style(
 			'alma-widget-block-frontend-cdn',
-			'https://cdn.jsdelivr.net/npm/@alma/widgets@3.x.x/dist/widgets.min.css',
+			'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.min.css',
 			array(),
-			'3.x.x'
+			'4.x.x'
 		);
 
 		$this->register_block_frontend_scripts();
@@ -104,9 +104,9 @@ class AlmaWidgetBlock implements IntegrationInterface {
 			);
 		wp_register_script(
 			'alma-widget-block-frontend',
-			'https://cdn.jsdelivr.net/npm/@alma/widgets@3.x.x/dist/widgets.umd.js',
+			'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.umd.js',
 			array(),
-			'3.x.x',
+			'4.x.x',
 			true
 		);
 		wp_register_script(
@@ -135,9 +135,9 @@ class AlmaWidgetBlock implements IntegrationInterface {
 			);
 		wp_register_script(
 			'alma-widget-block-editor',
-			'https://cdn.jsdelivr.net/npm/@alma/widgets@3.x.x/dist/widgets.umd.js',
+			'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.umd.js',
 			array(),
-			'3.x.x',
+			'4.x.x',
 			true
 		);
 		wp_register_script(
