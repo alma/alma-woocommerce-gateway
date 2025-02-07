@@ -25,6 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Alma_Blocks
  */
 class AlmaWidgetBlock implements IntegrationInterface {
+	const ALMA_WIDGET_CDN_VERSION = '4.x.x';
 
 	/**
 	 * The settings.
@@ -70,7 +71,7 @@ class AlmaWidgetBlock implements IntegrationInterface {
 			'alma-widget-block-frontend-cdn',
 			'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.min.css',
 			array(),
-			'4.x.x'
+			self::ALMA_WIDGET_CDN_VERSION
 		);
 
 		$this->register_block_frontend_scripts();
@@ -106,7 +107,7 @@ class AlmaWidgetBlock implements IntegrationInterface {
 			'alma-widget-block-frontend',
 			'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.umd.js',
 			array(),
-			'4.x.x',
+			self::ALMA_WIDGET_CDN_VERSION,
 			true
 		);
 		wp_register_script(
@@ -137,7 +138,7 @@ class AlmaWidgetBlock implements IntegrationInterface {
 			'alma-widget-block-editor',
 			'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.umd.js',
 			array(),
-			'4.x.x',
+			self::ALMA_WIDGET_CDN_VERSION,
 			true
 		);
 		wp_register_script(
