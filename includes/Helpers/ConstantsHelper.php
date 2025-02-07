@@ -78,6 +78,8 @@ class ConstantsHelper {
 
 	const ERROR = 'error';
 
+	const ALMA_WIDGET_CDN_VERSION = '4.x.x';
+
 	/**
 	 * The payment status
 	 *

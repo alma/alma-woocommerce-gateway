@@ -147,7 +147,7 @@ class GenericHandler {
 			'alma-widgets',
 			'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.umd.js',
 			array(),
-			'4.x.x',
+			ConstantsHelper::ALMA_WIDGET_CDN_VERSION,
 			true
 		);
 
@@ -155,7 +155,7 @@ class GenericHandler {
 			'alma-widgets',
 			'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.min.css',
 			array(),
-			'4.x.x'
+			ConstantsHelper::ALMA_WIDGET_CDN_VERSION
 		);
 
 		$alma_widgets_injection_url = AssetsHelper::get_asset_url( 'js/alma-widgets-inject.js' );
