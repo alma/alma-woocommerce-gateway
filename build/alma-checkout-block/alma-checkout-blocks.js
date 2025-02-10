@@ -29,6 +29,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   CardTemplatePanel: () => (/* binding */ CardTemplatePanel),
 /* harmony export */   Checkbox: () => (/* binding */ Checkbox),
 /* harmony export */   CircleStepper: () => (/* binding */ CircleStepper),
+/* harmony export */   CodeInput: () => (/* binding */ CodeInput),
+/* harmony export */   CodeInputField: () => (/* binding */ CodeInputField),
 /* harmony export */   Collapsible: () => (/* binding */ Collapsible),
 /* harmony export */   Dropdown: () => (/* binding */ Dropdown),
 /* harmony export */   DropdownField: () => (/* binding */ DropdownField),
@@ -64,6 +66,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   Spinner: () => (/* binding */ Spinner),
 /* harmony export */   Switch: () => (/* binding */ Switch),
 /* harmony export */   SwitchField: () => (/* binding */ SwitchField),
+/* harmony export */   Tab: () => (/* binding */ Tab),
+/* harmony export */   TabEntry: () => (/* binding */ TabEntry),
 /* harmony export */   Tag: () => (/* binding */ Tag),
 /* harmony export */   TextField: () => (/* binding */ TextField),
 /* harmony export */   Toaster: () => (/* binding */ Toaster),
@@ -103,11 +107,161 @@ __webpack_require__.r(__webpack_exports__);
 
 var variables = "";
 var fonts = "";
+const inputWrapper = "_inputWrapper_zow58_1";
+const centered = "_centered_zow58_9";
+const input$1 = "_input_zow58_1";
+const error$5 = "_error_zow58_39";
+var s$L = {
+  inputWrapper,
+  centered,
+  input: input$1,
+  error: error$5
+};
+const CODE_SIZE = 6;
+const isEmpty = (char) => !char || char === " ";
+const preventInvalidChars = (event) => ["e", "-", ".", ","].includes(event.key) && event.preventDefault();
+const CodeInput = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
+  ({
+    autoFocus = true,
+    codeSize = CODE_SIZE,
+    id,
+    dataTestId,
+    onChange: onChange2,
+    onComplete,
+    status = "idle",
+    value: value2,
+    centered: centered2
+  }, ref) => {
+    codeSize = Math.max(Math.floor(codeSize), 1);
+    const [code, setCode] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(() => {
+      const initialValue = value2 != null ? value2 : "";
+      return initialValue.padEnd(codeSize, " ");
+    });
+    const inputReferences = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)([]);
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useImperativeHandle)(ref, () => inputReferences.current);
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+      if (value2 !== void 0) {
+        setCode(value2.padEnd(codeSize, " "));
+      }
+    }, [value2, codeSize]);
+    const focusPosition = (position) => {
+      var _a;
+      (_a = inputReferences.current[position]) == null ? void 0 : _a.focus();
+    };
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+      if (status === "error") {
+        setCode(" ".repeat(codeSize));
+        focusPosition(0);
+      }
+    }, [status, codeSize]);
+    const setChar = (position, char) => {
+      setCode((previousCode) => {
+        const before = previousCode.substring(0, position);
+        const after = previousCode.substring(position + 1);
+        const newDisplayCode = `${before}${char}${after}`;
+        const newValue = newDisplayCode.replace(/ /g, "");
+        onChange2 == null ? void 0 : onChange2({ target: { value: newValue } });
+        return newDisplayCode;
+      });
+    };
+    const getCharAt = (position) => (code[position] || "").replace(" ", "");
+    const makeChangeHandler = (position) => (event) => {
+      const initialValue = event.target.value.trim();
+      if (position === 0 && initialValue.length > 2 && /^\d+$/.test(initialValue)) {
+        const newValue = initialValue.slice(0, codeSize);
+        setCode(newValue.padEnd(codeSize, " "));
+        onChange2 == null ? void 0 : onChange2({ target: { value: newValue } });
+        focusPosition(Math.min(newValue.length, codeSize - 1));
+      } else if (/^\d$/.test(initialValue)) {
+        setChar(position, initialValue);
+        if (position < codeSize - 1) {
+          focusPosition(position + 1);
+        }
+      }
+    };
+    const makeKeyHandler = (position) => (event) => {
+      const currentChar = code[position];
+      if (event.key === "Backspace") {
+        setChar(position, " ");
+        if (isEmpty(currentChar) && position > 0) {
+          setChar(position - 1, " ");
+        }
+      }
+      if (event.key === "ArrowLeft" || event.key === "Backspace" && isEmpty(currentChar)) {
+        focusPosition(position - 1);
+      }
+      if (event.key === "ArrowRight") {
+        focusPosition(position + 1);
+      }
+    };
+    const makeFocusHandler = (position) => () => {
+      var _a;
+      (_a = inputReferences.current[position]) == null ? void 0 : _a.select();
+    };
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+      const codeWithoutSpaces = code.replace(/ /g, "");
+      if (codeWithoutSpaces.length === codeSize) {
+        onComplete == null ? void 0 : onComplete(codeWithoutSpaces);
+      }
+    }, [code, onComplete, codeSize]);
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+      if (autoFocus) {
+        focusPosition(0);
+      }
+    }, [autoFocus]);
+    return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      id,
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$L.inputWrapper, { [s$L.centered]: centered2 }),
+      "data-testid": dataTestId
+    }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+      type: "number",
+      pattern: "[0-9]*",
+      value: getCharAt(0),
+      autoComplete: "one-time-code",
+      "data-testid": "code-verification-input",
+      className: s$L.input,
+      ref: (element) => {
+        if (element) {
+          inputReferences.current[0] = element;
+        }
+      },
+      "aria-label": "code input 1",
+      onChange: makeChangeHandler(0),
+      onKeyUp: makeKeyHandler(0),
+      onFocus: makeFocusHandler(0),
+      onKeyDown: preventInvalidChars,
+      disabled: ["pending", "success"].includes(status)
+    }), [...Array(codeSize - 1)].map((_, index) => {
+      const position = index + 1;
+      return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+        key: position,
+        type: "number",
+        pattern: "[0-9]*",
+        value: getCharAt(position),
+        min: "0",
+        max: "9",
+        "aria-label": `code input ${position}`,
+        className: s$L.input,
+        ref: (element) => {
+          if (element) {
+            inputReferences.current[position] = element;
+          }
+        },
+        onChange: makeChangeHandler(position),
+        onKeyUp: makeKeyHandler(position),
+        onFocus: makeFocusHandler(position),
+        onKeyDown: preventInvalidChars,
+        disabled: ["pending", "success"].includes(status != null ? status : "")
+      });
+    }));
+  }
+);
+CodeInput.displayName = "CodeInput";
 const accountContainer = "_accountContainer_1hpkt_1";
 const circle = "_circle_1hpkt_22";
 const initial = "_initial_1hpkt_34";
 const text = "_text_1hpkt_46";
-var s$I = {
+var s$K = {
   accountContainer,
   circle,
   initial,
@@ -121,13 +275,13 @@ const AccountButton = ({
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     type: "button",
     ...buttonProps,
-    className: s$I.accountContainer
+    className: s$K.accountContainer
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$I.circle
+    className: s$K.circle
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$I.initial
+    className: s$K.initial
   }, initial2)), firstName && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$I.text
+    className: s$K.text
   }, firstName));
 };
 function isDefined(value2) {
@@ -192,6 +346,29 @@ const selectRight = (item) => {
   return typeof item === "object" ? item == null ? void 0 : item.right : void 0;
 };
 const onMouseDownPreventBlur = (e) => e.preventDefault();
+const useDimensions = (ref) => {
+  const [width, setWidth] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0);
+  const [height, setHeight] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    function handleWindowResize() {
+      if (ref.current) {
+        setWidth(ref.current.offsetWidth);
+        setHeight(ref.current.offsetHeight);
+      }
+    }
+    if (ref.current) {
+      setWidth(ref.current.offsetWidth);
+      setHeight(ref.current.offsetHeight);
+    }
+    window.addEventListener("load", handleWindowResize);
+    window.addEventListener("resize", handleWindowResize);
+    return () => {
+      window.addEventListener("load", handleWindowResize);
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, [ref]);
+  return { width, height };
+};
 const AlmaIcon = ({
   color = "currentColor",
   title: title2,
@@ -6024,7 +6201,7 @@ const copyFeedBack = "_copyFeedBack_nb126_33";
 const nameAndIcon = "_nameAndIcon_nb126_37";
 const name = "_name_nb126_37";
 const searchContainer = "_searchContainer_nb126_54";
-var s$H = {
+var s$J = {
   iconStyle,
   container: container$a,
   row: row$1,
@@ -6322,7 +6499,7 @@ const Icon = ({
   };
   const IconComponent = (_a = iconComponentFor[icon2]) != null ? _a : AlmaIcon;
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(IconComponent, {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$H.iconStyle),
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$J.iconStyle),
     title: title2,
     "aria-hidden": title2 ? void 0 : "true",
     isfilled: isFilled == null ? void 0 : isFilled.toString(),
@@ -6595,11 +6772,11 @@ const disabled$8 = "_disabled_gpuib_61";
 const error$4 = "_error_gpuib_73";
 const unit = "_unit_gpuib_77";
 const clear$1 = "_clear_gpuib_84";
-const icon$3 = "_icon_gpuib_96";
+const icon$4 = "_icon_gpuib_96";
 const blurButton = "_blurButton_gpuib_120";
 const beforeInput = "_beforeInput_gpuib_131";
 const afterInput = "_afterInput_gpuib_136";
-var s$G = {
+var s$I = {
   inputContainer,
   regularBorder: regularBorder$2,
   lightBorder: lightBorder$2,
@@ -6610,7 +6787,7 @@ var s$G = {
   error: error$4,
   unit,
   clear: clear$1,
-  icon: icon$3,
+  icon: icon$4,
   blurButton,
   beforeInput,
   afterInput
@@ -6686,21 +6863,21 @@ const Input$2 = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef(
     );
     return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(
-        s$G.inputContainer,
-        { [s$G.error]: error2 },
-        { [s$G.disabled]: disabled2 },
-        { [s$G.hasSuffix]: unit2 || iconRight2 || shouldDisplayClearIcon },
-        s$G[inputHeight],
-        s$G[`${borderColor}Border`],
+        s$I.inputContainer,
+        { [s$I.error]: error2 },
+        { [s$I.disabled]: disabled2 },
+        { [s$I.hasSuffix]: unit2 || iconRight2 || shouldDisplayClearIcon },
+        s$I[inputHeight],
+        s$I[`${borderColor}Border`],
         className
       ),
       "data-testid": "input-test"
     }, iconLeft2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: iconLeft2,
-      className: s$G.icon,
+      className: s$I.icon,
       color: iconColorLeft ? `var(${iconColorLeft})` : "var(--alma-orange)"
     }), beforeInput2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$G.beforeInput,
+      className: s$I.beforeInput,
       ...beforeInputProps
     }, beforeInput2), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
       name: id,
@@ -6711,31 +6888,31 @@ const Input$2 = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef(
       readOnly: readOnly2,
       value: value2,
       ...otherProps,
-      className: s$G.input,
+      className: s$I.input,
       type,
       onFocus,
       onBlur
     }), unit2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$G.unit),
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$I.unit),
       style: { color: `var(${getUnitTextAndColor(unit2).color})` }
     }, getUnitTextAndColor(unit2).unit), shouldDisplayClearIcon ? /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
       type: "button",
       onClick: onClearClick,
       onMouseDown: onMouseDownPreventBlur,
-      className: s$G.clear,
+      className: s$I.clear,
       "data-testid": "clear-input"
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: IconName["close-circle"],
       color: "var(--alma-orange)"
     })) : shouldDisplayRightIcon && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: iconRight2,
-      className: s$G.icon,
+      className: s$I.icon,
       color: iconColorRight ? `var(${iconColorRight})` : "var(--alma-orange)"
     }), afterInput2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$G.afterInput,
+      className: s$I.afterInput,
       ...afterInputProps
     }, afterInput2), shouldDisplayBlurButton && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$G.blurButton,
+      className: s$I.blurButton,
       onClick: onBlur
     }, blurButtonMessage)));
   }
@@ -6744,7 +6921,7 @@ Input$2.displayName = "Input";
 const suggestionsList$1 = "_suggestionsList_xkeiy_1";
 const suggestion$1 = "_suggestion_xkeiy_1";
 const suggestionHighlighted$1 = "_suggestionHighlighted_xkeiy_19";
-var s$F = {
+var s$H = {
   suggestionsList: suggestionsList$1,
   suggestion: suggestion$1,
   suggestionHighlighted: suggestionHighlighted$1
@@ -6820,7 +6997,7 @@ const Autocomplete = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
         }
       });
       return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-        className: s$F.autocomplete
+        className: s$H.autocomplete
       }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Input$2, {
         ...inputProps,
         value: value2,
@@ -6835,7 +7012,7 @@ const Autocomplete = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       }, (0,react_dom__WEBPACK_IMPORTED_MODULE_2__.createPortal)(
         /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", {
           ...getMenuProps({
-            className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$F.suggestionsList, suggestionsListClassName),
+            className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$H.suggestionsList, suggestionsListClassName),
             style: {
               left: elementSize.left,
               top: elementSize.top,
@@ -6849,9 +7026,9 @@ const Autocomplete = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
             index,
             item,
             className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(
-              s$F.suggestion,
+              s$H.suggestion,
               {
-                [s$F.suggestionHighlighted]: highlightedIndex === index
+                [s$H.suggestionHighlighted]: highlightedIndex === index
               },
               suggestionClassName
             )
@@ -6863,11 +7040,11 @@ const Autocomplete = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
   }
 );
 const errorMessage = "_errorMessage_1sxgf_1";
-var s$E = {
+var s$G = {
   errorMessage
 };
 const ErrorMessage = ({ children: children2 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: s$E.errorMessage,
+  className: s$G.errorMessage,
   "data-testid": "field-error-message"
 }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
   icon: IconName["warning"],
@@ -6879,7 +7056,7 @@ const labelContainer = "_labelContainer_1iesd_1";
 const label$3 = "_label_1iesd_1";
 const disabled$7 = "_disabled_1iesd_18";
 const error$3 = "_error_1iesd_22";
-var s$D = {
+var s$F = {
   labelContainer,
   label: label$3,
   disabled: disabled$7,
@@ -6892,17 +7069,17 @@ const Label = ({
   error: error2,
   ...props
 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: s$D.labelContainer,
+  className: s$F.labelContainer,
   "data-testid": "input-label"
 }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
   ...props,
-  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$D.label, className, { [s$D.disabled]: disabled2, [s$D.error]: error2 })
+  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$F.label, className, { [s$F.disabled]: disabled2, [s$F.error]: error2 })
 }, children2));
 const legendMessage = "_legendMessage_16ifm_1";
 const lg$5 = "_lg_16ifm_10";
 const disabled$6 = "_disabled_16ifm_14";
 const light = "_light_16ifm_18";
-var s$C = {
+var s$E = {
   legendMessage,
   lg: lg$5,
   disabled: disabled$6,
@@ -6914,10 +7091,10 @@ const LegendMessage = ({
   disabled: disabled2 = false,
   light: light2 = false
 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$C.legendMessage, s$C[size], { [s$C.disabled]: disabled2, [s$C.light]: light2 })
+  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$E.legendMessage, s$E[size], { [s$E.disabled]: disabled2, [s$E.light]: light2 })
 }, children2);
 const container$9 = "_container_1qn1j_1";
-var s$B = {
+var s$D = {
   container: container$9
 };
 const Field = ({
@@ -6931,7 +7108,7 @@ const Field = ({
   legend,
   ...otherProps
 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$B.container, className),
+  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$D.container, className),
   ...otherProps
 }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Label, {
   htmlFor,
@@ -6970,7 +7147,7 @@ const suggestionsList = "_suggestionsList_1hnlf_1";
 const suggestion = "_suggestion_1hnlf_1";
 const suggestionHighlighted = "_suggestionHighlighted_1hnlf_19";
 const hasBefore = "_hasBefore_1hnlf_23";
-var s$A = {
+var s$C = {
   suggestionsList,
   suggestion,
   suggestionHighlighted,
@@ -7060,7 +7237,7 @@ const AutocompleteSelect = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
         }
       });
       return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-        className: s$A.autocomplete
+        className: s$C.autocomplete
       }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Input$2, {
         ...inputProps,
         autoComplete: "off",
@@ -7080,7 +7257,7 @@ const AutocompleteSelect = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       }, (0,react_dom__WEBPACK_IMPORTED_MODULE_2__.createPortal)(
         /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", {
           ...getMenuProps({
-            className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$A.suggestionsList, suggestionsListClassName),
+            className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$C.suggestionsList, suggestionsListClassName),
             style: {
               left: elementSize.left,
               top: elementSize.top,
@@ -7094,10 +7271,10 @@ const AutocompleteSelect = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
             index,
             item,
             className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(
-              s$A.suggestion,
+              s$C.suggestion,
               {
-                [s$A.suggestionHighlighted]: highlightedIndex === index,
-                [s$A.hasBefore]: itemBefore
+                [s$C.suggestionHighlighted]: highlightedIndex === index,
+                [s$C.hasBefore]: itemBefore
               },
               suggestionClassName
             )
@@ -7143,7 +7320,7 @@ const yellow$6 = "_yellow_1ci1p_38";
 const blue$5 = "_blue_1ci1p_43";
 const grey$1 = "_grey_1ci1p_48";
 const white$1 = "_white_1ci1p_52";
-var s$z = {
+var s$B = {
   badge: badge$1,
   "padding-lg": "_padding-lg_1ci1p_18",
   green: green$4,
@@ -7176,7 +7353,7 @@ const Badge = ({
   const iconTitleLeft = selectLeft(iconTitle);
   const iconTitleRight = selectRight(iconTitle);
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$z.badge, s$z[color], s$z[`padding-${padding}`], className)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$B.badge, s$B[color], s$B[`padding-${padding}`], className)
   }, iconLeft2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
     icon: iconLeft2,
     title: iconTitleLeft,
@@ -7202,7 +7379,7 @@ const TranslationsProvider = ({ translations, children: children2 }) => /* @__PU
 }, children2);
 const useTranslations = () => (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(TranslationsContext);
 const container$8 = "_container_1rrdt_1";
-const title$2 = "_title_1rrdt_10";
+const title$3 = "_title_1rrdt_10";
 const screenReader = "_screenReader_1rrdt_10";
 const content$5 = "_content_1rrdt_24";
 const info$1 = "_info_1rrdt_32";
@@ -7215,9 +7392,9 @@ const big$2 = "_big_1rrdt_84";
 const cta = "_cta_1rrdt_110";
 const ctaRight = "_ctaRight_1rrdt_122";
 const hasNoDescription = "_hasNoDescription_1rrdt_127";
-var s$y = {
+var s$A = {
   container: container$8,
-  title: title$2,
+  title: title$3,
   screenReader,
   content: content$5,
   info: info$1,
@@ -7258,8 +7435,8 @@ const Banner = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
     const ariaTitleId = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => `${id != null ? id : nextId()}-aria-title`, [id]);
     return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       id,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$y.container, className, s$y[type], s$y[size], {
-        [s$y.hasNoDescription]: !children2 || !children2 && !button2
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$A.container, className, s$A[type], s$A[size], {
+        [s$A.hasNoDescription]: !children2 || !children2 && !button2
       }),
       role: type === "error" ? "alert" : "note",
       "aria-live": type === "error" ? "assertive" : "polite",
@@ -7271,17 +7448,17 @@ const Banner = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       title: iconTitle,
       isFilled: iconIsFilled
     }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$y.content
+      className: s$A.content
     }, title2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       id: ariaTitleId,
-      className: s$y.title,
+      className: s$A.title,
       "aria-hidden": "true"
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$y.screenReader
+      className: s$A.screenReader
     }, screenReaderType, ": "), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, title2)), children2, button2 && buttonPlacement === "end" && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$y.cta
+      className: s$A.cta
     }, button2)), button2 && buttonPlacement === "right" && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$y.ctaRight
+      className: s$A.ctaRight
     }, button2));
   }
 );
@@ -7292,7 +7469,7 @@ const one = "_one_1h22b_15";
 const bounce$1 = "_bounce_1h22b_1";
 const two = "_two_1h22b_19";
 const three = "_three_1h22b_23";
-var s$x = {
+var s$z = {
   container: container$7,
   dot,
   one,
@@ -7304,13 +7481,13 @@ var s$x = {
 const LoadingDots = ({ className, ...options }) => {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     "data-testid": "loading-dots",
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$x.container, className)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$z.container, className)
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$x.dot, s$x.one)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$z.dot, s$z.one)
   }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$x.dot, s$x.two)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$z.dot, s$z.two)
   }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$x.dot, s$x.three)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$z.dot, s$z.three)
   }));
 };
 const button = "_button_kkqya_2";
@@ -7331,7 +7508,7 @@ const isDisabled = "_isDisabled_kkqya_220";
 const block$1 = "_block_kkqya_235";
 const tiny$2 = "_tiny_kkqya_258";
 const dotsLoading = "_dotsLoading_kkqya_299";
-var s$w = {
+var s$y = {
   button,
   onlyIcon,
   content: content$4,
@@ -7382,47 +7559,47 @@ function Button({
   const isProgressive = color === "progressive" && !isLoading2 && !disabled2 && !isValidated2;
   const commonProps = {
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(
-      s$w.button,
-      s$w[color],
-      s$w[size],
+      s$y.button,
+      s$y[color],
+      s$y[size],
       {
-        [s$w.block]: block2,
-        [s$w.isLoading]: isLoading2,
-        [s$w.isDisabled]: disabled2,
-        [s$w.isWithFeedback]: isWithFeedback2,
-        [s$w.isWithFeedback]: isWithFeedback2,
-        [s$w.isValidated]: isValidated2,
-        [s$w.onlyIcon]: !children2
+        [s$y.block]: block2,
+        [s$y.isLoading]: isLoading2,
+        [s$y.isDisabled]: disabled2,
+        [s$y.isWithFeedback]: isWithFeedback2,
+        [s$y.isWithFeedback]: isWithFeedback2,
+        [s$y.isValidated]: isValidated2,
+        [s$y.onlyIcon]: !children2
       },
       className
     ),
     children: /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, isLoading2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(LoadingDots, {
-      className: s$w.dotsLoading
+      className: s$y.dotsLoading
     }), isValidated2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: IconName.tick,
       color: "var(--white)"
     }), iconLeft2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: iconLeft2,
       title: iconTitleLeft,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$w.iconLeft, { [s$w.onlyIcon]: !children2 }),
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$y.iconLeft, { [s$y.onlyIcon]: !children2 }),
       color: iconColorLeft ? `var(${iconColorLeft})` : "currentColor"
     }), isProgressive && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: s$w.progress,
+      className: s$y.progress,
       style: { animationDuration: `${progressiveDuration}s` }
     }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$w.content, {
-        [s$w.isLoading]: isLoading2,
-        [s$w.isValidated]: isValidated2
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$y.content, {
+        [s$y.isLoading]: isLoading2,
+        [s$y.isValidated]: isValidated2
       })
     }, children2), iconRight2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: iconRight2,
       title: iconTitleRight,
-      className: s$w.iconRight,
+      className: s$y.iconRight,
       color: iconColorRight ? `var(${iconColorRight})` : "currentColor"
     }), isWithFeedback2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: selectLeft(icon2) || IconName["arrow-right"],
       title: selectLeft(iconTitle),
-      className: s$w.iconRight,
+      className: s$y.iconRight,
       color: iconColorLeft ? `var(${iconColorLeft})` : "currentColor"
     }))
   };
@@ -7441,7 +7618,7 @@ function Button({
 }
 const loadingIndicator = "_loadingIndicator_rleli_1";
 const bounce = "_bounce_rleli_1";
-var s$v = {
+var s$x = {
   loadingIndicator,
   bounce
 };
@@ -7619,7 +7796,7 @@ const Logo = ({ logo, ...svgProps }) => {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, (_a = logoByProps[logo]) != null ? _a : /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(AlmaBlackLogo, null));
 };
 const LoadingIndicator = ({ className }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$v.loadingIndicator, className),
+  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$x.loadingIndicator, className),
   "data-testid": "loader"
 }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Logo, {
   logo: "alma-a"
@@ -7643,7 +7820,7 @@ const sm$5 = "_sm_ab6li_110";
 const md$6 = "_md_ab6li_116";
 const lg$4 = "_lg_ab6li_122";
 const adaptToScreenSize = "_adaptToScreenSize_ab6li_136";
-var s$u = {
+var s$w = {
   card: card$1,
   shadow,
   blue: blue$4,
@@ -7681,31 +7858,31 @@ const Card = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
     ...otherProps
   }, ref) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(
-      s$u.card,
-      s$u[padding],
-      s$u[color],
+      s$w.card,
+      s$w[padding],
+      s$w[color],
       {
-        [s$u.shadow]: shadow2,
-        [s$u[`${borderColor}Border`]]: borderColor,
-        [s$u.adaptToScreenSize]: adaptToScreenSize2
+        [s$w.shadow]: shadow2,
+        [s$w[`${borderColor}Border`]]: borderColor,
+        [s$w.adaptToScreenSize]: adaptToScreenSize2
       },
       className
     ),
     ...otherProps,
     ref
   }, children2, isLoading2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$u.loader
+    className: s$w.loader
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(LoadingIndicator, null)))
 );
 Card.displayName = "Card";
 const CardFooter = ({ children: children2, className, ...otherProps }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$u.footerSection, className),
+  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$w.footerSection, className),
   ...otherProps,
   "data-testid": "footerSection"
 }, children2);
 const blockHeader = "_blockHeader_1d7ym_1";
 const description$3 = "_description_1d7ym_8";
-var s$t = {
+var s$v = {
   blockHeader,
   description: description$3
 };
@@ -7717,18 +7894,18 @@ const CardTemplate = ({
 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Card, {
   ...otherProps
 }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: s$t.blockHeader
+  className: s$v.blockHeader
 }, header2, corner && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, corner)), children2);
 const collapsibleTitle = "_collapsibleTitle_1wo6z_1";
-const title$1 = "_title_1wo6z_13";
+const title$2 = "_title_1wo6z_13";
 const block = "_block_1wo6z_17";
 const isOpen = "_isOpen_1wo6z_40";
 const collapsibleContent = "_collapsibleContent_1wo6z_48";
 const innerCollaspibleContent = "_innerCollaspibleContent_1wo6z_54";
 const inhibitTransition = "_inhibitTransition_1wo6z_58";
-var s$s = {
+var s$u = {
   collapsibleTitle,
-  title: title$1,
+  title: title$2,
   block,
   isOpen,
   collapsibleContent,
@@ -7760,31 +7937,31 @@ const Collapsible = ({
     className,
     ...otherProps
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$s.collapsibleTitle, {
-      [s$s.isOpen]: !collapsed,
-      [s$s.block]: block2
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$u.collapsibleTitle, {
+      [s$u.isOpen]: !collapsed,
+      [s$u.block]: block2
     }),
     onClick: () => onCollapse(collapsed),
     onKeyDown: (e) => [" ", "Enter"].includes(e.key) && onCollapse(collapsed),
     role: "button",
     tabIndex: 0
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$s.title
+    className: s$u.title
   }, title2), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
     icon: IconName["chevron-down"],
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()({
-      [s$s.block]: block2
+      [s$u.block]: block2
     }),
     color: chevronColor != null ? chevronColor : "currentColor"
   })), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$s.collapsibleContent, {
-      [s$s.isOpen]: !collapsed,
-      [s$s.inhibitTransition]: heightChanging
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$u.collapsibleContent, {
+      [s$u.isOpen]: !collapsed,
+      [s$u.inhibitTransition]: heightChanging
     }),
     style: collapsed ? { maxHeight: 0 } : { maxHeight: height === 0 ? "auto" : height }
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     ref: sizingElementRef,
-    className: s$s.innerCollaspibleContent
+    className: s$u.innerCollaspibleContent
   }, children2)));
 };
 const CardTemplateCollapsible = ({
@@ -7805,7 +7982,7 @@ const CardTemplateCollapsible = ({
   chevronColor,
   block: true,
   title: /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, header2, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$t.description
+    className: s$v.description
   }, description2))
 }, children2)));
 const container$6 = "_container_w1e6e_1";
@@ -7824,7 +8001,7 @@ const fadein = "_fadein_w1e6e_1";
 const fadeOut$1 = "_fadeOut_w1e6e_61";
 const fadeout = "_fadeout_w1e6e_1";
 const closeButton$1 = "_closeButton_w1e6e_66";
-var s$r = {
+var s$t = {
   container: container$6,
   overlay: overlay$1,
   header: header$2,
@@ -7859,7 +8036,7 @@ const slideOut = "_slideOut_1pp66_83";
 const fadeIn = "_fadeIn_1pp66_91";
 const fadeOut = "_fadeOut_1pp66_95";
 const sm$4 = "_sm_1pp66_178";
-var s$q = {
+var s$s = {
   overlay,
   md: md$5,
   lg: lg$3,
@@ -7967,14 +8144,14 @@ const Modal = ({
     }, 300);
   }, [onClose]);
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react_modal__WEBPACK_IMPORTED_MODULE_4___default()), {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$q.modal, className, s$q[`${size}`], s$q[`${position}`], s$q[`${padding}Padding`], {
-      [s$q.isOpen]: isOpen2,
-      [s$q.slideIn]: isOpen2,
-      [s$q.slideOut]: closingAnimation
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$s.modal, className, s$s[`${size}`], s$s[`${position}`], s$s[`${padding}Padding`], {
+      [s$s.isOpen]: isOpen2,
+      [s$s.slideIn]: isOpen2,
+      [s$s.slideOut]: closingAnimation
     }),
-    overlayClassName: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$q.overlay, s$q[`${overlayzIndex}`], s$q.fadeIn, {
-      [s$q.isOverlayOpen]: isOpen2 && !closingAnimation,
-      [s$q.fadeOut]: closingAnimation
+    overlayClassName: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$s.overlay, s$s[`${overlayzIndex}`], s$s.fadeIn, {
+      [s$s.isOverlayOpen]: isOpen2 && !closingAnimation,
+      [s$s.fadeOut]: closingAnimation
     }),
     onAfterOpen: () => no_scroll__WEBPACK_IMPORTED_MODULE_3___default().on(),
     onAfterClose: () => no_scroll__WEBPACK_IMPORTED_MODULE_3___default().off(),
@@ -7985,11 +8162,11 @@ const Modal = ({
     ...props
   }, closeIcon && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     onClick: onRequestClose,
-    className: s$q.closeButton,
+    className: s$s.closeButton,
     "data-testid": "modal-close-button",
     "aria-label": closeLabel
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(CloseIcon, null)), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$q.content, contentClassName, { [s$q.contentScrollable]: scrollable })
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$s.content, contentClassName, { [s$s.contentScrollable]: scrollable })
   }, children2));
 };
 const CardTemplatePanel = ({
@@ -8031,29 +8208,29 @@ const CardTemplatePanel = ({
     shouldCloseOnOverlayClick,
     position: modalPosition
   }, title2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$r.header
+    className: s$t.header
   }, title2), children2) : /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$r.container
+    className: s$t.container
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Card, {
     "data-testid": "card-panel",
     ...otherProps,
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$r.card, {
-      [s$r.slideIn]: isOpen2,
-      [s$r.slideOut]: closingAnimation,
-      [s$r.fullscreen]: isFullScreen
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$t.card, {
+      [s$t.slideIn]: isOpen2,
+      [s$t.slideOut]: closingAnimation,
+      [s$t.fullscreen]: isFullScreen
     })
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$r.panelHeader
+    className: s$t.panelHeader
   }, title2, closeIcon && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     onClick: () => setClosingAnimation(true),
-    className: s$r.closeButton,
+    className: s$t.closeButton,
     "data-testid": "card-panel-close-button"
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(CloseIcon, null))), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$r.body
+    className: s$t.body
   }, children2)), !isFullScreen && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     "data-testid": "card-overlay",
     onClick: () => setClosingAnimation(true),
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$r.overlay, { [s$r.fadeIn]: isOpen2, [s$r.fadeOut]: closingAnimation })
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$t.overlay, { [s$t.fadeIn]: isOpen2, [s$t.fadeOut]: closingAnimation })
   }))));
 };
 const circleStepper = "_circleStepper_16uv0_1";
@@ -8062,7 +8239,7 @@ const green$3 = "_green_16uv0_20";
 const blue$3 = "_blue_16uv0_24";
 const red$3 = "_red_16uv0_28";
 const yellow$4 = "_yellow_16uv0_32";
-var s$p = {
+var s$r = {
   circleStepper,
   steps,
   green: green$3,
@@ -8081,7 +8258,7 @@ const yellow$3 = "_yellow_es814_31";
 const red$2 = "_red_es814_35";
 const blue$2 = "_blue_es814_39";
 const progressRing = "_progressRing_es814_43";
-var s$o = {
+var s$q = {
   progressCircle,
   complete,
   backgroundGreen,
@@ -8105,21 +8282,21 @@ const ProgressCircle = ({
     width: "56",
     height: "56",
     viewBox: "0 0 56 56",
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$o.progressCircle, className)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$q.progressCircle, className)
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("circle", {
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()({
-      [s$o.backgroundGreen]: color === "green",
-      [s$o.backgroundBlue]: color === "blue",
-      [s$o.backgroundYellow]: color === "yellow",
-      [s$o.backgroundRed]: color === "red",
-      [s$o.complete]: progress2 === 1 && color === "green"
+      [s$q.backgroundGreen]: color === "green",
+      [s$q.backgroundBlue]: color === "blue",
+      [s$q.backgroundYellow]: color === "yellow",
+      [s$q.backgroundRed]: color === "red",
+      [s$q.complete]: progress2 === 1 && color === "green"
     }),
     strokeWidth: "1.5",
     r: PROGRESS_CIRCLE_RADIUS,
     cx: PROGRESS_CIRCLE_RADIUS + 2,
     cy: PROGRESS_CIRCLE_RADIUS + 2
   }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("circle", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$o.progressRing, s$o[color]),
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$q.progressRing, s$q[color]),
     strokeWidth: "3",
     strokeLinecap: "round",
     strokeDasharray: `${circumference}`,
@@ -8136,19 +8313,19 @@ const CircleStepper = ({
 }) => {
   const progress2 = steps2 > 0 ? activeStep / steps2 : 0;
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    className: s$p.circleStepper
+    className: s$r.circleStepper
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ProgressCircle, {
     progress: progress2,
     color
   }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$p.steps, s$p[color])
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$r.steps, s$r[color])
   }, activeStep, "/", steps2));
 };
 const inCard$1 = "_inCard_1onvk_1";
 const checked = "_checked_1onvk_11";
 const readOnly$1 = "_readOnly_1onvk_16";
 const disabled$5 = "_disabled_1onvk_17";
-var s$n = {
+var s$p = {
   inCard: inCard$1,
   checked,
   readOnly: readOnly$1,
@@ -8166,11 +8343,11 @@ const InCardContainer = ({
 }) => {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, {
-      [s$n.error]: error2,
-      [s$n.inCard]: inCard2,
-      [s$n.disabled]: disabled2,
-      [s$n.readOnly]: readOnly2,
-      [s$n.checked]: checked2
+      [s$p.error]: error2,
+      [s$p.inCard]: inCard2,
+      [s$p.disabled]: disabled2,
+      [s$p.readOnly]: readOnly2,
+      [s$p.checked]: checked2
     }),
     ...inCard2 && {
       onClick: (e) => {
@@ -8183,7 +8360,7 @@ const InCardContainer = ({
   }, children2);
 };
 const container$5 = "_container_x5a1w_1";
-const icon$2 = "_icon_x5a1w_13";
+const icon$3 = "_icon_x5a1w_13";
 const description$2 = "_description_x5a1w_18";
 const textContainer = "_textContainer_x5a1w_22";
 const additionalMessage$1 = "_additionalMessage_x5a1w_26";
@@ -8200,9 +8377,9 @@ const orange$2 = "_orange_x5a1w_128";
 const yellow$2 = "_yellow_x5a1w_133";
 const disabledContainer = "_disabledContainer_x5a1w_138";
 const readOnlyContainer = "_readOnlyContainer_x5a1w_139";
-var s$m = {
+var s$o = {
   container: container$5,
-  icon: icon$2,
+  icon: icon$3,
   description: description$2,
   textContainer,
   additionalMessage: additionalMessage$1,
@@ -8255,12 +8432,12 @@ const InputVariant = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       readOnly: readOnly2,
       inCard: inCard2,
       checked: checked2,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$m.container, {
-        [s$m.reverse]: direction === "row-reverse",
-        [s$m.checkboxContainer]: inputType === "checkbox",
-        [s$m.radioButtonContainer]: inputType === "radio",
-        [s$m.readOnlyContainer]: readOnly2,
-        [s$m.disabledContainer]: disabled2
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$o.container, {
+        [s$o.reverse]: direction === "row-reverse",
+        [s$o.checkboxContainer]: inputType === "checkbox",
+        [s$o.radioButtonContainer]: inputType === "radio",
+        [s$o.readOnlyContainer]: readOnly2,
+        [s$o.disabledContainer]: disabled2
       })
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
       ...props,
@@ -8271,29 +8448,29 @@ const InputVariant = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       name: name2,
       value: value2,
       ref,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$m[color], s$m[inputType]),
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$o[color], s$o[inputType]),
       checked: checked2,
       onChange: onChange2
     }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$m.tickContainer)
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$o.tickContainer)
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: IconName.tick,
       color: "white",
-      className: s$m.tick
+      className: s$o.tick
     }))), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$m.description
+      className: s$o.description
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
       ref: innerLabelRef,
       htmlFor: id,
       "data-testid": id,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$m.label)
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$o.label)
     }, label2), description2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$m.additionalMessage
+      className: s$o.additionalMessage
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, description2)), error2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$m.additionalMessage
+      className: s$o.additionalMessage
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ErrorMessage, null, error2))), inCard2 && (icon2 || image) && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$m.icon, {
-        [s$m.iconVerticalAlignTop]: direction === "row-reverse" && iconVerticalAlign === "top"
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$o.icon, {
+        [s$o.iconVerticalAlignTop]: direction === "row-reverse" && iconVerticalAlign === "top"
       }),
       "data-testid": "incard-visual-element",
       style: { width: icon2 ? iconSize : imageSize, height: icon2 ? iconSize : imageSize }
@@ -8301,11 +8478,40 @@ const InputVariant = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
   }
 );
 InputVariant.displayName = "InputVariant";
-const Checkbox = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(({ ...props }) => /* @__PURE__ */ React.createElement(InputVariant, {
+const Checkbox = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(({ ...props }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputVariant, {
   inputType: "checkbox",
   ...props
 }));
 Checkbox.displayName = "Checkbox";
+const CodeInputField = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef(
+  ({
+    id,
+    label: label2,
+    className,
+    error: error2 = "",
+    disabled: disabled2 = false,
+    legend = "",
+    lightLegend = false,
+    onComplete,
+    ...otherProps
+  }, ref) => {
+    return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Field, {
+      htmlFor: id,
+      label: label2,
+      legend,
+      lightLegend,
+      error: error2,
+      disabled: disabled2,
+      className
+    }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(CodeInput, {
+      onComplete,
+      id,
+      ref,
+      ...otherProps
+    }));
+  }
+);
+CodeInputField.displayName = "CodeInputField";
 const container$4 = "_container_axs2v_1";
 const selectContainer = "_selectContainer_axs2v_6";
 const regularBorder$1 = "_regularBorder_axs2v_25";
@@ -8320,7 +8526,7 @@ const error$1 = "_error_axs2v_104";
 const tags = "_tags_axs2v_123";
 const multipleOptions = "_multipleOptions_axs2v_132";
 const multipleOptionsActive = "_multipleOptionsActive_axs2v_161";
-var s$l = {
+var s$n = {
   container: container$4,
   selectContainer,
   regularBorder: regularBorder$1,
@@ -8381,10 +8587,10 @@ const Dropdown = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       return { groups, ungroupedOptions };
     }, [options]);
     return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$l.selectContainer, s$l[inputHeight], s$l[`${borderColor}Border`], {
-        [s$l.error]: error2,
-        [s$l.disabled]: disabled2,
-        [s$l.placeholder]: currentSelectedIndex === -1
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$n.selectContainer, s$n[inputHeight], s$n[`${borderColor}Border`], {
+        [s$n.error]: error2,
+        [s$n.disabled]: disabled2,
+        [s$n.placeholder]: currentSelectedIndex === -1
       })
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       "aria-hidden": "true"
@@ -8392,7 +8598,7 @@ const Dropdown = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       ...selectProps,
       id,
       name: name2,
-      className: s$l.select,
+      className: s$n.select,
       value: currentValue,
       ref,
       disabled: disabled2
@@ -8448,7 +8654,7 @@ DropdownField.displayName = "DropdownField";
 const tag = "_tag_1i5p6_1";
 const closeBtn = "_closeBtn_1i5p6_23";
 const small$2 = "_small_1i5p6_33";
-var s$k = {
+var s$m = {
   tag,
   closeBtn,
   small: small$2
@@ -8463,9 +8669,9 @@ const Tag = ({
 }) => {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     ...otherProps,
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$k.tag, { [s$k.small]: small2 }, className)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$m.tag, { [s$m.small]: small2 }, className)
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, label2), onClose && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-    className: s$k.closeBtn,
+    className: s$m.closeBtn,
     onClick: onClose,
     "aria-label": "Close"
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
@@ -8576,7 +8782,7 @@ const DropdownMultiple = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
     };
     return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       ref,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$l.container),
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$n.container),
       ...props
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       ref: selectRef,
@@ -8585,22 +8791,22 @@ const DropdownMultiple = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       tabIndex: 0,
       className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(
         className,
-        s$l.selectContainer,
-        s$l.multipleContainer,
-        s$l[inputHeight],
-        s$l[`${borderColor}Border`],
+        s$n.selectContainer,
+        s$n.multipleContainer,
+        s$n[inputHeight],
+        s$n[`${borderColor}Border`],
         {
-          [s$l.error]: error2,
-          [s$l.disabled]: disabled2
+          [s$n.error]: error2,
+          [s$n.disabled]: disabled2
         }
       ),
       onClick: toggleShowOptions,
       onKeyDown: onKeyDown2,
       "data-testid": "dropdown-multiple-container"
     }, value2.length ? /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$l.tags
+      className: s$n.tags
     }, value2.map((key, index) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Tag, {
-      className: s$l.tag,
+      className: s$n.tag,
       key,
       label: optionsMap[key].label,
       onKeyDown: (e) => {
@@ -8614,7 +8820,7 @@ const DropdownMultiple = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       color: chevronColor ? `var(${chevronColor})` : "var(--alma-orange)"
     })), !disabled2 && showOptions && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", {
       ref: optionsRef,
-      className: s$l.multipleOptions
+      className: s$n.multipleOptions
     }, options.map((option, index) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", {
       key: `${option.label}-${index}`,
       role: "option",
@@ -8662,7 +8868,7 @@ const xl = "_xl_1mfwy_9";
 const lg$2 = "_lg_1mfwy_14";
 const md$3 = "_md_1mfwy_19";
 const sm$2 = "_sm_1mfwy_24";
-var s$j = {
+var s$l = {
   header: header$1,
   xl,
   lg: lg$2,
@@ -8684,7 +8890,7 @@ function Header({
 }) {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Component, {
     ...props,
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$j.header, s$j[size])
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$l.header, s$l[size])
   }, children2);
 }
 const pill$1 = "_pill_eu0aw_1";
@@ -8697,7 +8903,7 @@ const yellow$1 = "_yellow_eu0aw_44";
 const blue$1 = "_blue_eu0aw_49";
 const grey = "_grey_eu0aw_54";
 const white = "_white_eu0aw_58";
-var s$i = {
+var s$k = {
   pill: pill$1,
   md: md$2,
   lg: lg$1,
@@ -8718,7 +8924,7 @@ const IconPill = ({
   iconSize = "md"
 }) => {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$i.pill, s$i[color], s$i[iconSize], className)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$k.pill, s$k[color], s$k[iconSize], className)
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
     icon: icon2,
     isFilled: !isOutlined,
@@ -8731,7 +8937,7 @@ const blue = "_blue_19qvu_17";
 const red = "_red_19qvu_21";
 const orange = "_orange_19qvu_25";
 const yellow = "_yellow_19qvu_29";
-var s$h = {
+var s$j = {
   pill,
   green,
   blue,
@@ -8741,7 +8947,7 @@ var s$h = {
 };
 const IconNumber = ({ number, color = "blue", className }) => {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$h.pill, s$h[color], className)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$j.pill, s$j[color], className)
   }, number);
 };
 const AmexCardIcon = ({ title: title2, ...svgProps }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("svg", {
@@ -9332,7 +9538,7 @@ const CustomControl = ({
 const optionIconWrapper = "_optionIconWrapper_1u30q_1";
 const optionContainer = "_optionContainer_1u30q_8";
 const iconDirectWrapper = "_iconDirectWrapper_1u30q_15";
-var s$g = {
+var s$i = {
   optionIconWrapper,
   optionContainer,
   iconDirectWrapper
@@ -9349,11 +9555,11 @@ const CustomOption = ({ isSelected, data, children: children2, ...props }) => {
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
       "data-testid": "option",
       key: props.innerProps.key,
-      className: s$g.optionContainer
+      className: s$i.optionContainer
     }, isDataWithIcon(data) ? /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$g.optionIconWrapper
+      className: s$i.optionIconWrapper
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$g.iconDirectWrapper
+      className: s$i.iconDirectWrapper
     }, data.icon), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, children2)) : /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, children2), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: "tick-circle",
       isFilled: true,
@@ -9369,9 +9575,9 @@ const CustomOption = ({ isSelected, data, children: children2, ...props }) => {
     "data-testid": "option",
     key: props.innerProps.key
   }, isDataWithIcon(data) ? /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$g.optionIconWrapper
+    className: s$i.optionIconWrapper
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$g.iconDirectWrapper
+    className: s$i.iconDirectWrapper
   }, data.icon), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, children2)) : /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, children2)));
 };
 const CustomSingleValue = ({ children: children2, data, ...props }) => {
@@ -9379,9 +9585,9 @@ const CustomSingleValue = ({ children: children2, data, ...props }) => {
     data,
     ...props
   }, isDataWithIcon(data) ? /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$g.optionIconWrapper
+    className: s$i.optionIconWrapper
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$g.iconDirectWrapper
+    className: s$i.iconDirectWrapper
   }, data.icon), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, children2)) : /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, children2));
 };
 const AlmaSelect = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
@@ -9494,7 +9700,7 @@ const LanguageSelector = ({
 };
 const list = "_list_1aqty_1";
 const children = "_children_1aqty_16";
-var s$f = {
+var s$h = {
   list,
   children
 };
@@ -9502,18 +9708,18 @@ const List = ({ children: children2, title: title2, className }) => {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Card, {
     color: "light-gray",
     padding: "none",
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$f.list, className),
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$h.list, className),
     "data-testid": "list"
   }, title2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     "data-testid": "list-title"
   }, title2), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$f.children
+    className: s$h.children
   }, children2));
 };
 const actionsModal = "_actionsModal_wiwsq_1";
 const actions = "_actions_wiwsq_1";
 const content$2 = "_content_wiwsq_17";
-var s$e = {
+var s$g = {
   actionsModal,
   actions,
   content: content$2
@@ -9528,15 +9734,15 @@ const ActionsModal = ({
 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Modal, {
   isOpen: isOpen2,
   onClose,
-  contentClassName: s$e.actionsModal,
+  contentClassName: s$g.actionsModal,
   ...otherProps
 }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: s$e.content
+  className: s$g.content
 }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Header, {
   size: "md",
   as: "h2"
 }, header2), children2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, children2)), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: s$e.actions
+  className: s$g.actions
 }, actions2));
 var metadata$1 = { "version": 4, "country_calling_codes": { "1": ["US", "AG", "AI", "AS", "BB", "BM", "BS", "CA", "DM", "DO", "GD", "GU", "JM", "KN", "KY", "LC", "MP", "MS", "PR", "SX", "TC", "TT", "VC", "VG", "VI"], "7": ["RU", "KZ"], "20": ["EG"], "27": ["ZA"], "30": ["GR"], "31": ["NL"], "32": ["BE"], "33": ["FR"], "34": ["ES"], "36": ["HU"], "39": ["IT", "VA"], "40": ["RO"], "41": ["CH"], "43": ["AT"], "44": ["GB", "GG", "IM", "JE"], "45": ["DK"], "46": ["SE"], "47": ["NO", "SJ"], "48": ["PL"], "49": ["DE"], "51": ["PE"], "52": ["MX"], "53": ["CU"], "54": ["AR"], "55": ["BR"], "56": ["CL"], "57": ["CO"], "58": ["VE"], "60": ["MY"], "61": ["AU", "CC", "CX"], "62": ["ID"], "63": ["PH"], "64": ["NZ"], "65": ["SG"], "66": ["TH"], "81": ["JP"], "82": ["KR"], "84": ["VN"], "86": ["CN"], "90": ["TR"], "91": ["IN"], "92": ["PK"], "93": ["AF"], "94": ["LK"], "95": ["MM"], "98": ["IR"], "211": ["SS"], "212": ["MA", "EH"], "213": ["DZ"], "216": ["TN"], "218": ["LY"], "220": ["GM"], "221": ["SN"], "222": ["MR"], "223": ["ML"], "224": ["GN"], "225": ["CI"], "226": ["BF"], "227": ["NE"], "228": ["TG"], "229": ["BJ"], "230": ["MU"], "231": ["LR"], "232": ["SL"], "233": ["GH"], "234": ["NG"], "235": ["TD"], "236": ["CF"], "237": ["CM"], "238": ["CV"], "239": ["ST"], "240": ["GQ"], "241": ["GA"], "242": ["CG"], "243": ["CD"], "244": ["AO"], "245": ["GW"], "246": ["IO"], "247": ["AC"], "248": ["SC"], "249": ["SD"], "250": ["RW"], "251": ["ET"], "252": ["SO"], "253": ["DJ"], "254": ["KE"], "255": ["TZ"], "256": ["UG"], "257": ["BI"], "258": ["MZ"], "260": ["ZM"], "261": ["MG"], "262": ["RE", "YT"], "263": ["ZW"], "264": ["NA"], "265": ["MW"], "266": ["LS"], "267": ["BW"], "268": ["SZ"], "269": ["KM"], "290": ["SH", "TA"], "291": ["ER"], "297": ["AW"], "298": ["FO"], "299": ["GL"], "350": ["GI"], "351": ["PT"], "352": ["LU"], "353": ["IE"], "354": ["IS"], "355": ["AL"], "356": ["MT"], "357": ["CY"], "358": ["FI", "AX"], "359": ["BG"], "370": ["LT"], "371": ["LV"], "372": ["EE"], "373": ["MD"], "374": ["AM"], "375": ["BY"], "376": ["AD"], "377": ["MC"], "378": ["SM"], "380": ["UA"], "381": ["RS"], "382": ["ME"], "383": ["XK"], "385": ["HR"], "386": ["SI"], "387": ["BA"], "389": ["MK"], "420": ["CZ"], "421": ["SK"], "423": ["LI"], "500": ["FK"], "501": ["BZ"], "502": ["GT"], "503": ["SV"], "504": ["HN"], "505": ["NI"], "506": ["CR"], "507": ["PA"], "508": ["PM"], "509": ["HT"], "590": ["GP", "BL", "MF"], "591": ["BO"], "592": ["GY"], "593": ["EC"], "594": ["GF"], "595": ["PY"], "596": ["MQ"], "597": ["SR"], "598": ["UY"], "599": ["CW", "BQ"], "670": ["TL"], "672": ["NF"], "673": ["BN"], "674": ["NR"], "675": ["PG"], "676": ["TO"], "677": ["SB"], "678": ["VU"], "679": ["FJ"], "680": ["PW"], "681": ["WF"], "682": ["CK"], "683": ["NU"], "685": ["WS"], "686": ["KI"], "687": ["NC"], "688": ["TV"], "689": ["PF"], "690": ["TK"], "691": ["FM"], "692": ["MH"], "850": ["KP"], "852": ["HK"], "853": ["MO"], "855": ["KH"], "856": ["LA"], "880": ["BD"], "886": ["TW"], "960": ["MV"], "961": ["LB"], "962": ["JO"], "963": ["SY"], "964": ["IQ"], "965": ["KW"], "966": ["SA"], "967": ["YE"], "968": ["OM"], "970": ["PS"], "971": ["AE"], "972": ["IL"], "973": ["BH"], "974": ["QA"], "975": ["BT"], "976": ["MN"], "977": ["NP"], "992": ["TJ"], "993": ["TM"], "994": ["AZ"], "995": ["GE"], "996": ["KG"], "998": ["UZ"] }, "countries": { "AC": ["247", "00", "(?:[01589]\\d|[46])\\d{4}", [5, 6], 0, 0, 0, 0, 0, 0, 0, [["6[2-467]\\d{3}", [5]], ["4\\d{4}", [5]], 0, 0, 0, 0, ["(?:0[1-9]|[1589]\\d)\\d{4}", [6]]]], "AD": ["376", "00", "(?:1|6\\d)\\d{7}|[135-9]\\d{5}", [6, 8, 9], [["(\\d{3})(\\d{3})", "$1 $2", ["[135-9]"]], ["(\\d{4})(\\d{4})", "$1 $2", ["1"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["6"]]], 0, 0, 0, 0, 0, 0, [["[78]\\d{5}", [6]], ["690\\d{6}|[356]\\d{5}", [6, 9]], ["180[02]\\d{4}", [8]], ["[19]\\d{5}", [6]]]], "AE": ["971", "00", "(?:[4-7]\\d|9[0-689])\\d{7}|800\\d{2,9}|[2-4679]\\d{7}", [5, 6, 7, 8, 9, 10, 11, 12], [["(\\d{3})(\\d{2,9})", "$1 $2", ["60|8"]], ["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["[236]|[479][2-8]"], "0$1"], ["(\\d{3})(\\d)(\\d{5})", "$1 $2 $3", ["[479]"]], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["5"], "0$1"]], "0", 0, 0, 0, 0, 0, [["[2-4679][2-8]\\d{6}", [8]], ["5[024-68]\\d{7}", [9]], ["400\\d{6}|800\\d{2,9}"], ["900[02]\\d{5}", [9]], 0, 0, ["600[25]\\d{5}", [9]], 0, 0, ["700[05]\\d{5}", [9]]]], "AF": ["93", "00", "[2-7]\\d{8}", [9], [["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[2-7]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:[25][0-8]|[34][0-4]|6[0-5])[2-9]\\d{6}"], ["7\\d{8}"]]], "AG": ["1", "011", "(?:268|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([457]\\d{6})$|1", "268$1", 0, "268", [["268(?:4(?:6[0-38]|84)|56[0-2])\\d{4}"], ["268(?:464|7(?:1[3-9]|[28]\\d|3[0246]|64|7[0-689]))\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], 0, 0, ["26840[69]\\d{4}"], ["26848[01]\\d{4}"]]], "AI": ["1", "011", "(?:264|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2457]\\d{6})$|1", "264$1", 0, "264", [["264(?:292|4(?:6[12]|9[78]))\\d{4}"], ["264(?:235|4(?:69|76)|5(?:3[6-9]|8[1-4])|7(?:29|72))\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], 0, 0, ["264724\\d{4}"]]], "AL": ["355", "00", "(?:700\\d\\d|900)\\d{3}|8\\d{5,7}|(?:[2-5]|6\\d)\\d{7}", [6, 7, 8, 9], [["(\\d{3})(\\d{3,4})", "$1 $2", ["80|9"], "0$1"], ["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["4[2-6]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[2358][2-5]|4"], "0$1"], ["(\\d{3})(\\d{5})", "$1 $2", ["[23578]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["6"], "0$1"]], "0", 0, 0, 0, 0, 0, [["4505[0-2]\\d{3}|(?:[2358][16-9]\\d[2-9]|4410)\\d{4}|(?:[2358][2-5][2-9]|4(?:[2-57-9][2-9]|6\\d))\\d{5}", [8]], ["6(?:[78][2-9]|9\\d)\\d{6}", [9]], ["800\\d{4}", [7]], ["900[1-9]\\d\\d", [6]], ["700[2-9]\\d{4}", [8]], 0, 0, 0, 0, ["808[1-9]\\d\\d", [6]]]], "AM": ["374", "00", "(?:[1-489]\\d|55|60|77)\\d{6}", [8], [["(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["[89]0"], "0 $1"], ["(\\d{3})(\\d{5})", "$1 $2", ["2|3[12]"], "(0$1)"], ["(\\d{2})(\\d{6})", "$1 $2", ["1|47"], "(0$1)"], ["(\\d{2})(\\d{6})", "$1 $2", ["[3-9]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:(?:1[0-25]|47)\\d|2(?:2[2-46]|3[1-8]|4[2-69]|5[2-7]|6[1-9]|8[1-7])|3[12]2)\\d{5}"], ["(?:33|4[1349]|55|77|88|9[13-9])\\d{6}"], ["800\\d{5}"], ["90[016]\\d{5}"], 0, 0, 0, 0, ["60(?:2[78]|3[5-9]|4[02-9]|5[0-46-9]|[6-8]\\d|9[0-2])\\d{4}"], ["80[1-4]\\d{5}"]]], "AO": ["244", "00", "[29]\\d{8}", [9], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[29]"]]], 0, 0, 0, 0, 0, 0, [["2\\d(?:[0134][25-9]|[25-9]\\d)\\d{5}"], ["9[1-79]\\d{7}"]]], "AR": ["54", "00", "(?:11|[89]\\d\\d)\\d{8}|[2368]\\d{9}", [10, 11], [["(\\d{4})(\\d{2})(\\d{4})", "$1 $2-$3", ["2(?:2[024-9]|3[0-59]|47|6[245]|9[02-8])|3(?:3[28]|4[03-9]|5[2-46-8]|7[1-578]|8[2-9])", "2(?:[23]02|6(?:[25]|4[6-8])|9(?:[02356]|4[02568]|72|8[23]))|3(?:3[28]|4(?:[04679]|3[5-8]|5[4-68]|8[2379])|5(?:[2467]|3[237]|8[2-5])|7[1-578]|8(?:[2469]|3[2578]|5[4-8]|7[36-8]|8[5-8]))|2(?:2[24-9]|3[1-59]|47)", "2(?:[23]02|6(?:[25]|4(?:64|[78]))|9(?:[02356]|4(?:[0268]|5[2-6])|72|8[23]))|3(?:3[28]|4(?:[04679]|3[78]|5(?:4[46]|8)|8[2379])|5(?:[2467]|3[237]|8[23])|7[1-578]|8(?:[2469]|3[278]|5[56][46]|86[3-6]))|2(?:2[24-9]|3[1-59]|47)|38(?:[58][78]|7[378])|3(?:4[35][56]|58[45]|8(?:[38]5|54|76))[4-6]", "2(?:[23]02|6(?:[25]|4(?:64|[78]))|9(?:[02356]|4(?:[0268]|5[2-6])|72|8[23]))|3(?:3[28]|4(?:[04679]|3(?:5(?:4[0-25689]|[56])|[78])|58|8[2379])|5(?:[2467]|3[237]|8(?:[23]|4(?:[45]|60)|5(?:4[0-39]|5|64)))|7[1-578]|8(?:[2469]|3[278]|54(?:4|5[13-7]|6[89])|86[3-6]))|2(?:2[24-9]|3[1-59]|47)|38(?:[58][78]|7[378])|3(?:454|85[56])[46]|3(?:4(?:36|5[56])|8(?:[38]5|76))[4-6]"], "0$1", 1], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2-$3", ["1"], "0$1", 1], ["(\\d{3})(\\d{3})(\\d{4})", "$1-$2-$3", ["[68]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2-$3", ["[23]"], "0$1", 1], ["(\\d)(\\d{4})(\\d{2})(\\d{4})", "$2 15-$3-$4", ["9(?:2[2-469]|3[3-578])", "9(?:2(?:2[024-9]|3[0-59]|47|6[245]|9[02-8])|3(?:3[28]|4[03-9]|5[2-46-8]|7[1-578]|8[2-9]))", "9(?:2(?:[23]02|6(?:[25]|4[6-8])|9(?:[02356]|4[02568]|72|8[23]))|3(?:3[28]|4(?:[04679]|3[5-8]|5[4-68]|8[2379])|5(?:[2467]|3[237]|8[2-5])|7[1-578]|8(?:[2469]|3[2578]|5[4-8]|7[36-8]|8[5-8])))|92(?:2[24-9]|3[1-59]|47)", "9(?:2(?:[23]02|6(?:[25]|4(?:64|[78]))|9(?:[02356]|4(?:[0268]|5[2-6])|72|8[23]))|3(?:3[28]|4(?:[04679]|3[78]|5(?:4[46]|8)|8[2379])|5(?:[2467]|3[237]|8[23])|7[1-578]|8(?:[2469]|3[278]|5(?:[56][46]|[78])|7[378]|8(?:6[3-6]|[78]))))|92(?:2[24-9]|3[1-59]|47)|93(?:4[35][56]|58[45]|8(?:[38]5|54|76))[4-6]", "9(?:2(?:[23]02|6(?:[25]|4(?:64|[78]))|9(?:[02356]|4(?:[0268]|5[2-6])|72|8[23]))|3(?:3[28]|4(?:[04679]|3(?:5(?:4[0-25689]|[56])|[78])|5(?:4[46]|8)|8[2379])|5(?:[2467]|3[237]|8(?:[23]|4(?:[45]|60)|5(?:4[0-39]|5|64)))|7[1-578]|8(?:[2469]|3[278]|5(?:4(?:4|5[13-7]|6[89])|[56][46]|[78])|7[378]|8(?:6[3-6]|[78]))))|92(?:2[24-9]|3[1-59]|47)|93(?:4(?:36|5[56])|8(?:[38]5|76))[4-6]"], "0$1", 0, "$1 $2 $3-$4"], ["(\\d)(\\d{2})(\\d{4})(\\d{4})", "$2 15-$3-$4", ["91"], "0$1", 0, "$1 $2 $3-$4"], ["(\\d{3})(\\d{3})(\\d{5})", "$1-$2-$3", ["8"], "0$1"], ["(\\d)(\\d{3})(\\d{3})(\\d{4})", "$2 15-$3-$4", ["9"], "0$1", 0, "$1 $2 $3-$4"]], "0", 0, "0?(?:(11|2(?:2(?:02?|[13]|2[13-79]|4[1-6]|5[2457]|6[124-8]|7[1-4]|8[13-6]|9[1267])|3(?:02?|1[467]|2[03-6]|3[13-8]|[49][2-6]|5[2-8]|[67])|4(?:7[3-578]|9)|6(?:[0136]|2[24-6]|4[6-8]?|5[15-8])|80|9(?:0[1-3]|[19]|2\\d|3[1-6]|4[02568]?|5[2-4]|6[2-46]|72?|8[23]?))|3(?:3(?:2[79]|6|8[2578])|4(?:0[0-24-9]|[12]|3[5-8]?|4[24-7]|5[4-68]?|6[02-9]|7[126]|8[2379]?|9[1-36-8])|5(?:1|2[1245]|3[237]?|4[1-46-9]|6[2-4]|7[1-6]|8[2-5]?)|6[24]|7(?:[069]|1[1568]|2[15]|3[145]|4[13]|5[14-8]|7[2-57]|8[126])|8(?:[01]|2[15-7]|3[2578]?|4[13-6]|5[4-8]?|6[1-357-9]|7[36-8]?|8[5-8]?|9[124])))15)?", "9$1", 0, 0, [["3(?:7(?:1[15]|81)|8(?:21|4[16]|69|9[12]))[46]\\d{5}|(?:(?:11[1-8]|670)\\d|2(?:21[2-6]|(?:3[06]|49)4|6(?:04|1[2-8])|9[17][4-6])|3(?:(?:36|64)4|4(?:1[2-8]|[25][4-6]|84)|5(?:1[2-9]|[38][4-6])|8(?:[17][2-6]|3[4-6]|8[3-68])))\\d{6}|(?:2(?:23|64|99)|3(?:43|85))[3-6]\\d{6}|(?:2(?:657|9(?:54|66))|3(?:487|7(?:55|77)|865))[2-8]\\d{5}|(?:2(?:[28]0|37|6[36]|9[48])|3(?:62|7[069]|80))[45]\\d{6}|(?:2(?:2(?:2[59]|44|52)|3(?:26|44)|47[35]|9(?:[07]2|2[26]|34|46))|3327)[45]\\d{5}|(?:2(?:2(?:62|81)|320|622|9(?:42|83))|3(?:329|4(?:62|76|89)|564))[2-6]\\d{5}|(?:2(?:284|3(?:02|23)|477|920)|3(?:4(?:46|[89]2)|541|878))[2-7]\\d{5}|2(?:2(?:21|4[23]|6[145]|7[1-4]|8[356]|9[267])|3(?:16|3[13-8]|43|5[346-8]|9[3-5])|6(?:2[46]|4[78]|5[1568])|9(?:03|2[1457-9]|3[1356]|4[08]|[56][23]|82))4\\d{5}|(?:2(?:257|3(?:24|46|92)|9(?:01|23|64))|3(?:4(?:42|71)|5(?:25|37|4[347]|71)|7(?:18|35|5[17])))[3-6]\\d{5}|(?:2(?:2(?:02|2[3467]|4[156]|5[45]|6[6-8]|91)|3(?:1[47]|25|[45][25]|96)|47[48]|625|932)|3(?:38[2578]|4(?:0[0-24-9]|3[78]|4[457]|58|6[03-9]|72|83|9[136-8])|5(?:2[124]|[368][23]|4[2689]|7[2-6])|7(?:16|2[15]|3[14]|4[13]|5[468]|7[2-5]|8[26])|8(?:2[5-7]|3[278]|4[3-5]|5[78]|6[1-378]|[78]7|94)))[4-6]\\d{5}", [10]], ["93(?:7(?:1[15]|81)|8(?:21|4[16]|69|9[12]))[46]\\d{5}|(?:675\\d|9(?:11[1-8]\\d|2(?:21[2-6]|(?:3[06]|49)4|6(?:04|1[2-8])|9[17][4-6])|3(?:(?:36|64)4|4(?:1[2-8]|[25][4-6]|84)|5(?:1[2-9]|[38][4-6])|8(?:[17][2-6]|3[4-6]|8[3-68]))))\\d{6}|9(?:2(?:23|64|99)|3(?:43|85))[3-6]\\d{6}|9(?:2(?:657|9(?:54|66))|3(?:487|7(?:55|77)|865))[2-8]\\d{5}|9(?:2(?:[28]0|37|6[36]|9[48])|3(?:62|7[069]|80))[45]\\d{6}|9(?:2(?:2(?:2[59]|44|52)|3(?:26|44)|47[35]|9(?:[07]2|2[26]|34|46))|3327)[45]\\d{5}|9(?:2(?:2(?:62|81)|320|622|9(?:42|83))|3(?:329|4(?:62|76|89)|564))[2-6]\\d{5}|9(?:2(?:284|3(?:02|23)|477|920)|3(?:4(?:46|[89]2)|541|878))[2-7]\\d{5}|92(?:2(?:21|4[23]|6[145]|7[1-4]|8[356]|9[267])|3(?:16|3[13-8]|43|5[346-8]|9[3-5])|6(?:2[46]|4[78]|5[1568])|9(?:03|2[1457-9]|3[1356]|4[08]|[56][23]|82))4\\d{5}|9(?:2(?:257|3(?:24|46|92)|9(?:01|23|64))|3(?:4(?:42|71)|5(?:25|37|4[347]|71)|7(?:18|35|5[17])))[3-6]\\d{5}|9(?:2(?:2(?:02|2[3467]|4[156]|5[45]|6[6-8]|91)|3(?:1[47]|25|[45][25]|96)|47[48]|625|932)|3(?:38[2578]|4(?:0[0-24-9]|3[78]|4[457]|58|6[03-9]|72|83|9[136-8])|5(?:2[124]|[368][23]|4[2689]|7[2-6])|7(?:16|2[15]|3[14]|4[13]|5[468]|7[2-5]|8[26])|8(?:2[5-7]|3[278]|4[3-5]|5[78]|6[1-378]|[78]7|94)))[4-6]\\d{5}"], ["800\\d{7,8}"], ["60[04579]\\d{7}", [10]], 0, 0, ["810\\d{7}", [10]]]], "AS": ["1", "011", "(?:[58]\\d\\d|684|900)\\d{7}", [10], 0, "1", 0, "([267]\\d{6})$|1", "684$1", 0, "684", [["6846(?:22|33|44|55|77|88|9[19])\\d{4}"], ["684(?:2(?:48|5[2468]|7[26])|7(?:3[13]|70|82))\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "AT": ["43", "00", "1\\d{3,12}|2\\d{6,12}|43(?:(?:0\\d|5[02-9])\\d{3,9}|2\\d{4,5}|[3467]\\d{4}|8\\d{4,6}|9\\d{4,7})|5\\d{4,12}|8\\d{7,12}|9\\d{8,12}|(?:[367]\\d|4[0-24-9])\\d{4,11}", [4, 5, 6, 7, 8, 9, 10, 11, 12, 13], [["(\\d)(\\d{3,12})", "$1 $2", ["1(?:11|[2-9])"], "0$1"], ["(\\d{3})(\\d{2})", "$1 $2", ["517"], "0$1"], ["(\\d{2})(\\d{3,5})", "$1 $2", ["5[079]"], "0$1"], ["(\\d{3})(\\d{3,10})", "$1 $2", ["(?:31|4)6|51|6(?:5[0-3579]|[6-9])|7(?:20|32|8)|[89]"], "0$1"], ["(\\d{4})(\\d{3,9})", "$1 $2", ["[2-467]|5[2-6]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["5"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4,7})", "$1 $2 $3", ["5"], "0$1"]], "0", 0, 0, 0, 0, 0, [["1(?:11\\d|[2-9]\\d{3,11})|(?:316|463|(?:51|66|73)2)\\d{3,10}|(?:2(?:1[467]|2[13-8]|5[2357]|6[1-46-8]|7[1-8]|8[124-7]|9[1458])|3(?:1[1-578]|3[23568]|4[5-7]|5[1378]|6[1-38]|8[3-68])|4(?:2[1-8]|35|7[1368]|8[2457])|5(?:2[1-8]|3[357]|4[147]|5[12578]|6[37])|6(?:13|2[1-47]|4[135-8]|5[468])|7(?:2[1-8]|35|4[13478]|5[68]|6[16-8]|7[1-6]|9[45]))\\d{4,10}"], ["6(?:5[0-3579]|6[013-9]|[7-9]\\d)\\d{4,10}", [7, 8, 9, 10, 11, 12, 13]], ["800\\d{6,10}", [9, 10, 11, 12, 13]], ["(?:8[69][2-68]|9(?:0[01]|3[019]))\\d{6,10}", [9, 10, 11, 12, 13]], 0, 0, 0, 0, ["5(?:0[1-9]|17|[79]\\d)\\d{2,10}|7[28]0\\d{6,10}", [5, 6, 7, 8, 9, 10, 11, 12, 13]], ["8(?:10|2[018])\\d{6,10}|828\\d{5}", [8, 9, 10, 11, 12, 13]]]], "AU": ["61", "001[14-689]|14(?:1[14]|34|4[17]|[56]6|7[47]|88)0011", "1(?:[0-79]\\d{7}(?:\\d(?:\\d{2})?)?|8[0-24-9]\\d{7})|[2-478]\\d{8}|1\\d{4,7}", [5, 6, 7, 8, 9, 10, 12], [["(\\d{2})(\\d{3,4})", "$1 $2", ["16"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2,4})", "$1 $2 $3", ["16"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["14|4"], "0$1"], ["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["[2378]"], "(0$1)"], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["1(?:30|[89])"]]], "0", 0, "(183[12])|0", 0, 0, 0, [["(?:(?:(?:2(?:[0-26-9]\\d|3[0-8]|4[02-9]|5[0135-9])|7(?:[013-57-9]\\d|2[0-8]))\\d|3(?:(?:[0-3589]\\d|6[1-9]|7[0-35-9])\\d|4(?:[0-578]\\d|90)))\\d\\d|8(?:51(?:0(?:0[03-9]|[12479]\\d|3[2-9]|5[0-8]|6[1-9]|8[0-7])|1(?:[0235689]\\d|1[0-69]|4[0-589]|7[0-47-9])|2(?:0[0-79]|[18][13579]|2[14-9]|3[0-46-9]|[4-6]\\d|7[89]|9[0-4])|3\\d\\d)|(?:6[0-8]|[78]\\d)\\d{3}|9(?:[02-9]\\d{3}|1(?:(?:[0-58]\\d|6[0135-9])\\d|7(?:0[0-24-9]|[1-9]\\d)|9(?:[0-46-9]\\d|5[0-79])))))\\d{3}", [9]], ["4(?:79[01]|83[0-389]|94[0-4])\\d{5}|4(?:[0-36]\\d|4[047-9]|5[0-25-9]|7[02-8]|8[0-24-9]|9[0-37-9])\\d{6}", [9]], ["180(?:0\\d{3}|2)\\d{3}", [7, 10]], ["190[0-26]\\d{6}", [10]], 0, 0, 0, ["163\\d{2,6}", [5, 6, 7, 8, 9]], ["14(?:5(?:1[0458]|[23][458])|71\\d)\\d{4}", [9]], ["13(?:00\\d{6}(?:\\d{2})?|45[0-4]\\d{3})|13\\d{4}", [6, 8, 10, 12]]], "0011"], "AW": ["297", "00", "(?:[25-79]\\d\\d|800)\\d{4}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[25-9]"]]], 0, 0, 0, 0, 0, 0, [["5(?:2\\d|8[1-9])\\d{4}"], ["(?:290|5[69]\\d|6(?:[03]0|22|4[0-2]|[69]\\d)|7(?:[34]\\d|7[07])|9(?:6[45]|9[4-8]))\\d{4}"], ["800\\d{4}"], ["900\\d{4}"], 0, 0, 0, 0, ["(?:28\\d|501)\\d{4}"]]], "AX": ["358", "00|99(?:[01469]|5(?:[14]1|3[23]|5[59]|77|88|9[09]))", "2\\d{4,9}|35\\d{4,5}|(?:60\\d\\d|800)\\d{4,6}|7\\d{5,11}|(?:[14]\\d|3[0-46-9]|50)\\d{4,8}", [5, 6, 7, 8, 9, 10, 11, 12], 0, "0", 0, 0, 0, 0, "18", [["18[1-8]\\d{3,6}", [6, 7, 8, 9]], ["4946\\d{2,6}|(?:4[0-8]|50)\\d{4,8}", [6, 7, 8, 9, 10]], ["800\\d{4,6}", [7, 8, 9]], ["[67]00\\d{5,6}", [8, 9]], 0, 0, ["20\\d{4,8}|60[12]\\d{5,6}|7(?:099\\d{4,5}|5[03-9]\\d{3,7})|20[2-59]\\d\\d|(?:606|7(?:0[78]|1|3\\d))\\d{7}|(?:10|29|3[09]|70[1-5]\\d)\\d{4,8}"]], "00"], "AZ": ["994", "00", "365\\d{6}|(?:[124579]\\d|60|88)\\d{7}", [9], [["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["90"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["1[28]|2|365|46", "1[28]|2|365[45]|46", "1[28]|2|365(?:4|5[02])|46"], "(0$1)"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[13-9]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2[12]428|3655[02])\\d{4}|(?:2(?:22[0-79]|63[0-28])|3654)\\d{5}|(?:(?:1[28]|46)\\d|2(?:[014-6]2|[23]3))\\d{6}"], ["36554\\d{4}|(?:[16]0|4[04]|5[015]|7[07]|99)\\d{7}"], ["88\\d{7}"], ["900200\\d{3}"]]], "BA": ["387", "00", "6\\d{8}|(?:[35689]\\d|49|70)\\d{6}", [8, 9], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["6[1-3]|[7-9]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2-$3", ["[3-5]|6[56]"], "0$1"], ["(\\d{2})(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3 $4", ["6"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:3(?:[05-79][2-9]|1[4579]|[23][24-9]|4[2-4689]|8[2457-9])|49[2-579]|5(?:0[2-49]|[13][2-9]|[268][2-4679]|4[4689]|5[2-79]|7[2-69]|9[2-4689]))\\d{5}", [8]], ["6040\\d{5}|6(?:03|[1-356]|44|7\\d)\\d{6}"], ["8[08]\\d{6}", [8]], ["9[0246]\\d{6}", [8]], 0, 0, ["703[235]0\\d{3}|70(?:2[0-5]|3[0146]|[56]0)\\d{4}", [8]], 0, 0, ["8[12]\\d{6}", [8]]]], "BB": ["1", "011", "(?:246|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2-9]\\d{6})$|1", "246$1", 0, "246", [["246521[0369]\\d{3}|246(?:2(?:2[78]|7[0-4])|4(?:1[024-6]|2\\d|3[2-9])|5(?:20|[34]\\d|54|7[1-3])|6(?:2\\d|38)|7[35]7|9(?:1[89]|63))\\d{4}"], ["246(?:(?:2(?:[3568]\\d|4[0-57-9])|3(?:5[2-9]|6[0-6])|4(?:46|5\\d)|69[5-7]|8(?:[2-5]\\d|83))\\d|52(?:1[147]|20))\\d{3}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["(?:246976|900[2-9]\\d\\d)\\d{4}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], 0, ["246(?:292|367|4(?:1[7-9]|3[01]|4[47-9]|67)|7(?:1[2-9]|2\\d|3[016]|53))\\d{4}"], 0, ["24631\\d{5}"]]], "BD": ["880", "00", "[1-469]\\d{9}|8[0-79]\\d{7,8}|[2-79]\\d{8}|[2-9]\\d{7}|[3-9]\\d{6}|[57-9]\\d{5}", [6, 7, 8, 9, 10], [["(\\d{2})(\\d{4,6})", "$1-$2", ["31[5-8]|[459]1"], "0$1"], ["(\\d{3})(\\d{3,7})", "$1-$2", ["3(?:[67]|8[013-9])|4(?:6[168]|7|[89][18])|5(?:6[128]|9)|6(?:[15]|28|4[14])|7[2-589]|8(?:0[014-9]|[12])|9[358]|(?:3[2-5]|4[235]|5[2-578]|6[0389]|76|8[3-7]|9[24])1|(?:44|66)[01346-9]"], "0$1"], ["(\\d{4})(\\d{3,6})", "$1-$2", ["[13-9]|2[23]"], "0$1"], ["(\\d)(\\d{7,8})", "$1-$2", ["2"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:4(?:31\\d\\d|423)|5222)\\d{3}(?:\\d{2})?|8332[6-9]\\d\\d|(?:3(?:03[56]|224)|4(?:22[25]|653))\\d{3,4}|(?:3(?:42[47]|529|823)|4(?:027|525|65(?:28|8))|562|6257|7(?:1(?:5[3-5]|6[12]|7[156]|89)|22[589]56|32|42675|52(?:[25689](?:56|8)|[347]8)|71(?:6[1267]|75|89)|92374)|82(?:2[59]|32)56|9(?:03[23]56|23(?:256|373)|31|5(?:1|2[4589]56)))\\d{3}|(?:3(?:02[348]|22[35]|324|422)|4(?:22[67]|32[236-9]|6(?:2[46]|5[57])|953)|5526|6(?:024|6655)|81)\\d{4,5}|(?:2(?:7(?:1[0-267]|2[0-289]|3[0-29]|4[01]|5[1-3]|6[013]|7[0178]|91)|8(?:0[125]|1[1-6]|2[0157-9]|3[1-69]|41|6[1-35]|7[1-5]|8[1-8]|9[0-6])|9(?:0[0-2]|1[0-4]|2[568]|3[3-6]|5[5-7]|6[0136-9]|7[0-7]|8[014-9]))|3(?:0(?:2[025-79]|3[2-4])|181|22[12]|32[2356]|824)|4(?:02[09]|22[348]|32[045]|523|6(?:27|54))|666(?:22|53)|7(?:22[57-9]|42[56]|82[35])8|8(?:0[124-9]|2(?:181|2[02-4679]8)|4[12]|[5-7]2)|9(?:[04]2|2(?:2|328)|81))\\d{4}|(?:2(?:[23]\\d|[45])\\d\\d|3(?:1(?:2[5-7]|[5-7])|425|822)|4(?:033|1\\d|[257]1|332|4(?:2[246]|5[25])|6(?:2[35]|56|62)|8(?:23|54)|92[2-5])|5(?:02[03489]|22[457]|32[35-79]|42[46]|6(?:[18]|53)|724|826)|6(?:023|2(?:2[2-5]|5[3-5]|8)|32[3478]|42[34]|52[47]|6(?:[18]|6(?:2[34]|5[24]))|[78]2[2-5]|92[2-6])|7(?:02|21\\d|[3-589]1|6[12]|72[24])|8(?:217|3[12]|[5-7]1)|9[24]1)\\d{5}|(?:(?:3[2-8]|5[2-57-9]|6[03-589])1|4[4689][18])\\d{5}|[59]1\\d{5}"], ["(?:1[13-9]\\d|644)\\d{7}|(?:3[78]|44|66)[02-9]\\d{7}", [10]], ["80[03]\\d{7}", [10]], 0, 0, 0, 0, 0, ["96(?:0[469]|1[0-47]|3[389]|43|6[69]|7[78])\\d{6}", [10]]]], "BE": ["32", "00", "4\\d{8}|[1-9]\\d{7}", [8, 9], [["(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["(?:80|9)0"], "0$1"], ["(\\d)(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[239]|4[23]"], "0$1"], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[15-8]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["4"], "0$1"]], "0", 0, 0, 0, 0, 0, [["80[2-8]\\d{5}|(?:1[0-69]|[23][2-8]|4[23]|5\\d|6[013-57-9]|71|8[1-79]|9[2-4])\\d{6}", [8]], ["4[5-9]\\d{7}", [9]], ["800[1-9]\\d{4}", [8]], ["(?:70(?:2[0-57]|3[04-7]|44|6[4-69]|7[0579])|90\\d\\d)\\d{4}", [8]], 0, 0, ["78(?:0[57]|1[014-8]|2[25]|3[15-8]|48|[56]0|7[06-8]|9\\d)\\d{4}", [8]], 0, 0, ["7879\\d{4}", [8]]]], "BF": ["226", "00", "[025-7]\\d{7}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[025-7]"]]], 0, 0, 0, 0, 0, 0, [["2(?:0(?:49|5[23]|6[5-7]|9[016-9])|4(?:4[569]|5[4-6]|6[5-7]|7[0179])|5(?:[34]\\d|50|6[5-7]))\\d{4}"], ["(?:0[1-7]|5[0-8]|[67]\\d)\\d{6}"]]], "BG": ["359", "00", "00800\\d{7}|[2-7]\\d{6,7}|[89]\\d{6,8}|2\\d{5}", [6, 7, 8, 9, 12], [["(\\d)(\\d)(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["2"], "0$1"], ["(\\d{3})(\\d{4})", "$1 $2", ["43[1-6]|70[1-9]"], "0$1"], ["(\\d)(\\d{3})(\\d{3,4})", "$1 $2 $3", ["2"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2,3})", "$1 $2 $3", ["[356]|4[124-7]|7[1-9]|8[1-6]|9[1-7]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["(?:70|8)0"], "0$1"], ["(\\d{3})(\\d{3})(\\d{2})", "$1 $2 $3", ["43[1-7]|7"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[48]|9[08]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["9"], "0$1"]], "0", 0, 0, 0, 0, 0, [["2\\d{5,7}|(?:43[1-6]|70[1-9])\\d{4,5}|(?:[36]\\d|4[124-7]|[57][1-9]|8[1-6]|9[1-7])\\d{5,6}", [6, 7, 8]], ["(?:43[07-9]|99[69]\\d)\\d{5}|(?:8[7-9]|98)\\d{7}", [8, 9]], ["(?:00800\\d\\d|800)\\d{5}", [8, 12]], ["90\\d{6}", [8]], 0, 0, 0, 0, 0, ["700\\d{5}", [8]]]], "BH": ["973", "00", "[136-9]\\d{7}", [8], [["(\\d{4})(\\d{4})", "$1 $2", ["[13679]|8[02-4679]"]]], 0, 0, 0, 0, 0, 0, [["(?:1(?:3[1356]|6[0156]|7\\d)\\d|6(?:1[16]\\d|500|6(?:0\\d|3[12]|44|55|7[7-9]|88)|9[69][69])|7(?:[07]\\d\\d|1(?:11|78)))\\d{4}"], ["(?:3(?:[0-79]\\d|8[0-57-9])\\d|6(?:3(?:00|33|6[16])|441|6(?:3[03-9]|[69]\\d|7[0-689])))\\d{4}"], ["8[02369]\\d{6}"], ["(?:87|9[0-8])\\d{6}"], 0, 0, 0, 0, 0, ["84\\d{6}"]]], "BI": ["257", "00", "(?:[267]\\d|31)\\d{6}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[2367]"]]], 0, 0, 0, 0, 0, 0, [["(?:22|31)\\d{6}"], ["(?:29|[67][125-9])\\d{6}"]]], "BJ": ["229", "00", "(?:01\\d|[24-689])\\d{7}", [8, 10], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[24-689]"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4 $5", ["0"]]], 0, 0, 0, 0, 0, 0, [["2090\\d{4}|(?:012\\d\\d|2(?:02|1[037]|2[45]|3[68]|4\\d))\\d{5}"], ["(?:01(?:2[5-9]|[4-69]\\d)|4[0-8]|[56]\\d|9[013-9])\\d{6}"], 0, 0, 0, 0, ["81\\d{6}", [8]], 0, ["857[58]\\d{4}", [8]]]], "BL": ["590", "00", "(?:590\\d|7090)\\d{5}|(?:69|80|9\\d)\\d{7}", [9], 0, "0", 0, 0, 0, 0, 0, [["590(?:2[7-9]|3[3-7]|5[12]|87)\\d{4}"], ["(?:69(?:0\\d\\d|1(?:2[2-9]|3[0-5])|4(?:0[89]|1[2-6]|9\\d)|6(?:1[016-9]|5[0-4]|[67]\\d))|7090[0-4])\\d{4}"], ["80[0-5]\\d{6}"], 0, 0, 0, 0, 0, ["9(?:(?:39[5-7]|76[018])\\d|475[0-5])\\d{4}"]]], "BM": ["1", "011", "(?:441|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2-9]\\d{6})$|1", "441$1", 0, "441", [["441(?:[46]\\d\\d|5(?:4\\d|60|89))\\d{4}"], ["441(?:[2378]\\d|5[0-39]|9[02])\\d{5}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "BN": ["673", "00", "[2-578]\\d{6}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[2-578]"]]], 0, 0, 0, 0, 0, 0, [["22[0-7]\\d{4}|(?:2[013-9]|[34]\\d|5[0-25-9])\\d{5}"], ["(?:22[89]|[78]\\d\\d)\\d{4}"], 0, 0, 0, 0, 0, 0, ["5[34]\\d{5}"]]], "BO": ["591", "00(?:1\\d)?", "8001\\d{5}|(?:[2-467]\\d|50)\\d{6}", [8, 9], [["(\\d)(\\d{7})", "$1 $2", ["[235]|4[46]"]], ["(\\d{8})", "$1", ["[67]"]], ["(\\d{3})(\\d{2})(\\d{4})", "$1 $2 $3", ["8"]]], "0", 0, "0(1\\d)?", 0, 0, 0, [["(?:2(?:2\\d\\d|5(?:11|[258]\\d|9[67])|6(?:12|2\\d|9[34])|8(?:2[34]|39|62))|3(?:3\\d\\d|4(?:6\\d|8[24])|8(?:25|42|5[257]|86|9[25])|9(?:[27]\\d|3[2-4]|4[248]|5[24]|6[2-6]))|4(?:4\\d\\d|6(?:11|[24689]\\d|72)))\\d{4}", [8]], ["[67]\\d{7}", [8]], ["8001[07]\\d{4}", [9]], 0, 0, 0, 0, 0, ["50\\d{6}", [8]]]], "BQ": ["599", "00", "(?:[34]1|7\\d)\\d{5}", [7], 0, 0, 0, 0, 0, 0, "[347]", [["(?:318[023]|41(?:6[023]|70)|7(?:1[578]|2[05]|50)\\d)\\d{3}"], ["(?:31(?:8[14-8]|9[14578])|416[14-9]|7(?:0[01]|7[07]|8\\d|9[056])\\d)\\d{3}"]]], "BR": ["55", "00(?:1[245]|2[1-35]|31|4[13]|[56]5|99)", "(?:[1-46-9]\\d\\d|5(?:[0-46-9]\\d|5[0-46-9]))\\d{8}|[1-9]\\d{9}|[3589]\\d{8}|[34]\\d{7}", [8, 9, 10, 11], [["(\\d{4})(\\d{4})", "$1-$2", ["300|4(?:0[02]|37)", "4(?:02|37)0|[34]00"]], ["(\\d{3})(\\d{2,3})(\\d{4})", "$1 $2 $3", ["(?:[358]|90)0"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2-$3", ["(?:[14689][1-9]|2[12478]|3[1-578]|5[13-5]|7[13-579])[2-57]"], "($1)"], ["(\\d{2})(\\d{5})(\\d{4})", "$1 $2-$3", ["[16][1-9]|[2-57-9]"], "($1)"]], "0", 0, "(?:0|90)(?:(1[245]|2[1-35]|31|4[13]|[56]5|99)(\\d{10,11}))?", "$2", 0, 0, [["(?:[14689][1-9]|2[12478]|3[1-578]|5[13-5]|7[13-579])[2-5]\\d{7}", [10]], ["(?:[14689][1-9]|2[12478]|3[1-578]|5[13-5]|7[13-579])(?:7|9\\d)\\d{7}", [10, 11]], ["800\\d{6,7}", [9, 10]], ["300\\d{6}|[59]00\\d{6,7}", [9, 10]], 0, 0, 0, 0, 0, ["(?:30[03]\\d{3}|4(?:0(?:0\\d|20)|370))\\d{4}|300\\d{5}", [8, 10]]]], "BS": ["1", "011", "(?:242|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([3-8]\\d{6})$|1", "242$1", 0, "242", [["242(?:3(?:02|[236][1-9]|4[0-24-9]|5[0-68]|7[347]|8[0-4]|9[2-467])|461|502|6(?:0[1-5]|12|2[013]|[45]0|7[67]|8[78]|9[89])|7(?:02|88))\\d{4}"], ["242(?:3(?:5[79]|7[56]|95)|4(?:[23][1-9]|4[1-35-9]|5[1-8]|6[2-8]|7\\d|81)|5(?:2[45]|3[35]|44|5[1-46-9]|65|77)|6[34]6|7(?:27|38)|8(?:0[1-9]|1[02-9]|2\\d|3[0-4]|[89]9))\\d{4}"], ["242300\\d{4}|8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], 0, ["242225\\d{4}"]]], "BT": ["975", "00", "[17]\\d{7}|[2-8]\\d{6}", [7, 8], [["(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["[2-68]|7[246]"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["1[67]|7"]]], 0, 0, 0, 0, 0, 0, [["(?:2[3-6]|[34][5-7]|5[236]|6[2-46]|7[246]|8[2-4])\\d{5}", [7]], ["(?:1[67]|77)\\d{6}", [8]]]], "BW": ["267", "00", "(?:0800|(?:[37]|800)\\d)\\d{6}|(?:[2-6]\\d|90)\\d{5}", [7, 8, 10], [["(\\d{2})(\\d{5})", "$1 $2", ["90"]], ["(\\d{3})(\\d{4})", "$1 $2", ["[24-6]|3[15-9]"]], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[37]"]], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["0"]], ["(\\d{3})(\\d{4})(\\d{3})", "$1 $2 $3", ["8"]]], 0, 0, 0, 0, 0, 0, [["(?:2(?:4[0-48]|6[0-24]|9[0578])|3(?:1[0-35-9]|55|[69]\\d|7[013]|81)|4(?:6[03]|7[1267]|9[0-5])|5(?:3[03489]|4[0489]|7[1-47]|88|9[0-49])|6(?:2[1-35]|5[149]|8[013467]))\\d{4}", [7]], ["(?:321|7[1-8]\\d)\\d{5}", [8]], ["(?:0800|800\\d)\\d{6}", [10]], ["90\\d{5}", [7]], 0, 0, 0, 0, ["79(?:1(?:[0-2]\\d|3[0-3])|2[0-7]\\d)\\d{3}", [8]]]], "BY": ["375", "810", "(?:[12]\\d|33|44|902)\\d{7}|8(?:0[0-79]\\d{5,7}|[1-7]\\d{9})|8(?:1[0-489]|[5-79]\\d)\\d{7}|8[1-79]\\d{6,7}|8[0-79]\\d{5}|8\\d{5}", [6, 7, 8, 9, 10, 11], [["(\\d{3})(\\d{3})", "$1 $2", ["800"], "8 $1"], ["(\\d{3})(\\d{2})(\\d{2,4})", "$1 $2 $3", ["800"], "8 $1"], ["(\\d{4})(\\d{2})(\\d{3})", "$1 $2-$3", ["1(?:5[169]|6[3-5]|7[179])|2(?:1[35]|2[34]|3[3-5])", "1(?:5[169]|6(?:3[1-3]|4|5[125])|7(?:1[3-9]|7[0-24-6]|9[2-7]))|2(?:1[35]|2[34]|3[3-5])"], "8 0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2-$3-$4", ["1(?:[56]|7[467])|2[1-3]"], "8 0$1"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2-$3-$4", ["[1-4]"], "8 0$1"], ["(\\d{3})(\\d{3,4})(\\d{4})", "$1 $2 $3", ["[89]"], "8 $1"]], "8", 0, "0|80?", 0, 0, 0, [["(?:1(?:5(?:1[1-5]|[24]\\d|6[2-4]|9[1-7])|6(?:[235]\\d|4[1-7])|7\\d\\d)|2(?:1(?:[246]\\d|3[0-35-9]|5[1-9])|2(?:[235]\\d|4[0-8])|3(?:[26]\\d|3[02-79]|4[024-7]|5[03-7])))\\d{5}", [9]], ["(?:2(?:5[5-79]|9[1-9])|(?:33|44)\\d)\\d{6}", [9]], ["800\\d{3,7}|8(?:0[13]|20\\d)\\d{7}"], ["(?:810|902)\\d{7}", [10]], 0, 0, 0, 0, ["249\\d{6}", [9]]], "8~10"], "BZ": ["501", "00", "(?:0800\\d|[2-8])\\d{6}", [7, 11], [["(\\d{3})(\\d{4})", "$1-$2", ["[2-8]"]], ["(\\d)(\\d{3})(\\d{4})(\\d{3})", "$1-$2-$3-$4", ["0"]]], 0, 0, 0, 0, 0, 0, [["(?:2(?:[02]\\d|36|[68]0)|[3-58](?:[02]\\d|[68]0)|7(?:[02]\\d|32|[68]0))\\d{4}", [7]], ["6[0-35-7]\\d{5}", [7]], ["0800\\d{7}", [11]]]], "CA": ["1", "011", "[2-9]\\d{9}|3\\d{6}", [7, 10], 0, "1", 0, 0, 0, 0, 0, [["(?:2(?:04|[23]6|[48]9|50|63)|3(?:06|43|54|6[578]|82)|4(?:03|1[68]|[26]8|3[178]|50|74)|5(?:06|1[49]|48|79|8[147])|6(?:04|[18]3|39|47|72)|7(?:0[59]|42|53|78|8[02])|8(?:[06]7|19|25|7[39])|9(?:0[25]|42))[2-9]\\d{6}", [10]], ["", [10]], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}", [10]], ["900[2-9]\\d{6}", [10]], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|(?:5(?:00|2[125-9]|33|44|66|77|88)|6(?:22|33))[2-9]\\d{6}", [10]], 0, ["310\\d{4}", [7]], 0, ["600[2-9]\\d{6}", [10]]]], "CC": ["61", "001[14-689]|14(?:1[14]|34|4[17]|[56]6|7[47]|88)0011", "1(?:[0-79]\\d{8}(?:\\d{2})?|8[0-24-9]\\d{7})|[148]\\d{8}|1\\d{5,7}", [6, 7, 8, 9, 10, 12], 0, "0", 0, "([59]\\d{7})$|0", "8$1", 0, 0, [["8(?:51(?:0(?:02|31|60|89)|1(?:18|76)|223)|91(?:0(?:1[0-2]|29)|1(?:[28]2|50|79)|2(?:10|64)|3(?:[06]8|22)|4[29]8|62\\d|70[23]|959))\\d{3}", [9]], ["4(?:79[01]|83[0-389]|94[0-4])\\d{5}|4(?:[0-36]\\d|4[047-9]|5[0-25-9]|7[02-8]|8[0-24-9]|9[0-37-9])\\d{6}", [9]], ["180(?:0\\d{3}|2)\\d{3}", [7, 10]], ["190[0-26]\\d{6}", [10]], 0, 0, 0, 0, ["14(?:5(?:1[0458]|[23][458])|71\\d)\\d{4}", [9]], ["13(?:00\\d{6}(?:\\d{2})?|45[0-4]\\d{3})|13\\d{4}", [6, 8, 10, 12]]], "0011"], "CD": ["243", "00", "(?:(?:[189]|5\\d)\\d|2)\\d{7}|[1-68]\\d{6}", [7, 8, 9, 10], [["(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3", ["88"], "0$1"], ["(\\d{2})(\\d{5})", "$1 $2", ["[1-6]"], "0$1"], ["(\\d{2})(\\d{2})(\\d{4})", "$1 $2 $3", ["2"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[89]"], "0$1"], ["(\\d{2})(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["5"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:(?:12|573)\\d\\d|276)\\d{5}|[1-6]\\d{6}"], ["88\\d{5}|(?:8[0-69]|9[017-9])\\d{7}", [7, 9]]]], "CF": ["236", "00", "(?:[27]\\d{3}|8776)\\d{4}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[278]"]]], 0, 0, 0, 0, 0, 0, [["2[12]\\d{6}"], ["7[024-7]\\d{6}"], 0, ["8776\\d{4}"]]], "CG": ["242", "00", "222\\d{6}|(?:0\\d|80)\\d{7}", [9], [["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["8"]], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[02]"]]], 0, 0, 0, 0, 0, 0, [["222[1-589]\\d{5}"], ["026(?:1[0-5]|6[6-9])\\d{4}|0(?:[14-6]\\d\\d|2(?:40|5[5-8]|6[07-9]))\\d{5}"], 0, ["80[0-2]\\d{6}"]]], "CH": ["41", "00", "8\\d{11}|[2-9]\\d{8}", [9, 12], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["8[047]|90"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[2-79]|81"], "0$1"], ["(\\d{3})(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4 $5", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2[12467]|3[1-4]|4[134]|5[256]|6[12]|[7-9]1)\\d{7}", [9]], ["(?:6[89]|7[235-9])\\d{7}", [9]], ["800\\d{6}", [9]], ["90[016]\\d{6}", [9]], ["878\\d{6}", [9]], ["860\\d{9}", [12]], ["5[18]\\d{7}", [9]], ["74[0248]\\d{6}", [9]], 0, ["84[0248]\\d{6}", [9]]]], "CI": ["225", "00", "[02]\\d{9}", [10], [["(\\d{2})(\\d{2})(\\d)(\\d{5})", "$1 $2 $3 $4", ["2"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{4})", "$1 $2 $3 $4", ["0"]]], 0, 0, 0, 0, 0, 0, [["2(?:[15]\\d{3}|7(?:2(?:0[23]|1[2357]|2[245]|3[45]|4[3-5])|3(?:06|1[69]|[2-6]7)))\\d{5}"], ["0[157]\\d{8}"]]], "CK": ["682", "00", "[2-578]\\d{4}", [5], [["(\\d{2})(\\d{3})", "$1 $2", ["[2-578]"]]], 0, 0, 0, 0, 0, 0, [["(?:2\\d|3[13-7]|4[1-5])\\d{3}"], ["[578]\\d{4}"]]], "CL": ["56", "(?:0|1(?:1[0-69]|2[02-5]|5[13-58]|69|7[0167]|8[018]))0", "12300\\d{6}|6\\d{9,10}|[2-9]\\d{8}", [9, 10, 11], [["(\\d{5})(\\d{4})", "$1 $2", ["219", "2196"], "($1)"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["44"]], ["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["2[1-36]"], "($1)"], ["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["9[2-9]"]], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["3[2-5]|[47]|5[1-3578]|6[13-57]|8(?:0[1-9]|[1-9])"], "($1)"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["60|8"]], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"]], ["(\\d{3})(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3 $4", ["60"]]], 0, 0, 0, 0, 0, 0, [["2(?:1982[0-6]|3314[05-9])\\d{3}|(?:2(?:1(?:160|962)|3(?:2\\d\\d|3(?:[03467]\\d|1[0-35-9]|2[1-9]|5[0-24-9]|8[0-3])|600)|646[59])|80[1-9]\\d\\d|9(?:3(?:[0-57-9]\\d\\d|6(?:0[02-9]|[1-9]\\d))|6(?:[0-8]\\d\\d|9(?:[02-79]\\d|1[05-9]))|7[1-9]\\d\\d|9(?:[03-9]\\d\\d|1(?:[0235-9]\\d|4[0-24-9])|2(?:[0-79]\\d|8[0-46-9]))))\\d{4}|(?:22|3[2-5]|[47][1-35]|5[1-3578]|6[13-57]|8[1-9]|9[2458])\\d{7}", [9]], ["", [9]], ["(?:123|8)00\\d{6}", [9, 11]], 0, 0, 0, 0, 0, ["44\\d{7}", [9]], ["600\\d{7,8}", [10, 11]]]], "CM": ["237", "00", "[26]\\d{8}|88\\d{6,7}", [8, 9], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["88"]], ["(\\d)(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4 $5", ["[26]|88"]]], 0, 0, 0, 0, 0, 0, [["2(?:22|33)\\d{6}", [9]], ["(?:24[23]|6(?:[25-9]\\d|40))\\d{6}", [9]], ["88\\d{6,7}"]]], "CN": ["86", "00|1(?:[12]\\d|79)\\d\\d00", "(?:(?:1[03-689]|2\\d)\\d\\d|6)\\d{8}|1\\d{10}|[126]\\d{6}(?:\\d(?:\\d{2})?)?|86\\d{5,6}|(?:[3-579]\\d|8[0-57-9])\\d{5,9}", [7, 8, 9, 10, 11, 12], [["(\\d{2})(\\d{5,6})", "$1 $2", ["(?:10|2[0-57-9])[19]|3(?:[157]|35|49|9[1-68])|4(?:1[124-9]|2[179]|6[47-9]|7|8[23])|5(?:[1357]|2[37]|4[36]|6[1-46]|80)|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:07|1[236-8]|2[5-7]|[37]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|3|4[13]|5[1-5]|7[0-79]|9[0-35-9])|(?:4[35]|59|85)[1-9]", "(?:10|2[0-57-9])(?:1[02]|9[56])|8078|(?:3(?:[157]\\d|35|49|9[1-68])|4(?:1[124-9]|2[179]|[35][1-9]|6[47-9]|7\\d|8[23])|5(?:[1357]\\d|2[37]|4[36]|6[1-46]|80|9[1-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]\\d|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:1[236-8]|2[5-7]|[37]\\d|5[1-9]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|3\\d|4[13]|5[1-5]|7[0-79]|9[0-35-9]))1", "10(?:1(?:0|23)|9[56])|2[0-57-9](?:1(?:00|23)|9[56])|80781|(?:3(?:[157]\\d|35|49|9[1-68])|4(?:1[124-9]|2[179]|[35][1-9]|6[47-9]|7\\d|8[23])|5(?:[1357]\\d|2[37]|4[36]|6[1-46]|80|9[1-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]\\d|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:1[236-8]|2[5-7]|[37]\\d|5[1-9]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|3\\d|4[13]|5[1-5]|7[0-79]|9[0-35-9]))12", "10(?:1(?:0|23)|9[56])|2[0-57-9](?:1(?:00|23)|9[56])|807812|(?:3(?:[157]\\d|35|49|9[1-68])|4(?:1[124-9]|2[179]|[35][1-9]|6[47-9]|7\\d|8[23])|5(?:[1357]\\d|2[37]|4[36]|6[1-46]|80|9[1-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]\\d|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:1[236-8]|2[5-7]|[37]\\d|5[1-9]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|3\\d|4[13]|5[1-5]|7[0-79]|9[0-35-9]))123", "10(?:1(?:0|23)|9[56])|2[0-57-9](?:1(?:00|23)|9[56])|(?:3(?:[157]\\d|35|49|9[1-68])|4(?:1[124-9]|2[179]|[35][1-9]|6[47-9]|7\\d|8[23])|5(?:[1357]\\d|2[37]|4[36]|6[1-46]|80|9[1-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]\\d|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:078|1[236-8]|2[5-7]|[37]\\d|5[1-9]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|3\\d|4[13]|5[1-5]|7[0-79]|9[0-35-9]))123"], "0$1"], ["(\\d{3})(\\d{5,6})", "$1 $2", ["3(?:[157]|35|49|9[1-68])|4(?:[17]|2[179]|6[47-9]|8[23])|5(?:[1357]|2[37]|4[36]|6[1-46]|80)|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:1[236-8]|2[5-7]|[37]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|[379]|4[13]|5[1-5])|(?:4[35]|59|85)[1-9]", "(?:3(?:[157]\\d|35|49|9[1-68])|4(?:[17]\\d|2[179]|[35][1-9]|6[47-9]|8[23])|5(?:[1357]\\d|2[37]|4[36]|6[1-46]|80|9[1-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]\\d|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:1[236-8]|2[5-7]|[37]\\d|5[1-9]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|[379]\\d|4[13]|5[1-5]))[19]", "85[23](?:10|95)|(?:3(?:[157]\\d|35|49|9[1-68])|4(?:[17]\\d|2[179]|[35][1-9]|6[47-9]|8[23])|5(?:[1357]\\d|2[37]|4[36]|6[1-46]|80|9[1-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]\\d|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:1[236-8]|2[5-7]|[37]\\d|5[14-9]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|[379]\\d|4[13]|5[1-5]))(?:10|9[56])", "85[23](?:100|95)|(?:3(?:[157]\\d|35|49|9[1-68])|4(?:[17]\\d|2[179]|[35][1-9]|6[47-9]|8[23])|5(?:[1357]\\d|2[37]|4[36]|6[1-46]|80|9[1-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]\\d|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:1[236-8]|2[5-7]|[37]\\d|5[14-9]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|[379]\\d|4[13]|5[1-5]))(?:100|9[56])"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["(?:4|80)0"]], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["10|2(?:[02-57-9]|1[1-9])", "10|2(?:[02-57-9]|1[1-9])", "10[0-79]|2(?:[02-57-9]|1[1-79])|(?:10|21)8(?:0[1-9]|[1-9])"], "0$1", 1], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["3(?:[3-59]|7[02-68])|4(?:[26-8]|3[3-9]|5[2-9])|5(?:3[03-9]|[468]|7[028]|9[2-46-9])|6|7(?:[0-247]|3[04-9]|5[0-4689]|6[2368])|8(?:[1-358]|9[1-7])|9(?:[013479]|5[1-5])|(?:[34]1|55|79|87)[02-9]"], "0$1", 1], ["(\\d{3})(\\d{7,8})", "$1 $2", ["9"]], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["80"], "0$1", 1], ["(\\d{3})(\\d{4})(\\d{4})", "$1 $2 $3", ["[3-578]"], "0$1", 1], ["(\\d{3})(\\d{4})(\\d{4})", "$1 $2 $3", ["1[3-9]"]], ["(\\d{2})(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3 $4", ["[12]"], "0$1", 1]], "0", 0, "(1(?:[12]\\d|79)\\d\\d)|0", 0, 0, 0, [["(?:10(?:[02-79]\\d\\d|[18](?:0[1-9]|[1-9]\\d))|2(?:[02-57-9]\\d{3}|1(?:[18](?:0[1-9]|[1-9]\\d)|[2-79]\\d\\d))|(?:41[03]|8078|9(?:78|94))\\d\\d)\\d{5}|(?:10|2[0-57-9])(?:1(?:00|23)\\d\\d|95\\d{3,4})|(?:41[03]|9(?:78|94))(?:100\\d\\d|95\\d{3,4})|8078123|(?:43[35]|754|851)\\d{7,8}|(?:43[35]|754|851)(?:1(?:00\\d|23)\\d|95\\d{3,4})|(?:3(?:11|7[179])|4(?:[15]1|3[12])|5(?:1\\d|2[37]|3[12]|51|7[13-79]|9[15])|7(?:[39]1|5[57]|6[09])|8(?:71|98))(?:[02-8]\\d{7}|1(?:0(?:0\\d\\d(?:\\d{3})?|[1-9]\\d{5})|[13-9]\\d{6}|2(?:[0-24-9]\\d{5}|3\\d(?:\\d{4})?))|9(?:[0-46-9]\\d{6}|5\\d{3}(?:\\d(?:\\d{2})?)?))|(?:3(?:1[02-9]|35|49|5\\d|7[02-68]|9[1-68])|4(?:1[24-9]|2[179]|3[46-9]|5[2-9]|6[47-9]|7\\d|8[23])|5(?:3[03-9]|4[36]|5[02-9]|6[1-46]|7[028]|80|9[2-46-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[17]\\d|2[248]|3[04-9]|4[3-6]|5[0-3689]|6[2368]|9[02-9])|8(?:1[236-8]|2[5-7]|3\\d|5[2-9]|7[02-9]|8[36-8]|9[1-7])|9(?:0[1-3689]|1[1-79]|3\\d|4[13]|5[1-5]|7[0-79]|9[0-35-9]))(?:[02-8]\\d{6}|1(?:0(?:0\\d\\d(?:\\d{2})?|[1-9]\\d{4})|[13-9]\\d{5}|2(?:[0-24-9]\\d{4}|3\\d(?:\\d{3})?))|9(?:[0-46-9]\\d{5}|5\\d{3,5}))", [7, 8, 9, 10, 11]], ["1740[0-5]\\d{6}|1(?:[38]\\d|4[57]|[59][0-35-9]|6[25-7]|7[0-35-8])\\d{8}", [11]], ["(?:(?:10|21)8|8)00\\d{7}", [10, 12]], ["16[08]\\d{5}", [8]], 0, 0, 0, 0, 0, ["10(?:10\\d{4}|96\\d{3,4})|400\\d{7}|950\\d{7,8}|(?:2[0-57-9]|3(?:[157]\\d|35|49|9[1-68])|4(?:[17]\\d|2[179]|[35][1-9]|6[47-9]|8[23])|5(?:[1357]\\d|2[37]|4[36]|6[1-46]|80|9[1-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[1579]\\d|2[248]|3[014-9]|4[3-6]|6[023689])|8(?:1[236-8]|2[5-7]|[37]\\d|5[14-9]|8[36-8]|9[1-8])|9(?:0[1-3689]|1[1-79]|[379]\\d|4[13]|5[1-5]))96\\d{3,4}", [7, 8, 9, 10, 11]]], "00"], "CO": ["57", "00(?:4(?:[14]4|56)|[579])", "(?:46|60\\d\\d)\\d{6}|(?:1\\d|[39])\\d{9}", [8, 10, 11], [["(\\d{4})(\\d{4})", "$1 $2", ["46"]], ["(\\d{3})(\\d{7})", "$1 $2", ["6|90"], "($1)"], ["(\\d{3})(\\d{7})", "$1 $2", ["3[0-357]|91"]], ["(\\d)(\\d{3})(\\d{7})", "$1-$2-$3", ["1"], "0$1", 0, "$1 $2 $3"]], "0", 0, "0([3579]|4(?:[14]4|56))?", 0, 0, 0, [["601055(?:[0-4]\\d|50)\\d\\d|6010(?:[0-4]\\d|5[0-4])\\d{4}|(?:46|60(?:[124-7][2-9]|8[1-9]))\\d{6}", [8, 10]], ["333301[0-5]\\d{3}|3333(?:00|2[5-9]|[3-9]\\d)\\d{4}|(?:3(?:24[1-9]|3(?:00|3[0-24-9]))|9101)\\d{6}|3(?:0[0-5]|1\\d|2[0-3]|5[01]|70)\\d{7}", [10]], ["1800\\d{7}", [11]], ["(?:19(?:0[01]|4[78])|901)\\d{7}", [10, 11]]]], "CR": ["506", "00", "(?:8\\d|90)\\d{8}|(?:[24-8]\\d{3}|3005)\\d{4}", [8, 10], [["(\\d{4})(\\d{4})", "$1 $2", ["[2-7]|8[3-9]"]], ["(\\d{3})(\\d{3})(\\d{4})", "$1-$2-$3", ["[89]"]]], 0, 0, "(19(?:0[0-2468]|1[09]|20|66|77|99))", 0, 0, 0, [["210[7-9]\\d{4}|2(?:[024-7]\\d|1[1-9])\\d{5}", [8]], ["(?:3005\\d|6500[01])\\d{3}|(?:5[07]|6[0-4]|7[0-3]|8[3-9])\\d{6}", [8]], ["800\\d{7}", [10]], ["90[059]\\d{7}", [10]], 0, 0, 0, 0, ["(?:210[0-6]|4\\d{3}|5100)\\d{4}", [8]]]], "CU": ["53", "119", "(?:[2-7]|8\\d\\d)\\d{7}|[2-47]\\d{6}|[34]\\d{5}", [6, 7, 8, 10], [["(\\d{2})(\\d{4,6})", "$1 $2", ["2[1-4]|[34]"], "(0$1)"], ["(\\d)(\\d{6,7})", "$1 $2", ["7"], "(0$1)"], ["(\\d)(\\d{7})", "$1 $2", ["[56]"], "0$1"], ["(\\d{3})(\\d{7})", "$1 $2", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:3[23]|4[89])\\d{4,6}|(?:31|4[36]|8(?:0[25]|78)\\d)\\d{6}|(?:2[1-4]|4[1257]|7\\d)\\d{5,6}"], ["(?:5\\d|6[2-4])\\d{6}", [8]], ["800\\d{7}", [10]], 0, 0, 0, 0, 0, 0, ["807\\d{7}", [10]]]], "CV": ["238", "0", "(?:[2-59]\\d\\d|800)\\d{4}", [7], [["(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3", ["[2-589]"]]], 0, 0, 0, 0, 0, 0, [["2(?:2[1-7]|3[0-8]|4[12]|5[1256]|6\\d|7[1-3]|8[1-5])\\d{4}"], ["(?:36|5[1-389]|9\\d)\\d{5}"], ["800\\d{4}"], 0, 0, 0, 0, 0, ["(?:3[3-5]|4[356])\\d{5}"]]], "CW": ["599", "00", "(?:[34]1|60|(?:7|9\\d)\\d)\\d{5}", [7, 8], [["(\\d{3})(\\d{4})", "$1 $2", ["[3467]"]], ["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["9[4-8]"]]], 0, 0, 0, 0, 0, "[69]", [["9(?:4(?:3[0-5]|4[14]|6\\d)|50\\d|7(?:2[014]|3[02-9]|4[4-9]|6[357]|77|8[7-9])|8(?:3[39]|[46]\\d|7[01]|8[57-9]))\\d{4}"], ["953[01]\\d{4}|9(?:5[12467]|6[5-9])\\d{5}"], 0, 0, 0, 0, 0, ["955\\d{5}", [8]], 0, ["60[0-2]\\d{4}", [7]]]], "CX": ["61", "001[14-689]|14(?:1[14]|34|4[17]|[56]6|7[47]|88)0011", "1(?:[0-79]\\d{8}(?:\\d{2})?|8[0-24-9]\\d{7})|[148]\\d{8}|1\\d{5,7}", [6, 7, 8, 9, 10, 12], 0, "0", 0, "([59]\\d{7})$|0", "8$1", 0, 0, [["8(?:51(?:0(?:01|30|59|88)|1(?:17|46|75)|2(?:22|35))|91(?:00[6-9]|1(?:[28]1|49|78)|2(?:09|63)|3(?:12|26|75)|4(?:56|97)|64\\d|7(?:0[01]|1[0-2])|958))\\d{3}", [9]], ["4(?:79[01]|83[0-389]|94[0-4])\\d{5}|4(?:[0-36]\\d|4[047-9]|5[0-25-9]|7[02-8]|8[0-24-9]|9[0-37-9])\\d{6}", [9]], ["180(?:0\\d{3}|2)\\d{3}", [7, 10]], ["190[0-26]\\d{6}", [10]], 0, 0, 0, 0, ["14(?:5(?:1[0458]|[23][458])|71\\d)\\d{4}", [9]], ["13(?:00\\d{6}(?:\\d{2})?|45[0-4]\\d{3})|13\\d{4}", [6, 8, 10, 12]]], "0011"], "CY": ["357", "00", "(?:[279]\\d|[58]0)\\d{6}", [8], [["(\\d{2})(\\d{6})", "$1 $2", ["[257-9]"]]], 0, 0, 0, 0, 0, 0, [["2[2-6]\\d{6}"], ["9(?:10|[4-79]\\d)\\d{5}"], ["800\\d{5}"], ["90[09]\\d{5}"], ["700\\d{5}"], 0, ["(?:50|77)\\d{6}"], 0, 0, ["80[1-9]\\d{5}"]]], "CZ": ["420", "00", "(?:[2-578]\\d|60)\\d{7}|9\\d{8,11}", [9, 10, 11, 12], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[2-8]|9[015-7]"]], ["(\\d{2})(\\d{3})(\\d{3})(\\d{2})", "$1 $2 $3 $4", ["96"]], ["(\\d{2})(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["9"]], ["(\\d{3})(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["9"]]], 0, 0, 0, 0, 0, 0, [["(?:2\\d|3[1257-9]|4[16-9]|5[13-9])\\d{7}", [9]], ["(?:60[1-8]\\d|7(?:0(?:[2-5]\\d|60)|19[01]|[2379]\\d\\d))\\d{5}", [9]], ["800\\d{6}", [9]], ["9(?:0[05689]|76)\\d{6}", [9]], ["70[01]\\d{6}", [9]], ["9(?:3\\d{9}|6\\d{7,10})"], ["9(?:5\\d|7[2-4])\\d{6}", [9]], 0, ["9[17]0\\d{6}", [9]], ["8[134]\\d{7}", [9]]]], "DE": ["49", "00", "[2579]\\d{5,14}|49(?:[34]0|69|8\\d)\\d\\d?|49(?:37|49|60|7[089]|9\\d)\\d{1,3}|49(?:2[024-9]|3[2-689]|7[1-7])\\d{1,8}|(?:1|[368]\\d|4[0-8])\\d{3,13}|49(?:[015]\\d|2[13]|31|[46][1-8])\\d{1,9}", [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], [["(\\d{2})(\\d{3,13})", "$1 $2", ["3[02]|40|[68]9"], "0$1"], ["(\\d{3})(\\d{3,12})", "$1 $2", ["2(?:0[1-389]|1[124]|2[18]|3[14])|3(?:[35-9][15]|4[015])|906|(?:2[4-9]|4[2-9]|[579][1-9]|[68][1-8])1", "2(?:0[1-389]|12[0-8])|3(?:[35-9][15]|4[015])|906|2(?:[13][14]|2[18])|(?:2[4-9]|4[2-9]|[579][1-9]|[68][1-8])1"], "0$1"], ["(\\d{4})(\\d{2,11})", "$1 $2", ["[24-6]|3(?:[3569][02-46-9]|4[2-4679]|7[2-467]|8[2-46-8])|70[2-8]|8(?:0[2-9]|[1-8])|90[7-9]|[79][1-9]", "[24-6]|3(?:3(?:0[1-467]|2[127-9]|3[124578]|7[1257-9]|8[1256]|9[145])|4(?:2[135]|4[13578]|9[1346])|5(?:0[14]|2[1-3589]|6[1-4]|7[13468]|8[13568])|6(?:2[1-489]|3[124-6]|6[13]|7[12579]|8[1-356]|9[135])|7(?:2[1-7]|4[145]|6[1-5]|7[1-4])|8(?:21|3[1468]|6|7[1467]|8[136])|9(?:0[12479]|2[1358]|4[134679]|6[1-9]|7[136]|8[147]|9[1468]))|70[2-8]|8(?:0[2-9]|[1-8])|90[7-9]|[79][1-9]|3[68]4[1347]|3(?:47|60)[1356]|3(?:3[46]|46|5[49])[1246]|3[4579]3[1357]"], "0$1"], ["(\\d{3})(\\d{4})", "$1 $2", ["138"], "0$1"], ["(\\d{5})(\\d{2,10})", "$1 $2", ["3"], "0$1"], ["(\\d{3})(\\d{5,11})", "$1 $2", ["181"], "0$1"], ["(\\d{3})(\\d)(\\d{4,10})", "$1 $2 $3", ["1(?:3|80)|9"], "0$1"], ["(\\d{3})(\\d{7,8})", "$1 $2", ["1[67]"], "0$1"], ["(\\d{3})(\\d{7,12})", "$1 $2", ["8"], "0$1"], ["(\\d{5})(\\d{6})", "$1 $2", ["185", "1850", "18500"], "0$1"], ["(\\d{3})(\\d{4})(\\d{4})", "$1 $2 $3", ["7"], "0$1"], ["(\\d{4})(\\d{7})", "$1 $2", ["18[68]"], "0$1"], ["(\\d{4})(\\d{7})", "$1 $2", ["15[1279]"], "0$1"], ["(\\d{5})(\\d{6})", "$1 $2", ["15[03568]", "15(?:[0568]|31)"], "0$1"], ["(\\d{3})(\\d{8})", "$1 $2", ["18"], "0$1"], ["(\\d{3})(\\d{2})(\\d{7,8})", "$1 $2 $3", ["1(?:6[023]|7)"], "0$1"], ["(\\d{4})(\\d{2})(\\d{7})", "$1 $2 $3", ["15[279]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{8})", "$1 $2 $3", ["15"], "0$1"]], "0", 0, 0, 0, 0, 0, [["32\\d{9,11}|49[1-6]\\d{10}|322\\d{6}|49[0-7]\\d{3,9}|(?:[34]0|[68]9)\\d{3,13}|(?:2(?:0[1-689]|[1-3569]\\d|4[0-8]|7[1-7]|8[0-7])|3(?:[3569]\\d|4[0-79]|7[1-7]|8[1-8])|4(?:1[02-9]|[2-48]\\d|5[0-6]|6[0-8]|7[0-79])|5(?:0[2-8]|[124-6]\\d|[38][0-8]|[79][0-7])|6(?:0[02-9]|[1-358]\\d|[47][0-8]|6[1-9])|7(?:0[2-8]|1[1-9]|[27][0-7]|3\\d|[4-6][0-8]|8[0-5]|9[013-7])|8(?:0[2-9]|1[0-79]|2\\d|3[0-46-9]|4[0-6]|5[013-9]|6[1-8]|7[0-8]|8[0-24-6])|9(?:0[6-9]|[1-4]\\d|[589][0-7]|6[0-8]|7[0-467]))\\d{3,12}", [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]], ["16[023]\\d{7,8}|1(?:5310|7[0-57-9]\\d)\\d{6}|1(?:5[0-25-9]|76)\\d{8}", [10, 11]], ["800\\d{7,12}", [10, 11, 12, 13, 14, 15]], ["(?:137[7-9]|900(?:[135]|9\\d))\\d{6}", [10, 11]], ["700\\d{8}", [11]], ["1(?:6(?:013|255|399)|7(?:(?:[015]1|[69]3)3|[2-4]55|[78]99))\\d{7,8}|15(?:(?:[03-68]00|113)\\d|2\\d55|7\\d99|9\\d33)\\d{7}", [12, 13]], ["18(?:1\\d{5,11}|[2-9]\\d{8})", [8, 9, 10, 11, 12, 13, 14]], ["16(?:4\\d{1,10}|[89]\\d{1,11})", [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]], 0, ["180\\d{5,11}|13(?:7[1-6]\\d\\d|8)\\d{4}", [7, 8, 9, 10, 11, 12, 13, 14]]]], "DJ": ["253", "00", "(?:2\\d|77)\\d{6}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[27]"]]], 0, 0, 0, 0, 0, 0, [["2(?:1[2-5]|7[45])\\d{5}"], ["77\\d{6}"]]], "DK": ["45", "00", "[2-9]\\d{7}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[2-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:(?:2\\d|9[1-46-9])\\d|3(?:[0-37]\\d|4[013]|5[0-58]|6[01347-9]|8[0-8]|9[0-79])|4(?:[0-25]\\d|[34][02-9]|6[013-579]|7[013579]|8[0-47]|9[0-27])|5(?:[0-36]\\d|4[0146-9]|5[03-57-9]|7[0568]|8[0-358]|9[0-69])|6(?:[013578]\\d|2[0-68]|4[02-8]|6[01689]|9[015689])|7(?:[0-69]\\d|7[03-9]|8[0147])|8(?:[16-9]\\d|2[0-58]))\\d{5}"], ["(?:[2-7]\\d|8[126-9]|9[1-46-9])\\d{6}"], ["80\\d{6}"], ["90\\d{6}"]]], "DM": ["1", "011", "(?:[58]\\d\\d|767|900)\\d{7}", [10], 0, "1", 0, "([2-7]\\d{6})$|1", "767$1", 0, "767", [["767(?:2(?:55|66)|4(?:2[01]|4[0-25-9])|50[0-4])\\d{4}"], ["767(?:2(?:[2-4689]5|7[5-7])|31[5-7]|61[1-8]|70[1-6])\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "DO": ["1", "011", "(?:[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, 0, 0, 0, "8001|8[024]9", [["8(?:[04]9[2-9]\\d\\d|29(?:2(?:[0-59]\\d|6[04-9]|7[0-27]|8[0237-9])|3(?:[0-35-9]\\d|4[7-9])|[45]\\d\\d|6(?:[0-27-9]\\d|[3-5][1-9]|6[0135-8])|7(?:0[013-9]|[1-37]\\d|4[1-35689]|5[1-4689]|6[1-57-9]|8[1-79]|9[1-8])|8(?:0[146-9]|1[0-48]|[248]\\d|3[1-79]|5[01589]|6[013-68]|7[124-8]|9[0-8])|9(?:[0-24]\\d|3[02-46-9]|5[0-79]|60|7[0169]|8[57-9]|9[02-9])))\\d{4}"], ["8[024]9[2-9]\\d{6}"], ["8(?:00(?:14|[2-9]\\d)|(?:33|44|55|66|77|88)[2-9]\\d)\\d{5}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "DZ": ["213", "00", "(?:[1-4]|[5-79]\\d|80)\\d{7}", [8, 9], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[1-4]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["9"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[5-8]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["9619\\d{5}|(?:1\\d|2[013-79]|3[0-8]|4[013-689])\\d{6}"], ["(?:5(?:4[0-29]|5\\d|6[0-3])|6(?:[569]\\d|7[0-6])|7[7-9]\\d)\\d{6}", [9]], ["800\\d{6}", [9]], ["80[3-689]1\\d{5}", [9]], 0, 0, 0, 0, ["98[23]\\d{6}", [9]], ["80[12]1\\d{5}", [9]]]], "EC": ["593", "00", "1\\d{9,10}|(?:[2-7]|9\\d)\\d{7}", [8, 9, 10, 11], [["(\\d)(\\d{3})(\\d{4})", "$1 $2-$3", ["[2-7]"], "(0$1)", 0, "$1-$2-$3"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["9"], "0$1"], ["(\\d{4})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["1"]]], "0", 0, 0, 0, 0, 0, [["[2-7][2-7]\\d{6}", [8]], ["964[0-2]\\d{5}|9(?:39|[57][89]|6[0-36-9]|[89]\\d)\\d{6}", [9]], ["1800\\d{7}|1[78]00\\d{6}", [10, 11]], 0, 0, 0, 0, 0, ["[2-7]890\\d{4}", [8]]]], "EE": ["372", "00", "8\\d{9}|[4578]\\d{7}|(?:[3-8]\\d|90)\\d{5}", [7, 8, 10], [["(\\d{3})(\\d{4})", "$1 $2", ["[369]|4[3-8]|5(?:[0-2]|5[0-478]|6[45])|7[1-9]|88", "[369]|4[3-8]|5(?:[02]|1(?:[0-8]|95)|5[0-478]|6(?:4[0-4]|5[1-589]))|7[1-9]|88"]], ["(\\d{4})(\\d{3,4})", "$1 $2", ["[45]|8(?:00|[1-49])", "[45]|8(?:00[1-9]|[1-49])"]], ["(\\d{2})(\\d{2})(\\d{4})", "$1 $2 $3", ["7"]], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["8"]]], 0, 0, 0, 0, 0, 0, [["(?:3[23589]|4[3-8]|6\\d|7[1-9]|88)\\d{5}", [7]], ["(?:5\\d{5}|8(?:1(?:0(?:0(?:00|[178]\\d)|[3-9]\\d\\d)|(?:1(?:0[2-6]|1\\d)|(?:2[0-59]|[3-79]\\d)\\d)\\d)|2(?:0(?:0(?:00|4\\d)|(?:19|[2-7]\\d)\\d)|(?:(?:[124-69]\\d|3[5-9])\\d|7(?:[0-79]\\d|8[13-9])|8(?:[2-6]\\d|7[01]))\\d)|[349]\\d{4}))\\d\\d|5(?:(?:[02]\\d|5[0-478])\\d|1(?:[0-8]\\d|95)|6(?:4[0-4]|5[1-589]))\\d{3}", [7, 8]], ["800(?:(?:0\\d\\d|1)\\d|[2-9])\\d{3}"], ["(?:40\\d\\d|900)\\d{4}", [7, 8]], ["70[0-2]\\d{5}", [8]]]], "EG": ["20", "00", "[189]\\d{8,9}|[24-6]\\d{8}|[135]\\d{7}", [8, 9, 10], [["(\\d)(\\d{7,8})", "$1 $2", ["[23]"], "0$1"], ["(\\d{2})(\\d{6,7})", "$1 $2", ["1[35]|[4-6]|8[2468]|9[235-7]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[89]"], "0$1"], ["(\\d{2})(\\d{8})", "$1 $2", ["1"], "0$1"]], "0", 0, 0, 0, 0, 0, [["13[23]\\d{6}|(?:15|57)\\d{6,7}|(?:2\\d|3|4[05-8]|5[05]|6[24-689]|8[2468]|9[235-7])\\d{7}", [8, 9]], ["1[0-25]\\d{8}", [10]], ["800\\d{7}", [10]], ["900\\d{7}", [10]]]], "EH": ["212", "00", "[5-8]\\d{8}", [9], 0, "0", 0, 0, 0, 0, "528[89]", [["528[89]\\d{5}"], ["(?:6(?:[0-79]\\d|8[0-247-9])|7(?:[0167]\\d|2[0-4]|5[01]|8[0-3]))\\d{6}"], ["80[0-7]\\d{6}"], ["89\\d{7}"], 0, 0, 0, 0, ["(?:592(?:4[0-2]|93)|80[89]\\d\\d)\\d{4}"]]], "ER": ["291", "00", "[178]\\d{6}", [7], [["(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["[178]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1(?:1[12568]|[24]0|55|6[146])|8\\d\\d)\\d{4}"], ["(?:17[1-3]|7\\d\\d)\\d{4}"]]], "ES": ["34", "00", "[5-9]\\d{8}", [9], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[89]00"]], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[5-9]"]]], 0, 0, 0, 0, 0, 0, [["96906(?:0[0-8]|1[1-9]|[2-9]\\d)\\d\\d|9(?:69(?:0[0-57-9]|[1-9]\\d)|73(?:[0-8]\\d|9[1-9]))\\d{4}|(?:8(?:[1356]\\d|[28][0-8]|[47][1-9])|9(?:[135]\\d|[268][0-8]|4[1-9]|7[124-9]))\\d{6}"], ["(?:590[16]00\\d|9(?:6906(?:09|10)|7390\\d\\d))\\d\\d|(?:6\\d|7[1-48])\\d{7}"], ["[89]00\\d{6}"], ["80[367]\\d{6}"], ["70\\d{7}"], 0, ["51\\d{7}"], 0, 0, ["90[12]\\d{6}"]]], "ET": ["251", "00", "(?:11|[2-579]\\d)\\d{7}", [9], [["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[1-579]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["11667[01]\\d{3}|(?:11(?:1(?:1[124]|2[2-7]|3[1-5]|5[5-8]|8[6-8])|2(?:13|3[6-8]|5[89]|7[05-9]|8[2-6])|3(?:2[01]|3[0-289]|4[1289]|7[1-4]|87)|4(?:1[69]|3[2-49]|4[0-3]|6[5-8]|7\\d)|5(?:1[578]|44|5[0-4])|6(?:1[578]|2[69]|39|4[5-7]|5[0-5]|6[0-59]|8[015-8]))|2(?:2(?:11[1-9]|22[0-7]|33\\d|44[1467]|66[1-68])|5(?:11[124-6]|33[2-8]|44[1467]|55[14]|66[1-3679]|77[124-79]|880))|3(?:3(?:11[0-46-8]|(?:22|55)[0-6]|33[0134689]|44[04]|66[01467])|4(?:44[0-8]|55[0-69]|66[0-3]|77[1-5]))|4(?:6(?:119|22[0-24-7]|33[1-5]|44[13-69]|55[14-689]|660|88[1-4])|7(?:(?:11|22)[1-9]|33[13-7]|44[13-6]|55[1-689]))|5(?:7(?:227|55[05]|(?:66|77)[14-8])|8(?:11[149]|22[013-79]|33[0-68]|44[013-8]|550|66[1-5]|77\\d)))\\d{4}"], ["700[1-9]\\d{5}|(?:7(?:0[1-9]|1[0-8]|22|77|86|99)|9\\d\\d)\\d{6}"]]], "FI": ["358", "00|99(?:[01469]|5(?:[14]1|3[23]|5[59]|77|88|9[09]))", "[1-35689]\\d{4}|7\\d{10,11}|(?:[124-7]\\d|3[0-46-9])\\d{8}|[1-9]\\d{5,8}", [5, 6, 7, 8, 9, 10, 11, 12], [["(\\d{5})", "$1", ["20[2-59]"], "0$1"], ["(\\d{3})(\\d{3,7})", "$1 $2", ["(?:[1-3]0|[68])0|70[07-9]"], "0$1"], ["(\\d{2})(\\d{4,8})", "$1 $2", ["[14]|2[09]|50|7[135]"], "0$1"], ["(\\d{2})(\\d{6,10})", "$1 $2", ["7"], "0$1"], ["(\\d)(\\d{4,9})", "$1 $2", ["(?:19|[2568])[1-8]|3(?:0[1-9]|[1-9])|9"], "0$1"]], "0", 0, 0, 0, 0, "1[03-79]|[2-9]", [["1[3-7][1-8]\\d{3,6}|(?:19[1-8]|[23568][1-8]\\d|9(?:00|[1-8]\\d))\\d{2,6}", [5, 6, 7, 8, 9]], ["4946\\d{2,6}|(?:4[0-8]|50)\\d{4,8}", [6, 7, 8, 9, 10]], ["800\\d{4,6}", [7, 8, 9]], ["[67]00\\d{5,6}", [8, 9]], 0, 0, ["20\\d{4,8}|60[12]\\d{5,6}|7(?:099\\d{4,5}|5[03-9]\\d{3,7})|20[2-59]\\d\\d|(?:606|7(?:0[78]|1|3\\d))\\d{7}|(?:10|29|3[09]|70[1-5]\\d)\\d{4,8}"]], "00"], "FJ": ["679", "0(?:0|52)", "45\\d{5}|(?:0800\\d|[235-9])\\d{6}", [7, 11], [["(\\d{3})(\\d{4})", "$1 $2", ["[235-9]|45"]], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["0"]]], 0, 0, 0, 0, 0, 0, [["603\\d{4}|(?:3[0-5]|6[25-7]|8[58])\\d{5}", [7]], ["(?:[279]\\d|45|5[01568]|8[034679])\\d{5}", [7]], ["0800\\d{7}", [11]]], "00"], "FK": ["500", "00", "[2-7]\\d{4}", [5], 0, 0, 0, 0, 0, 0, 0, [["[2-47]\\d{4}"], ["[56]\\d{4}"]]], "FM": ["691", "00", "(?:[39]\\d\\d|820)\\d{4}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[389]"]]], 0, 0, 0, 0, 0, 0, [["31(?:00[67]|208|309)\\d\\d|(?:3(?:[2357]0[1-9]|602|804|905)|(?:820|9[2-6]\\d)\\d)\\d{3}"], ["31(?:00[67]|208|309)\\d\\d|(?:3(?:[2357]0[1-9]|602|804|905)|(?:820|9[2-7]\\d)\\d)\\d{3}"]]], "FO": ["298", "00", "[2-9]\\d{5}", [6], [["(\\d{6})", "$1", ["[2-9]"]]], 0, 0, "(10(?:01|[12]0|88))", 0, 0, 0, [["(?:20|[34]\\d|8[19])\\d{4}"], ["(?:[27][1-9]|5\\d|9[16])\\d{4}"], ["80[257-9]\\d{3}"], ["90(?:[13-5][15-7]|2[125-7]|9\\d)\\d\\d"], 0, 0, 0, 0, ["(?:6[0-36]|88)\\d{4}"]]], "FR": ["33", "00", "[1-9]\\d{8}", [9], [["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["8"], "0 $1"], ["(\\d)(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4 $5", ["[1-79]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:26[013-9]|59[1-35-9])\\d{6}|(?:[13]\\d|2[0-57-9]|4[1-9]|5[0-8])\\d{7}"], ["(?:6(?:[0-24-8]\\d|3[0-8]|9[589])|7[3-9]\\d)\\d{6}"], ["80[0-5]\\d{6}"], ["836(?:0[0-36-9]|[1-9]\\d)\\d{4}|8(?:1[2-9]|2[2-47-9]|3[0-57-9]|[569]\\d|8[0-35-9])\\d{6}"], 0, 0, ["80[6-9]\\d{6}"], 0, ["9\\d{8}"], ["8(?:1[01]|2[0156]|4[024]|84)\\d{6}"]]], "GA": ["241", "00", "(?:[067]\\d|11)\\d{6}|[2-7]\\d{6}", [7, 8], [["(\\d)(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[2-7]"], "0$1"], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["0"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["11|[67]"], "0$1"]], 0, 0, "0(11\\d{6}|60\\d{6}|61\\d{6}|6[256]\\d{6}|7[467]\\d{6})", "$1", 0, 0, [["[01]1\\d{6}", [8]], ["(?:(?:0[2-7]|7[467])\\d|6(?:0[0-4]|10|[256]\\d))\\d{5}|[2-7]\\d{6}"]]], "GB": ["44", "00", "[1-357-9]\\d{9}|[18]\\d{8}|8\\d{6}", [7, 9, 10], [["(\\d{3})(\\d{4})", "$1 $2", ["800", "8001", "80011", "800111", "8001111"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3", ["845", "8454", "84546", "845464"], "0$1"], ["(\\d{3})(\\d{6})", "$1 $2", ["800"], "0$1"], ["(\\d{5})(\\d{4,5})", "$1 $2", ["1(?:38|5[23]|69|76|94)", "1(?:(?:38|69)7|5(?:24|39)|768|946)", "1(?:3873|5(?:242|39[4-6])|(?:697|768)[347]|9467)"], "0$1"], ["(\\d{4})(\\d{5,6})", "$1 $2", ["1(?:[2-69][02-9]|[78])"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["[25]|7(?:0|6[02-9])", "[25]|7(?:0|6(?:[03-9]|2[356]))"], "0$1"], ["(\\d{4})(\\d{6})", "$1 $2", ["7"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[1389]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1(?:1(?:3(?:[0-58]\\d\\d|73[0-35])|4(?:(?:[0-5]\\d|70)\\d|69[7-9])|(?:(?:5[0-26-9]|[78][0-49])\\d|6(?:[0-4]\\d|50))\\d)|(?:2(?:(?:0[024-9]|2[3-9]|3[3-79]|4[1-689]|[58][02-9]|6[0-47-9]|7[013-9]|9\\d)\\d|1(?:[0-7]\\d|8[0-3]))|(?:3(?:0\\d|1[0-8]|[25][02-9]|3[02-579]|[468][0-46-9]|7[1-35-79]|9[2-578])|4(?:0[03-9]|[137]\\d|[28][02-57-9]|4[02-69]|5[0-8]|[69][0-79])|5(?:0[1-35-9]|[16]\\d|2[024-9]|3[015689]|4[02-9]|5[03-9]|7[0-35-9]|8[0-468]|9[0-57-9])|6(?:0[034689]|1\\d|2[0-35689]|[38][013-9]|4[1-467]|5[0-69]|6[13-9]|7[0-8]|9[0-24578])|7(?:0[0246-9]|2\\d|3[0236-8]|4[03-9]|5[0-46-9]|6[013-9]|7[0-35-9]|8[024-9]|9[02-9])|8(?:0[35-9]|2[1-57-9]|3[02-578]|4[0-578]|5[124-9]|6[2-69]|7\\d|8[02-9]|9[02569])|9(?:0[02-589]|[18]\\d|2[02-689]|3[1-57-9]|4[2-9]|5[0-579]|6[2-47-9]|7[0-24578]|9[2-57]))\\d)\\d)|2(?:0[013478]|3[0189]|4[017]|8[0-46-9]|9[0-2])\\d{3})\\d{4}|1(?:2(?:0(?:46[1-4]|87[2-9])|545[1-79]|76(?:2\\d|3[1-8]|6[1-6])|9(?:7(?:2[0-4]|3[2-5])|8(?:2[2-8]|7[0-47-9]|8[3-5])))|3(?:6(?:38[2-5]|47[23])|8(?:47[04-9]|64[0157-9]))|4(?:044[1-7]|20(?:2[23]|8\\d)|6(?:0(?:30|5[2-57]|6[1-8]|7[2-8])|140)|8(?:052|87[1-3]))|5(?:2(?:4(?:3[2-79]|6\\d)|76\\d)|6(?:26[06-9]|686))|6(?:06(?:4\\d|7[4-79])|295[5-7]|35[34]\\d|47(?:24|61)|59(?:5[08]|6[67]|74)|9(?:55[0-4]|77[23]))|7(?:26(?:6[13-9]|7[0-7])|(?:442|688)\\d|50(?:2[0-3]|[3-68]2|76))|8(?:27[56]\\d|37(?:5[2-5]|8[239])|843[2-58])|9(?:0(?:0(?:6[1-8]|85)|52\\d)|3583|4(?:66[1-8]|9(?:2[01]|81))|63(?:23|3[1-4])|9561))\\d{3}", [9, 10]], ["7(?:457[0-57-9]|700[01]|911[028])\\d{5}|7(?:[1-3]\\d\\d|4(?:[0-46-9]\\d|5[0-689])|5(?:0[0-8]|[13-9]\\d|2[0-35-9])|7(?:0[1-9]|[1-7]\\d|8[02-9]|9[0-689])|8(?:[014-9]\\d|[23][0-8])|9(?:[024-9]\\d|1[02-9]|3[0-689]))\\d{6}", [10]], ["80[08]\\d{7}|800\\d{6}|8001111"], ["(?:8(?:4[2-5]|7[0-3])|9(?:[01]\\d|8[2-49]))\\d{7}|845464\\d", [7, 10]], ["70\\d{8}", [10]], 0, ["(?:3[0347]|55)\\d{8}", [10]], ["76(?:464|652)\\d{5}|76(?:0[0-28]|2[356]|34|4[01347]|5[49]|6[0-369]|77|8[14]|9[139])\\d{6}", [10]], ["56\\d{8}", [10]]], 0, " x"], "GD": ["1", "011", "(?:473|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2-9]\\d{6})$|1", "473$1", 0, "473", [["473(?:2(?:3[0-2]|69)|3(?:2[89]|86)|4(?:[06]8|3[5-9]|4[0-4]|5[579]|73|90)|63[68]|7(?:58|84)|800|938)\\d{4}"], ["473(?:4(?:0[2-79]|1[04-9]|2[0-5]|49|5[68])|5(?:2[01]|3[3-8])|901)\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "GE": ["995", "00", "(?:[3-57]\\d\\d|800)\\d{6}", [9], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["70"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["32"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[57]"]], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[348]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:3(?:[256]\\d|4[124-9]|7[0-4])|4(?:1\\d|2[2-7]|3[1-79]|4[2-8]|7[239]|9[1-7]))\\d{6}"], ["5(?:(?:(?:0555|1(?:[17]77|555))[5-9]|757(?:7[7-9]|8[01]))\\d|22252[0-4])\\d\\d|5(?:0(?:0[17]0|505)|1(?:0[01]0|1(?:07|33|51))|2(?:0[02]0|2[25]2)|3(?:0[03]0|3[35]3)|(?:40[04]|900)0|5222)[0-4]\\d{3}|(?:5(?:0(?:0(?:0\\d|11|22|3[0-6]|44|5[05]|77|88|9[09])|(?:[14]\\d|77)\\d|22[02])|1(?:1(?:[03][01]|[124]\\d|5[2-6]|7[0-4])|4\\d\\d)|[23]555|4(?:4\\d\\d|555)|5(?:[0157-9]\\d\\d|200|333|444)|6[89]\\d\\d|7(?:[0147-9]\\d\\d|5(?:00|[57]5))|8(?:0(?:[018]\\d|2[0-4])|5(?:55|8[89])|8(?:55|88))|9(?:090|[1-35-9]\\d\\d))|790\\d\\d)\\d{4}"], ["800\\d{6}"], 0, 0, 0, 0, 0, ["70[67]\\d{6}"]]], "GF": ["594", "00", "(?:[56]94\\d|7093)\\d{5}|(?:80|9\\d)\\d{7}", [9], [["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[5-7]|9[47]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[89]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["594(?:[02-49]\\d|1[0-5]|5[6-9]|6[0-3]|80)\\d{4}"], ["(?:694(?:[0-249]\\d|3[0-8])|7093[0-3])\\d{4}"], ["80[0-5]\\d{6}"], 0, 0, 0, 0, 0, ["9(?:(?:396|76\\d)\\d|476[0-5])\\d{4}"]]], "GG": ["44", "00", "(?:1481|[357-9]\\d{3})\\d{6}|8\\d{6}(?:\\d{2})?", [7, 9, 10], 0, "0", 0, "([25-9]\\d{5})$|0", "1481$1", 0, 0, [["1481[25-9]\\d{5}", [10]], ["7(?:(?:781|839)\\d|911[17])\\d{5}", [10]], ["80[08]\\d{7}|800\\d{6}|8001111"], ["(?:8(?:4[2-5]|7[0-3])|9(?:[01]\\d|8[0-3]))\\d{7}|845464\\d", [7, 10]], ["70\\d{8}", [10]], 0, ["(?:3[0347]|55)\\d{8}", [10]], ["76(?:464|652)\\d{5}|76(?:0[0-28]|2[356]|34|4[01347]|5[49]|6[0-369]|77|8[14]|9[139])\\d{6}", [10]], ["56\\d{8}", [10]]]], "GH": ["233", "00", "(?:[235]\\d{3}|800)\\d{5}", [8, 9], [["(\\d{3})(\\d{5})", "$1 $2", ["8"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[235]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["3082[0-5]\\d{4}|3(?:0(?:[237]\\d|8[01])|[167](?:2[0-6]|7\\d|80)|2(?:2[0-5]|7\\d|80)|3(?:2[0-3]|7\\d|80)|4(?:2[013-9]|3[01]|7\\d|80)|5(?:2[0-7]|7\\d|80)|8(?:2[0-2]|7\\d|80)|9(?:[28]0|7\\d))\\d{5}", [9]], ["(?:2(?:[0346-9]\\d|5[67])|5(?:[03-7]\\d|9[1-9]))\\d{6}", [9]], ["800\\d{5}", [8]]]], "GI": ["350", "00", "(?:[25]\\d|60)\\d{6}", [8], [["(\\d{3})(\\d{5})", "$1 $2", ["2"]]], 0, 0, 0, 0, 0, 0, [["2190[0-2]\\d{3}|2(?:0(?:[02]\\d|3[01])|16[24-9]|2[2-5]\\d)\\d{4}"], ["5251[0-4]\\d{3}|(?:5(?:[146-8]\\d\\d|250)|60(?:1[01]|6\\d))\\d{4}"]]], "GL": ["299", "00", "(?:19|[2-689]\\d|70)\\d{4}", [6], [["(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3", ["19|[2-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:19|3[1-7]|[68][1-9]|70|9\\d)\\d{4}"], ["[245]\\d{5}"], ["80\\d{4}"], 0, 0, 0, 0, 0, ["3[89]\\d{4}"]]], "GM": ["220", "00", "[2-9]\\d{6}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[2-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:4(?:[23]\\d\\d|4(?:1[024679]|[6-9]\\d))|5(?:5(?:3\\d|4[0-7])|6[67]\\d|7(?:1[04]|2[035]|3[58]|48))|8\\d{3})\\d{3}"], ["(?:[23679]\\d|4[015]|5[0-489])\\d{5}"]]], "GN": ["224", "00", "722\\d{6}|(?:3|6\\d)\\d{7}", [8, 9], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["3"]], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[67]"]]], 0, 0, 0, 0, 0, 0, [["3(?:0(?:24|3[12]|4[1-35-7]|5[13]|6[189]|[78]1|9[1478])|1\\d\\d)\\d{4}", [8]], ["6[0-356]\\d{7}", [9]], 0, 0, 0, 0, 0, 0, ["722\\d{6}", [9]]]], "GP": ["590", "00", "(?:590\\d|7090)\\d{5}|(?:69|80|9\\d)\\d{7}", [9], [["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[5-79]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["590(?:0[1-68]|[14][0-24-9]|2[0-68]|3[1-9]|5[3-579]|[68][0-689]|7[08]|9\\d)\\d{4}"], ["(?:69(?:0\\d\\d|1(?:2[2-9]|3[0-5])|4(?:0[89]|1[2-6]|9\\d)|6(?:1[016-9]|5[0-4]|[67]\\d))|7090[0-4])\\d{4}"], ["80[0-5]\\d{6}"], 0, 0, 0, 0, 0, ["9(?:(?:39[5-7]|76[018])\\d|475[0-5])\\d{4}"]]], "GQ": ["240", "00", "222\\d{6}|(?:3\\d|55|[89]0)\\d{7}", [9], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[235]"]], ["(\\d{3})(\\d{6})", "$1 $2", ["[89]"]]], 0, 0, 0, 0, 0, 0, [["33[0-24-9]\\d[46]\\d{4}|3(?:33|5\\d)\\d[7-9]\\d{4}"], ["(?:222|55\\d)\\d{6}"], ["80\\d[1-9]\\d{5}"], ["90\\d[1-9]\\d{5}"]]], "GR": ["30", "00", "5005000\\d{3}|8\\d{9,11}|(?:[269]\\d|70)\\d{8}", [10, 11, 12], [["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["21|7"]], ["(\\d{4})(\\d{6})", "$1 $2", ["2(?:2|3[2-57-9]|4[2-469]|5[2-59]|6[2-9]|7[2-69]|8[2-49])|5"]], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[2689]"]], ["(\\d{3})(\\d{3,4})(\\d{5})", "$1 $2 $3", ["8"]]], 0, 0, 0, 0, 0, 0, [["2(?:1\\d\\d|2(?:2[1-46-9]|[36][1-8]|4[1-7]|5[1-4]|7[1-5]|[89][1-9])|3(?:1\\d|2[1-57]|[35][1-3]|4[13]|7[1-7]|8[124-6]|9[1-79])|4(?:1\\d|2[1-8]|3[1-4]|4[13-5]|6[1-578]|9[1-5])|5(?:1\\d|[29][1-4]|3[1-5]|4[124]|5[1-6])|6(?:1\\d|[269][1-6]|3[1245]|4[1-7]|5[13-9]|7[14]|8[1-5])|7(?:1\\d|2[1-5]|3[1-6]|4[1-7]|5[1-57]|6[135]|9[125-7])|8(?:1\\d|2[1-5]|[34][1-4]|9[1-57]))\\d{6}", [10]], ["68[57-9]\\d{7}|(?:69|94)\\d{8}", [10]], ["800\\d{7,9}"], ["90[19]\\d{7}", [10]], ["70\\d{8}", [10]], 0, ["5005000\\d{3}", [10]], 0, 0, ["8(?:0[16]|12|[27]5|50)\\d{7}", [10]]]], "GT": ["502", "00", "80\\d{6}|(?:1\\d{3}|[2-7])\\d{7}", [8, 11], [["(\\d{4})(\\d{4})", "$1 $2", ["[2-8]"]], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"]]], 0, 0, 0, 0, 0, 0, [["[267][2-9]\\d{6}", [8]], ["(?:[3-5]\\d\\d|80[0-4])\\d{5}", [8]], ["18[01]\\d{8}", [11]], ["19\\d{9}", [11]]]], "GU": ["1", "011", "(?:[58]\\d\\d|671|900)\\d{7}", [10], 0, "1", 0, "([2-9]\\d{6})$|1", "671$1", 0, "671", [["671(?:2\\d\\d|3(?:00|3[39]|4[349]|55|6[26])|4(?:00|56|7[1-9]|8[02-9])|5(?:55|6[2-5]|88)|6(?:3[2-578]|4[24-9]|5[34]|78|8[235-9])|7(?:[0479]7|2[0167]|3[45]|8[7-9])|8(?:[2-57-9]8|6[478])|9(?:2[29]|6[79]|7[1279]|8[7-9]|9[78]))\\d{4}"], [""], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "GW": ["245", "00", "[49]\\d{8}|4\\d{6}", [7, 9], [["(\\d{3})(\\d{4})", "$1 $2", ["40"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[49]"]]], 0, 0, 0, 0, 0, 0, [["443\\d{6}", [9]], ["9(?:5\\d|6[569]|77)\\d{6}", [9]], 0, 0, 0, 0, 0, 0, ["40\\d{5}", [7]]]], "GY": ["592", "001", "(?:[2-8]\\d{3}|9008)\\d{3}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[2-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:2(?:1[6-9]|2[0-35-9]|3[1-4]|5[3-9]|6\\d|7[0-79])|3(?:2[25-9]|3\\d)|4(?:4[0-24]|5[56])|50[0-6]|77[1-57])\\d{4}"], ["510\\d{4}|(?:6\\d|7[0-5])\\d{5}"], ["(?:289|8(?:00|6[28]|88|99))\\d{4}"], ["9008\\d{3}"], 0, 0, 0, 0, ["515\\d{4}"]]], "HK": ["852", "00(?:30|5[09]|[126-9]?)", "8[0-46-9]\\d{6,7}|9\\d{4,7}|(?:[2-7]|9\\d{3})\\d{7}", [5, 6, 7, 8, 9, 11], [["(\\d{3})(\\d{2,5})", "$1 $2", ["900", "9003"]], ["(\\d{4})(\\d{4})", "$1 $2", ["[2-7]|8[1-4]|9(?:0[1-9]|[1-8])"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["8"]], ["(\\d{3})(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["9"]]], 0, 0, 0, 0, 0, 0, [["(?:2(?:[13-9]\\d|2[013-9])\\d|3(?:(?:[1569][0-24-9]|4[0-246-9]|7[0-24-69])\\d|8(?:4[0-8]|[579]\\d|6[0-2]))|58(?:0[1-9]|1[2-9]))\\d{4}", [8]], ["(?:4(?:44[0-25-9]|6(?:1[0-7]|4[0-57-9]|6[0-4])|7(?:4[0-2]|6[0-5]))|5(?:73[0-6]|95[0-8])|6(?:26[013-8]|66[0-3])|70(?:7[1-8]|8[0-4])|84(?:4[0-2]|8[0-35-9])|9(?:29[013-9]|39[014-9]|59[0-4]|899))\\d{4}|(?:4(?:4[0-35-9]|6[02357-9]|7[05])|5(?:[1-59][0-46-9]|6[0-4689]|7[0-246-9])|6(?:0[1-9]|[13-59]\\d|[268][0-57-9]|7[0-79])|70[1-49]|84[0-39]|9(?:0[1-9]|1[02-9]|[2358][0-8]|[467]\\d))\\d{5}", [8]], ["800\\d{6}", [9]], ["900(?:[0-24-9]\\d{7}|3\\d{1,4})", [5, 6, 7, 8, 11]], ["8(?:1[0-4679]\\d|2(?:[0-36]\\d|7[0-4])|3(?:[034]\\d|2[09]|70))\\d{4}", [8]], 0, ["30(?:0[1-9]|[15-7]\\d|2[047]|89)\\d{4}", [8]], ["7(?:1(?:0[0-38]|1[0-3679]|3[013]|69|9[0136])|2(?:[02389]\\d|1[18]|7[27-9])|3(?:[0-38]\\d|7[0-369]|9[2357-9])|47\\d|5(?:[178]\\d|5[0-5])|6(?:0[0-7]|2[236-9]|[35]\\d)|7(?:[27]\\d|8[7-9])|8(?:[23689]\\d|7[1-9])|9(?:[025]\\d|6[0-246-8]|7[0-36-9]|8[238]))\\d{4}", [8]]], "00"], "HN": ["504", "00", "8\\d{10}|[237-9]\\d{7}", [8, 11], [["(\\d{4})(\\d{4})", "$1-$2", ["[237-9]"]]], 0, 0, 0, 0, 0, 0, [["2(?:2(?:0[0-59]|1[1-9]|[23]\\d|4[02-7]|5[57]|6[245]|7[0135689]|8[01346-9]|9[0-2])|4(?:0[578]|2[3-59]|3[13-9]|4[0-68]|5[1-3589])|5(?:0[2357-9]|1[1-356]|4[03-5]|5\\d|6[014-69]|7[04]|80)|6(?:[056]\\d|17|2[067]|3[047]|4[0-378]|[78][0-8]|9[01])|7(?:0[5-79]|6[46-9]|7[02-9]|8[034]|91)|8(?:79|8[0-357-9]|9[1-57-9]))\\d{4}", [8]], ["[37-9]\\d{7}", [8]], ["8002\\d{7}", [11]]]], "HR": ["385", "00", "(?:[24-69]\\d|3[0-79])\\d{7}|80\\d{5,7}|[1-79]\\d{7}|6\\d{5,6}", [6, 7, 8, 9], [["(\\d{2})(\\d{2})(\\d{2,3})", "$1 $2 $3", ["6[01]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2,3})", "$1 $2 $3", ["8"], "0$1"], ["(\\d)(\\d{4})(\\d{3})", "$1 $2 $3", ["1"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["6|7[245]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["9"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[2-57]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["1\\d{7}|(?:2[0-3]|3[1-5]|4[02-47-9]|5[1-3])\\d{6,7}", [8, 9]], ["9(?:(?:0[1-9]|[12589]\\d)\\d\\d|7(?:[0679]\\d\\d|5(?:[01]\\d|44|55|77|9[5-79])))\\d{4}|98\\d{6}", [8, 9]], ["80\\d{5,7}", [7, 8, 9]], ["6[01459]\\d{6}|6[01]\\d{4,5}", [6, 7, 8]], ["7[45]\\d{6}", [8]], 0, ["62\\d{6,7}|72\\d{6}", [8, 9]]]], "HT": ["509", "00", "(?:[2-489]\\d|55)\\d{6}", [8], [["(\\d{2})(\\d{2})(\\d{4})", "$1 $2 $3", ["[2-589]"]]], 0, 0, 0, 0, 0, 0, [["2(?:2\\d|5[1-5]|81|9[149])\\d{5}"], ["(?:[34]\\d|55)\\d{6}"], ["8\\d{7}"], 0, 0, 0, 0, 0, ["9(?:[67][0-4]|8[0-3589]|9\\d)\\d{5}"]]], "HU": ["36", "00", "[235-7]\\d{8}|[1-9]\\d{7}", [8, 9], [["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["1"], "(06 $1)"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[27][2-9]|3[2-7]|4[24-9]|5[2-79]|6|8[2-57-9]|9[2-69]"], "(06 $1)"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[2-9]"], "06 $1"]], "06", 0, 0, 0, 0, 0, [["(?:1\\d|[27][2-9]|3[2-7]|4[24-9]|5[2-79]|6[23689]|8[2-57-9]|9[2-69])\\d{6}", [8]], ["(?:[257]0|3[01])\\d{7}", [9]], ["(?:[48]0\\d|680[29])\\d{5}"], ["9[01]\\d{6}", [8]], 0, 0, ["38\\d{7}", [9]], 0, ["21\\d{7}", [9]]]], "ID": ["62", "00[89]", "00[1-9]\\d{9,14}|(?:[1-36]|8\\d{5})\\d{6}|00\\d{9}|[1-9]\\d{8,10}|[2-9]\\d{7}", [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17], [["(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["15"]], ["(\\d{2})(\\d{5,9})", "$1 $2", ["2[124]|[36]1"], "(0$1)"], ["(\\d{3})(\\d{5,7})", "$1 $2", ["800"], "0$1"], ["(\\d{3})(\\d{5,8})", "$1 $2", ["[2-79]"], "(0$1)"], ["(\\d{3})(\\d{3,4})(\\d{3})", "$1-$2-$3", ["8[1-35-9]"], "0$1"], ["(\\d{3})(\\d{6,8})", "$1 $2", ["1"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["804"], "0$1"], ["(\\d{3})(\\d)(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["80"], "0$1"], ["(\\d{3})(\\d{4})(\\d{4,5})", "$1-$2-$3", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["2[124]\\d{7,8}|619\\d{8}|2(?:1(?:14|500)|2\\d{3})\\d{3}|61\\d{5,8}|(?:2(?:[35][1-4]|6[0-8]|7[1-6]|8\\d|9[1-8])|3(?:1|[25][1-8]|3[1-68]|4[1-3]|6[1-3568]|7[0-469]|8\\d)|4(?:0[1-589]|1[01347-9]|2[0-36-8]|3[0-24-68]|43|5[1-378]|6[1-5]|7[134]|8[1245])|5(?:1[1-35-9]|2[25-8]|3[124-9]|4[1-3589]|5[1-46]|6[1-8])|6(?:[25]\\d|3[1-69]|4[1-6])|7(?:02|[125][1-9]|[36]\\d|4[1-8]|7[0-36-9])|9(?:0[12]|1[013-8]|2[0-479]|5[125-8]|6[23679]|7[159]|8[01346]))\\d{5,8}", [7, 8, 9, 10, 11]], ["8[1-35-9]\\d{7,10}", [9, 10, 11, 12]], ["00(?:1803\\d{5,11}|7803\\d{7})|(?:177\\d|800)\\d{5,7}", [8, 9, 10, 11, 12, 13, 14, 15, 16, 17]], ["809\\d{7}", [10]], 0, 0, ["(?:1500|8071\\d{3})\\d{3}", [7, 10]], 0, 0, ["804\\d{7}", [10]]]], "IE": ["353", "00", "(?:1\\d|[2569])\\d{6,8}|4\\d{6,9}|7\\d{8}|8\\d{8,9}", [7, 8, 9, 10], [["(\\d{2})(\\d{5})", "$1 $2", ["2[24-9]|47|58|6[237-9]|9[35-9]"], "(0$1)"], ["(\\d{3})(\\d{5})", "$1 $2", ["[45]0"], "(0$1)"], ["(\\d)(\\d{3,4})(\\d{4})", "$1 $2 $3", ["1"], "(0$1)"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[2569]|4[1-69]|7[14]"], "(0$1)"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["70"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["81"], "(0$1)"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[78]"], "0$1"], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["1"]], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["4"], "(0$1)"], ["(\\d{2})(\\d)(\\d{3})(\\d{4})", "$1 $2 $3 $4", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1\\d|21)\\d{6,7}|(?:2[24-9]|4(?:0[24]|5\\d|7)|5(?:0[45]|1\\d|8)|6(?:1\\d|[237-9])|9(?:1\\d|[35-9]))\\d{5}|(?:23|4(?:[1-469]|8\\d)|5[23679]|6[4-6]|7[14]|9[04])\\d{7}"], ["8(?:22|[35-9]\\d)\\d{6}", [9]], ["1800\\d{6}", [10]], ["15(?:1[2-8]|[2-8]0|9[089])\\d{6}", [10]], ["700\\d{6}", [9]], ["88210[1-9]\\d{4}|8(?:[35-79]5\\d\\d|8(?:[013-9]\\d\\d|2(?:[01][1-9]|[2-9]\\d)))\\d{5}", [10]], ["818\\d{6}", [9]], 0, ["76\\d{7}", [9]], ["18[59]0\\d{6}", [10]]]], "IL": ["972", "0(?:0|1[2-9])", "1\\d{6}(?:\\d{3,5})?|[57]\\d{8}|[1-489]\\d{7}", [7, 8, 9, 10, 11, 12], [["(\\d{4})(\\d{3})", "$1-$2", ["125"]], ["(\\d{4})(\\d{2})(\\d{2})", "$1-$2-$3", ["121"]], ["(\\d)(\\d{3})(\\d{4})", "$1-$2-$3", ["[2-489]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1-$2-$3", ["[57]"], "0$1"], ["(\\d{4})(\\d{3})(\\d{3})", "$1-$2-$3", ["12"]], ["(\\d{4})(\\d{6})", "$1-$2", ["159"]], ["(\\d)(\\d{3})(\\d{3})(\\d{3})", "$1-$2-$3-$4", ["1[7-9]"]], ["(\\d{3})(\\d{1,2})(\\d{3})(\\d{4})", "$1-$2 $3-$4", ["15"]]], "0", 0, 0, 0, 0, 0, [["153\\d{8,9}|29[1-9]\\d{5}|(?:2[0-8]|[3489]\\d)\\d{6}", [8, 11, 12]], ["55(?:410|57[0-289])\\d{4}|5(?:(?:[0-2][02-9]|[36]\\d|[49][2-9]|8[3-7])\\d|5(?:01|2\\d|3[0-3]|4[34]|5[0-25689]|6[6-8]|7[0-267]|8[7-9]|9[1-9]))\\d{5}", [9]], ["1(?:255|80[019]\\d{3})\\d{3}", [7, 10]], ["1212\\d{4}|1(?:200|9(?:0[0-2]|19))\\d{6}", [8, 10]], 0, ["151\\d{8,9}", [11, 12]], ["1599\\d{6}", [10]], 0, ["7(?:38(?:0\\d|5[0-2569]|88)|8(?:33|55|77|81)\\d)\\d{4}|7(?:18|2[23]|3[237]|47|6[258]|7\\d|82|9[2-9])\\d{6}", [9]], ["1700\\d{6}", [10]]]], "IM": ["44", "00", "1624\\d{6}|(?:[3578]\\d|90)\\d{8}", [10], 0, "0", 0, "([25-8]\\d{5})$|0", "1624$1", 0, "74576|(?:16|7[56])24", [["1624(?:230|[5-8]\\d\\d)\\d{3}"], ["76245[06]\\d{4}|7(?:4576|[59]24\\d|624[0-4689])\\d{5}"], ["808162\\d{4}"], ["8(?:440[49]06|72299\\d)\\d{3}|(?:8(?:45|70)|90[0167])624\\d{4}"], ["70\\d{8}"], 0, ["3440[49]06\\d{3}|(?:3(?:08162|3\\d{4}|45624|7(?:0624|2299))|55\\d{4})\\d{4}"], 0, ["56\\d{8}"]]], "IN": ["91", "00", "(?:000800|[2-9]\\d\\d)\\d{7}|1\\d{7,12}", [8, 9, 10, 11, 12, 13], [["(\\d{8})", "$1", ["5(?:0|2[23]|3[03]|[67]1|88)", "5(?:0|2(?:21|3)|3(?:0|3[23])|616|717|888)", "5(?:0|2(?:21|3)|3(?:0|3[23])|616|717|8888)"], 0, 1], ["(\\d{4})(\\d{4,5})", "$1 $2", ["180", "1800"], 0, 1], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["140"], 0, 1], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["11|2[02]|33|4[04]|79[1-7]|80[2-46]", "11|2[02]|33|4[04]|79(?:[1-6]|7[19])|80(?:[2-4]|6[0-589])", "11|2[02]|33|4[04]|79(?:[124-6]|3(?:[02-9]|1[0-24-9])|7(?:1|9[1-6]))|80(?:[2-4]|6[0-589])"], "0$1", 1], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["1(?:2[0-249]|3[0-25]|4[145]|[68]|7[1257])|2(?:1[257]|3[013]|4[01]|5[0137]|6[0158]|78|8[1568])|3(?:26|4[1-3]|5[34]|6[01489]|7[02-46]|8[159])|4(?:1[36]|2[1-47]|5[12]|6[0-26-9]|7[0-24-9]|8[013-57]|9[014-7])|5(?:1[025]|22|[36][25]|4[28]|5[12]|[78]1)|6(?:12|[2-4]1|5[17]|6[13]|80)|7(?:12|3[134]|4[47]|61|88)|8(?:16|2[014]|3[126]|6[136]|7[078]|8[34]|91)|(?:43|59|75)[15]|(?:1[59]|29|67|72)[14]", "1(?:2[0-24]|3[0-25]|4[145]|[59][14]|6[1-9]|7[1257]|8[1-57-9])|2(?:1[257]|3[013]|4[01]|5[0137]|6[058]|78|8[1568]|9[14])|3(?:26|4[1-3]|5[34]|6[01489]|7[02-46]|8[159])|4(?:1[36]|2[1-47]|3[15]|5[12]|6[0-26-9]|7[0-24-9]|8[013-57]|9[014-7])|5(?:1[025]|22|[36][25]|4[28]|[578]1|9[15])|674|7(?:(?:2[14]|3[34]|5[15])[2-6]|61[346]|88[0-8])|8(?:70[2-6]|84[235-7]|91[3-7])|(?:1(?:29|60|8[06])|261|552|6(?:12|[2-47]1|5[17]|6[13]|80)|7(?:12|31|4[47])|8(?:16|2[014]|3[126]|6[136]|7[78]|83))[2-7]", "1(?:2[0-24]|3[0-25]|4[145]|[59][14]|6[1-9]|7[1257]|8[1-57-9])|2(?:1[257]|3[013]|4[01]|5[0137]|6[058]|78|8[1568]|9[14])|3(?:26|4[1-3]|5[34]|6[01489]|7[02-46]|8[159])|4(?:1[36]|2[1-47]|3[15]|5[12]|6[0-26-9]|7[0-24-9]|8[013-57]|9[014-7])|5(?:1[025]|22|[36][25]|4[28]|[578]1|9[15])|6(?:12(?:[2-6]|7[0-8])|74[2-7])|7(?:(?:2[14]|5[15])[2-6]|3171|61[346]|88(?:[2-7]|82))|8(?:70[2-6]|84(?:[2356]|7[19])|91(?:[3-6]|7[19]))|73[134][2-6]|(?:74[47]|8(?:16|2[014]|3[126]|6[136]|7[78]|83))(?:[2-6]|7[19])|(?:1(?:29|60|8[06])|261|552|6(?:[2-4]1|5[17]|6[13]|7(?:1|4[0189])|80)|7(?:12|88[01]))[2-7]"], "0$1", 1], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["1(?:[2-479]|5[0235-9])|[2-5]|6(?:1[1358]|2[2457-9]|3[2-5]|4[235-7]|5[2-689]|6[24578]|7[235689]|8[1-6])|7(?:1[013-9]|28|3[129]|4[1-35689]|5[29]|6[02-5]|70)|807", "1(?:[2-479]|5[0235-9])|[2-5]|6(?:1[1358]|2(?:[2457]|84|95)|3(?:[2-4]|55)|4[235-7]|5[2-689]|6[24578]|7[235689]|8[1-6])|7(?:1(?:[013-8]|9[6-9])|28[6-8]|3(?:17|2[0-49]|9[2-57])|4(?:1[2-4]|[29][0-7]|3[0-8]|[56]|8[0-24-7])|5(?:2[1-3]|9[0-6])|6(?:0[5689]|2[5-9]|3[02-8]|4|5[0-367])|70[13-7])|807[19]", "1(?:[2-479]|5(?:[0236-9]|5[013-9]))|[2-5]|6(?:2(?:84|95)|355|83)|73179|807(?:1|9[1-3])|(?:1552|6(?:1[1358]|2[2457]|3[2-4]|4[235-7]|5[2-689]|6[24578]|7[235689]|8[124-6])\\d|7(?:1(?:[013-8]\\d|9[6-9])|28[6-8]|3(?:2[0-49]|9[2-57])|4(?:1[2-4]|[29][0-7]|3[0-8]|[56]\\d|8[0-24-7])|5(?:2[1-3]|9[0-6])|6(?:0[5689]|2[5-9]|3[02-8]|4\\d|5[0-367])|70[13-7]))[2-7]"], "0$1", 1], ["(\\d{5})(\\d{5})", "$1 $2", ["[6-9]"], "0$1", 1], ["(\\d{4})(\\d{2,4})(\\d{4})", "$1 $2 $3", ["1(?:6|8[06])", "1(?:6|8[06]0)"], 0, 1], ["(\\d{4})(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["18"], 0, 1]], "0", 0, 0, 0, 0, 0, [["2717(?:[2-7]\\d|95)\\d{4}|(?:271[0-689]|782[0-6])[2-7]\\d{5}|(?:170[24]|2(?:(?:[02][2-79]|90)\\d|80[13468])|(?:3(?:23|80)|683|79[1-7])\\d|4(?:20[24]|72[2-8])|552[1-7])\\d{6}|(?:11|33|4[04]|80)[2-7]\\d{7}|(?:342|674|788)(?:[0189][2-7]|[2-7]\\d)\\d{5}|(?:1(?:2[0-249]|3[0-25]|4[145]|[59][14]|6[014]|7[1257]|8[01346])|2(?:1[257]|3[013]|4[01]|5[0137]|6[0158]|78|8[1568]|9[14])|3(?:26|4[13]|5[34]|6[01489]|7[02-46]|8[159])|4(?:1[36]|2[1-47]|3[15]|5[12]|6[0-26-9]|7[014-9]|8[013-57]|9[014-7])|5(?:1[025]|22|[36][25]|4[28]|[578]1|9[15])|6(?:12|[2-47]1|5[17]|6[13]|80)|7(?:12|2[14]|3[134]|4[47]|5[15]|[67]1)|8(?:16|2[014]|3[126]|6[136]|7[078]|8[34]|91))[2-7]\\d{6}|(?:1(?:2[35-8]|3[346-9]|4[236-9]|[59][0235-9]|6[235-9]|7[34689]|8[257-9])|2(?:1[134689]|3[24-8]|4[2-8]|5[25689]|6[2-4679]|7[3-79]|8[2-479]|9[235-9])|3(?:01|1[79]|2[1245]|4[5-8]|5[125689]|6[235-7]|7[157-9]|8[2-46-8])|4(?:1[14578]|2[5689]|3[2-467]|5[4-7]|6[35]|73|8[2689]|9[2389])|5(?:[16][146-9]|2[14-8]|3[1346]|4[14-69]|5[46]|7[2-4]|8[2-8]|9[246])|6(?:1[1358]|2[2457]|3[2-4]|4[235-7]|5[2-689]|6[24578]|7[235689]|8[124-6])|7(?:1[013-9]|2[0235-9]|3[2679]|4[1-35689]|5[2-46-9]|[67][02-9]|8[013-7]|9[089])|8(?:1[1357-9]|2[235-8]|3[03-57-9]|4[0-24-9]|5\\d|6[2457-9]|7[1-6]|8[1256]|9[2-4]))\\d[2-7]\\d{5}", [10]], ["(?:61279|7(?:887[02-9]|9(?:313|79[07-9]))|8(?:079[04-9]|(?:84|91)7[02-8]))\\d{5}|(?:6(?:12|[2-47]1|5[17]|6[13]|80)[0189]|7(?:1(?:2[0189]|9[0-5])|2(?:[14][017-9]|8[0-59])|3(?:2[5-8]|[34][017-9]|9[016-9])|4(?:1[015-9]|[29][89]|39|8[389])|5(?:[15][017-9]|2[04-9]|9[7-9])|6(?:0[0-47]|1[0-257-9]|2[0-4]|3[19]|5[4589])|70[0289]|88[089]|97[02-8])|8(?:0(?:6[67]|7[02-8])|70[017-9]|84[01489]|91[0-289]))\\d{6}|(?:7(?:31|4[47])|8(?:16|2[014]|3[126]|6[136]|7[78]|83))(?:[0189]\\d|7[02-8])\\d{5}|(?:6(?:[09]\\d|1[04679]|2[03689]|3[05-9]|4[0489]|50|6[069]|7[07]|8[7-9])|7(?:0\\d|2[0235-79]|3[05-8]|40|5[0346-8]|6[6-9]|7[1-9]|8[0-79]|9[089])|8(?:0[01589]|1[0-57-9]|2[235-9]|3[03-57-9]|[45]\\d|6[02457-9]|7[1-69]|8[0-25-9]|9[02-9])|9\\d\\d)\\d{7}|(?:6(?:(?:1[1358]|2[2457]|3[2-4]|4[235-7]|5[2-689]|6[24578]|8[124-6])\\d|7(?:[235689]\\d|4[0189]))|7(?:1(?:[013-8]\\d|9[6-9])|28[6-8]|3(?:2[0-49]|9[2-5])|4(?:1[2-4]|[29][0-7]|3[0-8]|[56]\\d|8[0-24-7])|5(?:2[1-3]|9[0-6])|6(?:0[5689]|2[5-9]|3[02-8]|4\\d|5[0-367])|70[13-7]|881))[0189]\\d{5}", [10]], ["000800\\d{7}|1(?:600\\d{6}|80(?:0\\d{4,9}|3\\d{9}))"], ["186[12]\\d{9}", [13]], 0, 0, ["140\\d{7}", [10]], 0, 0, ["1860\\d{7}", [11]]]], "IO": ["246", "00", "3\\d{6}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["3"]]], 0, 0, 0, 0, 0, 0, [["37\\d{5}"], ["38\\d{5}"]]], "IQ": ["964", "00", "(?:1|7\\d\\d)\\d{7}|[2-6]\\d{7,8}", [8, 9, 10], [["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["1"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[2-6]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["7"], "0$1"]], "0", 0, 0, 0, 0, 0, [["1\\d{7}|(?:2[13-5]|3[02367]|4[023]|5[03]|6[026])\\d{6,7}", [8, 9]], ["7[3-9]\\d{8}", [10]]]], "IR": ["98", "00", "[1-9]\\d{9}|(?:[1-8]\\d\\d|9)\\d{3,4}", [4, 5, 6, 7, 10], [["(\\d{4,5})", "$1", ["96"], "0$1"], ["(\\d{2})(\\d{4,5})", "$1 $2", ["(?:1[137]|2[13-68]|3[1458]|4[145]|5[1468]|6[16]|7[1467]|8[13467])[12689]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["9"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["[1-8]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1[137]|2[13-68]|3[1458]|4[145]|5[1468]|6[16]|7[1467]|8[13467])(?:[03-57]\\d{7}|[16]\\d{3}(?:\\d{4})?|[289]\\d{3}(?:\\d(?:\\d{3})?)?)|94(?:000[09]|(?:12\\d|30[0-2])\\d|2(?:121|[2689]0\\d)|4(?:111|40\\d))\\d{4}", [6, 7, 10]], ["9(?:(?:0(?:[0-35]\\d|4[4-6])|(?:[13]\\d|2[0-3])\\d)\\d|9(?:[0-46]\\d\\d|5[15]0|8(?:[12]\\d|88)|9(?:0[0-3]|[19]\\d|21|69|77|8[7-9])))\\d{5}", [10]], 0, 0, 0, 0, ["96(?:0[12]|2[16-8]|3(?:08|[14]5|[23]|66)|4(?:0|80)|5[01]|6[89]|86|9[19])", [4, 5]]]], "IS": ["354", "00|1(?:0(?:01|[12]0)|100)", "(?:38\\d|[4-9])\\d{6}", [7, 9], [["(\\d{3})(\\d{4})", "$1 $2", ["[4-9]"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["3"]]], 0, 0, 0, 0, 0, 0, [["(?:4(?:1[0-24-69]|2[0-7]|[37][0-8]|4[0-24589]|5[0-68]|6\\d|8[0-36-8])|5(?:05|[156]\\d|2[02578]|3[0-579]|4[03-7]|7[0-2578]|8[0-35-9]|9[013-689])|872)\\d{4}", [7]], ["(?:38[589]\\d\\d|6(?:1[1-8]|2[0-6]|3[026-9]|4[014679]|5[0159]|6[0-69]|70|8[06-8]|9\\d)|7(?:5[057]|[6-9]\\d)|8(?:2[0-59]|[3-69]\\d|8[238]))\\d{4}"], ["80[0-8]\\d{4}", [7]], ["90(?:0\\d|1[5-79]|2[015-79]|3[135-79]|4[125-7]|5[25-79]|7[1-37]|8[0-35-7])\\d{3}", [7]], 0, ["(?:689|8(?:7[18]|80)|95[48])\\d{4}", [7]], ["809\\d{4}", [7]], 0, ["49[0-24-79]\\d{4}", [7]]], "00"], "IT": ["39", "00", "0\\d{5,10}|1\\d{8,10}|3(?:[0-8]\\d{7,10}|9\\d{7,8})|(?:43|55|70)\\d{8}|8\\d{5}(?:\\d{2,4})?", [6, 7, 8, 9, 10, 11, 12], [["(\\d{2})(\\d{4,6})", "$1 $2", ["0[26]"]], ["(\\d{3})(\\d{3,6})", "$1 $2", ["0[13-57-9][0159]|8(?:03|4[17]|9[2-5])", "0[13-57-9][0159]|8(?:03|4[17]|9(?:2|3[04]|[45][0-4]))"]], ["(\\d{4})(\\d{2,6})", "$1 $2", ["0(?:[13-579][2-46-8]|8[236-8])"]], ["(\\d{4})(\\d{4})", "$1 $2", ["894"]], ["(\\d{2})(\\d{3,4})(\\d{4})", "$1 $2 $3", ["0[26]|5"]], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["1(?:44|[679])|[378]|43"]], ["(\\d{3})(\\d{3,4})(\\d{4})", "$1 $2 $3", ["0[13-57-9][0159]|14"]], ["(\\d{2})(\\d{4})(\\d{5})", "$1 $2 $3", ["0[26]"]], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["0"]], ["(\\d{3})(\\d{4})(\\d{4,5})", "$1 $2 $3", ["3"]]], 0, 0, 0, 0, 0, 0, [["0669[0-79]\\d{1,6}|0(?:1(?:[0159]\\d|[27][1-5]|31|4[1-4]|6[1356]|8[2-57])|2\\d\\d|3(?:[0159]\\d|2[1-4]|3[12]|[48][1-6]|6[2-59]|7[1-7])|4(?:[0159]\\d|[23][1-9]|4[245]|6[1-5]|7[1-4]|81)|5(?:[0159]\\d|2[1-5]|3[2-6]|4[1-79]|6[4-6]|7[1-578]|8[3-8])|6(?:[0-57-9]\\d|6[0-8])|7(?:[0159]\\d|2[12]|3[1-7]|4[2-46]|6[13569]|7[13-6]|8[1-59])|8(?:[0159]\\d|2[3-578]|3[1-356]|[6-8][1-5])|9(?:[0159]\\d|[238][1-5]|4[12]|6[1-8]|7[1-6]))\\d{2,7}", [6, 7, 8, 9, 10, 11]], ["3[2-9]\\d{7,8}|(?:31|43)\\d{8}", [9, 10]], ["80(?:0\\d{3}|3)\\d{3}", [6, 9]], ["(?:0878\\d{3}|89(?:2\\d|3[04]|4(?:[0-4]|[5-9]\\d\\d)|5[0-4]))\\d\\d|(?:1(?:44|6[346])|89(?:38|5[5-9]|9))\\d{6}", [6, 8, 9, 10]], ["1(?:78\\d|99)\\d{6}", [9, 10]], ["3[2-8]\\d{9,10}", [11, 12]], 0, 0, ["55\\d{8}", [10]], ["84(?:[08]\\d{3}|[17])\\d{3}", [6, 9]]]], "JE": ["44", "00", "1534\\d{6}|(?:[3578]\\d|90)\\d{8}", [10], 0, "0", 0, "([0-24-8]\\d{5})$|0", "1534$1", 0, 0, [["1534[0-24-8]\\d{5}"], ["7(?:(?:(?:50|82)9|937)\\d|7(?:00[378]|97\\d))\\d{5}"], ["80(?:07(?:35|81)|8901)\\d{4}"], ["(?:8(?:4(?:4(?:4(?:05|42|69)|703)|5(?:041|800))|7(?:0002|1206))|90(?:066[59]|1810|71(?:07|55)))\\d{4}"], ["701511\\d{4}"], 0, ["(?:3(?:0(?:07(?:35|81)|8901)|3\\d{4}|4(?:4(?:4(?:05|42|69)|703)|5(?:041|800))|7(?:0002|1206))|55\\d{4})\\d{4}"], ["76(?:464|652)\\d{5}|76(?:0[0-28]|2[356]|34|4[01347]|5[49]|6[0-369]|77|8[14]|9[139])\\d{6}"], ["56\\d{8}"]]], "JM": ["1", "011", "(?:[58]\\d\\d|658|900)\\d{7}", [10], 0, "1", 0, 0, 0, 0, "658|876", [["8766060\\d{3}|(?:658(?:2(?:[0-8]\\d|9[0-46-9])|[3-9]\\d\\d)|876(?:52[35]|6(?:0[1-3579]|1[0235-9]|[23]\\d|40|5[06]|6[2-589]|7[0-25-9]|8[04]|9[4-9])|7(?:0[2-689]|[1-6]\\d|8[056]|9[45])|9(?:0[1-8]|1[02378]|[2-8]\\d|9[2-468])))\\d{4}"], ["(?:658295|876(?:2(?:0[1-9]|[13-9]\\d|2[013-9])|[348]\\d\\d|5(?:0[1-9]|[1-9]\\d)|6(?:4[89]|6[67])|7(?:0[07]|7\\d|8[1-47-9]|9[0-36-9])|9(?:[01]9|9[0579])))\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "JO": ["962", "00", "(?:(?:[2689]|7\\d)\\d|32|53)\\d{6}", [8, 9], [["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["[2356]|87"], "(0$1)"], ["(\\d{3})(\\d{5,6})", "$1 $2", ["[89]"], "0$1"], ["(\\d{2})(\\d{7})", "$1 $2", ["70"], "0$1"], ["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["7"], "0$1"]], "0", 0, 0, 0, 0, 0, [["87(?:000|90[01])\\d{3}|(?:2(?:6(?:2[0-35-9]|3[0-578]|4[24-7]|5[0-24-8]|[6-8][023]|9[0-3])|7(?:0[1-79]|10|2[014-7]|3[0-689]|4[019]|5[0-3578]))|32(?:0[1-69]|1[1-35-7]|2[024-7]|3\\d|4[0-3]|[5-7][023])|53(?:0[0-3]|[13][023]|2[0-59]|49|5[0-35-9]|6[15]|7[45]|8[1-6]|9[0-36-9])|6(?:2(?:[05]0|22)|3(?:00|33)|4(?:0[0-25]|1[2-7]|2[0569]|[38][07-9]|4[025689]|6[0-589]|7\\d|9[0-2])|5(?:[01][056]|2[034]|3[0-57-9]|4[178]|5[0-69]|6[0-35-9]|7[1-379]|8[0-68]|9[0239]))|87(?:20|7[078]|99))\\d{4}", [8]], ["7(?:[78][0-25-9]|9\\d)\\d{6}", [9]], ["80\\d{6}", [8]], ["9\\d{7}", [8]], ["70\\d{7}", [9]], 0, ["8(?:10|8\\d)\\d{5}", [8]], ["74(?:66|77)\\d{5}", [9]], 0, ["85\\d{6}", [8]]]], "JP": ["81", "010", "00[1-9]\\d{6,14}|[257-9]\\d{9}|(?:00|[1-9]\\d\\d)\\d{6}", [8, 9, 10, 11, 12, 13, 14, 15, 16, 17], [["(\\d{3})(\\d{3})(\\d{3})", "$1-$2-$3", ["(?:12|57|99)0"], "0$1"], ["(\\d{4})(\\d)(\\d{4})", "$1-$2-$3", ["1(?:26|3[79]|4[56]|5[4-68]|6[3-5])|499|5(?:76|97)|746|8(?:3[89]|47|51)|9(?:80|9[16])", "1(?:267|3(?:7[247]|9[278])|466|5(?:47|58|64)|6(?:3[245]|48|5[4-68]))|499[2468]|5(?:76|97)9|7468|8(?:3(?:8[7-9]|96)|477|51[2-9])|9(?:802|9(?:1[23]|69))|1(?:45|58)[67]", "1(?:267|3(?:7[247]|9[278])|466|5(?:47|58|64)|6(?:3[245]|48|5[4-68]))|499[2468]|5(?:769|979[2-69])|7468|8(?:3(?:8[7-9]|96[2457-9])|477|51[2-9])|9(?:802|9(?:1[23]|69))|1(?:45|58)[67]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1-$2-$3", ["60"], "0$1"], ["(\\d)(\\d{4})(\\d{4})", "$1-$2-$3", ["[36]|4(?:2[09]|7[01])", "[36]|4(?:2(?:0|9[02-69])|7(?:0[019]|1))"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1-$2-$3", ["1(?:1|5[45]|77|88|9[69])|2(?:2[1-37]|3[0-269]|4[59]|5|6[24]|7[1-358]|8[1369]|9[0-38])|4(?:[28][1-9]|3[0-57]|[45]|6[248]|7[2-579]|9[29])|5(?:2|3[0459]|4[0-369]|5[29]|8[02389]|9[0-389])|7(?:2[02-46-9]|34|[58]|6[0249]|7[57]|9[2-6])|8(?:2[124589]|3[26-9]|49|51|6|7[0-468]|8[68]|9[019])|9(?:[23][1-9]|4[15]|5[138]|6[1-3]|7[156]|8[189]|9[1-489])", "1(?:1|5(?:4[018]|5[017])|77|88|9[69])|2(?:2(?:[127]|3[014-9])|3[0-269]|4[59]|5(?:[1-3]|5[0-69]|9[19])|62|7(?:[1-35]|8[0189])|8(?:[16]|3[0134]|9[0-5])|9(?:[028]|17))|4(?:2(?:[13-79]|8[014-6])|3[0-57]|[45]|6[248]|7[2-47]|8[1-9]|9[29])|5(?:2|3(?:[045]|9[0-8])|4[0-369]|5[29]|8[02389]|9[0-3])|7(?:2[02-46-9]|34|[58]|6[0249]|7[57]|9(?:[23]|4[0-59]|5[01569]|6[0167]))|8(?:2(?:[1258]|4[0-39]|9[0-2469])|3(?:[29]|60)|49|51|6(?:[0-24]|36|5[0-3589]|7[23]|9[01459])|7[0-468]|8[68])|9(?:[23][1-9]|4[15]|5[138]|6[1-3]|7[156]|8[189]|9(?:[1289]|3[34]|4[0178]))|(?:264|837)[016-9]|2(?:57|93)[015-9]|(?:25[0468]|422|838)[01]|(?:47[59]|59[89]|8(?:6[68]|9))[019]", "1(?:1|5(?:4[018]|5[017])|77|88|9[69])|2(?:2[127]|3[0-269]|4[59]|5(?:[1-3]|5[0-69]|9(?:17|99))|6(?:2|4[016-9])|7(?:[1-35]|8[0189])|8(?:[16]|3[0134]|9[0-5])|9(?:[028]|17))|4(?:2(?:[13-79]|8[014-6])|3[0-57]|[45]|6[248]|7[2-47]|9[29])|5(?:2|3(?:[045]|9(?:[0-58]|6[4-9]|7[0-35689]))|4[0-369]|5[29]|8[02389]|9[0-3])|7(?:2[02-46-9]|34|[58]|6[0249]|7[57]|9(?:[23]|4[0-59]|5[01569]|6[0167]))|8(?:2(?:[1258]|4[0-39]|9[0169])|3(?:[29]|60|7(?:[017-9]|6[6-8]))|49|51|6(?:[0-24]|36[2-57-9]|5(?:[0-389]|5[23])|6(?:[01]|9[178])|7(?:2[2-468]|3[78])|9[0145])|7[0-468]|8[68])|9(?:4[15]|5[138]|7[156]|8[189]|9(?:[1289]|3(?:31|4[357])|4[0178]))|(?:8294|96)[1-3]|2(?:57|93)[015-9]|(?:223|8699)[014-9]|(?:25[0468]|422|838)[01]|(?:48|8292|9[23])[1-9]|(?:47[59]|59[89]|8(?:68|9))[019]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{4})", "$1-$2-$3", ["[14]|[289][2-9]|5[3-9]|7[2-4679]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1-$2-$3", ["800"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4})", "$1-$2-$3", ["[257-9]"], "0$1"]], "0", 0, "(000[259]\\d{6})$|(?:(?:003768)0?)|0", "$1", 0, 0, [["(?:1(?:1[235-8]|2[3-6]|3[3-9]|4[2-6]|[58][2-8]|6[2-7]|7[2-9]|9[1-9])|(?:2[2-9]|[36][1-9])\\d|4(?:[2-578]\\d|6[02-8]|9[2-59])|5(?:[2-589]\\d|6[1-9]|7[2-8])|7(?:[25-9]\\d|3[4-9]|4[02-9])|8(?:[2679]\\d|3[2-9]|4[5-9]|5[1-9]|8[03-9])|9(?:[2-58]\\d|[679][1-9]))\\d{6}", [9]], ["[7-9]0[1-9]\\d{7}", [10]], ["00777(?:[01]|5\\d)\\d\\d|(?:00(?:7778|882[1245])|(?:120|800\\d)\\d\\d)\\d{4}|00(?:37|66|78)\\d{6,13}"], ["990\\d{6}", [9]], ["60\\d{7}", [9]], 0, ["570\\d{6}", [9]], ["20\\d{8}", [10]], ["50[1-9]\\d{7}", [10]]]], "KE": ["254", "000", "(?:[17]\\d\\d|900)\\d{6}|(?:2|80)0\\d{6,7}|[4-6]\\d{6,8}", [7, 8, 9, 10], [["(\\d{2})(\\d{5,7})", "$1 $2", ["[24-6]"], "0$1"], ["(\\d{3})(\\d{6})", "$1 $2", ["[17]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[89]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:4[245]|5[1-79]|6[01457-9])\\d{5,7}|(?:4[136]|5[08]|62)\\d{7}|(?:[24]0|66)\\d{6,7}", [7, 8, 9]], ["(?:1(?:0[0-8]|1[0-7]|2[014]|30)|7\\d\\d)\\d{6}", [9]], ["800[02-8]\\d{5,6}", [9, 10]], ["900[02-9]\\d{5}", [9]]]], "KG": ["996", "00", "8\\d{9}|[235-9]\\d{8}", [9, 10], [["(\\d{4})(\\d{5})", "$1 $2", ["3(?:1[346]|[24-79])"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[235-79]|88"], "0$1"], ["(\\d{3})(\\d{3})(\\d)(\\d{2,3})", "$1 $2 $3 $4", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["312(?:5[0-79]\\d|9(?:[0-689]\\d|7[0-24-9]))\\d{3}|(?:3(?:1(?:2[0-46-8]|3[1-9]|47|[56]\\d)|2(?:22|3[0-479]|6[0-7])|4(?:22|5[6-9]|6\\d)|5(?:22|3[4-7]|59|6\\d)|6(?:22|5[35-7]|6\\d)|7(?:22|3[468]|4[1-9]|59|[67]\\d)|9(?:22|4[1-8]|6\\d))|6(?:09|12|2[2-4])\\d)\\d{5}", [9]], ["312(?:58\\d|973)\\d{3}|(?:2(?:0[0-35]|2\\d)|5[0-24-7]\\d|600|7(?:[07]\\d|55)|88[08]|9(?:12|9[05-9]))\\d{6}", [9]], ["800\\d{6,7}"]]], "KH": ["855", "00[14-9]", "1\\d{9}|[1-9]\\d{7,8}", [8, 9, 10], [["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[1-9]"], "0$1"], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["1"]]], "0", 0, 0, 0, 0, 0, [["23(?:4(?:[2-4]|[56]\\d)|[568]\\d\\d)\\d{4}|23[236-9]\\d{5}|(?:2[4-6]|3[2-6]|4[2-4]|[5-7][2-5])(?:(?:[237-9]|4[56]|5\\d)\\d{5}|6\\d{5,6})", [8, 9]], ["(?:(?:1[28]|3[18]|9[67])\\d|6[016-9]|7(?:[07-9]|[16]\\d)|8(?:[013-79]|8\\d))\\d{6}|(?:1\\d|9[0-57-9])\\d{6}|(?:2[3-6]|3[2-6]|4[2-4]|[5-7][2-5])48\\d{5}", [8, 9]], ["1800(?:1\\d|2[019])\\d{4}", [10]], ["1900(?:1\\d|2[09])\\d{4}", [10]]]], "KI": ["686", "00", "(?:[37]\\d|6[0-79])\\d{6}|(?:[2-48]\\d|50)\\d{3}", [5, 8], 0, "0", 0, 0, 0, 0, 0, [["(?:[24]\\d|3[1-9]|50|65(?:02[12]|12[56]|22[89]|[3-5]00)|7(?:27\\d\\d|3100|5(?:02[12]|12[56]|22[89]|[34](?:00|81)|500))|8[0-5])\\d{3}"], ["(?:6200[01]|7(?:310[1-9]|5(?:02[03-9]|12[0-47-9]|22[0-7]|[34](?:0[1-9]|8[02-9])|50[1-9])))\\d{3}|(?:63\\d\\d|7(?:(?:[0146-9]\\d|2[0-689])\\d|3(?:[02-9]\\d|1[1-9])|5(?:[0-2][013-9]|[34][1-79]|5[1-9]|[6-9]\\d)))\\d{4}", [8]], 0, 0, 0, 0, 0, 0, ["30(?:0[01]\\d\\d|12(?:11|20))\\d\\d", [8]]]], "KM": ["269", "00", "[3478]\\d{6}", [7], [["(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3", ["[3478]"]]], 0, 0, 0, 0, 0, 0, [["7[4-7]\\d{5}"], ["[34]\\d{6}"], 0, ["8\\d{6}"]]], "KN": ["1", "011", "(?:[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2-7]\\d{6})$|1", "869$1", 0, "869", [["869(?:2(?:29|36)|302|4(?:6[015-9]|70)|56[5-7])\\d{4}"], ["869(?:48[89]|55[6-8]|66\\d|76[02-7])\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "KP": ["850", "00|99", "85\\d{6}|(?:19\\d|[2-7])\\d{7}", [8, 10], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["8"], "0$1"], ["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["[2-7]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:(?:195|2)\\d|3[19]|4[159]|5[37]|6[17]|7[39]|85)\\d{6}"], ["19[1-3]\\d{7}", [10]]]], "KR": ["82", "00(?:[125689]|3(?:[46]5|91)|7(?:00|27|3|55|6[126]))", "00[1-9]\\d{8,11}|(?:[12]|5\\d{3})\\d{7}|[13-6]\\d{9}|(?:[1-6]\\d|80)\\d{7}|[3-6]\\d{4,5}|(?:00|7)0\\d{8}", [5, 6, 8, 9, 10, 11, 12, 13, 14], [["(\\d{2})(\\d{3,4})", "$1-$2", ["(?:3[1-3]|[46][1-4]|5[1-5])1"], "0$1"], ["(\\d{4})(\\d{4})", "$1-$2", ["1"]], ["(\\d)(\\d{3,4})(\\d{4})", "$1-$2-$3", ["2"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1-$2-$3", ["[36]0|8"], "0$1"], ["(\\d{2})(\\d{3,4})(\\d{4})", "$1-$2-$3", ["[1346]|5[1-5]"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4})", "$1-$2-$3", ["[57]"], "0$1"], ["(\\d{2})(\\d{5})(\\d{4})", "$1-$2-$3", ["5"], "0$1"]], "0", 0, "0(8(?:[1-46-8]|5\\d\\d))?", 0, 0, 0, [["(?:2|3[1-3]|[46][1-4]|5[1-5])[1-9]\\d{6,7}|(?:3[1-3]|[46][1-4]|5[1-5])1\\d{2,3}", [5, 6, 8, 9, 10]], ["1(?:05(?:[0-8]\\d|9[0-6])|22[13]\\d)\\d{4,5}|1(?:0[0-46-9]|[16-9]\\d|2[013-9])\\d{6,7}", [9, 10]], ["00(?:308\\d{6,7}|798\\d{7,9})|(?:00368|[38]0)\\d{7}", [9, 11, 12, 13, 14]], ["60[2-9]\\d{6}", [9]], ["50\\d{8,9}", [10, 11]], 0, ["1(?:5(?:22|33|44|66|77|88|99)|6(?:[07]0|44|6[0168]|88)|8(?:00|33|55|77|99))\\d{4}", [8]], ["15\\d{7,8}", [9, 10]], ["70\\d{8}", [10]]]], "KW": ["965", "00", "18\\d{5}|(?:[2569]\\d|41)\\d{6}", [7, 8], [["(\\d{4})(\\d{3,4})", "$1 $2", ["[169]|2(?:[235]|4[1-35-9])|52"]], ["(\\d{3})(\\d{5})", "$1 $2", ["[245]"]]], 0, 0, 0, 0, 0, 0, [["2(?:[23]\\d\\d|4(?:[1-35-9]\\d|44)|5(?:0[034]|[2-46]\\d|5[1-3]|7[1-7]))\\d{4}", [8]], ["(?:41\\d\\d|5(?:(?:[05]\\d|1[0-7]|6[56])\\d|2(?:22|5[25])|7(?:55|77)|88[58])|6(?:(?:0[034679]|5[015-9]|6\\d)\\d|1(?:00|11|6[16])|2[26]2|3[36]3|4[46]4|7(?:0[013-9]|[67]\\d)|8[68]8|9(?:[069]\\d|3[039]))|9(?:(?:[04679]\\d|8[057-9])\\d|1(?:1[01]|99)|2(?:00|2\\d)|3(?:00|3[03])|5(?:00|5\\d)))\\d{4}", [8]], ["18\\d{5}", [7]]]], "KY": ["1", "011", "(?:345|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2-9]\\d{6})$|1", "345$1", 0, "345", [["345(?:2(?:22|3[23]|44|66)|333|444|6(?:23|38|40)|7(?:30|4[35-79]|6[6-9]|77)|8(?:00|1[45]|[48]8)|9(?:14|4[035-9]))\\d{4}"], ["345(?:32[1-9]|42[0-4]|5(?:1[67]|2[5-79]|4[6-9]|50|76)|649|82[56]|9(?:1[679]|2[2-9]|3[06-9]|90))\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["(?:345976|900[2-9]\\d\\d)\\d{4}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], 0, 0, ["345849\\d{4}"]]], "KZ": ["7", "810", "(?:33622|8\\d{8})\\d{5}|[78]\\d{9}", [10, 14], 0, "8", 0, 0, 0, 0, "33|7", [["(?:33622|7(?:1(?:0(?:[23]\\d|4[0-3]|59|63)|1(?:[23]\\d|4[0-79]|59)|2(?:[23]\\d|59)|3(?:2\\d|3[0-79]|4[0-35-9]|59)|4(?:[24]\\d|3[013-9]|5[1-9]|97)|5(?:2\\d|3[1-9]|4[0-7]|59)|6(?:[2-4]\\d|5[19]|61)|72\\d|8(?:[27]\\d|3[1-46-9]|4[0-5]|59))|2(?:1(?:[23]\\d|4[46-9]|5[3469])|2(?:2\\d|3[0679]|46|5[12679])|3(?:[2-4]\\d|5[139])|4(?:2\\d|3[1-35-9]|59)|5(?:[23]\\d|4[0-8]|59|61)|6(?:2\\d|3[1-9]|4[0-4]|59)|7(?:[2379]\\d|40|5[279])|8(?:[23]\\d|4[0-3]|59)|9(?:2\\d|3[124578]|59))))\\d{5}", [10]], ["7(?:0[0-25-8]|47|6[0-4]|7[15-8]|85)\\d{7}", [10]], ["8(?:00|108\\d{3})\\d{7}"], ["809\\d{7}", [10]], ["808\\d{7}", [10]], 0, 0, 0, ["751\\d{7}", [10]]], "8~10"], "LA": ["856", "00", "[23]\\d{9}|3\\d{8}|(?:[235-8]\\d|41)\\d{6}", [8, 9, 10], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["2[13]|3[14]|[4-8]"], "0$1"], ["(\\d{2})(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3 $4", ["30[0135-9]"], "0$1"], ["(\\d{2})(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["[23]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2[13]|[35-7][14]|41|8[1468])\\d{6}", [8]], ["208[78]\\d{6}|(?:20[23579]|30[24])\\d{7}", [10]], 0, 0, 0, 0, ["30[0135-9]\\d{6}", [9]]]], "LB": ["961", "00", "[27-9]\\d{7}|[13-9]\\d{6}", [7, 8], [["(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["[13-69]|7(?:[2-57]|62|8[0-7]|9[04-9])|8[02-9]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[27-9]"]]], "0", 0, 0, 0, 0, 0, [["7(?:62|8[0-7]|9[04-9])\\d{4}|(?:[14-69]\\d|2(?:[14-69]\\d|[78][1-9])|7[2-57]|8[02-9])\\d{5}"], ["793(?:[01]\\d|2[0-4])\\d{3}|(?:(?:3|81)\\d|7(?:[01]\\d|6[013-9]|8[89]|9[12]))\\d{5}"], 0, ["9[01]\\d{6}", [8]], 0, 0, 0, 0, 0, ["80\\d{6}", [8]]]], "LC": ["1", "011", "(?:[58]\\d\\d|758|900)\\d{7}", [10], 0, "1", 0, "([2-8]\\d{6})$|1", "758$1", 0, "758", [["758(?:234|4(?:30|5\\d|6[2-9]|8[0-2])|57[0-2]|(?:63|75)8)\\d{4}"], ["758(?:28[4-7]|384|4(?:6[01]|8[4-9])|5(?:1[89]|20|84)|7(?:1[2-9]|2\\d|3[0-3])|812)\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "LI": ["423", "00", "[68]\\d{8}|(?:[2378]\\d|90)\\d{5}", [7, 9], [["(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3", ["[2379]|8(?:0[09]|7)", "[2379]|8(?:0(?:02|9)|7)"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["8"]], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["69"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["6"]]], "0", 0, "(1001)|0", 0, 0, 0, [["(?:2(?:01|1[27]|2[02]|3\\d|6[02-578]|96)|3(?:[24]0|33|7[0135-7]|8[048]|9[0269]))\\d{4}", [7]], ["(?:6(?:(?:4[5-9]|5[0-469])\\d|6(?:[024-6]\\d|[17]0|3[7-9]))\\d|7(?:[37-9]\\d|42|56))\\d{4}"], ["8002[28]\\d\\d|80(?:05\\d|9)\\d{4}"], ["90(?:02[258]|1(?:23|3[14])|66[136])\\d\\d", [7]], 0, ["697(?:42|56|[78]\\d)\\d{4}", [9]], ["870(?:28|87)\\d\\d", [7]]]], "LK": ["94", "00", "[1-9]\\d{8}", [9], [["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["7"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[1-689]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:12[2-9]|602|8[12]\\d|9(?:1\\d|22|9[245]))\\d{6}|(?:11|2[13-7]|3[1-8]|4[157]|5[12457]|6[35-7])[2-57]\\d{6}"], ["7(?:[0-25-8]\\d|4[0-4])\\d{6}"], 0, 0, 0, 0, ["1973\\d{5}"]]], "LR": ["231", "00", "(?:[245]\\d|33|77|88)\\d{7}|(?:2\\d|[4-6])\\d{6}", [7, 8, 9], [["(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["4[67]|[56]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["2"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[2-578]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["2\\d{7}", [8]], ["(?:(?:(?:22|33)0|555|(?:77|88)\\d)\\d|4(?:240|[67]))\\d{5}|[56]\\d{6}", [7, 9]], 0, ["332(?:02|[34]\\d)\\d{4}", [9]]]], "LS": ["266", "00", "(?:[256]\\d\\d|800)\\d{5}", [8], [["(\\d{4})(\\d{4})", "$1 $2", ["[2568]"]]], 0, 0, 0, 0, 0, 0, [["2\\d{7}"], ["[56]\\d{7}"], ["800[1256]\\d{4}"]]], "LT": ["370", "00", "(?:[3469]\\d|52|[78]0)\\d{6}", [8], [["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["52[0-7]"], "(0-$1)", 1], ["(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["[7-9]"], "0 $1", 1], ["(\\d{2})(\\d{6})", "$1 $2", ["37|4(?:[15]|6[1-8])"], "(0-$1)", 1], ["(\\d{3})(\\d{5})", "$1 $2", ["[3-6]"], "(0-$1)", 1]], "0", 0, "[08]", 0, 0, 0, [["(?:3[1478]|4[124-6]|52)\\d{6}"], ["6\\d{7}"], ["80[02]\\d{5}"], ["9(?:0[0239]|10)\\d{5}"], ["70[05]\\d{5}"], 0, ["70[67]\\d{5}"], 0, ["[89]01\\d{5}"], ["808\\d{5}"]]], "LU": ["352", "00", "35[013-9]\\d{4,8}|6\\d{8}|35\\d{2,4}|(?:[2457-9]\\d|3[0-46-9])\\d{2,9}", [4, 5, 6, 7, 8, 9, 10, 11], [["(\\d{2})(\\d{3})", "$1 $2", ["2(?:0[2-689]|[2-9])|[3-57]|8(?:0[2-9]|[13-9])|9(?:0[89]|[2-579])"]], ["(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3", ["2(?:0[2-689]|[2-9])|[3-57]|8(?:0[2-9]|[13-9])|9(?:0[89]|[2-579])"]], ["(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3", ["20[2-689]"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{1,2})", "$1 $2 $3 $4", ["2(?:[0367]|4[3-8])"]], ["(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["80[01]|90[015]"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3 $4", ["20"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["6"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{1,2})", "$1 $2 $3 $4 $5", ["2(?:[0367]|4[3-8])"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{1,5})", "$1 $2 $3 $4", ["[3-57]|8[13-9]|9(?:0[89]|[2-579])|(?:2|80)[2-9]"]]], 0, 0, "(15(?:0[06]|1[12]|[35]5|4[04]|6[26]|77|88|99)\\d)", 0, 0, 0, [["(?:35[013-9]|80[2-9]|90[89])\\d{1,8}|(?:2[2-9]|3[0-46-9]|[457]\\d|8[13-9]|9[2-579])\\d{2,9}"], ["6(?:[269][18]|5[1568]|7[189]|81)\\d{6}", [9]], ["800\\d{5}", [8]], ["90[015]\\d{5}", [8]], 0, 0, 0, 0, ["20(?:1\\d{5}|[2-689]\\d{1,7})", [4, 5, 6, 7, 8, 9, 10]], ["801\\d{5}", [8]]]], "LV": ["371", "00", "(?:[268]\\d|90)\\d{6}", [8], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[269]|8[01]"]]], 0, 0, 0, 0, 0, 0, [["6\\d{7}"], ["23(?:23[0-57-9]|33[0238])\\d{3}|2(?:[0-24-9]\\d\\d|3(?:0[07]|[14-9]\\d|2[024-9]|3[0-24-9]))\\d{4}"], ["80\\d{6}"], ["90\\d{6}"], 0, 0, 0, 0, 0, ["81\\d{6}"]]], "LY": ["218", "00", "[2-9]\\d{8}", [9], [["(\\d{2})(\\d{7})", "$1-$2", ["[2-9]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2(?:0[56]|[1-6]\\d|7[124579]|8[124])|3(?:1\\d|2[2356])|4(?:[17]\\d|2[1-357]|5[2-4]|8[124])|5(?:[1347]\\d|2[1-469]|5[13-5]|8[1-4])|6(?:[1-479]\\d|5[2-57]|8[1-5])|7(?:[13]\\d|2[13-79])|8(?:[124]\\d|5[124]|84))\\d{6}"], ["9[1-6]\\d{7}"]]], "MA": ["212", "00", "[5-8]\\d{8}", [9], [["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["5[45]"], "0$1"], ["(\\d{4})(\\d{5})", "$1-$2", ["5(?:2[2-46-9]|3[3-9]|9)|8(?:0[89]|92)"], "0$1"], ["(\\d{2})(\\d{7})", "$1-$2", ["8"], "0$1"], ["(\\d{3})(\\d{6})", "$1-$2", ["[5-7]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["5(?:2(?:[0-25-79]\\d|3[1-578]|4[02-46-8]|8[0235-7])|3(?:[0-47]\\d|5[02-9]|6[02-8]|8[014-9]|9[3-9])|(?:4[067]|5[03])\\d)\\d{5}"], ["(?:6(?:[0-79]\\d|8[0-247-9])|7(?:[0167]\\d|2[0-4]|5[01]|8[0-3]))\\d{6}"], ["80[0-7]\\d{6}"], ["89\\d{7}"], 0, 0, 0, 0, ["(?:592(?:4[0-2]|93)|80[89]\\d\\d)\\d{4}"]]], "MC": ["377", "00", "(?:[3489]|6\\d)\\d{7}", [8, 9], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["4"], "0$1"], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[389]"]], ["(\\d)(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4 $5", ["6"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:870|9[2-47-9]\\d)\\d{5}", [8]], ["4(?:[469]\\d|5[1-9])\\d{5}|(?:3|6\\d)\\d{7}"], ["(?:800|90\\d)\\d{5}", [8]]]], "MD": ["373", "00", "(?:[235-7]\\d|[89]0)\\d{6}", [8], [["(\\d{3})(\\d{5})", "$1 $2", ["[89]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["22|3"], "0$1"], ["(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["[25-7]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:(?:2[1-9]|3[1-79])\\d|5(?:33|5[257]))\\d{5}"], ["562\\d{5}|(?:6\\d|7[16-9])\\d{6}"], ["800\\d{5}"], ["90[056]\\d{5}"], 0, 0, ["803\\d{5}"], 0, ["3[08]\\d{6}"], ["808\\d{5}"]]], "ME": ["382", "00", "(?:20|[3-79]\\d)\\d{6}|80\\d{6,7}", [8, 9], [["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[2-9]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:20[2-8]|3(?:[0-2][2-7]|3[24-7])|4(?:0[2-467]|1[2467])|5(?:0[2467]|1[24-7]|2[2-467]))\\d{5}", [8]], ["6(?:[07-9]\\d|3[024]|6[0-25])\\d{5}", [8]], ["80(?:[0-2578]|9\\d)\\d{5}"], ["9(?:4[1568]|5[178])\\d{5}", [8]], 0, 0, ["77[1-9]\\d{5}", [8]], 0, ["78[1-49]\\d{5}", [8]]]], "MF": ["590", "00", "(?:590\\d|7090)\\d{5}|(?:69|80|9\\d)\\d{7}", [9], 0, "0", 0, 0, 0, 0, 0, [["590(?:0[079]|[14]3|[27][79]|3[03-7]|5[0-268]|87)\\d{4}"], ["(?:69(?:0\\d\\d|1(?:2[2-9]|3[0-5])|4(?:0[89]|1[2-6]|9\\d)|6(?:1[016-9]|5[0-4]|[67]\\d))|7090[0-4])\\d{4}"], ["80[0-5]\\d{6}"], 0, 0, 0, 0, 0, ["9(?:(?:39[5-7]|76[018])\\d|475[0-5])\\d{4}"]]], "MG": ["261", "00", "[23]\\d{8}", [9], [["(\\d{2})(\\d{2})(\\d{3})(\\d{2})", "$1 $2 $3 $4", ["[23]"], "0$1"]], "0", 0, "([24-9]\\d{6})$|0", "20$1", 0, 0, [["2072[29]\\d{4}|20(?:2\\d|4[47]|5[3467]|6[279]|7[356]|8[268]|9[2457])\\d{5}"], ["3[2-47-9]\\d{7}"], 0, 0, 0, 0, 0, 0, ["22\\d{7}"]]], "MH": ["692", "011", "329\\d{4}|(?:[256]\\d|45)\\d{5}", [7], [["(\\d{3})(\\d{4})", "$1-$2", ["[2-6]"]]], "1", 0, 0, 0, 0, 0, [["(?:247|528|625)\\d{4}"], ["(?:(?:23|54)5|329|45[35-8])\\d{4}"], 0, 0, 0, 0, 0, 0, ["635\\d{4}"]]], "MK": ["389", "00", "[2-578]\\d{7}", [8], [["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["2|34[47]|4(?:[37]7|5[47]|64)"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[347]"], "0$1"], ["(\\d{3})(\\d)(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[58]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:(?:2(?:62|77)0|3444)\\d|4[56]440)\\d{3}|(?:34|4[357])700\\d{3}|(?:2(?:[0-3]\\d|5[0-578]|6[01]|82)|3(?:1[3-68]|[23][2-68]|4[23568])|4(?:[23][2-68]|4[3-68]|5[2568]|6[25-8]|7[24-68]|8[4-68]))\\d{5}"], ["7(?:3555|(?:474|9[019]7)7)\\d{3}|7(?:[0-25-8]\\d\\d|3(?:[1-48]\\d|6[01]|7[01578])|4(?:2\\d|60|7[01578])|9(?:[2-4]\\d|5[01]|7[015]))\\d{4}"], ["800\\d{5}"], ["5\\d{7}"], 0, 0, 0, 0, 0, ["8(?:0[1-9]|[1-9]\\d)\\d{5}"]]], "ML": ["223", "00", "[24-9]\\d{7}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[24-9]"]]], 0, 0, 0, 0, 0, 0, [["2(?:07[0-8]|12[67])\\d{4}|(?:2(?:02|1[4-689])|4(?:0[0-4]|4[1-39]))\\d{5}"], ["2(?:0(?:01|79)|17\\d)\\d{4}|(?:5[01]|[679]\\d|8[2-49])\\d{6}"], ["80\\d{6}"]]], "MM": ["95", "00", "1\\d{5,7}|95\\d{6}|(?:[4-7]|9[0-46-9])\\d{6,8}|(?:2|8\\d)\\d{5,8}", [6, 7, 8, 9, 10], [["(\\d)(\\d{2})(\\d{3})", "$1 $2 $3", ["16|2"], "0$1"], ["(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3", ["4(?:[2-46]|5[3-5])|5|6(?:[1-689]|7[235-7])|7(?:[0-4]|5[2-7])|8[1-5]|(?:60|86)[23]"], "0$1"], ["(\\d)(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[12]|452|678|86", "[12]|452|6788|86"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[4-7]|8[1-35]"], "0$1"], ["(\\d)(\\d{3})(\\d{4,6})", "$1 $2 $3", ["9(?:2[0-4]|[35-9]|4[137-9])"], "0$1"], ["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["2"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["8"], "0$1"], ["(\\d)(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["92"], "0$1"], ["(\\d)(\\d{5})(\\d{4})", "$1 $2 $3", ["9"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1(?:(?:12|[28]\\d|3[56]|7[3-6]|9[0-6])\\d|4(?:2[29]|62|7[0-2]|83)|6)|2(?:2(?:00|8[34])|4(?:0\\d|[26]2|7[0-2]|83)|51\\d\\d)|4(?:2(?:2\\d\\d|48[013])|3(?:20\\d|4(?:70|83)|56)|420\\d|5(?:2\\d|470))|6(?:0(?:[23]|88\\d)|(?:124|[56]2\\d)\\d|2472|3(?:20\\d|470)|4(?:2[04]\\d|472)|7(?:3\\d\\d|4[67]0|8(?:[01459]\\d|8))))\\d{4}|5(?:2(?:2\\d{5,6}|47[02]\\d{4})|(?:3472|4(?:2(?:1|86)|470)|522\\d|6(?:20\\d|483)|7(?:20\\d|48[01])|8(?:20\\d|47[02])|9(?:20\\d|470))\\d{4})|7(?:(?:0470|4(?:25\\d|470)|5(?:202|470|96\\d))\\d{4}|1(?:20\\d{4,5}|4(?:70|83)\\d{4}))|8(?:1(?:2\\d{5,6}|4(?:10|7[01]\\d)\\d{3})|2(?:2\\d{5,6}|(?:320|490\\d)\\d{3})|(?:3(?:2\\d\\d|470)|4[24-7]|5(?:(?:2\\d|51)\\d|4(?:[1-35-9]\\d|4[0-57-9]))|6[23])\\d{4})|(?:1[2-6]\\d|4(?:2[24-8]|3[2-7]|[46][2-6]|5[3-5])|5(?:[27][2-8]|3[2-68]|4[24-8]|5[23]|6[2-4]|8[24-7]|9[2-7])|6(?:[19]20|42[03-6]|(?:52|7[45])\\d)|7(?:[04][24-8]|[15][2-7]|22|3[2-4])|8(?:1[2-689]|2[2-8]|(?:[35]2|64)\\d))\\d{4}|25\\d{5,6}|(?:2[2-9]|6(?:1[2356]|[24][2-6]|3[24-6]|5[2-4]|6[2-8]|7[235-7]|8[245]|9[24])|8(?:3[24]|5[245]))\\d{4}", [6, 7, 8, 9]], ["(?:17[01]|9(?:2(?:[0-4]|[56]\\d\\d)|(?:3(?:[0-36]|4\\d)|(?:6\\d|8[89]|9[4-8])\\d|7(?:3|40|[5-9]\\d))\\d|4(?:(?:[0245]\\d|[1379])\\d|88)|5[0-6])\\d)\\d{4}|9[69]1\\d{6}|9(?:[68]\\d|9[089])\\d{5}", [7, 8, 9, 10]], ["80080(?:0[1-9]|2\\d)\\d{3}", [10]], 0, 0, 0, 0, 0, ["1333\\d{4}|[12]468\\d{4}", [8]]]], "MN": ["976", "001", "[12]\\d{7,9}|[5-9]\\d{7}", [8, 9, 10], [["(\\d{2})(\\d{2})(\\d{4})", "$1 $2 $3", ["[12]1"], "0$1"], ["(\\d{4})(\\d{4})", "$1 $2", ["[5-9]"]], ["(\\d{3})(\\d{5,6})", "$1 $2", ["[12]2[1-3]"], "0$1"], ["(\\d{4})(\\d{5,6})", "$1 $2", ["[12](?:27|3[2-8]|4[2-68]|5[1-4689])", "[12](?:27|3[2-8]|4[2-68]|5[1-4689])[0-3]"], "0$1"], ["(\\d{5})(\\d{4,5})", "$1 $2", ["[12]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["[12]2[1-3]\\d{5,6}|(?:(?:[12](?:1|27)|5[368])\\d\\d|7(?:0(?:[0-5]\\d|7[078]|80)|128))\\d{4}|[12](?:3[2-8]|4[2-68]|5[1-4689])\\d{6,7}"], ["(?:83[01]|92[039])\\d{5}|(?:5[05]|6[069]|8[015689]|9[013-9])\\d{6}", [8]], 0, 0, 0, 0, 0, 0, ["712[0-79]\\d{4}|7(?:1[013-9]|[25-9]\\d)\\d{5}", [8]]]], "MO": ["853", "00", "0800\\d{3}|(?:28|[68]\\d)\\d{6}", [7, 8], [["(\\d{4})(\\d{3})", "$1 $2", ["0"]], ["(\\d{4})(\\d{4})", "$1 $2", ["[268]"]]], 0, 0, 0, 0, 0, 0, [["(?:28[2-9]|8(?:11|[2-57-9]\\d))\\d{5}", [8]], ["6800[0-79]\\d{3}|6(?:[235]\\d\\d|6(?:0[0-5]|[1-9]\\d)|8(?:0[1-9]|[14-8]\\d|2[5-9]|[39][0-4]))\\d{4}", [8]], ["0800\\d{3}", [7]]]], "MP": ["1", "011", "[58]\\d{9}|(?:67|90)0\\d{7}", [10], 0, "1", 0, "([2-9]\\d{6})$|1", "670$1", 0, "670", [["670(?:2(?:3[3-7]|56|8[4-8])|32[1-38]|4(?:33|8[348])|5(?:32|55|88)|6(?:64|70|82)|78[3589]|8[3-9]8|989)\\d{4}"], [""], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "MQ": ["596", "00", "(?:596\\d|7091)\\d{5}|(?:69|[89]\\d)\\d{7}", [9], [["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[5-79]|8(?:0[6-9]|[36])"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:596(?:[03-7]\\d|1[05]|2[7-9]|8[0-39]|9[04-9])|80[6-9]\\d\\d|9(?:477[6-9]|767[4589]))\\d{4}"], ["(?:69[67]\\d\\d|7091[0-3])\\d{4}"], ["80[0-5]\\d{6}"], ["8[129]\\d{7}"], 0, 0, 0, 0, ["9(?:397[0-3]|477[0-5]|76(?:6\\d|7[0-367]))\\d{4}"]]], "MR": ["222", "00", "(?:[2-4]\\d\\d|800)\\d{5}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[2-48]"]]], 0, 0, 0, 0, 0, 0, [["(?:25[08]|35\\d|45[1-7])\\d{5}"], ["[2-4][0-46-9]\\d{6}"], ["800\\d{5}"]]], "MS": ["1", "011", "(?:[58]\\d\\d|664|900)\\d{7}", [10], 0, "1", 0, "([34]\\d{6})$|1", "664$1", 0, "664", [["6644(?:1[0-3]|91)\\d{4}"], ["664(?:3(?:49|9[1-6])|49[2-6])\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "MT": ["356", "00", "3550\\d{4}|(?:[2579]\\d\\d|800)\\d{5}", [8], [["(\\d{4})(\\d{4})", "$1 $2", ["[2357-9]"]]], 0, 0, 0, 0, 0, 0, [["20(?:3[1-4]|6[059])\\d{4}|2(?:0[19]|[1-357]\\d|60)\\d{5}"], ["(?:7(?:210|[79]\\d\\d)|9(?:[29]\\d\\d|69[67]|8(?:1[1-3]|89|97)))\\d{4}"], ["800(?:02|[3467]\\d)\\d{3}"], ["5(?:0(?:0(?:37|43)|(?:6\\d|70|9[0168])\\d)|[12]\\d0[1-5])\\d{3}"], 0, 0, ["501\\d{5}"], ["7117\\d{4}"], ["3550\\d{4}"]]], "MU": ["230", "0(?:0|[24-7]0|3[03])", "(?:[57]|8\\d\\d)\\d{7}|[2-468]\\d{6}", [7, 8, 10], [["(\\d{3})(\\d{4})", "$1 $2", ["[2-46]|8[013]"]], ["(\\d{4})(\\d{4})", "$1 $2", ["[57]"]], ["(\\d{5})(\\d{5})", "$1 $2", ["8"]]], 0, 0, 0, 0, 0, 0, [["(?:2(?:[0346-8]\\d|1[0-7])|4(?:[013568]\\d|2[4-8]|71)|54(?:[3-5]\\d|71)|6\\d\\d|8(?:14|3[129]))\\d{4}", [7, 8]], ["5(?:4(?:2[1-389]|7[1-9])|87[15-8])\\d{4}|(?:5(?:2[5-9]|4[3-689]|[57]\\d|8[0-689]|9[0-8])|7(?:0[0-4]|3[013]))\\d{5}", [8]], ["802\\d{7}|80[0-2]\\d{4}", [7, 10]], ["30\\d{5}", [7]], 0, 0, 0, 0, ["3(?:20|9\\d)\\d{4}", [7]]], "020"], "MV": ["960", "0(?:0|19)", "(?:800|9[0-57-9]\\d)\\d{7}|[34679]\\d{6}", [7, 10], [["(\\d{3})(\\d{4})", "$1-$2", ["[34679]"]], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[89]"]]], 0, 0, 0, 0, 0, 0, [["(?:3(?:0[0-4]|3[0-59])|6(?:[58][024689]|6[024-68]|7[02468]))\\d{4}", [7]], ["(?:46[46]|[79]\\d\\d)\\d{4}", [7]], ["800\\d{7}", [10]], ["900\\d{7}", [10]], 0, 0, ["4(?:0[01]|50)\\d{4}", [7]]], "00"], "MW": ["265", "00", "(?:[1289]\\d|31|77)\\d{7}|1\\d{6}", [7, 9], [["(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["1[2-9]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["2"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[137-9]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1[2-9]|2[12]\\d\\d)\\d{5}"], ["111\\d{6}|(?:31|77|[89][89])\\d{7}", [9]]]], "MX": ["52", "0[09]", "[2-9]\\d{9}", [10], [["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["33|5[56]|81"]], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[2-9]"]]], 0, 0, 0, 0, 0, 0, [["657[12]\\d{6}|(?:2(?:0[01]|2\\d|3[1-35-8]|4[13-9]|7[1-689]|8[1-578]|9[467])|3(?:1[1-79]|[2458][1-9]|3\\d|7[1-8]|9[1-5])|4(?:1[1-57-9]|[267][1-9]|3[1-8]|[45]\\d|8[1-35-9]|9[2-689])|5(?:[56]\\d|88|9[1-79])|6(?:1[2-68]|[2-4][1-9]|5[1-3689]|6[0-57-9]|7[1-7]|8[67]|9[4-8])|7(?:[1346][1-9]|[27]\\d|5[13-9]|8[1-69]|9[17])|8(?:1\\d|2[13-689]|3[1-6]|4[124-6]|6[1246-9]|7[0-378]|9[12479])|9(?:1[346-9]|2[1-4]|3[2-46-8]|5[1348]|[69]\\d|7[12]|8[1-8]))\\d{7}"], ["657[12]\\d{6}|(?:2(?:2\\d|3[1-35-8]|4[13-9]|7[1-689]|8[1-578]|9[467])|3(?:1[1-79]|[2458][1-9]|3\\d|7[1-8]|9[1-5])|4(?:1[1-57-9]|[267][1-9]|3[1-8]|[45]\\d|8[1-35-9]|9[2-689])|5(?:[56]\\d|88|9[1-79])|6(?:1[2-68]|[2-4][1-9]|5[1-3689]|6[0-57-9]|7[1-7]|8[67]|9[4-8])|7(?:[1346][1-9]|[27]\\d|5[13-9]|8[1-69]|9[17])|8(?:1\\d|2[13-689]|3[1-6]|4[124-6]|6[1246-9]|7[0-378]|9[12479])|9(?:1[346-9]|2[1-4]|3[2-46-8]|5[1348]|[69]\\d|7[12]|8[1-8]))\\d{7}"], ["8(?:00|88)\\d{7}"], ["900\\d{7}"], ["500\\d{7}"], 0, 0, 0, 0, ["300\\d{7}"]], "00"], "MY": ["60", "00", "1\\d{8,9}|(?:3\\d|[4-9])\\d{7}", [8, 9, 10], [["(\\d)(\\d{3})(\\d{4})", "$1-$2 $3", ["[4-79]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1-$2 $3", ["1(?:[02469]|[378][1-9]|53)|8", "1(?:[02469]|[37][1-9]|53|8(?:[1-46-9]|5[7-9]))|8"], "0$1"], ["(\\d)(\\d{4})(\\d{4})", "$1-$2 $3", ["3"], "0$1"], ["(\\d)(\\d{3})(\\d{2})(\\d{4})", "$1-$2-$3-$4", ["1(?:[367]|80)"]], ["(\\d{3})(\\d{3})(\\d{4})", "$1-$2 $3", ["15"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4})", "$1-$2 $3", ["1"], "0$1"]], "0", 0, 0, 0, 0, 0, [["4270\\d{4}|(?:3(?:2[0-36-9]|3[0-368]|4[0-278]|5[0-24-8]|6[0-467]|7[1246-9]|8\\d|9[0-57])\\d|4(?:2[0-689]|[3-79]\\d|8[1-35689])|5(?:2[0-589]|[3468]\\d|5[0-489]|7[1-9]|9[23])|6(?:2[2-9]|3[1357-9]|[46]\\d|5[0-6]|7[0-35-9]|85|9[015-8])|7(?:[2579]\\d|3[03-68]|4[0-8]|6[5-9]|8[0-35-9])|8(?:[24][2-8]|3[2-5]|5[2-7]|6[2-589]|7[2-578]|[89][2-9])|9(?:0[57]|13|[25-7]\\d|[3489][0-8]))\\d{5}", [8, 9]], ["1(?:1888[689]|4400|8(?:47|8[27])[0-4])\\d{4}|1(?:0(?:[23568]\\d|4[0-6]|7[016-9]|9[0-8])|1(?:[1-5]\\d\\d|6(?:0[5-9]|[1-9]\\d)|7(?:[0-4]\\d|5[0-7]))|(?:[269]\\d|[37][1-9]|4[235-9])\\d|5(?:31|9\\d\\d)|8(?:1[23]|[236]\\d|4[06]|5(?:46|[7-9])|7[016-9]|8[01]|9[0-8]))\\d{5}", [9, 10]], ["1[378]00\\d{6}", [10]], ["1600\\d{6}", [10]], 0, 0, 0, 0, ["15(?:4(?:6[0-4]\\d|8(?:0[125]|[17]\\d|21|3[01]|4[01589]|5[014]|6[02]))|6(?:32[0-6]|78\\d))\\d{4}", [10]]]], "MZ": ["258", "00", "(?:2|8\\d)\\d{7}", [8, 9], [["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["2|8[2-79]"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["8"]]], 0, 0, 0, 0, 0, 0, [["2(?:[1346]\\d|5[0-2]|[78][12]|93)\\d{5}", [8]], ["8[2-79]\\d{7}", [9]], ["800\\d{6}", [9]]]], "NA": ["264", "00", "[68]\\d{7,8}", [8, 9], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["88"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["6"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["87"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["64426\\d{3}|6(?:1(?:2[2-7]|3[01378]|4[0-4])|254|32[0237]|4(?:27|41|5[25])|52[236-8]|626|7(?:2[2-4]|30))\\d{4,5}|6(?:1(?:(?:0\\d|2[0189]|3[24-69]|4[5-9])\\d|17|69|7[014])|2(?:17|5[0-36-8]|69|70)|3(?:17|2[14-689]|34|6[289]|7[01]|81)|4(?:17|2[0-2]|4[06]|5[0137]|69|7[01])|5(?:17|2[0459]|69|7[01])|6(?:17|25|38|42|69|7[01])|7(?:17|2[569]|3[13]|6[89]|7[01]))\\d{4}"], ["(?:60|8[1245])\\d{7}", [9]], ["80\\d{7}", [9]], ["8701\\d{5}", [9]], 0, 0, 0, 0, ["8(?:3\\d\\d|86)\\d{5}"]]], "NC": ["687", "00", "(?:050|[2-57-9]\\d\\d)\\d{3}", [6], [["(\\d{2})(\\d{2})(\\d{2})", "$1.$2.$3", ["[02-57-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:2[03-9]|3[0-5]|4[1-7]|88)\\d{4}"], ["(?:5[0-4]|[79]\\d|8[0-79])\\d{4}"], ["050\\d{3}"], ["36\\d{4}"]]], "NE": ["227", "00", "[027-9]\\d{7}", [8], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["08"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[089]|2[013]|7[0467]"]]], 0, 0, 0, 0, 0, 0, [["2(?:0(?:20|3[1-8]|4[13-5]|5[14]|6[14578]|7[1-578])|1(?:4[145]|5[14]|6[14-68]|7[169]|88))\\d{4}"], ["(?:23|7[0467]|[89]\\d)\\d{6}"], ["08\\d{6}"], ["09\\d{6}"]]], "NF": ["672", "00", "[13]\\d{5}", [6], [["(\\d{2})(\\d{4})", "$1 $2", ["1[0-3]"]], ["(\\d)(\\d{5})", "$1 $2", ["[13]"]]], 0, 0, "([0-258]\\d{4})$", "3$1", 0, 0, [["(?:1(?:06|17|28|39)|3[0-2]\\d)\\d{3}"], ["(?:14|3[58])\\d{4}"]]], "NG": ["234", "009", "38\\d{6}|[78]\\d{9,13}|(?:20|9\\d)\\d{8}", [8, 10, 11, 12, 13, 14], [["(\\d{2})(\\d{3})(\\d{2,3})", "$1 $2 $3", ["3"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[7-9]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["20[129]"], "0$1"], ["(\\d{4})(\\d{2})(\\d{4})", "$1 $2 $3", ["2"], "0$1"], ["(\\d{3})(\\d{4})(\\d{4,5})", "$1 $2 $3", ["[78]"], "0$1"], ["(\\d{3})(\\d{5})(\\d{5,6})", "$1 $2 $3", ["[78]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:20(?:[1259]\\d|3[013-9]|4[1-8]|6[024-689]|7[1-79]|8[2-9])|38)\\d{6}", [8, 10]], ["(?:702[0-24-9]|819[01])\\d{6}|(?:7(?:0[13-9]|[12]\\d)|8(?:0[1-9]|1[0-8])|9(?:0[1-9]|1[1-6]))\\d{7}", [10]], ["800\\d{7,11}", [10, 11, 12, 13, 14]], 0, 0, 0, ["700\\d{7,11}", [10, 11, 12, 13, 14]]]], "NI": ["505", "00", "(?:1800|[25-8]\\d{3})\\d{4}", [8], [["(\\d{4})(\\d{4})", "$1 $2", ["[125-8]"]]], 0, 0, 0, 0, 0, 0, [["2\\d{7}"], ["(?:5(?:5[0-7]|[78]\\d)|6(?:20|3[035]|4[045]|5[05]|77|8[1-9]|9[059])|(?:7[5-8]|8\\d)\\d)\\d{5}"], ["1800\\d{4}"]]], "NL": ["31", "00", "(?:[124-7]\\d\\d|3(?:[02-9]\\d|1[0-8]))\\d{6}|8\\d{6,9}|9\\d{6,10}|1\\d{4,5}", [5, 6, 7, 8, 9, 10, 11], [["(\\d{3})(\\d{4,7})", "$1 $2", ["[89]0"], "0$1"], ["(\\d{2})(\\d{7})", "$1 $2", ["66"], "0$1"], ["(\\d)(\\d{8})", "$1 $2", ["6"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["1[16-8]|2[259]|3[124]|4[17-9]|5[124679]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[1-578]|91"], "0$1"], ["(\\d{3})(\\d{3})(\\d{5})", "$1 $2 $3", ["9"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1(?:[035]\\d|1[13-578]|6[124-8]|7[24]|8[0-467])|2(?:[0346]\\d|2[2-46-9]|5[125]|9[479])|3(?:[03568]\\d|1[3-8]|2[01]|4[1-8])|4(?:[0356]\\d|1[1-368]|7[58]|8[15-8]|9[23579])|5(?:[0358]\\d|[19][1-9]|2[1-57-9]|4[13-8]|6[126]|7[0-3578])|7\\d\\d)\\d{6}", [9]], ["(?:6[1-58]|970\\d)\\d{7}", [9, 11]], ["800\\d{4,7}", [7, 8, 9, 10]], ["90[069]\\d{4,7}", [7, 8, 9, 10]], 0, 0, ["140(?:1[035]|2[0346]|3[03568]|4[0356]|5[0358]|8[458])|(?:140(?:1[16-8]|2[259]|3[124]|4[17-9]|5[124679]|7)|8[478]\\d{6})\\d", [5, 6, 9]], ["66\\d{7}", [9]], ["(?:85|91)\\d{7}", [9]]]], "NO": ["47", "00", "(?:0|[2-9]\\d{3})\\d{4}", [5, 8], [["(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["8"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[2-79]"]]], 0, 0, 0, 0, 0, "[02-689]|7[0-8]", [["(?:2[1-4]|3[1-3578]|5[1-35-7]|6[1-4679]|7[0-8])\\d{6}", [8]], ["(?:4[015-8]|9\\d)\\d{6}", [8]], ["80[01]\\d{5}", [8]], ["82[09]\\d{5}", [8]], ["880\\d{5}", [8]], ["81[23]\\d{5}", [8]], ["(?:0[235-9]|81(?:0(?:0[7-9]|1\\d)|5\\d\\d))\\d{3}"], 0, ["85[0-5]\\d{5}", [8]], ["810(?:0[0-6]|[2-8]\\d)\\d{3}", [8]]]], "NP": ["977", "00", "(?:1\\d|9)\\d{9}|[1-9]\\d{7}", [8, 10, 11], [["(\\d)(\\d{7})", "$1-$2", ["1[2-6]"], "0$1"], ["(\\d{2})(\\d{6})", "$1-$2", ["1[01]|[2-8]|9(?:[1-59]|[67][2-6])"], "0$1"], ["(\\d{3})(\\d{7})", "$1-$2", ["9"]]], "0", 0, 0, 0, 0, 0, [["(?:1[0-6]\\d|99[02-6])\\d{5}|(?:2[13-79]|3[135-8]|4[146-9]|5[135-7]|6[13-9]|7[15-9]|8[1-46-9]|9[1-7])[2-6]\\d{5}", [8]], ["9(?:00|6[0-3]|7[024-6]|8[0-24-68])\\d{7}", [10]], ["1(?:66001|800\\d\\d)\\d{5}", [11]]]], "NR": ["674", "00", "(?:444|(?:55|8\\d)\\d|666)\\d{4}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[4-68]"]]], 0, 0, 0, 0, 0, 0, [["444\\d{4}"], ["(?:55[3-9]|666|8\\d\\d)\\d{4}"]]], "NU": ["683", "00", "(?:[4-7]|888\\d)\\d{3}", [4, 7], [["(\\d{3})(\\d{4})", "$1 $2", ["8"]]], 0, 0, 0, 0, 0, 0, [["[47]\\d{3}", [4]], ["(?:[56]|888[1-9])\\d{3}"]]], "NZ": ["64", "0(?:0|161)", "[1289]\\d{9}|50\\d{5}(?:\\d{2,3})?|[27-9]\\d{7,8}|(?:[34]\\d|6[0-35-9])\\d{6}|8\\d{4,6}", [5, 6, 7, 8, 9, 10], [["(\\d{2})(\\d{3,8})", "$1 $2", ["8[1-79]"], "0$1"], ["(\\d{3})(\\d{2})(\\d{2,3})", "$1 $2 $3", ["50[036-8]|8|90", "50(?:[0367]|88)|8|90"], "0$1"], ["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["24|[346]|7[2-57-9]|9[2-9]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["2(?:10|74)|[589]"], "0$1"], ["(\\d{2})(\\d{3,4})(\\d{4})", "$1 $2 $3", ["1|2[028]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,5})", "$1 $2 $3", ["2(?:[169]|7[0-35-9])|7"], "0$1"]], "0", 0, 0, 0, 0, 0, [["240\\d{5}|(?:3[2-79]|[49][2-9]|6[235-9]|7[2-57-9])\\d{6}", [8]], ["2(?:[0-27-9]\\d|6)\\d{6,7}|2(?:1\\d|75)\\d{5}", [8, 9, 10]], ["508\\d{6,7}|80\\d{6,8}", [8, 9, 10]], ["(?:1[13-57-9]\\d{5}|50(?:0[08]|30|66|77|88))\\d{3}|90\\d{6,8}", [7, 8, 9, 10]], ["70\\d{7}", [9]], 0, ["8(?:1[16-9]|22|3\\d|4[045]|5[459]|6[235-9]|7[0-3579]|90)\\d{2,7}"]], "00"], "OM": ["968", "00", "(?:1505|[279]\\d{3}|500)\\d{4}|800\\d{5,6}", [7, 8, 9], [["(\\d{3})(\\d{4,6})", "$1 $2", ["[58]"]], ["(\\d{2})(\\d{6})", "$1 $2", ["2"]], ["(\\d{4})(\\d{4})", "$1 $2", ["[179]"]]], 0, 0, 0, 0, 0, 0, [["2[1-6]\\d{6}", [8]], ["(?:1505|90[1-9]\\d)\\d{4}|(?:7[126-9]|9[1-9])\\d{6}", [8]], ["8007\\d{4,5}|(?:500|800[05])\\d{4}"], ["900\\d{5}", [8]]]], "PA": ["507", "00", "(?:00800|8\\d{3})\\d{6}|[68]\\d{7}|[1-57-9]\\d{6}", [7, 8, 10, 11], [["(\\d{3})(\\d{4})", "$1-$2", ["[1-57-9]"]], ["(\\d{4})(\\d{4})", "$1-$2", ["[68]"]], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["8"]]], 0, 0, 0, 0, 0, 0, [["(?:1(?:0\\d|1[479]|2[37]|3[0137]|4[17]|5[05]|6[058]|7[0167]|8[2358]|9[1389])|2(?:[0235-79]\\d|1[0-7]|4[013-9]|8[02-9])|3(?:[07-9]\\d|1[0-7]|2[0-5]|33|4[0-79]|5[0-35]|6[068])|4(?:00|3[0-579]|4\\d|7[0-57-9])|5(?:[01]\\d|2[0-7]|[56]0|79)|7(?:0[09]|2[0-26-8]|3[03]|4[04]|5[05-9]|6[0156]|7[0-24-9]|8[5-9]|90)|8(?:09|2[89]|3\\d|4[0-24-689]|5[014]|8[02])|9(?:0[5-9]|1[0135-8]|2[036-9]|3[35-79]|40|5[0457-9]|6[05-9]|7[04-9]|8[35-8]|9\\d))\\d{4}", [7]], ["(?:1[16]1|21[89]|6\\d{3}|8(?:1[01]|7[23]))\\d{4}", [7, 8]], ["800\\d{4,5}|(?:00800|800\\d)\\d{6}"], ["(?:8(?:22|55|60|7[78]|86)|9(?:00|81))\\d{4}", [7]]]], "PE": ["51", "00|19(?:1[124]|77|90)00", "(?:[14-8]|9\\d)\\d{7}", [8, 9], [["(\\d{3})(\\d{5})", "$1 $2", ["80"], "(0$1)"], ["(\\d)(\\d{7})", "$1 $2", ["1"], "(0$1)"], ["(\\d{2})(\\d{6})", "$1 $2", ["[4-8]"], "(0$1)"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["9"]]], "0", 0, 0, 0, 0, 0, [["(?:(?:(?:4[34]|5[14])[0-8]|687)\\d|7(?:173|(?:3[0-8]|55)\\d)|8(?:10[05689]|6(?:0[06-9]|1[6-9]|29)|7(?:0[0569]|[56]0)))\\d{4}|(?:1[0-8]|4[12]|5[236]|6[1-7]|7[246]|8[2-4])\\d{6}", [8]], ["9\\d{8}", [9]], ["800\\d{5}", [8]], ["805\\d{5}", [8]], ["80[24]\\d{5}", [8]], 0, 0, 0, 0, ["801\\d{5}", [8]]], "00", " Anexo "], "PF": ["689", "00", "4\\d{5}(?:\\d{2})?|8\\d{7,8}", [6, 8, 9], [["(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3", ["44"]], ["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["4|8[7-9]"]], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["8"]]], 0, 0, 0, 0, 0, 0, [["4(?:0[4-689]|9[4-68])\\d{5}", [8]], ["8[7-9]\\d{6}", [8]], ["80[0-5]\\d{6}", [9]], 0, 0, 0, ["44\\d{4}", [6]], 0, ["499\\d{5}", [8]]]], "PG": ["675", "00|140[1-3]", "(?:180|[78]\\d{3})\\d{4}|(?:[2-589]\\d|64)\\d{5}", [7, 8], [["(\\d{3})(\\d{4})", "$1 $2", ["18|[2-69]|85"]], ["(\\d{4})(\\d{4})", "$1 $2", ["[78]"]]], 0, 0, 0, 0, 0, 0, [["(?:(?:3[0-2]|4[257]|5[34]|9[78])\\d|64[1-9]|85[02-46-9])\\d{4}", [7]], ["(?:7\\d|8[1-38])\\d{6}", [8]], ["180\\d{4}", [7]], 0, 0, 0, 0, ["27[01]\\d{4}", [7]], ["2(?:0[0-57]|7[568])\\d{4}", [7]]], "00"], "PH": ["63", "00", "(?:[2-7]|9\\d)\\d{8}|2\\d{5}|(?:1800|8)\\d{7,9}", [6, 8, 9, 10, 11, 12, 13], [["(\\d)(\\d{5})", "$1 $2", ["2"], "(0$1)"], ["(\\d{4})(\\d{4,6})", "$1 $2", ["3(?:23|39|46)|4(?:2[3-6]|[35]9|4[26]|76)|544|88[245]|(?:52|64|86)2", "3(?:230|397|461)|4(?:2(?:35|[46]4|51)|396|4(?:22|63)|59[347]|76[15])|5(?:221|446)|642[23]|8(?:622|8(?:[24]2|5[13]))"], "(0$1)"], ["(\\d{5})(\\d{4})", "$1 $2", ["346|4(?:27|9[35])|883", "3469|4(?:279|9(?:30|56))|8834"], "(0$1)"], ["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["2"], "(0$1)"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[3-7]|8[2-8]"], "(0$1)"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[89]"], "0$1"], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"]], ["(\\d{4})(\\d{1,2})(\\d{3})(\\d{4})", "$1 $2 $3 $4", ["1"]]], "0", 0, 0, 0, 0, 0, [["(?:(?:2[3-8]|3[2-68]|4[2-9]|5[2-6]|6[2-58]|7[24578])\\d{3}|88(?:22\\d\\d|42))\\d{4}|(?:2|8[2-8]\\d\\d)\\d{5}", [6, 8, 9, 10]], ["(?:8(?:1[37]|9[5-8])|9(?:0[5-9]|1[0-24-9]|[235-7]\\d|4[2-9]|8[135-9]|9[1-9]))\\d{7}", [10]], ["1800\\d{7,9}", [11, 12, 13]]]], "PK": ["92", "00", "122\\d{6}|[24-8]\\d{10,11}|9(?:[013-9]\\d{8,10}|2(?:[01]\\d\\d|2(?:[06-8]\\d|1[01]))\\d{7})|(?:[2-8]\\d{3}|92(?:[0-7]\\d|8[1-9]))\\d{6}|[24-9]\\d{8}|[89]\\d{7}", [8, 9, 10, 11, 12], [["(\\d{3})(\\d{3})(\\d{2,7})", "$1 $2 $3", ["[89]0"], "0$1"], ["(\\d{4})(\\d{5})", "$1 $2", ["1"]], ["(\\d{3})(\\d{6,7})", "$1 $2", ["2(?:3[2358]|4[2-4]|9[2-8])|45[3479]|54[2-467]|60[468]|72[236]|8(?:2[2-689]|3[23578]|4[3478]|5[2356])|9(?:2[2-8]|3[27-9]|4[2-6]|6[3569]|9[25-8])", "9(?:2[3-8]|98)|(?:2(?:3[2358]|4[2-4]|9[2-8])|45[3479]|54[2-467]|60[468]|72[236]|8(?:2[2-689]|3[23578]|4[3478]|5[2356])|9(?:22|3[27-9]|4[2-6]|6[3569]|9[25-7]))[2-9]"], "(0$1)"], ["(\\d{2})(\\d{7,8})", "$1 $2", ["(?:2[125]|4[0-246-9]|5[1-35-7]|6[1-8]|7[14]|8[16]|91)[2-9]"], "(0$1)"], ["(\\d{5})(\\d{5})", "$1 $2", ["58"], "(0$1)"], ["(\\d{3})(\\d{7})", "$1 $2", ["3"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["2[125]|4[0-246-9]|5[1-35-7]|6[1-8]|7[14]|8[16]|91"], "(0$1)"], ["(\\d{3})(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["[24-9]"], "(0$1)"]], "0", 0, 0, 0, 0, 0, [["(?:(?:21|42)[2-9]|58[126])\\d{7}|(?:2[25]|4[0146-9]|5[1-35-7]|6[1-8]|7[14]|8[16]|91)[2-9]\\d{6,7}|(?:2(?:3[2358]|4[2-4]|9[2-8])|45[3479]|54[2-467]|60[468]|72[236]|8(?:2[2-689]|3[23578]|4[3478]|5[2356])|9(?:2[2-8]|3[27-9]|4[2-6]|6[3569]|9[25-8]))[2-9]\\d{5,6}", [9, 10]], ["3(?:[0-247]\\d|3[0-79]|55|64)\\d{7}", [10]], ["800\\d{5}(?:\\d{3})?", [8, 11]], ["900\\d{5}", [8]], ["122\\d{6}", [9]], 0, ["(?:2(?:[125]|3[2358]|4[2-4]|9[2-8])|4(?:[0-246-9]|5[3479])|5(?:[1-35-7]|4[2-467])|6(?:0[468]|[1-8])|7(?:[14]|2[236])|8(?:[16]|2[2-689]|3[23578]|4[3478]|5[2356])|9(?:1|22|3[27-9]|4[2-6]|6[3569]|9[2-7]))111\\d{6}", [11, 12]]]], "PL": ["48", "00", "(?:6|8\\d\\d)\\d{7}|[1-9]\\d{6}(?:\\d{2})?|[26]\\d{5}", [6, 7, 8, 9, 10], [["(\\d{5})", "$1", ["19"]], ["(\\d{3})(\\d{3})", "$1 $2", ["11|20|64"]], ["(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3", ["(?:1[2-8]|2[2-69]|3[2-4]|4[1-468]|5[24-689]|6[1-3578]|7[14-7]|8[1-79]|9[145])1", "(?:1[2-8]|2[2-69]|3[2-4]|4[1-468]|5[24-689]|6[1-3578]|7[14-7]|8[1-79]|9[145])19"]], ["(\\d{3})(\\d{2})(\\d{2,3})", "$1 $2 $3", ["64"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["21|39|45|5[0137]|6[0469]|7[02389]|8(?:0[14]|8)"]], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["1[2-8]|[2-7]|8[1-79]|9[145]"]], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["8"]]], 0, 0, 0, 0, 0, 0, [["47\\d{7}|(?:1[2-8]|2[2-69]|3[2-4]|4[1-468]|5[24-689]|6[1-3578]|7[14-7]|8[1-79]|9[145])(?:[02-9]\\d{6}|1(?:[0-8]\\d{5}|9\\d{3}(?:\\d{2})?))", [7, 9]], ["21(?:1[013-5]|2\\d|3[4-9])\\d{5}|(?:45|5[0137]|6[069]|7[2389]|88)\\d{7}", [9]], ["800\\d{6,7}", [9, 10]], ["70[01346-8]\\d{6}", [9]], 0, 0, ["804\\d{6}", [9]], ["64\\d{4,7}", [6, 7, 8, 9]], ["39\\d{7}", [9]], ["801\\d{6}", [9]]]], "PM": ["508", "00", "[45]\\d{5}|(?:708|8\\d\\d)\\d{6}", [6, 9], [["(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3", ["[45]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["7"]], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:4[1-35-9]|5[0-47-9]|80[6-9]\\d\\d)\\d{4}"], ["(?:4[02-489]|5[02-9]|708(?:4[0-5]|5[0-6]))\\d{4}"], ["80[0-5]\\d{6}", [9]], ["8[129]\\d{7}", [9]]]], "PR": ["1", "011", "(?:[589]\\d\\d|787)\\d{7}", [10], 0, "1", 0, 0, 0, 0, "787|939", [["(?:787|939)[2-9]\\d{6}"], [""], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "PS": ["970", "00", "[2489]2\\d{6}|(?:1\\d|5)\\d{8}", [8, 9, 10], [["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["[2489]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["5"], "0$1"], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["1"]]], "0", 0, 0, 0, 0, 0, [["(?:22[2-47-9]|42[45]|82[014-68]|92[3569])\\d{5}", [8]], ["5[69]\\d{7}", [9]], ["1800\\d{6}", [10]], 0, 0, 0, 0, 0, 0, ["1700\\d{6}", [10]]]], "PT": ["351", "00", "1693\\d{5}|(?:[26-9]\\d|30)\\d{7}", [9], [["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["2[12]"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["16|[236-9]"]]], 0, 0, 0, 0, 0, 0, [["2(?:[12]\\d|3[1-689]|4[1-59]|[57][1-9]|6[1-35689]|8[1-69]|9[1256])\\d{6}"], ["6(?:[06]92(?:30|9\\d)|[35]92(?:[049]\\d|3[034]))\\d{3}|(?:(?:16|6[0356])93|9(?:[1-36]\\d\\d|480))\\d{5}"], ["80[02]\\d{6}"], ["(?:6(?:0[178]|4[68])\\d|76(?:0[1-57]|1[2-47]|2[237]))\\d{5}"], ["884[0-4689]\\d{5}"], ["600\\d{6}|6[06]92(?:0\\d|3[349]|49)\\d{3}"], ["70(?:38[01]|596|(?:7\\d|8[17])\\d)\\d{4}"], ["6(?:222\\d|8988)\\d{4}"], ["30\\d{7}"], ["80(?:8\\d|9[1579])\\d{5}"]]], "PW": ["680", "01[12]", "(?:[24-8]\\d\\d|345|900)\\d{4}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[2-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:2(?:55|77)|345|488|5(?:35|44|87)|6(?:22|54|79)|7(?:33|47)|8(?:24|55|76)|900)\\d{4}"], ["(?:(?:46|83)[0-5]|6[2-4689]0)\\d{4}|(?:45|77|88)\\d{5}"]]], "PY": ["595", "00", "59\\d{4,6}|9\\d{5,10}|(?:[2-46-8]\\d|5[0-8])\\d{4,7}", [6, 7, 8, 9, 10, 11], [["(\\d{3})(\\d{3,6})", "$1 $2", ["[2-9]0"], "0$1"], ["(\\d{2})(\\d{5})", "$1 $2", ["[26]1|3[289]|4[1246-8]|7[1-3]|8[1-36]"], "(0$1)"], ["(\\d{3})(\\d{4,5})", "$1 $2", ["2[279]|3[13-5]|4[359]|5|6(?:[34]|7[1-46-8])|7[46-8]|85"], "(0$1)"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["2[14-68]|3[26-9]|4[1246-8]|6(?:1|75)|7[1-35]|8[1-36]"], "(0$1)"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["87"]], ["(\\d{3})(\\d{6})", "$1 $2", ["9(?:[5-79]|8[1-7])"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[2-8]"], "0$1"], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["9"]]], "0", 0, 0, 0, 0, 0, [["(?:[26]1|3[289]|4[1246-8]|7[1-3]|8[1-36])\\d{5,7}|(?:2(?:2[4-68]|[4-68]\\d|7[15]|9[1-5])|3(?:18|3[167]|4[2357]|51|[67]\\d)|4(?:3[12]|5[13]|9[1-47])|5(?:[1-4]\\d|5[02-4])|6(?:3[1-3]|44|7[1-8])|7(?:4[0-4]|5\\d|6[1-578]|75|8[0-8])|858)\\d{5,6}", [7, 8, 9]], ["9(?:51|6[129]|7[1-6]|8[1-7]|9[1-5])\\d{6}", [9]], ["9800\\d{5,7}", [9, 10, 11]], 0, 0, 0, ["[2-9]0\\d{4,7}", [6, 7, 8, 9]], 0, ["8700[0-4]\\d{4}", [9]]]], "QA": ["974", "00", "800\\d{4}|(?:2|800)\\d{6}|(?:0080|[3-7])\\d{7}", [7, 8, 9, 11], [["(\\d{3})(\\d{4})", "$1 $2", ["2[16]|8"]], ["(\\d{4})(\\d{4})", "$1 $2", ["[3-7]"]]], 0, 0, 0, 0, 0, 0, [["4(?:1111|2022)\\d{3}|4(?:[04]\\d\\d|14[0-6]|999)\\d{4}", [8]], ["[35-7]\\d{7}", [8]], ["800\\d{4}|(?:0080[01]|800)\\d{6}", [7, 9, 11]], 0, 0, 0, 0, ["2[16]\\d{5}", [7]]]], "RE": ["262", "00", "709\\d{6}|(?:26|[689]\\d)\\d{7}", [9], [["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[26-9]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["26(?:2\\d\\d|3(?:0\\d|1[0-6]))\\d{4}"], ["(?:69(?:2\\d\\d|3(?:[06][0-6]|1[013]|2[0-2]|3[0-39]|4\\d|5[0-5]|7[0-37]|8[0-8]|9[0-479]))|7092[0-3])\\d{4}"], ["80\\d{7}"], ["89[1-37-9]\\d{6}"], 0, 0, 0, 0, ["9(?:399[0-3]|479[0-5]|76(?:2[278]|3[0-37]))\\d{4}"], ["8(?:1[019]|2[0156]|84|90)\\d{6}"]]], "RO": ["40", "00", "(?:[236-8]\\d|90)\\d{7}|[23]\\d{5}", [6, 9], [["(\\d{3})(\\d{3})", "$1 $2", ["2[3-6]", "2[3-6]\\d9"], "0$1"], ["(\\d{2})(\\d{4})", "$1 $2", ["219|31"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[23]1"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[236-9]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["[23][13-6]\\d{7}|(?:2(?:19\\d|[3-6]\\d9)|31\\d\\d)\\d\\d"], ["(?:630|702)0\\d{5}|(?:6(?:00|2\\d)|7(?:0[013-9]|1[0-3]|[2-7]\\d|8[03-8]|9[0-39]))\\d{6}", [9]], ["800\\d{6}", [9]], ["90[0136]\\d{6}", [9]], 0, 0, ["(?:37\\d|80[578])\\d{6}", [9]], 0, 0, ["801\\d{6}", [9]]], 0, " int "], "RS": ["381", "00", "38[02-9]\\d{6,9}|6\\d{7,9}|90\\d{4,8}|38\\d{5,6}|(?:7\\d\\d|800)\\d{3,9}|(?:[12]\\d|3[0-79])\\d{5,10}", [6, 7, 8, 9, 10, 11, 12], [["(\\d{3})(\\d{3,9})", "$1 $2", ["(?:2[389]|39)0|[7-9]"], "0$1"], ["(\\d{2})(\\d{5,10})", "$1 $2", ["[1-36]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:11[1-9]\\d|(?:2[389]|39)(?:0[2-9]|[2-9]\\d))\\d{3,8}|(?:1[02-9]|2[0-24-7]|3[0-8])[2-9]\\d{4,9}", [7, 8, 9, 10, 11, 12]], ["6(?:[0-689]|7\\d)\\d{6,7}", [8, 9, 10]], ["800\\d{3,9}"], ["(?:78\\d|90[0169])\\d{3,7}", [6, 7, 8, 9, 10]], 0, 0, ["7[06]\\d{4,10}"]]], "RU": ["7", "810", "8\\d{13}|[347-9]\\d{9}", [10, 14], [["(\\d{4})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["7(?:1[0-8]|2[1-9])", "7(?:1(?:[0-356]2|4[29]|7|8[27])|2(?:1[23]|[2-9]2))", "7(?:1(?:[0-356]2|4[29]|7|8[27])|2(?:13[03-69]|62[013-9]))|72[1-57-9]2"], "8 ($1)", 1], ["(\\d{5})(\\d)(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["7(?:1[0-68]|2[1-9])", "7(?:1(?:[06][3-6]|[18]|2[35]|[3-5][3-5])|2(?:[13][3-5]|[24-689]|7[457]))", "7(?:1(?:0(?:[356]|4[023])|[18]|2(?:3[013-9]|5)|3[45]|43[013-79]|5(?:3[1-8]|4[1-7]|5)|6(?:3[0-35-9]|[4-6]))|2(?:1(?:3[178]|[45])|[24-689]|3[35]|7[457]))|7(?:14|23)4[0-8]|71(?:33|45)[1-79]"], "8 ($1)", 1], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["7"], "8 ($1)", 1], ["(\\d{3})(\\d{3})(\\d{2})(\\d{2})", "$1 $2-$3-$4", ["[349]|8(?:[02-7]|1[1-8])"], "8 ($1)", 1], ["(\\d{4})(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["8"], "8 ($1)"]], "8", 0, 0, 0, 0, "3[04-689]|[489]", [["(?:3(?:0[12]|4[1-35-79]|5[1-3]|65|8[1-58]|9[0145])|4(?:01|1[1356]|2[13467]|7[1-5]|8[1-7]|9[1-689])|8(?:1[1-8]|2[01]|3[13-6]|4[0-8]|5[15]|6[1-35-79]|7[1-37-9]))\\d{7}", [10]], ["9\\d{9}", [10]], ["8(?:0[04]|108\\d{3})\\d{7}"], ["80[39]\\d{7}", [10]], ["808\\d{7}", [10]]], "8~10"], "RW": ["250", "00", "(?:06|[27]\\d\\d|[89]00)\\d{6}", [8, 9], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["0"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["2"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[7-9]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:06|2[23568]\\d)\\d{6}"], ["7[237-9]\\d{7}", [9]], ["800\\d{6}", [9]], ["900\\d{6}", [9]]]], "SA": ["966", "00", "92\\d{7}|(?:[15]|8\\d)\\d{8}", [9, 10], [["(\\d{4})(\\d{5})", "$1 $2", ["9"]], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["5"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["81"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["8"]]], "0", 0, 0, 0, 0, 0, [["1(?:1\\d|2[24-8]|3[35-8]|4[3-68]|6[2-5]|7[235-7])\\d{6}", [9]], ["579[01]\\d{5}|5(?:[013-689]\\d|7[0-8])\\d{6}", [9]], ["800\\d{7}", [10]], ["925\\d{6}", [9]], 0, 0, ["811\\d{7}", [10]], 0, 0, ["920\\d{6}", [9]]]], "SB": ["677", "0[01]", "[6-9]\\d{6}|[1-6]\\d{4}", [5, 7], [["(\\d{2})(\\d{5})", "$1 $2", ["6[89]|7|8[4-9]|9(?:[1-8]|9[0-8])"]]], 0, 0, 0, 0, 0, 0, [["(?:1[4-79]|[23]\\d|4[0-2]|5[03]|6[0-37])\\d{3}", [5]], ["48\\d{3}|(?:(?:6[89]|7[1-9]|8[4-9])\\d|9(?:1[2-9]|2[013-9]|3[0-2]|[46]\\d|5[0-46-9]|7[0-689]|8[0-79]|9[0-8]))\\d{4}"], ["1[38]\\d{3}", [5]], 0, 0, 0, 0, 0, ["5[12]\\d{3}", [5]]]], "SC": ["248", "010|0[0-2]", "(?:[2489]\\d|64)\\d{5}", [7], [["(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["[246]|9[57]"]]], 0, 0, 0, 0, 0, 0, [["4[2-46]\\d{5}"], ["2[125-8]\\d{5}"], ["800[08]\\d{3}"], ["85\\d{5}"], 0, 0, 0, 0, ["971\\d{4}|(?:64|95)\\d{5}"]], "00"], "SD": ["249", "00", "[19]\\d{8}", [9], [["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[19]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["1(?:5\\d|8[35-7])\\d{6}"], ["(?:1[0-2]|9[0-3569])\\d{7}"]]], "SE": ["46", "00", "(?:[26]\\d\\d|9)\\d{9}|[1-9]\\d{8}|[1-689]\\d{7}|[1-4689]\\d{6}|2\\d{5}", [6, 7, 8, 9, 10, 12], [["(\\d{2})(\\d{2,3})(\\d{2})", "$1-$2 $3", ["20"], "0$1", 0, "$1 $2 $3"], ["(\\d{3})(\\d{4})", "$1-$2", ["9(?:00|39|44|9)"], "0$1", 0, "$1 $2"], ["(\\d{2})(\\d{3})(\\d{2})", "$1-$2 $3", ["[12][136]|3[356]|4[0246]|6[03]|90[1-9]"], "0$1", 0, "$1 $2 $3"], ["(\\d)(\\d{2,3})(\\d{2})(\\d{2})", "$1-$2 $3 $4", ["8"], "0$1", 0, "$1 $2 $3 $4"], ["(\\d{3})(\\d{2,3})(\\d{2})", "$1-$2 $3", ["1[2457]|2(?:[247-9]|5[0138])|3[0247-9]|4[1357-9]|5[0-35-9]|6(?:[125689]|4[02-57]|7[0-2])|9(?:[125-8]|3[02-5]|4[0-3])"], "0$1", 0, "$1 $2 $3"], ["(\\d{3})(\\d{2,3})(\\d{3})", "$1-$2 $3", ["9(?:00|39|44)"], "0$1", 0, "$1 $2 $3"], ["(\\d{2})(\\d{2,3})(\\d{2})(\\d{2})", "$1-$2 $3 $4", ["1[13689]|2[0136]|3[1356]|4[0246]|54|6[03]|90[1-9]"], "0$1", 0, "$1 $2 $3 $4"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1-$2 $3 $4", ["10|7"], "0$1", 0, "$1 $2 $3 $4"], ["(\\d)(\\d{3})(\\d{3})(\\d{2})", "$1-$2 $3 $4", ["8"], "0$1", 0, "$1 $2 $3 $4"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1-$2 $3 $4", ["[13-5]|2(?:[247-9]|5[0138])|6(?:[124-689]|7[0-2])|9(?:[125-8]|3[02-5]|4[0-3])"], "0$1", 0, "$1 $2 $3 $4"], ["(\\d{3})(\\d{2})(\\d{2})(\\d{3})", "$1-$2 $3 $4", ["9"], "0$1", 0, "$1 $2 $3 $4"], ["(\\d{3})(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1-$2 $3 $4 $5", ["[26]"], "0$1", 0, "$1 $2 $3 $4 $5"]], "0", 0, 0, 0, 0, 0, [["(?:(?:[12][136]|3[356]|4[0246]|6[03]|8\\d)\\d|90[1-9])\\d{4,6}|(?:1(?:2[0-35]|4[0-4]|5[0-25-9]|7[13-6]|[89]\\d)|2(?:2[0-7]|4[0136-8]|5[0138]|7[018]|8[01]|9[0-57])|3(?:0[0-4]|1\\d|2[0-25]|4[056]|7[0-2]|8[0-3]|9[023])|4(?:1[013-8]|3[0135]|5[14-79]|7[0-246-9]|8[0156]|9[0-689])|5(?:0[0-6]|[15][0-5]|2[0-68]|3[0-4]|4\\d|6[03-5]|7[013]|8[0-79]|9[01])|6(?:1[1-3]|2[0-4]|4[02-57]|5[0-37]|6[0-3]|7[0-2]|8[0247]|9[0-356])|9(?:1[0-68]|2\\d|3[02-5]|4[0-3]|5[0-4]|[68][01]|7[0135-8]))\\d{5,6}", [7, 8, 9]], ["7[02369]\\d{7}", [9]], ["20\\d{4,7}", [6, 7, 8, 9]], ["649\\d{6}|99[1-59]\\d{4}(?:\\d{3})?|9(?:00|39|44)[1-8]\\d{3,6}", [7, 8, 9, 10]], ["75[1-8]\\d{6}", [9]], ["(?:25[245]|67[3-68])\\d{9}", [12]], ["10[1-8]\\d{6}", [9]], ["74[02-9]\\d{6}", [9]], 0, ["77[0-7]\\d{6}", [9]]]], "SG": ["65", "0[0-3]\\d", "(?:(?:1\\d|8)\\d\\d|7000)\\d{7}|[3689]\\d{7}", [8, 10, 11], [["(\\d{4})(\\d{4})", "$1 $2", ["[369]|8(?:0[1-9]|[1-9])"]], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["8"]], ["(\\d{4})(\\d{4})(\\d{3})", "$1 $2 $3", ["7"]], ["(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"]]], 0, 0, 0, 0, 0, 0, [["662[0-24-9]\\d{4}|6(?:[0-578]\\d|6[013-57-9]|9[0-35-9])\\d{5}", [8]], ["896[0-4]\\d{4}|(?:8(?:0[1-9]|[1-8]\\d|9[0-5])|9[0-8]\\d)\\d{5}", [8]], ["(?:18|8)00\\d{7}", [10, 11]], ["1900\\d{7}", [11]], 0, 0, ["7000\\d{7}", [11]], 0, ["(?:3[12]\\d|666)\\d{5}", [8]]]], "SH": ["290", "00", "(?:[256]\\d|8)\\d{3}", [4, 5], 0, 0, 0, 0, 0, 0, "[256]", [["2(?:[0-57-9]\\d|6[4-9])\\d\\d"], ["[56]\\d{4}", [5]], 0, 0, 0, 0, 0, 0, ["262\\d\\d", [5]]]], "SI": ["386", "00|10(?:22|66|88|99)", "[1-7]\\d{7}|8\\d{4,7}|90\\d{4,6}", [5, 6, 7, 8], [["(\\d{2})(\\d{3,6})", "$1 $2", ["8[09]|9"], "0$1"], ["(\\d{3})(\\d{5})", "$1 $2", ["59|8"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[37][01]|4[0139]|51|6"], "0$1"], ["(\\d)(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[1-57]"], "(0$1)"]], "0", 0, 0, 0, 0, 0, [["(?:[1-357][2-8]|4[24-8])\\d{6}", [8]], ["65(?:[178]\\d|5[56]|6[01])\\d{4}|(?:[37][01]|4[0139]|51|6[489])\\d{6}", [8]], ["80\\d{4,6}", [6, 7, 8]], ["89[1-3]\\d{2,5}|90\\d{4,6}"], 0, 0, 0, 0, ["(?:59\\d\\d|8(?:1(?:[67]\\d|8[0-589])|2(?:0\\d|2[0-37-9]|8[0-2489])|3[389]\\d))\\d{4}", [8]]], "00"], "SJ": ["47", "00", "0\\d{4}|(?:[489]\\d|79)\\d{6}", [5, 8], 0, 0, 0, 0, 0, 0, "79", [["79\\d{6}", [8]], ["(?:4[015-8]|9\\d)\\d{6}", [8]], ["80[01]\\d{5}", [8]], ["82[09]\\d{5}", [8]], ["880\\d{5}", [8]], ["81[23]\\d{5}", [8]], ["(?:0[235-9]|81(?:0(?:0[7-9]|1\\d)|5\\d\\d))\\d{3}"], 0, ["85[0-5]\\d{5}", [8]], ["810(?:0[0-6]|[2-8]\\d)\\d{3}", [8]]]], "SK": ["421", "00", "[2-689]\\d{8}|[2-59]\\d{6}|[2-5]\\d{5}", [6, 7, 9], [["(\\d)(\\d{2})(\\d{3,4})", "$1 $2 $3", ["21"], "0$1"], ["(\\d{2})(\\d{2})(\\d{2,3})", "$1 $2 $3", ["[3-5][1-8]1", "[3-5][1-8]1[67]"], "0$1"], ["(\\d)(\\d{3})(\\d{3})(\\d{2})", "$1/$2 $3 $4", ["2"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[689]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1/$2 $3 $4", ["[3-5]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2(?:16|[2-9]\\d{3})|(?:(?:[3-5][1-8]\\d|819)\\d|601[1-5])\\d)\\d{4}|(?:2|[3-5][1-8])1[67]\\d{3}|[3-5][1-8]16\\d\\d"], ["909[1-9]\\d{5}|9(?:0[1-8]|1[0-24-9]|4[03-57-9]|5\\d)\\d{6}", [9]], ["800\\d{6}", [9]], ["9(?:00|[78]\\d)\\d{6}", [9]], 0, 0, ["96\\d{7}", [9]], ["9090\\d{3}", [7]], ["6(?:02|5[0-4]|9[0-6])\\d{6}", [9]], ["8[5-9]\\d{7}", [9]]]], "SL": ["232", "00", "(?:[237-9]\\d|66)\\d{6}", [8], [["(\\d{2})(\\d{6})", "$1 $2", ["[236-9]"], "(0$1)"]], "0", 0, 0, 0, 0, 0, [["22[2-4][2-9]\\d{4}"], ["(?:25|3[0-5]|66|7[2-9]|8[08]|9[09])\\d{6}"]]], "SM": ["378", "00", "(?:0549|[5-7]\\d)\\d{6}", [8, 10], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[5-7]"]], ["(\\d{4})(\\d{6})", "$1 $2", ["0"]]], 0, 0, "([89]\\d{5})$", "0549$1", 0, 0, [["0549(?:8[0157-9]|9\\d)\\d{4}", [10]], ["6[16]\\d{6}", [8]], 0, ["7[178]\\d{6}", [8]], 0, 0, 0, 0, ["5[158]\\d{6}", [8]]]], "SN": ["221", "00", "(?:[378]\\d|93)\\d{7}", [9], [["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["8"]], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[379]"]]], 0, 0, 0, 0, 0, 0, [["3(?:0(?:1[0-2]|80)|282|3(?:8[1-9]|9[3-9])|611)\\d{5}"], ["7(?:(?:[06-8]\\d|[19]0|21)\\d|5(?:0[01]|[19]0|2[25]|3[36]|[4-7]\\d|8[35]))\\d{5}"], ["800\\d{6}"], ["88[4689]\\d{6}"], 0, 0, 0, 0, ["(?:3(?:392|9[01]\\d)\\d|93(?:3[13]0|929))\\d{4}"], ["81[02468]\\d{6}"]]], "SO": ["252", "00", "[346-9]\\d{8}|[12679]\\d{7}|[1-5]\\d{6}|[1348]\\d{5}", [6, 7, 8, 9], [["(\\d{2})(\\d{4})", "$1 $2", ["8[125]"]], ["(\\d{6})", "$1", ["[134]"]], ["(\\d)(\\d{6})", "$1 $2", ["[15]|2[0-79]|3[0-46-8]|4[0-7]"]], ["(\\d)(\\d{7})", "$1 $2", ["(?:2|90)4|[67]"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[348]|64|79|90"]], ["(\\d{2})(\\d{5,7})", "$1 $2", ["1|28|6[0-35-9]|77|9[2-9]"]]], "0", 0, 0, 0, 0, 0, [["(?:1\\d|2[0-79]|3[0-46-8]|4[0-7]|5[57-9])\\d{5}|(?:[134]\\d|8[125])\\d{4}", [6, 7]], ["(?:(?:15|(?:3[59]|4[89]|6\\d|7[79]|8[08])\\d|9(?:0\\d|[2-9]))\\d|2(?:4\\d|8))\\d{5}|(?:[67]\\d\\d|904)\\d{5}", [7, 8, 9]]]], "SR": ["597", "00", "(?:[2-5]|68|[78]\\d)\\d{5}", [6, 7], [["(\\d{2})(\\d{2})(\\d{2})", "$1-$2-$3", ["56"]], ["(\\d{3})(\\d{3})", "$1-$2", ["[2-5]"]], ["(\\d{3})(\\d{4})", "$1-$2", ["[6-8]"]]], 0, 0, 0, 0, 0, 0, [["(?:2[1-3]|3[0-7]|(?:4|68)\\d|5[2-58])\\d{4}"], ["(?:7[124-7]|8[124-9])\\d{5}", [7]], 0, 0, 0, 0, 0, 0, ["56\\d{4}", [6]]]], "SS": ["211", "00", "[19]\\d{8}", [9], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[19]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["1[89]\\d{7}"], ["(?:12|9[1257-9])\\d{7}"]]], "ST": ["239", "00", "(?:22|9\\d)\\d{5}", [7], [["(\\d{3})(\\d{4})", "$1 $2", ["[29]"]]], 0, 0, 0, 0, 0, 0, [["22\\d{5}"], ["900[5-9]\\d{3}|9(?:0[1-9]|[89]\\d)\\d{4}"]]], "SV": ["503", "00", "[267]\\d{7}|(?:80\\d|900)\\d{4}(?:\\d{4})?", [7, 8, 11], [["(\\d{3})(\\d{4})", "$1 $2", ["[89]"]], ["(\\d{4})(\\d{4})", "$1 $2", ["[267]"]], ["(\\d{3})(\\d{4})(\\d{4})", "$1 $2 $3", ["[89]"]]], 0, 0, 0, 0, 0, 0, [["2(?:79(?:0[0347-9]|[1-9]\\d)|89(?:0[024589]|[1-9]\\d))\\d{3}|2(?:[1-69]\\d|[78][0-8])\\d{5}", [8]], ["[67]\\d{7}", [8]], ["800\\d{8}|80[01]\\d{4}", [7, 11]], ["900\\d{4}(?:\\d{4})?", [7, 11]]]], "SX": ["1", "011", "7215\\d{6}|(?:[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "(5\\d{6})$|1", "721$1", 0, "721", [["7215(?:4[2-8]|8[239]|9[056])\\d{4}"], ["7215(?:1[02]|2\\d|5[034679]|8[014-8])\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "SY": ["963", "00", "[1-359]\\d{8}|[1-5]\\d{7}", [8, 9], [["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[1-4]|5[1-3]"], "0$1", 1], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[59]"], "0$1", 1]], "0", 0, 0, 0, 0, 0, [["21\\d{6,7}|(?:1(?:[14]\\d|[2356])|2[235]|3(?:[13]\\d|4)|4[134]|5[1-3])\\d{6}"], ["(?:50|9[1-689])\\d{7}", [9]]]], "SZ": ["268", "00", "0800\\d{4}|(?:[237]\\d|900)\\d{6}", [8, 9], [["(\\d{4})(\\d{4})", "$1 $2", ["[0237]"]], ["(\\d{5})(\\d{4})", "$1 $2", ["9"]]], 0, 0, 0, 0, 0, 0, [["[23][2-5]\\d{6}", [8]], ["7[6-9]\\d{6}", [8]], ["0800\\d{4}", [8]], ["900\\d{6}", [9]], 0, 0, 0, 0, ["70\\d{6}", [8]]]], "TA": ["290", "00", "8\\d{3}", [4], 0, 0, 0, 0, 0, 0, "8", [["8\\d{3}"]]], "TC": ["1", "011", "(?:[58]\\d\\d|649|900)\\d{7}", [10], 0, "1", 0, "([2-479]\\d{6})$|1", "649$1", 0, "649", [["649(?:266|712|9(?:4\\d|50))\\d{4}"], ["649(?:2(?:3[129]|4[1-79])|3\\d\\d|4[34][1-3])\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], 0, 0, 0, ["649(?:71[01]|966)\\d{4}"]]], "TD": ["235", "00|16", "(?:22|[689]\\d|77)\\d{6}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[26-9]"]]], 0, 0, 0, 0, 0, 0, [["22(?:[37-9]0|5[0-5]|6[89])\\d{4}"], ["(?:[69]\\d|77|8[56])\\d{6}"]], "00"], "TG": ["228", "00", "[279]\\d{7}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[279]"]]], 0, 0, 0, 0, 0, 0, [["2(?:2[2-7]|3[23]|4[45]|55|6[67]|77)\\d{5}"], ["(?:7[0-29]|9[0-36-9])\\d{6}"]]], "TH": ["66", "00[1-9]", "(?:001800|[2-57]|[689]\\d)\\d{7}|1\\d{7,9}", [8, 9, 10, 13], [["(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["2"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[13-9]"], "0$1"], ["(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["1"]]], "0", 0, 0, 0, 0, 0, [["(?:1[0689]|2\\d|3[2-9]|4[2-5]|5[2-6]|7[3-7])\\d{6}", [8]], ["67(?:1[0-8]|2[4-7])\\d{5}|(?:14|6[1-6]|[89]\\d)\\d{7}", [9]], ["(?:001800\\d|1800)\\d{6}", [10, 13]], ["1900\\d{6}", [10]], 0, 0, 0, 0, ["6[08]\\d{7}", [9]]]], "TJ": ["992", "810", "[0-57-9]\\d{8}", [9], [["(\\d{6})(\\d)(\\d{2})", "$1 $2 $3", ["331", "3317"]], ["(\\d{3})(\\d{2})(\\d{4})", "$1 $2 $3", ["44[02-479]|[34]7"]], ["(\\d{4})(\\d)(\\d{4})", "$1 $2 $3", ["3(?:[1245]|3[12])"]], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[0-57-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:3(?:1[3-5]|2[245]|3[12]|4[24-7]|5[25]|72)|4(?:46|74|87))\\d{6}"], ["(?:33[03-9]|4(?:1[18]|4[02-479])|81[1-9])\\d{6}|(?:[09]\\d|1[0178]|2[02]|[34]0|5[05]|7[01578]|8[078])\\d{7}"]], "8~10"], "TK": ["690", "00", "[2-47]\\d{3,6}", [4, 5, 6, 7], 0, 0, 0, 0, 0, 0, 0, [["(?:2[2-4]|[34]\\d)\\d{2,5}"], ["7[2-4]\\d{2,5}"]]], "TL": ["670", "00", "7\\d{7}|(?:[2-47]\\d|[89]0)\\d{5}", [7, 8], [["(\\d{3})(\\d{4})", "$1 $2", ["[2-489]|70"]], ["(\\d{4})(\\d{4})", "$1 $2", ["7"]]], 0, 0, 0, 0, 0, 0, [["(?:2[1-5]|3[1-9]|4[1-4])\\d{5}", [7]], ["7[2-8]\\d{6}", [8]], ["80\\d{5}", [7]], ["90\\d{5}", [7]], ["70\\d{5}", [7]]]], "TM": ["993", "810", "(?:[1-6]\\d|71)\\d{6}", [8], [["(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2-$3-$4", ["12"], "(8 $1)"], ["(\\d{3})(\\d)(\\d{2})(\\d{2})", "$1 $2-$3-$4", ["[1-5]"], "(8 $1)"], ["(\\d{2})(\\d{6})", "$1 $2", ["[67]"], "8 $1"]], "8", 0, 0, 0, 0, 0, [["(?:1(?:2\\d|3[1-9])|2(?:22|4[0-35-8])|3(?:22|4[03-9])|4(?:22|3[128]|4\\d|6[15])|5(?:22|5[7-9]|6[014-689]))\\d{5}"], ["(?:6\\d|71)\\d{6}"]], "8~10"], "TN": ["216", "00", "[2-57-9]\\d{7}", [8], [["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[2-57-9]"]]], 0, 0, 0, 0, 0, 0, [["81200\\d{3}|(?:3[0-2]|7\\d)\\d{6}"], ["3(?:001|[12]40)\\d{4}|(?:(?:[259]\\d|4[0-8])\\d|3(?:1[1-35]|6[0-4]|91))\\d{5}"], ["8010\\d{4}"], ["88\\d{6}"], 0, 0, 0, 0, 0, ["8[12]10\\d{4}"]]], "TO": ["676", "00", "(?:0800|(?:[5-8]\\d\\d|999)\\d)\\d{3}|[2-8]\\d{4}", [5, 7], [["(\\d{2})(\\d{3})", "$1-$2", ["[2-4]|50|6[09]|7[0-24-69]|8[05]"]], ["(\\d{4})(\\d{3})", "$1 $2", ["0"]], ["(\\d{3})(\\d{4})", "$1 $2", ["[5-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:2\\d|3[0-8]|4[0-4]|50|6[09]|7[0-24-69]|8[05])\\d{3}", [5]], ["(?:5(?:4[0-5]|5[4-6])|6(?:[09]\\d|3[02]|8[15-9])|(?:7\\d|8[46-9])\\d|999)\\d{4}", [7]], ["0800\\d{3}", [7]], 0, 0, 0, 0, 0, ["55[0-37-9]\\d{4}", [7]]]], "TR": ["90", "00", "4\\d{6}|8\\d{11,12}|(?:[2-58]\\d\\d|900)\\d{7}", [7, 10, 12, 13], [["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["512|8[01589]|90"], "0$1", 1], ["(\\d{3})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["5(?:[0-59]|61)", "5(?:[0-59]|61[06])", "5(?:[0-59]|61[06]1)"], "0$1", 1], ["(\\d{3})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[24][1-8]|3[1-9]"], "(0$1)", 1], ["(\\d{3})(\\d{3})(\\d{6,7})", "$1 $2 $3", ["80"], "0$1", 1]], "0", 0, 0, 0, 0, 0, [["(?:2(?:[13][26]|[28][2468]|[45][268]|[67][246])|3(?:[13][28]|[24-6][2468]|[78][02468]|92)|4(?:[16][246]|[23578][2468]|4[26]))\\d{7}", [10]], ["561(?:011|61\\d)\\d{4}|5(?:0[15-7]|1[06]|24|[34]\\d|5[1-59]|9[46])\\d{7}", [10]], ["8(?:00\\d{7}(?:\\d{2,3})?|11\\d{7})", [10, 12, 13]], ["(?:8[89]8|900)\\d{7}", [10]], ["592(?:21[12]|461)\\d{4}", [10]], 0, ["444\\d{4}", [7]], ["512\\d{7}", [10]], ["850\\d{7}", [10]]]], "TT": ["1", "011", "(?:[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2-46-8]\\d{6})$|1", "868$1", 0, "868", [["868(?:2(?:01|1[5-9]|[23]\\d|4[0-2])|6(?:0[7-9]|1[02-8]|2[1-9]|[3-69]\\d|7[0-79])|82[124])\\d{4}"], ["868(?:(?:2[5-9]|3\\d)\\d|4(?:3[0-6]|[6-9]\\d)|6(?:20|78|8\\d)|7(?:0[1-9]|1[02-9]|[2-9]\\d))\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], ["868619\\d{4}"]]], "TV": ["688", "00", "(?:2|7\\d\\d|90)\\d{4}", [5, 6, 7], [["(\\d{2})(\\d{3})", "$1 $2", ["2"]], ["(\\d{2})(\\d{4})", "$1 $2", ["90"]], ["(\\d{2})(\\d{5})", "$1 $2", ["7"]]], 0, 0, 0, 0, 0, 0, [["2[02-9]\\d{3}", [5]], ["(?:7[01]\\d|90)\\d{4}", [6, 7]]]], "TW": ["886", "0(?:0[25-79]|19)", "[2-689]\\d{8}|7\\d{9,10}|[2-8]\\d{7}|2\\d{6}", [7, 8, 9, 10, 11], [["(\\d{2})(\\d)(\\d{4})", "$1 $2 $3", ["202"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[258]0"], "0$1"], ["(\\d)(\\d{3,4})(\\d{4})", "$1 $2 $3", ["[23568]|4(?:0[02-48]|[1-47-9])|7[1-9]", "[23568]|4(?:0[2-48]|[1-47-9])|(?:400|7)[1-9]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[49]"], "0$1"], ["(\\d{2})(\\d{4})(\\d{4,5})", "$1 $2 $3", ["7"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2[2-8]\\d|370|55[01]|7[1-9])\\d{6}|4(?:(?:0(?:0[1-9]|[2-48]\\d)|1[023]\\d)\\d{4,5}|(?:[239]\\d\\d|4(?:0[56]|12|49))\\d{5})|6(?:[01]\\d{7}|4(?:0[56]|12|24|4[09])\\d{4,5})|8(?:(?:2(?:3\\d|4[0-269]|[578]0|66)|36[24-9]|90\\d\\d)\\d{4}|4(?:0[56]|12|24|4[09])\\d{4,5})|(?:2(?:2(?:0\\d\\d|4(?:0[68]|[249]0|3[0-467]|5[0-25-9]|6[0235689]))|(?:3(?:[09]\\d|1[0-4])|(?:4\\d|5[0-49]|6[0-29]|7[0-5])\\d)\\d)|(?:(?:3[2-9]|5[2-8]|6[0-35-79]|8[7-9])\\d\\d|4(?:2(?:[089]\\d|7[1-9])|(?:3[0-4]|[78]\\d|9[01])\\d))\\d)\\d{3}", [8, 9]], ["(?:40001[0-2]|9[0-8]\\d{4})\\d{3}", [9]], ["80[0-79]\\d{6}|800\\d{5}", [8, 9]], ["20(?:[013-9]\\d\\d|2)\\d{4}", [7, 9]], ["99\\d{7}", [9]], 0, ["50[0-46-9]\\d{6}", [9]], 0, ["7010(?:[0-2679]\\d|3[0-7]|8[0-5])\\d{5}|70\\d{8}", [10, 11]]], 0, "#"], "TZ": ["255", "00[056]", "(?:[25-8]\\d|41|90)\\d{7}", [9], [["(\\d{3})(\\d{2})(\\d{4})", "$1 $2 $3", ["[89]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[24]"], "0$1"], ["(\\d{2})(\\d{7})", "$1 $2", ["5"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[67]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["2[2-8]\\d{7}"], ["(?:6[125-9]|7[13-9])\\d{7}"], ["80[08]\\d{6}"], ["90\\d{7}"], 0, 0, 0, 0, ["41\\d{7}"], ["8(?:40|6[01])\\d{6}"]]], "UA": ["380", "00", "[89]\\d{9}|[3-9]\\d{8}", [9, 10], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["6[12][29]|(?:3[1-8]|4[136-8]|5[12457]|6[49])2|(?:56|65)[24]", "6[12][29]|(?:35|4[1378]|5[12457]|6[49])2|(?:56|65)[24]|(?:3[1-46-8]|46)2[013-9]"], "0$1"], ["(\\d{4})(\\d{5})", "$1 $2", ["3[1-8]|4(?:[1367]|[45][6-9]|8[4-6])|5(?:[1-5]|6[0135689]|7[4-6])|6(?:[12][3-7]|[459])", "3[1-8]|4(?:[1367]|[45][6-9]|8[4-6])|5(?:[1-5]|6(?:[015689]|3[02389])|7[4-6])|6(?:[12][3-7]|[459])"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[3-7]|89|9[1-9]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[89]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:3[1-8]|4[13-8]|5[1-7]|6[12459])\\d{7}", [9]], ["790\\d{6}|(?:39|50|6[36-8]|7[1-357]|9[1-9])\\d{7}", [9]], ["800[1-8]\\d{5,6}"], ["900[239]\\d{5,6}"], 0, 0, 0, 0, ["89[1-579]\\d{6}", [9]]], "0~0"], "UG": ["256", "00[057]", "800\\d{6}|(?:[29]0|[347]\\d)\\d{7}", [9], [["(\\d{4})(\\d{5})", "$1 $2", ["202", "2024"], "0$1"], ["(\\d{3})(\\d{6})", "$1 $2", ["[27-9]|4(?:6[45]|[7-9])"], "0$1"], ["(\\d{2})(\\d{7})", "$1 $2", ["[34]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["20(?:(?:240|30[67])\\d|6(?:00[0-2]|30[0-4]))\\d{3}|(?:20(?:[017]\\d|2[5-9]|3[1-4]|5[0-4]|6[15-9])|[34]\\d{3})\\d{5}"], ["72[48]0\\d{5}|7(?:[015-8]\\d|2[067]|36|4[0-6]|9[89])\\d{6}"], ["800[1-3]\\d{5}"], ["90[1-3]\\d{6}"]]], "US": ["1", "011", "[2-9]\\d{9}|3\\d{6}", [10], [["(\\d{3})(\\d{4})", "$1-$2", ["310"], 0, 1], ["(\\d{3})(\\d{3})(\\d{4})", "($1) $2-$3", ["[2-9]"], 0, 1, "$1-$2-$3"]], "1", 0, 0, 0, 0, 0, [["(?:3052(?:0[0-8]|[1-9]\\d)|5056(?:[0-35-9]\\d|4[468])|7302[0-4]\\d)\\d{4}|(?:305[3-9]|472[24]|505[2-57-9]|7306|983[2-47-9])\\d{6}|(?:2(?:0[1-35-9]|1[02-9]|2[03-57-9]|3[1459]|4[08]|5[1-46]|6[0279]|7[0269]|8[13])|3(?:0[1-47-9]|1[02-9]|2[0135-79]|3[0-24679]|4[167]|5[0-2]|6[01349]|8[056])|4(?:0[124-9]|1[02-579]|2[3-5]|3[0245]|4[023578]|58|6[349]|7[0589]|8[04])|5(?:0[1-47-9]|1[0235-8]|20|3[0149]|4[01]|5[179]|6[1-47]|7[0-5]|8[0256])|6(?:0[1-35-9]|1[024-9]|2[03689]|3[016]|4[0156]|5[01679]|6[0-279]|78|8[0-29])|7(?:0[1-46-8]|1[2-9]|2[04-8]|3[1247]|4[037]|5[47]|6[02359]|7[0-59]|8[156])|8(?:0[1-68]|1[02-8]|2[068]|3[0-2589]|4[03578]|5[046-9]|6[02-5]|7[028])|9(?:0[1346-9]|1[02-9]|2[0589]|3[0146-8]|4[01357-9]|5[12469]|7[0-389]|8[04-69]))[2-9]\\d{6}"], [""], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], 0, 0, 0, ["305209\\d{4}"]]], "UY": ["598", "0(?:0|1[3-9]\\d)", "0004\\d{2,9}|[1249]\\d{7}|(?:[49]\\d|80)\\d{5}", [6, 7, 8, 9, 10, 11, 12, 13], [["(\\d{3})(\\d{3,4})", "$1 $2", ["0"]], ["(\\d{3})(\\d{4})", "$1 $2", ["[49]0|8"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["9"], "0$1"], ["(\\d{4})(\\d{4})", "$1 $2", ["[124]"]], ["(\\d{3})(\\d{3})(\\d{2,4})", "$1 $2 $3", ["0"]], ["(\\d{3})(\\d{3})(\\d{3})(\\d{2,4})", "$1 $2 $3 $4", ["0"]]], "0", 0, 0, 0, 0, 0, [["(?:1(?:770|9(?:20|[89]7))|(?:2\\d|4[2-7])\\d\\d)\\d{4}", [8]], ["9[1-9]\\d{6}", [8]], ["0004\\d{2,9}|(?:405|80[05])\\d{4}"], ["90[0-8]\\d{4}", [7]]], "00", " int. "], "UZ": ["998", "00", "(?:20|33|[5-79]\\d|88)\\d{7}", [9], [["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[235-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:55\\d\\d|6(?:1(?:22|3[124]|4[1-4]|5[1-3578]|64)|2(?:22|3[0-57-9]|41)|5(?:22|3[3-7]|5[024-8])|[69]\\d\\d|7(?:[23]\\d|7[69]))|7(?:0(?:5[4-9]|6[0146]|7[124-6]|9[135-8])|(?:1[12]|[68]\\d)\\d|2(?:22|3[13-57-9]|4[1-3579]|5[14])|3(?:2\\d|3[1578]|4[1-35-7]|5[1-57]|61)|4(?:2\\d|3[1-579]|7[1-79])|5(?:22|5[1-9]|6[1457])|9(?:22|5[1-9])))\\d{5}"], ["(?:(?:[25]0|33|88|9[0-57-9])\\d{3}|6(?:1(?:2(?:2[01]|98)|35[0-4]|50\\d|61[23]|7(?:[01][017]|4\\d|55|9[5-9]))|2(?:(?:11|7\\d)\\d|2(?:[12]1|9[01379])|5(?:[126]\\d|3[0-4]))|5(?:19[01]|2(?:27|9[26])|(?:30|59|7\\d)\\d)|6(?:2(?:1[5-9]|2[0367]|38|41|52|60)|(?:3[79]|9[0-3])\\d|4(?:56|83)|7(?:[07]\\d|1[017]|3[07]|4[047]|5[057]|67|8[0178]|9[79]))|7(?:2(?:24|3[237]|4[5-9]|7[15-8])|5(?:7[12]|8[0589])|7(?:0\\d|[39][07])|9(?:0\\d|7[079])))|7(?:[07]\\d{3}|1(?:13[01]|6(?:0[47]|1[67]|66)|71[3-69]|98\\d)|2(?:2(?:2[79]|95)|3(?:2[5-9]|6[0-6])|57\\d|7(?:0\\d|1[17]|2[27]|3[37]|44|5[057]|66|88))|3(?:2(?:1[0-6]|21|3[469]|7[159])|(?:33|9[4-6])\\d|5(?:0[0-4]|5[579]|9\\d)|7(?:[0-3579]\\d|4[0467]|6[67]|8[078]))|4(?:2(?:29|5[0257]|6[0-7]|7[1-57])|5(?:1[0-4]|8\\d|9[5-9])|7(?:0\\d|1[024589]|2[0-27]|3[0137]|[46][07]|5[01]|7[5-9]|9[079])|9(?:7[015-9]|[89]\\d))|5(?:112|2(?:0\\d|2[29]|[49]4)|3[1568]\\d|52[6-9]|7(?:0[01578]|1[017]|[23]7|4[047]|[5-7]\\d|8[78]|9[079]))|9(?:22[128]|3(?:2[0-4]|7\\d)|57[02569]|7(?:2[05-9]|3[37]|4\\d|60|7[2579]|87|9[07]))))\\d{4}"]]], "VA": ["39", "00", "0\\d{5,10}|3[0-8]\\d{7,10}|55\\d{8}|8\\d{5}(?:\\d{2,4})?|(?:1\\d|39)\\d{7,8}", [6, 7, 8, 9, 10, 11, 12], 0, 0, 0, 0, 0, 0, "06698", [["06698\\d{1,6}", [6, 7, 8, 9, 10, 11]], ["3[1-9]\\d{8}|3[2-9]\\d{7}", [9, 10]], ["80(?:0\\d{3}|3)\\d{3}", [6, 9]], ["(?:0878\\d{3}|89(?:2\\d|3[04]|4(?:[0-4]|[5-9]\\d\\d)|5[0-4]))\\d\\d|(?:1(?:44|6[346])|89(?:38|5[5-9]|9))\\d{6}", [6, 8, 9, 10]], ["1(?:78\\d|99)\\d{6}", [9, 10]], ["3[2-8]\\d{9,10}", [11, 12]], 0, 0, ["55\\d{8}", [10]], ["84(?:[08]\\d{3}|[17])\\d{3}", [6, 9]]]], "VC": ["1", "011", "(?:[58]\\d\\d|784|900)\\d{7}", [10], 0, "1", 0, "([2-7]\\d{6})$|1", "784$1", 0, "784", [["784(?:266|3(?:6[6-9]|7\\d|8[0-6])|4(?:38|5[0-36-8]|8[0-8])|5(?:55|7[0-2]|93)|638|784)\\d{4}"], ["784(?:4(?:3[0-5]|5[45]|89|9[0-8])|5(?:2[6-9]|3[0-4])|720)\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"], 0, 0, 0, ["78451[0-2]\\d{4}"]]], "VE": ["58", "00", "[68]00\\d{7}|(?:[24]\\d|[59]0)\\d{8}", [10], [["(\\d{3})(\\d{7})", "$1-$2", ["[24-689]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2(?:12|3[457-9]|[467]\\d|[58][1-9]|9[1-6])|[4-6]00)\\d{7}"], ["4(?:1[24-8]|2[46])\\d{7}"], ["800\\d{7}"], ["90[01]\\d{7}"], 0, 0, ["501\\d{7}"]]], "VG": ["1", "011", "(?:284|[58]\\d\\d|900)\\d{7}", [10], 0, "1", 0, "([2-578]\\d{6})$|1", "284$1", 0, "284", [["284(?:229|4(?:22|9[45])|774|8(?:52|6[459]))\\d{4}"], ["284(?:245|3(?:0[0-3]|4[0-7]|68|9[34])|4(?:4[0-6]|68|9[69])|5(?:4[0-7]|68|9[69]))\\d{4}"], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "VI": ["1", "011", "[58]\\d{9}|(?:34|90)0\\d{7}", [10], 0, "1", 0, "([2-9]\\d{6})$|1", "340$1", 0, "340", [["340(?:2(?:0\\d|10|2[06-8]|4[49]|77)|3(?:32|44)|4(?:2[23]|44|7[34]|89)|5(?:1[34]|55)|6(?:2[56]|4[23]|77|9[023])|7(?:1[2-57-9]|2[57]|7\\d)|884|998)\\d{4}"], [""], ["8(?:00|33|44|55|66|77|88)[2-9]\\d{6}"], ["900[2-9]\\d{6}"], ["52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}"]]], "VN": ["84", "00", "[12]\\d{9}|[135-9]\\d{8}|[16]\\d{7}|[16-8]\\d{6}", [7, 8, 9, 10], [["(\\d{2})(\\d{5})", "$1 $2", ["80"], "0$1", 1], ["(\\d{4})(\\d{4,6})", "$1 $2", ["1"], 0, 1], ["(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["6"], "0$1", 1], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[357-9]"], "0$1", 1], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["2[48]"], "0$1", 1], ["(\\d{3})(\\d{4})(\\d{3})", "$1 $2 $3", ["2"], "0$1", 1]], "0", 0, 0, 0, 0, 0, [["2(?:0[3-9]|1[0-689]|2[0-25-9]|[38][2-9]|4[2-8]|5[124-9]|6[0-39]|7[0-7]|9[0-4679])\\d{7}", [10]], ["(?:5(?:2[238]|59)|89[6-9]|99[013-9])\\d{6}|(?:3\\d|5[1689]|7[06-9]|8[1-8]|9[0-8])\\d{7}", [9]], ["1800\\d{4,6}|12(?:0[13]|28)\\d{4}", [8, 9, 10]], ["1900\\d{4,6}", [8, 9, 10]], 0, 0, ["(?:[17]99|80\\d)\\d{4}|69\\d{5,6}", [7, 8]], 0, ["672\\d{6}", [9]]]], "VU": ["678", "00", "[57-9]\\d{6}|(?:[238]\\d|48)\\d{3}", [5, 7], [["(\\d{3})(\\d{4})", "$1 $2", ["[57-9]"]]], 0, 0, 0, 0, 0, 0, [["(?:38[0-8]|48[4-9])\\d\\d|(?:2[02-9]|3[4-7]|88)\\d{3}", [5]], ["(?:[58]\\d|7[013-7])\\d{5}", [7]], ["81[18]\\d\\d", [5]], 0, 0, 0, ["(?:3[03]|900\\d)\\d{3}"], 0, ["9(?:0[1-9]|1[01])\\d{4}", [7]]]], "WF": ["681", "00", "(?:40|72|8\\d{4})\\d{4}|[89]\\d{5}", [6, 9], [["(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3", ["[47-9]"]], ["(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["8"]]], 0, 0, 0, 0, 0, 0, [["72\\d{4}", [6]], ["(?:72|8[23])\\d{4}", [6]], ["80[0-5]\\d{6}", [9]], 0, 0, ["[48]0\\d{4}", [6]], 0, 0, ["9[23]\\d{4}", [6]]]], "WS": ["685", "0", "(?:[2-6]|8\\d{5})\\d{4}|[78]\\d{6}|[68]\\d{5}", [5, 6, 7, 10], [["(\\d{5})", "$1", ["[2-5]|6[1-9]"]], ["(\\d{3})(\\d{3,7})", "$1 $2", ["[68]"]], ["(\\d{2})(\\d{5})", "$1 $2", ["7"]]], 0, 0, 0, 0, 0, 0, [["6[1-9]\\d{3}|(?:[2-5]|60)\\d{4}", [5, 6]], ["(?:7[1-35-7]|8(?:[3-7]|9\\d{3}))\\d{5}", [7, 10]], ["800\\d{3}", [6]]]], "XK": ["383", "00", "2\\d{7,8}|3\\d{7,11}|(?:4\\d\\d|[89]00)\\d{5}", [8, 9, 10, 11, 12], [["(\\d{3})(\\d{5})", "$1 $2", ["[89]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[2-4]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["2|39"], "0$1"], ["(\\d{2})(\\d{7,10})", "$1 $2", ["3"], "0$1"]], "0", 0, 0, 0, 0, 0, [["38\\d{6,10}|(?:2[89]|39)(?:0\\d{5,6}|[1-9]\\d{5})"], ["4[3-9]\\d{6}", [8]], ["800\\d{5}", [8]], ["900\\d{5}", [8]]]], "YE": ["967", "00", "(?:1|7\\d)\\d{7}|[1-7]\\d{6}", [7, 8, 9], [["(\\d)(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[1-6]|7(?:[24-6]|8[0-7])"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["7"], "0$1"]], "0", 0, 0, 0, 0, 0, [["78[0-7]\\d{4}|17\\d{6}|(?:[12][2-68]|3[2358]|4[2-58]|5[2-6]|6[3-58]|7[24-6])\\d{5}", [7, 8]], ["7[01378]\\d{7}", [9]]]], "YT": ["262", "00", "7093\\d{5}|(?:80|9\\d)\\d{7}|(?:26|63)9\\d{6}", [9], 0, "0", 0, 0, 0, 0, 0, [["269(?:0[0-467]|15|5[0-4]|6\\d|[78]0)\\d{4}"], ["(?:639(?:0[0-79]|1[019]|[267]\\d|3[09]|40|5[05-9]|9[04-79])|7093[5-7])\\d{4}"], ["80\\d{7}"], 0, 0, 0, 0, 0, ["9(?:(?:39|47)8[01]|769\\d)\\d{4}"]]], "ZA": ["27", "00", "[1-79]\\d{8}|8\\d{4,9}", [5, 6, 7, 8, 9, 10], [["(\\d{2})(\\d{3,4})", "$1 $2", ["8[1-4]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{2,3})", "$1 $2 $3", ["8[1-4]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["860"], "0$1"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[1-9]"], "0$1"], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["8"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:2(?:0330|4302)|52087)0\\d{3}|(?:1[0-8]|2[1-378]|3[1-69]|4\\d|5[1346-8])\\d{7}", [9]], ["(?:1(?:3492[0-25]|4495[0235]|549(?:20|5[01]))|4[34]492[01])\\d{3}|8[1-4]\\d{3,7}|(?:2[27]|47|54)4950\\d{3}|(?:1(?:049[2-4]|9[12]\\d\\d)|(?:6\\d\\d|7(?:[0-46-9]\\d|5[0-4]))\\d\\d|8(?:5\\d{3}|7(?:08[67]|158|28[5-9]|310)))\\d{4}|(?:1[6-8]|28|3[2-69]|4[025689]|5[36-8])4920\\d{3}|(?:12|[2-5]1)492\\d{4}", [5, 6, 7, 8, 9]], ["80\\d{7}", [9]], ["(?:86[2-9]|9[0-2]\\d)\\d{6}", [9]], 0, 0, ["861\\d{6,7}", [9, 10]], 0, ["87(?:08[0-589]|15[0-79]|28[0-4]|31[1-9])\\d{4}|87(?:[02][0-79]|1[0-46-9]|3[02-9]|[4-9]\\d)\\d{5}", [9]], ["860\\d{6}", [9]]]], "ZM": ["260", "00", "800\\d{6}|(?:21|63|[79]\\d)\\d{7}", [9], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[28]"], "0$1"], ["(\\d{2})(\\d{7})", "$1 $2", ["[79]"], "0$1"]], "0", 0, 0, 0, 0, 0, [["21[1-8]\\d{6}"], ["(?:7[5-79]|9[5-8])\\d{7}"], ["800\\d{6}"], 0, 0, 0, 0, 0, ["63\\d{7}"]]], "ZW": ["263", "00", "2(?:[0-57-9]\\d{6,8}|6[0-24-9]\\d{6,7})|[38]\\d{9}|[35-8]\\d{8}|[3-6]\\d{7}|[1-689]\\d{6}|[1-3569]\\d{5}|[1356]\\d{4}", [5, 6, 7, 8, 9, 10], [["(\\d{3})(\\d{3,5})", "$1 $2", ["2(?:0[45]|2[278]|[49]8)|3(?:[09]8|17)|6(?:[29]8|37|75)|[23][78]|(?:33|5[15]|6[68])[78]"], "0$1"], ["(\\d)(\\d{3})(\\d{2,4})", "$1 $2 $3", ["[49]"], "0$1"], ["(\\d{3})(\\d{4})", "$1 $2", ["80"], "0$1"], ["(\\d{2})(\\d{7})", "$1 $2", ["24|8[13-59]|(?:2[05-79]|39|5[45]|6[15-8])2", "2(?:02[014]|4|[56]20|[79]2)|392|5(?:42|525)|6(?:[16-8]21|52[013])|8[13-59]"], "(0$1)"], ["(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["7"], "0$1"], ["(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["2(?:1[39]|2[0157]|[378]|[56][14])|3(?:12|29)", "2(?:1[39]|2[0157]|[378]|[56][14])|3(?:123|29)"], "0$1"], ["(\\d{4})(\\d{6})", "$1 $2", ["8"], "0$1"], ["(\\d{2})(\\d{3,5})", "$1 $2", ["1|2(?:0[0-36-9]|12|29|[56])|3(?:1[0-689]|[24-6])|5(?:[0236-9]|1[2-4])|6(?:[013-59]|7[0-46-9])|(?:33|55|6[68])[0-69]|(?:29|3[09]|62)[0-79]"], "0$1"], ["(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["29[013-9]|39|54"], "0$1"], ["(\\d{4})(\\d{3,5})", "$1 $2", ["(?:25|54)8", "258|5483"], "0$1"]], "0", 0, 0, 0, 0, 0, [["(?:1(?:(?:3\\d|9)\\d|[4-8])|2(?:(?:(?:0(?:2[014]|5)|(?:2[0157]|31|84|9)\\d\\d|[56](?:[14]\\d\\d|20)|7(?:[089]|2[03]|[35]\\d\\d))\\d|4(?:2\\d\\d|8))\\d|1(?:2|[39]\\d{4}))|3(?:(?:123|(?:29\\d|92)\\d)\\d\\d|7(?:[19]|[56]\\d))|5(?:0|1[2-478]|26|[37]2|4(?:2\\d{3}|83)|5(?:25\\d\\d|[78])|[689]\\d)|6(?:(?:[16-8]21|28|52[013])\\d\\d|[39])|8(?:[1349]28|523)\\d\\d)\\d{3}|(?:4\\d\\d|9[2-9])\\d{4,5}|(?:(?:2(?:(?:(?:0|8[146])\\d|7[1-7])\\d|2(?:[278]\\d|92)|58(?:2\\d|3))|3(?:[26]|9\\d{3})|5(?:4\\d|5)\\d\\d)\\d|6(?:(?:(?:[0-246]|[78]\\d)\\d|37)\\d|5[2-8]))\\d\\d|(?:2(?:[569]\\d|8[2-57-9])|3(?:[013-59]\\d|8[37])|6[89]8)\\d{3}"], ["7(?:[1278]\\d|3[1-9])\\d{6}", [9]], ["80(?:[01]\\d|20|8[0-8])\\d{3}", [7]], 0, 0, 0, 0, 0, ["86(?:1[12]|22|30|44|55|77|8[368])\\d{6}", [10]]]] }, "nonGeographic": { "800": ["800", 0, "(?:00|[1-9]\\d)\\d{6}", [8], [["(\\d{4})(\\d{4})", "$1 $2", ["\\d"]]], 0, 0, 0, 0, 0, 0, [0, 0, ["(?:00|[1-9]\\d)\\d{6}"]]], "808": ["808", 0, "[1-9]\\d{7}", [8], [["(\\d{4})(\\d{4})", "$1 $2", ["[1-9]"]]], 0, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0, 0, 0, 0, 0, ["[1-9]\\d{7}"]]], "870": ["870", 0, "7\\d{11}|[235-7]\\d{8}", [9, 12], [["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[235-7]"]]], 0, 0, 0, 0, 0, 0, [0, ["(?:[356]|774[45])\\d{8}|7[6-8]\\d{7}"], 0, 0, 0, 0, 0, 0, ["2\\d{8}", [9]]]], "878": ["878", 0, "10\\d{10}", [12], [["(\\d{2})(\\d{5})(\\d{5})", "$1 $2 $3", ["1"]]], 0, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0, 0, 0, 0, ["10\\d{10}"]]], "881": ["881", 0, "6\\d{9}|[0-36-9]\\d{8}", [9, 10], [["(\\d)(\\d{3})(\\d{5})", "$1 $2 $3", ["[0-37-9]"]], ["(\\d)(\\d{3})(\\d{5,6})", "$1 $2 $3", ["6"]]], 0, 0, 0, 0, 0, 0, [0, ["6\\d{9}|[0-36-9]\\d{8}"]]], "882": ["882", 0, "[13]\\d{6}(?:\\d{2,5})?|[19]\\d{7}|(?:[25]\\d\\d|4)\\d{7}(?:\\d{2})?", [7, 8, 9, 10, 11, 12], [["(\\d{2})(\\d{5})", "$1 $2", ["16|342"]], ["(\\d{2})(\\d{6})", "$1 $2", ["49"]], ["(\\d{2})(\\d{2})(\\d{4})", "$1 $2 $3", ["1[36]|9"]], ["(\\d{2})(\\d{4})(\\d{3})", "$1 $2 $3", ["3[23]"]], ["(\\d{2})(\\d{3,4})(\\d{4})", "$1 $2 $3", ["16"]], ["(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["10|23|3(?:[15]|4[57])|4|51"]], ["(\\d{3})(\\d{4})(\\d{4})", "$1 $2 $3", ["34"]], ["(\\d{2})(\\d{4,5})(\\d{5})", "$1 $2 $3", ["[1-35]"]]], 0, 0, 0, 0, 0, 0, [0, ["342\\d{4}|(?:337|49)\\d{6}|(?:3(?:2|47|7\\d{3})|50\\d{3})\\d{7}", [7, 8, 9, 10, 12]], 0, 0, 0, ["348[57]\\d{7}", [11]], 0, 0, ["1(?:3(?:0[0347]|[13][0139]|2[035]|4[013568]|6[0459]|7[06]|8[15-8]|9[0689])\\d{4}|6\\d{5,10})|(?:345\\d|9[89])\\d{6}|(?:10|2(?:3|85\\d)|3(?:[15]|[69]\\d\\d)|4[15-8]|51)\\d{8}"]]], "883": ["883", 0, "(?:[1-4]\\d|51)\\d{6,10}", [8, 9, 10, 11, 12], [["(\\d{3})(\\d{3})(\\d{2,8})", "$1 $2 $3", ["[14]|2[24-689]|3[02-689]|51[24-9]"]], ["(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["510"]], ["(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["21"]], ["(\\d{4})(\\d{4})(\\d{4})", "$1 $2 $3", ["51[13]"]], ["(\\d{3})(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["[235]"]]], 0, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0, 0, 0, 0, ["(?:2(?:00\\d\\d|10)|(?:370[1-9]|51\\d0)\\d)\\d{7}|51(?:00\\d{5}|[24-9]0\\d{4,7})|(?:1[0-79]|2[24-689]|3[02-689]|4[0-4])0\\d{5,9}"]]], "888": ["888", 0, "\\d{11}", [11], [["(\\d{3})(\\d{3})(\\d{5})", "$1 $2 $3"]], 0, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0, 0, ["\\d{11}"]]], "979": ["979", 0, "[1359]\\d{8}", [9], [["(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["[1359]"]]], 0, 0, 0, 0, 0, 0, [0, 0, 0, ["[1359]\\d{8}"]]] } };
 var propTypes = { exports: {} };
@@ -16235,7 +16441,7 @@ const phoneNumberArrow = "_phoneNumberArrow_1as8a_78";
 const errorBorder = "_errorBorder_1as8a_90";
 const phoneInputContainer = "_phoneInputContainer_1as8a_94";
 const clear = "_clear_1as8a_98";
-var s$d = {
+var s$f = {
   phoneNumberInput,
   regularBorder,
   lightBorder,
@@ -16306,7 +16512,7 @@ const PhoneNumberInput = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef
     );
     const shouldDisplayClearIcon = onClearClick && isFocused && isDirty && !readOnly2;
     return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$d.phoneInputContainer
+      className: s$f.phoneInputContainer
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(PhoneInput, {
       ref: setRef,
       addInternationalOption: false,
@@ -16317,7 +16523,7 @@ const PhoneNumberInput = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef
       countrySelectProps: {
         "aria-label": countrySelectAriaLabel,
         arrowComponent: () => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
-          className: s$d.phoneNumberArrow,
+          className: s$f.phoneNumberArrow,
           icon: "chevron-down",
           width: 17,
           height: 17,
@@ -16326,9 +16532,9 @@ const PhoneNumberInput = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef
       },
       "data-testid": "phone-number-verification-input",
       id,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$d.phoneNumberInput, s$d[inputHeight], s$d[`${borderColor}Border`], {
-        [s$d.disabled]: otherProps.disabled,
-        [s$d.errorBorder]: isError
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$f.phoneNumberInput, s$f[inputHeight], s$f[`${borderColor}Border`], {
+        [s$f.disabled]: otherProps.disabled,
+        [s$f.errorBorder]: isError
       }),
       inputMode: "tel",
       countryCallingCodeEditable: false,
@@ -16340,7 +16546,7 @@ const PhoneNumberInput = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef
       type: "button",
       onClick: onClearClick,
       onMouseDown: onMouseDownPreventBlur,
-      className: s$d.clear,
+      className: s$f.clear,
       "data-testid": "clear-input"
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: IconName["close-circle"],
@@ -16371,7 +16577,7 @@ const container$3 = "_container_exreo_1";
 const progress = "_progress_exreo_9";
 const progressBarContainer = "_progressBarContainer_exreo_17";
 const progressBarTitle = "_progressBarTitle_exreo_24";
-var s$c = {
+var s$e = {
   container: container$3,
   progress,
   progressBarContainer,
@@ -16384,16 +16590,16 @@ const ProgressBar = ({
   ...divProps
 }) => {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$c.progressBarContainer, className),
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$e.progressBarContainer, className),
     ...divProps
   }, title2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$c.progressBarTitle
+    className: s$e.progressBarTitle
   }, title2), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$c.container,
+    className: s$e.container,
     role: "progressbar",
     "aria-valuenow": progress2
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$c.progress,
+    className: s$e.progress,
     style: { width: `${progress2}%` }
   })));
 };
@@ -16404,12 +16610,12 @@ const RadioButton = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(({ ...prop
 RadioButton.displayName = "RadioButton";
 const loading = "_loading_17wzl_1";
 const spin = "_spin_17wzl_1";
-var s$b = {
+var s$d = {
   loading,
   spin
 };
 const Spinner = ({ color = "currentColor", title: title2 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("svg", {
-  className: s$b.loading,
+  className: s$d.loading,
   width: "28",
   height: "28",
   viewBox: "0 0 126.1 126.1",
@@ -16426,7 +16632,7 @@ const sliderContainer = "_sliderContainer_6dtvk_1";
 const slider = "_slider_6dtvk_1";
 const checkbox = "_checkbox_6dtvk_36";
 const readOnly = "_readOnly_6dtvk_54";
-var s$a = {
+var s$c = {
   sliderContainer,
   slider,
   checkbox,
@@ -16436,17 +16642,17 @@ const Switch = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
   ({ id, className, readOnly: readOnly2 = false, containerProps = {}, ...props }, ref) => {
     const { className: containerClassName, ...otherContainerProps } = containerProps;
     return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$a.sliderContainer, containerClassName),
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$c.sliderContainer, containerClassName),
       ...otherContainerProps
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
       type: "checkbox",
       id,
       name: id,
       ref,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$a.checkbox, { [s$a.readOnly]: readOnly2 }, className),
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$c.checkbox, { [s$c.readOnly]: readOnly2 }, className),
       ...props
     }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: s$a.slider
+      className: s$c.slider
     }));
   }
 );
@@ -16454,17 +16660,17 @@ Switch.displayName = "Switch";
 const container$2 = "_container_npjda_1";
 const switchWithLabel = "_switchWithLabel_npjda_7";
 const textBlock = "_textBlock_npjda_13";
-const icon$1 = "_icon_npjda_17";
+const icon$2 = "_icon_npjda_17";
 const switchLabel = "_switchLabel_npjda_24";
 const disabled$2 = "_disabled_npjda_33";
 const additionalMessage = "_additionalMessage_npjda_37";
 const inCard = "_inCard_npjda_47";
 const right = "_right_npjda_52";
-var s$9 = {
+var s$b = {
   container: container$2,
   switchWithLabel,
   textBlock,
-  icon: icon$1,
+  icon: icon$2,
   switchLabel,
   disabled: disabled$2,
   additionalMessage,
@@ -16499,7 +16705,7 @@ const SwitchField = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       readOnly: readOnly2,
       inCard: inCard2,
       checked: otherProps.checked,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$9.container, s$9[switchPosition], { [s$9.inCard]: inCard2 }, className)
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$b.container, s$b[switchPosition], { [s$b.inCard]: inCard2 }, className)
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Switch, {
       id,
       ref,
@@ -16507,21 +16713,21 @@ const SwitchField = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       disabled: disabled2,
       ...otherProps
     }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$9.textBlock
+      className: s$b.textBlock
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$9.switchWithLabel
+      className: s$b.switchWithLabel
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
       htmlFor: id,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$9.switchLabel, { [s$9.disabled]: disabled2 }),
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$b.switchLabel, { [s$b.disabled]: disabled2 }),
       ref: innerLabelRef
     }, label2)), description2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$9.additionalMessage
+      className: s$b.additionalMessage
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, description2)), error2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$9.additionalMessage
+      className: s$b.additionalMessage
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ErrorMessage, null, error2)), legend && !error2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(LegendMessage, {
       light: lightLegend
     }, legend)), inCard2 && icon2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: s$9.icon,
+      className: s$b.icon,
       "data-testid": "switch-icon"
     }, icon2));
   }
@@ -16558,7 +16764,7 @@ const TextField = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef(
 );
 TextField.displayName = "TextField";
 const togglePassword = "_togglePassword_cn1i9_1";
-var s$8 = {
+var s$a = {
   togglePassword
 };
 const PasswordField = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef(
@@ -16606,7 +16812,7 @@ const PasswordField = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef(
         onClick: togglePassword2,
         onMouseDown: onMouseDownPreventBlur,
         onMouseUp: onMouseDownPreventBlur,
-        className: s$8.togglePassword,
+        className: s$a.togglePassword,
         "data-testid": "toggle-password"
       }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
         icon: IconName[passwordIcon]
@@ -16620,15 +16826,15 @@ const toggleButton = "_toggleButton_tv9p0_1";
 const sm = "_sm_tv9p0_18";
 const md = "_md_tv9p0_25";
 const lg = "_lg_tv9p0_30";
-const active = "_active_tv9p0_42";
+const active$1 = "_active_tv9p0_42";
 const disabled$1 = "_disabled_tv9p0_42";
 const wide = "_wide_tv9p0_65";
-var s$7 = {
+var s$9 = {
   toggleButton,
   sm,
   md,
   lg,
-  active,
+  active: active$1,
   disabled: disabled$1,
   wide
 };
@@ -16643,9 +16849,9 @@ const ToggleButton = ({
   ...props
 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
   className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(
-    s$7.toggleButton,
-    { [s$7.active]: active2, [s$7.disabled]: disabled2, [s$7.wide]: wide2 },
-    s$7[size]
+    s$9.toggleButton,
+    { [s$9.active]: active2, [s$9.disabled]: disabled2, [s$9.wide]: wide2 },
+    s$9[size]
   ),
   onClick,
   disabled: disabled2,
@@ -16655,7 +16861,7 @@ const ToggleButton = ({
   ...props
 }, children2);
 const toggleButtonsGroup = "_toggleButtonsGroup_th522_3";
-var s$6 = {
+var s$8 = {
   toggleButtonsGroup
 };
 function ToggleButtonsGroup({
@@ -16685,7 +16891,7 @@ function ToggleButtonsGroup({
   );
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     id,
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$6.toggleButtonsGroup, className),
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$8.toggleButtonsGroup, className),
     ...dataTestId && { "data-testid": dataTestId }
   }, options.map((item) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ToggleButton, {
     key: optionKey(item),
@@ -16737,14 +16943,14 @@ function ToggleButtonsField({
 const bulletItem = "_bulletItem_mxahq_1";
 const content$1 = "_content_mxahq_9";
 const label$1 = "_label_mxahq_16";
-const icon = "_icon_mxahq_24";
+const icon$1 = "_icon_mxahq_24";
 const description$1 = "_description_mxahq_34";
 const inline = "_inline_mxahq_38";
-var s$5 = {
+var s$7 = {
   bulletItem,
   content: content$1,
   label: label$1,
-  icon,
+  icon: icon$1,
   description: description$1,
   inline
 };
@@ -16757,30 +16963,30 @@ const BulletItem = ({
   iconColor,
   ...props
 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$5.bulletItem, className),
+  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$7.bulletItem, className),
   ...props
 }, !inline2 && (typeof iconName2 === "number" ? /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", {
   style: iconColor ? { color: `var(${iconColor})` } : { color: "var(--alma-blue)" },
-  className: s$5.icon
+  className: s$7.icon
 }, iconName2) : /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
-  className: s$5.icon,
+  className: s$7.icon,
   icon: iconName2,
   "data-testid": "bullet-side-icon",
   color: iconColor ? `var(${iconColor})` : "var(--alma-blue)"
 })), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: s$5.content
+  className: s$7.content
 }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-  className: s$5.label
+  className: s$7.label
 }, inline2 && (typeof iconName2 === "number" ? /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", {
   style: iconColor ? { color: `var(${iconColor})` } : { color: "var(--alma-blue)" },
-  className: s$5.icon
+  className: s$7.icon
 }, iconName2) : /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
-  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$5.icon, { [s$5.iconInline]: inline2 }),
+  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$7.icon, { [s$7.iconInline]: inline2 }),
   icon: iconName2,
   "data-testid": "bullet-inline-icon",
   color: iconColor ? `var(${iconColor})` : "var(--alma-blue)"
 })), label2), description2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$5.description, { [s$5.inline]: inline2 })
+  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$7.description, { [s$7.inline]: inline2 })
 }, description2)));
 const container$1 = "_container_qi4u0_1";
 const header = "_header_qi4u0_12";
@@ -16792,7 +16998,7 @@ const label = "_label_qi4u0_62";
 const value = "_value_qi4u0_73";
 const headerChildren = "_headerChildren_qi4u0_82";
 const ctaContainer = "_ctaContainer_qi4u0_86";
-var s$4 = {
+var s$6 = {
   container: container$1,
   header,
   titleWrapper,
@@ -16808,20 +17014,20 @@ const BasicTableRow = ({ id, label: label2, value: value2 }) => {
   const displayColumnValues = (value22) => {
     if (Array.isArray(value22)) {
       return value22.map((val) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-        className: s$4.value,
+        className: s$6.value,
         key: val
       }, val));
     } else {
       return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-        className: s$4.value
+        className: s$6.value
       }, value22);
     }
   };
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$4.row,
+    className: s$6.row,
     key: id
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$4.label
+    className: s$6.label
   }, label2), displayColumnValues(value2));
 };
 const BasicTable = ({
@@ -16833,29 +17039,29 @@ const BasicTable = ({
   cta: cta2
 }) => {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$4.container
+    className: s$6.container
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$4.header
+    className: s$6.header
   }, iconPill ? /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$4.titleWrapper
+    className: s$6.titleWrapper
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(IconPill, {
     ...iconPill,
     iconSize: "lg"
   }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Header, null, title2)) : /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Header, null, title2), headerChildren2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$4.headerChildren
+    className: s$6.headerChildren
   }, headerChildren2)), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$4.body
+    className: s$6.body
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$4.rowsWrapper
+    className: s$6.rowsWrapper
   }, content2.map(({ id, label: label2, value: value2 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(BasicTableRow, {
     key: id,
     id,
     label: label2,
     value: value2
   }))), bottomChildren && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$4.bottomChildren
+    className: s$6.bottomChildren
   }, bottomChildren), cta2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$4.ctaContainer
+    className: s$6.ctaContainer
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Button, {
     ...cta2,
     size: "small"
@@ -16872,12 +17078,12 @@ const leftIconTop = "_leftIconTop_1af2n_60";
 const leftIconCenter = "_leftIconCenter_1af2n_66";
 const leftIcon = "_leftIcon_1af2n_60";
 const content = "_content_1af2n_87";
-const title = "_title_1af2n_94";
+const title$1 = "_title_1af2n_94";
 const titleDisabled = "_titleDisabled_1af2n_99";
 const description = "_description_1af2n_104";
 const badge = "_badge_1af2n_109";
 const rightIcon = "_rightIcon_1af2n_113";
-var s$3 = {
+var s$5 = {
   menuEntryParent,
   menuEntry,
   tiny: tiny$1,
@@ -16889,7 +17095,7 @@ var s$3 = {
   leftIconCenter,
   leftIcon,
   content,
-  title,
+  title: title$1,
   titleDisabled,
   description,
   badge,
@@ -16911,7 +17117,7 @@ const MenuEntry = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
     onClick,
     ...otherProps
   }, ref) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$3.menuEntryParent, className),
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$5.menuEntryParent, className),
     onClick: () => {
       onClick && onClick();
     },
@@ -16920,21 +17126,21 @@ const MenuEntry = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
     ...otherProps,
     ref
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$3.menuEntry, s$3[size], {
-      [s$3.selected]: isSelected,
-      [s$3.disabled]: isDisabled2,
-      [s$3.error]: isError
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$5.menuEntry, s$5[size], {
+      [s$5.selected]: isSelected,
+      [s$5.disabled]: isDisabled2,
+      [s$5.error]: isError
     })
   }, leftIcon2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$3.leftIcon, isAlignTop ? s$3.leftIconTop : s$3.leftIconCenter)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$5.leftIcon, isAlignTop ? s$5.leftIconTop : s$5.leftIconCenter)
   }, leftIcon2), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$3.content
+    className: s$5.content
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: `${isDisabled2 ? s$3.titleDisabled : s$3.title}`
+    className: `${isDisabled2 ? s$5.titleDisabled : s$5.title}`
   }, title2), description2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$3.description
+    className: s$5.description
   }, description2)), badgeProps && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$3.badge
+    className: s$5.badge
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Badge, {
     color: badgeProps.color,
     label: badgeProps.label,
@@ -16944,7 +17150,7 @@ const MenuEntry = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
     padding: badgeProps.padding
   })), rightIcon2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
     icon: rightIcon2,
-    className: s$3.rightIcon
+    className: s$5.rightIcon
   })))
 );
 MenuEntry.displayName = "MenuEntry";
@@ -16954,7 +17160,7 @@ const menuTitle = "_menuTitle_xi98q_10";
 const entriesContainer = "_entriesContainer_xi98q_19";
 const small = "_small_xi98q_29";
 const big = "_big_xi98q_33";
-var s$2 = {
+var s$4 = {
   menu,
   tiny,
   menuTitle,
@@ -16964,18 +17170,18 @@ var s$2 = {
 };
 const Menu = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
   ({ className, title: title2, size = "big", children: children2, ...otherProps }, ref) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$2.menu, className, { [s$2.tiny]: size === "tiny" }),
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$4.menu, className, { [s$4.tiny]: size === "tiny" }),
     ...otherProps,
     ref
   }, title2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$2.menuTitle, s$2[size])
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$4.menuTitle, s$4[size])
   }, title2), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$2.entriesContainer
+    className: s$4.entriesContainer
   }, children2))
 );
 Menu.displayName = "Menu";
 const iconClickable = "_iconClickable_op07t_1";
-var s$1 = {
+var s$3 = {
   iconClickable
 };
 const IconClickable = ({
@@ -16991,13 +17197,13 @@ const IconClickable = ({
       active: /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
         isFilled: true,
         icon: IconName.heart,
-        className: s$1.iconClickable,
+        className: s$3.iconClickable,
         title: title2,
         ...svgProps
       }),
       inactive: /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
         icon: IconName.heart,
-        className: s$1.iconClickable,
+        className: s$3.iconClickable,
         title: title2,
         ...svgProps
       })
@@ -17005,14 +17211,14 @@ const IconClickable = ({
     bookmark: {
       active: /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
         icon: IconName.bookmark,
-        className: s$1.iconClickable,
+        className: s$3.iconClickable,
         title: title2,
         isFilled: true,
         ...svgProps
       }),
       inactive: /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
         icon: IconName.bookmark,
-        className: s$1.iconClickable,
+        className: s$3.iconClickable,
         title: title2,
         ...svgProps
       })
@@ -17021,13 +17227,13 @@ const IconClickable = ({
       active: /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
         isFilled: true,
         icon: IconName.sparks,
-        className: s$1.iconClickable,
+        className: s$3.iconClickable,
         title: title2,
         ...svgProps
       }),
       inactive: /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
         icon: IconName.sparks,
-        className: s$1.iconClickable,
+        className: s$3.iconClickable,
         title: title2,
         ...svgProps
       })
@@ -17043,7 +17249,7 @@ const warning = "_warning_1se7e_44";
 const info = "_info_1se7e_48";
 const hidden = "_hidden_1se7e_52";
 const visible = "_visible_1se7e_57";
-var s = {
+var s$2 = {
   container,
   close,
   success,
@@ -17142,15 +17348,15 @@ const ToasterElement = ({
   closeable
 }) => {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s[type], s.container, {
-      [s.visible]: t.visible,
-      [s.hidden]: !t.visible
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$2[type], s$2.container, {
+      [s$2.visible]: t.visible,
+      [s$2.hidden]: !t.visible
     }),
     onClick: () => closeable && react_hot_toast__WEBPACK_IMPORTED_MODULE_5__.toast.dismiss(t.id),
     "data-testid": "toast-container"
   }, icon2 && icon2, message, closeable && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     type: "button",
-    className: s.close,
+    className: s$2.close,
     onClick: (e) => {
       e.stopPropagation();
       react_hot_toast__WEBPACK_IMPORTED_MODULE_5__.toast.dismiss(t.id);
@@ -17161,6 +17367,81 @@ const ToasterElement = ({
     width: 16
   })));
 };
+const tabContainer = "_tabContainer_ih7ys_1";
+const selectedBackground = "_selectedBackground_ih7ys_12";
+const singleLabel = "_singleLabel_ih7ys_22";
+const active = "_active_ih7ys_36";
+var s$1 = {
+  tabContainer,
+  selectedBackground,
+  singleLabel,
+  active
+};
+const Tab = ({
+  className,
+  entries,
+  initialSelectedIndex = 0,
+  onItemSelected,
+  ...otherProps
+}) => {
+  const [selectedIndex, setSelectedIndex] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(initialSelectedIndex);
+  const ref = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  const { width } = useDimensions(ref);
+  const selectedBackgroundLeft = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(
+    () => selectedIndex * (width - 8) / entries.length,
+    [selectedIndex, width, entries]
+  );
+  const selectedBackgroundWidth = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => (width - 8) / entries.length, [width, entries]);
+  const handleClick = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(
+    (index) => {
+      setSelectedIndex(index);
+      onItemSelected && onItemSelected(index);
+    },
+    [onItemSelected]
+  );
+  return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    ref,
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$1.tabContainer, className),
+    ...otherProps
+  }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: s$1.selectedBackground,
+    style: {
+      width: `${selectedBackgroundWidth}px`,
+      left: `${selectedBackgroundLeft + 4}px`
+    }
+  }), entries.map((entry, index) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    key: index,
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$1.singleLabel, { [s$1.active]: index === selectedIndex }),
+    onClick: () => {
+      handleClick(index);
+    },
+    onKeyDown: () => handleClick(index),
+    role: "button",
+    tabIndex: 0
+  }, entry)));
+};
+Tab.displayName = "Tab";
+const tabEntryContainer = "_tabEntryContainer_1llvn_1";
+const icon = "_icon_1llvn_10";
+const title = "_title_1llvn_14";
+const subtitle = "_subtitle_1llvn_22";
+var s = {
+  tabEntryContainer,
+  icon,
+  title,
+  subtitle
+};
+const TabEntry = ({ icon: icon2, title: title2, subtitle: subtitle2, ...otherProps }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  className: s.tabEntryContainer,
+  ...otherProps
+}, icon2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  className: s.icon
+}, icon2), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  className: s.title
+}, title2), subtitle2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  className: s.subtitle
+}, subtitle2));
+TabEntry.displayName = "TabEntry";
 
 //# sourceMappingURL=lib.es.js.map
 
@@ -19511,10 +19792,935 @@ var weakMemoize = function weakMemoize(func) {
 
 /***/ }),
 
-/***/ "./node_modules/@formatjs/ecma402-abstract/lib/utils.js":
-/*!**************************************************************!*\
-  !*** ./node_modules/@formatjs/ecma402-abstract/lib/utils.js ***!
-  \**************************************************************/
+/***/ "./node_modules/@formatjs/intl/lib/src/create-intl.js":
+/*!************************************************************!*\
+  !*** ./node_modules/@formatjs/intl/lib/src/create-intl.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   createIntl: () => (/* binding */ createIntl)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./node_modules/@formatjs/intl/lib/src/utils.js");
+/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./error */ "./node_modules/@formatjs/intl/lib/src/error.js");
+/* harmony import */ var _number__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./number */ "./node_modules/@formatjs/intl/lib/src/number.js");
+/* harmony import */ var _relativeTime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./relativeTime */ "./node_modules/@formatjs/intl/lib/src/relativeTime.js");
+/* harmony import */ var _dateTime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./dateTime */ "./node_modules/@formatjs/intl/lib/src/dateTime.js");
+/* harmony import */ var _plural__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./plural */ "./node_modules/@formatjs/intl/lib/src/plural.js");
+/* harmony import */ var _message__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./message */ "./node_modules/@formatjs/intl/lib/src/message.js");
+/* harmony import */ var _list__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./list */ "./node_modules/@formatjs/intl/lib/src/list.js");
+/* harmony import */ var _displayName__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./displayName */ "./node_modules/@formatjs/intl/lib/src/displayName.js");
+
+
+
+
+
+
+
+
+
+
+function messagesContainString(messages) {
+    var firstMessage = messages ? messages[Object.keys(messages)[0]] : undefined;
+    return typeof firstMessage === 'string';
+}
+function verifyConfigMessages(config) {
+    if (config.onWarn &&
+        config.defaultRichTextElements &&
+        messagesContainString(config.messages || {})) {
+        config.onWarn("[@formatjs/intl] \"defaultRichTextElements\" was specified but \"message\" was not pre-compiled. \nPlease consider using \"@formatjs/cli\" to pre-compile your messages for performance.\nFor more details see https://formatjs.io/docs/getting-started/message-distribution");
+    }
+}
+/**
+ * Create intl object
+ * @param config intl config
+ * @param cache cache for formatter instances to prevent memory leak
+ */
+function createIntl(config, cache) {
+    var formatters = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.createFormatters)(cache);
+    var resolvedConfig = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, _utils__WEBPACK_IMPORTED_MODULE_0__.DEFAULT_INTL_CONFIG), config);
+    var locale = resolvedConfig.locale, defaultLocale = resolvedConfig.defaultLocale, onError = resolvedConfig.onError;
+    if (!locale) {
+        if (onError) {
+            onError(new _error__WEBPACK_IMPORTED_MODULE_2__.InvalidConfigError("\"locale\" was not configured, using \"".concat(defaultLocale, "\" as fallback. See https://formatjs.io/docs/react-intl/api#intlshape for more details")));
+        }
+        // Since there's no registered locale data for `locale`, this will
+        // fallback to the `defaultLocale` to make sure things can render.
+        // The `messages` are overridden to the `defaultProps` empty object
+        // to maintain referential equality across re-renders. It's assumed
+        // each <FormattedMessage> contains a `defaultMessage` prop.
+        resolvedConfig.locale = resolvedConfig.defaultLocale || 'en';
+    }
+    else if (!Intl.NumberFormat.supportedLocalesOf(locale).length && onError) {
+        onError(new _error__WEBPACK_IMPORTED_MODULE_2__.MissingDataError("Missing locale data for locale: \"".concat(locale, "\" in Intl.NumberFormat. Using default locale: \"").concat(defaultLocale, "\" as fallback. See https://formatjs.io/docs/react-intl#runtime-requirements for more details")));
+    }
+    else if (!Intl.DateTimeFormat.supportedLocalesOf(locale).length &&
+        onError) {
+        onError(new _error__WEBPACK_IMPORTED_MODULE_2__.MissingDataError("Missing locale data for locale: \"".concat(locale, "\" in Intl.DateTimeFormat. Using default locale: \"").concat(defaultLocale, "\" as fallback. See https://formatjs.io/docs/react-intl#runtime-requirements for more details")));
+    }
+    verifyConfigMessages(resolvedConfig);
+    return (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, resolvedConfig), { formatters: formatters, formatNumber: _number__WEBPACK_IMPORTED_MODULE_3__.formatNumber.bind(null, resolvedConfig, formatters.getNumberFormat), formatNumberToParts: _number__WEBPACK_IMPORTED_MODULE_3__.formatNumberToParts.bind(null, resolvedConfig, formatters.getNumberFormat), formatRelativeTime: _relativeTime__WEBPACK_IMPORTED_MODULE_4__.formatRelativeTime.bind(null, resolvedConfig, formatters.getRelativeTimeFormat), formatDate: _dateTime__WEBPACK_IMPORTED_MODULE_5__.formatDate.bind(null, resolvedConfig, formatters.getDateTimeFormat), formatDateToParts: _dateTime__WEBPACK_IMPORTED_MODULE_5__.formatDateToParts.bind(null, resolvedConfig, formatters.getDateTimeFormat), formatTime: _dateTime__WEBPACK_IMPORTED_MODULE_5__.formatTime.bind(null, resolvedConfig, formatters.getDateTimeFormat), formatDateTimeRange: _dateTime__WEBPACK_IMPORTED_MODULE_5__.formatDateTimeRange.bind(null, resolvedConfig, formatters.getDateTimeFormat), formatTimeToParts: _dateTime__WEBPACK_IMPORTED_MODULE_5__.formatTimeToParts.bind(null, resolvedConfig, formatters.getDateTimeFormat), formatPlural: _plural__WEBPACK_IMPORTED_MODULE_6__.formatPlural.bind(null, resolvedConfig, formatters.getPluralRules), 
+        // @ts-expect-error TODO: will get to this later
+        formatMessage: _message__WEBPACK_IMPORTED_MODULE_7__.formatMessage.bind(null, resolvedConfig, formatters), 
+        // @ts-expect-error TODO: will get to this later
+        $t: _message__WEBPACK_IMPORTED_MODULE_7__.formatMessage.bind(null, resolvedConfig, formatters), formatList: _list__WEBPACK_IMPORTED_MODULE_8__.formatList.bind(null, resolvedConfig, formatters.getListFormat), formatListToParts: _list__WEBPACK_IMPORTED_MODULE_8__.formatListToParts.bind(null, resolvedConfig, formatters.getListFormat), formatDisplayName: _displayName__WEBPACK_IMPORTED_MODULE_9__.formatDisplayName.bind(null, resolvedConfig, formatters.getDisplayNames) });
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@formatjs/intl/lib/src/dateTime.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/@formatjs/intl/lib/src/dateTime.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   formatDate: () => (/* binding */ formatDate),
+/* harmony export */   formatDateTimeRange: () => (/* binding */ formatDateTimeRange),
+/* harmony export */   formatDateToParts: () => (/* binding */ formatDateToParts),
+/* harmony export */   formatTime: () => (/* binding */ formatTime),
+/* harmony export */   formatTimeToParts: () => (/* binding */ formatTimeToParts),
+/* harmony export */   getFormatter: () => (/* binding */ getFormatter)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./node_modules/@formatjs/intl/lib/src/utils.js");
+/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./error */ "./node_modules/@formatjs/intl/lib/src/error.js");
+
+
+
+var DATE_TIME_FORMAT_OPTIONS = [
+    'formatMatcher',
+    'timeZone',
+    'hour12',
+    'weekday',
+    'era',
+    'year',
+    'month',
+    'day',
+    'hour',
+    'minute',
+    'second',
+    'timeZoneName',
+    'hourCycle',
+    'dateStyle',
+    'timeStyle',
+    'calendar',
+    // 'dayPeriod',
+    'numberingSystem',
+    'fractionalSecondDigits',
+];
+function getFormatter(_a, type, getDateTimeFormat, options) {
+    var locale = _a.locale, formats = _a.formats, onError = _a.onError, timeZone = _a.timeZone;
+    if (options === void 0) { options = {}; }
+    var format = options.format;
+    var defaults = (0,tslib__WEBPACK_IMPORTED_MODULE_0__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_0__.__assign)({}, (timeZone && { timeZone: timeZone })), (format && (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getNamedFormat)(formats, type, format, onError)));
+    var filteredOptions = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.filterProps)(options, DATE_TIME_FORMAT_OPTIONS, defaults);
+    if (type === 'time' &&
+        !filteredOptions.hour &&
+        !filteredOptions.minute &&
+        !filteredOptions.second &&
+        !filteredOptions.timeStyle &&
+        !filteredOptions.dateStyle) {
+        // Add default formatting options if hour, minute, or second isn't defined.
+        filteredOptions = (0,tslib__WEBPACK_IMPORTED_MODULE_0__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_0__.__assign)({}, filteredOptions), { hour: 'numeric', minute: 'numeric' });
+    }
+    return getDateTimeFormat(locale, filteredOptions);
+}
+function formatDate(config, getDateTimeFormat) {
+    var _a = [];
+    for (var _i = 2; _i < arguments.length; _i++) {
+        _a[_i - 2] = arguments[_i];
+    }
+    var value = _a[0], _b = _a[1], options = _b === void 0 ? {} : _b;
+    var date = typeof value === 'string' ? new Date(value || 0) : value;
+    try {
+        return getFormatter(config, 'date', getDateTimeFormat, options).format(date);
+    }
+    catch (e) {
+        config.onError(new _error__WEBPACK_IMPORTED_MODULE_2__.IntlFormatError('Error formatting date.', config.locale, e));
+    }
+    return String(date);
+}
+function formatTime(config, getDateTimeFormat) {
+    var _a = [];
+    for (var _i = 2; _i < arguments.length; _i++) {
+        _a[_i - 2] = arguments[_i];
+    }
+    var value = _a[0], _b = _a[1], options = _b === void 0 ? {} : _b;
+    var date = typeof value === 'string' ? new Date(value || 0) : value;
+    try {
+        return getFormatter(config, 'time', getDateTimeFormat, options).format(date);
+    }
+    catch (e) {
+        config.onError(new _error__WEBPACK_IMPORTED_MODULE_2__.IntlFormatError('Error formatting time.', config.locale, e));
+    }
+    return String(date);
+}
+function formatDateTimeRange(config, getDateTimeFormat) {
+    var _a = [];
+    for (var _i = 2; _i < arguments.length; _i++) {
+        _a[_i - 2] = arguments[_i];
+    }
+    var from = _a[0], to = _a[1], _b = _a[2], options = _b === void 0 ? {} : _b;
+    var timeZone = config.timeZone, locale = config.locale, onError = config.onError;
+    var filteredOptions = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.filterProps)(options, DATE_TIME_FORMAT_OPTIONS, timeZone ? { timeZone: timeZone } : {});
+    try {
+        return getDateTimeFormat(locale, filteredOptions).formatRange(from, to);
+    }
+    catch (e) {
+        onError(new _error__WEBPACK_IMPORTED_MODULE_2__.IntlFormatError('Error formatting date time range.', config.locale, e));
+    }
+    return String(from);
+}
+function formatDateToParts(config, getDateTimeFormat) {
+    var _a = [];
+    for (var _i = 2; _i < arguments.length; _i++) {
+        _a[_i - 2] = arguments[_i];
+    }
+    var value = _a[0], _b = _a[1], options = _b === void 0 ? {} : _b;
+    var date = typeof value === 'string' ? new Date(value || 0) : value;
+    try {
+        return getFormatter(config, 'date', getDateTimeFormat, options).formatToParts(date); // TODO: remove this when https://github.com/microsoft/TypeScript/pull/50402 is merged
+    }
+    catch (e) {
+        config.onError(new _error__WEBPACK_IMPORTED_MODULE_2__.IntlFormatError('Error formatting date.', config.locale, e));
+    }
+    return [];
+}
+function formatTimeToParts(config, getDateTimeFormat) {
+    var _a = [];
+    for (var _i = 2; _i < arguments.length; _i++) {
+        _a[_i - 2] = arguments[_i];
+    }
+    var value = _a[0], _b = _a[1], options = _b === void 0 ? {} : _b;
+    var date = typeof value === 'string' ? new Date(value || 0) : value;
+    try {
+        return getFormatter(config, 'time', getDateTimeFormat, options).formatToParts(date); // TODO: remove this when https://github.com/microsoft/TypeScript/pull/50402 is merged
+    }
+    catch (e) {
+        config.onError(new _error__WEBPACK_IMPORTED_MODULE_2__.IntlFormatError('Error formatting time.', config.locale, e));
+    }
+    return [];
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@formatjs/intl/lib/src/displayName.js":
+/*!************************************************************!*\
+  !*** ./node_modules/@formatjs/intl/lib/src/displayName.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   formatDisplayName: () => (/* binding */ formatDisplayName)
+/* harmony export */ });
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./node_modules/@formatjs/intl/lib/src/utils.js");
+/* harmony import */ var intl_messageformat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! intl-messageformat */ "./node_modules/@formatjs/intl/node_modules/intl-messageformat/lib/src/error.js");
+/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./error */ "./node_modules/@formatjs/intl/lib/src/error.js");
+
+
+
+var DISPLAY_NAMES_OPTONS = [
+    'style',
+    'type',
+    'fallback',
+    'languageDisplay',
+];
+function formatDisplayName(_a, getDisplayNames, value, options) {
+    var locale = _a.locale, onError = _a.onError;
+    var DisplayNames = Intl.DisplayNames;
+    if (!DisplayNames) {
+        onError(new intl_messageformat__WEBPACK_IMPORTED_MODULE_0__.FormatError("Intl.DisplayNames is not available in this environment.\nTry polyfilling it using \"@formatjs/intl-displaynames\"\n", intl_messageformat__WEBPACK_IMPORTED_MODULE_0__.ErrorCode.MISSING_INTL_API));
+    }
+    var filteredOptions = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.filterProps)(options, DISPLAY_NAMES_OPTONS);
+    try {
+        return getDisplayNames(locale, filteredOptions).of(value);
+    }
+    catch (e) {
+        onError(new _error__WEBPACK_IMPORTED_MODULE_2__.IntlFormatError('Error formatting display name.', locale, e));
+    }
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@formatjs/intl/lib/src/error.js":
+/*!******************************************************!*\
+  !*** ./node_modules/@formatjs/intl/lib/src/error.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   IntlError: () => (/* binding */ IntlError),
+/* harmony export */   IntlErrorCode: () => (/* binding */ IntlErrorCode),
+/* harmony export */   IntlFormatError: () => (/* binding */ IntlFormatError),
+/* harmony export */   InvalidConfigError: () => (/* binding */ InvalidConfigError),
+/* harmony export */   MessageFormatError: () => (/* binding */ MessageFormatError),
+/* harmony export */   MissingDataError: () => (/* binding */ MissingDataError),
+/* harmony export */   MissingTranslationError: () => (/* binding */ MissingTranslationError),
+/* harmony export */   UnsupportedFormatterError: () => (/* binding */ UnsupportedFormatterError)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
+
+var IntlErrorCode;
+(function (IntlErrorCode) {
+    IntlErrorCode["FORMAT_ERROR"] = "FORMAT_ERROR";
+    IntlErrorCode["UNSUPPORTED_FORMATTER"] = "UNSUPPORTED_FORMATTER";
+    IntlErrorCode["INVALID_CONFIG"] = "INVALID_CONFIG";
+    IntlErrorCode["MISSING_DATA"] = "MISSING_DATA";
+    IntlErrorCode["MISSING_TRANSLATION"] = "MISSING_TRANSLATION";
+})(IntlErrorCode || (IntlErrorCode = {}));
+var IntlError = /** @class */ (function (_super) {
+    (0,tslib__WEBPACK_IMPORTED_MODULE_0__.__extends)(IntlError, _super);
+    function IntlError(code, message, exception) {
+        var _this = this;
+        var err = exception
+            ? exception instanceof Error
+                ? exception
+                : new Error(String(exception))
+            : undefined;
+        _this = _super.call(this, "[@formatjs/intl Error ".concat(code, "] ").concat(message, "\n").concat(err ? "\n".concat(err.message, "\n").concat(err.stack) : '')) || this;
+        _this.code = code;
+        // @ts-ignore just so we don't need to declare dep on @types/node
+        if (typeof Error.captureStackTrace === 'function') {
+            // @ts-ignore just so we don't need to declare dep on @types/node
+            Error.captureStackTrace(_this, IntlError);
+        }
+        return _this;
+    }
+    return IntlError;
+}(Error));
+
+var UnsupportedFormatterError = /** @class */ (function (_super) {
+    (0,tslib__WEBPACK_IMPORTED_MODULE_0__.__extends)(UnsupportedFormatterError, _super);
+    function UnsupportedFormatterError(message, exception) {
+        return _super.call(this, IntlErrorCode.UNSUPPORTED_FORMATTER, message, exception) || this;
+    }
+    return UnsupportedFormatterError;
+}(IntlError));
+
+var InvalidConfigError = /** @class */ (function (_super) {
+    (0,tslib__WEBPACK_IMPORTED_MODULE_0__.__extends)(InvalidConfigError, _super);
+    function InvalidConfigError(message, exception) {
+        return _super.call(this, IntlErrorCode.INVALID_CONFIG, message, exception) || this;
+    }
+    return InvalidConfigError;
+}(IntlError));
+
+var MissingDataError = /** @class */ (function (_super) {
+    (0,tslib__WEBPACK_IMPORTED_MODULE_0__.__extends)(MissingDataError, _super);
+    function MissingDataError(message, exception) {
+        return _super.call(this, IntlErrorCode.MISSING_DATA, message, exception) || this;
+    }
+    return MissingDataError;
+}(IntlError));
+
+var IntlFormatError = /** @class */ (function (_super) {
+    (0,tslib__WEBPACK_IMPORTED_MODULE_0__.__extends)(IntlFormatError, _super);
+    function IntlFormatError(message, locale, exception) {
+        var _this = _super.call(this, IntlErrorCode.FORMAT_ERROR, "".concat(message, "\nLocale: ").concat(locale, "\n"), exception) || this;
+        _this.locale = locale;
+        return _this;
+    }
+    return IntlFormatError;
+}(IntlError));
+
+var MessageFormatError = /** @class */ (function (_super) {
+    (0,tslib__WEBPACK_IMPORTED_MODULE_0__.__extends)(MessageFormatError, _super);
+    function MessageFormatError(message, locale, descriptor, exception) {
+        var _this = _super.call(this, "".concat(message, "\nMessageID: ").concat(descriptor === null || descriptor === void 0 ? void 0 : descriptor.id, "\nDefault Message: ").concat(descriptor === null || descriptor === void 0 ? void 0 : descriptor.defaultMessage, "\nDescription: ").concat(descriptor === null || descriptor === void 0 ? void 0 : descriptor.description, "\n"), locale, exception) || this;
+        _this.descriptor = descriptor;
+        _this.locale = locale;
+        return _this;
+    }
+    return MessageFormatError;
+}(IntlFormatError));
+
+var MissingTranslationError = /** @class */ (function (_super) {
+    (0,tslib__WEBPACK_IMPORTED_MODULE_0__.__extends)(MissingTranslationError, _super);
+    function MissingTranslationError(descriptor, locale) {
+        var _this = _super.call(this, IntlErrorCode.MISSING_TRANSLATION, "Missing message: \"".concat(descriptor.id, "\" for locale \"").concat(locale, "\", using ").concat(descriptor.defaultMessage
+            ? "default message (".concat(typeof descriptor.defaultMessage === 'string'
+                ? descriptor.defaultMessage
+                : descriptor.defaultMessage
+                    .map(function (e) { var _a; return (_a = e.value) !== null && _a !== void 0 ? _a : JSON.stringify(e); })
+                    .join(), ")")
+            : 'id', " as fallback.")) || this;
+        _this.descriptor = descriptor;
+        return _this;
+    }
+    return MissingTranslationError;
+}(IntlError));
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@formatjs/intl/lib/src/list.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/@formatjs/intl/lib/src/list.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   formatList: () => (/* binding */ formatList),
+/* harmony export */   formatListToParts: () => (/* binding */ formatListToParts)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./node_modules/@formatjs/intl/lib/src/utils.js");
+/* harmony import */ var intl_messageformat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! intl-messageformat */ "./node_modules/@formatjs/intl/node_modules/intl-messageformat/lib/src/error.js");
+/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./error */ "./node_modules/@formatjs/intl/lib/src/error.js");
+
+
+
+
+var LIST_FORMAT_OPTIONS = [
+    'type',
+    'style',
+];
+var now = Date.now();
+function generateToken(i) {
+    return "".concat(now, "_").concat(i, "_").concat(now);
+}
+function formatList(opts, getListFormat, values, options) {
+    if (options === void 0) { options = {}; }
+    var results = formatListToParts(opts, getListFormat, values, options).reduce(function (all, el) {
+        var val = el.value;
+        if (typeof val !== 'string') {
+            all.push(val);
+        }
+        else if (typeof all[all.length - 1] === 'string') {
+            all[all.length - 1] += val;
+        }
+        else {
+            all.push(val);
+        }
+        return all;
+    }, []);
+    return results.length === 1 ? results[0] : results.length === 0 ? '' : results;
+}
+function formatListToParts(_a, getListFormat, values, options) {
+    var locale = _a.locale, onError = _a.onError;
+    if (options === void 0) { options = {}; }
+    var ListFormat = Intl.ListFormat;
+    if (!ListFormat) {
+        onError(new intl_messageformat__WEBPACK_IMPORTED_MODULE_0__.FormatError("Intl.ListFormat is not available in this environment.\nTry polyfilling it using \"@formatjs/intl-listformat\"\n", intl_messageformat__WEBPACK_IMPORTED_MODULE_0__.ErrorCode.MISSING_INTL_API));
+    }
+    var filteredOptions = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.filterProps)(options, LIST_FORMAT_OPTIONS);
+    try {
+        var richValues_1 = {};
+        var serializedValues = values.map(function (v, i) {
+            if (typeof v === 'object') {
+                var id = generateToken(i);
+                richValues_1[id] = v;
+                return id;
+            }
+            return String(v);
+        });
+        return getListFormat(locale, filteredOptions)
+            .formatToParts(serializedValues)
+            .map(function (part) {
+            return part.type === 'literal'
+                ? part
+                : (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({}, part), { value: richValues_1[part.value] || part.value });
+        });
+    }
+    catch (e) {
+        onError(new _error__WEBPACK_IMPORTED_MODULE_3__.IntlFormatError('Error formatting list.', locale, e));
+    }
+    // @ts-ignore
+    return values;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@formatjs/intl/lib/src/message.js":
+/*!********************************************************!*\
+  !*** ./node_modules/@formatjs/intl/lib/src/message.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   formatMessage: () => (/* binding */ formatMessage)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
+/* harmony import */ var _formatjs_ecma402_abstract__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @formatjs/ecma402-abstract */ "./node_modules/@formatjs/intl/node_modules/@formatjs/ecma402-abstract/lib/utils.js");
+/* harmony import */ var intl_messageformat__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! intl-messageformat */ "./node_modules/@formatjs/intl/node_modules/intl-messageformat/lib/src/core.js");
+/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./error */ "./node_modules/@formatjs/intl/lib/src/error.js");
+/* harmony import */ var _formatjs_icu_messageformat_parser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @formatjs/icu-messageformat-parser */ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/index.js");
+
+
+
+
+
+function setTimeZoneInOptions(opts, timeZone) {
+    return Object.keys(opts).reduce(function (all, k) {
+        all[k] = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({ timeZone: timeZone }, opts[k]);
+        return all;
+    }, {});
+}
+function deepMergeOptions(opts1, opts2) {
+    var keys = Object.keys((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, opts1), opts2));
+    return keys.reduce(function (all, k) {
+        all[k] = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, (opts1[k] || {})), (opts2[k] || {}));
+        return all;
+    }, {});
+}
+function deepMergeFormatsAndSetTimeZone(f1, timeZone) {
+    if (!timeZone) {
+        return f1;
+    }
+    var mfFormats = intl_messageformat__WEBPACK_IMPORTED_MODULE_2__.IntlMessageFormat.formats;
+    return (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, mfFormats), f1), { date: deepMergeOptions(setTimeZoneInOptions(mfFormats.date, timeZone), setTimeZoneInOptions(f1.date || {}, timeZone)), time: deepMergeOptions(setTimeZoneInOptions(mfFormats.time, timeZone), setTimeZoneInOptions(f1.time || {}, timeZone)) });
+}
+var formatMessage = function (_a, state, messageDescriptor, values, opts) {
+    var locale = _a.locale, formats = _a.formats, messages = _a.messages, defaultLocale = _a.defaultLocale, defaultFormats = _a.defaultFormats, fallbackOnEmptyString = _a.fallbackOnEmptyString, onError = _a.onError, timeZone = _a.timeZone, defaultRichTextElements = _a.defaultRichTextElements;
+    if (messageDescriptor === void 0) { messageDescriptor = { id: '' }; }
+    var msgId = messageDescriptor.id, defaultMessage = messageDescriptor.defaultMessage;
+    // `id` is a required field of a Message Descriptor.
+    (0,_formatjs_ecma402_abstract__WEBPACK_IMPORTED_MODULE_3__.invariant)(!!msgId, "[@formatjs/intl] An `id` must be provided to format a message. You can either:\n1. Configure your build toolchain with [babel-plugin-formatjs](https://formatjs.io/docs/tooling/babel-plugin)\nor [@formatjs/ts-transformer](https://formatjs.io/docs/tooling/ts-transformer) OR\n2. Configure your `eslint` config to include [eslint-plugin-formatjs](https://formatjs.io/docs/tooling/linter#enforce-id)\nto autofix this issue");
+    var id = String(msgId);
+    var message = 
+    // In case messages is Object.create(null)
+    // e.g import('foo.json') from webpack)
+    // See https://github.com/formatjs/formatjs/issues/1914
+    messages &&
+        Object.prototype.hasOwnProperty.call(messages, id) &&
+        messages[id];
+    // IMPORTANT: Hot path if `message` is AST with a single literal node
+    if (Array.isArray(message) &&
+        message.length === 1 &&
+        message[0].type === _formatjs_icu_messageformat_parser__WEBPACK_IMPORTED_MODULE_0__.TYPE.literal) {
+        return message[0].value;
+    }
+    // IMPORTANT: Hot path straight lookup for performance
+    if (!values &&
+        message &&
+        typeof message === 'string' &&
+        !defaultRichTextElements) {
+        return message.replace(/'\{(.*?)\}'/gi, "{$1}");
+    }
+    values = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, defaultRichTextElements), (values || {}));
+    formats = deepMergeFormatsAndSetTimeZone(formats, timeZone);
+    defaultFormats = deepMergeFormatsAndSetTimeZone(defaultFormats, timeZone);
+    if (!message) {
+        if (fallbackOnEmptyString === false && message === '') {
+            return message;
+        }
+        if (!defaultMessage ||
+            (locale && locale.toLowerCase() !== defaultLocale.toLowerCase())) {
+            // This prevents warnings from littering the console in development
+            // when no `messages` are passed into the <IntlProvider> for the
+            // default locale.
+            onError(new _error__WEBPACK_IMPORTED_MODULE_4__.MissingTranslationError(messageDescriptor, locale));
+        }
+        if (defaultMessage) {
+            try {
+                var formatter = state.getMessageFormat(defaultMessage, defaultLocale, defaultFormats, opts);
+                return formatter.format(values);
+            }
+            catch (e) {
+                onError(new _error__WEBPACK_IMPORTED_MODULE_4__.MessageFormatError("Error formatting default message for: \"".concat(id, "\", rendering default message verbatim"), locale, messageDescriptor, e));
+                return typeof defaultMessage === 'string' ? defaultMessage : id;
+            }
+        }
+        return id;
+    }
+    // We have the translated message
+    try {
+        var formatter = state.getMessageFormat(message, locale, formats, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({ formatters: state }, (opts || {})));
+        return formatter.format(values);
+    }
+    catch (e) {
+        onError(new _error__WEBPACK_IMPORTED_MODULE_4__.MessageFormatError("Error formatting message: \"".concat(id, "\", using ").concat(defaultMessage ? 'default message' : 'id', " as fallback."), locale, messageDescriptor, e));
+    }
+    if (defaultMessage) {
+        try {
+            var formatter = state.getMessageFormat(defaultMessage, defaultLocale, defaultFormats, opts);
+            return formatter.format(values);
+        }
+        catch (e) {
+            onError(new _error__WEBPACK_IMPORTED_MODULE_4__.MessageFormatError("Error formatting the default message for: \"".concat(id, "\", rendering message verbatim"), locale, messageDescriptor, e));
+        }
+    }
+    if (typeof message === 'string') {
+        return message;
+    }
+    if (typeof defaultMessage === 'string') {
+        return defaultMessage;
+    }
+    return id;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/@formatjs/intl/lib/src/number.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/@formatjs/intl/lib/src/number.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   formatNumber: () => (/* binding */ formatNumber),
+/* harmony export */   formatNumberToParts: () => (/* binding */ formatNumberToParts),
+/* harmony export */   getFormatter: () => (/* binding */ getFormatter)
+/* harmony export */ });
+/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./error */ "./node_modules/@formatjs/intl/lib/src/error.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./node_modules/@formatjs/intl/lib/src/utils.js");
+
+
+var NUMBER_FORMAT_OPTIONS = [
+    'style',
+    'currency',
+    'unit',
+    'unitDisplay',
+    'useGrouping',
+    'minimumIntegerDigits',
+    'minimumFractionDigits',
+    'maximumFractionDigits',
+    'minimumSignificantDigits',
+    'maximumSignificantDigits',
+    // ES2020 NumberFormat
+    'compactDisplay',
+    'currencyDisplay',
+    'currencySign',
+    'notation',
+    'signDisplay',
+    'unit',
+    'unitDisplay',
+    'numberingSystem',
+    // ES2023 NumberFormat
+    'trailingZeroDisplay',
+    'roundingPriority',
+    'roundingIncrement',
+    'roundingMode',
+];
+function getFormatter(_a, getNumberFormat, options) {
+    var locale = _a.locale, formats = _a.formats, onError = _a.onError;
+    if (options === void 0) { options = {}; }
+    var format = options.format;
+    var defaults = ((format &&
+        (0,_utils__WEBPACK_IMPORTED_MODULE_0__.getNamedFormat)(formats, 'number', format, onError)) ||
+        {});
+    var filteredOptions = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.filterProps)(options, NUMBER_FORMAT_OPTIONS, defaults);
+    return getNumberFormat(locale, filteredOptions);
+}
+function formatNumber(config, getNumberFormat, value, options) {
+    if (options === void 0) { options = {}; }
+    try {
+        return getFormatter(config, getNumberFormat, options).format(value);
+    }
+    catch (e) {
+        config.onError(new _error__WEBPACK_IMPORTED_MODULE_1__.IntlFormatError('Error formatting number.', config.locale, e));
+    }
+    return String(value);
+}
+function formatNumberToParts(config, getNumberFormat, value, options) {
+    if (options === void 0) { options = {}; }
+    try {
+        return getFormatter(config, getNumberFormat, options).formatToParts(value);
+    }
+    catch (e) {
+        config.onError(new _error__WEBPACK_IMPORTED_MODULE_1__.IntlFormatError('Error formatting number.', config.locale, e));
+    }
+    return [];
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@formatjs/intl/lib/src/plural.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/@formatjs/intl/lib/src/plural.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   formatPlural: () => (/* binding */ formatPlural)
+/* harmony export */ });
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./node_modules/@formatjs/intl/lib/src/utils.js");
+/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./error */ "./node_modules/@formatjs/intl/lib/src/error.js");
+/* harmony import */ var intl_messageformat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! intl-messageformat */ "./node_modules/@formatjs/intl/node_modules/intl-messageformat/lib/src/error.js");
+
+
+
+var PLURAL_FORMAT_OPTIONS = ['type'];
+function formatPlural(_a, getPluralRules, value, options) {
+    var locale = _a.locale, onError = _a.onError;
+    if (options === void 0) { options = {}; }
+    if (!Intl.PluralRules) {
+        onError(new intl_messageformat__WEBPACK_IMPORTED_MODULE_0__.FormatError("Intl.PluralRules is not available in this environment.\nTry polyfilling it using \"@formatjs/intl-pluralrules\"\n", intl_messageformat__WEBPACK_IMPORTED_MODULE_0__.ErrorCode.MISSING_INTL_API));
+    }
+    var filteredOptions = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.filterProps)(options, PLURAL_FORMAT_OPTIONS);
+    try {
+        return getPluralRules(locale, filteredOptions).select(value);
+    }
+    catch (e) {
+        onError(new _error__WEBPACK_IMPORTED_MODULE_2__.IntlFormatError('Error formatting plural.', locale, e));
+    }
+    return 'other';
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@formatjs/intl/lib/src/relativeTime.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/@formatjs/intl/lib/src/relativeTime.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   formatRelativeTime: () => (/* binding */ formatRelativeTime)
+/* harmony export */ });
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./node_modules/@formatjs/intl/lib/src/utils.js");
+/* harmony import */ var intl_messageformat__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! intl-messageformat */ "./node_modules/@formatjs/intl/node_modules/intl-messageformat/lib/src/error.js");
+/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./error */ "./node_modules/@formatjs/intl/lib/src/error.js");
+
+
+
+var RELATIVE_TIME_FORMAT_OPTIONS = ['numeric', 'style'];
+function getFormatter(_a, getRelativeTimeFormat, options) {
+    var locale = _a.locale, formats = _a.formats, onError = _a.onError;
+    if (options === void 0) { options = {}; }
+    var format = options.format;
+    var defaults = (!!format && (0,_utils__WEBPACK_IMPORTED_MODULE_0__.getNamedFormat)(formats, 'relative', format, onError)) || {};
+    var filteredOptions = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.filterProps)(options, RELATIVE_TIME_FORMAT_OPTIONS, defaults);
+    return getRelativeTimeFormat(locale, filteredOptions);
+}
+function formatRelativeTime(config, getRelativeTimeFormat, value, unit, options) {
+    if (options === void 0) { options = {}; }
+    if (!unit) {
+        unit = 'second';
+    }
+    var RelativeTimeFormat = Intl.RelativeTimeFormat;
+    if (!RelativeTimeFormat) {
+        config.onError(new intl_messageformat__WEBPACK_IMPORTED_MODULE_1__.FormatError("Intl.RelativeTimeFormat is not available in this environment.\nTry polyfilling it using \"@formatjs/intl-relativetimeformat\"\n", intl_messageformat__WEBPACK_IMPORTED_MODULE_1__.ErrorCode.MISSING_INTL_API));
+    }
+    try {
+        return getFormatter(config, getRelativeTimeFormat, options).format(value, unit);
+    }
+    catch (e) {
+        config.onError(new _error__WEBPACK_IMPORTED_MODULE_2__.IntlFormatError('Error formatting relative time.', config.locale, e));
+    }
+    return String(value);
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@formatjs/intl/lib/src/utils.js":
+/*!******************************************************!*\
+  !*** ./node_modules/@formatjs/intl/lib/src/utils.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DEFAULT_INTL_CONFIG: () => (/* binding */ DEFAULT_INTL_CONFIG),
+/* harmony export */   createFormatters: () => (/* binding */ createFormatters),
+/* harmony export */   createIntlCache: () => (/* binding */ createIntlCache),
+/* harmony export */   filterProps: () => (/* binding */ filterProps),
+/* harmony export */   getNamedFormat: () => (/* binding */ getNamedFormat)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
+/* harmony import */ var intl_messageformat__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! intl-messageformat */ "./node_modules/@formatjs/intl/node_modules/intl-messageformat/lib/src/core.js");
+/* harmony import */ var _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @formatjs/fast-memoize */ "./node_modules/@formatjs/intl/node_modules/@formatjs/fast-memoize/lib/index.js");
+/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./error */ "./node_modules/@formatjs/intl/lib/src/error.js");
+
+
+
+
+function filterProps(props, allowlist, defaults) {
+    if (defaults === void 0) { defaults = {}; }
+    return allowlist.reduce(function (filtered, name) {
+        if (name in props) {
+            filtered[name] = props[name];
+        }
+        else if (name in defaults) {
+            filtered[name] = defaults[name];
+        }
+        return filtered;
+    }, {});
+}
+var defaultErrorHandler = function (error) {
+    // @ts-ignore just so we don't need to declare dep on @types/node
+    if (true) {
+        console.error(error);
+    }
+};
+var defaultWarnHandler = function (warning) {
+    // @ts-ignore just so we don't need to declare dep on @types/node
+    if (true) {
+        console.warn(warning);
+    }
+};
+var DEFAULT_INTL_CONFIG = {
+    formats: {},
+    messages: {},
+    timeZone: undefined,
+    defaultLocale: 'en',
+    defaultFormats: {},
+    fallbackOnEmptyString: true,
+    onError: defaultErrorHandler,
+    onWarn: defaultWarnHandler,
+};
+function createIntlCache() {
+    return {
+        dateTime: {},
+        number: {},
+        message: {},
+        relativeTime: {},
+        pluralRules: {},
+        list: {},
+        displayNames: {},
+    };
+}
+function createFastMemoizeCache(store) {
+    return {
+        create: function () {
+            return {
+                get: function (key) {
+                    return store[key];
+                },
+                set: function (key, value) {
+                    store[key] = value;
+                },
+            };
+        },
+    };
+}
+/**
+ * Create intl formatters and populate cache
+ * @param cache explicit cache to prevent leaking memory
+ */
+function createFormatters(cache) {
+    if (cache === void 0) { cache = createIntlCache(); }
+    var RelativeTimeFormat = Intl.RelativeTimeFormat;
+    var ListFormat = Intl.ListFormat;
+    var DisplayNames = Intl.DisplayNames;
+    var getDateTimeFormat = (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
+        var _a;
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        return new ((_a = Intl.DateTimeFormat).bind.apply(_a, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([void 0], args, false)))();
+    }, {
+        cache: createFastMemoizeCache(cache.dateTime),
+        strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
+    });
+    var getNumberFormat = (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
+        var _a;
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        return new ((_a = Intl.NumberFormat).bind.apply(_a, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([void 0], args, false)))();
+    }, {
+        cache: createFastMemoizeCache(cache.number),
+        strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
+    });
+    var getPluralRules = (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
+        var _a;
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        return new ((_a = Intl.PluralRules).bind.apply(_a, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([void 0], args, false)))();
+    }, {
+        cache: createFastMemoizeCache(cache.pluralRules),
+        strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
+    });
+    return {
+        getDateTimeFormat: getDateTimeFormat,
+        getNumberFormat: getNumberFormat,
+        getMessageFormat: (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function (message, locales, overrideFormats, opts) {
+            return new intl_messageformat__WEBPACK_IMPORTED_MODULE_2__.IntlMessageFormat(message, locales, overrideFormats, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({ formatters: {
+                    getNumberFormat: getNumberFormat,
+                    getDateTimeFormat: getDateTimeFormat,
+                    getPluralRules: getPluralRules,
+                } }, (opts || {})));
+        }, {
+            cache: createFastMemoizeCache(cache.message),
+            strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
+        }),
+        getRelativeTimeFormat: (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            return new (RelativeTimeFormat.bind.apply(RelativeTimeFormat, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([void 0], args, false)))();
+        }, {
+            cache: createFastMemoizeCache(cache.relativeTime),
+            strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
+        }),
+        getPluralRules: getPluralRules,
+        getListFormat: (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            return new (ListFormat.bind.apply(ListFormat, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([void 0], args, false)))();
+        }, {
+            cache: createFastMemoizeCache(cache.list),
+            strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
+        }),
+        getDisplayNames: (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            return new (DisplayNames.bind.apply(DisplayNames, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([void 0], args, false)))();
+        }, {
+            cache: createFastMemoizeCache(cache.displayNames),
+            strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
+        }),
+    };
+}
+function getNamedFormat(formats, type, name, onError) {
+    var formatType = formats && formats[type];
+    var format;
+    if (formatType) {
+        format = formatType[name];
+    }
+    if (format) {
+        return format;
+    }
+    onError(new _error__WEBPACK_IMPORTED_MODULE_3__.UnsupportedFormatterError("No ".concat(type, " format named: ").concat(name)));
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@formatjs/intl/node_modules/@formatjs/ecma402-abstract/lib/utils.js":
+/*!******************************************************************************************!*\
+  !*** ./node_modules/@formatjs/intl/node_modules/@formatjs/ecma402-abstract/lib/utils.js ***!
+  \******************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -19538,7 +20744,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   setMultiInternalSlots: () => (/* binding */ setMultiInternalSlots)
 /* harmony export */ });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
-/* harmony import */ var _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @formatjs/fast-memoize */ "./node_modules/@formatjs/fast-memoize/lib/index.js");
+/* harmony import */ var _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @formatjs/fast-memoize */ "./node_modules/@formatjs/intl/node_modules/@formatjs/fast-memoize/lib/index.js");
 
 
 /**
@@ -19687,10 +20893,10 @@ var createMemoizedListFormat = (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODUL
 
 /***/ }),
 
-/***/ "./node_modules/@formatjs/fast-memoize/lib/index.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/@formatjs/fast-memoize/lib/index.js ***!
-  \**********************************************************/
+/***/ "./node_modules/@formatjs/intl/node_modules/@formatjs/fast-memoize/lib/index.js":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/@formatjs/intl/node_modules/@formatjs/fast-memoize/lib/index.js ***!
+  \**************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -19781,10 +20987,10 @@ var strategies = {
 
 /***/ }),
 
-/***/ "./node_modules/@formatjs/icu-messageformat-parser/lib/date-time-pattern-generator.js":
-/*!********************************************************************************************!*\
-  !*** ./node_modules/@formatjs/icu-messageformat-parser/lib/date-time-pattern-generator.js ***!
-  \********************************************************************************************/
+/***/ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/date-time-pattern-generator.js":
+/*!************************************************************************************************************************!*\
+  !*** ./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/date-time-pattern-generator.js ***!
+  \************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -19792,7 +20998,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   getBestPattern: () => (/* binding */ getBestPattern)
 /* harmony export */ });
-/* harmony import */ var _time_data_generated__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./time-data.generated */ "./node_modules/@formatjs/icu-messageformat-parser/lib/time-data.generated.js");
+/* harmony import */ var _time_data_generated__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./time-data.generated */ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/time-data.generated.js");
 
 /**
  * Returns the best matching date time pattern if a date time skeleton
@@ -19880,10 +21086,10 @@ function getDefaultHourSymbolFromLocale(locale) {
 
 /***/ }),
 
-/***/ "./node_modules/@formatjs/icu-messageformat-parser/lib/error.js":
-/*!**********************************************************************!*\
-  !*** ./node_modules/@formatjs/icu-messageformat-parser/lib/error.js ***!
-  \**********************************************************************/
+/***/ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/error.js":
+/*!**************************************************************************************************!*\
+  !*** ./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/error.js ***!
+  \**************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -19958,10 +21164,10 @@ var ErrorKind;
 
 /***/ }),
 
-/***/ "./node_modules/@formatjs/icu-messageformat-parser/lib/index.js":
-/*!**********************************************************************!*\
-  !*** ./node_modules/@formatjs/icu-messageformat-parser/lib/index.js ***!
-  \**********************************************************************/
+/***/ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/index.js":
+/*!**************************************************************************************************!*\
+  !*** ./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/index.js ***!
+  \**************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -19986,9 +21192,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   parse: () => (/* binding */ parse)
 /* harmony export */ });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
-/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./error */ "./node_modules/@formatjs/icu-messageformat-parser/lib/error.js");
-/* harmony import */ var _parser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./parser */ "./node_modules/@formatjs/icu-messageformat-parser/lib/parser.js");
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./types */ "./node_modules/@formatjs/icu-messageformat-parser/lib/types.js");
+/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./error */ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/error.js");
+/* harmony import */ var _parser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./parser */ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/parser.js");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./types */ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/types.js");
 
 
 
@@ -20038,10 +21244,10 @@ var _Parser = _parser__WEBPACK_IMPORTED_MODULE_1__.Parser;
 
 /***/ }),
 
-/***/ "./node_modules/@formatjs/icu-messageformat-parser/lib/parser.js":
-/*!***********************************************************************!*\
-  !*** ./node_modules/@formatjs/icu-messageformat-parser/lib/parser.js ***!
-  \***********************************************************************/
+/***/ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/parser.js":
+/*!***************************************************************************************************!*\
+  !*** ./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/parser.js ***!
+  \***************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -20050,11 +21256,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   Parser: () => (/* binding */ Parser)
 /* harmony export */ });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
-/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./error */ "./node_modules/@formatjs/icu-messageformat-parser/lib/error.js");
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./types */ "./node_modules/@formatjs/icu-messageformat-parser/lib/types.js");
-/* harmony import */ var _regex_generated__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./regex.generated */ "./node_modules/@formatjs/icu-messageformat-parser/lib/regex.generated.js");
-/* harmony import */ var _formatjs_icu_skeleton_parser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @formatjs/icu-skeleton-parser */ "./node_modules/@formatjs/icu-skeleton-parser/lib/index.js");
-/* harmony import */ var _date_time_pattern_generator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./date-time-pattern-generator */ "./node_modules/@formatjs/icu-messageformat-parser/lib/date-time-pattern-generator.js");
+/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./error */ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/error.js");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./types */ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/types.js");
+/* harmony import */ var _regex_generated__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./regex.generated */ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/regex.generated.js");
+/* harmony import */ var _formatjs_icu_skeleton_parser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @formatjs/icu-skeleton-parser */ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-skeleton-parser/lib/index.js");
+/* harmony import */ var _date_time_pattern_generator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./date-time-pattern-generator */ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/date-time-pattern-generator.js");
 var _a;
 
 
@@ -21335,10 +22541,10 @@ function _isPatternSyntax(c) {
 
 /***/ }),
 
-/***/ "./node_modules/@formatjs/icu-messageformat-parser/lib/regex.generated.js":
-/*!********************************************************************************!*\
-  !*** ./node_modules/@formatjs/icu-messageformat-parser/lib/regex.generated.js ***!
-  \********************************************************************************/
+/***/ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/regex.generated.js":
+/*!************************************************************************************************************!*\
+  !*** ./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/regex.generated.js ***!
+  \************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -21354,10 +22560,10 @@ var WHITE_SPACE_REGEX = /[\t-\r \x85\u200E\u200F\u2028\u2029]/;
 
 /***/ }),
 
-/***/ "./node_modules/@formatjs/icu-messageformat-parser/lib/time-data.generated.js":
-/*!************************************************************************************!*\
-  !*** ./node_modules/@formatjs/icu-messageformat-parser/lib/time-data.generated.js ***!
-  \************************************************************************************/
+/***/ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/time-data.generated.js":
+/*!****************************************************************************************************************!*\
+  !*** ./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/time-data.generated.js ***!
+  \****************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -22786,10 +23992,10 @@ var timeData = {
 
 /***/ }),
 
-/***/ "./node_modules/@formatjs/icu-messageformat-parser/lib/types.js":
-/*!**********************************************************************!*\
-  !*** ./node_modules/@formatjs/icu-messageformat-parser/lib/types.js ***!
-  \**********************************************************************/
+/***/ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/types.js":
+/*!**************************************************************************************************!*\
+  !*** ./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/types.js ***!
+  \**************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -22909,10 +24115,10 @@ function createNumberElement(value, style) {
 
 /***/ }),
 
-/***/ "./node_modules/@formatjs/icu-skeleton-parser/lib/date-time.js":
-/*!*********************************************************************!*\
-  !*** ./node_modules/@formatjs/icu-skeleton-parser/lib/date-time.js ***!
-  \*********************************************************************/
+/***/ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-skeleton-parser/lib/date-time.js":
+/*!*************************************************************************************************!*\
+  !*** ./node_modules/@formatjs/intl/node_modules/@formatjs/icu-skeleton-parser/lib/date-time.js ***!
+  \*************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -23045,10 +24251,10 @@ function parseDateTimeSkeleton(skeleton) {
 
 /***/ }),
 
-/***/ "./node_modules/@formatjs/icu-skeleton-parser/lib/index.js":
-/*!*****************************************************************!*\
-  !*** ./node_modules/@formatjs/icu-skeleton-parser/lib/index.js ***!
-  \*****************************************************************/
+/***/ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-skeleton-parser/lib/index.js":
+/*!*********************************************************************************************!*\
+  !*** ./node_modules/@formatjs/intl/node_modules/@formatjs/icu-skeleton-parser/lib/index.js ***!
+  \*********************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -23058,18 +24264,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   parseNumberSkeleton: () => (/* reexport safe */ _number__WEBPACK_IMPORTED_MODULE_1__.parseNumberSkeleton),
 /* harmony export */   parseNumberSkeletonFromString: () => (/* reexport safe */ _number__WEBPACK_IMPORTED_MODULE_1__.parseNumberSkeletonFromString)
 /* harmony export */ });
-/* harmony import */ var _date_time__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./date-time */ "./node_modules/@formatjs/icu-skeleton-parser/lib/date-time.js");
-/* harmony import */ var _number__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./number */ "./node_modules/@formatjs/icu-skeleton-parser/lib/number.js");
+/* harmony import */ var _date_time__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./date-time */ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-skeleton-parser/lib/date-time.js");
+/* harmony import */ var _number__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./number */ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-skeleton-parser/lib/number.js");
 
 
 
 
 /***/ }),
 
-/***/ "./node_modules/@formatjs/icu-skeleton-parser/lib/number.js":
-/*!******************************************************************!*\
-  !*** ./node_modules/@formatjs/icu-skeleton-parser/lib/number.js ***!
-  \******************************************************************/
+/***/ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-skeleton-parser/lib/number.js":
+/*!**********************************************************************************************!*\
+  !*** ./node_modules/@formatjs/intl/node_modules/@formatjs/icu-skeleton-parser/lib/number.js ***!
+  \**********************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -23079,7 +24285,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   parseNumberSkeletonFromString: () => (/* binding */ parseNumberSkeletonFromString)
 /* harmony export */ });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
-/* harmony import */ var _regex_generated__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./regex.generated */ "./node_modules/@formatjs/icu-skeleton-parser/lib/regex.generated.js");
+/* harmony import */ var _regex_generated__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./regex.generated */ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-skeleton-parser/lib/regex.generated.js");
 
 
 function parseNumberSkeletonFromString(skeleton) {
@@ -23400,10 +24606,10 @@ function parseNumberSkeleton(tokens) {
 
 /***/ }),
 
-/***/ "./node_modules/@formatjs/icu-skeleton-parser/lib/regex.generated.js":
-/*!***************************************************************************!*\
-  !*** ./node_modules/@formatjs/icu-skeleton-parser/lib/regex.generated.js ***!
-  \***************************************************************************/
+/***/ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-skeleton-parser/lib/regex.generated.js":
+/*!*******************************************************************************************************!*\
+  !*** ./node_modules/@formatjs/intl/node_modules/@formatjs/icu-skeleton-parser/lib/regex.generated.js ***!
+  \*******************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -23413,931 +24619,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 // @generated from regex-gen.ts
 var WHITE_SPACE_REGEX = /[\t-\r \x85\u200E\u200F\u2028\u2029]/i;
-
-
-/***/ }),
-
-/***/ "./node_modules/@formatjs/intl/lib/src/create-intl.js":
-/*!************************************************************!*\
-  !*** ./node_modules/@formatjs/intl/lib/src/create-intl.js ***!
-  \************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   createIntl: () => (/* binding */ createIntl)
-/* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./node_modules/@formatjs/intl/lib/src/utils.js");
-/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./error */ "./node_modules/@formatjs/intl/lib/src/error.js");
-/* harmony import */ var _number__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./number */ "./node_modules/@formatjs/intl/lib/src/number.js");
-/* harmony import */ var _relativeTime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./relativeTime */ "./node_modules/@formatjs/intl/lib/src/relativeTime.js");
-/* harmony import */ var _dateTime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./dateTime */ "./node_modules/@formatjs/intl/lib/src/dateTime.js");
-/* harmony import */ var _plural__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./plural */ "./node_modules/@formatjs/intl/lib/src/plural.js");
-/* harmony import */ var _message__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./message */ "./node_modules/@formatjs/intl/lib/src/message.js");
-/* harmony import */ var _list__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./list */ "./node_modules/@formatjs/intl/lib/src/list.js");
-/* harmony import */ var _displayName__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./displayName */ "./node_modules/@formatjs/intl/lib/src/displayName.js");
-
-
-
-
-
-
-
-
-
-
-function messagesContainString(messages) {
-    var firstMessage = messages ? messages[Object.keys(messages)[0]] : undefined;
-    return typeof firstMessage === 'string';
-}
-function verifyConfigMessages(config) {
-    if (config.onWarn &&
-        config.defaultRichTextElements &&
-        messagesContainString(config.messages || {})) {
-        config.onWarn("[@formatjs/intl] \"defaultRichTextElements\" was specified but \"message\" was not pre-compiled. \nPlease consider using \"@formatjs/cli\" to pre-compile your messages for performance.\nFor more details see https://formatjs.io/docs/getting-started/message-distribution");
-    }
-}
-/**
- * Create intl object
- * @param config intl config
- * @param cache cache for formatter instances to prevent memory leak
- */
-function createIntl(config, cache) {
-    var formatters = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.createFormatters)(cache);
-    var resolvedConfig = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, _utils__WEBPACK_IMPORTED_MODULE_0__.DEFAULT_INTL_CONFIG), config);
-    var locale = resolvedConfig.locale, defaultLocale = resolvedConfig.defaultLocale, onError = resolvedConfig.onError;
-    if (!locale) {
-        if (onError) {
-            onError(new _error__WEBPACK_IMPORTED_MODULE_2__.InvalidConfigError("\"locale\" was not configured, using \"".concat(defaultLocale, "\" as fallback. See https://formatjs.io/docs/react-intl/api#intlshape for more details")));
-        }
-        // Since there's no registered locale data for `locale`, this will
-        // fallback to the `defaultLocale` to make sure things can render.
-        // The `messages` are overridden to the `defaultProps` empty object
-        // to maintain referential equality across re-renders. It's assumed
-        // each <FormattedMessage> contains a `defaultMessage` prop.
-        resolvedConfig.locale = resolvedConfig.defaultLocale || 'en';
-    }
-    else if (!Intl.NumberFormat.supportedLocalesOf(locale).length && onError) {
-        onError(new _error__WEBPACK_IMPORTED_MODULE_2__.MissingDataError("Missing locale data for locale: \"".concat(locale, "\" in Intl.NumberFormat. Using default locale: \"").concat(defaultLocale, "\" as fallback. See https://formatjs.io/docs/react-intl#runtime-requirements for more details")));
-    }
-    else if (!Intl.DateTimeFormat.supportedLocalesOf(locale).length &&
-        onError) {
-        onError(new _error__WEBPACK_IMPORTED_MODULE_2__.MissingDataError("Missing locale data for locale: \"".concat(locale, "\" in Intl.DateTimeFormat. Using default locale: \"").concat(defaultLocale, "\" as fallback. See https://formatjs.io/docs/react-intl#runtime-requirements for more details")));
-    }
-    verifyConfigMessages(resolvedConfig);
-    return (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, resolvedConfig), { formatters: formatters, formatNumber: _number__WEBPACK_IMPORTED_MODULE_3__.formatNumber.bind(null, resolvedConfig, formatters.getNumberFormat), formatNumberToParts: _number__WEBPACK_IMPORTED_MODULE_3__.formatNumberToParts.bind(null, resolvedConfig, formatters.getNumberFormat), formatRelativeTime: _relativeTime__WEBPACK_IMPORTED_MODULE_4__.formatRelativeTime.bind(null, resolvedConfig, formatters.getRelativeTimeFormat), formatDate: _dateTime__WEBPACK_IMPORTED_MODULE_5__.formatDate.bind(null, resolvedConfig, formatters.getDateTimeFormat), formatDateToParts: _dateTime__WEBPACK_IMPORTED_MODULE_5__.formatDateToParts.bind(null, resolvedConfig, formatters.getDateTimeFormat), formatTime: _dateTime__WEBPACK_IMPORTED_MODULE_5__.formatTime.bind(null, resolvedConfig, formatters.getDateTimeFormat), formatDateTimeRange: _dateTime__WEBPACK_IMPORTED_MODULE_5__.formatDateTimeRange.bind(null, resolvedConfig, formatters.getDateTimeFormat), formatTimeToParts: _dateTime__WEBPACK_IMPORTED_MODULE_5__.formatTimeToParts.bind(null, resolvedConfig, formatters.getDateTimeFormat), formatPlural: _plural__WEBPACK_IMPORTED_MODULE_6__.formatPlural.bind(null, resolvedConfig, formatters.getPluralRules), 
-        // @ts-expect-error TODO: will get to this later
-        formatMessage: _message__WEBPACK_IMPORTED_MODULE_7__.formatMessage.bind(null, resolvedConfig, formatters), 
-        // @ts-expect-error TODO: will get to this later
-        $t: _message__WEBPACK_IMPORTED_MODULE_7__.formatMessage.bind(null, resolvedConfig, formatters), formatList: _list__WEBPACK_IMPORTED_MODULE_8__.formatList.bind(null, resolvedConfig, formatters.getListFormat), formatListToParts: _list__WEBPACK_IMPORTED_MODULE_8__.formatListToParts.bind(null, resolvedConfig, formatters.getListFormat), formatDisplayName: _displayName__WEBPACK_IMPORTED_MODULE_9__.formatDisplayName.bind(null, resolvedConfig, formatters.getDisplayNames) });
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@formatjs/intl/lib/src/dateTime.js":
-/*!*********************************************************!*\
-  !*** ./node_modules/@formatjs/intl/lib/src/dateTime.js ***!
-  \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   formatDate: () => (/* binding */ formatDate),
-/* harmony export */   formatDateTimeRange: () => (/* binding */ formatDateTimeRange),
-/* harmony export */   formatDateToParts: () => (/* binding */ formatDateToParts),
-/* harmony export */   formatTime: () => (/* binding */ formatTime),
-/* harmony export */   formatTimeToParts: () => (/* binding */ formatTimeToParts),
-/* harmony export */   getFormatter: () => (/* binding */ getFormatter)
-/* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./node_modules/@formatjs/intl/lib/src/utils.js");
-/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./error */ "./node_modules/@formatjs/intl/lib/src/error.js");
-
-
-
-var DATE_TIME_FORMAT_OPTIONS = [
-    'formatMatcher',
-    'timeZone',
-    'hour12',
-    'weekday',
-    'era',
-    'year',
-    'month',
-    'day',
-    'hour',
-    'minute',
-    'second',
-    'timeZoneName',
-    'hourCycle',
-    'dateStyle',
-    'timeStyle',
-    'calendar',
-    // 'dayPeriod',
-    'numberingSystem',
-    'fractionalSecondDigits',
-];
-function getFormatter(_a, type, getDateTimeFormat, options) {
-    var locale = _a.locale, formats = _a.formats, onError = _a.onError, timeZone = _a.timeZone;
-    if (options === void 0) { options = {}; }
-    var format = options.format;
-    var defaults = (0,tslib__WEBPACK_IMPORTED_MODULE_0__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_0__.__assign)({}, (timeZone && { timeZone: timeZone })), (format && (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getNamedFormat)(formats, type, format, onError)));
-    var filteredOptions = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.filterProps)(options, DATE_TIME_FORMAT_OPTIONS, defaults);
-    if (type === 'time' &&
-        !filteredOptions.hour &&
-        !filteredOptions.minute &&
-        !filteredOptions.second &&
-        !filteredOptions.timeStyle &&
-        !filteredOptions.dateStyle) {
-        // Add default formatting options if hour, minute, or second isn't defined.
-        filteredOptions = (0,tslib__WEBPACK_IMPORTED_MODULE_0__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_0__.__assign)({}, filteredOptions), { hour: 'numeric', minute: 'numeric' });
-    }
-    return getDateTimeFormat(locale, filteredOptions);
-}
-function formatDate(config, getDateTimeFormat) {
-    var _a = [];
-    for (var _i = 2; _i < arguments.length; _i++) {
-        _a[_i - 2] = arguments[_i];
-    }
-    var value = _a[0], _b = _a[1], options = _b === void 0 ? {} : _b;
-    var date = typeof value === 'string' ? new Date(value || 0) : value;
-    try {
-        return getFormatter(config, 'date', getDateTimeFormat, options).format(date);
-    }
-    catch (e) {
-        config.onError(new _error__WEBPACK_IMPORTED_MODULE_2__.IntlFormatError('Error formatting date.', config.locale, e));
-    }
-    return String(date);
-}
-function formatTime(config, getDateTimeFormat) {
-    var _a = [];
-    for (var _i = 2; _i < arguments.length; _i++) {
-        _a[_i - 2] = arguments[_i];
-    }
-    var value = _a[0], _b = _a[1], options = _b === void 0 ? {} : _b;
-    var date = typeof value === 'string' ? new Date(value || 0) : value;
-    try {
-        return getFormatter(config, 'time', getDateTimeFormat, options).format(date);
-    }
-    catch (e) {
-        config.onError(new _error__WEBPACK_IMPORTED_MODULE_2__.IntlFormatError('Error formatting time.', config.locale, e));
-    }
-    return String(date);
-}
-function formatDateTimeRange(config, getDateTimeFormat) {
-    var _a = [];
-    for (var _i = 2; _i < arguments.length; _i++) {
-        _a[_i - 2] = arguments[_i];
-    }
-    var from = _a[0], to = _a[1], _b = _a[2], options = _b === void 0 ? {} : _b;
-    var timeZone = config.timeZone, locale = config.locale, onError = config.onError;
-    var filteredOptions = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.filterProps)(options, DATE_TIME_FORMAT_OPTIONS, timeZone ? { timeZone: timeZone } : {});
-    try {
-        return getDateTimeFormat(locale, filteredOptions).formatRange(from, to);
-    }
-    catch (e) {
-        onError(new _error__WEBPACK_IMPORTED_MODULE_2__.IntlFormatError('Error formatting date time range.', config.locale, e));
-    }
-    return String(from);
-}
-function formatDateToParts(config, getDateTimeFormat) {
-    var _a = [];
-    for (var _i = 2; _i < arguments.length; _i++) {
-        _a[_i - 2] = arguments[_i];
-    }
-    var value = _a[0], _b = _a[1], options = _b === void 0 ? {} : _b;
-    var date = typeof value === 'string' ? new Date(value || 0) : value;
-    try {
-        return getFormatter(config, 'date', getDateTimeFormat, options).formatToParts(date); // TODO: remove this when https://github.com/microsoft/TypeScript/pull/50402 is merged
-    }
-    catch (e) {
-        config.onError(new _error__WEBPACK_IMPORTED_MODULE_2__.IntlFormatError('Error formatting date.', config.locale, e));
-    }
-    return [];
-}
-function formatTimeToParts(config, getDateTimeFormat) {
-    var _a = [];
-    for (var _i = 2; _i < arguments.length; _i++) {
-        _a[_i - 2] = arguments[_i];
-    }
-    var value = _a[0], _b = _a[1], options = _b === void 0 ? {} : _b;
-    var date = typeof value === 'string' ? new Date(value || 0) : value;
-    try {
-        return getFormatter(config, 'time', getDateTimeFormat, options).formatToParts(date); // TODO: remove this when https://github.com/microsoft/TypeScript/pull/50402 is merged
-    }
-    catch (e) {
-        config.onError(new _error__WEBPACK_IMPORTED_MODULE_2__.IntlFormatError('Error formatting time.', config.locale, e));
-    }
-    return [];
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@formatjs/intl/lib/src/displayName.js":
-/*!************************************************************!*\
-  !*** ./node_modules/@formatjs/intl/lib/src/displayName.js ***!
-  \************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   formatDisplayName: () => (/* binding */ formatDisplayName)
-/* harmony export */ });
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./node_modules/@formatjs/intl/lib/src/utils.js");
-/* harmony import */ var intl_messageformat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! intl-messageformat */ "./node_modules/@formatjs/intl/node_modules/intl-messageformat/lib/src/error.js");
-/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./error */ "./node_modules/@formatjs/intl/lib/src/error.js");
-
-
-
-var DISPLAY_NAMES_OPTONS = [
-    'style',
-    'type',
-    'fallback',
-    'languageDisplay',
-];
-function formatDisplayName(_a, getDisplayNames, value, options) {
-    var locale = _a.locale, onError = _a.onError;
-    var DisplayNames = Intl.DisplayNames;
-    if (!DisplayNames) {
-        onError(new intl_messageformat__WEBPACK_IMPORTED_MODULE_0__.FormatError("Intl.DisplayNames is not available in this environment.\nTry polyfilling it using \"@formatjs/intl-displaynames\"\n", intl_messageformat__WEBPACK_IMPORTED_MODULE_0__.ErrorCode.MISSING_INTL_API));
-    }
-    var filteredOptions = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.filterProps)(options, DISPLAY_NAMES_OPTONS);
-    try {
-        return getDisplayNames(locale, filteredOptions).of(value);
-    }
-    catch (e) {
-        onError(new _error__WEBPACK_IMPORTED_MODULE_2__.IntlFormatError('Error formatting display name.', locale, e));
-    }
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@formatjs/intl/lib/src/error.js":
-/*!******************************************************!*\
-  !*** ./node_modules/@formatjs/intl/lib/src/error.js ***!
-  \******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   IntlError: () => (/* binding */ IntlError),
-/* harmony export */   IntlErrorCode: () => (/* binding */ IntlErrorCode),
-/* harmony export */   IntlFormatError: () => (/* binding */ IntlFormatError),
-/* harmony export */   InvalidConfigError: () => (/* binding */ InvalidConfigError),
-/* harmony export */   MessageFormatError: () => (/* binding */ MessageFormatError),
-/* harmony export */   MissingDataError: () => (/* binding */ MissingDataError),
-/* harmony export */   MissingTranslationError: () => (/* binding */ MissingTranslationError),
-/* harmony export */   UnsupportedFormatterError: () => (/* binding */ UnsupportedFormatterError)
-/* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
-
-var IntlErrorCode;
-(function (IntlErrorCode) {
-    IntlErrorCode["FORMAT_ERROR"] = "FORMAT_ERROR";
-    IntlErrorCode["UNSUPPORTED_FORMATTER"] = "UNSUPPORTED_FORMATTER";
-    IntlErrorCode["INVALID_CONFIG"] = "INVALID_CONFIG";
-    IntlErrorCode["MISSING_DATA"] = "MISSING_DATA";
-    IntlErrorCode["MISSING_TRANSLATION"] = "MISSING_TRANSLATION";
-})(IntlErrorCode || (IntlErrorCode = {}));
-var IntlError = /** @class */ (function (_super) {
-    (0,tslib__WEBPACK_IMPORTED_MODULE_0__.__extends)(IntlError, _super);
-    function IntlError(code, message, exception) {
-        var _this = this;
-        var err = exception
-            ? exception instanceof Error
-                ? exception
-                : new Error(String(exception))
-            : undefined;
-        _this = _super.call(this, "[@formatjs/intl Error ".concat(code, "] ").concat(message, "\n").concat(err ? "\n".concat(err.message, "\n").concat(err.stack) : '')) || this;
-        _this.code = code;
-        // @ts-ignore just so we don't need to declare dep on @types/node
-        if (typeof Error.captureStackTrace === 'function') {
-            // @ts-ignore just so we don't need to declare dep on @types/node
-            Error.captureStackTrace(_this, IntlError);
-        }
-        return _this;
-    }
-    return IntlError;
-}(Error));
-
-var UnsupportedFormatterError = /** @class */ (function (_super) {
-    (0,tslib__WEBPACK_IMPORTED_MODULE_0__.__extends)(UnsupportedFormatterError, _super);
-    function UnsupportedFormatterError(message, exception) {
-        return _super.call(this, IntlErrorCode.UNSUPPORTED_FORMATTER, message, exception) || this;
-    }
-    return UnsupportedFormatterError;
-}(IntlError));
-
-var InvalidConfigError = /** @class */ (function (_super) {
-    (0,tslib__WEBPACK_IMPORTED_MODULE_0__.__extends)(InvalidConfigError, _super);
-    function InvalidConfigError(message, exception) {
-        return _super.call(this, IntlErrorCode.INVALID_CONFIG, message, exception) || this;
-    }
-    return InvalidConfigError;
-}(IntlError));
-
-var MissingDataError = /** @class */ (function (_super) {
-    (0,tslib__WEBPACK_IMPORTED_MODULE_0__.__extends)(MissingDataError, _super);
-    function MissingDataError(message, exception) {
-        return _super.call(this, IntlErrorCode.MISSING_DATA, message, exception) || this;
-    }
-    return MissingDataError;
-}(IntlError));
-
-var IntlFormatError = /** @class */ (function (_super) {
-    (0,tslib__WEBPACK_IMPORTED_MODULE_0__.__extends)(IntlFormatError, _super);
-    function IntlFormatError(message, locale, exception) {
-        var _this = _super.call(this, IntlErrorCode.FORMAT_ERROR, "".concat(message, "\nLocale: ").concat(locale, "\n"), exception) || this;
-        _this.locale = locale;
-        return _this;
-    }
-    return IntlFormatError;
-}(IntlError));
-
-var MessageFormatError = /** @class */ (function (_super) {
-    (0,tslib__WEBPACK_IMPORTED_MODULE_0__.__extends)(MessageFormatError, _super);
-    function MessageFormatError(message, locale, descriptor, exception) {
-        var _this = _super.call(this, "".concat(message, "\nMessageID: ").concat(descriptor === null || descriptor === void 0 ? void 0 : descriptor.id, "\nDefault Message: ").concat(descriptor === null || descriptor === void 0 ? void 0 : descriptor.defaultMessage, "\nDescription: ").concat(descriptor === null || descriptor === void 0 ? void 0 : descriptor.description, "\n"), locale, exception) || this;
-        _this.descriptor = descriptor;
-        _this.locale = locale;
-        return _this;
-    }
-    return MessageFormatError;
-}(IntlFormatError));
-
-var MissingTranslationError = /** @class */ (function (_super) {
-    (0,tslib__WEBPACK_IMPORTED_MODULE_0__.__extends)(MissingTranslationError, _super);
-    function MissingTranslationError(descriptor, locale) {
-        var _this = _super.call(this, IntlErrorCode.MISSING_TRANSLATION, "Missing message: \"".concat(descriptor.id, "\" for locale \"").concat(locale, "\", using ").concat(descriptor.defaultMessage
-            ? "default message (".concat(typeof descriptor.defaultMessage === 'string'
-                ? descriptor.defaultMessage
-                : descriptor.defaultMessage
-                    .map(function (e) { var _a; return (_a = e.value) !== null && _a !== void 0 ? _a : JSON.stringify(e); })
-                    .join(), ")")
-            : 'id', " as fallback.")) || this;
-        _this.descriptor = descriptor;
-        return _this;
-    }
-    return MissingTranslationError;
-}(IntlError));
-
-
-
-/***/ }),
-
-/***/ "./node_modules/@formatjs/intl/lib/src/list.js":
-/*!*****************************************************!*\
-  !*** ./node_modules/@formatjs/intl/lib/src/list.js ***!
-  \*****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   formatList: () => (/* binding */ formatList),
-/* harmony export */   formatListToParts: () => (/* binding */ formatListToParts)
-/* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./node_modules/@formatjs/intl/lib/src/utils.js");
-/* harmony import */ var intl_messageformat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! intl-messageformat */ "./node_modules/@formatjs/intl/node_modules/intl-messageformat/lib/src/error.js");
-/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./error */ "./node_modules/@formatjs/intl/lib/src/error.js");
-
-
-
-
-var LIST_FORMAT_OPTIONS = [
-    'type',
-    'style',
-];
-var now = Date.now();
-function generateToken(i) {
-    return "".concat(now, "_").concat(i, "_").concat(now);
-}
-function formatList(opts, getListFormat, values, options) {
-    if (options === void 0) { options = {}; }
-    var results = formatListToParts(opts, getListFormat, values, options).reduce(function (all, el) {
-        var val = el.value;
-        if (typeof val !== 'string') {
-            all.push(val);
-        }
-        else if (typeof all[all.length - 1] === 'string') {
-            all[all.length - 1] += val;
-        }
-        else {
-            all.push(val);
-        }
-        return all;
-    }, []);
-    return results.length === 1 ? results[0] : results.length === 0 ? '' : results;
-}
-function formatListToParts(_a, getListFormat, values, options) {
-    var locale = _a.locale, onError = _a.onError;
-    if (options === void 0) { options = {}; }
-    var ListFormat = Intl.ListFormat;
-    if (!ListFormat) {
-        onError(new intl_messageformat__WEBPACK_IMPORTED_MODULE_0__.FormatError("Intl.ListFormat is not available in this environment.\nTry polyfilling it using \"@formatjs/intl-listformat\"\n", intl_messageformat__WEBPACK_IMPORTED_MODULE_0__.ErrorCode.MISSING_INTL_API));
-    }
-    var filteredOptions = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.filterProps)(options, LIST_FORMAT_OPTIONS);
-    try {
-        var richValues_1 = {};
-        var serializedValues = values.map(function (v, i) {
-            if (typeof v === 'object') {
-                var id = generateToken(i);
-                richValues_1[id] = v;
-                return id;
-            }
-            return String(v);
-        });
-        return getListFormat(locale, filteredOptions)
-            .formatToParts(serializedValues)
-            .map(function (part) {
-            return part.type === 'literal'
-                ? part
-                : (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({}, part), { value: richValues_1[part.value] || part.value });
-        });
-    }
-    catch (e) {
-        onError(new _error__WEBPACK_IMPORTED_MODULE_3__.IntlFormatError('Error formatting list.', locale, e));
-    }
-    // @ts-ignore
-    return values;
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@formatjs/intl/lib/src/message.js":
-/*!********************************************************!*\
-  !*** ./node_modules/@formatjs/intl/lib/src/message.js ***!
-  \********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   formatMessage: () => (/* binding */ formatMessage)
-/* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
-/* harmony import */ var _formatjs_ecma402_abstract__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @formatjs/ecma402-abstract */ "./node_modules/@formatjs/ecma402-abstract/lib/utils.js");
-/* harmony import */ var intl_messageformat__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! intl-messageformat */ "./node_modules/@formatjs/intl/node_modules/intl-messageformat/lib/src/core.js");
-/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./error */ "./node_modules/@formatjs/intl/lib/src/error.js");
-/* harmony import */ var _formatjs_icu_messageformat_parser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @formatjs/icu-messageformat-parser */ "./node_modules/@formatjs/icu-messageformat-parser/lib/index.js");
-
-
-
-
-
-function setTimeZoneInOptions(opts, timeZone) {
-    return Object.keys(opts).reduce(function (all, k) {
-        all[k] = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({ timeZone: timeZone }, opts[k]);
-        return all;
-    }, {});
-}
-function deepMergeOptions(opts1, opts2) {
-    var keys = Object.keys((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, opts1), opts2));
-    return keys.reduce(function (all, k) {
-        all[k] = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, (opts1[k] || {})), (opts2[k] || {}));
-        return all;
-    }, {});
-}
-function deepMergeFormatsAndSetTimeZone(f1, timeZone) {
-    if (!timeZone) {
-        return f1;
-    }
-    var mfFormats = intl_messageformat__WEBPACK_IMPORTED_MODULE_2__.IntlMessageFormat.formats;
-    return (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, mfFormats), f1), { date: deepMergeOptions(setTimeZoneInOptions(mfFormats.date, timeZone), setTimeZoneInOptions(f1.date || {}, timeZone)), time: deepMergeOptions(setTimeZoneInOptions(mfFormats.time, timeZone), setTimeZoneInOptions(f1.time || {}, timeZone)) });
-}
-var formatMessage = function (_a, state, messageDescriptor, values, opts) {
-    var locale = _a.locale, formats = _a.formats, messages = _a.messages, defaultLocale = _a.defaultLocale, defaultFormats = _a.defaultFormats, fallbackOnEmptyString = _a.fallbackOnEmptyString, onError = _a.onError, timeZone = _a.timeZone, defaultRichTextElements = _a.defaultRichTextElements;
-    if (messageDescriptor === void 0) { messageDescriptor = { id: '' }; }
-    var msgId = messageDescriptor.id, defaultMessage = messageDescriptor.defaultMessage;
-    // `id` is a required field of a Message Descriptor.
-    (0,_formatjs_ecma402_abstract__WEBPACK_IMPORTED_MODULE_3__.invariant)(!!msgId, "[@formatjs/intl] An `id` must be provided to format a message. You can either:\n1. Configure your build toolchain with [babel-plugin-formatjs](https://formatjs.io/docs/tooling/babel-plugin)\nor [@formatjs/ts-transformer](https://formatjs.io/docs/tooling/ts-transformer) OR\n2. Configure your `eslint` config to include [eslint-plugin-formatjs](https://formatjs.io/docs/tooling/linter#enforce-id)\nto autofix this issue");
-    var id = String(msgId);
-    var message = 
-    // In case messages is Object.create(null)
-    // e.g import('foo.json') from webpack)
-    // See https://github.com/formatjs/formatjs/issues/1914
-    messages &&
-        Object.prototype.hasOwnProperty.call(messages, id) &&
-        messages[id];
-    // IMPORTANT: Hot path if `message` is AST with a single literal node
-    if (Array.isArray(message) &&
-        message.length === 1 &&
-        message[0].type === _formatjs_icu_messageformat_parser__WEBPACK_IMPORTED_MODULE_0__.TYPE.literal) {
-        return message[0].value;
-    }
-    // IMPORTANT: Hot path straight lookup for performance
-    if (!values &&
-        message &&
-        typeof message === 'string' &&
-        !defaultRichTextElements) {
-        return message.replace(/'\{(.*?)\}'/gi, "{$1}");
-    }
-    values = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, defaultRichTextElements), (values || {}));
-    formats = deepMergeFormatsAndSetTimeZone(formats, timeZone);
-    defaultFormats = deepMergeFormatsAndSetTimeZone(defaultFormats, timeZone);
-    if (!message) {
-        if (fallbackOnEmptyString === false && message === '') {
-            return message;
-        }
-        if (!defaultMessage ||
-            (locale && locale.toLowerCase() !== defaultLocale.toLowerCase())) {
-            // This prevents warnings from littering the console in development
-            // when no `messages` are passed into the <IntlProvider> for the
-            // default locale.
-            onError(new _error__WEBPACK_IMPORTED_MODULE_4__.MissingTranslationError(messageDescriptor, locale));
-        }
-        if (defaultMessage) {
-            try {
-                var formatter = state.getMessageFormat(defaultMessage, defaultLocale, defaultFormats, opts);
-                return formatter.format(values);
-            }
-            catch (e) {
-                onError(new _error__WEBPACK_IMPORTED_MODULE_4__.MessageFormatError("Error formatting default message for: \"".concat(id, "\", rendering default message verbatim"), locale, messageDescriptor, e));
-                return typeof defaultMessage === 'string' ? defaultMessage : id;
-            }
-        }
-        return id;
-    }
-    // We have the translated message
-    try {
-        var formatter = state.getMessageFormat(message, locale, formats, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({ formatters: state }, (opts || {})));
-        return formatter.format(values);
-    }
-    catch (e) {
-        onError(new _error__WEBPACK_IMPORTED_MODULE_4__.MessageFormatError("Error formatting message: \"".concat(id, "\", using ").concat(defaultMessage ? 'default message' : 'id', " as fallback."), locale, messageDescriptor, e));
-    }
-    if (defaultMessage) {
-        try {
-            var formatter = state.getMessageFormat(defaultMessage, defaultLocale, defaultFormats, opts);
-            return formatter.format(values);
-        }
-        catch (e) {
-            onError(new _error__WEBPACK_IMPORTED_MODULE_4__.MessageFormatError("Error formatting the default message for: \"".concat(id, "\", rendering message verbatim"), locale, messageDescriptor, e));
-        }
-    }
-    if (typeof message === 'string') {
-        return message;
-    }
-    if (typeof defaultMessage === 'string') {
-        return defaultMessage;
-    }
-    return id;
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/@formatjs/intl/lib/src/number.js":
-/*!*******************************************************!*\
-  !*** ./node_modules/@formatjs/intl/lib/src/number.js ***!
-  \*******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   formatNumber: () => (/* binding */ formatNumber),
-/* harmony export */   formatNumberToParts: () => (/* binding */ formatNumberToParts),
-/* harmony export */   getFormatter: () => (/* binding */ getFormatter)
-/* harmony export */ });
-/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./error */ "./node_modules/@formatjs/intl/lib/src/error.js");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./node_modules/@formatjs/intl/lib/src/utils.js");
-
-
-var NUMBER_FORMAT_OPTIONS = [
-    'style',
-    'currency',
-    'unit',
-    'unitDisplay',
-    'useGrouping',
-    'minimumIntegerDigits',
-    'minimumFractionDigits',
-    'maximumFractionDigits',
-    'minimumSignificantDigits',
-    'maximumSignificantDigits',
-    // ES2020 NumberFormat
-    'compactDisplay',
-    'currencyDisplay',
-    'currencySign',
-    'notation',
-    'signDisplay',
-    'unit',
-    'unitDisplay',
-    'numberingSystem',
-    // ES2023 NumberFormat
-    'trailingZeroDisplay',
-    'roundingPriority',
-    'roundingIncrement',
-    'roundingMode',
-];
-function getFormatter(_a, getNumberFormat, options) {
-    var locale = _a.locale, formats = _a.formats, onError = _a.onError;
-    if (options === void 0) { options = {}; }
-    var format = options.format;
-    var defaults = ((format &&
-        (0,_utils__WEBPACK_IMPORTED_MODULE_0__.getNamedFormat)(formats, 'number', format, onError)) ||
-        {});
-    var filteredOptions = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.filterProps)(options, NUMBER_FORMAT_OPTIONS, defaults);
-    return getNumberFormat(locale, filteredOptions);
-}
-function formatNumber(config, getNumberFormat, value, options) {
-    if (options === void 0) { options = {}; }
-    try {
-        return getFormatter(config, getNumberFormat, options).format(value);
-    }
-    catch (e) {
-        config.onError(new _error__WEBPACK_IMPORTED_MODULE_1__.IntlFormatError('Error formatting number.', config.locale, e));
-    }
-    return String(value);
-}
-function formatNumberToParts(config, getNumberFormat, value, options) {
-    if (options === void 0) { options = {}; }
-    try {
-        return getFormatter(config, getNumberFormat, options).formatToParts(value);
-    }
-    catch (e) {
-        config.onError(new _error__WEBPACK_IMPORTED_MODULE_1__.IntlFormatError('Error formatting number.', config.locale, e));
-    }
-    return [];
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@formatjs/intl/lib/src/plural.js":
-/*!*******************************************************!*\
-  !*** ./node_modules/@formatjs/intl/lib/src/plural.js ***!
-  \*******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   formatPlural: () => (/* binding */ formatPlural)
-/* harmony export */ });
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./node_modules/@formatjs/intl/lib/src/utils.js");
-/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./error */ "./node_modules/@formatjs/intl/lib/src/error.js");
-/* harmony import */ var intl_messageformat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! intl-messageformat */ "./node_modules/@formatjs/intl/node_modules/intl-messageformat/lib/src/error.js");
-
-
-
-var PLURAL_FORMAT_OPTIONS = ['type'];
-function formatPlural(_a, getPluralRules, value, options) {
-    var locale = _a.locale, onError = _a.onError;
-    if (options === void 0) { options = {}; }
-    if (!Intl.PluralRules) {
-        onError(new intl_messageformat__WEBPACK_IMPORTED_MODULE_0__.FormatError("Intl.PluralRules is not available in this environment.\nTry polyfilling it using \"@formatjs/intl-pluralrules\"\n", intl_messageformat__WEBPACK_IMPORTED_MODULE_0__.ErrorCode.MISSING_INTL_API));
-    }
-    var filteredOptions = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.filterProps)(options, PLURAL_FORMAT_OPTIONS);
-    try {
-        return getPluralRules(locale, filteredOptions).select(value);
-    }
-    catch (e) {
-        onError(new _error__WEBPACK_IMPORTED_MODULE_2__.IntlFormatError('Error formatting plural.', locale, e));
-    }
-    return 'other';
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@formatjs/intl/lib/src/relativeTime.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/@formatjs/intl/lib/src/relativeTime.js ***!
-  \*************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   formatRelativeTime: () => (/* binding */ formatRelativeTime)
-/* harmony export */ });
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./node_modules/@formatjs/intl/lib/src/utils.js");
-/* harmony import */ var intl_messageformat__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! intl-messageformat */ "./node_modules/@formatjs/intl/node_modules/intl-messageformat/lib/src/error.js");
-/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./error */ "./node_modules/@formatjs/intl/lib/src/error.js");
-
-
-
-var RELATIVE_TIME_FORMAT_OPTIONS = ['numeric', 'style'];
-function getFormatter(_a, getRelativeTimeFormat, options) {
-    var locale = _a.locale, formats = _a.formats, onError = _a.onError;
-    if (options === void 0) { options = {}; }
-    var format = options.format;
-    var defaults = (!!format && (0,_utils__WEBPACK_IMPORTED_MODULE_0__.getNamedFormat)(formats, 'relative', format, onError)) || {};
-    var filteredOptions = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.filterProps)(options, RELATIVE_TIME_FORMAT_OPTIONS, defaults);
-    return getRelativeTimeFormat(locale, filteredOptions);
-}
-function formatRelativeTime(config, getRelativeTimeFormat, value, unit, options) {
-    if (options === void 0) { options = {}; }
-    if (!unit) {
-        unit = 'second';
-    }
-    var RelativeTimeFormat = Intl.RelativeTimeFormat;
-    if (!RelativeTimeFormat) {
-        config.onError(new intl_messageformat__WEBPACK_IMPORTED_MODULE_1__.FormatError("Intl.RelativeTimeFormat is not available in this environment.\nTry polyfilling it using \"@formatjs/intl-relativetimeformat\"\n", intl_messageformat__WEBPACK_IMPORTED_MODULE_1__.ErrorCode.MISSING_INTL_API));
-    }
-    try {
-        return getFormatter(config, getRelativeTimeFormat, options).format(value, unit);
-    }
-    catch (e) {
-        config.onError(new _error__WEBPACK_IMPORTED_MODULE_2__.IntlFormatError('Error formatting relative time.', config.locale, e));
-    }
-    return String(value);
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@formatjs/intl/lib/src/utils.js":
-/*!******************************************************!*\
-  !*** ./node_modules/@formatjs/intl/lib/src/utils.js ***!
-  \******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   DEFAULT_INTL_CONFIG: () => (/* binding */ DEFAULT_INTL_CONFIG),
-/* harmony export */   createFormatters: () => (/* binding */ createFormatters),
-/* harmony export */   createIntlCache: () => (/* binding */ createIntlCache),
-/* harmony export */   filterProps: () => (/* binding */ filterProps),
-/* harmony export */   getNamedFormat: () => (/* binding */ getNamedFormat)
-/* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
-/* harmony import */ var intl_messageformat__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! intl-messageformat */ "./node_modules/@formatjs/intl/node_modules/intl-messageformat/lib/src/core.js");
-/* harmony import */ var _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @formatjs/fast-memoize */ "./node_modules/@formatjs/fast-memoize/lib/index.js");
-/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./error */ "./node_modules/@formatjs/intl/lib/src/error.js");
-
-
-
-
-function filterProps(props, allowlist, defaults) {
-    if (defaults === void 0) { defaults = {}; }
-    return allowlist.reduce(function (filtered, name) {
-        if (name in props) {
-            filtered[name] = props[name];
-        }
-        else if (name in defaults) {
-            filtered[name] = defaults[name];
-        }
-        return filtered;
-    }, {});
-}
-var defaultErrorHandler = function (error) {
-    // @ts-ignore just so we don't need to declare dep on @types/node
-    if (true) {
-        console.error(error);
-    }
-};
-var defaultWarnHandler = function (warning) {
-    // @ts-ignore just so we don't need to declare dep on @types/node
-    if (true) {
-        console.warn(warning);
-    }
-};
-var DEFAULT_INTL_CONFIG = {
-    formats: {},
-    messages: {},
-    timeZone: undefined,
-    defaultLocale: 'en',
-    defaultFormats: {},
-    fallbackOnEmptyString: true,
-    onError: defaultErrorHandler,
-    onWarn: defaultWarnHandler,
-};
-function createIntlCache() {
-    return {
-        dateTime: {},
-        number: {},
-        message: {},
-        relativeTime: {},
-        pluralRules: {},
-        list: {},
-        displayNames: {},
-    };
-}
-function createFastMemoizeCache(store) {
-    return {
-        create: function () {
-            return {
-                get: function (key) {
-                    return store[key];
-                },
-                set: function (key, value) {
-                    store[key] = value;
-                },
-            };
-        },
-    };
-}
-/**
- * Create intl formatters and populate cache
- * @param cache explicit cache to prevent leaking memory
- */
-function createFormatters(cache) {
-    if (cache === void 0) { cache = createIntlCache(); }
-    var RelativeTimeFormat = Intl.RelativeTimeFormat;
-    var ListFormat = Intl.ListFormat;
-    var DisplayNames = Intl.DisplayNames;
-    var getDateTimeFormat = (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
-        var _a;
-        var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i] = arguments[_i];
-        }
-        return new ((_a = Intl.DateTimeFormat).bind.apply(_a, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([void 0], args, false)))();
-    }, {
-        cache: createFastMemoizeCache(cache.dateTime),
-        strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
-    });
-    var getNumberFormat = (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
-        var _a;
-        var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i] = arguments[_i];
-        }
-        return new ((_a = Intl.NumberFormat).bind.apply(_a, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([void 0], args, false)))();
-    }, {
-        cache: createFastMemoizeCache(cache.number),
-        strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
-    });
-    var getPluralRules = (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
-        var _a;
-        var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i] = arguments[_i];
-        }
-        return new ((_a = Intl.PluralRules).bind.apply(_a, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([void 0], args, false)))();
-    }, {
-        cache: createFastMemoizeCache(cache.pluralRules),
-        strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
-    });
-    return {
-        getDateTimeFormat: getDateTimeFormat,
-        getNumberFormat: getNumberFormat,
-        getMessageFormat: (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function (message, locales, overrideFormats, opts) {
-            return new intl_messageformat__WEBPACK_IMPORTED_MODULE_2__.IntlMessageFormat(message, locales, overrideFormats, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({ formatters: {
-                    getNumberFormat: getNumberFormat,
-                    getDateTimeFormat: getDateTimeFormat,
-                    getPluralRules: getPluralRules,
-                } }, (opts || {})));
-        }, {
-            cache: createFastMemoizeCache(cache.message),
-            strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
-        }),
-        getRelativeTimeFormat: (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            return new (RelativeTimeFormat.bind.apply(RelativeTimeFormat, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([void 0], args, false)))();
-        }, {
-            cache: createFastMemoizeCache(cache.relativeTime),
-            strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
-        }),
-        getPluralRules: getPluralRules,
-        getListFormat: (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            return new (ListFormat.bind.apply(ListFormat, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([void 0], args, false)))();
-        }, {
-            cache: createFastMemoizeCache(cache.list),
-            strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
-        }),
-        getDisplayNames: (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            return new (DisplayNames.bind.apply(DisplayNames, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([void 0], args, false)))();
-        }, {
-            cache: createFastMemoizeCache(cache.displayNames),
-            strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
-        }),
-    };
-}
-function getNamedFormat(formats, type, name, onError) {
-    var formatType = formats && formats[type];
-    var format;
-    if (formatType) {
-        format = formatType[name];
-    }
-    if (format) {
-        return format;
-    }
-    onError(new _error__WEBPACK_IMPORTED_MODULE_3__.UnsupportedFormatterError("No ".concat(type, " format named: ").concat(name)));
-}
 
 
 /***/ }),
@@ -24354,8 +24635,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   IntlMessageFormat: () => (/* binding */ IntlMessageFormat)
 /* harmony export */ });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
-/* harmony import */ var _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @formatjs/fast-memoize */ "./node_modules/@formatjs/fast-memoize/lib/index.js");
-/* harmony import */ var _formatjs_icu_messageformat_parser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @formatjs/icu-messageformat-parser */ "./node_modules/@formatjs/icu-messageformat-parser/lib/index.js");
+/* harmony import */ var _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @formatjs/fast-memoize */ "./node_modules/@formatjs/intl/node_modules/@formatjs/fast-memoize/lib/index.js");
+/* harmony import */ var _formatjs_icu_messageformat_parser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @formatjs/icu-messageformat-parser */ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/index.js");
 /* harmony import */ var _formatters__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./formatters */ "./node_modules/@formatjs/intl/node_modules/intl-messageformat/lib/src/formatters.js");
 /*
 Copyright (c) 2014, Yahoo! Inc. All rights reserved.
@@ -24680,7 +24961,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   formatToParts: () => (/* binding */ formatToParts),
 /* harmony export */   isFormatXMLElementFn: () => (/* binding */ isFormatXMLElementFn)
 /* harmony export */ });
-/* harmony import */ var _formatjs_icu_messageformat_parser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @formatjs/icu-messageformat-parser */ "./node_modules/@formatjs/icu-messageformat-parser/lib/index.js");
+/* harmony import */ var _formatjs_icu_messageformat_parser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @formatjs/icu-messageformat-parser */ "./node_modules/@formatjs/intl/node_modules/@formatjs/icu-messageformat-parser/lib/index.js");
 /* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./error */ "./node_modules/@formatjs/intl/node_modules/intl-messageformat/lib/src/error.js");
 
 
@@ -25852,7 +26133,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_is__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-is */ "./node_modules/react-is/index.js");
+/* harmony import */ var react_is__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-is */ "./node_modules/downshift/node_modules/react-is/index.js");
 /* harmony import */ var compute_scroll_into_view__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! compute-scroll-into-view */ "./node_modules/compute-scroll-into-view/dist/index.mjs");
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
 
@@ -30181,6 +30462,259 @@ function useMultipleSelection(userProps) {
 
 /***/ }),
 
+/***/ "./node_modules/downshift/node_modules/react-is/cjs/react-is.development.js":
+/*!**********************************************************************************!*\
+  !*** ./node_modules/downshift/node_modules/react-is/cjs/react-is.development.js ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+/** @license React v17.0.2
+ * react-is.development.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+if (true) {
+  (function() {
+'use strict';
+
+// ATTENTION
+// When adding new symbols to this file,
+// Please consider also adding to 'react-devtools-shared/src/backend/ReactSymbols'
+// The Symbol used to tag the ReactElement-like types. If there is no native Symbol
+// nor polyfill, then a plain number is used for performance.
+var REACT_ELEMENT_TYPE = 0xeac7;
+var REACT_PORTAL_TYPE = 0xeaca;
+var REACT_FRAGMENT_TYPE = 0xeacb;
+var REACT_STRICT_MODE_TYPE = 0xeacc;
+var REACT_PROFILER_TYPE = 0xead2;
+var REACT_PROVIDER_TYPE = 0xeacd;
+var REACT_CONTEXT_TYPE = 0xeace;
+var REACT_FORWARD_REF_TYPE = 0xead0;
+var REACT_SUSPENSE_TYPE = 0xead1;
+var REACT_SUSPENSE_LIST_TYPE = 0xead8;
+var REACT_MEMO_TYPE = 0xead3;
+var REACT_LAZY_TYPE = 0xead4;
+var REACT_BLOCK_TYPE = 0xead9;
+var REACT_SERVER_BLOCK_TYPE = 0xeada;
+var REACT_FUNDAMENTAL_TYPE = 0xead5;
+var REACT_SCOPE_TYPE = 0xead7;
+var REACT_OPAQUE_ID_TYPE = 0xeae0;
+var REACT_DEBUG_TRACING_MODE_TYPE = 0xeae1;
+var REACT_OFFSCREEN_TYPE = 0xeae2;
+var REACT_LEGACY_HIDDEN_TYPE = 0xeae3;
+
+if (typeof Symbol === 'function' && Symbol.for) {
+  var symbolFor = Symbol.for;
+  REACT_ELEMENT_TYPE = symbolFor('react.element');
+  REACT_PORTAL_TYPE = symbolFor('react.portal');
+  REACT_FRAGMENT_TYPE = symbolFor('react.fragment');
+  REACT_STRICT_MODE_TYPE = symbolFor('react.strict_mode');
+  REACT_PROFILER_TYPE = symbolFor('react.profiler');
+  REACT_PROVIDER_TYPE = symbolFor('react.provider');
+  REACT_CONTEXT_TYPE = symbolFor('react.context');
+  REACT_FORWARD_REF_TYPE = symbolFor('react.forward_ref');
+  REACT_SUSPENSE_TYPE = symbolFor('react.suspense');
+  REACT_SUSPENSE_LIST_TYPE = symbolFor('react.suspense_list');
+  REACT_MEMO_TYPE = symbolFor('react.memo');
+  REACT_LAZY_TYPE = symbolFor('react.lazy');
+  REACT_BLOCK_TYPE = symbolFor('react.block');
+  REACT_SERVER_BLOCK_TYPE = symbolFor('react.server.block');
+  REACT_FUNDAMENTAL_TYPE = symbolFor('react.fundamental');
+  REACT_SCOPE_TYPE = symbolFor('react.scope');
+  REACT_OPAQUE_ID_TYPE = symbolFor('react.opaque.id');
+  REACT_DEBUG_TRACING_MODE_TYPE = symbolFor('react.debug_trace_mode');
+  REACT_OFFSCREEN_TYPE = symbolFor('react.offscreen');
+  REACT_LEGACY_HIDDEN_TYPE = symbolFor('react.legacy_hidden');
+}
+
+// Filter certain DOM attributes (e.g. src, href) if their values are empty strings.
+
+var enableScopeAPI = false; // Experimental Create Event Handle API.
+
+function isValidElementType(type) {
+  if (typeof type === 'string' || typeof type === 'function') {
+    return true;
+  } // Note: typeof might be other than 'symbol' or 'number' (e.g. if it's a polyfill).
+
+
+  if (type === REACT_FRAGMENT_TYPE || type === REACT_PROFILER_TYPE || type === REACT_DEBUG_TRACING_MODE_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || type === REACT_LEGACY_HIDDEN_TYPE || enableScopeAPI ) {
+    return true;
+  }
+
+  if (typeof type === 'object' && type !== null) {
+    if (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_BLOCK_TYPE || type[0] === REACT_SERVER_BLOCK_TYPE) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function typeOf(object) {
+  if (typeof object === 'object' && object !== null) {
+    var $$typeof = object.$$typeof;
+
+    switch ($$typeof) {
+      case REACT_ELEMENT_TYPE:
+        var type = object.type;
+
+        switch (type) {
+          case REACT_FRAGMENT_TYPE:
+          case REACT_PROFILER_TYPE:
+          case REACT_STRICT_MODE_TYPE:
+          case REACT_SUSPENSE_TYPE:
+          case REACT_SUSPENSE_LIST_TYPE:
+            return type;
+
+          default:
+            var $$typeofType = type && type.$$typeof;
+
+            switch ($$typeofType) {
+              case REACT_CONTEXT_TYPE:
+              case REACT_FORWARD_REF_TYPE:
+              case REACT_LAZY_TYPE:
+              case REACT_MEMO_TYPE:
+              case REACT_PROVIDER_TYPE:
+                return $$typeofType;
+
+              default:
+                return $$typeof;
+            }
+
+        }
+
+      case REACT_PORTAL_TYPE:
+        return $$typeof;
+    }
+  }
+
+  return undefined;
+}
+var ContextConsumer = REACT_CONTEXT_TYPE;
+var ContextProvider = REACT_PROVIDER_TYPE;
+var Element = REACT_ELEMENT_TYPE;
+var ForwardRef = REACT_FORWARD_REF_TYPE;
+var Fragment = REACT_FRAGMENT_TYPE;
+var Lazy = REACT_LAZY_TYPE;
+var Memo = REACT_MEMO_TYPE;
+var Portal = REACT_PORTAL_TYPE;
+var Profiler = REACT_PROFILER_TYPE;
+var StrictMode = REACT_STRICT_MODE_TYPE;
+var Suspense = REACT_SUSPENSE_TYPE;
+var hasWarnedAboutDeprecatedIsAsyncMode = false;
+var hasWarnedAboutDeprecatedIsConcurrentMode = false; // AsyncMode should be deprecated
+
+function isAsyncMode(object) {
+  {
+    if (!hasWarnedAboutDeprecatedIsAsyncMode) {
+      hasWarnedAboutDeprecatedIsAsyncMode = true; // Using console['warn'] to evade Babel and ESLint
+
+      console['warn']('The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 18+.');
+    }
+  }
+
+  return false;
+}
+function isConcurrentMode(object) {
+  {
+    if (!hasWarnedAboutDeprecatedIsConcurrentMode) {
+      hasWarnedAboutDeprecatedIsConcurrentMode = true; // Using console['warn'] to evade Babel and ESLint
+
+      console['warn']('The ReactIs.isConcurrentMode() alias has been deprecated, ' + 'and will be removed in React 18+.');
+    }
+  }
+
+  return false;
+}
+function isContextConsumer(object) {
+  return typeOf(object) === REACT_CONTEXT_TYPE;
+}
+function isContextProvider(object) {
+  return typeOf(object) === REACT_PROVIDER_TYPE;
+}
+function isElement(object) {
+  return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+}
+function isForwardRef(object) {
+  return typeOf(object) === REACT_FORWARD_REF_TYPE;
+}
+function isFragment(object) {
+  return typeOf(object) === REACT_FRAGMENT_TYPE;
+}
+function isLazy(object) {
+  return typeOf(object) === REACT_LAZY_TYPE;
+}
+function isMemo(object) {
+  return typeOf(object) === REACT_MEMO_TYPE;
+}
+function isPortal(object) {
+  return typeOf(object) === REACT_PORTAL_TYPE;
+}
+function isProfiler(object) {
+  return typeOf(object) === REACT_PROFILER_TYPE;
+}
+function isStrictMode(object) {
+  return typeOf(object) === REACT_STRICT_MODE_TYPE;
+}
+function isSuspense(object) {
+  return typeOf(object) === REACT_SUSPENSE_TYPE;
+}
+
+exports.ContextConsumer = ContextConsumer;
+exports.ContextProvider = ContextProvider;
+exports.Element = Element;
+exports.ForwardRef = ForwardRef;
+exports.Fragment = Fragment;
+exports.Lazy = Lazy;
+exports.Memo = Memo;
+exports.Portal = Portal;
+exports.Profiler = Profiler;
+exports.StrictMode = StrictMode;
+exports.Suspense = Suspense;
+exports.isAsyncMode = isAsyncMode;
+exports.isConcurrentMode = isConcurrentMode;
+exports.isContextConsumer = isContextConsumer;
+exports.isContextProvider = isContextProvider;
+exports.isElement = isElement;
+exports.isForwardRef = isForwardRef;
+exports.isFragment = isFragment;
+exports.isLazy = isLazy;
+exports.isMemo = isMemo;
+exports.isPortal = isPortal;
+exports.isProfiler = isProfiler;
+exports.isStrictMode = isStrictMode;
+exports.isSuspense = isSuspense;
+exports.isValidElementType = isValidElementType;
+exports.typeOf = typeOf;
+  })();
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/downshift/node_modules/react-is/index.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/downshift/node_modules/react-is/index.js ***!
+  \***************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+if (false) {} else {
+  module.exports = __webpack_require__(/*! ./cjs/react-is.development.js */ "./node_modules/downshift/node_modules/react-is/cjs/react-is.development.js");
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/exenv/index.js":
 /*!*************************************!*\
   !*** ./node_modules/exenv/index.js ***!
@@ -32393,7 +32927,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _formatjs_ecma402_abstract__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @formatjs/ecma402-abstract */ "./node_modules/@formatjs/ecma402-abstract/lib/utils.js");
+/* harmony import */ var _formatjs_ecma402_abstract__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @formatjs/ecma402-abstract */ "./node_modules/react-intl/node_modules/@formatjs/ecma402-abstract/lib/utils.js");
 /* harmony import */ var _useIntl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./useIntl */ "./node_modules/react-intl/lib/src/components/useIntl.js");
 
 /*
@@ -32568,7 +33102,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _formatjs_ecma402_abstract__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @formatjs/ecma402-abstract */ "./node_modules/@formatjs/ecma402-abstract/lib/utils.js");
+/* harmony import */ var _formatjs_ecma402_abstract__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @formatjs/ecma402-abstract */ "./node_modules/react-intl/node_modules/@formatjs/ecma402-abstract/lib/utils.js");
 /* harmony import */ var _formatjs_intl__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @formatjs/intl */ "./node_modules/@formatjs/intl/lib/src/utils.js");
 
 
@@ -32613,6 +33147,3912 @@ function shallowEqual(objA, objB) {
     }
     return true;
 }
+
+
+/***/ }),
+
+/***/ "./node_modules/react-intl/node_modules/@formatjs/ecma402-abstract/lib/utils.js":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/react-intl/node_modules/@formatjs/ecma402-abstract/lib/utils.js ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   UNICODE_EXTENSION_SEQUENCE_REGEX: () => (/* binding */ UNICODE_EXTENSION_SEQUENCE_REGEX),
+/* harmony export */   createDataProperty: () => (/* binding */ createDataProperty),
+/* harmony export */   createMemoizedDateTimeFormat: () => (/* binding */ createMemoizedDateTimeFormat),
+/* harmony export */   createMemoizedListFormat: () => (/* binding */ createMemoizedListFormat),
+/* harmony export */   createMemoizedLocale: () => (/* binding */ createMemoizedLocale),
+/* harmony export */   createMemoizedNumberFormat: () => (/* binding */ createMemoizedNumberFormat),
+/* harmony export */   createMemoizedPluralRules: () => (/* binding */ createMemoizedPluralRules),
+/* harmony export */   defineProperty: () => (/* binding */ defineProperty),
+/* harmony export */   getInternalSlot: () => (/* binding */ getInternalSlot),
+/* harmony export */   getMagnitude: () => (/* binding */ getMagnitude),
+/* harmony export */   getMultiInternalSlots: () => (/* binding */ getMultiInternalSlots),
+/* harmony export */   invariant: () => (/* binding */ invariant),
+/* harmony export */   isLiteralPart: () => (/* binding */ isLiteralPart),
+/* harmony export */   repeat: () => (/* binding */ repeat),
+/* harmony export */   setInternalSlot: () => (/* binding */ setInternalSlot),
+/* harmony export */   setMultiInternalSlots: () => (/* binding */ setMultiInternalSlots)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
+/* harmony import */ var _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @formatjs/fast-memoize */ "./node_modules/react-intl/node_modules/@formatjs/fast-memoize/lib/index.js");
+
+
+/**
+ * Cannot do Math.log(x) / Math.log(10) bc if IEEE floating point issue
+ * @param x number
+ */
+function getMagnitude(x) {
+    // Cannot count string length via Number.toString because it may use scientific notation
+    // for very small or very large numbers.
+    return Math.floor(Math.log(x) * Math.LOG10E);
+}
+function repeat(s, times) {
+    if (typeof s.repeat === 'function') {
+        return s.repeat(times);
+    }
+    var arr = new Array(times);
+    for (var i = 0; i < arr.length; i++) {
+        arr[i] = s;
+    }
+    return arr.join('');
+}
+function setInternalSlot(map, pl, field, value) {
+    if (!map.get(pl)) {
+        map.set(pl, Object.create(null));
+    }
+    var slots = map.get(pl);
+    slots[field] = value;
+}
+function setMultiInternalSlots(map, pl, props) {
+    for (var _i = 0, _a = Object.keys(props); _i < _a.length; _i++) {
+        var k = _a[_i];
+        setInternalSlot(map, pl, k, props[k]);
+    }
+}
+function getInternalSlot(map, pl, field) {
+    return getMultiInternalSlots(map, pl, field)[field];
+}
+function getMultiInternalSlots(map, pl) {
+    var fields = [];
+    for (var _i = 2; _i < arguments.length; _i++) {
+        fields[_i - 2] = arguments[_i];
+    }
+    var slots = map.get(pl);
+    if (!slots) {
+        throw new TypeError("".concat(pl, " InternalSlot has not been initialized"));
+    }
+    return fields.reduce(function (all, f) {
+        all[f] = slots[f];
+        return all;
+    }, Object.create(null));
+}
+function isLiteralPart(patternPart) {
+    return patternPart.type === 'literal';
+}
+/*
+  17 ECMAScript Standard Built-in Objects:
+    Every built-in Function object, including constructors, that is not
+    identified as an anonymous function has a name property whose value
+    is a String.
+
+    Unless otherwise specified, the name property of a built-in Function
+    object, if it exists, has the attributes { [[Writable]]: false,
+    [[Enumerable]]: false, [[Configurable]]: true }.
+*/
+function defineProperty(target, name, _a) {
+    var value = _a.value;
+    Object.defineProperty(target, name, {
+        configurable: true,
+        enumerable: false,
+        writable: true,
+        value: value,
+    });
+}
+/**
+ * 7.3.5 CreateDataProperty
+ * @param target
+ * @param name
+ * @param value
+ */
+function createDataProperty(target, name, value) {
+    Object.defineProperty(target, name, {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        value: value,
+    });
+}
+var UNICODE_EXTENSION_SEQUENCE_REGEX = /-u(?:-[0-9a-z]{2,8})+/gi;
+function invariant(condition, message, Err) {
+    if (Err === void 0) { Err = Error; }
+    if (!condition) {
+        throw new Err(message);
+    }
+}
+var createMemoizedNumberFormat = (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
+    var _a;
+    var args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+    }
+    return new ((_a = Intl.NumberFormat).bind.apply(_a, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([void 0], args, false)))();
+}, {
+    strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
+});
+var createMemoizedDateTimeFormat = (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
+    var _a;
+    var args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+    }
+    return new ((_a = Intl.DateTimeFormat).bind.apply(_a, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([void 0], args, false)))();
+}, {
+    strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
+});
+var createMemoizedPluralRules = (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
+    var _a;
+    var args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+    }
+    return new ((_a = Intl.PluralRules).bind.apply(_a, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([void 0], args, false)))();
+}, {
+    strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
+});
+var createMemoizedLocale = (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
+    var _a;
+    var args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+    }
+    return new ((_a = Intl.Locale).bind.apply(_a, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([void 0], args, false)))();
+}, {
+    strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
+});
+var createMemoizedListFormat = (0,_formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.memoize)(function () {
+    var _a;
+    var args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+    }
+    return new ((_a = Intl.ListFormat).bind.apply(_a, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([void 0], args, false)))();
+}, {
+    strategy: _formatjs_fast_memoize__WEBPACK_IMPORTED_MODULE_0__.strategies.variadic,
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/react-intl/node_modules/@formatjs/fast-memoize/lib/index.js":
+/*!**********************************************************************************!*\
+  !*** ./node_modules/react-intl/node_modules/@formatjs/fast-memoize/lib/index.js ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   memoize: () => (/* binding */ memoize),
+/* harmony export */   strategies: () => (/* binding */ strategies)
+/* harmony export */ });
+//
+// Main
+//
+function memoize(fn, options) {
+    var cache = options && options.cache ? options.cache : cacheDefault;
+    var serializer = options && options.serializer ? options.serializer : serializerDefault;
+    var strategy = options && options.strategy ? options.strategy : strategyDefault;
+    return strategy(fn, {
+        cache: cache,
+        serializer: serializer,
+    });
+}
+//
+// Strategy
+//
+function isPrimitive(value) {
+    return (value == null || typeof value === 'number' || typeof value === 'boolean'); // || typeof value === "string" 'unsafe' primitive for our needs
+}
+function monadic(fn, cache, serializer, arg) {
+    var cacheKey = isPrimitive(arg) ? arg : serializer(arg);
+    var computedValue = cache.get(cacheKey);
+    if (typeof computedValue === 'undefined') {
+        computedValue = fn.call(this, arg);
+        cache.set(cacheKey, computedValue);
+    }
+    return computedValue;
+}
+function variadic(fn, cache, serializer) {
+    var args = Array.prototype.slice.call(arguments, 3);
+    var cacheKey = serializer(args);
+    var computedValue = cache.get(cacheKey);
+    if (typeof computedValue === 'undefined') {
+        computedValue = fn.apply(this, args);
+        cache.set(cacheKey, computedValue);
+    }
+    return computedValue;
+}
+function assemble(fn, context, strategy, cache, serialize) {
+    return strategy.bind(context, fn, cache, serialize);
+}
+function strategyDefault(fn, options) {
+    var strategy = fn.length === 1 ? monadic : variadic;
+    return assemble(fn, this, strategy, options.cache.create(), options.serializer);
+}
+function strategyVariadic(fn, options) {
+    return assemble(fn, this, variadic, options.cache.create(), options.serializer);
+}
+function strategyMonadic(fn, options) {
+    return assemble(fn, this, monadic, options.cache.create(), options.serializer);
+}
+//
+// Serializer
+//
+var serializerDefault = function () {
+    return JSON.stringify(arguments);
+};
+//
+// Cache
+//
+function ObjectWithoutPrototypeCache() {
+    this.cache = Object.create(null);
+}
+ObjectWithoutPrototypeCache.prototype.get = function (key) {
+    return this.cache[key];
+};
+ObjectWithoutPrototypeCache.prototype.set = function (key, value) {
+    this.cache[key] = value;
+};
+var cacheDefault = {
+    create: function create() {
+        // @ts-ignore
+        return new ObjectWithoutPrototypeCache();
+    },
+};
+var strategies = {
+    variadic: strategyVariadic,
+    monadic: strategyMonadic,
+};
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "./node_modules/react-intl/node_modules/@formatjs/icu-messageformat-parser/lib/date-time-pattern-generator.js":
+/*!********************************************************************************************************************!*\
+  !*** ./node_modules/react-intl/node_modules/@formatjs/icu-messageformat-parser/lib/date-time-pattern-generator.js ***!
+  \********************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getBestPattern: () => (/* binding */ getBestPattern)
+/* harmony export */ });
+/* harmony import */ var _time_data_generated__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./time-data.generated */ "./node_modules/react-intl/node_modules/@formatjs/icu-messageformat-parser/lib/time-data.generated.js");
+
+/**
+ * Returns the best matching date time pattern if a date time skeleton
+ * pattern is provided with a locale. Follows the Unicode specification:
+ * https://www.unicode.org/reports/tr35/tr35-dates.html#table-mapping-requested-time-skeletons-to-patterns
+ * @param skeleton date time skeleton pattern that possibly includes j, J or C
+ * @param locale
+ */
+function getBestPattern(skeleton, locale) {
+    var skeletonCopy = '';
+    for (var patternPos = 0; patternPos < skeleton.length; patternPos++) {
+        var patternChar = skeleton.charAt(patternPos);
+        if (patternChar === 'j') {
+            var extraLength = 0;
+            while (patternPos + 1 < skeleton.length &&
+                skeleton.charAt(patternPos + 1) === patternChar) {
+                extraLength++;
+                patternPos++;
+            }
+            var hourLen = 1 + (extraLength & 1);
+            var dayPeriodLen = extraLength < 2 ? 1 : 3 + (extraLength >> 1);
+            var dayPeriodChar = 'a';
+            var hourChar = getDefaultHourSymbolFromLocale(locale);
+            if (hourChar == 'H' || hourChar == 'k') {
+                dayPeriodLen = 0;
+            }
+            while (dayPeriodLen-- > 0) {
+                skeletonCopy += dayPeriodChar;
+            }
+            while (hourLen-- > 0) {
+                skeletonCopy = hourChar + skeletonCopy;
+            }
+        }
+        else if (patternChar === 'J') {
+            skeletonCopy += 'H';
+        }
+        else {
+            skeletonCopy += patternChar;
+        }
+    }
+    return skeletonCopy;
+}
+/**
+ * Maps the [hour cycle type](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/hourCycle)
+ * of the given `locale` to the corresponding time pattern.
+ * @param locale
+ */
+function getDefaultHourSymbolFromLocale(locale) {
+    var hourCycle = locale.hourCycle;
+    if (hourCycle === undefined &&
+        // @ts-ignore hourCycle(s) is not identified yet
+        locale.hourCycles &&
+        // @ts-ignore
+        locale.hourCycles.length) {
+        // @ts-ignore
+        hourCycle = locale.hourCycles[0];
+    }
+    if (hourCycle) {
+        switch (hourCycle) {
+            case 'h24':
+                return 'k';
+            case 'h23':
+                return 'H';
+            case 'h12':
+                return 'h';
+            case 'h11':
+                return 'K';
+            default:
+                throw new Error('Invalid hourCycle');
+        }
+    }
+    // TODO: Once hourCycle is fully supported remove the following with data generation
+    var languageTag = locale.language;
+    var regionTag;
+    if (languageTag !== 'root') {
+        regionTag = locale.maximize().region;
+    }
+    var hourCycles = _time_data_generated__WEBPACK_IMPORTED_MODULE_0__.timeData[regionTag || ''] ||
+        _time_data_generated__WEBPACK_IMPORTED_MODULE_0__.timeData[languageTag || ''] ||
+        _time_data_generated__WEBPACK_IMPORTED_MODULE_0__.timeData["".concat(languageTag, "-001")] ||
+        _time_data_generated__WEBPACK_IMPORTED_MODULE_0__.timeData['001'];
+    return hourCycles[0];
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/react-intl/node_modules/@formatjs/icu-messageformat-parser/lib/error.js":
+/*!**********************************************************************************************!*\
+  !*** ./node_modules/react-intl/node_modules/@formatjs/icu-messageformat-parser/lib/error.js ***!
+  \**********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ErrorKind: () => (/* binding */ ErrorKind)
+/* harmony export */ });
+var ErrorKind;
+(function (ErrorKind) {
+    /** Argument is unclosed (e.g. `{0`) */
+    ErrorKind[ErrorKind["EXPECT_ARGUMENT_CLOSING_BRACE"] = 1] = "EXPECT_ARGUMENT_CLOSING_BRACE";
+    /** Argument is empty (e.g. `{}`). */
+    ErrorKind[ErrorKind["EMPTY_ARGUMENT"] = 2] = "EMPTY_ARGUMENT";
+    /** Argument is malformed (e.g. `{foo!}``) */
+    ErrorKind[ErrorKind["MALFORMED_ARGUMENT"] = 3] = "MALFORMED_ARGUMENT";
+    /** Expect an argument type (e.g. `{foo,}`) */
+    ErrorKind[ErrorKind["EXPECT_ARGUMENT_TYPE"] = 4] = "EXPECT_ARGUMENT_TYPE";
+    /** Unsupported argument type (e.g. `{foo,foo}`) */
+    ErrorKind[ErrorKind["INVALID_ARGUMENT_TYPE"] = 5] = "INVALID_ARGUMENT_TYPE";
+    /** Expect an argument style (e.g. `{foo, number, }`) */
+    ErrorKind[ErrorKind["EXPECT_ARGUMENT_STYLE"] = 6] = "EXPECT_ARGUMENT_STYLE";
+    /** The number skeleton is invalid. */
+    ErrorKind[ErrorKind["INVALID_NUMBER_SKELETON"] = 7] = "INVALID_NUMBER_SKELETON";
+    /** The date time skeleton is invalid. */
+    ErrorKind[ErrorKind["INVALID_DATE_TIME_SKELETON"] = 8] = "INVALID_DATE_TIME_SKELETON";
+    /** Exepct a number skeleton following the `::` (e.g. `{foo, number, ::}`) */
+    ErrorKind[ErrorKind["EXPECT_NUMBER_SKELETON"] = 9] = "EXPECT_NUMBER_SKELETON";
+    /** Exepct a date time skeleton following the `::` (e.g. `{foo, date, ::}`) */
+    ErrorKind[ErrorKind["EXPECT_DATE_TIME_SKELETON"] = 10] = "EXPECT_DATE_TIME_SKELETON";
+    /** Unmatched apostrophes in the argument style (e.g. `{foo, number, 'test`) */
+    ErrorKind[ErrorKind["UNCLOSED_QUOTE_IN_ARGUMENT_STYLE"] = 11] = "UNCLOSED_QUOTE_IN_ARGUMENT_STYLE";
+    /** Missing select argument options (e.g. `{foo, select}`) */
+    ErrorKind[ErrorKind["EXPECT_SELECT_ARGUMENT_OPTIONS"] = 12] = "EXPECT_SELECT_ARGUMENT_OPTIONS";
+    /** Expecting an offset value in `plural` or `selectordinal` argument (e.g `{foo, plural, offset}`) */
+    ErrorKind[ErrorKind["EXPECT_PLURAL_ARGUMENT_OFFSET_VALUE"] = 13] = "EXPECT_PLURAL_ARGUMENT_OFFSET_VALUE";
+    /** Offset value in `plural` or `selectordinal` is invalid (e.g. `{foo, plural, offset: x}`) */
+    ErrorKind[ErrorKind["INVALID_PLURAL_ARGUMENT_OFFSET_VALUE"] = 14] = "INVALID_PLURAL_ARGUMENT_OFFSET_VALUE";
+    /** Expecting a selector in `select` argument (e.g `{foo, select}`) */
+    ErrorKind[ErrorKind["EXPECT_SELECT_ARGUMENT_SELECTOR"] = 15] = "EXPECT_SELECT_ARGUMENT_SELECTOR";
+    /** Expecting a selector in `plural` or `selectordinal` argument (e.g `{foo, plural}`) */
+    ErrorKind[ErrorKind["EXPECT_PLURAL_ARGUMENT_SELECTOR"] = 16] = "EXPECT_PLURAL_ARGUMENT_SELECTOR";
+    /** Expecting a message fragment after the `select` selector (e.g. `{foo, select, apple}`) */
+    ErrorKind[ErrorKind["EXPECT_SELECT_ARGUMENT_SELECTOR_FRAGMENT"] = 17] = "EXPECT_SELECT_ARGUMENT_SELECTOR_FRAGMENT";
+    /**
+     * Expecting a message fragment after the `plural` or `selectordinal` selector
+     * (e.g. `{foo, plural, one}`)
+     */
+    ErrorKind[ErrorKind["EXPECT_PLURAL_ARGUMENT_SELECTOR_FRAGMENT"] = 18] = "EXPECT_PLURAL_ARGUMENT_SELECTOR_FRAGMENT";
+    /** Selector in `plural` or `selectordinal` is malformed (e.g. `{foo, plural, =x {#}}`) */
+    ErrorKind[ErrorKind["INVALID_PLURAL_ARGUMENT_SELECTOR"] = 19] = "INVALID_PLURAL_ARGUMENT_SELECTOR";
+    /**
+     * Duplicate selectors in `plural` or `selectordinal` argument.
+     * (e.g. {foo, plural, one {#} one {#}})
+     */
+    ErrorKind[ErrorKind["DUPLICATE_PLURAL_ARGUMENT_SELECTOR"] = 20] = "DUPLICATE_PLURAL_ARGUMENT_SELECTOR";
+    /** Duplicate selectors in `select` argument.
+     * (e.g. {foo, select, apple {apple} apple {apple}})
+     */
+    ErrorKind[ErrorKind["DUPLICATE_SELECT_ARGUMENT_SELECTOR"] = 21] = "DUPLICATE_SELECT_ARGUMENT_SELECTOR";
+    /** Plural or select argument option must have `other` clause. */
+    ErrorKind[ErrorKind["MISSING_OTHER_CLAUSE"] = 22] = "MISSING_OTHER_CLAUSE";
+    /** The tag is malformed. (e.g. `<bold!>foo</bold!>) */
+    ErrorKind[ErrorKind["INVALID_TAG"] = 23] = "INVALID_TAG";
+    /** The tag name is invalid. (e.g. `<123>foo</123>`) */
+    ErrorKind[ErrorKind["INVALID_TAG_NAME"] = 25] = "INVALID_TAG_NAME";
+    /** The closing tag does not match the opening tag. (e.g. `<bold>foo</italic>`) */
+    ErrorKind[ErrorKind["UNMATCHED_CLOSING_TAG"] = 26] = "UNMATCHED_CLOSING_TAG";
+    /** The opening tag has unmatched closing tag. (e.g. `<bold>foo`) */
+    ErrorKind[ErrorKind["UNCLOSED_TAG"] = 27] = "UNCLOSED_TAG";
+})(ErrorKind || (ErrorKind = {}));
+
+
+/***/ }),
+
+/***/ "./node_modules/react-intl/node_modules/@formatjs/icu-messageformat-parser/lib/index.js":
+/*!**********************************************************************************************!*\
+  !*** ./node_modules/react-intl/node_modules/@formatjs/icu-messageformat-parser/lib/index.js ***!
+  \**********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   SKELETON_TYPE: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_2__.SKELETON_TYPE),
+/* harmony export */   TYPE: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_2__.TYPE),
+/* harmony export */   _Parser: () => (/* binding */ _Parser),
+/* harmony export */   createLiteralElement: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_2__.createLiteralElement),
+/* harmony export */   createNumberElement: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_2__.createNumberElement),
+/* harmony export */   isArgumentElement: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_2__.isArgumentElement),
+/* harmony export */   isDateElement: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_2__.isDateElement),
+/* harmony export */   isDateTimeSkeleton: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_2__.isDateTimeSkeleton),
+/* harmony export */   isLiteralElement: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_2__.isLiteralElement),
+/* harmony export */   isNumberElement: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_2__.isNumberElement),
+/* harmony export */   isNumberSkeleton: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_2__.isNumberSkeleton),
+/* harmony export */   isPluralElement: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_2__.isPluralElement),
+/* harmony export */   isPoundElement: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_2__.isPoundElement),
+/* harmony export */   isSelectElement: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_2__.isSelectElement),
+/* harmony export */   isTagElement: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_2__.isTagElement),
+/* harmony export */   isTimeElement: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_2__.isTimeElement),
+/* harmony export */   parse: () => (/* binding */ parse)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
+/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./error */ "./node_modules/react-intl/node_modules/@formatjs/icu-messageformat-parser/lib/error.js");
+/* harmony import */ var _parser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./parser */ "./node_modules/react-intl/node_modules/@formatjs/icu-messageformat-parser/lib/parser.js");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./types */ "./node_modules/react-intl/node_modules/@formatjs/icu-messageformat-parser/lib/types.js");
+
+
+
+
+function pruneLocation(els) {
+    els.forEach(function (el) {
+        delete el.location;
+        if ((0,_types__WEBPACK_IMPORTED_MODULE_2__.isSelectElement)(el) || (0,_types__WEBPACK_IMPORTED_MODULE_2__.isPluralElement)(el)) {
+            for (var k in el.options) {
+                delete el.options[k].location;
+                pruneLocation(el.options[k].value);
+            }
+        }
+        else if ((0,_types__WEBPACK_IMPORTED_MODULE_2__.isNumberElement)(el) && (0,_types__WEBPACK_IMPORTED_MODULE_2__.isNumberSkeleton)(el.style)) {
+            delete el.style.location;
+        }
+        else if (((0,_types__WEBPACK_IMPORTED_MODULE_2__.isDateElement)(el) || (0,_types__WEBPACK_IMPORTED_MODULE_2__.isTimeElement)(el)) &&
+            (0,_types__WEBPACK_IMPORTED_MODULE_2__.isDateTimeSkeleton)(el.style)) {
+            delete el.style.location;
+        }
+        else if ((0,_types__WEBPACK_IMPORTED_MODULE_2__.isTagElement)(el)) {
+            pruneLocation(el.children);
+        }
+    });
+}
+function parse(message, opts) {
+    if (opts === void 0) { opts = {}; }
+    opts = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__assign)({ shouldParseSkeletons: true, requiresOtherClause: true }, opts);
+    var result = new _parser__WEBPACK_IMPORTED_MODULE_1__.Parser(message, opts).parse();
+    if (result.err) {
+        var error = SyntaxError(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind[result.err.kind]);
+        // @ts-expect-error Assign to error object
+        error.location = result.err.location;
+        // @ts-expect-error Assign to error object
+        error.originalMessage = result.err.message;
+        throw error;
+    }
+    if (!(opts === null || opts === void 0 ? void 0 : opts.captureLocation)) {
+        pruneLocation(result.val);
+    }
+    return result.val;
+}
+
+// only for testing
+var _Parser = _parser__WEBPACK_IMPORTED_MODULE_1__.Parser;
+
+
+/***/ }),
+
+/***/ "./node_modules/react-intl/node_modules/@formatjs/icu-messageformat-parser/lib/parser.js":
+/*!***********************************************************************************************!*\
+  !*** ./node_modules/react-intl/node_modules/@formatjs/icu-messageformat-parser/lib/parser.js ***!
+  \***********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Parser: () => (/* binding */ Parser)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
+/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./error */ "./node_modules/react-intl/node_modules/@formatjs/icu-messageformat-parser/lib/error.js");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./types */ "./node_modules/react-intl/node_modules/@formatjs/icu-messageformat-parser/lib/types.js");
+/* harmony import */ var _regex_generated__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./regex.generated */ "./node_modules/react-intl/node_modules/@formatjs/icu-messageformat-parser/lib/regex.generated.js");
+/* harmony import */ var _formatjs_icu_skeleton_parser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @formatjs/icu-skeleton-parser */ "./node_modules/react-intl/node_modules/@formatjs/icu-skeleton-parser/lib/index.js");
+/* harmony import */ var _date_time_pattern_generator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./date-time-pattern-generator */ "./node_modules/react-intl/node_modules/@formatjs/icu-messageformat-parser/lib/date-time-pattern-generator.js");
+var _a;
+
+
+
+
+
+
+var SPACE_SEPARATOR_START_REGEX = new RegExp("^".concat(_regex_generated__WEBPACK_IMPORTED_MODULE_2__.SPACE_SEPARATOR_REGEX.source, "*"));
+var SPACE_SEPARATOR_END_REGEX = new RegExp("".concat(_regex_generated__WEBPACK_IMPORTED_MODULE_2__.SPACE_SEPARATOR_REGEX.source, "*$"));
+function createLocation(start, end) {
+    return { start: start, end: end };
+}
+// #region Ponyfills
+// Consolidate these variables up top for easier toggling during debugging
+var hasNativeStartsWith = !!String.prototype.startsWith && '_a'.startsWith('a', 1);
+var hasNativeFromCodePoint = !!String.fromCodePoint;
+var hasNativeFromEntries = !!Object.fromEntries;
+var hasNativeCodePointAt = !!String.prototype.codePointAt;
+var hasTrimStart = !!String.prototype.trimStart;
+var hasTrimEnd = !!String.prototype.trimEnd;
+var hasNativeIsSafeInteger = !!Number.isSafeInteger;
+var isSafeInteger = hasNativeIsSafeInteger
+    ? Number.isSafeInteger
+    : function (n) {
+        return (typeof n === 'number' &&
+            isFinite(n) &&
+            Math.floor(n) === n &&
+            Math.abs(n) <= 0x1fffffffffffff);
+    };
+// IE11 does not support y and u.
+var REGEX_SUPPORTS_U_AND_Y = true;
+try {
+    var re = RE('([^\\p{White_Space}\\p{Pattern_Syntax}]*)', 'yu');
+    /**
+     * legacy Edge or Xbox One browser
+     * Unicode flag support: supported
+     * Pattern_Syntax support: not supported
+     * See https://github.com/formatjs/formatjs/issues/2822
+     */
+    REGEX_SUPPORTS_U_AND_Y = ((_a = re.exec('a')) === null || _a === void 0 ? void 0 : _a[0]) === 'a';
+}
+catch (_) {
+    REGEX_SUPPORTS_U_AND_Y = false;
+}
+var startsWith = hasNativeStartsWith
+    ? // Native
+        function startsWith(s, search, position) {
+            return s.startsWith(search, position);
+        }
+    : // For IE11
+        function startsWith(s, search, position) {
+            return s.slice(position, position + search.length) === search;
+        };
+var fromCodePoint = hasNativeFromCodePoint
+    ? String.fromCodePoint
+    : // IE11
+        function fromCodePoint() {
+            var codePoints = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                codePoints[_i] = arguments[_i];
+            }
+            var elements = '';
+            var length = codePoints.length;
+            var i = 0;
+            var code;
+            while (length > i) {
+                code = codePoints[i++];
+                if (code > 0x10ffff)
+                    throw RangeError(code + ' is not a valid code point');
+                elements +=
+                    code < 0x10000
+                        ? String.fromCharCode(code)
+                        : String.fromCharCode(((code -= 0x10000) >> 10) + 0xd800, (code % 0x400) + 0xdc00);
+            }
+            return elements;
+        };
+var fromEntries = 
+// native
+hasNativeFromEntries
+    ? Object.fromEntries
+    : // Ponyfill
+        function fromEntries(entries) {
+            var obj = {};
+            for (var _i = 0, entries_1 = entries; _i < entries_1.length; _i++) {
+                var _a = entries_1[_i], k = _a[0], v = _a[1];
+                obj[k] = v;
+            }
+            return obj;
+        };
+var codePointAt = hasNativeCodePointAt
+    ? // Native
+        function codePointAt(s, index) {
+            return s.codePointAt(index);
+        }
+    : // IE 11
+        function codePointAt(s, index) {
+            var size = s.length;
+            if (index < 0 || index >= size) {
+                return undefined;
+            }
+            var first = s.charCodeAt(index);
+            var second;
+            return first < 0xd800 ||
+                first > 0xdbff ||
+                index + 1 === size ||
+                (second = s.charCodeAt(index + 1)) < 0xdc00 ||
+                second > 0xdfff
+                ? first
+                : ((first - 0xd800) << 10) + (second - 0xdc00) + 0x10000;
+        };
+var trimStart = hasTrimStart
+    ? // Native
+        function trimStart(s) {
+            return s.trimStart();
+        }
+    : // Ponyfill
+        function trimStart(s) {
+            return s.replace(SPACE_SEPARATOR_START_REGEX, '');
+        };
+var trimEnd = hasTrimEnd
+    ? // Native
+        function trimEnd(s) {
+            return s.trimEnd();
+        }
+    : // Ponyfill
+        function trimEnd(s) {
+            return s.replace(SPACE_SEPARATOR_END_REGEX, '');
+        };
+// Prevent minifier to translate new RegExp to literal form that might cause syntax error on IE11.
+function RE(s, flag) {
+    return new RegExp(s, flag);
+}
+// #endregion
+var matchIdentifierAtIndex;
+if (REGEX_SUPPORTS_U_AND_Y) {
+    // Native
+    var IDENTIFIER_PREFIX_RE_1 = RE('([^\\p{White_Space}\\p{Pattern_Syntax}]*)', 'yu');
+    matchIdentifierAtIndex = function matchIdentifierAtIndex(s, index) {
+        var _a;
+        IDENTIFIER_PREFIX_RE_1.lastIndex = index;
+        var match = IDENTIFIER_PREFIX_RE_1.exec(s);
+        return (_a = match[1]) !== null && _a !== void 0 ? _a : '';
+    };
+}
+else {
+    // IE11
+    matchIdentifierAtIndex = function matchIdentifierAtIndex(s, index) {
+        var match = [];
+        while (true) {
+            var c = codePointAt(s, index);
+            if (c === undefined || _isWhiteSpace(c) || _isPatternSyntax(c)) {
+                break;
+            }
+            match.push(c);
+            index += c >= 0x10000 ? 2 : 1;
+        }
+        return fromCodePoint.apply(void 0, match);
+    };
+}
+var Parser = /** @class */ (function () {
+    function Parser(message, options) {
+        if (options === void 0) { options = {}; }
+        this.message = message;
+        this.position = { offset: 0, line: 1, column: 1 };
+        this.ignoreTag = !!options.ignoreTag;
+        this.locale = options.locale;
+        this.requiresOtherClause = !!options.requiresOtherClause;
+        this.shouldParseSkeletons = !!options.shouldParseSkeletons;
+    }
+    Parser.prototype.parse = function () {
+        if (this.offset() !== 0) {
+            throw Error('parser can only be used once');
+        }
+        return this.parseMessage(0, '', false);
+    };
+    Parser.prototype.parseMessage = function (nestingLevel, parentArgType, expectingCloseTag) {
+        var elements = [];
+        while (!this.isEOF()) {
+            var char = this.char();
+            if (char === 123 /* `{` */) {
+                var result = this.parseArgument(nestingLevel, expectingCloseTag);
+                if (result.err) {
+                    return result;
+                }
+                elements.push(result.val);
+            }
+            else if (char === 125 /* `}` */ && nestingLevel > 0) {
+                break;
+            }
+            else if (char === 35 /* `#` */ &&
+                (parentArgType === 'plural' || parentArgType === 'selectordinal')) {
+                var position = this.clonePosition();
+                this.bump();
+                elements.push({
+                    type: _types__WEBPACK_IMPORTED_MODULE_1__.TYPE.pound,
+                    location: createLocation(position, this.clonePosition()),
+                });
+            }
+            else if (char === 60 /* `<` */ &&
+                !this.ignoreTag &&
+                this.peek() === 47 // char code for '/'
+            ) {
+                if (expectingCloseTag) {
+                    break;
+                }
+                else {
+                    return this.error(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.UNMATCHED_CLOSING_TAG, createLocation(this.clonePosition(), this.clonePosition()));
+                }
+            }
+            else if (char === 60 /* `<` */ &&
+                !this.ignoreTag &&
+                _isAlpha(this.peek() || 0)) {
+                var result = this.parseTag(nestingLevel, parentArgType);
+                if (result.err) {
+                    return result;
+                }
+                elements.push(result.val);
+            }
+            else {
+                var result = this.parseLiteral(nestingLevel, parentArgType);
+                if (result.err) {
+                    return result;
+                }
+                elements.push(result.val);
+            }
+        }
+        return { val: elements, err: null };
+    };
+    /**
+     * A tag name must start with an ASCII lower/upper case letter. The grammar is based on the
+     * [custom element name][] except that a dash is NOT always mandatory and uppercase letters
+     * are accepted:
+     *
+     * ```
+     * tag ::= "<" tagName (whitespace)* "/>" | "<" tagName (whitespace)* ">" message "</" tagName (whitespace)* ">"
+     * tagName ::= [a-z] (PENChar)*
+     * PENChar ::=
+     *     "-" | "." | [0-9] | "_" | [a-z] | [A-Z] | #xB7 | [#xC0-#xD6] | [#xD8-#xF6] | [#xF8-#x37D] |
+     *     [#x37F-#x1FFF] | [#x200C-#x200D] | [#x203F-#x2040] | [#x2070-#x218F] | [#x2C00-#x2FEF] |
+     *     [#x3001-#xD7FF] | [#xF900-#xFDCF] | [#xFDF0-#xFFFD] | [#x10000-#xEFFFF]
+     * ```
+     *
+     * [custom element name]: https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name
+     * NOTE: We're a bit more lax here since HTML technically does not allow uppercase HTML element but we do
+     * since other tag-based engines like React allow it
+     */
+    Parser.prototype.parseTag = function (nestingLevel, parentArgType) {
+        var startPosition = this.clonePosition();
+        this.bump(); // `<`
+        var tagName = this.parseTagName();
+        this.bumpSpace();
+        if (this.bumpIf('/>')) {
+            // Self closing tag
+            return {
+                val: {
+                    type: _types__WEBPACK_IMPORTED_MODULE_1__.TYPE.literal,
+                    value: "<".concat(tagName, "/>"),
+                    location: createLocation(startPosition, this.clonePosition()),
+                },
+                err: null,
+            };
+        }
+        else if (this.bumpIf('>')) {
+            var childrenResult = this.parseMessage(nestingLevel + 1, parentArgType, true);
+            if (childrenResult.err) {
+                return childrenResult;
+            }
+            var children = childrenResult.val;
+            // Expecting a close tag
+            var endTagStartPosition = this.clonePosition();
+            if (this.bumpIf('</')) {
+                if (this.isEOF() || !_isAlpha(this.char())) {
+                    return this.error(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.INVALID_TAG, createLocation(endTagStartPosition, this.clonePosition()));
+                }
+                var closingTagNameStartPosition = this.clonePosition();
+                var closingTagName = this.parseTagName();
+                if (tagName !== closingTagName) {
+                    return this.error(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.UNMATCHED_CLOSING_TAG, createLocation(closingTagNameStartPosition, this.clonePosition()));
+                }
+                this.bumpSpace();
+                if (!this.bumpIf('>')) {
+                    return this.error(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.INVALID_TAG, createLocation(endTagStartPosition, this.clonePosition()));
+                }
+                return {
+                    val: {
+                        type: _types__WEBPACK_IMPORTED_MODULE_1__.TYPE.tag,
+                        value: tagName,
+                        children: children,
+                        location: createLocation(startPosition, this.clonePosition()),
+                    },
+                    err: null,
+                };
+            }
+            else {
+                return this.error(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.UNCLOSED_TAG, createLocation(startPosition, this.clonePosition()));
+            }
+        }
+        else {
+            return this.error(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.INVALID_TAG, createLocation(startPosition, this.clonePosition()));
+        }
+    };
+    /**
+     * This method assumes that the caller has peeked ahead for the first tag character.
+     */
+    Parser.prototype.parseTagName = function () {
+        var startOffset = this.offset();
+        this.bump(); // the first tag name character
+        while (!this.isEOF() && _isPotentialElementNameChar(this.char())) {
+            this.bump();
+        }
+        return this.message.slice(startOffset, this.offset());
+    };
+    Parser.prototype.parseLiteral = function (nestingLevel, parentArgType) {
+        var start = this.clonePosition();
+        var value = '';
+        while (true) {
+            var parseQuoteResult = this.tryParseQuote(parentArgType);
+            if (parseQuoteResult) {
+                value += parseQuoteResult;
+                continue;
+            }
+            var parseUnquotedResult = this.tryParseUnquoted(nestingLevel, parentArgType);
+            if (parseUnquotedResult) {
+                value += parseUnquotedResult;
+                continue;
+            }
+            var parseLeftAngleResult = this.tryParseLeftAngleBracket();
+            if (parseLeftAngleResult) {
+                value += parseLeftAngleResult;
+                continue;
+            }
+            break;
+        }
+        var location = createLocation(start, this.clonePosition());
+        return {
+            val: { type: _types__WEBPACK_IMPORTED_MODULE_1__.TYPE.literal, value: value, location: location },
+            err: null,
+        };
+    };
+    Parser.prototype.tryParseLeftAngleBracket = function () {
+        if (!this.isEOF() &&
+            this.char() === 60 /* `<` */ &&
+            (this.ignoreTag ||
+                // If at the opening tag or closing tag position, bail.
+                !_isAlphaOrSlash(this.peek() || 0))) {
+            this.bump(); // `<`
+            return '<';
+        }
+        return null;
+    };
+    /**
+     * Starting with ICU 4.8, an ASCII apostrophe only starts quoted text if it immediately precedes
+     * a character that requires quoting (that is, "only where needed"), and works the same in
+     * nested messages as on the top level of the pattern. The new behavior is otherwise compatible.
+     */
+    Parser.prototype.tryParseQuote = function (parentArgType) {
+        if (this.isEOF() || this.char() !== 39 /* `'` */) {
+            return null;
+        }
+        // Parse escaped char following the apostrophe, or early return if there is no escaped char.
+        // Check if is valid escaped character
+        switch (this.peek()) {
+            case 39 /* `'` */:
+                // double quote, should return as a single quote.
+                this.bump();
+                this.bump();
+                return "'";
+            // '{', '<', '>', '}'
+            case 123:
+            case 60:
+            case 62:
+            case 125:
+                break;
+            case 35: // '#'
+                if (parentArgType === 'plural' || parentArgType === 'selectordinal') {
+                    break;
+                }
+                return null;
+            default:
+                return null;
+        }
+        this.bump(); // apostrophe
+        var codePoints = [this.char()]; // escaped char
+        this.bump();
+        // read chars until the optional closing apostrophe is found
+        while (!this.isEOF()) {
+            var ch = this.char();
+            if (ch === 39 /* `'` */) {
+                if (this.peek() === 39 /* `'` */) {
+                    codePoints.push(39);
+                    // Bump one more time because we need to skip 2 characters.
+                    this.bump();
+                }
+                else {
+                    // Optional closing apostrophe.
+                    this.bump();
+                    break;
+                }
+            }
+            else {
+                codePoints.push(ch);
+            }
+            this.bump();
+        }
+        return fromCodePoint.apply(void 0, codePoints);
+    };
+    Parser.prototype.tryParseUnquoted = function (nestingLevel, parentArgType) {
+        if (this.isEOF()) {
+            return null;
+        }
+        var ch = this.char();
+        if (ch === 60 /* `<` */ ||
+            ch === 123 /* `{` */ ||
+            (ch === 35 /* `#` */ &&
+                (parentArgType === 'plural' || parentArgType === 'selectordinal')) ||
+            (ch === 125 /* `}` */ && nestingLevel > 0)) {
+            return null;
+        }
+        else {
+            this.bump();
+            return fromCodePoint(ch);
+        }
+    };
+    Parser.prototype.parseArgument = function (nestingLevel, expectingCloseTag) {
+        var openingBracePosition = this.clonePosition();
+        this.bump(); // `{`
+        this.bumpSpace();
+        if (this.isEOF()) {
+            return this.error(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.EXPECT_ARGUMENT_CLOSING_BRACE, createLocation(openingBracePosition, this.clonePosition()));
+        }
+        if (this.char() === 125 /* `}` */) {
+            this.bump();
+            return this.error(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.EMPTY_ARGUMENT, createLocation(openingBracePosition, this.clonePosition()));
+        }
+        // argument name
+        var value = this.parseIdentifierIfPossible().value;
+        if (!value) {
+            return this.error(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.MALFORMED_ARGUMENT, createLocation(openingBracePosition, this.clonePosition()));
+        }
+        this.bumpSpace();
+        if (this.isEOF()) {
+            return this.error(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.EXPECT_ARGUMENT_CLOSING_BRACE, createLocation(openingBracePosition, this.clonePosition()));
+        }
+        switch (this.char()) {
+            // Simple argument: `{name}`
+            case 125 /* `}` */: {
+                this.bump(); // `}`
+                return {
+                    val: {
+                        type: _types__WEBPACK_IMPORTED_MODULE_1__.TYPE.argument,
+                        // value does not include the opening and closing braces.
+                        value: value,
+                        location: createLocation(openingBracePosition, this.clonePosition()),
+                    },
+                    err: null,
+                };
+            }
+            // Argument with options: `{name, format, ...}`
+            case 44 /* `,` */: {
+                this.bump(); // `,`
+                this.bumpSpace();
+                if (this.isEOF()) {
+                    return this.error(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.EXPECT_ARGUMENT_CLOSING_BRACE, createLocation(openingBracePosition, this.clonePosition()));
+                }
+                return this.parseArgumentOptions(nestingLevel, expectingCloseTag, value, openingBracePosition);
+            }
+            default:
+                return this.error(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.MALFORMED_ARGUMENT, createLocation(openingBracePosition, this.clonePosition()));
+        }
+    };
+    /**
+     * Advance the parser until the end of the identifier, if it is currently on
+     * an identifier character. Return an empty string otherwise.
+     */
+    Parser.prototype.parseIdentifierIfPossible = function () {
+        var startingPosition = this.clonePosition();
+        var startOffset = this.offset();
+        var value = matchIdentifierAtIndex(this.message, startOffset);
+        var endOffset = startOffset + value.length;
+        this.bumpTo(endOffset);
+        var endPosition = this.clonePosition();
+        var location = createLocation(startingPosition, endPosition);
+        return { value: value, location: location };
+    };
+    Parser.prototype.parseArgumentOptions = function (nestingLevel, expectingCloseTag, value, openingBracePosition) {
+        var _a;
+        // Parse this range:
+        // {name, type, style}
+        //        ^---^
+        var typeStartPosition = this.clonePosition();
+        var argType = this.parseIdentifierIfPossible().value;
+        var typeEndPosition = this.clonePosition();
+        switch (argType) {
+            case '':
+                // Expecting a style string number, date, time, plural, selectordinal, or select.
+                return this.error(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.EXPECT_ARGUMENT_TYPE, createLocation(typeStartPosition, typeEndPosition));
+            case 'number':
+            case 'date':
+            case 'time': {
+                // Parse this range:
+                // {name, number, style}
+                //              ^-------^
+                this.bumpSpace();
+                var styleAndLocation = null;
+                if (this.bumpIf(',')) {
+                    this.bumpSpace();
+                    var styleStartPosition = this.clonePosition();
+                    var result = this.parseSimpleArgStyleIfPossible();
+                    if (result.err) {
+                        return result;
+                    }
+                    var style = trimEnd(result.val);
+                    if (style.length === 0) {
+                        return this.error(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.EXPECT_ARGUMENT_STYLE, createLocation(this.clonePosition(), this.clonePosition()));
+                    }
+                    var styleLocation = createLocation(styleStartPosition, this.clonePosition());
+                    styleAndLocation = { style: style, styleLocation: styleLocation };
+                }
+                var argCloseResult = this.tryParseArgumentClose(openingBracePosition);
+                if (argCloseResult.err) {
+                    return argCloseResult;
+                }
+                var location_1 = createLocation(openingBracePosition, this.clonePosition());
+                // Extract style or skeleton
+                if (styleAndLocation && startsWith(styleAndLocation === null || styleAndLocation === void 0 ? void 0 : styleAndLocation.style, '::', 0)) {
+                    // Skeleton starts with `::`.
+                    var skeleton = trimStart(styleAndLocation.style.slice(2));
+                    if (argType === 'number') {
+                        var result = this.parseNumberSkeletonFromString(skeleton, styleAndLocation.styleLocation);
+                        if (result.err) {
+                            return result;
+                        }
+                        return {
+                            val: { type: _types__WEBPACK_IMPORTED_MODULE_1__.TYPE.number, value: value, location: location_1, style: result.val },
+                            err: null,
+                        };
+                    }
+                    else {
+                        if (skeleton.length === 0) {
+                            return this.error(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.EXPECT_DATE_TIME_SKELETON, location_1);
+                        }
+                        var dateTimePattern = skeleton;
+                        // Get "best match" pattern only if locale is passed, if not, let it
+                        // pass as-is where `parseDateTimeSkeleton()` will throw an error
+                        // for unsupported patterns.
+                        if (this.locale) {
+                            dateTimePattern = (0,_date_time_pattern_generator__WEBPACK_IMPORTED_MODULE_4__.getBestPattern)(skeleton, this.locale);
+                        }
+                        var style = {
+                            type: _types__WEBPACK_IMPORTED_MODULE_1__.SKELETON_TYPE.dateTime,
+                            pattern: dateTimePattern,
+                            location: styleAndLocation.styleLocation,
+                            parsedOptions: this.shouldParseSkeletons
+                                ? (0,_formatjs_icu_skeleton_parser__WEBPACK_IMPORTED_MODULE_3__.parseDateTimeSkeleton)(dateTimePattern)
+                                : {},
+                        };
+                        var type = argType === 'date' ? _types__WEBPACK_IMPORTED_MODULE_1__.TYPE.date : _types__WEBPACK_IMPORTED_MODULE_1__.TYPE.time;
+                        return {
+                            val: { type: type, value: value, location: location_1, style: style },
+                            err: null,
+                        };
+                    }
+                }
+                // Regular style or no style.
+                return {
+                    val: {
+                        type: argType === 'number'
+                            ? _types__WEBPACK_IMPORTED_MODULE_1__.TYPE.number
+                            : argType === 'date'
+                                ? _types__WEBPACK_IMPORTED_MODULE_1__.TYPE.date
+                                : _types__WEBPACK_IMPORTED_MODULE_1__.TYPE.time,
+                        value: value,
+                        location: location_1,
+                        style: (_a = styleAndLocation === null || styleAndLocation === void 0 ? void 0 : styleAndLocation.style) !== null && _a !== void 0 ? _a : null,
+                    },
+                    err: null,
+                };
+            }
+            case 'plural':
+            case 'selectordinal':
+            case 'select': {
+                // Parse this range:
+                // {name, plural, options}
+                //              ^---------^
+                var typeEndPosition_1 = this.clonePosition();
+                this.bumpSpace();
+                if (!this.bumpIf(',')) {
+                    return this.error(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.EXPECT_SELECT_ARGUMENT_OPTIONS, createLocation(typeEndPosition_1, (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__assign)({}, typeEndPosition_1)));
+                }
+                this.bumpSpace();
+                // Parse offset:
+                // {name, plural, offset:1, options}
+                //                ^-----^
+                //
+                // or the first option:
+                //
+                // {name, plural, one {...} other {...}}
+                //                ^--^
+                var identifierAndLocation = this.parseIdentifierIfPossible();
+                var pluralOffset = 0;
+                if (argType !== 'select' && identifierAndLocation.value === 'offset') {
+                    if (!this.bumpIf(':')) {
+                        return this.error(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.EXPECT_PLURAL_ARGUMENT_OFFSET_VALUE, createLocation(this.clonePosition(), this.clonePosition()));
+                    }
+                    this.bumpSpace();
+                    var result = this.tryParseDecimalInteger(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.EXPECT_PLURAL_ARGUMENT_OFFSET_VALUE, _error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.INVALID_PLURAL_ARGUMENT_OFFSET_VALUE);
+                    if (result.err) {
+                        return result;
+                    }
+                    // Parse another identifier for option parsing
+                    this.bumpSpace();
+                    identifierAndLocation = this.parseIdentifierIfPossible();
+                    pluralOffset = result.val;
+                }
+                var optionsResult = this.tryParsePluralOrSelectOptions(nestingLevel, argType, expectingCloseTag, identifierAndLocation);
+                if (optionsResult.err) {
+                    return optionsResult;
+                }
+                var argCloseResult = this.tryParseArgumentClose(openingBracePosition);
+                if (argCloseResult.err) {
+                    return argCloseResult;
+                }
+                var location_2 = createLocation(openingBracePosition, this.clonePosition());
+                if (argType === 'select') {
+                    return {
+                        val: {
+                            type: _types__WEBPACK_IMPORTED_MODULE_1__.TYPE.select,
+                            value: value,
+                            options: fromEntries(optionsResult.val),
+                            location: location_2,
+                        },
+                        err: null,
+                    };
+                }
+                else {
+                    return {
+                        val: {
+                            type: _types__WEBPACK_IMPORTED_MODULE_1__.TYPE.plural,
+                            value: value,
+                            options: fromEntries(optionsResult.val),
+                            offset: pluralOffset,
+                            pluralType: argType === 'plural' ? 'cardinal' : 'ordinal',
+                            location: location_2,
+                        },
+                        err: null,
+                    };
+                }
+            }
+            default:
+                return this.error(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.INVALID_ARGUMENT_TYPE, createLocation(typeStartPosition, typeEndPosition));
+        }
+    };
+    Parser.prototype.tryParseArgumentClose = function (openingBracePosition) {
+        // Parse: {value, number, ::currency/GBP }
+        //
+        if (this.isEOF() || this.char() !== 125 /* `}` */) {
+            return this.error(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.EXPECT_ARGUMENT_CLOSING_BRACE, createLocation(openingBracePosition, this.clonePosition()));
+        }
+        this.bump(); // `}`
+        return { val: true, err: null };
+    };
+    /**
+     * See: https://github.com/unicode-org/icu/blob/af7ed1f6d2298013dc303628438ec4abe1f16479/icu4c/source/common/messagepattern.cpp#L659
+     */
+    Parser.prototype.parseSimpleArgStyleIfPossible = function () {
+        var nestedBraces = 0;
+        var startPosition = this.clonePosition();
+        while (!this.isEOF()) {
+            var ch = this.char();
+            switch (ch) {
+                case 39 /* `'` */: {
+                    // Treat apostrophe as quoting but include it in the style part.
+                    // Find the end of the quoted literal text.
+                    this.bump();
+                    var apostrophePosition = this.clonePosition();
+                    if (!this.bumpUntil("'")) {
+                        return this.error(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.UNCLOSED_QUOTE_IN_ARGUMENT_STYLE, createLocation(apostrophePosition, this.clonePosition()));
+                    }
+                    this.bump();
+                    break;
+                }
+                case 123 /* `{` */: {
+                    nestedBraces += 1;
+                    this.bump();
+                    break;
+                }
+                case 125 /* `}` */: {
+                    if (nestedBraces > 0) {
+                        nestedBraces -= 1;
+                    }
+                    else {
+                        return {
+                            val: this.message.slice(startPosition.offset, this.offset()),
+                            err: null,
+                        };
+                    }
+                    break;
+                }
+                default:
+                    this.bump();
+                    break;
+            }
+        }
+        return {
+            val: this.message.slice(startPosition.offset, this.offset()),
+            err: null,
+        };
+    };
+    Parser.prototype.parseNumberSkeletonFromString = function (skeleton, location) {
+        var tokens = [];
+        try {
+            tokens = (0,_formatjs_icu_skeleton_parser__WEBPACK_IMPORTED_MODULE_3__.parseNumberSkeletonFromString)(skeleton);
+        }
+        catch (e) {
+            return this.error(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.INVALID_NUMBER_SKELETON, location);
+        }
+        return {
+            val: {
+                type: _types__WEBPACK_IMPORTED_MODULE_1__.SKELETON_TYPE.number,
+                tokens: tokens,
+                location: location,
+                parsedOptions: this.shouldParseSkeletons
+                    ? (0,_formatjs_icu_skeleton_parser__WEBPACK_IMPORTED_MODULE_3__.parseNumberSkeleton)(tokens)
+                    : {},
+            },
+            err: null,
+        };
+    };
+    /**
+     * @param nesting_level The current nesting level of messages.
+     *     This can be positive when parsing message fragment in select or plural argument options.
+     * @param parent_arg_type The parent argument's type.
+     * @param parsed_first_identifier If provided, this is the first identifier-like selector of
+     *     the argument. It is a by-product of a previous parsing attempt.
+     * @param expecting_close_tag If true, this message is directly or indirectly nested inside
+     *     between a pair of opening and closing tags. The nested message will not parse beyond
+     *     the closing tag boundary.
+     */
+    Parser.prototype.tryParsePluralOrSelectOptions = function (nestingLevel, parentArgType, expectCloseTag, parsedFirstIdentifier) {
+        var _a;
+        var hasOtherClause = false;
+        var options = [];
+        var parsedSelectors = new Set();
+        var selector = parsedFirstIdentifier.value, selectorLocation = parsedFirstIdentifier.location;
+        // Parse:
+        // one {one apple}
+        // ^--^
+        while (true) {
+            if (selector.length === 0) {
+                var startPosition = this.clonePosition();
+                if (parentArgType !== 'select' && this.bumpIf('=')) {
+                    // Try parse `={number}` selector
+                    var result = this.tryParseDecimalInteger(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.EXPECT_PLURAL_ARGUMENT_SELECTOR, _error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.INVALID_PLURAL_ARGUMENT_SELECTOR);
+                    if (result.err) {
+                        return result;
+                    }
+                    selectorLocation = createLocation(startPosition, this.clonePosition());
+                    selector = this.message.slice(startPosition.offset, this.offset());
+                }
+                else {
+                    break;
+                }
+            }
+            // Duplicate selector clauses
+            if (parsedSelectors.has(selector)) {
+                return this.error(parentArgType === 'select'
+                    ? _error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.DUPLICATE_SELECT_ARGUMENT_SELECTOR
+                    : _error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.DUPLICATE_PLURAL_ARGUMENT_SELECTOR, selectorLocation);
+            }
+            if (selector === 'other') {
+                hasOtherClause = true;
+            }
+            // Parse:
+            // one {one apple}
+            //     ^----------^
+            this.bumpSpace();
+            var openingBracePosition = this.clonePosition();
+            if (!this.bumpIf('{')) {
+                return this.error(parentArgType === 'select'
+                    ? _error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.EXPECT_SELECT_ARGUMENT_SELECTOR_FRAGMENT
+                    : _error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.EXPECT_PLURAL_ARGUMENT_SELECTOR_FRAGMENT, createLocation(this.clonePosition(), this.clonePosition()));
+            }
+            var fragmentResult = this.parseMessage(nestingLevel + 1, parentArgType, expectCloseTag);
+            if (fragmentResult.err) {
+                return fragmentResult;
+            }
+            var argCloseResult = this.tryParseArgumentClose(openingBracePosition);
+            if (argCloseResult.err) {
+                return argCloseResult;
+            }
+            options.push([
+                selector,
+                {
+                    value: fragmentResult.val,
+                    location: createLocation(openingBracePosition, this.clonePosition()),
+                },
+            ]);
+            // Keep track of the existing selectors
+            parsedSelectors.add(selector);
+            // Prep next selector clause.
+            this.bumpSpace();
+            (_a = this.parseIdentifierIfPossible(), selector = _a.value, selectorLocation = _a.location);
+        }
+        if (options.length === 0) {
+            return this.error(parentArgType === 'select'
+                ? _error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.EXPECT_SELECT_ARGUMENT_SELECTOR
+                : _error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.EXPECT_PLURAL_ARGUMENT_SELECTOR, createLocation(this.clonePosition(), this.clonePosition()));
+        }
+        if (this.requiresOtherClause && !hasOtherClause) {
+            return this.error(_error__WEBPACK_IMPORTED_MODULE_0__.ErrorKind.MISSING_OTHER_CLAUSE, createLocation(this.clonePosition(), this.clonePosition()));
+        }
+        return { val: options, err: null };
+    };
+    Parser.prototype.tryParseDecimalInteger = function (expectNumberError, invalidNumberError) {
+        var sign = 1;
+        var startingPosition = this.clonePosition();
+        if (this.bumpIf('+')) {
+        }
+        else if (this.bumpIf('-')) {
+            sign = -1;
+        }
+        var hasDigits = false;
+        var decimal = 0;
+        while (!this.isEOF()) {
+            var ch = this.char();
+            if (ch >= 48 /* `0` */ && ch <= 57 /* `9` */) {
+                hasDigits = true;
+                decimal = decimal * 10 + (ch - 48);
+                this.bump();
+            }
+            else {
+                break;
+            }
+        }
+        var location = createLocation(startingPosition, this.clonePosition());
+        if (!hasDigits) {
+            return this.error(expectNumberError, location);
+        }
+        decimal *= sign;
+        if (!isSafeInteger(decimal)) {
+            return this.error(invalidNumberError, location);
+        }
+        return { val: decimal, err: null };
+    };
+    Parser.prototype.offset = function () {
+        return this.position.offset;
+    };
+    Parser.prototype.isEOF = function () {
+        return this.offset() === this.message.length;
+    };
+    Parser.prototype.clonePosition = function () {
+        // This is much faster than `Object.assign` or spread.
+        return {
+            offset: this.position.offset,
+            line: this.position.line,
+            column: this.position.column,
+        };
+    };
+    /**
+     * Return the code point at the current position of the parser.
+     * Throws if the index is out of bound.
+     */
+    Parser.prototype.char = function () {
+        var offset = this.position.offset;
+        if (offset >= this.message.length) {
+            throw Error('out of bound');
+        }
+        var code = codePointAt(this.message, offset);
+        if (code === undefined) {
+            throw Error("Offset ".concat(offset, " is at invalid UTF-16 code unit boundary"));
+        }
+        return code;
+    };
+    Parser.prototype.error = function (kind, location) {
+        return {
+            val: null,
+            err: {
+                kind: kind,
+                message: this.message,
+                location: location,
+            },
+        };
+    };
+    /** Bump the parser to the next UTF-16 code unit. */
+    Parser.prototype.bump = function () {
+        if (this.isEOF()) {
+            return;
+        }
+        var code = this.char();
+        if (code === 10 /* '\n' */) {
+            this.position.line += 1;
+            this.position.column = 1;
+            this.position.offset += 1;
+        }
+        else {
+            this.position.column += 1;
+            // 0 ~ 0x10000 -> unicode BMP, otherwise skip the surrogate pair.
+            this.position.offset += code < 0x10000 ? 1 : 2;
+        }
+    };
+    /**
+     * If the substring starting at the current position of the parser has
+     * the given prefix, then bump the parser to the character immediately
+     * following the prefix and return true. Otherwise, don't bump the parser
+     * and return false.
+     */
+    Parser.prototype.bumpIf = function (prefix) {
+        if (startsWith(this.message, prefix, this.offset())) {
+            for (var i = 0; i < prefix.length; i++) {
+                this.bump();
+            }
+            return true;
+        }
+        return false;
+    };
+    /**
+     * Bump the parser until the pattern character is found and return `true`.
+     * Otherwise bump to the end of the file and return `false`.
+     */
+    Parser.prototype.bumpUntil = function (pattern) {
+        var currentOffset = this.offset();
+        var index = this.message.indexOf(pattern, currentOffset);
+        if (index >= 0) {
+            this.bumpTo(index);
+            return true;
+        }
+        else {
+            this.bumpTo(this.message.length);
+            return false;
+        }
+    };
+    /**
+     * Bump the parser to the target offset.
+     * If target offset is beyond the end of the input, bump the parser to the end of the input.
+     */
+    Parser.prototype.bumpTo = function (targetOffset) {
+        if (this.offset() > targetOffset) {
+            throw Error("targetOffset ".concat(targetOffset, " must be greater than or equal to the current offset ").concat(this.offset()));
+        }
+        targetOffset = Math.min(targetOffset, this.message.length);
+        while (true) {
+            var offset = this.offset();
+            if (offset === targetOffset) {
+                break;
+            }
+            if (offset > targetOffset) {
+                throw Error("targetOffset ".concat(targetOffset, " is at invalid UTF-16 code unit boundary"));
+            }
+            this.bump();
+            if (this.isEOF()) {
+                break;
+            }
+        }
+    };
+    /** advance the parser through all whitespace to the next non-whitespace code unit. */
+    Parser.prototype.bumpSpace = function () {
+        while (!this.isEOF() && _isWhiteSpace(this.char())) {
+            this.bump();
+        }
+    };
+    /**
+     * Peek at the *next* Unicode codepoint in the input without advancing the parser.
+     * If the input has been exhausted, then this returns null.
+     */
+    Parser.prototype.peek = function () {
+        if (this.isEOF()) {
+            return null;
+        }
+        var code = this.char();
+        var offset = this.offset();
+        var nextCode = this.message.charCodeAt(offset + (code >= 0x10000 ? 2 : 1));
+        return nextCode !== null && nextCode !== void 0 ? nextCode : null;
+    };
+    return Parser;
+}());
+
+/**
+ * This check if codepoint is alphabet (lower & uppercase)
+ * @param codepoint
+ * @returns
+ */
+function _isAlpha(codepoint) {
+    return ((codepoint >= 97 && codepoint <= 122) ||
+        (codepoint >= 65 && codepoint <= 90));
+}
+function _isAlphaOrSlash(codepoint) {
+    return _isAlpha(codepoint) || codepoint === 47; /* '/' */
+}
+/** See `parseTag` function docs. */
+function _isPotentialElementNameChar(c) {
+    return (c === 45 /* '-' */ ||
+        c === 46 /* '.' */ ||
+        (c >= 48 && c <= 57) /* 0..9 */ ||
+        c === 95 /* '_' */ ||
+        (c >= 97 && c <= 122) /** a..z */ ||
+        (c >= 65 && c <= 90) /* A..Z */ ||
+        c == 0xb7 ||
+        (c >= 0xc0 && c <= 0xd6) ||
+        (c >= 0xd8 && c <= 0xf6) ||
+        (c >= 0xf8 && c <= 0x37d) ||
+        (c >= 0x37f && c <= 0x1fff) ||
+        (c >= 0x200c && c <= 0x200d) ||
+        (c >= 0x203f && c <= 0x2040) ||
+        (c >= 0x2070 && c <= 0x218f) ||
+        (c >= 0x2c00 && c <= 0x2fef) ||
+        (c >= 0x3001 && c <= 0xd7ff) ||
+        (c >= 0xf900 && c <= 0xfdcf) ||
+        (c >= 0xfdf0 && c <= 0xfffd) ||
+        (c >= 0x10000 && c <= 0xeffff));
+}
+/**
+ * Code point equivalent of regex `\p{White_Space}`.
+ * From: https://www.unicode.org/Public/UCD/latest/ucd/PropList.txt
+ */
+function _isWhiteSpace(c) {
+    return ((c >= 0x0009 && c <= 0x000d) ||
+        c === 0x0020 ||
+        c === 0x0085 ||
+        (c >= 0x200e && c <= 0x200f) ||
+        c === 0x2028 ||
+        c === 0x2029);
+}
+/**
+ * Code point equivalent of regex `\p{Pattern_Syntax}`.
+ * See https://www.unicode.org/Public/UCD/latest/ucd/PropList.txt
+ */
+function _isPatternSyntax(c) {
+    return ((c >= 0x0021 && c <= 0x0023) ||
+        c === 0x0024 ||
+        (c >= 0x0025 && c <= 0x0027) ||
+        c === 0x0028 ||
+        c === 0x0029 ||
+        c === 0x002a ||
+        c === 0x002b ||
+        c === 0x002c ||
+        c === 0x002d ||
+        (c >= 0x002e && c <= 0x002f) ||
+        (c >= 0x003a && c <= 0x003b) ||
+        (c >= 0x003c && c <= 0x003e) ||
+        (c >= 0x003f && c <= 0x0040) ||
+        c === 0x005b ||
+        c === 0x005c ||
+        c === 0x005d ||
+        c === 0x005e ||
+        c === 0x0060 ||
+        c === 0x007b ||
+        c === 0x007c ||
+        c === 0x007d ||
+        c === 0x007e ||
+        c === 0x00a1 ||
+        (c >= 0x00a2 && c <= 0x00a5) ||
+        c === 0x00a6 ||
+        c === 0x00a7 ||
+        c === 0x00a9 ||
+        c === 0x00ab ||
+        c === 0x00ac ||
+        c === 0x00ae ||
+        c === 0x00b0 ||
+        c === 0x00b1 ||
+        c === 0x00b6 ||
+        c === 0x00bb ||
+        c === 0x00bf ||
+        c === 0x00d7 ||
+        c === 0x00f7 ||
+        (c >= 0x2010 && c <= 0x2015) ||
+        (c >= 0x2016 && c <= 0x2017) ||
+        c === 0x2018 ||
+        c === 0x2019 ||
+        c === 0x201a ||
+        (c >= 0x201b && c <= 0x201c) ||
+        c === 0x201d ||
+        c === 0x201e ||
+        c === 0x201f ||
+        (c >= 0x2020 && c <= 0x2027) ||
+        (c >= 0x2030 && c <= 0x2038) ||
+        c === 0x2039 ||
+        c === 0x203a ||
+        (c >= 0x203b && c <= 0x203e) ||
+        (c >= 0x2041 && c <= 0x2043) ||
+        c === 0x2044 ||
+        c === 0x2045 ||
+        c === 0x2046 ||
+        (c >= 0x2047 && c <= 0x2051) ||
+        c === 0x2052 ||
+        c === 0x2053 ||
+        (c >= 0x2055 && c <= 0x205e) ||
+        (c >= 0x2190 && c <= 0x2194) ||
+        (c >= 0x2195 && c <= 0x2199) ||
+        (c >= 0x219a && c <= 0x219b) ||
+        (c >= 0x219c && c <= 0x219f) ||
+        c === 0x21a0 ||
+        (c >= 0x21a1 && c <= 0x21a2) ||
+        c === 0x21a3 ||
+        (c >= 0x21a4 && c <= 0x21a5) ||
+        c === 0x21a6 ||
+        (c >= 0x21a7 && c <= 0x21ad) ||
+        c === 0x21ae ||
+        (c >= 0x21af && c <= 0x21cd) ||
+        (c >= 0x21ce && c <= 0x21cf) ||
+        (c >= 0x21d0 && c <= 0x21d1) ||
+        c === 0x21d2 ||
+        c === 0x21d3 ||
+        c === 0x21d4 ||
+        (c >= 0x21d5 && c <= 0x21f3) ||
+        (c >= 0x21f4 && c <= 0x22ff) ||
+        (c >= 0x2300 && c <= 0x2307) ||
+        c === 0x2308 ||
+        c === 0x2309 ||
+        c === 0x230a ||
+        c === 0x230b ||
+        (c >= 0x230c && c <= 0x231f) ||
+        (c >= 0x2320 && c <= 0x2321) ||
+        (c >= 0x2322 && c <= 0x2328) ||
+        c === 0x2329 ||
+        c === 0x232a ||
+        (c >= 0x232b && c <= 0x237b) ||
+        c === 0x237c ||
+        (c >= 0x237d && c <= 0x239a) ||
+        (c >= 0x239b && c <= 0x23b3) ||
+        (c >= 0x23b4 && c <= 0x23db) ||
+        (c >= 0x23dc && c <= 0x23e1) ||
+        (c >= 0x23e2 && c <= 0x2426) ||
+        (c >= 0x2427 && c <= 0x243f) ||
+        (c >= 0x2440 && c <= 0x244a) ||
+        (c >= 0x244b && c <= 0x245f) ||
+        (c >= 0x2500 && c <= 0x25b6) ||
+        c === 0x25b7 ||
+        (c >= 0x25b8 && c <= 0x25c0) ||
+        c === 0x25c1 ||
+        (c >= 0x25c2 && c <= 0x25f7) ||
+        (c >= 0x25f8 && c <= 0x25ff) ||
+        (c >= 0x2600 && c <= 0x266e) ||
+        c === 0x266f ||
+        (c >= 0x2670 && c <= 0x2767) ||
+        c === 0x2768 ||
+        c === 0x2769 ||
+        c === 0x276a ||
+        c === 0x276b ||
+        c === 0x276c ||
+        c === 0x276d ||
+        c === 0x276e ||
+        c === 0x276f ||
+        c === 0x2770 ||
+        c === 0x2771 ||
+        c === 0x2772 ||
+        c === 0x2773 ||
+        c === 0x2774 ||
+        c === 0x2775 ||
+        (c >= 0x2794 && c <= 0x27bf) ||
+        (c >= 0x27c0 && c <= 0x27c4) ||
+        c === 0x27c5 ||
+        c === 0x27c6 ||
+        (c >= 0x27c7 && c <= 0x27e5) ||
+        c === 0x27e6 ||
+        c === 0x27e7 ||
+        c === 0x27e8 ||
+        c === 0x27e9 ||
+        c === 0x27ea ||
+        c === 0x27eb ||
+        c === 0x27ec ||
+        c === 0x27ed ||
+        c === 0x27ee ||
+        c === 0x27ef ||
+        (c >= 0x27f0 && c <= 0x27ff) ||
+        (c >= 0x2800 && c <= 0x28ff) ||
+        (c >= 0x2900 && c <= 0x2982) ||
+        c === 0x2983 ||
+        c === 0x2984 ||
+        c === 0x2985 ||
+        c === 0x2986 ||
+        c === 0x2987 ||
+        c === 0x2988 ||
+        c === 0x2989 ||
+        c === 0x298a ||
+        c === 0x298b ||
+        c === 0x298c ||
+        c === 0x298d ||
+        c === 0x298e ||
+        c === 0x298f ||
+        c === 0x2990 ||
+        c === 0x2991 ||
+        c === 0x2992 ||
+        c === 0x2993 ||
+        c === 0x2994 ||
+        c === 0x2995 ||
+        c === 0x2996 ||
+        c === 0x2997 ||
+        c === 0x2998 ||
+        (c >= 0x2999 && c <= 0x29d7) ||
+        c === 0x29d8 ||
+        c === 0x29d9 ||
+        c === 0x29da ||
+        c === 0x29db ||
+        (c >= 0x29dc && c <= 0x29fb) ||
+        c === 0x29fc ||
+        c === 0x29fd ||
+        (c >= 0x29fe && c <= 0x2aff) ||
+        (c >= 0x2b00 && c <= 0x2b2f) ||
+        (c >= 0x2b30 && c <= 0x2b44) ||
+        (c >= 0x2b45 && c <= 0x2b46) ||
+        (c >= 0x2b47 && c <= 0x2b4c) ||
+        (c >= 0x2b4d && c <= 0x2b73) ||
+        (c >= 0x2b74 && c <= 0x2b75) ||
+        (c >= 0x2b76 && c <= 0x2b95) ||
+        c === 0x2b96 ||
+        (c >= 0x2b97 && c <= 0x2bff) ||
+        (c >= 0x2e00 && c <= 0x2e01) ||
+        c === 0x2e02 ||
+        c === 0x2e03 ||
+        c === 0x2e04 ||
+        c === 0x2e05 ||
+        (c >= 0x2e06 && c <= 0x2e08) ||
+        c === 0x2e09 ||
+        c === 0x2e0a ||
+        c === 0x2e0b ||
+        c === 0x2e0c ||
+        c === 0x2e0d ||
+        (c >= 0x2e0e && c <= 0x2e16) ||
+        c === 0x2e17 ||
+        (c >= 0x2e18 && c <= 0x2e19) ||
+        c === 0x2e1a ||
+        c === 0x2e1b ||
+        c === 0x2e1c ||
+        c === 0x2e1d ||
+        (c >= 0x2e1e && c <= 0x2e1f) ||
+        c === 0x2e20 ||
+        c === 0x2e21 ||
+        c === 0x2e22 ||
+        c === 0x2e23 ||
+        c === 0x2e24 ||
+        c === 0x2e25 ||
+        c === 0x2e26 ||
+        c === 0x2e27 ||
+        c === 0x2e28 ||
+        c === 0x2e29 ||
+        (c >= 0x2e2a && c <= 0x2e2e) ||
+        c === 0x2e2f ||
+        (c >= 0x2e30 && c <= 0x2e39) ||
+        (c >= 0x2e3a && c <= 0x2e3b) ||
+        (c >= 0x2e3c && c <= 0x2e3f) ||
+        c === 0x2e40 ||
+        c === 0x2e41 ||
+        c === 0x2e42 ||
+        (c >= 0x2e43 && c <= 0x2e4f) ||
+        (c >= 0x2e50 && c <= 0x2e51) ||
+        c === 0x2e52 ||
+        (c >= 0x2e53 && c <= 0x2e7f) ||
+        (c >= 0x3001 && c <= 0x3003) ||
+        c === 0x3008 ||
+        c === 0x3009 ||
+        c === 0x300a ||
+        c === 0x300b ||
+        c === 0x300c ||
+        c === 0x300d ||
+        c === 0x300e ||
+        c === 0x300f ||
+        c === 0x3010 ||
+        c === 0x3011 ||
+        (c >= 0x3012 && c <= 0x3013) ||
+        c === 0x3014 ||
+        c === 0x3015 ||
+        c === 0x3016 ||
+        c === 0x3017 ||
+        c === 0x3018 ||
+        c === 0x3019 ||
+        c === 0x301a ||
+        c === 0x301b ||
+        c === 0x301c ||
+        c === 0x301d ||
+        (c >= 0x301e && c <= 0x301f) ||
+        c === 0x3020 ||
+        c === 0x3030 ||
+        c === 0xfd3e ||
+        c === 0xfd3f ||
+        (c >= 0xfe45 && c <= 0xfe46));
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/react-intl/node_modules/@formatjs/icu-messageformat-parser/lib/regex.generated.js":
+/*!********************************************************************************************************!*\
+  !*** ./node_modules/react-intl/node_modules/@formatjs/icu-messageformat-parser/lib/regex.generated.js ***!
+  \********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   SPACE_SEPARATOR_REGEX: () => (/* binding */ SPACE_SEPARATOR_REGEX),
+/* harmony export */   WHITE_SPACE_REGEX: () => (/* binding */ WHITE_SPACE_REGEX)
+/* harmony export */ });
+// @generated from regex-gen.ts
+var SPACE_SEPARATOR_REGEX = /[ \xA0\u1680\u2000-\u200A\u202F\u205F\u3000]/;
+var WHITE_SPACE_REGEX = /[\t-\r \x85\u200E\u200F\u2028\u2029]/;
+
+
+/***/ }),
+
+/***/ "./node_modules/react-intl/node_modules/@formatjs/icu-messageformat-parser/lib/time-data.generated.js":
+/*!************************************************************************************************************!*\
+  !*** ./node_modules/react-intl/node_modules/@formatjs/icu-messageformat-parser/lib/time-data.generated.js ***!
+  \************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   timeData: () => (/* binding */ timeData)
+/* harmony export */ });
+// @generated from time-data-gen.ts
+// prettier-ignore  
+var timeData = {
+    "001": [
+        "H",
+        "h"
+    ],
+    "419": [
+        "h",
+        "H",
+        "hB",
+        "hb"
+    ],
+    "AC": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "AD": [
+        "H",
+        "hB"
+    ],
+    "AE": [
+        "h",
+        "hB",
+        "hb",
+        "H"
+    ],
+    "AF": [
+        "H",
+        "hb",
+        "hB",
+        "h"
+    ],
+    "AG": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "AI": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "AL": [
+        "h",
+        "H",
+        "hB"
+    ],
+    "AM": [
+        "H",
+        "hB"
+    ],
+    "AO": [
+        "H",
+        "hB"
+    ],
+    "AR": [
+        "h",
+        "H",
+        "hB",
+        "hb"
+    ],
+    "AS": [
+        "h",
+        "H"
+    ],
+    "AT": [
+        "H",
+        "hB"
+    ],
+    "AU": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "AW": [
+        "H",
+        "hB"
+    ],
+    "AX": [
+        "H"
+    ],
+    "AZ": [
+        "H",
+        "hB",
+        "h"
+    ],
+    "BA": [
+        "H",
+        "hB",
+        "h"
+    ],
+    "BB": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "BD": [
+        "h",
+        "hB",
+        "H"
+    ],
+    "BE": [
+        "H",
+        "hB"
+    ],
+    "BF": [
+        "H",
+        "hB"
+    ],
+    "BG": [
+        "H",
+        "hB",
+        "h"
+    ],
+    "BH": [
+        "h",
+        "hB",
+        "hb",
+        "H"
+    ],
+    "BI": [
+        "H",
+        "h"
+    ],
+    "BJ": [
+        "H",
+        "hB"
+    ],
+    "BL": [
+        "H",
+        "hB"
+    ],
+    "BM": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "BN": [
+        "hb",
+        "hB",
+        "h",
+        "H"
+    ],
+    "BO": [
+        "h",
+        "H",
+        "hB",
+        "hb"
+    ],
+    "BQ": [
+        "H"
+    ],
+    "BR": [
+        "H",
+        "hB"
+    ],
+    "BS": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "BT": [
+        "h",
+        "H"
+    ],
+    "BW": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "BY": [
+        "H",
+        "h"
+    ],
+    "BZ": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "CA": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "CC": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "CD": [
+        "hB",
+        "H"
+    ],
+    "CF": [
+        "H",
+        "h",
+        "hB"
+    ],
+    "CG": [
+        "H",
+        "hB"
+    ],
+    "CH": [
+        "H",
+        "hB",
+        "h"
+    ],
+    "CI": [
+        "H",
+        "hB"
+    ],
+    "CK": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "CL": [
+        "h",
+        "H",
+        "hB",
+        "hb"
+    ],
+    "CM": [
+        "H",
+        "h",
+        "hB"
+    ],
+    "CN": [
+        "H",
+        "hB",
+        "hb",
+        "h"
+    ],
+    "CO": [
+        "h",
+        "H",
+        "hB",
+        "hb"
+    ],
+    "CP": [
+        "H"
+    ],
+    "CR": [
+        "h",
+        "H",
+        "hB",
+        "hb"
+    ],
+    "CU": [
+        "h",
+        "H",
+        "hB",
+        "hb"
+    ],
+    "CV": [
+        "H",
+        "hB"
+    ],
+    "CW": [
+        "H",
+        "hB"
+    ],
+    "CX": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "CY": [
+        "h",
+        "H",
+        "hb",
+        "hB"
+    ],
+    "CZ": [
+        "H"
+    ],
+    "DE": [
+        "H",
+        "hB"
+    ],
+    "DG": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "DJ": [
+        "h",
+        "H"
+    ],
+    "DK": [
+        "H"
+    ],
+    "DM": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "DO": [
+        "h",
+        "H",
+        "hB",
+        "hb"
+    ],
+    "DZ": [
+        "h",
+        "hB",
+        "hb",
+        "H"
+    ],
+    "EA": [
+        "H",
+        "h",
+        "hB",
+        "hb"
+    ],
+    "EC": [
+        "h",
+        "H",
+        "hB",
+        "hb"
+    ],
+    "EE": [
+        "H",
+        "hB"
+    ],
+    "EG": [
+        "h",
+        "hB",
+        "hb",
+        "H"
+    ],
+    "EH": [
+        "h",
+        "hB",
+        "hb",
+        "H"
+    ],
+    "ER": [
+        "h",
+        "H"
+    ],
+    "ES": [
+        "H",
+        "hB",
+        "h",
+        "hb"
+    ],
+    "ET": [
+        "hB",
+        "hb",
+        "h",
+        "H"
+    ],
+    "FI": [
+        "H"
+    ],
+    "FJ": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "FK": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "FM": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "FO": [
+        "H",
+        "h"
+    ],
+    "FR": [
+        "H",
+        "hB"
+    ],
+    "GA": [
+        "H",
+        "hB"
+    ],
+    "GB": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "GD": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "GE": [
+        "H",
+        "hB",
+        "h"
+    ],
+    "GF": [
+        "H",
+        "hB"
+    ],
+    "GG": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "GH": [
+        "h",
+        "H"
+    ],
+    "GI": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "GL": [
+        "H",
+        "h"
+    ],
+    "GM": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "GN": [
+        "H",
+        "hB"
+    ],
+    "GP": [
+        "H",
+        "hB"
+    ],
+    "GQ": [
+        "H",
+        "hB",
+        "h",
+        "hb"
+    ],
+    "GR": [
+        "h",
+        "H",
+        "hb",
+        "hB"
+    ],
+    "GT": [
+        "h",
+        "H",
+        "hB",
+        "hb"
+    ],
+    "GU": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "GW": [
+        "H",
+        "hB"
+    ],
+    "GY": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "HK": [
+        "h",
+        "hB",
+        "hb",
+        "H"
+    ],
+    "HN": [
+        "h",
+        "H",
+        "hB",
+        "hb"
+    ],
+    "HR": [
+        "H",
+        "hB"
+    ],
+    "HU": [
+        "H",
+        "h"
+    ],
+    "IC": [
+        "H",
+        "h",
+        "hB",
+        "hb"
+    ],
+    "ID": [
+        "H"
+    ],
+    "IE": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "IL": [
+        "H",
+        "hB"
+    ],
+    "IM": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "IN": [
+        "h",
+        "H"
+    ],
+    "IO": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "IQ": [
+        "h",
+        "hB",
+        "hb",
+        "H"
+    ],
+    "IR": [
+        "hB",
+        "H"
+    ],
+    "IS": [
+        "H"
+    ],
+    "IT": [
+        "H",
+        "hB"
+    ],
+    "JE": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "JM": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "JO": [
+        "h",
+        "hB",
+        "hb",
+        "H"
+    ],
+    "JP": [
+        "H",
+        "K",
+        "h"
+    ],
+    "KE": [
+        "hB",
+        "hb",
+        "H",
+        "h"
+    ],
+    "KG": [
+        "H",
+        "h",
+        "hB",
+        "hb"
+    ],
+    "KH": [
+        "hB",
+        "h",
+        "H",
+        "hb"
+    ],
+    "KI": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "KM": [
+        "H",
+        "h",
+        "hB",
+        "hb"
+    ],
+    "KN": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "KP": [
+        "h",
+        "H",
+        "hB",
+        "hb"
+    ],
+    "KR": [
+        "h",
+        "H",
+        "hB",
+        "hb"
+    ],
+    "KW": [
+        "h",
+        "hB",
+        "hb",
+        "H"
+    ],
+    "KY": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "KZ": [
+        "H",
+        "hB"
+    ],
+    "LA": [
+        "H",
+        "hb",
+        "hB",
+        "h"
+    ],
+    "LB": [
+        "h",
+        "hB",
+        "hb",
+        "H"
+    ],
+    "LC": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "LI": [
+        "H",
+        "hB",
+        "h"
+    ],
+    "LK": [
+        "H",
+        "h",
+        "hB",
+        "hb"
+    ],
+    "LR": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "LS": [
+        "h",
+        "H"
+    ],
+    "LT": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "LU": [
+        "H",
+        "h",
+        "hB"
+    ],
+    "LV": [
+        "H",
+        "hB",
+        "hb",
+        "h"
+    ],
+    "LY": [
+        "h",
+        "hB",
+        "hb",
+        "H"
+    ],
+    "MA": [
+        "H",
+        "h",
+        "hB",
+        "hb"
+    ],
+    "MC": [
+        "H",
+        "hB"
+    ],
+    "MD": [
+        "H",
+        "hB"
+    ],
+    "ME": [
+        "H",
+        "hB",
+        "h"
+    ],
+    "MF": [
+        "H",
+        "hB"
+    ],
+    "MG": [
+        "H",
+        "h"
+    ],
+    "MH": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "MK": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "ML": [
+        "H"
+    ],
+    "MM": [
+        "hB",
+        "hb",
+        "H",
+        "h"
+    ],
+    "MN": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "MO": [
+        "h",
+        "hB",
+        "hb",
+        "H"
+    ],
+    "MP": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "MQ": [
+        "H",
+        "hB"
+    ],
+    "MR": [
+        "h",
+        "hB",
+        "hb",
+        "H"
+    ],
+    "MS": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "MT": [
+        "H",
+        "h"
+    ],
+    "MU": [
+        "H",
+        "h"
+    ],
+    "MV": [
+        "H",
+        "h"
+    ],
+    "MW": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "MX": [
+        "h",
+        "H",
+        "hB",
+        "hb"
+    ],
+    "MY": [
+        "hb",
+        "hB",
+        "h",
+        "H"
+    ],
+    "MZ": [
+        "H",
+        "hB"
+    ],
+    "NA": [
+        "h",
+        "H",
+        "hB",
+        "hb"
+    ],
+    "NC": [
+        "H",
+        "hB"
+    ],
+    "NE": [
+        "H"
+    ],
+    "NF": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "NG": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "NI": [
+        "h",
+        "H",
+        "hB",
+        "hb"
+    ],
+    "NL": [
+        "H",
+        "hB"
+    ],
+    "NO": [
+        "H",
+        "h"
+    ],
+    "NP": [
+        "H",
+        "h",
+        "hB"
+    ],
+    "NR": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "NU": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "NZ": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "OM": [
+        "h",
+        "hB",
+        "hb",
+        "H"
+    ],
+    "PA": [
+        "h",
+        "H",
+        "hB",
+        "hb"
+    ],
+    "PE": [
+        "h",
+        "H",
+        "hB",
+        "hb"
+    ],
+    "PF": [
+        "H",
+        "h",
+        "hB"
+    ],
+    "PG": [
+        "h",
+        "H"
+    ],
+    "PH": [
+        "h",
+        "hB",
+        "hb",
+        "H"
+    ],
+    "PK": [
+        "h",
+        "hB",
+        "H"
+    ],
+    "PL": [
+        "H",
+        "h"
+    ],
+    "PM": [
+        "H",
+        "hB"
+    ],
+    "PN": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "PR": [
+        "h",
+        "H",
+        "hB",
+        "hb"
+    ],
+    "PS": [
+        "h",
+        "hB",
+        "hb",
+        "H"
+    ],
+    "PT": [
+        "H",
+        "hB"
+    ],
+    "PW": [
+        "h",
+        "H"
+    ],
+    "PY": [
+        "h",
+        "H",
+        "hB",
+        "hb"
+    ],
+    "QA": [
+        "h",
+        "hB",
+        "hb",
+        "H"
+    ],
+    "RE": [
+        "H",
+        "hB"
+    ],
+    "RO": [
+        "H",
+        "hB"
+    ],
+    "RS": [
+        "H",
+        "hB",
+        "h"
+    ],
+    "RU": [
+        "H"
+    ],
+    "RW": [
+        "H",
+        "h"
+    ],
+    "SA": [
+        "h",
+        "hB",
+        "hb",
+        "H"
+    ],
+    "SB": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "SC": [
+        "H",
+        "h",
+        "hB"
+    ],
+    "SD": [
+        "h",
+        "hB",
+        "hb",
+        "H"
+    ],
+    "SE": [
+        "H"
+    ],
+    "SG": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "SH": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "SI": [
+        "H",
+        "hB"
+    ],
+    "SJ": [
+        "H"
+    ],
+    "SK": [
+        "H"
+    ],
+    "SL": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "SM": [
+        "H",
+        "h",
+        "hB"
+    ],
+    "SN": [
+        "H",
+        "h",
+        "hB"
+    ],
+    "SO": [
+        "h",
+        "H"
+    ],
+    "SR": [
+        "H",
+        "hB"
+    ],
+    "SS": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "ST": [
+        "H",
+        "hB"
+    ],
+    "SV": [
+        "h",
+        "H",
+        "hB",
+        "hb"
+    ],
+    "SX": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "SY": [
+        "h",
+        "hB",
+        "hb",
+        "H"
+    ],
+    "SZ": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "TA": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "TC": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "TD": [
+        "h",
+        "H",
+        "hB"
+    ],
+    "TF": [
+        "H",
+        "h",
+        "hB"
+    ],
+    "TG": [
+        "H",
+        "hB"
+    ],
+    "TH": [
+        "H",
+        "h"
+    ],
+    "TJ": [
+        "H",
+        "h"
+    ],
+    "TL": [
+        "H",
+        "hB",
+        "hb",
+        "h"
+    ],
+    "TM": [
+        "H",
+        "h"
+    ],
+    "TN": [
+        "h",
+        "hB",
+        "hb",
+        "H"
+    ],
+    "TO": [
+        "h",
+        "H"
+    ],
+    "TR": [
+        "H",
+        "hB"
+    ],
+    "TT": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "TW": [
+        "hB",
+        "hb",
+        "h",
+        "H"
+    ],
+    "TZ": [
+        "hB",
+        "hb",
+        "H",
+        "h"
+    ],
+    "UA": [
+        "H",
+        "hB",
+        "h"
+    ],
+    "UG": [
+        "hB",
+        "hb",
+        "H",
+        "h"
+    ],
+    "UM": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "US": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "UY": [
+        "h",
+        "H",
+        "hB",
+        "hb"
+    ],
+    "UZ": [
+        "H",
+        "hB",
+        "h"
+    ],
+    "VA": [
+        "H",
+        "h",
+        "hB"
+    ],
+    "VC": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "VE": [
+        "h",
+        "H",
+        "hB",
+        "hb"
+    ],
+    "VG": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "VI": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "VN": [
+        "H",
+        "h"
+    ],
+    "VU": [
+        "h",
+        "H"
+    ],
+    "WF": [
+        "H",
+        "hB"
+    ],
+    "WS": [
+        "h",
+        "H"
+    ],
+    "XK": [
+        "H",
+        "hB",
+        "h"
+    ],
+    "YE": [
+        "h",
+        "hB",
+        "hb",
+        "H"
+    ],
+    "YT": [
+        "H",
+        "hB"
+    ],
+    "ZA": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "ZM": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "ZW": [
+        "H",
+        "h"
+    ],
+    "af-ZA": [
+        "H",
+        "h",
+        "hB",
+        "hb"
+    ],
+    "ar-001": [
+        "h",
+        "hB",
+        "hb",
+        "H"
+    ],
+    "ca-ES": [
+        "H",
+        "h",
+        "hB"
+    ],
+    "en-001": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "en-HK": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "en-IL": [
+        "H",
+        "h",
+        "hb",
+        "hB"
+    ],
+    "en-MY": [
+        "h",
+        "hb",
+        "H",
+        "hB"
+    ],
+    "es-BR": [
+        "H",
+        "h",
+        "hB",
+        "hb"
+    ],
+    "es-ES": [
+        "H",
+        "h",
+        "hB",
+        "hb"
+    ],
+    "es-GQ": [
+        "H",
+        "h",
+        "hB",
+        "hb"
+    ],
+    "fr-CA": [
+        "H",
+        "h",
+        "hB"
+    ],
+    "gl-ES": [
+        "H",
+        "h",
+        "hB"
+    ],
+    "gu-IN": [
+        "hB",
+        "hb",
+        "h",
+        "H"
+    ],
+    "hi-IN": [
+        "hB",
+        "h",
+        "H"
+    ],
+    "it-CH": [
+        "H",
+        "h",
+        "hB"
+    ],
+    "it-IT": [
+        "H",
+        "h",
+        "hB"
+    ],
+    "kn-IN": [
+        "hB",
+        "h",
+        "H"
+    ],
+    "ml-IN": [
+        "hB",
+        "h",
+        "H"
+    ],
+    "mr-IN": [
+        "hB",
+        "hb",
+        "h",
+        "H"
+    ],
+    "pa-IN": [
+        "hB",
+        "hb",
+        "h",
+        "H"
+    ],
+    "ta-IN": [
+        "hB",
+        "h",
+        "hb",
+        "H"
+    ],
+    "te-IN": [
+        "hB",
+        "h",
+        "H"
+    ],
+    "zu-ZA": [
+        "H",
+        "hB",
+        "hb",
+        "h"
+    ]
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/react-intl/node_modules/@formatjs/icu-messageformat-parser/lib/types.js":
+/*!**********************************************************************************************!*\
+  !*** ./node_modules/react-intl/node_modules/@formatjs/icu-messageformat-parser/lib/types.js ***!
+  \**********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   SKELETON_TYPE: () => (/* binding */ SKELETON_TYPE),
+/* harmony export */   TYPE: () => (/* binding */ TYPE),
+/* harmony export */   createLiteralElement: () => (/* binding */ createLiteralElement),
+/* harmony export */   createNumberElement: () => (/* binding */ createNumberElement),
+/* harmony export */   isArgumentElement: () => (/* binding */ isArgumentElement),
+/* harmony export */   isDateElement: () => (/* binding */ isDateElement),
+/* harmony export */   isDateTimeSkeleton: () => (/* binding */ isDateTimeSkeleton),
+/* harmony export */   isLiteralElement: () => (/* binding */ isLiteralElement),
+/* harmony export */   isNumberElement: () => (/* binding */ isNumberElement),
+/* harmony export */   isNumberSkeleton: () => (/* binding */ isNumberSkeleton),
+/* harmony export */   isPluralElement: () => (/* binding */ isPluralElement),
+/* harmony export */   isPoundElement: () => (/* binding */ isPoundElement),
+/* harmony export */   isSelectElement: () => (/* binding */ isSelectElement),
+/* harmony export */   isTagElement: () => (/* binding */ isTagElement),
+/* harmony export */   isTimeElement: () => (/* binding */ isTimeElement)
+/* harmony export */ });
+var TYPE;
+(function (TYPE) {
+    /**
+     * Raw text
+     */
+    TYPE[TYPE["literal"] = 0] = "literal";
+    /**
+     * Variable w/o any format, e.g `var` in `this is a {var}`
+     */
+    TYPE[TYPE["argument"] = 1] = "argument";
+    /**
+     * Variable w/ number format
+     */
+    TYPE[TYPE["number"] = 2] = "number";
+    /**
+     * Variable w/ date format
+     */
+    TYPE[TYPE["date"] = 3] = "date";
+    /**
+     * Variable w/ time format
+     */
+    TYPE[TYPE["time"] = 4] = "time";
+    /**
+     * Variable w/ select format
+     */
+    TYPE[TYPE["select"] = 5] = "select";
+    /**
+     * Variable w/ plural format
+     */
+    TYPE[TYPE["plural"] = 6] = "plural";
+    /**
+     * Only possible within plural argument.
+     * This is the `#` symbol that will be substituted with the count.
+     */
+    TYPE[TYPE["pound"] = 7] = "pound";
+    /**
+     * XML-like tag
+     */
+    TYPE[TYPE["tag"] = 8] = "tag";
+})(TYPE || (TYPE = {}));
+var SKELETON_TYPE;
+(function (SKELETON_TYPE) {
+    SKELETON_TYPE[SKELETON_TYPE["number"] = 0] = "number";
+    SKELETON_TYPE[SKELETON_TYPE["dateTime"] = 1] = "dateTime";
+})(SKELETON_TYPE || (SKELETON_TYPE = {}));
+/**
+ * Type Guards
+ */
+function isLiteralElement(el) {
+    return el.type === TYPE.literal;
+}
+function isArgumentElement(el) {
+    return el.type === TYPE.argument;
+}
+function isNumberElement(el) {
+    return el.type === TYPE.number;
+}
+function isDateElement(el) {
+    return el.type === TYPE.date;
+}
+function isTimeElement(el) {
+    return el.type === TYPE.time;
+}
+function isSelectElement(el) {
+    return el.type === TYPE.select;
+}
+function isPluralElement(el) {
+    return el.type === TYPE.plural;
+}
+function isPoundElement(el) {
+    return el.type === TYPE.pound;
+}
+function isTagElement(el) {
+    return el.type === TYPE.tag;
+}
+function isNumberSkeleton(el) {
+    return !!(el && typeof el === 'object' && el.type === SKELETON_TYPE.number);
+}
+function isDateTimeSkeleton(el) {
+    return !!(el && typeof el === 'object' && el.type === SKELETON_TYPE.dateTime);
+}
+function createLiteralElement(value) {
+    return {
+        type: TYPE.literal,
+        value: value,
+    };
+}
+function createNumberElement(value, style) {
+    return {
+        type: TYPE.number,
+        value: value,
+        style: style,
+    };
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/react-intl/node_modules/@formatjs/icu-skeleton-parser/lib/date-time.js":
+/*!*********************************************************************************************!*\
+  !*** ./node_modules/react-intl/node_modules/@formatjs/icu-skeleton-parser/lib/date-time.js ***!
+  \*********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   parseDateTimeSkeleton: () => (/* binding */ parseDateTimeSkeleton)
+/* harmony export */ });
+/**
+ * https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
+ * Credit: https://github.com/caridy/intl-datetimeformat-pattern/blob/master/index.js
+ * with some tweaks
+ */
+var DATE_TIME_REGEX = /(?:[Eec]{1,6}|G{1,5}|[Qq]{1,5}|(?:[yYur]+|U{1,5})|[ML]{1,5}|d{1,2}|D{1,3}|F{1}|[abB]{1,5}|[hkHK]{1,2}|w{1,2}|W{1}|m{1,2}|s{1,2}|[zZOvVxX]{1,4})(?=([^']*'[^']*')*[^']*$)/g;
+/**
+ * Parse Date time skeleton into Intl.DateTimeFormatOptions
+ * Ref: https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
+ * @public
+ * @param skeleton skeleton string
+ */
+function parseDateTimeSkeleton(skeleton) {
+    var result = {};
+    skeleton.replace(DATE_TIME_REGEX, function (match) {
+        var len = match.length;
+        switch (match[0]) {
+            // Era
+            case 'G':
+                result.era = len === 4 ? 'long' : len === 5 ? 'narrow' : 'short';
+                break;
+            // Year
+            case 'y':
+                result.year = len === 2 ? '2-digit' : 'numeric';
+                break;
+            case 'Y':
+            case 'u':
+            case 'U':
+            case 'r':
+                throw new RangeError('`Y/u/U/r` (year) patterns are not supported, use `y` instead');
+            // Quarter
+            case 'q':
+            case 'Q':
+                throw new RangeError('`q/Q` (quarter) patterns are not supported');
+            // Month
+            case 'M':
+            case 'L':
+                result.month = ['numeric', '2-digit', 'short', 'long', 'narrow'][len - 1];
+                break;
+            // Week
+            case 'w':
+            case 'W':
+                throw new RangeError('`w/W` (week) patterns are not supported');
+            case 'd':
+                result.day = ['numeric', '2-digit'][len - 1];
+                break;
+            case 'D':
+            case 'F':
+            case 'g':
+                throw new RangeError('`D/F/g` (day) patterns are not supported, use `d` instead');
+            // Weekday
+            case 'E':
+                result.weekday = len === 4 ? 'long' : len === 5 ? 'narrow' : 'short';
+                break;
+            case 'e':
+                if (len < 4) {
+                    throw new RangeError('`e..eee` (weekday) patterns are not supported');
+                }
+                result.weekday = ['short', 'long', 'narrow', 'short'][len - 4];
+                break;
+            case 'c':
+                if (len < 4) {
+                    throw new RangeError('`c..ccc` (weekday) patterns are not supported');
+                }
+                result.weekday = ['short', 'long', 'narrow', 'short'][len - 4];
+                break;
+            // Period
+            case 'a': // AM, PM
+                result.hour12 = true;
+                break;
+            case 'b': // am, pm, noon, midnight
+            case 'B': // flexible day periods
+                throw new RangeError('`b/B` (period) patterns are not supported, use `a` instead');
+            // Hour
+            case 'h':
+                result.hourCycle = 'h12';
+                result.hour = ['numeric', '2-digit'][len - 1];
+                break;
+            case 'H':
+                result.hourCycle = 'h23';
+                result.hour = ['numeric', '2-digit'][len - 1];
+                break;
+            case 'K':
+                result.hourCycle = 'h11';
+                result.hour = ['numeric', '2-digit'][len - 1];
+                break;
+            case 'k':
+                result.hourCycle = 'h24';
+                result.hour = ['numeric', '2-digit'][len - 1];
+                break;
+            case 'j':
+            case 'J':
+            case 'C':
+                throw new RangeError('`j/J/C` (hour) patterns are not supported, use `h/H/K/k` instead');
+            // Minute
+            case 'm':
+                result.minute = ['numeric', '2-digit'][len - 1];
+                break;
+            // Second
+            case 's':
+                result.second = ['numeric', '2-digit'][len - 1];
+                break;
+            case 'S':
+            case 'A':
+                throw new RangeError('`S/A` (second) patterns are not supported, use `s` instead');
+            // Zone
+            case 'z': // 1..3, 4: specific non-location format
+                result.timeZoneName = len < 4 ? 'short' : 'long';
+                break;
+            case 'Z': // 1..3, 4, 5: The ISO8601 varios formats
+            case 'O': // 1, 4: milliseconds in day short, long
+            case 'v': // 1, 4: generic non-location format
+            case 'V': // 1, 2, 3, 4: time zone ID or city
+            case 'X': // 1, 2, 3, 4: The ISO8601 varios formats
+            case 'x': // 1, 2, 3, 4: The ISO8601 varios formats
+                throw new RangeError('`Z/O/v/V/X/x` (timeZone) patterns are not supported, use `z` instead');
+        }
+        return '';
+    });
+    return result;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/react-intl/node_modules/@formatjs/icu-skeleton-parser/lib/index.js":
+/*!*****************************************************************************************!*\
+  !*** ./node_modules/react-intl/node_modules/@formatjs/icu-skeleton-parser/lib/index.js ***!
+  \*****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   parseDateTimeSkeleton: () => (/* reexport safe */ _date_time__WEBPACK_IMPORTED_MODULE_0__.parseDateTimeSkeleton),
+/* harmony export */   parseNumberSkeleton: () => (/* reexport safe */ _number__WEBPACK_IMPORTED_MODULE_1__.parseNumberSkeleton),
+/* harmony export */   parseNumberSkeletonFromString: () => (/* reexport safe */ _number__WEBPACK_IMPORTED_MODULE_1__.parseNumberSkeletonFromString)
+/* harmony export */ });
+/* harmony import */ var _date_time__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./date-time */ "./node_modules/react-intl/node_modules/@formatjs/icu-skeleton-parser/lib/date-time.js");
+/* harmony import */ var _number__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./number */ "./node_modules/react-intl/node_modules/@formatjs/icu-skeleton-parser/lib/number.js");
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/react-intl/node_modules/@formatjs/icu-skeleton-parser/lib/number.js":
+/*!******************************************************************************************!*\
+  !*** ./node_modules/react-intl/node_modules/@formatjs/icu-skeleton-parser/lib/number.js ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   parseNumberSkeleton: () => (/* binding */ parseNumberSkeleton),
+/* harmony export */   parseNumberSkeletonFromString: () => (/* binding */ parseNumberSkeletonFromString)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.mjs");
+/* harmony import */ var _regex_generated__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./regex.generated */ "./node_modules/react-intl/node_modules/@formatjs/icu-skeleton-parser/lib/regex.generated.js");
+
+
+function parseNumberSkeletonFromString(skeleton) {
+    if (skeleton.length === 0) {
+        throw new Error('Number skeleton cannot be empty');
+    }
+    // Parse the skeleton
+    var stringTokens = skeleton
+        .split(_regex_generated__WEBPACK_IMPORTED_MODULE_0__.WHITE_SPACE_REGEX)
+        .filter(function (x) { return x.length > 0; });
+    var tokens = [];
+    for (var _i = 0, stringTokens_1 = stringTokens; _i < stringTokens_1.length; _i++) {
+        var stringToken = stringTokens_1[_i];
+        var stemAndOptions = stringToken.split('/');
+        if (stemAndOptions.length === 0) {
+            throw new Error('Invalid number skeleton');
+        }
+        var stem = stemAndOptions[0], options = stemAndOptions.slice(1);
+        for (var _a = 0, options_1 = options; _a < options_1.length; _a++) {
+            var option = options_1[_a];
+            if (option.length === 0) {
+                throw new Error('Invalid number skeleton');
+            }
+        }
+        tokens.push({ stem: stem, options: options });
+    }
+    return tokens;
+}
+function icuUnitToEcma(unit) {
+    return unit.replace(/^(.*?)-/, '');
+}
+var FRACTION_PRECISION_REGEX = /^\.(?:(0+)(\*)?|(#+)|(0+)(#+))$/g;
+var SIGNIFICANT_PRECISION_REGEX = /^(@+)?(\+|#+)?[rs]?$/g;
+var INTEGER_WIDTH_REGEX = /(\*)(0+)|(#+)(0+)|(0+)/g;
+var CONCISE_INTEGER_WIDTH_REGEX = /^(0+)$/;
+function parseSignificantPrecision(str) {
+    var result = {};
+    if (str[str.length - 1] === 'r') {
+        result.roundingPriority = 'morePrecision';
+    }
+    else if (str[str.length - 1] === 's') {
+        result.roundingPriority = 'lessPrecision';
+    }
+    str.replace(SIGNIFICANT_PRECISION_REGEX, function (_, g1, g2) {
+        // @@@ case
+        if (typeof g2 !== 'string') {
+            result.minimumSignificantDigits = g1.length;
+            result.maximumSignificantDigits = g1.length;
+        }
+        // @@@+ case
+        else if (g2 === '+') {
+            result.minimumSignificantDigits = g1.length;
+        }
+        // .### case
+        else if (g1[0] === '#') {
+            result.maximumSignificantDigits = g1.length;
+        }
+        // .@@## or .@@@ case
+        else {
+            result.minimumSignificantDigits = g1.length;
+            result.maximumSignificantDigits =
+                g1.length + (typeof g2 === 'string' ? g2.length : 0);
+        }
+        return '';
+    });
+    return result;
+}
+function parseSign(str) {
+    switch (str) {
+        case 'sign-auto':
+            return {
+                signDisplay: 'auto',
+            };
+        case 'sign-accounting':
+        case '()':
+            return {
+                currencySign: 'accounting',
+            };
+        case 'sign-always':
+        case '+!':
+            return {
+                signDisplay: 'always',
+            };
+        case 'sign-accounting-always':
+        case '()!':
+            return {
+                signDisplay: 'always',
+                currencySign: 'accounting',
+            };
+        case 'sign-except-zero':
+        case '+?':
+            return {
+                signDisplay: 'exceptZero',
+            };
+        case 'sign-accounting-except-zero':
+        case '()?':
+            return {
+                signDisplay: 'exceptZero',
+                currencySign: 'accounting',
+            };
+        case 'sign-never':
+        case '+_':
+            return {
+                signDisplay: 'never',
+            };
+    }
+}
+function parseConciseScientificAndEngineeringStem(stem) {
+    // Engineering
+    var result;
+    if (stem[0] === 'E' && stem[1] === 'E') {
+        result = {
+            notation: 'engineering',
+        };
+        stem = stem.slice(2);
+    }
+    else if (stem[0] === 'E') {
+        result = {
+            notation: 'scientific',
+        };
+        stem = stem.slice(1);
+    }
+    if (result) {
+        var signDisplay = stem.slice(0, 2);
+        if (signDisplay === '+!') {
+            result.signDisplay = 'always';
+            stem = stem.slice(2);
+        }
+        else if (signDisplay === '+?') {
+            result.signDisplay = 'exceptZero';
+            stem = stem.slice(2);
+        }
+        if (!CONCISE_INTEGER_WIDTH_REGEX.test(stem)) {
+            throw new Error('Malformed concise eng/scientific notation');
+        }
+        result.minimumIntegerDigits = stem.length;
+    }
+    return result;
+}
+function parseNotationOptions(opt) {
+    var result = {};
+    var signOpts = parseSign(opt);
+    if (signOpts) {
+        return signOpts;
+    }
+    return result;
+}
+/**
+ * https://github.com/unicode-org/icu/blob/master/docs/userguide/format_parse/numbers/skeletons.md#skeleton-stems-and-options
+ */
+function parseNumberSkeleton(tokens) {
+    var result = {};
+    for (var _i = 0, tokens_1 = tokens; _i < tokens_1.length; _i++) {
+        var token = tokens_1[_i];
+        switch (token.stem) {
+            case 'percent':
+            case '%':
+                result.style = 'percent';
+                continue;
+            case '%x100':
+                result.style = 'percent';
+                result.scale = 100;
+                continue;
+            case 'currency':
+                result.style = 'currency';
+                result.currency = token.options[0];
+                continue;
+            case 'group-off':
+            case ',_':
+                result.useGrouping = false;
+                continue;
+            case 'precision-integer':
+            case '.':
+                result.maximumFractionDigits = 0;
+                continue;
+            case 'measure-unit':
+            case 'unit':
+                result.style = 'unit';
+                result.unit = icuUnitToEcma(token.options[0]);
+                continue;
+            case 'compact-short':
+            case 'K':
+                result.notation = 'compact';
+                result.compactDisplay = 'short';
+                continue;
+            case 'compact-long':
+            case 'KK':
+                result.notation = 'compact';
+                result.compactDisplay = 'long';
+                continue;
+            case 'scientific':
+                result = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, result), { notation: 'scientific' }), token.options.reduce(function (all, opt) { return ((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, all), parseNotationOptions(opt))); }, {}));
+                continue;
+            case 'engineering':
+                result = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, result), { notation: 'engineering' }), token.options.reduce(function (all, opt) { return ((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, all), parseNotationOptions(opt))); }, {}));
+                continue;
+            case 'notation-simple':
+                result.notation = 'standard';
+                continue;
+            // https://github.com/unicode-org/icu/blob/master/icu4c/source/i18n/unicode/unumberformatter.h
+            case 'unit-width-narrow':
+                result.currencyDisplay = 'narrowSymbol';
+                result.unitDisplay = 'narrow';
+                continue;
+            case 'unit-width-short':
+                result.currencyDisplay = 'code';
+                result.unitDisplay = 'short';
+                continue;
+            case 'unit-width-full-name':
+                result.currencyDisplay = 'name';
+                result.unitDisplay = 'long';
+                continue;
+            case 'unit-width-iso-code':
+                result.currencyDisplay = 'symbol';
+                continue;
+            case 'scale':
+                result.scale = parseFloat(token.options[0]);
+                continue;
+            case 'rounding-mode-floor':
+                result.roundingMode = 'floor';
+                continue;
+            case 'rounding-mode-ceiling':
+                result.roundingMode = 'ceil';
+                continue;
+            case 'rounding-mode-down':
+                result.roundingMode = 'trunc';
+                continue;
+            case 'rounding-mode-up':
+                result.roundingMode = 'expand';
+                continue;
+            case 'rounding-mode-half-even':
+                result.roundingMode = 'halfEven';
+                continue;
+            case 'rounding-mode-half-down':
+                result.roundingMode = 'halfTrunc';
+                continue;
+            case 'rounding-mode-half-up':
+                result.roundingMode = 'halfExpand';
+                continue;
+            // https://unicode-org.github.io/icu/userguide/format_parse/numbers/skeletons.html#integer-width
+            case 'integer-width':
+                if (token.options.length > 1) {
+                    throw new RangeError('integer-width stems only accept a single optional option');
+                }
+                token.options[0].replace(INTEGER_WIDTH_REGEX, function (_, g1, g2, g3, g4, g5) {
+                    if (g1) {
+                        result.minimumIntegerDigits = g2.length;
+                    }
+                    else if (g3 && g4) {
+                        throw new Error('We currently do not support maximum integer digits');
+                    }
+                    else if (g5) {
+                        throw new Error('We currently do not support exact integer digits');
+                    }
+                    return '';
+                });
+                continue;
+        }
+        // https://unicode-org.github.io/icu/userguide/format_parse/numbers/skeletons.html#integer-width
+        if (CONCISE_INTEGER_WIDTH_REGEX.test(token.stem)) {
+            result.minimumIntegerDigits = token.stem.length;
+            continue;
+        }
+        if (FRACTION_PRECISION_REGEX.test(token.stem)) {
+            // Precision
+            // https://unicode-org.github.io/icu/userguide/format_parse/numbers/skeletons.html#fraction-precision
+            // precision-integer case
+            if (token.options.length > 1) {
+                throw new RangeError('Fraction-precision stems only accept a single optional option');
+            }
+            token.stem.replace(FRACTION_PRECISION_REGEX, function (_, g1, g2, g3, g4, g5) {
+                // .000* case (before ICU67 it was .000+)
+                if (g2 === '*') {
+                    result.minimumFractionDigits = g1.length;
+                }
+                // .### case
+                else if (g3 && g3[0] === '#') {
+                    result.maximumFractionDigits = g3.length;
+                }
+                // .00## case
+                else if (g4 && g5) {
+                    result.minimumFractionDigits = g4.length;
+                    result.maximumFractionDigits = g4.length + g5.length;
+                }
+                else {
+                    result.minimumFractionDigits = g1.length;
+                    result.maximumFractionDigits = g1.length;
+                }
+                return '';
+            });
+            var opt = token.options[0];
+            // https://unicode-org.github.io/icu/userguide/format_parse/numbers/skeletons.html#trailing-zero-display
+            if (opt === 'w') {
+                result = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, result), { trailingZeroDisplay: 'stripIfInteger' });
+            }
+            else if (opt) {
+                result = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, result), parseSignificantPrecision(opt));
+            }
+            continue;
+        }
+        // https://unicode-org.github.io/icu/userguide/format_parse/numbers/skeletons.html#significant-digits-precision
+        if (SIGNIFICANT_PRECISION_REGEX.test(token.stem)) {
+            result = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, result), parseSignificantPrecision(token.stem));
+            continue;
+        }
+        var signOpts = parseSign(token.stem);
+        if (signOpts) {
+            result = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, result), signOpts);
+        }
+        var conciseScientificAndEngineeringOpts = parseConciseScientificAndEngineeringStem(token.stem);
+        if (conciseScientificAndEngineeringOpts) {
+            result = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, result), conciseScientificAndEngineeringOpts);
+        }
+    }
+    return result;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/react-intl/node_modules/@formatjs/icu-skeleton-parser/lib/regex.generated.js":
+/*!***************************************************************************************************!*\
+  !*** ./node_modules/react-intl/node_modules/@formatjs/icu-skeleton-parser/lib/regex.generated.js ***!
+  \***************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   WHITE_SPACE_REGEX: () => (/* binding */ WHITE_SPACE_REGEX)
+/* harmony export */ });
+// @generated from regex-gen.ts
+var WHITE_SPACE_REGEX = /[\t-\r \x85\u200E\u200F\u2028\u2029]/i;
 
 
 /***/ }),
@@ -32698,7 +37138,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   formatToParts: () => (/* binding */ formatToParts),
 /* harmony export */   isFormatXMLElementFn: () => (/* binding */ isFormatXMLElementFn)
 /* harmony export */ });
-/* harmony import */ var _formatjs_icu_messageformat_parser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @formatjs/icu-messageformat-parser */ "./node_modules/@formatjs/icu-messageformat-parser/lib/index.js");
+/* harmony import */ var _formatjs_icu_messageformat_parser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @formatjs/icu-messageformat-parser */ "./node_modules/react-intl/node_modules/@formatjs/icu-messageformat-parser/lib/index.js");
 /* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./error */ "./node_modules/react-intl/node_modules/intl-messageformat/lib/src/error.js");
 
 
@@ -32876,259 +37316,6 @@ originalMessage) {
         }
     }
     return mergeLiteral(result);
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/react-is/cjs/react-is.development.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/react-is/cjs/react-is.development.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-/** @license React v17.0.2
- * react-is.development.js
- *
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
-if (true) {
-  (function() {
-'use strict';
-
-// ATTENTION
-// When adding new symbols to this file,
-// Please consider also adding to 'react-devtools-shared/src/backend/ReactSymbols'
-// The Symbol used to tag the ReactElement-like types. If there is no native Symbol
-// nor polyfill, then a plain number is used for performance.
-var REACT_ELEMENT_TYPE = 0xeac7;
-var REACT_PORTAL_TYPE = 0xeaca;
-var REACT_FRAGMENT_TYPE = 0xeacb;
-var REACT_STRICT_MODE_TYPE = 0xeacc;
-var REACT_PROFILER_TYPE = 0xead2;
-var REACT_PROVIDER_TYPE = 0xeacd;
-var REACT_CONTEXT_TYPE = 0xeace;
-var REACT_FORWARD_REF_TYPE = 0xead0;
-var REACT_SUSPENSE_TYPE = 0xead1;
-var REACT_SUSPENSE_LIST_TYPE = 0xead8;
-var REACT_MEMO_TYPE = 0xead3;
-var REACT_LAZY_TYPE = 0xead4;
-var REACT_BLOCK_TYPE = 0xead9;
-var REACT_SERVER_BLOCK_TYPE = 0xeada;
-var REACT_FUNDAMENTAL_TYPE = 0xead5;
-var REACT_SCOPE_TYPE = 0xead7;
-var REACT_OPAQUE_ID_TYPE = 0xeae0;
-var REACT_DEBUG_TRACING_MODE_TYPE = 0xeae1;
-var REACT_OFFSCREEN_TYPE = 0xeae2;
-var REACT_LEGACY_HIDDEN_TYPE = 0xeae3;
-
-if (typeof Symbol === 'function' && Symbol.for) {
-  var symbolFor = Symbol.for;
-  REACT_ELEMENT_TYPE = symbolFor('react.element');
-  REACT_PORTAL_TYPE = symbolFor('react.portal');
-  REACT_FRAGMENT_TYPE = symbolFor('react.fragment');
-  REACT_STRICT_MODE_TYPE = symbolFor('react.strict_mode');
-  REACT_PROFILER_TYPE = symbolFor('react.profiler');
-  REACT_PROVIDER_TYPE = symbolFor('react.provider');
-  REACT_CONTEXT_TYPE = symbolFor('react.context');
-  REACT_FORWARD_REF_TYPE = symbolFor('react.forward_ref');
-  REACT_SUSPENSE_TYPE = symbolFor('react.suspense');
-  REACT_SUSPENSE_LIST_TYPE = symbolFor('react.suspense_list');
-  REACT_MEMO_TYPE = symbolFor('react.memo');
-  REACT_LAZY_TYPE = symbolFor('react.lazy');
-  REACT_BLOCK_TYPE = symbolFor('react.block');
-  REACT_SERVER_BLOCK_TYPE = symbolFor('react.server.block');
-  REACT_FUNDAMENTAL_TYPE = symbolFor('react.fundamental');
-  REACT_SCOPE_TYPE = symbolFor('react.scope');
-  REACT_OPAQUE_ID_TYPE = symbolFor('react.opaque.id');
-  REACT_DEBUG_TRACING_MODE_TYPE = symbolFor('react.debug_trace_mode');
-  REACT_OFFSCREEN_TYPE = symbolFor('react.offscreen');
-  REACT_LEGACY_HIDDEN_TYPE = symbolFor('react.legacy_hidden');
-}
-
-// Filter certain DOM attributes (e.g. src, href) if their values are empty strings.
-
-var enableScopeAPI = false; // Experimental Create Event Handle API.
-
-function isValidElementType(type) {
-  if (typeof type === 'string' || typeof type === 'function') {
-    return true;
-  } // Note: typeof might be other than 'symbol' or 'number' (e.g. if it's a polyfill).
-
-
-  if (type === REACT_FRAGMENT_TYPE || type === REACT_PROFILER_TYPE || type === REACT_DEBUG_TRACING_MODE_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || type === REACT_LEGACY_HIDDEN_TYPE || enableScopeAPI ) {
-    return true;
-  }
-
-  if (typeof type === 'object' && type !== null) {
-    if (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_BLOCK_TYPE || type[0] === REACT_SERVER_BLOCK_TYPE) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-function typeOf(object) {
-  if (typeof object === 'object' && object !== null) {
-    var $$typeof = object.$$typeof;
-
-    switch ($$typeof) {
-      case REACT_ELEMENT_TYPE:
-        var type = object.type;
-
-        switch (type) {
-          case REACT_FRAGMENT_TYPE:
-          case REACT_PROFILER_TYPE:
-          case REACT_STRICT_MODE_TYPE:
-          case REACT_SUSPENSE_TYPE:
-          case REACT_SUSPENSE_LIST_TYPE:
-            return type;
-
-          default:
-            var $$typeofType = type && type.$$typeof;
-
-            switch ($$typeofType) {
-              case REACT_CONTEXT_TYPE:
-              case REACT_FORWARD_REF_TYPE:
-              case REACT_LAZY_TYPE:
-              case REACT_MEMO_TYPE:
-              case REACT_PROVIDER_TYPE:
-                return $$typeofType;
-
-              default:
-                return $$typeof;
-            }
-
-        }
-
-      case REACT_PORTAL_TYPE:
-        return $$typeof;
-    }
-  }
-
-  return undefined;
-}
-var ContextConsumer = REACT_CONTEXT_TYPE;
-var ContextProvider = REACT_PROVIDER_TYPE;
-var Element = REACT_ELEMENT_TYPE;
-var ForwardRef = REACT_FORWARD_REF_TYPE;
-var Fragment = REACT_FRAGMENT_TYPE;
-var Lazy = REACT_LAZY_TYPE;
-var Memo = REACT_MEMO_TYPE;
-var Portal = REACT_PORTAL_TYPE;
-var Profiler = REACT_PROFILER_TYPE;
-var StrictMode = REACT_STRICT_MODE_TYPE;
-var Suspense = REACT_SUSPENSE_TYPE;
-var hasWarnedAboutDeprecatedIsAsyncMode = false;
-var hasWarnedAboutDeprecatedIsConcurrentMode = false; // AsyncMode should be deprecated
-
-function isAsyncMode(object) {
-  {
-    if (!hasWarnedAboutDeprecatedIsAsyncMode) {
-      hasWarnedAboutDeprecatedIsAsyncMode = true; // Using console['warn'] to evade Babel and ESLint
-
-      console['warn']('The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 18+.');
-    }
-  }
-
-  return false;
-}
-function isConcurrentMode(object) {
-  {
-    if (!hasWarnedAboutDeprecatedIsConcurrentMode) {
-      hasWarnedAboutDeprecatedIsConcurrentMode = true; // Using console['warn'] to evade Babel and ESLint
-
-      console['warn']('The ReactIs.isConcurrentMode() alias has been deprecated, ' + 'and will be removed in React 18+.');
-    }
-  }
-
-  return false;
-}
-function isContextConsumer(object) {
-  return typeOf(object) === REACT_CONTEXT_TYPE;
-}
-function isContextProvider(object) {
-  return typeOf(object) === REACT_PROVIDER_TYPE;
-}
-function isElement(object) {
-  return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
-}
-function isForwardRef(object) {
-  return typeOf(object) === REACT_FORWARD_REF_TYPE;
-}
-function isFragment(object) {
-  return typeOf(object) === REACT_FRAGMENT_TYPE;
-}
-function isLazy(object) {
-  return typeOf(object) === REACT_LAZY_TYPE;
-}
-function isMemo(object) {
-  return typeOf(object) === REACT_MEMO_TYPE;
-}
-function isPortal(object) {
-  return typeOf(object) === REACT_PORTAL_TYPE;
-}
-function isProfiler(object) {
-  return typeOf(object) === REACT_PROFILER_TYPE;
-}
-function isStrictMode(object) {
-  return typeOf(object) === REACT_STRICT_MODE_TYPE;
-}
-function isSuspense(object) {
-  return typeOf(object) === REACT_SUSPENSE_TYPE;
-}
-
-exports.ContextConsumer = ContextConsumer;
-exports.ContextProvider = ContextProvider;
-exports.Element = Element;
-exports.ForwardRef = ForwardRef;
-exports.Fragment = Fragment;
-exports.Lazy = Lazy;
-exports.Memo = Memo;
-exports.Portal = Portal;
-exports.Profiler = Profiler;
-exports.StrictMode = StrictMode;
-exports.Suspense = Suspense;
-exports.isAsyncMode = isAsyncMode;
-exports.isConcurrentMode = isConcurrentMode;
-exports.isContextConsumer = isContextConsumer;
-exports.isContextProvider = isContextProvider;
-exports.isElement = isElement;
-exports.isForwardRef = isForwardRef;
-exports.isFragment = isFragment;
-exports.isLazy = isLazy;
-exports.isMemo = isMemo;
-exports.isPortal = isPortal;
-exports.isProfiler = isProfiler;
-exports.isStrictMode = isStrictMode;
-exports.isSuspense = isSuspense;
-exports.isValidElementType = isValidElementType;
-exports.typeOf = typeOf;
-  })();
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/react-is/index.js":
-/*!****************************************!*\
-  !*** ./node_modules/react-is/index.js ***!
-  \****************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-
-if (false) {} else {
-  module.exports = __webpack_require__(/*! ./cjs/react-is.development.js */ "./node_modules/react-is/cjs/react-is.development.js");
 }
 
 
