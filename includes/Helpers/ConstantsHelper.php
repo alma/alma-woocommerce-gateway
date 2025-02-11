@@ -78,6 +78,10 @@ class ConstantsHelper {
 
 	const ERROR = 'error';
 
+	const ALMA_WIDGET_CDN_VERSION = '4.x.x';
+
+	const ALMA_WIDGET_CDN_URL = 'https://cdn.jsdelivr.net/npm/@alma/widgets@4.X.X/dist';
+
 	/**
 	 * The payment status
 	 *

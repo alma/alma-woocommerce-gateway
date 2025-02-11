@@ -16,6 +16,7 @@ use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
 use Alma\Woocommerce\Builders\Helpers\GatewayHelperBuilder;
 use Alma\Woocommerce\Helpers\CartHelper;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
+use Alma\Woocommerce\Helpers\ConstantsHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -68,9 +69,9 @@ class AlmaWidgetBlock implements IntegrationInterface {
 		);
 		wp_enqueue_style(
 			'alma-widget-block-frontend-cdn',
-			'https://cdn.jsdelivr.net/npm/@alma/widgets@3.x.x/dist/widgets.min.css',
+			ConstantsHelper::ALMA_WIDGET_CDN_URL . '/widgets.min.css',
 			array(),
-			'3.x.x'
+			ConstantsHelper::ALMA_WIDGET_CDN_VERSION
 		);
 
 		$this->register_block_frontend_scripts();
@@ -104,9 +105,9 @@ class AlmaWidgetBlock implements IntegrationInterface {
 			);
 		wp_register_script(
 			'alma-widget-block-frontend',
-			'https://cdn.jsdelivr.net/npm/@alma/widgets@3.x.x/dist/widgets.umd.js',
+			ConstantsHelper::ALMA_WIDGET_CDN_URL . '/widgets.umd.js',
 			array(),
-			'3.x.x',
+			ConstantsHelper::ALMA_WIDGET_CDN_VERSION,
 			true
 		);
 		wp_register_script(
@@ -135,9 +136,9 @@ class AlmaWidgetBlock implements IntegrationInterface {
 			);
 		wp_register_script(
 			'alma-widget-block-editor',
-			'https://cdn.jsdelivr.net/npm/@alma/widgets@3.x.x/dist/widgets.umd.js',
+			ConstantsHelper::ALMA_WIDGET_CDN_URL . '/widgets.umd.js',
 			array(),
-			'3.x.x',
+			ConstantsHelper::ALMA_WIDGET_CDN_VERSION,
 			true
 		);
 		wp_register_script(
