@@ -1,5 +1,17 @@
 # Changelog
 
+## v5.10.0 - 2025-02-11
+
+### Changes
+
+### 🚀 New Features
+
+- Use cdn for alma widget and update to version 4.x.x (#322)
+
+#### Contributors
+
+@joyet-simon and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+
 ## v5.9.0 - 2025-02-06
 
 ### 🚀 New Features
