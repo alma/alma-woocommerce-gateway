@@ -6,7 +6,7 @@
 
 ### 🚀 New Features
 
-- Use cdn for alma widget and update to version 4.x.x (#322)
+- Use CDN for alma widget and update to version 4.x.x (#322)
 
 #### Contributors
 
