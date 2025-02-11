@@ -69,7 +69,7 @@ class AlmaWidgetBlock implements IntegrationInterface {
 		);
 		wp_enqueue_style(
 			'alma-widget-block-frontend-cdn',
-			'https://cdn.jsdelivr.net/npm/@alma/widgets@' . ConstantsHelper::ALMA_WIDGET_CDN_VERSION . '/dist/widgets.min.css',
+			ConstantsHelper::ALMA_WIDGET_CDN_URL . '/widgets.min.css',
 			array(),
 			ConstantsHelper::ALMA_WIDGET_CDN_VERSION
 		);
@@ -105,7 +105,7 @@ class AlmaWidgetBlock implements IntegrationInterface {
 			);
 		wp_register_script(
 			'alma-widget-block-frontend',
-			'https://cdn.jsdelivr.net/npm/@alma/widgets@' . ConstantsHelper::ALMA_WIDGET_CDN_VERSION . '/dist/widgets.umd.js',
+			ConstantsHelper::ALMA_WIDGET_CDN_URL . '/widgets.umd.js',
 			array(),
 			ConstantsHelper::ALMA_WIDGET_CDN_VERSION,
 			true
@@ -136,7 +136,7 @@ class AlmaWidgetBlock implements IntegrationInterface {
 			);
 		wp_register_script(
 			'alma-widget-block-editor',
-			'https://cdn.jsdelivr.net/npm/@alma/widgets@' . ConstantsHelper::ALMA_WIDGET_CDN_VERSION . '/dist/widgets.umd.js',
+			ConstantsHelper::ALMA_WIDGET_CDN_URL . '/widgets.umd.js',
 			array(),
 			ConstantsHelper::ALMA_WIDGET_CDN_VERSION,
 			true

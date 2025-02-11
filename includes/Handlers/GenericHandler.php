@@ -145,7 +145,7 @@ class GenericHandler {
 		// Inject JS/CSS required for the eligibility/payment plans info display.
 		wp_enqueue_script(
 			'alma-widgets',
-			'https://cdn.jsdelivr.net/npm/@alma/widgets@' . ConstantsHelper::ALMA_WIDGET_CDN_VERSION . '/dist/widgets.umd.js',
+			ConstantsHelper::ALMA_WIDGET_CDN_URL . '/widgets.umd.js',
 			array(),
 			ConstantsHelper::ALMA_WIDGET_CDN_VERSION,
 			true
@@ -153,7 +153,7 @@ class GenericHandler {
 
 		wp_enqueue_style(
 			'alma-widgets',
-			'https://cdn.jsdelivr.net/npm/@alma/widgets@' . ConstantsHelper::ALMA_WIDGET_CDN_VERSION . '/dist/widgets.min.css',
+			ConstantsHelper::ALMA_WIDGET_CDN_URL . '/widgets.min.css',
 			array(),
 			ConstantsHelper::ALMA_WIDGET_CDN_VERSION
 		);
