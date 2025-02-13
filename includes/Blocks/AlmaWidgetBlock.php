@@ -15,8 +15,8 @@ use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
 use Alma\Woocommerce\Builders\Helpers\GatewayHelperBuilder;
 use Alma\Woocommerce\Helpers\CartHelper;
-use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
+use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -202,9 +202,6 @@ class AlmaWidgetBlock implements IntegrationInterface {
 	}
 
 	private function can_be_displayed() {
-		return $this->alma_settings->has_keys()
-			   && $this->alma_settings->is_enabled()
-			   && 'yes' === $this->alma_settings->display_cart_eligibility
-			&& ! $this->gateway_helper->cart_contains_excluded_category();
+		return $this->alma_settings->is_widget_can_be_displayed() && ! $this->gateway_helper->cart_contains_excluded_category();
 	}
 }
