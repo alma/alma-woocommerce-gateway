@@ -21,12 +21,12 @@ tasks:
   build:phpcs:
     desc: Build PHPCS container
     cmds:
-      - docker build -t phpcs -f phpcs.Dockerfile .
+      - docker build -t phpcs:wp -f phpcs.Dockerfile .
 
   build:phpcbf:
     desc: Build PHPCBF container
     cmds:
-      - docker build -t phpcbf -f phpcbf.Dockerfile .
+      - docker build -t phpcbf:wp -f phpcbf.Dockerfile .
 
   lint:
     aliases:
