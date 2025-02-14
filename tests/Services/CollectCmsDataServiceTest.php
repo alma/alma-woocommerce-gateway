@@ -160,6 +160,7 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase
 			'widget_cart_activated' => true,
 			'widget_product_activated' => false,
 			'used_fee_plans' => ['general_1_0_0' => ['enabled' => true, 'min_amount' => 0, 'max_amount' => 1000]],
+			'payment_method_position' => 4,
 			'in_page_activated' => false,
 			'log_activated' => true,
 			'excluded_categories' => [],

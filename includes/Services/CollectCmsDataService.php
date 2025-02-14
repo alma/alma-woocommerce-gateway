@@ -25,6 +25,7 @@ use Alma\Woocommerce\Helpers\SecurityHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
 use Alma\Woocommerce\WcProxy\FunctionsProxy;
 use Alma\Woocommerce\WcProxy\OptionProxy;
+use Alma\Woocommerce\WcProxy\PaymentGatewaysProxy;
 use Alma\Woocommerce\WcProxy\ThemeProxy;
 
 /**
@@ -187,6 +188,7 @@ class CollectCmsDataService {
 				'specific_features'        => array(
 					( in_array( 'alma-woocommerce-gateway/alma-gateway-for-woocommerce.php', $auto_update_plugins, true ) ) ? 'auto_update' : null,
 				),
+				'payment_method_position'  => $this->get_alma_gateway_position(),
 			)
 		);
 	}
@@ -253,6 +255,28 @@ class CollectCmsDataService {
 		uksort( $plans, array( $this->alma_settings->fee_plan_helper, 'alma_usort_plans_keys' ) );
 
 		return $plans;
+	}
+
+	private function get_alma_gateway_position() {
+		$gateways         = PaymentGatewaysProxy::get_instance()->get_payment_gateways();
+		$gateway_position = 0;
+
+		$gateways = array_filter(
+			$gateways,
+			function( $gateway) {
+				return ! preg_match( '/alma_.+/', $gateway->id );
+			}
+		);
+
+		$gateways = array_combine( range( 1, count( $gateways ) ), array_values( $gateways ) );
+
+		foreach ( $gateways as $position => $gateway ) {
+			if ( 'alma' === $gateway->id ) {
+				$gateway_position = $position;
+			}
+		}
+
+		return $gateway_position;
 	}
 
 }
