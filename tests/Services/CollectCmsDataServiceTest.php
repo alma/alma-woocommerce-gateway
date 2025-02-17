@@ -17,6 +17,7 @@ use Alma\Woocommerce\Helpers\ToolsHelper;
 use Alma\Woocommerce\Services\CollectCmsDataService;
 use Alma\Woocommerce\WcProxy\FunctionsProxy;
 use Alma\Woocommerce\WcProxy\OptionProxy;
+use Alma\Woocommerce\WcProxy\PaymentGatewaysProxy;
 use Alma\Woocommerce\WcProxy\ThemeProxy;
 use WP_UnitTestCase;
 use function PHPUnit\Framework\assertNull;
@@ -160,7 +161,7 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase
 			'widget_cart_activated' => true,
 			'widget_product_activated' => false,
 			'used_fee_plans' => ['general_1_0_0' => ['enabled' => true, 'min_amount' => 0, 'max_amount' => 1000]],
-			'payment_method_position' => 4,
+			'payment_method_position' => 3,
 			'in_page_activated' => false,
 			'log_activated' => true,
 			'excluded_categories' => [],
@@ -181,6 +182,9 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase
 		                           ->method('send_http_response')
 		                           ->with($payload_formatter_return, 200);
 
+
+		$this->set_payment_gateways();
+
 		$this->assertNull($this->collect_cms_data_service->handle_collect_cms_data());
 	}
 
@@ -199,5 +203,40 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase
 				'auto_update_plugins' => ['woocommerce/woocommerce.php', 'alma-woocommerce-gateway/alma-gateway-for-woocommerce.php']
 			]
 		];
+	}
+
+	/**
+	 * @return void
+	 */
+	private function set_payment_gateways() {
+		$cheque_mock     = $this->createMock( \WC_Payment_Gateway::class );
+		$cheque_mock->id = 'cheque';
+
+		$bacs_mock     = $this->createMock( \WC_Payment_Gateway::class );
+		$bacs_mock->id = 'bacs';
+
+		$alma_in_page_mock     = $this->createMock( \WC_Payment_Gateway::class );
+		$alma_in_page_mock->id = 'alma_in_page';
+
+		$alma_mock     = $this->createMock( \WC_Payment_Gateway::class );
+		$alma_mock->id = 'alma';
+
+		$paypal_mock     = $this->createMock( \WC_Payment_Gateway::class );
+		$paypal_mock->id = 'paypal';
+
+		$payment_gateways = [
+			'cheque'       => $cheque_mock,
+			'bacs'         => $bacs_mock,
+			'alma_in_page' => $alma_in_page_mock,
+			'alma'         => $alma_mock,
+			'paypal'       => $paypal_mock
+		];
+
+		$wc_payment_gateway = $this->createMock( \WC_Payment_Gateways::class );
+		$wc_payment_gateway->expects( $this->once() )
+		                   ->method( 'payment_gateways' )
+		                   ->willReturn( $payment_gateways );
+
+		PaymentGatewaysProxy::get_instance()->set_wc_payment_gateways( $wc_payment_gateway );
 	}
 }
