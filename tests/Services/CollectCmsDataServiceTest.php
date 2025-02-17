@@ -41,8 +41,8 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase
 		$this->alma_settings_mock->method('is_enabled')->willReturn(true);
 		$this->alma_settings_mock->display_cart_eligibility = 'yes';
 		$this->alma_settings_mock->display_product_eligibility = 'no';
-		$this->alma_settings_mock->display_in_page = false;
-		$this->alma_settings_mock->debug = "yes";
+		$this->alma_settings_mock->display_in_page = 'no';
+		$this->alma_settings_mock->debug = 'yes';
 		$this->alma_settings_mock->method('is_plan_enabled')->willReturn(true);
 		$this->alma_settings_mock->method('get_min_amount')->willReturn(0);
 		$this->alma_settings_mock->method('get_max_amount')->willReturn(1000);

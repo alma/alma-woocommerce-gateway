@@ -181,7 +181,7 @@ class CollectCmsDataService {
 				'widget_cart_activated'    => 'yes' === $this->alma_settings->display_cart_eligibility,
 				'widget_product_activated' => 'yes' === $this->alma_settings->display_product_eligibility,
 				'used_fee_plans'           => $this->format_fee_plans(),
-				'in_page_activated'        => $this->alma_settings->display_in_page,
+				'in_page_activated'        => 'yes' === $this->alma_settings->display_in_page,
 				'log_activated'            => 'yes' === $this->alma_settings->debug,
 				'excluded_categories'      => $this->alma_settings->excluded_products_list,
 				'is_multisite'             => is_multisite(),

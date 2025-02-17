@@ -88,9 +88,9 @@ class AlmaSettings {
 	public $display_cart_eligibility;
 
 	/**
-	 * Bool if In Page is activated.
+	 * In Page is activated ("yes" or "no").
 	 *
-	 * @var bool
+	 * @var string
 	 */
 	public $display_in_page;
 
