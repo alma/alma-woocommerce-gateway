@@ -257,6 +257,13 @@ class CollectCmsDataService {
 		return $plans;
 	}
 
+	/**
+	 * Get Alma gateway position.
+	 * Remove alma_* gateways from the list of gateways.
+	 * Sort gateways to re-index all.
+	 *
+	 * @return int
+	 */
 	private function get_alma_gateway_position() {
 		$gateways         = PaymentGatewaysProxy::get_instance()->get_payment_gateways();
 		$gateway_position = 0;
@@ -268,11 +275,11 @@ class CollectCmsDataService {
 			}
 		);
 
-		$gateways = array_combine( range( 1, count( $gateways ) ), array_values( $gateways ) );
+		$gateways = array_values( $gateways );
 
 		foreach ( $gateways as $position => $gateway ) {
 			if ( 'alma' === $gateway->id ) {
-				$gateway_position = $position;
+				$gateway_position = $position + 1;
 			}
 		}
 

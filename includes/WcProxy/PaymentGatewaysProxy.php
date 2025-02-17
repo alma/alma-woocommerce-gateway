@@ -39,6 +39,7 @@ class PaymentGatewaysProxy {
 		if (null === self::$instance) {
 			self::$instance = new self( $wc_payment_gateway );
 		}
+
 		return self::$instance;
 	}
 
@@ -51,12 +52,4 @@ class PaymentGatewaysProxy {
 		return $this->wc_payment_gateway->payment_gateways();
 	}
 
-	/**
-	 * Set WC Payment Gateways instance.
-	 *
-	 * @param WC_Payment_Gateways $wc_payment_gateway
-	 */
-	public function set_wc_payment_gateways( $wc_payment_gateway) {
-		$this->wc_payment_gateway = $wc_payment_gateway;
-	}
 }
