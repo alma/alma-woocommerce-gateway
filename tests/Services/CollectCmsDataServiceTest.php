@@ -34,12 +34,6 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase {
 	protected $fee_plan_mock;
 	protected $tools_helper_mock;
 
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-		$testInstance = new self();
-		self::set_payment_gateways( $testInstance );
-	}
-
 	public function set_up() {
 		$this->alma_logger_mock   = $this->createMock( AlmaLogger::class );
 		$this->alma_settings_mock = $this->createMock( AlmaSettings::class );
@@ -65,6 +59,8 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase {
 		$this->functions_proxy_mock = $this->createMock( FunctionsProxy::class );
 		$this->tools_helper_mock    = $this->createMock( ToolsHelper::class );
 
+		$this->set_payment_gateways();
+
 		$this->collect_cms_data_service = new CollectCmsDataService(
 			$this->alma_settings_mock,
 			$this->alma_logger_mock,
@@ -75,6 +71,10 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase {
 			$this->functions_proxy_mock,
 			$this->tools_helper_mock
 		);
+	}
+
+	public function tear_down() {
+		PaymentGatewaysProxy::reset_instance();
 	}
 
 	public function test_send_url() {
@@ -215,20 +215,20 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase {
 	/**
 	 * @return void
 	 */
-	private static function set_payment_gateways( $testInstance ) {
-		$cheque_mock     = $testInstance->createMock( \WC_Payment_Gateway::class );
+	private function set_payment_gateways() {
+		$cheque_mock     = $this->createMock( \WC_Payment_Gateway::class );
 		$cheque_mock->id = 'cheque';
 
-		$bacs_mock     = $testInstance->createMock( \WC_Payment_Gateway::class );
+		$bacs_mock     = $this->createMock( \WC_Payment_Gateway::class );
 		$bacs_mock->id = 'bacs';
 
-		$alma_in_page_mock     = $testInstance->createMock( \WC_Payment_Gateway::class );
+		$alma_in_page_mock     = $this->createMock( \WC_Payment_Gateway::class );
 		$alma_in_page_mock->id = 'alma_in_page';
 
-		$alma_mock     = $testInstance->createMock( \WC_Payment_Gateway::class );
+		$alma_mock     = $this->createMock( \WC_Payment_Gateway::class );
 		$alma_mock->id = 'alma';
 
-		$paypal_mock     = $testInstance->createMock( \WC_Payment_Gateway::class );
+		$paypal_mock     = $this->createMock( \WC_Payment_Gateway::class );
 		$paypal_mock->id = 'paypal';
 
 		$payment_gateways = [
@@ -239,7 +239,7 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase {
 			'paypal'       => $paypal_mock
 		];
 
-		$wc_payment_gateway =$testInstance->createMock( \WC_Payment_Gateways::class );
+		$wc_payment_gateway =$this->createMock( \WC_Payment_Gateways::class );
 
 		$wc_payment_gateway->method( 'payment_gateways' )
 		                   ->willReturn( $payment_gateways );

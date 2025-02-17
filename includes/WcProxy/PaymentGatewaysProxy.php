@@ -52,4 +52,13 @@ class PaymentGatewaysProxy {
 		return $this->wc_payment_gateway->payment_gateways();
 	}
 
+	/**
+	 * Used for unit tests.
+	 *
+	 * @return void
+	 */
+	public static function reset_instance() {
+		self::$instance = null;
+	}
+
 }
