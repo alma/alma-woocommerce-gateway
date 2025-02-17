@@ -4,47 +4,59 @@
  *
  * @package Alma\Woocommerce\WcProxy
  */
-
 namespace Alma\Woocommerce\WcProxy;
 
 use WC_Payment_Gateways;
 
 class PaymentGatewaysProxy {
 
+	/**
+	 * @var PaymentGatewaysProxy|null
+	 */
 	private static $instance = null;
 
 	/**
 	 * @var WC_Payment_Gateways
 	 */
-	private static $wc_payment_gateway;
+	private $wc_payment_gateway;
 
-	public static function get_instance() {
+	/**
+	 * PaymentGatewaysProxy constructor.
+	 *
+	 * @param WC_Payment_Gateways|null $wc_payment_gateway
+	 */
+	private function __construct( $wc_payment_gateway = null) {
+		$this->wc_payment_gateway = $wc_payment_gateway ? $wc_payment_gateway : WC_Payment_Gateways::instance();
+	}
+
+	/**
+	 * Get the singleton instance of PaymentGatewaysProxy.
+	 *
+	 * @param WC_Payment_Gateways|null $wc_payment_gateway
+	 * @return PaymentGatewaysProxy
+	 */
+	public static function get_instance( $wc_payment_gateway = null) {
 		if (null === self::$instance) {
-			self::$instance = new self();
+			self::$instance = new self( $wc_payment_gateway );
 		}
 		return self::$instance;
 	}
 
-	private function get_wc_payment_gateways() {
-		if (null === self::$wc_payment_gateway) {
-			self::$wc_payment_gateway = WC_Payment_Gateways::instance();
-		}
-		return self::$wc_payment_gateway;
-	}
-
+	/**
+	 * Get payment gateways.
+	 *
+	 * @return array
+	 */
 	public function get_payment_gateways() {
-		return self::get_wc_payment_gateways()->payment_gateways();
+		return $this->wc_payment_gateway->payment_gateways();
 	}
 
 	/**
-	 * Use for test
+	 * Set WC Payment Gateways instance.
 	 *
-	 * @param WC_Payment_Gateways $wc_payment_gateway use only mock
-	 *
-	 * @return void
+	 * @param WC_Payment_Gateways $wc_payment_gateway
 	 */
 	public function set_wc_payment_gateways( $wc_payment_gateway) {
-		self::$wc_payment_gateway = $wc_payment_gateway;
+		$this->wc_payment_gateway = $wc_payment_gateway;
 	}
-
 }
