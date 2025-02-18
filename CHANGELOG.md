@@ -1,5 +1,17 @@
 # Changelog
 
+## v5.11.0 - 2025-02-18
+
+### Changes
+
+### 🚀 New Features
+
+- Add payment method position to the gather cms data and fix typeError for display in page (#326)
+
+#### Contributors
+
+@joyet-simon and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+
 ## v5.10.0 - 2025-02-11
 
 ### Changes
