@@ -57,7 +57,11 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 ### 🚀 New Features
 
-- Add payment method position to the gather cms data and fix typeError for display in page (#326)
+- Add payment method position to the gather cms data (#326)
+
+### 🐛 Bug Fixes
+
+- Fix typeError for display in page in gather cms data (#326)
 
 #### Contributors
 
