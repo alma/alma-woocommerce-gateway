@@ -1,5 +1,5 @@
 #!/bin/bash
-docker run --rm -v "$(pwd)/:/app/" -v "$(pwd)/.php_cs.cache:/app/.php_cs.cache" --entrypoint /composer/vendor/bin/phpcs \
+docker run --rm -v "$(pwd):/app" -v "$(pwd)/.php_cs.cache:/app/.php_cs.cache" --entrypoint /composer/vendor/bin/phpcs \
   php-compatibility:wc -p . --standard=PHPCompatibility -s --runtime-set testVersion 5.6-8.4 --ignore=\*/vendor/\*,build/*,node_modules/*,coverage/*
 EXIT_CODE=$?
 
