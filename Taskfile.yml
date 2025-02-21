@@ -18,33 +18,36 @@ tasks:
     cmds:
       - docker compose build --build-arg UID="$(id -u)" php5-6
 
-  build:phpcs:
-    desc: Build PHPCS container
+  lint:build:
+    desc: Build lint container (php-cs-fixer)
     cmds:
-      - docker build -t phpcs:wp -f phpcs.Dockerfile .
-
-  build:phpcbf:
-    desc: Build PHPCBF container
-    cmds:
-      - docker build -t phpcbf:wp -f phpcbf.Dockerfile .
+      - docker build -t lint:wc -f lint.Dockerfile .
 
   lint:
-    aliases:
-      - run:phpcs
-    desc: Run PHPCS container
+    desc: Run lint container
     deps:
-      - build:phpcs
+      - lint:build
     cmds:
-      - ./bin/coding-standard.sh
+      - ./bin/lint.sh
 
   lint:fix:
-    aliases:
-      - run:phpcbf
-    desc: Run PHPCBF container
+    desc: Run lint container
     deps:
-      - build:phpcbf
+      - lint:build
     cmds:
-      - ./bin/coding-standard-fixer.sh
+      - ./bin/lint-fix.sh
+
+  php-compatibility:build:
+    desc: Build php-compatibility container (phpcs)
+    cmds:
+      - docker build -t php-compatibility:wc -f lint.Dockerfile .
+
+  php-compatibility:
+    desc: Check compatibility code in PHP-CS container
+    deps:
+      - php-compatibility:build
+    cmds:
+      - ./bin/php-compatibility.sh
 
   test:
     desc: Run tests
@@ -59,13 +62,6 @@ tasks:
     cmds:
       - pre-commit install --hook-type commit-msg
       - pre-commit install
-
-  php-compatibility:
-    desc: Check compatibility code
-    deps:
-      - build:php5-6
-    cmds:
-      - docker compose run --rm php5-6 php ./vendor/bin/phpcs -d memory_limit=512M -p ./ --standard=PHPCompatibility -s --runtime-set testVersion 5.6-8.1 --ignore='*/vendor/*,build/*'
 
   dist:
     desc: Build zip file

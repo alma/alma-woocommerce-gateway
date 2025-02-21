@@ -14,12 +14,7 @@ Used to build the ZIP file to release the plugin.
 
 ## PHPCS Dockerfile
 
-Used to run the `phpcs` command by the pre-commit hook or manually with the command
+Used to run the `lint` and `lint:fix` command by the pre-commit hook or manually with the command
 
 ```task lint```
-
-## PHPCBF Dockerfile
-
-Used to run the `phpcbf` command by the pre-commit hook or manually with the command
-
 ```task lint:fix```
