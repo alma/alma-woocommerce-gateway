@@ -40,7 +40,7 @@ services:
   php5-6:
     build:
       context: ./
-      dockerfile: Dockerfile.legacy
+      dockerfile: legacy.Dockerfile
     volumes:
       - ./:/home/phpuser
       - /home/phpuser/src/vendor # do not mount vendor inside container

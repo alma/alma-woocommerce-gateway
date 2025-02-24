@@ -175,7 +175,7 @@ class GenericHandler {
 				$exclusion_msg = $this->get_cart_not_eligible_message_gift_cards();
 				?>
 				<img src="<?php echo esc_attr( $logo_url ); ?>" alt="Alma"
-					 style="width: auto !important; height: 25px !important; border: none !important; vertical-align: middle; display: inline-block;">
+					style="width: auto !important; height: 25px !important; border: none !important; vertical-align: middle; display: inline-block;">
 				<span style="text-transform: initial"><?php echo wp_kses_post( $exclusion_msg ); ?></span>
 				<?php
 			}
