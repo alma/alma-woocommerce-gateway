@@ -23,12 +23,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Alma\\Woocommerce\\": "includes/"
+      "Alma\\Gateway\\": "includes/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Alma\\Woocommerce\\Tests\\": "tests/"
+      "Alma\\Gateway\\Tests\\": "tests/"
     }
   },
   "extra": {

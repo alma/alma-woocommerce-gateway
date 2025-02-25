@@ -16,8 +16,8 @@ RUN composer require phpcompatibility/php-compatibility --no-interaction
 RUN composer require phpcompatibility/phpcompatibility-wp:"*" --no-interaction
 RUN composer require phpcompatibility/phpcompatibility-paragonie:"*" --no-interaction
 
-RUN /composer/vendor/bin/phpcbf --config-set installed_paths /app/vendor/phpcsstandards/phpcsutils,/app/vendor/phpcsstandards/phpcsextra,/app/vendor/squizlabs/php_codesniffer,/app/vendor/wp-coding-standards/wpcs,/app/vendor/phpcompatibility/php-compatibility,/app/vendor/phpcompatibility/phpcompatibility-wp,/app/vendor/phpcompatibility/phpcompatibility-paragonie
-RUN /composer/vendor/bin/phpcs --config-set installed_paths /app/vendor/phpcsstandards/phpcsutils,/app/vendor/phpcsstandards/phpcsextra,/app/vendor/squizlabs/php_codesniffer,/app/vendor/wp-coding-standards/wpcs,/app/vendor/phpcompatibility/php-compatibility,/app/vendor/phpcompatibility/phpcompatibility-wp,/app/vendor/phpcompatibility/phpcompatibility-paragonie
+RUN /composer/vendor/bin/phpcbf --config-set installed_paths /composer/vendor/phpcsstandards/phpcsutils,/composer/vendor/phpcsstandards/phpcsextra,/composer/vendor/squizlabs/php_codesniffer,/composer/vendor/wp-coding-standards/wpcs,/composer/vendor/phpcompatibility/php-compatibility,/composer/vendor/phpcompatibility/phpcompatibility-wp,/composer/vendor/phpcompatibility/phpcompatibility-paragonie
+RUN /composer/vendor/bin/phpcs --config-set installed_paths /composer/vendor/phpcsstandards/phpcsutils,/composer/vendor/phpcsstandards/phpcsextra,/composer/vendor/squizlabs/php_codesniffer,/composer/vendor/wp-coding-standards/wpcs,/composer/vendor/phpcompatibility/php-compatibility,/composer/vendor/phpcompatibility/phpcompatibility-wp,/composer/vendor/phpcompatibility/phpcompatibility-paragonie
 
 WORKDIR /app
 
