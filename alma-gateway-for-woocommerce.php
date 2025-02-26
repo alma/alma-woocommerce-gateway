@@ -41,5 +41,5 @@ require_once 'vendor/autoload.php';
 
 add_action(
 	'plugins_loaded',
-	array( Alma\Gateway\Business\Plugin::get_instance(), 'plugin_setup' )
+	array( Alma\Gateway\Plugin::get_instance(), 'plugin_setup' )
 );
