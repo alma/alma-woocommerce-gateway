@@ -16,14 +16,14 @@ class HooksProxy {
 	 */
 	public static function load_language( $domain, $plugin_path ) {
 		self::add_action(
-				'init',
-				function () use ( $domain, $plugin_path ) {
-					load_plugin_textdomain(
-							$domain,
-							false,
-							$plugin_path . '/languages'
-					);
-				}
+			'init',
+			function () use ( $domain, $plugin_path ) {
+				load_plugin_textdomain(
+					$domain,
+					false,
+					$plugin_path . '/languages'
+				);
+			}
 		);
 	}
 
@@ -41,10 +41,10 @@ class HooksProxy {
 
 	public static function load_gateway( $gateway ) {
 		self::add_action(
-				'woocommerce_payment_gateways',
-				function () use ( $gateway ) {
-					return $gateway;
-				}
+			'woocommerce_payment_gateways',
+			function () use ( $gateway ) {
+				return $gateway;
+			}
 		);
 	}
 }

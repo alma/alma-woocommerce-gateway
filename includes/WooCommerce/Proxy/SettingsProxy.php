@@ -37,28 +37,26 @@ class SettingsProxy {
 
 		// Register a new section in the "alma" page.
 		add_settings_section(
-				'alma_section_developers',
-				__( 'The Matrix has you.', 'alma-gateway-for-woocommerce' ),
-				array(
-						$this,
-						'alma_section_developers_callback'
-				),
-				'alma'
+			'alma_section_developers',
+			__( 'The Matrix has you.', 'alma-gateway-for-woocommerce' ),
+			array( $this, 'alma_section_developers_callback' ),
+			'alma'
 		);
 
 		// Register a new field in the "alma_section_developers" section, inside the "alma" page.
 		add_settings_field(
-				'alma_field_pill', // As of WP 4.6 this value is used only internally.
-				// Use $args' label_for to populate the id inside the callback.
-				__( 'Pill', 'alma-gateway-for-woocommerce' ),
-				array( $this, 'alma_field_pill_cb' ),
-				'alma',
-				'alma_section_developers',
-				array(
-						'label_for'        => 'alma_field_pill',
-						'class'            => 'alma_row',
-						'alma_custom_data' => 'custom',
-				)
+			'alma_field_pill',
+			// As of WP 4.6 this value is used only internally.
+			// Use $args' label_for to populate the id inside the callback.
+			__( 'Pill', 'alma-gateway-for-woocommerce' ),
+			array( $this, 'alma_field_pill_cb' ),
+			'alma',
+			'alma_section_developers',
+			array(
+				'label_for'        => 'alma_field_pill',
+				'class'            => 'alma_row',
+				'alma_custom_data' => 'custom',
+			)
 		);
 	}
 
@@ -67,11 +65,11 @@ class SettingsProxy {
 	 */
 	public function alma_options_page() {
 		add_menu_page(
-				'alma',
-				'alma Options',
-				'manage_options',
-				'alma',
-				array( $this, 'alma_options_page_html' )
+			'alma',
+			'alma Options',
+			'manage_options',
+			'alma',
+			array( $this, 'alma_options_page_html' )
 		);
 	}
 
@@ -89,8 +87,17 @@ class SettingsProxy {
 		// check if the user have submitted the settings
 		// WordPress will add the "settings-updated" $_GET parameter to the url
 		if ( isset( $_GET['settings-updated'] ) ) {
+			// Vérifier le nonce
+			if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'alma_save_settings' ) ) {
+				wp_die( __( 'Security check failed.', 'alma-gateway-for-woocommerce' ) );
+			}
 			// add settings saved message with the class of "updated"
-			add_settings_error( 'alma_messages', 'alma_message', __( 'Settings Saved', 'alma-gateway-for-woocommerce' ), 'updated' );
+			add_settings_error(
+				'alma_messages',
+				'alma_message',
+				__( 'Settings Saved', 'alma-gateway-for-woocommerce' ),
+				'updated'
+			);
 		}
 
 		// show error/update messages
@@ -138,16 +145,30 @@ class SettingsProxy {
 			id="' . esc_attr( $args['label_for'] ) . '"
 			data-custom="' . esc_attr( $args['alma_custom_data'] ) . '"
 			name="alma_options[' . esc_attr( $args['label_for'] ) . ']">';
-		$selected = isset( $options[ $args['label_for'] ] ) ? ( selected( $options[ $args['label_for'] ], 'red', false ) ) : ( '' );
+		$selected = '';
+		if ( $options[ $args['label_for'] ] ) {
+			selected( $options[ $args['label_for'] ], 'red', false );
+			$selected = 'red';
+		}
 		echo printf( '<option value="red %s">%s</option>', $selected, esc_html( 'red pill' ) );
-		$selected = isset( $options[ $args['label_for'] ] ) ? ( selected( $options[ $args['label_for'] ], 'blue', false ) ) : ( '' );
+		$selected = '';
+		if ( $options[ $args['label_for'] ] ) {
+			selected( $options[ $args['label_for'] ], 'blue', false );
+			$selected = 'blue';
+		}
 		echo printf( '<option value="blue %s">%s</option>', $selected, esc_html( 'blue pill' ) );
 		echo '</select>';
 		echo '<p class="description">';
-		esc_html_e( 'You take the blue pill and the story ends. You wake in your bed and you believe whatever you want to believe.', 'alma-gateway-for-woocommerce' );
+		esc_html_e(
+			'You take the blue pill and the story ends. You wake in your bed and you believe whatever you want to believe.',
+			'alma-gateway-for-woocommerce'
+		);
 		echo '</p>';
 		echo '<p class="description">';
-		esc_html_e( 'You take the red pill and you stay in Wonderland and I show you how deep the rabbit-hole goes.', 'alma-gateway-for-woocommerce' );
+		esc_html_e(
+			'You take the red pill and you stay in Wonderland and I show you how deep the rabbit-hole goes.',
+			'alma-gateway-for-woocommerce'
+		);
 		echo '</p>';
 	}
 }
