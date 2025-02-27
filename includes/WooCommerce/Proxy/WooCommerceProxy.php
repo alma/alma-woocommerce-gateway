@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @see https://developer.wordpress.org/plugins/settings/custom-settings-page/
- */
-
 namespace Alma\Gateway\WooCommerce\Proxy;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -13,9 +9,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class SettingsProxy to manage WordPress/WooCommerce settings.
  */
-class WooCommerceProxy {
+class WooCommerceProxy extends WordPressProxy {
 
 	public static function get_version() {
 		return WC()->version;
+	}
+
+	/**
+	 * Returns true if WooCommerce is active.
+	 *
+	 * @return bool
+	 */
+	public static function is_woocommerce_loaded() {
+		return (bool) did_action( 'woocommerce_loaded' );
 	}
 }

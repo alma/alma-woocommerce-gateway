@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Business\Service;
 
-use Alma\Gateway\Business\Helpers\EncryptorHelper;
+use Alma\Gateway\Business\Helper\EncryptorHelper;
 use Alma\Gateway\WooCommerce\Proxy\OptionsProxy;
 
 if ( ! defined( 'ABSPATH' ) ) {

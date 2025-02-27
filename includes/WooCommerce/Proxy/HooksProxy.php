@@ -39,12 +39,21 @@ class HooksProxy {
 		add_action( $hook_name, $callback, $priority, $accepted_args );
 	}
 
-	public static function load_gateway( $gateway ) {
-		self::add_action(
+	public static function load_gateway( $gateway_class_name ) {
+		add_filter(
 			'woocommerce_payment_gateways',
-			function () use ( $gateway ) {
-				return $gateway;
+			function ( $gateways ) use ( $gateway_class_name ) {
+				array_unshift( $gateways, $gateway_class_name );
+
+				return $gateways;
 			}
+		);
+	}
+
+	public static function add_gateway_links( $base_path, $callback ) {
+		add_filter(
+			'plugin_action_links_' . plugin_basename( $base_path ),
+			$callback
 		);
 	}
 }

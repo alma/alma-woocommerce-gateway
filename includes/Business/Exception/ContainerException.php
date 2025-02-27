@@ -1,8 +1,8 @@
 <?php
 /**
- * RequirementsException.
+ * ContainerException.
  *
- * @since 4.0.0
+ * @since 6.0.0
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes/Business/Exception
@@ -16,8 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * RequirementsException
+ * ContainerException
  */
-class RequirementsException extends AlmaGatewayException {
+class ContainerException extends AlmaGatewayException {
 
 }

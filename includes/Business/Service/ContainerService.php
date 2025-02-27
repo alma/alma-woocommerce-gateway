@@ -2,6 +2,7 @@
 
 namespace Alma\Gateway\Business\Service;
 
+use Alma\Gateway\Business\Exception\ContainerException;
 use Dice\Dice;
 
 class ContainerService extends Dice {
@@ -42,7 +43,11 @@ class ContainerService extends Dice {
 		);
 		// Helpers
 		$this->addRule(
-			'Alma\Gateway\Business\Helpers\EncryptorHelper',
+			'Alma\Gateway\Business\Helper\EncryptorHelper',
+			array( 'shared' => true )
+		);
+		$this->addRule(
+			'Alma\Gateway\Business\Helper\RequirementsHelper',
 			array( 'shared' => true )
 		);
 	}
@@ -74,13 +79,18 @@ class ContainerService extends Dice {
 	 * @param array  $share Whether or not this class instance be shared, so that the same instance is passed around each time
 	 *
 	 * @return object A fully constructed object based on the specified input arguments
+	 * @throws ContainerException
 	 */
 	public function get( $name, array $args = array(), array $share = array() ) {
-		error_reporting( error_reporting() & ~E_DEPRECATED ); // phpcs:ignore
-		// @formatter:off PHPStorm wants this call to be multiline
-		$service = $this->create( $name, $args = array(), $share = array() );
-		// @formatter:on
-		error_reporting( error_reporting() ^ E_DEPRECATED ); // phpcs:ignore
+		try {
+			error_reporting( error_reporting() & ~E_DEPRECATED ); // phpcs:ignore
+			// @formatter:off PHPStorm wants this call to be multiline
+			$service = $this->create( $name, $args, $share );
+			// @formatter:on
+			error_reporting( error_reporting() ^ E_DEPRECATED ); // phpcs:ignore
+		} catch ( \Exception $e ) {
+			throw new ContainerException( 'Missing Service' );
+		}
 
 		return $service;
 	}

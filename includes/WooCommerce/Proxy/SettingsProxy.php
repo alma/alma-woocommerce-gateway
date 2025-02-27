@@ -6,6 +6,8 @@
 
 namespace Alma\Gateway\WooCommerce\Proxy;
 
+use Alma\Gateway\Business\Helper\L10nHelper;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -38,7 +40,7 @@ class SettingsProxy {
 		// Register a new section in the "alma" page.
 		add_settings_section(
 			'alma_section_developers',
-			__( 'The Matrix has you.', 'alma-gateway-for-woocommerce' ),
+			L10nHelper::__( 'The Matrix has you.' ),
 			array( $this, 'alma_section_developers_callback' ),
 			'alma'
 		);
@@ -48,7 +50,7 @@ class SettingsProxy {
 			'alma_field_pill',
 			// As of WP 4.6 this value is used only internally.
 			// Use $args' label_for to populate the id inside the callback.
-			__( 'Pill', 'alma-gateway-for-woocommerce' ),
+			L10nHelper::__( 'Pill' ),
 			array( $this, 'alma_field_pill_cb' ),
 			'alma',
 			'alma_section_developers',
@@ -89,13 +91,13 @@ class SettingsProxy {
 		if ( isset( $_GET['settings-updated'] ) ) {
 			// Vérifier le nonce
 			if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'alma_save_settings' ) ) {
-				wp_die( __( 'Security check failed.', 'alma-gateway-for-woocommerce' ) );
+				wp_die( L10nHelper::__( 'Security check failed.' ) );
 			}
 			// add settings saved message with the class of "updated"
 			add_settings_error(
 				'alma_messages',
 				'alma_message',
-				__( 'Settings Saved', 'alma-gateway-for-woocommerce' ),
+				L10nHelper::__( 'Settings Saved' ),
 				'updated'
 			);
 		}

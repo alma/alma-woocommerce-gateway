@@ -5,11 +5,11 @@
  * @since 4.1.1
  *
  * @package Alma_Gateway_For_Woocommerce
- * @subpackage Alma_Gateway_For_Woocommerce/includes/Business/Helpers
- * @namespace Alma\Gateway\Business\Helpers
+ * @subpackage Alma_Gateway_For_Woocommerce/includes/Business/Helper
+ * @namespace Alma\Gateway\Business\Helper
  */
 
-namespace Alma\Gateway\Business\Helpers;
+namespace Alma\Gateway\Business\Helper;
 
 use Alma\Gateway\Business\Exception\RequirementsException;
 
