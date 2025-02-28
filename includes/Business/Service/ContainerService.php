@@ -5,6 +5,16 @@ namespace Alma\Gateway\Business\Service;
 use Alma\Gateway\Business\Exception\ContainerException;
 use Dice\Dice;
 
+/**
+ * This DI Container is a wrapper around Dice
+ * It provides a way to define rules for the Dice container
+ * and to get services from the container
+ *
+ * @see https://r.je/dice
+ *
+ * Class ContainerService
+ * Dependency Injection Container
+ */
 class ContainerService extends Dice {
 
 	/**
@@ -49,6 +59,16 @@ class ContainerService extends Dice {
 		$this->addRule(
 			'Alma\Gateway\Business\Helper\RequirementsHelper',
 			array( 'shared' => true )
+		);
+		$this->addRule(
+			'Alma\Gateway\Business\Helper\AssetsHelper',
+			array(
+				'shared'          => true,
+				'constructParams' => array(
+					'http://woocommerce-9-6-2.local.test/wp-content/plugins/alma-gateway-for-woocommerce/'
+					//Plugin::get_instance()->get_plugin_url()
+				)
+			)
 		);
 	}
 

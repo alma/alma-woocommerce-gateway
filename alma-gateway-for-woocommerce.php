@@ -38,6 +38,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once 'vendor/autoload.php';
+require_once 'includes/functions.php';
 
 add_action(
 	'plugins_loaded',

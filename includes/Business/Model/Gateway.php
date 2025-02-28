@@ -2,8 +2,11 @@
 
 namespace Alma\Gateway\Business\Model;
 
+use Alma\Gateway\Business\Exception\ContainerException;
+use Alma\Gateway\Business\Helper\AssetsHelper;
+use Alma\Gateway\Business\Helper\GatewayFormHelper;
 use Alma\Gateway\Business\Helper\L10nHelper;
-use Alma\Gateway\WooCommerce\Proxy\HooksProxy;
+use Alma\Gateway\Plugin;
 use WC_Payment_Gateway;
 
 /**
@@ -28,48 +31,57 @@ class Gateway extends WC_Payment_Gateway {
 	 * @var false
 	 */
 	public $has_fields;
-	/**
-	 * @var HooksProxy
-	 */
-	private $hooks_proxy;
 
 	/**
 	 * Gateway constructor.
+	 * @throws ContainerException
 	 */
 	public function __construct() {
 		$this->id                 = 'alma';
+		$this->plugin_id          = 'woocommerce_' . $this->id;
 		$this->method_title       = L10nHelper::__( 'Alma' );
 		$this->method_description = L10nHelper::__( 'Payer en plusieurs fois avec Alma.' );
 		$this->has_fields         = false;
-
+		$this->icon               = $this->get_icon();
 		$this->init_form_fields();
 		$this->init_settings();
-
 		$this->title       = $this->get_option( 'title' );
 		$this->description = $this->get_option( 'description' );
 
-		// Sauvegarde des paramètres
 		add_action(
 			'woocommerce_update_options_payment_gateways_' . $this->id,
 			array( $this, 'process_admin_options' )
 		);
 	}
 
+	/**
+	 * Get Alma icon.
+	 *
+	 * @return string The icon path.
+	 * @throws ContainerException
+	 */
+	public function get_icon() {
+
+		/** @var AssetsHelper $asset_helper */
+		$asset_helper = Plugin::get_container()->get( AssetsHelper::class );
+
+		return $asset_helper->get_image( 'images/alma_logo.svg' );
+	}
+
+	/**
+	 * @throws ContainerException
+	 */
 	public function init_form_fields() {
-		$this->form_fields = array(
-			'enabled' => array(
-				'title'   => L10nHelper::__( 'Activer/Désactiver' ),
-				'type'    => 'checkbox',
-				'label'   => L10nHelper::__( 'Activer Alma' ),
-				'default' => 'yes',
-			),
-			'title'   => array(
-				'title'       => L10nHelper::__( 'Titre' ),
-				'type'        => 'text',
-				'description' => L10nHelper::__( 'Titre affiché lors du paiement.' ),
-				'default'     => L10nHelper::__( 'Paiement en plusieurs fois avec Alma' ),
-			),
+		/** @var GatewayFormHelper $gateway_form_helper */
+		$gateway_form_helper = Plugin::get_container()->get( GatewayFormHelper::class );
+
+		$this->form_fields = array_merge(
+			$this->form_fields,
+			$gateway_form_helper->enabled_field(),
+			$gateway_form_helper->api_key_fieldset()
 		);
+
+		return $this->form_fields;
 	}
 
 	public function process_payment( $order_id ) {

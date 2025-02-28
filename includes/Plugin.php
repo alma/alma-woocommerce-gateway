@@ -34,8 +34,6 @@ final class Plugin {
 
 	const ALMA_GATEWAY_PLUGIN_NAME = 'alma-gateway-for-woocommerce';
 
-	const WOOCOMMERCE_PLUGIN_REFERENCE = 'woocommerce/woocommerce.php';
-
 	/**
 	 * Plugin instance.
 	 *
@@ -48,13 +46,13 @@ final class Plugin {
 	 */
 	private static $container = null;
 	/**
-	 * URL to this plugin's directory.
+	 * URL to the root plugin's directory.
 	 *
 	 * @type string
 	 */
 	private $plugin_url = '';
 	/**
-	 * Path to this plugin's directory.
+	 * Path to the root plugin's directory.
 	 *
 	 * @type string
 	 */
@@ -87,16 +85,20 @@ final class Plugin {
 	 *
 	 * @return  void
 	 * @throws RequirementsException
+	 * @throws ContainerException
 	 */
 	public function plugin_setup() {
 		if ( ! $this->can_i_load() ) {
 			return;
 		}
-		$this->plugin_url  = plugins_url( '/', __FILE__ );
-		$this->plugin_path = plugin_dir_path( __FILE__ );
 
+		$this->plugin_url  = plugins_url( '/', __DIR__ );
+		$this->plugin_path = plugin_dir_path( __DIR__ );
+
+		// Configure Helpers
 		L10nHelper::load_language( $this->get_plugin_path() );
 
+		// Init Services
 		if ( is_admin() ) {
 			self::get_container()->get( AdminService::class );
 		}
