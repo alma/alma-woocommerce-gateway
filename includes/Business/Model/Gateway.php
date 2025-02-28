@@ -38,7 +38,6 @@ class Gateway extends WC_Payment_Gateway {
 	 */
 	public function __construct() {
 		$this->id                 = 'alma';
-		$this->plugin_id          = 'woocommerce_' . $this->id;
 		$this->method_title       = L10nHelper::__( 'Alma' );
 		$this->method_description = L10nHelper::__( 'Payer en plusieurs fois avec Alma.' );
 		$this->has_fields         = false;
