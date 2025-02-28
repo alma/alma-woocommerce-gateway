@@ -48,7 +48,7 @@ class GatewayService {
 	public function plugin_action_links( $links ) {
 		$setting_link = WordPressProxy::admin_url( 'admin.php?page=wc-settings&tab=checkout&section=alma' );
 		$plugin_links = array(
-			printf( '<a href="%s">%s</a>', $setting_link, L10nHelper::__( 'Alma Settings' ) ),
+			sprintf( '<a href="%s">%s</a>', $setting_link, L10nHelper::__( 'Settings' ) ),
 		);
 
 		return array_merge( $plugin_links, $links );
