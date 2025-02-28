@@ -4,6 +4,10 @@ namespace Alma\Gateway\Business\Helper;
 
 use Alma\Gateway\WooCommerce\Proxy\HooksProxy;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 class L10nHelper {
 
 	const ALMA_L10N_DOMAIN = 'alma-gateway-for-woocommerce';

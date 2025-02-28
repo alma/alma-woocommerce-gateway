@@ -2,21 +2,21 @@
 
 namespace Alma\Gateway\Business\Helper;
 
+use Alma\Gateway\Plugin;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 class AssetsHelper {
 
 	/**
-	 * @var mixed
-	 */
-	private $plugin_url;
-
-	/**
-	 * AssetsHelper constructor.
-	 * Define plugin url for assets.
+	 * Get admin logs url.
 	 *
-	 * @param $plugin_url
+	 * @return string
 	 */
-	public function __construct( $plugin_url ) {
-		$this->plugin_url = $plugin_url;
+	public function get_admin_logs_url() {
+		return admin_url( 'admin.php?page=wc-status&tab=logs' );
 	}
 
 	/**
@@ -38,6 +38,10 @@ class AssetsHelper {
 	 * @return string URL to given asset
 	 */
 	public function get_asset_url( $path ) {
-		return $this->plugin_url . 'assets/' . $path;
+
+		/** @var PluginHelper $plugin_helper */
+		$plugin_url = Plugin::get_instance()->get_container()->get( PluginHelper::class )->get_plugin_url();
+
+		return $plugin_url . 'assets/' . $path;
 	}
 }

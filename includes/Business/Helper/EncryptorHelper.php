@@ -72,7 +72,7 @@ class EncryptorHelper {
 		$this->key     = substr( sha1( $key_salt, true ), 0, 16 );
 		$this->iv      = substr( $key_salt, 0, 16 );
 	}
-
+	
 	/**
 	 *  Get the salt.
 	 *
@@ -97,7 +97,7 @@ class EncryptorHelper {
 	public function encrypt( $data ) {
 		$data = openssl_encrypt( $data, $this->method, $this->key, OPENSSL_RAW_DATA, $this->iv );
 
-		return base64_encode( $data ); // phpcs:ignore
+		return base64_encode( $data );
 	}
 
 	/**
@@ -114,7 +114,7 @@ class EncryptorHelper {
 			return $data;
 		}
 
-		$data = base64_decode( $data ); // phpcs:ignore
+		$data = base64_decode( $data );
 		$data = openssl_decrypt( $data, $this->method, $this->key, OPENSSL_RAW_DATA, $this->iv );
 
 		return $data;

@@ -15,6 +15,7 @@ use Alma\Gateway\Business\Exception\ContainerException;
 use Alma\Gateway\Business\Exception\CoreException;
 use Alma\Gateway\Business\Exception\RequirementsException;
 use Alma\Gateway\Business\Helper\L10nHelper;
+use Alma\Gateway\Business\Helper\PluginHelper;
 use Alma\Gateway\Business\Helper\RequirementsHelper;
 use Alma\Gateway\Business\Service\AdminService;
 use Alma\Gateway\Business\Service\ContainerService;
@@ -57,14 +58,29 @@ final class Plugin {
 	 * @type string
 	 */
 	private $plugin_path = '';
+	/**
+	 * @var object
+	 */
+	private $plugin_helper;
 
 	/**
 	 * Constructor.
 	 *
+	 * @throws ContainerException
 	 * @see plugin_setup()
 	 */
 	public function __construct() {
 		self::$container = new ContainerService();
+		/** @var PluginHelper $plugin_helper */
+		$this->plugin_helper = self::get_container()->get( PluginHelper::class );
+	}
+
+	/**
+	 * Return the DI container
+	 * @return ContainerService|null
+	 */
+	public static function get_container() {
+		return self::$container;
 	}
 
 	/**
@@ -92,7 +108,8 @@ final class Plugin {
 			return;
 		}
 
-		$this->plugin_url  = plugins_url( '/', __DIR__ );
+		$this->plugin_url = plugins_url( '/', __DIR__ );
+		$this->plugin_helper->set_plugin_url( $this->plugin_url );
 		$this->plugin_path = plugin_dir_path( __DIR__ );
 
 		// Configure Helpers
@@ -123,14 +140,6 @@ final class Plugin {
 		WooCommerceProxy::is_woocommerce_loaded();
 
 		return true;
-	}
-
-	/**
-	 * Return the DI container
-	 * @return ContainerService|null
-	 */
-	public static function get_container() {
-		return self::$container;
 	}
 
 	/**

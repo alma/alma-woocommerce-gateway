@@ -62,13 +62,11 @@ class ContainerService extends Dice {
 		);
 		$this->addRule(
 			'Alma\Gateway\Business\Helper\AssetsHelper',
-			array(
-				'shared'          => true,
-				'constructParams' => array(
-					'http://woocommerce-9-6-2.local.test/wp-content/plugins/alma-gateway-for-woocommerce/'
-					//Plugin::get_instance()->get_plugin_url()
-				)
-			)
+			array( 'shared' => true )
+		);
+		$this->addRule(
+			'Alma\Gateway\Business\Helper\PluginHelper',
+			array( 'shared' => true )
 		);
 	}
 
