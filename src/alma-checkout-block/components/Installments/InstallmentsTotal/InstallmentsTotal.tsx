@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const InstallmentsTotal: React.FC<Props> = ({totalAmount, customerFees}) => {
-        const totalAmountIncludingFees = (totalAmount / 100) + (customerFees / 100)
+    const totalAmountIncludingFees = (totalAmount) + (customerFees / 100)
 
         return (
             <div className={"total"}>

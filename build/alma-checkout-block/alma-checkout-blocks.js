@@ -25426,18 +25426,12 @@ const DisplayAlmaBlocks = props => {
     onPaymentSetup
   } = eventRegistration;
   const {
-    CART_STORE_KEY
-  } = window.wc.wcBlocksData;
-  const {
-    cartTotal
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.useSelect)(select => ({
-    cartTotal: select(CART_STORE_KEY).getCartTotals()
-  }), []);
-  const {
     eligibility,
-    isLoading
+    isLoading,
+    eligibilityCartTotal
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.useSelect)(select => ({
     eligibility: select(store_key).getAlmaEligibility(),
+    eligibilityCartTotal: select(store_key).getCartTotal(),
     isLoading: select(store_key).isLoading()
   }), []);
 
@@ -25476,7 +25470,7 @@ const DisplayAlmaBlocks = props => {
   return isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {}) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_alma_blocks_component_tsx__WEBPACK_IMPORTED_MODULE_2__.AlmaBlocks, {
     hasInPage: settings.is_in_page,
     isPayNow: isPayNow,
-    totalPrice: cartTotal.total_price,
+    totalPrice: eligibilityCartTotal,
     settings: settings,
     selectedFeePlan: plan.planKey,
     setSelectedFeePlan: setSelectedFeePlan,
@@ -25527,9 +25521,11 @@ const DisplayAlmaInPageBlocks = props => {
   }), []);
   const {
     eligibility,
+    eligibilityCartTotal,
     isLoading
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.useSelect)(select => ({
     eligibility: select(store_key).getAlmaEligibility(),
+    eligibilityCartTotal: select(store_key).getCartTotal(),
     isLoading: select(store_key).isLoading()
   }), []);
 
@@ -25552,7 +25548,7 @@ const DisplayAlmaInPageBlocks = props => {
     }
     inPage = Alma.InPage.initialize({
       merchantId: settingsInPage.merchant_id,
-      amountInCents: total_price,
+      amountInCents: total_price * 100,
       installmentsCount: plan.installmentsCount,
       selector: "#alma-inpage-alma_in_page",
       deferredDays: plan.deferredDays,
@@ -25565,7 +25561,7 @@ const DisplayAlmaInPageBlocks = props => {
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (!isLoading && plan) {
       setSelectedFeePlan(plan.planKey);
-      initializeInpage(settings, cartTotal.total_price);
+      initializeInpage(settings, eligibilityCartTotal);
     }
   }, [selectedFeePlan, cartTotal, isLoading]);
   const displayInstallments = isPayNow ? 'none' : 'block';
@@ -25573,7 +25569,7 @@ const DisplayAlmaInPageBlocks = props => {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_alma_blocks_component_tsx__WEBPACK_IMPORTED_MODULE_2__.AlmaBlocks, {
       hasInPage: settings.is_in_page,
       isPayNow: isPayNow,
-      totalPrice: cartTotal.total_price,
+      totalPrice: eligibilityCartTotal,
       settings: settings,
       selectedFeePlan: plan.planKey,
       setSelectedFeePlan: setSelectedFeePlan,
@@ -25676,7 +25672,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const Installments = ({
   feePlan,
-  amountInCents
+  amount
 }) => {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_alma_react_components__WEBPACK_IMPORTED_MODULE_0__.CardTemplate, {
     "data-testid": "cardInstallments",
@@ -25684,7 +25680,7 @@ const Installments = ({
     header: null,
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_InstallmentsContent__WEBPACK_IMPORTED_MODULE_2__.InstallmentsContent, {
       feePlan: feePlan,
-      amountInCents: amountInCents
+      amount: amount
     })
   });
 };
@@ -25720,7 +25716,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const InstallmentsContent = ({
   feePlan,
-  amountInCents
+  amount
 }) => {
   if (!feePlan.paymentPlan) {
     return null;
@@ -25743,7 +25739,7 @@ const InstallmentsContent = ({
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(_alma_react_components__WEBPACK_IMPORTED_MODULE_2__.CardFooter, {
         className: "footer",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_InstallmentsTotal_InstallmentsTotal__WEBPACK_IMPORTED_MODULE_3__.InstallmentsTotal, {
-          totalAmount: amountInCents,
+          totalAmount: amount,
           customerFees: customerFees
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_InstallmentsTotal_InstallmentsTotalFees__WEBPACK_IMPORTED_MODULE_4__.InstallmentsTotalFees, {
           customerFees: customerFees
@@ -25781,7 +25777,7 @@ const InstallmentsTotal = ({
   totalAmount,
   customerFees
 }) => {
-  const totalAmountIncludingFees = totalAmount / 100 + customerFees / 100;
+  const totalAmountIncludingFees = totalAmount + customerFees / 100;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
     className: "total",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
@@ -25815,22 +25811,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _InstallmentsTotal_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./InstallmentsTotal.css */ "./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotal.css");
-/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/index.js");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__);
+
 
 
 
 
 const InstallmentsTotalFees = ({
   customerFees
-}) => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+}) => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
   className: "fees",
-  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-    children: "Payment costs"
-  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+    children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Payment costs')
+  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
     className: "feesNumbers",
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_intl__WEBPACK_IMPORTED_MODULE_3__.FormattedNumber, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_intl__WEBPACK_IMPORTED_MODULE_4__.FormattedNumber, {
       value: customerFees / 100,
       style: "currency",
       currency: "EUR"
@@ -25984,7 +25983,7 @@ const AlmaBlocks = ({
       className: "alma-card-installments",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Installments_Installments__WEBPACK_IMPORTED_MODULE_5__.Installments, {
         feePlan: plans[selectedFeePlan],
-        amountInCents: totalPrice
+        amount: totalPrice
       })
     })]
   });
@@ -26023,7 +26022,7 @@ const fetchAlmaEligibility = async (storeKey, url) => {
     });
     const data = await response.json();
     if (data.success) {
-      (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.dispatch)(storeKey).setAlmaEligibility(data.eligibility);
+      (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.dispatch)(storeKey).setAlmaEligibility(data);
     }
   } catch (error) {
     console.error('Erreur lors de l’appel API :', error);
@@ -26097,13 +26096,16 @@ function reducer(state = DEFAULT_STATE, action) {
 }
 const selectors = {
   getAlmaEligibility(state) {
-    return state.almaEligibility;
+    return state.almaEligibility.eligibility;
   },
   getSelectedFeePlan(state) {
     return state.selectedFeePlan;
   },
   isLoading(state) {
     return state.isLoading;
+  },
+  getCartTotal(state) {
+    return state.almaEligibility.cart_total;
   }
 };
 (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.registerStore)('alma/alma-store', {
@@ -43605,6 +43607,17 @@ module.exports = window["wp"]["data"];
 
 "use strict";
 module.exports = window["wp"]["element"];
+
+/***/ }),
+
+/***/ "@wordpress/i18n":
+/*!******************************!*\
+  !*** external ["wp","i18n"] ***!
+  \******************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = window["wp"]["i18n"];
 
 /***/ }),
 
