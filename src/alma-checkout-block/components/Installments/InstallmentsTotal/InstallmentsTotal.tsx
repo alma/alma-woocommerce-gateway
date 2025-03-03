@@ -1,6 +1,7 @@
 import React from "react";
 import {FormattedMessage, FormattedNumber} from "react-intl";
 import "./InstallmentsTotal.css";
+import {__} from "@wordpress/i18n";
 
 type Props = {
     totalAmount: number;
@@ -13,7 +14,7 @@ export const InstallmentsTotal: React.FC<Props> = ({totalAmount, customerFees}) 
         return (
             <div className={"total"}>
                 <div>
-                    <FormattedMessage id="installments.total" defaultMessage="Total TTC"/>
+                    {__('Total TTC', 'alma-gateway-for-woocommerce')}
                 </div>
                 <div>
                     <FormattedNumber
