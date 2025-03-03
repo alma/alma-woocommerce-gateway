@@ -18,24 +18,19 @@ class OptionsService {
 	 * @var EncryptorHelper
 	 */
 	private $encryptor_helper;
+
 	/**
-	 * @var string
+	 * @var OptionsProxy
 	 */
-	private $environment;
-	/**
-	 * @var string
-	 */
-	private $live_api_key;
-	/**
-	 * @var string
-	 */
-	private $test_api_key;
+	private $options_proxy;
 
 	/**
 	 * @param EncryptorHelper $encryptor_helper
+	 * @param OptionsProxy    $options_proxy
 	 */
-	public function __construct( EncryptorHelper $encryptor_helper ) {
+	public function __construct( EncryptorHelper $encryptor_helper, OptionsProxy $options_proxy ) {
 		$this->encryptor_helper = $encryptor_helper;
+		$this->options_proxy    = $options_proxy;
 	}
 
 	/**
@@ -44,7 +39,7 @@ class OptionsService {
 	 * @return bool
 	 */
 	public function is_test() {
-		return OptionsProxy::get_environment() === self::ALMA_ENVIRONMENT_TEST;
+		return $this->get_environment() === self::ALMA_ENVIRONMENT_TEST;
 	}
 
 	/**
@@ -53,8 +48,15 @@ class OptionsService {
 	 * @return string
 	 */
 	public function get_environment() {
-		return self::ALMA_ENVIRONMENT_LIVE === OptionsProxy::get_environment()
+		return self::ALMA_ENVIRONMENT_LIVE === $this->get_options()['environment']
 			? self::ALMA_ENVIRONMENT_LIVE : self::ALMA_ENVIRONMENT_TEST;
+	}
+
+	/**
+	 * @return false|mixed|null
+	 */
+	public function get_options() {
+		return $this->options_proxy->get_options();
 	}
 
 	/**
@@ -76,6 +78,7 @@ class OptionsService {
 	 * @return string
 	 */
 	public function get_active_api_key() {
+
 		return $this->is_live() ? $this->get_live_api_key() : $this->get_test_api_key();
 	}
 
@@ -85,7 +88,7 @@ class OptionsService {
 	 * @return bool
 	 */
 	public function is_live() {
-		return OptionsProxy::get_environment() === self::ALMA_ENVIRONMENT_LIVE;
+		return $this->get_environment() === self::ALMA_ENVIRONMENT_LIVE;
 	}
 
 	/**
@@ -94,16 +97,7 @@ class OptionsService {
 	 * @return string
 	 */
 	public function get_live_api_key() {
-		return $this->encryptor_helper->decrypt( $this->live_api_key );
-	}
-
-	/**
-	 * @param $api_key
-	 *
-	 * @return void
-	 */
-	public function set_live_api_key( $api_key ) {
-		$this->live_api_key = $this->encryptor_helper->encrypt( $api_key );
+		return $this->encryptor_helper->decrypt( $this->get_options()['live_api_key'] );
 	}
 
 	/**
@@ -112,15 +106,15 @@ class OptionsService {
 	 * @return string
 	 */
 	public function get_test_api_key() {
-		return $this->encryptor_helper->decrypt( $this->test_api_key );
+		return $this->encryptor_helper->decrypt( $this->get_options()['test_api_key'] );
 	}
 
 	/**
-	 * @param $api_key
+	 * Gets the debug mode
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	public function set_test_api_key( $api_key ) {
-		$this->test_api_key = $this->encryptor_helper->encrypt( $api_key );
+	public function is_debug() {
+		return 'yes' === $this->get_options()['debug'];
 	}
 }

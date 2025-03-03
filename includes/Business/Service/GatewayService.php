@@ -2,6 +2,7 @@
 
 namespace Alma\Gateway\Business\Service;
 
+use Alma\Gateway\Business\Exception\ContainerException;
 use Alma\Gateway\Business\Helper\L10nHelper;
 use Alma\Gateway\Business\Model\Gateway;
 use Alma\Gateway\Plugin;
@@ -26,6 +27,7 @@ class GatewayService {
 
 	/**
 	 * Init and Load the gateway
+	 * @throws ContainerException
 	 */
 	public function load_gateway() {
 		// Init Gateway

@@ -72,12 +72,16 @@ class GatewayFormHelper {
 				'title'       => L10nHelper::__( 'Debug mode', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'checkbox',
 				// translators: %s: Admin logs url.
-				'label'       => L10nHelper::__( 'Activate debug mode',
-						'alma-gateway-for-woocommerce' ) . sprintf( __( '(<a href="%s">Go to logs</a>)',
-						'alma-gateway-for-woocommerce' ), $assets_helper->get_admin_logs_url() ),
+				'label'       => L10nHelper::__(
+						'Activate debug mode',
+						'alma-gateway-for-woocommerce'
+					) . sprintf( __( '(<a href="%s">Go to logs</a>)', 'alma-gateway-for-woocommerce' ),
+						$assets_helper->get_admin_logs_url() ),
 				// translators: %s: The previous plugin version if exists.
-				'description' => L10nHelper::__( 'Enable logging info and errors to help debug any issue with the plugin (previous Alma version)',
-					'alma-gateway-for-woocommerce' ),
+				'description' => L10nHelper::__(
+					'Enable logging info and errors to help debug any issue with the plugin (previous Alma version)',
+					'alma-gateway-for-woocommerce'
+				),
 				'desc_tip'    => true,
 				'default'     => 'yes',
 			),
@@ -90,7 +94,7 @@ class GatewayFormHelper {
 				'title'       => '<hr>' . L10nHelper::__( '→ Localization' ),
 				'type'        => 'title',
 				'description' => L10nHelper::__( 'Where\'s Alma is available?</a>' ),
-			)
+			),
 		);
 	}
 }

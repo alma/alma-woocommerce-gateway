@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class PluginHelper {
-	
+
 	/**
 	 * The plugin url.
 	 *
@@ -28,10 +28,8 @@ class PluginHelper {
 	 * Set plugin url.
 	 *
 	 * @param $plugin_url
-	 *
-	 * @return mixed
 	 */
 	public function set_plugin_url( $plugin_url ) {
-		return $this->plugin_url = $plugin_url;
+		$this->plugin_url = $plugin_url;
 	}
 }

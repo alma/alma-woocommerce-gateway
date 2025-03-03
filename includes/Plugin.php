@@ -11,14 +11,17 @@
 
 namespace Alma\Gateway;
 
+use Alma\API\RequestError;
 use Alma\Gateway\Business\Exception\ContainerException;
 use Alma\Gateway\Business\Exception\CoreException;
+use Alma\Gateway\Business\Exception\PluginException;
 use Alma\Gateway\Business\Exception\RequirementsException;
 use Alma\Gateway\Business\Helper\L10nHelper;
 use Alma\Gateway\Business\Helper\PluginHelper;
 use Alma\Gateway\Business\Helper\RequirementsHelper;
 use Alma\Gateway\Business\Service\AdminService;
 use Alma\Gateway\Business\Service\ContainerService;
+use Alma\Gateway\Business\Service\EligibilityService;
 use Alma\Gateway\Business\Service\GatewayService;
 use Alma\Gateway\WooCommerce\Proxy\WooCommerceProxy;
 
@@ -102,6 +105,7 @@ final class Plugin {
 	 * @return  void
 	 * @throws RequirementsException
 	 * @throws ContainerException
+	 * @throws PluginException
 	 */
 	public function plugin_setup() {
 		if ( ! $this->can_i_load() ) {
@@ -122,6 +126,29 @@ final class Plugin {
 		/** @var GatewayService $gateway_service */
 		$gateway_service = self::get_container()->get( GatewayService::class );
 		$gateway_service->load_gateway();
+
+		// Test eligibility
+		if ( ! is_admin() && false ) {
+			/** @var EligibilityService $eligibility_service */
+			$eligibility_service = self::get_container()->get( EligibilityService::class );
+			try {
+				$eligibility = $eligibility_service->is_eligible(
+					array(
+						'purchase_amount' => 15000,
+						'queries'         => array(
+							array(
+								'deferred_days'      => 0,
+								'deferred_months'    => 0,
+								'deferred_trigger'   => false,
+								'installments_count' => 3,
+							),
+						),
+					)
+				);
+			} catch ( RequestError $e ) {
+				throw new PluginException( $e->getMessage() );
+			}
+		}
 	}
 
 	/**
