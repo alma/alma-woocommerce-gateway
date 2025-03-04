@@ -47810,29 +47810,27 @@ __webpack_require__.r(__webpack_exports__);
 
 const Installment = ({
   installment: {
-    due_date,
     localized_due_date
   },
-  totalAmountInEuros
+  totalAmountInEuros,
+  firstInstallment
 }) => {
-  const date = new Date(due_date * 1000);
-  const isToday = localized_due_date === "today";
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()("installmentContent", {
-      firstInstallmentContent: isToday
+      firstInstallmentContent: firstInstallment
     }),
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
       className: classnames__WEBPACK_IMPORTED_MODULE_1___default()("bullet", {
-        firstBullet: isToday
+        firstBullet: firstInstallment
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
       className: "installment",
       "data-testid": "installment",
-      children: [isToday ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_intl__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      children: [firstInstallment ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_intl__WEBPACK_IMPORTED_MODULE_3__["default"], {
         id: "installments.today",
-        defaultMessage: "Today"
+        defaultMessage: localized_due_date.charAt(0).toUpperCase() + localized_due_date.slice(1)
       }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_intl__WEBPACK_IMPORTED_MODULE_4__.FormattedDate, {
-        value: date,
+        value: localized_due_date,
         day: "numeric",
         month: "long",
         year: "numeric"
@@ -47945,7 +47943,8 @@ const InstallmentsContent = ({
       className: "installments",
       children: feePlan.paymentPlan.map((installment, index) => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Installment__WEBPACK_IMPORTED_MODULE_1__.Installment, {
         installment: installment,
-        totalAmountInEuros: centsToEuros(installment.total_amount)
+        totalAmountInEuros: centsToEuros(installment.total_amount),
+        firstInstallment: 0 === index
       }, index))
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
       className: "footerCard",

@@ -31,6 +31,7 @@ export const InstallmentsContent: React.FC<InstallmentsContentProps> = ({
                                     key={index}
                                     installment={installment}
                                     totalAmountInEuros={centsToEuros(installment.total_amount)}
+                                    firstInstallment={0 === index}
                             />
                     ))}
                 </div>
