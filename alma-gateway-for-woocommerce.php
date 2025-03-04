@@ -67,6 +67,8 @@ require_once ALMA_PLUGIN_PATH . 'vendor/autoload.php';
  * @return  Alma\Woocommerce\AlmaPlugin
  * @noinspection PhpIncludeInspection
  */
+
+
 function alma_plugin() {
 	static $plugin;
 
