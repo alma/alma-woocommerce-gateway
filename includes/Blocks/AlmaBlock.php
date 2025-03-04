@@ -148,9 +148,7 @@ class AlmaBlock extends AbstractPaymentMethodType {
 			)
 		);
 
-		if ( function_exists( 'wp_set_script_translations' ) ) {
-			wp_set_script_translations( 'alma-blocks-integration' );
-		}
+		wp_set_script_translations( 'alma-blocks-integration', 'alma-gateway-for-woocommerce', ALMA_PLUGIN_PATH . 'languages' );
 
 		if ( $this->gateway_helper->is_in_page_gateway( $this->gateway->id ) ) {
 			wp_localize_script(

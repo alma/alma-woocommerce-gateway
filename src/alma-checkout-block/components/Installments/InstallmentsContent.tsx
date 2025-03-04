@@ -8,10 +8,10 @@ import "./Installments.css";
 
 type InstallmentsContentProps = {
     feePlan: FeePlan;
-    amountInCents: number;
+    amount: number;
 };
 export const InstallmentsContent: React.FC<InstallmentsContentProps> = ({
-                                                                            feePlan, amountInCents
+                                                                            feePlan, amount
                                                                         }) => {
     if (!feePlan.paymentPlan) {
         return null;
@@ -31,13 +31,14 @@ export const InstallmentsContent: React.FC<InstallmentsContentProps> = ({
                                     key={index}
                                     installment={installment}
                                     totalAmountInEuros={centsToEuros(installment.total_amount)}
+                                    firstInstallment={0 === index}
                             />
                     ))}
                 </div>
                 <div className={"footerCard"}>
                     <CardFooter className={"footer"}>
                         <InstallmentsTotal
-                                totalAmount={amountInCents}
+                                totalAmount={amount}
                                 customerFees={customerFees}
                         />
                         <InstallmentsTotalFees

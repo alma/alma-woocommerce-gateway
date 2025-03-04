@@ -19,8 +19,9 @@ export const fetchAlmaEligibility = async (storeKey, url) => {
         );
         const data = await response.json()
         if (data.success) {
-            dispatch(storeKey).setAlmaEligibility(data.eligibility);
+            dispatch(storeKey).setAlmaEligibility(data);
         }
+
     } catch (error) {
         console.error('Erreur lors de l’appel API :', error);
     } finally {

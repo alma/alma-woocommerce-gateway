@@ -6,19 +6,13 @@ export const DisplayAlmaBlocks = (props) => {
     const {eventRegistration, emitResponse, settings, gateway, store_key, isPayNow} = props;
     const {onPaymentSetup} = eventRegistration;
 
-    const {CART_STORE_KEY} = window.wc.wcBlocksData;
-
-    const {cartTotal} = useSelect((select) => ({
-        cartTotal: select(CART_STORE_KEY).getCartTotals()
-    }), []);
-
-    const {eligibility, isLoading} = useSelect(
+    const {eligibility, isLoading, eligibilityCartTotal} = useSelect(
         (select) => ({
             eligibility: select(store_key).getAlmaEligibility(),
+            eligibilityCartTotal: select(store_key).getCartTotal(),
             isLoading: select(store_key).isLoading()
         }), []
     );
-
 
     // Define default plan and selected plan outside of the render return
     let default_plan = '';
@@ -58,7 +52,7 @@ export const DisplayAlmaBlocks = (props) => {
     return isLoading ? <div></div> : <AlmaBlocks
         hasInPage={settings.is_in_page}
         isPayNow={isPayNow}
-        totalPrice={cartTotal.total_price}
+        totalPrice={eligibilityCartTotal}
         settings={settings}
         selectedFeePlan={plan.planKey}
         setSelectedFeePlan={setSelectedFeePlan}
