@@ -82,7 +82,6 @@ class CheckoutService extends WC_Checkout {
 		$this->customer_factory   = $customer_factory_builder->get_instance();
 		$this->session_factory    = new SessionFactory();
 		$this->cart_factory       = new CartFactory();
-
 	}
 
 	/**
@@ -271,5 +270,4 @@ class CheckoutService extends WC_Checkout {
 
 		do_action( 'woocommerce_after_checkout_validation', $data, $errors ); // phpcs:ignore
 	}
-
 }

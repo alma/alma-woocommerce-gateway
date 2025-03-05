@@ -37,5 +37,4 @@ class WrongCredentialsException extends AlmaException {
 
 		parent::__construct( $message );
 	}
-
 }

@@ -180,5 +180,4 @@ class MigrationHelper {
 			$this->logger->info( $e->getMessage() );
 		}
 	}
-
 }

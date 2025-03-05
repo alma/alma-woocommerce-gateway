@@ -36,5 +36,4 @@ class PayLaterGateway extends AlmaPaymentGateway {
 	public function get_gateway_id() {
 		return ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_LATER;
 	}
-
 }

@@ -411,5 +411,4 @@ trait BuilderTrait {
 	public function get_payment_validator() {
 		return new PaymentValidator();
 	}
-
 }

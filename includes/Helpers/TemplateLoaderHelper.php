@@ -67,7 +67,5 @@ class TemplateLoaderHelper {
 		}
 
 		include $template_file;
-
 	}
 }
-

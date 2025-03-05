@@ -407,7 +407,6 @@ class AlmaPaymentGateway extends WC_Payment_Gateway {
 			$this->plugin_factory->add_admin_notice( 'error_keys', 'notice notice-error', $e->getMessage(), true );
 			throw new ApiMerchantsException( $e );
 		}
-
 	}
 
 	/**
@@ -836,5 +835,4 @@ class AlmaPaymentGateway extends WC_Payment_Gateway {
 	public function has_fields() {
 		return true;
 	}
-
 }

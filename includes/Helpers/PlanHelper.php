@@ -69,7 +69,6 @@ class PlanHelper {
 		$this->gateway_helper  = $gateway_helper;
 		$this->template_loader = $template_loader;
 		$this->price_factory   = $price_factory;
-
 	}
 
 	/**
@@ -188,7 +187,6 @@ class PlanHelper {
 				'upon_trigger_enabled' => $this->alma_settings->payment_upon_trigger_enabled,
 			)
 		);
-
 	}
 
 	/**

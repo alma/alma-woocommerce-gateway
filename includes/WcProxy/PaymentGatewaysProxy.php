@@ -25,7 +25,7 @@ class PaymentGatewaysProxy {
 	 *
 	 * @param WC_Payment_Gateways|null $wc_payment_gateway
 	 */
-	private function __construct( $wc_payment_gateway = null) {
+	private function __construct( $wc_payment_gateway = null ) {
 		$this->wc_payment_gateway = $wc_payment_gateway ? $wc_payment_gateway : WC_Payment_Gateways::instance();
 	}
 
@@ -35,7 +35,7 @@ class PaymentGatewaysProxy {
 	 * @param WC_Payment_Gateways|null $wc_payment_gateway
 	 * @return PaymentGatewaysProxy
 	 */
-	public static function get_instance( $wc_payment_gateway = null) {
+	public static function get_instance( $wc_payment_gateway = null ) {
 		if (null === self::$instance) {
 			self::$instance = new self( $wc_payment_gateway );
 		}
@@ -60,5 +60,4 @@ class PaymentGatewaysProxy {
 	public static function reset_instance() {
 		self::$instance = null;
 	}
-
 }

@@ -152,7 +152,7 @@ class RefundService {
 		foreach ( $this->admin_texts_to_change as $original_text => $updated_text ) {
 			if ( $original_text === $text ) {
 				$translation = str_replace( $original_text, $updated_text, $text );
-				$this->number_of_texts_changed++;
+				++$this->number_of_texts_changed;
 			}
 		}
 
@@ -245,5 +245,4 @@ class RefundService {
 			$this->helper->make_full_refund( $wc_order, $refund_id );
 		}
 	}
-
 }

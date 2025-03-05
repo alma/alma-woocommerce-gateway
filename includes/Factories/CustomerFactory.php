@@ -343,5 +343,4 @@ class CustomerFactory {
 
 		return false;
 	}
-
 }

@@ -241,7 +241,6 @@ class GatewayHelper {
 		}
 
 		throw new AlmaException( sprintf( 'Unknown gateway id : %s', $id ) );
-
 	}
 
 	/**

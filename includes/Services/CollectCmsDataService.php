@@ -270,7 +270,7 @@ class CollectCmsDataService {
 
 		$gateways = array_filter(
 			$gateways,
-			function( $gateway) {
+			function ( $gateway ) {
 				return ! preg_match( '/alma_.+/', $gateway->id );
 			}
 		);
@@ -285,5 +285,4 @@ class CollectCmsDataService {
 
 		return $gateway_position;
 	}
-
 }
