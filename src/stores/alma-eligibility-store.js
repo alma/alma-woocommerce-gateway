@@ -53,7 +53,7 @@ function reducer(state = DEFAULT_STATE, action) {
 
 const selectors = {
 	getAlmaEligibility( state ) {
-		return state.almaEligibility;
+		return state.almaEligibility.eligibility;
 	},
 	getSelectedFeePlan( state ) {
 		return state.selectedFeePlan;
@@ -61,6 +61,9 @@ const selectors = {
 	isLoading( state ) {
 		return state.isLoading;
 	},
+    getCartTotal( state ) {
+        return state.almaEligibility.cart_total;
+    }
 };
 
 registerStore(

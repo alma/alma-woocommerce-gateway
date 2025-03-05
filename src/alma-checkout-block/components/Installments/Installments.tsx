@@ -5,13 +5,13 @@ import {FeePlan} from "../alma-blocks-component";
 
 type InstallmentsProps = {
     feePlan: FeePlan;
-    amountInCents: number;
+    amount: number;
 };
 
-export const Installments: React.FC<InstallmentsProps> = ({feePlan, amountInCents}) => {
+export const Installments: React.FC<InstallmentsProps> = ({feePlan, amount}) => {
     return (
             <CardTemplate data-testid="cardInstallments" padding={"sm"} header={null}>
-                <InstallmentsContent feePlan={feePlan} amountInCents={amountInCents}/>
+                <InstallmentsContent feePlan={feePlan} amount={amount}/>
             </CardTemplate>
     );
 };

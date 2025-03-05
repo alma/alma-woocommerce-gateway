@@ -2,14 +2,14 @@
 # This file is distributed under the GNU General Public License v3.0.
 msgid ""
 msgstr ""
-"Project-Id-Version: Alma - Pay in installments or later for WooCommerce 5.8.1\n"
+"Project-Id-Version: Alma - Pay in installments or later for WooCommerce 5.11.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/alma-woocommerce-gateway\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-02-05T09:50:25+00:00\n"
+"POT-Creation-Date: 2025-03-03T14:54:57+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: alma-gateway-for-woocommerce\n"
@@ -514,7 +514,7 @@ msgstr ""
 msgid "Alma encountered an error when fetching the fee plans."
 msgstr ""
 
-#: includes/Blocks/AlmaBlock.php:190
+#: includes/Blocks/AlmaBlock.php:188
 msgid "Pay With Alma"
 msgstr ""
 
@@ -776,6 +776,26 @@ msgstr ""
 #: public/templates/partials/alma-checkout-plan.php:36
 #: public/templates/partials/alma-checkout-plan.php:49
 msgid "%s installments"
+msgstr ""
+
+#: build/alma-checkout-block/alma-checkout-blocks.js:38667
+msgid "Total TTC"
+msgstr ""
+
+#: build/alma-checkout-block/alma-checkout-blocks.js:38709
+msgid "Payment costs"
+msgstr ""
+
+#: build/alma-widget-block/alma-widget-block.js:43
+#: src/alma-widget-block/edit.js:16
+#: build/alma-widget-block/alma-widget-block.js:16
+msgid "D+30"
+msgstr ""
+
+#: build/alma-widget-block/alma-widget-block.js:51
+#: src/alma-widget-block/edit.js:21
+#: build/alma-widget-block/alma-widget-block.js:21
+msgid "Without fees"
 msgstr ""
 
 #: build/alma-widget-block/block.json

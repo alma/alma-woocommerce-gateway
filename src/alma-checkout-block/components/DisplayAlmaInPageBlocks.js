@@ -10,9 +10,10 @@ export const DisplayAlmaInPageBlocks = (props) => {
         cartTotal: select(CART_STORE_KEY).getCartTotals()
     }), []);
 
-    const {eligibility, isLoading} = useSelect(
+    const {eligibility, eligibilityCartTotal, isLoading} = useSelect(
         (select) => ({
             eligibility: select(store_key).getAlmaEligibility(),
+            eligibilityCartTotal: select(store_key).getCartTotal(),
             isLoading: select(store_key).isLoading()
         }), []
     );
@@ -49,7 +50,7 @@ export const DisplayAlmaInPageBlocks = (props) => {
 
         inPage = Alma.InPage.initialize({
             merchantId: settingsInPage.merchant_id,
-            amountInCents: total_price,
+            amountInCents: total_price * 100,
             installmentsCount: plan.installmentsCount,
             selector: "#alma-inpage-alma_in_page",
             deferredDays: plan.deferredDays,
@@ -63,7 +64,7 @@ export const DisplayAlmaInPageBlocks = (props) => {
     useEffect(() => {
         if (!isLoading && plan) {
             setSelectedFeePlan(plan.planKey);
-            initializeInpage(settings, cartTotal.total_price)
+            initializeInpage(settings, eligibilityCartTotal)
         }
     }, [selectedFeePlan, cartTotal, isLoading])
 
@@ -71,7 +72,7 @@ export const DisplayAlmaInPageBlocks = (props) => {
     return isLoading ? <div></div> : <><AlmaBlocks
         hasInPage={settings.is_in_page}
         isPayNow={isPayNow}
-        totalPrice={cartTotal.total_price}
+        totalPrice={eligibilityCartTotal}
         settings={settings}
         selectedFeePlan={plan.planKey}
         setSelectedFeePlan={setSelectedFeePlan}

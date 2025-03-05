@@ -2,6 +2,28 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/alma-widget-block/alma-widget-block.css":
+/*!*****************************************************!*\
+  !*** ./src/alma-widget-block/alma-widget-block.css ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./src/alma-widget-block/block.json":
+/*!******************************************!*\
+  !*** ./src/alma-widget-block/block.json ***!
+  \******************************************/
+/***/ ((module) => {
+
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"title":"Widget block for Alma Gateway","description":"A block that displays the Alma widget","name":"alma-gateway-for-woocommerce/alma-widget-block","version":"0.1.0","category":"woocommerce","keywords":["alma","widget"],"editorScript":"file:./alma-widget-block.js","editorStyle":"file:./alma-widget-block.css","viewScript":"file:./alma-widget-block-view.js","viewStyle":"file:./alma-widget-block-view.css","parent":["woocommerce/cart-order-summary-block","woocommerce/cart-totals-block","woocommerce/cart-items-block"],"supports":{"html":false,"multiple":false,"reusable":false}}');
+
+/***/ }),
+
 /***/ "./src/alma-widget-block/edit.js":
 /*!***************************************!*\
   !*** ./src/alma-widget-block/edit.js ***!
@@ -40,7 +62,7 @@ const Edit = () => {
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-          children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('J+30')
+          children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('D+30', 'alma-gateway-for-woocommerce')
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
           children: "3x"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
@@ -48,7 +70,7 @@ const Edit = () => {
         })]
       })]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-      children: ["4 x 112,50\xA0\u20AC\xA0(", (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('sans frais'), ")"]
+      children: ["4 x 112,50\xA0\u20AC\xA0(", (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Without fees', 'alma-gateway-for-woocommerce'), ")"]
     })]
   });
 };
@@ -82,28 +104,6 @@ const Save = () => {
 
 /***/ }),
 
-/***/ "./src/alma-widget-block/alma-widget-block.css":
-/*!*****************************************************!*\
-  !*** ./src/alma-widget-block/alma-widget-block.css ***!
-  \*****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
-/***/ "react/jsx-runtime":
-/*!**********************************!*\
-  !*** external "ReactJSXRuntime" ***!
-  \**********************************/
-/***/ ((module) => {
-
-module.exports = window["ReactJSXRuntime"];
-
-/***/ }),
-
 /***/ "@wordpress/block-editor":
 /*!*************************************!*\
   !*** external ["wp","blockEditor"] ***!
@@ -134,13 +134,13 @@ module.exports = window["wp"]["i18n"];
 
 /***/ }),
 
-/***/ "./src/alma-widget-block/block.json":
-/*!******************************************!*\
-  !*** ./src/alma-widget-block/block.json ***!
-  \******************************************/
+/***/ "react/jsx-runtime":
+/*!**********************************!*\
+  !*** external "ReactJSXRuntime" ***!
+  \**********************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"title":"Widget block for Alma Gateway","description":"A block that displays the Alma widget","name":"alma-gateway-for-woocommerce/alma-widget-block","version":"0.1.0","category":"woocommerce","keywords":["alma","widget"],"editorScript":"file:./alma-widget-block.js","editorStyle":"file:./alma-widget-block.css","viewScript":"file:./alma-widget-block-view.js","viewStyle":"file:./alma-widget-block-view.css","parent":["woocommerce/cart-order-summary-block","woocommerce/cart-totals-block","woocommerce/cart-items-block"],"supports":{"html":false,"multiple":false,"reusable":false}}');
+module.exports = window["ReactJSXRuntime"];
 
 /***/ })
 
