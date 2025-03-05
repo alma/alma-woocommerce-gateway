@@ -1,8 +1,8 @@
 #!/bin/bash
-docker run --rm -v "$(pwd):/app" -w /app lint:wc -v --standard=phpcs.xml ./
+docker run --rm --entrypoint /composer/vendor/bin/phpcbf -v "$(pwd):/app" -w /app lint:wc --standard=phpcs.xml ./
 EXIT_CODE=$?
 
 if [[ $EXIT_CODE -ne 0 ]]; then
-    echo "Fix the errors with PHPcbf automatic fixer before commit!"
+    echo "Commit errors fixed by PHPcbf!"
     exit 1
 fi
