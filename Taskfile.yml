@@ -19,9 +19,14 @@ tasks:
       - docker compose build --build-arg UID="$(id -u)" php5-6
 
   lint:build:
-    desc: Build lint container (php-cs-fixer)
+    desc: Build lint container (phpcs)
     cmds:
-      - docker build -t lint:wc -f lint.Dockerfile .
+      - |
+        if ! docker image inspect lint:wc > /dev/null 2>&1; then
+          docker build -t lint:wc -f lint.Dockerfile .
+        else
+          echo "Image already exists"
+        fi
 
   lint:
     desc: Run lint container

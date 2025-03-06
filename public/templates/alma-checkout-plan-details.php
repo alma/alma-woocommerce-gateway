@@ -103,7 +103,7 @@ $alma_tools_helper         = $alma_tools_helper_builder->get_instance();
 				</p>
 				<?php
 			}
-			$alma_plan_index++;
+			++$alma_plan_index;
 		} // end foreach
 
 		if ( $alma_eligibility->getInstallmentsCount() > 4 ) {

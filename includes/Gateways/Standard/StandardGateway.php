@@ -53,5 +53,4 @@ class StandardGateway extends AlmaPaymentGateway {
 
 		$this->alma_plan_helper->render_checkout_fields( $eligibilities, $eligible_plans, $this->id, $default_plan );
 	}
-
 }

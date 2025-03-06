@@ -50,6 +50,4 @@ class PayMoreThanFourBlock extends AlmaBlock {
 
 		$this->gateway = new PayMoreThanFourGateway();
 	}
-
-
 }

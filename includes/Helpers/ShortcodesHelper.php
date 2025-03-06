@@ -110,7 +110,6 @@ class ShortcodesHelper {
 		}
 
 		return sprintf( '<div class="%s %s" style="%s">%s<div class="alma_wc_content">%s</div>%s</div>', $shortcode_tag, $class, $style, $debug_content, do_shortcode( $shortcode_content ), $alma_content );
-
 	}
 
 	/**

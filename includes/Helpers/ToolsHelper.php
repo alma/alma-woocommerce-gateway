@@ -193,5 +193,4 @@ class ToolsHelper {
 
 		return true;
 	}
-
 }

@@ -31,6 +31,4 @@ class PHPHelper {
 	public function property_exists( $object_or_class, $property ) {
 		return property_exists( $object_or_class, $property );
 	}
-
-
 }

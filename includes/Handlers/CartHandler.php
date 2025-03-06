@@ -75,5 +75,4 @@ class CartHandler extends GenericHandler {
 
 		$this->inject_payment_plan_widget( $has_excluded_products, $amount, ConstantsHelper::JQUERY_CART_UPDATE_EVENT );
 	}
-
 }

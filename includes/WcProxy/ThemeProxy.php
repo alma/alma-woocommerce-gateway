@@ -40,5 +40,4 @@ class ThemeProxy {
 	public function get_version() {
 		return $this->get_theme()->get( 'Version' );
 	}
-
 }

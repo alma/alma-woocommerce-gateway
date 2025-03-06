@@ -45,7 +45,6 @@ class CheckoutHelper {
 	public function __construct() {
 		$this->logger       = new AlmaLogger();
 		$this->cart_factory = new CartFactory();
-
 	}
 
 	/**

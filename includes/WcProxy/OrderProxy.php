@@ -9,8 +9,8 @@ namespace Alma\Woocommerce\WcProxy;
 
 use Alma\Woocommerce\Exceptions\NoOrderException;
 use Alma\Woocommerce\Exceptions\RequirementsException;
-use \WC_Order;
-use \WC_Order_Refund;
+use WC_Order;
+use WC_Order_Refund;
 
 /**
  * Order proxy.
@@ -70,5 +70,4 @@ class OrderProxy {
 		}
 		return $order->get_transaction_id();
 	}
-
 }

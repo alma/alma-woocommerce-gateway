@@ -65,5 +65,3 @@ class GeneralHelper {
 		return $this->internalization_helper->map_locale( $current_admin_page_language );
 	}
 }
-
-

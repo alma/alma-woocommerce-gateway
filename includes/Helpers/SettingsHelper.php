@@ -312,5 +312,4 @@ class SettingsHelper {
 			}
 		}
 	}
-
 }

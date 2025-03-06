@@ -51,6 +51,4 @@ class InPageBlock extends AlmaBlock {
 
 		$this->gateway = new InPageGateway();
 	}
-
-
 }

@@ -24,5 +24,4 @@ class OptionProxy {
 	public function get_option( $option_name, $default = false ) {
 		return get_option( $option_name, $default );
 	}
-
 }
