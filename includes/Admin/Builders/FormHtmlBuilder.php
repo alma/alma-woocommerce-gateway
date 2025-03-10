@@ -11,6 +11,8 @@
 
 namespace Alma\Woocommerce\Admin\Builders;
 
+use Alma\Woocommerce\Fixes\GetTermsFix;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
@@ -113,9 +115,9 @@ class FormHtmlBuilder {
 	 * @return array
 	 */
 	public static function generate_categories_options() {
-		$product_categories = get_terms(
-			'product_cat',
+		$product_categories = GetTermsFix::get_terms(
 			array(
+				'taxonomy'   => 'product_cat',
 				'orderby'    => 'name',
 				'order'      => 'asc',
 				'hide_empty' => false,
