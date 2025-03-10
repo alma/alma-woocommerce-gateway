@@ -21,7 +21,7 @@ class GetTermsFix {
 	public static function get_terms( $args ) {
 		if ( defined( 'WP_VERSION' ) && version_compare( WP_VERSION, '4.5.0', '<' ) ) {
 			// phpcs:disable
-			get_terms(
+			 return get_terms(
 				$args['taxonomy'],
 				array_filter(
 					$args,
@@ -32,7 +32,7 @@ class GetTermsFix {
 			);
 			// phpcs:enable
 		} else {
-			get_terms( $args );
+			return get_terms( $args );
 		}
 	}
 }
