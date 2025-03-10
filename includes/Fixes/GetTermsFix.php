@@ -9,7 +9,7 @@ namespace Alma\Woocommerce\Fixes;
 
 /**
  * Class GetTermsFix
- * Fix for get_terms function to be compatible with WordPress 4.4.
+ * Fix for get_terms function to be compatible with WordPress 4.4.0.
  */
 class GetTermsFix {
 
