@@ -57,9 +57,8 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 ### 🚀 New Features
 
-- Feature/ecom 2536 fix and improve linter on woocommerce (#331)
-- Feature/ecom 2394 sonar explore feasibility to change or remove the limit of 3 (#330)
-- Fix: checkout blocks get cart total price (#329)
+- Fix and improve linter on woocommerce (#331)
+- Fix checkout blocks get cart total price (#329)
 
 ### 🐛 Bug Fixes
 

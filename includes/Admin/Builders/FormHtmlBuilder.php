@@ -114,8 +114,8 @@ class FormHtmlBuilder {
 	 */
 	public static function generate_categories_options() {
 		$product_categories = get_terms(
-			'product_cat',
 			array(
+				'taxonomy'   => 'product_cat',
 				'orderby'    => 'name',
 				'order'      => 'asc',
 				'hide_empty' => false,
