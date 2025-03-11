@@ -1151,7 +1151,7 @@ class AlmaSettings {
 	}
 
 	public function is_widget_can_be_displayed() {
-		return $this->alma_settings->has_keys() && $this->alma_settings->is_enabled() && 'yes' === $this->alma_settings->display_cart_eligibility;
+		return $this->has_keys() && $this->is_enabled() && 'yes' === $this->settings['display_cart_eligibility'];
 	}
 
 	/**
