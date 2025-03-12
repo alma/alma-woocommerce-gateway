@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 4.4
 Tested up to: 6.3
 Requires PHP: 5.6
-Stable tag: 5.11.0
+Stable tag: 5.12.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,25 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+## v5.12.0 - 2025-03-12
+
+### Changes
+
+### 🚀 New Features
+
+- Fix get_terms function to be compatible with Wordpress 4.4 (#333)
+- Feature/ecom 2536 fix and improve linter on woocommerce (#331)
+- Feature/ecom 2394 sonar explore feasibility to change or remove the limit of 3 (#330)
+- Fix: checkout blocks get cart total price (#329)
+
+### 🐛 Bug Fixes
+
+- Fix/pre commit (#325)
+
+#### Contributors
+
+@joyet-simon, @webaaz and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
 
 ## v5.11.0 - 2025-02-18
 
