@@ -47488,8 +47488,7 @@ __webpack_require__.r(__webpack_exports__);
   $(document).ready(() => {
     mountReactComponent();
   });
-  $('body').on('change', 'input[type=\'radio\'][name=\'radio-control-wc-payment-method-options\']', function () {
-    document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].removeEventListener("click", addActionToPaymentButtonListener);
+  $(window).bind("load", function () {
     addActionToPaymentButton();
   });
   const addActionToPaymentButton = () => {
