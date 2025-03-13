@@ -6,7 +6,7 @@
 
 ### 🐛 Bug Fixes
 
-- Fix: pre commit (#325)
+- Fix: pre-commit (#325)
 - Fix: checkout blocks get cart total price (#329)
 - Fix: get_terms function to be compatible with Wordpress 4.4 (#333)
 - Fix: fix and improve linter on woocommerce (#331)
