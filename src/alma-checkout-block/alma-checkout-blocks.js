@@ -10,7 +10,7 @@
 // phpcs:ignoreFile
 import {store_key} from "../stores/alma-eligibility-store";
 import {useEffect} from '@wordpress/element';
-import {dispatch, select, useSelect} from '@wordpress/data';
+import {select, useSelect} from '@wordpress/data';
 import {fetchAlmaEligibility} from "./hooks/fetchAlmaEligibility";
 import {Label} from "./components/Label";
 import {DisplayAlmaBlocks} from "./components/DisplayAlmaBlocks";
@@ -128,14 +128,10 @@ import './alma-checkout-blocks.css';
         mountReactComponent();
     });
 
-    $('body').on(
-        'change',
-        'input[type=\'radio\'][name=\'radio-control-wc-payment-method-options\']',
-        function () {
-            document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].removeEventListener("click", addActionToPaymentButtonListener);
-            addActionToPaymentButton()
-        }
-    );
+    $(window).bind("load", function() {
+        addActionToPaymentButton();
+    });
+
 
     const addActionToPaymentButton = () => {
         document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].addEventListener(
@@ -239,7 +235,6 @@ import './alma-checkout-blocks.css';
 
         }
     };
-
     function cancel_order(orderId) {
         var data = {
             'action': 'alma_cancel_order_in_page',
