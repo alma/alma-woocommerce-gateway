@@ -2,8 +2,8 @@
 name: E2E Test
 on:
   pull_request:
-    branches: ["main", "develop"]
-    types: ["opened", "synchronize", "reopened",  "ready_for_review"]
+    branches: [ "main", "develop" ]
+    types: [ "opened", "synchronize", "reopened",  "ready_for_review" ]
   workflow_dispatch:
 
 jobs:
@@ -11,49 +11,49 @@ jobs:
     strategy:
       matrix:
         version:
-        - 8.2.2
+          - 9.6.2
     runs-on: ubuntu-22.04
     if: github.event.pull_request.draft == false && !contains(github.event.pull_request.labels.*.name, 'hotfix')
 
     steps:
 
-    - name: Generate Github token for PR checks
-      id: github-token-checks
-      uses: actions/create-github-app-token@v1
-      continue-on-error: true
-      with:
-        app-id: ${{ secrets.ALMA_UPDATE_CHECKS_APP_ID }}
-        private-key: ${{ secrets.ALMA_UPDATE_CHECKS_APP_PEM }}
-        repositories: alma-woocommerce-gateway
+      - name: Generate Github token for PR checks
+        id: github-token-checks
+        uses: actions/create-github-app-token@v1
+        continue-on-error: true
+        with:
+          app-id: ${{ secrets.ALMA_UPDATE_CHECKS_APP_ID }}
+          private-key: ${{ secrets.ALMA_UPDATE_CHECKS_APP_PEM }}
+          repositories: alma-woocommerce-gateway
 
-    - name: Create a Github check for E2E tests run in the Pull Request
-      if: github.event_name == 'pull_request'
-      uses: actions/github-script@v7
-      id: create-github-check
-      with:
+      - name: Create a Github check for E2E tests run in the Pull Request
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        id: create-github-check
+        with:
           github-token: ${{ steps.github-token-checks.outputs.token }}
           script: |
-              const check = await github.rest.checks.create({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  name: 'E2E tests results',
-                  head_sha: '${{ github.event.pull_request.head.sha }}',
-                  status: "in_progress",
-              })
-              core.setOutput('id', check.data.id)
+            const check = await github.rest.checks.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'E2E tests results',
+                head_sha: '${{ github.event.pull_request.head.sha }}',
+                status: "in_progress",
+            })
+            core.setOutput('id', check.data.id)
 
-    - name: Generate Github token for integration-infrastructure repo
-      id: github-token-infrastructure
-      uses: actions/create-github-app-token@v1
-      with:
-        app-id: ${{ secrets.ALMA_WF_TRIGGER_APP_ID }}
-        private-key: ${{ secrets.ALMA_WF_TRIGGER_APP_PEM }}
-        repositories: integration-infrastructure
+      - name: Generate Github token for integration-infrastructure repo
+        id: github-token-infrastructure
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.ALMA_WF_TRIGGER_APP_ID }}
+          private-key: ${{ secrets.ALMA_WF_TRIGGER_APP_PEM }}
+          repositories: integration-infrastructure
 
-    - name: Trigger E2E tests in the integration-infrastructure repository
-      uses: codex-/return-dispatch@v1
-      id: e2e-tests-workflow-dispatch
-      with:
+      - name: Trigger E2E tests in the integration-infrastructure repository
+        uses: codex-/return-dispatch@v1
+        id: e2e-tests-workflow-dispatch
+        with:
           token: ${{ steps.github-token-infrastructure.outputs.token }}
           ref: main
           repo: integration-infrastructure
@@ -74,43 +74,43 @@ jobs:
           workflow_timeout_seconds: 120 # Default: 300
 
 
-    - name: Hide deprecated E2E test run info message
-      uses: int128/hide-comment-action@v1
-      with:
-        # This string should be kept in sync with the last words of the comment in.
-        # `Send a comment to the PR informing that the E2E tests are running` step (in this workflow).
-        # `Add a comment with E2E tests results in the Pull Request` step (in e2e-test-post-results workflow)
-        contains: <!-- id:e2e-test-run-info -->
+      - name: Hide deprecated E2E test run info message
+        uses: int128/hide-comment-action@v1
+        with:
+          # This string should be kept in sync with the last words of the comment in.
+          # `Send a comment to the PR informing that the E2E tests are running` step (in this workflow).
+          # `Add a comment with E2E tests results in the Pull Request` step (in e2e-test-post-results workflow)
+          contains: <!-- id:e2e-test-run-info -->
 
-    - name: Send a comment to the PR informing that the E2E tests are running
-      if: github.event_name == 'pull_request'
-      uses: actions/github-script@v7
-      with:
+      - name: Send a comment to the PR informing that the E2E tests are running
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
           script: |
-              github.rest.issues.createComment({
-                  issue_number: context.issue.number,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  body: '⏳E2E tests are currently running. \n' +
-                      '➡️ You can follow their progression [here](${{steps.e2e-tests-workflow-dispatch.outputs.run_url}}).' +
-                      '\n\n<!-- id:e2e-test-run-info -->'
-              })
+            github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: '⏳E2E tests are currently running. \n' +
+                    '➡️ You can follow their progression [here](${{steps.e2e-tests-workflow-dispatch.outputs.run_url}}).' +
+                    '\n\n<!-- id:e2e-test-run-info -->'
+            })
 
-    - name: Update Github check with the E2E tests run URL
-      if: github.event_name == 'pull_request'
-      uses: actions/github-script@v7
-      with:
+      - name: Update Github check with the E2E tests run URL
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
           github-token: ${{ steps.github-token-checks.outputs.token }}
           script: |
-              const checkOutput = {
-                  title: 'E2E tests results',
-                  summary: '⏳E2E tests are currently running.',
-                  text: '➡️ You can follow their progression [here](${{steps.e2e-tests-workflow-dispatch.outputs.run_url}}).'
-              };
-              github.rest.checks.update({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  check_run_id: '${{ steps.create-github-check.outputs.id }}',
-                  output: checkOutput
-              })
+            const checkOutput = {
+                title: 'E2E tests results',
+                summary: '⏳E2E tests are currently running.',
+                text: '➡️ You can follow their progression [here](${{steps.e2e-tests-workflow-dispatch.outputs.run_url}}).'
+            };
+            github.rest.checks.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                check_run_id: '${{ steps.create-github-check.outputs.id }}',
+                output: checkOutput
+            })
 
