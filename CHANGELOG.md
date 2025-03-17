@@ -1,5 +1,21 @@
 # Changelog
 
+## v5.12.0 - 2025-03-14
+
+### Changes
+
+### 🐛 Bug Fixes
+
+- Fix: event listener blocks checkout (#337)
+- Fix: get_terms function to be compatible with Wordpress 4.4 (#333)
+- Fix: fix and improve linter on woocommerce (#331)
+- Fix: checkout blocks get cart total price (#329)
+- Fix: pre commit (#325)
+
+#### Contributors
+
+@joyet-simon, @webaaz and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+
 ## v5.11.0 - 2025-02-18
 
 ### Changes

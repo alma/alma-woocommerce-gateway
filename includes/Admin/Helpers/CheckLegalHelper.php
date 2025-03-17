@@ -105,7 +105,6 @@ class CheckLegalHelper {
 
 		add_action( 'wp_ajax_legal_alma', array( $this, 'legal_alma' ) );
 		add_action( 'admin_notices', array( $this, 'get_modal_checkout_legal' ) );
-
 	}
 
 	/**
@@ -289,5 +288,4 @@ class CheckLegalHelper {
 	public static function get_modal_title() {
 		return __( 'Increase your performance & get insights !', 'alma-gateway-for-woocommerce' );
 	}
-
 }

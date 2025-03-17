@@ -231,5 +231,4 @@ class BlocksDataService {
 			'annualInterestRate'      => $eligibility->getAnnualInterestRate(),
 		);
 	}
-
 }

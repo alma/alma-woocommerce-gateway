@@ -90,7 +90,6 @@ class OrderHelper {
 		$this->session_factory = new SessionFactory();
 		$this->version_factory = new VersionFactory();
 		$this->cart_factory    = new CartFactory();
-
 	}
 
 	/**

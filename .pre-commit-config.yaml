@@ -23,13 +23,22 @@ repos:
       - id: coding-standard-fixer
         name: PHP and WordPress coding standards Fixer test
         language: system
-        entry: ./bin/coding-standard-fixer.sh
+        pass_filenames: false
+        entry: task lint:fix
         stages: [ pre-commit ]
 
       - id: coding-standard
         name: Check the PHP and WordPress coding standards
         language: system
-        entry: ./bin/coding-standard.sh
+        pass_filenames: false
+        entry: task lint
+        stages: [ pre-commit ]
+
+      - id: php-compatibility
+        name: Check the PHP compatibility
+        language: system
+        pass_filenames: false
+        entry: task php-compatibility
         stages: [ pre-commit ]
 
   # - repo: https://github.com/returntocorp/semgrep

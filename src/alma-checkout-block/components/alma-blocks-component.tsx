@@ -117,7 +117,7 @@ export const AlmaBlocks: React.FC<AlmaBlocksProps> = (
                         <div className="alma-card-installments">
                             <Installments
                                     feePlan={plans[selectedFeePlan]}
-                                    amountInCents={totalPrice}
+                                    amount={totalPrice}
                             />
                         </div>
                 )}

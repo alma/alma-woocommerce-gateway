@@ -69,8 +69,10 @@ class FeePlanHelper {
 				&& 0 === $match_1['deferred_months']
 			)
 			|| (
-				$match_1['deferred_days'] > 0
-				&& $match_2['deferred_months'] > 0
+				(
+					$match_1['deferred_days'] > 0
+					&& $match_2['deferred_months'] > 0
+				)
 				|| (
 					$match_2['deferred_days'] > 0
 					&& $match_1['deferred_days'] < $match_2['deferred_days']
@@ -116,5 +118,3 @@ class FeePlanHelper {
 		return false;
 	}
 }
-
-

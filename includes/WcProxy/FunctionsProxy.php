@@ -34,5 +34,4 @@ class FunctionsProxy {
 	public function send_http_error_response( $response, $status_code = null, $flags = 0 ) {
 		wp_send_json_error( $response, $status_code, $flags );
 	}
-
 }

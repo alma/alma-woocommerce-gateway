@@ -61,6 +61,4 @@ trait InPageGatewayTrait {
 		wp_localize_script( 'alma-checkout-in-page', 'alma_iframe_params', $alma_args );
 		wp_localize_script( 'alma-checkout-in-page', 'alma_iframe_paiement', array() );
 	}
-
-
 }

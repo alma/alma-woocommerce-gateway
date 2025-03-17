@@ -13,12 +13,12 @@ const Edit = () => {
                         fill="var(--off-black)"></path>
                 </svg>
                 <div>
-                    <div>{__('J+30')}</div>
+                    <div>{__('D+30', 'alma-gateway-for-woocommerce')}</div>
                     <div>3x</div>
                     <div>4x</div>
                 </div>
             </div>
-            <div>4 x 112,50&nbsp;€&nbsp;({__('sans frais')})</div>
+            <div>4 x 112,50&nbsp;€&nbsp;({__('Without fees', 'alma-gateway-for-woocommerce')})</div>
         </div>
     );
 };

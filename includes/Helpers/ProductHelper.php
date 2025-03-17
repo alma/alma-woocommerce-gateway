@@ -71,7 +71,6 @@ class ProductHelper {
 		$this->alma_settings = $alma_settings;
 		$this->cart_factory  = $cart_factory;
 		$this->core_factory  = $core_factory;
-
 	}
 
 	/**

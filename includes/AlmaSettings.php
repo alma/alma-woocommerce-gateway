@@ -187,6 +187,10 @@ class AlmaSettings {
 	 * @var PluginFactory
 	 */
 	protected $plugin_factory;
+	/**
+	 * @var mixed
+	 */
+	private $alma_settings;
 
 	/**
 	 * Constructor.
@@ -422,15 +426,6 @@ class AlmaSettings {
 	}
 
 	/**
-	 * Is plugin enabled.
-	 *
-	 * @return bool
-	 */
-	public function is_enabled() {
-		return 'yes' === $this->enabled;
-	}
-
-	/**
 	 * Gets title for a payment method.
 	 *
 	 * @param string $payment_method The payment method.
@@ -503,55 +498,6 @@ class AlmaSettings {
 	}
 
 	/**
-	 * Check if we have keys for the active environment.
-	 *
-	 * @return bool
-	 */
-	public function has_keys() {
-		if ( empty( $this->get_active_api_key() ) ) {
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Gets API string for the current environment.
-	 *
-	 * @return string
-	 */
-	public function get_active_api_key() {
-		return $this->is_live() ? $this->get_live_api_key() : $this->get_test_api_key();
-	}
-
-	/**
-	 * Is using live API.
-	 *
-	 * @return bool
-	 */
-	public function is_live() {
-		return $this->get_environment() === 'live';
-	}
-
-	/**
-	 * Gets API key for live environment.
-	 *
-	 * @return string
-	 */
-	public function get_live_api_key() {
-		return $this->encryptor_helper->decrypt( $this->live_api_key );
-	}
-
-	/**
-	 * Gets API key for test environment.
-	 *
-	 * @return string
-	 */
-	public function get_test_api_key() {
-		return $this->encryptor_helper->decrypt( $this->test_api_key );
-	}
-
-	/**
 	 * Fetch the payment.
 	 *
 	 * @param string $payment_id The payment id.
@@ -602,6 +548,42 @@ class AlmaSettings {
 		// translators: %s: Error message.
 			__( 'Alma encountered an error. No alma client found', 'alma-gateway-for-woocommerce' )
 		);
+	}
+
+	/**
+	 * Gets API string for the current environment.
+	 *
+	 * @return string
+	 */
+	public function get_active_api_key() {
+		return $this->is_live() ? $this->get_live_api_key() : $this->get_test_api_key();
+	}
+
+	/**
+	 * Is using live API.
+	 *
+	 * @return bool
+	 */
+	public function is_live() {
+		return $this->get_environment() === 'live';
+	}
+
+	/**
+	 * Gets API key for live environment.
+	 *
+	 * @return string
+	 */
+	public function get_live_api_key() {
+		return $this->encryptor_helper->decrypt( $this->live_api_key );
+	}
+
+	/**
+	 * Gets API key for test environment.
+	 *
+	 * @return string
+	 */
+	public function get_test_api_key() {
+		return $this->encryptor_helper->decrypt( $this->test_api_key );
 	}
 
 	/**
@@ -903,12 +885,11 @@ class AlmaSettings {
 			if ( ! isset( $this->settings[ $enabled_key ] ) ) {
 				$this->settings[ $enabled_key ] = ConstantsHelper::DEFAULT_FEE_PLAN === $plan_key ? 'yes' : 'no';
 			}
-			$this->settings[ "deferred_months_$plan_key" ]    = $fee_plan->getDeferredMonths();
-			$this->settings[ "deferred_days_$plan_key" ]      = $fee_plan->getDeferredDays();
-			$this->settings[ "installments_count_$plan_key" ] = $fee_plan->getInstallmentsCount();
+			$this->settings[ sprintf( 'deferred_months_%s', $plan_key ) ]    = $fee_plan->getDeferredMonths();
+			$this->settings[ sprintf( 'deferred_days_%s', $plan_key ) ]      = $fee_plan->getDeferredDays();
+			$this->settings[ sprintf( 'installments_count_%s', $plan_key ) ] = $fee_plan->getInstallmentsCount();
 		}
 	}
-
 
 	/**
 	 * Retrieves the api fee plans.
@@ -973,7 +954,6 @@ class AlmaSettings {
 		return false;
 	}
 
-
 	/**
 	 * Tells if the merchant has at least one "pnx_plus_4" payment method enabled in the WC back-office.
 	 *
@@ -1028,11 +1008,16 @@ class AlmaSettings {
 	 * @return bool
 	 */
 	public function should_display_plan( $plan_key, $gateway_id ) {
+
+		$installment_count = $this->get_installments_count( $plan_key );
+		$deferred_days     = $this->get_deferred_days( $plan_key );
+		$deferred_months   = $this->get_deferred_months( $plan_key );
+
 		switch ( $gateway_id ) {
 			case ConstantsHelper::GATEWAY_ID:
 			case ConstantsHelper::GATEWAY_ID_IN_PAGE:
 				$display_plan = in_array(
-					$this->get_installments_count( $plan_key ),
+					$installment_count,
 					array(
 						2,
 						3,
@@ -1043,17 +1028,15 @@ class AlmaSettings {
 				break;
 			case ConstantsHelper::GATEWAY_ID_PAY_NOW:
 			case ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_NOW:
-				$display_plan = $this->get_installments_count( $plan_key ) === 1
-								&& ( $this->get_deferred_days( $plan_key ) === 0 && $this->get_deferred_months( $plan_key ) === 0 );
+				$display_plan = 1 === $installment_count && ( 0 === $deferred_days && 0 === $deferred_months );
 				break;
 			case ConstantsHelper::GATEWAY_ID_PAY_LATER:
 			case ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_LATER:
-				$display_plan = $this->get_installments_count( $plan_key ) === 1
-								&& ( $this->get_deferred_days( $plan_key ) !== 0 || $this->get_deferred_months( $plan_key ) !== 0 );
+				$display_plan = 1 === $installment_count && ( 0 !== $deferred_days || 0 !== $deferred_months );
 				break;
 			case ConstantsHelper::GATEWAY_ID_IN_PAGE_MORE_THAN_FOUR:
 			case ConstantsHelper::GATEWAY_ID_MORE_THAN_FOUR:
-				$display_plan = $this->get_installments_count( $plan_key ) > 4;
+				$display_plan = $installment_count > 4;
 				break;
 			default:
 				$display_plan = false;
@@ -1098,27 +1081,26 @@ class AlmaSettings {
 	 */
 	public function build_fee_plan( $plan_key ) {
 
-		if ( ! isset( $this->settings[ "installments_count_$plan_key" ] ) ) {
+		if ( ! isset( $this->settings[ sprintf( 'installments_count_%s', $plan_key ) ] ) ) {
 			throw new PlansDefinitionException( "installments_count_$plan_key not set" );
 		}
 
-		if ( ! isset( $this->settings[ "deferred_days_$plan_key" ] ) ) {
+		if ( ! isset( $this->settings[ sprintf( 'deferred_days_%s', $plan_key ) ] ) ) {
 			throw new PlansDefinitionException( "deferred_days_$plan_key not set" );
 		}
 
-		if ( ! isset( $this->settings[ "deferred_months_$plan_key" ] ) ) {
+		if ( ! isset( $this->settings[ sprintf( 'deferred_months_%s', $plan_key ) ] ) ) {
 			throw new PlansDefinitionException( "deferred_months_$plan_key not set" );
 		}
 
 		return new FeePlan(
 			array(
-				'installments_count' => $this->settings[ "installments_count_$plan_key" ],
-				'deferred_days'      => $this->settings[ "deferred_days_$plan_key" ],
-				'deferred_months'    => $this->settings[ "deferred_months_$plan_key" ],
+				'installments_count' => $this->settings[ sprintf( 'installments_count_%s', $plan_key ) ],
+				'deferred_days'      => $this->settings[ sprintf( 'deferred_days_%s', $plan_key ) ],
+				'deferred_months'    => $this->settings[ sprintf( 'deferred_months_%s', $plan_key ) ],
 			)
 		);
 	}
-
 
 	/**
 	 * Does need API key ?
@@ -1166,5 +1148,31 @@ class AlmaSettings {
 		}
 
 		return $this->settings_helper->default_variable_sale_price_selector();
+	}
+
+	public function is_widget_can_be_displayed() {
+		return $this->has_keys() && $this->is_enabled() && 'yes' === $this->settings['display_cart_eligibility'];
+	}
+
+	/**
+	 * Check if we have keys for the active environment.
+	 *
+	 * @return bool
+	 */
+	public function has_keys() {
+		if ( empty( $this->get_active_api_key() ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Is plugin enabled.
+	 *
+	 * @return bool
+	 */
+	public function is_enabled() {
+		return 'yes' === $this->enabled;
 	}
 }

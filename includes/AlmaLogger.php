@@ -137,8 +137,7 @@ class AlmaLogger extends AbstractLogger {
 			$this->error( $key, $context );
 
 			$exception = $exception->getPrevious();
-			$cnt++;
+			++$cnt;
 		} while ( $exception );
 	}
-
 }

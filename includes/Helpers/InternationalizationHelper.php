@@ -184,5 +184,4 @@ class InternationalizationHelper {
 			'at_shipping' => __( 'At shipping', 'alma-gateway-for-woocommerce' ),
 		);
 	}
-
 }

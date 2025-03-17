@@ -41,5 +41,4 @@ class PayMoreThanFourGateway extends StandardGateway {
 	public function has_fields() {
 		return true;
 	}
-
 }

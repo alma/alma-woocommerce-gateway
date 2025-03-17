@@ -13,9 +13,7 @@ namespace Alma\Woocommerce\Blocks;
 
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
-use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
 use Alma\Woocommerce\Builders\Helpers\GatewayHelperBuilder;
-use Alma\Woocommerce\Builders\Helpers\PlanHelperBuilder;
 use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
 use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Gateways\Standard\StandardGateway;
@@ -24,7 +22,6 @@ use Alma\Woocommerce\Helpers\CartHelper;
 use Alma\Woocommerce\Helpers\CheckoutHelper;
 use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\GatewayHelper;
-use Alma\Woocommerce\Helpers\PlanHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
 
@@ -105,8 +102,6 @@ class AlmaBlock extends AbstractPaymentMethodType {
 	 * @return mixed
 	 */
 	public function is_active() {
-		// TODO need to check if no side effects
-		// return $this->gateway->is_available();
 		return true;
 	}
 
@@ -153,9 +148,7 @@ class AlmaBlock extends AbstractPaymentMethodType {
 			)
 		);
 
-		if ( function_exists( 'wp_set_script_translations' ) ) {
-			wp_set_script_translations( 'alma-blocks-integration' );
-		}
+		wp_set_script_translations( 'alma-blocks-integration', 'alma-gateway-for-woocommerce', ALMA_PLUGIN_PATH . 'languages' );
 
 		if ( $this->gateway_helper->is_in_page_gateway( $this->gateway->id ) ) {
 			wp_localize_script(

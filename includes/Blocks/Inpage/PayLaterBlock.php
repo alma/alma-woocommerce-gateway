@@ -50,6 +50,4 @@ class PayLaterBlock extends AlmaBlock {
 
 		$this->gateway = new PayLaterGateway();
 	}
-
-
 }

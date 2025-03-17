@@ -1,6 +1,19 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./node_modules/@alma/react-components/dist/global.css":
+/*!*************************************************************!*\
+  !*** ./node_modules/@alma/react-components/dist/global.css ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
 /***/ "./node_modules/@alma/react-components/dist/lib.es.js":
 /*!************************************************************!*\
   !*** ./node_modules/@alma/react-components/dist/lib.es.js ***!
@@ -32,6 +45,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   CodeInput: () => (/* binding */ CodeInput),
 /* harmony export */   CodeInputField: () => (/* binding */ CodeInputField),
 /* harmony export */   Collapsible: () => (/* binding */ Collapsible),
+/* harmony export */   Drawer: () => (/* binding */ Drawer),
 /* harmony export */   Dropdown: () => (/* binding */ Dropdown),
 /* harmony export */   DropdownField: () => (/* binding */ DropdownField),
 /* harmony export */   DropdownMultiple: () => (/* binding */ DropdownMultiple),
@@ -107,11 +121,11 @@ __webpack_require__.r(__webpack_exports__);
 
 var variables = "";
 var fonts = "";
-const inputWrapper = "_inputWrapper_zow58_1";
-const centered = "_centered_zow58_9";
-const input$1 = "_input_zow58_1";
-const error$5 = "_error_zow58_39";
-var s$L = {
+const inputWrapper = "_inputWrapper_1nlpn_1";
+const centered = "_centered_1nlpn_9";
+const input$1 = "_input_1nlpn_1";
+const error$5 = "_error_1nlpn_40";
+var s$M = {
   inputWrapper,
   centered,
   input: input$1,
@@ -211,7 +225,7 @@ const CodeInput = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
     }, [autoFocus]);
     return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       id,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$L.inputWrapper, { [s$L.centered]: centered2 }),
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$M.inputWrapper, { [s$M.centered]: centered2 }),
       "data-testid": dataTestId
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
       type: "number",
@@ -219,7 +233,7 @@ const CodeInput = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       value: getCharAt(0),
       autoComplete: "one-time-code",
       "data-testid": "code-verification-input",
-      className: s$L.input,
+      className: s$M.input,
       ref: (element) => {
         if (element) {
           inputReferences.current[0] = element;
@@ -241,7 +255,7 @@ const CodeInput = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
         min: "0",
         max: "9",
         "aria-label": `code input ${position}`,
-        className: s$L.input,
+        className: s$M.input,
         ref: (element) => {
           if (element) {
             inputReferences.current[position] = element;
@@ -261,7 +275,7 @@ const accountContainer = "_accountContainer_1hpkt_1";
 const circle = "_circle_1hpkt_22";
 const initial = "_initial_1hpkt_34";
 const text = "_text_1hpkt_46";
-var s$K = {
+var s$L = {
   accountContainer,
   circle,
   initial,
@@ -275,13 +289,13 @@ const AccountButton = ({
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     type: "button",
     ...buttonProps,
-    className: s$K.accountContainer
+    className: s$L.accountContainer
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$K.circle
+    className: s$L.circle
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$K.initial
+    className: s$L.initial
   }, initial2)), firstName && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$K.text
+    className: s$L.text
   }, firstName));
 };
 function isDefined(value2) {
@@ -6201,7 +6215,7 @@ const copyFeedBack = "_copyFeedBack_nb126_33";
 const nameAndIcon = "_nameAndIcon_nb126_37";
 const name = "_name_nb126_37";
 const searchContainer = "_searchContainer_nb126_54";
-var s$J = {
+var s$K = {
   iconStyle,
   container: container$a,
   row: row$1,
@@ -6499,7 +6513,7 @@ const Icon = ({
   };
   const IconComponent = (_a = iconComponentFor[icon2]) != null ? _a : AlmaIcon;
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(IconComponent, {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$J.iconStyle),
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$K.iconStyle),
     title: title2,
     "aria-hidden": title2 ? void 0 : "true",
     isfilled: isFilled == null ? void 0 : isFilled.toString(),
@@ -6776,7 +6790,7 @@ const icon$4 = "_icon_gpuib_96";
 const blurButton = "_blurButton_gpuib_120";
 const beforeInput = "_beforeInput_gpuib_131";
 const afterInput = "_afterInput_gpuib_136";
-var s$I = {
+var s$J = {
   inputContainer,
   regularBorder: regularBorder$2,
   lightBorder: lightBorder$2,
@@ -6863,21 +6877,21 @@ const Input$2 = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef(
     );
     return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(
-        s$I.inputContainer,
-        { [s$I.error]: error2 },
-        { [s$I.disabled]: disabled2 },
-        { [s$I.hasSuffix]: unit2 || iconRight2 || shouldDisplayClearIcon },
-        s$I[inputHeight],
-        s$I[`${borderColor}Border`],
+        s$J.inputContainer,
+        { [s$J.error]: error2 },
+        { [s$J.disabled]: disabled2 },
+        { [s$J.hasSuffix]: unit2 || iconRight2 || shouldDisplayClearIcon },
+        s$J[inputHeight],
+        s$J[`${borderColor}Border`],
         className
       ),
       "data-testid": "input-test"
     }, iconLeft2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: iconLeft2,
-      className: s$I.icon,
+      className: s$J.icon,
       color: iconColorLeft ? `var(${iconColorLeft})` : "var(--alma-orange)"
     }), beforeInput2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$I.beforeInput,
+      className: s$J.beforeInput,
       ...beforeInputProps
     }, beforeInput2), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
       name: id,
@@ -6888,31 +6902,31 @@ const Input$2 = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef(
       readOnly: readOnly2,
       value: value2,
       ...otherProps,
-      className: s$I.input,
+      className: s$J.input,
       type,
       onFocus,
       onBlur
     }), unit2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$I.unit),
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$J.unit),
       style: { color: `var(${getUnitTextAndColor(unit2).color})` }
     }, getUnitTextAndColor(unit2).unit), shouldDisplayClearIcon ? /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
       type: "button",
       onClick: onClearClick,
       onMouseDown: onMouseDownPreventBlur,
-      className: s$I.clear,
+      className: s$J.clear,
       "data-testid": "clear-input"
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: IconName["close-circle"],
       color: "var(--alma-orange)"
     })) : shouldDisplayRightIcon && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: iconRight2,
-      className: s$I.icon,
+      className: s$J.icon,
       color: iconColorRight ? `var(${iconColorRight})` : "var(--alma-orange)"
     }), afterInput2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$I.afterInput,
+      className: s$J.afterInput,
       ...afterInputProps
     }, afterInput2), shouldDisplayBlurButton && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$I.blurButton,
+      className: s$J.blurButton,
       onClick: onBlur
     }, blurButtonMessage)));
   }
@@ -6921,7 +6935,7 @@ Input$2.displayName = "Input";
 const suggestionsList$1 = "_suggestionsList_xkeiy_1";
 const suggestion$1 = "_suggestion_xkeiy_1";
 const suggestionHighlighted$1 = "_suggestionHighlighted_xkeiy_19";
-var s$H = {
+var s$I = {
   suggestionsList: suggestionsList$1,
   suggestion: suggestion$1,
   suggestionHighlighted: suggestionHighlighted$1
@@ -6997,7 +7011,7 @@ const Autocomplete = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
         }
       });
       return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-        className: s$H.autocomplete
+        className: s$I.autocomplete
       }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Input$2, {
         ...inputProps,
         value: value2,
@@ -7012,7 +7026,7 @@ const Autocomplete = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       }, (0,react_dom__WEBPACK_IMPORTED_MODULE_2__.createPortal)(
         /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", {
           ...getMenuProps({
-            className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$H.suggestionsList, suggestionsListClassName),
+            className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$I.suggestionsList, suggestionsListClassName),
             style: {
               left: elementSize.left,
               top: elementSize.top,
@@ -7026,9 +7040,9 @@ const Autocomplete = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
             index,
             item,
             className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(
-              s$H.suggestion,
+              s$I.suggestion,
               {
-                [s$H.suggestionHighlighted]: highlightedIndex === index
+                [s$I.suggestionHighlighted]: highlightedIndex === index
               },
               suggestionClassName
             )
@@ -7040,11 +7054,11 @@ const Autocomplete = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
   }
 );
 const errorMessage = "_errorMessage_1sxgf_1";
-var s$G = {
+var s$H = {
   errorMessage
 };
 const ErrorMessage = ({ children: children2 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: s$G.errorMessage,
+  className: s$H.errorMessage,
   "data-testid": "field-error-message"
 }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
   icon: IconName["warning"],
@@ -7056,7 +7070,7 @@ const labelContainer = "_labelContainer_1iesd_1";
 const label$3 = "_label_1iesd_1";
 const disabled$7 = "_disabled_1iesd_18";
 const error$3 = "_error_1iesd_22";
-var s$F = {
+var s$G = {
   labelContainer,
   label: label$3,
   disabled: disabled$7,
@@ -7069,17 +7083,17 @@ const Label = ({
   error: error2,
   ...props
 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: s$F.labelContainer,
+  className: s$G.labelContainer,
   "data-testid": "input-label"
 }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
   ...props,
-  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$F.label, className, { [s$F.disabled]: disabled2, [s$F.error]: error2 })
+  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$G.label, className, { [s$G.disabled]: disabled2, [s$G.error]: error2 })
 }, children2));
 const legendMessage = "_legendMessage_16ifm_1";
 const lg$5 = "_lg_16ifm_10";
 const disabled$6 = "_disabled_16ifm_14";
 const light = "_light_16ifm_18";
-var s$E = {
+var s$F = {
   legendMessage,
   lg: lg$5,
   disabled: disabled$6,
@@ -7091,10 +7105,10 @@ const LegendMessage = ({
   disabled: disabled2 = false,
   light: light2 = false
 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$E.legendMessage, s$E[size], { [s$E.disabled]: disabled2, [s$E.light]: light2 })
+  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$F.legendMessage, s$F[size], { [s$F.disabled]: disabled2, [s$F.light]: light2 })
 }, children2);
 const container$9 = "_container_1qn1j_1";
-var s$D = {
+var s$E = {
   container: container$9
 };
 const Field = ({
@@ -7108,7 +7122,7 @@ const Field = ({
   legend,
   ...otherProps
 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$D.container, className),
+  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$E.container, className),
   ...otherProps
 }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Label, {
   htmlFor,
@@ -7147,7 +7161,7 @@ const suggestionsList = "_suggestionsList_1hnlf_1";
 const suggestion = "_suggestion_1hnlf_1";
 const suggestionHighlighted = "_suggestionHighlighted_1hnlf_19";
 const hasBefore = "_hasBefore_1hnlf_23";
-var s$C = {
+var s$D = {
   suggestionsList,
   suggestion,
   suggestionHighlighted,
@@ -7237,7 +7251,7 @@ const AutocompleteSelect = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
         }
       });
       return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-        className: s$C.autocomplete
+        className: s$D.autocomplete
       }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Input$2, {
         ...inputProps,
         autoComplete: "off",
@@ -7257,7 +7271,7 @@ const AutocompleteSelect = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       }, (0,react_dom__WEBPACK_IMPORTED_MODULE_2__.createPortal)(
         /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", {
           ...getMenuProps({
-            className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$C.suggestionsList, suggestionsListClassName),
+            className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$D.suggestionsList, suggestionsListClassName),
             style: {
               left: elementSize.left,
               top: elementSize.top,
@@ -7271,10 +7285,10 @@ const AutocompleteSelect = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
             index,
             item,
             className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(
-              s$C.suggestion,
+              s$D.suggestion,
               {
-                [s$C.suggestionHighlighted]: highlightedIndex === index,
-                [s$C.hasBefore]: itemBefore
+                [s$D.suggestionHighlighted]: highlightedIndex === index,
+                [s$D.hasBefore]: itemBefore
               },
               suggestionClassName
             )
@@ -7320,7 +7334,7 @@ const yellow$6 = "_yellow_1ci1p_38";
 const blue$5 = "_blue_1ci1p_43";
 const grey$1 = "_grey_1ci1p_48";
 const white$1 = "_white_1ci1p_52";
-var s$B = {
+var s$C = {
   badge: badge$1,
   "padding-lg": "_padding-lg_1ci1p_18",
   green: green$4,
@@ -7353,7 +7367,7 @@ const Badge = ({
   const iconTitleLeft = selectLeft(iconTitle);
   const iconTitleRight = selectRight(iconTitle);
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$B.badge, s$B[color], s$B[`padding-${padding}`], className)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$C.badge, s$C[color], s$C[`padding-${padding}`], className)
   }, iconLeft2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
     icon: iconLeft2,
     title: iconTitleLeft,
@@ -7392,7 +7406,7 @@ const big$2 = "_big_1rrdt_84";
 const cta = "_cta_1rrdt_110";
 const ctaRight = "_ctaRight_1rrdt_122";
 const hasNoDescription = "_hasNoDescription_1rrdt_127";
-var s$A = {
+var s$B = {
   container: container$8,
   title: title$3,
   screenReader,
@@ -7435,8 +7449,8 @@ const Banner = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
     const ariaTitleId = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => `${id != null ? id : nextId()}-aria-title`, [id]);
     return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       id,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$A.container, className, s$A[type], s$A[size], {
-        [s$A.hasNoDescription]: !children2 || !children2 && !button2
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$B.container, className, s$B[type], s$B[size], {
+        [s$B.hasNoDescription]: !children2 || !children2 && !button2
       }),
       role: type === "error" ? "alert" : "note",
       "aria-live": type === "error" ? "assertive" : "polite",
@@ -7448,17 +7462,17 @@ const Banner = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       title: iconTitle,
       isFilled: iconIsFilled
     }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$A.content
+      className: s$B.content
     }, title2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       id: ariaTitleId,
-      className: s$A.title,
+      className: s$B.title,
       "aria-hidden": "true"
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$A.screenReader
+      className: s$B.screenReader
     }, screenReaderType, ": "), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, title2)), children2, button2 && buttonPlacement === "end" && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$A.cta
+      className: s$B.cta
     }, button2)), button2 && buttonPlacement === "right" && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$A.ctaRight
+      className: s$B.ctaRight
     }, button2));
   }
 );
@@ -7469,7 +7483,7 @@ const one = "_one_1h22b_15";
 const bounce$1 = "_bounce_1h22b_1";
 const two = "_two_1h22b_19";
 const three = "_three_1h22b_23";
-var s$z = {
+var s$A = {
   container: container$7,
   dot,
   one,
@@ -7481,13 +7495,13 @@ var s$z = {
 const LoadingDots = ({ className, ...options }) => {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     "data-testid": "loading-dots",
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$z.container, className)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$A.container, className)
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$z.dot, s$z.one)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$A.dot, s$A.one)
   }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$z.dot, s$z.two)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$A.dot, s$A.two)
   }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$z.dot, s$z.three)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$A.dot, s$A.three)
   }));
 };
 const button = "_button_kkqya_2";
@@ -7508,7 +7522,7 @@ const isDisabled = "_isDisabled_kkqya_220";
 const block$1 = "_block_kkqya_235";
 const tiny$2 = "_tiny_kkqya_258";
 const dotsLoading = "_dotsLoading_kkqya_299";
-var s$y = {
+var s$z = {
   button,
   onlyIcon,
   content: content$4,
@@ -7559,47 +7573,47 @@ function Button({
   const isProgressive = color === "progressive" && !isLoading2 && !disabled2 && !isValidated2;
   const commonProps = {
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(
-      s$y.button,
-      s$y[color],
-      s$y[size],
+      s$z.button,
+      s$z[color],
+      s$z[size],
       {
-        [s$y.block]: block2,
-        [s$y.isLoading]: isLoading2,
-        [s$y.isDisabled]: disabled2,
-        [s$y.isWithFeedback]: isWithFeedback2,
-        [s$y.isWithFeedback]: isWithFeedback2,
-        [s$y.isValidated]: isValidated2,
-        [s$y.onlyIcon]: !children2
+        [s$z.block]: block2,
+        [s$z.isLoading]: isLoading2,
+        [s$z.isDisabled]: disabled2,
+        [s$z.isWithFeedback]: isWithFeedback2,
+        [s$z.isWithFeedback]: isWithFeedback2,
+        [s$z.isValidated]: isValidated2,
+        [s$z.onlyIcon]: !children2
       },
       className
     ),
     children: /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, isLoading2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(LoadingDots, {
-      className: s$y.dotsLoading
+      className: s$z.dotsLoading
     }), isValidated2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: IconName.tick,
       color: "var(--white)"
     }), iconLeft2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: iconLeft2,
       title: iconTitleLeft,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$y.iconLeft, { [s$y.onlyIcon]: !children2 }),
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$z.iconLeft, { [s$z.onlyIcon]: !children2 }),
       color: iconColorLeft ? `var(${iconColorLeft})` : "currentColor"
     }), isProgressive && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: s$y.progress,
+      className: s$z.progress,
       style: { animationDuration: `${progressiveDuration}s` }
     }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$y.content, {
-        [s$y.isLoading]: isLoading2,
-        [s$y.isValidated]: isValidated2
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$z.content, {
+        [s$z.isLoading]: isLoading2,
+        [s$z.isValidated]: isValidated2
       })
     }, children2), iconRight2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: iconRight2,
       title: iconTitleRight,
-      className: s$y.iconRight,
+      className: s$z.iconRight,
       color: iconColorRight ? `var(${iconColorRight})` : "currentColor"
     }), isWithFeedback2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: selectLeft(icon2) || IconName["arrow-right"],
       title: selectLeft(iconTitle),
-      className: s$y.iconRight,
+      className: s$z.iconRight,
       color: iconColorLeft ? `var(${iconColorLeft})` : "currentColor"
     }))
   };
@@ -7618,7 +7632,7 @@ function Button({
 }
 const loadingIndicator = "_loadingIndicator_rleli_1";
 const bounce = "_bounce_rleli_1";
-var s$x = {
+var s$y = {
   loadingIndicator,
   bounce
 };
@@ -7796,7 +7810,7 @@ const Logo = ({ logo, ...svgProps }) => {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, (_a = logoByProps[logo]) != null ? _a : /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(AlmaBlackLogo, null));
 };
 const LoadingIndicator = ({ className }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$x.loadingIndicator, className),
+  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$y.loadingIndicator, className),
   "data-testid": "loader"
 }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Logo, {
   logo: "alma-a"
@@ -7820,7 +7834,7 @@ const sm$5 = "_sm_ab6li_110";
 const md$6 = "_md_ab6li_116";
 const lg$4 = "_lg_ab6li_122";
 const adaptToScreenSize = "_adaptToScreenSize_ab6li_136";
-var s$w = {
+var s$x = {
   card: card$1,
   shadow,
   blue: blue$4,
@@ -7858,31 +7872,31 @@ const Card = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
     ...otherProps
   }, ref) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(
-      s$w.card,
-      s$w[padding],
-      s$w[color],
+      s$x.card,
+      s$x[padding],
+      s$x[color],
       {
-        [s$w.shadow]: shadow2,
-        [s$w[`${borderColor}Border`]]: borderColor,
-        [s$w.adaptToScreenSize]: adaptToScreenSize2
+        [s$x.shadow]: shadow2,
+        [s$x[`${borderColor}Border`]]: borderColor,
+        [s$x.adaptToScreenSize]: adaptToScreenSize2
       },
       className
     ),
     ...otherProps,
     ref
   }, children2, isLoading2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$w.loader
+    className: s$x.loader
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(LoadingIndicator, null)))
 );
 Card.displayName = "Card";
 const CardFooter = ({ children: children2, className, ...otherProps }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$w.footerSection, className),
+  className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$x.footerSection, className),
   ...otherProps,
   "data-testid": "footerSection"
 }, children2);
 const blockHeader = "_blockHeader_1d7ym_1";
 const description$3 = "_description_1d7ym_8";
-var s$v = {
+var s$w = {
   blockHeader,
   description: description$3
 };
@@ -7894,7 +7908,7 @@ const CardTemplate = ({
 }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Card, {
   ...otherProps
 }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-  className: s$v.blockHeader
+  className: s$w.blockHeader
 }, header2, corner && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, corner)), children2);
 const collapsibleTitle = "_collapsibleTitle_1wo6z_1";
 const title$2 = "_title_1wo6z_13";
@@ -7903,7 +7917,7 @@ const isOpen = "_isOpen_1wo6z_40";
 const collapsibleContent = "_collapsibleContent_1wo6z_48";
 const innerCollaspibleContent = "_innerCollaspibleContent_1wo6z_54";
 const inhibitTransition = "_inhibitTransition_1wo6z_58";
-var s$u = {
+var s$v = {
   collapsibleTitle,
   title: title$2,
   block,
@@ -7937,31 +7951,31 @@ const Collapsible = ({
     className,
     ...otherProps
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$u.collapsibleTitle, {
-      [s$u.isOpen]: !collapsed,
-      [s$u.block]: block2
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$v.collapsibleTitle, {
+      [s$v.isOpen]: !collapsed,
+      [s$v.block]: block2
     }),
     onClick: () => onCollapse(collapsed),
     onKeyDown: (e) => [" ", "Enter"].includes(e.key) && onCollapse(collapsed),
     role: "button",
     tabIndex: 0
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$u.title
+    className: s$v.title
   }, title2), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
     icon: IconName["chevron-down"],
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()({
-      [s$u.block]: block2
+      [s$v.block]: block2
     }),
     color: chevronColor != null ? chevronColor : "currentColor"
   })), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$u.collapsibleContent, {
-      [s$u.isOpen]: !collapsed,
-      [s$u.inhibitTransition]: heightChanging
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$v.collapsibleContent, {
+      [s$v.isOpen]: !collapsed,
+      [s$v.inhibitTransition]: heightChanging
     }),
     style: collapsed ? { maxHeight: 0 } : { maxHeight: height === 0 ? "auto" : height }
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     ref: sizingElementRef,
-    className: s$u.innerCollaspibleContent
+    className: s$v.innerCollaspibleContent
   }, children2)));
 };
 const CardTemplateCollapsible = ({
@@ -7982,7 +7996,7 @@ const CardTemplateCollapsible = ({
   chevronColor,
   block: true,
   title: /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, header2, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$v.description
+    className: s$w.description
   }, description2))
 }, children2)));
 const container$6 = "_container_w1e6e_1";
@@ -8001,7 +8015,7 @@ const fadein = "_fadein_w1e6e_1";
 const fadeOut$1 = "_fadeOut_w1e6e_61";
 const fadeout = "_fadeout_w1e6e_1";
 const closeButton$1 = "_closeButton_w1e6e_66";
-var s$t = {
+var s$u = {
   container: container$6,
   overlay: overlay$1,
   header: header$2,
@@ -8024,7 +8038,7 @@ const md$5 = "_md_1pp66_9";
 const lg$3 = "_lg_1pp66_13";
 const isOverlayOpen = "_isOverlayOpen_1pp66_17";
 const modal = "_modal_1pp66_21";
-const top = "_top_1pp66_31";
+const top$1 = "_top_1pp66_31";
 const center = "_center_1pp66_35";
 const xlPadding = "_xlPadding_1pp66_40";
 const content$3 = "_content_1pp66_40";
@@ -8036,13 +8050,13 @@ const slideOut = "_slideOut_1pp66_83";
 const fadeIn = "_fadeIn_1pp66_91";
 const fadeOut = "_fadeOut_1pp66_95";
 const sm$4 = "_sm_1pp66_178";
-var s$s = {
+var s$t = {
   overlay,
   md: md$5,
   lg: lg$3,
   isOverlayOpen,
   modal,
-  top,
+  top: top$1,
   center,
   xlPadding,
   content: content$3,
@@ -8133,6 +8147,7 @@ const Modal = ({
   size = "md",
   overlayzIndex = "md",
   padding = size === "sm" ? "lg" : "xl",
+  shouldCloseOnOverlayClick = true,
   ...props
 }) => {
   const [closingAnimation, setClosingAnimation] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
@@ -8144,14 +8159,14 @@ const Modal = ({
     }, 300);
   }, [onClose]);
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react_modal__WEBPACK_IMPORTED_MODULE_4___default()), {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$s.modal, className, s$s[`${size}`], s$s[`${position}`], s$s[`${padding}Padding`], {
-      [s$s.isOpen]: isOpen2,
-      [s$s.slideIn]: isOpen2,
-      [s$s.slideOut]: closingAnimation
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$t.modal, className, s$t[`${size}`], s$t[`${position}`], s$t[`${padding}Padding`], {
+      [s$t.isOpen]: isOpen2,
+      [s$t.slideIn]: isOpen2,
+      [s$t.slideOut]: closingAnimation
     }),
-    overlayClassName: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$s.overlay, s$s[`${overlayzIndex}`], s$s.fadeIn, {
-      [s$s.isOverlayOpen]: isOpen2 && !closingAnimation,
-      [s$s.fadeOut]: closingAnimation
+    overlayClassName: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$t.overlay, s$t[`${overlayzIndex}`], s$t.fadeIn, {
+      [s$t.isOverlayOpen]: isOpen2 && !closingAnimation,
+      [s$t.fadeOut]: closingAnimation
     }),
     onAfterOpen: () => no_scroll__WEBPACK_IMPORTED_MODULE_3___default().on(),
     onAfterClose: () => no_scroll__WEBPACK_IMPORTED_MODULE_3___default().off(),
@@ -8159,14 +8174,15 @@ const Modal = ({
     isOpen: isOpen2,
     ariaHideApp: false,
     testId: "reactModal",
+    shouldCloseOnOverlayClick,
     ...props
   }, closeIcon && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     onClick: onRequestClose,
-    className: s$s.closeButton,
+    className: s$t.closeButton,
     "data-testid": "modal-close-button",
     "aria-label": closeLabel
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(CloseIcon, null)), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$s.content, contentClassName, { [s$s.contentScrollable]: scrollable })
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$t.content, contentClassName, { [s$t.contentScrollable]: scrollable })
   }, children2));
 };
 const CardTemplatePanel = ({
@@ -8208,29 +8224,29 @@ const CardTemplatePanel = ({
     shouldCloseOnOverlayClick,
     position: modalPosition
   }, title2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$t.header
+    className: s$u.header
   }, title2), children2) : /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$t.container
+    className: s$u.container
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Card, {
     "data-testid": "card-panel",
     ...otherProps,
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$t.card, {
-      [s$t.slideIn]: isOpen2,
-      [s$t.slideOut]: closingAnimation,
-      [s$t.fullscreen]: isFullScreen
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$u.card, {
+      [s$u.slideIn]: isOpen2,
+      [s$u.slideOut]: closingAnimation,
+      [s$u.fullscreen]: isFullScreen
     })
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$t.panelHeader
+    className: s$u.panelHeader
   }, title2, closeIcon && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     onClick: () => setClosingAnimation(true),
-    className: s$t.closeButton,
+    className: s$u.closeButton,
     "data-testid": "card-panel-close-button"
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(CloseIcon, null))), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: s$t.body
+    className: s$u.body
   }, children2)), !isFullScreen && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     "data-testid": "card-overlay",
     onClick: () => setClosingAnimation(true),
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$t.overlay, { [s$t.fadeIn]: isOpen2, [s$t.fadeOut]: closingAnimation })
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$u.overlay, { [s$u.fadeIn]: isOpen2, [s$u.fadeOut]: closingAnimation })
   }))));
 };
 const circleStepper = "_circleStepper_16uv0_1";
@@ -8239,7 +8255,7 @@ const green$3 = "_green_16uv0_20";
 const blue$3 = "_blue_16uv0_24";
 const red$3 = "_red_16uv0_28";
 const yellow$4 = "_yellow_16uv0_32";
-var s$r = {
+var s$s = {
   circleStepper,
   steps,
   green: green$3,
@@ -8258,7 +8274,7 @@ const yellow$3 = "_yellow_es814_31";
 const red$2 = "_red_es814_35";
 const blue$2 = "_blue_es814_39";
 const progressRing = "_progressRing_es814_43";
-var s$q = {
+var s$r = {
   progressCircle,
   complete,
   backgroundGreen,
@@ -8282,21 +8298,21 @@ const ProgressCircle = ({
     width: "56",
     height: "56",
     viewBox: "0 0 56 56",
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$q.progressCircle, className)
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$r.progressCircle, className)
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("circle", {
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()({
-      [s$q.backgroundGreen]: color === "green",
-      [s$q.backgroundBlue]: color === "blue",
-      [s$q.backgroundYellow]: color === "yellow",
-      [s$q.backgroundRed]: color === "red",
-      [s$q.complete]: progress2 === 1 && color === "green"
+      [s$r.backgroundGreen]: color === "green",
+      [s$r.backgroundBlue]: color === "blue",
+      [s$r.backgroundYellow]: color === "yellow",
+      [s$r.backgroundRed]: color === "red",
+      [s$r.complete]: progress2 === 1 && color === "green"
     }),
     strokeWidth: "1.5",
     r: PROGRESS_CIRCLE_RADIUS,
     cx: PROGRESS_CIRCLE_RADIUS + 2,
     cy: PROGRESS_CIRCLE_RADIUS + 2
   }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("circle", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$q.progressRing, s$q[color]),
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$r.progressRing, s$r[color]),
     strokeWidth: "3",
     strokeLinecap: "round",
     strokeDasharray: `${circumference}`,
@@ -8313,19 +8329,19 @@ const CircleStepper = ({
 }) => {
   const progress2 = steps2 > 0 ? activeStep / steps2 : 0;
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    className: s$r.circleStepper
+    className: s$s.circleStepper
   }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ProgressCircle, {
     progress: progress2,
     color
   }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$r.steps, s$r[color])
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$s.steps, s$s[color])
   }, activeStep, "/", steps2));
 };
-const inCard$1 = "_inCard_1onvk_1";
-const checked = "_checked_1onvk_11";
-const readOnly$1 = "_readOnly_1onvk_16";
-const disabled$5 = "_disabled_1onvk_17";
-var s$p = {
+const inCard$1 = "_inCard_4kfai_1";
+const checked = "_checked_4kfai_12";
+const readOnly$1 = "_readOnly_4kfai_17";
+const disabled$5 = "_disabled_4kfai_18";
+var s$q = {
   inCard: inCard$1,
   checked,
   readOnly: readOnly$1,
@@ -8338,46 +8354,37 @@ const InCardContainer = ({
   readOnly: readOnly2,
   error: error2,
   disabled: disabled2,
-  checked: checked2,
-  onParentClick
+  checked: checked2
 }) => {
   return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, {
-      [s$p.error]: error2,
-      [s$p.inCard]: inCard2,
-      [s$p.disabled]: disabled2,
-      [s$p.readOnly]: readOnly2,
-      [s$p.checked]: checked2
-    }),
-    ...inCard2 && {
-      onClick: (e) => {
-        const element = e.target;
-        if (element.tagName.toLowerCase() === "div") {
-          onParentClick();
-        }
-      }
-    }
+      [s$q.error]: error2,
+      [s$q.inCard]: inCard2,
+      [s$q.disabled]: disabled2,
+      [s$q.readOnly]: readOnly2,
+      [s$q.checked]: checked2
+    })
   }, children2);
 };
-const container$5 = "_container_x5a1w_1";
-const icon$3 = "_icon_x5a1w_13";
-const description$2 = "_description_x5a1w_18";
-const textContainer = "_textContainer_x5a1w_22";
-const additionalMessage$1 = "_additionalMessage_x5a1w_26";
-const reverse = "_reverse_x5a1w_37";
-const iconVerticalAlignTop = "_iconVerticalAlignTop_x5a1w_37";
-const checkboxContainer = "_checkboxContainer_x5a1w_57";
-const tickContainer = "_tickContainer_x5a1w_57";
-const tick = "_tick_x5a1w_57";
-const radioButtonContainer = "_radioButtonContainer_x5a1w_81";
-const checkbox$1 = "_checkbox_x5a1w_57";
-const label$2 = "_label_x5a1w_104";
-const radio = "_radio_x5a1w_81";
-const orange$2 = "_orange_x5a1w_128";
-const yellow$2 = "_yellow_x5a1w_133";
-const disabledContainer = "_disabledContainer_x5a1w_138";
-const readOnlyContainer = "_readOnlyContainer_x5a1w_139";
-var s$o = {
+const container$5 = "_container_1hz38_1";
+const icon$3 = "_icon_1hz38_13";
+const description$2 = "_description_1hz38_18";
+const textContainer = "_textContainer_1hz38_22";
+const additionalMessage$1 = "_additionalMessage_1hz38_26";
+const reverse = "_reverse_1hz38_37";
+const iconVerticalAlignTop = "_iconVerticalAlignTop_1hz38_37";
+const checkboxContainer = "_checkboxContainer_1hz38_58";
+const tickContainer = "_tickContainer_1hz38_58";
+const tick = "_tick_1hz38_58";
+const radioButtonContainer = "_radioButtonContainer_1hz38_82";
+const checkbox$1 = "_checkbox_1hz38_58";
+const label$2 = "_label_1hz38_105";
+const radio = "_radio_1hz38_82";
+const orange$2 = "_orange_1hz38_128";
+const yellow$2 = "_yellow_1hz38_133";
+const disabledContainer = "_disabledContainer_1hz38_138";
+const readOnlyContainer = "_readOnlyContainer_1hz38_139";
+var s$p = {
   container: container$5,
   icon: icon$3,
   description: description$2,
@@ -8420,27 +8427,24 @@ const InputVariant = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
     inputType,
     ...props
   }, ref) => {
-    const innerLabelRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
     const imageSize = 40;
-    return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InCardContainer, {
-      onParentClick: () => {
-        var _a;
-        return (_a = innerLabelRef == null ? void 0 : innerLabelRef.current) == null ? void 0 : _a.click();
-      },
+    return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+      "data-testid": id,
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$p.label)
+    }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InCardContainer, {
       error: error2,
       disabled: disabled2,
       readOnly: readOnly2,
       inCard: inCard2,
       checked: checked2,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$o.container, {
-        [s$o.reverse]: direction === "row-reverse",
-        [s$o.checkboxContainer]: inputType === "checkbox",
-        [s$o.radioButtonContainer]: inputType === "radio",
-        [s$o.readOnlyContainer]: readOnly2,
-        [s$o.disabledContainer]: disabled2
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(className, s$p.container, {
+        [s$p.reverse]: direction === "row-reverse",
+        [s$p.checkboxContainer]: inputType === "checkbox",
+        [s$p.radioButtonContainer]: inputType === "radio",
+        [s$p.readOnlyContainer]: readOnly2,
+        [s$p.disabledContainer]: disabled2
       })
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
-      ...props,
       disabled: disabled2,
       readOnly: readOnly2,
       type: inputType,
@@ -8448,39 +8452,36 @@ const InputVariant = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       name: name2,
       value: value2,
       ref,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$o[color], s$o[inputType]),
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$p[color], s$p[inputType]),
       checked: checked2,
-      onChange: onChange2
+      onChange: onChange2,
+      ...props
     }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$o.tickContainer)
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$p.tickContainer)
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       icon: IconName.tick,
       color: "white",
-      className: s$o.tick
+      className: s$p.tick
     }))), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$o.description
-    }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-      ref: innerLabelRef,
-      htmlFor: id,
-      "data-testid": id,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$o.label)
-    }, label2), description2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$o.additionalMessage
+      className: s$p.description
+    }, label2, description2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: s$p.additionalMessage
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, description2)), error2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: s$o.additionalMessage
+      className: s$p.additionalMessage
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ErrorMessage, null, error2))), inCard2 && (icon2 || image) && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$o.icon, {
-        [s$o.iconVerticalAlignTop]: direction === "row-reverse" && iconVerticalAlign === "top"
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$p.icon, {
+        [s$p.iconVerticalAlignTop]: direction === "row-reverse" && iconVerticalAlign === "top"
       }),
       "data-testid": "incard-visual-element",
       style: { width: icon2 ? iconSize : imageSize, height: icon2 ? iconSize : imageSize }
-    }, icon2 != null ? icon2 : image));
+    }, icon2 != null ? icon2 : image)));
   }
 );
 InputVariant.displayName = "InputVariant";
-const Checkbox = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(({ ...props }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputVariant, {
+const Checkbox = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(({ ...props }, ref) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputVariant, {
   inputType: "checkbox",
-  ...props
+  ...props,
+  ref
 }));
 Checkbox.displayName = "Checkbox";
 const CodeInputField = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef(
@@ -8512,6 +8513,97 @@ const CodeInputField = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef(
   }
 );
 CodeInputField.displayName = "CodeInputField";
+const drawer = "_drawer_14ieg_1";
+const drawerCheckbox = "_drawerCheckbox_14ieg_1";
+const drawerOverlay = "_drawerOverlay_14ieg_5";
+const drawerContainer = "_drawerContainer_14ieg_14";
+const left = "_left_14ieg_35";
+const right$1 = "_right_14ieg_43";
+const bottom = "_bottom_14ieg_51";
+const top = "_top_14ieg_60";
+var s$o = {
+  drawer,
+  drawerCheckbox,
+  drawerOverlay,
+  drawerContainer,
+  left,
+  right: right$1,
+  bottom,
+  top
+};
+const getDirectionStyle = (dir) => {
+  const directionStyle = {
+    left: s$o.left,
+    right: s$o.right,
+    bottom: s$o.bottom,
+    top: s$o.top
+  };
+  return directionStyle[dir];
+};
+const Drawer = (props) => {
+  const {
+    open,
+    onClose = () => null,
+    children: children2,
+    style: style2,
+    enableOverlay = true,
+    overlayColor = "#000",
+    overlayOpacity = 0.1,
+    zIndex = 100,
+    duration = 500,
+    direction,
+    size = "450px",
+    className,
+    customIdSuffix,
+    lockBackgroundScroll = false,
+    overlayClassName = ""
+  } = props;
+  const bodyRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    const updatePageScroll = () => {
+      bodyRef.current = window.document.querySelector("body");
+      if (bodyRef.current && lockBackgroundScroll) {
+        bodyRef.current.style.overflow = open ? "hidden" : "";
+      }
+    };
+    updatePageScroll();
+  }, [open, lockBackgroundScroll]);
+  const idSuffix = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+    return customIdSuffix || (Math.random() + 1).toString(36).substring(7);
+  }, [customIdSuffix]);
+  const overlayStyles = {
+    backgroundColor: overlayColor.toString(),
+    opacity: overlayOpacity,
+    zIndex
+  };
+  const drawerStyles = {
+    zIndex: zIndex + 1,
+    transitionDuration: `${duration}ms`,
+    ...style2
+  };
+  return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    id: "drawer" + idSuffix,
+    className: s$o.drawer
+  }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    type: "checkbox",
+    "data-testid": "drawerCheckbox",
+    id: "drawerCheckbox" + idSuffix,
+    className: s$o.drawerCheckbox,
+    onChange: onClose,
+    checked: open
+  }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("nav", {
+    role: "navigation",
+    id: "drawerContainer" + idSuffix,
+    style: { ...drawerStyles, "--size": size },
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$o.drawerContainer, getDirectionStyle(direction), className)
+  }, children2), enableOverlay && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    htmlFor: "drawerCheckbox" + idSuffix,
+    id: "drawerOverlay" + idSuffix,
+    "data-testid": "drawerOverlay",
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$o.drawerOverlay, overlayClassName),
+    style: overlayStyles
+  }));
+};
 const container$4 = "_container_axs2v_1";
 const selectContainer = "_selectContainer_axs2v_6";
 const regularBorder$1 = "_regularBorder_axs2v_25";
@@ -16603,9 +16695,10 @@ const ProgressBar = ({
     style: { width: `${progress2}%` }
   })));
 };
-const RadioButton = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(({ ...props }) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputVariant, {
+const RadioButton = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(({ ...props }, ref) => /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputVariant, {
   inputType: "radio",
-  ...props
+  ...props,
+  ref
 }));
 RadioButton.displayName = "RadioButton";
 const loading = "_loading_17wzl_1";
@@ -16694,12 +16787,9 @@ const SwitchField = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
     icon: icon2,
     ...otherProps
   }, ref) => {
-    const innerLabelRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
-    return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InCardContainer, {
-      onParentClick: () => {
-        var _a;
-        return (_a = innerLabelRef == null ? void 0 : innerLabelRef.current) == null ? void 0 : _a.click();
-      },
+    return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$b.switchLabel, { [s$b.disabled]: disabled2 })
+    }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InCardContainer, {
       error: error2,
       disabled: disabled2,
       readOnly: readOnly2,
@@ -16716,11 +16806,7 @@ const SwitchField = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
       className: s$b.textBlock
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       className: s$b.switchWithLabel
-    }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-      htmlFor: id,
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(s$b.switchLabel, { [s$b.disabled]: disabled2 }),
-      ref: innerLabelRef
-    }, label2)), description2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    }, label2), description2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       className: s$b.additionalMessage
     }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, description2)), error2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       className: s$b.additionalMessage
@@ -16729,7 +16815,7 @@ const SwitchField = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
     }, legend)), inCard2 && icon2 && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
       className: s$b.icon,
       "data-testid": "switch-icon"
-    }, icon2));
+    }, icon2)));
   }
 );
 SwitchField.displayName = "SwitchField";
@@ -17444,6 +17530,698 @@ const TabEntry = ({ icon: icon2, title: title2, subtitle: subtitle2, ...otherPro
 TabEntry.displayName = "TabEntry";
 
 //# sourceMappingURL=lib.es.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@alma/react-components/dist/style.css":
+/*!************************************************************!*\
+  !*** ./node_modules/@alma/react-components/dist/style.css ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _arrayLikeToArray)
+/* harmony export */ });
+function _arrayLikeToArray(r, a) {
+  (null == a || a > r.length) && (a = r.length);
+  for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e];
+  return n;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/arrayWithHoles.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/arrayWithHoles.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _arrayWithHoles)
+/* harmony export */ });
+function _arrayWithHoles(r) {
+  if (Array.isArray(r)) return r;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/arrayWithoutHoles.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/arrayWithoutHoles.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _arrayWithoutHoles)
+/* harmony export */ });
+/* harmony import */ var _arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arrayLikeToArray.js */ "./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js");
+
+function _arrayWithoutHoles(r) {
+  if (Array.isArray(r)) return (0,_arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r);
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js":
+/*!**************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _assertThisInitialized)
+/* harmony export */ });
+function _assertThisInitialized(e) {
+  if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  return e;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/classCallCheck.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/classCallCheck.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _classCallCheck)
+/* harmony export */ });
+function _classCallCheck(a, n) {
+  if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function");
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/createClass.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/createClass.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _createClass)
+/* harmony export */ });
+/* harmony import */ var _toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./toPropertyKey.js */ "./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js");
+
+function _defineProperties(e, r) {
+  for (var t = 0; t < r.length; t++) {
+    var o = r[t];
+    o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, (0,_toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__["default"])(o.key), o);
+  }
+}
+function _createClass(e, r, t) {
+  return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", {
+    writable: !1
+  }), e;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/createSuper.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/createSuper.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _createSuper)
+/* harmony export */ });
+/* harmony import */ var _getPrototypeOf_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getPrototypeOf.js */ "./node_modules/@babel/runtime/helpers/esm/getPrototypeOf.js");
+/* harmony import */ var _isNativeReflectConstruct_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./isNativeReflectConstruct.js */ "./node_modules/@babel/runtime/helpers/esm/isNativeReflectConstruct.js");
+/* harmony import */ var _possibleConstructorReturn_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./possibleConstructorReturn.js */ "./node_modules/@babel/runtime/helpers/esm/possibleConstructorReturn.js");
+
+
+
+function _createSuper(t) {
+  var r = (0,_isNativeReflectConstruct_js__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  return function () {
+    var e,
+      o = (0,_getPrototypeOf_js__WEBPACK_IMPORTED_MODULE_0__["default"])(t);
+    if (r) {
+      var s = (0,_getPrototypeOf_js__WEBPACK_IMPORTED_MODULE_0__["default"])(this).constructor;
+      e = Reflect.construct(o, arguments, s);
+    } else e = o.apply(this, arguments);
+    return (0,_possibleConstructorReturn_js__WEBPACK_IMPORTED_MODULE_2__["default"])(this, e);
+  };
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/defineProperty.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _defineProperty)
+/* harmony export */ });
+/* harmony import */ var _toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./toPropertyKey.js */ "./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js");
+
+function _defineProperty(e, r, t) {
+  return (r = (0,_toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r)) in e ? Object.defineProperty(e, r, {
+    value: t,
+    enumerable: !0,
+    configurable: !0,
+    writable: !0
+  }) : e[r] = t, e;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/extends.js":
+/*!************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/extends.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _extends)
+/* harmony export */ });
+function _extends() {
+  return _extends = Object.assign ? Object.assign.bind() : function (n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
+    }
+    return n;
+  }, _extends.apply(null, arguments);
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/getPrototypeOf.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/getPrototypeOf.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _getPrototypeOf)
+/* harmony export */ });
+function _getPrototypeOf(t) {
+  return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) {
+    return t.__proto__ || Object.getPrototypeOf(t);
+  }, _getPrototypeOf(t);
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/inherits.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/inherits.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _inherits)
+/* harmony export */ });
+/* harmony import */ var _setPrototypeOf_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./setPrototypeOf.js */ "./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js");
+
+function _inherits(t, e) {
+  if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function");
+  t.prototype = Object.create(e && e.prototype, {
+    constructor: {
+      value: t,
+      writable: !0,
+      configurable: !0
+    }
+  }), Object.defineProperty(t, "prototype", {
+    writable: !1
+  }), e && (0,_setPrototypeOf_js__WEBPACK_IMPORTED_MODULE_0__["default"])(t, e);
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/isNativeReflectConstruct.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/isNativeReflectConstruct.js ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _isNativeReflectConstruct)
+/* harmony export */ });
+function _isNativeReflectConstruct() {
+  try {
+    var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+  } catch (t) {}
+  return (_isNativeReflectConstruct = function _isNativeReflectConstruct() {
+    return !!t;
+  })();
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/iterableToArray.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/iterableToArray.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _iterableToArray)
+/* harmony export */ });
+function _iterableToArray(r) {
+  if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r);
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _iterableToArrayLimit)
+/* harmony export */ });
+function _iterableToArrayLimit(r, l) {
+  var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
+  if (null != t) {
+    var e,
+      n,
+      i,
+      u,
+      a = [],
+      f = !0,
+      o = !1;
+    try {
+      if (i = (t = t.call(r)).next, 0 === l) {
+        if (Object(t) !== t) return;
+        f = !1;
+      } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0);
+    } catch (r) {
+      o = !0, n = r;
+    } finally {
+      try {
+        if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return;
+      } finally {
+        if (o) throw n;
+      }
+    }
+    return a;
+  }
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/nonIterableRest.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/nonIterableRest.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _nonIterableRest)
+/* harmony export */ });
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/nonIterableSpread.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/nonIterableSpread.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _nonIterableSpread)
+/* harmony export */ });
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/objectSpread2.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/objectSpread2.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _objectSpread2)
+/* harmony export */ });
+/* harmony import */ var _defineProperty_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./defineProperty.js */ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js");
+
+function ownKeys(e, r) {
+  var t = Object.keys(e);
+  if (Object.getOwnPropertySymbols) {
+    var o = Object.getOwnPropertySymbols(e);
+    r && (o = o.filter(function (r) {
+      return Object.getOwnPropertyDescriptor(e, r).enumerable;
+    })), t.push.apply(t, o);
+  }
+  return t;
+}
+function _objectSpread2(e) {
+  for (var r = 1; r < arguments.length; r++) {
+    var t = null != arguments[r] ? arguments[r] : {};
+    r % 2 ? ownKeys(Object(t), !0).forEach(function (r) {
+      (0,_defineProperty_js__WEBPACK_IMPORTED_MODULE_0__["default"])(e, r, t[r]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) {
+      Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
+    });
+  }
+  return e;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _objectWithoutProperties)
+/* harmony export */ });
+/* harmony import */ var _objectWithoutPropertiesLoose_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./objectWithoutPropertiesLoose.js */ "./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js");
+
+function _objectWithoutProperties(e, t) {
+  if (null == e) return {};
+  var o,
+    r,
+    i = (0,_objectWithoutPropertiesLoose_js__WEBPACK_IMPORTED_MODULE_0__["default"])(e, t);
+  if (Object.getOwnPropertySymbols) {
+    var s = Object.getOwnPropertySymbols(e);
+    for (r = 0; r < s.length; r++) o = s[r], t.includes(o) || {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
+  }
+  return i;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _objectWithoutPropertiesLoose)
+/* harmony export */ });
+function _objectWithoutPropertiesLoose(r, e) {
+  if (null == r) return {};
+  var t = {};
+  for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
+    if (e.includes(n)) continue;
+    t[n] = r[n];
+  }
+  return t;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/possibleConstructorReturn.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/possibleConstructorReturn.js ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _possibleConstructorReturn)
+/* harmony export */ });
+/* harmony import */ var _typeof_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./typeof.js */ "./node_modules/@babel/runtime/helpers/esm/typeof.js");
+/* harmony import */ var _assertThisInitialized_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./assertThisInitialized.js */ "./node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js");
+
+
+function _possibleConstructorReturn(t, e) {
+  if (e && ("object" == (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(e) || "function" == typeof e)) return e;
+  if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined");
+  return (0,_assertThisInitialized_js__WEBPACK_IMPORTED_MODULE_1__["default"])(t);
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _setPrototypeOf)
+/* harmony export */ });
+function _setPrototypeOf(t, e) {
+  return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) {
+    return t.__proto__ = e, t;
+  }, _setPrototypeOf(t, e);
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/slicedToArray.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/slicedToArray.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _slicedToArray)
+/* harmony export */ });
+/* harmony import */ var _arrayWithHoles_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arrayWithHoles.js */ "./node_modules/@babel/runtime/helpers/esm/arrayWithHoles.js");
+/* harmony import */ var _iterableToArrayLimit_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./iterableToArrayLimit.js */ "./node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js");
+/* harmony import */ var _unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./unsupportedIterableToArray.js */ "./node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js");
+/* harmony import */ var _nonIterableRest_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./nonIterableRest.js */ "./node_modules/@babel/runtime/helpers/esm/nonIterableRest.js");
+
+
+
+
+function _slicedToArray(r, e) {
+  return (0,_arrayWithHoles_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r) || (0,_iterableToArrayLimit_js__WEBPACK_IMPORTED_MODULE_1__["default"])(r, e) || (0,_unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__["default"])(r, e) || (0,_nonIterableRest_js__WEBPACK_IMPORTED_MODULE_3__["default"])();
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/taggedTemplateLiteral.js":
+/*!**************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/taggedTemplateLiteral.js ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _taggedTemplateLiteral)
+/* harmony export */ });
+function _taggedTemplateLiteral(e, t) {
+  return t || (t = e.slice(0)), Object.freeze(Object.defineProperties(e, {
+    raw: {
+      value: Object.freeze(t)
+    }
+  }));
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/toConsumableArray.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/toConsumableArray.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _toConsumableArray)
+/* harmony export */ });
+/* harmony import */ var _arrayWithoutHoles_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arrayWithoutHoles.js */ "./node_modules/@babel/runtime/helpers/esm/arrayWithoutHoles.js");
+/* harmony import */ var _iterableToArray_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./iterableToArray.js */ "./node_modules/@babel/runtime/helpers/esm/iterableToArray.js");
+/* harmony import */ var _unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./unsupportedIterableToArray.js */ "./node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js");
+/* harmony import */ var _nonIterableSpread_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./nonIterableSpread.js */ "./node_modules/@babel/runtime/helpers/esm/nonIterableSpread.js");
+
+
+
+
+function _toConsumableArray(r) {
+  return (0,_arrayWithoutHoles_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r) || (0,_iterableToArray_js__WEBPACK_IMPORTED_MODULE_1__["default"])(r) || (0,_unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__["default"])(r) || (0,_nonIterableSpread_js__WEBPACK_IMPORTED_MODULE_3__["default"])();
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/toPrimitive.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/toPrimitive.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ toPrimitive)
+/* harmony export */ });
+/* harmony import */ var _typeof_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./typeof.js */ "./node_modules/@babel/runtime/helpers/esm/typeof.js");
+
+function toPrimitive(t, r) {
+  if ("object" != (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(t) || !t) return t;
+  var e = t[Symbol.toPrimitive];
+  if (void 0 !== e) {
+    var i = e.call(t, r || "default");
+    if ("object" != (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(i)) return i;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return ("string" === r ? String : Number)(t);
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ toPropertyKey)
+/* harmony export */ });
+/* harmony import */ var _typeof_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./typeof.js */ "./node_modules/@babel/runtime/helpers/esm/typeof.js");
+/* harmony import */ var _toPrimitive_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./toPrimitive.js */ "./node_modules/@babel/runtime/helpers/esm/toPrimitive.js");
+
+
+function toPropertyKey(t) {
+  var i = (0,_toPrimitive_js__WEBPACK_IMPORTED_MODULE_1__["default"])(t, "string");
+  return "symbol" == (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(i) ? i : i + "";
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/typeof.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/typeof.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _typeof)
+/* harmony export */ });
+function _typeof(o) {
+  "@babel/helpers - typeof";
+
+  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
+    return typeof o;
+  } : function (o) {
+    return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
+  }, _typeof(o);
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _unsupportedIterableToArray)
+/* harmony export */ });
+/* harmony import */ var _arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arrayLikeToArray.js */ "./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js");
+
+function _unsupportedIterableToArray(r, a) {
+  if (r) {
+    if ("string" == typeof r) return (0,_arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r, a);
+    var t = {}.toString.call(r).slice(8, -1);
+    return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? (0,_arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r, a) : void 0;
+  }
+}
 
 
 /***/ }),
@@ -19786,6 +20564,2221 @@ var weakMemoize = function weakMemoize(func) {
     return ret;
   };
 };
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@floating-ui/core/dist/floating-ui.core.mjs":
+/*!******************************************************************!*\
+  !*** ./node_modules/@floating-ui/core/dist/floating-ui.core.mjs ***!
+  \******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   arrow: () => (/* binding */ arrow),
+/* harmony export */   autoPlacement: () => (/* binding */ autoPlacement),
+/* harmony export */   computePosition: () => (/* binding */ computePosition),
+/* harmony export */   detectOverflow: () => (/* binding */ detectOverflow),
+/* harmony export */   flip: () => (/* binding */ flip),
+/* harmony export */   hide: () => (/* binding */ hide),
+/* harmony export */   inline: () => (/* binding */ inline),
+/* harmony export */   limitShift: () => (/* binding */ limitShift),
+/* harmony export */   offset: () => (/* binding */ offset),
+/* harmony export */   rectToClientRect: () => (/* reexport safe */ _floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.rectToClientRect),
+/* harmony export */   shift: () => (/* binding */ shift),
+/* harmony export */   size: () => (/* binding */ size)
+/* harmony export */ });
+/* harmony import */ var _floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @floating-ui/utils */ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.mjs");
+
+
+
+function computeCoordsFromPlacement(_ref, placement, rtl) {
+  let {
+    reference,
+    floating
+  } = _ref;
+  const sideAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(placement);
+  const alignmentAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignmentAxis)(placement);
+  const alignLength = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAxisLength)(alignmentAxis);
+  const side = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement);
+  const isVertical = sideAxis === 'y';
+  const commonX = reference.x + reference.width / 2 - floating.width / 2;
+  const commonY = reference.y + reference.height / 2 - floating.height / 2;
+  const commonAlign = reference[alignLength] / 2 - floating[alignLength] / 2;
+  let coords;
+  switch (side) {
+    case 'top':
+      coords = {
+        x: commonX,
+        y: reference.y - floating.height
+      };
+      break;
+    case 'bottom':
+      coords = {
+        x: commonX,
+        y: reference.y + reference.height
+      };
+      break;
+    case 'right':
+      coords = {
+        x: reference.x + reference.width,
+        y: commonY
+      };
+      break;
+    case 'left':
+      coords = {
+        x: reference.x - floating.width,
+        y: commonY
+      };
+      break;
+    default:
+      coords = {
+        x: reference.x,
+        y: reference.y
+      };
+  }
+  switch ((0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(placement)) {
+    case 'start':
+      coords[alignmentAxis] -= commonAlign * (rtl && isVertical ? -1 : 1);
+      break;
+    case 'end':
+      coords[alignmentAxis] += commonAlign * (rtl && isVertical ? -1 : 1);
+      break;
+  }
+  return coords;
+}
+
+/**
+ * Computes the `x` and `y` coordinates that will place the floating element
+ * next to a given reference element.
+ *
+ * This export does not have any `platform` interface logic. You will need to
+ * write one for the platform you are using Floating UI with.
+ */
+const computePosition = async (reference, floating, config) => {
+  const {
+    placement = 'bottom',
+    strategy = 'absolute',
+    middleware = [],
+    platform
+  } = config;
+  const validMiddleware = middleware.filter(Boolean);
+  const rtl = await (platform.isRTL == null ? void 0 : platform.isRTL(floating));
+  let rects = await platform.getElementRects({
+    reference,
+    floating,
+    strategy
+  });
+  let {
+    x,
+    y
+  } = computeCoordsFromPlacement(rects, placement, rtl);
+  let statefulPlacement = placement;
+  let middlewareData = {};
+  let resetCount = 0;
+  for (let i = 0; i < validMiddleware.length; i++) {
+    const {
+      name,
+      fn
+    } = validMiddleware[i];
+    const {
+      x: nextX,
+      y: nextY,
+      data,
+      reset
+    } = await fn({
+      x,
+      y,
+      initialPlacement: placement,
+      placement: statefulPlacement,
+      strategy,
+      middlewareData,
+      rects,
+      platform,
+      elements: {
+        reference,
+        floating
+      }
+    });
+    x = nextX != null ? nextX : x;
+    y = nextY != null ? nextY : y;
+    middlewareData = {
+      ...middlewareData,
+      [name]: {
+        ...middlewareData[name],
+        ...data
+      }
+    };
+    if (reset && resetCount <= 50) {
+      resetCount++;
+      if (typeof reset === 'object') {
+        if (reset.placement) {
+          statefulPlacement = reset.placement;
+        }
+        if (reset.rects) {
+          rects = reset.rects === true ? await platform.getElementRects({
+            reference,
+            floating,
+            strategy
+          }) : reset.rects;
+        }
+        ({
+          x,
+          y
+        } = computeCoordsFromPlacement(rects, statefulPlacement, rtl));
+      }
+      i = -1;
+    }
+  }
+  return {
+    x,
+    y,
+    placement: statefulPlacement,
+    strategy,
+    middlewareData
+  };
+};
+
+/**
+ * Resolves with an object of overflow side offsets that determine how much the
+ * element is overflowing a given clipping boundary on each side.
+ * - positive = overflowing the boundary by that number of pixels
+ * - negative = how many pixels left before it will overflow
+ * - 0 = lies flush with the boundary
+ * @see https://floating-ui.com/docs/detectOverflow
+ */
+async function detectOverflow(state, options) {
+  var _await$platform$isEle;
+  if (options === void 0) {
+    options = {};
+  }
+  const {
+    x,
+    y,
+    platform,
+    rects,
+    elements,
+    strategy
+  } = state;
+  const {
+    boundary = 'clippingAncestors',
+    rootBoundary = 'viewport',
+    elementContext = 'floating',
+    altBoundary = false,
+    padding = 0
+  } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
+  const paddingObject = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getPaddingObject)(padding);
+  const altContext = elementContext === 'floating' ? 'reference' : 'floating';
+  const element = elements[altBoundary ? altContext : elementContext];
+  const clippingClientRect = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.rectToClientRect)(await platform.getClippingRect({
+    element: ((_await$platform$isEle = await (platform.isElement == null ? void 0 : platform.isElement(element))) != null ? _await$platform$isEle : true) ? element : element.contextElement || (await (platform.getDocumentElement == null ? void 0 : platform.getDocumentElement(elements.floating))),
+    boundary,
+    rootBoundary,
+    strategy
+  }));
+  const rect = elementContext === 'floating' ? {
+    x,
+    y,
+    width: rects.floating.width,
+    height: rects.floating.height
+  } : rects.reference;
+  const offsetParent = await (platform.getOffsetParent == null ? void 0 : platform.getOffsetParent(elements.floating));
+  const offsetScale = (await (platform.isElement == null ? void 0 : platform.isElement(offsetParent))) ? (await (platform.getScale == null ? void 0 : platform.getScale(offsetParent))) || {
+    x: 1,
+    y: 1
+  } : {
+    x: 1,
+    y: 1
+  };
+  const elementClientRect = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.rectToClientRect)(platform.convertOffsetParentRelativeRectToViewportRelativeRect ? await platform.convertOffsetParentRelativeRectToViewportRelativeRect({
+    elements,
+    rect,
+    offsetParent,
+    strategy
+  }) : rect);
+  return {
+    top: (clippingClientRect.top - elementClientRect.top + paddingObject.top) / offsetScale.y,
+    bottom: (elementClientRect.bottom - clippingClientRect.bottom + paddingObject.bottom) / offsetScale.y,
+    left: (clippingClientRect.left - elementClientRect.left + paddingObject.left) / offsetScale.x,
+    right: (elementClientRect.right - clippingClientRect.right + paddingObject.right) / offsetScale.x
+  };
+}
+
+/**
+ * Provides data to position an inner element of the floating element so that it
+ * appears centered to the reference element.
+ * @see https://floating-ui.com/docs/arrow
+ */
+const arrow = options => ({
+  name: 'arrow',
+  options,
+  async fn(state) {
+    const {
+      x,
+      y,
+      placement,
+      rects,
+      platform,
+      elements,
+      middlewareData
+    } = state;
+    // Since `element` is required, we don't Partial<> the type.
+    const {
+      element,
+      padding = 0
+    } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state) || {};
+    if (element == null) {
+      return {};
+    }
+    const paddingObject = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getPaddingObject)(padding);
+    const coords = {
+      x,
+      y
+    };
+    const axis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignmentAxis)(placement);
+    const length = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAxisLength)(axis);
+    const arrowDimensions = await platform.getDimensions(element);
+    const isYAxis = axis === 'y';
+    const minProp = isYAxis ? 'top' : 'left';
+    const maxProp = isYAxis ? 'bottom' : 'right';
+    const clientProp = isYAxis ? 'clientHeight' : 'clientWidth';
+    const endDiff = rects.reference[length] + rects.reference[axis] - coords[axis] - rects.floating[length];
+    const startDiff = coords[axis] - rects.reference[axis];
+    const arrowOffsetParent = await (platform.getOffsetParent == null ? void 0 : platform.getOffsetParent(element));
+    let clientSize = arrowOffsetParent ? arrowOffsetParent[clientProp] : 0;
+
+    // DOM platform can return `window` as the `offsetParent`.
+    if (!clientSize || !(await (platform.isElement == null ? void 0 : platform.isElement(arrowOffsetParent)))) {
+      clientSize = elements.floating[clientProp] || rects.floating[length];
+    }
+    const centerToReference = endDiff / 2 - startDiff / 2;
+
+    // If the padding is large enough that it causes the arrow to no longer be
+    // centered, modify the padding so that it is centered.
+    const largestPossiblePadding = clientSize / 2 - arrowDimensions[length] / 2 - 1;
+    const minPadding = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(paddingObject[minProp], largestPossiblePadding);
+    const maxPadding = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(paddingObject[maxProp], largestPossiblePadding);
+
+    // Make sure the arrow doesn't overflow the floating element if the center
+    // point is outside the floating element's bounds.
+    const min$1 = minPadding;
+    const max = clientSize - arrowDimensions[length] - maxPadding;
+    const center = clientSize / 2 - arrowDimensions[length] / 2 + centerToReference;
+    const offset = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.clamp)(min$1, center, max);
+
+    // If the reference is small enough that the arrow's padding causes it to
+    // to point to nothing for an aligned placement, adjust the offset of the
+    // floating element itself. To ensure `shift()` continues to take action,
+    // a single reset is performed when this is true.
+    const shouldAddOffset = !middlewareData.arrow && (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(placement) != null && center !== offset && rects.reference[length] / 2 - (center < min$1 ? minPadding : maxPadding) - arrowDimensions[length] / 2 < 0;
+    const alignmentOffset = shouldAddOffset ? center < min$1 ? center - min$1 : center - max : 0;
+    return {
+      [axis]: coords[axis] + alignmentOffset,
+      data: {
+        [axis]: offset,
+        centerOffset: center - offset - alignmentOffset,
+        ...(shouldAddOffset && {
+          alignmentOffset
+        })
+      },
+      reset: shouldAddOffset
+    };
+  }
+});
+
+function getPlacementList(alignment, autoAlignment, allowedPlacements) {
+  const allowedPlacementsSortedByAlignment = alignment ? [...allowedPlacements.filter(placement => (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(placement) === alignment), ...allowedPlacements.filter(placement => (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(placement) !== alignment)] : allowedPlacements.filter(placement => (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement) === placement);
+  return allowedPlacementsSortedByAlignment.filter(placement => {
+    if (alignment) {
+      return (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(placement) === alignment || (autoAlignment ? (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getOppositeAlignmentPlacement)(placement) !== placement : false);
+    }
+    return true;
+  });
+}
+/**
+ * Optimizes the visibility of the floating element by choosing the placement
+ * that has the most space available automatically, without needing to specify a
+ * preferred placement. Alternative to `flip`.
+ * @see https://floating-ui.com/docs/autoPlacement
+ */
+const autoPlacement = function (options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: 'autoPlacement',
+    options,
+    async fn(state) {
+      var _middlewareData$autoP, _middlewareData$autoP2, _placementsThatFitOnE;
+      const {
+        rects,
+        middlewareData,
+        placement,
+        platform,
+        elements
+      } = state;
+      const {
+        crossAxis = false,
+        alignment,
+        allowedPlacements = _floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.placements,
+        autoAlignment = true,
+        ...detectOverflowOptions
+      } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
+      const placements$1 = alignment !== undefined || allowedPlacements === _floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.placements ? getPlacementList(alignment || null, autoAlignment, allowedPlacements) : allowedPlacements;
+      const overflow = await detectOverflow(state, detectOverflowOptions);
+      const currentIndex = ((_middlewareData$autoP = middlewareData.autoPlacement) == null ? void 0 : _middlewareData$autoP.index) || 0;
+      const currentPlacement = placements$1[currentIndex];
+      if (currentPlacement == null) {
+        return {};
+      }
+      const alignmentSides = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignmentSides)(currentPlacement, rects, await (platform.isRTL == null ? void 0 : platform.isRTL(elements.floating)));
+
+      // Make `computeCoords` start from the right place.
+      if (placement !== currentPlacement) {
+        return {
+          reset: {
+            placement: placements$1[0]
+          }
+        };
+      }
+      const currentOverflows = [overflow[(0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(currentPlacement)], overflow[alignmentSides[0]], overflow[alignmentSides[1]]];
+      const allOverflows = [...(((_middlewareData$autoP2 = middlewareData.autoPlacement) == null ? void 0 : _middlewareData$autoP2.overflows) || []), {
+        placement: currentPlacement,
+        overflows: currentOverflows
+      }];
+      const nextPlacement = placements$1[currentIndex + 1];
+
+      // There are more placements to check.
+      if (nextPlacement) {
+        return {
+          data: {
+            index: currentIndex + 1,
+            overflows: allOverflows
+          },
+          reset: {
+            placement: nextPlacement
+          }
+        };
+      }
+      const placementsSortedByMostSpace = allOverflows.map(d => {
+        const alignment = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(d.placement);
+        return [d.placement, alignment && crossAxis ?
+        // Check along the mainAxis and main crossAxis side.
+        d.overflows.slice(0, 2).reduce((acc, v) => acc + v, 0) :
+        // Check only the mainAxis.
+        d.overflows[0], d.overflows];
+      }).sort((a, b) => a[1] - b[1]);
+      const placementsThatFitOnEachSide = placementsSortedByMostSpace.filter(d => d[2].slice(0,
+      // Aligned placements should not check their opposite crossAxis
+      // side.
+      (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(d[0]) ? 2 : 3).every(v => v <= 0));
+      const resetPlacement = ((_placementsThatFitOnE = placementsThatFitOnEachSide[0]) == null ? void 0 : _placementsThatFitOnE[0]) || placementsSortedByMostSpace[0][0];
+      if (resetPlacement !== placement) {
+        return {
+          data: {
+            index: currentIndex + 1,
+            overflows: allOverflows
+          },
+          reset: {
+            placement: resetPlacement
+          }
+        };
+      }
+      return {};
+    }
+  };
+};
+
+/**
+ * Optimizes the visibility of the floating element by flipping the `placement`
+ * in order to keep it in view when the preferred placement(s) will overflow the
+ * clipping boundary. Alternative to `autoPlacement`.
+ * @see https://floating-ui.com/docs/flip
+ */
+const flip = function (options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: 'flip',
+    options,
+    async fn(state) {
+      var _middlewareData$arrow, _middlewareData$flip;
+      const {
+        placement,
+        middlewareData,
+        rects,
+        initialPlacement,
+        platform,
+        elements
+      } = state;
+      const {
+        mainAxis: checkMainAxis = true,
+        crossAxis: checkCrossAxis = true,
+        fallbackPlacements: specifiedFallbackPlacements,
+        fallbackStrategy = 'bestFit',
+        fallbackAxisSideDirection = 'none',
+        flipAlignment = true,
+        ...detectOverflowOptions
+      } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
+
+      // If a reset by the arrow was caused due to an alignment offset being
+      // added, we should skip any logic now since `flip()` has already done its
+      // work.
+      // https://github.com/floating-ui/floating-ui/issues/2549#issuecomment-1719601643
+      if ((_middlewareData$arrow = middlewareData.arrow) != null && _middlewareData$arrow.alignmentOffset) {
+        return {};
+      }
+      const side = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement);
+      const initialSideAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(initialPlacement);
+      const isBasePlacement = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(initialPlacement) === initialPlacement;
+      const rtl = await (platform.isRTL == null ? void 0 : platform.isRTL(elements.floating));
+      const fallbackPlacements = specifiedFallbackPlacements || (isBasePlacement || !flipAlignment ? [(0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getOppositePlacement)(initialPlacement)] : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getExpandedPlacements)(initialPlacement));
+      const hasFallbackAxisSideDirection = fallbackAxisSideDirection !== 'none';
+      if (!specifiedFallbackPlacements && hasFallbackAxisSideDirection) {
+        fallbackPlacements.push(...(0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getOppositeAxisPlacements)(initialPlacement, flipAlignment, fallbackAxisSideDirection, rtl));
+      }
+      const placements = [initialPlacement, ...fallbackPlacements];
+      const overflow = await detectOverflow(state, detectOverflowOptions);
+      const overflows = [];
+      let overflowsData = ((_middlewareData$flip = middlewareData.flip) == null ? void 0 : _middlewareData$flip.overflows) || [];
+      if (checkMainAxis) {
+        overflows.push(overflow[side]);
+      }
+      if (checkCrossAxis) {
+        const sides = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignmentSides)(placement, rects, rtl);
+        overflows.push(overflow[sides[0]], overflow[sides[1]]);
+      }
+      overflowsData = [...overflowsData, {
+        placement,
+        overflows
+      }];
+
+      // One or more sides is overflowing.
+      if (!overflows.every(side => side <= 0)) {
+        var _middlewareData$flip2, _overflowsData$filter;
+        const nextIndex = (((_middlewareData$flip2 = middlewareData.flip) == null ? void 0 : _middlewareData$flip2.index) || 0) + 1;
+        const nextPlacement = placements[nextIndex];
+        if (nextPlacement) {
+          // Try next placement and re-run the lifecycle.
+          return {
+            data: {
+              index: nextIndex,
+              overflows: overflowsData
+            },
+            reset: {
+              placement: nextPlacement
+            }
+          };
+        }
+
+        // First, find the candidates that fit on the mainAxis side of overflow,
+        // then find the placement that fits the best on the main crossAxis side.
+        let resetPlacement = (_overflowsData$filter = overflowsData.filter(d => d.overflows[0] <= 0).sort((a, b) => a.overflows[1] - b.overflows[1])[0]) == null ? void 0 : _overflowsData$filter.placement;
+
+        // Otherwise fallback.
+        if (!resetPlacement) {
+          switch (fallbackStrategy) {
+            case 'bestFit':
+              {
+                var _overflowsData$filter2;
+                const placement = (_overflowsData$filter2 = overflowsData.filter(d => {
+                  if (hasFallbackAxisSideDirection) {
+                    const currentSideAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(d.placement);
+                    return currentSideAxis === initialSideAxis ||
+                    // Create a bias to the `y` side axis due to horizontal
+                    // reading directions favoring greater width.
+                    currentSideAxis === 'y';
+                  }
+                  return true;
+                }).map(d => [d.placement, d.overflows.filter(overflow => overflow > 0).reduce((acc, overflow) => acc + overflow, 0)]).sort((a, b) => a[1] - b[1])[0]) == null ? void 0 : _overflowsData$filter2[0];
+                if (placement) {
+                  resetPlacement = placement;
+                }
+                break;
+              }
+            case 'initialPlacement':
+              resetPlacement = initialPlacement;
+              break;
+          }
+        }
+        if (placement !== resetPlacement) {
+          return {
+            reset: {
+              placement: resetPlacement
+            }
+          };
+        }
+      }
+      return {};
+    }
+  };
+};
+
+function getSideOffsets(overflow, rect) {
+  return {
+    top: overflow.top - rect.height,
+    right: overflow.right - rect.width,
+    bottom: overflow.bottom - rect.height,
+    left: overflow.left - rect.width
+  };
+}
+function isAnySideFullyClipped(overflow) {
+  return _floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.sides.some(side => overflow[side] >= 0);
+}
+/**
+ * Provides data to hide the floating element in applicable situations, such as
+ * when it is not in the same clipping context as the reference element.
+ * @see https://floating-ui.com/docs/hide
+ */
+const hide = function (options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: 'hide',
+    options,
+    async fn(state) {
+      const {
+        rects
+      } = state;
+      const {
+        strategy = 'referenceHidden',
+        ...detectOverflowOptions
+      } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
+      switch (strategy) {
+        case 'referenceHidden':
+          {
+            const overflow = await detectOverflow(state, {
+              ...detectOverflowOptions,
+              elementContext: 'reference'
+            });
+            const offsets = getSideOffsets(overflow, rects.reference);
+            return {
+              data: {
+                referenceHiddenOffsets: offsets,
+                referenceHidden: isAnySideFullyClipped(offsets)
+              }
+            };
+          }
+        case 'escaped':
+          {
+            const overflow = await detectOverflow(state, {
+              ...detectOverflowOptions,
+              altBoundary: true
+            });
+            const offsets = getSideOffsets(overflow, rects.floating);
+            return {
+              data: {
+                escapedOffsets: offsets,
+                escaped: isAnySideFullyClipped(offsets)
+              }
+            };
+          }
+        default:
+          {
+            return {};
+          }
+      }
+    }
+  };
+};
+
+function getBoundingRect(rects) {
+  const minX = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(...rects.map(rect => rect.left));
+  const minY = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(...rects.map(rect => rect.top));
+  const maxX = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(...rects.map(rect => rect.right));
+  const maxY = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(...rects.map(rect => rect.bottom));
+  return {
+    x: minX,
+    y: minY,
+    width: maxX - minX,
+    height: maxY - minY
+  };
+}
+function getRectsByLine(rects) {
+  const sortedRects = rects.slice().sort((a, b) => a.y - b.y);
+  const groups = [];
+  let prevRect = null;
+  for (let i = 0; i < sortedRects.length; i++) {
+    const rect = sortedRects[i];
+    if (!prevRect || rect.y - prevRect.y > prevRect.height / 2) {
+      groups.push([rect]);
+    } else {
+      groups[groups.length - 1].push(rect);
+    }
+    prevRect = rect;
+  }
+  return groups.map(rect => (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.rectToClientRect)(getBoundingRect(rect)));
+}
+/**
+ * Provides improved positioning for inline reference elements that can span
+ * over multiple lines, such as hyperlinks or range selections.
+ * @see https://floating-ui.com/docs/inline
+ */
+const inline = function (options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: 'inline',
+    options,
+    async fn(state) {
+      const {
+        placement,
+        elements,
+        rects,
+        platform,
+        strategy
+      } = state;
+      // A MouseEvent's client{X,Y} coords can be up to 2 pixels off a
+      // ClientRect's bounds, despite the event listener being triggered. A
+      // padding of 2 seems to handle this issue.
+      const {
+        padding = 2,
+        x,
+        y
+      } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
+      const nativeClientRects = Array.from((await (platform.getClientRects == null ? void 0 : platform.getClientRects(elements.reference))) || []);
+      const clientRects = getRectsByLine(nativeClientRects);
+      const fallback = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.rectToClientRect)(getBoundingRect(nativeClientRects));
+      const paddingObject = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getPaddingObject)(padding);
+      function getBoundingClientRect() {
+        // There are two rects and they are disjoined.
+        if (clientRects.length === 2 && clientRects[0].left > clientRects[1].right && x != null && y != null) {
+          // Find the first rect in which the point is fully inside.
+          return clientRects.find(rect => x > rect.left - paddingObject.left && x < rect.right + paddingObject.right && y > rect.top - paddingObject.top && y < rect.bottom + paddingObject.bottom) || fallback;
+        }
+
+        // There are 2 or more connected rects.
+        if (clientRects.length >= 2) {
+          if ((0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(placement) === 'y') {
+            const firstRect = clientRects[0];
+            const lastRect = clientRects[clientRects.length - 1];
+            const isTop = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement) === 'top';
+            const top = firstRect.top;
+            const bottom = lastRect.bottom;
+            const left = isTop ? firstRect.left : lastRect.left;
+            const right = isTop ? firstRect.right : lastRect.right;
+            const width = right - left;
+            const height = bottom - top;
+            return {
+              top,
+              bottom,
+              left,
+              right,
+              width,
+              height,
+              x: left,
+              y: top
+            };
+          }
+          const isLeftSide = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement) === 'left';
+          const maxRight = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(...clientRects.map(rect => rect.right));
+          const minLeft = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(...clientRects.map(rect => rect.left));
+          const measureRects = clientRects.filter(rect => isLeftSide ? rect.left === minLeft : rect.right === maxRight);
+          const top = measureRects[0].top;
+          const bottom = measureRects[measureRects.length - 1].bottom;
+          const left = minLeft;
+          const right = maxRight;
+          const width = right - left;
+          const height = bottom - top;
+          return {
+            top,
+            bottom,
+            left,
+            right,
+            width,
+            height,
+            x: left,
+            y: top
+          };
+        }
+        return fallback;
+      }
+      const resetRects = await platform.getElementRects({
+        reference: {
+          getBoundingClientRect
+        },
+        floating: elements.floating,
+        strategy
+      });
+      if (rects.reference.x !== resetRects.reference.x || rects.reference.y !== resetRects.reference.y || rects.reference.width !== resetRects.reference.width || rects.reference.height !== resetRects.reference.height) {
+        return {
+          reset: {
+            rects: resetRects
+          }
+        };
+      }
+      return {};
+    }
+  };
+};
+
+// For type backwards-compatibility, the `OffsetOptions` type was also
+// Derivable.
+
+async function convertValueToCoords(state, options) {
+  const {
+    placement,
+    platform,
+    elements
+  } = state;
+  const rtl = await (platform.isRTL == null ? void 0 : platform.isRTL(elements.floating));
+  const side = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement);
+  const alignment = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(placement);
+  const isVertical = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(placement) === 'y';
+  const mainAxisMulti = ['left', 'top'].includes(side) ? -1 : 1;
+  const crossAxisMulti = rtl && isVertical ? -1 : 1;
+  const rawValue = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
+
+  // eslint-disable-next-line prefer-const
+  let {
+    mainAxis,
+    crossAxis,
+    alignmentAxis
+  } = typeof rawValue === 'number' ? {
+    mainAxis: rawValue,
+    crossAxis: 0,
+    alignmentAxis: null
+  } : {
+    mainAxis: rawValue.mainAxis || 0,
+    crossAxis: rawValue.crossAxis || 0,
+    alignmentAxis: rawValue.alignmentAxis
+  };
+  if (alignment && typeof alignmentAxis === 'number') {
+    crossAxis = alignment === 'end' ? alignmentAxis * -1 : alignmentAxis;
+  }
+  return isVertical ? {
+    x: crossAxis * crossAxisMulti,
+    y: mainAxis * mainAxisMulti
+  } : {
+    x: mainAxis * mainAxisMulti,
+    y: crossAxis * crossAxisMulti
+  };
+}
+
+/**
+ * Modifies the placement by translating the floating element along the
+ * specified axes.
+ * A number (shorthand for `mainAxis` or distance), or an axes configuration
+ * object may be passed.
+ * @see https://floating-ui.com/docs/offset
+ */
+const offset = function (options) {
+  if (options === void 0) {
+    options = 0;
+  }
+  return {
+    name: 'offset',
+    options,
+    async fn(state) {
+      var _middlewareData$offse, _middlewareData$arrow;
+      const {
+        x,
+        y,
+        placement,
+        middlewareData
+      } = state;
+      const diffCoords = await convertValueToCoords(state, options);
+
+      // If the placement is the same and the arrow caused an alignment offset
+      // then we don't need to change the positioning coordinates.
+      if (placement === ((_middlewareData$offse = middlewareData.offset) == null ? void 0 : _middlewareData$offse.placement) && (_middlewareData$arrow = middlewareData.arrow) != null && _middlewareData$arrow.alignmentOffset) {
+        return {};
+      }
+      return {
+        x: x + diffCoords.x,
+        y: y + diffCoords.y,
+        data: {
+          ...diffCoords,
+          placement
+        }
+      };
+    }
+  };
+};
+
+/**
+ * Optimizes the visibility of the floating element by shifting it in order to
+ * keep it in view when it will overflow the clipping boundary.
+ * @see https://floating-ui.com/docs/shift
+ */
+const shift = function (options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: 'shift',
+    options,
+    async fn(state) {
+      const {
+        x,
+        y,
+        placement
+      } = state;
+      const {
+        mainAxis: checkMainAxis = true,
+        crossAxis: checkCrossAxis = false,
+        limiter = {
+          fn: _ref => {
+            let {
+              x,
+              y
+            } = _ref;
+            return {
+              x,
+              y
+            };
+          }
+        },
+        ...detectOverflowOptions
+      } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
+      const coords = {
+        x,
+        y
+      };
+      const overflow = await detectOverflow(state, detectOverflowOptions);
+      const crossAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)((0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement));
+      const mainAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getOppositeAxis)(crossAxis);
+      let mainAxisCoord = coords[mainAxis];
+      let crossAxisCoord = coords[crossAxis];
+      if (checkMainAxis) {
+        const minSide = mainAxis === 'y' ? 'top' : 'left';
+        const maxSide = mainAxis === 'y' ? 'bottom' : 'right';
+        const min = mainAxisCoord + overflow[minSide];
+        const max = mainAxisCoord - overflow[maxSide];
+        mainAxisCoord = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.clamp)(min, mainAxisCoord, max);
+      }
+      if (checkCrossAxis) {
+        const minSide = crossAxis === 'y' ? 'top' : 'left';
+        const maxSide = crossAxis === 'y' ? 'bottom' : 'right';
+        const min = crossAxisCoord + overflow[minSide];
+        const max = crossAxisCoord - overflow[maxSide];
+        crossAxisCoord = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.clamp)(min, crossAxisCoord, max);
+      }
+      const limitedCoords = limiter.fn({
+        ...state,
+        [mainAxis]: mainAxisCoord,
+        [crossAxis]: crossAxisCoord
+      });
+      return {
+        ...limitedCoords,
+        data: {
+          x: limitedCoords.x - x,
+          y: limitedCoords.y - y,
+          enabled: {
+            [mainAxis]: checkMainAxis,
+            [crossAxis]: checkCrossAxis
+          }
+        }
+      };
+    }
+  };
+};
+/**
+ * Built-in `limiter` that will stop `shift()` at a certain point.
+ */
+const limitShift = function (options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    options,
+    fn(state) {
+      const {
+        x,
+        y,
+        placement,
+        rects,
+        middlewareData
+      } = state;
+      const {
+        offset = 0,
+        mainAxis: checkMainAxis = true,
+        crossAxis: checkCrossAxis = true
+      } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
+      const coords = {
+        x,
+        y
+      };
+      const crossAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(placement);
+      const mainAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getOppositeAxis)(crossAxis);
+      let mainAxisCoord = coords[mainAxis];
+      let crossAxisCoord = coords[crossAxis];
+      const rawOffset = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(offset, state);
+      const computedOffset = typeof rawOffset === 'number' ? {
+        mainAxis: rawOffset,
+        crossAxis: 0
+      } : {
+        mainAxis: 0,
+        crossAxis: 0,
+        ...rawOffset
+      };
+      if (checkMainAxis) {
+        const len = mainAxis === 'y' ? 'height' : 'width';
+        const limitMin = rects.reference[mainAxis] - rects.floating[len] + computedOffset.mainAxis;
+        const limitMax = rects.reference[mainAxis] + rects.reference[len] - computedOffset.mainAxis;
+        if (mainAxisCoord < limitMin) {
+          mainAxisCoord = limitMin;
+        } else if (mainAxisCoord > limitMax) {
+          mainAxisCoord = limitMax;
+        }
+      }
+      if (checkCrossAxis) {
+        var _middlewareData$offse, _middlewareData$offse2;
+        const len = mainAxis === 'y' ? 'width' : 'height';
+        const isOriginSide = ['top', 'left'].includes((0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement));
+        const limitMin = rects.reference[crossAxis] - rects.floating[len] + (isOriginSide ? ((_middlewareData$offse = middlewareData.offset) == null ? void 0 : _middlewareData$offse[crossAxis]) || 0 : 0) + (isOriginSide ? 0 : computedOffset.crossAxis);
+        const limitMax = rects.reference[crossAxis] + rects.reference[len] + (isOriginSide ? 0 : ((_middlewareData$offse2 = middlewareData.offset) == null ? void 0 : _middlewareData$offse2[crossAxis]) || 0) - (isOriginSide ? computedOffset.crossAxis : 0);
+        if (crossAxisCoord < limitMin) {
+          crossAxisCoord = limitMin;
+        } else if (crossAxisCoord > limitMax) {
+          crossAxisCoord = limitMax;
+        }
+      }
+      return {
+        [mainAxis]: mainAxisCoord,
+        [crossAxis]: crossAxisCoord
+      };
+    }
+  };
+};
+
+/**
+ * Provides data that allows you to change the size of the floating element —
+ * for instance, prevent it from overflowing the clipping boundary or match the
+ * width of the reference element.
+ * @see https://floating-ui.com/docs/size
+ */
+const size = function (options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: 'size',
+    options,
+    async fn(state) {
+      var _state$middlewareData, _state$middlewareData2;
+      const {
+        placement,
+        rects,
+        platform,
+        elements
+      } = state;
+      const {
+        apply = () => {},
+        ...detectOverflowOptions
+      } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
+      const overflow = await detectOverflow(state, detectOverflowOptions);
+      const side = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement);
+      const alignment = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(placement);
+      const isYAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(placement) === 'y';
+      const {
+        width,
+        height
+      } = rects.floating;
+      let heightSide;
+      let widthSide;
+      if (side === 'top' || side === 'bottom') {
+        heightSide = side;
+        widthSide = alignment === ((await (platform.isRTL == null ? void 0 : platform.isRTL(elements.floating))) ? 'start' : 'end') ? 'left' : 'right';
+      } else {
+        widthSide = side;
+        heightSide = alignment === 'end' ? 'top' : 'bottom';
+      }
+      const maximumClippingHeight = height - overflow.top - overflow.bottom;
+      const maximumClippingWidth = width - overflow.left - overflow.right;
+      const overflowAvailableHeight = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(height - overflow[heightSide], maximumClippingHeight);
+      const overflowAvailableWidth = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(width - overflow[widthSide], maximumClippingWidth);
+      const noShift = !state.middlewareData.shift;
+      let availableHeight = overflowAvailableHeight;
+      let availableWidth = overflowAvailableWidth;
+      if ((_state$middlewareData = state.middlewareData.shift) != null && _state$middlewareData.enabled.x) {
+        availableWidth = maximumClippingWidth;
+      }
+      if ((_state$middlewareData2 = state.middlewareData.shift) != null && _state$middlewareData2.enabled.y) {
+        availableHeight = maximumClippingHeight;
+      }
+      if (noShift && !alignment) {
+        const xMin = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(overflow.left, 0);
+        const xMax = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(overflow.right, 0);
+        const yMin = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(overflow.top, 0);
+        const yMax = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(overflow.bottom, 0);
+        if (isYAxis) {
+          availableWidth = width - 2 * (xMin !== 0 || xMax !== 0 ? xMin + xMax : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(overflow.left, overflow.right));
+        } else {
+          availableHeight = height - 2 * (yMin !== 0 || yMax !== 0 ? yMin + yMax : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(overflow.top, overflow.bottom));
+        }
+      }
+      await apply({
+        ...state,
+        availableWidth,
+        availableHeight
+      });
+      const nextDimensions = await platform.getDimensions(elements.floating);
+      if (width !== nextDimensions.width || height !== nextDimensions.height) {
+        return {
+          reset: {
+            rects: true
+          }
+        };
+      }
+      return {};
+    }
+  };
+};
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@floating-ui/dom/dist/floating-ui.dom.mjs":
+/*!****************************************************************!*\
+  !*** ./node_modules/@floating-ui/dom/dist/floating-ui.dom.mjs ***!
+  \****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   arrow: () => (/* binding */ arrow),
+/* harmony export */   autoPlacement: () => (/* binding */ autoPlacement),
+/* harmony export */   autoUpdate: () => (/* binding */ autoUpdate),
+/* harmony export */   computePosition: () => (/* binding */ computePosition),
+/* harmony export */   detectOverflow: () => (/* binding */ detectOverflow),
+/* harmony export */   flip: () => (/* binding */ flip),
+/* harmony export */   getOverflowAncestors: () => (/* reexport safe */ _floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getOverflowAncestors),
+/* harmony export */   hide: () => (/* binding */ hide),
+/* harmony export */   inline: () => (/* binding */ inline),
+/* harmony export */   limitShift: () => (/* binding */ limitShift),
+/* harmony export */   offset: () => (/* binding */ offset),
+/* harmony export */   platform: () => (/* binding */ platform),
+/* harmony export */   shift: () => (/* binding */ shift),
+/* harmony export */   size: () => (/* binding */ size)
+/* harmony export */ });
+/* harmony import */ var _floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @floating-ui/utils */ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.mjs");
+/* harmony import */ var _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @floating-ui/core */ "./node_modules/@floating-ui/core/dist/floating-ui.core.mjs");
+/* harmony import */ var _floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @floating-ui/utils/dom */ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.dom.mjs");
+
+
+
+
+
+function getCssDimensions(element) {
+  const css = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(element);
+  // In testing environments, the `width` and `height` properties are empty
+  // strings for SVG elements, returning NaN. Fallback to `0` in this case.
+  let width = parseFloat(css.width) || 0;
+  let height = parseFloat(css.height) || 0;
+  const hasOffset = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(element);
+  const offsetWidth = hasOffset ? element.offsetWidth : width;
+  const offsetHeight = hasOffset ? element.offsetHeight : height;
+  const shouldFallback = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.round)(width) !== offsetWidth || (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.round)(height) !== offsetHeight;
+  if (shouldFallback) {
+    width = offsetWidth;
+    height = offsetHeight;
+  }
+  return {
+    width,
+    height,
+    $: shouldFallback
+  };
+}
+
+function unwrapElement(element) {
+  return !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(element) ? element.contextElement : element;
+}
+
+function getScale(element) {
+  const domElement = unwrapElement(element);
+  if (!(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(domElement)) {
+    return (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(1);
+  }
+  const rect = domElement.getBoundingClientRect();
+  const {
+    width,
+    height,
+    $
+  } = getCssDimensions(domElement);
+  let x = ($ ? (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.round)(rect.width) : rect.width) / width;
+  let y = ($ ? (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.round)(rect.height) : rect.height) / height;
+
+  // 0, NaN, or Infinity should always fallback to 1.
+
+  if (!x || !Number.isFinite(x)) {
+    x = 1;
+  }
+  if (!y || !Number.isFinite(y)) {
+    y = 1;
+  }
+  return {
+    x,
+    y
+  };
+}
+
+const noOffsets = /*#__PURE__*/(0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
+function getVisualOffsets(element) {
+  const win = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(element);
+  if (!(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isWebKit)() || !win.visualViewport) {
+    return noOffsets;
+  }
+  return {
+    x: win.visualViewport.offsetLeft,
+    y: win.visualViewport.offsetTop
+  };
+}
+function shouldAddVisualOffsets(element, isFixed, floatingOffsetParent) {
+  if (isFixed === void 0) {
+    isFixed = false;
+  }
+  if (!floatingOffsetParent || isFixed && floatingOffsetParent !== (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(element)) {
+    return false;
+  }
+  return isFixed;
+}
+
+function getBoundingClientRect(element, includeScale, isFixedStrategy, offsetParent) {
+  if (includeScale === void 0) {
+    includeScale = false;
+  }
+  if (isFixedStrategy === void 0) {
+    isFixedStrategy = false;
+  }
+  const clientRect = element.getBoundingClientRect();
+  const domElement = unwrapElement(element);
+  let scale = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(1);
+  if (includeScale) {
+    if (offsetParent) {
+      if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(offsetParent)) {
+        scale = getScale(offsetParent);
+      }
+    } else {
+      scale = getScale(element);
+    }
+  }
+  const visualOffsets = shouldAddVisualOffsets(domElement, isFixedStrategy, offsetParent) ? getVisualOffsets(domElement) : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
+  let x = (clientRect.left + visualOffsets.x) / scale.x;
+  let y = (clientRect.top + visualOffsets.y) / scale.y;
+  let width = clientRect.width / scale.x;
+  let height = clientRect.height / scale.y;
+  if (domElement) {
+    const win = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(domElement);
+    const offsetWin = offsetParent && (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(offsetParent) ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(offsetParent) : offsetParent;
+    let currentWin = win;
+    let currentIFrame = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getFrameElement)(currentWin);
+    while (currentIFrame && offsetParent && offsetWin !== currentWin) {
+      const iframeScale = getScale(currentIFrame);
+      const iframeRect = currentIFrame.getBoundingClientRect();
+      const css = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(currentIFrame);
+      const left = iframeRect.left + (currentIFrame.clientLeft + parseFloat(css.paddingLeft)) * iframeScale.x;
+      const top = iframeRect.top + (currentIFrame.clientTop + parseFloat(css.paddingTop)) * iframeScale.y;
+      x *= iframeScale.x;
+      y *= iframeScale.y;
+      width *= iframeScale.x;
+      height *= iframeScale.y;
+      x += left;
+      y += top;
+      currentWin = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(currentIFrame);
+      currentIFrame = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getFrameElement)(currentWin);
+    }
+  }
+  return (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.rectToClientRect)({
+    width,
+    height,
+    x,
+    y
+  });
+}
+
+// If <html> has a CSS width greater than the viewport, then this will be
+// incorrect for RTL.
+function getWindowScrollBarX(element, rect) {
+  const leftScroll = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeScroll)(element).scrollLeft;
+  if (!rect) {
+    return getBoundingClientRect((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element)).left + leftScroll;
+  }
+  return rect.left + leftScroll;
+}
+
+function getHTMLOffset(documentElement, scroll, ignoreScrollbarX) {
+  if (ignoreScrollbarX === void 0) {
+    ignoreScrollbarX = false;
+  }
+  const htmlRect = documentElement.getBoundingClientRect();
+  const x = htmlRect.left + scroll.scrollLeft - (ignoreScrollbarX ? 0 :
+  // RTL <body> scrollbar.
+  getWindowScrollBarX(documentElement, htmlRect));
+  const y = htmlRect.top + scroll.scrollTop;
+  return {
+    x,
+    y
+  };
+}
+
+function convertOffsetParentRelativeRectToViewportRelativeRect(_ref) {
+  let {
+    elements,
+    rect,
+    offsetParent,
+    strategy
+  } = _ref;
+  const isFixed = strategy === 'fixed';
+  const documentElement = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(offsetParent);
+  const topLayer = elements ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isTopLayer)(elements.floating) : false;
+  if (offsetParent === documentElement || topLayer && isFixed) {
+    return rect;
+  }
+  let scroll = {
+    scrollLeft: 0,
+    scrollTop: 0
+  };
+  let scale = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(1);
+  const offsets = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
+  const isOffsetParentAnElement = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(offsetParent);
+  if (isOffsetParentAnElement || !isOffsetParentAnElement && !isFixed) {
+    if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeName)(offsetParent) !== 'body' || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isOverflowElement)(documentElement)) {
+      scroll = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeScroll)(offsetParent);
+    }
+    if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(offsetParent)) {
+      const offsetRect = getBoundingClientRect(offsetParent);
+      scale = getScale(offsetParent);
+      offsets.x = offsetRect.x + offsetParent.clientLeft;
+      offsets.y = offsetRect.y + offsetParent.clientTop;
+    }
+  }
+  const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll, true) : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
+  return {
+    width: rect.width * scale.x,
+    height: rect.height * scale.y,
+    x: rect.x * scale.x - scroll.scrollLeft * scale.x + offsets.x + htmlOffset.x,
+    y: rect.y * scale.y - scroll.scrollTop * scale.y + offsets.y + htmlOffset.y
+  };
+}
+
+function getClientRects(element) {
+  return Array.from(element.getClientRects());
+}
+
+// Gets the entire size of the scrollable document area, even extending outside
+// of the `<html>` and `<body>` rect bounds if horizontally scrollable.
+function getDocumentRect(element) {
+  const html = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element);
+  const scroll = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeScroll)(element);
+  const body = element.ownerDocument.body;
+  const width = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(html.scrollWidth, html.clientWidth, body.scrollWidth, body.clientWidth);
+  const height = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(html.scrollHeight, html.clientHeight, body.scrollHeight, body.clientHeight);
+  let x = -scroll.scrollLeft + getWindowScrollBarX(element);
+  const y = -scroll.scrollTop;
+  if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(body).direction === 'rtl') {
+    x += (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(html.clientWidth, body.clientWidth) - width;
+  }
+  return {
+    width,
+    height,
+    x,
+    y
+  };
+}
+
+function getViewportRect(element, strategy) {
+  const win = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(element);
+  const html = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element);
+  const visualViewport = win.visualViewport;
+  let width = html.clientWidth;
+  let height = html.clientHeight;
+  let x = 0;
+  let y = 0;
+  if (visualViewport) {
+    width = visualViewport.width;
+    height = visualViewport.height;
+    const visualViewportBased = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isWebKit)();
+    if (!visualViewportBased || visualViewportBased && strategy === 'fixed') {
+      x = visualViewport.offsetLeft;
+      y = visualViewport.offsetTop;
+    }
+  }
+  return {
+    width,
+    height,
+    x,
+    y
+  };
+}
+
+// Returns the inner client rect, subtracting scrollbars if present.
+function getInnerBoundingClientRect(element, strategy) {
+  const clientRect = getBoundingClientRect(element, true, strategy === 'fixed');
+  const top = clientRect.top + element.clientTop;
+  const left = clientRect.left + element.clientLeft;
+  const scale = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(element) ? getScale(element) : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(1);
+  const width = element.clientWidth * scale.x;
+  const height = element.clientHeight * scale.y;
+  const x = left * scale.x;
+  const y = top * scale.y;
+  return {
+    width,
+    height,
+    x,
+    y
+  };
+}
+function getClientRectFromClippingAncestor(element, clippingAncestor, strategy) {
+  let rect;
+  if (clippingAncestor === 'viewport') {
+    rect = getViewportRect(element, strategy);
+  } else if (clippingAncestor === 'document') {
+    rect = getDocumentRect((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element));
+  } else if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(clippingAncestor)) {
+    rect = getInnerBoundingClientRect(clippingAncestor, strategy);
+  } else {
+    const visualOffsets = getVisualOffsets(element);
+    rect = {
+      x: clippingAncestor.x - visualOffsets.x,
+      y: clippingAncestor.y - visualOffsets.y,
+      width: clippingAncestor.width,
+      height: clippingAncestor.height
+    };
+  }
+  return (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.rectToClientRect)(rect);
+}
+function hasFixedPositionAncestor(element, stopNode) {
+  const parentNode = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getParentNode)(element);
+  if (parentNode === stopNode || !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(parentNode) || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isLastTraversableNode)(parentNode)) {
+    return false;
+  }
+  return (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(parentNode).position === 'fixed' || hasFixedPositionAncestor(parentNode, stopNode);
+}
+
+// A "clipping ancestor" is an `overflow` element with the characteristic of
+// clipping (or hiding) child elements. This returns all clipping ancestors
+// of the given element up the tree.
+function getClippingElementAncestors(element, cache) {
+  const cachedResult = cache.get(element);
+  if (cachedResult) {
+    return cachedResult;
+  }
+  let result = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getOverflowAncestors)(element, [], false).filter(el => (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(el) && (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeName)(el) !== 'body');
+  let currentContainingBlockComputedStyle = null;
+  const elementIsFixed = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(element).position === 'fixed';
+  let currentNode = elementIsFixed ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getParentNode)(element) : element;
+
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
+  while ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(currentNode) && !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isLastTraversableNode)(currentNode)) {
+    const computedStyle = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(currentNode);
+    const currentNodeIsContaining = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isContainingBlock)(currentNode);
+    if (!currentNodeIsContaining && computedStyle.position === 'fixed') {
+      currentContainingBlockComputedStyle = null;
+    }
+    const shouldDropCurrentNode = elementIsFixed ? !currentNodeIsContaining && !currentContainingBlockComputedStyle : !currentNodeIsContaining && computedStyle.position === 'static' && !!currentContainingBlockComputedStyle && ['absolute', 'fixed'].includes(currentContainingBlockComputedStyle.position) || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isOverflowElement)(currentNode) && !currentNodeIsContaining && hasFixedPositionAncestor(element, currentNode);
+    if (shouldDropCurrentNode) {
+      // Drop non-containing blocks.
+      result = result.filter(ancestor => ancestor !== currentNode);
+    } else {
+      // Record last containing block for next iteration.
+      currentContainingBlockComputedStyle = computedStyle;
+    }
+    currentNode = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getParentNode)(currentNode);
+  }
+  cache.set(element, result);
+  return result;
+}
+
+// Gets the maximum area that the element is visible in due to any number of
+// clipping ancestors.
+function getClippingRect(_ref) {
+  let {
+    element,
+    boundary,
+    rootBoundary,
+    strategy
+  } = _ref;
+  const elementClippingAncestors = boundary === 'clippingAncestors' ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isTopLayer)(element) ? [] : getClippingElementAncestors(element, this._c) : [].concat(boundary);
+  const clippingAncestors = [...elementClippingAncestors, rootBoundary];
+  const firstClippingAncestor = clippingAncestors[0];
+  const clippingRect = clippingAncestors.reduce((accRect, clippingAncestor) => {
+    const rect = getClientRectFromClippingAncestor(element, clippingAncestor, strategy);
+    accRect.top = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(rect.top, accRect.top);
+    accRect.right = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.min)(rect.right, accRect.right);
+    accRect.bottom = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.min)(rect.bottom, accRect.bottom);
+    accRect.left = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(rect.left, accRect.left);
+    return accRect;
+  }, getClientRectFromClippingAncestor(element, firstClippingAncestor, strategy));
+  return {
+    width: clippingRect.right - clippingRect.left,
+    height: clippingRect.bottom - clippingRect.top,
+    x: clippingRect.left,
+    y: clippingRect.top
+  };
+}
+
+function getDimensions(element) {
+  const {
+    width,
+    height
+  } = getCssDimensions(element);
+  return {
+    width,
+    height
+  };
+}
+
+function getRectRelativeToOffsetParent(element, offsetParent, strategy) {
+  const isOffsetParentAnElement = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(offsetParent);
+  const documentElement = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(offsetParent);
+  const isFixed = strategy === 'fixed';
+  const rect = getBoundingClientRect(element, true, isFixed, offsetParent);
+  let scroll = {
+    scrollLeft: 0,
+    scrollTop: 0
+  };
+  const offsets = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
+  if (isOffsetParentAnElement || !isOffsetParentAnElement && !isFixed) {
+    if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeName)(offsetParent) !== 'body' || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isOverflowElement)(documentElement)) {
+      scroll = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeScroll)(offsetParent);
+    }
+    if (isOffsetParentAnElement) {
+      const offsetRect = getBoundingClientRect(offsetParent, true, isFixed, offsetParent);
+      offsets.x = offsetRect.x + offsetParent.clientLeft;
+      offsets.y = offsetRect.y + offsetParent.clientTop;
+    } else if (documentElement) {
+      // If the <body> scrollbar appears on the left (e.g. RTL systems). Use
+      // Firefox with layout.scrollbar.side = 3 in about:config to test this.
+      offsets.x = getWindowScrollBarX(documentElement);
+    }
+  }
+  const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll) : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
+  const x = rect.left + scroll.scrollLeft - offsets.x - htmlOffset.x;
+  const y = rect.top + scroll.scrollTop - offsets.y - htmlOffset.y;
+  return {
+    x,
+    y,
+    width: rect.width,
+    height: rect.height
+  };
+}
+
+function isStaticPositioned(element) {
+  return (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(element).position === 'static';
+}
+
+function getTrueOffsetParent(element, polyfill) {
+  if (!(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(element) || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(element).position === 'fixed') {
+    return null;
+  }
+  if (polyfill) {
+    return polyfill(element);
+  }
+  let rawOffsetParent = element.offsetParent;
+
+  // Firefox returns the <html> element as the offsetParent if it's non-static,
+  // while Chrome and Safari return the <body> element. The <body> element must
+  // be used to perform the correct calculations even if the <html> element is
+  // non-static.
+  if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element) === rawOffsetParent) {
+    rawOffsetParent = rawOffsetParent.ownerDocument.body;
+  }
+  return rawOffsetParent;
+}
+
+// Gets the closest ancestor positioned element. Handles some edge cases,
+// such as table ancestors and cross browser bugs.
+function getOffsetParent(element, polyfill) {
+  const win = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(element);
+  if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isTopLayer)(element)) {
+    return win;
+  }
+  if (!(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(element)) {
+    let svgOffsetParent = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getParentNode)(element);
+    while (svgOffsetParent && !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isLastTraversableNode)(svgOffsetParent)) {
+      if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(svgOffsetParent) && !isStaticPositioned(svgOffsetParent)) {
+        return svgOffsetParent;
+      }
+      svgOffsetParent = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getParentNode)(svgOffsetParent);
+    }
+    return win;
+  }
+  let offsetParent = getTrueOffsetParent(element, polyfill);
+  while (offsetParent && (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isTableElement)(offsetParent) && isStaticPositioned(offsetParent)) {
+    offsetParent = getTrueOffsetParent(offsetParent, polyfill);
+  }
+  if (offsetParent && (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isLastTraversableNode)(offsetParent) && isStaticPositioned(offsetParent) && !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isContainingBlock)(offsetParent)) {
+    return win;
+  }
+  return offsetParent || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getContainingBlock)(element) || win;
+}
+
+const getElementRects = async function (data) {
+  const getOffsetParentFn = this.getOffsetParent || getOffsetParent;
+  const getDimensionsFn = this.getDimensions;
+  const floatingDimensions = await getDimensionsFn(data.floating);
+  return {
+    reference: getRectRelativeToOffsetParent(data.reference, await getOffsetParentFn(data.floating), data.strategy),
+    floating: {
+      x: 0,
+      y: 0,
+      width: floatingDimensions.width,
+      height: floatingDimensions.height
+    }
+  };
+};
+
+function isRTL(element) {
+  return (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(element).direction === 'rtl';
+}
+
+const platform = {
+  convertOffsetParentRelativeRectToViewportRelativeRect,
+  getDocumentElement: _floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement,
+  getClippingRect,
+  getOffsetParent,
+  getElementRects,
+  getClientRects,
+  getDimensions,
+  getScale,
+  isElement: _floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement,
+  isRTL
+};
+
+function rectsAreEqual(a, b) {
+  return a.x === b.x && a.y === b.y && a.width === b.width && a.height === b.height;
+}
+
+// https://samthor.au/2021/observing-dom/
+function observeMove(element, onMove) {
+  let io = null;
+  let timeoutId;
+  const root = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element);
+  function cleanup() {
+    var _io;
+    clearTimeout(timeoutId);
+    (_io = io) == null || _io.disconnect();
+    io = null;
+  }
+  function refresh(skip, threshold) {
+    if (skip === void 0) {
+      skip = false;
+    }
+    if (threshold === void 0) {
+      threshold = 1;
+    }
+    cleanup();
+    const elementRectForRootMargin = element.getBoundingClientRect();
+    const {
+      left,
+      top,
+      width,
+      height
+    } = elementRectForRootMargin;
+    if (!skip) {
+      onMove();
+    }
+    if (!width || !height) {
+      return;
+    }
+    const insetTop = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.floor)(top);
+    const insetRight = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.floor)(root.clientWidth - (left + width));
+    const insetBottom = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.floor)(root.clientHeight - (top + height));
+    const insetLeft = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.floor)(left);
+    const rootMargin = -insetTop + "px " + -insetRight + "px " + -insetBottom + "px " + -insetLeft + "px";
+    const options = {
+      rootMargin,
+      threshold: (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(0, (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.min)(1, threshold)) || 1
+    };
+    let isFirstUpdate = true;
+    function handleObserve(entries) {
+      const ratio = entries[0].intersectionRatio;
+      if (ratio !== threshold) {
+        if (!isFirstUpdate) {
+          return refresh();
+        }
+        if (!ratio) {
+          // If the reference is clipped, the ratio is 0. Throttle the refresh
+          // to prevent an infinite loop of updates.
+          timeoutId = setTimeout(() => {
+            refresh(false, 1e-7);
+          }, 1000);
+        } else {
+          refresh(false, ratio);
+        }
+      }
+      if (ratio === 1 && !rectsAreEqual(elementRectForRootMargin, element.getBoundingClientRect())) {
+        // It's possible that even though the ratio is reported as 1, the
+        // element is not actually fully within the IntersectionObserver's root
+        // area anymore. This can happen under performance constraints. This may
+        // be a bug in the browser's IntersectionObserver implementation. To
+        // work around this, we compare the element's bounding rect now with
+        // what it was at the time we created the IntersectionObserver. If they
+        // are not equal then the element moved, so we refresh.
+        refresh();
+      }
+      isFirstUpdate = false;
+    }
+
+    // Older browsers don't support a `document` as the root and will throw an
+    // error.
+    try {
+      io = new IntersectionObserver(handleObserve, {
+        ...options,
+        // Handle <iframe>s
+        root: root.ownerDocument
+      });
+    } catch (e) {
+      io = new IntersectionObserver(handleObserve, options);
+    }
+    io.observe(element);
+  }
+  refresh(true);
+  return cleanup;
+}
+
+/**
+ * Automatically updates the position of the floating element when necessary.
+ * Should only be called when the floating element is mounted on the DOM or
+ * visible on the screen.
+ * @returns cleanup function that should be invoked when the floating element is
+ * removed from the DOM or hidden from the screen.
+ * @see https://floating-ui.com/docs/autoUpdate
+ */
+function autoUpdate(reference, floating, update, options) {
+  if (options === void 0) {
+    options = {};
+  }
+  const {
+    ancestorScroll = true,
+    ancestorResize = true,
+    elementResize = typeof ResizeObserver === 'function',
+    layoutShift = typeof IntersectionObserver === 'function',
+    animationFrame = false
+  } = options;
+  const referenceEl = unwrapElement(reference);
+  const ancestors = ancestorScroll || ancestorResize ? [...(referenceEl ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getOverflowAncestors)(referenceEl) : []), ...(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getOverflowAncestors)(floating)] : [];
+  ancestors.forEach(ancestor => {
+    ancestorScroll && ancestor.addEventListener('scroll', update, {
+      passive: true
+    });
+    ancestorResize && ancestor.addEventListener('resize', update);
+  });
+  const cleanupIo = referenceEl && layoutShift ? observeMove(referenceEl, update) : null;
+  let reobserveFrame = -1;
+  let resizeObserver = null;
+  if (elementResize) {
+    resizeObserver = new ResizeObserver(_ref => {
+      let [firstEntry] = _ref;
+      if (firstEntry && firstEntry.target === referenceEl && resizeObserver) {
+        // Prevent update loops when using the `size` middleware.
+        // https://github.com/floating-ui/floating-ui/issues/1740
+        resizeObserver.unobserve(floating);
+        cancelAnimationFrame(reobserveFrame);
+        reobserveFrame = requestAnimationFrame(() => {
+          var _resizeObserver;
+          (_resizeObserver = resizeObserver) == null || _resizeObserver.observe(floating);
+        });
+      }
+      update();
+    });
+    if (referenceEl && !animationFrame) {
+      resizeObserver.observe(referenceEl);
+    }
+    resizeObserver.observe(floating);
+  }
+  let frameId;
+  let prevRefRect = animationFrame ? getBoundingClientRect(reference) : null;
+  if (animationFrame) {
+    frameLoop();
+  }
+  function frameLoop() {
+    const nextRefRect = getBoundingClientRect(reference);
+    if (prevRefRect && !rectsAreEqual(prevRefRect, nextRefRect)) {
+      update();
+    }
+    prevRefRect = nextRefRect;
+    frameId = requestAnimationFrame(frameLoop);
+  }
+  update();
+  return () => {
+    var _resizeObserver2;
+    ancestors.forEach(ancestor => {
+      ancestorScroll && ancestor.removeEventListener('scroll', update);
+      ancestorResize && ancestor.removeEventListener('resize', update);
+    });
+    cleanupIo == null || cleanupIo();
+    (_resizeObserver2 = resizeObserver) == null || _resizeObserver2.disconnect();
+    resizeObserver = null;
+    if (animationFrame) {
+      cancelAnimationFrame(frameId);
+    }
+  };
+}
+
+/**
+ * Resolves with an object of overflow side offsets that determine how much the
+ * element is overflowing a given clipping boundary on each side.
+ * - positive = overflowing the boundary by that number of pixels
+ * - negative = how many pixels left before it will overflow
+ * - 0 = lies flush with the boundary
+ * @see https://floating-ui.com/docs/detectOverflow
+ */
+const detectOverflow = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.detectOverflow;
+
+/**
+ * Modifies the placement by translating the floating element along the
+ * specified axes.
+ * A number (shorthand for `mainAxis` or distance), or an axes configuration
+ * object may be passed.
+ * @see https://floating-ui.com/docs/offset
+ */
+const offset = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.offset;
+
+/**
+ * Optimizes the visibility of the floating element by choosing the placement
+ * that has the most space available automatically, without needing to specify a
+ * preferred placement. Alternative to `flip`.
+ * @see https://floating-ui.com/docs/autoPlacement
+ */
+const autoPlacement = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.autoPlacement;
+
+/**
+ * Optimizes the visibility of the floating element by shifting it in order to
+ * keep it in view when it will overflow the clipping boundary.
+ * @see https://floating-ui.com/docs/shift
+ */
+const shift = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.shift;
+
+/**
+ * Optimizes the visibility of the floating element by flipping the `placement`
+ * in order to keep it in view when the preferred placement(s) will overflow the
+ * clipping boundary. Alternative to `autoPlacement`.
+ * @see https://floating-ui.com/docs/flip
+ */
+const flip = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.flip;
+
+/**
+ * Provides data that allows you to change the size of the floating element —
+ * for instance, prevent it from overflowing the clipping boundary or match the
+ * width of the reference element.
+ * @see https://floating-ui.com/docs/size
+ */
+const size = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.size;
+
+/**
+ * Provides data to hide the floating element in applicable situations, such as
+ * when it is not in the same clipping context as the reference element.
+ * @see https://floating-ui.com/docs/hide
+ */
+const hide = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.hide;
+
+/**
+ * Provides data to position an inner element of the floating element so that it
+ * appears centered to the reference element.
+ * @see https://floating-ui.com/docs/arrow
+ */
+const arrow = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.arrow;
+
+/**
+ * Provides improved positioning for inline reference elements that can span
+ * over multiple lines, such as hyperlinks or range selections.
+ * @see https://floating-ui.com/docs/inline
+ */
+const inline = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.inline;
+
+/**
+ * Built-in `limiter` that will stop `shift()` at a certain point.
+ */
+const limitShift = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.limitShift;
+
+/**
+ * Computes the `x` and `y` coordinates that will place the floating element
+ * next to a given reference element.
+ */
+const computePosition = (reference, floating, options) => {
+  // This caches the expensive `getClippingElementAncestors` function so that
+  // multiple lifecycle resets re-use the same result. It only lives for a
+  // single call. If other functions become expensive, we can add them as well.
+  const cache = new Map();
+  const mergedOptions = {
+    platform,
+    ...options
+  };
+  const platformWithCache = {
+    ...mergedOptions.platform,
+    _c: cache
+  };
+  return (0,_floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.computePosition)(reference, floating, {
+    ...mergedOptions,
+    platform: platformWithCache
+  });
+};
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.dom.mjs":
+/*!************************************************************************!*\
+  !*** ./node_modules/@floating-ui/utils/dist/floating-ui.utils.dom.mjs ***!
+  \************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getComputedStyle: () => (/* binding */ getComputedStyle),
+/* harmony export */   getContainingBlock: () => (/* binding */ getContainingBlock),
+/* harmony export */   getDocumentElement: () => (/* binding */ getDocumentElement),
+/* harmony export */   getFrameElement: () => (/* binding */ getFrameElement),
+/* harmony export */   getNearestOverflowAncestor: () => (/* binding */ getNearestOverflowAncestor),
+/* harmony export */   getNodeName: () => (/* binding */ getNodeName),
+/* harmony export */   getNodeScroll: () => (/* binding */ getNodeScroll),
+/* harmony export */   getOverflowAncestors: () => (/* binding */ getOverflowAncestors),
+/* harmony export */   getParentNode: () => (/* binding */ getParentNode),
+/* harmony export */   getWindow: () => (/* binding */ getWindow),
+/* harmony export */   isContainingBlock: () => (/* binding */ isContainingBlock),
+/* harmony export */   isElement: () => (/* binding */ isElement),
+/* harmony export */   isHTMLElement: () => (/* binding */ isHTMLElement),
+/* harmony export */   isLastTraversableNode: () => (/* binding */ isLastTraversableNode),
+/* harmony export */   isNode: () => (/* binding */ isNode),
+/* harmony export */   isOverflowElement: () => (/* binding */ isOverflowElement),
+/* harmony export */   isShadowRoot: () => (/* binding */ isShadowRoot),
+/* harmony export */   isTableElement: () => (/* binding */ isTableElement),
+/* harmony export */   isTopLayer: () => (/* binding */ isTopLayer),
+/* harmony export */   isWebKit: () => (/* binding */ isWebKit)
+/* harmony export */ });
+function hasWindow() {
+  return typeof window !== 'undefined';
+}
+function getNodeName(node) {
+  if (isNode(node)) {
+    return (node.nodeName || '').toLowerCase();
+  }
+  // Mocked nodes in testing environments may not be instances of Node. By
+  // returning `#document` an infinite loop won't occur.
+  // https://github.com/floating-ui/floating-ui/issues/2317
+  return '#document';
+}
+function getWindow(node) {
+  var _node$ownerDocument;
+  return (node == null || (_node$ownerDocument = node.ownerDocument) == null ? void 0 : _node$ownerDocument.defaultView) || window;
+}
+function getDocumentElement(node) {
+  var _ref;
+  return (_ref = (isNode(node) ? node.ownerDocument : node.document) || window.document) == null ? void 0 : _ref.documentElement;
+}
+function isNode(value) {
+  if (!hasWindow()) {
+    return false;
+  }
+  return value instanceof Node || value instanceof getWindow(value).Node;
+}
+function isElement(value) {
+  if (!hasWindow()) {
+    return false;
+  }
+  return value instanceof Element || value instanceof getWindow(value).Element;
+}
+function isHTMLElement(value) {
+  if (!hasWindow()) {
+    return false;
+  }
+  return value instanceof HTMLElement || value instanceof getWindow(value).HTMLElement;
+}
+function isShadowRoot(value) {
+  if (!hasWindow() || typeof ShadowRoot === 'undefined') {
+    return false;
+  }
+  return value instanceof ShadowRoot || value instanceof getWindow(value).ShadowRoot;
+}
+function isOverflowElement(element) {
+  const {
+    overflow,
+    overflowX,
+    overflowY,
+    display
+  } = getComputedStyle(element);
+  return /auto|scroll|overlay|hidden|clip/.test(overflow + overflowY + overflowX) && !['inline', 'contents'].includes(display);
+}
+function isTableElement(element) {
+  return ['table', 'td', 'th'].includes(getNodeName(element));
+}
+function isTopLayer(element) {
+  return [':popover-open', ':modal'].some(selector => {
+    try {
+      return element.matches(selector);
+    } catch (e) {
+      return false;
+    }
+  });
+}
+function isContainingBlock(elementOrCss) {
+  const webkit = isWebKit();
+  const css = isElement(elementOrCss) ? getComputedStyle(elementOrCss) : elementOrCss;
+
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
+  // https://drafts.csswg.org/css-transforms-2/#individual-transforms
+  return ['transform', 'translate', 'scale', 'rotate', 'perspective'].some(value => css[value] ? css[value] !== 'none' : false) || (css.containerType ? css.containerType !== 'normal' : false) || !webkit && (css.backdropFilter ? css.backdropFilter !== 'none' : false) || !webkit && (css.filter ? css.filter !== 'none' : false) || ['transform', 'translate', 'scale', 'rotate', 'perspective', 'filter'].some(value => (css.willChange || '').includes(value)) || ['paint', 'layout', 'strict', 'content'].some(value => (css.contain || '').includes(value));
+}
+function getContainingBlock(element) {
+  let currentNode = getParentNode(element);
+  while (isHTMLElement(currentNode) && !isLastTraversableNode(currentNode)) {
+    if (isContainingBlock(currentNode)) {
+      return currentNode;
+    } else if (isTopLayer(currentNode)) {
+      return null;
+    }
+    currentNode = getParentNode(currentNode);
+  }
+  return null;
+}
+function isWebKit() {
+  if (typeof CSS === 'undefined' || !CSS.supports) return false;
+  return CSS.supports('-webkit-backdrop-filter', 'none');
+}
+function isLastTraversableNode(node) {
+  return ['html', 'body', '#document'].includes(getNodeName(node));
+}
+function getComputedStyle(element) {
+  return getWindow(element).getComputedStyle(element);
+}
+function getNodeScroll(element) {
+  if (isElement(element)) {
+    return {
+      scrollLeft: element.scrollLeft,
+      scrollTop: element.scrollTop
+    };
+  }
+  return {
+    scrollLeft: element.scrollX,
+    scrollTop: element.scrollY
+  };
+}
+function getParentNode(node) {
+  if (getNodeName(node) === 'html') {
+    return node;
+  }
+  const result =
+  // Step into the shadow DOM of the parent of a slotted node.
+  node.assignedSlot ||
+  // DOM Element detected.
+  node.parentNode ||
+  // ShadowRoot detected.
+  isShadowRoot(node) && node.host ||
+  // Fallback.
+  getDocumentElement(node);
+  return isShadowRoot(result) ? result.host : result;
+}
+function getNearestOverflowAncestor(node) {
+  const parentNode = getParentNode(node);
+  if (isLastTraversableNode(parentNode)) {
+    return node.ownerDocument ? node.ownerDocument.body : node.body;
+  }
+  if (isHTMLElement(parentNode) && isOverflowElement(parentNode)) {
+    return parentNode;
+  }
+  return getNearestOverflowAncestor(parentNode);
+}
+function getOverflowAncestors(node, list, traverseIframes) {
+  var _node$ownerDocument2;
+  if (list === void 0) {
+    list = [];
+  }
+  if (traverseIframes === void 0) {
+    traverseIframes = true;
+  }
+  const scrollableAncestor = getNearestOverflowAncestor(node);
+  const isBody = scrollableAncestor === ((_node$ownerDocument2 = node.ownerDocument) == null ? void 0 : _node$ownerDocument2.body);
+  const win = getWindow(scrollableAncestor);
+  if (isBody) {
+    const frameElement = getFrameElement(win);
+    return list.concat(win, win.visualViewport || [], isOverflowElement(scrollableAncestor) ? scrollableAncestor : [], frameElement && traverseIframes ? getOverflowAncestors(frameElement) : []);
+  }
+  return list.concat(scrollableAncestor, getOverflowAncestors(scrollableAncestor, [], traverseIframes));
+}
+function getFrameElement(win) {
+  return win.parent && Object.getPrototypeOf(win.parent) ? win.frameElement : null;
+}
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.mjs":
+/*!********************************************************************!*\
+  !*** ./node_modules/@floating-ui/utils/dist/floating-ui.utils.mjs ***!
+  \********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   alignments: () => (/* binding */ alignments),
+/* harmony export */   clamp: () => (/* binding */ clamp),
+/* harmony export */   createCoords: () => (/* binding */ createCoords),
+/* harmony export */   evaluate: () => (/* binding */ evaluate),
+/* harmony export */   expandPaddingObject: () => (/* binding */ expandPaddingObject),
+/* harmony export */   floor: () => (/* binding */ floor),
+/* harmony export */   getAlignment: () => (/* binding */ getAlignment),
+/* harmony export */   getAlignmentAxis: () => (/* binding */ getAlignmentAxis),
+/* harmony export */   getAlignmentSides: () => (/* binding */ getAlignmentSides),
+/* harmony export */   getAxisLength: () => (/* binding */ getAxisLength),
+/* harmony export */   getExpandedPlacements: () => (/* binding */ getExpandedPlacements),
+/* harmony export */   getOppositeAlignmentPlacement: () => (/* binding */ getOppositeAlignmentPlacement),
+/* harmony export */   getOppositeAxis: () => (/* binding */ getOppositeAxis),
+/* harmony export */   getOppositeAxisPlacements: () => (/* binding */ getOppositeAxisPlacements),
+/* harmony export */   getOppositePlacement: () => (/* binding */ getOppositePlacement),
+/* harmony export */   getPaddingObject: () => (/* binding */ getPaddingObject),
+/* harmony export */   getSide: () => (/* binding */ getSide),
+/* harmony export */   getSideAxis: () => (/* binding */ getSideAxis),
+/* harmony export */   max: () => (/* binding */ max),
+/* harmony export */   min: () => (/* binding */ min),
+/* harmony export */   placements: () => (/* binding */ placements),
+/* harmony export */   rectToClientRect: () => (/* binding */ rectToClientRect),
+/* harmony export */   round: () => (/* binding */ round),
+/* harmony export */   sides: () => (/* binding */ sides)
+/* harmony export */ });
+/**
+ * Custom positioning reference element.
+ * @see https://floating-ui.com/docs/virtual-elements
+ */
+
+const sides = ['top', 'right', 'bottom', 'left'];
+const alignments = ['start', 'end'];
+const placements = /*#__PURE__*/sides.reduce((acc, side) => acc.concat(side, side + "-" + alignments[0], side + "-" + alignments[1]), []);
+const min = Math.min;
+const max = Math.max;
+const round = Math.round;
+const floor = Math.floor;
+const createCoords = v => ({
+  x: v,
+  y: v
+});
+const oppositeSideMap = {
+  left: 'right',
+  right: 'left',
+  bottom: 'top',
+  top: 'bottom'
+};
+const oppositeAlignmentMap = {
+  start: 'end',
+  end: 'start'
+};
+function clamp(start, value, end) {
+  return max(start, min(value, end));
+}
+function evaluate(value, param) {
+  return typeof value === 'function' ? value(param) : value;
+}
+function getSide(placement) {
+  return placement.split('-')[0];
+}
+function getAlignment(placement) {
+  return placement.split('-')[1];
+}
+function getOppositeAxis(axis) {
+  return axis === 'x' ? 'y' : 'x';
+}
+function getAxisLength(axis) {
+  return axis === 'y' ? 'height' : 'width';
+}
+function getSideAxis(placement) {
+  return ['top', 'bottom'].includes(getSide(placement)) ? 'y' : 'x';
+}
+function getAlignmentAxis(placement) {
+  return getOppositeAxis(getSideAxis(placement));
+}
+function getAlignmentSides(placement, rects, rtl) {
+  if (rtl === void 0) {
+    rtl = false;
+  }
+  const alignment = getAlignment(placement);
+  const alignmentAxis = getAlignmentAxis(placement);
+  const length = getAxisLength(alignmentAxis);
+  let mainAlignmentSide = alignmentAxis === 'x' ? alignment === (rtl ? 'end' : 'start') ? 'right' : 'left' : alignment === 'start' ? 'bottom' : 'top';
+  if (rects.reference[length] > rects.floating[length]) {
+    mainAlignmentSide = getOppositePlacement(mainAlignmentSide);
+  }
+  return [mainAlignmentSide, getOppositePlacement(mainAlignmentSide)];
+}
+function getExpandedPlacements(placement) {
+  const oppositePlacement = getOppositePlacement(placement);
+  return [getOppositeAlignmentPlacement(placement), oppositePlacement, getOppositeAlignmentPlacement(oppositePlacement)];
+}
+function getOppositeAlignmentPlacement(placement) {
+  return placement.replace(/start|end/g, alignment => oppositeAlignmentMap[alignment]);
+}
+function getSideList(side, isStart, rtl) {
+  const lr = ['left', 'right'];
+  const rl = ['right', 'left'];
+  const tb = ['top', 'bottom'];
+  const bt = ['bottom', 'top'];
+  switch (side) {
+    case 'top':
+    case 'bottom':
+      if (rtl) return isStart ? rl : lr;
+      return isStart ? lr : rl;
+    case 'left':
+    case 'right':
+      return isStart ? tb : bt;
+    default:
+      return [];
+  }
+}
+function getOppositeAxisPlacements(placement, flipAlignment, direction, rtl) {
+  const alignment = getAlignment(placement);
+  let list = getSideList(getSide(placement), direction === 'start', rtl);
+  if (alignment) {
+    list = list.map(side => side + "-" + alignment);
+    if (flipAlignment) {
+      list = list.concat(list.map(getOppositeAlignmentPlacement));
+    }
+  }
+  return list;
+}
+function getOppositePlacement(placement) {
+  return placement.replace(/left|right|bottom|top/g, side => oppositeSideMap[side]);
+}
+function expandPaddingObject(padding) {
+  return {
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    ...padding
+  };
+}
+function getPaddingObject(padding) {
+  return typeof padding !== 'number' ? expandPaddingObject(padding) : {
+    top: padding,
+    right: padding,
+    bottom: padding,
+    left: padding
+  };
+}
+function rectToClientRect(rect) {
+  const {
+    x,
+    y,
+    width,
+    height
+  } = rect;
+  return {
+    width,
+    height,
+    top: y,
+    left: x,
+    right: x + width,
+    bottom: y + height,
+    x,
+    y
+  };
+}
 
 
 
@@ -25144,973 +28137,106 @@ originalMessage) {
 
 /***/ }),
 
-/***/ "./src/alma-checkout-block/alma-checkout-blocks.js":
-/*!*********************************************************!*\
-  !*** ./src/alma-checkout-block/alma-checkout-blocks.js ***!
-  \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "./node_modules/classnames/index.js":
+/*!******************************************!*\
+  !*** ./node_modules/classnames/index.js ***!
+  \******************************************/
+/***/ ((module, exports) => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../stores/alma-eligibility-store */ "./src/stores/alma-eligibility-store.js");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _hooks_fetchAlmaEligibility__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./hooks/fetchAlmaEligibility */ "./src/alma-checkout-block/hooks/fetchAlmaEligibility.js");
-/* harmony import */ var _components_Label__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/Label */ "./src/alma-checkout-block/components/Label.js");
-/* harmony import */ var _components_DisplayAlmaBlocks__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/DisplayAlmaBlocks */ "./src/alma-checkout-block/components/DisplayAlmaBlocks.js");
-/* harmony import */ var _components_DisplayAlmaInPageBlocks__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/DisplayAlmaInPageBlocks */ "./src/alma-checkout-block/components/DisplayAlmaInPageBlocks.js");
-/* harmony import */ var _alma_checkout_blocks_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./alma-checkout-blocks.css */ "./src/alma-checkout-block/alma-checkout-blocks.css");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__);
-/**
- * Checkout blocks page.
- *
- * @since 5.3.0
- *
- * @package Alma_Gateway_For_Woocommerce
- * @subpackage Alma_Gateway_For_Woocommerce/assets
- */
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	Copyright (c) 2018 Jed Watson.
+	Licensed under the MIT License (MIT), see
+	http://jedwatson.github.io/classnames
+*/
+/* global define */
 
-// phpcs:ignoreFile
+(function () {
+	'use strict';
 
+	var hasOwn = {}.hasOwnProperty;
 
+	function classNames () {
+		var classes = '';
 
+		for (var i = 0; i < arguments.length; i++) {
+			var arg = arguments[i];
+			if (arg) {
+				classes = appendClass(classes, parseValue(arg));
+			}
+		}
 
+		return classes;
+	}
 
+	function parseValue (arg) {
+		if (typeof arg === 'string' || typeof arg === 'number') {
+			return arg;
+		}
 
+		if (typeof arg !== 'object') {
+			return '';
+		}
 
+		if (Array.isArray(arg)) {
+			return classNames.apply(null, arg);
+		}
 
+		if (arg.toString !== Object.prototype.toString && !arg.toString.toString().includes('[native code]')) {
+			return arg.toString();
+		}
 
-(function ($) {
-  var inPage = undefined;
-  const {
-    CART_STORE_KEY,
-    CHECKOUT_STORE_KEY
-  } = window.wc.wcBlocksData;
-  const CartObserver = () => {
-    // Subscribe to the cart total
-    const {
-      cartTotal,
-      shippingRates
-    } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(select => ({
-      cartTotal: select(CART_STORE_KEY).getCartTotals().total_price,
-      shippingRates: select(CART_STORE_KEY).getShippingRates()
-    }), []);
-    // Subscribe to the eligibility
-    const {
-      eligibility,
-      isLoading
-    } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(select => ({
-      eligibility: select(_stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_0__.store_key).getAlmaEligibility(),
-      isLoading: select(_stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_0__.store_key).isLoading()
-    }), []);
-    const {
-      isCalculating
-    } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(select => ({
-      isCalculating: select(CHECKOUT_STORE_KEY).isCalculating()
-    }), []);
+		var classes = '';
 
-    // Use the cart total to fetch the new eligibility
-    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-      // BlockData is a global variable defined in the PHP file with the wp_localize_script function
-      (0,_hooks_fetchAlmaEligibility__WEBPACK_IMPORTED_MODULE_3__.fetchAlmaEligibility)(_stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_0__.store_key, BlocksData.url);
-    }, [cartTotal, shippingRates]);
+		for (var key in arg) {
+			if (hasOwn.call(arg, key) && arg[key]) {
+				classes = appendClass(classes, key);
+			}
+		}
 
-    // Register the payment gateway blocks
-    if (!isCalculating && !isLoading) {
-      // For each gateway in eligibility result, we register a block
-      // before registering the payment gateway, we reset the payment gateways to force gutenberg reload
-      reset_payment_gateways(eligibility);
-      register_payment_gateway(eligibility, cartTotal);
-    }
-  };
-  const reset_payment_gateways = eligibility => {
-    for (const gateway in eligibility) {
-      const settings = window.wc.wcSettings.getSetting(`${gateway}_data`, null);
-      const Block_Gateway_Alma = generateGatewayBlock(settings, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.Fragment, {}), gateway, false);
-      window.wc.wcBlocksRegistry.registerPaymentMethod(Block_Gateway_Alma);
-    }
-  };
-  const register_payment_gateway = (eligibility, cartTotal, init = false) => {
-    // For each gateway in eligibility result, we register a block
-    for (const gateway in eligibility) {
-      const settings = window.wc.wcSettings.getSetting(`${gateway}_data`, null);
-      const blockContent = getContentBlock(settings.is_in_page, settings, cartTotal, gateway);
-      const Block_Gateway_Alma = generateGatewayBlock(settings, blockContent, gateway, init ? true : gatewayCanMakePayment(eligibility[gateway]));
-      window.wc.wcBlocksRegistry.registerPaymentMethod(Block_Gateway_Alma);
-    }
-  };
-  const generateGatewayBlock = (settings, blockContent, gateway, canMakePayment) => {
-    return {
-      name: settings.gateway_name,
-      label: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_Label__WEBPACK_IMPORTED_MODULE_4__.Label, {
-        title: window.wp.htmlEntities.decodeEntities(settings.title)
-      }),
-      content: blockContent,
-      edit: blockContent,
-      placeOrderButtonLabel: settings.label_button,
-      canMakePayment: () => canMakePayment,
-      ariaLabel: settings.title
-    };
-  };
-  const getContentBlock = (is_in_page, settings, cartTotal, gateway) => {
-    const setInPage = inPageInstance => {
-      inPage = inPageInstance;
-    };
-    const isPayNow = settings.gateway_name === "alma_pay_now" || settings.gateway_name === "alma_in_page_pay_now";
-    return is_in_page ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_DisplayAlmaInPageBlocks__WEBPACK_IMPORTED_MODULE_6__.DisplayAlmaInPageBlocks, {
-      isPayNow: isPayNow,
-      store_key: _stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_0__.store_key,
-      settings: settings,
-      gateway: gateway,
-      setInPage: setInPage
-    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_DisplayAlmaBlocks__WEBPACK_IMPORTED_MODULE_5__.DisplayAlmaBlocks, {
-      isPayNow: isPayNow,
-      store_key: _stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_0__.store_key,
-      settings: settings,
-      gateway: gateway
-    });
-  };
-  const gatewayCanMakePayment = gateway_eligibility => {
-    let canMakePayment = true;
-    if (Object.keys(gateway_eligibility).length === 0) {
-      canMakePayment = false;
-    }
-    return canMakePayment;
-  };
-  const mountReactComponent = () => {
-    const rootDiv = document.createElement('div');
-    document.body.appendChild(rootDiv);
-    ReactDOM.render(/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(CartObserver, {}), rootDiv);
-  };
-  $(document).ready(() => {
-    mountReactComponent();
-  });
-  $('body').on('change', 'input[type=\'radio\'][name=\'radio-control-wc-payment-method-options\']', function () {
-    document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].removeEventListener("click", addActionToPaymentButtonListener);
-    addActionToPaymentButton();
-  });
-  const addActionToPaymentButton = () => {
-    document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].addEventListener("click", addActionToPaymentButtonListener);
-  };
-  const addActionToPaymentButtonListener = event => {
-    const {
-      CHECKOUT_STORE_KEY,
-      CART_STORE_KEY
-    } = window.wc.wcBlocksData;
-    const store = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.select)(CHECKOUT_STORE_KEY);
-    const cartStore = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.select)(CART_STORE_KEY);
-    const almaStore = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.select)(_stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_0__.store_key);
-    const dataTest = {
-      hasError: store.hasError(),
-      redirectUrl: store.getRedirectUrl(),
-      isProcessing: store.isProcessing(),
-      isBeforeProcessing: store.isBeforeProcessing(),
-      isComplete: store.isComplete(),
-      orderNotes: store.getOrderNotes(),
-      shouldCreateAccount: store.getShouldCreateAccount(),
-      extensionData: store.getExtensionData(),
-      customerId: store.getCustomerId()
-    };
-    const gateway = $("input[type='radio'][name='radio-control-wc-payment-method-options']:checked").val();
-    const settings = window.wc.wcSettings.getSetting(`${gateway}_data`, null);
-    const almaCheckoutNonce = `alma_checkout_nonce${settings.gateway_name}`;
-    if (settings.gateway_name === 'alma_in_page_pay_now' || settings.gateway_name === 'alma_in_page_pay_later' || settings.gateway_name === 'alma_in_page' || settings.gateway_name === 'alma_in_page_pnx_plus_4') {
-      event.stopPropagation();
-      const {
-        shouldCreateAccount,
-        ...restOfDataTest
-      } = dataTest;
-      function isDifferentAddress(billing, shipping) {
-        for (const key in billing) {
-          if (billing[key] !== shipping[key]) {
-            return true;
-          }
-        }
-        return false;
-      }
-      const areShippingAndBillingAddressDifferent = isDifferentAddress(cartStore.getCustomerData().shippingAddress, cartStore.getCustomerData().billingAddress);
-      var data = {
-        'action': 'alma_do_checkout_in_page',
-        'fields': {
-          'shipping_address': cartStore.getCustomerData().shippingAddress,
-          'billing_address': {
-            ...cartStore.getCustomerData().billingAddress
-          },
-          ...restOfDataTest,
-          'ship_to_different_address': areShippingAndBillingAddressDifferent,
-          'createaccount': dataTest.shouldCreateAccount,
-          'alma_fee_plan': almaStore.getSelectedFeePlan(),
-          [almaCheckoutNonce]: settings.nonce_value,
-          'payment_method': settings.gateway_name
-        },
-        [almaCheckoutNonce]: settings.nonce_value,
-        'woocommerce-process-checkout-nonce': settings.woocommerce_process_checkout_nonce,
-        'payment_method': settings.gateway_name,
-        'alma_fee_plan': almaStore.getSelectedFeePlan(),
-        'alma_fee_plan_in_page': almaStore.getSelectedFeePlan(),
-        'is_woo_block': true
-      };
-      var loading = "<div class='loadingIndicator'><img src='https://cdn.almapay.com/img/animated-logo-a.svg' alt='Loading' /></div>";
-      $("body").append("<div class='alma-loader-wrapper'>" + loading + "</div>");
+		return classes;
+	}
 
-      // Create the payment id and order.
-      jQuery.post(ajax_object.ajax_url, data).done(function (response) {
-        var paymentId = response.data.payment_id;
-        var orderId = response.data.order_id;
+	function appendClass (value, newClass) {
+		if (!newClass) {
+			return value;
+		}
+	
+		if (value) {
+			return value + ' ' + newClass;
+		}
+	
+		return value + newClass;
+	}
 
-        // Start the payment.
-        inPage.startPayment({
-          paymentId: paymentId,
-          onUserCloseModal: () => {
-            cancel_order(orderId);
-            $('.alma-loader-wrapper').remove();
-          }
-        });
-      }).fail(function (response) {
-        $('.alma-loader-wrapper').remove();
-        location.reload();
-      });
-    }
-  };
-  function cancel_order(orderId) {
-    var data = {
-      'action': 'alma_cancel_order_in_page',
-      'order_id': orderId
-    };
-    jQuery.post(ajax_object.ajax_url, data);
-  }
-  function init_checkout_blocks() {
-    register_payment_gateway(BlocksData['init_eligibility'], 0, true);
-  }
-  init_checkout_blocks();
-})(jQuery);
+	if ( true && module.exports) {
+		classNames.default = classNames;
+		module.exports = classNames;
+	} else if (true) {
+		// register as 'classnames', consistent with npm package name
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function () {
+			return classNames;
+		}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {}
+}());
+
 
 /***/ }),
 
-/***/ "./src/alma-checkout-block/components/DisplayAlmaBlocks.js":
-/*!*****************************************************************!*\
-  !*** ./src/alma-checkout-block/components/DisplayAlmaBlocks.js ***!
-  \*****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "./node_modules/compute-scroll-into-view/dist/index.mjs":
+/*!**************************************************************!*\
+  !*** ./node_modules/compute-scroll-into-view/dist/index.mjs ***!
+  \**************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   DisplayAlmaBlocks: () => (/* binding */ DisplayAlmaBlocks)
+/* harmony export */   "default": () => (/* binding */ i)
 /* harmony export */ });
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _alma_blocks_component_tsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./alma-blocks-component.tsx */ "./src/alma-checkout-block/components/alma-blocks-component.tsx");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__);
+function t(t){return"object"==typeof t&&null!=t&&1===t.nodeType}function e(t,e){return(!e||"hidden"!==t)&&"visible"!==t&&"clip"!==t}function n(t,n){if(t.clientHeight<t.scrollHeight||t.clientWidth<t.scrollWidth){var r=getComputedStyle(t,null);return e(r.overflowY,n)||e(r.overflowX,n)||function(t){var e=function(t){if(!t.ownerDocument||!t.ownerDocument.defaultView)return null;try{return t.ownerDocument.defaultView.frameElement}catch(t){return null}}(t);return!!e&&(e.clientHeight<t.scrollHeight||e.clientWidth<t.scrollWidth)}(t)}return!1}function r(t,e,n,r,i,o,l,d){return o<t&&l>e||o>t&&l<e?0:o<=t&&d<=n||l>=e&&d>=n?o-t-r:l>e&&d<n||o<t&&d>n?l-e+i:0}var i=function(e,i){var o=window,l=i.scrollMode,d=i.block,f=i.inline,h=i.boundary,u=i.skipOverflowHiddenElements,s="function"==typeof h?h:function(t){return t!==h};if(!t(e))throw new TypeError("Invalid target");for(var a,c,g=document.scrollingElement||document.documentElement,p=[],m=e;t(m)&&s(m);){if((m=null==(c=(a=m).parentElement)?a.getRootNode().host||null:c)===g){p.push(m);break}null!=m&&m===document.body&&n(m)&&!n(document.documentElement)||null!=m&&n(m,u)&&p.push(m)}for(var w=o.visualViewport?o.visualViewport.width:innerWidth,v=o.visualViewport?o.visualViewport.height:innerHeight,W=window.scrollX||pageXOffset,H=window.scrollY||pageYOffset,b=e.getBoundingClientRect(),y=b.height,E=b.width,M=b.top,V=b.right,x=b.bottom,I=b.left,C="start"===d||"nearest"===d?M:"end"===d?x:M+y/2,R="center"===f?I+E/2:"end"===f?V:I,T=[],k=0;k<p.length;k++){var B=p[k],D=B.getBoundingClientRect(),O=D.height,X=D.width,Y=D.top,L=D.right,S=D.bottom,j=D.left;if("if-needed"===l&&M>=0&&I>=0&&x<=v&&V<=w&&M>=Y&&x<=S&&I>=j&&V<=L)return T;var N=getComputedStyle(B),q=parseInt(N.borderLeftWidth,10),z=parseInt(N.borderTopWidth,10),A=parseInt(N.borderRightWidth,10),F=parseInt(N.borderBottomWidth,10),G=0,J=0,K="offsetWidth"in B?B.offsetWidth-B.clientWidth-q-A:0,P="offsetHeight"in B?B.offsetHeight-B.clientHeight-z-F:0,Q="offsetWidth"in B?0===B.offsetWidth?0:X/B.offsetWidth:0,U="offsetHeight"in B?0===B.offsetHeight?0:O/B.offsetHeight:0;if(g===B)G="start"===d?C:"end"===d?C-v:"nearest"===d?r(H,H+v,v,z,F,H+C,H+C+y,y):C-v/2,J="start"===f?R:"center"===f?R-w/2:"end"===f?R-w:r(W,W+w,w,q,A,W+R,W+R+E,E),G=Math.max(0,G+H),J=Math.max(0,J+W);else{G="start"===d?C-Y-z:"end"===d?C-S+F+P:"nearest"===d?r(Y,S,O,z,F+P,C,C+y,y):C-(Y+O/2)+P/2,J="start"===f?R-j-q:"center"===f?R-(j+X/2)+K/2:"end"===f?R-L+A+K:r(j,L,X,q,A+K,R,R+E,E);var Z=B.scrollLeft,$=B.scrollTop;C+=$-(G=Math.max(0,Math.min($+G/U,B.scrollHeight-O/U+P))),R+=Z-(J=Math.max(0,Math.min(Z+J/Q,B.scrollWidth-X/Q+K)))}T.push({el:B,top:G,left:J})}return T};
+//# sourceMappingURL=index.mjs.map
 
-
-
-
-const DisplayAlmaBlocks = props => {
-  var _eligibility$gateway$;
-  const {
-    eventRegistration,
-    emitResponse,
-    settings,
-    gateway,
-    store_key,
-    isPayNow
-  } = props;
-  const {
-    onPaymentSetup
-  } = eventRegistration;
-  const {
-    CART_STORE_KEY
-  } = window.wc.wcBlocksData;
-  const {
-    cartTotal
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.useSelect)(select => ({
-    cartTotal: select(CART_STORE_KEY).getCartTotals()
-  }), []);
-  const {
-    eligibility,
-    isLoading
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.useSelect)(select => ({
-    eligibility: select(store_key).getAlmaEligibility(),
-    isLoading: select(store_key).isLoading()
-  }), []);
-
-  // Define default plan and selected plan outside of the render return
-  let default_plan = '';
-  if (!isLoading && Object.keys(eligibility[gateway] || {}).length > 0) {
-    default_plan = Object.keys(eligibility[gateway])[0];
-  }
-  const [selectedFeePlan, setSelectedFeePlan] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(default_plan);
-  const plan = !isLoading ? (_eligibility$gateway$ = eligibility[gateway]?.[selectedFeePlan]) !== null && _eligibility$gateway$ !== void 0 ? _eligibility$gateway$ : eligibility[gateway]?.[default_plan] : null;
-
-  // Always define useEffect, regardless of `isLoading`
-  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (isLoading || !plan) return; // Skip if still loading or no plan
-
-    const unsubscribe = onPaymentSetup(() => {
-      const nonceKey = `alma_checkout_nonce${settings.gateway_name}`;
-      const paymentMethodData = {
-        [nonceKey]: `${settings.nonce_value}`,
-        alma_fee_plan: plan.planKey,
-        payment_method: settings.gateway_name
-      };
-      return {
-        type: emitResponse.responseTypes.SUCCESS,
-        meta: {
-          paymentMethodData
-        }
-      };
-    });
-
-    // Cleanup when component unmounts
-    return () => {
-      unsubscribe();
-    };
-  }, [eligibility, onPaymentSetup, selectedFeePlan, plan, isLoading]);
-  return isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {}) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_alma_blocks_component_tsx__WEBPACK_IMPORTED_MODULE_2__.AlmaBlocks, {
-    hasInPage: settings.is_in_page,
-    isPayNow: isPayNow,
-    totalPrice: cartTotal.total_price,
-    settings: settings,
-    selectedFeePlan: plan.planKey,
-    setSelectedFeePlan: setSelectedFeePlan,
-    plans: eligibility[gateway]
-  });
-};
-
-/***/ }),
-
-/***/ "./src/alma-checkout-block/components/DisplayAlmaInPageBlocks.js":
-/*!***********************************************************************!*\
-  !*** ./src/alma-checkout-block/components/DisplayAlmaInPageBlocks.js ***!
-  \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   DisplayAlmaInPageBlocks: () => (/* binding */ DisplayAlmaInPageBlocks)
-/* harmony export */ });
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _alma_blocks_component_tsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./alma-blocks-component.tsx */ "./src/alma-checkout-block/components/alma-blocks-component.tsx");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__);
-
-
-
-
-const DisplayAlmaInPageBlocks = props => {
-  var _eligibility$gateway$;
-  const {
-    settings,
-    gateway,
-    store_key,
-    setInPage,
-    isPayNow
-  } = props;
-  const {
-    CART_STORE_KEY
-  } = window.wc.wcBlocksData;
-  const {
-    cartTotal
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.useSelect)(select => ({
-    cartTotal: select(CART_STORE_KEY).getCartTotals()
-  }), []);
-  const {
-    eligibility,
-    isLoading
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.useSelect)(select => ({
-    eligibility: select(store_key).getAlmaEligibility(),
-    isLoading: select(store_key).isLoading()
-  }), []);
-
-  // Init default plan
-  let default_plan = '';
-  if (!isLoading && Object.keys(eligibility[gateway]).length > 0) {
-    // default plan is the first plan
-    default_plan = Object.keys(eligibility[gateway])[0];
-  }
-  const [selectedFeePlan, setSelectedFeePlan] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(default_plan);
-  const plan = !isLoading ? (_eligibility$gateway$ = eligibility[gateway]?.[selectedFeePlan]) !== null && _eligibility$gateway$ !== void 0 ? _eligibility$gateway$ : eligibility[gateway]?.[default_plan] : null;
-  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    // Transfer the selected fee plan to the alma redux store
-    (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.dispatch)(store_key).setSelectedFeePlan(selectedFeePlan);
-  }, [selectedFeePlan]);
-  let inPage = undefined;
-  function initializeInpage(settingsInPage, total_price) {
-    if (inPage !== undefined && document.getElementById('alma-embedded-iframe') !== null) {
-      inPage.unmount();
-    }
-    inPage = Alma.InPage.initialize({
-      merchantId: settingsInPage.merchant_id,
-      amountInCents: total_price,
-      installmentsCount: plan.installmentsCount,
-      selector: "#alma-inpage-alma_in_page",
-      deferredDays: plan.deferredDays,
-      deferredMonths: plan.deferredMonths,
-      environment: settingsInPage.environment,
-      locale: settingsInPage.locale
-    });
-    setInPage(inPage);
-  }
-  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (!isLoading && plan) {
-      setSelectedFeePlan(plan.planKey);
-      initializeInpage(settings, cartTotal.total_price);
-    }
-  }, [selectedFeePlan, cartTotal, isLoading]);
-  const displayInstallments = isPayNow ? 'none' : 'block';
-  return isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {}) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_alma_blocks_component_tsx__WEBPACK_IMPORTED_MODULE_2__.AlmaBlocks, {
-      hasInPage: settings.is_in_page,
-      isPayNow: isPayNow,
-      totalPrice: cartTotal.total_price,
-      settings: settings,
-      selectedFeePlan: plan.planKey,
-      setSelectedFeePlan: setSelectedFeePlan,
-      plans: eligibility[gateway]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-      id: "alma-inpage-alma_in_page",
-      style: {
-        display: displayInstallments
-      }
-    })]
-  });
-};
-
-/***/ }),
-
-/***/ "./src/alma-checkout-block/components/Installments/Installment.tsx":
-/*!*************************************************************************!*\
-  !*** ./src/alma-checkout-block/components/Installments/Installment.tsx ***!
-  \*************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Installment: () => (/* binding */ Installment)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/src/components/message.js");
-/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/index.js");
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__);
-
-
-
-
-const Installment = ({
-  installment: {
-    due_date,
-    localized_due_date
-  },
-  totalAmountInEuros
-}) => {
-  const date = new Date(due_date * 1000);
-  const isToday = localized_due_date === "today";
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()("installmentContent", {
-      firstInstallmentContent: isToday
-    }),
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()("bullet", {
-        firstBullet: isToday
-      })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-      className: "installment",
-      "data-testid": "installment",
-      children: [isToday ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_intl__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        id: "installments.today",
-        defaultMessage: "Today"
-      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_intl__WEBPACK_IMPORTED_MODULE_4__.FormattedDate, {
-        value: date,
-        day: "numeric",
-        month: "long",
-        year: "numeric"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_intl__WEBPACK_IMPORTED_MODULE_4__.FormattedNumber, {
-          value: totalAmountInEuros,
-          style: "currency",
-          currency: "EUR"
-        })
-      })]
-    })]
-  });
-};
-
-/***/ }),
-
-/***/ "./src/alma-checkout-block/components/Installments/Installments.tsx":
-/*!**************************************************************************!*\
-  !*** ./src/alma-checkout-block/components/Installments/Installments.tsx ***!
-  \**************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Installments: () => (/* binding */ Installments)
-/* harmony export */ });
-/* harmony import */ var _alma_react_components__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @alma/react-components */ "./node_modules/@alma/react-components/dist/lib.es.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _InstallmentsContent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InstallmentsContent */ "./src/alma-checkout-block/components/Installments/InstallmentsContent.tsx");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__);
-
-
-
-
-const Installments = ({
-  feePlan,
-  amountInCents
-}) => {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_alma_react_components__WEBPACK_IMPORTED_MODULE_0__.CardTemplate, {
-    "data-testid": "cardInstallments",
-    padding: "sm",
-    header: null,
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_InstallmentsContent__WEBPACK_IMPORTED_MODULE_2__.InstallmentsContent, {
-      feePlan: feePlan,
-      amountInCents: amountInCents
-    })
-  });
-};
-
-/***/ }),
-
-/***/ "./src/alma-checkout-block/components/Installments/InstallmentsContent.tsx":
-/*!*********************************************************************************!*\
-  !*** ./src/alma-checkout-block/components/Installments/InstallmentsContent.tsx ***!
-  \*********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   InstallmentsContent: () => (/* binding */ InstallmentsContent)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Installment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Installment */ "./src/alma-checkout-block/components/Installments/Installment.tsx");
-/* harmony import */ var _alma_react_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @alma/react-components */ "./node_modules/@alma/react-components/dist/lib.es.js");
-/* harmony import */ var _InstallmentsTotal_InstallmentsTotal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./InstallmentsTotal/InstallmentsTotal */ "./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotal.tsx");
-/* harmony import */ var _InstallmentsTotal_InstallmentsTotalFees__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./InstallmentsTotal/InstallmentsTotalFees */ "./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotalFees.tsx");
-/* harmony import */ var _Installments_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Installments.css */ "./src/alma-checkout-block/components/Installments/Installments.css");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__);
-
-
-
-
-
-
-
-const InstallmentsContent = ({
-  feePlan,
-  amountInCents
-}) => {
-  if (!feePlan.paymentPlan) {
-    return null;
-  }
-  const customerFees = feePlan.paymentPlan[0].customer_fee;
-  const centsToEuros = cents => {
-    return cents / 100;
-  };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-      className: "separator"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-      className: "installments",
-      children: feePlan.paymentPlan.map((installment, index) => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Installment__WEBPACK_IMPORTED_MODULE_1__.Installment, {
-        installment: installment,
-        totalAmountInEuros: centsToEuros(installment.total_amount)
-      }, index))
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-      className: "footerCard",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(_alma_react_components__WEBPACK_IMPORTED_MODULE_2__.CardFooter, {
-        className: "footer",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_InstallmentsTotal_InstallmentsTotal__WEBPACK_IMPORTED_MODULE_3__.InstallmentsTotal, {
-          totalAmount: amountInCents,
-          customerFees: customerFees
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_InstallmentsTotal_InstallmentsTotalFees__WEBPACK_IMPORTED_MODULE_4__.InstallmentsTotalFees, {
-          customerFees: customerFees
-        })]
-      })
-    })]
-  });
-};
-
-/***/ }),
-
-/***/ "./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotal.tsx":
-/*!*************************************************************************************************!*\
-  !*** ./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotal.tsx ***!
-  \*************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   InstallmentsTotal: () => (/* binding */ InstallmentsTotal)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/src/components/message.js");
-/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/index.js");
-/* harmony import */ var _InstallmentsTotal_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./InstallmentsTotal.css */ "./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotal.css");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__);
-
-
-
-
-const InstallmentsTotal = ({
-  totalAmount,
-  customerFees
-}) => {
-  const totalAmountIncludingFees = totalAmount / 100 + customerFees / 100;
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-    className: "total",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_intl__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        id: "installments.total",
-        defaultMessage: "Total TTC"
-      })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_intl__WEBPACK_IMPORTED_MODULE_4__.FormattedNumber, {
-        value: totalAmountIncludingFees,
-        style: "currency",
-        currency: "EUR"
-      })
-    })]
-  });
-};
-
-/***/ }),
-
-/***/ "./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotalFees.tsx":
-/*!*****************************************************************************************************!*\
-  !*** ./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotalFees.tsx ***!
-  \*****************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   InstallmentsTotalFees: () => (/* binding */ InstallmentsTotalFees)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _InstallmentsTotal_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./InstallmentsTotal.css */ "./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotal.css");
-/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__);
-
-
-
-
-const InstallmentsTotalFees = ({
-  customerFees
-}) => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-  className: "fees",
-  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-    children: "Payment costs"
-  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-    className: "feesNumbers",
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_intl__WEBPACK_IMPORTED_MODULE_3__.FormattedNumber, {
-      value: customerFees / 100,
-      style: "currency",
-      currency: "EUR"
-    })
-  })]
-});
-
-/***/ }),
-
-/***/ "./src/alma-checkout-block/components/Label.js":
-/*!*****************************************************!*\
-  !*** ./src/alma-checkout-block/components/Label.js ***!
-  \*****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Label: () => (/* binding */ Label)
-/* harmony export */ });
-/* harmony import */ var _alma_react_components__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @alma/react-components */ "./node_modules/@alma/react-components/dist/lib.es.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__);
-
-
-const Label = props => {
-  const {
-    components,
-    title
-  } = props;
-  const {
-    PaymentMethodLabel
-  } = components;
-  const icon = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_alma_react_components__WEBPACK_IMPORTED_MODULE_0__.Logo, {
-    style: {
-      width: 'auto',
-      height: '1em'
-    },
-    logo: "alma-orange"
-  });
-  const text = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
-    children: [" ", title, " "]
-  });
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
-    className: "paymentMethodLabel",
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(PaymentMethodLabel, {
-      text: text,
-      icon: icon
-    })
-  });
-};
-
-/***/ }),
-
-/***/ "./src/alma-checkout-block/components/alma-blocks-component.tsx":
-/*!**********************************************************************!*\
-  !*** ./src/alma-checkout-block/components/alma-blocks-component.tsx ***!
-  \**********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   AlmaBlocks: () => (/* binding */ AlmaBlocks)
-/* harmony export */ });
-/* harmony import */ var _alma_react_components_style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @alma/react-components/style.css */ "./node_modules/@alma/react-components/dist/style.css");
-/* harmony import */ var _alma_react_components_global_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @alma/react-components/global.css */ "./node_modules/@alma/react-components/dist/global.css");
-/* harmony import */ var _alma_checkout_blocks_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../alma-checkout-blocks.css */ "./src/alma-checkout-block/alma-checkout-blocks.css");
-/* harmony import */ var _alma_react_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @alma/react-components */ "./node_modules/@alma/react-components/dist/lib.es.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _Installments_Installments__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Installments/Installments */ "./src/alma-checkout-block/components/Installments/Installments.tsx");
-/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/src/components/provider.js");
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__);
-/**
- * Checkout blocks component.
- *
- * @since 5.3.0
- *
- * @package Alma_Gateway_For_Woocommerce
- * @subpackage Alma_Gateway_For_Woocommerce/assets
- */
-
-
-
-
-
-
-
-
-
-
-const AlmaBlocks = ({
-  settings,
-  selectedFeePlan,
-  setSelectedFeePlan,
-  hasInPage,
-  isPayNow,
-  totalPrice,
-  plans
-}) => {
-  const labels = {};
-  let values = [];
-  Object.keys(plans).forEach(function (key, index) {
-    values.push(key);
-    if (settings.gateway_name === "alma_pay_later" || settings.gateway_name === "alma_in_page_pay_later") {
-      if (plans[key].deferredDays > 0) {
-        labels[key] = "D+" + plans[key].deferredDays;
-      } else if (plans[key].deferredMonths > 0) {
-        labels[key] = "M+" + plans[key].deferredMonths;
-      }
-    } else {
-      labels[key] = plans[key].installmentsCount + "x";
-    }
-  });
-  const handleClick = optionKey => {
-    setSelectedFeePlan(optionKey);
-  };
-  const label = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-    className: "toggleButtonFieldLabel",
-    children: settings.description
-  });
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(react_intl__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    locale: "fr",
-    children: [isPayNow && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-      className: "payNowLabel",
-      children: label
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-      className: "buttonsContainer",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-        className: classnames__WEBPACK_IMPORTED_MODULE_6___default()({
-          payNow: isPayNow
-        }),
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_alma_react_components__WEBPACK_IMPORTED_MODULE_3__.ToggleButtonsField, {
-          className: "toggleButtonField",
-          options: values,
-          optionLabel: key => labels[key],
-          optionKey: key => key,
-          onChange: key => handleClick(key),
-          value: selectedFeePlan,
-          label: label,
-          wide: false,
-          size: "sm",
-          error: ""
-        })
-      })
-    }), !hasInPage && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-      className: "alma-card-installments",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Installments_Installments__WEBPACK_IMPORTED_MODULE_5__.Installments, {
-        feePlan: plans[selectedFeePlan],
-        amountInCents: totalPrice
-      })
-    })]
-  });
-};
-
-/***/ }),
-
-/***/ "./src/alma-checkout-block/hooks/fetchAlmaEligibility.js":
-/*!***************************************************************!*\
-  !*** ./src/alma-checkout-block/hooks/fetchAlmaEligibility.js ***!
-  \***************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   fetchAlmaEligibility: () => (/* binding */ fetchAlmaEligibility)
-/* harmony export */ });
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_0__);
-
-
-/**
- * @param storeKey
- * @param url
- * @returns {Promise<void>}
- */
-const fetchAlmaEligibility = async (storeKey, url) => {
-  (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.dispatch)(storeKey).setLoading(true);
-  try {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    });
-    const data = await response.json();
-    if (data.success) {
-      (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.dispatch)(storeKey).setAlmaEligibility(data.eligibility);
-    }
-  } catch (error) {
-    console.error('Erreur lors de l’appel API :', error);
-  } finally {
-    (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.dispatch)(storeKey).setLoading(false);
-  }
-};
-
-/***/ }),
-
-/***/ "./src/stores/alma-eligibility-store.js":
-/*!**********************************************!*\
-  !*** ./src/stores/alma-eligibility-store.js ***!
-  \**********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   store_key: () => (/* binding */ store_key)
-/* harmony export */ });
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_0__);
-
-const store_key = 'alma/alma-store';
-const DEFAULT_STATE = {
-  almaEligibility: {},
-  selectedFeePlan: null,
-  isLoading: false
-};
-const actions = {
-  setAlmaEligibility(data) {
-    return {
-      type: 'SET_ALMA_ELIGIBILITY',
-      payload: data
-    };
-  },
-  setSelectedFeePlan(plan) {
-    return {
-      type: 'SET_SELECTED_FEE_PLAN',
-      payload: plan
-    };
-  },
-  setLoading(isLoading) {
-    return {
-      type: 'SET_LOADING',
-      payload: isLoading
-    };
-  }
-};
-function reducer(state = DEFAULT_STATE, action) {
-  switch (action.type) {
-    case 'SET_ALMA_ELIGIBILITY':
-      return {
-        ...state,
-        almaEligibility: action.payload
-      };
-    case 'SET_SELECTED_FEE_PLAN':
-      return {
-        ...state,
-        selectedFeePlan: action.payload
-      };
-    case 'SET_LOADING':
-      return {
-        ...state,
-        isLoading: action.payload
-      };
-    default:
-      return state;
-  }
-}
-const selectors = {
-  getAlmaEligibility(state) {
-    return state.almaEligibility;
-  },
-  getSelectedFeePlan(state) {
-    return state.selectedFeePlan;
-  },
-  isLoading(state) {
-    return state.isLoading;
-  }
-};
-(0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.registerStore)('alma/alma-store', {
-  reducer,
-  actions,
-  selectors
-});
 
 /***/ }),
 
@@ -30762,6 +32888,27 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 /***/ }),
 
+/***/ "./node_modules/goober/dist/goober.modern.js":
+/*!***************************************************!*\
+  !*** ./node_modules/goober/dist/goober.modern.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   css: () => (/* binding */ u),
+/* harmony export */   extractCss: () => (/* binding */ r),
+/* harmony export */   glob: () => (/* binding */ b),
+/* harmony export */   keyframes: () => (/* binding */ h),
+/* harmony export */   setup: () => (/* binding */ m),
+/* harmony export */   styled: () => (/* binding */ j)
+/* harmony export */ });
+let e={data:""},t=t=>"object"==typeof window?((t?t.querySelector("#_goober"):window._goober)||Object.assign((t||document.head).appendChild(document.createElement("style")),{innerHTML:" ",id:"_goober"})).firstChild:t||e,r=e=>{let r=t(e),l=r.data;return r.data="",l},l=/(?:([\u0080-\uFFFF\w-%@]+) *:? *([^{;]+?);|([^;}{]*?) *{)|(}\s*)/g,a=/\/\*[^]*?\*\/|  +/g,n=/\n+/g,o=(e,t)=>{let r="",l="",a="";for(let n in e){let c=e[n];"@"==n[0]?"i"==n[1]?r=n+" "+c+";":l+="f"==n[1]?o(c,n):n+"{"+o(c,"k"==n[1]?"":t)+"}":"object"==typeof c?l+=o(c,t?t.replace(/([^,])+/g,e=>n.replace(/([^,]*:\S+\([^)]*\))|([^,])+/g,t=>/&/.test(t)?t.replace(/&/g,e):e?e+" "+t:t)):n):null!=c&&(n=/^--/.test(n)?n:n.replace(/[A-Z]/g,"-$&").toLowerCase(),a+=o.p?o.p(n,c):n+":"+c+";")}return r+(t&&a?t+"{"+a+"}":a)+l},c={},s=e=>{if("object"==typeof e){let t="";for(let r in e)t+=r+s(e[r]);return t}return e},i=(e,t,r,i,p)=>{let u=s(e),d=c[u]||(c[u]=(e=>{let t=0,r=11;for(;t<e.length;)r=101*r+e.charCodeAt(t++)>>>0;return"go"+r})(u));if(!c[d]){let t=u!==e?e:(e=>{let t,r,o=[{}];for(;t=l.exec(e.replace(a,""));)t[4]?o.shift():t[3]?(r=t[3].replace(n," ").trim(),o.unshift(o[0][r]=o[0][r]||{})):o[0][t[1]]=t[2].replace(n," ").trim();return o[0]})(e);c[d]=o(p?{["@keyframes "+d]:t}:t,r?"":"."+d)}let f=r&&c.g?c.g:null;return r&&(c.g=c[d]),((e,t,r,l)=>{l?t.data=t.data.replace(l,e):-1===t.data.indexOf(e)&&(t.data=r?e+t.data:t.data+e)})(c[d],t,i,f),d},p=(e,t,r)=>e.reduce((e,l,a)=>{let n=t[a];if(n&&n.call){let e=n(r),t=e&&e.props&&e.props.className||/^go/.test(e)&&e;n=t?"."+t:e&&"object"==typeof e?e.props?"":o(e,""):!1===e?"":e}return e+l+(null==n?"":n)},"");function u(e){let r=this||{},l=e.call?e(r.p):e;return i(l.unshift?l.raw?p(l,[].slice.call(arguments,1),r.p):l.reduce((e,t)=>Object.assign(e,t&&t.call?t(r.p):t),{}):l,t(r.target),r.g,r.o,r.k)}let d,f,g,b=u.bind({g:1}),h=u.bind({k:1});function m(e,t,r,l){o.p=t,d=e,f=r,g=l}function j(e,t){let r=this||{};return function(){let l=arguments;function a(n,o){let c=Object.assign({},n),s=c.className||a.className;r.p=Object.assign({theme:f&&f()},c),r.o=/ *go\d+/.test(s),c.className=u.apply(r,l)+(s?" "+s:""),t&&(c.ref=o);let i=e;return e[0]&&(i=c.as||e,delete c.as),g&&i[0]&&g(c),d(i,c)}return t?t(a):a}}
+
+
+/***/ }),
+
 /***/ "./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js":
 /*!**********************************************************************************!*\
   !*** ./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js ***!
@@ -31146,71 +33293,6 @@ function memoizeOne(resultFn, isEqual) {
 }
 
 
-
-
-/***/ }),
-
-/***/ "./node_modules/@alma/react-components/dist/global.css":
-/*!*************************************************************!*\
-  !*** ./node_modules/@alma/react-components/dist/global.css ***!
-  \*************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
-/***/ "./node_modules/@alma/react-components/dist/style.css":
-/*!************************************************************!*\
-  !*** ./node_modules/@alma/react-components/dist/style.css ***!
-  \************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
-/***/ "./src/alma-checkout-block/alma-checkout-blocks.css":
-/*!**********************************************************!*\
-  !*** ./src/alma-checkout-block/alma-checkout-blocks.css ***!
-  \**********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
-/***/ "./src/alma-checkout-block/components/Installments/Installments.css":
-/*!**************************************************************************!*\
-  !*** ./src/alma-checkout-block/components/Installments/Installments.css ***!
-  \**************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
-/***/ "./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotal.css":
-/*!*************************************************************************************************!*\
-  !*** ./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotal.css ***!
-  \*************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
 
 
 /***/ }),
@@ -32392,6 +34474,211 @@ if (false) {} else {
   module.exports = __webpack_require__(/*! ./cjs/react-is.development.js */ "./node_modules/prop-types/node_modules/react-is/cjs/react-is.development.js");
 }
 
+
+/***/ }),
+
+/***/ "./node_modules/react-hot-toast/dist/index.mjs":
+/*!*****************************************************!*\
+  !*** ./node_modules/react-hot-toast/dist/index.mjs ***!
+  \*****************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   CheckmarkIcon: () => (/* binding */ _),
+/* harmony export */   ErrorIcon: () => (/* binding */ k),
+/* harmony export */   LoaderIcon: () => (/* binding */ V),
+/* harmony export */   ToastBar: () => (/* binding */ C),
+/* harmony export */   ToastIcon: () => (/* binding */ M),
+/* harmony export */   Toaster: () => (/* binding */ Oe),
+/* harmony export */   "default": () => (/* binding */ Vt),
+/* harmony export */   resolveValue: () => (/* binding */ f),
+/* harmony export */   toast: () => (/* binding */ c),
+/* harmony export */   useToaster: () => (/* binding */ O),
+/* harmony export */   useToasterStore: () => (/* binding */ D)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var goober__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! goober */ "./node_modules/goober/dist/goober.modern.js");
+"use client";
+var W=e=>typeof e=="function",f=(e,t)=>W(e)?e(t):e;var F=(()=>{let e=0;return()=>(++e).toString()})(),A=(()=>{let e;return()=>{if(e===void 0&&typeof window<"u"){let t=matchMedia("(prefers-reduced-motion: reduce)");e=!t||t.matches}return e}})();var Y=20;var U=(e,t)=>{switch(t.type){case 0:return{...e,toasts:[t.toast,...e.toasts].slice(0,Y)};case 1:return{...e,toasts:e.toasts.map(o=>o.id===t.toast.id?{...o,...t.toast}:o)};case 2:let{toast:r}=t;return U(e,{type:e.toasts.find(o=>o.id===r.id)?1:0,toast:r});case 3:let{toastId:s}=t;return{...e,toasts:e.toasts.map(o=>o.id===s||s===void 0?{...o,dismissed:!0,visible:!1}:o)};case 4:return t.toastId===void 0?{...e,toasts:[]}:{...e,toasts:e.toasts.filter(o=>o.id!==t.toastId)};case 5:return{...e,pausedAt:t.time};case 6:let a=t.time-(e.pausedAt||0);return{...e,pausedAt:void 0,toasts:e.toasts.map(o=>({...o,pauseDuration:o.pauseDuration+a}))}}},P=[],y={toasts:[],pausedAt:void 0},u=e=>{y=U(y,e),P.forEach(t=>{t(y)})},q={blank:4e3,error:4e3,success:2e3,loading:1/0,custom:4e3},D=(e={})=>{let[t,r]=(0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(y),s=(0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(y);(0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(()=>(s.current!==y&&r(y),P.push(r),()=>{let o=P.indexOf(r);o>-1&&P.splice(o,1)}),[]);let a=t.toasts.map(o=>{var n,i,p;return{...e,...e[o.type],...o,removeDelay:o.removeDelay||((n=e[o.type])==null?void 0:n.removeDelay)||(e==null?void 0:e.removeDelay),duration:o.duration||((i=e[o.type])==null?void 0:i.duration)||(e==null?void 0:e.duration)||q[o.type],style:{...e.style,...(p=e[o.type])==null?void 0:p.style,...o.style}}});return{...t,toasts:a}};var J=(e,t="blank",r)=>({createdAt:Date.now(),visible:!0,dismissed:!1,type:t,ariaProps:{role:"status","aria-live":"polite"},message:e,pauseDuration:0,...r,id:(r==null?void 0:r.id)||F()}),x=e=>(t,r)=>{let s=J(t,e,r);return u({type:2,toast:s}),s.id},c=(e,t)=>x("blank")(e,t);c.error=x("error");c.success=x("success");c.loading=x("loading");c.custom=x("custom");c.dismiss=e=>{u({type:3,toastId:e})};c.remove=e=>u({type:4,toastId:e});c.promise=(e,t,r)=>{let s=c.loading(t.loading,{...r,...r==null?void 0:r.loading});return typeof e=="function"&&(e=e()),e.then(a=>{let o=t.success?f(t.success,a):void 0;return o?c.success(o,{id:s,...r,...r==null?void 0:r.success}):c.dismiss(s),a}).catch(a=>{let o=t.error?f(t.error,a):void 0;o?c.error(o,{id:s,...r,...r==null?void 0:r.error}):c.dismiss(s)}),e};var K=(e,t)=>{u({type:1,toast:{id:e,height:t}})},X=()=>{u({type:5,time:Date.now()})},b=new Map,Z=1e3,ee=(e,t=Z)=>{if(b.has(e))return;let r=setTimeout(()=>{b.delete(e),u({type:4,toastId:e})},t);b.set(e,r)},O=e=>{let{toasts:t,pausedAt:r}=D(e);(0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(()=>{if(r)return;let o=Date.now(),n=t.map(i=>{if(i.duration===1/0)return;let p=(i.duration||0)+i.pauseDuration-(o-i.createdAt);if(p<0){i.visible&&c.dismiss(i.id);return}return setTimeout(()=>c.dismiss(i.id),p)});return()=>{n.forEach(i=>i&&clearTimeout(i))}},[t,r]);let s=(0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(()=>{r&&u({type:6,time:Date.now()})},[r]),a=(0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)((o,n)=>{let{reverseOrder:i=!1,gutter:p=8,defaultPosition:d}=n||{},h=t.filter(m=>(m.position||d)===(o.position||d)&&m.height),v=h.findIndex(m=>m.id===o.id),S=h.filter((m,E)=>E<v&&m.visible).length;return h.filter(m=>m.visible).slice(...i?[S+1]:[0,S]).reduce((m,E)=>m+(E.height||0)+p,0)},[t]);return (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(()=>{t.forEach(o=>{if(o.dismissed)ee(o.id,o.removeDelay);else{let n=b.get(o.id);n&&(clearTimeout(n),b.delete(o.id))}})},[t]),{toasts:t,handlers:{updateHeight:K,startPause:X,endPause:s,calculateOffset:a}}};var oe=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
+from {
+  transform: scale(0) rotate(45deg);
+	opacity: 0;
+}
+to {
+ transform: scale(1) rotate(45deg);
+  opacity: 1;
+}`,re=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
+from {
+  transform: scale(0);
+  opacity: 0;
+}
+to {
+  transform: scale(1);
+  opacity: 1;
+}`,se=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
+from {
+  transform: scale(0) rotate(90deg);
+	opacity: 0;
+}
+to {
+  transform: scale(1) rotate(90deg);
+	opacity: 1;
+}`,k=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
+  width: 20px;
+  opacity: 0;
+  height: 20px;
+  border-radius: 10px;
+  background: ${e=>e.primary||"#ff4b4b"};
+  position: relative;
+  transform: rotate(45deg);
+
+  animation: ${oe} 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+    forwards;
+  animation-delay: 100ms;
+
+  &:after,
+  &:before {
+    content: '';
+    animation: ${re} 0.15s ease-out forwards;
+    animation-delay: 150ms;
+    position: absolute;
+    border-radius: 3px;
+    opacity: 0;
+    background: ${e=>e.secondary||"#fff"};
+    bottom: 9px;
+    left: 4px;
+    height: 2px;
+    width: 12px;
+  }
+
+  &:before {
+    animation: ${se} 0.15s ease-out forwards;
+    animation-delay: 180ms;
+    transform: rotate(90deg);
+  }
+`;var ne=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`,V=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
+  width: 12px;
+  height: 12px;
+  box-sizing: border-box;
+  border: 2px solid;
+  border-radius: 100%;
+  border-color: ${e=>e.secondary||"#e0e0e0"};
+  border-right-color: ${e=>e.primary||"#616161"};
+  animation: ${ne} 1s linear infinite;
+`;var pe=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
+from {
+  transform: scale(0) rotate(45deg);
+	opacity: 0;
+}
+to {
+  transform: scale(1) rotate(45deg);
+	opacity: 1;
+}`,de=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
+0% {
+	height: 0;
+	width: 0;
+	opacity: 0;
+}
+40% {
+  height: 0;
+	width: 6px;
+	opacity: 1;
+}
+100% {
+  opacity: 1;
+  height: 10px;
+}`,_=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
+  width: 20px;
+  opacity: 0;
+  height: 20px;
+  border-radius: 10px;
+  background: ${e=>e.primary||"#61d345"};
+  position: relative;
+  transform: rotate(45deg);
+
+  animation: ${pe} 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+    forwards;
+  animation-delay: 100ms;
+  &:after {
+    content: '';
+    box-sizing: border-box;
+    animation: ${de} 0.2s ease-out forwards;
+    opacity: 0;
+    animation-delay: 200ms;
+    position: absolute;
+    border-right: 2px solid;
+    border-bottom: 2px solid;
+    border-color: ${e=>e.secondary||"#fff"};
+    bottom: 6px;
+    left: 6px;
+    height: 10px;
+    width: 6px;
+  }
+`;var ue=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
+  position: absolute;
+`,le=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 20px;
+  min-height: 20px;
+`,fe=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
+from {
+  transform: scale(0.6);
+  opacity: 0.4;
+}
+to {
+  transform: scale(1);
+  opacity: 1;
+}`,Te=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
+  position: relative;
+  transform: scale(0.6);
+  opacity: 0.4;
+  min-width: 20px;
+  animation: ${fe} 0.3s 0.12s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+    forwards;
+`,M=({toast:e})=>{let{icon:t,type:r,iconTheme:s}=e;return t!==void 0?typeof t=="string"?react__WEBPACK_IMPORTED_MODULE_0__.createElement(Te,null,t):t:r==="blank"?null:react__WEBPACK_IMPORTED_MODULE_0__.createElement(le,null,react__WEBPACK_IMPORTED_MODULE_0__.createElement(V,{...s}),r!=="loading"&&react__WEBPACK_IMPORTED_MODULE_0__.createElement(ue,null,r==="error"?react__WEBPACK_IMPORTED_MODULE_0__.createElement(k,{...s}):react__WEBPACK_IMPORTED_MODULE_0__.createElement(_,{...s})))};var ye=e=>`
+0% {transform: translate3d(0,${e*-200}%,0) scale(.6); opacity:.5;}
+100% {transform: translate3d(0,0,0) scale(1); opacity:1;}
+`,ge=e=>`
+0% {transform: translate3d(0,0,-1px) scale(1); opacity:1;}
+100% {transform: translate3d(0,${e*-150}%,-1px) scale(.6); opacity:0;}
+`,he="0%{opacity:0;} 100%{opacity:1;}",xe="0%{opacity:1;} 100%{opacity:0;}",be=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
+  display: flex;
+  align-items: center;
+  background: #fff;
+  color: #363636;
+  line-height: 1.3;
+  will-change: transform;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1), 0 3px 3px rgba(0, 0, 0, 0.05);
+  max-width: 350px;
+  pointer-events: auto;
+  padding: 8px 10px;
+  border-radius: 8px;
+`,Se=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
+  display: flex;
+  justify-content: center;
+  margin: 4px 10px;
+  color: inherit;
+  flex: 1 1 auto;
+  white-space: pre-line;
+`,Ae=(e,t)=>{let s=e.includes("top")?1:-1,[a,o]=A()?[he,xe]:[ye(s),ge(s)];return{animation:t?`${(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)(a)} 0.35s cubic-bezier(.21,1.02,.73,1) forwards`:`${(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)(o)} 0.4s forwards cubic-bezier(.06,.71,.55,1)`}},C=react__WEBPACK_IMPORTED_MODULE_0__.memo(({toast:e,position:t,style:r,children:s})=>{let a=e.height?Ae(e.position||t||"top-center",e.visible):{opacity:0},o=react__WEBPACK_IMPORTED_MODULE_0__.createElement(M,{toast:e}),n=react__WEBPACK_IMPORTED_MODULE_0__.createElement(Se,{...e.ariaProps},f(e.message,e));return react__WEBPACK_IMPORTED_MODULE_0__.createElement(be,{className:e.className,style:{...a,...r,...e.style}},typeof s=="function"?s({icon:o,message:n}):react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment,null,o,n))});(0,goober__WEBPACK_IMPORTED_MODULE_1__.setup)(react__WEBPACK_IMPORTED_MODULE_0__.createElement);var ve=({id:e,className:t,style:r,onHeightUpdate:s,children:a})=>{let o=react__WEBPACK_IMPORTED_MODULE_0__.useCallback(n=>{if(n){let i=()=>{let p=n.getBoundingClientRect().height;s(e,p)};i(),new MutationObserver(i).observe(n,{subtree:!0,childList:!0,characterData:!0})}},[e,s]);return react__WEBPACK_IMPORTED_MODULE_0__.createElement("div",{ref:o,className:t,style:r},a)},Ee=(e,t)=>{let r=e.includes("top"),s=r?{top:0}:{bottom:0},a=e.includes("center")?{justifyContent:"center"}:e.includes("right")?{justifyContent:"flex-end"}:{};return{left:0,right:0,display:"flex",position:"absolute",transition:A()?void 0:"all 230ms cubic-bezier(.21,1.02,.73,1)",transform:`translateY(${t*(r?1:-1)}px)`,...s,...a}},De=(0,goober__WEBPACK_IMPORTED_MODULE_1__.css)`
+  z-index: 9999;
+  > * {
+    pointer-events: auto;
+  }
+`,R=16,Oe=({reverseOrder:e,position:t="top-center",toastOptions:r,gutter:s,children:a,containerStyle:o,containerClassName:n})=>{let{toasts:i,handlers:p}=O(r);return react__WEBPACK_IMPORTED_MODULE_0__.createElement("div",{id:"_rht_toaster",style:{position:"fixed",zIndex:9999,top:R,left:R,right:R,bottom:R,pointerEvents:"none",...o},className:n,onMouseEnter:p.startPause,onMouseLeave:p.endPause},i.map(d=>{let h=d.position||t,v=p.calculateOffset(d,{reverseOrder:e,gutter:s,defaultPosition:t}),S=Ee(h,v);return react__WEBPACK_IMPORTED_MODULE_0__.createElement(ve,{id:d.id,key:d.id,onHeightUpdate:p.updateHeight,className:d.visible?De:"",style:S},d.type==="custom"?f(d.message,d):a?a(d):react__WEBPACK_IMPORTED_MODULE_0__.createElement(C,{toast:d,position:h}))}))};var Vt=c;
+//# sourceMappingURL=index.mjs.map
 
 /***/ }),
 
@@ -43458,3379 +45745,6 @@ function useStateManager(_ref) {
 
 /***/ }),
 
-/***/ "./node_modules/use-isomorphic-layout-effect/dist/use-isomorphic-layout-effect.browser.esm.js":
-/*!****************************************************************************************************!*\
-  !*** ./node_modules/use-isomorphic-layout-effect/dist/use-isomorphic-layout-effect.browser.esm.js ***!
-  \****************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ index)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-
-
-var index = react__WEBPACK_IMPORTED_MODULE_0__.useLayoutEffect ;
-
-
-
-
-/***/ }),
-
-/***/ "./node_modules/warning/warning.js":
-/*!*****************************************!*\
-  !*** ./node_modules/warning/warning.js ***!
-  \*****************************************/
-/***/ ((module) => {
-
-"use strict";
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
-/**
- * Similar to invariant but only logs a warning if the condition is not met.
- * This can be used to log issues in development environments in critical
- * paths. Removing the logging code for production environments will keep the
- * same logic and follow the same code paths.
- */
-
-var __DEV__ = "development" !== 'production';
-
-var warning = function() {};
-
-if (__DEV__) {
-  var printWarning = function printWarning(format, args) {
-    var len = arguments.length;
-    args = new Array(len > 1 ? len - 1 : 0);
-    for (var key = 1; key < len; key++) {
-      args[key - 1] = arguments[key];
-    }
-    var argIndex = 0;
-    var message = 'Warning: ' +
-      format.replace(/%s/g, function() {
-        return args[argIndex++];
-      });
-    if (typeof console !== 'undefined') {
-      console.error(message);
-    }
-    try {
-      // --- Welcome to debugging React ---
-      // This error was thrown as a convenience so that you can use this stack
-      // to find the callsite that caused this warning to fire.
-      throw new Error(message);
-    } catch (x) {}
-  }
-
-  warning = function(condition, format, args) {
-    var len = arguments.length;
-    args = new Array(len > 2 ? len - 2 : 0);
-    for (var key = 2; key < len; key++) {
-      args[key - 2] = arguments[key];
-    }
-    if (format === undefined) {
-      throw new Error(
-          '`warning(condition, format, ...args)` requires a warning ' +
-          'message argument'
-      );
-    }
-    if (!condition) {
-      printWarning.apply(null, [format].concat(args));
-    }
-  };
-}
-
-module.exports = warning;
-
-
-/***/ }),
-
-/***/ "react":
-/*!************************!*\
-  !*** external "React" ***!
-  \************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = window["React"];
-
-/***/ }),
-
-/***/ "react-dom":
-/*!***************************!*\
-  !*** external "ReactDOM" ***!
-  \***************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = window["ReactDOM"];
-
-/***/ }),
-
-/***/ "react/jsx-runtime":
-/*!**********************************!*\
-  !*** external "ReactJSXRuntime" ***!
-  \**********************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = window["ReactJSXRuntime"];
-
-/***/ }),
-
-/***/ "@wordpress/data":
-/*!******************************!*\
-  !*** external ["wp","data"] ***!
-  \******************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = window["wp"]["data"];
-
-/***/ }),
-
-/***/ "@wordpress/element":
-/*!*********************************!*\
-  !*** external ["wp","element"] ***!
-  \*********************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = window["wp"]["element"];
-
-/***/ }),
-
-/***/ "./node_modules/classnames/index.js":
-/*!******************************************!*\
-  !*** ./node_modules/classnames/index.js ***!
-  \******************************************/
-/***/ ((module, exports) => {
-
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	Copyright (c) 2018 Jed Watson.
-	Licensed under the MIT License (MIT), see
-	http://jedwatson.github.io/classnames
-*/
-/* global define */
-
-(function () {
-	'use strict';
-
-	var hasOwn = {}.hasOwnProperty;
-
-	function classNames () {
-		var classes = '';
-
-		for (var i = 0; i < arguments.length; i++) {
-			var arg = arguments[i];
-			if (arg) {
-				classes = appendClass(classes, parseValue(arg));
-			}
-		}
-
-		return classes;
-	}
-
-	function parseValue (arg) {
-		if (typeof arg === 'string' || typeof arg === 'number') {
-			return arg;
-		}
-
-		if (typeof arg !== 'object') {
-			return '';
-		}
-
-		if (Array.isArray(arg)) {
-			return classNames.apply(null, arg);
-		}
-
-		if (arg.toString !== Object.prototype.toString && !arg.toString.toString().includes('[native code]')) {
-			return arg.toString();
-		}
-
-		var classes = '';
-
-		for (var key in arg) {
-			if (hasOwn.call(arg, key) && arg[key]) {
-				classes = appendClass(classes, key);
-			}
-		}
-
-		return classes;
-	}
-
-	function appendClass (value, newClass) {
-		if (!newClass) {
-			return value;
-		}
-	
-		if (value) {
-			return value + ' ' + newClass;
-		}
-	
-		return value + newClass;
-	}
-
-	if ( true && module.exports) {
-		classNames.default = classNames;
-		module.exports = classNames;
-	} else if (true) {
-		// register as 'classnames', consistent with npm package name
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function () {
-			return classNames;
-		}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	} else {}
-}());
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js":
-/*!*********************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js ***!
-  \*********************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _arrayLikeToArray)
-/* harmony export */ });
-function _arrayLikeToArray(r, a) {
-  (null == a || a > r.length) && (a = r.length);
-  for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e];
-  return n;
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/arrayWithHoles.js":
-/*!*******************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/arrayWithHoles.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _arrayWithHoles)
-/* harmony export */ });
-function _arrayWithHoles(r) {
-  if (Array.isArray(r)) return r;
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/arrayWithoutHoles.js":
-/*!**********************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/arrayWithoutHoles.js ***!
-  \**********************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _arrayWithoutHoles)
-/* harmony export */ });
-/* harmony import */ var _arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arrayLikeToArray.js */ "./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js");
-
-function _arrayWithoutHoles(r) {
-  if (Array.isArray(r)) return (0,_arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r);
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js":
-/*!**************************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js ***!
-  \**************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _assertThisInitialized)
-/* harmony export */ });
-function _assertThisInitialized(e) {
-  if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  return e;
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/classCallCheck.js":
-/*!*******************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/classCallCheck.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _classCallCheck)
-/* harmony export */ });
-function _classCallCheck(a, n) {
-  if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function");
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/createClass.js":
-/*!****************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/createClass.js ***!
-  \****************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _createClass)
-/* harmony export */ });
-/* harmony import */ var _toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./toPropertyKey.js */ "./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js");
-
-function _defineProperties(e, r) {
-  for (var t = 0; t < r.length; t++) {
-    var o = r[t];
-    o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, (0,_toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__["default"])(o.key), o);
-  }
-}
-function _createClass(e, r, t) {
-  return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", {
-    writable: !1
-  }), e;
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/createSuper.js":
-/*!****************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/createSuper.js ***!
-  \****************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _createSuper)
-/* harmony export */ });
-/* harmony import */ var _getPrototypeOf_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getPrototypeOf.js */ "./node_modules/@babel/runtime/helpers/esm/getPrototypeOf.js");
-/* harmony import */ var _isNativeReflectConstruct_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./isNativeReflectConstruct.js */ "./node_modules/@babel/runtime/helpers/esm/isNativeReflectConstruct.js");
-/* harmony import */ var _possibleConstructorReturn_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./possibleConstructorReturn.js */ "./node_modules/@babel/runtime/helpers/esm/possibleConstructorReturn.js");
-
-
-
-function _createSuper(t) {
-  var r = (0,_isNativeReflectConstruct_js__WEBPACK_IMPORTED_MODULE_1__["default"])();
-  return function () {
-    var e,
-      o = (0,_getPrototypeOf_js__WEBPACK_IMPORTED_MODULE_0__["default"])(t);
-    if (r) {
-      var s = (0,_getPrototypeOf_js__WEBPACK_IMPORTED_MODULE_0__["default"])(this).constructor;
-      e = Reflect.construct(o, arguments, s);
-    } else e = o.apply(this, arguments);
-    return (0,_possibleConstructorReturn_js__WEBPACK_IMPORTED_MODULE_2__["default"])(this, e);
-  };
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js":
-/*!*******************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/defineProperty.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _defineProperty)
-/* harmony export */ });
-/* harmony import */ var _toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./toPropertyKey.js */ "./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js");
-
-function _defineProperty(e, r, t) {
-  return (r = (0,_toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r)) in e ? Object.defineProperty(e, r, {
-    value: t,
-    enumerable: !0,
-    configurable: !0,
-    writable: !0
-  }) : e[r] = t, e;
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/extends.js":
-/*!************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/extends.js ***!
-  \************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _extends)
-/* harmony export */ });
-function _extends() {
-  return _extends = Object.assign ? Object.assign.bind() : function (n) {
-    for (var e = 1; e < arguments.length; e++) {
-      var t = arguments[e];
-      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
-    }
-    return n;
-  }, _extends.apply(null, arguments);
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/getPrototypeOf.js":
-/*!*******************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/getPrototypeOf.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _getPrototypeOf)
-/* harmony export */ });
-function _getPrototypeOf(t) {
-  return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) {
-    return t.__proto__ || Object.getPrototypeOf(t);
-  }, _getPrototypeOf(t);
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/inherits.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/inherits.js ***!
-  \*************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _inherits)
-/* harmony export */ });
-/* harmony import */ var _setPrototypeOf_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./setPrototypeOf.js */ "./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js");
-
-function _inherits(t, e) {
-  if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function");
-  t.prototype = Object.create(e && e.prototype, {
-    constructor: {
-      value: t,
-      writable: !0,
-      configurable: !0
-    }
-  }), Object.defineProperty(t, "prototype", {
-    writable: !1
-  }), e && (0,_setPrototypeOf_js__WEBPACK_IMPORTED_MODULE_0__["default"])(t, e);
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/isNativeReflectConstruct.js":
-/*!*****************************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/isNativeReflectConstruct.js ***!
-  \*****************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _isNativeReflectConstruct)
-/* harmony export */ });
-function _isNativeReflectConstruct() {
-  try {
-    var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
-  } catch (t) {}
-  return (_isNativeReflectConstruct = function _isNativeReflectConstruct() {
-    return !!t;
-  })();
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/iterableToArray.js":
-/*!********************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/iterableToArray.js ***!
-  \********************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _iterableToArray)
-/* harmony export */ });
-function _iterableToArray(r) {
-  if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r);
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js":
-/*!*************************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js ***!
-  \*************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _iterableToArrayLimit)
-/* harmony export */ });
-function _iterableToArrayLimit(r, l) {
-  var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
-  if (null != t) {
-    var e,
-      n,
-      i,
-      u,
-      a = [],
-      f = !0,
-      o = !1;
-    try {
-      if (i = (t = t.call(r)).next, 0 === l) {
-        if (Object(t) !== t) return;
-        f = !1;
-      } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0);
-    } catch (r) {
-      o = !0, n = r;
-    } finally {
-      try {
-        if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return;
-      } finally {
-        if (o) throw n;
-      }
-    }
-    return a;
-  }
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/nonIterableRest.js":
-/*!********************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/nonIterableRest.js ***!
-  \********************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _nonIterableRest)
-/* harmony export */ });
-function _nonIterableRest() {
-  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/nonIterableSpread.js":
-/*!**********************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/nonIterableSpread.js ***!
-  \**********************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _nonIterableSpread)
-/* harmony export */ });
-function _nonIterableSpread() {
-  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/objectSpread2.js":
-/*!******************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/objectSpread2.js ***!
-  \******************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _objectSpread2)
-/* harmony export */ });
-/* harmony import */ var _defineProperty_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./defineProperty.js */ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js");
-
-function ownKeys(e, r) {
-  var t = Object.keys(e);
-  if (Object.getOwnPropertySymbols) {
-    var o = Object.getOwnPropertySymbols(e);
-    r && (o = o.filter(function (r) {
-      return Object.getOwnPropertyDescriptor(e, r).enumerable;
-    })), t.push.apply(t, o);
-  }
-  return t;
-}
-function _objectSpread2(e) {
-  for (var r = 1; r < arguments.length; r++) {
-    var t = null != arguments[r] ? arguments[r] : {};
-    r % 2 ? ownKeys(Object(t), !0).forEach(function (r) {
-      (0,_defineProperty_js__WEBPACK_IMPORTED_MODULE_0__["default"])(e, r, t[r]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) {
-      Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
-    });
-  }
-  return e;
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js":
-/*!****************************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js ***!
-  \****************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _objectWithoutProperties)
-/* harmony export */ });
-/* harmony import */ var _objectWithoutPropertiesLoose_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./objectWithoutPropertiesLoose.js */ "./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js");
-
-function _objectWithoutProperties(e, t) {
-  if (null == e) return {};
-  var o,
-    r,
-    i = (0,_objectWithoutPropertiesLoose_js__WEBPACK_IMPORTED_MODULE_0__["default"])(e, t);
-  if (Object.getOwnPropertySymbols) {
-    var s = Object.getOwnPropertySymbols(e);
-    for (r = 0; r < s.length; r++) o = s[r], t.includes(o) || {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
-  }
-  return i;
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js":
-/*!*********************************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js ***!
-  \*********************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _objectWithoutPropertiesLoose)
-/* harmony export */ });
-function _objectWithoutPropertiesLoose(r, e) {
-  if (null == r) return {};
-  var t = {};
-  for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
-    if (e.includes(n)) continue;
-    t[n] = r[n];
-  }
-  return t;
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/possibleConstructorReturn.js":
-/*!******************************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/possibleConstructorReturn.js ***!
-  \******************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _possibleConstructorReturn)
-/* harmony export */ });
-/* harmony import */ var _typeof_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./typeof.js */ "./node_modules/@babel/runtime/helpers/esm/typeof.js");
-/* harmony import */ var _assertThisInitialized_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./assertThisInitialized.js */ "./node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js");
-
-
-function _possibleConstructorReturn(t, e) {
-  if (e && ("object" == (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(e) || "function" == typeof e)) return e;
-  if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined");
-  return (0,_assertThisInitialized_js__WEBPACK_IMPORTED_MODULE_1__["default"])(t);
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js":
-/*!*******************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _setPrototypeOf)
-/* harmony export */ });
-function _setPrototypeOf(t, e) {
-  return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) {
-    return t.__proto__ = e, t;
-  }, _setPrototypeOf(t, e);
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/slicedToArray.js":
-/*!******************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/slicedToArray.js ***!
-  \******************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _slicedToArray)
-/* harmony export */ });
-/* harmony import */ var _arrayWithHoles_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arrayWithHoles.js */ "./node_modules/@babel/runtime/helpers/esm/arrayWithHoles.js");
-/* harmony import */ var _iterableToArrayLimit_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./iterableToArrayLimit.js */ "./node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js");
-/* harmony import */ var _unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./unsupportedIterableToArray.js */ "./node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js");
-/* harmony import */ var _nonIterableRest_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./nonIterableRest.js */ "./node_modules/@babel/runtime/helpers/esm/nonIterableRest.js");
-
-
-
-
-function _slicedToArray(r, e) {
-  return (0,_arrayWithHoles_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r) || (0,_iterableToArrayLimit_js__WEBPACK_IMPORTED_MODULE_1__["default"])(r, e) || (0,_unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__["default"])(r, e) || (0,_nonIterableRest_js__WEBPACK_IMPORTED_MODULE_3__["default"])();
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/taggedTemplateLiteral.js":
-/*!**************************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/taggedTemplateLiteral.js ***!
-  \**************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _taggedTemplateLiteral)
-/* harmony export */ });
-function _taggedTemplateLiteral(e, t) {
-  return t || (t = e.slice(0)), Object.freeze(Object.defineProperties(e, {
-    raw: {
-      value: Object.freeze(t)
-    }
-  }));
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/toConsumableArray.js":
-/*!**********************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/toConsumableArray.js ***!
-  \**********************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _toConsumableArray)
-/* harmony export */ });
-/* harmony import */ var _arrayWithoutHoles_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arrayWithoutHoles.js */ "./node_modules/@babel/runtime/helpers/esm/arrayWithoutHoles.js");
-/* harmony import */ var _iterableToArray_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./iterableToArray.js */ "./node_modules/@babel/runtime/helpers/esm/iterableToArray.js");
-/* harmony import */ var _unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./unsupportedIterableToArray.js */ "./node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js");
-/* harmony import */ var _nonIterableSpread_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./nonIterableSpread.js */ "./node_modules/@babel/runtime/helpers/esm/nonIterableSpread.js");
-
-
-
-
-function _toConsumableArray(r) {
-  return (0,_arrayWithoutHoles_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r) || (0,_iterableToArray_js__WEBPACK_IMPORTED_MODULE_1__["default"])(r) || (0,_unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__["default"])(r) || (0,_nonIterableSpread_js__WEBPACK_IMPORTED_MODULE_3__["default"])();
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/toPrimitive.js":
-/*!****************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/toPrimitive.js ***!
-  \****************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ toPrimitive)
-/* harmony export */ });
-/* harmony import */ var _typeof_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./typeof.js */ "./node_modules/@babel/runtime/helpers/esm/typeof.js");
-
-function toPrimitive(t, r) {
-  if ("object" != (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(t) || !t) return t;
-  var e = t[Symbol.toPrimitive];
-  if (void 0 !== e) {
-    var i = e.call(t, r || "default");
-    if ("object" != (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(i)) return i;
-    throw new TypeError("@@toPrimitive must return a primitive value.");
-  }
-  return ("string" === r ? String : Number)(t);
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js":
-/*!******************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js ***!
-  \******************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ toPropertyKey)
-/* harmony export */ });
-/* harmony import */ var _typeof_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./typeof.js */ "./node_modules/@babel/runtime/helpers/esm/typeof.js");
-/* harmony import */ var _toPrimitive_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./toPrimitive.js */ "./node_modules/@babel/runtime/helpers/esm/toPrimitive.js");
-
-
-function toPropertyKey(t) {
-  var i = (0,_toPrimitive_js__WEBPACK_IMPORTED_MODULE_1__["default"])(t, "string");
-  return "symbol" == (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(i) ? i : i + "";
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/typeof.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/typeof.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _typeof)
-/* harmony export */ });
-function _typeof(o) {
-  "@babel/helpers - typeof";
-
-  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
-    return typeof o;
-  } : function (o) {
-    return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
-  }, _typeof(o);
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js":
-/*!*******************************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js ***!
-  \*******************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _unsupportedIterableToArray)
-/* harmony export */ });
-/* harmony import */ var _arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arrayLikeToArray.js */ "./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js");
-
-function _unsupportedIterableToArray(r, a) {
-  if (r) {
-    if ("string" == typeof r) return (0,_arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r, a);
-    var t = {}.toString.call(r).slice(8, -1);
-    return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? (0,_arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__["default"])(r, a) : void 0;
-  }
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@floating-ui/core/dist/floating-ui.core.mjs":
-/*!******************************************************************!*\
-  !*** ./node_modules/@floating-ui/core/dist/floating-ui.core.mjs ***!
-  \******************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   arrow: () => (/* binding */ arrow),
-/* harmony export */   autoPlacement: () => (/* binding */ autoPlacement),
-/* harmony export */   computePosition: () => (/* binding */ computePosition),
-/* harmony export */   detectOverflow: () => (/* binding */ detectOverflow),
-/* harmony export */   flip: () => (/* binding */ flip),
-/* harmony export */   hide: () => (/* binding */ hide),
-/* harmony export */   inline: () => (/* binding */ inline),
-/* harmony export */   limitShift: () => (/* binding */ limitShift),
-/* harmony export */   offset: () => (/* binding */ offset),
-/* harmony export */   rectToClientRect: () => (/* reexport safe */ _floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.rectToClientRect),
-/* harmony export */   shift: () => (/* binding */ shift),
-/* harmony export */   size: () => (/* binding */ size)
-/* harmony export */ });
-/* harmony import */ var _floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @floating-ui/utils */ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.mjs");
-
-
-
-function computeCoordsFromPlacement(_ref, placement, rtl) {
-  let {
-    reference,
-    floating
-  } = _ref;
-  const sideAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(placement);
-  const alignmentAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignmentAxis)(placement);
-  const alignLength = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAxisLength)(alignmentAxis);
-  const side = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement);
-  const isVertical = sideAxis === 'y';
-  const commonX = reference.x + reference.width / 2 - floating.width / 2;
-  const commonY = reference.y + reference.height / 2 - floating.height / 2;
-  const commonAlign = reference[alignLength] / 2 - floating[alignLength] / 2;
-  let coords;
-  switch (side) {
-    case 'top':
-      coords = {
-        x: commonX,
-        y: reference.y - floating.height
-      };
-      break;
-    case 'bottom':
-      coords = {
-        x: commonX,
-        y: reference.y + reference.height
-      };
-      break;
-    case 'right':
-      coords = {
-        x: reference.x + reference.width,
-        y: commonY
-      };
-      break;
-    case 'left':
-      coords = {
-        x: reference.x - floating.width,
-        y: commonY
-      };
-      break;
-    default:
-      coords = {
-        x: reference.x,
-        y: reference.y
-      };
-  }
-  switch ((0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(placement)) {
-    case 'start':
-      coords[alignmentAxis] -= commonAlign * (rtl && isVertical ? -1 : 1);
-      break;
-    case 'end':
-      coords[alignmentAxis] += commonAlign * (rtl && isVertical ? -1 : 1);
-      break;
-  }
-  return coords;
-}
-
-/**
- * Computes the `x` and `y` coordinates that will place the floating element
- * next to a given reference element.
- *
- * This export does not have any `platform` interface logic. You will need to
- * write one for the platform you are using Floating UI with.
- */
-const computePosition = async (reference, floating, config) => {
-  const {
-    placement = 'bottom',
-    strategy = 'absolute',
-    middleware = [],
-    platform
-  } = config;
-  const validMiddleware = middleware.filter(Boolean);
-  const rtl = await (platform.isRTL == null ? void 0 : platform.isRTL(floating));
-  let rects = await platform.getElementRects({
-    reference,
-    floating,
-    strategy
-  });
-  let {
-    x,
-    y
-  } = computeCoordsFromPlacement(rects, placement, rtl);
-  let statefulPlacement = placement;
-  let middlewareData = {};
-  let resetCount = 0;
-  for (let i = 0; i < validMiddleware.length; i++) {
-    const {
-      name,
-      fn
-    } = validMiddleware[i];
-    const {
-      x: nextX,
-      y: nextY,
-      data,
-      reset
-    } = await fn({
-      x,
-      y,
-      initialPlacement: placement,
-      placement: statefulPlacement,
-      strategy,
-      middlewareData,
-      rects,
-      platform,
-      elements: {
-        reference,
-        floating
-      }
-    });
-    x = nextX != null ? nextX : x;
-    y = nextY != null ? nextY : y;
-    middlewareData = {
-      ...middlewareData,
-      [name]: {
-        ...middlewareData[name],
-        ...data
-      }
-    };
-    if (reset && resetCount <= 50) {
-      resetCount++;
-      if (typeof reset === 'object') {
-        if (reset.placement) {
-          statefulPlacement = reset.placement;
-        }
-        if (reset.rects) {
-          rects = reset.rects === true ? await platform.getElementRects({
-            reference,
-            floating,
-            strategy
-          }) : reset.rects;
-        }
-        ({
-          x,
-          y
-        } = computeCoordsFromPlacement(rects, statefulPlacement, rtl));
-      }
-      i = -1;
-    }
-  }
-  return {
-    x,
-    y,
-    placement: statefulPlacement,
-    strategy,
-    middlewareData
-  };
-};
-
-/**
- * Resolves with an object of overflow side offsets that determine how much the
- * element is overflowing a given clipping boundary on each side.
- * - positive = overflowing the boundary by that number of pixels
- * - negative = how many pixels left before it will overflow
- * - 0 = lies flush with the boundary
- * @see https://floating-ui.com/docs/detectOverflow
- */
-async function detectOverflow(state, options) {
-  var _await$platform$isEle;
-  if (options === void 0) {
-    options = {};
-  }
-  const {
-    x,
-    y,
-    platform,
-    rects,
-    elements,
-    strategy
-  } = state;
-  const {
-    boundary = 'clippingAncestors',
-    rootBoundary = 'viewport',
-    elementContext = 'floating',
-    altBoundary = false,
-    padding = 0
-  } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
-  const paddingObject = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getPaddingObject)(padding);
-  const altContext = elementContext === 'floating' ? 'reference' : 'floating';
-  const element = elements[altBoundary ? altContext : elementContext];
-  const clippingClientRect = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.rectToClientRect)(await platform.getClippingRect({
-    element: ((_await$platform$isEle = await (platform.isElement == null ? void 0 : platform.isElement(element))) != null ? _await$platform$isEle : true) ? element : element.contextElement || (await (platform.getDocumentElement == null ? void 0 : platform.getDocumentElement(elements.floating))),
-    boundary,
-    rootBoundary,
-    strategy
-  }));
-  const rect = elementContext === 'floating' ? {
-    x,
-    y,
-    width: rects.floating.width,
-    height: rects.floating.height
-  } : rects.reference;
-  const offsetParent = await (platform.getOffsetParent == null ? void 0 : platform.getOffsetParent(elements.floating));
-  const offsetScale = (await (platform.isElement == null ? void 0 : platform.isElement(offsetParent))) ? (await (platform.getScale == null ? void 0 : platform.getScale(offsetParent))) || {
-    x: 1,
-    y: 1
-  } : {
-    x: 1,
-    y: 1
-  };
-  const elementClientRect = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.rectToClientRect)(platform.convertOffsetParentRelativeRectToViewportRelativeRect ? await platform.convertOffsetParentRelativeRectToViewportRelativeRect({
-    elements,
-    rect,
-    offsetParent,
-    strategy
-  }) : rect);
-  return {
-    top: (clippingClientRect.top - elementClientRect.top + paddingObject.top) / offsetScale.y,
-    bottom: (elementClientRect.bottom - clippingClientRect.bottom + paddingObject.bottom) / offsetScale.y,
-    left: (clippingClientRect.left - elementClientRect.left + paddingObject.left) / offsetScale.x,
-    right: (elementClientRect.right - clippingClientRect.right + paddingObject.right) / offsetScale.x
-  };
-}
-
-/**
- * Provides data to position an inner element of the floating element so that it
- * appears centered to the reference element.
- * @see https://floating-ui.com/docs/arrow
- */
-const arrow = options => ({
-  name: 'arrow',
-  options,
-  async fn(state) {
-    const {
-      x,
-      y,
-      placement,
-      rects,
-      platform,
-      elements,
-      middlewareData
-    } = state;
-    // Since `element` is required, we don't Partial<> the type.
-    const {
-      element,
-      padding = 0
-    } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state) || {};
-    if (element == null) {
-      return {};
-    }
-    const paddingObject = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getPaddingObject)(padding);
-    const coords = {
-      x,
-      y
-    };
-    const axis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignmentAxis)(placement);
-    const length = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAxisLength)(axis);
-    const arrowDimensions = await platform.getDimensions(element);
-    const isYAxis = axis === 'y';
-    const minProp = isYAxis ? 'top' : 'left';
-    const maxProp = isYAxis ? 'bottom' : 'right';
-    const clientProp = isYAxis ? 'clientHeight' : 'clientWidth';
-    const endDiff = rects.reference[length] + rects.reference[axis] - coords[axis] - rects.floating[length];
-    const startDiff = coords[axis] - rects.reference[axis];
-    const arrowOffsetParent = await (platform.getOffsetParent == null ? void 0 : platform.getOffsetParent(element));
-    let clientSize = arrowOffsetParent ? arrowOffsetParent[clientProp] : 0;
-
-    // DOM platform can return `window` as the `offsetParent`.
-    if (!clientSize || !(await (platform.isElement == null ? void 0 : platform.isElement(arrowOffsetParent)))) {
-      clientSize = elements.floating[clientProp] || rects.floating[length];
-    }
-    const centerToReference = endDiff / 2 - startDiff / 2;
-
-    // If the padding is large enough that it causes the arrow to no longer be
-    // centered, modify the padding so that it is centered.
-    const largestPossiblePadding = clientSize / 2 - arrowDimensions[length] / 2 - 1;
-    const minPadding = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(paddingObject[minProp], largestPossiblePadding);
-    const maxPadding = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(paddingObject[maxProp], largestPossiblePadding);
-
-    // Make sure the arrow doesn't overflow the floating element if the center
-    // point is outside the floating element's bounds.
-    const min$1 = minPadding;
-    const max = clientSize - arrowDimensions[length] - maxPadding;
-    const center = clientSize / 2 - arrowDimensions[length] / 2 + centerToReference;
-    const offset = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.clamp)(min$1, center, max);
-
-    // If the reference is small enough that the arrow's padding causes it to
-    // to point to nothing for an aligned placement, adjust the offset of the
-    // floating element itself. To ensure `shift()` continues to take action,
-    // a single reset is performed when this is true.
-    const shouldAddOffset = !middlewareData.arrow && (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(placement) != null && center !== offset && rects.reference[length] / 2 - (center < min$1 ? minPadding : maxPadding) - arrowDimensions[length] / 2 < 0;
-    const alignmentOffset = shouldAddOffset ? center < min$1 ? center - min$1 : center - max : 0;
-    return {
-      [axis]: coords[axis] + alignmentOffset,
-      data: {
-        [axis]: offset,
-        centerOffset: center - offset - alignmentOffset,
-        ...(shouldAddOffset && {
-          alignmentOffset
-        })
-      },
-      reset: shouldAddOffset
-    };
-  }
-});
-
-function getPlacementList(alignment, autoAlignment, allowedPlacements) {
-  const allowedPlacementsSortedByAlignment = alignment ? [...allowedPlacements.filter(placement => (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(placement) === alignment), ...allowedPlacements.filter(placement => (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(placement) !== alignment)] : allowedPlacements.filter(placement => (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement) === placement);
-  return allowedPlacementsSortedByAlignment.filter(placement => {
-    if (alignment) {
-      return (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(placement) === alignment || (autoAlignment ? (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getOppositeAlignmentPlacement)(placement) !== placement : false);
-    }
-    return true;
-  });
-}
-/**
- * Optimizes the visibility of the floating element by choosing the placement
- * that has the most space available automatically, without needing to specify a
- * preferred placement. Alternative to `flip`.
- * @see https://floating-ui.com/docs/autoPlacement
- */
-const autoPlacement = function (options) {
-  if (options === void 0) {
-    options = {};
-  }
-  return {
-    name: 'autoPlacement',
-    options,
-    async fn(state) {
-      var _middlewareData$autoP, _middlewareData$autoP2, _placementsThatFitOnE;
-      const {
-        rects,
-        middlewareData,
-        placement,
-        platform,
-        elements
-      } = state;
-      const {
-        crossAxis = false,
-        alignment,
-        allowedPlacements = _floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.placements,
-        autoAlignment = true,
-        ...detectOverflowOptions
-      } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
-      const placements$1 = alignment !== undefined || allowedPlacements === _floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.placements ? getPlacementList(alignment || null, autoAlignment, allowedPlacements) : allowedPlacements;
-      const overflow = await detectOverflow(state, detectOverflowOptions);
-      const currentIndex = ((_middlewareData$autoP = middlewareData.autoPlacement) == null ? void 0 : _middlewareData$autoP.index) || 0;
-      const currentPlacement = placements$1[currentIndex];
-      if (currentPlacement == null) {
-        return {};
-      }
-      const alignmentSides = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignmentSides)(currentPlacement, rects, await (platform.isRTL == null ? void 0 : platform.isRTL(elements.floating)));
-
-      // Make `computeCoords` start from the right place.
-      if (placement !== currentPlacement) {
-        return {
-          reset: {
-            placement: placements$1[0]
-          }
-        };
-      }
-      const currentOverflows = [overflow[(0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(currentPlacement)], overflow[alignmentSides[0]], overflow[alignmentSides[1]]];
-      const allOverflows = [...(((_middlewareData$autoP2 = middlewareData.autoPlacement) == null ? void 0 : _middlewareData$autoP2.overflows) || []), {
-        placement: currentPlacement,
-        overflows: currentOverflows
-      }];
-      const nextPlacement = placements$1[currentIndex + 1];
-
-      // There are more placements to check.
-      if (nextPlacement) {
-        return {
-          data: {
-            index: currentIndex + 1,
-            overflows: allOverflows
-          },
-          reset: {
-            placement: nextPlacement
-          }
-        };
-      }
-      const placementsSortedByMostSpace = allOverflows.map(d => {
-        const alignment = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(d.placement);
-        return [d.placement, alignment && crossAxis ?
-        // Check along the mainAxis and main crossAxis side.
-        d.overflows.slice(0, 2).reduce((acc, v) => acc + v, 0) :
-        // Check only the mainAxis.
-        d.overflows[0], d.overflows];
-      }).sort((a, b) => a[1] - b[1]);
-      const placementsThatFitOnEachSide = placementsSortedByMostSpace.filter(d => d[2].slice(0,
-      // Aligned placements should not check their opposite crossAxis
-      // side.
-      (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(d[0]) ? 2 : 3).every(v => v <= 0));
-      const resetPlacement = ((_placementsThatFitOnE = placementsThatFitOnEachSide[0]) == null ? void 0 : _placementsThatFitOnE[0]) || placementsSortedByMostSpace[0][0];
-      if (resetPlacement !== placement) {
-        return {
-          data: {
-            index: currentIndex + 1,
-            overflows: allOverflows
-          },
-          reset: {
-            placement: resetPlacement
-          }
-        };
-      }
-      return {};
-    }
-  };
-};
-
-/**
- * Optimizes the visibility of the floating element by flipping the `placement`
- * in order to keep it in view when the preferred placement(s) will overflow the
- * clipping boundary. Alternative to `autoPlacement`.
- * @see https://floating-ui.com/docs/flip
- */
-const flip = function (options) {
-  if (options === void 0) {
-    options = {};
-  }
-  return {
-    name: 'flip',
-    options,
-    async fn(state) {
-      var _middlewareData$arrow, _middlewareData$flip;
-      const {
-        placement,
-        middlewareData,
-        rects,
-        initialPlacement,
-        platform,
-        elements
-      } = state;
-      const {
-        mainAxis: checkMainAxis = true,
-        crossAxis: checkCrossAxis = true,
-        fallbackPlacements: specifiedFallbackPlacements,
-        fallbackStrategy = 'bestFit',
-        fallbackAxisSideDirection = 'none',
-        flipAlignment = true,
-        ...detectOverflowOptions
-      } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
-
-      // If a reset by the arrow was caused due to an alignment offset being
-      // added, we should skip any logic now since `flip()` has already done its
-      // work.
-      // https://github.com/floating-ui/floating-ui/issues/2549#issuecomment-1719601643
-      if ((_middlewareData$arrow = middlewareData.arrow) != null && _middlewareData$arrow.alignmentOffset) {
-        return {};
-      }
-      const side = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement);
-      const initialSideAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(initialPlacement);
-      const isBasePlacement = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(initialPlacement) === initialPlacement;
-      const rtl = await (platform.isRTL == null ? void 0 : platform.isRTL(elements.floating));
-      const fallbackPlacements = specifiedFallbackPlacements || (isBasePlacement || !flipAlignment ? [(0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getOppositePlacement)(initialPlacement)] : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getExpandedPlacements)(initialPlacement));
-      const hasFallbackAxisSideDirection = fallbackAxisSideDirection !== 'none';
-      if (!specifiedFallbackPlacements && hasFallbackAxisSideDirection) {
-        fallbackPlacements.push(...(0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getOppositeAxisPlacements)(initialPlacement, flipAlignment, fallbackAxisSideDirection, rtl));
-      }
-      const placements = [initialPlacement, ...fallbackPlacements];
-      const overflow = await detectOverflow(state, detectOverflowOptions);
-      const overflows = [];
-      let overflowsData = ((_middlewareData$flip = middlewareData.flip) == null ? void 0 : _middlewareData$flip.overflows) || [];
-      if (checkMainAxis) {
-        overflows.push(overflow[side]);
-      }
-      if (checkCrossAxis) {
-        const sides = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignmentSides)(placement, rects, rtl);
-        overflows.push(overflow[sides[0]], overflow[sides[1]]);
-      }
-      overflowsData = [...overflowsData, {
-        placement,
-        overflows
-      }];
-
-      // One or more sides is overflowing.
-      if (!overflows.every(side => side <= 0)) {
-        var _middlewareData$flip2, _overflowsData$filter;
-        const nextIndex = (((_middlewareData$flip2 = middlewareData.flip) == null ? void 0 : _middlewareData$flip2.index) || 0) + 1;
-        const nextPlacement = placements[nextIndex];
-        if (nextPlacement) {
-          // Try next placement and re-run the lifecycle.
-          return {
-            data: {
-              index: nextIndex,
-              overflows: overflowsData
-            },
-            reset: {
-              placement: nextPlacement
-            }
-          };
-        }
-
-        // First, find the candidates that fit on the mainAxis side of overflow,
-        // then find the placement that fits the best on the main crossAxis side.
-        let resetPlacement = (_overflowsData$filter = overflowsData.filter(d => d.overflows[0] <= 0).sort((a, b) => a.overflows[1] - b.overflows[1])[0]) == null ? void 0 : _overflowsData$filter.placement;
-
-        // Otherwise fallback.
-        if (!resetPlacement) {
-          switch (fallbackStrategy) {
-            case 'bestFit':
-              {
-                var _overflowsData$filter2;
-                const placement = (_overflowsData$filter2 = overflowsData.filter(d => {
-                  if (hasFallbackAxisSideDirection) {
-                    const currentSideAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(d.placement);
-                    return currentSideAxis === initialSideAxis ||
-                    // Create a bias to the `y` side axis due to horizontal
-                    // reading directions favoring greater width.
-                    currentSideAxis === 'y';
-                  }
-                  return true;
-                }).map(d => [d.placement, d.overflows.filter(overflow => overflow > 0).reduce((acc, overflow) => acc + overflow, 0)]).sort((a, b) => a[1] - b[1])[0]) == null ? void 0 : _overflowsData$filter2[0];
-                if (placement) {
-                  resetPlacement = placement;
-                }
-                break;
-              }
-            case 'initialPlacement':
-              resetPlacement = initialPlacement;
-              break;
-          }
-        }
-        if (placement !== resetPlacement) {
-          return {
-            reset: {
-              placement: resetPlacement
-            }
-          };
-        }
-      }
-      return {};
-    }
-  };
-};
-
-function getSideOffsets(overflow, rect) {
-  return {
-    top: overflow.top - rect.height,
-    right: overflow.right - rect.width,
-    bottom: overflow.bottom - rect.height,
-    left: overflow.left - rect.width
-  };
-}
-function isAnySideFullyClipped(overflow) {
-  return _floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.sides.some(side => overflow[side] >= 0);
-}
-/**
- * Provides data to hide the floating element in applicable situations, such as
- * when it is not in the same clipping context as the reference element.
- * @see https://floating-ui.com/docs/hide
- */
-const hide = function (options) {
-  if (options === void 0) {
-    options = {};
-  }
-  return {
-    name: 'hide',
-    options,
-    async fn(state) {
-      const {
-        rects
-      } = state;
-      const {
-        strategy = 'referenceHidden',
-        ...detectOverflowOptions
-      } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
-      switch (strategy) {
-        case 'referenceHidden':
-          {
-            const overflow = await detectOverflow(state, {
-              ...detectOverflowOptions,
-              elementContext: 'reference'
-            });
-            const offsets = getSideOffsets(overflow, rects.reference);
-            return {
-              data: {
-                referenceHiddenOffsets: offsets,
-                referenceHidden: isAnySideFullyClipped(offsets)
-              }
-            };
-          }
-        case 'escaped':
-          {
-            const overflow = await detectOverflow(state, {
-              ...detectOverflowOptions,
-              altBoundary: true
-            });
-            const offsets = getSideOffsets(overflow, rects.floating);
-            return {
-              data: {
-                escapedOffsets: offsets,
-                escaped: isAnySideFullyClipped(offsets)
-              }
-            };
-          }
-        default:
-          {
-            return {};
-          }
-      }
-    }
-  };
-};
-
-function getBoundingRect(rects) {
-  const minX = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(...rects.map(rect => rect.left));
-  const minY = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(...rects.map(rect => rect.top));
-  const maxX = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(...rects.map(rect => rect.right));
-  const maxY = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(...rects.map(rect => rect.bottom));
-  return {
-    x: minX,
-    y: minY,
-    width: maxX - minX,
-    height: maxY - minY
-  };
-}
-function getRectsByLine(rects) {
-  const sortedRects = rects.slice().sort((a, b) => a.y - b.y);
-  const groups = [];
-  let prevRect = null;
-  for (let i = 0; i < sortedRects.length; i++) {
-    const rect = sortedRects[i];
-    if (!prevRect || rect.y - prevRect.y > prevRect.height / 2) {
-      groups.push([rect]);
-    } else {
-      groups[groups.length - 1].push(rect);
-    }
-    prevRect = rect;
-  }
-  return groups.map(rect => (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.rectToClientRect)(getBoundingRect(rect)));
-}
-/**
- * Provides improved positioning for inline reference elements that can span
- * over multiple lines, such as hyperlinks or range selections.
- * @see https://floating-ui.com/docs/inline
- */
-const inline = function (options) {
-  if (options === void 0) {
-    options = {};
-  }
-  return {
-    name: 'inline',
-    options,
-    async fn(state) {
-      const {
-        placement,
-        elements,
-        rects,
-        platform,
-        strategy
-      } = state;
-      // A MouseEvent's client{X,Y} coords can be up to 2 pixels off a
-      // ClientRect's bounds, despite the event listener being triggered. A
-      // padding of 2 seems to handle this issue.
-      const {
-        padding = 2,
-        x,
-        y
-      } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
-      const nativeClientRects = Array.from((await (platform.getClientRects == null ? void 0 : platform.getClientRects(elements.reference))) || []);
-      const clientRects = getRectsByLine(nativeClientRects);
-      const fallback = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.rectToClientRect)(getBoundingRect(nativeClientRects));
-      const paddingObject = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getPaddingObject)(padding);
-      function getBoundingClientRect() {
-        // There are two rects and they are disjoined.
-        if (clientRects.length === 2 && clientRects[0].left > clientRects[1].right && x != null && y != null) {
-          // Find the first rect in which the point is fully inside.
-          return clientRects.find(rect => x > rect.left - paddingObject.left && x < rect.right + paddingObject.right && y > rect.top - paddingObject.top && y < rect.bottom + paddingObject.bottom) || fallback;
-        }
-
-        // There are 2 or more connected rects.
-        if (clientRects.length >= 2) {
-          if ((0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(placement) === 'y') {
-            const firstRect = clientRects[0];
-            const lastRect = clientRects[clientRects.length - 1];
-            const isTop = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement) === 'top';
-            const top = firstRect.top;
-            const bottom = lastRect.bottom;
-            const left = isTop ? firstRect.left : lastRect.left;
-            const right = isTop ? firstRect.right : lastRect.right;
-            const width = right - left;
-            const height = bottom - top;
-            return {
-              top,
-              bottom,
-              left,
-              right,
-              width,
-              height,
-              x: left,
-              y: top
-            };
-          }
-          const isLeftSide = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement) === 'left';
-          const maxRight = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(...clientRects.map(rect => rect.right));
-          const minLeft = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(...clientRects.map(rect => rect.left));
-          const measureRects = clientRects.filter(rect => isLeftSide ? rect.left === minLeft : rect.right === maxRight);
-          const top = measureRects[0].top;
-          const bottom = measureRects[measureRects.length - 1].bottom;
-          const left = minLeft;
-          const right = maxRight;
-          const width = right - left;
-          const height = bottom - top;
-          return {
-            top,
-            bottom,
-            left,
-            right,
-            width,
-            height,
-            x: left,
-            y: top
-          };
-        }
-        return fallback;
-      }
-      const resetRects = await platform.getElementRects({
-        reference: {
-          getBoundingClientRect
-        },
-        floating: elements.floating,
-        strategy
-      });
-      if (rects.reference.x !== resetRects.reference.x || rects.reference.y !== resetRects.reference.y || rects.reference.width !== resetRects.reference.width || rects.reference.height !== resetRects.reference.height) {
-        return {
-          reset: {
-            rects: resetRects
-          }
-        };
-      }
-      return {};
-    }
-  };
-};
-
-// For type backwards-compatibility, the `OffsetOptions` type was also
-// Derivable.
-
-async function convertValueToCoords(state, options) {
-  const {
-    placement,
-    platform,
-    elements
-  } = state;
-  const rtl = await (platform.isRTL == null ? void 0 : platform.isRTL(elements.floating));
-  const side = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement);
-  const alignment = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(placement);
-  const isVertical = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(placement) === 'y';
-  const mainAxisMulti = ['left', 'top'].includes(side) ? -1 : 1;
-  const crossAxisMulti = rtl && isVertical ? -1 : 1;
-  const rawValue = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
-
-  // eslint-disable-next-line prefer-const
-  let {
-    mainAxis,
-    crossAxis,
-    alignmentAxis
-  } = typeof rawValue === 'number' ? {
-    mainAxis: rawValue,
-    crossAxis: 0,
-    alignmentAxis: null
-  } : {
-    mainAxis: rawValue.mainAxis || 0,
-    crossAxis: rawValue.crossAxis || 0,
-    alignmentAxis: rawValue.alignmentAxis
-  };
-  if (alignment && typeof alignmentAxis === 'number') {
-    crossAxis = alignment === 'end' ? alignmentAxis * -1 : alignmentAxis;
-  }
-  return isVertical ? {
-    x: crossAxis * crossAxisMulti,
-    y: mainAxis * mainAxisMulti
-  } : {
-    x: mainAxis * mainAxisMulti,
-    y: crossAxis * crossAxisMulti
-  };
-}
-
-/**
- * Modifies the placement by translating the floating element along the
- * specified axes.
- * A number (shorthand for `mainAxis` or distance), or an axes configuration
- * object may be passed.
- * @see https://floating-ui.com/docs/offset
- */
-const offset = function (options) {
-  if (options === void 0) {
-    options = 0;
-  }
-  return {
-    name: 'offset',
-    options,
-    async fn(state) {
-      var _middlewareData$offse, _middlewareData$arrow;
-      const {
-        x,
-        y,
-        placement,
-        middlewareData
-      } = state;
-      const diffCoords = await convertValueToCoords(state, options);
-
-      // If the placement is the same and the arrow caused an alignment offset
-      // then we don't need to change the positioning coordinates.
-      if (placement === ((_middlewareData$offse = middlewareData.offset) == null ? void 0 : _middlewareData$offse.placement) && (_middlewareData$arrow = middlewareData.arrow) != null && _middlewareData$arrow.alignmentOffset) {
-        return {};
-      }
-      return {
-        x: x + diffCoords.x,
-        y: y + diffCoords.y,
-        data: {
-          ...diffCoords,
-          placement
-        }
-      };
-    }
-  };
-};
-
-/**
- * Optimizes the visibility of the floating element by shifting it in order to
- * keep it in view when it will overflow the clipping boundary.
- * @see https://floating-ui.com/docs/shift
- */
-const shift = function (options) {
-  if (options === void 0) {
-    options = {};
-  }
-  return {
-    name: 'shift',
-    options,
-    async fn(state) {
-      const {
-        x,
-        y,
-        placement
-      } = state;
-      const {
-        mainAxis: checkMainAxis = true,
-        crossAxis: checkCrossAxis = false,
-        limiter = {
-          fn: _ref => {
-            let {
-              x,
-              y
-            } = _ref;
-            return {
-              x,
-              y
-            };
-          }
-        },
-        ...detectOverflowOptions
-      } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
-      const coords = {
-        x,
-        y
-      };
-      const overflow = await detectOverflow(state, detectOverflowOptions);
-      const crossAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)((0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement));
-      const mainAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getOppositeAxis)(crossAxis);
-      let mainAxisCoord = coords[mainAxis];
-      let crossAxisCoord = coords[crossAxis];
-      if (checkMainAxis) {
-        const minSide = mainAxis === 'y' ? 'top' : 'left';
-        const maxSide = mainAxis === 'y' ? 'bottom' : 'right';
-        const min = mainAxisCoord + overflow[minSide];
-        const max = mainAxisCoord - overflow[maxSide];
-        mainAxisCoord = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.clamp)(min, mainAxisCoord, max);
-      }
-      if (checkCrossAxis) {
-        const minSide = crossAxis === 'y' ? 'top' : 'left';
-        const maxSide = crossAxis === 'y' ? 'bottom' : 'right';
-        const min = crossAxisCoord + overflow[minSide];
-        const max = crossAxisCoord - overflow[maxSide];
-        crossAxisCoord = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.clamp)(min, crossAxisCoord, max);
-      }
-      const limitedCoords = limiter.fn({
-        ...state,
-        [mainAxis]: mainAxisCoord,
-        [crossAxis]: crossAxisCoord
-      });
-      return {
-        ...limitedCoords,
-        data: {
-          x: limitedCoords.x - x,
-          y: limitedCoords.y - y,
-          enabled: {
-            [mainAxis]: checkMainAxis,
-            [crossAxis]: checkCrossAxis
-          }
-        }
-      };
-    }
-  };
-};
-/**
- * Built-in `limiter` that will stop `shift()` at a certain point.
- */
-const limitShift = function (options) {
-  if (options === void 0) {
-    options = {};
-  }
-  return {
-    options,
-    fn(state) {
-      const {
-        x,
-        y,
-        placement,
-        rects,
-        middlewareData
-      } = state;
-      const {
-        offset = 0,
-        mainAxis: checkMainAxis = true,
-        crossAxis: checkCrossAxis = true
-      } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
-      const coords = {
-        x,
-        y
-      };
-      const crossAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(placement);
-      const mainAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getOppositeAxis)(crossAxis);
-      let mainAxisCoord = coords[mainAxis];
-      let crossAxisCoord = coords[crossAxis];
-      const rawOffset = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(offset, state);
-      const computedOffset = typeof rawOffset === 'number' ? {
-        mainAxis: rawOffset,
-        crossAxis: 0
-      } : {
-        mainAxis: 0,
-        crossAxis: 0,
-        ...rawOffset
-      };
-      if (checkMainAxis) {
-        const len = mainAxis === 'y' ? 'height' : 'width';
-        const limitMin = rects.reference[mainAxis] - rects.floating[len] + computedOffset.mainAxis;
-        const limitMax = rects.reference[mainAxis] + rects.reference[len] - computedOffset.mainAxis;
-        if (mainAxisCoord < limitMin) {
-          mainAxisCoord = limitMin;
-        } else if (mainAxisCoord > limitMax) {
-          mainAxisCoord = limitMax;
-        }
-      }
-      if (checkCrossAxis) {
-        var _middlewareData$offse, _middlewareData$offse2;
-        const len = mainAxis === 'y' ? 'width' : 'height';
-        const isOriginSide = ['top', 'left'].includes((0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement));
-        const limitMin = rects.reference[crossAxis] - rects.floating[len] + (isOriginSide ? ((_middlewareData$offse = middlewareData.offset) == null ? void 0 : _middlewareData$offse[crossAxis]) || 0 : 0) + (isOriginSide ? 0 : computedOffset.crossAxis);
-        const limitMax = rects.reference[crossAxis] + rects.reference[len] + (isOriginSide ? 0 : ((_middlewareData$offse2 = middlewareData.offset) == null ? void 0 : _middlewareData$offse2[crossAxis]) || 0) - (isOriginSide ? computedOffset.crossAxis : 0);
-        if (crossAxisCoord < limitMin) {
-          crossAxisCoord = limitMin;
-        } else if (crossAxisCoord > limitMax) {
-          crossAxisCoord = limitMax;
-        }
-      }
-      return {
-        [mainAxis]: mainAxisCoord,
-        [crossAxis]: crossAxisCoord
-      };
-    }
-  };
-};
-
-/**
- * Provides data that allows you to change the size of the floating element —
- * for instance, prevent it from overflowing the clipping boundary or match the
- * width of the reference element.
- * @see https://floating-ui.com/docs/size
- */
-const size = function (options) {
-  if (options === void 0) {
-    options = {};
-  }
-  return {
-    name: 'size',
-    options,
-    async fn(state) {
-      var _state$middlewareData, _state$middlewareData2;
-      const {
-        placement,
-        rects,
-        platform,
-        elements
-      } = state;
-      const {
-        apply = () => {},
-        ...detectOverflowOptions
-      } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
-      const overflow = await detectOverflow(state, detectOverflowOptions);
-      const side = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement);
-      const alignment = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(placement);
-      const isYAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(placement) === 'y';
-      const {
-        width,
-        height
-      } = rects.floating;
-      let heightSide;
-      let widthSide;
-      if (side === 'top' || side === 'bottom') {
-        heightSide = side;
-        widthSide = alignment === ((await (platform.isRTL == null ? void 0 : platform.isRTL(elements.floating))) ? 'start' : 'end') ? 'left' : 'right';
-      } else {
-        widthSide = side;
-        heightSide = alignment === 'end' ? 'top' : 'bottom';
-      }
-      const maximumClippingHeight = height - overflow.top - overflow.bottom;
-      const maximumClippingWidth = width - overflow.left - overflow.right;
-      const overflowAvailableHeight = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(height - overflow[heightSide], maximumClippingHeight);
-      const overflowAvailableWidth = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(width - overflow[widthSide], maximumClippingWidth);
-      const noShift = !state.middlewareData.shift;
-      let availableHeight = overflowAvailableHeight;
-      let availableWidth = overflowAvailableWidth;
-      if ((_state$middlewareData = state.middlewareData.shift) != null && _state$middlewareData.enabled.x) {
-        availableWidth = maximumClippingWidth;
-      }
-      if ((_state$middlewareData2 = state.middlewareData.shift) != null && _state$middlewareData2.enabled.y) {
-        availableHeight = maximumClippingHeight;
-      }
-      if (noShift && !alignment) {
-        const xMin = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(overflow.left, 0);
-        const xMax = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(overflow.right, 0);
-        const yMin = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(overflow.top, 0);
-        const yMax = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(overflow.bottom, 0);
-        if (isYAxis) {
-          availableWidth = width - 2 * (xMin !== 0 || xMax !== 0 ? xMin + xMax : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(overflow.left, overflow.right));
-        } else {
-          availableHeight = height - 2 * (yMin !== 0 || yMax !== 0 ? yMin + yMax : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(overflow.top, overflow.bottom));
-        }
-      }
-      await apply({
-        ...state,
-        availableWidth,
-        availableHeight
-      });
-      const nextDimensions = await platform.getDimensions(elements.floating);
-      if (width !== nextDimensions.width || height !== nextDimensions.height) {
-        return {
-          reset: {
-            rects: true
-          }
-        };
-      }
-      return {};
-    }
-  };
-};
-
-
-
-
-/***/ }),
-
-/***/ "./node_modules/@floating-ui/dom/dist/floating-ui.dom.mjs":
-/*!****************************************************************!*\
-  !*** ./node_modules/@floating-ui/dom/dist/floating-ui.dom.mjs ***!
-  \****************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   arrow: () => (/* binding */ arrow),
-/* harmony export */   autoPlacement: () => (/* binding */ autoPlacement),
-/* harmony export */   autoUpdate: () => (/* binding */ autoUpdate),
-/* harmony export */   computePosition: () => (/* binding */ computePosition),
-/* harmony export */   detectOverflow: () => (/* binding */ detectOverflow),
-/* harmony export */   flip: () => (/* binding */ flip),
-/* harmony export */   getOverflowAncestors: () => (/* reexport safe */ _floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getOverflowAncestors),
-/* harmony export */   hide: () => (/* binding */ hide),
-/* harmony export */   inline: () => (/* binding */ inline),
-/* harmony export */   limitShift: () => (/* binding */ limitShift),
-/* harmony export */   offset: () => (/* binding */ offset),
-/* harmony export */   platform: () => (/* binding */ platform),
-/* harmony export */   shift: () => (/* binding */ shift),
-/* harmony export */   size: () => (/* binding */ size)
-/* harmony export */ });
-/* harmony import */ var _floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @floating-ui/utils */ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.mjs");
-/* harmony import */ var _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @floating-ui/core */ "./node_modules/@floating-ui/core/dist/floating-ui.core.mjs");
-/* harmony import */ var _floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @floating-ui/utils/dom */ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.dom.mjs");
-
-
-
-
-
-function getCssDimensions(element) {
-  const css = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(element);
-  // In testing environments, the `width` and `height` properties are empty
-  // strings for SVG elements, returning NaN. Fallback to `0` in this case.
-  let width = parseFloat(css.width) || 0;
-  let height = parseFloat(css.height) || 0;
-  const hasOffset = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(element);
-  const offsetWidth = hasOffset ? element.offsetWidth : width;
-  const offsetHeight = hasOffset ? element.offsetHeight : height;
-  const shouldFallback = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.round)(width) !== offsetWidth || (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.round)(height) !== offsetHeight;
-  if (shouldFallback) {
-    width = offsetWidth;
-    height = offsetHeight;
-  }
-  return {
-    width,
-    height,
-    $: shouldFallback
-  };
-}
-
-function unwrapElement(element) {
-  return !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(element) ? element.contextElement : element;
-}
-
-function getScale(element) {
-  const domElement = unwrapElement(element);
-  if (!(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(domElement)) {
-    return (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(1);
-  }
-  const rect = domElement.getBoundingClientRect();
-  const {
-    width,
-    height,
-    $
-  } = getCssDimensions(domElement);
-  let x = ($ ? (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.round)(rect.width) : rect.width) / width;
-  let y = ($ ? (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.round)(rect.height) : rect.height) / height;
-
-  // 0, NaN, or Infinity should always fallback to 1.
-
-  if (!x || !Number.isFinite(x)) {
-    x = 1;
-  }
-  if (!y || !Number.isFinite(y)) {
-    y = 1;
-  }
-  return {
-    x,
-    y
-  };
-}
-
-const noOffsets = /*#__PURE__*/(0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
-function getVisualOffsets(element) {
-  const win = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(element);
-  if (!(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isWebKit)() || !win.visualViewport) {
-    return noOffsets;
-  }
-  return {
-    x: win.visualViewport.offsetLeft,
-    y: win.visualViewport.offsetTop
-  };
-}
-function shouldAddVisualOffsets(element, isFixed, floatingOffsetParent) {
-  if (isFixed === void 0) {
-    isFixed = false;
-  }
-  if (!floatingOffsetParent || isFixed && floatingOffsetParent !== (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(element)) {
-    return false;
-  }
-  return isFixed;
-}
-
-function getBoundingClientRect(element, includeScale, isFixedStrategy, offsetParent) {
-  if (includeScale === void 0) {
-    includeScale = false;
-  }
-  if (isFixedStrategy === void 0) {
-    isFixedStrategy = false;
-  }
-  const clientRect = element.getBoundingClientRect();
-  const domElement = unwrapElement(element);
-  let scale = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(1);
-  if (includeScale) {
-    if (offsetParent) {
-      if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(offsetParent)) {
-        scale = getScale(offsetParent);
-      }
-    } else {
-      scale = getScale(element);
-    }
-  }
-  const visualOffsets = shouldAddVisualOffsets(domElement, isFixedStrategy, offsetParent) ? getVisualOffsets(domElement) : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
-  let x = (clientRect.left + visualOffsets.x) / scale.x;
-  let y = (clientRect.top + visualOffsets.y) / scale.y;
-  let width = clientRect.width / scale.x;
-  let height = clientRect.height / scale.y;
-  if (domElement) {
-    const win = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(domElement);
-    const offsetWin = offsetParent && (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(offsetParent) ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(offsetParent) : offsetParent;
-    let currentWin = win;
-    let currentIFrame = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getFrameElement)(currentWin);
-    while (currentIFrame && offsetParent && offsetWin !== currentWin) {
-      const iframeScale = getScale(currentIFrame);
-      const iframeRect = currentIFrame.getBoundingClientRect();
-      const css = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(currentIFrame);
-      const left = iframeRect.left + (currentIFrame.clientLeft + parseFloat(css.paddingLeft)) * iframeScale.x;
-      const top = iframeRect.top + (currentIFrame.clientTop + parseFloat(css.paddingTop)) * iframeScale.y;
-      x *= iframeScale.x;
-      y *= iframeScale.y;
-      width *= iframeScale.x;
-      height *= iframeScale.y;
-      x += left;
-      y += top;
-      currentWin = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(currentIFrame);
-      currentIFrame = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getFrameElement)(currentWin);
-    }
-  }
-  return (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.rectToClientRect)({
-    width,
-    height,
-    x,
-    y
-  });
-}
-
-// If <html> has a CSS width greater than the viewport, then this will be
-// incorrect for RTL.
-function getWindowScrollBarX(element, rect) {
-  const leftScroll = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeScroll)(element).scrollLeft;
-  if (!rect) {
-    return getBoundingClientRect((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element)).left + leftScroll;
-  }
-  return rect.left + leftScroll;
-}
-
-function getHTMLOffset(documentElement, scroll, ignoreScrollbarX) {
-  if (ignoreScrollbarX === void 0) {
-    ignoreScrollbarX = false;
-  }
-  const htmlRect = documentElement.getBoundingClientRect();
-  const x = htmlRect.left + scroll.scrollLeft - (ignoreScrollbarX ? 0 :
-  // RTL <body> scrollbar.
-  getWindowScrollBarX(documentElement, htmlRect));
-  const y = htmlRect.top + scroll.scrollTop;
-  return {
-    x,
-    y
-  };
-}
-
-function convertOffsetParentRelativeRectToViewportRelativeRect(_ref) {
-  let {
-    elements,
-    rect,
-    offsetParent,
-    strategy
-  } = _ref;
-  const isFixed = strategy === 'fixed';
-  const documentElement = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(offsetParent);
-  const topLayer = elements ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isTopLayer)(elements.floating) : false;
-  if (offsetParent === documentElement || topLayer && isFixed) {
-    return rect;
-  }
-  let scroll = {
-    scrollLeft: 0,
-    scrollTop: 0
-  };
-  let scale = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(1);
-  const offsets = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
-  const isOffsetParentAnElement = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(offsetParent);
-  if (isOffsetParentAnElement || !isOffsetParentAnElement && !isFixed) {
-    if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeName)(offsetParent) !== 'body' || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isOverflowElement)(documentElement)) {
-      scroll = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeScroll)(offsetParent);
-    }
-    if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(offsetParent)) {
-      const offsetRect = getBoundingClientRect(offsetParent);
-      scale = getScale(offsetParent);
-      offsets.x = offsetRect.x + offsetParent.clientLeft;
-      offsets.y = offsetRect.y + offsetParent.clientTop;
-    }
-  }
-  const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll, true) : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
-  return {
-    width: rect.width * scale.x,
-    height: rect.height * scale.y,
-    x: rect.x * scale.x - scroll.scrollLeft * scale.x + offsets.x + htmlOffset.x,
-    y: rect.y * scale.y - scroll.scrollTop * scale.y + offsets.y + htmlOffset.y
-  };
-}
-
-function getClientRects(element) {
-  return Array.from(element.getClientRects());
-}
-
-// Gets the entire size of the scrollable document area, even extending outside
-// of the `<html>` and `<body>` rect bounds if horizontally scrollable.
-function getDocumentRect(element) {
-  const html = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element);
-  const scroll = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeScroll)(element);
-  const body = element.ownerDocument.body;
-  const width = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(html.scrollWidth, html.clientWidth, body.scrollWidth, body.clientWidth);
-  const height = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(html.scrollHeight, html.clientHeight, body.scrollHeight, body.clientHeight);
-  let x = -scroll.scrollLeft + getWindowScrollBarX(element);
-  const y = -scroll.scrollTop;
-  if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(body).direction === 'rtl') {
-    x += (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(html.clientWidth, body.clientWidth) - width;
-  }
-  return {
-    width,
-    height,
-    x,
-    y
-  };
-}
-
-function getViewportRect(element, strategy) {
-  const win = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(element);
-  const html = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element);
-  const visualViewport = win.visualViewport;
-  let width = html.clientWidth;
-  let height = html.clientHeight;
-  let x = 0;
-  let y = 0;
-  if (visualViewport) {
-    width = visualViewport.width;
-    height = visualViewport.height;
-    const visualViewportBased = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isWebKit)();
-    if (!visualViewportBased || visualViewportBased && strategy === 'fixed') {
-      x = visualViewport.offsetLeft;
-      y = visualViewport.offsetTop;
-    }
-  }
-  return {
-    width,
-    height,
-    x,
-    y
-  };
-}
-
-// Returns the inner client rect, subtracting scrollbars if present.
-function getInnerBoundingClientRect(element, strategy) {
-  const clientRect = getBoundingClientRect(element, true, strategy === 'fixed');
-  const top = clientRect.top + element.clientTop;
-  const left = clientRect.left + element.clientLeft;
-  const scale = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(element) ? getScale(element) : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(1);
-  const width = element.clientWidth * scale.x;
-  const height = element.clientHeight * scale.y;
-  const x = left * scale.x;
-  const y = top * scale.y;
-  return {
-    width,
-    height,
-    x,
-    y
-  };
-}
-function getClientRectFromClippingAncestor(element, clippingAncestor, strategy) {
-  let rect;
-  if (clippingAncestor === 'viewport') {
-    rect = getViewportRect(element, strategy);
-  } else if (clippingAncestor === 'document') {
-    rect = getDocumentRect((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element));
-  } else if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(clippingAncestor)) {
-    rect = getInnerBoundingClientRect(clippingAncestor, strategy);
-  } else {
-    const visualOffsets = getVisualOffsets(element);
-    rect = {
-      x: clippingAncestor.x - visualOffsets.x,
-      y: clippingAncestor.y - visualOffsets.y,
-      width: clippingAncestor.width,
-      height: clippingAncestor.height
-    };
-  }
-  return (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.rectToClientRect)(rect);
-}
-function hasFixedPositionAncestor(element, stopNode) {
-  const parentNode = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getParentNode)(element);
-  if (parentNode === stopNode || !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(parentNode) || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isLastTraversableNode)(parentNode)) {
-    return false;
-  }
-  return (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(parentNode).position === 'fixed' || hasFixedPositionAncestor(parentNode, stopNode);
-}
-
-// A "clipping ancestor" is an `overflow` element with the characteristic of
-// clipping (or hiding) child elements. This returns all clipping ancestors
-// of the given element up the tree.
-function getClippingElementAncestors(element, cache) {
-  const cachedResult = cache.get(element);
-  if (cachedResult) {
-    return cachedResult;
-  }
-  let result = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getOverflowAncestors)(element, [], false).filter(el => (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(el) && (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeName)(el) !== 'body');
-  let currentContainingBlockComputedStyle = null;
-  const elementIsFixed = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(element).position === 'fixed';
-  let currentNode = elementIsFixed ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getParentNode)(element) : element;
-
-  // https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
-  while ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(currentNode) && !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isLastTraversableNode)(currentNode)) {
-    const computedStyle = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(currentNode);
-    const currentNodeIsContaining = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isContainingBlock)(currentNode);
-    if (!currentNodeIsContaining && computedStyle.position === 'fixed') {
-      currentContainingBlockComputedStyle = null;
-    }
-    const shouldDropCurrentNode = elementIsFixed ? !currentNodeIsContaining && !currentContainingBlockComputedStyle : !currentNodeIsContaining && computedStyle.position === 'static' && !!currentContainingBlockComputedStyle && ['absolute', 'fixed'].includes(currentContainingBlockComputedStyle.position) || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isOverflowElement)(currentNode) && !currentNodeIsContaining && hasFixedPositionAncestor(element, currentNode);
-    if (shouldDropCurrentNode) {
-      // Drop non-containing blocks.
-      result = result.filter(ancestor => ancestor !== currentNode);
-    } else {
-      // Record last containing block for next iteration.
-      currentContainingBlockComputedStyle = computedStyle;
-    }
-    currentNode = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getParentNode)(currentNode);
-  }
-  cache.set(element, result);
-  return result;
-}
-
-// Gets the maximum area that the element is visible in due to any number of
-// clipping ancestors.
-function getClippingRect(_ref) {
-  let {
-    element,
-    boundary,
-    rootBoundary,
-    strategy
-  } = _ref;
-  const elementClippingAncestors = boundary === 'clippingAncestors' ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isTopLayer)(element) ? [] : getClippingElementAncestors(element, this._c) : [].concat(boundary);
-  const clippingAncestors = [...elementClippingAncestors, rootBoundary];
-  const firstClippingAncestor = clippingAncestors[0];
-  const clippingRect = clippingAncestors.reduce((accRect, clippingAncestor) => {
-    const rect = getClientRectFromClippingAncestor(element, clippingAncestor, strategy);
-    accRect.top = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(rect.top, accRect.top);
-    accRect.right = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.min)(rect.right, accRect.right);
-    accRect.bottom = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.min)(rect.bottom, accRect.bottom);
-    accRect.left = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(rect.left, accRect.left);
-    return accRect;
-  }, getClientRectFromClippingAncestor(element, firstClippingAncestor, strategy));
-  return {
-    width: clippingRect.right - clippingRect.left,
-    height: clippingRect.bottom - clippingRect.top,
-    x: clippingRect.left,
-    y: clippingRect.top
-  };
-}
-
-function getDimensions(element) {
-  const {
-    width,
-    height
-  } = getCssDimensions(element);
-  return {
-    width,
-    height
-  };
-}
-
-function getRectRelativeToOffsetParent(element, offsetParent, strategy) {
-  const isOffsetParentAnElement = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(offsetParent);
-  const documentElement = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(offsetParent);
-  const isFixed = strategy === 'fixed';
-  const rect = getBoundingClientRect(element, true, isFixed, offsetParent);
-  let scroll = {
-    scrollLeft: 0,
-    scrollTop: 0
-  };
-  const offsets = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
-  if (isOffsetParentAnElement || !isOffsetParentAnElement && !isFixed) {
-    if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeName)(offsetParent) !== 'body' || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isOverflowElement)(documentElement)) {
-      scroll = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeScroll)(offsetParent);
-    }
-    if (isOffsetParentAnElement) {
-      const offsetRect = getBoundingClientRect(offsetParent, true, isFixed, offsetParent);
-      offsets.x = offsetRect.x + offsetParent.clientLeft;
-      offsets.y = offsetRect.y + offsetParent.clientTop;
-    } else if (documentElement) {
-      // If the <body> scrollbar appears on the left (e.g. RTL systems). Use
-      // Firefox with layout.scrollbar.side = 3 in about:config to test this.
-      offsets.x = getWindowScrollBarX(documentElement);
-    }
-  }
-  const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll) : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
-  const x = rect.left + scroll.scrollLeft - offsets.x - htmlOffset.x;
-  const y = rect.top + scroll.scrollTop - offsets.y - htmlOffset.y;
-  return {
-    x,
-    y,
-    width: rect.width,
-    height: rect.height
-  };
-}
-
-function isStaticPositioned(element) {
-  return (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(element).position === 'static';
-}
-
-function getTrueOffsetParent(element, polyfill) {
-  if (!(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(element) || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(element).position === 'fixed') {
-    return null;
-  }
-  if (polyfill) {
-    return polyfill(element);
-  }
-  let rawOffsetParent = element.offsetParent;
-
-  // Firefox returns the <html> element as the offsetParent if it's non-static,
-  // while Chrome and Safari return the <body> element. The <body> element must
-  // be used to perform the correct calculations even if the <html> element is
-  // non-static.
-  if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element) === rawOffsetParent) {
-    rawOffsetParent = rawOffsetParent.ownerDocument.body;
-  }
-  return rawOffsetParent;
-}
-
-// Gets the closest ancestor positioned element. Handles some edge cases,
-// such as table ancestors and cross browser bugs.
-function getOffsetParent(element, polyfill) {
-  const win = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(element);
-  if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isTopLayer)(element)) {
-    return win;
-  }
-  if (!(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(element)) {
-    let svgOffsetParent = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getParentNode)(element);
-    while (svgOffsetParent && !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isLastTraversableNode)(svgOffsetParent)) {
-      if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(svgOffsetParent) && !isStaticPositioned(svgOffsetParent)) {
-        return svgOffsetParent;
-      }
-      svgOffsetParent = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getParentNode)(svgOffsetParent);
-    }
-    return win;
-  }
-  let offsetParent = getTrueOffsetParent(element, polyfill);
-  while (offsetParent && (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isTableElement)(offsetParent) && isStaticPositioned(offsetParent)) {
-    offsetParent = getTrueOffsetParent(offsetParent, polyfill);
-  }
-  if (offsetParent && (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isLastTraversableNode)(offsetParent) && isStaticPositioned(offsetParent) && !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isContainingBlock)(offsetParent)) {
-    return win;
-  }
-  return offsetParent || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getContainingBlock)(element) || win;
-}
-
-const getElementRects = async function (data) {
-  const getOffsetParentFn = this.getOffsetParent || getOffsetParent;
-  const getDimensionsFn = this.getDimensions;
-  const floatingDimensions = await getDimensionsFn(data.floating);
-  return {
-    reference: getRectRelativeToOffsetParent(data.reference, await getOffsetParentFn(data.floating), data.strategy),
-    floating: {
-      x: 0,
-      y: 0,
-      width: floatingDimensions.width,
-      height: floatingDimensions.height
-    }
-  };
-};
-
-function isRTL(element) {
-  return (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(element).direction === 'rtl';
-}
-
-const platform = {
-  convertOffsetParentRelativeRectToViewportRelativeRect,
-  getDocumentElement: _floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement,
-  getClippingRect,
-  getOffsetParent,
-  getElementRects,
-  getClientRects,
-  getDimensions,
-  getScale,
-  isElement: _floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement,
-  isRTL
-};
-
-function rectsAreEqual(a, b) {
-  return a.x === b.x && a.y === b.y && a.width === b.width && a.height === b.height;
-}
-
-// https://samthor.au/2021/observing-dom/
-function observeMove(element, onMove) {
-  let io = null;
-  let timeoutId;
-  const root = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element);
-  function cleanup() {
-    var _io;
-    clearTimeout(timeoutId);
-    (_io = io) == null || _io.disconnect();
-    io = null;
-  }
-  function refresh(skip, threshold) {
-    if (skip === void 0) {
-      skip = false;
-    }
-    if (threshold === void 0) {
-      threshold = 1;
-    }
-    cleanup();
-    const elementRectForRootMargin = element.getBoundingClientRect();
-    const {
-      left,
-      top,
-      width,
-      height
-    } = elementRectForRootMargin;
-    if (!skip) {
-      onMove();
-    }
-    if (!width || !height) {
-      return;
-    }
-    const insetTop = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.floor)(top);
-    const insetRight = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.floor)(root.clientWidth - (left + width));
-    const insetBottom = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.floor)(root.clientHeight - (top + height));
-    const insetLeft = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.floor)(left);
-    const rootMargin = -insetTop + "px " + -insetRight + "px " + -insetBottom + "px " + -insetLeft + "px";
-    const options = {
-      rootMargin,
-      threshold: (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(0, (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.min)(1, threshold)) || 1
-    };
-    let isFirstUpdate = true;
-    function handleObserve(entries) {
-      const ratio = entries[0].intersectionRatio;
-      if (ratio !== threshold) {
-        if (!isFirstUpdate) {
-          return refresh();
-        }
-        if (!ratio) {
-          // If the reference is clipped, the ratio is 0. Throttle the refresh
-          // to prevent an infinite loop of updates.
-          timeoutId = setTimeout(() => {
-            refresh(false, 1e-7);
-          }, 1000);
-        } else {
-          refresh(false, ratio);
-        }
-      }
-      if (ratio === 1 && !rectsAreEqual(elementRectForRootMargin, element.getBoundingClientRect())) {
-        // It's possible that even though the ratio is reported as 1, the
-        // element is not actually fully within the IntersectionObserver's root
-        // area anymore. This can happen under performance constraints. This may
-        // be a bug in the browser's IntersectionObserver implementation. To
-        // work around this, we compare the element's bounding rect now with
-        // what it was at the time we created the IntersectionObserver. If they
-        // are not equal then the element moved, so we refresh.
-        refresh();
-      }
-      isFirstUpdate = false;
-    }
-
-    // Older browsers don't support a `document` as the root and will throw an
-    // error.
-    try {
-      io = new IntersectionObserver(handleObserve, {
-        ...options,
-        // Handle <iframe>s
-        root: root.ownerDocument
-      });
-    } catch (e) {
-      io = new IntersectionObserver(handleObserve, options);
-    }
-    io.observe(element);
-  }
-  refresh(true);
-  return cleanup;
-}
-
-/**
- * Automatically updates the position of the floating element when necessary.
- * Should only be called when the floating element is mounted on the DOM or
- * visible on the screen.
- * @returns cleanup function that should be invoked when the floating element is
- * removed from the DOM or hidden from the screen.
- * @see https://floating-ui.com/docs/autoUpdate
- */
-function autoUpdate(reference, floating, update, options) {
-  if (options === void 0) {
-    options = {};
-  }
-  const {
-    ancestorScroll = true,
-    ancestorResize = true,
-    elementResize = typeof ResizeObserver === 'function',
-    layoutShift = typeof IntersectionObserver === 'function',
-    animationFrame = false
-  } = options;
-  const referenceEl = unwrapElement(reference);
-  const ancestors = ancestorScroll || ancestorResize ? [...(referenceEl ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getOverflowAncestors)(referenceEl) : []), ...(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getOverflowAncestors)(floating)] : [];
-  ancestors.forEach(ancestor => {
-    ancestorScroll && ancestor.addEventListener('scroll', update, {
-      passive: true
-    });
-    ancestorResize && ancestor.addEventListener('resize', update);
-  });
-  const cleanupIo = referenceEl && layoutShift ? observeMove(referenceEl, update) : null;
-  let reobserveFrame = -1;
-  let resizeObserver = null;
-  if (elementResize) {
-    resizeObserver = new ResizeObserver(_ref => {
-      let [firstEntry] = _ref;
-      if (firstEntry && firstEntry.target === referenceEl && resizeObserver) {
-        // Prevent update loops when using the `size` middleware.
-        // https://github.com/floating-ui/floating-ui/issues/1740
-        resizeObserver.unobserve(floating);
-        cancelAnimationFrame(reobserveFrame);
-        reobserveFrame = requestAnimationFrame(() => {
-          var _resizeObserver;
-          (_resizeObserver = resizeObserver) == null || _resizeObserver.observe(floating);
-        });
-      }
-      update();
-    });
-    if (referenceEl && !animationFrame) {
-      resizeObserver.observe(referenceEl);
-    }
-    resizeObserver.observe(floating);
-  }
-  let frameId;
-  let prevRefRect = animationFrame ? getBoundingClientRect(reference) : null;
-  if (animationFrame) {
-    frameLoop();
-  }
-  function frameLoop() {
-    const nextRefRect = getBoundingClientRect(reference);
-    if (prevRefRect && !rectsAreEqual(prevRefRect, nextRefRect)) {
-      update();
-    }
-    prevRefRect = nextRefRect;
-    frameId = requestAnimationFrame(frameLoop);
-  }
-  update();
-  return () => {
-    var _resizeObserver2;
-    ancestors.forEach(ancestor => {
-      ancestorScroll && ancestor.removeEventListener('scroll', update);
-      ancestorResize && ancestor.removeEventListener('resize', update);
-    });
-    cleanupIo == null || cleanupIo();
-    (_resizeObserver2 = resizeObserver) == null || _resizeObserver2.disconnect();
-    resizeObserver = null;
-    if (animationFrame) {
-      cancelAnimationFrame(frameId);
-    }
-  };
-}
-
-/**
- * Resolves with an object of overflow side offsets that determine how much the
- * element is overflowing a given clipping boundary on each side.
- * - positive = overflowing the boundary by that number of pixels
- * - negative = how many pixels left before it will overflow
- * - 0 = lies flush with the boundary
- * @see https://floating-ui.com/docs/detectOverflow
- */
-const detectOverflow = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.detectOverflow;
-
-/**
- * Modifies the placement by translating the floating element along the
- * specified axes.
- * A number (shorthand for `mainAxis` or distance), or an axes configuration
- * object may be passed.
- * @see https://floating-ui.com/docs/offset
- */
-const offset = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.offset;
-
-/**
- * Optimizes the visibility of the floating element by choosing the placement
- * that has the most space available automatically, without needing to specify a
- * preferred placement. Alternative to `flip`.
- * @see https://floating-ui.com/docs/autoPlacement
- */
-const autoPlacement = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.autoPlacement;
-
-/**
- * Optimizes the visibility of the floating element by shifting it in order to
- * keep it in view when it will overflow the clipping boundary.
- * @see https://floating-ui.com/docs/shift
- */
-const shift = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.shift;
-
-/**
- * Optimizes the visibility of the floating element by flipping the `placement`
- * in order to keep it in view when the preferred placement(s) will overflow the
- * clipping boundary. Alternative to `autoPlacement`.
- * @see https://floating-ui.com/docs/flip
- */
-const flip = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.flip;
-
-/**
- * Provides data that allows you to change the size of the floating element —
- * for instance, prevent it from overflowing the clipping boundary or match the
- * width of the reference element.
- * @see https://floating-ui.com/docs/size
- */
-const size = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.size;
-
-/**
- * Provides data to hide the floating element in applicable situations, such as
- * when it is not in the same clipping context as the reference element.
- * @see https://floating-ui.com/docs/hide
- */
-const hide = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.hide;
-
-/**
- * Provides data to position an inner element of the floating element so that it
- * appears centered to the reference element.
- * @see https://floating-ui.com/docs/arrow
- */
-const arrow = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.arrow;
-
-/**
- * Provides improved positioning for inline reference elements that can span
- * over multiple lines, such as hyperlinks or range selections.
- * @see https://floating-ui.com/docs/inline
- */
-const inline = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.inline;
-
-/**
- * Built-in `limiter` that will stop `shift()` at a certain point.
- */
-const limitShift = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.limitShift;
-
-/**
- * Computes the `x` and `y` coordinates that will place the floating element
- * next to a given reference element.
- */
-const computePosition = (reference, floating, options) => {
-  // This caches the expensive `getClippingElementAncestors` function so that
-  // multiple lifecycle resets re-use the same result. It only lives for a
-  // single call. If other functions become expensive, we can add them as well.
-  const cache = new Map();
-  const mergedOptions = {
-    platform,
-    ...options
-  };
-  const platformWithCache = {
-    ...mergedOptions.platform,
-    _c: cache
-  };
-  return (0,_floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.computePosition)(reference, floating, {
-    ...mergedOptions,
-    platform: platformWithCache
-  });
-};
-
-
-
-
-/***/ }),
-
-/***/ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.dom.mjs":
-/*!************************************************************************!*\
-  !*** ./node_modules/@floating-ui/utils/dist/floating-ui.utils.dom.mjs ***!
-  \************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   getComputedStyle: () => (/* binding */ getComputedStyle),
-/* harmony export */   getContainingBlock: () => (/* binding */ getContainingBlock),
-/* harmony export */   getDocumentElement: () => (/* binding */ getDocumentElement),
-/* harmony export */   getFrameElement: () => (/* binding */ getFrameElement),
-/* harmony export */   getNearestOverflowAncestor: () => (/* binding */ getNearestOverflowAncestor),
-/* harmony export */   getNodeName: () => (/* binding */ getNodeName),
-/* harmony export */   getNodeScroll: () => (/* binding */ getNodeScroll),
-/* harmony export */   getOverflowAncestors: () => (/* binding */ getOverflowAncestors),
-/* harmony export */   getParentNode: () => (/* binding */ getParentNode),
-/* harmony export */   getWindow: () => (/* binding */ getWindow),
-/* harmony export */   isContainingBlock: () => (/* binding */ isContainingBlock),
-/* harmony export */   isElement: () => (/* binding */ isElement),
-/* harmony export */   isHTMLElement: () => (/* binding */ isHTMLElement),
-/* harmony export */   isLastTraversableNode: () => (/* binding */ isLastTraversableNode),
-/* harmony export */   isNode: () => (/* binding */ isNode),
-/* harmony export */   isOverflowElement: () => (/* binding */ isOverflowElement),
-/* harmony export */   isShadowRoot: () => (/* binding */ isShadowRoot),
-/* harmony export */   isTableElement: () => (/* binding */ isTableElement),
-/* harmony export */   isTopLayer: () => (/* binding */ isTopLayer),
-/* harmony export */   isWebKit: () => (/* binding */ isWebKit)
-/* harmony export */ });
-function hasWindow() {
-  return typeof window !== 'undefined';
-}
-function getNodeName(node) {
-  if (isNode(node)) {
-    return (node.nodeName || '').toLowerCase();
-  }
-  // Mocked nodes in testing environments may not be instances of Node. By
-  // returning `#document` an infinite loop won't occur.
-  // https://github.com/floating-ui/floating-ui/issues/2317
-  return '#document';
-}
-function getWindow(node) {
-  var _node$ownerDocument;
-  return (node == null || (_node$ownerDocument = node.ownerDocument) == null ? void 0 : _node$ownerDocument.defaultView) || window;
-}
-function getDocumentElement(node) {
-  var _ref;
-  return (_ref = (isNode(node) ? node.ownerDocument : node.document) || window.document) == null ? void 0 : _ref.documentElement;
-}
-function isNode(value) {
-  if (!hasWindow()) {
-    return false;
-  }
-  return value instanceof Node || value instanceof getWindow(value).Node;
-}
-function isElement(value) {
-  if (!hasWindow()) {
-    return false;
-  }
-  return value instanceof Element || value instanceof getWindow(value).Element;
-}
-function isHTMLElement(value) {
-  if (!hasWindow()) {
-    return false;
-  }
-  return value instanceof HTMLElement || value instanceof getWindow(value).HTMLElement;
-}
-function isShadowRoot(value) {
-  if (!hasWindow() || typeof ShadowRoot === 'undefined') {
-    return false;
-  }
-  return value instanceof ShadowRoot || value instanceof getWindow(value).ShadowRoot;
-}
-function isOverflowElement(element) {
-  const {
-    overflow,
-    overflowX,
-    overflowY,
-    display
-  } = getComputedStyle(element);
-  return /auto|scroll|overlay|hidden|clip/.test(overflow + overflowY + overflowX) && !['inline', 'contents'].includes(display);
-}
-function isTableElement(element) {
-  return ['table', 'td', 'th'].includes(getNodeName(element));
-}
-function isTopLayer(element) {
-  return [':popover-open', ':modal'].some(selector => {
-    try {
-      return element.matches(selector);
-    } catch (e) {
-      return false;
-    }
-  });
-}
-function isContainingBlock(elementOrCss) {
-  const webkit = isWebKit();
-  const css = isElement(elementOrCss) ? getComputedStyle(elementOrCss) : elementOrCss;
-
-  // https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
-  // https://drafts.csswg.org/css-transforms-2/#individual-transforms
-  return ['transform', 'translate', 'scale', 'rotate', 'perspective'].some(value => css[value] ? css[value] !== 'none' : false) || (css.containerType ? css.containerType !== 'normal' : false) || !webkit && (css.backdropFilter ? css.backdropFilter !== 'none' : false) || !webkit && (css.filter ? css.filter !== 'none' : false) || ['transform', 'translate', 'scale', 'rotate', 'perspective', 'filter'].some(value => (css.willChange || '').includes(value)) || ['paint', 'layout', 'strict', 'content'].some(value => (css.contain || '').includes(value));
-}
-function getContainingBlock(element) {
-  let currentNode = getParentNode(element);
-  while (isHTMLElement(currentNode) && !isLastTraversableNode(currentNode)) {
-    if (isContainingBlock(currentNode)) {
-      return currentNode;
-    } else if (isTopLayer(currentNode)) {
-      return null;
-    }
-    currentNode = getParentNode(currentNode);
-  }
-  return null;
-}
-function isWebKit() {
-  if (typeof CSS === 'undefined' || !CSS.supports) return false;
-  return CSS.supports('-webkit-backdrop-filter', 'none');
-}
-function isLastTraversableNode(node) {
-  return ['html', 'body', '#document'].includes(getNodeName(node));
-}
-function getComputedStyle(element) {
-  return getWindow(element).getComputedStyle(element);
-}
-function getNodeScroll(element) {
-  if (isElement(element)) {
-    return {
-      scrollLeft: element.scrollLeft,
-      scrollTop: element.scrollTop
-    };
-  }
-  return {
-    scrollLeft: element.scrollX,
-    scrollTop: element.scrollY
-  };
-}
-function getParentNode(node) {
-  if (getNodeName(node) === 'html') {
-    return node;
-  }
-  const result =
-  // Step into the shadow DOM of the parent of a slotted node.
-  node.assignedSlot ||
-  // DOM Element detected.
-  node.parentNode ||
-  // ShadowRoot detected.
-  isShadowRoot(node) && node.host ||
-  // Fallback.
-  getDocumentElement(node);
-  return isShadowRoot(result) ? result.host : result;
-}
-function getNearestOverflowAncestor(node) {
-  const parentNode = getParentNode(node);
-  if (isLastTraversableNode(parentNode)) {
-    return node.ownerDocument ? node.ownerDocument.body : node.body;
-  }
-  if (isHTMLElement(parentNode) && isOverflowElement(parentNode)) {
-    return parentNode;
-  }
-  return getNearestOverflowAncestor(parentNode);
-}
-function getOverflowAncestors(node, list, traverseIframes) {
-  var _node$ownerDocument2;
-  if (list === void 0) {
-    list = [];
-  }
-  if (traverseIframes === void 0) {
-    traverseIframes = true;
-  }
-  const scrollableAncestor = getNearestOverflowAncestor(node);
-  const isBody = scrollableAncestor === ((_node$ownerDocument2 = node.ownerDocument) == null ? void 0 : _node$ownerDocument2.body);
-  const win = getWindow(scrollableAncestor);
-  if (isBody) {
-    const frameElement = getFrameElement(win);
-    return list.concat(win, win.visualViewport || [], isOverflowElement(scrollableAncestor) ? scrollableAncestor : [], frameElement && traverseIframes ? getOverflowAncestors(frameElement) : []);
-  }
-  return list.concat(scrollableAncestor, getOverflowAncestors(scrollableAncestor, [], traverseIframes));
-}
-function getFrameElement(win) {
-  return win.parent && Object.getPrototypeOf(win.parent) ? win.frameElement : null;
-}
-
-
-
-
-/***/ }),
-
-/***/ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.mjs":
-/*!********************************************************************!*\
-  !*** ./node_modules/@floating-ui/utils/dist/floating-ui.utils.mjs ***!
-  \********************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   alignments: () => (/* binding */ alignments),
-/* harmony export */   clamp: () => (/* binding */ clamp),
-/* harmony export */   createCoords: () => (/* binding */ createCoords),
-/* harmony export */   evaluate: () => (/* binding */ evaluate),
-/* harmony export */   expandPaddingObject: () => (/* binding */ expandPaddingObject),
-/* harmony export */   floor: () => (/* binding */ floor),
-/* harmony export */   getAlignment: () => (/* binding */ getAlignment),
-/* harmony export */   getAlignmentAxis: () => (/* binding */ getAlignmentAxis),
-/* harmony export */   getAlignmentSides: () => (/* binding */ getAlignmentSides),
-/* harmony export */   getAxisLength: () => (/* binding */ getAxisLength),
-/* harmony export */   getExpandedPlacements: () => (/* binding */ getExpandedPlacements),
-/* harmony export */   getOppositeAlignmentPlacement: () => (/* binding */ getOppositeAlignmentPlacement),
-/* harmony export */   getOppositeAxis: () => (/* binding */ getOppositeAxis),
-/* harmony export */   getOppositeAxisPlacements: () => (/* binding */ getOppositeAxisPlacements),
-/* harmony export */   getOppositePlacement: () => (/* binding */ getOppositePlacement),
-/* harmony export */   getPaddingObject: () => (/* binding */ getPaddingObject),
-/* harmony export */   getSide: () => (/* binding */ getSide),
-/* harmony export */   getSideAxis: () => (/* binding */ getSideAxis),
-/* harmony export */   max: () => (/* binding */ max),
-/* harmony export */   min: () => (/* binding */ min),
-/* harmony export */   placements: () => (/* binding */ placements),
-/* harmony export */   rectToClientRect: () => (/* binding */ rectToClientRect),
-/* harmony export */   round: () => (/* binding */ round),
-/* harmony export */   sides: () => (/* binding */ sides)
-/* harmony export */ });
-/**
- * Custom positioning reference element.
- * @see https://floating-ui.com/docs/virtual-elements
- */
-
-const sides = ['top', 'right', 'bottom', 'left'];
-const alignments = ['start', 'end'];
-const placements = /*#__PURE__*/sides.reduce((acc, side) => acc.concat(side, side + "-" + alignments[0], side + "-" + alignments[1]), []);
-const min = Math.min;
-const max = Math.max;
-const round = Math.round;
-const floor = Math.floor;
-const createCoords = v => ({
-  x: v,
-  y: v
-});
-const oppositeSideMap = {
-  left: 'right',
-  right: 'left',
-  bottom: 'top',
-  top: 'bottom'
-};
-const oppositeAlignmentMap = {
-  start: 'end',
-  end: 'start'
-};
-function clamp(start, value, end) {
-  return max(start, min(value, end));
-}
-function evaluate(value, param) {
-  return typeof value === 'function' ? value(param) : value;
-}
-function getSide(placement) {
-  return placement.split('-')[0];
-}
-function getAlignment(placement) {
-  return placement.split('-')[1];
-}
-function getOppositeAxis(axis) {
-  return axis === 'x' ? 'y' : 'x';
-}
-function getAxisLength(axis) {
-  return axis === 'y' ? 'height' : 'width';
-}
-function getSideAxis(placement) {
-  return ['top', 'bottom'].includes(getSide(placement)) ? 'y' : 'x';
-}
-function getAlignmentAxis(placement) {
-  return getOppositeAxis(getSideAxis(placement));
-}
-function getAlignmentSides(placement, rects, rtl) {
-  if (rtl === void 0) {
-    rtl = false;
-  }
-  const alignment = getAlignment(placement);
-  const alignmentAxis = getAlignmentAxis(placement);
-  const length = getAxisLength(alignmentAxis);
-  let mainAlignmentSide = alignmentAxis === 'x' ? alignment === (rtl ? 'end' : 'start') ? 'right' : 'left' : alignment === 'start' ? 'bottom' : 'top';
-  if (rects.reference[length] > rects.floating[length]) {
-    mainAlignmentSide = getOppositePlacement(mainAlignmentSide);
-  }
-  return [mainAlignmentSide, getOppositePlacement(mainAlignmentSide)];
-}
-function getExpandedPlacements(placement) {
-  const oppositePlacement = getOppositePlacement(placement);
-  return [getOppositeAlignmentPlacement(placement), oppositePlacement, getOppositeAlignmentPlacement(oppositePlacement)];
-}
-function getOppositeAlignmentPlacement(placement) {
-  return placement.replace(/start|end/g, alignment => oppositeAlignmentMap[alignment]);
-}
-function getSideList(side, isStart, rtl) {
-  const lr = ['left', 'right'];
-  const rl = ['right', 'left'];
-  const tb = ['top', 'bottom'];
-  const bt = ['bottom', 'top'];
-  switch (side) {
-    case 'top':
-    case 'bottom':
-      if (rtl) return isStart ? rl : lr;
-      return isStart ? lr : rl;
-    case 'left':
-    case 'right':
-      return isStart ? tb : bt;
-    default:
-      return [];
-  }
-}
-function getOppositeAxisPlacements(placement, flipAlignment, direction, rtl) {
-  const alignment = getAlignment(placement);
-  let list = getSideList(getSide(placement), direction === 'start', rtl);
-  if (alignment) {
-    list = list.map(side => side + "-" + alignment);
-    if (flipAlignment) {
-      list = list.concat(list.map(getOppositeAlignmentPlacement));
-    }
-  }
-  return list;
-}
-function getOppositePlacement(placement) {
-  return placement.replace(/left|right|bottom|top/g, side => oppositeSideMap[side]);
-}
-function expandPaddingObject(padding) {
-  return {
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    ...padding
-  };
-}
-function getPaddingObject(padding) {
-  return typeof padding !== 'number' ? expandPaddingObject(padding) : {
-    top: padding,
-    right: padding,
-    bottom: padding,
-    left: padding
-  };
-}
-function rectToClientRect(rect) {
-  const {
-    x,
-    y,
-    width,
-    height
-  } = rect;
-  return {
-    width,
-    height,
-    top: y,
-    left: x,
-    right: x + width,
-    bottom: y + height,
-    x,
-    y
-  };
-}
-
-
-
-
-/***/ }),
-
-/***/ "./node_modules/compute-scroll-into-view/dist/index.mjs":
-/*!**************************************************************!*\
-  !*** ./node_modules/compute-scroll-into-view/dist/index.mjs ***!
-  \**************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ i)
-/* harmony export */ });
-function t(t){return"object"==typeof t&&null!=t&&1===t.nodeType}function e(t,e){return(!e||"hidden"!==t)&&"visible"!==t&&"clip"!==t}function n(t,n){if(t.clientHeight<t.scrollHeight||t.clientWidth<t.scrollWidth){var r=getComputedStyle(t,null);return e(r.overflowY,n)||e(r.overflowX,n)||function(t){var e=function(t){if(!t.ownerDocument||!t.ownerDocument.defaultView)return null;try{return t.ownerDocument.defaultView.frameElement}catch(t){return null}}(t);return!!e&&(e.clientHeight<t.scrollHeight||e.clientWidth<t.scrollWidth)}(t)}return!1}function r(t,e,n,r,i,o,l,d){return o<t&&l>e||o>t&&l<e?0:o<=t&&d<=n||l>=e&&d>=n?o-t-r:l>e&&d<n||o<t&&d>n?l-e+i:0}var i=function(e,i){var o=window,l=i.scrollMode,d=i.block,f=i.inline,h=i.boundary,u=i.skipOverflowHiddenElements,s="function"==typeof h?h:function(t){return t!==h};if(!t(e))throw new TypeError("Invalid target");for(var a,c,g=document.scrollingElement||document.documentElement,p=[],m=e;t(m)&&s(m);){if((m=null==(c=(a=m).parentElement)?a.getRootNode().host||null:c)===g){p.push(m);break}null!=m&&m===document.body&&n(m)&&!n(document.documentElement)||null!=m&&n(m,u)&&p.push(m)}for(var w=o.visualViewport?o.visualViewport.width:innerWidth,v=o.visualViewport?o.visualViewport.height:innerHeight,W=window.scrollX||pageXOffset,H=window.scrollY||pageYOffset,b=e.getBoundingClientRect(),y=b.height,E=b.width,M=b.top,V=b.right,x=b.bottom,I=b.left,C="start"===d||"nearest"===d?M:"end"===d?x:M+y/2,R="center"===f?I+E/2:"end"===f?V:I,T=[],k=0;k<p.length;k++){var B=p[k],D=B.getBoundingClientRect(),O=D.height,X=D.width,Y=D.top,L=D.right,S=D.bottom,j=D.left;if("if-needed"===l&&M>=0&&I>=0&&x<=v&&V<=w&&M>=Y&&x<=S&&I>=j&&V<=L)return T;var N=getComputedStyle(B),q=parseInt(N.borderLeftWidth,10),z=parseInt(N.borderTopWidth,10),A=parseInt(N.borderRightWidth,10),F=parseInt(N.borderBottomWidth,10),G=0,J=0,K="offsetWidth"in B?B.offsetWidth-B.clientWidth-q-A:0,P="offsetHeight"in B?B.offsetHeight-B.clientHeight-z-F:0,Q="offsetWidth"in B?0===B.offsetWidth?0:X/B.offsetWidth:0,U="offsetHeight"in B?0===B.offsetHeight?0:O/B.offsetHeight:0;if(g===B)G="start"===d?C:"end"===d?C-v:"nearest"===d?r(H,H+v,v,z,F,H+C,H+C+y,y):C-v/2,J="start"===f?R:"center"===f?R-w/2:"end"===f?R-w:r(W,W+w,w,q,A,W+R,W+R+E,E),G=Math.max(0,G+H),J=Math.max(0,J+W);else{G="start"===d?C-Y-z:"end"===d?C-S+F+P:"nearest"===d?r(Y,S,O,z,F+P,C,C+y,y):C-(Y+O/2)+P/2,J="start"===f?R-j-q:"center"===f?R-(j+X/2)+K/2:"end"===f?R-L+A+K:r(j,L,X,q,A+K,R,R+E,E);var Z=B.scrollLeft,$=B.scrollTop;C+=$-(G=Math.max(0,Math.min($+G/U,B.scrollHeight-O/U+P))),R+=Z-(J=Math.max(0,Math.min(Z+J/Q,B.scrollWidth-X/Q+K)))}T.push({el:B,top:G,left:J})}return T};
-//# sourceMappingURL=index.mjs.map
-
-
-/***/ }),
-
-/***/ "./node_modules/goober/dist/goober.modern.js":
-/*!***************************************************!*\
-  !*** ./node_modules/goober/dist/goober.modern.js ***!
-  \***************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   css: () => (/* binding */ u),
-/* harmony export */   extractCss: () => (/* binding */ r),
-/* harmony export */   glob: () => (/* binding */ b),
-/* harmony export */   keyframes: () => (/* binding */ h),
-/* harmony export */   setup: () => (/* binding */ m),
-/* harmony export */   styled: () => (/* binding */ j)
-/* harmony export */ });
-let e={data:""},t=t=>"object"==typeof window?((t?t.querySelector("#_goober"):window._goober)||Object.assign((t||document.head).appendChild(document.createElement("style")),{innerHTML:" ",id:"_goober"})).firstChild:t||e,r=e=>{let r=t(e),l=r.data;return r.data="",l},l=/(?:([\u0080-\uFFFF\w-%@]+) *:? *([^{;]+?);|([^;}{]*?) *{)|(}\s*)/g,a=/\/\*[^]*?\*\/|  +/g,n=/\n+/g,o=(e,t)=>{let r="",l="",a="";for(let n in e){let c=e[n];"@"==n[0]?"i"==n[1]?r=n+" "+c+";":l+="f"==n[1]?o(c,n):n+"{"+o(c,"k"==n[1]?"":t)+"}":"object"==typeof c?l+=o(c,t?t.replace(/([^,])+/g,e=>n.replace(/([^,]*:\S+\([^)]*\))|([^,])+/g,t=>/&/.test(t)?t.replace(/&/g,e):e?e+" "+t:t)):n):null!=c&&(n=/^--/.test(n)?n:n.replace(/[A-Z]/g,"-$&").toLowerCase(),a+=o.p?o.p(n,c):n+":"+c+";")}return r+(t&&a?t+"{"+a+"}":a)+l},c={},s=e=>{if("object"==typeof e){let t="";for(let r in e)t+=r+s(e[r]);return t}return e},i=(e,t,r,i,p)=>{let u=s(e),d=c[u]||(c[u]=(e=>{let t=0,r=11;for(;t<e.length;)r=101*r+e.charCodeAt(t++)>>>0;return"go"+r})(u));if(!c[d]){let t=u!==e?e:(e=>{let t,r,o=[{}];for(;t=l.exec(e.replace(a,""));)t[4]?o.shift():t[3]?(r=t[3].replace(n," ").trim(),o.unshift(o[0][r]=o[0][r]||{})):o[0][t[1]]=t[2].replace(n," ").trim();return o[0]})(e);c[d]=o(p?{["@keyframes "+d]:t}:t,r?"":"."+d)}let f=r&&c.g?c.g:null;return r&&(c.g=c[d]),((e,t,r,l)=>{l?t.data=t.data.replace(l,e):-1===t.data.indexOf(e)&&(t.data=r?e+t.data:t.data+e)})(c[d],t,i,f),d},p=(e,t,r)=>e.reduce((e,l,a)=>{let n=t[a];if(n&&n.call){let e=n(r),t=e&&e.props&&e.props.className||/^go/.test(e)&&e;n=t?"."+t:e&&"object"==typeof e?e.props?"":o(e,""):!1===e?"":e}return e+l+(null==n?"":n)},"");function u(e){let r=this||{},l=e.call?e(r.p):e;return i(l.unshift?l.raw?p(l,[].slice.call(arguments,1),r.p):l.reduce((e,t)=>Object.assign(e,t&&t.call?t(r.p):t),{}):l,t(r.target),r.g,r.o,r.k)}let d,f,g,b=u.bind({g:1}),h=u.bind({k:1});function m(e,t,r,l){o.p=t,d=e,f=r,g=l}function j(e,t){let r=this||{};return function(){let l=arguments;function a(n,o){let c=Object.assign({},n),s=c.className||a.className;r.p=Object.assign({theme:f&&f()},c),r.o=/ *go\d+/.test(s),c.className=u.apply(r,l)+(s?" "+s:""),t&&(c.ref=o);let i=e;return e[0]&&(i=c.as||e,delete c.as),g&&i[0]&&g(c),d(i,c)}return t?t(a):a}}
-
-
-/***/ }),
-
-/***/ "./node_modules/react-hot-toast/dist/index.mjs":
-/*!*****************************************************!*\
-  !*** ./node_modules/react-hot-toast/dist/index.mjs ***!
-  \*****************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   CheckmarkIcon: () => (/* binding */ _),
-/* harmony export */   ErrorIcon: () => (/* binding */ k),
-/* harmony export */   LoaderIcon: () => (/* binding */ V),
-/* harmony export */   ToastBar: () => (/* binding */ C),
-/* harmony export */   ToastIcon: () => (/* binding */ M),
-/* harmony export */   Toaster: () => (/* binding */ De),
-/* harmony export */   "default": () => (/* binding */ kt),
-/* harmony export */   resolveValue: () => (/* binding */ f),
-/* harmony export */   toast: () => (/* binding */ c),
-/* harmony export */   useToaster: () => (/* binding */ O),
-/* harmony export */   useToasterStore: () => (/* binding */ D)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var goober__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! goober */ "./node_modules/goober/dist/goober.modern.js");
-"use client";
-var W=e=>typeof e=="function",f=(e,t)=>W(e)?e(t):e;var F=(()=>{let e=0;return()=>(++e).toString()})(),S=(()=>{let e;return()=>{if(e===void 0&&typeof window<"u"){let t=matchMedia("(prefers-reduced-motion: reduce)");e=!t||t.matches}return e}})();var J=20;var U=(e,t)=>{switch(t.type){case 0:return{...e,toasts:[t.toast,...e.toasts].slice(0,J)};case 1:return{...e,toasts:e.toasts.map(r=>r.id===t.toast.id?{...r,...t.toast}:r)};case 2:let{toast:o}=t;return U(e,{type:e.toasts.find(r=>r.id===o.id)?1:0,toast:o});case 3:let{toastId:a}=t;return{...e,toasts:e.toasts.map(r=>r.id===a||a===void 0?{...r,dismissed:!0,visible:!1}:r)};case 4:return t.toastId===void 0?{...e,toasts:[]}:{...e,toasts:e.toasts.filter(r=>r.id!==t.toastId)};case 5:return{...e,pausedAt:t.time};case 6:let s=t.time-(e.pausedAt||0);return{...e,pausedAt:void 0,toasts:e.toasts.map(r=>({...r,pauseDuration:r.pauseDuration+s}))}}},A=[],P={toasts:[],pausedAt:void 0},u=e=>{P=U(P,e),A.forEach(t=>{t(P)})},Q={blank:4e3,error:4e3,success:2e3,loading:1/0,custom:4e3},D=(e={})=>{let[t,o]=(0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(P);(0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(()=>(A.push(o),()=>{let s=A.indexOf(o);s>-1&&A.splice(s,1)}),[t]);let a=t.toasts.map(s=>{var r,n,i;return{...e,...e[s.type],...s,removeDelay:s.removeDelay||((r=e[s.type])==null?void 0:r.removeDelay)||(e==null?void 0:e.removeDelay),duration:s.duration||((n=e[s.type])==null?void 0:n.duration)||(e==null?void 0:e.duration)||Q[s.type],style:{...e.style,...(i=e[s.type])==null?void 0:i.style,...s.style}}});return{...t,toasts:a}};var Y=(e,t="blank",o)=>({createdAt:Date.now(),visible:!0,dismissed:!1,type:t,ariaProps:{role:"status","aria-live":"polite"},message:e,pauseDuration:0,...o,id:(o==null?void 0:o.id)||F()}),h=e=>(t,o)=>{let a=Y(t,e,o);return u({type:2,toast:a}),a.id},c=(e,t)=>h("blank")(e,t);c.error=h("error");c.success=h("success");c.loading=h("loading");c.custom=h("custom");c.dismiss=e=>{u({type:3,toastId:e})};c.remove=e=>u({type:4,toastId:e});c.promise=(e,t,o)=>{let a=c.loading(t.loading,{...o,...o==null?void 0:o.loading});return typeof e=="function"&&(e=e()),e.then(s=>{let r=t.success?f(t.success,s):void 0;return r?c.success(r,{id:a,...o,...o==null?void 0:o.success}):c.dismiss(a),s}).catch(s=>{let r=t.error?f(t.error,s):void 0;r?c.error(r,{id:a,...o,...o==null?void 0:o.error}):c.dismiss(a)}),e};var q=(e,t)=>{u({type:1,toast:{id:e,height:t}})},G=()=>{u({type:5,time:Date.now()})},x=new Map,K=1e3,Z=(e,t=K)=>{if(x.has(e))return;let o=setTimeout(()=>{x.delete(e),u({type:4,toastId:e})},t);x.set(e,o)},O=e=>{let{toasts:t,pausedAt:o}=D(e);(0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(()=>{if(o)return;let r=Date.now(),n=t.map(i=>{if(i.duration===1/0)return;let d=(i.duration||0)+i.pauseDuration-(r-i.createdAt);if(d<0){i.visible&&c.dismiss(i.id);return}return setTimeout(()=>c.dismiss(i.id),d)});return()=>{n.forEach(i=>i&&clearTimeout(i))}},[t,o]);let a=(0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(()=>{o&&u({type:6,time:Date.now()})},[o]),s=(0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)((r,n)=>{let{reverseOrder:i=!1,gutter:d=8,defaultPosition:p}=n||{},g=t.filter(m=>(m.position||p)===(r.position||p)&&m.height),E=g.findIndex(m=>m.id===r.id),b=g.filter((m,R)=>R<E&&m.visible).length;return g.filter(m=>m.visible).slice(...i?[b+1]:[0,b]).reduce((m,R)=>m+(R.height||0)+d,0)},[t]);return (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(()=>{t.forEach(r=>{if(r.dismissed)Z(r.id,r.removeDelay);else{let n=x.get(r.id);n&&(clearTimeout(n),x.delete(r.id))}})},[t]),{toasts:t,handlers:{updateHeight:q,startPause:G,endPause:a,calculateOffset:s}}};var te=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
-from {
-  transform: scale(0) rotate(45deg);
-	opacity: 0;
-}
-to {
- transform: scale(1) rotate(45deg);
-  opacity: 1;
-}`,oe=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
-from {
-  transform: scale(0);
-  opacity: 0;
-}
-to {
-  transform: scale(1);
-  opacity: 1;
-}`,re=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
-from {
-  transform: scale(0) rotate(90deg);
-	opacity: 0;
-}
-to {
-  transform: scale(1) rotate(90deg);
-	opacity: 1;
-}`,k=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
-  width: 20px;
-  opacity: 0;
-  height: 20px;
-  border-radius: 10px;
-  background: ${e=>e.primary||"#ff4b4b"};
-  position: relative;
-  transform: rotate(45deg);
-
-  animation: ${te} 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)
-    forwards;
-  animation-delay: 100ms;
-
-  &:after,
-  &:before {
-    content: '';
-    animation: ${oe} 0.15s ease-out forwards;
-    animation-delay: 150ms;
-    position: absolute;
-    border-radius: 3px;
-    opacity: 0;
-    background: ${e=>e.secondary||"#fff"};
-    bottom: 9px;
-    left: 4px;
-    height: 2px;
-    width: 12px;
-  }
-
-  &:before {
-    animation: ${re} 0.15s ease-out forwards;
-    animation-delay: 180ms;
-    transform: rotate(90deg);
-  }
-`;var ie=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`,V=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
-  width: 12px;
-  height: 12px;
-  box-sizing: border-box;
-  border: 2px solid;
-  border-radius: 100%;
-  border-color: ${e=>e.secondary||"#e0e0e0"};
-  border-right-color: ${e=>e.primary||"#616161"};
-  animation: ${ie} 1s linear infinite;
-`;var ce=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
-from {
-  transform: scale(0) rotate(45deg);
-	opacity: 0;
-}
-to {
-  transform: scale(1) rotate(45deg);
-	opacity: 1;
-}`,pe=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
-0% {
-	height: 0;
-	width: 0;
-	opacity: 0;
-}
-40% {
-  height: 0;
-	width: 6px;
-	opacity: 1;
-}
-100% {
-  opacity: 1;
-  height: 10px;
-}`,_=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
-  width: 20px;
-  opacity: 0;
-  height: 20px;
-  border-radius: 10px;
-  background: ${e=>e.primary||"#61d345"};
-  position: relative;
-  transform: rotate(45deg);
-
-  animation: ${ce} 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)
-    forwards;
-  animation-delay: 100ms;
-  &:after {
-    content: '';
-    box-sizing: border-box;
-    animation: ${pe} 0.2s ease-out forwards;
-    opacity: 0;
-    animation-delay: 200ms;
-    position: absolute;
-    border-right: 2px solid;
-    border-bottom: 2px solid;
-    border-color: ${e=>e.secondary||"#fff"};
-    bottom: 6px;
-    left: 6px;
-    height: 10px;
-    width: 6px;
-  }
-`;var me=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
-  position: absolute;
-`,ue=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 20px;
-  min-height: 20px;
-`,le=(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)`
-from {
-  transform: scale(0.6);
-  opacity: 0.4;
-}
-to {
-  transform: scale(1);
-  opacity: 1;
-}`,fe=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
-  position: relative;
-  transform: scale(0.6);
-  opacity: 0.4;
-  min-width: 20px;
-  animation: ${le} 0.3s 0.12s cubic-bezier(0.175, 0.885, 0.32, 1.275)
-    forwards;
-`,M=({toast:e})=>{let{icon:t,type:o,iconTheme:a}=e;return t!==void 0?typeof t=="string"?react__WEBPACK_IMPORTED_MODULE_0__.createElement(fe,null,t):t:o==="blank"?null:react__WEBPACK_IMPORTED_MODULE_0__.createElement(ue,null,react__WEBPACK_IMPORTED_MODULE_0__.createElement(V,{...a}),o!=="loading"&&react__WEBPACK_IMPORTED_MODULE_0__.createElement(me,null,o==="error"?react__WEBPACK_IMPORTED_MODULE_0__.createElement(k,{...a}):react__WEBPACK_IMPORTED_MODULE_0__.createElement(_,{...a})))};var Te=e=>`
-0% {transform: translate3d(0,${e*-200}%,0) scale(.6); opacity:.5;}
-100% {transform: translate3d(0,0,0) scale(1); opacity:1;}
-`,ye=e=>`
-0% {transform: translate3d(0,0,-1px) scale(1); opacity:1;}
-100% {transform: translate3d(0,${e*-150}%,-1px) scale(.6); opacity:0;}
-`,ge="0%{opacity:0;} 100%{opacity:1;}",he="0%{opacity:1;} 100%{opacity:0;}",xe=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
-  display: flex;
-  align-items: center;
-  background: #fff;
-  color: #363636;
-  line-height: 1.3;
-  will-change: transform;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1), 0 3px 3px rgba(0, 0, 0, 0.05);
-  max-width: 350px;
-  pointer-events: auto;
-  padding: 8px 10px;
-  border-radius: 8px;
-`,be=(0,goober__WEBPACK_IMPORTED_MODULE_1__.styled)("div")`
-  display: flex;
-  justify-content: center;
-  margin: 4px 10px;
-  color: inherit;
-  flex: 1 1 auto;
-  white-space: pre-line;
-`,Se=(e,t)=>{let a=e.includes("top")?1:-1,[s,r]=S()?[ge,he]:[Te(a),ye(a)];return{animation:t?`${(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)(s)} 0.35s cubic-bezier(.21,1.02,.73,1) forwards`:`${(0,goober__WEBPACK_IMPORTED_MODULE_1__.keyframes)(r)} 0.4s forwards cubic-bezier(.06,.71,.55,1)`}},C=react__WEBPACK_IMPORTED_MODULE_0__.memo(({toast:e,position:t,style:o,children:a})=>{let s=e.height?Se(e.position||t||"top-center",e.visible):{opacity:0},r=react__WEBPACK_IMPORTED_MODULE_0__.createElement(M,{toast:e}),n=react__WEBPACK_IMPORTED_MODULE_0__.createElement(be,{...e.ariaProps},f(e.message,e));return react__WEBPACK_IMPORTED_MODULE_0__.createElement(xe,{className:e.className,style:{...s,...o,...e.style}},typeof a=="function"?a({icon:r,message:n}):react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment,null,r,n))});(0,goober__WEBPACK_IMPORTED_MODULE_1__.setup)(react__WEBPACK_IMPORTED_MODULE_0__.createElement);var ve=({id:e,className:t,style:o,onHeightUpdate:a,children:s})=>{let r=react__WEBPACK_IMPORTED_MODULE_0__.useCallback(n=>{if(n){let i=()=>{let d=n.getBoundingClientRect().height;a(e,d)};i(),new MutationObserver(i).observe(n,{subtree:!0,childList:!0,characterData:!0})}},[e,a]);return react__WEBPACK_IMPORTED_MODULE_0__.createElement("div",{ref:r,className:t,style:o},s)},Ee=(e,t)=>{let o=e.includes("top"),a=o?{top:0}:{bottom:0},s=e.includes("center")?{justifyContent:"center"}:e.includes("right")?{justifyContent:"flex-end"}:{};return{left:0,right:0,display:"flex",position:"absolute",transition:S()?void 0:"all 230ms cubic-bezier(.21,1.02,.73,1)",transform:`translateY(${t*(o?1:-1)}px)`,...a,...s}},Re=(0,goober__WEBPACK_IMPORTED_MODULE_1__.css)`
-  z-index: 9999;
-  > * {
-    pointer-events: auto;
-  }
-`,v=16,De=({reverseOrder:e,position:t="top-center",toastOptions:o,gutter:a,children:s,containerStyle:r,containerClassName:n})=>{let{toasts:i,handlers:d}=O(o);return react__WEBPACK_IMPORTED_MODULE_0__.createElement("div",{id:"_rht_toaster",style:{position:"fixed",zIndex:9999,top:v,left:v,right:v,bottom:v,pointerEvents:"none",...r},className:n,onMouseEnter:d.startPause,onMouseLeave:d.endPause},i.map(p=>{let g=p.position||t,E=d.calculateOffset(p,{reverseOrder:e,gutter:a,defaultPosition:t}),b=Ee(g,E);return react__WEBPACK_IMPORTED_MODULE_0__.createElement(ve,{id:p.id,key:p.id,onHeightUpdate:d.updateHeight,className:p.visible?Re:"",style:b},p.type==="custom"?f(p.message,p):s?s(p):react__WEBPACK_IMPORTED_MODULE_0__.createElement(C,{toast:p,position:g}))}))};var kt=c;
-//# sourceMappingURL=index.mjs.map
-
-/***/ }),
-
 /***/ "./node_modules/stylis/src/Enum.js":
 /*!*****************************************!*\
   !*** ./node_modules/stylis/src/Enum.js ***!
@@ -48319,6 +47233,1175 @@ function __rewriteRelativeImportExtension(path, preserveJsx) {
   __rewriteRelativeImportExtension,
 });
 
+
+/***/ }),
+
+/***/ "./node_modules/use-isomorphic-layout-effect/dist/use-isomorphic-layout-effect.browser.esm.js":
+/*!****************************************************************************************************!*\
+  !*** ./node_modules/use-isomorphic-layout-effect/dist/use-isomorphic-layout-effect.browser.esm.js ***!
+  \****************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ index)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var index = react__WEBPACK_IMPORTED_MODULE_0__.useLayoutEffect ;
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/warning/warning.js":
+/*!*****************************************!*\
+  !*** ./node_modules/warning/warning.js ***!
+  \*****************************************/
+/***/ ((module) => {
+
+"use strict";
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+/**
+ * Similar to invariant but only logs a warning if the condition is not met.
+ * This can be used to log issues in development environments in critical
+ * paths. Removing the logging code for production environments will keep the
+ * same logic and follow the same code paths.
+ */
+
+var __DEV__ = "development" !== 'production';
+
+var warning = function() {};
+
+if (__DEV__) {
+  var printWarning = function printWarning(format, args) {
+    var len = arguments.length;
+    args = new Array(len > 1 ? len - 1 : 0);
+    for (var key = 1; key < len; key++) {
+      args[key - 1] = arguments[key];
+    }
+    var argIndex = 0;
+    var message = 'Warning: ' +
+      format.replace(/%s/g, function() {
+        return args[argIndex++];
+      });
+    if (typeof console !== 'undefined') {
+      console.error(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  }
+
+  warning = function(condition, format, args) {
+    var len = arguments.length;
+    args = new Array(len > 2 ? len - 2 : 0);
+    for (var key = 2; key < len; key++) {
+      args[key - 2] = arguments[key];
+    }
+    if (format === undefined) {
+      throw new Error(
+          '`warning(condition, format, ...args)` requires a warning ' +
+          'message argument'
+      );
+    }
+    if (!condition) {
+      printWarning.apply(null, [format].concat(args));
+    }
+  };
+}
+
+module.exports = warning;
+
+
+/***/ }),
+
+/***/ "./src/alma-checkout-block/alma-checkout-blocks.css":
+/*!**********************************************************!*\
+  !*** ./src/alma-checkout-block/alma-checkout-blocks.css ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./src/alma-checkout-block/alma-checkout-blocks.js":
+/*!*********************************************************!*\
+  !*** ./src/alma-checkout-block/alma-checkout-blocks.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../stores/alma-eligibility-store */ "./src/stores/alma-eligibility-store.js");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _hooks_fetchAlmaEligibility__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./hooks/fetchAlmaEligibility */ "./src/alma-checkout-block/hooks/fetchAlmaEligibility.js");
+/* harmony import */ var _components_Label__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/Label */ "./src/alma-checkout-block/components/Label.js");
+/* harmony import */ var _components_DisplayAlmaBlocks__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/DisplayAlmaBlocks */ "./src/alma-checkout-block/components/DisplayAlmaBlocks.js");
+/* harmony import */ var _components_DisplayAlmaInPageBlocks__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/DisplayAlmaInPageBlocks */ "./src/alma-checkout-block/components/DisplayAlmaInPageBlocks.js");
+/* harmony import */ var _alma_checkout_blocks_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./alma-checkout-blocks.css */ "./src/alma-checkout-block/alma-checkout-blocks.css");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__);
+/**
+ * Checkout blocks page.
+ *
+ * @since 5.3.0
+ *
+ * @package Alma_Gateway_For_Woocommerce
+ * @subpackage Alma_Gateway_For_Woocommerce/assets
+ */
+
+// phpcs:ignoreFile
+
+
+
+
+
+
+
+
+
+(function ($) {
+  var inPage = undefined;
+  const {
+    CART_STORE_KEY,
+    CHECKOUT_STORE_KEY
+  } = window.wc.wcBlocksData;
+  const CartObserver = () => {
+    // Subscribe to the cart total
+    const {
+      cartTotal,
+      shippingRates
+    } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(select => ({
+      cartTotal: select(CART_STORE_KEY).getCartTotals().total_price,
+      shippingRates: select(CART_STORE_KEY).getShippingRates()
+    }), []);
+    // Subscribe to the eligibility
+    const {
+      eligibility,
+      isLoading
+    } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(select => ({
+      eligibility: select(_stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_0__.store_key).getAlmaEligibility(),
+      isLoading: select(_stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_0__.store_key).isLoading()
+    }), []);
+    const {
+      isCalculating
+    } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(select => ({
+      isCalculating: select(CHECKOUT_STORE_KEY).isCalculating()
+    }), []);
+
+    // Use the cart total to fetch the new eligibility
+    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+      // BlockData is a global variable defined in the PHP file with the wp_localize_script function
+      (0,_hooks_fetchAlmaEligibility__WEBPACK_IMPORTED_MODULE_3__.fetchAlmaEligibility)(_stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_0__.store_key, BlocksData.url);
+    }, [cartTotal, shippingRates]);
+
+    // Register the payment gateway blocks
+    if (!isCalculating && !isLoading) {
+      // For each gateway in eligibility result, we register a block
+      // before registering the payment gateway, we reset the payment gateways to force gutenberg reload
+      reset_payment_gateways(eligibility);
+      register_payment_gateway(eligibility, cartTotal);
+    }
+  };
+  const reset_payment_gateways = eligibility => {
+    for (const gateway in eligibility) {
+      const settings = window.wc.wcSettings.getSetting(`${gateway}_data`, null);
+      const Block_Gateway_Alma = generateGatewayBlock(settings, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.Fragment, {}), gateway, false);
+      window.wc.wcBlocksRegistry.registerPaymentMethod(Block_Gateway_Alma);
+    }
+  };
+  const register_payment_gateway = (eligibility, cartTotal, init = false) => {
+    // For each gateway in eligibility result, we register a block
+    for (const gateway in eligibility) {
+      const settings = window.wc.wcSettings.getSetting(`${gateway}_data`, null);
+      const blockContent = getContentBlock(settings.is_in_page, settings, cartTotal, gateway);
+      const Block_Gateway_Alma = generateGatewayBlock(settings, blockContent, gateway, init ? true : gatewayCanMakePayment(eligibility[gateway]));
+      window.wc.wcBlocksRegistry.registerPaymentMethod(Block_Gateway_Alma);
+    }
+  };
+  const generateGatewayBlock = (settings, blockContent, gateway, canMakePayment) => {
+    return {
+      name: settings.gateway_name,
+      label: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_Label__WEBPACK_IMPORTED_MODULE_4__.Label, {
+        title: window.wp.htmlEntities.decodeEntities(settings.title)
+      }),
+      content: blockContent,
+      edit: blockContent,
+      placeOrderButtonLabel: settings.label_button,
+      canMakePayment: () => canMakePayment,
+      ariaLabel: settings.title
+    };
+  };
+  const getContentBlock = (is_in_page, settings, cartTotal, gateway) => {
+    const setInPage = inPageInstance => {
+      inPage = inPageInstance;
+    };
+    const isPayNow = settings.gateway_name === "alma_pay_now" || settings.gateway_name === "alma_in_page_pay_now";
+    return is_in_page ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_DisplayAlmaInPageBlocks__WEBPACK_IMPORTED_MODULE_6__.DisplayAlmaInPageBlocks, {
+      isPayNow: isPayNow,
+      store_key: _stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_0__.store_key,
+      settings: settings,
+      gateway: gateway,
+      setInPage: setInPage
+    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_DisplayAlmaBlocks__WEBPACK_IMPORTED_MODULE_5__.DisplayAlmaBlocks, {
+      isPayNow: isPayNow,
+      store_key: _stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_0__.store_key,
+      settings: settings,
+      gateway: gateway
+    });
+  };
+  const gatewayCanMakePayment = gateway_eligibility => {
+    let canMakePayment = true;
+    if (Object.keys(gateway_eligibility).length === 0) {
+      canMakePayment = false;
+    }
+    return canMakePayment;
+  };
+  const mountReactComponent = () => {
+    const rootDiv = document.createElement('div');
+    document.body.appendChild(rootDiv);
+    ReactDOM.render(/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(CartObserver, {}), rootDiv);
+  };
+  $(document).ready(() => {
+    mountReactComponent();
+  });
+  $(window).bind("load", function () {
+    addActionToPaymentButton();
+  });
+  const addActionToPaymentButton = () => {
+    document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].addEventListener("click", addActionToPaymentButtonListener);
+  };
+  const addActionToPaymentButtonListener = event => {
+    const {
+      CHECKOUT_STORE_KEY,
+      CART_STORE_KEY
+    } = window.wc.wcBlocksData;
+    const store = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.select)(CHECKOUT_STORE_KEY);
+    const cartStore = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.select)(CART_STORE_KEY);
+    const almaStore = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.select)(_stores_alma_eligibility_store__WEBPACK_IMPORTED_MODULE_0__.store_key);
+    const dataTest = {
+      hasError: store.hasError(),
+      redirectUrl: store.getRedirectUrl(),
+      isProcessing: store.isProcessing(),
+      isBeforeProcessing: store.isBeforeProcessing(),
+      isComplete: store.isComplete(),
+      orderNotes: store.getOrderNotes(),
+      shouldCreateAccount: store.getShouldCreateAccount(),
+      extensionData: store.getExtensionData(),
+      customerId: store.getCustomerId()
+    };
+    const gateway = $("input[type='radio'][name='radio-control-wc-payment-method-options']:checked").val();
+    const settings = window.wc.wcSettings.getSetting(`${gateway}_data`, null);
+    const almaCheckoutNonce = `alma_checkout_nonce${settings.gateway_name}`;
+    if (settings.gateway_name === 'alma_in_page_pay_now' || settings.gateway_name === 'alma_in_page_pay_later' || settings.gateway_name === 'alma_in_page' || settings.gateway_name === 'alma_in_page_pnx_plus_4') {
+      event.stopPropagation();
+      const {
+        shouldCreateAccount,
+        ...restOfDataTest
+      } = dataTest;
+      function isDifferentAddress(billing, shipping) {
+        for (const key in billing) {
+          if (billing[key] !== shipping[key]) {
+            return true;
+          }
+        }
+        return false;
+      }
+      const areShippingAndBillingAddressDifferent = isDifferentAddress(cartStore.getCustomerData().shippingAddress, cartStore.getCustomerData().billingAddress);
+      var data = {
+        'action': 'alma_do_checkout_in_page',
+        'fields': {
+          'shipping_address': cartStore.getCustomerData().shippingAddress,
+          'billing_address': {
+            ...cartStore.getCustomerData().billingAddress
+          },
+          ...restOfDataTest,
+          'ship_to_different_address': areShippingAndBillingAddressDifferent,
+          'createaccount': dataTest.shouldCreateAccount,
+          'alma_fee_plan': almaStore.getSelectedFeePlan(),
+          [almaCheckoutNonce]: settings.nonce_value,
+          'payment_method': settings.gateway_name
+        },
+        [almaCheckoutNonce]: settings.nonce_value,
+        'woocommerce-process-checkout-nonce': settings.woocommerce_process_checkout_nonce,
+        'payment_method': settings.gateway_name,
+        'alma_fee_plan': almaStore.getSelectedFeePlan(),
+        'alma_fee_plan_in_page': almaStore.getSelectedFeePlan(),
+        'is_woo_block': true
+      };
+      var loading = "<div class='loadingIndicator'><img src='https://cdn.almapay.com/img/animated-logo-a.svg' alt='Loading' /></div>";
+      $("body").append("<div class='alma-loader-wrapper'>" + loading + "</div>");
+
+      // Create the payment id and order.
+      jQuery.post(ajax_object.ajax_url, data).done(function (response) {
+        var paymentId = response.data.payment_id;
+        var orderId = response.data.order_id;
+
+        // Start the payment.
+        inPage.startPayment({
+          paymentId: paymentId,
+          onUserCloseModal: () => {
+            cancel_order(orderId);
+            $('.alma-loader-wrapper').remove();
+          }
+        });
+      }).fail(function (response) {
+        $('.alma-loader-wrapper').remove();
+        location.reload();
+      });
+    }
+  };
+  function cancel_order(orderId) {
+    var data = {
+      'action': 'alma_cancel_order_in_page',
+      'order_id': orderId
+    };
+    jQuery.post(ajax_object.ajax_url, data);
+  }
+  function init_checkout_blocks() {
+    register_payment_gateway(BlocksData['init_eligibility'], 0, true);
+  }
+  init_checkout_blocks();
+})(jQuery);
+
+/***/ }),
+
+/***/ "./src/alma-checkout-block/components/DisplayAlmaBlocks.js":
+/*!*****************************************************************!*\
+  !*** ./src/alma-checkout-block/components/DisplayAlmaBlocks.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DisplayAlmaBlocks: () => (/* binding */ DisplayAlmaBlocks)
+/* harmony export */ });
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _alma_blocks_component_tsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./alma-blocks-component.tsx */ "./src/alma-checkout-block/components/alma-blocks-component.tsx");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__);
+
+
+
+
+const DisplayAlmaBlocks = props => {
+  var _eligibility$gateway$;
+  const {
+    eventRegistration,
+    emitResponse,
+    settings,
+    gateway,
+    store_key,
+    isPayNow
+  } = props;
+  const {
+    onPaymentSetup
+  } = eventRegistration;
+  const {
+    eligibility,
+    isLoading,
+    eligibilityCartTotal
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.useSelect)(select => ({
+    eligibility: select(store_key).getAlmaEligibility(),
+    eligibilityCartTotal: select(store_key).getCartTotal(),
+    isLoading: select(store_key).isLoading()
+  }), []);
+
+  // Define default plan and selected plan outside of the render return
+  let default_plan = '';
+  if (!isLoading && Object.keys(eligibility[gateway] || {}).length > 0) {
+    default_plan = Object.keys(eligibility[gateway])[0];
+  }
+  const [selectedFeePlan, setSelectedFeePlan] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(default_plan);
+  const plan = !isLoading ? (_eligibility$gateway$ = eligibility[gateway]?.[selectedFeePlan]) !== null && _eligibility$gateway$ !== void 0 ? _eligibility$gateway$ : eligibility[gateway]?.[default_plan] : null;
+
+  // Always define useEffect, regardless of `isLoading`
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (isLoading || !plan) return; // Skip if still loading or no plan
+
+    const unsubscribe = onPaymentSetup(() => {
+      const nonceKey = `alma_checkout_nonce${settings.gateway_name}`;
+      const paymentMethodData = {
+        [nonceKey]: `${settings.nonce_value}`,
+        alma_fee_plan: plan.planKey,
+        payment_method: settings.gateway_name
+      };
+      return {
+        type: emitResponse.responseTypes.SUCCESS,
+        meta: {
+          paymentMethodData
+        }
+      };
+    });
+
+    // Cleanup when component unmounts
+    return () => {
+      unsubscribe();
+    };
+  }, [eligibility, onPaymentSetup, selectedFeePlan, plan, isLoading]);
+  return isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {}) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_alma_blocks_component_tsx__WEBPACK_IMPORTED_MODULE_2__.AlmaBlocks, {
+    hasInPage: settings.is_in_page,
+    isPayNow: isPayNow,
+    totalPrice: eligibilityCartTotal,
+    settings: settings,
+    selectedFeePlan: plan.planKey,
+    setSelectedFeePlan: setSelectedFeePlan,
+    plans: eligibility[gateway]
+  });
+};
+
+/***/ }),
+
+/***/ "./src/alma-checkout-block/components/DisplayAlmaInPageBlocks.js":
+/*!***********************************************************************!*\
+  !*** ./src/alma-checkout-block/components/DisplayAlmaInPageBlocks.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DisplayAlmaInPageBlocks: () => (/* binding */ DisplayAlmaInPageBlocks)
+/* harmony export */ });
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _alma_blocks_component_tsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./alma-blocks-component.tsx */ "./src/alma-checkout-block/components/alma-blocks-component.tsx");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__);
+
+
+
+
+const DisplayAlmaInPageBlocks = props => {
+  var _eligibility$gateway$;
+  const {
+    settings,
+    gateway,
+    store_key,
+    setInPage,
+    isPayNow
+  } = props;
+  const {
+    CART_STORE_KEY
+  } = window.wc.wcBlocksData;
+  const {
+    cartTotal
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.useSelect)(select => ({
+    cartTotal: select(CART_STORE_KEY).getCartTotals()
+  }), []);
+  const {
+    eligibility,
+    eligibilityCartTotal,
+    isLoading
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.useSelect)(select => ({
+    eligibility: select(store_key).getAlmaEligibility(),
+    eligibilityCartTotal: select(store_key).getCartTotal(),
+    isLoading: select(store_key).isLoading()
+  }), []);
+
+  // Init default plan
+  let default_plan = '';
+  if (!isLoading && Object.keys(eligibility[gateway]).length > 0) {
+    // default plan is the first plan
+    default_plan = Object.keys(eligibility[gateway])[0];
+  }
+  const [selectedFeePlan, setSelectedFeePlan] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(default_plan);
+  const plan = !isLoading ? (_eligibility$gateway$ = eligibility[gateway]?.[selectedFeePlan]) !== null && _eligibility$gateway$ !== void 0 ? _eligibility$gateway$ : eligibility[gateway]?.[default_plan] : null;
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    // Transfer the selected fee plan to the alma redux store
+    (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.dispatch)(store_key).setSelectedFeePlan(selectedFeePlan);
+  }, [selectedFeePlan]);
+  let inPage = undefined;
+  function initializeInpage(settingsInPage, total_price) {
+    if (inPage !== undefined && document.getElementById('alma-embedded-iframe') !== null) {
+      inPage.unmount();
+    }
+    inPage = Alma.InPage.initialize({
+      merchantId: settingsInPage.merchant_id,
+      amountInCents: total_price * 100,
+      installmentsCount: plan.installmentsCount,
+      selector: "#alma-inpage-alma_in_page",
+      deferredDays: plan.deferredDays,
+      deferredMonths: plan.deferredMonths,
+      environment: settingsInPage.environment,
+      locale: settingsInPage.locale
+    });
+    setInPage(inPage);
+  }
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (!isLoading && plan) {
+      setSelectedFeePlan(plan.planKey);
+      initializeInpage(settings, eligibilityCartTotal);
+    }
+  }, [selectedFeePlan, cartTotal, isLoading]);
+  const displayInstallments = isPayNow ? 'none' : 'block';
+  return isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {}) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_alma_blocks_component_tsx__WEBPACK_IMPORTED_MODULE_2__.AlmaBlocks, {
+      hasInPage: settings.is_in_page,
+      isPayNow: isPayNow,
+      totalPrice: eligibilityCartTotal,
+      settings: settings,
+      selectedFeePlan: plan.planKey,
+      setSelectedFeePlan: setSelectedFeePlan,
+      plans: eligibility[gateway]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      id: "alma-inpage-alma_in_page",
+      style: {
+        display: displayInstallments
+      }
+    })]
+  });
+};
+
+/***/ }),
+
+/***/ "./src/alma-checkout-block/components/Installments/Installment.tsx":
+/*!*************************************************************************!*\
+  !*** ./src/alma-checkout-block/components/Installments/Installment.tsx ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Installment: () => (/* binding */ Installment)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/src/components/message.js");
+/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+
+const Installment = ({
+  installment: {
+    localized_due_date
+  },
+  totalAmountInEuros,
+  firstInstallment
+}) => {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()("installmentContent", {
+      firstInstallmentContent: firstInstallment
+    }),
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()("bullet", {
+        firstBullet: firstInstallment
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+      className: "installment",
+      "data-testid": "installment",
+      children: [firstInstallment ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_intl__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        id: "installments.today",
+        defaultMessage: localized_due_date.charAt(0).toUpperCase() + localized_due_date.slice(1)
+      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_intl__WEBPACK_IMPORTED_MODULE_4__.FormattedDate, {
+        value: localized_due_date,
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_intl__WEBPACK_IMPORTED_MODULE_4__.FormattedNumber, {
+          value: totalAmountInEuros,
+          style: "currency",
+          currency: "EUR"
+        })
+      })]
+    })]
+  });
+};
+
+/***/ }),
+
+/***/ "./src/alma-checkout-block/components/Installments/Installments.css":
+/*!**************************************************************************!*\
+  !*** ./src/alma-checkout-block/components/Installments/Installments.css ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./src/alma-checkout-block/components/Installments/Installments.tsx":
+/*!**************************************************************************!*\
+  !*** ./src/alma-checkout-block/components/Installments/Installments.tsx ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Installments: () => (/* binding */ Installments)
+/* harmony export */ });
+/* harmony import */ var _alma_react_components__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @alma/react-components */ "./node_modules/@alma/react-components/dist/lib.es.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _InstallmentsContent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InstallmentsContent */ "./src/alma-checkout-block/components/Installments/InstallmentsContent.tsx");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__);
+
+
+
+
+const Installments = ({
+  feePlan,
+  amount
+}) => {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_alma_react_components__WEBPACK_IMPORTED_MODULE_0__.CardTemplate, {
+    "data-testid": "cardInstallments",
+    padding: "sm",
+    header: null,
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_InstallmentsContent__WEBPACK_IMPORTED_MODULE_2__.InstallmentsContent, {
+      feePlan: feePlan,
+      amount: amount
+    })
+  });
+};
+
+/***/ }),
+
+/***/ "./src/alma-checkout-block/components/Installments/InstallmentsContent.tsx":
+/*!*********************************************************************************!*\
+  !*** ./src/alma-checkout-block/components/Installments/InstallmentsContent.tsx ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   InstallmentsContent: () => (/* binding */ InstallmentsContent)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Installment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Installment */ "./src/alma-checkout-block/components/Installments/Installment.tsx");
+/* harmony import */ var _alma_react_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @alma/react-components */ "./node_modules/@alma/react-components/dist/lib.es.js");
+/* harmony import */ var _InstallmentsTotal_InstallmentsTotal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./InstallmentsTotal/InstallmentsTotal */ "./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotal.tsx");
+/* harmony import */ var _InstallmentsTotal_InstallmentsTotalFees__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./InstallmentsTotal/InstallmentsTotalFees */ "./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotalFees.tsx");
+/* harmony import */ var _Installments_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Installments.css */ "./src/alma-checkout-block/components/Installments/Installments.css");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__);
+
+
+
+
+
+
+
+const InstallmentsContent = ({
+  feePlan,
+  amount
+}) => {
+  if (!feePlan.paymentPlan) {
+    return null;
+  }
+  const customerFees = feePlan.paymentPlan[0].customer_fee;
+  const centsToEuros = cents => {
+    return cents / 100;
+  };
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+      className: "separator"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+      className: "installments",
+      children: feePlan.paymentPlan.map((installment, index) => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Installment__WEBPACK_IMPORTED_MODULE_1__.Installment, {
+        installment: installment,
+        totalAmountInEuros: centsToEuros(installment.total_amount),
+        firstInstallment: 0 === index
+      }, index))
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+      className: "footerCard",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(_alma_react_components__WEBPACK_IMPORTED_MODULE_2__.CardFooter, {
+        className: "footer",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_InstallmentsTotal_InstallmentsTotal__WEBPACK_IMPORTED_MODULE_3__.InstallmentsTotal, {
+          totalAmount: amount,
+          customerFees: customerFees
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_InstallmentsTotal_InstallmentsTotalFees__WEBPACK_IMPORTED_MODULE_4__.InstallmentsTotalFees, {
+          customerFees: customerFees
+        })]
+      })
+    })]
+  });
+};
+
+/***/ }),
+
+/***/ "./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotal.css":
+/*!*************************************************************************************************!*\
+  !*** ./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotal.css ***!
+  \*************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotal.tsx":
+/*!*************************************************************************************************!*\
+  !*** ./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotal.tsx ***!
+  \*************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   InstallmentsTotal: () => (/* binding */ InstallmentsTotal)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/index.js");
+/* harmony import */ var _InstallmentsTotal_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./InstallmentsTotal.css */ "./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotal.css");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__);
+
+
+
+
+
+const InstallmentsTotal = ({
+  totalAmount,
+  customerFees
+}) => {
+  const totalAmountIncludingFees = totalAmount + customerFees / 100;
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+    className: "total",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Total TTC', 'alma-gateway-for-woocommerce')
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_intl__WEBPACK_IMPORTED_MODULE_4__.FormattedNumber, {
+        value: totalAmountIncludingFees,
+        style: "currency",
+        currency: "EUR"
+      })
+    })]
+  });
+};
+
+/***/ }),
+
+/***/ "./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotalFees.tsx":
+/*!*****************************************************************************************************!*\
+  !*** ./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotalFees.tsx ***!
+  \*****************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   InstallmentsTotalFees: () => (/* binding */ InstallmentsTotalFees)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _InstallmentsTotal_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./InstallmentsTotal.css */ "./src/alma-checkout-block/components/Installments/InstallmentsTotal/InstallmentsTotal.css");
+/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/index.js");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__);
+
+
+
+
+
+const InstallmentsTotalFees = ({
+  customerFees
+}) => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+  className: "fees",
+  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+    children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Payment costs', 'alma-gateway-for-woocommerce')
+  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+    className: "feesNumbers",
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_intl__WEBPACK_IMPORTED_MODULE_4__.FormattedNumber, {
+      value: customerFees / 100,
+      style: "currency",
+      currency: "EUR"
+    })
+  })]
+});
+
+/***/ }),
+
+/***/ "./src/alma-checkout-block/components/Label.js":
+/*!*****************************************************!*\
+  !*** ./src/alma-checkout-block/components/Label.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Label: () => (/* binding */ Label)
+/* harmony export */ });
+/* harmony import */ var _alma_react_components__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @alma/react-components */ "./node_modules/@alma/react-components/dist/lib.es.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__);
+
+
+const Label = props => {
+  const {
+    components,
+    title
+  } = props;
+  const {
+    PaymentMethodLabel
+  } = components;
+  const icon = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_alma_react_components__WEBPACK_IMPORTED_MODULE_0__.Logo, {
+    style: {
+      width: 'auto',
+      height: '1em'
+    },
+    logo: "alma-orange"
+  });
+  const text = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+    children: [" ", title, " "]
+  });
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+    className: "paymentMethodLabel",
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(PaymentMethodLabel, {
+      text: text,
+      icon: icon
+    })
+  });
+};
+
+/***/ }),
+
+/***/ "./src/alma-checkout-block/components/alma-blocks-component.tsx":
+/*!**********************************************************************!*\
+  !*** ./src/alma-checkout-block/components/alma-blocks-component.tsx ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   AlmaBlocks: () => (/* binding */ AlmaBlocks)
+/* harmony export */ });
+/* harmony import */ var _alma_react_components_style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @alma/react-components/style.css */ "./node_modules/@alma/react-components/dist/style.css");
+/* harmony import */ var _alma_react_components_global_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @alma/react-components/global.css */ "./node_modules/@alma/react-components/dist/global.css");
+/* harmony import */ var _alma_checkout_blocks_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../alma-checkout-blocks.css */ "./src/alma-checkout-block/alma-checkout-blocks.css");
+/* harmony import */ var _alma_react_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @alma/react-components */ "./node_modules/@alma/react-components/dist/lib.es.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _Installments_Installments__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Installments/Installments */ "./src/alma-checkout-block/components/Installments/Installments.tsx");
+/* harmony import */ var react_intl__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-intl */ "./node_modules/react-intl/lib/src/components/provider.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__);
+/**
+ * Checkout blocks component.
+ *
+ * @since 5.3.0
+ *
+ * @package Alma_Gateway_For_Woocommerce
+ * @subpackage Alma_Gateway_For_Woocommerce/assets
+ */
+
+
+
+
+
+
+
+
+
+
+const AlmaBlocks = ({
+  settings,
+  selectedFeePlan,
+  setSelectedFeePlan,
+  hasInPage,
+  isPayNow,
+  totalPrice,
+  plans
+}) => {
+  const labels = {};
+  let values = [];
+  Object.keys(plans).forEach(function (key, index) {
+    values.push(key);
+    if (settings.gateway_name === "alma_pay_later" || settings.gateway_name === "alma_in_page_pay_later") {
+      if (plans[key].deferredDays > 0) {
+        labels[key] = "D+" + plans[key].deferredDays;
+      } else if (plans[key].deferredMonths > 0) {
+        labels[key] = "M+" + plans[key].deferredMonths;
+      }
+    } else {
+      labels[key] = plans[key].installmentsCount + "x";
+    }
+  });
+  const handleClick = optionKey => {
+    setSelectedFeePlan(optionKey);
+  };
+  const label = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+    className: "toggleButtonFieldLabel",
+    children: settings.description
+  });
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(react_intl__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    locale: "fr",
+    children: [isPayNow && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+      className: "payNowLabel",
+      children: label
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+      className: "buttonsContainer",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+        className: classnames__WEBPACK_IMPORTED_MODULE_6___default()({
+          payNow: isPayNow
+        }),
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_alma_react_components__WEBPACK_IMPORTED_MODULE_3__.ToggleButtonsField, {
+          className: "toggleButtonField",
+          options: values,
+          optionLabel: key => labels[key],
+          optionKey: key => key,
+          onChange: key => handleClick(key),
+          value: selectedFeePlan,
+          label: label,
+          wide: false,
+          size: "sm",
+          error: ""
+        })
+      })
+    }), !hasInPage && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+      className: "alma-card-installments",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Installments_Installments__WEBPACK_IMPORTED_MODULE_5__.Installments, {
+        feePlan: plans[selectedFeePlan],
+        amount: totalPrice
+      })
+    })]
+  });
+};
+
+/***/ }),
+
+/***/ "./src/alma-checkout-block/hooks/fetchAlmaEligibility.js":
+/*!***************************************************************!*\
+  !*** ./src/alma-checkout-block/hooks/fetchAlmaEligibility.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   fetchAlmaEligibility: () => (/* binding */ fetchAlmaEligibility)
+/* harmony export */ });
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_0__);
+
+
+/**
+ * @param storeKey
+ * @param url
+ * @returns {Promise<void>}
+ */
+const fetchAlmaEligibility = async (storeKey, url) => {
+  (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.dispatch)(storeKey).setLoading(true);
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    });
+    const data = await response.json();
+    if (data.success) {
+      (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.dispatch)(storeKey).setAlmaEligibility(data);
+    }
+  } catch (error) {
+    console.error('Erreur lors de l’appel API :', error);
+  } finally {
+    (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.dispatch)(storeKey).setLoading(false);
+  }
+};
+
+/***/ }),
+
+/***/ "./src/stores/alma-eligibility-store.js":
+/*!**********************************************!*\
+  !*** ./src/stores/alma-eligibility-store.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   store_key: () => (/* binding */ store_key)
+/* harmony export */ });
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_0__);
+
+const store_key = 'alma/alma-store';
+const DEFAULT_STATE = {
+  almaEligibility: {},
+  selectedFeePlan: null,
+  isLoading: false
+};
+const actions = {
+  setAlmaEligibility(data) {
+    return {
+      type: 'SET_ALMA_ELIGIBILITY',
+      payload: data
+    };
+  },
+  setSelectedFeePlan(plan) {
+    return {
+      type: 'SET_SELECTED_FEE_PLAN',
+      payload: plan
+    };
+  },
+  setLoading(isLoading) {
+    return {
+      type: 'SET_LOADING',
+      payload: isLoading
+    };
+  }
+};
+function reducer(state = DEFAULT_STATE, action) {
+  switch (action.type) {
+    case 'SET_ALMA_ELIGIBILITY':
+      return {
+        ...state,
+        almaEligibility: action.payload
+      };
+    case 'SET_SELECTED_FEE_PLAN':
+      return {
+        ...state,
+        selectedFeePlan: action.payload
+      };
+    case 'SET_LOADING':
+      return {
+        ...state,
+        isLoading: action.payload
+      };
+    default:
+      return state;
+  }
+}
+const selectors = {
+  getAlmaEligibility(state) {
+    return state.almaEligibility.eligibility;
+  },
+  getSelectedFeePlan(state) {
+    return state.selectedFeePlan;
+  },
+  isLoading(state) {
+    return state.isLoading;
+  },
+  getCartTotal(state) {
+    return state.almaEligibility.cart_total;
+  }
+};
+(0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.registerStore)('alma/alma-store', {
+  reducer,
+  actions,
+  selectors
+});
+
+/***/ }),
+
+/***/ "@wordpress/data":
+/*!******************************!*\
+  !*** external ["wp","data"] ***!
+  \******************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = window["wp"]["data"];
+
+/***/ }),
+
+/***/ "@wordpress/element":
+/*!*********************************!*\
+  !*** external ["wp","element"] ***!
+  \*********************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = window["wp"]["element"];
+
+/***/ }),
+
+/***/ "@wordpress/i18n":
+/*!******************************!*\
+  !*** external ["wp","i18n"] ***!
+  \******************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = window["wp"]["i18n"];
+
+/***/ }),
+
+/***/ "react":
+/*!************************!*\
+  !*** external "React" ***!
+  \************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = window["React"];
+
+/***/ }),
+
+/***/ "react-dom":
+/*!***************************!*\
+  !*** external "ReactDOM" ***!
+  \***************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = window["ReactDOM"];
+
+/***/ }),
+
+/***/ "react/jsx-runtime":
+/*!**********************************!*\
+  !*** external "ReactJSXRuntime" ***!
+  \**********************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = window["ReactJSXRuntime"];
 
 /***/ })
 

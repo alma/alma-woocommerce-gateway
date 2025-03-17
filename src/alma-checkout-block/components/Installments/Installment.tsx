@@ -5,27 +5,26 @@ import classNames from "classnames";
 type Props = {
   installment: any;
   totalAmountInEuros: number;
+  firstInstallment: boolean;
 };
 
 export const Installment: React.FC<Props> = ({
-  installment: { due_date, localized_due_date }, totalAmountInEuros
+  installment: { localized_due_date }, totalAmountInEuros, firstInstallment
 }: Props) => {
-  const date = new Date(due_date * 1000);
-  const isToday = localized_due_date === "today";
 
   return (
     <div
       className={classNames("installmentContent", {
-        firstInstallmentContent: isToday,
+        firstInstallmentContent: firstInstallment,
       })}
     >
-      <div className={classNames("bullet", { firstBullet: isToday })} />
+      <div className={classNames("bullet", { firstBullet: firstInstallment })} />
       <div className={"installment"} data-testid="installment">
-        {isToday ? (
-          <FormattedMessage id="installments.today" defaultMessage="Today" />
+        {firstInstallment ? (
+          <FormattedMessage id="installments.today" defaultMessage={localized_due_date.charAt(0).toUpperCase() + localized_due_date.slice(1)} />
         ) : (
           <FormattedDate
-            value={date}
+            value={localized_due_date}
             day="numeric"
             month="long"
             year="numeric"

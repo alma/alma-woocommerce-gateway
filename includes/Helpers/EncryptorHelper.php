@@ -120,4 +120,3 @@ class EncryptorHelper {
 		throw new RequirementsException( 'The constant NONCE_SALT must to be defined in wp-config.php' );
 	}
 }
-
