@@ -3,9 +3,10 @@
 Contributors: almapayments, olance, francois-gomis, clairealma
 Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell, woo commerce, alma, monthly payments, split payments
 Requires at least: 4.4
-Tested up to: 6.3
+Tested up to Wordpress: 6.7.1
+Tested up to Woocommerce: 9.7.1
 Requires PHP: 5.6
-Stable tag: 5.11.0
+Stable tag: 5.12.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +51,22 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+## v5.12.0 - 2025-03-14
+
+### Changes
+
+### 🐛 Bug Fixes
+
+- Fix: event listener blocks checkout (#337)
+- Fix: get_terms function to be compatible with Wordpress 4.4 (#333)
+- Fix: fix and improve linter on woocommerce (#331)
+- Fix: checkout blocks get cart total price (#329)
+- Fix: pre commit (#325)
+
+#### Contributors
+
+@joyet-simon, @webaaz and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
 
 ## v5.11.0 - 2025-02-18
 
