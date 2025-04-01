@@ -62,9 +62,9 @@ jobs:
       # We are using only the latest supported version as a first step
       matrix:
         include:
-          - wc_version: "8.2.2"
-            wp_version: "6.4.1"
-            php_version: "7.4"
+          - wc_version: "9.6.2"
+            wp_version: "6.7.2"
+            php_version: "8.1"
 
     env:
       PHP_VERSION: ${{ matrix.php_version }}
