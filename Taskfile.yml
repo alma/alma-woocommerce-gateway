@@ -1,20 +1,20 @@
 version: 3
 
 env:
-  PHP_VERSION: '{{ .PHP_VERSION | default "7.4" }}'
-  WC_VERSION: '{{ .WC_VERSION | default "8.2.2" }}'
-  WP_VERSION: '{{ .WP_VERSION | default "6.4.1" }}'
+  PHP_VERSION: '{{ .PHP_VERSION | default "8.1" }}'
+  WC_VERSION: '{{ .WC_VERSION | default "9.6.2" }}'
+  WP_VERSION: '{{ .WP_VERSION | default "6.7.2" }}'
   REPOSITORY: alma-woocommerce-gateway
 
 tasks:
 
   build:test:
-    desc: Build test container
+    desc: Build test container (PHP 8.x)
     cmds:
       - docker compose build test
 
   build:php5-6:
-    desc: Build test container
+    desc: Build test container (PHP 5.6)
     cmds:
       - docker compose build --build-arg UID="$(id -u)" php5-6
 
