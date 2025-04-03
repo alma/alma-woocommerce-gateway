@@ -16,3 +16,7 @@ package-lock.json
 .task/
 /build/*/*.map
 /.subversion/*
+.DS_Store
+.composer
+src/.composer
+src/.subversion
