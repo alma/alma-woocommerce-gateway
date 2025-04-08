@@ -28,6 +28,7 @@ use Alma\Woocommerce\Gateways\Standard\PayNowGateway;
 use Alma\Woocommerce\Gateways\Standard\StandardGateway;
 use Alma\Woocommerce\Helpers\MigrationHelper;
 use Alma\Woocommerce\Helpers\PluginHelper;
+use Alma\Woocommerce\Services\AlmaBusinessEventService;
 use Exception;
 
 /**
@@ -81,6 +82,11 @@ class AlmaPlugin {
 	private $blocks_data_service;
 
 	/**
+	 * @var AlmaBusinessEventService
+	 */
+	private $business_event_service;
+
+	/**
 	 * Protected constructor to prevent creating a new instance of the
 	 * *Singleton* via the `new` operator from outside of this class.
 	 */
@@ -92,6 +98,7 @@ class AlmaPlugin {
 		$this->version_factory  = new VersionFactory();
 
 		$this->blocks_data_service = new BlocksDataService();
+		$this->business_event_service = new AlmaBusinessEventService($this->logger);
 
 		try {
 			$migration_success = $this->migration_helper->update();
@@ -137,6 +144,8 @@ class AlmaPlugin {
 		$this->plugin_helper->add_shortcodes_and_scripts();
 		$this->plugin_helper->add_actions();
 		$this->blocks_data_service->init_hooks();
+		$this->business_event_service->init_order_confirmed_hook();
+		$this->business_event_service->init_cart_initiated_hook();
 	}
 
 
