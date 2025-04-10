@@ -34,6 +34,7 @@ use Alma\Woocommerce\Helpers\PHPHelper;
 use Alma\Woocommerce\Helpers\ProductHelper;
 use Alma\Woocommerce\Helpers\TemplateLoaderHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
+use Alma\Woocommerce\Services\AlmaBusinessEventService;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -248,6 +249,19 @@ trait BuilderTrait {
 	}
 
 	/**
+	 * @param $alma_business_event_service
+	 *
+	 * @return AlmaBusinessEventService|mixed
+	 */
+	public function get_alma_business_event_service( $alma_business_event_service = null ) {
+		if ( $alma_business_event_service ) {
+			return $alma_business_event_service;
+		}
+
+		return new AlmaBusinessEventService();
+	}
+
+	/**
 	 *  PHPFactory.
 	 *
 	 * @param PHPFactory $php_factory The PHP factory.
@@ -384,7 +398,8 @@ trait BuilderTrait {
 			$this->get_cart_factory(),
 			$this->get_alma_settings(),
 			$this->get_alma_logger(),
-			$this->get_customer_helper()
+			$this->get_customer_helper(),
+			$this->get_alma_business_event_service()
 		);
 	}
 
