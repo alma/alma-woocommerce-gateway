@@ -2,6 +2,7 @@
 
 namespace Alma\Woocommerce\Services;
 
+use Alma\PrestaShop\Helpers\ConfigurationHelper;
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\Exceptions\AlmaBusinessEventException;
 use Alma\Woocommerce\Factories\VersionFactory;
@@ -42,9 +43,7 @@ class AlmaBusinessEventService {
 	 * @throws AlmaBusinessEventException
 	 */
 	public function on_cart_initiated( $cart_id, $product_id, $request_quantity, $variation_id, $variation, $cart_item_data ) {
-//		if (WC()->cart->is_empty()) {
-//			return;
-//		}
+
 		//  Get cart id on session
 		$alma_cart_id = WC()->session->get( self::ALMA_CART_ID, null );
 
@@ -55,6 +54,14 @@ class AlmaBusinessEventService {
 		}
 	}
 
+	/**
+	 * @param string $orderId
+	 * @param $from
+	 * @param $to
+	 * @param \WC_Order $order
+	 *
+	 * @return void
+	 */
 	public function on_order_status_changed($orderId, $from, $to, $order) {
 		global $wpdb;
 		if (WC()->cart && $from == 'pending' && in_array($to, array_merge(wc_get_is_paid_statuses(), ['on-hold'])) && $order->get_cart_hash() == WC()->cart->get_cart_hash()) {
@@ -62,14 +69,17 @@ class AlmaBusinessEventService {
 			if (empty($cart_id)) {
 				return;
 			}
+
 			$wpdb->update(
 				$wpdb->prefix . self::ALMA_BUSINESS_DATA,
 				[
-					'order_id' => $orderId
+					'order_id' => $orderId,
+					'payment_id' => $order->get_transaction_id()
 				],
 				[ 'cart_id' => $cart_id ],
 				[
-					'order_id' => '%d'
+					'order_id' => '%d',
+					'payment_id' => '%s'
 				],
 				[ 'cart_id' => '%d' ]
 			);
@@ -143,4 +153,47 @@ class AlmaBusinessEventService {
 
 		return $id;
 	}
+
+	/**
+	 * @param $eligibility
+	 *
+	 * @return void
+	 */
+	public function save_eligibility($eligibility) {
+		global $wpdb;
+		$cart_id = WC()->session->get( self::ALMA_CART_ID, null );
+		if (empty($cart_id)) {
+			return;
+		}
+		$isEligible = 0;
+		$planKeys = [];
+		/*
+		 * @var \Alma\Woocommerce\Eligibility $plan
+		 */
+		foreach ($eligibility as $planKey => $plan) {
+			if ($plan->isEligible) {
+				$planKeys[] = $planKey;
+			}
+		}
+		$planKeysWithoutPayNow = array_filter($planKeys, function ($key) {
+			return $key !== 'general_1_0_0';
+		});
+
+		if (count($planKeysWithoutPayNow) > 0) {
+			$isEligible = 1;
+		}
+
+		$wpdb->update(
+			$wpdb->prefix . self::ALMA_BUSINESS_DATA,
+			[
+				'is_bnpl_eligible' => $isEligible
+			],
+			[ 'cart_id' => $cart_id ],
+			[
+				'is_bnpl_eligible' => '%d'
+			],
+			[ 'cart_id' => '%d' ]
+		);
+	}
+
 }
