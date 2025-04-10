@@ -118,6 +118,7 @@ add_action(
 	'init',
 	function () {
 		register_block_type_from_metadata( __DIR__ . '/build/alma-widget-block' );
+		new Alma\Woocommerce\Services\AlmaBusinessEventService(); // NO SONAR
 	}
 );
 

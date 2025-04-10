@@ -144,8 +144,6 @@ class AlmaPlugin {
 		$this->plugin_helper->add_shortcodes_and_scripts();
 		$this->plugin_helper->add_actions();
 		$this->blocks_data_service->init_hooks();
-		$this->business_event_service->init_order_confirmed_hook();
-		$this->business_event_service->init_cart_initiated_hook();
 	}
 
 
