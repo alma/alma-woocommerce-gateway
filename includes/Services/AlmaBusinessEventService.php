@@ -70,6 +70,7 @@ class AlmaBusinessEventService {
 			WC()->session->set( self::ALMA_CART_ID, $alma_cart_id );
 			try {
 				$cart_initiated_business_event = new CartInitiatedBusinessEvent( $alma_cart_id );
+				$this->logger->info('cart initiated', [$cart_initiated_business_event]);
 				$this->alma_settings->get_alma_client();
 				$this->alma_settings->alma_client->merchants->sendCartInitiatedBusinessEvent( $cart_initiated_business_event );
 			} catch ( ParametersException $e ) {
@@ -87,34 +88,54 @@ class AlmaBusinessEventService {
 	}
 
 	/**
-	 * @param string $orderId
-	 * @param $from
-	 * @param $to
+	 * @param           $order_id
+	 * @param           $from
+	 * @param           $to
 	 * @param \WC_Order $order
 	 *
 	 * @return void
 	 */
-	public function on_order_status_changed($orderId, $from, $to, $order) {
+	public function on_order_status_changed($order_id, $from, $to, $order) {
 		global $wpdb;
-		if (WC()->cart && $from == 'pending' && in_array($to, array_merge(wc_get_is_paid_statuses(), ['on-hold'])) && $order->get_cart_hash() == WC()->cart->get_cart_hash()) {
+		$alma_cart_id = WC()->session->get( self::ALMA_CART_ID, null );
+		$this->logger->info('alma_cart_id', [$alma_cart_id]);
+		$this->logger->info('order info', [
+			'from' => $from,
+			'status' => in_array( $to, array_merge( wc_get_is_paid_statuses(), [ 'on-hold' ] ) ),
+			'$to' => $to,
+			'get_cart_hash' => $order->get_cart_hash(),
+			'WC_get_cart_hash' => WC()->cart->get_cart_hash(),
+			'order_id' => $order_id,
+			'order_get_id' => $order->get_id(),
+		]);
+
+		//  Check if cart id is valid on database
+		if ( empty( $alma_cart_id ) || ! $this->is_cart_valid( $alma_cart_id ) ) {
+			return;
+		}
+
+		if ( WC()->cart && $from == 'pending' && in_array( $to, array_merge( wc_get_is_paid_statuses(), [ 'on-hold' ] ) ) && $order->get_cart_hash() == WC()->cart->get_cart_hash() ) {
 			$cart_id = WC()->session->get( self::ALMA_CART_ID, null );
-			if (empty($cart_id)) {
+			if ( empty( $cart_id ) ) {
 				return;
 			}
 
 			$is_pay_now = false;
-			$is_bnpl = false;
+			$is_bnpl    = false;
 			$payment_id = null;
-			if (strpos($order->get_payment_method(), 'alma') !== false) {
-				$is_pay_now = in_array($order->get_payment_method(), [InPagePayNowGateway::GATEWAY_ID, PayNowGateway::GATEWAY_ID]);
-				$is_bnpl = !$is_pay_now;
+			if ( strpos( $order->get_payment_method(), 'alma' ) !== false ) {
+				$is_pay_now = in_array( $order->get_payment_method(), [
+					InPagePayNowGateway::GATEWAY_ID,
+					PayNowGateway::GATEWAY_ID
+				] );
+				$is_bnpl    = ! $is_pay_now;
 				$payment_id = $order->get_transaction_id();
 			}
 
 			$wpdb->update(
 				$wpdb->prefix . self::ALMA_BUSINESS_DATA,
 				[
-					'order_id' => $orderId
+					'order_id' => $order_id
 				],
 				[ 'cart_id' => $cart_id ],
 				[
@@ -123,29 +144,37 @@ class AlmaBusinessEventService {
 				[ 'cart_id' => '%d' ]
 			);
 
-			$is_bnpl_eligible = $wpdb->get_row( $wpdb->prepare('SELECT is_bnpl_eligible FROM '.$wpdb->prefix . self::ALMA_BUSINESS_DATA . ' WHERE cart_id=%d', $cart_id) );
+			$is_bnpl_eligible = $wpdb->get_row( $wpdb->prepare( 'SELECT is_bnpl_eligible FROM ' . $wpdb->prefix . self::ALMA_BUSINESS_DATA . ' WHERE cart_id=%d', $cart_id ) );
+			$this->logger->info( '$order_confirmed_business_event', [
+				'is_pay_now' => $is_pay_now,
+				'is_bnpl' => $is_bnpl,
+				'is_bnpl_eligible' => (bool) $is_bnpl_eligible,
+				'order_id' => (string) $order_id,
+				'cart_id' => $cart_id,
+				'payment_id' => $payment_id,
+			] );
 
 			try {
 				$order_confirmed_business_event = new OrderConfirmedBusinessEvent(
 					$is_pay_now,
 					$is_bnpl,
 					(bool) $is_bnpl_eligible,
-					$orderId,
+					(string) $order_id,
 					$cart_id,
 					$payment_id
 				);
 				$this->alma_settings->get_alma_client();
 				$this->alma_settings->alma_client->merchants->sendOrderConfirmedBusinessEvent( $order_confirmed_business_event );
 			} catch ( ParametersException $e ) {
-				$this->logger->warning( '[Alma] Wrong Parameter Order Confirmed Business event', [$e->getMessage()] );
+				$this->logger->warning( '[Alma] Wrong Parameter Order Confirmed Business event', [ $e->getMessage() ] );
 			} catch ( RequestException $e ) {
-				$this->logger->warning( '[Alma] Order Confirmed Business event not sent', [$e->getMessage()] );
+				$this->logger->warning( '[Alma] Order Confirmed Business event not sent', [ $e->getMessage() ] );
 			} catch ( DependenciesError $e ) {
-				$this->logger->warning( '[Alma] Alma Client DependenciesError', [$e->getMessage()] );
+				$this->logger->warning( '[Alma] Alma Client DependenciesError', [ $e->getMessage() ] );
 			} catch ( ParamsError $e ) {
-				$this->logger->warning( '[Alma] Alma Client ParamsError', [$e->getMessage()] );
+				$this->logger->warning( '[Alma] Alma Client ParamsError', [ $e->getMessage() ] );
 			} catch ( AlmaException $e ) {
-				$this->logger->warning( '[Alma] Alma Client AlmaException', [$e->getMessage()] );
+				$this->logger->warning( '[Alma] Alma Client AlmaException', [ $e->getMessage() ] );
 			}
 
 		}

@@ -28,7 +28,6 @@ use Alma\Woocommerce\Gateways\Standard\PayNowGateway;
 use Alma\Woocommerce\Gateways\Standard\StandardGateway;
 use Alma\Woocommerce\Helpers\MigrationHelper;
 use Alma\Woocommerce\Helpers\PluginHelper;
-use Alma\Woocommerce\Services\AlmaBusinessEventService;
 use Exception;
 
 /**
@@ -81,10 +80,6 @@ class AlmaPlugin {
 	 */
 	private $blocks_data_service;
 
-	/**
-	 * @var AlmaBusinessEventService
-	 */
-	private $business_event_service;
 
 	/**
 	 * Protected constructor to prevent creating a new instance of the
@@ -98,7 +93,6 @@ class AlmaPlugin {
 		$this->version_factory  = new VersionFactory();
 
 		$this->blocks_data_service = new BlocksDataService();
-		$this->business_event_service = new AlmaBusinessEventService($this->logger);
 
 		try {
 			$migration_success = $this->migration_helper->update();
