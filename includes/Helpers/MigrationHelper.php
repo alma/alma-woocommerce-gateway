@@ -50,8 +50,8 @@ class MigrationHelper {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->encryptor_helper = new EncryptorHelper();
-		$this->logger           = new AlmaLogger();
+		$this->encryptor_helper               = new EncryptorHelper();
+		$this->logger                         = new AlmaLogger();
 		$this->alma_business_event_repository = new AlmaBusinessEventRepository();
 	}
 

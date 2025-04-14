@@ -2,10 +2,8 @@
 
 namespace Alma\Woocommerce\Repositories;
 
-class AlmaBusinessEventRepository
-{
-	public function create_alma_business_data_table()
-	{
+class AlmaBusinessEventRepository {
+	public function create_alma_business_data_table() {
 		global $wpdb;
 		$charset_collate = $wpdb->get_charset_collate();
 
