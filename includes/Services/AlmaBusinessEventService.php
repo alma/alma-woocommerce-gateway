@@ -3,7 +3,6 @@
 namespace Alma\Woocommerce\Services;
 
 use Alma\API\DependenciesError;
-use Alma\API\Endpoints\Merchants;
 use Alma\API\Entities\DTO\MerchantBusinessEvent\CartInitiatedBusinessEvent;
 use Alma\API\Entities\DTO\MerchantBusinessEvent\OrderConfirmedBusinessEvent;
 use Alma\API\Exceptions\ParametersException;
@@ -44,8 +43,6 @@ class AlmaBusinessEventService {
 		}
 		$this->logger = $logger;
 		$this->alma_settings = new AlmaSettings();
-		add_action( 'woocommerce_add_to_cart', [$this, 'on_cart_initiated'], 10, 6 );
-		add_action('woocommerce_order_status_changed', [$this, 'on_order_status_changed'], 10, 4);
 	}
 
 	/**
@@ -288,6 +285,14 @@ class AlmaBusinessEventService {
 			],
 			[ 'cart_id' => '%d' ]
 		);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function add_hooks() {
+		add_action( 'woocommerce_add_to_cart', [$this, 'on_cart_initiated'], 10, 6 );
+		add_action('woocommerce_order_status_changed', [$this, 'on_order_status_changed'], 10, 4);
 	}
 
 }
