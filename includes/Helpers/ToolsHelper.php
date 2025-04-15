@@ -202,7 +202,7 @@ class ToolsHelper {
 		$timestamp = round( microtime( true ) * 1000 );
 
 		// Add random component (5 digits)
-		$random = mt_rand( 10000, 99999 ); // NO SONAR
+		$random = mt_rand( 10000, 99999 ); // NOSONAR
 
 		// Combine timestamp + random to ensure uniqueness
 		// Format: TTTTTTTTTTTTTRRRR
