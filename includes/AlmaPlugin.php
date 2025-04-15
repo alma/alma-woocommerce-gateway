@@ -80,6 +80,7 @@ class AlmaPlugin {
 	 */
 	private $blocks_data_service;
 
+
 	/**
 	 * Protected constructor to prevent creating a new instance of the
 	 * *Singleton* via the `new` operator from outside of this class.

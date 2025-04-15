@@ -17,6 +17,7 @@ use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Factories\CartFactory;
 use Alma\Woocommerce\Factories\SessionFactory;
 use Alma\Woocommerce\Factories\VersionFactory;
+use Alma\Woocommerce\Services\AlmaBusinessEventService;
 use Exception;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -85,26 +86,32 @@ class CartHelper {
 	 * @var CustomerHelper
 	 */
 	protected $customer_helper;
+	/**
+	 * @var AlmaBusinessEventService
+	 */
+	protected $alma_business_event_service;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param ToolsHelper    $tools_helper The tool Helper.
-	 * @param SessionFactory $session_factory The session Helper.
-	 * @param VersionFactory $version_factory The version Helper.
-	 * @param CartFactory    $cart_factory The cart Helper.
-	 * @param AlmaSettings   $alma_settings The alma settings.
-	 * @param AlmaLogger     $alma_logger The alma logger.
-	 * @param CustomerHelper $customer_helper The customer helper.
+	 * @param ToolsHelper              $tools_helper The tool Helper.
+	 * @param SessionFactory           $session_factory The session Helper.
+	 * @param VersionFactory           $version_factory The version Helper.
+	 * @param CartFactory              $cart_factory The cart Helper.
+	 * @param AlmaSettings             $alma_settings The alma settings.
+	 * @param AlmaLogger               $alma_logger The alma logger.
+	 * @param CustomerHelper           $customer_helper The customer helper.
+	 * @param AlmaBusinessEventService $alma_business_event_service The business event service.
 	 */
-	public function __construct( $tools_helper, $session_factory, $version_factory, $cart_factory, $alma_settings, $alma_logger, $customer_helper ) {
-		$this->tools_helper    = $tools_helper;
-		$this->session_factory = $session_factory;
-		$this->version_factory = $version_factory;
-		$this->cart_factory    = $cart_factory;
-		$this->alma_settings   = $alma_settings;
-		$this->alma_logger     = $alma_logger;
-		$this->customer_helper = $customer_helper;
+	public function __construct( $tools_helper, $session_factory, $version_factory, $cart_factory, $alma_settings, $alma_logger, $customer_helper, $alma_business_event_service ) {
+		$this->tools_helper                = $tools_helper;
+		$this->session_factory             = $session_factory;
+		$this->version_factory             = $version_factory;
+		$this->cart_factory                = $cart_factory;
+		$this->alma_settings               = $alma_settings;
+		$this->alma_logger                 = $alma_logger;
+		$this->customer_helper             = $customer_helper;
+		$this->alma_business_event_service = $alma_business_event_service;
 	}
 
 	/**
@@ -150,6 +157,7 @@ class CartHelper {
 				$this->alma_settings->get_alma_client();
 				$payload             = $this->get_eligibility_payload_from_cart();
 				$this->eligibilities = $this->alma_settings->alma_client->payments->eligibility( $payload );
+				$this->alma_business_event_service->save_eligibility( $this->eligibilities );
 			} catch ( Exception $error ) {
 				$this->alma_logger->error( $error->getMessage(), $error->getTrace() );
 

@@ -77,7 +77,7 @@ class AlmaLogger extends AbstractLogger {
 			$logger->add( self::LOG_HANDLE, $message );
 		} else {
 			$method = $levels[ $level ];
-			$logger->$method( $message, array( 'source' => self::LOG_HANDLE ) );
+			$logger->$method( $message, array_merge( array( 'source' => self::LOG_HANDLE ), $context ) );
 		}
 	}
 
