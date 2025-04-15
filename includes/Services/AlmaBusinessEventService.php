@@ -28,9 +28,14 @@ class AlmaBusinessEventService {
 	 * @var AlmaSettings
 	 */
 	private $alma_settings;
+	/**
+	 * @var string
+	 */
+	private $table_name;
 
 
 	public function __construct( $logger = null ) {
+		global $wpdb;
 		//This feature works only for WooCommerce > 3.6.0
 		$version_factory = new VersionFactory();
 		if ( version_compare( $version_factory->get_version(), '3.6', '<' ) ) {
@@ -41,6 +46,7 @@ class AlmaBusinessEventService {
 		}
 		$this->logger        = $logger;
 		$this->alma_settings = new AlmaSettings();
+		$this->table_name    = esc_sql( $wpdb->prefix . self::ALMA_BUSINESS_DATA );
 	}
 
 	/**
@@ -128,7 +134,7 @@ class AlmaBusinessEventService {
 				array( 'cart_id' => '%d' )
 			);
 
-			$alma_business_data = $wpdb->get_row( $wpdb->prepare( 'SELECT is_bnpl_eligible FROM %i WHERE cart_id=%d', $wpdb->prefix . self::ALMA_BUSINESS_DATA, $cart_id ) );
+			$alma_business_data = $wpdb->get_row( $wpdb->prepare( "SELECT is_bnpl_eligible FROM $this->table_name WHERE cart_id=%d", $cart_id ) );
 
 			try {
 				$order_confirmed_business_event = new OrderConfirmedBusinessEvent(
@@ -221,8 +227,7 @@ class AlmaBusinessEventService {
 	 */
 	private function is_cart_valid( $cart_id ) {
 		global $wpdb;
-		$table_name         = $wpdb->prefix . self::ALMA_BUSINESS_DATA;
-		$alma_business_data = $wpdb->get_row( $wpdb->prepare( 'SELECT order_id FROM %i WHERE cart_id=%d', $table_name, $cart_id ) );
+		$alma_business_data = $wpdb->get_row( $wpdb->prepare( "SELECT order_id FROM $this->table_name WHERE cart_id=%d", $cart_id ) );
 		if ( ! $alma_business_data ) {
 			//  No cart id found
 			return false;
@@ -248,7 +253,7 @@ class AlmaBusinessEventService {
 			$tools_helper_builder = new ToolsHelperBuilder();
 			$tools_helper         = $tools_helper_builder->get_instance();
 			$cart_id              = $tools_helper->generate_unique_bigint();
-			$found_cart_id        = $wpdb->get_col( $wpdb->prepare( 'SELECT cart_id FROM %i WHERE cart_id=%d', $wpdb->prefix . self::ALMA_BUSINESS_DATA, $cart_id ) );
+			$found_cart_id        = $wpdb->get_col( $wpdb->prepare( "SELECT cart_id FROM $this->table_name WHERE cart_id=%d", $cart_id ) );
 		} while ( $found_cart_id );
 
 		$result = $wpdb->insert(
