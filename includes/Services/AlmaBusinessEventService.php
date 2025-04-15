@@ -11,6 +11,7 @@ use Alma\API\Exceptions\RequestException;
 use Alma\API\ParamsError;
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
+use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
 use Alma\Woocommerce\Exceptions\AlmaBusinessEventException;
 use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Factories\VersionFactory;
@@ -246,8 +247,10 @@ class AlmaBusinessEventService {
 		global $wpdb;
 
 		do {
-			$cart_id       = $this->generate_unique_bigint();
-			$found_cart_id = $wpdb->get_col( $wpdb->prepare( 'SELECT cart_id FROM %d WHERE cart_id=%d', $wpdb->prefix . self::ALMA_BUSINESS_DATA, $cart_id ) );
+			$tools_helper_builder = new ToolsHelperBuilder();
+			$this->tools_helper   = $tools_helper_builder->get_instance();
+			$cart_id              = $this->tools_helper->generate_unique_bigint();
+			$found_cart_id        = $wpdb->get_col( $wpdb->prepare( 'SELECT cart_id FROM %d WHERE cart_id=%d', $wpdb->prefix . self::ALMA_BUSINESS_DATA, $cart_id ) );
 		} while ( $found_cart_id );
 
 		$result = $wpdb->insert(
@@ -265,30 +268,5 @@ class AlmaBusinessEventService {
 		}
 
 		return $cart_id;
-	}
-
-	/**
-	 * Generate a unique bigint.
-	 *
-	 * @return string
-	 */
-	private function generate_unique_bigint() {
-		// Get current timestamp (milliseconds)
-		$timestamp = round( microtime( true ) * 1000 );
-
-		// Add random component (5 digits)
-		$random = mt_rand( 10000, 99999 ); // NO SONAR
-
-		// Combine timestamp + random to ensure uniqueness
-		// Format: TTTTTTTTTTTTTRRRR
-		$id = $timestamp . $random;
-
-		// Ensure it fits in BIGINT(20) unsigned max value
-		$max_bigint = '18446744073709551615';
-		if ( strlen( $id ) > strlen( $max_bigint ) ) {
-			$id = substr( $id, 0, strlen( $max_bigint ) );
-		}
-
-		return $id;
 	}
 }
