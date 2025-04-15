@@ -12,7 +12,6 @@ use Alma\API\ParamsError;
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
-use Alma\Woocommerce\Exceptions\AlmaBusinessEventException;
 use Alma\Woocommerce\Exceptions\AlmaException;
 use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Gateways\Inpage\PayNowGateway as InPagePayNowGateway;
@@ -48,7 +47,6 @@ class AlmaBusinessEventService {
 	 * Event launched when a cart is initiated.
 	 *
 	 * @return void
-	 * @throws AlmaBusinessEventException
 	 */
 	public function on_cart_initiated() {
 
@@ -61,7 +59,6 @@ class AlmaBusinessEventService {
 			WC()->session->set( self::ALMA_CART_ID, $alma_cart_id );
 			try {
 				$cart_initiated_business_event = new CartInitiatedBusinessEvent( $alma_cart_id );
-				$this->logger->info( 'cart initiated', array( $cart_initiated_business_event ) );
 				$this->alma_settings->get_alma_client();
 				$this->alma_settings->alma_client->merchants->sendCartInitiatedBusinessEvent( $cart_initiated_business_event );
 			} catch ( ParametersException $e ) {
@@ -131,13 +128,13 @@ class AlmaBusinessEventService {
 				array( 'cart_id' => '%d' )
 			);
 
-			$is_bnpl_eligible = $wpdb->get_row( $wpdb->prepare( 'SELECT is_bnpl_eligible FROM %d WHERE cart_id=%d', $wpdb->prefix . self::ALMA_BUSINESS_DATA, $cart_id ) );
+			$alma_business_data = $wpdb->get_row( $wpdb->prepare( 'SELECT is_bnpl_eligible FROM %i WHERE cart_id=%d', $wpdb->prefix . self::ALMA_BUSINESS_DATA, $cart_id ) );
 
 			try {
 				$order_confirmed_business_event = new OrderConfirmedBusinessEvent(
 					$is_pay_now,
 					$is_bnpl,
-					(bool) $is_bnpl_eligible,
+					(bool) $alma_business_data->is_bnpl_eligible,
 					(string) $order_id,
 					$cart_id,
 					$payment_id
@@ -224,13 +221,14 @@ class AlmaBusinessEventService {
 	 */
 	private function is_cart_valid( $cart_id ) {
 		global $wpdb;
-		$result = $wpdb->get_row( $wpdb->prepare( 'SELECT order_id FROM %d WHERE cart_id=%d', $wpdb->prefix . self::ALMA_BUSINESS_DATA, $cart_id ) );
-		if ( ! $result ) {
+		$table_name         = $wpdb->prefix . self::ALMA_BUSINESS_DATA;
+		$alma_business_data = $wpdb->get_row( $wpdb->prepare( 'SELECT order_id FROM %i WHERE cart_id=%d', $table_name, $cart_id ) );
+		if ( ! $alma_business_data ) {
 			//  No cart id found
 			return false;
 		}
 		//
-		if ( null !== $result->order_id ) {
+		if ( null !== $alma_business_data->order_id ) {
 			// Cart id already converted
 			return false;
 		}
@@ -241,16 +239,16 @@ class AlmaBusinessEventService {
 	/**
 	 * Save cart id in database.
 	 *
-	 * @throws AlmaBusinessEventException
+	 * @return string
 	 */
 	private function save_cart() {
 		global $wpdb;
 
 		do {
 			$tools_helper_builder = new ToolsHelperBuilder();
-			$this->tools_helper   = $tools_helper_builder->get_instance();
-			$cart_id              = $this->tools_helper->generate_unique_bigint();
-			$found_cart_id        = $wpdb->get_col( $wpdb->prepare( 'SELECT cart_id FROM %d WHERE cart_id=%d', $wpdb->prefix . self::ALMA_BUSINESS_DATA, $cart_id ) );
+			$tools_helper         = $tools_helper_builder->get_instance();
+			$cart_id              = $tools_helper->generate_unique_bigint();
+			$found_cart_id        = $wpdb->get_col( $wpdb->prepare( 'SELECT cart_id FROM %i WHERE cart_id=%d', $wpdb->prefix . self::ALMA_BUSINESS_DATA, $cart_id ) );
 		} while ( $found_cart_id );
 
 		$result = $wpdb->insert(
@@ -264,7 +262,7 @@ class AlmaBusinessEventService {
 		);
 
 		if ( ! $result ) {
-			throw new AlmaBusinessEventException( __( 'Cart could not be created', 'alma-gateway-for-woocommerce' ) );
+			$this->logger->warning( '[Alma] Database Insert Error, Cart could not be created', array( $wpdb->last_error ) );
 		}
 
 		return $cart_id;
