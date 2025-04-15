@@ -59,10 +59,7 @@ install_test_suite() {
 
 	download https://downloads.wordpress.org/plugin/woocommerce."${WC_VERSION}".zip $TMPDIR/woocommerce.zip
 	unzip $TMPDIR/woocommerce.zip  -d $WP_TESTS_DIR
-
 }
-
-
 
 install_wp
 install_test_suite

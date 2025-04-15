@@ -94,13 +94,14 @@ class CartHelper {
 	/**
 	 * Constructor.
 	 *
-	 * @param ToolsHelper    $tools_helper The tool Helper.
-	 * @param SessionFactory $session_factory The session Helper.
-	 * @param VersionFactory $version_factory The version Helper.
-	 * @param CartFactory    $cart_factory The cart Helper.
-	 * @param AlmaSettings   $alma_settings The alma settings.
-	 * @param AlmaLogger     $alma_logger The alma logger.
-	 * @param CustomerHelper $customer_helper The customer helper.
+	 * @param ToolsHelper              $tools_helper The tool Helper.
+	 * @param SessionFactory           $session_factory The session Helper.
+	 * @param VersionFactory           $version_factory The version Helper.
+	 * @param CartFactory              $cart_factory The cart Helper.
+	 * @param AlmaSettings             $alma_settings The alma settings.
+	 * @param AlmaLogger               $alma_logger The alma logger.
+	 * @param CustomerHelper           $customer_helper The customer helper.
+	 * @param AlmaBusinessEventService $alma_business_event_service The business event service.
 	 */
 	public function __construct( $tools_helper, $session_factory, $version_factory, $cart_factory, $alma_settings, $alma_logger, $customer_helper, $alma_business_event_service ) {
 		$this->tools_helper                = $tools_helper;

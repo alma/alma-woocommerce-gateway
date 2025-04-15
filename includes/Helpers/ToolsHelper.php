@@ -50,9 +50,9 @@ class ToolsHelper {
 	/**
 	 * Constructor.
 	 *
-	 * @param AlmaLogger      $logger  The logger.
+	 * @param AlmaLogger      $logger The logger.
 	 * @param PriceFactory    $price_factory The price helper.
-	 * @param  CurrencyFactory $currency_factory  The currency helper.
+	 * @param CurrencyFactory $currency_factory The currency helper.
 	 *
 	 * @codeCoverageIgnore
 	 */
@@ -60,6 +60,30 @@ class ToolsHelper {
 		$this->logger           = $logger;
 		$this->price_factory    = $price_factory;
 		$this->currency_factory = $currency_factory;
+	}
+
+	/**
+	 * Converts a string (e.g. 'yes' or 'no') to a bool.
+	 *
+	 * Taken from WooCommerce, to which it was added in version 3.0.0, and we need support for older WC versions.
+	 *
+	 * @param string $string String to convert.
+	 *
+	 * @return bool
+	 */
+	public static function alma_string_to_bool( $string ) {
+		return is_bool( $string ) ? $string : ( 'yes' === strtolower( $string ) || 1 === $string || 'true' === strtolower( $string ) || '1' === $string );
+	}
+
+	/**
+	 * Get webhook action.
+	 *
+	 * @param string $webhook Webhook.
+	 *
+	 * @return string
+	 */
+	public static function action_for_webhook( $webhook ) {
+		return "woocommerce_api_$webhook";
 	}
 
 	/**
@@ -72,7 +96,6 @@ class ToolsHelper {
 	public function is_amount_plan_key( $key ) {
 		return preg_match( ConstantsHelper::AMOUNT_PLAN_KEY_REGEX, $key ) > 0;
 	}
-
 
 	/**
 	 * Converts a float price to its integer cents value, used by the API.
@@ -137,21 +160,6 @@ class ToolsHelper {
 	}
 
 	/**
-	 * Converts a string (e.g. 'yes' or 'no') to a bool.
-	 *
-	 * Taken from WooCommerce, to which it was added in version 3.0.0, and we need support for older WC versions.
-	 *
-	 * @param string $string String to convert.
-	 *
-	 * @return bool
-	 */
-	public static function alma_string_to_bool( $string ) {
-		return is_bool( $string ) ? $string : ( 'yes' === strtolower( $string ) || 1 === $string || 'true' === strtolower( $string ) || '1' === $string );
-	}
-
-
-
-	/**
 	 * Get webhook url
 	 *
 	 * @param string $webhook Webhook.
@@ -160,17 +168,6 @@ class ToolsHelper {
 	 */
 	public function url_for_webhook( $webhook ) {
 		return wc()->api_request_url( $webhook );
-	}
-
-	/**
-	 * Get webhook action.
-	 *
-	 * @param string $webhook Webhook.
-	 *
-	 * @return string
-	 */
-	public static function action_for_webhook( $webhook ) {
-		return "woocommerce_api_$webhook";
 	}
 
 	/**
@@ -188,9 +185,35 @@ class ToolsHelper {
 					'Currency' => $currency,
 				)
 			);
+
 			return false;
 		}
 
 		return true;
+	}
+
+	/**
+	 * Generate a unique bigint.
+	 *
+	 * @return string
+	 */
+	public function generate_unique_bigint() {
+		// Get current timestamp (milliseconds)
+		$timestamp = round( microtime( true ) * 1000 );
+
+		// Add random component (5 digits)
+		$random = mt_rand( 10000, 99999 ); // NO SONAR
+
+		// Combine timestamp + random to ensure uniqueness
+		// Format: TTTTTTTTTTTTTRRRR
+		$id = $timestamp . $random;
+
+		// Ensure it fits in BIGINT(20) unsigned max value
+		$max_bigint = '18446744073709551615';
+		if ( strlen( $id ) > strlen( $max_bigint ) ) {
+			$id = substr( $id, 0, strlen( $max_bigint ) );
+		}
+
+		return $id;
 	}
 }
