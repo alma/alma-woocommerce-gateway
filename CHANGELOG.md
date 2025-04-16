@@ -1,5 +1,22 @@
 # Changelog
 
+## v5.13.0 - 2025-04-16
+
+### Changes
+
+### 🚀 New Features
+
+- Merchant business event (#345)
+- Set in page settings to yes by default (#342)
+
+### 🐛 Bug Fixes
+
+- Global style css in dashboard (#343)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @joyet-simon, @webaaz and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+
 ## v5.12.0 - 2025-03-14
 
 ### Changes
