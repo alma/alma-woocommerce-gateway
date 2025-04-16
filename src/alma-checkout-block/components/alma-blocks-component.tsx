@@ -8,7 +8,6 @@
  */
 
 import "@alma/react-components/style.css";
-import "@alma/react-components/global.css";
 import "../alma-checkout-blocks.css";
 import {ToggleButtonsField} from "@alma/react-components";
 import React from "react";

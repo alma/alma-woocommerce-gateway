@@ -70,7 +70,7 @@ class SettingsHelperTest extends WP_UnitTestCase {
 		'share_of_checkout_enabled'                  => 'no',
 		'debug'                                      => 'yes',
 		'keys_validity'                              => 'no',
-		'display_in_page'                            => 'no',
+		'display_in_page'                            => 'yes',
 		'title_alma_in_page_pnx_plus_4'              => 'Pay with financing',
 		'description_alma_in_page_pnx_plus_4'        => 'Fast and secure payment by credit card'
 	);

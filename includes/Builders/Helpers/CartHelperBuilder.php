@@ -38,7 +38,8 @@ class CartHelperBuilder {
 			$this->get_cart_factory(),
 			$this->get_alma_settings(),
 			$this->get_alma_logger(),
-			$this->get_customer_helper()
+			$this->get_customer_helper(),
+			$this->get_alma_business_event_service()
 		);
 	}
 }

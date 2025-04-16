@@ -15,6 +15,7 @@ use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Exceptions\VersionDeprecated;
 use Alma\Woocommerce\Gateways\Standard\StandardGateway;
+use Alma\Woocommerce\Repositories\AlmaBusinessEventRepository;
 use Exception;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -40,13 +41,18 @@ class MigrationHelper {
 	 * @var AlmaLogger
 	 */
 	protected $logger;
+	/**
+	 * @var AlmaBusinessEventRepository
+	 */
+	protected $alma_business_event_repository;
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->encryptor_helper = new EncryptorHelper();
-		$this->logger           = new AlmaLogger();
+		$this->encryptor_helper               = new EncryptorHelper();
+		$this->logger                         = new AlmaLogger();
+		$this->alma_business_event_repository = new AlmaBusinessEventRepository();
 	}
 
 	/**
@@ -78,6 +84,8 @@ class MigrationHelper {
 
 		update_option( 'alma_version', ALMA_VERSION );
 		delete_option( 'alma_migration_ongoing' );
+
+		$this->alma_business_event_repository->create_alma_business_data_table();
 
 		return true;
 	}

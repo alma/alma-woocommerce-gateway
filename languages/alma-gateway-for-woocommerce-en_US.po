@@ -1,3 +1,5 @@
+# Copyright (C) 2025 Alma
+# This file is distributed under the GNU General Public License v3.0.
 msgid ""
 msgstr ""
 "Project-Id-Version: 77e083b1cd468d7c2202d1ff3d20e024\n"
@@ -7,9 +9,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-03-03T11:41:19+00:00\n"
-"PO-Revision-Date: 2025-03-03 11:43\n"
-"Language: en_US\n"
+"POT-Creation-Date: 2025-04-03T12:55:21+00:00\n"
+"PO-Revision-Date: 2025-04-03 13:00\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: alma-gateway-for-woocommerce\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -18,6 +19,7 @@ msgstr ""
 "X-Crowdin-Language: en\n"
 "X-Crowdin-File: /languages/alma-gateway-for-woocommerce.pot\n"
 "X-Crowdin-File-ID: 3021\n"
+"Language: en_US\n"
 
 #. Plugin Name of the plugin
 #: alma-gateway-for-woocommerce.php
@@ -46,68 +48,68 @@ msgid "https://almapay.com"
 msgstr ""
 
 #. translators: %d: number of installments.
-#: includes/Admin/Builders/FormHtmlBuilder.php:37
+#: includes/Admin/Builders/FormHtmlBuilder.php:39
 #: includes/Admin/Helpers/FormFieldsHelper.php:347
 msgid "→ %d-installment payment"
 msgstr ""
 
 #. translators: %d: number of installments.
-#: includes/Admin/Builders/FormHtmlBuilder.php:42
+#: includes/Admin/Builders/FormHtmlBuilder.php:44
 #: includes/Admin/Helpers/FormFieldsHelper.php:340
 msgid "→ Pay Now"
 msgstr ""
 
 #. translators: %d: number of deferred days.
-#: includes/Admin/Builders/FormHtmlBuilder.php:51
+#: includes/Admin/Builders/FormHtmlBuilder.php:53
 #: includes/Admin/Helpers/FormFieldsHelper.php:357
 msgid "→ D+%d-deferred payment"
 msgstr ""
 
 #. translators: %d: number of deferred months.
-#: includes/Admin/Builders/FormHtmlBuilder.php:56
+#: includes/Admin/Builders/FormHtmlBuilder.php:58
 #: includes/Admin/Helpers/FormFieldsHelper.php:363
 msgid "→ M+%d-deferred payment"
 msgstr ""
 
-#: includes/Admin/Helpers/CheckLegalHelper.php:164
+#: includes/Admin/Helpers/CheckLegalHelper.php:163
 msgid "Impossible to save the settings, please try again later."
 msgstr ""
 
 #. translators: %s: Admin settings url.
-#: includes/Admin/Helpers/CheckLegalHelper.php:213
+#: includes/Admin/Helpers/CheckLegalHelper.php:212
 msgid "The settings have been saved. <a href=\"%s\">Refresh</a> the page when ready."
 msgstr ""
 
-#: includes/Admin/Helpers/CheckLegalHelper.php:242
+#: includes/Admin/Helpers/CheckLegalHelper.php:241
 msgid "By accepting this option, you enable Alma to analyze the usage of your payment methods and get information in order to improve your clients’ experience."
 msgstr ""
 
-#: includes/Admin/Helpers/CheckLegalHelper.php:251
+#: includes/Admin/Helpers/CheckLegalHelper.php:250
 msgid "You can <a href=\"mailto:support@getalma.eu\">opt out and erase your data</a> at any moment."
 msgstr ""
 
-#: includes/Admin/Helpers/CheckLegalHelper.php:259
+#: includes/Admin/Helpers/CheckLegalHelper.php:258
 #: includes/Admin/Helpers/FormFieldsHelper.php:787
 msgid "Know more about collected data"
 msgstr ""
 
-#: includes/Admin/Helpers/CheckLegalHelper.php:263
+#: includes/Admin/Helpers/CheckLegalHelper.php:262
 msgid "total quantity of orders, amounts and currencies"
 msgstr ""
 
-#: includes/Admin/Helpers/CheckLegalHelper.php:264
+#: includes/Admin/Helpers/CheckLegalHelper.php:263
 msgid "payment provider for each order"
 msgstr ""
 
-#: includes/Admin/Helpers/CheckLegalHelper.php:269
+#: includes/Admin/Helpers/CheckLegalHelper.php:268
 msgid "REJECT"
 msgstr ""
 
-#: includes/Admin/Helpers/CheckLegalHelper.php:271
+#: includes/Admin/Helpers/CheckLegalHelper.php:270
 msgid "ACCEPT"
 msgstr ""
 
-#: includes/Admin/Helpers/CheckLegalHelper.php:290
+#: includes/Admin/Helpers/CheckLegalHelper.php:289
 msgid "Increase your performance & get insights !"
 msgstr ""
 
@@ -193,12 +195,12 @@ msgstr ""
 
 #. translators: %s: Alma in page doc URL
 #: includes/Admin/Helpers/FormFieldsHelper.php:232
-msgid "Enable this setting if you want in-page payments (no redirection) for all Alma payment methods."
+msgid "Let your customers pay with Alma in a secure pop-up, without leaving your site."
 msgstr ""
 
 #. translators: %s: Alma in page doc URL
 #: includes/Admin/Helpers/FormFieldsHelper.php:232
-msgid "(Learn more about this feature <a href=\"%s\">here</a>)"
+msgid "<a href=\"%s\" title=\"Learn more\" target=\"_blank\">Learn more</a>."
 msgstr ""
 
 #: includes/Admin/Helpers/FormFieldsHelper.php:249
@@ -501,25 +503,25 @@ msgid "Settings"
 msgstr ""
 
 #. translators: %s: Error message.
-#: includes/AlmaSettings.php:603
+#: includes/AlmaSettings.php:549
 msgid "Alma encountered an error. No alma client found"
 msgstr ""
 
 #. translators: %s: Error message.
-#: includes/AlmaSettings.php:834
+#: includes/AlmaSettings.php:816
 msgid "Alma encountered an error when fetching merchant status, please check your api keys or retry later."
 msgstr ""
 
 #. translators: %s: Error message.
-#: includes/AlmaSettings.php:849
+#: includes/AlmaSettings.php:831
 msgid "Alma encountered an error."
 msgstr ""
 
-#: includes/AlmaSettings.php:873
+#: includes/AlmaSettings.php:855
 msgid "Alma encountered an error when fetching the fee plans."
 msgstr ""
 
-#: includes/Blocks/AlmaBlock.php:188
+#: includes/Blocks/AlmaBlock.php:183
 msgid "Pay With Alma"
 msgstr ""
 
@@ -556,16 +558,16 @@ msgstr ""
 msgid "Error while initializing Alma API client.<br><a href=\"%1$s\">Activate debug mode</a> and <a href=\"%2$s\">check logs</a> for more details."
 msgstr ""
 
-#: includes/Gateways/AlmaPaymentGateway.php:691
-#: includes/Gateways/AlmaPaymentGateway.php:719
+#: includes/Gateways/AlmaPaymentGateway.php:690
+#: includes/Gateways/AlmaPaymentGateway.php:718
 msgid "There was an error processing your payment.<br>Please try again or contact us if the problem persists."
 msgstr ""
 
-#: includes/Gateways/AlmaPaymentGateway.php:773
+#: includes/Gateways/AlmaPaymentGateway.php:772
 msgid "enabled"
 msgstr ""
 
-#: includes/Gateways/AlmaPaymentGateway.php:777
+#: includes/Gateways/AlmaPaymentGateway.php:776
 msgid "disabled"
 msgstr ""
 
@@ -655,54 +657,54 @@ msgid "Alma is almost ready. To get started, <a href=\"%s\">fill in your API key
 msgstr ""
 
 #. translators: %s: #product_id (if any)
-#: includes/Helpers/ShortcodesHelper.php:151
+#: includes/Helpers/ShortcodesHelper.php:150
 msgid "Product%s not found - Not displaying Alma"
 msgstr ""
 
-#: includes/Services/CheckoutService.php:137
-#: includes/Services/CheckoutService.php:151
+#: includes/Services/CheckoutService.php:136
+#: includes/Services/CheckoutService.php:150
 msgid "We were unable to process your order, please try again."
 msgstr ""
 
 #. translators: %s: shop cart url
-#: includes/Services/CheckoutService.php:162
+#: includes/Services/CheckoutService.php:161
 msgid "Sorry, your session has expired. <a href=\"%s\" class=\"wc-backward\">Return to shop</a>"
 msgstr ""
 
-#: includes/Services/CheckoutService.php:171
+#: includes/Services/CheckoutService.php:170
 msgid "Payment in installments via Alma"
 msgstr ""
 
-#: includes/Services/CheckoutService.php:175
+#: includes/Services/CheckoutService.php:174
 msgid "Payment by credit card via Alma"
 msgstr ""
 
-#: includes/Services/CheckoutService.php:178
+#: includes/Services/CheckoutService.php:177
 msgid "Pay Later via Alma"
 msgstr ""
 
-#: includes/Services/CheckoutService.php:181
+#: includes/Services/CheckoutService.php:180
 msgid "Payments in more than 4 installments"
 msgstr ""
 
-#: includes/Services/CheckoutService.php:216
+#: includes/Services/CheckoutService.php:215
 msgid "Unable to create order."
 msgstr ""
 
-#: includes/Services/CheckoutService.php:248
+#: includes/Services/CheckoutService.php:247
 msgid "Please read and accept the terms and conditions to proceed with your order."
 msgstr ""
 
-#: includes/Services/CheckoutService.php:255
+#: includes/Services/CheckoutService.php:254
 msgid "Please enter an address to continue."
 msgstr ""
 
 #. translators: %s: shipping location
-#: includes/Services/CheckoutService.php:258
+#: includes/Services/CheckoutService.php:257
 msgid "Unfortunately <strong>we do not ship %s</strong>. Please enter an alternative shipping address."
 msgstr ""
 
-#: includes/Services/CheckoutService.php:266
+#: includes/Services/CheckoutService.php:265
 msgid "No shipping method has been selected. Please double check your address, or contact us if you need any help."
 msgstr ""
 
@@ -783,6 +785,24 @@ msgstr ""
 msgid "%s installments"
 msgstr ""
 
+#: build/alma-checkout-block/alma-checkout-blocks.js:48010
+msgid "Total TTC"
+msgstr ""
+
+#: build/alma-checkout-block/alma-checkout-blocks.js:48052
+msgid "Payment costs"
+msgstr ""
+
+#: build/alma-widget-block/alma-widget-block.js:65
+#: src/alma-widget-block/edit.js:16
+msgid "D+30"
+msgstr ""
+
+#: build/alma-widget-block/alma-widget-block.js:73
+#: src/alma-widget-block/edit.js:21
+msgid "Without fees"
+msgstr ""
+
 #: build/alma-widget-block/block.json
 #: src/alma-widget-block/block.json
 msgctxt "block title"
@@ -806,3 +826,4 @@ msgstr ""
 msgctxt "block keyword"
 msgid "widget"
 msgstr ""
+
