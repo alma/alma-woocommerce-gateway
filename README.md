@@ -8,7 +8,7 @@
 - Tested up to Wordpress: 6.7.1
 - Tested up to Woocommerce: 9.7.1
 - Requires PHP: 5.6
-- Stable tag: 5.12.0
+- Stable tag: 5.13.0
 - License: GPLv3
 - License URI: https://www.gnu.org/licenses/gpl-3.0.html
 - Support: support@getalma.eu
