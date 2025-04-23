@@ -12,7 +12,6 @@
 namespace Alma\Woocommerce\Helpers;
 
 use Alma\Woocommerce\Admin\Helpers\CheckLegalHelper;
-use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Blocks\Inpage\InPageBlock;
 use Alma\Woocommerce\Blocks\Inpage\PayLaterBlock as InpagePayLaterBlock;
@@ -69,10 +68,6 @@ class PluginHelper {
 	 * @var CartHelper
 	 */
 	private $cart_helper;
-	/**
-	 * @var AlmaLogger
-	 */
-	private $logger;
 
 
 	/**
@@ -85,7 +80,6 @@ class PluginHelper {
 		$this->alma_settings            = new AlmaSettings();
 		$cart_helper_builder            = new CartHelperBuilder();
 		$this->cart_helper              = $cart_helper_builder->get_instance();
-		$this->logger                   = new AlmaLogger();
 	}
 
 	/**
@@ -377,6 +371,5 @@ class PluginHelper {
 
 		wp_localize_script( 'alma-checkout-in-page', 'alma_iframe_params', $alma_args );
 		wp_localize_script( 'alma-checkout-in-page', 'alma_iframe_paiement', array() );
-		$this->logger->info( 'Rendering payment fields for InPageGateway', $alma_args );
 	}
 }
