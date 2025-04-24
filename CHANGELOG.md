@@ -1,5 +1,22 @@
 # Changelog
 
+## v5.14.0 - 2025-04-24
+
+### Changes
+
+### 🚀 New Features
+
+- fix: in-page loading in certain event loading cases (#354)
+
+### 🐛 Bug Fixes
+
+- fix: error on change order status (#350)
+- fix: in-page loading in certain event loading cases (#349)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @webaaz and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+
 ## v5.13.0 - 2025-04-16
 
 ### Changes
