@@ -21,7 +21,6 @@ use Alma\Woocommerce\Blocks\Standard\PayLaterBlock;
 use Alma\Woocommerce\Blocks\Standard\PayMoreThanFourBlock;
 use Alma\Woocommerce\Blocks\Standard\PayNowBlock;
 use Alma\Woocommerce\Blocks\Standard\StandardBlock;
-use Alma\Woocommerce\Builders\Helpers\CartHelperBuilder;
 use Alma\Woocommerce\Handlers\CartHandler;
 use Alma\Woocommerce\Handlers\ProductHandler;
 use Alma\Woocommerce\Services\CollectCmsDataService;
@@ -60,14 +59,6 @@ class PluginHelper {
 	 * @var CollectCmsDataService
 	 */
 	protected $collect_cms_data_service;
-	/**
-	 * @var AlmaSettings
-	 */
-	private $alma_settings;
-	/**
-	 * @var CartHelper
-	 */
-	private $cart_helper;
 
 
 	/**
@@ -77,9 +68,6 @@ class PluginHelper {
 		$this->order_helper             = new OrderHelper();
 		$this->block_helper             = new BlockHelper();
 		$this->collect_cms_data_service = new CollectCmsDataService();
-		$this->alma_settings            = new AlmaSettings();
-		$cart_helper_builder            = new CartHelperBuilder();
-		$this->cart_helper              = $cart_helper_builder->get_instance();
 	}
 
 	/**
@@ -141,6 +129,48 @@ class PluginHelper {
 	}
 
 	/**
+	 * Add the Alma widget shortcode.
+	 *
+	 * @return void
+	 */
+	protected function add_widgets_shortcodes() {
+		$shortcodes = new ShortcodesHelper();
+
+		$cart_handler = new CartHandler();
+		$shortcodes->init_cart_widget_shortcode( $cart_handler );
+
+		$product_handler = new ProductHandler();
+		$shortcodes->init_product_widget_shortcode( $product_handler );
+	}
+
+
+	/**
+	 * Add in page actions.
+	 *
+	 * @return void
+	 */
+	protected function add_in_page_actions() {
+		add_action( 'wp_ajax_alma_do_checkout_in_page', array( $this->order_helper, 'alma_do_checkout_in_page' ) );
+		add_action(
+			'wp_ajax_nopriv_alma_do_checkout_in_page',
+			array(
+				$this->order_helper,
+				'alma_do_checkout_in_page',
+			)
+		);
+
+		add_action( 'wp_ajax_alma_cancel_order_in_page', array( $this->order_helper, 'alma_cancel_order_in_page' ) );
+		add_action(
+			'wp_ajax_nopriv_alma_cancel_order_in_page',
+			array(
+				$this->order_helper,
+				'alma_cancel_order_in_page',
+			)
+		);
+	}
+
+
+	/**
 	 * Add the wp actions.
 	 *
 	 * @return void
@@ -187,6 +217,7 @@ class PluginHelper {
 		}
 	}
 
+
 	/**
 	 * Register the blocks.
 	 *
@@ -209,6 +240,7 @@ class PluginHelper {
 		);
 	}
 
+
 	/**
 	 * Inject JS in checkout page.
 	 *
@@ -229,86 +261,6 @@ class PluginHelper {
 				$this->enqueue_in_page_scripts();
 			}
 		}
-	}
-
-	/**
-	 *  Get the current tab and section.
-	 *
-	 * @return array
-	 */
-	public function get_tab_and_section() {
-		global $current_tab, $current_section;
-		$tab     = $current_tab;
-		$section = $current_section;
-
-		if (
-			(
-				empty( $tab )
-				|| empty( $section )
-			)
-			&& ! empty( $_SERVER['QUERY_STRING'] )
-		) {
-			$query_parts = explode( '&', $_SERVER['QUERY_STRING'] );
-
-			foreach ( $query_parts as $args ) {
-				$query_args = explode( '=', $args );
-
-				if ( count( $query_args ) === 2 ) {
-					switch ( $query_args['0'] ) {
-						case 'tab':
-							$tab = $query_args['1'];
-							break;
-						case 'section':
-							$section = $query_args['1'];
-							break;
-						default:
-							break;
-					}
-				}
-			}
-		}
-
-		return array( $tab, $section );
-	}
-
-	/**
-	 * Add the Alma widget shortcode.
-	 *
-	 * @return void
-	 */
-	protected function add_widgets_shortcodes() {
-		$shortcodes = new ShortcodesHelper();
-
-		$cart_handler = new CartHandler();
-		$shortcodes->init_cart_widget_shortcode( $cart_handler );
-
-		$product_handler = new ProductHandler();
-		$shortcodes->init_product_widget_shortcode( $product_handler );
-	}
-
-	/**
-	 * Add in page actions.
-	 *
-	 * @return void
-	 */
-	protected function add_in_page_actions() {
-		add_action( 'wp_ajax_alma_do_checkout_in_page', array( $this->order_helper, 'alma_do_checkout_in_page' ) );
-		add_action(
-			'wp_ajax_nopriv_alma_do_checkout_in_page',
-			array(
-				$this->order_helper,
-				'alma_do_checkout_in_page',
-			)
-		);
-
-		add_action( 'wp_ajax_alma_cancel_order_in_page', array( $this->order_helper, 'alma_cancel_order_in_page' ) );
-		add_action(
-			'wp_ajax_nopriv_alma_cancel_order_in_page',
-			array(
-				$this->order_helper,
-				'alma_cancel_order_in_page',
-			)
-		);
 	}
 
 	/**
@@ -361,15 +313,45 @@ class PluginHelper {
 				array( 'ajax_url' => admin_url( 'admin-ajax.php' ) )
 			);
 		}
+	}
 
-		$alma_args = array(
-			'merchant_id'     => $this->alma_settings->get_active_merchant_id(),
-			'amount_in_cents' => $this->cart_helper->get_total_in_cents(),
-			'environment'     => strtoupper( $this->alma_settings->get_environment() ),
-			'locale'          => strtoupper( substr( get_locale(), 0, 2 ) ),
-		);
+	/**
+	 *  Get the current tab and section.
+	 *
+	 * @return array
+	 */
+	public function get_tab_and_section() {
+		global $current_tab, $current_section;
+		$tab     = $current_tab;
+		$section = $current_section;
 
-		wp_localize_script( 'alma-checkout-in-page', 'alma_iframe_params', $alma_args );
-		wp_localize_script( 'alma-checkout-in-page', 'alma_iframe_paiement', array() );
+		if (
+			(
+				empty( $tab )
+				|| empty( $section )
+			)
+			&& ! empty( $_SERVER['QUERY_STRING'] )
+		) {
+			$query_parts = explode( '&', $_SERVER['QUERY_STRING'] );
+
+			foreach ( $query_parts as $args ) {
+				$query_args = explode( '=', $args );
+
+				if ( count( $query_args ) === 2 ) {
+					switch ( $query_args['0'] ) {
+						case 'tab':
+							$tab = $query_args['1'];
+							break;
+						case 'section':
+							$section = $query_args['1'];
+							break;
+						default:
+							break;
+					}
+				}
+			}
+		}
+
+		return array( $tab, $section );
 	}
 }
