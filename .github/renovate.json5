@@ -1,0 +1,23 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [ "github>alma/renovate:defaults.json5" ],
+  "enabledManagers": [ "github-actions", "pre-commit", "composer", "dockerfile", "docker-compose" ],
+  "reviewers": [ "team:squad-e-commerce-integrations" ],
+  "baseBranches": [ "develop" ],
+  "packageRules": [
+    {
+      "matchManagers": [ "composer" ],
+      "groupName": "composer updates"
+    },
+    {
+      "matchManagers": [ "dockerfile", "docker-compose" ],
+      "groupName": "docker updates"
+    },
+    {
+      "description": "PHP and composer versions in Dockerfiles must be freezed",
+      "matchManagers": [ "dockerfile" ],
+      "matchDepNames": [ "php", "composer" ],
+      "enabled": false
+    }
+  ]
+}
