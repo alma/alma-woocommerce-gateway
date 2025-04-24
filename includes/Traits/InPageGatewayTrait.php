@@ -35,7 +35,6 @@ trait InPageGatewayTrait {
 
 		return parent::is_available();
 	}
-
 	/**
 	 * Custom payment fields for a payment gateway.
 	 * (We have three payment gateways : "alma", "alma_pay_later", and "alma_pnx_plus_4")
@@ -51,5 +50,15 @@ trait InPageGatewayTrait {
 		$default_plan = $this->gateway_helper->get_default_plan( $eligible_plans[ $this->id ] );
 
 		$this->alma_plan_helper->render_checkout_fields( $eligibilities, $eligible_plans, $this->id, $default_plan );
+
+		$alma_args = array(
+			'merchant_id'     => $this->alma_settings->get_active_merchant_id(),
+			'amount_in_cents' => $this->cart_helper->get_total_in_cents(),
+			'environment'     => strtoupper( $this->alma_settings->get_environment() ),
+			'locale'          => strtoupper( substr( get_locale(), 0, 2 ) ),
+		);
+
+		wp_localize_script( 'alma-checkout-in-page', 'alma_iframe_params', $alma_args );
+		wp_localize_script( 'alma-checkout-in-page', 'alma_iframe_paiement', array() );
 	}
 }
