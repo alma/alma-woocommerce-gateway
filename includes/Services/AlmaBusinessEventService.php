@@ -31,7 +31,7 @@ class AlmaBusinessEventService {
 	/**
 	 * @var string
 	 */
-	private $table_name;
+	private $alma_business_data_table;
 
 
 	public function __construct( $logger = null ) {
@@ -44,9 +44,9 @@ class AlmaBusinessEventService {
 		if ( is_null( $logger ) ) {
 			$logger = new AlmaLogger();
 		}
-		$this->logger        = $logger;
-		$this->alma_settings = new AlmaSettings();
-		$this->table_name    = esc_sql( $wpdb->prefix . self::ALMA_BUSINESS_DATA );
+		$this->logger                   = $logger;
+		$this->alma_settings            = new AlmaSettings();
+		$this->alma_business_data_table = esc_sql( $wpdb->prefix . self::ALMA_BUSINESS_DATA );
 	}
 
 	/**
@@ -82,6 +82,33 @@ class AlmaBusinessEventService {
 	}
 
 	/**
+	 * @param $order_id
+	 *
+	 * @return void
+	 */
+	public function on_create_order( $order_id ) {
+		global $wpdb;
+		$alma_cart_id = WC()->session->get( self::ALMA_CART_ID, null );
+
+		//  Check if cart id is valid on database
+		if ( empty( $alma_cart_id ) ) {
+			return;
+		}
+
+		$wpdb->update(
+			$wpdb->prefix . self::ALMA_BUSINESS_DATA,
+			array(
+				'order_id' => $order_id,
+			),
+			array( 'cart_id' => $alma_cart_id ),
+			array(
+				'order_id' => '%d',
+			),
+			array( 'cart_id' => '%d' )
+		);
+	}
+
+	/**
 	 * Event launched when an order status is changed.
 	 *
 	 * @param           $order_id
@@ -94,19 +121,13 @@ class AlmaBusinessEventService {
 	public function on_order_status_changed( $order_id, $from, $to, $order ) {
 
 		global $wpdb;
-		$alma_cart_id = WC()->session->get( self::ALMA_CART_ID, null );
-
-		//  Check if cart id is valid on database
-		if ( empty( $alma_cart_id ) || ! $this->is_cart_valid( $alma_cart_id ) ) {
+		$alma_business_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $this->alma_business_data_table WHERE order_id=%d", $order_id ) );
+		if ( ! $alma_business_data ) {
+			//  No cart id found
 			return;
 		}
 
-		if ( WC()->cart && 'pending' === $from && in_array( $to, array_merge( wc_get_is_paid_statuses(), array( 'on-hold' ) ) ) && $order->get_cart_hash() === WC()->cart->get_cart_hash() ) {
-			$cart_id = WC()->session->get( self::ALMA_CART_ID, null );
-			if ( empty( $cart_id ) ) {
-				return;
-			}
-
+		if ( 'pending' === $from && in_array( $to, array_merge( wc_get_is_paid_statuses(), array( 'on-hold' ) ) ) ) {
 			$is_pay_now = false;
 			$is_bnpl    = false;
 			$payment_id = null;
@@ -119,22 +140,8 @@ class AlmaBusinessEventService {
 					)
 				);
 				$is_bnpl    = ! $is_pay_now;
-				$payment_id = $order->get_transaction_id();
+				$payment_id = $alma_business_data->alma_payment_id;
 			}
-
-			$wpdb->update(
-				$wpdb->prefix . self::ALMA_BUSINESS_DATA,
-				array(
-					'order_id' => $order_id,
-				),
-				array( 'cart_id' => $cart_id ),
-				array(
-					'order_id' => '%d',
-				),
-				array( 'cart_id' => '%d' )
-			);
-
-			$alma_business_data = $wpdb->get_row( $wpdb->prepare( "SELECT is_bnpl_eligible FROM $this->table_name WHERE cart_id=%d", $cart_id ) );
 
 			try {
 				$order_confirmed_business_event = new OrderConfirmedBusinessEvent(
@@ -142,7 +149,7 @@ class AlmaBusinessEventService {
 					$is_bnpl,
 					(bool) $alma_business_data->is_bnpl_eligible,
 					(string) $order_id,
-					$cart_id,
+					$alma_business_data->cart_id,
 					$payment_id
 				);
 				$this->alma_settings->get_alma_client();
@@ -209,12 +216,38 @@ class AlmaBusinessEventService {
 	}
 
 	/**
+	 * @param $payment_id
+	 *
+	 * @return void
+	 */
+	public function save_payment_id( $payment_id ) {
+		global $wpdb;
+		$cart_id = WC()->session->get( self::ALMA_CART_ID, null );
+		if ( empty( $cart_id ) ) {
+			return;
+		}
+
+		$wpdb->update(
+			$wpdb->prefix . self::ALMA_BUSINESS_DATA,
+			array(
+				'alma_payment_id' => $payment_id,
+			),
+			array( 'cart_id' => $cart_id ),
+			array(
+				'alma_payment_id' => '%s',
+			),
+			array( 'cart_id' => '%d' )
+		);
+	}
+
+	/**
 	 * Add hooks to the class.
 	 *
 	 * @return void
 	 */
 	public function add_hooks() {
 		add_action( 'woocommerce_add_to_cart', array( $this, 'on_cart_initiated' ), 10, 6 );
+		add_action( 'woocommerce_checkout_update_order_meta', array( $this, 'on_create_order' ), 10, 1 );
 		add_action( 'woocommerce_order_status_changed', array( $this, 'on_order_status_changed' ), 10, 4 );
 	}
 
@@ -227,7 +260,7 @@ class AlmaBusinessEventService {
 	 */
 	private function is_cart_valid( $cart_id ) {
 		global $wpdb;
-		$alma_business_data = $wpdb->get_row( $wpdb->prepare( "SELECT order_id FROM $this->table_name WHERE cart_id=%d", $cart_id ) );
+		$alma_business_data = $wpdb->get_row( $wpdb->prepare( "SELECT order_id FROM $this->alma_business_data_table WHERE cart_id=%d", $cart_id ) );
 		if ( ! $alma_business_data ) {
 			//  No cart id found
 			return false;
@@ -253,7 +286,7 @@ class AlmaBusinessEventService {
 			$tools_helper_builder = new ToolsHelperBuilder();
 			$tools_helper         = $tools_helper_builder->get_instance();
 			$cart_id              = $tools_helper->generate_unique_bigint();
-			$found_cart_id        = $wpdb->get_col( $wpdb->prepare( "SELECT cart_id FROM $this->table_name WHERE cart_id=%d", $cart_id ) );
+			$found_cart_id        = $wpdb->get_col( $wpdb->prepare( "SELECT cart_id FROM $this->alma_business_data_table WHERE cart_id=%d", $cart_id ) );
 		} while ( $found_cart_id );
 
 		$result = $wpdb->insert(

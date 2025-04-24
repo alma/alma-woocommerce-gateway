@@ -25,6 +25,7 @@ use Alma\Woocommerce\Factories\CartFactory;
 use Alma\Woocommerce\Factories\SessionFactory;
 use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Gateways\Standard\StandardGateway;
+use Alma\Woocommerce\Services\AlmaBusinessEventService;
 use Alma\Woocommerce\Services\CheckoutService;
 use Exception;
 use WC_Data_Exception;
@@ -80,16 +81,21 @@ class OrderHelper {
 	 * @var CartFactory
 	 */
 	protected $cart_factory;
+	/**
+	 * @var AlmaBusinessEventService
+	 */
+	protected $alma_business_event_service;
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->logger          = new AlmaLogger();
-		$this->block_helper    = new BlockHelper();
-		$this->session_factory = new SessionFactory();
-		$this->version_factory = new VersionFactory();
-		$this->cart_factory    = new CartFactory();
+		$this->logger                      = new AlmaLogger();
+		$this->block_helper                = new BlockHelper();
+		$this->session_factory             = new SessionFactory();
+		$this->version_factory             = new VersionFactory();
+		$this->cart_factory                = new CartFactory();
+		$this->alma_business_event_service = new AlmaBusinessEventService();
 	}
 
 	/**
@@ -297,6 +303,7 @@ class OrderHelper {
 		$fee_plan = $settings->build_fee_plan( $post_fields[ ConstantsHelper::ALMA_FEE_PLAN_IN_PAGE ] );
 
 		$payment = $payment_helper->create_payments( $order, $fee_plan, true );
+		$this->alma_business_event_service->save_payment_id( $payment->id );
 
 		return array(
 			$payment->id,
