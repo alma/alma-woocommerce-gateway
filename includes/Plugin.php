@@ -73,9 +73,6 @@ final class Plugin {
 	 * @see plugin_setup()
 	 */
 	public function __construct() {
-		self::$container = new ContainerService();
-		/** @var PluginHelper $plugin_helper */
-		$this->plugin_helper = self::get_container()->get( PluginHelper::class );
 	}
 
 	/**
@@ -83,6 +80,7 @@ final class Plugin {
 	 * @return ContainerService|null
 	 */
 	public static function get_container() {
+		/** @var ContainerService $container */
 		return self::$container;
 	}
 
@@ -107,6 +105,11 @@ final class Plugin {
 	 * @throws ContainerException
 	 */
 	public function plugin_setup() {
+
+		self::$container = new ContainerService();
+		/** @var PluginHelper $plugin_helper */
+		$this->plugin_helper = self::get_container()->get( PluginHelper::class );
+
 		if ( ! $this->can_i_load() ) {
 			return;
 		}

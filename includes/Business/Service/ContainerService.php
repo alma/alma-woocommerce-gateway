@@ -14,6 +14,8 @@ use Alma\API\Endpoint\WebhookEndpoint;
 use Alma\Gateway\Business\Exception\ContainerException;
 use Alma\Gateway\Business\Helper\AssetsHelper;
 use Alma\Gateway\Business\Helper\EncryptorHelper;
+use Alma\Gateway\Business\Helper\GatewayFormHelper;
+use Alma\Gateway\Business\Helper\L10nHelper;
 use Alma\Gateway\Business\Helper\PluginHelper;
 use Alma\Gateway\Business\Helper\RequirementsHelper;
 use Alma\Gateway\Business\Service\API\EligibilityService;
@@ -169,10 +171,12 @@ class ContainerService extends Dice {
 		// Helpers
 		$this->addRules(
 			array(
-				EncryptorHelper::class    => array( 'shared' => true ),
-				RequirementsHelper::class => array( 'shared' => true ),
 				AssetsHelper::class       => array( 'shared' => true ),
+				EncryptorHelper::class    => array( 'shared' => true ),
+				GatewayFormHelper::class  => array( 'shared' => true ),
+				L10nHelper::class         => array( 'shared' => true ),
 				PluginHelper::class       => array( 'shared' => true ),
+				RequirementsHelper::class => array( 'shared' => true ),
 			)
 		);
 	}
