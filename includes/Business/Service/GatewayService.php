@@ -14,14 +14,10 @@ use Alma\Gateway\WooCommerce\Proxy\WordPressProxy;
 
 class GatewayService {
 
-	/**
-	 * @var Gateway
-	 */
+	/** @var Gateway */
 	private Gateway $gateway;
 
-	/**
-	 * @var HooksProxy
-	 */
+	/** @var HooksProxy */
 	private HooksProxy $hooks_proxy;
 
 	public function __construct( Gateway $gateway, HooksProxy $hooks_proxy ) {

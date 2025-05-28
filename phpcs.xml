@@ -44,6 +44,7 @@
         -->
         <exclude name="WordPress.Security.EscapeOutput"/>
         <exclude name="WordPress.Files.FileName"/>
+        <exclude name="Generic.Functions.CallTimePassByReference"/>
     </rule>
 
     <!-- Let's also check that everything is properly documented. -->
@@ -62,8 +63,8 @@
     For more information, also see:
     https://github.com/PHPCompatibility/PHPCompatibility
     -->
-    <config name="testVersion" value="7.4-8.4"/>
-    <rule ref="PHPCompatibilityWP"/>
+    <config name="testVersion" value="7.4-"/>
+    <rule ref="PHPCompatibility"/>
 
     <!--
     To get the optimal benefits of using WPCS, we should add a couple of

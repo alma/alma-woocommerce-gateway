@@ -126,7 +126,7 @@ final class Plugin {
 		}
 		/** @var GatewayService $gateway_service */
 		// $gateway_service = self::get_container()->get( GatewayService::class );
-		//$gateway_service->load_gateway();
+		// $gateway_service->load_gateway();
 		// $gateway_service->is_eligible();
 	}
 

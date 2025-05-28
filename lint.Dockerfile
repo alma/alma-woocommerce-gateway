@@ -1,9 +1,35 @@
-ARG PHP_IMG_TAG=5.6-alpine
+ARG PHP_IMG_TAG=7.4-fpm
+
+FROM composer:latest AS composer
+
 FROM php:${PHP_IMG_TAG} AS production
 
 WORKDIR /composer
 
-RUN apk add --no-cache composer
+# Set Environment Variables
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN set -eux; apt-get update; apt-get upgrade -y; apt-get install -y --no-install-recommends curl
+RUN set -eux; apt-get update; apt-get upgrade -y; apt-get install -y --no-install-recommends libcurl4-openssl-dev
+RUN set -eux; apt-get update; apt-get upgrade -y; apt-get install -y --no-install-recommends libmemcached-dev
+RUN set -eux; apt-get update; apt-get upgrade -y; apt-get install -y --no-install-recommends libz-dev
+RUN set -eux; apt-get update; apt-get upgrade -y; apt-get install -y --no-install-recommends libzip-dev
+RUN set -eux; apt-get update; apt-get upgrade -y; apt-get install -y --no-install-recommends libpq-dev
+RUN set -eux; apt-get update; apt-get upgrade -y; apt-get install -y --no-install-recommends libjpeg-dev
+RUN set -eux; apt-get update; apt-get upgrade -y; apt-get install -y --no-install-recommends libpng-dev
+RUN set -eux; apt-get update; apt-get upgrade -y; apt-get install -y --no-install-recommends libfreetype6-dev
+RUN set -eux; apt-get update; apt-get upgrade -y; apt-get install -y --no-install-recommends libssl-dev
+RUN set -eux; apt-get update; apt-get upgrade -y; apt-get install -y --no-install-recommends libwebp-dev
+RUN set -eux; apt-get update; apt-get upgrade -y; apt-get install -y --no-install-recommends libmcrypt-dev
+RUN set -eux; apt-get update; apt-get upgrade -y; apt-get install -y --no-install-recommends libonig-dev
+
+# Installer les autres extensions PHP d'abord
+RUN docker-php-ext-install mbstring
+RUN docker-php-ext-install zip
+RUN docker-php-ext-install phar
+RUN docker-php-ext-install curl
+
+COPY --from=composer /usr/bin/composer /usr/bin/composer
 RUN composer self-update
 RUN composer init -n --name="alma/php-cs" --description="php-cs" --type="library"
 
