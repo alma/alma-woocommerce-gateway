@@ -10,13 +10,13 @@
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: alma-gateway-for-woocommerce
  * Domain Path: /languages
- * Requires at least: 7.0
+ * Requires at least: 6.2.0
  * Requires PHP: 7.4
  * Tested up to: 6.8.1
  *
  * @package Alma_Gateway_For_Woocommerce
  *
- * WC requires at least: 7.0
+ * WC requires at least: 6.2.0
  * WC tested up to: 9.8.5
  *
  * Alma Payment Gateway for WooCommerce is free software: you can redistribute it and/or modify
