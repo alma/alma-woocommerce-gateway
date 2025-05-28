@@ -74,27 +74,13 @@ class EncryptorHelper {
 	}
 
 	/**
-	 *  Get the salt.
-	 *
-	 * @return string
-	 * @throws RequirementsException  Requirement exception.
-	 */
-	protected function get_key_salt() {
-		if ( defined( 'NONCE_SALT' ) ) {
-			return NONCE_SALT;
-		}
-
-		throw new RequirementsException( 'The constant NONCE_SALT must to be defined in wp-config.php' );
-	}
-
-	/**
 	 * Encrypt the data.
 	 *
 	 * @param string $data The data.
 	 *
 	 * @return string   The data encrypted
 	 */
-	public function encrypt( $data ) {
+	public function encrypt( $data ): string {
 		$data = openssl_encrypt( $data, $this->method, $this->key, OPENSSL_RAW_DATA, $this->iv );
 
 		return base64_encode( $data ); // phpcs:ignore
@@ -107,7 +93,7 @@ class EncryptorHelper {
 	 *
 	 * @return string The decrypted data.
 	 */
-	public function decrypt( $encrypted_data = '' ) {
+	public function decrypt( string $encrypted_data = '' ): string {
 		$data = $encrypted_data;
 
 		if ( empty( $data ) ) {
@@ -118,5 +104,19 @@ class EncryptorHelper {
 		$data = openssl_decrypt( $data, $this->method, $this->key, OPENSSL_RAW_DATA, $this->iv );
 
 		return $data;
+	}
+
+	/**
+	 *  Get the salt.
+	 *
+	 * @return string
+	 * @throws RequirementsException  Requirement exception.
+	 */
+	protected function get_key_salt(): string {
+		if ( defined( 'NONCE_SALT' ) ) {
+			return NONCE_SALT;
+		}
+
+		throw new RequirementsException( 'The constant NONCE_SALT must to be defined in wp-config.php' );
 	}
 }

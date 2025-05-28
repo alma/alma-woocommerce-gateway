@@ -2,8 +2,27 @@
 
 namespace Alma\Gateway\Business\Service;
 
+use Alma\API\CurlClient;
+use Alma\API\Endpoint\ConfigurationEndpoint;
+use Alma\API\Endpoint\DataExportEndpoint;
+use Alma\API\Endpoint\EligibilityEndpoint;
+use Alma\API\Endpoint\MerchantEndpoint;
+use Alma\API\Endpoint\OrderEndpoint;
+use Alma\API\Endpoint\PaymentEndpoint;
+use Alma\API\Endpoint\ShareOfCheckoutEndpoint;
+use Alma\API\Endpoint\WebhookEndpoint;
 use Alma\Gateway\Business\Exception\ContainerException;
+use Alma\Gateway\Business\Helper\AssetsHelper;
+use Alma\Gateway\Business\Helper\EncryptorHelper;
+use Alma\Gateway\Business\Helper\PluginHelper;
+use Alma\Gateway\Business\Helper\RequirementsHelper;
+use Alma\Gateway\Business\Service\API\EligibilityService;
+use Alma\Gateway\WooCommerce\Model\Gateway;
+use Alma\Gateway\WooCommerce\Proxy\HooksProxy;
+use Alma\Gateway\WooCommerce\Proxy\OptionsProxy;
+use Alma\Gateway\WooCommerce\Proxy\SettingsProxy;
 use Dice\Dice;
+use Psr\Http\Client\ClientInterface;
 
 /**
  * This DI Container is a wrapper around Dice
@@ -17,14 +36,13 @@ use Dice\Dice;
  */
 class ContainerService extends Dice {
 	/**
-	 * @var object
+	 * @var OptionsService
 	 */
-	private $options_service;
+	private OptionsService $options_service;
 
 	/**
 	 * ContainerService constructor.
 	 * Init Rules
-	 * @throws ContainerException
 	 */
 	public function __construct() {
 		/** @var OptionsService $options_service */
@@ -44,7 +62,7 @@ class ContainerService extends Dice {
 	 * @return object A fully constructed object based on the specified input arguments
 	 * @throws ContainerException
 	 */
-	public function get( $name, array $args = array(), array $share = array() ) {
+	public function get( $name, array $args = array(), array $share = array() ): object {
 		try {
 			error_reporting( error_reporting() & ~E_DEPRECATED ); // phpcs:ignore
 			// @formatter:off PHPStorm wants this call to be multiline
@@ -60,67 +78,102 @@ class ContainerService extends Dice {
 
 	/**
 	 * Set Business Layer Rules
-	 * @throws ContainerException
 	 */
 	private function set_business_rules() {
 		// Business Layer
-		$this->addRule(
-			'Alma\Gateway\Business\Service\AdminService',
-			array( 'shared' => true )
+		$this->addRules(
+			array(
+				AdminService::class       => array( 'shared' => true ),
+				OptionsService::class     => array( 'shared' => true ),
+				SettingsService::class    => array( 'shared' => true ),
+				WooCommerceService::class => array( 'shared' => true ),
+				GatewayService::class     => array( 'shared' => true ),
+				PaymentService::class     => array( 'shared' => true ),
+			)
 		);
-		$this->addRule(
-			'Alma\Gateway\Business\Service\OptionsService',
-			array( 'shared' => true )
-		);
-		$this->addRule(
-			'Alma\Gateway\Business\Service\SettingsService',
-			array( 'shared' => true )
-		);
-		$this->addRule(
-			'Alma\Gateway\Business\Service\WooCommerceService',
-			array( 'shared' => true )
-		);
-		$this->addRule(
-			'Alma\Gateway\Business\Service\GatewayService',
-			array( 'shared' => true )
-		);
-		$this->addRule(
-			'Alma\Gateway\Business\Service\PaymentService',
-			array( 'shared' => true )
-		);
-		$this->addRule(
-			'Alma\Gateway\Business\Service\EligibilityService',
-			array( 'shared' => true )
+
+		// API Layer
+		$this->addRules(
+			array(
+				EligibilityService::class => array( 'shared' => true ),
+			)
 		);
 
 		// PHP-Client
-		$this->addRule(
-			'Alma\API\Client',
+		if ( $this->options_service->is_configured() ) {
+			$this->addRules(
+				array(
+					'Alma\API\ClientConfiguration' => array(
+						'constructParams' => array(
+							$this->options_service->get_active_api_key(),
+							$this->options_service->get_environment(),
+							array(),
+						),
+						'shared'          => true,
+					),
+					CurlClient::class              => array( 'shared' => true ),
+				)
+			);
+		}
+
+		// Endpoints
+		$this->addRules(
 			array(
-				'constructParams' => array(
-					$this->options_service->get_active_api_key(),
-					array( 'mode' => $this->options_service->get_environment() ),
+				'*' => array(
+					array(
+						'substitutions' => array(
+							ClientInterface::class => CurlClient::class,
+						),
+					),
 				),
-				'shared'          => true,
+			)
+		);
+
+		$this->addRules(
+			array(
+				ConfigurationEndpoint::class   => array(
+					'substitutions' => array( ClientInterface::class => CurlClient::class ),
+					'shared'        => true,
+				),
+				DataExportEndpoint::class      => array(
+					'substitutions' => array( ClientInterface::class => CurlClient::class ),
+					'shared'        => true,
+				),
+				EligibilityEndpoint::class     => array(
+					'substitutions' => array( ClientInterface::class => CurlClient::class ),
+					'shared'        => true,
+				),
+				MerchantEndpoint::class        => array(
+					'substitutions' => array( ClientInterface::class => CurlClient::class ),
+					'shared'        => true,
+				),
+				OrderEndpoint::class           => array(
+					'substitutions' => array( ClientInterface::class => CurlClient::class ),
+					'shared'        => true,
+				),
+				PaymentEndpoint::class         => array(
+					'substitutions' => array( ClientInterface::class => CurlClient::class ),
+					'shared'        => true,
+				),
+				ShareOfCheckoutEndpoint::class => array(
+					'substitutions' => array( ClientInterface::class => CurlClient::class ),
+					'shared'        => true,
+				),
+				WebhookEndpoint::class         => array(
+					'substitutions' => array( ClientInterface::class => CurlClient::class ),
+					'shared'        => true,
+				),
 			)
 		);
 
 		// Helpers
-		$this->addRule(
-			'Alma\Gateway\Business\Helper\EncryptorHelper',
-			array( 'shared' => true )
-		);
-		$this->addRule(
-			'Alma\Gateway\Business\Helper\RequirementsHelper',
-			array( 'shared' => true )
-		);
-		$this->addRule(
-			'Alma\Gateway\Business\Helper\AssetsHelper',
-			array( 'shared' => true )
-		);
-		$this->addRule(
-			'Alma\Gateway\Business\Helper\PluginHelper',
-			array( 'shared' => true )
+		$this->addRules(
+			array(
+				EncryptorHelper::class    => array( 'shared' => true ),
+				RequirementsHelper::class => array( 'shared' => true ),
+				AssetsHelper::class       => array( 'shared' => true ),
+				PluginHelper::class       => array( 'shared' => true ),
+			)
 		);
 	}
 
@@ -128,18 +181,15 @@ class ContainerService extends Dice {
 	 * Set WooCommerce Layer Rules
 	 */
 	private function set_woocommerce_rules() {
+
 		// WooCommerce Layer
-		$this->addRule(
-			'Alma\Gateway\WooCommerce\Proxy\HooksProxy',
-			array( 'shared' => true )
-		);
-		$this->addRule(
-			'Alma\Gateway\WooCommerce\Proxy\OptionsProxy',
-			array( 'shared' => true )
-		);
-		$this->addRule(
-			'Alma\Gateway\WooCommerce\Proxy\SettingsProxy',
-			array( 'shared' => true )
+		$this->addRules(
+			array(
+				HooksProxy::class    => array( 'shared' => true ),
+				OptionsProxy::class  => array( 'shared' => true ),
+				SettingsProxy::class => array( 'shared' => true ),
+				Gateway::class       => array( 'shared' => true ),
+			)
 		);
 	}
 }

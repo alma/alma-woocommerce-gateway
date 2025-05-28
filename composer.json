@@ -3,10 +3,11 @@
   "description": "Alma - Pay in installments or later for WooCommerce",
   "type": "library",
   "require": {
-    "php": "^5.6 || ~7.0 || ~7.1 || ~7.2 || ~7.3 || ~7.4 || ~8.0 || ~8.1 || ~8.2 || ~8.3 || ~8.4",
+    "php": "~7.4 || ~8.0 || ~8.1 || ~8.2 || ~8.3 || ~8.4",
     "ext-openssl": "*",
     "alma/alma-php-client": ">=2.4.0",
-    "level-2/dice": "^2.0"
+    "psr/http-client": "^1",
+    "level-2/dice": "^4.0"
   },
   "require-dev": {
     "johnpbloch/wordpress-core": "*",
@@ -42,7 +43,7 @@
   "scripts": {
     "phpcs": "vendor/bin/phpcs --standard=phpcs.xml .",
     "phpcbf": "vendor/bin/phpcbf --standard=phpcs.xml .",
-    "php-compatibility": "vendor/bin/phpcs -p src --standard=PHPCompatibility -s --runtime-set testVersion 5.6-8.1 --ignore=\\*/vendor/\\*"
+    "php-compatibility": "vendor/bin/phpcs -p src --standard=PHPCompatibility -s --runtime-set testVersion 7.4-8.4 --ignore=\\*/vendor/\\*"
   },
   "config": {
     "sort-packages": true,

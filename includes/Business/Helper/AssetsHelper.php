@@ -2,6 +2,7 @@
 
 namespace Alma\Gateway\Business\Helper;
 
+use Alma\Gateway\Business\Exception\ContainerException;
 use Alma\Gateway\Plugin;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -15,7 +16,7 @@ class AssetsHelper {
 	 *
 	 * @return string
 	 */
-	public function get_admin_logs_url() {
+	public function get_admin_logs_url(): string {
 		return admin_url( 'admin.php?page=wc-status&tab=logs' );
 	}
 
@@ -25,8 +26,9 @@ class AssetsHelper {
 	 * @param string $path By default, the alma logo.
 	 *
 	 * @return string
+	 * @throws ContainerException
 	 */
-	public function get_image( $path = 'images/alma_logo.svg' ) {
+	public function get_image( string $path = 'images/alma_logo.svg' ): string {
 		return $this->get_asset_url( $path );
 	}
 
@@ -36,11 +38,12 @@ class AssetsHelper {
 	 * @param string $path Path to asset relative to the plugin's assets directory.
 	 *
 	 * @return string URL to given asset
+	 * @throws ContainerException
 	 */
-	public function get_asset_url( $path ) {
-
+	public function get_asset_url( string $path ): string {
 		/** @var PluginHelper $plugin_helper */
-		$plugin_url = Plugin::get_instance()->get_container()->get( PluginHelper::class )->get_plugin_url();
+		$plugin_helper = Plugin::get_instance()->get_container()->get( PluginHelper::class );
+		$plugin_url    = $plugin_helper->get_plugin_url();
 
 		return $plugin_url . 'assets/' . $path;
 	}

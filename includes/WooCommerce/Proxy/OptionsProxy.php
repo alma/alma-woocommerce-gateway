@@ -20,7 +20,7 @@ class OptionsProxy {
 	 */
 	const OPTIONS_KEY = 'woocommerce_alma_settings';
 
-	public function get_options() {
-		return get_option( self::OPTIONS_KEY );
+	public function get_options(): array {
+		return get_option( self::OPTIONS_KEY ) ?? array();
 	}
 }

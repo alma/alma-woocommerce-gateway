@@ -1,7 +1,7 @@
 {
   "name": "alma-woocommerce-gateway",
   "version": "1.0.0",
-  "description": "- Contributors: almapayments, olance, francois-gomis, clairealma - Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo commerce, alma, monthly payments, split payments - Requires at least Wordpress: 4.4 - Requires at least Woocommerce: 3.0.0 - Tested up to Wordpress: 6.3.2 - Tested up to Woocommerce: 8.2.1 - Requires PHP: 5.6 - Stable tag: 5.1.4 - License: GPLv3 - License URI: https://www.gnu.org/licenses/gpl-3.0.html - Support: support@getalma.eu - Documentation: https://docs.almapay.com/docs/woocommerce",
+  "description": "- Contributors: almapayments, olance, francois-gomis, clairealma - Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo commerce, alma, monthly payments, split payments - Requires at least Wordpress: 4.4 - Requires at least Woocommerce: 3.0.0 - Tested up to Wordpress: 6.3.2 - Tested up to Woocommerce: 8.2.1 - Requires PHP: 7.4 - Stable tag: 5.1.4 - License: GPLv3 - License URI: https://www.gnu.org/licenses/gpl-3.0.html - Support: support@getalma.eu - Documentation: https://docs.almapay.com/docs/woocommerce",
   "main": "src/alma-checkout-block/alma-checkout-blocks.js",
   "scripts": {
     "start": "wp-scripts start",

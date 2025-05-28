@@ -13,7 +13,7 @@ class RequirementsHelper {
 	 * @return true
 	 * @throws RequirementsException
 	 */
-	public function check_dependencies() {
+	public function check_dependencies(): bool {
 		if ( ! function_exists( 'WC' ) ) {
 			throw new RequirementsException( L10nHelper::__( 'Alma requires WooCommerce to be activated' ) );
 		}

@@ -1,6 +1,6 @@
 <?php
 
-namespace Alma\Woocommerce\Tests\Business\Helper;
+namespace Alma\Gateway\Tests\Business\Helper;
 
 class EncryptorHelperTest {
 

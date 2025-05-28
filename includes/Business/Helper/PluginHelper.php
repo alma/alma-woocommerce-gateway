@@ -11,25 +11,25 @@ class PluginHelper {
 	/**
 	 * The plugin url.
 	 *
-	 * @var mixed
+	 * @var string
 	 */
-	private $plugin_url;
+	private static string $plugin_url;
 
 	/**
 	 * Get plugin url.
 	 *
-	 * @return mixed
+	 * @return string
 	 */
-	public function get_plugin_url() {
-		return $this->plugin_url;
+	public function get_plugin_url(): string {
+		return self::$plugin_url;
 	}
 
 	/**
 	 * Set plugin url.
 	 *
-	 * @param $plugin_url
+	 * @param string $plugin_url
 	 */
-	public function set_plugin_url( $plugin_url ) {
-		$this->plugin_url = $plugin_url;
+	public function set_plugin_url( string $plugin_url ) {
+		self::$plugin_url = $plugin_url;
 	}
 }

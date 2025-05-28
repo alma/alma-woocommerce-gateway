@@ -42,9 +42,7 @@
         The below two examples just show how you can exclude rules.
         They are not intended as advice about which sniffs to exclude.
         -->
-        <exclude name="WordPress.WhiteSpace.ControlStructureSpacing"/>
         <exclude name="WordPress.Security.EscapeOutput"/>
-        -->
         <exclude name="WordPress.Files.FileName"/>
     </rule>
 
@@ -64,7 +62,7 @@
     For more information, also see:
     https://github.com/PHPCompatibility/PHPCompatibility
     -->
-    <config name="testVersion" value="5.6-"/>
+    <config name="testVersion" value="7.4-8.4"/>
     <rule ref="PHPCompatibilityWP"/>
 
     <!--
@@ -75,7 +73,7 @@
     the wiki:
     https://github.com/WordPress/WordPress-Coding-Standards/wiki/Customizable-sniff-properties
     -->
-    <config name="minimum_supported_wp_version" value="4.4"/>
+    <config name="minimum_supported_wp_version" value="5.3"/>
 
     <rule ref="WordPress.WP.I18n">
         <properties>
@@ -93,10 +91,6 @@
             </property>
 
         </properties>
-    </rule>
-
-    <rule ref="Squiz.Commenting.FunctionCommentThrowTag">
-        <exclude name="Squiz.Commenting.FunctionCommentThrowTag.WrongNumber"/>
     </rule>
 
     <config name="ignore_warnings_on_exit" value="1"/>

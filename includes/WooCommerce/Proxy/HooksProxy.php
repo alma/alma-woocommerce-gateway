@@ -14,9 +14,9 @@ class HooksProxy {
 	 *
 	 * @return void
 	 */
-	public static function load_language( $domain, $plugin_path ) {
+	public static function load_language( string $domain, string $plugin_path ) {
 		self::add_action(
-			'init',
+			'plugins_loaded',
 			function () use ( $domain, $plugin_path ) {
 				load_plugin_textdomain(
 					$domain,
@@ -24,6 +24,24 @@ class HooksProxy {
 					$plugin_path . '/languages'
 				);
 			}
+		);
+	}
+
+	public static function load_gateway( string $gateway_class_name ) {
+		add_filter(
+			'woocommerce_payment_gateways',
+			function ( $gateways ) use ( $gateway_class_name ) {
+				array_unshift( $gateways, $gateway_class_name );
+
+				return $gateways;
+			}
+		);
+	}
+
+	public static function add_gateway_links( string $base_path, callable $callback ) {
+		add_filter(
+			'plugin_action_links_' . plugin_basename( $base_path ),
+			$callback
 		);
 	}
 
@@ -35,25 +53,7 @@ class HooksProxy {
 	 *
 	 * @return void
 	 */
-	private static function add_action( $hook_name, $callback, $priority = 10, $accepted_args = 1 ) {
+	private static function add_action( string $hook_name, callable $callback, int $priority = 10, int $accepted_args = 1 ) {
 		add_action( $hook_name, $callback, $priority, $accepted_args );
-	}
-
-	public static function load_gateway( $gateway_class_name ) {
-		add_filter(
-			'woocommerce_payment_gateways',
-			function ( $gateways ) use ( $gateway_class_name ) {
-				array_unshift( $gateways, $gateway_class_name );
-
-				return $gateways;
-			}
-		);
-	}
-
-	public static function add_gateway_links( $base_path, $callback ) {
-		add_filter(
-			'plugin_action_links_' . plugin_basename( $base_path ),
-			$callback
-		);
 	}
 }

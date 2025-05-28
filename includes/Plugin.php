@@ -11,19 +11,17 @@
 
 namespace Alma\Gateway;
 
-use Alma\API\RequestError;
 use Alma\Gateway\Business\Exception\ContainerException;
 use Alma\Gateway\Business\Exception\CoreException;
-use Alma\Gateway\Business\Exception\PluginException;
 use Alma\Gateway\Business\Exception\RequirementsException;
 use Alma\Gateway\Business\Helper\L10nHelper;
 use Alma\Gateway\Business\Helper\PluginHelper;
 use Alma\Gateway\Business\Helper\RequirementsHelper;
 use Alma\Gateway\Business\Service\AdminService;
 use Alma\Gateway\Business\Service\ContainerService;
-use Alma\Gateway\Business\Service\EligibilityService;
 use Alma\Gateway\Business\Service\GatewayService;
 use Alma\Gateway\WooCommerce\Proxy\WooCommerceProxy;
+use Dice\Dice;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -42,13 +40,15 @@ final class Plugin {
 	 * Plugin instance.
 	 *
 	 * @see get_instance()
-	 * @type object
+	 * @type Null|Plugin
 	 */
-	private static $instance = null;
+	private static ?Plugin $instance = null;
+
 	/**
-	 * @var null The DI Container.
+	 * @var Null|Dice The DI Container.
 	 */
-	private static $container = null;
+	private static ?Dice $container = null;
+
 	/**
 	 * URL to the root plugin's directory.
 	 *
@@ -62,9 +62,9 @@ final class Plugin {
 	 */
 	private $plugin_path = '';
 	/**
-	 * @var object
+	 * @var PluginHelper
 	 */
-	private $plugin_helper;
+	private PluginHelper $plugin_helper;
 
 	/**
 	 * Constructor.
@@ -105,12 +105,13 @@ final class Plugin {
 	 * @return  void
 	 * @throws RequirementsException
 	 * @throws ContainerException
-	 * @throws PluginException
 	 */
 	public function plugin_setup() {
 		if ( ! $this->can_i_load() ) {
 			return;
 		}
+
+		// ShouldILoad?
 
 		$this->plugin_url = plugins_url( '/', __DIR__ );
 		$this->plugin_helper->set_plugin_url( $this->plugin_url );
@@ -124,31 +125,9 @@ final class Plugin {
 			self::get_container()->get( AdminService::class );
 		}
 		/** @var GatewayService $gateway_service */
-		$gateway_service = self::get_container()->get( GatewayService::class );
-		$gateway_service->load_gateway();
-
-		// Test eligibility
-		if ( ! is_admin() && false ) {
-			/** @var EligibilityService $eligibility_service */
-			$eligibility_service = self::get_container()->get( EligibilityService::class );
-			try {
-				$eligibility = $eligibility_service->is_eligible(
-					array(
-						'purchase_amount' => 15000,
-						'queries'         => array(
-							array(
-								'deferred_days'      => 0,
-								'deferred_months'    => 0,
-								'deferred_trigger'   => false,
-								'installments_count' => 3,
-							),
-						),
-					)
-				);
-			} catch ( RequestError $e ) {
-				throw new PluginException( $e->getMessage() );
-			}
-		}
+		// $gateway_service = self::get_container()->get( GatewayService::class );
+		//$gateway_service->load_gateway();
+		// $gateway_service->is_eligible();
 	}
 
 	/**
@@ -160,7 +139,9 @@ final class Plugin {
 	 */
 	public function can_i_load() {
 		// Check if all dependencies are met
-		if ( ! self::get_container()->get( RequirementsHelper::class )->check_dependencies() ) {
+		/** @var RequirementsHelper $requirements_helper */
+		$requirements_helper = self::get_container()->get( RequirementsHelper::class );
+		if ( ! $requirements_helper->check_dependencies() ) {
 			return false;
 		}
 		// Check if WooCommerce is active
@@ -183,7 +164,7 @@ final class Plugin {
 	 *
 	 * @return string
 	 */
-	public function get_plugin_url() {
+	public function get_plugin_url(): string {
 		return $this->plugin_url;
 	}
 
@@ -192,7 +173,7 @@ final class Plugin {
 	 *
 	 * @return string
 	 */
-	public function get_plugin_version() {
+	public function get_plugin_version(): string {
 		return self::ALMA_GATEWAY_PLUGIN_VERSION;
 	}
 
@@ -201,7 +182,7 @@ final class Plugin {
 	 *
 	 * @return string
 	 */
-	public function get_plugin_file() {
+	public function get_plugin_file(): string {
 		return dirname( __DIR__ ) . '/alma-gateway-for-woocommerce.php';
 	}
 

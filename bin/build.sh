@@ -15,11 +15,11 @@ PHP_VERSION=$($PHP_PATH -v | head -n 1 | awk '{print $2}')
 PHP_MAJOR=$(echo "$PHP_VERSION" | cut -d. -f1) # Extract major version
 PHP_MINOR=$(echo "$PHP_VERSION" | cut -d. -f2) # Extract minor version
 
-# Check if PHP version is exactly 5.6.x
-if [[ "$PHP_MAJOR" -eq 5 && "$PHP_MINOR" -eq 6 ]]; then
+# Check if PHP version is exactly 7.4.x
+if [[ "$PHP_MAJOR" -eq 7 && "$PHP_MINOR" -eq 4 ]]; then
     echo "PHP version is $PHP_VERSION (compatible)."
 else
-    echo "PHP version is $PHP_VERSION. Only PHP 5.6.x is supported."
+    echo "PHP version is $PHP_VERSION. Only PHP 7.4.x is supported."
     exit 1
 fi
 

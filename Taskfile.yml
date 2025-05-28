@@ -2,8 +2,8 @@ version: 3
 
 env:
   PHP_VERSION: '{{ .PHP_VERSION | default "7.4" }}'
-  WC_VERSION: '{{ .WC_VERSION | default "8.2.2" }}'
-  WP_VERSION: '{{ .WP_VERSION | default "6.4.1" }}'
+  WC_VERSION: '{{ .WC_VERSION | default "9.8.5" }}'
+  WP_VERSION: '{{ .WP_VERSION | default "6.8.1" }}'
   REPOSITORY: alma-woocommerce-gateway
 
 tasks:
@@ -13,10 +13,10 @@ tasks:
     cmds:
       - docker compose build test
 
-  build:php5-6:
+  build:php7-4:
     desc: Build test container
     cmds:
-      - docker compose build --build-arg UID="$(id -u)" php5-6
+      - docker compose build --build-arg UID="$(id -u)" php7-4
 
   lint:build:
     desc: Build lint container (phpcs)
@@ -70,7 +70,7 @@ tasks:
   dist:
     desc: Build zip file
     deps:
-      - build:php5-6
+      - build:php7-4
     cmds:
       - rm -rf ./dist
       - docker compose run --rm php5-6 ./bin/build.sh

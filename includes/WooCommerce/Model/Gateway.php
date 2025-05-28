@@ -1,12 +1,13 @@
 <?php
 
-namespace Alma\Gateway\Business\Model;
+namespace Alma\Gateway\WooCommerce\Model;
 
 use Alma\Gateway\Business\Exception\ContainerException;
 use Alma\Gateway\Business\Helper\AssetsHelper;
 use Alma\Gateway\Business\Helper\EncryptorHelper;
 use Alma\Gateway\Business\Helper\GatewayFormHelper;
 use Alma\Gateway\Business\Helper\L10nHelper;
+use Alma\Gateway\Business\Service\API\EligibilityService;
 use Alma\Gateway\Plugin;
 use WC_Payment_Gateway;
 
@@ -44,7 +45,8 @@ class Gateway extends WC_Payment_Gateway {
 		$this->has_fields         = false;
 		$this->init_form_fields();
 		$this->init_settings();
-		$this->icon = $this->get_icon_url();
+		$this->icon  = $this->get_icon_url();
+		$this->title = 'Alma';
 
 		add_action(
 			'woocommerce_update_options_payment_gateways_' . $this->id,
@@ -76,7 +78,7 @@ class Gateway extends WC_Payment_Gateway {
 	 * @return string The icon path.
 	 * @throws ContainerException
 	 */
-	public function get_icon_url() {
+	public function get_icon_url(): string {
 
 		/** @var AssetsHelper $asset_helper */
 		$asset_helper = Plugin::get_container()->get( AssetsHelper::class );
@@ -87,12 +89,36 @@ class Gateway extends WC_Payment_Gateway {
 	/**
 	 * Is gateway available?
 	 * @return bool
+	 * @throws ContainerException
 	 */
-	public function is_available() {
-		return true;
+	public function is_available(): bool {
+
+		if ( is_admin() ) {
+			return true;
+		}
+
+		// Get the cart total amount
+		$cart = WC()->cart;
+		if ( ! $cart ) {
+			return false;
+		}
+
+		$eligibilities = Plugin::get_container()->get( EligibilityService::class )->is_eligible(
+			array(
+				'purchase_amount' => $cart->get_total( '' ),
+			)
+		);
+		$eligibilities->is_eligibile();
+
+		$total = $cart->get_total( '' );
+		if ( $total < 0 || $total > $this->max_amount ) {
+			return false;
+		}
+
+		return parent::is_available();
 	}
 
-	public function process_payment( $order_id ) {
+	public function process_payment( $order_id ): array {
 		$order = wc_get_order( $order_id );
 
 		// Exemple : URL de paiement Alma (à remplacer par l'API réelle)
@@ -111,7 +137,7 @@ class Gateway extends WC_Payment_Gateway {
 	 *
 	 * @throws ContainerException
 	 */
-	public function process_admin_options() {
+	public function process_admin_options(): bool {
 
 		// Force key encryption before saving.
 		$post_data  = $this->get_post_data();
@@ -127,7 +153,7 @@ class Gateway extends WC_Payment_Gateway {
 	 *
 	 * @throws ContainerException
 	 */
-	private function encrypt_keys( $post_data ) {
+	private function encrypt_keys( array $post_data ): array {
 		/** @var EncryptorHelper $encryptor_helper */
 		$encryptor_helper = Plugin::get_container()->get( EncryptorHelper::class );
 
