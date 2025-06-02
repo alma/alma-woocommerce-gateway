@@ -90,7 +90,6 @@ class OptionsService {
 	 * @return string
 	 */
 	public function get_active_api_key(): string {
-
 		return $this->is_live() ? $this->get_live_api_key() : $this->get_test_api_key();
 	}
 

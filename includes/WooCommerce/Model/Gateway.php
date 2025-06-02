@@ -108,7 +108,7 @@ class Gateway extends WC_Payment_Gateway {
 				'purchase_amount' => $cart->get_total( '' ),
 			)
 		);
-		$eligibilities->is_eligibile();
+		//      $eligibilities->is_eligible();
 
 		$total = $cart->get_total( '' );
 		if ( $total < 0 || $total > $this->max_amount ) {

@@ -2,6 +2,7 @@
 
 namespace Alma\Gateway\Business\Service;
 
+use Alma\API\ClientConfiguration;
 use Alma\API\CurlClient;
 use Alma\API\Endpoint\ConfigurationEndpoint;
 use Alma\API\Endpoint\DataExportEndpoint;
@@ -105,7 +106,7 @@ class ContainerService extends Dice {
 		if ( $this->options_service->is_configured() ) {
 			$this->addRules(
 				array(
-					'Alma\API\ClientConfiguration' => array(
+					ClientConfiguration::class => array(
 						'constructParams' => array(
 							$this->options_service->get_active_api_key(),
 							$this->options_service->get_environment(),
@@ -113,7 +114,12 @@ class ContainerService extends Dice {
 						),
 						'shared'          => true,
 					),
-					CurlClient::class              => array( 'shared' => true ),
+					CurlClient::class          => array(
+						'constructParams' => array(
+							array( Dice::INSTANCE => ClientConfiguration::class ),
+						),
+						'shared'          => true,
+					),
 				)
 			);
 		}

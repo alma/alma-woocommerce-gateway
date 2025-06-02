@@ -13,6 +13,7 @@ namespace Alma\Gateway;
 
 use Alma\Gateway\Business\Exception\ContainerException;
 use Alma\Gateway\Business\Exception\CoreException;
+use Alma\Gateway\Business\Exception\PluginException;
 use Alma\Gateway\Business\Exception\RequirementsException;
 use Alma\Gateway\Business\Helper\L10nHelper;
 use Alma\Gateway\Business\Helper\PluginHelper;
@@ -101,11 +102,11 @@ final class Plugin {
 	 * Used for regular plugin work.
 	 *
 	 * @return  void
-	 * @throws RequirementsException
+	 * @throws PluginException
 	 * @throws ContainerException
+	 * @throws RequirementsException
 	 */
 	public function plugin_setup() {
-
 		self::$container = new ContainerService();
 		/** @var PluginHelper $plugin_helper */
 		$this->plugin_helper = self::get_container()->get( PluginHelper::class );
@@ -128,9 +129,9 @@ final class Plugin {
 			self::get_container()->get( AdminService::class );
 		}
 		/** @var GatewayService $gateway_service */
-		// $gateway_service = self::get_container()->get( GatewayService::class );
-		// $gateway_service->load_gateway();
-		// $gateway_service->is_eligible();
+		$gateway_service = self::get_container()->get( GatewayService::class );
+		$gateway_service->load_gateway();
+		$gateway_service->is_eligible();
 	}
 
 	/**
