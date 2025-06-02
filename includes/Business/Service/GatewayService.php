@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Business\Service;
 
-use Alma\API\Endpoint\EligibilityEndpoint;
+use Alma\API\Exceptions\EligibilityServiceException;
 use Alma\API\Exceptions\RequestException;
 use Alma\Gateway\Business\Exception\ContainerException;
 use Alma\Gateway\Business\Exception\PluginException;
@@ -31,7 +31,7 @@ class GatewayService {
 	 */
 	public function load_gateway() {
 		// Init Gateway
-		//add_action( 'wp_loaded', $this->hooks_proxy->load_gateway( Gateway::class ) );
+		// add_action( 'wp_loaded', $this->hooks_proxy->load_gateway( Gateway::class ) );
 		add_action( 'wp_loaded', array( $this->hooks_proxy, 'load_gateway' ) );
 
 		// Add links to gateway.
@@ -59,7 +59,7 @@ class GatewayService {
 
 	/**
 	 * @throws ContainerException
-	 * @throws PluginException
+	 * @throws PluginException|EligibilityServiceException
 	 */
 	public function is_eligible() {
 		/* @var EligibilityService $eligibility_service */

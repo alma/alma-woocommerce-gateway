@@ -89,7 +89,6 @@ class Gateway extends WC_Payment_Gateway {
 	/**
 	 * Is gateway available?
 	 * @return bool
-	 * @throws ContainerException
 	 */
 	public function is_available(): bool {
 
@@ -106,9 +105,9 @@ class Gateway extends WC_Payment_Gateway {
 		$eligibilities = Plugin::get_container()->get( EligibilityService::class )->is_eligible(
 			array(
 				'purchase_amount' => $cart->get_total( '' ),
+				'currency'        => get_woocommerce_currency(),
 			)
 		);
-		//      $eligibilities->is_eligible();
 
 		$total = $cart->get_total( '' );
 		if ( $total < 0 || $total > $this->max_amount ) {

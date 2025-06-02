@@ -42,10 +42,7 @@ class OptionsService {
 		if ( empty( $this->get_options() ) ) {
 			$is_configured = false;
 		}
-		if ( ! isset( $this->get_options()['environment'] ) ) {
-			$is_configured = false;
-		}
-		if ( ! isset( $this->get_options()['live_api_key'] ) && ! isset( $this->get_options()['test_api_key'] ) ) {
+		if ( $this->get_active_api_key() === null || empty( $this->get_active_api_key() ) ) {
 			$is_configured = false;
 		}
 
@@ -67,8 +64,12 @@ class OptionsService {
 	 * @return string
 	 */
 	public function get_environment(): string {
-		return self::ALMA_ENVIRONMENT_LIVE === $this->get_options()['environment']
-			? self::ALMA_ENVIRONMENT_LIVE : self::ALMA_ENVIRONMENT_TEST;
+		if ( isset( $this->get_options()['environment'] ) ) {
+			return self::ALMA_ENVIRONMENT_LIVE === $this->get_options()['environment']
+				? self::ALMA_ENVIRONMENT_LIVE : self::ALMA_ENVIRONMENT_TEST;
+		}
+
+		return self::ALMA_ENVIRONMENT_LIVE;
 	}
 
 	/**
@@ -87,9 +88,9 @@ class OptionsService {
 	/**
 	 * Gets API string for the current environment.
 	 *
-	 * @return string
+	 * @return string|null
 	 */
-	public function get_active_api_key(): string {
+	public function get_active_api_key(): ?string {
 		return $this->is_live() ? $this->get_live_api_key() : $this->get_test_api_key();
 	}
 
@@ -105,19 +106,27 @@ class OptionsService {
 	/**
 	 * Gets API key for live environment.
 	 *
-	 * @return string
+	 * @return string|null
 	 */
-	public function get_live_api_key(): string {
-		return $this->encryptor_helper->decrypt( $this->get_options()['live_api_key'] );
+	public function get_live_api_key(): ?string {
+		if ( isset( $this->get_options()['live_api_key'] ) ) {
+			return $this->encryptor_helper->decrypt( $this->get_options()['live_api_key'] );
+		}
+
+		return null;
 	}
 
 	/**
 	 * Gets API key for test environment.
 	 *
-	 * @return string
+	 * @return string|null
 	 */
-	public function get_test_api_key(): string {
-		return $this->encryptor_helper->decrypt( $this->get_options()['test_api_key'] );
+	public function get_test_api_key(): ?string {
+		if ( isset( $this->get_options()['test_api_key'] ) ) {
+			return $this->encryptor_helper->decrypt( $this->get_options()['test_api_key'] );
+		}
+
+		return null;
 	}
 
 	/**

@@ -57,7 +57,7 @@ class EncryptorHelper {
 	 *
 	 * @throws RequirementsException Requirement exception.
 	 */
-	public function __construct( $method = 'AES-256-CTR' ) {
+	public function __construct( string $method = 'AES-256-CTR' ) {
 		$key_salt = $this->get_key_salt();
 
 		$methods = openssl_get_cipher_methods();
