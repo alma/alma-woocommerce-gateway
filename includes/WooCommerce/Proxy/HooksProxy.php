@@ -2,6 +2,8 @@
 
 namespace Alma\Gateway\WooCommerce\Proxy;
 
+use Alma\Gateway\WooCommerce\Model\Gateway;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -27,11 +29,11 @@ class HooksProxy {
 		);
 	}
 
-	public static function load_gateway( string $gateway_class_name ) {
+	public static function load_gateway() {
 		add_filter(
 			'woocommerce_payment_gateways',
-			function ( $gateways ) use ( $gateway_class_name ) {
-				array_unshift( $gateways, $gateway_class_name );
+			function ( $gateways ) {
+				array_unshift( $gateways, Gateway::class );
 
 				return $gateways;
 			}

@@ -2,11 +2,12 @@
 
 namespace Alma\Gateway\Business\Service;
 
-use Alma\API\Endpoint\EligibilityEndpoint;
+use Alma\API\Exceptions\EligibilityServiceException;
 use Alma\API\Exceptions\RequestException;
 use Alma\Gateway\Business\Exception\ContainerException;
 use Alma\Gateway\Business\Exception\PluginException;
 use Alma\Gateway\Business\Helper\L10nHelper;
+use Alma\Gateway\Business\Service\API\EligibilityService;
 use Alma\Gateway\Plugin;
 use Alma\Gateway\WooCommerce\Model\Gateway;
 use Alma\Gateway\WooCommerce\Proxy\HooksProxy;
@@ -30,7 +31,8 @@ class GatewayService {
 	 */
 	public function load_gateway() {
 		// Init Gateway
-		add_action( 'wp_loaded', $this->hooks_proxy->load_gateway( Gateway::class ) );
+		// add_action( 'wp_loaded', $this->hooks_proxy->load_gateway( Gateway::class ) );
+		add_action( 'wp_loaded', array( $this->hooks_proxy, 'load_gateway' ) );
 
 		// Add links to gateway.
 		$this->hooks_proxy->add_gateway_links(
@@ -57,12 +59,13 @@ class GatewayService {
 
 	/**
 	 * @throws ContainerException
-	 * @throws PluginException
+	 * @throws PluginException|EligibilityServiceException
 	 */
 	public function is_eligible() {
-		$eligibility_endpoint = Plugin::get_container()->get( EligibilityEndpoint::class );
+		/* @var EligibilityService $eligibility_service */
+		$eligibility_service = Plugin::get_container()->get( EligibilityService::class );
 		try {
-			$eligibility_endpoint->is_eligible(
+			$eligibility_service->is_eligible(
 				array(
 					'purchase_amount' => 15000,
 					'queries'         => array(

@@ -13,6 +13,7 @@ namespace Alma\Gateway;
 
 use Alma\Gateway\Business\Exception\ContainerException;
 use Alma\Gateway\Business\Exception\CoreException;
+use Alma\Gateway\Business\Exception\PluginException;
 use Alma\Gateway\Business\Exception\RequirementsException;
 use Alma\Gateway\Business\Helper\L10nHelper;
 use Alma\Gateway\Business\Helper\PluginHelper;
@@ -20,8 +21,8 @@ use Alma\Gateway\Business\Helper\RequirementsHelper;
 use Alma\Gateway\Business\Service\AdminService;
 use Alma\Gateway\Business\Service\ContainerService;
 use Alma\Gateway\Business\Service\GatewayService;
+use Alma\Gateway\Business\Service\OptionsService;
 use Alma\Gateway\WooCommerce\Proxy\WooCommerceProxy;
-use Dice\Dice;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -45,9 +46,9 @@ final class Plugin {
 	private static ?Plugin $instance = null;
 
 	/**
-	 * @var Null|Dice The DI Container.
+	 * @var Null|ContainerService The DI Container.
 	 */
-	private static ?Dice $container = null;
+	private static ?ContainerService $container = null;
 
 	/**
 	 * URL to the root plugin's directory.
@@ -69,7 +70,6 @@ final class Plugin {
 	/**
 	 * Constructor.
 	 *
-	 * @throws ContainerException
 	 * @see plugin_setup()
 	 */
 	public function __construct() {
@@ -79,7 +79,7 @@ final class Plugin {
 	 * Return the DI container
 	 * @return ContainerService|null
 	 */
-	public static function get_container() {
+	public static function get_container(): ContainerService {
 		/** @var ContainerService $container */
 		return self::$container;
 	}
@@ -101,11 +101,11 @@ final class Plugin {
 	 * Used for regular plugin work.
 	 *
 	 * @return  void
-	 * @throws RequirementsException
+	 * @throws PluginException
 	 * @throws ContainerException
+	 * @throws RequirementsException
 	 */
 	public function plugin_setup() {
-
 		self::$container = new ContainerService();
 		/** @var PluginHelper $plugin_helper */
 		$this->plugin_helper = self::get_container()->get( PluginHelper::class );
@@ -113,8 +113,6 @@ final class Plugin {
 		if ( ! $this->can_i_load() ) {
 			return;
 		}
-
-		// ShouldILoad?
 
 		$this->plugin_url = plugins_url( '/', __DIR__ );
 		$this->plugin_helper->set_plugin_url( $this->plugin_url );
@@ -127,10 +125,15 @@ final class Plugin {
 		if ( is_admin() ) {
 			self::get_container()->get( AdminService::class );
 		}
+
+		// If I'm in frontend, check if i should load the gateway
+		if ( ! is_admin() && ! $this->should_i_load() ) {
+			return;
+		}
+
 		/** @var GatewayService $gateway_service */
-		// $gateway_service = self::get_container()->get( GatewayService::class );
-		// $gateway_service->load_gateway();
-		// $gateway_service->is_eligible();
+		$gateway_service = self::get_container()->get( GatewayService::class );
+		$gateway_service->load_gateway();
 	}
 
 	/**
@@ -140,7 +143,7 @@ final class Plugin {
 	 * @throws RequirementsException
 	 * @throws ContainerException
 	 */
-	public function can_i_load() {
+	public function can_i_load(): bool {
 		// Check if all dependencies are met
 		/** @var RequirementsHelper $requirements_helper */
 		$requirements_helper = self::get_container()->get( RequirementsHelper::class );
@@ -154,11 +157,20 @@ final class Plugin {
 	}
 
 	/**
+	 * @throws ContainerException
+	 */
+	public function should_i_load(): bool {
+		$options_service = self::get_container()->get( OptionsService::class );
+
+		return $options_service->is_configured();
+	}
+
+	/**
 	 * Return the plugin path.
 	 *
 	 * @return string
 	 */
-	public function get_plugin_path() {
+	public function get_plugin_path(): string {
 		return $this->plugin_path;
 	}
 

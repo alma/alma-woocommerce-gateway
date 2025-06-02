@@ -2,6 +2,7 @@
 
 namespace Alma\Gateway\Business\Service;
 
+use Alma\API\ClientConfiguration;
 use Alma\API\CurlClient;
 use Alma\API\Endpoint\ConfigurationEndpoint;
 use Alma\API\Endpoint\DataExportEndpoint;
@@ -36,17 +37,21 @@ use Psr\Http\Client\ClientInterface;
  * Class ContainerService
  * Dependency Injection Container
  */
-class ContainerService extends Dice {
-	/**
-	 * @var OptionsService
-	 */
+class ContainerService {
+
+	/** @var OptionsService */
 	private OptionsService $options_service;
+
+	/** @var Dice */
+	private Dice $dice;
 
 	/**
 	 * ContainerService constructor.
 	 * Init Rules
 	 */
 	public function __construct() {
+		$this->dice = new Dice();
+
 		/** @var OptionsService $options_service */
 		$this->options_service = $this->get( OptionsService::class );
 
@@ -68,7 +73,7 @@ class ContainerService extends Dice {
 		try {
 			error_reporting( error_reporting() & ~E_DEPRECATED ); // phpcs:ignore
 			// @formatter:off PHPStorm wants this call to be multiline
-			$service = $this->create( $name, $args, $share );
+			$service = $this->dice->create( $name, $args, $share );
 			// @formatter:on
 			error_reporting( error_reporting() ^ E_DEPRECATED ); // phpcs:ignore
 		} catch ( \Exception $e ) {
@@ -81,9 +86,9 @@ class ContainerService extends Dice {
 	/**
 	 * Set Business Layer Rules
 	 */
-	private function set_business_rules() {
+	private function set_business_rules(): void {
 		// Business Layer
-		$this->addRules(
+		$this->dice = $this->dice->addRules(
 			array(
 				AdminService::class       => array( 'shared' => true ),
 				OptionsService::class     => array( 'shared' => true ),
@@ -95,81 +100,57 @@ class ContainerService extends Dice {
 		);
 
 		// API Layer
-		$this->addRules(
+		$this->dice = $this->dice->addRules(
 			array(
 				EligibilityService::class => array( 'shared' => true ),
 			)
 		);
 
 		// PHP-Client
-		if ( $this->options_service->is_configured() ) {
-			$this->addRules(
-				array(
-					'Alma\API\ClientConfiguration' => array(
-						'constructParams' => array(
-							$this->options_service->get_active_api_key(),
-							$this->options_service->get_environment(),
-							array(),
-						),
-						'shared'          => true,
-					),
-					CurlClient::class              => array( 'shared' => true ),
-				)
-			);
-		}
+		$this->dice = $this->dice->addRule(
+			ClientConfiguration::class,
+			array(
+				'constructParams' => array(
+					$this->options_service->get_active_api_key(),
+					$this->options_service->get_environment(),
+				),
+				'shared'          => true,
+			)
+		);
+
+		$this->dice = $this->dice->addRule(
+			CurlClient::class,
+			array( 'shared' => true )
+		);
 
 		// Endpoints
-		$this->addRules(
+		$this->dice = $this->dice->addRule(
+			'*',
 			array(
-				'*' => array(
-					array(
-						'substitutions' => array(
-							ClientInterface::class => CurlClient::class,
-						),
+				array(
+					'substitutions' => array(
+						ClientInterface::class => CurlClient::class,
 					),
+
 				),
 			)
 		);
 
-		$this->addRules(
+		$this->dice = $this->dice->addRules(
 			array(
-				ConfigurationEndpoint::class   => array(
-					'substitutions' => array( ClientInterface::class => CurlClient::class ),
-					'shared'        => true,
-				),
-				DataExportEndpoint::class      => array(
-					'substitutions' => array( ClientInterface::class => CurlClient::class ),
-					'shared'        => true,
-				),
-				EligibilityEndpoint::class     => array(
-					'substitutions' => array( ClientInterface::class => CurlClient::class ),
-					'shared'        => true,
-				),
-				MerchantEndpoint::class        => array(
-					'substitutions' => array( ClientInterface::class => CurlClient::class ),
-					'shared'        => true,
-				),
-				OrderEndpoint::class           => array(
-					'substitutions' => array( ClientInterface::class => CurlClient::class ),
-					'shared'        => true,
-				),
-				PaymentEndpoint::class         => array(
-					'substitutions' => array( ClientInterface::class => CurlClient::class ),
-					'shared'        => true,
-				),
-				ShareOfCheckoutEndpoint::class => array(
-					'substitutions' => array( ClientInterface::class => CurlClient::class ),
-					'shared'        => true,
-				),
-				WebhookEndpoint::class         => array(
-					'substitutions' => array( ClientInterface::class => CurlClient::class ),
-					'shared'        => true,
-				),
+				ConfigurationEndpoint::class   => array( 'shared' => true ),
+				DataExportEndpoint::class      => array( 'shared' => true ),
+				EligibilityEndpoint::class     => array( 'shared' => true ),
+				MerchantEndpoint::class        => array( 'shared' => true ),
+				OrderEndpoint::class           => array( 'shared' => true ),
+				PaymentEndpoint::class         => array( 'shared' => true ),
+				ShareOfCheckoutEndpoint::class => array( 'shared' => true ),
+				WebhookEndpoint::class         => array( 'shared' => true ),
 			)
 		);
 
 		// Helpers
-		$this->addRules(
+		$this->dice = $this->dice->addRules(
 			array(
 				AssetsHelper::class       => array( 'shared' => true ),
 				EncryptorHelper::class    => array( 'shared' => true ),
@@ -187,7 +168,7 @@ class ContainerService extends Dice {
 	private function set_woocommerce_rules() {
 
 		// WooCommerce Layer
-		$this->addRules(
+		$this->dice = $this->dice->addRules(
 			array(
 				HooksProxy::class    => array( 'shared' => true ),
 				OptionsProxy::class  => array( 'shared' => true ),
