@@ -48,6 +48,17 @@ class HooksProxy {
 	}
 
 	/**
+	 * Run services on template redirect.
+	 * We need to wait templates because is_page detection run at this time!
+	 *
+	 * @param callable $callback
+	 */
+	public static function run_services( callable $callback ) {
+		// This method can be used to run any services that need to be initialized.
+		self::add_action( 'wp', $callback );
+	}
+
+	/**
 	 * @param string   $hook_name
 	 * @param callable $callback
 	 * @param int      $priority

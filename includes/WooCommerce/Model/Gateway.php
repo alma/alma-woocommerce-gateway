@@ -7,7 +7,6 @@ use Alma\Gateway\Business\Helper\AssetsHelper;
 use Alma\Gateway\Business\Helper\EncryptorHelper;
 use Alma\Gateway\Business\Helper\GatewayFormHelper;
 use Alma\Gateway\Business\Helper\L10nHelper;
-use Alma\Gateway\Business\Service\API\EligibilityService;
 use Alma\Gateway\Plugin;
 use WC_Payment_Gateway;
 
@@ -33,6 +32,8 @@ class Gateway extends WC_Payment_Gateway {
 	 * @var false
 	 */
 	public $has_fields;
+
+	private $is_eligible = false;
 
 	/**
 	 * Gateway constructor.
@@ -102,15 +103,12 @@ class Gateway extends WC_Payment_Gateway {
 			return false;
 		}
 
-		$eligibilities = Plugin::get_container()->get( EligibilityService::class )->is_eligible(
-			array(
-				'purchase_amount' => $cart->get_total( '' ),
-				'currency'        => get_woocommerce_currency(),
-			)
-		);
-
 		$total = $cart->get_total( '' );
 		if ( $total < 0 || $total > $this->max_amount ) {
+			return false;
+		}
+
+		if ( ! $this->is_eligible ) {
 			return false;
 		}
 

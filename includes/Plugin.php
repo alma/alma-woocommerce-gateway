@@ -13,15 +13,16 @@ namespace Alma\Gateway;
 
 use Alma\Gateway\Business\Exception\ContainerException;
 use Alma\Gateway\Business\Exception\CoreException;
-use Alma\Gateway\Business\Exception\PluginException;
 use Alma\Gateway\Business\Exception\RequirementsException;
 use Alma\Gateway\Business\Helper\L10nHelper;
 use Alma\Gateway\Business\Helper\PluginHelper;
 use Alma\Gateway\Business\Helper\RequirementsHelper;
 use Alma\Gateway\Business\Service\AdminService;
+use Alma\Gateway\Business\Service\API\EligibilityService;
 use Alma\Gateway\Business\Service\ContainerService;
 use Alma\Gateway\Business\Service\GatewayService;
 use Alma\Gateway\Business\Service\OptionsService;
+use Alma\Gateway\WooCommerce\Proxy\HooksProxy;
 use Alma\Gateway\WooCommerce\Proxy\WooCommerceProxy;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -101,7 +102,6 @@ final class Plugin {
 	 * Used for regular plugin work.
 	 *
 	 * @return  void
-	 * @throws PluginException
 	 * @throws ContainerException
 	 * @throws RequirementsException
 	 */
@@ -126,14 +126,23 @@ final class Plugin {
 			self::get_container()->get( AdminService::class );
 		}
 
-		// If I'm in frontend, check if i should load the gateway
-		if ( ! is_admin() && ! $this->should_i_load() ) {
-			return;
-		}
+		HooksProxy::run_services(
+			function () {
+				// If I'm in frontend, check if I should load the gateway
+				if ( ! is_admin() && ! $this->should_i_load() ) {
+					return;
+				}
 
-		/** @var GatewayService $gateway_service */
-		$gateway_service = self::get_container()->get( GatewayService::class );
-		$gateway_service->load_gateway();
+				// Init Services
+				/** @var EligibilityService $eligibility_service */
+				$eligibility_service = self::get_container()->get( EligibilityService::class );
+				$eligibility_service->init();
+
+				/** @var GatewayService $gateway_service */
+				$gateway_service = self::get_container()->get( GatewayService::class );
+				$gateway_service->load_gateway();
+			}
+		);
 	}
 
 	/**
@@ -162,7 +171,18 @@ final class Plugin {
 	public function should_i_load(): bool {
 		$options_service = self::get_container()->get( OptionsService::class );
 
-		return $options_service->is_configured();
+		// If mandatory parameters are set, we can load the plugin
+		$is_configured = $options_service->is_configured();
+
+		// Are we on the cart page?
+		$is_cart_or_checkout_page = WooCommerceProxy::is_cart_or_checkout_page();
+
+		// If everything is ok, we can load the plugin
+		if ( $is_configured && $is_cart_or_checkout_page ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
