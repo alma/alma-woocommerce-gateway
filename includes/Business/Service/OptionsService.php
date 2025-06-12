@@ -143,9 +143,9 @@ class OptionsService {
 	}
 
 	/**
-	 * @return false|mixed|null
+	 * @return array
 	 */
-	private function get_options() {
+	private function get_options(): array {
 		return $this->options_proxy->get_options();
 	}
 }

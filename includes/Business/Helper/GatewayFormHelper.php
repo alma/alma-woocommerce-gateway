@@ -10,6 +10,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class GatewayFormHelper {
 
+	public const FIELD_LIVE_API_KEY = 'live_api_key';
+
+	public const FIELD_TEST_API_KEY = 'test_api_key';
+
 	/**
 	 * Inits enabled Admin field.
 	 *
@@ -29,20 +33,20 @@ class GatewayFormHelper {
 	public function api_key_fieldset() {
 
 		return array(
-			'keys_section' => array(
+			'keys_section'           => array(
 				'title'       => '<hr>' . L10nHelper::__( '→ Start by filling in your API keys' ),
 				'type'        => 'title',
 				'description' => L10nHelper::__( 'You can find your API keys on your Alma dashboard</a>' ),
 			),
-			'live_api_key' => array(
+			self::FIELD_LIVE_API_KEY => array(
 				'title' => L10nHelper::__( 'Live API key' ),
-				'type'  => 'password',
+				'type'  => 'text',
 			),
-			'test_api_key' => array(
+			self::FIELD_TEST_API_KEY => array(
 				'title' => L10nHelper::__( 'Test API key' ),
-				'type'  => 'password',
+				'type'  => 'text',
 			),
-			'environment'  => array(
+			'environment'            => array(
 				'title'       => L10nHelper::__( 'API Mode' ),
 				'type'        => 'select',
 				/* translators: %s Merchant description */

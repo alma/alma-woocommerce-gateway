@@ -2,46 +2,84 @@
 
 namespace Alma\Gateway\Business\Service;
 
+use Alma\API\Exceptions\EligibilityServiceException;
+use Alma\API\Exceptions\MerchantServiceException;
 use Alma\Gateway\Business\Helper\L10nHelper;
 use Alma\Gateway\Business\Service\API\EligibilityService;
+use Alma\Gateway\Business\Service\API\FeePlanService;
 use Alma\Gateway\Plugin;
-use Alma\Gateway\WooCommerce\Model\Gateway;
+use Alma\Gateway\WooCommerce\Gateway\AbstractGateway;
 use Alma\Gateway\WooCommerce\Proxy\HooksProxy;
 use Alma\Gateway\WooCommerce\Proxy\WooCommerceProxy;
 use Alma\Gateway\WooCommerce\Proxy\WordPressProxy;
 
 class GatewayService {
 
-	/** @var Gateway */
-	private Gateway $gateway;
-
 	/** @var HooksProxy */
 	private HooksProxy $hooks_proxy;
+	private EligibilityService $eligibility_service;
+	private FeePlanService $fee_plan_service;
 
-	public function __construct( Gateway $gateway, HooksProxy $hooks_proxy ) {
+	public function __construct(
+		HooksProxy $hooks_proxy
+	) {
 		$this->hooks_proxy = $hooks_proxy;
-		$this->gateway     = $gateway;
+	}
+
+	public function set_eligibility_service( EligibilityService $eligibility_service ): void {
+		$this->eligibility_service = $eligibility_service;
+	}
+
+	public function set_fee_plan_service( FeePlanService $fee_plan_service ): void {
+		$this->fee_plan_service = $fee_plan_service;
 	}
 
 	/**
-	 * Init and Load the gateway
+	 * Init and Load the gateways
 	 */
 	public function load_gateway() {
 
-		// Load eligibilities
-		$eligibility_service = Plugin::get_container()->get( EligibilityService::class );
-		$eligibility_service->is_eligible();
-
 		// Init Gateway
-		add_action( 'wp_loaded', array( $this->hooks_proxy, 'load_gateway' ) );
+		if ( WordPressProxy::is_admin() ) {
+			$this->hooks_proxy->load_backend_gateway();
 
-		// Add links to gateway.
-		$this->hooks_proxy->add_gateway_links(
-			Plugin::get_instance()->get_plugin_file(),
-			array( $this, 'plugin_action_links' )
-		);
+			// Add links to gateway.
+			$this->hooks_proxy->add_gateway_links(
+				Plugin::get_instance()->get_plugin_file(),
+				array( $this, 'plugin_action_links' )
+			);
+		} else {
+			$this->hooks_proxy->load_frontend_gateways();
+		}
+	}
 
-		WooCommerceProxy::setEligibilities( $eligibility_service->is_eligible() );
+	/**
+	 * Configure each gateway with eligibility and fee plans
+	 * @throws EligibilityServiceException
+	 * @throws MerchantServiceException
+	 */
+	public function configure_gateway() {
+
+		if ( ! $this->eligibility_service || ! $this->fee_plan_service ) {
+			L10nHelper::__( 'Eligibility or Fee Plan service is not set.' );
+
+			return;
+		}
+
+		// Init Services
+		$this->eligibility_service->retrieve_eligibility();
+		$this->fee_plan_service->retrieve_fee_plan_list();
+
+		$logger = Plugin::get_container()->get( LoggerService::class );
+		$logger->debug( count( WooCommerceProxy::get_alma_gateways() ) . ' gateways found.' );
+
+		/** @var AbstractGateway $gateway */
+		foreach ( WooCommerceProxy::get_alma_gateways() as $gateway ) {
+			$logger = Plugin::get_container()->get( LoggerService::class );
+			$logger->debug( $gateway->id );
+			$gateway->configure_eligibility( $this->eligibility_service->get_eligibility_list() );
+			$gateway->configure_fee_plans( $this->fee_plan_service->get_fee_plan_list() );
+		}
 	}
 
 	/**
@@ -52,7 +90,7 @@ class GatewayService {
 	 * @return array
 	 */
 	public function plugin_action_links( $links ): array {
-		$setting_link = WordPressProxy::admin_url( 'admin.php?page=wc-settings&tab=checkout&section=alma' );
+		$setting_link = WordPressProxy::admin_url( 'admin.php?page=wc-settings&tab=checkout&section=alma_config_gateway' );
 		$plugin_links = array(
 			sprintf( '<a href="%s">%s</a>', $setting_link, L10nHelper::__( 'Settings' ) ),
 		);

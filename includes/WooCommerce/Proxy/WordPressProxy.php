@@ -11,7 +11,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class WordPressProxy {
 
-	public static function admin_url( $path = '', $scheme = 'admin' ) {
+	public static function admin_url( $path = '', $scheme = 'admin' ): ?string {
 		return admin_url( $path, $scheme );
+	}
+
+	public static function is_admin(): bool {
+		return is_admin();
 	}
 }

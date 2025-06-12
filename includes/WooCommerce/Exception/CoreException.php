@@ -1,6 +1,6 @@
 <?php
 
-namespace Alma\Gateway\Business\Exception;
+namespace Alma\Gateway\WooCommerce\Exception;
 
 class CoreException extends \Exception {
 }

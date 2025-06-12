@@ -22,12 +22,12 @@ class SettingsProxy {
 		/**
 		 * Register our alma_settings_init to the admin_init action hook.
 		 */
-		add_action( 'admin_init', array( $this, 'alma_settings_init' ) );
+		// add_action( 'admin_init', array( $this, 'alma_settings_init' ) );
 
 		/**
 		 * Register our alma_options_page to the admin_menu action hook.
 		 */
-		add_action( 'admin_menu', array( $this, 'alma_options_page' ) );
+		// add_action( 'admin_menu', array( $this, 'alma_options_page' ) );
 	}
 
 	/**

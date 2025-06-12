@@ -2,6 +2,8 @@
 
 namespace Alma\Gateway\WooCommerce\Proxy;
 
+use Alma\Gateway\WooCommerce\Model\AbstractGateway;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -33,7 +35,7 @@ class WooCommerceProxy extends WordPressProxy {
 	}
 
 	public static function is_cart_or_checkout_page(): bool {
-		return is_checkout() || is_cart();
+		return self::is_cart_page() || self::is_checkout_page();
 	}
 
 	/**
@@ -46,9 +48,16 @@ class WooCommerceProxy extends WordPressProxy {
 		return 100 * WC()->cart->get_total( null );
 	}
 
-	public static function setEligibilities( $eligibility_data ): void {
-		$available_gateways = WC()->payment_gateways()->payment_gateways();
-
-		// Pour chaque gateway, on vérifie si elle est éligible
+	/**
+	 * Get all Alma gateways.
+	 * @return array
+	 */
+	public static function get_alma_gateways(): array {
+		return array_filter(
+			WC()->payment_gateways()->payment_gateways(),
+			function ( $gateway ) {
+				return $gateway instanceof AbstractGateway;
+			}
+		);
 	}
 }
