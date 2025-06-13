@@ -6,9 +6,11 @@ use Alma\API\Entities\EligibilityList;
 use Alma\API\Entities\FeePlanList;
 use Alma\API\Exceptions\EligibilityServiceException;
 use Alma\API\Exceptions\MerchantServiceException;
+use Alma\API\Exceptions\PaymentServiceException;
 use Alma\Gateway\Business\Exception\ContainerException;
 use Alma\Gateway\Business\Helper\AssetsHelper;
 use Alma\Gateway\Business\Helper\L10nHelper;
+use Alma\Gateway\Business\Service\API\PaymentService;
 use Alma\Gateway\Business\Service\CacheService;
 use Alma\Gateway\Plugin;
 use Alma\Gateway\WooCommerce\Proxy\WooCommerceProxy;
@@ -128,17 +130,21 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		return $availability;
 	}
 
+	/**
+	 * @throws ContainerException
+	 * @throws PaymentServiceException
+	 */
 	public function process_payment( $order_id ): array {
 		$order = wc_get_order( $order_id );
-
-		// Example : URL de paiement Alma (à remplacer par l'API réelle)
-		$payment_url = 'https://sandbox.getalma.eu/payment-link';
+		/** @var PaymentService $payment_service */
+		$payment_service = Plugin::get_container()->get( PaymentService::class );
+		$payment         = $payment_service->create_payment( WooCommerceProxy::get_order_total( $order_id ) );
 
 		$order->update_status( 'pending', L10nHelper::__( 'En attente de paiement via Alma' ) );
 
 		return array(
 			'result'   => 'success',
-			'redirect' => $payment_url,
+			'redirect' => $payment->url,
 		);
 	}
 

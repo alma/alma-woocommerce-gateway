@@ -102,7 +102,6 @@ class ContainerService {
 				SettingsService::class    => array( 'shared' => true ),
 				WooCommerceService::class => array( 'shared' => true ),
 				GatewayService::class     => array( 'shared' => true ),
-				PaymentService::class     => array( 'shared' => true ),
 				LoggerService::class      => array( 'shared' => true ),
 			)
 		);
@@ -112,6 +111,7 @@ class ContainerService {
 			array(
 				EligibilityService::class => array( 'shared' => true ),
 				FeePlanService::class     => array( 'shared' => true ),
+				PaymentService::class     => array( 'shared' => true ),
 			)
 		);
 

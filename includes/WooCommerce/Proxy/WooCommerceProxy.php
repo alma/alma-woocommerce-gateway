@@ -49,6 +49,17 @@ class WooCommerceProxy extends WordPressProxy {
 	}
 
 	/**
+	 * Get the order total in cents.
+	 *
+	 * @param $order_id
+	 *
+	 * @return int
+	 */
+	public static function get_order_total( $order_id ): int {
+		return 100 * wc_get_order( $order_id )->get_total();
+	}
+
+	/**
 	 * Get all Alma gateways.
 	 * @return array
 	 */
@@ -59,5 +70,33 @@ class WooCommerceProxy extends WordPressProxy {
 				return $gateway instanceof AbstractGateway;
 			}
 		);
+	}
+
+	/**
+	 * Get something in WC session
+	 *
+	 * @param string $key
+	 * @param        $default
+	 *
+	 * @return array|string|null
+	 */
+	public function get_session( string $key, $default = null ) {
+		if ( ! function_exists( 'WC' ) || ! WC()->session ) {
+			return null;
+		}
+
+		return WC()->session->get( $key, $default );
+	}
+
+	/**
+	 * Set something in WC session
+	 *
+	 * @param string $key
+	 * @param mixed  $value
+	 */
+	public function set_session( string $key, $value ) {
+		if ( function_exists( 'WC' ) && WC()->session ) {
+			WC()->session->set( $key, $value );
+		}
 	}
 }
