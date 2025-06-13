@@ -70,13 +70,8 @@ class GatewayService {
 		$this->eligibility_service->retrieve_eligibility();
 		$this->fee_plan_service->retrieve_fee_plan_list();
 
-		$logger = Plugin::get_container()->get( LoggerService::class );
-		$logger->debug( count( WooCommerceProxy::get_alma_gateways() ) . ' gateways found.' );
-
 		/** @var AbstractGateway $gateway */
 		foreach ( WooCommerceProxy::get_alma_gateways() as $gateway ) {
-			$logger = Plugin::get_container()->get( LoggerService::class );
-			$logger->debug( $gateway->id );
 			$gateway->configure_eligibility( $this->eligibility_service->get_eligibility_list() );
 			$gateway->configure_fee_plans( $this->fee_plan_service->get_fee_plan_list() );
 		}

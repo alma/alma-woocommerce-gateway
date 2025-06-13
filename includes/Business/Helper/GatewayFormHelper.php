@@ -19,7 +19,7 @@ class GatewayFormHelper {
 	 *
 	 * @return array[]
 	 */
-	public function enabled_field() {
+	public function enabled_field(): array {
 		return array(
 			'enabled' => array(
 				'title'   => L10nHelper::__( 'Enable/Disable' ),
@@ -30,7 +30,7 @@ class GatewayFormHelper {
 		);
 	}
 
-	public function api_key_fieldset() {
+	public function api_key_fieldset(): array {
 
 		return array(
 			'keys_section'           => array(
@@ -40,11 +40,11 @@ class GatewayFormHelper {
 			),
 			self::FIELD_LIVE_API_KEY => array(
 				'title' => L10nHelper::__( 'Live API key' ),
-				'type'  => 'text',
+				'type'  => 'password',
 			),
 			self::FIELD_TEST_API_KEY => array(
 				'title' => L10nHelper::__( 'Test API key' ),
-				'type'  => 'text',
+				'type'  => 'password',
 			),
 			'environment'            => array(
 				'title'       => L10nHelper::__( 'API Mode' ),
@@ -63,7 +63,7 @@ class GatewayFormHelper {
 		);
 	}
 
-	public function debug_fieldset() {
+	public function debug_fieldset(): array {
 		/** @var AssetsHelper $assets_helper */
 		$assets_helper = Plugin::get_container()->get( AssetsHelper::class );
 
@@ -94,7 +94,7 @@ class GatewayFormHelper {
 		);
 	}
 
-	public function l10n_fieldset() {
+	public function l10n_fieldset(): array {
 		return array(
 			'l10n_section' => array(
 				'title'       => '<hr>' . L10nHelper::__( '→ Localization' ),

@@ -37,7 +37,7 @@ abstract class AbstractLoggerService implements LoggerInterface {
 
 		foreach ( $context as $key => $value ) {
 			if ( ! is_scalar( $value ) ) {
-				$value = json_encode( $value );
+				$value = wp_json_encode( $value );
 			}
 			$replace[ '{' . $key . '}' ] = $value;
 		}

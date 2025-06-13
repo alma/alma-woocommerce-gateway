@@ -5,6 +5,8 @@ namespace Alma\Gateway\Business\Service\API;
 use Alma\API\Endpoint\MerchantEndpoint;
 use Alma\API\Entities\FeePlanList;
 use Alma\API\Exceptions\MerchantServiceException;
+use Alma\Gateway\Business\Service\LoggerService;
+use Alma\Gateway\Plugin;
 
 class FeePlanService {
 
@@ -24,7 +26,8 @@ class FeePlanService {
 	 * @throws MerchantServiceException
 	 */
 	public function retrieve_fee_plan_list() {
-
+		$logger = Plugin::get_container()->get( LoggerService::class );
+		$logger->debug( '[FeePlanService] Retrieving fee plan list for cart total: ' );
 		$this->fee_plan_list = $this->merchant_endpoint->getFeePlanList();
 	}
 

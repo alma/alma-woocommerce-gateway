@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\WooCommerce\Proxy;
 
-use Alma\Gateway\WooCommerce\Model\AbstractGateway;
+use Alma\Gateway\WooCommerce\Gateway\AbstractGateway;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

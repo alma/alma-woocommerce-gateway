@@ -9,7 +9,7 @@ use Alma\API\Exceptions\MerchantServiceException;
 use Alma\Gateway\Business\Exception\ContainerException;
 use Alma\Gateway\Business\Helper\AssetsHelper;
 use Alma\Gateway\Business\Helper\L10nHelper;
-use Alma\Gateway\Business\Service\LoggerService;
+use Alma\Gateway\Business\Service\CacheService;
 use Alma\Gateway\Plugin;
 use Alma\Gateway\WooCommerce\Proxy\WooCommerceProxy;
 use WC_Payment_Gateway;
@@ -50,6 +50,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	/**
 	 * Set the eligibility of the gateway based on the eligibility list.
 	 * @throws EligibilityServiceException|MerchantServiceException
+	 * @todo Analyze result for each fee plan and set the eligibility accordingly.
 	 */
 	public function configure_eligibility( EligibilityList $eligibility_list ): void {
 		$this->eligibility_list = $eligibility_list->filterEligibilityList( $this->get_type() );
@@ -65,6 +66,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	/**
 	 * Set the max amount of the gateway based on the fee plans.
 	 * @throws EligibilityServiceException|MerchantServiceException
+	 * @todo Analyze result for each fee plan and set the max amount accordingly.
 	 */
 	public function configure_fee_plans( FeePlanList $fee_plan_list ): void {
 		$this->fee_plan_list = $fee_plan_list->filterFeePlanList( $this->get_type() );
@@ -95,24 +97,35 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	/**
 	 * Is gateway available?
 	 * @return bool
+	 * @throws ContainerException
 	 */
 	public function is_available(): bool {
-
-		$logger = Plugin::get_container()->get( LoggerService::class );
 
 		// Get the cart total amount
 		$cart  = WC()->cart;
 		$total = WooCommerceProxy::get_cart_total();
 
+		// Is the availability already computed for this cart?
+		$cache_service = Plugin::get_container()->get( CacheService::class );
+		$cache_key     = sprintf( '%s_%f', $this->id, $total );
+		$cached        = $cache_service->get_cache( $cache_key );
+		if ( ! is_null( $cached ) ) {
+			return (bool) $cached;
+		}
+
+		// Check the availability for this cart
 		if ( ! $cart || $total < 0 || $total > $this->max_amount ) {
 			return false;
 		}
-
 		if ( ! $this->is_eligible ) {
 			return false;
 		}
 
-		return parent::is_available();
+		// Cache and return the availability for this cart
+		$availability = parent::is_available();
+		$cache_service->set_cache( $cache_key, $availability );
+
+		return $availability;
 	}
 
 	public function process_payment( $order_id ): array {

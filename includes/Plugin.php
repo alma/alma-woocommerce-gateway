@@ -109,6 +109,12 @@ final class Plugin {
 		$logger_service       = self::get_container()->get( LoggerService::class );
 		$this->logger_service = $logger_service;
 
+		$logger_service->debug( '---------- START ----------' );
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			$logger_service->debug( '---------- AJAX CALL ----------' );
+		} else {
+			$logger_service->debug( '---------- HTTP CALL ----------' );
+		}
 		if ( ! $this->are_prerequisites_ok() ) {
 			return;
 		}
@@ -157,6 +163,8 @@ final class Plugin {
 				$gateway_service->configure_gateway();
 			}
 		);
+
+		$logger_service->debug( '---------- END ----------' );
 	}
 
 	/**

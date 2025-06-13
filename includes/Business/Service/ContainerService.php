@@ -28,7 +28,6 @@ use Alma\Gateway\Business\Service\API\EligibilityService;
 use Alma\Gateway\Business\Service\API\FeePlanService;
 use Alma\Gateway\WooCommerce\Proxy\HooksProxy;
 use Alma\Gateway\WooCommerce\Proxy\OptionsProxy;
-use Alma\Gateway\WooCommerce\Proxy\SettingsProxy;
 use Dice\Dice;
 use Exception;
 use Psr\Http\Client\ClientInterface;
