@@ -4,6 +4,7 @@ namespace Alma\Gateway\Business\Service;
 
 use Alma\API\Exceptions\EligibilityServiceException;
 use Alma\API\Exceptions\MerchantServiceException;
+use Alma\Gateway\Business\Exception\ContainerException;
 use Alma\Gateway\Business\Helper\L10nHelper;
 use Alma\Gateway\Business\Service\API\EligibilityService;
 use Alma\Gateway\Business\Service\API\FeePlanService;
@@ -17,8 +18,8 @@ class GatewayService {
 
 	/** @var HooksProxy */
 	private HooksProxy $hooks_proxy;
-	private EligibilityService $eligibility_service;
-	private FeePlanService $fee_plan_service;
+	private ?EligibilityService $eligibility_service = null;
+	private ?FeePlanService $fee_plan_service        = null;
 
 	public function __construct(
 		HooksProxy $hooks_proxy
@@ -57,12 +58,11 @@ class GatewayService {
 	 * Configure each gateway with eligibility and fee plans
 	 * @throws EligibilityServiceException
 	 * @throws MerchantServiceException
+	 * @throws ContainerException
 	 */
 	public function configure_gateway() {
 
 		if ( ! $this->eligibility_service || ! $this->fee_plan_service ) {
-			L10nHelper::__( 'Eligibility or Fee Plan service is not set.' );
-
 			return;
 		}
 
