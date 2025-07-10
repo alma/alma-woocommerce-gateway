@@ -12,14 +12,14 @@ jobs:
       matrix:
         version:
           - 9.6.2
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: github.event.pull_request.draft == false && !contains(github.event.pull_request.labels.*.name, 'hotfix')
 
     steps:
 
       - name: Generate Github token for PR checks
         id: github-token-checks
-        uses: actions/create-github-app-token@d72941d797fd3113feb6b93fd0dec494b13a2547 # v1.12.0
+        uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2.0.6
         continue-on-error: true
         with:
           app-id: ${{ secrets.ALMA_UPDATE_CHECKS_APP_ID }}
@@ -44,14 +44,14 @@ jobs:
 
       - name: Generate Github token for integration-infrastructure repo
         id: github-token-infrastructure
-        uses: actions/create-github-app-token@d72941d797fd3113feb6b93fd0dec494b13a2547 # v1.12.0
+        uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2.0.6
         with:
           app-id: ${{ secrets.ALMA_WF_TRIGGER_APP_ID }}
           private-key: ${{ secrets.ALMA_WF_TRIGGER_APP_PEM }}
           repositories: integration-infrastructure
 
       - name: Trigger E2E tests in the integration-infrastructure repository
-        uses: codex-/return-dispatch@8e5959a15e0ef0a34b9569395f994e61fed5dd26 # v1.16.0
+        uses: codex-/return-dispatch@72a3b5d4ff36e4319a7b1ab5b686c778ee02fa37 # v2.1.0
         id: e2e-tests-workflow-dispatch
         with:
           token: ${{ steps.github-token-infrastructure.outputs.token }}
