@@ -79,6 +79,10 @@ final class Plugin {
 		return self::$container;
 	}
 
+	public static function set_container( ContainerService $container ) {
+		self::$container = $container;
+	}
+
 	/**
 	 * Access this plugin’s working instance
 	 *
@@ -93,15 +97,23 @@ final class Plugin {
 	}
 
 	/**
-	 * Used for regular plugin work.
-	 *
-	 * @return  void
 	 * @throws ContainerException
 	 * @throws RequirementsException
 	 */
-	public function plugin_setup() {
+	public function plugin_warmup() {
+
+		// Configure Languages
+		L10nHelper::load_language( $this->get_plugin_path() );
+
+		// Check mandatory prerequisites
+		if ( ! $this->are_prerequisites_ok() ) {
+			return;
+		}
+
+		// Set the DI container
 		self::$container = new ContainerService();
 
+		// Set the plugin helper and logger service
 		/** @var PluginHelper $plugin_helper */
 		$plugin_helper       = self::get_container()->get( PluginHelper::class );
 		$this->plugin_helper = $plugin_helper;
@@ -109,22 +121,11 @@ final class Plugin {
 		$logger_service       = self::get_container()->get( LoggerService::class );
 		$this->logger_service = $logger_service;
 
-		if ( ! $this->are_prerequisites_ok() ) {
-			return;
-		}
-
 		$this->plugin_url = plugins_url( '/', __DIR__ );
 		$this->plugin_helper->set_plugin_url( $this->plugin_url );
 		$this->plugin_path = plugin_dir_path( __DIR__ );
 
-		// Configure Helpers
-		L10nHelper::load_language( $this->get_plugin_path() );
-
-		// Init Services
-		if ( is_admin() ) {
-			self::get_container()->get( AdminService::class );
-		}
-
+		// Configure the gateways
 		/** @var GatewayService $gateway_service */
 		$gateway_service = self::get_container()->get( GatewayService::class );
 		if ( $this->is_configured() ) {
@@ -135,13 +136,34 @@ final class Plugin {
 			$fee_plan_service = self::get_container()->get( FeePlanService::class );
 			$gateway_service->set_fee_plan_service( $fee_plan_service );
 		}
+	}
 
+	/**
+	 * Used for regular plugin work.
+	 *
+	 * @return  void
+	 * @throws ContainerException
+	 * @throws RequirementsException
+	 */
+	public function plugin_setup() {
+
+		if ( ! $this->are_prerequisites_ok() ) {
+			return;
+		}
+
+		/** @var GatewayService $gateway_service */
+		$gateway_service = self::get_container()->get( GatewayService::class );
 		$gateway_service->load_gateway();
 
 		// Run services only when WordPress admin is ready.
 		HooksProxy::run_backend_services(
 			function () {
 				// Init Backend Services
+				if ( is_admin() ) {
+					/** @var AdminService $admin_service */
+					$admin_service = self::get_container()->get( AdminService::class );
+					$admin_service->enqueue_admin_scripts();
+				}
 			}
 		);
 
@@ -161,20 +183,22 @@ final class Plugin {
 
 	/**
 	 * Check if the plugin can load. Is woocommerce installed? It's mandatory.
-	 *
+	 * We don't use Dice because it's not loaded yet.
 	 * @return bool
 	 * @throws RequirementsException
-	 * @throws ContainerException
 	 */
 	public function are_prerequisites_ok(): bool {
+
+		// Check if WooCommerce is active
+		if ( ! WooCommerceProxy::is_woocommerce_loaded() ) {
+			return false;
+		}
+
 		// Check if all dependencies are met
-		/** @var RequirementsHelper $requirements_helper */
-		$requirements_helper = self::get_container()->get( RequirementsHelper::class );
+		$requirements_helper = new RequirementsHelper();
 		if ( ! $requirements_helper->check_dependencies() ) {
 			return false;
 		}
-		// Check if WooCommerce is active
-		WooCommerceProxy::is_woocommerce_loaded();
 
 		return true;
 	}
@@ -183,13 +207,8 @@ final class Plugin {
 	 * @throws ContainerException
 	 */
 	public function is_configured(): bool {
+		/** @var OptionsService $options_service */
 		$options_service = self::get_container()->get( OptionsService::class );
-
-		if ( $options_service->is_configured() ) {
-			$this->logger_service->debug( 'Plugin is configured' );
-		} else {
-			$this->logger_service->debug( 'Plugin is NOT configured' );
-		}
 
 		return $options_service->is_configured();
 	}

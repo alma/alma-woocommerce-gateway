@@ -3,7 +3,12 @@
 namespace Alma\Gateway\Business\Gateway\Frontend;
 
 use Alma\Gateway\Business\Exception\ContainerException;
+use Alma\Gateway\Business\Exception\MerchantServiceException;
 use Alma\Gateway\Business\Helper\L10nHelper;
+use Alma\Gateway\Business\Helper\TemplateHelper;
+use Alma\Gateway\Plugin;
+use Alma\Gateway\WooCommerce\Proxy\WooCommerceProxy;
+use Alma\Gateway\WooCommerce\Proxy\WordPressProxy;
 
 /**
  * Class Gateway
@@ -11,7 +16,7 @@ use Alma\Gateway\Business\Helper\L10nHelper;
  */
 class PayLaterGateway extends AbstractFrontendGateway {
 
-	public const GATEWAY_TYPE = 'pay_later';
+	public const GATEWAY_TYPE = 'pay-later';
 
 	/**
 	 * Gateway constructor.
@@ -22,5 +27,67 @@ class PayLaterGateway extends AbstractFrontendGateway {
 		$this->method_title = L10nHelper::__( 'Payment deferred with Alma' );
 
 		parent::__construct();
+	}
+
+	/**
+	 * Validate the fields submitted by the user.
+	 *
+	 * @return bool
+	 */
+	public function validate_fields(): bool {
+
+		WordPressProxy::check_nonce(
+			'alma_pay-later_gateway_nonce_field',
+			'alma_pay-later_gateway_nonce_action'
+		);
+
+		if ( empty( $_POST['alma_deferred'] )// phpcs:ignore
+			|| ! in_array(
+				$_POST['alma_deferred'], // phpcs:ignore
+				array( '15_0', '30_0', '45_0', '0_1', '0_2', '0_3' ),
+				true
+			) ) {
+			WooCommerceProxy::notify_error( L10nHelper::__( 'Veuillez choisir un nombre de mensualités valide.' ) );
+
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Expose the payment fields to the frontend.
+	 *
+	 * @return void
+	 * @throws ContainerException
+	 * @throws MerchantServiceException
+	 */
+	public function payment_fields() {
+		/** @var TemplateHelper $template_helper */
+		$template_helper = Plugin::get_container()->get( TemplateHelper::class );
+		$template_helper->get_template(
+			'pay-later-gateway-options.php',
+			array( 'alma_woocommerce_gateway_fee_plan_list' => $this->get_fee_plan_list() ),
+			'partials'
+		);
+	}
+
+	protected function process_payment_fields( $order ): array {
+
+		WordPressProxy::check_nonce(
+			'alma_pnx_gateway_nonce_field',
+			'alma_pnx_gateway_nonce_action'
+		);
+
+		$deferred = (int) sanitize_text_field( $_POST['alma_deferred'] ?? 0 );// phpcs:ignore
+		list( $deferred_days, $deferred_months ) = explode( '_', $deferred );
+		$order->update_meta_data( '_alma_deferred_days', $deferred_days );
+		$order->update_meta_data( '_alma_deferred_months', $deferred_months );
+		$order->save();
+
+		return array(
+			'deferred_days'   => $deferred_days,
+			'deferred_months' => $deferred_months,
+		);
 	}
 }

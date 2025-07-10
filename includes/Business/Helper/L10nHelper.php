@@ -21,7 +21,7 @@ class L10nHelper {
 	 *
 	 * @return string
 	 */
-	public static function __( string $translation, string $domain = self::ALMA_L10N_DOMAIN ) /* NOSONAR */ {
+	public static function __( string $translation, string $domain = self::ALMA_L10N_DOMAIN ): string /* NOSONAR */ {
 		return __( $translation, $domain );// phpcs:ignore
 	}
 

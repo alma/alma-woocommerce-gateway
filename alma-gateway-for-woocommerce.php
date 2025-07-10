@@ -40,7 +40,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once 'vendor/autoload.php';
 require_once 'includes/functions.php';
 
+$alma_gateway_plugin = Alma\Gateway\Plugin::get_instance();
+
 add_action(
 	'plugins_loaded',
-	array( Alma\Gateway\Plugin::get_instance(), 'plugin_setup' )
+	array( $alma_gateway_plugin, 'plugin_warmup' ),
+	0
+);
+
+add_action(
+	'plugins_loaded',
+	array( $alma_gateway_plugin, 'plugin_setup' )
 );

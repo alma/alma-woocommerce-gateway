@@ -12,6 +12,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 class AssetsHelper {
 
 	/**
+	 * Get Alma full URL depends on test or live mode (sandbox or not)
+	 *
+	 * @param string $env The environment.
+	 * @param string $path as path to add after default scheme://host/ infos.
+	 *
+	 * @return string as full URL
+	 */
+	public static function get_alma_dashboard_url( string $env = 'test', string $path = '' ): string {
+		if ( 'live' === $env ) {
+			/* translators: %s -> path to add after dashboard url */
+			return esc_url( sprintf( L10nHelper::__( 'https://dashboard.getalma.eu/%s' ), $path ) );
+		}
+
+		/* translators: %s -> path to add after sandbox dashboard url */
+
+		return esc_url(
+			sprintf(
+				L10nHelper::__( 'https://dashboard.sandbox.getalma.eu/%s' ),
+				$path
+			)
+		);
+	}
+
+	/**
 	 * Get admin logs url.
 	 *
 	 * @return string

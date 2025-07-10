@@ -7,6 +7,7 @@ use Alma\Gateway\Business\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Business\Gateway\Frontend\PayLaterGateway;
 use Alma\Gateway\Business\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Business\Gateway\Frontend\PnxGateway;
+use Alma\Gateway\WooCommerce\Gateway\AbstractGateway;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -44,14 +45,30 @@ class HooksProxy {
 		);
 	}
 
+	/**
+	 * Load the frontend gateways.
+	 * @return void
+	 * @todo Define the order of the gateways to be loaded.
+	 */
 	public static function load_frontend_gateways() {
 		add_filter(
 			'woocommerce_payment_gateways',
 			function ( $gateways ) {
-				array_unshift( $gateways, CreditGateway::class );
-				array_unshift( $gateways, PayLaterGateway::class );
-				array_unshift( $gateways, PayNowGateway::class );
-				array_unshift( $gateways, PnxGateway::class );
+				$alma_gateway_list = array(
+					CreditGateway::class,
+					PayLaterGateway::class,
+					PayNowGateway::class,
+					PnxGateway::class,
+				);
+				/** @var AbstractGateway $gateway */
+				foreach ( $alma_gateway_list as $gateway ) {
+					if ( ! in_array( $gateway, $gateways, true ) && class_exists( $gateway ) ) {
+						// Check if the gateway is enabled before adding it to the list.
+						if ( ( new $gateway() )->is_enabled() ) { // NOSONAR
+							array_unshift( $gateways, $gateway );
+						}
+					}
+				}
 
 				return $gateways;
 			}
@@ -71,7 +88,6 @@ class HooksProxy {
 	 * @param callable $callback
 	 */
 	public static function run_backend_services( callable $callback ) {
-		// This method can be used to run any services that need to be initialized.
 		self::add_action( 'admin_init', $callback );
 	}
 
@@ -82,7 +98,6 @@ class HooksProxy {
 	 * @param callable $callback
 	 */
 	public static function run_frontend_services( callable $callback ) {
-		// This method can be used to run any services that need to be initialized.
 		self::add_action( 'template_redirect', $callback );
 	}
 

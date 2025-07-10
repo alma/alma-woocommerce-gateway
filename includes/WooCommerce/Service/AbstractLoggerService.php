@@ -8,6 +8,7 @@ use Psr\Log\LogLevel;
 use WC_Logger;
 
 abstract class AbstractLoggerService implements LoggerInterface {
+
 	/**
 	 * @var WC_Logger
 	 */

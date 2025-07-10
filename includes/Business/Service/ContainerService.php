@@ -20,14 +20,16 @@ use Alma\Gateway\Business\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Business\Gateway\Frontend\PnxGateway;
 use Alma\Gateway\Business\Helper\AssetsHelper;
 use Alma\Gateway\Business\Helper\EncryptorHelper;
-use Alma\Gateway\Business\Helper\GatewayFormHelper;
 use Alma\Gateway\Business\Helper\L10nHelper;
 use Alma\Gateway\Business\Helper\PluginHelper;
 use Alma\Gateway\Business\Helper\RequirementsHelper;
+use Alma\Gateway\Business\Helper\TemplateHelper;
 use Alma\Gateway\Business\Service\API\EligibilityService;
 use Alma\Gateway\Business\Service\API\FeePlanService;
+use Alma\Gateway\Business\Service\API\PaymentService;
 use Alma\Gateway\WooCommerce\Proxy\HooksProxy;
 use Alma\Gateway\WooCommerce\Proxy\OptionsProxy;
+use Alma\Gateway\WooCommerce\Proxy\SettingsProxy;
 use Dice\Dice;
 use Exception;
 use Psr\Http\Client\ClientInterface;
@@ -103,6 +105,7 @@ class ContainerService {
 				WooCommerceService::class => array( 'shared' => true ),
 				GatewayService::class     => array( 'shared' => true ),
 				LoggerService::class      => array( 'shared' => true ),
+				IpnService::class         => array( 'shared' => true ),
 			)
 		);
 
@@ -163,10 +166,10 @@ class ContainerService {
 			array(
 				AssetsHelper::class       => array( 'shared' => true ),
 				EncryptorHelper::class    => array( 'shared' => true ),
-				GatewayFormHelper::class  => array( 'shared' => true ),
 				L10nHelper::class         => array( 'shared' => true ),
 				PluginHelper::class       => array( 'shared' => true ),
 				RequirementsHelper::class => array( 'shared' => true ),
+				TemplateHelper::class     => array( 'shared' => true ),
 			)
 		);
 	}

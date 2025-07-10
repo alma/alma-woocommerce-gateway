@@ -36,14 +36,13 @@ class RequirementsHelper {
 			);
 		}
 
-		$openssl_warning = L10nHelper::__( 'Alma requires OpenSSL to be installed on your server' );
 		if ( ! defined( 'OPENSSL_VERSION_TEXT' ) ) {
-			throw new RequirementsException( $openssl_warning );
+			throw new RequirementsException( L10nHelper::__( 'Alma requires OpenSSL to be installed on your server' ) );
 		}
 
 		preg_match( '/^(?:Libre|Open)SSL ([\d.]+)/', OPENSSL_VERSION_TEXT, $matches );
 		if ( empty( $matches[1] ) ) {
-			throw new RequirementsException( $openssl_warning );
+			throw new RequirementsException( L10nHelper::__( 'Alma requires OpenSSL to be installed on your server' ) );
 		}
 
 		return true;

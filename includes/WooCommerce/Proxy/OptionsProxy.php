@@ -25,4 +25,26 @@ class OptionsProxy {
 
 		return is_array( $options ) ? $options : array();
 	}
+
+	/**
+	 * Update a specific option value.
+	 *
+	 * @param string $option The option name to update.
+	 * @param mixed  $value The value to set for the option.
+	 *
+	 * @return bool
+	 */
+	public function update_option( string $option, $value ): bool {
+		$options            = get_option( self::OPTIONS_KEY ) ?? array();
+		$options[ $option ] = $value;
+
+		return update_option( self::OPTIONS_KEY, $options );
+	}
+
+	public function delete_option( string $option ): bool {
+		$options = get_option( self::OPTIONS_KEY ) ?? array();
+		unset( $options[ $option ] );
+
+		return update_option( self::OPTIONS_KEY, $options );
+	}
 }

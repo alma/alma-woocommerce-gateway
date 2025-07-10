@@ -2,7 +2,9 @@
 
 namespace Alma\Gateway\WooCommerce\Proxy;
 
+use Alma\Gateway\WooCommerce\Exception\CoreException;
 use Alma\Gateway\WooCommerce\Gateway\AbstractGateway;
+use WC_Order;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -45,18 +47,18 @@ class WooCommerceProxy extends WordPressProxy {
 	 */
 	public static function get_cart_total(): int {
 
-		return 100 * WC()->cart->get_total( null );
+		return self::price_to_cent( WC()->cart->get_total( null ) );
 	}
 
 	/**
 	 * Get the order total in cents.
 	 *
-	 * @param $order_id
+	 * @param string $order_id
 	 *
 	 * @return int
 	 */
-	public static function get_order_total( $order_id ): int {
-		return 100 * wc_get_order( $order_id )->get_total();
+	public static function get_order_total( string $order_id ): int {
+		return self::price_to_cent( wc_get_order( $order_id )->get_total() );
 	}
 
 	/**
@@ -70,6 +72,76 @@ class WooCommerceProxy extends WordPressProxy {
 				return $gateway instanceof AbstractGateway;
 			}
 		);
+	}
+
+	/**
+	 * Get webhook url
+	 *
+	 * @param string $webhook Webhook.
+	 *
+	 * @return string
+	 */
+	public static function get_webhook_url( string $webhook ): string {
+		return wc()->api_request_url( $webhook );
+	}
+
+	public static function empty_cart() {
+		wc()->cart->empty_cart();
+	}
+
+	/**
+	 * Get an order by ID and key.
+	 * @throws CoreException
+	 */
+	public static function get_order( $order_id, $order_key = null, $payment_id = null ) {
+		$order = wc_get_order( $order_id );
+
+		if ( ! $order && $order_key ) {
+			// We have an invalid $order_id, probably because invoice_prefix has changed.
+			$order_id = wc_get_order_id_by_order_key( $order_key );
+			$order    = wc_get_order( $order_id );
+		}
+
+		if ( ! $order || ! hash_equals( $order->get_order_key(), $order_key ) ) {
+			throw new CoreException( $order_id, $order_key, $payment_id );
+		}
+
+		return $order;
+	}
+
+	public static function price_to_cent( int $price ) {
+		return 100 * $price;
+	}
+
+	/**
+	 * Redirects to the return URL after payment.
+	 * This method is used to redirect the user to the return URL after a successful payment.
+	 * It retrieves the return URL from the payment method and redirects the user to that URL.
+	 * If the return URL is not set, it falls back to the cart URL.
+	 *
+	 * @param WC_Order $wc_order The WooCommerce order object.
+	 *
+	 * @return void
+	 */
+	public static function redirect_after_payment( WC_Order $wc_order ) {
+
+		// Get the return url from the payment method
+		$payment_method = $wc_order->get_payment_method();
+		$url            = WC()->payment_gateways()->payment_gateways()[ $payment_method ]->get_return_url( $wc_order );
+		// If the return url is not set, fallback to the cart url
+		if ( ! $url ) {
+			$url = wc_get_cart_url();
+		}
+		wp_safe_redirect( $url );
+		exit;
+	}
+
+	public static function redirect_to_cart( $message = null ) {
+		if ( $message ) {
+			self::notify_error( $message );
+		}
+		wp_safe_redirect( wc_get_cart_url() );
+		exit;
 	}
 
 	/**

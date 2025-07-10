@@ -35,10 +35,6 @@ install_wp() {
 }
 
 install_test_suite() {
-	local DB_NAME=${WP_TEST_DATABASE_NAME}
-	local DB_USER=${WP_TEST_DATABASE_USER}
-	local DB_PASS=${WP_TEST_DATABASE_PASSWORD}
-	local DB_HOST=${WP_TEST_DATABASE_HOST}
 
 	# set up testing suite if it doesn't yet exist
 	if [ ! -d $WP_TESTS_DIR ]; then
@@ -59,7 +55,6 @@ install_test_suite() {
 
 	download https://downloads.wordpress.org/plugin/woocommerce."${WC_VERSION}".zip $TMPDIR/woocommerce.zip
 	unzip $TMPDIR/woocommerce.zip  -d $WP_TESTS_DIR
-
 }
 
 

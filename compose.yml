@@ -18,7 +18,8 @@ services:
 
   test:
     build:
-      context: .
+      context: ./
+      dockerfile: test.Dockerfile
       args:
         PHP_VERSION: ${PHP_VERSION}
         WC_VERSION: ${WC_VERSION}
@@ -36,13 +37,3 @@ services:
       WP_TEST_DATABASE_PASSWORD: root
       WP_TEST_DATABASE_HOST: mysql
     entrypoint: ./bin/entrypoint.sh
-
-  php5-6:
-    build:
-      context: ./
-      dockerfile: legacy.Dockerfile
-    volumes:
-      - ./:/home/phpuser
-      - /home/phpuser/src/vendor # do not mount vendor inside container
-    environment:
-      PATH_TO_COMPOSER: /usr/bin/composer

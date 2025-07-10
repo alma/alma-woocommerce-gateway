@@ -1,8 +1,8 @@
 <?php
 /**
- * AlmaException.
+ * EligibilityServiceException.
  *
- * @since 4.0.0
+ * @since 6.0.0
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/includes/Business/Exception
@@ -11,15 +11,13 @@
 
 namespace Alma\Gateway\Business\Exception;
 
-use Exception;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * Alma_Alma.
+ * EligibilityServiceException
  */
-class AlmaGatewayException extends Exception {
+class EligibilityServiceException extends AlmaGatewayException {
 
 }

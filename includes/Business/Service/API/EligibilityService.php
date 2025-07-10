@@ -4,8 +4,8 @@ namespace Alma\Gateway\Business\Service\API;
 
 use Alma\API\Endpoint\EligibilityEndpoint;
 use Alma\API\Entities\EligibilityList;
-use Alma\API\Exceptions\EligibilityServiceException;
-use Alma\Gateway\Business\Exception\ContainerException;
+use Alma\API\Exceptions\Endpoint\EligibilityEndpointException;
+use Alma\Gateway\Business\Exception\EligibilityServiceException;
 use Alma\Gateway\WooCommerce\Proxy\WooCommerceProxy;
 
 class EligibilityService {
@@ -23,21 +23,25 @@ class EligibilityService {
 	/**
 	 * Retrieve the eligibility list based on the current cart total.
 	 *
-	 * @throws EligibilityServiceException|ContainerException
+	 * @throws EligibilityServiceException
 	 */
 	public function retrieve_eligibility() {
-		$purchase_amount = WooCommerceProxy::get_cart_total();
-		if ( $purchase_amount > 0 ) {
-			$this->eligibility_list = $this->eligibility_endpoint->getEligibilityList( array( 'purchase_amount' => $purchase_amount ) );
-		} else {
-			$this->eligibility_list = new EligibilityList();
+		try {
+			$purchase_amount = WooCommerceProxy::get_cart_total();
+			if ( $purchase_amount > 0 ) {
+				$this->eligibility_list = $this->eligibility_endpoint->getEligibilityList( array( 'purchase_amount' => $purchase_amount ) );
+			} else {
+				$this->eligibility_list = new EligibilityList();
+			}
+		} catch ( EligibilityEndpointException $e ) {
+			throw new EligibilityServiceException( 'Error retrieving eligibility: ' . $e->getMessage() );
 		}
 	}
 
 	/**
 	 * Get the eligibility list.
 	 *
-	 * @throws EligibilityServiceException|ContainerException
+	 * @throws EligibilityServiceException
 	 */
 	public function get_eligibility_list(): EligibilityList {
 		if ( ! isset( $this->eligibility_list ) ) {
