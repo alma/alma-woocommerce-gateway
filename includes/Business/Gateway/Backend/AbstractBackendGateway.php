@@ -108,7 +108,7 @@ class AbstractBackendGateway extends AbstractGateway {
 			'keys_section'           => array(
 				'title'       => '<hr>' . L10nHelper::__( '→ Start by filling in your API keys' ),
 				'type'        => 'title',
-				'description' => L10nHelper::__( 'You can find your API keys on your Alma dashboard</a>' ),
+				'description' => L10nHelper::__( 'You can find your API keys on your Alma dashboard' ),
 				'desc_tip'    => false,
 			),
 			self::FIELD_LIVE_API_KEY => array(

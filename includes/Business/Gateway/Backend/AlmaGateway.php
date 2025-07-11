@@ -12,7 +12,7 @@ use Alma\Gateway\Plugin;
 
 /**
  * Class Gateway
- * Should extend WC_Payment_Gateway
+ * It's a fake gateway that is used to configure the plugin.
  */
 class AlmaGateway extends AbstractBackendGateway {
 
@@ -34,6 +34,7 @@ class AlmaGateway extends AbstractBackendGateway {
 
 	/**
 	 * Is gateway available?
+	 *
 	 * @return bool
 	 */
 	public function is_available(): bool {
@@ -41,6 +42,8 @@ class AlmaGateway extends AbstractBackendGateway {
 	}
 
 	/**
+	 * Initialize form fields.
+	 *
 	 * @throws ContainerException
 	 * @throws MerchantServiceException
 	 */
