@@ -530,9 +530,7 @@ class AbstractBackendGateway extends AbstractGateway {
 		return $section_title;
 	}
 
-	public function generate_fee_plan_description(
-		FeePlan $fee_plan
-	): string {
+	public function generate_fee_plan_description( FeePlan $fee_plan ): string {
 
 		/** @var OptionsService $options_service */
 		$options_service = Plugin::get_container()->get( OptionsService::class );
