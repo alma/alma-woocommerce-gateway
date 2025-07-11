@@ -158,7 +158,7 @@ class AbstractBackendGateway extends AbstractGateway {
 			'type'     => 'title',
 			'desc_tip' => false,
 		);
-		/** @see self::generate_custom_html() */
+		/** @uses self::generate_custom_html() */
 		$field_list['fee_plan_header'] = array(
 			'type'     => 'custom',
 			'html'     => <<<HTML
@@ -182,7 +182,7 @@ class AbstractBackendGateway extends AbstractGateway {
 
 		/** @var FeePlan $fee_plan */
 		foreach ( $fee_plan_list as $fee_plan ) {
-			/** @see self::generate_table_title_html() */
+			/** @uses self::generate_table_title_html() */
 			$field_list[ $fee_plan->getPlanKey() . '_title' ] = array(
 				'type'      => 'table_title',
 				'title'     => $this->generate_fee_plan_title( $fee_plan ),
@@ -190,7 +190,7 @@ class AbstractBackendGateway extends AbstractGateway {
 				'desc_tip'  => false,
 			);
 			/**
-			 * @see self::generate_table_toggle_html()
+			 * @uses self::generate_table_toggle_html()
 			 */
 			$field_list[ $fee_plan->getPlanKey() ] = array(
 				'type'        => 'table_toggle',
@@ -199,13 +199,13 @@ class AbstractBackendGateway extends AbstractGateway {
 				'desc_tip'    => true,
 				'enabled'     => $fee_plan->isEnabled(),
 			);
-			/** @see self::generate_table_description_html() */
+			/** @uses self::generate_table_description_html() */
 			$field_list[ $fee_plan->getPlanKey() . '_description' ] = array(
 				'type'        => 'table_description',
 				'description' => $this->generate_fee_plan_description( $fee_plan ),
 				'desc_tip'    => true,
 			);
-			/** @see self::generate_table_min_amount_html() */
+			/** @uses self::generate_table_min_amount_html() */
 			$field_list[ $fee_plan->getPlanKey() . '_min_amount' ] = array(
 				'type'        => 'table_min_amount',
 				'description' => $this->generate_fee_plan_description( $fee_plan ),
@@ -213,7 +213,7 @@ class AbstractBackendGateway extends AbstractGateway {
 				'default'     => $fee_plan->getMinPurchaseAmount() / 100,
 				'value'       => $fee_plan->getMinPurchaseAmount( true ) / 100,
 			);
-			/** @see self::generate_table_max_amount_html() */
+			/** @uses self::generate_table_max_amount_html() */
 			$field_list[ $fee_plan->getPlanKey() . '_max_amount' ] = array(
 				'type'        => 'table_max_amount',
 				'description' => $this->generate_fee_plan_description( $fee_plan ),
@@ -224,7 +224,7 @@ class AbstractBackendGateway extends AbstractGateway {
 			);
 		}
 
-		/** @see self::generate_custom_html() */
+		/** @uses self::generate_custom_html() */
 		$field_list['fee_plan_footer'] = array(
 			'type'     => 'custom',
 			'html'     => <<<HTML
@@ -258,7 +258,7 @@ class AbstractBackendGateway extends AbstractGateway {
 			'type'     => 'title',
 			'desc_tip' => false,
 		);
-		/** @see self::generate_custom_html() */
+		/** @uses self::generate_custom_html() */
 		$field_list['gateway_header'] = array(
 			'type'     => 'custom',
 			'html'     => <<<HTML
@@ -278,14 +278,14 @@ class AbstractBackendGateway extends AbstractGateway {
 		);
 
 		foreach ( $gateway_list as $gateway ) {
-			/** @see self::generate_table_order_html() */
+			/** @uses self::generate_table_order_html() */
 			$field_list[ ( new $gateway() )->get_id() . '_order' ] = array(
 				'type'      => 'table_order',
 				'gateway'   => $gateway,
 				'decorator' => '<tr>%s',
 				'desc_tip'  => true,
 			);
-			/** @see self::generate_table_description_html() */
+			/** @uses self::generate_table_description_html() */
 			$field_list[ ( new $gateway() )->get_id() . '_description' ] = array(
 				'type'        => 'table_description',
 				'description' => ( new $gateway() )->method_title,
@@ -293,7 +293,7 @@ class AbstractBackendGateway extends AbstractGateway {
 			);
 		}
 
-		/** @see self::generate_custom_html() */
+		/** @uses self::generate_custom_html() */
 		$field_list['gateway_footer'] = array(
 			'type'     => 'custom',
 			'html'     => <<<HTML
