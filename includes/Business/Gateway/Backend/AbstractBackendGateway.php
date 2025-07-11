@@ -35,6 +35,7 @@ class AbstractBackendGateway extends AbstractGateway {
 	 * @param true  $echo Not used, but kept for compatibility.
 	 *
 	 * @throws ContainerException
+	 * @phpcs Not used, but kept for compatibility.
 	 */
 	public function generate_settings_html( $form_fields = array(), $echo = true ): string {// phpcs:ignore
 
@@ -43,16 +44,16 @@ class AbstractBackendGateway extends AbstractGateway {
 		}
 
 		$html = '';
-		foreach ( $form_fields as $k => $v ) {
-			$type = $this->get_field_type( $v );
+		foreach ( $form_fields as $key => $value ) {
+			$type = $this->get_field_type( $value );
 
 			if ( method_exists( $this, 'generate_' . $type . '_html' ) ) {
 				$html .= $this->decorate(
-					$this->{'generate_' . $type . '_html'}( $k, $v ),
-					$this->get_field_decorator( $v )
+					$this->{'generate_' . $type . '_html'}( $key, $value ),
+					$this->get_field_decorator( $value )
 				);
 			} else {
-				$html .= $this->generate_text_html( $k, $v );
+				$html .= $this->generate_text_html( $key, $value );
 			}
 		}
 
@@ -68,10 +69,10 @@ class AbstractBackendGateway extends AbstractGateway {
 	 * @return string
 	 */
 	public function get_field_decorator( array $field ): string {
-		if ( ! empty( $field['decorator'] ) && is_string( $field['decorator'] ) && strpos(
-			$field['decorator'],
-			'%s'
-		) !== false ) {
+		if ( ! empty( $field['decorator'] )
+			&& is_string( $field['decorator'] )
+			&& strpos( $field['decorator'], '%s' ) !== false
+		) {
 			return $field['decorator'];
 		}
 

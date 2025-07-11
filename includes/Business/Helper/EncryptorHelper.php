@@ -79,11 +79,12 @@ class EncryptorHelper {
 	 * @param string $data The data.
 	 *
 	 * @return string   The data encrypted
+	 * @phpcs base64_encode is marked as safe to ignore by phpcs as it is not used to obfuscate code, but to encode binary data.
 	 */
 	public function encrypt( $data ): string {
 		$data = openssl_encrypt( $data, $this->method, $this->key, OPENSSL_RAW_DATA, $this->iv );
 
-		return base64_encode( $data ); // phpcs:ignore
+		return base64_encode( $data );// phpcs:ignore
 	}
 
 	/**
@@ -92,6 +93,7 @@ class EncryptorHelper {
 	 * @param string $encrypted_data The crypted data.
 	 *
 	 * @return string The decrypted data.
+	 * @phpcs base64_encode is marked as safe to ignore by phpcs as it is not used to obfuscate code, but to decode binary data.
 	 */
 	public function decrypt( string $encrypted_data = '' ): string {
 		$data = $encrypted_data;
@@ -100,7 +102,7 @@ class EncryptorHelper {
 			return $data;
 		}
 
-		$data = base64_decode( $data ); // phpcs:ignore
+		$data = base64_decode( $data );// phpcs:ignore
 		$data = openssl_decrypt( $data, $this->method, $this->key, OPENSSL_RAW_DATA, $this->iv );
 
 		return $data;

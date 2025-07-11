@@ -9,6 +9,7 @@ use Alma\Gateway\Business\Helper\TemplateHelper;
 use Alma\Gateway\Plugin;
 use Alma\Gateway\WooCommerce\Proxy\WooCommerceProxy;
 use Alma\Gateway\WooCommerce\Proxy\WordPressProxy;
+use WC_Order;
 
 /**
  * Class Gateway
@@ -33,6 +34,7 @@ class PayLaterGateway extends AbstractFrontendGateway {
 	 * Validate the fields submitted by the user.
 	 *
 	 * @return bool
+	 * @phpcs ignore verify_nonce because we use a proxy to check nonce
 	 */
 	public function validate_fields(): bool {
 
@@ -43,7 +45,7 @@ class PayLaterGateway extends AbstractFrontendGateway {
 
 		if ( empty( $_POST['alma_deferred'] )// phpcs:ignore
 			|| ! in_array(
-				$_POST['alma_deferred'], // phpcs:ignore
+				$_POST['alma_deferred'],// phpcs:ignore
 				array( '15_0', '30_0', '45_0', '0_1', '0_2', '0_3' ),
 				true
 			) ) {
@@ -72,7 +74,15 @@ class PayLaterGateway extends AbstractFrontendGateway {
 		);
 	}
 
-	protected function process_payment_fields( $order ): array {
+	/**
+	 * Process payment fields and update order metadata.
+	 *
+	 * @param WC_Order $order The order to pay
+	 *
+	 * @return array
+	 * @phpcs ignore verify_nonce because we use a proxy to check nonce
+	 */
+	protected function process_payment_fields( WC_Order $order ): array {
 
 		WordPressProxy::check_nonce(
 			'alma_pnx_gateway_nonce_field',

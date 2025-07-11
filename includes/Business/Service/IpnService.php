@@ -39,6 +39,7 @@ class IpnService {
 	 * Handle the customer return.
 	 *
 	 * @return void
+	 * @todo check nonce
 	 */
 	public function handle_customer_return(): void {
 
@@ -86,6 +87,7 @@ class IpnService {
 	 * Handle IPN callback.
 	 *
 	 * @return void
+	 * @todo check nonce
 	 */
 	public function handle_ipn_callback(): void {
 

@@ -148,16 +148,16 @@ class WooCommerceProxy extends WordPressProxy {
 	 * Get something in WC session
 	 *
 	 * @param string $key
-	 * @param        $default
+	 * @param        $default_session
 	 *
 	 * @return array|string|null
 	 */
-	public function get_session( string $key, $default = null ) {
+	public function get_session( string $key, $default_session = null ) {
 		if ( ! function_exists( 'WC' ) || ! WC()->session ) {
 			return null;
 		}
 
-		return WC()->session->get( $key, $default );
+		return WC()->session->get( $key, $default_session );
 	}
 
 	/**

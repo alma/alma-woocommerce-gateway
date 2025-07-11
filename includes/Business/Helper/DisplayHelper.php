@@ -21,7 +21,7 @@ class DisplayHelper {
 	 *
 	 * @return string
 	 */
-	public static function amount( float $amount ): string /* NOSONAR */ {
+	public static function amount( float $amount ): string {
 		if ( fmod( $amount, 1 ) === 0.0 ) {
 			return sprintf( '%.0f €', $amount );
 		} else {

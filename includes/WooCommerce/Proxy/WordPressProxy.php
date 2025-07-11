@@ -29,8 +29,10 @@ class WordPressProxy {
 	 * So we look for the 'rest_route' parameter in the $_GET superglobal to determine if it's an admin REST API request.
 	 *
 	 * @return bool True if the current request is an admin request, false otherwise.
+	 * @phpcs We don't need to check nonce here. We only check the url, and we don't use parameters.
 	 */
 	public static function is_admin(): bool {
+		// phpcs:ignore
 		if ( array_key_exists( 'rest_route', $_GET ) && stripos( $_GET['rest_route'], '/wc-admin' ) !== false ) {
 			return true;
 		} else {

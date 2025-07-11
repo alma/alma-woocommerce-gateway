@@ -49,6 +49,7 @@ class HooksProxy {
 	 * Load the frontend gateways.
 	 * @return void
 	 * @todo Define the order of the gateways to be loaded.
+	 * @sonar Easier to understand with two if statements.
 	 */
 	public static function load_frontend_gateways() {
 		add_filter(
@@ -64,7 +65,7 @@ class HooksProxy {
 				foreach ( $alma_gateway_list as $gateway ) {
 					if ( ! in_array( $gateway, $gateways, true ) && class_exists( $gateway ) ) {
 						// Check if the gateway is enabled before adding it to the list.
-						if ( ( new $gateway() )->is_enabled() ) { // NOSONAR
+						if ( ( new $gateway() )->is_enabled() ) { // NOSONAR -- Easier to understand with two if statements.
 							array_unshift( $gateways, $gateway );
 						}
 					}

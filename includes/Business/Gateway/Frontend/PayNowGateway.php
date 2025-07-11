@@ -6,6 +6,7 @@ use Alma\Gateway\Business\Exception\ContainerException;
 use Alma\Gateway\Business\Helper\L10nHelper;
 use Alma\Gateway\Business\Helper\TemplateHelper;
 use Alma\Gateway\Plugin;
+use WC_Order;
 
 /**
  * Class Gateway
@@ -45,11 +46,11 @@ class PayNowGateway extends AbstractFrontendGateway {
 	/**
 	 * No extras fields to validate for Pay Now gateway.
 	 *
-	 * @param $order
+	 * @param WC_Order $order The order to pay
 	 *
 	 * @return array
 	 */
-	protected function process_payment_fields( $order ): array {
+	protected function process_payment_fields( WC_Order $order ): array {
 		$order->update_meta_data( '_alma_installments', 1 );
 		$order->save();
 

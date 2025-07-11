@@ -45,17 +45,20 @@ class TemplateHelper {
 	 *
 	 * @see locate_template()
 	 *
+	 * @sonar It's mandatory to use include_once method here.
+	 * @phpcs We use extract to pass variables to the template.
 	 */
 	public function get_template( string $template_name, array $args = array(), string $subpath = '' ) {
 
 		if ( is_array( $args ) ) {
 			// We master our data. It's not get or post.
-			extract( $args ); // phpcs:ignore
+			extract( $args );// phpcs:ignore
 		}
 
 		$template_file = $this->locate_template( $template_name, $subpath );
 
 		if ( ! file_exists( $template_file ) ) {
+			// @todo use a proxy
 			_doing_it_wrong(
 				__FUNCTION__,
 				sprintf( '<code>%s</code> does not exist.', esc_html( $template_file ) ),
@@ -65,6 +68,6 @@ class TemplateHelper {
 			return;
 		}
 
-		include_once $template_file;// phpcs:ignore
+		include_once $template_file;// NOSONAR -- It's mandatory to use include_once method here.
 	}
 }

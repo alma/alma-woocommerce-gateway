@@ -32,7 +32,7 @@ add_action(
 			} else {
 				echo '  - Not an Alma gateway' . "\n";
 			}
-		}// phpcs:ignore
+		}
 		echo '</pre>';
 	}
 );
@@ -47,13 +47,13 @@ add_action(
 		/** @var OptionsService $option_service */
 		$option_service = Plugin::get_container()->get( OptionsService::class );
 
-		// $option_service->delete_option( '_enabled' );
+		$option_service->delete_option( '' );
 
 		$options = $option_service->get_options();
 		ksort( $options );
 		foreach ( $options as $key => $value ) {
 			echo $key . ' => ' . $value . "\n";
-		}// phpcs:ignore
+		}
 		echo '</pre>';
 	}
 );

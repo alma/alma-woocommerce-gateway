@@ -9,7 +9,6 @@
                 const $link = $(this),
                     $row = $link.closest('tr'),
                     $toggle = $link.find('.woocommerce-input-toggle');
-                console.log('test ok');
                 const data = {
                     action: 'alma_toggle_fee_plan_enabled',
                     security: alma_settings.nonce,
