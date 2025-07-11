@@ -64,6 +64,7 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	/**
 	 * Get the fee plan list for this gateway.
 	 * This method retrieves the fee plans from the FeePlanService and filters them based on the gateway type.
+	 *
 	 * @return FeePlanList
 	 * @throws MerchantServiceException|ContainerException
 	 */
@@ -72,5 +73,21 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 		$fee_plan_service = Plugin::get_instance()->get_container()->get( FeePlanService::class );
 
 		return $fee_plan_service->get_fee_plan_list()->filterFeePlanList( array( $this->get_type() ) );
+	}
+
+	/**
+	 * Check if params are valid.
+	 *
+	 * @param array $settings The settings to check.
+	 * @param array $expected_values The expected values for the settings.
+	 *
+	 * @return bool True if the settings are valid, false otherwise.
+	 */
+	protected function check_values( array $settings, array $expected_values ): bool {
+		if ( empty( $settings ) || ! in_array( $settings, $expected_values, true ) ) {
+			return false;
+		}
+
+		return true;
 	}
 }

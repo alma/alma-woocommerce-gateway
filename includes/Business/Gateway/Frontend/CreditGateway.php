@@ -43,13 +43,9 @@ class CreditGateway extends AbstractFrontendGateway {
 			'alma_credit_gateway_nonce_action'
 		);
 
-		if ( empty( $_POST['alma_installments'] )// phpcs:ignore
-			|| ! in_array(
-				$_POST['alma_installments'],// phpcs:ignore
-				array( '6', '10', '12' ),
-				true
-			) ) {
-			WooCommerceProxy::notify_error( L10nHelper::__( 'Veuillez choisir un nombre de mensualités valide.' ) );
+		// phpcs:ignore
+		if ( ! $this->check_values( $_POST['alma_installments'], array( '6', '10', '12' ) ) ) {
+			WooCommerceProxy::notify_error( L10nHelper::__( 'Please choose a valid option.' ) );
 
 			return false;
 		}

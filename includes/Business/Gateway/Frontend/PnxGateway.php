@@ -41,10 +41,10 @@ class PnxGateway extends AbstractFrontendGateway {
 			'alma_pnx_gateway_nonce_field',
 			'alma_pnx_gateway_nonce_action'
 		);
+
 		// phpcs:ignore
-		if ( empty( $_POST['alma_installments'] )
-		     || ! in_array( $_POST['alma_installments'], array( '2', '3', '4' ), true ) ) {// phpcs:ignore
-			WooCommerceProxy::notify_error( L10nHelper::__( 'Veuillez choisir un nombre de mensualités valide.' ) );
+		if ( ! $this->check_values( $_POST['alma_deferred'], array( '2', '3', '4' ) ) ) {
+			WooCommerceProxy::notify_error( L10nHelper::__( 'Please choose a valid option.' ) );
 
 			return false;
 		}

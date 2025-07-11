@@ -92,13 +92,23 @@ class AlmaGateway extends AbstractBackendGateway {
 
 	/**
 	 * Sanitize our settings
+	 * This method is called by WooCommerce when saving the settings.
+	 * It allows us to sanitize the settings before they are saved in the database.
+	 *
+	 * @param array $settings The settings to sanitize.
+	 *
+	 * @return array The sanitized settings.
 	 * @throws ContainerException
 	 */
-	public function sanitize_settings( $settings ): array {
+	public function sanitize_settings( array $settings ): array {
 
 		return $this->encrypt_keys( $this->check_values( $settings ) );
 	}
 
+	/**
+	 * Process admin Options and display errors
+	 * @return bool
+	 */
 	public function process_admin_options(): bool {
 		$saved = parent::process_admin_options();
 

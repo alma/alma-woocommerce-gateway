@@ -43,13 +43,9 @@ class PayLaterGateway extends AbstractFrontendGateway {
 			'alma_pay-later_gateway_nonce_action'
 		);
 
-		if ( empty( $_POST['alma_deferred'] )// phpcs:ignore
-			|| ! in_array(
-				$_POST['alma_deferred'],// phpcs:ignore
-				array( '15_0', '30_0', '45_0', '0_1', '0_2', '0_3' ),
-				true
-			) ) {
-			WooCommerceProxy::notify_error( L10nHelper::__( 'Veuillez choisir un nombre de mensualités valide.' ) );
+		// phpcs:ignore
+		if ( ! $this->check_values( $_POST['alma_deferred'], array( '15_0', '30_0', '45_0', '0_1', '0_2', '0_3' ) ) ) {
+			WooCommerceProxy::notify_error( L10nHelper::__( 'Please choose a valid option.' ) );
 
 			return false;
 		}
