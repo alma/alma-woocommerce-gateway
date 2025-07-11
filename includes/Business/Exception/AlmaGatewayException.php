@@ -11,6 +11,8 @@
 
 namespace Alma\Gateway\Business\Exception;
 
+use Exception;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -18,6 +20,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Alma_Alma.
  */
-class AlmaGatewayException extends \Exception {
+class AlmaGatewayException extends Exception {
 
 }

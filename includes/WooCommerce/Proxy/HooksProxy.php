@@ -2,7 +2,12 @@
 
 namespace Alma\Gateway\WooCommerce\Proxy;
 
-use Alma\Gateway\WooCommerce\Model\Gateway;
+use Alma\Gateway\Business\Gateway\Backend\AlmaGateway;
+use Alma\Gateway\Business\Gateway\Frontend\CreditGateway;
+use Alma\Gateway\Business\Gateway\Frontend\PayLaterGateway;
+use Alma\Gateway\Business\Gateway\Frontend\PayNowGateway;
+use Alma\Gateway\Business\Gateway\Frontend\PnxGateway;
+use Alma\Gateway\WooCommerce\Gateway\AbstractGateway;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -29,11 +34,42 @@ class HooksProxy {
 		);
 	}
 
-	public static function load_gateway() {
+	public static function load_backend_gateway() {
 		add_filter(
 			'woocommerce_payment_gateways',
 			function ( $gateways ) {
-				array_unshift( $gateways, Gateway::class );
+				array_unshift( $gateways, AlmaGateway::class );
+
+				return $gateways;
+			}
+		);
+	}
+
+	/**
+	 * Load the frontend gateways.
+	 * @return void
+	 * @todo Define the order of the gateways to be loaded.
+	 * @sonar Easier to understand with two if statements.
+	 */
+	public static function load_frontend_gateways() {
+		add_filter(
+			'woocommerce_payment_gateways',
+			function ( $gateways ) {
+				$alma_gateway_list = array(
+					CreditGateway::class,
+					PayLaterGateway::class,
+					PayNowGateway::class,
+					PnxGateway::class,
+				);
+				/** @var AbstractGateway $gateway */
+				foreach ( $alma_gateway_list as $gateway ) {
+					if ( ! in_array( $gateway, $gateways, true ) && class_exists( $gateway ) ) {
+						// Check if the gateway is enabled before adding it to the list.
+						if ( ( new $gateway() )->is_enabled() ) { // NOSONAR -- Easier to understand with two if statements.
+							array_unshift( $gateways, $gateway );
+						}
+					}
+				}
 
 				return $gateways;
 			}
@@ -45,6 +81,25 @@ class HooksProxy {
 			'plugin_action_links_' . plugin_basename( $base_path ),
 			$callback
 		);
+	}
+
+	/**
+	 * Run services on admin init.
+	 *
+	 * @param callable $callback
+	 */
+	public static function run_backend_services( callable $callback ) {
+		self::add_action( 'admin_init', $callback );
+	}
+
+	/**
+	 * Run services on template redirect.
+	 * We need to wait templates because is_page detection run at this time!
+	 *
+	 * @param callable $callback
+	 */
+	public static function run_frontend_services( callable $callback ) {
+		self::add_action( 'template_redirect', $callback );
 	}
 
 	/**

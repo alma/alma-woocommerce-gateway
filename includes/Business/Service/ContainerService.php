@@ -13,18 +13,25 @@ use Alma\API\Endpoint\PaymentEndpoint;
 use Alma\API\Endpoint\ShareOfCheckoutEndpoint;
 use Alma\API\Endpoint\WebhookEndpoint;
 use Alma\Gateway\Business\Exception\ContainerException;
+use Alma\Gateway\Business\Gateway\Backend\AlmaGateway;
+use Alma\Gateway\Business\Gateway\Frontend\CreditGateway;
+use Alma\Gateway\Business\Gateway\Frontend\PayLaterGateway;
+use Alma\Gateway\Business\Gateway\Frontend\PayNowGateway;
+use Alma\Gateway\Business\Gateway\Frontend\PnxGateway;
 use Alma\Gateway\Business\Helper\AssetsHelper;
 use Alma\Gateway\Business\Helper\EncryptorHelper;
-use Alma\Gateway\Business\Helper\GatewayFormHelper;
 use Alma\Gateway\Business\Helper\L10nHelper;
 use Alma\Gateway\Business\Helper\PluginHelper;
 use Alma\Gateway\Business\Helper\RequirementsHelper;
+use Alma\Gateway\Business\Helper\TemplateHelper;
 use Alma\Gateway\Business\Service\API\EligibilityService;
-use Alma\Gateway\WooCommerce\Model\Gateway;
+use Alma\Gateway\Business\Service\API\FeePlanService;
+use Alma\Gateway\Business\Service\API\PaymentService;
 use Alma\Gateway\WooCommerce\Proxy\HooksProxy;
 use Alma\Gateway\WooCommerce\Proxy\OptionsProxy;
 use Alma\Gateway\WooCommerce\Proxy\SettingsProxy;
 use Dice\Dice;
+use Exception;
 use Psr\Http\Client\ClientInterface;
 
 /**
@@ -48,12 +55,14 @@ class ContainerService {
 	/**
 	 * ContainerService constructor.
 	 * Init Rules
+	 * @throws ContainerException
 	 */
 	public function __construct() {
 		$this->dice = new Dice();
 
-		/** @var OptionsService $options_service */
-		$this->options_service = $this->get( OptionsService::class );
+		/** @var OptionsService $options_service Mandatory for API services */
+		$options_service       = $this->get( OptionsService::class );
+		$this->options_service = $options_service;
 
 		$this->set_business_rules();
 		$this->set_woocommerce_rules();
@@ -69,14 +78,14 @@ class ContainerService {
 	 * @return object A fully constructed object based on the specified input arguments
 	 * @throws ContainerException
 	 */
-	public function get( $name, array $args = array(), array $share = array() ): object {
+	public function get( string $name, array $args = array(), array $share = array() ): object {
 		try {
 			error_reporting( error_reporting() & ~E_DEPRECATED ); // phpcs:ignore
 			// @formatter:off PHPStorm wants this call to be multiline
 			$service = $this->dice->create( $name, $args, $share );
 			// @formatter:on
 			error_reporting( error_reporting() ^ E_DEPRECATED ); // phpcs:ignore
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			throw new ContainerException( "Missing Service $name" );
 		}
 
@@ -95,7 +104,8 @@ class ContainerService {
 				SettingsService::class    => array( 'shared' => true ),
 				WooCommerceService::class => array( 'shared' => true ),
 				GatewayService::class     => array( 'shared' => true ),
-				PaymentService::class     => array( 'shared' => true ),
+				LoggerService::class      => array( 'shared' => true ),
+				IpnService::class         => array( 'shared' => true ),
 			)
 		);
 
@@ -103,6 +113,8 @@ class ContainerService {
 		$this->dice = $this->dice->addRules(
 			array(
 				EligibilityService::class => array( 'shared' => true ),
+				FeePlanService::class     => array( 'shared' => true ),
+				PaymentService::class     => array( 'shared' => true ),
 			)
 		);
 
@@ -154,10 +166,10 @@ class ContainerService {
 			array(
 				AssetsHelper::class       => array( 'shared' => true ),
 				EncryptorHelper::class    => array( 'shared' => true ),
-				GatewayFormHelper::class  => array( 'shared' => true ),
 				L10nHelper::class         => array( 'shared' => true ),
 				PluginHelper::class       => array( 'shared' => true ),
 				RequirementsHelper::class => array( 'shared' => true ),
+				TemplateHelper::class     => array( 'shared' => true ),
 			)
 		);
 	}
@@ -170,10 +182,14 @@ class ContainerService {
 		// WooCommerce Layer
 		$this->dice = $this->dice->addRules(
 			array(
-				HooksProxy::class    => array( 'shared' => true ),
-				OptionsProxy::class  => array( 'shared' => true ),
-				SettingsProxy::class => array( 'shared' => true ),
-				Gateway::class       => array( 'shared' => true ),
+				HooksProxy::class      => array( 'shared' => true ),
+				OptionsProxy::class    => array( 'shared' => true ),
+				SettingsProxy::class   => array( 'shared' => true ),
+				AlmaGateway::class     => array( 'shared' => true ),
+				CreditGateway::class   => array( 'shared' => true ),
+				PayLaterGateway::class => array( 'shared' => true ),
+				PayNowGateway::class   => array( 'shared' => true ),
+				PnxGateway::class      => array( 'shared' => true ),
 			)
 		);
 	}

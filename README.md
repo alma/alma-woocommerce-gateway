@@ -125,7 +125,7 @@ function inject_alma_cart_eligibility_into_cart() {
    ```txt
    [alma-cart-eligibility class=my-website-amazing-content-style-class]
    ```
-1. Content
+2. Content
 
    You can add a content between opening & closing shortcode tags. This content will be displayed into a
    `div.alma_wc_content`
@@ -138,7 +138,7 @@ function inject_alma_cart_eligibility_into_cart() {
    ```txt
    [alma-product-eligibility id=10][product id=10][/alma-product-eligibility ]
    ```
-1. Debug
+3. Debug
 
    Each shortcode can be debugged with a `debug=on` attribute. This will display a visual container with a message that
    will explain why the badge is not displayed. Use this option if you don't see the widget on a page you added the

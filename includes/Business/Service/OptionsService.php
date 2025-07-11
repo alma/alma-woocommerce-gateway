@@ -35,6 +35,7 @@ class OptionsService {
 
 
 	/**
+	 * Check if the plugin is configured.
 	 * @return bool
 	 */
 	public function is_configured(): bool {
@@ -142,10 +143,72 @@ class OptionsService {
 		return 'yes' === $this->get_options()['debug'];
 	}
 
+	public function get_option( $key ): string {
+		return $this->options_proxy->get_options()[ $key ] ?? '';
+	}
+
 	/**
-	 * @return false|mixed|null
+	 * Toggle a Fee Plan status.
+	 *
+	 * @param string $fee_plan_key The ID of the Fee Plan to toggle.
+	 *
+	 * @return bool True if the Fee Plan is now enabled, false otherwise.
 	 */
-	private function get_options() {
+	public function toggle_fee_plan( string $fee_plan_key ): bool {
+		$option                  = $fee_plan_key . '_enabled';
+		$current_fee_plan_status = $this->get_option( $option );
+		$new_fee_plan_status     = 'yes' === $current_fee_plan_status ? 'no' : 'yes';
+		$this->options_proxy->update_option( $option, $new_fee_plan_status );
+
+		return 'yes' === $new_fee_plan_status;
+	}
+
+	/**
+	 * Check if a Fee Plan is enabled in the options.
+	 *
+	 * @param string $fee_plan_key
+	 *
+	 * @return bool
+	 */
+	public function is_fee_plan_enabled( string $fee_plan_key ): bool {
+		$option = $fee_plan_key . '_enabled';
+
+		return $this->get_option( $option ) === 'yes';
+	}
+
+	/**
+	 * Get the maximum amount for a Fee Plan.
+	 *
+	 * @param string $fee_plan_key
+	 *
+	 * @return int
+	 */
+	public function get_max_amount( string $fee_plan_key ): int {
+		return (int) $this->get_option( $fee_plan_key . '_max_amount' );
+	}
+
+	/**
+	 * Get the minimum amount for a Fee Plan.
+	 *
+	 * @param string $fee_plan_key
+	 *
+	 * @return int
+	 */
+	public function get_min_amount( string $fee_plan_key ): int {
+		return (int) $this->get_option( $fee_plan_key . '_min_amount' );
+	}
+
+	/**
+	 * Get all options.
+	 * @return array
+	 * @todo make private, public only for debugging purposes
+	 */
+	public function get_options(): array {
 		return $this->options_proxy->get_options();
+	}
+
+	public function delete_option( string $key ): bool {
+
+		return $this->options_proxy->delete_option( $key );
 	}
 }
