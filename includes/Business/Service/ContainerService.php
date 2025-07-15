@@ -66,6 +66,8 @@ class ContainerService {
 
 		$this->set_business_rules();
 		$this->set_woocommerce_rules();
+
+		HooksProxy::auto_reload_di_container_on_option_save();
 	}
 
 	/**

@@ -74,7 +74,11 @@ final class Plugin {
 	 * Return the DI container
 	 * @return ContainerService|null
 	 */
-	public static function get_container(): ContainerService {
+	public static function get_container( bool $force_refresh = false ): ContainerService {
+		if ( $force_refresh || null === self::$container ) {
+			self::$container = new ContainerService();
+		}
+
 		/** @var ContainerService $container */
 		return self::$container;
 	}
@@ -111,7 +115,7 @@ final class Plugin {
 		}
 
 		// Set the DI container
-		self::$container = new ContainerService();
+		self::get_container();
 
 		// Set the plugin helper and logger service
 		/** @var PluginHelper $plugin_helper */
