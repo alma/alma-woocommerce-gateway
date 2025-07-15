@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Business\Service;
 
-use Alma\Gateway\Woocommerce\Service\AbstractLoggerService;
+use Alma\Gateway\WooCommerce\Service\AbstractLoggerService;
 use Psr\Log\LogLevel;
 
 class LoggerService extends AbstractLoggerService {
