@@ -72,6 +72,9 @@ final class Plugin {
 
 	/**
 	 * Return the DI container
+	 *
+	 * @param bool $force_refresh If true, the container will be recreated.
+	 *
 	 * @return ContainerService|null
 	 */
 	public static function get_container( bool $force_refresh = false ): ContainerService {
