@@ -76,16 +76,16 @@ class OptionsServiceTest extends TestCase {
 	public function is_test_data_provider(): array {
 		return [
 			"is test is no"  => [
-				"options"   => [
+				"options"  => [
 					"environment" => "live"
 				],
-				"response " => false
+				"response" => false
 			],
 			"is test is yes" => [
-				"options"   => [
+				"options"  => [
 					"environment" => "test"
 				],
-				"response " => true
+				"response" => true
 			]
 		];
 	}

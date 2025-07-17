@@ -13,7 +13,7 @@
   },
   "require-dev": {
     "johnpbloch/wordpress-core": "*",
-    "mockery/mockery": "^1.3",
+    "mockery/mockery": "^1.6",
     "phpunit/phpunit": "*",
     "symfony/var-dumper": "*",
     "woocommerce/woocommerce": "*",
