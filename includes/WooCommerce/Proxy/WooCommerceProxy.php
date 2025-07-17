@@ -109,8 +109,26 @@ class WooCommerceProxy extends WordPressProxy {
 		return $order;
 	}
 
-	public static function price_to_cent( int $price ) {
-		return 100 * $price;
+	/**
+	 * Convert a price in euros to cents.
+	 *
+	 * @param int $price The price in euros.
+	 *
+	 * @return int The price in cents.
+	 */
+	public static function price_to_cent( int $price ): int {
+		return $price * 100;
+	}
+
+	/**
+	 * Convert a price in cents to euros.
+	 *
+	 * @param int $price The price in cents.
+	 *
+	 * @return float|int The price in euros.
+	 */
+	public static function price_to_euro( int $price ) {
+		return $price / 100;
 	}
 
 	/**

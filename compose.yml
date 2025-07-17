@@ -1,39 +1,16 @@
 services:
-  mysql:
-    image: mysql:lts
-    platform: linux/amd64
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: wordpress_test
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "mysqladmin",
-          "ping",
-          "-p$$MYSQL_ROOT_PASSWORD",
-        ]
-      timeout: 2s
-      retries: 30
-
-  test:
+  php:
+    user: ${UID:-1000}:${GID:-1000}
     build:
       context: ./
-      dockerfile: test.Dockerfile
+      dockerfile: Dockerfile
       args:
         PHP_VERSION: ${PHP_VERSION}
-        WC_VERSION: ${WC_VERSION}
-        WP_VERSION: ${WP_VERSION}
-    user: ${UID:-1000}:${GID:-1000}
-    depends_on:
-      mysql:
-        condition: service_healthy
+        COMPOSER_VERSION: ${COMPOSER_VERSION:-2}
+    ports:
+      - "8080:80"
     volumes:
-      - ./:/home/phpuser
-      - /home/phpuser/vendor # do not mount vendor inside container
+      - ./:/app
+      - /app/vendor
     environment:
-      WP_TEST_DATABASE_NAME: wordpress_test
-      WP_TEST_DATABASE_USER: root
-      WP_TEST_DATABASE_PASSWORD: root
-      WP_TEST_DATABASE_HOST: mysql
-    entrypoint: ./bin/entrypoint.sh
+      XDEBUG_MODE: coverage

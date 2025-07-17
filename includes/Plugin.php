@@ -118,7 +118,7 @@ final class Plugin {
 		}
 
 		// Set the DI container
-		self::get_container();
+		self::get_container( true );
 
 		// Set the plugin helper and logger service
 		/** @var PluginHelper $plugin_helper */

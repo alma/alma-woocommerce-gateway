@@ -1,18 +1,40 @@
 version: 3
 
 env:
-  PHP_VERSION: '{{ .PHP_VERSION | default "7.4" }}'
+  REPOSITORY: alma-woocommerce-gateway
+  UID:
+    sh: id -u
+  GID:
+    sh: id -g
   WC_VERSION: '{{ .WC_VERSION | default "9.8.5" }}'
   WP_VERSION: '{{ .WP_VERSION | default "6.8.1" }}'
-  REPOSITORY: alma-woocommerce-gateway
+
+includes:
+  "7.4":
+    taskfile: Taskfile.php.yml
+    vars:
+      PHP_VERSION: "7.4"
+  "8.0":
+    taskfile: Taskfile.php.yml
+    vars:
+      PHP_VERSION: "8.0"
+  "8.1":
+    taskfile: Taskfile.php.yml
+    vars:
+      PHP_VERSION: "8.1"
+      PHPUNIT_FILE: phpunit.dist.8.xml
+  "8.2":
+    taskfile: Taskfile.php.yml
+    vars:
+      PHP_VERSION: "8.2"
+      PHPUNIT_FILE: phpunit.dist.8.xml
+  "8.3":
+    taskfile: Taskfile.php.yml
+    vars:
+      PHP_VERSION: "8.3"
+      PHPUNIT_FILE: phpunit.dist.8.xml
 
 tasks:
-
-  build:test:
-    desc: Build test container
-    cmds:
-      - docker compose build test
-
   build:php7-4:
     desc: Build test container
     cmds:
@@ -52,14 +74,6 @@ tasks:
       - php-compatibility:build
     cmds:
       - ./bin/php-compatibility.sh
-
-  test:
-    desc: Run tests
-    deps:
-      - build:test
-    cmds:
-      - docker compose run --rm test
-      - docker compose down --remove-orphans
 
   pre-commit:install:
     desc: Install pre-commit hooks

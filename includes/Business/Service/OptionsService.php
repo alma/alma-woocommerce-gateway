@@ -2,6 +2,8 @@
 
 namespace Alma\Gateway\Business\Service;
 
+use Alma\API\Entities\FeePlan;
+use Alma\API\Entities\FeePlanList;
 use Alma\Gateway\Business\Helper\EncryptorHelper;
 use Alma\Gateway\WooCommerce\Proxy\OptionsProxy;
 
@@ -145,6 +147,32 @@ class OptionsService {
 
 	public function get_option( $key ): string {
 		return $this->options_proxy->get_options()[ $key ] ?? '';
+	}
+
+	/**
+	 * Init Fee Plan list options with values from the Alma API.
+	 *
+	 * @param FeePlanList $fee_plan_list The given Fee Plan list to initialize.
+	 *
+	 * @return void
+	 */
+	public function init_fee_plan_list( FeePlanList $fee_plan_list ) {
+		/** @var FeePlan $fee_plan */
+		foreach ( $fee_plan_list as $fee_plan ) {
+
+			$default_plan_list = array(
+				'_enabled'    => false,
+				'_max_amount' => $fee_plan->getMaxPurchaseAmount(),
+				'_min_amount' => $fee_plan->getMinPurchaseAmount(),
+			);
+
+			foreach ( $default_plan_list as $plan_key => $default_value ) {
+				$option_key = $fee_plan->getPlanKey() . $plan_key;
+				if ( ! $this->options_proxy->has_option( $option_key ) ) {
+					$this->options_proxy->update_option( $option_key, $default_value );
+				}
+			}
+		}
 	}
 
 	/**

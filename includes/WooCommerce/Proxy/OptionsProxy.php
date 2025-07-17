@@ -20,6 +20,11 @@ class OptionsProxy {
 	 */
 	const OPTIONS_KEY = 'woocommerce_alma_config_gateway_settings';
 
+	/**
+	 * Get the value of all options.
+	 *
+	 * @return array The array of options, or an empty array.
+	 */
 	public function get_options(): array {
 		$options = get_option( self::OPTIONS_KEY ) ?? array();
 
@@ -27,12 +32,25 @@ class OptionsProxy {
 	}
 
 	/**
-	 * Update a specific option value.
+	 * Check if the option exists in the options array.
+	 *
+	 * @param string $option The option name to check for existence.
+	 *
+	 * @return bool True if the option exists, false otherwise.
+	 */
+	public function has_option( string $option ): bool {
+		$options = $this->get_options() ?? array();
+
+		return isset( $options[ $option ] );
+	}
+
+	/**
+	 * Add or Update a specific option value.
 	 *
 	 * @param string $option The option name to update.
 	 * @param mixed  $value The value to set for the option.
 	 *
-	 * @return bool
+	 * @return bool True if the option was updated, false otherwise.
 	 */
 	public function update_option( string $option, $value ): bool {
 		$options            = get_option( self::OPTIONS_KEY ) ?? array();
@@ -41,6 +59,13 @@ class OptionsProxy {
 		return update_option( self::OPTIONS_KEY, $options );
 	}
 
+	/**
+	 * Delete a specific option from the options array.
+	 *
+	 * @param string $option The option name to delete.
+	 *
+	 * @return bool True if the option was deleted, false otherwise.
+	 */
 	public function delete_option( string $option ): bool {
 		$options = get_option( self::OPTIONS_KEY ) ?? array();
 		unset( $options[ $option ] );

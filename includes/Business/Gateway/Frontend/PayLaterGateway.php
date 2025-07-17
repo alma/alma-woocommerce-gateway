@@ -44,7 +44,9 @@ class PayLaterGateway extends AbstractFrontendGateway {
 		);
 
 		// phpcs:ignore
-		if ( ! $this->check_values( $_POST['alma_deferred'], array( '15_0', '30_0', '45_0', '0_1', '0_2', '0_3' ) ) ) {
+		if ( $_POST['alma_deferred'] && ! $this->check_values( $_POST['alma_deferred'],
+			array( '15_0', '30_0', '45_0', '0_1', '0_2', '0_3' )
+		) ) {
 			WooCommerceProxy::notify_error( L10nHelper::__( 'Please choose a valid option.' ) );
 
 			return false;

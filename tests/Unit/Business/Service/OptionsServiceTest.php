@@ -1,26 +1,25 @@
 <?php
 
-namespace Alma\Gateway\Tests\Business\Service;
+namespace Alma\Gateway\Tests\Unit\Business\Service;
 
 use Alma\Gateway\Business\Helper\EncryptorHelper;
 use Alma\Gateway\Business\Service\OptionsService;
 use Alma\Gateway\WooCommerce\Proxy\OptionsProxy;
-use WP_UnitTestCase;
+use Mockery;
+use Mockery\Mock;
+use PHPUnit\Framework\TestCase;
 
-class OptionsServiceTest extends WP_UnitTestCase {
+class OptionsServiceTest extends TestCase {
 
-	private $options_service;
-	private $options_proxy;
+	/** @var OptionsService $options_service */
+	private OptionsService $options_service;
 
+	/** @var OptionsProxy|Mock $options_proxy_mock */
+	private OptionsProxy $options_proxy_mock;
 
-	public function set_up() {
-		$this->options_proxy   = $this->createMock( OptionsProxy::class );
-		$this->options_service = new OptionsService( new EncryptorHelper(), $this->options_proxy );
-	}
-
-	public function tear_down() {
-		$this->options_proxy   = null;
-		$this->options_service = null;
+	public function setUp(): void {
+		$this->options_proxy_mock = Mockery::mock( OptionsProxy::class );
+		$this->options_service    = new OptionsService( new EncryptorHelper(), $this->options_proxy_mock );
 	}
 
 	public function test_empty_core_options() {
@@ -32,9 +31,8 @@ class OptionsServiceTest extends WP_UnitTestCase {
 			"environment"  => "test",
 			"debug"        => "yes"
 		);
-		$this->options_proxy->method( 'get_options' )->willReturn( $options );
-
-		$this->assertFalse( $this->options_service->has_keys() );
+		$this->options_proxy_mock->shouldReceive( 'get_options' )->andReturn( $options );
+		$this->assertSame( false, $this->options_service->has_keys() );
 	}
 
 	/**
@@ -49,7 +47,7 @@ class OptionsServiceTest extends WP_UnitTestCase {
 			"environment"  => "test",
 			"debug"        => "yes"
 		);
-		$this->options_proxy->method( 'get_options' )->willReturn( $options );
+		$this->options_proxy_mock->shouldReceive( 'get_options' )->andReturn( $options );
 
 		$this->assertEquals( OptionsService::ALMA_ENVIRONMENT_TEST, $this->options_service->get_environment() );
 		$this->assertFalse( $this->options_service->is_live() );
@@ -70,12 +68,12 @@ class OptionsServiceTest extends WP_UnitTestCase {
 	 *
 	 */
 	public function test_is_test_option( $options, $response ) {
-		$this->options_proxy->method( 'get_options' )->willReturn( $options );
+		$this->options_proxy_mock->shouldReceive( 'get_options' )->andReturn( $options );
 
 		$this->assertEquals( $response, $this->options_service->is_test() );
 	}
 
-	public function is_test_data_provider() {
+	public function is_test_data_provider(): array {
 		return [
 			"is test is no"  => [
 				"options"   => [

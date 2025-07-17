@@ -44,7 +44,9 @@ class CreditGateway extends AbstractFrontendGateway {
 		);
 
 		// phpcs:ignore
-		if ( ! $this->check_values( $_POST['alma_installments'], array( '6', '10', '12' ) ) ) {
+		if ( $_POST['alma_installments'] && ! $this->check_values( $_POST['alma_installments'],
+			array( '6', '10', '12' )
+		) ) {
 			WooCommerceProxy::notify_error( L10nHelper::__( 'Please choose a valid option.' ) );
 
 			return false;

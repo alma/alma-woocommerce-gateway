@@ -1,0 +1,45 @@
+version: 3
+
+vars:
+  # Required variables
+  PHP_VERSION: '{{ .PHP_VERSION }}'
+  PHPUNIT_VERSION: '{{ .PHPUNIT_VERSION  }}'
+  # Defaulted variable
+  COMPOSER_VERSION: '{{ .COMPOSER_VERSION | default "2" }}'
+  COMPOSE_SERVICE: '{{ .COMPOSE_SERVICE | default "php" }}'
+  PHPUNIT_FILE: '{{ .PHPUNIT_FILE | default "phpunit.dist.xml" }}'
+
+env:
+  PHP_VERSION: '{{ .PHP_VERSION }}'
+  COMPOSER_VERSION: '{{ .COMPOSER_VERSION }}'
+
+tasks:
+  build:test:
+    internal: true
+    desc: Build the PHP test container
+    cmds:
+      - docker compose build --pull {{ .COMPOSE_SERVICE }}
+
+  tests:
+    desc: Execute PHPUnit tests on PHP {{ .PHP_VERSION }}
+    deps:
+      - build:test
+    cmds:
+      - >-
+        docker compose run --rm {{ .COMPOSE_SERVICE }} composer exec phpunit --verbose -- --configuration {{ .PHPUNIT_FILE }} --testsuite "Alma WooCommerce Unit Test Suite" --coverage-xml ./.coverage
+
+  tests:integration:
+    desc: Execute integration tests
+    deps:
+      - build:test
+    cmds:
+      - >-
+        docker compose run --rm {{ .COMPOSE_SERVICE }} composer exec phpunit --verbose -- --configuration {{ .PHPUNIT_FILE }} --testsuite "Alma WooCommerce Integration Test Suite"
+
+  shell:
+    desc: Connect to PHP container
+    deps:
+      - build:test
+    cmds:
+      - sed 's/{MYVERSION}/{{ .PHPUNIT_VERSION }}/g' {{ .PHPUNIT_FILE }} > phpunit.xml
+      - docker compose run --rm {{ .COMPOSE_SERVICE }} bash
