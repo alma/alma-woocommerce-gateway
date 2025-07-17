@@ -110,28 +110,6 @@ class WooCommerceProxy extends WordPressProxy {
 	}
 
 	/**
-	 * Convert a price in euros to cents.
-	 *
-	 * @param int $price The price in euros.
-	 *
-	 * @return int The price in cents.
-	 */
-	public static function price_to_cent( int $price ): int {
-		return $price * 100;
-	}
-
-	/**
-	 * Convert a price in cents to euros.
-	 *
-	 * @param int $price The price in cents.
-	 *
-	 * @return float|int The price in euros.
-	 */
-	public static function price_to_euro( int $price ) {
-		return $price / 100;
-	}
-
-	/**
 	 * Redirects to the return URL after payment.
 	 * This method is used to redirect the user to the return URL after a successful payment.
 	 * It retrieves the return URL from the payment method and redirects the user to that URL.

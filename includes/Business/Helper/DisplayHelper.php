@@ -28,4 +28,27 @@ class DisplayHelper {
 			return sprintf( '%.2f €', $amount );
 		}
 	}
+
+	/**
+	 * Convert a price in euros to cents.
+	 *
+	 * @param float $price The price in euros.
+	 *
+	 * @return int The price in cents.
+	 */
+	public static function price_to_cent( float $price ): int {
+
+		return $price * 100;
+	}
+
+	/**
+	 * Convert a price in cents to euros.
+	 *
+	 * @param int $price The price in cents.
+	 *
+	 * @return float The price in euros.
+	 */
+	public static function price_to_euro( int $price ): float {
+		return $price / 100;
+	}
 }
