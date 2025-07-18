@@ -7,8 +7,8 @@ use Alma\API\Entities\FeePlan;
 use Alma\API\Entities\FeePlanList;
 use Alma\API\Exceptions\Endpoint\MerchantEndpointException;
 use Alma\Gateway\Business\Exception\MerchantServiceException;
+use Alma\Gateway\Business\Helper\DisplayHelper;
 use Alma\Gateway\Business\Service\OptionsService;
-use Alma\Gateway\WooCommerce\Proxy\WooCommerceProxy;
 
 class FeePlanService {
 
@@ -84,8 +84,8 @@ class FeePlanService {
 				$fee_plan->disable();
 			}
 			// WooCommerce use euros, but Alma API uses cents.
-			$fee_plan->setOverrideMaxPurchaseAmount( WooCommerceProxy::price_to_cent( $this->options_service->get_max_amount( $fee_plan->getPlanKey() ) ) );
-			$fee_plan->setOverrideMinPurchaseAmount( WooCommerceProxy::price_to_cent( $this->options_service->get_min_amount( $fee_plan->getPlanKey() ) ) );
+			$fee_plan->setOverrideMaxPurchaseAmount( DisplayHelper::price_to_cent( $this->options_service->get_max_amount( $fee_plan->getPlanKey() ) ) );
+			$fee_plan->setOverrideMinPurchaseAmount( DisplayHelper::price_to_cent( $this->options_service->get_min_amount( $fee_plan->getPlanKey() ) ) );
 		}
 
 		return $fee_plan_list;

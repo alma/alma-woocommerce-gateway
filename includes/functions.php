@@ -4,11 +4,11 @@ use Alma\API\Entities\Eligibility;
 use Alma\API\Entities\FeePlan;
 use Alma\Gateway\Business\Exception\ContainerException;
 use Alma\Gateway\Business\Exception\MerchantServiceException;
+use Alma\Gateway\Business\Helper\DisplayHelper;
 use Alma\Gateway\Business\Service\API\FeePlanService;
 use Alma\Gateway\Business\Service\OptionsService;
 use Alma\Gateway\Plugin;
 use Alma\Gateway\WooCommerce\Gateway\AbstractGateway;
-use Alma\Gateway\WooCommerce\Proxy\WooCommerceProxy;
 
 add_action(
 	'wp_footer',
@@ -128,10 +128,10 @@ add_action(
 		foreach ( $fee_plan_list as $fee_plan ) {
 			echo '<h2>' . $fee_plan->getPlanKey() . '</h2>'
 				. '<ul>'
-				. '<li>Min amount: ' . WooCommerceProxy::price_to_euro( $fee_plan->getMinPurchaseAmount() ) . '</li>'
-				. '<li>Max amount: ' . WooCommerceProxy::price_to_euro( $fee_plan->getMaxPurchaseAmount() ) . '</li>'
-				. '<li>Override Min amount: ' . WooCommerceProxy::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ) . '</li>'
-				. '<li>Override Max amount: ' . WooCommerceProxy::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) ) . '</li>'
+				. '<li>Min amount: ' . DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount() ) . '</li>'
+				. '<li>Max amount: ' . DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount() ) . '</li>'
+				. '<li>Override Min amount: ' . DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ) . '</li>'
+				. '<li>Override Max amount: ' . DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) ) . '</li>'
 				. '</ul>';
 		}
 

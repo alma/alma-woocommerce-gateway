@@ -2,6 +2,7 @@
 
 namespace Alma\Gateway\WooCommerce\Proxy;
 
+use Alma\Gateway\Business\Helper\DisplayHelper;
 use Alma\Gateway\WooCommerce\Exception\CoreException;
 use Alma\Gateway\WooCommerce\Gateway\AbstractGateway;
 use WC_Order;
@@ -47,7 +48,7 @@ class WooCommerceProxy extends WordPressProxy {
 	 */
 	public static function get_cart_total(): int {
 
-		return self::price_to_cent( WC()->cart->get_total( null ) );
+		return DisplayHelper::price_to_cent( WC()->cart->get_total( null ) );
 	}
 
 	/**
@@ -58,7 +59,7 @@ class WooCommerceProxy extends WordPressProxy {
 	 * @return int
 	 */
 	public static function get_order_total( string $order_id ): int {
-		return self::price_to_cent( wc_get_order( $order_id )->get_total() );
+		return DisplayHelper::price_to_cent( wc_get_order( $order_id )->get_total() );
 	}
 
 	/**

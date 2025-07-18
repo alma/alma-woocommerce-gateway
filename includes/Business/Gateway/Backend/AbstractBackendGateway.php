@@ -17,7 +17,6 @@ use Alma\Gateway\Business\Service\OptionsService;
 use Alma\Gateway\Plugin;
 use Alma\Gateway\WooCommerce\Exception\CoreException;
 use Alma\Gateway\WooCommerce\Gateway\AbstractGateway;
-use Alma\Gateway\WooCommerce\Proxy\WooCommerceProxy;
 
 class AbstractBackendGateway extends AbstractGateway {
 
@@ -220,16 +219,16 @@ class AbstractBackendGateway extends AbstractGateway {
 				'type'        => 'table_min_amount',
 				'description' => $this->generate_fee_plan_description( $fee_plan ),
 				'desc_tip'    => true,
-				'default'     => WooCommerceProxy::price_to_euro( $fee_plan->getMinPurchaseAmount() ),
-				'value'       => WooCommerceProxy::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ),
+				'default'     => DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount() ),
+				'value'       => DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ),
 			);
 			/** @uses self::generate_table_max_amount_html() */
 			$field_list[ $fee_plan->getPlanKey() . '_max_amount' ] = array(
 				'type'        => 'table_max_amount',
 				'description' => $this->generate_fee_plan_description( $fee_plan ),
 				'desc_tip'    => true,
-				'default'     => WooCommerceProxy::price_to_euro( $fee_plan->getMaxPurchaseAmount() ),
-				'value'       => WooCommerceProxy::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) ),
+				'default'     => DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount() ),
+				'value'       => DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) ),
 				'decorator'   => '%s</tr>',
 			);
 		}
@@ -551,8 +550,8 @@ class AbstractBackendGateway extends AbstractGateway {
 			// translators: %d: number of installments.
 				L10nHelper::__( 'You can offer %1$d-installment payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.' ),
 				$fee_plan->getInstallmentsCount(),
-				WooCommerceProxy::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ),
-				WooCommerceProxy::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) )
+				DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ),
+				DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) )
 			);
 		}
 
@@ -561,8 +560,8 @@ class AbstractBackendGateway extends AbstractGateway {
 			// translators: %d: number of installments.
 				L10nHelper::__( 'You can offer instant payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.' ),
 				$fee_plan->getInstallmentsCount(),
-				WooCommerceProxy::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ),
-				WooCommerceProxy::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) )
+				DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ),
+				DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) )
 			);
 		}
 
@@ -574,8 +573,8 @@ class AbstractBackendGateway extends AbstractGateway {
 				// translators: %d: number of deferred days.
 					L10nHelper::__( 'You can offer D+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.' ),
 					$deferred_days,
-					WooCommerceProxy::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ),
-					WooCommerceProxy::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) )
+					DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ),
+					DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) )
 				);
 			}
 			if ( $deferred_months ) {
@@ -583,8 +582,8 @@ class AbstractBackendGateway extends AbstractGateway {
 				// translators: %d: number of deferred months.
 					L10nHelper::__( 'You can offer M+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.' ),
 					$deferred_months,
-					WooCommerceProxy::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ),
-					WooCommerceProxy::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) )
+					DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ),
+					DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) )
 				);
 			}
 		}
@@ -638,8 +637,8 @@ class AbstractBackendGateway extends AbstractGateway {
 		$default_enabled   = $default_settings['selected_fee_plan'] === $key ? 'yes' : 'no';
 		$custom_attributes = array(
 			'required' => 'required',
-			'min'      => WooCommerceProxy::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ),
-			'max'      => WooCommerceProxy::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) ),
+			'min'      => DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ),
+			'max'      => DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) ),
 			'step'     => 0.01,
 		);
 
