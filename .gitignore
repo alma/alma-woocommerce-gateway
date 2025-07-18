@@ -19,3 +19,4 @@ package-lock.json
 .phpunit.cache/
 .coverage
 .coverage-report
+phpstan.log

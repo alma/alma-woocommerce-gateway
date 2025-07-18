@@ -94,5 +94,9 @@
         </properties>
     </rule>
 
+    <rule ref="Generic.Metrics.CyclomaticComplexity">
+        <type>error</type>
+    </rule>
+
     <config name="ignore_warnings_on_exit" value="1"/>
 </ruleset>

@@ -75,6 +75,13 @@ tasks:
     cmds:
       - ./bin/php-compatibility.sh
 
+  php-static-analysis:
+    desc: Run PHPStan analysis
+    deps:
+      - lint:build
+    cmds:
+      - ./bin/php-static-analysis.sh
+
   pre-commit:install:
     desc: Install pre-commit hooks
     cmds:

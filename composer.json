@@ -14,11 +14,14 @@
   "require-dev": {
     "johnpbloch/wordpress-core": "*",
     "mockery/mockery": "^1.6",
+    "phpstan/extension-installer": "^1.4",
+    "phpstan/phpstan": "^1.10",
     "phpunit/phpunit": "*",
     "symfony/var-dumper": "*",
+    "php-stubs/woocommerce-stubs": "*",
+    "php-stubs/wordpress-stubs": "*",
     "woocommerce/woocommerce": "*",
-    "yoast/phpunit-polyfills": "*",
-    "ext-simplexml": "*"
+    "yoast/phpunit-polyfills": "*"
   },
   "autoload": {
     "psr-4": {
@@ -50,9 +53,10 @@
   "config": {
     "sort-packages": true,
     "allow-plugins": {
+      "automattic/jetpack-autoloader": true,
       "composer/installers": true,
       "dealerdirect/phpcodesniffer-composer-installer": true,
-      "automattic/jetpack-autoloader": true
+      "phpstan/extension-installer": true
     },
     "lock": false
   }
