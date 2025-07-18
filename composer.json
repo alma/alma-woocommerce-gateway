@@ -7,7 +7,7 @@
     "php": "~7.4 || ~8.0 || ~8.1 || ~8.2 || ~8.3 || ~8.4",
     "ext-openssl": "*",
     "ext-json": "*",
-    "alma/alma-php-client": ">=2.4.0",
+    "alma/alma-php-client": "dev-feature/3.0",
     "psr/http-client": "^1",
     "level-2/dice": "^4.0"
   },

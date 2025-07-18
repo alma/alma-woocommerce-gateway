@@ -3,7 +3,7 @@
 namespace Alma\Gateway\WooCommerce\Proxy;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+	exit; // @codeCoverageIgnore
 }
 
 /**

@@ -5,7 +5,7 @@ namespace Alma\Gateway\Business\Helper;
 use Alma\Gateway\Plugin;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+	exit; // @codeCoverageIgnore
 }
 
 /**

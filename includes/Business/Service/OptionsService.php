@@ -8,7 +8,7 @@ use Alma\Gateway\Business\Helper\EncryptorHelper;
 use Alma\Gateway\WooCommerce\Proxy\OptionsProxy;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+	exit; // @codeCoverageIgnore
 }
 
 class OptionsService {
@@ -53,15 +53,6 @@ class OptionsService {
 	}
 
 	/**
-	 * Are we using test environment?
-	 *
-	 * @return bool
-	 */
-	public function is_test(): bool {
-		return $this->get_environment() === self::ALMA_ENVIRONMENT_TEST;
-	}
-
-	/**
 	 * Returns the active environment.
 	 *
 	 * @return string
@@ -73,6 +64,24 @@ class OptionsService {
 		}
 
 		return self::ALMA_ENVIRONMENT_LIVE;
+	}
+
+	/**
+	 * Are we using test environment?
+	 *
+	 * @return bool
+	 */
+	public function is_test(): bool {
+		return $this->get_environment() === self::ALMA_ENVIRONMENT_TEST;
+	}
+
+	/**
+	 * Are we using live environment?
+	 *
+	 * @return bool
+	 */
+	public function is_live(): bool {
+		return $this->get_environment() === self::ALMA_ENVIRONMENT_LIVE;
 	}
 
 	/**
@@ -95,15 +104,6 @@ class OptionsService {
 	 */
 	public function get_active_api_key(): ?string {
 		return $this->is_live() ? $this->get_live_api_key() : $this->get_test_api_key();
-	}
-
-	/**
-	 * Are we using live environment?
-	 *
-	 * @return bool
-	 */
-	public function is_live(): bool {
-		return $this->get_environment() === self::ALMA_ENVIRONMENT_LIVE;
 	}
 
 	/**
@@ -149,6 +149,10 @@ class OptionsService {
 		return $this->options_proxy->get_options()[ $key ] ?? '';
 	}
 
+	public function has_option( $key ): bool {
+		return $this->options_proxy->has_option( $key );
+	}
+
 	/**
 	 * Init Fee Plan list options with values from the Alma API.
 	 *
@@ -168,7 +172,7 @@ class OptionsService {
 
 			foreach ( $default_plan_list as $plan_key => $default_value ) {
 				$option_key = $fee_plan->getPlanKey() . $plan_key;
-				if ( ! $this->options_proxy->has_option( $option_key ) ) {
+				if ( ! $this->has_option( $option_key ) ) {
 					$this->options_proxy->update_option( $option_key, $default_value );
 				}
 			}

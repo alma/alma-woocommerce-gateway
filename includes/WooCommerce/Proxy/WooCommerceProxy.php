@@ -7,7 +7,7 @@ use Alma\Gateway\WooCommerce\Gateway\AbstractGateway;
 use WC_Order;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+	exit; // @codeCoverageIgnore
 }
 
 /**

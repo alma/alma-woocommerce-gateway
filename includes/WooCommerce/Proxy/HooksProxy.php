@@ -11,7 +11,7 @@ use Alma\Gateway\Plugin;
 use Alma\Gateway\WooCommerce\Gateway\AbstractGateway;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+	exit; // @codeCoverageIgnore
 }
 
 class HooksProxy {

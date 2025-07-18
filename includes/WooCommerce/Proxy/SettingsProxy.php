@@ -9,7 +9,7 @@ namespace Alma\Gateway\WooCommerce\Proxy;
 use WC_Settings_API;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+	exit; // @codeCoverageIgnore
 }
 
 /**

@@ -14,7 +14,7 @@ namespace Alma\Gateway\Business\Exception;
 use Exception;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+	exit; // @codeCoverageIgnore
 }
 
 /**

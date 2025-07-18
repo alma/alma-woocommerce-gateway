@@ -14,7 +14,7 @@ namespace Alma\Gateway\Business\Helper;
 use Alma\Gateway\Business\Exception\RequirementsException;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+	exit; // @codeCoverageIgnore
 }
 
 /**

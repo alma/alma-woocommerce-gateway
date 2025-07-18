@@ -10,8 +10,7 @@
          beStrictAboutTestsThatDoNotTestAnything="false"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.3/phpunit.xsd"
          cacheDirectory=".phpunit.cache"
-         backupStaticProperties="false"
-         beStrictAboutDataProviderDefinitions="true">
+         backupStaticProperties="false">
 
     <testsuites>
         <testsuite name="Alma WooCommerce Unit Test Suite">
