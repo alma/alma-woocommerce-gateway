@@ -104,10 +104,11 @@ final class Plugin {
 	}
 
 	/**
+	 * Used for plugin warmup.
 	 * @throws ContainerException
 	 * @throws RequirementsException
 	 */
-	public function plugin_warmup() {
+	public function plugin_warmup(): void {
 
 		// Configure Languages
 		L10nHelper::load_language( $this->get_plugin_path() );
@@ -152,7 +153,7 @@ final class Plugin {
 	 * @throws ContainerException
 	 * @throws RequirementsException
 	 */
-	public function plugin_setup() {
+	public function plugin_setup(): void {
 
 		if ( ! $this->are_prerequisites_ok() ) {
 			return;
@@ -286,7 +287,9 @@ final class Plugin {
 	 * Clone is not allowed.
 	 *
 	 * @return void
+	 * @throws CoreException
 	 */
 	private function __clone() {
+		throw new CoreException( 'Cannot clone the plugin!' );
 	}
 }
