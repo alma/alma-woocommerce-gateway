@@ -19,20 +19,20 @@ class AuthenticationService {
 	 * @param string $api_key The API key to validate.
 	 * @param string $mode The mode of operation (LIVE_MODE or TEST_MODE).
 	 *
-	 * @return bool True if the API key is valid, false otherwise.
+	 * @return string The merchant ID if the API key is valid, or an empty string if it is not valid.
 	 */
-	public function check_authentication( string $api_key, string $mode = ClientConfiguration::LIVE_MODE ): bool {
+	public function check_authentication( string $api_key, string $mode = ClientConfiguration::LIVE_MODE ): string {
 
 		try {
 			$client_configuration = new ClientConfiguration( $api_key, $mode );
 			$curl_client          = new CurlClient( $client_configuration );
 			$merchant_endpoint    = new MerchantEndpoint( $curl_client );
-			$merchant_endpoint->me();
+			$merchant             = $merchant_endpoint->me();
 		} catch ( ClientConfigurationException | ClientException | MerchantEndpointException $e ) {
 
-			return false;
+			return '';
 		}
 
-		return true;
+		return $merchant->id;
 	}
 }

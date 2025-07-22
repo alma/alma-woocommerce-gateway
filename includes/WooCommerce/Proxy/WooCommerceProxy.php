@@ -37,8 +37,8 @@ class WooCommerceProxy extends WordPressProxy {
 		return is_checkout();
 	}
 
-	public static function is_cart_or_checkout_page(): bool {
-		return self::is_cart_page() || self::is_checkout_page();
+	public static function is_cart_product_or_checkout_page(): bool {
+		return self::is_cart_page() || self::is_product_page() || self::is_checkout_page();
 	}
 
 	/**
@@ -139,6 +139,27 @@ class WooCommerceProxy extends WordPressProxy {
 		}
 		wp_safe_redirect( wc_get_cart_url() );
 		exit;
+	}
+
+	public static function is_product_page(): bool {
+		return is_product();
+	}
+
+	/**
+	 * Get the current product price in cents.
+	 *
+	 * @return int
+	 */
+	public static function get_current_product_price() {
+		if ( ! self::is_product_page() ) {
+			return 0;
+		}
+		$product = wc_get_product( get_the_ID() );
+		if ( ! $product ) {
+			return 0;
+		}
+
+		return DisplayHelper::price_to_cent( $product->get_price() );
 	}
 
 	/**

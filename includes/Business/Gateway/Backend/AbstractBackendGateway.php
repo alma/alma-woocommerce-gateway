@@ -149,6 +149,32 @@ class AbstractBackendGateway extends AbstractGateway {
 		);
 	}
 
+	public function widget_fieldset() {
+
+		return array(
+			'widgets_section'        => array(
+				'title'       => '<hr>' . L10nHelper::__( '→ Display Alma widgets' ),
+				'type'        => 'title',
+				'description' => L10nHelper::__( 'Display Alma widget on cart and product page.' ),
+				'desc_tip'    => false,
+			),
+			'widget_cart_enabled'    => array(
+				'title'    => L10nHelper::__( 'Enable/Disable' ),
+				'type'     => 'checkbox',
+				'label'    => L10nHelper::__( 'Enable widget on cart page' ),
+				'default'  => 'yes',
+				'desc_tip' => false,
+			),
+			'widget_product_enabled' => array(
+				'title'    => L10nHelper::__( 'Enable/Disable' ),
+				'type'     => 'checkbox',
+				'label'    => L10nHelper::__( 'Enable widget on product page' ),
+				'default'  => 'yes',
+				'desc_tip' => false,
+			),
+		);
+	}
+
 	/**
 	 * Define the fee plan section.
 	 *
@@ -539,6 +565,13 @@ class AbstractBackendGateway extends AbstractGateway {
 		return $section_title;
 	}
 
+	/**
+	 * @param FeePlan $fee_plan
+	 *
+	 * @return string
+	 * @throws ContainerException
+	 * @deprecated Copy and paste from AlmaGateway, to be refactored before release
+	 */
 	public function generate_fee_plan_description( FeePlan $fee_plan ): string {
 
 		/** @var OptionsService $options_service */
@@ -626,6 +659,8 @@ class AbstractBackendGateway extends AbstractGateway {
 	 * @param array   $default_settings Default settings definitions.
 	 *
 	 * @return array  as field_form definition
+	 * @throws ContainerException
+	 * @deprecated Copy and paste from AlmaGateway, to be refactored before release
 	 */
 	protected function init_fee_plan_fields( FeePlan $fee_plan, array $default_settings ): array {
 		$key               = $fee_plan->getPlanKey();

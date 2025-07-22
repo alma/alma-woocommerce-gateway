@@ -4,7 +4,9 @@ namespace Alma\Gateway\Business\Service;
 
 use Alma\API\Entities\FeePlan;
 use Alma\API\Entities\FeePlanList;
+use Alma\Gateway\Business\Exception\ContainerException;
 use Alma\Gateway\Business\Helper\EncryptorHelper;
+use Alma\Gateway\Plugin;
 use Alma\Gateway\WooCommerce\Proxy\OptionsProxy;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -13,8 +15,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class OptionsService {
 
+	/** @var string The live environment key */
 	const ALMA_ENVIRONMENT_LIVE = 'live';
+
+	/** @var string The test environment key */
 	const ALMA_ENVIRONMENT_TEST = 'test';
+
+	/** @var string The merchant ID key */
+	const MERCHANT_ID = 'merchant_id';
+
+	/** @var string The live API key */
+	const LIVE_API_KEY = 'live_api_key';
+
+	/** @var string The test API key */
+	const TEST_API_KEY = 'test_api_key';
 
 	/**
 	 * @var EncryptorHelper
@@ -33,6 +47,9 @@ class OptionsService {
 	public function __construct( EncryptorHelper $encryptor_helper, OptionsProxy $options_proxy ) {
 		$this->encryptor_helper = $encryptor_helper;
 		$this->options_proxy    = $options_proxy;
+
+		// Define filters for encrypting keys
+		add_filter( 'pre_update_option_' . OptionsProxy::OPTIONS_KEY, array( $this, 'encrypt_keys' ) );
 	}
 
 
@@ -112,8 +129,8 @@ class OptionsService {
 	 * @return string|null
 	 */
 	public function get_live_api_key(): ?string {
-		if ( isset( $this->get_options()['live_api_key'] ) ) {
-			return $this->encryptor_helper->decrypt( $this->get_options()['live_api_key'] );
+		if ( isset( $this->get_options()[ self::LIVE_API_KEY ] ) ) {
+			return $this->encryptor_helper->decrypt( $this->get_options()[ self::LIVE_API_KEY ] );
 		}
 
 		return null;
@@ -125,8 +142,8 @@ class OptionsService {
 	 * @return string|null
 	 */
 	public function get_test_api_key(): ?string {
-		if ( isset( $this->get_options()['test_api_key'] ) ) {
-			return $this->encryptor_helper->decrypt( $this->get_options()['test_api_key'] );
+		if ( isset( $this->get_options()[ self::TEST_API_KEY ] ) ) {
+			return $this->encryptor_helper->decrypt( $this->get_options()[ self::TEST_API_KEY ] );
 		}
 
 		return null;
@@ -242,5 +259,52 @@ class OptionsService {
 	public function delete_option( string $key ): bool {
 
 		return $this->options_proxy->delete_option( $key );
+	}
+
+	/**
+	 * Gets Merchant ID.
+	 *
+	 * @return string|null
+	 */
+	public function get_merchant_id(): ?string {
+		return $this->get_options()[ self::MERCHANT_ID ] ?? null;
+	}
+
+	/**
+	 * Sets Merchant ID.
+	 *
+	 * @param string $merchant_id
+	 */
+	public function set_merchant_id( string $merchant_id ): void {
+		$this->options_proxy->update_option( self::MERCHANT_ID, $merchant_id );
+	}
+
+	/**
+	 * Encrypt keys.
+	 *
+	 * @param $options array The whole posted settings.
+	 *
+	 * @throws ContainerException
+	 */
+	public function encrypt_keys( array $options ): array {
+
+		/** @var EncryptorHelper $encryptor_helper */
+		$encryptor_helper = Plugin::get_container()->get( EncryptorHelper::class );
+
+		if ( ! empty( $options[ self::LIVE_API_KEY ] ) && stripos(
+			$options[ self::LIVE_API_KEY ],
+			'sk_live_'
+		) === 0 ) {
+			$options[ self::LIVE_API_KEY ] = $encryptor_helper->encrypt( $options[ self::LIVE_API_KEY ] );
+		}
+
+		if ( ! empty( $options[ self::TEST_API_KEY ] ) && stripos(
+			$options[ self::LIVE_API_KEY ],
+			'sk_test_'
+		) === 0 ) {
+			$options[ self::TEST_API_KEY ] = $encryptor_helper->encrypt( $options[ self::TEST_API_KEY ] );
+		}
+
+		return $options;
 	}
 }
