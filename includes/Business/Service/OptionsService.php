@@ -291,17 +291,11 @@ class OptionsService {
 		/** @var EncryptorHelper $encryptor_helper */
 		$encryptor_helper = Plugin::get_container()->get( EncryptorHelper::class );
 
-		if ( ! empty( $options[ self::LIVE_API_KEY ] ) && stripos(
-			$options[ self::LIVE_API_KEY ],
-			'sk_live_'
-		) === 0 ) {
+		if ( stripos( $options[ self::LIVE_API_KEY ], 'sk_live_' ) === 0 ) {
 			$options[ self::LIVE_API_KEY ] = $encryptor_helper->encrypt( $options[ self::LIVE_API_KEY ] );
 		}
 
-		if ( ! empty( $options[ self::TEST_API_KEY ] ) && stripos(
-			$options[ self::LIVE_API_KEY ],
-			'sk_test_'
-		) === 0 ) {
+		if ( stripos( $options[ self::TEST_API_KEY ], 'sk_test_' ) === 0 ) {
 			$options[ self::TEST_API_KEY ] = $encryptor_helper->encrypt( $options[ self::TEST_API_KEY ] );
 		}
 
