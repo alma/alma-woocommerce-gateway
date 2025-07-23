@@ -37,7 +37,7 @@ class OptionsProxy {
 	 * @return bool True if the option exists, false otherwise.
 	 */
 	public function has_option( string $option ): bool {
-		$options = $this->get_options() ?? array();
+		$options = $this->get_options();
 
 		return isset( $options[ $option ] );
 	}
@@ -51,7 +51,7 @@ class OptionsProxy {
 	 * @return bool True if the option was updated, false otherwise.
 	 */
 	public function update_option( string $option, $value ): bool {
-		$options            = get_option( self::OPTIONS_KEY ) ?? array();
+		$options            = $this->get_options();
 		$options[ $option ] = $value;
 
 		return update_option( self::OPTIONS_KEY, $options );
@@ -65,7 +65,7 @@ class OptionsProxy {
 	 * @return bool True if the option was deleted, false otherwise.
 	 */
 	public function delete_option( string $option ): bool {
-		$options = get_option( self::OPTIONS_KEY ) ?? array();
+		$options = $this->get_options();
 		unset( $options[ $option ] );
 
 		return update_option( self::OPTIONS_KEY, $options );

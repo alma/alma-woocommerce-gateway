@@ -52,7 +52,6 @@ class OptionsService {
 		add_filter( 'pre_update_option_' . OptionsProxy::OPTIONS_KEY, array( $this, 'encrypt_keys' ) );
 	}
 
-
 	/**
 	 * Check if the plugin is configured.
 	 * @return bool
@@ -82,6 +81,7 @@ class OptionsService {
 
 		return self::ALMA_ENVIRONMENT_LIVE;
 	}
+
 
 	/**
 	 * Are we using test environment?

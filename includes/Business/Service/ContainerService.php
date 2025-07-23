@@ -102,7 +102,7 @@ class ContainerService {
 		$this->dice = $this->dice->addRules(
 			array(
 				AdminService::class       => array( 'shared' => true ),
-				OptionsService::class     => array( 'shared' => true ),
+				OptionsService::class     => array( 'shared' => false ),
 				SettingsService::class    => array( 'shared' => true ),
 				WooCommerceService::class => array( 'shared' => true ),
 				GatewayService::class     => array( 'shared' => true ),

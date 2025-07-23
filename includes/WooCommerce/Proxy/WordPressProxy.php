@@ -115,4 +115,22 @@ class WordPressProxy {
 	public static function notify_success( string $message ) {
 		wc_add_notice( $message );
 	}
+
+	/**
+	 * Get the current language.
+	 *
+	 * @return string The current locale, default is 'fr'.
+	 */
+	public static function get_language(): string {
+		return substr( get_locale() ?? 'fr_FR', 0, 2 );
+	}
+
+	/**
+	 * Get the current locale.
+	 *
+	 * @return string The current locale, default is 'fr_FR'.
+	 */
+	public function get_locale(): string {
+		return get_locale() ?? 'fr_FR';
+	}
 }
