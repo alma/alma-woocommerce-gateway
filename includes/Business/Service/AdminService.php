@@ -60,7 +60,7 @@ class AdminService {
 
 		wp_enqueue_script(
 			'alma-admin-js',
-			$assert_helper->get_asset_url( 'js/alma-admin.js' ),
+			$assert_helper->get_asset_url( 'js/backend/alma-admin.js' ),
 			array( 'jquery' ),
 			'1.0.0',
 			true

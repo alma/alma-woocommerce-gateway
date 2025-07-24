@@ -102,6 +102,11 @@ add_action(
 		$options = $option_service->get_options();
 		ksort( $options );
 		foreach ( $options as $key => $value ) {
+			if ( is_array( $value ) ) {
+				$value = json_encode( $value );
+			} elseif ( is_bool( $value ) ) {
+				$value = $value ? 'true' : 'false';
+			}
 			echo $key . ' => ' . $value . "\n";
 		}
 		echo '</pre>';

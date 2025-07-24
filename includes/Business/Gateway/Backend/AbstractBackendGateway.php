@@ -17,6 +17,8 @@ use Alma\Gateway\Business\Service\OptionsService;
 use Alma\Gateway\Plugin;
 use Alma\Gateway\WooCommerce\Exception\CoreException;
 use Alma\Gateway\WooCommerce\Gateway\AbstractGateway;
+use Alma\Gateway\WooCommerce\Proxy\WordPressProxy;
+use Alma\Woocommerce\Fixes\GetTermsFix;
 
 class AbstractBackendGateway extends AbstractGateway {
 
@@ -92,7 +94,6 @@ class AbstractBackendGateway extends AbstractGateway {
 		return sprintf( $decorator, $component );
 	}
 
-
 	/**
 	 * Inits enabled Admin field.
 	 *
@@ -122,12 +123,12 @@ class AbstractBackendGateway extends AbstractGateway {
 			),
 			self::FIELD_LIVE_API_KEY => array(
 				'title'    => L10nHelper::__( 'Live API key' ),
-				'type'     => 'text',
+				'type'     => 'password',
 				'desc_tip' => true,
 			),
 			self::FIELD_TEST_API_KEY => array(
 				'title'    => L10nHelper::__( 'Test API key' ),
-				'type'     => 'text',
+				'type'     => 'password',
 				'desc_tip' => true,
 			),
 			'environment'            => array(
@@ -649,6 +650,31 @@ class AbstractBackendGateway extends AbstractGateway {
 			$you_pay,
 			$customer_pays,
 			$customer_lending_pays
+		);
+	}
+
+	public function excluded_categories_fieldset(): array {
+		return array(
+			'excluded_categories_section' => array(
+				'title'       => '<hr>' . L10nHelper::__( '→ Excluded Categories' ),
+				'type'        => 'title',
+				'description' => L10nHelper::__( 'Define the categories on which Alma doesn\'t apply' ),
+				'desc_tip'    => false,
+			),
+			'excluded_products_list'      => array(
+				'title'       => L10nHelper::__( 'Excluded product categories' ),
+				'type'        => 'multiselect',
+				'description' => L10nHelper::__( 'Exclude all virtual/downloadable product categories, as you cannot sell them with Alma' ),
+				'desc_tip'    => true,
+				'css'         => 'height: 150px;',
+				'options'     => WordPressProxy::get_categories(),
+			),
+			'excluded_products_message'   => array(
+				'title'       => L10nHelper::__( 'Non-eligibility message for excluded products' ),
+				'type'        => 'text',
+				'description' => L10nHelper::__( 'Message displayed below the cart totals when it contains excluded products' ),
+				'desc_tip'    => true,
+			),
 		);
 	}
 

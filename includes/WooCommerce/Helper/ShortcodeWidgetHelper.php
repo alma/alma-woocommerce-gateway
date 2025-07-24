@@ -2,6 +2,7 @@
 
 namespace Alma\Gateway\WooCommerce\Helper;
 
+use Alma\API\Entities\FeePlan;
 use Alma\API\Entities\FeePlanList;
 use Alma\Gateway\Business\Exception\ContainerException;
 use Alma\Gateway\Business\Helper\AssetsHelper;
@@ -10,6 +11,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
 }
 
+/**
+ * Helper class to display the cart and product widgets with a shortcode.
+ * This class manages the display for Classic themes.
+ */
 class ShortcodeWidgetHelper {
 
 	/** @var string class used by merchant's shortcode to display widget */
@@ -32,7 +37,7 @@ class ShortcodeWidgetHelper {
 	 */
 	public static function display_default_cart_widget() {
 		add_action(
-			'woocommerce_after_cart',
+			'woocommerce_proceed_to_checkout',
 			function () {
 				echo do_shortcode( sprintf( '[%s class="%s"]', self::CART_SHORTCODE_TAG, self::WIDGET_DEFAULT_CLASS ) );
 			}
@@ -43,16 +48,19 @@ class ShortcodeWidgetHelper {
 	 * Create the Alma cart widget shortcode.
 	 * This shortcode can be used to display the Alma cart widget
 	 *
-	 * @param string $merchant_id The merchant ID.
-	 * @param int    $price The total price of the cart in cents.
+	 * @param string      $environment The API mode (live or test).
+	 * @param string      $merchant_id The merchant ID.
+	 * @param int         $price The total price of the cart in cents.
+	 * @param FeePlanList $fee_plan_list The list of fee plans.
+	 * @param string      $language The language code (e.g., 'en', 'fr', etc.).
 	 *
 	 * @return void
 	 * @throws ContainerException
 	 */
-	public static function init_cart_shortcode( string $merchant_id, int $price, FeePlanList $fee_plan_list, string $language ) {
+	public static function init_cart_shortcode( string $environment, string $merchant_id, int $price, FeePlanList $fee_plan_list, string $language ) {
 
 		self::add_scripts_and_styles();
-		self::add_parameters( $merchant_id, $price, $fee_plan_list, $language );
+		self::add_parameters( $environment, $merchant_id, $price, $fee_plan_list, $language );
 		self::add_shortcode( self::CART_SHORTCODE_TAG );
 	}
 
@@ -66,7 +74,13 @@ class ShortcodeWidgetHelper {
 		add_action(
 			'woocommerce_before_add_to_cart_form',
 			function () {
-				echo do_shortcode( sprintf( '[%s class="%s"]', self::PRODUCT_SHORTCODE_TAG, self::WIDGET_DEFAULT_CLASS ) );
+				echo do_shortcode(
+					sprintf(
+						'[%s class="%s"]',
+						self::PRODUCT_SHORTCODE_TAG,
+						self::WIDGET_DEFAULT_CLASS
+					)
+				);
 			}
 		);
 	}
@@ -75,16 +89,19 @@ class ShortcodeWidgetHelper {
 	 * Create the Alma cart widget shortcode.
 	 * This shortcode can be used to display the Alma cart widget
 	 *
-	 * @param string $merchant_id The merchant ID.
-	 * @param int    $price The total price of the cart in cents.
+	 * @param string      $environment The API mode (live or test).
+	 * @param string      $merchant_id The merchant ID.
+	 * @param int         $price The total price of the cart in cents.
+	 * @param FeePlanList $fee_plan_list The list of fee plans.
+	 * @param string      $language The language code.
 	 *
 	 * @return void
 	 * @throws ContainerException
 	 */
-	public static function init_product_shortcode( string $merchant_id, int $price, FeePlanList $fee_plan_list, string $language ) {
+	public static function init_product_shortcode( string $environment, string $merchant_id, int $price, FeePlanList $fee_plan_list, string $language ) {
 
 		self::add_scripts_and_styles();
-		self::add_parameters( $merchant_id, $price, $fee_plan_list, $language );
+		self::add_parameters( $environment, $merchant_id, $price, $fee_plan_list, $language );
 		self::add_shortcode( self::PRODUCT_SHORTCODE_TAG );
 	}
 
@@ -105,7 +122,7 @@ class ShortcodeWidgetHelper {
 		);
 		wp_enqueue_script(
 			'alma-frontend-widget-implementation',
-			( new AssetsHelper() )->get_asset_url( 'js/alma-frontend-widget-implementation.js' ),
+			( new AssetsHelper() )->get_asset_url( 'js/frontend/alma-frontend-widget-implementation.js' ),
 			array( 'jquery' ),
 			'1.0.0',
 			true
@@ -115,32 +132,38 @@ class ShortcodeWidgetHelper {
 	/**
 	 * Add the parameters needed for the Alma widget.
 	 *
+	 * @param string      $environment The API environment (live or test).
 	 * @param string      $merchant_id The merchant ID.
 	 * @param int         $price The price of the product or cart in cents.
 	 * @param FeePlanList $fee_plan_list The list of fee plans.
 	 * @param string      $language The language code.
 	 *
 	 * @return void
+	 * @see assets/js/frontend/alma-frontend-widget-implementation.js
+	 *
 	 */
-	private static function add_parameters( string $merchant_id, int $price, FeePlanList $fee_plan_list, string $language ) {
+	private static function add_parameters( string $environment, string $merchant_id, int $price, FeePlanList $fee_plan_list, string $language ) {
 		wp_localize_script(
 			'alma-frontend-widget-implementation',
 			'alma_widget_settings',
 			array(
+				'environment'             => $environment,
 				'widget_selector'         => sprintf( '.%s', self::WIDGET_CLASS ),
 				'widget_default_selector' => sprintf( '.%s', self::WIDGET_DEFAULT_CLASS ),
 				'merchant_id'             => $merchant_id,
 				'price'                   => $price,
 				'language'                => $language,
 				'fee_plan_list'           => array_map(
-					function ( $plan ) {
+					function ( FeePlan $plan ) {
 						return array(
 							'installmentsCount' => $plan->getInstallmentsCount(),
 							'minAmount'         => $plan->getMinPurchaseAmount( true ),
 							'maxAmount'         => $plan->getMaxPurchaseAmount( true ),
+							'deferredDays'      => $plan->getDeferredDays(),
+							'deferredMonths'    => $plan->getDeferredMonths(),
 						);
 					},
-					$fee_plan_list->getIterator()->getArrayCopy()
+					$fee_plan_list->getArrayCopy()
 				),
 				'hide_if_not_eligible'    => false,
 				'transition_delay'        => 5500,
@@ -160,7 +183,7 @@ class ShortcodeWidgetHelper {
 	private static function add_shortcode( string $tag ) {
 		add_shortcode(
 			$tag,
-			function ( $atts, $content = '' ) use ( $tag ) {
+			function ( $atts ) use ( $tag ) {
 
 				$class = isset( $atts['class'] ) ? htmlspecialchars( $atts['class'] ) : self::WIDGET_CLASS;
 				$style = '';

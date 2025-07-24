@@ -162,6 +162,44 @@ class WooCommerceProxy extends WordPressProxy {
 		return DisplayHelper::price_to_cent( $product->get_price() );
 	}
 
+	public static function get_current_product_categories(): array {
+		if ( ! self::is_product_page() ) {
+			return array();
+		}
+		$product = wc_get_product( get_the_ID() );
+		if ( ! $product ) {
+			return array();
+		}
+
+		return $product->get_category_ids();
+	}
+
+	/**
+	 * Get the cart items.
+	 *
+	 * @return array
+	 */
+	public static function get_cart_items_categories(): array {
+
+		$category_ids = array();
+
+		foreach ( WC()->cart->get_cart() as $cart_item ) {
+			$product = $cart_item['data'];
+
+			if ( ! $product || ! $product->get_id() ) {
+				continue;
+			}
+
+			$terms = get_the_terms( $product->get_id(), 'product_cat' );
+
+			if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+				$category_ids = array_merge( $category_ids, wp_list_pluck( $terms, 'term_id' ) );
+			}
+		}
+
+		return array_values( array_unique( $category_ids ) );
+	}
+
 	/**
 	 * Get something in WC session
 	 *

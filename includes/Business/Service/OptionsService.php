@@ -162,7 +162,12 @@ class OptionsService {
 		return 'yes' === $this->get_options()['debug'];
 	}
 
-	public function get_option( $key ): string {
+	/**
+	 * @param $key
+	 *
+	 * @return mixed|array|string
+	 */
+	public function get_option( $key ) {
 		return $this->options_proxy->get_options()[ $key ] ?? '';
 	}
 
