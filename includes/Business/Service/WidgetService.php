@@ -46,31 +46,35 @@ class WidgetService {
 		$excluded_categories    = $this->options_service->get_option( 'excluded_products_list' );
 		$language               = WordPressProxy::get_language();
 
-		if ( WooCommerceProxy::is_cart_page() && 'yes' === $widget_cart_enabled ) {
-			if ( empty( array_intersect( WooCommerceProxy::get_cart_items_categories(), $excluded_categories ) ) ) {
-				WidgetHelper::display_cart_widget(
-					$environment,
-					$merchant_id,
-					WooCommerceProxy::get_cart_total(),
-					$fee_plan_list,
-					$language
-				);
-			}
-		} elseif ( WooCommerceProxy::is_product_page() && 'yes' === $widget_product_enabled ) {
-			// If the product is not in the excluded categories, display the widget.
-			if ( empty(
-				array_intersect(
-					WooCommerceProxy::get_current_product_categories(),
-					$excluded_categories
-				)
-			) ) {
-				WidgetHelper::display_product_widget(
-					$environment,
-					$merchant_id,
-					WooCommerceProxy::get_current_product_price(),
-					$fee_plan_list,
-					$language
-				);
+		// No fee plans available, do not display the widget.
+		if ( count( $fee_plan_list ) > 0 ) {
+			// Display widget if page is cart or product page and widget is enabled.
+			if ( WooCommerceProxy::is_cart_page() && 'yes' === $widget_cart_enabled ) {
+				if ( empty( array_intersect( WooCommerceProxy::get_cart_items_categories(), $excluded_categories ) ) ) {
+					WidgetHelper::display_cart_widget(
+						$environment,
+						$merchant_id,
+						WooCommerceProxy::get_cart_total(),
+						$fee_plan_list,
+						$language
+					);
+				}
+			} elseif ( WooCommerceProxy::is_product_page() && 'yes' === $widget_product_enabled ) {
+				// If the product is not in the excluded categories, display the widget.
+				if ( empty(
+					array_intersect(
+						WooCommerceProxy::get_current_product_categories(),
+						$excluded_categories
+					)
+				) ) {
+					WidgetHelper::display_product_widget(
+						$environment,
+						$merchant_id,
+						WooCommerceProxy::get_current_product_price(),
+						$fee_plan_list,
+						$language
+					);
+				}
 			}
 		}
 	}
