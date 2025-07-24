@@ -27,12 +27,7 @@ class AssetsHelper {
 
 		/* translators: %s -> path to add after sandbox dashboard url */
 
-		return esc_url(
-			sprintf(
-				L10nHelper::__( 'https://dashboard.sandbox.getalma.eu/%s' ),
-				$path
-			)
-		);
+		return esc_url( sprintf( L10nHelper::__( 'https://dashboard.sandbox.getalma.eu/%s' ), $path ) );
 	}
 
 	/**

@@ -150,6 +150,11 @@ class AbstractBackendGateway extends AbstractGateway {
 		);
 	}
 
+	/**
+	 * Define the widget section.
+	 *
+	 * @return array[]
+	 */
 	public function widget_fieldset() {
 
 		return array(
@@ -183,6 +188,10 @@ class AbstractBackendGateway extends AbstractGateway {
 	 * @throws MerchantServiceException
 	 */
 	public function fee_plan_fieldset(): array {
+
+		/** @var OptionsService $options_service */
+		$options_service = Plugin::get_container()->get( OptionsService::class );
+		$environment     = $options_service->get_environment();
 
 		// Get the default fee plans.
 		/** @var FeePlanService $fee_plan_service */
@@ -218,12 +227,13 @@ class AbstractBackendGateway extends AbstractGateway {
 
 		/** @var FeePlan $fee_plan */
 		foreach ( $fee_plan_list as $fee_plan ) {
+			$fee_plan_display_data = L10nHelper::generate_fee_plan_display_data( $fee_plan, $environment );
 			/** @uses self::generate_table_title_html() */
 			$field_list[ $fee_plan->getPlanKey() . '_title' ] = array(
 				'type'      => 'table_title',
-				'title'     => $this->generate_fee_plan_title( $fee_plan ),
 				'decorator' => '<tr data-fee_plan_key="' . $fee_plan->getPlanKey() . '">%s',
-				'desc_tip'  => false,
+				'desc_tip'  => true,
+				'title'     => $fee_plan_display_data['title'],
 			);
 			/**
 			 * @uses self::generate_table_toggle_html()
@@ -231,32 +241,30 @@ class AbstractBackendGateway extends AbstractGateway {
 			$field_list[ $fee_plan->getPlanKey() ] = array(
 				'type'        => 'table_toggle',
 				'fee_plan'    => $fee_plan,
-				'description' => 'Enable/Disable Fee Plan',
+				'description' => $fee_plan_display_data['toggle_label'],
 				'desc_tip'    => true,
 				'enabled'     => $fee_plan->isEnabled(),
 			);
 			/** @uses self::generate_table_description_html() */
 			$field_list[ $fee_plan->getPlanKey() . '_description' ] = array(
 				'type'        => 'table_description',
-				'description' => $this->generate_fee_plan_description( $fee_plan ),
+				'description' => $fee_plan_display_data['description'],
 				'desc_tip'    => true,
 			);
 			/** @uses self::generate_table_min_amount_html() */
 			$field_list[ $fee_plan->getPlanKey() . '_min_amount' ] = array(
-				'type'        => 'table_min_amount',
-				'description' => $this->generate_fee_plan_description( $fee_plan ),
-				'desc_tip'    => true,
-				'default'     => DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount() ),
-				'value'       => DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ),
+				'type'     => 'table_min_amount',
+				'desc_tip' => true,
+				'default'  => DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount() ),
+				'value'    => DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ),
 			);
 			/** @uses self::generate_table_max_amount_html() */
 			$field_list[ $fee_plan->getPlanKey() . '_max_amount' ] = array(
-				'type'        => 'table_max_amount',
-				'description' => $this->generate_fee_plan_description( $fee_plan ),
-				'desc_tip'    => true,
-				'default'     => DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount() ),
-				'value'       => DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) ),
-				'decorator'   => '%s</tr>',
+				'type'      => 'table_max_amount',
+				'desc_tip'  => true,
+				'default'   => DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount() ),
+				'value'     => DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) ),
+				'decorator' => '%s</tr>',
 			);
 		}
 
@@ -401,7 +409,7 @@ class AbstractBackendGateway extends AbstractGateway {
 			'class'             => '',
 			'css'               => '',
 			'type'              => 'text',
-			'desc_tip'          => false,
+			'desc_tip'          => true,
 			'description'       => '',
 			'custom_attributes' => array(),
 		);
@@ -421,11 +429,10 @@ class AbstractBackendGateway extends AbstractGateway {
 		// Begin building the HTML string
 		$html  = '<td width="1%">';
 		$html .= '<label for="' . esc_attr( $field_key ) . '">';
-		$html .= '<a class="wc-alma-toggle-fee-plan-enabled" href="#' . esc_attr( $field_key ) . '" aria-label="Toggle the Payment Method">';
+		$html .= '<a class="wc-alma-toggle-fee-plan-enabled" href="#' . esc_attr( $field_key ) . '" aria-label="' . $data['description'] . '" title="' . $data['description'] . '">';
 		$html .= '<span class="' . $toggle_class . '"></span>';
 		$html .= '</a>';
-		$html .= '</label><br />';
-		$html .= $this->get_description_html( $data );
+		$html .= '</label>';
 		$html .= '</td>';
 
 		return $html;
@@ -492,167 +499,6 @@ class AbstractBackendGateway extends AbstractGateway {
 		);
 	}
 
-	public function generate_fee_to_pay_description( $translation, $fee_variable, $fee_fixed, $fee_description = '' ): string {
-		if ( ! $fee_variable && ! $fee_fixed ) {
-			return '';
-		}
-
-		$fees = '';
-		if ( $fee_variable ) {
-			$fees .= $fee_variable . '%';
-		}
-
-		if ( $fee_fixed ) {
-			if ( $fee_variable ) {
-				$fees .= ' + ';
-			}
-			$fees .= $fee_fixed . '€';
-		}
-
-		return sprintf( '<br><b>%s</b> %s %s', $translation, $fees, $fee_description );
-	}
-
-	public function generate_fee_plan_title( FeePlan $fee_plan ): string {
-		$section_title = '';
-
-		if ( $fee_plan->isPayNow() ) {
-			$section_title = L10nHelper::__( '→ Pay Now' );
-			// translators: %d: number of installments.
-			$toggle_label = sprintf(
-				L10nHelper::__( 'Enable %d-installment payments with Alma' ),
-				$fee_plan->getInstallmentsCount()
-			);
-		}
-
-		if ( $fee_plan->isPnXOnly() || $fee_plan->isCredit() ) {
-			// translators: %d: number of installments.
-			$section_title = sprintf(
-				L10nHelper::__( '→ %d-installment payment' ),
-				$fee_plan->getInstallmentsCount()
-			);
-			// translators: %d: number of installments.
-			$toggle_label = sprintf(
-				L10nHelper::__( 'Enable %d-installment payments with Alma' ),
-				$fee_plan->getInstallmentsCount()
-			);
-		}
-
-		if ( $fee_plan->isPayLaterOnly() ) {
-			$deferred_days   = $fee_plan->getDeferredDays();
-			$deferred_months = $fee_plan->getDeferredMonths();
-			if ( $deferred_days ) {
-				// translators: %d: number of deferred days.
-				$section_title = sprintf(
-					L10nHelper::__( '→ D+%d-deferred payment' ),
-					$deferred_days
-				);
-				// translators: %d: number of deferred days.
-				$toggle_label = sprintf( L10nHelper::__( 'Enable D+%d-deferred payments with Alma' ), $deferred_days );
-			}
-			if ( $deferred_months ) {
-				// translators: %d: number of deferred months.
-				$section_title = sprintf(
-					L10nHelper::__( '→ M+%d-deferred payment' ),
-					$deferred_months
-				);
-				// translators: %d: number of deferred months.
-				$toggle_label = sprintf(
-					L10nHelper::__( 'Enable M+%d-deferred payments with Alma' ),
-					$deferred_months
-				);
-			}
-		}
-
-		return $section_title;
-	}
-
-	/**
-	 * @param FeePlan $fee_plan
-	 *
-	 * @return string
-	 * @throws ContainerException
-	 * @deprecated Copy and paste from AlmaGateway, to be refactored before release
-	 */
-	public function generate_fee_plan_description( FeePlan $fee_plan ): string {
-
-		/** @var OptionsService $options_service */
-		$options_service = Plugin::get_container()->get( OptionsService::class );
-
-		$you_can_offer = '';
-		if ( $fee_plan->isPnXOnly() || $fee_plan->isCredit() ) {
-			$you_can_offer = sprintf(
-			// translators: %d: number of installments.
-				L10nHelper::__( 'You can offer %1$d-installment payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.' ),
-				$fee_plan->getInstallmentsCount(),
-				DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ),
-				DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) )
-			);
-		}
-
-		if ( $fee_plan->isPayNow() ) {
-			$you_can_offer = sprintf(
-			// translators: %d: number of installments.
-				L10nHelper::__( 'You can offer instant payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.' ),
-				$fee_plan->getInstallmentsCount(),
-				DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ),
-				DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) )
-			);
-		}
-
-		if ( $fee_plan->isPayLaterOnly() ) {
-			$deferred_days   = $fee_plan->getDeferredDays();
-			$deferred_months = $fee_plan->getDeferredMonths();
-			if ( $deferred_days ) {
-				$you_can_offer = sprintf(
-				// translators: %d: number of deferred days.
-					L10nHelper::__( 'You can offer D+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.' ),
-					$deferred_days,
-					DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ),
-					DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) )
-				);
-			}
-			if ( $deferred_months ) {
-				$you_can_offer = sprintf(
-				// translators: %d: number of deferred months.
-					L10nHelper::__( 'You can offer M+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.' ),
-					$deferred_months,
-					DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ),
-					DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) )
-				);
-			}
-		}
-		$fees_applied  = L10nHelper::__( 'Fees applied to each transaction for this plan:' );
-		$you_pay       = $this->generate_fee_to_pay_description(
-			L10nHelper::__( 'You pay:' ),
-			$fee_plan->getMerchantFeeVariable() / 100,
-			$fee_plan->getMerchantFeeFixed() / 100
-		);
-		$customer_pays = $this->generate_fee_to_pay_description(
-			L10nHelper::__( 'Customer pays:' ),
-			$fee_plan->getCustomerFeeVariable() / 100,
-			$fee_plan->getCustomerFeeFixed() / 100,
-			// translators: %s Link to alma dashboard.
-			'<br>' . sprintf(
-				L10nHelper::__( '<u>Note</u>: Customer fees are impacted by the usury rate, and will be adapted based on the limitations to comply with regulations. For more information, visit the Configuration page on your <a href="%s" target="_blank">Alma Dashboard</a>.' ),
-				AssetsHelper::get_alma_dashboard_url( $options_service->get_environment(), 'conditions' )
-			)
-		);
-		$customer_lending_pays = $this->generate_fee_to_pay_description(
-			L10nHelper::__( 'Customer lending rate:' ),
-			$fee_plan->getCustomerLendingRate() / 100,
-			0
-		);
-
-		return sprintf(
-			'<p>%s<br>%s %s %s %s</p>',
-			$you_can_offer,
-			$fees_applied,
-			$you_pay,
-			$customer_pays,
-			$customer_lending_pays
-		);
-	}
-
 	public function excluded_categories_fieldset(): array {
 		return array(
 			'excluded_categories_section' => array(
@@ -674,92 +520,6 @@ class AbstractBackendGateway extends AbstractGateway {
 				'type'        => 'text',
 				'description' => L10nHelper::__( 'Message displayed below the cart totals when it contains excluded products' ),
 				'desc_tip'    => true,
-			),
-		);
-	}
-
-	/**
-	 * Inits a fee_plan's fields.
-	 *
-	 * @param FeePlan $fee_plan Fee plan definitions.
-	 * @param array   $default_settings Default settings definitions.
-	 *
-	 * @return array  as field_form definition
-	 * @throws ContainerException
-	 * @deprecated Copy and paste from AlmaGateway, to be refactored before release
-	 */
-	protected function init_fee_plan_fields( FeePlan $fee_plan, array $default_settings ): array {
-		$key               = $fee_plan->getPlanKey();
-		$min_amount_key    = 'min_amount_' . $key;
-		$section_key       = $key . '_section';
-		$max_amount_key    = 'max_amount_' . $key;
-		$toggle_key        = 'enabled_' . $key;
-		$class             = 'alma_fee_plan alma_fee_plan_' . $key;
-		$default_enabled   = $default_settings['selected_fee_plan'] === $key ? 'yes' : 'no';
-		$custom_attributes = array(
-			'required' => 'required',
-			'min'      => DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ),
-			'max'      => DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) ),
-			'step'     => 0.01,
-		);
-
-		$section_title = '';
-		$toggle_label  = '';
-
-		if ( $fee_plan->isPayNow() ) {
-			$section_title = L10nHelper::__( '→ Pay Now' );
-			// translators: %d: number of installments.
-			$toggle_label = sprintf(
-				L10nHelper::__( 'Enable %d-installment payments with Alma' ),
-				$fee_plan->getInstallmentsCount()
-			);
-		}
-
-		if ( $fee_plan->isPnXOnly() || $fee_plan->isCredit() ) {
-			// translators: %d: number of installments.
-			$section_title = sprintf(
-				L10nHelper::__( '→ %d-installment payment' ),
-				$fee_plan->getInstallmentsCount()
-			);
-			// translators: %d: number of installments.
-			$toggle_label = sprintf(
-				L10nHelper::__( 'Enable %d-installment payments with Alma' ),
-				$fee_plan->getInstallmentsCount()
-			);
-		}
-
-		if ( $fee_plan->isPayLaterOnly() ) {
-			$deferred_days   = $fee_plan->getDeferredDays();
-			$deferred_months = $fee_plan->getDeferredMonths();
-			if ( $deferred_days ) {
-				// translators: %d: number of deferred days.
-				$section_title = sprintf(
-					L10nHelper::__( '→ D+%d-deferred payment' ),
-					$deferred_days
-				);
-				// translators: %d: number of deferred days.
-				$toggle_label = sprintf( L10nHelper::__( 'Enable D+%d-deferred payments with Alma' ), $deferred_days );
-			}
-			if ( $deferred_months ) {
-				// translators: %d: number of deferred months.
-				$section_title = sprintf(
-					L10nHelper::__( '→ M+%d-deferred payment' ),
-					$deferred_months
-				);
-				// translators: %d: number of deferred months.
-				$toggle_label = sprintf(
-					L10nHelper::__( 'Enable M+%d-deferred payments with Alma' ),
-					$deferred_months
-				);
-			}
-		}
-
-		return array(
-			$section_key => array(
-				'title'       => $section_title,
-				'type'        => 'alma_fee_plan_section',
-				'description' => $this->generate_fee_plan_description( $fee_plan ),
-				'fee_plan,'   => $fee_plan,
 			),
 		);
 	}
