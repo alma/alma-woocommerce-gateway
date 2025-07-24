@@ -53,15 +53,19 @@ class ShortcodeWidgetHelper {
 	 * @param int         $price The total price of the cart in cents.
 	 * @param FeePlanList $fee_plan_list The list of fee plans.
 	 * @param string      $language The language code (e.g., 'en', 'fr', etc.).
+	 * @param bool        $display_widget Whether to display the widget or not.
 	 *
 	 * @return void
 	 * @throws ContainerException
 	 */
-	public static function init_cart_shortcode( string $environment, string $merchant_id, int $price, FeePlanList $fee_plan_list, string $language ) {
-
-		self::add_scripts_and_styles();
-		self::add_parameters( $environment, $merchant_id, $price, $fee_plan_list, $language );
-		self::add_shortcode( self::CART_SHORTCODE_TAG );
+	public static function init_cart_shortcode( string $environment, string $merchant_id, int $price, FeePlanList $fee_plan_list, string $language, bool $display_widget = false ) {
+		if ( $display_widget ) {
+			self::add_scripts_and_styles();
+			self::add_parameters( $environment, $merchant_id, $price, $fee_plan_list, $language );
+			self::add_shortcode( self::CART_SHORTCODE_TAG );
+		} else {
+			self::add_empty_shortcode( self::CART_SHORTCODE_TAG );
+		}
 	}
 
 	/**
@@ -94,15 +98,19 @@ class ShortcodeWidgetHelper {
 	 * @param int         $price The total price of the cart in cents.
 	 * @param FeePlanList $fee_plan_list The list of fee plans.
 	 * @param string      $language The language code.
+	 * @param bool        $display_widget Whether to display the widget or not.
 	 *
 	 * @return void
 	 * @throws ContainerException
 	 */
-	public static function init_product_shortcode( string $environment, string $merchant_id, int $price, FeePlanList $fee_plan_list, string $language ) {
-
-		self::add_scripts_and_styles();
-		self::add_parameters( $environment, $merchant_id, $price, $fee_plan_list, $language );
-		self::add_shortcode( self::PRODUCT_SHORTCODE_TAG );
+	public static function init_product_shortcode( string $environment, string $merchant_id, int $price, FeePlanList $fee_plan_list, string $language, bool $display_widget = false ) {
+		if ( $display_widget ) {
+			self::add_scripts_and_styles();
+			self::add_parameters( $environment, $merchant_id, $price, $fee_plan_list, $language );
+			self::add_shortcode( self::PRODUCT_SHORTCODE_TAG );
+		} else {
+			self::add_empty_shortcode( self::PRODUCT_SHORTCODE_TAG );
+		}
 	}
 
 	/**
@@ -193,6 +201,26 @@ class ShortcodeWidgetHelper {
 					$tag,
 					$class,
 					$style
+				);
+			}
+		);
+	}
+
+	/**
+	 * Add an empty shortcode that returns a div with the given tag.
+	 * That's used when the widget is not enabled, to avoid breaking the layout.
+	 *
+	 * @param string $tag The shortcode tag.
+	 *
+	 * @return void
+	 */
+	private static function add_empty_shortcode( string $tag ) {
+		add_shortcode(
+			$tag,
+			function () use ( $tag ) {
+				return sprintf(
+					'<div class="%s"></div>',
+					$tag,
 				);
 			}
 		);
