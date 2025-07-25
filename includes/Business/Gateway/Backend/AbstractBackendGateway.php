@@ -120,10 +120,6 @@ class AbstractBackendGateway extends AbstractGateway {
 				'description' => L10nHelper::__( 'You can find your API keys on your Alma dashboard' ),
 				'desc_tip'    => false,
 			),
-			/** @see self::generate_hidden_html */
-			'merchant_id'            => array(
-				'type' => 'hidden',
-			),
 			self::FIELD_LIVE_API_KEY => array(
 				'title'    => L10nHelper::__( 'Live API key' ),
 				'type'     => 'password',
@@ -368,11 +364,6 @@ class AbstractBackendGateway extends AbstractGateway {
 	public function generate_custom_html( string $key, array $data ): string {
 
 		return $data['html'] ?? '';
-	}
-
-	public function generate_hidden_html( string $key, array $data ): string {
-
-		return '<input type="hidden" name="' . esc_attr( $this->get_field_key( $key ) ) . '" value="">';
 	}
 
 	public function generate_table_order_html( string $key, array $data ): string {
