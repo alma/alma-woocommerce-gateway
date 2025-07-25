@@ -5,6 +5,7 @@ namespace Alma\Gateway\Business\Service;
 use Alma\API\Entities\FeePlan;
 use Alma\API\Entities\FeePlanList;
 use Alma\Gateway\Business\Exception\ContainerException;
+use Alma\Gateway\Business\Helper\DisplayHelper;
 use Alma\Gateway\Business\Helper\EncryptorHelper;
 use Alma\Gateway\Plugin;
 use Alma\Gateway\WooCommerce\Proxy\OptionsProxy;
@@ -188,8 +189,8 @@ class OptionsService {
 
 			$default_plan_list = array(
 				'_enabled'    => false,
-				'_max_amount' => $fee_plan->getMaxPurchaseAmount(),
-				'_min_amount' => $fee_plan->getMinPurchaseAmount(),
+				'_max_amount' => DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount() ),
+				'_min_amount' => DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount() ),
 			);
 
 			foreach ( $default_plan_list as $plan_key => $default_value ) {
@@ -276,15 +277,6 @@ class OptionsService {
 	}
 
 	/**
-	 * Sets Merchant ID.
-	 *
-	 * @param string $merchant_id
-	 */
-	public function set_merchant_id( string $merchant_id ): void {
-		$this->options_proxy->update_option( self::MERCHANT_ID, $merchant_id );
-	}
-
-	/**
 	 * Encrypt keys.
 	 *
 	 * @param $options array The whole posted settings.
@@ -296,14 +288,39 @@ class OptionsService {
 		/** @var EncryptorHelper $encryptor_helper */
 		$encryptor_helper = Plugin::get_container()->get( EncryptorHelper::class );
 
-		if ( stripos( $options[ self::LIVE_API_KEY ], 'sk_live_' ) === 0 ) {
+		if ( ! empty( $options[ self::LIVE_API_KEY ] ) && strpos( $options[ self::LIVE_API_KEY ], 'sk_live_' ) === 0 ) {
 			$options[ self::LIVE_API_KEY ] = $encryptor_helper->encrypt( $options[ self::LIVE_API_KEY ] );
 		}
 
-		if ( stripos( $options[ self::TEST_API_KEY ], 'sk_test_' ) === 0 ) {
+		if ( ! empty( $options[ self::TEST_API_KEY ] ) && strpos( $options[ self::TEST_API_KEY ], 'sk_test_' ) === 0 ) {
 			$options[ self::TEST_API_KEY ] = $encryptor_helper->encrypt( $options[ self::TEST_API_KEY ] );
 		}
 
 		return $options;
+	}
+
+	/**
+	 * Get excluded categories.
+	 *
+	 * @return array The list of excluded categories.
+	 */
+	public function get_excluded_categories(): array {
+		$excluded_categories = $this->get_option( 'excluded_products_list' );
+		if ( ! is_array( $excluded_categories ) ) {
+			$excluded_categories = array();
+		}
+		if ( ! empty( $excluded_categories ) ) {
+			$excluded_categories = array_map( 'intval', $excluded_categories );
+		}
+
+		return $excluded_categories;
+	}
+
+	public function get_widget_cart_enabled(): bool {
+		return 'yes' === $this->get_option( 'widget_cart_enabled' );
+	}
+
+	public function get_widget_product_enabled(): bool {
+		return 'yes' === $this->get_option( 'widget_product_enabled' );
 	}
 }

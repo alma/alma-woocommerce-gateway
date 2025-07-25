@@ -2,6 +2,7 @@
 
 namespace Alma\Gateway\Business\Service;
 
+use Alma\API\Entities\FeePlanList;
 use Alma\Gateway\Business\Exception\ContainerException;
 use Alma\Gateway\Business\Exception\MerchantServiceException;
 use Alma\Gateway\Business\Service\API\FeePlanService;
@@ -41,20 +42,24 @@ class WidgetService {
 		$environment         = $this->options_service->get_environment();
 		$merchant_id         = $this->options_service->get_merchant_id();
 		$fee_plan_list       = $this->fee_plan_service->get_fee_plan_list()->filterEnabled();
-		$excluded_categories = $this->options_service->get_option( 'excluded_products_list' );
+		$excluded_categories = $this->options_service->get_excluded_categories();
 		$language            = WordPressProxy::get_language();
 
 		// Display widget if page is cart or product page and widget is enabled.
 		if ( WooCommerceProxy::is_cart_page() ) {
 			// Display widget if widget is enabled and there are no excluded categories.
-			$widget_cart_enabled = $this->options_service->get_option( 'widget_cart_enabled' );
+			$widget_cart_enabled = $this->options_service->get_widget_cart_enabled();
 			$excluded_categories = empty(
 				array_intersect(
 					WooCommerceProxy::get_cart_items_categories(),
 					$excluded_categories
 				)
 			);
-			$display_widget      = $this->should_display_widget( $widget_cart_enabled, $excluded_categories );
+			$display_widget      = $this->should_display_widget(
+				$widget_cart_enabled,
+				$excluded_categories,
+				$fee_plan_list
+			);
 
 			// Display the cart widget.
 			WidgetHelper::display_cart_widget(
@@ -68,14 +73,18 @@ class WidgetService {
 
 		} elseif ( WooCommerceProxy::is_product_page() ) {
 			// Display widget if widget is enabled and there are no excluded categories.
-			$widget_product_enabled = $this->options_service->get_option( 'widget_product_enabled' );
+			$widget_product_enabled = $this->options_service->get_widget_product_enabled();
 			$excluded_categories    = empty(
 				array_intersect(
 					WooCommerceProxy::get_current_product_categories(),
 					$excluded_categories
 				)
 			);
-			$display_widget         = $this->should_display_widget( $widget_product_enabled, $excluded_categories );
+			$display_widget         = $this->should_display_widget(
+				$widget_product_enabled,
+				$excluded_categories,
+				$fee_plan_list
+			);
 
 			// Display the product widget.
 			WidgetHelper::display_product_widget(
@@ -93,12 +102,13 @@ class WidgetService {
 	/**
 	 * Check if the widget should be displayed based on the settings and excluded categories.
 	 *
-	 * @param bool $widget_enabled Whether the widget is enabled in settings.
-	 * @param bool $excluded_categories Whether there are excluded categories.
+	 * @param bool        $widget_enabled Whether the widget is enabled in settings.
+	 * @param bool        $excluded_categories Whether there are excluded categories.
+	 * @param FeePlanList $fee_plan_list The list of fee plans.
 	 *
 	 * @return bool True if the widget should be displayed, false otherwise.
 	 */
-	private function should_display_widget( bool $widget_enabled, bool $excluded_categories ): bool {
-		return $widget_enabled && $excluded_categories;
+	private function should_display_widget( bool $widget_enabled, bool $excluded_categories, FeePlanList $fee_plan_list ): bool {
+		return $widget_enabled && $excluded_categories && count( $fee_plan_list ) > 0;
 	}
 }

@@ -18,7 +18,6 @@ use Alma\Gateway\Plugin;
 use Alma\Gateway\WooCommerce\Exception\CoreException;
 use Alma\Gateway\WooCommerce\Gateway\AbstractGateway;
 use Alma\Gateway\WooCommerce\Proxy\WordPressProxy;
-use Alma\Woocommerce\Fixes\GetTermsFix;
 
 class AbstractBackendGateway extends AbstractGateway {
 
@@ -120,6 +119,10 @@ class AbstractBackendGateway extends AbstractGateway {
 				'type'        => 'title',
 				'description' => L10nHelper::__( 'You can find your API keys on your Alma dashboard' ),
 				'desc_tip'    => false,
+			),
+			/** @see self::generate_hidden_html */
+			'merchant_id'            => array(
+				'type' => 'hidden',
 			),
 			self::FIELD_LIVE_API_KEY => array(
 				'title'    => L10nHelper::__( 'Live API key' ),
@@ -367,6 +370,11 @@ class AbstractBackendGateway extends AbstractGateway {
 		return $data['html'] ?? '';
 	}
 
+	public function generate_hidden_html( string $key, array $data ): string {
+
+		return '<input type="hidden" name="' . esc_attr( $this->get_field_key( $key ) ) . '" value="">';
+	}
+
 	public function generate_table_order_html( string $key, array $data ): string {
 
 		return '<td class="sort ui-sortable-handle" width="1%">'
@@ -451,7 +459,7 @@ class AbstractBackendGateway extends AbstractGateway {
 		$field_key = $this->get_field_key( $key );
 
 		return '<td width="1%">'
-				. '<input type="number" name="' . esc_attr( $field_key ) . '" id="' . esc_attr( $field_key ) . '" value="' . esc_attr( $data['value'] ) . '" style="width: 80px;" step="0.01" min="" max="' . $data['default'] . '">'
+				. '<input type="number" name="' . esc_attr( $field_key ) . '" id="' . esc_attr( $field_key ) . '" value="' . esc_attr( $data['value'] ) . '" style="width: 80px;" step="0.01" max="' . $data['default'] . '">'
 				. '&nbsp;<span>' . DisplayHelper::amount( $data['default'] ) . '</span>'
 				. '</td>';
 	}

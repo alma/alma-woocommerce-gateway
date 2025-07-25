@@ -204,7 +204,7 @@ class AlmaGateway extends AbstractBackendGateway {
 			ClientConfiguration::TEST_MODE
 		);
 		if ( empty( $test_merchant_id ) ) {
-			unset( $settings[ self::FIELD_TEST_API_KEY ] );
+			$settings[ self::FIELD_TEST_API_KEY ] = '';
 			$this->add_error( 'La clé API de test n\'est pas valide.' );
 		}
 
@@ -213,18 +213,14 @@ class AlmaGateway extends AbstractBackendGateway {
 			$settings[ self::FIELD_LIVE_API_KEY ]
 		);
 		if ( empty( $live_merchant_id ) ) {
-			unset( $settings[ self::FIELD_LIVE_API_KEY ] );
+			$settings[ self::FIELD_LIVE_API_KEY ] = '';
 			$this->add_error( 'La clé API de production n\'est pas valide.' );
 		}
 
 		// @todo: check if both keys are valid, (same merchant id), otherwise, display an error.
 
 		// Save merchant IDs
-		/** @var OptionsService $options_service */
-		$options_service = Plugin::get_container()->get( OptionsService::class );
-
-		$merchant_id = $live_merchant_id ?? $test_merchant_id;
-		$options_service->set_merchant_id( $merchant_id );
+		$settings['merchant_id'] = ! empty( $live_merchant_id ) ? $live_merchant_id : $test_merchant_id;
 
 		return $settings;
 	}
