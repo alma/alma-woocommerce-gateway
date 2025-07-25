@@ -60,7 +60,6 @@ if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins',
 
 require_once ALMA_PLUGIN_PATH . 'vendor/autoload.php';
 
-
 /**
  * Return instance of AlmaPlugin.
  *
@@ -70,6 +69,13 @@ require_once ALMA_PLUGIN_PATH . 'vendor/autoload.php';
 
 
 function alma_plugin() {
+
+	load_plugin_textdomain(
+		'alma-gateway-for-woocommerce',
+		false,
+		plugin_basename( ALMA_PLUGIN_PATH ) . '/languages'
+	);
+
 	static $plugin;
 
 	if ( ! isset( $plugin ) ) {
@@ -81,18 +87,6 @@ function alma_plugin() {
 
 /** Add the plugin. */
 add_action( 'plugins_loaded', 'alma_plugin' );
-
-/** Init the plugin */
-add_action(
-	'init',
-	function () {
-		load_plugin_textdomain(
-			'alma-gateway-for-woocommerce',
-			false,
-			plugin_basename( ALMA_PLUGIN_PATH ) . '/languages'
-		);
-	}
-);
 
 /**
  * Init custom_order_tables if available in Woocommerce version.

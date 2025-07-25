@@ -28,6 +28,7 @@ use Alma\Woocommerce\Gateways\Standard\PayNowGateway;
 use Alma\Woocommerce\Gateways\Standard\StandardGateway;
 use Alma\Woocommerce\Helpers\MigrationHelper;
 use Alma\Woocommerce\Helpers\PluginHelper;
+use Alma\Woocommerce\WcProxy\FunctionsProxy;
 use Exception;
 
 /**
@@ -111,6 +112,19 @@ class AlmaPlugin {
 	}
 
 	/**
+	 * Returns the *Singleton* instance of this class.
+	 *
+	 * @return AlmaPlugin
+	 */
+	public static function get_instance() {
+		if ( ! self::$instance ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Init the plugin after plugins_loaded so environment variables are set.
 	 *
 	 * @since 1.0.0
@@ -140,59 +154,6 @@ class AlmaPlugin {
 		$this->blocks_data_service->init_hooks();
 	}
 
-
-	/**
-	 * Check dependencies.
-	 *
-	 * @return void
-	 * @throws RequirementsException   RequirementsException.
-	 */
-	protected function check_dependencies() {
-
-		if ( ! function_exists( 'WC' ) ) {
-			throw new RequirementsException( __( 'Alma requires WooCommerce to be activated', 'alma-gateway-for-woocommerce' ) );
-		}
-
-		if ( version_compare( $this->version_factory->get_version(), '3.0.0', '<' ) ) {
-			throw new RequirementsException( __( 'Alma requires WooCommerce version 3.0.0 or greater', 'alma-gateway-for-woocommerce' ) );
-		}
-
-		if ( ! function_exists( 'curl_init' ) ) {
-			throw new RequirementsException( __( 'Alma requires the cURL PHP extension to be installed on your server', 'alma-gateway-for-woocommerce' ) );
-		}
-
-		if ( ! function_exists( 'json_decode' ) ) {
-			throw new RequirementsException( __( 'Alma requires the JSON PHP extension to be installed on your server', 'alma-gateway-for-woocommerce' ) );
-		}
-
-		$openssl_warning = __( 'Alma requires OpenSSL >= 1.0.1 to be installed on your server', 'alma-gateway-for-woocommerce' );
-		if ( ! defined( 'OPENSSL_VERSION_TEXT' ) ) {
-			throw new RequirementsException( $openssl_warning );
-		}
-
-		preg_match( '/^(?:Libre|Open)SSL ([\d.]+)/', OPENSSL_VERSION_TEXT, $matches );
-		if ( empty( $matches[1] ) ) {
-			throw new RequirementsException( $openssl_warning );
-		}
-
-		if ( ! version_compare( $matches[1], '1.0.1', '>=' ) ) {
-			throw new RequirementsException( $openssl_warning );
-		}
-	}
-
-	/**
-	 * Returns the *Singleton* instance of this class.
-	 *
-	 * @return AlmaPlugin
-	 */
-	public static function get_instance() {
-		if ( ! self::$instance ) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
-	}
-
 	/**
 	 * Add the gateway to WC Available Gateways.
 	 *
@@ -202,7 +163,7 @@ class AlmaPlugin {
 	 * @since 1.0.0
 	 */
 	public function add_gateways( $gateways ) {
-		if ( ! is_admin() ) {
+		if ( ! FunctionsProxy::is_admin() ) {
 			$gateways[] = InPagePayNowGateway::class;
 			$gateways[] = PayNowGateway::class;
 			$gateways[] = InPageGateway::class;
@@ -250,6 +211,45 @@ class AlmaPlugin {
 	 * @return void
 	 */
 	public function __wakeup() {
+	}
+
+	/**
+	 * Check dependencies.
+	 *
+	 * @return void
+	 * @throws RequirementsException   RequirementsException.
+	 */
+	protected function check_dependencies() {
+
+		if ( ! function_exists( 'WC' ) ) {
+			throw new RequirementsException( __( 'Alma requires WooCommerce to be activated', 'alma-gateway-for-woocommerce' ) );
+		}
+
+		if ( version_compare( $this->version_factory->get_version(), '3.0.0', '<' ) ) {
+			throw new RequirementsException( __( 'Alma requires WooCommerce version 3.0.0 or greater', 'alma-gateway-for-woocommerce' ) );
+		}
+
+		if ( ! function_exists( 'curl_init' ) ) {
+			throw new RequirementsException( __( 'Alma requires the cURL PHP extension to be installed on your server', 'alma-gateway-for-woocommerce' ) );
+		}
+
+		if ( ! function_exists( 'json_decode' ) ) {
+			throw new RequirementsException( __( 'Alma requires the JSON PHP extension to be installed on your server', 'alma-gateway-for-woocommerce' ) );
+		}
+
+		$openssl_warning = __( 'Alma requires OpenSSL >= 1.0.1 to be installed on your server', 'alma-gateway-for-woocommerce' );
+		if ( ! defined( 'OPENSSL_VERSION_TEXT' ) ) {
+			throw new RequirementsException( $openssl_warning );
+		}
+
+		preg_match( '/^(?:Libre|Open)SSL ([\d.]+)/', OPENSSL_VERSION_TEXT, $matches );
+		if ( empty( $matches[1] ) ) {
+			throw new RequirementsException( $openssl_warning );
+		}
+
+		if ( ! version_compare( $matches[1], '1.0.1', '>=' ) ) {
+			throw new RequirementsException( $openssl_warning );
+		}
 	}
 
 	/**
