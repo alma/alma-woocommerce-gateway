@@ -87,12 +87,11 @@ class AlmaPlugin {
 	 * *Singleton* via the `new` operator from outside of this class.
 	 */
 	protected function __construct() {
-		$this->logger           = new AlmaLogger();
-		$this->migration_helper = new MigrationHelper();
-		$this->admin_notices    = new NoticesService();
-		$this->plugin_helper    = new PluginHelper();
-		$this->version_factory  = new VersionFactory();
-
+		$this->logger              = new AlmaLogger();
+		$this->migration_helper    = new MigrationHelper();
+		$this->admin_notices       = new NoticesService();
+		$this->plugin_helper       = new PluginHelper();
+		$this->version_factory     = new VersionFactory();
 		$this->blocks_data_service = new BlocksDataService();
 
 		try {
@@ -222,22 +221,22 @@ class AlmaPlugin {
 	protected function check_dependencies() {
 
 		if ( ! function_exists( 'WC' ) ) {
-			throw new RequirementsException( __( 'Alma requires WooCommerce to be activated', 'alma-gateway-for-woocommerce' ) );
+			throw new RequirementsException( 'Alma requires WooCommerce to be activated' );
 		}
 
 		if ( version_compare( $this->version_factory->get_version(), '3.0.0', '<' ) ) {
-			throw new RequirementsException( __( 'Alma requires WooCommerce version 3.0.0 or greater', 'alma-gateway-for-woocommerce' ) );
+			throw new RequirementsException( 'Alma requires WooCommerce version 3.0.0 or greater' );
 		}
 
 		if ( ! function_exists( 'curl_init' ) ) {
-			throw new RequirementsException( __( 'Alma requires the cURL PHP extension to be installed on your server', 'alma-gateway-for-woocommerce' ) );
+			throw new RequirementsException( 'Alma requires the cURL PHP extension to be installed on your server' );
 		}
 
 		if ( ! function_exists( 'json_decode' ) ) {
-			throw new RequirementsException( __( 'Alma requires the JSON PHP extension to be installed on your server', 'alma-gateway-for-woocommerce' ) );
+			throw new RequirementsException( 'Alma requires the JSON PHP extension to be installed on your server' );
 		}
 
-		$openssl_warning = __( 'Alma requires OpenSSL >= 1.0.1 to be installed on your server', 'alma-gateway-for-woocommerce' );
+		$openssl_warning = 'Alma requires OpenSSL >= 1.0.1 to be installed on your server';
 		if ( ! defined( 'OPENSSL_VERSION_TEXT' ) ) {
 			throw new RequirementsException( $openssl_warning );
 		}

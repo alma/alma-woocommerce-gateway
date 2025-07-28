@@ -63,11 +63,6 @@ class RefundService {
 		$this->logger                  = new AlmaLogger();
 		$this->helper                  = new AdminHelperRefund();
 		$this->settings_helper         = new AlmaSettings();
-		$this->admin_texts_to_change   = array(
-			'You will need to manually issue a refund through your payment gateway after using this.' => __( 'Refund will be operated directly with Alma.', 'alma-gateway-for-woocommerce' ),
-			/* translators: %s is an amount with currency. */
-			'Refund %s manually' => __( 'Refund %s with Alma', 'alma-gateway-for-woocommerce' ),
-		);
 		$this->number_of_texts_changed = 0;
 	}
 
@@ -77,6 +72,12 @@ class RefundService {
 	 * @return void
 	 */
 	public function admin_init() {
+		$this->admin_texts_to_change = array(
+			'You will need to manually issue a refund through your payment gateway after using this.' => __( 'Refund will be operated directly with Alma.', 'alma-gateway-for-woocommerce' ),
+			/* translators: %s is an amount with currency. */
+			'Refund %s manually' => __( 'Refund %s with Alma', 'alma-gateway-for-woocommerce' ),
+		);
+
 		if ( isset( $_GET['post'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$maybe_wc_order = wc_get_order( intval( $_GET['post'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
 			if ( $maybe_wc_order instanceof \WC_order && $this->helper->is_paid_with_alma( $maybe_wc_order ) ) {
