@@ -32,7 +32,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Alma Payment Gateway for WooCommerce. If not, see https://www.gnu.org/licenses/gpl-3.0.html.
  */
-
 use Alma\Woocommerce\Blocks\AlmaWidgetBlock;
 
 if ( ! defined( 'ABSPATH' ) ) {
