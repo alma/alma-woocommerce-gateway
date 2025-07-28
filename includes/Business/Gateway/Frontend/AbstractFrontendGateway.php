@@ -78,13 +78,13 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	/**
 	 * Check if params are valid.
 	 *
-	 * @param array $settings The settings to check.
-	 * @param array $expected_values The expected values for the settings.
+	 * @param string $setting The setting to check.
+	 * @param array  $expected_values The expected values for the settings.
 	 *
 	 * @return bool True if the settings are valid, false otherwise.
 	 */
-	protected function check_values( array $settings, array $expected_values ): bool {
-		if ( empty( $settings ) || ! in_array( $settings, $expected_values, true ) ) {
+	protected function check_values( string $setting, array $expected_values ): bool {
+		if ( empty( $setting ) || ! in_array( $setting, $expected_values, true ) ) {
 			return false;
 		}
 

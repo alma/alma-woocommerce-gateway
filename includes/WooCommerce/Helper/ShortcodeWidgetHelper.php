@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class ShortcodeWidgetHelper {
 
 	/** @var string class used by merchant's shortcode to display widget */
-	const WIDGET_CLASS = 'alma_widget';
+	const WIDGET_CLASS = 'alma-widget';
 
 	/** @var string Default class to display widget */
 	const WIDGET_DEFAULT_CLASS = 'alma-default-widget';
