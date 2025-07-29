@@ -2,8 +2,10 @@
 
 namespace Alma\Gateway\WooCommerce\Proxy;
 
+use Alma\Gateway\Business\Service\OptionsService;
+
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -114,5 +116,56 @@ class WordPressProxy {
 	 */
 	public static function notify_success( string $message ) {
 		wc_add_notice( $message );
+	}
+
+	/**
+	 * Get the current language.
+	 *
+	 * @return string The current locale, default is 'fr'.
+	 */
+	public static function get_language(): string {
+		return substr( get_locale() ?? 'fr_FR', 0, 2 );
+	}
+
+	/**
+	 * Get the product categories.
+	 *
+	 * @return array The product categories, as an associative array with term IDs as keys and names as values.
+	 */
+	public static function get_categories(): array {
+		$product_categories = get_terms(
+			array(
+				'taxonomy'   => 'product_cat',
+				'orderby'    => 'name',
+				'order'      => 'asc',
+				'hide_empty' => false,
+			)
+		);
+
+		return array_combine(
+			array_column( $product_categories, 'term_id' ),
+			array_column( $product_categories, 'name' )
+		);
+	}
+
+	/**
+	 * Set the key encryptor for API keys.
+	 *
+	 * @return void
+	 */
+	public static function set_key_encryptor() {
+		add_filter(
+			'pre_update_option_' . OptionsProxy::OPTIONS_KEY,
+			array( OptionsService::class, 'encrypt_keys' )
+		);
+	}
+
+	/**
+	 * Get the current locale.
+	 *
+	 * @return string The current locale, default is 'fr_FR'.
+	 */
+	public function get_locale(): string {
+		return get_locale() ?? 'fr_FR';
 	}
 }

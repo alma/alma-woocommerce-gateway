@@ -67,7 +67,7 @@ class ContainerService {
 		$this->set_business_rules();
 		$this->set_woocommerce_rules();
 
-		HooksProxy::auto_reload_di_container_on_option_save();
+		HooksProxy::auto_reload_options_on_option_save();
 	}
 
 	/**
@@ -92,6 +92,16 @@ class ContainerService {
 		}
 
 		return $service;
+	}
+
+	/**
+	 * Reload the DI container Options when the Options are updated.
+	 * @throws ContainerException
+	 */
+	public function reload_options(): void {
+		/** @var OptionsService $options_service */
+		$options_service       = $this->get( OptionsService::class );
+		$this->options_service = $options_service;
 	}
 
 	/**

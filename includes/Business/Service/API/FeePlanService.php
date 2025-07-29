@@ -7,6 +7,7 @@ use Alma\API\Entities\FeePlan;
 use Alma\API\Entities\FeePlanList;
 use Alma\API\Exceptions\Endpoint\MerchantEndpointException;
 use Alma\Gateway\Business\Exception\MerchantServiceException;
+use Alma\Gateway\Business\Helper\DisplayHelper;
 use Alma\Gateway\Business\Service\OptionsService;
 
 class FeePlanService {
@@ -48,15 +49,20 @@ class FeePlanService {
 	 */
 	private function retrieve_fee_plan_list(): FeePlanList {
 		try {
-			return $this->merchant_endpoint->getFeePlanList( FeePlan::KIND_GENERAL, 'all', true )
-											->filterFeePlanList(
-												array(
-													'credit',
-													'pnx',
-													'pay-later',
-													'pay-now',
-												)
-											);
+			$fee_plan_list = $this->merchant_endpoint->getFeePlanList( FeePlan::KIND_GENERAL, 'all', true )
+													->filterFeePlanList(
+														array(
+															'credit',
+															'pnx',
+															'pay-later',
+															'pay-now',
+														)
+													);
+
+			$this->options_service->init_fee_plan_list( $fee_plan_list );
+
+			return $fee_plan_list;
+
 		} catch ( MerchantEndpointException $e ) {
 			throw new MerchantServiceException( 'Error retrieving fee plans: ' . $e->getMessage() );
 		}
@@ -78,8 +84,8 @@ class FeePlanService {
 				$fee_plan->disable();
 			}
 			// WooCommerce use euros, but Alma API uses cents.
-			$fee_plan->setOverrideMaxPurchaseAmount( $this->options_service->get_max_amount( $fee_plan->getPlanKey() ) * 100 );
-			$fee_plan->setOverrideMinPurchaseAmount( $this->options_service->get_min_amount( $fee_plan->getPlanKey() ) * 100 );
+			$fee_plan->setOverrideMaxPurchaseAmount( DisplayHelper::price_to_cent( $this->options_service->get_max_amount( $fee_plan->getPlanKey() ) ) );
+			$fee_plan->setOverrideMinPurchaseAmount( DisplayHelper::price_to_cent( $this->options_service->get_min_amount( $fee_plan->getPlanKey() ) ) );
 		}
 
 		return $fee_plan_list;

@@ -23,6 +23,7 @@ use Alma\Gateway\Business\Service\ContainerService;
 use Alma\Gateway\Business\Service\GatewayService;
 use Alma\Gateway\Business\Service\LoggerService;
 use Alma\Gateway\Business\Service\OptionsService;
+use Alma\Gateway\Business\Service\WidgetService;
 use Alma\Gateway\WooCommerce\Exception\CoreException;
 use Alma\Gateway\WooCommerce\Proxy\HooksProxy;
 use Alma\Gateway\WooCommerce\Proxy\WooCommerceProxy;
@@ -104,10 +105,11 @@ final class Plugin {
 	}
 
 	/**
+	 * Used for plugin warmup.
 	 * @throws ContainerException
 	 * @throws RequirementsException
 	 */
-	public function plugin_warmup() {
+	public function plugin_warmup(): void {
 
 		// Configure Languages
 		L10nHelper::load_language( $this->get_plugin_path() );
@@ -118,7 +120,7 @@ final class Plugin {
 		}
 
 		// Set the DI container
-		self::get_container();
+		self::get_container( true );
 
 		// Set the plugin helper and logger service
 		/** @var PluginHelper $plugin_helper */
@@ -152,7 +154,7 @@ final class Plugin {
 	 * @throws ContainerException
 	 * @throws RequirementsException
 	 */
-	public function plugin_setup() {
+	public function plugin_setup(): void {
 
 		if ( ! $this->are_prerequisites_ok() ) {
 			return;
@@ -184,6 +186,10 @@ final class Plugin {
 				/** @var GatewayService $gateway_service */
 				$gateway_service = self::get_container()->get( GatewayService::class );
 				$gateway_service->configure_gateway();
+
+				/** @var WidgetService $widget_service */
+				$widget_service = self::get_container()->get( WidgetService::class );
+				$widget_service->display_widget();
 			}
 		);
 	}
@@ -229,7 +235,7 @@ final class Plugin {
 
 		// Are we on the cart page?
 		// If everything is ok, we can load the plugin
-		if ( $this->is_configured() && WooCommerceProxy::is_cart_or_checkout_page() ) {
+		if ( $this->is_configured() && WooCommerceProxy::is_cart_product_or_checkout_page() ) {
 			return true;
 		}
 
@@ -286,7 +292,9 @@ final class Plugin {
 	 * Clone is not allowed.
 	 *
 	 * @return void
+	 * @throws CoreException
 	 */
 	private function __clone() {
+		throw new CoreException( 'Cannot clone the plugin!' );
 	}
 }

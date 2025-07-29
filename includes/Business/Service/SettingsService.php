@@ -5,7 +5,7 @@ namespace Alma\Gateway\Business\Service;
 use Alma\Gateway\WooCommerce\Proxy\SettingsProxy;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+	exit; // @codeCoverageIgnore
 }
 
 class SettingsService {

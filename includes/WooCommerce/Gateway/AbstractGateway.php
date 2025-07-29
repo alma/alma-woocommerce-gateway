@@ -138,16 +138,21 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	}
 
 	/**
+	 * Process the payment for the order.
 	 * @throws ContainerException
 	 */
 	public function process_payment( $order_id ): array {
 		$order  = wc_get_order( $order_id );
 		$fields = $this->process_payment_fields( $order );
 
-		$fee_plan = ( new FeePlan( array() ) )//alma_installments
-		->setInstallmentsCount( $fields['installments_count'] ?? 0 )
-		->setDeferredDays( $fields['deferred_days'] ?? 0 )
-		->setDeferredMonths( $fields['deferred_months'] ?? 0 );
+		$fee_plan = $this->fee_plan_list->getByPlanKey(
+			sprintf(
+				'general_%s_%s_%s',
+				$fields['installments_count'] ?? 0,
+				$fields['deferred_days'] ?? 0,
+				$fields['deferred_months'] ?? 0
+			)
+		);
 
 		/** @var PaymentService $payment_service */
 		$payment_service = Plugin::get_container()->get( PaymentService::class );

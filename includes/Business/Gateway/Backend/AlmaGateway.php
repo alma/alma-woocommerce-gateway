@@ -8,6 +8,7 @@ use Alma\Gateway\Business\Exception\MerchantServiceException;
 use Alma\Gateway\Business\Helper\EncryptorHelper;
 use Alma\Gateway\Business\Helper\L10nHelper;
 use Alma\Gateway\Business\Service\AuthenticationService;
+use Alma\Gateway\Business\Service\OptionsService;
 use Alma\Gateway\Plugin;
 
 /**
@@ -29,6 +30,7 @@ class AlmaGateway extends AbstractBackendGateway {
 		$this->has_fields         = true;
 		parent::__construct();
 
+		// Define filters for sanitizing settings
 		add_filter( 'woocommerce_settings_api_sanitized_fields_' . $this->id, array( $this, 'sanitize_settings' ) );
 	}
 
@@ -60,8 +62,10 @@ class AlmaGateway extends AbstractBackendGateway {
 		if ( Plugin::get_instance()->is_configured() ) {
 			$this->form_fields = array_merge(
 				$this->form_fields,
+				$this->widget_fieldset(),
+				$this->excluded_categories_fieldset(),
 				$this->gateway_order_fieldset(),
-				$this->fee_plan_fieldset(),
+				$this->fee_plan_fieldset()
 			);
 		}
 
@@ -105,7 +109,22 @@ class AlmaGateway extends AbstractBackendGateway {
 	 */
 	public function sanitize_settings( array $settings ): array {
 
-		return $this->encrypt_keys( $this->check_values( $settings ) );
+		return $this->check_values( $settings );
+	}
+
+	/**
+	 * Filter to encrypt the API keys before saving them in the database.
+	 * This method is called by WooCommerce when saving the settings.
+	 *
+	 * @param array $new_value The new value of the settings.
+	 *
+	 * @return array The settings with encrypted keys.
+	 * @throws ContainerException
+	 */
+	public function encrypt_keys( $new_value ): array {
+		$options_service = Plugin::get_container()->get( OptionsService::class );
+
+		return $options_service->encrypt_keys( $new_value );
 	}
 
 	/**
@@ -178,17 +197,30 @@ class AlmaGateway extends AbstractBackendGateway {
 	private function check_keys( array $settings ): array {
 		/** @var AuthenticationService $authentication_service */
 		$authentication_service = Plugin::get_container()->get( AuthenticationService::class );
-		if ( ! $authentication_service->check_authentication(
+
+		// Check test key
+		$test_merchant_id = $authentication_service->check_authentication(
 			$settings[ self::FIELD_TEST_API_KEY ],
 			ClientConfiguration::TEST_MODE
-		) ) {
-			unset( $settings[ self::FIELD_TEST_API_KEY ] );
+		);
+		if ( empty( $test_merchant_id ) ) {
+			$settings[ self::FIELD_TEST_API_KEY ] = '';
 			$this->add_error( 'La clé API de test n\'est pas valide.' );
 		}
-		if ( ! $authentication_service->check_authentication( $settings[ self::FIELD_LIVE_API_KEY ] ) ) {
-			unset( $settings[ self::FIELD_LIVE_API_KEY ] );
+
+		// Check live key
+		$live_merchant_id = $authentication_service->check_authentication(
+			$settings[ self::FIELD_LIVE_API_KEY ]
+		);
+		if ( empty( $live_merchant_id ) ) {
+			$settings[ self::FIELD_LIVE_API_KEY ] = '';
 			$this->add_error( 'La clé API de production n\'est pas valide.' );
 		}
+
+		// @todo: check if both keys are valid, (same merchant id), otherwise, display an error.
+
+		// Save merchant IDs
+		$settings['merchant_id'] = ! empty( $live_merchant_id ) ? $live_merchant_id : $test_merchant_id;
 
 		return $settings;
 	}
@@ -213,29 +245,6 @@ class AlmaGateway extends AbstractBackendGateway {
 			$settings['keys_section'],
 			$settings['l10n_section'],
 		);
-
-		return $settings;
-	}
-
-	/**
-	 * Encrypt keys.
-	 *
-	 * @param $settings array The whole post settings.
-	 *
-	 * @throws ContainerException
-	 */
-	private function encrypt_keys( array $settings ): array {
-
-		/** @var EncryptorHelper $encryptor_helper */
-		$encryptor_helper = Plugin::get_container()->get( EncryptorHelper::class );
-
-		if ( ! empty( $settings[ self::FIELD_LIVE_API_KEY ] ) ) {
-			$settings[ self::FIELD_LIVE_API_KEY ] = $encryptor_helper->encrypt( $settings[ self::FIELD_LIVE_API_KEY ] );
-		}
-
-		if ( ! empty( $settings[ self::FIELD_TEST_API_KEY ] ) ) {
-			$settings[ self::FIELD_TEST_API_KEY ] = $encryptor_helper->encrypt( $settings[ self::FIELD_TEST_API_KEY ] );
-		}
 
 		return $settings;
 	}

@@ -11,7 +11,7 @@ use Alma\Gateway\Plugin;
 use Alma\Gateway\WooCommerce\Gateway\AbstractGateway;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+	exit; // @codeCoverageIgnore
 }
 
 class HooksProxy {
@@ -105,19 +105,21 @@ class HooksProxy {
 
 
 	/**
-	 * Reload the DI container when the plugin options are updated.
+	 * Reload the DI container Options when the plugin Options are updated.
 	 * This is useful to ensure that the latest options are used in the application.
 	 *
 	 * @return void
 	 */
-	public static function auto_reload_di_container_on_option_save() {
+	public static function auto_reload_options_on_option_save() {
 		self::add_action(
 			'woocommerce_update_options_payment_gateways_alma_config_gateway',
 			function () {
-				Plugin::get_container( true );
+				// Reload the DI container Options.
+				Plugin::get_container( true )->reload_options();
 			}
 		);
 	}
+
 
 	/**
 	 * @param string   $hook_name

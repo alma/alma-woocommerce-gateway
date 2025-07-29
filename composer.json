@@ -7,18 +7,21 @@
     "php": "~7.4 || ~8.0 || ~8.1 || ~8.2 || ~8.3 || ~8.4",
     "ext-openssl": "*",
     "ext-json": "*",
-    "alma/alma-php-client": ">=2.4.0",
+    "alma/alma-php-client": "dev-feature/3.0",
     "psr/http-client": "^1",
     "level-2/dice": "^4.0"
   },
   "require-dev": {
     "johnpbloch/wordpress-core": "*",
-    "mockery/mockery": "^1.3",
+    "mockery/mockery": "^1.6",
+    "phpstan/extension-installer": "^1.4",
+    "phpstan/phpstan": "^1.10",
     "phpunit/phpunit": "*",
     "symfony/var-dumper": "*",
+    "php-stubs/woocommerce-stubs": "*",
+    "php-stubs/wordpress-stubs": "*",
     "woocommerce/woocommerce": "*",
-    "yoast/phpunit-polyfills": "*",
-    "ext-simplexml": "*"
+    "yoast/phpunit-polyfills": "*"
   },
   "autoload": {
     "psr-4": {
@@ -50,9 +53,10 @@
   "config": {
     "sort-packages": true,
     "allow-plugins": {
+      "automattic/jetpack-autoloader": true,
       "composer/installers": true,
       "dealerdirect/phpcodesniffer-composer-installer": true,
-      "automattic/jetpack-autoloader": true
+      "phpstan/extension-installer": true
     },
     "lock": false
   }

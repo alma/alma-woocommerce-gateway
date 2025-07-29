@@ -2,17 +2,35 @@
 
 namespace Alma\Gateway\Business\Service;
 
+use Alma\API\Entities\FeePlan;
+use Alma\API\Entities\FeePlanList;
+use Alma\Gateway\Business\Exception\ContainerException;
+use Alma\Gateway\Business\Helper\DisplayHelper;
 use Alma\Gateway\Business\Helper\EncryptorHelper;
+use Alma\Gateway\Plugin;
 use Alma\Gateway\WooCommerce\Proxy\OptionsProxy;
+use Alma\Gateway\WooCommerce\Proxy\WooCommerceProxy;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+	exit; // @codeCoverageIgnore
 }
 
 class OptionsService {
 
+	/** @var string The live environment key */
 	const ALMA_ENVIRONMENT_LIVE = 'live';
+
+	/** @var string The test environment key */
 	const ALMA_ENVIRONMENT_TEST = 'test';
+
+	/** @var string The merchant ID key */
+	const MERCHANT_ID = 'merchant_id';
+
+	/** @var string The live API key */
+	const LIVE_API_KEY = 'live_api_key';
+
+	/** @var string The test API key */
+	const TEST_API_KEY = 'test_api_key';
 
 	/**
 	 * @var EncryptorHelper
@@ -31,8 +49,10 @@ class OptionsService {
 	public function __construct( EncryptorHelper $encryptor_helper, OptionsProxy $options_proxy ) {
 		$this->encryptor_helper = $encryptor_helper;
 		$this->options_proxy    = $options_proxy;
-	}
 
+		// Define filters for encrypting keys
+		WooCommerceProxy::set_key_encryptor();
+	}
 
 	/**
 	 * Check if the plugin is configured.
@@ -51,15 +71,6 @@ class OptionsService {
 	}
 
 	/**
-	 * Are we using test environment?
-	 *
-	 * @return bool
-	 */
-	public function is_test(): bool {
-		return $this->get_environment() === self::ALMA_ENVIRONMENT_TEST;
-	}
-
-	/**
 	 * Returns the active environment.
 	 *
 	 * @return string
@@ -71,6 +82,25 @@ class OptionsService {
 		}
 
 		return self::ALMA_ENVIRONMENT_LIVE;
+	}
+
+
+	/**
+	 * Are we using test environment?
+	 *
+	 * @return bool
+	 */
+	public function is_test(): bool {
+		return $this->get_environment() === self::ALMA_ENVIRONMENT_TEST;
+	}
+
+	/**
+	 * Are we using live environment?
+	 *
+	 * @return bool
+	 */
+	public function is_live(): bool {
+		return $this->get_environment() === self::ALMA_ENVIRONMENT_LIVE;
 	}
 
 	/**
@@ -96,22 +126,13 @@ class OptionsService {
 	}
 
 	/**
-	 * Are we using live environment?
-	 *
-	 * @return bool
-	 */
-	public function is_live(): bool {
-		return $this->get_environment() === self::ALMA_ENVIRONMENT_LIVE;
-	}
-
-	/**
 	 * Gets API key for live environment.
 	 *
 	 * @return string|null
 	 */
 	public function get_live_api_key(): ?string {
-		if ( isset( $this->get_options()['live_api_key'] ) ) {
-			return $this->encryptor_helper->decrypt( $this->get_options()['live_api_key'] );
+		if ( isset( $this->get_options()[ self::LIVE_API_KEY ] ) ) {
+			return $this->encryptor_helper->decrypt( $this->get_options()[ self::LIVE_API_KEY ] );
 		}
 
 		return null;
@@ -123,8 +144,8 @@ class OptionsService {
 	 * @return string|null
 	 */
 	public function get_test_api_key(): ?string {
-		if ( isset( $this->get_options()['test_api_key'] ) ) {
-			return $this->encryptor_helper->decrypt( $this->get_options()['test_api_key'] );
+		if ( isset( $this->get_options()[ self::TEST_API_KEY ] ) ) {
+			return $this->encryptor_helper->decrypt( $this->get_options()[ self::TEST_API_KEY ] );
 		}
 
 		return null;
@@ -143,8 +164,43 @@ class OptionsService {
 		return 'yes' === $this->get_options()['debug'];
 	}
 
-	public function get_option( $key ): string {
+	/**
+	 * @param $key
+	 *
+	 * @return mixed|array|string
+	 */
+	public function get_option( $key ) {
 		return $this->options_proxy->get_options()[ $key ] ?? '';
+	}
+
+	public function has_option( $key ): bool {
+		return $this->options_proxy->has_option( $key );
+	}
+
+	/**
+	 * Init Fee Plan list options with values from the Alma API.
+	 *
+	 * @param FeePlanList $fee_plan_list The given Fee Plan list to initialize.
+	 *
+	 * @return void
+	 */
+	public function init_fee_plan_list( FeePlanList $fee_plan_list ) {
+		/** @var FeePlan $fee_plan */
+		foreach ( $fee_plan_list as $fee_plan ) {
+
+			$default_plan_list = array(
+				'_enabled'    => false,
+				'_max_amount' => DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount() ),
+				'_min_amount' => DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount() ),
+			);
+
+			foreach ( $default_plan_list as $plan_key => $default_value ) {
+				$option_key = $fee_plan->getPlanKey() . $plan_key;
+				if ( ! $this->has_option( $option_key ) ) {
+					$this->options_proxy->update_option( $option_key, $default_value );
+				}
+			}
+		}
 	}
 
 	/**
@@ -210,5 +266,62 @@ class OptionsService {
 	public function delete_option( string $key ): bool {
 
 		return $this->options_proxy->delete_option( $key );
+	}
+
+	/**
+	 * Gets Merchant ID.
+	 *
+	 * @return string|null
+	 */
+	public function get_merchant_id(): ?string {
+		return $this->get_options()[ self::MERCHANT_ID ] ?? null;
+	}
+
+	/**
+	 * Encrypt keys.
+	 *
+	 * @param $options array The whole posted settings.
+	 *
+	 * @throws ContainerException
+	 */
+	public function encrypt_keys( array $options ): array {
+
+		/** @var EncryptorHelper $encryptor_helper */
+		$encryptor_helper = Plugin::get_container()->get( EncryptorHelper::class );
+
+		if ( ! empty( $options[ self::LIVE_API_KEY ] ) && strpos( $options[ self::LIVE_API_KEY ], 'sk_live_' ) === 0 ) {
+			$options[ self::LIVE_API_KEY ] = $encryptor_helper->encrypt( $options[ self::LIVE_API_KEY ] );
+		}
+
+		if ( ! empty( $options[ self::TEST_API_KEY ] ) && strpos( $options[ self::TEST_API_KEY ], 'sk_test_' ) === 0 ) {
+			$options[ self::TEST_API_KEY ] = $encryptor_helper->encrypt( $options[ self::TEST_API_KEY ] );
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Get excluded categories.
+	 *
+	 * @return array The list of excluded categories.
+	 */
+	public function get_excluded_categories(): array {
+		$excluded_categories = $this->get_option( 'excluded_products_list' );
+		if ( ! is_array( $excluded_categories ) ) {
+			$excluded_categories = array();
+		}
+		if ( ! empty( $excluded_categories ) ) {
+			$excluded_categories = array_map( 'intval', $excluded_categories );
+		}
+
+		return $excluded_categories;
+	}
+
+	public function get_widget_cart_enabled(): bool {
+		return 'yes' === $this->get_option( 'widget_cart_enabled' );
+	}
+
+	public function get_widget_product_enabled(): bool {
+		return 'yes' === $this->get_option( 'widget_product_enabled' );
 	}
 }

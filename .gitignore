@@ -16,3 +16,7 @@ package-lock.json
 .task/
 /build/*/*.map
 /.subversion/*
+.phpunit.cache/
+.coverage
+.coverage-report
+phpstan.log

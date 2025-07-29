@@ -93,11 +93,13 @@ class GatewayService {
 			return;
 		}
 
-		/** @var AbstractGateway $gateway */
-		foreach ( WooCommerceProxy::get_alma_gateways() as $gateway ) {
-			$gateway->configure_eligibility( $this->eligibility_service->get_eligibility_list() );
-			$gateway->configure_fee_plans( $this->fee_plan_service->get_fee_plan_list() );
-			$gateway->configure_ipn();
+		if ( WooCommerceProxy::is_checkout_page() ) {
+			/** @var AbstractGateway $gateway */
+			foreach ( WooCommerceProxy::get_alma_gateways() as $gateway ) {
+				$gateway->configure_eligibility( $this->eligibility_service->get_eligibility_list() );
+				$gateway->configure_fee_plans( $this->fee_plan_service->get_fee_plan_list() );
+				$gateway->configure_ipn();
+			}
 		}
 	}
 

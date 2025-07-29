@@ -3,7 +3,7 @@
 namespace Alma\Gateway\WooCommerce\Mapper;
 
 use Alma\API\Entities\DTO\CartItemDto;
-use Alma\Gateway\WooCommerce\Proxy\WooCommerceProxy;
+use Alma\Gateway\Business\Helper\DisplayHelper;
 use Alma\Gateway\WooCommerce\Proxy\WordPressProxy;
 
 class CartItemMapper {
@@ -15,14 +15,14 @@ class CartItemMapper {
 
 		return ( new CartItemDto(
 			$item->get_quantity(),
-			WooCommerceProxy::price_to_cent( $item->get_total() ),
+			DisplayHelper::price_to_cent( $item->get_total() ),
 			WordPressProxy::get_attachment_url( $product->get_image_id() )
 		) )
 			->setSku( $product->get_sku() )
 			->setTitle( $item->get_name() )
 			->setQuantity( $item->get_quantity() )
-			->setUnitPrice( WooCommerceProxy::price_to_cent( $product->get_price() ) )
-			->setLinePrice( WooCommerceProxy::price_to_cent( $item->get_total() ) )
+			->setUnitPrice( DisplayHelper::price_to_cent( $product->get_price() ) )
+			->setLinePrice( DisplayHelper::price_to_cent( $item->get_total() ) )
 			->setCategories( $categories )
 			->setUrl( $product->get_permalink() )
 			->setPictureUrl( WordPressProxy::get_attachment_url( $product->get_image_id() ) )

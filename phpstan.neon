@@ -1,0 +1,5 @@
+parameters:
+    level: max
+    bootstrapFiles:
+        - %rootDir%/../../php-stubs/wordpress-stubs/wordpress-stubs.php
+        - %rootDir%/../../php-stubs/woocommerce-stubs/woocommerce-stubs.php

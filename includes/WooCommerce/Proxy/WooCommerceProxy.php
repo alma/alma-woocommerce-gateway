@@ -2,12 +2,13 @@
 
 namespace Alma\Gateway\WooCommerce\Proxy;
 
+use Alma\Gateway\Business\Helper\DisplayHelper;
 use Alma\Gateway\WooCommerce\Exception\CoreException;
 use Alma\Gateway\WooCommerce\Gateway\AbstractGateway;
 use WC_Order;
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+	exit; // @codeCoverageIgnore
 }
 
 /**
@@ -36,8 +37,8 @@ class WooCommerceProxy extends WordPressProxy {
 		return is_checkout();
 	}
 
-	public static function is_cart_or_checkout_page(): bool {
-		return self::is_cart_page() || self::is_checkout_page();
+	public static function is_cart_product_or_checkout_page(): bool {
+		return self::is_cart_page() || self::is_product_page() || self::is_checkout_page();
 	}
 
 	/**
@@ -47,7 +48,7 @@ class WooCommerceProxy extends WordPressProxy {
 	 */
 	public static function get_cart_total(): int {
 
-		return self::price_to_cent( WC()->cart->get_total( null ) );
+		return DisplayHelper::price_to_cent( WC()->cart->get_total( null ) );
 	}
 
 	/**
@@ -58,7 +59,7 @@ class WooCommerceProxy extends WordPressProxy {
 	 * @return int
 	 */
 	public static function get_order_total( string $order_id ): int {
-		return self::price_to_cent( wc_get_order( $order_id )->get_total() );
+		return DisplayHelper::price_to_cent( wc_get_order( $order_id )->get_total() );
 	}
 
 	/**
@@ -109,10 +110,6 @@ class WooCommerceProxy extends WordPressProxy {
 		return $order;
 	}
 
-	public static function price_to_cent( int $price ) {
-		return 100 * $price;
-	}
-
 	/**
 	 * Redirects to the return URL after payment.
 	 * This method is used to redirect the user to the return URL after a successful payment.
@@ -142,6 +139,65 @@ class WooCommerceProxy extends WordPressProxy {
 		}
 		wp_safe_redirect( wc_get_cart_url() );
 		exit;
+	}
+
+	public static function is_product_page(): bool {
+		return is_product();
+	}
+
+	/**
+	 * Get the current product price in cents.
+	 *
+	 * @return int
+	 */
+	public static function get_current_product_price() {
+		if ( ! self::is_product_page() ) {
+			return 0;
+		}
+		$product = wc_get_product( get_the_ID() );
+		if ( ! $product ) {
+			return 0;
+		}
+
+		return DisplayHelper::price_to_cent( $product->get_price() );
+	}
+
+	public static function get_current_product_categories(): array {
+		if ( ! self::is_product_page() ) {
+			return array();
+		}
+		$product = wc_get_product( get_the_ID() );
+		if ( ! $product ) {
+			return array();
+		}
+
+		return $product->get_category_ids();
+	}
+
+	/**
+	 * Get the cart items.
+	 *
+	 * @return array
+	 */
+	public static function get_cart_items_categories(): array {
+
+		$category_ids = array();
+
+		foreach ( WC()->cart->get_cart() as $cart_item ) {
+			$product = $cart_item['data'];
+
+			if ( ! $product || ! $product->get_id() ) {
+				continue;
+			}
+
+			$terms = get_the_terms( $product->get_id(), 'product_cat' );
+
+			if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+				$category_ids = array_merge( $category_ids, wp_list_pluck( $terms, 'term_id' ) );
+			}
+		}
+
+		return array_values( array_unique( $category_ids ) );
 	}
 
 	/**

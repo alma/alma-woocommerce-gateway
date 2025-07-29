@@ -43,7 +43,9 @@ class PnxGateway extends AbstractFrontendGateway {
 		);
 
 		// phpcs:ignore
-		if ( ! $this->check_values( $_POST['alma_deferred'], array( '2', '3', '4' ) ) ) {
+		if ( $_POST['alma_installments'] && ! $this->check_values( $_POST['alma_installments'],
+			array( '2', '3', '4' )
+		) ) {
 			WooCommerceProxy::notify_error( L10nHelper::__( 'Please choose a valid option.' ) );
 
 			return false;
