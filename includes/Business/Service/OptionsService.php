@@ -9,6 +9,7 @@ use Alma\Gateway\Business\Helper\DisplayHelper;
 use Alma\Gateway\Business\Helper\EncryptorHelper;
 use Alma\Gateway\Plugin;
 use Alma\Gateway\WooCommerce\Proxy\OptionsProxy;
+use Alma\Gateway\WooCommerce\Proxy\WooCommerceProxy;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
@@ -50,7 +51,7 @@ class OptionsService {
 		$this->options_proxy    = $options_proxy;
 
 		// Define filters for encrypting keys
-		add_filter( 'pre_update_option_' . OptionsProxy::OPTIONS_KEY, array( $this, 'encrypt_keys' ) );
+		WooCommerceProxy::set_key_encryptor();
 	}
 
 	/**

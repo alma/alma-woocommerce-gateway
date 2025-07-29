@@ -2,6 +2,8 @@
 
 namespace Alma\Gateway\WooCommerce\Proxy;
 
+use Alma\Gateway\Business\Service\OptionsService;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
 }
@@ -143,6 +145,18 @@ class WordPressProxy {
 		return array_combine(
 			array_column( $product_categories, 'term_id' ),
 			array_column( $product_categories, 'name' )
+		);
+	}
+
+	/**
+	 * Set the key encryptor for API keys.
+	 *
+	 * @return void
+	 */
+	public static function set_key_encryptor() {
+		add_filter(
+			'pre_update_option_' . OptionsProxy::OPTIONS_KEY,
+			array( OptionsService::class, 'encrypt_keys' )
 		);
 	}
 

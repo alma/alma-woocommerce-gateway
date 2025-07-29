@@ -7,18 +7,31 @@ use Alma\API\Entities\FeePlanList;
 use Alma\Gateway\Business\Helper\EncryptorHelper;
 use Alma\Gateway\Business\Service\OptionsService;
 use Alma\Gateway\WooCommerce\Proxy\OptionsProxy;
+use Alma\Gateway\WooCommerce\Proxy\WordPressProxy;
+use Mockery;
 use PHPUnit\Framework\TestCase;
 
 class OptionsServiceTest extends TestCase {
 
+	private WordPressProxy $wordpress_proxy_mock;
 	private OptionsProxy $options_proxy_mock;
 
 	private OptionsService $options_service;
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->options_proxy_mock = $this->createMock( OptionsProxy::class );
-		$this->options_service    = new OptionsService( new EncryptorHelper(), $this->options_proxy_mock );
+		// Mock de la méthode statique AVANT la création de l'instance
+		Mockery::mock( 'alias:Alma\Gateway\WooCommerce\Proxy\WooCommerceProxy' )
+		       ->shouldReceive( 'set_key_encryptor' )
+		       ->andReturnNull();
+
+		$this->options_proxy_mock   = $this->createMock( OptionsProxy::class );
+		$this->wordpress_proxy_mock = Mockery::mock( WordPressProxy::class );
+		$this->options_service = new OptionsService( new EncryptorHelper(), $this->options_proxy_mock );
+	}
+
+	public function tearDown(): void {
+		Mockery::close();
 	}
 
 	public function test_is_configured() {

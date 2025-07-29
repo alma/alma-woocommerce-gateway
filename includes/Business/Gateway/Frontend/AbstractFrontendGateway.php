@@ -5,7 +5,9 @@ namespace Alma\Gateway\Business\Gateway\Frontend;
 use Alma\API\Entities\FeePlanList;
 use Alma\Gateway\Business\Exception\ContainerException;
 use Alma\Gateway\Business\Exception\MerchantServiceException;
+use Alma\Gateway\Business\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Business\Service\API\FeePlanService;
+use Alma\Gateway\Business\Service\OptionsService;
 use Alma\Gateway\Plugin;
 use Alma\Gateway\WooCommerce\Gateway\AbstractGateway;
 
@@ -31,8 +33,6 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	 * @return bool
 	 */
 	public function is_enabled(): bool {
-		// @todo do we want to enable the frontend gateways independently?
-		// The parameter is actually disabled in the frontend gateways form.
 		$enabled = $this->settings['enabled'] ?? 'no';
 
 		return 'yes' === $enabled;
@@ -46,6 +46,8 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	 * @throws ContainerException|MerchantServiceException
 	 */
 	public function is_available(): bool {
+
+		// Check Fee Plans availability
 		$available = false;
 		foreach ( $this->get_fee_plan_list() as $fee_plan ) {
 			if ( $fee_plan->isEnabled() ) {
@@ -55,6 +57,15 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 
 		// If no fee plan is enabled, the gateway is not available
 		if ( ! $available ) {
+			return false;
+		}
+
+		// Check if there are products in the cart that are in excluded categories.
+		/** @var OptionsService $options_service */
+		$options_service            = Plugin::get_instance()->get_container()->get( OptionsService::class );
+		$excluded_categories        = $options_service->get_excluded_categories();
+		$excluded_categories_status = ExcludedProductsHelper::can_display_on_checkout_page( $excluded_categories );
+		if ( ! $excluded_categories_status ) {
 			return false;
 		}
 
