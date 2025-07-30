@@ -13,6 +13,14 @@ namespace Alma\Woocommerce\WcProxy;
 class FunctionsProxy {
 
 
+	public static function is_admin() {
+		if ( array_key_exists( 'rest_route', $_GET ) && stripos( $_GET['rest_route'], '/wc-admin' ) !== false ) {
+			return true;
+		} else {
+			return is_admin();
+		}
+	}
+
 	/**
 	 * Send HTTP response.
 	 *
