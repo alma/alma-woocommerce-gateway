@@ -307,6 +307,16 @@ class AlmaSettings {
 		return 'yes' === $this->__get( "enabled_$key" );
 	}
 
+
+	/**
+	 * Is removed order on close in page.
+	 *
+	 * @return bool
+	 */
+	public function is_removed_order_on_close_inpage() {
+		return 'yes' === $this->__get( 'remove_order_on_close_in_page' );
+	}
+
 	/**
 	 * __get.
 	 *
