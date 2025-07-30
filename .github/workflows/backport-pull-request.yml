@@ -13,11 +13,11 @@ jobs:
 
   create-backport-pull-request:
     if: ${{ (github.event.pull_request.merged == true) && (contains(github.event.pull_request.labels.*.name, 'release')) }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
 
     steps:
 
-        - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        - uses: actions/checkout@v4
           with:
             ref: develop
 
@@ -30,7 +30,7 @@ jobs:
         # If using default Github token, the created pull request won't trigger workflows with pull_request event
         # See https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#triggering-further-workflow-runs
         - name: Generate Github token to create PR
-          uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2.0.6
+          uses: actions/create-github-app-token@v1
           id: github-token
           with:
             app-id: ${{ secrets.ALMA_CREATE_TEAM_PRS_APP_ID }}
@@ -38,7 +38,7 @@ jobs:
             repositories: alma-woocommerce-gateway
 
         - name: Create Pull Request
-          uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
+          uses: peter-evans/create-pull-request@v6
           with:
             token: ${{ steps.github-token.outputs.token }}
             commit-message: 'chore: backport main to develop'
