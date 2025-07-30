@@ -17,7 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\Woocommerce\AlmaLogger;
 use Alma\Woocommerce\AlmaSettings;
-use Alma\Woocommerce\Builders\Helpers\SettingsHelperBuilder;
 use Alma\Woocommerce\Exceptions\ApiCreatePaymentsException;
 use Alma\Woocommerce\Exceptions\BuildOrderException;
 use Alma\Woocommerce\Exceptions\CreatePaymentsException;
@@ -86,10 +85,6 @@ class OrderHelper {
 	 * @var AlmaBusinessEventService
 	 */
 	protected $alma_business_event_service;
-	/**
-	 * @var AlmaSettings
-	 */
-	protected $alma_settings;
 
 	/**
 	 * Constructor.
@@ -101,7 +96,6 @@ class OrderHelper {
 		$this->version_factory             = new VersionFactory();
 		$this->cart_factory                = new CartFactory();
 		$this->alma_business_event_service = new AlmaBusinessEventService();
-		$this->alma_settings               = new AlmaSettings();
 	}
 
 	/**
@@ -355,9 +349,7 @@ class OrderHelper {
 			$order_helper = new OrderHelper();
 			$order        = $order_helper->get_order( $order_id );
 			$order->update_status( 'cancelled', 'Cancelled by customer' );
-			if ($this->alma_settings->is_removed_order_on_close_inpage()) {
-				$order->delete( true );
-			}
+			$order->delete( true );
 			wp_send_json_success();
 		} catch ( Exception $e ) {
 			$this->logger->error( $e->getMessage() );

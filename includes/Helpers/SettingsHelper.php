@@ -11,7 +11,6 @@
 
 namespace Alma\Woocommerce\Helpers;
 
-use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Exceptions\NoCredentialsException;
 use Alma\Woocommerce\Factories\PluginFactory;
 use Alma\Woocommerce\Factories\VersionFactory;
@@ -142,7 +141,6 @@ class SettingsHelper {
 			'debug'                                      => 'yes',
 			'keys_validity'                              => 'no',
 			'display_in_page'                            => 'yes',
-			'remove_order_on_close_in_page'              => 'yes',
 		);
 	}
 
