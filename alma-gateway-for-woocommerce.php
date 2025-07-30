@@ -12,12 +12,12 @@
  * Domain Path: /languages
  * Requires at least: 4.4
  * Requires PHP: 5.6
- * Tested up to: 6.7.1
+ * Tested up to: 6.8.2
  *
  * @package Alma_Gateway_For_Woocommerce
  *
  * WC requires at least: 3.0.0
- * WC tested up to: 9.7.1
+ * WC tested up to: 10.0.4
  *
  * Alma Payment Gateway for WooCommerce is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -70,6 +70,13 @@ require_once ALMA_PLUGIN_PATH . 'vendor/autoload.php';
 
 
 function alma_plugin() {
+
+	load_plugin_textdomain(
+		'alma-gateway-for-woocommerce',
+		false,
+		plugin_basename( ALMA_PLUGIN_PATH ) . '/languages'
+	);
+
 	static $plugin;
 
 	if ( ! isset( $plugin ) ) {
@@ -81,18 +88,6 @@ function alma_plugin() {
 
 /** Add the plugin. */
 add_action( 'plugins_loaded', 'alma_plugin' );
-
-/** Init the plugin */
-add_action(
-	'init',
-	function () {
-		load_plugin_textdomain(
-			'alma-gateway-for-woocommerce',
-			false,
-			plugin_basename( ALMA_PLUGIN_PATH ) . '/languages'
-		);
-	}
-);
 
 /**
  * Init custom_order_tables if available in Woocommerce version.
