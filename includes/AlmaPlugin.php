@@ -28,6 +28,7 @@ use Alma\Woocommerce\Gateways\Standard\PayNowGateway;
 use Alma\Woocommerce\Gateways\Standard\StandardGateway;
 use Alma\Woocommerce\Helpers\MigrationHelper;
 use Alma\Woocommerce\Helpers\PluginHelper;
+use Alma\Woocommerce\WcProxy\FunctionsProxy;
 use Exception;
 
 /**
@@ -86,12 +87,11 @@ class AlmaPlugin {
 	 * *Singleton* via the `new` operator from outside of this class.
 	 */
 	protected function __construct() {
-		$this->logger           = new AlmaLogger();
-		$this->migration_helper = new MigrationHelper();
-		$this->admin_notices    = new NoticesService();
-		$this->plugin_helper    = new PluginHelper();
-		$this->version_factory  = new VersionFactory();
-
+		$this->logger              = new AlmaLogger();
+		$this->migration_helper    = new MigrationHelper();
+		$this->admin_notices       = new NoticesService();
+		$this->plugin_helper       = new PluginHelper();
+		$this->version_factory     = new VersionFactory();
 		$this->blocks_data_service = new BlocksDataService();
 
 		try {
@@ -108,6 +108,19 @@ class AlmaPlugin {
 		} else {
 			$this->logger->warning( 'The plugin migration is already in progress or has failed' );
 		}
+	}
+
+	/**
+	 * Returns the *Singleton* instance of this class.
+	 *
+	 * @return AlmaPlugin
+	 */
+	public static function get_instance() {
+		if ( ! self::$instance ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
 	}
 
 	/**
@@ -140,7 +153,6 @@ class AlmaPlugin {
 		$this->blocks_data_service->init_hooks();
 	}
 
-
 	/**
 	 * Check dependencies.
 	 *
@@ -150,22 +162,22 @@ class AlmaPlugin {
 	protected function check_dependencies() {
 
 		if ( ! function_exists( 'WC' ) ) {
-			throw new RequirementsException( __( 'Alma requires WooCommerce to be activated', 'alma-gateway-for-woocommerce' ) );
+			throw new RequirementsException( 'Alma requires WooCommerce to be activated' );
 		}
 
 		if ( version_compare( $this->version_factory->get_version(), '3.0.0', '<' ) ) {
-			throw new RequirementsException( __( 'Alma requires WooCommerce version 3.0.0 or greater', 'alma-gateway-for-woocommerce' ) );
+			throw new RequirementsException( 'Alma requires WooCommerce version 3.0.0 or greater' );
 		}
 
 		if ( ! function_exists( 'curl_init' ) ) {
-			throw new RequirementsException( __( 'Alma requires the cURL PHP extension to be installed on your server', 'alma-gateway-for-woocommerce' ) );
+			throw new RequirementsException( 'Alma requires the cURL PHP extension to be installed on your server' );
 		}
 
 		if ( ! function_exists( 'json_decode' ) ) {
-			throw new RequirementsException( __( 'Alma requires the JSON PHP extension to be installed on your server', 'alma-gateway-for-woocommerce' ) );
+			throw new RequirementsException( 'Alma requires the JSON PHP extension to be installed on your server' );
 		}
 
-		$openssl_warning = __( 'Alma requires OpenSSL >= 1.0.1 to be installed on your server', 'alma-gateway-for-woocommerce' );
+		$openssl_warning = 'Alma requires OpenSSL >= 1.0.1 to be installed on your server';
 		if ( ! defined( 'OPENSSL_VERSION_TEXT' ) ) {
 			throw new RequirementsException( $openssl_warning );
 		}
@@ -181,19 +193,6 @@ class AlmaPlugin {
 	}
 
 	/**
-	 * Returns the *Singleton* instance of this class.
-	 *
-	 * @return AlmaPlugin
-	 */
-	public static function get_instance() {
-		if ( ! self::$instance ) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
-	}
-
-	/**
 	 * Add the gateway to WC Available Gateways.
 	 *
 	 * @param array $gateways all available WC gateways.
@@ -202,7 +201,7 @@ class AlmaPlugin {
 	 * @since 1.0.0
 	 */
 	public function add_gateways( $gateways ) {
-		if ( ! is_admin() ) {
+		if ( ! FunctionsProxy::is_admin() ) {
 			$gateways[] = InPagePayNowGateway::class;
 			$gateways[] = PayNowGateway::class;
 			$gateways[] = InPageGateway::class;
