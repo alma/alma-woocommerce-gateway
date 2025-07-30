@@ -1,5 +1,19 @@
 # Changelog
 
+## v5.14.0 - 2025-07-30
+
+### Changes
+
+### 🚀 New Features
+
+- fix: update legacy Dockerfile to fix release process (#388)
+- feat: option to remove order on close in page pop-up (#383)
+- feat: update for wc 9.9.x/10.0.x compatibility (#382)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @alma-renovate-bot[bot], @gdraynz, @remi-zuffinetti, @webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
+
 ## v5.13.1 - 2025-04-24
 
 ### Changes
