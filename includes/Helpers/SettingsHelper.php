@@ -141,6 +141,7 @@ class SettingsHelper {
 			'debug'                                      => 'yes',
 			'keys_validity'                              => 'no',
 			'display_in_page'                            => 'yes',
+			'remove_order_on_close_in_page'              => 'yes',
 		);
 	}
 
