@@ -13,6 +13,14 @@ namespace Alma\Woocommerce\WcProxy;
 class FunctionsProxy {
 
 
+	public static function is_admin() {
+		if ( array_key_exists( 'rest_route', $_GET ) && stripos( $_GET['rest_route'], '/wc-admin' ) !== false ) {
+			return true;
+		} else {
+			return is_admin();
+		}
+	}
+
 	/**
 	 * Send HTTP response.
 	 *
@@ -33,13 +41,5 @@ class FunctionsProxy {
 	 */
 	public function send_http_error_response( $response, $status_code = null, $flags = 0 ) {
 		wp_send_json_error( $response, $status_code, $flags );
-	}
-
-	public static function is_admin() {
-		if ( array_key_exists( 'rest_route', $_GET ) && stripos( $_GET['rest_route'], '/wc-admin' ) !== false ) {
-			return true;
-		} else {
-			return is_admin();
-		}
 	}
 }

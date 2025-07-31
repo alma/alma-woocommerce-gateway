@@ -307,7 +307,6 @@ class AlmaSettings {
 		return 'yes' === $this->__get( "enabled_$key" );
 	}
 
-
 	/**
 	 * Is removed order on close in page.
 	 *

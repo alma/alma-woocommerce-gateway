@@ -86,7 +86,6 @@ class OrderHelper {
 	 * @var AlmaBusinessEventService
 	 */
 	protected $alma_business_event_service;
-
 	/**
 	 * @var AlmaSettings
 	 */

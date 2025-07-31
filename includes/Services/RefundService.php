@@ -77,6 +77,7 @@ class RefundService {
 			/* translators: %s is an amount with currency. */
 			'Refund %s manually' => __( 'Refund %s with Alma', 'alma-gateway-for-woocommerce' ),
 		);
+
 		if ( isset( $_GET['post'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$maybe_wc_order = wc_get_order( intval( $_GET['post'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
 			if ( $maybe_wc_order instanceof \WC_order && $this->helper->is_paid_with_alma( $maybe_wc_order ) ) {
