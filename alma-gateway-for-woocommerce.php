@@ -3,7 +3,7 @@
  * Plugin Name: Alma - Pay in installments or later for WooCommerce
  * Plugin URI: https://docs.almapay.com/docs/woocommerce
  * Description: Install Alma and boost your sales! It's simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.
- * Version: 5.13.1
+ * Version: 5.14.0
  * Author: Alma
  * Author URI: https://almapay.com
  * License: GNU General Public License v3.0
@@ -12,12 +12,12 @@
  * Domain Path: /languages
  * Requires at least: 4.4
  * Requires PHP: 5.6
- * Tested up to: 6.7.1
+ * Tested up to: 6.8.2
  *
  * @package Alma_Gateway_For_Woocommerce
  *
  * WC requires at least: 3.0.0
- * WC tested up to: 9.7.1
+ * WC tested up to: 10.0.4
  *
  * Alma Payment Gateway for WooCommerce is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Alma Payment Gateway for WooCommerce. If not, see https://www.gnu.org/licenses/gpl-3.0.html.
  */
-
 use Alma\Woocommerce\Blocks\AlmaWidgetBlock;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -40,7 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'ALMA_VERSION' ) ) {
-	define( 'ALMA_VERSION', '5.13.1' );
+	define( 'ALMA_VERSION', '5.14.0' );
 }
 if ( ! defined( 'ALMA_PLUGIN_FILE' ) ) {
 	define( 'ALMA_PLUGIN_FILE', __FILE__ );
@@ -60,7 +59,6 @@ if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins',
 
 require_once ALMA_PLUGIN_PATH . 'vendor/autoload.php';
 
-
 /**
  * Return instance of AlmaPlugin.
  *
@@ -70,6 +68,13 @@ require_once ALMA_PLUGIN_PATH . 'vendor/autoload.php';
 
 
 function alma_plugin() {
+
+	load_plugin_textdomain(
+		'alma-gateway-for-woocommerce',
+		false,
+		plugin_basename( ALMA_PLUGIN_PATH ) . '/languages'
+	);
+
 	static $plugin;
 
 	if ( ! isset( $plugin ) ) {
@@ -81,18 +86,6 @@ function alma_plugin() {
 
 /** Add the plugin. */
 add_action( 'plugins_loaded', 'alma_plugin' );
-
-/** Init the plugin */
-add_action(
-	'init',
-	function () {
-		load_plugin_textdomain(
-			'alma-gateway-for-woocommerce',
-			false,
-			plugin_basename( ALMA_PLUGIN_PATH ) . '/languages'
-		);
-	}
-);
 
 /**
  * Init custom_order_tables if available in Woocommerce version.
