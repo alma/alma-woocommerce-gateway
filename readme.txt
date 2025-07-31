@@ -6,7 +6,7 @@ Requires at least: 4.4
 Tested up to Wordpress: 6.8.2
 Tested up to Woocommerce: 10.0.4
 Requires PHP: 5.6
-Stable tag: 5.14.0
+Stable tag: 5.14.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -51,6 +51,20 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+## v5.14.1 - 2025-07-31
+
+### Changes
+
+- Backport 5.14.0 (#397)
+
+### 🐛 Bug Fixes
+
+- Fix: Update translations (#398)
+
+#### Contributors
+
+@simon-previdente and @webaaz
 
 ## v5.14.0 - 2025-07-30
 
