@@ -1,5 +1,19 @@
 # Changelog
 
+## v5.14.1 - 2025-07-31
+
+### Changes
+
+- Backport 5.14.0 (#397)
+
+### 🐛 Bug Fixes
+
+- Fix: Update translations (#398)
+
+#### Contributors
+
+@simon-previdente and @webaaz
+
 ## v5.14.0 - 2025-07-30
 
 ### Changes
