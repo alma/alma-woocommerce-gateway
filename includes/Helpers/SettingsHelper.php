@@ -11,6 +11,7 @@
 
 namespace Alma\Woocommerce\Helpers;
 
+use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Exceptions\NoCredentialsException;
 use Alma\Woocommerce\Factories\PluginFactory;
 use Alma\Woocommerce\Factories\VersionFactory;

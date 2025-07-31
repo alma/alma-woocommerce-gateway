@@ -154,45 +154,6 @@ class AlmaPlugin {
 	}
 
 	/**
-	 * Check dependencies.
-	 *
-	 * @return void
-	 * @throws RequirementsException   RequirementsException.
-	 */
-	protected function check_dependencies() {
-
-		if ( ! function_exists( 'WC' ) ) {
-			throw new RequirementsException( 'Alma requires WooCommerce to be activated' );
-		}
-
-		if ( version_compare( $this->version_factory->get_version(), '3.0.0', '<' ) ) {
-			throw new RequirementsException( 'Alma requires WooCommerce version 3.0.0 or greater' );
-		}
-
-		if ( ! function_exists( 'curl_init' ) ) {
-			throw new RequirementsException( 'Alma requires the cURL PHP extension to be installed on your server' );
-		}
-
-		if ( ! function_exists( 'json_decode' ) ) {
-			throw new RequirementsException( 'Alma requires the JSON PHP extension to be installed on your server' );
-		}
-
-		$openssl_warning = 'Alma requires OpenSSL >= 1.0.1 to be installed on your server';
-		if ( ! defined( 'OPENSSL_VERSION_TEXT' ) ) {
-			throw new RequirementsException( $openssl_warning );
-		}
-
-		preg_match( '/^(?:Libre|Open)SSL ([\d.]+)/', OPENSSL_VERSION_TEXT, $matches );
-		if ( empty( $matches[1] ) ) {
-			throw new RequirementsException( $openssl_warning );
-		}
-
-		if ( ! version_compare( $matches[1], '1.0.1', '>=' ) ) {
-			throw new RequirementsException( $openssl_warning );
-		}
-	}
-
-	/**
 	 * Add the gateway to WC Available Gateways.
 	 *
 	 * @param array $gateways all available WC gateways.
@@ -249,6 +210,45 @@ class AlmaPlugin {
 	 * @return void
 	 */
 	public function __wakeup() {
+	}
+
+	/**
+	 * Check dependencies.
+	 *
+	 * @return void
+	 * @throws RequirementsException   RequirementsException.
+	 */
+	protected function check_dependencies() {
+
+		if ( ! function_exists( 'WC' ) ) {
+			throw new RequirementsException( 'Alma requires WooCommerce to be activated' );
+		}
+
+		if ( version_compare( $this->version_factory->get_version(), '3.0.0', '<' ) ) {
+			throw new RequirementsException( 'Alma requires WooCommerce version 3.0.0 or greater' );
+		}
+
+		if ( ! function_exists( 'curl_init' ) ) {
+			throw new RequirementsException( 'Alma requires the cURL PHP extension to be installed on your server' );
+		}
+
+		if ( ! function_exists( 'json_decode' ) ) {
+			throw new RequirementsException( 'Alma requires the JSON PHP extension to be installed on your server' );
+		}
+
+		$openssl_warning = 'Alma requires OpenSSL >= 1.0.1 to be installed on your server';
+		if ( ! defined( 'OPENSSL_VERSION_TEXT' ) ) {
+			throw new RequirementsException( $openssl_warning );
+		}
+
+		preg_match( '/^(?:Libre|Open)SSL ([\d.]+)/', OPENSSL_VERSION_TEXT, $matches );
+		if ( empty( $matches[1] ) ) {
+			throw new RequirementsException( $openssl_warning );
+		}
+
+		if ( ! version_compare( $matches[1], '1.0.1', '>=' ) ) {
+			throw new RequirementsException( $openssl_warning );
+		}
 	}
 
 	/**
