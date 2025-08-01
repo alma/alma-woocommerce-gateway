@@ -108,6 +108,14 @@ tasks:
           Please check out: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic
           Then, run `gh auth login` or set the GITHUB_TOKEN environment variable with your personal access token.
 
+  pull-request:
+    aliases:
+      - pr
+    deps:
+      - gh-cli
+    cmds:
+      - ./bin/create-pull-request.sh
+
   release:
     deps:
       - gh-cli
