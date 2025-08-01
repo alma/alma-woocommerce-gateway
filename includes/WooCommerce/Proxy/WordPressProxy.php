@@ -3,6 +3,7 @@
 namespace Alma\Gateway\WooCommerce\Proxy;
 
 use Alma\Gateway\Business\Service\OptionsService;
+use WP_Error;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
@@ -83,6 +84,19 @@ class WordPressProxy {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Return an Error
+	 *
+	 * @param string $code The error code.
+	 * @param string $message The error message.
+	 * @param mixed  $data Additional data to include in the error.
+	 *
+	 * @return WP_Error The WP_Error object with the given message.
+	 */
+	public static function error( string $code, string $message, $data = '' ): WP_Error {
+		return new WP_Error( $code, $message, $data );
 	}
 
 	/**

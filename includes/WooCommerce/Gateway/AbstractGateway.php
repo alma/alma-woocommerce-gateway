@@ -12,14 +12,15 @@ use Alma\Gateway\Business\Helper\L10nHelper;
 use Alma\Gateway\Business\Service\API\FeePlanService;
 use Alma\Gateway\Business\Service\API\PaymentService;
 use Alma\Gateway\Business\Service\CacheService;
-use Alma\Gateway\Business\Service\GatewayService;
-use Alma\Gateway\Business\Service\IpnService;
+use Alma\Gateway\Business\Service\LoggerService;
 use Alma\Gateway\Plugin;
+use Alma\Gateway\WooCommerce\Exception\CoreException;
 use Alma\Gateway\WooCommerce\Mapper\CustomerMapper;
 use Alma\Gateway\WooCommerce\Mapper\OrderMapper;
 use Alma\Gateway\WooCommerce\Mapper\PaymentMapper;
 use Alma\Gateway\WooCommerce\Proxy\WooCommerceProxy;
 use Alma\Gateway\WooCommerce\Proxy\WordPressProxy;
+use Alma\Woocommerce\Helpers\ConstantsHelper;
 use WC_Payment_Gateway;
 
 /**
@@ -55,9 +56,11 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		$this->id                 = sprintf( 'alma_%s_gateway', $this->get_type() );
 		$this->method_description = L10nHelper::__( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.' );
 		$this->has_fields         = true;
+		$this->supports           = array( 'products', 'refunds' );
 		$this->init_form_fields();
 		$this->init_settings();
-		$this->icon = $this->get_icon_url();
+		$this->icon                  = $this->get_icon_url();
+		$this->admin_texts_to_change = array( 'Refund' => 'Refund with Alma' );
 
 		add_action(
 			'woocommerce_update_options_payment_gateways_alma_config_gateway',
@@ -67,23 +70,9 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Configure IPNs if configuration is done
-	 * @return void
-	 * @throws ContainerException
-	 */
-	public function configure_ipn() {
-		add_action(
-			'woocommerce_api_' . GatewayService::IPN_CALLBACK,
-			array( Plugin::get_container()->get( IpnService::class ), 'handle_ipn_callback' )
-		);
-		add_action(
-			'woocommerce_api_' . GatewayService::CUSTOMER_RETURN,
-			array( Plugin::get_container()->get( IpnService::class ), 'handle_customer_return' )
-		);
-	}
-
-	/**
 	 * Set the eligibility of the gateway based on the eligibility list.
+	 *
+	 * @param EligibilityList $eligibility_list The eligibility list to filter.
 	 */
 	public function configure_eligibility( EligibilityList $eligibility_list ): void {
 		$this->eligibility_list = $eligibility_list->filterEligibilityList( $this->get_type() );
@@ -91,6 +80,8 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 
 	/**
 	 * Set the max amount of the gateway based on the fee plans.
+	 *
+	 * @param FeePlanList $fee_plan_list The fee plan list to filter.
 	 */
 	public function configure_fee_plans( FeePlanList $fee_plan_list ): void {
 		$this->fee_plan_list = $fee_plan_list->filterFeePlanList( array( $this->get_type() ) );
@@ -181,6 +172,93 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		);
 	}
 
+	/**
+	 * Check if the order can be refunded.
+	 *
+	 * @param $order
+	 *
+	 * @return bool
+	 * @throws ContainerException
+	 */
+	public function can_refund_order( $order ): bool {
+
+		// Check if the gateway supports refunds
+		return parent::can_refund_order( $order );
+	}
+
+	/**
+	 * Process the Refund of an order.
+	 * This method is called when a refund is requested from the WooCommerce admin.
+	 *
+	 * No need to check amount here, WooCommerce will handle it.
+	 *
+	 * @param int        $order_id The ID of the order to refund.
+	 * @param float|null $amount The amount to refund. If null, the full order amount will be refunded.
+	 * @param string     $reason The reason for the refund.
+	 *
+	 * @throws CoreException|ContainerException
+	 */
+	public function process_refund( $order_id, $amount = null, $reason = '' ) {
+
+		$logger = Plugin::get_container()->get( LoggerService::class );
+
+		$order = WooCommerceProxy::get_order( $order_id );
+		if ( ! $order || ! $this->can_refund_order( $order_id ) ) {
+			return false;
+		}
+
+		/** @var PaymentService $payment_service */
+		$payment_service  = Plugin::get_container()->get( PaymentService::class );
+		$already_refunded = $order->get_total_refunded() - $amount;
+		$refundable       = ( $order->get_total() - $already_refunded );
+		$partial          = ! ( round( $refundable, 3 ) === round( $amount, 3 ) );
+
+		$logger->debug( 'total: ' . $order->get_total() );
+		$logger->debug( 'total already refunded: ' . $already_refunded );
+		$logger->debug( 'total refundable: ' . $refundable );
+		$logger->debug( 'amount: ' . $amount );
+		$logger->debug( 'round 1: ' . round( $refundable, 3 ) );
+		$logger->debug( 'round 2: ' . round( $amount, 3 ) );
+		$logger->debug( 'partial?: ' . $partial ? 'yes' : 'no' );
+		$logger->debug( 'payment_id: ' . $order->get_transaction_id() );
+
+		$response = $payment_service->refund_payment(
+			$order->get_transaction_id(),
+			$order->get_order_number(),
+			$amount,
+			$partial,
+			$reason
+		);
+
+		if ( ! $response ) {
+			return WordPressProxy::error( 'refund error', L10nHelper::__( 'Refund failed.' ) );
+		}
+
+		// Add a note to the order
+		if ( $partial ) {
+			/* translators: %s is a username. */
+			$order_note = sprintf(
+				L10nHelper::__( 'Order partially refunded (%d via Alma) by %s.' ),
+				$amount,
+				wp_get_current_user()->display_name
+			);
+		} else {
+			/* translators: %s is a username. */
+			$order_note = sprintf(
+				L10nHelper::__( 'Order fully refunded by %s.' ),
+				wp_get_current_user()->display_name
+			);
+		}
+		$order->add_order_note( $order_note );
+
+		// WooCommerce will create WC_Order_Refund automatically
+		return true;
+	}
+
+	/**
+	 * Return the Origin of the payment.
+	 * @return string
+	 */
 	public function get_origin(): string {
 		return 'online';
 	}

@@ -62,22 +62,16 @@ class GatewayService {
 	 * Init and Load the gateways
 	 */
 	public function load_gateway() {
-
-		$logger = Plugin::get_container()->get( LoggerService::class );
-		$logger->debug( WordPressProxy::is_admin() );
-
 		// Init Gateway
 		if ( WordPressProxy::is_admin() ) {
-			$logger->debug( 'backend gateway loading' );
 			$this->hooks_proxy->load_backend_gateway();
-
+			$this->hooks_proxy->load_frontend_gateways();
 			// Add links to gateway.
 			$this->hooks_proxy->add_gateway_links(
 				Plugin::get_instance()->get_plugin_file(),
 				array( $this, 'plugin_action_links' )
 			);
 		} else {
-			$logger->debug( 'frontend gateway loading' );
 			$this->hooks_proxy->load_frontend_gateways();
 		}
 	}
@@ -90,17 +84,36 @@ class GatewayService {
 	public function configure_gateway() {
 
 		if ( ! $this->eligibility_service || ! $this->fee_plan_service ) {
+			$logger = Plugin::get_container()->get( LoggerService::class );
+			$logger->debug( 'configure_gateway : Errors in services eligibility or fee plan' );
+
 			return;
 		}
 
-		if ( WooCommerceProxy::is_checkout_page() ) {
-			/** @var AbstractGateway $gateway */
-			foreach ( WooCommerceProxy::get_alma_gateways() as $gateway ) {
+		/** @var AbstractGateway $gateway */
+		foreach ( WooCommerceProxy::get_alma_gateways() as $gateway ) {
+			if ( WooCommerceProxy::is_checkout_page() ) {
 				$gateway->configure_eligibility( $this->eligibility_service->get_eligibility_list() );
 				$gateway->configure_fee_plans( $this->fee_plan_service->get_fee_plan_list() );
-				$gateway->configure_ipn();
 			}
 		}
+	}
+
+
+	/**
+	 * Configure returns (ipn and customer_return ) if configuration is done
+	 * @return void
+	 * @throws ContainerException
+	 */
+	public function configure_returns() {
+		add_action(
+			'woocommerce_api_' . self::IPN_CALLBACK,
+			array( Plugin::get_container()->get( IpnService::class ), 'handle_ipn_callback' )
+		);
+		add_action(
+			'woocommerce_api_' . self::CUSTOMER_RETURN,
+			array( Plugin::get_container()->get( IpnService::class ), 'handle_customer_return' )
+		);
 	}
 
 	/**

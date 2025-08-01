@@ -97,17 +97,18 @@ class WooCommerceProxy extends WordPressProxy {
 	public static function get_order( $order_id, $order_key = null, $payment_id = null ) {
 		$order = wc_get_order( $order_id );
 
-		if ( ! $order && $order_key ) {
+		if ( $order ) {
+			return $order;
+		} elseif ( $order_key ) {
 			// We have an invalid $order_id, probably because invoice_prefix has changed.
 			$order_id = wc_get_order_id_by_order_key( $order_key );
 			$order    = wc_get_order( $order_id );
-		}
+			if ( ! $order || ! hash_equals( $order->get_order_key(), $order_key ) ) {
+				throw new CoreException( $order_id, $order_key, $payment_id );
+			}
 
-		if ( ! $order || ! hash_equals( $order->get_order_key(), $order_key ) ) {
-			throw new CoreException( $order_id, $order_key, $payment_id );
+			return $order;
 		}
-
-		return $order;
 	}
 
 	/**

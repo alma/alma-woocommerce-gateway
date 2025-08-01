@@ -69,6 +69,7 @@ final class Plugin {
 	 * @see plugin_setup()
 	 */
 	public function __construct() {
+		// FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__,true );// phpcs:ignore
 	}
 
 	/**
@@ -163,6 +164,7 @@ final class Plugin {
 		/** @var GatewayService $gateway_service */
 		$gateway_service = self::get_container()->get( GatewayService::class );
 		$gateway_service->load_gateway();
+		$gateway_service->configure_returns();
 
 		// Run services only when WordPress admin is ready.
 		HooksProxy::run_backend_services(
@@ -232,7 +234,7 @@ final class Plugin {
 	 * @throws ContainerException
 	 */
 	public function is_plugin_needed(): bool {
-
+		return true;
 		// Are we on the cart page?
 		// If everything is ok, we can load the plugin
 		if ( $this->is_configured() && WooCommerceProxy::is_cart_product_or_checkout_page() ) {

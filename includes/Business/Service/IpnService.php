@@ -14,7 +14,7 @@ use WC_Order;
 class IpnService {
 
 	public const IPN_CALLBACK    = 'alma_ipn_callback';
-	public const CUSTOMER_RETURN = 'alma_customer°return';
+	public const CUSTOMER_RETURN = 'alma_customer_return';
 
 	/** @var OptionsService */
 	private OptionsService $options_service;
