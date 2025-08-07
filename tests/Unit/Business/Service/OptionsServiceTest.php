@@ -2,12 +2,12 @@
 
 namespace Alma\Gateway\Tests\Unit\Business\Service;
 
-use Alma\API\Entities\FeePlan;
-use Alma\API\Entities\FeePlanList;
-use Alma\Gateway\Business\Helper\EncryptorHelper;
-use Alma\Gateway\Business\Service\OptionsService;
-use Alma\Gateway\WooCommerce\Proxy\OptionsProxy;
-use Alma\Gateway\WooCommerce\Proxy\WordPressProxy;
+use Alma\API\Entity\FeePlan;
+use Alma\API\Entity\FeePlanList;
+use Alma\Gateway\Application\Helper\EncryptorHelper;
+use Alma\Gateway\Application\Service\OptionsService;
+use Alma\Gateway\Infrastructure\WooCommerce\Proxy\OptionsProxy;
+use Alma\Gateway\Infrastructure\WooCommerce\Proxy\WordPressProxy;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
@@ -27,7 +27,7 @@ class OptionsServiceTest extends TestCase {
 
 		$this->options_proxy_mock   = $this->createMock( OptionsProxy::class );
 		$this->wordpress_proxy_mock = Mockery::mock( WordPressProxy::class );
-		$this->options_service = new OptionsService( new EncryptorHelper(), $this->options_proxy_mock );
+		$this->options_service      = new OptionsService( new EncryptorHelper(), $this->options_proxy_mock );
 	}
 
 	public function tearDown(): void {

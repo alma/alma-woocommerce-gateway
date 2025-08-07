@@ -4,9 +4,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use Alma\API\Entities\FeePlan;
-use Alma\API\Entities\FeePlanList;
-use Alma\Gateway\WooCommerce\Proxy\WordPressProxy;
+use Alma\API\Entity\FeePlan;
+use Alma\API\Entity\FeePlanList;
+use Alma\Gateway\Application\Helper\L10nHelper;
+use Alma\Gateway\Infrastructure\WooCommerce\Proxy\WordPressProxy;
 
 ?>
 
@@ -25,18 +26,19 @@ use Alma\Gateway\WooCommerce\Proxy\WordPressProxy;
 		/** @var FeePlan $alma_woocommerce_gateway_fee_plan */
 		foreach ( $alma_woocommerce_gateway_fee_plan_list as $alma_woocommerce_gateway_fee_plan ) {
 			if ( $alma_woocommerce_gateway_fee_plan->isEnabled() ) {
-				$alma_woocommerce_gateway_value = sprintf(
-					'%_%',
+				$alma_plan_key_value = sprintf(
+					'value="general_%d_%d_%d"',
+					$alma_woocommerce_gateway_fee_plan->getInstallmentsCount(),
 					$alma_woocommerce_gateway_fee_plan->getDeferredDays(),
 					$alma_woocommerce_gateway_fee_plan->getDeferredMonths()
 				);
 				echo '<label>';
-				echo '<input type="radio" name="alma_deferred" value="' . $alma_woocommerce_gateway_value . '" />';
+				echo '<input type="radio" name="alma_plan_key" ' . $alma_plan_key_value . ' />';
 				if ( $alma_woocommerce_gateway_fee_plan->getDeferredDays() > 0 ) {
 					echo esc_html(
 						sprintf(
 						// Translators: %d is the number of deferred days
-							__( 'Achetez maintenant, payez dans %s jours', 'alma-gateway-for-woocommerce' ),
+							L10nHelper::__( 'Achetez maintenant, payez dans %d jours' ),
 							$alma_woocommerce_gateway_fee_plan->getDeferredDays()
 						)
 					);
@@ -45,15 +47,15 @@ use Alma\Gateway\WooCommerce\Proxy\WordPressProxy;
 					echo esc_html(
 						sprintf(
 						// Translators: %d is the number of deferred months
-							__( 'Achetez maintenant, payez dans %s mois', 'alma-gateway-for-woocommerce' ),
+							L10nHelper::__( 'Achetez maintenant, payez dans %d mois' ),
 							$alma_woocommerce_gateway_fee_plan->getDeferredMonths()
 						)
 					);
 				}
-				echo '<label><br>';
+				echo '</label><br>';
 			}
 		}
 		?>
 	</p>
-	<?php WordPressProxy::set_nonce( 'alma_pnx_gateway_nonce_action', 'alma_pnx_gateway_nonce_field' ); ?>
+	<?php WordPressProxy::set_nonce( 'alma_pay_later_gateway_nonce_action', 'alma_pay_later_gateway_nonce_field' ); ?>
 </fieldset>
