@@ -11,22 +11,22 @@
 
 namespace Alma\Gateway;
 
-use Alma\Gateway\Business\Exception\ContainerException;
-use Alma\Gateway\Business\Exception\RequirementsException;
-use Alma\Gateway\Business\Helper\L10nHelper;
-use Alma\Gateway\Business\Helper\PluginHelper;
-use Alma\Gateway\Business\Helper\RequirementsHelper;
-use Alma\Gateway\Business\Service\AdminService;
-use Alma\Gateway\Business\Service\API\EligibilityService;
-use Alma\Gateway\Business\Service\API\FeePlanService;
-use Alma\Gateway\Business\Service\ContainerService;
-use Alma\Gateway\Business\Service\GatewayService;
-use Alma\Gateway\Business\Service\LoggerService;
-use Alma\Gateway\Business\Service\OptionsService;
-use Alma\Gateway\Business\Service\WidgetService;
-use Alma\Gateway\WooCommerce\Exception\CoreException;
-use Alma\Gateway\WooCommerce\Proxy\HooksProxy;
-use Alma\Gateway\WooCommerce\Proxy\WooCommerceProxy;
+use Alma\Gateway\Application\Exception\ContainerException;
+use Alma\Gateway\Application\Exception\RequirementsException;
+use Alma\Gateway\Application\Helper\L10nHelper;
+use Alma\Gateway\Application\Helper\PluginHelper;
+use Alma\Gateway\Application\Helper\RequirementsHelper;
+use Alma\Gateway\Application\Service\AdminService;
+use Alma\Gateway\Application\Service\API\EligibilityService;
+use Alma\Gateway\Application\Service\API\FeePlanService;
+use Alma\Gateway\Application\Service\ContainerService;
+use Alma\Gateway\Application\Service\GatewayService;
+use Alma\Gateway\Application\Service\LoggerService;
+use Alma\Gateway\Application\Service\OptionsService;
+use Alma\Gateway\Application\Service\WidgetService;
+use Alma\Gateway\Infrastructure\WooCommerce\Exception\CoreException;
+use Alma\Gateway\Infrastructure\WooCommerce\Proxy\HooksProxy;
+use Alma\Gateway\Infrastructure\WooCommerce\Proxy\WooCommerceProxy;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -43,6 +43,7 @@ final class Plugin {
 
 	/**
 	 * Plugin instance.
+	 *
 	 * @see get_instance()
 	 * @type Null|Plugin
 	 */
@@ -69,6 +70,7 @@ final class Plugin {
 	 * @see plugin_setup()
 	 */
 	public function __construct() {
+		// FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__,true );// phpcs:ignore
 	}
 
 	/**
@@ -106,6 +108,7 @@ final class Plugin {
 
 	/**
 	 * Used for plugin warmup.
+	 *
 	 * @throws ContainerException
 	 * @throws RequirementsException
 	 */
@@ -163,6 +166,7 @@ final class Plugin {
 		/** @var GatewayService $gateway_service */
 		$gateway_service = self::get_container()->get( GatewayService::class );
 		$gateway_service->load_gateway();
+		$gateway_service->configure_returns();
 
 		// Run services only when WordPress admin is ready.
 		HooksProxy::run_backend_services(
@@ -197,6 +201,7 @@ final class Plugin {
 	/**
 	 * Check if the plugin can load. Is woocommerce installed? It's mandatory.
 	 * We don't use Dice because it's not loaded yet.
+	 *
 	 * @return bool
 	 * @throws RequirementsException
 	 */
@@ -229,10 +234,11 @@ final class Plugin {
 	/**
 	 * Define if we can load the plugin.
 	 * True on cart or checkout page if the plugin is configured for frontend use.
+	 *
 	 * @throws ContainerException
 	 */
 	public function is_plugin_needed(): bool {
-
+		return true;
 		// Are we on the cart page?
 		// If everything is ok, we can load the plugin
 		if ( $this->is_configured() && WooCommerceProxy::is_cart_product_or_checkout_page() ) {

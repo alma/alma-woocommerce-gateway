@@ -1,14 +1,15 @@
 <?php
 
-use Alma\API\Entities\Eligibility;
-use Alma\API\Entities\FeePlan;
-use Alma\Gateway\Business\Exception\ContainerException;
-use Alma\Gateway\Business\Exception\MerchantServiceException;
-use Alma\Gateway\Business\Helper\DisplayHelper;
-use Alma\Gateway\Business\Service\API\FeePlanService;
-use Alma\Gateway\Business\Service\OptionsService;
+use Alma\API\Entity\Eligibility;
+use Alma\API\Entity\FeePlan;
+use Alma\Gateway\Application\Exception\ContainerException;
+use Alma\Gateway\Application\Exception\MerchantServiceException;
+use Alma\Gateway\Application\Helper\DisplayHelper;
+use Alma\Gateway\Application\Service\API\FeePlanService;
+use Alma\Gateway\Application\Service\LoggerService;
+use Alma\Gateway\Application\Service\OptionsService;
+use Alma\Gateway\Infrastructure\WooCommerce\Gateway\AbstractGateway;
 use Alma\Gateway\Plugin;
-use Alma\Gateway\WooCommerce\Gateway\AbstractGateway;
 
 add_action(
 	'wp_footer',
@@ -143,3 +144,12 @@ add_action(
 		echo '</pre>';
 	}
 );
+
+function almalog( $message, $data = null ) {
+	/** @var LoggerService $logger */
+	$logger = Plugin::get_container()->get( LoggerService::class );
+	$logger->debug( $message );
+	if ( ! is_null( $data ) ) {
+		$logger->debug( wp_json_encode( $data ) );
+	}
+}

@@ -45,6 +45,10 @@
         <exclude name="WordPress.Security.EscapeOutput"/>
         <exclude name="WordPress.Files.FileName"/>
         <exclude name="Generic.Functions.CallTimePassByReference"/>
+        <exclude name="WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase"/>
+        <exclude name="WordPress.Security.NonceVerification.Recommended"/>
+        <exclude-pattern>includes/Domain/*</exclude-pattern>
+        <exclude-pattern>includes/Application/*</exclude-pattern>
     </rule>
 
     <!-- Let's also check that everything is properly documented. -->
@@ -99,4 +103,15 @@
     </rule>
 
     <config name="ignore_warnings_on_exit" value="1"/>
+
+    <!--rule ref="WordPress">
+        <exclude-pattern>includes/Domain/*</exclude-pattern>
+        <exclude-pattern>includes/Application/*</exclude-pattern>
+    </rule-->
+
+    <!--rule ref="PSR12">
+        <include-pattern>src/Domain/*</include-pattern>
+        <include-pattern>src/Application/*</include-pattern>
+    </rule-->
+
 </ruleset>

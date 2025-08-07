@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Tests\Unit\Business\Helper;
 
-use Alma\Gateway\Business\Helper\DisplayHelper;
+use Alma\Gateway\Application\Helper\DisplayHelper;
 use PHPUnit\Framework\TestCase;
 
 class DisplayHelperTest extends TestCase {
