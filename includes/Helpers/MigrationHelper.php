@@ -183,6 +183,11 @@ class MigrationHelper {
 
 				$gateway->manage_credentials();
 			}
+
+			if ($settings['variable_product_check_variations_event'] === 'check_variations'){
+				$settings['variable_product_check_variations_event'] = 'show_variation';
+				update_option( AlmaSettings::OPTIONS_KEY, $settings );
+			}
 		} catch ( Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			// We don't care if it fails there is nothing to update.
 			$this->logger->info( $e->getMessage() );
