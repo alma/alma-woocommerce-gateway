@@ -61,7 +61,7 @@ class SettingsHelperTest extends WP_UnitTestCase {
 		'display_product_eligibility'                => 'yes',
 		'variable_product_price_query_selector'      => 'form.variations_form div.woocommerce-variation-price span.woocommerce-Price-amount',
 		'variable_product_sale_price_query_selector' => 'form.variations_form div.woocommerce-variation-price ins span.woocommerce-Price-amount',
-		'variable_product_check_variations_event'    => 'check_variations',
+		'variable_product_check_variations_event'    => 'show_variation',
 		'excluded_products_list'                     => array(),
 		'cart_not_eligible_message_gift_cards'       => 'Some products cannot be paid with monthly or deferred installments',
 		'live_api_key'                               => '',
