@@ -184,7 +184,7 @@ class MigrationHelper {
 				$gateway->manage_credentials();
 			}
 
-			if ($settings['variable_product_check_variations_event'] === 'check_variations'){
+			if ( 'check_variations' === $settings['variable_product_check_variations_event'] ) {
 				$settings['variable_product_check_variations_event'] = 'show_variation';
 				update_option( AlmaSettings::OPTIONS_KEY, $settings );
 			}
