@@ -1,5 +1,17 @@
 # Changelog
 
+## v5.15.0 - 2025-08-28
+
+### Changes
+
+### 🚀 New Features
+
+- fix: change the variation update event on product page (#406)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @Francois-Gomis, @alma-renovate-bot[bot], @joyet-simon, @remi-zuffinetti, @webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
+
 ## v5.14.1 - 2025-07-31
 
 ### Changes
