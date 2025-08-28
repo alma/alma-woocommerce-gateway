@@ -6,7 +6,7 @@ Requires at least: 4.4
 Tested up to Wordpress: 6.8.2
 Tested up to Woocommerce: 10.0.4
 Requires PHP: 5.6
-Stable tag: 5.14.1
+Stable tag: 5.14.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -51,6 +51,18 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+## v5.14.2 - 2025-08-28
+
+### Changes
+
+### 🐛 Bug Fixes
+
+- fix: change the variation update event on product page (#406)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @Francois-Gomis, @alma-renovate-bot[bot], @joyet-simon, @remi-zuffinetti, @webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
 
 ## v5.14.1 - 2025-07-31
 
