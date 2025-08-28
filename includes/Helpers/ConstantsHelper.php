@@ -50,7 +50,7 @@ class ConstantsHelper {
 	const PAY_NOW_FEE_PLAN               = 'general_1_0_0';
 	const PAYMENT_METHOD                 = 'payment_method';
 	const PAYMENT_METHOD_TITLE           = 'payment_method_title';
-	const DEFAULT_CHECK_VARIATIONS_EVENT = 'check_variations';
+	const DEFAULT_CHECK_VARIATIONS_EVENT = 'show_variation';
 	const AMOUNT_PLAN_KEY_REGEX          = '#^(min|max)_amount_general_[0-9]{1,2}_[0-9]{1,2}_[0-9]{1,2}$#';
 	const SORT_PLAN_KEY_REGEX            = '/^(general|pos)_([0-9]{1,2})_([0-9]{1,2})_([0-9]{1,2})$/';
 
