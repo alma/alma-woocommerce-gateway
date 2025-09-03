@@ -206,7 +206,7 @@ class AbstractBackendGateway extends AbstractGateway {
 		/** @uses self::generate_custom_html() */
 		$field_list['fee_plan_header'] = array(
 			'type'     => 'custom',
-			'html'     => <<<HTML
+			'html'     => <<<'HTML'
 			<tr valign="top">
 				<table class="form-table">
 					<tr valign="top"><td class="wc_emails_wrapper" colspan="2">
@@ -271,7 +271,7 @@ class AbstractBackendGateway extends AbstractGateway {
 		/** @uses self::generate_custom_html() */
 		$field_list['fee_plan_footer'] = array(
 			'type'     => 'custom',
-			'html'     => <<<HTML
+			'html'     => <<<'HTML'
 								</tbody>
 							</table>
 						</td>
@@ -305,7 +305,7 @@ class AbstractBackendGateway extends AbstractGateway {
 		/** @uses self::generate_custom_html() */
 		$field_list['gateway_header'] = array(
 			'type'     => 'custom',
-			'html'     => <<<HTML
+			'html'     => <<<'HTML'
 			<tr valign="top">
 				<table class="form-table">
 					<tr valign="top"><td class="wc_emails_wrapper" colspan="2">
@@ -340,7 +340,7 @@ class AbstractBackendGateway extends AbstractGateway {
 		/** @uses self::generate_custom_html() */
 		$field_list['gateway_footer'] = array(
 			'type'     => 'custom',
-			'html'     => <<<HTML
+			'html'     => <<<'HTML'
 								</tbody>
 							</table>
 						</td>
