@@ -5,6 +5,7 @@ namespace Alma\Gateway\Application\Service;
 use Alma\API\Entity\FeePlanList;
 use Alma\Gateway\Application\Exception\ContainerException;
 use Alma\Gateway\Application\Exception\MerchantServiceException;
+use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Service\API\FeePlanService;
 use Alma\Gateway\Infrastructure\WooCommerce\Exception\CoreException;
@@ -88,7 +89,7 @@ class WidgetService {
 			WidgetHelper::display_product_widget(
 				$environment,
 				$merchant_id,
-				$product->getPrice(),
+				DisplayHelper::price_to_cent($product->getPrice()),
 				$fee_plan_list,
 				$language,
 				$display_widget
