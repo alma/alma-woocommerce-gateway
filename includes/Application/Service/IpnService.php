@@ -15,7 +15,7 @@ use Alma\Gateway\Plugin;
 
 class IpnService {
 
-	public const IPN_CALLBACK    = 'alma_ipn_callback';
+	public const IPN_CALLBACK = 'alma_ipn_callback';
 	public const CUSTOMER_RETURN = 'alma_customer_return';
 
 	/** @var OptionsService */
@@ -55,7 +55,7 @@ class IpnService {
 
 		// Process the customer return
 		try {
-			$payment = $this->payment_service->fetch_payment( $payment_id );
+			$payment = $this->payment_service->fetchPayment( $payment_id );
 			/** @var OrderRepository $order_repository */
 			$order_repository = Plugin::get_container()->get( OrderRepository::class );
 			$order            = $order_repository->findById(
@@ -121,7 +121,7 @@ class IpnService {
 		$result = array( 'success' => true );
 
 		try {
-			$payment = $this->payment_service->fetch_payment( $payment_id );
+			$payment = $this->payment_service->fetchPayment( $payment_id );
 			/** @var OrderRepository $order_repository */
 			$order_repository = Plugin::get_container()->get( OrderRepository::class );
 			$order            = $order_repository->findById(
@@ -150,7 +150,7 @@ class IpnService {
 
 		$order_total = WooCommerceProxy::get_order_total( $order->get_id() );
 		if ( $order_total !== $payment->purchase_amount ) {
-			$this->payment_service->flag_as_fraud( $payment->id, Payment::FRAUD_AMOUNT_MISMATCH );
+			$this->payment_service->flagAsFraud( $payment->id, Payment::FRAUD_AMOUNT_MISMATCH );
 			$order->update_status( 'failed', Payment::FRAUD_AMOUNT_MISMATCH );
 
 			throw new PaymentServiceException( 'Potential fraud detected: order total does not match payment amount.' );
@@ -164,7 +164,7 @@ class IpnService {
 	private function manage_potential_fraud( OrderInterface $order, $payment ): void {
 
 		if ( ! in_array( $payment->state, array( Payment::STATE_IN_PROGRESS, Payment::STATE_PAID ), true ) ) {
-			$this->payment_service->flag_as_fraud( $payment->id, Payment::FRAUD_STATE_ERROR );
+			$this->payment_service->flagAsFraud( $payment->id, Payment::FRAUD_STATE_ERROR );
 			$order->update_status( 'failed', Payment::FRAUD_STATE_ERROR );
 
 			throw new PaymentServiceException( 'Potential fraud detected: payment state is not in progress or paid.' );

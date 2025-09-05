@@ -52,6 +52,7 @@ class CustomerMapper {
 					->setPostalCode( $order->getShippingPostcode() )
 					->setCity( $order->getShippingCity() )
 					->setCountry( $order->getShippingCountry() )
+					->setEmail( $order->getShippingEmail() )
 			);
 		}
 

@@ -22,7 +22,7 @@ use Alma\Gateway\Plugin;
 class GatewayService {
 
 	public const CUSTOMER_RETURN = 'alma_customer_return';
-	public const IPN_CALLBACK    = 'alma_ipn_callback';
+	public const IPN_CALLBACK = 'alma_ipn_callback';
 
 	/** @var HooksProxy */
 	private HooksProxy $hooks_proxy;
@@ -116,7 +116,7 @@ class GatewayService {
 				/** @var PaymentService $payment_service */
 				$payment_service = Plugin::get_container()->get( PaymentService::class );
 
-				$payment_service->refund_payment(
+				$payment_service->refundPayment(
 					$order->getPaymentId(),
 					( new RefundDto() )
 						->setAmount( DisplayHelper::price_to_cent( $order->getRemainingRefundAmount() ) )
@@ -153,8 +153,8 @@ class GatewayService {
 		/** @var AbstractGateway $gateway */
 		foreach ( WooCommerceProxy::get_alma_gateways() as $gateway ) {
 			if ( WooCommerceProxy::is_checkout_page() ) {
-				$gateway->configure_eligibility( $this->eligibility_service->get_eligibility_list() );
-				$gateway->configure_fee_plans( $this->fee_plan_service->get_fee_plan_list() );
+				$gateway->configure_eligibility( $this->eligibility_service->getEligibilityList() );
+				$gateway->configure_fee_plans( $this->fee_plan_service->getFeePlanList() );
 			}
 		}
 	}

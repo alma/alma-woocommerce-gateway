@@ -85,7 +85,7 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 		/** @var FeePlanService $fee_plan_service */
 		$fee_plan_service = Plugin::get_instance()->get_container()->get( FeePlanService::class );
 
-		return $fee_plan_service->get_fee_plan_list()->filterFeePlanList( array( $this->get_type() ) );
+		return $fee_plan_service->getFeePlanList()->filterFeePlanList( array( $this->get_type() ) );
 	}
 
 	/**

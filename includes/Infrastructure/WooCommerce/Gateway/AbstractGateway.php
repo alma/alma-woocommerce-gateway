@@ -154,7 +154,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		/** @var PaymentService $payment_service */
 		$payment_service = Plugin::get_container()->get( PaymentService::class );
 		try {
-			$payment = $payment_service->create_payment(
+			$payment = $payment_service->createPayment(
 				( new PaymentMapper() )->buildPaymentDto( $this, $order, $fee_plan ),
 				( new OrderMapper() )->buildOrderDto( $order ),
 				( new CustomerMapper() )->buildCustomerDto( $order ),
@@ -198,7 +198,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 
 		/** @var PaymentService $payment_service */
 		$payment_service = Plugin::get_container()->get( PaymentService::class );
-		$response        = $payment_service->refund_payment(
+		$response        = $payment_service->refundPayment(
 			$order->getPaymentId(),
 			( new RefundDto() )
 				->setAmount( DisplayHelper::price_to_cent( $amount ) )

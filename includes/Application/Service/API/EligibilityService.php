@@ -5,33 +5,34 @@ namespace Alma\Gateway\Application\Service\API;
 use Alma\API\Endpoint\EligibilityEndpoint;
 use Alma\API\Entity\EligibilityList;
 use Alma\API\Exception\Endpoint\EligibilityEndpointException;
+use Alma\API\Exception\ParametersException;
 use Alma\Gateway\Application\Exception\EligibilityServiceException;
 use Alma\Gateway\Infrastructure\WooCommerce\Proxy\WooCommerceProxy;
 
 class EligibilityService {
 
-	private EligibilityEndpoint $eligibility_endpoint;
+	private EligibilityEndpoint $eligibilityEndpoint;
 
 	/** @var EligibilityList */
-	private EligibilityList $eligibility_list;
+	private EligibilityList $eligibilityList;
 
-	public function __construct( EligibilityEndpoint $eligibility_endpoint ) {
+	public function __construct( EligibilityEndpoint $eligibilityEndpoint ) {
 
-		$this->eligibility_endpoint = $eligibility_endpoint;
+		$this->eligibilityEndpoint = $eligibilityEndpoint;
 	}
 
 	/**
 	 * Retrieve the eligibility list based on the current cart total.
 	 *
-	 * @throws EligibilityServiceException
+	 * @throws EligibilityServiceException|ParametersException
 	 */
-	public function retrieve_eligibility() {
+	public function retrieveEligibility() {
 		try {
 			$purchase_amount = WooCommerceProxy::get_cart_total();
 			if ( $purchase_amount > 0 ) {
-				$this->eligibility_list = $this->eligibility_endpoint->getEligibilityList( array( 'purchase_amount' => $purchase_amount ) );
+				$this->eligibilityList = $this->eligibilityEndpoint->getEligibilityList( array( 'purchase_amount' => $purchase_amount ) );
 			} else {
-				$this->eligibility_list = new EligibilityList();
+				$this->eligibilityList = new EligibilityList();
 			}
 		} catch ( EligibilityEndpointException $e ) {
 			throw new EligibilityServiceException( 'Error retrieving eligibility: ' . $e->getMessage() );
@@ -41,13 +42,13 @@ class EligibilityService {
 	/**
 	 * Get the eligibility list.
 	 *
-	 * @throws EligibilityServiceException
+	 * @throws EligibilityServiceException|ParametersException
 	 */
-	public function get_eligibility_list(): EligibilityList {
-		if ( ! isset( $this->eligibility_list ) ) {
-			$this->retrieve_eligibility();
+	public function getEligibilityList(): EligibilityList {
+		if ( ! isset( $this->eligibilityList ) ) {
+			$this->retrieveEligibility();
 		}
 
-		return $this->eligibility_list;
+		return $this->eligibilityList;
 	}
 }

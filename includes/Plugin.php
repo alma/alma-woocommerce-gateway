@@ -166,7 +166,9 @@ final class Plugin {
 		/** @var GatewayService $gateway_service */
 		$gateway_service = self::get_container()->get( GatewayService::class );
 		$gateway_service->load_gateway();
-		$gateway_service->configure_returns();
+		if ( $this->is_configured() ) {
+			$gateway_service->configure_returns();
+		}
 
 		// Run services only when WordPress admin is ready.
 		HooksProxy::run_backend_services(
@@ -191,9 +193,11 @@ final class Plugin {
 				$gateway_service = self::get_container()->get( GatewayService::class );
 				$gateway_service->configure_gateway();
 
-				/** @var WidgetService $widget_service */
-				$widget_service = self::get_container()->get( WidgetService::class );
-				$widget_service->display_widget();
+				if ( $this->is_configured() ) {
+					/** @var WidgetService $widget_service */
+					$widget_service = self::get_container()->get( WidgetService::class );
+					$widget_service->display_widget();
+				}
 			}
 		);
 	}
@@ -238,7 +242,7 @@ final class Plugin {
 	 * @throws ContainerException
 	 */
 	public function is_plugin_needed(): bool {
-		return true;
+
 		// Are we on the cart page?
 		// If everything is ok, we can load the plugin
 		if ( $this->is_configured() && WooCommerceProxy::is_cart_product_or_checkout_page() ) {

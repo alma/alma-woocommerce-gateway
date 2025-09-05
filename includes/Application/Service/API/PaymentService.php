@@ -15,22 +15,22 @@ use Alma\Gateway\Application\Service\LoggerService;
 
 class PaymentService {
 	const CAPTURE_METHOD_AUTOMATIC = 'automatic';
-	const CAPTURE_METHOD_MANUAL    = 'manual';
+	const CAPTURE_METHOD_MANUAL = 'manual';
 
-	/** @var PaymentEndpoint */
-	private PaymentEndpoint $payment_endpoint;
+	/** @var PaymentEndpoint $paymentEndpoint */
+	private PaymentEndpoint $paymentEndpoint;
 
-	/** @var LoggerService $logger_service */
-	private LoggerService $logger_service;
+	/** @var LoggerService $loggerService */
+	private LoggerService $loggerService;
 
 	/**
 	 * PaymentService constructor.
 	 *
-	 * @param PaymentEndpoint $payment_endpoint The payment endpoint to use for API calls.
+	 * @param PaymentEndpoint $paymentEndpoint The payment endpoint to use for API calls.
 	 */
-	public function __construct( PaymentEndpoint $payment_endpoint, LoggerService $logger_service ) {
-		$this->payment_endpoint = $payment_endpoint;
-		$this->logger_service   = $logger_service;
+	public function __construct( PaymentEndpoint $paymentEndpoint, LoggerService $loggerService ) {
+		$this->paymentEndpoint = $paymentEndpoint;
+		$this->loggerService   = $loggerService;
 	}
 
 	/**
@@ -44,13 +44,13 @@ class PaymentService {
 	 *
 	 * @throws PaymentServiceException
 	 */
-	public function create_payment(
+	public function createPayment(
 		PaymentDto $payment_dto,
 		OrderDto $order_dto,
 		CustomerDto $customer_dto
 	): Payment {
 		try {
-			return $this->payment_endpoint->create( $payment_dto, $order_dto, $customer_dto );
+			return $this->paymentEndpoint->create( $payment_dto, $order_dto, $customer_dto );
 		} catch ( PaymentEndpointException $e ) {
 			throw new PaymentServiceException( 'Error creating payment: ' . $e->getMessage() );
 		}
@@ -63,9 +63,9 @@ class PaymentService {
 	 *
 	 * @throws PaymentServiceException|PaymentEndpointException
 	 */
-	public function fetch_payment( ?string $payment_id ): Payment {
+	public function fetchPayment( ?string $payment_id ): Payment {
 		try {
-			return $this->payment_endpoint->fetch( $payment_id );
+			return $this->paymentEndpoint->fetch( $payment_id );
 		} catch ( PaymentEndpointException $e ) {
 			throw new PaymentServiceException( 'Error fetching payment: ' . $e->getMessage() );
 		}
@@ -76,9 +76,9 @@ class PaymentService {
 	 *
 	 * @throws PaymentServiceException|PaymentEndpointException
 	 */
-	public function flag_as_fraud( string $id, string $reason ): bool {
+	public function flagAsFraud( string $id, string $reason ): bool {
 		try {
-			return $this->payment_endpoint->flagAsPotentialFraud( $id, $reason );
+			return $this->paymentEndpoint->flagAsPotentialFraud( $id, $reason );
 		} catch ( PaymentEndpointException $e ) {
 			throw new PaymentServiceException( 'Error flagging payment as fraud: ' . $e->getMessage() );
 		}
@@ -91,13 +91,12 @@ class PaymentService {
 	 * @param RefundDto $refundDto The Refund Data Transfer Object containing the refund details.
 	 *
 	 * @return bool
-	 * @throws PaymentEndpointException
 	 */
-	public function refund_payment( string $paymentId, RefundDto $refundDto ): bool {
+	public function refundPayment( string $paymentId, RefundDto $refundDto ): bool {
 		try {
-			$this->payment_endpoint->refund( $paymentId, $refundDto );
-		} catch ( PaymentEndpointException | ParametersException $e ) {
-			$this->logger_service->debug( $e->getMessage() );
+			$this->paymentEndpoint->refund( $paymentId, $refundDto );
+		} catch ( PaymentEndpointException|ParametersException $e ) {
+			$this->loggerService->debug( $e->getMessage() );
 
 			return false;
 		}

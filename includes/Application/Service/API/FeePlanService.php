@@ -6,6 +6,7 @@ use Alma\API\Endpoint\MerchantEndpoint;
 use Alma\API\Entity\FeePlan;
 use Alma\API\Entity\FeePlanList;
 use Alma\API\Exception\Endpoint\MerchantEndpointException;
+use Alma\API\Exception\ParametersException;
 use Alma\Gateway\Application\Exception\MerchantServiceException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Service\OptionsService;
@@ -13,55 +14,55 @@ use Alma\Gateway\Application\Service\OptionsService;
 class FeePlanService {
 
 	/** @var MerchantEndpoint */
-	private MerchantEndpoint $merchant_endpoint;
+	private MerchantEndpoint $merchantEndpoint;
 
 	/** @var FeePlanList */
-	private FeePlanList $fee_plan_list;
+	private FeePlanList $feePlanList;
 
-	/** @var OptionsService $options_service */
-	private OptionsService $options_service;
+	/** @var OptionsService $optionsService */
+	private OptionsService $optionsService;
 
-	public function __construct( MerchantEndpoint $merchant_endpoint, OptionsService $options_service ) {
-		$this->merchant_endpoint = $merchant_endpoint;
-		$this->options_service   = $options_service;
+	public function __construct( MerchantEndpoint $merchantEndpoint, OptionsService $optionsService ) {
+		$this->merchantEndpoint = $merchantEndpoint;
+		$this->optionsService   = $optionsService;
 	}
 
 	/**
 	 * Get the fee plan list.
 	 *
-	 * @param bool $force_refresh Whether to force a refresh of the fee plan list.
+	 * @param bool $forceRefresh Whether to force a refresh of the fee plan list.
 	 *
 	 * @return FeePlanList
-	 * @throws MerchantServiceException
+	 * @throws MerchantServiceException|ParametersException
 	 */
-	public function get_fee_plan_list( bool $force_refresh = false ): FeePlanList {
-		if ( ! isset( $this->fee_plan_list ) || $force_refresh ) {
-			$this->fee_plan_list = $this->set_local_configuration( $this->retrieve_fee_plan_list() );
+	public function getFeePlanList( bool $forceRefresh = false ): FeePlanList {
+		if ( ! isset( $this->feePlanList ) || $forceRefresh ) {
+			$this->feePlanList = $this->setLocalConfiguration( $this->retrieveFeePlanList() );
 		}
 
-		return $this->fee_plan_list;
+		return $this->feePlanList;
 	}
 
 	/**
 	 * Retrieve the fee plan list from the merchant endpoint.
 	 *
-	 * @throws MerchantServiceException
+	 * @throws MerchantServiceException|ParametersException
 	 */
-	private function retrieve_fee_plan_list(): FeePlanList {
+	private function retrieveFeePlanList(): FeePlanList {
 		try {
-			$fee_plan_list = $this->merchant_endpoint->getFeePlanList( FeePlan::KIND_GENERAL, 'all', true )
-													->filterFeePlanList(
-														array(
-															'credit',
-															'pnx',
-															'pay-later',
-															'pay-now',
-														)
-													);
+			$feePlanList = $this->merchantEndpoint->getFeePlanList( FeePlan::KIND_GENERAL, 'all', true )
+			                                      ->filterFeePlanList(
+				                                      array(
+					                                      'credit',
+					                                      'pnx',
+					                                      'pay-later',
+					                                      'pay-now',
+				                                      )
+			                                      );
 
-			$this->options_service->init_fee_plan_list( $fee_plan_list );
+			$this->optionsService->init_fee_plan_list( $feePlanList );
 
-			return $fee_plan_list;
+			return $feePlanList;
 
 		} catch ( MerchantEndpointException $e ) {
 			throw new MerchantServiceException( 'Error retrieving fee plans: ' . $e->getMessage() );
@@ -73,21 +74,21 @@ class FeePlanService {
 	 * This includes enabling/disabling plans and setting the min/max purchase amounts
 	 * Based on the merchant's settings.
 	 *
-	 * @param FeePlanList $fee_plan_list
+	 * @param FeePlanList $feePlanList
 	 *
 	 * @return FeePlanList
 	 */
-	private function set_local_configuration( FeePlanList $fee_plan_list ): FeePlanList {
-		/** @var FeePlan $fee_plan */
-		foreach ( $fee_plan_list as $fee_plan ) {
-			if ( ! $this->options_service->is_fee_plan_enabled( $fee_plan->getPlanKey() ) ) {
-				$fee_plan->disable();
+	private function setLocalConfiguration( FeePlanList $feePlanList ): FeePlanList {
+		/** @var FeePlan $feePlan */
+		foreach ( $feePlanList as $feePlan ) {
+			if ( ! $this->optionsService->is_fee_plan_enabled( $feePlan->getPlanKey() ) ) {
+				$feePlan->disable();
 			}
 			// WooCommerce use euros, but Alma API uses cents.
-			$fee_plan->setOverrideMaxPurchaseAmount( DisplayHelper::price_to_cent( $this->options_service->get_max_amount( $fee_plan->getPlanKey() ) ) );
-			$fee_plan->setOverrideMinPurchaseAmount( DisplayHelper::price_to_cent( $this->options_service->get_min_amount( $fee_plan->getPlanKey() ) ) );
+			$feePlan->setOverrideMaxPurchaseAmount( DisplayHelper::price_to_cent( $this->optionsService->get_max_amount( $feePlan->getPlanKey() ) ) );
+			$feePlan->setOverrideMinPurchaseAmount( DisplayHelper::price_to_cent( $this->optionsService->get_min_amount( $feePlan->getPlanKey() ) ) );
 		}
 
-		return $fee_plan_list;
+		return $feePlanList;
 	}
 }

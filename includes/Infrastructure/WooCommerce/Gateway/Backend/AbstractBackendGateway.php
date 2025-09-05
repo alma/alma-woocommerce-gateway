@@ -196,7 +196,7 @@ class AbstractBackendGateway extends AbstractGateway {
 		// Get the default fee plans.
 		/** @var FeePlanService $fee_plan_service */
 		$fee_plan_service = Plugin::get_container()->get( FeePlanService::class );
-		$fee_plan_list    = $fee_plan_service->get_fee_plan_list( true );
+		$fee_plan_list    = $fee_plan_service->getFeePlanList( true );
 
 		$field_list['fee_plan_section'] = array(
 			'title'    => '<hr>' . L10nHelper::__( '→ Fee plans configuration' ),

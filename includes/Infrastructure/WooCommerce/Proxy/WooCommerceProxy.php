@@ -167,13 +167,18 @@ class WooCommerceProxy extends WordPressProxy {
 
 	/**
 	 * Check if we are on the gateway settings page.
-	 * It's an AJAX request to the REST API, so we check if the 'rest_route' key exists in the $_GET array
+	 * - It's an AJAX request to the REST API, so we check if the 'rest_route' key exists in the $_GET array
+	 * - It's a regular page load, so we check if the 'page' key exists in the $_GET array
 	 *
 	 * @return bool True if we are on the gateway settings page, false otherwise.
 	 */
 	public static function is_gateway_settings_page(): bool {
-		almalog( var_export( $_GET, true ) );
+		// AJAX request
 		if ( array_key_exists( 'rest_route', $_GET ) && stripos( $_GET['rest_route'], '/wc-admin' ) !== false ) {
+			return true;
+		}
+		// Regular page load
+		if ( array_key_exists( 'page', $_GET ) && stripos( $_GET['page'], 'wc-settings' ) !== false ) {
 			return true;
 		}
 

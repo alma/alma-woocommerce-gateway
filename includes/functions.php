@@ -128,7 +128,7 @@ add_action(
 		echo '<pre>';
 		/** @var FeePlanService $fee_plan_service */
 		$fee_plan_service = Plugin::get_container()->get( FeePlanService::class );
-		$fee_plan_list    = $fee_plan_service->get_fee_plan_list();
+		$fee_plan_list    = $fee_plan_service->getFeePlanList();
 
 		/** @var FeePlan $fee_plan */
 		foreach ( $fee_plan_list as $fee_plan ) {

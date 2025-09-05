@@ -15,13 +15,13 @@ class CartMapper {
 	 * @return CartDto The constructed OrderDto.
 	 */
 	public function buildCartDetails( OrderInterface $order ): CartDto {
-		$cart_dto = new CartDto();
+		$cartDto = new CartDto();
 		foreach ( $order->getOrderLines() as $item ) {
-			$cart_dto->addItem(
+			$cartDto->addItem(
 				( new CartItemMapper() )->buildCartItemDetails( $item )
 			);
 		}
 
-		return $cart_dto;
+		return $cartDto;
 	}
 }

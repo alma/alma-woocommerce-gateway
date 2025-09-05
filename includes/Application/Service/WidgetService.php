@@ -46,7 +46,7 @@ class WidgetService {
 	public function display_widget() {
 		$environment         = $this->options_service->get_environment();
 		$merchant_id         = $this->options_service->get_merchant_id();
-		$fee_plan_list       = $this->fee_plan_service->get_fee_plan_list()->filterEnabled();
+		$fee_plan_list       = $this->fee_plan_service->getFeePlanList()->filterEnabled();
 		$excluded_categories = $this->options_service->get_excluded_categories();
 		$language            = WordPressProxy::get_language();
 
