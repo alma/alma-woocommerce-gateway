@@ -174,7 +174,7 @@ class ShortcodeWidgetHelper {
 				),
 				'hide_if_not_eligible'    => false,
 				'transition_delay'        => 5500,
-				'monochrome'              => false,
+				'monochrome'              => true,
 				'hide_border'             => false,
 			)
 		);

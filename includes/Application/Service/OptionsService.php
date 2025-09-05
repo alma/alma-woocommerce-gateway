@@ -286,7 +286,7 @@ class OptionsService {
 	 *
 	 * @throws ContainerException
 	 */
-	public function encrypt_keys( array $options ): array {
+	public static function encrypt_keys( array $options ): array {
 
 		/** @var EncryptorHelper $encryptor_helper */
 		$encryptor_helper = Plugin::get_container()->get( EncryptorHelper::class );
