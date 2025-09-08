@@ -279,7 +279,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		// @todo Find a fix to avoid API calls here.
 		if ( ! $this->fee_plan_list ) {
 			$fee_plan_service    = Plugin::get_container()->get( FeePlanService::class );
-			$this->fee_plan_list = $fee_plan_service->get_fee_plan_list();
+			$this->fee_plan_list = $fee_plan_service->getFeePlanList();
 		}
 
 		// Check if at least one fee plan is eligible for the cart total amount for this gateway

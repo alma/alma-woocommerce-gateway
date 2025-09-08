@@ -52,7 +52,7 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 
 		// Check Fee Plans availability
 		$available = false;
-		foreach ( $this->get_fee_plan_list() as $fee_plan ) {
+		foreach ( $this->getFeePlanList() as $fee_plan ) {
 			if ( $fee_plan->isEnabled() ) {
 				$available = true;
 			}
@@ -81,7 +81,7 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	 * @return FeePlanList
 	 * @throws MerchantServiceException|ContainerException
 	 */
-	public function get_fee_plan_list(): FeePlanList {
+	public function getFeePlanList(): FeePlanList {
 		/** @var FeePlanService $fee_plan_service */
 		$fee_plan_service = Plugin::get_instance()->get_container()->get( FeePlanService::class );
 
