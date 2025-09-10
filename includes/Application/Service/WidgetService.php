@@ -9,6 +9,7 @@ use Alma\API\Domain\Exception\MerchantServiceException;
 use Alma\API\Domain\Helper\ContextHelperInterface;
 use Alma\API\Entity\FeePlanList;
 use Alma\API\Exception\ParametersException;
+use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Service\API\FeePlanService;
 use Alma\Gateway\Infrastructure\Helper\WidgetHelper;
@@ -114,7 +115,7 @@ class WidgetService {
 			$this->widgetHelper->displayProductWidget(
 				$environment,
 				$merchantId,
-				$product->getPrice(),
+				DisplayHelper::price_to_cent( $product->getPrice() ),
 				$feePlanList,
 				$language,
 				$displayWidget
