@@ -55,7 +55,7 @@
             // Listen for changes in the cart totals to reinitialize the widget
             $(document.body).on('updated_cart_totals', function () {
                 const price =
-                    parseFloat($('.cart-subtotal .woocommerce-Price-amount').text().replace(/[^0-9.-]+/g, ''));
+                    Alma.Utils.priceToCents(parseFloat($('.cart-subtotal .woocommerce-Price-amount').text().replace(/[^0-9.-]+/g, '')));
                 initializeAlmaWidget(price);
             });
 
