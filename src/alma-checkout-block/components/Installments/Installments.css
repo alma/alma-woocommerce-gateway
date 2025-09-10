@@ -87,7 +87,14 @@
 	width: 50px;
 }
 
-.footer {
+.footerCard {
+	display: flex;
+	flex-direction: column;
+
+	@mixin row-gap var(--spacing-6);
+}
+
+.footerCard .footer {
 	/* important needed for chrome 49 */
 	margin: 0 !important;
 	width: auto;
@@ -98,13 +105,6 @@
 	flex-direction: column;
 
 	@mixin row-gap var(--spacing-1);
-}
-
-.footerCard {
-	display: flex;
-	flex-direction: column;
-
-	@mixin row-gap var(--spacing-6);
 }
 
 @media screen and (--min-w-sm) {
