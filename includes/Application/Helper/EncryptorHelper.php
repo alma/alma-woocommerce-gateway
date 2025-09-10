@@ -11,7 +11,7 @@
 
 namespace Alma\Gateway\Application\Helper;
 
-use Alma\Gateway\Application\Exception\RequirementsException;
+use Alma\API\Domain\Exception\RequirementsException;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
@@ -56,6 +56,8 @@ class EncryptorHelper {
 	 * @param string $method The method.
 	 *
 	 * @throws RequirementsException Requirement exception.
+	 *
+	 * @todo check with security if we need to change algorythm
 	 */
 	public function __construct( string $method = 'AES-256-CTR' ) {
 		$key_salt = $this->get_key_salt();

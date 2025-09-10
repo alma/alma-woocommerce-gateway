@@ -3,7 +3,7 @@
 namespace Alma\Gateway\Application\Helper;
 
 use Alma\API\Entity\FeePlan;
-use Alma\Gateway\Infrastructure\WooCommerce\Proxy\HooksProxy;
+use Alma\Gateway\Infrastructure\Helper\LanguageHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -36,7 +36,7 @@ class L10nHelper {
 	 * @return void
 	 */
 	public static function load_language( $language_path ) {
-		HooksProxy::load_language( self::ALMA_L10N_DOMAIN, $language_path );
+		LanguageHelper::loadLanguage( self::ALMA_L10N_DOMAIN, $language_path );
 	}
 
 	/**

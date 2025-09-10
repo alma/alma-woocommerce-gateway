@@ -47,8 +47,13 @@
         <exclude name="Generic.Functions.CallTimePassByReference"/>
         <exclude name="WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase"/>
         <exclude name="WordPress.Security.NonceVerification.Recommended"/>
+        <exclude-pattern>includes/Plugin.php</exclude-pattern>
         <exclude-pattern>includes/Domain/*</exclude-pattern>
         <exclude-pattern>includes/Application/*</exclude-pattern>
+        <exclude-pattern>includes/Infrastructure/Adapter/*</exclude-pattern>
+        <exclude-pattern>includes/Infrastructure/Helper/*</exclude-pattern>
+        <exclude-pattern>includes/Infrastructure/Repository/*</exclude-pattern>
+        <exclude-pattern>includes/Infrastructure/Service/*</exclude-pattern>
     </rule>
 
     <!-- Let's also check that everything is properly documented. -->

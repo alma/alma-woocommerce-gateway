@@ -4,8 +4,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use Alma\Gateway\Infrastructure\WooCommerce\Proxy\WordPressProxy;
-
 ?>
 
 <fieldset>
@@ -19,5 +17,8 @@ use Alma\Gateway\Infrastructure\WooCommerce\Proxy\WordPressProxy;
 	</p>
 	<p>
 	</p>
-	<?php WordPressProxy::set_nonce( 'alma_pnx_gateway_nonce_action', 'alma_pnx_gateway_nonce_field' ); ?>
+	<?php
+	/** @var string $alma_woocommerce_gateway_nonce */
+	echo $alma_woocommerce_gateway_nonce;
+	?>
 </fieldset>

@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Application\Mapper;
 
-use Alma\API\Domain\OrderInterface;
+use Alma\API\Domain\Adapter\OrderAdapterInterface;
 use Alma\API\DTO\CartDto;
 
 class CartMapper {
@@ -10,11 +10,11 @@ class CartMapper {
 	/**
 	 * Builds an CartDto from an Order.
 	 *
-	 * @param OrderInterface $order
+	 * @param OrderAdapterInterface $order
 	 *
 	 * @return CartDto The constructed OrderDto.
 	 */
-	public function buildCartDetails( OrderInterface $order ): CartDto {
+	public function buildCartDetails( OrderAdapterInterface $order ): CartDto {
 		$cartDto = new CartDto();
 		foreach ( $order->getOrderLines() as $item ) {
 			$cartDto->addItem(

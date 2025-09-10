@@ -2,7 +2,8 @@
 
 namespace Alma\Gateway\Application\Service;
 
-use Alma\Gateway\Infrastructure\WooCommerce\Proxy\WooCommerceProxy;
+
+use Alma\API\Domain\Helper\SessionHelperInterface;
 
 /**
  * Class CacheService
@@ -16,17 +17,18 @@ use Alma\Gateway\Infrastructure\WooCommerce\Proxy\WooCommerceProxy;
  */
 class CacheService {
 
-	private WooCommerceProxy $woocommerce_proxy;
+	private SessionHelperInterface $sessionHelper;
 
-	public function __construct( WooCommerceProxy $woocommerce_proxy ) {
-		$this->woocommerce_proxy = $woocommerce_proxy;
+	public function __construct( SessionHelperInterface $sessionHelper ) {
+		$this->sessionHelper = $sessionHelper;
+
 	}
 
-	public function get_cache( string $cache_key ) {
-		return $this->woocommerce_proxy->get_session( $cache_key );
+	public function getCache( string $cache_key ) {
+		return $this->sessionHelper->getSession( $cache_key );
 	}
 
-	public function set_cache( string $cache_key, $value ) {
-		$this->woocommerce_proxy->set_session( $cache_key, $value );
+	public function setCache( string $cache_key, $value ) {
+		$this->sessionHelper->setSession( $cache_key, $value );
 	}
 }

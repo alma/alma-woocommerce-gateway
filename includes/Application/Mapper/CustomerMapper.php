@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Application\Mapper;
 
-use Alma\API\Domain\OrderInterface;
+use Alma\API\Domain\Adapter\OrderAdapterInterface;
 use Alma\API\DTO\AddressDto;
 use Alma\API\DTO\CustomerDto;
 
@@ -11,11 +11,11 @@ class CustomerMapper {
 	/**
 	 * Builds a CustomerDto from an Order.
 	 *
-	 * @param OrderInterface $order The Order object.
+	 * @param OrderAdapterInterface $order The Order object.
 	 *
 	 * @return CustomerDto The constructed CustomerDto.
 	 */
-	public function buildCustomerDto( OrderInterface $order ): CustomerDto {
+	public function buildCustomerDto( OrderAdapterInterface $order ): CustomerDto {
 
 		$customerDto = ( new CustomerDto() )
 			->setFirstName( $order->getBillingFirstName() )

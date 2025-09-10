@@ -2,13 +2,13 @@
 
 use Alma\API\Entity\Eligibility;
 use Alma\API\Entity\FeePlan;
-use Alma\Gateway\Application\Exception\ContainerException;
-use Alma\Gateway\Application\Exception\MerchantServiceException;
+use Alma\API\Domain\Exception\ContainerException;
+use Alma\API\Domain\Exception\MerchantServiceException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Service\API\FeePlanService;
+use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\LoggerService;
-use Alma\Gateway\Application\Service\OptionsService;
-use Alma\Gateway\Infrastructure\WooCommerce\Gateway\AbstractGateway;
+use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Plugin;
 
 add_action(
@@ -46,8 +46,8 @@ add_action(
 
 		echo '<h1>All Options</h1>';
 		echo '<pre>';
-		/** @var OptionsService $option_service */
-		$option_service = Plugin::get_container()->get( OptionsService::class );
+		/** @var ConfigService $option_service */
+		$option_service = Plugin::get_container()->get( ConfigService::class );
 
 		/*
 				$option_service->delete_option( 'general_10_0_0' );
@@ -100,7 +100,7 @@ add_action(
 				$option_service->delete_option( 'general_4_0_0_title' );
 		*/
 
-		$options = $option_service->get_options();
+		$options = $option_service->getSettings();
 		ksort( $options );
 		foreach ( $options as $key => $value ) {
 			if ( is_array( $value ) ) {

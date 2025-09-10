@@ -2,16 +2,17 @@
 
 namespace Alma\Gateway\Application\Service\API;
 
+use Alma\API\Domain\Exception\MerchantServiceException;
+use Alma\API\Domain\Service\API\FeePlanServiceInterface;
 use Alma\API\Endpoint\MerchantEndpoint;
 use Alma\API\Entity\FeePlan;
 use Alma\API\Entity\FeePlanList;
 use Alma\API\Exception\Endpoint\MerchantEndpointException;
 use Alma\API\Exception\ParametersException;
-use Alma\Gateway\Application\Exception\MerchantServiceException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
-use Alma\Gateway\Application\Service\OptionsService;
+use Alma\Gateway\Application\Service\ConfigService;
 
-class FeePlanService {
+class FeePlanService implements FeePlanServiceInterface {
 
 	/** @var MerchantEndpoint */
 	private MerchantEndpoint $merchantEndpoint;
@@ -19,10 +20,10 @@ class FeePlanService {
 	/** @var FeePlanList */
 	private FeePlanList $feePlanList;
 
-	/** @var OptionsService $optionsService */
-	private OptionsService $optionsService;
+	/** @var ConfigService $optionsService */
+	private ConfigService $optionsService;
 
-	public function __construct( MerchantEndpoint $merchantEndpoint, OptionsService $optionsService ) {
+	public function __construct( MerchantEndpoint $merchantEndpoint, ConfigService $optionsService ) {
 		$this->merchantEndpoint = $merchantEndpoint;
 		$this->optionsService   = $optionsService;
 	}
@@ -46,7 +47,7 @@ class FeePlanService {
 	/**
 	 * Retrieve the fee plan list from the merchant endpoint.
 	 *
-	 * @throws MerchantServiceException|ParametersException
+	 * @throws MerchantServiceException
 	 */
 	private function retrieveFeePlanList(): FeePlanList {
 		try {
@@ -60,7 +61,7 @@ class FeePlanService {
 				                                      )
 			                                      );
 
-			$this->optionsService->init_fee_plan_list( $feePlanList );
+			$this->optionsService->initFeePlanList( $feePlanList );
 
 			return $feePlanList;
 
@@ -81,12 +82,12 @@ class FeePlanService {
 	private function setLocalConfiguration( FeePlanList $feePlanList ): FeePlanList {
 		/** @var FeePlan $feePlan */
 		foreach ( $feePlanList as $feePlan ) {
-			if ( ! $this->optionsService->is_fee_plan_enabled( $feePlan->getPlanKey() ) ) {
+			if ( ! $this->optionsService->isFeePlanEnabled( $feePlan->getPlanKey() ) ) {
 				$feePlan->disable();
 			}
 			// WooCommerce use euros, but Alma API uses cents.
-			$feePlan->setOverrideMaxPurchaseAmount( DisplayHelper::price_to_cent( $this->optionsService->get_max_amount( $feePlan->getPlanKey() ) ) );
-			$feePlan->setOverrideMinPurchaseAmount( DisplayHelper::price_to_cent( $this->optionsService->get_min_amount( $feePlan->getPlanKey() ) ) );
+			$feePlan->setOverrideMaxPurchaseAmount( DisplayHelper::price_to_cent( $this->optionsService->getMaxAmount( $feePlan->getPlanKey() ) ) );
+			$feePlan->setOverrideMinPurchaseAmount( DisplayHelper::price_to_cent( $this->optionsService->getMinAmount( $feePlan->getPlanKey() ) ) );
 		}
 
 		return $feePlanList;

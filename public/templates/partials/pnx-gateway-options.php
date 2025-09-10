@@ -7,7 +7,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 use Alma\API\Entity\FeePlan;
 use Alma\API\Entity\FeePlanList;
 use Alma\Gateway\Application\Helper\L10nHelper;
-use Alma\Gateway\Infrastructure\WooCommerce\Proxy\WordPressProxy;
 
 ?>
 
@@ -46,5 +45,8 @@ use Alma\Gateway\Infrastructure\WooCommerce\Proxy\WordPressProxy;
 		}
 		?>
 	</p>
-	<?php WordPressProxy::set_nonce( 'alma_pnx_gateway_nonce_action', 'alma_pnx_gateway_nonce_field' ); ?>
+	<?php
+	/** @var string $alma_woocommerce_gateway_nonce */
+	echo $alma_woocommerce_gateway_nonce;
+	?>
 </fieldset>

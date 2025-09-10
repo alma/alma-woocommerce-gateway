@@ -2,6 +2,8 @@
 
 namespace Alma\Gateway\Application\Service\API;
 
+use Alma\API\Domain\Exception\PaymentServiceException;
+use Alma\API\Domain\Service\API\PaymentServiceInterface;
 use Alma\API\DTO\CustomerDto;
 use Alma\API\DTO\OrderDto;
 use Alma\API\DTO\PaymentDto;
@@ -10,10 +12,9 @@ use Alma\API\Endpoint\PaymentEndpoint;
 use Alma\API\Entity\Payment;
 use Alma\API\Exception\Endpoint\PaymentEndpointException;
 use Alma\API\Exception\ParametersException;
-use Alma\Gateway\Application\Exception\PaymentServiceException;
 use Alma\Gateway\Application\Service\LoggerService;
 
-class PaymentService {
+class PaymentService implements PaymentServiceInterface {
 	const CAPTURE_METHOD_AUTOMATIC = 'automatic';
 	const CAPTURE_METHOD_MANUAL = 'manual';
 
@@ -74,7 +75,7 @@ class PaymentService {
 	/**
 	 * Flag a payment as potential fraud.
 	 *
-	 * @throws PaymentServiceException|PaymentEndpointException
+	 * @throws PaymentServiceException
 	 */
 	public function flagAsFraud( string $id, string $reason ): bool {
 		try {

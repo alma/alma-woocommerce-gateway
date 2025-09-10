@@ -2,8 +2,7 @@
 
 namespace Alma\Gateway\Application\Helper;
 
-use Alma\Gateway\Application\Exception\RequirementsException;
-use Alma\Gateway\Application\Service\WooCommerceService;
+use Alma\API\Domain\Exception\RequirementsException;
 
 class RequirementsHelper {
 
@@ -13,14 +12,14 @@ class RequirementsHelper {
 	 * @return true
 	 * @throws RequirementsException
 	 */
-	public function check_dependencies(): bool {
+	public function check_dependencies( string $cmsVersion ): bool {
 		if ( ! function_exists( 'WC' ) ) {
 			throw new RequirementsException( L10nHelper::__( 'Alma requires WooCommerce to be activated' ) );
 		}
 
-		if ( version_compare( WooCommerceService::get_version(), '3.0.0', '<' ) ) {
+		if ( version_compare( $cmsVersion, '7.0.0', '<' ) ) {
 			throw new RequirementsException(
-				L10nHelper::__( 'Alma requires WooCommerce version 3.0.0 or greater' )
+				L10nHelper::__( 'Alma requires WooCommerce version 7.0.0 or greater' )
 			);
 		}
 

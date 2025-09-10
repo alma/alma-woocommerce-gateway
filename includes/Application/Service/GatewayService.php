@@ -2,21 +2,25 @@
 
 namespace Alma\Gateway\Application\Service;
 
+use Alma\API\Domain\Exception\ContainerException;
+use Alma\API\Domain\Exception\EligibilityServiceException;
+use Alma\API\Domain\Exception\MerchantServiceException;
+use Alma\API\Domain\Helper\ContextHelperInterface;
+use Alma\API\Domain\Helper\EventHelperInterface;
 use Alma\API\DTO\RefundDto;
 use Alma\API\Exception\ParametersException;
-use Alma\Gateway\Application\Exception\ContainerException;
-use Alma\Gateway\Application\Exception\EligibilityServiceException;
-use Alma\Gateway\Application\Exception\MerchantServiceException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\API\EligibilityService;
 use Alma\Gateway\Application\Service\API\FeePlanService;
 use Alma\Gateway\Application\Service\API\PaymentService;
-use Alma\Gateway\Infrastructure\WooCommerce\Gateway\AbstractGateway;
-use Alma\Gateway\Infrastructure\WooCommerce\Proxy\HooksProxy;
-use Alma\Gateway\Infrastructure\WooCommerce\Proxy\WooCommerceProxy;
-use Alma\Gateway\Infrastructure\WooCommerce\Proxy\WordPressProxy;
-use Alma\Gateway\Infrastructure\WooCommerce\Repository\OrderRepository;
+use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
+use Alma\Gateway\Infrastructure\Helper\BackendHelper;
+use Alma\Gateway\Infrastructure\Helper\ContextHelper;
+use Alma\Gateway\Infrastructure\Helper\FrontendHelper;
+use Alma\Gateway\Infrastructure\Helper\GatewayHelper;
+use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
+use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Plugin;
 
 class GatewayService {
@@ -24,43 +28,68 @@ class GatewayService {
 	public const CUSTOMER_RETURN = 'alma_customer_return';
 	public const IPN_CALLBACK = 'alma_ipn_callback';
 
-	/** @var HooksProxy */
-	private HooksProxy $hooks_proxy;
+	/** GatewayHelper */
+	private GatewayHelper $gatewayHelper;
 
 	/** @var EligibilityService|null The Eligibility Service if available */
-	private ?EligibilityService $eligibility_service = null;
+	private ?EligibilityService $eligibilityService = null;
 
 	/** @var FeePlanService|null The Fee plan Service if available */
-	private ?FeePlanService $fee_plan_service = null;
+	private ?FeePlanService $feePlanService = null;
+
+	/** @var EventHelperInterface The Event Adapter */
+	private EventHelperInterface $eventHelper;
+
+	/** @var ContextHelperInterface The Context Adapter gives information about context */
+	private ContextHelperInterface $contextHelper;
+
+	/** @var GatewayRepository The Gateway Repository */
+	private GatewayRepository $gatewayRepository;
+
+	/** @var FrontendHelper The Frontend Helper */
+	private FrontendHelper $frontendHelper;
+
+	/** @var BackendHelper The Backend Helper */
+	private BackendHelper $backendHelper;
 
 	public function __construct(
-		HooksProxy $hooks_proxy
+		GatewayRepository $gatewayRepository,
+		GatewayHelper $gatewayHelper,
+		EventHelperInterface $eventHelper,
+		ContextHelperInterface $contextHelper,
+		FrontendHelper $frontendHelper,
+		BackendHelper $backendHelper
 	) {
-		$this->hooks_proxy = $hooks_proxy;
+		$this->gatewayRepository = $gatewayRepository;
+		$this->gatewayHelper     = $gatewayHelper;
+		$this->eventHelper       = $eventHelper;
+		$this->contextHelper     = $contextHelper;
+		$this->frontendHelper    = $frontendHelper;
+		$this->backendHelper     = $backendHelper;
 	}
 
 	/**
 	 *  Set the eligibility service. This can't be done in the constructor because the service
 	 *  could be not available at the time if the plugin in not fully configured.
 	 *
-	 * @param EligibilityService $eligibility_service
+	 * @param EligibilityService $eligibilityService
 	 *
 	 * @return void
 	 */
-	public function set_eligibility_service( EligibilityService $eligibility_service ): void {
-		$this->eligibility_service = $eligibility_service;
+	public function setEligibilityService( EligibilityService $eligibilityService ): void {
+		$this->eligibilityService = $eligibilityService;
 	}
 
 	/**
 	 * Set the fee plan service. This can't be done in the constructor because the service
 	 * could be not available at the time if the plugin in not fully configured.
 	 *
-	 * @param FeePlanService $fee_plan_service
+	 * @param FeePlanService $feePlanService
 	 *
 	 * @return void
 	 */
-	public function set_fee_plan_service( FeePlanService $fee_plan_service ): void {
-		$this->fee_plan_service = $fee_plan_service;
+	public function setFeePlanService( FeePlanService $feePlanService ): void {
+		$this->feePlanService = $feePlanService;
 	}
 
 	/**
@@ -71,27 +100,26 @@ class GatewayService {
 	 * But also load the Frontend gateways if the user is in the admin area but not on the Gateway settings page.
 	 * It's useful to do refunds on, the order page for example.
 	 */
-	public function load_gateway() {
+	public function loadGateway() {
 		// Init Gateway
-		if ( WordPressProxy::is_admin() ) {
-			if ( WooCommerceProxy::is_gateway_settings_page() ) {
-				almalog( 'settings page' );
-				$this->hooks_proxy->load_backend_gateway();
+		if ( $this->contextHelper->isAdmin() ) {
+			if ( $this->contextHelper->isGatewaySettingsPage() ) {
+				$this->backendHelper->loadBackendGateway();
 			} else {
-				almalog( 'another admin page' );
-				$this->hooks_proxy->load_frontend_gateways();
+				$this->frontendHelper->loadFrontendGateways();
 			}
 			// Add links to gateway.
-			$this->hooks_proxy->add_gateway_links(
+			$this->gatewayHelper->addGatewayLinks(
 				Plugin::get_instance()->get_plugin_file(),
-				array( $this, 'plugin_action_links' )
+				array( $this, 'pluginActionLinks' )
 			);
 		} else {
-			$this->hooks_proxy->load_frontend_gateways();
+			$this->frontendHelper->loadFrontendGateways();
 		}
 
 		// Configure the hooks linked to the gateways
-		add_action( 'woocommerce_order_status_changed', array( $this, 'woocommerce_order_status_changed' ), 10, 3 );
+		$this->eventHelper->addEvent( 'woocommerce_order_status_changed',
+			array( $this, 'woocommerceOrderStatusChanged' ), 10, 3 );
 	}
 
 	/**
@@ -99,12 +127,16 @@ class GatewayService {
 	 * This method will make full refund if possible.
 	 *
 	 * @param int    $order_id Order id.
-	 * @param string $old_status Old status.
+	 * @param string $old_status Old status (not used but necessary for the callback).
 	 * @param string $new_status New status.
 	 *
-	 * @throws ParametersException
+	 * @sonar We need to keep $old_status on the signature for the hook
 	 */
-	public function woocommerce_order_status_changed( int $order_id, string $old_status, string $new_status ): void {
+	public function woocommerceOrderStatusChanged(
+		int $order_id,
+		string $old_status,// NOSONAR -- We need to keep this signature for the hook
+		string $new_status
+	): void {
 
 		/** @var OrderRepository $order_repository */
 		$order_repository = Plugin::get_container()->get( OrderRepository::class );
@@ -120,11 +152,11 @@ class GatewayService {
 					$order->getPaymentId(),
 					( new RefundDto() )
 						->setAmount( DisplayHelper::price_to_cent( $order->getRemainingRefundAmount() ) )
-						->setMerchantReference( $order->get_order_number() )
+						->setMerchantReference( $order->getOrderNumber() )
 						->setComment( L10nHelper::__( 'Full refund requested by the merchant' ) )
 				);
 
-				$order->add_order_note(
+				$order->addOrderNote(
 					sprintf(
 						L10nHelper::__( 'Order fully refunded by %s.' ),
 						wp_get_current_user()->display_name
@@ -139,11 +171,11 @@ class GatewayService {
 	 * Configure each gateway with eligibility and fee plans
 	 *
 	 * @throws EligibilityServiceException
-	 * @throws MerchantServiceException|ContainerException
+	 * @throws MerchantServiceException|ContainerException|ParametersException
 	 */
-	public function configure_gateway() {
+	public function configureGateway() {
 
-		if ( ! $this->eligibility_service || ! $this->fee_plan_service ) {
+		if ( ! $this->eligibilityService || ! $this->feePlanService ) {
 			$logger = Plugin::get_container()->get( LoggerService::class );
 			$logger->debug( 'configure_gateway : Errors in services eligibility or fee plan' );
 
@@ -151,10 +183,10 @@ class GatewayService {
 		}
 
 		/** @var AbstractGateway $gateway */
-		foreach ( WooCommerceProxy::get_alma_gateways() as $gateway ) {
-			if ( WooCommerceProxy::is_checkout_page() ) {
-				$gateway->configure_eligibility( $this->eligibility_service->getEligibilityList() );
-				$gateway->configure_fee_plans( $this->fee_plan_service->getFeePlanList() );
+		foreach ( $this->gatewayRepository->getAlmaGateways() as $gateway ) {
+			if ( $this->contextHelper->isCheckoutPage() ) {
+				$gateway->configure_eligibility( $this->eligibilityService->getEligibilityList() );
+				$gateway->configure_fee_plans( $this->feePlanService->getFeePlanList() );
 			}
 		}
 	}
@@ -166,14 +198,14 @@ class GatewayService {
 	 * @return void
 	 * @throws ContainerException
 	 */
-	public function configure_returns() {
-		add_action(
+	public function configureReturns() {
+		$this->eventHelper->addEvent(
 			'woocommerce_api_' . self::IPN_CALLBACK,
-			array( Plugin::get_container()->get( IpnService::class ), 'handle_ipn_callback' )
+			array( Plugin::get_container()->get( IpnService::class ), 'handleIpnCallback' )
 		);
-		add_action(
+		$this->eventHelper->addEvent(
 			'woocommerce_api_' . self::CUSTOMER_RETURN,
-			array( Plugin::get_container()->get( IpnService::class ), 'handle_customer_return' )
+			array( Plugin::get_container()->get( IpnService::class ), 'handleCustomerReturn' )
 		);
 	}
 
@@ -184,8 +216,8 @@ class GatewayService {
 	 *
 	 * @return array
 	 */
-	public function plugin_action_links( $links ): array {
-		$setting_link = WordPressProxy::admin_url( 'admin.php?page=wc-settings&tab=checkout&section=alma_config_gateway' );
+	public function pluginActionLinks( $links ): array {
+		$setting_link = ContextHelper::adminUrl( 'admin.php?page=wc-settings&tab=checkout&section=alma_config_gateway' );
 		$plugin_links = array(
 			sprintf( '<a href="%s">%s</a>', $setting_link, L10nHelper::__( 'Settings' ) ),
 		);
