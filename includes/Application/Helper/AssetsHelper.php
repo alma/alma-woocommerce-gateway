@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Application\Helper;
 
-use Alma\Gateway\Application\Exception\ContainerException;
+use Alma\API\Domain\Exception\ContainerException;
 use Alma\Gateway\Plugin;
 
 if ( ! defined( 'ABSPATH' ) ) {

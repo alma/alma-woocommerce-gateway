@@ -2,22 +2,23 @@
 
 namespace Alma\Gateway\Application\Helper;
 
-use Alma\API\Domain\ProductInterface;
-use Alma\Gateway\Infrastructure\WooCommerce\Proxy\WooCommerceProxy;
+use Alma\API\Domain\Adapter\CartAdapterInterface;
+use Alma\API\Domain\Adapter\ProductAdapterInterface;
+use Alma\API\Domain\Helper\ExcludedProductsHelperInterface;
 
-class ExcludedProductsHelper {
+class ExcludedProductsHelper implements ExcludedProductsHelperInterface {
 
 	/**
 	 * Check if the widget can be displayed on the product page.
 	 *
-	 * @param ProductInterface $product The product to check.
-	 * @param array            $excluded_categories List of excluded categories.
+	 * @param ProductAdapterInterface $product The product to check.
+	 * @param array                   $excludedCategories List of excluded categories.
 	 *
 	 * @return bool True if the widget can be displayed, false otherwise.
 	 */
-	public static function can_display_on_product_page( ProductInterface $product, array $excluded_categories = array() ): bool {
+	public function canDisplayOnProductPage( ProductAdapterInterface $product, array $excludedCategories = array() ): bool {
 		$exclusions = array_intersect(
-			$excluded_categories,
+			$excludedCategories,
 			$product->getCategoryIds()
 		);
 
@@ -27,14 +28,15 @@ class ExcludedProductsHelper {
 	/**
 	 * Check if the widget can be displayed on the cart page.
 	 *
-	 * @param array $excluded_categories List of excluded categories.
+	 * @param CartAdapterInterface $cartAdapter The cart adapter.
+	 * @param array                $excludedCategories List of excluded categories.
 	 *
 	 * @return bool True if the widget can be displayed, false otherwise.
 	 */
-	public static function can_display_on_cart_page( array $excluded_categories = array() ): bool {
+	public function canDisplayOnCartPage( CartAdapterInterface $cartAdapter, array $excludedCategories = array() ): bool {
 		$exclusions = array_intersect(
-			$excluded_categories,
-			WooCommerceProxy::get_cart_items_categories()
+			$excludedCategories,
+			$cartAdapter->getCartItemsCategories()
 		);
 
 		return empty( $exclusions );
@@ -43,11 +45,12 @@ class ExcludedProductsHelper {
 	/**
 	 * Check if the widget can be displayed on the checkout page.
 	 *
-	 * @param array $excluded_categories List of excluded categories.
+	 * @param CartAdapterInterface $cartAdapter The cart adapter.
+	 * @param array                $excludedCategories List of excluded categories.
 	 *
 	 * @return bool True if the widget can be displayed, false otherwise.
 	 */
-	public static function can_display_on_checkout_page( array $excluded_categories = array() ): bool {
-		return self::can_display_on_cart_page( $excluded_categories );
+	public function canDisplayOnCheckoutPage( CartAdapterInterface $cartAdapter, array $excludedCategories = array() ): bool {
+		return $this->canDisplayOnCartPage( $cartAdapter, $excludedCategories );
 	}
 }

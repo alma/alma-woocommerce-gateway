@@ -4,6 +4,24 @@ namespace Alma\Gateway\Application\Service;
 
 use Alma\API\ClientConfiguration;
 use Alma\API\CurlClient;
+use Alma\API\Domain\Adapter\CartAdapterInterface;
+use Alma\API\Domain\Adapter\OrderAdapterInterface;
+use Alma\API\Domain\Adapter\ProductAdapterInterface;
+use Alma\API\Domain\Exception\ContainerException;
+use Alma\API\Domain\Helper\ContextHelperInterface;
+use Alma\API\Domain\Helper\EventHelperInterface;
+use Alma\API\Domain\Helper\ExcludedProductsHelperInterface;
+use Alma\API\Domain\Helper\FormHelperInterface;
+use Alma\API\Domain\Helper\NavigationHelperInterface;
+use Alma\API\Domain\Helper\NotificationHelperInterface;
+use Alma\API\Domain\Helper\SecurityHelperInterface;
+use Alma\API\Domain\Helper\SessionHelperInterface;
+use Alma\API\Domain\Helper\WidgetHelperInterface;
+use Alma\API\Domain\ProductRepositoryInterface;
+use Alma\API\Domain\Repository\ConfigRepositoryInterface;
+use Alma\API\Domain\Repository\GatewayRepositoryInterface;
+use Alma\API\Domain\Repository\OrderRepositoryInterface;
+use Alma\API\Domain\Repository\ProductCategoryRepositoryInterface;
 use Alma\API\Endpoint\ConfigurationEndpoint;
 use Alma\API\Endpoint\DataExportEndpoint;
 use Alma\API\Endpoint\EligibilityEndpoint;
@@ -12,9 +30,10 @@ use Alma\API\Endpoint\OrderEndpoint;
 use Alma\API\Endpoint\PaymentEndpoint;
 use Alma\API\Endpoint\ShareOfCheckoutEndpoint;
 use Alma\API\Endpoint\WebhookEndpoint;
-use Alma\Gateway\Application\Exception\ContainerException;
 use Alma\Gateway\Application\Helper\AssetsHelper;
 use Alma\Gateway\Application\Helper\EncryptorHelper;
+use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
+use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Helper\RequirementsHelper;
@@ -22,14 +41,28 @@ use Alma\Gateway\Application\Helper\TemplateHelper;
 use Alma\Gateway\Application\Service\API\EligibilityService;
 use Alma\Gateway\Application\Service\API\FeePlanService;
 use Alma\Gateway\Application\Service\API\PaymentService;
-use Alma\Gateway\Infrastructure\WooCommerce\Gateway\Backend\AlmaGateway;
-use Alma\Gateway\Infrastructure\WooCommerce\Gateway\Frontend\CreditGateway;
-use Alma\Gateway\Infrastructure\WooCommerce\Gateway\Frontend\PayLaterGateway;
-use Alma\Gateway\Infrastructure\WooCommerce\Gateway\Frontend\PayNowGateway;
-use Alma\Gateway\Infrastructure\WooCommerce\Gateway\Frontend\PnxGateway;
-use Alma\Gateway\Infrastructure\WooCommerce\Proxy\HooksProxy;
-use Alma\Gateway\Infrastructure\WooCommerce\Proxy\OptionsProxy;
-use Alma\Gateway\Infrastructure\WooCommerce\Proxy\SettingsProxy;
+use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
+use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
+use Alma\Gateway\Infrastructure\Adapter\ProductAdapter;
+use Alma\Gateway\Infrastructure\Gateway\Backend\AlmaGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
+use Alma\Gateway\Infrastructure\Helper\ContextHelper;
+use Alma\Gateway\Infrastructure\Helper\CoreHelper;
+use Alma\Gateway\Infrastructure\Helper\EventHelper;
+use Alma\Gateway\Infrastructure\Helper\FormHelper;
+use Alma\Gateway\Infrastructure\Helper\NavigationHelper;
+use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
+use Alma\Gateway\Infrastructure\Helper\SecurityHelper;
+use Alma\Gateway\Infrastructure\Helper\SessionHelper;
+use Alma\Gateway\Infrastructure\Helper\WidgetHelper;
+use Alma\Gateway\Infrastructure\Repository\ConfigRepository;
+use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
+use Alma\Gateway\Infrastructure\Repository\OrderRepository;
+use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
+use Alma\Gateway\Infrastructure\Repository\ProductRepository;
 use Dice\Dice;
 use Exception;
 use Psr\Http\Client\ClientInterface;
@@ -46,29 +79,23 @@ use Psr\Http\Client\ClientInterface;
  */
 class ContainerService {
 
-	/** @var OptionsService */
-	private OptionsService $options_service;
-
 	/** @var Dice */
 	private Dice $dice;
 
 	/**
 	 * ContainerService constructor.
-	 * Init Rules
-	 *
+	 * Init Rules for the DI Container
 	 * @throws ContainerException
 	 */
 	public function __construct() {
 		$this->dice = new Dice();
 
-		/** @var OptionsService $options_service Mandatory for API services */
-		$options_service       = $this->get( OptionsService::class );
-		$this->options_service = $options_service;
+		$this->setDiConfig();
+		$this->setApplicationRules();
+		$this->setInfrastructureRules();
+		$this->setApiConfig();
 
-		$this->set_business_rules();
-		$this->set_woocommerce_rules();
-
-		HooksProxy::auto_reload_options_on_option_save();
+		CoreHelper::autoReloadOptionsOnOptionSave();
 	}
 
 	/**
@@ -89,6 +116,7 @@ class ContainerService {
 			// @formatter:on
 			error_reporting( error_reporting() ^ E_DEPRECATED ); // phpcs:ignore
 		} catch ( Exception $e ) {
+			almalog( $e->getMessage() );
 			throw new ContainerException( "Missing Service $name" );
 		}
 
@@ -97,29 +125,81 @@ class ContainerService {
 
 	/**
 	 * Reload the DI container Options when the Options are updated.
-	 *
-	 * @throws ContainerException
 	 */
-	public function reload_options(): void {
-		/** @var OptionsService $options_service */
-		$options_service       = $this->get( OptionsService::class );
-		$this->options_service = $options_service;
+	public function reloadOptions(): void {
+		$this->setApiConfig();
+	}
+
+	public function setApiConfig() {
+
+		/** @var ConfigService $configService Mandatory for API services */
+		$configService = $this->get( ConfigService::class );
+
+		// PHP-Client
+		$this->dice = $this->dice->addRule(
+			ClientConfiguration::class,
+			array(
+				'constructParams' => array(
+					$configService->getActiveApiKey(),
+					$configService->getEnvironment(),
+				),
+				'shared'          => true,
+			)
+		);
+
+		$this->dice = $this->dice->addRule( CurlClient::class, array( 'shared' => true ) );
+
+	}
+
+	public function setDiConfig(): void {
+
+		// Endpoints
+		$this->dice = $this->dice->addRule(
+			'*',
+			array(
+				'substitutions' => array(
+					// Client
+					ClientInterface::class                    => CurlClient::class,
+
+					// Adapters
+					CartAdapterInterface::class               => CartAdapter::class,
+					OrderAdapterInterface::class              => OrderAdapter::class,
+					ProductAdapterInterface::class            => ProductAdapter::class,
+
+					// Helpers
+					ContextHelperInterface::class             => ContextHelper::class,
+					EventHelperInterface::class               => EventHelper::class,
+					ExcludedProductsHelperInterface::class    => ExcludedProductsHelper::class,
+					FormHelperInterface::class                => FormHelper::class,
+					NavigationHelperInterface::class          => NavigationHelper::class,
+					NotificationHelperInterface::class        => NotificationHelper::class,
+					SecurityHelperInterface::class            => SecurityHelper::class,
+					SessionHelperInterface::class             => SessionHelper::class,
+					WidgetHelperInterface::class              => WidgetHelper::class,
+
+					// Repositories
+					ConfigRepositoryInterface::class          => ConfigRepository::class,
+					GatewayRepositoryInterface::class         => GatewayRepository::class,
+					OrderRepositoryInterface::class           => OrderRepository::class,
+					ProductRepositoryInterface::class         => ProductRepository::class,
+					ProductCategoryRepositoryInterface::class => ProductCategoryRepository::class,
+				),
+			),
+		);
 	}
 
 	/**
-	 * Set Business Layer Rules
+	 * Set Application Layer Rules
 	 */
-	private function set_business_rules(): void {
+	private function setApplicationRules(): void {
 		// Business Layer
 		$this->dice = $this->dice->addRules(
 			array(
-				AdminService::class       => array( 'shared' => true ),
-				OptionsService::class     => array( 'shared' => true ),
-				SettingsService::class    => array( 'shared' => true ),
-				WooCommerceService::class => array( 'shared' => true ),
-				GatewayService::class     => array( 'shared' => true ),
-				LoggerService::class      => array( 'shared' => true ),
-				IpnService::class         => array( 'shared' => true ),
+				AdminService::class   => array( 'shared' => true ),
+				ConfigService::class  => array( 'shared' => true ),
+				GatewayService::class => array( 'shared' => true ),
+				LoggerService::class  => array( 'shared' => true ),
+				IpnService::class     => array( 'shared' => true ),
 			)
 		);
 
@@ -132,36 +212,7 @@ class ContainerService {
 			)
 		);
 
-		// PHP-Client
-		$this->dice = $this->dice->addRule(
-			ClientConfiguration::class,
-			array(
-				'constructParams' => array(
-					$this->options_service->get_active_api_key(),
-					$this->options_service->get_environment(),
-				),
-				'shared'          => true,
-			)
-		);
-
-		$this->dice = $this->dice->addRule(
-			CurlClient::class,
-			array( 'shared' => true )
-		);
-
 		// Endpoints
-		$this->dice = $this->dice->addRule(
-			'*',
-			array(
-				array(
-					'substitutions' => array(
-						ClientInterface::class => CurlClient::class,
-					),
-
-				),
-			)
-		);
-
 		$this->dice = $this->dice->addRules(
 			array(
 				ConfigurationEndpoint::class   => array( 'shared' => true ),
@@ -184,26 +235,26 @@ class ContainerService {
 				PluginHelper::class       => array( 'shared' => true ),
 				RequirementsHelper::class => array( 'shared' => true ),
 				TemplateHelper::class     => array( 'shared' => true ),
+				IpnHelper::class          => array( 'shared' => true ),
 			)
 		);
 	}
 
 	/**
-	 * Set WooCommerce Layer Rules
+	 * Set Infrastructure Layer Rules
 	 */
-	private function set_woocommerce_rules() {
+	private function setInfrastructureRules() {
 
 		// WooCommerce Layer
 		$this->dice = $this->dice->addRules(
 			array(
-				HooksProxy::class      => array( 'shared' => true ),
-				OptionsProxy::class    => array( 'shared' => true ),
-				SettingsProxy::class   => array( 'shared' => true ),
-				AlmaGateway::class     => array( 'shared' => true ),
-				CreditGateway::class   => array( 'shared' => true ),
-				PayLaterGateway::class => array( 'shared' => true ),
-				PayNowGateway::class   => array( 'shared' => true ),
-				PnxGateway::class      => array( 'shared' => true ),
+				EventHelper::class      => array( 'shared' => true ),
+				ConfigRepository::class => array( 'shared' => true ),
+				AlmaGateway::class      => array( 'shared' => true ),
+				CreditGateway::class    => array( 'shared' => true ),
+				PayLaterGateway::class  => array( 'shared' => true ),
+				PayNowGateway::class    => array( 'shared' => true ),
+				PnxGateway::class       => array( 'shared' => true ),
 			)
 		);
 	}

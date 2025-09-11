@@ -2,33 +2,37 @@
 
 namespace Alma\Gateway\Application\Service\API;
 
+use Alma\API\Domain\Adapter\CartAdapterInterface;
+use Alma\API\Domain\Exception\EligibilityServiceException;
+use Alma\API\Domain\Service\API\EligibilityServiceInterface;
 use Alma\API\Endpoint\EligibilityEndpoint;
 use Alma\API\Entity\EligibilityList;
 use Alma\API\Exception\Endpoint\EligibilityEndpointException;
-use Alma\API\Exception\ParametersException;
-use Alma\Gateway\Application\Exception\EligibilityServiceException;
-use Alma\Gateway\Infrastructure\WooCommerce\Proxy\WooCommerceProxy;
 
-class EligibilityService {
+class EligibilityService implements EligibilityServiceInterface {
 
 	private EligibilityEndpoint $eligibilityEndpoint;
 
 	/** @var EligibilityList */
 	private EligibilityList $eligibilityList;
 
-	public function __construct( EligibilityEndpoint $eligibilityEndpoint ) {
+	/** @var CartAdapterInterface */
+	private CartAdapterInterface $cartAdapter;
+
+	public function __construct( EligibilityEndpoint $eligibilityEndpoint, CartAdapterInterface $cartAdapter ) {
 
 		$this->eligibilityEndpoint = $eligibilityEndpoint;
+		$this->cartAdapter         = $cartAdapter;
 	}
 
 	/**
 	 * Retrieve the eligibility list based on the current cart total.
 	 *
-	 * @throws EligibilityServiceException|ParametersException
+	 * @throws EligibilityServiceException
 	 */
-	public function retrieveEligibility() {
+	public function retrieveEligibility(): void {
 		try {
-			$purchase_amount = WooCommerceProxy::get_cart_total();
+			$purchase_amount = $this->cartAdapter->getCartTotal();
 			if ( $purchase_amount > 0 ) {
 				$this->eligibilityList = $this->eligibilityEndpoint->getEligibilityList( array( 'purchase_amount' => $purchase_amount ) );
 			} else {
@@ -42,7 +46,7 @@ class EligibilityService {
 	/**
 	 * Get the eligibility list.
 	 *
-	 * @throws EligibilityServiceException|ParametersException
+	 * @throws EligibilityServiceException
 	 */
 	public function getEligibilityList(): EligibilityList {
 		if ( ! isset( $this->eligibilityList ) ) {

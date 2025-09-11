@@ -11,22 +11,24 @@
 
 namespace Alma\Gateway;
 
-use Alma\Gateway\Application\Exception\ContainerException;
-use Alma\Gateway\Application\Exception\RequirementsException;
+use Alma\API\Domain\Exception\ContainerException;
+use Alma\API\Domain\Exception\CoreException;
+use Alma\API\Domain\Exception\RequirementsException;
+use Alma\API\Domain\Helper\ContextHelperInterface;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Helper\RequirementsHelper;
 use Alma\Gateway\Application\Service\AdminService;
 use Alma\Gateway\Application\Service\API\EligibilityService;
 use Alma\Gateway\Application\Service\API\FeePlanService;
+use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\ContainerService;
 use Alma\Gateway\Application\Service\GatewayService;
 use Alma\Gateway\Application\Service\LoggerService;
-use Alma\Gateway\Application\Service\OptionsService;
 use Alma\Gateway\Application\Service\WidgetService;
-use Alma\Gateway\Infrastructure\WooCommerce\Exception\CoreException;
-use Alma\Gateway\Infrastructure\WooCommerce\Proxy\HooksProxy;
-use Alma\Gateway\Infrastructure\WooCommerce\Proxy\WooCommerceProxy;
+use Alma\Gateway\Infrastructure\Helper\BackendHelper;
+use Alma\Gateway\Infrastructure\Helper\ContextHelper;
+use Alma\Gateway\Infrastructure\Helper\FrontendHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -64,13 +66,15 @@ final class Plugin {
 	/** @var LoggerService $logger_service */
 	private LoggerService $logger_service;
 
+	/** @var ContextHelperInterface $contextHelper Gives information about context */
+	private ContextHelperInterface $contextHelper;
+
 	/**
 	 * Constructor.
 	 *
 	 * @see plugin_setup()
 	 */
 	public function __construct() {
-		// FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__,true );// phpcs:ignore
 	}
 
 	/**
@@ -125,6 +129,10 @@ final class Plugin {
 		// Set the DI container
 		self::get_container( true );
 
+		/** @var ContextHelper $contextHelper */
+		$contextHelper       = self::get_container()->get( ContextHelper::class );
+		$this->contextHelper = $contextHelper;
+
 		// Set the plugin helper and logger service
 		/** @var PluginHelper $plugin_helper */
 		$plugin_helper       = self::get_container()->get( PluginHelper::class );
@@ -143,10 +151,10 @@ final class Plugin {
 		if ( $this->is_configured() ) {
 			/** @var EligibilityService $eligibility_service */
 			$eligibility_service = self::get_container()->get( EligibilityService::class );
-			$gateway_service->set_eligibility_service( $eligibility_service );
+			$gateway_service->setEligibilityService( $eligibility_service );
 			/** @var FeePlanService $fee_plan_service */
 			$fee_plan_service = self::get_container()->get( FeePlanService::class );
-			$gateway_service->set_fee_plan_service( $fee_plan_service );
+			$gateway_service->setFeePlanService( $fee_plan_service );
 		}
 	}
 
@@ -165,25 +173,25 @@ final class Plugin {
 
 		/** @var GatewayService $gateway_service */
 		$gateway_service = self::get_container()->get( GatewayService::class );
-		$gateway_service->load_gateway();
+		$gateway_service->loadGateway();
 		if ( $this->is_configured() ) {
-			$gateway_service->configure_returns();
+			$gateway_service->configureReturns();
 		}
 
 		// Run services only when WordPress admin is ready.
-		HooksProxy::run_backend_services(
+		BackendHelper::runBackendServices(
 			function () {
 				// Init Backend Services
-				if ( is_admin() ) {
+				if ( $this->contextHelper->isAdmin() ) {
 					/** @var AdminService $admin_service */
 					$admin_service = self::get_container()->get( AdminService::class );
-					$admin_service->enqueue_admin_scripts();
+					$admin_service->enqueueAdminScripts();
 				}
 			}
 		);
 
 		// Run services only when WordPress frontend is ready.
-		HooksProxy::run_frontend_services(
+		FrontendHelper::runFrontendServices(
 			function () {
 				if ( ! $this->is_plugin_needed() ) {
 					return;
@@ -191,12 +199,12 @@ final class Plugin {
 
 				/** @var GatewayService $gateway_service */
 				$gateway_service = self::get_container()->get( GatewayService::class );
-				$gateway_service->configure_gateway();
+				$gateway_service->configureGateway();
 
 				if ( $this->is_configured() ) {
 					/** @var WidgetService $widget_service */
 					$widget_service = self::get_container()->get( WidgetService::class );
-					$widget_service->display_widget();
+					$widget_service->displayWidget();
 				}
 			}
 		);
@@ -210,15 +218,15 @@ final class Plugin {
 	 * @throws RequirementsException
 	 */
 	public function are_prerequisites_ok(): bool {
-
 		// Check if WooCommerce is active
-		if ( ! WooCommerceProxy::is_woocommerce_loaded() ) {
+		$contextHelper = new ContextHelper();
+		if ( ! $contextHelper->isCmsLoaded() ) {
 			return false;
 		}
 
 		// Check if all dependencies are met
 		$requirements_helper = new RequirementsHelper();
-		if ( ! $requirements_helper->check_dependencies() ) {
+		if ( ! $requirements_helper->check_dependencies( $contextHelper->getCmsVersion() ) ) {
 			return false;
 		}
 
@@ -229,10 +237,10 @@ final class Plugin {
 	 * @throws ContainerException
 	 */
 	public function is_configured(): bool {
-		/** @var OptionsService $options_service */
-		$options_service = self::get_container()->get( OptionsService::class );
+		/** @var ConfigService $options_service */
+		$options_service = self::get_container()->get( ConfigService::class );
 
-		return $options_service->is_configured();
+		return $options_service->isConfigured();
 	}
 
 	/**
@@ -245,7 +253,7 @@ final class Plugin {
 
 		// Are we on the cart page?
 		// If everything is ok, we can load the plugin
-		if ( $this->is_configured() && WooCommerceProxy::is_cart_product_or_checkout_page() ) {
+		if ( $this->is_configured() && $this->contextHelper->isCartProductOrCheckoutPage() ) {
 			return true;
 		}
 

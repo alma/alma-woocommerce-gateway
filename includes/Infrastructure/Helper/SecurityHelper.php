@@ -1,0 +1,39 @@
+<?php
+
+namespace Alma\Gateway\Infrastructure\Helper;
+
+use Alma\API\Domain\Helper\SecurityHelperInterface;
+
+class SecurityHelper implements SecurityHelperInterface {
+
+	/**
+	 * Set a token for form submission.
+	 *
+	 * @param string $action The action name.
+	 *
+	 * @return string The generated token.
+	 */
+	public function generateToken( string $action ): string {
+		return wp_create_nonce( $action );
+	}
+
+	/**
+	 * Checks if the token is valid.
+	 *
+	 * @param string $token The nonce field name.
+	 * @param string $action The action name.
+	 *
+	 * @return bool True if the nonce is valid, false otherwise.
+	 */
+	public function validateToken( string $token, string $action ): bool {
+		if ( ! isset( $_POST[ $token ] ) ) {
+			return false;
+		}
+
+		if ( ! wp_verify_nonce( $_POST[ $token ], $action ) ) {
+			return false;
+		}
+
+		return true;
+	}
+}
