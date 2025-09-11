@@ -25,7 +25,7 @@ class IpnService {
 	public const CUSTOMER_RETURN = 'alma_customer_return';
 
 	/** @var ConfigService */
-	private ConfigService $optionsService;
+	private ConfigService $configService;
 
 	/** @var IpnHelper */
 	private IpnHelper $ipnHelper;
@@ -43,14 +43,14 @@ class IpnService {
 	private NavigationHelperInterface $navigationHelper;
 
 	public function __construct(
-		ConfigService $optionsService,
+		ConfigService $configService,
 		PaymentService $paymentService,
 		NotificationHelperInterface $notificationHelper,
 		CartAdapterInterface $cartAdapter,
 		NavigationHelperInterface $navigationHelper,
 		IpnHelper $ipnHelper
 	) {
-		$this->optionsService     = $optionsService;
+		$this->configService      = $configService;
 		$this->paymentService     = $paymentService;
 		$this->notificationHelper = $notificationHelper;
 		$this->cartAdapter        = $cartAdapter;
@@ -130,7 +130,7 @@ class IpnService {
 		try {
 			$this->ipnHelper->validateIpnSignature(
 				$payment_id,
-				$this->optionsService->getActiveApiKey(),
+				$this->configService->getActiveApiKey(),
 				$_SERVER['HTTP_X_ALMA_SIGNATURE']
 			);
 		} catch ( SecurityException $e ) {

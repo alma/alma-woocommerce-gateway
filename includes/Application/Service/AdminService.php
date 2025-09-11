@@ -18,7 +18,7 @@ class AdminService {
 	private SecurityHelperInterface $securityHelper;
 
 	/** @var ConfigService */
-	private ConfigService $optionService;
+	private ConfigService $configService;
 
 	/** @var AssetsHelper */
 	private AssetsHelper $assetsHelper;
@@ -29,12 +29,12 @@ class AdminService {
 	public function __construct(
 		EventHelperInterface $eventDispatcher,
 		SecurityHelperInterface $securityHelper,
-		ConfigService $optionService,
+		ConfigService $configService,
 		AssetsHelper $assetsHelper
 	) {
 		$this->eventDispatcher = $eventDispatcher;
 		$this->securityHelper  = $securityHelper;
-		$this->optionService   = $optionService;
+		$this->configService   = $configService;
 		$this->assetsHelper    = $assetsHelper;
 		$this->registerAjaxHandlers();
 	}
@@ -64,7 +64,7 @@ class AdminService {
 		}
 		// Toggle the gateway enabled state
 		$feePlanId = isset( $_POST['fee_plan_key'] ) ? sanitize_text_field( $_POST['fee_plan_key'] ) : '';
-		$newStatus = $this->optionService->toggleFeePlan( $feePlanId );
+		$newStatus = $this->configService->toggleFeePlan( $feePlanId );
 
 		wp_send_json_success( true === $newStatus );
 	}

@@ -54,7 +54,7 @@ class GatewayService {
 
 	public function __construct(
 		GatewayRepository $gatewayRepository,
-		GatewayHelper $gatewayHelper,
+		GatewayHelper $gatewayHelper,// Move
 		EventHelperInterface $eventHelper,
 		ContextHelperInterface $contextHelper,
 		FrontendHelper $frontendHelper,

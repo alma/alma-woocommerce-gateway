@@ -1,9 +1,9 @@
 <?php
 
-use Alma\API\Entity\Eligibility;
-use Alma\API\Entity\FeePlan;
 use Alma\API\Domain\Exception\ContainerException;
 use Alma\API\Domain\Exception\MerchantServiceException;
+use Alma\API\Entity\Eligibility;
+use Alma\API\Entity\FeePlan;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Service\API\FeePlanService;
 use Alma\Gateway\Application\Service\ConfigService;
@@ -46,61 +46,61 @@ add_action(
 
 		echo '<h1>All Options</h1>';
 		echo '<pre>';
-		/** @var ConfigService $option_service */
-		$option_service = Plugin::get_container()->get( ConfigService::class );
+		/** @var ConfigService $configService */
+		$configService = Plugin::get_container()->get( ConfigService::class );
 
 		/*
-				$option_service->delete_option( 'general_10_0_0' );
-				$option_service->delete_option( 'general_10_0_0_description' );
-				$option_service->delete_option( 'general_10_0_0_enabled' );
-				$option_service->delete_option( 'general_10_0_0_max_amount' );
-				$option_service->delete_option( 'general_10_0_0_min_amount' );
-				$option_service->delete_option( 'general_10_0_0_title' );
-				$option_service->delete_option( 'general_12_0_0' );
-				$option_service->delete_option( 'general_12_0_0_description' );
-				$option_service->delete_option( 'general_12_0_0_enabled' );
-				$option_service->delete_option( 'general_12_0_0_max_amount' );
-				$option_service->delete_option( 'general_12_0_0_min_amount' );
-				$option_service->delete_option( 'general_12_0_0_title' );
-				$option_service->delete_option( 'general_1_0_0' );
-				$option_service->delete_option( 'general_1_0_0_description' );
-				$option_service->delete_option( 'general_1_0_0_enabled' );
-				$option_service->delete_option( 'general_1_0_0_max_amount' );
-				$option_service->delete_option( 'general_1_0_0_min_amount' );
-				$option_service->delete_option( 'general_1_0_0_title' );
-				$option_service->delete_option( 'general_1_15_0' );
-				$option_service->delete_option( 'general_1_15_0_description' );
-				$option_service->delete_option( 'general_1_15_0_enabled' );
-				$option_service->delete_option( 'general_1_15_0_max_amount' );
-				$option_service->delete_option( 'general_1_15_0_min_amount' );
-				$option_service->delete_option( 'general_1_15_0_title' );
-				$option_service->delete_option( 'general_1_30_0' );
-				$option_service->delete_option( 'general_1_30_0_description' );
-				$option_service->delete_option( 'general_1_30_0_enabled' );
-				$option_service->delete_option( 'general_1_30_0_max_amount' );
-				$option_service->delete_option( 'general_1_30_0_min_amount' );
-				$option_service->delete_option( 'general_1_30_0_title' );
-				$option_service->delete_option( 'general_2_0_0' );
-				$option_service->delete_option( 'general_2_0_0_description' );
-				$option_service->delete_option( 'general_2_0_0_enabled' );
-				$option_service->delete_option( 'general_2_0_0_max_amount' );
-				$option_service->delete_option( 'general_2_0_0_min_amount' );
-				$option_service->delete_option( 'general_2_0_0_title' );
-				$option_service->delete_option( 'general_3_0_0' );
-				$option_service->delete_option( 'general_3_0_0_description' );
-				$option_service->delete_option( 'general_3_0_0_enabled' );
-				$option_service->delete_option( 'general_3_0_0_max_amount' );
-				$option_service->delete_option( 'general_3_0_0_min_amount' );
-				$option_service->delete_option( 'general_3_0_0_title' );
-				$option_service->delete_option( 'general_4_0_0' );
-				$option_service->delete_option( 'general_4_0_0_description' );
-				$option_service->delete_option( 'general_4_0_0_enabled' );
-				$option_service->delete_option( 'general_4_0_0_max_amount' );
-				$option_service->delete_option( 'general_4_0_0_min_amount' );
-				$option_service->delete_option( 'general_4_0_0_title' );
+				$configService->delete_option( 'general_10_0_0' );
+				$configService->delete_option( 'general_10_0_0_description' );
+				$configService->delete_option( 'general_10_0_0_enabled' );
+				$configService->delete_option( 'general_10_0_0_max_amount' );
+				$configService->delete_option( 'general_10_0_0_min_amount' );
+				$configService->delete_option( 'general_10_0_0_title' );
+				$configService->delete_option( 'general_12_0_0' );
+				$configService->delete_option( 'general_12_0_0_description' );
+				$configService->delete_option( 'general_12_0_0_enabled' );
+				$configService->delete_option( 'general_12_0_0_max_amount' );
+				$configService->delete_option( 'general_12_0_0_min_amount' );
+				$configService->delete_option( 'general_12_0_0_title' );
+				$configService->delete_option( 'general_1_0_0' );
+				$configService->delete_option( 'general_1_0_0_description' );
+				$configService->delete_option( 'general_1_0_0_enabled' );
+				$configService->delete_option( 'general_1_0_0_max_amount' );
+				$configService->delete_option( 'general_1_0_0_min_amount' );
+				$configService->delete_option( 'general_1_0_0_title' );
+				$configService->delete_option( 'general_1_15_0' );
+				$configService->delete_option( 'general_1_15_0_description' );
+				$configService->delete_option( 'general_1_15_0_enabled' );
+				$configService->delete_option( 'general_1_15_0_max_amount' );
+				$configService->delete_option( 'general_1_15_0_min_amount' );
+				$configService->delete_option( 'general_1_15_0_title' );
+				$configService->delete_option( 'general_1_30_0' );
+				$configService->delete_option( 'general_1_30_0_description' );
+				$configService->delete_option( 'general_1_30_0_enabled' );
+				$configService->delete_option( 'general_1_30_0_max_amount' );
+				$configService->delete_option( 'general_1_30_0_min_amount' );
+				$configService->delete_option( 'general_1_30_0_title' );
+				$configService->delete_option( 'general_2_0_0' );
+				$configService->delete_option( 'general_2_0_0_description' );
+				$configService->delete_option( 'general_2_0_0_enabled' );
+				$configService->delete_option( 'general_2_0_0_max_amount' );
+				$configService->delete_option( 'general_2_0_0_min_amount' );
+				$configService->delete_option( 'general_2_0_0_title' );
+				$configService->delete_option( 'general_3_0_0' );
+				$configService->delete_option( 'general_3_0_0_description' );
+				$configService->delete_option( 'general_3_0_0_enabled' );
+				$configService->delete_option( 'general_3_0_0_max_amount' );
+				$configService->delete_option( 'general_3_0_0_min_amount' );
+				$configService->delete_option( 'general_3_0_0_title' );
+				$configService->delete_option( 'general_4_0_0' );
+				$configService->delete_option( 'general_4_0_0_description' );
+				$configService->delete_option( 'general_4_0_0_enabled' );
+				$configService->delete_option( 'general_4_0_0_max_amount' );
+				$configService->delete_option( 'general_4_0_0_min_amount' );
+				$configService->delete_option( 'general_4_0_0_title' );
 		*/
 
-		$options = $option_service->getSettings();
+		$options = $configService->getSettings();
 		ksort( $options );
 		foreach ( $options as $key => $value ) {
 			if ( is_array( $value ) ) {

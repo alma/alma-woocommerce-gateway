@@ -85,6 +85,7 @@ class ContainerService {
 	/**
 	 * ContainerService constructor.
 	 * Init Rules for the DI Container
+	 * @throws ContainerException
 	 */
 	public function __construct() {
 		$this->dice = new Dice();
@@ -124,13 +125,9 @@ class ContainerService {
 
 	/**
 	 * Reload the DI container Options when the Options are updated.
-	 *
-	 * @throws ContainerException
 	 */
 	public function reloadOptions(): void {
-		/** @var ConfigService $optionsService */
-		$optionsService      = $this->get( ConfigService::class );
-		$this->configService = $optionsService;
+		$this->setApiConfig();
 	}
 
 	public function setApiConfig() {

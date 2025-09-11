@@ -9,20 +9,24 @@ class IpnHelper {
 	/**
 	 * Validate the given signature
 	 *
+	 * @param string $paymentId The payment ID associated with the IPN
+	 * @param string $apiKey The API key used to generate the HMAC signature
+	 * @param string $signature The HMAC signature to validate
+	 *
 	 * @throws SecurityException
 	 */
-	public function validateIpnSignature( string $payment_id, string $api_key, string $signature ) {
-		if ( empty( $payment_id ) || empty( $api_key ) || empty( $signature ) ) {
+	public function validateIpnSignature( string $paymentId, string $apiKey, string $signature ) {
+		if ( empty( $paymentId ) || empty( $apiKey ) || empty( $signature ) ) {
 			throw new SecurityException(
 				sprintf(
 					'[ALMA] Missing required parameters, payment_id: %s, api_key: %s, signature: %s',
-					$payment_id,
-					$api_key,
+					$paymentId,
+					$apiKey,
 					$signature
 				)
 			);
 		}
-		if ( ! $this->isHmacValidated( $payment_id, $api_key, $signature ) ) {
+		if ( ! $this->isHmacValidated( $paymentId, $apiKey, $signature ) ) {
 			throw new SecurityException( '[ALMA] Invalid signature' );
 		}
 	}
@@ -30,9 +34,9 @@ class IpnHelper {
 	/**
 	 * Validate the HMAC signature of the request
 	 *
-	 * @param string $data
-	 * @param string $apiKey
-	 * @param string $signature
+	 * @param string $data The data to validate (e.g., payment ID)
+	 * @param string $apiKey The API key used to generate the HMAC signature
+	 * @param string $signature The HMAC signature to validate
 	 *
 	 * @return bool
 	 */

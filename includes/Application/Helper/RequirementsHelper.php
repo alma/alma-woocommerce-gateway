@@ -9,6 +9,8 @@ class RequirementsHelper {
 	/**
 	 * Check if we met dependencies.
 	 *
+	 * @param string $cmsVersion The current version of WooCommerce
+	 *
 	 * @return true
 	 * @throws RequirementsException
 	 */
