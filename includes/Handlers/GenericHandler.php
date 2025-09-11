@@ -162,9 +162,7 @@ class GenericHandler {
 		wp_enqueue_script( 'alma-widgets-injection', $alma_widgets_injection_url, array(), ALMA_VERSION, true );
 
 		?>
-		<style>#alma-payment-plans button {
-				background-color: white;
-			}</style>
+
 		<div style="margin: 15px 0; max-width: 350px">
 			<div id="alma-payment-plans" data-settings="<?php echo esc_attr( wp_json_encode( $widget_settings ) ); ?>">
 			</div>
