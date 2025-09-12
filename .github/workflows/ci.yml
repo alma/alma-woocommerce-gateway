@@ -5,10 +5,12 @@ on:
     branches:
       - main
       - develop
+      - feature/6.0
   pull_request:
     branches:
       - main
       - develop
+      - feature/6.0
   workflow_dispatch: ~
 
 jobs:
@@ -20,7 +22,7 @@ jobs:
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: SonarQube Cloud Scan
-        uses: SonarSource/sonarqube-scan-action@master
+        uses: SonarSource/sonarqube-scan-action@1a6d90ebcb0e6a6b1d87e37ba693fe453195ae25  # v5.3.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -93,4 +95,3 @@ jobs:
 
       - name: Run tests
         run: docker compose run test
-
