@@ -24,8 +24,8 @@ class L10nHelper {
 	 * @sonar It's a convention to use __() for translations
 	 * @phpcs We pass a variable to __() call because it's a proxy!
 	 */
-	public static function __( string $translation, string $domain = self::ALMA_L10N_DOMAIN ): string /* NOSONAR */ {
-		return __( $translation, $domain );// phpcs:ignore // @todo use a proxy
+	public static function __( string $translation, string $domain = self::ALMA_L10N_DOMAIN ): string {
+		return LanguageHelper::__( $translation, $domain );
 	}
 
 	/**
