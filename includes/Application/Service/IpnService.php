@@ -68,7 +68,7 @@ class IpnService {
 	public function handleCustomerReturn(): void {
 
 		// Get the order ID and validate it
-		$payment_id = sanitize_text_field( $_GET['pid'] ) ?? null;
+		$payment_id = sanitize_text_field( $_GET['pid'] ) ?? null; // @todo use a proxy
 
 		if ( ! $payment_id ) {
 			$this->navigationHelper->redirectToCart( L10nHelper::__( 'Payment validation error: no ID provided.<br>Please try again or contact us if the problem persists.' ) );
@@ -117,15 +117,15 @@ class IpnService {
 	public function handleIpnCallback(): void {
 
 		// Get the order ID and validate it
-		$payment_id = sanitize_text_field( $_GET['pid'] ) ?? null;
+		$payment_id = sanitize_text_field( $_GET['pid'] ) ?? null; // @todo use a proxy
 
 		if ( ! $payment_id ) {
-			wp_send_json( array( 'error' => 'Payment validation error: no ID provided.' ), 403 );
+			wp_send_json( array( 'error' => 'Payment validation error: no ID provided.' ), 403 ); // @todo use a proxy
 		}
 
 		// Get the signature and validate it
 		if ( ! array_key_exists( 'HTTP_X_ALMA_SIGNATURE', $_SERVER ) ) {
-			wp_send_json( array( 'error' => 'Header key X-Alma-Signature does not exist.' ), 403 );
+			wp_send_json( array( 'error' => 'Header key X-Alma-Signature does not exist.' ), 403 ); // @todo use a proxy
 		}
 		try {
 			$this->ipnHelper->validateIpnSignature(
@@ -134,7 +134,7 @@ class IpnService {
 				$_SERVER['HTTP_X_ALMA_SIGNATURE']
 			);
 		} catch ( SecurityException $e ) {
-			wp_send_json( array( 'error' => $e->getMessage() ), 403 );
+			wp_send_json( array( 'error' => $e->getMessage() ), 403 ); // @todo use a proxy
 		}
 
 		// Process the IPN callback
@@ -159,7 +159,7 @@ class IpnService {
 			$message = sprintf( ' %s - Payment id : "%s"', $e->getMessage(), $payment_id );
 			$result  = array( 'error' => $message );
 		} finally {
-			wp_send_json( $result, $code );
+			wp_send_json( $result, $code ); // @todo use a proxy
 		}
 	}
 

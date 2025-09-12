@@ -22,12 +22,12 @@ class AssetsHelper {
 	public static function get_alma_dashboard_url( string $env = 'test', string $path = '' ): string {
 		if ( 'live' === $env ) {
 			/* translators: %s -> path to add after dashboard url */
-			return esc_url( sprintf( L10nHelper::__( 'https://dashboard.getalma.eu/%s' ), $path ) );
+			return esc_url( sprintf( L10nHelper::__( 'https://dashboard.getalma.eu/%s' ), $path ) ); // @todo use a proxy
 		}
 
 		/* translators: %s -> path to add after sandbox dashboard url */
 
-		return esc_url( sprintf( L10nHelper::__( 'https://dashboard.sandbox.getalma.eu/%s' ), $path ) );
+		return esc_url( sprintf( L10nHelper::__( 'https://dashboard.sandbox.getalma.eu/%s' ), $path ) ); // @todo use a proxy
 	}
 
 	/**
@@ -36,7 +36,7 @@ class AssetsHelper {
 	 * @return string
 	 */
 	public function get_admin_logs_url(): string {
-		return admin_url( 'admin.php?page=wc-status&tab=logs' );
+		return admin_url( 'admin.php?page=wc-status&tab=logs' ); // @todo use a proxy
 	}
 
 	/**

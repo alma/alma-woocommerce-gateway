@@ -12,7 +12,7 @@ class CartItemMapper {
 	public function buildCartItemDetails( OrderLineAdapterInterface $item ): CartItemDto {
 
 		$product    = $item->getProduct();
-		$categories = explode( ',', wp_strip_all_tags( wc_get_product_category_list( $product->get_id(), ',' ) ) );
+		$categories = explode( ',', wp_strip_all_tags( wc_get_product_category_list( $product->get_id(), ',' ) ) ); // @todo use a proxy
 
 		return ( new CartItemDto(
 			$item->getQuantity(),

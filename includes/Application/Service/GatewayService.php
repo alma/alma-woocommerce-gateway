@@ -159,7 +159,7 @@ class GatewayService {
 				$order->addOrderNote(
 					sprintf(
 						L10nHelper::__( 'Order fully refunded by %s.' ),
-						wp_get_current_user()->display_name
+						wp_get_current_user()->display_name // @todo use a proxy
 					)
 				);
 			}

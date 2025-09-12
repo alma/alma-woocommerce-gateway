@@ -58,15 +58,15 @@ class AdminService {
 	 */
 	public function toggleAlmaFeePlanEnabled() {
 		// Check nonce for security and rights
-		check_ajax_referer( self::ALMA_TOGGLE_FEE_PLAN_ENABLED_NONCE, 'security' );
-		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			wp_die( - 1 );
+		check_ajax_referer( self::ALMA_TOGGLE_FEE_PLAN_ENABLED_NONCE, 'security' ); // @todo use a proxy
+		if ( ! current_user_can( 'manage_woocommerce' ) ) { // @todo use a proxy
+			wp_die( - 1 ); // @todo use a proxy
 		}
 		// Toggle the gateway enabled state
-		$feePlanId = isset( $_POST['fee_plan_key'] ) ? sanitize_text_field( $_POST['fee_plan_key'] ) : '';
+		$feePlanId = isset( $_POST['fee_plan_key'] ) ? sanitize_text_field( $_POST['fee_plan_key'] ) : ''; // @todo use a proxy
 		$newStatus = $this->configService->toggleFeePlan( $feePlanId );
 
-		wp_send_json_success( true === $newStatus );
+		wp_send_json_success( true === $newStatus ); // @todo use a proxy
 	}
 
 	/**
@@ -77,7 +77,7 @@ class AdminService {
 	 * @throws ContainerException
 	 */
 	public function enqueueAdminScripts() {
-		wp_enqueue_script(
+		wp_enqueue_script( // @todo use a proxy
 			'alma-admin-js',
 			$this->assetsHelper->get_asset_url( 'js/backend/alma-admin.js' ),
 			array( 'jquery' ),
@@ -85,12 +85,12 @@ class AdminService {
 			true
 		);
 
-		wp_localize_script(
+		wp_localize_script( // @todo use a proxy
 			'alma-admin-js',
 			'alma_settings',
 			array(
 				'nonce'    => $this->securityHelper->generateToken( self::ALMA_TOGGLE_FEE_PLAN_ENABLED_NONCE ),
-				'ajax_url' => admin_url( 'admin-ajax.php' ),
+				'ajax_url' => admin_url( 'admin-ajax.php' ), // @todo use a proxy
 			)
 		);
 	}
