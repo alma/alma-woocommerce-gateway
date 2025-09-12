@@ -33,7 +33,7 @@ class TemplateHelper {
 			$template = Plugin::get_instance()->get_plugin_path() . 'public/templates/' . $subpath . '/' . $template_name;
 		}
 
-		return apply_filters( 'alma_locate_template', $template, $template_name );
+		return apply_filters( 'alma_locate_template', $template, $template_name ); // @todo use a proxy
 	}
 
 	/**
