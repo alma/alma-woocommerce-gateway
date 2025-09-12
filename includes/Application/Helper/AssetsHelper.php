@@ -3,6 +3,8 @@
 namespace Alma\Gateway\Application\Helper;
 
 use Alma\API\Domain\Exception\ContainerException;
+use Alma\Gateway\Infrastructure\Helper\ContextHelper;
+use Alma\Gateway\Infrastructure\Helper\UrlHelper;
 use Alma\Gateway\Plugin;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -22,12 +24,12 @@ class AssetsHelper {
 	public static function get_alma_dashboard_url( string $env = 'test', string $path = '' ): string {
 		if ( 'live' === $env ) {
 			/* translators: %s -> path to add after dashboard url */
-			return esc_url( sprintf( L10nHelper::__( 'https://dashboard.getalma.eu/%s' ), $path ) ); // @todo use a proxy
+			return UrlHelper::escUrl( sprintf( L10nHelper::__( 'https://dashboard.getalma.eu/%s' ), $path ) );
 		}
 
 		/* translators: %s -> path to add after sandbox dashboard url */
 
-		return esc_url( sprintf( L10nHelper::__( 'https://dashboard.sandbox.getalma.eu/%s' ), $path ) ); // @todo use a proxy
+		return UrlHelper::escUrl( sprintf( L10nHelper::__( 'https://dashboard.sandbox.getalma.eu/%s' ), $path ) );
 	}
 
 	/**
@@ -36,7 +38,7 @@ class AssetsHelper {
 	 * @return string
 	 */
 	public function get_admin_logs_url(): string {
-		return admin_url( 'admin.php?page=wc-status&tab=logs' ); // @todo use a proxy
+		return ContextHelper::adminUrl( 'admin.php?page=wc-status&tab=logs' );
 	}
 
 	/**
