@@ -1,8 +1,7 @@
 <?php
 
-namespace Alma\Gateway\Application\Service;
+namespace Alma\Gateway\Infrastructure\Service;
 
-use Alma\Gateway\Infrastructure\Service\AbstractLoggerService;
 use Psr\Log\LogLevel;
 
 class LoggerService extends AbstractLoggerService {

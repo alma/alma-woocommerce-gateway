@@ -2,17 +2,18 @@
 
 namespace Alma\Gateway\Application\Service;
 
-use Alma\API\Domain\Exception\MerchantServiceException;
-use Alma\API\Domain\Exception\Service\ContainerServiceException;
-use Alma\API\Domain\Exception\Service\EligibilityServiceException;
+use Alma\API\Application\DTO\RefundDto;
 use Alma\API\Domain\Helper\ContextHelperInterface;
 use Alma\API\Domain\Helper\EventHelperInterface;
-use Alma\API\DTO\RefundDto;
+use Alma\API\Infrastructure\Exception\ParametersException;
+use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\API\EligibilityService;
 use Alma\Gateway\Application\Service\API\FeePlanService;
 use Alma\Gateway\Application\Service\API\PaymentService;
+use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
+use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Infrastructure\Helper\BackendHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
@@ -20,6 +21,7 @@ use Alma\Gateway\Infrastructure\Helper\FrontendHelper;
 use Alma\Gateway\Infrastructure\Helper\GatewayHelper;
 use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
+use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Alma\Gateway\Plugin;
 
 class GatewayService {
@@ -130,6 +132,8 @@ class GatewayService {
 	 * @param string $new_status New status.
 	 *
 	 * @sonar We need to keep $old_status on the signature for the hook
+	 *
+	 * @throws GatewayServiceException|ContainerServiceException
 	 */
 	public function woocommerceOrderStatusChanged(
 		int $order_id,
@@ -139,7 +143,11 @@ class GatewayService {
 
 		/** @var OrderRepository $order_repository */
 		$order_repository = Plugin::get_container()->get( OrderRepository::class );
-		$order            = $order_repository->findById( $order_id );
+		try {
+			$order = $order_repository->findById( $order_id );
+		} catch ( ProductRepositoryException $e ) {
+			throw new GatewayServiceException( 'Order not found' );
+		}
 
 		if ( 'refunded' === $new_status || 'cancelled' === $new_status ) {
 			if ( $order->isRefundable() ) {
@@ -147,13 +155,17 @@ class GatewayService {
 				/** @var PaymentService $payment_service */
 				$payment_service = Plugin::get_container()->get( PaymentService::class );
 
-				$payment_service->refundPayment(
-					$order->getPaymentId(),
-					( new RefundDto() )
-						->setAmount( DisplayHelper::price_to_cent( $order->getRemainingRefundAmount() ) )
-						->setMerchantReference( $order->getOrderNumber() )
-						->setComment( L10nHelper::__( 'Full refund requested by the merchant' ) )
-				);
+				try {
+					$payment_service->refundPayment(
+						$order->getPaymentId(),
+						( new RefundDto() )
+							->setAmount( DisplayHelper::price_to_cent( $order->getRemainingRefundAmount() ) )
+							->setMerchantReference( $order->getOrderNumber() )
+							->setComment( L10nHelper::__( 'Full refund requested by the merchant' ) )
+					);
+				} catch ( ParametersException $e ) {
+					throw new GatewayServiceException( $e->getMessage() );
+				}
 
 				$order->addOrderNote(
 					sprintf(
@@ -168,9 +180,6 @@ class GatewayService {
 
 	/**
 	 * Configure each gateway with eligibility and fee plans
-	 *
-	 * @throws EligibilityServiceException
-	 * @throws MerchantServiceException|ContainerServiceException
 	 */
 	public function configureGateway() {
 

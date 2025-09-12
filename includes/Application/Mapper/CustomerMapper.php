@@ -2,9 +2,9 @@
 
 namespace Alma\Gateway\Application\Mapper;
 
+use Alma\API\Application\DTO\AddressDto;
+use Alma\API\Application\DTO\CustomerDto;
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
-use Alma\API\DTO\AddressDto;
-use Alma\API\DTO\CustomerDto;
 
 class CustomerMapper {
 

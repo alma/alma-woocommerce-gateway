@@ -1,14 +1,14 @@
 <?php
 
-use Alma\API\Domain\Exception\MerchantServiceException;
-use Alma\API\Domain\Exception\Service\ContainerServiceException;
-use Alma\API\Entity\Eligibility;
-use Alma\API\Entity\FeePlan;
+use Alma\API\Domain\Entity\Eligibility;
+use Alma\API\Domain\Entity\FeePlan;
+use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Service\API\FeePlanService;
 use Alma\Gateway\Application\Service\ConfigService;
-use Alma\Gateway\Application\Service\LoggerService;
+use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
+use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Alma\Gateway\Plugin;
 
 add_action(
@@ -116,9 +116,6 @@ add_action(
 
 add_action(
 	'wp_footer',
-	/** @throws ContainerServiceException
-	 * @throws MerchantServiceException
-	 */
 	function () {
 		if ( ! is_checkout() ) {
 			return;
@@ -127,8 +124,13 @@ add_action(
 		echo '<h1>Fee plans from API</h1>';
 		echo '<pre>';
 		/** @var FeePlanService $fee_plan_service */
-		$fee_plan_service = Plugin::get_container()->get( FeePlanService::class );
-		$fee_plan_list    = $fee_plan_service->getFeePlanList();
+		try {
+			$fee_plan_service = Plugin::get_container()->get( FeePlanService::class );
+			$fee_plan_list    = $fee_plan_service->getFeePlanList();
+		} catch ( ContainerServiceException | FeePlanServiceException $e ) {
+			echo 'Error: ' . $e->getMessage();
+			die;
+		}
 
 		/** @var FeePlan $fee_plan */
 		foreach ( $fee_plan_list as $fee_plan ) {

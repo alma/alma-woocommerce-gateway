@@ -22,8 +22,6 @@ class AlmaGateway extends AbstractBackendGateway {
 
 	/**
 	 * Gateway constructor.
-	 *
-	 * @throws ContainerServiceException
 	 */
 	public function __construct() {
 		$this->method_title       = L10nHelper::__( 'Payment in installments and deferred with Alma' );
@@ -46,9 +44,6 @@ class AlmaGateway extends AbstractBackendGateway {
 
 	/**
 	 * Initialize form fields.
-	 *
-	 * @throws ContainerServiceException
-	 * @throws MerchantServiceException
 	 */
 	public function init_form_fields() {
 
@@ -81,8 +76,6 @@ class AlmaGateway extends AbstractBackendGateway {
 
 	/**
 	 * Init settings for gateways.
-	 *
-	 * @throws ContainerServiceException
 	 */
 	public function init_settings() {
 		parent::init_settings();
@@ -107,7 +100,6 @@ class AlmaGateway extends AbstractBackendGateway {
 	 * @param array $settings The settings to sanitize.
 	 *
 	 * @return array The sanitized settings.
-	 * @throws ContainerServiceException
 	 */
 	public function sanitize_settings( array $settings ): array {
 
@@ -121,7 +113,6 @@ class AlmaGateway extends AbstractBackendGateway {
 	 * @param array $new_value The new value of the settings.
 	 *
 	 * @return array The settings with encrypted keys.
-	 * @throws ContainerServiceException
 	 */
 	public function encrypt_keys( $new_value ): array {
 		$options_service = Plugin::get_container()->get( ConfigService::class );
@@ -148,7 +139,6 @@ class AlmaGateway extends AbstractBackendGateway {
 	 * @param $settings
 	 *
 	 * @return array
-	 * @throws ContainerServiceException
 	 */
 	private function check_values( $settings ): array {
 		$settings = $this->check_amounts( $settings );
@@ -195,7 +185,6 @@ class AlmaGateway extends AbstractBackendGateway {
 	 * @param array $settings
 	 *
 	 * @return array
-	 * @throws ContainerServiceException
 	 */
 	private function check_keys( array $settings ): array {
 		/** @var AuthenticationService $authentication_service */

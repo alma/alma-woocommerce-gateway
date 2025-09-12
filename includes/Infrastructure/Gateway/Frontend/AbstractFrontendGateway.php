@@ -2,10 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 
+use Alma\API\Domain\Entity\FeePlanList;
 use Alma\API\Domain\Exception\MerchantServiceException;
 use Alma\API\Domain\Exception\Service\ContainerServiceException;
 use Alma\API\Domain\Helper\FormHelperInterface;
-use Alma\API\Entity\FeePlanList;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Service\API\FeePlanService;
 use Alma\Gateway\Application\Service\ConfigService;

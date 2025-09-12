@@ -3,8 +3,24 @@
 namespace Alma\Gateway\Infrastructure\Helper;
 
 use Alma\API\Domain\Helper\SecurityHelperInterface;
+use Alma\Gateway\Infrastructure\Exception\CmsException;
 
 class SecurityHelper implements SecurityHelperInterface {
+
+	/**
+	 *  Get the salt.
+	 *
+	 * @return string The salt.
+	 *
+	 * @throws CmsException If the NONCE_SALT constant is not defined.
+	 */
+	public static function getKeySalt(): string {
+		if ( defined( 'NONCE_SALT' ) ) {
+			return NONCE_SALT;
+		}
+
+		throw new CmsException( 'The constant NONCE_SALT must to be defined in wp-config.php' );
+	}
 
 	/**
 	 * Set a token for form submission.

@@ -2,12 +2,11 @@
 
 namespace Alma\Gateway\Application\Mapper;
 
+use Alma\API\Application\DTO\AddressDto;
+use Alma\API\Application\DTO\PaymentDto;
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
-use Alma\API\Domain\Exception\Service\ContainerServiceException;
+use Alma\API\Domain\Entity\FeePlan;
 use Alma\API\Domain\Helper\ContextHelperInterface;
-use Alma\API\DTO\AddressDto;
-use Alma\API\DTO\PaymentDto;
-use Alma\API\Entity\FeePlan;
 use Alma\Gateway\Application\Service\GatewayService;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
@@ -23,7 +22,6 @@ class PaymentMapper {
 	 * @param FeePlan               $fee_plan The Fee Plan to apply.
 	 *
 	 * @return PaymentDto The constructed PaymentDto.
-	 * @throws ContainerServiceException
 	 */
 	public function buildPaymentDto( AbstractGateway $gateway, OrderAdapterInterface $order, FeePlan $fee_plan ): PaymentDto {
 		/** @var ContextHelperInterface $contextHelper */

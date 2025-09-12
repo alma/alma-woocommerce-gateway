@@ -14,6 +14,7 @@ use WC_Order;
  * This class adapts the WC_Order object to the OrderAdapterInterface, allowing dynamic calls to WC_Order methods.
  * It provides methods to retrieve order details, update order status, and manage order notes.
  *
+ * @method addOrderNote( $note, $is_customer_note = 0, $added_by_user = false ) see WC_Order::add_order_note()
  * @method getId() see WC_Order::get_id()
  * @method getItems() see WC_Order::get_items()
  * @method getOrderKey() see WC_Order::get_order_key()
@@ -36,14 +37,17 @@ use WC_Order;
  * @method getShippingFirstName() see WC_Order::get_shipping_first_name()
  * @method getShippingLastName() see WC_Order::get_shipping_last_name()
  * @method getShippingCompany() see WC_Order::get_shipping_company()
- * @method hasShippingAddress() see WC_Order::has_shipping_address()
  * @method getShippingAddress1() see WC_Order::get_shipping_address_1()
  * @method getShippingAddress2() see WC_Order::get_shipping_address_2()
  * @method getShippingPostcode() see WC_Order::get_shipping_postcode()
  * @method getShippingCity() see WC_Order::get_shipping_city()
  * @method getShippingState() see WC_Order::get_shipping_state()
  * @method getShippingCountry() see WC_Order::get_shipping_country()
- * @method updateMetaData() see WC_Abstract_Order::update_meta_data()
+ * @method hasShippingAddress() see WC_Order::has_shipping_address()
+ * @method hasStatus( $status ) see WC_Order::has_status()
+ * @method paymentComplete( $transaction_id = '' ) see WC_Order::payment_complete()
+ * @method updateMetaData( $key, $value, $meta_id = 0 ) see WC_Abstract_Order::update_meta_data()
+ * @method updateStatus( $new_status, $note = '', $manual = false ) see WC_Order::update_status()
  * @method save() see WC_Order::save()
  */
 class OrderAdapter implements OrderAdapterInterface {

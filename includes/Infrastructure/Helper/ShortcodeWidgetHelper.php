@@ -2,9 +2,8 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
-use Alma\API\Domain\Exception\Service\ContainerServiceException;
-use Alma\API\Entity\FeePlan;
-use Alma\API\Entity\FeePlanList;
+use Alma\API\Domain\Entity\FeePlan;
+use Alma\API\Domain\Entity\FeePlanList;
 use Alma\Gateway\Application\Helper\AssetsHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -56,7 +55,6 @@ class ShortcodeWidgetHelper {
 	 * @param bool        $display_widget Whether to display the widget or not.
 	 *
 	 * @return void
-	 * @throws ContainerServiceException
 	 */
 	public function initCartShortcode( string $environment, string $merchant_id, int $price, FeePlanList $fee_plan_list, string $language, bool $display_widget = false ) {
 		if ( $display_widget ) {
@@ -101,7 +99,6 @@ class ShortcodeWidgetHelper {
 	 * @param bool        $display_widget Whether to display the widget or not.
 	 *
 	 * @return void
-	 * @throws ContainerServiceException
 	 */
 	public function initProductShortcode( string $environment, string $merchant_id, int $price, FeePlanList $fee_plan_list, string $language, bool $display_widget = false ) {
 		if ( $display_widget ) {
@@ -117,7 +114,6 @@ class ShortcodeWidgetHelper {
 	 * Enqueue the scripts and styles needed for the Alma widget.
 	 *
 	 * @return void
-	 * @throws ContainerServiceException
 	 */
 	private function addScriptsAndStyles() {
 		wp_enqueue_style(

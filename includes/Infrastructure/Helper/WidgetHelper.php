@@ -2,9 +2,8 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
-use Alma\API\Domain\Exception\Service\ContainerServiceException;
+use Alma\API\Domain\Entity\FeePlanList;
 use Alma\API\Domain\Helper\WidgetHelperInterface;
-use Alma\API\Entity\FeePlanList;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
@@ -32,8 +31,6 @@ class WidgetHelper implements WidgetHelperInterface {
 	 * @param FeePlanList $feePlanList The list of fee plans.
 	 * @param string      $language The language code (e.g., 'en', 'fr', etc.).
 	 * @param bool        $display_widget Whether to display the widget or not.
-	 *
-	 * @throws ContainerServiceException
 	 */
 	public function displayCartWidget( string $environment, string $merchantId, int $price, FeePlanList $feePlanList, string $language, bool $display_widget = false ) {
 		$this->shortcodeWidgetHelper->initCartShortcode(
@@ -56,8 +53,6 @@ class WidgetHelper implements WidgetHelperInterface {
 	 * @param FeePlanList $feePlanList The list of fee plans.
 	 * @param string      $language The language code (e.g., 'en', 'fr', etc.).
 	 * @param bool        $display_widget Whether to display the widget or not.
-	 *
-	 * @throws ContainerServiceException
 	 */
 	public function displayProductWidget( string $environment, string $merchantId, int $price, FeePlanList $feePlanList, string $language, bool $display_widget = false ) {
 		$this->shortcodeWidgetHelper->initProductShortcode(

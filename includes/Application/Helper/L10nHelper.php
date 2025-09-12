@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Application\Helper;
 
-use Alma\API\Entity\FeePlan;
+use Alma\API\Domain\Entity\FeePlan;
 use Alma\Gateway\Infrastructure\Helper\LanguageHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {

@@ -3,7 +3,6 @@
 namespace Alma\Gateway\Infrastructure\Helper;
 
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
-use Alma\API\Domain\Exception\Service\ContainerServiceException;
 use Alma\API\Domain\Helper\NavigationHelperInterface;
 use Alma\Gateway\Plugin;
 
@@ -37,7 +36,6 @@ class NavigationHelper implements NavigationHelperInterface {
 	 *
 	 * @param string|null $message The message to display on the cart page.
 	 *
-	 * @throws ContainerServiceException
 	 */
 	public function redirectToCart( $message = null ): void {
 		if ( $message ) {

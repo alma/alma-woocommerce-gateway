@@ -2,16 +2,16 @@
 
 namespace Alma\Gateway\Application\Service\API;
 
-use Alma\API\Domain\Exception\PaymentServiceException;
+use Alma\API\Application\DTO\CustomerDto;
+use Alma\API\Application\DTO\OrderDto;
+use Alma\API\Application\DTO\PaymentDto;
+use Alma\API\Application\DTO\RefundDto;
+use Alma\API\Domain\Entity\Payment;
 use Alma\API\Domain\Service\API\PaymentServiceInterface;
-use Alma\API\DTO\CustomerDto;
-use Alma\API\DTO\OrderDto;
-use Alma\API\DTO\PaymentDto;
-use Alma\API\DTO\RefundDto;
-use Alma\API\Endpoint\PaymentEndpoint;
-use Alma\API\Entity\Payment;
-use Alma\API\Exception\Endpoint\PaymentEndpointException;
-use Alma\Gateway\Application\Service\LoggerService;
+use Alma\API\Infrastructure\Endpoint\PaymentEndpoint;
+use Alma\API\Infrastructure\Exception\Endpoint\PaymentEndpointException;
+use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
+use Alma\Gateway\Infrastructure\Service\LoggerService;
 
 class PaymentService implements PaymentServiceInterface {
 	const CAPTURE_METHOD_AUTOMATIC = 'automatic';

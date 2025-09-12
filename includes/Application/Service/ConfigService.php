@@ -2,10 +2,9 @@
 
 namespace Alma\Gateway\Application\Service;
 
-use Alma\API\Domain\Exception\Service\ContainerServiceException;
+use Alma\API\Domain\Entity\FeePlan;
+use Alma\API\Domain\Entity\FeePlanList;
 use Alma\API\Domain\Repository\ConfigRepositoryInterface;
-use Alma\API\Entity\FeePlan;
-use Alma\API\Entity\FeePlanList;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\EncryptorHelper;
 use Alma\Gateway\Infrastructure\Helper\WordPressHelper;
@@ -54,8 +53,6 @@ class ConfigService {
 	 * Encrypt keys.
 	 *
 	 * @param $options array The whole posted settings.
-	 *
-	 * @throws ContainerServiceException
 	 */
 	public static function encryptKeys( array $options ): array {
 

@@ -3,9 +3,9 @@
 namespace Alma\Gateway\Infrastructure\Repository;
 
 use Alma\API\Domain\Adapter\ProductAdapterInterface;
-use Alma\API\Domain\Exception\CoreException;
 use Alma\API\Domain\Repository\ProductRepositoryInterface;
 use Alma\Gateway\Infrastructure\Adapter\ProductAdapter;
+use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 
 class ProductRepository implements ProductRepositoryInterface {
 
@@ -16,7 +16,7 @@ class ProductRepository implements ProductRepositoryInterface {
 	 *
 	 * @return ProductAdapterInterface The Product object.
 	 *
-	 * @throws CoreException
+	 * @throws ProductRepositoryException
 	 */
 	public function findById( int $productId ): ProductAdapterInterface {
 		$wc_product = wc_get_product( $productId );
@@ -25,6 +25,6 @@ class ProductRepository implements ProductRepositoryInterface {
 			return new ProductAdapter( $wc_product );
 		}
 
-		throw new CoreException( sprintf( 'Undefined Product id: %d', $productId ) );
+		throw new ProductRepositoryException( sprintf( 'Undefined Product id: %d', $productId ) );
 	}
 }

@@ -2,14 +2,13 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway;
 
-use Alma\API\Domain\Exception\CoreException;
-use Alma\API\Domain\Exception\PaymentServiceException;
-use Alma\API\Domain\Exception\Service\ContainerServiceException;
-use Alma\API\DTO\RefundDto;
-use Alma\API\Entity\EligibilityList;
-use Alma\API\Entity\FeePlan;
-use Alma\API\Entity\FeePlanList;
-use Alma\API\Exception\Endpoint\PaymentEndpointException;
+use Alma\API\Application\DTO\RefundDto;
+use Alma\API\Domain\Entity\EligibilityList;
+use Alma\API\Domain\Entity\FeePlan;
+use Alma\API\Domain\Entity\FeePlanList;
+use Alma\API\Infrastructure\Exception\ParametersException;
+use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
+use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Application\Helper\AssetsHelper;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
@@ -18,11 +17,12 @@ use Alma\Gateway\Application\Mapper\OrderMapper;
 use Alma\Gateway\Application\Mapper\PaymentMapper;
 use Alma\Gateway\Application\Service\API\FeePlanService;
 use Alma\Gateway\Application\Service\API\PaymentService;
-use Alma\Gateway\Application\Service\CacheService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
+use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
+use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
 use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
-use Alma\Gateway\Infrastructure\Helper\WordPressHelper;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
+use Alma\Gateway\Infrastructure\Service\CacheService;
 use Alma\Gateway\Plugin;
 use WC_Payment_Gateway;
 
@@ -53,8 +53,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 
 	/**
 	 * Gateway constructor.
-	 *
-	 * @throws ContainerServiceException
+	 * @throws GatewayServiceException
 	 */
 	public function __construct() {
 		$this->id                 = sprintf( 'alma_%s_gateway', $this->get_type() );
@@ -63,7 +62,11 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		$this->supports           = array( 'products', 'refunds' );
 		$this->init_form_fields();
 		$this->init_settings();
-		$this->icon = $this->get_icon_url();
+		try {
+			$this->icon = $this->get_icon_url();
+		} catch ( ContainerServiceException $e ) {
+			throw new GatewayServiceException( 'Can not find Gateway icon' );
+		}
 
 		add_action(
 			'woocommerce_update_options_payment_gateways_alma_config_gateway',
@@ -142,14 +145,18 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 *
 	 * @return array|string[] The result of the payment processing.
 	 *
-	 * @throws ContainerServiceException|CoreException
+	 * @throws GatewayServiceException|ContainerServiceException
 	 */
 	public function process_payment( $order_id ): array {
 		/** @var OrderRepository $order_repository */
 		$order_repository = Plugin::get_container()->get( OrderRepository::class );
-		$order            = $order_repository->findById( $order_id );
-		$fields           = $this->process_payment_fields( $order );
-		$fee_plan         = $this->fee_plan_list->getByPlanKey( $fields['alma_plan_key'] );
+		try {
+			$order = $order_repository->findById( $order_id );
+		} catch ( ProductRepositoryException $e ) {
+			throw new GatewayServiceException( 'Can not find Order' );
+		}
+		$fields   = $this->process_payment_fields( $order );
+		$fee_plan = $this->fee_plan_list->getByPlanKey( $fields['alma_plan_key'] );
 
 		/** @var PaymentService $payment_service */
 		$payment_service = Plugin::get_container()->get( PaymentService::class );
@@ -172,11 +179,11 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 			);
 		}
 
-		$order->update_status( 'pending', L10nHelper::__( 'En attente de paiement via Alma' ) );
+		$order->updateStatus( 'pending', L10nHelper::__( 'En attente de paiement via Alma' ) );
 
 		return array(
 			'result'   => 'success',
-			'redirect' => $payment->url,
+			'redirect' => $payment->getUrl(),
 		);
 	}
 
@@ -190,7 +197,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * @param float|null $amount The amount to refund. If null, the full order amount will be refunded.
 	 * @param string     $reason The reason for the refund.
 	 *
-	 * @throws CoreException|ContainerServiceException|PaymentEndpointException
+	 * @throws GatewayServiceException
 	 */
 	public function process_refund( $order_id, $amount = null, $reason = '' ) {
 
@@ -200,16 +207,20 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 
 		/** @var PaymentService $payment_service */
 		$payment_service = Plugin::get_container()->get( PaymentService::class );
-		$response        = $payment_service->refundPayment(
-			$order->getPaymentId(),
-			( new RefundDto() )
-				->setAmount( DisplayHelper::price_to_cent( $amount ) )
-				->setMerchantReference( $order->getMerchantReference() )
-				->setComment( $reason )
-		);
+		try {
+			$response = $payment_service->refundPayment(
+				$order->getPaymentId(),
+				( new RefundDto() )
+					->setAmount( DisplayHelper::price_to_cent( $amount ) )
+					->setMerchantReference( $order->getMerchantReference() )
+					->setComment( $reason )
+			);
+		} catch ( ParametersException $e ) {
+			throw new GatewayServiceException( $e->getMessage() );
+		}
 
 		if ( ! $response ) {
-			return WordPressHelper::error( 'refund error', L10nHelper::__( 'Refund failed.' ) );
+			return L10nHelper::__( 'Refund failed.' );
 		}
 
 		// Add a note to the order
@@ -227,7 +238,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 				wp_get_current_user()->display_name
 			);
 		}
-		$order->add_order_note( $order_note );
+		$order->addOrderNote( $order_note );
 
 		// WooCommerce will create WC_Order_Refund automatically
 		return true;

@@ -4,12 +4,11 @@ namespace Alma\Gateway\Application\Service;
 
 use Alma\API\Domain\Adapter\CartAdapterInterface;
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
-use Alma\API\Domain\Exception\PaymentServiceException;
-use Alma\API\Domain\Exception\SecurityException;
-use Alma\API\Domain\Exception\Service\ContainerServiceException;
+use Alma\API\Domain\Entity\Payment;
 use Alma\API\Domain\Helper\NavigationHelperInterface;
 use Alma\API\Domain\Helper\NotificationHelperInterface;
-use Alma\API\Entity\Payment;
+use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
+use Alma\Gateway\Application\Exception\Service\IpnServiceException;
 use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\API\PaymentService;
@@ -61,7 +60,7 @@ class IpnService {
 	 * Handle the customer return.
 	 *
 	 * @return void
-	 * @throws ContainerServiceException
+	 *
 	 * @todo check nonce
 	 */
 	public function handleCustomerReturn(): void {
@@ -80,17 +79,17 @@ class IpnService {
 			/** @var OrderRepository $order_repository */
 			$order_repository = Plugin::get_container()->get( OrderRepository::class );
 			$order            = $order_repository->findById(
-				$payment->custom_data['order_id'],
-				$payment->custom_data['order_key'],
+				$payment->getCustomData()['order_id'],
+				$payment->getCustomData()['order_key'],
 				$payment_id
 			);
 
-			if ( $order->has_status( array( 'on-hold', 'pending', 'failed' ) ) ) {
+			if ( $order->hasStatus( array( 'on-hold', 'pending', 'failed' ) ) ) {
 				$this->manageMismatch( $order, $payment );
 				$this->managePotentialFraud( $order, $payment );
 			}
 
-			$order->payment_complete( $payment_id );
+			$order->paymentComplete( $payment_id );
 			$this->cartAdapter->emptyCart();
 			$this->notificationHelper->notifySuccess( L10nHelper::__( 'Payment validation done' ) );
 
@@ -111,6 +110,7 @@ class IpnService {
 	 * Handle IPN callback.
 	 *
 	 * @return void
+	 * @throws IpnServiceException
 	 * @todo check nonce
 	 */
 	public function handleIpnCallback(): void {
@@ -132,7 +132,7 @@ class IpnService {
 				$this->configService->getActiveApiKey(),
 				$_SERVER['HTTP_X_ALMA_SIGNATURE']
 			);
-		} catch ( SecurityException $e ) {
+		} catch ( IpnServiceException $e ) {
 			wp_send_json( array( 'error' => $e->getMessage() ), 403 );
 		}
 
@@ -145,11 +145,11 @@ class IpnService {
 			/** @var OrderRepository $order_repository */
 			$order_repository = Plugin::get_container()->get( OrderRepository::class );
 			$order            = $order_repository->findById(
-				$payment->custom_data['order_id'],
-				$payment->custom_data['order_key'],
+				$payment->getCustomData()['order_id'],
+				$payment->getCustomData()['order_key'],
 				$payment_id
 			);
-			if ( $order->has_status( array( 'on-hold', 'pending', 'failed' ) ) ) {
+			if ( $order->hasStatus( array( 'on-hold', 'pending', 'failed' ) ) ) {
 				$this->manageMismatch( $order, $payment );
 				$this->managePotentialFraud( $order, $payment );
 			}
@@ -163,29 +163,37 @@ class IpnService {
 	}
 
 	/**
-	 * @throws PaymentServiceException
+	 * @throws IpnServiceException
 	 */
 	private function manageMismatch( OrderAdapterInterface $order, Payment $payment ): void {
 
-		$order_total = $order->getOrderTotal( $order->get_id() );
-		if ( $order_total !== $payment->purchase_amount ) {
-			$this->paymentService->flagAsFraud( $payment->id, Payment::FRAUD_AMOUNT_MISMATCH );
-			$order->update_status( 'failed', Payment::FRAUD_AMOUNT_MISMATCH );
+		$order_total = $order->getOrderTotal( $order->getId() );
+		if ( $order_total !== $payment->getPurchaseAmount() ) {
+			try {
+				$this->paymentService->flagAsFraud( $payment->getId(), Payment::FRAUD_AMOUNT_MISMATCH );
+			} catch ( PaymentServiceException $e ) {
+				throw new IpnServiceException( $e->getMessage() );
+			}
+			$order->updateStatus( 'failed', Payment::FRAUD_AMOUNT_MISMATCH );
 
-			throw new PaymentServiceException( 'Potential fraud detected: order total does not match payment amount.' );
+			throw new IpnServiceException( 'Potential fraud detected: order total does not match payment amount.' );
 		}
 	}
 
 	/**
-	 * @throws PaymentServiceException
+	 * @throws IpnServiceException
 	 */
 	private function managePotentialFraud( OrderAdapterInterface $order, $payment ): void {
 
 		if ( ! in_array( $payment->state, array( Payment::STATE_IN_PROGRESS, Payment::STATE_PAID ), true ) ) {
-			$this->paymentService->flagAsFraud( $payment->id, Payment::FRAUD_STATE_ERROR );
-			$order->update_status( 'failed', Payment::FRAUD_STATE_ERROR );
+			try {
+				$this->paymentService->flagAsFraud( $payment->id, Payment::FRAUD_STATE_ERROR );
+			} catch ( PaymentServiceException $e ) {
+				throw new IpnServiceException( $e->getMessage() );
+			}
+			$order->updateStatus( 'failed', Payment::FRAUD_STATE_ERROR );
 
-			throw new PaymentServiceException( 'Potential fraud detected: payment state is not in progress or paid.' );
+			throw new IpnServiceException( 'Potential fraud detected: payment state is not in progress or paid.' );
 		}
 	}
 }

@@ -3,11 +3,10 @@
 namespace Alma\Gateway\Application\Service;
 
 use Alma\API\Domain\Adapter\CartAdapterInterface;
-use Alma\API\Domain\Exception\CoreException;
-use Alma\API\Domain\Exception\MerchantServiceException;
-use Alma\API\Domain\Exception\Service\ContainerServiceException;
+use Alma\API\Domain\Entity\FeePlanList;
 use Alma\API\Domain\Helper\ContextHelperInterface;
-use Alma\API\Entity\FeePlanList;
+use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
+use Alma\Gateway\Application\Exception\Service\WidgetServiceException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Service\API\FeePlanService;
@@ -67,14 +66,16 @@ class WidgetService {
 	 * - The excluded categories
 	 *
 	 * @return void
-	 * @throws ContainerServiceException
-	 * @throws MerchantServiceException
-	 * @throws CoreException
+	 * @throws WidgetServiceException
 	 */
 	public function displayWidget() {
-		$environment        = $this->optionsService->getEnvironment();
-		$merchantId         = $this->optionsService->getMerchantId();
-		$feePlanList        = $this->feePlanService->getFeePlanList()->filterEnabled();
+		$environment = $this->optionsService->getEnvironment();
+		$merchantId  = $this->optionsService->getMerchantId();
+		try {
+			$feePlanList = $this->feePlanService->getFeePlanList()->filterEnabled();
+		} catch ( FeePlanServiceException $e ) {
+			throw new WidgetServiceException( $e->getMessage() );
+		}
 		$excludedCategories = $this->optionsService->getExcludedCategories();
 		$language           = $this->contextHelper->getLanguage();
 

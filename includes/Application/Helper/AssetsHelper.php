@@ -2,7 +2,6 @@
 
 namespace Alma\Gateway\Application\Helper;
 
-use Alma\API\Domain\Exception\Service\ContainerServiceException;
 use Alma\Gateway\Plugin;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -45,7 +44,6 @@ class AssetsHelper {
 	 * @param string $path By default, the alma logo.
 	 *
 	 * @return string
-	 * @throws ContainerServiceException
 	 */
 	public function get_image( string $path = 'images/alma_logo.svg' ): string {
 		return $this->get_asset_url( $path );
@@ -57,7 +55,6 @@ class AssetsHelper {
 	 * @param string $path Path to asset relative to the plugin's assets directory.
 	 *
 	 * @return string URL to given asset
-	 * @throws ContainerServiceException
 	 */
 	public function get_asset_url( string $path ): string {
 		/** @var PluginHelper $plugin_helper */

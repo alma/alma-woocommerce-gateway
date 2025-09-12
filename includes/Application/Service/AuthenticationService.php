@@ -2,12 +2,12 @@
 
 namespace Alma\Gateway\Application\Service;
 
-use Alma\API\ClientConfiguration;
-use Alma\API\CurlClient;
-use Alma\API\Endpoint\MerchantEndpoint;
-use Alma\API\Exception\ClientConfigurationException;
-use Alma\API\Exception\ClientException;
-use Alma\API\Exception\Endpoint\MerchantEndpointException;
+use Alma\API\Infrastructure\ClientConfiguration;
+use Alma\API\Infrastructure\CurlClient;
+use Alma\API\Infrastructure\Endpoint\MerchantEndpoint;
+use Alma\API\Infrastructure\Exception\ClientConfigurationException;
+use Alma\API\Infrastructure\Exception\ClientException;
+use Alma\API\Infrastructure\Exception\Endpoint\MerchantEndpointException;
 
 class AuthenticationService {
 
@@ -33,6 +33,6 @@ class AuthenticationService {
 			return '';
 		}
 
-		return $merchant->id;
+		return $merchant->getId();
 	}
 }

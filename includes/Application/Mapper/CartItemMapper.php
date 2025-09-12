@@ -2,8 +2,8 @@
 
 namespace Alma\Gateway\Application\Mapper;
 
+use Alma\API\Application\DTO\CartItemDto;
 use Alma\API\Domain\Adapter\OrderLineAdapterInterface;
-use Alma\API\DTO\CartItemDto;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 

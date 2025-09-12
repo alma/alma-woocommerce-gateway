@@ -2,7 +2,8 @@
 
 namespace Alma\Gateway\Application\Helper;
 
-use Alma\API\Domain\Exception\SecurityException;
+
+use Alma\Gateway\Application\Exception\Service\IpnServiceException;
 
 class IpnHelper {
 
@@ -13,11 +14,11 @@ class IpnHelper {
 	 * @param string $apiKey The API key used to generate the HMAC signature
 	 * @param string $signature The HMAC signature to validate
 	 *
-	 * @throws SecurityException
+	 * @throws IpnServiceException
 	 */
 	public function validateIpnSignature( string $paymentId, string $apiKey, string $signature ) {
 		if ( empty( $paymentId ) || empty( $apiKey ) || empty( $signature ) ) {
-			throw new SecurityException(
+			throw new IpnServiceException(
 				sprintf(
 					'[ALMA] Missing required parameters, payment_id: %s, api_key: %s, signature: %s',
 					$paymentId,
@@ -27,7 +28,7 @@ class IpnHelper {
 			);
 		}
 		if ( ! $this->isHmacValidated( $paymentId, $apiKey, $signature ) ) {
-			throw new SecurityException( '[ALMA] Invalid signature' );
+			throw new IpnServiceException( '[ALMA] Invalid signature' );
 		}
 	}
 

@@ -2,8 +2,8 @@
 
 namespace Alma\Gateway\Application\Mapper;
 
+use Alma\API\Application\DTO\CartDto;
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
-use Alma\API\DTO\CartDto;
 
 class CartMapper {
 

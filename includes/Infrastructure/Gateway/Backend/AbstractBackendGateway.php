@@ -2,15 +2,13 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway\Backend;
 
-use Alma\API\Domain\Exception\CoreException;
-use Alma\API\Domain\Exception\MerchantServiceException;
-use Alma\API\Domain\Exception\Service\ContainerServiceException;
 use Alma\API\Entity\FeePlan;
 use Alma\Gateway\Application\Helper\AssetsHelper;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\API\FeePlanService;
 use Alma\Gateway\Application\Service\ConfigService;
+use Alma\Gateway\Domain\Exception\AlmaException;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
@@ -31,10 +29,10 @@ class AbstractBackendGateway extends AbstractGateway {
 	/**
 	 * This gateway is not meant to process payments and throws an exception if called.
 	 *
-	 * @throws CoreException
+	 * @throws AlmaException
 	 */
 	public function process_payment( $order_id ): array {
-		throw new CoreException( 'This gateway is not meant to process payments.' );
+		throw new AlmaException( 'This gateway is not meant to process payments.' );
 	}
 
 	/**
@@ -45,7 +43,6 @@ class AbstractBackendGateway extends AbstractGateway {
 	 * @param array $form_fields
 	 * @param true  $echo Not used, but kept for compatibility.
 	 *
-	 * @throws ContainerServiceException
 	 * @phpcs Not used, but kept for compatibility.
 	 */
 	public function generate_settings_html( $form_fields = array(), $echo = true ): string {// phpcs:ignore
@@ -183,9 +180,6 @@ class AbstractBackendGateway extends AbstractGateway {
 
 	/**
 	 * Define the fee plan section.
-	 *
-	 * @throws ContainerServiceException
-	 * @throws MerchantServiceException
 	 */
 	public function fee_plan_fieldset(): array {
 

@@ -22,13 +22,13 @@ use Alma\Gateway\Application\Service\AdminService;
 use Alma\Gateway\Application\Service\API\EligibilityService;
 use Alma\Gateway\Application\Service\API\FeePlanService;
 use Alma\Gateway\Application\Service\ConfigService;
-use Alma\Gateway\Application\Service\ContainerService;
 use Alma\Gateway\Application\Service\GatewayService;
-use Alma\Gateway\Application\Service\LoggerService;
 use Alma\Gateway\Application\Service\WidgetService;
 use Alma\Gateway\Infrastructure\Helper\BackendHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\FrontendHelper;
+use Alma\Gateway\Infrastructure\Service\ContainerService;
+use Alma\Gateway\Infrastructure\Service\LoggerService;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
