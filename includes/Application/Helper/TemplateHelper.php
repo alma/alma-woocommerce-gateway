@@ -2,6 +2,8 @@
 
 namespace Alma\Gateway\Application\Helper;
 
+use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
+use Alma\Gateway\Infrastructure\Helper\RenderHelper;
 use Alma\Gateway\Plugin;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -33,7 +35,7 @@ class TemplateHelper {
 			$template = Plugin::get_instance()->get_plugin_path() . 'public/templates/' . $subpath . '/' . $template_name;
 		}
 
-		return apply_filters( 'alma_locate_template', $template, $template_name ); // @todo use a proxy
+		return RenderHelper::render( 'alma_locate_template', $template, $template_name );
 	}
 
 	/**
@@ -43,6 +45,7 @@ class TemplateHelper {
 	 * @param array  $args Args passed for the template file.
 	 * @param string $subpath Path to template files.
 	 *
+	 * @throws TemplateHelperException
 	 * @see locate_template()
 	 *
 	 * @sonar It's mandatory to use include_once method here.
@@ -58,14 +61,9 @@ class TemplateHelper {
 		$template_file = $this->locate_template( $template_name, $subpath );
 
 		if ( ! file_exists( $template_file ) ) {
-			// @todo use a proxy
-			_doing_it_wrong(
-				__FUNCTION__,
-				sprintf( '<code>%s</code> does not exist.', esc_html( $template_file ) ),
-				'4.2.0'
+			throw new TemplateHelperException(
+				sprintf( 'Template file %s does not exist.', esc_html( $template_file ) )
 			);
-
-			return;
 		}
 
 		include_once $template_file;// NOSONAR -- It's mandatory to use include_once method here.
