@@ -8,7 +8,6 @@ use Alma\API\Endpoint\MerchantEndpoint;
 use Alma\API\Entity\FeePlan;
 use Alma\API\Entity\FeePlanList;
 use Alma\API\Exception\Endpoint\MerchantEndpointException;
-use Alma\API\Exception\ParametersException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 
@@ -34,7 +33,7 @@ class FeePlanService implements FeePlanServiceInterface {
 	 * @param bool $forceRefresh Whether to force a refresh of the fee plan list.
 	 *
 	 * @return FeePlanList
-	 * @throws MerchantServiceException|ParametersException
+	 * @throws MerchantServiceException
 	 */
 	public function getFeePlanList( bool $forceRefresh = false ): FeePlanList {
 		if ( ! isset( $this->feePlanList ) || $forceRefresh ) {

@@ -3,7 +3,7 @@
 namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
-use Alma\API\Domain\Exception\ContainerException;
+use Alma\API\Domain\Exception\Service\ContainerServiceException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
 use Alma\Gateway\Plugin;
@@ -19,7 +19,7 @@ class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 	/**
 	 * Gateway constructor.
 	 *
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 */
 	public function __construct() {
 		$this->title        = 'Pay now with Alma';
@@ -32,7 +32,7 @@ class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 	 * Expose the payment fields to the frontend.
 	 *
 	 * @return void
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 */
 	public function payment_fields() {
 		/** @var TemplateHelper $template_helper */

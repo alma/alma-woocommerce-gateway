@@ -11,9 +11,9 @@
 
 namespace Alma\Gateway;
 
-use Alma\API\Domain\Exception\ContainerException;
 use Alma\API\Domain\Exception\CoreException;
 use Alma\API\Domain\Exception\RequirementsException;
+use Alma\API\Domain\Exception\Service\ContainerServiceException;
 use Alma\API\Domain\Helper\ContextHelperInterface;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\PluginHelper;
@@ -113,7 +113,7 @@ final class Plugin {
 	/**
 	 * Used for plugin warmup.
 	 *
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 * @throws RequirementsException
 	 */
 	public function plugin_warmup(): void {
@@ -162,7 +162,7 @@ final class Plugin {
 	 * Used for regular plugin work.
 	 *
 	 * @return  void
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 * @throws RequirementsException
 	 */
 	public function plugin_setup(): void {
@@ -234,7 +234,7 @@ final class Plugin {
 	}
 
 	/**
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 */
 	public function is_configured(): bool {
 		/** @var ConfigService $options_service */
@@ -247,7 +247,7 @@ final class Plugin {
 	 * Define if we can load the plugin.
 	 * True on cart or checkout page if the plugin is configured for frontend use.
 	 *
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 */
 	public function is_plugin_needed(): bool {
 

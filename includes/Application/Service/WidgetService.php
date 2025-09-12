@@ -3,12 +3,11 @@
 namespace Alma\Gateway\Application\Service;
 
 use Alma\API\Domain\Adapter\CartAdapterInterface;
-use Alma\API\Domain\Exception\ContainerException;
 use Alma\API\Domain\Exception\CoreException;
 use Alma\API\Domain\Exception\MerchantServiceException;
+use Alma\API\Domain\Exception\Service\ContainerServiceException;
 use Alma\API\Domain\Helper\ContextHelperInterface;
 use Alma\API\Entity\FeePlanList;
-use Alma\API\Exception\ParametersException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Service\API\FeePlanService;
@@ -68,9 +67,9 @@ class WidgetService {
 	 * - The excluded categories
 	 *
 	 * @return void
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 * @throws MerchantServiceException
-	 * @throws CoreException|ParametersException
+	 * @throws CoreException
 	 */
 	public function displayWidget() {
 		$environment        = $this->optionsService->getEnvironment();

@@ -2,13 +2,12 @@
 
 namespace Alma\Gateway\Application\Service;
 
-use Alma\API\Domain\Exception\ContainerException;
-use Alma\API\Domain\Exception\EligibilityServiceException;
 use Alma\API\Domain\Exception\MerchantServiceException;
+use Alma\API\Domain\Exception\Service\ContainerServiceException;
+use Alma\API\Domain\Exception\Service\EligibilityServiceException;
 use Alma\API\Domain\Helper\ContextHelperInterface;
 use Alma\API\Domain\Helper\EventHelperInterface;
 use Alma\API\DTO\RefundDto;
-use Alma\API\Exception\ParametersException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\API\EligibilityService;
@@ -171,7 +170,7 @@ class GatewayService {
 	 * Configure each gateway with eligibility and fee plans
 	 *
 	 * @throws EligibilityServiceException
-	 * @throws MerchantServiceException|ContainerException|ParametersException
+	 * @throws MerchantServiceException|ContainerServiceException
 	 */
 	public function configureGateway() {
 
@@ -196,7 +195,7 @@ class GatewayService {
 	 * Configure returns (ipn and customer_return ) if configuration is done
 	 *
 	 * @return void
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 */
 	public function configureReturns() {
 		$this->eventHelper->addEvent(

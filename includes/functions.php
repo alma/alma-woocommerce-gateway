@@ -1,7 +1,7 @@
 <?php
 
-use Alma\API\Domain\Exception\ContainerException;
 use Alma\API\Domain\Exception\MerchantServiceException;
+use Alma\API\Domain\Exception\Service\ContainerServiceException;
 use Alma\API\Entity\Eligibility;
 use Alma\API\Entity\FeePlan;
 use Alma\Gateway\Application\Helper\DisplayHelper;
@@ -13,7 +13,7 @@ use Alma\Gateway\Plugin;
 
 add_action(
 	'wp_footer',
-	/** @throws ContainerException */
+	/** @throws ContainerServiceException */
 	function () {
 		if ( ! is_checkout() ) {
 			return;
@@ -41,7 +41,7 @@ add_action(
 
 add_action(
 	'wp_footer',
-	/** @throws ContainerException */
+	/** @throws ContainerServiceException */
 	function () {
 
 		echo '<h1>All Options</h1>';
@@ -116,7 +116,7 @@ add_action(
 
 add_action(
 	'wp_footer',
-	/** @throws ContainerException
+	/** @throws ContainerServiceException
 	 * @throws MerchantServiceException
 	 */
 	function () {

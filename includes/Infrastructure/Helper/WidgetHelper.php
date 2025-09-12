@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
-use Alma\API\Domain\Exception\ContainerException;
+use Alma\API\Domain\Exception\Service\ContainerServiceException;
 use Alma\API\Domain\Helper\WidgetHelperInterface;
 use Alma\API\Entity\FeePlanList;
 
@@ -33,7 +33,7 @@ class WidgetHelper implements WidgetHelperInterface {
 	 * @param string      $language The language code (e.g., 'en', 'fr', etc.).
 	 * @param bool        $display_widget Whether to display the widget or not.
 	 *
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 */
 	public function displayCartWidget( string $environment, string $merchantId, int $price, FeePlanList $feePlanList, string $language, bool $display_widget = false ) {
 		$this->shortcodeWidgetHelper->initCartShortcode(
@@ -57,7 +57,7 @@ class WidgetHelper implements WidgetHelperInterface {
 	 * @param string      $language The language code (e.g., 'en', 'fr', etc.).
 	 * @param bool        $display_widget Whether to display the widget or not.
 	 *
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 */
 	public function displayProductWidget( string $environment, string $merchantId, int $price, FeePlanList $feePlanList, string $language, bool $display_widget = false ) {
 		$this->shortcodeWidgetHelper->initProductShortcode(

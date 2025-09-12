@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Application\Service;
 
-use Alma\API\Domain\Exception\ContainerException;
+use Alma\API\Domain\Exception\Service\ContainerServiceException;
 use Alma\API\Domain\Helper\EventHelperInterface;
 use Alma\API\Domain\Helper\SecurityHelperInterface;
 use Alma\Gateway\Application\Helper\AssetsHelper;
@@ -54,7 +54,7 @@ class AdminService {
 	 * This function is called via AJAX to enable or disable an Alma Fee Plan.
 	 *
 	 * @return void
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 */
 	public function toggleAlmaFeePlanEnabled() {
 		// Check nonce for security and rights
@@ -74,7 +74,7 @@ class AdminService {
 	 * This function is called to enqueue the admin scripts for the Alma gateway.
 	 *
 	 * @return void
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 */
 	public function enqueueAdminScripts() {
 		wp_enqueue_script(

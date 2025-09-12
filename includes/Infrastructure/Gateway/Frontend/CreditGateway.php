@@ -3,9 +3,8 @@
 namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
-use Alma\API\Domain\Exception\ContainerException;
 use Alma\API\Domain\Exception\MerchantServiceException;
-use Alma\API\Exception\ParametersException;
+use Alma\API\Domain\Exception\Service\ContainerServiceException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
 use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
@@ -22,7 +21,7 @@ class CreditGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 	/**
 	 * Gateway constructor.
 	 *
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 */
 	public function __construct() {
 		$this->title        = 'Credit with Alma';
@@ -63,7 +62,7 @@ class CreditGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 	 * Expose the payment fields to the frontend.
 	 *
 	 * @return void
-	 * @throws ContainerException|MerchantServiceException|ParametersException
+	 * @throws ContainerServiceException|MerchantServiceException
 	 */
 	public function payment_fields() {
 

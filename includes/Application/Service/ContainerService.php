@@ -7,7 +7,7 @@ use Alma\API\CurlClient;
 use Alma\API\Domain\Adapter\CartAdapterInterface;
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
 use Alma\API\Domain\Adapter\ProductAdapterInterface;
-use Alma\API\Domain\Exception\ContainerException;
+use Alma\API\Domain\Exception\Service\ContainerServiceException;
 use Alma\API\Domain\Helper\ContextHelperInterface;
 use Alma\API\Domain\Helper\EventHelperInterface;
 use Alma\API\Domain\Helper\ExcludedProductsHelperInterface;
@@ -85,7 +85,7 @@ class ContainerService {
 	/**
 	 * ContainerService constructor.
 	 * Init Rules for the DI Container
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 */
 	public function __construct() {
 		$this->dice = new Dice();
@@ -106,7 +106,7 @@ class ContainerService {
 	 * @param array  $share Whether or not this class instance be shared, so that the same instance is passed around each time
 	 *
 	 * @return object A fully constructed object based on the specified input arguments
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 */
 	public function get( string $name, array $args = array(), array $share = array() ): object {
 		try {
@@ -117,7 +117,7 @@ class ContainerService {
 			error_reporting( error_reporting() ^ E_DEPRECATED ); // phpcs:ignore
 		} catch ( Exception $e ) {
 			almalog( $e->getMessage() );
-			throw new ContainerException( "Missing Service $name" );
+			throw new ContainerServiceException( "Missing Service $name" );
 		}
 
 		return $service;

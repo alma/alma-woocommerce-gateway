@@ -11,7 +11,6 @@ use Alma\API\DTO\RefundDto;
 use Alma\API\Endpoint\PaymentEndpoint;
 use Alma\API\Entity\Payment;
 use Alma\API\Exception\Endpoint\PaymentEndpointException;
-use Alma\API\Exception\ParametersException;
 use Alma\Gateway\Application\Service\LoggerService;
 
 class PaymentService implements PaymentServiceInterface {
@@ -62,7 +61,7 @@ class PaymentService implements PaymentServiceInterface {
 	 *
 	 * @param string|null $payment_id The ID of the payment to fetch.
 	 *
-	 * @throws PaymentServiceException|PaymentEndpointException
+	 * @throws PaymentServiceException
 	 */
 	public function fetchPayment( ?string $payment_id ): Payment {
 		try {
@@ -96,7 +95,7 @@ class PaymentService implements PaymentServiceInterface {
 	public function refundPayment( string $paymentId, RefundDto $refundDto ): bool {
 		try {
 			$this->paymentEndpoint->refund( $paymentId, $refundDto );
-		} catch ( PaymentEndpointException|ParametersException $e ) {
+		} catch ( PaymentEndpointException $e ) {
 			$this->loggerService->debug( $e->getMessage() );
 
 			return false;

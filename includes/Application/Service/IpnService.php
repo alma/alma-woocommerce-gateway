@@ -4,13 +4,12 @@ namespace Alma\Gateway\Application\Service;
 
 use Alma\API\Domain\Adapter\CartAdapterInterface;
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
-use Alma\API\Domain\Exception\ContainerException;
 use Alma\API\Domain\Exception\PaymentServiceException;
 use Alma\API\Domain\Exception\SecurityException;
+use Alma\API\Domain\Exception\Service\ContainerServiceException;
 use Alma\API\Domain\Helper\NavigationHelperInterface;
 use Alma\API\Domain\Helper\NotificationHelperInterface;
 use Alma\API\Entity\Payment;
-use Alma\API\Exception\Endpoint\PaymentEndpointException;
 use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\API\PaymentService;
@@ -62,7 +61,7 @@ class IpnService {
 	 * Handle the customer return.
 	 *
 	 * @return void
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 * @todo check nonce
 	 */
 	public function handleCustomerReturn(): void {
@@ -164,7 +163,7 @@ class IpnService {
 	}
 
 	/**
-	 * @throws PaymentServiceException|PaymentEndpointException
+	 * @throws PaymentServiceException
 	 */
 	private function manageMismatch( OrderAdapterInterface $order, Payment $payment ): void {
 

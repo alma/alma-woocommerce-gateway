@@ -2,9 +2,9 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway\Backend;
 
-use Alma\API\Domain\Exception\ContainerException;
 use Alma\API\Domain\Exception\CoreException;
 use Alma\API\Domain\Exception\MerchantServiceException;
+use Alma\API\Domain\Exception\Service\ContainerServiceException;
 use Alma\API\Entity\FeePlan;
 use Alma\Gateway\Application\Helper\AssetsHelper;
 use Alma\Gateway\Application\Helper\DisplayHelper;
@@ -45,7 +45,7 @@ class AbstractBackendGateway extends AbstractGateway {
 	 * @param array $form_fields
 	 * @param true  $echo Not used, but kept for compatibility.
 	 *
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 * @phpcs Not used, but kept for compatibility.
 	 */
 	public function generate_settings_html( $form_fields = array(), $echo = true ): string {// phpcs:ignore
@@ -184,7 +184,7 @@ class AbstractBackendGateway extends AbstractGateway {
 	/**
 	 * Define the fee plan section.
 	 *
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 * @throws MerchantServiceException
 	 */
 	public function fee_plan_fieldset(): array {

@@ -3,7 +3,7 @@
 namespace Alma\Gateway\Application\Service\API;
 
 use Alma\API\Domain\Adapter\CartAdapterInterface;
-use Alma\API\Domain\Exception\EligibilityServiceException;
+use Alma\API\Domain\Exception\Service\EligibilityServiceException;
 use Alma\API\Domain\Service\API\EligibilityServiceInterface;
 use Alma\API\Endpoint\EligibilityEndpoint;
 use Alma\API\Entity\EligibilityList;

@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Application\Service;
 
-use Alma\API\Domain\Exception\ContainerException;
+use Alma\API\Domain\Exception\Service\ContainerServiceException;
 use Alma\API\Domain\Repository\ConfigRepositoryInterface;
 use Alma\API\Entity\FeePlan;
 use Alma\API\Entity\FeePlanList;
@@ -55,7 +55,7 @@ class ConfigService {
 	 *
 	 * @param $options array The whole posted settings.
 	 *
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 */
 	public static function encryptKeys( array $options ): array {
 

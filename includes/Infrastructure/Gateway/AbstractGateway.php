@@ -2,15 +2,14 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway;
 
-use Alma\API\Domain\Exception\ContainerException;
 use Alma\API\Domain\Exception\CoreException;
 use Alma\API\Domain\Exception\PaymentServiceException;
+use Alma\API\Domain\Exception\Service\ContainerServiceException;
 use Alma\API\DTO\RefundDto;
 use Alma\API\Entity\EligibilityList;
 use Alma\API\Entity\FeePlan;
 use Alma\API\Entity\FeePlanList;
 use Alma\API\Exception\Endpoint\PaymentEndpointException;
-use Alma\API\Exception\ParametersException;
 use Alma\Gateway\Application\Helper\AssetsHelper;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
@@ -55,7 +54,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	/**
 	 * Gateway constructor.
 	 *
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 */
 	public function __construct() {
 		$this->id                 = sprintf( 'alma_%s_gateway', $this->get_type() );
@@ -95,7 +94,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * Get Alma icon.
 	 *
 	 * @return string The icon path.
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 */
 	public function get_icon_url(): string {
 
@@ -122,7 +121,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * - if the gateway is eligible.
 	 *
 	 * @return bool
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 */
 	public function is_available(): bool {
 
@@ -143,7 +142,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 *
 	 * @return array|string[] The result of the payment processing.
 	 *
-	 * @throws ContainerException|CoreException
+	 * @throws ContainerServiceException|CoreException
 	 */
 	public function process_payment( $order_id ): array {
 		/** @var OrderRepository $order_repository */
@@ -191,7 +190,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * @param float|null $amount The amount to refund. If null, the full order amount will be refunded.
 	 * @param string     $reason The reason for the refund.
 	 *
-	 * @throws CoreException|ContainerException|ParametersException|PaymentEndpointException
+	 * @throws CoreException|ContainerServiceException|PaymentEndpointException
 	 */
 	public function process_refund( $order_id, $amount = null, $reason = '' ) {
 
@@ -262,7 +261,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * The result can be cached to avoid multiple calls to the same cart total.
 	 *
 	 * @return bool
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 */
 	private function is_cart_eligible(): bool {
 		$eligibility = false;
