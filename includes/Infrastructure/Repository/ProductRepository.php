@@ -10,7 +10,7 @@ use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 class ProductRepository implements ProductRepositoryInterface {
 
 	/**
-	 * Find a product by its ID.
+	 * Get a product by its ID.
 	 *
 	 * @param int $productId The product ID.
 	 *
@@ -18,7 +18,7 @@ class ProductRepository implements ProductRepositoryInterface {
 	 *
 	 * @throws ProductRepositoryException
 	 */
-	public function findById( int $productId ): ProductAdapterInterface {
+	public function getById( int $productId ): ProductAdapterInterface {
 		$wc_product = wc_get_product( $productId );
 
 		if ( $wc_product ) {

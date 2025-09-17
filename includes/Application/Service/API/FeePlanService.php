@@ -9,7 +9,6 @@ use Alma\API\Infrastructure\Endpoint\MerchantEndpoint;
 use Alma\API\Infrastructure\Exception\Endpoint\MerchantEndpointException;
 use Alma\API\Infrastructure\Exception\ParametersException;
 use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
-use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 
 class FeePlanService implements FeePlanServiceInterface {
@@ -87,10 +86,10 @@ class FeePlanService implements FeePlanServiceInterface {
 			}
 			// WooCommerce use euros, but Alma API uses cents.
 			try {
-				$feePlan->setOverrideMaxPurchaseAmount( DisplayHelper::price_to_cent( $this->optionsService->getMaxAmount( $feePlan->getPlanKey() ) ) );
-				$feePlan->setOverrideMinPurchaseAmount( DisplayHelper::price_to_cent( $this->optionsService->getMinAmount( $feePlan->getPlanKey() ) ) );
+				$feePlan->setOverrideMaxPurchaseAmount( $this->optionsService->getMaxAmount( $feePlan->getPlanKey() ) );
+				$feePlan->setOverrideMinPurchaseAmount( $this->optionsService->getMinAmount( $feePlan->getPlanKey() ) );
 			} catch ( ParametersException $e ) {
-				throw new FeePlanServiceException( $e->getMessage() );
+				//throw new FeePlanServiceException( $e->getMessage() );
 			}
 		}
 

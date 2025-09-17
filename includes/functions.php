@@ -3,7 +3,6 @@
 use Alma\API\Domain\Entity\Eligibility;
 use Alma\API\Domain\Entity\FeePlan;
 use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
-use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Service\API\FeePlanService;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
@@ -136,10 +135,10 @@ add_action(
 		foreach ( $fee_plan_list as $fee_plan ) {
 			echo '<h2>' . $fee_plan->getPlanKey() . '</h2>'
 				. '<ul>'
-				. '<li>Min amount: ' . DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount() ) . '</li>'
-				. '<li>Max amount: ' . DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount() ) . '</li>'
-				. '<li>Override Min amount: ' . DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ) . '</li>'
-				. '<li>Override Max amount: ' . DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) ) . '</li>'
+				. '<li>Min amount: ' . $fee_plan->getMinPurchaseAmount() . '</li>'
+				. '<li>Max amount: ' . $fee_plan->getMaxPurchaseAmount() . '</li>'
+				. '<li>Override Min amount: ' . $fee_plan->getMinPurchaseAmount( true ) . '</li>'
+				. '<li>Override Max amount: ' . $fee_plan->getMaxPurchaseAmount( true ) . '</li>'
 				. '</ul>';
 		}
 

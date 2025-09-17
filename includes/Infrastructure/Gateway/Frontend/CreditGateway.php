@@ -63,7 +63,7 @@ class CreditGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 
 		/** @var TemplateHelper $template_helper */
 		$template_helper = Plugin::get_container()->get( TemplateHelper::class );
-		$template_helper->get_template(
+		$template_helper->getTemplate(
 			'credit-gateway-options.php',
 			array(
 				'alma_woocommerce_gateway_fee_plan_list' => $this->getFeePlanList(),

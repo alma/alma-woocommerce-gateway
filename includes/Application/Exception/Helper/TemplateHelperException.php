@@ -5,7 +5,7 @@ namespace Alma\Gateway\Application\Exception\Helper;
 use Alma\Gateway\Domain\Exception\AlmaException;
 
 /**
- * Class RequirementsHelperException
+ * Class TemplateHelperException
  */
 class TemplateHelperException extends AlmaException {
 

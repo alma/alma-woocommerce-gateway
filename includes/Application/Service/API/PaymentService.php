@@ -61,6 +61,8 @@ class PaymentService implements PaymentServiceInterface {
 	 *
 	 * @param string|null $payment_id The ID of the payment to fetch.
 	 *
+	 * @return Payment The fetched payment.
+	 *
 	 * @throws PaymentServiceException
 	 */
 	public function fetchPayment( ?string $payment_id ): Payment {

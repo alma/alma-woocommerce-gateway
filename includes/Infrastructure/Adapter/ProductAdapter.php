@@ -3,6 +3,7 @@
 namespace Alma\Gateway\Infrastructure\Adapter;
 
 use Alma\API\Domain\Adapter\ProductAdapterInterface;
+use Alma\Gateway\Application\Helper\DisplayHelper;
 use BadMethodCallException;
 use WC_Product;
 
@@ -11,8 +12,6 @@ use WC_Product;
  *
  * This class adapts the WC_Order object to the OrderAdapterInterface, allowing dynamic calls to WC_Order methods.
  * It provides methods to retrieve order details, update order status, and manage order notes.
- *
- * @method getId()
  */
 class ProductAdapter implements ProductAdapterInterface {
 
@@ -36,11 +35,15 @@ class ProductAdapter implements ProductAdapterInterface {
 		throw new BadMethodCallException( "Method $name (→ $snake_case_name) does not exists on WC_Product" );
 	}
 
-	public function getPrice(): float {
-		return (float) $this->wc_product->get_price();
+	public function getPrice(): int {
+		return DisplayHelper::price_to_cent( $this->wc_product->get_price() );
 	}
 
 	public function getCategoryIds(): array {
 		return $this->wc_product->get_category_ids();
+	}
+
+	public function getId(): int {
+		return $this->wc_product->get_id();
 	}
 }

@@ -2,8 +2,8 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway\Backend;
 
-use Alma\API\Entity\FeePlan;
-use Alma\Gateway\Application\Helper\AssetsHelper;
+use Alma\API\Domain\Entity\FeePlan;
+use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\API\FeePlanService;
@@ -14,6 +14,8 @@ use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
+use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
+use Alma\Gateway\Infrastructure\Helper\UrlHelper;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
 use Alma\Gateway\Plugin;
 
@@ -180,6 +182,7 @@ class AbstractBackendGateway extends AbstractGateway {
 
 	/**
 	 * Define the fee plan section.
+	 * @throws FeePlanServiceException
 	 */
 	public function fee_plan_fieldset(): array {
 
@@ -469,7 +472,7 @@ class AbstractBackendGateway extends AbstractGateway {
 					'alma-gateway-for-woocommerce'
 				) . sprintf(
 					L10nHelper::__( '(<a href="%s">Go to logs</a>)' ),
-					$assets_helper->get_admin_logs_url()
+					UrlHelper::getAdminLogsUrl()
 				),
 				// translators: %s: The previous plugin version if exists.
 				'description' => L10nHelper::__(
@@ -510,7 +513,7 @@ class AbstractBackendGateway extends AbstractGateway {
 				'description' => L10nHelper::__( 'Exclude all virtual/downloadable product categories, as you cannot sell them with Alma' ),
 				'desc_tip'    => true,
 				'css'         => 'height: 150px;',
-				'options'     => $product_category_repository->getProductCategories(),
+				'options'     => $product_category_repository->getAll(),
 			),
 			'excluded_products_message'   => array(
 				'title'       => L10nHelper::__( 'Non-eligibility message for excluded products' ),

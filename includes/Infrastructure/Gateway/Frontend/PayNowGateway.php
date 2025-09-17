@@ -33,7 +33,7 @@ class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 	public function payment_fields() {
 		/** @var TemplateHelper $template_helper */
 		$template_helper = Plugin::get_container()->get( TemplateHelper::class );
-		$template_helper->get_template(
+		$template_helper->getTemplate(
 			'pay-now-gateway-options.php',
 			array(
 				'alma_woocommerce_gateway_nonce' => $this->form_helper->generateTokenField(

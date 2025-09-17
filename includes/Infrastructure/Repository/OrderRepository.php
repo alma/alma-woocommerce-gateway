@@ -10,7 +10,7 @@ use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 class OrderRepository implements OrderRepositoryInterface {
 
 	/**
-	 * Find an order by its ID, or eventually by its order key or payment ID.
+	 * Get an order by its ID, or eventually by its order key or payment ID.
 	 *
 	 * @param int         $orderId The order ID.
 	 * @param string|null $order_key The order key, if available.
@@ -20,7 +20,7 @@ class OrderRepository implements OrderRepositoryInterface {
 	 *
 	 * @throws ProductRepositoryException
 	 */
-	public function findById( int $orderId, string $order_key = null, string $payment_id = null ): OrderAdapter {
+	public function getById( int $orderId, string $order_key = null, string $payment_id = null ): OrderAdapter {
 		$wc_order = wc_get_order( $orderId );
 
 		if ( $wc_order ) {

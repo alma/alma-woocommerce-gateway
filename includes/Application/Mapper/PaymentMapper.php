@@ -6,11 +6,9 @@ use Alma\API\Application\DTO\AddressDto;
 use Alma\API\Application\DTO\PaymentDto;
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
 use Alma\API\Domain\Entity\FeePlan;
-use Alma\API\Domain\Helper\ContextHelperInterface;
-use Alma\Gateway\Application\Service\GatewayService;
+use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
-use Alma\Gateway\Plugin;
 
 class PaymentMapper {
 
@@ -24,10 +22,8 @@ class PaymentMapper {
 	 * @return PaymentDto The constructed PaymentDto.
 	 */
 	public function buildPaymentDto( AbstractGateway $gateway, OrderAdapterInterface $order, FeePlan $fee_plan ): PaymentDto {
-		/** @var ContextHelperInterface $contextHelper */
-		$contextHelper = Plugin::get_container()->get( ContextHelper::class );
 
-		return ( new PaymentDto( $order->getOrderTotal( $order->get_id() ) ) )
+		return ( new PaymentDto( $order->getTotal() ) )
 			->setInstallmentsCount( $fee_plan->getInstallmentsCount() )
 			->setDeferredMonths( $fee_plan->getDeferredMonths() )
 			->setDeferredDays( $fee_plan->getDeferredDays() )
@@ -37,9 +33,9 @@ class PaymentMapper {
 					'order_key' => $order->getOrderKey(),
 				)
 			)
-			->setIpnCallbackUrl( $contextHelper->getWebhookUrl( GatewayService::IPN_CALLBACK ) )
-			->setReturnUrl( $contextHelper->getWebhookUrl( GatewayService::CUSTOMER_RETURN ) )
-			->setLocale( apply_filters( 'alma_checkout_payment_user_locale', $contextHelper->getLocale() ) )
+			->setIpnCallbackUrl( ContextHelper::getWebhookUrl( IpnHelper::IPN_CALLBACK ) )
+			->setReturnUrl( ContextHelper::getWebhookUrl( IpnHelper::CUSTOMER_RETURN ) )
+			->setLocale( apply_filters( 'alma_checkout_payment_user_locale', ContextHelper::getLocale() ) )
 			->setCart(
 				( ( new CartMapper() )->buildCartDetails( $order ) )
 			)

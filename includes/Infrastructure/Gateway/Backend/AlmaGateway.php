@@ -2,13 +2,16 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway\Backend;
 
-use Alma\API\ClientConfiguration;
-use Alma\API\Domain\Exception\MerchantServiceException;
-use Alma\API\Domain\Exception\Service\ContainerServiceException;
+use Alma\API\Infrastructure\ClientConfiguration;
+use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
+use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
+use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\EncryptorHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
+use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Service\AuthenticationService;
 use Alma\Gateway\Application\Service\ConfigService;
+use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
 use Alma\Gateway\Plugin;
 
 /**
@@ -22,6 +25,7 @@ class AlmaGateway extends AbstractBackendGateway {
 
 	/**
 	 * Gateway constructor.
+	 * @throws GatewayServiceException
 	 */
 	public function __construct() {
 		$this->method_title       = L10nHelper::__( 'Payment in installments and deferred with Alma' );
@@ -44,6 +48,8 @@ class AlmaGateway extends AbstractBackendGateway {
 
 	/**
 	 * Initialize form fields.
+	 * @throws ContainerServiceException
+	 * @throws FeePlanServiceException
 	 */
 	public function init_form_fields() {
 
@@ -55,7 +61,7 @@ class AlmaGateway extends AbstractBackendGateway {
 		);
 
 		// If the plugin is configured, add the gateway and fee plan fields
-		if ( Plugin::get_instance()->is_configured() ) {
+		if ( PluginHelper::isConfigured() ) {
 			$this->form_fields = array_merge(
 				$this->form_fields,
 				$this->widget_fieldset(),
@@ -113,8 +119,9 @@ class AlmaGateway extends AbstractBackendGateway {
 	 * @param array $new_value The new value of the settings.
 	 *
 	 * @return array The settings with encrypted keys.
+	 * @throws ContainerServiceException
 	 */
-	public function encrypt_keys( $new_value ): array {
+	public function encrypt_keys( array $new_value ): array {
 		$options_service = Plugin::get_container()->get( ConfigService::class );
 
 		return $options_service->encrypt_keys( $new_value );
@@ -139,6 +146,7 @@ class AlmaGateway extends AbstractBackendGateway {
 	 * @param $settings
 	 *
 	 * @return array
+	 * @throws ContainerServiceException
 	 */
 	private function check_values( $settings ): array {
 		$settings = $this->check_amounts( $settings );
@@ -163,6 +171,7 @@ class AlmaGateway extends AbstractBackendGateway {
 			$pattern = '/^(.*)_(' . self::MIN_AMOUNT_SUFFIX . '|' . self::MAX_AMOUNT_SUFFIX . ')$/';
 			if ( preg_match( $pattern, $key, $matches ) ) {
 				$groups[ $matches[1] ][ $matches[2] ] = $value;
+				$settings[ $key ]                     = DisplayHelper::price_to_cent( $value );
 			}
 		}
 
@@ -185,6 +194,7 @@ class AlmaGateway extends AbstractBackendGateway {
 	 * @param array $settings
 	 *
 	 * @return array
+	 * @throws ContainerServiceException
 	 */
 	private function check_keys( array $settings ): array {
 		/** @var AuthenticationService $authentication_service */

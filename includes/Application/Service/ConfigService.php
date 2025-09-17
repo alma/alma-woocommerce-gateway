@@ -5,8 +5,8 @@ namespace Alma\Gateway\Application\Service;
 use Alma\API\Domain\Entity\FeePlan;
 use Alma\API\Domain\Entity\FeePlanList;
 use Alma\API\Domain\Repository\ConfigRepositoryInterface;
-use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\EncryptorHelper;
+use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
 use Alma\Gateway\Infrastructure\Helper\WordPressHelper;
 use Alma\Gateway\Plugin;
 
@@ -53,6 +53,8 @@ class ConfigService {
 	 * Encrypt keys.
 	 *
 	 * @param $options array The whole posted settings.
+	 *
+	 * @throws ContainerServiceException
 	 */
 	public static function encryptKeys( array $options ): array {
 
@@ -206,8 +208,8 @@ class ConfigService {
 
 			$default_plan_list = array(
 				'_enabled'    => false,
-				'_max_amount' => DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount() ),
-				'_min_amount' => DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount() ),
+				'_max_amount' => $fee_plan->getMaxPurchaseAmount(),
+				'_min_amount' => $fee_plan->getMinPurchaseAmount(),
 			);
 
 			foreach ( $default_plan_list as $plan_key => $default_value ) {

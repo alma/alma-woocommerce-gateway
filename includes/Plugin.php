@@ -11,22 +11,21 @@
 
 namespace Alma\Gateway;
 
-use Alma\API\Domain\Exception\CoreException;
-use Alma\API\Domain\Exception\RequirementsException;
-use Alma\API\Domain\Exception\Service\ContainerServiceException;
 use Alma\API\Domain\Helper\ContextHelperInterface;
+use Alma\API\Infrastructure\Exception\PluginException;
+use Alma\Gateway\Application\Exception\Helper\RequirementsHelperException;
+use Alma\Gateway\Application\Exception\Service\ShopServiceException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Helper\RequirementsHelper;
 use Alma\Gateway\Application\Service\AdminService;
 use Alma\Gateway\Application\Service\API\EligibilityService;
 use Alma\Gateway\Application\Service\API\FeePlanService;
-use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\GatewayService;
-use Alma\Gateway\Application\Service\WidgetService;
-use Alma\Gateway\Infrastructure\Helper\BackendHelper;
+use Alma\Gateway\Application\Service\ShopService;
+use Alma\Gateway\Infrastructure\Exception\CmsException;
+use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
-use Alma\Gateway\Infrastructure\Helper\FrontendHelper;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
 
@@ -54,15 +53,6 @@ final class Plugin {
 	/** @var Null|ContainerService The DI Container. */
 	private static ?ContainerService $container = null;
 
-	/** @type string $plugin_url URL to the root plugin's directory. */
-	private string $plugin_url = '';
-
-	/** @type string $plugin_path Path to the root plugin's directory. */
-	private string $plugin_path = '';
-
-	/** @var PluginHelper $plugin_helper */
-	private PluginHelper $plugin_helper;
-
 	/** @var LoggerService $logger_service */
 	private LoggerService $logger_service;
 
@@ -75,6 +65,10 @@ final class Plugin {
 	 * @see plugin_setup()
 	 */
 	public function __construct() {
+		// Configure the plugin paths
+		PluginHelper::setPluginUrl( plugins_url( '/', __DIR__ ) );
+		PluginHelper::setPluginPath( plugin_dir_path( __DIR__ ) );
+		PluginHelper::setPluginFile( dirname( __DIR__ ) . '/alma-gateway-for-woocommerce.php' );
 	}
 
 	/**
@@ -91,10 +85,6 @@ final class Plugin {
 
 		/** @var ContainerService $container */
 		return self::$container;
-	}
-
-	public static function set_container( ContainerService $container ) {
-		self::$container = $container;
 	}
 
 	/**
@@ -114,12 +104,12 @@ final class Plugin {
 	 * Used for plugin warmup.
 	 *
 	 * @throws ContainerServiceException
-	 * @throws RequirementsException
+	 * @throws RequirementsHelperException
 	 */
 	public function plugin_warmup(): void {
 
 		// Configure Languages
-		L10nHelper::load_language( $this->get_plugin_path() );
+		L10nHelper::load_language( PluginHelper::getPluginPath() );
 
 		// Check mandatory prerequisites
 		if ( ! $this->are_prerequisites_ok() ) {
@@ -134,21 +124,14 @@ final class Plugin {
 		$this->contextHelper = $contextHelper;
 
 		// Set the plugin helper and logger service
-		/** @var PluginHelper $plugin_helper */
-		$plugin_helper       = self::get_container()->get( PluginHelper::class );
-		$this->plugin_helper = $plugin_helper;
 		/** @var LoggerService $logger_service */
 		$logger_service       = self::get_container()->get( LoggerService::class );
 		$this->logger_service = $logger_service;
 
-		$this->plugin_url = plugins_url( '/', __DIR__ );
-		$this->plugin_helper->set_plugin_url( $this->plugin_url );
-		$this->plugin_path = plugin_dir_path( __DIR__ );
-
 		// Configure the gateways
 		/** @var GatewayService $gateway_service */
 		$gateway_service = self::get_container()->get( GatewayService::class );
-		if ( $this->is_configured() ) {
+		if ( PluginHelper::isConfigured() ) {
 			/** @var EligibilityService $eligibility_service */
 			$eligibility_service = self::get_container()->get( EligibilityService::class );
 			$gateway_service->setEligibilityService( $eligibility_service );
@@ -163,7 +146,8 @@ final class Plugin {
 	 *
 	 * @return  void
 	 * @throws ContainerServiceException
-	 * @throws RequirementsException
+	 * @throws RequirementsHelperException
+	 * @throws PluginException
 	 */
 	public function plugin_setup(): void {
 
@@ -174,40 +158,23 @@ final class Plugin {
 		/** @var GatewayService $gateway_service */
 		$gateway_service = self::get_container()->get( GatewayService::class );
 		$gateway_service->loadGateway();
-		if ( $this->is_configured() ) {
+		if ( PluginHelper::isConfigured() ) {
 			$gateway_service->configureReturns();
 		}
 
 		// Run services only when WordPress admin is ready.
-		BackendHelper::runBackendServices(
-			function () {
-				// Init Backend Services
-				if ( $this->contextHelper->isAdmin() ) {
-					/** @var AdminService $admin_service */
-					$admin_service = self::get_container()->get( AdminService::class );
-					$admin_service->enqueueAdminScripts();
-				}
-			}
-		);
+		/** @var AdminService $adminService */
+		$adminService = self::get_container()->get( AdminService::class );
+		$adminService->runService();
 
 		// Run services only when WordPress frontend is ready.
-		FrontendHelper::runFrontendServices(
-			function () {
-				if ( ! $this->is_plugin_needed() ) {
-					return;
-				}
-
-				/** @var GatewayService $gateway_service */
-				$gateway_service = self::get_container()->get( GatewayService::class );
-				$gateway_service->configureGateway();
-
-				if ( $this->is_configured() ) {
-					/** @var WidgetService $widget_service */
-					$widget_service = self::get_container()->get( WidgetService::class );
-					$widget_service->displayWidget();
-				}
-			}
-		);
+		try {
+			/** @var ShopService $shopService */
+			$shopService = self::get_container()->get( ShopService::class );
+			$shopService->runService();
+		} catch ( ShopServiceException $e ) {
+			throw new PluginException( $e->getMessage() );
+		}
 	}
 
 	/**
@@ -215,18 +182,17 @@ final class Plugin {
 	 * We don't use Dice because it's not loaded yet.
 	 *
 	 * @return bool
-	 * @throws RequirementsException
+	 * @throws RequirementsHelperException
 	 */
 	public function are_prerequisites_ok(): bool {
 		// Check if WooCommerce is active
-		$contextHelper = new ContextHelper();
-		if ( ! $contextHelper->isCmsLoaded() ) {
+		if ( ! ContextHelper::isCmsLoaded() ) {
 			return false;
 		}
 
 		// Check if all dependencies are met
 		$requirements_helper = new RequirementsHelper();
-		if ( ! $requirements_helper->check_dependencies( $contextHelper->getCmsVersion() ) ) {
+		if ( ! $requirements_helper->check_dependencies( ContextHelper::getCmsVersion() ) ) {
 			return false;
 		}
 
@@ -234,85 +200,22 @@ final class Plugin {
 	}
 
 	/**
-	 * @throws ContainerServiceException
-	 */
-	public function is_configured(): bool {
-		/** @var ConfigService $options_service */
-		$options_service = self::get_container()->get( ConfigService::class );
-
-		return $options_service->isConfigured();
-	}
-
-	/**
-	 * Define if we can load the plugin.
-	 * True on cart or checkout page if the plugin is configured for frontend use.
-	 *
-	 * @throws ContainerServiceException
-	 */
-	public function is_plugin_needed(): bool {
-
-		// Are we on the cart page?
-		// If everything is ok, we can load the plugin
-		if ( $this->is_configured() && $this->contextHelper->isCartProductOrCheckoutPage() ) {
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Return the plugin path.
-	 *
-	 * @return string
-	 */
-	public function get_plugin_path(): string {
-		return $this->plugin_path;
-	}
-
-	/**
-	 * Return the plugin url.
-	 *
-	 * @return string
-	 */
-	public function get_plugin_url(): string {
-		return $this->plugin_url;
-	}
-
-	/**
-	 * Return the plugin version.
-	 *
-	 * @return string
-	 */
-	public function get_plugin_version(): string {
-		return self::ALMA_GATEWAY_PLUGIN_VERSION;
-	}
-
-	/**
-	 * Return the plugin filename.
-	 *
-	 * @return string
-	 */
-	public function get_plugin_file(): string {
-		return dirname( __DIR__ ) . '/alma-gateway-for-woocommerce.php';
-	}
-
-	/**
 	 * Singletons should not be restored from strings.
 	 *
 	 * @return void
-	 * @throws CoreException if called
+	 * @throws CmsException if called
 	 */
 	public function __wakeup() {
-		throw new CoreException( 'Cannot serialize or unserialize a plugin!' );
+		throw new CmsException( 'Cannot serialize or unserialize a plugin!' );
 	}
 
 	/**
 	 * Clone is not allowed.
 	 *
 	 * @return void
-	 * @throws CoreException
+	 * @throws CmsException
 	 */
 	private function __clone() {
-		throw new CoreException( 'Cannot clone the plugin!' );
+		throw new CmsException( 'Cannot clone the plugin!' );
 	}
 }

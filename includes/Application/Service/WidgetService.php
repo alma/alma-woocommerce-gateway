@@ -7,9 +7,11 @@ use Alma\API\Domain\Entity\FeePlanList;
 use Alma\API\Domain\Helper\ContextHelperInterface;
 use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
 use Alma\Gateway\Application\Exception\Service\WidgetServiceException;
-use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Service\API\FeePlanService;
+use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
+use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
+use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\WidgetHelper;
 use Alma\Gateway\Infrastructure\Repository\ProductRepository;
 
@@ -67,6 +69,8 @@ class WidgetService {
 	 *
 	 * @return void
 	 * @throws WidgetServiceException
+	 * @throws ProductRepositoryException
+	 * @throws ContainerServiceException
 	 */
 	public function displayWidget() {
 		$environment = $this->optionsService->getEnvironment();
@@ -77,10 +81,10 @@ class WidgetService {
 			throw new WidgetServiceException( $e->getMessage() );
 		}
 		$excludedCategories = $this->optionsService->getExcludedCategories();
-		$language           = $this->contextHelper->getLanguage();
+		$language           = ContextHelper::getLanguage();
 
 		// Display widget if page is cart or product page and widget is enabled.
-		if ( $this->contextHelper->isCartPage() ) {
+		if ( ContextHelper::isCartPage() ) {
 			// Display widget if widget is enabled and there are no excluded categories.
 			$widgetCartEnabled = $this->optionsService->getWidgetCartEnabled();
 			$displayWidget     = $this->shouldDisplayWidget(
@@ -99,9 +103,9 @@ class WidgetService {
 				$displayWidget
 			);
 
-		} elseif ( $this->contextHelper->isProductPage() ) {
+		} elseif ( ContextHelper::isProductPage() ) {
 			// Get the product
-			$product = $this->productRepository->findById( $this->contextHelper->getCurrentProduct() );
+			$product = $this->productRepository->getById( ContextHelper::getCurrentProductId() );
 
 			// Display widget if widget is enabled and there are no excluded categories.
 			$widgetProductEnabled = $this->optionsService->getWidgetProductEnabled();
@@ -115,7 +119,7 @@ class WidgetService {
 			$this->widgetHelper->displayProductWidget(
 				$environment,
 				$merchantId,
-				DisplayHelper::price_to_cent( $product->getPrice() ),
+				$product->getPrice(),
 				$feePlanList,
 				$language,
 				$displayWidget

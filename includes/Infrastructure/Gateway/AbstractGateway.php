@@ -9,7 +9,6 @@ use Alma\API\Domain\Entity\FeePlanList;
 use Alma\API\Infrastructure\Exception\ParametersException;
 use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
-use Alma\Gateway\Application\Helper\AssetsHelper;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Mapper\CustomerMapper;
@@ -20,6 +19,7 @@ use Alma\Gateway\Application\Service\API\PaymentService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
+use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Infrastructure\Service\CacheService;
@@ -104,7 +104,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		/** @var AssetsHelper $asset_helper */
 		$asset_helper = Plugin::get_container()->get( AssetsHelper::class );
 
-		return $asset_helper->get_image( 'images/alma_logo.svg' );
+		return $asset_helper->getImage( 'images/alma_logo.svg' );
 	}
 
 	/**
@@ -151,7 +151,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		/** @var OrderRepository $order_repository */
 		$order_repository = Plugin::get_container()->get( OrderRepository::class );
 		try {
-			$order = $order_repository->findById( $order_id );
+			$order = $order_repository->getById( $order_id );
 		} catch ( ProductRepositoryException $e ) {
 			throw new GatewayServiceException( 'Can not find Order' );
 		}
@@ -203,7 +203,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 
 		/** @var OrderRepository $order_repository */
 		$order_repository = Plugin::get_container()->get( OrderRepository::class );
-		$order            = $order_repository->findById( $order_id );
+		$order            = $order_repository->getById( $order_id );
 
 		/** @var PaymentService $payment_service */
 		$payment_service = Plugin::get_container()->get( PaymentService::class );

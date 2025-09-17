@@ -69,7 +69,7 @@ class PayLaterGateway extends AbstractFrontendGateway implements FrontendGateway
 	public function payment_fields() {
 		/** @var TemplateHelper $template_helper */
 		$template_helper = Plugin::get_container()->get( TemplateHelper::class );
-		$template_helper->get_template(
+		$template_helper->getTemplate(
 			'pay-later-gateway-options.php',
 			array(
 				'alma_woocommerce_gateway_fee_plan_list' => $this->getFeePlanList(),

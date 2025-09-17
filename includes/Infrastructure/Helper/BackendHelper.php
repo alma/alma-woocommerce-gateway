@@ -9,10 +9,10 @@ class BackendHelper {
 	/**
 	 * Run services on admin init.
 	 *
-	 * @param callable $callback
+	 * @param callable $callback Function to run on admin_init.
 	 */
 	public static function runBackendServices( callable $callback ) {
-		add_action( 'admin_init', $callback );
+		EventHelper::addEvent( 'admin_init', $callback );
 	}
 
 	/**
