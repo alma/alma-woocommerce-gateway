@@ -12,6 +12,9 @@
 namespace Alma\Gateway\Application\Helper;
 
 use Alma\API\Domain\Exception\RequirementsException;
+use Alma\Gateway\Application\Exception\Helper\EncryptorHelperException;
+use Alma\Gateway\Infrastructure\Exception\CmsException;
+use Alma\Gateway\Infrastructure\Helper\SecurityHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
@@ -55,12 +58,16 @@ class EncryptorHelper {
 	 *
 	 * @param string $method The method.
 	 *
-	 * @throws RequirementsException Requirement exception.
-	 *
+	 * @throws EncryptorHelperException
 	 * @todo check with security if we need to change algorythm
 	 */
 	public function __construct( string $method = 'AES-256-CTR' ) {
-		$key_salt = $this->get_key_salt();
+
+		try {
+			$key_salt = SecurityHelper::getKeySalt();
+		} catch ( CmsException $e ) {
+			throw new EncryptorHelperException( 'The constant NONCE_SALT is not defined' );
+		}
 
 		$methods = openssl_get_cipher_methods();
 
@@ -106,19 +113,5 @@ class EncryptorHelper {
 		$encrypted_data = base64_decode( $encrypted_data );// phpcs:ignore
 
 		return openssl_decrypt( $encrypted_data, $this->method, $this->key, OPENSSL_RAW_DATA, $this->iv );
-	}
-
-	/**
-	 *  Get the salt.
-	 *
-	 * @return string
-	 * @throws RequirementsException  Requirement exception.
-	 */
-	protected function get_key_salt(): string {
-		if ( defined( 'NONCE_SALT' ) ) {
-			return NONCE_SALT;
-		}
-
-		throw new RequirementsException( 'The constant NONCE_SALT must to be defined in wp-config.php' );
 	}
 }

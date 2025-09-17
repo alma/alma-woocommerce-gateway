@@ -2,11 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 
-use Alma\API\Domain\Exception\ContainerException;
+use Alma\API\Domain\Entity\FeePlanList;
 use Alma\API\Domain\Exception\MerchantServiceException;
+use Alma\API\Domain\Exception\Service\ContainerServiceException;
 use Alma\API\Domain\Helper\FormHelperInterface;
-use Alma\API\Entity\FeePlanList;
-use Alma\API\Exception\ParametersException;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Service\API\FeePlanService;
 use Alma\Gateway\Application\Service\ConfigService;
@@ -60,7 +59,7 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	 * It calls the parent method to check the availability.
 	 *
 	 * @return bool
-	 * @throws ContainerException|MerchantServiceException
+	 * @throws ContainerServiceException|MerchantServiceException
 	 */
 	public function is_available(): bool {
 
@@ -97,7 +96,7 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	 * This method retrieves the fee plans from the FeePlanService and filters them based on the gateway type.
 	 *
 	 * @return FeePlanList
-	 * @throws MerchantServiceException|ContainerException|ParametersException
+	 * @throws MerchantServiceException|ContainerServiceException
 	 */
 	public function getFeePlanList(): FeePlanList {
 		/** @var FeePlanService $fee_plan_service */

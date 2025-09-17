@@ -1,6 +1,6 @@
 <?php
 
-namespace Alma\Gateway\Application\Service;
+namespace Alma\Gateway\Infrastructure\Service;
 
 
 use Alma\API\Domain\Helper\SessionHelperInterface;

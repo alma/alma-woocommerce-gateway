@@ -4,20 +4,20 @@ namespace Alma\Gateway\Application\Service;
 
 use Alma\API\Domain\Adapter\CartAdapterInterface;
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
-use Alma\API\Domain\Exception\ContainerException;
-use Alma\API\Domain\Exception\PaymentServiceException;
-use Alma\API\Domain\Exception\SecurityException;
+use Alma\API\Domain\Entity\Payment;
 use Alma\API\Domain\Helper\NavigationHelperInterface;
 use Alma\API\Domain\Helper\NotificationHelperInterface;
-use Alma\API\Entity\Payment;
-use Alma\API\Exception\Endpoint\PaymentEndpointException;
+use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
+use Alma\Gateway\Application\Exception\Service\IpnServiceException;
 use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\API\PaymentService;
+use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
+use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
 use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
+use Alma\Gateway\Infrastructure\Helper\ParameterHelper;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Plugin;
-use Exception;
 
 class IpnService {
 
@@ -62,40 +62,44 @@ class IpnService {
 	 * Handle the customer return.
 	 *
 	 * @return void
-	 * @throws ContainerException
+	 *
+	 * @throws ContainerServiceException
 	 * @todo check nonce
 	 */
 	public function handleCustomerReturn(): void {
 
-		// Get the order ID and validate it
-		$payment_id = sanitize_text_field( $_GET['pid'] ) ?? null;
+		$paymentId = ParameterHelper::checkAndCleanParam( $_GET['pid'] );
 
-		if ( ! $payment_id ) {
+		if ( ! $paymentId ) {
 			$this->navigationHelper->redirectToCart( L10nHelper::__( 'Payment validation error: no ID provided.<br>Please try again or contact us if the problem persists.' ) );
 			exit();
 		}
 
 		// Process the customer return
 		try {
-			$payment = $this->paymentService->fetchPayment( $payment_id );
+			$payment = $this->paymentService->fetchPayment( $paymentId );
 			/** @var OrderRepository $order_repository */
 			$order_repository = Plugin::get_container()->get( OrderRepository::class );
-			$order            = $order_repository->findById(
-				$payment->custom_data['order_id'],
-				$payment->custom_data['order_key'],
-				$payment_id
+			$order            = $order_repository->getById(
+				$payment->getCustomData()['order_id'],
+				$payment->getCustomData()['order_key'],
+				$paymentId
 			);
 
-			if ( $order->has_status( array( 'on-hold', 'pending', 'failed' ) ) ) {
+			if ( $order->hasStatus( array( 'on-hold', 'pending', 'failed' ) ) ) {
 				$this->manageMismatch( $order, $payment );
 				$this->managePotentialFraud( $order, $payment );
 			}
 
-			$order->payment_complete( $payment_id );
+			if ( ! $order->paymentComplete( $paymentId ) ) {
+				$this->navigationHelper->redirectToCart( L10nHelper::__( 'Payment validation error: order not found.<br>Please try again or contact us if the problem persists.' ) );
+				exit();
+			}
+
 			$this->cartAdapter->emptyCart();
 			$this->notificationHelper->notifySuccess( L10nHelper::__( 'Payment validation done' ) );
 
-		} catch ( Exception $e ) {
+		} catch ( IpnServiceException|PaymentServiceException|ProductRepositoryException $e ) {
 			$this->notificationHelper->notifyError(
 				sprintf(
 					L10nHelper::__( 'Payment validation error: %s<br>Please try again or contact us if the problem persists.' ),
@@ -112,81 +116,88 @@ class IpnService {
 	 * Handle IPN callback.
 	 *
 	 * @return void
+	 * @throws ContainerServiceException
 	 * @todo check nonce
 	 */
 	public function handleIpnCallback(): void {
 
-		// Get the order ID and validate it
-		$payment_id = sanitize_text_field( $_GET['pid'] ) ?? null;
+		$paymentId = ParameterHelper::checkAndCleanParam( $_GET['pid'] );
 
-		if ( ! $payment_id ) {
-			wp_send_json( array( 'error' => 'Payment validation error: no ID provided.' ), 403 );
+		if ( ! $paymentId ) {
+			$this->ipnHelper->parameterError();
 		}
 
 		// Get the signature and validate it
 		if ( ! array_key_exists( 'HTTP_X_ALMA_SIGNATURE', $_SERVER ) ) {
-			wp_send_json( array( 'error' => 'Header key X-Alma-Signature does not exist.' ), 403 );
+			$this->ipnHelper->signatureNotExistError();
 		}
 		try {
 			$this->ipnHelper->validateIpnSignature(
-				$payment_id,
+				$paymentId,
 				$this->configService->getActiveApiKey(),
 				$_SERVER['HTTP_X_ALMA_SIGNATURE']
 			);
-		} catch ( SecurityException $e ) {
-			wp_send_json( array( 'error' => $e->getMessage() ), 403 );
+		} catch ( IpnServiceException $e ) {
+			$this->ipnHelper->unauthorizedError( $e->getMessage() );
 		}
 
 		// Process the IPN callback
-		$code   = 200;
-		$result = array( 'success' => true );
+		$order = null;
 
 		try {
-			$payment = $this->paymentService->fetchPayment( $payment_id );
-			/** @var OrderRepository $order_repository */
-			$order_repository = Plugin::get_container()->get( OrderRepository::class );
-			$order            = $order_repository->findById(
-				$payment->custom_data['order_id'],
-				$payment->custom_data['order_key'],
-				$payment_id
+			$payment = $this->paymentService->fetchPayment( $paymentId );
+			/** @var OrderRepository $orderRepository */
+			$orderRepository = Plugin::get_container()->get( OrderRepository::class );
+			$order           = $orderRepository->getById(
+				$payment->getCustomData()['order_id'],
+				$payment->getCustomData()['order_key'],
+				$paymentId
 			);
-			if ( $order->has_status( array( 'on-hold', 'pending', 'failed' ) ) ) {
+		} catch ( ProductRepositoryException|PaymentServiceException $e ) {
+			$this->ipnHelper->parameterError( 'Payment validation error: ' . $e->getMessage() );
+		}
+
+		try {
+			if ( $order->hasStatus( array( 'on-hold', 'pending', 'failed' ) ) ) {
 				$this->manageMismatch( $order, $payment );
 				$this->managePotentialFraud( $order, $payment );
 			}
-		} catch ( Exception $e ) {
-			$code    = 500;
-			$message = sprintf( ' %s - Payment id : "%s"', $e->getMessage(), $payment_id );
-			$result  = array( 'error' => $message );
-		} finally {
-			wp_send_json( $result, $code );
+		} catch ( IpnServiceException $e ) {
+			$this->ipnHelper->potentialFraudError( $e->getMessage() );
 		}
+
+		$this->ipnHelper->success();
 	}
 
 	/**
-	 * @throws PaymentServiceException|PaymentEndpointException
+	 * @throws IpnServiceException
 	 */
 	private function manageMismatch( OrderAdapterInterface $order, Payment $payment ): void {
-
-		$order_total = $order->getOrderTotal( $order->get_id() );
-		if ( $order_total !== $payment->purchase_amount ) {
-			$this->paymentService->flagAsFraud( $payment->id, Payment::FRAUD_AMOUNT_MISMATCH );
-			$order->update_status( 'failed', Payment::FRAUD_AMOUNT_MISMATCH );
-
-			throw new PaymentServiceException( 'Potential fraud detected: order total does not match payment amount.' );
+		$order_total = $order->getTotal();
+		if ( $order_total !== $payment->getPurchaseAmount() ) {
+			try {
+				$this->paymentService->flagAsFraud( $payment->getId(), Payment::FRAUD_AMOUNT_MISMATCH );
+			} catch ( PaymentServiceException $e ) {
+				throw new IpnServiceException( $e->getMessage() );
+			}
+			$order->updateStatus( 'failed', Payment::FRAUD_AMOUNT_MISMATCH );
+			throw new IpnServiceException( 'Potential fraud detected: order total does not match payment amount.' );
 		}
 	}
 
 	/**
-	 * @throws PaymentServiceException
+	 * @throws IpnServiceException
 	 */
-	private function managePotentialFraud( OrderAdapterInterface $order, $payment ): void {
+	private function managePotentialFraud( OrderAdapterInterface $order, Payment $payment ): void {
+		if ( ! in_array( $payment->getState(), array( Payment::STATE_IN_PROGRESS, Payment::STATE_PAID ), true ) ) {
+			try {
+				$this->paymentService->flagAsFraud( $payment->getId(), Payment::FRAUD_STATE_ERROR );
+			} catch ( PaymentServiceException $e ) {
+				throw new IpnServiceException( $e->getMessage() );
+			}
+			$order->updateStatus( 'failed', Payment::FRAUD_STATE_ERROR );
 
-		if ( ! in_array( $payment->state, array( Payment::STATE_IN_PROGRESS, Payment::STATE_PAID ), true ) ) {
-			$this->paymentService->flagAsFraud( $payment->id, Payment::FRAUD_STATE_ERROR );
-			$order->update_status( 'failed', Payment::FRAUD_STATE_ERROR );
-
-			throw new PaymentServiceException( 'Potential fraud detected: payment state is not in progress or paid.' );
+			throw new IpnServiceException( 'Potential fraud detected: payment state is not in progress or paid.' );
 		}
 	}
 }

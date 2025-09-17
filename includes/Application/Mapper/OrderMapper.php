@@ -2,8 +2,8 @@
 
 namespace Alma\Gateway\Application\Mapper;
 
+use Alma\API\Application\DTO\OrderDto;
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
-use Alma\API\DTO\OrderDto;
 
 class OrderMapper {
 

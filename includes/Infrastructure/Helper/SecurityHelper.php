@@ -3,8 +3,24 @@
 namespace Alma\Gateway\Infrastructure\Helper;
 
 use Alma\API\Domain\Helper\SecurityHelperInterface;
+use Alma\Gateway\Infrastructure\Exception\CmsException;
 
 class SecurityHelper implements SecurityHelperInterface {
+
+	/**
+	 *  Get the salt.
+	 *
+	 * @return string The salt.
+	 *
+	 * @throws CmsException If the NONCE_SALT constant is not defined.
+	 */
+	public static function getKeySalt(): string {
+		if ( defined( 'NONCE_SALT' ) ) {
+			return NONCE_SALT;
+		}
+
+		throw new CmsException( 'The constant NONCE_SALT must to be defined in wp-config.php' );
+	}
 
 	/**
 	 * Set a token for form submission.
@@ -20,10 +36,10 @@ class SecurityHelper implements SecurityHelperInterface {
 	/**
 	 * Checks if the token is valid.
 	 *
-	 * @param string $token The nonce field name.
+	 * @param string $token The token field name.
 	 * @param string $action The action name.
 	 *
-	 * @return bool True if the nonce is valid, false otherwise.
+	 * @return bool True if the token is valid, false otherwise.
 	 */
 	public function validateToken( string $token, string $action ): bool {
 		if ( ! isset( $_POST[ $token ] ) ) {
@@ -35,5 +51,16 @@ class SecurityHelper implements SecurityHelperInterface {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Validates an AJAX request token.
+	 *
+	 * @param string $token The token field name.
+	 *
+	 * @return bool True if the token is valid, false otherwise.
+	 */
+	public function validateAjaxToken( string $token ): bool {
+		return check_ajax_referer( $token, 'security' );
 	}
 }

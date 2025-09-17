@@ -2,7 +2,6 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
-use Alma\API\Domain\Exception\ContainerException;
 use Alma\Gateway\Plugin;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -19,7 +18,6 @@ class CoreHelper {
 	 * This is useful to ensure that the latest options are used in the application.
 	 *
 	 * @return void
-	 * @throws ContainerException
 	 */
 	public static function autoReloadOptionsOnOptionSave() {
 		add_action(

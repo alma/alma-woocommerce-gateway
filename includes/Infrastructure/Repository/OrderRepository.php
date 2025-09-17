@@ -3,14 +3,14 @@
 namespace Alma\Gateway\Infrastructure\Repository;
 
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
-use Alma\API\Domain\Exception\CoreException;
 use Alma\API\Domain\Repository\OrderRepositoryInterface;
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
+use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 
 class OrderRepository implements OrderRepositoryInterface {
 
 	/**
-	 * Find an order by its ID, or eventually by its order key or payment ID.
+	 * Get an order by its ID, or eventually by its order key or payment ID.
 	 *
 	 * @param int         $orderId The order ID.
 	 * @param string|null $order_key The order key, if available.
@@ -18,9 +18,9 @@ class OrderRepository implements OrderRepositoryInterface {
 	 *
 	 * @return OrderAdapterInterface The order object.
 	 *
-	 * @throws CoreException
+	 * @throws ProductRepositoryException
 	 */
-	public function findById( int $orderId, string $order_key = null, string $payment_id = null ): OrderAdapter {
+	public function getById( int $orderId, string $order_key = null, string $payment_id = null ): OrderAdapter {
 		$wc_order = wc_get_order( $orderId );
 
 		if ( $wc_order ) {
@@ -32,7 +32,7 @@ class OrderRepository implements OrderRepositoryInterface {
 			$order    = wc_get_order( $order_id );
 
 			if ( ! $order || ! hash_equals( $order->get_order_key(), $order_key ) ) {
-				throw new CoreException(
+				throw new ProductRepositoryException(
 					sprintf(
 						'Undefined Order id: %d (%s / %s)',
 						$orderId,
@@ -45,6 +45,7 @@ class OrderRepository implements OrderRepositoryInterface {
 			return new OrderAdapter( $order );
 		}
 
-		throw new CoreException( sprintf( 'Undefined Order id: %d (%s / %s)', $orderId, $order_key, $payment_id ) );
+		throw new ProductRepositoryException( sprintf( 'Undefined Order id: %d (%s / %s)', $orderId, $order_key,
+			$payment_id ) );
 	}
 }

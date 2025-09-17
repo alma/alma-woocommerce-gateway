@@ -1,19 +1,18 @@
 <?php
 
-use Alma\API\Domain\Exception\ContainerException;
-use Alma\API\Domain\Exception\MerchantServiceException;
-use Alma\API\Entity\Eligibility;
-use Alma\API\Entity\FeePlan;
-use Alma\Gateway\Application\Helper\DisplayHelper;
+use Alma\API\Domain\Entity\Eligibility;
+use Alma\API\Domain\Entity\FeePlan;
+use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
 use Alma\Gateway\Application\Service\API\FeePlanService;
 use Alma\Gateway\Application\Service\ConfigService;
-use Alma\Gateway\Application\Service\LoggerService;
+use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
+use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Alma\Gateway\Plugin;
 
 add_action(
 	'wp_footer',
-	/** @throws ContainerException */
+	/** @throws ContainerServiceException */
 	function () {
 		if ( ! is_checkout() ) {
 			return;
@@ -41,7 +40,7 @@ add_action(
 
 add_action(
 	'wp_footer',
-	/** @throws ContainerException */
+	/** @throws ContainerServiceException */
 	function () {
 
 		echo '<h1>All Options</h1>';
@@ -116,9 +115,6 @@ add_action(
 
 add_action(
 	'wp_footer',
-	/** @throws ContainerException
-	 * @throws MerchantServiceException
-	 */
 	function () {
 		if ( ! is_checkout() ) {
 			return;
@@ -127,17 +123,22 @@ add_action(
 		echo '<h1>Fee plans from API</h1>';
 		echo '<pre>';
 		/** @var FeePlanService $fee_plan_service */
-		$fee_plan_service = Plugin::get_container()->get( FeePlanService::class );
-		$fee_plan_list    = $fee_plan_service->getFeePlanList();
+		try {
+			$fee_plan_service = Plugin::get_container()->get( FeePlanService::class );
+			$fee_plan_list    = $fee_plan_service->getFeePlanList();
+		} catch ( ContainerServiceException | FeePlanServiceException $e ) {
+			echo 'Error: ' . $e->getMessage();
+			die;
+		}
 
 		/** @var FeePlan $fee_plan */
 		foreach ( $fee_plan_list as $fee_plan ) {
 			echo '<h2>' . $fee_plan->getPlanKey() . '</h2>'
 				. '<ul>'
-				. '<li>Min amount: ' . DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount() ) . '</li>'
-				. '<li>Max amount: ' . DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount() ) . '</li>'
-				. '<li>Override Min amount: ' . DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ) . '</li>'
-				. '<li>Override Max amount: ' . DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) ) . '</li>'
+				. '<li>Min amount: ' . $fee_plan->getMinPurchaseAmount() . '</li>'
+				. '<li>Max amount: ' . $fee_plan->getMaxPurchaseAmount() . '</li>'
+				. '<li>Override Min amount: ' . $fee_plan->getMinPurchaseAmount( true ) . '</li>'
+				. '<li>Override Max amount: ' . $fee_plan->getMaxPurchaseAmount( true ) . '</li>'
 				. '</ul>';
 		}
 

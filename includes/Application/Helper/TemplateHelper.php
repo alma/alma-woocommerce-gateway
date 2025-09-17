@@ -2,7 +2,8 @@
 
 namespace Alma\Gateway\Application\Helper;
 
-use Alma\Gateway\Plugin;
+use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
+use Alma\Gateway\Infrastructure\Helper\RenderHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
@@ -18,22 +19,22 @@ class TemplateHelper {
 	 *
 	 * Locate the called template.
 	 * Search Order:
-	 * 1. /themes/theme/woocommerce-plugin-templates/$template_name
-	 * 2. /themes/theme/$template_name
-	 * 3. /plugins/woocommerce-plugin-templates/templates/$template_name.
+	 * 1. /themes/theme/woocommerce-plugin-templates/$templateName
+	 * 2. /themes/theme/$templateName
+	 * 3. /plugins/woocommerce-plugin-templates/templates/$templateName.
 	 *
-	 * @param string $template_name Template to load.
+	 * @param string $templateName Template to load.
 	 * @param string $subpath Subdirectories.
 	 */
-	public function locate_template( string $template_name, string $subpath = '' ) {
+	public function locateTemplate( string $templateName, string $subpath = '' ): string {
 
-		$template = Plugin::get_instance()->get_plugin_path() . 'public/templates/' . $template_name;
-
-		if ( ! empty( $subpath ) ) {
-			$template = Plugin::get_instance()->get_plugin_path() . 'public/templates/' . $subpath . '/' . $template_name;
+		if ( $subpath ) {
+			$templatePath = PluginHelper::getPluginPath() . 'public/templates/' . $subpath . '/' . $templateName;
+		} else {
+			$templatePath = PluginHelper::getPluginPath() . 'public/templates/' . $templateName;
 		}
 
-		return apply_filters( 'alma_locate_template', $template, $template_name );
+		return RenderHelper::locate( $templatePath, $templateName );
 	}
 
 	/**
@@ -43,29 +44,25 @@ class TemplateHelper {
 	 * @param array  $args Args passed for the template file.
 	 * @param string $subpath Path to template files.
 	 *
+	 * @throws TemplateHelperException
 	 * @see locate_template()
 	 *
 	 * @sonar It's mandatory to use include_once method here.
 	 * @phpcs We use extract to pass variables to the template.
 	 */
-	public function get_template( string $template_name, array $args = array(), string $subpath = '' ) {
+	public function getTemplate( string $template_name, array $args = array(), string $subpath = '' ) {
 
 		if ( is_array( $args ) ) {
 			// We master our data. It's not get or post.
 			extract( $args );// phpcs:ignore
 		}
 
-		$template_file = $this->locate_template( $template_name, $subpath );
+		$template_file = $this->locateTemplate( $template_name, $subpath );
 
 		if ( ! file_exists( $template_file ) ) {
-			// @todo use a proxy
-			_doing_it_wrong(
-				__FUNCTION__,
-				sprintf( '<code>%s</code> does not exist.', esc_html( $template_file ) ),
-				'4.2.0'
+			throw new TemplateHelperException(
+				sprintf( 'Template file %s does not exist.', esc_html( $template_file ) )
 			);
-
-			return;
 		}
 
 		include_once $template_file;// NOSONAR -- It's mandatory to use include_once method here.

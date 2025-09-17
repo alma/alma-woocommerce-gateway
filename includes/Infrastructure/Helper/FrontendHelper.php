@@ -14,10 +14,10 @@ class FrontendHelper {
 	 * Run services on template redirect.
 	 * We need to wait templates because is_page detection run at this time!
 	 *
-	 * @param callable $callback
+	 * @param callable $callback Function to run on template_redirect.
 	 */
 	public static function runFrontendServices( callable $callback ) {
-		add_action( 'template_redirect', $callback );
+		EventHelper::addEvent( 'template_redirect', $callback );
 	}
 
 	/**

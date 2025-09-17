@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Application\Helper;
 
-use Alma\API\Entity\FeePlan;
+use Alma\API\Domain\Entity\FeePlan;
 use Alma\Gateway\Infrastructure\Helper\LanguageHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -25,7 +25,7 @@ class L10nHelper {
 	 * @phpcs We pass a variable to __() call because it's a proxy!
 	 */
 	public static function __( string $translation, string $domain = self::ALMA_L10N_DOMAIN ): string /* NOSONAR */ {
-		return __( $translation, $domain );// phpcs:ignore
+		return LanguageHelper::__( $translation, $domain );// phpcs:ignore
 	}
 
 	/**
@@ -46,7 +46,7 @@ class L10nHelper {
 	 * @param string  $environment
 	 *
 	 * @return array
-	 * @todo should we move this to FeePlan Oblect?
+	 * @todo should we move this to FeePlan Object?
 	 */
 	public static function generate_fee_plan_display_data( FeePlan $fee_plan, string $environment ): array {
 		$installments    = $fee_plan->getInstallmentsCount();
@@ -120,15 +120,15 @@ class L10nHelper {
 		$customer_pays         = self::generate_fee_to_pay_description(
 			self::__( 'Customer pays:' ),
 			$fee_plan->getCustomerFeeVariable() / 100,
-			$fee_plan->getCustomerFeeFixed() / 100,
+			0,//@todo always 0 for now, remove this param
 			'<br>' . sprintf(
 				self::__( '<u>Note</u>: Customer fees are impacted by the usury rate, and will be adapted based on the limitations to comply with regulations. For more information, visit the Configuration page on your <a href="%s" target="_blank">Alma Dashboard</a>.' ),
-				AssetsHelper::get_alma_dashboard_url( $environment, 'conditions' )
+				AlmaHelper::getAlmaDashboardUrl( $environment, 'conditions' )
 			)
 		);
 		$customer_lending_pays = self::generate_fee_to_pay_description(
 			self::__( 'Customer lending rate:' ),
-			$fee_plan->getCustomerLendingRate() / 100,
+			0,//@todo always 0 for now, remove this param
 			0
 		);
 

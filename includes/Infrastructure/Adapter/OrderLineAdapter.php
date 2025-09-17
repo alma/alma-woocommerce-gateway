@@ -3,6 +3,8 @@
 namespace Alma\Gateway\Infrastructure\Adapter;
 
 use Alma\API\Domain\Adapter\OrderLineAdapterInterface;
+use Alma\API\Domain\Adapter\ProductAdapterInterface;
+use Alma\Gateway\Application\Helper\DisplayHelper;
 use BadMethodCallException;
 use WC_Order_Item;
 
@@ -12,9 +14,7 @@ use WC_Order_Item;
  * This class adapts the WC_Order_Item object to the OrderAdapterInterface, allowing dynamic calls to WC_Order_Item methods.
  * It provides methods to retrieve order item details.
  *
- * @method getProduct() see WC_Order_Item::get_product()
  * @method getQuantity() see WC_Order_Item::get_quantity()
- * @method getTotal() see WC_Order_Item::get_total()
  * @method getName() see WC_Order_Item::get_name()
  */
 class OrderLineAdapter implements OrderLineAdapterInterface {
@@ -37,5 +37,13 @@ class OrderLineAdapter implements OrderLineAdapterInterface {
 		}
 
 		throw new BadMethodCallException( "Méthod $name (→ $snake_case_name) does not exists on WC_Order_Item" );
+	}
+
+	public function getTotal(): int {
+		return DisplayHelper::price_to_cent( $this->order_item->get_total() );
+	}
+
+	public function getProduct(): ProductAdapterInterface {
+		return new ProductAdapter( $this->order_item->get_product() );
 	}
 }

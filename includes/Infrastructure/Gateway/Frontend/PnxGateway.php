@@ -3,9 +3,6 @@
 namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
-use Alma\API\Domain\Exception\ContainerException;
-use Alma\API\Domain\Exception\MerchantServiceException;
-use Alma\API\Exception\ParametersException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
 use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
@@ -20,8 +17,6 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 
 	/**
 	 * Gateway constructor.
-	 *
-	 * @throws ContainerException
 	 */
 	public function __construct() {
 		$this->title        = 'Pay in installments with Alma';
@@ -61,13 +56,11 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 	 * Expose the payment fields to the frontend.
 	 *
 	 * @return void
-	 * @throws ContainerException
-	 * @throws MerchantServiceException|ParametersException
 	 */
 	public function payment_fields() {
 		/** @var TemplateHelper $template_helper */
 		$template_helper = Plugin::get_container()->get( TemplateHelper::class );
-		$template_helper->get_template(
+		$template_helper->getTemplate(
 			'pnx-gateway-options.php',
 			array(
 				'alma_woocommerce_gateway_fee_plan_list' => $this->getFeePlanList(),

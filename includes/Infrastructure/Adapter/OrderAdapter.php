@@ -14,6 +14,7 @@ use WC_Order;
  * This class adapts the WC_Order object to the OrderAdapterInterface, allowing dynamic calls to WC_Order methods.
  * It provides methods to retrieve order details, update order status, and manage order notes.
  *
+ * @method addOrderNote( $note, $is_customer_note = 0, $added_by_user = false ) see WC_Order::add_order_note()
  * @method getId() see WC_Order::get_id()
  * @method getItems() see WC_Order::get_items()
  * @method getOrderKey() see WC_Order::get_order_key()
@@ -36,22 +37,24 @@ use WC_Order;
  * @method getShippingFirstName() see WC_Order::get_shipping_first_name()
  * @method getShippingLastName() see WC_Order::get_shipping_last_name()
  * @method getShippingCompany() see WC_Order::get_shipping_company()
- * @method hasShippingAddress() see WC_Order::has_shipping_address()
  * @method getShippingAddress1() see WC_Order::get_shipping_address_1()
  * @method getShippingAddress2() see WC_Order::get_shipping_address_2()
  * @method getShippingPostcode() see WC_Order::get_shipping_postcode()
  * @method getShippingCity() see WC_Order::get_shipping_city()
  * @method getShippingState() see WC_Order::get_shipping_state()
  * @method getShippingCountry() see WC_Order::get_shipping_country()
- * @method updateMetaData() see WC_Abstract_Order::update_meta_data()
+ * @method hasShippingAddress() see WC_Order::has_shipping_address()
+ * @method hasStatus( $status ) see WC_Order::has_status()
+ * @method updateMetaData( $key, $value, $meta_id = 0 ) see WC_Abstract_Order::update_meta_data()
+ * @method updateStatus( $new_status, $note = '', $manual = false ) see WC_Order::update_status()
  * @method save() see WC_Order::save()
  */
 class OrderAdapter implements OrderAdapterInterface {
 
-	private WC_Order $wc_order;
+	private WC_Order $wcOrder;
 
-	public function __construct( $order ) {
-		$this->wc_order = $order instanceof WC_Order ? $order : wc_get_order( $order );
+	public function __construct( WC_Order $wcOrder ) {
+		$this->wcOrder = $wcOrder;
 	}
 
 	/**
@@ -59,13 +62,13 @@ class OrderAdapter implements OrderAdapterInterface {
 	 */
 	public function __call( string $name, array $arguments ) {
 		// Convert camelCase to snake_case
-		$snake_case_name = strtolower( preg_replace( '/(?<!^)([A-Z0-9])/', '_$1', $name ) );
+		$snakeCaseName = strtolower( preg_replace( '/(?<!^)([A-Z0-9])/', '_$1', $name ) );
 
-		if ( method_exists( $this->wc_order, $snake_case_name ) ) {
-			return $this->wc_order->{$snake_case_name}( ...$arguments );
+		if ( method_exists( $this->wcOrder, $snakeCaseName ) ) {
+			return $this->wcOrder->{$snakeCaseName}( ...$arguments );
 		}
 
-		throw new BadMethodCallException( "Method $name (→ $snake_case_name) does not exists on WC_Order" );
+		throw new BadMethodCallException( "Method $name (→ $snakeCaseName) does not exists on WC_Order" );
 	}
 
 	/**
@@ -74,7 +77,7 @@ class OrderAdapter implements OrderAdapterInterface {
 	 * @return WC_Order
 	 */
 	public function getWcOrder(): WC_Order {
-		return $this->wc_order;
+		return $this->wcOrder;
 	}
 
 	/**
@@ -86,7 +89,7 @@ class OrderAdapter implements OrderAdapterInterface {
 	public function getOrderLines(): array {
 		return array_map(
 			fn( $item ) => new OrderLineAdapter( $item ),
-			$this->wc_order->get_items()
+			$this->wcOrder->get_items()
 		);
 	}
 
@@ -97,7 +100,7 @@ class OrderAdapter implements OrderAdapterInterface {
 	 * @return string The transaction ID of the order.
 	 */
 	public function getPaymentId(): string {
-		return $this->wc_order->get_transaction_id();
+		return $this->wcOrder->get_transaction_id();
 	}
 
 	/**
@@ -107,7 +110,7 @@ class OrderAdapter implements OrderAdapterInterface {
 	 * @return string The order number of the order.
 	 */
 	public function getMerchantReference(): string {
-		return $this->wc_order->get_order_number();
+		return $this->wcOrder->get_order_number();
 	}
 
 	/**
@@ -118,7 +121,7 @@ class OrderAdapter implements OrderAdapterInterface {
 	 * @return float The remaining refund amount.
 	 */
 	public function getRemainingRefundAmount(): float {
-		return $this->get_total() - $this->get_total_refunded();
+		return $this->getTotal() - $this->getTotalRefunded();
 	}
 
 	/**
@@ -140,7 +143,7 @@ class OrderAdapter implements OrderAdapterInterface {
 	 */
 	public function isPaidWithAlma(): bool {
 		$gateways = WC()->payment_gateways()->payment_gateways();
-		$gateway  = $gateways[ $this->wc_order->get_payment_method() ] ?? null;
+		$gateway  = $gateways[ $this->wcOrder->get_payment_method() ] ?? null;
 
 		if ( $gateway instanceof AbstractGateway ) {
 			return true;
@@ -157,7 +160,7 @@ class OrderAdapter implements OrderAdapterInterface {
 	 * @return bool True if the order has a transaction ID, false otherwise.
 	 */
 	public function hasATransactionId(): bool {
-		if ( ! $this->wc_order->get_transaction_id() ) {
+		if ( ! $this->wcOrder->get_transaction_id() ) {
 			return false;
 		}
 
@@ -177,13 +180,20 @@ class OrderAdapter implements OrderAdapterInterface {
 	}
 
 	/**
-	 * Get the order total in cents.
+	 * Get the total amount of the order in cents.
 	 *
-	 * @param string $orderId
-	 *
-	 * @return int The order total in cents.
+	 * @return int The total amount of the order in cents.
 	 */
-	public function getOrderTotal( string $orderId ): int {
-		return DisplayHelper::price_to_cent( wc_get_order( $orderId )->get_total() );
+	public function getTotal(): int {
+		return DisplayHelper::price_to_cent( $this->wcOrder->get_total() );
+	}
+
+	public function getTotalRefunded(): int {
+		return DisplayHelper::price_to_cent( $this->wcOrder->get_total_refunded() );
+	}
+
+	public function paymentComplete( $paymentId ): bool {
+		return $this->wcOrder->payment_complete( $paymentId );
+
 	}
 }

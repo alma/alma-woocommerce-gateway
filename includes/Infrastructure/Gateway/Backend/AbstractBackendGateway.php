@@ -2,20 +2,20 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway\Backend;
 
-use Alma\API\Domain\Exception\ContainerException;
-use Alma\API\Domain\Exception\CoreException;
-use Alma\API\Domain\Exception\MerchantServiceException;
-use Alma\API\Entity\FeePlan;
-use Alma\Gateway\Application\Helper\AssetsHelper;
+use Alma\API\Domain\Entity\FeePlan;
+use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\API\FeePlanService;
 use Alma\Gateway\Application\Service\ConfigService;
+use Alma\Gateway\Domain\Exception\AlmaException;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
+use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
+use Alma\Gateway\Infrastructure\Helper\UrlHelper;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
 use Alma\Gateway\Plugin;
 
@@ -31,10 +31,10 @@ class AbstractBackendGateway extends AbstractGateway {
 	/**
 	 * This gateway is not meant to process payments and throws an exception if called.
 	 *
-	 * @throws CoreException
+	 * @throws AlmaException
 	 */
 	public function process_payment( $order_id ): array {
-		throw new CoreException( 'This gateway is not meant to process payments.' );
+		throw new AlmaException( 'This gateway is not meant to process payments.' );
 	}
 
 	/**
@@ -45,7 +45,6 @@ class AbstractBackendGateway extends AbstractGateway {
 	 * @param array $form_fields
 	 * @param true  $echo Not used, but kept for compatibility.
 	 *
-	 * @throws ContainerException
 	 * @phpcs Not used, but kept for compatibility.
 	 */
 	public function generate_settings_html( $form_fields = array(), $echo = true ): string {// phpcs:ignore
@@ -183,9 +182,7 @@ class AbstractBackendGateway extends AbstractGateway {
 
 	/**
 	 * Define the fee plan section.
-	 *
-	 * @throws ContainerException
-	 * @throws MerchantServiceException
+	 * @throws FeePlanServiceException
 	 */
 	public function fee_plan_fieldset(): array {
 
@@ -475,7 +472,7 @@ class AbstractBackendGateway extends AbstractGateway {
 					'alma-gateway-for-woocommerce'
 				) . sprintf(
 					L10nHelper::__( '(<a href="%s">Go to logs</a>)' ),
-					$assets_helper->get_admin_logs_url()
+					UrlHelper::getAdminLogsUrl()
 				),
 				// translators: %s: The previous plugin version if exists.
 				'description' => L10nHelper::__(
@@ -516,7 +513,7 @@ class AbstractBackendGateway extends AbstractGateway {
 				'description' => L10nHelper::__( 'Exclude all virtual/downloadable product categories, as you cannot sell them with Alma' ),
 				'desc_tip'    => true,
 				'css'         => 'height: 150px;',
-				'options'     => $product_category_repository->getProductCategories(),
+				'options'     => $product_category_repository->getAll(),
 			),
 			'excluded_products_message'   => array(
 				'title'       => L10nHelper::__( 'Non-eligibility message for excluded products' ),

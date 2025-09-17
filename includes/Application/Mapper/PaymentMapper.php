@@ -2,16 +2,13 @@
 
 namespace Alma\Gateway\Application\Mapper;
 
+use Alma\API\Application\DTO\AddressDto;
+use Alma\API\Application\DTO\PaymentDto;
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
-use Alma\API\Domain\Exception\ContainerException;
-use Alma\API\Domain\Helper\ContextHelperInterface;
-use Alma\API\DTO\AddressDto;
-use Alma\API\DTO\PaymentDto;
-use Alma\API\Entity\FeePlan;
-use Alma\Gateway\Application\Service\GatewayService;
+use Alma\API\Domain\Entity\FeePlan;
+use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
-use Alma\Gateway\Plugin;
 
 class PaymentMapper {
 
@@ -23,13 +20,10 @@ class PaymentMapper {
 	 * @param FeePlan               $fee_plan The Fee Plan to apply.
 	 *
 	 * @return PaymentDto The constructed PaymentDto.
-	 * @throws ContainerException
 	 */
 	public function buildPaymentDto( AbstractGateway $gateway, OrderAdapterInterface $order, FeePlan $fee_plan ): PaymentDto {
-		/** @var ContextHelperInterface $contextHelper */
-		$contextHelper = Plugin::get_container()->get( ContextHelper::class );
 
-		return ( new PaymentDto( $order->getOrderTotal( $order->get_id() ) ) )
+		return ( new PaymentDto( $order->getTotal() ) )
 			->setInstallmentsCount( $fee_plan->getInstallmentsCount() )
 			->setDeferredMonths( $fee_plan->getDeferredMonths() )
 			->setDeferredDays( $fee_plan->getDeferredDays() )
@@ -39,9 +33,9 @@ class PaymentMapper {
 					'order_key' => $order->getOrderKey(),
 				)
 			)
-			->setIpnCallbackUrl( $contextHelper->getWebhookUrl( GatewayService::IPN_CALLBACK ) )
-			->setReturnUrl( $contextHelper->getWebhookUrl( GatewayService::CUSTOMER_RETURN ) )
-			->setLocale( apply_filters( 'alma_checkout_payment_user_locale', $contextHelper->getLocale() ) )
+			->setIpnCallbackUrl( ContextHelper::getWebhookUrl( IpnHelper::IPN_CALLBACK ) )
+			->setReturnUrl( ContextHelper::getWebhookUrl( IpnHelper::CUSTOMER_RETURN ) )
+			->setLocale( apply_filters( 'alma_checkout_payment_user_locale', ContextHelper::getLocale() ) )
 			->setCart(
 				( ( new CartMapper() )->buildCartDetails( $order ) )
 			)

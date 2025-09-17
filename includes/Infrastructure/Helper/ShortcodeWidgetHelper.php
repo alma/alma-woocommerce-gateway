@@ -2,10 +2,9 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
-use Alma\API\Domain\Exception\ContainerException;
-use Alma\API\Entity\FeePlan;
-use Alma\API\Entity\FeePlanList;
-use Alma\Gateway\Application\Helper\AssetsHelper;
+use Alma\API\Domain\Entity\FeePlan;
+use Alma\API\Domain\Entity\FeePlanList;
+use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
@@ -56,15 +55,15 @@ class ShortcodeWidgetHelper {
 	 * @param bool        $display_widget Whether to display the widget or not.
 	 *
 	 * @return void
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 */
 	public function initCartShortcode( string $environment, string $merchant_id, int $price, FeePlanList $fee_plan_list, string $language, bool $display_widget = false ) {
 		if ( $display_widget ) {
-			self::addScriptsAndStyles();
-			self::addParameters( $environment, $merchant_id, $price, $fee_plan_list, $language );
-			self::addShortcode( self::CART_SHORTCODE_TAG );
+			$this->addScriptsAndStyles();
+			$this->addParameters( $environment, $merchant_id, $price, $fee_plan_list, $language );
+			$this->addShortcode( self::CART_SHORTCODE_TAG );
 		} else {
-			self::addEmptyShortcode( self::CART_SHORTCODE_TAG );
+			$this->addEmptyShortcode( self::CART_SHORTCODE_TAG );
 		}
 	}
 
@@ -101,7 +100,7 @@ class ShortcodeWidgetHelper {
 	 * @param bool        $display_widget Whether to display the widget or not.
 	 *
 	 * @return void
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 */
 	public function initProductShortcode( string $environment, string $merchant_id, int $price, FeePlanList $fee_plan_list, string $language, bool $display_widget = false ) {
 		if ( $display_widget ) {
@@ -117,24 +116,11 @@ class ShortcodeWidgetHelper {
 	 * Enqueue the scripts and styles needed for the Alma widget.
 	 *
 	 * @return void
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 */
 	private function addScriptsAndStyles() {
-		wp_enqueue_style(
-			'alma-frontend-widget-cdn',
-			'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.min.css'
-		);
-		wp_enqueue_script(
-			'alma-frontend-widget-cdn',
-			'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.umd.js'
-		);
-		wp_enqueue_script(
-			'alma-frontend-widget-implementation',
-			( new AssetsHelper() )->get_asset_url( 'js/frontend/alma-frontend-widget-implementation.js' ),
-			array( 'jquery' ),
-			'1.0.0',
-			true
-		);
+		AssetsHelper::enqueueWidgetStyle();
+		AssetsHelper::enqueueWidgetScript( '1.0.0' );
 	}
 
 	/**

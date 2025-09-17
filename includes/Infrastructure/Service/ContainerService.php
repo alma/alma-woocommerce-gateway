@@ -1,13 +1,10 @@
 <?php
 
-namespace Alma\Gateway\Application\Service;
+namespace Alma\Gateway\Infrastructure\Service;
 
-use Alma\API\ClientConfiguration;
-use Alma\API\CurlClient;
 use Alma\API\Domain\Adapter\CartAdapterInterface;
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
 use Alma\API\Domain\Adapter\ProductAdapterInterface;
-use Alma\API\Domain\Exception\ContainerException;
 use Alma\API\Domain\Helper\ContextHelperInterface;
 use Alma\API\Domain\Helper\EventHelperInterface;
 use Alma\API\Domain\Helper\ExcludedProductsHelperInterface;
@@ -17,20 +14,21 @@ use Alma\API\Domain\Helper\NotificationHelperInterface;
 use Alma\API\Domain\Helper\SecurityHelperInterface;
 use Alma\API\Domain\Helper\SessionHelperInterface;
 use Alma\API\Domain\Helper\WidgetHelperInterface;
-use Alma\API\Domain\ProductRepositoryInterface;
 use Alma\API\Domain\Repository\ConfigRepositoryInterface;
 use Alma\API\Domain\Repository\GatewayRepositoryInterface;
 use Alma\API\Domain\Repository\OrderRepositoryInterface;
 use Alma\API\Domain\Repository\ProductCategoryRepositoryInterface;
-use Alma\API\Endpoint\ConfigurationEndpoint;
-use Alma\API\Endpoint\DataExportEndpoint;
-use Alma\API\Endpoint\EligibilityEndpoint;
-use Alma\API\Endpoint\MerchantEndpoint;
-use Alma\API\Endpoint\OrderEndpoint;
-use Alma\API\Endpoint\PaymentEndpoint;
-use Alma\API\Endpoint\ShareOfCheckoutEndpoint;
-use Alma\API\Endpoint\WebhookEndpoint;
-use Alma\Gateway\Application\Helper\AssetsHelper;
+use Alma\API\Domain\Repository\ProductRepositoryInterface;
+use Alma\API\Infrastructure\ClientConfiguration;
+use Alma\API\Infrastructure\CurlClient;
+use Alma\API\Infrastructure\Endpoint\ConfigurationEndpoint;
+use Alma\API\Infrastructure\Endpoint\DataExportEndpoint;
+use Alma\API\Infrastructure\Endpoint\EligibilityEndpoint;
+use Alma\API\Infrastructure\Endpoint\MerchantEndpoint;
+use Alma\API\Infrastructure\Endpoint\OrderEndpoint;
+use Alma\API\Infrastructure\Endpoint\PaymentEndpoint;
+use Alma\API\Infrastructure\Endpoint\ShareOfCheckoutEndpoint;
+use Alma\API\Infrastructure\Endpoint\WebhookEndpoint;
 use Alma\Gateway\Application\Helper\EncryptorHelper;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Helper\IpnHelper;
@@ -38,17 +36,23 @@ use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Helper\RequirementsHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
+use Alma\Gateway\Application\Service\AdminService;
 use Alma\Gateway\Application\Service\API\EligibilityService;
 use Alma\Gateway\Application\Service\API\FeePlanService;
 use Alma\Gateway\Application\Service\API\PaymentService;
+use Alma\Gateway\Application\Service\ConfigService;
+use Alma\Gateway\Application\Service\GatewayService;
+use Alma\Gateway\Application\Service\IpnService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
 use Alma\Gateway\Infrastructure\Adapter\ProductAdapter;
+use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
 use Alma\Gateway\Infrastructure\Gateway\Backend\AlmaGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
+use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\CoreHelper;
 use Alma\Gateway\Infrastructure\Helper\EventHelper;
@@ -85,7 +89,6 @@ class ContainerService {
 	/**
 	 * ContainerService constructor.
 	 * Init Rules for the DI Container
-	 * @throws ContainerException
 	 */
 	public function __construct() {
 		$this->dice = new Dice();
@@ -106,7 +109,7 @@ class ContainerService {
 	 * @param array  $share Whether or not this class instance be shared, so that the same instance is passed around each time
 	 *
 	 * @return object A fully constructed object based on the specified input arguments
-	 * @throws ContainerException
+	 * @throws ContainerServiceException
 	 */
 	public function get( string $name, array $args = array(), array $share = array() ): object {
 		try {
@@ -117,7 +120,7 @@ class ContainerService {
 			error_reporting( error_reporting() ^ E_DEPRECATED ); // phpcs:ignore
 		} catch ( Exception $e ) {
 			almalog( $e->getMessage() );
-			throw new ContainerException( "Missing Service $name" );
+			throw new ContainerServiceException( "Missing Service $name" );
 		}
 
 		return $service;
