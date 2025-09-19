@@ -12,14 +12,15 @@
     "level-2/dice": "^4.0"
   },
   "require-dev": {
+    "brain/monkey": "^2.0@dev",
     "johnpbloch/wordpress-core": "*",
     "mockery/mockery": "^1.6",
+    "php-stubs/woocommerce-stubs": "*",
+    "php-stubs/wordpress-stubs": "*",
     "phpstan/extension-installer": "^1.4",
     "phpstan/phpstan": "^1.10",
     "phpunit/phpunit": "*",
     "symfony/var-dumper": "*",
-    "php-stubs/woocommerce-stubs": "*",
-    "php-stubs/wordpress-stubs": "*",
     "woocommerce/woocommerce": "*",
     "yoast/phpunit-polyfills": "*"
   },
