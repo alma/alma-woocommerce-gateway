@@ -96,48 +96,45 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase {
 		assertNull( $this->collect_cms_data_service->send_url() );
 	}
 
-//	public function test_handle_collect_cms_data_without_signature_header() {
-//		$this->alma_logger_mock->expects( $this->once() )
-//		                       ->method( 'error' )
-//		                       ->with( "Header key X-Alma-Signature doesn't exist" );
-//
-//		$this->functions_proxy_mock->expects( $this->once() )
-//		                           ->method( 'send_http_response' )
-//		                           ->with( array( 'error' => 'Header key X-Alma-Signature doesn\'t exist' ), 403 );
-//		$this->security_helper_mock->expects( $this->never() )->method( 'validate_collect_data_signature' );
-//
-//		$this->assertNull( $this->collect_cms_data_service->handle_collect_cms_data() );
-//	}
-//
-//	public function test_handle_collect_cms_data_with_invalid_signature() {
-//		$_SERVER['HTTP_X_ALMA_SIGNATURE'] = 'invalid_signature';
-//
-//		$this->security_helper_mock->expects( $this->once() )
-//		                           ->method( 'validate_collect_data_signature' )
-//		                           ->willThrowException( new AlmaInvalidSignatureException( "Invalid signature" ) );
-//
-//		$this->alma_logger_mock->expects( $this->once() )
-//		                       ->method( 'error' )
-//		                       ->with( "Invalid signature" );
-//
-//		$this->functions_proxy_mock->expects( $this->once() )
-//		                           ->method( 'send_http_response' )
-//		                           ->with( array( 'error' => 'Invalid signature' ), 403 );
-//
-//		$this->payload_formatter_mock->expects( $this->never() )->method( 'formatConfigurationPayload' );
-//
-//		$this->assertNull( $this->collect_cms_data_service->handle_collect_cms_data() );
-//
-//	}
+	public function test_handle_collect_cms_data_without_signature_header() {
+		$this->alma_logger_mock->expects( $this->once() )
+		                       ->method( 'error' )
+		                       ->with( "Header key X-Alma-Signature doesn't exist" );
+
+		$this->functions_proxy_mock->expects( $this->once() )
+		                           ->method( 'send_http_response' )
+		                           ->with( array( 'error' => 'Header key X-Alma-Signature doesn\'t exist' ), 403 );
+		$this->security_helper_mock->expects( $this->never() )->method( 'validate_collect_data_signature' );
+
+		$this->assertNull( $this->collect_cms_data_service->handle_collect_cms_data() );
+	}
+
+	public function test_handle_collect_cms_data_with_invalid_signature() {
+		$_SERVER['HTTP_X_ALMA_SIGNATURE'] = 'invalid_signature';
+
+		$this->security_helper_mock->expects( $this->once() )
+		                           ->method( 'validate_collect_data_signature' )
+		                           ->willThrowException( new AlmaInvalidSignatureException( "Invalid signature" ) );
+
+		$this->alma_logger_mock->expects( $this->once() )
+		                       ->method( 'error' )
+		                       ->with( "Invalid signature" );
+
+		$this->functions_proxy_mock->expects( $this->once() )
+		                           ->method( 'send_http_response' )
+		                           ->with( array( 'error' => 'Invalid signature' ), 403 );
+
+		$this->assertNull( $this->collect_cms_data_service->handle_collect_cms_data() );
+	}
 
 	/**
 	 * @dataProvider get_auto_update_plugins_settings
 	 */
 	public function test_handle_collect_cms_data_with_valid_signature( $specific_features, $auto_update_plugins, $gateway_order ) {
-//		$_SERVER['HTTP_X_ALMA_SIGNATURE'] = 'valid_signature';
-//
-//		$this->security_helper_mock->expects( $this->once() )
-//		                           ->method( 'validate_collect_data_signature' );
+		$_SERVER['HTTP_X_ALMA_SIGNATURE'] = 'valid_signature';
+
+		$this->security_helper_mock->expects( $this->once() )
+		                           ->method( 'validate_collect_data_signature' );
 
 		$valueMap = [
 			[ 'active_plugins', false, [] ],
