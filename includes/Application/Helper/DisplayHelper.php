@@ -38,7 +38,7 @@ class DisplayHelper {
 	 */
 	public static function price_to_cent( float $price ): int {
 
-		return $price * 100;
+		return (int) round( $price * 100 );
 	}
 
 	/**

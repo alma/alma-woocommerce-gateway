@@ -2,8 +2,8 @@
 
 namespace Alma\Gateway\Tests\Unit\Business\Service;
 
-use Alma\API\Entity\FeePlan;
-use Alma\API\Entity\FeePlanList;
+use Alma\API\Domain\Entity\FeePlan;
+use Alma\API\Domain\Entity\FeePlanList;
 use Alma\Gateway\Application\Helper\EncryptorHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Helper\WordPressHelper;

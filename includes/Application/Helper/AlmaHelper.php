@@ -11,6 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class AlmaHelper {
 
 	/**
+	 * TODO Add constants for env
 	 * Get Alma full URL depends on test or live mode (sandbox or not)
 	 *
 	 * @param string $env The environment.
