@@ -44,10 +44,10 @@ class PluginHelper {
 	 * @throws ContainerServiceException
 	 */
 	public static function isConfigured(): bool {
-		/** @var ConfigService $optionsService */
-		$optionsService = Plugin::get_container()->get( ConfigService::class );
+		/** @var ConfigService $configService */
+		$configService = Plugin::get_container()->get( ConfigService::class );
 
-		return $optionsService->isConfigured();
+		return $configService->isConfigured();
 	}
 
 	/**
