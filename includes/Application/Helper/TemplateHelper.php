@@ -39,6 +39,7 @@ class TemplateHelper {
 
 	/**
 	 * Get template.
+	 * @TODO need refactor for test file_exists need a test
 	 *
 	 * @param string $template_name Template to load.
 	 * @param array  $args Args passed for the template file.

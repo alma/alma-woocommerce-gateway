@@ -2,7 +2,6 @@
 
 namespace Alma\Gateway\Tests\Unit\Application\Helper;
 
-use Alma\API\Domain\Entity\FeePlan;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Tests\Unit\Mocks\FeePlanMock;
 use Brain\Monkey;
@@ -89,7 +88,6 @@ class L10nHelperTest extends TestCase {
 		$this->assertArrayHasKey( 'title', $displayData );
 		$this->assertArrayHasKey( 'toggle_label', $displayData );
 		$this->assertArrayHasKey( 'description', $displayData );
-
 	}
 
 }
