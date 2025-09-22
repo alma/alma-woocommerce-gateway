@@ -6,6 +6,7 @@ use Alma\Gateway\Application\Exception\Helper\RequirementsHelperException;
 use Alma\Gateway\Application\Helper\RequirementsHelper;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
+use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 
@@ -23,6 +24,8 @@ class RequirementHelperTest extends TestCase {
 	protected function tearDown(): void {
 		Monkey\tearDown();
 		parent::tearDown();
+		Mockery::close();
+
 	}
 
 	public function testWCnotExit() {

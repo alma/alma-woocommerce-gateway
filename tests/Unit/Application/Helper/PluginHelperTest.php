@@ -12,6 +12,13 @@ use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Exécute cette classe de tests dans un processus séparé pour éviter
+ * le conflit "class already exists" quand on crée un alias Mockery.
+ *
+ * @RunTestsInSeparateProcesses
+ * @preserveGlobalState disabled
+ */
 class PluginHelperTest extends TestCase {
 	use MockeryPHPUnitIntegration;
 
@@ -37,6 +44,8 @@ class PluginHelperTest extends TestCase {
 	}
 
 	protected function tearDown(): void {
+		Mockery::resetContainer();
+		Mockery::close();
 		Monkey\tearDown();
 		parent::tearDown();
 	}

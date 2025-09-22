@@ -24,6 +24,8 @@ class IpnHelperTest extends TestCase {
 	}
 
 	protected function tearDown(): void {
+		Mockery::resetContainer();
+		Mockery::close();
 		Monkey\tearDown();
 		parent::tearDown();
 

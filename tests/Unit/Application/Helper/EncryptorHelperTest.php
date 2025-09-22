@@ -13,6 +13,10 @@ use PHPUnit\Framework\TestCase;
 class EncryptorHelperTest extends TestCase {
 	use MockeryPHPUnitIntegration;
 
+	protected function tearDown(): void {
+		Mockery::resetContainer();
+		Mockery::close();
+	}
 
 	public function testEncrypt() {
 		$encryptorHelper = new EncryptorHelper();

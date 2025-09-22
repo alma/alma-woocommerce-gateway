@@ -9,25 +9,40 @@ use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 
-
+/**
+ * Exécute cette classe de tests dans un processus séparé pour éviter
+ * le conflit "class already exists" quand on crée un alias Mockery.
+ *
+ * @RunTestsInSeparateProcesses
+ * @preserveGlobalState disabled
+ */
 class TemplateHelperTest extends TestCase {
 	use MockeryPHPUnitIntegration;
 
 	private $templateHelper;
+	private $pluginHelper;
 
 	protected function setUp(): void {
 		parent::setUp();
 		Monkey\setUp();
+		$this->pluginHelper = Mockery::mock( 'alias:Alma\Gateway\Application\Helper\PluginHelper' );
+		$this->pluginHelper->shouldReceive( 'getPluginPath' )->andReturn( 'var/plugin/path/' );
 		$this->templateHelper = new TemplateHelper();
-		$pluginHelperAlias    = Mockery::mock( 'alias:Alma\Gateway\Application\Helper\PluginHelper' );
-		$pluginHelperAlias->shouldReceive( 'getPluginPath' )->andReturn( 'var/plugin/path/' );
 	}
 
 	protected function tearDown(): void {
 		Monkey\tearDown();
+		Mockery::resetContainer();
+		Mockery::close();
 		parent::tearDown();
+		$this->templateHelper = null;
+		$this->pluginHelper   = null;
 	}
 
+	/**
+	 * @runInSeparateProcess
+	 * @return void
+	 */
 	public function testLocateTemplateWithoutSubPath() {
 
 		Functions\expect( 'apply_filters' )
@@ -48,6 +63,10 @@ class TemplateHelperTest extends TestCase {
 
 	}
 
+	/**
+	 * @runInSeparateProcess
+	 * @return void
+	 */
 	public function testLocateTemplateWithSubPath() {
 
 		Functions\expect( 'apply_filters' )

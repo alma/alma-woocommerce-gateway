@@ -19,8 +19,6 @@ class OptionsServiceTest extends TestCase {
 	private ConfigService $options_service;
 
 	public function setUp(): void {
-		parent::setUp();
-		// Mock de la méthode statique AVANT la création de l'instance
 		Mockery::mock( 'alias:Alma\Gateway\WooCommerce\Proxy\WooCommerceProxy' )
 		       ->shouldReceive( 'set_key_encryptor' )
 		       ->andReturnNull();
@@ -31,6 +29,7 @@ class OptionsServiceTest extends TestCase {
 	}
 
 	public function tearDown(): void {
+		Mockery::resetContainer();
 		Mockery::close();
 	}
 

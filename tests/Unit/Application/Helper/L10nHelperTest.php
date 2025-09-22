@@ -7,6 +7,7 @@ use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Tests\Unit\Mocks\FeePlanMock;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
+use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 
@@ -23,6 +24,8 @@ class L10nHelperTest extends TestCase {
 	protected function tearDown(): void {
 		Monkey\tearDown();
 		parent::tearDown();
+		Mockery::close();
+
 	}
 
 	/**
