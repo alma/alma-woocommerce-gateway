@@ -4,10 +4,9 @@ namespace Alma\Gateway\Tests\Unit\Application\Mapper;
 
 use Alma\API\Application\DTO\CartItemDto;
 use Alma\Gateway\Application\Mapper\CartItemMapper;
-use Alma\Gateway\Infrastructure\Adapter\OrderLineAdapter;
-use Alma\Gateway\Infrastructure\Adapter\ProductAdapter;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
+use Alma\Gateway\Tests\Unit\Mocks\OrderLineMockFactory;
 use Mockery;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
@@ -56,19 +55,7 @@ class CartIemMapperTest extends TestCase {
 		           ->once()
 		           ->andReturn( $containerMock );
 
-		$productAdapterMock = $this->createMock( ProductAdapter::class );
-		$productAdapterMock->method( 'getSku' )->willReturn( 'TESTSKU' );
-		$productAdapterMock->method( 'getId' )->willReturn( 123 );
-		$productAdapterMock->method( 'getPrice' )->willReturn( 1010 );
-		$productAdapterMock->method( 'getImageId' )->willReturn( 456 );
-		$productAdapterMock->method( 'getPermalink' )->willReturn( 'http://example.com/product/test-product' );
-		$productAdapterMock->method( 'needsShipping' )->willReturn( true );
-
-		$orderLineMock = $this->createMock( OrderLineAdapter::class );
-		$orderLineMock->method( 'getName' )->willReturn( 'TESTNAME' );
-		$orderLineMock->method( 'getProduct' )->willReturn( $productAdapterMock );
-		$orderLineMock->method( 'getQuantity' )->willReturn( 2 );
-		$orderLineMock->method( 'getTotal' )->willReturn( 2020 );
+		$orderLineMock = OrderLineMockFactory::create( $this );
 
 		$cartItemDetail = $this->cartIemMapper->buildCartItemDetails( $orderLineMock );
 		$this->assertInstanceOf( CartItemDto::class, $cartItemDetail );
