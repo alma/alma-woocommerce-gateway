@@ -14,8 +14,6 @@ use WC_Order_Item;
  * This class adapts the WC_Order_Item object to the OrderAdapterInterface, allowing dynamic calls to WC_Order_Item methods.
  * It provides methods to retrieve order item details.
  *
- * @method getQuantity() see WC_Order_Item::get_quantity()
- * @method getName() see WC_Order_Item::get_name()
  */
 class OrderLineAdapter implements OrderLineAdapterInterface {
 
@@ -45,5 +43,13 @@ class OrderLineAdapter implements OrderLineAdapterInterface {
 
 	public function getProduct(): ProductAdapterInterface {
 		return new ProductAdapter( $this->order_item->get_product() );
+	}
+
+	public function getQuantity(): int {
+		return $this->order_item->get_quantity();
+	}
+
+	public function getName(): string {
+		return $this->order_item->get_name();
 	}
 }

@@ -46,4 +46,20 @@ class ProductAdapter implements ProductAdapterInterface {
 	public function getId(): int {
 		return $this->wc_product->get_id();
 	}
+
+	public function getSku(): string {
+		return $this->wc_product->get_sku();
+	}
+
+	public function getPermalink(): string {
+		return $this->wc_product->get_permalink();
+	}
+
+	public function getImageId(): int {
+		return (int) $this->wc_product->get_image_id();
+	}
+
+	public function needsShipping(): bool {
+		return $this->wc_product->needs_shipping();
+	}
 }
