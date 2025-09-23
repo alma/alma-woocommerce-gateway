@@ -3,16 +3,14 @@
 use Alma\API\Domain\Entity\Eligibility;
 use Alma\API\Domain\Entity\FeePlan;
 use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
-use Alma\Gateway\Application\Service\API\FeePlanService;
 use Alma\Gateway\Application\Service\ConfigService;
-use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
+use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Alma\Gateway\Plugin;
 
 add_action(
 	'wp_footer',
-	/** @throws ContainerServiceException */
 	function () {
 		if ( ! is_checkout() ) {
 			return;
@@ -40,7 +38,6 @@ add_action(
 
 add_action(
 	'wp_footer',
-	/** @throws ContainerServiceException */
 	function () {
 
 		echo '<h1>All Options</h1>';
@@ -122,23 +119,23 @@ add_action(
 
 		echo '<h1>Fee plans from API</h1>';
 		echo '<pre>';
-		/** @var FeePlanService $fee_plan_service */
 		try {
-			$fee_plan_service = Plugin::get_container()->get( FeePlanService::class );
-			$fee_plan_list    = $fee_plan_service->getFeePlanList();
-		} catch ( ContainerServiceException | FeePlanServiceException $e ) {
+			/** @var FeePlanRepository $feePlanRepository */
+			$feePlanRepository  = Plugin::get_container()->get( FeePlanRepository::class );
+			$feePlanListAdapter = $feePlanRepository->getAll();
+		} catch ( FeePlanServiceException $e ) {
 			echo 'Error: ' . $e->getMessage();
 			die;
 		}
 
 		/** @var FeePlan $fee_plan */
-		foreach ( $fee_plan_list as $fee_plan ) {
-			echo '<h2>' . $fee_plan->getPlanKey() . '</h2>'
+		foreach ( $feePlanListAdapter as $feePlanAdapter ) {
+			echo '<h2>' . $feePlanAdapter->getPlanKey() . '</h2>'
 				. '<ul>'
-				. '<li>Min amount: ' . $fee_plan->getMinPurchaseAmount() . '</li>'
-				. '<li>Max amount: ' . $fee_plan->getMaxPurchaseAmount() . '</li>'
-				. '<li>Override Min amount: ' . $fee_plan->getMinPurchaseAmount( true ) . '</li>'
-				. '<li>Override Max amount: ' . $fee_plan->getMaxPurchaseAmount( true ) . '</li>'
+				. '<li>Min amount: ' . $feePlanAdapter->getMinPurchaseAmount() . '</li>'
+				. '<li>Max amount: ' . $feePlanAdapter->getMaxPurchaseAmount() . '</li>'
+				. '<li>Override Min amount: ' . $feePlanAdapter->getOverrideMinPurchaseAmount() . '</li>'
+				. '<li>Override Max amount: ' . $feePlanAdapter->getOverrideMaxPurchaseAmount() . '</li>'
 				. '</ul>';
 		}
 

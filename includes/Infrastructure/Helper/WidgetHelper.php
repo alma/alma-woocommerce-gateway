@@ -2,9 +2,8 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
-use Alma\API\Domain\Entity\FeePlanList;
+use Alma\API\Domain\Adapter\FeePlanListAdapterInterface;
 use Alma\API\Domain\Helper\WidgetHelperInterface;
-use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
@@ -26,21 +25,20 @@ class WidgetHelper implements WidgetHelperInterface {
 	/**
 	 * Display the cart widget with the given price.
 	 *
-	 * @param string      $environment The API environment (live or test).
-	 * @param string      $merchantId The merchant ID.
-	 * @param int         $price The total price of the cart in cents.
-	 * @param FeePlanList $feePlanList The list of fee plans.
-	 * @param string      $language The language code (e.g., 'en', 'fr', etc.).
-	 * @param bool        $display_widget Whether to display the widget or not.
+	 * @param string                      $environment The API environment (live or test).
+	 * @param string                      $merchantId The merchant ID.
+	 * @param int                         $price The total price of the cart in cents.
+	 * @param FeePlanListAdapterInterface $feePlanListAdapter The list of fee plans.
+	 * @param string                      $language The language code (e.g., 'en', 'fr', etc.).
+	 * @param bool                        $display_widget Whether to display the widget or not.
 	 *
-	 * @throws ContainerServiceException
 	 */
-	public function displayCartWidget( string $environment, string $merchantId, int $price, FeePlanList $feePlanList, string $language, bool $display_widget = false ) {
+	public function displayCartWidget( string $environment, string $merchantId, int $price, FeePlanListAdapterInterface $feePlanListAdapter, string $language, bool $display_widget = false ) {
 		$this->shortcodeWidgetHelper->initCartShortcode(
 			$environment,
 			$merchantId,
 			$price,
-			$feePlanList,
+			$feePlanListAdapter,
 			$language,
 			$display_widget
 		);
@@ -50,21 +48,19 @@ class WidgetHelper implements WidgetHelperInterface {
 	/**
 	 * Display the product widget with the given price.
 	 *
-	 * @param string      $environment The API environment (live or test).
-	 * @param string      $merchantId The merchant ID.
-	 * @param int         $price The price of the product in cents.
-	 * @param FeePlanList $feePlanList The list of fee plans.
-	 * @param string      $language The language code (e.g., 'en', 'fr', etc.).
-	 * @param bool        $display_widget Whether to display the widget or not.
-	 *
-	 * @throws ContainerServiceException
+	 * @param string                      $environment The API environment (live or test).
+	 * @param string                      $merchantId The merchant ID.
+	 * @param int                         $price The price of the product in cents.
+	 * @param FeePlanListAdapterInterface $feePlanListAdapter The list of fee plans.
+	 * @param string                      $language The language code (e.g., 'en', 'fr', etc.).
+	 * @param bool                        $display_widget Whether to display the widget or not.
 	 */
-	public function displayProductWidget( string $environment, string $merchantId, int $price, FeePlanList $feePlanList, string $language, bool $display_widget = false ) {
+	public function displayProductWidget( string $environment, string $merchantId, int $price, FeePlanListAdapterInterface $feePlanListAdapter, string $language, bool $display_widget = false ) {
 		$this->shortcodeWidgetHelper->initProductShortcode(
 			$environment,
 			$merchantId,
 			$price,
-			$feePlanList,
+			$feePlanListAdapter,
 			$language,
 			$display_widget
 		);

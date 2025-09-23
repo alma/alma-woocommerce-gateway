@@ -1,15 +1,15 @@
 <?php
 
-namespace Alma\Gateway\Application\Service\API;
+namespace Alma\Gateway\Application\Provider;
 
 use Alma\API\Domain\Adapter\CartAdapterInterface;
 use Alma\API\Domain\Entity\EligibilityList;
-use Alma\API\Domain\Service\API\EligibilityServiceInterface;
+use Alma\API\Domain\Port\EligibilityProviderInterface;
 use Alma\API\Infrastructure\Endpoint\EligibilityEndpoint;
 use Alma\API\Infrastructure\Exception\Endpoint\EligibilityEndpointException;
 use Alma\Gateway\Application\Exception\Service\API\EligibilityServiceException;
 
-class EligibilityService implements EligibilityServiceInterface {
+class EligibilityProvider implements EligibilityProviderInterface {
 
 	private EligibilityEndpoint $eligibilityEndpoint;
 

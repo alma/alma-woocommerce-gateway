@@ -45,7 +45,22 @@ class ConfigRepository implements ConfigRepositoryInterface {
 	}
 
 	/**
-	 * Add or Update a specific setting value.
+	 * Add a specific setting value.
+	 *
+	 * @param string $setting The setting name to update.
+	 * @param mixed  $value The value to set for the setting.
+	 *
+	 * @return bool True if the setting was updated, false otherwise.
+	 */
+	public function createSetting( string $setting, $value ): bool {
+		$options             = $this->getSettings();
+		$options[ $setting ] = $value;
+
+		return update_option( self::OPTIONS_KEY, $options );
+	}
+
+	/**
+	 * Update a specific setting value.
 	 *
 	 * @param string $setting The setting name to update.
 	 * @param mixed  $value The value to set for the setting.
@@ -67,6 +82,7 @@ class ConfigRepository implements ConfigRepositoryInterface {
 	 * @return bool True if the setting was deleted, false otherwise.
 	 */
 	public function deleteSetting( string $setting ): bool {
+		almalog( 'Delete setting: ' . $setting );
 		$settings = $this->getSettings();
 		unset( $settings[ $setting ] );
 

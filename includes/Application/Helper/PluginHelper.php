@@ -3,7 +3,6 @@
 namespace Alma\Gateway\Application\Helper;
 
 use Alma\Gateway\Application\Service\ConfigService;
-use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Plugin;
 
@@ -26,8 +25,6 @@ class PluginHelper {
 	/**
 	 * Define if we can load the plugin.
 	 * True on cart or checkout page if the plugin is configured for frontend use.
-	 *
-	 * @throws ContainerServiceException
 	 */
 	public static function isPluginNeeded(): bool {
 
@@ -40,14 +37,11 @@ class PluginHelper {
 		return false;
 	}
 
-	/**
-	 * @throws ContainerServiceException
-	 */
 	public static function isConfigured(): bool {
-		/** @var ConfigService $optionsService */
-		$optionsService = Plugin::get_container()->get( ConfigService::class );
+		/** @var ConfigService $configService */
+		$configService = Plugin::get_container()->get( ConfigService::class );
 
-		return $optionsService->isConfigured();
+		return $configService->isConfigured();
 	}
 
 	/**

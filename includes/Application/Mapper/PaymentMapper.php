@@ -4,8 +4,8 @@ namespace Alma\Gateway\Application\Mapper;
 
 use Alma\API\Application\DTO\AddressDto;
 use Alma\API\Application\DTO\PaymentDto;
+use Alma\API\Domain\Adapter\FeePlanAdapterInterface;
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
-use Alma\API\Domain\Entity\FeePlan;
 use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
@@ -15,18 +15,18 @@ class PaymentMapper {
 	/**
 	 * Builds a PaymentDto from a WC_Order and FeePlan.
 	 *
-	 * @param AbstractGateway       $gateway
-	 * @param OrderAdapterInterface $order The Order.
-	 * @param FeePlan               $fee_plan The Fee Plan to apply.
+	 * @param AbstractGateway         $gateway
+	 * @param OrderAdapterInterface   $order The Order.
+	 * @param FeePlanAdapterInterface $feePlanAdapter The Fee Plan to apply.
 	 *
 	 * @return PaymentDto The constructed PaymentDto.
 	 */
-	public function buildPaymentDto( AbstractGateway $gateway, OrderAdapterInterface $order, FeePlan $fee_plan ): PaymentDto {
+	public function buildPaymentDto( AbstractGateway $gateway, OrderAdapterInterface $order, FeePlanAdapterInterface $feePlanAdapter ): PaymentDto {
 
 		return ( new PaymentDto( $order->getTotal() ) )
-			->setInstallmentsCount( $fee_plan->getInstallmentsCount() )
-			->setDeferredMonths( $fee_plan->getDeferredMonths() )
-			->setDeferredDays( $fee_plan->getDeferredDays() )
+			->setInstallmentsCount( $feePlanAdapter->getInstallmentsCount() )
+			->setDeferredMonths( $feePlanAdapter->getDeferredMonths() )
+			->setDeferredDays( $feePlanAdapter->getDeferredDays() )
 			->setCustomData(
 				array(
 					'order_id'  => $order->getId(),

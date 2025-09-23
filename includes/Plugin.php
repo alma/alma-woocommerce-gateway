@@ -18,13 +18,12 @@ use Alma\Gateway\Application\Exception\Service\ShopServiceException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Helper\RequirementsHelper;
+use Alma\Gateway\Application\Provider\EligibilityProvider;
+use Alma\Gateway\Application\Provider\FeePlanProvider;
 use Alma\Gateway\Application\Service\AdminService;
-use Alma\Gateway\Application\Service\API\EligibilityService;
-use Alma\Gateway\Application\Service\API\FeePlanService;
 use Alma\Gateway\Application\Service\GatewayService;
 use Alma\Gateway\Application\Service\ShopService;
 use Alma\Gateway\Infrastructure\Exception\CmsException;
-use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
@@ -103,7 +102,6 @@ final class Plugin {
 	/**
 	 * Used for plugin warmup.
 	 *
-	 * @throws ContainerServiceException
 	 * @throws RequirementsHelperException
 	 */
 	public function plugin_warmup(): void {
@@ -132,11 +130,11 @@ final class Plugin {
 		/** @var GatewayService $gateway_service */
 		$gateway_service = self::get_container()->get( GatewayService::class );
 		if ( PluginHelper::isConfigured() ) {
-			/** @var EligibilityService $eligibility_service */
-			$eligibility_service = self::get_container()->get( EligibilityService::class );
+			/** @var EligibilityProvider $eligibility_service */
+			$eligibility_service = self::get_container()->get( EligibilityProvider::class );
 			$gateway_service->setEligibilityService( $eligibility_service );
-			/** @var FeePlanService $fee_plan_service */
-			$fee_plan_service = self::get_container()->get( FeePlanService::class );
+			/** @var FeePlanProvider $fee_plan_service */
+			$fee_plan_service = self::get_container()->get( FeePlanProvider::class );
 			$gateway_service->setFeePlanService( $fee_plan_service );
 		}
 	}
@@ -145,7 +143,6 @@ final class Plugin {
 	 * Used for regular plugin work.
 	 *
 	 * @return  void
-	 * @throws ContainerServiceException
 	 * @throws RequirementsHelperException
 	 * @throws PluginException
 	 */

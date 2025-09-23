@@ -12,17 +12,18 @@ use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\PluginHelper;
-use Alma\Gateway\Application\Service\API\EligibilityService;
-use Alma\Gateway\Application\Service\API\FeePlanService;
-use Alma\Gateway\Application\Service\API\PaymentService;
+use Alma\Gateway\Application\Provider\EligibilityProvider;
+use Alma\Gateway\Application\Provider\FeePlanProvider;
+use Alma\Gateway\Application\Provider\PaymentProvider;
+use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
-use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Infrastructure\Helper\BackendHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\EventHelper;
 use Alma\Gateway\Infrastructure\Helper\FrontendHelper;
 use Alma\Gateway\Infrastructure\Helper\GatewayHelper;
+use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Infrastructure\Repository\UserRepository;
@@ -34,11 +35,11 @@ class GatewayService {
 	/** GatewayHelper */
 	private GatewayHelper $gatewayHelper;
 
-	/** @var EligibilityService|null The Eligibility Service if available */
-	private ?EligibilityService $eligibilityService = null;
+	/** @var EligibilityProvider|null The Eligibility Service if available */
+	private ?EligibilityProvider $eligibilityService = null;
 
-	/** @var FeePlanService|null The Fee plan Service if available */
-	private ?FeePlanService $feePlanService = null;
+	/** @var FeePlanProvider|null The Fee plan Service if available */
+	private ?FeePlanProvider $feePlanService = null;
 
 	/** @var IpnHelper The IPN Helper */
 	private IpnHelper $ipnHelper;
@@ -75,11 +76,11 @@ class GatewayService {
 	 *  Set the eligibility service. This can't be done in the constructor because the service
 	 *  could be not available at the time if the plugin in not fully configured.
 	 *
-	 * @param EligibilityService $eligibilityService
+	 * @param EligibilityProvider $eligibilityService
 	 *
 	 * @return void
 	 */
-	public function setEligibilityService( EligibilityService $eligibilityService ): void {
+	public function setEligibilityService( EligibilityProvider $eligibilityService ): void {
 		$this->eligibilityService = $eligibilityService;
 	}
 
@@ -87,11 +88,11 @@ class GatewayService {
 	 * Set the fee plan service. This can't be done in the constructor because the service
 	 * could be not available at the time if the plugin in not fully configured.
 	 *
-	 * @param FeePlanService $feePlanService
+	 * @param FeePlanProvider $feePlanService
 	 *
 	 * @return void
 	 */
-	public function setFeePlanService( FeePlanService $feePlanService ): void {
+	public function setFeePlanService( FeePlanProvider $feePlanService ): void {
 		$this->feePlanService = $feePlanService;
 	}
 
@@ -135,7 +136,7 @@ class GatewayService {
 	 *
 	 * @sonar We need to keep $old_status on the signature for the hook
 	 *
-	 * @throws GatewayServiceException|ContainerServiceException
+	 * @throws GatewayServiceException
 	 */
 	public function woocommerceOrderStatusChanged(
 		int $orderId,
@@ -154,8 +155,8 @@ class GatewayService {
 		if ( 'refunded' === $newStatus || 'cancelled' === $newStatus ) {
 			if ( $order->isRefundable() ) {
 
-				/** @var PaymentService $paymentService */
-				$paymentService = Plugin::get_container()->get( PaymentService::class );
+				/** @var PaymentProvider $paymentService */
+				$paymentService = Plugin::get_container()->get( PaymentProvider::class );
 
 				try {
 					$paymentService->refundPayment(
@@ -185,7 +186,7 @@ class GatewayService {
 
 	/**
 	 * Configure each gateway with eligibility and fee plans
-	 * @throws ContainerServiceException|GatewayServiceException
+	 * @throws GatewayServiceException|FeePlanRepositoryException
 	 */
 	public function configureGateway() {
 
@@ -196,12 +197,15 @@ class GatewayService {
 			return;
 		}
 
+		/** @var FeePlanRepository $feePlanRepository */
+		$feePlanRepository = Plugin::get_container()->get( FeePlanRepository::class );
+
 		try {
 			/** @var AbstractGateway $gateway */
 			foreach ( $this->gatewayRepository->getAlmaGateways() as $gateway ) {
 				if ( ContextHelper::isCheckoutPage() ) {
 					$gateway->configure_eligibility( $this->eligibilityService->getEligibilityList() );
-					$gateway->configure_fee_plans( $this->feePlanService->getFeePlanList() );
+					$gateway->configure_fee_plans( $feePlanRepository->getAll() );
 				}
 			}
 		} catch ( EligibilityServiceException|FeePlanServiceException $e ) {
@@ -214,7 +218,6 @@ class GatewayService {
 	 * Configure returns (ipn and customer_return ) if configuration is done
 	 *
 	 * @return void
-	 * @throws ContainerServiceException
 	 */
 	public function configureReturns() {
 		$this->ipnHelper->configureIpnCallback();

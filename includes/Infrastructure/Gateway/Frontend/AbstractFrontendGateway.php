@@ -2,16 +2,14 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 
-use Alma\API\Domain\Entity\FeePlanList;
-use Alma\API\Domain\Exception\MerchantServiceException;
-use Alma\API\Domain\Exception\Service\ContainerServiceException;
 use Alma\API\Domain\Helper\FormHelperInterface;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
-use Alma\Gateway\Application\Service\API\FeePlanService;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
+use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Infrastructure\Helper\FormHelper;
+use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Plugin;
 
 /**
@@ -59,7 +57,6 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	 * It calls the parent method to check the availability.
 	 *
 	 * @return bool
-	 * @throws ContainerServiceException|MerchantServiceException
 	 */
 	public function is_available(): bool {
 
@@ -95,14 +92,13 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	 * Get the fee plan list for this gateway.
 	 * This method retrieves the fee plans from the FeePlanService and filters them based on the gateway type.
 	 *
-	 * @return FeePlanList
-	 * @throws MerchantServiceException|ContainerServiceException
+	 * @return FeePlanListAdapter
 	 */
-	public function getFeePlanList(): FeePlanList {
-		/** @var FeePlanService $fee_plan_service */
-		$fee_plan_service = Plugin::get_instance()->get_container()->get( FeePlanService::class );
+	public function getFeePlanList(): FeePlanListAdapter {
+		/** @var FeePlanRepository $fee_plan_repository */
+		$fee_plan_repository = Plugin::get_instance()->get_container()->get( FeePlanRepository::class );
 
-		return $fee_plan_service->getFeePlanList()->filterFeePlanList( array( $this->get_type() ) );
+		return $fee_plan_repository->getAll()->filterFeePlanList( array( $this->get_type() ) );
 	}
 
 	/**

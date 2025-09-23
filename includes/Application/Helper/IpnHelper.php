@@ -7,7 +7,6 @@ use Alma\API\Domain\Helper\IpnHelperInterface;
 use Alma\API\Infrastructure\Helper\RequestHelper;
 use Alma\Gateway\Application\Exception\Service\IpnServiceException;
 use Alma\Gateway\Application\Service\IpnService;
-use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
 use Alma\Gateway\Infrastructure\Helper\AjaxHelper;
 use Alma\Gateway\Infrastructure\Helper\EventHelper;
 use Alma\Gateway\Plugin;
@@ -17,9 +16,6 @@ class IpnHelper implements IpnHelperInterface {
 	public const CUSTOMER_RETURN = 'alma_customer_return';
 	public const IPN_CALLBACK = 'alma_ipn_callback';
 
-	/**
-	 * @throws ContainerServiceException
-	 */
 	public function configureIpnCallback() {
 		EventHelper::addEvent(
 			'woocommerce_api_' . self::IPN_CALLBACK,
@@ -27,9 +23,6 @@ class IpnHelper implements IpnHelperInterface {
 		);
 	}
 
-	/**
-	 * @throws ContainerServiceException
-	 */
 	public function configureCustomerReturn() {
 		EventHelper::addEvent(
 			'woocommerce_api_' . self::CUSTOMER_RETURN,

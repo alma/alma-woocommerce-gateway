@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Application\Helper;
 
-use Alma\API\Domain\Entity\FeePlan;
+use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Helper\LanguageHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -42,24 +42,24 @@ class L10nHelper {
 	/**
 	 * Generate a title and a toggle description for the fee plan.
 	 *
-	 * @param FeePlan $fee_plan
-	 * @param string  $environment
+	 * @param FeePlanAdapter $fee_plan_adapter
+	 * @param string         $environment
 	 *
 	 * @return array
 	 * @todo should we move this to FeePlan Object?
 	 */
-	public static function generate_fee_plan_display_data( FeePlan $fee_plan, string $environment ): array {
-		$installments    = $fee_plan->getInstallmentsCount();
-		$deferred_days   = $fee_plan->getDeferredDays();
-		$deferred_months = $fee_plan->getDeferredMonths();
-		$min             = DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) );
-		$max             = DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) );
+	public static function generate_fee_plan_display_data( FeePlanAdapter $fee_plan_adapter, string $environment ): array {
+		$installments    = $fee_plan_adapter->getInstallmentsCount();
+		$deferred_days   = $fee_plan_adapter->getDeferredDays();
+		$deferred_months = $fee_plan_adapter->getDeferredMonths();
+		$min             = DisplayHelper::price_to_euro( $fee_plan_adapter->getOverrideMinPurchaseAmount() );
+		$max             = DisplayHelper::price_to_euro( $fee_plan_adapter->getOverrideMaxPurchaseAmount() );
 
 		$section_title = '';
 		$toggle_label  = '';
 		$you_can_offer = '';
 
-		if ( $fee_plan->isPayNow() ) {
+		if ( $fee_plan_adapter->isPayNow() ) {
 			$section_title = self::__( '→ Pay Now' );
 			$toggle_label  = sprintf(
 				self::__( 'Enable %d-installment payments with Alma' ),
@@ -71,7 +71,7 @@ class L10nHelper {
 				$min,
 				$max
 			);
-		} elseif ( $fee_plan->isPnXOnly() || $fee_plan->isCredit() ) {
+		} elseif ( $fee_plan_adapter->isPnXOnly() || $fee_plan_adapter->isCredit() ) {
 			$section_title = sprintf(
 				self::__( '→ %d-installment payment' ),
 				$installments
@@ -86,7 +86,7 @@ class L10nHelper {
 				$min,
 				$max
 			);
-		} elseif ( $fee_plan->isPayLaterOnly() ) {
+		} elseif ( $fee_plan_adapter->isPayLaterOnly() ) {
 			if ( $deferred_days > 0 ) {
 				$section_title = sprintf( self::__( '→ D+%d-deferred payment' ), $deferred_days );
 				$toggle_label  = sprintf( self::__( 'Enable D+%d-deferred payments with Alma' ), $deferred_days );
@@ -114,12 +114,12 @@ class L10nHelper {
 		$fees_applied          = self::__( 'Fees applied to each transaction for this plan:' );
 		$you_pay               = self::generate_fee_to_pay_description(
 			self::__( 'You pay:' ),
-			$fee_plan->getMerchantFeeVariable() / 100,
-			$fee_plan->getMerchantFeeFixed() / 100
+			$fee_plan_adapter->getMerchantFeeVariable() / 100,
+			$fee_plan_adapter->getMerchantFeeFixed() / 100
 		);
 		$customer_pays         = self::generate_fee_to_pay_description(
 			self::__( 'Customer pays:' ),
-			$fee_plan->getCustomerFeeVariable() / 100,
+			$fee_plan_adapter->getCustomerFeeVariable() / 100,
 			0,//@todo always 0 for now, remove this param
 			'<br>' . sprintf(
 				self::__( '<u>Note</u>: Customer fees are impacted by the usury rate, and will be adapted based on the limitations to comply with regulations. For more information, visit the Configuration page on your <a href="%s" target="_blank">Alma Dashboard</a>.' ),

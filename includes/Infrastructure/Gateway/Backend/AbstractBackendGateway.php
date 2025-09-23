@@ -2,13 +2,12 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway\Backend;
 
-use Alma\API\Domain\Entity\FeePlan;
-use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
-use Alma\Gateway\Application\Service\API\FeePlanService;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Domain\Exception\AlmaException;
+use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
+use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
@@ -16,6 +15,7 @@ use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\UrlHelper;
+use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
 use Alma\Gateway\Plugin;
 
@@ -23,10 +23,11 @@ class AbstractBackendGateway extends AbstractGateway {
 
 	public const FIELD_LIVE_API_KEY = 'live_api_key';
 	public const FIELD_TEST_API_KEY = 'test_api_key';
-
-	public const MIN_AMOUNT_SUFFIX = 'min_amount';
-
-	public const MAX_AMOUNT_SUFFIX = 'max_amount';
+	public const MIN_AMOUNT_SUFFIX  = 'min_amount';
+	public const MAX_AMOUNT_SUFFIX  = 'max_amount';
+	public const ENABLED_SUFFIX     = 'enabled';
+	public const ENABLED_PREFIX     = 'general';
+	public const FIELD_MERCHANT_ID  = 'merchant_id';
 
 	/**
 	 * This gateway is not meant to process payments and throws an exception if called.
@@ -122,13 +123,19 @@ class AbstractBackendGateway extends AbstractGateway {
 			),
 			self::FIELD_LIVE_API_KEY => array(
 				'title'    => L10nHelper::__( 'Live API key' ),
-				'type'     => 'password',
+				'type'     => 'text',
 				'desc_tip' => true,
 			),
 			self::FIELD_TEST_API_KEY => array(
 				'title'    => L10nHelper::__( 'Test API key' ),
-				'type'     => 'password',
+				'type'     => 'text',
 				'desc_tip' => true,
+			),
+			self::FIELD_MERCHANT_ID  => array(
+				'title'    => L10nHelper::__( 'Merchant Id' ),
+				'type'     => 'text',
+				'desc_tip' => true,
+				'disabled' => true,
 			),
 			'environment'            => array(
 				'title'       => L10nHelper::__( 'API Mode' ),
@@ -154,7 +161,7 @@ class AbstractBackendGateway extends AbstractGateway {
 	 *
 	 * @return array[]
 	 */
-	public function widget_fieldset() {
+	public function widget_fieldset(): array {
 
 		return array(
 			'widgets_section'        => array(
@@ -182,7 +189,7 @@ class AbstractBackendGateway extends AbstractGateway {
 
 	/**
 	 * Define the fee plan section.
-	 * @throws FeePlanServiceException
+	 * @throws FeePlanRepositoryException
 	 */
 	public function fee_plan_fieldset(): array {
 
@@ -190,10 +197,9 @@ class AbstractBackendGateway extends AbstractGateway {
 		$options_service = Plugin::get_container()->get( ConfigService::class );
 		$environment     = $options_service->getEnvironment();
 
-		// Get the default fee plans.
-		/** @var FeePlanService $fee_plan_service */
-		$fee_plan_service = Plugin::get_container()->get( FeePlanService::class );
-		$fee_plan_list    = $fee_plan_service->getFeePlanList( true );
+		/** @var FeePlanRepository $fee_plan_repository */
+		$fee_plan_repository   = Plugin::get_container( true )->get( FeePlanRepository::class );
+		$fee_plan_list_adapter = $fee_plan_repository->getAll( true );
 
 		$field_list['fee_plan_section'] = array(
 			'title'    => '<hr>' . L10nHelper::__( '→ Fee plans configuration' ),
@@ -222,45 +228,45 @@ class AbstractBackendGateway extends AbstractGateway {
 			'desc_tip' => false,
 		);
 
-		/** @var FeePlan $fee_plan */
-		foreach ( $fee_plan_list as $fee_plan ) {
-			$fee_plan_display_data = L10nHelper::generate_fee_plan_display_data( $fee_plan, $environment );
+		/** @var FeePlanAdapter $fee_plan_adapter */
+		foreach ( $fee_plan_list_adapter as $fee_plan_adapter ) {
+			$fee_plan_display_data = L10nHelper::generate_fee_plan_display_data( $fee_plan_adapter, $environment );
 			/** @uses self::generate_table_title_html() */
-			$field_list[ $fee_plan->getPlanKey() . '_title' ] = array(
+			$field_list[ $fee_plan_adapter->getPlanKey() . '_title' ] = array(
 				'type'      => 'table_title',
-				'decorator' => '<tr data-fee_plan_key="' . $fee_plan->getPlanKey() . '">%s',
+				'decorator' => '<tr data-fee_plan_key="' . $fee_plan_adapter->getPlanKey() . '">%s',
 				'desc_tip'  => true,
 				'title'     => $fee_plan_display_data['title'],
 			);
 			/**
 			 * @uses self::generate_table_toggle_html()
 			 */
-			$field_list[ $fee_plan->getPlanKey() ] = array(
+			$field_list[ $fee_plan_adapter->getPlanKey() . '_enabled' ] = array(
 				'type'        => 'table_toggle',
-				'fee_plan'    => $fee_plan,
+				'fee_plan'    => $fee_plan_adapter,
 				'description' => $fee_plan_display_data['toggle_label'],
 				'desc_tip'    => true,
-				'enabled'     => $fee_plan->isEnabled(),
+				'enabled'     => $fee_plan_adapter->isEnabled() ? '1' : '0',
 			);
 			/** @uses self::generate_table_description_html() */
-			$field_list[ $fee_plan->getPlanKey() . '_description' ] = array(
+			$field_list[ $fee_plan_adapter->getPlanKey() . '_description' ] = array(
 				'type'        => 'table_description',
 				'description' => $fee_plan_display_data['description'],
 				'desc_tip'    => true,
 			);
 			/** @uses self::generate_table_min_amount_html() */
-			$field_list[ $fee_plan->getPlanKey() . '_min_amount' ] = array(
+			$field_list[ $fee_plan_adapter->getPlanKey() . '_min_amount' ] = array(
 				'type'     => 'table_min_amount',
 				'desc_tip' => true,
-				'default'  => DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount() ),
-				'value'    => DisplayHelper::price_to_euro( $fee_plan->getMinPurchaseAmount( true ) ),
+				'default'  => DisplayHelper::price_to_euro( $fee_plan_adapter->getMinPurchaseAmount() ),
+				'value'    => DisplayHelper::price_to_euro( $fee_plan_adapter->getOverrideMinPurchaseAmount() ),
 			);
 			/** @uses self::generate_table_max_amount_html() */
-			$field_list[ $fee_plan->getPlanKey() . '_max_amount' ] = array(
+			$field_list[ $fee_plan_adapter->getPlanKey() . '_max_amount' ] = array(
 				'type'      => 'table_max_amount',
 				'desc_tip'  => true,
-				'default'   => DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount() ),
-				'value'     => DisplayHelper::price_to_euro( $fee_plan->getMaxPurchaseAmount( true ) ),
+				'default'   => DisplayHelper::price_to_euro( $fee_plan_adapter->getMaxPurchaseAmount() ),
+				'value'     => DisplayHelper::price_to_euro( $fee_plan_adapter->getOverrideMaxPurchaseAmount() ),
 				'decorator' => '%s</tr>',
 			);
 		}
@@ -425,6 +431,7 @@ class AbstractBackendGateway extends AbstractGateway {
 
 		// Begin building the HTML string
 		$html  = '<td width="1%">';
+		$html .= '<input type="hidden" name="' . esc_attr( $field_key ) . '" value="' . esc_attr( $data['enabled'] ) . '">';
 		$html .= '<label for="' . esc_attr( $field_key ) . '">';
 		$html .= '<a class="wc-alma-toggle-fee-plan-enabled" href="#' . esc_attr( $field_key ) . '" aria-label="' . $data['description'] . '" title="' . $data['description'] . '">';
 		$html .= '<span class="' . $toggle_class . '"></span>';
@@ -433,6 +440,24 @@ class AbstractBackendGateway extends AbstractGateway {
 		$html .= '</td>';
 
 		return $html;
+	}
+
+	/**
+	 * Validate Toggle in Table Field.
+	 *
+	 * Make sure the data is escaped correctly, etc.
+	 *
+	 * @param string $key Field key.
+	 * @param string $value Posted Value.
+	 *
+	 * @return bool True if the toggle is enabled, false otherwise.
+	 */
+	public function validate_table_toggle_field( $key, $value ): bool {
+		if ( ! empty( $value ) && '1' === $value ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public function generate_table_min_amount_html( string $key, array $data ): string {

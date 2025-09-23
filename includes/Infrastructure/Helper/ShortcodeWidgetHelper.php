@@ -2,9 +2,8 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
-use Alma\API\Domain\Entity\FeePlan;
-use Alma\API\Domain\Entity\FeePlanList;
-use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
+use Alma\API\Domain\Adapter\FeePlanListAdapterInterface;
+use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
@@ -47,20 +46,19 @@ class ShortcodeWidgetHelper {
 	 * Create the Alma cart widget shortcode.
 	 * This shortcode can be used to display the Alma cart widget
 	 *
-	 * @param string      $environment The API mode (live or test).
-	 * @param string      $merchant_id The merchant ID.
-	 * @param int         $price The total price of the cart in cents.
-	 * @param FeePlanList $fee_plan_list The list of fee plans.
-	 * @param string      $language The language code (e.g., 'en', 'fr', etc.).
-	 * @param bool        $display_widget Whether to display the widget or not.
+	 * @param string                      $environment The API mode (live or test).
+	 * @param string                      $merchantId The merchant ID.
+	 * @param int                         $price The total price of the cart in cents.
+	 * @param FeePlanListAdapterInterface $feePlanListAdapter The list of fee plans.
+	 * @param string                      $language The language code (e.g., 'en', 'fr', etc.).
+	 * @param bool                        $displayWidget Whether to display the widget or not.
 	 *
 	 * @return void
-	 * @throws ContainerServiceException
 	 */
-	public function initCartShortcode( string $environment, string $merchant_id, int $price, FeePlanList $fee_plan_list, string $language, bool $display_widget = false ) {
-		if ( $display_widget ) {
+	public function initCartShortcode( string $environment, string $merchantId, int $price, FeePlanListAdapterInterface $feePlanListAdapter, string $language, bool $displayWidget = false ) {
+		if ( $displayWidget ) {
 			$this->addScriptsAndStyles();
-			$this->addParameters( $environment, $merchant_id, $price, $fee_plan_list, $language );
+			$this->addParameters( $environment, $merchantId, $price, $feePlanListAdapter, $language );
 			$this->addShortcode( self::CART_SHORTCODE_TAG );
 		} else {
 			$this->addEmptyShortcode( self::CART_SHORTCODE_TAG );
@@ -92,20 +90,19 @@ class ShortcodeWidgetHelper {
 	 * Create the Alma cart widget shortcode.
 	 * This shortcode can be used to display the Alma cart widget
 	 *
-	 * @param string      $environment The API mode (live or test).
-	 * @param string      $merchant_id The merchant ID.
-	 * @param int         $price The total price of the cart in cents.
-	 * @param FeePlanList $fee_plan_list The list of fee plans.
-	 * @param string      $language The language code.
-	 * @param bool        $display_widget Whether to display the widget or not.
+	 * @param string                      $environment The API mode (live or test).
+	 * @param string                      $merchantId The merchant ID.
+	 * @param int                         $price The total price of the cart in cents.
+	 * @param FeePlanListAdapterInterface $feePlanListAdapter The list of fee plans.
+	 * @param string                      $language The language code.
+	 * @param bool                        $displayWidget Whether to display the widget or not.
 	 *
 	 * @return void
-	 * @throws ContainerServiceException
 	 */
-	public function initProductShortcode( string $environment, string $merchant_id, int $price, FeePlanList $fee_plan_list, string $language, bool $display_widget = false ) {
-		if ( $display_widget ) {
+	public function initProductShortcode( string $environment, string $merchantId, int $price, FeePlanListAdapterInterface $feePlanListAdapter, string $language, bool $displayWidget = false ) {
+		if ( $displayWidget ) {
 			$this->addScriptsAndStyles();
-			$this->addParameters( $environment, $merchant_id, $price, $fee_plan_list, $language );
+			$this->addParameters( $environment, $merchantId, $price, $feePlanListAdapter, $language );
 			$this->addShortcode( self::PRODUCT_SHORTCODE_TAG );
 		} else {
 			$this->addEmptyShortcode( self::PRODUCT_SHORTCODE_TAG );
@@ -116,7 +113,6 @@ class ShortcodeWidgetHelper {
 	 * Enqueue the scripts and styles needed for the Alma widget.
 	 *
 	 * @return void
-	 * @throws ContainerServiceException
 	 */
 	private function addScriptsAndStyles() {
 		AssetsHelper::enqueueWidgetStyle();
@@ -126,16 +122,16 @@ class ShortcodeWidgetHelper {
 	/**
 	 * Add the parameters needed for the Alma widget.
 	 *
-	 * @param string      $environment The API environment (live or test).
-	 * @param string      $merchant_id The merchant ID.
-	 * @param int         $price The price of the product or cart in cents.
-	 * @param FeePlanList $fee_plan_list The list of fee plans.
-	 * @param string      $language The language code.
+	 * @param string                      $environment The API environment (live or test).
+	 * @param string                      $merchantId The merchant ID.
+	 * @param int                         $price The price of the product or cart in cents.
+	 * @param FeePlanListAdapterInterface $feePlanListAdapter The list of fee plans.
+	 * @param string                      $language The language code.
 	 *
 	 * @return void
 	 * @see assets/js/frontend/alma-frontend-widget-implementation.js
 	 */
-	private function addParameters( string $environment, string $merchant_id, int $price, FeePlanList $fee_plan_list, string $language ) {
+	private function addParameters( string $environment, string $merchantId, int $price, FeePlanListAdapterInterface $feePlanListAdapter, string $language ) {
 		wp_localize_script(
 			'alma-frontend-widget-implementation',
 			'alma_widget_settings',
@@ -143,20 +139,20 @@ class ShortcodeWidgetHelper {
 				'environment'             => $environment,
 				'widget_selector'         => sprintf( '.%s', self::WIDGET_CLASS ),
 				'widget_default_selector' => sprintf( '.%s', self::WIDGET_DEFAULT_CLASS ),
-				'merchant_id'             => $merchant_id,
+				'merchant_id'             => $merchantId,
 				'price'                   => $price,
 				'language'                => $language,
 				'fee_plan_list'           => array_map(
-					function ( FeePlan $plan ) {
+					function ( FeePlanAdapter $plan ) {
 						return array(
 							'installmentsCount' => $plan->getInstallmentsCount(),
-							'minAmount'         => $plan->getMinPurchaseAmount( true ),
-							'maxAmount'         => $plan->getMaxPurchaseAmount( true ),
+							'minAmount'         => $plan->getOverrideMinPurchaseAmount(),
+							'maxAmount'         => $plan->getOverrideMaxPurchaseAmount(),
 							'deferredDays'      => $plan->getDeferredDays(),
 							'deferredMonths'    => $plan->getDeferredMonths(),
 						);
 					},
-					$fee_plan_list->getArrayCopy()
+					$feePlanListAdapter->getArrayCopy()
 				),
 				'hide_if_not_eligible'    => false,
 				'transition_delay'        => 5500,
