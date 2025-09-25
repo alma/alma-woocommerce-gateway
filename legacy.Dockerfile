@@ -1,5 +1,5 @@
 FROM composer:2.2 AS composer
-FROM debian:bullseye
+FROM debian:bookworm
 
 ARG UID
 
