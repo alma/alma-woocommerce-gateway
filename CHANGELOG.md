@@ -1,5 +1,17 @@
 # Changelog
 
+## v5.16.0 - 2025-09-30
+
+### Changes
+
+### 🚀 New Features
+
+- feat: add payment_methods_list in cms_features (#422)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @Francois-Gomis, @joyet-simon and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+
 ## v5.15.0 - 2025-09-15
 
 ### Changes

@@ -27,12 +27,13 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase {
 	protected $alma_logger_mock;
 	protected $alma_settings_mock;
 	protected $security_helper_mock;
-	protected $payload_formatter_mock;
+	protected $payload_formatter;
 	protected $option_proxy_mock;
 	protected $theme_proxy_mock;
 	protected $functions_proxy_mock;
 	protected $fee_plan_mock;
 	protected $tools_helper_mock;
+	protected $payment_gateways_proxy;
 
 	public function set_up() {
 		$this->alma_logger_mock   = $this->createMock( AlmaLogger::class );
@@ -51,7 +52,7 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase {
 		$this->alma_settings_mock->fee_plan_helper        = $this->createMock( FeePlanHelper::class );
 		$this->alma_settings_mock->excluded_products_list = [];
 		$this->security_helper_mock                       = $this->createMock( SecurityHelper::class );
-		$this->payload_formatter_mock                     = $this->createMock( PayloadFormatter::class );
+		$this->payload_formatter                          = new PayloadFormatter();
 		$this->option_proxy_mock                          = $this->createMock( OptionProxy::class );
 		$this->theme_proxy_mock                           = $this->createMock( ThemeProxy::class );
 		$this->theme_proxy_mock->method( 'get_name' )->willReturn( 'Storefront' );
@@ -59,17 +60,19 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase {
 		$this->functions_proxy_mock = $this->createMock( FunctionsProxy::class );
 		$this->tools_helper_mock    = $this->createMock( ToolsHelper::class );
 
-		$this->set_payment_gateways();
+
+		$this->payment_gateways_proxy = $this->get_payment_gateways();
 
 		$this->collect_cms_data_service = new CollectCmsDataService(
 			$this->alma_settings_mock,
 			$this->alma_logger_mock,
-			$this->payload_formatter_mock,
+			$this->payload_formatter,
 			$this->security_helper_mock,
 			$this->option_proxy_mock,
 			$this->theme_proxy_mock,
 			$this->functions_proxy_mock,
-			$this->tools_helper_mock
+			$this->tools_helper_mock,
+			$this->payment_gateways_proxy
 		);
 	}
 
@@ -121,16 +124,13 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase {
 		                           ->method( 'send_http_response' )
 		                           ->with( array( 'error' => 'Invalid signature' ), 403 );
 
-		$this->payload_formatter_mock->expects( $this->never() )->method( 'formatConfigurationPayload' );
-
 		$this->assertNull( $this->collect_cms_data_service->handle_collect_cms_data() );
-
 	}
 
 	/**
 	 * @dataProvider get_auto_update_plugins_settings
 	 */
-	public function test_handle_collect_cms_data_with_valid_signature( $specific_features, $auto_update_plugins ) {
+	public function test_handle_collect_cms_data_with_valid_signature( $specific_features, $auto_update_plugins, $gateway_order ) {
 		$_SERVER['HTTP_X_ALMA_SIGNATURE'] = 'valid_signature';
 
 		$this->security_helper_mock->expects( $this->once() )
@@ -139,54 +139,60 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase {
 		$valueMap = [
 			[ 'active_plugins', false, [] ],
 			[ 'woocommerce_version', false, 'v.4.2' ],
-			[ 'auto_update_plugins', [], $auto_update_plugins ]
+			[ 'auto_update_plugins', [], $auto_update_plugins ],
+			[ 'woocommerce_gateway_order', [], $gateway_order ]
 		];
 		$this->option_proxy_mock->method( 'get_option' )->willReturnMap( $valueMap );
-
-		$cms_info = new CmsInfo( [
-			'cms_name'              => 'WooCommerce',
-			'cms_version'           => 'v.4.2',
-			'third_parties_plugins' => [],
-			'theme_name'            => 'Storefront',
-			'theme_version'         => 'v.4.5',
-			'language_name'         => 'PHP',
-			'language_version'      => phpversion(),
-			'alma_plugin_version'   => ALMA_VERSION,
-			'alma_sdk_version'      => Client::VERSION,
-			'alma_sdk_name'         => 'alma/alma-php-client',
-		] );
-
-		$cms_features = new CmsFeatures( [
-			'alma_enabled'             => true,
-			'widget_cart_activated'    => true,
-			'widget_product_activated' => false,
-			'used_fee_plans'           => [
-				'general_1_0_0' => [
-					'enabled'    => true,
-					'min_amount' => 0,
-					'max_amount' => 1000
-				]
-			],
-			'payment_method_position'  => 3,
-			'in_page_activated'        => false,
-			'log_activated'            => true,
-			'excluded_categories'      => [],
-			'is_multisite'             => is_multisite(),
-			'specific_features'        => $specific_features,
-		] );
-
-		$payload_formatter_return = [
-			'cms_info'     => $cms_info->getProperties(),
-			'cms_features' => $cms_features->getProperties()
+		$paymentMethodsList = [
+			[ 'name' => 'cheque', 'position' => 0 ],
+			[ 'name' => 'bacs', 'position' => 1 ],
+			[ 'name' => 'alma', 'position' => 2 ],
+			[ 'name' => 'paypal', 'position' => 3 ]
 		];
-		$this->payload_formatter_mock->expects( $this->once() )
-		                             ->method( 'formatConfigurationPayload' )
-		                             ->with( $cms_info, $cms_features )
-		                             ->willReturn( $payload_formatter_return );
-
+		if ( ! empty( $gateway_order ) ) {
+			$paymentMethodsList = [
+				[ 'name' => 'cheque', 'position' => 1 ],
+				[ 'name' => 'bacs', 'position' => 2 ],
+				[ 'name' => 'alma', 'position' => 0 ],
+				[ 'name' => 'paypal', 'position' => 3 ]
+			];;
+		}
+		$expectedData = [
+			"cms_info"     => [
+				"cms_name"              => "WooCommerce",
+				"cms_version"           => "v.4.2",
+				"third_parties_plugins" => [],
+				"theme_name"            => "Storefront",
+				"theme_version"         => "v.4.5",
+				"language_name"         => "PHP",
+				"language_version"      => phpversion(),
+				"alma_plugin_version"   => ALMA_VERSION,
+				"alma_sdk_version"      => Client::VERSION,
+				"alma_sdk_name"         => "alma/alma-php-client"
+			],
+			"cms_features" => [
+				"alma_enabled"             => true,
+				"widget_cart_activated"    => true,
+				"widget_product_activated" => false,
+				"used_fee_plans"           => [
+					'general_1_0_0' => [
+						'enabled'    => true,
+						'min_amount' => 0,
+						'max_amount' => 1000
+					]
+				],
+				"in_page_activated"        => false,
+				"log_activated"            => true,
+				"excluded_categories"      => [],
+				"payment_methods_list"     => $paymentMethodsList,
+				"payment_method_position"  => 3,
+				"specific_features"        => $specific_features,
+				"is_multisite"             => false,
+			]
+		];
 		$this->functions_proxy_mock->expects( $this->once() )
 		                           ->method( 'send_http_response' )
-		                           ->with( $payload_formatter_return, 200 );
+		                           ->with( $expectedData, 200 );
 
 
 		$this->assertNull( $this->collect_cms_data_service->handle_collect_cms_data() );
@@ -196,26 +202,41 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase {
 		return [
 			'Auto update plugins key does not exist'                     => [
 				'specific_features'   => [ null ],
-				'auto_update_plugins' => []
+				'auto_update_plugins' => [],
+				'gateway_order'       => []
 			],
 			'Auto update plugins key exists and nor contain Alma plugin' => [
 				'specific_features'   => [ null ],
-				'auto_update_plugins' => [ 'woocommerce/woocommerce.php' ]
+				'auto_update_plugins' => [ 'woocommerce/woocommerce.php' ],
+				'gateway_order'       => []
+
 			],
 			'Auto update plugins key exists and contain Alma plugin'     => [
 				'specific_features'   => [ 'auto_update' ],
 				'auto_update_plugins' => [
 					'woocommerce/woocommerce.php',
 					'alma-woocommerce-gateway/alma-gateway-for-woocommerce.php'
+				],
+				'gateway_order'       => []
+			],
+			'gateway order is not empty'                                 => [
+				'specific_features'   => [ null ],
+				'auto_update_plugins' => [],
+				'gateway_order'       => [
+					'cheque' => 1,
+					'bacs'   => 2,
+					'alma'   => 0,
+					'paypal' => 3,
 				]
-			]
+			],
+
 		];
 	}
 
 	/**
-	 * @return void
+	 * @return PaymentGatewaysProxy
 	 */
-	private function set_payment_gateways() {
+	private function get_payment_gateways() {
 		$cheque_mock     = $this->createMock( \WC_Payment_Gateway::class );
 		$cheque_mock->id = 'cheque';
 
@@ -239,11 +260,11 @@ class CollectCmsDataServiceTest extends WP_UnitTestCase {
 			'paypal'       => $paypal_mock
 		];
 
-		$wc_payment_gateway =$this->createMock( \WC_Payment_Gateways::class );
+		$wc_payment_gateway = $this->createMock( \WC_Payment_Gateways::class );
 
 		$wc_payment_gateway->method( 'payment_gateways' )
 		                   ->willReturn( $payment_gateways );
 
-		PaymentGatewaysProxy::get_instance( $wc_payment_gateway );
+		return PaymentGatewaysProxy::get_instance( $wc_payment_gateway );
 	}
 }

@@ -21,6 +21,7 @@ use Alma\Woocommerce\AlmaSettings;
 use Alma\Woocommerce\Builders\Helpers\SecurityHelperBuilder;
 use Alma\Woocommerce\Builders\Helpers\ToolsHelperBuilder;
 use Alma\Woocommerce\Exceptions\AlmaInvalidSignatureException;
+use Alma\Woocommerce\Helpers\ConstantsHelper;
 use Alma\Woocommerce\Helpers\SecurityHelper;
 use Alma\Woocommerce\Helpers\ToolsHelper;
 use Alma\Woocommerce\WcProxy\FunctionsProxy;
@@ -152,6 +153,7 @@ class CollectCmsDataService {
 		if ( ! array_key_exists( 'HTTP_X_ALMA_SIGNATURE', $_SERVER ) ) {
 			$this->alma_logger->error( 'Header key X-Alma-Signature doesn\'t exist' );
 			$this->functions_proxy->send_http_response( array( 'error' => 'Header key X-Alma-Signature doesn\'t exist' ), 403 );
+
 			return;
 		}
 
@@ -175,6 +177,7 @@ class CollectCmsDataService {
 	 */
 	private function get_cms_features() {
 		$auto_update_plugins = $this->option_proxy->get_option( 'auto_update_plugins', array() );
+
 		return new CmsFeatures(
 			array(
 				'alma_enabled'             => $this->alma_settings->is_enabled(),
@@ -188,6 +191,7 @@ class CollectCmsDataService {
 				'specific_features'        => array(
 					( in_array( 'alma-woocommerce-gateway/alma-gateway-for-woocommerce.php', $auto_update_plugins, true ) ) ? 'auto_update' : null,
 				),
+				'payment_methods_list'     => $this->get_payment_gateway(),
 				'payment_method_position'  => $this->get_alma_gateway_position(),
 			)
 		);
@@ -284,5 +288,48 @@ class CollectCmsDataService {
 		}
 
 		return $gateway_position;
+	}
+
+	/**
+	 * Get payment gateways excluding virtual gateways.
+	 * @return array
+	 */
+	private function get_payment_gateway() {
+		$gateway_order = $this->option_proxy->get_option( 'woocommerce_gateway_order', array() );
+
+		$available_gateways = PaymentGatewaysProxy::get_instance()->get_payment_gateways();
+		$ordered_gateways   = array();
+		$position_index     = 0;
+		foreach ( $available_gateways as $gateway_id => $gateway ) {
+			if (
+				'yes' === $gateway->enabled &&
+				! in_array( $gateway->id, $this->get_excluded_virtual_gateways() )
+			) {
+				$position = isset( $gateway_order[ $gateway_id ] ) ? $gateway_order[ $gateway_id ] : $position_index++;
+
+				$ordered_gateways[] = array(
+					'name'     => $gateway_id,
+					'position' => $position,
+				);
+			}
+		}
+
+		return $ordered_gateways;
+	}
+
+	/**
+	 * Get excluded virtual gateways.
+	 * @return array
+	 */
+	private function get_excluded_virtual_gateways() {
+		return array(
+			ConstantsHelper::GATEWAY_ID_PAY_NOW,
+			ConstantsHelper::GATEWAY_ID_PAY_LATER,
+			ConstantsHelper::GATEWAY_ID_MORE_THAN_FOUR,
+			ConstantsHelper::GATEWAY_ID_IN_PAGE,
+			ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_NOW,
+			ConstantsHelper::GATEWAY_ID_IN_PAGE_PAY_LATER,
+			ConstantsHelper::GATEWAY_ID_IN_PAGE_MORE_THAN_FOUR,
+		);
 	}
 }
