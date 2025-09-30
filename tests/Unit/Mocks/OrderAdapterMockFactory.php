@@ -5,7 +5,7 @@ namespace Alma\Gateway\Tests\Unit\Mocks;
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
 use PHPUnit\Framework\TestCase;
 
-class OrderInterfaceMockFactory {
+class OrderAdapterMockFactory {
 
 	public static function createMock( TestCase $testCase ) {
 		$orderInterface = $testCase
@@ -33,6 +33,10 @@ class OrderInterfaceMockFactory {
 		$orderInterface->method( 'getShippingCity' )->willReturn( 'Gotham' );
 		$orderInterface->method( 'getShippingCountry' )->willReturn( 'FR' );
 		$orderInterface->method( 'getShippingEmail' )->willReturn( 'jane.doe@example.com' );
+		$orderInterface->method( 'getOrderNumber' )->willReturn( 'ORDER123' );
+		$orderInterface->method( 'getEditOrderUrl' )->willReturn( 'http://example.com/wp-admin/post.php?post=123&action=edit' );
+		$orderInterface->method( 'getViewOrderUrl' )->willReturn( 'http://example.com/wp-admin/post.php?post=123&action=view' );
+		$orderInterface->method( 'getCustomerNote' )->willReturn( 'Please deliver between 9 AM and 5 PM.' );
 
 		return $orderInterface;
 	}

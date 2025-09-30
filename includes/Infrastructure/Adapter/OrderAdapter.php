@@ -18,10 +18,6 @@ use WC_Order;
  * @method getId() see WC_Order::get_id()
  * @method getItems() see WC_Order::get_items()
  * @method getOrderKey() see WC_Order::get_order_key()
- * @method getOrderNumber() see WC_Order::get_order_number()
- * @method getViewOrderUrl() see WC_Order::get_view_order_url()
- * @method getEditOrderUrl() see WC_Order::get_edit_order_url()
- * @method getCustomerNote() see WC_Order::get_customer_note()
  * @method getBillingState() see WC_Order::get_billing_state()
  * @method getShippingState() see WC_Order::get_shipping_state()
  * @method hasStatus( $status ) see WC_Order::has_status()
@@ -58,6 +54,42 @@ class OrderAdapter implements OrderAdapterInterface {
 	 */
 	public function getWcOrder(): WC_Order {
 		return $this->wcOrder;
+	}
+
+	/**
+	 * Get the order number.
+	 *
+	 * @return string
+	 */
+	public function getOrderNumber(): string {
+		return $this->wcOrder->get_order_number();
+	}
+
+	/**
+	 * Get the view order URL.
+	 *
+	 * @return string
+	 */
+	public function getEditOrderUrl(): string {
+		return $this->wcOrder->get_edit_order_url();
+	}
+
+	/**
+	 * Get the view order URL.
+	 *
+	 * @return string
+	 */
+	public function getViewOrderUrl(): string {
+		return $this->wcOrder->get_view_order_url();
+	}
+
+	/**
+	 * Get the customer note.
+	 *
+	 * @return string
+	 */
+	public function getCustomerNote(): string {
+		return $this->wcOrder->get_customer_note();
 	}
 
 	/**
