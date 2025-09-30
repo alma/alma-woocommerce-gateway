@@ -11,7 +11,6 @@
 
 namespace Alma\Gateway\Application\Helper;
 
-use Alma\API\Domain\Exception\RequirementsException;
 use Alma\Gateway\Application\Exception\Helper\EncryptorHelperException;
 use Alma\Gateway\Infrastructure\Exception\CmsException;
 use Alma\Gateway\Infrastructure\Helper\SecurityHelper;

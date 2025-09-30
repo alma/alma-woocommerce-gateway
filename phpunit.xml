@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         bootstrap="tests/bootstrap.php"
+<phpunit bootstrap="tests/bootstrap.php"
          backupGlobals="false"
          colors="true"
-         testdox="true"
-         displayDetailsOnTestsThatTriggerDeprecations="true"
          processIsolation="false"
          stopOnFailure="false"
-         beStrictAboutTestsThatDoNotTestAnything="false"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.3/phpunit.xsd"
-         cacheDirectory=".phpunit.cache"
-         backupStaticProperties="false">
+>
 
     <testsuites>
         <testsuite name="Alma WooCommerce Unit Test Suite">
-            <directory suffix="Test.php">./tests/Unit</directory>
+            <directory>./tests/Unit/Application/Helper/AdminHelperTest.php</directory>
         </testsuite>
     </testsuites>
 
@@ -22,19 +16,16 @@
               pathCoverage="false"
               ignoreDeprecatedCodeUnits="true"
               disableCodeCoverageIgnore="false">
+        <include>
+            <directory suffix=".php">./includes</directory>
+        </include>
         <report>
             <html outputDirectory="./.coverage-report"/>
         </report>
     </coverage>
 
-    <source>
-        <include>
-            <directory suffix=".php">./includes</directory>
-        </include>
-    </source>
-
     <php>
         <env name="ALMA_API_KEY" value="sk_test_*******"/>
-        <env name="ALMA_API_ROOT" value="https://api.sandbox.getalma.eu"/>
+        <env name="ALMA_API_ROOT" value="alma-api-url"/>
     </php>
 </phpunit>

@@ -25,16 +25,16 @@ class CartItemMapper {
 		return ( new CartItemDto(
 			$orderLine->getQuantity(),
 			DisplayHelper::price_to_cent( $orderLine->getTotal() ),
-			ContextHelper::getAttachmentUrl( $product->get_image_id() )
+			ContextHelper::getAttachmentUrl( $product->getImageId() )
 		) )
-			->setSku( $product->get_sku() )
+			->setSku( $product->getSku() )
 			->setTitle( $orderLine->getName() )
 			->setQuantity( $orderLine->getQuantity() )
-			->setUnitPrice( DisplayHelper::price_to_cent( $product->get_price() ) )
-			->setLinePrice( DisplayHelper::price_to_cent( $orderLine->getTotal() ) )
+			->setUnitPrice( $product->getPrice() )
+			->setLinePrice( $orderLine->getTotal() )
 			->setCategories( $categories )
-			->setUrl( $product->get_permalink() )
-			->setPictureUrl( ContextHelper::getAttachmentUrl( $product->get_image_id() ) )
-			->setRequiresShipping( $product->needs_shipping() );
+			->setUrl( $product->getPermalink() )
+			->setPictureUrl( ContextHelper::getAttachmentUrl( $product->getImageId() ) )
+			->setRequiresShipping( $product->needsShipping() );
 	}
 }

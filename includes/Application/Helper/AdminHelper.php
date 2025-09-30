@@ -22,6 +22,7 @@ class AdminHelper implements AdminHelperInterface {
 	}
 
 	/**
+	 * TODO Clarify the purpose of this argument
 	 * Send a success response with a message.
 	 *
 	 * @param bool $data

@@ -2,8 +2,8 @@
 
 namespace Alma\Gateway\Tests\Unit\Business\Service;
 
-use Alma\API\Entity\FeePlan;
-use Alma\API\Entity\FeePlanList;
+use Alma\API\Domain\Entity\FeePlan;
+use Alma\API\Domain\Entity\FeePlanList;
 use Alma\Gateway\Application\Helper\EncryptorHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Helper\WordPressHelper;
@@ -19,8 +19,6 @@ class OptionsServiceTest extends TestCase {
 	private ConfigService $options_service;
 
 	public function setUp(): void {
-		parent::setUp();
-		// Mock de la méthode statique AVANT la création de l'instance
 		Mockery::mock( 'alias:Alma\Gateway\WooCommerce\Proxy\WooCommerceProxy' )
 		       ->shouldReceive( 'set_key_encryptor' )
 		       ->andReturnNull();
@@ -31,6 +29,7 @@ class OptionsServiceTest extends TestCase {
 	}
 
 	public function tearDown(): void {
+		Mockery::resetContainer();
 		Mockery::close();
 	}
 
