@@ -12,6 +12,9 @@ class OrderAdapterMockFactory {
 			->getMockBuilder( OrderAdapter::class )
 			->disableOriginalConstructor()
 			->getMock();
+		$orderInterface->method( 'getId' )->willReturn( 123456 );
+		$orderInterface->method( 'getOrderKey' )->willReturn( 'orderKey' );
+		$orderInterface->method( 'getTotal' )->willReturn( 12300 );
 		$orderInterface->method( 'getBillingFirstName' )->willReturn( 'John' );
 		$orderInterface->method( 'getBillingLastName' )->willReturn( 'Doe' );
 		$orderInterface->method( 'getBillingEmail' )->willReturn( 'john.doe@example.com' );
@@ -32,7 +35,6 @@ class OrderAdapterMockFactory {
 		$orderInterface->method( 'getShippingPostcode' )->willReturn( '67890' );
 		$orderInterface->method( 'getShippingCity' )->willReturn( 'Gotham' );
 		$orderInterface->method( 'getShippingCountry' )->willReturn( 'FR' );
-		$orderInterface->method( 'getShippingEmail' )->willReturn( 'jane.doe@example.com' );
 		$orderInterface->method( 'getOrderNumber' )->willReturn( 'ORDER123' );
 		$orderInterface->method( 'getEditOrderUrl' )->willReturn( 'http://example.com/wp-admin/post.php?post=123&action=edit' );
 		$orderInterface->method( 'getViewOrderUrl' )->willReturn( 'http://example.com/wp-admin/post.php?post=123&action=view' );
@@ -64,7 +66,6 @@ class OrderAdapterMockFactory {
 				[
 					'first_name'  => 'Jane',
 					'last_name'   => 'Doe',
-					'email'       => 'jane.doe@example.com',
 					'line1'       => '456 Elm St',
 					'line2'       => 'Suite 5C',
 					'postal_code' => '67890',

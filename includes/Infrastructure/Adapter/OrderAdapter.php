@@ -15,11 +15,7 @@ use WC_Order;
  * It provides methods to retrieve order details, update order status, and manage order notes.
  *
  * @method addOrderNote( $note, $is_customer_note = 0, $added_by_user = false ) see WC_Order::add_order_note()
- * @method getId() see WC_Order::get_id()
  * @method getItems() see WC_Order::get_items()
- * @method getOrderKey() see WC_Order::get_order_key()
- * @method getBillingState() see WC_Order::get_billing_state()
- * @method getShippingState() see WC_Order::get_shipping_state()
  * @method hasStatus( $status ) see WC_Order::has_status()
  * @method updateMetaData( $key, $value, $meta_id = 0 ) see WC_Abstract_Order::update_meta_data()
  * @method updateStatus( $new_status, $note = '', $manual = false ) see WC_Order::update_status()
@@ -56,6 +52,20 @@ class OrderAdapter implements OrderAdapterInterface {
 		return $this->wcOrder;
 	}
 
+
+	/**
+	 * Return the order ID.
+	 *
+	 * @return int
+	 */
+	public function getId(): int {
+		return $this->wcOrder->get_id();
+	}
+
+	public function getOrderKey(): string {
+		return $this->wcOrder->get_order_key();
+	}
+
 	/**
 	 * Get the order number.
 	 *
@@ -90,6 +100,15 @@ class OrderAdapter implements OrderAdapterInterface {
 	 */
 	public function getCustomerNote(): string {
 		return $this->wcOrder->get_customer_note();
+	}
+
+	/**
+	 * Get the billing state.
+	 *
+	 * @return string|null
+	 */
+	public function getBillingState() {
+		return $this->wcOrder->get_billing_state();
 	}
 
 	/**
@@ -193,6 +212,15 @@ class OrderAdapter implements OrderAdapterInterface {
 	}
 
 	/**
+	 * Get the shipping state.
+	 *
+	 * @return string
+	 */
+	public function getShippingState(): string {
+		return $this->wcOrder->get_shipping_state();
+	}
+
+	/**
 	 * Get the shipping first name.
 	 *
 	 * @return string
@@ -271,15 +299,6 @@ class OrderAdapter implements OrderAdapterInterface {
 	 */
 	public function hasShippingAddress(): bool {
 		return $this->wcOrder->has_shipping_address();
-	}
-
-	/**
-	 * Get the shipping email.
-	 *
-	 * @return string
-	 */
-	public function getShippingEmail(): string {
-		return $this->wcOrder->get_billing_email();
 	}
 
 
