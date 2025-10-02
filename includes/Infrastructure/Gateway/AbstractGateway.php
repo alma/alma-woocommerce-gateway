@@ -13,6 +13,7 @@ use Alma\Gateway\Application\Mapper\CustomerMapper;
 use Alma\Gateway\Application\Mapper\OrderMapper;
 use Alma\Gateway\Application\Mapper\PaymentMapper;
 use Alma\Gateway\Application\Provider\PaymentProvider;
+use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
@@ -242,6 +243,12 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * @return string
 	 */
 	public function get_origin(): string {
+		/** @var ConfigService $config_service */
+		$config_service = Plugin::get_container()->get( ConfigService::class );
+		if ( $config_service->isInPage() ) {
+			return 'online_inpage';
+		}
+
 		return 'online';
 	}
 
