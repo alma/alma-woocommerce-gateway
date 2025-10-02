@@ -16,9 +16,6 @@ use BadMethodCallException;
  *
  * @method enable() : void see FeePlan::enable()
  * @method getCustomerFeeVariable(): ?int see FeePlan::getCustomerFeeVariable()
- * @method getDeferredDays(): int see FeePlan::getDeferredDays()
- * @method getDeferredMonths(): int see FeePlan::getDeferredMonths()
- * @method getInstallmentsCount(): int see FeePlan::getInstallmentsCount()
  * @method getKind(): string see FeePlan::getKind()
  * @method getMerchantFeeFixed(): ?int see FeePlan::getMerchantFeeFixed()
  * @method getMerchantFeeVariable(): ?int see FeePlan::getMerchantFeeVariable()
@@ -124,15 +121,57 @@ class FeePlanAdapter implements FeePlanAdapterInterface {
 		$this->overrideMaxPurchaseAmount = $this->almaFeePlan->getMaxPurchaseAmount();
 	}
 
+	/**
+	 * Returns the unique plan key for this fee plan.
+	 *
+	 * @return string
+	 */
 	public function getPlanKey(): string {
 		return $this->almaFeePlan->getPlanKey();
 	}
 
+	/**
+	 * Returns the minimum purchase amount this fee plan applies to.
+	 *
+	 * @return int
+	 */
 	public function getMinPurchaseAmount(): int {
 		return $this->almaFeePlan->getMinPurchaseAmount();
 	}
 
+	/**
+	 * Returns the maximum purchase amount this fee plan applies to.
+	 *
+	 * @return int
+	 */
 	public function getMaxPurchaseAmount(): int {
 		return $this->almaFeePlan->getMaxPurchaseAmount();
+	}
+
+	/**
+	 * Returns the number of installments this fee plan applies to.
+	 *
+	 * @return int
+	 */
+	public function getInstallmentsCount(): int {
+		return $this->almaFeePlan->getInstallmentsCount();
+	}
+
+	/**
+	 * Returns the number of deferred days this fee plan applies to.
+	 *
+	 * @return int
+	 */
+	public function getDeferredDays(): int {
+		return $this->almaFeePlan->getDeferredDays();
+	}
+
+	/**
+	 * Returns the number of deferred months this fee plan applies to.
+	 *
+	 * @return int
+	 */
+	public function getDeferredMonths(): int {
+		return $this->almaFeePlan->getDeferredMonths();
 	}
 }

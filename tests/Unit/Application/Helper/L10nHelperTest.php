@@ -15,18 +15,6 @@ class L10nHelperTest extends TestCase {
 
 	private $l10nHelper;
 
-	protected function setUp(): void {
-		parent::setUp();
-		Monkey\setUp();
-	}
-
-	protected function tearDown(): void {
-		Monkey\tearDown();
-		parent::tearDown();
-		Mockery::close();
-
-	}
-
 	/**
 	 * Return error if with args are not the expected ones
 	 *\LanguageHelper::__() must be of the type string, null returned
@@ -71,7 +59,7 @@ class L10nHelperTest extends TestCase {
 	}
 
 	/**
-	 * @TODO Need to move this transtlation to the FeePlan Object?
+	 * @TODO Need to move this translation to the FeePlan Object?
 	 *
 	 * @return void
 	 */
@@ -81,13 +69,25 @@ class L10nHelperTest extends TestCase {
 		Functions\expect( 'esc_url' )
 			->andReturn( 'escapedUrl' );
 
-		$feePlan     = FeePlanMock::getFeePlan();
+		$feePlan     = FeePlanMock::getFeePlanAdapter();
 		$displayData = L10nHelper::generate_fee_plan_display_data( $feePlan, 'test' );
 
 		$this->assertIsArray( $displayData );
 		$this->assertArrayHasKey( 'title', $displayData );
 		$this->assertArrayHasKey( 'toggle_label', $displayData );
 		$this->assertArrayHasKey( 'description', $displayData );
+	}
+
+	protected function setUp(): void {
+		parent::setUp();
+		Monkey\setUp();
+	}
+
+	protected function tearDown(): void {
+		Monkey\tearDown();
+		parent::tearDown();
+		Mockery::close();
+
 	}
 
 }

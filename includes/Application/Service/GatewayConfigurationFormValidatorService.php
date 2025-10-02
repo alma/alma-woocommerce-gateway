@@ -43,7 +43,7 @@ class GatewayConfigurationFormValidatorService {
 		}
 
 		// We only validate fee plans if there are any
-		if ( count( $feePlanConfigurationList ) ) {
+		if ( $feePlanConfigurationList->count() ) {
 			try {
 				$feePlanConfigurationList->validate( $this->feePlanRepository->getAll() );
 			} catch ( FeePlanRepositoryException $e ) {

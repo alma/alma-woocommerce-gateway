@@ -147,14 +147,14 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		} catch ( ProductRepositoryException $e ) {
 			throw new GatewayServiceException( 'Can not find Order' );
 		}
-		$fields   = $this->process_payment_fields( $order );
-		$fee_plan = $this->fee_plan_list_adapter->getByPlanKey( $fields['alma_plan_key'] );
+		$fields           = $this->process_payment_fields( $order );
+		$fee_plan_adapter = $this->fee_plan_list_adapter->getByPlanKey( $fields['alma_plan_key'] );
 
 		/** @var PaymentProvider $payment_service */
 		$payment_service = Plugin::get_container()->get( PaymentProvider::class );
 		try {
 			$payment = $payment_service->createPayment(
-				( new PaymentMapper() )->buildPaymentDto( $this->get_origin(), $order, $fee_plan ),
+				( new PaymentMapper() )->buildPaymentDto( $this->get_origin(), $order, $fee_plan_adapter ),
 				( new OrderMapper() )->buildOrderDto( $order ),
 				( new CustomerMapper() )->buildCustomerDto( $order ),
 			);

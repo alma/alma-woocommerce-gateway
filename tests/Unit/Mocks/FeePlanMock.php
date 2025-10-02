@@ -3,10 +3,15 @@
 namespace Alma\Gateway\Tests\Unit\Mocks;
 
 use Alma\API\Domain\Entity\FeePlan;
+use Alma\API\Infrastructure\Exception\ParametersException;
+use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 
 class FeePlanMock {
-	public static function getFeePlan(): FeePlan {
-		return new FeePlan(
+	/**
+	 * @throws ParametersException
+	 */
+	public static function getFeePlanAdapter(): FeePlanAdapter {
+		$feePlan = new FeePlan(
 			[
 				'allowed'               => true,
 				'available_online'      => true,
@@ -21,5 +26,7 @@ class FeePlanMock {
 				'min_purchase_amount'   => 5000,
 			]
 		);
+
+		return new FeePlanAdapter( $feePlan );
 	}
 }
