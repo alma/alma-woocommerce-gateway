@@ -2,11 +2,8 @@
 
 namespace Alma\Gateway\Application\Service;
 
-use Alma\API\Domain\Entity\FeePlan;
-use Alma\API\Domain\Entity\FeePlanList;
 use Alma\API\Domain\Repository\ConfigRepositoryInterface;
 use Alma\Gateway\Application\Helper\EncryptorHelper;
-use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
 use Alma\Gateway\Infrastructure\Helper\WordPressHelper;
 use Alma\Gateway\Plugin;
 
@@ -53,8 +50,6 @@ class ConfigService {
 	 * Encrypt keys.
 	 *
 	 * @param $options array The whole posted settings.
-	 *
-	 * @throws ContainerServiceException
 	 */
 	public static function encryptKeys( array $options ): array {
 
@@ -195,30 +190,16 @@ class ConfigService {
 		return $this->configRepository->hasSetting( $key );
 	}
 
-	/**
-	 * Init Fee Plan list options with values from the Alma API.
-	 *
-	 * @param FeePlanList $fee_plan_list The given Fee Plan list to initialize.
-	 *
-	 * @return void
-	 */
-	public function initFeePlanList( FeePlanList $fee_plan_list ) {
-		/** @var FeePlan $fee_plan */
-		foreach ( $fee_plan_list as $fee_plan ) {
+	public function createSetting( string $setting, $value ): bool {
+		return $this->configRepository->createSetting( $setting, $value );
+	}
 
-			$default_plan_list = array(
-				'_enabled'    => false,
-				'_max_amount' => $fee_plan->getMaxPurchaseAmount(),
-				'_min_amount' => $fee_plan->getMinPurchaseAmount(),
-			);
+	public function updateSetting( string $setting, $value ): bool {
+		return $this->configRepository->updateSetting( $setting, $value );
+	}
 
-			foreach ( $default_plan_list as $plan_key => $default_value ) {
-				$option_key = $fee_plan->getPlanKey() . $plan_key;
-				if ( ! $this->hasSetting( $option_key ) ) {
-					$this->configRepository->updateSetting( $option_key, $default_value );
-				}
-			}
-		}
+	public function deleteSetting( $key ): bool {
+		return $this->configRepository->deleteSetting( $key );
 	}
 
 	/**
@@ -247,29 +228,29 @@ class ConfigService {
 	public function isFeePlanEnabled( string $fee_plan_key ): bool {
 		$option = $fee_plan_key . '_enabled';
 
-		return $this->getSetting( $option ) === 'yes';
+		return $this->getSetting( $option );
 	}
 
 	/**
-	 * Get the maximum amount for a Fee Plan.
+	 * Get the maximum amount for a Fee Plan saved in config.
 	 *
-	 * @param string $fee_plan_key
+	 * @param string $feePlanKey
 	 *
 	 * @return int
 	 */
-	public function getMaxAmount( string $fee_plan_key ): int {
-		return (int) $this->getSetting( $fee_plan_key . '_max_amount' );
+	public function getMaxPurchaseAmount( string $feePlanKey ): int {
+		return (int) $this->getSetting( $feePlanKey . '_max_amount' );
 	}
 
 	/**
-	 * Get the minimum amount for a Fee Plan.
+	 * Get the minimum amount for a Fee Plan saved in config.
 	 *
-	 * @param string $fee_plan_key
+	 * @param string $feePlanKey
 	 *
 	 * @return int
 	 */
-	public function getMinAmount( string $fee_plan_key ): int {
-		return (int) $this->getSetting( $fee_plan_key . '_min_amount' );
+	public function getMinPurchaseAmount( string $feePlanKey ): int {
+		return (int) $this->getSetting( $feePlanKey . '_min_amount' );
 	}
 
 	/**
@@ -280,11 +261,6 @@ class ConfigService {
 	 */
 	public function getSettings(): array {
 		return $this->configRepository->getSettings();
-	}
-
-	public function deleteSetting( string $key ): bool {
-
-		return $this->configRepository->deleteSetting( $key );
 	}
 
 	/**
@@ -319,5 +295,14 @@ class ConfigService {
 
 	public function getWidgetProductEnabled(): bool {
 		return 'yes' === $this->getSetting( 'widget_product_enabled' );
+	}
+
+	public function deleteFeePlansConfiguration(): void {
+		$settings = $this->getSettings();
+		foreach ( $settings as $key => $value ) {
+			if ( preg_match( '/^general_.*(_min_amount|_max_amount|_enabled)$/', $key ) ) {
+				$this->deleteSetting( $key );
+			}
+		}
 	}
 }

@@ -2,20 +2,13 @@
 
 namespace Alma\Gateway\Tests\Unit\Application\Mapper;
 
-use Alma\API\Domain\Entity\FeePlan;
 use Alma\Gateway\Application\Mapper\PaymentMapper;
+use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Tests\Unit\Mocks\OrderAdapterMockFactory;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
 class PaymentMapperTest extends TestCase {
-
-	protected function setUp(): void {
-	}
-
-	protected function tearDown(): void {
-		Mockery::close();
-	}
 
 	/**
 	 * @runInSeparateProcess
@@ -36,13 +29,13 @@ class PaymentMapperTest extends TestCase {
 
 		$paymentMapper = new PaymentMapper();
 
-		$orderAdapterMock = OrderAdapterMockFactory::createMock( $this );
-		$feePlanMock      = $this->createMock( FeePlan::class );
-		$feePlanMock->method( 'getInstallmentsCount' )->willReturn( 3 );
-		$feePlanMock->method( 'getDeferredMonths' )->willReturn( 2 );
-		$feePlanMock->method( 'getDeferredDays' )->willReturn( 0 );
+		$orderAdapterMock   = OrderAdapterMockFactory::createMock( $this );
+		$feePlanAdapterMock = $this->createMock( FeePlanAdapter::class );
+		$feePlanAdapterMock->method( 'getInstallmentsCount' )->willReturn( 3 );
+		$feePlanAdapterMock->method( 'getDeferredMonths' )->willReturn( 2 );
+		$feePlanAdapterMock->method( 'getDeferredDays' )->willReturn( 0 );
 
-		$paymentDto = $paymentMapper->buildPaymentDto( 'test_origin', $orderAdapterMock, $feePlanMock );
+		$paymentDto = $paymentMapper->buildPaymentDto( 'test_origin', $orderAdapterMock, $feePlanAdapterMock );
 		$this->assertEquals(
 			[
 				'installments_count' => 3,
@@ -63,5 +56,12 @@ class PaymentMapperTest extends TestCase {
 			],
 			$paymentDto->toArray()
 		);
+	}
+
+	protected function setUp(): void {
+	}
+
+	protected function tearDown(): void {
+		Mockery::close();
 	}
 }
