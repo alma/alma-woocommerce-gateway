@@ -1,6 +1,6 @@
 <?php
 
-namespace Alma\Gateway\Tests\Unit\Application\Entity;
+namespace Alma\Gateway\Tests\Unit\Application\Entity\Form;
 
 use Alma\API\Infrastructure\Exception\ParametersException;
 use Alma\Gateway\Application\Entity\Form\FeePlanConfiguration;
