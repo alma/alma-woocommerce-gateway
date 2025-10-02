@@ -2,16 +2,16 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway\Backend;
 
-use Alma\API\Infrastructure\ClientConfiguration;
-use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
+use Alma\Gateway\Application\Entity\FeePlansConfigForm;
+use Alma\Gateway\Application\Entity\KeysConfigForm;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\EncryptorHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\PluginHelper;
-use Alma\Gateway\Application\Service\AuthenticationService;
+use Alma\Gateway\Application\Service\ConfigFormService;
 use Alma\Gateway\Application\Service\ConfigService;
-use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
+use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Plugin;
 
 /**
@@ -48,8 +48,7 @@ class AlmaGateway extends AbstractBackendGateway {
 
 	/**
 	 * Initialize form fields.
-	 * @throws ContainerServiceException
-	 * @throws FeePlanServiceException
+	 * @throws FeePlanRepositoryException
 	 */
 	public function init_form_fields() {
 
@@ -109,22 +108,50 @@ class AlmaGateway extends AbstractBackendGateway {
 	 */
 	public function sanitize_settings( array $settings ): array {
 
-		return $this->check_values( $settings );
-	}
+		// Clean settings
+		$settings = $this->clean_decoration_fields( $settings );
 
-	/**
-	 * Filter to encrypt the API keys before saving them in the database.
-	 * This method is called by WooCommerce when saving the settings.
-	 *
-	 * @param array $new_value The new value of the settings.
-	 *
-	 * @return array The settings with encrypted keys.
-	 * @throws ContainerServiceException
-	 */
-	public function encrypt_keys( array $new_value ): array {
-		$options_service = Plugin::get_container()->get( ConfigService::class );
+		/** @var ConfigFormService $config_form_service */
+		$config_form_service = Plugin::get_container()->get( ConfigFormService::class );
+		/** @var ConfigService $config_service */
+		$config_service = Plugin::get_container()->get( ConfigService::class );
 
-		return $options_service->encrypt_keys( $new_value );
+		// Create a config form to validate form data
+		$keys_config_form = ( new KeysConfigForm( $config_service ) )
+			->setNewTestKey( $settings[ self::FIELD_TEST_API_KEY ] )
+			->setNewLiveKey( $settings[ self::FIELD_LIVE_API_KEY ] );
+
+		$fee_plans_config_form = ( new FeePlansConfigForm( $config_service ) );
+		foreach ( $this->extractFeePlanFromForm( $settings ) as $key => $value ) {
+			$fee_plans_config_form->addFeePlan(
+				$key,
+				$value[ AbstractBackendGateway::MIN_AMOUNT_SUFFIX ],
+				$value[ AbstractBackendGateway::MAX_AMOUNT_SUFFIX ],
+				$value[ AbstractBackendGateway::ENABLED_SUFFIX ]
+			);
+		}
+
+		// Check if the config form is valid
+		$keys_config_form      = $config_form_service->checkKeysForm( $keys_config_form );
+		$fee_plans_config_form = $config_form_service->checkFeePlansForm( $fee_plans_config_form );
+
+		// Add errors to the gateway
+		$this->errors = array_merge(
+			$this->errors,
+			$keys_config_form->getErrors(),
+			$fee_plans_config_form->getErrors()
+		);
+
+		$settings[ self::FIELD_TEST_API_KEY ] = $keys_config_form->getNewTestKey();
+		$settings[ self::FIELD_LIVE_API_KEY ] = $keys_config_form->getNewLiveKey();
+		$settings[ self::FIELD_MERCHANT_ID ]  = $keys_config_form->getNewMerchantId();
+		foreach ( $fee_plans_config_form->getFeePlans() as $planKey => $feePlanArray ) {
+			$settings[ $planKey . '_' . AbstractBackendGateway::MIN_AMOUNT_SUFFIX ] = $feePlanArray[ FeePlansConfigForm::FEE_PLAN_MIN_AMOUNT_KEY ];
+			$settings[ $planKey . '_' . AbstractBackendGateway::MAX_AMOUNT_SUFFIX ] = $feePlanArray[ FeePlansConfigForm::FEE_PLAN_MAX_AMOUNT_KEY ];
+			$settings[ $planKey . '_' . AbstractBackendGateway::ENABLED_SUFFIX ]    = $feePlanArray[ FeePlansConfigForm::FEE_PLAN_ENABLED_KEY ];
+		}
+
+		return $settings;
 	}
 
 	/**
@@ -140,91 +167,23 @@ class AlmaGateway extends AbstractBackendGateway {
 		return $saved;
 	}
 
-	/**
-	 * Check form values
-	 *
-	 * @param $settings
-	 *
-	 * @return array
-	 * @throws ContainerServiceException
-	 */
-	private function check_values( $settings ): array {
-		$settings = $this->check_amounts( $settings );
-		$settings = $this->check_keys( $settings );
+	private function extractFeePlanFromForm( array $settings ) {
 
-		return $this->clean_decoration_fields( $settings );
-	}
-
-	/**
-	 * Check if min_amount is less than max_amount.
-	 *
-	 * @param array $settings
-	 *
-	 * @return array
-	 * @todo check if the given amount is between boundaries
-	 */
-	private function check_amounts( array $settings ): array {
 		// Group pairs of min_amount and max_amount
 		$groups = array();
 
 		foreach ( $settings as $key => $value ) {
-			$pattern = '/^(.*)_(' . self::MIN_AMOUNT_SUFFIX . '|' . self::MAX_AMOUNT_SUFFIX . ')$/';
+			$pattern = '/^(.*)_(' . AbstractBackendGateway::MIN_AMOUNT_SUFFIX . '|' . AbstractBackendGateway::MAX_AMOUNT_SUFFIX . ')$/';
+			if ( preg_match( $pattern, $key, $matches ) ) {
+				$groups[ $matches[1] ][ $matches[2] ] = DisplayHelper::price_to_cent( $value );
+			}
+			$pattern = '/^(' . AbstractBackendGateway::ENABLED_PREFIX . '.*)_(' . AbstractBackendGateway::ENABLED_SUFFIX . ')$/';
 			if ( preg_match( $pattern, $key, $matches ) ) {
 				$groups[ $matches[1] ][ $matches[2] ] = $value;
-				$settings[ $key ]                     = DisplayHelper::price_to_cent( $value );
 			}
 		}
 
-		// Check each group for min_amount and max_amount
-		foreach ( $groups as $prefix => $values ) {
-			if ( empty( $values[ self::MIN_AMOUNT_SUFFIX ] ) && empty( $values[ self::MAX_AMOUNT_SUFFIX ] ) ) {
-				unset( $settings[ $prefix . '_enabled' ] );
-			} elseif ( $values[ self::MIN_AMOUNT_SUFFIX ] >= $values[ self::MAX_AMOUNT_SUFFIX ] ) {
-				$this->add_error( "La valeur minimale de '$prefix' ne peut pas être supérieure ou égale à la valeur maximale." );
-				unset( $settings[ $prefix . '_' . self::MIN_AMOUNT_SUFFIX ], $settings[ $prefix . '_' . self::MAX_AMOUNT_SUFFIX ] );
-			}
-		}
-
-		return $settings;
-	}
-
-	/**
-	 * Check if API keys are valid.
-	 *
-	 * @param array $settings
-	 *
-	 * @return array
-	 * @throws ContainerServiceException
-	 */
-	private function check_keys( array $settings ): array {
-		/** @var AuthenticationService $authentication_service */
-		$authentication_service = Plugin::get_container()->get( AuthenticationService::class );
-
-		// Check test key
-		$test_merchant_id = $authentication_service->checkAuthentication(
-			$settings[ self::FIELD_TEST_API_KEY ],
-			ClientConfiguration::TEST_MODE
-		);
-		if ( empty( $test_merchant_id ) ) {
-			$settings[ self::FIELD_TEST_API_KEY ] = '';
-			$this->add_error( 'La clé API de test n\'est pas valide.' );
-		}
-
-		// Check live key
-		$live_merchant_id = $authentication_service->checkAuthentication(
-			$settings[ self::FIELD_LIVE_API_KEY ]
-		);
-		if ( empty( $live_merchant_id ) ) {
-			$settings[ self::FIELD_LIVE_API_KEY ] = '';
-			$this->add_error( 'La clé API de production n\'est pas valide.' );
-		}
-
-		// @todo: check if both keys are valid, (same merchant id), otherwise, display an error.
-
-		// Save merchant IDs
-		$settings['merchant_id'] = ! empty( $live_merchant_id ) ? $live_merchant_id : $test_merchant_id;
-
-		return $settings;
+		return $groups;
 	}
 
 	/**

@@ -37,7 +37,7 @@ RUN composer config --no-interaction --no-plugins allow-plugins.dealerdirect/php
 RUN composer config --no-interaction --no-plugins allow-plugins.phpstan/extension-installer true
 RUN composer require phpcsstandards/phpcsutils --no-interaction
 RUN composer require phpcsstandards/phpcsextra --no-interaction
-RUN composer require squizlabs/php_codesniffer --no-interaction
+RUN composer require squizlabs/php_codesniffer:^3.9 --no-interaction
 RUN composer require wp-coding-standards/wpcs --no-interaction
 RUN composer require phpcompatibility/php-compatibility --no-interaction
 RUN composer require phpcompatibility/phpcompatibility-wp:"*" --no-interaction

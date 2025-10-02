@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class WordPressHelper.
  */
 class WordPressHelper {
-	
+
 	/**
 	 * Set the key encryptor for API keys.
 	 *

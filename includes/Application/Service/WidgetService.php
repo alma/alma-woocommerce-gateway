@@ -3,16 +3,15 @@
 namespace Alma\Gateway\Application\Service;
 
 use Alma\API\Domain\Adapter\CartAdapterInterface;
-use Alma\API\Domain\Entity\FeePlanList;
 use Alma\API\Domain\Helper\ContextHelperInterface;
 use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
 use Alma\Gateway\Application\Exception\Service\WidgetServiceException;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
-use Alma\Gateway\Application\Service\API\FeePlanService;
+use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
-use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\WidgetHelper;
+use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\ProductRepository;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -22,10 +21,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WidgetService {
 
 	/** @var ConfigService Service to manage options. */
-	private ConfigService $optionsService;
+	private ConfigService $configService;
 
-	/** @var FeePlanService Service to manage fee plans. */
-	private FeePlanService $feePlanService;
+	/** @var FeePlanRepository Fee Plan Repository */
+	private FeePlanRepository $feePlanRepository;
 
 	/** @var ContextHelperInterface Adapter to manage context. */
 	private ContextHelperInterface $contextHelper;
@@ -39,20 +38,20 @@ class WidgetService {
 	/** @var ExcludedProductsHelper */
 	private ExcludedProductsHelper $excludedProductsHelper;
 
-	/** @var ProductRepository */
+	/** @var ProductRepository Product Repository */
 	private ProductRepository $productRepository;
 
 	public function __construct(
-		ConfigService $optionsService,
-		FeePlanService $feePlanService,
+		ConfigService $configService,
+		FeePlanRepository $feePlanRepository,
 		ProductRepository $productRepository,
 		ContextHelperInterface $contextHelper,
 		CartAdapterInterface $cartAdapter,
 		WidgetHelper $widgetHelper,
 		ExcludedProductsHelper $excludedProductsHelper
 	) {
-		$this->optionsService         = $optionsService;
-		$this->feePlanService         = $feePlanService;
+		$this->configService          = $configService;
+		$this->feePlanRepository      = $feePlanRepository;
 		$this->productRepository      = $productRepository;
 		$this->contextHelper          = $contextHelper;
 		$this->cartAdapter            = $cartAdapter;
@@ -70,23 +69,22 @@ class WidgetService {
 	 * @return void
 	 * @throws WidgetServiceException
 	 * @throws ProductRepositoryException
-	 * @throws ContainerServiceException
 	 */
 	public function displayWidget() {
-		$environment = $this->optionsService->getEnvironment();
-		$merchantId  = $this->optionsService->getMerchantId();
+		$environment = $this->configService->getEnvironment();
+		$merchantId  = $this->configService->getMerchantId();
 		try {
-			$feePlanList = $this->feePlanService->getFeePlanList()->filterEnabled();
+			$feePlanList = $this->feePlanRepository->getAll()->filterEnabled();
 		} catch ( FeePlanServiceException $e ) {
 			throw new WidgetServiceException( $e->getMessage() );
 		}
-		$excludedCategories = $this->optionsService->getExcludedCategories();
+		$excludedCategories = $this->configService->getExcludedCategories();
 		$language           = ContextHelper::getLanguage();
 
 		// Display widget if page is cart or product page and widget is enabled.
 		if ( ContextHelper::isCartPage() ) {
 			// Display widget if widget is enabled and there are no excluded categories.
-			$widgetCartEnabled = $this->optionsService->getWidgetCartEnabled();
+			$widgetCartEnabled = $this->configService->getWidgetCartEnabled();
 			$displayWidget     = $this->shouldDisplayWidget(
 				$widgetCartEnabled,
 				$this->excludedProductsHelper->canDisplayOnCartPage( $this->cartAdapter, $excludedCategories ),
@@ -108,7 +106,7 @@ class WidgetService {
 			$product = $this->productRepository->getById( ContextHelper::getCurrentProductId() );
 
 			// Display widget if widget is enabled and there are no excluded categories.
-			$widgetProductEnabled = $this->optionsService->getWidgetProductEnabled();
+			$widgetProductEnabled = $this->configService->getWidgetProductEnabled();
 			$displayWidget        = $this->shouldDisplayWidget(
 				$widgetProductEnabled,
 				$this->excludedProductsHelper->canDisplayOnProductPage( $product, $excludedCategories ),
@@ -130,13 +128,13 @@ class WidgetService {
 	/**
 	 * Check if the widget should be displayed based on the settings and excluded categories.
 	 *
-	 * @param bool        $widgetEnabled Whether the widget is enabled in settings.
-	 * @param bool        $excludedCategoriesStatus Whether there are excluded categories.
-	 * @param FeePlanList $feePlanList The list of fee plans.
+	 * @param bool               $widgetEnabled Whether the widget is enabled in settings.
+	 * @param bool               $excludedCategoriesStatus Whether there are excluded categories.
+	 * @param FeePlanListAdapter $feePlanList The list of fee plans.
 	 *
 	 * @return bool True if the widget should be displayed, false otherwise.
 	 */
-	private function shouldDisplayWidget( bool $widgetEnabled, bool $excludedCategoriesStatus, FeePlanList $feePlanList ): bool {
+	private function shouldDisplayWidget( bool $widgetEnabled, bool $excludedCategoriesStatus, FeePlanListAdapter $feePlanList ): bool {
 		return $widgetEnabled && $excludedCategoriesStatus && count( $feePlanList ) > 0;
 	}
 }

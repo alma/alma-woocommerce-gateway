@@ -36,17 +36,16 @@ use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Helper\RequirementsHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
+use Alma\Gateway\Application\Provider\EligibilityProvider;
+use Alma\Gateway\Application\Provider\FeePlanProvider;
+use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Application\Service\AdminService;
-use Alma\Gateway\Application\Service\API\EligibilityService;
-use Alma\Gateway\Application\Service\API\FeePlanService;
-use Alma\Gateway\Application\Service\API\PaymentService;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\GatewayService;
 use Alma\Gateway\Application\Service\IpnService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
 use Alma\Gateway\Infrastructure\Adapter\ProductAdapter;
-use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
 use Alma\Gateway\Infrastructure\Gateway\Backend\AlmaGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
@@ -68,7 +67,6 @@ use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
 use Alma\Gateway\Infrastructure\Repository\ProductRepository;
 use Dice\Dice;
-use Exception;
 use Psr\Http\Client\ClientInterface;
 
 /**
@@ -109,19 +107,14 @@ class ContainerService {
 	 * @param array  $share Whether or not this class instance be shared, so that the same instance is passed around each time
 	 *
 	 * @return object A fully constructed object based on the specified input arguments
-	 * @throws ContainerServiceException
 	 */
 	public function get( string $name, array $args = array(), array $share = array() ): object {
-		try {
-			error_reporting( error_reporting() & ~E_DEPRECATED ); // phpcs:ignore
-			// @formatter:off PHPStorm wants this call to be multiline
-			$service = $this->dice->create( $name, $args, $share );
-			// @formatter:on
-			error_reporting( error_reporting() ^ E_DEPRECATED ); // phpcs:ignore
-		} catch ( Exception $e ) {
-			almalog( $e->getMessage() );
-			throw new ContainerServiceException( "Missing Service $name" );
-		}
+
+		// error_reporting( error_reporting() & ~E_DEPRECATED ); // phpcs:ignore
+		// @formatter:off PHPStorm wants this call to be multiline
+		$service = $this->dice->create( $name, $args, $share );
+		// @formatter:on
+		// error_reporting( error_reporting() ^ E_DEPRECATED ); // phpcs:ignore
 
 		return $service;
 	}
@@ -137,9 +130,7 @@ class ContainerService {
 
 		/** @var ConfigService $configService Mandatory for API services */
 		$configService = $this->get( ConfigService::class );
-
-		// PHP-Client
-		$this->dice = $this->dice->addRule(
+		$this->dice    = $this->dice->addRule(
 			ClientConfiguration::class,
 			array(
 				'constructParams' => array(
@@ -209,9 +200,9 @@ class ContainerService {
 		// API Layer
 		$this->dice = $this->dice->addRules(
 			array(
-				EligibilityService::class => array( 'shared' => true ),
-				FeePlanService::class     => array( 'shared' => true ),
-				PaymentService::class     => array( 'shared' => true ),
+				EligibilityProvider::class => array( 'shared' => true ),
+				FeePlanProvider::class     => array( 'shared' => true ),
+				PaymentProvider::class     => array( 'shared' => true ),
 			)
 		);
 
@@ -251,10 +242,10 @@ class ContainerService {
 		// WooCommerce Layer
 		$this->dice = $this->dice->addRules(
 			array(
-				EventHelper::class      => array( 'shared' => true ),
-				ConfigRepository::class => array( 'shared' => true ),
 				AlmaGateway::class      => array( 'shared' => true ),
+				ConfigRepository::class => array( 'shared' => true ),
 				CreditGateway::class    => array( 'shared' => true ),
+				EventHelper::class      => array( 'shared' => true ),
 				PayLaterGateway::class  => array( 'shared' => true ),
 				PayNowGateway::class    => array( 'shared' => true ),
 				PnxGateway::class       => array( 'shared' => true ),

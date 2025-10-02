@@ -11,9 +11,8 @@ use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
 use Alma\Gateway\Application\Exception\Service\IpnServiceException;
 use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
-use Alma\Gateway\Application\Service\API\PaymentService;
+use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
-use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
 use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
 use Alma\Gateway\Infrastructure\Helper\ParameterHelper;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
@@ -30,8 +29,8 @@ class IpnService {
 	/** @var IpnHelper */
 	private IpnHelper $ipnHelper;
 
-	/** @var PaymentService */
-	private PaymentService $paymentService;
+	/** @var PaymentProvider */
+	private PaymentProvider $paymentService;
 
 	/** @var NotificationHelper */
 	private NotificationHelper $notificationHelper;
@@ -44,7 +43,7 @@ class IpnService {
 
 	public function __construct(
 		ConfigService $configService,
-		PaymentService $paymentService,
+		PaymentProvider $paymentService,
 		NotificationHelperInterface $notificationHelper,
 		CartAdapterInterface $cartAdapter,
 		NavigationHelperInterface $navigationHelper,
@@ -63,7 +62,6 @@ class IpnService {
 	 *
 	 * @return void
 	 *
-	 * @throws ContainerServiceException
 	 * @todo check nonce
 	 */
 	public function handleCustomerReturn(): void {
@@ -116,7 +114,6 @@ class IpnService {
 	 * Handle IPN callback.
 	 *
 	 * @return void
-	 * @throws ContainerServiceException
 	 * @todo check nonce
 	 */
 	public function handleIpnCallback(): void {

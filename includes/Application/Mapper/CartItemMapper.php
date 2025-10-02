@@ -5,16 +5,12 @@ namespace Alma\Gateway\Application\Mapper;
 use Alma\API\Application\DTO\CartItemDto;
 use Alma\API\Domain\Adapter\OrderLineAdapterInterface;
 use Alma\Gateway\Application\Helper\DisplayHelper;
-use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
 use Alma\Gateway\Plugin;
 
 class CartItemMapper {
 
-	/**
-	 * @throws ContainerServiceException
-	 */
 	public function buildCartItemDetails( OrderLineAdapterInterface $orderLine ): CartItemDto {
 
 		$product = $orderLine->getProduct();
