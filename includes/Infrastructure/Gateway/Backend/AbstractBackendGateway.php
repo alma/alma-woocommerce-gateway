@@ -2,6 +2,7 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway\Backend;
 
+use Alma\Gateway\Application\Entity\Form\GatewayConfigurationForm;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\ConfigService;
@@ -21,13 +22,6 @@ use Alma\Gateway\Plugin;
 
 class AbstractBackendGateway extends AbstractGateway {
 
-	public const FIELD_LIVE_API_KEY = 'live_api_key';
-	public const FIELD_TEST_API_KEY = 'test_api_key';
-	public const MIN_AMOUNT_SUFFIX  = 'min_amount';
-	public const MAX_AMOUNT_SUFFIX  = 'max_amount';
-	public const ENABLED_SUFFIX     = 'enabled';
-	public const ENABLED_PREFIX     = 'general';
-	public const FIELD_MERCHANT_ID  = 'merchant_id';
 
 	/**
 	 * This gateway is not meant to process payments and throws an exception if called.
@@ -115,29 +109,29 @@ class AbstractBackendGateway extends AbstractGateway {
 	public function api_key_fieldset(): array {
 
 		return array(
-			'keys_section'           => array(
+			'keys_section'                               => array(
 				'title'       => '<hr>' . L10nHelper::__( '→ Start by filling in your API keys' ),
 				'type'        => 'title',
 				'description' => L10nHelper::__( 'You can find your API keys on your Alma dashboard' ),
 				'desc_tip'    => false,
 			),
-			self::FIELD_LIVE_API_KEY => array(
+			GatewayConfigurationForm::FIELD_LIVE_API_KEY => array(
 				'title'    => L10nHelper::__( 'Live API key' ),
 				'type'     => 'text',
 				'desc_tip' => true,
 			),
-			self::FIELD_TEST_API_KEY => array(
+			GatewayConfigurationForm::FIELD_TEST_API_KEY => array(
 				'title'    => L10nHelper::__( 'Test API key' ),
 				'type'     => 'text',
 				'desc_tip' => true,
 			),
-			self::FIELD_MERCHANT_ID  => array(
+			GatewayConfigurationForm::FIELD_MERCHANT_ID  => array(
 				'title'    => L10nHelper::__( 'Merchant Id' ),
 				'type'     => 'text',
 				'desc_tip' => true,
 				'disabled' => true,
 			),
-			'environment'            => array(
+			'environment'                                => array(
 				'title'       => L10nHelper::__( 'API Mode' ),
 				'type'        => 'select',
 				/* translators: %s Merchant description */

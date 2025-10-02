@@ -4,6 +4,7 @@ namespace Alma\Gateway\Infrastructure\Adapter;
 
 use Alma\API\Domain\Adapter\FeePlanAdapterInterface;
 use Alma\API\Domain\Entity\FeePlan;
+use Alma\API\Infrastructure\Exception\ParametersException;
 use BadMethodCallException;
 
 /**
@@ -26,9 +27,6 @@ use BadMethodCallException;
  * @method isAvailableOnline(): bool see FeePlan::isAvailableOnline()
  * @method isEligible( int $purchaseAmount ): bool see FeePlan::isEligible()
  * @method isEnabled(): bool see FeePlan::isEnabled()
- * @method getPlanKey(): string see FeePlan::getPlanKey()
- * @method getMinPurchaseAmount(): int see FeePlan::getMinPurchaseAmount()
- * @method getMaxPurchaseAmount(): int see FeePlan::getMaxPurchaseAmount()
  */
 class FeePlanAdapter implements FeePlanAdapterInterface {
 
@@ -67,13 +65,21 @@ class FeePlanAdapter implements FeePlanAdapterInterface {
 	 * @param int $overrideMinPurchaseAmount Amount in cents
 	 *
 	 * @return void
+	 * @throws ParametersException
 	 */
 	public function setOverrideMinPurchaseAmount( int $overrideMinPurchaseAmount ): void {
+		// If the config is too low, let's just set it to the min allowed by Alma
 		if ( $overrideMinPurchaseAmount < $this->almaFeePlan->getMinPurchaseAmount() ) {
-			// If the config is too low, let's just set it to the min allowed by Alma
 			$this->overrideMinPurchaseAmount = $this->almaFeePlan->getMinPurchaseAmount();
-			//throw new ParametersException( 'The minimum purchase amount cannot be lower than the minimum allowed by Alma.' );
+			throw new ParametersException( 'The minimum purchase amount cannot be lower than the minimum allowed by Alma.' );
 		}
+
+		// If the config is higher than the min override, let's just set it to the min allowed by Alma
+		if ( $overrideMinPurchaseAmount > $this->getOverrideMaxPurchaseAmount() ) {
+			$this->overrideMinPurchaseAmount = $this->almaFeePlan->getMinPurchaseAmount();
+			throw new ParametersException( 'The minimum purchase amount cannot be higher than the maximum.' );
+		}
+
 		$this->overrideMinPurchaseAmount = $overrideMinPurchaseAmount;
 	}
 
@@ -92,13 +98,41 @@ class FeePlanAdapter implements FeePlanAdapterInterface {
 	 * @param int $overrideMaxPurchaseAmount Amount in cents
 	 *
 	 * @return void
+	 * @throws ParametersException
 	 */
 	public function setOverrideMaxPurchaseAmount( int $overrideMaxPurchaseAmount ): void {
+		// If the config is too high, let's just set it to the max allowed by Alma
 		if ( $overrideMaxPurchaseAmount > $this->almaFeePlan->getMaxPurchaseAmount() ) {
-			// If the config is too high, let's just set it to the max allowed by Alma
 			$this->overrideMaxPurchaseAmount = $this->almaFeePlan->getMaxPurchaseAmount();
-			//throw new ParametersException( 'The minimum purchase amount cannot be lower than the minimum allowed by Alma.' );
+			throw new ParametersException( 'The maximum purchase amount cannot be higher than the maximum allowed by Alma.' );
 		}
+
+		// If the config is lower than the min override, let's just set it to the max allowed by Alma
+		if ( $overrideMaxPurchaseAmount < $this->getOverrideMinPurchaseAmount() ) {
+			$this->overrideMaxPurchaseAmount = $this->almaFeePlan->getMaxPurchaseAmount();
+			throw new ParametersException( 'The minimum purchase amount cannot be higher than the maximum.' );
+		}
+
 		$this->overrideMaxPurchaseAmount = $overrideMaxPurchaseAmount;
+	}
+
+	public function resetOverrideMinPurchaseAmount(): void {
+		$this->overrideMinPurchaseAmount = $this->almaFeePlan->getMinPurchaseAmount();
+	}
+
+	public function resetOverrideMaxPurchaseAmount(): void {
+		$this->overrideMaxPurchaseAmount = $this->almaFeePlan->getMaxPurchaseAmount();
+	}
+
+	public function getPlanKey(): string {
+		return $this->almaFeePlan->getPlanKey();
+	}
+
+	public function getMinPurchaseAmount(): int {
+		return $this->almaFeePlan->getMinPurchaseAmount();
+	}
+
+	public function getMaxPurchaseAmount(): int {
+		return $this->almaFeePlan->getMaxPurchaseAmount();
 	}
 }

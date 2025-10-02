@@ -26,14 +26,10 @@ class FeePlanRepository {
 	 *
 	 * @param FeePlanProvider $feePlanProvider
 	 * @param ConfigService   $configService
-	 *
-	 * @throws FeePlanRepositoryException
 	 */
 	public function __construct( FeePlanProvider $feePlanProvider, ConfigService $configService ) {
 		$this->feePlanProvider = $feePlanProvider;
 		$this->configService   = $configService;
-		// Initialize Fee Plans from Alma API.
-		$this->retrieveFeePlans();
 	}
 
 	/**
@@ -97,13 +93,17 @@ class FeePlanRepository {
 		return null;
 	}
 
+	public function deleteAll() {
+		$this->configService->deleteFeePlansConfiguration();
+	}
+
 	/**
 	 * Retrieve Fee Plans from Alma and set their local configuration.
 	 *
 	 * @return void
 	 * @throws FeePlanRepositoryException
 	 */
-	private function retrieveFeePlans(): void {
+	public function retrieveFeePlans(): void {
 		try {
 			$feePlanListAdapter = new FeePlanListAdapter( $this->feePlanProvider->getFeePlanList() );
 			$this->addAll( $feePlanListAdapter );
@@ -121,7 +121,6 @@ class FeePlanRepository {
 	 * @param FeePlanListAdapter $feePlanListAdapter
 	 *
 	 * @return FeePlanListAdapter
-	 * @throws FeePlanRepositoryException
 	 */
 	private function setLocalConfiguration( FeePlanListAdapter $feePlanListAdapter ): FeePlanListAdapter {
 		/** @var FeePlanAdapter $feePlanAdapter */
@@ -134,7 +133,8 @@ class FeePlanRepository {
 				$feePlanAdapter->setOverrideMinPurchaseAmount( $this->configService->getMinPurchaseAmount( $feePlanAdapter->getPlanKey() ) );
 				$feePlanAdapter->setOverrideMaxPurchaseAmount( $this->configService->getMaxPurchaseAmount( $feePlanAdapter->getPlanKey() ) );
 			} catch ( ParametersException $e ) {
-				throw new FeePlanRepositoryException( $e->getMessage() );
+				$feePlanAdapter->resetOverrideMaxPurchaseAmount();
+				$feePlanAdapter->resetOverrideMinPurchaseAmount();
 			}
 		}
 

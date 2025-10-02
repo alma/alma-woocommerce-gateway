@@ -2,16 +2,16 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway\Backend;
 
-use Alma\Gateway\Application\Entity\FeePlansConfigForm;
-use Alma\Gateway\Application\Entity\KeysConfigForm;
+use Alma\Gateway\Application\Entity\Form\GatewayConfigurationForm;
+use Alma\Gateway\Application\Exception\Service\GatewayConfigurationFormValidatorServiceException;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
-use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\EncryptorHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\PluginHelper;
-use Alma\Gateway\Application\Service\ConfigFormService;
 use Alma\Gateway\Application\Service\ConfigService;
+use Alma\Gateway\Application\Service\GatewayConfigurationFormValidatorService;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
+use Alma\Gateway\Infrastructure\Mapper\ConfigFormMapper;
 use Alma\Gateway\Plugin;
 
 /**
@@ -88,12 +88,12 @@ class AlmaGateway extends AbstractBackendGateway {
 		/** @var EncryptorHelper $encryptor_helper */
 		$encryptor_helper = Plugin::get_container()->get( EncryptorHelper::class );
 
-		if ( ! empty( $this->settings[ self::FIELD_LIVE_API_KEY ] ) ) {
-			$this->settings[ self::FIELD_LIVE_API_KEY ] = $encryptor_helper->decrypt( $this->settings[ self::FIELD_LIVE_API_KEY ] );
+		if ( ! empty( $this->settings[ GatewayConfigurationForm::FIELD_LIVE_API_KEY ] ) ) {
+			$this->settings[ GatewayConfigurationForm::FIELD_LIVE_API_KEY ] = $encryptor_helper->decrypt( $this->settings[ GatewayConfigurationForm::FIELD_LIVE_API_KEY ] );
 		}
 
-		if ( ! empty( $this->settings[ self::FIELD_TEST_API_KEY ] ) ) {
-			$this->settings[ self::FIELD_TEST_API_KEY ] = $encryptor_helper->decrypt( $this->settings[ self::FIELD_TEST_API_KEY ] );
+		if ( ! empty( $this->settings[ GatewayConfigurationForm::FIELD_TEST_API_KEY ] ) ) {
+			$this->settings[ GatewayConfigurationForm::FIELD_TEST_API_KEY ] = $encryptor_helper->decrypt( $this->settings[ GatewayConfigurationForm::FIELD_TEST_API_KEY ] );
 		}
 	}
 
@@ -111,45 +111,36 @@ class AlmaGateway extends AbstractBackendGateway {
 		// Clean settings
 		$settings = $this->clean_decoration_fields( $settings );
 
-		/** @var ConfigFormService $config_form_service */
-		$config_form_service = Plugin::get_container()->get( ConfigFormService::class );
-		/** @var ConfigService $config_service */
-		$config_service = Plugin::get_container()->get( ConfigService::class );
+		// Transform settings to GatewayConfiguration
+		/** @var ConfigFormMapper $config_form_mapper */
+		$config_form_mapper    = Plugin::get_container()->get( ConfigFormMapper::class );
+		$gateway_configuration = $config_form_mapper->from_cms_form( $settings );
 
-		// Create a config form to validate form data
-		$keys_config_form = ( new KeysConfigForm( $config_service ) )
-			->setNewTestKey( $settings[ self::FIELD_TEST_API_KEY ] )
-			->setNewLiveKey( $settings[ self::FIELD_LIVE_API_KEY ] );
+		// Validate settings
+		try {
+			/** @var GatewayConfigurationFormValidatorService $config_form_validator_service */
+			$config_form_validator_service = Plugin::get_container()->get( GatewayConfigurationFormValidatorService::class );
+			$gateway_configuration         = $config_form_validator_service->validate( $gateway_configuration );
 
-		$fee_plans_config_form = ( new FeePlansConfigForm( $config_service ) );
-		foreach ( $this->extractFeePlanFromForm( $settings ) as $key => $value ) {
-			$fee_plans_config_form->addFeePlan(
-				$key,
-				$value[ AbstractBackendGateway::MIN_AMOUNT_SUFFIX ],
-				$value[ AbstractBackendGateway::MAX_AMOUNT_SUFFIX ],
-				$value[ AbstractBackendGateway::ENABLED_SUFFIX ]
-			);
+		} catch ( GatewayConfigurationFormValidatorServiceException $e ) {
+			// If an error occurs during validation, we display a generic error message
+			// and return the previous settings to avoid losing data.
+			$this->errors = array( L10nHelper::__( 'An error occurred while validating the configuration. Please try again.' ) );
+
+			/** @var ConfigService $config_service */
+			$config_service = Plugin::get_container()->get( ConfigService::class );
+
+			return $config_service->getSettings( array_keys( $settings ) );
 		}
 
-		// Check if the config form is valid
-		$keys_config_form      = $config_form_service->checkKeysForm( $keys_config_form );
-		$fee_plans_config_form = $config_form_service->checkFeePlansForm( $fee_plans_config_form );
+		// Transform back to settings array
+		$settings = $config_form_mapper->to_cms_form( $gateway_configuration );
 
 		// Add errors to the gateway
 		$this->errors = array_merge(
 			$this->errors,
-			$keys_config_form->getErrors(),
-			$fee_plans_config_form->getErrors()
+			$gateway_configuration->getErrors()
 		);
-
-		$settings[ self::FIELD_TEST_API_KEY ] = $keys_config_form->getNewTestKey();
-		$settings[ self::FIELD_LIVE_API_KEY ] = $keys_config_form->getNewLiveKey();
-		$settings[ self::FIELD_MERCHANT_ID ]  = $keys_config_form->getNewMerchantId();
-		foreach ( $fee_plans_config_form->getFeePlans() as $planKey => $feePlanArray ) {
-			$settings[ $planKey . '_' . AbstractBackendGateway::MIN_AMOUNT_SUFFIX ] = $feePlanArray[ FeePlansConfigForm::FEE_PLAN_MIN_AMOUNT_KEY ];
-			$settings[ $planKey . '_' . AbstractBackendGateway::MAX_AMOUNT_SUFFIX ] = $feePlanArray[ FeePlansConfigForm::FEE_PLAN_MAX_AMOUNT_KEY ];
-			$settings[ $planKey . '_' . AbstractBackendGateway::ENABLED_SUFFIX ]    = $feePlanArray[ FeePlansConfigForm::FEE_PLAN_ENABLED_KEY ];
-		}
 
 		return $settings;
 	}
@@ -165,25 +156,6 @@ class AlmaGateway extends AbstractBackendGateway {
 		$this->display_errors();
 
 		return $saved;
-	}
-
-	private function extractFeePlanFromForm( array $settings ) {
-
-		// Group pairs of min_amount and max_amount
-		$groups = array();
-
-		foreach ( $settings as $key => $value ) {
-			$pattern = '/^(.*)_(' . AbstractBackendGateway::MIN_AMOUNT_SUFFIX . '|' . AbstractBackendGateway::MAX_AMOUNT_SUFFIX . ')$/';
-			if ( preg_match( $pattern, $key, $matches ) ) {
-				$groups[ $matches[1] ][ $matches[2] ] = DisplayHelper::price_to_cent( $value );
-			}
-			$pattern = '/^(' . AbstractBackendGateway::ENABLED_PREFIX . '.*)_(' . AbstractBackendGateway::ENABLED_SUFFIX . ')$/';
-			if ( preg_match( $pattern, $key, $matches ) ) {
-				$groups[ $matches[1] ][ $matches[2] ] = $value;
-			}
-		}
-
-		return $groups;
 	}
 
 	/**

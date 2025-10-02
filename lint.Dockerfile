@@ -30,6 +30,8 @@ RUN docker-php-ext-install phar
 RUN docker-php-ext-install curl
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
+COPY phpcs-custom /phpcs-custom
+
 RUN composer self-update
 RUN composer init -n --name="alma/php-cs" --description="php-cs" --type="library"
 
@@ -47,8 +49,8 @@ RUN composer require phpstan/phpstan:"*" --no-interaction
 RUN composer require php-stubs/woocommerce-stubs:"*" --no-interaction
 RUN composer require php-stubs/wordpress-stubs:"*" --no-interaction
 
-RUN /composer/vendor/bin/phpcbf --config-set installed_paths /composer/vendor/phpcsstandards/phpcsutils,/composer/vendor/phpcsstandards/phpcsextra,/composer/vendor/squizlabs/php_codesniffer,/composer/vendor/wp-coding-standards/wpcs,/composer/vendor/phpcompatibility/php-compatibility,/composer/vendor/phpcompatibility/phpcompatibility-wp,/composer/vendor/phpcompatibility/phpcompatibility-paragonie
-RUN /composer/vendor/bin/phpcs --config-set installed_paths /composer/vendor/phpcsstandards/phpcsutils,/composer/vendor/phpcsstandards/phpcsextra,/composer/vendor/squizlabs/php_codesniffer,/composer/vendor/wp-coding-standards/wpcs,/composer/vendor/phpcompatibility/php-compatibility,/composer/vendor/phpcompatibility/phpcompatibility-wp,/composer/vendor/phpcompatibility/phpcompatibility-paragonie
+RUN /composer/vendor/bin/phpcbf --config-set installed_paths /composer/vendor/phpcsstandards/phpcsutils,/composer/vendor/phpcsstandards/phpcsextra,/composer/vendor/squizlabs/php_codesniffer,/composer/vendor/wp-coding-standards/wpcs,/composer/vendor/phpcompatibility/php-compatibility,/composer/vendor/phpcompatibility/phpcompatibility-wp,/composer/vendor/phpcompatibility/phpcompatibility-paragonie,/phpcs-custom
+RUN /composer/vendor/bin/phpcs --config-set installed_paths /composer/vendor/phpcsstandards/phpcsutils,/composer/vendor/phpcsstandards/phpcsextra,/composer/vendor/squizlabs/php_codesniffer,/composer/vendor/wp-coding-standards/wpcs,/composer/vendor/phpcompatibility/php-compatibility,/composer/vendor/phpcompatibility/phpcompatibility-wp,/composer/vendor/phpcompatibility/phpcompatibility-paragonie,/phpcs-custom
 
 WORKDIR /app
 

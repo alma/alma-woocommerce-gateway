@@ -23,12 +23,26 @@ class ConfigRepository implements ConfigRepositoryInterface {
 	/**
 	 * Get the value of all settings.
 	 *
+	 * @param array $arrayFilter Optional. An array to filter the settings. Not used in this implementation.
+	 *
 	 * @return array The array of settings, or an empty array.
 	 */
-	public function getSettings(): array {
+	public function getSettings( array $arrayFilter = [] ): array {
 		$settings = get_option( self::OPTIONS_KEY ) ?? array();
+		$settings = is_array( $settings ) ? $settings : array();
 
-		return is_array( $settings ) ? $settings : array();
+		if ( empty( $arrayFilter ) ) {
+			return $settings;
+		} else {
+			$filteredSettings = [];
+			foreach ( $arrayFilter as $key ) {
+				if ( isset( $settings[ $key ] ) ) {
+					$filteredSettings[ $key ] = $settings[ $key ];
+				}
+			}
+
+			return $filteredSettings;
+		}
 	}
 
 	/**

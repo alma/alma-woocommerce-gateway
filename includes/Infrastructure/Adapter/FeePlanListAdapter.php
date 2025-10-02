@@ -18,7 +18,7 @@ class FeePlanListAdapter extends ArrayObject implements FeePlanListAdapterInterf
 	/** @var FeePlanList */
 	private FeePlanList $almaFeePlanList;
 
-	public function __construct( $almaFeePlanList = [], $flags = 0, $iteratorClass = "ArrayIterator" ) {
+	public function __construct( FeePlanList $almaFeePlanList, $flags = 0, $iteratorClass = "ArrayIterator" ) {
 
 		$this->almaFeePlanList  = $almaFeePlanList;
 		$almaFeePlanAdapterList = [];

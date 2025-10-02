@@ -4,10 +4,10 @@ namespace Alma\Gateway\Application\Service;
 
 use Alma\API\Domain\Adapter\CartAdapterInterface;
 use Alma\API\Domain\Helper\ContextHelperInterface;
-use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
 use Alma\Gateway\Application\Exception\Service\WidgetServiceException;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
+use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\WidgetHelper;
@@ -75,7 +75,7 @@ class WidgetService {
 		$merchantId  = $this->configService->getMerchantId();
 		try {
 			$feePlanList = $this->feePlanRepository->getAll()->filterEnabled();
-		} catch ( FeePlanServiceException $e ) {
+		} catch ( FeePlanRepositoryException $e ) {
 			throw new WidgetServiceException( $e->getMessage() );
 		}
 		$excludedCategories = $this->configService->getExcludedCategories();

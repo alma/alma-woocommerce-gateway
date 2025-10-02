@@ -54,6 +54,7 @@
         <exclude-pattern>includes/Infrastructure/Helper/*</exclude-pattern>
         <exclude-pattern>includes/Infrastructure/Repository/*</exclude-pattern>
         <exclude-pattern>includes/Infrastructure/Service/*</exclude-pattern>
+        <exclude-pattern>phpcs-custom/*</exclude-pattern>
     </rule>
 
     <!-- Let's also check that everything is properly documented. -->
@@ -119,4 +120,9 @@
         <include-pattern>src/Application/*</include-pattern>
     </rule-->
 
+    <!-- Include custom sniff -->
+    <rule ref="AlmaIntegrationCms.Architecture">
+        <exclude-pattern>includes/Infrastructure/*</exclude-pattern>
+        <exclude-pattern>includes/functions.php</exclude-pattern>
+    </rule>
 </ruleset>
