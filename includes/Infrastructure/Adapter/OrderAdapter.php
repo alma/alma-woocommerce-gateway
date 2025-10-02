@@ -15,35 +15,7 @@ use WC_Order;
  * It provides methods to retrieve order details, update order status, and manage order notes.
  *
  * @method addOrderNote( $note, $is_customer_note = 0, $added_by_user = false ) see WC_Order::add_order_note()
- * @method getId() see WC_Order::get_id()
  * @method getItems() see WC_Order::get_items()
- * @method getOrderKey() see WC_Order::get_order_key()
- * @method getOrderNumber() see WC_Order::get_order_number()
- * @method getViewOrderUrl() see WC_Order::get_view_order_url()
- * @method getEditOrderUrl() see WC_Order::get_edit_order_url()
- * @method getCustomerNote() see WC_Order::get_customer_note()
- * @method getBillingFirstName() see WC_Order::get_billing_first_name()
- * @method getBillingLastName() see WC_Order::get_billing_last_name()
- * @method getBillingCompany() see WC_Order::get_billing_company()
- * @method hasBillingAddress()) see WC_Order::has_billing_address()
- * @method getBillingAddress1() see WC_Order::get_billing_address_1()
- * @method getBillingAddress2() see WC_Order::get_billing_address_2()
- * @method getBillingPostcode() see WC_Order::get_billing_postcode()
- * @method getBillingCity() see WC_Order::get_billing_city()
- * @method getBillingState() see WC_Order::get_billing_state()
- * @method getBillingCountry() see WC_Order::get_billing_country()
- * @method getBillingEmail() see WC_Order::get_billing_email()
- * @method getBillingPhone() see WC_Order::get_billing_phone()
- * @method getShippingFirstName() see WC_Order::get_shipping_first_name()
- * @method getShippingLastName() see WC_Order::get_shipping_last_name()
- * @method getShippingCompany() see WC_Order::get_shipping_company()
- * @method getShippingAddress1() see WC_Order::get_shipping_address_1()
- * @method getShippingAddress2() see WC_Order::get_shipping_address_2()
- * @method getShippingPostcode() see WC_Order::get_shipping_postcode()
- * @method getShippingCity() see WC_Order::get_shipping_city()
- * @method getShippingState() see WC_Order::get_shipping_state()
- * @method getShippingCountry() see WC_Order::get_shipping_country()
- * @method hasShippingAddress() see WC_Order::has_shipping_address()
  * @method hasStatus( $status ) see WC_Order::has_status()
  * @method updateMetaData( $key, $value, $meta_id = 0 ) see WC_Abstract_Order::update_meta_data()
  * @method updateStatus( $new_status, $note = '', $manual = false ) see WC_Order::update_status()
@@ -79,6 +51,256 @@ class OrderAdapter implements OrderAdapterInterface {
 	public function getWcOrder(): WC_Order {
 		return $this->wcOrder;
 	}
+
+
+	/**
+	 * Return the order ID.
+	 *
+	 * @return int
+	 */
+	public function getId(): int {
+		return $this->wcOrder->get_id();
+	}
+
+	public function getOrderKey(): string {
+		return $this->wcOrder->get_order_key();
+	}
+
+	/**
+	 * Get the order number.
+	 *
+	 * @return string
+	 */
+	public function getOrderNumber(): string {
+		return $this->wcOrder->get_order_number();
+	}
+
+	/**
+	 * Get the view order URL.
+	 *
+	 * @return string
+	 */
+	public function getEditOrderUrl(): string {
+		return $this->wcOrder->get_edit_order_url();
+	}
+
+	/**
+	 * Get the view order URL.
+	 *
+	 * @return string
+	 */
+	public function getViewOrderUrl(): string {
+		return $this->wcOrder->get_view_order_url();
+	}
+
+	/**
+	 * Get the customer note.
+	 *
+	 * @return string
+	 */
+	public function getCustomerNote(): string {
+		return $this->wcOrder->get_customer_note();
+	}
+
+	/**
+	 * Get the billing state.
+	 *
+	 * @return string|null
+	 */
+	public function getBillingState() {
+		return $this->wcOrder->get_billing_state();
+	}
+
+	/**
+	 * Get the billing first name.
+	 *
+	 * @return string
+	 */
+	public function getBillingFirstName(): string {
+		return $this->wcOrder->get_billing_first_name();
+	}
+
+	/**
+	 * Get the billing last name.
+	 *
+	 * @return string
+	 */
+	public function getBillingLastName(): string {
+		return $this->wcOrder->get_billing_last_name();
+	}
+
+	/**
+	 * Get the billing email.
+	 *
+	 * @return string
+	 */
+	public function getBillingEmail(): string {
+		return $this->wcOrder->get_billing_email();
+	}
+
+	/**
+	 * Get the billing phone.
+	 *
+	 * @return string
+	 */
+	public function getBillingPhone(): string {
+		return $this->wcOrder->get_billing_phone();
+	}
+
+	/**
+	 * Get the billing company.
+	 *
+	 * @return string
+	 */
+	public function getBillingCompany(): string {
+		return $this->wcOrder->get_billing_company();
+	}
+
+	/**
+	 * Check if the order has a billing address.
+	 *
+	 * @return bool
+	 */
+	public function hasBillingAddress(): bool {
+		return $this->wcOrder->has_billing_address();
+	}
+
+
+	/**
+	 * Get the billing address line 1.
+	 *
+	 * @return string
+	 */
+	public function getBillingAddress1(): string {
+		return $this->wcOrder->get_billing_address_1();
+	}
+
+	/**
+	 * Get the billing address line 2.
+	 *
+	 * @return string
+	 */
+	public function getBillingAddress2(): string {
+		return $this->wcOrder->get_billing_address_2();
+	}
+
+	/**
+	 * Get the billing postcode.
+	 *
+	 * @return string
+	 */
+	public function getBillingPostcode(): string {
+		return $this->wcOrder->get_billing_postcode();
+	}
+
+	/**
+	 * Get the billing city.
+	 *
+	 * @return string
+	 */
+	public function getBillingCity(): string {
+		return $this->wcOrder->get_billing_city();
+	}
+
+	/**
+	 * Get the billing country.
+	 *
+	 * @return string
+	 */
+	public function getBillingCountry(): string {
+		return $this->wcOrder->get_billing_country();
+	}
+
+	/**
+	 * Get the shipping state.
+	 *
+	 * @return string
+	 */
+	public function getShippingState(): string {
+		return $this->wcOrder->get_shipping_state();
+	}
+
+	/**
+	 * Get the shipping first name.
+	 *
+	 * @return string
+	 */
+	public function getShippingFirstName(): string {
+		return $this->wcOrder->get_shipping_first_name();
+	}
+
+	/**
+	 * Get the shipping last name.
+	 *
+	 * @return string
+	 */
+	public function getShippingLastName(): string {
+		return $this->wcOrder->get_shipping_last_name();
+	}
+
+	/**
+	 * Get the shipping company.
+	 *
+	 * @return string
+	 */
+	public function getShippingCompany(): string {
+		return $this->wcOrder->get_shipping_company();
+	}
+
+	/**
+	 * Get the shipping address line 1.
+	 *
+	 * @return string
+	 */
+	public function getShippingAddress1(): string {
+		return $this->wcOrder->get_shipping_address_1();
+	}
+
+	/**
+	 * Get the shipping address line 2.
+	 *
+	 * @return string
+	 */
+	public function getShippingAddress2(): string {
+		return $this->wcOrder->get_shipping_address_2();
+	}
+
+	/**
+	 * Get the shipping postcode.
+	 *
+	 * @return string
+	 */
+	public function getShippingPostcode(): string {
+		return $this->wcOrder->get_shipping_postcode();
+	}
+
+	/**
+	 * Get the shipping city.
+	 *
+	 * @return string
+	 */
+	public function getShippingCity(): string {
+		return $this->wcOrder->get_shipping_city();
+	}
+
+	/**
+	 * Get the shipping country.
+	 *
+	 * @return string
+	 */
+	public function getShippingCountry(): string {
+		return $this->wcOrder->get_shipping_country();
+	}
+
+	/**
+	 * Check if the order has a shipping address.
+	 *
+	 * @return bool
+	 */
+	public function hasShippingAddress(): bool {
+		return $this->wcOrder->has_shipping_address();
+	}
+
 
 	/**
 	 * Get the lines of the order.

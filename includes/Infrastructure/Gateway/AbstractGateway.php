@@ -49,7 +49,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * @todo Remove this public property when the eligibility and fee plans are fully implemented.
 	 */
 	public ?FeePlanList $fee_plan_list = null;
-	protected bool $is_eligible        = false;
+	protected bool $is_eligible = false;
 
 	/**
 	 * Gateway constructor.
@@ -162,7 +162,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		$payment_service = Plugin::get_container()->get( PaymentService::class );
 		try {
 			$payment = $payment_service->createPayment(
-				( new PaymentMapper() )->buildPaymentDto( $this, $order, $fee_plan ),
+				( new PaymentMapper() )->buildPaymentDto( $this->get_origin(), $order, $fee_plan ),
 				( new OrderMapper() )->buildOrderDto( $order ),
 				( new CustomerMapper() )->buildCustomerDto( $order ),
 			);

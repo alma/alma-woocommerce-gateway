@@ -15,13 +15,13 @@ class PaymentMapper {
 	/**
 	 * Builds a PaymentDto from a WC_Order and FeePlan.
 	 *
-	 * @param AbstractGateway       $gateway
+	 * @param string                $paymentOrigin
 	 * @param OrderAdapterInterface $order The Order.
 	 * @param FeePlan               $fee_plan The Fee Plan to apply.
 	 *
 	 * @return PaymentDto The constructed PaymentDto.
 	 */
-	public function buildPaymentDto( AbstractGateway $gateway, OrderAdapterInterface $order, FeePlan $fee_plan ): PaymentDto {
+	public function buildPaymentDto( string $paymentOrigin, OrderAdapterInterface $order, FeePlan $fee_plan ): PaymentDto {
 
 		return ( new PaymentDto( $order->getTotal() ) )
 			->setInstallmentsCount( $fee_plan->getInstallmentsCount() )
@@ -35,7 +35,7 @@ class PaymentMapper {
 			)
 			->setIpnCallbackUrl( ContextHelper::getWebhookUrl( IpnHelper::IPN_CALLBACK ) )
 			->setReturnUrl( ContextHelper::getWebhookUrl( IpnHelper::CUSTOMER_RETURN ) )
-			->setLocale( apply_filters( 'alma_checkout_payment_user_locale', ContextHelper::getLocale() ) )
+			->setLocale( ContextHelper::getLocale() )
 			->setCart(
 				( ( new CartMapper() )->buildCartDetails( $order ) )
 			)
@@ -64,6 +64,6 @@ class PaymentMapper {
 					->setStateProvince( $order->getShippingState() )
 					->setCountry( $order->getShippingCountry() )
 			)
-			->setOrigin( $gateway->get_origin() );
+			->setOrigin( $paymentOrigin );
 	}
 }
