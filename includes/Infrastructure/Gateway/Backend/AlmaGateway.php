@@ -4,7 +4,6 @@ namespace Alma\Gateway\Infrastructure\Gateway\Backend;
 
 use Alma\Gateway\Application\Entity\Form\GatewayConfigurationForm;
 use Alma\Gateway\Application\Exception\Service\GatewayConfigurationFormValidatorServiceException;
-use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Application\Helper\EncryptorHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\PluginHelper;
@@ -25,7 +24,6 @@ class AlmaGateway extends AbstractBackendGateway {
 
 	/**
 	 * Gateway constructor.
-	 * @throws GatewayServiceException
 	 */
 	public function __construct() {
 		$this->method_title       = L10nHelper::__( 'Payment in installments and deferred with Alma' );
