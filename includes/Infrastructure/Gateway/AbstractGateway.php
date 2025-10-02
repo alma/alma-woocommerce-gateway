@@ -4,7 +4,6 @@ namespace Alma\Gateway\Infrastructure\Gateway;
 
 use Alma\API\Application\DTO\RefundDto;
 use Alma\API\Domain\Entity\EligibilityList;
-use Alma\API\Domain\Entity\FeePlanList;
 use Alma\API\Infrastructure\Exception\ParametersException;
 use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
@@ -45,7 +44,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 */
 	public ?EligibilityList $eligibility_list = null;
 	/**
-	 * @var ?FeePlanList $fee_plan_list_adapter public only for debug in functions.php
+	 * @var ?FeePlanListAdapter $fee_plan_list_adapter public only for debug in functions.php
 	 * @todo Remove this public property when the eligibility and fee plans are fully implemented.
 	 */
 	public ?FeePlanListAdapter $fee_plan_list_adapter = null;
