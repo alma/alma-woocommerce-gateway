@@ -117,6 +117,15 @@ class ConfigService {
 	}
 
 	/**
+	 * Check if in-page is enabled.
+	 *
+	 * @return bool
+	 */
+	public function isInPage(): bool {
+		return 'yes' === $this->getSetting( 'in_page_enabled' );
+	}
+
+	/**
 	 * Check if we have keys for the active environment.
 	 *
 	 * @return bool
