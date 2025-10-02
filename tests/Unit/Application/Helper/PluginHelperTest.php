@@ -4,7 +4,6 @@ namespace Alma\Gateway\Tests\Unit\Application\Helper;
 
 use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Service\ConfigService;
-use Alma\Gateway\Infrastructure\Exception\Service\ContainerServiceException;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
@@ -13,8 +12,7 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Exécute cette classe de tests dans un processus séparé pour éviter
- * le conflit "class already exists" quand on crée un alias Mockery.
+ * Run in separate process to allow mocking of functions like is_cart()
  *
  * @RunTestsInSeparateProcesses
  * @preserveGlobalState disabled
@@ -26,28 +24,12 @@ class PluginHelperTest extends TestCase {
 	private $containerService;
 	private $configService;
 
-	protected function setUp(): void {
-		parent::setUp();
-		Monkey\setUp();
-
-		$this->plugin           = Mockery::mock( 'alias:Alma\Gateway\Plugin' );
-		$this->containerService = Mockery::mock( ContainerService::class );
-		$this->configService    = Mockery::mock( ConfigService::class );
-
-		$this->containerService->shouldReceive( 'get' )
-		                       ->with( ConfigService::class )
-		                       ->andReturn( $this->configService );
-
-		$this->plugin->shouldReceive( 'get_container' )
-		             ->andReturn( $this->containerService );
-
-	}
-
-	protected function tearDown(): void {
-		Mockery::resetContainer();
-		Mockery::close();
-		Monkey\tearDown();
-		parent::tearDown();
+	public static function pageDataProvider(): array {
+		return [
+			"Is cart page"     => [ true, false, false ],
+			"Is checkout page" => [ false, true, false ],
+			"Is product page"  => [ false, false, true ],
+		];
 	}
 
 	public function testIsConfiguredTrue(): void {
@@ -85,7 +67,6 @@ class PluginHelperTest extends TestCase {
 	 * @param $product
 	 *
 	 * @return void
-	 * @throws ContainerServiceException
 	 */
 	public function testPluginIsNeededWithIsConfiguredTrueAndGoodPage( $cart, $checkout, $product ): void {
 		Functions\expect( 'is_cart' )->andReturn( $cart );
@@ -94,14 +75,6 @@ class PluginHelperTest extends TestCase {
 
 		$this->configService->shouldReceive( 'isConfigured' )->andReturn( true );
 		$this->assertTrue( PluginHelper::isPluginNeeded() );
-	}
-
-	public static function pageDataProvider(): array {
-		return [
-			"Is cart page"     => [ true, false, false ],
-			"Is checkout page" => [ false, true, false ],
-			"Is product page"  => [ false, false, true ],
-		];
 	}
 
 	public function testGetterAndSetterPluginUrl(): void {
@@ -120,6 +93,29 @@ class PluginHelperTest extends TestCase {
 		$testFile = '/path/to/plugin/plugin-file.php';
 		PluginHelper::setPluginFile( $testFile );
 		$this->assertEquals( $testFile, PluginHelper::getPluginFile() );
+	}
+
+	protected function setUp(): void {
+		parent::setUp();
+		Monkey\setUp();
+
+		$this->plugin           = Mockery::mock( 'alias:Alma\Gateway\Plugin' );
+		$this->containerService = Mockery::mock( ContainerService::class );
+		$this->configService    = Mockery::mock( ConfigService::class );
+
+		$this->containerService->shouldReceive( 'get' )
+		                       ->with( ConfigService::class )
+		                       ->andReturn( $this->configService );
+
+		$this->plugin->shouldReceive( 'get_container' )
+		             ->andReturn( $this->containerService );
+
+	}
+
+	protected function tearDown(): void {
+		Mockery::close();
+		Monkey\tearDown();
+		parent::tearDown();
 	}
 
 
