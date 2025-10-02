@@ -3,6 +3,7 @@
 namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
+use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
 use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
@@ -11,6 +12,7 @@ use Alma\Gateway\Plugin;
 /**
  * Class Gateway
  * Should extend WC_Payment_Gateway
+ * @see public/templates/partials/pnx-gateway-options.php for rendering
  */
 class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInterface {
 	public const GATEWAY_TYPE = 'pnx';
@@ -56,6 +58,7 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 	 * Expose the payment fields to the frontend.
 	 *
 	 * @return void
+	 * @throws TemplateHelperException
 	 */
 	public function payment_fields() {
 		/** @var TemplateHelper $template_helper */
@@ -63,8 +66,8 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 		$template_helper->getTemplate(
 			'pnx-gateway-options.php',
 			array(
-				'alma_woocommerce_gateway_fee_plan_list' => $this->getFeePlanList(),
-				'alma_woocommerce_gateway_nonce'         => $this->form_helper->generateTokenField(
+				'alma_woocommerce_gateway_fee_plan_list_adapter' => $this->getFeePlanList(),
+				'alma_woocommerce_gateway_nonce' => $this->form_helper->generateTokenField(
 					'alma_pnx_gateway_nonce_action',
 					'alma_pnx_gateway_nonce_field'
 				),

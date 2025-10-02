@@ -3,6 +3,7 @@
 namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
+use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
 use Alma\Gateway\Plugin;
@@ -10,6 +11,7 @@ use Alma\Gateway\Plugin;
 /**
  * Class Gateway
  * Should extend WC_Payment_Gateway
+ * @see public/templates/partials/pay-now-gateway-options.php for rendering
  */
 class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayInterface {
 
@@ -29,6 +31,7 @@ class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 	 * Expose the payment fields to the frontend.
 	 *
 	 * @return void
+	 * @throws TemplateHelperException
 	 */
 	public function payment_fields() {
 		/** @var TemplateHelper $template_helper */

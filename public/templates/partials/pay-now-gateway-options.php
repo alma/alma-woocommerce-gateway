@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * @see Infrastructure/Gateway/Frontend/PayNowGateway.php
+ */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
