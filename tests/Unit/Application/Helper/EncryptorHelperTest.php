@@ -5,18 +5,12 @@ namespace Alma\Gateway\Tests\Unit\Application\Helper;
 use Alma\Gateway\Application\Exception\Helper\EncryptorHelperException;
 use Alma\Gateway\Application\Helper\EncryptorHelper;
 use Alma\Gateway\Infrastructure\Exception\CmsException;
-
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 
 class EncryptorHelperTest extends TestCase {
 	use MockeryPHPUnitIntegration;
-
-	protected function tearDown(): void {
-		Mockery::resetContainer();
-		Mockery::close();
-	}
 
 	public function testEncrypt() {
 		$encryptorHelper = new EncryptorHelper();
@@ -40,6 +34,11 @@ class EncryptorHelperTest extends TestCase {
 		$this->expectException( EncryptorHelperException::class );
 		new EncryptorHelper();
 
+	}
+
+	protected function tearDown(): void {
+		Mockery::resetContainer();
+		Mockery::close();
 	}
 
 
