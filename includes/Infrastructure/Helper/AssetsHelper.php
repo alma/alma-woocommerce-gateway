@@ -50,6 +50,39 @@ class AssetsHelper {
 	}
 
 	/**
+	 * Enqueue the Alma In Page scripts.
+	 *
+	 * @param string $version String specifying the script version number, if it has one.
+	 * @param string $merchantId
+	 * @param string $environment
+	 *
+	 * @return void
+	 */
+	public static function enqueueInPageScript( string $version, string $merchantId, string $environment ): void {
+		wp_enqueue_script(
+			'alma-frontend-in-page-cdn',
+			'https://cdn.jsdelivr.net/npm/@alma/in-page@2.x/dist/index.umd.js'
+		);
+
+		wp_enqueue_script(
+			'alma-frontend-in-page-implementation',
+			self::getAssetUrl( 'js/frontend/alma-frontend-in-page-implementation.js' ),
+			[ 'jquery' ],
+			$version,
+			true
+		);
+
+		wp_localize_script(
+			'alma-frontend-in-page-implementation',
+			'alma_in_page_settings',
+			array(
+				'environment' => $environment,
+				'merchant_id' => $merchantId,
+			)
+		);
+	}
+
+	/**
 	 * Enqueue the Alma widget scripts.
 	 *
 	 * @param string $version String specifying the script version number, if it has one.

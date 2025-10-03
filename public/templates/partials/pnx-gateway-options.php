@@ -12,7 +12,7 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 
 ?>
 
-<fieldset>
+<fieldset id="alma_woocommerce_gateway_fieldset">
 	<p>
 		<?php
 		esc_html_e(
@@ -25,6 +25,7 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 		<?php
 		/** @var FeePlanListAdapter $alma_woocommerce_gateway_fee_plan_list_adapter */
 		/** @var FeePlanAdapter $alma_woocommerce_gateway_fee_plan_adapter */
+		$alma_woocommerce_gateway_checked = 'checked';
 		foreach ( $alma_woocommerce_gateway_fee_plan_list_adapter as $alma_woocommerce_gateway_fee_plan_adapter ) {
 			if ( $alma_woocommerce_gateway_fee_plan_adapter->isEnabled() ) {
 				$alma_plan_key_value = sprintf(
@@ -34,7 +35,7 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 					$alma_woocommerce_gateway_fee_plan_adapter->getDeferredMonths()
 				);
 				echo '<label>';
-				echo '<input type="radio" name="alma_plan_key" ' . $alma_plan_key_value . ' />';
+				echo '<input type="radio" name="alma_plan_key" ' . $alma_plan_key_value . ' ' . $alma_woocommerce_gateway_checked . ' />';
 				echo esc_html(
 					sprintf(
 					// Translators: %d is the number of installments.
@@ -43,6 +44,7 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 					)
 				);
 				echo '</label><br>';
+				$alma_woocommerce_gateway_checked = '';
 			}
 		}
 		?>
@@ -53,3 +55,4 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 	?>
 </fieldset>
 
+<div id="alma-in-page-pnx"></div>

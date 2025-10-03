@@ -24,3 +24,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 	echo $alma_woocommerce_gateway_nonce;
 	?>
 </fieldset>
+
+<div id="alma-in-page-pay-now"></div>
