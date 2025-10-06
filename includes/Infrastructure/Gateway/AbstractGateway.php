@@ -49,7 +49,6 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * @todo Remove this public property when the eligibility and fee plans are fully implemented.
 	 */
 	public ?FeePlanListAdapter $fee_plan_list_adapter = null;
-	protected bool $is_eligible                       = false;
 
 	/**
 	 * Gateway constructor.
@@ -143,6 +142,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	public function process_payment( $order_id ): array {
 		/** @var OrderRepository $order_repository */
 		$order_repository = Plugin::get_container()->get( OrderRepository::class );
+		$config_service   = Plugin::get_container()->get( ConfigService::class );
 		try {
 			$order = $order_repository->getById( $order_id );
 		} catch ( ProductRepositoryException $e ) {
@@ -174,10 +174,15 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 
 		$order->updateStatus( 'pending', L10nHelper::__( 'En attente de paiement via Alma' ) );
 
+		$redirection_url = $payment->geturl();
+
+		if ( $config_service->isInPage() ) {
+			$redirection_url = $this->get_in_page_url( $payment->getId() );
+		}
+
 		return array(
-			'result'    => 'success',
-			'redirect'  => '',
-			'paymentId' => $payment->getId(),
+			'result'   => 'success',
+			'redirect' => $redirection_url,
 		);
 	}
 
@@ -313,5 +318,26 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		}
 
 		return $eligibility;
+	}
+
+	/**
+	 * Return the in-page URL for the payment.
+	 * This URL is used to display the Alma payment page in an iframe on the checkout page.
+	 * It adds the payment ID as a query parameter to the checkout URL.
+	 *
+	 * @param string $paymentId Alma payment ID
+	 *
+	 * @return string
+	 */
+	private function get_in_page_url( $payment_id ): string {
+		$redirection_url = wc_get_checkout_url();
+
+		return add_query_arg(
+			[
+				'alma' => 'inPage',
+				'pid'  => $payment_id,
+			],
+			$redirection_url
+		);
 	}
 }

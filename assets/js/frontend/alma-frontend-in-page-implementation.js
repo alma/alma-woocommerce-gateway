@@ -6,6 +6,13 @@
 (function ($) {
     $(function () {
 
+        const urlParams = new URLSearchParams(window.location.search);
+        const isInPagePayment = urlParams.has('alma') && urlParams.get('alma') === 'inPage' && urlParams.has('pid');
+
+        // Add overlay if it's an inPage payment to prevent user interactions while the payment modal is loading
+        if (isInPagePayment) {
+            addLoadingOverlay();
+        }
         /**
          * @typedef {Object} alma_in_page_settings
          * @typedef {Object} alma_woocommerce_gateway_credit_gateway
@@ -23,6 +30,7 @@
         let inPage;
         let totalAmount = 0;
         const merchantId = alma_in_page_settings.merchant_id;
+        const environment = alma_in_page_settings.environment.toUpperCase();
 
         // Get all defined gateway names
         // Some of them may be undefined if the corresponding gateway is not available
@@ -32,7 +40,6 @@
             typeof alma_woocommerce_gateway_pay_now_gateway !== "undefined" ? alma_woocommerce_gateway_pay_now_gateway : null,
             typeof alma_woocommerce_gateway_pnx_gateway !== "undefined" ? alma_woocommerce_gateway_pnx_gateway : null,
         ].filter(Boolean);
-        const gatewayNames = gatewayVars.map(gw => gw.gateway_name);
 
         // Associate gateway names with their types and selectors
         // e.g. { 'alma_credit_gateway': { type: 'credit', inPageSelector: '#alma_credit_in_page' , fieldsetSelector: '.alma_woocommerce_gateway_credit' }, ... }
@@ -45,25 +52,13 @@
             return acc;
         }, {});
 
-
-        // Intercept the form submission to handle Alma In-Page payment
-        //TODO CHANGE WITH LOAD PAGE EVENT
-        $('form.checkout').on('checkout_place_order_success', function (e, result) {
-            const selectedMethod = jQuery('input[name="payment_method"]:checked').val();
-            if (almaMethods[selectedMethod]) {
-                inPage.startPayment({paymentId: result.paymentId});
-                return false; // Prevent the order review section from refreshing
-            }
-            return result;
-        });
-
         // Show the Alma In-Page iframe if the selected gateway is an Alma gateway
         // Otherwise, remove the iframe
         function mountIframe() {
-            let selectedMethod = $('input[name="payment_method"]:checked').val();
-            let almaPlanSelected = $('.alma_woocommerce_gateway_fieldset input[name="alma_plan_key"]:checked').val();
+            const selectedMethod = $('input[name="payment_method"]:checked').val();
+            const almaPlanSelected = $('.alma_woocommerce_gateway_fieldset input[name="alma_plan_key"]:checked').val();
             if (almaMethods[selectedMethod] && almaPlanSelected && totalAmount > 0) {
-                let [installmentsCount, deferredDays, deferredMonths] = almaPlanSelected.match(/\d+/g).map(Number);
+                const [installmentsCount, deferredDays, deferredMonths] = almaPlanSelected.match(/\d+/g).map(Number);
                 inPage = Alma.InPage.initialize({
                     merchantId: merchantId,
                     amountInCents: totalAmount,
@@ -71,7 +66,7 @@
                     deferredDays: deferredDays,
                     deferredMonths: deferredMonths,
                     selector: almaMethods[selectedMethod].inPageSelector,
-                    environment: 'TEST'
+                    environment: environment,
                 });
             }
         }
@@ -100,12 +95,66 @@
             return parseFloat(totalText.replace(/[^0-9.,]/g, '').replace(',', '.') * 100);
         }
 
+
+        // Remove alma=inPage&pid=PAYMENT_ID from URL without reloading the page
+        // This is to prevent starting the payment again if the user close the modal and refresh the page
+        function cleanInPageUrlParams() {
+            const url = new URL(window.location.href);
+            const params = url.searchParams;
+            $('#alma-overlay').remove();
+
+            params.delete('alma');
+            params.delete('pid');
+            window.history.replaceState({}, document.title, url.pathname + '?' + params.toString());
+        }
+
+        // Generate and add the loading overlay to the page
+        // This overlay is removed when the inPage modal is closed
+        function addLoadingOverlay() {
+            const $overlay = $('<div>', {
+                id: 'alma-overlay',
+                css: {
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    zIndex: 9999,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }
+            });
+            const $image = $('<img>', {
+                src: 'https://cdn.almapay.com/img/animated-logo-a.svg',
+                alt: 'Chargement Alma',
+                css: {
+                    width: '100px',
+                    height: '100px'
+                }
+            });
+
+            $overlay.append($image);
+            $('body').append($overlay);
+        }
+
+
         // Woocommerce updates the checkout (e.g. when changing address or applying a coupon)
         $(document.body).on('updated_checkout', function () {
             totalAmount = getAmount()
             inPage = undefined; // Reset inPage instance after partial reload
             checkPlan();
             mountIframe();
+
+            // Start payment for inPage if URL contains alma=inPage&pid=PAYMENT_ID
+            // This is used to handle the case where the user is redirected back to the checkout page after place order
+            if (isInPagePayment) {
+                inPage.startPayment({
+                    paymentId: urlParams.get('pid'),
+                    onUserCloseModal: cleanInPageUrlParams
+                });
+            }
         });
 
         // Change payment method
@@ -119,6 +168,5 @@
             unmountIframe();
             mountIframe()
         });
-
     })
 })(jQuery);
