@@ -249,13 +249,13 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Return the Origin of the payment depending if in-page is enabled or not.
+	 * Return the Origin of the payment depending on if in-page is enabled or not.
 	 *
-	 * @param $is_in_page_payment
+	 * @param bool $is_in_page_payment
 	 *
 	 * @return string
 	 */
-	public function get_origin( $is_in_page_payment ): string {
+	public function get_origin( bool $is_in_page_payment ): string {
 		if ( $is_in_page_payment ) {
 			return 'online_in_page';
 		}
