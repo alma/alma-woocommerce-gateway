@@ -84,7 +84,6 @@
         function checkPlan() {
             let selectedMethod = $('input[name="payment_method"]:checked').val();
             if (almaMethods[selectedMethod]) {
-                // alma_woocommerce_gateway_pnx
                 const firstPlan = $(`${almaMethods[selectedMethod].fieldsetSelector} input[name="alma_plan_key"]`).first();
                 firstPlan.trigger('click');
             }
