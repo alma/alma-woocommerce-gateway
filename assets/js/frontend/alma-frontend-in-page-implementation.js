@@ -45,7 +45,6 @@
             return acc;
         }, {});
 
-        console.log(almaMethods);
 
         // Intercept the form submission to handle Alma In-Page payment
         //TODO CHANGE WITH LOAD PAGE EVENT
@@ -61,13 +60,10 @@
         // Show the Alma In-Page iframe if the selected gateway is an Alma gateway
         // Otherwise, remove the iframe
         function mountIframe() {
-
             let selectedMethod = $('input[name="payment_method"]:checked').val();
             let almaPlanSelected = $('.alma_woocommerce_gateway_fieldset input[name="alma_plan_key"]:checked').val();
-            console.log('totalAmount', totalAmount);
-            if (almaMethods[selectedMethod] && almaPlanSelected) {
+            if (almaMethods[selectedMethod] && almaPlanSelected && totalAmount > 0) {
                 let [installmentsCount, deferredDays, deferredMonths] = almaPlanSelected.match(/\d+/g).map(Number);
-                console.log('Initializing Alma In-Page for ' + selectedMethod);
                 inPage = Alma.InPage.initialize({
                     merchantId: merchantId,
                     amountInCents: totalAmount,
@@ -81,10 +77,7 @@
         }
 
         function unmountIframe() {
-            console.log('unmountIframe');
-            console.log(inPage);
             if (inPage !== undefined) {
-                console.log('unmountIframe!!!');
                 inPage.unmount()
             }
         }
@@ -110,21 +103,19 @@
         // Woocommerce updates the checkout (e.g. when changing address or applying a coupon)
         $(document.body).on('updated_checkout', function () {
             totalAmount = getAmount()
-            console.log('Checkout updated, updating Alma In-Page iframe...');
-            unmountIframe();
+            inPage = undefined; // Reset inPage instance after partial reload
+            checkPlan();
             mountIframe();
         });
 
         // Change payment method
         $(document.body).on('payment_method_selected', function () {
-            console.log('Payment method selected ...');
             uncheckPlan();
             checkPlan();
         });
 
         // Change plan
         $(document).on('change', '.alma_woocommerce_gateway_fieldset input[name="alma_plan_key"]', function () {
-            console.log('alma_woocommerce_gateway field changed...');
             unmountIframe();
             mountIframe()
         });
