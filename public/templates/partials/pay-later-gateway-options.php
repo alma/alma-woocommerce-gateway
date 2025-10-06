@@ -12,7 +12,7 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 
 ?>
 
-<fieldset>
+<fieldset class="alma_woocommerce_gateway_fieldset alma_woocommerce_gateway_pay-later">
 	<p>
 		<?php
 		esc_html_e(
@@ -25,7 +25,6 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 		<?php
 		/** @var FeePlanListAdapter $alma_woocommerce_gateway_fee_plan_list_adapter */
 		/** @var FeePlanAdapter $alma_woocommerce_gateway_fee_plan_adapter */
-		$alma_woocommerce_gateway_checked = 'checked';
 		foreach ( $alma_woocommerce_gateway_fee_plan_list_adapter as $alma_woocommerce_gateway_fee_plan_adapter ) {
 			if ( $alma_woocommerce_gateway_fee_plan_adapter->isEnabled() ) {
 				$alma_plan_key_value = sprintf(
@@ -35,7 +34,7 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 					$alma_woocommerce_gateway_fee_plan_adapter->getDeferredMonths()
 				);
 				echo '<label>';
-				echo '<input type="radio" name="alma_plan_key" ' . $alma_plan_key_value . ' ' . $alma_woocommerce_gateway_checked . ' />';
+				echo '<input type="radio" name="alma_plan_key" ' . $alma_plan_key_value . ' />';
 				if ( $alma_woocommerce_gateway_fee_plan_adapter->getDeferredDays() > 0 ) {
 					echo esc_html(
 						sprintf(
@@ -56,7 +55,6 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 				}
 				echo '</label><br>';
 			}
-			$alma_woocommerce_gateway_checked = '';
 		}
 		?>
 	</p>
@@ -66,4 +64,5 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 	?>
 </fieldset>
 
-<div id="alma-in-page-pay-later"></div>
+<?php /** @var string $alma_woocommerce_gateway_in_page_iframe_selector */ ?>
+<div id="<?php echo $alma_woocommerce_gateway_in_page_iframe_selector; ?>"></div>

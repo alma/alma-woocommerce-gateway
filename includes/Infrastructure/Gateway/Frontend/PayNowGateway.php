@@ -48,6 +48,10 @@ class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 					'alma_pay_now_gateway_nonce_field'
 				),
 				'alma_woocommerce_gateway_merchant_id' => $config_service->getMerchantId(),
+				'alma_woocommerce_gateway_in_page_iframe_selector' => sprintf(
+					'alma_%s_gateway_in_page',
+					$this->get_type()
+				),
 			),
 			'partials'
 		);
@@ -55,7 +59,8 @@ class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 			'alma-frontend-in-page-implementation',
 			'alma_woocommerce_gateway_pay_now_gateway',
 			array(
-				'type' => sprintf( 'alma_%s_gateway', $this->get_type() ),
+				'type'         => $this->get_type(),
+				'gateway_name' => sprintf( 'alma_%s_gateway', $this->get_type() ),
 			)
 		);
 	}

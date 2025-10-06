@@ -77,6 +77,10 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 					'alma_pnx_gateway_nonce_field'
 				),
 				'alma_woocommerce_gateway_merchant_id' => $config_service->getMerchantId(),
+				'alma_woocommerce_gateway_in_page_iframe_selector' => sprintf(
+					'alma_%s_gateway_in_page',
+					$this->get_type()
+				),
 			),
 			'partials'
 		);
@@ -84,8 +88,9 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 			'alma-frontend-in-page-implementation',
 			'alma_woocommerce_gateway_pnx_gateway',
 			array(
-				'type'   => sprintf( 'alma_%s_gateway', $this->get_type() ),
-				'amount' => '',
+				'type'         => $this->get_type(),
+				'gateway_name' => sprintf( 'alma_%s_gateway', $this->get_type() ),
+				'amount'       => '',
 			)
 		);
 	}
