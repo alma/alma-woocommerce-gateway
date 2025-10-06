@@ -156,8 +156,11 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		$payment_service = Plugin::get_container()->get( PaymentProvider::class );
 		try {
 			$payment = $payment_service->createPayment(
-				( new PaymentMapper() )->buildPaymentDto( $this->get_origin( $is_in_page_payment ), $order,
-					$fee_plan_adapter ),
+				( new PaymentMapper() )->buildPaymentDto(
+					$this->get_origin( $is_in_page_payment ),
+					$order,
+					$fee_plan_adapter
+				),
 				( new OrderMapper() )->buildOrderDto( $order ),
 				( new CustomerMapper() )->buildCustomerDto( $order ),
 			);
@@ -335,10 +338,10 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		$redirection_url = wc_get_checkout_url();
 
 		return add_query_arg(
-			[
+			array(
 				'alma' => 'inPage',
 				'pid'  => $payment_id,
-			],
+			),
 			$redirection_url
 		);
 	}
