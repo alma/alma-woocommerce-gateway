@@ -141,8 +141,9 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 */
 	public function process_payment( $order_id ): array {
 		/** @var OrderRepository $order_repository */
-		$order_repository = Plugin::get_container()->get( OrderRepository::class );
-		$config_service   = Plugin::get_container()->get( ConfigService::class );
+		$order_repository   = Plugin::get_container()->get( OrderRepository::class );
+		$config_service     = Plugin::get_container()->get( ConfigService::class );
+		$is_in_page_payment = $config_service->isInPage();
 		try {
 			$order = $order_repository->getById( $order_id );
 		} catch ( ProductRepositoryException $e ) {
@@ -155,7 +156,8 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		$payment_service = Plugin::get_container()->get( PaymentProvider::class );
 		try {
 			$payment = $payment_service->createPayment(
-				( new PaymentMapper() )->buildPaymentDto( $this->get_origin(), $order, $fee_plan_adapter ),
+				( new PaymentMapper() )->buildPaymentDto( $this->get_origin( $is_in_page_payment ), $order,
+					$fee_plan_adapter ),
 				( new OrderMapper() )->buildOrderDto( $order ),
 				( new CustomerMapper() )->buildCustomerDto( $order ),
 			);
@@ -176,7 +178,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 
 		$redirection_url = $payment->geturl();
 
-		if ( $config_service->isInPage() ) {
+		if ( $is_in_page_payment ) {
 			$redirection_url = $this->get_in_page_url( $payment->getId() );
 		}
 
@@ -244,14 +246,14 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Return the Origin of the payment.
+	 * Return the Origin of the payment depending if in-page is enabled or not.
+	 *
+	 * @param $is_in_page_payment
 	 *
 	 * @return string
 	 */
-	public function get_origin(): string {
-		/** @var ConfigService $config_service */
-		$config_service = Plugin::get_container()->get( ConfigService::class );
-		if ( $config_service->isInPage() ) {
+	public function get_origin( $is_in_page_payment ): string {
+		if ( $is_in_page_payment ) {
 			return 'online_in_page';
 		}
 
