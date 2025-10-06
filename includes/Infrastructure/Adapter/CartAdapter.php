@@ -13,6 +13,9 @@ class CartAdapter implements CartAdapterInterface {
 	 * @return int
 	 */
 	public function getCartTotal(): int {
+		if ( ! WC()->cart ) {
+			return 0;
+		}
 
 		return DisplayHelper::price_to_cent( WC()->cart->get_total( null ) );
 	}
@@ -23,6 +26,9 @@ class CartAdapter implements CartAdapterInterface {
 	 * @return void
 	 */
 	public function emptyCart(): void {
+		if ( ! WC()->cart ) {
+			return;
+		}
 		wc()->cart->empty_cart();
 	}
 
@@ -32,6 +38,10 @@ class CartAdapter implements CartAdapterInterface {
 	 * @return array An array of cart items categories.
 	 */
 	public function getCartItemsCategories(): array {
+
+		if ( ! WC()->cart ) {
+			return [];
+		}
 
 		$category_ids = array();
 
