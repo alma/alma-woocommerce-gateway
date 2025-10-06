@@ -50,7 +50,7 @@
         //TODO CHANGE WITH LOAD PAGE EVENT
         $('form.checkout').on('checkout_place_order_success', function (e, result) {
             const selectedMethod = jQuery('input[name="payment_method"]:checked').val();
-            if (gatewayNames.some(gw => gw.id === selectedMethod)) {
+            if (almaMethods[selectedMethod]) {
                 inPage.startPayment({paymentId: result.paymentId});
                 return false; // Prevent the order review section from refreshing
             }
