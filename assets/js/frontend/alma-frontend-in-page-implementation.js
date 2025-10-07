@@ -71,16 +71,25 @@
             }
         }
 
+        // Unmount the Alma In-Page iframe
+        // This is to ensure that the iframe is removed when switching between Alma gateways or plans
+        // If the iframe is not removed, it may cause issues with the payment process
         function unmountIframe() {
             if (inPage !== undefined) {
                 inPage.unmount()
             }
         }
 
+        // Uncheck all plans when switching between Alma gateways
+        // This is to ensure that only one plan is selected at a time
+        // If multiple plans are selected, the iframe will not be displayed
         function uncheckPlan() {
             $('.alma_woocommerce_gateway_fieldset input[name="alma_plan_key"]').prop('checked', false);
         }
 
+        // Select the first plan of the selected Alma gateway
+        // This is to ensure that a plan is always selected when switching between Alma gateways
+        // If no plan is selected, the iframe will not be displayed
         function checkPlan() {
             let selectedMethod = $('input[name="payment_method"]:checked').val();
             if (almaMethods[selectedMethod]) {
@@ -89,6 +98,9 @@
             }
         }
 
+        // Get the total amount from the order total element
+        // The amount is in the format "12,34 €" or "$12.34"
+        // We need to extract the numeric value and convert it to cents
         function getAmount() {
             const totalText = $('.order-total .woocommerce-Price-amount').text().trim();
             return parseFloat(totalText.replace(/[^0-9.,]/g, '').replace(',', '.') * 100);
@@ -139,7 +151,9 @@
         }
 
 
-        // Woocommerce updates the checkout (e.g. when changing address or applying a coupon)
+        // Woocommerce updates the checkout (e.g. when changing address or applying a coupon)*
+        // We need to remount the iframe after the update
+        // We also reset the inPage instance to ensure a fresh initialization with the updated amount
         $(document.body).on('updated_checkout', function () {
             totalAmount = getAmount()
             inPage = undefined; // Reset inPage instance after partial reload

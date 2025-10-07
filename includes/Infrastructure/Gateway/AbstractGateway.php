@@ -19,6 +19,7 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
+use Alma\Gateway\Infrastructure\Helper\InPageHelper;
 use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
@@ -141,8 +142,10 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 */
 	public function process_payment( $order_id ): array {
 		/** @var OrderRepository $order_repository */
-		$order_repository   = Plugin::get_container()->get( OrderRepository::class );
-		$config_service     = Plugin::get_container()->get( ConfigService::class );
+		$order_repository = Plugin::get_container()->get( OrderRepository::class );
+		$config_service   = Plugin::get_container()->get( ConfigService::class );
+		/** @var InPageHelper $in_page_helper */
+		$in_page_helper     = Plugin::get_container()->get( InPageHelper::class );
 		$is_in_page_payment = $config_service->isInPage();
 		try {
 			$order = $order_repository->getById( $order_id );
@@ -182,7 +185,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		$redirection_url = $payment->geturl();
 
 		if ( $is_in_page_payment ) {
-			$redirection_url = $this->get_in_page_url( $payment->getId() );
+			$redirection_url = $in_page_helper->getInPageRedirectionUrl( $payment->getId() );
 		}
 
 		return array(
@@ -325,24 +328,4 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		return $eligibility;
 	}
 
-	/**
-	 * Return the in-page URL for the payment.
-	 * This URL is used to display the Alma payment page in an iframe on the checkout page.
-	 * It adds the payment ID as a query parameter to the checkout URL.
-	 *
-	 * @param string $paymentId Alma payment ID
-	 *
-	 * @return string
-	 */
-	private function get_in_page_url( $payment_id ): string {
-		$redirection_url = wc_get_checkout_url();
-
-		return add_query_arg(
-			array(
-				'alma' => 'inPage',
-				'pid'  => $payment_id,
-			),
-			$redirection_url
-		);
-	}
 }
