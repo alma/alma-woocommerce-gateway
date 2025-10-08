@@ -14,7 +14,7 @@ class ContextHelper implements ContextHelperInterface {
 	 *
 	 * @return string|null
 	 */
-	public static function adminUrl( string $path = '', string $scheme = 'admin' ): ?string {
+	public static function getAdminUrl( string $path = '', string $scheme = 'admin' ): ?string {
 		return admin_url( $path, $scheme );
 	}
 

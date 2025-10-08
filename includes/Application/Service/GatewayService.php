@@ -36,10 +36,10 @@ class GatewayService {
 	private GatewayHelper $gatewayHelper;
 
 	/** @var EligibilityProvider|null The Eligibility Service if available */
-	private ?EligibilityProvider $eligibilityService = null;
+	private ?EligibilityProvider $eligibilityProvider = null;
 
 	/** @var FeePlanProvider|null The Fee plan Service if available */
-	private ?FeePlanProvider $feePlanService = null;
+	private ?FeePlanProvider $feePlanProvider = null;
 
 	/** @var IpnHelper The IPN Helper */
 	private IpnHelper $ipnHelper;
@@ -76,24 +76,24 @@ class GatewayService {
 	 *  Set the eligibility service. This can't be done in the constructor because the service
 	 *  could be not available at the time if the plugin in not fully configured.
 	 *
-	 * @param EligibilityProvider $eligibilityService
+	 * @param EligibilityProvider $eligibilityProvider
 	 *
 	 * @return void
 	 */
-	public function setEligibilityService( EligibilityProvider $eligibilityService ): void {
-		$this->eligibilityService = $eligibilityService;
+	public function setEligibilityProvider( EligibilityProvider $eligibilityProvider ): void {
+		$this->eligibilityProvider = $eligibilityProvider;
 	}
 
 	/**
 	 * Set the fee plan service. This can't be done in the constructor because the service
 	 * could be not available at the time if the plugin in not fully configured.
 	 *
-	 * @param FeePlanProvider $feePlanService
+	 * @param FeePlanProvider $feePlanProvider
 	 *
 	 * @return void
 	 */
-	public function setFeePlanService( FeePlanProvider $feePlanService ): void {
-		$this->feePlanService = $feePlanService;
+	public function setFeePlanProvider( FeePlanProvider $feePlanProvider ): void {
+		$this->feePlanProvider = $feePlanProvider;
 	}
 
 	/**
@@ -190,7 +190,7 @@ class GatewayService {
 	 */
 	public function configureGateway() {
 
-		if ( ! $this->eligibilityService || ! $this->feePlanService ) {
+		if ( ! $this->eligibilityProvider || ! $this->feePlanProvider ) {
 			$logger = Plugin::get_container()->get( LoggerService::class );
 			$logger->debug( 'configure_gateway : Errors in services eligibility or fee plan' );
 
@@ -204,7 +204,7 @@ class GatewayService {
 			/** @var AbstractGateway $gateway */
 			foreach ( $this->gatewayRepository->getAlmaGateways() as $gateway ) {
 				if ( ContextHelper::isCheckoutPage() ) {
-					$gateway->configure_eligibility( $this->eligibilityService->getEligibilityList() );
+					$gateway->configure_eligibility( $this->eligibilityProvider->getEligibilityList() );
 					$gateway->configure_fee_plans( $feePlanRepository->getAll() );
 				}
 			}
@@ -232,7 +232,7 @@ class GatewayService {
 	 * @return array
 	 */
 	public function pluginActionLinks( $links ): array {
-		$setting_link = ContextHelper::adminUrl( 'admin.php?page=wc-settings&tab=checkout&section=alma_config_gateway' );
+		$setting_link = ContextHelper::getAdminUrl( 'admin.php?page=wc-settings&tab=checkout&section=alma_config_gateway' );
 		$plugin_links = array(
 			sprintf( '<a href="%s">%s</a>', $setting_link, L10nHelper::__( 'Settings' ) ),
 		);

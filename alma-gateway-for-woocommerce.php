@@ -33,14 +33,23 @@
  * along with Alma Payment Gateway for WooCommerce. If not, see https://www.gnu.org/licenses/gpl-3.0.html.
  */
 
+require_once 'vendor/autoload.php';
+require_once 'includes/functions.php';
+
+use Alma\Gateway\Infrastructure\Block\Checkout\CreditCheckoutBlock;
+use Alma\Gateway\Infrastructure\Block\Checkout\PayLaterCheckoutBlock;
+use Alma\Gateway\Infrastructure\Block\Checkout\PayNowCheckoutBlock;
+use Alma\Gateway\Infrastructure\Block\Checkout\PnxCheckoutBlock;
+use Alma\Gateway\Infrastructure\Block\Widget\WidgetBlock;
+use Alma\Gateway\Plugin;
+use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
+use Automattic\WooCommerce\Utilities\FeaturesUtil;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-require_once 'vendor/autoload.php';
-require_once 'includes/functions.php';
-
-$alma_gateway_plugin = Alma\Gateway\Plugin::get_instance();
+$alma_gateway_plugin = Plugin::get_instance();
 
 add_action(
 	'plugins_loaded',
@@ -51,4 +60,50 @@ add_action(
 add_action(
 	'plugins_loaded',
 	array( $alma_gateway_plugin, 'plugin_setup' )
+);
+
+/**
+ * Init custom_order_tables if available in Woocommerce version.
+ */
+add_action(
+	'before_woocommerce_init',
+	function () {
+		FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+		FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
+	}
+);
+
+add_action(
+	'init',
+	function () {
+		register_block_type_from_metadata( __DIR__ . '/build/alma-widget-block' );
+	}
+);
+
+/**
+ * Register the Alma widget block.
+ */
+add_action(
+	'woocommerce_blocks_loaded',
+	function () {
+		add_action(
+			'woocommerce_blocks_cart_block_registration',
+			function ( $integration_registry ) {
+				$alma_widget_block = Plugin::get_container()->get( WidgetBlock::class );
+
+				$integration_registry->register( $alma_widget_block );
+			}
+		);
+	}
+);
+
+add_action(
+	'woocommerce_blocks_payment_method_type_registration',
+	function ( PaymentMethodRegistry $payment_method_registry ) {
+		// Register an instance of Alma_Gateway_Blocks.
+		$payment_method_registry->register( Plugin::get_container()->get( PnxCheckoutBlock::class ) );
+		$payment_method_registry->register( Plugin::get_container()->get( CreditCheckoutBlock::class ) );
+		$payment_method_registry->register( Plugin::get_container()->get( PayLaterCheckoutBlock::class ) );
+		$payment_method_registry->register( Plugin::get_container()->get( PayNowCheckoutBlock::class ) );
+	}
 );

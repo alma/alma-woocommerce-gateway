@@ -7,6 +7,7 @@ use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
+use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Infrastructure\Helper\FormHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
@@ -28,6 +29,16 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 		$this->form_helper = $form_helper;
 
 		parent::__construct();
+	}
+
+	/**
+	 * Get the gateway name.
+	 * The goal is to have a unique name for all frontend gateways
+	 *
+	 * @return string
+	 */
+	public function get_name(): string {
+		return sprintf( 'alma_%s_gateway', $this->get_type() );
 	}
 
 	/**
@@ -57,6 +68,7 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	 * It calls the parent method to check the availability.
 	 *
 	 * @return bool
+	 * @throws FeePlanRepositoryException
 	 */
 	public function is_available(): bool {
 
@@ -93,6 +105,7 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	 * This method retrieves the fee plans from the FeePlanService and filters them based on the gateway type.
 	 *
 	 * @return FeePlanListAdapter
+	 * @throws FeePlanRepositoryException
 	 */
 	public function getFeePlanList(): FeePlanListAdapter {
 		/** @var FeePlanRepository $fee_plan_repository */

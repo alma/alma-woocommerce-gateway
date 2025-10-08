@@ -14,7 +14,7 @@ use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
-use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
+use Alma\Gateway\Infrastructure\Helper\AssetsService;
 use Alma\Gateway\Infrastructure\Helper\UrlHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
@@ -146,6 +146,13 @@ class AbstractBackendGateway extends AbstractGateway {
 					'live' => L10nHelper::__( 'Live' ),
 				),
 				'class'       => 'wc-enhanced-select',
+			),
+			'blocks_disabled'                            => array(
+				'title'    => L10nHelper::__( 'Disable Blocks Feature' ),
+				'type'     => 'checkbox',
+				'label'    => L10nHelper::__( 'Use classic (old) rendering instead of Blocks' ),
+				'default'  => 'no',
+				'desc_tip' => false,
 			),
 		);
 	}
@@ -474,8 +481,8 @@ class AbstractBackendGateway extends AbstractGateway {
 
 	public function debug_fieldset(): array {
 
-		/** @var AssetsHelper $assets_helper */
-		$assets_helper = Plugin::get_container()->get( AssetsHelper::class );
+		/** @var AssetsService $assets_helper */
+		$assets_helper = Plugin::get_container()->get( AssetsService::class );
 
 		return array(
 			'debug_section' => array(

@@ -132,10 +132,10 @@ final class Plugin {
 		if ( PluginHelper::isConfigured() ) {
 			/** @var EligibilityProvider $eligibility_service */
 			$eligibility_service = self::get_container()->get( EligibilityProvider::class );
-			$gateway_service->setEligibilityService( $eligibility_service );
+			$gateway_service->setEligibilityProvider( $eligibility_service );
 			/** @var FeePlanProvider $fee_plan_service */
 			$fee_plan_service = self::get_container()->get( FeePlanProvider::class );
-			$gateway_service->setFeePlanService( $fee_plan_service );
+			$gateway_service->setFeePlanProvider( $fee_plan_service );
 		}
 	}
 

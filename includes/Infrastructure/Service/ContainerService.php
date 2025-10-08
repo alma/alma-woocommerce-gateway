@@ -13,7 +13,6 @@ use Alma\API\Domain\Helper\NavigationHelperInterface;
 use Alma\API\Domain\Helper\NotificationHelperInterface;
 use Alma\API\Domain\Helper\SecurityHelperInterface;
 use Alma\API\Domain\Helper\SessionHelperInterface;
-use Alma\API\Domain\Helper\WidgetHelperInterface;
 use Alma\API\Domain\Repository\ConfigRepositoryInterface;
 use Alma\API\Domain\Repository\GatewayRepositoryInterface;
 use Alma\API\Domain\Repository\OrderRepositoryInterface;
@@ -51,7 +50,7 @@ use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
-use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
+use Alma\Gateway\Infrastructure\Helper\AssetsService;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\CoreHelper;
 use Alma\Gateway\Infrastructure\Helper\EventHelper;
@@ -169,7 +168,6 @@ class ContainerService {
 					NotificationHelperInterface::class        => NotificationHelper::class,
 					SecurityHelperInterface::class            => SecurityHelper::class,
 					SessionHelperInterface::class             => SessionHelper::class,
-					WidgetHelperInterface::class              => WidgetHelper::class,
 
 					// Repositories
 					ConfigRepositoryInterface::class          => ConfigRepository::class,
@@ -223,7 +221,7 @@ class ContainerService {
 		// Helpers
 		$this->dice = $this->dice->addRules(
 			array(
-				AssetsHelper::class       => array( 'shared' => true ),
+				AssetsService::class      => array( 'shared' => true ),
 				EncryptorHelper::class    => array( 'shared' => true ),
 				L10nHelper::class         => array( 'shared' => true ),
 				PluginHelper::class       => array( 'shared' => true ),

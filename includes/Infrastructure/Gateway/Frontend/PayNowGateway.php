@@ -37,8 +37,8 @@ class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 			'pay-now-gateway-options.php',
 			array(
 				'alma_woocommerce_gateway_nonce' => $this->form_helper->generateTokenField(
-					'alma_pay_now_gateway_nonce_action',
-					'alma_pay_now_gateway_nonce_field'
+					sprintf( '%s_nonce_action', $this->get_name() ),
+					sprintf( '%s_nonce_field', $this->get_name() ),
 				),
 			),
 			'partials'
@@ -56,8 +56,8 @@ class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 	public function process_payment_fields( OrderAdapterInterface $order ): array {
 
 		$this->form_helper->validateTokenField(
-			'alma_pay_now_gateway_nonce_field',
-			'alma_pay_now_gateway_nonce_action'
+			sprintf( '%s_nonce_action', $this->get_name() ),
+			sprintf( '%s_nonce_field', $this->get_name() ),
 		);
 
 		// @todo Add validation for the payment fields.

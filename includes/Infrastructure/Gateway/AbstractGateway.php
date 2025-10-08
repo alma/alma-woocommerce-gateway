@@ -17,7 +17,7 @@ use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
-use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
+use Alma\Gateway\Infrastructure\Helper\AssetsService;
 use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
@@ -87,6 +87,10 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		$this->fee_plan_list_adapter = $fee_plan_list_adapter->filterFeePlanList( array( $this->get_type() ) );
 	}
 
+	public function getEligibilityList(): EligibilityList {
+		return $this->eligibility_list;
+	}
+
 	/**
 	 * Get Alma icon.
 	 *
@@ -94,8 +98,8 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 */
 	public function get_icon_url(): string {
 
-		/** @var AssetsHelper $asset_helper */
-		$asset_helper = Plugin::get_container()->get( AssetsHelper::class );
+		/** @var AssetsService $asset_helper */
+		$asset_helper = Plugin::get_container()->get( AssetsService::class );
 
 		return $asset_helper->getImage( 'images/alma_logo.svg' );
 	}

@@ -98,6 +98,14 @@ class ConfigService {
 		return self::ALMA_ENVIRONMENT_LIVE;
 	}
 
+	public function isBlocksEnabled(): bool {
+		return 'no' === $this->getSetting( 'blocks_disabled' );
+	}
+
+	public function isBlocksDisabled(): bool {
+		return 'yes' === $this->getSetting( 'blocks_disabled' );
+	}
+
 	/**
 	 * Are we using test environment?
 	 *

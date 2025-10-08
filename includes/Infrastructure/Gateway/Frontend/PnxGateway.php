@@ -3,8 +3,10 @@
 namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
+use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
+use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
 use Alma\Gateway\Plugin;
 
@@ -34,8 +36,8 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 	public function validate_fields(): bool {
 
 		$this->form_helper->validateTokenField(
-			'alma_pnx_gateway_nonce_field',
-			'alma_pnx_gateway_nonce_action'
+			sprintf( '%s_nonce_action', $this->get_name() ),
+			sprintf( '%s_nonce_field', $this->get_name() ),
 		);
 
 		// phpcs:ignore
@@ -56,6 +58,8 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 	 * Expose the payment fields to the frontend.
 	 *
 	 * @return void
+	 * @throws TemplateHelperException
+	 * @throws FeePlanRepositoryException
 	 */
 	public function payment_fields() {
 		/** @var TemplateHelper $template_helper */
@@ -65,8 +69,8 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 			array(
 				'alma_woocommerce_gateway_fee_plan_list' => $this->getFeePlanList(),
 				'alma_woocommerce_gateway_nonce'         => $this->form_helper->generateTokenField(
-					'alma_pnx_gateway_nonce_action',
-					'alma_pnx_gateway_nonce_field'
+					sprintf( '%s_nonce_action', $this->get_name() ),
+					sprintf( '%s_nonce_field', $this->get_name() ),
 				),
 			),
 			'partials'
@@ -84,8 +88,8 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 	public function process_payment_fields( OrderAdapterInterface $order ): array {
 
 		$this->form_helper->validateTokenField(
-			'alma_pnx_gateway_nonce_field',
-			'alma_pnx_gateway_nonce_action'
+			sprintf( '%s_nonce_action', $this->get_name() ),
+			sprintf( '%s_nonce_field', $this->get_name() ),
 		);
 
 		// @todo Add validation for the payment fields.

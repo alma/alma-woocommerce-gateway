@@ -21,18 +21,18 @@ class ShopService {
 					return;
 				}
 
-				/** @var GatewayService $gateway_service */
-				$gateway_service = Plugin::get_container()->get( GatewayService::class );
+				/** @var GatewayService $gatewayService */
+				$gatewayService = Plugin::get_container()->get( GatewayService::class );
 				try {
-					$gateway_service->configureGateway();
+					$gatewayService->configureGateway();
 				} catch ( GatewayServiceException $e ) {
 					throw new AdminServiceException();
 				}
 
 				if ( PluginHelper::isConfigured() ) {
-					/** @var WidgetService $widget_service */
-					$widget_service = Plugin::get_container()->get( WidgetService::class );
-					$widget_service->displayWidget();
+					/** @var WidgetService $widgetService */
+					$widgetService = Plugin::get_container()->get( WidgetService::class );
+					$widgetService->displayWidget();
 				}
 			}
 		);

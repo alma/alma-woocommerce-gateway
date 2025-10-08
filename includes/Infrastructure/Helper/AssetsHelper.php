@@ -11,68 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class AssetsHelper {
 
 	/**
-	 * Enqueue a script.
-	 *
-	 * @param string $version String specifying the script version number, if it has one.
-	 *
-	 * @return void
-	 */
-	public static function enqueueAdminScript( string $version ): void {
-		wp_enqueue_script(
-			'alma-admin-script',
-			self::getAssetUrl( 'js/backend/alma-admin.js' ),
-			[ 'jquery' ],
-			$version,
-			true );
-	}
-
-	/**
-	 * Localize a script.
-	 *
-	 * @param array $data
-	 *
-	 * @return void
-	 */
-	public static function configureAdminScript( array $data ): void {
-		wp_localize_script( 'alma-admin-script', 'alma_settings', $data );
-	}
-
-	/**
-	 * Enqueue the Alma widget style.
-	 *
-	 * @return void
-	 */
-	public static function enqueueWidgetStyle() {
-		wp_enqueue_style(
-			'alma-frontend-widget-cdn',
-			'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.min.css'
-		);
-	}
-
-	/**
-	 * Enqueue the Alma widget scripts.
-	 *
-	 * @param string $version String specifying the script version number, if it has one.
-	 *
-	 * @return void
-	 */
-	public static function enqueueWidgetScript( string $version ): void {
-		wp_enqueue_script(
-			'alma-frontend-widget-cdn',
-			'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.umd.js'
-		);
-
-		wp_enqueue_script(
-			'alma-frontend-widget-implementation',
-			self::getAssetUrl( 'js/frontend/alma-frontend-widget-implementation.js' ),
-			[ 'jquery' ],
-			$version,
-			true
-		);
-
-	}
-
-	/**
 	 * Get asset url.
 	 *
 	 * @param string $path Path to asset relative to the plugin's assets directory.
@@ -83,6 +21,43 @@ class AssetsHelper {
 		$pluginUrl = PluginHelper::getPluginUrl();
 
 		return $pluginUrl . 'assets/' . $path;
+	}
+
+	/**
+	 * @param string $path
+	 *
+	 * @return string
+	 */
+	public static function getBuildUrl( string $path ): string {
+
+		$pluginUrl = PluginHelper::getPluginUrl();
+
+		return $pluginUrl . 'build/' . $path;
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getLanguagesPath(): string {
+
+		$pluginUrl = PluginHelper::getPluginUrl();
+
+		return $pluginUrl . 'languages';
+	}
+
+	/**
+	 * Get the file modified time as a cache buster if we're in dev mode.
+	 *
+	 * @param string $file Local path to the file.
+	 *
+	 * @return string The cache buster value to use for the given file or the plugin version.
+	 */
+	public static function getFileVersion( string $file ): string {
+		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG && file_exists( $file ) ) {
+			return filemtime( $file );
+		}
+
+		return PluginHelper::getPluginVersion();
 	}
 
 	/**
