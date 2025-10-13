@@ -31,24 +31,21 @@ use WC_Payment_Gateway;
  */
 abstract class AbstractGateway extends WC_Payment_Gateway {
 
-	public const GATEWAY_TYPE = 'abstract';
+	protected const GATEWAY_TYPE = 'abstract';
 
-	public const CACHE_ENABLED = false;
-
-	/** @var string Identifier */
-	public $id;
-
+	protected const CACHE_ENABLED = false;
 	/**
 	 * @var ?EligibilityList $eligibility_list public only for debug in functions.php
 	 * @todo Remove this public property when the eligibility and fee plans are fully implemented.
 	 */
-	public ?EligibilityList $eligibility_list = null;
+	protected ?EligibilityList $eligibility_list = null;
 	/**
 	 * @var ?FeePlanListAdapter $fee_plan_list_adapter public only for debug in functions.php
 	 * @todo Remove this public property when the eligibility and fee plans are fully implemented.
 	 */
-	public ?FeePlanListAdapter $fee_plan_list_adapter = null;
-	protected bool $is_eligible                       = false;
+	protected ?FeePlanListAdapter $fee_plan_list_adapter = null;
+
+	protected bool $is_eligible = false;
 
 	/**
 	 * Gateway constructor.
@@ -97,7 +94,11 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * @return string The icon path.
 	 */
 	public function get_icon_url(): string {
-		return AssetsHelper::getImage( 'images/alma_logo.svg' );
+
+		/** @var AssetsHelper $asset_helper */
+		$asset_helper = Plugin::get_container()->get( AssetsHelper::class );
+
+		return $asset_helper->getImage( 'images/alma_logo.svg' );
 	}
 
 	/**

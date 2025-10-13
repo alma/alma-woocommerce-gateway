@@ -1,0 +1,92 @@
+<?php
+
+declare( strict_types=1 );
+
+namespace AlmaIntegrationCms\Sniffs\Architecture;
+
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+
+/**
+ * Ensures classes follow directory-based suffix conventions.
+ * Example:
+ * - /Service/ => *Service
+ * - /Exception/ => *Exception
+ * - /Helper/ => *Helper
+ * - /Gateway/ => *Gateway or *GatewayInterface
+ */
+class ClassSuffixByDirectorySniff implements Sniff {
+	/**
+	 * Directory → required suffix(es).
+	 *
+	 * @var array<string, string[]>
+	 */
+	private $directorySuffixMap = [
+		'Mapper'     => [ 'Mapper', 'MapperInterface', 'MapperException' ],
+		'Provider'   => [ 'Provider', 'ProviderInterface', 'ProviderException' ],
+		'Repository' => [ 'Repository', 'RepositoryInterface', 'RepositoryException' ],
+		'Adapter'    => [ 'Adapter', 'AdapterInterface', 'AdapterException' ],
+		'Block'      => [ 'Block', 'BlockInterface', 'BlockException' ],
+		'Config'     => [ 'Config', 'ConfigException' ],
+		'Service'    => [ 'Service', 'ServiceException' ],
+		'Exception'  => [ 'Exception' ],
+		'Helper'     => [ 'Helper', 'HelperException' ],
+		'Gateway'    => [ 'Gateway', 'GatewayInterface', 'GatewayException' ],
+	];
+
+	/**
+	 * Listen only for class declarations.
+	 *
+	 * @return int[]
+	 */
+	public function register() {
+		return [ T_CLASS, T_INTERFACE ];
+	}
+
+	/**
+	 * Process each class or interface declaration.
+	 *
+	 * @param File $phpcsFile
+	 * @param int  $stackPtr
+	 *
+	 * @return void
+	 */
+	public function process( File $phpcsFile, $stackPtr ) {
+		$className = $phpcsFile->getDeclarationName( $stackPtr );
+		if ( ! $className ) {
+			return;
+		}
+
+		$filePath = $phpcsFile->getFilename();
+
+		foreach ( $this->directorySuffixMap as $directory => $suffixes ) {
+			if ( preg_match( '#[\\\\/]' . $directory . '[\\\\/]#i', $filePath ) ) {
+
+				// Check if class name ends with one of the allowed suffixes
+				$matchesSuffix = false;
+				foreach ( $suffixes as $suffix ) {
+					if ( preg_match( '/' . preg_quote( $suffix, '/' ) . '$/', $className ) ) {
+						$matchesSuffix = true;
+						break;
+					}
+				}
+
+				if ( ! $matchesSuffix ) {
+					$phpcsFile->addError(
+						sprintf(
+							"Classes in '%s' directory must be suffixed with one of: %s (found: %s).",
+							$directory,
+							implode( ', ', $suffixes ),
+							$className
+						),
+						$stackPtr,
+						'WrongClassSuffix'
+					);
+				}
+
+				// Stop after first match
+				return;
+			}
+		}
+	}
+}

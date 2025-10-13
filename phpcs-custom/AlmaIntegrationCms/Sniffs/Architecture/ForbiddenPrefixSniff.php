@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types=1 );
+
 namespace AlmaIntegrationCms\Sniffs\Architecture;
 
 use PHP_CodeSniffer\Files\File;
@@ -12,10 +14,10 @@ class ForbiddenPrefixSniff implements Sniff {
 	 *
 	 * @var string[]
 	 */
-	public $forbiddenPrefixes = array( 'wp_', 'wc_' );
+	private $forbiddenPrefixes = array( 'wp_', 'wc_' );
 
 	/**
-	 * On s'intéresse aux T_STRING (noms de fonctions / constantes / etc.)
+	 * Token recorder
 	 */
 	public function register() {
 		return array( T_STRING );

@@ -62,7 +62,7 @@
 
     <!-- Add in some extra rules from other standards. -->
     <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
-    <rule ref="Generic.Commenting.Todo"/>
+    <!--rule ref="Generic.Commenting.Todo"/-->
 
     <!-- Check for PHP cross-version compatibility. -->
     <!--
@@ -121,8 +121,11 @@
     </rule-->
 
     <!-- Include custom sniff -->
-    <rule ref="AlmaIntegrationCms.Architecture">
+    <rule ref="AlmaIntegrationCms.Architecture.ForbiddenPrefix">
         <exclude-pattern>includes/Infrastructure/*</exclude-pattern>
         <exclude-pattern>includes/functions.php</exclude-pattern>
     </rule>
+    <rule ref="AlmaIntegrationCms.NamingConventions.ClassSuffixByDirectory"/>
+    <rule ref="AlmaIntegrationCms.NamingConventions.ForbiddenHelperDependency"/>
+    <rule ref="AlmaIntegrationCms.Scope.NoPublicMemberVar"/>
 </ruleset>
