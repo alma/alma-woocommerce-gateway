@@ -94,11 +94,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * @return string The icon path.
 	 */
 	public function get_icon_url(): string {
-
-		/** @var AssetsHelper $asset_helper */
-		$asset_helper = Plugin::get_container()->get( AssetsHelper::class );
-
-		return $asset_helper->getImage( 'images/alma_logo.svg' );
+		return AssetsHelper::getImage( 'images/alma_logo.svg' );
 	}
 
 	/**
