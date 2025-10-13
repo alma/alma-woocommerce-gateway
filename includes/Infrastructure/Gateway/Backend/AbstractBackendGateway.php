@@ -14,7 +14,6 @@ use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
-use Alma\Gateway\Infrastructure\Helper\AssetsService;
 use Alma\Gateway\Infrastructure\Helper\UrlHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
@@ -480,10 +479,6 @@ class AbstractBackendGateway extends AbstractGateway {
 	}
 
 	public function debug_fieldset(): array {
-
-		/** @var AssetsService $assets_helper */
-		$assets_helper = Plugin::get_container()->get( AssetsService::class );
-
 		return array(
 			'debug_section' => array(
 				'title' => '<hr>' . L10nHelper::__( '→ Debug options', 'alma-gateway-for-woocommerce' ),

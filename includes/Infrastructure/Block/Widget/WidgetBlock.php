@@ -11,13 +11,11 @@
 
 namespace Alma\Gateway\Infrastructure\Block\Widget;
 
-use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Exception\Block\WidgetBlockException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
-use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Service\AssetsService;
@@ -65,21 +63,6 @@ class WidgetBlock implements IntegrationInterface {
 	 * @throws WidgetBlockException
 	 */
 	public function initialize() {
-		wp_enqueue_style(
-			'alma-widget-block-frontend',
-			PluginHelper::getPluginUrl() . '/build/alma-widget-block/alma-widget-block-view.css',
-			array(),
-			AssetsHelper::getFileVersion( PluginHelper::getPluginUrl() . '/build/alma-widget-block/alma-widget-block-view.css' )
-		);
-
-		$params = array();
-
-		try {
-			$this->assets_service->loadWidgetBlockAssets( $params );
-		} catch ( AssetsServiceException $e ) {
-			throw new WidgetBlockException( $e->getMessage() );
-		}
-
 		$this->register_block_frontend_scripts();
 		$this->register_block_editor_scripts();
 	}
@@ -113,53 +96,21 @@ class WidgetBlock implements IntegrationInterface {
 	 * @throws WidgetBlockException
 	 */
 	private function register_block_frontend_scripts() {
-		$script_path       = '/build/alma-widget-block/alma-widget-block-view.js';
-		$script_url        = PluginHelper::getPluginUrl() . $script_path;
-		$script_asset_path = PluginHelper::getPluginPath() . '/build/alma-widget-block/alma-widget-block-view.asset.php';
-		$script_asset      = file_exists( $script_asset_path )
-			? require $script_asset_path // NOSONAR - build PHP script with no class.
-			: array(
-				'dependencies' => array(),
-				'version'      => $this->getFileVersion( $script_asset_path ),
-			);
 		try {
 			$this->assets_service->loadWidgetBlockAssets();
 		} catch ( AssetsServiceException $e ) {
 			throw new WidgetBlockException( $e->getMessage() );
 		}
-		wp_register_script(
-			'alma-widget-block-frontend',
-			$script_url,
-			$script_asset['dependencies'],
-			$script_asset['version'],
-			true
-		);
 	}
 
 	/**
 	 * @throws WidgetBlockException
 	 */
 	private function register_block_editor_scripts() {
-		$script_path       = '/build/alma-widget-block/alma-widget-block.js';
-		$script_url        = PluginHelper::getPluginUrl() . $script_path;
-		$script_asset_path = PluginHelper::getPluginPath() . '/build/alma-widget-block/alma-widget-block.asset.php';
-		$script_asset      = file_exists( $script_asset_path )
-			? require $script_asset_path // NOSONAR - build PHP script with no class.
-			: array(
-				'dependencies' => array(),
-				'version'      => $this->getFileVersion( $script_asset_path ),
-			);
 		try {
-			$this->assets_service->loadWidgetBlockAssets();
+			$this->assets_service->loadWidgetBlockEditorAssets();
 		} catch ( AssetsServiceException $e ) {
 			throw new WidgetBlockException( $e->getMessage() );
 		}
-		wp_register_script(
-			'alma-widget-block-editor',
-			$script_url,
-			$script_asset['dependencies'],
-			$script_asset['version'],
-			true
-		);
 	}
 }

@@ -17,7 +17,7 @@ use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
-use Alma\Gateway\Infrastructure\Helper\AssetsService;
+use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
@@ -97,11 +97,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * @return string The icon path.
 	 */
 	public function get_icon_url(): string {
-
-		/** @var AssetsService $asset_helper */
-		$asset_helper = Plugin::get_container()->get( AssetsService::class );
-
-		return $asset_helper->getImage( 'images/alma_logo.svg' );
+		return AssetsHelper::getImage( 'images/alma_logo.svg' );
 	}
 
 	/**

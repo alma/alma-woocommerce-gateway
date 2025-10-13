@@ -23,7 +23,7 @@ class AdminService {
 	/**
 	 * Run services on admin init.
 	 */
-	public static function runService() {
+	public function runService() {
 		BackendHelper::runBackendServices(
 			function () {
 				// Init Backend Services

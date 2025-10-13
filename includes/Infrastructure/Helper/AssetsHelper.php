@@ -67,7 +67,7 @@ class AssetsHelper {
 	 *
 	 * @return string
 	 */
-	public function getImage( string $path = 'images/alma_logo.svg' ): string {
-		return $this->getAssetUrl( $path );
+	public static function getImage( string $path = 'images/alma_logo.svg' ): string {
+		return self::getAssetUrl( $path );
 	}
 }
