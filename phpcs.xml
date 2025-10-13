@@ -51,6 +51,7 @@
         <exclude-pattern>includes/Domain/*</exclude-pattern>
         <exclude-pattern>includes/Application/*</exclude-pattern>
         <exclude-pattern>includes/Infrastructure/Adapter/*</exclude-pattern>
+        <exclude-pattern>includes/Infrastructure/Config/*</exclude-pattern>
         <exclude-pattern>includes/Infrastructure/Helper/*</exclude-pattern>
         <exclude-pattern>includes/Infrastructure/Repository/*</exclude-pattern>
         <exclude-pattern>includes/Infrastructure/Service/*</exclude-pattern>

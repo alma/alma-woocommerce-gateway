@@ -13,7 +13,7 @@ class AssetsConfig {
 	public const ASSETS_CONFIG_CHECKOUT_BLOCK      = 'checkout-block';
 	public const ASSETS_CONFIG_ADMIN               = 'admin';
 
-	public static function get_all() {
+	public static function getAll() {
 		return array(
 
 			self::ASSETS_CONFIG_WIDGET              => array(

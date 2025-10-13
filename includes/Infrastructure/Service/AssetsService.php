@@ -12,7 +12,7 @@ class AssetsService {
 
 	public function __construct() {
 		// @todo check with Martin if we want to load all assets config here
-		$this->registered_assets = AssetsConfig::get_all();
+		$this->registered_assets = AssetsConfig::getAll();
 	}
 
 	// @todo Do we need this function ?
