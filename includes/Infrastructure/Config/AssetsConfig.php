@@ -7,16 +7,93 @@ use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 
 class AssetsConfig {
 
-	public const ASSETS_CONFIG_WIDGET              = 'widget';
-	public const ASSETS_CONFIG_WIDGET_BLOCK        = 'widget-block';
+	public const ASSETS_CONFIG_WIDGET = 'widget';
+	public const ASSETS_CONFIG_WIDGET_BLOCK = 'widget-block';
 	public const ASSETS_CONFIG_WIDGET_BLOCK_EDITOR = 'widget-block-editor';
-	public const ASSETS_CONFIG_CHECKOUT_BLOCK      = 'checkout-block';
-	public const ASSETS_CONFIG_ADMIN               = 'admin';
+	public const ASSETS_CONFIG_CHECKOUT_BLOCK = 'checkout-block';
+	public const ASSETS_CONFIG_ADMIN = 'admin';
 
 	public static function getAll() {
-		return array(
+		return array_merge(
+			self::assetsConfigAdmin(),
+			self::assetsConfigWidget(),
+			self::assetsConfigCheckoutBlock(),
+			self::assetsConfigWidgetBlock(),
+			self::assetsConfigWidgetBlockEditor()
+		);
+	}
 
-			self::ASSETS_CONFIG_WIDGET              => array(
+	private static function assetsConfigWidgetBlock(): array {
+		return [
+			self::ASSETS_CONFIG_WIDGET_BLOCK => array(
+				'php'     => array(
+					'src' => AssetsHelper::getBuildUrl( 'alma-widget-block/alma-widget-blocks-view.asset.php' ),
+				),
+				'styles'  => array(
+					'alma-frontend-widget-block-cdn' => array(
+						'src'  => 'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.min.css',
+						'deps' => array(),
+					),
+					'alma-blocks-integration-css'    => array(
+						'src'  => AssetsHelper::getBuildUrl( 'alma-widget-block/alma-widget-blocks.css' ),
+						'deps' => array(),
+					),
+					'alma-widget-block-frontend'     => array(
+						'src'  => AssetsHelper::getBuildUrl( 'alma-widget-block/alma-widget-block-view.css' ),
+						'deps' => array(),
+					),
+				),
+				'scripts' => array(
+					'alma-frontend-widget-block-cdn' => array(
+						'src'  => 'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.umd.js',
+						'deps' => array(),
+					),
+					'alma-widget-block-frontend'     => array(
+						'src'  => AssetsHelper::getBuildUrl( 'alma-widget-block/alma-widget-block-view.js' ),
+						'deps' => array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-components', 'wp-editor' ),
+					),
+				),
+			)
+		];
+	}
+
+	private static function assetsConfigWidgetBlockEditor(): array {
+		return [
+			self::ASSETS_CONFIG_WIDGET_BLOCK_EDITOR => array(
+				'php'     => array(
+					'src' => AssetsHelper::getBuildUrl( 'alma-widget-block/alma-widget-blocks.asset.php' ),
+				),
+				'styles'  => array(
+					'alma-editor-widget-block-cdn' => array(
+						'src'  => 'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.min.css',
+						'deps' => array(),
+					),
+					'alma-blocks-integration-css'  => array(
+						'src'  => AssetsHelper::getBuildUrl( 'alma-widget-block/alma-widget-blocks.css' ),
+						'deps' => array(),
+					),
+					'alma-widget-block-editor'     => array(
+						'src'  => AssetsHelper::getBuildUrl( 'alma-widget-block/alma-widget-block-view.css' ),
+						'deps' => array(),
+					),
+				),
+				'scripts' => array(
+					'alma-editor-widget-block-cdn' => array(
+						'src'  => 'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.umd.js',
+						'deps' => array(),
+					),
+					'alma-widget-block-editor'     => array(
+						'src'  => AssetsHelper::getBuildUrl( 'alma-widget-block/alma-widget-block.js' ),
+						'deps' => array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-components', 'wp-editor' ),
+					),
+				),
+			)
+		];
+	}
+
+	private static function assetsConfigWidget(): array {
+		return [
+			self::ASSETS_CONFIG_WIDGET => array(
 				'styles'  => array(
 					'alma-frontend-widget-cdn' => array(
 						'src'  => 'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.min.css',
@@ -49,14 +126,18 @@ class AssetsConfig {
 						),
 					),
 				),
-			),
+			)
+		];
+	}
 
-			self::ASSETS_CONFIG_CHECKOUT_BLOCK      => array(
+	private static function assetsConfigCheckoutBlock(): array {
+		return [
+			self::ASSETS_CONFIG_CHECKOUT_BLOCK => array(
 				'php'     => array(
 					'src' => AssetsHelper::getBuildUrl( 'alma-checkout-block/alma-checkout-blocks.asset.php' ),
 				),
 				'styles'  => array(
-					'alma-blocks-integration-css' => array(
+					'alma-blocks-integration-css'                 => array(
 						'src'  => AssetsHelper::getBuildUrl( 'alma-checkout-block/alma-checkout-blocks.css' ),
 						'deps' => array(),
 					),
@@ -94,68 +175,12 @@ class AssetsConfig {
 					),
 				),
 			),
+		];
+	}
 
-			self::ASSETS_CONFIG_WIDGET_BLOCK        => array(
-				'php'     => array(
-					'src' => AssetsHelper::getBuildUrl( 'alma-widget-block/alma-widget-blocks-view.asset.php' ),
-				),
-				'styles'  => array(
-					'alma-frontend-widget-block-cdn' => array(
-						'src'  => 'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.min.css',
-						'deps' => array(),
-					),
-					'alma-blocks-integration-css'    => array(
-						'src'  => AssetsHelper::getBuildUrl( 'alma-widget-block/alma-widget-blocks.css' ),
-						'deps' => array(),
-					),
-					'alma-widget-block-frontend'     => array(
-						'src'  => AssetsHelper::getBuildUrl( 'alma-widget-block/alma-widget-block-view.css' ),
-						'deps' => array(),
-					),
-				),
-				'scripts' => array(
-					'alma-frontend-widget-block-cdn' => array(
-						'src'  => 'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.umd.js',
-						'deps' => array(),
-					),
-					'alma-widget-block-frontend'     => array(
-						'src'  => AssetsHelper::getBuildUrl( 'alma-widget-block/alma-widget-block-view.js' ),
-						'deps' => array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-components', 'wp-editor' ),
-					),
-				),
-			),
-
-			self::ASSETS_CONFIG_WIDGET_BLOCK_EDITOR => array(
-				'php'     => array(
-					'src' => AssetsHelper::getBuildUrl( 'alma-widget-block/alma-widget-blocks.asset.php' ),
-				),
-				'styles'  => array(
-					'alma-editor-widget-block-cdn' => array(
-						'src'  => 'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.min.css',
-						'deps' => array(),
-					),
-					'alma-blocks-integration-css'  => array(
-						'src'  => AssetsHelper::getBuildUrl( 'alma-widget-block/alma-widget-blocks.css' ),
-						'deps' => array(),
-					),
-					'alma-widget-block-editor'     => array(
-						'src'  => AssetsHelper::getBuildUrl( 'alma-widget-block/alma-widget-block-view.css' ),
-						'deps' => array(),
-					),
-				),
-				'scripts' => array(
-					'alma-editor-widget-block-cdn' => array(
-						'src'  => 'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.umd.js',
-						'deps' => array(),
-					),
-					'alma-widget-block-editor'     => array(
-						'src'  => AssetsHelper::getBuildUrl( 'alma-widget-block/alma-widget-block.js' ),
-						'deps' => array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-components', 'wp-editor' ),
-					),
-				),
-			),
-
-			self::ASSETS_CONFIG_ADMIN               => array(
+	private static function assetsConfigAdmin(): array {
+		return [
+			self::ASSETS_CONFIG_ADMIN => array(
 				'styles'  => array(
 					'alma-backend-widget-block-editor-cdn' => array(
 						'src'  => 'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.min.css',
@@ -167,8 +192,12 @@ class AssetsConfig {
 						'src'  => 'https://cdn.jsdelivr.net/npm/@alma/widgets@4.x.x/dist/widgets.umd.js',
 						'deps' => array(),
 					),
+					'alma-backend'                         => array(
+						'src'  => AssetsHelper::getAssetUrl( 'js/backend/alma-backend.js' ),
+						'deps' => array(),
+					),
 				),
-			),
-		);
+			)
+		];
 	}
 }
