@@ -147,10 +147,16 @@ class AbstractBackendGateway extends AbstractGateway {
 				'class'       => 'wc-enhanced-select',
 			),
 			'blocks_disabled'                            => array(
-				'title'    => L10nHelper::__( 'Disable Blocks Feature' ),
+				'title'   => L10nHelper::__( 'Disable Blocks Feature' ),
+				'type'    => 'checkbox',
+				'label'   => L10nHelper::__( 'Use classic (old) rendering instead of Blocks' ),
+				'default' => 'no',
+			),
+			'in_page_enabled'                            => array(
+				'title'    => L10nHelper::__( 'Activate In-Page Checkout' ),
 				'type'     => 'checkbox',
-				'label'    => L10nHelper::__( 'Use classic (old) rendering instead of Blocks' ),
-				'default'  => 'no',
+				'label'    => L10nHelper::__( 'Let your customers pay with Alma in a secure pop-up, without leaving your site.' ),
+				'default'  => 'yes',
 				'desc_tip' => false,
 			),
 		);

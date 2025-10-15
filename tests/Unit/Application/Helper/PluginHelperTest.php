@@ -120,4 +120,3 @@ class PluginHelperTest extends TestCase {
 
 
 }
-

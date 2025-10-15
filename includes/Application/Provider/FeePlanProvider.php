@@ -8,7 +8,6 @@ use Alma\API\Domain\Port\FeePlanProviderInterface;
 use Alma\API\Infrastructure\Endpoint\MerchantEndpoint;
 use Alma\API\Infrastructure\Exception\Endpoint\MerchantEndpointException;
 use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
-use Alma\Gateway\Application\Service\ConfigService;
 
 class FeePlanProvider implements FeePlanProviderInterface {
 
@@ -18,12 +17,9 @@ class FeePlanProvider implements FeePlanProviderInterface {
 	/** @var FeePlanList */
 	private FeePlanList $feePlanList;
 
-	/** @var ConfigService $configService */
-	private ConfigService $configService;
 
-	public function __construct( MerchantEndpoint $merchantEndpoint, ConfigService $configService ) {
+	public function __construct( MerchantEndpoint $merchantEndpoint ) {
 		$this->merchantEndpoint = $merchantEndpoint;
-		$this->configService    = $configService;
 	}
 
 	/**

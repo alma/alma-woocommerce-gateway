@@ -13,11 +13,13 @@ use Alma\Gateway\Application\Mapper\CustomerMapper;
 use Alma\Gateway\Application\Mapper\OrderMapper;
 use Alma\Gateway\Application\Mapper\PaymentMapper;
 use Alma\Gateway\Application\Provider\PaymentProvider;
+use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
+use Alma\Gateway\Infrastructure\Helper\InPageHelper;
 use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
@@ -145,6 +147,11 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	public function process_payment( $order_id ): array {
 		/** @var OrderRepository $order_repository */
 		$order_repository = Plugin::get_container()->get( OrderRepository::class );
+		/** @var ConfigService $config_service */
+		$config_service = Plugin::get_container()->get( ConfigService::class );
+		/** @var InPageHelper $in_page_helper */
+		$in_page_helper     = Plugin::get_container()->get( InPageHelper::class );
+		$is_in_page_payment = $config_service->isInPage();
 		try {
 			$order = $order_repository->getById( $order_id );
 		} catch ( ProductRepositoryException $e ) {
@@ -157,7 +164,11 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		$payment_service = Plugin::get_container()->get( PaymentProvider::class );
 		try {
 			$payment = $payment_service->createPayment(
-				( new PaymentMapper() )->buildPaymentDto( $this->get_origin(), $order, $fee_plan_adapter ),
+				( new PaymentMapper() )->buildPaymentDto(
+					$config_service->getOrigin(),
+					$order,
+					$fee_plan_adapter
+				),
 				( new OrderMapper() )->buildOrderDto( $order ),
 				( new CustomerMapper() )->buildCustomerDto( $order ),
 			);
@@ -176,9 +187,15 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 
 		$order->updateStatus( 'pending', L10nHelper::__( 'En attente de paiement via Alma' ) );
 
+		$redirection_url = $payment->geturl();
+
+		if ( $is_in_page_payment ) {
+			$redirection_url = $in_page_helper->getInPageRedirectionUrl( $payment->getId() );
+		}
+
 		return array(
 			'result'   => 'success',
-			'redirect' => $payment->getUrl(),
+			'redirect' => $redirection_url,
 		);
 	}
 
@@ -237,15 +254,6 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 
 		// WooCommerce will create WC_Order_Refund automatically
 		return true;
-	}
-
-	/**
-	 * Return the Origin of the payment.
-	 *
-	 * @return string
-	 */
-	public function get_origin(): string {
-		return 'online';
 	}
 
 	/**

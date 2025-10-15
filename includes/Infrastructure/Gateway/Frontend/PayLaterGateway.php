@@ -6,6 +6,7 @@ use Alma\API\Domain\Adapter\OrderAdapterInterface;
 use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
+use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
 use Alma\Gateway\Plugin;
@@ -13,6 +14,7 @@ use Alma\Gateway\Plugin;
 /**
  * Class Gateway
  * Should extend WC_Payment_Gateway
+ * @see public/templates/partials/pay-later-gateway-options.php for rendering
  */
 class PayLaterGateway extends AbstractFrontendGateway implements FrontendGatewayInterface {
 
@@ -68,9 +70,12 @@ class PayLaterGateway extends AbstractFrontendGateway implements FrontendGateway
 	 *
 	 * @return void
 	 * @throws TemplateHelperException
-	 * @throws FeePlanRepositoryException
+	 * @throws TemplateHelperException|FeePlanRepositoryException
 	 */
 	public function payment_fields() {
+
+		/** @var ConfigService $config_service */
+		$config_service = Plugin::get_container()->get( ConfigService::class );
 		/** @var TemplateHelper $template_helper */
 		$template_helper = Plugin::get_container()->get( TemplateHelper::class );
 		$template_helper->getTemplate(
@@ -81,8 +86,21 @@ class PayLaterGateway extends AbstractFrontendGateway implements FrontendGateway
 					sprintf( '%s_nonce_action', $this->get_name() ),
 					sprintf( '%s_nonce_field', $this->get_name() ),
 				),
+				'alma_woocommerce_gateway_merchant_id'   => $config_service->getMerchantId(),
+				'alma_woocommerce_gateway_in_page_iframe_selector' => sprintf(
+					'alma_%s_gateway_in_page',
+					$this->get_type()
+				),
 			),
 			'partials'
+		);
+		wp_localize_script(
+			'alma-frontend-in-page-implementation',
+			'alma_woocommerce_gateway_pay_later_gateway',
+			array(
+				'type'         => $this->get_type(),
+				'gateway_name' => sprintf( 'alma_%s_gateway', $this->get_type() ),
+			)
 		);
 	}
 

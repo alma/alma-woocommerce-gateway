@@ -14,8 +14,6 @@ use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
 
 class PaymentProvider implements PaymentProviderInterface {
-	const CAPTURE_METHOD_AUTOMATIC = 'automatic';
-	const CAPTURE_METHOD_MANUAL = 'manual';
 
 	/** @var PaymentEndpoint $paymentEndpoint */
 	private PaymentEndpoint $paymentEndpoint;
@@ -36,21 +34,21 @@ class PaymentProvider implements PaymentProviderInterface {
 	/**
 	 * Create a new payment.
 	 *
-	 * @param PaymentDto  $payment_dto The payment data transfer object.
-	 * @param OrderDto    $order_dto The order data transfer object.
-	 * @param CustomerDto $customer_dto The customer data transfer object.
+	 * @param PaymentDto  $paymentDto The payment data transfer object.
+	 * @param OrderDto    $orderDto The order data transfer object.
+	 * @param CustomerDto $customerDto The customer data transfer object.
 	 *
 	 * @return Payment The created payment.
 	 *
 	 * @throws PaymentServiceException
 	 */
 	public function createPayment(
-		PaymentDto $payment_dto,
-		OrderDto $order_dto,
-		CustomerDto $customer_dto
+		PaymentDto $paymentDto,
+		OrderDto $orderDto,
+		CustomerDto $customerDto
 	): Payment {
 		try {
-			return $this->paymentEndpoint->create( $payment_dto, $order_dto, $customer_dto );
+			return $this->paymentEndpoint->create( $paymentDto, $orderDto, $customerDto );
 		} catch ( PaymentEndpointException $e ) {
 			throw new PaymentServiceException( 'Error creating payment: ' . $e->getMessage() );
 		}
@@ -59,15 +57,16 @@ class PaymentProvider implements PaymentProviderInterface {
 	/**
 	 * Fetch a payment by its ID.
 	 *
-	 * @param string|null $payment_id The ID of the payment to fetch.
+	 * @param string $paymentId The ID of the payment to fetch.
 	 *
 	 * @return Payment The fetched payment.
 	 *
 	 * @throws PaymentServiceException
 	 */
-	public function fetchPayment( ?string $payment_id ): Payment {
+	//TODO REPLACE INTERFACE REMOVE NULL
+	public function fetchPayment( ?string $paymentId ): Payment {
 		try {
-			return $this->paymentEndpoint->fetch( $payment_id );
+			return $this->paymentEndpoint->fetch( $paymentId );
 		} catch ( PaymentEndpointException $e ) {
 			throw new PaymentServiceException( 'Error fetching payment: ' . $e->getMessage() );
 		}

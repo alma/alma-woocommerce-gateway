@@ -26,7 +26,7 @@ add_action(
 				/** @var Eligibility $eligibility */
 				foreach ( $gateway->getEligibilityList() as $eligibility ) {
 					echo '  - ' . $eligibility->getPlanKey() . ' => ' . ( $eligibility->isEligible() ? 'eligible' : 'not eligible' )
-						. "\n";
+					     . "\n";
 				}
 			} else {
 				echo ' - Not an Alma gateway' . "\n";
@@ -131,12 +131,12 @@ add_action(
 		/** @var FeePlan $fee_plan */
 		foreach ( $feePlanListAdapter as $feePlanAdapter ) {
 			echo '<h2>' . $feePlanAdapter->getPlanKey() . '</h2>'
-				. '<ul>'
-				. '<li>Min amount: ' . $feePlanAdapter->getMinPurchaseAmount() . '</li>'
-				. '<li>Max amount: ' . $feePlanAdapter->getMaxPurchaseAmount() . '</li>'
-				. '<li>Override Min amount: ' . $feePlanAdapter->getOverrideMinPurchaseAmount() . '</li>'
-				. '<li>Override Max amount: ' . $feePlanAdapter->getOverrideMaxPurchaseAmount() . '</li>'
-				. '</ul>';
+			     . '<ul>'
+			     . '<li>Min amount: ' . $feePlanAdapter->getMinPurchaseAmount() . '</li>'
+			     . '<li>Max amount: ' . $feePlanAdapter->getMaxPurchaseAmount() . '</li>'
+			     . '<li>Override Min amount: ' . $feePlanAdapter->getOverrideMinPurchaseAmount() . '</li>'
+			     . '<li>Override Max amount: ' . $feePlanAdapter->getOverrideMaxPurchaseAmount() . '</li>'
+			     . '</ul>';
 		}
 
 		echo '</pre>';
@@ -150,4 +150,26 @@ function almalog( $message, $data = null ) {
 	if ( ! is_null( $data ) ) {
 		$logger->debug( wp_json_encode( $data ) );
 	}
+}
+
+
+add_action( 'admin_menu', 'alma_add_gateway_top_menu' );
+
+function alma_add_gateway_top_menu() {
+	add_menu_page(
+		__( 'Alma - Réglages', 'alma-gateway-for-woocommerce' ),
+		__( 'Alma', 'alma-gateway-for-woocommerce' ),
+		'manage_options',
+		'alma-gateway-settings',
+		'alma_redirect_to_gateway_settings',
+		plugin_dir_url( __FILE__ ) . '../assets/images/alma_short_logo.svg',
+		54
+	);
+}
+
+function alma_redirect_to_gateway_settings() {
+	$gateway_id = 'alma_config_gateway';
+	$url        = admin_url( 'admin.php?page=wc-settings&tab=checkout&section=' . $gateway_id );
+	wp_safe_redirect( $url );
+	exit;
 }

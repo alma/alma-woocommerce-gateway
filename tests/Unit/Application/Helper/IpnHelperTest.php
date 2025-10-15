@@ -272,4 +272,3 @@ class IpnHelperTest extends TestCase {
 		];
 	}
 }
-

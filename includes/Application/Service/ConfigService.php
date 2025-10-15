@@ -2,6 +2,7 @@
 
 namespace Alma\Gateway\Application\Service;
 
+use Alma\API\Application\DTO\PaymentDto;
 use Alma\API\Domain\Repository\ConfigRepositoryInterface;
 use Alma\Gateway\Application\Helper\EncryptorHelper;
 use Alma\Gateway\Infrastructure\Helper\WordPressHelper;
@@ -122,6 +123,28 @@ class ConfigService {
 	 */
 	public function isLive(): bool {
 		return $this->getEnvironment() === self::ALMA_ENVIRONMENT_LIVE;
+	}
+
+	/**
+	 * Check if in-page is enabled.
+	 *
+	 * @return bool
+	 */
+	public function isInPage(): bool {
+		return 'yes' === $this->getSetting( 'in_page_enabled' );
+	}
+
+	/**
+	 * Return the Origin of the payment depending on if in-page is enabled or not.
+	 *
+	 * @return string
+	 */
+	public function getOrigin() {
+		if ( $this->isInPage()) {
+			return PaymentDto::ORIGIN_ONLINE_IN_PAGE;
+		}
+
+		return PaymentDto::ORIGIN_ONLINE;
 	}
 
 	/**
