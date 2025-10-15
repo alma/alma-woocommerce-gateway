@@ -91,4 +91,3 @@ class L10nHelperTest extends TestCase {
 	}
 
 }
-

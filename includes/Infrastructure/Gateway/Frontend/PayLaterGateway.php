@@ -3,14 +3,18 @@
 namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
+use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
+use Alma\Gateway\Application\Service\ConfigService;
+use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
 use Alma\Gateway\Plugin;
 
 /**
  * Class Gateway
  * Should extend WC_Payment_Gateway
+ * @see public/templates/partials/pay-later-gateway-options.php for rendering
  */
 class PayLaterGateway extends AbstractFrontendGateway implements FrontendGatewayInterface {
 
@@ -65,20 +69,37 @@ class PayLaterGateway extends AbstractFrontendGateway implements FrontendGateway
 	 * Expose the payment fields to the frontend.
 	 *
 	 * @return void
+	 * @throws TemplateHelperException|FeePlanRepositoryException
 	 */
 	public function payment_fields() {
+
+		/** @var ConfigService $config_service */
+		$config_service = Plugin::get_container()->get( ConfigService::class );
 		/** @var TemplateHelper $template_helper */
 		$template_helper = Plugin::get_container()->get( TemplateHelper::class );
 		$template_helper->getTemplate(
 			'pay-later-gateway-options.php',
 			array(
-				'alma_woocommerce_gateway_fee_plan_list' => $this->getFeePlanList(),
-				'alma_woocommerce_gateway_nonce'         => $this->form_helper->generateTokenField(
+				'alma_woocommerce_gateway_fee_plan_list_adapter' => $this->getFeePlanList(),
+				'alma_woocommerce_gateway_nonce'       => $this->form_helper->generateTokenField(
 					'alma_pay_later_gateway_nonce_action',
 					'alma_pay_later_gateway_nonce_field'
 				),
+				'alma_woocommerce_gateway_merchant_id' => $config_service->getMerchantId(),
+				'alma_woocommerce_gateway_in_page_iframe_selector' => sprintf(
+					'alma_%s_gateway_in_page',
+					$this->get_type()
+				),
 			),
 			'partials'
+		);
+		wp_localize_script(
+			'alma-frontend-in-page-implementation',
+			'alma_woocommerce_gateway_pay_later_gateway',
+			array(
+				'type'         => $this->get_type(),
+				'gateway_name' => sprintf( 'alma_%s_gateway', $this->get_type() ),
+			)
 		);
 	}
 

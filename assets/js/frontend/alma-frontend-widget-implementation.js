@@ -1,7 +1,7 @@
 /*
  * Alma Frontend Widget Implementation
  * This script initializes the Alma payment widget on the frontend.
- * @see includes/WooCommerce/Helper/ShortcodeWidgetHelper.php
+ * @see includes/Infrastructure/Helper/AssetsHelper.php
  */
 (function ($) {
     $(function () {

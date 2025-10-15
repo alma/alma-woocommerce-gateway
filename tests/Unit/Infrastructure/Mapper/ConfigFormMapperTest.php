@@ -104,4 +104,3 @@ class ConfigFormMapperTest extends TestCase {
 	}
 
 }
-

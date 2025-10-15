@@ -147,6 +147,13 @@ class AbstractBackendGateway extends AbstractGateway {
 				),
 				'class'       => 'wc-enhanced-select',
 			),
+			'in_page_enabled'                            => array(
+				'title'    => L10nHelper::__( 'Activate In-Page Checkout' ),
+				'type'     => 'checkbox',
+				'label'    => L10nHelper::__( 'Let your customers pay with Alma in a secure pop-up, without leaving your site.' ),
+				'default'  => 'yes',
+				'desc_tip' => false,
+			),
 		);
 	}
 

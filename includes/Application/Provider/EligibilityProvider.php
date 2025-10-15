@@ -31,15 +31,18 @@ class EligibilityProvider implements EligibilityProviderInterface {
 	 * @throws EligibilityServiceException
 	 */
 	public function retrieveEligibility(): void {
+		$purchaseAmount = $this->cartAdapter->getCartTotal();
+
+		if ( $purchaseAmount <= 0 ) {
+			$this->eligibilityList = new EligibilityList();
+
+			return;
+		}
+	
 		try {
-			$purchase_amount = $this->cartAdapter->getCartTotal();
-			if ( $purchase_amount > 0 ) {
-				$this->eligibilityList = $this->eligibilityEndpoint->getEligibilityList( array( 'purchase_amount' => $purchase_amount ) );
-			} else {
-				$this->eligibilityList = new EligibilityList();
-			}
+			$this->eligibilityList = $this->eligibilityEndpoint->getEligibilityList( array( 'purchase_amount' => $purchaseAmount ) );
 		} catch ( EligibilityEndpointException $e ) {
-			throw new EligibilityServiceException( 'Error retrieving eligibility: ' . $e->getMessage() );
+			throw new EligibilityServiceException( 'Error retrieving eligibility: ' . $e->getMessage(), 0, $e );
 		}
 	}
 

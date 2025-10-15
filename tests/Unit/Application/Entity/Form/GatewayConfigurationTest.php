@@ -1,6 +1,6 @@
 <?php
 
-namespace Alma\Gateway\Tests\Unit\Application\Entity;
+namespace Alma\Gateway\Tests\Unit\Application\Entity\Form;
 
 use Alma\Gateway\Application\Entity\Form\FeePlanConfigurationList;
 use Alma\Gateway\Application\Entity\Form\GatewayConfigurationForm;

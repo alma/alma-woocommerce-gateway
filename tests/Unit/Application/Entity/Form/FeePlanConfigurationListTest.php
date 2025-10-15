@@ -1,6 +1,6 @@
 <?php
 
-namespace Alma\Gateway\Tests\Unit\Application\Entity;
+namespace Alma\Gateway\Tests\Unit\Application\Entity\Form;
 
 use Alma\API\Domain\Entity\FeePlan;
 use Alma\API\Domain\Entity\FeePlanList;

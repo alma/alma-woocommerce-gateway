@@ -33,6 +33,14 @@ class ShopService {
 					/** @var WidgetService $widget_service */
 					$widget_service = Plugin::get_container()->get( WidgetService::class );
 					$widget_service->displayWidget();
+
+					/** @var ConfigService $configService */
+					$configService = Plugin::get_container()->get( ConfigService::class );
+					if ( $configService->isInPage() ) {
+						/** @var InPageService $inPageService */
+						$inPageService = Plugin::get_container()->get( InPageService::class );
+						$inPageService->displayInPage();
+					}
 				}
 			}
 		);
