@@ -8,6 +8,7 @@ use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 class AssetsConfig {
 
 	public const ASSETS_CONFIG_WIDGET = 'widget';
+	public const ASSETS_CONFIG_IN_PAGE = 'in-page';
 	public const ASSETS_CONFIG_WIDGET_BLOCK = 'widget-block';
 	public const ASSETS_CONFIG_WIDGET_BLOCK_EDITOR = 'widget-block-editor';
 	public const ASSETS_CONFIG_GATEWAY_BLOCK = 'gateway-block';
@@ -16,6 +17,7 @@ class AssetsConfig {
 	public static function getAll() {
 		return array_merge(
 			self::assetsConfigAdmin(),
+			self::assetsConfigInPage(),
 			self::assetsConfigWidget(),
 			self::assetsConfigGatewayBlock(),
 			self::assetsConfigWidgetBlock(),
@@ -58,6 +60,33 @@ class AssetsConfig {
 							'wp-editor',
 							'alma-frontend-widget-block-cdn',
 							'wc-blocks-data-store',
+						),
+					),
+				),
+			)
+		];
+	}
+
+	private static function assetsConfigInPage(): array {
+		return [
+			self::ASSETS_CONFIG_IN_PAGE => array(
+				'scripts' => array(
+					'alma-frontend-in-page-cdn'            => array(
+						'src'  => 'https://cdn.jsdelivr.net/npm/@alma/in-page@2.x/dist/index.umd.js',
+						'deps' => array(),
+					),
+					'alma-frontend-in-page-implementation' => array(
+						'src'    => AssetsHelper::getAssetUrl( 'js/frontend/alma-frontend-in-page-implementation.js' ),
+						'deps'   => array(
+							'jquery',
+							'alma-frontend-in-page-cdn',
+						),
+						'params' => array(
+							'object_name' => 'alma_in_page_settings',
+							'keys'        => array(
+								'environment',
+								'merchant_id',
+							),
 						),
 					),
 				),

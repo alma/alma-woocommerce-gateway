@@ -44,6 +44,14 @@ class AssetsService {
 	}
 
 	/**
+	 * Load In-Page assets.
+	 * @throws AssetsServiceException
+	 */
+	public function loadInPageAssets( array $scriptParams = [] ): void {
+		$this->enqueueGroup( AssetsConfig::ASSETS_CONFIG_IN_PAGE, $scriptParams );
+	}
+
+	/**
 	 * Load Widget Block assets.
 	 * @throws AssetsServiceException
 	 */
