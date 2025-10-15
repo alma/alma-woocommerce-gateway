@@ -64,7 +64,7 @@ class AssetsService {
 	 * @throws AssetsServiceException
 	 */
 	public function loadCheckoutBlockAssets( array $scriptParams = [] ): void {
-		$this->enqueueGroup( AssetsConfig::ASSETS_CONFIG_CHECKOUT_BLOCK, $scriptParams );
+		$this->enqueueGroup( AssetsConfig::ASSETS_CONFIG_GATEWAY_BLOCK, $scriptParams );
 	}
 
 	/**
@@ -128,16 +128,16 @@ class AssetsService {
 					$config['in_footer'] ?? true
 				);
 
-				// Handle localization
+				// Handle localization @todo use window.wc.wcSettings.getSetting instead?
 				if ( isset( $config['params'] ) ) {
 
-					$expectedKeys = array_keys( $config['params']['keys'] );
-					$scriptParams = array_intersect_key( $scriptParams, array_flip( $expectedKeys ) );
+					$expectedKeys         = array_flip( $config['params']['keys'] );
+					$filteredScriptParams = array_intersect_key( $scriptParams, $expectedKeys );
 
 					wp_localize_script(
 						$handle,
 						$config['params']['object_name'],
-						$scriptParams
+						$filteredScriptParams
 					);
 				}
 

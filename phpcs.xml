@@ -55,6 +55,8 @@
         <exclude-pattern>includes/Infrastructure/Helper/*</exclude-pattern>
         <exclude-pattern>includes/Infrastructure/Repository/*</exclude-pattern>
         <exclude-pattern>includes/Infrastructure/Service/*</exclude-pattern>
+        <exclude-pattern>includes/Infrastructure/Dto/*</exclude-pattern>
+        <exclude-pattern>includes/Infrastructure/Mapper/*</exclude-pattern>
         <exclude-pattern>phpcs-custom/*</exclude-pattern>
     </rule>
 
@@ -64,6 +66,8 @@
     <!-- Add in some extra rules from other standards. -->
     <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
     <!--rule ref="Generic.Commenting.Todo"/-->
+
+    <rule ref="Generic.Files.EndFileNewline"/>
 
     <!-- Check for PHP cross-version compatibility. -->
     <!--

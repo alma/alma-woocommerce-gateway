@@ -3,6 +3,7 @@
 namespace Alma\Gateway\Infrastructure\Adapter;
 
 use Alma\API\Domain\Adapter\FeePlanAdapterInterface;
+use Alma\API\Domain\Adapter\FeePlanInterface;
 use Alma\API\Domain\Entity\FeePlan;
 use Alma\API\Infrastructure\Exception\ParametersException;
 use BadMethodCallException;
@@ -14,18 +15,8 @@ use BadMethodCallException;
  *
  * @see FeePlanAdapterInterface
  *
- * @method enable() : void see FeePlan::enable()
- * @method getCustomerFeeVariable(): ?int see FeePlan::getCustomerFeeVariable()
- * @method getKind(): string see FeePlan::getKind()
- * @method getMerchantFeeFixed(): ?int see FeePlan::getMerchantFeeFixed()
- * @method getMerchantFeeVariable(): ?int see FeePlan::getMerchantFeeVariable()
- * @method isAllowed(): bool see FeePlan::isAllowed()
- * @method isAvailable(): bool see FeePlan::isAvailable()
- * @method isAvailableOnline(): bool see FeePlan::isAvailableOnline()
- * @method isEligible( int $purchaseAmount ): bool see FeePlan::isEligible()
- * @method isEnabled(): bool see FeePlan::isEnabled()
  */
-class FeePlanAdapter implements FeePlanAdapterInterface {
+class FeePlanAdapter implements FeePlanAdapterInterface, FeePlanInterface {
 
 	private $almaFeePlan;
 	private int $overrideMinPurchaseAmount;
@@ -173,5 +164,45 @@ class FeePlanAdapter implements FeePlanAdapterInterface {
 	 */
 	public function getDeferredMonths(): int {
 		return $this->almaFeePlan->getDeferredMonths();
+	}
+
+	public function isAllowed(): bool {
+		return $this->almaFeePlan->isAllowed();
+	}
+
+	public function isEligible( int $purchaseAmount ): bool {
+		return $this->almaFeePlan->isEligible( $purchaseAmount );
+	}
+
+	public function isEnabled(): bool {
+		return $this->almaFeePlan->isEnabled();
+	}
+
+	public function enable(): void {
+		$this->almaFeePlan->enable();
+	}
+
+	public function isAvailable(): bool {
+		return $this->almaFeePlan->isAvailable();
+	}
+
+	public function isAvailableOnline(): bool {
+		return $this->almaFeePlan->isAvailableOnline();
+	}
+
+	public function getMerchantFeeFixed(): ?int {
+		return $this->almaFeePlan->getMerchantFeeFixed();
+	}
+
+	public function getMerchantFeeVariable(): ?int {
+		return $this->almaFeePlan->getMerchantFeeVariable();
+	}
+
+	public function getCustomerFeeVariable(): ?int {
+		return $this->almaFeePlan->getCustomerFeeVariable();
+	}
+
+	public function getKind(): string {
+		return $this->almaFeePlan->getKind();
 	}
 }

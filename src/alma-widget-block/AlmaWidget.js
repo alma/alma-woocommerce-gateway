@@ -1,6 +1,15 @@
 import {useEffect} from '@wordpress/element';
 import {useSelect} from '@wordpress/data';
 
+/**
+ * Alma Widget Component.
+ * Displays the Alma payment widget if it can be displayed.
+ * Settings (almaSettings) comes from WidgetBlock::get_script_data()
+ * @see includes/Infrastructure/Block/Widget/WidgetBlock.php
+ *
+ * @returns {JSX.Element|null}
+ * @constructor
+ */
 const AlmaWidget = () => {
     if (!window.wc.wcSettings.getSetting(`alma-widget-block_data`, null).can_be_displayed) {
         return null;
@@ -18,20 +27,21 @@ const AlmaWidget = () => {
         const almaWidgetDivId = "alma-widget";
 
         function addAlmaWidget() {
-            const data = window.wc.wcSettings.getSetting(`alma-widget-block_data`, null);
-            if (!data) return;
+            const almaSettings = window.wc.wcSettings.getSetting(`alma-widget-block_data`, null);
+            if (!almaSettings) return;
 
+            console.log(almaSettings);
             let widget = Alma.Widgets.initialize(
-                data.merchant_id,
-                Alma.ApiMode[data.environment],
+                almaSettings.merchant_id,
+                Alma.ApiMode[almaSettings.environment],
             );
 
             widget.add(Alma.Widgets.PaymentPlans, {
                 container: '#' + almaWidgetDivId,
                 purchaseAmount: total,
-                locale: data.locale,
+                locale: almaSettings.locale,
                 hideIfNotEligible: false,
-                plans: data.plans.map(plan => ({
+                plans: almaSettings.plans.map(plan => ({
                     installmentsCount: plan.installments_count,
                     minAmount: plan.min_amount,
                     maxAmount: plan.max_amount,

@@ -67,6 +67,16 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	}
 
 	/**
+	 * Get the eligibility list.
+	 * @return EligibilityList
+	 * @todo Usefull only for dev purposes, remove when not needed anymore.
+	 *
+	 */
+	public function getEligibilityList(): EligibilityList {
+		return $this->eligibility_list;
+	}
+
+	/**
 	 * Set the eligibility of the gateway based on the eligibility list.
 	 *
 	 * @param EligibilityList $eligibility_list The eligibility list to filter.
@@ -82,10 +92,6 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 */
 	public function configure_fee_plans( FeePlanListAdapter $fee_plan_list_adapter ): void {
 		$this->fee_plan_list_adapter = $fee_plan_list_adapter->filterFeePlanList( array( $this->get_type() ) );
-	}
-
-	public function getEligibilityList(): EligibilityList {
-		return $this->eligibility_list;
 	}
 
 	/**

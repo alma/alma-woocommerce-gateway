@@ -1,8 +1,8 @@
 import {useSelect} from '@wordpress/data';
 import {useEffect, useState} from '@wordpress/element';
-import {AlmaBlocks} from "./alma-blocks-component.tsx";
+import {AlmaBlock} from "./alma-block-component.tsx";
 
-export const DisplayAlmaBlocks = (props) => {
+export const DisplayAlmaBlock = (props) => {
     const {eventRegistration, emitResponse, settings, gateway, store_key, isPayNow} = props;
     const {onPaymentSetup} = eventRegistration;
 
@@ -49,7 +49,7 @@ export const DisplayAlmaBlocks = (props) => {
         };
     }, [eligibility, onPaymentSetup, selectedFeePlan, plan, isLoading]);
 
-    return isLoading ? <div></div> : <AlmaBlocks
+    return isLoading ? <div></div> : <AlmaBlock
         hasInPage={settings.is_in_page}
         isPayNow={isPayNow}
         totalPrice={eligibilityCartTotal}

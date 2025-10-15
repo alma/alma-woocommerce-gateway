@@ -9,7 +9,7 @@
  * @namespace Alma\Woocommerce\Blocks\Standard;
  */
 
-namespace Alma\Gateway\Infrastructure\Block\Checkout;
+namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
@@ -21,14 +21,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * StandardBlock
  */
-final class PnxCheckoutBlock extends AbstractCheckoutBlock implements IntegrationInterface {
+final class PnxGatewayBlock extends AbstractGatewayBlock implements IntegrationInterface {
 
 	/**
 	 * When called invokes any initialization/setup for the integration.
 	 */
 	public function initialize() {
 
-		$this->name    = 'alma_checkout_pnx_block';
+		$this->name    = 'alma_pnx_gateway_block';
 		$this->gateway = new PnxGateway();
 
 		parent::initialize();

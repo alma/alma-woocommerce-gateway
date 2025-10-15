@@ -50,7 +50,7 @@ class FeePlanProvider implements FeePlanProviderInterface {
 
 		try {
 			return $this->merchantEndpoint->getFeePlanList( FeePlan::KIND_GENERAL, 'all', true )
-			                              ->filterFeePlanList( array( 'credit', 'pnx', 'pay-later', 'pay-now' ) );
+			                              ->filterFeePlanList( array( 'credit', 'pnx', 'paylater', 'paynow' ) );
 
 		} catch ( MerchantEndpointException $e ) {
 			throw new FeePlanServiceException( 'Error retrieving fee plans: ' . $e->getMessage() );

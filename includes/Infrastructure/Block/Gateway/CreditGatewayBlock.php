@@ -1,6 +1,6 @@
 <?php
 /**
- * PayLaterBlock.
+ * PayMoreThanFourBlock.
  *
  * @since 5.3.0
  *
@@ -9,9 +9,9 @@
  * @namespace Alma\Woocommerce\Blocks\Standard;
  */
 
-namespace Alma\Gateway\Infrastructure\Block\Checkout;
+namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
-use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -19,17 +19,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * PayLaterBlock
+ * PayMoreThanFourBlock
  */
-final class PayLaterCheckoutBlock extends AbstractCheckoutBlock implements IntegrationInterface {
+final class CreditGatewayBlock extends AbstractGatewayBlock implements IntegrationInterface {
 
 	/**
 	 * When called invokes any initialization/setup for the integration.
 	 */
 	public function initialize() {
 
-		$this->name    = 'alma_checkout_paylater_block';
-		$this->gateway = new PayLaterGateway();
+		$this->name    = 'alma_credit_gateway_block';
+		$this->gateway = new CreditGateway();
 
 		parent::initialize();
 	}

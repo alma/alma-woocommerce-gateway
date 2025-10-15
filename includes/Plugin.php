@@ -52,8 +52,8 @@ final class Plugin {
 	/** @var Null|ContainerService The DI Container. */
 	private static ?ContainerService $container = null;
 
-	/** @var LoggerService $logger_service */
-	private LoggerService $logger_service;
+	/** @var LoggerService $loggerService */
+	private LoggerService $loggerService;
 
 	/** @var ContextHelperInterface $contextHelper Gives information about context */
 	private ContextHelperInterface $contextHelper;
@@ -123,8 +123,8 @@ final class Plugin {
 
 		// Set the plugin helper and logger service
 		/** @var LoggerService $logger_service */
-		$logger_service       = self::get_container()->get( LoggerService::class );
-		$this->logger_service = $logger_service;
+		$logger_service      = self::get_container()->get( LoggerService::class );
+		$this->loggerService = $logger_service;
 
 		// Configure the gateways
 		/** @var GatewayService $gateway_service */

@@ -81,7 +81,7 @@ class WidgetService {
 			return;
 		}
 
-		// Display non blocks widget
+		// Display non block widget
 		$params      = array();
 		$environment = $this->configService->getEnvironment();
 		$merchantId  = $this->configService->getMerchantId();

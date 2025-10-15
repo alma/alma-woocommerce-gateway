@@ -1,10 +1,25 @@
 /**
- * Checkout blocks page.
+ * Gateway Blocks Page.
  *
  * @since 5.3.0
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/assets
+ */
+
+/**
+ * Global BlocksData variable from Block.
+ *
+ * @typedef {object} BlocksData
+ * @property {string} url - Webhook URL
+ * @property {object} init_eligibility - Initial eligibility data
+ * @property {number} cart_total - Initial cart total
+ * @property {string} nonce_value - Token value for AJAX calls
+ * @property {boolean} is_in_page - Is In Page mode enabled?
+ * @property {string} merchant_id - Merchant ID (optional, mandatory if in page is enabled)
+ * @property {string} environment - Environment (optional, mandatory if in page is enabled)
+ * @property {string} language - Language (optional, mandatory if in page is enabled)
+ * @property {string} ajax_url - AJAX URL (optional, mandatory if in page is enabled)
  */
 
 // phpcs:ignoreFile
@@ -13,15 +28,12 @@ import {useEffect} from '@wordpress/element';
 import {select, useSelect} from '@wordpress/data';
 import {fetchAlmaEligibility} from "./hooks/fetchAlmaEligibility";
 import {Label} from "./components/Label";
-import {DisplayAlmaBlocks} from "./components/DisplayAlmaBlocks";
-import {DisplayAlmaInPageBlocks} from "./components/DisplayAlmaInPageBlocks";
-import './alma-checkout-blocks.css';
+import './alma-gateway-block.css';
 
 (function ($) {
-    var inPage = undefined;
+    let inPage = undefined;
     const {CART_STORE_KEY, CHECKOUT_STORE_KEY} = window.wc.wcBlocksData
     const CartObserver = () => {
-
         // Subscribe to the cart total
         const {cartTotal, shippingRates} = useSelect((select) => ({
             cartTotal: select(CART_STORE_KEY).getCartTotals().total_price,
@@ -45,33 +57,35 @@ import './alma-checkout-blocks.css';
         }, [cartTotal, shippingRates]);
 
 
-        // Register the payment gateway blocks
+        // Register the payment gateway block
         if (!isCalculating && !isLoading) {
             // For each gateway in eligibility result, we register a block
             // before registering the payment gateway, we reset the payment gateways to force gutenberg reload
             reset_payment_gateways(eligibility)
             register_payment_gateway(eligibility, cartTotal)
         }
-
     };
+
     const reset_payment_gateways = (eligibility) => {
         for (const gateway in eligibility) {
-            const settings = window.wc.wcSettings.getSetting(`${gateway}_data`, null)
+            console.log('reset: ' + gateway);
+            const settings = window.wc.wcSettings.getSetting(`${gateway}_block_data`, null)
             const Block_Gateway_Alma = generateGatewayBlock(settings, <></>, gateway, false)
             window.wc.wcBlocksRegistry.registerPaymentMethod(Block_Gateway_Alma);
         }
     }
 
-    const register_payment_gateway = (eligibility, cartTotal, init = false, origin = 'observer') => {
-
-        console.log("Registering payment gateways with cart total: ", cartTotal, " and eligibility: ", eligibility, " from ", origin);
-
+    const register_payment_gateway = (eligibility, cartTotal, init = false) => {
         // For each gateway in eligibility result, we register a block
         for (const gateway in eligibility) {
-            const settings = window.wc.wcSettings.getSetting(`${gateway}_data`, null)
-            const blockContent = getContentBlock(settings.is_in_page, settings, cartTotal, gateway)
-            const Block_Gateway_Alma = generateGatewayBlock(settings, blockContent, gateway, init ? true : gatewayCanMakePayment(eligibility[gateway]))
-            window.wc.wcBlocksRegistry.registerPaymentMethod(Block_Gateway_Alma);
+            const settings = window.wc.wcSettings.getSetting(`${gateway}_block_data`, null)
+            // If gateway Block is availavle, we register it
+            if (settings) {
+                const blockContent = getContentBlock(BlocksData.is_in_page, settings, cartTotal, gateway)
+                const Block_Gateway_Alma = generateGatewayBlock(settings, blockContent, gateway, init ? true : gatewayCanMakePayment(eligibility[gateway]))
+                window.wc.wcBlocksRegistry.registerPaymentMethod(Block_Gateway_Alma);
+                console.log('register: ' + gateway);
+            }
         }
     }
 
@@ -100,7 +114,7 @@ import './alma-checkout-blocks.css';
         const isPayNow = (settings.gateway_name === "alma_pay_now" || settings.gateway_name === "alma_in_page_pay_now");
 
         return is_in_page ? (
-            <DisplayAlmaInPageBlocks
+            <DisplayAlmaInPageBlock
                 isPayNow={isPayNow}
                 store_key={store_key}
                 settings={settings}
@@ -108,7 +122,7 @@ import './alma-checkout-blocks.css';
                 setInPage={setInPage}
             />
         ) : (
-            <DisplayAlmaBlocks
+            <DisplayAlmaBlock
                 isPayNow={isPayNow}
                 store_key={store_key}
                 settings={settings}
@@ -141,15 +155,10 @@ import './alma-checkout-blocks.css';
 
 
     const addActionToPaymentButton = () => {
-
-        if (document.getElementsByClassName("wc-block-components-checkout-place-order-button").length > 0) {
-            document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].addEventListener(
-                "click",
-                addActionToPaymentButtonListener
-            );
-        } else {
-            console.error('Button not found');
-        }
+        document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].addEventListener(
+            "click",
+            addActionToPaymentButtonListener
+        );
     }
 
     const addActionToPaymentButtonListener = (event) => {
@@ -173,13 +182,11 @@ import './alma-checkout-blocks.css';
 
         const settings = window.wc.wcSettings.getSetting(`${gateway}_data`, null);
 
-        const almaCheckoutNonce = `alma_checkout_nonce${settings.gateway_name}`;
-
         if (
-            settings.gateway_name === 'alma_checkout_paynow_block'
-            || settings.gateway_name === 'alma_checkout_paylater_block'
-            || settings.gateway_name === 'alma_checkout_pnx_block'
-            || settings.gateway_name === 'alma_checkout_credit_block'
+            settings.gateway_name === 'alma_paynow_gateway'
+            || settings.gateway_name === 'alma_paylater_gateway'
+            || settings.gateway_name === 'alma_pnx_gateway'
+            || settings.gateway_name === 'alma_credit_gateway'
         ) {
             event.stopPropagation()
             const {shouldCreateAccount, ...restOfDataTest} = dataTest
@@ -204,10 +211,10 @@ import './alma-checkout-blocks.css';
                     'ship_to_different_address': areShippingAndBillingAddressDifferent,
                     'createaccount': dataTest.shouldCreateAccount,
                     'alma_fee_plan': almaStore.getSelectedFeePlan(),
-                    [almaCheckoutNonce]: settings.nonce_value,
+                    [almaCheckoutNonce]: BlocksData.nonce_value,
                     'payment_method': settings.gateway_name,
                 },
-                [almaCheckoutNonce]: settings.nonce_value,
+                [almaCheckoutNonce]: BlocksData.nonce_value,
                 'woocommerce-process-checkout-nonce': settings.woocommerce_process_checkout_nonce,
                 'payment_method': settings.gateway_name,
                 'alma_fee_plan': almaStore.getSelectedFeePlan(),
@@ -257,12 +264,12 @@ import './alma-checkout-blocks.css';
         jQuery.post(ajax_object.ajax_url, data)
     }
 
-    function init_checkout_blocks() {
+    function init_gateway_block() {
 
-        console.log("init_checkout_blocks");
+        console.log("Init Gateway Block");
 
-        register_payment_gateway(BlocksData['init_eligibility'], BlocksData['cart_total'], true, 'init');
+        register_payment_gateway(BlocksData.init_eligibility, 0, true)
     }
 
-    init_checkout_blocks()
+    init_gateway_block()
 })(jQuery);

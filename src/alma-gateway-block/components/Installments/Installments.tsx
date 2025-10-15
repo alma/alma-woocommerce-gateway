@@ -1,7 +1,7 @@
 import {CardTemplate} from "@alma/react-components";
 import React from "react";
 import {InstallmentsContent} from "./InstallmentsContent";
-import {FeePlan} from "../alma-blocks-component";
+import {FeePlan} from "../alma-block-component";
 
 type InstallmentsProps = {
     feePlan: FeePlan;

@@ -3,6 +3,7 @@
 namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
+use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
 use Alma\Gateway\Plugin;
@@ -13,7 +14,7 @@ use Alma\Gateway\Plugin;
  */
 class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayInterface {
 
-	public const GATEWAY_TYPE = 'pay-now';
+	public const GATEWAY_TYPE = 'paynow';
 
 	/**
 	 * Gateway constructor.
@@ -29,12 +30,13 @@ class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 	 * Expose the payment fields to the frontend.
 	 *
 	 * @return void
+	 * @throws TemplateHelperException
 	 */
 	public function payment_fields() {
 		/** @var TemplateHelper $template_helper */
 		$template_helper = Plugin::get_container()->get( TemplateHelper::class );
 		$template_helper->getTemplate(
-			'pay-now-gateway-options.php',
+			'paynow-gateway-options.php',
 			array(
 				'alma_woocommerce_gateway_nonce' => $this->form_helper->generateTokenField(
 					sprintf( '%s_nonce_action', $this->get_name() ),

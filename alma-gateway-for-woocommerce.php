@@ -36,11 +36,10 @@
 require_once 'vendor/autoload.php';
 require_once 'includes/functions.php';
 
-use Alma\Gateway\Infrastructure\Block\Checkout\CreditCheckoutBlock;
-use Alma\Gateway\Infrastructure\Block\Checkout\PayLaterCheckoutBlock;
-use Alma\Gateway\Infrastructure\Block\Checkout\PayNowCheckoutBlock;
-use Alma\Gateway\Infrastructure\Block\Checkout\PnxCheckoutBlock;
-use Alma\Gateway\Infrastructure\Block\Widget\WidgetBlock;
+use Alma\Gateway\Infrastructure\Block\Gateway\CreditGatewayBlock;
+use Alma\Gateway\Infrastructure\Block\Gateway\PayLaterGatewayBlock;
+use Alma\Gateway\Infrastructure\Block\Gateway\PayNowGatewayBlock;
+use Alma\Gateway\Infrastructure\Block\Gateway\PnxGatewayBlock;
 use Alma\Gateway\Plugin;
 use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
 use Automattic\WooCommerce\Utilities\FeaturesUtil;
@@ -89,9 +88,8 @@ add_action(
 		add_action(
 			'woocommerce_blocks_cart_block_registration',
 			function ( $integration_registry ) {
-				$alma_widget_block = Plugin::get_container()->get( WidgetBlock::class );
-
-				$integration_registry->register( $alma_widget_block );
+				//$alma_widget_block = Plugin::get_container()->get( WidgetBlock::class );
+				//$integration_registry->register( $alma_widget_block );
 			}
 		);
 	}
@@ -101,9 +99,21 @@ add_action(
 	'woocommerce_blocks_payment_method_type_registration',
 	function ( PaymentMethodRegistry $payment_method_registry ) {
 		// Register an instance of Alma_Gateway_Blocks.
-		$payment_method_registry->register( Plugin::get_container()->get( PnxCheckoutBlock::class ) );
-		$payment_method_registry->register( Plugin::get_container()->get( CreditCheckoutBlock::class ) );
-		$payment_method_registry->register( Plugin::get_container()->get( PayLaterCheckoutBlock::class ) );
-		$payment_method_registry->register( Plugin::get_container()->get( PayNowCheckoutBlock::class ) );
+
+		/** @var PnxGatewayBlock $pnxCheckoutBlock */
+		$pnxCheckoutBlock = Plugin::get_container()->get( PnxGatewayBlock::class );
+		$payment_method_registry->register( $pnxCheckoutBlock );
+
+		/** @var CreditGatewayBlock $creditCheckoutBlock */
+		$creditCheckoutBlock = Plugin::get_container()->get( CreditGatewayBlock::class );
+		$payment_method_registry->register( $creditCheckoutBlock );
+
+		/** @var PayLaterGatewayBlock $payLaterCheckoutBlock */
+		$payLaterCheckoutBlock = Plugin::get_container()->get( PayLaterGatewayBlock::class );
+		$payment_method_registry->register( $payLaterCheckoutBlock );
+
+		/** @var PayNowGatewayBlock $payNowCheckoutBlock */
+		$payNowCheckoutBlock = Plugin::get_container()->get( PayNowGatewayBlock::class );
+		$payment_method_registry->register( $payNowCheckoutBlock );
 	}
 );

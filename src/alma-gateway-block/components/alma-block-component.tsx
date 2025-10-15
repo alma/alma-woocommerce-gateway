@@ -1,5 +1,5 @@
 /**
- * Checkout blocks component.
+ * Gateway Block Component.
  *
  * @since 5.3.0
  *
@@ -8,7 +8,7 @@
  */
 
 import "@alma/react-components/style.css";
-import "../alma-checkout-blocks.css";
+import "../alma-gateway-block.css";
 import {ToggleButtonsField} from "@alma/react-components";
 import React from "react";
 import {Installments} from "./Installments/Installments";
@@ -48,7 +48,7 @@ type Settings = {
     amount_in_cents: number;
 };
 
-type AlmaBlocksProps = {
+type AlmaBlockProps = {
     settings: Settings;
     selectedFeePlan: string;
     setSelectedFeePlan: (value: string) => void;
@@ -57,7 +57,7 @@ type AlmaBlocksProps = {
     totalPrice: number
 };
 
-export const AlmaBlocks: React.FC<AlmaBlocksProps> = (
+export const AlmaBlock: React.FC<AlmaBlockProps> = (
         {
             settings,
             selectedFeePlan,
@@ -70,7 +70,8 @@ export const AlmaBlocks: React.FC<AlmaBlocksProps> = (
 ) => {
     const labels = {};
     let values = [];
-    Object.keys(plans).forEach(function (key, index) {
+    for (const key of Object.keys(plans)) {
+        const index = Object.keys(plans).indexOf(key);
         values.push(key);
         if (
                 settings.gateway_name === "alma_pay_later" ||
@@ -84,7 +85,7 @@ export const AlmaBlocks: React.FC<AlmaBlocksProps> = (
         } else {
             labels[key] = plans[key].installmentsCount + "x";
         }
-    });
+    }
 
     const handleClick = (optionKey) => {
         setSelectedFeePlan(optionKey);

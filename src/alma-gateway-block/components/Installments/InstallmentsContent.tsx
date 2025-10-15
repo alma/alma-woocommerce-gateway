@@ -3,7 +3,7 @@ import {Installment} from "./Installment";
 import {CardFooter} from "@alma/react-components";
 import {InstallmentsTotal} from "./InstallmentsTotal/InstallmentsTotal";
 import {InstallmentsTotalFees} from "./InstallmentsTotal/InstallmentsTotalFees";
-import {FeePlan, PaymentPlan} from "../alma-blocks-component";
+import {FeePlan, PaymentPlan} from "../alma-block-component";
 import "./Installments.css";
 
 type InstallmentsContentProps = {

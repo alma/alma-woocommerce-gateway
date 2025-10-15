@@ -6,6 +6,7 @@ import {dispatch} from '@wordpress/data';
  * @returns {Promise<void>}
  */
 export const fetchAlmaEligibility = async (storeKey, url) => {
+
     dispatch(storeKey).setLoading(true);
     try {
         const response = await fetch(
@@ -18,6 +19,7 @@ export const fetchAlmaEligibility = async (storeKey, url) => {
             }
         );
         const data = await response.json()
+
         if (data.success) {
             dispatch(storeKey).setAlmaEligibility(data);
         }

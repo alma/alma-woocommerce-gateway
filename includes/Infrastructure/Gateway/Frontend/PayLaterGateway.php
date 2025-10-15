@@ -16,7 +16,7 @@ use Alma\Gateway\Plugin;
  */
 class PayLaterGateway extends AbstractFrontendGateway implements FrontendGatewayInterface {
 
-	public const GATEWAY_TYPE = 'pay-later';
+	public const GATEWAY_TYPE = 'paylater';
 
 	/**
 	 * Gateway constructor.
@@ -74,7 +74,7 @@ class PayLaterGateway extends AbstractFrontendGateway implements FrontendGateway
 		/** @var TemplateHelper $template_helper */
 		$template_helper = Plugin::get_container()->get( TemplateHelper::class );
 		$template_helper->getTemplate(
-			'pay-later-gateway-options.php',
+			'paylater-gateway-options.php',
 			array(
 				'alma_woocommerce_gateway_fee_plan_list' => $this->getFeePlanList(),
 				'alma_woocommerce_gateway_nonce'         => $this->form_helper->generateTokenField(

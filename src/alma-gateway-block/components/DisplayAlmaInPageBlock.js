@@ -1,8 +1,8 @@
-import {useSelect, dispatch} from '@wordpress/data';
+import {dispatch, useSelect} from '@wordpress/data';
 import {useEffect, useState} from '@wordpress/element';
-import {AlmaBlocks} from "./alma-blocks-component.tsx";
+import {AlmaBlock} from "./alma-block-component.tsx";
 
-export const DisplayAlmaInPageBlocks = (props) => {
+export const DisplayAlmaInPageBlock = (props) => {
     const {settings, gateway, store_key, setInPage, isPayNow} = props;
 
     const {CART_STORE_KEY} = window.wc.wcBlocksData
@@ -69,7 +69,7 @@ export const DisplayAlmaInPageBlocks = (props) => {
     }, [selectedFeePlan, cartTotal, isLoading])
 
     const displayInstallments = isPayNow ? 'none' : 'block';
-    return isLoading ? <div></div> : <><AlmaBlocks
+    return isLoading ? <div></div> : <><AlmaBlock
         hasInPage={settings.is_in_page}
         isPayNow={isPayNow}
         totalPrice={eligibilityCartTotal}

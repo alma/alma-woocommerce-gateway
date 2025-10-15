@@ -9,7 +9,7 @@
  * @namespace Alma\Woocommerce\Blocks;
  */
 
-namespace Alma\Gateway\Infrastructure\Block\Checkout;
+namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
 use Alma\API\Domain\Entity\Eligibility;
 use Alma\Gateway\Application\Exception\Service\API\EligibilityServiceException;
@@ -33,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Alma_Blocks
  */
-abstract class AbstractCheckoutBlock extends AbstractPaymentMethodType {
+abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 
 	protected AbstractFrontendGateway $gateway;
 	private ConfigService $config_service;
@@ -58,10 +58,10 @@ abstract class AbstractCheckoutBlock extends AbstractPaymentMethodType {
 	 */
 	public function initialize() {
 		add_action(
-			'woocommerce_api_alma_blocks_data',
+			'woocommerce_api_alma_block_data',
 			array(
 				$this,
-				'get_blocks_data',
+				'get_block_data',
 			)
 		);
 	}
@@ -73,64 +73,31 @@ abstract class AbstractCheckoutBlock extends AbstractPaymentMethodType {
 	 * @throws FeePlanRepositoryException
 	 */
 	public function is_active(): bool {
-		return $this->config_service->isBlocksEnabled() && $this->gateway->is_enabled() && $this->gateway->is_available();
+		return true;
+
+		// return $this->config_service->isBlocksEnabled() && $this->gateway->is_enabled() && $this->gateway->is_available();
 	}
 
-	/**
-	 * Register the script.
-	 *
-	 * @return string[]
-	 * @throws CheckoutBlockException
-	 */
-	public function get_payment_method_script_handles(): array {
-
-		// Passer la base URL au JavaScript
-		try {
-			$params = array(
-				'url'              => ContextHelper::getWebhookUrl( 'alma_blocks_data' ),
-				'init_eligibility' => $this->format_eligibility_for_blocks(),
-				'cart_total'       => $this->cart_adapter->getCartTotal(),
-			);
-		} catch ( EligibilityServiceException | FeePlanRepositoryException $e ) {
-			throw new CheckoutBlockException( 'Unable to get eligibility for blocks', 0, $e );
-		}
-
-		if ( false ) { // @todo $this->configService->isInPageEnabled();
-			$inPageParams = array(
-				'ajax_url' => ContextHelper::getAdminUrl( 'admin-ajax.php' ),
-			);
-			$params       = array_merge( $inPageParams, $params );
-		}
-
-		try {
-			$this->assets_service->loadCheckoutBlockAssets( $params );
-		} catch ( AssetsServiceException $e ) {
-			throw new CheckoutBlockException( 'Unable to load block assets', 0, $e );
-		}
-
-		return array( 'alma-blocks-integration' );
-	}
-
-	public function get_blocks_data(): void {
+	public function get_block_data(): void {
 		wp_send_json(
 			array(
 				'success'     => true,
-				'eligibility' => $this->format_eligibility_for_blocks(),
+				'eligibility' => $this->format_eligibility_for_block(),
 				'cart_total'  => $this->cart_adapter->getCartTotal(),
 			)
 		);
 	}
 
 	/**
-	 * Format Fee Plans for blocks
+	 * Format Fee Plans for block
 	 */
-	public function format_eligibility_for_blocks(): array {
+	public function format_eligibility_for_block(): array {
 
 		$gateways = array(
-			'alma_checkout_paynow_block'   => array(),
-			'alma_checkout_pnx_block'      => array(),
-			'alma_checkout_paylater_block' => array(),
-			'alma_checkout_credit_block'   => array(),
+			'alma_paynow_gateway'   => array(),
+			'alma_pnx_gateway'      => array(),
+			'alma_paylater_gateway' => array(),
+			'alma_credit_gateway'   => array(),
 		);
 
 		try {
@@ -143,19 +110,19 @@ abstract class AbstractCheckoutBlock extends AbstractPaymentMethodType {
 
 			// Pay now
 			if ( $eligibility->isPayNow() ) {
-				$gateways['alma_checkout_paynow_block'][ $eligibility->getPlanKey() ] = $this->format_plan_content_for_blocks( $eligibility );
+				$gateways['alma_paynow_gateway'][ $eligibility->getPlanKey() ] = $this->format_plan_content_for_block( $eligibility );
 			}
 			// Pay in installments
 			if ( $eligibility->isPnXOnly() ) {
-				$gateways['alma_checkout_pnx_block'][ $eligibility->getPlanKey() ] = $this->format_plan_content_for_blocks( $eligibility );
+				$gateways['alma_pnx_gateway'][ $eligibility->getPlanKey() ] = $this->format_plan_content_for_block( $eligibility );
 			}
 			// Pay in credit
 			if ( $eligibility->isCredit() ) {
-				$gateways['alma_checkout_credit_block'][ $eligibility->getPlanKey() ] = $this->format_plan_content_for_blocks( $eligibility );
+				$gateways['alma_credit_gateway'][ $eligibility->getPlanKey() ] = $this->format_plan_content_for_block( $eligibility );
 			}
 			// Pay later
 			if ( $eligibility->isPayLaterOnly() ) {
-				$gateways['alma_checkout_paylater_block'][ $eligibility->getPlanKey() ] = $this->format_plan_content_for_blocks( $eligibility );
+				$gateways['alma_paylater_gateway'][ $eligibility->getPlanKey() ] = $this->format_plan_content_for_block( $eligibility );
 			}
 		}
 
@@ -163,33 +130,59 @@ abstract class AbstractCheckoutBlock extends AbstractPaymentMethodType {
 	}
 
 	/**
-	 * Send data to the js.
-	 *
+	 * Send data to the js. Used by default by WooCommerce for static gateway data.
+	 * To use it in the payment method script, use script like:
+	 * const settings = window.wc.wcSettings.getSetting(`alma_paynow_gateway_block_data`, null)
 	 * @return array
+	 * @see src/alma-gateway-block/alma-gateway-block.js
 	 */
 	public function get_payment_method_data(): array {
 
-		$is_in_page = false;// @todo $this->configService->isInPageEnabled();
-
-		$data = array(
+		return array(
+			'name'         => $this->get_name(),
 			'title'        => $this->gateway->get_title(),
 			'description'  => $this->gateway->get_description(),
 			'gateway_name' => $this->gateway->get_name(),
-			'nonce_value'  => $this->form_helper->generateTokenField(
+			'label_button' => L10nHelper::__( 'Pay With Alma', 'alma-gateway-for-woocommerce' ),
+		);
+	}
+
+	/**
+	 * Register the script.
+	 *
+	 * @return string[]
+	 * @throws CheckoutBlockException
+	 */
+	public function get_payment_method_script_handles(): array {
+
+		$is_in_page = false;// @todo $this->configService->isInPageEnabled();
+
+		// Passer la base URL au JavaScript
+		$params = array(
+			'url'              => ContextHelper::getWebhookUrl( 'alma_block_data' ),
+			'init_eligibility' => $this->format_eligibility_for_block(),
+			'cart_total'       => $this->cart_adapter->getCartTotal(),
+			'nonce_value'      => $this->form_helper->generateTokenField(
 				sprintf( '%s_nonce_action', $this->gateway->get_name() ),
 				sprintf( '%s_nonce_field', $this->gateway->get_name() ),
 			),
-			'label_button' => L10nHelper::__( 'Pay With Alma', 'alma-gateway-for-woocommerce' ),
-			'is_in_page'   => $is_in_page,
+			'is_in_page'       => $is_in_page ? '1' : '0',
 		);
 
 		if ( $is_in_page ) {
-			$data['merchant_id'] = $this->config_service->getMerchantId();
-			$data['environment'] = strtoupper( $this->config_service->getEnvironment() );
-			$data['language']    = ContextHelper::getLanguage();
+			$params['merchant_id'] = $this->config_service->getMerchantId();
+			$params['environment'] = strtoupper( $this->config_service->getEnvironment() );
+			$params['language']    = ContextHelper::getLanguage();
+			$params['ajax_url']    = ContextHelper::getAdminUrl( 'admin-ajax.php' );
 		}
 
-		return $data;
+		try {
+			$this->assets_service->loadCheckoutBlockAssets( $params );
+		} catch ( AssetsServiceException $e ) {
+			throw new CheckoutBlockException( 'Unable to load block assets', 0, $e );
+		}
+
+		return array( 'alma-block-integration' );
 	}
 
 	/**
@@ -197,7 +190,7 @@ abstract class AbstractCheckoutBlock extends AbstractPaymentMethodType {
 	 *
 	 * @return array
 	 */
-	private function format_plan_content_for_blocks( Eligibility $eligibility ): array {
+	private function format_plan_content_for_block( Eligibility $eligibility ): array {
 		return array(
 			'planKey'                 => $eligibility->getPlanKey(),
 			'paymentPlan'             => $eligibility->getPaymentPlan(),

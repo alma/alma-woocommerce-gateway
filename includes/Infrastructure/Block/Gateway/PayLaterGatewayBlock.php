@@ -1,6 +1,6 @@
 <?php
 /**
- * PayNowBlock.
+ * PayLaterBlock.
  *
  * @since 5.3.0
  *
@@ -9,9 +9,9 @@
  * @namespace Alma\Woocommerce\Blocks\Standard;
  */
 
-namespace Alma\Gateway\Infrastructure\Block\Checkout;
+namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
-use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -19,17 +19,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Alma_Blocks_Pay_Now.
+ * PayLaterBlock
  */
-final class PayNowCheckoutBlock extends AbstractCheckoutBlock implements IntegrationInterface {
+final class PayLaterGatewayBlock extends AbstractGatewayBlock implements IntegrationInterface {
 
 	/**
 	 * When called invokes any initialization/setup for the integration.
 	 */
 	public function initialize() {
 
-		$this->name    = 'alma_checkout_paynow_block';
-		$this->gateway = new PayNowGateway();
+		$this->name    = 'alma_paylater_gateway_block';
+		$this->gateway = new PayLaterGateway();
 
 		parent::initialize();
 	}

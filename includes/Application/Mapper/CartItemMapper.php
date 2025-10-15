@@ -11,7 +11,7 @@ use Alma\Gateway\Plugin;
 
 class CartItemMapper {
 
-	public function buildCartItemDetails( OrderLineAdapterInterface $orderLine ): CartItemDto {
+	public function buildCartItemDto( OrderLineAdapterInterface $orderLine ): CartItemDto {
 
 		$product = $orderLine->getProduct();
 		/** @var ProductCategoryRepository $productCategoryRepository */

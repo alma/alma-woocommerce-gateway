@@ -24,7 +24,7 @@ add_action(
 			echo $gateway->id . ' (Enabled: => ' . $gateway->enabled . ' / Available: => ' . $availability . ")\n";
 			if ( $gateway instanceof AbstractGateway ) {
 				/** @var Eligibility $eligibility */
-				foreach ( $gateway->eligibility_list as $eligibility ) {
+				foreach ( $gateway->getEligibilityList() as $eligibility ) {
 					echo '  - ' . $eligibility->getPlanKey() . ' => ' . ( $eligibility->isEligible() ? 'eligible' : 'not eligible' )
 						. "\n";
 				}

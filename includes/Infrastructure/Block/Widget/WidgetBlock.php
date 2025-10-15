@@ -17,6 +17,7 @@ use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Exception\Block\WidgetBlockException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
+use Alma\Gateway\Infrastructure\Mapper\FeePlanListMapper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Service\AssetsService;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
@@ -77,15 +78,18 @@ class WidgetBlock implements IntegrationInterface {
 
 	/**
 	 * Send data to the js.
-	 *
+	 * Create new scratch file from selection
+	 * const settings = window.wc.wcSettings.getSetting(`alma-widget-block_data`, null);
 	 * @return array
 	 * @throws FeePlanRepositoryException
+	 * @see src/alma-widget-block/AlmaWidget.js
 	 */
 	public function get_script_data(): array {
+
 		return array(
 			'merchant_id'      => $this->config_service->getMerchantId(),
 			'environment'      => strtoupper( $this->config_service->getEnvironment() ),
-			'plans'            => $this->fee_plan_repository->getAll(),
+			'plans'            => ( new FeePlanListMapper() )->buildFeePlanListDto( $this->fee_plan_repository->getAll() )->toArray()['plans'],
 			'amount'           => $this->cart_adapter->getCartTotal(),
 			'locale'           => $this->context_helper->getLanguage(),
 			'can_be_displayed' => true,
