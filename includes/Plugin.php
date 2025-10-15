@@ -21,11 +21,11 @@ use Alma\Gateway\Application\Helper\RequirementsHelper;
 use Alma\Gateway\Application\Provider\EligibilityProvider;
 use Alma\Gateway\Application\Provider\FeePlanProvider;
 use Alma\Gateway\Application\Service\AdminService;
-use Alma\Gateway\Application\Service\GatewayService;
 use Alma\Gateway\Application\Service\ShopService;
 use Alma\Gateway\Infrastructure\Exception\CmsException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
+use Alma\Gateway\Infrastructure\Service\GatewayService;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
 
 if ( ! defined( 'ABSPATH' ) ) {

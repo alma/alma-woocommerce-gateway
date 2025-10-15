@@ -33,8 +33,8 @@ class InPageService {
 	public function displayInPage() {
 		try {
 			$this->assetsService->loadInPageAssets( [
-				'environment' => $this->configService->getMerchantId(),
-				'merchant_id' => $this->configService->getEnvironment()
+				'environment' => $this->configService->getEnvironment()->getMode(),
+				'merchant_id' => $this->configService->getMerchantId()
 			] );
 		} catch ( AssetsServiceException $e ) {
 			throw new InPageServiceException( 'Unable to load In-Page assets.', 0, $e );

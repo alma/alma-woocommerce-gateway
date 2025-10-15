@@ -1,6 +1,6 @@
 <?php
 
-namespace Alma\Gateway\Application\Service;
+namespace Alma\Gateway\Infrastructure\Service;
 
 use Alma\API\Application\DTO\RefundDto;
 use Alma\API\Domain\Helper\ContextHelperInterface;
@@ -15,6 +15,11 @@ use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Provider\EligibilityProvider;
 use Alma\Gateway\Application\Provider\FeePlanProvider;
 use Alma\Gateway\Application\Provider\PaymentProvider;
+use Alma\Gateway\Application\Service\ConfigService;
+use Alma\Gateway\Infrastructure\Block\Gateway\CreditGatewayBlock;
+use Alma\Gateway\Infrastructure\Block\Gateway\PayLaterGatewayBlock;
+use Alma\Gateway\Infrastructure\Block\Gateway\PayNowGatewayBlock;
+use Alma\Gateway\Infrastructure\Block\Gateway\PnxGatewayBlock;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
@@ -27,8 +32,8 @@ use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Infrastructure\Repository\UserRepository;
-use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Alma\Gateway\Plugin;
+use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
 
 class GatewayService {
 
@@ -56,7 +61,11 @@ class GatewayService {
 	/** @var BackendHelper The Backend Helper */
 	private BackendHelper $backendHelper;
 
+	/** @var ConfigService The Config Service */
+	private ConfigService $configService;
+
 	public function __construct(
+		ConfigService $configService,
 		GatewayRepository $gatewayRepository,
 		GatewayHelper $gatewayHelper,// Move
 		IpnHelper $ipnHelper,
@@ -64,6 +73,7 @@ class GatewayService {
 		FrontendHelper $frontendHelper,
 		BackendHelper $backendHelper
 	) {
+		$this->configService     = $configService;
 		$this->gatewayRepository = $gatewayRepository;
 		$this->gatewayHelper     = $gatewayHelper;
 		$this->ipnHelper         = $ipnHelper;
@@ -119,6 +129,10 @@ class GatewayService {
 			);
 		} else {
 			$this->frontendHelper->loadFrontendGateways();
+		}
+
+		if ( $this->configService->isBlocksEnabled() ) {
+			$this->initGatewayBlocks();
 		}
 
 		// Configure the hooks linked to the gateways
@@ -238,5 +252,31 @@ class GatewayService {
 		);
 
 		return array_merge( $plugin_links, $links );
+	}
+
+	public function initGatewayBlocks() {
+
+		add_action(
+			'woocommerce_blocks_payment_method_type_registration',
+			function ( PaymentMethodRegistry $payment_method_registry ) {
+				// Register an instance of Alma_Gateway_Blocks.
+
+				/** @var PnxGatewayBlock $pnxCheckoutBlock */
+				$pnxCheckoutBlock = Plugin::get_container()->get( PnxGatewayBlock::class );
+				$payment_method_registry->register( $pnxCheckoutBlock );
+
+				/** @var CreditGatewayBlock $creditCheckoutBlock */
+				$creditCheckoutBlock = Plugin::get_container()->get( CreditGatewayBlock::class );
+				$payment_method_registry->register( $creditCheckoutBlock );
+
+				/** @var PayLaterGatewayBlock $payLaterCheckoutBlock */
+				$payLaterCheckoutBlock = Plugin::get_container()->get( PayLaterGatewayBlock::class );
+				$payment_method_registry->register( $payLaterCheckoutBlock );
+
+				/** @var PayNowGatewayBlock $payNowCheckoutBlock */
+				$payNowCheckoutBlock = Plugin::get_container()->get( PayNowGatewayBlock::class );
+				$payment_method_registry->register( $payNowCheckoutBlock );
+			}
+		);
 	}
 }

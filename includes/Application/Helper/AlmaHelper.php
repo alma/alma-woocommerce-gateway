@@ -2,6 +2,7 @@
 
 namespace Alma\Gateway\Application\Helper;
 
+use Alma\API\Domain\ValueObject\Environment;
 use Alma\Gateway\Infrastructure\Helper\UrlHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -11,16 +12,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 class AlmaHelper {
 
 	/**
-	 * TODO Add constants for env
 	 * Get Alma full URL depends on test or live mode (sandbox or not)
 	 *
-	 * @param string $env The environment.
-	 * @param string $path as path to add after default scheme://host/ infos.
+	 * @param Environment $environment The environment.
+	 * @param string      $path as path to add after default scheme://host/ infos.
 	 *
 	 * @return string as full URL
 	 */
-	public static function getAlmaDashboardUrl( string $env = 'test', string $path = '' ): string {
-		if ( 'live' === $env ) {
+	public static function getAlmaDashboardUrl( Environment $environment, string $path = '' ): string {
+		if ( Environment::LIVE_MODE === $environment->getMode() ) {
 			return UrlHelper::checkAndCleanUrl( sprintf( 'https://dashboard.getalma.eu/%s', $path ) );
 		}
 

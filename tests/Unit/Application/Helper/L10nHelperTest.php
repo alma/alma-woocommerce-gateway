@@ -2,6 +2,8 @@
 
 namespace Alma\Gateway\Tests\Unit\Application\Helper;
 
+use Alma\API\Domain\ValueObject\Environment;
+use Alma\API\Infrastructure\Exception\ParametersException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Tests\Unit\Mocks\FeePlanMock;
 use Brain\Monkey;
@@ -62,6 +64,7 @@ class L10nHelperTest extends TestCase {
 	 * @TODO Need to move this translation to the FeePlan Object?
 	 *
 	 * @return void
+	 * @throws ParametersException
 	 */
 	public function testGenerateFeePlanDisplayData(): void {
 		Functions\expect( '__' )
@@ -70,7 +73,10 @@ class L10nHelperTest extends TestCase {
 			->andReturn( 'escapedUrl' );
 
 		$feePlan     = FeePlanMock::getFeePlanAdapter();
-		$displayData = L10nHelper::generate_fee_plan_display_data( $feePlan, 'test' );
+		$displayData = L10nHelper::generate_fee_plan_display_data(
+			$feePlan,
+			new Environment( Environment::TEST_MODE )
+		);
 
 		$this->assertIsArray( $displayData );
 		$this->assertArrayHasKey( 'title', $displayData );

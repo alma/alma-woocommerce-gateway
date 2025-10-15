@@ -6,6 +6,7 @@ use Alma\Gateway\Application\Exception\Service\AdminServiceException;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Infrastructure\Helper\FrontendHelper;
+use Alma\Gateway\Infrastructure\Service\GatewayService;
 use Alma\Gateway\Plugin;
 
 class ShopService {

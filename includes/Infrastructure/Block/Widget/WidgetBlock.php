@@ -88,7 +88,7 @@ class WidgetBlock implements IntegrationInterface {
 
 		return array(
 			'merchant_id'      => $this->config_service->getMerchantId(),
-			'environment'      => strtoupper( $this->config_service->getEnvironment() ),
+			'environment'      => strtoupper( $this->config_service->getEnvironment()->getMode() ),
 			'plans'            => ( new FeePlanListMapper() )->buildFeePlanListDto( $this->fee_plan_repository->getAll() )->toArray()['plans'],
 			'amount'           => $this->cart_adapter->getCartTotal(),
 			'locale'           => $this->context_helper->getLanguage(),

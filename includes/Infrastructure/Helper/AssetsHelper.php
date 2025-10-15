@@ -13,29 +13,31 @@ class AssetsHelper {
 	/**
 	 * Get asset url.
 	 *
-	 * @param string $path Path to asset relative to the plugin's assets directory.
+	 * @param string $resourcePath Path to asset relative to the plugin's assets directory.
 	 *
 	 * @return string URL to given asset
 	 */
-	public static function getAssetUrl( string $path ): string {
+	public static function getAssetUrl( string $resourcePath ): string {
 		$pluginUrl = PluginHelper::getPluginUrl();
 
-		return $pluginUrl . 'assets/' . $path;
+		return $pluginUrl . 'assets/' . $resourcePath;
 	}
 
 	/**
-	 * @param string $path
+	 * @param string $resourcePath
 	 *
 	 * @return string
 	 */
-	public static function getBuildUrl( string $path ): string {
+	public static function getBuildUrl( string $resourcePath ): string {
 
 		$pluginUrl = PluginHelper::getPluginUrl();
 
-		return $pluginUrl . 'build/' . $path;
+		return $pluginUrl . 'build/' . $resourcePath;
 	}
 
 	/**
+	 * Get the path to the languages' directory.
+	 *
 	 * @return string
 	 */
 	public static function getLanguagesPath(): string {
@@ -43,6 +45,20 @@ class AssetsHelper {
 		$pluginUrl = PluginHelper::getPluginUrl();
 
 		return $pluginUrl . 'languages';
+	}
+
+	/**
+	 * Get the path to the build directory or a resource into it.
+	 *
+	 * @param string $resourcePath Path relative to the build directory.
+	 *
+	 * @return string
+	 */
+	public static function getBuildPath( $resourcePath = '' ): string {
+
+		$pluginUrl = PluginHelper::getPluginUrl();
+
+		return $pluginUrl . 'build/' . $resourcePath;
 	}
 
 	/**
@@ -63,11 +79,11 @@ class AssetsHelper {
 	/**
 	 * Get the url for the image to display
 	 *
-	 * @param string $path By default, the alma logo.
+	 * @param string $resourcePath By default, the alma logo.
 	 *
 	 * @return string
 	 */
-	public static function getImage( string $path = 'images/alma_logo.svg' ): string {
-		return self::getAssetUrl( $path );
+	public static function getImage( string $resourcePath = 'images/alma_logo.svg' ): string {
+		return self::getAssetUrl( $resourcePath );
 	}
 }

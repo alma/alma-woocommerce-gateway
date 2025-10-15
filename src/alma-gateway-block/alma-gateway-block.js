@@ -29,6 +29,8 @@ import {select, useSelect} from '@wordpress/data';
 import {fetchAlmaEligibility} from "./hooks/fetchAlmaEligibility";
 import {Label} from "./components/Label";
 import './alma-gateway-block.css';
+import {DisplayAlmaInPageBlock} from "./components/DisplayAlmaInPageBlock";
+import {DisplayAlmaBlock} from "./components/DisplayAlmaBlock";
 
 (function ($) {
     let inPage = undefined;
@@ -155,7 +157,7 @@ import './alma-gateway-block.css';
 
 
     const addActionToPaymentButton = () => {
-        document.getElementsByClassName("wc-block-components-checkout-place-order-button")[0].addEventListener(
+        document.querySelector(".wc-block-components-checkout-place-order-button").addEventListener(
             "click",
             addActionToPaymentButtonListener
         );

@@ -4,6 +4,7 @@ namespace Alma\Gateway\Application\Service;
 
 use Alma\API\Application\DTO\PaymentDto;
 use Alma\API\Domain\Repository\ConfigRepositoryInterface;
+use Alma\API\Domain\ValueObject\Environment;
 use Alma\Gateway\Application\Helper\EncryptorHelper;
 use Alma\Gateway\Infrastructure\Helper\WordPressHelper;
 use Alma\Gateway\Plugin;
@@ -13,12 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class ConfigService {
-
-	/** @var string The live environment key */
-	const ALMA_ENVIRONMENT_LIVE = 'live';
-
-	/** @var string The test environment key */
-	const ALMA_ENVIRONMENT_TEST = 'test';
 
 	/** @var string The merchant ID key */
 	const MERCHANT_ID = 'merchant_id';
@@ -85,20 +80,6 @@ class ConfigService {
 		return $is_configured;
 	}
 
-	/**
-	 * Returns the active environment.
-	 *
-	 * @return string
-	 */
-	public function getEnvironment(): string {
-		if ( isset( $this->getSettings()['environment'] ) ) {
-			return self::ALMA_ENVIRONMENT_LIVE === $this->getSettings()['environment']
-				? self::ALMA_ENVIRONMENT_LIVE : self::ALMA_ENVIRONMENT_TEST;
-		}
-
-		return self::ALMA_ENVIRONMENT_LIVE;
-	}
-
 	public function isBlocksEnabled(): bool {
 		return 'no' === $this->getSetting( 'blocks_disabled' );
 	}
@@ -108,12 +89,26 @@ class ConfigService {
 	}
 
 	/**
+	 * Returns the active environment.
+	 *
+	 * @return Environment
+	 */
+	public function getEnvironment(): Environment {
+		$mode = Environment::LIVE_MODE;
+		if ( $this->hasSetting( [ 'environment' ] ) ) {
+			$mode = $this->getSettings()['environment'];
+		}
+
+		return Environment::fromString( $mode );
+	}
+
+	/**
 	 * Are we using test environment?
 	 *
 	 * @return bool
 	 */
 	public function isTest(): bool {
-		return $this->getEnvironment() === self::ALMA_ENVIRONMENT_TEST;
+		return $this->getEnvironment()->isTestMode();
 	}
 
 	/**
@@ -122,7 +117,7 @@ class ConfigService {
 	 * @return bool
 	 */
 	public function isLive(): bool {
-		return $this->getEnvironment() === self::ALMA_ENVIRONMENT_LIVE;
+		return $this->getEnvironment()->isLiveMode();
 	}
 
 	/**
@@ -140,7 +135,7 @@ class ConfigService {
 	 * @return string
 	 */
 	public function getOrigin() {
-		if ( $this->isInPage()) {
+		if ( $this->isInPage() ) {
 			return PaymentDto::ORIGIN_ONLINE_IN_PAGE;
 		}
 

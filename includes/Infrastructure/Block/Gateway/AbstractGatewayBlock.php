@@ -171,7 +171,7 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 
 		if ( $is_in_page ) {
 			$params['merchant_id'] = $this->config_service->getMerchantId();
-			$params['environment'] = strtoupper( $this->config_service->getEnvironment() );
+			$params['environment'] = strtoupper( $this->config_service->getEnvironment()->getMode() );
 			$params['language']    = ContextHelper::getLanguage();
 			$params['ajax_url']    = ContextHelper::getAdminUrl( 'admin-ajax.php' );
 		}

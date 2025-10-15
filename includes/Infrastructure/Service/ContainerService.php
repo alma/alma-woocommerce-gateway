@@ -40,7 +40,6 @@ use Alma\Gateway\Application\Provider\FeePlanProvider;
 use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Application\Service\AdminService;
 use Alma\Gateway\Application\Service\ConfigService;
-use Alma\Gateway\Application\Service\GatewayService;
 use Alma\Gateway\Application\Service\IpnService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
