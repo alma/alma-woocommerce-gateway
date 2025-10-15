@@ -16,7 +16,7 @@ class InPageHelper {
 	 *
 	 * @return void
 	 */
-	public function displayInPage( string $merchantId, string $environment ): void {
+	public function displayInPageAssets( string $merchantId, string $environment ): void {
 		AssetsHelper::enqueueInPageScript( '1.0.0', $merchantId, $environment );
 	}
 

@@ -28,7 +28,7 @@ class InPageService {
 	 * @return void
 	 */
 	public function displayInPage() {
-		$this->inPageHelper->displayInPage(
+		$this->inPageHelper->displayInPageAssets(
 			$this->configService->getMerchantId(),
 			$this->configService->getEnvironment()
 		);

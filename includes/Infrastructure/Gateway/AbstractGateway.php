@@ -143,7 +143,8 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	public function process_payment( $order_id ): array {
 		/** @var OrderRepository $order_repository */
 		$order_repository = Plugin::get_container()->get( OrderRepository::class );
-		$config_service   = Plugin::get_container()->get( ConfigService::class );
+		/** @var ConfigService $config_service */
+		$config_service = Plugin::get_container()->get( ConfigService::class );
 		/** @var InPageHelper $in_page_helper */
 		$in_page_helper     = Plugin::get_container()->get( InPageHelper::class );
 		$is_in_page_payment = $config_service->isInPage();
@@ -160,7 +161,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		try {
 			$payment = $payment_service->createPayment(
 				( new PaymentMapper() )->buildPaymentDto(
-					$this->get_origin( $is_in_page_payment ),
+					$config_service->getOrigin(),
 					$order,
 					$fee_plan_adapter
 				),
@@ -252,21 +253,6 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Return the Origin of the payment depending on if in-page is enabled or not.
-	 *
-	 * @param bool $is_in_page_payment
-	 *
-	 * @return string
-	 */
-	public function get_origin( bool $is_in_page_payment ): string {
-		if ( $is_in_page_payment ) {
-			return 'online_in_page';
-		}
-
-		return 'online';
-	}
-
-	/**
 	 * Get the gateway identifier.
 	 *
 	 * @return string The identifier of the gateway.
@@ -327,5 +313,4 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 
 		return $eligibility;
 	}
-
 }
