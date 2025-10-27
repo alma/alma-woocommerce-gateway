@@ -3,7 +3,7 @@ import {useEffect, useState} from '@wordpress/element';
 import {AlmaBlock} from "./alma-block-component.tsx";
 
 export const DisplayAlmaInPageBlock = (props) => {
-    const {settings, gateway, store_key, setInPage, isPayNow} = props;
+    const {almaSettings, gatewaySettings, store_key, setInPage, isPayNow} = props;
 
     const {CART_STORE_KEY} = window.wc.wcBlocksData
     const {cartTotal} = useSelect((select) => ({
@@ -40,7 +40,7 @@ export const DisplayAlmaInPageBlock = (props) => {
 
     let inPage = undefined;
 
-    function initializeInpage(settingsInPage, total_price) {
+    function initializeInpage(almaSettings, total_price) {
         if (
             inPage !== undefined
             && document.getElementById('alma-embedded-iframe') !== null
@@ -49,14 +49,14 @@ export const DisplayAlmaInPageBlock = (props) => {
         }
 
         inPage = Alma.InPage.initialize({
-            merchantId: settingsInPage.merchant_id,
+            merchantId: almaSettings.merchant_id,
             amountInCents: total_price * 100,
             installmentsCount: plan.installmentsCount,
             selector: "#alma-inpage-alma_in_page",
             deferredDays: plan.deferredDays,
             deferredMonths: plan.deferredMonths,
-            environment: settingsInPage.environment,
-            locale: settingsInPage.locale,
+            environment: almaSettings.environment,
+            locale: almaSettings.locale,
         });
         setInPage(inPage);
     }
@@ -64,16 +64,16 @@ export const DisplayAlmaInPageBlock = (props) => {
     useEffect(() => {
         if (!isLoading && plan) {
             setSelectedFeePlan(plan.planKey);
-            initializeInpage(settings, eligibilityCartTotal)
+            initializeInpage(almaSettings, eligibilityCartTotal)
         }
     }, [selectedFeePlan, cartTotal, isLoading])
 
     const displayInstallments = isPayNow ? 'none' : 'block';
     return isLoading ? <div></div> : <><AlmaBlock
-        hasInPage={settings.is_in_page}
+        hasInPage={almaSettings.is_in_page}
         isPayNow={isPayNow}
         totalPrice={eligibilityCartTotal}
-        settings={settings}
+        GatewaySettings={gatewaySettings}
         selectedFeePlan={plan.planKey}
         setSelectedFeePlan={setSelectedFeePlan}
         plans={eligibility[gateway]}

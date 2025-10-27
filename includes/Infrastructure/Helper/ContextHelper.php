@@ -2,7 +2,12 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
+use Alma\API\Domain\Adapter\CartAdapterInterface;
+use Alma\API\Domain\Adapter\CustomerAdapterInterface;
 use Alma\API\Domain\Helper\ContextHelperInterface;
+use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
+use Alma\Gateway\Infrastructure\Adapter\CustomerAdapter;
+use Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils;
 
 class ContextHelper implements ContextHelperInterface {
 
@@ -51,7 +56,7 @@ class ContextHelper implements ContextHelperInterface {
 	 * @return bool
 	 */
 	public static function isCartPage(): bool {
-		return is_cart();
+		return CartCheckoutUtils::is_cart_page();
 	}
 
 	/**
@@ -59,7 +64,7 @@ class ContextHelper implements ContextHelperInterface {
 	 * @return bool
 	 */
 	public static function isCheckoutPage(): bool {
-		return is_checkout();
+		return CartCheckoutUtils::is_checkout_page();
 	}
 
 	/**
@@ -167,4 +172,21 @@ class ContextHelper implements ContextHelperInterface {
 		return false;
 	}
 
+	/**
+	 * Get the current Cart instance.
+	 *
+	 * @return CartAdapterInterface
+	 */
+	public static function getCart(): ?CartAdapterInterface {
+		return new CartAdapter( WC()->cart );
+	}
+
+	/**
+	 * Get the current Customer instance.
+	 *
+	 * @return CustomerAdapterInterface
+	 */
+	public static function getCustomer(): ?CustomerAdapterInterface {
+		return new CustomerAdapter( WC()->customer );
+	}
 }

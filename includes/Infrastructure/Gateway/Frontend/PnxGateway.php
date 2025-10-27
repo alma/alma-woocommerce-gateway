@@ -37,13 +37,22 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 	 */
 	public function validate_fields(): bool {
 
+		/** @var NotificationHelper $notificationHelper */
+		$notificationHelper = Plugin::get_container()->get( NotificationHelper::class );
+
 		$this->form_helper->validateTokenField(
 			sprintf( '%s_nonce_action', $this->get_name() ),
 			sprintf( '%s_nonce_field', $this->get_name() ),
 		);
 
+		if ( ! $_POST['alma_plan_key'] ) {
+			$notificationHelper->notifyError( L10nHelper::__( 'Please choose a payment plan.' ) );
+
+			return false;
+		}
+
 		// phpcs:ignore
-		if ( $_POST['alma_plan_key'] && ! $this->check_values( $_POST['alma_plan_key'],
+		if ( ! $this->check_values( $_POST['alma_plan_key'],
 			array( 'general_2_0_0', 'general_3_0_0', 'general_4_0_0' )
 		) ) {
 			/** @var NotificationHelper $notificationHelper */

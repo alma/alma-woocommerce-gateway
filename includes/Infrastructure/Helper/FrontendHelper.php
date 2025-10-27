@@ -14,6 +14,8 @@ class FrontendHelper {
 	 * Run services on template redirect.
 	 * We need to wait templates because is_page detection run at this time!
 	 *
+	 * You can now call isCartPage, isCheckoutPage, isProductPage...
+	 *
 	 * @param callable $callback Function to run on template_redirect.
 	 */
 	public static function runFrontendServices( callable $callback ) {
@@ -28,17 +30,18 @@ class FrontendHelper {
 	 * @sonar Easier to understand with two if statements.
 	 */
 	public function loadFrontendGateways() {
+		// Register Gateways
 		add_filter(
 			'woocommerce_payment_gateways',
 			function ( $gateways ) {
-				$alma_gateway_list = array(
+				$almaGatewayList = array(
 					CreditGateway::class,
 					PayLaterGateway::class,
 					PayNowGateway::class,
 					PnxGateway::class,
 				);
 				/** @var AbstractGateway $gateway */
-				foreach ( $alma_gateway_list as $gateway ) {
+				foreach ( $almaGatewayList as $gateway ) {
 					if ( ! in_array( $gateway, $gateways, true ) && class_exists( $gateway ) ) {
 						// Check if the gateway is enabled before adding it to the list.
 						if ( ( new $gateway() )->is_enabled() ) { // NOSONAR -- Easier to understand with two if statements.

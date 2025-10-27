@@ -34,7 +34,6 @@
  */
 
 require_once 'vendor/autoload.php';
-require_once 'includes/functions.php';
 
 use Alma\Gateway\Plugin;
 use Automattic\WooCommerce\Utilities\FeaturesUtil;

@@ -9,6 +9,7 @@ use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
+use Alma\Gateway\Plugin;
 
 class FeePlanRepository {
 
@@ -24,12 +25,10 @@ class FeePlanRepository {
 	/**
 	 * FeePlanRepository constructor.
 	 *
-	 * @param FeePlanProvider $feePlanProvider
-	 * @param ConfigService   $configService
+	 * @param ConfigService $configService
 	 */
-	public function __construct( FeePlanProvider $feePlanProvider, ConfigService $configService ) {
-		$this->feePlanProvider = $feePlanProvider;
-		$this->configService   = $configService;
+	public function __construct( ConfigService $configService ) {
+		$this->configService = $configService;
 	}
 
 	/**
@@ -104,6 +103,7 @@ class FeePlanRepository {
 	 * @throws FeePlanRepositoryException
 	 */
 	public function retrieveFeePlans(): void {
+		$this->loadProvider();
 		try {
 			$feePlanListAdapter = new FeePlanListAdapter( $this->feePlanProvider->getFeePlanList() );
 			$this->addAll( $feePlanListAdapter );
@@ -111,6 +111,15 @@ class FeePlanRepository {
 		} catch ( FeePlanServiceException $e ) {
 			throw new FeePlanRepositoryException( $e->getMessage() );
 		}
+	}
+
+	/**
+	 * Load the Fee Plan provider from the DI container only when needed.
+	 * We can't use constructor injection because of a circular dependency.
+	 * @return void
+	 */
+	private function loadProvider() {
+		$this->feePlanProvider = Plugin::get_container()->get( FeePlanProvider::class );
 	}
 
 	/**

@@ -8,6 +8,8 @@ use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 
 class AssetsService {
 
+	private static array $inlined_script_handles = [];
+
 	private array $registered_assets = [];
 
 	public function __construct() {
@@ -142,11 +144,18 @@ class AssetsService {
 					$expectedKeys         = array_flip( $config['params']['keys'] );
 					$filteredScriptParams = array_intersect_key( $scriptParams, $expectedKeys );
 
-					wp_localize_script(
-						$handle,
-						$config['params']['object_name'],
-						$filteredScriptParams
-					);
+					// Avoid duplicating inlined scripts
+					if ( ! in_array( $handle, self::$inlined_script_handles, true ) ) {
+						wp_add_inline_script(
+							$handle,
+							sprintf( 'const %s = %s;',
+								$config['params']['object_name'],
+								wp_json_encode( $filteredScriptParams )
+							),
+							'before'
+						);
+						self::$inlined_script_handles[] = $handle;
+					}
 				}
 
 				// Handle translations

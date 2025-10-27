@@ -126,10 +126,10 @@ final class Plugin {
 		$logger_service      = self::get_container()->get( LoggerService::class );
 		$this->loggerService = $logger_service;
 
-		// Configure the gateways
-		/** @var GatewayService $gateway_service */
-		$gateway_service = self::get_container()->get( GatewayService::class );
 		if ( PluginHelper::isConfigured() ) {
+			// Configure the gateways
+			/** @var GatewayService $gateway_service */
+			$gateway_service = self::get_container()->get( GatewayService::class );
 			/** @var EligibilityProvider $eligibility_service */
 			$eligibility_service = self::get_container()->get( EligibilityProvider::class );
 			$gateway_service->setEligibilityProvider( $eligibility_service );
@@ -152,25 +152,33 @@ final class Plugin {
 			return;
 		}
 
-		/** @var GatewayService $gateway_service */
-		$gateway_service = self::get_container()->get( GatewayService::class );
-		$gateway_service->loadGateway();
 		if ( PluginHelper::isConfigured() ) {
-			$gateway_service->configureReturns();
-		}
 
-		// Run services only when WordPress admin is ready.
-		/** @var AdminService $adminService */
-		$adminService = self::get_container()->get( AdminService::class );
-		$adminService->runService();
+			/** @var GatewayService $gateway_service */
+			$gateway_service = self::get_container()->get( GatewayService::class );
+			$gateway_service->loadGateway();
+			if ( PluginHelper::isConfigured() ) {
+				$gateway_service->configureReturns();
+			}
 
-		// Run services only when WordPress frontend is ready.
-		try {
-			/** @var ShopService $shopService */
-			$shopService = self::get_container()->get( ShopService::class );
-			$shopService->runService();
-		} catch ( ShopServiceException $e ) {
-			throw new PluginException( $e->getMessage() );
+			// Run services only when WordPress admin is ready.
+			/** @var AdminService $adminService */
+			$adminService = self::get_container()->get( AdminService::class );
+			$adminService->runService();
+
+			// Run services only when WordPress frontend is ready.
+			try {
+				/** @var ShopService $shopService */
+				$shopService = self::get_container()->get( ShopService::class );
+				$shopService->runService();
+			} catch ( ShopServiceException $e ) {
+				throw new PluginException( $e->getMessage() );
+			}
+
+		} else {
+			/** @var GatewayService $gateway_service */
+			$gateway_service = self::get_container()->get( GatewayService::class );
+			$gateway_service->loadBackendGateway();
 		}
 	}
 

@@ -31,13 +31,25 @@ abstract class AbstractWidget {
 		$this->assetsService = $assetsService;
 	}
 
-	public function configure( FeePlanListAdapterInterface $feePlanListAdapter, Environment $environment, string $merchantId, int $price, bool $displayWidget, string $language ): void {
+	/**
+	 * Configure the widget with the needed parameters.
+	 *
+	 * @param FeePlanListAdapterInterface $feePlanListAdapter The list of fee plans.
+	 * @param Environment                 $environment The API environment (live or test).
+	 * @param string                      $merchantId The merchant ID.
+	 * @param int                         $price The price of the product or cart in cents.
+	 * @param bool                        $displayWidget Whether to display the widget or not.
+	 * @param string                      $language The language code.
+	 */
+	public function configure( FeePlanListAdapterInterface $feePlanListAdapter, Environment $environment, string $merchantId, int $price, bool $displayWidget, string $language ): self {
 		$this->feePlanListAdapter = $feePlanListAdapter;
 		$this->environment        = $environment;
 		$this->merchantId         = $merchantId;
 		$this->price              = $price;
 		$this->displayWidget      = $displayWidget;
 		$this->language           = $language;
+
+		return $this;
 	}
 
 	/**

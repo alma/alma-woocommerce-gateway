@@ -27,7 +27,7 @@ class ShopService {
 				try {
 					$gatewayService->configureGateway();
 				} catch ( GatewayServiceException $e ) {
-					throw new AdminServiceException();
+					throw new AdminServiceException( $e->getMessage() );
 				}
 
 				if ( PluginHelper::isConfigured() ) {
@@ -38,7 +38,9 @@ class ShopService {
 
 					/** @var ConfigService $configService */
 					$configService = Plugin::get_container()->get( ConfigService::class );
-					if ( $configService->isInPage() ) {
+
+					// Enabled In-Page on product or shop page
+					if ( $configService->isInPageEnabled() ) {
 						/** @var InPageService $inPageService */
 						$inPageService = Plugin::get_container()->get( InPageService::class );
 						$inPageService->displayInPage();

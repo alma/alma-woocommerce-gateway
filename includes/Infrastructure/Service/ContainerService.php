@@ -108,7 +108,12 @@ class ContainerService {
 
 		// error_reporting( error_reporting() & ~E_DEPRECATED ); // phpcs:ignore
 		// @formatter:off PHPStorm wants this call to be multiline
-		$service = $this->dice->create( $name, $args, $share );
+		try {
+			$service = $this->dice->create( $name, $args, $share );
+		}
+		catch (\Exception $e) {
+			var_dump( $e->getMessage() );
+		}
 		// @formatter:on
 		// error_reporting( error_reporting() ^ E_DEPRECATED ); // phpcs:ignore
 
@@ -138,7 +143,6 @@ class ContainerService {
 		);
 
 		$this->dice = $this->dice->addRule( CurlClient::class, array( 'shared' => true ) );
-
 	}
 
 	public function setDiConfig(): void {

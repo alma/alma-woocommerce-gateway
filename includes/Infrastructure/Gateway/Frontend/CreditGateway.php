@@ -39,17 +39,24 @@ class CreditGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 	 */
 	public function validate_fields(): bool {
 
+		/** @var NotificationHelper $notificationHelper */
+		$notificationHelper = Plugin::get_container()->get( NotificationHelper::class );
+
 		$this->form_helper->validateTokenField(
 			'alma_credit_gateway_nonce_field',
 			'alma_credit_gateway_nonce_action'
 		);
 
 		// phpcs:ignore
-		if ( $_POST['alma_plan_key'] && ! $this->check_values( $_POST['alma_plan_key'],
+		if ( ! $_POST['alma_plan_key'] ) {
+			$notificationHelper->notifyError( L10nHelper::__( 'Please choose a payment plan.' ) );
+
+			return false;
+		}
+		if ( ! $this->check_values(
+			$_POST['alma_plan_key'],
 			array( 'general_6_0_0', 'general_10_0_0', 'general_12_0_0' )
 		) ) {
-			/** @var NotificationHelper $notificationHelper */
-			$notificationHelper = Plugin::get_container()->get( NotificationHelper::class );
 			$notificationHelper->notifyError( L10nHelper::__( 'Please choose a valid option.' ) );
 
 			return false;

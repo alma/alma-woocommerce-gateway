@@ -10,10 +10,26 @@
 import "@alma/react-components/style.css";
 import "../alma-gateway-block.css";
 import {ToggleButtonsField} from "@alma/react-components";
-import React from "react";
+import * as React from "react";
 import {Installments} from "./Installments/Installments";
 import {IntlProvider} from "react-intl";
 import classNames from "classnames";
+
+// Define translation messages
+const messages = {
+    fr: {
+        "installments.today": "Aujourd'hui"
+    },
+    en: {
+        "installments.today": "Today"
+    },
+    de: {
+        "installments.today": "Heute"
+    },
+    es: {
+        "installments.today": "Hoy"
+    }
+};
 
 export type PaymentPlan = {
     customer_fee: number;
@@ -36,7 +52,7 @@ export type FeePlan = {
     reasons: null | string;
 };
 
-type Settings = {
+type GatewaySettings = {
     default_plan: string[];
     description: string;
     plans: Record<string, FeePlan>;
@@ -49,17 +65,18 @@ type Settings = {
 };
 
 type AlmaBlockProps = {
-    settings: Settings;
+    gatewaySettings: GatewaySettings;
     selectedFeePlan: string;
     setSelectedFeePlan: (value: string) => void;
     hasInPage: boolean;
     isPayNow: boolean;
-    totalPrice: number
+    totalPrice: number;
+    plans: object;
 };
 
 export const AlmaBlock: React.FC<AlmaBlockProps> = (
         {
-            settings,
+            gatewaySettings,
             selectedFeePlan,
             setSelectedFeePlan,
             hasInPage,
@@ -74,8 +91,8 @@ export const AlmaBlock: React.FC<AlmaBlockProps> = (
         const index = Object.keys(plans).indexOf(key);
         values.push(key);
         if (
-                settings.gateway_name === "alma_pay_later" ||
-                settings.gateway_name === "alma_in_page_pay_later"
+                gatewaySettings.gateway_name === "alma_pay_later" ||
+                gatewaySettings.gateway_name === "alma_in_page_pay_later"
         ) {
             if (plans[key].deferredDays > 0) {
                 labels[key] = "D+" + plans[key].deferredDays;
@@ -92,10 +109,10 @@ export const AlmaBlock: React.FC<AlmaBlockProps> = (
     };
 
     const label = (
-            <div className="toggleButtonFieldLabel">{settings.description}</div>
+            <div className="toggleButtonFieldLabel">{gatewaySettings.description}</div>
     );
     return (
-            <IntlProvider locale="fr">
+            <IntlProvider locale="fr" messages={messages.fr}>
                 {isPayNow && <div className={"payNowLabel"}>{label}</div>}
                 <div className={"buttonsContainer"}>
                     <div className={classNames({payNow: isPayNow})}>

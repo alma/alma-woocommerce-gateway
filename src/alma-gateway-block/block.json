@@ -1,11 +1,11 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "name": "alma-woocommmerce-gateway/gateway-payment-block",
+  "name": "alma-gateway-for-woocommerce/alma-gateway-block",
   "version": "2.0.0",
-  "title": "Gateway Payment Block",
+  "title": "Alma Gateway Payment Block",
   "category": "payment-gateway",
-  "textdomain": "gateway-payment-block",
+  "textdomain": "alma-gateway-for-woocommerce",
   "editorScript": "file:./alma-gateway-block.js",
   "style": "file:./alma-gateway-block.css"
 }

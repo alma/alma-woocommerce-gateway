@@ -29,6 +29,15 @@ class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 	}
 
 	/**
+	 * Check if the gateway is a pay now gateway.
+	 *
+	 * @return bool
+	 */
+	public function is_pay_now(): bool {
+		return true;
+	}
+
+	/**
 	 * Expose the payment fields to the frontend.
 	 *
 	 * @return void

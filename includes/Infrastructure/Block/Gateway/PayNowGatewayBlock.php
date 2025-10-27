@@ -11,7 +11,9 @@
 
 namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
+use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
+use Alma\Gateway\Infrastructure\Service\AssetsService;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -23,16 +25,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 final class PayNowGatewayBlock extends AbstractGatewayBlock implements IntegrationInterface {
 
-	protected $name = 'alma_paynow_gateway_block';
+	public function __construct( ConfigService $config_service, AssetsService $assets_service ) {
+		$this->name    = 'alma_paynow_gateway_block';
+		$this->gateway = new PayNowGateway();
+		parent::__construct( $config_service, $assets_service );
+	}
 
 	/**
 	 * When called invokes any initialization/setup for the integration.
+	 * @todo implements https://developer.woocommerce.com/docs/block-development/extensible-blocks/cart-and-checkout-blocks/checkout-payment-methods/payment-method-integration/#processing-payments-via-the-store-api
 	 */
 	public function initialize() {
-
-		$this->name    = 'alma_paynow_gateway_block';
-		$this->gateway = new PayNowGateway();
-
-		parent::initialize();
 	}
 }

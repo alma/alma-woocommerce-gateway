@@ -145,13 +145,14 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * @throws GatewayServiceException
 	 */
 	public function process_payment( $order_id ): array {
+
 		/** @var OrderRepository $order_repository */
 		$order_repository = Plugin::get_container()->get( OrderRepository::class );
 		/** @var ConfigService $config_service */
 		$config_service = Plugin::get_container()->get( ConfigService::class );
 		/** @var InPageHelper $in_page_helper */
 		$in_page_helper     = Plugin::get_container()->get( InPageHelper::class );
-		$is_in_page_payment = $config_service->isInPage();
+		$is_in_page_payment = $config_service->isInPageEnabled();
 		try {
 			$order = $order_repository->getById( $order_id );
 		} catch ( ProductRepositoryException $e ) {

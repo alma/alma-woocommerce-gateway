@@ -203,18 +203,9 @@ class AssetsConfig {
 							'wp-i18n'
 						),
 						'params'       => array(
-							'object_name' => 'BlocksData',
+							'object_name' => 'AlmaInitSettings',
 							'keys'        => array(
-								'url',
-								'init_eligibility',
-								'cart_total',
-								'nonce_value',
-								'label_button',
-								'is_in_page',
-								'merchant_id',
-								'environment',
-								'language',
-								'ajax_url',
+								'checkout_url',
 							),
 						),
 						'translations' => array(
