@@ -36,7 +36,7 @@ export type FeePlan = {
     reasons: null | string;
 };
 
-type Settings = {
+type GatewaySettings = {
     default_plan: string[];
     description: string;
     plans: Record<string, FeePlan>;
@@ -49,7 +49,7 @@ type Settings = {
 };
 
 type AlmaBlockProps = {
-    settings: Settings;
+    gatewaySettings: GatewaySettings;
     selectedFeePlan: string;
     setSelectedFeePlan: (value: string) => void;
     hasInPage: boolean;
@@ -60,7 +60,7 @@ type AlmaBlockProps = {
 
 export const AlmaBlock: React.FC<AlmaBlockProps> = (
         {
-            settings,
+            gatewaySettings,
             selectedFeePlan,
             setSelectedFeePlan,
             hasInPage,
@@ -75,8 +75,8 @@ export const AlmaBlock: React.FC<AlmaBlockProps> = (
         const index = Object.keys(plans).indexOf(key);
         values.push(key);
         if (
-                settings.gateway_name === "alma_pay_later" ||
-                settings.gateway_name === "alma_in_page_pay_later"
+                gatewaySettings.gateway_name === "alma_pay_later" ||
+                gatewaySettings.gateway_name === "alma_in_page_pay_later"
         ) {
             if (plans[key].deferredDays > 0) {
                 labels[key] = "D+" + plans[key].deferredDays;
@@ -93,7 +93,7 @@ export const AlmaBlock: React.FC<AlmaBlockProps> = (
     };
 
     const label = (
-            <div className="toggleButtonFieldLabel">{settings.description}</div>
+            <div className="toggleButtonFieldLabel">{gatewaySettings.description}</div>
     );
     return (
             <IntlProvider locale="fr">

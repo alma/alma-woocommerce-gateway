@@ -3,7 +3,7 @@ import {useEffect, useState} from '@wordpress/element';
 import {AlmaBlock} from "./alma-block-component.tsx";
 
 export const DisplayAlmaBlock = (props) => {
-    const {eventRegistration, emitResponse, settings, gateway, store_key, isPayNow, cartTotal} = props;
+    const {eventRegistration, emitResponse, gatewaySettings, gateway, store_key, isPayNow, cartTotal} = props;
     const {onPaymentSetup} = eventRegistration;
     const {almaSettings, isLoading} = useSelect(
         (select) => ({
@@ -33,11 +33,11 @@ export const DisplayAlmaBlock = (props) => {
         if (isLoading || !plan) return; // Skip if still loading or no plan
 
         const unsubscribe = onPaymentSetup(() => {
-            const nonceKey = `alma_checkout_nonce${settings.gateway_name}`;
+            const nonceKey = `alma_checkout_nonce${gatewaySettings.gateway_name}`;
             const paymentMethodData = {
-                [nonceKey]: `${settings.nonce_value}`,
+                [nonceKey]: `${almaSettings.nonce_value}`,
                 alma_fee_plan: plan.planKey,
-                payment_method: settings.gateway_name,
+                payment_method: gatewaySettings.gateway_name,
             };
 
             return {
@@ -54,10 +54,10 @@ export const DisplayAlmaBlock = (props) => {
 
     console.log('***********  plan', plan)
     return isLoading ? <div></div> : <AlmaBlock
-        hasInPage={settings.is_in_page}
+        hasInPage={almaSettings.is_in_page}
         isPayNow={isPayNow}
         totalPrice={cartTotal}
-        settings={settings}
+        gatewaySettings={gatewaySettings}
         selectedFeePlan={plan.planKey}
         setSelectedFeePlan={setSelectedFeePlan}
         plans={availableFeePlans}

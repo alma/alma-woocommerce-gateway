@@ -217,30 +217,30 @@ import {useRef} from "react";
      * Get Content Block
      *
      * @param almaSettings
-     * @param settings
+     * @param gatewaySettings
      * @param gateway
      * @param cartTotal
      * @returns {JSX.Element}
      */
-    const getContentBlock = (almaSettings, settings, gateway, cartTotal) => {
+    const getContentBlock = (almaSettings, gatewaySettings, gateway, cartTotal) => {
         const setInPage = (inPageInstance) => {
             inPage = inPageInstance
         }
 
         return almaSettings.is_in_page ? (
             <DisplayAlmaInPageBlock
-                isPayNow={settings.is_pay_now}
+                isPayNow={gatewaySettings.is_pay_now}
                 store_key={storeKey}
-                settings={settings}
+                gatewaySettings={gatewaySettings}
                 gateway={gateway}
                 setInPage={setInPage}
                 cartTotal={cartTotal}
             />
         ) : (
             <DisplayAlmaBlock
-                isPayNow={settings.is_pay_now}
+                isPayNow={gatewaySettings.is_pay_now}
                 store_key={storeKey}
-                settings={settings}
+                gatewaySettings={gatewaySettings}
                 gateway={gateway}
                 cartTotal={cartTotal}
             />
