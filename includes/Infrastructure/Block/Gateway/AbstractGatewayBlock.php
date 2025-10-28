@@ -11,6 +11,7 @@
 
 namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
+use Alma\API\Application\DTO\EligibilityDto;
 use Alma\API\Domain\Entity\Eligibility;
 use Alma\Gateway\Application\Exception\Service\API\EligibilityServiceException;
 use Alma\Gateway\Application\Helper\L10nHelper;
@@ -19,7 +20,6 @@ use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Exception\Block\CheckoutBlockException;
-use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\AbstractFrontendGateway;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\FormHelper;
@@ -70,7 +70,6 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 	 * Returns if this payment method should be active. If false, the scripts will not be enqueued.
 	 *
 	 * @return boolean
-	 * @throws FeePlanRepositoryException
 	 */
 	public function is_active(): bool {
 		return true;
@@ -101,7 +100,8 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 		);
 
 		try {
-			$eligibility_list = $this->eligibility_provider->getEligibilityList();
+			$eligibilityDto   = new EligibilityDto( 15000 );
+			$eligibility_list = $this->eligibility_provider->getEligibilityList( $eligibilityDto );
 		} catch ( EligibilityServiceException $e ) {
 			return $gateways;
 		}

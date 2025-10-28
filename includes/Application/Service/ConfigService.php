@@ -95,7 +95,7 @@ class ConfigService {
 	 */
 	public function getEnvironment(): Environment {
 		$mode = Environment::LIVE_MODE;
-		if ( $this->hasSetting( [ 'environment' ] ) ) {
+		if ( $this->hasSetting( 'environment' ) ) {
 			$mode = $this->getSettings()['environment'];
 		}
 

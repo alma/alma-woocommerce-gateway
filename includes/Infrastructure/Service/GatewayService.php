@@ -6,12 +6,12 @@ use Alma\API\Application\DTO\RefundDto;
 use Alma\API\Domain\Helper\ContextHelperInterface;
 use Alma\API\Infrastructure\Exception\ParametersException;
 use Alma\Gateway\Application\Exception\Service\API\EligibilityServiceException;
-use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\PluginHelper;
+use Alma\Gateway\Application\Mapper\EligibilityMapper;
 use Alma\Gateway\Application\Provider\EligibilityProvider;
 use Alma\Gateway\Application\Provider\FeePlanProvider;
 use Alma\Gateway\Application\Provider\PaymentProvider;
@@ -216,13 +216,16 @@ class GatewayService {
 
 		try {
 			/** @var AbstractGateway $gateway */
-			foreach ( $this->gatewayRepository->getAlmaGateways() as $gateway ) {
+			foreach ( $this->gatewayRepository->findAllAlmaGateways() as $gateway ) {
 				if ( ContextHelper::isCheckoutPage() ) {
-					$gateway->configure_eligibility( $this->eligibilityProvider->getEligibilityList() );
+					$gateway->configure_eligibility( $this->eligibilityProvider->getEligibilityList(
+						( new EligibilityMapper() )
+							->buildEligibilityDto( ContextHelper::getCart(), ContextHelper::getCustomer() )
+					) );
 					$gateway->configure_fee_plans( $feePlanRepository->getAll() );
 				}
 			}
-		} catch ( EligibilityServiceException|FeePlanServiceException $e ) {
+		} catch ( EligibilityServiceException $e ) {
 			throw new GatewayServiceException( $e->getMessage() );
 		}
 	}
