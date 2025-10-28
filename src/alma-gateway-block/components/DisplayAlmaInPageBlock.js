@@ -10,15 +10,14 @@ export const DisplayAlmaInPageBlock = (props) => {
         cartTotal: select(CART_STORE_KEY).getCartTotals()
     }), []);
 
-    const {almaSettings, eligibilityCartTotal, isLoading} = useSelect(
+    const {almaSettings, isLoading} = useSelect(
         (select) => ({
             almaSettings: select(storeKey).getAlmaSettings(),
-            eligibilityCartTotal: select(storeKey).getCartTotal(),
             isLoading: select(storeKey).isLoading()
         }), []
     );
 
-    // Define default plan and selected plan outside of the render return
+    // Define default plan and selected plan outside the render return
     const availableFeePlans = almaSettings?.gateway_settings[gateway].fee_plans_settings || {};
 
     // Init default plan
@@ -66,7 +65,7 @@ export const DisplayAlmaInPageBlock = (props) => {
     useEffect(() => {
         if (!isLoading && plan) {
             setSelectedFeePlan(plan.planKey);
-            initializeInpage(gatewaySettings, eligibilityCartTotal)
+            initializeInpage(gatewaySettings, cartTotal)
         }
     }, [selectedFeePlan, cartTotal, isLoading])
 
@@ -74,11 +73,11 @@ export const DisplayAlmaInPageBlock = (props) => {
     return isLoading ? <div></div> : <><AlmaBlock
         hasInPage={gatewaySettings.is_in_page}
         isPayNow={isPayNow}
-        totalPrice={eligibilityCartTotal}
+        totalPrice={cartTotal}
         gatewaySettings={gatewaySettings}
         selectedFeePlan={plan.planKey}
         setSelectedFeePlan={setSelectedFeePlan}
-        plans={eligibility[gateway]}
+        plans={gatewaySettings}
     />
         <div id="alma-inpage-alma_in_page" style={{display: displayInstallments}}></div>
     </>
