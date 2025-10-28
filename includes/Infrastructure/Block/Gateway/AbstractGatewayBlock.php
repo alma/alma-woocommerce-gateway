@@ -11,6 +11,7 @@
 
 namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
+use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Exception\Block\CheckoutBlockException;
@@ -103,5 +104,23 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 		}
 
 		return array( 'alma-block-integration' );
+	}
+
+	/**
+	 * Send data to the js. Used by default by WooCommerce for static gateway data.
+	 * To use it in the payment method script, use script like:
+	 * const settings = window.wc.wcSettings.getSetting(`alma_paynow_gateway_block_data`, null)
+	 * @return array
+	 * @see src/alma-gateway-block/alma-gateway-block.js
+	 */
+	public function get_payment_method_data(): array {
+
+		return array(
+			'name'         => $this->get_name(),
+			'title'        => $this->gateway->get_title(),
+			'description'  => $this->gateway->get_description(),
+			'gateway_name' => $this->gateway->get_name(),
+			'label_button' => L10nHelper::__( 'Pay With Alma', 'alma-gateway-for-woocommerce' ),
+		);
 	}
 }
