@@ -23,9 +23,9 @@
  */
 
 /**
- * Global AlmaCheckoutData variable from WooCommerce Block.
+ * Global AlmaSettings variable from WooCommerce Block.
  *
- * @typedef {object} AlmaCheckoutData
+ * @typedef {object} AlmaSettings
  * @property {boolean} success - Indicates if the data retrieval was successful.
  * @property {boolean} is_in_page - True if checkout is embedded within the page.
  * @property {string} nonce_value - Nonce input HTML used for secured AJAX calls.
@@ -86,8 +86,32 @@ import {fetchAlmaSettings} from "./hooks/fetchAlmaSettings";
 import {useRef} from "react";
 
 (function ($) {
+
+    /** In Page status */
     let inPage = undefined;
+
+    /** Get Cart and Checkout store keys */
     const {CART_STORE_KEY, CHECKOUT_STORE_KEY} = window.wc.wcBlocksData
+
+    /**
+     * Check if the Gateway can make payment
+     *
+     * @param gatewaySettings
+     * @returns {boolean}
+     */
+    const gatewayCanMakePayment = (gatewaySettings) => {
+        let canMakePayment = true
+        if (Object.keys(gatewaySettings.fee_plans_settings).length === 0) {
+            canMakePayment = false
+        }
+        return canMakePayment
+    }
+
+    /**
+     * Cart Observer Component
+     *
+     * @constructor
+     */
     const CartObserver = () => {
         // Subscribe to the cart total
         const {cartTotal, shippingRates} = useSelect((select) => ({
@@ -136,35 +160,40 @@ import {useRef} from "react";
         // Register the payment gateway block
         if (!isCalculating && !isLoading) {
             // For each gateway in eligibility result, we register a block
-            registerPaymentGateway(almaSettings, almaSettings.gateway_settings, cartTotal)
+            registerPaymentGateway(almaSettings, cartTotal)
         }
     };
 
     /**
      * Register All Payment Gateway Blocks
-     * @param almaSettings
-     * @param gateway_settings The gateway settings (one row for each gateway)
+     * @param almaSettings All AlmaSettings
      * @param init
      * @param cartTotal
      */
-    const registerPaymentGateway = (almaSettings, gateway_settings, init = false, cartTotal) => {
+    const registerPaymentGateway = (almaSettings, init = false, cartTotal) => {
 
-        console.log('almaSettings', almaSettings)
+        for (const gatewayName in almaSettings.gateway_settings) {
 
-        for (const gateway in gateway_settings) {
-
-            const gatewaySetting = gateway_settings[gateway]
+            const gatewaySetting = almaSettings?.gateway_settings?.[gatewayName] ?? {};
 
             // If gateway Block is available, we register it
             if (gatewaySetting) {
-                const blockContent = getContentBlock(AlmaInitSettings.is_in_page, gatewaySetting, gateway, cartTotal)
-                const AlmaGatewayBlock = generateGatewayBlock(gatewaySetting, blockContent, init ? true : true)
+                const blockContent = getContentBlock(almaSettings, gatewaySetting, gatewayName, cartTotal)
+                const AlmaGatewayBlock = generateGatewayBlock(gatewaySetting, blockContent, init ? true : gatewayCanMakePayment(gatewaySetting));
                 window.wc.wcBlocksRegistry.registerPaymentMethod(AlmaGatewayBlock);
-                console.log('register: ' + gateway);
+                console.log('register: ' + gatewayName);
             }
         }
     }
 
+    /**
+     * Generate Gateway Block
+     *
+     * @param settings
+     * @param blockContent
+     * @param canMakePayment
+     * @returns {{name: *, label, content: *, edit: *, placeOrderButtonLabel: *, canMakePayment: function(): *, ariaLabel: *}}
+     */
     const generateGatewayBlock = (settings, blockContent, canMakePayment) => {
 
         console.log("Generating Gateway block " + blockContent);
@@ -183,15 +212,24 @@ import {useRef} from "react";
             ariaLabel: settings.title,
         }
     }
-    const getContentBlock = (is_in_page, settings, gateway, cartTotal) => {
+
+    /**
+     * Get Content Block
+     *
+     * @param almaSettings
+     * @param settings
+     * @param gateway
+     * @param cartTotal
+     * @returns {JSX.Element}
+     */
+    const getContentBlock = (almaSettings, settings, gateway, cartTotal) => {
         const setInPage = (inPageInstance) => {
             inPage = inPageInstance
         }
-        const isPayNow = (settings.gateway_name === "alma_pay_now" || settings.gateway_name === "alma_in_page_pay_now");
 
-        return is_in_page ? (
+        return almaSettings.is_in_page ? (
             <DisplayAlmaInPageBlock
-                isPayNow={isPayNow}
+                isPayNow={settings.is_pay_now}
                 store_key={storeKey}
                 settings={settings}
                 gateway={gateway}
@@ -200,7 +238,7 @@ import {useRef} from "react";
             />
         ) : (
             <DisplayAlmaBlock
-                isPayNow={isPayNow}
+                isPayNow={settings.is_pay_now}
                 store_key={storeKey}
                 settings={settings}
                 gateway={gateway}
@@ -208,14 +246,10 @@ import {useRef} from "react";
             />
         )
     }
-    const gatewayCanMakePayment = (gateway_eligibility) => {
-        let canMakePayment = true
-        if (Object.keys(gateway_eligibility).length === 0) {
-            canMakePayment = false
-        }
-        return canMakePayment
-    }
 
+    /**
+     * Mount React Component for Cart Observer
+     */
     const mountReactComponent = () => {
         const rootDiv = document.createElement('div');
         document.body.appendChild(rootDiv);
@@ -224,6 +258,9 @@ import {useRef} from "react";
         root.render(<CartObserver/>);
     };
 
+    /**
+     * Init Alma Gateway Blocks on DOMContentLoaded
+     */
     document.addEventListener('DOMContentLoaded', function () {
         mountReactComponent()
     });
