@@ -24,6 +24,7 @@ use Alma\Gateway\Infrastructure\Gateway\Frontend\AbstractFrontendGateway;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\FormHelper;
 use Alma\Gateway\Infrastructure\Service\AssetsService;
+use Alma\Gateway\Plugin;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -37,18 +38,12 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 
 	protected AbstractFrontendGateway $gateway;
 	private ConfigService $config_service;
-	private FormHelper $form_helper;
-	private CartAdapter $cart_adapter;
-	private EligibilityProvider $eligibility_provider;
 	private AssetsService $assets_service;
 
-	public function __construct( ConfigService $config_service, EligibilityProvider $eligibility_provider, CartAdapter $cart_adapter, FormHelper $form_helper, AssetsService $assets_service ) {
+	public function __construct( ConfigService $config_service, AssetsService $assets_service ) {
 
-		$this->config_service       = $config_service;
-		$this->eligibility_provider = $eligibility_provider;
-		$this->cart_adapter         = $cart_adapter;
-		$this->form_helper          = $form_helper;
-		$this->assets_service       = $assets_service;
+		$this->config_service = $config_service;
+		$this->assets_service = $assets_service;
 
 		$this->initialize();
 	}
@@ -57,13 +52,6 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 	 * When called invokes any initialization/setup for the integration.
 	 */
 	public function initialize() {
-		add_action(
-			'woocommerce_api_alma_block_data',
-			array(
-				$this,
-				'get_block_data',
-			)
-		);
 	}
 
 	/**
@@ -75,16 +63,6 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 		return true;
 
 		// return $this->config_service->isBlocksEnabled() && $this->gateway->is_enabled() && $this->gateway->is_available();
-	}
-
-	public function get_block_data(): void {
-		wp_send_json(
-			array(
-				'success'     => true,
-				'eligibility' => $this->format_eligibility_for_block(),
-				'cart_total'  => $this->cart_adapter->getCartTotal(),
-			)
-		);
 	}
 
 	/**
@@ -100,8 +78,9 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 		);
 
 		try {
-			$eligibilityDto   = new EligibilityDto( 15000 );
-			$eligibility_list = $this->eligibility_provider->getEligibilityList( $eligibilityDto );
+			$eligibilityDto       = new EligibilityDto( 15000 );
+			$eligibility_provider = Plugin::get_container()->get( EligibilityProvider::class );
+			$eligibility_list     = $eligibility_provider->getEligibilityList( $eligibilityDto );
 		} catch ( EligibilityServiceException $e ) {
 			return $gateways;
 		}
@@ -155,14 +134,16 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 	 */
 	public function get_payment_method_script_handles(): array {
 
-		$is_in_page = false;// @todo $this->configService->isInPageEnabled();
+		$is_in_page   = false;// @todo $this->configService->isInPageEnabled();
+		$cart_adapter = Plugin::get_container()->get( CartAdapter::class );
+		$form_helper  = Plugin::get_container()->get( FormHelper::class );
 
 		// Passer la base URL au JavaScript
 		$params = array(
 			'url'              => ContextHelper::getWebhookUrl( 'alma_block_data' ),
 			'init_eligibility' => $this->format_eligibility_for_block(),
-			'cart_total'       => $this->cart_adapter->getCartTotal(),
-			'nonce_value'      => $this->form_helper->generateTokenField(
+			'cart_total'       => $cart_adapter->getCartTotal(),
+			'nonce_value'      => $form_helper->generateTokenField(
 				sprintf( '%s_nonce_action', $this->gateway->get_name() ),
 				sprintf( '%s_nonce_field', $this->gateway->get_name() ),
 			),
