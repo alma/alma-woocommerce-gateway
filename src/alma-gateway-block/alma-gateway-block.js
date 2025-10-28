@@ -22,6 +22,58 @@
  * @property {string} ajax_url - AJAX URL (optional, mandatory if in page is enabled)
  */
 
+/**
+ * Global AlmaCheckoutData variable from WooCommerce Block.
+ *
+ * @typedef {object} AlmaCheckoutData
+ * @property {boolean} success - Indicates if the data retrieval was successful.
+ * @property {boolean} is_in_page - True if checkout is embedded within the page.
+ * @property {string} nonce_value - Nonce input HTML used for secured AJAX calls.
+ * @property {object} gateway_settings - Contains all Alma payment gateways configuration.
+ *
+ * @typedef {object} GatewaySettings
+ * @property {AlmaGateway} alma_pnx_gateway - Pay in installments gateway.
+ * @property {AlmaGateway} alma_credit_gateway - Credit with Alma gateway.
+ * @property {AlmaGateway} alma_paylater_gateway - Pay later with Alma gateway.
+ * @property {AlmaGateway} alma_paynow_gateway - Pay now with Alma gateway.
+ *
+ * @typedef {object} AlmaGateway
+ * @property {string} name - Internal block name.
+ * @property {string} gateway_name - WooCommerce gateway identifier.
+ * @property {string} title - Gateway display title.
+ * @property {string} [description] - Gateway description (optional).
+ * @property {boolean} [is_pay_now] - Indicates if it is a pay-now type gateway.
+ * @property {string} [label_button] - Button label used in UI.
+ * @property {FeePlansSettings} [fee_plans_settings] - Available payment plans (credit/installments gateways only).
+ *
+ * @typedef {object} FeePlansSettings
+ * @property {FeePlan} general_1_0_0 - Pay now plan configuration.
+ * @property {FeePlan} general_2_0_0 - Pnx 2-installment plan configuration.
+ * @property {FeePlan} general_3_0_0 - Pnx3-installment plan configuration.
+ * @property {FeePlan} general_4_0_0 - Pnx4-installment plan configuration.
+ * @property {FeePlan} general_6_0_0 - Credit 6-installment plan configuration.
+ * @property {FeePlan} general_10_0_0 - Credit 10-installment plan configuration.
+ * @property {FeePlan} general_12_0_0 - Credit 12-installment plan configuration.
+ * @property {FeePlan} general_1_30_0 - Pay later 30-days plan configuration.
+ *
+ * @typedef {object} FeePlan
+ * @property {string} planKey - Unique key identifying the plan.
+ * @property {number} installmentsCount - Number of installments.
+ * @property {number} annualInterestRate - Annual interest rate applied to the plan.
+ * @property {number} customerTotalCostAmount - Total cost paid by the customer (including fees and interests).
+ * @property {number} deferredDays - Deferred payment days before first installment.
+ * @property {number} deferredMonths - Deferred payment months before first installment.
+ * @property {PaymentSchedule[]} paymentPlan - Detailed schedule of installments.
+ *
+ * @typedef {object} PaymentSchedule
+ * @property {number} due_date - UNIX timestamp of the due date.
+ * @property {string} localized_due_date - Localized readable due date (e.g., "28 mai 2026").
+ * @property {number} purchase_amount - Amount of the principal payment.
+ * @property {number} customer_fee - Additional customer fees.
+ * @property {number} customer_interest - Interest amount.
+ * @property {number} total_amount - Total amount to pay for this installment.
+ */
+
 // phpcs:ignoreFile
 import {storeKey} from "../stores/alma-store";
 import {createRoot, useEffect} from '@wordpress/element';
@@ -84,39 +136,29 @@ import {useRef} from "react";
         // Register the payment gateway block
         if (!isCalculating && !isLoading) {
             // For each gateway in eligibility result, we register a block
-            // before registering the payment gateway, we reset the payment gateways to force gutenberg reload
-            // resetPaymentGateways(almaSettings)
-            registerPaymentGateway(almaSettings.gateway_settings, cartTotal)
+            registerPaymentGateway(almaSettings, almaSettings.gateway_settings, cartTotal)
         }
     };
 
-    const resetPaymentGateways = (almaSettings) => {
-        for (const gatewayName in almaSettings.gateway_settings) {
-            console.log('Resetting gateway:', gatewayName);
-            const gatewaySettings = almaSettings.gateway_settings[gatewayName]
-            const settings = window.wc.wcSettings.getSetting(`${gateway}_block_data`, null)
-            const Block_Gateway_Alma = generateGatewayBlock(gatewaySettings, <></>, false)
-            window.wc.wcBlocksRegistry.registerPaymentMethod(Block_Gateway_Alma);
-        }
-    }
-
     /**
      * Register All Payment Gateway Blocks
+     * @param almaSettings
      * @param gateway_settings The gateway settings (one row for each gateway)
      * @param init
      * @param cartTotal
      */
-    const registerPaymentGateway = (gateway_settings, init = false, cartTotal) => {
+    const registerPaymentGateway = (almaSettings, gateway_settings, init = false, cartTotal) => {
+
+        console.log('almaSettings', almaSettings)
 
         for (const gateway in gateway_settings) {
 
             const gatewaySetting = gateway_settings[gateway]
-            const settings = window.wc.wcSettings.getSetting(`${gatewaySetting.gateway_name}_block_data`, null)
 
             // If gateway Block is available, we register it
-            if (settings) {
-                const blockContent = getContentBlock(AlmaInitSettings.is_in_page, settings, gateway, cartTotal)
-                const AlmaGatewayBlock = generateGatewayBlock(settings, blockContent, init ? true : true)
+            if (gatewaySetting) {
+                const blockContent = getContentBlock(AlmaInitSettings.is_in_page, gatewaySetting, gateway, cartTotal)
+                const AlmaGatewayBlock = generateGatewayBlock(gatewaySetting, blockContent, init ? true : true)
                 window.wc.wcBlocksRegistry.registerPaymentMethod(AlmaGatewayBlock);
                 console.log('register: ' + gateway);
             }
