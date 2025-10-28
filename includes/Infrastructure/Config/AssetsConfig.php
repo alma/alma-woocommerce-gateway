@@ -203,7 +203,7 @@ class AssetsConfig {
 							'wp-i18n'
 						),
 						'params'       => array(
-							'object_name' => 'BlocksData',
+							'object_name' => 'AlmaInitSettings',
 							'keys'        => array(
 								'checkout_url',
 								'init_eligibility',

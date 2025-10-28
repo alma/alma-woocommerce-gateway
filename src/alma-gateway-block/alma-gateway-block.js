@@ -8,9 +8,9 @@
  */
 
 /**
- * Global BlocksData variable from Block.
+ * Global AlmaInitSettings variable from Block.
  *
- * @typedef {object} BlocksData
+ * @typedef {object} AlmaInitSettings
  * @property {string} url - Webhook URL
  * @property {object} init_eligibility - Initial eligibility data
  * @property {number} cart_total - Initial cart total
@@ -31,6 +31,7 @@ import './alma-gateway-block.css';
 import {DisplayAlmaInPageBlock} from "./components/DisplayAlmaInPageBlock";
 import {DisplayAlmaBlock} from "./components/DisplayAlmaBlock";
 import {fetchAlmaSettings} from "./hooks/fetchAlmaSettings";
+import {useRef} from "react";
 
 (function ($) {
     let inPage = undefined;
@@ -52,11 +53,32 @@ import {fetchAlmaSettings} from "./hooks/fetchAlmaSettings";
             isCalculating: select(CHECKOUT_STORE_KEY).isCalculating(),
         }), []);
 
-        // Use the cart total to fetch the new eligibility
+        const previousCartState = useRef({
+            cartTotal: null,
+            shippingRates: null,
+        });
+        const isFetching = useRef(false);
+
+        // Use the cart total and addresses to fetch the new eligibility
         useEffect(() => {
-            // BlockData is a global variable defined in the PHP file with the wp_localize_script function
-            fetchAlmaSettings(storeKey, BlocksData.checkout_url)
-        }, [cartTotal, shippingRates]);
+            console.log('CartObserver useEffect triggered with cartTotal:', cartTotal, 'shippingRates:', shippingRates);
+            // Check if cart state has actually changed
+            const cartStateChanged =
+                previousCartState.current.cartTotal !== cartTotal ||
+                JSON.stringify(previousCartState.current.shippingRates) !== JSON.stringify(shippingRates);
+
+            if (cartStateChanged && !isFetching.current && !isLoading) {
+                isFetching.current = true;
+                previousCartState.current = {
+                    cartTotal,
+                    shippingRates
+                };
+
+                fetchAlmaSettings(storeKey, AlmaInitSettings.checkout_url).finally(() => {
+                    isFetching.current = false;
+                });
+            }
+        }, [cartTotal, shippingRates, isLoading]);
 
 
         // Register the payment gateway block
@@ -92,7 +114,7 @@ import {fetchAlmaSettings} from "./hooks/fetchAlmaSettings";
 
             // If gateway Block is available, we register it
             if (settings) {
-                const blockContent = getContentBlock(BlocksData.is_in_page, settings, gateway)
+                const blockContent = getContentBlock(AlmaInitSettings.is_in_page, settings, gateway)
                 const AlmaGatewayBlock = generateGatewayBlock(settings, blockContent, init ? true : true)
                 window.wc.wcBlocksRegistry.registerPaymentMethod(AlmaGatewayBlock);
                 console.log('register: ' + gateway);
