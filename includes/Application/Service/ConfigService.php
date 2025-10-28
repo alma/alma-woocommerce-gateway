@@ -80,10 +80,20 @@ class ConfigService {
 		return $is_configured;
 	}
 
+	/**
+	 * Check if blocks are enabled.
+	 *
+	 * @return bool
+	 */
 	public function isBlocksEnabled(): bool {
 		return 'no' === $this->getSetting( 'blocks_disabled' );
 	}
 
+	/**
+	 * Check if blocks are disabled.
+	 *
+	 * @return bool
+	 */
 	public function isBlocksDisabled(): bool {
 		return 'yes' === $this->getSetting( 'blocks_disabled' );
 	}
@@ -96,7 +106,7 @@ class ConfigService {
 	public function getEnvironment(): Environment {
 		$mode = Environment::LIVE_MODE;
 		if ( $this->hasSetting( 'environment' ) ) {
-			$mode = $this->getSettings()['environment'];
+			$mode = $this->getSetting( 'environment' );
 		}
 
 		return Environment::fromString( $mode );
@@ -125,7 +135,7 @@ class ConfigService {
 	 *
 	 * @return bool
 	 */
-	public function isInPage(): bool {
+	public function isInPageEnabled(): bool {
 		return 'yes' === $this->getSetting( 'in_page_enabled' );
 	}
 
@@ -135,7 +145,7 @@ class ConfigService {
 	 * @return string
 	 */
 	public function getOrigin() {
-		if ( $this->isInPage() ) {
+		if ( $this->isInPageEnabled() ) {
 			return PaymentDto::ORIGIN_ONLINE_IN_PAGE;
 		}
 
@@ -204,26 +214,54 @@ class ConfigService {
 	}
 
 	/**
-	 * @param $key
+	 * @param string $key
 	 *
-	 * @return mixed|array|string
+	 * @return bool
 	 */
-	public function getSetting( $key ) {
-		return $this->configRepository->getSettings()[ $key ] ?? '';
-	}
-
-	public function hasSetting( $key ): bool {
+	public function hasSetting( string $key ): bool {
 		return $this->configRepository->hasSetting( $key );
 	}
 
+	/**
+	 * @param string $key
+	 *
+	 * @return array|bool|string
+	 */
+	public function getSetting( string $key ) {
+		return $this->configRepository->getSettings()[ $key ] ?? '';
+	}
+
+	/**
+	 * Create a new key/value setting.
+	 *
+	 * @param string            $setting The setting key to create.
+	 * @param array|bool|string $value The value for the setting.
+	 *
+	 * @return bool
+	 */
 	public function createSetting( string $setting, $value ): bool {
 		return $this->configRepository->createSetting( $setting, $value );
 	}
 
+	/**
+	 * Update a key/value setting.
+	 *
+	 * @param string            $setting The setting key to update.
+	 * @param array|bool|string $value The new value for the setting.
+	 *
+	 * @return bool True on success, false on failure.
+	 */
 	public function updateSetting( string $setting, $value ): bool {
 		return $this->configRepository->updateSetting( $setting, $value );
 	}
 
+	/**
+	 * Delete a key/value setting.
+	 *
+	 * @param $key string The setting key to delete.
+	 *
+	 * @return bool True on success, false on failure.
+	 */
 	public function deleteSetting( $key ): bool {
 		return $this->configRepository->deleteSetting( $key );
 	}
@@ -315,14 +353,29 @@ class ConfigService {
 		return $excluded_categories;
 	}
 
+	/**
+	 * Check if the cart widget is enabled.
+	 *
+	 * @return bool
+	 */
 	public function getWidgetCartEnabled(): bool {
 		return 'yes' === $this->getSetting( 'widget_cart_enabled' );
 	}
 
+	/**
+	 * Check if the product widget is enabled.
+	 *
+	 * @return bool
+	 */
 	public function getWidgetProductEnabled(): bool {
 		return 'yes' === $this->getSetting( 'widget_product_enabled' );
 	}
 
+	/**
+	 * Delete all Fee Plans configuration settings.
+	 *
+	 * @return void
+	 */
 	public function deleteFeePlansConfiguration(): void {
 		$settings = $this->getSettings();
 		foreach ( $settings as $key => $value ) {

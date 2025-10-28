@@ -16,10 +16,6 @@ use Alma\Gateway\Application\Provider\EligibilityProvider;
 use Alma\Gateway\Application\Provider\FeePlanProvider;
 use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Application\Service\ConfigService;
-use Alma\Gateway\Infrastructure\Block\Gateway\CreditGatewayBlock;
-use Alma\Gateway\Infrastructure\Block\Gateway\PayLaterGatewayBlock;
-use Alma\Gateway\Infrastructure\Block\Gateway\PayNowGatewayBlock;
-use Alma\Gateway\Infrastructure\Block\Gateway\PnxGatewayBlock;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
@@ -257,29 +253,32 @@ class GatewayService {
 		return array_merge( $plugin_links, $links );
 	}
 
+	/**
+	 * Init the gateway blocks if the blocks are enabled
+	 * They're registered on every page but will be displayed only on checkout page
+	 * (see AbstractGatewayBlock::is_active())
+	 *
+	 * @return void
+	 */
 	public function initGatewayBlocks() {
 
-		add_action(
-			'woocommerce_blocks_payment_method_type_registration',
-			function ( PaymentMethodRegistry $payment_method_registry ) {
-				// Register an instance of Alma_Gateway_Blocks.
+		if ( $this->configService->isBlocksEnabled() ) {
 
-				/** @var PnxGatewayBlock $pnxCheckoutBlock */
-				$pnxCheckoutBlock = Plugin::get_container()->get( PnxGatewayBlock::class );
-				$payment_method_registry->register( $pnxCheckoutBlock );
+			add_action(
+				'woocommerce_blocks_payment_method_type_registration',
+				function ( PaymentMethodRegistry $payment_method_registry ) {
+					// Register an instance of Alma_Gateway_Blocks.
+					$gatewayRepository = Plugin::get_container()->get( GatewayRepository::class );
+					foreach ( $gatewayRepository->findAllAlmaGatewayBlocks() as $gateway ) {
+						$payment_method_registry->register( $gateway );
+					}
+				}
+			);
 
-				/** @var CreditGatewayBlock $creditCheckoutBlock */
-				$creditCheckoutBlock = Plugin::get_container()->get( CreditGatewayBlock::class );
-				$payment_method_registry->register( $creditCheckoutBlock );
-
-				/** @var PayLaterGatewayBlock $payLaterCheckoutBlock */
-				$payLaterCheckoutBlock = Plugin::get_container()->get( PayLaterGatewayBlock::class );
-				$payment_method_registry->register( $payLaterCheckoutBlock );
-
-				/** @var PayNowGatewayBlock $payNowCheckoutBlock */
-				$payNowCheckoutBlock = Plugin::get_container()->get( PayNowGatewayBlock::class );
-				$payment_method_registry->register( $payNowCheckoutBlock );
-			}
-		);
+			// Enabled blocks AJAX calls on checkout page
+			/** @var CheckoutService $checkout_service */
+			$checkout_service = Plugin::get_container()->get( CheckoutService::class );
+			$checkout_service->initialize();
+		}
 	}
 }

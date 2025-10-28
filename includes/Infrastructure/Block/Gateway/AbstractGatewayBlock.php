@@ -11,19 +11,14 @@
 
 namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
-use Alma\API\Application\DTO\EligibilityDto;
-use Alma\API\Domain\Entity\Eligibility;
-use Alma\Gateway\Application\Exception\Service\API\EligibilityServiceException;
 use Alma\Gateway\Application\Helper\L10nHelper;
-use Alma\Gateway\Application\Provider\EligibilityProvider;
 use Alma\Gateway\Application\Service\ConfigService;
-use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Exception\Block\CheckoutBlockException;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\AbstractFrontendGateway;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
-use Alma\Gateway\Infrastructure\Helper\FormHelper;
 use Alma\Gateway\Infrastructure\Service\AssetsService;
+use Alma\Gateway\Infrastructure\Service\CheckoutService;
 use Alma\Gateway\Plugin;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
 
@@ -49,9 +44,12 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 	}
 
 	/**
-	 * When called invokes any initialization/setup for the integration.
+	 * Returns the gateway associated with this block.
+	 *
+	 * @return AbstractFrontendGateway
 	 */
-	public function initialize() {
+	public function get_gateway(): AbstractFrontendGateway {
+		return $this->gateway;
 	}
 
 	/**
@@ -63,49 +61,6 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 		return true;
 
 		// return $this->config_service->isBlocksEnabled() && $this->gateway->is_enabled() && $this->gateway->is_available();
-	}
-
-	/**
-	 * Format Fee Plans for block
-	 */
-	public function format_eligibility_for_block(): array {
-
-		$gateways = array(
-			'alma_paynow_gateway'   => array(),
-			'alma_pnx_gateway'      => array(),
-			'alma_paylater_gateway' => array(),
-			'alma_credit_gateway'   => array(),
-		);
-
-		try {
-			$eligibilityDto       = new EligibilityDto( 15000 );
-			$eligibility_provider = Plugin::get_container()->get( EligibilityProvider::class );
-			$eligibility_list     = $eligibility_provider->getEligibilityList( $eligibilityDto );
-		} catch ( EligibilityServiceException $e ) {
-			return $gateways;
-		}
-
-		foreach ( $eligibility_list as $eligibility ) {
-
-			// Pay now
-			if ( $eligibility->isPayNow() ) {
-				$gateways['alma_paynow_gateway'][ $eligibility->getPlanKey() ] = $this->format_plan_content_for_block( $eligibility );
-			}
-			// Pay in installments
-			if ( $eligibility->isPnXOnly() ) {
-				$gateways['alma_pnx_gateway'][ $eligibility->getPlanKey() ] = $this->format_plan_content_for_block( $eligibility );
-			}
-			// Pay in credit
-			if ( $eligibility->isCredit() ) {
-				$gateways['alma_credit_gateway'][ $eligibility->getPlanKey() ] = $this->format_plan_content_for_block( $eligibility );
-			}
-			// Pay later
-			if ( $eligibility->isPayLaterOnly() ) {
-				$gateways['alma_paylater_gateway'][ $eligibility->getPlanKey() ] = $this->format_plan_content_for_block( $eligibility );
-			}
-		}
-
-		return $gateways;
 	}
 
 	/**
@@ -127,35 +82,22 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 	}
 
 	/**
-	 * Register the script.
+	 * Register the scripts to be loaded for the payment method.
+	 * The handle returned here is used by WooCommerce to enqueue the script.
+	 * Params are passed to the script.
 	 *
 	 * @return string[]
 	 * @throws CheckoutBlockException
+	 *
+	 * @todo move to GatewayService::initGatewayBlocks this could be done only once.
 	 */
 	public function get_payment_method_script_handles(): array {
 
-		$is_in_page   = false;// @todo $this->configService->isInPageEnabled();
-		$cart_adapter = Plugin::get_container()->get( CartAdapter::class );
-		$form_helper  = Plugin::get_container()->get( FormHelper::class );
+		/** @var CheckoutService $checkoutService */
+		$checkoutService = Plugin::get_container()->get( CheckoutService::class );
+		$params          = $checkoutService->getCheckoutParams();
 
-		// Passer la base URL au JavaScript
-		$params = array(
-			'url'              => ContextHelper::getWebhookUrl( 'alma_block_data' ),
-			'init_eligibility' => $this->format_eligibility_for_block(),
-			'cart_total'       => $cart_adapter->getCartTotal(),
-			'nonce_value'      => $form_helper->generateTokenField(
-				sprintf( '%s_nonce_action', $this->gateway->get_name() ),
-				sprintf( '%s_nonce_field', $this->gateway->get_name() ),
-			),
-			'is_in_page'       => $is_in_page ? '1' : '0',
-		);
-
-		if ( $is_in_page ) {
-			$params['merchant_id'] = $this->config_service->getMerchantId();
-			$params['environment'] = strtoupper( $this->config_service->getEnvironment()->getMode() );
-			$params['language']    = ContextHelper::getLanguage();
-			$params['ajax_url']    = ContextHelper::getAdminUrl( 'admin-ajax.php' );
-		}
+		$params['checkout_url'] = ContextHelper::getWebhookUrl( 'alma_checkout_data' );
 
 		try {
 			$this->assets_service->loadCheckoutBlockAssets( $params );
@@ -164,22 +106,5 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 		}
 
 		return array( 'alma-block-integration' );
-	}
-
-	/**
-	 * @param Eligibility $eligibility
-	 *
-	 * @return array
-	 */
-	private function format_plan_content_for_block( Eligibility $eligibility ): array {
-		return array(
-			'planKey'                 => $eligibility->getPlanKey(),
-			'paymentPlan'             => $eligibility->getPaymentPlan(),
-			'customerTotalCostAmount' => $eligibility->getCustomerTotalCostAmount(),
-			'installmentsCount'       => $eligibility->getInstallmentsCount(),
-			'deferredDays'            => $eligibility->getDeferredDays(),
-			'deferredMonths'          => $eligibility->getDeferredMonths(),
-			'annualInterestRate'      => $eligibility->getAnnualInterestRate(),
-		);
 	}
 }

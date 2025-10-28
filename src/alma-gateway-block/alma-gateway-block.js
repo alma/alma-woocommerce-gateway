@@ -23,14 +23,14 @@
  */
 
 // phpcs:ignoreFile
-import {store_key} from "../stores/alma-eligibility-store";
+import {storeKey} from "../stores/alma-store";
 import {useEffect} from '@wordpress/element';
 import {select, useSelect} from '@wordpress/data';
-import {fetchAlmaEligibility} from "./hooks/fetchAlmaEligibility";
 import {Label} from "./components/Label";
 import './alma-gateway-block.css';
 import {DisplayAlmaInPageBlock} from "./components/DisplayAlmaInPageBlock";
 import {DisplayAlmaBlock} from "./components/DisplayAlmaBlock";
+import {fetchAlmaSettings} from "./hooks/fetchAlmaSettings";
 
 (function ($) {
     let inPage = undefined;
@@ -42,10 +42,10 @@ import {DisplayAlmaBlock} from "./components/DisplayAlmaBlock";
             shippingRates: select(CART_STORE_KEY).getShippingRates()
         }), []);
         // Subscribe to the eligibility
-        const {eligibility, isLoading} = useSelect(
+        const {almaSettings, isLoading} = useSelect(
             (select) => ({
-                eligibility: select(store_key).getAlmaEligibility(),
-                isLoading: select(store_key).isLoading(),
+                almaSettings: select(storeKey).getAlmaSettings(),
+                isLoading: select(storeKey).isLoading(),
             }), []
         );
         const {isCalculating} = useSelect((select) => ({
@@ -55,7 +55,7 @@ import {DisplayAlmaBlock} from "./components/DisplayAlmaBlock";
         // Use the cart total to fetch the new eligibility
         useEffect(() => {
             // BlockData is a global variable defined in the PHP file with the wp_localize_script function
-            fetchAlmaEligibility(store_key, BlocksData.url)
+            fetchAlmaSettings(storeKey, BlocksData.checkout_url)
         }, [cartTotal, shippingRates]);
 
 
@@ -63,35 +63,44 @@ import {DisplayAlmaBlock} from "./components/DisplayAlmaBlock";
         if (!isCalculating && !isLoading) {
             // For each gateway in eligibility result, we register a block
             // before registering the payment gateway, we reset the payment gateways to force gutenberg reload
-            reset_payment_gateways(eligibility)
-            register_payment_gateway(eligibility, cartTotal)
+            // resetPaymentGateways(almaSettings)
+            registerPaymentGateway(almaSettings.gateway_settings, cartTotal)
         }
     };
 
-    const reset_payment_gateways = (eligibility) => {
-        for (const gateway in eligibility) {
-            console.log('reset: ' + gateway);
+    const resetPaymentGateways = (almaSettings) => {
+        for (const gatewayName in almaSettings.gateway_settings) {
+            console.log('Resetting gateway:', gatewayName);
+            const gatewaySettings = almaSettings.gateway_settings[gatewayName]
             const settings = window.wc.wcSettings.getSetting(`${gateway}_block_data`, null)
-            const Block_Gateway_Alma = generateGatewayBlock(settings, <></>, gateway, false)
+            const Block_Gateway_Alma = generateGatewayBlock(gatewaySettings, <></>, false)
             window.wc.wcBlocksRegistry.registerPaymentMethod(Block_Gateway_Alma);
         }
     }
 
-    const register_payment_gateway = (eligibility, cartTotal, init = false) => {
-        // For each gateway in eligibility result, we register a block
-        for (const gateway in eligibility) {
-            const settings = window.wc.wcSettings.getSetting(`${gateway}_block_data`, null)
-            // If gateway Block is availavle, we register it
+    const registerPaymentGateway = (gateway_settings, cartTotal, init = false) => {
+
+        for (const gateway in gateway_settings) {
+
+            const gatewaySetting = gateway_settings[gateway]
+
+            console.log('gateway_setting', gatewaySetting)
+
+            const settings = window.wc.wcSettings.getSetting(`${gatewaySetting.gateway_name}_block_data`, null)
+
+            console.log('settings ++++++++++++ ', gatewaySetting, settings)
+
+            // If gateway Block is available, we register it
             if (settings) {
                 const blockContent = getContentBlock(BlocksData.is_in_page, settings, cartTotal, gateway)
-                const Block_Gateway_Alma = generateGatewayBlock(settings, blockContent, gateway, init ? true : gatewayCanMakePayment(eligibility[gateway]))
+                const Block_Gateway_Alma = generateGatewayBlock(settings, blockContent, init ? true : true)
                 window.wc.wcBlocksRegistry.registerPaymentMethod(Block_Gateway_Alma);
                 console.log('register: ' + gateway);
             }
         }
     }
 
-    const generateGatewayBlock = (settings, blockContent, gateway, canMakePayment) => {
+    const generateGatewayBlock = (settings, blockContent, canMakePayment) => {
 
         console.log("Generating Gateway block " + blockContent);
 
@@ -118,7 +127,7 @@ import {DisplayAlmaBlock} from "./components/DisplayAlmaBlock";
         return is_in_page ? (
             <DisplayAlmaInPageBlock
                 isPayNow={isPayNow}
-                store_key={store_key}
+                store_key={storeKey}
                 settings={settings}
                 gateway={gateway}
                 setInPage={setInPage}
@@ -126,7 +135,7 @@ import {DisplayAlmaBlock} from "./components/DisplayAlmaBlock";
         ) : (
             <DisplayAlmaBlock
                 isPayNow={isPayNow}
-                store_key={store_key}
+                store_key={storeKey}
                 settings={settings}
                 gateway={gateway}
             />
@@ -167,7 +176,7 @@ import {DisplayAlmaBlock} from "./components/DisplayAlmaBlock";
         const {CHECKOUT_STORE_KEY, CART_STORE_KEY} = window.wc.wcBlocksData
         const store = select(CHECKOUT_STORE_KEY);
         const cartStore = select(CART_STORE_KEY);
-        const almaStore = select(store_key);
+        const almaStore = select(storeKey);
         const dataTest = {
             hasError: store.hasError(),
             redirectUrl: store.getRedirectUrl(),
@@ -268,9 +277,20 @@ import {DisplayAlmaBlock} from "./components/DisplayAlmaBlock";
 
     function init_gateway_block() {
 
-        console.log("Init Gateway Block");
+        console.log("Init Gateway Block", BlocksData);
 
-        register_payment_gateway(BlocksData.init_eligibility, 0, true)
+        fetchAlmaSettings(storeKey, BlocksData.checkout_url).then(
+            () => {
+                const {almaSettings} = useSelect(
+                    (select) => ({
+                        almaSettings: select(storeKey).getAlmaSettings(),
+                    }), []
+                );
+                const eligibility = almaSettings.gateway_settings;
+
+                registerPaymentGateway(gateway_settings, 0, true)
+            }
+        )
     }
 
     init_gateway_block()

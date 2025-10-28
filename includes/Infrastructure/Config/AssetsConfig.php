@@ -205,7 +205,7 @@ class AssetsConfig {
 						'params'       => array(
 							'object_name' => 'BlocksData',
 							'keys'        => array(
-								'url',
+								'checkout_url',
 								'init_eligibility',
 								'cart_total',
 								'nonce_value',
