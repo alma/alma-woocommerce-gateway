@@ -3,37 +3,39 @@ import {useEffect, useState} from '@wordpress/element';
 import {AlmaBlock} from "./alma-block-component.tsx";
 
 export const DisplayAlmaInPageBlock = (props) => {
-    const {gatewaySettings, gateway, store_key, setInPage, isPayNow} = props;
+    const {gatewaySettings, gateway, storeKey, setInPage, isPayNow} = props;
 
     const {CART_STORE_KEY} = window.wc.wcBlocksData
     const {cartTotal} = useSelect((select) => ({
         cartTotal: select(CART_STORE_KEY).getCartTotals()
     }), []);
 
-    const {eligibility, eligibilityCartTotal, isLoading} = useSelect(
+    const {almaSettings, eligibilityCartTotal, isLoading} = useSelect(
         (select) => ({
-            eligibility: select(store_key).getAlmaEligibility(),
-            eligibilityCartTotal: select(store_key).getCartTotal(),
-            isLoading: select(store_key).isLoading()
+            almaSettings: select(storeKey).getAlmaSettings(),
+            eligibilityCartTotal: select(storeKey).getCartTotal(),
+            isLoading: select(storeKey).isLoading()
         }), []
     );
+
+    // Define default plan and selected plan outside of the render return
+    const availableFeePlans = almaSettings?.gateway_settings[gateway].fee_plans_settings || {};
 
     // Init default plan
     let default_plan = ''
 
-    if (!isLoading && Object.keys(eligibility[gateway]).length > 0) {
-        // default plan is the first plan
-        default_plan = Object.keys(eligibility[gateway])[0]
+    if (!isLoading && Object.keys(availableFeePlans || {}).length > 0) {
+        default_plan = Object.keys(availableFeePlans)[0]
     }
 
     const [selectedFeePlan, setSelectedFeePlan] = useState(default_plan);
     const plan = !isLoading
-        ? eligibility[gateway]?.[selectedFeePlan] ?? eligibility[gateway]?.[default_plan]
+        ? availableFeePlans?.[selectedFeePlan] ?? availableFeePlans?.[default_plan]
         : null;
 
     useEffect(() => {
         // Transfer the selected fee plan to the alma redux store
-        dispatch(store_key).setSelectedFeePlan(selectedFeePlan);
+        dispatch(storeKey).setSelectedFeePlan(selectedFeePlan);
 
     }, [selectedFeePlan])
 

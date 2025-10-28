@@ -3,20 +3,17 @@ import {useEffect, useState} from '@wordpress/element';
 import {AlmaBlock} from "./alma-block-component.tsx";
 
 export const DisplayAlmaBlock = (props) => {
-    const {eventRegistration, emitResponse, gatewaySettings, gateway, store_key, isPayNow, cartTotal} = props;
+    const {eventRegistration, emitResponse, gatewaySettings, gateway, storeKey, isPayNow, cartTotal} = props;
     const {onPaymentSetup} = eventRegistration;
     const {almaSettings, isLoading} = useSelect(
         (select) => ({
-            almaSettings: select(store_key).getAlmaSettings(),
-            isLoading: select(store_key).isLoading()
+            almaSettings: select(storeKey).getAlmaSettings(),
+            isLoading: select(storeKey).isLoading()
         }), []
     );
 
     // Define default plan and selected plan outside of the render return
     const availableFeePlans = almaSettings?.gateway_settings[gateway].fee_plans_settings || {};
-
-    console.log('***********  eligibility', availableFeePlans)
-    console.log('***********  gateway', gateway)
 
     let default_plan = '';
     if (!isLoading && Object.keys(availableFeePlans || {}).length > 0) {
@@ -52,7 +49,6 @@ export const DisplayAlmaBlock = (props) => {
         };
     }, [availableFeePlans, onPaymentSetup, selectedFeePlan, plan, isLoading]);
 
-    console.log('***********  plan', plan)
     return isLoading ? <div></div> : <AlmaBlock
         hasInPage={almaSettings.is_in_page}
         isPayNow={isPayNow}

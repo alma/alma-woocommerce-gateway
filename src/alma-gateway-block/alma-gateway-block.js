@@ -230,7 +230,7 @@ import {useRef} from "react";
         return almaSettings.is_in_page ? (
             <DisplayAlmaInPageBlock
                 isPayNow={gatewaySettings.is_pay_now}
-                store_key={storeKey}
+                storeKey={storeKey}
                 gatewaySettings={gatewaySettings}
                 gateway={gateway}
                 setInPage={setInPage}
@@ -239,7 +239,7 @@ import {useRef} from "react";
         ) : (
             <DisplayAlmaBlock
                 isPayNow={gatewaySettings.is_pay_now}
-                store_key={storeKey}
+                storeKey={storeKey}
                 gatewaySettings={gatewaySettings}
                 gateway={gateway}
                 cartTotal={cartTotal}
