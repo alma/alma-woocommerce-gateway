@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import {Installment} from "./Installment";
 import {CardFooter} from "@alma/react-components";
 import {InstallmentsTotal} from "./InstallmentsTotal/InstallmentsTotal";

@@ -3,26 +3,29 @@ import {useEffect, useState} from '@wordpress/element';
 import {AlmaBlock} from "./alma-block-component.tsx";
 
 export const DisplayAlmaBlock = (props) => {
-    const {eventRegistration, emitResponse, settings, gateway, store_key, isPayNow} = props;
+    const {eventRegistration, emitResponse, settings, gateway, store_key, isPayNow, cartTotal} = props;
     const {onPaymentSetup} = eventRegistration;
-
-    const {eligibility, isLoading, eligibilityCartTotal} = useSelect(
+    const {almaSettings, isLoading} = useSelect(
         (select) => ({
-            eligibility: select(store_key).getAlmaEligibility(),
-            eligibilityCartTotal: select(store_key).getCartTotal(),
+            almaSettings: select(store_key).getAlmaSettings(),
             isLoading: select(store_key).isLoading()
         }), []
     );
 
     // Define default plan and selected plan outside of the render return
+    const availableFeePlans = almaSettings?.gateway_settings[gateway].fee_plans_settings || {};
+
+    console.log('***********  eligibility', availableFeePlans)
+    console.log('***********  gateway', gateway)
+
     let default_plan = '';
-    if (!isLoading && Object.keys(eligibility[gateway] || {}).length > 0) {
-        default_plan = Object.keys(eligibility[gateway])[0];
+    if (!isLoading && Object.keys(availableFeePlans || {}).length > 0) {
+        default_plan = Object.keys(availableFeePlans)[0];
     }
     const [selectedFeePlan, setSelectedFeePlan] = useState(default_plan);
 
     const plan = !isLoading
-        ? eligibility[gateway]?.[selectedFeePlan] ?? eligibility[gateway]?.[default_plan]
+        ? availableFeePlans?.[selectedFeePlan] ?? availableFeePlans?.[default_plan]
         : null;
 
     // Always define useEffect, regardless of `isLoading`
@@ -47,16 +50,17 @@ export const DisplayAlmaBlock = (props) => {
         return () => {
             unsubscribe();
         };
-    }, [eligibility, onPaymentSetup, selectedFeePlan, plan, isLoading]);
+    }, [availableFeePlans, onPaymentSetup, selectedFeePlan, plan, isLoading]);
 
+    console.log('***********  plan', plan)
     return isLoading ? <div></div> : <AlmaBlock
         hasInPage={settings.is_in_page}
         isPayNow={isPayNow}
-        totalPrice={eligibilityCartTotal}
+        totalPrice={cartTotal}
         settings={settings}
         selectedFeePlan={plan.planKey}
         setSelectedFeePlan={setSelectedFeePlan}
-        plans={eligibility[gateway]}
+        plans={availableFeePlans}
     />
 
 };

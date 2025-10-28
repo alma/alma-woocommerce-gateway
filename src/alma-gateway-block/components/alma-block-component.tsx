@@ -10,7 +10,7 @@
 import "@alma/react-components/style.css";
 import "../alma-gateway-block.css";
 import {ToggleButtonsField} from "@alma/react-components";
-import React from "react";
+import * as React from "react";
 import {Installments} from "./Installments/Installments";
 import {IntlProvider} from "react-intl";
 import classNames from "classnames";
@@ -54,7 +54,8 @@ type AlmaBlockProps = {
     setSelectedFeePlan: (value: string) => void;
     hasInPage: boolean;
     isPayNow: boolean;
-    totalPrice: number
+    totalPrice: number;
+    plans: Record<string, FeePlan>;
 };
 
 export const AlmaBlock: React.FC<AlmaBlockProps> = (

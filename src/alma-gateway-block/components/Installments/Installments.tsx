@@ -1,5 +1,5 @@
 import {CardTemplate} from "@alma/react-components";
-import React from "react";
+import * as React from "react";
 import {InstallmentsContent} from "./InstallmentsContent";
 import {FeePlan} from "../alma-block-component";
 

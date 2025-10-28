@@ -86,7 +86,7 @@ import {useRef} from "react";
             // For each gateway in eligibility result, we register a block
             // before registering the payment gateway, we reset the payment gateways to force gutenberg reload
             // resetPaymentGateways(almaSettings)
-            registerPaymentGateway(almaSettings.gateway_settings)
+            registerPaymentGateway(almaSettings.gateway_settings, cartTotal)
         }
     };
 
@@ -104,8 +104,9 @@ import {useRef} from "react";
      * Register All Payment Gateway Blocks
      * @param gateway_settings The gateway settings (one row for each gateway)
      * @param init
+     * @param cartTotal
      */
-    const registerPaymentGateway = (gateway_settings, init = false) => {
+    const registerPaymentGateway = (gateway_settings, init = false, cartTotal) => {
 
         for (const gateway in gateway_settings) {
 
@@ -114,7 +115,7 @@ import {useRef} from "react";
 
             // If gateway Block is available, we register it
             if (settings) {
-                const blockContent = getContentBlock(AlmaInitSettings.is_in_page, settings, gateway)
+                const blockContent = getContentBlock(AlmaInitSettings.is_in_page, settings, gateway, cartTotal)
                 const AlmaGatewayBlock = generateGatewayBlock(settings, blockContent, init ? true : true)
                 window.wc.wcBlocksRegistry.registerPaymentMethod(AlmaGatewayBlock);
                 console.log('register: ' + gateway);
@@ -140,7 +141,7 @@ import {useRef} from "react";
             ariaLabel: settings.title,
         }
     }
-    const getContentBlock = (is_in_page, settings, gateway) => {
+    const getContentBlock = (is_in_page, settings, gateway, cartTotal) => {
         const setInPage = (inPageInstance) => {
             inPage = inPageInstance
         }
@@ -153,6 +154,7 @@ import {useRef} from "react";
                 settings={settings}
                 gateway={gateway}
                 setInPage={setInPage}
+                cartTotal={cartTotal}
             />
         ) : (
             <DisplayAlmaBlock
@@ -160,6 +162,7 @@ import {useRef} from "react";
                 store_key={storeKey}
                 settings={settings}
                 gateway={gateway}
+                cartTotal={cartTotal}
             />
         )
     }
