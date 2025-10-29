@@ -2,11 +2,10 @@
 
 namespace Alma\Gateway\Application\Service;
 
+use Alma\API\Domain\ValueObject\Environment;
 use Alma\API\Infrastructure\ClientConfiguration;
 use Alma\API\Infrastructure\CurlClient;
 use Alma\API\Infrastructure\Endpoint\MerchantEndpoint;
-use Alma\API\Infrastructure\Exception\ClientConfigurationException;
-use Alma\API\Infrastructure\Exception\ClientException;
 use Alma\API\Infrastructure\Exception\Endpoint\MerchantEndpointException;
 
 class AuthenticationService {
@@ -16,19 +15,19 @@ class AuthenticationService {
 	 * We do not use Dependency Injection here because this method is used in the plugin activation process,
 	 * where the full dependency injection container is not available.
 	 *
-	 * @param string $apiKey The API key to validate.
-	 * @param string $mode The mode of operation (LIVE_MODE or TEST_MODE).
+	 * @param string      $apiKey The API key to validate.
+	 * @param Environment $mode The mode of operation (LIVE_MODE or TEST_MODE).
 	 *
 	 * @return string The merchant ID if the API key is valid, or an empty string if it is not valid.
 	 */
-	public function checkAuthentication( string $apiKey, string $mode = ClientConfiguration::LIVE_MODE ): string {
+	public function checkAuthentication( string $apiKey, Environment $mode ): string {
 
 		try {
 			$clientConfiguration = new ClientConfiguration( $apiKey, $mode );
 			$curlClient          = new CurlClient( $clientConfiguration );
 			$merchantEndpoint    = new MerchantEndpoint( $curlClient );
 			$merchant            = $merchantEndpoint->me();
-		} catch ( ClientConfigurationException|ClientException|MerchantEndpointException $e ) {
+		} catch ( MerchantEndpointException $e ) {
 
 			return '';
 		}

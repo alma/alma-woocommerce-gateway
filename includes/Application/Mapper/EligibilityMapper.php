@@ -19,33 +19,42 @@ class EligibilityMapper {
 	 */
 	public function buildEligibilityDto( CartAdapter $cartAdapter, CustomerAdapter $customerAdapter ): EligibilityDto {
 
-		$billingAddress = ( new AddressDto() )
-			->setFirstName( $customerAdapter->getCustomerBillingAddress()->getFirstName() )
-			->setLastName( $customerAdapter->getCustomerBillingAddress()->getLastName() )
-			->setCompany( $customerAdapter->getCustomerBillingAddress()->getCompany() )
-			->setLine1( $customerAdapter->getCustomerBillingAddress()->getLine1() )
-			->setLine2( $customerAdapter->getCustomerBillingAddress()->getLine2() )
-			->setPostalCode( $customerAdapter->getCustomerBillingAddress()->getPostalCode() )
-			->setCity( $customerAdapter->getCustomerBillingAddress()->getCity() )
-			->setStateProvince( $customerAdapter->getCustomerBillingAddress()->getStateProvince() )
-			->setCountry( $customerAdapter->getCustomerBillingAddress()->getCountry() );
-		if ( ! empty( $customerAdapter->getCustomerBillingAddress()->getEmail() ) ) {
-			$billingAddress->setEmail( $customerAdapter->getCustomerBillingAddress()->getEmail() );
+		$customerBillingAddress  = $customerAdapter->getCustomerBillingAddress();
+		$customerShippingAddress = $customerAdapter->getCustomerShippingAddress();
+
+		$billingAddressDto = new AddressDto();
+		if ( $customerBillingAddress ) {
+			$billingAddressDto
+				->setFirstName( $customerBillingAddress->getFirstName() )
+				->setLastName( $customerBillingAddress->getLastName() )
+				->setCompany( $customerBillingAddress->getCompany() )
+				->setLine1( $customerBillingAddress->getLine1() )
+				->setLine2( $customerBillingAddress->getLine2() )
+				->setPostalCode( $customerBillingAddress->getPostalCode() )
+				->setCity( $customerBillingAddress->getCity() )
+				->setStateProvince( $customerBillingAddress->getStateProvince() )
+				->setCountry( $customerBillingAddress->getCountry() );
+			if ( ! empty( $customerBillingAddress->getEmail() ) ) {
+				$billingAddressDto->setEmail( $customerBillingAddress->getEmail() );
+			}
 		}
 
-		$shippingAddress = ( new AddressDto() )
-			->setFirstName( $customerAdapter->getCustomerShippingAddress()->getFirstName() )
-			->setLastName( $customerAdapter->getCustomerShippingAddress()->getLastName() )
-			->setCompany( $customerAdapter->getCustomerShippingAddress()->getCompany() )
-			->setLine1( $customerAdapter->getCustomerShippingAddress()->getLine1() )
-			->setLine2( $customerAdapter->getCustomerShippingAddress()->getLine2() )
-			->setPostalCode( $customerAdapter->getCustomerShippingAddress()->getPostalCode() )
-			->setCity( $customerAdapter->getCustomerShippingAddress()->getCity() )
-			->setStateProvince( $customerAdapter->getCustomerShippingAddress()->getStateProvince() )
-			->setCountry( $customerAdapter->getCustomerShippingAddress()->getCountry() );
+		$shippingAddressDto = new AddressDto();
+		if ( $customerShippingAddress ) {
+			$shippingAddressDto
+				->setFirstName( $customerShippingAddress->getFirstName() )
+				->setLastName( $customerShippingAddress->getLastName() )
+				->setCompany( $customerShippingAddress->getCompany() )
+				->setLine1( $customerShippingAddress->getLine1() )
+				->setLine2( $customerShippingAddress->getLine2() )
+				->setPostalCode( $customerShippingAddress->getPostalCode() )
+				->setCity( $customerShippingAddress->getCity() )
+				->setStateProvince( $customerShippingAddress->getStateProvince() )
+				->setCountry( $customerShippingAddress->getCountry() );
+		}
 
 		return ( new EligibilityDto( $cartAdapter->getCartTotal() ) )
-			->setBillingAddress( $billingAddress )
-			->setShippingAddress( $shippingAddress );
+			->setBillingAddress( $billingAddressDto )
+			->setShippingAddress( $shippingAddressDto );
 	}
 }
