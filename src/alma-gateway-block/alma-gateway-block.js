@@ -160,7 +160,7 @@ import {useRef} from "react";
         // Register the payment gateway block
         if (!isCalculating && !isLoading) {
             // For each gateway in eligibility result, we register a block
-            registerPaymentGateway(almaSettings, allGatewaysSettings, parseInt(cartTotal))
+            registerPaymentGateway(almaSettings, allGatewaysSettings, storeKey, parseInt(cartTotal))
         }
     };
 
@@ -168,10 +168,11 @@ import {useRef} from "react";
      * Register All Payment Gateway Blocks
      * @param almaSettings All AlmaSettings
      * @param allGatewaysSettings
+     * @param storeKey
      * @param init
      * @param cartTotal
      */
-    const registerPaymentGateway = (almaSettings, allGatewaysSettings, cartTotal, init = false) => {
+    const registerPaymentGateway = (almaSettings, allGatewaysSettings, storeKey, cartTotal, init = false) => {
 
         for (const gatewayName in allGatewaysSettings) {
 
@@ -179,7 +180,7 @@ import {useRef} from "react";
 
             // If gateway Block is available, we register it
             if (gatewaySettings) {
-                const blockContent = getContentBlock(almaSettings, gatewaySettings, gatewayName, cartTotal)
+                const blockContent = getContentBlock(almaSettings, gatewaySettings, gatewayName, storeKey, cartTotal)
                 const AlmaGatewayBlock = generateGatewayBlock(gatewaySettings, blockContent, init ? true : gatewayCanMakePayment(gatewaySettings));
                 window.wc.wcBlocksRegistry.registerPaymentMethod(AlmaGatewayBlock);
                 console.log('register: ' + gatewayName);
@@ -218,13 +219,13 @@ import {useRef} from "react";
      * Get Content Block
      *
      * @param almaSettings
-     * @param isLoading
      * @param gatewaySettings
      * @param gateway
+     * @param storeKey
      * @param cartTotal
      * @returns {JSX.Element}
      */
-    const getContentBlock = (almaSettings, isLoading, gatewaySettings, gateway, cartTotal) => {
+    const getContentBlock = (almaSettings, gatewaySettings, gateway, storeKey, cartTotal) => {
         const setInPage = (inPageInstance) => {
             inPage = inPageInstance
         }
@@ -241,10 +242,10 @@ import {useRef} from "react";
         ) : (
             <DisplayAlmaBlock
                 almaSettings={almaSettings}
-                isLoading={isLoading}
                 isPayNow={gatewaySettings.is_pay_now}
                 gatewaySettings={gatewaySettings}
                 gateway={gateway}
+                storeKey={storeKey}
                 cartTotal={cartTotal}
             />
         )
