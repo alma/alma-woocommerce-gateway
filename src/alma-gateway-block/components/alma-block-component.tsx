@@ -66,7 +66,7 @@ export const AlmaBlock: React.FC<AlmaBlockProps> = (
             hasInPage,
             isPayNow,
             totalPrice,
-            plans
+            plans,
         }
 ) => {
     const labels = {};

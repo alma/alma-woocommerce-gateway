@@ -1,16 +1,18 @@
-import {useSelect} from '@wordpress/data';
 import {useEffect, useState} from '@wordpress/element';
 import {AlmaBlock} from "./alma-block-component.tsx";
 
 export const DisplayAlmaBlock = (props) => {
-    const {eventRegistration, emitResponse, gatewaySettings, gateway, storeKey, isPayNow, cartTotal} = props;
+    const {
+        eventRegistration,
+        emitResponse,
+        gatewaySettings,
+        gateway,
+        isPayNow,
+        cartTotal,
+        almaSettings,
+        isLoading
+    } = props;
     const {onPaymentSetup} = eventRegistration;
-    const {almaSettings, isLoading} = useSelect(
-        (select) => ({
-            almaSettings: select(storeKey).getAlmaSettings(),
-            isLoading: select(storeKey).isLoading()
-        }), []
-    );
 
     // Define default plan and selected plan outside of the render return
     const availableFeePlans = gatewaySettings.fee_plans_settings || {};

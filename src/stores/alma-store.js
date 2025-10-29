@@ -84,7 +84,7 @@ import {createReduxStore, register} from "@wordpress/data";
 export const storeKey = 'alma/alma-store';
 const DEFAULT_STATE = {
     almaSettings: {},
-    gatewaysSettings: {},
+    allGatewaysSettings: {},
     selectedFeePlan: null,
     isLoading: false,
 };
@@ -97,13 +97,13 @@ const actions = {
      */
     setAlmaSettings(data) {
         console.log('set settings in store:', data);
-        // Separate almaSettings and gatewaysSettings
+        // Separate almaSettings and allGatewaysSettings
         const {gateway_settings, ...almaSettings} = data || {};
         return {
             type: 'SET_ALMA_SETTINGS',
             payload: {
                 almaSettings,
-                gatewaysSettings: gateway_settings || {},
+                allGatewaysSettings: gateway_settings || {},
             },
         };
     },
@@ -127,7 +127,7 @@ function reducer(state = DEFAULT_STATE, action) {
             return {
                 ...state,
                 almaSettings: action.payload.almaSettings,
-                gatewaysSettings: action.payload.gatewaysSettings,
+                allGatewaysSettings: action.payload.allGatewaysSettings,
             };
         case 'SET_SELECTED_FEE_PLAN':
             return {
@@ -154,8 +154,8 @@ const selectors = {
     getAlmaSettings(state) {
         return state.almaSettings || {};
     },
-    getGatewaysSettings(state) {
-        return state.gatewaysSettings || {};
+    getAllGatewaysSettings(state) {
+        return state.allGatewaysSettings || {};
     },
     getSelectedFeePlan(state) {
         return state.selectedFeePlan ?? null;

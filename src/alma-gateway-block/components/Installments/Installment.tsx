@@ -1,5 +1,5 @@
 import * as React from "react";
-import {FormattedDate, FormattedMessage, FormattedNumber} from "react-intl";
+import {FormattedMessage, FormattedNumber} from "react-intl";
 import classNames from "classnames";
 
 type Props = {
@@ -24,12 +24,7 @@ export const Installment: React.FC<Props> = ({
                             <FormattedMessage id="installments.today"
                                     defaultMessage={localized_due_date.charAt(0).toUpperCase() + localized_due_date.slice(1)}/>
                     ) : (
-                            <FormattedDate
-                                    value={localized_due_date}
-                                    day="numeric"
-                                    month="long"
-                                    year="numeric"
-                            />
+                            <div>{localized_due_date}</div>
                     )}
                     <div>
                         <FormattedNumber

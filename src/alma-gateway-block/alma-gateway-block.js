@@ -119,10 +119,10 @@ import {useRef} from "react";
             shippingRates: select(CART_STORE_KEY).getShippingRates()
         }), []);
         // Subscribe to the eligibility
-        const {almaSettings, gatewaysSettings, isLoading} = useSelect(
+        const {almaSettings, allGatewaysSettings, isLoading} = useSelect(
             (select) => ({
                 almaSettings: select(storeKey).getAlmaSettings(),
-                gatewaysSettings: select(storeKey).getGatewaysSettings(),
+                allGatewaysSettings: select(storeKey).getAllGatewaysSettings(),
                 isLoading: select(storeKey).isLoading(),
             }), []
         );
@@ -157,26 +157,25 @@ import {useRef} from "react";
             }
         }, [cartTotal, shippingRates, isLoading]);
 
-
         // Register the payment gateway block
         if (!isCalculating && !isLoading) {
             // For each gateway in eligibility result, we register a block
-            registerPaymentGateway(almaSettings, gatewaysSettings, cartTotal)
+            registerPaymentGateway(almaSettings, allGatewaysSettings, parseInt(cartTotal))
         }
     };
 
     /**
      * Register All Payment Gateway Blocks
      * @param almaSettings All AlmaSettings
-     * @param gatewaysSettings
+     * @param allGatewaysSettings
      * @param init
      * @param cartTotal
      */
-    const registerPaymentGateway = (almaSettings, gatewaysSettings, init = false, cartTotal) => {
+    const registerPaymentGateway = (almaSettings, allGatewaysSettings, cartTotal, init = false) => {
 
-        for (const gatewayName in gatewaysSettings) {
+        for (const gatewayName in allGatewaysSettings) {
 
-            const gatewaySettings = gatewaysSettings?.[gatewayName] ?? {};
+            const gatewaySettings = allGatewaysSettings?.[gatewayName] ?? {};
 
             // If gateway Block is available, we register it
             if (gatewaySettings) {
@@ -219,12 +218,13 @@ import {useRef} from "react";
      * Get Content Block
      *
      * @param almaSettings
+     * @param isLoading
      * @param gatewaySettings
      * @param gateway
      * @param cartTotal
      * @returns {JSX.Element}
      */
-    const getContentBlock = (almaSettings, gatewaySettings, gateway, cartTotal) => {
+    const getContentBlock = (almaSettings, isLoading, gatewaySettings, gateway, cartTotal) => {
         const setInPage = (inPageInstance) => {
             inPage = inPageInstance
         }
@@ -240,8 +240,9 @@ import {useRef} from "react";
             />
         ) : (
             <DisplayAlmaBlock
+                almaSettings={almaSettings}
+                isLoading={isLoading}
                 isPayNow={gatewaySettings.is_pay_now}
-                storeKey={storeKey}
                 gatewaySettings={gatewaySettings}
                 gateway={gateway}
                 cartTotal={cartTotal}
