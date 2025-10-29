@@ -13,7 +13,7 @@ export const DisplayAlmaBlock = (props) => {
     );
 
     // Define default plan and selected plan outside of the render return
-    const availableFeePlans = almaSettings?.gateway_settings[gateway].fee_plans_settings || {};
+    const availableFeePlans = gatewaySettings.fee_plans_settings || {};
 
     let default_plan = '';
     if (!isLoading && Object.keys(availableFeePlans || {}).length > 0) {

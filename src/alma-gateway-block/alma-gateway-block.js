@@ -82,7 +82,7 @@ import {Label} from "./components/Label";
 import './alma-gateway-block.css';
 import {DisplayAlmaInPageBlock} from "./components/DisplayAlmaInPageBlock";
 import {DisplayAlmaBlock} from "./components/DisplayAlmaBlock";
-import {fetchAlmaSettings} from "./hooks/fetchAlmaSettings";
+import {fetchAlmaSettings} from "./hooks/almaSettings";
 import {useRef} from "react";
 
 (function ($) {
@@ -119,9 +119,10 @@ import {useRef} from "react";
             shippingRates: select(CART_STORE_KEY).getShippingRates()
         }), []);
         // Subscribe to the eligibility
-        const {almaSettings, isLoading} = useSelect(
+        const {almaSettings, gatewaysSettings, isLoading} = useSelect(
             (select) => ({
                 almaSettings: select(storeKey).getAlmaSettings(),
+                gatewaysSettings: select(storeKey).getGatewaysSettings(),
                 isLoading: select(storeKey).isLoading(),
             }), []
         );
@@ -160,26 +161,27 @@ import {useRef} from "react";
         // Register the payment gateway block
         if (!isCalculating && !isLoading) {
             // For each gateway in eligibility result, we register a block
-            registerPaymentGateway(almaSettings, cartTotal)
+            registerPaymentGateway(almaSettings, gatewaysSettings, cartTotal)
         }
     };
 
     /**
      * Register All Payment Gateway Blocks
      * @param almaSettings All AlmaSettings
+     * @param gatewaysSettings
      * @param init
      * @param cartTotal
      */
-    const registerPaymentGateway = (almaSettings, init = false, cartTotal) => {
+    const registerPaymentGateway = (almaSettings, gatewaysSettings, init = false, cartTotal) => {
 
-        for (const gatewayName in almaSettings.gateway_settings) {
+        for (const gatewayName in gatewaysSettings) {
 
-            const gatewaySetting = almaSettings?.gateway_settings?.[gatewayName] ?? {};
+            const gatewaySettings = gatewaysSettings?.[gatewayName] ?? {};
 
             // If gateway Block is available, we register it
-            if (gatewaySetting) {
-                const blockContent = getContentBlock(almaSettings, gatewaySetting, gatewayName, cartTotal)
-                const AlmaGatewayBlock = generateGatewayBlock(gatewaySetting, blockContent, init ? true : gatewayCanMakePayment(gatewaySetting));
+            if (gatewaySettings) {
+                const blockContent = getContentBlock(almaSettings, gatewaySettings, gatewayName, cartTotal)
+                const AlmaGatewayBlock = generateGatewayBlock(gatewaySettings, blockContent, init ? true : gatewayCanMakePayment(gatewaySettings));
                 window.wc.wcBlocksRegistry.registerPaymentMethod(AlmaGatewayBlock);
                 console.log('register: ' + gatewayName);
             }

@@ -1,4 +1,3 @@
-import {registerStore} from '@wordpress/data';
 /**
  * Example of Alma settings structure stored in the Redux store:
  * {
@@ -76,6 +75,8 @@ import {registerStore} from '@wordpress/data';
  * }
  */
 
+import {createReduxStore, register} from "@wordpress/data";
+
 /**
  * Store key for the Alma store.
  * @type {string}
@@ -83,6 +84,7 @@ import {registerStore} from '@wordpress/data';
 export const storeKey = 'alma/alma-store';
 const DEFAULT_STATE = {
     almaSettings: {},
+    gatewaysSettings: {},
     selectedFeePlan: null,
     isLoading: false,
 };
@@ -95,9 +97,14 @@ const actions = {
      */
     setAlmaSettings(data) {
         console.log('set settings in store:', data);
+        // Separate almaSettings and gatewaysSettings
+        const {gateway_settings, ...almaSettings} = data || {};
         return {
             type: 'SET_ALMA_SETTINGS',
-            payload: data,
+            payload: {
+                almaSettings,
+                gatewaysSettings: gateway_settings || {},
+            },
         };
     },
     setSelectedFeePlan(plan) {
@@ -119,7 +126,8 @@ function reducer(state = DEFAULT_STATE, action) {
         case 'SET_ALMA_SETTINGS':
             return {
                 ...state,
-                almaSettings: action.payload,
+                almaSettings: action.payload.almaSettings,
+                gatewaysSettings: action.payload.gatewaysSettings,
             };
         case 'SET_SELECTED_FEE_PLAN':
             return {
@@ -132,6 +140,7 @@ function reducer(state = DEFAULT_STATE, action) {
                 isLoading: action.payload,
             };
         default:
+            console.warn(`Unhandled action type: ${action.type}`);
             return state;
     }
 }
@@ -145,19 +154,20 @@ const selectors = {
     getAlmaSettings(state) {
         return state.almaSettings || {};
     },
+    getGatewaysSettings(state) {
+        return state.gatewaysSettings || {};
+    },
     getSelectedFeePlan(state) {
-        return state.selectedFeePlan;
+        return state.selectedFeePlan ?? null;
     },
     isLoading(state) {
-        return state.isLoading;
+        return state.isLoading ?? false;
     }
 };
 
-registerStore(
-    'alma/alma-store',
-    {
-        reducer,
-        actions,
-        selectors,
-    }
-);
+const almaReduxStore = createReduxStore('alma/alma-store', {
+    reducer,
+    actions,
+    selectors,
+});
+register(almaReduxStore);
