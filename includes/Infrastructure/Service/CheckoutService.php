@@ -68,39 +68,12 @@ class CheckoutService {
 	 * Can receive billing_country and shipping_country as GET parameters
 	 * to filter on Eligibility.
 	 */
-	public function getCheckoutData() {
+	public function getCheckoutData(): void {
 
-		$isInPage       = $this->configService->isInPageEnabled();
-		$eligibilityDto = ( new EligibilityMapper() )
-			->buildEligibilityDto( ContextHelper::getCart(), ContextHelper::getCustomer() );
-		try {
-			$eligibilityList = $this->eligibilityProvider->getEligibilityList( $eligibilityDto );
-		} catch ( EligibilityServiceException $e ) {
-			$eligibilityList = new EligibilityList();
-		}
-
-		// Prepare response
-		$params = array(
-			'success'          => true,
-			'is_in_page'       => (bool) $isInPage,
-			'gateway_settings' => array_merge_recursive(
-				$this->formatBlocksForCheckout( $this->gatewayRepository->findAllAlmaGatewayBlocks() ),
-				$this->formatEligibilityForCheckout( $eligibilityList ),
-			),
-			'nonce_value'      => $this->formHelper->generateTokenField(
-				sprintf( '%s_nonce_action', 'alma_checkout' ),
-				sprintf( '%s_nonce_field', 'alma_checkout' ),
-			),
-		);
-		if ( $isInPage ) {
-			$params['merchant_id'] = $this->configService->getMerchantId();
-			$params['environment'] = strtoupper( $this->configService->getEnvironment()->getMode() );
-			$params['language']    = ContextHelper::getLanguage();
-		}
-		wp_send_json( $params );
+		wp_send_json( $this->getCheckoutParams() );
 	}
 
-	public function getCheckoutParams() {
+	public function getCheckoutParams(): array {
 
 		$isInPage       = $this->configService->isInPageEnabled();
 		$eligibilityDto = ( new EligibilityMapper() )

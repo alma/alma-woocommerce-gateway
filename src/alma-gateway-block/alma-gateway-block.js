@@ -191,27 +191,26 @@ import {useRef} from "react";
     /**
      * Generate Gateway Block
      *
-     * @param settings
+     * @param gatewaySettings
      * @param blockContent
      * @param canMakePayment
      * @returns {{name: *, label, content: *, edit: *, placeOrderButtonLabel: *, canMakePayment: function(): *, ariaLabel: *}}
      */
-    const generateGatewayBlock = (settings, blockContent, canMakePayment) => {
-
+    const generateGatewayBlock = (gatewaySettings, blockContent, canMakePayment) => {
         console.log("Generating Gateway block " + blockContent);
 
         return {
-            name: settings.gateway_name,
+            name: gatewaySettings.gateway_name,
             label: (
                 <Label
-                    title={window.wp.htmlEntities.decodeEntities(settings.title)}
+                    title={window.wp.htmlEntities.decodeEntities(gatewaySettings.title)}
                 />
             ),
             content: blockContent,
             edit: blockContent,
-            placeOrderButtonLabel: settings.label_button,
+            placeOrderButtonLabel: gatewaySettings.label_button,
             canMakePayment: () => canMakePayment,
-            ariaLabel: settings.title,
+            ariaLabel: gatewaySettings.title,
         }
     }
 

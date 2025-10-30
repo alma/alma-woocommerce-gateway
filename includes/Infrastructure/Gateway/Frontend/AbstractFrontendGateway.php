@@ -32,6 +32,22 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	}
 
 	/**
+	 * Check if the gateway is enabled.
+	 * If there is at least one enabled Fee Plan for this gateway type, the gateway is considered enabled.
+	 *
+	 * @return bool
+	 * @throws FeePlanRepositoryException
+	 */
+	public function is_enabled(): bool {
+
+		/** @var FeePlanRepository $feePlanRepository */
+		$feePlanRepository = Plugin::get_instance()->get_container()->get( FeePlanRepository::class );
+		$feePlanList       = $feePlanRepository->getAll()->filterFeePlanList( array( $this->get_type() ) )->filterEnabled();
+
+		return count( $feePlanList ) > 0;
+	}
+
+	/**
 	 * Check if the gateway is a pay now gateway.
 	 *
 	 * @return bool
@@ -58,17 +74,6 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	 */
 	public function get_option_key(): string {
 		return $this->plugin_id . $this->config_gateway_id . '_settings';
-	}
-
-	/**
-	 * Check if the gateway is enabled.
-	 *
-	 * @return bool
-	 */
-	public function is_enabled(): bool {
-		$enabled = $this->settings['enabled'] ?? 'no';
-
-		return 'yes' === $enabled;
 	}
 
 	/**

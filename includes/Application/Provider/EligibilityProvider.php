@@ -22,21 +22,6 @@ class EligibilityProvider implements EligibilityProviderInterface {
 	}
 
 	/**
-	 * Retrieve the eligibility list based on the current cart total.
-	 *
-	 * @throws EligibilityServiceException
-	 */
-	public function retrieveEligibility( EligibilityDto $eligibilityDto ): void {
-
-		try {
-			$this->eligibilityList = $this->eligibilityEndpoint->getEligibilityList( $eligibilityDto );
-
-		} catch ( EligibilityEndpointException $e ) {
-			throw new EligibilityServiceException( 'Error retrieving eligibility: ' . $e->getMessage(), 0, $e );
-		}
-	}
-
-	/**
 	 * Get the eligibility list.
 	 *
 	 * @param EligibilityDto $eligibilityDto
@@ -50,5 +35,20 @@ class EligibilityProvider implements EligibilityProviderInterface {
 		}
 
 		return $this->eligibilityList;
+	}
+	
+	/**
+	 * Retrieve the eligibility list based on the current cart total.
+	 *
+	 * @throws EligibilityServiceException
+	 */
+	public function retrieveEligibility( EligibilityDto $eligibilityDto ): void {
+
+		try {
+			$this->eligibilityList = $this->eligibilityEndpoint->getEligibilityList( $eligibilityDto );
+
+		} catch ( EligibilityEndpointException $e ) {
+			throw new EligibilityServiceException( 'Error retrieving eligibility: ' . $e->getMessage(), 0, $e );
+		}
 	}
 }
