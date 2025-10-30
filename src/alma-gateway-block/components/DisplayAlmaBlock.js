@@ -6,19 +6,16 @@ export const DisplayAlmaBlock = (props) => {
     const {
         eventRegistration,
         emitResponse,
-        gatewaySettings,
         gateway,
         storeKey,
-        isPayNow,
         cartTotal,
-        almaSettings,
     } = props;
     const {onPaymentSetup} = eventRegistration;
 
-    console.log('storeKey', storeKey)
-
-    const {isLoading} = useSelect(
+    const {almaSettings, gatewaySettings, isLoading} = useSelect(
         (select) => ({
+            almaSettings: select(storeKey).getAlmaSettings(),
+            gatewaySettings: select(storeKey).getGatewaySettings(gateway),
             isLoading: select(storeKey).isLoading()
         }), []
     );
@@ -62,7 +59,7 @@ export const DisplayAlmaBlock = (props) => {
 
     return isLoading ? <div></div> : <AlmaBlock
         hasInPage={almaSettings.is_in_page}
-        isPayNow={isPayNow}
+        isPayNow={gatewaySettings.is_pay_now}
         totalPrice={cartTotal}
         gatewaySettings={gatewaySettings}
         selectedFeePlan={plan.planKey}

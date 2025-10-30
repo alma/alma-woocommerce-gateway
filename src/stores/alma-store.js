@@ -154,12 +154,36 @@ const selectors = {
     getAlmaSettings(state) {
         return state.almaSettings || {};
     },
+    /**
+     * Get all gateways settings or a specific gateway's settings if a gateway name is provided.
+     * @param state
+     * @returns {object}
+     */
     getAllGatewaysSettings(state) {
         return state.allGatewaysSettings || {};
     },
+    /**
+     * Get settings for a specific gateway.
+     * @param state
+     * @param gateway
+     * @returns {*|{}}
+     */
+    getGatewaySettings(state, gateway) {
+        return state.allGatewaysSettings?.[gateway] || {};
+    },
+    /**
+     * Get the selected fee plan from the store.
+     * @param state
+     * @returns {string|*|null}
+     */
     getSelectedFeePlan(state) {
         return state.selectedFeePlan ?? null;
     },
+    /**
+     * Check if the store is in a loading state.
+     * @param state
+     * @returns {boolean}
+     */
     isLoading(state) {
         return state.isLoading ?? false;
     }

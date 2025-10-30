@@ -180,7 +180,7 @@ import {useRef} from "react";
 
             // If gateway Block is available, we register it
             if (gatewaySettings) {
-                const blockContent = getContentBlock(almaSettings, gatewaySettings, gatewayName, storeKey, cartTotal)
+                const blockContent = getContentBlock(almaSettings, gatewayName, storeKey, cartTotal)
                 const AlmaGatewayBlock = generateGatewayBlock(gatewaySettings, blockContent, init ? true : gatewayCanMakePayment(gatewaySettings));
                 window.wc.wcBlocksRegistry.registerPaymentMethod(AlmaGatewayBlock);
                 console.log('register: ' + gatewayName);
@@ -219,31 +219,25 @@ import {useRef} from "react";
      * Get Content Block
      *
      * @param almaSettings
-     * @param gatewaySettings
      * @param gateway
      * @param storeKey
      * @param cartTotal
      * @returns {JSX.Element}
      */
-    const getContentBlock = (almaSettings, gatewaySettings, gateway, storeKey, cartTotal) => {
+    const getContentBlock = (almaSettings, gateway, storeKey, cartTotal) => {
         const setInPage = (inPageInstance) => {
             inPage = inPageInstance
         }
 
         return almaSettings.is_in_page ? (
             <DisplayAlmaInPageBlock
-                isPayNow={gatewaySettings.is_pay_now}
-                storeKey={storeKey}
-                gatewaySettings={gatewaySettings}
                 gateway={gateway}
+                storeKey={storeKey}
                 setInPage={setInPage}
                 cartTotal={cartTotal}
             />
         ) : (
             <DisplayAlmaBlock
-                almaSettings={almaSettings}
-                isPayNow={gatewaySettings.is_pay_now}
-                gatewaySettings={gatewaySettings}
                 gateway={gateway}
                 storeKey={storeKey}
                 cartTotal={cartTotal}
