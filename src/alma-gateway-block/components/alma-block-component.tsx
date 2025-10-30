@@ -42,6 +42,8 @@ type GatewaySettings = {
     plans: Record<string, FeePlan>;
     gateway_name: string;
     is_in_page: boolean;
+    is_pay_later: boolean;
+    is_pay_now: boolean;
     label_button: string;
     nonce_value: string;
     title: string;
@@ -53,7 +55,6 @@ type AlmaBlockProps = {
     selectedFeePlan: string;
     setSelectedFeePlan: (value: string) => void;
     hasInPage: boolean;
-    isPayNow: boolean;
     totalPrice: number;
     plans: Record<string, FeePlan>;
 };
@@ -64,7 +65,6 @@ export const AlmaBlock: React.FC<AlmaBlockProps> = (
             selectedFeePlan,
             setSelectedFeePlan,
             hasInPage,
-            isPayNow,
             totalPrice,
             plans,
         }
@@ -74,10 +74,7 @@ export const AlmaBlock: React.FC<AlmaBlockProps> = (
     for (const key of Object.keys(plans)) {
         const index = Object.keys(plans).indexOf(key);
         values.push(key);
-        if (
-                gatewaySettings.gateway_name === "alma_pay_later" ||
-                gatewaySettings.gateway_name === "alma_in_page_pay_later"
-        ) {
+        if (gatewaySettings.is_pay_later) {
             if (plans[key].deferredDays > 0) {
                 labels[key] = "D+" + plans[key].deferredDays;
             } else if (plans[key].deferredMonths > 0) {
@@ -97,9 +94,9 @@ export const AlmaBlock: React.FC<AlmaBlockProps> = (
     );
     return (
             <IntlProvider locale="fr">
-                {isPayNow && <div className={"payNowLabel"}>{label}</div>}
+                {gatewaySettings.is_pay_now && <div className={"payNowLabel"}>{label}</div>}
                 <div className={"buttonsContainer"}>
-                    <div className={classNames({payNow: isPayNow})}>
+                    <div className={classNames({payNow: gatewaySettings.is_pay_now})}>
                         <ToggleButtonsField
                                 className={"toggleButtonField"}
                                 options={values}

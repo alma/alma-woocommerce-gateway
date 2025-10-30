@@ -59,7 +59,6 @@ export const DisplayAlmaBlock = (props) => {
 
     return isLoading ? <div></div> : <AlmaBlock
         hasInPage={almaSettings.is_in_page}
-        isPayNow={gatewaySettings.is_pay_now}
         totalPrice={cartTotal}
         gatewaySettings={gatewaySettings}
         selectedFeePlan={plan.planKey}

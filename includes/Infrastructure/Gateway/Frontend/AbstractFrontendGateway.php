@@ -57,6 +57,15 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	}
 
 	/**
+	 * Check if the gateway is a pay later gateway.
+	 *
+	 * @return bool
+	 */
+	public function is_pay_later(): bool {
+		return false;
+	}
+
+	/**
 	 * Get the gateway name.
 	 * The goal is to have a unique name for all frontend gateways
 	 *

@@ -42,7 +42,8 @@
  * @property {string} gateway_name - WooCommerce gateway identifier.
  * @property {string} title - Gateway display title.
  * @property {string} [description] - Gateway description (optional).
- * @property {boolean} [is_pay_now] - Indicates if it is a pay-now type gateway.
+ * @property {boolean} [is_pay_later] - Indicates if it is a paylater type gateway.
+ * @property {boolean} [is_pay_now] - Indicates if it is a paynow type gateway.
  * @property {string} [label_button] - Button label used in UI.
  * @property {FeePlansSettings} [fee_plans_settings] - Available payment plans (credit/installments gateways only).
  *

@@ -158,6 +158,7 @@ class CheckoutService {
 			'title'        => $almaGatewayBlock->get_gateway()->get_title(),
 			'description'  => $almaGatewayBlock->get_gateway()->get_description(),
 			'is_pay_now'   => $almaGatewayBlock->get_gateway()->is_pay_now(),
+			'is_pay_later' => $almaGatewayBlock->get_gateway()->is_pay_later(),
 			'label_button' => L10nHelper::__( 'Pay With Alma' ),
 		);
 	}

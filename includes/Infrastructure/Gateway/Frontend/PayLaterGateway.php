@@ -31,6 +31,15 @@ class PayLaterGateway extends AbstractFrontendGateway implements FrontendGateway
 	}
 
 	/**
+	 * Check if the gateway is a pay later gateway.
+	 *
+	 * @return bool
+	 */
+	public function is_pay_later(): bool {
+		return true;
+	}
+
+	/**
 	 * Validate the fields submitted by the user.
 	 *
 	 * @return bool
