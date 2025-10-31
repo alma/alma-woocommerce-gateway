@@ -2,7 +2,6 @@
 
 namespace Alma\Gateway\Infrastructure\Entity;
 
-use Alma\API\Domain\Entity\WidgetInterface;
 use Alma\Gateway\Application\Exception\Entity\CartWidgetException;
 use Alma\Gateway\Infrastructure\Block\Widget\WidgetBlock;
 use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
@@ -10,7 +9,7 @@ use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\ShortcodeWidgetHelper;
 use Alma\Gateway\Plugin;
 
-class CartWidget extends AbstractWidget implements WidgetInterface {
+class CartWidget extends AbstractWidget {
 
 	/**
 	 * @throws CartWidgetException

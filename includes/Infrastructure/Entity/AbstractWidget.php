@@ -3,13 +3,14 @@
 namespace Alma\Gateway\Infrastructure\Entity;
 
 use Alma\API\Domain\Adapter\FeePlanListAdapterInterface;
+use Alma\API\Domain\Entity\WidgetInterface;
 use Alma\API\Domain\ValueObject\Environment;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Service\AssetsService;
 
-abstract class AbstractWidget {
+abstract class AbstractWidget implements WidgetInterface {
 
 	/** @var string class used by merchant's shortcode to display widget */
 	const WIDGET_CLASS = 'alma-widget';
@@ -31,13 +32,15 @@ abstract class AbstractWidget {
 		$this->assetsService = $assetsService;
 	}
 
-	public function configure( FeePlanListAdapterInterface $feePlanListAdapter, Environment $environment, string $merchantId, int $price, bool $displayWidget, string $language ): void {
+	public function configure( FeePlanListAdapterInterface $feePlanListAdapter, Environment $environment, string $merchantId, int $price, bool $displayWidget, string $language ): WidgetInterface {
 		$this->feePlanListAdapter = $feePlanListAdapter;
 		$this->environment        = $environment;
 		$this->merchantId         = $merchantId;
 		$this->price              = $price;
 		$this->displayWidget      = $displayWidget;
 		$this->language           = $language;
+
+		return $this;
 	}
 
 	/**

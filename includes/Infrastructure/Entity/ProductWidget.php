@@ -2,13 +2,12 @@
 
 namespace Alma\Gateway\Infrastructure\Entity;
 
-use Alma\API\Domain\Entity\WidgetInterface;
 use Alma\Gateway\Application\Exception\Entity\ProductWidgetException;
 use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Helper\ShortcodeWidgetHelper;
 use Alma\Gateway\Plugin;
 
-class ProductWidget extends AbstractWidget implements WidgetInterface {
+class ProductWidget extends AbstractWidget {
 
 	/**
 	 * Display the Alma widget using shortcode.
