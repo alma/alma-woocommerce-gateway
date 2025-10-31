@@ -15,6 +15,7 @@ use Alma\Gateway\Infrastructure\Block\Gateway\AbstractGatewayBlock;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\AbstractFrontendGateway;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\FormHelper;
+use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
 
 class CheckoutService {
@@ -23,6 +24,7 @@ class CheckoutService {
 	private ConfigService $configService;
 	private AssetsService $assetsService;
 	private GatewayRepository $gatewayRepository;
+	private FeePlanRepository $feePlanRepository;
 	private EligibilityProvider $eligibilityProvider;
 	private CartAdapter $cartAdapter;
 	private CustomerAdapter $customerAdapter;
@@ -34,6 +36,7 @@ class CheckoutService {
 		ConfigService $configService,
 		AssetsService $assetsService,
 		GatewayRepository $gatewayRepository,
+		FeePlanRepository $feePlanRepository,
 		EligibilityProvider $eligibilityProvider,
 		CartAdapter $cartAdapter,
 		CustomerAdapter $customerAdapter,
@@ -42,6 +45,7 @@ class CheckoutService {
 		$this->configService       = $configService;
 		$this->assetsService       = $assetsService;
 		$this->gatewayRepository   = $gatewayRepository;
+		$this->feePlanRepository   = $feePlanRepository;
 		$this->eligibilityProvider = $eligibilityProvider;
 		$this->cartAdapter         = $cartAdapter;
 		$this->customerAdapter     = $customerAdapter;
@@ -77,7 +81,11 @@ class CheckoutService {
 
 		$isInPage       = $this->configService->isInPageEnabled();
 		$eligibilityDto = ( new EligibilityMapper() )
-			->buildEligibilityDto( ContextHelper::getCart(), ContextHelper::getCustomer() );
+			->buildEligibilityDto(
+				ContextHelper::getCart(),
+				ContextHelper::getCustomer(),
+				$this->feePlanRepository->getAll()
+			);
 		try {
 			$eligibilityList = $this->eligibilityProvider->getEligibilityList( $eligibilityDto );
 		} catch ( EligibilityServiceException $e ) {

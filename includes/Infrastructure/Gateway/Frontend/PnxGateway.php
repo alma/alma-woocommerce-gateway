@@ -3,6 +3,7 @@
 namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
+use Alma\API\Domain\ValueObject\PaymentMethod;
 use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
@@ -17,7 +18,7 @@ use Alma\Gateway\Plugin;
  * @see public/templates/partials/pnx-gateway-options.php for rendering
  */
 class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInterface {
-	public const GATEWAY_TYPE = 'pnx';
+	public const GATEWAY_TYPE = PaymentMethod::PNX;
 
 	/**
 	 * Gateway constructor.

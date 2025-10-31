@@ -51,6 +51,9 @@ class GatewayService {
 	/** @var GatewayRepository The Gateway Repository */
 	private GatewayRepository $gatewayRepository;
 
+	/** @var FeePlanRepository The Fee Plan Repository */
+	private FeePlanRepository $feePlanRepository;
+
 	/** @var FrontendHelper The Frontend Helper */
 	private FrontendHelper $frontendHelper;
 
@@ -63,6 +66,7 @@ class GatewayService {
 	public function __construct(
 		ConfigService $configService,
 		GatewayRepository $gatewayRepository,
+		FeePlanRepository $feePlanRepository,
 		GatewayHelper $gatewayHelper,// Move
 		IpnHelper $ipnHelper,
 		ContextHelperInterface $contextHelper,
@@ -71,6 +75,7 @@ class GatewayService {
 	) {
 		$this->configService     = $configService;
 		$this->gatewayRepository = $gatewayRepository;
+		$this->feePlanRepository = $feePlanRepository;
 		$this->gatewayHelper     = $gatewayHelper;
 		$this->ipnHelper         = $ipnHelper;
 		$this->contextHelper     = $contextHelper;
@@ -216,7 +221,11 @@ class GatewayService {
 				if ( ContextHelper::isCheckoutPage() ) {
 					$gateway->configure_eligibility( $this->eligibilityProvider->getEligibilityList(
 						( new EligibilityMapper() )
-							->buildEligibilityDto( ContextHelper::getCart(), ContextHelper::getCustomer() )
+							->buildEligibilityDto(
+								ContextHelper::getCart(),
+								ContextHelper::getCustomer(),
+								$this->feePlanRepository->getAll()
+							)
 					) );
 					$gateway->configure_fee_plans( $feePlanRepository->getAll() );
 				}

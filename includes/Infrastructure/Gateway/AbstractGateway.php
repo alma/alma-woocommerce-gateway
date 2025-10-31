@@ -88,7 +88,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Set the max amount of the gateway based on the fee plans.
+	 * Configure the fee plans of the gateway based on the fee plan list.
 	 *
 	 * @param FeePlanListAdapter $fee_plan_list_adapter The fee plan list to filter.
 	 */

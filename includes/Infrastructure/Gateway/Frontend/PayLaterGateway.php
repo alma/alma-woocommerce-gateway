@@ -3,6 +3,7 @@
 namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
+use Alma\API\Domain\ValueObject\PaymentMethod;
 use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
@@ -18,7 +19,7 @@ use Alma\Gateway\Plugin;
  */
 class PayLaterGateway extends AbstractFrontendGateway implements FrontendGatewayInterface {
 
-	public const GATEWAY_TYPE = 'paylater';
+	public const GATEWAY_TYPE = PaymentMethod::PAY_LATER;
 
 	/**
 	 * Gateway constructor.

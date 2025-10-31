@@ -26,7 +26,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class PayNowGatewayBlock extends AbstractGatewayBlock implements IntegrationInterface {
 
 	public function __construct( ConfigService $config_service, AssetsService $assets_service ) {
-		$this->name    = 'alma_paynow_gateway_block';
 		$this->gateway = new PayNowGateway();
 		parent::__construct( $config_service, $assets_service );
 	}

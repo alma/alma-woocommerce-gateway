@@ -26,7 +26,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class PnxGatewayBlock extends AbstractGatewayBlock implements IntegrationInterface {
 
 	public function __construct( ConfigService $config_service, AssetsService $assets_service ) {
-		$this->name    = 'alma_pnx_gateway_block';
 		$this->gateway = new PnxGateway();
 		parent::__construct( $config_service, $assets_service );
 	}

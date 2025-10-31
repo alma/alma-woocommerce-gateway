@@ -96,7 +96,6 @@ class ConfigRepository implements ConfigRepositoryInterface {
 	 * @return bool True if the setting was deleted, false otherwise.
 	 */
 	public function deleteSetting( string $setting ): bool {
-		almalog( 'Delete setting: ' . $setting );
 		$settings = $this->getSettings();
 		unset( $settings[ $setting ] );
 

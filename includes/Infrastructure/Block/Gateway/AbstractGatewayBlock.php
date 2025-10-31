@@ -39,7 +39,7 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 
 		$this->config_service = $config_service;
 		$this->assets_service = $assets_service;
-
+		$this->name           = 'alma_' . $this->gateway->get_name() . '_gateway_block';
 		$this->initialize();
 	}
 
