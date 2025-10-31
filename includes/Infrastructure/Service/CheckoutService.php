@@ -84,7 +84,7 @@ class CheckoutService {
 			->buildEligibilityDto(
 				ContextHelper::getCart(),
 				ContextHelper::getCustomer(),
-				$this->feePlanRepository->getAll()
+				$this->feePlanRepository->getAll()->filterEnabled()
 			);
 		try {
 			$eligibilityList = $this->eligibilityProvider->getEligibilityList( $eligibilityDto );

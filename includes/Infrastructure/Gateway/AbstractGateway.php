@@ -3,7 +3,6 @@
 namespace Alma\Gateway\Infrastructure\Gateway;
 
 use Alma\API\Application\DTO\RefundDto;
-use Alma\API\Domain\Entity\EligibilityList;
 use Alma\API\Infrastructure\Exception\ParametersException;
 use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
@@ -33,14 +32,10 @@ use WC_Payment_Gateway;
  */
 abstract class AbstractGateway extends WC_Payment_Gateway {
 
-	protected const GATEWAY_TYPE = 'abstract';
+	protected const PAYMENT_METHOD = 'abstract';
 
 	protected const CACHE_ENABLED = false;
-	/**
-	 * @var ?EligibilityList $eligibility_list public only for debug in functions.php
-	 * @todo Remove this public property when the eligibility and fee plans are fully implemented.
-	 */
-	protected ?EligibilityList $eligibility_list = null;
+
 	/**
 	 * @var ?FeePlanListAdapter $fee_plan_list_adapter public only for debug in functions.php
 	 * @todo Remove this public property when the eligibility and fee plans are fully implemented.
@@ -53,7 +48,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * Gateway constructor.
 	 */
 	public function __construct() {
-		$this->id                 = sprintf( 'alma_%s_gateway', $this->get_type() );
+		$this->id                 = sprintf( 'alma_%s_gateway', $this->get_payment_method() );
 		$this->method_description = L10nHelper::__( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.' );
 		$this->has_fields         = true;
 		$this->supports           = array( 'products', 'refunds' );
@@ -69,31 +64,12 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Get the eligibility list.
-	 * @return EligibilityList
-	 * @todo Usefull only for dev purposes, remove when not needed anymore.
-	 *
-	 */
-	public function getEligibilityList(): EligibilityList {
-		return $this->eligibility_list;
-	}
-
-	/**
-	 * Set the eligibility of the gateway based on the eligibility list.
-	 *
-	 * @param EligibilityList $eligibility_list The eligibility list to filter.
-	 */
-	public function configure_eligibility( EligibilityList $eligibility_list ): void {
-		$this->eligibility_list = $eligibility_list->filterEligibilityList( $this->get_type() );
-	}
-
-	/**
 	 * Configure the fee plans of the gateway based on the fee plan list.
 	 *
 	 * @param FeePlanListAdapter $fee_plan_list_adapter The fee plan list to filter.
 	 */
 	public function configure_fee_plans( FeePlanListAdapter $fee_plan_list_adapter ): void {
-		$this->fee_plan_list_adapter = $fee_plan_list_adapter->filterFeePlanList( array( $this->get_type() ) );
+		$this->fee_plan_list_adapter = $fee_plan_list_adapter->filterFeePlanList( array( $this->get_payment_method() ) );
 	}
 
 	/**
@@ -265,8 +241,14 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		return $this->id;
 	}
 
-	protected function get_type(): string {
-		return static::GATEWAY_TYPE;
+	/**
+	 * Get the Payment Method type of the gateway.
+	 *
+	 *
+	 * @return string The Payment Method type of the gateway.
+	 */
+	public function get_payment_method(): string {
+		return static::PAYMENT_METHOD;
 	}
 
 	/**
@@ -275,6 +257,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * The result can be cached to avoid multiple calls to the same cart total.
 	 *
 	 * @return bool
+	 * @todo move this to CartAdapter?
 	 */
 	private function is_cart_eligible(): bool {
 		$eligibility = false;
@@ -296,12 +279,12 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		// @todo Find a fix to avoid API calls here.
 		if ( ! $this->fee_plan_list_adapter ) {
 			$fee_plan_repository         = Plugin::get_container()->get( FeePlanRepository::class );
-			$this->fee_plan_list_adapter = $fee_plan_repository->getAll();
+			$this->fee_plan_list_adapter = $fee_plan_repository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) );
 		}
 
 		// Check if at least one fee plan is eligible for the cart total amount for this gateway
 		if ( isset( $this->fee_plan_list_adapter ) ) {
-			/** @var FeePlanAdapter $fee_plan */
+			/** @var FeePlanAdapter $fee_plan_adapter */
 			foreach ( $this->fee_plan_list_adapter as $fee_plan_adapter ) {
 				if ( $fee_plan_adapter->isEligible( $total ) ) {
 					$eligibility = true;

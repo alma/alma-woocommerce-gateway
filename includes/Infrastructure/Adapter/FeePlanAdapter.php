@@ -171,7 +171,19 @@ class FeePlanAdapter implements FeePlanAdapterInterface, FeePlanInterface {
 	}
 
 	public function isEligible( int $purchaseAmount ): bool {
-		return $this->almaFeePlan->isEligible( $purchaseAmount );
+		if ( ! $this->isAvailable() ) {
+			return false;
+		}
+
+		// If the purchase amount is below the minimum override or above the maximum override, it is not eligible
+		if (
+			$purchaseAmount < $this->getOverrideMinPurchaseAmount() ||
+			$purchaseAmount > $this->getOverrideMaxPurchaseAmount()
+		) {
+			return false;
+		}
+
+		return true;
 	}
 
 	public function isEnabled(): bool {

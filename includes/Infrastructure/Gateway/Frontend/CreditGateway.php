@@ -19,7 +19,7 @@ use Alma\Gateway\Plugin;
  */
 class CreditGateway extends AbstractFrontendGateway implements FrontendGatewayInterface {
 
-	public const GATEWAY_TYPE = PaymentMethod::CREDIT;
+	public const PAYMENT_METHOD = PaymentMethod::CREDIT;
 
 	/**
 	 * Gateway constructor.
@@ -83,7 +83,7 @@ class CreditGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 				'alma_woocommerce_gateway_merchant_id'   => $config_service->getMerchantId(),
 				'alma_woocommerce_gateway_in_page_iframe_selector' => sprintf(
 					'alma_%s_gateway_in_page',
-					$this->get_type()
+					$this->get_payment_method()
 				),
 			),
 			'partials'
@@ -92,8 +92,8 @@ class CreditGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 			'alma-frontend-in-page-implementation',
 			'alma_woocommerce_gateway_credit_gateway',
 			array(
-				'type'         => $this->get_type(),
-				'gateway_name' => sprintf( 'alma_%s_gateway', $this->get_type() ),
+				'type'         => $this->get_payment_method(),
+				'gateway_name' => sprintf( 'alma_%s_gateway', $this->get_payment_method() ),
 			)
 		);
 	}

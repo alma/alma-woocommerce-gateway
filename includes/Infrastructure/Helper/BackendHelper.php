@@ -20,7 +20,7 @@ class BackendHelper {
 	 *
 	 * @return void
 	 */
-	public function loadBackendGateway() {
+	public static function loadBackendGateway() {
 		add_filter(
 			'woocommerce_payment_gateways',
 			function ( $gateways ) {

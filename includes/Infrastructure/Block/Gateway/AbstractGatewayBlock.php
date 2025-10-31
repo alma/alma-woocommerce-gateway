@@ -15,6 +15,7 @@ use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Exception\Block\CheckoutBlockException;
+use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\AbstractFrontendGateway;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Service\AssetsService;
@@ -56,11 +57,10 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 	 * Returns if this payment method should be active. If false, the scripts will not be enqueued.
 	 *
 	 * @return boolean
+	 * @throws FeePlanRepositoryException
 	 */
 	public function is_active(): bool {
-		return true;
-
-		// return $this->config_service->isBlocksEnabled() && $this->gateway->is_enabled() && $this->gateway->is_available();
+		return $this->config_service->isBlocksEnabled() && $this->gateway->is_enabled() && $this->gateway->is_available();
 	}
 
 	/**

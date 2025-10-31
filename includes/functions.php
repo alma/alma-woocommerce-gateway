@@ -1,6 +1,5 @@
 <?php
 
-use Alma\API\Domain\Entity\Eligibility;
 use Alma\API\Domain\Entity\FeePlan;
 use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
 use Alma\Gateway\Application\Service\ConfigService;
@@ -22,15 +21,6 @@ add_action(
 		foreach ( WC()->payment_gateways()->payment_gateways() as $gateway ) {
 			$availability = $gateway->is_available() ? 'available' : 'not available';
 			echo $gateway->id . ' (Enabled: => ' . $gateway->enabled . ' / Available: => ' . $availability . ")\n";
-			if ( $gateway instanceof AbstractGateway ) {
-				/** @var Eligibility $eligibility */
-				foreach ( $gateway->getEligibilityList() as $eligibility ) {
-					echo '  - ' . $eligibility->getPlanKey() . ' => ' . ( $eligibility->isEligible() ? 'eligible' : 'not eligible' )
-					     . "\n";
-				}
-			} else {
-				echo ' - Not an Alma gateway' . "\n";
-			}
 		}
 		echo '</pre>';
 	}

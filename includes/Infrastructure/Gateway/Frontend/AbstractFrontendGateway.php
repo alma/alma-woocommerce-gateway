@@ -42,7 +42,7 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 
 		/** @var FeePlanRepository $feePlanRepository */
 		$feePlanRepository = Plugin::get_instance()->get_container()->get( FeePlanRepository::class );
-		$feePlanList       = $feePlanRepository->getAll()->filterFeePlanList( array( $this->get_type() ) )->filterEnabled();
+		$feePlanList       = $feePlanRepository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) )->filterEnabled();
 
 		return count( $feePlanList ) > 0;
 	}
@@ -72,7 +72,7 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	 * @return string
 	 */
 	public function get_name(): string {
-		return sprintf( 'alma_%s_gateway', $this->get_type() );
+		return sprintf( 'alma_%s_gateway', $this->get_payment_method() );
 	}
 
 	/**
@@ -134,7 +134,7 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 		/** @var FeePlanRepository $fee_plan_repository */
 		$fee_plan_repository = Plugin::get_instance()->get_container()->get( FeePlanRepository::class );
 
-		return $fee_plan_repository->getAll()->filterFeePlanList( array( $this->get_type() ) );
+		return $fee_plan_repository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) );
 	}
 
 	/**

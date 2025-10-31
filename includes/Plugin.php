@@ -18,8 +18,6 @@ use Alma\Gateway\Application\Exception\Service\ShopServiceException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Helper\RequirementsHelper;
-use Alma\Gateway\Application\Provider\EligibilityProvider;
-use Alma\Gateway\Application\Provider\FeePlanProvider;
 use Alma\Gateway\Application\Service\AdminService;
 use Alma\Gateway\Application\Service\ShopService;
 use Alma\Gateway\Infrastructure\Exception\CmsException;
@@ -125,18 +123,6 @@ final class Plugin {
 		/** @var LoggerService $logger_service */
 		$logger_service      = self::get_container()->get( LoggerService::class );
 		$this->loggerService = $logger_service;
-
-		if ( PluginHelper::isConfigured() ) {
-			// Configure the gateways
-			/** @var GatewayService $gateway_service */
-			$gateway_service = self::get_container()->get( GatewayService::class );
-			/** @var EligibilityProvider $eligibility_service */
-			$eligibility_service = self::get_container()->get( EligibilityProvider::class );
-			$gateway_service->setEligibilityProvider( $eligibility_service );
-			/** @var FeePlanProvider $fee_plan_service */
-			$fee_plan_service = self::get_container()->get( FeePlanProvider::class );
-			$gateway_service->setFeePlanProvider( $fee_plan_service );
-		}
 	}
 
 	/**
