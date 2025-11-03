@@ -142,12 +142,11 @@ function almalog( $message, $data = null ) {
 	}
 }
 
-
 add_action( 'admin_menu', 'alma_add_gateway_top_menu' );
 
 function alma_add_gateway_top_menu() {
 	add_menu_page(
-		__( 'Alma - Réglages', 'alma-gateway-for-woocommerce' ),
+		__( 'Alma - Settings', 'alma-gateway-for-woocommerce' ),
 		__( 'Alma', 'alma-gateway-for-woocommerce' ),
 		'manage_options',
 		'alma-gateway-settings',

@@ -121,7 +121,10 @@ final class Plugin {
 
 		// Set the plugin helper and logger service
 		/** @var LoggerService $logger_service */
-		$logger_service      = self::get_container()->get( LoggerService::class );
+		$logger_service      = self::get_container()->get(
+			LoggerService::class,
+			[ sprintf( 'alma-%s', uniqid() ) ]
+		);
 		$this->loggerService = $logger_service;
 	}
 

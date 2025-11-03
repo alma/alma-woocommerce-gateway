@@ -189,4 +189,43 @@ class ContextHelper implements ContextHelperInterface {
 	public static function getCustomer(): ?CustomerAdapterInterface {
 		return new CustomerAdapter( WC()->customer );
 	}
+
+	/**
+	 * Check if the current request is an AJAX request.
+	 * Multiple types of AJAX requests are possible in WordPress/WooCommerce so we use many methods to detect them.
+	 *
+	 * @return bool True if the current request is an AJAX request, false otherwise.
+	 */
+	public static function isAjax(): bool {
+
+		$ajax = false;
+
+		// AJAX Call
+		if ( wp_doing_ajax() ) {
+			$ajax = true;
+		}
+
+		// REST API Call (after parse_request)
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+			$ajax = true;
+		}
+
+		// REST API Call (after parse_request)
+		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
+			$uri = $_SERVER['REQUEST_URI'];
+
+			// Store API call
+			if ( strpos( $uri, '/wc/store/' ) !== false ) {
+				$ajax = true;
+			}
+
+			// general REST API call
+			$rest_prefix = trailingslashit( rest_get_url_prefix() );
+			if ( strpos( $uri, $rest_prefix ) !== false ) {
+				$ajax = true;
+			}
+		}
+
+		return $ajax;
+	}
 }

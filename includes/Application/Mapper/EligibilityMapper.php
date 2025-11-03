@@ -61,8 +61,6 @@ class EligibilityMapper {
 
 		// Add queries to EligibilityDto
 		foreach ( $feePlanListAdapter as $feePlanAdapter ) {
-			$a = ( new EligibilityQueryMapper() )->buildEligibilityQueryDto( $feePlanAdapter );
-			almalog( 'Adding eligibility query for fee plan: ', var_export( $a, true ) );
 			$eligibilityDto->addQuery( ( new EligibilityQueryMapper() )->buildEligibilityQueryDto( $feePlanAdapter ) );
 		}
 
