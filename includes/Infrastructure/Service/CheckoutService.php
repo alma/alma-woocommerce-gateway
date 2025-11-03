@@ -14,7 +14,7 @@ use Alma\Gateway\Infrastructure\Adapter\CustomerAdapter;
 use Alma\Gateway\Infrastructure\Block\Gateway\AbstractGatewayBlock;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\AbstractFrontendGateway;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
-use Alma\Gateway\Infrastructure\Helper\FormHelper;
+use Alma\Gateway\Infrastructure\Helper\SecurityHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
 
@@ -28,8 +28,7 @@ class CheckoutService {
 	private EligibilityProvider $eligibilityProvider;
 	private CartAdapter $cartAdapter;
 	private CustomerAdapter $customerAdapter;
-
-	private FormHelper $formHelper;
+	private SecurityHelper $securityHelper;
 
 
 	public function __construct(
@@ -40,7 +39,7 @@ class CheckoutService {
 		EligibilityProvider $eligibilityProvider,
 		CartAdapter $cartAdapter,
 		CustomerAdapter $customerAdapter,
-		FormHelper $formHelper
+		SecurityHelper $securityHelper
 	) {
 		$this->configService       = $configService;
 		$this->assetsService       = $assetsService;
@@ -49,7 +48,7 @@ class CheckoutService {
 		$this->eligibilityProvider = $eligibilityProvider;
 		$this->cartAdapter         = $cartAdapter;
 		$this->customerAdapter     = $customerAdapter;
-		$this->formHelper          = $formHelper;
+		$this->securityHelper      = $securityHelper;
 
 		$this->initialize();
 	}
@@ -93,17 +92,16 @@ class CheckoutService {
 		}
 
 		// Prepare response
-		$params = array(
+		$nonce_key = sprintf( '%s_nonce_field', 'alma_checkout' );
+		$params    = array(
 			'success'          => true,
 			'is_in_page'       => (bool) $isInPage,
 			'gateway_settings' => array_merge_recursive(
 				$this->formatBlocksForCheckout( $this->gatewayRepository->findAllAlmaGatewayBlocks() ),
 				$this->formatEligibilityForCheckout( $eligibilityList ),
 			),
-			'nonce_value'      => $this->formHelper->generateTokenField(
-				sprintf( '%s_nonce_action', 'alma_checkout' ),
-				sprintf( '%s_nonce_field', 'alma_checkout' ),
-			),
+			'nonce_key'        => $nonce_key,
+			'nonce_value'      => $this->securityHelper->generateToken( $nonce_key ),
 		);
 		if ( $isInPage ) {
 			$params['merchant_id'] = $this->configService->getMerchantId();
