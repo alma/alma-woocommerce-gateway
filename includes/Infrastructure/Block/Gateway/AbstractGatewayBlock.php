@@ -13,6 +13,8 @@ namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\ConfigService;
+use Alma\Gateway\Application\Service\PaymentService;
+use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
 use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Exception\Block\CheckoutBlockException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
@@ -42,6 +44,14 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 		$this->assets_service = $assets_service;
 		$this->name           = 'alma_' . $this->gateway->get_name() . '_gateway_block';
 		$this->initialize();
+
+		// @todo move this to a more appropriate place
+		add_action(
+			'woocommerce_rest_checkout_process_payment_with_context',
+			array( $this, 'process_payment_with_context' ),
+			10,
+			2
+		);
 	}
 
 	/**
@@ -106,5 +116,45 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 		}
 
 		return array( 'alma-block-integration' );
+	}
+
+	/**
+	 * Traitement du paiement via la Store API
+	 * @throws CheckoutBlockException
+	 */
+	public function process_payment_with_context( $context, $result ) {
+
+		if ( $context->payment_method === $this->gateway->get_name() ) {
+
+			$payment_data     = $context->payment_data;
+			$order            = new OrderAdapter( $context->order );
+			$fee_plan_adapter = $this->gateway->getFeeplanListAdapter()->getByPlanKey( $payment_data['alma_plan_key'] );
+
+			/** @var PaymentService $payment_service */
+			$payment_service = Plugin::get_container()->get( PaymentService::class );
+			$payment         = $payment_service->createPayment(
+				$this->config_service->isInPageEnabled(),
+				$order,
+				$fee_plan_adapter
+			);
+
+			$order->updateStatus( 'pending', L10nHelper::__( 'En attente de paiement via Alma' ) );
+
+			if ( $payment['success'] ) {
+				$result->set_status( 'success' );
+				$result->set_payment_details(
+					array(
+						'alma_payment_id' => $payment['payment_id'],
+						'alma_fee_plan'   => $payment_data['alma_plan_key'],
+					)
+				);
+
+				if ( isset( $payment_result['redirect_url'] ) ) {
+					$result->set_redirect_url( $payment_result['redirect'] );
+				}
+			} else {
+				throw new CheckoutBlockException( $payment['error'] );
+			}
+		}
 	}
 }
