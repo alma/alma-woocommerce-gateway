@@ -124,6 +124,9 @@ class ContainerService {
 
 	public function setApiConfig() {
 
+		/** @var LoggerService $loggerService Mandatory for API services */
+		$loggerService = $this->get( LoggerService::class, [ 'php-client' ], [ 'shared' => false ] );
+
 		/** @var ConfigService $configService Mandatory for API services */
 		$configService = $this->get( ConfigService::class );
 		$this->dice    = $this->dice->addRule(
@@ -131,13 +134,21 @@ class ContainerService {
 			array(
 				'constructParams' => array(
 					$configService->getActiveApiKey(),
-					$configService->getEnvironment(),
+					$configService->getEnvironment()
 				),
 				'shared'          => true,
 			)
 		);
-
-		$this->dice = $this->dice->addRule( CurlClient::class, array( 'shared' => true ) );
+		$this->dice    = $this->dice->addRule(
+			CurlClient::class,
+			array(
+				'constructParams' => array(
+					$this->get( ClientConfiguration::class ),
+					$loggerService
+				),
+				'shared'          => true
+			)
+		);
 
 	}
 
