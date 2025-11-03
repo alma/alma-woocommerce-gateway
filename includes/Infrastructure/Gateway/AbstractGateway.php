@@ -4,22 +4,18 @@ namespace Alma\Gateway\Infrastructure\Gateway;
 
 use Alma\API\Application\DTO\RefundDto;
 use Alma\API\Infrastructure\Exception\ParametersException;
-use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
-use Alma\Gateway\Application\Mapper\CustomerMapper;
-use Alma\Gateway\Application\Mapper\OrderMapper;
-use Alma\Gateway\Application\Mapper\PaymentMapper;
 use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Application\Service\ConfigService;
+use Alma\Gateway\Application\Service\PaymentService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\InPageHelper;
-use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Infrastructure\Service\CacheService;
@@ -70,6 +66,15 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 */
 	public function configure_fee_plans( FeePlanListAdapter $fee_plan_list_adapter ): void {
 		$this->fee_plan_list_adapter = $fee_plan_list_adapter->filterFeePlanList( array( $this->get_payment_method() ) );
+	}
+
+	/**
+	 * Get FeePlanListAdapter.
+	 * @todo The adpater isn't configured when called from AJAX. Find a fix to avoid API calls there.
+	 * @return FeePlanListAdapter|null
+	 */
+	public function getFeeplanListAdapter(): ?FeePlanListAdapter {
+		return $this->fee_plan_list_adapter;
 	}
 
 	/**
@@ -127,7 +132,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		$config_service = Plugin::get_container()->get( ConfigService::class );
 		/** @var InPageHelper $in_page_helper */
 		$in_page_helper     = Plugin::get_container()->get( InPageHelper::class );
-		$is_in_page_payment = $config_service->isInPage();
+		$is_in_page_payment = $config_service->isInPageEnabled();
 		try {
 			$order = $order_repository->getById( $order_id );
 		} catch ( ProductRepositoryException $e ) {
@@ -136,43 +141,18 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		$fields           = $this->process_payment_fields( $order );
 		$fee_plan_adapter = $this->fee_plan_list_adapter->getByPlanKey( $fields['alma_plan_key'] );
 
-		/** @var PaymentProvider $payment_service */
-		$payment_service = Plugin::get_container()->get( PaymentProvider::class );
-		try {
-			$payment = $payment_service->createPayment(
-				( new PaymentMapper() )->buildPaymentDto(
-					$config_service->getOrigin(),
-					$order,
-					$fee_plan_adapter
-				),
-				( new OrderMapper() )->buildOrderDto( $order ),
-				( new CustomerMapper() )->buildCustomerDto( $order ),
-			);
-		} catch ( PaymentServiceException $e ) {
-			/** @var NotificationHelper $notificationHelper */
-			$notificationHelper = Plugin::get_container()->get( NotificationHelper::class );
-			$notificationHelper->notifyError(
-				L10nHelper::__( 'Une erreur est survenue lors de la création du paiement. Veuillez réessayer.' . $e->getMessage() ),
-			);
+		/** @var PaymentService $payment_service */
+		$payment_service = Plugin::get_container()->get( PaymentService::class );
+		$payment         = $payment_service->createPayment(
+			$config_service->isInPageEnabled(),
+			$order,
+			$fee_plan_adapter
+		);
 
-			return array(
-				'result'   => 'failure',
-				'redirect' => '',
-			);
-		}
-
+		// Update order status to pending
 		$order->updateStatus( 'pending', L10nHelper::__( 'En attente de paiement via Alma' ) );
 
-		$redirection_url = $payment->geturl();
-
-		if ( $is_in_page_payment ) {
-			$redirection_url = $in_page_helper->getInPageRedirectionUrl( $payment->getId() );
-		}
-
-		return array(
-			'result'   => 'success',
-			'redirect' => $redirection_url,
-		);
+		return $payment;
 	}
 
 	/**
