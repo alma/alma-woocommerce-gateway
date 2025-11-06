@@ -30,22 +30,20 @@ class ShopService {
 					throw new AdminServiceException( $e->getMessage() );
 				}
 
-				if ( PluginHelper::isConfigured() ) {
+				/** @var WidgetService $widget_service */
+				$widget_service = Plugin::get_container()->get( WidgetService::class );
+				$widget_service->displayWidget();
 
-					/** @var WidgetService $widget_service */
-					$widget_service = Plugin::get_container()->get( WidgetService::class );
-					$widget_service->displayWidget();
+				/** @var ConfigService $configService */
+				$configService = Plugin::get_container()->get( ConfigService::class );
 
-					/** @var ConfigService $configService */
-					$configService = Plugin::get_container()->get( ConfigService::class );
-
-					// Enabled In-Page on product or shop page
-					if ( $configService->isInPageEnabled() ) {
-						/** @var InPageService $inPageService */
-						$inPageService = Plugin::get_container()->get( InPageService::class );
-						$inPageService->displayInPage();
-					}
+				// Enabled In-Page on product or shop page
+				if ( $configService->isInPageEnabled() ) {
+					/** @var InPageService $inPageService */
+					$inPageService = Plugin::get_container()->get( InPageService::class );
+					$inPageService->displayInPage();
 				}
+
 			}
 		);
 	}
