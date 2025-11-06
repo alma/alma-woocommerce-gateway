@@ -14,7 +14,7 @@ namespace Alma\Gateway;
 use Alma\API\Domain\Helper\ContextHelperInterface;
 use Alma\API\Infrastructure\Exception\PluginException;
 use Alma\Gateway\Application\Exception\Helper\RequirementsHelperException;
-use Alma\Gateway\Application\Exception\Service\ShopServiceException;
+use Alma\Gateway\Application\Exception\Service\AdminServiceException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Helper\RequirementsHelper;
@@ -115,10 +115,6 @@ final class Plugin {
 		// Set the DI container
 		self::get_container( true );
 
-		/** @var ContextHelper $contextHelper */
-		$contextHelper       = self::get_container()->get( ContextHelper::class );
-		$this->contextHelper = $contextHelper;
-
 		// Set the plugin helper and logger service
 		/** @var LoggerService $logger_service */
 		$logger_service      = self::get_container()->get(
@@ -156,18 +152,15 @@ final class Plugin {
 			$adminService->runService();
 
 			// Run services only when WordPress frontend is ready.
-			try {
-				/** @var ShopService $shopService */
-				$shopService = self::get_container()->get( ShopService::class );
-				$shopService->runService();
-			} catch ( ShopServiceException $e ) {
-				throw new PluginException( $e->getMessage() );
-			}
+			/** @var ShopService $shopService */
+			$shopService = self::get_container()->get( ShopService::class );
+			$shopService->runService();
 
 		} else {
-			/** @var GatewayService $gateway_service */
-			$gateway_service = self::get_container()->get( GatewayService::class );
-			$gateway_service->loadBackendGateway();
+			// Plugin not yet configured, load only backend gateway to help in configuration.
+			/** @var GatewayService $gatewayService */
+			$gatewayService = self::get_container()->get( GatewayService::class );
+			$gatewayService->loadBackendGateway();
 		}
 	}
 
