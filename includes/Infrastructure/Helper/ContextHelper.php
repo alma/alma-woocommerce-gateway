@@ -79,7 +79,7 @@ class ContextHelper implements ContextHelperInterface {
 	 * Check if we are on the cart, product or checkout page.
 	 * @return bool
 	 */
-	public static function isCartProductOrCheckoutPage(): bool {
+	public static function isShop(): bool {
 		return self::isCartPage() || self::isProductPage() || self::isCheckoutPage();
 	}
 
@@ -202,26 +202,31 @@ class ContextHelper implements ContextHelperInterface {
 
 		// AJAX Call
 		if ( wp_doing_ajax() ) {
+			almalog( 'AJAX detected by wp_doing_ajax()' );
 			$ajax = true;
 		}
 
 		// REST API Call (after parse_request)
 		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+			almalog( 'AJAX detected by REST_REQUEST' );
 			$ajax = true;
 		}
 
 		// REST API Call (after parse_request)
 		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
+			almalog( 'AJAX detected by REQUEST_URI' );
 			$uri = $_SERVER['REQUEST_URI'];
 
 			// Store API call
 			if ( strpos( $uri, '/wc/store/' ) !== false ) {
+				almalog( 'AJAX detected by WooCommerce' );
 				$ajax = true;
 			}
 
 			// general REST API call
 			$rest_prefix = trailingslashit( rest_get_url_prefix() );
 			if ( strpos( $uri, $rest_prefix ) !== false ) {
+				almalog( 'AJAX detected by REST API prefix' );
 				$ajax = true;
 			}
 		}
