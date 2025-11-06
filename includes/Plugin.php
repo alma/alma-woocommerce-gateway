@@ -139,12 +139,10 @@ final class Plugin {
 
 		if ( PluginHelper::isConfigured() ) {
 
-			/** @var GatewayService $gateway_service */
-			$gateway_service = self::get_container()->get( GatewayService::class );
-			$gateway_service->loadGateway();
-			if ( PluginHelper::isConfigured() ) {
-				$gateway_service->configureReturns();
-			}
+			// Plugin fully configured, let's run the services
+			/** @var GatewayService $gatewayService */
+			$gatewayService = self::get_container()->get( GatewayService::class );
+			$gatewayService->runService();
 
 			// Run services only when WordPress admin is ready.
 			/** @var AdminService $adminService */

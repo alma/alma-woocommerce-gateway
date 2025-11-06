@@ -59,6 +59,19 @@ class GatewayService {
 	}
 
 	/**
+	 * Run services on admin init.
+	 */
+	public function runService() {
+		GatewayHelper::runGatewayServices(
+			function () {
+				// Init Gateway Services
+				$this->loadGateway();
+				$this->configureReturns();
+			}
+		);
+	}
+
+	/**
 	 * Init and Load the gateways
 	 *
 	 * Load the Frontend gateways if the user is not in the admin area.
@@ -151,22 +164,6 @@ class GatewayService {
 		}
 	}
 
-
-	/**
-	 * Configure each gateway with eligibility and fee plans
-	 * @throws FeePlanRepositoryException
-	 */
-	public function configureGateway() {
-
-		/** @var AbstractGateway $gateway */
-		foreach ( $this->gatewayRepository->findAllAlmaGateways() as $gateway ) {
-			if ( ContextHelper::isCheckoutPage() ) {
-				$gateway->configure_fee_plans( $this->feePlanRepository->getAll()->filterFeePlanList( [ $gateway->get_payment_method() ] ) );
-			}
-		}
-	}
-
-
 	/**
 	 * Configure returns (ipn and customer_return ) if configuration is done
 	 *
@@ -219,6 +216,22 @@ class GatewayService {
 			/** @var CheckoutService $checkout_service */
 			$checkout_service = Plugin::get_container()->get( CheckoutService::class );
 			$checkout_service->initialize();
+		}
+	}
+
+	/**
+	 * Configure each gateway with eligibility and fee plans
+	 * @throws FeePlanRepositoryException
+	 */
+	public function configureGateway() {
+
+		/** @var AbstractGateway $gateway */
+		foreach ( $this->gatewayRepository->findAllAlmaGateways() as $gateway ) {
+			if ( ContextHelper::isCheckoutPage() ) {
+				$gateway->configure_fee_plans(
+					$this->feePlanRepository->getAll()->filterFeePlanList( [ $gateway->get_payment_method() ] )
+				);
+			}
 		}
 	}
 }

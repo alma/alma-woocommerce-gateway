@@ -12,6 +12,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 class GatewayHelper {
 
 	/**
+	 * Run services on ???.
+	 *
+	 * @param callable $callback Function to run on ???.
+	 */
+	public static function runGatewayServices( callable $callback ) {
+		EventHelper::addEvent( 'template_redirect', $callback );
+	}
+
+	/**
 	 * Add links to the plugin on the plugins page.
 	 *
 	 * @param string   $base_path Path to the main plugin file.
