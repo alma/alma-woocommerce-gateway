@@ -77,6 +77,8 @@ use Psr\Http\Client\ClientInterface;
  */
 class ContainerService {
 
+	private const PHP_CLIENT_LOGGER = 'PHPClientLogger';
+
 	/** @var Dice */
 	private Dice $dice;
 
@@ -124,12 +126,10 @@ class ContainerService {
 
 	public function setApiConfig() {
 
-		/** @var LoggerService $loggerService Mandatory for API services */
-		$loggerService = $this->get( LoggerService::class, [ 'php-client' ], [ 'shared' => false ] );
-
 		/** @var ConfigService $configService Mandatory for API services */
 		$configService = $this->get( ConfigService::class );
-		$this->dice    = $this->dice->addRule(
+
+		$this->dice = $this->dice->addRule(
 			ClientConfiguration::class,
 			array(
 				'constructParams' => array(
@@ -139,12 +139,12 @@ class ContainerService {
 				'shared'          => true,
 			)
 		);
-		$this->dice    = $this->dice->addRule(
+		$this->dice = $this->dice->addRule(
 			CurlClient::class,
 			array(
 				'constructParams' => array(
 					$this->get( ClientConfiguration::class ),
-					$loggerService
+					$this->get( self::PHP_CLIENT_LOGGER )
 				),
 				'shared'          => true
 			)
@@ -255,6 +255,16 @@ class ContainerService {
 				PayLaterGateway::class  => array( 'shared' => true ),
 				PayNowGateway::class    => array( 'shared' => true ),
 				PnxGateway::class       => array( 'shared' => true ),
+				// Generic Logger for WooCommerce
+				LoggerService::class    => array( 'shared' => true ),
+				// Specific Logger for the PHP Client
+				self::PHP_CLIENT_LOGGER => array(
+					'constructParams' => [
+						'php-client', // The source name
+					],
+					'instanceOf'      => LoggerService::class,
+					'shared'          => true
+				),
 			)
 		);
 	}
