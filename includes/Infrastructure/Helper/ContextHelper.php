@@ -38,9 +38,10 @@ class ContextHelper implements ContextHelperInterface {
 	 * Defines if the current request is an admin request.
 	 * is_admin is not accurate for REST API requests.
 	 * So we look for the 'rest_route' parameter in the $_GET superglobal to determine if it's an admin REST API request.
-	 *
 	 * @return bool True if the current request is an admin request, false otherwise.
 	 * @phpcs We don't need to check nonce here. We only check the url, and we don't use parameters.
+	 * @todo Can we check wp_is_serving_rest_request() instead?
+	 *
 	 */
 	public static function isAdmin(): bool {
 		// phpcs:ignore
@@ -202,31 +203,26 @@ class ContextHelper implements ContextHelperInterface {
 
 		// AJAX Call
 		if ( wp_doing_ajax() ) {
-			almalog( 'AJAX detected by wp_doing_ajax()' );
 			$ajax = true;
 		}
 
 		// REST API Call (after parse_request)
 		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
-			almalog( 'AJAX detected by REST_REQUEST' );
 			$ajax = true;
 		}
 
 		// REST API Call (after parse_request)
 		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
-			almalog( 'AJAX detected by REQUEST_URI' );
 			$uri = $_SERVER['REQUEST_URI'];
 
 			// Store API call
 			if ( strpos( $uri, '/wc/store/' ) !== false ) {
-				almalog( 'AJAX detected by WooCommerce' );
 				$ajax = true;
 			}
 
 			// general REST API call
-			$rest_prefix = trailingslashit( rest_get_url_prefix() );
-			if ( strpos( $uri, $rest_prefix ) !== false ) {
-				almalog( 'AJAX detected by REST API prefix' );
+			if ( wp_is_serving_rest_request() ) {
+				// rest_route=/wc/store/v1/checkout&_locale=site
 				$ajax = true;
 			}
 		}

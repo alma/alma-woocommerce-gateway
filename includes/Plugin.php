@@ -103,10 +103,14 @@ final class Plugin {
 		self::get_container( true );
 
 		// Set the plugin helper and logger service
+		$suffix = [];
+		if ( isset( $_GET['rest_route'] ) && $_GET['rest_route'] === '/wc/store/v1/checkout' ) {
+			$suffix = [ sprintf( 'alma-%s', 'martin' ) ];
+		}
 		/** @var LoggerService $logger_service */
 		$logger_service      = self::get_container()->get(
 			LoggerService::class,
-			[ sprintf( 'alma-%s', uniqid() ) ]
+			$suffix
 		);
 		$this->loggerService = $logger_service;
 	}
@@ -117,6 +121,7 @@ final class Plugin {
 	 * @return  void
 	 * @throws RequirementsHelperException
 	 * @throws PluginException
+	 * @throws AdminServiceException
 	 */
 	public function plugin_setup(): void {
 

@@ -24,6 +24,9 @@ use Alma\Gateway\Infrastructure\Service\AssetsService;
 use Alma\Gateway\Infrastructure\Service\CheckoutService;
 use Alma\Gateway\Plugin;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
+use Automattic\WooCommerce\StoreApi\Payments\PaymentContext;
+use Automattic\WooCommerce\StoreApi\Payments\PaymentResult;
+use Exception;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -119,16 +122,16 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 	}
 
 	/**
-	 * Traitement du paiement via la Store API
-	 * @throws CheckoutBlockException
+	 * Process the payment when this gateway is selected.
+	 * use StoreApi to create the payment
 	 */
-	public function process_payment_with_context( $context, $result ) {
+	public function process_payment_with_context( PaymentContext $context, PaymentResult $result ) {
 
 		if ( $context->payment_method === $this->gateway->get_name() ) {
 
 			$payment_data     = $context->payment_data;
 			$order            = new OrderAdapter( $context->order );
-			$fee_plan_adapter = $this->gateway->getFeeplanListAdapter()->getByPlanKey( $payment_data['alma_plan_key'] );
+			$fee_plan_adapter = $this->gateway->get_fee_plan_list_adapter()->getByPlanKey( $payment_data['alma_plan_key'] );
 
 			/** @var PaymentService $payment_service */
 			$payment_service = Plugin::get_container()->get( PaymentService::class );
@@ -139,21 +142,34 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 			);
 
 			$order->updateStatus( 'pending', L10nHelper::__( 'En attente de paiement via Alma' ) );
+			$order->update_meta_data( '_alma_payment_id', $payment['payment_id'] );
+			$order->save();
 
-			if ( $payment['success'] ) {
-				$result->set_status( 'success' );
-				$result->set_payment_details(
-					array(
-						'alma_payment_id' => $payment['payment_id'],
-						'alma_fee_plan'   => $payment_data['alma_plan_key'],
-					)
-				);
-
-				if ( isset( $payment_result['redirect_url'] ) ) {
-					$result->set_redirect_url( $payment_result['redirect'] );
+			if ( 'success' === $payment['result'] ) {
+				try {
+					$result->set_status( 'success' );
+					$result->set_payment_details(
+						array(
+							'alma_payment_id' => $payment['payment_id'],
+							'alma_fee_plan'   => $payment_data['alma_plan_key'],
+						)
+					);
+				} catch ( Exception $e ) {
+					$result->set_status( 'error' );
+					wc_add_notice(
+						L10nHelper::__( 'Payment processing failed. Please try again.' ),
+						'error'
+					);
+				}
+				if ( isset( $payment['redirect_url'] ) ) {
+					$result->set_redirect_url( $payment['redirect'] );
 				}
 			} else {
-				throw new CheckoutBlockException( $payment['error'] );
+				$result->set_status( 'error' );
+				wc_add_notice(
+					L10nHelper::__( 'Payment processing failed. Please try again.' ),
+					'error'
+				);
 			}
 		}
 	}
