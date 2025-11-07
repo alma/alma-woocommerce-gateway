@@ -12,9 +12,7 @@ use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Provider\EligibilityProvider;
 use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Application\Service\ConfigService;
-use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
-use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Infrastructure\Helper\BackendHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\EventHelper;
@@ -216,22 +214,6 @@ class GatewayService {
 			/** @var CheckoutService $checkout_service */
 			$checkout_service = Plugin::get_container()->get( CheckoutService::class );
 			$checkout_service->initialize();
-		}
-	}
-
-	/**
-	 * Configure each gateway with eligibility and fee plans
-	 * @throws FeePlanRepositoryException
-	 */
-	public function configureGateway() {
-
-		/** @var AbstractGateway $gateway */
-		foreach ( $this->gatewayRepository->findAllAlmaGateways() as $gateway ) {
-			if ( ContextHelper::isCheckoutPage() ) {
-				$gateway->configure_fee_plans(
-					$this->feePlanRepository->getAll()->filterFeePlanList( [ $gateway->get_payment_method() ] )
-				);
-			}
 		}
 	}
 }

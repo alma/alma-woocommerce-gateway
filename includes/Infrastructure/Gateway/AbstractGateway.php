@@ -32,12 +32,6 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 
 	protected const CACHE_ENABLED = false;
 
-	/**
-	 * @var ?FeePlanListAdapter $fee_plan_list_adapter public only for debug in functions.php
-	 * @todo Remove this public property when the eligibility and fee plans are fully implemented.
-	 */
-	protected ?FeePlanListAdapter $fee_plan_list_adapter = null;
-
 	protected bool $is_eligible = false;
 
 	/**
@@ -60,21 +54,15 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Configure the fee plans of the gateway based on the fee plan list.
-	 *
-	 * @param FeePlanListAdapter $fee_plan_list_adapter The fee plan list to filter.
-	 */
-	public function configure_fee_plans( FeePlanListAdapter $fee_plan_list_adapter ): void {
-		$this->fee_plan_list_adapter = $fee_plan_list_adapter->filterFeePlanList( array( $this->get_payment_method() ) );
-	}
-
-	/**
 	 * Get FeePlanListAdapter.
-	 * @todo The adpater isn't configured when called from AJAX. Find a fix to avoid API calls there.
+	 *
 	 * @return FeePlanListAdapter|null
 	 */
-	public function getFeeplanListAdapter(): ?FeePlanListAdapter {
-		return $this->fee_plan_list_adapter;
+	public function get_fee_plan_list_adapter(): ?FeePlanListAdapter {
+
+		$fee_plan_repository = Plugin::get_container()->get( FeePlanRepository::class );
+
+		return $fee_plan_repository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) );
 	}
 
 	/**
@@ -256,19 +244,14 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		}
 
 		// When running from AJAX, the fee plan list is not set.
-		// @todo Find a fix to avoid API calls here.
-		if ( ! $this->fee_plan_list_adapter ) {
-			$fee_plan_repository         = Plugin::get_container()->get( FeePlanRepository::class );
-			$this->fee_plan_list_adapter = $fee_plan_repository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) );
-		}
+		$fee_plan_repository   = Plugin::get_container()->get( FeePlanRepository::class );
+		$fee_plan_list_adapter = $fee_plan_repository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) );
 
 		// Check if at least one fee plan is eligible for the cart total amount for this gateway
-		if ( isset( $this->fee_plan_list_adapter ) ) {
-			/** @var FeePlanAdapter $fee_plan_adapter */
-			foreach ( $this->fee_plan_list_adapter as $fee_plan_adapter ) {
-				if ( $fee_plan_adapter->isEligible( $total ) ) {
-					$eligibility = true;
-				}
+		/** @var FeePlanAdapter $fee_plan_adapter */
+		foreach ( $fee_plan_list_adapter as $fee_plan_adapter ) {
+			if ( $fee_plan_adapter->isEligible( $total ) ) {
+				$eligibility = true;
 			}
 		}
 

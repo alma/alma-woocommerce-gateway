@@ -1,17 +1,7 @@
 <?php
-/**
- * FormHtmlBuilder.
- *
- * @since 5.0.0
- *
- * @package Alma_Gateway_For_Woocommerce
- * @subpackage Alma_Gateway_For_Woocommerce/Gateway/Business
- * @namespace Alma\Gateway\Business
- */
 
 namespace Alma\Gateway;
 
-use Alma\API\Domain\Helper\ContextHelperInterface;
 use Alma\API\Infrastructure\Exception\PluginException;
 use Alma\Gateway\Application\Exception\Helper\RequirementsHelperException;
 use Alma\Gateway\Application\Exception\Service\AdminServiceException;
@@ -52,9 +42,6 @@ final class Plugin {
 
 	/** @var LoggerService $loggerService */
 	private LoggerService $loggerService;
-
-	/** @var ContextHelperInterface $contextHelper Gives information about context */
-	private ContextHelperInterface $contextHelper;
 
 	/**
 	 * Constructor.
