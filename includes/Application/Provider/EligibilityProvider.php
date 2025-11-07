@@ -9,7 +9,7 @@ use Alma\API\Infrastructure\Endpoint\EligibilityEndpoint;
 use Alma\API\Infrastructure\Exception\Endpoint\EligibilityEndpointException;
 use Alma\Gateway\Application\Exception\Service\API\EligibilityServiceException;
 
-class EligibilityProvider implements EligibilityProviderInterface {
+class EligibilityProvider implements EligibilityProviderInterface, ProviderInterface {
 
 	private EligibilityEndpoint $eligibilityEndpoint;
 
@@ -36,7 +36,7 @@ class EligibilityProvider implements EligibilityProviderInterface {
 
 		return $this->eligibilityList;
 	}
-	
+
 	/**
 	 * Retrieve the eligibility list based on the current cart total.
 	 *

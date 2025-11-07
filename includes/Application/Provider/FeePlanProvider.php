@@ -11,7 +11,7 @@ use Alma\API\Infrastructure\Endpoint\MerchantEndpoint;
 use Alma\API\Infrastructure\Exception\Endpoint\MerchantEndpointException;
 use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
 
-class FeePlanProvider implements FeePlanProviderInterface {
+class FeePlanProvider implements FeePlanProviderInterface, ProviderInterface {
 
 	/** @var MerchantEndpoint */
 	private MerchantEndpoint $merchantEndpoint;
