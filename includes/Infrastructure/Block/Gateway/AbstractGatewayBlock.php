@@ -161,11 +161,12 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 						'error'
 					);
 				}
-				if ( isset( $payment['redirect_url'] ) ) {
+				if ( isset( $payment['redirect'] ) ) {
 					$result->set_redirect_url( $payment['redirect'] );
 				}
 			} else {
 				$result->set_status( 'error' );
+
 				wc_add_notice(
 					L10nHelper::__( 'Payment processing failed. Please try again.' ),
 					'error'
