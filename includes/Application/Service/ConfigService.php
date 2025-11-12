@@ -81,24 +81,6 @@ class ConfigService {
 	}
 
 	/**
-	 * Check if blocks are enabled.
-	 *
-	 * @return bool
-	 */
-	public function isBlocksEnabled(): bool {
-		return 'no' === $this->getSetting( 'blocks_disabled' );
-	}
-
-	/**
-	 * Check if blocks are disabled.
-	 *
-	 * @return bool
-	 */
-	public function isBlocksDisabled(): bool {
-		return 'yes' === $this->getSetting( 'blocks_disabled' );
-	}
-
-	/**
 	 * Returns the active environment.
 	 *
 	 * @return Environment

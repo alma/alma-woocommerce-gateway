@@ -18,7 +18,7 @@ abstract class AbstractWidget implements WidgetInterface {
 	/** @var string Default class to display widget */
 	const WIDGET_DEFAULT_CLASS = 'alma-default-widget';
 
-	protected string $environment;
+	protected Environment $environment;
 	protected string $merchantId;
 	protected int $price;
 	protected bool $displayWidget;
@@ -44,25 +44,19 @@ abstract class AbstractWidget implements WidgetInterface {
 	}
 
 	/**
-	 * Add the parameters needed for the Alma widget.
-	 *
-	 * @param string                      $environment The API environment (live or test).
-	 * @param string                      $merchantId The merchant ID.
-	 * @param int                         $price The price of the product or cart in cents.
-	 * @param FeePlanListAdapterInterface $feePlanListAdapter The list of fee plans.
-	 * @param string                      $language The language code.
+	 * Create the configuration array for the Alma widget JS implementation.
 	 *
 	 * @return void
 	 * @see assets/js/frontend/alma-frontend-widget-implementation.js
 	 */
-	protected function addParameters( string $environment, string $merchantId, int $price, FeePlanListAdapterInterface $feePlanListAdapter, string $language ): array {
+	protected function getConfiguration(): array {
 		return array(
-			'environment'             => $environment,
+			'environment'             => $this->environment,
 			'widget_selector'         => sprintf( '.%s', self::WIDGET_CLASS ),
 			'widget_default_selector' => sprintf( '.%s', self::WIDGET_DEFAULT_CLASS ),
-			'merchant_id'             => $merchantId,
-			'price'                   => $price,
-			'language'                => $language,
+			'merchant_id'             => $this->merchantId,
+			'price'                   => $this->price,
+			'language'                => $this->language,
 			'fee_plan_list'           => array_map(
 				function ( FeePlanAdapter $plan ) {
 					return array(
@@ -73,7 +67,7 @@ abstract class AbstractWidget implements WidgetInterface {
 						'deferredMonths'    => $plan->getDeferredMonths(),
 					);
 				},
-				$feePlanListAdapter->getArrayCopy()
+				$this->feePlanListAdapter->getArrayCopy()
 			),
 			'hide_if_not_eligible'    => false,
 			'transition_delay'        => 5500,

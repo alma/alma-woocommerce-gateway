@@ -202,15 +202,15 @@ class FeePlanAdapter implements FeePlanAdapterInterface, FeePlanInterface {
 		return $this->almaFeePlan->isAvailableOnline();
 	}
 
-	public function getMerchantFeeFixed(): ?int {
+	public function getMerchantFeeFixed(): int {
 		return $this->almaFeePlan->getMerchantFeeFixed();
 	}
 
-	public function getMerchantFeeVariable(): ?int {
+	public function getMerchantFeeVariable(): int {
 		return $this->almaFeePlan->getMerchantFeeVariable();
 	}
 
-	public function getCustomerFeeVariable(): ?int {
+	public function getCustomerFeeVariable(): int {
 		return $this->almaFeePlan->getCustomerFeeVariable();
 	}
 

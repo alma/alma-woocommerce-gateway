@@ -6,6 +6,7 @@ use Alma\Gateway\Application\Exception\Entity\CartWidgetException;
 use Alma\Gateway\Infrastructure\Block\Widget\WidgetBlock;
 use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
+use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\ShortcodeWidgetHelper;
 use Alma\Gateway\Plugin;
 
@@ -16,7 +17,7 @@ class CartWidget extends AbstractWidget {
 	 */
 	public function display() {
 
-		if ( $this->configService->isBlocksEnabled() ) {
+		if ( ContextHelper::isCartPageUseBlocks() ) {
 			$this->registerBlockWidget();
 		} else {
 			$this->displayShortcodeWidget();
@@ -55,21 +56,11 @@ class CartWidget extends AbstractWidget {
 	public function displayShortcodeWidget() {
 		/** @var ShortcodeWidgetHelper $shortcodeWidgetHelper */
 		$shortcodeWidgetHelper = Plugin::get_container()->get( ShortcodeWidgetHelper::class );
-
 		$shortcodeWidgetHelper->initCartShortcode( self::WIDGET_CLASS, $this->displayWidget );
 		$shortcodeWidgetHelper->displayDefaultCartWidget( self::WIDGET_DEFAULT_CLASS );
 
 		try {
-			// Generate assets parameters
-			$params = $this->addParameters(
-				$this->environment,
-				$this->merchantId,
-				$this->price,
-				$this->feePlanListAdapter,
-				$this->language
-			);
-
-			$this->assetsService->loadWidgetAssets( $params );
+			$this->assetsService->loadWidgetAssets( $this->getConfiguration() );
 		} catch ( AssetsServiceException $e ) {
 			throw new CartWidgetException( $e->getMessage() );
 		}

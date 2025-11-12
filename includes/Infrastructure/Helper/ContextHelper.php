@@ -229,4 +229,24 @@ class ContextHelper implements ContextHelperInterface {
 
 		return $ajax;
 	}
+
+	/**
+	 * Check if the checkout page is using blocks.
+	 *
+	 * @return bool True if the checkout page is using blocks, false otherwise.
+	 */
+	public static function isCheckoutPageUseBlocks(): bool {
+
+		return CartCheckoutUtils::is_checkout_block_default();
+	}
+
+	/**
+	 * Check if the cart page is using blocks.
+	 *
+	 * @return bool True if the cart page is using blocks, false otherwise.
+	 */
+	public static function isCartPageUseBlocks(): bool {
+
+		return CartCheckoutUtils::is_cart_block_default();
+	}
 }

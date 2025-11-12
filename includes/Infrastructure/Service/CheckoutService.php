@@ -95,7 +95,7 @@ class CheckoutService {
 		$nonce_key = sprintf( '%s_nonce_field', 'alma_checkout' );
 		$params    = array(
 			'success'          => true,
-			'is_in_page'       => (bool) $isInPage,
+			'is_in_page'       => $isInPage,
 			'gateway_settings' => array_merge_recursive(
 				$this->formatBlocksForCheckout( $this->gatewayRepository->findAllAlmaGatewayBlocks() ),
 				$this->formatEligibilityForCheckout( $eligibilityList ),

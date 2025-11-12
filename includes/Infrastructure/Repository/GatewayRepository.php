@@ -26,10 +26,6 @@ class GatewayRepository implements GatewayRepositoryInterface {
 		);
 	}
 
-	public function getAlmaGateways(): array {
-		return $this->findAllAlmaGateways();
-	}
-
 	/**
 	 * Get all Alma gateway blocks.
 	 * @return array

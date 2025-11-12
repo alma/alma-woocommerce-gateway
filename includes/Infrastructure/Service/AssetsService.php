@@ -11,13 +11,7 @@ class AssetsService {
 	private array $registered_assets = [];
 
 	public function __construct() {
-		// @todo check with Martin if we want to load all assets config here
 		$this->registered_assets = AssetsConfig::getAll();
-	}
-
-	// @todo Do we need this function ?
-	public function register_group( $group_name, $assets ) {
-		$this->registered_assets[ $group_name ] = $assets;
 	}
 
 	/**

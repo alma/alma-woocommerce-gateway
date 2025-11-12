@@ -69,6 +69,26 @@ class GatewayService {
 		);
 	}
 
+	public function runUnconfiguredService() {
+		GatewayHelper::runGatewayServices(
+			function () {
+				$this->loadUnconfiguredGateway();
+			}
+		);
+	}
+
+	/**
+	 * Load the admin gateway to do configuration.
+	 * Load only in admin area on gateway settings page
+	 */
+	public function loadUnconfiguredGateway() {
+		if ( ContextHelper::isAdmin() ) {
+			if ( ContextHelper::isGatewaySettingsPage() ) {
+				BackendHelper::loadBackendGateway();
+			}
+		}
+	}
+
 	/**
 	 * Init and Load the gateways
 	 *
@@ -94,7 +114,7 @@ class GatewayService {
 			FrontendHelper::loadFrontendGateways();
 		}
 
-		if ( $this->configService->isBlocksEnabled() ) {
+		if ( ContextHelper::isCheckoutPageUseBlocks() ) {
 			$this->initGatewayBlocks();
 		}
 
@@ -197,7 +217,7 @@ class GatewayService {
 	 */
 	public function initGatewayBlocks() {
 
-		if ( $this->configService->isBlocksEnabled() ) {
+		if ( ContextHelper::isCheckoutPageUseBlocks() ) {
 
 			add_action(
 				'woocommerce_blocks_payment_method_type_registration',

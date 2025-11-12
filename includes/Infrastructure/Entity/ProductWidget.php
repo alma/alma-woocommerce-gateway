@@ -22,16 +22,7 @@ class ProductWidget extends AbstractWidget {
 		$shortcodeWidgetHelper->displayDefaultProductWidget( self::WIDGET_DEFAULT_CLASS );
 
 		try {
-			// Generate assets parameters
-			$params = $this->addParameters(
-				$this->environment,
-				$this->merchantId,
-				$this->price,
-				$this->feePlanListAdapter,
-				$this->language
-			);
-
-			$this->assetsService->loadWidgetAssets( $params );
+			$this->assetsService->loadWidgetAssets( $this->getConfiguration() );
 		} catch ( AssetsServiceException $e ) {
 			throw new ProductWidgetException( $e->getMessage() );
 		}

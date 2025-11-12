@@ -43,6 +43,8 @@ class WidgetBlock implements IntegrationInterface {
 
 	/** @var FeePlanRepository */
 	private FeePlanRepository $fee_plan_repository;
+
+	/** @var AssetsService */
 	private AssetsService $assets_service;
 
 	public function __construct( ConfigService $config_service, CartAdapter $cart_adapter, FeePlanRepository $fee_plan_repository, ContextHelper $context_helper, AssetsService $assets_service ) {

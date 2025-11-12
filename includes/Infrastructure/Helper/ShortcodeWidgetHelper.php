@@ -26,11 +26,11 @@ class ShortcodeWidgetHelper {
 	 *
 	 * @return void
 	 */
-	public function displayDefaultCartWidget( $widgetDefaultClass ) {
+	public function displayDefaultCartWidget( string $widgetDefaultClass ) {
 		add_action(
 			'woocommerce_proceed_to_checkout',
 			function () use ( $widgetDefaultClass ) {
-				echo do_shortcode(
+				echo apply_shortcodes(
 					sprintf( '[%s class="%s"]', self::CART_SHORTCODE_TAG, $widgetDefaultClass )
 				);
 			}
@@ -63,7 +63,7 @@ class ShortcodeWidgetHelper {
 		add_action(
 			'woocommerce_before_add_to_cart_form',
 			function () use ( $widgetDefaultClass ) {
-				echo do_shortcode(
+				echo apply_shortcodes(
 					sprintf( '[%s class="%s"]', self::PRODUCT_SHORTCODE_TAG, $widgetDefaultClass )
 				);
 			}

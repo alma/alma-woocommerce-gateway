@@ -2,9 +2,7 @@
 
 namespace Alma\Gateway;
 
-use Alma\API\Infrastructure\Exception\PluginException;
 use Alma\Gateway\Application\Exception\Helper\RequirementsHelperException;
-use Alma\Gateway\Application\Exception\Service\AdminServiceException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Helper\RequirementsHelper;
@@ -39,9 +37,6 @@ final class Plugin {
 
 	/** @var Null|ContainerService The DI Container. */
 	private static ?ContainerService $container = null;
-
-	/** @var LoggerService $loggerService */
-	private LoggerService $loggerService;
 
 	/**
 	 * Constructor.
@@ -107,12 +102,10 @@ final class Plugin {
 		if ( isset( $_GET['rest_route'] ) && $_GET['rest_route'] === '/wc/store/v1/checkout' ) {
 			$suffix = [ sprintf( 'alma-%s', 'martin' ) ];
 		}
+
+		// Configure the logger service
 		/** @var LoggerService $logger_service */
-		$logger_service      = self::get_container()->get(
-			LoggerService::class,
-			$suffix
-		);
-		$this->loggerService = $logger_service;
+		self::get_container()->get( LoggerService::class, $suffix );
 	}
 
 	/**
@@ -120,8 +113,6 @@ final class Plugin {
 	 *
 	 * @return  void
 	 * @throws RequirementsHelperException
-	 * @throws PluginException
-	 * @throws AdminServiceException
 	 */
 	public function plugin_setup(): void {
 
@@ -150,7 +141,7 @@ final class Plugin {
 			// Plugin not yet configured, load only backend gateway to help in configuration.
 			/** @var GatewayService $gatewayService */
 			$gatewayService = self::get_container()->get( GatewayService::class );
-			$gatewayService->loadBackendGateway();
+			$gatewayService->runUnconfiguredService();
 		}
 	}
 

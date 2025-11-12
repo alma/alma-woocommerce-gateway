@@ -53,7 +53,7 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 	/** @var string $alma_woocommerce_gateway_nonce */
 	echo $alma_woocommerce_gateway_nonce;
 	?>
-	</di>
+</div>
 
-	<?php /** @var string $alma_woocommerce_gateway_in_page_iframe_selector */ ?>
-	<div id="<?php echo $alma_woocommerce_gateway_in_page_iframe_selector; ?>"></div>
+<?php /** @var string $alma_woocommerce_gateway_in_page_iframe_selector */ ?>
+<div id="<?php echo $alma_woocommerce_gateway_in_page_iframe_selector; ?>"></div>

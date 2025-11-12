@@ -73,7 +73,7 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 	 * @throws FeePlanRepositoryException
 	 */
 	public function is_active(): bool {
-		return $this->config_service->isBlocksEnabled() && $this->gateway->is_enabled() && $this->gateway->is_available();
+		return ContextHelper::isCheckoutPageUseBlocks() && $this->gateway->is_enabled() && $this->gateway->is_available();
 	}
 
 	/**

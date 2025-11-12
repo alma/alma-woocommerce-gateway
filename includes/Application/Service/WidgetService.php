@@ -5,7 +5,6 @@ namespace Alma\Gateway\Application\Service;
 use Alma\API\Domain\Adapter\CartAdapterInterface;
 use Alma\API\Domain\Entity\WidgetInterface;
 use Alma\API\Domain\ValueObject\Environment;
-use Alma\Gateway\Application\Exception\Entity\WidgetException;
 use Alma\Gateway\Application\Exception\Service\WidgetServiceException;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
@@ -90,11 +89,7 @@ class WidgetService {
 
 		// Display the widget
 		if ( isset( $widget ) ) {
-			try {
-				$widget->display();
-			} catch ( WidgetException $e ) {
-				throw new WidgetServiceException( $e->getMessage() );
-			}
+			$widget->display();
 		}
 	}
 
@@ -106,13 +101,12 @@ class WidgetService {
 	public function displayCartWidget( array $excludedCategories, FeePlanListAdapter $feePlanListAdapter, Environment $environment, string $merchantId, string $language ): WidgetInterface {
 
 		// Display widget if widget is enabled and there are no excluded categories.
-		$widgetCartEnabled = $this->configService->getWidgetCartEnabled();
-		$displayWidget     = $this->shouldDisplayWidget(
-			$widgetCartEnabled,
+		$displayWidget = $this->shouldDisplayWidget(
+			$this->configService->getWidgetCartEnabled(),
 			$this->excludedProductsHelper->canDisplayOnCartPage( $this->cartAdapter, $excludedCategories ),
 			$feePlanListAdapter
 		);
-		$price             = $this->cartAdapter->getCartTotal();
+		$price         = $this->cartAdapter->getCartTotal();
 
 		return ( Plugin::get_container()->get( CartWidget::class ) )
 			->configure( $feePlanListAdapter, $environment, $merchantId, $price, $displayWidget, $language );
@@ -134,13 +128,12 @@ class WidgetService {
 		}
 
 		// Display widget if widget is enabled and there are no excluded categories.
-		$widgetProductEnabled = $this->configService->getWidgetProductEnabled();
-		$displayWidget        = $this->shouldDisplayWidget(
-			$widgetProductEnabled,
+		$displayWidget = $this->shouldDisplayWidget(
+			$this->configService->getWidgetProductEnabled(),
 			$this->excludedProductsHelper->canDisplayOnProductPage( $product, $excludedCategories ),
 			$feePlanListAdapter
 		);
-		$price                = $product->getPrice();
+		$price         = $product->getPrice();
 
 		return ( Plugin::get_container()->get( ProductWidget::class ) )
 			->configure( $feePlanListAdapter, $environment, $merchantId, $price, $displayWidget, $language );
