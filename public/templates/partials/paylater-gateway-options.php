@@ -12,7 +12,7 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 
 ?>
 
-<fieldset class="alma_woocommerce_gateway_fieldset alma_woocommerce_gateway_pay-later">
+<div class="alma_woocommerce_gateway_fieldset alma_woocommerce_gateway_pay-later">
 	<p>
 		<?php
 		esc_html_e(
@@ -20,6 +20,8 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 			'alma-gateway-for-woocommerce'
 		);
 		?>
+		<br/>
+		<br/>
 	</p>
 	<p>
 		<?php
@@ -39,7 +41,7 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 					echo esc_html(
 						sprintf(
 						// Translators: %d is the number of deferred days
-							L10nHelper::__( 'Achetez maintenant, payez dans %d jours' ),
+							L10nHelper::__( '&nbsp;Achetez maintenant, payez dans %d jours' ),
 							$alma_woocommerce_gateway_fee_plan_adapter->getDeferredDays()
 						)
 					);
@@ -48,7 +50,7 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 					echo esc_html(
 						sprintf(
 						// Translators: %d is the number of deferred months
-							L10nHelper::__( 'Achetez maintenant, payez dans %d mois' ),
+							L10nHelper::__( '&nbsp;Achetez maintenant, payez dans %d mois' ),
 							$alma_woocommerce_gateway_fee_plan_adapter->getDeferredMonths()
 						)
 					);
@@ -62,7 +64,7 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 	/** @var string $alma_woocommerce_gateway_nonce */
 	echo $alma_woocommerce_gateway_nonce;
 	?>
-</fieldset>
+</div>
 
 <?php /** @var string $alma_woocommerce_gateway_in_page_iframe_selector */ ?>
 <div id="<?php echo $alma_woocommerce_gateway_in_page_iframe_selector; ?>"></div>

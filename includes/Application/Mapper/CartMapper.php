@@ -12,13 +12,13 @@ class CartMapper {
 	 *
 	 * @param OrderAdapterInterface $order
 	 *
-	 * @return CartDto The constructed OrderDto.
+	 * @return CartDto The constructed CartDto.
 	 */
-	public function buildCartDetails( OrderAdapterInterface $order ): CartDto {
+	public function buildCartDto( OrderAdapterInterface $order ): CartDto {
 		$cartDto = new CartDto();
 		foreach ( $order->getOrderLines() as $item ) {
 			$cartDto->addItem(
-				( new CartItemMapper() )->buildCartItemDetails( $item )
+				( new CartItemMapper() )->buildCartItemDto( $item )
 			);
 		}
 

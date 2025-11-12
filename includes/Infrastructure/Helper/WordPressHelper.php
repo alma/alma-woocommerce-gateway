@@ -19,7 +19,7 @@ class WordPressHelper {
 	 *
 	 * @return void
 	 *
-	 * @toto move this to a more appropriate place
+	 * @todo move this to a more appropriate place
 	 */
 	public static function set_key_encryptor() {
 		add_filter(

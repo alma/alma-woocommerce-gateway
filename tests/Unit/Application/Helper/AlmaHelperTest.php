@@ -2,6 +2,7 @@
 
 namespace Alma\Gateway\Tests\Unit\Application\Helper;
 
+use Alma\API\Domain\ValueObject\Environment;
 use Alma\Gateway\Application\Helper\AlmaHelper;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
@@ -10,16 +11,6 @@ use PHPUnit\Framework\TestCase;
 
 class AlmaHelperTest extends TestCase {
 	use MockeryPHPUnitIntegration;
-
-	protected function setUp(): void {
-		parent::setUp();
-		Monkey\setUp();
-	}
-
-	protected function tearDown(): void {
-		Monkey\tearDown();
-		parent::tearDown();
-	}
 
 	public function testGetAlmaDashboardUrlSandboxDefault() {
 		Functions\expect( 'esc_url' )
@@ -33,7 +24,7 @@ class AlmaHelperTest extends TestCase {
 			} )
 			->andReturn( 'finalUrl' );
 
-		AlmaHelper::getAlmaDashboardUrl();
+		AlmaHelper::getAlmaDashboardUrl( new Environment( Environment::TEST_MODE ) );
 	}
 
 	public function testGetAlmaDashboardUrlSandboxWithParam() {
@@ -48,7 +39,7 @@ class AlmaHelperTest extends TestCase {
 			} )
 			->andReturn( 'finalUrl' );
 
-		AlmaHelper::getAlmaDashboardUrl( 'test', 'mypath' );
+		AlmaHelper::getAlmaDashboardUrl( new Environment( Environment::TEST_MODE ), 'mypath' );
 	}
 
 	public function testGetAlmaDashboardUrlLive() {
@@ -63,7 +54,17 @@ class AlmaHelperTest extends TestCase {
 			} )
 			->andReturn( 'finalUrl' );
 
-		AlmaHelper::getAlmaDashboardUrl( 'live', 'mypath' );
+		AlmaHelper::getAlmaDashboardUrl( new Environment( Environment::LIVE_MODE ), 'mypath' );
+	}
+
+	protected function setUp(): void {
+		parent::setUp();
+		Monkey\setUp();
+	}
+
+	protected function tearDown(): void {
+		Monkey\tearDown();
+		parent::tearDown();
 	}
 
 

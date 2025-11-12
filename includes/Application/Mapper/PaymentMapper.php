@@ -36,7 +36,7 @@ class PaymentMapper {
 			->setReturnUrl( ContextHelper::getWebhookUrl( IpnHelper::CUSTOMER_RETURN ) )
 			->setLocale( ContextHelper::getLocale() )
 			->setCart(
-				( ( new CartMapper() )->buildCartDetails( $order ) )
+				( ( new CartMapper() )->buildCartDto( $order ) )
 			)
 			->setBillingAddress(
 				( new AddressDto() )

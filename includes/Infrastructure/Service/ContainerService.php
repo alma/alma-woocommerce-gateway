@@ -13,7 +13,6 @@ use Alma\API\Domain\Helper\NavigationHelperInterface;
 use Alma\API\Domain\Helper\NotificationHelperInterface;
 use Alma\API\Domain\Helper\SecurityHelperInterface;
 use Alma\API\Domain\Helper\SessionHelperInterface;
-use Alma\API\Domain\Helper\WidgetHelperInterface;
 use Alma\API\Domain\Repository\ConfigRepositoryInterface;
 use Alma\API\Domain\Repository\GatewayRepositoryInterface;
 use Alma\API\Domain\Repository\OrderRepositoryInterface;
@@ -41,7 +40,6 @@ use Alma\Gateway\Application\Provider\FeePlanProvider;
 use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Application\Service\AdminService;
 use Alma\Gateway\Application\Service\ConfigService;
-use Alma\Gateway\Application\Service\GatewayService;
 use Alma\Gateway\Application\Service\IpnService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
@@ -51,7 +49,6 @@ use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
-use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\CoreHelper;
 use Alma\Gateway\Infrastructure\Helper\EventHelper;
@@ -60,7 +57,6 @@ use Alma\Gateway\Infrastructure\Helper\NavigationHelper;
 use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
 use Alma\Gateway\Infrastructure\Helper\SecurityHelper;
 use Alma\Gateway\Infrastructure\Helper\SessionHelper;
-use Alma\Gateway\Infrastructure\Helper\WidgetHelper;
 use Alma\Gateway\Infrastructure\Repository\ConfigRepository;
 use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
@@ -80,6 +76,8 @@ use Psr\Http\Client\ClientInterface;
  * Dependency Injection Container
  */
 class ContainerService {
+
+	private const PHP_CLIENT_LOGGER = 'PHPClientLogger';
 
 	/** @var Dice */
 	private Dice $dice;
@@ -130,18 +128,27 @@ class ContainerService {
 
 		/** @var ConfigService $configService Mandatory for API services */
 		$configService = $this->get( ConfigService::class );
-		$this->dice    = $this->dice->addRule(
+
+		$this->dice = $this->dice->addRule(
 			ClientConfiguration::class,
 			array(
 				'constructParams' => array(
 					$configService->getActiveApiKey(),
-					$configService->getEnvironment(),
+					$configService->getEnvironment()
 				),
 				'shared'          => true,
 			)
 		);
-
-		$this->dice = $this->dice->addRule( CurlClient::class, array( 'shared' => true ) );
+		$this->dice = $this->dice->addRule(
+			CurlClient::class,
+			array(
+				'constructParams' => array(
+					$this->get( ClientConfiguration::class ),
+					$this->get( self::PHP_CLIENT_LOGGER )
+				),
+				'shared'          => true
+			)
+		);
 
 	}
 
@@ -169,7 +176,6 @@ class ContainerService {
 					NotificationHelperInterface::class        => NotificationHelper::class,
 					SecurityHelperInterface::class            => SecurityHelper::class,
 					SessionHelperInterface::class             => SessionHelper::class,
-					WidgetHelperInterface::class              => WidgetHelper::class,
 
 					// Repositories
 					ConfigRepositoryInterface::class          => ConfigRepository::class,
@@ -223,7 +229,7 @@ class ContainerService {
 		// Helpers
 		$this->dice = $this->dice->addRules(
 			array(
-				AssetsHelper::class       => array( 'shared' => true ),
+				AssetsService::class      => array( 'shared' => true ),
 				EncryptorHelper::class    => array( 'shared' => true ),
 				L10nHelper::class         => array( 'shared' => true ),
 				PluginHelper::class       => array( 'shared' => true ),
@@ -249,6 +255,16 @@ class ContainerService {
 				PayLaterGateway::class  => array( 'shared' => true ),
 				PayNowGateway::class    => array( 'shared' => true ),
 				PnxGateway::class       => array( 'shared' => true ),
+				// Generic Logger for WooCommerce
+				LoggerService::class    => array( 'shared' => true ),
+				// Specific Logger for the PHP Client
+				self::PHP_CLIENT_LOGGER => array(
+					'constructParams' => [
+						'php-client', // The source name
+					],
+					'instanceOf'      => LoggerService::class,
+					'shared'          => true
+				),
 			)
 		);
 	}

@@ -19,7 +19,7 @@ use Alma\Gateway\Plugin;
  */
 class AlmaGateway extends AbstractBackendGateway {
 
-	public const GATEWAY_TYPE = 'config';
+	public const PAYMENT_METHOD = 'config';
 
 
 	/**

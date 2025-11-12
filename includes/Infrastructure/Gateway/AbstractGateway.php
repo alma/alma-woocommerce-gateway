@@ -3,24 +3,19 @@
 namespace Alma\Gateway\Infrastructure\Gateway;
 
 use Alma\API\Application\DTO\RefundDto;
-use Alma\API\Domain\Entity\EligibilityList;
 use Alma\API\Infrastructure\Exception\ParametersException;
-use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
-use Alma\Gateway\Application\Mapper\CustomerMapper;
-use Alma\Gateway\Application\Mapper\OrderMapper;
-use Alma\Gateway\Application\Mapper\PaymentMapper;
 use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Application\Service\ConfigService;
+use Alma\Gateway\Application\Service\PaymentService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
+use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
-use Alma\Gateway\Infrastructure\Helper\InPageHelper;
-use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Infrastructure\Service\CacheService;
@@ -33,29 +28,17 @@ use WC_Payment_Gateway;
  */
 abstract class AbstractGateway extends WC_Payment_Gateway {
 
-	public const GATEWAY_TYPE = 'abstract';
+	protected const PAYMENT_METHOD = 'abstract';
 
-	public const CACHE_ENABLED = false;
+	protected const CACHE_ENABLED = false;
 
-	/** @var string Identifier */
-	public $id;
-
-	/**
-	 * @var ?EligibilityList $eligibility_list public only for debug in functions.php
-	 * @todo Remove this public property when the eligibility and fee plans are fully implemented.
-	 */
-	public ?EligibilityList $eligibility_list = null;
-	/**
-	 * @var ?FeePlanListAdapter $fee_plan_list_adapter public only for debug in functions.php
-	 * @todo Remove this public property when the eligibility and fee plans are fully implemented.
-	 */
-	public ?FeePlanListAdapter $fee_plan_list_adapter = null;
+	protected bool $is_eligible = false;
 
 	/**
 	 * Gateway constructor.
 	 */
 	public function __construct() {
-		$this->id                 = sprintf( 'alma_%s_gateway', $this->get_type() );
+		$this->id                 = sprintf( 'alma_%s_gateway', $this->get_payment_method() );
 		$this->method_description = L10nHelper::__( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.' );
 		$this->has_fields         = true;
 		$this->supports           = array( 'products', 'refunds' );
@@ -71,21 +54,15 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Set the eligibility of the gateway based on the eligibility list.
+	 * Get FeePlanListAdapter.
 	 *
-	 * @param EligibilityList $eligibility_list The eligibility list to filter.
+	 * @return FeePlanListAdapter|null
 	 */
-	public function configure_eligibility( EligibilityList $eligibility_list ): void {
-		$this->eligibility_list = $eligibility_list->filterEligibilityList( $this->get_type() );
-	}
+	public function get_fee_plan_list_adapter(): ?FeePlanListAdapter {
 
-	/**
-	 * Set the max amount of the gateway based on the fee plans.
-	 *
-	 * @param FeePlanListAdapter $fee_plan_list_adapter The fee plan list to filter.
-	 */
-	public function configure_fee_plans( FeePlanListAdapter $fee_plan_list_adapter ): void {
-		$this->fee_plan_list_adapter = $fee_plan_list_adapter->filterFeePlanList( array( $this->get_type() ) );
+		$fee_plan_repository = Plugin::get_container()->get( FeePlanRepository::class );
+
+		return $fee_plan_repository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) );
 	}
 
 	/**
@@ -94,11 +71,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * @return string The icon path.
 	 */
 	public function get_icon_url(): string {
-
-		/** @var AssetsHelper $asset_helper */
-		$asset_helper = Plugin::get_container()->get( AssetsHelper::class );
-
-		return $asset_helper->getImage( 'images/alma_logo.svg' );
+		return AssetsHelper::getImage( 'images/alma_logo.svg' );
 	}
 
 	/**
@@ -141,58 +114,36 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * @throws GatewayServiceException
 	 */
 	public function process_payment( $order_id ): array {
+		/** @var FeePlanRepository $fee_plan_repository */
+		$fee_plan_repository = Plugin::get_container()->get( FeePlanRepository::class );
 		/** @var OrderRepository $order_repository */
 		$order_repository = Plugin::get_container()->get( OrderRepository::class );
 		/** @var ConfigService $config_service */
 		$config_service = Plugin::get_container()->get( ConfigService::class );
-		/** @var InPageHelper $in_page_helper */
-		$in_page_helper     = Plugin::get_container()->get( InPageHelper::class );
-		$is_in_page_payment = $config_service->isInPage();
 		try {
 			$order = $order_repository->getById( $order_id );
 		} catch ( ProductRepositoryException $e ) {
 			throw new GatewayServiceException( 'Can not find Order' );
 		}
-		$fields           = $this->process_payment_fields( $order );
-		$fee_plan_adapter = $this->fee_plan_list_adapter->getByPlanKey( $fields['alma_plan_key'] );
-
-		/** @var PaymentProvider $payment_service */
-		$payment_service = Plugin::get_container()->get( PaymentProvider::class );
+		$fields = $this->process_payment_fields( $order );
 		try {
-			$payment = $payment_service->createPayment(
-				( new PaymentMapper() )->buildPaymentDto(
-					$config_service->getOrigin(),
-					$order,
-					$fee_plan_adapter
-				),
-				( new OrderMapper() )->buildOrderDto( $order ),
-				( new CustomerMapper() )->buildCustomerDto( $order ),
-			);
-		} catch ( PaymentServiceException $e ) {
-			/** @var NotificationHelper $notificationHelper */
-			$notificationHelper = Plugin::get_container()->get( NotificationHelper::class );
-			$notificationHelper->notifyError(
-				L10nHelper::__( 'Une erreur est survenue lors de la création du paiement. Veuillez réessayer.' . $e->getMessage() ),
-			);
-
-			return array(
-				'result'   => 'failure',
-				'redirect' => '',
-			);
+			$fee_plan_adapter = $fee_plan_repository->getByPlanKey( $fields['alma_plan_key'] );
+		} catch ( FeePlanRepositoryException $e ) {
+			throw new GatewayServiceException( 'Can not find Fee Plan' );
 		}
 
+		/** @var PaymentService $payment_service */
+		$payment_service = Plugin::get_container()->get( PaymentService::class );
+		$payment         = $payment_service->createPayment(
+			$config_service->isInPageEnabled(),
+			$order,
+			$fee_plan_adapter
+		);
+
+		// Update order status to pending
 		$order->updateStatus( 'pending', L10nHelper::__( 'En attente de paiement via Alma' ) );
 
-		$redirection_url = $payment->geturl();
-
-		if ( $is_in_page_payment ) {
-			$redirection_url = $in_page_helper->getInPageRedirectionUrl( $payment->getId() );
-		}
-
-		return array(
-			'result'   => 'success',
-			'redirect' => $redirection_url,
-		);
+		return $payment;
 	}
 
 	/**
@@ -261,8 +212,14 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		return $this->id;
 	}
 
-	protected function get_type(): string {
-		return static::GATEWAY_TYPE;
+	/**
+	 * Get the Payment Method type of the gateway.
+	 *
+	 *
+	 * @return string The Payment Method type of the gateway.
+	 */
+	public function get_payment_method(): string {
+		return static::PAYMENT_METHOD;
 	}
 
 	/**
@@ -271,6 +228,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * The result can be cached to avoid multiple calls to the same cart total.
 	 *
 	 * @return bool
+	 * @todo move this to CartAdapter?
 	 */
 	private function is_cart_eligible(): bool {
 		$eligibility = false;
@@ -289,19 +247,14 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		}
 
 		// When running from AJAX, the fee plan list is not set.
-		// @todo Find a fix to avoid API calls here.
-		if ( ! $this->fee_plan_list_adapter ) {
-			$fee_plan_repository         = Plugin::get_container()->get( FeePlanRepository::class );
-			$this->fee_plan_list_adapter = $fee_plan_repository->getAll();
-		}
+		$fee_plan_repository   = Plugin::get_container()->get( FeePlanRepository::class );
+		$fee_plan_list_adapter = $fee_plan_repository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) );
 
 		// Check if at least one fee plan is eligible for the cart total amount for this gateway
-		if ( isset( $this->fee_plan_list_adapter ) ) {
-			/** @var FeePlanAdapter $fee_plan */
-			foreach ( $this->fee_plan_list_adapter as $fee_plan_adapter ) {
-				if ( $fee_plan_adapter->isEligible( $total ) ) {
-					$eligibility = true;
-				}
+		/** @var FeePlanAdapter $fee_plan_adapter */
+		foreach ( $fee_plan_list_adapter as $fee_plan_adapter ) {
+			if ( $fee_plan_adapter->isEligible( $total ) ) {
+				$eligibility = true;
 			}
 		}
 

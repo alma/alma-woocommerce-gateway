@@ -8,29 +8,16 @@ use Alma\Gateway\Application\Mapper\CartMapper;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
 use Alma\Gateway\Tests\Unit\Mocks\OrderLineMockFactory;
-use Mockery;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
+use Mockery;
 use PHPUnit\Framework\TestCase;
 
 class CartMapperTest extends TestCase {
-	protected function setUp(): void {
-		Monkey\setUp();
-		$this->cartMapper = new CartMapper();
-	}
-
-	protected function tearDown(): void {
-		Mockery::resetContainer();
-		Mockery::close();
-		Monkey\tearDown();
-
-		$this->cartMapper = null;
-	}
-
 	public function testBuildCartDetailsWithoutItems(): void {
 		$orderAdapterMock = $this->createMock( OrderAdapterInterface::class );
 		$orderAdapterMock->method( 'getOrderLines' )->willReturn( [] );
-		$cartDto = $this->cartMapper->buildCartDetails( $orderAdapterMock );
+		$cartDto = $this->cartMapper->buildCartDto( $orderAdapterMock );
 		$this->assertInstanceOf( CartDto::class, $cartDto );
 		$this->assertSame( [ 'items' => [] ], $cartDto->toArray() );
 	}
@@ -62,7 +49,7 @@ class CartMapperTest extends TestCase {
 
 		$orderAdapterMock = $this->createMock( OrderAdapterInterface::class );
 		$orderAdapterMock->method( 'getOrderLines' )->willReturn( [ OrderLineMockFactory::create( $this ) ] );
-		$cartDto = $this->cartMapper->buildCartDetails( $orderAdapterMock );
+		$cartDto = $this->cartMapper->buildCartDto( $orderAdapterMock );
 		$this->assertInstanceOf( CartDto::class, $cartDto );
 		$this->assertEquals(
 			[
@@ -81,5 +68,18 @@ class CartMapperTest extends TestCase {
 				]
 			],
 			$cartDto->toArray() );
+	}
+
+	protected function setUp(): void {
+		Monkey\setUp();
+		$this->cartMapper = new CartMapper();
+	}
+
+	protected function tearDown(): void {
+		Mockery::resetContainer();
+		Mockery::close();
+		Monkey\tearDown();
+
+		$this->cartMapper = null;
 	}
 }

@@ -1,5 +1,5 @@
 /* global woocommerce_admin */
-(function ($, woocommerce_admin) {
+(function ($) {
     $(function () {
         // Toggle fee plans on/off.
         $('.wc_gateways').on(
@@ -48,4 +48,4 @@
         );
     });
 
-})(jQuery, woocommerce_admin);
+})(jQuery);

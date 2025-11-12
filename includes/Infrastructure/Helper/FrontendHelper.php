@@ -27,7 +27,7 @@ class FrontendHelper {
 	 * @todo Define the order of the gateways to be loaded.
 	 * @sonar Easier to understand with two if statements.
 	 */
-	public function loadFrontendGateways() {
+	public static function loadFrontendGateways() {
 		add_filter(
 			'woocommerce_payment_gateways',
 			function ( $gateways ) {

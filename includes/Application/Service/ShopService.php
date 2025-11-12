@@ -2,8 +2,6 @@
 
 namespace Alma\Gateway\Application\Service;
 
-use Alma\Gateway\Application\Exception\Service\AdminServiceException;
-use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Infrastructure\Helper\FrontendHelper;
 use Alma\Gateway\Plugin;
@@ -21,27 +19,20 @@ class ShopService {
 					return;
 				}
 
-				/** @var GatewayService $gateway_service */
-				$gateway_service = Plugin::get_container()->get( GatewayService::class );
-				try {
-					$gateway_service->configureGateway();
-				} catch ( GatewayServiceException $e ) {
-					throw new AdminServiceException();
+				/** @var WidgetService $widget_service */
+				$widget_service = Plugin::get_container()->get( WidgetService::class );
+				$widget_service->displayWidget();
+
+				/** @var ConfigService $configService */
+				$configService = Plugin::get_container()->get( ConfigService::class );
+
+				// Enabled In-Page on product or shop page
+				if ( $configService->isInPageEnabled() ) {
+					/** @var InPageService $inPageService */
+					$inPageService = Plugin::get_container()->get( InPageService::class );
+					$inPageService->displayInPage();
 				}
 
-				if ( PluginHelper::isConfigured() ) {
-					/** @var WidgetService $widget_service */
-					$widget_service = Plugin::get_container()->get( WidgetService::class );
-					$widget_service->displayWidget();
-
-					/** @var ConfigService $configService */
-					$configService = Plugin::get_container()->get( ConfigService::class );
-					if ( $configService->isInPage() ) {
-						/** @var InPageService $inPageService */
-						$inPageService = Plugin::get_container()->get( InPageService::class );
-						$inPageService->displayInPage();
-					}
-				}
 			}
 		);
 	}

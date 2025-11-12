@@ -20,3 +20,4 @@ package-lock.json
 .coverage
 .coverage-report
 phpstan.log
+build/*

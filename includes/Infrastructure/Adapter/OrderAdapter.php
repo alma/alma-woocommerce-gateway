@@ -17,9 +17,7 @@ use WC_Order;
  * @method addOrderNote( $note, $is_customer_note = 0, $added_by_user = false ) see WC_Order::add_order_note()
  * @method getItems() see WC_Order::get_items()
  * @method hasStatus( $status ) see WC_Order::has_status()
- * @method updateMetaData( $key, $value, $meta_id = 0 ) see WC_Abstract_Order::update_meta_data()
  * @method updateStatus( $new_status, $note = '', $manual = false ) see WC_Order::update_status()
- * @method save() see WC_Order::save()
  */
 class OrderAdapter implements OrderAdapterInterface {
 
@@ -417,5 +415,13 @@ class OrderAdapter implements OrderAdapterInterface {
 	public function paymentComplete( $paymentId ): bool {
 		return $this->wcOrder->payment_complete( $paymentId );
 
+	}
+
+	public function update_meta_data( $key, $value, $meta_id = 0 ) {
+		return $this->wcOrder->update_meta_data( $key, $value, $meta_id );
+	}
+
+	public function save() {
+		return $this->wcOrder->save();
 	}
 }

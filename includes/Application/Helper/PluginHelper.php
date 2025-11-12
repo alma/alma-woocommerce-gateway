@@ -30,7 +30,7 @@ class PluginHelper {
 
 		// Are we on the cart page?
 		// If everything is ok, we can load the plugin
-		if ( self::isConfigured() && ContextHelper::isCartProductOrCheckoutPage() ) {
+		if ( self::isConfigured() && ContextHelper::isShop() ) {
 			return true;
 		}
 

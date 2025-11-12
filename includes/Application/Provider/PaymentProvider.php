@@ -13,7 +13,7 @@ use Alma\API\Infrastructure\Exception\Endpoint\PaymentEndpointException;
 use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
 
-class PaymentProvider implements PaymentProviderInterface {
+class PaymentProvider implements PaymentProviderInterface, ProviderInterface {
 
 	/** @var PaymentEndpoint $paymentEndpoint */
 	private PaymentEndpoint $paymentEndpoint;

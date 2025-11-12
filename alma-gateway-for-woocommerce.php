@@ -33,14 +33,17 @@
  * along with Alma Payment Gateway for WooCommerce. If not, see https://www.gnu.org/licenses/gpl-3.0.html.
  */
 
+require_once 'vendor/autoload.php';
+require_once 'includes/functions.php';
+
+use Alma\Gateway\Plugin;
+use Automattic\WooCommerce\Utilities\FeaturesUtil;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-require_once 'vendor/autoload.php';
-require_once 'includes/functions.php';
-
-$alma_gateway_plugin = Alma\Gateway\Plugin::get_instance();
+$alma_gateway_plugin = Plugin::get_instance();
 
 add_action(
 	'plugins_loaded',
@@ -51,4 +54,15 @@ add_action(
 add_action(
 	'plugins_loaded',
 	array( $alma_gateway_plugin, 'plugin_setup' )
+);
+
+/**
+ * Init custom_order_tables if available in Woocommerce version.
+ */
+add_action(
+	'before_woocommerce_init',
+	function () {
+		FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+		FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
+	}
 );

@@ -9,18 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class InPageHelper {
 
 	/**
-	 * Display Alma In-Page script on the page.
-	 *
-	 * @param string $merchantId
-	 * @param string $environment
-	 *
-	 * @return void
-	 */
-	public function displayInPageAssets( string $merchantId, string $environment ): void {
-		AssetsHelper::enqueueInPageScript( '1.0.0', $merchantId, $environment );
-	}
-
-	/**
 	 * @param string $paymentId
 	 *
 	 * @return string

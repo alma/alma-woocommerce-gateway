@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Application\Entity\Form;
 
-use Alma\API\Infrastructure\ClientConfiguration;
+use Alma\API\Domain\ValueObject\Environment;
 use Alma\Gateway\Application\Service\AuthenticationService;
 use Alma\Gateway\Application\Service\ConfigService;
 
@@ -229,10 +229,11 @@ class KeyConfiguration {
 	private function retrieveMerchantId() {
 		if ( ! empty( $this->newTestKey ) ) {
 			$this->testMerchantId = $this->authenticationService->checkAuthentication( $this->newTestKey,
-				ClientConfiguration::TEST_MODE );
+				new Environment( Environment::TEST_MODE ) );
 		}
 		if ( ! empty( $this->newLiveKey ) ) {
-			$this->liveMerchantId = $this->authenticationService->checkAuthentication( $this->newLiveKey );
+			$this->liveMerchantId = $this->authenticationService->checkAuthentication( $this->newLiveKey,
+				new Environment( Environment::LIVE_MODE ) );
 		}
 	}
 }

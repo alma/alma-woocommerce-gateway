@@ -3,6 +3,7 @@
 namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
+use Alma\API\Domain\ValueObject\PaymentMethod;
 use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
@@ -18,7 +19,7 @@ use Alma\Gateway\Plugin;
  */
 class CreditGateway extends AbstractFrontendGateway implements FrontendGatewayInterface {
 
-	public const GATEWAY_TYPE = 'credit';
+	public const PAYMENT_METHOD = PaymentMethod::CREDIT;
 
 	/**
 	 * Gateway constructor.
@@ -62,6 +63,7 @@ class CreditGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 	 * Expose the payment fields to the frontend.
 	 *
 	 * @return void
+	 * @throws TemplateHelperException
 	 * @throws TemplateHelperException|FeePlanRepositoryException
 	 */
 	public function payment_fields() {
@@ -75,13 +77,13 @@ class CreditGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 			array(
 				'alma_woocommerce_gateway_fee_plan_list_adapter' => $this->getFeePlanList(),
 				'alma_woocommerce_gateway_nonce'       => $this->form_helper->generateTokenField(
-					'alma_credit_gateway_nonce_action',
-					'alma_credit_gateway_nonce_field'
+					sprintf( '%s_nonce_action', $this->get_name() ),
+					sprintf( '%s_nonce_field', $this->get_name() ),
 				),
 				'alma_woocommerce_gateway_merchant_id' => $config_service->getMerchantId(),
 				'alma_woocommerce_gateway_in_page_iframe_selector' => sprintf(
 					'alma_%s_gateway_in_page',
-					$this->get_type()
+					$this->get_payment_method()
 				),
 			),
 			'partials'
@@ -90,8 +92,8 @@ class CreditGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 			'alma-frontend-in-page-implementation',
 			'alma_woocommerce_gateway_credit_gateway',
 			array(
-				'type'         => $this->get_type(),
-				'gateway_name' => sprintf( 'alma_%s_gateway', $this->get_type() ),
+				'type'         => $this->get_payment_method(),
+				'gateway_name' => sprintf( 'alma_%s_gateway', $this->get_payment_method() ),
 			)
 		);
 	}
@@ -107,8 +109,8 @@ class CreditGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 	public function process_payment_fields( OrderAdapterInterface $order ): array {
 
 		$this->form_helper->validateTokenField(
-			'alma_credit_gateway_nonce_field',
-			'alma_credit_gateway_nonce_action'
+			sprintf( '%s_nonce_action', $this->get_name() ),
+			sprintf( '%s_nonce_field', $this->get_name() ),
 		);
 
 		// @todo Add validation for the payment fields.

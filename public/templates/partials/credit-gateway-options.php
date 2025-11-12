@@ -12,7 +12,7 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 
 ?>
 
-<fieldset class="alma_woocommerce_gateway_fieldset alma_woocommerce_gateway_credit">
+<div class="alma_woocommerce_gateway_fieldset alma_woocommerce_gateway_credit">
 	<p>
 		<?php
 		esc_html_e(
@@ -20,6 +20,8 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 			'alma-gateway-for-woocommerce'
 		);
 		?>
+		<br/>
+		<br/>
 	</p>
 	<p>
 		<?php
@@ -38,7 +40,7 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 				echo esc_html(
 					sprintf(
 					// Translators: %d is the number of installments.
-						L10nHelper::__( 'Paiement en %d fois' ),
+						L10nHelper::__( '&nbsp;Paiement en %d fois' ),
 						$alma_woocommerce_gateway_fee_plan_adapter->getInstallmentsCount()
 					)
 				);
@@ -51,7 +53,7 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 	/** @var string $alma_woocommerce_gateway_nonce */
 	echo $alma_woocommerce_gateway_nonce;
 	?>
-</fieldset>
+</div>
 
 <?php /** @var string $alma_woocommerce_gateway_in_page_iframe_selector */ ?>
 <div id="<?php echo $alma_woocommerce_gateway_in_page_iframe_selector; ?>"></div>

@@ -1,31 +1,17 @@
 <?php
-/**
- * FormHtmlBuilder.
- *
- * @since 5.0.0
- *
- * @package Alma_Gateway_For_Woocommerce
- * @subpackage Alma_Gateway_For_Woocommerce/Gateway/Business
- * @namespace Alma\Gateway\Business
- */
 
 namespace Alma\Gateway;
 
-use Alma\API\Domain\Helper\ContextHelperInterface;
-use Alma\API\Infrastructure\Exception\PluginException;
 use Alma\Gateway\Application\Exception\Helper\RequirementsHelperException;
-use Alma\Gateway\Application\Exception\Service\ShopServiceException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Helper\RequirementsHelper;
-use Alma\Gateway\Application\Provider\EligibilityProvider;
-use Alma\Gateway\Application\Provider\FeePlanProvider;
 use Alma\Gateway\Application\Service\AdminService;
-use Alma\Gateway\Application\Service\GatewayService;
 use Alma\Gateway\Application\Service\ShopService;
 use Alma\Gateway\Infrastructure\Exception\CmsException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
+use Alma\Gateway\Infrastructure\Service\GatewayService;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -51,12 +37,6 @@ final class Plugin {
 
 	/** @var Null|ContainerService The DI Container. */
 	private static ?ContainerService $container = null;
-
-	/** @var LoggerService $logger_service */
-	private LoggerService $logger_service;
-
-	/** @var ContextHelperInterface $contextHelper Gives information about context */
-	private ContextHelperInterface $contextHelper;
 
 	/**
 	 * Constructor.
@@ -117,26 +97,15 @@ final class Plugin {
 		// Set the DI container
 		self::get_container( true );
 
-		/** @var ContextHelper $contextHelper */
-		$contextHelper       = self::get_container()->get( ContextHelper::class );
-		$this->contextHelper = $contextHelper;
-
 		// Set the plugin helper and logger service
-		/** @var LoggerService $logger_service */
-		$logger_service       = self::get_container()->get( LoggerService::class );
-		$this->logger_service = $logger_service;
-
-		// Configure the gateways
-		/** @var GatewayService $gateway_service */
-		$gateway_service = self::get_container()->get( GatewayService::class );
-		if ( PluginHelper::isConfigured() ) {
-			/** @var EligibilityProvider $eligibility_service */
-			$eligibility_service = self::get_container()->get( EligibilityProvider::class );
-			$gateway_service->setEligibilityService( $eligibility_service );
-			/** @var FeePlanProvider $fee_plan_service */
-			$fee_plan_service = self::get_container()->get( FeePlanProvider::class );
-			$gateway_service->setFeePlanService( $fee_plan_service );
+		$suffix = [];
+		if ( isset( $_GET['rest_route'] ) && $_GET['rest_route'] === '/wc/store/v1/checkout' ) {
+			$suffix = [ sprintf( 'alma-%s', 'martin' ) ];
 		}
+
+		// Configure the logger service
+		/** @var LoggerService $logger_service */
+		self::get_container()->get( LoggerService::class, $suffix );
 	}
 
 	/**
@@ -144,7 +113,6 @@ final class Plugin {
 	 *
 	 * @return  void
 	 * @throws RequirementsHelperException
-	 * @throws PluginException
 	 */
 	public function plugin_setup(): void {
 
@@ -152,25 +120,28 @@ final class Plugin {
 			return;
 		}
 
-		/** @var GatewayService $gateway_service */
-		$gateway_service = self::get_container()->get( GatewayService::class );
-		$gateway_service->loadGateway();
 		if ( PluginHelper::isConfigured() ) {
-			$gateway_service->configureReturns();
-		}
 
-		// Run services only when WordPress admin is ready.
-		/** @var AdminService $adminService */
-		$adminService = self::get_container()->get( AdminService::class );
-		$adminService->runService();
+			// Plugin fully configured, let's run the services
+			/** @var GatewayService $gatewayService */
+			$gatewayService = self::get_container()->get( GatewayService::class );
+			$gatewayService->runService();
 
-		// Run services only when WordPress frontend is ready.
-		try {
+			// Run services only when WordPress admin is ready.
+			/** @var AdminService $adminService */
+			$adminService = self::get_container()->get( AdminService::class );
+			$adminService->runService();
+
+			// Run services only when WordPress frontend is ready.
 			/** @var ShopService $shopService */
 			$shopService = self::get_container()->get( ShopService::class );
 			$shopService->runService();
-		} catch ( ShopServiceException $e ) {
-			throw new PluginException( $e->getMessage() );
+
+		} else {
+			// Plugin not yet configured, load only backend gateway to help in configuration.
+			/** @var GatewayService $gatewayService */
+			$gatewayService = self::get_container()->get( GatewayService::class );
+			$gatewayService->runUnconfiguredService();
 		}
 	}
 

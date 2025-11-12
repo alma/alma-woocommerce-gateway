@@ -2,14 +2,16 @@
 
 namespace Alma\Gateway\Application\Provider;
 
+use Alma\API\Domain\Adapter\FeePlanListInterface;
 use Alma\API\Domain\Entity\FeePlan;
 use Alma\API\Domain\Entity\FeePlanList;
 use Alma\API\Domain\Port\FeePlanProviderInterface;
+use Alma\API\Domain\ValueObject\PaymentMethod;
 use Alma\API\Infrastructure\Endpoint\MerchantEndpoint;
 use Alma\API\Infrastructure\Exception\Endpoint\MerchantEndpointException;
 use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
 
-class FeePlanProvider implements FeePlanProviderInterface {
+class FeePlanProvider implements FeePlanProviderInterface, ProviderInterface {
 
 	/** @var MerchantEndpoint */
 	private MerchantEndpoint $merchantEndpoint;
@@ -42,11 +44,16 @@ class FeePlanProvider implements FeePlanProviderInterface {
 	 * Retrieve the fee plan list from the merchant endpoint.
 	 * @throws FeePlanServiceException
 	 */
-	private function retrieveFeePlanList(): FeePlanList {
+	private function retrieveFeePlanList(): FeePlanListInterface {
 
 		try {
 			return $this->merchantEndpoint->getFeePlanList( FeePlan::KIND_GENERAL, 'all', true )
-			                              ->filterFeePlanList( array( 'credit', 'pnx', 'pay-later', 'pay-now' ) );
+			                              ->filterFeePlanList( array(
+				                              PaymentMethod::CREDIT,
+				                              PaymentMethod::PAY_LATER,
+				                              PaymentMethod::PAY_NOW,
+				                              PaymentMethod::PNX
+			                              ) );
 
 		} catch ( MerchantEndpointException $e ) {
 			throw new FeePlanServiceException( 'Error retrieving fee plans: ' . $e->getMessage() );

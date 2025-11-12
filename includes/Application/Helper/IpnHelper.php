@@ -16,14 +16,14 @@ class IpnHelper implements IpnHelperInterface {
 	public const CUSTOMER_RETURN = 'alma_customer_return';
 	public const IPN_CALLBACK = 'alma_ipn_callback';
 
-	public function configureIpnCallback() {
+	public static function configureIpnCallback() {
 		EventHelper::addEvent(
 			'woocommerce_api_' . self::IPN_CALLBACK,
 			array( Plugin::get_container()->get( IpnService::class ), 'handleIpnCallback' )
 		);
 	}
 
-	public function configureCustomerReturn() {
+	public static function configureCustomerReturn() {
 		EventHelper::addEvent(
 			'woocommerce_api_' . self::CUSTOMER_RETURN,
 			array( Plugin::get_container()->get( IpnService::class ), 'handleCustomerReturn' )

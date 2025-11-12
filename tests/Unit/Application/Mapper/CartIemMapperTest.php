@@ -7,34 +7,20 @@ use Alma\Gateway\Application\Mapper\CartItemMapper;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
 use Alma\Gateway\Tests\Unit\Mocks\OrderLineMockFactory;
-use Mockery;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
+use Mockery;
 use PHPUnit\Framework\TestCase;
 
 class CartIemMapperTest extends TestCase {
 
 	private $cartIemMapper;
 
-	protected function setUp(): void {
-		Monkey\setUp();
-		$this->cartIemMapper = new CartItemMapper();
-	}
-
-	protected function tearDown(): void {
-		Mockery::resetContainer();
-		Mockery::close();
-		Monkey\tearDown();
-		parent::tearDown();
-
-		$this->cartIemMapper = null;
-	}
-
 	/**
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
-	public function testBuildCartItemDetails(): void {
+	public function testBuildCartItemDto(): void {
 		Functions\expect( 'wp_get_attachment_url' )
 			->once()
 			->with( 456 )
@@ -57,7 +43,7 @@ class CartIemMapperTest extends TestCase {
 
 		$orderLineMock = OrderLineMockFactory::create( $this );
 
-		$cartItemDetail = $this->cartIemMapper->buildCartItemDetails( $orderLineMock );
+		$cartItemDetail = $this->cartIemMapper->buildCartItemDto( $orderLineMock );
 		$this->assertInstanceOf( CartItemDto::class, $cartItemDetail );
 		$this->assertSame(
 			[
@@ -74,6 +60,20 @@ class CartIemMapperTest extends TestCase {
 			$cartItemDetail->toArray()
 		);
 
+	}
+
+	protected function setUp(): void {
+		Monkey\setUp();
+		$this->cartIemMapper = new CartItemMapper();
+	}
+
+	protected function tearDown(): void {
+		Mockery::resetContainer();
+		Mockery::close();
+		Monkey\tearDown();
+		parent::tearDown();
+
+		$this->cartIemMapper = null;
 	}
 
 }

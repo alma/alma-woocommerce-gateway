@@ -17,11 +17,11 @@ abstract class AbstractLoggerService implements LoggerInterface {
 	/**
 	 * @var string
 	 */
-	private string $context;
+	private string $source;
 
-	public function __construct( string $context = 'alma' ) {
+	public function __construct( string $source = 'alma' ) {
 		$this->woo_logger = new WC_Logger();
-		$this->context    = $context;
+		$this->source     = $source;
 	}
 
 	public function log( $level, $message, array $context = array() ): void {
@@ -30,7 +30,7 @@ abstract class AbstractLoggerService implements LoggerInterface {
 		}
 
 		$message = $this->interpolate( (string) $message, $context );
-		$this->woo_logger->log( $level, $message, array( 'source' => $this->context ) );
+		$this->woo_logger->log( $level, $message, array( 'source' => $this->source ) );
 	}
 
 	private function interpolate( string $message, array $context ): string {

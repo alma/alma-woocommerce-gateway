@@ -1,0 +1,27 @@
+{
+  "translation-revision-date": "2025-03-03 11:43",
+  "generator": "WP-CLI\/2.11.0",
+  "source": "build\/alma-checkout-block\/alma-checkout-blocks.js",
+  "domain": "alma-gateway-for-woocommerce",
+  "locale_data": {
+    "messages": {
+      "": {
+        "domain": "messages",
+        "lang": "fr_FR",
+        "plural-forms": "nplurals=2; plural=(n > 1);"
+      },
+      "Total TTC": [
+        "Total TTC"
+      ],
+      "Payment costs": [
+        "Frais de paiement"
+      ],
+      "installments.tomorrow": [
+        "Demain"
+      ],
+      "installments.today": [
+        "Aujourd'hui"
+      ]
+    }
+  }
+}

@@ -32,6 +32,50 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	}
 
 	/**
+	 * Check if the gateway is enabled.
+	 * If there is at least one enabled Fee Plan for this gateway type, the gateway is considered enabled.
+	 *
+	 * @return bool
+	 * @throws FeePlanRepositoryException
+	 */
+	public function is_enabled(): bool {
+
+		/** @var FeePlanRepository $feePlanRepository */
+		$feePlanRepository = Plugin::get_instance()->get_container()->get( FeePlanRepository::class );
+		$feePlanList       = $feePlanRepository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) )->filterEnabled();
+
+		return count( $feePlanList ) > 0;
+	}
+
+	/**
+	 * Check if the gateway is a pay now gateway.
+	 *
+	 * @return bool
+	 */
+	public function is_pay_now(): bool {
+		return false;
+	}
+
+	/**
+	 * Check if the gateway is a pay later gateway.
+	 *
+	 * @return bool
+	 */
+	public function is_pay_later(): bool {
+		return false;
+	}
+
+	/**
+	 * Get the gateway name.
+	 * The goal is to have a unique name for all frontend gateways
+	 *
+	 * @return string
+	 */
+	public function get_name(): string {
+		return sprintf( 'alma_%s_gateway', $this->get_payment_method() );
+	}
+
+	/**
 	 * Override the method to return the AlmaGateway option key for the frontend gateways.
 	 * The goal is to share the same options for all gateways
 	 *
@@ -39,17 +83,6 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	 */
 	public function get_option_key(): string {
 		return $this->plugin_id . $this->config_gateway_id . '_settings';
-	}
-
-	/**
-	 * Check if the gateway is enabled.
-	 *
-	 * @return bool
-	 */
-	public function is_enabled(): bool {
-		$enabled = $this->settings['enabled'] ?? 'no';
-
-		return 'yes' === $enabled;
 	}
 
 	/**
@@ -101,7 +134,7 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 		/** @var FeePlanRepository $fee_plan_repository */
 		$fee_plan_repository = Plugin::get_instance()->get_container()->get( FeePlanRepository::class );
 
-		return $fee_plan_repository->getAll()->filterFeePlanList( array( $this->get_type() ) );
+		return $fee_plan_repository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) );
 	}
 
 	/**

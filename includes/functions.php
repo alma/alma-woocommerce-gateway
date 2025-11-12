@@ -1,6 +1,5 @@
 <?php
 
-use Alma\API\Domain\Entity\Eligibility;
 use Alma\API\Domain\Entity\FeePlan;
 use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
 use Alma\Gateway\Application\Service\ConfigService;
@@ -22,15 +21,6 @@ add_action(
 		foreach ( WC()->payment_gateways()->payment_gateways() as $gateway ) {
 			$availability = $gateway->is_available() ? 'available' : 'not available';
 			echo $gateway->id . ' (Enabled: => ' . $gateway->enabled . ' / Available: => ' . $availability . ")\n";
-			if ( $gateway instanceof AbstractGateway ) {
-				/** @var Eligibility $eligibility */
-				foreach ( $gateway->eligibility_list as $eligibility ) {
-					echo '  - ' . $eligibility->getPlanKey() . ' => ' . ( $eligibility->isEligible() ? 'eligible' : 'not eligible' )
-					     . "\n";
-				}
-			} else {
-				echo ' - Not an Alma gateway' . "\n";
-			}
 		}
 		echo '</pre>';
 	}
@@ -152,12 +142,11 @@ function almalog( $message, $data = null ) {
 	}
 }
 
-
 add_action( 'admin_menu', 'alma_add_gateway_top_menu' );
 
 function alma_add_gateway_top_menu() {
 	add_menu_page(
-		__( 'Alma - Réglages', 'alma-gateway-for-woocommerce' ),
+		__( 'Alma - Settings', 'alma-gateway-for-woocommerce' ),
 		__( 'Alma', 'alma-gateway-for-woocommerce' ),
 		'manage_options',
 		'alma-gateway-settings',

@@ -3,6 +3,7 @@
 namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
+use Alma\API\Domain\ValueObject\PaymentMethod;
 use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
@@ -18,7 +19,7 @@ use Alma\Gateway\Plugin;
  */
 class PayLaterGateway extends AbstractFrontendGateway implements FrontendGatewayInterface {
 
-	public const GATEWAY_TYPE = 'pay-later';
+	public const PAYMENT_METHOD = PaymentMethod::PAY_LATER;
 
 	/**
 	 * Gateway constructor.
@@ -31,6 +32,15 @@ class PayLaterGateway extends AbstractFrontendGateway implements FrontendGateway
 	}
 
 	/**
+	 * Check if the gateway is a pay later gateway.
+	 *
+	 * @return bool
+	 */
+	public function is_pay_later(): bool {
+		return true;
+	}
+
+	/**
 	 * Validate the fields submitted by the user.
 	 *
 	 * @return bool
@@ -40,8 +50,8 @@ class PayLaterGateway extends AbstractFrontendGateway implements FrontendGateway
 	public function validate_fields(): bool {
 
 		$this->form_helper->validateTokenField(
-			'alma_pay-later_gateway_nonce_field',
-			'alma_pay-later_gateway_nonce_action'
+			sprintf( '%s_nonce_action', $this->get_name() ),
+			sprintf( '%s_nonce_field', $this->get_name() ),
 		);
 
 		// phpcs:ignore
@@ -69,6 +79,7 @@ class PayLaterGateway extends AbstractFrontendGateway implements FrontendGateway
 	 * Expose the payment fields to the frontend.
 	 *
 	 * @return void
+	 * @throws TemplateHelperException
 	 * @throws TemplateHelperException|FeePlanRepositoryException
 	 */
 	public function payment_fields() {
@@ -78,17 +89,17 @@ class PayLaterGateway extends AbstractFrontendGateway implements FrontendGateway
 		/** @var TemplateHelper $template_helper */
 		$template_helper = Plugin::get_container()->get( TemplateHelper::class );
 		$template_helper->getTemplate(
-			'pay-later-gateway-options.php',
+			'paylater-gateway-options.php',
 			array(
 				'alma_woocommerce_gateway_fee_plan_list_adapter' => $this->getFeePlanList(),
 				'alma_woocommerce_gateway_nonce'       => $this->form_helper->generateTokenField(
-					'alma_pay_later_gateway_nonce_action',
-					'alma_pay_later_gateway_nonce_field'
+					sprintf( '%s_nonce_action', $this->get_name() ),
+					sprintf( '%s_nonce_field', $this->get_name() ),
 				),
 				'alma_woocommerce_gateway_merchant_id' => $config_service->getMerchantId(),
 				'alma_woocommerce_gateway_in_page_iframe_selector' => sprintf(
 					'alma_%s_gateway_in_page',
-					$this->get_type()
+					$this->get_payment_method()
 				),
 			),
 			'partials'
@@ -97,8 +108,8 @@ class PayLaterGateway extends AbstractFrontendGateway implements FrontendGateway
 			'alma-frontend-in-page-implementation',
 			'alma_woocommerce_gateway_pay_later_gateway',
 			array(
-				'type'         => $this->get_type(),
-				'gateway_name' => sprintf( 'alma_%s_gateway', $this->get_type() ),
+				'type'         => $this->get_payment_method(),
+				'gateway_name' => sprintf( 'alma_%s_gateway', $this->get_payment_method() ),
 			)
 		);
 	}
@@ -114,8 +125,8 @@ class PayLaterGateway extends AbstractFrontendGateway implements FrontendGateway
 	public function process_payment_fields( OrderAdapterInterface $order ): array {
 
 		$this->form_helper->validateTokenField(
-			'alma_pay_later_gateway_nonce_field',
-			'alma_pay_later_gateway_nonce_action'
+			sprintf( '%s_nonce_action', $this->get_name() ),
+			sprintf( '%s_nonce_field', $this->get_name() ),
 		);
 
 		// @todo Add validation for the payment fields.

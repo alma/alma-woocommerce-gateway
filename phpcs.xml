@@ -51,9 +51,13 @@
         <exclude-pattern>includes/Domain/*</exclude-pattern>
         <exclude-pattern>includes/Application/*</exclude-pattern>
         <exclude-pattern>includes/Infrastructure/Adapter/*</exclude-pattern>
+        <exclude-pattern>includes/Infrastructure/Config/*</exclude-pattern>
         <exclude-pattern>includes/Infrastructure/Helper/*</exclude-pattern>
         <exclude-pattern>includes/Infrastructure/Repository/*</exclude-pattern>
         <exclude-pattern>includes/Infrastructure/Service/*</exclude-pattern>
+        <exclude-pattern>includes/Infrastructure/Dto/*</exclude-pattern>
+        <exclude-pattern>includes/Infrastructure/Mapper/*</exclude-pattern>
+        <exclude-pattern>includes/Infrastructure/Entity/*</exclude-pattern>
         <exclude-pattern>phpcs-custom/*</exclude-pattern>
         <exclude-pattern>includes/functions.php</exclude-pattern>
     </rule>
@@ -63,7 +67,9 @@
 
     <!-- Add in some extra rules from other standards. -->
     <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
-    <rule ref="Generic.Commenting.Todo"/>
+    <!--rule ref="Generic.Commenting.Todo"/-->
+
+    <rule ref="Generic.Files.EndFileNewline"/>
 
     <!-- Check for PHP cross-version compatibility. -->
     <!--
@@ -122,8 +128,11 @@
     </rule-->
 
     <!-- Include custom sniff -->
-    <rule ref="AlmaIntegrationCms.Architecture">
+    <rule ref="AlmaIntegrationCms.Architecture.ForbiddenPrefix">
         <exclude-pattern>includes/Infrastructure/*</exclude-pattern>
         <exclude-pattern>includes/functions.php</exclude-pattern>
     </rule>
+    <rule ref="AlmaIntegrationCms.NamingConventions.ClassSuffixByDirectory"/>
+    <rule ref="AlmaIntegrationCms.NamingConventions.ForbiddenHelperDependency"/>
+    <rule ref="AlmaIntegrationCms.Scope.NoPublicMemberVar"/>
 </ruleset>

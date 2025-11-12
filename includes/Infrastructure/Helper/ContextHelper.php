@@ -2,7 +2,12 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
+use Alma\API\Domain\Adapter\CartAdapterInterface;
+use Alma\API\Domain\Adapter\CustomerAdapterInterface;
 use Alma\API\Domain\Helper\ContextHelperInterface;
+use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
+use Alma\Gateway\Infrastructure\Adapter\CustomerAdapter;
+use Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils;
 
 class ContextHelper implements ContextHelperInterface {
 
@@ -14,7 +19,7 @@ class ContextHelper implements ContextHelperInterface {
 	 *
 	 * @return string|null
 	 */
-	public static function adminUrl( string $path = '', string $scheme = 'admin' ): ?string {
+	public static function getAdminUrl( string $path = '', string $scheme = 'admin' ): ?string {
 		return admin_url( $path, $scheme );
 	}
 
@@ -33,9 +38,10 @@ class ContextHelper implements ContextHelperInterface {
 	 * Defines if the current request is an admin request.
 	 * is_admin is not accurate for REST API requests.
 	 * So we look for the 'rest_route' parameter in the $_GET superglobal to determine if it's an admin REST API request.
-	 *
 	 * @return bool True if the current request is an admin request, false otherwise.
 	 * @phpcs We don't need to check nonce here. We only check the url, and we don't use parameters.
+	 * @todo Can we check wp_is_serving_rest_request() instead?
+	 *
 	 */
 	public static function isAdmin(): bool {
 		// phpcs:ignore
@@ -51,7 +57,7 @@ class ContextHelper implements ContextHelperInterface {
 	 * @return bool
 	 */
 	public static function isCartPage(): bool {
-		return is_cart();
+		return CartCheckoutUtils::is_cart_page();
 	}
 
 	/**
@@ -59,7 +65,7 @@ class ContextHelper implements ContextHelperInterface {
 	 * @return bool
 	 */
 	public static function isCheckoutPage(): bool {
-		return is_checkout();
+		return CartCheckoutUtils::is_checkout_page();
 	}
 
 	/**
@@ -74,7 +80,7 @@ class ContextHelper implements ContextHelperInterface {
 	 * Check if we are on the cart, product or checkout page.
 	 * @return bool
 	 */
-	public static function isCartProductOrCheckoutPage(): bool {
+	public static function isShop(): bool {
 		return self::isCartPage() || self::isProductPage() || self::isCheckoutPage();
 	}
 
@@ -167,4 +173,80 @@ class ContextHelper implements ContextHelperInterface {
 		return false;
 	}
 
+	/**
+	 * Get the current Cart instance.
+	 *
+	 * @return CartAdapterInterface
+	 */
+	public static function getCart(): ?CartAdapterInterface {
+		return new CartAdapter( WC()->cart );
+	}
+
+	/**
+	 * Get the current Customer instance.
+	 *
+	 * @return CustomerAdapterInterface
+	 */
+	public static function getCustomer(): ?CustomerAdapterInterface {
+		return new CustomerAdapter( WC()->customer );
+	}
+
+	/**
+	 * Check if the current request is an AJAX request.
+	 * Multiple types of AJAX requests are possible in WordPress/WooCommerce so we use many methods to detect them.
+	 *
+	 * @return bool True if the current request is an AJAX request, false otherwise.
+	 */
+	public static function isAjax(): bool {
+
+		$ajax = false;
+
+		// AJAX Call
+		if ( wp_doing_ajax() ) {
+			$ajax = true;
+		}
+
+		// REST API Call (after parse_request)
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+			$ajax = true;
+		}
+
+		// REST API Call (after parse_request)
+		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
+			$uri = $_SERVER['REQUEST_URI'];
+
+			// Store API call
+			if ( strpos( $uri, '/wc/store/' ) !== false ) {
+				$ajax = true;
+			}
+
+			// general REST API call
+			if ( wp_is_serving_rest_request() ) {
+				// rest_route=/wc/store/v1/checkout&_locale=site
+				$ajax = true;
+			}
+		}
+
+		return $ajax;
+	}
+
+	/**
+	 * Check if the checkout page is using blocks.
+	 *
+	 * @return bool True if the checkout page is using blocks, false otherwise.
+	 */
+	public static function isCheckoutPageUseBlocks(): bool {
+
+		return CartCheckoutUtils::is_checkout_block_default();
+	}
+
+	/**
+	 * Check if the cart page is using blocks.
+	 *
+	 * @return bool True if the cart page is using blocks, false otherwise.
+	 */
+	public static function isCartPageUseBlocks(): bool {
+
+		return CartCheckoutUtils::is_cart_block_default();
+	}
 }
