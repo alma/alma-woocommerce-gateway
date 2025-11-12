@@ -91,12 +91,12 @@ class PayLaterGateway extends AbstractFrontendGateway implements FrontendGateway
 		$template_helper->getTemplate(
 			'paylater-gateway-options.php',
 			array(
-				'alma_woocommerce_gateway_fee_plan_list' => $this->getFeePlanList(),
-				'alma_woocommerce_gateway_nonce'         => $this->form_helper->generateTokenField(
+				'alma_woocommerce_gateway_fee_plan_list_adapter' => $this->getFeePlanList(),
+				'alma_woocommerce_gateway_nonce'       => $this->form_helper->generateTokenField(
 					sprintf( '%s_nonce_action', $this->get_name() ),
 					sprintf( '%s_nonce_field', $this->get_name() ),
 				),
-				'alma_woocommerce_gateway_merchant_id'   => $config_service->getMerchantId(),
+				'alma_woocommerce_gateway_merchant_id' => $config_service->getMerchantId(),
 				'alma_woocommerce_gateway_in_page_iframe_selector' => sprintf(
 					'alma_%s_gateway_in_page',
 					$this->get_payment_method()

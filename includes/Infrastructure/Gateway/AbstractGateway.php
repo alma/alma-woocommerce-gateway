@@ -15,7 +15,6 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
-use Alma\Gateway\Infrastructure\Helper\InPageHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Infrastructure\Service\CacheService;
@@ -114,20 +113,19 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * @throws GatewayServiceException
 	 */
 	public function process_payment( $order_id ): array {
+		/** @var FeePlanRepository $fee_plan_repository */
+		$fee_plan_repository = Plugin::get_container()->get( FeePlanRepository::class );
 		/** @var OrderRepository $order_repository */
 		$order_repository = Plugin::get_container()->get( OrderRepository::class );
 		/** @var ConfigService $config_service */
 		$config_service = Plugin::get_container()->get( ConfigService::class );
-		/** @var InPageHelper $in_page_helper */
-		$in_page_helper     = Plugin::get_container()->get( InPageHelper::class );
-		$is_in_page_payment = $config_service->isInPageEnabled();
 		try {
 			$order = $order_repository->getById( $order_id );
 		} catch ( ProductRepositoryException $e ) {
 			throw new GatewayServiceException( 'Can not find Order' );
 		}
 		$fields           = $this->process_payment_fields( $order );
-		$fee_plan_adapter = $this->fee_plan_list_adapter->getByPlanKey( $fields['alma_plan_key'] );
+		$fee_plan_adapter = $fee_plan_repository->getByPlanKey( $fields['alma_plan_key'] );
 
 		/** @var PaymentService $payment_service */
 		$payment_service = Plugin::get_container()->get( PaymentService::class );

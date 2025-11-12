@@ -79,10 +79,17 @@ class FeePlanRepository {
 	 * Get a Fee Plan by its plan key (e.g. 'general_3_0_0').
 	 *
 	 * @param string $planKey
+	 * @param bool   $forceRefresh
 	 *
 	 * @return FeePlanAdapter|null
+	 * @throws FeePlanRepositoryException
 	 */
-	public function getByPlanKey( string $planKey ): ?FeePlanAdapter {
+	public function getByPlanKey( string $planKey, bool $forceRefresh = false ): ?FeePlanAdapter {
+
+		if ( $forceRefresh || ! isset( $this->feePlanListAdapter ) ) {
+			$this->retrieveFeePlans();
+		}
+
 		/** @var FeePlanAdapter $feePlanAdapter */
 		foreach ( $this->feePlanListAdapter as $feePlanAdapter ) {
 			if ( $feePlanAdapter->getPlanKey() === $planKey ) {
