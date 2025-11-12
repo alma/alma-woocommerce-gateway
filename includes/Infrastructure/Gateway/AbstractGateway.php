@@ -13,6 +13,7 @@ use Alma\Gateway\Application\Service\PaymentService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
+use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
@@ -124,8 +125,12 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		} catch ( ProductRepositoryException $e ) {
 			throw new GatewayServiceException( 'Can not find Order' );
 		}
-		$fields           = $this->process_payment_fields( $order );
-		$fee_plan_adapter = $fee_plan_repository->getByPlanKey( $fields['alma_plan_key'] );
+		$fields = $this->process_payment_fields( $order );
+		try {
+			$fee_plan_adapter = $fee_plan_repository->getByPlanKey( $fields['alma_plan_key'] );
+		} catch ( FeePlanRepositoryException $e ) {
+			throw new GatewayServiceException( 'Can not find Fee Plan' );
+		}
 
 		/** @var PaymentService $payment_service */
 		$payment_service = Plugin::get_container()->get( PaymentService::class );

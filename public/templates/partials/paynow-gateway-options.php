@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 
-<fieldset class="alma_woocommerce_gateway_fieldset  alma_woocommerce_gateway_pay-now">
+<div class="alma_woocommerce_gateway_fieldset  alma_woocommerce_gateway_pay-now">
 	<p>
 		<?php
 		esc_html_e(
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	/** @var string $alma_woocommerce_gateway_nonce */
 	echo $alma_woocommerce_gateway_nonce;
 	?>
-</fieldset>
+</div>
 
 <?php /** @var string $alma_woocommerce_gateway_in_page_iframe_selector */ ?>
 <div id="<?php echo $alma_woocommerce_gateway_in_page_iframe_selector; ?>"></div>
