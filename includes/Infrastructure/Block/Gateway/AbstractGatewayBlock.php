@@ -45,7 +45,7 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 
 		$this->config_service = $config_service;
 		$this->assets_service = $assets_service;
-		$this->name           = 'alma_' . $this->gateway->get_name() . '_gateway_block';
+		$this->name           = $this->gateway->get_name() . '_block';
 		$this->initialize();
 
 		// @todo move this to a more appropriate place
@@ -124,6 +124,8 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 	/**
 	 * Process the payment when this gateway is selected.
 	 * use StoreApi to create the payment
+	 *
+	 * Non-Blocks payments use AbstractFrontendGateway::process_payment()
 	 */
 	public function process_payment_with_context( PaymentContext $context, PaymentResult $result ) {
 

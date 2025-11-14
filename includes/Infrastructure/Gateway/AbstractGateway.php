@@ -107,6 +107,8 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * This method is called when the customer clicks on the "Pay with Alma" button.
 	 * It creates a payment with the Alma API and redirects the customer to the payment page.
 	 *
+	 * Blocks payments use AbstractGatewayBlock::process_payment_with_context()
+	 *
 	 * @param int $order_id The ID of the order to process.
 	 *
 	 * @return array|string[] The result of the payment processing.
