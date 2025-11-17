@@ -16,19 +16,39 @@ use Alma\Gateway\Plugin;
 
 class PaymentService {
 
+	/** @var ConfigService $configService */
 	private ConfigService $configService;
 
+	/** @var PaymentProvider $paymentProvider */
 	private PaymentProvider $paymentProvider;
 
+	/** @var InPageHelper $inPageHelper */
 	private InPageHelper $inPageHelper;
 
+	/**
+	 * PaymentService constructor.
+	 *
+	 * @param ConfigService   $configService
+	 * @param PaymentProvider $paymentProvider
+	 * @param InPageHelper    $inPageHelper
+	 */
 	public function __construct( ConfigService $configService, PaymentProvider $paymentProvider, InPageHelper $inPageHelper ) {
 		$this->configService   = $configService;
 		$this->paymentProvider = $paymentProvider;
 		$this->inPageHelper    = $inPageHelper;
 	}
 
-	public function createPayment( bool $isInPage, OrderAdapter $order, FeePlanAdapter $feePlanAdapter ): array {
+	/**
+	 * Create a payment.
+	 *
+	 * @param bool           $isInPage Indicates if the payment is created for an in-page flow
+	 * @param OrderAdapter   $order Order to create the payment for
+	 * @param FeePlanAdapter $feePlanAdapter Fee plan selected by the customer
+	 * @param bool           $inPageRedirectFallback return a fallback URL for in-page redirection (old behavior)
+	 *
+	 * @return array
+	 */
+	public function createPayment( bool $isInPage, OrderAdapter $order, FeePlanAdapter $feePlanAdapter, bool $inPageRedirectFallback = false ): array {
 
 		try {
 			$payment = $this->paymentProvider->createPayment(
@@ -54,17 +74,22 @@ class PaymentService {
 			);
 		}
 
-		// Determine redirection URL based on in-page or standard flow
+		// Determine redirection URL based id needed
+		$redirectionUrl = '';
 		if ( $isInPage ) {
-			$redirectionUrl = $this->inPageHelper->getInPageRedirectionUrl( $payment->getId() );
+			if ( $inPageRedirectFallback ) {
+				// In-page checkout with fallback redirection
+				$redirectionUrl = $this->inPageHelper->getInPageRedirectionFallbackUrl( $payment->getId() );
+			}
 		} else {
+			// Classic checkout redirection
 			$redirectionUrl = $payment->geturl();
 		}
 
 		return array(
-			'result'     => 'success',
-			'redirect'   => $redirectionUrl,
-			'payment_id' => $payment->getId(),
+			'result'          => 'success',
+			'redirect'        => $redirectionUrl,
+			'alma_payment_id' => $payment->getId(),
 		);
 	}
 }

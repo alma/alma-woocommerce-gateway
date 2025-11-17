@@ -77,7 +77,7 @@
 
 // phpcs:ignoreFile
 import {storeKey} from "../stores/alma-store";
-import {createRoot, useEffect} from '@wordpress/element';
+import {createRoot, useEffect, useState} from '@wordpress/element';
 import {useSelect} from '@wordpress/data';
 import {Label} from "./components/Label";
 import './alma-gateway-block.css';
@@ -87,9 +87,6 @@ import {fetchAlmaSettings} from "./hooks/almaSettings";
 import {useRef} from "react";
 
 (function ($) {
-
-    /** In Page status */
-    let inPage = undefined;
 
     /** Get Cart and Checkout store keys */
     const {CART_STORE_KEY, CHECKOUT_STORE_KEY} = window.wc.wcBlocksData
@@ -137,6 +134,8 @@ import {useRef} from "react";
         });
         const isFetching = useRef(false);
 
+        const [inPageInstance, setInPageInstance] = useState(undefined)
+
         // Use the cart total and addresses to fetch the new eligibility
         useEffect(() => {
             console.log('CartObserver useEffect triggered with cartTotal:', cartTotal, 'shippingRates:', shippingRates);
@@ -161,19 +160,20 @@ import {useRef} from "react";
         // Register the payment gateway block
         if (!isCalculating && !isLoading) {
             // For each gateway in eligibility result, we register a block
-            registerPaymentGateway(almaSettings, allGatewaysSettings, storeKey, parseInt(cartTotal))
+            registerPaymentGateway(almaSettings, allGatewaysSettings, storeKey, parseInt(cartTotal), inPageInstance, setInPageInstance)
         }
     };
 
     /**
      * Register All Payment Gateway Blocks
+     *
      * @param almaSettings All AlmaSettings
      * @param allGatewaysSettings
      * @param storeKey
      * @param init
      * @param cartTotal
      */
-    const registerPaymentGateway = (almaSettings, allGatewaysSettings, storeKey, cartTotal, init = false) => {
+    const registerPaymentGateway = (almaSettings, allGatewaysSettings, storeKey, cartTotal, inPageInstance, setInPageInstance, init = false) => {
 
         for (const gatewayName in allGatewaysSettings) {
 
@@ -181,7 +181,7 @@ import {useRef} from "react";
 
             // If gateway Block is available, we register it
             if (gatewaySettings) {
-                const blockContent = getContentBlock(almaSettings, gatewayName, storeKey, cartTotal)
+                const blockContent = getContentBlock(almaSettings, gatewayName, storeKey, cartTotal, inPageInstance, setInPageInstance)
                 const AlmaGatewayBlock = generateGatewayBlock(gatewaySettings, blockContent, init ? true : gatewayCanMakePayment(gatewaySettings));
                 window.wc.wcBlocksRegistry.registerPaymentMethod(AlmaGatewayBlock);
                 console.log('register: ' + gatewayName);
@@ -224,16 +224,14 @@ import {useRef} from "react";
      * @param cartTotal
      * @returns {JSX.Element}
      */
-    const getContentBlock = (almaSettings, gateway, storeKey, cartTotal) => {
-        const setInPage = (inPageInstance) => {
-            inPage = inPageInstance
-        }
+    const getContentBlock = (almaSettings, gateway, storeKey, cartTotal, inPageInstance, setInPageInstance) => {
 
         return almaSettings.is_in_page ? (
             <DisplayAlmaInPageBlock
                 gateway={gateway}
                 storeKey={storeKey}
-                setInPage={setInPage}
+                setInPage={setInPageInstance}
+                inPage={inPageInstance}
                 cartTotal={cartTotal}
             />
         ) : (

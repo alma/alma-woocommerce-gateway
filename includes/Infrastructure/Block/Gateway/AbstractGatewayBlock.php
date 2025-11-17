@@ -131,7 +131,20 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 
 		if ( $context->payment_method === $this->gateway->get_name() ) {
 
-			$payment_data     = $context->payment_data;
+			$payment_data = $context->payment_data;
+			almalog( $this->gateway->get_name(), $payment_data );
+
+			// Defensive: Ignore requests that do not have the required fields
+			if (
+				empty( $payment_data['alma_plan_key'] ) ||
+				empty( $payment_data['alma_checkout_nonce_field'] ) ||
+				empty( $payment_data['payment_method'] )
+			) {
+				almalog( $this->gateway->get_name(), 'Ignored incomplete payment_data' );
+
+				return;
+			}
+
 			$order            = new OrderAdapter( $context->order );
 			$fee_plan_adapter = $this->gateway->get_fee_plan_list_adapter()->getByPlanKey( $payment_data['alma_plan_key'] );
 
@@ -144,7 +157,7 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 			);
 
 			$order->updateStatus( 'pending', L10nHelper::__( 'En attente de paiement via Alma' ) );
-			$order->update_meta_data( '_alma_payment_id', $payment['payment_id'] );
+			$order->update_meta_data( '_alma_payment_id', $payment['alma_payment_id'] );
 			$order->save();
 
 			if ( 'success' === $payment['result'] ) {
@@ -152,7 +165,7 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 					$result->set_status( 'success' );
 					$result->set_payment_details(
 						array(
-							'alma_payment_id' => $payment['payment_id'],
+							'alma_payment_id' => $payment['alma_payment_id'],
 							'alma_fee_plan'   => $payment_data['alma_plan_key'],
 						)
 					);

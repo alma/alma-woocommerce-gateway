@@ -139,7 +139,8 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		$payment         = $payment_service->createPayment(
 			$config_service->isInPageEnabled(),
 			$order,
-			$fee_plan_adapter
+			$fee_plan_adapter,
+			true // Force in-page redirect fallback
 		);
 
 		// Update order status to pending

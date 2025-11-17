@@ -10,13 +10,15 @@ export const DisplayAlmaInPageBlock = (props) => {
         storeKey,
         cartTotal,
         setInPage,
+        inPage,
     } = props;
 
     const {onPaymentSetup, onCheckoutSuccess, onCheckoutFail} = eventRegistration;
 
-    // ✅ Accéder au store CHECKOUT pour réinitialiser l'état
+    // Get the Checkout Store Key
     const {CHECKOUT_STORE_KEY} = window.wc.wcBlocksData;
 
+    // Get Alma settings and gateway settings from the store
     const {almaSettings, gatewaySettings, isLoading} = useSelect(
         (select) => ({
             almaSettings: select(storeKey).getAlmaSettings(),
@@ -25,7 +27,7 @@ export const DisplayAlmaInPageBlock = (props) => {
         }), []
     );
 
-    // ✅ Utiliser useRef pour conserver l'instance inPage
+    // Getters and setters for In-Page instance and state
     const inPageRef = useRef(null);
     const [isInPageReady, setIsInPageReady] = useState(false);
     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
@@ -33,18 +35,17 @@ export const DisplayAlmaInPageBlock = (props) => {
     // Define default plan and selected plan
     const availableFeePlans = gatewaySettings.fee_plans_settings || {};
 
+    // Define the first plan as default and store it in state
     let default_plan = '';
     if (!isLoading && Object.keys(availableFeePlans || {}).length > 0) {
         default_plan = Object.keys(availableFeePlans)[0];
     }
-
     const [selectedFeePlan, setSelectedFeePlan] = useState(default_plan);
-
     const plan = !isLoading
         ? availableFeePlans?.[selectedFeePlan] ?? availableFeePlans?.[default_plan]
         : null;
 
-    // ✅ Synchroniser le plan sélectionné avec le store
+    // Synchronize selectedFeePlan with the store
     useEffect(() => {
         if (selectedFeePlan) {
             dispatch(storeKey).setSelectedFeePlan(selectedFeePlan);
@@ -52,59 +53,53 @@ export const DisplayAlmaInPageBlock = (props) => {
     }, [selectedFeePlan]);
 
     /**
-     * ✅ Fonction pour réinitialiser le checkout après fermeture/annulation
+     * Reset checkout state after payment modal is closed
      */
     const resetCheckoutState = useCallback(() => {
-        console.log('🔄 ' + gatewaySettings.name + ': Resetting checkout state...');
+        console.log(gatewaySettings.name + ': Resetting checkout state...');
 
         try {
-            // ✅ Réinitialiser l'état "processing" du checkout
+            // Reinit "processing" state of checkout
             dispatch(CHECKOUT_STORE_KEY).__internalSetProcessing(false);
 
-            // ✅ Réinitialiser l'état "idle" du checkout
+            // Reinit "idle" state of checkout
             dispatch(CHECKOUT_STORE_KEY).__internalSetIdle();
 
-            console.log('✅ ' + gatewaySettings.name + ': Checkout state reset successfully');
+            console.log(gatewaySettings.name + ': Checkout state reset successfully');
         } catch (error) {
-            console.warn('⚠️ Could not reset checkout state:', error);
+            console.warn('Could not reset checkout state:', error);
         }
 
         setIsProcessingPayment(false);
     }, [CHECKOUT_STORE_KEY]);
 
-    const initializeInpage = useCallback((total_price) => {
-        console.log('🔧 Initializing Alma In-Page Iframe...');
+    /**
+     * Initialize Alma In-Page Iframe
+     */
+    const initializeInPage = useCallback((total_price) => {
+        console.log('Initializing Alma In-Page Iframe...');
 
-        // ❌ NE PAS unmount si un paiement est en cours !
+        // Don't re-initialize if a payment is in progress
         if (isProcessingPayment) {
-            console.log('⚠️ Payment in progress, skipping re-initialization');
+            console.log('Payment in progress, skipping re-initialization');
             return;
         }
 
-        // Nettoyer l'instance précédente si elle existe
-        if (inPageRef.current && typeof inPageRef.current.unmount === 'function') {
+        // Clean up previous instance if exists
+        if (inPage && typeof inPage.unmount === 'function') {
             try {
-                console.log('✅ Unmounting previous instance');
-                inPageRef.current.unmount();
+                console.log('Unmounting previous instance');
+                inPage.unmount();
             } catch (e) {
-                console.warn('❌ Failed to unmount:', e);
+                console.info('Unmounting previous instance');
             }
         }
 
+        // Don't initialize if no plan is selected
         if (!plan) {
-            console.warn('⚠️ No plan available');
+            console.warn('No plan available');
             return;
         }
-
-        console.log('Alma.InPage:', Alma?.InPage);
-        console.log('merchantId:', almaSettings.merchant_id);
-        console.log('amountInCents:', total_price);
-        console.log('installmentsCount:', plan.installmentsCount);
-        console.log('selector:', "#alma-inpage-container");
-        console.log('deferredDays:', plan.deferredDays);
-        console.log('deferredMonths:', plan.deferredMonths);
-        console.log('environment:', almaSettings.environment);
-        console.log('locale:', almaSettings.language);
 
         try {
             inPageRef.current = Alma.InPage.initialize({
@@ -117,43 +112,26 @@ export const DisplayAlmaInPageBlock = (props) => {
                 environment: almaSettings.environment,
                 locale: almaSettings.language,
             });
-            console.warn('InPage instance:', inPageRef.current);
 
-            // ✅ Passer l'instance au parent
+            // Store and share the instance in parent component state
             setInPage(inPageRef.current);
-
             setIsInPageReady(true);
-            console.log('✅ In-Page initialized');
+            console.log('In-Page initialized');
         } catch (error) {
-            console.error('❌ Failed to initialize:', error);
+            console.error('Failed to initialize:', error);
             setIsInPageReady(false);
         }
-    }, [plan, almaSettings, setInPage, isProcessingPayment]);
-
-    // ✅ Cleanup UNIQUEMENT quand le composant est démonté (changement de gateway)
-    // useEffect(() => {
-    //     return () => {
-    //         console.log('🧹 Component unmounting, cleaning up InPage');
-    //         if (inPageRef.current?.unmount) {
-    //             try {
-    //                 inPageRef.current.unmount();
-    //                 setInPage(null);
-    //             } catch (e) {
-    //                 console.warn('Failed to cleanup:', e);
-    //             }
-    //         }
-    //     };
-    // }, [setInPage]); // ✅ Pas de dépendances sur isProcessingPayment
+    }, [plan, almaSettings, inPage, setInPage, isProcessingPayment]);
 
     /**
-     * ✅ onPaymentSetup - Préparer le paiement
+     * Prepare payment data onPaymentSetup
      */
     useEffect(() => {
         const unsubscribe = onPaymentSetup(async () => {
-            console.log('🚀 ' + gatewaySettings.name + ': In-Page Payment Setup starting...');
+            console.log(gatewaySettings.name + ': In-Page Payment Setup starting...');
 
             if (isProcessingPayment) {
-                console.log('⚠️ ' + gatewaySettings.name + ': Payment already processing, skipping...');
+                console.log(gatewaySettings.name + ': Payment already processing, skipping...');
                 return {
                     type: emitResponse.responseTypes.SUCCESS,
                 };
@@ -169,8 +147,6 @@ export const DisplayAlmaInPageBlock = (props) => {
                     payment_method: String(gatewaySettings.gateway_name || ''),
                 };
 
-                console.log('📦 ' + gatewaySettings.name + ': Payment data prepared:', paymentMethodData);
-
                 return {
                     type: emitResponse.responseTypes.SUCCESS,
                     meta: {
@@ -179,7 +155,7 @@ export const DisplayAlmaInPageBlock = (props) => {
                 };
 
             } catch (error) {
-                console.error('❌ Payment setup error:', error);
+                console.error('Payment setup error:', error);
                 setIsProcessingPayment(false);
                 return {
                     type: emitResponse.responseTypes.ERROR,
@@ -192,22 +168,19 @@ export const DisplayAlmaInPageBlock = (props) => {
     }, [onPaymentSetup, selectedFeePlan, gatewaySettings.gateway_name, almaSettings.nonce_key, almaSettings.nonce_value, emitResponse.responseTypes, isProcessingPayment]);
 
     /**
-     * ✅ onCheckoutSuccess - Ouvrir la popup après l'appel API
+     * Open In-Page modal onCheckoutSuccess
      */
     useEffect(() => {
         const unsubscribeSuccess = onCheckoutSuccess(async (checkoutResponse) => {
-            console.log('✅ Checkout API call successful:', checkoutResponse);
+            console.log('Checkout API call successful:', checkoutResponse);
 
             try {
-                // ✅ Récupérer le payment_id depuis la réponse
+                // Get payment details from response
                 const paymentDetails = checkoutResponse.processingResponse?.paymentDetails;
                 const almaPaymentId = paymentDetails?.alma_payment_id;
 
-                console.log('🔍 Payment details:', paymentDetails);
-
                 if (!almaPaymentId) {
-                    console.error('❌ No Alma payment ID in response');
-                    console.error('Full response:', JSON.stringify(checkoutResponse, null, 2));
+                    console.error('No Alma payment ID in response');
                     resetCheckoutState();
                     return {
                         type: emitResponse.responseTypes.ERROR,
@@ -215,11 +188,8 @@ export const DisplayAlmaInPageBlock = (props) => {
                     };
                 }
 
-                console.log('🎯 Alma Payment ID:', almaPaymentId);
-                console.log('InPage Ref:', inPageRef.current);
-
-                if (!inPageRef.current || !isInPageReady) {
-                    console.error('❌ In-Page not ready');
+                if (!inPage || !isInPageReady) {
+                    console.error('In-Page not ready');
                     resetCheckoutState();
                     return {
                         type: emitResponse.responseTypes.ERROR,
@@ -227,26 +197,23 @@ export const DisplayAlmaInPageBlock = (props) => {
                     };
                 }
 
-                console.log('🪟 Opening Alma In-Page payment modal...');
-                console.log(inPageRef.current)
+                console.log('Opening Alma In-Page payment modal...');
 
                 try {
-                    const paymentResult = await inPageRef.current.startPayment({
+                    const paymentResult = await inPage.startPayment({
                         paymentId: almaPaymentId,
                         onUserCloseModal: () => {
-                            console.log('⚠️ User closed the payment modal');
+                            console.log('Payment modal closed by user');
                             resetCheckoutState();
                         }
                     });
 
-                    console.log('✅ Payment result:', paymentResult);
-
-                    // Vérifier le statut du résultat
+                    // Check payment result status
                     if (paymentResult && paymentResult.status === 'success') {
-                        console.log('✅ Payment completed successfully');
+                        console.log('Payment completed successfully');
                         setIsProcessingPayment(false);
 
-                        // Rediriger vers la page de succès
+                        // Redirect to order received page
                         if (checkoutResponse.redirectUrl) {
                             window.location.href = checkoutResponse.redirectUrl;
                         } else {
@@ -255,27 +222,27 @@ export const DisplayAlmaInPageBlock = (props) => {
                             window.location.href = `/checkout/order-received/${orderId}/?key=${orderKey}`;
                         }
                     } else if (paymentResult && paymentResult.status === 'error') {
-                        console.error('❌ Payment error:', paymentResult.error);
+                        console.error('Payment error:', paymentResult.error);
                         resetCheckoutState();
                         alert(paymentResult.error?.message || 'Payment failed. Please try again.');
                     } else if (paymentResult && paymentResult.status === 'cancelled') {
-                        console.log('⚠️ Payment cancelled by user');
+                        console.log('⚠Payment cancelled by user');
                         resetCheckoutState();
                     }
 
                 } catch (paymentError) {
-                    console.error('❌ Payment modal error:', paymentError);
+                    console.error('Payment modal error:', paymentError);
                     resetCheckoutState();
 
                     if (paymentError.code === 'user_cancelled') {
-                        console.log('⚠️ User cancelled payment');
+                        console.log('User cancelled payment');
                     } else {
                         alert(paymentError.message || 'Payment failed. Please try again.');
                     }
                 }
 
             } catch (error) {
-                console.error('❌ Failed to open payment modal:', error);
+                console.error('Failed to open payment modal:', error);
                 resetCheckoutState();
                 return {
                     type: emitResponse.responseTypes.ERROR,
@@ -285,28 +252,55 @@ export const DisplayAlmaInPageBlock = (props) => {
         });
 
         return () => unsubscribeSuccess();
-    }, [onCheckoutSuccess, isInPageReady, emitResponse.responseTypes, resetCheckoutState]);
+    }, [onCheckoutSuccess, isInPageReady, emitResponse.responseTypes, resetCheckoutState, inPage]);
 
     /**
-     * ✅ Initialiser In-Page (widget informatif) quand le plan change
+     * Handle checkout failure onCheckoutFail
+     */
+    useEffect(() => {
+        const unsubscribeFail = onCheckoutFail((error) => {
+            console.error('Checkout failed:', error);
+
+            // Unmount the In-Page instance if it exists
+            if (inPage && typeof inPage.unmount === 'function') {
+                try {
+                    inPage.unmount();
+                } catch (e) {
+                    console.warn('Failed to unmount In-Page instance on fail:', e);
+                }
+            }
+
+            // Reset checkout state
+            resetCheckoutState();
+
+            // Optionally, show an error to the user
+            alert('Payment failed. Please try again.');
+        });
+
+        return () => unsubscribeFail();
+    }, [onCheckoutFail, inPage, resetCheckoutState]);
+
+    /**
+     * Initialize or re-initialize In-Page when plan or cart total changes
      */
     const lastInitRef = useRef({planKey: null, cartTotal: null});
 
     useEffect(() => {
-        // Ne réinitialiser que si le plan ou le montant a vraiment changé
+        // Initialize or re-initialize In-Page if plan or cart total changed
         if (!isLoading && plan && cartTotal) {
             const planKey = plan.planKey;
 
             if (lastInitRef.current.planKey !== planKey || lastInitRef.current.cartTotal !== cartTotal) {
                 console.log('🔄 Plan or cart changed, reinitializing In-Page widget');
                 lastInitRef.current = {planKey, cartTotal};
-                initializeInpage(cartTotal);
+                initializeInPage(cartTotal);
             }
         }
-    }, [plan?.planKey, cartTotal, isLoading, initializeInpage]);
+    }, [plan?.planKey, cartTotal, isLoading, initializeInPage]);
 
     const displayInstallments = gatewaySettings.is_pay_now ? 'none' : 'block';
 
+    // Render loading state or Alma In-Page block
     return isLoading ? (
         <div>Loading payment options...</div>
     ) : (
@@ -320,12 +314,12 @@ export const DisplayAlmaInPageBlock = (props) => {
                 setSelectedFeePlan={setSelectedFeePlan}
                 plans={availableFeePlans}
             />
-            {/* ✅ Widget informatif In-Page */}
+            {/* Informative In-Page Widget */}
             <div
                 id="alma-inpage-container"
                 style={{display: displayInstallments}}
             ></div>
-            {/* ✅ Indicateur de traitement */}
+            {/* Loading state */}
             {isProcessingPayment}
         </>
     );
