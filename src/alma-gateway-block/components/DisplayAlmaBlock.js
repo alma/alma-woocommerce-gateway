@@ -1,4 +1,4 @@
-import {select, useSelect} from '@wordpress/data';
+import {useSelect} from '@wordpress/data';
 import {useEffect, useState} from '@wordpress/element';
 import {AlmaBlock} from "./alma-block-component.tsx";
 
@@ -43,11 +43,8 @@ export const DisplayAlmaBlock = (props) => {
     useEffect(() => {
         console.log('selectedFeePlan changed:', selectedFeePlan);
         const unsubscribe = onPaymentProcessing(async () => {
-            if (almaSettings.is_in_page) {
-                return handleInPagePayment(gatewaySettings, emitResponse, selectedFeePlan);
-            } else {
-                return handleStandardPayment(gatewaySettings, emitResponse, selectedFeePlan);
-            }
+            return handleStandardPayment(gatewaySettings, emitResponse, selectedFeePlan);
+
         });
 
         return () => unsubscribe();
@@ -69,33 +66,6 @@ export const DisplayAlmaBlock = (props) => {
         const paymentMethodData = {
             [nonceKey]: `${almaSettings.nonce_value}`,
             alma_plan_key: String(selectedFeePlan || ''),
-        };
-
-        return {
-            type: emitResponse.responseTypes.SUCCESS,
-            meta: {
-                paymentMethodData: paymentMethodData
-            }
-        };
-    };
-
-    /**
-     * Handle In-Page Payment
-     *
-     * @param gatewaySettings
-     * @param emitResponse
-     * @param selectedFeePlan
-     * @returns {Promise<{type: *, meta: {paymentMethodData: {alma_plan_key: string, payment_method: string}}}>}
-     */
-    const handleInPagePayment = async (gatewaySettings, emitResponse, selectedFeePlan) => {
-
-        console.log('In Page Checkout');
-        const selectedPlan = select(storeKey).getSelectedFeePlan();
-        console.log('Selected plan:', selectedFeePlan);
-
-        const paymentMethodData = {
-            alma_plan_key: String(selectedFeePlan || ''),
-            payment_method: String(gatewaySettings.gateway_name || ''),
         };
 
         return {
