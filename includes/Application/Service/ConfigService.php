@@ -249,22 +249,6 @@ class ConfigService {
 	}
 
 	/**
-	 * Toggle a Fee Plan status.
-	 *
-	 * @param string $fee_plan_key The ID of the Fee Plan to toggle.
-	 *
-	 * @return bool True if the Fee Plan is now enabled, false otherwise.
-	 */
-	public function toggleFeePlan( string $fee_plan_key ): bool {
-		$option                  = $fee_plan_key . '_enabled';
-		$current_fee_plan_status = $this->getSetting( $option );
-		$new_fee_plan_status     = 'yes' === $current_fee_plan_status ? 'no' : 'yes';
-		$this->configRepository->updateSetting( $option, $new_fee_plan_status );
-
-		return 'yes' === $new_fee_plan_status;
-	}
-
-	/**
 	 * Check if a Fee Plan is enabled in the options.
 	 *
 	 * @param string $fee_plan_key

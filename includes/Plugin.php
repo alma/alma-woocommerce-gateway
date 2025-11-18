@@ -121,6 +121,7 @@ final class Plugin {
 		}
 
 		if ( PluginHelper::isConfigured() ) {
+			$this->get_container()->setApiConfig();
 
 			// Plugin fully configured, let's run the services
 			/** @var GatewayService $gatewayService */
@@ -159,8 +160,7 @@ final class Plugin {
 		}
 
 		// Check if all dependencies are met
-		$requirements_helper = new RequirementsHelper();
-		if ( ! $requirements_helper->check_dependencies( ContextHelper::getCmsVersion() ) ) {
+		if ( ! RequirementsHelper::check_dependencies( ContextHelper::getCmsVersion() ) ) {
 			return false;
 		}
 

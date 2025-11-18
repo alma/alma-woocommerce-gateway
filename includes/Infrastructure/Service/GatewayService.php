@@ -9,17 +9,13 @@ use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\PluginHelper;
-use Alma\Gateway\Application\Provider\EligibilityProvider;
 use Alma\Gateway\Application\Provider\PaymentProvider;
-use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\BackendHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\EventHelper;
 use Alma\Gateway\Infrastructure\Helper\FrontendHelper;
 use Alma\Gateway\Infrastructure\Helper\GatewayHelper;
-use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
-use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Infrastructure\Repository\UserRepository;
 use Alma\Gateway\Plugin;
@@ -30,30 +26,10 @@ class GatewayService {
 	/** GatewayHelper */
 	private GatewayHelper $gatewayHelper;
 
-	/** @var EligibilityProvider|null The Eligibility Service if available */
-	private ?EligibilityProvider $eligibilityProvider = null;
-
-	/** @var GatewayRepository The Gateway Repository */
-	private GatewayRepository $gatewayRepository;
-
-	/** @var FeePlanRepository The Fee Plan Repository */
-	private FeePlanRepository $feePlanRepository;
-
-	/** @var ConfigService The Config Service */
-	private ConfigService $configService;
-
 	public function __construct(
-		ConfigService $configService,
-		GatewayRepository $gatewayRepository,
-		FeePlanRepository $feePlanRepository,
-		EligibilityProvider $eligibilityProvider,
 		GatewayHelper $gatewayHelper // Move
 	) {
-		$this->configService       = $configService;
-		$this->gatewayRepository   = $gatewayRepository;
-		$this->eligibilityProvider = $eligibilityProvider;
-		$this->feePlanRepository   = $feePlanRepository;
-		$this->gatewayHelper       = $gatewayHelper;
+		$this->gatewayHelper = $gatewayHelper;
 	}
 
 	/**
