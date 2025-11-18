@@ -11,6 +11,7 @@
 
 namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
+use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\PaymentService;
@@ -26,7 +27,6 @@ use Alma\Gateway\Plugin;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
 use Automattic\WooCommerce\StoreApi\Payments\PaymentContext;
 use Automattic\WooCommerce\StoreApi\Payments\PaymentResult;
-use Exception;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -126,13 +126,13 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 	 * use StoreApi to create the payment
 	 *
 	 * Non-Blocks payments use AbstractFrontendGateway::process_payment()
+	 * @throws CheckoutBlockException
 	 */
 	public function process_payment_with_context( PaymentContext $context, PaymentResult $result ) {
 
 		if ( $context->payment_method === $this->gateway->get_name() ) {
 
 			$payment_data = $context->payment_data;
-			almalog( $this->gateway->get_name(), $payment_data );
 
 			// Defensive: Ignore requests that do not have the required fields
 			if (
@@ -140,8 +140,6 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 				empty( $payment_data['alma_checkout_nonce_field'] ) ||
 				empty( $payment_data['payment_method'] )
 			) {
-				almalog( $this->gateway->get_name(), 'Ignored incomplete payment_data' );
-
 				return;
 			}
 
@@ -150,42 +148,46 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 
 			/** @var PaymentService $payment_service */
 			$payment_service = Plugin::get_container()->get( PaymentService::class );
-			$payment         = $payment_service->createPayment(
-				$this->config_service->isInPageEnabled(),
-				$order,
-				$fee_plan_adapter
-			);
+			try {
+				$payment = $payment_service->createPayment(
+					$this->config_service->isInPageEnabled(),
+					$order,
+					$fee_plan_adapter
+				);
+			} catch ( PaymentServiceException $e ) {
 
-			$order->updateStatus( 'pending', L10nHelper::__( 'En attente de paiement via Alma' ) );
-			$order->update_meta_data( '_alma_payment_id', $payment['alma_payment_id'] );
-			$order->save();
-
-			if ( 'success' === $payment['result'] ) {
 				try {
-					$result->set_status( 'success' );
-					$result->set_payment_details(
-						array(
-							'alma_payment_id' => $payment['alma_payment_id'],
-							'alma_fee_plan'   => $payment_data['alma_plan_key'],
-						)
-					);
-				} catch ( Exception $e ) {
 					$result->set_status( 'error' );
-					wc_add_notice(
-						L10nHelper::__( 'Payment processing failed. Please try again.' ),
-						'error'
-					);
+				} catch ( \Exception $e ) {
+					throw new CheckoutBlockException( $e->getMessage() );
 				}
-				if ( isset( $payment['redirect'] ) ) {
-					$result->set_redirect_url( $payment['redirect'] );
-				}
-			} else {
-				$result->set_status( 'error' );
-
 				wc_add_notice(
 					L10nHelper::__( 'Payment processing failed. Please try again.' ),
 					'error'
 				);
+
+				return;
+			}
+
+			$order->updateStatus( 'pending', L10nHelper::__( 'En attente de paiement via Alma' ) );
+			$order->update_meta_data( '_alma_payment_id', $payment['payment'] );
+			$order->save();
+
+			try {
+				$result->set_status( 'success' );
+			} catch ( \Exception $e ) {
+				throw new CheckoutBlockException( $e->getMessage() );
+			}
+			$result->set_payment_details(
+				array(
+					'alma_payment_id' => $payment->getId(),
+					'alma_fee_plan'   => $payment_data['alma_plan_key'],
+				)
+			);
+
+			// If it's redirect flow, set redirect URL
+			if ( ! $this->config_service->isInPageEnabled() ) {
+				$result->set_redirect_url( $payment->getUrl() );
 			}
 		}
 	}

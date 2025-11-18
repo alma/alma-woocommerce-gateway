@@ -291,7 +291,7 @@ export const DisplayAlmaInPageBlock = (props) => {
             const planKey = plan.planKey;
 
             if (lastInitRef.current.planKey !== planKey || lastInitRef.current.cartTotal !== cartTotal) {
-                console.log('🔄 Plan or cart changed, reinitializing In-Page widget');
+                console.log('Plan or cart changed, reinitializing In-Page widget');
                 lastInitRef.current = {planKey, cartTotal};
                 initializeInPage(cartTotal);
             }

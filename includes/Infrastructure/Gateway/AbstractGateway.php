@@ -4,6 +4,7 @@ namespace Alma\Gateway\Infrastructure\Gateway;
 
 use Alma\API\Application\DTO\RefundDto;
 use Alma\API\Infrastructure\Exception\ParametersException;
+use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
@@ -16,6 +17,7 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
+use Alma\Gateway\Infrastructure\Helper\InPageHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Infrastructure\Service\CacheService;
@@ -136,17 +138,31 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 
 		/** @var PaymentService $payment_service */
 		$payment_service = Plugin::get_container()->get( PaymentService::class );
-		$payment         = $payment_service->createPayment(
-			$config_service->isInPageEnabled(),
-			$order,
-			$fee_plan_adapter,
-			true // Force in-page redirect fallback
-		);
+		try {
+			$payment = $payment_service->createPayment(
+				$config_service->isInPageEnabled(),
+				$order,
+				$fee_plan_adapter
+			);
+		} catch ( PaymentServiceException $e ) {
+			throw new GatewayServiceException( $e->getMessage() );
+		}
 
 		// Update order status to pending
 		$order->updateStatus( 'pending', L10nHelper::__( 'En attente de paiement via Alma' ) );
 
-		return $payment;
+		$result = array(
+			'alma_payment' => $payment,
+		);
+		if ( $config_service->isInPageEnabled() ) {
+			// In-page checkout with fallback redirection
+			$result['redirect_url'] = InPageHelper::getInPageRedirectionFallbackUrl( $payment->getId() );
+		} else {
+			// Classic checkout redirection
+			$result['redirect_url'] = $payment->geturl();
+		}
+
+		return $result;
 	}
 
 	/**

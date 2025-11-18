@@ -2,6 +2,7 @@
 
 namespace Alma\Gateway\Application\Service;
 
+use Alma\API\Domain\Entity\Payment;
 use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Mapper\CustomerMapper;
@@ -22,9 +23,6 @@ class PaymentService {
 	/** @var PaymentProvider $paymentProvider */
 	private PaymentProvider $paymentProvider;
 
-	/** @var InPageHelper $inPageHelper */
-	private InPageHelper $inPageHelper;
-
 	/**
 	 * PaymentService constructor.
 	 *
@@ -35,7 +33,6 @@ class PaymentService {
 	public function __construct( ConfigService $configService, PaymentProvider $paymentProvider, InPageHelper $inPageHelper ) {
 		$this->configService   = $configService;
 		$this->paymentProvider = $paymentProvider;
-		$this->inPageHelper    = $inPageHelper;
 	}
 
 	/**
@@ -44,11 +41,11 @@ class PaymentService {
 	 * @param bool           $isInPage Indicates if the payment is created for an in-page flow
 	 * @param OrderAdapter   $order Order to create the payment for
 	 * @param FeePlanAdapter $feePlanAdapter Fee plan selected by the customer
-	 * @param bool           $inPageRedirectFallback return a fallback URL for in-page redirection (old behavior)
 	 *
-	 * @return array
+	 * @return Payment
+	 * @throws PaymentServiceException
 	 */
-	public function createPayment( bool $isInPage, OrderAdapter $order, FeePlanAdapter $feePlanAdapter, bool $inPageRedirectFallback = false ): array {
+	public function createPayment( bool $isInPage, OrderAdapter $order, FeePlanAdapter $feePlanAdapter ): Payment {
 
 		try {
 			$payment = $this->paymentProvider->createPayment(
@@ -67,29 +64,9 @@ class PaymentService {
 				L10nHelper::__( 'An error occurred while creating the payment. Please try again.' . $e->getMessage() ),
 			);
 
-			return array(
-				'result'   => 'failure',
-				'error'    => L10nHelper::__( 'An error occurred while creating the payment. Please try again.' ),
-				'redirect' => '',
-			);
+			throw new PaymentServiceException( 'An error occurred while creating the payment. Please try again.' );
 		}
 
-		// Determine redirection URL based id needed
-		$redirectionUrl = '';
-		if ( $isInPage ) {
-			if ( $inPageRedirectFallback ) {
-				// In-page checkout with fallback redirection
-				$redirectionUrl = $this->inPageHelper->getInPageRedirectionFallbackUrl( $payment->getId() );
-			}
-		} else {
-			// Classic checkout redirection
-			$redirectionUrl = $payment->geturl();
-		}
-
-		return array(
-			'result'          => 'success',
-			'redirect'        => $redirectionUrl,
-			'alma_payment_id' => $payment->getId(),
-		);
+		return $payment;
 	}
 }
