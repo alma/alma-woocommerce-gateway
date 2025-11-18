@@ -187,9 +187,14 @@ class AlmaBusinessEventService {
 		 * @var Eligibility $plan
 		 */
 		foreach ( $eligibility as $plan_key => $plan ) {
-			if ( $plan->isEligible() ) {
-				$plan_keys[] = $plan_key;
-			}
+	        if ($plan !== false && $plan !== null) {
+              if ( $plan->isEligible() ) {
+                $plan_keys[] = $plan_key;
+              }
+          } else {
+          // Handle the error, log it, or throw an exception                                   
+          error_log("Failed to get object");
+          }
 		}
 		$plan_keys_without_pay_now = array_filter(
 			$plan_keys,
