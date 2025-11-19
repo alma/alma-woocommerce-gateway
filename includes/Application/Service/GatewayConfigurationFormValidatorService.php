@@ -5,22 +5,12 @@ namespace Alma\Gateway\Application\Service;
 use Alma\Gateway\Application\Entity\Form\FeePlanConfigurationList;
 use Alma\Gateway\Application\Entity\Form\GatewayConfigurationForm;
 use Alma\Gateway\Application\Exception\Service\GatewayConfigurationFormValidatorServiceException;
+use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
+use Alma\Gateway\Plugin;
 
 class GatewayConfigurationFormValidatorService {
-
-	/** @var FeePlanRepository $feePlanRepository */
-	private FeePlanRepository $feePlanRepository;
-
-	/**
-	 * ConfigFormValidatorService constructor.
-	 *
-	 * @param FeePlanRepository $feePlanRepository
-	 */
-	public function __construct( FeePlanRepository $feePlanRepository ) {
-		$this->feePlanRepository = $feePlanRepository;
-	}
 
 	/**
 	 * Validate the GatewayConfiguration entity.
@@ -37,15 +27,18 @@ class GatewayConfigurationFormValidatorService {
 		$keyConfigForm            = $gatewayConfiguration->getKeyConfiguration()->validate();
 		$feePlanConfigurationList = $gatewayConfiguration->getFeePlanConfigurationList();
 
-		if ( $keyConfigForm->isMerchantIdChanged() ) {
-			// If the API keys have changed, we need to clean the fee plans and reload them from the API
+		// If the API keys have changed, we need to clean the fee plans and reload them from the API
+		// No need to reset if the plugin is not yet configured
+		if ( $keyConfigForm->isMerchantIdChanged() && PluginHelper::isConfigured() ) {
 			$this->resetFeePlans( $feePlanConfigurationList );
 		}
 
 		// We only validate fee plans if there are any
 		if ( $feePlanConfigurationList->count() ) {
 			try {
-				$feePlanConfigurationList->validate( $this->feePlanRepository->getAll() );
+				/** @var FeePlanRepository $feePlanRepository */
+				$feePlanRepository = Plugin::get_container()->get( FeePlanRepository::class );
+				$feePlanConfigurationList->validate( $feePlanRepository->getAll() );
 			} catch ( FeePlanRepositoryException $e ) {
 				throw new GatewayConfigurationFormValidatorServiceException( 'Les fee plans n\'ont pas pu être récupérés. Veuillez réessayer plus tard.' );
 			}
@@ -64,8 +57,9 @@ class GatewayConfigurationFormValidatorService {
 	 * @return void
 	 */
 	private function resetFeePlans( FeePlanConfigurationList $feePlanConfigurationList ): void {
-		// Delete all fee plans from the database
-		$this->feePlanRepository->deleteAll();
+		/** @var FeePlanRepository $feePlanRepository */
+		$feePlanRepository = Plugin::get_container()->get( FeePlanRepository::class );
+		$feePlanRepository->deleteAll();
 		$feePlanConfigurationList->reset();
 	}
 }

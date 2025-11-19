@@ -18,6 +18,7 @@ use Alma\API\Domain\Repository\GatewayRepositoryInterface;
 use Alma\API\Domain\Repository\OrderRepositoryInterface;
 use Alma\API\Domain\Repository\ProductCategoryRepositoryInterface;
 use Alma\API\Domain\Repository\ProductRepositoryInterface;
+use Alma\API\Infrastructure\ClientConfiguration;
 use Alma\API\Infrastructure\CurlClient;
 use Alma\API\Infrastructure\Endpoint\ConfigurationEndpoint;
 use Alma\API\Infrastructure\Endpoint\DataExportEndpoint;
@@ -125,30 +126,28 @@ class ContainerService {
 	public function setApiConfig() {
 
 		/** @var ConfigService $configService Mandatory for API services */
-		/*
-				$configService = $this->get( ConfigService::class );
+		$configService = $this->get( ConfigService::class );
+		$this->dice    = $this->dice->addRule(
+			ClientConfiguration::class,
+			array(
+				'constructParams' => array(
+					$configService->getActiveApiKey(),
+					$configService->getEnvironment()
+				),
+				'shared'          => true,
+			)
+		);
 
-				$this->dice = $this->dice->addRule(
-					ClientConfiguration::class,
-					array(
-						'constructParams' => array(
-							$configService->getActiveApiKey(),
-							$configService->getEnvironment()
-						),
-						'shared'          => true,
-					)
-				);
-				$this->dice = $this->dice->addRule(
-					CurlClient::class,
-					array(
-						'constructParams' => array(
-							$this->get( ClientConfiguration::class ),
-							$this->get( self::PHP_CLIENT_LOGGER )
-						),
-						'shared'          => true
-					)
-				);
-			*/
+		$this->dice = $this->dice->addRule(
+			CurlClient::class,
+			array(
+				'constructParams' => array(
+					$this->get( ClientConfiguration::class ),
+					$this->get( self::PHP_CLIENT_LOGGER )
+				),
+				'shared'          => true
+			)
+		);
 	}
 
 	public function setDiConfig(): void {

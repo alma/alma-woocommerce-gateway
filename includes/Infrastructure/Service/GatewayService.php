@@ -16,6 +16,7 @@ use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\EventHelper;
 use Alma\Gateway\Infrastructure\Helper\FrontendHelper;
 use Alma\Gateway\Infrastructure\Helper\GatewayHelper;
+use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Infrastructure\Repository\UserRepository;
 use Alma\Gateway\Plugin;

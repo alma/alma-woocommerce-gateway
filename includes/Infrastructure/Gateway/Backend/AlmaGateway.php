@@ -119,7 +119,6 @@ class AlmaGateway extends AbstractBackendGateway {
 			/** @var GatewayConfigurationFormValidatorService $config_form_validator_service */
 			$config_form_validator_service = Plugin::get_container()->get( GatewayConfigurationFormValidatorService::class );
 			$gateway_configuration         = $config_form_validator_service->validate( $gateway_configuration );
-
 		} catch ( GatewayConfigurationFormValidatorServiceException $e ) {
 			// If an error occurs during validation, we display a generic error message
 			// and return the previous settings to avoid losing data.
@@ -128,7 +127,7 @@ class AlmaGateway extends AbstractBackendGateway {
 			/** @var ConfigService $config_service */
 			$config_service = Plugin::get_container()->get( ConfigService::class );
 
-			return $config_service->getSettings( array_keys( $settings ) );
+			return $config_service->getSettings();
 		}
 
 		// Transform back to settings array
@@ -149,6 +148,7 @@ class AlmaGateway extends AbstractBackendGateway {
 	 * @return bool
 	 */
 	public function process_admin_options(): bool {
+
 		$saved = parent::process_admin_options();
 
 		$this->display_errors();
