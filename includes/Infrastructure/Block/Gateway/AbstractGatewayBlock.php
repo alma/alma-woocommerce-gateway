@@ -27,6 +27,7 @@ use Alma\Gateway\Plugin;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
 use Automattic\WooCommerce\StoreApi\Payments\PaymentContext;
 use Automattic\WooCommerce\StoreApi\Payments\PaymentResult;
+use Exception;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -158,7 +159,7 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 
 				try {
 					$result->set_status( 'error' );
-				} catch ( \Exception $e ) {
+				} catch ( Exception $e ) {
 					throw new CheckoutBlockException( $e->getMessage() );
 				}
 				wc_add_notice(
@@ -170,12 +171,12 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 			}
 
 			$order->updateStatus( 'pending', L10nHelper::__( 'En attente de paiement via Alma' ) );
-			$order->update_meta_data( '_alma_payment_id', $payment['payment'] );
+			$order->update_meta_data( '_alma_payment_id', $payment->getId() );
 			$order->save();
 
 			try {
 				$result->set_status( 'success' );
-			} catch ( \Exception $e ) {
+			} catch ( Exception $e ) {
 				throw new CheckoutBlockException( $e->getMessage() );
 			}
 			$result->set_payment_details(
