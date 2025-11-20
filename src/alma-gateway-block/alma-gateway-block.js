@@ -99,8 +99,8 @@ import {useRef} from "react";
      */
     const gatewayCanMakePayment = (gatewaySettings) => {
         let canMakePayment = true
-        if (Object.keys(gatewaySettings.fee_plans_settings).length === 0) {
-            canMakePayment = false
+        if (!gatewaySettings?.fee_plans_settings || Object.keys(gatewaySettings.fee_plans_settings).length === 0) {
+            canMakePayment = false;
         }
         return canMakePayment
     }
@@ -170,6 +170,8 @@ import {useRef} from "react";
      * @param almaSettings All AlmaSettings
      * @param allGatewaysSettings
      * @param storeKey
+     * @param inPageInstance
+     * @param setInPageInstance
      * @param init
      * @param cartTotal
      */
