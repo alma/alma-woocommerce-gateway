@@ -138,8 +138,7 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 			// Defensive: Ignore requests that do not have the required fields
 			if (
 				empty( $payment_data['alma_plan_key'] ) ||
-				empty( $payment_data['alma_checkout_nonce_field'] ) ||
-				empty( $payment_data['payment_method'] )
+				empty( $payment_data['alma_checkout_nonce_field'] )
 			) {
 				return;
 			}
