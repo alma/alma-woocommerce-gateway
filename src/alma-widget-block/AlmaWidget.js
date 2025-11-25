@@ -42,11 +42,11 @@ const AlmaWidget = () => {
                 locale: almaSettings.locale,
                 hideIfNotEligible: false,
                 plans: almaSettings.plans.map(plan => ({
-                    installmentsCount: plan.installments_count,
-                    minAmount: plan.min_amount,
-                    maxAmount: plan.max_amount,
-                    deferredDays: plan.deferred_days,
-                    deferredMonths: plan.deferred_months
+                    installmentsCount: plan.installmentsCount,
+                    minAmount: plan.minAmount,
+                    maxAmount: plan.maxAmount,
+                    deferredDays: plan.deferredDays,
+                    deferredMonths: plan.deferredMonths
                 })),
             });
         }

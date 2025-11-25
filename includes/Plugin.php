@@ -121,8 +121,14 @@ final class Plugin {
 		}
 
 		if ( PluginHelper::isConfigured() ) {
+
 			$this->get_container()->setApiConfig();
 
+			// Register widgets
+			/** @var ShopService $shopService */
+			$shopService = self::get_container()->get( ShopService::class );
+			$shopService->warmService();
+			
 			// Plugin fully configured, let's run the services
 			/** @var GatewayService $gatewayService */
 			$gatewayService = self::get_container()->get( GatewayService::class );

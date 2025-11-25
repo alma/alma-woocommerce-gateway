@@ -13,39 +13,33 @@ use Alma\Gateway\Plugin;
 class CartWidget extends AbstractWidget {
 
 	/**
-	 * @throws CartWidgetException
+	 * Register the Alma widget.
+	 * For Blocks widget, registration is done here.
+	 * WooCommerce will handle the display.
 	 */
-	public function display() {
-
+	public function register() {
 		if ( ContextHelper::isCartPageUseBlocks() ) {
-			$this->registerBlockWidget();
-		} else {
-			$this->displayShortcodeWidget();
+			register_block_type_from_metadata( AssetsHelper::getBuildPath( 'alma-widget-block' ) );
+
+			add_action(
+				'woocommerce_blocks_cart_block_registration',
+				function ( $integrationRegistry ) {
+					$widgetBlock = Plugin::get_container()->get( WidgetBlock::class );
+					$integrationRegistry->register( $widgetBlock );
+				}
+			);
 		}
 	}
 
 	/**
-	 * Register the Alma widget block. WooCommerce will handle the display.
+	 * For non-blocks widget, register is done at display time.
+	 * @throws CartWidgetException
 	 */
-	public function registerBlockWidget() {
-		add_action(
-			'init',
-			function () {
-				register_block_type_from_metadata( AssetsHelper::getBuildPath( 'alma-widget-block' ) );
-			}
-		);
-		add_action(
-			'woocommerce_blocks_loaded',
-			function () {
-				add_action(
-					'woocommerce_blocks_cart_block_registration',
-					function ( $integrationRegistry ) {
-						$widgetBlock = Plugin::get_container()->get( WidgetBlock::class );
-						$integrationRegistry->register( $widgetBlock );
-					}
-				);
-			}
-		);
+	public function display() {
+
+		if ( ! ContextHelper::isCartPageUseBlocks() ) {
+			$this->displayShortcodeWidget();
+		}
 	}
 
 	/**

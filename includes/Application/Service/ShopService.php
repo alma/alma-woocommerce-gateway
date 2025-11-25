@@ -3,10 +3,20 @@
 namespace Alma\Gateway\Application\Service;
 
 use Alma\Gateway\Application\Helper\PluginHelper;
+use Alma\Gateway\Infrastructure\Helper\BackendHelper;
+use Alma\Gateway\Infrastructure\Helper\BlocksWidgetHelper;
 use Alma\Gateway\Infrastructure\Helper\FrontendHelper;
 use Alma\Gateway\Plugin;
 
 class ShopService {
+
+	/**
+	 * Register widgets on warm up
+	 * @return void
+	 */
+	public function warmService() {
+		BlocksWidgetHelper::registerWidget();
+	}
 
 	/**
 	 * Run services on template redirect.
@@ -33,6 +43,18 @@ class ShopService {
 					$inPageService->displayInPage();
 				}
 
+			}
+		);
+
+		BackendHelper::runBackendServices(
+			function () {
+				if ( ! PluginHelper::isConfigured() ) {
+					return;
+				}
+
+				/** @var WidgetService $widget_service */
+				$widget_service = Plugin::get_container()->get( WidgetService::class );
+				$widget_service->displayWidget();
 			}
 		);
 	}

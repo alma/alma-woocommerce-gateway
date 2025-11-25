@@ -68,7 +68,6 @@ class WidgetService {
 	 */
 	public function displayWidget() {
 
-		$widget      = null;
 		$environment = $this->configService->getEnvironment();
 		$merchantId  = $this->configService->getMerchantId();
 		try {
@@ -79,17 +78,12 @@ class WidgetService {
 		$excludedCategories = $this->configService->getExcludedCategories();
 		$language           = ContextHelper::getLanguage();
 
-		if ( ContextHelper::isCartPage() ) {
-			$widget = $this->displayCartWidget( $excludedCategories, $feePlanListAdapter, $environment, $merchantId,
-				$language );
+		if ( ContextHelper::isCartPage() || ContextHelper::isAdmin() ) {
+			$this->displayCartWidget( $excludedCategories, $feePlanListAdapter, $environment, $merchantId,
+				$language )->display();
 		} elseif ( ContextHelper::isProductPage() ) {
-			$widget = $this->displayProductWidget( $excludedCategories, $feePlanListAdapter, $environment, $merchantId,
-				$language );
-		}
-
-		// Display the widget
-		if ( isset( $widget ) ) {
-			$widget->display();
+			$this->displayProductWidget( $excludedCategories, $feePlanListAdapter, $environment, $merchantId,
+				$language )->display();
 		}
 	}
 
