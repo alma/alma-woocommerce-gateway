@@ -5,6 +5,7 @@ namespace Alma\Gateway\Application\Service;
 use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Infrastructure\Helper\BackendHelper;
 use Alma\Gateway\Infrastructure\Helper\BlocksWidgetHelper;
+use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\FrontendHelper;
 use Alma\Gateway\Plugin;
 
@@ -15,7 +16,9 @@ class ShopService {
 	 * @return void
 	 */
 	public function warmService() {
-		BlocksWidgetHelper::registerWidget();
+		if ( ContextHelper::isCartPageUseBlocks() ) {
+			BlocksWidgetHelper::registerWidget();
+		}
 	}
 
 	/**
@@ -25,6 +28,7 @@ class ShopService {
 	public function runService() {
 		FrontendHelper::runFrontendServices(
 			function () {
+
 				if ( ! PluginHelper::isPluginNeeded() ) {
 					return;
 				}

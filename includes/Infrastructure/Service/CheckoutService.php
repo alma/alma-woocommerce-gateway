@@ -65,6 +65,9 @@ class CheckoutService {
 		wp_send_json( $this->getCheckoutParams() );
 	}
 
+	/**
+	 * Get Checkout parameters
+	 */
 	public function getCheckoutParams(): array {
 
 		$isInPage       = $this->configService->isInPageEnabled();

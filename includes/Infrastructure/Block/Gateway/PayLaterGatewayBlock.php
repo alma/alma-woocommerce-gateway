@@ -11,9 +11,7 @@
 
 namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
-use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
-use Alma\Gateway\Infrastructure\Service\AssetsService;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -25,9 +23,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 final class PayLaterGatewayBlock extends AbstractGatewayBlock implements IntegrationInterface {
 
-	public function __construct( ConfigService $config_service, AssetsService $assets_service ) {
+	public function __construct( bool $is_in_page_enabled, string $assets_handle ) {
 		$this->gateway = new PayLaterGateway();
-		parent::__construct( $config_service, $assets_service );
+		parent::__construct( $is_in_page_enabled, $assets_handle );
 	}
 
 	/**

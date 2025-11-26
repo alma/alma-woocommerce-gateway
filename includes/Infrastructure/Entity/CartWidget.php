@@ -9,6 +9,7 @@ use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\ShortcodeWidgetHelper;
 use Alma\Gateway\Plugin;
+use Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry;
 
 class CartWidget extends AbstractWidget {
 
@@ -23,7 +24,9 @@ class CartWidget extends AbstractWidget {
 
 			add_action(
 				'woocommerce_blocks_cart_block_registration',
-				function ( $integrationRegistry ) {
+				function ( IntegrationRegistry $integrationRegistry ) {
+
+					/** @var WidgetBlock $widgetBlock */
 					$widgetBlock = Plugin::get_container()->get( WidgetBlock::class );
 					$integrationRegistry->register( $widgetBlock );
 				}

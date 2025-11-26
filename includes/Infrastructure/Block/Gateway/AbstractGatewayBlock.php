@@ -13,16 +13,12 @@ namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
 use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
 use Alma\Gateway\Application\Helper\L10nHelper;
-use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\PaymentService;
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
-use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Exception\Block\CheckoutBlockException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\AbstractFrontendGateway;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
-use Alma\Gateway\Infrastructure\Service\AssetsService;
-use Alma\Gateway\Infrastructure\Service\CheckoutService;
 use Alma\Gateway\Plugin;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
 use Automattic\WooCommerce\StoreApi\Payments\PaymentContext;
@@ -39,14 +35,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 
 	protected AbstractFrontendGateway $gateway;
-	private ConfigService $config_service;
-	private AssetsService $assets_service;
 
-	public function __construct( ConfigService $config_service, AssetsService $assets_service ) {
+	/** @var bool $is_in_page_enabled */
+	private bool $is_in_page_enabled;
+	private string $assets_handle;
 
-		$this->config_service = $config_service;
-		$this->assets_service = $assets_service;
-		$this->name           = $this->gateway->get_name() . '_block';
+	public function __construct( bool $is_in_page_enabled, string $assets_handle ) {
+
+		$this->is_in_page_enabled = $is_in_page_enabled;
+		$this->assets_handle      = $assets_handle;
+		$this->name               = $this->gateway->get_name() . '_block';
 		$this->initialize();
 
 		// @todo move this to a more appropriate place
@@ -101,25 +99,10 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 	 * Params are passed to the script.
 	 *
 	 * @return string[]
-	 * @throws CheckoutBlockException
-	 *
-	 * @todo move to GatewayService::initGatewayBlocks this could be done only once.
 	 */
 	public function get_payment_method_script_handles(): array {
 
-		/** @var CheckoutService $checkoutService */
-		$checkoutService = Plugin::get_container()->get( CheckoutService::class );
-		$params          = $checkoutService->getCheckoutParams();
-
-		$params['checkout_url'] = ContextHelper::getWebhookUrl( 'alma_checkout_data' );
-
-		try {
-			$this->assets_service->loadCheckoutBlockAssets( $params );
-		} catch ( AssetsServiceException $e ) {
-			throw new CheckoutBlockException( 'Unable to load block assets', 0, $e );
-		}
-
-		return array( 'alma-block-integration' );
+		return array( $this->assets_handle );
 	}
 
 	/**
@@ -150,7 +133,7 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 			$payment_service = Plugin::get_container()->get( PaymentService::class );
 			try {
 				$payment = $payment_service->createPayment(
-					$this->config_service->isInPageEnabled(),
+					$this->is_in_page_enabled,
 					$order,
 					$fee_plan_adapter
 				);
@@ -186,7 +169,7 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 			);
 
 			// If it's redirect flow, set redirect URL
-			if ( ! $this->config_service->isInPageEnabled() ) {
+			if ( ! $this->is_in_page_enabled ) {
 				$result->set_redirect_url( $payment->getUrl() );
 			}
 		}

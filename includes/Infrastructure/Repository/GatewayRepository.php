@@ -3,14 +3,24 @@
 namespace Alma\Gateway\Infrastructure\Repository;
 
 use Alma\API\Domain\Repository\GatewayRepositoryInterface;
+use Alma\Gateway\Infrastructure\Block\Gateway\CheckoutBlockFactory;
 use Alma\Gateway\Infrastructure\Block\Gateway\CreditGatewayBlock;
+use Alma\Gateway\Infrastructure\Block\Gateway\GatewayBlockFactory;
 use Alma\Gateway\Infrastructure\Block\Gateway\PayLaterGatewayBlock;
 use Alma\Gateway\Infrastructure\Block\Gateway\PayNowGatewayBlock;
 use Alma\Gateway\Infrastructure\Block\Gateway\PnxGatewayBlock;
+use Alma\Gateway\Infrastructure\Exception\Block\CheckoutBlockException;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Plugin;
 
 class GatewayRepository implements GatewayRepositoryInterface {
+
+	private array $gatewayBlocks = [
+		PnxGatewayBlock::class,
+		CreditGatewayBlock::class,
+		PayLaterGatewayBlock::class,
+		PayNowGatewayBlock::class
+	];
 
 	/**
 	 * Get all Alma gateways.
@@ -32,23 +42,20 @@ class GatewayRepository implements GatewayRepositoryInterface {
 	 */
 	public function findAllAlmaGatewayBlocks(): array {
 
-		/** @var PnxGatewayBlock $pnxCheckoutBlock */
-		$pnxCheckoutBlock = Plugin::get_container()->get( PnxGatewayBlock::class );
+		/** @var GatewayBlockFactory $gatewayBlockFactory */
+		$gatewayBlockFactory = Plugin::get_container()->get( GatewayBlockFactory::class );
 
-		/** @var CreditGatewayBlock $creditCheckoutBlock */
-		$creditCheckoutBlock = Plugin::get_container()->get( CreditGatewayBlock::class );
+		$blocks = array();
+		foreach ( $this->gatewayBlocks as $gatewayBlock ) {
+			try {
+				$block                        = $gatewayBlockFactory->create_gateway_block( $gatewayBlock );
+				$blocks[ $block->get_name() ] = $block;
+			} catch ( CheckoutBlockException $e ) {
+				// If any block cannot be created, skip it.
+				continue;
+			}
+		}
 
-		/** @var PayLaterGatewayBlock $payLaterCheckoutBlock */
-		$payLaterCheckoutBlock = Plugin::get_container()->get( PayLaterGatewayBlock::class );
-
-		/** @var PayNowGatewayBlock $payNowCheckoutBlock */
-		$payNowCheckoutBlock = Plugin::get_container()->get( PayNowGatewayBlock::class );
-
-		return array(
-			$pnxCheckoutBlock->get_name()      => $pnxCheckoutBlock,
-			$creditCheckoutBlock->get_name()   => $creditCheckoutBlock,
-			$payLaterCheckoutBlock->get_name() => $payLaterCheckoutBlock,
-			$payNowCheckoutBlock->get_name()   => $payNowCheckoutBlock,
-		);
+		return $blocks;
 	}
 }

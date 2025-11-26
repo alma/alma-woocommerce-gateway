@@ -5,7 +5,6 @@ namespace Alma\Gateway\Infrastructure\Entity;
 use Alma\API\Domain\Adapter\FeePlanListAdapterInterface;
 use Alma\API\Domain\Entity\WidgetInterface;
 use Alma\API\Domain\ValueObject\Environment;
-use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Service\AssetsService;
@@ -25,10 +24,8 @@ abstract class AbstractWidget implements WidgetInterface {
 	protected string $language;
 	protected AssetsService $assetsService;
 	protected FeePlanListAdapter $feePlanListAdapter;
-	protected ConfigService $configService;
 
-	public function __construct( ConfigService $configService, AssetsService $assetsService ) {
-		$this->configService = $configService;
+	public function __construct( AssetsService $assetsService ) {
 		$this->assetsService = $assetsService;
 	}
 

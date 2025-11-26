@@ -65,7 +65,7 @@ class AssetsService {
 	 * Load Checkout Block assets.
 	 * @throws AssetsServiceException
 	 */
-	public function loadCheckoutBlockAssets( array $scriptParams = [] ): void {
+	public function loadGatewayBlockAssets( array $scriptParams = [] ): void {
 		$this->enqueueGroup( AssetsConfig::ASSETS_CONFIG_GATEWAY_BLOCK, $scriptParams );
 	}
 

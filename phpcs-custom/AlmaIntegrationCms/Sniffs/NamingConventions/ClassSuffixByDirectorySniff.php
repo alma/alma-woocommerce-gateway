@@ -26,7 +26,7 @@ class ClassSuffixByDirectorySniff implements Sniff {
 		'Provider'   => [ 'Provider', 'ProviderInterface', 'ProviderException' ],
 		'Repository' => [ 'Repository', 'RepositoryInterface', 'RepositoryException' ],
 		'Adapter'    => [ 'Adapter', 'AdapterInterface', 'AdapterException' ],
-		'Block'      => [ 'Block', 'BlockInterface', 'BlockException' ],
+		'Block'      => [ 'Block', 'BlockInterface', 'BlockException', 'BlockFactory' ],
 		'Config'     => [ 'Config', 'ConfigException' ],
 		'Service'    => [ 'Service', 'ServiceException' ],
 		'Exception'  => [ 'Exception' ],
