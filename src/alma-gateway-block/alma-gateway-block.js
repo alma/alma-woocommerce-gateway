@@ -184,7 +184,9 @@ import {fetchAlmaSettings} from "./hooks/almaSettings";
             if (gatewaySettings) {
                 const blockContent = getContentBlock(almaSettings, gatewayName, storeKey, cartTotal, inPageInstance, setInPageInstance)
                 const AlmaGatewayBlock = generateGatewayBlock(gatewaySettings, blockContent, init ? true : gatewayCanMakePayment(gatewaySettings));
-                window.wc.wcBlocksRegistry.registerPaymentMethod(AlmaGatewayBlock);
+                if (gatewayCanMakePayment(gatewaySettings)) {
+                    window.wc.wcBlocksRegistry.registerPaymentMethod(AlmaGatewayBlock);
+                }
                 console.log('register: ' + gatewayName);
             }
         }
