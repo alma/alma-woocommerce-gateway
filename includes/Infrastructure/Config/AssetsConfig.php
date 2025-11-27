@@ -160,17 +160,7 @@ class AssetsConfig {
 					),
 				),
 				'scripts' => array(
-					'alma-widget-block' => array(
-						'src'  => AssetsHelper::getBuildUrl( 'alma-widget-block/alma-widget-block.js' ),
-						'deps' => array(
-							'alma-widget-cdn',
-							'wp-element',
-							'wp-i18n',
-							'wp-components',
-							'wp-editor',
-						),
-					),
-					'alma-widget'       => array(
+					'alma-widget' => array(
 						'src'    => AssetsHelper::getAssetUrl( 'js/frontend/alma-widget.js' ),
 						'deps'   => array(
 							'alma-widget-cdn',

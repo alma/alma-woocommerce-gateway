@@ -110,7 +110,7 @@ class WidgetService {
 
 		// Load widget assets
 		try {
-			// $this->assetsService->loadWidgetAssets( $widget->getConfiguration() );
+			$this->assetsService->loadWidgetAssets( $widget->getConfiguration() );
 		} catch ( AssetsServiceException $e ) {
 			throw new WidgetServiceException( $e->getMessage() );
 		}
@@ -147,7 +147,7 @@ class WidgetService {
 
 		// Load widget assets
 		try {
-			// $this->assetsService->loadWidgetAssets( $widget->getConfiguration() );
+			$this->assetsService->loadWidgetAssets( $widget->getConfiguration() );
 		} catch ( AssetsServiceException $e ) {
 			throw new WidgetServiceException( $e->getMessage() );
 		}
