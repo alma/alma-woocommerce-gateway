@@ -35,7 +35,7 @@ class GatewayBlockFactory {
 
 		return new $class_name(
 			$this->config_service->isInPageEnabled(),
-			'alma-block-integration'
+			'alma-gateway-block'
 		);
 	}
 }

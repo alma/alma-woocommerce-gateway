@@ -77,14 +77,13 @@
 
 // phpcs:ignoreFile
 import {storeKey} from "../stores/alma-store";
-import {createRoot, useEffect, useState} from '@wordpress/element';
+import {createRoot, useEffect, useRef, useState} from '@wordpress/element';
 import {useSelect} from '@wordpress/data';
 import {Label} from "./components/Label";
 import './alma-gateway-block.css';
 import {DisplayAlmaInPageBlock} from "./components/DisplayAlmaInPageBlock";
 import {DisplayAlmaBlock} from "./components/DisplayAlmaBlock";
 import {fetchAlmaSettings} from "./hooks/almaSettings";
-import {useRef} from "react";
 
 (function ($) {
 
@@ -201,7 +200,6 @@ import {useRef} from "react";
      */
     const generateGatewayBlock = (gatewaySettings, blockContent, canMakePayment) => {
         console.log("Generating Gateway block " + blockContent);
-
         return {
             name: gatewaySettings.gateway_name,
             label: (
@@ -224,6 +222,8 @@ import {useRef} from "react";
      * @param gateway
      * @param storeKey
      * @param cartTotal
+     * @param inPageInstance
+     * @param setInPageInstance
      * @returns {JSX.Element}
      */
     const getContentBlock = (almaSettings, gateway, storeKey, cartTotal, inPageInstance, setInPageInstance) => {
@@ -252,8 +252,13 @@ import {useRef} from "react";
         const rootDiv = document.createElement('div');
         document.body.appendChild(rootDiv);
 
-        const root = createRoot(rootDiv);
-        root.render(<CartObserver/>);
+        if (createRoot) {
+            const root = createRoot(rootDiv);
+            root.render(<CartObserver/>);
+        } else {
+            // Fallback pour React 17
+            ReactDOM.render(<CartObserver/>, rootDiv);
+        }
     };
 
     /**

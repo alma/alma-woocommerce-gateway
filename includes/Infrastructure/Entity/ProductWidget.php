@@ -2,8 +2,6 @@
 
 namespace Alma\Gateway\Infrastructure\Entity;
 
-use Alma\Gateway\Application\Exception\Entity\ProductWidgetException;
-use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Helper\ShortcodeWidgetHelper;
 use Alma\Gateway\Plugin;
 
@@ -11,8 +9,6 @@ class ProductWidget extends AbstractWidget {
 
 	/**
 	 * Display the Alma widget using shortcode.
-	 *
-	 * @throws ProductWidgetException
 	 */
 	public function display() {
 		/** @var ShortcodeWidgetHelper $shortcodeWidgetHelper */
@@ -20,11 +16,5 @@ class ProductWidget extends AbstractWidget {
 
 		$shortcodeWidgetHelper->initProductShortcode( self::WIDGET_CLASS, $this->displayWidget );
 		$shortcodeWidgetHelper->displayDefaultProductWidget( self::WIDGET_DEFAULT_CLASS );
-
-		try {
-			$this->assetsService->loadWidgetAssets( $this->getConfiguration() );
-		} catch ( AssetsServiceException $e ) {
-			throw new ProductWidgetException( $e->getMessage() );
-		}
 	}
 }

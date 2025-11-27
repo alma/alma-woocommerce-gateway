@@ -30,10 +30,6 @@ class AdminService {
 				if ( ContextHelper::isAdmin() ) {
 					// Load Admin Assets
 					$this->assetsService->loadAdminAssets();
-					// Load Block Assets
-					add_action( 'enqueue_block_assets', function () {
-						$this->assetsService->loadWidgetBlockEditorAssets();
-					} );
 				}
 			}
 		);

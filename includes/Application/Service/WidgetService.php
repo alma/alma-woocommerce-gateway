@@ -10,6 +10,7 @@ use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Entity\CartWidget;
 use Alma\Gateway\Infrastructure\Entity\ProductWidget;
+use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
@@ -91,6 +92,7 @@ class WidgetService {
 	 * Display Cart Widget if page is cart page and widget is enabled.
 	 *
 	 * @return void
+	 * @throws WidgetServiceException
 	 */
 	public function displayCartWidget( array $excludedCategories, FeePlanListAdapter $feePlanListAdapter, Environment $environment, string $merchantId, string $language ): WidgetInterface {
 
@@ -102,8 +104,18 @@ class WidgetService {
 		);
 		$price         = $this->cartAdapter->getCartTotal();
 
-		return ( Plugin::get_container()->get( CartWidget::class ) )
+		// Configure the widget
+		$widget = ( Plugin::get_container()->get( CartWidget::class ) )
 			->configure( $feePlanListAdapter, $environment, $merchantId, $price, $displayWidget, $language );
+
+		// Load widget assets
+		try {
+			// $this->assetsService->loadWidgetAssets( $widget->getConfiguration() );
+		} catch ( AssetsServiceException $e ) {
+			throw new WidgetServiceException( $e->getMessage() );
+		}
+
+		return $widget;
 	}
 
 	/**
@@ -129,8 +141,18 @@ class WidgetService {
 		);
 		$price         = $product->getPrice();
 
-		return ( Plugin::get_container()->get( ProductWidget::class ) )
+		// Configure the widget
+		$widget = ( Plugin::get_container()->get( ProductWidget::class ) )
 			->configure( $feePlanListAdapter, $environment, $merchantId, $price, $displayWidget, $language );
+
+		// Load widget assets
+		try {
+			// $this->assetsService->loadWidgetAssets( $widget->getConfiguration() );
+		} catch ( AssetsServiceException $e ) {
+			throw new WidgetServiceException( $e->getMessage() );
+		}
+
+		return $widget;
 	}
 
 	/**

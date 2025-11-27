@@ -7,7 +7,6 @@ use Alma\API\Domain\Entity\WidgetInterface;
 use Alma\API\Domain\ValueObject\Environment;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
-use Alma\Gateway\Infrastructure\Service\AssetsService;
 
 abstract class AbstractWidget implements WidgetInterface {
 
@@ -22,12 +21,7 @@ abstract class AbstractWidget implements WidgetInterface {
 	protected int $price;
 	protected bool $displayWidget;
 	protected string $language;
-	protected AssetsService $assetsService;
 	protected FeePlanListAdapter $feePlanListAdapter;
-
-	public function __construct( AssetsService $assetsService ) {
-		$this->assetsService = $assetsService;
-	}
 
 	public function configure( FeePlanListAdapterInterface $feePlanListAdapter, Environment $environment, string $merchantId, int $price, bool $displayWidget, string $language ): WidgetInterface {
 		$this->feePlanListAdapter = $feePlanListAdapter;
@@ -46,7 +40,7 @@ abstract class AbstractWidget implements WidgetInterface {
 	 * @return void
 	 * @see assets/js/frontend/alma-frontend-widget-implementation.js
 	 */
-	protected function getConfiguration(): array {
+	public function getConfiguration(): array {
 		return array(
 			'environment'             => $this->environment,
 			'widget_selector'         => sprintf( '.%s', self::WIDGET_CLASS ),

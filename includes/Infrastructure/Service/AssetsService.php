@@ -10,8 +10,14 @@ class AssetsService {
 
 	private array $registered_assets = [];
 
+	/**
+	 * CDN Assets are loaded by default.
+	 * @throws AssetsServiceException
+	 * @todo CDN should be only register and not be enqueued by default
+	 */
 	public function __construct() {
 		$this->registered_assets = AssetsConfig::getAll();
+		$this->enqueueGroup( AssetsConfig::ASSETS_CONFIG_CDN );
 	}
 
 	/**

@@ -67,15 +67,17 @@ class WidgetBlock implements IntegrationInterface {
 	 */
 	public function initialize() {
 		$this->register_block_frontend_scripts();
-		$this->register_block_editor_scripts();
+		if ( ContextHelper::isAdmin() ) {
+			$this->register_block_editor_scripts();
+		}
 	}
 
 	public function get_script_handles(): array {
-		return array( 'alma-widget-block-frontend' );
+		return array( 'alma-widget-block' );
 	}
 
 	public function get_editor_script_handles(): array {
-		return array( 'alma-widget-block-editor' );
+		return array( 'alma-widget-block' );
 	}
 
 	/**

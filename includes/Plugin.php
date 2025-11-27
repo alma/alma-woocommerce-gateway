@@ -100,7 +100,13 @@ final class Plugin {
 		// Set the plugin helper and logger service
 		$suffix = [];
 		if ( isset( $_GET['rest_route'] ) && $_GET['rest_route'] === '/wc/store/v1/checkout' ) {
-			$suffix = [ sprintf( 'alma-%s', 'martin' ) ];
+			$suffix = [ sprintf( 'alma-%s', 'rest' ) ];
+		}
+		if ( isset( $_GET['page_id'] ) && $_GET['page_id'] === '6' ) {
+			$suffix = [ sprintf( 'alma-%s', 'cart' ) ];
+		}
+		if ( isset( $_GET['product'] ) ) {
+			$suffix = [ sprintf( 'alma-%s', 'product' ) ];
 		}
 
 		// Configure the logger service
@@ -128,7 +134,7 @@ final class Plugin {
 			/** @var ShopService $shopService */
 			$shopService = self::get_container()->get( ShopService::class );
 			$shopService->warmService();
-			
+
 			// Plugin fully configured, let's run the services
 			/** @var GatewayService $gatewayService */
 			$gatewayService = self::get_container()->get( GatewayService::class );
