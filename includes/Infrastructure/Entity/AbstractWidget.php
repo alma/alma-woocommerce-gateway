@@ -52,10 +52,10 @@ abstract class AbstractWidget implements WidgetInterface {
 				function ( FeePlanAdapter $plan ) {
 					return array(
 						'installmentsCount' => $plan->getInstallmentsCount(),
-						'minAmount'         => $plan->getOverrideMinPurchaseAmount(),
-						'maxAmount'         => $plan->getOverrideMaxPurchaseAmount(),
 						'deferredDays'      => $plan->getDeferredDays(),
 						'deferredMonths'    => $plan->getDeferredMonths(),
+						'minAmount'         => $plan->getOverrideMinPurchaseAmount(),
+						'maxAmount'         => $plan->getOverrideMaxPurchaseAmount(),
 					);
 				},
 				$this->feePlanListAdapter->getArrayCopy()

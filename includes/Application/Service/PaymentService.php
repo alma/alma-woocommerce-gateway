@@ -38,14 +38,13 @@ class PaymentService {
 	/**
 	 * Create a payment.
 	 *
-	 * @param bool           $isInPage Indicates if the payment is created for an in-page flow
 	 * @param OrderAdapter   $order Order to create the payment for
 	 * @param FeePlanAdapter $feePlanAdapter Fee plan selected by the customer
 	 *
 	 * @return Payment
 	 * @throws PaymentServiceException
 	 */
-	public function createPayment( bool $isInPage, OrderAdapter $order, FeePlanAdapter $feePlanAdapter ): Payment {
+	public function createPayment( OrderAdapter $order, FeePlanAdapter $feePlanAdapter ): Payment {
 
 		try {
 			$payment = $this->paymentProvider->createPayment(

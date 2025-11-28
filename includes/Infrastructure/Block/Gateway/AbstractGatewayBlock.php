@@ -133,7 +133,6 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 			$payment_service = Plugin::get_container()->get( PaymentService::class );
 			try {
 				$payment = $payment_service->createPayment(
-					$this->is_in_page_enabled,
 					$order,
 					$fee_plan_adapter
 				);

@@ -118,6 +118,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * @throws GatewayServiceException
 	 */
 	public function process_payment( $order_id ): array {
+
 		/** @var FeePlanRepository $fee_plan_repository */
 		$fee_plan_repository = Plugin::get_container()->get( FeePlanRepository::class );
 		/** @var OrderRepository $order_repository */
@@ -140,7 +141,6 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		$payment_service = Plugin::get_container()->get( PaymentService::class );
 		try {
 			$payment = $payment_service->createPayment(
-				$config_service->isInPageEnabled(),
 				$order,
 				$fee_plan_adapter
 			);
@@ -151,15 +151,15 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		// Update order status to pending
 		$order->updateStatus( 'pending', L10nHelper::__( 'En attente de paiement via Alma' ) );
 
-		$result = array(
-			'alma_payment' => $payment,
-		);
+		$result = array();
 		if ( $config_service->isInPageEnabled() ) {
 			// In-page checkout with fallback redirection
+			$result['alma_payment'] = $payment;
 			$result['redirect_url'] = InPageHelper::getInPageRedirectionFallbackUrl( $payment->getId() );
 		} else {
 			// Classic checkout redirection
-			$result['redirect_url'] = $payment->geturl();
+			$result['result']   = 'success';
+			$result['redirect'] = $payment->getUrl();
 		}
 
 		return $result;
