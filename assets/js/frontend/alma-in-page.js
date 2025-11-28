@@ -179,7 +179,7 @@
         // Change plan
         $(document).on('change', '.alma_woocommerce_gateway_fieldset input[name="alma_plan_key"]', function () {
             unmountIframe();
-            mountIframe()
+            mountIframe();
         });
     })
 })(jQuery);
