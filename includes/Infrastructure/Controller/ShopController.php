@@ -1,31 +1,34 @@
 <?php
 
-namespace Alma\Gateway\Application\Service;
+namespace Alma\Gateway\Infrastructure\Controller;
 
 use Alma\Gateway\Application\Helper\PluginHelper;
+use Alma\Gateway\Application\Service\ConfigService;
+use Alma\Gateway\Application\Service\InPageService;
+use Alma\Gateway\Application\Service\WidgetService;
 use Alma\Gateway\Infrastructure\Helper\BackendHelper;
 use Alma\Gateway\Infrastructure\Helper\BlocksWidgetHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\FrontendHelper;
 use Alma\Gateway\Plugin;
 
-class ShopService {
+class ShopController {
 
 	/**
 	 * Register widgets on warm up
 	 * @return void
 	 */
-	public function warmService() {
+	public function warm() {
 		if ( ContextHelper::isCartPageUseBlocks() ) {
 			BlocksWidgetHelper::registerWidget();
 		}
 	}
 
 	/**
-	 * Run services on template redirect.
+	 * Run on template redirect.
 	 * We need to wait templates because is_page detection run at this time!
 	 */
-	public function runService() {
+	public function run() {
 		FrontendHelper::runFrontendServices(
 			function () {
 
@@ -46,7 +49,6 @@ class ShopService {
 					$inPageService = Plugin::get_container()->get( InPageService::class );
 					$inPageService->displayInPage();
 				}
-
 			}
 		);
 

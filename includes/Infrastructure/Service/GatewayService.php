@@ -8,14 +8,10 @@ use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
-use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
-use Alma\Gateway\Infrastructure\Helper\BackendHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
-use Alma\Gateway\Infrastructure\Helper\EventHelper;
-use Alma\Gateway\Infrastructure\Helper\FrontendHelper;
 use Alma\Gateway\Infrastructure\Helper\GatewayHelper;
 use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
@@ -38,73 +34,6 @@ class GatewayService {
 		$this->assetsService   = $assetsService;
 		$this->checkoutService = $checkoutService;
 		$this->gatewayHelper   = $gatewayHelper;
-	}
-
-	/**
-	 * Run services on admin init.
-	 */
-	public function runService() {
-		GatewayHelper::runGatewayServices(
-			function () {
-				// Init Gateway Services
-				$this->loadGateway();
-				$this->configureReturns();
-			}
-		);
-	}
-
-	public function runUnconfiguredService() {
-		GatewayHelper::runGatewayServices(
-			function () {
-				$this->loadUnconfiguredGateway();
-			}
-		);
-	}
-
-	/**
-	 * Load the admin gateway to do configuration.
-	 * Load only in admin area on gateway settings page
-	 */
-	public function loadUnconfiguredGateway() {
-		if ( ContextHelper::isAdmin() ) {
-			if ( ContextHelper::isGatewaySettingsPage() ) {
-				BackendHelper::loadBackendGateway();
-			}
-		}
-	}
-
-	/**
-	 * Init and Load the gateways
-	 *
-	 * Load the Frontend gateways if the user is not in the admin area.
-	 * Load the Backend gateways if the user is in the admin area.
-	 * But also load the Frontend gateways if the user is in the admin area but not on the Gateway settings page.
-	 * It's useful to do refunds on, the order page for example.
-	 */
-	public function loadGateway() {
-		// Init Gateway
-		if ( ContextHelper::isAdmin() ) {
-			if ( ContextHelper::isGatewaySettingsPage() ) {
-				BackendHelper::loadBackendGateway();
-			} else {
-				FrontendHelper::loadFrontendGateways();
-			}
-			// Add links to gateway.
-			$this->gatewayHelper->addGatewayLinks(
-				PluginHelper::getPluginFile(),
-				array( $this, 'pluginActionLinks' )
-			);
-		} else {
-			FrontendHelper::loadFrontendGateways();
-		}
-
-		if ( ContextHelper::isCheckoutPageUseBlocks() ) {
-			$this->initGatewayBlocks();
-		}
-
-		// Configure the hooks linked to the gateways
-		EventHelper::addEvent( 'woocommerce_order_status_changed',
-			array( $this, 'woocommerceOrderStatusChanged' ), 10, 3 );
 	}
 
 	/**
@@ -216,7 +145,6 @@ class GatewayService {
 					foreach ( $almaGatewayBlocks as $gatewayBlock ) {
 						$paymentMethodRegistry->register( $gatewayBlock );
 					}
-
 
 
 					$params                 = $this->checkoutService->getCheckoutParams();

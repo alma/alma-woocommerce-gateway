@@ -12,16 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class GatewayHelper {
 
 	/**
-	 * Run services.
-	 * The callback is called immediately. No need to hook into any event.
-	 *
-	 * @param callable $callback Function to run.
-	 */
-	public static function runGatewayServices( callable $callback ) {
-		$callback();
-	}
-
-	/**
 	 * Add links to the plugin on the plugins page.
 	 *
 	 * @param string   $base_path Path to the main plugin file.

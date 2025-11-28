@@ -22,16 +22,17 @@ class ClassSuffixByDirectorySniff implements Sniff {
 	 * @var array<string, string[]>
 	 */
 	private $directorySuffixMap = [
-		'Mapper'     => [ 'Mapper', 'MapperInterface', 'MapperException' ],
-		'Provider'   => [ 'Provider', 'ProviderInterface', 'ProviderException' ],
-		'Repository' => [ 'Repository', 'RepositoryInterface', 'RepositoryException' ],
 		'Adapter'    => [ 'Adapter', 'AdapterInterface', 'AdapterException' ],
 		'Block'      => [ 'Block', 'BlockInterface', 'BlockException', 'BlockFactory' ],
 		'Config'     => [ 'Config', 'ConfigException' ],
-		'Service'    => [ 'Service', 'ServiceException' ],
+		'Controller' => [ 'Controller', 'ControllerException' ],
 		'Exception'  => [ 'Exception' ],
-		'Helper'     => [ 'Helper', 'HelperException' ],
 		'Gateway'    => [ 'Gateway', 'GatewayInterface', 'GatewayException' ],
+		'Helper'     => [ 'Helper', 'HelperException' ],
+		'Mapper'     => [ 'Mapper', 'MapperInterface', 'MapperException' ],
+		'Provider'   => [ 'Provider', 'ProviderInterface', 'ProviderException' ],
+		'Repository' => [ 'Repository', 'RepositoryInterface', 'RepositoryException' ],
+		'Service'    => [ 'Service', 'ServiceException' ],
 	];
 
 	/**

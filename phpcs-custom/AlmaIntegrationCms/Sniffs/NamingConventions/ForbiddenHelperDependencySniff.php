@@ -9,7 +9,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * Forbid classes suffixed with 'Helper' from calling classes suffixed with
- * 'Service', 'Repository', 'Provider', or 'Gateway'.
+ * 'Controler', 'Service', 'Repository', 'Provider', or 'Gateway'.
  */
 class ForbiddenHelperDependencySniff implements Sniff {
 
@@ -18,7 +18,7 @@ class ForbiddenHelperDependencySniff implements Sniff {
 	 *
 	 * @var string[]
 	 */
-	private $forbiddenSuffixes = [ 'Service', 'Repository', 'Provider', 'Gateway' ];
+	private $forbiddenSuffixes = [ 'Controller', 'Service', 'Repository', 'Provider', 'Gateway' ];
 
 	/**
 	 * Register the tokens to listen for.
