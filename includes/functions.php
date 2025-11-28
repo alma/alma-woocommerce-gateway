@@ -142,6 +142,10 @@ function almalog( $message, $data = null ) {
 	}
 }
 
+function almaLogConsole( $dump, $level = 'debug' ) {
+	do_action( 'qm/' . $level, $dump );
+}
+
 add_action( 'admin_menu', 'alma_add_gateway_top_menu' );
 
 function alma_add_gateway_top_menu() {
