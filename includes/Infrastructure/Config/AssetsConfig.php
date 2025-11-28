@@ -164,7 +164,6 @@ class AssetsConfig {
 						'src'    => AssetsHelper::getAssetUrl( 'js/frontend/alma-widget.js' ),
 						'deps'   => array(
 							'alma-widget-cdn',
-							'alma-widget-block',
 							'jquery',
 						),
 						'params' => array(
