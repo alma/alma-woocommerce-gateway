@@ -198,7 +198,7 @@ class AbstractBackendGateway extends AbstractGateway {
 		$environment     = $options_service->getEnvironment();
 
 		/** @var FeePlanRepository $fee_plan_repository */
-		$fee_plan_repository   = Plugin::get_container( true )->get( FeePlanRepository::class );
+		$fee_plan_repository   = Plugin::get_container()->get( FeePlanRepository::class );
 		$fee_plan_list_adapter = $fee_plan_repository->getAll( true );
 
 		$field_list['fee_plan_section'] = array(

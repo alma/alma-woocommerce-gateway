@@ -7,6 +7,7 @@ use Alma\Gateway\Application\Entity\Form\FeePlanConfigurationList;
 use Alma\Gateway\Application\Entity\Form\GatewayConfigurationForm;
 use Alma\Gateway\Application\Entity\Form\KeyConfiguration;
 use Alma\Gateway\Application\Helper\DisplayHelper;
+use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Service\AuthenticationService;
 use Alma\Gateway\Application\Service\ConfigService;
 
@@ -37,8 +38,13 @@ class ConfigFormMapper {
 		unset( $settings['merchant_id'] );
 		$this->settings = $settings;
 
-		$key_configuration           = $this->process_key_configuration();
-		$fee_plan_configuration_list = $this->process_fee_plan_configuration_list();
+		$key_configuration = $this->process_key_configuration();
+
+		if ( PluginHelper::isConfigured() ) {
+			$fee_plan_configuration_list = $this->process_fee_plan_configuration_list();
+		} else {
+			$fee_plan_configuration_list = new FeePlanConfigurationList( array() );
+		}
 
 		return new GatewayConfigurationForm( $key_configuration, $fee_plan_configuration_list, $this->settings );
 	}

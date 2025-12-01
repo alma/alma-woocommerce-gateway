@@ -9,8 +9,6 @@ use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Mapper\EligibilityMapper;
 use Alma\Gateway\Application\Provider\EligibilityProvider;
 use Alma\Gateway\Application\Service\ConfigService;
-use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
-use Alma\Gateway\Infrastructure\Adapter\CustomerAdapter;
 use Alma\Gateway\Infrastructure\Block\Gateway\AbstractGatewayBlock;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\AbstractFrontendGateway;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
@@ -22,32 +20,23 @@ class CheckoutService {
 
 	protected AbstractFrontendGateway $gateway;
 	private ConfigService $configService;
-	private AssetsService $assetsService;
 	private GatewayRepository $gatewayRepository;
 	private FeePlanRepository $feePlanRepository;
 	private EligibilityProvider $eligibilityProvider;
-	private CartAdapter $cartAdapter;
-	private CustomerAdapter $customerAdapter;
 	private SecurityHelper $securityHelper;
 
 
 	public function __construct(
 		ConfigService $configService,
-		AssetsService $assetsService,
 		GatewayRepository $gatewayRepository,
 		FeePlanRepository $feePlanRepository,
 		EligibilityProvider $eligibilityProvider,
-		CartAdapter $cartAdapter,
-		CustomerAdapter $customerAdapter,
 		SecurityHelper $securityHelper
 	) {
 		$this->configService       = $configService;
-		$this->assetsService       = $assetsService;
 		$this->gatewayRepository   = $gatewayRepository;
 		$this->feePlanRepository   = $feePlanRepository;
 		$this->eligibilityProvider = $eligibilityProvider;
-		$this->cartAdapter         = $cartAdapter;
-		$this->customerAdapter     = $customerAdapter;
 		$this->securityHelper      = $securityHelper;
 
 		$this->initialize();
@@ -76,6 +65,9 @@ class CheckoutService {
 		wp_send_json( $this->getCheckoutParams() );
 	}
 
+	/**
+	 * Get Checkout parameters
+	 */
 	public function getCheckoutParams(): array {
 
 		$isInPage       = $this->configService->isInPageEnabled();
@@ -149,6 +141,7 @@ class CheckoutService {
 	}
 
 	private function formatBlocksForCheckout( array $almaGatewayBlocks ): array {
+		$blocks = [];
 		/** @var AbstractGatewayBlock $almaGatewayBlock */
 		foreach ( $almaGatewayBlocks as $almaGatewayBlock ) {
 			$blocks[ $almaGatewayBlock->get_gateway()->get_name() ] = $this->formatBlocksContentForCheckout( $almaGatewayBlock );

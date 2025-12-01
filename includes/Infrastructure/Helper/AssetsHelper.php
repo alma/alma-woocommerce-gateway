@@ -56,9 +56,9 @@ class AssetsHelper {
 	 */
 	public static function getBuildPath( $resourcePath = '' ): string {
 
-		$pluginUrl = PluginHelper::getPluginUrl();
+		$pluginPath = PluginHelper::getPluginPath();
 
-		return $pluginUrl . 'build/' . $resourcePath;
+		return $pluginPath . 'build/' . $resourcePath;
 	}
 
 	/**

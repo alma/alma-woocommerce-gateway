@@ -2,6 +2,7 @@
 
 namespace Alma\Gateway\Application\Service;
 
+use Alma\API\Domain\Entity\Payment;
 use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Mapper\CustomerMapper;
@@ -16,19 +17,34 @@ use Alma\Gateway\Plugin;
 
 class PaymentService {
 
+	/** @var ConfigService $configService */
 	private ConfigService $configService;
 
+	/** @var PaymentProvider $paymentProvider */
 	private PaymentProvider $paymentProvider;
 
-	private InPageHelper $inPageHelper;
-
+	/**
+	 * PaymentService constructor.
+	 *
+	 * @param ConfigService   $configService
+	 * @param PaymentProvider $paymentProvider
+	 * @param InPageHelper    $inPageHelper
+	 */
 	public function __construct( ConfigService $configService, PaymentProvider $paymentProvider, InPageHelper $inPageHelper ) {
 		$this->configService   = $configService;
 		$this->paymentProvider = $paymentProvider;
-		$this->inPageHelper    = $inPageHelper;
 	}
 
-	public function createPayment( bool $isInPage, OrderAdapter $order, FeePlanAdapter $feePlanAdapter ): array {
+	/**
+	 * Create a payment.
+	 *
+	 * @param OrderAdapter   $order Order to create the payment for
+	 * @param FeePlanAdapter $feePlanAdapter Fee plan selected by the customer
+	 *
+	 * @return Payment
+	 * @throws PaymentServiceException
+	 */
+	public function createPayment( OrderAdapter $order, FeePlanAdapter $feePlanAdapter ): Payment {
 
 		try {
 			$payment = $this->paymentProvider->createPayment(
@@ -47,24 +63,9 @@ class PaymentService {
 				L10nHelper::__( 'An error occurred while creating the payment. Please try again.' . $e->getMessage() ),
 			);
 
-			return array(
-				'result'   => 'failure',
-				'error'    => L10nHelper::__( 'An error occurred while creating the payment. Please try again.' ),
-				'redirect' => '',
-			);
+			throw new PaymentServiceException( 'An error occurred while creating the payment. Please try again.' );
 		}
 
-		// Determine redirection URL based on in-page or standard flow
-		if ( $isInPage ) {
-			$redirectionUrl = $this->inPageHelper->getInPageRedirectionUrl( $payment->getId() );
-		} else {
-			$redirectionUrl = $payment->geturl();
-		}
-
-		return array(
-			'result'     => 'success',
-			'redirect'   => $redirectionUrl,
-			'payment_id' => $payment->getId(),
-		);
+		return $payment;
 	}
 }

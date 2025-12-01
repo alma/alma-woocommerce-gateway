@@ -105,7 +105,7 @@ class PayLaterGateway extends AbstractFrontendGateway implements FrontendGateway
 			'partials'
 		);
 		wp_localize_script(
-			'alma-frontend-in-page-implementation',
+			'alma-in-page',
 			'alma_woocommerce_gateway_pay_later_gateway',
 			array(
 				'type'         => $this->get_payment_method(),

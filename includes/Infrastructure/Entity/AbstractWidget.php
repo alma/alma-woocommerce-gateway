@@ -5,10 +5,8 @@ namespace Alma\Gateway\Infrastructure\Entity;
 use Alma\API\Domain\Adapter\FeePlanListAdapterInterface;
 use Alma\API\Domain\Entity\WidgetInterface;
 use Alma\API\Domain\ValueObject\Environment;
-use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
-use Alma\Gateway\Infrastructure\Service\AssetsService;
 
 abstract class AbstractWidget implements WidgetInterface {
 
@@ -23,14 +21,7 @@ abstract class AbstractWidget implements WidgetInterface {
 	protected int $price;
 	protected bool $displayWidget;
 	protected string $language;
-	protected AssetsService $assetsService;
 	protected FeePlanListAdapter $feePlanListAdapter;
-	protected ConfigService $configService;
-
-	public function __construct( ConfigService $configService, AssetsService $assetsService ) {
-		$this->configService = $configService;
-		$this->assetsService = $assetsService;
-	}
 
 	public function configure( FeePlanListAdapterInterface $feePlanListAdapter, Environment $environment, string $merchantId, int $price, bool $displayWidget, string $language ): WidgetInterface {
 		$this->feePlanListAdapter = $feePlanListAdapter;
@@ -49,7 +40,7 @@ abstract class AbstractWidget implements WidgetInterface {
 	 * @return void
 	 * @see assets/js/frontend/alma-frontend-widget-implementation.js
 	 */
-	protected function getConfiguration(): array {
+	public function getConfiguration(): array {
 		return array(
 			'environment'             => $this->environment,
 			'widget_selector'         => sprintf( '.%s', self::WIDGET_CLASS ),
@@ -61,10 +52,10 @@ abstract class AbstractWidget implements WidgetInterface {
 				function ( FeePlanAdapter $plan ) {
 					return array(
 						'installmentsCount' => $plan->getInstallmentsCount(),
-						'minAmount'         => $plan->getOverrideMinPurchaseAmount(),
-						'maxAmount'         => $plan->getOverrideMaxPurchaseAmount(),
 						'deferredDays'      => $plan->getDeferredDays(),
 						'deferredMonths'    => $plan->getDeferredMonths(),
+						'minAmount'         => $plan->getOverrideMinPurchaseAmount(),
+						'maxAmount'         => $plan->getOverrideMaxPurchaseAmount(),
 					);
 				},
 				$this->feePlanListAdapter->getArrayCopy()

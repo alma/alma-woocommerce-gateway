@@ -77,19 +77,15 @@
 
 // phpcs:ignoreFile
 import {storeKey} from "../stores/alma-store";
-import {createRoot, useEffect} from '@wordpress/element';
+import {createRoot, useEffect, useRef, useState} from '@wordpress/element';
 import {useSelect} from '@wordpress/data';
 import {Label} from "./components/Label";
 import './alma-gateway-block.css';
 import {DisplayAlmaInPageBlock} from "./components/DisplayAlmaInPageBlock";
 import {DisplayAlmaBlock} from "./components/DisplayAlmaBlock";
 import {fetchAlmaSettings} from "./hooks/almaSettings";
-import {useRef} from "react";
 
 (function ($) {
-
-    /** In Page status */
-    let inPage = undefined;
 
     /** Get Cart and Checkout store keys */
     const {CART_STORE_KEY, CHECKOUT_STORE_KEY} = window.wc.wcBlocksData
@@ -102,8 +98,8 @@ import {useRef} from "react";
      */
     const gatewayCanMakePayment = (gatewaySettings) => {
         let canMakePayment = true
-        if (Object.keys(gatewaySettings.fee_plans_settings).length === 0) {
-            canMakePayment = false
+        if (!gatewaySettings?.fee_plans_settings || Object.keys(gatewaySettings.fee_plans_settings).length === 0) {
+            canMakePayment = false;
         }
         return canMakePayment
     }
@@ -137,6 +133,8 @@ import {useRef} from "react";
         });
         const isFetching = useRef(false);
 
+        const [inPageInstance, setInPageInstance] = useState(undefined)
+
         // Use the cart total and addresses to fetch the new eligibility
         useEffect(() => {
             console.log('CartObserver useEffect triggered with cartTotal:', cartTotal, 'shippingRates:', shippingRates);
@@ -161,19 +159,22 @@ import {useRef} from "react";
         // Register the payment gateway block
         if (!isCalculating && !isLoading) {
             // For each gateway in eligibility result, we register a block
-            registerPaymentGateway(almaSettings, allGatewaysSettings, storeKey, parseInt(cartTotal))
+            registerPaymentGateway(almaSettings, allGatewaysSettings, storeKey, parseInt(cartTotal), inPageInstance, setInPageInstance)
         }
     };
 
     /**
      * Register All Payment Gateway Blocks
+     *
      * @param almaSettings All AlmaSettings
      * @param allGatewaysSettings
      * @param storeKey
+     * @param inPageInstance
+     * @param setInPageInstance
      * @param init
      * @param cartTotal
      */
-    const registerPaymentGateway = (almaSettings, allGatewaysSettings, storeKey, cartTotal, init = false) => {
+    const registerPaymentGateway = (almaSettings, allGatewaysSettings, storeKey, cartTotal, inPageInstance, setInPageInstance, init = false) => {
 
         for (const gatewayName in allGatewaysSettings) {
 
@@ -181,9 +182,11 @@ import {useRef} from "react";
 
             // If gateway Block is available, we register it
             if (gatewaySettings) {
-                const blockContent = getContentBlock(almaSettings, gatewayName, storeKey, cartTotal)
+                const blockContent = getContentBlock(almaSettings, gatewayName, storeKey, cartTotal, inPageInstance, setInPageInstance)
                 const AlmaGatewayBlock = generateGatewayBlock(gatewaySettings, blockContent, init ? true : gatewayCanMakePayment(gatewaySettings));
-                window.wc.wcBlocksRegistry.registerPaymentMethod(AlmaGatewayBlock);
+                if (gatewayCanMakePayment(gatewaySettings)) {
+                    window.wc.wcBlocksRegistry.registerPaymentMethod(AlmaGatewayBlock);
+                }
                 console.log('register: ' + gatewayName);
             }
         }
@@ -199,7 +202,6 @@ import {useRef} from "react";
      */
     const generateGatewayBlock = (gatewaySettings, blockContent, canMakePayment) => {
         console.log("Generating Gateway block " + blockContent);
-
         return {
             name: gatewaySettings.gateway_name,
             label: (
@@ -222,18 +224,18 @@ import {useRef} from "react";
      * @param gateway
      * @param storeKey
      * @param cartTotal
+     * @param inPageInstance
+     * @param setInPageInstance
      * @returns {JSX.Element}
      */
-    const getContentBlock = (almaSettings, gateway, storeKey, cartTotal) => {
-        const setInPage = (inPageInstance) => {
-            inPage = inPageInstance
-        }
+    const getContentBlock = (almaSettings, gateway, storeKey, cartTotal, inPageInstance, setInPageInstance) => {
 
         return almaSettings.is_in_page ? (
             <DisplayAlmaInPageBlock
                 gateway={gateway}
                 storeKey={storeKey}
-                setInPage={setInPage}
+                setInPage={setInPageInstance}
+                inPage={inPageInstance}
                 cartTotal={cartTotal}
             />
         ) : (
@@ -252,8 +254,13 @@ import {useRef} from "react";
         const rootDiv = document.createElement('div');
         document.body.appendChild(rootDiv);
 
-        const root = createRoot(rootDiv);
-        root.render(<CartObserver/>);
+        if (createRoot) {
+            const root = createRoot(rootDiv);
+            root.render(<CartObserver/>);
+        } else {
+            // Fallback pour React 17
+            ReactDOM.render(<CartObserver/>, rootDiv);
+        }
     };
 
     /**

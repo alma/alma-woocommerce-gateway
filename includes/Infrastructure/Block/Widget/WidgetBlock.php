@@ -67,15 +67,17 @@ class WidgetBlock implements IntegrationInterface {
 	 */
 	public function initialize() {
 		$this->register_block_frontend_scripts();
-		$this->register_block_editor_scripts();
+		if ( ContextHelper::isAdmin() ) {
+			$this->register_block_editor_scripts();
+		}
 	}
 
 	public function get_script_handles(): array {
-		return array( 'alma-widget-block-frontend' );
+		return array( 'alma-widget-block' );
 	}
 
 	public function get_editor_script_handles(): array {
-		return array( 'alma-widget-block-editor' );
+		return array( 'alma-widget-block' );
 	}
 
 	/**
@@ -88,13 +90,15 @@ class WidgetBlock implements IntegrationInterface {
 	 */
 	public function get_script_data(): array {
 
+		$feePlanList = $this->fee_plan_repository->getAll()->filterEnabled();
+
 		return array(
 			'merchant_id'      => $this->config_service->getMerchantId(),
 			'environment'      => strtoupper( $this->config_service->getEnvironment()->getMode() ),
-			'plans'            => ( new FeePlanListMapper() )->buildFeePlanListDto( $this->fee_plan_repository->getAll() )->toArray()['plans'],
+			'plans'            => ( new FeePlanListMapper() )->buildFeePlanListDto( $feePlanList )->toArray()['plans'],
 			'amount'           => $this->cart_adapter->getCartTotal(),
 			'locale'           => $this->context_helper->getLanguage(),
-			'can_be_displayed' => true,
+			'can_be_displayed' => count( $feePlanList ) > 0 && $this->config_service->getWidgetCartEnabled(),
 		);
 	}
 

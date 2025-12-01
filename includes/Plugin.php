@@ -2,16 +2,17 @@
 
 namespace Alma\Gateway;
 
+use Alma\Gateway\Application\Exception\Controller\GatewayControllerException;
 use Alma\Gateway\Application\Exception\Helper\RequirementsHelperException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Helper\RequirementsHelper;
-use Alma\Gateway\Application\Service\AdminService;
-use Alma\Gateway\Application\Service\ShopService;
+use Alma\Gateway\Infrastructure\Controller\AdminController;
+use Alma\Gateway\Infrastructure\Controller\GatewayController;
+use Alma\Gateway\Infrastructure\Controller\ShopController;
 use Alma\Gateway\Infrastructure\Exception\CmsException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
-use Alma\Gateway\Infrastructure\Service\GatewayService;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -100,7 +101,13 @@ final class Plugin {
 		// Set the plugin helper and logger service
 		$suffix = [];
 		if ( isset( $_GET['rest_route'] ) && $_GET['rest_route'] === '/wc/store/v1/checkout' ) {
-			$suffix = [ sprintf( 'alma-%s', 'martin' ) ];
+			$suffix = [ sprintf( 'alma-%s', 'rest' ) ];
+		}
+		if ( isset( $_GET['page_id'] ) && $_GET['page_id'] === '6' ) {
+			$suffix = [ sprintf( 'alma-%s', 'cart' ) ];
+		}
+		if ( isset( $_GET['product'] ) ) {
+			$suffix = [ sprintf( 'alma-%s', 'product' ) ];
 		}
 
 		// Configure the logger service
@@ -112,7 +119,7 @@ final class Plugin {
 	 * Used for regular plugin work.
 	 *
 	 * @return  void
-	 * @throws RequirementsHelperException
+	 * @throws RequirementsHelperException|GatewayControllerException
 	 */
 	public function plugin_setup(): void {
 
@@ -122,26 +129,31 @@ final class Plugin {
 
 		if ( PluginHelper::isConfigured() ) {
 
-			// Plugin fully configured, let's run the services
-			/** @var GatewayService $gatewayService */
-			$gatewayService = self::get_container()->get( GatewayService::class );
-			$gatewayService->runService();
+			$this->get_container()->setApiConfig();
 
-			// Run services only when WordPress admin is ready.
-			/** @var AdminService $adminService */
-			$adminService = self::get_container()->get( AdminService::class );
-			$adminService->runService();
+			// Register widgets
+			/** @var ShopController $shopController */
+			$shopController = self::get_container()->get( ShopController::class );
+			$shopController->warm();
+
+			// Plugin fully configured, let's run the services
+			/** @var GatewayController $gatewayController */
+			$gatewayController = self::get_container()->get( GatewayController::class );
+			$gatewayController->run();
+
+			// Run Admin Controller only when WordPress admin is ready.
+			/** @var AdminController $adminController */
+			$adminController = self::get_container()->get( AdminController::class );
+			$adminController->run();
 
 			// Run services only when WordPress frontend is ready.
-			/** @var ShopService $shopService */
-			$shopService = self::get_container()->get( ShopService::class );
-			$shopService->runService();
+			$shopController->run();
 
 		} else {
 			// Plugin not yet configured, load only backend gateway to help in configuration.
-			/** @var GatewayService $gatewayService */
-			$gatewayService = self::get_container()->get( GatewayService::class );
-			$gatewayService->runUnconfiguredService();
+			/** @var GatewayController $gatewayController */
+			$gatewayController = self::get_container()->get( GatewayController::class );
+			$gatewayController->configure();
 		}
 	}
 
@@ -159,8 +171,7 @@ final class Plugin {
 		}
 
 		// Check if all dependencies are met
-		$requirements_helper = new RequirementsHelper();
-		if ( ! $requirements_helper->check_dependencies( ContextHelper::getCmsVersion() ) ) {
+		if ( ! RequirementsHelper::check_dependencies( ContextHelper::getCmsVersion() ) ) {
 			return false;
 		}
 

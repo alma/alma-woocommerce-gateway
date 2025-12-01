@@ -13,7 +13,7 @@ class InPageHelper {
 	 *
 	 * @return string
 	 */
-	public function getInPageRedirectionUrl( string $paymentId ): string {
+	public static function getInPageRedirectionFallbackUrl( string $paymentId ): string {
 		$redirectionUrl = wc_get_checkout_url();
 
 		return add_query_arg(

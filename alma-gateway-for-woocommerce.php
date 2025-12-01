@@ -45,17 +45,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $alma_gateway_plugin = Plugin::get_instance();
 
-add_action(
-	'plugins_loaded',
-	array( $alma_gateway_plugin, 'plugin_warmup' ),
-	0
-);
-
-add_action(
-	'plugins_loaded',
-	array( $alma_gateway_plugin, 'plugin_setup' )
-);
-
 /**
  * Init custom_order_tables if available in Woocommerce version.
  */
@@ -65,4 +54,15 @@ add_action(
 		FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
 		FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
 	}
+);
+
+add_action(
+	'plugins_loaded',
+	array( $alma_gateway_plugin, 'plugin_warmup' ),
+	0
+);
+
+add_action(
+	'woocommerce_init',
+	array( $alma_gateway_plugin, 'plugin_setup' )
 );

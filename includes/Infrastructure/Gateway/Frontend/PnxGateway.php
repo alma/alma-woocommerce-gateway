@@ -86,7 +86,7 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 			'partials'
 		);
 		wp_localize_script(
-			'alma-frontend-in-page-implementation',
+			'alma-in-page',
 			'alma_woocommerce_gateway_pnx_gateway',
 			array(
 				'type'         => $this->get_payment_method(),

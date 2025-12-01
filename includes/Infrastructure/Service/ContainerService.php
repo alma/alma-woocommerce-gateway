@@ -38,12 +38,12 @@ use Alma\Gateway\Application\Helper\TemplateHelper;
 use Alma\Gateway\Application\Provider\EligibilityProvider;
 use Alma\Gateway\Application\Provider\FeePlanProvider;
 use Alma\Gateway\Application\Provider\PaymentProvider;
-use Alma\Gateway\Application\Service\AdminService;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\IpnService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
 use Alma\Gateway\Infrastructure\Adapter\ProductAdapter;
+use Alma\Gateway\Infrastructure\Controller\AdminController;
 use Alma\Gateway\Infrastructure\Gateway\Backend\AlmaGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
@@ -92,7 +92,6 @@ class ContainerService {
 		$this->setDiConfig();
 		$this->setApplicationRules();
 		$this->setInfrastructureRules();
-		$this->setApiConfig();
 
 		CoreHelper::autoReloadOptionsOnOptionSave();
 	}
@@ -128,8 +127,7 @@ class ContainerService {
 
 		/** @var ConfigService $configService Mandatory for API services */
 		$configService = $this->get( ConfigService::class );
-
-		$this->dice = $this->dice->addRule(
+		$this->dice    = $this->dice->addRule(
 			ClientConfiguration::class,
 			array(
 				'constructParams' => array(
@@ -139,6 +137,7 @@ class ContainerService {
 				'shared'          => true,
 			)
 		);
+
 		$this->dice = $this->dice->addRule(
 			CurlClient::class,
 			array(
@@ -149,7 +148,6 @@ class ContainerService {
 				'shared'          => true
 			)
 		);
-
 	}
 
 	public function setDiConfig(): void {
@@ -195,11 +193,11 @@ class ContainerService {
 		// Business Layer
 		$this->dice = $this->dice->addRules(
 			array(
-				AdminService::class   => array( 'shared' => true ),
-				ConfigService::class  => array( 'shared' => true ),
-				GatewayService::class => array( 'shared' => true ),
-				LoggerService::class  => array( 'shared' => true ),
-				IpnService::class     => array( 'shared' => true ),
+				AdminController::class => array( 'shared' => true ),
+				ConfigService::class   => array( 'shared' => true ),
+				GatewayService::class  => array( 'shared' => true ),
+				LoggerService::class   => array( 'shared' => true ),
+				IpnService::class      => array( 'shared' => true ),
 			)
 		);
 
