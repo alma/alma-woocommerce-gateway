@@ -24,16 +24,13 @@ class GatewayService {
 	/** GatewayHelper */
 	private GatewayHelper $gatewayHelper;
 	private AssetsService $assetsService;
-	private CheckoutService $checkoutService;
 
 	public function __construct(
 		AssetsService $assetsService,
-		CheckoutService $checkoutService,
 		GatewayHelper $gatewayHelper // Move
 	) {
-		$this->assetsService   = $assetsService;
-		$this->checkoutService = $checkoutService;
-		$this->gatewayHelper   = $gatewayHelper;
+		$this->assetsService = $assetsService;
+		$this->gatewayHelper = $gatewayHelper;
 	}
 
 	/**
@@ -146,7 +143,9 @@ class GatewayService {
 						$paymentMethodRegistry->register( $gatewayBlock );
 					}
 
-					$params                 = $this->checkoutService->getCheckoutParams();
+					/** @var CheckoutService $checkoutService */
+					$checkoutService        = Plugin::get_container()->get( CheckoutService::class );
+					$params                 = $checkoutService->getCheckoutParams();
 					$params['checkout_url'] = ContextHelper::getWebhookUrl( 'alma_checkout_data' );
 
 					try {
