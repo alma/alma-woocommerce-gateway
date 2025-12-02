@@ -65,8 +65,6 @@ class FeePlanRepository {
 	 */
 	public function getByPlanKey( string $planKey, bool $forceRefresh = false ): ?FeePlanAdapter {
 
-		almaLogConsole( 'GET BY PLAN KEY' );
-
 		if ( $forceRefresh || ! isset( $this->feePlanListAdapter ) ) {
 			$this->retrieveFeePlans();
 		}
@@ -101,9 +99,9 @@ class FeePlanRepository {
 
 			// Add local configuration to Fee Plans. (local min and max amount set in the plugin form)
 			$feePlanListAdapter = $this->setLocalConfiguration( $feePlanListAdapter );
-
+			almaLogConsole( ContextHelper::getCart()->getCartTotal() );
 			// Get Eligibility only on shop
-			if ( ! ContextHelper::isAdmin() ) {
+			if ( ! ContextHelper::isAdmin() && ContextHelper::getCart()->getCartTotal() > 0 ) {
 				// Add Eligibility to Fee Plans. (Installment Plans from API) /** @var EligibilityProvider $eligibilityProvider */ {
 				$eligibilityProvider = Plugin::get_container()->get( EligibilityProvider::class );
 				$eligibilityDto      = ( new EligibilityMapper() )
