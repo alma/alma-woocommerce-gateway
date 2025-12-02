@@ -2,18 +2,22 @@
 
 namespace Alma\Gateway\Infrastructure\Repository;
 
+use Alma\API\Domain\Entity\Eligibility;
+use Alma\API\Domain\Entity\EligibilityList;
 use Alma\API\Infrastructure\Exception\ParametersException;
+use Alma\Gateway\Application\Exception\Service\API\EligibilityServiceException;
 use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
+use Alma\Gateway\Application\Mapper\EligibilityMapper;
+use Alma\Gateway\Application\Provider\EligibilityProvider;
 use Alma\Gateway\Application\Provider\FeePlanProvider;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
+use Alma\Gateway\Infrastructure\Helper\ContextHelper;
+use Alma\Gateway\Plugin;
 
 class FeePlanRepository {
-
-	/** @var FeePlanProvider */
-	private FeePlanProvider $feePlanProvider;
 
 	/** @var FeePlanListAdapter */
 	private FeePlanListAdapter $feePlanListAdapter;
@@ -24,39 +28,11 @@ class FeePlanRepository {
 	/**
 	 * FeePlanRepository constructor.
 	 *
-	 * @param FeePlanProvider $feePlanProvider
-	 * @param ConfigService   $configService
+	 * @param ConfigService $configService
 	 */
-	public function __construct( FeePlanProvider $feePlanProvider, ConfigService $configService ) {
-		$this->feePlanProvider = $feePlanProvider;
-		$this->configService   = $configService;
-	}
-
-	/**
-	 * Init Fee Plan list options with values from the Alma API.
-	 *
-	 * @param FeePlanListAdapter $feePlanListAdapter The given Fee Plan list to initialize.
-	 *
-	 * @return void
-	 */
-	public function addAll( FeePlanListAdapter $feePlanListAdapter ) {
-
-		/** @var FeePlanAdapter $feePlanAdapter */
-		foreach ( $feePlanListAdapter as $feePlanAdapter ) {
-
-			$defaultPlanList = array(
-				'_enabled'    => false,
-				'_max_amount' => $feePlanAdapter->getMaxPurchaseAmount(),
-				'_min_amount' => $feePlanAdapter->getMinPurchaseAmount(),
-			);
-
-			foreach ( $defaultPlanList as $planKey => $defaultValue ) {
-				$optionKey = $feePlanAdapter->getPlanKey() . $planKey;
-				if ( ! $this->configService->hasSetting( $optionKey ) ) {
-					$this->configService->createSetting( $optionKey, $defaultValue );
-				}
-			}
-		}
+	public function __construct( ConfigService $configService ) {
+		almaLogConsole( 'CONSTRUCT' );
+		$this->configService = $configService;
 	}
 
 	/**
@@ -68,6 +44,9 @@ class FeePlanRepository {
 	 * @throws FeePlanRepositoryException
 	 */
 	public function getAll( bool $forceRefresh = false ): FeePlanListAdapter {
+
+		almaLogConsole( 'GET ALL' );
+
 		if ( $forceRefresh || ! isset( $this->feePlanListAdapter ) ) {
 			$this->retrieveFeePlans();
 		}
@@ -85,6 +64,8 @@ class FeePlanRepository {
 	 * @throws FeePlanRepositoryException
 	 */
 	public function getByPlanKey( string $planKey, bool $forceRefresh = false ): ?FeePlanAdapter {
+
+		almaLogConsole( 'GET BY PLAN KEY' );
 
 		if ( $forceRefresh || ! isset( $this->feePlanListAdapter ) ) {
 			$this->retrieveFeePlans();
@@ -112,11 +93,61 @@ class FeePlanRepository {
 	 */
 	public function retrieveFeePlans(): void {
 		try {
-			$feePlanListAdapter = new FeePlanListAdapter( $this->feePlanProvider->getFeePlanList() );
-			$this->addAll( $feePlanListAdapter );
-			$this->feePlanListAdapter = $this->setLocalConfiguration( $feePlanListAdapter );
-		} catch ( FeePlanServiceException $e ) {
+			// Get Fee Plans. (From API)
+			/** @var FeePlanProvider $feePlanProvider */
+			$feePlanProvider    = Plugin::get_container()->get( FeePlanProvider::class );
+			$feePlanListAdapter = new FeePlanListAdapter( $feePlanProvider->getFeePlanList() );
+			$this->saveKeysToConfig( $feePlanListAdapter );
+
+			// Add local configuration to Fee Plans. (local min and max amount set in the plugin form)
+			$feePlanListAdapter = $this->setLocalConfiguration( $feePlanListAdapter );
+
+			// Get Eligibility only on shop
+			if ( ! ContextHelper::isAdmin() ) {
+				// Add Eligibility to Fee Plans. (Installment Plans from API) /** @var EligibilityProvider $eligibilityProvider */ {
+				$eligibilityProvider = Plugin::get_container()->get( EligibilityProvider::class );
+				$eligibilityDto      = ( new EligibilityMapper() )
+					->buildEligibilityDto(
+						ContextHelper::getCart(),
+						ContextHelper::getCustomer(),
+						$feePlanListAdapter->filterEnabled()
+					);
+				$installmentPlanList = $eligibilityProvider->getEligibilityList( $eligibilityDto );
+				$feePlanListAdapter  = $this->setInstallmentPlanList( $feePlanListAdapter, $installmentPlanList );
+			}
+
+			$this->feePlanListAdapter = $feePlanListAdapter;
+
+		} catch ( FeePlanServiceException|EligibilityServiceException $e ) {
 			throw new FeePlanRepositoryException( $e->getMessage() );
+		}
+	}
+
+	/**
+	 * Init Fee Plan list options with values from the Alma API.
+	 *
+	 * @param FeePlanListAdapter $feePlanListAdapter The given Fee Plan list to initialize.
+	 *
+	 * @return void
+	 * @todo move to configRepository?
+	 */
+	private function saveKeysToConfig( FeePlanListAdapter $feePlanListAdapter ) {
+
+		/** @var FeePlanAdapter $feePlanAdapter */
+		foreach ( $feePlanListAdapter as $feePlanAdapter ) {
+
+			$defaultPlanList = array(
+				'_enabled'    => false,
+				'_max_amount' => $feePlanAdapter->getMaxPurchaseAmount(),
+				'_min_amount' => $feePlanAdapter->getMinPurchaseAmount(),
+			);
+
+			foreach ( $defaultPlanList as $planKey => $defaultValue ) {
+				$optionKey = $feePlanAdapter->getPlanKey() . $planKey;
+				if ( ! $this->configService->hasSetting( $optionKey ) ) {
+					$this->configService->createSetting( $optionKey, $defaultValue );
+				}
+			}
 		}
 	}
 
@@ -142,6 +173,25 @@ class FeePlanRepository {
 			} catch ( ParametersException $e ) {
 				$feePlanAdapter->resetOverrideMaxPurchaseAmount();
 				$feePlanAdapter->resetOverrideMinPurchaseAmount();
+			}
+		}
+
+		return $feePlanListAdapter;
+	}
+
+	private function setInstallmentPlanList( FeePlanListAdapter $feePlanListAdapter, EligibilityList $eligibilityList ): FeePlanListAdapter {
+		/** @var Eligibility $eligibility */
+		foreach ( $eligibilityList as $eligibility ) {
+			/** @var FeePlanAdapter $feePlanAdapter */
+			foreach ( $feePlanListAdapter as $feePlanAdapter ) {
+				if ( $feePlanAdapter->getPlanKey() === $eligibility->getPlanKey() ) {
+					$feePlanAdapter->setEligibility( $eligibility->isEligible() );
+					$feePlanAdapter->setPaymentPlan( $eligibility->getPaymentPlan() );
+					$feePlanAdapter->setCustomerTotalCostAmount( $eligibility->getCustomerTotalCostAmount() );
+					$feePlanAdapter->setAnnualInterestRate( $eligibility->getAnnualInterestRate() );
+					$feePlanAdapter->setCustomerTotalCostBps( $eligibility->getCustomerTotalCostBps() );
+					$feePlanAdapter->setCustomerFee( $eligibility->getCustomerFee() );
+				}
 			}
 		}
 

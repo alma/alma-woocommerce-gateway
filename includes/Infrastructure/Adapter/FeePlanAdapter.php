@@ -5,6 +5,7 @@ namespace Alma\Gateway\Infrastructure\Adapter;
 use Alma\API\Domain\Adapter\FeePlanAdapterInterface;
 use Alma\API\Domain\Adapter\FeePlanInterface;
 use Alma\API\Domain\Entity\FeePlan;
+use Alma\API\Domain\Entity\PaymentPlanTrait;
 use Alma\API\Infrastructure\Exception\ParametersException;
 use BadMethodCallException;
 
@@ -18,9 +19,42 @@ use BadMethodCallException;
  */
 class FeePlanAdapter implements FeePlanAdapterInterface, FeePlanInterface {
 
-	private $almaFeePlan;
+	use PaymentPlanTrait;
+
+	/**
+	 * The original Fee Plan (from the API)
+	 * @var FeePlan $almaFeePlan
+	 */
+	private FeePlan $almaFeePlan;
+
+	/**
+	 * The override min purchase amount (from the merchant config)
+	 * @var int $overrideMinPurchaseAmount
+	 */
 	private int $overrideMinPurchaseAmount;
+
+	/**
+	 * The override max purchase amount (from the merchant config)
+	 * @var int $overrideMaxPurchaseAmount
+	 */
 	private int $overrideMaxPurchaseAmount;
+
+	/**
+	 * The Eligibility of the Fee Plan
+	 * @var bool $eligibility
+	 */
+	private bool $eligibility = false;
+
+	/**
+	 * The payment plan for this fee plan.
+	 * This comes from API.
+	 * @var array $paymentPlan
+	 */
+	private array $paymentPlan = array();
+	private int $customerTotalCostAmount = 0;
+	private int $annualInterestRate = 0;
+	private int $customerTotalCostBps = 0;
+	private int $customerFee = 0;
 
 	public function __construct( FeePlan $almaFeePlan ) {
 		$this->almaFeePlan = $almaFeePlan;
@@ -44,7 +78,7 @@ class FeePlanAdapter implements FeePlanAdapterInterface, FeePlanInterface {
 	 * @return int
 	 */
 	public function getOverrideMinPurchaseAmount(): int {
-		return $this->overrideMinPurchaseAmount ?? $this->almaFeePlan->getMinPurchaseAmount();
+		return $this->overrideMinPurchaseAmount ?? $this->getMinPurchaseAmount();
 	}
 
 	/**
@@ -57,14 +91,14 @@ class FeePlanAdapter implements FeePlanAdapterInterface, FeePlanInterface {
 	 */
 	public function setOverrideMinPurchaseAmount( int $overrideMinPurchaseAmount ): void {
 		// If the config is too low, let's just set it to the min allowed by Alma
-		if ( $overrideMinPurchaseAmount < $this->almaFeePlan->getMinPurchaseAmount() ) {
-			$this->overrideMinPurchaseAmount = $this->almaFeePlan->getMinPurchaseAmount();
+		if ( $overrideMinPurchaseAmount < $this->getMinPurchaseAmount() ) {
+			$this->overrideMinPurchaseAmount = $this->getMinPurchaseAmount();
 			throw new ParametersException( 'The minimum purchase amount cannot be lower than the minimum allowed by Alma.' );
 		}
 
 		// If the config is higher than the min override, let's just set it to the min allowed by Alma
 		if ( $overrideMinPurchaseAmount > $this->getOverrideMaxPurchaseAmount() ) {
-			$this->overrideMinPurchaseAmount = $this->almaFeePlan->getMinPurchaseAmount();
+			$this->overrideMinPurchaseAmount = $this->getMinPurchaseAmount();
 			throw new ParametersException( 'The minimum purchase amount cannot be higher than the maximum.' );
 		}
 
@@ -77,7 +111,7 @@ class FeePlanAdapter implements FeePlanAdapterInterface, FeePlanInterface {
 	 * @return int
 	 */
 	public function getOverrideMaxPurchaseAmount(): int {
-		return $this->overrideMaxPurchaseAmount ?? $this->almaFeePlan->getMaxPurchaseAmount();
+		return $this->overrideMaxPurchaseAmount ?? $this->getMaxPurchaseAmount();
 	}
 
 	/**
@@ -90,14 +124,14 @@ class FeePlanAdapter implements FeePlanAdapterInterface, FeePlanInterface {
 	 */
 	public function setOverrideMaxPurchaseAmount( int $overrideMaxPurchaseAmount ): void {
 		// If the config is too high, let's just set it to the max allowed by Alma
-		if ( $overrideMaxPurchaseAmount > $this->almaFeePlan->getMaxPurchaseAmount() ) {
-			$this->overrideMaxPurchaseAmount = $this->almaFeePlan->getMaxPurchaseAmount();
+		if ( $overrideMaxPurchaseAmount > $this->getMaxPurchaseAmount() ) {
+			$this->overrideMaxPurchaseAmount = $this->getMaxPurchaseAmount();
 			throw new ParametersException( 'The maximum purchase amount cannot be higher than the maximum allowed by Alma.' );
 		}
 
 		// If the config is lower than the min override, let's just set it to the max allowed by Alma
 		if ( $overrideMaxPurchaseAmount < $this->getOverrideMinPurchaseAmount() ) {
-			$this->overrideMaxPurchaseAmount = $this->almaFeePlan->getMaxPurchaseAmount();
+			$this->overrideMaxPurchaseAmount = $this->getMaxPurchaseAmount();
 			throw new ParametersException( 'The minimum purchase amount cannot be higher than the maximum.' );
 		}
 
@@ -105,11 +139,11 @@ class FeePlanAdapter implements FeePlanAdapterInterface, FeePlanInterface {
 	}
 
 	public function resetOverrideMinPurchaseAmount(): void {
-		$this->overrideMinPurchaseAmount = $this->almaFeePlan->getMinPurchaseAmount();
+		$this->overrideMinPurchaseAmount = $this->getMinPurchaseAmount();
 	}
 
 	public function resetOverrideMaxPurchaseAmount(): void {
-		$this->overrideMaxPurchaseAmount = $this->almaFeePlan->getMaxPurchaseAmount();
+		$this->overrideMaxPurchaseAmount = $this->getMaxPurchaseAmount();
 	}
 
 	/**
@@ -119,6 +153,16 @@ class FeePlanAdapter implements FeePlanAdapterInterface, FeePlanInterface {
 	 */
 	public function getPlanKey(): string {
 		return $this->almaFeePlan->getPlanKey();
+	}
+
+	public function getLabel(): string {
+		if ( $this->isPayNow() ) {
+			return 'Pay now';
+		} elseif ( $this->isPayLaterOnly() ) {
+			return sprintf( '+%d', $this->getDeferredDays() );
+		} else {
+			return sprintf( '%dx', $this->getInstallmentsCount() );
+		}
 	}
 
 	/**
@@ -170,8 +214,20 @@ class FeePlanAdapter implements FeePlanAdapterInterface, FeePlanInterface {
 		return $this->almaFeePlan->isAllowed();
 	}
 
+	public function setEligibility( bool $eligibility ): void {
+		$this->eligibility = $eligibility;
+	}
+
+	/**
+	 * Define if the Fee Plan is Eligible or not.
+	 * It must be Eligible, Available and in the boundaries.
+	 *
+	 * @param int $purchaseAmount
+	 *
+	 * @return bool
+	 */
 	public function isEligible( int $purchaseAmount ): bool {
-		if ( ! $this->isAvailable() ) {
+		if ( ( ! $this->isAvailable() ) || ( ! $this->eligibility ) ) {
 			return false;
 		}
 
@@ -184,6 +240,25 @@ class FeePlanAdapter implements FeePlanAdapterInterface, FeePlanInterface {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Return the PaymentPlan
+	 * @return array
+	 */
+	public function getPaymentPlan(): array {
+		return $this->paymentPlan;
+	}
+
+	/**
+	 * Add Payment Plans to Fee Plans
+	 *
+	 * @param array $paymentPlan
+	 *
+	 * @return void
+	 */
+	public function setPaymentPlan( array $paymentPlan ): void {
+		$this->paymentPlan = $paymentPlan;
 	}
 
 	public function isEnabled(): bool {
@@ -216,5 +291,37 @@ class FeePlanAdapter implements FeePlanAdapterInterface, FeePlanInterface {
 
 	public function getKind(): string {
 		return $this->almaFeePlan->getKind();
+	}
+
+	public function getCustomerTotalCostAmount(): int {
+		return $this->customerTotalCostAmount;
+	}
+
+	public function setCustomerTotalCostAmount( int $customerTotalCostAmount ) {
+		$this->customerTotalCostAmount = $customerTotalCostAmount;
+	}
+
+	public function getAnnualInterestRate(): int {
+		return $this->annualInterestRate;
+	}
+
+	public function setAnnualInterestRate( int $annualInterestRate ) {
+		$this->annualInterestRate = $annualInterestRate;
+	}
+
+	public function getCustomerTotalCostBps(): int {
+		return $this->customerTotalCostBps;
+	}
+
+	public function setCustomerTotalCostBps( int $customerTotalCostBps ) {
+		$this->customerTotalCostBps = $customerTotalCostBps;
+	}
+
+	public function getCustomerFee(): int {
+		return $this->customerFee;
+	}
+
+	public function setCustomerFee( int $customerFee ) {
+		$this->customerFee = $customerFee;
 	}
 }

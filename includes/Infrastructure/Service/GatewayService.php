@@ -146,7 +146,6 @@ class GatewayService {
 						$paymentMethodRegistry->register( $gatewayBlock );
 					}
 
-
 					$params                 = $this->checkoutService->getCheckoutParams();
 					$params['checkout_url'] = ContextHelper::getWebhookUrl( 'alma_checkout_data' );
 
