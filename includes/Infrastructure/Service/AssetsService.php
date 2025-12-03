@@ -17,7 +17,7 @@ class AssetsService {
 	 */
 	public function __construct() {
 		$this->registered_assets = AssetsConfig::getAll();
-		$this->enqueueGroup( AssetsConfig::ASSETS_CONFIG_CDN );
+		$this->registerGroup( AssetsConfig::ASSETS_CONFIG_CDN );
 	}
 
 	/**
@@ -33,6 +33,20 @@ class AssetsService {
 		$this->enqueuePhp( $assets );
 		$this->enqueueStyles( $assets );
 		$this->enqueueScripts( $assets, $scriptParams );
+	}
+
+	/**
+	 * @throws AssetsServiceException
+	 */
+	public function registerGroup( string $group_name ): void {
+		if ( ! isset( $this->registered_assets[ $group_name ] ) ) {
+			throw new AssetsServiceException( 'Assets are not defined in config.' );
+		}
+
+		$assets = $this->registered_assets[ $group_name ];
+
+		$this->registerStyles( $assets );
+		$this->registerScripts( $assets );
 	}
 
 	/**
@@ -157,6 +171,50 @@ class AssetsService {
 						$config['translations']['path']
 					);
 				}
+			}
+		}
+	}
+
+	/**
+	 * Register styles.
+	 *
+	 * @param array $assets
+	 *
+	 * @return void
+	 */
+	private function registerStyles( array $assets ) {
+		// Enqueue styles first
+		if ( isset( $assets['styles'] ) ) {
+			foreach ( $assets['styles'] as $handle => $config ) {
+				wp_register_style(
+					$handle,
+					$config['src'],
+					$config['deps'] ?? [],
+					$config['version'] ?? AssetsHelper::getFileVersion( $config['src'] ),
+					$config['media'] ?? 'all'
+				);
+			}
+		}
+	}
+
+	/**
+	 * Register scripts.
+	 *
+	 * @param array $assets
+	 *
+	 * @return void
+	 */
+	private function registerScripts( array $assets ) {
+		// Then scripts
+		if ( isset( $assets['scripts'] ) ) {
+			foreach ( $assets['scripts'] as $handle => $config ) {
+				wp_register_script(
+					$handle,
+					$config['src'],
+					$config['deps'] ?? [],
+					$config['version'] ?? AssetsHelper::getFileVersion( $config['src'] ),
+					$config['in_footer'] ?? true
+				);
 			}
 		}
 	}
