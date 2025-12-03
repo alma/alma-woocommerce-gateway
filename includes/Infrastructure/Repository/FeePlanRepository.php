@@ -31,7 +31,6 @@ class FeePlanRepository {
 	 * @param ConfigService $configService
 	 */
 	public function __construct( ConfigService $configService ) {
-		almaLogConsole( 'CONSTRUCT' );
 		$this->configService = $configService;
 	}
 
@@ -44,8 +43,6 @@ class FeePlanRepository {
 	 * @throws FeePlanRepositoryException
 	 */
 	public function getAll( bool $forceRefresh = false ): FeePlanListAdapter {
-
-		almaLogConsole( 'GET ALL' );
 
 		if ( $forceRefresh || ! isset( $this->feePlanListAdapter ) ) {
 			$this->retrieveFeePlans();
@@ -99,7 +96,7 @@ class FeePlanRepository {
 
 			// Add local configuration to Fee Plans. (local min and max amount set in the plugin form)
 			$feePlanListAdapter = $this->setLocalConfiguration( $feePlanListAdapter );
-			almaLogConsole( ContextHelper::getCart()->getCartTotal() );
+
 			// Get Eligibility only on shop
 			if ( ! ContextHelper::isAdmin() && ContextHelper::getCart()->getCartTotal() > 0 ) {
 				// Add Eligibility to Fee Plans. (Installment Plans from API) /** @var EligibilityProvider $eligibilityProvider */ {
@@ -178,6 +175,7 @@ class FeePlanRepository {
 	}
 
 	private function setInstallmentPlanList( FeePlanListAdapter $feePlanListAdapter, EligibilityList $eligibilityList ): FeePlanListAdapter {
+
 		/** @var Eligibility $eligibility */
 		foreach ( $eligibilityList as $eligibility ) {
 			/** @var FeePlanAdapter $feePlanAdapter */

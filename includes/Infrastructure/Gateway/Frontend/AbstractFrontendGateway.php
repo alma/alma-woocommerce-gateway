@@ -117,7 +117,6 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	public function getFeePlanList(): FeePlanListAdapter {
 		/** @var FeePlanRepository $fee_plan_repository */
 		$fee_plan_repository = Plugin::get_instance()->get_container()->get( FeePlanRepository::class );
-		almaLogConsole( 'ABSTRACT FRONTEND GATEWAY 1' );
 
 		return $fee_plan_repository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) )->filterEnabled();
 	}

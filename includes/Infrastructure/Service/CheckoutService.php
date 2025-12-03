@@ -105,7 +105,6 @@ class CheckoutService {
 	 */
 	public function getEligibilityForCheckout(): EligibilityList {
 		try {
-			almaLogConsole( 'CHECKOUT SERVICE' );
 			$eligibilityDto = ( new EligibilityMapper() )
 				->buildEligibilityDto(
 					ContextHelper::getCart(),
