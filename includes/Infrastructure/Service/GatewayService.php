@@ -8,6 +8,7 @@ use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
+use Alma\Gateway\Application\Mapper\RefundMapper;
 use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
@@ -70,17 +71,14 @@ class GatewayService {
 				/** @var PaymentProvider $paymentService */
 				$paymentService = Plugin::get_container()->get( PaymentProvider::class );
 
-				try {
-					$paymentService->refundPayment(
-						$order->getPaymentId(),
-						( new RefundDto() )
-							->setAmount( DisplayHelper::price_to_cent( $order->getRemainingRefundAmount() ) )
-							->setMerchantReference( $order->getOrderNumber() )
-							->setComment( L10nHelper::__( 'Full refund requested by the merchant' ) )
-					);
-				} catch ( ParametersException $e ) {
-					throw new GatewayServiceException( $e->getMessage() );
-				}
+				$paymentService->refundPayment(
+					$order->getPaymentId(),
+					( new RefundMapper() )->buildRefundDto(
+						DisplayHelper::price_to_cent( $order->getRemainingRefundAmount() ),
+						L10nHelper::__( 'Full refund requested by the merchant' ),
+						$order
+					)
+				);
 
 				$userRepository = Plugin::get_container()->get( UserRepository::class );
 				$currentUser    = $userRepository->getById( ContextHelper::getCurrentUserId() );

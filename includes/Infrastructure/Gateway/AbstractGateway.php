@@ -8,6 +8,7 @@ use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
+use Alma\Gateway\Application\Mapper\RefundMapper;
 use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\PaymentService;
@@ -186,17 +187,14 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 
 		/** @var PaymentProvider $payment_service */
 		$payment_service = Plugin::get_container()->get( PaymentProvider::class );
-		try {
-			$response = $payment_service->refundPayment(
-				$order->getPaymentId(),
-				( new RefundDto() )
-					->setAmount( DisplayHelper::price_to_cent( $amount ) )
-					->setMerchantReference( $order->getMerchantReference() )
-					->setComment( $reason )
-			);
-		} catch ( ParametersException $e ) {
-			throw new GatewayServiceException( $e->getMessage() );
-		}
+		$response        = $payment_service->refundPayment(
+			$order->getPaymentId(),
+			( new RefundMapper() )->buildRefundDto(
+				DisplayHelper::price_to_cent( $amount ),
+				$reason,
+				$order
+			)
+		);
 
 		if ( ! $response ) {
 			return L10nHelper::__( 'Refund failed.' );
