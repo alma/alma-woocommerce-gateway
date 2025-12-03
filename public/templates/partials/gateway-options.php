@@ -11,9 +11,10 @@
 /** @var string $alma_woocommerce_gateway_plan_key */
 /** @var string $alma_woocommerce_gateway_logo_url */
 /** @var string $alma_woocommerce_gateway_fee_plan_label */
+/** @var string $alma_woocommerce_gateway_payment_method */
 
 ?>
-
+<div class="alma_woocommerce_gateway_fieldset alma_woocommerce_gateway_<?php echo esc_attr( $alma_woocommerce_gateway_payment_method ); ?>">
 <input
 	type="radio"
 	value="<?php echo esc_attr( $alma_woocommerce_gateway_plan_key ); ?>"
@@ -43,3 +44,4 @@
 		</span>
 	</span>
 </label>
+</div>

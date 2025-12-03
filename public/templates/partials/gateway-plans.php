@@ -18,15 +18,23 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 	id="alma-checkout-plan-<?php echo esc_attr( $alma_woocommerce_gateway_plan_key ); ?>"
 	class="alma_woocommerce_gateway_checkout_plan"
 	data-gateway-id="<?php echo esc_attr( $alma_woocommerce_gateway_name ); ?>"
-	style="display: none;"
 >
+	<?php
+	/** @var bool $alma_woocommerce_gateway_in_page_enabled */
+	/** @var string $alma_woocommerce_gateway_in_page_iframe_selector */
+	if ( $alma_woocommerce_gateway_in_page_enabled ) {
+		?>
+		<div id="<?php echo $alma_woocommerce_gateway_in_page_iframe_selector; ?>"></div>
+		<?php
+	} else {
+		?>
 	<table class="alma_woocommerce_gateway_installments">
 		<?php
 		$alma_plan_index = 1;
 
 		foreach ( $alma_woocommerce_gateway_fee_plan->getPaymentPlan() as $alma_woocommerce_gateway_installment ) {
 			?>
-			<tr>
+			<tr class="alma_woocommerce_gateway_installment">
 				<?php
 				if ( $alma_woocommerce_gateway_fee_plan->isPayLaterOnly() ) {
 					printf(
@@ -37,13 +45,13 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 						date_i18n( get_option( 'date_format' ), $alma_woocommerce_gateway_installment['due_date'] )
 					);
 				} else {
-					echo '<td class="alma_woocommerce_gateway_installment alma_woocommerce_gateway_due_date">' . esc_html(
+					echo '<td class="alma_woocommerce_gateway_due_date">' . esc_html(
 						date_i18n(
 							get_option( 'date_format' ),
 							$alma_woocommerce_gateway_installment['due_date']
 						)
 					) . '</td>';
-					echo '<td class="alma_woocommerce_gateway_installment alma_woocommerce_gateway_amount">' . $alma_woocommerce_gateway_installment['total_amount'] . '</td>';
+					echo '<td class="alma_woocommerce_gateway_amount">' . $alma_woocommerce_gateway_installment['total_amount'] . '</td>';
 				}
 				?>
 				<?php if ( $alma_woocommerce_gateway_fee_plan->getCustomerFee() ) { ?>
@@ -101,4 +109,11 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 		}
 		?>
 	</table>
+		<?php
+	}
+	?>
+	<?php
+	/** @var string $alma_woocommerce_gateway_nonce */
+	echo $alma_woocommerce_gateway_nonce;
+	?>
 </div>

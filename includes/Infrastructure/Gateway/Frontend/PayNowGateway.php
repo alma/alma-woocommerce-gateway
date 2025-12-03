@@ -7,6 +7,7 @@ use Alma\API\Domain\ValueObject\PaymentMethod;
 use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
+use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Plugin;
@@ -47,6 +48,9 @@ class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 	 */
 	public function payment_fields() {
 
+		/** @var ConfigService $config_service */
+		$config_service = Plugin::get_container()->get( ConfigService::class );
+
 		/** @var TemplateHelper $template_helper */
 		$template_helper = Plugin::get_container()->get( TemplateHelper::class );
 		$feePlanList     = $this->getFeePlanList();
@@ -56,6 +60,7 @@ class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 			$template_helper->getTemplate(
 				'gateway-options.php',
 				array(
+					'alma_woocommerce_gateway_payment_method' => $this->get_payment_method(),
 					'alma_woocommerce_gateway_plan_key' => $fee_plan_adapter->getPlanKey(),
 					'alma_woocommerce_gateway_logo_url' => AssetsHelper::getImage( 'images/alma_card_logo.svg' ),
 					'alma_woocommerce_gateway_fee_plan_label' => $fee_plan_adapter->getLabel(),
@@ -72,6 +77,15 @@ class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 					'alma_woocommerce_gateway_plan_key' => $fee_plan_adapter->getPlanKey(),
 					'alma_woocommerce_gateway_name'     => $this->get_name(),
 					'alma_woocommerce_gateway_fee_plan' => $fee_plan_adapter,
+					'alma_woocommerce_gateway_in_page_enabled' => $config_service->isInPageEnabled(),
+					'alma_woocommerce_gateway_in_page_iframe_selector' => sprintf(
+						'alma_%s_gateway_in_page',
+						$this->get_payment_method()
+					),
+					'alma_woocommerce_gateway_nonce'    => $this->form_helper->generateTokenField(
+						sprintf( '%s_nonce_action', $this->get_name() ),
+						sprintf( '%s_nonce_field', $this->get_name() ),
+					),
 				),
 				'partials'
 			);
