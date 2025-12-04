@@ -18,6 +18,7 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 	id="alma-checkout-plan-<?php echo esc_attr( $alma_woocommerce_gateway_plan_key ); ?>"
 	class="alma_woocommerce_gateway_checkout_plan"
 	data-gateway-id="<?php echo esc_attr( $alma_woocommerce_gateway_name ); ?>"
+	style="display: none"
 >
 	<?php
 	/** @var bool $alma_woocommerce_gateway_in_page_enabled */

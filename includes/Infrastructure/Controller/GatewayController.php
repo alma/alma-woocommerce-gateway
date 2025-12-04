@@ -5,24 +5,29 @@ namespace Alma\Gateway\Infrastructure\Controller;
 use Alma\Gateway\Application\Exception\Controller\GatewayControllerException;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Application\Helper\PluginHelper;
+use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Helper\BackendHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\EventHelper;
 use Alma\Gateway\Infrastructure\Helper\FrontendHelper;
 use Alma\Gateway\Infrastructure\Helper\GatewayHelper;
+use Alma\Gateway\Infrastructure\Service\AssetsService;
 use Alma\Gateway\Infrastructure\Service\GatewayService;
 
 class GatewayController {
 
 	private GatewayService $gatewayService;
 	private GatewayHelper $gatewayHelper;
+	private AssetsService $assetsService;
 
 	public function __construct(
 		GatewayService $gatewayService,
-		GatewayHelper $gatewayHelper
+		GatewayHelper $gatewayHelper,
+		AssetsService $assetsService
 	) {
 		$this->gatewayService = $gatewayService;
 		$this->gatewayHelper  = $gatewayHelper;
+		$this->assetsService   = $assetsService;
 	}
 
 	/**
@@ -71,7 +76,12 @@ class GatewayController {
 				array( $this->gatewayService, 'pluginActionLinks' )
 			);
 		} else {
-			FrontendHelper::loadFrontendGateways();
+			try {
+				$this->assetsService->loadClassicCheckoutAssets();
+				FrontendHelper::loadFrontendGateways();
+			} catch ( AssetsServiceException $e ) {
+				throw new GatewayControllerException();
+			}
 		}
 
 		if ( ContextHelper::isCheckoutPageUseBlocks() ) {

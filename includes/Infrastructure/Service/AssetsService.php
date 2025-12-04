@@ -90,6 +90,14 @@ class AssetsService {
 	}
 
 	/**
+	 * Load Checkout Block assets.
+	 * @throws AssetsServiceException
+	 */
+	public function loadClassicCheckoutAssets( array $scriptParams = [] ): void {
+		$this->enqueueGroup( AssetsConfig::ASSETS_CONFIG_CLASSIC_CHECKOUT, $scriptParams );
+	}
+
+	/**
 	 * Load Admin assets.
 	 * @throws AssetsServiceException
 	 */
