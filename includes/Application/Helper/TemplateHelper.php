@@ -66,6 +66,6 @@ class TemplateHelper {
 			);
 		}
 
-		include_once $template_file;// NOSONAR -- It's mandatory to use include_once method here.
+		include $template_file;// NOSONAR -- It's mandatory to use include_once method here.
 	}
 }

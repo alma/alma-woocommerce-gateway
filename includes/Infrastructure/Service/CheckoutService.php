@@ -10,6 +10,8 @@ use Alma\Gateway\Application\Mapper\EligibilityMapper;
 use Alma\Gateway\Application\Provider\EligibilityProvider;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Block\Gateway\AbstractGatewayBlock;
+use Alma\Gateway\Infrastructure\Exception\CheckoutServiceException;
+use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\AbstractFrontendGateway;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\SecurityHelper;
@@ -70,18 +72,8 @@ class CheckoutService {
 	 */
 	public function getCheckoutParams(): array {
 
-		$isInPage       = $this->configService->isInPageEnabled();
-		$eligibilityDto = ( new EligibilityMapper() )
-			->buildEligibilityDto(
-				ContextHelper::getCart(),
-				ContextHelper::getCustomer(),
-				$this->feePlanRepository->getAll()->filterEnabled()
-			);
-		try {
-			$eligibilityList = $this->eligibilityProvider->getEligibilityList( $eligibilityDto );
-		} catch ( EligibilityServiceException $e ) {
-			$eligibilityList = new EligibilityList();
-		}
+		$isInPage        = $this->configService->isInPageEnabled();
+		$eligibilityList = $this->getEligibilityForCheckout();
 
 		// Prepare response
 		$nonce_key = sprintf( '%s_nonce_field', 'alma_checkout' );
@@ -102,6 +94,33 @@ class CheckoutService {
 		}
 
 		return $params;
+	}
+
+	/**
+	 * Get Eligibility for checkout
+	 *
+	 * @return EligibilityList
+	 * @throws CheckoutServiceException
+	 * @todo use the new FeePLanRepository
+	 */
+	public function getEligibilityForCheckout(): EligibilityList {
+		try {
+			$eligibilityDto = ( new EligibilityMapper() )
+				->buildEligibilityDto(
+					ContextHelper::getCart(),
+					ContextHelper::getCustomer(),
+					$this->feePlanRepository->getAll()->filterEnabled()
+				);
+		} catch ( FeePlanRepositoryException $e ) {
+			throw new CheckoutServiceException( $e );
+		}
+		try {
+			$eligibilityList = $this->eligibilityProvider->getEligibilityList( $eligibilityDto );
+		} catch ( EligibilityServiceException $e ) {
+			$eligibilityList = new EligibilityList();
+		}
+
+		return $eligibilityList;
 	}
 
 	/**

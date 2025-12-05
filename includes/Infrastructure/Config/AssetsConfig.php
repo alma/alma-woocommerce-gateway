@@ -14,7 +14,7 @@ class AssetsConfig {
 	public const ASSETS_CONFIG_WIDGET_BLOCK_EDITOR = 'widget-block-editor';
 	public const ASSETS_CONFIG_GATEWAY_BLOCK = 'gateway-block';
 	public const ASSETS_CONFIG_ADMIN = 'admin';
-	public const CDN_WIDGET_VERSION = '3.x.x';
+	public const CDN_WIDGET_VERSION = '4.x.x';
 	public const CDN_IN_PAGE_VERSION = '2.x';
 
 	public static function getAll() {

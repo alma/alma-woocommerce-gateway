@@ -32,22 +32,6 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	}
 
 	/**
-	 * Check if the gateway is enabled.
-	 * If there is at least one enabled Fee Plan for this gateway type, the gateway is considered enabled.
-	 *
-	 * @return bool
-	 * @throws FeePlanRepositoryException
-	 */
-	public function is_enabled(): bool {
-
-		/** @var FeePlanRepository $feePlanRepository */
-		$feePlanRepository = Plugin::get_instance()->get_container()->get( FeePlanRepository::class );
-		$feePlanList       = $feePlanRepository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) )->filterEnabled();
-
-		return count( $feePlanList ) > 0;
-	}
-
-	/**
 	 * Check if the gateway is a pay now gateway.
 	 *
 	 * @return bool
@@ -120,7 +104,7 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 			return false;
 		}
 
-		return parent::is_available();
+		return true;
 	}
 
 	/**
@@ -134,7 +118,7 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 		/** @var FeePlanRepository $fee_plan_repository */
 		$fee_plan_repository = Plugin::get_instance()->get_container()->get( FeePlanRepository::class );
 
-		return $fee_plan_repository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) );
+		return $fee_plan_repository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) )->filterEnabled();
 	}
 
 	/**

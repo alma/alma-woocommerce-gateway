@@ -58,10 +58,12 @@ use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
 use Alma\Gateway\Infrastructure\Helper\SecurityHelper;
 use Alma\Gateway\Infrastructure\Helper\SessionHelper;
 use Alma\Gateway\Infrastructure\Repository\ConfigRepository;
+use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
 use Alma\Gateway\Infrastructure\Repository\ProductRepository;
+use Alma\Gateway\Infrastructure\Repository\UserRepository;
 use Dice\Dice;
 use Psr\Http\Client\ClientInterface;
 
@@ -246,17 +248,23 @@ class ContainerService {
 		// WooCommerce Layer
 		$this->dice = $this->dice->addRules(
 			array(
-				AlmaGateway::class      => array( 'shared' => true ),
-				ConfigRepository::class => array( 'shared' => true ),
-				CreditGateway::class    => array( 'shared' => true ),
-				EventHelper::class      => array( 'shared' => true ),
-				PayLaterGateway::class  => array( 'shared' => true ),
-				PayNowGateway::class    => array( 'shared' => true ),
-				PnxGateway::class       => array( 'shared' => true ),
+				AlmaGateway::class               => array( 'shared' => true ),
+				ConfigRepository::class          => array( 'shared' => true ),
+				FeePlanRepository::class         => array( 'shared' => true ),
+				GatewayRepository::class         => array( 'shared' => true ),
+				OrderRepository::class           => array( 'shared' => true ),
+				ProductCategoryRepository::class => array( 'shared' => true ),
+				ProductRepository::class         => array( 'shared' => true ),
+				UserRepository::class            => array( 'shared' => true ),
+				CreditGateway::class             => array( 'shared' => true ),
+				EventHelper::class               => array( 'shared' => true ),
+				PayLaterGateway::class           => array( 'shared' => true ),
+				PayNowGateway::class             => array( 'shared' => true ),
+				PnxGateway::class                => array( 'shared' => true ),
 				// Generic Logger for WooCommerce
-				LoggerService::class    => array( 'shared' => true ),
+				LoggerService::class             => array( 'shared' => true ),
 				// Specific Logger for the PHP Client
-				self::PHP_CLIENT_LOGGER => array(
+				self::PHP_CLIENT_LOGGER          => array(
 					'constructParams' => [
 						'php-client', // The source name
 					],
