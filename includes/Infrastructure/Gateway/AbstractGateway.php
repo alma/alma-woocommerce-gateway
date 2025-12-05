@@ -2,12 +2,12 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway;
 
-use Alma\API\Application\DTO\RefundDto;
 use Alma\API\Infrastructure\Exception\ParametersException;
 use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
+use Alma\Gateway\Application\Mapper\RefundMapper;
 use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\PaymentService;
@@ -155,7 +155,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * @param float|null $amount The amount to refund. If null, the full order amount will be refunded.
 	 * @param string     $reason The reason for the refund.
 	 *
-	 * @throws GatewayServiceException|ProductRepositoryException
+	 * @throws ProductRepositoryException|ParametersException
 	 */
 	public function process_refund( $order_id, $amount = null, $reason = '' ) {
 
@@ -165,37 +165,26 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 
 		/** @var PaymentProvider $payment_service */
 		$payment_service = Plugin::get_container()->get( PaymentProvider::class );
-		try {
-			$response = $payment_service->refundPayment(
-				$order->getPaymentId(),
-				( new RefundDto() )
-					->setAmount( DisplayHelper::price_to_cent( $amount ) )
-					->setMerchantReference( $order->getMerchantReference() )
-					->setComment( $reason )
-			);
-		} catch ( ParametersException $e ) {
-			throw new GatewayServiceException( $e->getMessage() );
-		}
+		$response        = $payment_service->refundPayment(
+			$order->getPaymentId(),
+			( new RefundMapper() )->buildRefundDto(
+				$order,
+				$reason,
+				DisplayHelper::price_to_cent( $amount )
+			)
+		);
 
 		if ( ! $response ) {
 			return L10nHelper::__( 'Refund failed.' );
 		}
 
 		// Add a note to the order
-		if ( $order->isFullyRefunded() ) {
-			/* translators: %s is a username. */
-			$order_note = sprintf(
-				L10nHelper::__( 'Order fully refunded by %s.' ),
-				wp_get_current_user()->display_name
-			);
-		} else {
-			/* translators: %s is a username. */
-			$order_note = sprintf(
-				L10nHelper::__( 'Order partially refunded (%d via Alma) by %s.' ),
-				$amount,
-				wp_get_current_user()->display_name
-			);
-		}
+		/* translators: %s is a username. */
+		$order_note = sprintf(
+			L10nHelper::__( 'Order partially refunded (%d via Alma) by %s.' ),
+			$amount,
+			wp_get_current_user()->display_name
+		);
 		$order->addOrderNote( $order_note );
 
 		// WooCommerce will create WC_Order_Refund automatically

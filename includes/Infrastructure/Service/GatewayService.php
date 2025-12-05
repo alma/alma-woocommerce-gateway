@@ -2,12 +2,11 @@
 
 namespace Alma\Gateway\Infrastructure\Service;
 
-use Alma\API\Application\DTO\RefundDto;
 use Alma\API\Infrastructure\Exception\ParametersException;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
-use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
+use Alma\Gateway\Application\Mapper\RefundMapper;
 use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
@@ -43,7 +42,7 @@ class GatewayService {
 	 *
 	 * @sonar We need to keep $old_status on the signature for the hook
 	 *
-	 * @throws GatewayServiceException
+	 * @throws GatewayServiceException|ParametersException
 	 * @todo move this in a more appropriated service
 	 *
 	 */
@@ -67,17 +66,13 @@ class GatewayService {
 				/** @var PaymentProvider $paymentService */
 				$paymentService = Plugin::get_container()->get( PaymentProvider::class );
 
-				try {
-					$paymentService->refundPayment(
-						$order->getPaymentId(),
-						( new RefundDto() )
-							->setAmount( DisplayHelper::price_to_cent( $order->getRemainingRefundAmount() ) )
-							->setMerchantReference( $order->getOrderNumber() )
-							->setComment( L10nHelper::__( 'Full refund requested by the merchant' ) )
-					);
-				} catch ( ParametersException $e ) {
-					throw new GatewayServiceException( $e->getMessage() );
-				}
+				$paymentService->refundPayment(
+					$order->getPaymentId(),
+					( new RefundMapper() )->buildRefundDto(
+						$order,
+						L10nHelper::__( 'Full refund requested by the merchant' )
+					)
+				);
 
 				$userRepository = Plugin::get_container()->get( UserRepository::class );
 				$currentUser    = $userRepository->getById( ContextHelper::getCurrentUserId() );
