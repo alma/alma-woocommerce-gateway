@@ -63,7 +63,6 @@ class AlmaGateway extends AbstractBackendGateway {
 				$this->form_fields,
 				$this->widget_fieldset(),
 				$this->excluded_categories_fieldset(),
-				$this->gateway_order_fieldset(),
 				$this->fee_plan_fieldset()
 			);
 		}
