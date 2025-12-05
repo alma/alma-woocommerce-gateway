@@ -2,7 +2,6 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway;
 
-use Alma\API\Application\DTO\RefundDto;
 use Alma\API\Infrastructure\Exception\ParametersException;
 use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
@@ -177,7 +176,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * @param float|null $amount The amount to refund. If null, the full order amount will be refunded.
 	 * @param string     $reason The reason for the refund.
 	 *
-	 * @throws GatewayServiceException|ProductRepositoryException
+	 * @throws ProductRepositoryException|ParametersException
 	 */
 	public function process_refund( $order_id, $amount = null, $reason = '' ) {
 
@@ -190,9 +189,9 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		$response        = $payment_service->refundPayment(
 			$order->getPaymentId(),
 			( new RefundMapper() )->buildRefundDto(
-				DisplayHelper::price_to_cent( $amount ),
+				$order,
 				$reason,
-				$order
+				DisplayHelper::price_to_cent( $amount )
 			)
 		);
 
@@ -201,20 +200,12 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		}
 
 		// Add a note to the order
-		if ( $order->isFullyRefunded() ) {
-			/* translators: %s is a username. */
-			$order_note = sprintf(
-				L10nHelper::__( 'Order fully refunded by %s.' ),
-				wp_get_current_user()->display_name
-			);
-		} else {
-			/* translators: %s is a username. */
-			$order_note = sprintf(
-				L10nHelper::__( 'Order partially refunded (%d via Alma) by %s.' ),
-				$amount,
-				wp_get_current_user()->display_name
-			);
-		}
+		/* translators: %s is a username. */
+		$order_note = sprintf(
+			L10nHelper::__( 'Order partially refunded (%d via Alma) by %s.' ),
+			$amount,
+			wp_get_current_user()->display_name
+		);
 		$order->addOrderNote( $order_note );
 
 		// WooCommerce will create WC_Order_Refund automatically

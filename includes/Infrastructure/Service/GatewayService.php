@@ -2,10 +2,8 @@
 
 namespace Alma\Gateway\Infrastructure\Service;
 
-use Alma\API\Application\DTO\RefundDto;
 use Alma\API\Infrastructure\Exception\ParametersException;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
-use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Mapper\RefundMapper;
@@ -47,7 +45,7 @@ class GatewayService {
 	 *
 	 * @sonar We need to keep $old_status on the signature for the hook
 	 *
-	 * @throws GatewayServiceException
+	 * @throws GatewayServiceException|ParametersException
 	 * @todo move this in a more appropriated service
 	 *
 	 */
@@ -74,9 +72,8 @@ class GatewayService {
 				$paymentService->refundPayment(
 					$order->getPaymentId(),
 					( new RefundMapper() )->buildRefundDto(
-						DisplayHelper::price_to_cent( $order->getRemainingRefundAmount() ),
-						L10nHelper::__( 'Full refund requested by the merchant' ),
-						$order
+						$order,
+						L10nHelper::__( 'Full refund requested by the merchant' )
 					)
 				);
 
