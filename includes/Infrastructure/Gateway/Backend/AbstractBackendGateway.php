@@ -10,10 +10,6 @@ use Alma\Gateway\Domain\Exception\AlmaException;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
-use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
-use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
-use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
-use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
 use Alma\Gateway\Infrastructure\Helper\UrlHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
@@ -273,75 +269,6 @@ class AbstractBackendGateway extends AbstractGateway {
 
 		/** @uses self::generate_custom_html() */
 		$field_list['fee_plan_footer'] = array(
-			'type'     => 'custom',
-			'html'     => <<<'HTML'
-								</tbody>
-							</table>
-						</td>
-					</tr>
-				</table>
-			</tr>
-			HTML,
-			'desc_tip' => false,
-		);
-
-		return $field_list;
-	}
-
-	/**
-	 * Define the gateway order section.
-	 */
-	public function gateway_order_fieldset(): array {
-
-		$gateway_list = array(
-			CreditGateway::class,
-			PayLaterGateway::class,
-			PayNowGateway::class,
-			PnxGateway::class,
-		);
-
-		$field_list['gateway_section'] = array(
-			'title'    => '<hr>' . L10nHelper::__( '→ Display Order configuration' ),
-			'type'     => 'title',
-			'desc_tip' => false,
-		);
-		/** @uses self::generate_custom_html() */
-		$field_list['gateway_header'] = array(
-			'type'     => 'custom',
-			'html'     => <<<'HTML'
-			<tr valign="top">
-				<table class="form-table">
-					<tr valign="top"><td class="wc_emails_wrapper" colspan="2">
-						<table class="wc_gateways widefat" cellspacing="0">
-							<thead>
-								<tr>
-									<th class="wc-gateway-settings-table-name">Order</th>
-									<th class="wc-gateway-settings-table-name">Payment method</th>
-								</tr>
-							</thead>
-							<tbody class="ui-sortable">
-			HTML,
-			'desc_tip' => false,
-		);
-
-		foreach ( $gateway_list as $gateway ) {
-			/** @uses self::generate_table_order_html() */
-			$field_list[ ( new $gateway() )->get_id() . '_order' ] = array(
-				'type'      => 'table_order',
-				'gateway'   => $gateway,
-				'decorator' => '<tr>%s',
-				'desc_tip'  => true,
-			);
-			/** @uses self::generate_table_description_html() */
-			$field_list[ ( new $gateway() )->get_id() . '_description' ] = array(
-				'type'        => 'table_description',
-				'description' => ( new $gateway() )->method_title,
-				'desc_tip'    => true,
-			);
-		}
-
-		/** @uses self::generate_custom_html() */
-		$field_list['gateway_footer'] = array(
 			'type'     => 'custom',
 			'html'     => <<<'HTML'
 								</tbody>
