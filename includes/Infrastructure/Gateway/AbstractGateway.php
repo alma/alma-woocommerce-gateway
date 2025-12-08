@@ -56,6 +56,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * Get FeePlanListAdapter.
 	 *
 	 * @return FeePlanListAdapter|null
+	 * @throws FeePlanRepositoryException
 	 */
 	public function get_fee_plan_list_adapter(): ?FeePlanListAdapter {
 

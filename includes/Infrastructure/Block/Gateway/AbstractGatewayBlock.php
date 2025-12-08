@@ -34,8 +34,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 
-	private static bool $is_action_added = false;
 	protected AbstractFrontendGateway $gateway;
+
 	/** @var bool $is_in_page_enabled */
 	private bool $is_in_page_enabled;
 	private string $assets_handle;
@@ -47,16 +47,13 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 		$this->name               = $this->gateway->get_name() . '_block';
 		$this->initialize();
 
-		// This hook must be called once
-		if ( ! self::$is_action_added ) {
-			add_action(
-				'woocommerce_rest_checkout_process_payment_with_context',
-				array( $this, 'process_payment_with_context' ),
-				10,
-				2
-			);
-			self::$is_action_added = true;
-		}
+		// @todo move this to a more appropriate place
+		add_action(
+			'woocommerce_rest_checkout_process_payment_with_context',
+			array( $this, 'process_payment_with_context' ),
+			10,
+			2
+		);
 	}
 
 	/**
@@ -113,12 +110,13 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 	 * use StoreApi to create the payment
 	 *
 	 * Non-Blocks payments use AbstractFrontendGateway::process_payment()
-	 * @throws CheckoutBlockException
+	 * @throws CheckoutBlockException|FeePlanRepositoryException
 	 */
 	public function process_payment_with_context( PaymentContext $context, PaymentResult $result ) {
 
 		if ( $context->payment_method === $this->gateway->get_name() ) {
 
+			$order        = new OrderAdapter( $context->order );
 			$payment_data = $context->payment_data;
 
 			// Defensive: Ignore requests that do not have the required fields
@@ -129,7 +127,6 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 				return;
 			}
 
-			$order            = new OrderAdapter( $context->order );
 			$fee_plan_adapter = $this->gateway->get_fee_plan_list_adapter()->getByPlanKey( $payment_data['alma_plan_key'] );
 
 			/** @var PaymentService $payment_service */

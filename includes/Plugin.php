@@ -106,6 +106,9 @@ final class Plugin {
 		if ( isset( $_GET['page_id'] ) && $_GET['page_id'] === '6' ) {
 			$suffix = [ sprintf( 'alma-%s', 'cart' ) ];
 		}
+		if ( isset( $_GET['page_id'] ) && $_GET['page_id'] === '7' ) {
+			$suffix = [ sprintf( 'alma-%s', 'checkout' ) ];
+		}
 		if ( isset( $_GET['product'] ) ) {
 			$suffix = [ sprintf( 'alma-%s', 'product' ) ];
 		}

@@ -17,12 +17,12 @@ use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\SecurityHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
+use Alma\Gateway\Plugin;
 
 class CheckoutService {
 
 	protected AbstractFrontendGateway $gateway;
 	private ConfigService $configService;
-	private GatewayRepository $gatewayRepository;
 	private FeePlanRepository $feePlanRepository;
 	private EligibilityProvider $eligibilityProvider;
 	private SecurityHelper $securityHelper;
@@ -30,13 +30,11 @@ class CheckoutService {
 
 	public function __construct(
 		ConfigService $configService,
-		GatewayRepository $gatewayRepository,
 		FeePlanRepository $feePlanRepository,
 		EligibilityProvider $eligibilityProvider,
 		SecurityHelper $securityHelper
 	) {
 		$this->configService       = $configService;
-		$this->gatewayRepository   = $gatewayRepository;
 		$this->feePlanRepository   = $feePlanRepository;
 		$this->eligibilityProvider = $eligibilityProvider;
 		$this->securityHelper      = $securityHelper;
@@ -61,16 +59,20 @@ class CheckoutService {
 	 * AJAX handler to get Checkout data.
 	 * Can receive billing_country and shipping_country as GET parameters
 	 * to filter on Eligibility.
+	 * @throws CheckoutServiceException
 	 */
 	public function getCheckoutData(): void {
 
-		wp_send_json( $this->getCheckoutParams() );
+		/** @var GatewayRepository $gatewayRepository */
+		$gatewayRepository = Plugin::get_container()->get( GatewayRepository::class );
+		wp_send_json( $this->getCheckoutParams( $gatewayRepository->findAllAlmaGatewayBlocks() ) );
 	}
 
 	/**
 	 * Get Checkout parameters
+	 * @throws CheckoutServiceException
 	 */
-	public function getCheckoutParams(): array {
+	public function getCheckoutParams( array $almaGatewayBlocks ): array {
 
 		$isInPage        = $this->configService->isInPageEnabled();
 		$eligibilityList = $this->getEligibilityForCheckout();
@@ -81,7 +83,7 @@ class CheckoutService {
 			'success'          => true,
 			'is_in_page'       => $isInPage,
 			'gateway_settings' => array_merge_recursive(
-				$this->formatBlocksForCheckout( $this->gatewayRepository->findAllAlmaGatewayBlocks() ),
+				$this->formatBlocksForCheckout( $almaGatewayBlocks ),
 				$this->formatEligibilityForCheckout( $eligibilityList ),
 			),
 			'nonce_key'        => $nonce_key,

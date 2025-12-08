@@ -3,7 +3,6 @@
 namespace Alma\Gateway\Infrastructure\Repository;
 
 use Alma\API\Domain\Repository\GatewayRepositoryInterface;
-use Alma\Gateway\Infrastructure\Block\Gateway\CheckoutBlockFactory;
 use Alma\Gateway\Infrastructure\Block\Gateway\CreditGatewayBlock;
 use Alma\Gateway\Infrastructure\Block\Gateway\GatewayBlockFactory;
 use Alma\Gateway\Infrastructure\Block\Gateway\PayLaterGatewayBlock;
