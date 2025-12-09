@@ -113,12 +113,13 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 	 * use StoreApi to create the payment
 	 *
 	 * Non-Blocks payments use AbstractFrontendGateway::process_payment()
-	 * @throws CheckoutBlockException
+	 * @throws CheckoutBlockException|FeePlanRepositoryException
 	 */
 	public function process_payment_with_context( PaymentContext $context, PaymentResult $result ) {
 
 		if ( $context->payment_method === $this->gateway->get_name() ) {
 
+			$order        = new OrderAdapter( $context->order );
 			$payment_data = $context->payment_data;
 
 			// Defensive: Ignore requests that do not have the required fields
@@ -129,7 +130,6 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 				return;
 			}
 
-			$order            = new OrderAdapter( $context->order );
 			$fee_plan_adapter = $this->gateway->get_fee_plan_list_adapter()->getByPlanKey( $payment_data['alma_plan_key'] );
 
 			/** @var PaymentService $payment_service */

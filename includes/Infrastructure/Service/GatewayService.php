@@ -9,6 +9,7 @@ use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Mapper\RefundMapper;
 use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
+use Alma\Gateway\Infrastructure\Exception\CheckoutServiceException;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\GatewayHelper;
@@ -120,6 +121,7 @@ class GatewayService {
 	 *
 	 * @return void
 	 * @throws GatewayServiceException
+	 * @throws CheckoutServiceException
 	 */
 	public function initGatewayBlocks() {
 
@@ -129,19 +131,18 @@ class GatewayService {
 				'woocommerce_blocks_payment_method_type_registration',
 				function ( PaymentMethodRegistry $paymentMethodRegistry ) {
 
-					// Register an instance of Alma_Gateway_Blocks.
 					/** @var GatewayRepository $gatewayRepository */
 					$gatewayRepository = Plugin::get_container()->get( GatewayRepository::class );
 					$almaGatewayBlocks = $gatewayRepository->findAllAlmaGatewayBlocks();
+					/** @var CheckoutService $checkoutService */
+					$checkoutService        = Plugin::get_container()->get( CheckoutService::class );
+					$params                 = $checkoutService->getCheckoutParams( $almaGatewayBlocks );
+					$params['checkout_url'] = ContextHelper::getWebhookUrl( 'alma_checkout_data' );
 
+					// Register an instance of Alma_Gateway_Blocks.
 					foreach ( $almaGatewayBlocks as $gatewayBlock ) {
 						$paymentMethodRegistry->register( $gatewayBlock );
 					}
-
-					/** @var CheckoutService $checkoutService */
-					$checkoutService        = Plugin::get_container()->get( CheckoutService::class );
-					$params                 = $checkoutService->getCheckoutParams();
-					$params['checkout_url'] = ContextHelper::getWebhookUrl( 'alma_checkout_data' );
 
 					try {
 						$this->assetsService->loadGatewayBlockAssets( $params );
