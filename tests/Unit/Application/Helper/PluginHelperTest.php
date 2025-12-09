@@ -6,7 +6,6 @@ use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
 use Brain\Monkey;
-use Brain\Monkey\Functions;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
@@ -23,6 +22,7 @@ class PluginHelperTest extends TestCase {
 	private $plugin;
 	private $containerService;
 	private $configService;
+	private $contextHelper;
 
 	public static function pageDataProvider(): array {
 		return [
@@ -43,17 +43,14 @@ class PluginHelperTest extends TestCase {
 	}
 
 	public function testPluginIsNeededWithIsConfiguredFalse(): void {
-		Functions\expect( 'is_cart' )->never();
-		Functions\expect( 'is_checkout' )->never();
-		Functions\expect( 'is_product' )->never();
+		$this->contextHelper->shouldReceive( 'isShop' )->never();
+
 		$this->configService->shouldReceive( 'isConfigured' )->andReturn( false );
 		$this->assertFalse( PluginHelper::isPluginNeeded() );
 	}
 
 	public function testPluginIsNeededWithIsConfiguredTrueAndBadPage(): void {
-		Functions\expect( 'is_cart' )->once()->andReturn( false );
-		Functions\expect( 'is_checkout' )->once()->andReturn( false );
-		Functions\expect( 'is_product' )->once()->andReturn( false );
+		$this->contextHelper->shouldReceive( 'isShop' )->once()->andReturn( false );
 
 		$this->configService->shouldReceive( 'isConfigured' )->andReturn( true );
 		$this->assertFalse( PluginHelper::isPluginNeeded() );
@@ -69,9 +66,7 @@ class PluginHelperTest extends TestCase {
 	 * @return void
 	 */
 	public function testPluginIsNeededWithIsConfiguredTrueAndGoodPage( $cart, $checkout, $product ): void {
-		Functions\expect( 'is_cart' )->andReturn( $cart );
-		Functions\expect( 'is_checkout' )->andReturn( $checkout );
-		Functions\expect( 'is_product' )->andReturn( $product );
+		$this->contextHelper->shouldReceive( 'isShop' )->once()->andReturn( true );
 
 		$this->configService->shouldReceive( 'isConfigured' )->andReturn( true );
 		$this->assertTrue( PluginHelper::isPluginNeeded() );
@@ -102,6 +97,7 @@ class PluginHelperTest extends TestCase {
 		$this->plugin           = Mockery::mock( 'alias:Alma\Gateway\Plugin' );
 		$this->containerService = Mockery::mock( ContainerService::class );
 		$this->configService    = Mockery::mock( ConfigService::class );
+		$this->contextHelper    = Mockery::mock( 'alias:Alma\Gateway\Infrastructure\Helper\ContextHelper' );
 
 		$this->containerService->shouldReceive( 'get' )
 		                       ->with( ConfigService::class )

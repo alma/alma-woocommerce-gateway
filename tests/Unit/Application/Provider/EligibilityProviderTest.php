@@ -2,6 +2,7 @@
 
 namespace Alma\Gateway\Tests\Unit\Application\Provider;
 
+use Alma\API\Application\DTO\EligibilityDto;
 use Alma\API\Domain\Entity\Eligibility;
 use Alma\API\Domain\Entity\EligibilityList;
 use Alma\API\Infrastructure\Endpoint\EligibilityEndpoint;
@@ -13,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class EligibilityProviderTest extends TestCase {
 
-	private $eligibilityProvider;
+	private ?EligibilityProvider $eligibilityProvider;
 	private $eligibilityEndpointMock;
 	private $cartAdapterMock;
 
@@ -21,14 +22,15 @@ class EligibilityProviderTest extends TestCase {
 	 * Given an empty cart (0 total), when retrieving eligibility, then the eligibility list should be empty and Api never called.
 	 * @return void
 	 * @throws EligibilityServiceException
+	 * TODO : Need to move to FeePlanRepositoryTest
 	 */
-	public function testRetrieveEligibilityWithCartOReturnEmptyEligibility() {
-		$this->cartAdapterMock->method( 'getCartTotal' )->willReturn( 0 );
-		$this->eligibilityEndpointMock->expects( $this->never() )->method( 'getEligibilityList' );
-
-		$this->assertNull( $this->eligibilityProvider->retrieveEligibility() );
-		$this->assertEquals( 0, $this->eligibilityProvider->getEligibilityList()->count() );
-	}
+//	public function testRetrieveEligibilityWithCartOReturnEmptyEligibility() {
+//		$this->cartAdapterMock->method( 'getCartTotal' )->willReturn( 0 );
+//		$this->eligibilityEndpointMock->expects( $this->never() )->method( 'getEligibilityList' );
+//
+//		$this->assertNull( $this->eligibilityProvider->retrieveEligibility() );
+//		$this->assertEquals( 0, $this->eligibilityProvider->getEligibilityList()->count() );
+//	}
 
 	/**
 	 * Given a cart with a positive total,
@@ -42,10 +44,11 @@ class EligibilityProviderTest extends TestCase {
 		$this->expectException( EligibilityServiceException::class );
 		$this->expectExceptionMessage( 'Error retrieving eligibility: API error' );
 
-		$this->cartAdapterMock->method( 'getCartTotal' )->willReturn( 10000 );
+		//$this->cartAdapterMock->method( 'getCartTotal' )->willReturn( 10000 );
+		$eligibilityDto = new EligibilityDto( 10000 );
 		$this->eligibilityEndpointMock->expects( $this->once() )->method( 'getEligibilityList' )->willThrowException( new EligibilityEndpointException( 'API error' ) );
 
-		$this->assertNull( $this->eligibilityProvider->retrieveEligibility() );
+		$this->assertNull( $this->eligibilityProvider->retrieveEligibility( $eligibilityDto ) );
 	}
 
 	/**
@@ -95,8 +98,7 @@ class EligibilityProviderTest extends TestCase {
 	protected function setUp(): void {
 		$this->eligibilityEndpointMock = $this->createMock( EligibilityEndpoint::class );
 		$this->cartAdapterMock         = $this->createMock( CartAdapter::class );
-		$this->eligibilityProvider     = new EligibilityProvider( $this->eligibilityEndpointMock,
-			$this->cartAdapterMock );
+		$this->eligibilityProvider     = new EligibilityProvider( $this->eligibilityEndpointMock );
 	}
 
 	protected function tearDown(): void {
