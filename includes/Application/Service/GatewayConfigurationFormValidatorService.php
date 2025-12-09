@@ -12,6 +12,16 @@ use Alma\Gateway\Plugin;
 
 class GatewayConfigurationFormValidatorService {
 
+	private GatewayConfigurationForm $gatewayConfiguration;
+	private FeePlanRepository $feePlanRepository;
+	private ConfigService $configService;
+
+	public function __construct(GatewayConfigurationForm $gatewayConfiguration, FeePlanRepository $feePlanRepository, ConfigService $configService) {
+		$this->gatewayConfiguration = $gatewayConfiguration;
+		$this->feePlanRepository = $feePlanRepository;
+		$this->configService = $configService;
+	}
+
 	/**
 	 * Validate the GatewayConfiguration entity.
 	 * If the API keys have changed, we need to reset the fee plans.
@@ -29,16 +39,14 @@ class GatewayConfigurationFormValidatorService {
 
 		// If the API keys have changed, we need to clean the fee plans and reload them from the API
 		// No need to reset if the plugin is not yet configured
-		if ( $keyConfigForm->isMerchantIdChanged() && PluginHelper::isConfigured() ) {
+		if ( $keyConfigForm->isMerchantIdChanged() && $this->configService->isConfigured() ) {
 			$this->resetFeePlans( $feePlanConfigurationList );
 		}
 
 		// We only validate fee plans if there are any
 		if ( $feePlanConfigurationList->count() ) {
 			try {
-				/** @var FeePlanRepository $feePlanRepository */
-				$feePlanRepository = Plugin::get_container()->get( FeePlanRepository::class );
-				$feePlanConfigurationList->validate( $feePlanRepository->getAll() );
+				$feePlanConfigurationList->validate( $this->feePlanRepository->getAll() );
 			} catch ( FeePlanRepositoryException $e ) {
 				throw new GatewayConfigurationFormValidatorServiceException( 'Les fee plans n\'ont pas pu être récupérés. Veuillez réessayer plus tard.' );
 			}
@@ -57,9 +65,7 @@ class GatewayConfigurationFormValidatorService {
 	 * @return void
 	 */
 	private function resetFeePlans( FeePlanConfigurationList $feePlanConfigurationList ): void {
-		/** @var FeePlanRepository $feePlanRepository */
-		$feePlanRepository = Plugin::get_container()->get( FeePlanRepository::class );
-		$feePlanRepository->deleteAll();
+		$this->feePlanRepository->deleteAll();
 		$feePlanConfigurationList->reset();
 	}
 }

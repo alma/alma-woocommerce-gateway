@@ -44,7 +44,6 @@ class EligibilityProviderTest extends TestCase {
 		$this->expectException( EligibilityServiceException::class );
 		$this->expectExceptionMessage( 'Error retrieving eligibility: API error' );
 
-		//$this->cartAdapterMock->method( 'getCartTotal' )->willReturn( 10000 );
 		$eligibilityDto = new EligibilityDto( 10000 );
 		$this->eligibilityEndpointMock->expects( $this->once() )->method( 'getEligibilityList' )->willThrowException( new EligibilityEndpointException( 'API error' ) );
 
@@ -64,9 +63,10 @@ class EligibilityProviderTest extends TestCase {
 		$eligibilityList = new EligibilityList();
 		$eligibilityList->add( $eligibility );
 		$this->eligibilityEndpointMock->expects( $this->once() )->method( 'getEligibilityList' )->willReturn( $eligibilityList );
-		$this->cartAdapterMock->method( 'getCartTotal' )->willReturn( 10000 );
-		$this->assertNull( $this->eligibilityProvider->retrieveEligibility() );
-		$this->assertEquals( 1, $this->eligibilityProvider->getEligibilityList()->count() );
+		$eligibilityDto = new EligibilityDto( 10000 );
+
+		$this->assertNull( $this->eligibilityProvider->retrieveEligibility($eligibilityDto) );
+		$this->assertEquals( 1, $this->eligibilityProvider->getEligibilityList($eligibilityDto)->count() );
 
 	}
 
@@ -75,8 +75,8 @@ class EligibilityProviderTest extends TestCase {
 		$eligibilityList = new EligibilityList();
 		$eligibilityList->add( $eligibility );
 		$this->eligibilityEndpointMock->expects( $this->once() )->method( 'getEligibilityList' )->willReturn( $eligibilityList );
-		$this->cartAdapterMock->method( 'getCartTotal' )->willReturn( 10000 );
-		$eligibilityListResult = $this->eligibilityProvider->getEligibilityList();
+		$eligibilityDto = new EligibilityDto( 10000 );
+		$eligibilityListResult = $this->eligibilityProvider->getEligibilityList($eligibilityDto);
 		$this->assertInstanceOf( EligibilityList::class, $eligibilityListResult );
 		$this->assertEquals( 1, $eligibilityListResult->count() );
 	}
@@ -86,11 +86,11 @@ class EligibilityProviderTest extends TestCase {
 		$eligibilityList = new EligibilityList();
 		$eligibilityList->add( $eligibility );
 		$this->eligibilityEndpointMock->expects( $this->once() )->method( 'getEligibilityList' )->willReturn( $eligibilityList );
-		$this->cartAdapterMock->method( 'getCartTotal' )->willReturn( 10000 );
-		$eligibilityListResult1 = $this->eligibilityProvider->getEligibilityList();
+		$eligibilityDto = new EligibilityDto( 10000 );
+		$eligibilityListResult1 = $this->eligibilityProvider->getEligibilityList($eligibilityDto);
 		$this->assertInstanceOf( EligibilityList::class, $eligibilityListResult1 );
 		$this->assertEquals( 1, $eligibilityListResult1->count() );
-		$eligibilityListResult2 = $this->eligibilityProvider->getEligibilityList();
+		$eligibilityListResult2 = $this->eligibilityProvider->getEligibilityList($eligibilityDto);
 		$this->assertInstanceOf( EligibilityList::class, $eligibilityListResult2 );
 		$this->assertEquals( 1, $eligibilityListResult2->count() );
 	}

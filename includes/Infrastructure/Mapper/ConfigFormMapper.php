@@ -40,7 +40,7 @@ class ConfigFormMapper {
 
 		$key_configuration = $this->process_key_configuration();
 
-		if ( PluginHelper::isConfigured() ) {
+		if ( $this->config_service->isConfigured() ) {
 			$fee_plan_configuration_list = $this->process_fee_plan_configuration_list();
 		} else {
 			$fee_plan_configuration_list = new FeePlanConfigurationList( array() );

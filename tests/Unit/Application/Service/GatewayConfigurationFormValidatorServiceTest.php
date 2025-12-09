@@ -6,6 +6,7 @@ use Alma\Gateway\Application\Entity\Form\FeePlanConfigurationList;
 use Alma\Gateway\Application\Entity\Form\GatewayConfigurationForm;
 use Alma\Gateway\Application\Entity\Form\KeyConfiguration;
 use Alma\Gateway\Application\Exception\Service\GatewayConfigurationFormValidatorServiceException;
+use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\GatewayConfigurationFormValidatorService;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
@@ -14,8 +15,9 @@ use PHPUnit\Framework\TestCase;
 class GatewayConfigurationFormValidatorServiceTest extends TestCase {
 
 	private $feePlanRepository;
-	private $gatewayConfigurationFormValidatorService;
-
+	private $gatewayConfigurationForm;
+	private $configService;
+	private GatewayConfigurationFormValidatorService $gatewayConfigurationFormValidatorService;
 
 	public function testValidateWithSameMerchantIdWithoutPlan(): void {
 		$feePlanConfigurationList = $this->createMock( FeePlanConfigurationList::class );
@@ -25,9 +27,8 @@ class GatewayConfigurationFormValidatorServiceTest extends TestCase {
 		$keyConfiguration->expects( $this->once() )->method( 'validate' )->willReturn( $keyConfiguration );
 		$keyConfiguration->expects( $this->once() )->method( 'isMerchantIdChanged' )->willReturn( false );
 
-		$gatewayConfigurationForm = $this->createMock( GatewayConfigurationForm::class );
-		$gatewayConfigurationForm->expects( $this->once() )->method( 'getKeyConfiguration' )->willReturn( $keyConfiguration );
-		$gatewayConfigurationForm->expects( $this->once() )->method( 'getFeePlanConfigurationList' )->willReturn( $feePlanConfigurationList );
+		$this->gatewayConfigurationForm->expects( $this->once() )->method( 'getKeyConfiguration' )->willReturn( $keyConfiguration );
+		$this->gatewayConfigurationForm->expects( $this->once() )->method( 'getFeePlanConfigurationList' )->willReturn( $feePlanConfigurationList );
 
 		$this->feePlanRepository->expects( $this->never() )->method( 'getAll' );
 		$feePlanConfigurationList->expects( $this->never() )->method( 'validate' );
@@ -36,7 +37,7 @@ class GatewayConfigurationFormValidatorServiceTest extends TestCase {
 
 		$this->assertInstanceOf(
 			GatewayConfigurationForm::class,
-			$this->gatewayConfigurationFormValidatorService->validate( $gatewayConfigurationForm )
+			$this->gatewayConfigurationFormValidatorService->validate( $this->gatewayConfigurationForm, $this->feePlanRepository )
 		);
 
 	}
@@ -49,9 +50,8 @@ class GatewayConfigurationFormValidatorServiceTest extends TestCase {
 		$keyConfiguration->expects( $this->once() )->method( 'validate' )->willReturn( $keyConfiguration );
 		$keyConfiguration->expects( $this->once() )->method( 'isMerchantIdChanged' )->willReturn( false );
 
-		$gatewayConfigurationForm = $this->createMock( GatewayConfigurationForm::class );
-		$gatewayConfigurationForm->expects( $this->once() )->method( 'getKeyConfiguration' )->willReturn( $keyConfiguration );
-		$gatewayConfigurationForm->expects( $this->once() )->method( 'getFeePlanConfigurationList' )->willReturn( $feePlanConfigurationList );
+		$this->gatewayConfigurationForm->expects( $this->once() )->method( 'getKeyConfiguration' )->willReturn( $keyConfiguration );
+		$this->gatewayConfigurationForm->expects( $this->once() )->method( 'getFeePlanConfigurationList' )->willReturn( $feePlanConfigurationList );
 
 		$this->feePlanRepository->expects( $this->once() )->method( 'getAll' );
 		$feePlanConfigurationList->expects( $this->once() )->method( 'validate' );
@@ -60,7 +60,7 @@ class GatewayConfigurationFormValidatorServiceTest extends TestCase {
 
 		$this->assertInstanceOf(
 			GatewayConfigurationForm::class,
-			$this->gatewayConfigurationFormValidatorService->validate( $gatewayConfigurationForm )
+			$this->gatewayConfigurationFormValidatorService->validate( $this->gatewayConfigurationForm, $this->feePlanRepository )
 		);
 
 	}
@@ -74,9 +74,10 @@ class GatewayConfigurationFormValidatorServiceTest extends TestCase {
 		$keyConfiguration->expects( $this->once() )->method( 'validate' )->willReturn( $keyConfiguration );
 		$keyConfiguration->expects( $this->once() )->method( 'isMerchantIdChanged' )->willReturn( true );
 
-		$gatewayConfigurationForm = $this->createMock( GatewayConfigurationForm::class );
-		$gatewayConfigurationForm->expects( $this->once() )->method( 'getKeyConfiguration' )->willReturn( $keyConfiguration );
-		$gatewayConfigurationForm->expects( $this->once() )->method( 'getFeePlanConfigurationList' )->willReturn( $feePlanConfigurationList );
+		$this->configService->expects( $this->once() )->method( 'isConfigured' )->willReturn( true );
+
+		$this->gatewayConfigurationForm->expects( $this->once() )->method( 'getKeyConfiguration' )->willReturn( $keyConfiguration );
+		$this->gatewayConfigurationForm->expects( $this->once() )->method( 'getFeePlanConfigurationList' )->willReturn( $feePlanConfigurationList );
 
 		$feePlanConfigurationList->expects( $this->once() )->method( 'validate' );
 		$feePlanConfigurationList->expects( $this->once() )->method( 'reset' );
@@ -84,10 +85,8 @@ class GatewayConfigurationFormValidatorServiceTest extends TestCase {
 
 		$this->assertInstanceOf(
 			GatewayConfigurationForm::class,
-			$this->gatewayConfigurationFormValidatorService->validate( $gatewayConfigurationForm )
+			$this->gatewayConfigurationFormValidatorService->validate( $this->gatewayConfigurationForm )
 		);
-
-
 	}
 
 	public function testValidateApiResponseError(): void {
@@ -110,16 +109,23 @@ class GatewayConfigurationFormValidatorServiceTest extends TestCase {
 		$this->feePlanRepository->expects( $this->never() )->method( 'deleteAll' );
 
 		$this->gatewayConfigurationFormValidatorService->validate( $gatewayConfigurationForm );
-
 	}
 
 
 	protected function setUp(): void {
 		$this->feePlanRepository                        = $this->createMock( FeePlanRepository::class );
-		$this->gatewayConfigurationFormValidatorService = new GatewayConfigurationFormValidatorService( $this->feePlanRepository );
+		$this->gatewayConfigurationForm                 = $this->createMock( GatewayConfigurationForm::class );
+		$this->configService                            = $this->createMock( ConfigService::class );
+		$this->gatewayConfigurationFormValidatorService = new GatewayConfigurationFormValidatorService(
+			$this->gatewayConfigurationForm,
+			$this->feePlanRepository,
+			$this->configService
+		);
 	}
 
 	protected function tearDown(): void {
 		$this->feePlanRepository = null;
+		$this->gatewayConfigurationForm = null;
+		$this->configService = null;
 	}
 }
