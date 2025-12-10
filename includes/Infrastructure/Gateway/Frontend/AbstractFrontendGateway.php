@@ -22,13 +22,24 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	/** @var FormHelper The form Adapter */
 	protected FormHelperInterface $form_helper;
 	private string $config_gateway_id = 'alma_config_gateway';
+	private FeePlanRepository $fee_plan_repository;
+	private ConfigService $config_service;
+	private CartAdapter $cart_adapter;
+	private ExcludedProductsHelper $excluded_products_helper;
 
-	public function __construct() {
-		/** @var FormHelperInterface $form_helper */
-		$form_helper       = Plugin::get_container()->get( FormHelper::class );
-		$this->form_helper = $form_helper;
-
+	public function __construct(
+		FormHelper $formHelper,
+		FeePlanRepository $feePlanRepository,
+		ConfigService $configService,
+		CartAdapter $cartAdapter,
+		ExcludedProductsHelper $excludedProductsHelper
+	) {
 		parent::__construct();
+		$this->form_helper              = $formHelper;
+		$this->fee_plan_repository      = $feePlanRepository;
+		$this->config_service           = $configService;
+		$this->cart_adapter             = $cartAdapter;
+		$this->excluded_products_helper = $excludedProductsHelper;
 	}
 
 	/**
@@ -93,14 +104,9 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 		}
 
 		// Check if there are products in the cart that are in excluded categories.
-		/** @var ConfigService $options_service */
-		$options_service     = Plugin::get_instance()->get_container()->get( ConfigService::class );
-		$excluded_categories = $options_service->getExcludedCategories();
-		/** @var CartAdapter $cart_adapter */
-		$cart_adapter = Plugin::get_container()->get( CartAdapter::class );
-		/** @var ExcludedProductsHelper $form_helper */
-		$excludedProductsHelper = Plugin::get_container()->get( ExcludedProductsHelper::class );
-		if ( ! $excludedProductsHelper->canDisplayOnCheckoutPage( $cart_adapter, $excluded_categories ) ) {
+		$excluded_categories = $this->config_service->getExcludedCategories();
+
+		if ( ! $this->excluded_products_helper->canDisplayOnCheckoutPage( $this->cart_adapter, $excluded_categories ) ) {
 			return false;
 		}
 
@@ -115,10 +121,9 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	 * @throws FeePlanRepositoryException
 	 */
 	public function getFeePlanList(): FeePlanListAdapter {
-		/** @var FeePlanRepository $fee_plan_repository */
-		$fee_plan_repository = Plugin::get_instance()->get_container()->get( FeePlanRepository::class );
-
-		return $fee_plan_repository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) )->filterEnabled();
+		var_dump( $this->fee_plan_repository->getAll() );
+		return $this->fee_plan_repository->getAll();
+		//      return $this->feePlanRepository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) )->filterEnabled();
 	}
 
 	/**

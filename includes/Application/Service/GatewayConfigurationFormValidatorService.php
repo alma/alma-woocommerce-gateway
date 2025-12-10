@@ -12,14 +12,23 @@ use Alma\Gateway\Plugin;
 
 class GatewayConfigurationFormValidatorService {
 
-	private GatewayConfigurationForm $gatewayConfiguration;
-	private FeePlanRepository $feePlanRepository;
-	private ConfigService $configService;
+	private ?ConfigService $configService;
+	private ?FeePlanRepository $feePlanRepository;
 
-	public function __construct(GatewayConfigurationForm $gatewayConfiguration, FeePlanRepository $feePlanRepository, ConfigService $configService) {
-		$this->gatewayConfiguration = $gatewayConfiguration;
-		$this->feePlanRepository = $feePlanRepository;
+	/**
+	 * Setter for Unit Test
+	 * @param ConfigService $configService
+	 */
+	public function setConfigService( ConfigService $configService ): void {
 		$this->configService = $configService;
+	}
+
+	/**
+	 * Setter for Unit Test
+	 * @param FeePlanRepository $feePlanRepository
+	 */
+	public function setFeePlanRepository( FeePlanRepository $feePlanRepository ): void {
+		$this->feePlanRepository = $feePlanRepository;
 	}
 
 	/**
@@ -33,13 +42,12 @@ class GatewayConfigurationFormValidatorService {
 	 * @throws GatewayConfigurationFormValidatorServiceException
 	 */
 	public function validate( GatewayConfigurationForm $gatewayConfiguration ): GatewayConfigurationForm {
-
 		$keyConfigForm            = $gatewayConfiguration->getKeyConfiguration()->validate();
 		$feePlanConfigurationList = $gatewayConfiguration->getFeePlanConfigurationList();
 
 		// If the API keys have changed, we need to clean the fee plans and reload them from the API
 		// No need to reset if the plugin is not yet configured
-		if ( $keyConfigForm->isMerchantIdChanged() && $this->configService->isConfigured() ) {
+		if ( $keyConfigForm->isMerchantIdChanged() && PluginHelper::isConfigured() ) {
 			$this->resetFeePlans( $feePlanConfigurationList );
 		}
 

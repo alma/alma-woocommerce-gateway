@@ -10,6 +10,8 @@ use Alma\Gateway\Application\Helper\TemplateHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
+use Alma\Gateway\Infrastructure\Helper\FormHelper;
+use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Plugin;
 
 /**
@@ -24,11 +26,11 @@ class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 	/**
 	 * Gateway constructor.
 	 */
-	public function __construct() {
+	public function __construct( FormHelper $formHelper, FeePlanRepository $feePlanRepository ) {
 		$this->title        = 'Pay now with Alma';
 		$this->method_title = L10nHelper::__( 'Payment with Alma' );
 
-		parent::__construct();
+		parent::__construct( $formHelper, $feePlanRepository );
 	}
 
 	/**

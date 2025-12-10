@@ -7,6 +7,8 @@ use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
+use Alma\Gateway\Infrastructure\Service\ContainerService;
+use Alma\Gateway\Plugin;
 
 class FrontendHelper {
 
@@ -31,6 +33,8 @@ class FrontendHelper {
 		add_filter(
 			'woocommerce_payment_gateways',
 			function ( $gateways ) {
+				$container = Plugin::get_container();
+
 				$alma_gateway_list = array(
 					CreditGateway::class,
 					PayLaterGateway::class,
@@ -38,10 +42,11 @@ class FrontendHelper {
 					PnxGateway::class,
 				);
 				/** @var AbstractGateway $gateway */
-				foreach ( $alma_gateway_list as $gateway ) {
-					if ( ! in_array( $gateway, $gateways, true ) && class_exists( $gateway ) ) {
+				foreach ( $alma_gateway_list as $gatewayClass ) {
+					if ( ! in_array( $gatewayClass, $gateways, true ) && class_exists( $gatewayClass ) ) {
 						// Check if the gateway is enabled before adding it to the list.
-						if ( ( new $gateway() )->is_enabled() ) { // NOSONAR -- Easier to understand with two if statements.
+						$gateway = $container->get( $gatewayClass );
+						if ( $gateway->is_enabled() ) { // NOSONAR -- Easier to understand with two if statements.
 							array_unshift( $gateways, $gateway );
 						}
 					}

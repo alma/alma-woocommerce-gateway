@@ -41,9 +41,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		$this->method_description = L10nHelper::__( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.' );
 		$this->has_fields         = true;
 		$this->supports           = array( 'products', 'refunds' );
-		$this->init_form_fields();
-		$this->init_settings();
-		$this->icon = $this->get_icon_url();
+		$this->icon               = $this->get_icon_url();
 
 		add_action(
 			'woocommerce_update_options_payment_gateways_alma_config_gateway',

@@ -11,7 +11,9 @@ use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
+use Alma\Gateway\Infrastructure\Helper\FormHelper;
 use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
+use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Plugin;
 
 /**
@@ -26,11 +28,11 @@ class CreditGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 	/**
 	 * Gateway constructor.
 	 */
-	public function __construct() {
+	public function __construct( FormHelper $formHelper, FeePlanRepository $feePlanRepository ) {
 		$this->title        = 'Credit with Alma';
 		$this->method_title = L10nHelper::__( 'Payment in installments with Alma - 10x 12x' );
 
-		parent::__construct();
+		parent::__construct( $formHelper, $feePlanRepository );
 	}
 
 	/**

@@ -113,6 +113,4 @@ class PluginHelperTest extends TestCase {
 		Monkey\tearDown();
 		parent::tearDown();
 	}
-
-
 }
