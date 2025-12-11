@@ -26,8 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class PnxGatewayBlock extends AbstractGatewayBlock implements IntegrationInterface {
 
 	public function __construct( bool $is_in_page_enabled, string $assets_handle ) {
-		$formHelper    = new FormHelper();
-		$this->gateway = new PnxGateway( $formHelper );
+		$this->gateway = new PnxGateway();
 		parent::__construct( $is_in_page_enabled, $assets_handle );
 	}
 

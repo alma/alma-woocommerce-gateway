@@ -99,6 +99,7 @@ class FeePlanRepository {
 
 			// Get Eligibility only on shop
 			if ( ! ContextHelper::isAdmin() && ContextHelper::getCart()->getCartTotal() > 0 ) {
+//				var_dump(ContextHelper::getCustomer());
 				// Add Eligibility to Fee Plans. (Installment Plans from API) /** @var EligibilityProvider $eligibilityProvider */ {
 				$eligibilityProvider = Plugin::get_container()->get( EligibilityProvider::class );
 				$eligibilityDto      = ( new EligibilityMapper() )

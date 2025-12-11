@@ -30,23 +30,11 @@ class CreditGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 	/**
 	 * Gateway constructor.
 	 */
-	public function __construct(
-		FormHelper $formHelper,
-		FeePlanRepository $feePlanRepository,
-		ConfigService $configService,
-		CartAdapter $cartAdapter,
-		ExcludedProductsHelper $excludedProductsHelper
-	) {
+	public function __construct() {
 		$this->title        = 'Credit with Alma';
 		$this->method_title = L10nHelper::__( 'Payment in installments with Alma - 10x 12x' );
 
-		parent::__construct(
-			$formHelper,
-			$feePlanRepository,
-			$configService,
-			$cartAdapter,
-			$excludedProductsHelper
-		);
+		parent::__construct();
 	}
 
 	/**

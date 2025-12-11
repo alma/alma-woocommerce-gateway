@@ -31,23 +31,11 @@ class PayLaterGateway extends AbstractFrontendGateway implements FrontendGateway
 	/**
 	 * Gateway constructor.
 	 */
-	public function __construct(
-		FormHelper $formHelper,
-		FeePlanRepository $feePlanRepository,
-		ConfigService $configService,
-		CartAdapter $cartAdapter,
-		ExcludedProductsHelper $excludedProductsHelper
-	) {
+	public function __construct() {
 		$this->title        = 'Pay later with Alma';
 		$this->method_title = L10nHelper::__( 'Payment deferred with Alma' );
 
-		parent::__construct(
-			$formHelper,
-			$feePlanRepository,
-			$configService,
-			$cartAdapter,
-			$excludedProductsHelper
-		);
+		parent::__construct();
 	}
 
 	/**

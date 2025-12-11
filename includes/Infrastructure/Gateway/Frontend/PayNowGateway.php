@@ -28,23 +28,11 @@ class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 	/**
 	 * Gateway constructor.
 	 */
-	public function __construct(
-		FormHelper $formHelper,
-		FeePlanRepository $feePlanRepository,
-		ConfigService $configService,
-		CartAdapter $cartAdapter,
-		ExcludedProductsHelper $excludedProductsHelper
-	) {
+	public function __construct() {
 		$this->title        = 'Pay now with Alma';
 		$this->method_title = L10nHelper::__( 'Payment with Alma' );
 
-		parent::__construct(
-			$formHelper,
-			$feePlanRepository,
-			$configService,
-			$cartAdapter,
-			$excludedProductsHelper
-		);
+		parent::__construct();
 	}
 
 	/**

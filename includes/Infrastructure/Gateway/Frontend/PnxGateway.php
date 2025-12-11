@@ -29,23 +29,31 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 	/**
 	 * Gateway constructor.
 	 */
-	public function __construct(
-		FormHelper $formHelper,
-		FeePlanRepository $feePlanRepository,
-		ConfigService $configService,
-		CartAdapter $cartAdapter,
-		ExcludedProductsHelper $excludedProductsHelper
-	) {
+	public function __construct() {
 		$this->title        = 'Pay in installments with Alma';
 		$this->method_title = L10nHelper::__( 'Payment in installments with Alma - 2x 3x 4x' );
 
-		parent::__construct(
-			$formHelper,
-			$feePlanRepository,
-			$configService,
-			$cartAdapter,
-			$excludedProductsHelper
-		);
+		parent::__construct();
+	}
+
+	public function setFormHelper( $formHelper ) {
+		$this->form_helper = $formHelper;
+	}
+
+	public function setFeePlanRepository( $feePlanRepository ) {
+		$this->fee_plan_repository = $feePlanRepository;
+	}
+
+	public function setConfigService( $configService ) {
+		$this->config_service = $configService;
+	}
+
+	public function setCartAdapter( $cartAdapter ) {
+		$this->cart_adapter = $cartAdapter;
+	}
+
+	public function setExcludedProductsHelper( $excludedProductsHelper ) {
+		$this->excluded_products_helper = $excludedProductsHelper;
 	}
 
 	/**
