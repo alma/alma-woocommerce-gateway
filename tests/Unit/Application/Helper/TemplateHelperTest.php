@@ -19,25 +19,8 @@ use PHPUnit\Framework\TestCase;
 class TemplateHelperTest extends TestCase {
 	use MockeryPHPUnitIntegration;
 
-	private $templateHelper;
+	private TemplateHelper $templateHelper;
 	private $pluginHelper;
-
-	protected function setUp(): void {
-		parent::setUp();
-		Monkey\setUp();
-		$this->pluginHelper = Mockery::mock( 'alias:Alma\Gateway\Application\Helper\PluginHelper' );
-		$this->pluginHelper->shouldReceive( 'getPluginPath' )->andReturn( 'var/plugin/path/' );
-		$this->templateHelper = new TemplateHelper();
-	}
-
-	protected function tearDown(): void {
-		Monkey\tearDown();
-		Mockery::resetContainer();
-		Mockery::close();
-		parent::tearDown();
-		$this->templateHelper = null;
-		$this->pluginHelper   = null;
-	}
 
 	/**
 	 * @runInSeparateProcess
@@ -85,6 +68,23 @@ class TemplateHelperTest extends TestCase {
 			$this->templateHelper->locateTemplate( 'my-template.php', 'mysub' )
 		);
 
+	}
+
+	protected function setUp(): void {
+		parent::setUp();
+		Monkey\setUp();
+		$this->pluginHelper = Mockery::mock( 'alias:Alma\Gateway\Application\Helper\PluginHelper' );
+		$this->pluginHelper->shouldReceive( 'getPluginPath' )->andReturn( 'var/plugin/path/' );
+		$this->templateHelper = new TemplateHelper();
+	}
+
+	protected function tearDown(): void {
+		Monkey\tearDown();
+		Mockery::resetContainer();
+		Mockery::close();
+		parent::tearDown();
+		$this->templateHelper = null;
+		$this->pluginHelper   = null;
 	}
 
 

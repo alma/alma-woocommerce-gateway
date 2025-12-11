@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
-use Alma\Gateway\Application\Helper\PluginHelper;
+use Alma\Gateway\Plugin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -18,7 +18,7 @@ class AssetsHelper {
 	 * @return string URL to given asset
 	 */
 	public static function getAssetUrl( string $resourcePath ): string {
-		$pluginUrl = PluginHelper::getPluginUrl();
+		$pluginUrl = Plugin::get_instance()->get_plugin_url();
 
 		return $pluginUrl . 'assets/' . $resourcePath;
 	}
@@ -30,7 +30,7 @@ class AssetsHelper {
 	 */
 	public static function getBuildUrl( string $resourcePath ): string {
 
-		$pluginUrl = PluginHelper::getPluginUrl();
+		$pluginUrl = Plugin::get_instance()->get_plugin_url();
 
 		return $pluginUrl . 'build/' . $resourcePath;
 	}
@@ -42,7 +42,7 @@ class AssetsHelper {
 	 */
 	public static function getLanguagesPath(): string {
 
-		$pluginUrl = PluginHelper::getPluginUrl();
+		$pluginUrl = Plugin::get_instance()->get_plugin_url();
 
 		return $pluginUrl . 'languages';
 	}
@@ -56,7 +56,7 @@ class AssetsHelper {
 	 */
 	public static function getBuildPath( $resourcePath = '' ): string {
 
-		$pluginPath = PluginHelper::getPluginPath();
+		$pluginPath = Plugin::get_instance()->get_plugin_path();
 
 		return $pluginPath . 'build/' . $resourcePath;
 	}
@@ -73,7 +73,7 @@ class AssetsHelper {
 			return filemtime( $file );
 		}
 
-		return PluginHelper::getPluginVersion();
+		return Plugin::get_instance()->get_plugin_version();
 	}
 
 	/**

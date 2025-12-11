@@ -6,13 +6,11 @@ use Alma\Gateway\Application\Entity\Form\GatewayConfigurationForm;
 use Alma\Gateway\Application\Exception\Service\GatewayConfigurationFormValidatorServiceException;
 use Alma\Gateway\Application\Helper\EncryptorHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
-use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\GatewayConfigurationFormValidatorService;
 use Alma\Gateway\Infrastructure\Exception\Gateway\Backend\AlmaGatewayException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Mapper\ConfigFormMapper;
-use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Plugin;
 
 /**
@@ -63,7 +61,7 @@ class AlmaGateway extends AbstractBackendGateway {
 		);
 
 		// If the plugin is configured, add the gateway and fee plan fields
-		if ( PluginHelper::isConfigured() ) {
+		if ( Plugin::get_instance()->is_configured() ) {
 			try {
 				$this->form_fields = array_merge(
 					$this->form_fields,

@@ -7,7 +7,6 @@ use Alma\Gateway\Application\Entity\Form\FeePlanConfigurationList;
 use Alma\Gateway\Application\Entity\Form\GatewayConfigurationForm;
 use Alma\Gateway\Application\Entity\Form\KeyConfiguration;
 use Alma\Gateway\Application\Helper\DisplayHelper;
-use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Service\AuthenticationService;
 use Alma\Gateway\Application\Service\ConfigService;
 

@@ -2,7 +2,6 @@
 
 namespace Alma\Gateway\Infrastructure\Controller;
 
-use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\InPageService;
 use Alma\Gateway\Application\Service\WidgetService;
@@ -32,7 +31,7 @@ class ShopController {
 		FrontendHelper::runFrontendServices(
 			function () {
 
-				if ( ! PluginHelper::isPluginNeeded() ) {
+				if ( ! Plugin::get_instance()->is_plugin_needed() ) {
 					return;
 				}
 
@@ -54,7 +53,7 @@ class ShopController {
 
 		BackendHelper::runBackendServices(
 			function () {
-				if ( ! PluginHelper::isConfigured() ) {
+				if ( ! Plugin::get_instance()->is_configured() ) {
 					return;
 				}
 

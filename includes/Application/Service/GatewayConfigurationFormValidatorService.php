@@ -5,7 +5,6 @@ namespace Alma\Gateway\Application\Service;
 use Alma\Gateway\Application\Entity\Form\FeePlanConfigurationList;
 use Alma\Gateway\Application\Entity\Form\GatewayConfigurationForm;
 use Alma\Gateway\Application\Exception\Service\GatewayConfigurationFormValidatorServiceException;
-use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Plugin;
@@ -17,18 +16,11 @@ class GatewayConfigurationFormValidatorService {
 
 	/**
 	 * Setter for Unit Test
+	 *
 	 * @param ConfigService $configService
 	 */
 	public function setConfigService( ConfigService $configService ): void {
 		$this->configService = $configService;
-	}
-
-	/**
-	 * Setter for Unit Test
-	 * @param FeePlanRepository $feePlanRepository
-	 */
-	public function setFeePlanRepository( FeePlanRepository $feePlanRepository ): void {
-		$this->feePlanRepository = $feePlanRepository;
 	}
 
 	/**
@@ -47,14 +39,16 @@ class GatewayConfigurationFormValidatorService {
 
 		// If the API keys have changed, we need to clean the fee plans and reload them from the API
 		// No need to reset if the plugin is not yet configured
-		if ( $keyConfigForm->isMerchantIdChanged() && PluginHelper::isConfigured() ) {
+		if ( $keyConfigForm->isMerchantIdChanged() && Plugin::get_instance()->is_configured() ) {
 			$this->resetFeePlans( $feePlanConfigurationList );
 		}
 
 		// We only validate fee plans if there are any
 		if ( $feePlanConfigurationList->count() ) {
 			try {
-				$feePlanConfigurationList->validate( $this->feePlanRepository->getAll() );
+				/** @var FeePlanRepository $feePlanRepository */
+				$feePlanRepository = Plugin::get_container()->get( FeePlanRepository::class );
+				$feePlanConfigurationList->validate( $feePlanRepository->getAll() );
 			} catch ( FeePlanRepositoryException $e ) {
 				throw new GatewayConfigurationFormValidatorServiceException( 'Les fee plans n\'ont pas pu être récupérés. Veuillez réessayer plus tard.' );
 			}

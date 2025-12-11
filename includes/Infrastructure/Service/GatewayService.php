@@ -7,12 +7,12 @@ use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Mapper\RefundMapper;
-use Alma\Gateway\Application\Provider\PaymentProvider;
+use Alma\Gateway\Application\Provider\PaymentProviderAwareTrait;
+use Alma\Gateway\Application\Provider\PaymentProviderFactory;
 use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Exception\CheckoutServiceException;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
-use Alma\Gateway\Infrastructure\Helper\GatewayHelper;
 use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Infrastructure\Repository\UserRepository;
@@ -21,16 +21,17 @@ use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
 
 class GatewayService {
 
-	/** GatewayHelper */
-	private GatewayHelper $gatewayHelper;
+	/** Add ability to use PaymentProviderFactory */
+	use PaymentProviderAwareTrait;
+
 	private AssetsService $assetsService;
 
 	public function __construct(
-		AssetsService $assetsService,
-		GatewayHelper $gatewayHelper // Move
+		PaymentProviderFactory $paymentProviderFactory,
+		AssetsService $assetsService
 	) {
-		$this->assetsService = $assetsService;
-		$this->gatewayHelper = $gatewayHelper;
+		$this->paymentProviderFactory = $paymentProviderFactory;
+		$this->assetsService          = $assetsService;
 	}
 
 	/**
@@ -63,10 +64,7 @@ class GatewayService {
 
 		if ( 'refunded' === $newStatus || 'cancelled' === $newStatus ) {
 			if ( $order->isRefundable() ) {
-
-				/** @var PaymentProvider $paymentService */
-				$paymentService = Plugin::get_container()->get( PaymentProvider::class );
-
+				$paymentService = $this->getPaymentProvider();
 				$paymentService->refundPayment(
 					$order->getPaymentId(),
 					( new RefundMapper() )->buildRefundDto(

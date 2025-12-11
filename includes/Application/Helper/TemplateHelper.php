@@ -4,6 +4,7 @@ namespace Alma\Gateway\Application\Helper;
 
 use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
 use Alma\Gateway\Infrastructure\Helper\RenderHelper;
+use Alma\Gateway\Plugin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
@@ -29,9 +30,9 @@ class TemplateHelper {
 	public function locateTemplate( string $templateName, string $subpath = '' ): string {
 
 		if ( $subpath ) {
-			$templatePath = PluginHelper::getPluginPath() . 'public/templates/' . $subpath . '/' . $templateName;
+			$templatePath = Plugin::get_instance()->get_plugin_path() . 'public/templates/' . $subpath . '/' . $templateName;
 		} else {
-			$templatePath = PluginHelper::getPluginPath() . 'public/templates/' . $templateName;
+			$templatePath = Plugin::get_instance()->get_plugin_path() . 'public/templates/' . $templateName;
 		}
 
 		return RenderHelper::locate( $templatePath, $templateName );
