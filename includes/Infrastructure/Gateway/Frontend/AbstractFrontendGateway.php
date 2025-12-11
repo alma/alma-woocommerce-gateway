@@ -121,9 +121,7 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	 * @throws FeePlanRepositoryException
 	 */
 	public function getFeePlanList(): FeePlanListAdapter {
-		var_dump( $this->fee_plan_repository->getAll() );
-		return $this->fee_plan_repository->getAll();
-		//      return $this->feePlanRepository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) )->filterEnabled();
+		return $this->fee_plan_repository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) )->filterEnabled();
 	}
 
 	/**
