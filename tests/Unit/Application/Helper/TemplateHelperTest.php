@@ -3,6 +3,7 @@
 namespace Alma\Gateway\Tests\Unit\Application\Helper;
 
 use Alma\Gateway\Application\Helper\TemplateHelper;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
 use Mockery;
@@ -73,6 +74,14 @@ class TemplateHelperTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 		Monkey\setUp();
+
+		Functions\expect('plugins_url')
+			->once()
+			->andReturn( 'http://woocommerce-10-3-5.local.test/wp-content/plugins/alma-gateway-for-woocommerce/' );
+
+		Functions\expect('plugin_dir_path')
+			->andReturn( '/app/woocommerce/wp-content/plugins/alma-gateway-for-woocommerce/' );
+
 		$this->pluginHelper = Mockery::mock( 'alias:Alma\Gateway\Application\Helper\PluginHelper' );
 		$this->pluginHelper->shouldReceive( 'getPluginPath' )->andReturn( 'var/plugin/path/' );
 		$this->templateHelper = new TemplateHelper();

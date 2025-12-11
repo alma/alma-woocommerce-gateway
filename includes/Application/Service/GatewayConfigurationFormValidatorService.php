@@ -14,6 +14,10 @@ class GatewayConfigurationFormValidatorService {
 	private ?ConfigService $configService;
 	private ?FeePlanRepository $feePlanRepository;
 
+	public function __construct(FeePlanRepository $feePlanRepository) {
+		$this->feePlanRepository = $feePlanRepository;
+	}
+
 	/**
 	 * Setter for Unit Test
 	 *
@@ -46,9 +50,7 @@ class GatewayConfigurationFormValidatorService {
 		// We only validate fee plans if there are any
 		if ( $feePlanConfigurationList->count() ) {
 			try {
-				/** @var FeePlanRepository $feePlanRepository */
-				$feePlanRepository = Plugin::get_container()->get( FeePlanRepository::class );
-				$feePlanConfigurationList->validate( $feePlanRepository->getAll() );
+				$feePlanConfigurationList->validate( $this->feePlanRepository->getAll() );
 			} catch ( FeePlanRepositoryException $e ) {
 				throw new GatewayConfigurationFormValidatorServiceException( 'Les fee plans n\'ont pas pu être récupérés. Veuillez réessayer plus tard.' );
 			}
