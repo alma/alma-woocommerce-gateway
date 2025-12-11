@@ -24,6 +24,7 @@ class FeePlanRepository {
 
 	/** @var ConfigService */
 	private ConfigService $configService;
+	private FeePlanProvider $feePlanProvider;
 
 	/**
 	 * FeePlanRepository constructor.
@@ -32,6 +33,10 @@ class FeePlanRepository {
 	 */
 	public function __construct( ConfigService $configService ) {
 		$this->configService = $configService;
+	}
+
+	public function setFeePlanProvider( FeePlanProvider $feePlanProvider ) {
+		$this->feePlanProvider = $feePlanProvider;
 	}
 
 	/**
@@ -89,9 +94,7 @@ class FeePlanRepository {
 	public function retrieveFeePlans(): void {
 		try {
 			// Get Fee Plans. (From API)
-			/** @var FeePlanProvider $feePlanProvider */
-			$feePlanProvider    = Plugin::get_container()->get( FeePlanProvider::class );
-			$feePlanListAdapter = new FeePlanListAdapter( $feePlanProvider->getFeePlanList() );
+			$feePlanListAdapter = new FeePlanListAdapter( $this->feePlanProvider->getFeePlanList() );
 			$this->saveKeysToConfig( $feePlanListAdapter );
 
 			// Add local configuration to Fee Plans. (local min and max amount set in the plugin form)
@@ -100,7 +103,8 @@ class FeePlanRepository {
 			// Get Eligibility only on shop
 			if ( ! ContextHelper::isAdmin() && ContextHelper::getCart()->getCartTotal() > 0 ) {
 //				var_dump(ContextHelper::getCustomer());
-				// Add Eligibility to Fee Plans. (Installment Plans from API) /** @var EligibilityProvider $eligibilityProvider */ {
+				// Add Eligibility to Fee Plans. (Installment Plans from API)
+				/** @var EligibilityProvider $eligibilityProvider */
 				$eligibilityProvider = Plugin::get_container()->get( EligibilityProvider::class );
 				$eligibilityDto      = ( new EligibilityMapper() )
 					->buildEligibilityDto(
