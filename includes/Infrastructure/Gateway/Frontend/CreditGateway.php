@@ -5,9 +5,11 @@ namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
 use Alma\API\Domain\ValueObject\PaymentMethod;
 use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
+use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
 use Alma\Gateway\Application\Service\ConfigService;
+use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
@@ -28,11 +30,23 @@ class CreditGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 	/**
 	 * Gateway constructor.
 	 */
-	public function __construct( FormHelper $formHelper, FeePlanRepository $feePlanRepository ) {
+	public function __construct(
+		FormHelper $formHelper,
+		FeePlanRepository $feePlanRepository,
+		ConfigService $configService,
+		CartAdapter $cartAdapter,
+		ExcludedProductsHelper $excludedProductsHelper
+	) {
 		$this->title        = 'Credit with Alma';
 		$this->method_title = L10nHelper::__( 'Payment in installments with Alma - 10x 12x' );
 
-		parent::__construct( $formHelper, $feePlanRepository );
+		parent::__construct(
+			$formHelper,
+			$feePlanRepository,
+			$configService,
+			$cartAdapter,
+			$excludedProductsHelper
+		);
 	}
 
 	/**

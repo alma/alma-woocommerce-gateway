@@ -5,9 +5,11 @@ namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
 use Alma\API\Domain\ValueObject\PaymentMethod;
 use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
+use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
 use Alma\Gateway\Application\Service\ConfigService;
+use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Exception\CheckoutServiceException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
@@ -29,11 +31,23 @@ class PayLaterGateway extends AbstractFrontendGateway implements FrontendGateway
 	/**
 	 * Gateway constructor.
 	 */
-	public function __construct( FormHelper $formHelper, FeePlanRepository $feePlanRepository ) {
+	public function __construct(
+		FormHelper $formHelper,
+		FeePlanRepository $feePlanRepository,
+		ConfigService $configService,
+		CartAdapter $cartAdapter,
+		ExcludedProductsHelper $excludedProductsHelper
+	) {
 		$this->title        = 'Pay later with Alma';
 		$this->method_title = L10nHelper::__( 'Payment deferred with Alma' );
 
-		parent::__construct( $formHelper, $feePlanRepository );
+		parent::__construct(
+			$formHelper,
+			$feePlanRepository,
+			$configService,
+			$cartAdapter,
+			$excludedProductsHelper
+		);
 	}
 
 	/**
