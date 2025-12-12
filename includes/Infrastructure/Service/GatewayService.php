@@ -64,8 +64,8 @@ class GatewayService {
 
 		if ( 'refunded' === $newStatus || 'cancelled' === $newStatus ) {
 			if ( $order->isRefundable() ) {
-				$paymentService = $this->getPaymentProvider();
-				$paymentService->refundPayment(
+				$this->getPaymentProvider();
+				$this->paymentProvider->refundPayment(
 					$order->getPaymentId(),
 					( new RefundMapper() )->buildRefundDto(
 						$order,

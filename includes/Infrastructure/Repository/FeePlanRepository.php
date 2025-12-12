@@ -97,8 +97,8 @@ class FeePlanRepository {
 	public function retrieveFeePlans(): void {
 		try {
 			// Get Fee Plans. (From API)
-			$feePlanProvider    = $this->getFeePlanProvider();
-			$feePlanListAdapter = new FeePlanListAdapter( $feePlanProvider->getFeePlanList() );
+			$this->getFeePlanProvider();
+			$feePlanListAdapter = new FeePlanListAdapter( $this->feePlanProvider->getFeePlanList() );
 			$this->saveKeysToConfig( $feePlanListAdapter );
 
 			// Add local configuration to Fee Plans. (local min and max amount set in the plugin form)
@@ -107,14 +107,14 @@ class FeePlanRepository {
 			// Get Eligibility only on shop
 			if ( ! ContextHelper::isAdmin() && ContextHelper::getCart()->getCartTotal() > 0 ) {
 				// Add Eligibility to Fee Plans. (Installment Plans from API)
-				$eligibilityProvider = $this->getEligibilityProvider();
+				$this->getEligibilityProvider();
 				$eligibilityDto      = ( new EligibilityMapper() )
 					->buildEligibilityDto(
 						ContextHelper::getCart(),
 						ContextHelper::getCustomer(),
 						$feePlanListAdapter->filterEnabled()
 					);
-				$installmentPlanList = $eligibilityProvider->getEligibilityList( $eligibilityDto );
+				$installmentPlanList = $this->eligibilityProvider->getEligibilityList( $eligibilityDto );
 				$feePlanListAdapter  = $this->setInstallmentPlanList( $feePlanListAdapter, $installmentPlanList );
 			}
 
