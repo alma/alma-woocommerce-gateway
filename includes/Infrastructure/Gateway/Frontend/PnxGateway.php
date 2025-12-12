@@ -5,17 +5,13 @@ namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
 use Alma\API\Domain\ValueObject\PaymentMethod;
 use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
-use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
 use Alma\Gateway\Application\Service\ConfigService;
-use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
-use Alma\Gateway\Infrastructure\Helper\FormHelper;
 use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
-use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Plugin;
 
 /**
@@ -34,26 +30,6 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 		$this->method_title = L10nHelper::__( 'Payment in installments with Alma - 2x 3x 4x' );
 
 		parent::__construct();
-	}
-
-	public function setFormHelper( $formHelper ) {
-		$this->form_helper = $formHelper;
-	}
-
-	public function setFeePlanRepository( $feePlanRepository ) {
-		$this->fee_plan_repository = $feePlanRepository;
-	}
-
-	public function setConfigService( $configService ) {
-		$this->config_service = $configService;
-	}
-
-	public function setCartAdapter( $cartAdapter ) {
-		$this->cart_adapter = $cartAdapter;
-	}
-
-	public function setExcludedProductsHelper( $excludedProductsHelper ) {
-		$this->excluded_products_helper = $excludedProductsHelper;
 	}
 
 	/**
