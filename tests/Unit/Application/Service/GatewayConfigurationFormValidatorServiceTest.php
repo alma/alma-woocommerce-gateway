@@ -11,11 +11,12 @@ use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\GatewayConfigurationFormValidatorService;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
+use Alma\Gateway\Plugin;
 use Brain\Monkey;
-use Brain\Monkey\Functions;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
+use function Brain\Monkey\Functions\when;
 
 /**
  * @runInSeparateProcess
@@ -24,11 +25,10 @@ use PHPUnit\Framework\TestCase;
 class GatewayConfigurationFormValidatorServiceTest extends TestCase {
 	use MockeryPHPUnitIntegration;
 
-	private $feePlanRepository;
-	private $gatewayConfigurationForm;
-	private $configService;
-	private $pluginHelper;
-	private GatewayConfigurationFormValidatorService $gatewayConfigurationFormValidatorService;
+	private ?FeePlanRepository $feePlanRepository;
+	private ?GatewayConfigurationForm $gatewayConfigurationForm;
+	private ?ConfigService $configService;
+	private ?GatewayConfigurationFormValidatorService $gatewayConfigurationFormValidatorService;
 
 	/**
 	 * @runInSeparateProcess
@@ -44,7 +44,6 @@ class GatewayConfigurationFormValidatorServiceTest extends TestCase {
 
 		$this->gatewayConfigurationForm->expects( $this->once() )->method( 'getKeyConfiguration' )->willReturn( $keyConfiguration );
 		$this->gatewayConfigurationForm->expects( $this->once() )->method( 'getFeePlanConfigurationList' )->willReturn( $feePlanConfigurationList );
-		//$this->pluginHelper->shouldReceive('isConfigured')->andReturn(false);
 		$this->feePlanRepository->expects( $this->never() )->method( 'getAll' );
 		$feePlanConfigurationList->expects( $this->never() )->method( 'validate' );
 		$feePlanConfigurationList->expects( $this->never() )->method( 'reset' );
@@ -52,7 +51,7 @@ class GatewayConfigurationFormValidatorServiceTest extends TestCase {
 
 		$this->assertInstanceOf(
 			GatewayConfigurationForm::class,
-			$this->gatewayConfigurationFormValidatorService->validate( $this->gatewayConfigurationForm, $this->feePlanRepository )
+			$this->gatewayConfigurationFormValidatorService->validate( $this->gatewayConfigurationForm )
 		);
 
 	}
@@ -71,7 +70,6 @@ class GatewayConfigurationFormValidatorServiceTest extends TestCase {
 
 		$this->gatewayConfigurationForm->expects( $this->once() )->method( 'getKeyConfiguration' )->willReturn( $keyConfiguration );
 		$this->gatewayConfigurationForm->expects( $this->once() )->method( 'getFeePlanConfigurationList' )->willReturn( $feePlanConfigurationList );
-		//$this->pluginHelper->shouldReceive('isConfigured')->andReturn(false);
 		$this->feePlanRepository->expects( $this->once() )->method( 'getAll' );
 		$feePlanConfigurationList->expects( $this->once() )->method( 'validate' );
 		$feePlanConfigurationList->expects( $this->never() )->method( 'reset' );
@@ -79,7 +77,7 @@ class GatewayConfigurationFormValidatorServiceTest extends TestCase {
 
 		$this->assertInstanceOf(
 			GatewayConfigurationForm::class,
-			$this->gatewayConfigurationFormValidatorService->validate( $this->gatewayConfigurationForm, $this->feePlanRepository )
+			$this->gatewayConfigurationFormValidatorService->validate( $this->gatewayConfigurationForm )
 		);
 
 	}
@@ -96,10 +94,9 @@ class GatewayConfigurationFormValidatorServiceTest extends TestCase {
 		$keyConfiguration->expects( $this->once() )->method( 'validate' )->willReturn( $keyConfiguration );
 		$keyConfiguration->expects( $this->once() )->method( 'isMerchantIdChanged' )->willReturn( true );
 
-		//$this->pluginHelper->shouldReceive('isConfigured')->andReturn(true);
-		Functions\expect('plugins_url')
-			->once()
-			->andReturn( 'http://woocommerce-10-3-5.local.test/wp-content/plugins/alma-gateway-for-woocommerce/' );
+		when( 'plugins_url' )->justReturn( 'http://woocommerce-10-3-5.local.test/wp-content/plugins/alma-gateway-for-woocommerce/' );
+		when( 'plugin_dir_path' )->justReturn( '/app/woocommerce/wp-content/plugins/alma-gateway-for-woocommerce/' );
+		Plugin::get_instance()->set_is_configured( true );
 
 		$this->gatewayConfigurationForm->expects( $this->once() )->method( 'getKeyConfiguration' )->willReturn( $keyConfiguration );
 		$this->gatewayConfigurationForm->expects( $this->once() )->method( 'getFeePlanConfigurationList' )->willReturn( $feePlanConfigurationList );
@@ -136,7 +133,6 @@ class GatewayConfigurationFormValidatorServiceTest extends TestCase {
 		$feePlanConfigurationList->expects( $this->never() )->method( 'validate' );
 		$feePlanConfigurationList->expects( $this->never() )->method( 'reset' );
 		$this->feePlanRepository->expects( $this->never() )->method( 'deleteAll' );
-		//$this->pluginHelper->shouldReceive('isConfigured')->andReturn(false);
 
 		$this->gatewayConfigurationFormValidatorService->validate( $gatewayConfigurationForm );
 	}
@@ -144,10 +140,10 @@ class GatewayConfigurationFormValidatorServiceTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 		Monkey\setUp();
-		$this->feePlanRepository                        = $this->createMock( FeePlanRepository::class );
-		$this->gatewayConfigurationForm                 = $this->createMock( GatewayConfigurationForm::class );
-		$this->configService                            = $this->createMock( ConfigService::class );
-
+		$this->feePlanRepository        = $this->createMock( FeePlanRepository::class );
+		$this->gatewayConfigurationForm = $this->createMock( GatewayConfigurationForm::class );
+		$this->configService            = $this->createMock( ConfigService::class );
+		when( 'plugins_url' )->justReturn( 'http://woocommerce-10-3-5.local.test/wp-content/plugins/alma-gateway-for-woocommerce/' );
 		$this->gatewayConfigurationFormValidatorService = new GatewayConfigurationFormValidatorService(
 			$this->feePlanRepository
 		);
@@ -159,8 +155,8 @@ class GatewayConfigurationFormValidatorServiceTest extends TestCase {
 		Mockery::resetContainer();
 		Mockery::close();
 		parent::tearDown();
-		$this->feePlanRepository = null;
+		$this->feePlanRepository        = null;
 		$this->gatewayConfigurationForm = null;
-		$this->configService = null;
+		$this->configService            = null;
 	}
 }

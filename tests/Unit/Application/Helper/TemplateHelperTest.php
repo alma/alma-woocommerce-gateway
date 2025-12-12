@@ -3,29 +3,28 @@
 namespace Alma\Gateway\Tests\Unit\Application\Helper;
 
 use Alma\Gateway\Application\Helper\TemplateHelper;
-use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
+use function Brain\Monkey\Functions\when;
 
 /**
  * Exécute cette classe de tests dans un processus séparé pour éviter
  * le conflit "class already exists" quand on crée un alias Mockery.
  *
- * @RunTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */
 class TemplateHelperTest extends TestCase {
 	use MockeryPHPUnitIntegration;
 
-	private TemplateHelper $templateHelper;
+	private ?TemplateHelper $templateHelper;
 	private $pluginHelper;
 
 	/**
-	 * @runInSeparateProcess
 	 * @return void
+	 *
 	 */
 	public function testLocateTemplateWithoutSubPath() {
 
@@ -33,7 +32,8 @@ class TemplateHelperTest extends TestCase {
 			->once()
 			->withArgs( function ( $key, $path, $name ) {
 				$this->assertSame( 'alma_gateway_template', $key );
-				$this->assertSame( 'var/plugin/path/public/templates/my-template.php', $path );
+				$this->assertSame( '/app/woocommerce/wp-content/plugins/alma-gateway-for-woocommerce/public/templates/my-template.php',
+					$path );
 				$this->assertSame( 'my-template.php', $name );
 
 				return true;
@@ -48,7 +48,6 @@ class TemplateHelperTest extends TestCase {
 	}
 
 	/**
-	 * @runInSeparateProcess
 	 * @return void
 	 */
 	public function testLocateTemplateWithSubPath() {
@@ -57,7 +56,8 @@ class TemplateHelperTest extends TestCase {
 			->once()
 			->withArgs( function ( $key, $path, $name ) {
 				$this->assertSame( 'alma_gateway_template', $key );
-				$this->assertSame( 'var/plugin/path/public/templates/mysub/my-template.php', $path );
+				$this->assertSame( '/app/woocommerce/wp-content/plugins/alma-gateway-for-woocommerce/public/templates/mysub/my-template.php',
+					$path );
 				$this->assertSame( 'my-template.php', $name );
 
 				return true;
@@ -75,12 +75,8 @@ class TemplateHelperTest extends TestCase {
 		parent::setUp();
 		Monkey\setUp();
 
-		Functions\expect('plugins_url')
-			->once()
-			->andReturn( 'http://woocommerce-10-3-5.local.test/wp-content/plugins/alma-gateway-for-woocommerce/' );
-
-		Functions\expect('plugin_dir_path')
-			->andReturn( '/app/woocommerce/wp-content/plugins/alma-gateway-for-woocommerce/' );
+		when( 'plugins_url' )->justReturn( 'http://woocommerce-10-3-5.local.test/wp-content/plugins/alma-gateway-for-woocommerce/' );
+		when( 'plugin_dir_path' )->justReturn( '/app/woocommerce/wp-content/plugins/alma-gateway-for-woocommerce/' );
 
 		$this->pluginHelper = Mockery::mock( 'alias:Alma\Gateway\Application\Helper\PluginHelper' );
 		$this->pluginHelper->shouldReceive( 'getPluginPath' )->andReturn( 'var/plugin/path/' );
