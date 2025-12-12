@@ -12,9 +12,9 @@ use Alma\Gateway\Plugin;
 class GatewayConfigurationFormValidatorService {
 
 	private ?ConfigService $configService;
-	private ?FeePlanRepository $feePlanRepository;
+	private FeePlanRepository $feePlanRepository;
 
-	public function __construct(FeePlanRepository $feePlanRepository) {
+	public function __construct( FeePlanRepository $feePlanRepository ) {
 		$this->feePlanRepository = $feePlanRepository;
 	}
 
