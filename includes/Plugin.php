@@ -2,15 +2,17 @@
 
 namespace Alma\Gateway;
 
-use Alma\Gateway\Application\Exception\Controller\GatewayControllerException;
 use Alma\Gateway\Application\Exception\Helper\RequirementsHelperException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\RequirementsHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Controller\AdminController;
+use Alma\Gateway\Infrastructure\Controller\AssetsController;
 use Alma\Gateway\Infrastructure\Controller\GatewayController;
 use Alma\Gateway\Infrastructure\Controller\ShopController;
 use Alma\Gateway\Infrastructure\Exception\CmsException;
+use Alma\Gateway\Infrastructure\Exception\Controller\AssetsControllerException;
+use Alma\Gateway\Infrastructure\Exception\Controller\GatewayControllerException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
@@ -126,7 +128,7 @@ final class Plugin extends abstractPlugin {
 	/**
 	 * Used for regular plugin work.
 	 *
-	 * @throws RequirementsHelperException|GatewayControllerException
+	 * @throws AssetsControllerException|GatewayControllerException
 	 */
 	public function plugin_setup(): void {
 
@@ -162,6 +164,10 @@ final class Plugin extends abstractPlugin {
 			$gatewayController = self::get_container()->get( GatewayController::class );
 			$gatewayController->configure();
 		}
+
+		/** @var AssetsController $assetsController */
+		$assetsController = self::get_container()->get( AssetsController::class );
+		$assetsController->run();
 	}
 
 	/**

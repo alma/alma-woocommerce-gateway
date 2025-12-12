@@ -43,6 +43,7 @@ use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
 use Alma\Gateway\Infrastructure\Adapter\ProductAdapter;
 use Alma\Gateway\Infrastructure\Controller\AdminController;
+use Alma\Gateway\Infrastructure\Controller\AssetsController;
 use Alma\Gateway\Infrastructure\Gateway\Backend\AlmaGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
@@ -246,6 +247,7 @@ class ContainerService {
 		// WooCommerce Layer
 		$this->dice = $this->dice->addRules(
 			array(
+				AssetsController::class          => array( 'shared' => true ),
 				AlmaGateway::class               => array( 'shared' => true ),
 				ConfigRepository::class          => array( 'shared' => true ),
 				FeePlanRepository::class         => array( 'shared' => true ),

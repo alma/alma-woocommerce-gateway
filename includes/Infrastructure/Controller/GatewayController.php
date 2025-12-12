@@ -2,8 +2,8 @@
 
 namespace Alma\Gateway\Infrastructure\Controller;
 
-use Alma\Gateway\Application\Exception\Controller\GatewayControllerException;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
+use Alma\Gateway\Infrastructure\Exception\Controller\GatewayControllerException;
 use Alma\Gateway\Infrastructure\Helper\BackendHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\EventHelper;

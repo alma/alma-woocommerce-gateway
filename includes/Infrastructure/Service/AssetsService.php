@@ -5,6 +5,7 @@ namespace Alma\Gateway\Infrastructure\Service;
 use Alma\Gateway\Infrastructure\Config\AssetsConfig;
 use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
+use Alma\Gateway\Infrastructure\Helper\EventHelper;
 
 class AssetsService {
 
@@ -18,6 +19,26 @@ class AssetsService {
 	public function __construct() {
 		$this->registered_assets = AssetsConfig::getAll();
 		$this->registerGroup( AssetsConfig::ASSETS_CONFIG_CDN );
+	}
+
+	/**
+	 * Run services on template wp_enqueue_scripts.
+	 * We need to wait at least templates because is_page detection run at this time!
+	 *
+	 * @param callable $callback Function to run on wp_enqueue_scripts.
+	 */
+	public static function runFrontendServices( callable $callback ) {
+		EventHelper::addEvent( 'wp_enqueue_scripts', $callback );
+	}
+
+	/**
+	 * Run services on template wp_enqueue_scripts.
+	 * We need to wait at least templates because is_page detection run at this time!
+	 *
+	 * @param callable $callback Function to run on wp_enqueue_scripts.
+	 */
+	public static function runBackendServices( callable $callback ) {
+		EventHelper::addEvent( 'wp_enqueue_scripts', $callback );
 	}
 
 	/**
