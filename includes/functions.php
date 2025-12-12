@@ -8,6 +8,15 @@ use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Alma\Gateway\Plugin;
 
+add_filter( 'woocommerce_deprecated_filter_trigger_error', '__return_false' );
+add_filter( 'woocommerce_deprecated_action_trigger_error', '__return_false' );
+add_filter( 'woocommerce_deprecated_argument_trigger_error', '__return_false' );
+add_filter( 'woocommerce_deprecated_function_trigger_error', '__return_false' );
+add_filter( 'deprecated_function_trigger_error', '__return_false' );
+add_filter( 'deprecated_argument_trigger_error', '__return_false' );
+add_filter( 'deprecated_file_trigger_error', '__return_false' );
+error_reporting( E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED );
+
 add_action(
 	'wp_footer',
 	function () {

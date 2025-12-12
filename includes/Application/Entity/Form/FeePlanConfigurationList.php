@@ -27,7 +27,7 @@ class FeePlanConfigurationList extends ArrayObject {
 			$iteratorClass
 		);
 	}
-	
+
 	/**
 	 * Check if the fee plans are valid.
 	 *

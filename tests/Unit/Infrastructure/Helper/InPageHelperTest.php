@@ -47,7 +47,7 @@ class InPageHelperTest extends TestCase {
 
 		$this->assertEquals(
 			'https://woocommerce.com/?page_id=6&alma=inPage&pid=payment_123',
-			$this->inPageHelper->getInPageRedirectionUrl( 'payment_123' ) );
+			$this->inPageHelper->getInPageRedirectionFallbackUrl( 'payment_123' ) );
 	}
 
 }

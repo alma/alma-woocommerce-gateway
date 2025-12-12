@@ -4,13 +4,13 @@ namespace Alma\Gateway\Infrastructure\Controller;
 
 use Alma\Gateway\Application\Exception\Controller\GatewayControllerException;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
-use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Infrastructure\Helper\BackendHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\EventHelper;
 use Alma\Gateway\Infrastructure\Helper\FrontendHelper;
 use Alma\Gateway\Infrastructure\Helper\GatewayHelper;
 use Alma\Gateway\Infrastructure\Service\GatewayService;
+use Alma\Gateway\Plugin;
 
 class GatewayController {
 
@@ -67,7 +67,7 @@ class GatewayController {
 			}
 			// Add links to gateway.
 			$this->gatewayHelper->addGatewayLinks(
-				PluginHelper::getPluginFile(),
+				Plugin::get_instance()->get_plugin_file(),
 				array( $this->gatewayService, 'pluginActionLinks' )
 			);
 		} else {

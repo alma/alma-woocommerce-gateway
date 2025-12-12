@@ -27,11 +27,18 @@ class ConfigFormMapperTest extends TestCase {
 	/** * @var array $settings */
 	private array $settings;
 
+	/** * @var ConfigService */
+	private $configServiceMock;
+	/**
+	 * @var array|int[]
+	 */
+	private array $additionalSettingsWithFeePlan;
+
 	public function setUp(): void {
 
 		$authenticationServiceMock = $this->createMock( AuthenticationService::class );
-		$configServiceMock         = $this->createMock( ConfigService::class );
-		$this->configFormMapper    = new ConfigFormMapper( $configServiceMock, $authenticationServiceMock );
+		$this->configServiceMock         = $this->createMock( ConfigService::class );
+		$this->configFormMapper    = new ConfigFormMapper( $this->configServiceMock, $authenticationServiceMock );
 
 		$this->keySettings        = [
 			'test_api_key' => 'test_key_123',
@@ -57,17 +64,32 @@ class ConfigFormMapperTest extends TestCase {
 		$this->settings           = array_merge( $this->keySettings, $this->feePlanSettings,
 			$this->additionalSettings );
 
+		$this->additionalSettingsWithFeePlan           = array_merge( $this->feePlanSettings,
+			$this->additionalSettings );
+
 		$this->finalSettings = array_merge( $this->settings, [ 'merchant_id' => 'merchant_xxxxxxxxxxxxxxx' ] );
 	}
 
 	/**
-	 * Test to transform Form data to GatewayConfiguration entity.
+	 * Test to transform Form data to GatewayConfiguration entity if is configured.
 	 */
-	public function testFromCmsForm(): void {
+	public function testFromCmsFormIsConfigured(): void {
 
+		$this->configServiceMock->expects( $this->once() )->method('isConfigured')->willReturn( true );
 		$gatewayConfig = $this->configFormMapper->from_cms_form( $this->settings );
 
 		$this->assertEquals( $this->additionalSettings, $gatewayConfig->getAdditionalSettings() );
+	}
+
+	/**
+	 * Test to transform Form data to GatewayConfiguration entity if is not configured.
+	 */
+	public function testFromCmsFormIsNotConfigured(): void {
+
+		$this->configServiceMock->expects( $this->once() )->method('isConfigured')->willReturn( false );
+		$gatewayConfig = $this->configFormMapper->from_cms_form( $this->settings );
+
+		$this->assertEquals( $this->additionalSettingsWithFeePlan, $gatewayConfig->getAdditionalSettings() );
 	}
 
 	/**

@@ -32,7 +32,6 @@ use Alma\Gateway\Application\Helper\EncryptorHelper;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
-use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Helper\RequirementsHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
 use Alma\Gateway\Application\Provider\EligibilityProvider;
@@ -232,7 +231,6 @@ class ContainerService {
 				AssetsService::class      => array( 'shared' => true ),
 				EncryptorHelper::class    => array( 'shared' => true ),
 				L10nHelper::class         => array( 'shared' => true ),
-				PluginHelper::class       => array( 'shared' => true ),
 				RequirementsHelper::class => array( 'shared' => true ),
 				TemplateHelper::class     => array( 'shared' => true ),
 				IpnHelper::class          => array( 'shared' => true ),

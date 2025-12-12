@@ -12,6 +12,7 @@ use Alma\Gateway\Application\Exception\Service\IpnServiceException;
 use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Provider\PaymentProvider;
+use Alma\Gateway\Application\Provider\PaymentProviderFactory;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
 use Alma\Gateway\Infrastructure\Helper\ParameterHelper;
@@ -41,7 +42,12 @@ class IpnService {
 	/** @var NavigationHelperInterface */
 	private NavigationHelperInterface $navigationHelper;
 
+	private PaymentProviderFactory $paymentProviderFactory;
+
+	private ?PaymentProvider $paymentProvider;
+
 	public function __construct(
+		PaymentProviderFactory $paymentProviderFactory,
 		ConfigService $configService,
 		PaymentProvider $paymentService,
 		NotificationHelperInterface $notificationHelper,
@@ -49,12 +55,13 @@ class IpnService {
 		NavigationHelperInterface $navigationHelper,
 		IpnHelper $ipnHelper
 	) {
-		$this->configService      = $configService;
-		$this->paymentService     = $paymentService;
-		$this->notificationHelper = $notificationHelper;
-		$this->cartAdapter        = $cartAdapter;
-		$this->navigationHelper   = $navigationHelper;
-		$this->ipnHelper          = $ipnHelper;
+		$this->paymentProviderFactory = $paymentProviderFactory;
+		$this->configService          = $configService;
+		$this->paymentService         = $paymentService;
+		$this->notificationHelper     = $notificationHelper;
+		$this->cartAdapter            = $cartAdapter;
+		$this->navigationHelper       = $navigationHelper;
+		$this->ipnHelper              = $ipnHelper;
 	}
 
 	/**
@@ -183,6 +190,7 @@ class IpnService {
 	}
 
 	/**
+	 *
 	 * @throws IpnServiceException
 	 */
 	private function managePotentialFraud( OrderAdapterInterface $order, Payment $payment ): void {

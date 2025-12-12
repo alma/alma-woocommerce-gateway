@@ -30,7 +30,7 @@ class ClassSuffixByDirectorySniff implements Sniff {
 		'Gateway'    => [ 'Gateway', 'GatewayInterface', 'GatewayException' ],
 		'Helper'     => [ 'Helper', 'HelperException' ],
 		'Mapper'     => [ 'Mapper', 'MapperInterface', 'MapperException' ],
-		'Provider'   => [ 'Provider', 'ProviderInterface', 'ProviderException' ],
+		'Provider'   => [ 'Provider', 'ProviderFactory', 'ProviderInterface', 'ProviderException' ],
 		'Repository' => [ 'Repository', 'RepositoryInterface', 'RepositoryException' ],
 		'Service'    => [ 'Service', 'ServiceException' ],
 	];
