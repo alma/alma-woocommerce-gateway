@@ -26,7 +26,7 @@ class AssetsController {
 			return;
 		}
 
-		if ( ContextHelper::isCheckoutPage() && ContextHelper::isCheckoutPageUseBlocks() ) {
+		if ( ContextHelper::isAdmin() || ( ContextHelper::isCheckoutPage() && ContextHelper::isCheckoutPageUseBlocks() ) ) {
 			/** @var GatewayRepository $gatewayRepository */
 			$gatewayRepository = Plugin::get_container()->get( GatewayRepository::class );
 			$almaGatewayBlocks = $gatewayRepository->findAllAlmaGatewayBlocks();

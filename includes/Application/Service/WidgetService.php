@@ -79,10 +79,10 @@ class WidgetService {
 		$excludedCategories = $this->configService->getExcludedCategories();
 		$language           = ContextHelper::getLanguage();
 
-		if ( ContextHelper::isCartPage() || ContextHelper::isAdmin() ) {
+		if ( ContextHelper::isAdmin() || ContextHelper::isCartPage() ) {
 			$this->displayCartWidget( $excludedCategories, $feePlanListAdapter, $environment, $merchantId,
 				$language )->display();
-		} elseif ( ContextHelper::isProductPage() ) {
+		} elseif ( ContextHelper::isAdmin() || ContextHelper::isProductPage() ) {
 			$this->displayProductWidget( $excludedCategories, $feePlanListAdapter, $environment, $merchantId,
 				$language )->display();
 		}
