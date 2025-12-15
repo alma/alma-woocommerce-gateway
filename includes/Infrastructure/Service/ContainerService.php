@@ -63,6 +63,7 @@ use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
 use Alma\Gateway\Infrastructure\Repository\ProductRepository;
 use Alma\Gateway\Infrastructure\Repository\UserRepository;
+use Alma\Gateway\Plugin;
 use Dice\Dice;
 use Psr\Http\Client\ClientInterface;
 
@@ -93,6 +94,7 @@ class ContainerService {
 		$this->setDiConfig();
 		$this->setApplicationRules();
 		$this->setInfrastructureRules();
+		$this->setUserAgentInfo();
 
 		CoreHelper::autoReloadOptionsOnOptionSave();
 	}
@@ -271,5 +273,13 @@ class ContainerService {
 				),
 			)
 		);
+	}
+
+	private function setUserAgentInfo() {
+		/** @var ClientConfiguration  $clientConfiguration */
+		$clientConfiguration = $this->get( ClientConfiguration::class );
+		$clientConfiguration->addUserAgentComponent('WordPress', get_bloginfo('version') );
+		$clientConfiguration->addUserAgentComponent('WooCommerce', WC()->version );
+		$clientConfiguration->addUserAgentComponent('Alma for WooCommerce', Plugin::ALMA_GATEWAY_PLUGIN_VERSION);
 	}
 }
