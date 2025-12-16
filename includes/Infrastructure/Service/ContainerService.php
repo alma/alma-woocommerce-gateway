@@ -48,6 +48,7 @@ use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
+use Alma\Gateway\Infrastructure\Helper\CmsHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\CoreHelper;
 use Alma\Gateway\Infrastructure\Helper\EventHelper;
@@ -63,6 +64,7 @@ use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
 use Alma\Gateway\Infrastructure\Repository\ProductRepository;
 use Alma\Gateway\Infrastructure\Repository\UserRepository;
+use Alma\Gateway\Plugin;
 use Dice\Dice;
 use Psr\Http\Client\ClientInterface;
 
@@ -136,6 +138,11 @@ class ContainerService {
 					$configService->getEnvironment()
 				),
 				'shared'          => true,
+				'call' => [
+					['addUserAgentComponent', CmsHelper::getCmsVersion()],
+					['addUserAgentComponent', CmsHelper::getShopVersion()],
+					['addUserAgentComponent', ['Alma for WooCommerce', Plugin::ALMA_GATEWAY_PLUGIN_VERSION]]
+				]
 			)
 		);
 
