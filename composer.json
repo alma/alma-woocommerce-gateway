@@ -8,6 +8,16 @@
     "ext-openssl": "*",
     "psr/log": "^1 || ^2"
   },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org",
+      "only": [
+        "wpackagist-plugin/*",
+        "wpackagist-theme/*"
+      ]
+    }
+  ],
   "require-dev": {
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
     "johnpbloch/wordpress-core": "*",
@@ -17,7 +27,7 @@
     "phpunit/phpunit": "^5 || ^6 || ^7 || ^8 || ^9",
     "squizlabs/php_codesniffer": "^3.5",
     "symfony/var-dumper": "*",
-    "woocommerce/woocommerce": "*",
+    "wpackagist-plugin/woocommerce": "*",
     "wp-coding-standards/wpcs": "^2.3",
     "yoast/phpunit-polyfills": "*",
     "ext-simplexml": "*"
