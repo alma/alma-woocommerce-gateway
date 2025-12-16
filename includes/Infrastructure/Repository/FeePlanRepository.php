@@ -93,7 +93,7 @@ class FeePlanRepository {
 	 */
 	public function getByPlanKey( string $planKey, bool $forceRefresh = false ): ?FeePlanAdapter {
 
-		if ( $forceRefresh || ! isset( $this->feePlanListAdapter ) ) {
+		if ( $forceRefresh || ! isset( $this->feePlanListAdapter['all'][0] ) ) {
 			$this->feePlanListAdapter['all'][0] = $this->retrieveFeePlans();
 		}
 
