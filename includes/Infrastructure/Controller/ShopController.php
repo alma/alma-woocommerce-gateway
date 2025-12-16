@@ -87,11 +87,6 @@ class ShopController {
 	public function display() {
 		FrontendHelper::displayFrontendServices(
 			function () {
-				if ( ContextHelper::isCartPage() && ContextHelper::isCartPageUseBlocks() ) {
-					$this->assetsService->displayWidgetBlockAssets();
-					almaLogConsole( '3 - DISPLAY - Load Widget Blocks Assets' );
-				}
-
 				if ( ContextHelper::isCartPage() || ContextHelper::isProductPage() ) {
 					$this->assetsService->displayWidgetAssets();
 					almaLogConsole( '3 - DISPLAY - Load Widget Assets' );
