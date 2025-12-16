@@ -48,6 +48,7 @@ use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
+use Alma\Gateway\Infrastructure\Helper\CmsHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\CoreHelper;
 use Alma\Gateway\Infrastructure\Helper\EventHelper;
@@ -94,7 +95,6 @@ class ContainerService {
 		$this->setDiConfig();
 		$this->setApplicationRules();
 		$this->setInfrastructureRules();
-		$this->setUserAgentInfo();
 
 		CoreHelper::autoReloadOptionsOnOptionSave();
 	}
@@ -138,6 +138,11 @@ class ContainerService {
 					$configService->getEnvironment()
 				),
 				'shared'          => true,
+				'call' => [
+					['addUserAgentComponent', CmsHelper::getCmsVersion()],
+					['addUserAgentComponent', CmsHelper::getShopVersion()],
+					['addUserAgentComponent', ['Alma for WooCommerce', Plugin::ALMA_GATEWAY_PLUGIN_VERSION]]
+				]
 			)
 		);
 
@@ -273,13 +278,5 @@ class ContainerService {
 				),
 			)
 		);
-	}
-
-	private function setUserAgentInfo() {
-		/** @var ClientConfiguration  $clientConfiguration */
-		$clientConfiguration = $this->get( ClientConfiguration::class );
-		$clientConfiguration->addUserAgentComponent('WordPress', get_bloginfo('version') );
-		$clientConfiguration->addUserAgentComponent('WooCommerce', WC()->version );
-		$clientConfiguration->addUserAgentComponent('Alma for WooCommerce', Plugin::ALMA_GATEWAY_PLUGIN_VERSION);
 	}
 }
