@@ -5,7 +5,6 @@ namespace Alma\Gateway\Infrastructure\Service;
 use Alma\Gateway\Infrastructure\Config\AssetsConfig;
 use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
-use Alma\Gateway\Infrastructure\Helper\EventHelper;
 
 class AssetsService {
 
@@ -14,31 +13,10 @@ class AssetsService {
 	/**
 	 * CDN Assets are loaded by default.
 	 * @throws AssetsServiceException
-	 * @todo CDN should be only register and not be enqueued by default
 	 */
 	public function __construct() {
 		$this->registered_assets = AssetsConfig::getAll();
 		$this->registerCdn( AssetsConfig::ASSETS_CONFIG_CDN );
-	}
-
-	/**
-	 * Run services on template wp_enqueue_scripts.
-	 * We need to wait at least templates because is_page detection run at this time!
-	 *
-	 * @param callable $callback Function to run on wp_enqueue_scripts.
-	 */
-	public static function runFrontendServices( callable $callback ) {
-		EventHelper::addEvent( 'wp_enqueue_scripts', $callback );
-	}
-
-	/**
-	 * Run services on template wp_enqueue_scripts.
-	 * We need to wait at least templates because is_page detection run at this time!
-	 *
-	 * @param callable $callback Function to run on wp_enqueue_scripts.
-	 */
-	public static function runBackendServices( callable $callback ) {
-		EventHelper::addEvent( 'wp_enqueue_scripts', $callback );
 	}
 
 	/**
@@ -109,14 +87,6 @@ class AssetsService {
 	}
 
 	/**
-	 * Display Widget Block assets.
-	 * @todo remove? it seems that Gutemberg enqueue this itself
-	 */
-	public function displayWidgetBlockAssets(): void {
-		//wp_enqueue_script( 'alma-' . AssetsConfig::ASSETS_CONFIG_WIDGET_BLOCK );
-	}
-
-	/**
 	 * Prepare Widget Block Editor assets.
 	 * @throws AssetsServiceException
 	 */
@@ -125,25 +95,11 @@ class AssetsService {
 	}
 
 	/**
-	 * Display Widget Block Editor assets.
-	 */
-	public function displayWidgetBlockEditorAssets(): void {
-		//wp_enqueue_script( 'alma-' . AssetsConfig::ASSETS_CONFIG_WIDGET_BLOCK_EDITOR );
-	}
-
-	/**
 	 * Prepare Checkout Block assets.
 	 * @throws AssetsServiceException
 	 */
 	public function registerGatewayBlockAssets( array $scriptParams = [] ): void {
 		$this->registerLocal( AssetsConfig::ASSETS_CONFIG_GATEWAY_BLOCK, $scriptParams );
-	}
-
-	/**
-	 * Display Checkout Block assets.
-	 */
-	public function displayGatewayBlockAssets(): void {
-		//wp_enqueue_script( 'alma-' . AssetsConfig::ASSETS_CONFIG_GATEWAY_BLOCK );
 	}
 
 	/**
@@ -213,8 +169,7 @@ class AssetsService {
 					$config['version'] ?? AssetsHelper::getFileVersion( $config['src'] ),
 					$config['in_footer'] ?? true
 				);
-
-				// Handle localization @todo use window.wc.wcSettings.getSetting instead?
+				
 				if ( isset( $config['params'] ) ) {
 
 					$expectedKeys         = array_flip( $config['params']['keys'] );
