@@ -170,10 +170,6 @@ final class Plugin extends abstractPlugin {
 			$gatewayController = self::get_container()->get( GatewayController::class );
 			$gatewayController->configure();
 		}
-
-		/** @var GatewayController $gatewayController */
-		$gatewayController = self::get_container()->get( GatewayController::class );
-		$gatewayController->display();
 	}
 
 	/**

@@ -72,26 +72,6 @@ class GatewayController {
 	}
 
 	/**
-	 * Display the service by loading assets
-	 *
-	 * @return void
-	 */
-	public function display() {
-		if ( ! Plugin::get_instance()->is_configured() ) {
-			return;
-		}
-
-		FrontendHelper::displayFrontendServices(
-			function () {
-				if ( ContextHelper::isAdmin() || ( ContextHelper::isCheckoutPage() && ContextHelper::isCheckoutPageUseBlocks() ) ) {
-					$this->assetsService->displayGatewayBlockAssets();
-					almaLogConsole( '3 - DISPLAY - Display Gateway Block Assets' );
-				}
-			}
-		);
-	}
-
-	/**
 	 * Load the admin gateway to do configuration.
 	 * Load only in admin area on gateway settings page
 	 */
