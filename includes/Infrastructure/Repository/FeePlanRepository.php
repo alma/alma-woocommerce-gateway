@@ -23,8 +23,8 @@ class FeePlanRepository {
 	use FeePlanProviderAwareTrait;
 	use EligibilityProviderAwareTrait;
 
-	/** @var FeePlanListAdapter */
-	private FeePlanListAdapter $feePlanListAdapter;
+	/** @var array */
+	private array $feePlanListAdapter;
 
 	/** @var ConfigService */
 	private ConfigService $configService;
@@ -52,11 +52,34 @@ class FeePlanRepository {
 	 */
 	public function getAll( bool $forceRefresh = false ): FeePlanListAdapter {
 
-		if ( $forceRefresh || ! isset( $this->feePlanListAdapter ) ) {
-			$this->retrieveFeePlans();
+		if ( $forceRefresh || ! isset( $this->feePlanListAdapter['all'][0] ) ) {
+			almalog( 'NO CACHE' );
+			$this->feePlanListAdapter['all'][0] = $this->retrieveFeePlans();
 		}
+		almalog( 'CACHE' );
 
-		return $this->feePlanListAdapter;
+		return $this->feePlanListAdapter['all'][0];
+	}
+
+	/**
+	 * Get all Fee Plans with their local configuration and Eligibility
+	 *
+	 * @param int  $cartTotal
+	 * @param bool $forceRefresh Whether to force a refresh of the fee plan list.
+	 *
+	 * @return FeePlanListAdapter
+	 * @throws FeePlanRepositoryException
+	 */
+	public function getAllWithEligibility( int $cartTotal = 0, bool $forceRefresh = false ): FeePlanListAdapter {
+
+		if ( $forceRefresh || ! isset( $this->feePlanListAdapter['all-with-eligibility'][ $cartTotal ] ) ) {
+			almalogConsole( 'NO CACHE - WITH ELIGIBILITY - ' . $cartTotal );
+			$this->feePlanListAdapter['all-with-eligibility'][ $cartTotal ] = $this->retrieveFeePlans( $cartTotal );
+			almaLogConsole( $this->feePlanListAdapter['all-with-eligibility'][ $cartTotal ] );
+		}
+		almalogConsole( 'CACHE - WITH ELIGIBILITY - ' . $cartTotal );
+
+		return $this->feePlanListAdapter['all-with-eligibility'][ $cartTotal ];
 	}
 
 	/**
@@ -71,7 +94,7 @@ class FeePlanRepository {
 	public function getByPlanKey( string $planKey, bool $forceRefresh = false ): ?FeePlanAdapter {
 
 		if ( $forceRefresh || ! isset( $this->feePlanListAdapter ) ) {
-			$this->retrieveFeePlans();
+			$this->feePlanListAdapter['all'][0] = $this->retrieveFeePlans();
 		}
 
 		/** @var FeePlanAdapter $feePlanAdapter */
@@ -94,7 +117,7 @@ class FeePlanRepository {
 	 * @return void
 	 * @throws FeePlanRepositoryException
 	 */
-	public function retrieveFeePlans(): void {
+	protected function retrieveFeePlans( $cartTotal = 0 ): FeePlanListAdapter {
 		try {
 			// Get Fee Plans. (From API)
 			$this->getFeePlanProvider();
@@ -105,7 +128,7 @@ class FeePlanRepository {
 			$feePlanListAdapter = $this->setLocalConfiguration( $feePlanListAdapter );
 
 			// Get Eligibility only on shop
-			if ( ! ContextHelper::isAdmin() && ContextHelper::getCart()->getCartTotal() > 0 ) {
+			if ( ! ContextHelper::isAdmin() && $cartTotal > 0 ) {
 				// Add Eligibility to Fee Plans. (Installment Plans from API)
 				$this->getEligibilityProvider();
 				$eligibilityDto      = ( new EligibilityMapper() )
@@ -118,7 +141,7 @@ class FeePlanRepository {
 				$feePlanListAdapter  = $this->setInstallmentPlanList( $feePlanListAdapter, $installmentPlanList );
 			}
 
-			$this->feePlanListAdapter = $feePlanListAdapter;
+			return $feePlanListAdapter;
 
 		} catch ( FeePlanServiceException|EligibilityServiceException $e ) {
 			throw new FeePlanRepositoryException( $e->getMessage() );

@@ -78,7 +78,7 @@ class WidgetBlock implements IntegrationInterface {
 	 */
 	public function get_script_data(): array {
 
-		$feePlanList = $this->fee_plan_repository->getAll()->filterEnabled();
+		$feePlanList = $this->fee_plan_repository->getAllWithEligibility()->filterEnabled();
 
 		return array(
 			'merchant_id'      => $this->config_service->getMerchantId(),

@@ -70,7 +70,8 @@ class CheckoutService {
 
 		$isInPage = $this->configService->isInPageEnabled();
 		try {
-			$feePlanListAdapter = $this->feePlanRepository->getAll()->filterEnabled();
+			$feePlanListAdapter = $this->feePlanRepository->getAllWithEligibility( ContextHelper::getCart()->getCartTotal(),
+				true )->filterEnabled();
 		} catch ( FeePlanRepositoryException $e ) {
 			throw new CheckoutServiceException( $e->getMessage(), 0, $e );
 		}
