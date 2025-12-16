@@ -21,15 +21,25 @@ class AdminController {
 	}
 
 	/**
-	 * Run services on admin init.
+	 * Display services on admin init.
 	 */
-	public function run() {
+	public function display() {
 		BackendHelper::runBackendServices(
 			function () {
 				// Init Backend Services
 				if ( ContextHelper::isAdmin() ) {
-					// Load Admin Assets
-					$this->assetsService->loadAdminAssets();
+					// Register Admin Assets
+					$this->assetsService->registerAdminAssets();
+					almaLogConsole( '2 - RUN - Register Admin Assets' );
+					$this->assetsService->registerWidgetAssets();
+					almaLogConsole( '2 - RUN - Register Widget Assets' );
+					$this->assetsService->registerWidgetBlockEditorAssets();
+					almaLogConsole( '2 - RUN - Register Block Widget Editor Assets' );
+					// Display Admin Assets
+					$this->assetsService->displayAdminAssets();
+					almaLogConsole( '3 - Display - Load Admin Assets' );
+					$this->assetsService->displayWidgetAssets();
+					almaLogConsole( '3 - Display - Load Widget Assets' );
 				}
 			}
 		);

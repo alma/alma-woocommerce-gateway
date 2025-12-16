@@ -13,8 +13,6 @@ namespace Alma\Gateway\Infrastructure\Block\Widget;
 
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
-use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
-use Alma\Gateway\Infrastructure\Exception\Block\WidgetBlockException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Mapper\FeePlanListMapper;
@@ -59,17 +57,7 @@ class WidgetBlock implements IntegrationInterface {
 		return 'alma-widget-block';
 	}
 
-	/**
-	 * Initialize.
-	 *
-	 * @return void
-	 * @throws WidgetBlockException
-	 */
 	public function initialize() {
-		$this->register_block_frontend_scripts();
-		if ( ContextHelper::isAdmin() ) {
-			$this->register_block_editor_scripts();
-		}
 	}
 
 	public function get_script_handles(): array {
@@ -100,27 +88,5 @@ class WidgetBlock implements IntegrationInterface {
 			'locale'           => $this->context_helper->getLanguage(),
 			'can_be_displayed' => count( $feePlanList ) > 0 && $this->config_service->getWidgetCartEnabled(),
 		);
-	}
-
-	/**
-	 * @throws WidgetBlockException
-	 */
-	private function register_block_frontend_scripts() {
-		try {
-			$this->assets_service->loadWidgetBlockAssets();
-		} catch ( AssetsServiceException $e ) {
-			throw new WidgetBlockException( $e->getMessage() );
-		}
-	}
-
-	/**
-	 * @throws WidgetBlockException
-	 */
-	private function register_block_editor_scripts() {
-		try {
-			$this->assets_service->loadWidgetBlockEditorAssets();
-		} catch ( AssetsServiceException $e ) {
-			throw new WidgetBlockException( $e->getMessage() );
-		}
 	}
 }

@@ -30,9 +30,9 @@ class InPageService {
 	 * @return void
 	 * @throws InPageServiceException
 	 */
-	public function displayInPage() {
+	public function runInPage() {
 		try {
-			$this->assetsService->loadInPageAssets( [
+			$this->assetsService->registerInPageAssets( [
 				'environment' => $this->configService->getEnvironment()->getMode(),
 				'merchant_id' => $this->configService->getMerchantId()
 			] );

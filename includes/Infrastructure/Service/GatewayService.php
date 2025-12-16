@@ -116,7 +116,6 @@ class GatewayService {
 	 * (see AbstractGatewayBlock::is_active())
 	 *
 	 * @return void
-	 * @throws GatewayServiceException
 	 */
 	public function initGatewayBlocks() {
 

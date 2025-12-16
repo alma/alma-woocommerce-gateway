@@ -20,4 +20,10 @@ class BlocksWidgetHelper {
 		$cartWidget = Plugin::get_container()->get( CartWidget::class );
 		$cartWidget->register();
 	}
+
+	public static function prepareWidgetAssets() {
+		/** @var CartWidget $cartWidget */
+		$cartWidget = Plugin::get_container()->get( CartWidget::class );
+		$cartWidget->prepareAssets();
+	}
 }

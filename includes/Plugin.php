@@ -128,7 +128,8 @@ final class Plugin extends abstractPlugin {
 	/**
 	 * Used for regular plugin work.
 	 *
-	 * @throws AssetsControllerException|GatewayControllerException
+	 * @throws GatewayControllerException|RequirementsHelperException
+	 * @throws AssetsControllerException
 	 */
 	public function plugin_setup(): void {
 
@@ -140,23 +141,28 @@ final class Plugin extends abstractPlugin {
 
 			$this->get_container()->setApiConfig();
 
+			/** @var GatewayController $gatewayController */
+			$gatewayController = self::get_container()->get( GatewayController::class );
+			$gatewayController->prepare();
+
 			// Register widgets
 			/** @var ShopController $shopController */
 			$shopController = self::get_container()->get( ShopController::class );
-			$shopController->warm();
+			$shopController->prepare();
 
 			// Plugin fully configured, let's run the services
-			/** @var GatewayController $gatewayController */
-			$gatewayController = self::get_container()->get( GatewayController::class );
 			$gatewayController->run();
+
+			// Run services only when WordPress frontend is ready.
+			$shopController->run();
 
 			// Run Admin Controller only when WordPress admin is ready.
 			/** @var AdminController $adminController */
 			$adminController = self::get_container()->get( AdminController::class );
-			$adminController->run();
+			$adminController->display();
 
-			// Run services only when WordPress frontend is ready.
-			$shopController->run();
+			// Display services only when WordPress frontend is ready.
+			$shopController->display();
 
 		} else {
 			// Plugin not yet configured, load only backend gateway to help in configuration.
@@ -165,9 +171,9 @@ final class Plugin extends abstractPlugin {
 			$gatewayController->configure();
 		}
 
-		/** @var AssetsController $assetsController */
-		$assetsController = self::get_container()->get( AssetsController::class );
-		$assetsController->run();
+		/** @var GatewayController $gatewayController */
+		$gatewayController = self::get_container()->get( GatewayController::class );
+		$gatewayController->display();
 	}
 
 	/**
