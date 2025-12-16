@@ -98,7 +98,7 @@ class FeePlanRepository {
 		}
 
 		/** @var FeePlanAdapter $feePlanAdapter */
-		foreach ( $this->feePlanListAdapter as $feePlanAdapter ) {
+		foreach ( $this->feePlanListAdapter['all'][0] as $feePlanAdapter ) {
 			if ( $feePlanAdapter->getPlanKey() === $planKey ) {
 				return $feePlanAdapter;
 			}
