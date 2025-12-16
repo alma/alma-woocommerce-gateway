@@ -3,9 +3,9 @@
 namespace Alma\Gateway\Infrastructure\Adapter;
 
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
+use Alma\API\Domain\Adapter\OrderLineAdapterInterface;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
-use BadMethodCallException;
 use WC_Order;
 
 /**
@@ -304,7 +304,7 @@ class OrderAdapter implements OrderAdapterInterface {
 	 * Get the lines of the order.
 	 * This method retrieves the items from the order and maps them to OrderLineAdapterInterface.
 	 *
-	 * @return OrderLineAdapter[]
+	 * @return OrderLineAdapterInterface[]
 	 */
 	public function getOrderLines(): array {
 		return array_map(
@@ -331,28 +331,6 @@ class OrderAdapter implements OrderAdapterInterface {
 	 */
 	public function getMerchantReference(): string {
 		return $this->wcOrder->get_order_number();
-	}
-
-	/**
-	 * Get the remaining refund amount.
-	 * This method calculates the remaining refund amount by subtracting the total refunded amount from
-	 * the total order amount.
-	 *
-	 * @return float The remaining refund amount.
-	 */
-	public function getRemainingRefundAmount(): float {
-		return $this->getTotal() - $this->getTotalRefunded();
-	}
-
-	/**
-	 * Check if the order is fully refunded.
-	 * This method checks if the remaining refund amount is zero, indicating that the order has been
-	 * fully refunded.
-	 *
-	 * @return bool True if the order is fully refunded, false otherwise.
-	 */
-	public function isFullyRefunded(): bool {
-		return round( $this->getRemainingRefundAmount(), 3 ) === round( 0, 3 );
 	}
 
 	/**

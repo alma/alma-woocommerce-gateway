@@ -2,13 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Service;
 
-use Alma\API\Domain\Entity\Eligibility;
-use Alma\API\Domain\Entity\EligibilityList;
-use Alma\Gateway\Application\Exception\Service\API\EligibilityServiceException;
 use Alma\Gateway\Application\Helper\L10nHelper;
-use Alma\Gateway\Application\Mapper\EligibilityMapper;
-use Alma\Gateway\Application\Provider\EligibilityProvider;
 use Alma\Gateway\Application\Service\ConfigService;
+use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
+use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Block\Gateway\AbstractGatewayBlock;
 use Alma\Gateway\Infrastructure\Exception\CheckoutServiceException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
@@ -17,29 +14,24 @@ use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\SecurityHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
+use Alma\Gateway\Plugin;
 
 class CheckoutService {
 
 	protected AbstractFrontendGateway $gateway;
 	private ConfigService $configService;
-	private GatewayRepository $gatewayRepository;
 	private FeePlanRepository $feePlanRepository;
-	private EligibilityProvider $eligibilityProvider;
 	private SecurityHelper $securityHelper;
 
 
 	public function __construct(
 		ConfigService $configService,
-		GatewayRepository $gatewayRepository,
 		FeePlanRepository $feePlanRepository,
-		EligibilityProvider $eligibilityProvider,
 		SecurityHelper $securityHelper
 	) {
-		$this->configService       = $configService;
-		$this->gatewayRepository   = $gatewayRepository;
-		$this->feePlanRepository   = $feePlanRepository;
-		$this->eligibilityProvider = $eligibilityProvider;
-		$this->securityHelper      = $securityHelper;
+		$this->configService     = $configService;
+		$this->feePlanRepository = $feePlanRepository;
+		$this->securityHelper    = $securityHelper;
 
 		$this->initialize();
 	}
@@ -61,19 +53,28 @@ class CheckoutService {
 	 * AJAX handler to get Checkout data.
 	 * Can receive billing_country and shipping_country as GET parameters
 	 * to filter on Eligibility.
+	 * @throws CheckoutServiceException
 	 */
 	public function getCheckoutData(): void {
 
-		wp_send_json( $this->getCheckoutParams() );
+		/** @var GatewayRepository $gatewayRepository */
+		$gatewayRepository = Plugin::get_container()->get( GatewayRepository::class );
+		wp_send_json( $this->getCheckoutParams( $gatewayRepository->findAllAlmaGatewayBlocks() ) );
 	}
 
 	/**
 	 * Get Checkout parameters
+	 * @throws CheckoutServiceException
 	 */
-	public function getCheckoutParams(): array {
+	public function getCheckoutParams( array $almaGatewayBlocks ): array {
 
-		$isInPage        = $this->configService->isInPageEnabled();
-		$eligibilityList = $this->getEligibilityForCheckout();
+		$isInPage = $this->configService->isInPageEnabled();
+		try {
+			$feePlanListAdapter = $this->feePlanRepository->getAll()->filterEnabled();
+		} catch ( FeePlanRepositoryException $e ) {
+			throw new CheckoutServiceException( $e->getMessage(), 0, $e );
+		}
+
 
 		// Prepare response
 		$nonce_key = sprintf( '%s_nonce_field', 'alma_checkout' );
@@ -81,8 +82,8 @@ class CheckoutService {
 			'success'          => true,
 			'is_in_page'       => $isInPage,
 			'gateway_settings' => array_merge_recursive(
-				$this->formatBlocksForCheckout( $this->gatewayRepository->findAllAlmaGatewayBlocks() ),
-				$this->formatEligibilityForCheckout( $eligibilityList ),
+				$this->formatBlocksForCheckout( $almaGatewayBlocks ),
+				$this->formatEligibilityForCheckout( $feePlanListAdapter ),
 			),
 			'nonce_key'        => $nonce_key,
 			'nonce_value'      => $this->securityHelper->generateToken( $nonce_key ),
@@ -97,37 +98,10 @@ class CheckoutService {
 	}
 
 	/**
-	 * Get Eligibility for checkout
-	 *
-	 * @return EligibilityList
-	 * @throws CheckoutServiceException
-	 * @todo use the new FeePLanRepository
-	 */
-	public function getEligibilityForCheckout(): EligibilityList {
-		try {
-			$eligibilityDto = ( new EligibilityMapper() )
-				->buildEligibilityDto(
-					ContextHelper::getCart(),
-					ContextHelper::getCustomer(),
-					$this->feePlanRepository->getAll()->filterEnabled()
-				);
-		} catch ( FeePlanRepositoryException $e ) {
-			throw new CheckoutServiceException( $e );
-		}
-		try {
-			$eligibilityList = $this->eligibilityProvider->getEligibilityList( $eligibilityDto );
-		} catch ( EligibilityServiceException $e ) {
-			$eligibilityList = new EligibilityList();
-		}
-
-		return $eligibilityList;
-	}
-
-	/**
 	 * Format Fee Plans for block
 	 * @todo use a DTO
 	 */
-	public function formatEligibilityForCheckout( EligibilityList $eligibilityList ): array {
+	public function formatEligibilityForCheckout( FeePlanListAdapter $feePlanListAdapter ): array {
 
 		$gateways = array(
 			'alma_paynow_gateway'   => array(),
@@ -136,23 +110,23 @@ class CheckoutService {
 			'alma_credit_gateway'   => array(),
 		);
 
-		foreach ( $eligibilityList as $eligibility ) {
+		foreach ( $feePlanListAdapter as $feePlanAdapter ) {
 
 			// Pay now
-			if ( $eligibility->isPayNow() ) {
-				$gateways['alma_paynow_gateway']['fee_plans_settings'][ $eligibility->getPlanKey() ] = $this->formatEligibilityContentForCheckout( $eligibility );
+			if ( $feePlanAdapter->isPayNow() ) {
+				$gateways['alma_paynow_gateway']['fee_plans_settings'][ $feePlanAdapter->getPlanKey() ] = $this->formatEligibilityContentForCheckout( $feePlanAdapter );
 			}
 			// Pay in installments
-			if ( $eligibility->isPnXOnly() ) {
-				$gateways['alma_pnx_gateway']['fee_plans_settings'][ $eligibility->getPlanKey() ] = $this->formatEligibilityContentForCheckout( $eligibility );
+			if ( $feePlanAdapter->isPnXOnly() ) {
+				$gateways['alma_pnx_gateway']['fee_plans_settings'][ $feePlanAdapter->getPlanKey() ] = $this->formatEligibilityContentForCheckout( $feePlanAdapter );
 			}
 			// Pay in credit
-			if ( $eligibility->isCredit() ) {
-				$gateways['alma_credit_gateway']['fee_plans_settings'][ $eligibility->getPlanKey() ] = $this->formatEligibilityContentForCheckout( $eligibility );
+			if ( $feePlanAdapter->isCredit() ) {
+				$gateways['alma_credit_gateway']['fee_plans_settings'][ $feePlanAdapter->getPlanKey() ] = $this->formatEligibilityContentForCheckout( $feePlanAdapter );
 			}
 			// Pay later
-			if ( $eligibility->isPayLaterOnly() ) {
-				$gateways['alma_paylater_gateway']['fee_plans_settings'][ $eligibility->getPlanKey() ] = $this->formatEligibilityContentForCheckout( $eligibility );
+			if ( $feePlanAdapter->isPayLaterOnly() ) {
+				$gateways['alma_paylater_gateway']['fee_plans_settings'][ $feePlanAdapter->getPlanKey() ] = $this->formatEligibilityContentForCheckout( $feePlanAdapter );
 			}
 		}
 
@@ -182,19 +156,19 @@ class CheckoutService {
 	}
 
 	/**
-	 * @param Eligibility $eligibility
+	 * @param FeePlanAdapter $feePlanAdapter
 	 *
 	 * @return array
 	 */
-	private function formatEligibilityContentForCheckout( Eligibility $eligibility ): array {
+	private function formatEligibilityContentForCheckout( FeePlanAdapter $feePlanAdapter ): array {
 		return array(
-			'planKey'                 => $eligibility->getPlanKey(),
-			'paymentPlan'             => $eligibility->getPaymentPlan(),
-			'customerTotalCostAmount' => $eligibility->getCustomerTotalCostAmount(),
-			'installmentsCount'       => $eligibility->getInstallmentsCount(),
-			'deferredDays'            => $eligibility->getDeferredDays(),
-			'deferredMonths'          => $eligibility->getDeferredMonths(),
-			'annualInterestRate'      => $eligibility->getAnnualInterestRate(),
+			'planKey'                 => $feePlanAdapter->getPlanKey(),
+			'paymentPlan'             => $feePlanAdapter->getPaymentPlan(),
+			'customerTotalCostAmount' => $feePlanAdapter->getCustomerTotalCostAmount(),
+			'installmentsCount'       => $feePlanAdapter->getInstallmentsCount(),
+			'deferredDays'            => $feePlanAdapter->getDeferredDays(),
+			'deferredMonths'          => $feePlanAdapter->getDeferredMonths(),
+			'annualInterestRate'      => $feePlanAdapter->getAnnualInterestRate(),
 		);
 	}
 }

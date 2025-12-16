@@ -214,7 +214,7 @@ export const DisplayAlmaInPageBlock = (props) => {
                         setIsProcessingPayment(false);
 
                         // Redirect to order received page
-                        if (checkoutResponse.redirectUrl) {
+                        if (!inPage && checkoutResponse.redirectUrl) {
                             window.location.href = checkoutResponse.redirectUrl;
                         } else {
                             const orderId = checkoutResponse.orderId || paymentResult.orderId;

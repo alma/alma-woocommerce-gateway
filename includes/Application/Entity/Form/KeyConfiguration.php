@@ -49,7 +49,6 @@ class KeyConfiguration {
 	 * @param string                $liveApiKey
 	 */
 	public function __construct( ConfigService $configService, AuthenticationService $authenticationService, string $testApiKey, string $liveApiKey ) {
-
 		$this->configService         = $configService;
 		$this->authenticationService = $authenticationService;
 

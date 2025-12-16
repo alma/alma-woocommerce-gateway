@@ -11,7 +11,6 @@ use Alma\Gateway\Application\Mapper\PaymentMapper;
 use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
-use Alma\Gateway\Infrastructure\Helper\InPageHelper;
 use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
 use Alma\Gateway\Plugin;
 
@@ -28,9 +27,8 @@ class PaymentService {
 	 *
 	 * @param ConfigService   $configService
 	 * @param PaymentProvider $paymentProvider
-	 * @param InPageHelper    $inPageHelper
 	 */
-	public function __construct( ConfigService $configService, PaymentProvider $paymentProvider, InPageHelper $inPageHelper ) {
+	public function __construct( ConfigService $configService, PaymentProvider $paymentProvider ) {
 		$this->configService   = $configService;
 		$this->paymentProvider = $paymentProvider;
 	}

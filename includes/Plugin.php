@@ -5,8 +5,8 @@ namespace Alma\Gateway;
 use Alma\Gateway\Application\Exception\Controller\GatewayControllerException;
 use Alma\Gateway\Application\Exception\Helper\RequirementsHelperException;
 use Alma\Gateway\Application\Helper\L10nHelper;
-use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Helper\RequirementsHelper;
+use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Controller\AdminController;
 use Alma\Gateway\Infrastructure\Controller\GatewayController;
 use Alma\Gateway\Infrastructure\Controller\ShopController;
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * AlmaPlugin.
  */
-final class Plugin {
+final class Plugin extends abstractPlugin {
 
 	const ALMA_GATEWAY_PLUGIN_VERSION = '6.0.0-poc';
 
@@ -46,9 +46,9 @@ final class Plugin {
 	 */
 	public function __construct() {
 		// Configure the plugin paths
-		PluginHelper::setPluginUrl( plugins_url( '/', __DIR__ ) );
-		PluginHelper::setPluginPath( plugin_dir_path( __DIR__ ) );
-		PluginHelper::setPluginFile( dirname( __DIR__ ) . '/alma-gateway-for-woocommerce.php' );
+		$this->set_plugin_url( plugins_url( '/', __DIR__ ) );
+		$this->set_plugin_path( plugin_dir_path( __DIR__ ) );
+		$this->set_plugin_file( dirname( __DIR__ ) . DIRECTORY_SEPARATOR . self::ALMA_GATEWAY_PLUGIN_NAME . '.php' );
 	}
 
 	/**
@@ -70,9 +70,9 @@ final class Plugin {
 	/**
 	 * Access this plugin’s working instance
 	 *
-	 * @return  object of this class
+	 * @return Plugin of this class
 	 */
-	public static function get_instance() {
+	public static function get_instance(): Plugin {
 		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
@@ -83,12 +83,13 @@ final class Plugin {
 	/**
 	 * Used for plugin warmup.
 	 *
+	 * @return void
 	 * @throws RequirementsHelperException
 	 */
 	public function plugin_warmup(): void {
 
 		// Configure Languages
-		L10nHelper::load_language( PluginHelper::getPluginPath() );
+		L10nHelper::load_language( $this->get_plugin_path() );
 
 		// Check mandatory prerequisites
 		if ( ! $this->are_prerequisites_ok() ) {
@@ -106,6 +107,9 @@ final class Plugin {
 		if ( isset( $_GET['page_id'] ) && $_GET['page_id'] === '6' ) {
 			$suffix = [ sprintf( 'alma-%s', 'cart' ) ];
 		}
+		if ( isset( $_GET['page_id'] ) && $_GET['page_id'] === '7' ) {
+			$suffix = [ sprintf( 'alma-%s', 'checkout' ) ];
+		}
 		if ( isset( $_GET['product'] ) ) {
 			$suffix = [ sprintf( 'alma-%s', 'product' ) ];
 		}
@@ -113,12 +117,15 @@ final class Plugin {
 		// Configure the logger service
 		/** @var LoggerService $logger_service */
 		self::get_container()->get( LoggerService::class, $suffix );
+
+		/** @var ConfigService $config_service */
+		$config_service = self::get_container()->get( ConfigService::class );
+		$this->set_is_configured( $config_service->isConfigured() );
 	}
 
 	/**
 	 * Used for regular plugin work.
 	 *
-	 * @return  void
 	 * @throws RequirementsHelperException|GatewayControllerException
 	 */
 	public function plugin_setup(): void {
@@ -127,7 +134,7 @@ final class Plugin {
 			return;
 		}
 
-		if ( PluginHelper::isConfigured() ) {
+		if ( $this->is_configured() ) {
 
 			$this->get_container()->setApiConfig();
 

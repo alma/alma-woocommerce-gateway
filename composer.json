@@ -3,6 +3,16 @@
   "description": "Alma - Pay in installments or later for WooCommerce",
   "type": "library",
   "version": "6.0.0-alpha",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org",
+      "only": [
+        "wpackagist-plugin/*",
+        "wpackagist-theme/*"
+      ]
+    }
+  ],
   "require": {
     "php": "~7.4 || ~8.0 || ~8.1 || ~8.2 || ~8.3 || ~8.4",
     "ext-openssl": "*",
@@ -23,7 +33,7 @@
     "phpunit/phpunit": "*",
     "squizlabs/php_codesniffer": "^3.7",
     "symfony/var-dumper": "*",
-    "woocommerce/woocommerce": "*",
+    "wpackagist-plugin/woocommerce": "^10.0.4",
     "wp-coding-standards/wpcs": "dev-develop",
     "yoast/phpunit-polyfills": "*"
   },

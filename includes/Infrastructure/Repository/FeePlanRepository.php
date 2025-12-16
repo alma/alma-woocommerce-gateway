@@ -8,16 +8,20 @@ use Alma\API\Infrastructure\Exception\ParametersException;
 use Alma\Gateway\Application\Exception\Service\API\EligibilityServiceException;
 use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
 use Alma\Gateway\Application\Mapper\EligibilityMapper;
-use Alma\Gateway\Application\Provider\EligibilityProvider;
-use Alma\Gateway\Application\Provider\FeePlanProvider;
+use Alma\Gateway\Application\Provider\EligibilityProviderAwareTrait;
+use Alma\Gateway\Application\Provider\EligibilityProviderFactory;
+use Alma\Gateway\Application\Provider\FeePlanProviderAwareTrait;
+use Alma\Gateway\Application\Provider\FeePlanProviderFactory;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
-use Alma\Gateway\Plugin;
 
 class FeePlanRepository {
+
+	use FeePlanProviderAwareTrait;
+	use EligibilityProviderAwareTrait;
 
 	/** @var FeePlanListAdapter */
 	private FeePlanListAdapter $feePlanListAdapter;
@@ -28,10 +32,14 @@ class FeePlanRepository {
 	/**
 	 * FeePlanRepository constructor.
 	 *
-	 * @param ConfigService $configService
+	 * @param ConfigService              $configService
+	 * @param FeePlanProviderFactory     $feePlanProviderFactory
+	 * @param EligibilityProviderFactory $eligibilityProviderFactory
 	 */
-	public function __construct( ConfigService $configService ) {
-		$this->configService = $configService;
+	public function __construct( ConfigService $configService, FeePlanProviderFactory $feePlanProviderFactory, EligibilityProviderFactory $eligibilityProviderFactory ) {
+		$this->configService              = $configService;
+		$this->feePlanProviderFactory     = $feePlanProviderFactory;
+		$this->eligibilityProviderFactory = $eligibilityProviderFactory;
 	}
 
 	/**
@@ -89,9 +97,8 @@ class FeePlanRepository {
 	public function retrieveFeePlans(): void {
 		try {
 			// Get Fee Plans. (From API)
-			/** @var FeePlanProvider $feePlanProvider */
-			$feePlanProvider    = Plugin::get_container()->get( FeePlanProvider::class );
-			$feePlanListAdapter = new FeePlanListAdapter( $feePlanProvider->getFeePlanList() );
+			$this->getFeePlanProvider();
+			$feePlanListAdapter = new FeePlanListAdapter( $this->feePlanProvider->getFeePlanList() );
 			$this->saveKeysToConfig( $feePlanListAdapter );
 
 			// Add local configuration to Fee Plans. (local min and max amount set in the plugin form)
@@ -99,15 +106,15 @@ class FeePlanRepository {
 
 			// Get Eligibility only on shop
 			if ( ! ContextHelper::isAdmin() && ContextHelper::getCart()->getCartTotal() > 0 ) {
-				// Add Eligibility to Fee Plans. (Installment Plans from API) /** @var EligibilityProvider $eligibilityProvider */ {
-				$eligibilityProvider = Plugin::get_container()->get( EligibilityProvider::class );
+				// Add Eligibility to Fee Plans. (Installment Plans from API)
+				$this->getEligibilityProvider();
 				$eligibilityDto      = ( new EligibilityMapper() )
 					->buildEligibilityDto(
 						ContextHelper::getCart(),
 						ContextHelper::getCustomer(),
 						$feePlanListAdapter->filterEnabled()
 					);
-				$installmentPlanList = $eligibilityProvider->getEligibilityList( $eligibilityDto );
+				$installmentPlanList = $this->eligibilityProvider->getEligibilityList( $eligibilityDto );
 				$feePlanListAdapter  = $this->setInstallmentPlanList( $feePlanListAdapter, $installmentPlanList );
 			}
 

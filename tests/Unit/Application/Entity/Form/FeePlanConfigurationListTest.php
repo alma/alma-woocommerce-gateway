@@ -6,6 +6,7 @@ use Alma\API\Domain\Entity\FeePlan;
 use Alma\API\Domain\Entity\FeePlanList;
 use Alma\Gateway\Application\Entity\Form\FeePlanConfiguration;
 use Alma\Gateway\Application\Entity\Form\FeePlanConfigurationList;
+use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use PHPUnit\Framework\TestCase;
 
@@ -58,13 +59,40 @@ class FeePlanConfigurationListTest extends TestCase {
 		$this->assertCount( 2, $this->feePlanConfigurationList );
 	}
 
-	/**
-	 * Test that there are no errors initially.
-	 */
-	public function testValidationAndGetErrors() {
-		$this->assertCount( 0, $this->feePlanConfigurationList->getErrors() );
-		$this->feePlanConfigurationList->validate( $this->feePlanAdapterList );
-		$this->assertCount( 3, $this->feePlanConfigurationList->getErrors() );
+	public function testValidateWithMatchingPlanKeyAddsErrors()
+	{
+		$feePlanAdapter = $this->createMock(FeePlanAdapter::class);
+		$feePlanAdapter->method('getPlanKey')->willReturn('general_2_0_0');
+
+		$feePlanListAdapter = new FeePlanListAdapter([$feePlanAdapter]);
+
+		$feePlan = $this->createMock(FeePlanConfiguration::class);
+		$feePlan->method('getPlanKey')->willReturn('general_2_0_0');
+		$feePlan->method('getErrors')->willReturn(['error1']);
+		$feePlan->expects($this->once())->method('validate')->with($feePlanAdapter);
+
+		$feePlanList = new FeePlanConfigurationList([$feePlan]);
+		$feePlanList->validate($feePlanListAdapter);
+
+		$this->assertEquals(['error1'], $feePlanList->getErrors());
+	}
+
+	public function testValidateWithNoMatchingPlanKeyDoesNotAddErrors()
+	{
+		$feePlanAdapter = $this->createMock(FeePlanAdapter::class);
+		$feePlanAdapter->method('getPlanKey')->willReturn('general_3_0_0');
+
+		$feePlanListAdapter = new FeePlanListAdapter([$feePlanAdapter]);
+
+		$feePlan = $this->createMock(FeePlanConfiguration::class);
+		$feePlan->method('getPlanKey')->willReturn('general_2_0_0');
+		$feePlan->method('getErrors')->willReturn([]);
+		$feePlan->expects($this->never())->method('validate');
+
+		$feePlanList = new FeePlanConfigurationList([$feePlan]);
+		$feePlanList->validate($feePlanListAdapter);
+
+		$this->assertEquals([], $feePlanList->getErrors());
 	}
 
 	/**

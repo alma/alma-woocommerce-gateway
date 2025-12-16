@@ -12,6 +12,8 @@
 namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
+use Alma\Gateway\Infrastructure\Helper\FormHelper;
+use Alma\Gateway\Plugin;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
 
 if ( ! defined( 'ABSPATH' ) ) {

@@ -32,7 +32,6 @@ use Alma\Gateway\Application\Helper\EncryptorHelper;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
-use Alma\Gateway\Application\Helper\PluginHelper;
 use Alma\Gateway\Application\Helper\RequirementsHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
 use Alma\Gateway\Application\Provider\EligibilityProvider;
@@ -49,6 +48,7 @@ use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
+use Alma\Gateway\Infrastructure\Helper\CmsHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\CoreHelper;
 use Alma\Gateway\Infrastructure\Helper\EventHelper;
@@ -64,6 +64,7 @@ use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
 use Alma\Gateway\Infrastructure\Repository\ProductRepository;
 use Alma\Gateway\Infrastructure\Repository\UserRepository;
+use Alma\Gateway\Plugin;
 use Dice\Dice;
 use Psr\Http\Client\ClientInterface;
 
@@ -137,6 +138,11 @@ class ContainerService {
 					$configService->getEnvironment()
 				),
 				'shared'          => true,
+				'call' => [
+					['addUserAgentComponent', CmsHelper::getCmsVersion()],
+					['addUserAgentComponent', CmsHelper::getShopVersion()],
+					['addUserAgentComponent', ['Alma for WooCommerce', Plugin::ALMA_GATEWAY_PLUGIN_VERSION]]
+				]
 			)
 		);
 
@@ -232,7 +238,6 @@ class ContainerService {
 				AssetsService::class      => array( 'shared' => true ),
 				EncryptorHelper::class    => array( 'shared' => true ),
 				L10nHelper::class         => array( 'shared' => true ),
-				PluginHelper::class       => array( 'shared' => true ),
 				RequirementsHelper::class => array( 'shared' => true ),
 				TemplateHelper::class     => array( 'shared' => true ),
 				IpnHelper::class          => array( 'shared' => true ),
