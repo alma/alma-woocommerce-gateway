@@ -13,6 +13,7 @@ class AssetsConfig {
 	public const ASSETS_CONFIG_WIDGET_BLOCK = 'widget-block';
 	public const ASSETS_CONFIG_WIDGET_BLOCK_EDITOR = 'widget-block-editor';
 	public const ASSETS_CONFIG_GATEWAY_BLOCK = 'gateway-block';
+	public const ASSETS_CONFIG_CLASSIC_CHECKOUT = 'classic-checkout';
 	public const ASSETS_CONFIG_ADMIN = 'admin';
 	public const CDN_WIDGET_VERSION = '4.x.x';
 	public const CDN_IN_PAGE_VERSION = '2.x';
@@ -24,6 +25,7 @@ class AssetsConfig {
 			self::assetsConfigInPage(),
 			self::assetsConfigWidget(),
 			self::assetsConfigGatewayBlock(),
+			self::assetsConfigClassicCheckout(),
 			self::assetsConfigWidgetBlock(),
 			self::assetsConfigWidgetBlockEditor()
 		);
@@ -231,6 +233,32 @@ class AssetsConfig {
 								'language',
 								'ajax_url',
 							),
+						),
+						'translations' => array(
+							'domain' => L10nHelper::ALMA_L10N_DOMAIN,
+							'path'   => AssetsHelper::getLanguagesPath(),
+						),
+					),
+				),
+			),
+		];
+	}
+
+	private static function assetsConfigClassicCheckout(): array {
+		return [
+			self::ASSETS_CONFIG_CLASSIC_CHECKOUT => array(
+				'styles'  => array(
+					'alma-classic-checkout'                 => array(
+						'src'  => AssetsHelper::getAssetUrl( 'css/frontend/alma-checkout.css' ),
+						'deps' => array(),
+					),
+				),
+				'scripts' => array(
+					'alma-classic-checkout' => array(
+						'src'          => AssetsHelper::getAssetUrl( 'js/frontend/alma-checkout.js' ),
+						'deps'         => array(
+							'jquery',
+							'jquery-ui-core',
 						),
 						'translations' => array(
 							'domain' => L10nHelper::ALMA_L10N_DOMAIN,
