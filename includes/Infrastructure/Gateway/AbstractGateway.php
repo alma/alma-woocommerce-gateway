@@ -114,6 +114,12 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		} catch ( FeePlanRepositoryException $e ) {
 			throw new GatewayServiceException( 'Can not find Fee Plan' );
 		}
+		$order->addOrderNote(
+			sprintf(
+				L10nHelper::__( 'Selected payment method : %s' ),
+				$fee_plan_adapter->getLabel(),
+			)
+		);
 
 		/** @var PaymentService $payment_service */
 		$payment_service = Plugin::get_container()->get( PaymentService::class );
