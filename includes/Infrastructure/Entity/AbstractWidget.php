@@ -22,14 +22,24 @@ abstract class AbstractWidget implements WidgetInterface {
 	protected bool $displayWidget;
 	protected string $language;
 	protected FeePlanListAdapter $feePlanListAdapter;
+	protected bool $hasExcludedCategories;
 
-	public function configure( FeePlanListAdapterInterface $feePlanListAdapter, Environment $environment, string $merchantId, int $price, bool $displayWidget, string $language ): WidgetInterface {
+	public function configure(
+		FeePlanListAdapterInterface $feePlanListAdapter,
+		Environment $environment,
+		string $merchantId,
+		int $price,
+		bool $displayWidget,
+		string $language,
+		bool $hasExcludedCategories
+	): WidgetInterface {
 		$this->feePlanListAdapter = $feePlanListAdapter;
 		$this->environment        = $environment;
 		$this->merchantId         = $merchantId;
 		$this->price              = $price;
 		$this->displayWidget      = $displayWidget;
 		$this->language           = $language;
+		$this->hasExcludedCategories = $hasExcludedCategories;
 
 		return $this;
 	}

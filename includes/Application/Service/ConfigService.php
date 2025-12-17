@@ -320,6 +320,15 @@ class ConfigService {
 	}
 
 	/**
+	 * Get excluded categories message.
+	 *
+	 * @return string The excluded categories message.
+	 */
+	public function getExcludedCategoriesMessage(): string {
+		return $this->getSetting( 'excluded_products_message' );
+	}
+
+	/**
 	 * Check if the cart widget is enabled.
 	 *
 	 * @return bool

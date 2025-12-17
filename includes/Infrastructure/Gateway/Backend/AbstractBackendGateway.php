@@ -468,6 +468,7 @@ class AbstractBackendGateway extends AbstractGateway {
 				'type'        => 'text',
 				'description' => L10nHelper::__( 'Message displayed below the cart totals when it contains excluded products' ),
 				'desc_tip'    => true,
+				'default'     => 'Some products cannot be paid with monthly or deferred installments',
 			),
 		);
 	}

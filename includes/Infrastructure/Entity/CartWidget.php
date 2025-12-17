@@ -78,7 +78,7 @@ class CartWidget extends AbstractWidget {
 	public function displayShortcodeWidget() {
 		/** @var ShortcodeWidgetHelper $shortcodeWidgetHelper */
 		$shortcodeWidgetHelper = Plugin::get_container()->get( ShortcodeWidgetHelper::class );
-		$shortcodeWidgetHelper->initCartShortcode( self::WIDGET_CLASS, $this->displayWidget );
+		$shortcodeWidgetHelper->initCartShortcode( self::WIDGET_CLASS, $this->displayWidget, $this->hasExcludedCategories );
 		$shortcodeWidgetHelper->displayDefaultCartWidget( self::WIDGET_DEFAULT_CLASS );
 	}
 }

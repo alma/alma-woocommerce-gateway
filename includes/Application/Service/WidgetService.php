@@ -97,16 +97,26 @@ class WidgetService {
 	public function displayCartWidget( array $excludedCategories, FeePlanListAdapter $feePlanListAdapter, Environment $environment, string $merchantId, string $language ): WidgetInterface {
 
 		// Display widget if widget is enabled and there are no excluded categories.
+		$hasExcludedCategories = ! $this->excludedProductsHelper->canDisplayOnCartPage( $this->cartAdapter, $excludedCategories );
 		$displayWidget = $this->shouldDisplayWidget(
 			$this->configService->getWidgetCartEnabled(),
-			$this->excludedProductsHelper->canDisplayOnCartPage( $this->cartAdapter, $excludedCategories ),
+			$hasExcludedCategories,
 			$feePlanListAdapter
 		);
 		$price         = $this->cartAdapter->getCartTotal();
 
 		// Configure the widget
+		/** @var CartWidget $widget */
 		$widget = ( Plugin::get_container()->get( CartWidget::class ) )
-			->configure( $feePlanListAdapter, $environment, $merchantId, $price, $displayWidget, $language );
+			->configure(
+				$feePlanListAdapter,
+				$environment,
+				$merchantId,
+				$price,
+				$displayWidget,
+				$language,
+				$hasExcludedCategories
+			);
 
 		// Load widget assets
 		try {
@@ -134,16 +144,26 @@ class WidgetService {
 		}
 
 		// Display widget if widget is enabled and there are no excluded categories.
+		$hasExcludedCategories = ! $this->excludedProductsHelper->canDisplayOnProductPage( $product, $excludedCategories );
 		$displayWidget = $this->shouldDisplayWidget(
 			$this->configService->getWidgetProductEnabled(),
-			$this->excludedProductsHelper->canDisplayOnProductPage( $product, $excludedCategories ),
+			$hasExcludedCategories,
 			$feePlanListAdapter
 		);
 		$price         = $product->getPrice();
 
 		// Configure the widget
+		/** @var ProductWidget $widget */
 		$widget = ( Plugin::get_container()->get( ProductWidget::class ) )
-			->configure( $feePlanListAdapter, $environment, $merchantId, $price, $displayWidget, $language );
+			->configure(
+				$feePlanListAdapter,
+				$environment,
+				$merchantId,
+				$price,
+				$displayWidget,
+				$language,
+				$hasExcludedCategories
+			);
 
 		// Load widget assets
 		try {
