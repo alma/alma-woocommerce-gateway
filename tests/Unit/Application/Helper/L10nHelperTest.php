@@ -7,6 +7,7 @@ use Alma\API\Infrastructure\Exception\ParametersException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Tests\Unit\Mocks\FeePlanMock;
 use Brain\Monkey;
+use Brain\Monkey\Expectation\Exception\ExpectationArgsRequired;
 use Brain\Monkey\Functions;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -21,6 +22,7 @@ class L10nHelperTest extends TestCase {
 	 * Return error if with args are not the expected ones
 	 *\LanguageHelper::__() must be of the type string, null returned
 	 * @return void
+	 * @throws ExpectationArgsRequired
 	 */
 	public function testTranslate(): void {
 		Functions\expect( '__' )
@@ -95,5 +97,4 @@ class L10nHelperTest extends TestCase {
 		Mockery::close();
 
 	}
-
 }
