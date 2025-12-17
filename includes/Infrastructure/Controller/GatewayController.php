@@ -4,11 +4,13 @@ namespace Alma\Gateway\Infrastructure\Controller;
 
 use Alma\Gateway\Application\Exception\Controller\GatewayControllerException;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
+use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Helper\BackendHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\EventHelper;
 use Alma\Gateway\Infrastructure\Helper\FrontendHelper;
 use Alma\Gateway\Infrastructure\Helper\GatewayHelper;
+use Alma\Gateway\Infrastructure\Service\AssetsService;
 use Alma\Gateway\Infrastructure\Service\GatewayService;
 use Alma\Gateway\Plugin;
 
@@ -16,13 +18,16 @@ class GatewayController {
 
 	private GatewayService $gatewayService;
 	private GatewayHelper $gatewayHelper;
+	private AssetsService $assetsService;
 
 	public function __construct(
 		GatewayService $gatewayService,
-		GatewayHelper $gatewayHelper
+		GatewayHelper $gatewayHelper,
+		AssetsService $assetsService
 	) {
 		$this->gatewayService = $gatewayService;
 		$this->gatewayHelper  = $gatewayHelper;
+		$this->assetsService = $assetsService;
 	}
 
 	/**
@@ -71,6 +76,11 @@ class GatewayController {
 				array( $this->gatewayService, 'pluginActionLinks' )
 			);
 		} else {
+			try {
+				$this->assetsService->loadClassicCheckoutAssets();
+			} catch ( AssetsServiceException $e ) {
+				throw new GatewayControllerException();
+			}
 			FrontendHelper::loadFrontendGateways();
 		}
 
