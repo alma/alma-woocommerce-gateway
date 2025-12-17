@@ -2,6 +2,9 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
+use Alma\Gateway\Application\Service\ConfigService;
+use Alma\Gateway\Plugin;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
 }
@@ -45,11 +48,15 @@ class ShortcodeWidgetHelper {
 	 *
 	 * @return void
 	 */
-	public function initCartShortcode( string $widgetClass, bool $displayWidget = false ) {
-		if ( $displayWidget ) {
-			$this->addShortcode( self::CART_SHORTCODE_TAG, $widgetClass );
+	public function initCartShortcode( string $widgetClass, bool $displayWidget = false, bool $noExcludedCategories = true ) {
+		if ( ! $noExcludedCategories ) {
+			$this->addExcludedCategoriesShortcode(self::CART_SHORTCODE_TAG);
 		} else {
-			$this->addEmptyShortcode( self::CART_SHORTCODE_TAG );
+			if ( $displayWidget ) {
+				$this->addShortcode( self::CART_SHORTCODE_TAG, $widgetClass );
+			} else {
+				$this->addEmptyShortcode( self::CART_SHORTCODE_TAG );
+			}
 		}
 	}
 
@@ -74,16 +81,22 @@ class ShortcodeWidgetHelper {
 	 * Create the Alma cart widget shortcode.
 	 * This shortcode can be used to display the Alma cart widget
 	 *
-	 * @param bool   $displayWidget Whether to display the widget or not.
 	 * @param string $widgetClass
+	 *
+	 * @param bool   $displayWidget Whether to display the widget or not.
+	 * @param bool   $noExcludedCategories
 	 *
 	 * @return void
 	 */
-	public function initProductShortcode( string $widgetClass, bool $displayWidget = false ) {
-		if ( $displayWidget ) {
-			$this->addShortcode( self::PRODUCT_SHORTCODE_TAG, $widgetClass );
+	public function initProductShortcode( string $widgetClass, bool $displayWidget = false, bool $noExcludedCategories = true ) {
+		if ( ! $noExcludedCategories ) {
+			$this->addExcludedCategoriesShortcode(self::PRODUCT_SHORTCODE_TAG);
 		} else {
-			$this->addEmptyShortcode( self::PRODUCT_SHORTCODE_TAG );
+			if ( $displayWidget ) {
+				$this->addShortcode( self::PRODUCT_SHORTCODE_TAG, $widgetClass );
+			} else {
+				$this->addEmptyShortcode( self::PRODUCT_SHORTCODE_TAG );
+			}
 		}
 	}
 
@@ -127,6 +140,24 @@ class ShortcodeWidgetHelper {
 				return sprintf(
 					'<div class="%s"></div>',
 					$tag,
+				);
+			}
+		);
+	}
+
+	private function addExcludedCategoriesShortcode( string $tag ) {
+		/** @var ConfigService $configService */
+		$configService = Plugin::get_container()->get( ConfigService::class );
+		$excludedCategoriesMessage = $configService->getExcludedCategoriesMessage();
+		add_shortcode(
+			$tag,
+			function () use ( $tag, $excludedCategoriesMessage ) {
+				return sprintf(
+					'<div class="%s">
+								%s
+							</div>',
+					$tag,
+					$excludedCategoriesMessage
 				);
 			}
 		);
