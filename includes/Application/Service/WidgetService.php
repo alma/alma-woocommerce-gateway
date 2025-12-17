@@ -67,7 +67,7 @@ class WidgetService {
 	 * @return void
 	 * @throws WidgetServiceException
 	 */
-	public function displayWidget() {
+	public function runWidget() {
 
 		$environment = $this->configService->getEnvironment();
 		$merchantId  = $this->configService->getMerchantId();
@@ -79,7 +79,7 @@ class WidgetService {
 		$excludedCategories = $this->configService->getExcludedCategories();
 		$language           = ContextHelper::getLanguage();
 
-		if ( ContextHelper::isCartPage() || ContextHelper::isAdmin() ) {
+		if ( ContextHelper::isAdmin() || ContextHelper::isCartPage() ) {
 			$this->displayCartWidget( $excludedCategories, $feePlanListAdapter, $environment, $merchantId,
 				$language )->display();
 		} elseif ( ContextHelper::isProductPage() ) {
@@ -110,7 +110,7 @@ class WidgetService {
 
 		// Load widget assets
 		try {
-			$this->assetsService->loadWidgetAssets( $widget->getConfiguration() );
+			$this->assetsService->registerWidgetAssets( $widget->getConfiguration() );
 		} catch ( AssetsServiceException $e ) {
 			throw new WidgetServiceException( $e->getMessage() );
 		}
@@ -147,7 +147,7 @@ class WidgetService {
 
 		// Load widget assets
 		try {
-			$this->assetsService->loadWidgetAssets( $widget->getConfiguration() );
+			$this->assetsService->registerWidgetAssets( $widget->getConfiguration() );
 		} catch ( AssetsServiceException $e ) {
 			throw new WidgetServiceException( $e->getMessage() );
 		}

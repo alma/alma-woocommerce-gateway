@@ -2,15 +2,17 @@
 
 namespace Alma\Gateway;
 
-use Alma\Gateway\Application\Exception\Controller\GatewayControllerException;
 use Alma\Gateway\Application\Exception\Helper\RequirementsHelperException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\RequirementsHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Controller\AdminController;
+use Alma\Gateway\Infrastructure\Controller\AssetsController;
 use Alma\Gateway\Infrastructure\Controller\GatewayController;
 use Alma\Gateway\Infrastructure\Controller\ShopController;
 use Alma\Gateway\Infrastructure\Exception\CmsException;
+use Alma\Gateway\Infrastructure\Exception\Controller\AssetsControllerException;
+use Alma\Gateway\Infrastructure\Exception\Controller\GatewayControllerException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
@@ -126,7 +128,8 @@ final class Plugin extends abstractPlugin {
 	/**
 	 * Used for regular plugin work.
 	 *
-	 * @throws RequirementsHelperException|GatewayControllerException
+	 * @throws GatewayControllerException|RequirementsHelperException
+	 * @throws AssetsControllerException
 	 */
 	public function plugin_setup(): void {
 
@@ -138,23 +141,28 @@ final class Plugin extends abstractPlugin {
 
 			$this->get_container()->setApiConfig();
 
+			/** @var GatewayController $gatewayController */
+			$gatewayController = self::get_container()->get( GatewayController::class );
+			$gatewayController->prepare();
+
 			// Register widgets
 			/** @var ShopController $shopController */
 			$shopController = self::get_container()->get( ShopController::class );
-			$shopController->warm();
+			$shopController->prepare();
 
 			// Plugin fully configured, let's run the services
-			/** @var GatewayController $gatewayController */
-			$gatewayController = self::get_container()->get( GatewayController::class );
 			$gatewayController->run();
+
+			// Run services only when WordPress frontend is ready.
+			$shopController->run();
 
 			// Run Admin Controller only when WordPress admin is ready.
 			/** @var AdminController $adminController */
 			$adminController = self::get_container()->get( AdminController::class );
-			$adminController->run();
+			$adminController->display();
 
-			// Run services only when WordPress frontend is ready.
-			$shopController->run();
+			// Display services only when WordPress frontend is ready.
+			$shopController->display();
 
 		} else {
 			// Plugin not yet configured, load only backend gateway to help in configuration.

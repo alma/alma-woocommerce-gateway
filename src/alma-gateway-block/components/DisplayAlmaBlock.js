@@ -37,7 +37,7 @@ export const DisplayAlmaBlock = (props) => {
     const {onPaymentProcessing} = eventRegistration;
 
     useEffect(() => {
-        console.log('Special use effet selectedFeePlan changed:', selectedFeePlan);
+        console.log('Special use effect selectedFeePlan changed:', selectedFeePlan);
     }, [selectedFeePlan]);
 
     useEffect(() => {

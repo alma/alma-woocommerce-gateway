@@ -17,6 +17,10 @@ class EventHelper implements EventHelperInterface {
 	 * @return void
 	 */
 	public static function addEvent( string $event, callable $callback, int $priority = 10, int $acceptedArgs = 1 ): void {
+		if ( did_action( $event ) ) {
+			_doing_it_wrong( 'EventHelper::addEvent', sprintf( 'Too late! %s Event is already triggered.', $event ),
+				'*' );
+		}
 		add_action( $event, $callback, $priority, $acceptedArgs );
 	}
 
