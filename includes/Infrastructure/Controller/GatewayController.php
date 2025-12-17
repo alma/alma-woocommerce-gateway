@@ -2,11 +2,9 @@
 
 namespace Alma\Gateway\Infrastructure\Controller;
 
-use Alma\Gateway\Application\Exception\Controller\GatewayControllerException;
-use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Exception\CheckoutServiceException;
-use Alma\Gateway\Infrastructure\Exception\Controller\AssetsControllerException;
+use Alma\Gateway\Infrastructure\Exception\Controller\GatewayControllerException;
 use Alma\Gateway\Infrastructure\Helper\BackendHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\EventHelper;
@@ -23,7 +21,6 @@ class GatewayController {
 	private GatewayService $gatewayService;
 	private AssetsService $assetsService;
 	private GatewayHelper $gatewayHelper;
-	private AssetsService $assetsService;
 
 	public function __construct(
 		GatewayService $gatewayService,
@@ -52,7 +49,7 @@ class GatewayController {
 
 	/**
 	 * Run services.
-	 * @throws AssetsControllerException
+	 * @throws GatewayControllerException
 	 */
 	public function run() {
 
@@ -70,7 +67,7 @@ class GatewayController {
 			$this->assetsService->registerGatewayBlockAssets( $params );
 			almaLogConsole( '2 - RUN - Register Gateway Block Assets' );
 		} catch ( CheckoutServiceException|AssetsServiceException $e ) {
-			throw new AssetsControllerException( 'Unable to load block assets', 0, $e );
+			throw new GatewayControllerException( 'Unable to load block assets', 0, $e );
 		}
 	}
 
@@ -94,6 +91,7 @@ class GatewayController {
 	 * Load the Backend gateways if the user is in the admin area.
 	 * But also load the Frontend gateways if the user is in the admin area but not on the Gateway settings page.
 	 * It's useful to do refunds on, the order page for example.
+	 * @throws GatewayControllerException
 	 */
 	private function loadGateway() {
 		// Init Gateway
@@ -112,7 +110,10 @@ class GatewayController {
 			);
 		} else {
 			try {
-				$this->assetsService->loadClassicCheckoutAssets();
+				$this->assetsService->registerClassicCheckoutAssets();
+				almaLogConsole( '2 - RUN - Register Classic Checkout Assets' );
+				$this->assetsService->displayClassicCheckoutAssets();
+				almaLogConsole( '3 - DISPLAY - Load Classic Checkout Assets' );
 			} catch ( AssetsServiceException $e ) {
 				throw new GatewayControllerException();
 			}

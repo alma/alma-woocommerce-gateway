@@ -110,13 +110,13 @@ class AssetsService {
 		$this->registerLocal( AssetsConfig::ASSETS_CONFIG_CLASSIC_CHECKOUT, $scriptParams );
 	}
 
-  /**
+	/**
 	 * Display Checkout assets.
 	 */
-	public function displayAdminAssets(): void {
+	public function displayClassicCheckoutAssets(): void {
 		wp_enqueue_script( 'alma-' . AssetsConfig::ASSETS_CONFIG_CLASSIC_CHECKOUT );
 	}
-  
+
 	/**
 	 * Load Admin assets.
 	 * Prepare Admin assets.
@@ -185,7 +185,7 @@ class AssetsService {
 					$config['version'] ?? AssetsHelper::getFileVersion( $config['src'] ),
 					$config['in_footer'] ?? true
 				);
-				
+
 				if ( isset( $config['params'] ) ) {
 
 					$expectedKeys         = array_flip( $config['params']['keys'] );
