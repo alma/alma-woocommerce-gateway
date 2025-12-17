@@ -11,8 +11,17 @@ import {useSelect} from '@wordpress/data';
  * @constructor
  */
 const AlmaWidget = () => {
-    if (!window.wc.wcSettings.getSetting(`alma-widget-block_data`, null).can_be_displayed) {
+    const almaSettings = window.wc.wcSettings.getSetting(`alma-widget-block_data`, null);
+    if (!almaSettings.can_be_displayed) {
         return null;
+    }
+    if (almaSettings.is_excluded_categories) {
+        let message = almaSettings.excluded_categories_message;
+        let logoUrl = almaSettings.url_alma_logo;
+        return <div id="alma-widget-excluded" className="alma-widget-excluded">
+                    <img src={logoUrl} alt="Alma Logo" className="alma-logo-excluded-categories" />
+                    {message}
+                </div>;
     }
     const {CART_STORE_KEY} = window.wc.wcBlocksData
 

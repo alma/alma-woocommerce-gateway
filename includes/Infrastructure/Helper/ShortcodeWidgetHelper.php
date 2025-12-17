@@ -153,10 +153,12 @@ class ShortcodeWidgetHelper {
 			$tag,
 			function () use ( $tag, $excludedCategoriesMessage ) {
 				return sprintf(
-					'<div class="%s">
+					'<div class="%s alma-widget-excluded">
+								<img src="%s" alt="Alma Logo" class="alma-logo-excluded-categories" />
 								%s
 							</div>',
 					$tag,
+					esc_url( AssetsHelper::getImage( 'images/alma_logo.svg' ) ),
 					$excludedCategoriesMessage
 				);
 			}
