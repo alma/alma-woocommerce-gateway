@@ -92,7 +92,7 @@ class WidgetBlock implements IntegrationInterface {
 
 		$excludedCategories     = $this->config_service->getExcludedCategories();
 		$canDisplayWidgetOnCart = $this->excluded_products_helper->canDisplayOnCartPage( $this->cart_adapter, $excludedCategories );
-		$feePlanList = $this->fee_plan_repository->getAllWithEligibility()->filterEnabled();
+		$feePlanList            = $this->fee_plan_repository->getAllWithEligibility()->filterEnabled();
 
 		return array(
 			'merchant_id'                 => $this->config_service->getMerchantId(),

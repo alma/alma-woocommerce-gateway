@@ -44,12 +44,14 @@ class ShortcodeWidgetHelper {
 	 * Create the Alma cart widget shortcode.
 	 * This shortcode can be used to display the Alma cart widget
 	 *
-	 * @param bool $displayWidget Whether to display the widget or not.
+	 * @param string $widgetClass
+	 * @param bool   $displayWidget Whether to display the widget or not.
+	 * @param bool   $hasExcludedCategories
 	 *
 	 * @return void
 	 */
-	public function initCartShortcode( string $widgetClass, bool $displayWidget = false, bool $noExcludedCategories = true ) {
-		if ( ! $noExcludedCategories ) {
+	public function initCartShortcode( string $widgetClass, bool $displayWidget = false, bool $hasExcludedCategories = false ) {
+		if ( $hasExcludedCategories ) {
 			$this->addExcludedCategoriesShortcode(self::CART_SHORTCODE_TAG);
 		} else {
 			if ( $displayWidget ) {
@@ -84,12 +86,12 @@ class ShortcodeWidgetHelper {
 	 * @param string $widgetClass
 	 *
 	 * @param bool   $displayWidget Whether to display the widget or not.
-	 * @param bool   $noExcludedCategories
+	 * @param bool   $hasExcludedCategories
 	 *
 	 * @return void
 	 */
-	public function initProductShortcode( string $widgetClass, bool $displayWidget = false, bool $noExcludedCategories = true ) {
-		if ( ! $noExcludedCategories ) {
+	public function initProductShortcode( string $widgetClass, bool $displayWidget = false, bool $hasExcludedCategories = false ) {
+		if ( $hasExcludedCategories ) {
 			$this->addExcludedCategoriesShortcode(self::PRODUCT_SHORTCODE_TAG);
 		} else {
 			if ( $displayWidget ) {
@@ -145,6 +147,12 @@ class ShortcodeWidgetHelper {
 		);
 	}
 
+	/**
+	 * Add the shortcode for excluded categories message.
+	 * @param string $tag
+	 *
+	 * @return void
+	 */
 	private function addExcludedCategoriesShortcode( string $tag ) {
 		/** @var ConfigService $configService */
 		$configService = Plugin::get_container()->get( ConfigService::class );

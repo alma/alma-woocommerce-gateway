@@ -22,7 +22,7 @@ abstract class AbstractWidget implements WidgetInterface {
 	protected bool $displayWidget;
 	protected string $language;
 	protected FeePlanListAdapter $feePlanListAdapter;
-	protected bool $noExcludedCategories;
+	protected bool $hasExcludedCategories;
 
 	public function configure(
 		FeePlanListAdapterInterface $feePlanListAdapter,
@@ -31,7 +31,7 @@ abstract class AbstractWidget implements WidgetInterface {
 		int $price,
 		bool $displayWidget,
 		string $language,
-		bool $noExcludedCategories
+		bool $hasExcludedCategories
 	): WidgetInterface {
 		$this->feePlanListAdapter = $feePlanListAdapter;
 		$this->environment        = $environment;
@@ -39,7 +39,7 @@ abstract class AbstractWidget implements WidgetInterface {
 		$this->price              = $price;
 		$this->displayWidget      = $displayWidget;
 		$this->language           = $language;
-		$this->noExcludedCategories = $noExcludedCategories;
+		$this->hasExcludedCategories = $hasExcludedCategories;
 
 		return $this;
 	}

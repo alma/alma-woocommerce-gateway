@@ -97,10 +97,10 @@ class WidgetService {
 	public function displayCartWidget( array $excludedCategories, FeePlanListAdapter $feePlanListAdapter, Environment $environment, string $merchantId, string $language ): WidgetInterface {
 
 		// Display widget if widget is enabled and there are no excluded categories.
-		$noExcludedCategories = $this->excludedProductsHelper->canDisplayOnCartPage( $this->cartAdapter, $excludedCategories );
+		$hasExcludedCategories = ! $this->excludedProductsHelper->canDisplayOnCartPage( $this->cartAdapter, $excludedCategories );
 		$displayWidget = $this->shouldDisplayWidget(
 			$this->configService->getWidgetCartEnabled(),
-			$noExcludedCategories,
+			$hasExcludedCategories,
 			$feePlanListAdapter
 		);
 		$price         = $this->cartAdapter->getCartTotal();
@@ -115,7 +115,7 @@ class WidgetService {
 				$price,
 				$displayWidget,
 				$language,
-				$noExcludedCategories
+				$hasExcludedCategories
 			);
 
 		// Load widget assets
@@ -144,10 +144,10 @@ class WidgetService {
 		}
 
 		// Display widget if widget is enabled and there are no excluded categories.
-		$noExcludedCategories = $this->excludedProductsHelper->canDisplayOnProductPage( $product, $excludedCategories );
+		$hasExcludedCategories = ! $this->excludedProductsHelper->canDisplayOnProductPage( $product, $excludedCategories );
 		$displayWidget = $this->shouldDisplayWidget(
 			$this->configService->getWidgetProductEnabled(),
-			$noExcludedCategories,
+			$hasExcludedCategories,
 			$feePlanListAdapter
 		);
 		$price         = $product->getPrice();
@@ -162,7 +162,7 @@ class WidgetService {
 				$price,
 				$displayWidget,
 				$language,
-				$noExcludedCategories
+				$hasExcludedCategories
 			);
 
 		// Load widget assets
