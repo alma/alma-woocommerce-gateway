@@ -13,102 +13,130 @@ class AssetsService {
 	/**
 	 * CDN Assets are loaded by default.
 	 * @throws AssetsServiceException
-	 * @todo CDN should be only register and not be enqueued by default
 	 */
 	public function __construct() {
 		$this->registered_assets = AssetsConfig::getAll();
-		$this->registerGroup( AssetsConfig::ASSETS_CONFIG_CDN );
+		$this->registerCdn( AssetsConfig::ASSETS_CONFIG_CDN );
 	}
 
 	/**
 	 * @throws AssetsServiceException
 	 */
-	public function enqueueGroup( string $group_name, array $scriptParams = [] ): void {
+	public function registerLocal( string $group_name, array $scriptParams = [] ): void {
 		if ( ! isset( $this->registered_assets[ $group_name ] ) ) {
 			throw new AssetsServiceException( 'Assets are not defined in config.' );
 		}
 
 		$assets = $this->registered_assets[ $group_name ];
 
-		$this->enqueuePhp( $assets );
+		$this->registerPhp( $assets );
 		$this->enqueueStyles( $assets );
-		$this->enqueueScripts( $assets, $scriptParams );
+		$this->registerScripts( $assets, $scriptParams );
 	}
 
 	/**
 	 * @throws AssetsServiceException
 	 */
-	public function registerGroup( string $group_name ): void {
+	public function registerCdn( string $group_name ): void {
 		if ( ! isset( $this->registered_assets[ $group_name ] ) ) {
 			throw new AssetsServiceException( 'Assets are not defined in config.' );
 		}
 
 		$assets = $this->registered_assets[ $group_name ];
 
-		$this->registerStyles( $assets );
-		$this->registerScripts( $assets );
+		$this->registerCdnStyles( $assets );
+		$this->registerCdnScripts( $assets );
 	}
 
 	/**
-	 * Load Widget assets.
+	 * Prepare In-Page assets.
 	 * @throws AssetsServiceException
 	 */
-	public function loadWidgetAssets( array $scriptParams = [] ): void {
-		$this->enqueueGroup( AssetsConfig::ASSETS_CONFIG_WIDGET, $scriptParams );
+	public function registerInPageAssets( array $scriptParams = [] ): void {
+		$this->registerLocal( AssetsConfig::ASSETS_CONFIG_IN_PAGE, $scriptParams );
 	}
 
 	/**
-	 * Load In-Page assets.
-	 * @throws AssetsServiceException
+	 * Display In-Page assets.
 	 */
-	public function loadInPageAssets( array $scriptParams = [] ): void {
-		$this->enqueueGroup( AssetsConfig::ASSETS_CONFIG_IN_PAGE, $scriptParams );
+	public function displayInPageAssets(): void {
+		wp_enqueue_script( 'alma-' . AssetsConfig::ASSETS_CONFIG_IN_PAGE );
 	}
 
 	/**
-	 * Load Widget Block assets.
+	 * Prepare Widget assets.
 	 * @throws AssetsServiceException
 	 */
-	public function loadWidgetBlockAssets( array $scriptParams = [] ): void {
-		$this->enqueueGroup( AssetsConfig::ASSETS_CONFIG_WIDGET_BLOCK, $scriptParams );
+	public function registerWidgetAssets( array $scriptParams = [] ): void {
+		$this->registerLocal( AssetsConfig::ASSETS_CONFIG_WIDGET, $scriptParams );
 	}
 
 	/**
-	 * Load Widget Block assets.
-	 * @throws AssetsServiceException
+	 * Display Widget assets.
 	 */
-	public function loadWidgetBlockEditorAssets( array $scriptParams = [] ): void {
-		$this->enqueueGroup( AssetsConfig::ASSETS_CONFIG_WIDGET_BLOCK_EDITOR, $scriptParams );
+	public function displayWidgetAssets(): void {
+		wp_enqueue_script( 'alma-' . AssetsConfig::ASSETS_CONFIG_WIDGET );
 	}
 
 	/**
-	 * Load Checkout Block assets.
+	 * Prepare Widget Block assets.
 	 * @throws AssetsServiceException
 	 */
-	public function loadGatewayBlockAssets( array $scriptParams = [] ): void {
-		$this->enqueueGroup( AssetsConfig::ASSETS_CONFIG_GATEWAY_BLOCK, $scriptParams );
+	public function registerWidgetBlockAssets( array $scriptParams = [] ): void {
+		$this->registerLocal( AssetsConfig::ASSETS_CONFIG_WIDGET_BLOCK, $scriptParams );
 	}
 
 	/**
-	 * Load Checkout Block assets.
+	 * Prepare Widget Block Editor assets.
 	 * @throws AssetsServiceException
 	 */
-	public function loadClassicCheckoutAssets( array $scriptParams = [] ): void {
-		$this->enqueueGroup( AssetsConfig::ASSETS_CONFIG_CLASSIC_CHECKOUT, $scriptParams );
+	public function registerWidgetBlockEditorAssets( array $scriptParams = [] ): void {
+		$this->registerLocal( AssetsConfig::ASSETS_CONFIG_WIDGET_BLOCK_EDITOR, $scriptParams );
 	}
 
+	/**
+	 * Prepare Checkout Block assets.
+	 * @throws AssetsServiceException
+	 */
+	public function registerGatewayBlockAssets( array $scriptParams = [] ): void {
+		$this->registerLocal( AssetsConfig::ASSETS_CONFIG_GATEWAY_BLOCK, $scriptParams );
+	}
+
+	/**
+	 * Load Checkout assets.
+	 * @throws AssetsServiceException
+	 */
+	public function registerClassicCheckoutAssets( array $scriptParams = [] ): void {
+		$this->registerLocal( AssetsConfig::ASSETS_CONFIG_CLASSIC_CHECKOUT, $scriptParams );
+	}
+
+  /**
+	 * Display Checkout assets.
+	 */
+	public function displayAdminAssets(): void {
+		wp_enqueue_script( 'alma-' . AssetsConfig::ASSETS_CONFIG_CLASSIC_CHECKOUT );
+	}
+  
 	/**
 	 * Load Admin assets.
+	 * Prepare Admin assets.
 	 * @throws AssetsServiceException
 	 */
-	public function loadAdminAssets( array $scriptParams = [] ): void {
-		$this->enqueueGroup( AssetsConfig::ASSETS_CONFIG_ADMIN, $scriptParams );
+	public function registerAdminAssets( array $scriptParams = [] ): void {
+		$this->registerLocal( AssetsConfig::ASSETS_CONFIG_ADMIN, $scriptParams );
+	}
+
+	/**
+	 * Display Admin assets.
+	 */
+	public function displayAdminAssets(): void {
+		wp_enqueue_script( 'alma-' . AssetsConfig::ASSETS_CONFIG_ADMIN );
 	}
 
 	/**
 	 * Load Block assets.
 	 */
-	private function enqueuePhp( array $assets ): void {
+	private function registerPhp( array $assets ): void {
 		foreach ( $assets as $asset ) {
 			if ( isset( $asset['php']['src'] ) && file_exists( $asset['php']['src'] ) ) {
 				require_once $asset['php']['src'];
@@ -146,19 +174,18 @@ class AssetsService {
 	 *
 	 * @return void
 	 */
-	private function enqueueScripts( array $assets, array $scriptParams ) {
+	private function registerScripts( array $assets, array $scriptParams ) {
 		// Then scripts
 		if ( isset( $assets['scripts'] ) ) {
 			foreach ( $assets['scripts'] as $handle => $config ) {
-				wp_enqueue_script(
+				wp_register_script(
 					$handle,
 					$config['src'],
 					$config['deps'] ?? [],
 					$config['version'] ?? AssetsHelper::getFileVersion( $config['src'] ),
 					$config['in_footer'] ?? true
 				);
-
-				// Handle localization @todo use window.wc.wcSettings.getSetting instead?
+				
 				if ( isset( $config['params'] ) ) {
 
 					$expectedKeys         = array_flip( $config['params']['keys'] );
@@ -190,7 +217,7 @@ class AssetsService {
 	 *
 	 * @return void
 	 */
-	private function registerStyles( array $assets ) {
+	private function registerCdnStyles( array $assets ) {
 		// Enqueue styles first
 		if ( isset( $assets['styles'] ) ) {
 			foreach ( $assets['styles'] as $handle => $config ) {
@@ -212,7 +239,7 @@ class AssetsService {
 	 *
 	 * @return void
 	 */
-	private function registerScripts( array $assets ) {
+	private function registerCdnScripts( array $assets ) {
 		// Then scripts
 		if ( isset( $assets['scripts'] ) ) {
 			foreach ( $assets['scripts'] as $handle => $config ) {

@@ -57,6 +57,10 @@ class ContextHelper implements ContextHelperInterface {
 	 * @return bool
 	 */
 	public static function isCartPage(): bool {
+		if ( ! did_action( 'template_redirect' ) ) {
+			_doing_it_wrong( 'ContextHelper::isCartPage', 'We don\'t know yet the typ of page we are on.', '*' );
+		}
+
 		return CartCheckoutUtils::is_cart_page();
 	}
 
@@ -65,6 +69,10 @@ class ContextHelper implements ContextHelperInterface {
 	 * @return bool
 	 */
 	public static function isCheckoutPage(): bool {
+		if ( ! did_action( 'template_redirect' ) ) {
+			_doing_it_wrong( 'ContextHelper::isCheckoutPage', 'We don\'t know yet the typ of page we are on.', '*' );
+		}
+
 		return CartCheckoutUtils::is_checkout_page();
 	}
 
@@ -73,6 +81,10 @@ class ContextHelper implements ContextHelperInterface {
 	 * @return bool
 	 */
 	public static function isProductPage(): bool {
+		if ( ! did_action( 'template_redirect' ) ) {
+			_doing_it_wrong( 'ContextHelper::isProductPage', 'We don\'t know yet the typ of page we are on.', '*' );
+		}
+
 		return is_product();
 	}
 
@@ -81,6 +93,10 @@ class ContextHelper implements ContextHelperInterface {
 	 * @return bool
 	 */
 	public static function isShop(): bool {
+		if ( ! did_action( 'template_redirect' ) ) {
+			_doing_it_wrong( 'ContextHelper::isShop', 'We don\'t know yet the typ of page we are on.', '*' );
+		}
+
 		return self::isCartPage() || self::isProductPage() || self::isCheckoutPage();
 	}
 

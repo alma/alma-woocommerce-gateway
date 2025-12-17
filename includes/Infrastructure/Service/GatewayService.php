@@ -9,8 +9,6 @@ use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Mapper\RefundMapper;
 use Alma\Gateway\Application\Provider\PaymentProviderAwareTrait;
 use Alma\Gateway\Application\Provider\PaymentProviderFactory;
-use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
-use Alma\Gateway\Infrastructure\Exception\CheckoutServiceException;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
@@ -118,8 +116,6 @@ class GatewayService {
 	 * (see AbstractGatewayBlock::is_active())
 	 *
 	 * @return void
-	 * @throws GatewayServiceException
-	 * @throws CheckoutServiceException
 	 */
 	public function initGatewayBlocks() {
 
@@ -132,20 +128,10 @@ class GatewayService {
 					/** @var GatewayRepository $gatewayRepository */
 					$gatewayRepository = Plugin::get_container()->get( GatewayRepository::class );
 					$almaGatewayBlocks = $gatewayRepository->findAllAlmaGatewayBlocks();
-					/** @var CheckoutService $checkoutService */
-					$checkoutService        = Plugin::get_container()->get( CheckoutService::class );
-					$params                 = $checkoutService->getCheckoutParams( $almaGatewayBlocks );
-					$params['checkout_url'] = ContextHelper::getWebhookUrl( 'alma_checkout_data' );
 
 					// Register an instance of Alma_Gateway_Blocks.
 					foreach ( $almaGatewayBlocks as $gatewayBlock ) {
 						$paymentMethodRegistry->register( $gatewayBlock );
-					}
-
-					try {
-						$this->assetsService->loadGatewayBlockAssets( $params );
-					} catch ( AssetsServiceException $e ) {
-						throw new GatewayServiceException( 'Unable to load block assets', 0, $e );
 					}
 				}
 			);

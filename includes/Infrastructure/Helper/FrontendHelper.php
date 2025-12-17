@@ -7,7 +7,6 @@ use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
-use Alma\Gateway\Infrastructure\Service\ContainerService;
 use Alma\Gateway\Plugin;
 
 class FrontendHelper {
@@ -20,6 +19,16 @@ class FrontendHelper {
 	 */
 	public static function runFrontendServices( callable $callback ) {
 		EventHelper::addEvent( 'template_redirect', $callback );
+	}
+
+	/**
+	 * Display the services on template redirect.
+	 * We need to wait templates because is_page detection run at this time!
+	 *
+	 * @param callable $callback Function to run on template_redirect.
+	 */
+	public static function displayFrontendServices( callable $callback ) {
+		EventHelper::addEvent( 'template_redirect', $callback, 20 );
 	}
 
 	/**

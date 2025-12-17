@@ -13,7 +13,7 @@ type InstallmentsContentProps = {
 export const InstallmentsContent: React.FC<InstallmentsContentProps> = ({
                                                                             feePlan, amount
                                                                         }) => {
-    if (!feePlan.paymentPlan) {
+    if (!feePlan.paymentPlan || feePlan.paymentPlan.length === 0) {
         return null;
     }
     const customerFees = feePlan.paymentPlan[0].customer_fee
