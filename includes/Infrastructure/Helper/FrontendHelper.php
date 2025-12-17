@@ -34,24 +34,20 @@ class FrontendHelper {
 	/**
 	 * Load the frontend gateways.
 	 *
+	 * @param array $almaGatewayList
+	 *
 	 * @return void
-	 * @todo Define the order of the gateways to be loaded.
+	 *
 	 * @sonar Easier to understand with two if statements.
 	 */
-	public static function loadFrontendGateways() {
+	public static function loadFrontendGateways( array $almaGatewayList ) {
 		add_filter(
 			'woocommerce_payment_gateways',
-			function ( $gateways ) {
+			function ( $gateways ) use ( $almaGatewayList ) {
 				$container = Plugin::get_container();
 
-				$alma_gateway_list = array(
-					CreditGateway::class,
-					PayLaterGateway::class,
-					PayNowGateway::class,
-					PnxGateway::class,
-				);
 				/** @var AbstractGateway $gateway */
-				foreach ( $alma_gateway_list as $gatewayClass ) {
+				foreach ( $almaGatewayList as $gatewayClass ) {
 					if ( ! in_array( $gatewayClass, $gateways, true ) && class_exists( $gatewayClass ) ) {
 						// Check if the gateway is enabled before adding it to the list.
 						$gateway = $container->get( $gatewayClass );
@@ -64,5 +60,35 @@ class FrontendHelper {
 				return $gateways;
 			}
 		);
+
+		// Sort gateways order (not Blocks).
+		add_filter( 'woocommerce_available_payment_gateways', function ( $gateways ) {
+			$order = [
+				Plugin::get_container()->get( PayNowGateway::class )->get_name(),   // first
+				Plugin::get_container()->get( PayNowGateway::class )->get_name() . '_block',   // first
+				Plugin::get_container()->get( PnxGateway::class )->get_name(),      // second
+				Plugin::get_container()->get( PnxGateway::class )->get_name() . '_block',      // second
+				Plugin::get_container()->get( PayLaterGateway::class )->get_name(), // third
+				Plugin::get_container()->get( PayLaterGateway::class )->get_name() . '_block', // third
+				Plugin::get_container()->get( CreditGateway::class )->get_name(),   // fourth
+				Plugin::get_container()->get( CreditGateway::class )->get_name() . '_block',   // fourth
+			];
+
+			$sorted = [];
+			foreach ( $order as $id ) {
+				if ( isset( $gateways[ $id ] ) ) {
+					$sorted[ $id ] = $gateways[ $id ];
+				}
+			}
+
+			// We keep other gateways that could be registered by other plugins at the end of the list
+			foreach ( $gateways as $id => $gateway ) {
+				if ( ! isset( $sorted[ $id ] ) ) {
+					$sorted[ $id ] = $gateway;
+				}
+			}
+
+			return $sorted;
+		} );
 	}
 }

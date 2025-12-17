@@ -21,15 +21,18 @@ class GatewayController {
 	private GatewayService $gatewayService;
 	private AssetsService $assetsService;
 	private GatewayHelper $gatewayHelper;
+	private GatewayRepository $gatewayRepository;
 
 	public function __construct(
 		GatewayService $gatewayService,
 		AssetsService $assetsService,
+		GatewayRepository $gatewayRepository,
 		GatewayHelper $gatewayHelper
 	) {
-		$this->gatewayService = $gatewayService;
-		$this->assetsService  = $assetsService;
-		$this->gatewayHelper  = $gatewayHelper;
+		$this->gatewayService    = $gatewayService;
+		$this->assetsService     = $assetsService;
+		$this->gatewayRepository = $gatewayRepository;
+		$this->gatewayHelper     = $gatewayHelper;
 	}
 
 	/**
@@ -100,7 +103,7 @@ class GatewayController {
 				BackendHelper::loadBackendGateway();
 				almaLogConsole( '2 - RUN - Load Backend Gateways' );
 			} else {
-				FrontendHelper::loadFrontendGateways();
+				FrontendHelper::loadFrontendGateways( $this->gatewayRepository->findAllAlmaGateways() );
 				almaLogConsole( '2 - RUN - Load Gateways' );
 			}
 			// Add links to gateway.
@@ -117,7 +120,8 @@ class GatewayController {
 			} catch ( AssetsServiceException $e ) {
 				throw new GatewayControllerException();
 			}
-			FrontendHelper::loadFrontendGateways();
+
+			FrontendHelper::loadFrontendGateways( $this->gatewayRepository->findAllAlmaGateways() );
 			almaLogConsole( '2 - RUN - Load Frontend Gateways' );
 		}
 

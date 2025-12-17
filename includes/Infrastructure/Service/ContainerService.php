@@ -254,7 +254,6 @@ class ContainerService {
 		// WooCommerce Layer
 		$this->dice = $this->dice->addRules(
 			array(
-				AssetsController::class          => array( 'shared' => true ),
 				AlmaGateway::class               => array( 'shared' => true ),
 				ConfigRepository::class          => array( 'shared' => true ),
 				FeePlanRepository::class         => array( 'shared' => true ),

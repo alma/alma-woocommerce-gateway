@@ -9,6 +9,7 @@ use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Mapper\RefundMapper;
 use Alma\Gateway\Application\Provider\PaymentProviderAwareTrait;
 use Alma\Gateway\Application\Provider\PaymentProviderFactory;
+use Alma\Gateway\Infrastructure\Block\Gateway\AbstractGatewayBlock;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
@@ -130,6 +131,7 @@ class GatewayService {
 					$almaGatewayBlocks = $gatewayRepository->findAllAlmaGatewayBlocks();
 
 					// Register an instance of Alma_Gateway_Blocks.
+					/** @var AbstractGatewayBlock $gatewayBlock */
 					foreach ( $almaGatewayBlocks as $gatewayBlock ) {
 						$paymentMethodRegistry->register( $gatewayBlock );
 					}

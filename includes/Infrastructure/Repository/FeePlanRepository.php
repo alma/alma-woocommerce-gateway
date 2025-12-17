@@ -75,7 +75,6 @@ class FeePlanRepository {
 		if ( $forceRefresh || ! isset( $this->feePlanListAdapter['all-with-eligibility'][ $cartTotal ] ) ) {
 			almalogConsole( 'NO CACHE - WITH ELIGIBILITY - ' . $cartTotal );
 			$this->feePlanListAdapter['all-with-eligibility'][ $cartTotal ] = $this->retrieveFeePlans( $cartTotal );
-			almaLogConsole( $this->feePlanListAdapter['all-with-eligibility'][ $cartTotal ] );
 		}
 		almalogConsole( 'CACHE - WITH ELIGIBILITY - ' . $cartTotal );
 
