@@ -103,7 +103,7 @@ class GatewayController {
 				BackendHelper::loadBackendGateway();
 				almaLogConsole( '2 - RUN - Load Backend Gateways' );
 			} else {
-				FrontendHelper::loadFrontendGateways( $this->gatewayRepository->findAllAlmaGateways() );
+				FrontendHelper::loadFrontendGateways( $this->gatewayRepository->findOrderedAlmaGateways() );
 				almaLogConsole( '2 - RUN - Load Gateways' );
 			}
 			// Add links to gateway.
@@ -121,7 +121,7 @@ class GatewayController {
 				throw new GatewayControllerException();
 			}
 
-			FrontendHelper::loadFrontendGateways( $this->gatewayRepository->findAllAlmaGateways() );
+			FrontendHelper::loadFrontendGateways( $this->gatewayRepository->findOrderedAlmaGateways() );
 			almaLogConsole( '2 - RUN - Load Frontend Gateways' );
 		}
 

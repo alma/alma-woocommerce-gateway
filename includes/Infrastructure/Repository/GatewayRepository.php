@@ -49,7 +49,7 @@ class GatewayRepository implements GatewayRepositoryInterface {
 	 *
 	 * @return array
 	 */
-	public function findAllAlmaGateways(): array {
+	public function findOrderedAlmaGateways(): array {
 		return $this->gatewayOrderedList;
 	}
 

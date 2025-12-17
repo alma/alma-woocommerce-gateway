@@ -19,6 +19,7 @@ use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Mapper\FeePlanListMapper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
+use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
 use Alma\Gateway\Infrastructure\Service\AssetsService;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
 
@@ -44,6 +45,9 @@ class WidgetBlock implements IntegrationInterface {
 	/** @var FeePlanRepository */
 	private FeePlanRepository $fee_plan_repository;
 
+	/** @var GatewayRepository The Gateway Repository */
+	private GatewayRepository $gateway_repository;
+
 	/** @var AssetsService */
 	private AssetsService $assets_service;
 	/** @var ExcludedProductsHelper */
@@ -53,6 +57,7 @@ class WidgetBlock implements IntegrationInterface {
 		ConfigService $config_service,
 		CartAdapter $cart_adapter,
 		FeePlanRepository $fee_plan_repository,
+		GatewayRepository $gateway_repository,
 		ContextHelper $context_helper,
 		AssetsService $assets_service,
 		ExcludedProductsHelper $excluded_products_helper
@@ -60,6 +65,7 @@ class WidgetBlock implements IntegrationInterface {
 		$this->config_service           = $config_service;
 		$this->cart_adapter             = $cart_adapter;
 		$this->fee_plan_repository      = $fee_plan_repository;
+		$this->gateway_repository       = $gateway_repository;
 		$this->context_helper           = $context_helper;
 		$this->assets_service           = $assets_service;
 		$this->excluded_products_helper = $excluded_products_helper;
@@ -91,8 +97,11 @@ class WidgetBlock implements IntegrationInterface {
 	public function get_script_data(): array {
 
 		$excludedCategories     = $this->config_service->getExcludedCategories();
-		$canDisplayWidgetOnCart = $this->excluded_products_helper->canDisplayOnCartPage( $this->cart_adapter, $excludedCategories );
-		$feePlanList            = $this->fee_plan_repository->getAllWithEligibility()->filterEnabled();
+		$canDisplayWidgetOnCart = $this->excluded_products_helper->canDisplayOnCartPage(
+			$this->cart_adapter,
+			$excludedCategories
+		);
+		$feePlanList            = $this->fee_plan_repository->getAllWithEligibility()->filterEnabled()->orderBy( $this->gateway_repository->findOrderedAlmaGateways() );
 
 		return array(
 			'merchant_id'                 => $this->config_service->getMerchantId(),
