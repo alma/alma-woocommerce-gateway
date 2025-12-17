@@ -14,8 +14,6 @@ namespace Alma\Gateway\Infrastructure\Block\Widget;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
-use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
-use Alma\Gateway\Infrastructure\Exception\Block\WidgetBlockException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
@@ -71,17 +69,7 @@ class WidgetBlock implements IntegrationInterface {
 		return 'alma-widget-block';
 	}
 
-	/**
-	 * Initialize.
-	 *
-	 * @return void
-	 * @throws WidgetBlockException
-	 */
 	public function initialize() {
-		$this->register_block_frontend_scripts();
-		if ( ContextHelper::isAdmin() ) {
-			$this->register_block_editor_scripts();
-		}
 	}
 
 	public function get_script_handles(): array {
@@ -104,7 +92,7 @@ class WidgetBlock implements IntegrationInterface {
 
 		$excludedCategories     = $this->config_service->getExcludedCategories();
 		$canDisplayWidgetOnCart = $this->excluded_products_helper->canDisplayOnCartPage( $this->cart_adapter, $excludedCategories );
-		$feePlanList            = $this->fee_plan_repository->getAll()->filterEnabled();
+		$feePlanList = $this->fee_plan_repository->getAllWithEligibility()->filterEnabled();
 
 		return array(
 			'merchant_id'                 => $this->config_service->getMerchantId(),
@@ -117,27 +105,5 @@ class WidgetBlock implements IntegrationInterface {
 			'excluded_categories_message' => $this->config_service->getExcludedCategoriesMessage(),
 			'url_alma_logo'               => esc_url( AssetsHelper::getImage( 'images/alma_logo.svg' ) ),
 		);
-	}
-
-	/**
-	 * @throws WidgetBlockException
-	 */
-	private function register_block_frontend_scripts() {
-		try {
-			$this->assets_service->loadWidgetBlockAssets();
-		} catch ( AssetsServiceException $e ) {
-			throw new WidgetBlockException( $e->getMessage() );
-		}
-	}
-
-	/**
-	 * @throws WidgetBlockException
-	 */
-	private function register_block_editor_scripts() {
-		try {
-			$this->assets_service->loadWidgetBlockEditorAssets();
-		} catch ( AssetsServiceException $e ) {
-			throw new WidgetBlockException( $e->getMessage() );
-		}
 	}
 }

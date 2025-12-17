@@ -3,13 +3,22 @@
 namespace Alma\Gateway\Infrastructure\Entity;
 
 use Alma\Gateway\Infrastructure\Block\Widget\WidgetBlock;
+use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
+use Alma\Gateway\Infrastructure\Exception\Block\WidgetBlockException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\ShortcodeWidgetHelper;
+use Alma\Gateway\Infrastructure\Service\AssetsService;
 use Alma\Gateway\Plugin;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry;
 
 class CartWidget extends AbstractWidget {
+
+	private AssetsService $assetsService;
+
+	public function __construct( AssetsService $assetsService ) {
+		$this->assetsService = $assetsService;
+	}
 
 	/**
 	 * Register the Alma widget.
@@ -29,6 +38,27 @@ class CartWidget extends AbstractWidget {
 					$integrationRegistry->register( $widgetBlock );
 				}
 			);
+		}
+	}
+
+	/**
+	 * Load widget assets.
+	 *
+	 * @return void
+	 * @throws WidgetBlockException
+	 */
+	public function prepareAssets() {
+		try {
+			$this->assetsService->registerWidgetBlockAssets();
+		} catch ( AssetsServiceException $e ) {
+			throw new WidgetBlockException( $e->getMessage() );
+		}
+		if ( ContextHelper::isAdmin() ) {
+			try {
+				$this->assetsService->registerWidgetBlockEditorAssets();
+			} catch ( AssetsServiceException $e ) {
+				throw new WidgetBlockException( $e->getMessage() );
+			}
 		}
 	}
 

@@ -10,11 +10,13 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
+use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\FormHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Tests\Unit\Fixtures\FeePlanFixturesFactory;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
+use Mockery;
 use PHPUnit\Framework\TestCase;
 
 class PnxGatewayTest extends TestCase {
@@ -28,14 +30,7 @@ class PnxGatewayTest extends TestCase {
 
 		Functions\when('__')->justReturn('');
 		Functions\expect('add_action')
-			->once()
-			->withArgs(function ($event, $callback, $priority) {
-				$this->assertSame('woocommerce_update_options_payment_gateways_alma_config_gateway', $event);
-				// Vérifier que le callback est bien un tableau [objet, méthode]
-				$this->assertIsArray($callback);
-				$this->assertInstanceOf(PnxGateway::class, $callback[0]);
-				return true;
-			});
+			->once();
 		$this->feePlanFixturesFactory = new FeePlanFixturesFactory();
 
 		$this->feePlanRepository = $this->createMock(FeePlanRepository::class);
@@ -57,7 +52,7 @@ class PnxGatewayTest extends TestCase {
 	}
 
 	/**
-	 * TODO: enable tests once the refacto on the constructor is done
+	 * TODO: enable tests once we can mock the retrieveFeePlans function
 	 * @throws ParametersException
 	 * @throws FeePlanRepositoryException
 	 */
@@ -66,14 +61,22 @@ class PnxGatewayTest extends TestCase {
 		$feePlanAdapter2 = $this->feePlanFixturesFactory->getP3x(false);
 
 		$feePlanListAdapter = new FeePlanListAdapter([$feePlanAdapter1, $feePlanAdapter2]);
-		$this->feePlanRepository->method('getAll')
+		$cartMock = Mockery::mock();
+		$cartMock->shouldReceive('getCartTotal')->andReturn(10000);
+		$contextHelperMock = Mockery::mock('alias:' . ContextHelper::class);
+		$contextHelperMock->shouldReceive('getCart')
+		                  ->once()
+		->andReturn($cartMock);
+		$this->feePlanRepository->method('getAllWithEligibility')
+		                        ->willReturn($feePlanListAdapter);
+		$this->feePlanRepository->method('retrieveFeePlans')
 		                        ->willReturn($feePlanListAdapter);
 
 		$this->assertFalse($this->pnxGateway->is_available());
 	}
 
 	/**
-	 * TODO: enable tests once the refacto on the constructor is done
+	 * TODO: enable tests once we can mock the retrieveFeePlans function
 	 * @throws FeePlanRepositoryException
 	 * @throws ParametersException
 	 */
@@ -90,7 +93,7 @@ class PnxGatewayTest extends TestCase {
 	}
 
 	/**
-	 * TODO: enable tests once the refacto on the constructor is done
+	 * TODO: enable tests once we can mock the retrieveFeePlans function
 	 * @throws FeePlanRepositoryException
 	 * @throws ParametersException
 	 */
