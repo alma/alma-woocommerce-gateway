@@ -103,6 +103,22 @@ class AssetsService {
 	}
 
 	/**
+	 * Load Checkout assets.
+	 * @throws AssetsServiceException
+	 */
+	public function registerClassicCheckoutAssets( array $scriptParams = [] ): void {
+		$this->registerLocal( AssetsConfig::ASSETS_CONFIG_CLASSIC_CHECKOUT, $scriptParams );
+	}
+
+	/**
+	 * Display Checkout assets.
+	 */
+	public function displayClassicCheckoutAssets(): void {
+		wp_enqueue_script( 'alma-' . AssetsConfig::ASSETS_CONFIG_CLASSIC_CHECKOUT );
+	}
+
+	/**
+	 * Load Admin assets.
 	 * Prepare Admin assets.
 	 * @throws AssetsServiceException
 	 */
@@ -169,7 +185,7 @@ class AssetsService {
 					$config['version'] ?? AssetsHelper::getFileVersion( $config['src'] ),
 					$config['in_footer'] ?? true
 				);
-				
+
 				if ( isset( $config['params'] ) ) {
 
 					$expectedKeys         = array_flip( $config['params']['keys'] );

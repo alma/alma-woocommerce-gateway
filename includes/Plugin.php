@@ -7,7 +7,6 @@ use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\RequirementsHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Controller\AdminController;
-use Alma\Gateway\Infrastructure\Controller\AssetsController;
 use Alma\Gateway\Infrastructure\Controller\GatewayController;
 use Alma\Gateway\Infrastructure\Controller\ShopController;
 use Alma\Gateway\Infrastructure\Exception\CmsException;

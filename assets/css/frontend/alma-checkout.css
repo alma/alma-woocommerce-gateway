@@ -1,35 +1,49 @@
 /* Checkout no blocks styles */
-#payment_method_alma_pnx_gateway .alma_woocommerce_gateway_checkbox,
-#payment_method_alma_credit_gateway .alma_woocommerce_gateway_checkbox,
-#payment_method_alma_paynow_gateway .alma_woocommerce_gateway_checkbox,
-#payment_method_alma_paylater_gateway .alma_woocommerce_gateway_checkbox {
-	float: none;
-	margin-right: 10px;
-	display: inline;
+.payment_box.payment_method_alma_pnx_gateway,
+.payment_box.payment_method_alma_credit_gateway,
+.payment_box.payment_method_alma_paynow_gateway,
+.payment_box.payment_method_alma_paylater_gateway {
+	display: flex;
+	flex-wrap: wrap;
 }
 
-#payment_method_alma_pnx_gateway .alma_woocommerce_gateway_logo,
-#payment_method_alma_credit_gateway .alma_woocommerce_gateway_logo,
-#payment_method_alma_paynow_gateway .alma_woocommerce_gateway_logo,
-#payment_method_alma_paylater_gateway .alma_woocommerce_gateway_logo {
-	margin-top: 10px;
+.alma_woocommerce_gateway_fieldset {
+	flex: 1 1 0;
+	box-sizing: border-box;
 }
 
-#payment_method_alma_pnx_gateway .alma_woocommerce_gateway_logo img,
-#payment_method_alma_credit_gateway .alma_woocommerce_gateway_logo img,
-#payment_method_alma_paynow_gateway .alma_woocommerce_gateway_logo img,
-#payment_method_alma_paylater_gateway .alma_woocommerce_gateway_logo img {
-	float: unset !important;
-	width: auto !important;
-	height: 15px !important;
-	border: none !important;
+.alma_woocommerce_gateway_checkout_plan {
+	flex: 0 0 100%;
+	box-sizing: border-box;
+	margin: 5px auto;
+}
+
+.alma_woocommerce_gateway_logo {
+	background-color: #FFFFFF;
+	padding: 0 2px 4px 2px;
+	width: fit-content;
+	border: 1px solid #E1E4E6;
+	border-radius: 7px;
+}
+
+#payment .payment_methods li .alma_woocommerce_gateway_logo img {
+	float: unset;
+	width: auto;
+	height: 15px;
+	border: none;
 	vertical-align: middle;
 	display: inline-block;
 	margin-left: 2px;
 }
 
-.alma_woocommerce_gateway_checkout_plan {
-	margin: 0 auto 15px auto;
+.alma_woocommerce_gateway_label {
+	background-color: #1A1A1A;
+	color: #FFFFFF;
+	margin: 2px 2px;
+	border: 1px solid #1A1A1A;
+	border-radius: 4px;
+	padding: 2px 7px;
+	font-size: 10px;
 }
 
 .alma_woocommerce_gateway_checkout_plan .alma_woocommerce_gateway_installments tr td {

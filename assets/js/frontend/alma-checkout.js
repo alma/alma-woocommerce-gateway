@@ -5,22 +5,43 @@
  */
 (function ($) {
     $(function () {
-
         /**
-         * Move to alma-checkout.js
-         * Need to finish
+         * Hide or display the payment plan details based on the selected payment method.
          */
         function displayInstallmentsPlanForPaymentMethods() {
-            $('#payment_method_alma_pnx_gateway').on('change', function () {
-                if (this.checked) {
-                    $('.alma_woocommerce_gateway_checkout_plan').hide();
-                    $(this).closest('li.wc_payment_method').find('#alma-checkout-plan-general_3_0_0').show()
-                }
-            })
+            let $checked = $('input[name="alma_plan_key"]:checked');
+
+            $('.alma_woocommerce_gateway_checkout_plan').hide();
+
+            if ($checked.length) {
+                let value = $checked.val();
+                let id = '#alma-checkout-plan-' + value;
+                $(id).show();
+            }
         }
 
-        $(function () {
+        function selectFirstPaymentMethod(paymentBox) {
+            let $first = paymentBox.find("input[name='alma_plan_key']").first();
+            $first.prop('checked', true);
+            displayInstallmentsPlanForPaymentMethods();
+        }
+
+        $(document).on('change', 'input[name="payment_method"]', function() {
+            if ($(this).val().startsWith('alma_')) {
+                let paymentBox = $(this).nextAll('.payment_box').first();
+                selectFirstPaymentMethod(paymentBox);
+            }
+        });
+
+        $(document).on('change', 'input[name="alma_plan_key"]', function() {
             displayInstallmentsPlanForPaymentMethods();
         });
+
+        if ($('input[name="payment_method"]:checked').val()?.startsWith('alma_')) {
+            let paymentBox = $('input[name="payment_method"]:checked').nextAll('.payment_box').first();
+            selectFirstPaymentMethod(paymentBox);
+        } else {
+            displayInstallmentsPlanForPaymentMethods();
+        }
     })
 })(jQuery);
