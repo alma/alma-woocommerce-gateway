@@ -194,6 +194,6 @@ class WidgetService {
 	 * @return bool True if the widget should be displayed, false otherwise.
 	 */
 	private function shouldDisplayWidget( bool $widgetEnabled, bool $excludedCategoriesStatus, FeePlanListAdapter $feePlanList ): bool {
-		return $widgetEnabled && $excludedCategoriesStatus && count( $feePlanList ) > 0;
+		return $widgetEnabled && ! $excludedCategoriesStatus && count( $feePlanList ) > 0;
 	}
 }
