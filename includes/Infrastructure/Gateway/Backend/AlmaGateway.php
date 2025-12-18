@@ -67,6 +67,7 @@ class AlmaGateway extends AbstractBackendGateway {
 					$this->form_fields,
 					$this->widget_fieldset(),
 					$this->excluded_categories_fieldset(),
+					$this->customize_payment_buttons_text_fieldset(),
 					$this->fee_plan_fieldset()
 				);
 			} catch ( FeePlanRepositoryException $e ) {

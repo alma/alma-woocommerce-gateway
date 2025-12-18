@@ -472,4 +472,103 @@ class AbstractBackendGateway extends AbstractGateway {
 			),
 		);
 	}
+
+	public function customize_payment_buttons_text_fieldset(): array {
+
+		$paynow_fields   = array(
+			'paynow_title'             => array(
+				'title' => sprintf( '<h3>%s:</h3>', L10nHelper::__( 'Pay now' ) ),
+				'type'  => 'title',
+			),
+			'paynow_title_field'       => array(
+				'title'       => L10nHelper::__( 'Title' ),
+				'type'        => 'text',
+				'description' => L10nHelper::__( 'This controls the payment method name which the user sees during checkout.' ),
+				'desc_tip'    => true,
+				'default'     => L10nHelper::__( 'Pay by credit card', 'alma-gateway-for-woocommerce' ),
+			),
+			'paynow_description_field' => array(
+				'title'       => L10nHelper::__( 'Description' ),
+				'type'        => 'text',
+				'description' => L10nHelper::__( 'This controls the payment method description which the user sees during checkout.' ),
+				'desc_tip'    => true,
+				'default'     => L10nHelper::__( 'Fast and secured payments', 'alma-gateway-for-woocommerce' ),
+			),
+		);
+		$pnx_fields      = array(
+			'pnx_title'             => array(
+				'title' => sprintf( '<h3>%s:</h3>', L10nHelper::__( 'Payments in 2, 3 and 4 installments' ) ),
+				'type'  => 'title',
+			),
+			'pnx_title_field'       => array(
+				'title'       => L10nHelper::__( 'Title' ),
+				'type'        => 'text',
+				'description' => L10nHelper::__( 'This controls the payment method name which the user sees during checkout.' ),
+				'desc_tip'    => true,
+				'default'     => L10nHelper::__( 'Pay in installments', 'alma-gateway-for-woocommerce' ),
+			),
+			'pnx_description_field' => array(
+				'title'       => L10nHelper::__( 'Description' ),
+				'type'        => 'text',
+				'description' => L10nHelper::__( 'This controls the payment method description which the user sees during checkout.' ),
+				'desc_tip'    => true,
+				'default'     => L10nHelper::__( 'Fast and secure payment by credit card', 'alma-gateway-for-woocommerce' ),
+			),
+		);
+		$paylater_fields = array(
+			'paylater_title'             => array(
+				'title' => sprintf( '<h3>%s:</h3>', L10nHelper::__( 'Deferred Payments' ) ),
+				'type'  => 'title',
+			),
+			'paylater_title_field'       => array(
+				'title'       => L10nHelper::__( 'Title' ),
+				'type'        => 'text',
+				'description' => L10nHelper::__( 'This controls the payment method name which the user sees during checkout.' ),
+				'desc_tip'    => true,
+				'default'     => L10nHelper::__( 'Pay later', 'alma-gateway-for-woocommerce' ),
+			),
+			'paylater_description_field' => array(
+				'title'       => L10nHelper::__( 'Description' ),
+				'type'        => 'text',
+				'description' => L10nHelper::__( 'This controls the payment method description which the user sees during checkout.' ),
+				'desc_tip'    => true,
+				'default'     => L10nHelper::__( 'Fast and secure payment by credit card', 'alma-gateway-for-woocommerce' ),
+			),
+		);
+		$credit_fields   = array(
+			'credit_title'             => array(
+				'title' => sprintf( '<h3>%s:</h3>', L10nHelper::__( 'Payments in more than 4 installments' ) ),
+				'type'  => 'title',
+			),
+			'credit_title_field'       => array(
+				'title'       => L10nHelper::__( 'Title' ),
+				'type'        => 'text',
+				'description' => L10nHelper::__( 'This controls the payment method name which the user sees during checkout.' ),
+				'desc_tip'    => true,
+				'default'     => L10nHelper::__( 'Pay with financing', 'alma-gateway-for-woocommerce' ),
+			),
+			'credit_description_field' => array(
+				'title'       => L10nHelper::__( 'Description' ),
+				'type'        => 'text',
+				'description' => L10nHelper::__( 'This controls the payment method description which the user sees during checkout.' ),
+				'desc_tip'    => true,
+				'default'     => L10nHelper::__( 'Fast and secure payment by credit card', 'alma-gateway-for-woocommerce' ),
+			),
+		);
+
+		return array_merge(
+			array(
+				'customize_payment_buttons_text_section' => array(
+					'title'       => '<hr>' . L10nHelper::__( '→ Customize payment button text' ),
+					'type'        => 'title',
+					'description' => L10nHelper::__( 'Customize the text displayed on the Alma payment button on the checkout page' ),
+					'desc_tip'    => false,
+				),
+			),
+			$paynow_fields,
+			$pnx_fields,
+			$paylater_fields,
+			$credit_fields
+		);
+	}
 }
