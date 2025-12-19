@@ -14,6 +14,10 @@ use Alma\Gateway\Application\Service\PaymentService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\InPageHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
@@ -28,6 +32,13 @@ use WC_Payment_Gateway;
 abstract class AbstractGateway extends WC_Payment_Gateway {
 
 	protected const PAYMENT_METHOD = 'abstract';
+
+	protected const GATEWAYS = array(
+		PayNowGateway::PAYMENT_METHOD,
+		PnxGateway::PAYMENT_METHOD,
+		PayLaterGateway::PAYMENT_METHOD,
+		CreditGateway::PAYMENT_METHOD,
+	);
 
 	protected const CACHE_ENABLED = false;
 

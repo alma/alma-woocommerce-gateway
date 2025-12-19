@@ -10,6 +10,10 @@ use Alma\Gateway\Domain\Exception\AlmaException;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
 use Alma\Gateway\Infrastructure\Helper\UrlHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
@@ -473,9 +477,55 @@ class AbstractBackendGateway extends AbstractGateway {
 		);
 	}
 
-	public function customize_payment_buttons_text_fieldset(): array {
+	/**
+	 * Define the customize payment buttons text section.
+	 *
+	 * @param array $active_gateways
+	 *
+	 * @return array[]
+	 */
+	public function customize_payment_buttons_text_fieldset( array $active_gateways = array() ): array {
+		$has_alma_gateway = ! empty( array_intersect( $active_gateways, AbstractGateway::GATEWAYS ) );
 
-		$paynow_fields   = array(
+		if ( ! $has_alma_gateway ) {
+			return array();
+		}
+
+		$fields = array(
+			'customize_payment_buttons_text_section' => array(
+				'title'       => '<hr>' . L10nHelper::__( '→ Customize payment button text' ),
+				'type'        => 'title',
+				'description' => L10nHelper::__( 'Customize the text displayed on the Alma payment button on the checkout page' ),
+				'desc_tip'    => false,
+			),
+		);
+
+		if ( in_array( PayNowGateway::PAYMENT_METHOD, $active_gateways, true ) ) {
+			$fields = array_merge( $fields, $this->get_paynow_fields() );
+		}
+
+		if ( in_array( PnxGateway::PAYMENT_METHOD, $active_gateways, true ) ) {
+			$fields = array_merge( $fields, $this->get_pnx_fields() );
+		}
+
+		if ( in_array( PayLaterGateway::PAYMENT_METHOD, $active_gateways, true ) ) {
+			$fields = array_merge( $fields, $this->get_paylater_fields() );
+		}
+
+		if ( in_array( CreditGateway::PAYMENT_METHOD, $active_gateways, true ) ) {
+			$fields = array_merge( $fields, $this->get_credit_fields() );
+		}
+
+		return $fields;
+	}
+
+	/**
+	 * Get paynow fields.
+	 *
+	 * @return array
+	 */
+	public function get_paynow_fields(): array {
+		return array(
 			'paynow_title'             => array(
 				'title' => sprintf( '<h3>%s:</h3>', L10nHelper::__( 'Pay now' ) ),
 				'type'  => 'title',
@@ -495,7 +545,15 @@ class AbstractBackendGateway extends AbstractGateway {
 				'default'     => L10nHelper::__( 'Fast and secured payments', 'alma-gateway-for-woocommerce' ),
 			),
 		);
-		$pnx_fields      = array(
+	}
+
+	/**
+	 * Get pnx fields.
+	 *
+	 * @return array
+	 */
+	public function get_pnx_fields(): array {
+		return array(
 			'pnx_title'             => array(
 				'title' => sprintf( '<h3>%s:</h3>', L10nHelper::__( 'Payments in 2, 3 and 4 installments' ) ),
 				'type'  => 'title',
@@ -515,7 +573,15 @@ class AbstractBackendGateway extends AbstractGateway {
 				'default'     => L10nHelper::__( 'Fast and secure payment by credit card', 'alma-gateway-for-woocommerce' ),
 			),
 		);
-		$paylater_fields = array(
+	}
+
+	/**
+	 * Get paylater fields.
+	 *
+	 * @return array
+	 */
+	public function get_paylater_fields(): array {
+		return array(
 			'paylater_title'             => array(
 				'title' => sprintf( '<h3>%s:</h3>', L10nHelper::__( 'Deferred Payments' ) ),
 				'type'  => 'title',
@@ -535,7 +601,15 @@ class AbstractBackendGateway extends AbstractGateway {
 				'default'     => L10nHelper::__( 'Fast and secure payment by credit card', 'alma-gateway-for-woocommerce' ),
 			),
 		);
-		$credit_fields   = array(
+	}
+
+	/**
+	 * Get credit fields.
+	 *
+	 * @return array
+	 */
+	public function get_credit_fields(): array {
+		return array(
 			'credit_title'             => array(
 				'title' => sprintf( '<h3>%s:</h3>', L10nHelper::__( 'Payments in more than 4 installments' ) ),
 				'type'  => 'title',
@@ -554,21 +628,6 @@ class AbstractBackendGateway extends AbstractGateway {
 				'desc_tip'    => true,
 				'default'     => L10nHelper::__( 'Fast and secure payment by credit card', 'alma-gateway-for-woocommerce' ),
 			),
-		);
-
-		return array_merge(
-			array(
-				'customize_payment_buttons_text_section' => array(
-					'title'       => '<hr>' . L10nHelper::__( '→ Customize payment button text' ),
-					'type'        => 'title',
-					'description' => L10nHelper::__( 'Customize the text displayed on the Alma payment button on the checkout page' ),
-					'desc_tip'    => false,
-				),
-			),
-			$paynow_fields,
-			$pnx_fields,
-			$paylater_fields,
-			$credit_fields
 		);
 	}
 }

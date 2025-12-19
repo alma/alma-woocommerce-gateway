@@ -53,6 +53,9 @@ class AlmaGateway extends AbstractBackendGateway {
 	 */
 	public function init_form_fields() {
 
+		/** @var ConfigService $config_service */
+		$config_service = Plugin::get_container()->get( ConfigService::class );
+
 		// Initialize minimum form fields
 		$this->form_fields = array_merge(
 			$this->form_fields,
@@ -67,7 +70,7 @@ class AlmaGateway extends AbstractBackendGateway {
 					$this->form_fields,
 					$this->widget_fieldset(),
 					$this->excluded_categories_fieldset(),
-					$this->customize_payment_buttons_text_fieldset(),
+					$this->customize_payment_buttons_text_fieldset( $config_service->getGatewaysActive() ),
 					$this->fee_plan_fieldset()
 				);
 			} catch ( FeePlanRepositoryException $e ) {

@@ -6,6 +6,10 @@ use Alma\API\Application\DTO\PaymentDto;
 use Alma\API\Domain\Repository\ConfigRepositoryInterface;
 use Alma\API\Domain\ValueObject\Environment;
 use Alma\Gateway\Application\Helper\EncryptorHelper;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
 use Alma\Gateway\Infrastructure\Helper\WordPressHelper;
 use Alma\Gateway\Plugin;
 
@@ -291,6 +295,47 @@ class ConfigService {
 	 */
 	public function getSettings(): array {
 		return $this->configRepository->getSettings();
+	}
+
+	/**
+	 * Get all active gateways based on the settings.
+	 *
+	 * @return array
+	 */
+	public function getGatewaysActive(): array {
+		$gateways = [];
+		$settings = $this->getSettings();
+
+		foreach ($settings as $key => $value) {
+			if (!preg_match('/^general_(\d+)_(\d+)_(\d+)_enabled$/', $key, $matches) || $value !== true) {
+				continue;
+			}
+
+			$installment = (int) $matches[1];
+			$deferredDays = (int) $matches[2];
+			$deferredMonth = (int) $matches[3];
+
+			if ($installment === 1 && $deferredDays === 0 && $deferredMonth === 0) {
+				$gateways[] = PayNowGateway::PAYMENT_METHOD;
+				continue;
+			}
+
+			if ($installment >= 2 && $installment <= 4 && $deferredDays === 0 && $deferredMonth === 0) {
+				$gateways[] = PnxGateway::PAYMENT_METHOD;
+				continue;
+			}
+
+			if ($installment === 1 && ($deferredDays !== 0 || $deferredMonth !== 0)) {
+				$gateways[] = PayLaterGateway::PAYMENT_METHOD;
+				continue;
+			}
+
+			if ($installment > 4 && $deferredDays === 0 && $deferredMonth === 0) {
+				$gateways[] = CreditGateway::PAYMENT_METHOD;
+			}
+		}
+
+		return array_unique($gateways);
 	}
 
 	/**
