@@ -5,6 +5,7 @@ namespace Alma\Gateway\Infrastructure\Block\Gateway;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Exception\Block\CheckoutBlockException;
 use Alma\Gateway\Infrastructure\Service\AssetsService;
+use Alma\Gateway\Plugin;
 
 class GatewayBlockFactory {
 
@@ -35,7 +36,8 @@ class GatewayBlockFactory {
 
 		return new $class_name(
 			$this->config_service->isInPageEnabled(),
-			'alma-gateway-block'
+			'alma-gateway-block',
+			Plugin::get_container()->get( ConfigService::class ),
 		);
 	}
 }

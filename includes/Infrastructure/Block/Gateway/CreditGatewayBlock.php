@@ -11,6 +11,7 @@
 
 namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
+use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
 
@@ -23,8 +24,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 final class CreditGatewayBlock extends AbstractGatewayBlock implements IntegrationInterface {
 
-	public function __construct( bool $is_in_page_enabled, string $assets_handle ) {
-		$this->gateway = new CreditGateway();
+	public function __construct( bool $is_in_page_enabled, string $assets_handle, ConfigService $config_service ) {
+		$this->gateway = new CreditGateway( $config_service );
 		parent::__construct( $is_in_page_enabled, $assets_handle );
 	}
 

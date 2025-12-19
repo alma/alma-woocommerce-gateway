@@ -554,18 +554,18 @@ class AbstractBackendGateway extends AbstractGateway {
 	 */
 	public function get_pnx_fields(): array {
 		return array(
-			'pnx_title'             => array(
+			'pnx_title'                   => array(
 				'title' => sprintf( '<h3>%s:</h3>', L10nHelper::__( 'Payments in 2, 3 and 4 installments' ) ),
 				'type'  => 'title',
 			),
-			'pnx_title_field'       => array(
+			PnxGateway::TITLE_FIELD       => array(
 				'title'       => L10nHelper::__( 'Title' ),
 				'type'        => 'text',
 				'description' => L10nHelper::__( 'This controls the payment method name which the user sees during checkout.' ),
 				'desc_tip'    => true,
 				'default'     => L10nHelper::__( 'Pay in installments', 'alma-gateway-for-woocommerce' ),
 			),
-			'pnx_description_field' => array(
+			PnxGateway::DESCRIPTION_FIELD => array(
 				'title'       => L10nHelper::__( 'Description' ),
 				'type'        => 'text',
 				'description' => L10nHelper::__( 'This controls the payment method description which the user sees during checkout.' ),
