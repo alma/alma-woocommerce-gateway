@@ -2,8 +2,8 @@
 
 namespace Alma\Gateway\Infrastructure\Controller;
 
+use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
-use Alma\Gateway\Infrastructure\Exception\CheckoutServiceException;
 use Alma\Gateway\Infrastructure\Exception\Controller\GatewayControllerException;
 use Alma\Gateway\Infrastructure\Helper\BackendHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
@@ -12,7 +12,6 @@ use Alma\Gateway\Infrastructure\Helper\FrontendHelper;
 use Alma\Gateway\Infrastructure\Helper\GatewayHelper;
 use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
 use Alma\Gateway\Infrastructure\Service\AssetsService;
-use Alma\Gateway\Infrastructure\Service\CheckoutService;
 use Alma\Gateway\Infrastructure\Service\GatewayService;
 use Alma\Gateway\Plugin;
 
@@ -58,19 +57,11 @@ class GatewayController {
 
 		// Init Gateway Services
 		$this->loadGateway();
-
-		/** @var GatewayRepository $gatewayRepository */
-		$gatewayRepository = Plugin::get_container()->get( GatewayRepository::class );
-		$almaGatewayBlocks = $gatewayRepository->findAllAlmaGatewayBlocks();
 		try {
-			/** @var CheckoutService $checkoutService */
-			$checkoutService        = Plugin::get_container()->get( CheckoutService::class );
-			$params                 = $checkoutService->getCheckoutParams( $almaGatewayBlocks );
-			$params['checkout_url'] = ContextHelper::getWebhookUrl( 'alma_checkout_data' );
-			$this->assetsService->registerGatewayBlockAssets( $params );
+			$this->gatewayService->runGatewayBlocks();
 			almaLogConsole( '2 - RUN - Register Gateway Block Assets' );
-		} catch ( CheckoutServiceException|AssetsServiceException $e ) {
-			throw new GatewayControllerException( 'Unable to load block assets', 0, $e );
+		} catch ( GatewayServiceException $e ) {
+			throw new GatewayControllerException();
 		}
 	}
 

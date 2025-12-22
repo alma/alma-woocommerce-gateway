@@ -10,6 +10,8 @@ use Alma\Gateway\Application\Mapper\RefundMapper;
 use Alma\Gateway\Application\Provider\PaymentProviderAwareTrait;
 use Alma\Gateway\Application\Provider\PaymentProviderFactory;
 use Alma\Gateway\Infrastructure\Block\Gateway\AbstractGatewayBlock;
+use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
+use Alma\Gateway\Infrastructure\Exception\CheckoutServiceException;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
@@ -25,11 +27,15 @@ class GatewayService {
 
 	private AssetsService $assetsService;
 
+	private GatewayRepository $gatewayRepository;
+
 	public function __construct(
 		PaymentProviderFactory $paymentProviderFactory,
+		GatewayRepository $gatewayRepository,
 		AssetsService $assetsService
 	) {
 		$this->paymentProviderFactory = $paymentProviderFactory;
+		$this->gatewayRepository      = $gatewayRepository;
 		$this->assetsService          = $assetsService;
 	}
 
@@ -126,9 +132,7 @@ class GatewayService {
 				'woocommerce_blocks_payment_method_type_registration',
 				function ( PaymentMethodRegistry $paymentMethodRegistry ) {
 
-					/** @var GatewayRepository $gatewayRepository */
-					$gatewayRepository = Plugin::get_container()->get( GatewayRepository::class );
-					$almaGatewayBlocks = $gatewayRepository->findAllAlmaGatewayBlocks();
+					$almaGatewayBlocks = $this->gatewayRepository->findAllAlmaGatewayBlocks();
 
 					// Register an instance of Alma_Gateway_Blocks.
 					/** @var AbstractGatewayBlock $gatewayBlock */
@@ -142,6 +146,24 @@ class GatewayService {
 			/** @var CheckoutService $checkout_service */
 			$checkout_service = Plugin::get_container()->get( CheckoutService::class );
 			$checkout_service->initialize();
+		}
+	}
+
+	/**
+	 * Run the gateway blocks services.
+	 * @throws GatewayServiceException
+	 */
+	public function runGatewayBlocks(): void {
+
+		$almaGatewayBlocks = $this->gatewayRepository->findAllAlmaGatewayBlocks();
+		try {
+			/** @var CheckoutService $checkoutService */
+			$checkoutService        = Plugin::get_container()->get( CheckoutService::class );
+			$params                 = $checkoutService->getCheckoutParams( $almaGatewayBlocks );
+			$params['checkout_url'] = ContextHelper::getWebhookUrl( 'alma_checkout_data' );
+			$this->assetsService->registerGatewayBlockAssets( $params );
+		} catch ( CheckoutServiceException|AssetsServiceException $e ) {
+			throw new GatewayServiceException( 'Unable to load block assets', 0, $e );
 		}
 	}
 }

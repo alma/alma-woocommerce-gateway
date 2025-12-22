@@ -34,7 +34,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 
-	private static bool $is_action_added = false;
 	protected AbstractFrontendGateway $gateway;
 	/** @var bool $is_in_page_enabled */
 	private bool $is_in_page_enabled;
@@ -47,16 +46,12 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 		$this->name               = $this->gateway->get_name() . '_block';
 		$this->initialize();
 
-		// This hook must be called once
-		if ( ! self::$is_action_added ) {
-			add_action(
-				'woocommerce_rest_checkout_process_payment_with_context',
-				array( $this, 'process_payment_with_context' ),
-				10,
-				2
-			);
-			self::$is_action_added = true;
-		}
+		add_action(
+			'woocommerce_rest_checkout_process_payment_with_context',
+			array( $this, 'process_payment_with_context' ),
+			10,
+			2
+		);
 	}
 
 	/**
