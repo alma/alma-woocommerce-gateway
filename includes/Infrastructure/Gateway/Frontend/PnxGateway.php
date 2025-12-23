@@ -23,16 +23,16 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 	public const PAYMENT_METHOD    = PaymentMethod::PNX;
 	public const TITLE_FIELD       = self::PAYMENT_METHOD . '_title_field';
 	public const DESCRIPTION_FIELD = self::PAYMENT_METHOD . '_description_field';
-	private ConfigService $config_service;
 
 	/**
 	 * Gateway constructor.
 	 */
-	public function __construct( ConfigService $config_service ) {
-		$this->config_service = $config_service;
-		$this->title          = $config_service->getSetting( self::TITLE_FIELD );
-		$this->description    = $config_service->getSetting( self::DESCRIPTION_FIELD );
-		$this->method_title   = L10nHelper::__( 'Payment in installments with Alma - 2x 3x 4x' );
+	public function __construct() {
+		/** @var ConfigService $config_service */
+		$config_service     = Plugin::get_container()->get( ConfigService::class );
+		$this->title        = $config_service->getSetting( self::TITLE_FIELD );
+		$this->description  = $config_service->getSetting( self::DESCRIPTION_FIELD );
+		$this->method_title = L10nHelper::__( 'Payment in installments with Alma - 2x 3x 4x' );
 
 		parent::__construct();
 	}

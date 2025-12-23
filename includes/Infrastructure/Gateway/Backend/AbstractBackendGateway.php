@@ -8,6 +8,7 @@ use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Domain\Exception\AlmaException;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
+use Alma\Gateway\Infrastructure\Exception\Gateway\AbstractGatewayException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
@@ -480,14 +481,30 @@ class AbstractBackendGateway extends AbstractGateway {
 	/**
 	 * Define the customize payment buttons text section.
 	 *
-	 * @param array $active_gateways
-	 *
 	 * @return array[]
+	 * @throws AbstractGatewayException
 	 */
-	public function customize_payment_buttons_text_fieldset( array $active_gateways = array() ): array {
-		$has_alma_gateway = ! empty( array_intersect( $active_gateways, AbstractGateway::GATEWAYS ) );
+	public function customize_payment_buttons_text_fieldset(
+		?PayNowGateway $payNowGateway = null,
+		?PnxGateway $pnxGateway = null,
+		?PayLaterGateway $payLaterGateway = null,
+		?CreditGateway $creditGateway = null
+	): array {
+		/** @var PayNowGateway $payNowGateway */
+		$payNowGateway = $payNowGateway ?? Plugin::get_container()->get( PayNowGateway::class );
+		/** @var PnxGateway $pnxGateway */
+		$pnxGateway = $pnxGateway ?? Plugin::get_container()->get( PnxGateway::class );
+		/** @var PayLaterGateway $payLaterGateway */
+		$payLaterGateway = $payLaterGateway ?? Plugin::get_container()->get( PayLaterGateway::class );
+		/** @var CreditGateway $creditGateway */
+		$creditGateway = $creditGateway ?? Plugin::get_container()->get( CreditGateway::class );
 
-		if ( ! $has_alma_gateway ) {
+		if (
+			! $payNowGateway->is_enabled() &&
+			! $pnxGateway->is_enabled() &&
+			! $payLaterGateway->is_enabled() &&
+			! $creditGateway->is_enabled()
+		) {
 			return array();
 		}
 
@@ -500,19 +517,19 @@ class AbstractBackendGateway extends AbstractGateway {
 			),
 		);
 
-		if ( in_array( PayNowGateway::PAYMENT_METHOD, $active_gateways, true ) ) {
+		if ( $payNowGateway->is_enabled() ) {
 			$fields = array_merge( $fields, $this->get_paynow_fields() );
 		}
 
-		if ( in_array( PnxGateway::PAYMENT_METHOD, $active_gateways, true ) ) {
+		if ( $pnxGateway->is_enabled() ) {
 			$fields = array_merge( $fields, $this->get_pnx_fields() );
 		}
 
-		if ( in_array( PayLaterGateway::PAYMENT_METHOD, $active_gateways, true ) ) {
+		if ( $payLaterGateway->is_enabled() ) {
 			$fields = array_merge( $fields, $this->get_paylater_fields() );
 		}
 
-		if ( in_array( CreditGateway::PAYMENT_METHOD, $active_gateways, true ) ) {
+		if ( $creditGateway->is_enabled() ) {
 			$fields = array_merge( $fields, $this->get_credit_fields() );
 		}
 

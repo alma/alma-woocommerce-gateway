@@ -8,6 +8,7 @@ use Alma\Gateway\Application\Helper\EncryptorHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\GatewayConfigurationFormValidatorService;
+use Alma\Gateway\Infrastructure\Exception\Gateway\AbstractGatewayException;
 use Alma\Gateway\Infrastructure\Exception\Gateway\Backend\AlmaGatewayException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Mapper\ConfigFormMapper;
@@ -70,10 +71,10 @@ class AlmaGateway extends AbstractBackendGateway {
 					$this->form_fields,
 					$this->widget_fieldset(),
 					$this->excluded_categories_fieldset(),
-					$this->customize_payment_buttons_text_fieldset( $config_service->getGatewaysActive() ),
+					$this->customize_payment_buttons_text_fieldset(),
 					$this->fee_plan_fieldset()
 				);
-			} catch ( FeePlanRepositoryException $e ) {
+			} catch ( FeePlanRepositoryException | AbstractGatewayException $e ) {
 				almalog( $e->getMessage() );
 				throw new AlmaGatewayException( 'Can\'t initialize Alma Gateway', 0, $e );
 			}

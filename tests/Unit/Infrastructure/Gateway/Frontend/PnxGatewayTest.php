@@ -33,6 +33,7 @@ class PnxGatewayTest extends TestCase {
 		// Mock les hooks WordPress pour éviter l'erreur
 		Functions\when('add_filter')->justReturn(true);
 		Functions\when('add_action')->justReturn(true);
+		Functions\when('get_option')->justReturn(true);
 		$this->feePlanFixturesFactory = new FeePlanFixturesFactory();
 
 		$this->feePlanRepository = $this->createMock(FeePlanRepository::class);

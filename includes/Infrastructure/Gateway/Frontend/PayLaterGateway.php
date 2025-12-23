@@ -25,16 +25,16 @@ class PayLaterGateway extends AbstractFrontendGateway implements FrontendGateway
 	public const PAYMENT_METHOD    = PaymentMethod::PAY_LATER;
 	public const TITLE_FIELD       = self::PAYMENT_METHOD . '_title_field';
 	public const DESCRIPTION_FIELD = self::PAYMENT_METHOD . '_description_field';
-	private ConfigService $config_service;
 
 	/**
 	 * Gateway constructor.
 	 */
-	public function __construct( ConfigService $config_service ) {
-		$this->config_service = $config_service;
-		$this->title          = $this->config_service->getSetting( self::TITLE_FIELD );
-		$this->description    = $config_service->getSetting( self::DESCRIPTION_FIELD );
-		$this->method_title   = L10nHelper::__( 'Payment deferred with Alma' );
+	public function __construct() {
+		/** @var ConfigService $config_service */
+		$config_service     = Plugin::get_container()->get( ConfigService::class );
+		$this->title        = $config_service->getSetting( self::TITLE_FIELD );
+		$this->description  = $config_service->getSetting( self::DESCRIPTION_FIELD );
+		$this->method_title = L10nHelper::__( 'Payment deferred with Alma' );
 
 		parent::__construct();
 	}

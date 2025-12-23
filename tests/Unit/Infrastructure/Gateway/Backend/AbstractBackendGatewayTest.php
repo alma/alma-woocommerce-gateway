@@ -3,12 +3,32 @@
 namespace Alma\Gateway\Tests\Unit\Infrastructure\Gateway\Backend;
 
 use Alma\Gateway\Infrastructure\Gateway\Backend\AbstractBackendGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
 use PHPUnit\Framework\TestCase;
 
 class AbstractBackendGatewayTest extends TestCase {
 	private AbstractBackendGateway $abstractBackendGateway;
+	/**
+	 * @var PayNowGateway
+	 */
+	private $payNowGatewayMock;
+	/**
+	 * @var PnxGateway
+	 */
+	private $pnxGatewayMock;
+	/**
+	 * @var PayLaterGateway
+	 */
+	private $payLaterGatewayMock;
+	/**
+	 * @var CreditGateway
+	 */
+	private $creditGatewayMock;
 
 	public function setUp(): void {
 		Monkey\setUp();
@@ -18,6 +38,13 @@ class AbstractBackendGatewayTest extends TestCase {
 		// Mock les hooks WordPress pour éviter l'erreur
 		Functions\when('add_filter')->justReturn(true);
 		Functions\when('add_action')->justReturn(true);
+		Functions\when('get_option')->justReturn(true);
+		Functions\when('almalog')->justReturn(true);
+
+		$this->payNowGatewayMock = $this->createMock(PayNowGateway::class);
+		$this->pnxGatewayMock = $this->createMock(PnxGateway::class);
+		$this->payLaterGatewayMock = $this->createMock(PayLaterGateway::class);
+		$this->creditGatewayMock = $this->createMock(CreditGateway::class);
 		$this->abstractBackendGateway = new AbstractBackendGateway();
 	}
 
@@ -27,22 +54,24 @@ class AbstractBackendGatewayTest extends TestCase {
 	}
 
 	public function testCustomizePaymentButtonsTextFieldsetWithoutGatewaysEnabled(): void {
-		$active_gateways = [];
+		$this->payNowGatewayMock->expects( $this->once() )->method('is_enabled')->willReturn(false);
+		$this->pnxGatewayMock->expects( $this->once() )->method('is_enabled')->willReturn(false);
+		$this->payLaterGatewayMock->expects( $this->once() )->method('is_enabled')->willReturn(false);
+		$this->creditGatewayMock->expects( $this->once() )->method('is_enabled')->willReturn(false);
 		$expected = [];
-		$this->assertEquals($expected, $this->abstractBackendGateway->customize_payment_buttons_text_fieldset($active_gateways));
-	}
-
-	public function testCustomizePaymentButtonsTextFieldsetWithWrongStringInArray(): void {
-		$active_gateways = ['wrong_string'];
-		$expected = [];
-		$this->assertEquals($expected, $this->abstractBackendGateway->customize_payment_buttons_text_fieldset($active_gateways));
+		$this->assertEquals($expected, $this->abstractBackendGateway->customize_payment_buttons_text_fieldset(
+			$this->payNowGatewayMock,
+			$this->pnxGatewayMock,
+			$this->payLaterGatewayMock,
+			$this->creditGatewayMock
+		));
 	}
 
 	public function testCustomizePaymentButtonsTextFieldsetWithPayNowAndPnxEnabled(): void {
-		$active_gateways = [
-			'paynow',
-			'pnx',
-		];
+		$this->payNowGatewayMock->method('is_enabled')->willReturn(true);
+		$this->pnxGatewayMock->method('is_enabled')->willReturn(true);
+		$this->payLaterGatewayMock->method('is_enabled')->willReturn(false);
+		$this->creditGatewayMock->method('is_enabled')->willReturn(false);
 		$expected = [
 			'customize_payment_buttons_text_section' => [
 				'title'       => '<hr>→ Customize payment button text',
@@ -87,6 +116,11 @@ class AbstractBackendGatewayTest extends TestCase {
 				'default'     => 'Fast and secure payment by credit card',
 			],
 		];
-		$this->assertEquals($expected, $this->abstractBackendGateway->customize_payment_buttons_text_fieldset($active_gateways));
+		$this->assertEquals($expected, $this->abstractBackendGateway->customize_payment_buttons_text_fieldset(
+			$this->payNowGatewayMock,
+			$this->pnxGatewayMock,
+			$this->payLaterGatewayMock,
+			$this->creditGatewayMock
+		));
 	}
 }
