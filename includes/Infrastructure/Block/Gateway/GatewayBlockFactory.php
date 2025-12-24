@@ -5,6 +5,7 @@ namespace Alma\Gateway\Infrastructure\Block\Gateway;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Exception\Block\CheckoutBlockException;
 use Alma\Gateway\Infrastructure\Service\AssetsService;
+use Alma\Gateway\Plugin;
 
 class GatewayBlockFactory {
 

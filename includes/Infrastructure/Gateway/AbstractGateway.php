@@ -12,8 +12,14 @@ use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\PaymentService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
+use Alma\Gateway\Infrastructure\Exception\Gateway\AbstractGatewayException;
+use Alma\Gateway\Infrastructure\Exception\Gateway\Backend\AlmaGatewayException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\InPageHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
@@ -32,11 +38,17 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	protected const CACHE_ENABLED = false;
 
 	protected bool $is_eligible = false;
+	private FeePlanRepository $fee_plan_repository;
 
 	/**
 	 * Gateway constructor.
+	 * All parameters are injected here are used for unit test
+	 * Let the fallback to the container for production use
+	 * @param FeePlanRepository|null $fee_plan_repository
 	 */
-	public function __construct() {
+	public function __construct( ?FeePlanRepository $fee_plan_repository = null ) {
+		$this->fee_plan_repository = $fee_plan_repository ?? Plugin::get_container()->get( FeePlanRepository::class );
+
 		$this->id                 = sprintf( 'alma_%s_gateway', $this->get_payment_method() );
 		$this->method_description = L10nHelper::__( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.' );
 		$this->has_fields         = true;
@@ -77,9 +89,16 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * Is gateway enabled?
 	 *
 	 * @return bool
+	 * @throws AbstractGatewayException
 	 */
 	public function is_enabled(): bool {
-		return 'yes' === $this->enabled;
+		try {
+			$enabledFeePlans = $this->fee_plan_repository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) )->filterEnabled();
+		} catch ( FeePlanRepositoryException $e ) {
+			throw new AbstractGatewayException( 'Can not get Fee Plans' );
+		}
+
+		return count( $enabledFeePlans ) > 0;
 	}
 
 	/**

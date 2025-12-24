@@ -6,6 +6,10 @@ use Alma\API\Application\DTO\PaymentDto;
 use Alma\API\Domain\Repository\ConfigRepositoryInterface;
 use Alma\API\Domain\ValueObject\Environment;
 use Alma\Gateway\Application\Helper\EncryptorHelper;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
 use Alma\Gateway\Infrastructure\Helper\WordPressHelper;
 use Alma\Gateway\Plugin;
 

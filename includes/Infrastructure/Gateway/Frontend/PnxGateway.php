@@ -20,13 +20,18 @@ use Alma\Gateway\Plugin;
  * @see public/templates/partials/pnx-gateway-options.php for rendering
  */
 class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInterface {
-	public const PAYMENT_METHOD = PaymentMethod::PNX;
+	public const PAYMENT_METHOD    = PaymentMethod::PNX;
+	public const TITLE_FIELD       = self::PAYMENT_METHOD . '_title_field';
+	public const DESCRIPTION_FIELD = self::PAYMENT_METHOD . '_description_field';
 
 	/**
 	 * Gateway constructor.
 	 */
 	public function __construct() {
-		$this->title        = 'Pay in installments with Alma';
+		/** @var ConfigService $config_service */
+		$config_service     = Plugin::get_container()->get( ConfigService::class );
+		$this->title        = $config_service->getSetting( self::TITLE_FIELD );
+		$this->description  = $config_service->getSetting( self::DESCRIPTION_FIELD );
 		$this->method_title = L10nHelper::__( 'Payment in installments with Alma - 2x 3x 4x' );
 
 		parent::__construct();
@@ -80,9 +85,10 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 				'gateway-options.php',
 				array(
 					'alma_woocommerce_gateway_payment_method' => $this->get_payment_method(),
-					'alma_woocommerce_gateway_plan_key' => $fee_plan_adapter->getPlanKey(),
-					'alma_woocommerce_gateway_logo_url' => AssetsHelper::getImage( 'images/alma_card_logo.svg' ),
+					'alma_woocommerce_gateway_plan_key'    => $fee_plan_adapter->getPlanKey(),
+					'alma_woocommerce_gateway_logo_url'    => AssetsHelper::getImage( 'images/alma_card_logo.svg' ),
 					'alma_woocommerce_gateway_fee_plan_label' => $fee_plan_adapter->getLabel(),
+					'alma_woocommerce_gateway_description' => $this->description,
 				),
 				'partials'
 			);

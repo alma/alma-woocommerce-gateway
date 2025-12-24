@@ -11,6 +11,7 @@
 
 namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
+use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
 use Alma\Gateway\Infrastructure\Helper\FormHelper;
 use Alma\Gateway\Plugin;

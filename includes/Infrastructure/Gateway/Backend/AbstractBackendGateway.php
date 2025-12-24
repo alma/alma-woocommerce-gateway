@@ -8,8 +8,13 @@ use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Domain\Exception\AlmaException;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
+use Alma\Gateway\Infrastructure\Exception\Gateway\AbstractGatewayException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
 use Alma\Gateway\Infrastructure\Helper\UrlHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
@@ -469,6 +474,178 @@ class AbstractBackendGateway extends AbstractGateway {
 				'description' => L10nHelper::__( 'Message displayed below the cart totals when it contains excluded products' ),
 				'desc_tip'    => true,
 				'default'     => 'Some products cannot be paid with monthly or deferred installments',
+			),
+		);
+	}
+
+	/**
+	 * Define the customize payment buttons text section.
+	 *  All parameters are injected here are used for unit test
+	 *  Let the fallback to the container for production use
+	 *
+	 * @return array[]
+	 * @throws AbstractGatewayException
+	 */
+	public function customize_payment_buttons_text_fieldset(
+		?PayNowGateway $payNowGateway = null,
+		?PnxGateway $pnxGateway = null,
+		?PayLaterGateway $payLaterGateway = null,
+		?CreditGateway $creditGateway = null
+	): array {
+		/** @var PayNowGateway $payNowGateway */
+		$payNowGateway = $payNowGateway ?? Plugin::get_container()->get( PayNowGateway::class );
+		/** @var PnxGateway $pnxGateway */
+		$pnxGateway = $pnxGateway ?? Plugin::get_container()->get( PnxGateway::class );
+		/** @var PayLaterGateway $payLaterGateway */
+		$payLaterGateway = $payLaterGateway ?? Plugin::get_container()->get( PayLaterGateway::class );
+		/** @var CreditGateway $creditGateway */
+		$creditGateway = $creditGateway ?? Plugin::get_container()->get( CreditGateway::class );
+
+		if (
+			! $payNowGateway->is_enabled() &&
+			! $pnxGateway->is_enabled() &&
+			! $payLaterGateway->is_enabled() &&
+			! $creditGateway->is_enabled()
+		) {
+			return array();
+		}
+
+		$fields = array(
+			'customize_payment_buttons_text_section' => array(
+				'title'       => '<hr>' . L10nHelper::__( '→ Customize payment button text' ),
+				'type'        => 'title',
+				'description' => L10nHelper::__( 'Customize the text displayed on the Alma payment button on the checkout page' ),
+				'desc_tip'    => false,
+			),
+		);
+
+		if ( $payNowGateway->is_enabled() ) {
+			$fields = array_merge( $fields, $this->get_paynow_fields() );
+		}
+
+		if ( $pnxGateway->is_enabled() ) {
+			$fields = array_merge( $fields, $this->get_pnx_fields() );
+		}
+
+		if ( $payLaterGateway->is_enabled() ) {
+			$fields = array_merge( $fields, $this->get_paylater_fields() );
+		}
+
+		if ( $creditGateway->is_enabled() ) {
+			$fields = array_merge( $fields, $this->get_credit_fields() );
+		}
+
+		return $fields;
+	}
+
+	/**
+	 * Get paynow fields.
+	 *
+	 * @return array
+	 */
+	public function get_paynow_fields(): array {
+		return array(
+			'paynow_title'             => array(
+				'title' => sprintf( '<h3>%s:</h3>', L10nHelper::__( 'Pay now' ) ),
+				'type'  => 'title',
+			),
+			'paynow_title_field'       => array(
+				'title'       => L10nHelper::__( 'Title' ),
+				'type'        => 'text',
+				'description' => L10nHelper::__( 'This controls the payment method name which the user sees during checkout.' ),
+				'desc_tip'    => true,
+				'default'     => L10nHelper::__( 'Pay by credit card', 'alma-gateway-for-woocommerce' ),
+			),
+			'paynow_description_field' => array(
+				'title'       => L10nHelper::__( 'Description' ),
+				'type'        => 'text',
+				'description' => L10nHelper::__( 'This controls the payment method description which the user sees during checkout.' ),
+				'desc_tip'    => true,
+				'default'     => L10nHelper::__( 'Fast and secured payments', 'alma-gateway-for-woocommerce' ),
+			),
+		);
+	}
+
+	/**
+	 * Get pnx fields.
+	 *
+	 * @return array
+	 */
+	public function get_pnx_fields(): array {
+		return array(
+			'pnx_title'                   => array(
+				'title' => sprintf( '<h3>%s:</h3>', L10nHelper::__( 'Payments in 2, 3 and 4 installments' ) ),
+				'type'  => 'title',
+			),
+			PnxGateway::TITLE_FIELD       => array(
+				'title'       => L10nHelper::__( 'Title' ),
+				'type'        => 'text',
+				'description' => L10nHelper::__( 'This controls the payment method name which the user sees during checkout.' ),
+				'desc_tip'    => true,
+				'default'     => L10nHelper::__( 'Pay in installments', 'alma-gateway-for-woocommerce' ),
+			),
+			PnxGateway::DESCRIPTION_FIELD => array(
+				'title'       => L10nHelper::__( 'Description' ),
+				'type'        => 'text',
+				'description' => L10nHelper::__( 'This controls the payment method description which the user sees during checkout.' ),
+				'desc_tip'    => true,
+				'default'     => L10nHelper::__( 'Fast and secure payment by credit card', 'alma-gateway-for-woocommerce' ),
+			),
+		);
+	}
+
+	/**
+	 * Get paylater fields.
+	 *
+	 * @return array
+	 */
+	public function get_paylater_fields(): array {
+		return array(
+			'paylater_title'             => array(
+				'title' => sprintf( '<h3>%s:</h3>', L10nHelper::__( 'Deferred Payments' ) ),
+				'type'  => 'title',
+			),
+			'paylater_title_field'       => array(
+				'title'       => L10nHelper::__( 'Title' ),
+				'type'        => 'text',
+				'description' => L10nHelper::__( 'This controls the payment method name which the user sees during checkout.' ),
+				'desc_tip'    => true,
+				'default'     => L10nHelper::__( 'Pay later', 'alma-gateway-for-woocommerce' ),
+			),
+			'paylater_description_field' => array(
+				'title'       => L10nHelper::__( 'Description' ),
+				'type'        => 'text',
+				'description' => L10nHelper::__( 'This controls the payment method description which the user sees during checkout.' ),
+				'desc_tip'    => true,
+				'default'     => L10nHelper::__( 'Fast and secure payment by credit card', 'alma-gateway-for-woocommerce' ),
+			),
+		);
+	}
+
+	/**
+	 * Get credit fields.
+	 *
+	 * @return array
+	 */
+	public function get_credit_fields(): array {
+		return array(
+			'credit_title'             => array(
+				'title' => sprintf( '<h3>%s:</h3>', L10nHelper::__( 'Payments in more than 4 installments' ) ),
+				'type'  => 'title',
+			),
+			'credit_title_field'       => array(
+				'title'       => L10nHelper::__( 'Title' ),
+				'type'        => 'text',
+				'description' => L10nHelper::__( 'This controls the payment method name which the user sees during checkout.' ),
+				'desc_tip'    => true,
+				'default'     => L10nHelper::__( 'Pay with financing', 'alma-gateway-for-woocommerce' ),
+			),
+			'credit_description_field' => array(
+				'title'       => L10nHelper::__( 'Description' ),
+				'type'        => 'text',
+				'description' => L10nHelper::__( 'This controls the payment method description which the user sees during checkout.' ),
+				'desc_tip'    => true,
+				'default'     => L10nHelper::__( 'Fast and secure payment by credit card', 'alma-gateway-for-woocommerce' ),
 			),
 		);
 	}

@@ -11,6 +11,7 @@
 
 namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
+use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
 
