@@ -480,6 +480,8 @@ class AbstractBackendGateway extends AbstractGateway {
 
 	/**
 	 * Define the customize payment buttons text section.
+	 *  All parameters are injected here are used for unit test
+	 *  Let the fallback to the container for production use
 	 *
 	 * @return array[]
 	 * @throws AbstractGatewayException
