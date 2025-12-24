@@ -43,6 +43,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
+if ( ! defined( 'ALMA_VERSION' ) ) {
+	define( 'ALMA_VERSION', '6.0.0' );
+}
+
 $alma_gateway_plugin = Plugin::get_instance();
 
 /**

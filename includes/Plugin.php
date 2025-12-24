@@ -10,11 +10,11 @@ use Alma\Gateway\Infrastructure\Controller\AdminController;
 use Alma\Gateway\Infrastructure\Controller\GatewayController;
 use Alma\Gateway\Infrastructure\Controller\ShopController;
 use Alma\Gateway\Infrastructure\Exception\CmsException;
-use Alma\Gateway\Infrastructure\Exception\Controller\AssetsControllerException;
 use Alma\Gateway\Infrastructure\Exception\Controller\GatewayControllerException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
+use Alma\Gateway\Infrastructure\Service\MigrationService;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -89,6 +89,7 @@ final class Plugin extends abstractPlugin {
 	 */
 	public function plugin_warmup(): void {
 
+
 		// Configure Languages
 		L10nHelper::load_language( $this->get_plugin_path() );
 
@@ -122,13 +123,16 @@ final class Plugin extends abstractPlugin {
 		/** @var ConfigService $config_service */
 		$config_service = self::get_container()->get( ConfigService::class );
 		$this->set_is_configured( $config_service->isConfigured() );
+
+		/** @var MigrationService $migration_service */
+		$migration_service = self::get_container()->get( MigrationService::class );
+		$migration_service->runMigrationsIfNeeded();
 	}
 
 	/**
 	 * Used for regular plugin work.
 	 *
 	 * @throws GatewayControllerException|RequirementsHelperException
-	 * @throws AssetsControllerException
 	 */
 	public function plugin_setup(): void {
 
