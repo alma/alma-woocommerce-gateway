@@ -35,13 +35,6 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 
 	protected const PAYMENT_METHOD = 'abstract';
 
-	protected const GATEWAYS = array(
-		PayNowGateway::PAYMENT_METHOD,
-		PnxGateway::PAYMENT_METHOD,
-		PayLaterGateway::PAYMENT_METHOD,
-		CreditGateway::PAYMENT_METHOD,
-	);
-
 	protected const CACHE_ENABLED = false;
 
 	protected bool $is_eligible = false;
@@ -50,6 +43,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	/**
 	 * Gateway constructor.
 	 * All parameters are injected here are used for unit test
+	 * Let the fallback to the container for production use
 	 * @param FeePlanRepository|null $fee_plan_repository
 	 */
 	public function __construct( ?FeePlanRepository $fee_plan_repository = null ) {
