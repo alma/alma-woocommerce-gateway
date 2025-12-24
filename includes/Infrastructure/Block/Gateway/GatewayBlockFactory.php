@@ -36,8 +36,7 @@ class GatewayBlockFactory {
 
 		return new $class_name(
 			$this->config_service->isInPageEnabled(),
-			'alma-gateway-block',
-			Plugin::get_container()->get( ConfigService::class ),
+			'alma-gateway-block'
 		);
 	}
 }
