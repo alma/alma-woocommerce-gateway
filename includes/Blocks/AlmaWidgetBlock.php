@@ -98,7 +98,7 @@ class AlmaWidgetBlock implements IntegrationInterface {
 		$script_url        = ALMA_PLUGIN_URL . $script_path;
 		$script_asset_path = ALMA_PLUGIN_PATH . '/build/alma-widget-block/alma-widget-block-view.asset.php';
 		$script_asset      = file_exists( $script_asset_path )
-			? require $script_asset_path // NOSONAR - build PHP script with no class.
+			? require $script_asset_path
 			: array(
 				'dependencies' => array(),
 				'version'      => $this->get_file_version( $script_asset_path ),
@@ -129,7 +129,7 @@ class AlmaWidgetBlock implements IntegrationInterface {
 		$script_url        = ALMA_PLUGIN_URL . $script_path;
 		$script_asset_path = ALMA_PLUGIN_PATH . '/build/alma-widget-block/alma-widget-block.asset.php';
 		$script_asset      = file_exists( $script_asset_path )
-			? require $script_asset_path // NOSONAR - build PHP script with no class.
+			? require $script_asset_path
 			: array(
 				'dependencies' => array(),
 				'version'      => $this->get_file_version( $script_asset_path ),

@@ -20,7 +20,7 @@ class AlmaBusinessEventRepository {
 	        UNIQUE KEY `unique_alma_payment_id` (`alma_payment_id`)
 		) $charset_collate;";
 
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php'; // NOSONAR
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
 	}
 }
