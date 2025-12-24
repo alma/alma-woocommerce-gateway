@@ -138,4 +138,53 @@ class FeePlanListAdapter extends ArrayObject implements FeePlanListAdapterInterf
 
 		return $feePlanListAdapter;
 	}
+
+	/**
+	 * Orders the Fee Plans based on the given payment method order,
+	 * then by installments count (ascending), then by deferred days (ascending).
+	 *
+	 * @param array $orderedPaymentMethodList
+	 *
+	 * @return FeePlanListAdapterInterface
+	 */
+	public function orderBy( array $orderedPaymentMethodList ): FeePlanListAdapterInterface {
+		$feePlanListAdapter = $this->getArrayCopy();
+
+		usort( $feePlanListAdapter,
+			function ( FeePlanAdapter $a, FeePlanAdapter $b ) use ( $orderedPaymentMethodList ) {
+
+				// Priority 1: Get gateway priorities based on $orderedPaymentMethodList order
+				$priorityA = array_search( $a->getPaymentMethod(), $orderedPaymentMethodList, true );
+				$priorityB = array_search( $b->getPaymentMethod(), $orderedPaymentMethodList, true );
+
+				// If gateway not found in list, put it at the end
+				if ( $priorityA === false ) {
+					$priorityA = PHP_INT_MAX;
+				}
+				if ( $priorityB === false ) {
+					$priorityB = PHP_INT_MAX;
+				}
+
+				// If gateway priority is different, sort by priority
+				if ( $priorityA !== $priorityB ) {
+					return $priorityA <=> $priorityB;
+				}
+
+				// Priority 2: Same gateway, sort by installments count (1 to 12)
+				$installmentsA = $a->getInstallmentsCount();
+				$installmentsB = $b->getInstallmentsCount();
+
+				if ( $installmentsA !== $installmentsB ) {
+					return $installmentsA <=> $installmentsB;
+				}
+
+				// Priority 3: Same installments count, sort by deferred days (15, 30, etc.)
+				$deferredDaysA = $a->getDeferredDays();
+				$deferredDaysB = $b->getDeferredDays();
+
+				return $deferredDaysA <=> $deferredDaysB;
+			} );
+
+		return new FeePlanListAdapter( $feePlanListAdapter );
+	}
 }

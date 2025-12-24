@@ -33,12 +33,12 @@ abstract class AbstractWidget implements WidgetInterface {
 		string $language,
 		bool $hasExcludedCategories
 	): WidgetInterface {
-		$this->feePlanListAdapter = $feePlanListAdapter;
-		$this->environment        = $environment;
-		$this->merchantId         = $merchantId;
-		$this->price              = $price;
-		$this->displayWidget      = $displayWidget;
-		$this->language           = $language;
+		$this->feePlanListAdapter    = $feePlanListAdapter;
+		$this->environment           = $environment;
+		$this->merchantId            = $merchantId;
+		$this->price                 = $price;
+		$this->displayWidget         = $displayWidget;
+		$this->language              = $language;
 		$this->hasExcludedCategories = $hasExcludedCategories;
 
 		return $this;
@@ -51,6 +51,7 @@ abstract class AbstractWidget implements WidgetInterface {
 	 * @see assets/js/frontend/alma-frontend-widget-implementation.js
 	 */
 	public function getConfiguration(): array {
+
 		return array(
 			'environment'             => $this->environment,
 			'widget_selector'         => sprintf( '.%s', self::WIDGET_CLASS ),

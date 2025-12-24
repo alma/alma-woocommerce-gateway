@@ -15,6 +15,7 @@ use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
+use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
 use Alma\Gateway\Infrastructure\Repository\ProductRepository;
 use Alma\Gateway\Infrastructure\Service\AssetsService;
 use Alma\Gateway\Plugin;
@@ -31,6 +32,9 @@ class WidgetService {
 	/** @var FeePlanRepository Fee Plan Repository */
 	private FeePlanRepository $feePlanRepository;
 
+	/** @var GatewayRepository Fee Plan Repository */
+	private GatewayRepository $gatewayRepository;
+
 	/** @var CartAdapterInterface Adapter to manage the cart. */
 	private CartAdapterInterface $cartAdapter;
 
@@ -45,6 +49,7 @@ class WidgetService {
 		ConfigService $configService,
 		FeePlanRepository $feePlanRepository,
 		ProductRepository $productRepository,
+		GatewayRepository $gatewayRepository,
 		CartAdapterInterface $cartAdapter,
 		ExcludedProductsHelper $excludedProductsHelper,
 		AssetsService $assetsService
@@ -52,6 +57,7 @@ class WidgetService {
 		$this->configService          = $configService;
 		$this->feePlanRepository      = $feePlanRepository;
 		$this->productRepository      = $productRepository;
+		$this->gatewayRepository      = $gatewayRepository;
 		$this->cartAdapter            = $cartAdapter;
 		$this->excludedProductsHelper = $excludedProductsHelper;
 		$this->assetsService          = $assetsService;
@@ -72,7 +78,8 @@ class WidgetService {
 		$environment = $this->configService->getEnvironment();
 		$merchantId  = $this->configService->getMerchantId();
 		try {
-			$feePlanListAdapter = $this->feePlanRepository->getAll()->filterEnabled();
+			$feePlanListAdapter = $this->feePlanRepository->getAll()->filterEnabled()->orderBy( $this->gatewayRepository->findOrderedAlmaGateways() );
+
 		} catch ( FeePlanRepositoryException $e ) {
 			throw new WidgetServiceException( $e->getMessage() );
 		}
@@ -97,13 +104,14 @@ class WidgetService {
 	public function displayCartWidget( array $excludedCategories, FeePlanListAdapter $feePlanListAdapter, Environment $environment, string $merchantId, string $language ): WidgetInterface {
 
 		// Display widget if widget is enabled and there are no excluded categories.
-		$hasExcludedCategories = ! $this->excludedProductsHelper->canDisplayOnCartPage( $this->cartAdapter, $excludedCategories );
-		$displayWidget = $this->shouldDisplayWidget(
+		$hasExcludedCategories = ! $this->excludedProductsHelper->canDisplayOnCartPage( $this->cartAdapter,
+			$excludedCategories );
+		$displayWidget         = $this->shouldDisplayWidget(
 			$this->configService->getWidgetCartEnabled(),
 			$hasExcludedCategories,
 			$feePlanListAdapter
 		);
-		$price         = $this->cartAdapter->getCartTotal();
+		$price                 = $this->cartAdapter->getCartTotal();
 
 		// Configure the widget
 		/** @var CartWidget $widget */
@@ -144,13 +152,14 @@ class WidgetService {
 		}
 
 		// Display widget if widget is enabled and there are no excluded categories.
-		$hasExcludedCategories = ! $this->excludedProductsHelper->canDisplayOnProductPage( $product, $excludedCategories );
-		$displayWidget = $this->shouldDisplayWidget(
+		$hasExcludedCategories = ! $this->excludedProductsHelper->canDisplayOnProductPage( $product,
+			$excludedCategories );
+		$displayWidget         = $this->shouldDisplayWidget(
 			$this->configService->getWidgetProductEnabled(),
 			$hasExcludedCategories,
 			$feePlanListAdapter
 		);
-		$price         = $product->getPrice();
+		$price                 = $product->getPrice();
 
 		// Configure the widget
 		/** @var ProductWidget $widget */
@@ -185,6 +194,6 @@ class WidgetService {
 	 * @return bool True if the widget should be displayed, false otherwise.
 	 */
 	private function shouldDisplayWidget( bool $widgetEnabled, bool $excludedCategoriesStatus, FeePlanListAdapter $feePlanList ): bool {
-		return $widgetEnabled && $excludedCategoriesStatus && count( $feePlanList ) > 0;
+		return $widgetEnabled && ! $excludedCategoriesStatus && count( $feePlanList ) > 0;
 	}
 }
