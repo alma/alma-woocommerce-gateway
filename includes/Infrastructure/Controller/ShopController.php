@@ -2,15 +2,12 @@
 
 namespace Alma\Gateway\Infrastructure\Controller;
 
-use Alma\Gateway\Application\Service\BusinessEventsService;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\InPageService;
-use Alma\Gateway\Application\Service\IpnService;
 use Alma\Gateway\Application\Service\WidgetService;
 use Alma\Gateway\Infrastructure\Helper\BackendHelper;
 use Alma\Gateway\Infrastructure\Helper\BlocksWidgetHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
-use Alma\Gateway\Infrastructure\Helper\EventHelper;
 use Alma\Gateway\Infrastructure\Helper\FrontendHelper;
 use Alma\Gateway\Infrastructure\Service\AssetsService;
 use Alma\Gateway\Plugin;
@@ -68,7 +65,6 @@ class ShopController {
 					$this->inPageService->runInPage();
 					almaLogConsole( '2 - RUN - Run In-Page' );
 				}
-
 			}
 		);
 
