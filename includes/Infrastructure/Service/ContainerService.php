@@ -37,6 +37,7 @@ use Alma\Gateway\Application\Helper\TemplateHelper;
 use Alma\Gateway\Application\Provider\EligibilityProvider;
 use Alma\Gateway\Application\Provider\FeePlanProvider;
 use Alma\Gateway\Application\Provider\PaymentProvider;
+use Alma\Gateway\Application\Service\BusinessEventsService;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\IpnService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
@@ -58,6 +59,7 @@ use Alma\Gateway\Infrastructure\Helper\NavigationHelper;
 use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
 use Alma\Gateway\Infrastructure\Helper\SecurityHelper;
 use Alma\Gateway\Infrastructure\Helper\SessionHelper;
+use Alma\Gateway\Infrastructure\Repository\BusinessEventsRepository;
 use Alma\Gateway\Infrastructure\Repository\ConfigRepository;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
@@ -203,6 +205,7 @@ class ContainerService {
 		$this->dice = $this->dice->addRules(
 			array(
 				AdminController::class => array( 'shared' => true ),
+				BusinessEventsService::class => array( 'shared' => true ),
 				ConfigService::class   => array( 'shared' => true ),
 				GatewayService::class  => array( 'shared' => true ),
 				LoggerService::class   => array( 'shared' => true ),
@@ -255,6 +258,7 @@ class ContainerService {
 		$this->dice = $this->dice->addRules(
 			array(
 				AlmaGateway::class               => array( 'shared' => true ),
+				BusinessEventsRepository::class  => array( 'shared' => true ),
 				ConfigRepository::class          => array( 'shared' => true ),
 				FeePlanRepository::class         => array( 'shared' => true ),
 				GatewayRepository::class         => array( 'shared' => true ),

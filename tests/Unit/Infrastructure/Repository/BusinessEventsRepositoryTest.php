@@ -53,4 +53,27 @@ class BusinessEventsRepositoryTest extends TestCase
 
 		$this->assertTrue($this->businessEventsRepository->alreadyExist(456));
 	}
+
+	public function testSaveEligibility() {
+		global $wpdb;
+
+		$wpdb = $this->getMockBuilder(\stdClass::class)
+		             ->addMethods(['update'])
+		             ->getMock();
+
+		$wpdb->prefix = 'wp_';
+
+		$wpdb->expects($this->once())
+		     ->method('update')
+		     ->with(
+			     'wp_alma_business_data',
+			     ['is_bnpl_eligible' => 1],
+			     ['cart_id' => 789],
+			     ['%d'],
+			     ['%d']
+		     );
+
+		$repository = new BusinessEventsRepository();
+		$repository->saveEligibility(789, true);
+	}
 }

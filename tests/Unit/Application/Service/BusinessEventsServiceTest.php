@@ -3,6 +3,8 @@
 namespace Alma\Gateway\Tests\Unit\Application\Service;
 
 use Alma\API\Application\DTO\MerchantBusinessEvent\CartInitiatedBusinessEventDto;
+use Alma\API\Domain\Entity\Eligibility;
+use Alma\API\Domain\Entity\EligibilityList;
 use Alma\API\Infrastructure\Endpoint\MerchantEndpoint;
 use Alma\Gateway\Application\Exception\Service\BusinessEventsServiceException;
 use Alma\Gateway\Application\Service\BusinessEventsService;
@@ -43,10 +45,6 @@ class BusinessEventsServiceTest extends TestCase
 			->method('saveCartId')
 			->with($cartId);
 
-		$this->sessionHelper->expects($this->once())
-			->method('setSession')
-			->with(BusinessEventsService::ALMA_CART_ID, $cartId);
-
 		$this->merchantEndpoint->expects($this->once())
 			->method('sendCartInitiatedBusinessEvent')
 			->with($this->isInstanceOf( CartInitiatedBusinessEventDto::class));
@@ -74,14 +72,70 @@ class BusinessEventsServiceTest extends TestCase
            ->method('saveCartId')
            ->with($cartId);
 
-		$this->sessionHelper->expects($this->never())
-            ->method('setSession')
-            ->with(BusinessEventsService::ALMA_CART_ID, $cartId);
-
 		$this->merchantEndpoint->expects($this->never())
            ->method('sendCartInitiatedBusinessEvent')
            ->with($this->isInstanceOf( CartInitiatedBusinessEventDto::class));
 
 		$this->busisnessEventsService->onCartInitiated();
+	}
+
+	/**
+	 * @dataProvider eligibleListProvider
+	 */
+	public function testUpdateEligibilityWithEligibleList($eligibleList, $isEligible): void {
+		$cartId = 12345;
+
+		$this->busisnessEventsService = $this->getMockBuilder(BusinessEventsService::class)
+             ->setConstructorArgs([
+                 $this->sessionHelper,
+                 $this->businessEventsRepository,
+                 $this->merchantEndpoint
+             ])
+             ->onlyMethods(['getCartId'])
+             ->getMock();
+
+		$this->busisnessEventsService->expects($this->once())
+             ->method('getCartId')
+             ->willReturn($cartId);
+
+		$this->businessEventsRepository->expects($this->once())
+			->method('saveEligibility')
+			->with($cartId, $isEligible);
+
+		$this->busisnessEventsService->updateEligibility($eligibleList);
+	}
+
+	public function eligibleListProvider(): array {
+		return [
+			'Eligible List' => [
+				new EligibilityList([
+					new Eligibility([
+						'eligible' => true,
+						'deferred_days' => 0,
+						'deferred_months' => 0,
+						'installments_count' => 3,
+						'customer_fee' => 0,
+						'customer_total_cost_amount' => 0,
+						'customer_total_cost_bps' => 0,
+						'payment_plan' => [],
+						'annual_interest_rate' => 0,
+					])
+				]),
+				true
+			],
+			'Non-Eligible List' => [
+				new EligibilityList([
+					new Eligibility([
+						'eligible' => false,
+						'deferred_days' => 0,
+						'deferred_months' => 0,
+						'installments_count' => 3,
+						'constraints' => [],
+						'reasons' => [],
+					])
+				]),
+				false
+			],
+		];
 	}
 }

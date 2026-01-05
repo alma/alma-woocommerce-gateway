@@ -3,6 +3,7 @@
 namespace Alma\Gateway\Application\Service;
 
 use Alma\API\Application\DTO\MerchantBusinessEvent\CartInitiatedBusinessEventDto;
+use Alma\API\Domain\Entity\EligibilityList;
 use Alma\API\Infrastructure\Endpoint\MerchantEndpoint;
 use Alma\API\Infrastructure\Exception\Endpoint\MerchantEndpointException;
 use Alma\API\Infrastructure\Exception\ParametersException;
@@ -36,7 +37,6 @@ class BusinessEventsService
 		$almaCartId = $this->getCartId();
 		if ( ! $this->businessEventsRepository->alreadyExist( $almaCartId ) ) {
 			$this->businessEventsRepository->saveCartId( $almaCartId );
-			$this->sessionHelper->setSession( self::ALMA_CART_ID, $almaCartId );
 			try {
 				$cartInitiated = new CartInitiatedBusinessEventDto( $almaCartId );
 				$this->merchantEndpoint->sendCartInitiatedBusinessEvent( $cartInitiated );
@@ -48,10 +48,22 @@ class BusinessEventsService
 		}
 	}
 
+	public function updateEligibility(EligibilityList $eligibilityList): void {
+		$isEligible = false;
+		foreach ( $eligibilityList as $eligibility ) {
+			if ( $eligibility->isEligible() ) {
+				$isEligible = true;
+				break;
+			}
+		}
+		$this->businessEventsRepository->saveEligibility($this->getCartId(), $isEligible);
+	}
+
 	protected function getCartId(): int {
 		$alma_cart_id = $this->sessionHelper->getSession( self::ALMA_CART_ID );
 		if ( empty($alma_cart_id) ) {
 			$alma_cart_id = CartHelper::generateUniqueCartId();
+			$this->session->setSession( self::ALMA_CART_ID, $alma_cart_id );
 		}
 
 		return $alma_cart_id;

@@ -71,4 +71,25 @@ class BusinessEventsRepository
 			]
 		);
 	}
+
+	public function saveEligibility(int $cartId, bool $isEligible): void {
+		global $wpdb;
+		$table_name = $wpdb->prefix . BusinessEventsService::ALMA_BUSINESS_EVENT_TABLE;
+
+		$wpdb->update(
+			$table_name,
+			[
+				'is_bnpl_eligible' => $isEligible ? 1 : 0,
+			],
+			[
+				'cart_id' => $cartId,
+			],
+			[
+				'%d',
+			],
+			[
+				'%d',
+			]
+		);
+	}
 }
