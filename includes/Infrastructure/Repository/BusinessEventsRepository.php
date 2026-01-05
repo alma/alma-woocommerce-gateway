@@ -26,7 +26,6 @@ class BusinessEventsRepository
 			`alma_payment_id` VARCHAR(255) DEFAULT NULL,
 			`is_bnpl_eligible` TINYINT(1) DEFAULT NULL,
 			PRIMARY KEY (`alma_business_data_id`),
-			UNIQUE KEY unique_event_id (event_id)
 			UNIQUE KEY `unique_cart_id` (`cart_id`),
 	        UNIQUE KEY `unique_alma_payment_id` (`alma_payment_id`)
 		) $charset_collate;";
@@ -35,7 +34,12 @@ class BusinessEventsRepository
 		dbDelta( $sql );
 	}
 
-	public function isCartIdValid(int $cartId): bool {
+	/**
+	 * @param int|null $cartId
+	 *
+	 * @return bool
+	 */
+	public function isCartIdValid(?int $cartId): bool {
 		global $wpdb;
 		$table_name = $wpdb->prefix . BusinessEventsService::ALMA_BUSINESS_EVENT_TABLE;
 
@@ -52,5 +56,25 @@ class BusinessEventsRepository
 		}
 
 		return true;
+	}
+
+	/**
+	 * @param int $cartId
+	 *
+	 * @return void
+	 */
+	public function saveCartId(int $cartId): void {
+		global $wpdb;
+		$table_name = $wpdb->prefix . BusinessEventsService::ALMA_BUSINESS_EVENT_TABLE;
+
+		$wpdb->insert(
+			$table_name,
+			[
+				'cart_id' => $cartId,
+			],
+			[
+				'%d',
+			]
+		);
 	}
 }
