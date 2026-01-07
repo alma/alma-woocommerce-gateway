@@ -14,6 +14,19 @@ env:
   COMPOSER_VERSION: '{{ .COMPOSER_VERSION }}'
 
 tasks:
+  build:php:
+    desc: Build PHP container
+    cmds:
+      - docker compose build --build-arg UID="$(id -u)" php
+
+  dist:
+    desc: Build zip file
+    deps:
+      - build:php
+    cmds:
+      - rm -rf ./dist
+      - docker compose run --rm php ./bin/build.sh --verbose
+
   build:test:
     internal: true
     desc: Build the PHP test container

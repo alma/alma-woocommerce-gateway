@@ -14,6 +14,7 @@ includes:
     taskfile: Taskfile.php.yml
     vars:
       PHP_VERSION: "7.4"
+      COMPOSER_VERSION: "2.2"
   "8.0":
     taskfile: Taskfile.php.yml
     vars:
@@ -35,11 +36,6 @@ includes:
       PHPUNIT_FILE: phpunit.dist.8.xml
 
 tasks:
-  build:php7-4:
-    desc: Build test container
-    cmds:
-      - docker compose build --build-arg UID="$(id -u)" php7-4
-
   lint:build:
     desc: Build lint container (phpcs)
     cmds:
@@ -87,14 +83,6 @@ tasks:
     cmds:
       - pre-commit install --hook-type commit-msg
       - pre-commit install
-
-  dist:
-    desc: Build zip file
-    deps:
-      - build:php7-4
-    cmds:
-      - rm -rf ./dist
-      - docker compose run --rm php5-6 ./bin/build.sh
 
   crowdin:
     internal: true

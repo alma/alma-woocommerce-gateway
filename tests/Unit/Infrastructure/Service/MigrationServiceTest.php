@@ -3,13 +3,26 @@
 namespace Alma\Gateway\Tests\Unit\Infrastructure\Service;
 
 use Alma\Gateway\Infrastructure\Service\MigrationService;
+use Brain\Monkey;
+use Brain\Monkey\Functions;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 class MigrationServiceTest extends TestCase {
 
 	public static function migrationDataProvider(): array {
 		return [
-			'empty keys'      => [ [], [] ],
+			'empty keys'      => [
+				[],
+				[
+					'debug'                  => 'no',
+					'enabled'                => 'no',
+					'environment'            => 'test',
+					'widget_cart_enabled'    => 'yes',
+					'in_page_enabled'        => 'yes',
+					'widget_product_enabled' => 'yes',
+				]
+			],
 			'deprecated keys' => [
 				[
 					'allowed_fee_plans',
@@ -49,7 +62,6 @@ class MigrationServiceTest extends TestCase {
 					'selected_fee_plan'                          => 'general_3_0_0',
 					'share_of_checkout_enabled'                  => 'no',
 					'share_of_checkout_enabled_date'             => '2023-01-01 00:00:00',
-					'test_merchant_id'                           => 'merchant_test_123',
 					'test_merchant_name'                         => 'Test Merchant',
 					'title_alma_in_page'                         => 'Pay in installments',
 					'title_alma_in_page_pay_later'               => 'Pay later',
@@ -68,20 +80,32 @@ class MigrationServiceTest extends TestCase {
 					'variable_product_sale_price_query_selector' => 'form.variations_form div.woocommerce-variation-price ins span.woocommerce-Price-amount',
 					'woocommerce_alma_share_of_checkout_enabled' => 'no',
 				],
-				[]
+				[
+					'debug'                  => 'no',
+					'enabled'                => 'no',
+					'environment'            => 'test',
+					'widget_cart_enabled'    => 'yes',
+					'in_page_enabled'        => 'yes',
+					'widget_product_enabled' => 'yes',
+				]
 			],
 			'good keys'       => [
 				[
-					'debug'        => false,
-					'enabled'      => true,
+					'debug'        => 'no',
+					'enabled'      => 'yes',
 					'live_api_key' => 'encrypted_live_key',
 					'test_api_key' => 'encrypted_test_key',
+					'environment'  => 'test',
 				],
 				[
-					'debug'        => false,
-					'enabled'      => true,
-					'live_api_key' => 'encrypted_live_key',
-					'test_api_key' => 'encrypted_test_key',
+					'debug'                  => 'no',
+					'enabled'                => 'yes',
+					'live_api_key'           => 'encrypted_live_key',
+					'test_api_key'           => 'encrypted_test_key',
+					'environment'            => 'test',
+					'widget_cart_enabled'    => 'yes',
+					'in_page_enabled'        => 'yes',
+					'widget_product_enabled' => 'yes',
 				]
 			],
 			'changed keys'    => [
@@ -101,7 +125,7 @@ class MigrationServiceTest extends TestCase {
 					'enabled_general_1_30_0'               => 'no',
 					'enabled_general_2_0_0'                => 'yes',
 					'enabled_general_3_0_0'                => 'yes',
-					'excluded_products_list'               => [ 0 => "hoodies", 1 => "music", 2 => "tshirts" ],
+					'excluded_products_list'               => [ 0 => "music" ],
 					'live_merchant_id'                     => 'merchant_123',
 					'max_amount_general_10_0_0'            => 21000,
 					'max_amount_general_12_0_0'            => 21200,
@@ -125,6 +149,9 @@ class MigrationServiceTest extends TestCase {
 					'title_alma_pnx_plus_4'                => 'A fourth title',
 				],
 				[
+					'debug'                      => 'no',
+					'enabled'                    => 'no',
+					'environment'                => 'test',
 					'excluded_products_message'  => 'A cart not eligible message',
 					'pnx_description_field'      => 'Some description',
 					'paylater_description_field' => 'A second description',
@@ -133,14 +160,12 @@ class MigrationServiceTest extends TestCase {
 					'widget_cart_enabled'        => 'yes',
 					'in_page_enabled'            => 'yes',
 					'widget_product_enabled'     => 'yes',
-					'general_10_0_0_enabled'     => 'yes',
-					'general_12_0_0_enabled'     => 'no',
-					'general_1_0_0_enabled'      => 'yes',
-					'general_1_15_0_enabled'     => 'yes',
-					'general_1_30_0_enabled'     => 'no',
-					'general_2_0_0_enabled'      => 'yes',
-					'general_3_0_0_enabled'      => 'yes',
-					'excluded_products_list'     => [ 0 => "hoodies", 1 => "music", 2 => "tshirts" ],
+					'general_10_0_0_enabled'     => 1,
+					'general_1_0_0_enabled'      => 1,
+					'general_1_15_0_enabled'     => 1,
+					'general_2_0_0_enabled'      => 1,
+					'general_3_0_0_enabled'      => 1,
+					'excluded_products_list'     => [ 0 => 19 ],
 					'merchant_id'                => 'merchant_123',
 					'general_10_0_0_max_amount'  => 21000,
 					'general_12_0_0_max_amount'  => 21200,
@@ -162,9 +187,56 @@ class MigrationServiceTest extends TestCase {
 					'paylater_title_field'       => 'A second title',
 					'paynow_title_field'         => 'A third title',
 					'credit_title_field'         => 'A fourth title',
-				]
+				],
+				'merchant keys - only live key defined' => [
+					[
+						'live_merchant_id' => 'merchant_123',
+					],
+					[
+						'merchant_id' => 'merchant_123',
+					]
+				],
+				'merchant keys - only test key defined' => [
+					[
+						'test_merchant_id' => 'merchant_123',
+					],
+					[
+						'merchant_id' => 'merchant_123',
+					]
+				],
+				'merchant keys - two keys defined'      => [
+					[
+						'test_merchant_id' => 'merchant_456',
+						'live_merchant_id' => 'merchant_123',
+					],
+					[
+						'merchant_id' => 'merchant_123',
+					]
+				],
+				'merchant keys - no keys defined'       => [
+					[
+					],
+					[
+					]
+				],
 			],
 		];
+	}
+
+	public function setUp(): void {
+		Monkey\setUp();
+
+		// Mock les hooks WordPress pour éviter l'erreur
+		$term          = new stdClass();
+		$term->term_id = 19;
+		$term->name    = 'Music';
+		$term->slug    = 'music';
+		Functions\when( 'get_term_by' )->justReturn( $term );
+	}
+
+	public function tearDown(): void {
+		Monkey\tearDown();
+		parent::tearDown();
 	}
 
 	/**
