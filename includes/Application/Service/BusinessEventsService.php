@@ -4,45 +4,48 @@ namespace Alma\Gateway\Application\Service;
 
 use Alma\API\Application\DTO\MerchantBusinessEvent\CartInitiatedBusinessEventDto;
 use Alma\API\Domain\Entity\EligibilityList;
-use Alma\API\Infrastructure\Endpoint\MerchantEndpoint;
-use Alma\API\Infrastructure\Exception\Endpoint\MerchantEndpointException;
 use Alma\API\Infrastructure\Exception\ParametersException;
+use Alma\Gateway\Application\Exception\Service\API\MerchantServiceException;
 use Alma\Gateway\Application\Exception\Service\BusinessEventsServiceException;
+use Alma\Gateway\Application\Provider\MerchantProviderAwareTrait;
+use Alma\Gateway\Application\Provider\MerchantProviderFactory;
 use Alma\Gateway\Infrastructure\Helper\CartHelper;
 use Alma\Gateway\Infrastructure\Helper\SessionHelper;
 use Alma\Gateway\Infrastructure\Repository\BusinessEventsRepository;
 
 class BusinessEventsService
 {
+	use MerchantProviderAwareTrait;
+
 	const ALMA_BUSINESS_EVENT_TABLE = 'alma_business_data';
 	const ALMA_CART_ID       = 'alma_cart_id';
 	private SessionHelper $sessionHelper;
 	private BusinessEventsRepository $businessEventsRepository;
-	private MerchantEndpoint $merchantEndpoint;
 
 	public function __construct(
 		SessionHelper $sessionHelper,
 		BusinessEventsRepository $businessEventsRepository,
-		MerchantEndpoint $merchantEndpoint
+		MerchantProviderFactory $merchantProviderFactory
 	) {
 		$this->sessionHelper            = $sessionHelper;
 		$this->businessEventsRepository = $businessEventsRepository;
-		$this->merchantEndpoint = $merchantEndpoint;
+		$this->merchantProviderFactory = $merchantProviderFactory;
 	}
 
 	/**
 	 * @throws BusinessEventsServiceException
 	 */
 	public function onCartInitiated(): void {
+		$this->getMerchantProvider();
 		$almaCartId = $this->getCartId();
 		if ( ! $this->businessEventsRepository->alreadyExist( $almaCartId ) ) {
 			$this->businessEventsRepository->saveCartId( $almaCartId );
 			try {
 				$cartInitiated = new CartInitiatedBusinessEventDto( $almaCartId );
-				$this->merchantEndpoint->sendCartInitiatedBusinessEvent( $cartInitiated );
+				$this->merchantProvider->sendCartInitiatedBusinessEvent( $cartInitiated );
 			} catch ( ParametersException $e ) {
 				throw new BusinessEventsServiceException( 'Failed to create CartInitiatedBusinessEventDto: ' . $e->getMessage() );
-			} catch ( MerchantEndpointException $e ) {
+			} catch ( MerchantServiceException $e ) {
 				throw new BusinessEventsServiceException( 'Error sending cart initiated business event: ' . $e->getMessage() );
 			}
 		}

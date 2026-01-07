@@ -11,7 +11,7 @@ trait PaymentProviderAwareTrait {
 	private PaymentProviderFactory $paymentProviderFactory;
 
 	/** @var PaymentProvider|null The Payment Provider */
-	private ?PaymentProvider $paymentProvider;
+	private ?PaymentProvider $paymentProvider = null;
 
 	/**
 	 * Load the Payment Provider only when needed

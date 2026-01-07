@@ -5,8 +5,8 @@ namespace Alma\Gateway\Tests\Unit\Application\Service;
 use Alma\API\Application\DTO\MerchantBusinessEvent\CartInitiatedBusinessEventDto;
 use Alma\API\Domain\Entity\Eligibility;
 use Alma\API\Domain\Entity\EligibilityList;
-use Alma\API\Infrastructure\Endpoint\MerchantEndpoint;
 use Alma\Gateway\Application\Exception\Service\BusinessEventsServiceException;
+use Alma\Gateway\Application\Provider\MerchantProvider;
 use Alma\Gateway\Application\Service\BusinessEventsService;
 use Alma\Gateway\Infrastructure\Helper\SessionHelper;
 use Alma\Gateway\Infrastructure\Repository\BusinessEventsRepository;
@@ -17,11 +17,11 @@ class BusinessEventsServiceTest extends TestCase
 	public function setUp(): void {
 		$this->sessionHelper = $this->createMock(SessionHelper::class);
 		$this->businessEventsRepository = $this->createMock(BusinessEventsRepository::class);
-		$this->merchantEndpoint = $this->createMock( MerchantEndpoint::class);
+		$this->merchantProvider = $this->createMock( MerchantProvider::class);
 		$this->busisnessEventsService = new BusinessEventsService(
 			$this->sessionHelper,
 			$this->businessEventsRepository,
-			$this->merchantEndpoint
+			$this->merchantProvider
 		);
 	}
 
@@ -45,7 +45,7 @@ class BusinessEventsServiceTest extends TestCase
 			->method('saveCartId')
 			->with($cartId);
 
-		$this->merchantEndpoint->expects($this->once())
+		$this->merchantProvider->expects($this->once())
 			->method('sendCartInitiatedBusinessEvent')
 			->with($this->isInstanceOf( CartInitiatedBusinessEventDto::class));
 
@@ -72,7 +72,7 @@ class BusinessEventsServiceTest extends TestCase
            ->method('saveCartId')
            ->with($cartId);
 
-		$this->merchantEndpoint->expects($this->never())
+		$this->merchantProvider->expects($this->never())
            ->method('sendCartInitiatedBusinessEvent')
            ->with($this->isInstanceOf( CartInitiatedBusinessEventDto::class));
 
@@ -89,7 +89,7 @@ class BusinessEventsServiceTest extends TestCase
              ->setConstructorArgs([
                  $this->sessionHelper,
                  $this->businessEventsRepository,
-                 $this->merchantEndpoint
+                 $this->merchantProvider
              ])
              ->onlyMethods(['getCartId'])
              ->getMock();
