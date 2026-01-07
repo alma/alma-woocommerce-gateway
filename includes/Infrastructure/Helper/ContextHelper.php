@@ -176,14 +176,22 @@ class ContextHelper implements ContextHelperInterface {
 	 *
 	 * @return bool True if we are on the gateway settings page, false otherwise.
 	 */
-	public static function isGatewaySettingsPage(): bool {
+	public static function isGatewaySettingsPage( $almaGatewaySettingPage = false ): bool {
 		// AJAX request
 		if ( array_key_exists( 'rest_route', $_GET ) && stripos( $_GET['rest_route'], '/wc-admin' ) !== false ) {
 			return true;
 		}
-		// Regular page load
-		if ( array_key_exists( 'page', $_GET ) && stripos( $_GET['page'], 'wc-settings' ) !== false ) {
-			return true;
+		if ( $almaGatewaySettingPage ) {
+			// Alma Gateway settings page
+			if ( array_key_exists( 'page', $_GET ) && stripos( $_GET['page'],
+					'wc-settings' ) !== false && stripos( $_GET['section'], 'alma_config_gateway' ) !== false ) {
+				return true;
+			}
+		} else {
+			// Regular page load
+			if ( array_key_exists( 'page', $_GET ) && stripos( $_GET['page'], 'wc-settings' ) !== false ) {
+				return true;
+			}
 		}
 
 		return false;

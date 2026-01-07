@@ -2,9 +2,9 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
-use Alma\API\Domain\Helper\NotificationHelperInterface;
+use Alma\API\Domain\Helper\ShopNotificationHelperInterface;
 
-class NotificationHelper implements NotificationHelperInterface {
+class ShopNotificationHelper implements ShopNotificationHelperInterface {
 
 	/**
 	 * Notify the user with an error message.
@@ -13,18 +13,18 @@ class NotificationHelper implements NotificationHelperInterface {
 	 *
 	 * @return void
 	 */
-	public function notifyError( string $message ): void {
+	public static function notifyError( string $message ): void {
 		wc_add_notice( $message, 'error' );
 	}
 
 	/**
-	 * Notify the user with a notice message.
+	 * Notify the user with an info message.
 	 *
 	 * @param string $message The notice message to display.
 	 *
 	 * @return void
 	 */
-	public function notifyNotice( string $message ): void {
+	public static function notifyInfo( string $message ): void {
 		wc_add_notice( $message, 'notice' );
 	}
 
@@ -35,7 +35,7 @@ class NotificationHelper implements NotificationHelperInterface {
 	 *
 	 * @return void
 	 */
-	public function notifySuccess( string $message ): void {
+	public static function notifySuccess( string $message ): void {
 		wc_add_notice( $message );
 	}
 }
