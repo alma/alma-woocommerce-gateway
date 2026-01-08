@@ -324,6 +324,16 @@ class OrderAdapter implements OrderAdapterInterface {
 	}
 
 	/**
+	 * Get the Payment Method type.
+	 * This method retrieves the payment method used for the order.
+	 *
+	 * @return string The Payment Method type of the order.
+	 */
+	public function getPaymentMethod(): string {
+		return $this->wcOrder->get_payment_method();
+	}
+
+	/**
 	 * Get the merchant reference.
 	 * This method retrieves the order number, which serves as the merchant reference for the order.
 	 *

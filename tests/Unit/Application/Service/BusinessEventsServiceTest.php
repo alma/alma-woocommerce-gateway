@@ -3,13 +3,20 @@
 namespace Alma\Gateway\Tests\Unit\Application\Service;
 
 use Alma\API\Application\DTO\MerchantBusinessEvent\CartInitiatedBusinessEventDto;
+use Alma\API\Application\DTO\MerchantBusinessEvent\OrderConfirmedBusinessEventDto;
 use Alma\API\Domain\Entity\Eligibility;
 use Alma\API\Domain\Entity\EligibilityList;
+use Alma\API\Infrastructure\Exception\ParametersException;
 use Alma\Gateway\Application\Exception\Service\BusinessEventsServiceException;
 use Alma\Gateway\Application\Provider\MerchantProvider;
+use Alma\Gateway\Application\Provider\MerchantProviderFactory;
 use Alma\Gateway\Application\Service\BusinessEventsService;
+use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
+use Alma\Gateway\Infrastructure\Helper\OrderHelper;
 use Alma\Gateway\Infrastructure\Helper\SessionHelper;
 use Alma\Gateway\Infrastructure\Repository\BusinessEventsRepository;
+use Automattic\WooCommerce\Admin\Overrides\Order;
+use Mockery;
 use PHPUnit\Framework\TestCase;
 
 class BusinessEventsServiceTest extends TestCase
@@ -18,10 +25,15 @@ class BusinessEventsServiceTest extends TestCase
 		$this->sessionHelper = $this->createMock(SessionHelper::class);
 		$this->businessEventsRepository = $this->createMock(BusinessEventsRepository::class);
 		$this->merchantProvider = $this->createMock( MerchantProvider::class);
-		$this->busisnessEventsService = new BusinessEventsService(
+		$this->merchantProviderFactory = $this->createMock( MerchantProviderFactory::class);
+
+		$this->merchantProviderFactory->method('__invoke')
+              ->willReturn($this->merchantProvider);
+
+		$this->businessEventsService = new BusinessEventsService(
 			$this->sessionHelper,
 			$this->businessEventsRepository,
-			$this->merchantProvider
+			$this->merchantProviderFactory
 		);
 	}
 
@@ -49,7 +61,7 @@ class BusinessEventsServiceTest extends TestCase
 			->method('sendCartInitiatedBusinessEvent')
 			->with($this->isInstanceOf( CartInitiatedBusinessEventDto::class));
 
-		$this->busisnessEventsService->onCartInitiated();
+		$this->businessEventsService->onCartInitiated();
 	}
 
 	/**
@@ -76,7 +88,7 @@ class BusinessEventsServiceTest extends TestCase
            ->method('sendCartInitiatedBusinessEvent')
            ->with($this->isInstanceOf( CartInitiatedBusinessEventDto::class));
 
-		$this->busisnessEventsService->onCartInitiated();
+		$this->businessEventsService->onCartInitiated();
 	}
 
 	/**
@@ -85,16 +97,16 @@ class BusinessEventsServiceTest extends TestCase
 	public function testUpdateEligibilityWithEligibleList($eligibleList, $isEligible): void {
 		$cartId = 12345;
 
-		$this->busisnessEventsService = $this->getMockBuilder(BusinessEventsService::class)
+		$this->businessEventsService = $this->getMockBuilder(BusinessEventsService::class)
              ->setConstructorArgs([
                  $this->sessionHelper,
                  $this->businessEventsRepository,
-                 $this->merchantProvider
+                 $this->merchantProviderFactory
              ])
              ->onlyMethods(['getCartId'])
              ->getMock();
 
-		$this->busisnessEventsService->expects($this->once())
+		$this->businessEventsService->expects($this->once())
              ->method('getCartId')
              ->willReturn($cartId);
 
@@ -102,7 +114,71 @@ class BusinessEventsServiceTest extends TestCase
 			->method('saveEligibility')
 			->with($cartId, $isEligible);
 
-		$this->busisnessEventsService->updateEligibility($eligibleList);
+		$this->businessEventsService->updateEligibility($eligibleList);
+	}
+
+	/**
+	 * @throws BusinessEventsServiceException
+	 */
+	public function testOnOrderConfirmedOldStatusNotPendingMakeNothing(): void {
+		$orderMock = $this->createMock(OrderAdapter::class);
+		$orderMock->method('getId')->willReturn(42);
+
+		$this->merchantProvider->expects($this->never())->method('sendCartInitiatedBusinessEvent');
+		$this->businessEventsService->onOrderConfirmed('not_pending', 'processing', $orderMock);
+	}
+
+	/**
+	 * Not Paid says the order status is not in 'processing' or 'completed' for WC,
+	 * with the function wc_get_is_paid_statuses()
+	 * @throws BusinessEventsServiceException
+	 */
+	public function testOnOrderConfirmedNewStatusNotPaidOrOnHoldMakeNothing(): void {
+		$orderMock = $this->createMock(OrderAdapter::class);
+		$orderMock->method('getId')->willReturn(42);
+
+		$orderHelperMock = Mockery::mock('alias:' . OrderHelper::class);
+		$orderHelperMock->shouldReceive('wcGetIsPaidStatuses')
+		                ->andReturn(['processing', 'completed']);
+
+		$this->merchantProvider->expects($this->never())->method('sendCartInitiatedBusinessEvent');
+		$this->businessEventsService->onOrderConfirmed('pending', 'not_paid', $orderMock);
+	}
+
+	/**
+	 * @throws BusinessEventsServiceException
+	 * @throws ParametersException
+	 */
+	public function testOnOrderConfirmedOldStatusPendingNewStatusPaidPaymentMethodNotAlma(): void {
+		$this->businessEventsRepository->method('getRowByOrderId')
+			->with(42)
+			 ->willReturn((object)[
+				 'cart_id' => 4242,
+				 'alma_payment_id' => '',
+				 'is_bnpl_eligible' => 1,
+			 ]);
+
+		$orderMock = $this->createMock(OrderAdapter::class);
+		$orderMock->method('getId')->willReturn(42);
+		$orderMock->method('getPaymentMethod')->willReturn('paypal');
+
+		$orderHelperMock = Mockery::mock('alias:' . OrderHelper::class);
+		$orderHelperMock->shouldReceive('wcGetIsPaidStatuses')
+		                ->andReturn(['processing', 'completed']);
+
+		$orderConfirmedBusinessEvent = new OrderConfirmedBusinessEventDto(
+			false,
+			false,
+			true,
+			'42',
+			4242,
+			''
+		);
+
+		$this->merchantProvider->expects($this->once())
+               ->method('sendOrderConfirmedBusinessEvent')
+               ->with($orderConfirmedBusinessEvent);
+		$this->businessEventsService->onOrderConfirmed('pending', 'processing', $orderMock);
 	}
 
 	public function eligibleListProvider(): array {

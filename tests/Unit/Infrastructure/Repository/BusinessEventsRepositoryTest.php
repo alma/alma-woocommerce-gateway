@@ -76,4 +76,44 @@ class BusinessEventsRepositoryTest extends TestCase
 		$repository = new BusinessEventsRepository();
 		$repository->saveEligibility(789, true);
 	}
+
+	public function testGetRowByOrderId() {
+		global $wpdb;
+		$row           = new Stdclass();
+		$row->order_id = 42;
+		$wpdb          = $this->getMockBuilder( \stdClass::class )
+		                      ->addMethods( [ 'get_row', 'prepare' ] )
+		                      ->getMock();
+		$wpdb->prefix  = 'wp_';
+		$wpdb->expects( $this->once() )
+		     ->method( 'prepare' )
+		     ->with( 'SELECT * FROM wp_alma_business_data WHERE order_id = %d', 42 )
+		     ->willReturn('SELECT * FROM wp_alma_business_data WHERE order_id = 42');
+		$wpdb->expects( $this->once() )
+		     ->method( 'get_row' )
+			 ->with('SELECT * FROM wp_alma_business_data WHERE order_id = 42')
+		     ->willReturn( $row );
+		$repository = new BusinessEventsRepository();
+		$result     = $repository->getRowByOrderId( 42 );
+		$this->assertEquals( $row, $result );
+	}
+
+	public function testGetRowByOrderIdNoRow() {
+		global $wpdb;
+		$wpdb = $this->getMockBuilder( \stdClass::class )
+		                      ->addMethods( [ 'get_row', 'prepare' ] )
+		                      ->getMock();
+		$wpdb->prefix  = 'wp_';
+		$wpdb->expects( $this->once() )
+		     ->method( 'prepare' )
+		     ->with( 'SELECT * FROM wp_alma_business_data WHERE order_id = %d', 99 )
+		     ->willReturn('SELECT * FROM wp_alma_business_data WHERE order_id = 99');
+		$wpdb->expects( $this->once() )
+		     ->method( 'get_row' )
+			 ->with('SELECT * FROM wp_alma_business_data WHERE order_id = 99')
+		     ->willReturn( null );
+		$repository = new BusinessEventsRepository();
+		$result     = $repository->getRowByOrderId( 99 );
+		$this->assertNull( $result );
+	}
 }

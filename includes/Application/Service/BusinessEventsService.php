@@ -3,15 +3,20 @@
 namespace Alma\Gateway\Application\Service;
 
 use Alma\API\Application\DTO\MerchantBusinessEvent\CartInitiatedBusinessEventDto;
+use Alma\API\Application\DTO\MerchantBusinessEvent\OrderConfirmedBusinessEventDto;
 use Alma\API\Domain\Entity\EligibilityList;
 use Alma\API\Infrastructure\Exception\ParametersException;
 use Alma\Gateway\Application\Exception\Service\API\MerchantServiceException;
 use Alma\Gateway\Application\Exception\Service\BusinessEventsServiceException;
 use Alma\Gateway\Application\Provider\MerchantProviderAwareTrait;
 use Alma\Gateway\Application\Provider\MerchantProviderFactory;
+use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Infrastructure\Helper\CartHelper;
+use Alma\Gateway\Infrastructure\Helper\OrderHelper;
 use Alma\Gateway\Infrastructure\Helper\SessionHelper;
 use Alma\Gateway\Infrastructure\Repository\BusinessEventsRepository;
+use Automattic\WooCommerce\Admin\Overrides\Order;
 
 class BusinessEventsService
 {
@@ -47,6 +52,45 @@ class BusinessEventsService
 				throw new BusinessEventsServiceException( 'Failed to create CartInitiatedBusinessEventDto: ' . $e->getMessage() );
 			} catch ( MerchantServiceException $e ) {
 				throw new BusinessEventsServiceException( 'Error sending cart initiated business event: ' . $e->getMessage() );
+			}
+		}
+	}
+
+	/**
+	 * @param string $oldStatus
+	 * @param string $newStatus
+	 * @param OrderAdapter $order
+	 *
+	 * @return void
+	 * @throws BusinessEventsServiceException
+	 */
+	public function onOrderConfirmed(string $oldStatus, string $newStatus, OrderAdapter $order): void {
+		$isPayNow = false;
+		$isBnpl    = false;
+		$paymentId = '';
+		if ( 'pending' === $oldStatus && in_array( $newStatus, array_merge( OrderHelper::wcGetIsPaidStatuses(), array( 'on-hold' ) ) ) ) {
+			$almaBusinessData = $this->businessEventsRepository->getRowByOrderId($order->getId());
+			if ( strpos( $order->getPaymentMethod(), 'alma' ) !== false ) {
+				$isPayNow = $order->getPaymentMethod() === 'alma_' . PayNowGateway::PAYMENT_METHOD . '_gateway';
+				$isBnpl    = ! $isPayNow;
+				$paymentId = $almaBusinessData->alma_payment_id;
+			}
+
+			try {
+				$this->getMerchantProvider();
+				$orderConfirmedBusinessEvent = new OrderConfirmedBusinessEventDto(
+					$isPayNow,
+					$isBnpl,
+					(bool) $almaBusinessData->is_bnpl_eligible,
+					(string) $order->getId(),
+					$almaBusinessData->cart_id,
+					$paymentId
+				);
+				$this->merchantProvider->sendOrderConfirmedBusinessEvent( $orderConfirmedBusinessEvent );
+			} catch ( ParametersException $e ) {
+				throw new BusinessEventsServiceException( 'Failed to create OrderConfirmedBusinessEventDto: ' . $e->getMessage() );
+			} catch ( MerchantServiceException $e ) {
+				throw new BusinessEventsServiceException( 'Error sending order confirmed business event: ' . $e->getMessage() );
 			}
 		}
 	}

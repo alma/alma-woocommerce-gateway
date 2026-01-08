@@ -72,6 +72,12 @@ class BusinessEventsRepository
 		);
 	}
 
+	/**
+	 * @param int  $cartId
+	 * @param bool $isEligible
+	 *
+	 * @return void
+	 */
 	public function saveEligibility(int $cartId, bool $isEligible): void {
 		global $wpdb;
 		$table_name = $wpdb->prefix . BusinessEventsService::ALMA_BUSINESS_EVENT_TABLE;
@@ -91,5 +97,22 @@ class BusinessEventsRepository
 				'%d',
 			]
 		);
+	}
+
+	/**
+	 * @param int $orderId
+	 *
+	 * @return object|null
+	 */
+	public function getRowByOrderId(int $orderId): ?object {
+		global $wpdb;
+		$table_name = $wpdb->prefix . BusinessEventsService::ALMA_BUSINESS_EVENT_TABLE;
+
+		$result = $wpdb->get_row( $wpdb->prepare(
+			"SELECT * FROM $table_name WHERE order_id = %d",
+			$orderId
+		) );
+
+		return $result ?: null;
 	}
 }
