@@ -11,8 +11,7 @@ use Alma\Gateway\Application\Mapper\PaymentMapper;
 use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
-use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
-use Alma\Gateway\Plugin;
+use Alma\Gateway\Infrastructure\Helper\ShopNotificationHelper;
 
 class PaymentService {
 
@@ -55,9 +54,7 @@ class PaymentService {
 				( new CustomerMapper() )->buildCustomerDto( $order ),
 			);
 		} catch ( PaymentServiceException $e ) {
-			/** @var NotificationHelper $notificationHelper */
-			$notificationHelper = Plugin::get_container()->get( NotificationHelper::class );
-			$notificationHelper->notifyError(
+			ShopNotificationHelper::notifyError(
 				L10nHelper::__( 'An error occurred while creating the payment. Please try again.' . $e->getMessage() ),
 			);
 

@@ -12,7 +12,7 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Exception\CheckoutServiceException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
-use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
+use Alma\Gateway\Infrastructure\Helper\ShopNotificationHelper;
 use Alma\Gateway\Plugin;
 
 /**
@@ -73,9 +73,7 @@ class PayLaterGateway extends AbstractFrontendGateway implements FrontendGateway
 				'general_1_0_3',
 			)
 		) ) {
-			/** @var NotificationHelper $notificationHelper */
-			$notificationHelper = Plugin::get_container()->get( NotificationHelper::class );
-			$notificationHelper->notifyError( L10nHelper::__( 'Please choose a valid option.' ) );
+			ShopNotificationHelper::notifyError( L10nHelper::__( 'Please choose a valid option.' ) );
 
 			return false;
 		}
