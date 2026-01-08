@@ -44,7 +44,7 @@ class PluginService {
 	 */
 	public function remindToEnableAlma(): void {
 		if ( ! $this->configService->isEnabled() ) {
-			AdminNotificationHelper::notifySuccess(
+			AdminNotificationHelper::notifyInfo(
 				L10nHelper::__(
 					sprintf(
 						'Thanks for installing Alma! Start by <a href="%s">activating Alma\'s payment method</a>, then set it up to get started.',
@@ -61,7 +61,7 @@ class PluginService {
 	 */
 	public function remindToConfigureAlma(): void {
 		if ( ! $this->configService->hasKeys() ) {
-			AdminNotificationHelper::notifySuccess(
+			AdminNotificationHelper::notifyInfo(
 				L10nHelper::__(
 					sprintf(
 						'Alma is almost ready. To get started, <a href="%s">fill in your API keys</a>.',
