@@ -174,19 +174,25 @@ class ContextHelper implements ContextHelperInterface {
 	 * - It's an AJAX request to the REST API, so we check if the 'rest_route' key exists in the $_GET array
 	 * - It's a regular page load, so we check if the 'page' key exists in the $_GET array
 	 *
+	 * @param bool $isAlmaGatewaySettingPage Whether to check specifically for Alma gateway settings page.
+	 *
 	 * @return bool True if we are on the gateway settings page, false otherwise.
 	 */
-	public static function isGatewaySettingsPage(): bool {
-		// AJAX request
-		if ( array_key_exists( 'rest_route', $_GET ) && stripos( $_GET['rest_route'], '/wc-admin' ) !== false ) {
-			return true;
-		}
-		// Regular page load
-		if ( array_key_exists( 'page', $_GET ) && stripos( $_GET['page'], 'wc-settings' ) !== false ) {
+	public static function isGatewaySettingsPage( bool $isAlmaGatewaySettingPage = false ): bool {
+		if ( isset( $_GET['rest_route'] ) && stripos( $_GET['rest_route'], '/wc-admin' ) !== false ) {
 			return true;
 		}
 
-		return false;
+		if ( ! isset( $_GET['page'] ) || stripos( $_GET['page'], 'wc-settings' ) === false ) {
+			return false;
+		}
+
+		// Check specifically for Alma gateway settings page
+		if ( $isAlmaGatewaySettingPage ) {
+			return isset( $_GET['section'] ) && stripos( $_GET['section'], 'alma_config_gateway' ) !== false;
+		}
+
+		return true;
 	}
 
 	/**

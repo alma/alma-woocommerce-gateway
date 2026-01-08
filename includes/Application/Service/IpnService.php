@@ -6,7 +6,6 @@ use Alma\API\Domain\Adapter\CartAdapterInterface;
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
 use Alma\API\Domain\Entity\Payment;
 use Alma\API\Domain\Helper\NavigationHelperInterface;
-use Alma\API\Domain\Helper\NotificationHelperInterface;
 use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
 use Alma\Gateway\Application\Exception\Service\IpnServiceException;
 use Alma\Gateway\Application\Helper\IpnHelper;
@@ -14,8 +13,8 @@ use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Application\Provider\PaymentProviderFactory;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
-use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
 use Alma\Gateway\Infrastructure\Helper\ParameterHelper;
+use Alma\Gateway\Infrastructure\Helper\ShopNotificationHelper;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Plugin;
 
@@ -33,9 +32,6 @@ class IpnService {
 	/** @var PaymentProvider */
 	private PaymentProvider $paymentService;
 
-	/** @var NotificationHelper */
-	private NotificationHelper $notificationHelper;
-
 	/** @var CartAdapterInterface */
 	private CartAdapterInterface $cartAdapter;
 
@@ -50,7 +46,6 @@ class IpnService {
 		PaymentProviderFactory $paymentProviderFactory,
 		ConfigService $configService,
 		PaymentProvider $paymentService,
-		NotificationHelperInterface $notificationHelper,
 		CartAdapterInterface $cartAdapter,
 		NavigationHelperInterface $navigationHelper,
 		IpnHelper $ipnHelper
@@ -58,7 +53,6 @@ class IpnService {
 		$this->paymentProviderFactory = $paymentProviderFactory;
 		$this->configService          = $configService;
 		$this->paymentService         = $paymentService;
-		$this->notificationHelper     = $notificationHelper;
 		$this->cartAdapter            = $cartAdapter;
 		$this->navigationHelper       = $navigationHelper;
 		$this->ipnHelper              = $ipnHelper;
@@ -102,10 +96,10 @@ class IpnService {
 			}
 
 			$this->cartAdapter->emptyCart();
-			$this->notificationHelper->notifySuccess( L10nHelper::__( 'Payment validation done' ) );
+			ShopNotificationHelper::notifySuccess( L10nHelper::__( 'Payment validation done' ) );
 
 		} catch ( IpnServiceException|PaymentServiceException|ProductRepositoryException $e ) {
-			$this->notificationHelper->notifyError(
+			ShopNotificationHelper::notifyError(
 				sprintf(
 					L10nHelper::__( 'Payment validation error: %s<br>Please try again or contact us if the problem persists.' ),
 					$e->getMessage()
