@@ -413,24 +413,22 @@ class AbstractBackendGateway extends AbstractGateway {
 	public function debug_fieldset(): array {
 		return array(
 			'debug_section' => array(
-				'title' => '<hr>' . L10nHelper::__( '→ Debug options', 'alma-gateway-for-woocommerce' ),
+				'title' => '<hr>' . L10nHelper::__( '→ Debug options' ),
 				'type'  => 'title',
 			),
 			'debug'         => array(
-				'title'       => L10nHelper::__( 'Debug mode', 'alma-gateway-for-woocommerce' ),
+				'title'       => L10nHelper::__( 'Debug mode' ),
 				'type'        => 'checkbox',
 				// translators: %s: Admin logs url.
 				'label'       => L10nHelper::__(
-					'Activate debug mode',
-					'alma-gateway-for-woocommerce'
+					'Activate debug mode'
 				) . sprintf(
 					L10nHelper::__( '(<a href="%s">Go to logs</a>)' ),
 					UrlHelper::getAdminLogsUrl()
 				),
 				// translators: %s: The previous plugin version if exists.
 				'description' => L10nHelper::__(
-					'Enable logging info and errors to help debug any issue with the plugin (previous Alma version)',
-					'alma-gateway-for-woocommerce'
+					'Enable logging info and errors to help debug any issue with the plugin (previous Alma version)'
 				),
 				'desc_tip'    => true,
 				'default'     => 'yes',
@@ -473,7 +471,7 @@ class AbstractBackendGateway extends AbstractGateway {
 				'type'        => 'text',
 				'description' => L10nHelper::__( 'Message displayed below the cart totals when it contains excluded products' ),
 				'desc_tip'    => true,
-				'default'     => 'Some products cannot be paid with monthly or deferred installments',
+				'default'     => L10nHelper::__( 'Some products cannot be paid with monthly or deferred installments' ),
 			),
 		);
 	}
@@ -554,14 +552,14 @@ class AbstractBackendGateway extends AbstractGateway {
 				'type'        => 'text',
 				'description' => L10nHelper::__( 'This controls the payment method name which the user sees during checkout.' ),
 				'desc_tip'    => true,
-				'default'     => L10nHelper::__( 'Pay by credit card', 'alma-gateway-for-woocommerce' ),
+				'default'     => L10nHelper::__( 'Pay by credit card' ),
 			),
 			'paynow_description_field' => array(
 				'title'       => L10nHelper::__( 'Description' ),
 				'type'        => 'text',
 				'description' => L10nHelper::__( 'This controls the payment method description which the user sees during checkout.' ),
 				'desc_tip'    => true,
-				'default'     => L10nHelper::__( 'Fast and secured payments', 'alma-gateway-for-woocommerce' ),
+				'default'     => L10nHelper::__( 'Fast and secured payments' ),
 			),
 		);
 	}
@@ -582,14 +580,14 @@ class AbstractBackendGateway extends AbstractGateway {
 				'type'        => 'text',
 				'description' => L10nHelper::__( 'This controls the payment method name which the user sees during checkout.' ),
 				'desc_tip'    => true,
-				'default'     => L10nHelper::__( 'Pay in installments', 'alma-gateway-for-woocommerce' ),
+				'default'     => L10nHelper::__( 'Pay in installments' ),
 			),
 			PnxGateway::DESCRIPTION_FIELD => array(
 				'title'       => L10nHelper::__( 'Description' ),
 				'type'        => 'text',
 				'description' => L10nHelper::__( 'This controls the payment method description which the user sees during checkout.' ),
 				'desc_tip'    => true,
-				'default'     => L10nHelper::__( 'Fast and secure payment by credit card', 'alma-gateway-for-woocommerce' ),
+				'default'     => L10nHelper::__( 'Fast and secure payment by credit card' ),
 			),
 		);
 	}
@@ -610,14 +608,14 @@ class AbstractBackendGateway extends AbstractGateway {
 				'type'        => 'text',
 				'description' => L10nHelper::__( 'This controls the payment method name which the user sees during checkout.' ),
 				'desc_tip'    => true,
-				'default'     => L10nHelper::__( 'Pay later', 'alma-gateway-for-woocommerce' ),
+				'default'     => L10nHelper::__( 'Pay later' ),
 			),
 			'paylater_description_field' => array(
 				'title'       => L10nHelper::__( 'Description' ),
 				'type'        => 'text',
 				'description' => L10nHelper::__( 'This controls the payment method description which the user sees during checkout.' ),
 				'desc_tip'    => true,
-				'default'     => L10nHelper::__( 'Fast and secure payment by credit card', 'alma-gateway-for-woocommerce' ),
+				'default'     => L10nHelper::__( 'Fast and secure payment by credit card' ),
 			),
 		);
 	}
@@ -638,14 +636,14 @@ class AbstractBackendGateway extends AbstractGateway {
 				'type'        => 'text',
 				'description' => L10nHelper::__( 'This controls the payment method name which the user sees during checkout.' ),
 				'desc_tip'    => true,
-				'default'     => L10nHelper::__( 'Pay with financing', 'alma-gateway-for-woocommerce' ),
+				'default'     => L10nHelper::__( 'Pay with financing' ),
 			),
 			'credit_description_field' => array(
 				'title'       => L10nHelper::__( 'Description' ),
 				'type'        => 'text',
 				'description' => L10nHelper::__( 'This controls the payment method description which the user sees during checkout.' ),
 				'desc_tip'    => true,
-				'default'     => L10nHelper::__( 'Fast and secure payment by credit card', 'alma-gateway-for-woocommerce' ),
+				'default'     => L10nHelper::__( 'Fast and secure payment by credit card' ),
 			),
 		);
 	}

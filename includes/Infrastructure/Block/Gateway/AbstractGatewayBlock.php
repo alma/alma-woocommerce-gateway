@@ -87,7 +87,7 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 			'title'        => $this->gateway->get_title(),
 			'description'  => $this->gateway->get_description(),
 			'gateway_name' => $this->gateway->get_name(),
-			'label_button' => L10nHelper::__( 'Pay With Alma', 'alma-gateway-for-woocommerce' ),
+			'label_button' => L10nHelper::__( 'Pay With Alma' ),
 		);
 	}
 

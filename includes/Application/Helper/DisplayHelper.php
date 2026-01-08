@@ -12,8 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class DisplayHelper {
 
-	const ALMA_L10N_DOMAIN = 'alma-gateway-for-woocommerce';
-
 	/**
 	 * Format an amount to a string with the Euro symbol.
 	 *
