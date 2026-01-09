@@ -13,45 +13,39 @@ class BusinessEventsRepository
 	 *
 	 * @return void
 	 */
-	public function createTable(): void {
+	public function createTableIfNotExists(): void {
 		global $wpdb;
 
 		$table_name      = $wpdb->prefix . BusinessEventsService::ALMA_BUSINESS_EVENT_TABLE;
 		$charset_collate = $wpdb->get_charset_collate();
 
 		$sql = "CREATE TABLE IF NOT EXISTS $table_name (
-			`alma_business_data_id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 			`cart_id` BIGINT(20) NOT NULL,
 			`order_id` BIGINT(20) UNSIGNED DEFAULT NULL,
 			`alma_payment_id` VARCHAR(255) DEFAULT NULL,
 			`is_bnpl_eligible` TINYINT(1) DEFAULT NULL,
-			PRIMARY KEY (`alma_business_data_id`),
-			UNIQUE KEY `unique_cart_id` (`cart_id`),
+			PRIMARY KEY (`cart_id`),
 	        UNIQUE KEY `unique_alma_payment_id` (`alma_payment_id`)
 		) $charset_collate;";
 
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
 	}
 
 	/**
-	 * @param int|null $cartId
+	 * @param int $cartId
 	 *
 	 * @return bool
 	 */
-	public function isCartIdValid(?int $cartId): bool {
+	public function alreadyExist(int $cartId): bool {
 		global $wpdb;
 		$table_name = $wpdb->prefix . BusinessEventsService::ALMA_BUSINESS_EVENT_TABLE;
 
-		$result = $wpdb->get_row( $wpdb->prepare(
-			"SELECT order_id FROM $table_name WHERE cart_id = %d",
+		$result = $wpdb->get_var( $wpdb->prepare(
+			"SELECT COUNT(*) FROM $table_name WHERE cart_id = %d",
 			$cartId
 		) );
 
-		if (! $result) {
-			return false;
-		}
-		if ($result->order_id !== null) {
+		if ($result === '0') {
 			return false;
 		}
 

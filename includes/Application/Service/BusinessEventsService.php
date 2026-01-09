@@ -15,16 +15,16 @@ class BusinessEventsService
 {
 	const ALMA_BUSINESS_EVENT_TABLE = 'alma_business_data';
 	const ALMA_CART_ID       = 'alma_cart_id';
-	private SessionHelper $session;
+	private SessionHelper $sessionHelper;
 	private BusinessEventsRepository $businessEventsRepository;
 	private MerchantEndpoint $merchantEndpoint;
 
 	public function __construct(
-		SessionHelper $session,
+		SessionHelper $sessionHelper,
 		BusinessEventsRepository $businessEventsRepository,
 		MerchantEndpoint $merchantEndpoint
 	) {
-		$this->session = $session;
+		$this->sessionHelper            = $sessionHelper;
 		$this->businessEventsRepository = $businessEventsRepository;
 		$this->merchantEndpoint = $merchantEndpoint;
 	}
@@ -33,12 +33,12 @@ class BusinessEventsService
 	 * @throws BusinessEventsServiceException
 	 */
 	public function onCartInitiated(): void {
-		$alma_cart_id = $this->getCartId();
-		if ( ! $this->businessEventsRepository->isCartIdValid( $alma_cart_id ) ) {
-			$this->businessEventsRepository->saveCartId( $alma_cart_id );
-			$this->session->setSession( self::ALMA_CART_ID, $alma_cart_id );
+		$almaCartId = $this->getCartId();
+		if ( ! $this->businessEventsRepository->alreadyExist( $almaCartId ) ) {
+			$this->businessEventsRepository->saveCartId( $almaCartId );
+			$this->sessionHelper->setSession( self::ALMA_CART_ID, $almaCartId );
 			try {
-				$cartInitiated = new CartInitiatedBusinessEventDto( $alma_cart_id );
+				$cartInitiated = new CartInitiatedBusinessEventDto( $almaCartId );
 				$this->merchantEndpoint->sendCartInitiatedBusinessEvent( $cartInitiated );
 			} catch ( ParametersException $e ) {
 				throw new BusinessEventsServiceException( 'Failed to create CartInitiatedBusinessEventDto: ' . $e->getMessage() );
@@ -49,7 +49,7 @@ class BusinessEventsService
 	}
 
 	protected function getCartId(): int {
-		$alma_cart_id = $this->session->getSession( self::ALMA_CART_ID, null );
+		$alma_cart_id = $this->sessionHelper->getSession( self::ALMA_CART_ID );
 		if ( empty($alma_cart_id) ) {
 			$alma_cart_id = CartHelper::generateUniqueCartId();
 		}

@@ -115,12 +115,12 @@ class GatewayController {
 
 			FrontendHelper::loadFrontendGateways( $this->gatewayRepository->findOrderedAlmaGateways() );
 			almaLogConsole( '2 - RUN - Load Frontend Gateways' );
-		}
 
-		EventHelper::addEvent(
-			'woocommerce_add_to_cart',
-			array( Plugin::get_container()->get( BusinessEventsService::class ), 'onCartInitiated' )
-		);
+			EventHelper::addEvent(
+				'woocommerce_add_to_cart',
+				array( Plugin::get_container()->get( BusinessEventsService::class ), 'onCartInitiated' )
+			);
+		}
 
 		// Configure the hooks linked to the gateways
 		EventHelper::addEvent(

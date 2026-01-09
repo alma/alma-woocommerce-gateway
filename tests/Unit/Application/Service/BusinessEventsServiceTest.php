@@ -29,21 +29,13 @@ class BusinessEventsServiceTest extends TestCase
 	public function testOnCartInitiatedWithoutCartIdSaved(): void {
 		$cartId = 12345;
 
-		$this->busisnessEventsService = $this->getMockBuilder(BusinessEventsService::class)
-			->setConstructorArgs([
-				$this->sessionHelper,
-				$this->businessEventsRepository,
-				$this->merchantEndpoint
-			])
-			->onlyMethods(['getCartId'])
-			->getMock();
-
-		$this->busisnessEventsService->expects($this->once())
-			->method('getCartId')
+		$this->sessionHelper->expects($this->once())
+			->method('getSession')
+			->with('alma_cart_id')
 			->willReturn($cartId);
 
 		$this->businessEventsRepository->expects($this->once())
-			->method('isCartIdValid')
+			->method( 'alreadyExist' )
 			->with($cartId)
 			->willReturn(false);
 
@@ -68,21 +60,13 @@ class BusinessEventsServiceTest extends TestCase
 	public function testOnCartInitiatedWithCartIdSaved(): void {
 		$cartId = 12345;
 
-		$this->busisnessEventsService = $this->getMockBuilder(BusinessEventsService::class)
-             ->setConstructorArgs([
-                 $this->sessionHelper,
-                 $this->businessEventsRepository,
-                 $this->merchantEndpoint
-             ])
-             ->onlyMethods(['getCartId'])
-             ->getMock();
-
-		$this->busisnessEventsService->expects($this->once())
-             ->method('getCartId')
-             ->willReturn($cartId);
+		$this->sessionHelper->expects($this->once())
+            ->method('getSession')
+            ->with('alma_cart_id')
+            ->willReturn($cartId);
 
 		$this->businessEventsRepository->expects($this->once())
-           ->method('isCartIdValid')
+           ->method( 'alreadyExist' )
            ->with($cartId)
            ->willReturn(true);
 

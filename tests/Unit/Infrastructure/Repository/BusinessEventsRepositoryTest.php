@@ -5,7 +5,6 @@ namespace Alma\Gateway\Tests\Unit\Infrastructure\Repository;
 use Alma\Gateway\Infrastructure\Repository\BusinessEventsRepository;
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use wpdb;
 
 class BusinessEventsRepositoryTest extends TestCase
 {
@@ -15,76 +14,43 @@ class BusinessEventsRepositoryTest extends TestCase
 		$this->businessEventsRepository = new BusinessEventsRepository();
 	}
 
-	public function testIsCartIdValidNotRowReturned() {
+	public function testAlreadyExistIfNotExist() {
 		global $wpdb;
 
 		$wpdb = $this->getMockBuilder(\stdClass::class)
-		             ->addMethods(['get_row', 'prepare'])
+		             ->addMethods(['get_var', 'prepare'])
 		             ->getMock();
 
 		$wpdb->prefix = 'wp_';
 
 		$wpdb->expects($this->once())
 		     ->method('prepare')
-		     ->willReturn('SELECT order_id FROM wp_alma_business_events WHERE cart_id = 123');
+		     ->willReturn('SELECT COUNT(*) FROM wp_alma_business_events WHERE cart_id = 123');
 
 		$wpdb->expects($this->once())
-		     ->method('get_row')
-		     ->willReturn(null);
+		     ->method('get_var')
+		     ->willReturn('0');
 
-		$repository = new BusinessEventsRepository();
-		$result = $repository->isCartIdValid(123);
-
-		$this->assertFalse($result);
+		$this->assertFalse($this->businessEventsRepository->alreadyExist(123));
 	}
 
-	public function testIsCartIdValidCartExist() {
+	public function testAlreadyExistIfExist() {
 		global $wpdb;
-		$row = new Stdclass();
-		$row->order_id = 1;
 
 		$wpdb = $this->getMockBuilder(\stdClass::class)
-		             ->addMethods(['get_row', 'prepare'])
+		             ->addMethods(['get_var', 'prepare'])
 		             ->getMock();
 
 		$wpdb->prefix = 'wp_';
 
 		$wpdb->expects($this->once())
 		     ->method('prepare')
-		     ->willReturn('SELECT order_id FROM wp_alma_business_events WHERE cart_id = 456');
+		     ->willReturn('SELECT COUNT(*) FROM wp_alma_business_events WHERE cart_id = 456');
 
 		$wpdb->expects($this->once())
-		     ->method('get_row')
-		     ->willReturn($row);
+		     ->method('get_var')
+		     ->willReturn('1');
 
-		$repository = new BusinessEventsRepository();
-		$result = $repository->isCartIdValid(456);
-
-		$this->assertFalse($result);
-	}
-
-	public function testIsCartIdValidCartDoesntExist() {
-		global $wpdb;
-		$row = new Stdclass();
-		$row->order_id = null;
-
-		$wpdb = $this->getMockBuilder(\stdClass::class)
-		             ->addMethods(['get_row', 'prepare'])
-		             ->getMock();
-
-		$wpdb->prefix = 'wp_';
-
-		$wpdb->expects($this->once())
-		     ->method('prepare')
-		     ->willReturn('SELECT order_id FROM wp_alma_business_events WHERE cart_id = 456');
-
-		$wpdb->expects($this->once())
-		     ->method('get_row')
-		     ->willReturn($row);
-
-		$repository = new BusinessEventsRepository();
-		$result = $repository->isCartIdValid(456);
-
-		$this->assertTrue($result);
+		$this->assertTrue($this->businessEventsRepository->alreadyExist(456));
 	}
 }

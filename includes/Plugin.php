@@ -126,7 +126,7 @@ final class Plugin extends abstractPlugin {
 
 		/** @var BusinessEventsRepository  $business_event */
 		$business_event = self::get_container()->get( BusinessEventsRepository::class, $suffix );
-		$business_event->createTable();
+		$business_event->createTableIfNotExists();
 	}
 
 	/**
