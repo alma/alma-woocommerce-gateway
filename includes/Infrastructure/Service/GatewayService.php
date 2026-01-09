@@ -5,7 +5,6 @@ namespace Alma\Gateway\Infrastructure\Service;
 use Alma\API\Infrastructure\Exception\ParametersException;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Application\Helper\IpnHelper;
-use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Mapper\RefundMapper;
 use Alma\Gateway\Application\Provider\PaymentProviderAwareTrait;
 use Alma\Gateway\Application\Provider\PaymentProviderFactory;
@@ -74,7 +73,7 @@ class GatewayService {
 					$order->getPaymentId(),
 					( new RefundMapper() )->buildRefundDto(
 						$order,
-						L10nHelper::__( 'Full refund requested by the merchant' )
+						__( 'Full refund requested by the merchant', 'alma-gateway-for-woocommerce' )
 					)
 				);
 
@@ -84,7 +83,7 @@ class GatewayService {
 				$order->addOrderNote(
 					sprintf(
 					// translators: %s: Refunded by.
-						L10nHelper::__( 'Order fully refunded by %s.' ),
+						__( 'Order fully refunded by %s.', 'alma-gateway-for-woocommerce' ),
 						$currentUser->getDisplayName()
 					)
 				);
@@ -112,7 +111,8 @@ class GatewayService {
 	public function pluginActionLinks( $links ): array {
 		$setting_link = ContextHelper::getAdminUrl( 'admin.php?page=wc-settings&tab=checkout&section=alma_config_gateway' );
 		$plugin_links = array(
-			sprintf( '<a href="%s">%s</a>', $setting_link, L10nHelper::__( 'Settings' ) ),
+			sprintf( '<a href="%s">%s</a>', $setting_link,
+				__( 'Settings', 'alma-gateway-for-woocommerce' ) ),
 		);
 
 		return array_merge( $plugin_links, $links );

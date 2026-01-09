@@ -5,7 +5,6 @@ namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
 use Alma\API\Domain\ValueObject\PaymentMethod;
 use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
-use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
@@ -20,8 +19,8 @@ use Alma\Gateway\Plugin;
  * @see public/templates/partials/gateway-options.php for rendering
  */
 class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInterface {
-	public const PAYMENT_METHOD    = PaymentMethod::PNX;
-	public const TITLE_FIELD       = self::PAYMENT_METHOD . '_title_field';
+	public const PAYMENT_METHOD = PaymentMethod::PNX;
+	public const TITLE_FIELD = self::PAYMENT_METHOD . '_title_field';
 	public const DESCRIPTION_FIELD = self::PAYMENT_METHOD . '_description_field';
 
 	/**
@@ -32,7 +31,7 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 		$config_service     = Plugin::get_container()->get( ConfigService::class );
 		$this->title        = $config_service->getSetting( self::TITLE_FIELD );
 		$this->description  = $config_service->getSetting( self::DESCRIPTION_FIELD );
-		$this->method_title = L10nHelper::__( 'Payment in installments with Alma - 2x 3x 4x' );
+		$this->method_title = __( 'Payment in installments with Alma - 2x 3x 4x', 'alma-gateway-for-woocommerce' );
 
 		parent::__construct();
 	}
@@ -52,9 +51,10 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 
 		// phpcs:ignore
 		if ( $_POST['alma_plan_key'] && ! $this->check_values( $_POST['alma_plan_key'],
-			array( 'general_2_0_0', 'general_3_0_0', 'general_4_0_0' )
-		) ) {
-			ShopNotificationHelper::notifyError( L10nHelper::__( 'Please choose a valid option.' ) );
+				array( 'general_2_0_0', 'general_3_0_0', 'general_4_0_0' )
+			) ) {
+			ShopNotificationHelper::notifyError( __( 'Please choose a valid option.',
+				'alma-gateway-for-woocommerce' ) );
 
 			return false;
 		}
@@ -91,8 +91,8 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 				'gateway-options.php',
 				array(
 					'alma_woocommerce_gateway_payment_method' => $this->get_payment_method(),
-					'alma_woocommerce_gateway_plan_key' => $fee_plan_adapter->getPlanKey(),
-					'alma_woocommerce_gateway_logo_url' => AssetsHelper::getImage( 'images/alma_card_logo.svg' ),
+					'alma_woocommerce_gateway_plan_key'       => $fee_plan_adapter->getPlanKey(),
+					'alma_woocommerce_gateway_logo_url'       => AssetsHelper::getImage( 'images/alma_card_logo.svg' ),
 					'alma_woocommerce_gateway_fee_plan_label' => $fee_plan_adapter->getLabel(),
 				),
 				'partials'
@@ -103,16 +103,16 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 			$template_helper->getTemplate(
 				'gateway-plans.php',
 				array(
-					'alma_woocommerce_gateway_payment_method' => $this->get_payment_method(),
-					'alma_woocommerce_gateway_plan_key' => $fee_plan_adapter->getPlanKey(),
-					'alma_woocommerce_gateway_name'     => $this->get_name(),
-					'alma_woocommerce_gateway_fee_plan' => $fee_plan_adapter,
-					'alma_woocommerce_gateway_in_page_enabled' => $config_service->isInPageEnabled(),
+					'alma_woocommerce_gateway_payment_method'          => $this->get_payment_method(),
+					'alma_woocommerce_gateway_plan_key'                => $fee_plan_adapter->getPlanKey(),
+					'alma_woocommerce_gateway_name'                    => $this->get_name(),
+					'alma_woocommerce_gateway_fee_plan'                => $fee_plan_adapter,
+					'alma_woocommerce_gateway_in_page_enabled'         => $config_service->isInPageEnabled(),
 					'alma_woocommerce_gateway_in_page_iframe_selector' => sprintf(
 						'alma_%s_gateway_in_page',
 						$this->get_payment_method()
 					),
-					'alma_woocommerce_gateway_nonce'    => $this->form_helper->generateTokenField(
+					'alma_woocommerce_gateway_nonce'                   => $this->form_helper->generateTokenField(
 						sprintf( '%s_nonce_action', $this->get_name() ),
 						sprintf( '%s_nonce_field', $this->get_name() ),
 					),

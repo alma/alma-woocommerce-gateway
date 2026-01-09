@@ -18,38 +18,33 @@ class RequirementsHelper {
 	 */
 	public static function check_dependencies( string $cmsVersion ): bool {
 		if ( ! function_exists( 'WC' ) ) {
-			throw new RequirementsHelperException( L10nHelper::__( 'Alma requires WooCommerce to be activated' ) );
+			throw new RequirementsHelperException( 'Alma requires WooCommerce to be activated' );
 		}
 
 		if ( version_compare( $cmsVersion, self::MIN_WOOCOMMERCE_VERSION, '<' ) ) {
 			throw new RequirementsHelperException(
 				sprintf(
-				// translators: %s: WooCommerce minimal version number for compatibility.
-					L10nHelper::__( 'Alma requires WooCommerce version %s or greater' ),
+					'Alma requires WooCommerce version %s or greater',
 					self::MIN_WOOCOMMERCE_VERSION
 				)
 			);
 		}
 
 		if ( ! function_exists( 'curl_init' ) ) {
-			throw new RequirementsHelperException(
-				L10nHelper::__( 'Alma requires the cURL PHP extension to be installed on your server' )
-			);
+			throw new RequirementsHelperException( 'Alma requires the cURL PHP extension to be installed on your server' );
 		}
 
 		if ( ! function_exists( 'json_decode' ) ) {
-			throw new RequirementsHelperException(
-				L10nHelper::__( 'Alma requires the JSON PHP extension to be installed on your server' )
-			);
+			throw new RequirementsHelperException( 'Alma requires the JSON PHP extension to be installed on your server' );
 		}
 
 		if ( ! defined( 'OPENSSL_VERSION_TEXT' ) ) {
-			throw new RequirementsHelperException( L10nHelper::__( 'Alma requires OpenSSL to be installed on your server' ) );
+			throw new RequirementsHelperException( 'Alma requires OpenSSL to be installed on your server' );
 		}
 
 		preg_match( '/^(?:Libre|Open)SSL ([\d.]+)/', OPENSSL_VERSION_TEXT, $matches );
 		if ( empty( $matches[1] ) ) {
-			throw new RequirementsHelperException( L10nHelper::__( 'Alma requires OpenSSL to be installed on your server' ) );
+			throw new RequirementsHelperException( 'Alma requires OpenSSL to be installed on your server' );
 		}
 
 		return true;

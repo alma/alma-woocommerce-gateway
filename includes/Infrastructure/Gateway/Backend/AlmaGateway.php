@@ -5,7 +5,6 @@ namespace Alma\Gateway\Infrastructure\Gateway\Backend;
 use Alma\Gateway\Application\Entity\Form\GatewayConfigurationForm;
 use Alma\Gateway\Application\Exception\Service\GatewayConfigurationFormValidatorServiceException;
 use Alma\Gateway\Application\Helper\EncryptorHelper;
-use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\GatewayConfigurationFormValidatorService;
 use Alma\Gateway\Infrastructure\Exception\Gateway\AbstractGatewayException;
@@ -28,8 +27,10 @@ class AlmaGateway extends AbstractBackendGateway {
 	 * @throws AlmaGatewayException
 	 */
 	public function __construct() {
-		$this->method_title       = L10nHelper::__( 'Payment in installments and deferred with Alma' );
-		$this->method_description = L10nHelper::__( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.' );
+		$this->method_title       = __( 'Payment in installments and deferred with Alma',
+			'alma-gateway-for-woocommerce' );
+		$this->method_description = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.',
+			'alma-gateway-for-woocommerce' );
 		$this->has_fields         = true;
 		parent::__construct();
 		$this->init_form_fields();
@@ -74,7 +75,7 @@ class AlmaGateway extends AbstractBackendGateway {
 					$this->customize_payment_buttons_text_fieldset(),
 					$this->fee_plan_fieldset()
 				);
-			} catch ( FeePlanRepositoryException | AbstractGatewayException $e ) {
+			} catch ( FeePlanRepositoryException|AbstractGatewayException $e ) {
 				almalog( $e->getMessage() );
 				throw new AlmaGatewayException( 'Can\'t initialize Alma Gateway', 0, $e );
 			}
@@ -133,7 +134,10 @@ class AlmaGateway extends AbstractBackendGateway {
 		} catch ( GatewayConfigurationFormValidatorServiceException $e ) {
 			// If an error occurs during validation, we display a generic error message
 			// and return the previous settings to avoid losing data.
-			$this->errors = array( L10nHelper::__( 'An error occurred while validating the configuration. Please try again.' ) );
+			$this->errors = array(
+				__( 'An error occurred while validating the configuration. Please try again.',
+					'alma-gateway-for-woocommerce' )
+			);
 
 			/** @var ConfigService $config_service */
 			$config_service = Plugin::get_container()->get( ConfigService::class );

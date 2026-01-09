@@ -6,7 +6,6 @@ use Alma\API\Infrastructure\Exception\ParametersException;
 use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
-use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Mapper\RefundMapper;
 use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Application\Service\ConfigService;
@@ -46,7 +45,8 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		$this->fee_plan_repository = $fee_plan_repository ?? Plugin::get_container()->get( FeePlanRepository::class );
 
 		$this->id                 = sprintf( 'alma_%s_gateway', $this->get_payment_method() );
-		$this->method_description = L10nHelper::__( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.' );
+		$this->method_description = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.',
+			'alma-gateway-for-woocommerce' );
 		$this->has_fields         = true;
 		$this->supports           = array( 'products', 'refunds' );
 		$this->icon               = $this->get_icon_url();
@@ -132,7 +132,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		$order->addOrderNote(
 			sprintf(
 			// translators: %s: Selected payment method.
-				L10nHelper::__( 'Selected payment method : %s' ),
+				__( 'Selected payment method : %s', 'alma-gateway-for-woocommerce' ),
 				$fee_plan_adapter->getLabel(),
 			)
 		);
@@ -149,7 +149,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		}
 
 		// Update order status to pending
-		$order->updateStatus( 'pending', L10nHelper::__( 'Awaiting payment via Alma' ) );
+		$order->updateStatus( 'pending', __( 'Awaiting payment via Alma', 'alma-gateway-for-woocommerce' ) );
 
 		$result = array();
 		if ( $config_service->isInPageEnabled() ) {
@@ -196,14 +196,13 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		);
 
 		if ( ! $response ) {
-			return L10nHelper::__( 'Refund failed.' );
+			return __( 'Refund failed.', 'alma-gateway-for-woocommerce' );
 		}
 
 		// Add a note to the order
-		/* translators: %s is a username. */
 		$order_note = sprintf(
-		// translators: %d: Amount refunded / %s: Refunded by.
-			L10nHelper::__( 'Order partially refunded (%d via Alma) by %s.' ),
+		// translators: %1$d: Amount refunded / %2$s: Refunded by.
+			__( 'Order partially refunded (%1$d via Alma) by %2$s.', 'alma-gateway-for-woocommerce' ),
 			$amount,
 			wp_get_current_user()->display_name
 		);

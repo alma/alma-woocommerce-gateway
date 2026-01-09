@@ -12,7 +12,6 @@
 namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
 use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
-use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\PaymentService;
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
 use Alma\Gateway\Infrastructure\Exception\Block\CheckoutBlockException;
@@ -87,7 +86,7 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 			'title'        => $this->gateway->get_title(),
 			'description'  => $this->gateway->get_description(),
 			'gateway_name' => $this->gateway->get_name(),
-			'label_button' => L10nHelper::__( 'Pay With Alma' ),
+			'label_button' => __( 'Pay With Alma', 'alma-gateway-for-woocommerce' ),
 		);
 	}
 
@@ -142,14 +141,14 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 					throw new CheckoutBlockException( $e->getMessage() );
 				}
 				wc_add_notice(
-					L10nHelper::__( 'Payment processing failed. Please try again.' ),
+					__( 'Payment processing failed. Please try again.', 'alma-gateway-for-woocommerce' ),
 					'error'
 				);
 
 				return;
 			}
 
-			$order->updateStatus( 'pending', L10nHelper::__( 'Awaiting payment via Alma' ) );
+			$order->updateStatus( 'pending', __( 'Awaiting payment via Alma', 'alma-gateway-for-woocommerce' ) );
 			$order->update_meta_data( '_alma_payment_id', $payment->getId() );
 			$order->save();
 
