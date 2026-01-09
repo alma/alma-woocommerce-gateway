@@ -5,7 +5,7 @@ namespace Alma\Gateway\Infrastructure\Repository;
 use Alma\API\Domain\Repository\BusinessEventsRepositoryInterface;
 use Alma\Gateway\Application\Service\BusinessEventsService;
 
-//class BusinessEventsRepository implements BusinessEventsRepositoryInterface // TODO: Uncomment when interface was released in PHP Client
+class BusinessEventsRepository implements BusinessEventsRepositoryInterface
 class BusinessEventsRepository
 {
 	/**
