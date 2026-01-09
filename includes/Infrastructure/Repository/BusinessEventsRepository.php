@@ -115,4 +115,58 @@ class BusinessEventsRepository
 
 		return $result ?: null;
 	}
+
+	/**
+	 * @param int $cartId
+	 * @param int $orderId
+	 *
+	 * @return void
+	 */
+	public function updateOrderId(int $cartId, int $orderId): void {
+		global $wpdb;
+		$table_name = $wpdb->prefix . BusinessEventsService::ALMA_BUSINESS_EVENT_TABLE;
+
+		$wpdb->update(
+			$table_name,
+			[
+				'order_id' => $orderId,
+			],
+			[
+				'cart_id' => $cartId,
+			],
+			[
+				'order_id' => '%d',
+			],
+			[
+				'cart_id' => '%d',
+			]
+		);
+	}
+
+	/**
+	 * @param int    $cartId
+	 * @param string $almaPaymentId
+	 *
+	 * @return void
+	 */
+	public function saveAlmaPaymentId(int $cartId, string $almaPaymentId): void {
+		global $wpdb;
+		$table_name = $wpdb->prefix . BusinessEventsService::ALMA_BUSINESS_EVENT_TABLE;
+
+		$wpdb->update(
+			$table_name,
+			[
+				'alma_payment_id' => $almaPaymentId,
+			],
+			[
+				'cart_id' => $cartId,
+			],
+			[
+				'alma_payment_id' => '%s',
+			],
+			[
+				'cart_id' => '%d',
+			]
+		);
+	}
 }

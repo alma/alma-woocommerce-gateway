@@ -116,4 +116,48 @@ class BusinessEventsRepositoryTest extends TestCase
 		$result     = $repository->getRowByOrderId( 99 );
 		$this->assertNull( $result );
 	}
+
+	public function testUpdateOrderId() {
+		global $wpdb;
+
+		$wpdb = $this->getMockBuilder(\stdClass::class)
+		             ->addMethods(['update'])
+		             ->getMock();
+
+		$wpdb->prefix = 'wp_';
+
+		$wpdb->expects($this->once())
+		     ->method('update')
+		     ->with(
+			     'wp_alma_business_data',
+			     ['order_id' => 101],
+			     ['cart_id' => 202],
+			     ['order_id' => '%d'],
+			     ['cart_id' => '%d']
+		     );
+
+		$this->businessEventsRepository->updateOrderId(202, 101);
+	}
+
+	public function testSaveAlmaPaymentId() {
+		global $wpdb;
+
+		$wpdb = $this->getMockBuilder(\stdClass::class)
+		             ->addMethods(['update'])
+		             ->getMock();
+
+		$wpdb->prefix = 'wp_';
+
+		$wpdb->expects($this->once())
+		     ->method('update')
+		     ->with(
+			     'wp_alma_business_data',
+			     ['alma_payment_id' => 'payment_alma_12345'],
+			     ['cart_id' => 303],
+			     ['alma_payment_id' => '%s'],
+			     ['cart_id' => '%d']
+		     );
+
+		$this->businessEventsRepository->saveAlmaPaymentId(303, 'payment_alma_12345');
+	}
 }

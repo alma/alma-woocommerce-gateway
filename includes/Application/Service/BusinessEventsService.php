@@ -95,6 +95,31 @@ class BusinessEventsService
 		}
 	}
 
+	/**
+	 * @param int $orderId
+	 *
+	 * @return void
+	 */
+	public function onCreateOrder(int $orderId): void {
+		$almaCartId = $this->getCartId();
+		$this->businessEventsRepository->updateOrderId($almaCartId, $orderId);
+	}
+
+	/**
+	 * @param string $almaPaymentId
+	 *
+	 * @return void
+	 */
+	public function saveAlmaPaymentId(string $almaPaymentId): void {
+		$almaCartId = $this->getCartId();
+		$this->businessEventsRepository->saveAlmaPaymentId($almaCartId, $almaPaymentId);
+	}
+
+	/**
+	 * @param EligibilityList $eligibilityList
+	 *
+	 * @return void
+	 */
 	public function updateEligibility(EligibilityList $eligibilityList): void {
 		$isEligible = false;
 		foreach ( $eligibilityList as $eligibility ) {
@@ -106,13 +131,16 @@ class BusinessEventsService
 		$this->businessEventsRepository->saveEligibility($this->getCartId(), $isEligible);
 	}
 
+	/**
+	 * @return int
+	 */
 	protected function getCartId(): int {
-		$alma_cart_id = $this->sessionHelper->getSession( self::ALMA_CART_ID );
-		if ( empty($alma_cart_id) ) {
-			$alma_cart_id = CartHelper::generateUniqueCartId();
-			$this->session->setSession( self::ALMA_CART_ID, $alma_cart_id );
+		$almaCartId = $this->sessionHelper->getSession( self::ALMA_CART_ID );
+		if ( empty($almaCartId) ) {
+			$almaCartId = CartHelper::generateUniqueCartId();
+			$this->sessionHelper->setSession( self::ALMA_CART_ID, $almaCartId );
 		}
 
-		return $alma_cart_id;
+		return $almaCartId;
 	}
 }

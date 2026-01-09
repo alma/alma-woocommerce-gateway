@@ -7,6 +7,7 @@ use Alma\API\Application\DTO\MerchantBusinessEvent\OrderConfirmedBusinessEventDt
 use Alma\API\Domain\Entity\Eligibility;
 use Alma\API\Domain\Entity\EligibilityList;
 use Alma\API\Infrastructure\Exception\ParametersException;
+use Alma\Gateway\Application\Exception\Service\API\MerchantServiceException;
 use Alma\Gateway\Application\Exception\Service\BusinessEventsServiceException;
 use Alma\Gateway\Application\Provider\MerchantProvider;
 use Alma\Gateway\Application\Provider\MerchantProviderFactory;
@@ -179,6 +180,107 @@ class BusinessEventsServiceTest extends TestCase
                ->method('sendOrderConfirmedBusinessEvent')
                ->with($orderConfirmedBusinessEvent);
 		$this->businessEventsService->onOrderConfirmed('pending', 'processing', $orderMock);
+	}
+
+	/**
+	 * @throws BusinessEventsServiceException
+	 * @throws ParametersException
+	 */
+	public function testOnOrderConfirmedOldStatusPendingNewStatusPaidPaymentMethodAlma(): void {
+		$this->businessEventsRepository->method('getRowByOrderId')
+               ->with(42)
+               ->willReturn((object)[
+                   'cart_id' => 4242,
+                   'alma_payment_id' => 'payment_alma_id',
+                   'is_bnpl_eligible' => 1,
+               ]);
+
+		$orderMock = $this->createMock(OrderAdapter::class);
+		$orderMock->method('getId')->willReturn(42);
+		$orderMock->method('getPaymentMethod')->willReturn('alma_pnx_gateway');
+
+		$orderHelperMock = Mockery::mock('alias:' . OrderHelper::class);
+		$orderHelperMock->shouldReceive('wcGetIsPaidStatuses')
+            ->andReturn(['processing', 'completed']);
+
+		$orderConfirmedBusinessEvent = new OrderConfirmedBusinessEventDto(
+			false,
+			true,
+			true,
+			'42',
+			4242,
+			'payment_alma_id'
+		);
+
+		$this->merchantProvider->expects($this->once())
+               ->method('sendOrderConfirmedBusinessEvent')
+               ->with($orderConfirmedBusinessEvent);
+		$this->businessEventsService->onOrderConfirmed('pending', 'processing', $orderMock);
+	}
+
+	/**
+	 * @throws ParametersException
+	 */
+	public function testOnOrderConfirmedCatchMerchantServiceException(): void {
+		$this->businessEventsRepository->method('getRowByOrderId')
+		                               ->with(42)
+		                               ->willReturn((object)[
+			                               'cart_id' => 4242,
+			                               'alma_payment_id' => 'payment_alma_id',
+			                               'is_bnpl_eligible' => 1,
+		                               ]);
+
+		$orderMock = $this->createMock(OrderAdapter::class);
+		$orderMock->method('getId')->willReturn(42);
+		$orderMock->method('getPaymentMethod')->willReturn('alma_pnx_gateway');
+
+		$orderHelperMock = Mockery::mock('alias:' . OrderHelper::class);
+		$orderHelperMock->shouldReceive('wcGetIsPaidStatuses')
+		                ->andReturn(['processing', 'completed']);
+
+		$orderConfirmedBusinessEvent = new OrderConfirmedBusinessEventDto(
+			false,
+			true,
+			true,
+			'42',
+			4242,
+			'payment_alma_id'
+		);
+
+		$this->merchantProvider->expects($this->once())
+               ->method('sendOrderConfirmedBusinessEvent')
+               ->with($orderConfirmedBusinessEvent)
+				->willThrowException(new MerchantServiceException());
+		$this->expectException(BusinessEventsServiceException::class);
+		$this->businessEventsService->onOrderConfirmed('pending', 'processing', $orderMock);
+	}
+
+	public function testOnCreateOrder(): void {
+		$cartId = 12345;
+
+		$this->sessionHelper->expects($this->once())
+                ->method('getSession')
+                ->with('alma_cart_id')
+                ->willReturn($cartId);
+
+		$this->businessEventsRepository->expects($this->once())
+            ->method('updateOrderId')
+			->with($cartId, 42);
+		$this->businessEventsService->onCreateOrder(42);
+	}
+
+	public function testSaveAlmaPaymentId(): void {
+		$cartId = 12345;
+
+		$this->sessionHelper->expects($this->once())
+		                    ->method('getSession')
+		                    ->with('alma_cart_id')
+		                    ->willReturn($cartId);
+
+		$this->businessEventsRepository->expects($this->once())
+		                               ->method('saveAlmaPaymentId')
+		                               ->with($cartId, 'payment_alma_id');
+		$this->businessEventsService->saveAlmaPaymentId('payment_alma_id');
 	}
 
 	public function eligibleListProvider(): array {
