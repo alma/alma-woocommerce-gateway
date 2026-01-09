@@ -9,7 +9,6 @@ use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
-use Alma\Gateway\Infrastructure\Exception\CheckoutServiceException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\ShopNotificationHelper;
@@ -87,7 +86,6 @@ class PayLaterGateway extends AbstractFrontendGateway implements FrontendGateway
 	 * @return void
 	 * @throws TemplateHelperException
 	 * @throws TemplateHelperException|FeePlanRepositoryException
-	 * @throws CheckoutServiceException
 	 */
 	public function payment_fields() {
 
@@ -98,16 +96,23 @@ class PayLaterGateway extends AbstractFrontendGateway implements FrontendGateway
 		$template_helper = Plugin::get_container()->get( TemplateHelper::class );
 		$feePlanList     = $this->getFeePlanList();
 
+		$template_helper->getTemplate(
+			'gateway-description.php',
+			array(
+				'alma_woocommerce_gateway_description' => $this->description,
+			),
+			'partials'
+		);
+
 		/** @var FeePlanAdapter $fee_plan_adapter */
 		foreach ( $feePlanList as $fee_plan_adapter ) {
 			$template_helper->getTemplate(
 				'gateway-options.php',
 				array(
 					'alma_woocommerce_gateway_payment_method' => $this->get_payment_method(),
-					'alma_woocommerce_gateway_plan_key'    => $fee_plan_adapter->getPlanKey(),
-					'alma_woocommerce_gateway_logo_url'    => AssetsHelper::getImage( 'images/alma_card_logo.svg' ),
+					'alma_woocommerce_gateway_plan_key' => $fee_plan_adapter->getPlanKey(),
+					'alma_woocommerce_gateway_logo_url' => AssetsHelper::getImage( 'images/alma_card_logo.svg' ),
 					'alma_woocommerce_gateway_fee_plan_label' => $fee_plan_adapter->getLabel(),
-					'alma_woocommerce_gateway_description' => $this->description,
 				),
 				'partials'
 			);
