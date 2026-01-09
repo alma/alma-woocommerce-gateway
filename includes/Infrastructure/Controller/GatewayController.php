@@ -3,6 +3,7 @@
 namespace Alma\Gateway\Infrastructure\Controller;
 
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
+use Alma\Gateway\Application\Service\BusinessEventsService;
 use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Exception\Controller\GatewayControllerException;
 use Alma\Gateway\Infrastructure\Helper\BackendHelper;
@@ -114,6 +115,11 @@ class GatewayController {
 
 			FrontendHelper::loadFrontendGateways( $this->gatewayRepository->findOrderedAlmaGateways() );
 			almaLogConsole( '2 - RUN - Load Frontend Gateways' );
+
+			EventHelper::addEvent(
+				'woocommerce_add_to_cart',
+				array( Plugin::get_container()->get( BusinessEventsService::class ), 'onCartInitiated' )
+			);
 		}
 
 		// Configure the hooks linked to the gateways
