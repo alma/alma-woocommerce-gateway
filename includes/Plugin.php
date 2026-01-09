@@ -10,7 +10,6 @@ use Alma\Gateway\Infrastructure\Controller\AdminController;
 use Alma\Gateway\Infrastructure\Controller\GatewayController;
 use Alma\Gateway\Infrastructure\Controller\ShopController;
 use Alma\Gateway\Infrastructure\Exception\CmsException;
-use Alma\Gateway\Infrastructure\Exception\Controller\AssetsControllerException;
 use Alma\Gateway\Infrastructure\Exception\Controller\GatewayControllerException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
@@ -128,7 +127,6 @@ final class Plugin extends abstractPlugin {
 	 * Used for regular plugin work.
 	 *
 	 * @throws GatewayControllerException|RequirementsHelperException
-	 * @throws AssetsControllerException
 	 */
 	public function plugin_setup(): void {
 

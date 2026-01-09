@@ -4,7 +4,6 @@ namespace Alma\Gateway\Infrastructure\Helper;
 
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
 use Alma\API\Domain\Helper\NavigationHelperInterface;
-use Alma\Gateway\Plugin;
 
 class NavigationHelper implements NavigationHelperInterface {
 
@@ -39,9 +38,7 @@ class NavigationHelper implements NavigationHelperInterface {
 	 */
 	public function redirectToCart( $message = null ): void {
 		if ( $message ) {
-			/** @var NotificationHelper $notificationHelper */
-			$notificationHelper = Plugin::get_container()->get( NotificationHelper::class );
-			$notificationHelper->notifyError( $message );
+			ShopNotificationHelper::notifyError( $message );
 		}
 		wp_safe_redirect( wc_get_cart_url() );
 		exit;

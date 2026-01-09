@@ -11,7 +11,7 @@ use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
-use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
+use Alma\Gateway\Infrastructure\Helper\ShopNotificationHelper;
 use Alma\Gateway\Plugin;
 
 /**
@@ -54,9 +54,7 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 		if ( $_POST['alma_plan_key'] && ! $this->check_values( $_POST['alma_plan_key'],
 			array( 'general_2_0_0', 'general_3_0_0', 'general_4_0_0' )
 		) ) {
-			/** @var NotificationHelper $notificationHelper */
-			$notificationHelper = Plugin::get_container()->get( NotificationHelper::class );
-			$notificationHelper->notifyError( L10nHelper::__( 'Please choose a valid option.' ) );
+			ShopNotificationHelper::notifyError( L10nHelper::__( 'Please choose a valid option.' ) );
 
 			return false;
 		}
