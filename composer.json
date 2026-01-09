@@ -14,11 +14,12 @@
     }
   ],
   "require": {
-    "php": "~7.4 || ~8.0 || ~8.1 || ~8.2 || ~8.3 || ~8.4",
+    "php": "~7.4 || ~8.0 || ~8.1 || ~8.2 || ~8.3 || ~8.4 || ~8.5",
     "ext-openssl": "*",
     "ext-json": "*",
     "alma/alma-php-client": "3.0.*|dev-feature/3.0",
     "psr/http-client": "^1",
+    "psr/log": "^1",
     "level-2/dice": "^4.0"
   },
   "require-dev": {
