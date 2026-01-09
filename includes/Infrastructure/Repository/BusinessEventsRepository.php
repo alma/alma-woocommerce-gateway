@@ -6,7 +6,6 @@ use Alma\API\Domain\Repository\BusinessEventsRepositoryInterface;
 use Alma\Gateway\Application\Service\BusinessEventsService;
 
 class BusinessEventsRepository implements BusinessEventsRepositoryInterface
-class BusinessEventsRepository
 {
 	/**
 	 * Create the necessary table in the database for Business Event.
