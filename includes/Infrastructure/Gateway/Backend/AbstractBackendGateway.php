@@ -436,17 +436,6 @@ class AbstractBackendGateway extends AbstractGateway {
 		);
 	}
 
-	public function l10n_fieldset(): array {
-
-		return array(
-			'l10n_section' => array(
-				'title'       => '<hr>' . L10nHelper::__( '→ Localization' ),
-				'type'        => 'title',
-				'description' => L10nHelper::__( 'Where\'s Alma is available?</a>' ),
-			),
-		);
-	}
-
 	public function excluded_categories_fieldset(): array {
 		/** @var ProductCategoryRepository $product_category_repository */
 		$product_category_repository = Plugin::get_container()->get( ProductCategoryRepository::class );

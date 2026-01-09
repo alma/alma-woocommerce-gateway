@@ -83,7 +83,6 @@ class AlmaGateway extends AbstractBackendGateway {
 		$this->form_fields = array_merge(
 			$this->form_fields,
 			$this->debug_fieldset(),
-			$this->l10n_fieldset(),
 		);
 
 		return $this->form_fields;

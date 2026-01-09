@@ -149,7 +149,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		}
 
 		// Update order status to pending
-		$order->updateStatus( 'pending', L10nHelper::__( 'En attente de paiement via Alma' ) );
+		$order->updateStatus( 'pending', L10nHelper::__( 'Awaiting payment via Alma' ) );
 
 		$result = array();
 		if ( $config_service->isInPageEnabled() ) {
