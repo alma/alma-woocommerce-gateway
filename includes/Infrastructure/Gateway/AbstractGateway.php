@@ -13,13 +13,8 @@ use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\PaymentService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Exception\Gateway\AbstractGatewayException;
-use Alma\Gateway\Infrastructure\Exception\Gateway\Backend\AlmaGatewayException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
-use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
-use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
-use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
-use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\InPageHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
@@ -44,6 +39,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * Gateway constructor.
 	 * All parameters are injected here are used for unit test
 	 * Let the fallback to the container for production use
+	 *
 	 * @param FeePlanRepository|null $fee_plan_repository
 	 */
 	public function __construct( ?FeePlanRepository $fee_plan_repository = null ) {
@@ -135,6 +131,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		}
 		$order->addOrderNote(
 			sprintf(
+			// translators: %s: Selected payment method.
 				L10nHelper::__( 'Selected payment method : %s' ),
 				$fee_plan_adapter->getLabel(),
 			)
@@ -205,6 +202,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		// Add a note to the order
 		/* translators: %s is a username. */
 		$order_note = sprintf(
+		// translators: %d: Amount refunded / %s: Refunded by.
 			L10nHelper::__( 'Order partially refunded (%d via Alma) by %s.' ),
 			$amount,
 			wp_get_current_user()->display_name

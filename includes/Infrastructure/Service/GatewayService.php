@@ -83,6 +83,7 @@ class GatewayService {
 
 				$order->addOrderNote(
 					sprintf(
+					// translators: %s: Refunded by.
 						L10nHelper::__( 'Order fully refunded by %s.' ),
 						$currentUser->getDisplayName()
 					)

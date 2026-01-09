@@ -4,7 +4,9 @@ namespace Alma\Gateway\Application\Helper;
 
 use Alma\API\Domain\ValueObject\Environment;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
+use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\LanguageHelper;
+use NumberFormatter;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -38,6 +40,19 @@ class L10nHelper {
 	 */
 	public static function load_language( $language_path ) {
 		LanguageHelper::loadLanguage( self::ALMA_L10N_DOMAIN, $language_path );
+	}
+
+	/**
+	 * Format currency from cents to localized string.
+	 *
+	 * @param int $amountInCents
+	 *
+	 * @return string
+	 */
+	public static function format_currency( int $amountInCents ): string {
+		$formatter = new NumberFormatter( ContextHelper::getLocale(), NumberFormatter::CURRENCY );
+
+		return $formatter->formatCurrency( $amountInCents / 100, 'EUR' );
 	}
 
 	/**

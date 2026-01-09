@@ -17,7 +17,7 @@ use Alma\Gateway\Plugin;
 /**
  * Class Gateway
  * Should extend WC_Payment_Gateway
- * @see public/templates/partials/credit-gateway-options.php for rendering
+ * @see public/templates/partials/gateway-options.php for rendering
  */
 class CreditGateway extends AbstractFrontendGateway implements FrontendGatewayInterface {
 

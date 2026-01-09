@@ -16,7 +16,7 @@ use Alma\Gateway\Plugin;
 /**
  * Class Gateway
  * Should extend WC_Payment_Gateway
- * @see public/templates/partials/pay-now-gateway-options.php for rendering
+ * @see public/templates/partials/gateway-options.php for rendering
  */
 class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayInterface {
 

@@ -11,7 +11,6 @@ use Alma\Gateway\Application\Exception\Service\IpnServiceException;
 use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Provider\PaymentProvider;
-use Alma\Gateway\Application\Provider\PaymentProviderFactory;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\ParameterHelper;
 use Alma\Gateway\Infrastructure\Helper\ShopNotificationHelper;
@@ -19,7 +18,6 @@ use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Plugin;
 
 class IpnService {
-
 	public const IPN_CALLBACK = 'alma_ipn_callback';
 	public const CUSTOMER_RETURN = 'alma_customer_return';
 
@@ -38,24 +36,20 @@ class IpnService {
 	/** @var NavigationHelperInterface */
 	private NavigationHelperInterface $navigationHelper;
 
-	private PaymentProviderFactory $paymentProviderFactory;
-
 	private ?PaymentProvider $paymentProvider;
 
 	public function __construct(
-		PaymentProviderFactory $paymentProviderFactory,
 		ConfigService $configService,
 		PaymentProvider $paymentService,
 		CartAdapterInterface $cartAdapter,
 		NavigationHelperInterface $navigationHelper,
 		IpnHelper $ipnHelper
 	) {
-		$this->paymentProviderFactory = $paymentProviderFactory;
-		$this->configService          = $configService;
-		$this->paymentService         = $paymentService;
-		$this->cartAdapter            = $cartAdapter;
-		$this->navigationHelper       = $navigationHelper;
-		$this->ipnHelper              = $ipnHelper;
+		$this->configService    = $configService;
+		$this->paymentService   = $paymentService;
+		$this->cartAdapter      = $cartAdapter;
+		$this->navigationHelper = $navigationHelper;
+		$this->ipnHelper        = $ipnHelper;
 	}
 
 	/**

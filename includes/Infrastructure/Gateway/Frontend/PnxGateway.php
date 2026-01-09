@@ -17,7 +17,7 @@ use Alma\Gateway\Plugin;
 /**
  * Class Gateway
  * Should extend WC_Payment_Gateway
- * @see public/templates/partials/pnx-gateway-options.php for rendering
+ * @see public/templates/partials/gateway-options.php for rendering
  */
 class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInterface {
 	public const PAYMENT_METHOD    = PaymentMethod::PNX;
