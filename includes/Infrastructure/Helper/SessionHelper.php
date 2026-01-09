@@ -33,4 +33,15 @@ class SessionHelper implements SessionHelperInterface {
 			WC()->session->set( $key, $value );
 		}
 	}
+
+	/**
+	 * Unset something in WC session
+	 *
+	 * @param string $key
+	 */
+	public function unsetSession( string $key ): void {
+		if ( function_exists( 'WC' ) && WC()->session ) {
+			WC()->session->__unset( $key );
+		}
+	}
 }

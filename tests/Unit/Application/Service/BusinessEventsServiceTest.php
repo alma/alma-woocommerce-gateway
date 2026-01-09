@@ -41,7 +41,7 @@ class BusinessEventsServiceTest extends TestCase
 	/**
 	 * @throws BusinessEventsServiceException
 	 */
-	public function testOnCartInitiatedWithoutCartIdSaved(): void {
+	public function testOnCartInitiatedWithoutCartExistAndCartNotConverted(): void {
 		$cartId = 12345;
 
 		$this->sessionHelper->expects($this->once())
@@ -49,8 +49,11 @@ class BusinessEventsServiceTest extends TestCase
 			->with('alma_cart_id')
 			->willReturn($cartId);
 
-		$this->businessEventsRepository->expects($this->once())
-			->method( 'alreadyExist' )
+		$this->businessEventsRepository->method( 'alreadyExist' )
+			->with($cartId)
+			->willReturn(false);
+
+		$this->businessEventsRepository->method( 'alreadyConverted' )
 			->with($cartId)
 			->willReturn(false);
 
@@ -68,24 +71,73 @@ class BusinessEventsServiceTest extends TestCase
 	/**
 	 * @throws BusinessEventsServiceException
 	 */
-	public function testOnCartInitiatedWithCartIdSaved(): void {
+	public function testOnCartInitiatedWithCartExistAndCartNotConverted(): void {
 		$cartId = 12345;
 
 		$this->sessionHelper->expects($this->once())
-            ->method('getSession')
-            ->with('alma_cart_id')
-            ->willReturn($cartId);
+	        ->method('getSession')
+	        ->with('alma_cart_id')
+	        ->willReturn($cartId);
 
-		$this->businessEventsRepository->expects($this->once())
-           ->method( 'alreadyExist' )
+		$this->businessEventsRepository->method( 'alreadyExist' )
            ->with($cartId)
            ->willReturn(true);
+
+		$this->businessEventsRepository->method( 'alreadyConverted' )
+           ->with($cartId)
+           ->willReturn(false);
 
 		$this->businessEventsRepository->expects($this->never())
            ->method('saveCartId')
            ->with($cartId);
 
 		$this->merchantProvider->expects($this->never())
+           ->method('sendCartInitiatedBusinessEvent')
+           ->with($this->isInstanceOf( CartInitiatedBusinessEventDto::class));
+
+		$this->businessEventsService->onCartInitiated();
+	}
+
+	/**
+	 * @throws BusinessEventsServiceException
+	 */
+	public function testOnCartInitiatedWithCartExistAndCartConverted(): void {
+		$oldCartId = 12345;
+		$newCartId = 6789;
+
+		$this->sessionHelper->expects($this->once())
+            ->method('getSession')
+            ->with('alma_cart_id')
+            ->willReturn($oldCartId);
+
+		$this->businessEventsRepository->expects($this->exactly(2))
+		   ->method( 'alreadyExist' )
+			->willReturnCallback(function($cartId) use ($oldCartId, $newCartId) {
+				if ($cartId === $oldCartId) {
+					return true;
+				}
+				if ($cartId === $newCartId) {
+					return false;
+				}
+				return false;
+			});
+
+		$this->businessEventsRepository->method( 'alreadyConverted' )
+           ->with($oldCartId)
+           ->willReturn(true);
+
+		$this->sessionHelper->expects($this->once())
+            ->method('unsetSession')
+            ->with('alma_cart_id');
+
+		$this->sessionHelper->expects($this->once())
+            ->method('setSession')
+            ->with('alma_cart_id');
+
+		$this->businessEventsRepository->expects($this->once())
+           ->method('saveCartId');
+
+		$this->merchantProvider->expects($this->once())
            ->method('sendCartInitiatedBusinessEvent')
            ->with($this->isInstanceOf( CartInitiatedBusinessEventDto::class));
 

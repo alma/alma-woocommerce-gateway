@@ -32,6 +32,7 @@ class BusinessEventsRepository
 	}
 
 	/**
+	 * If cart ID already exists in the database.
 	 * @param int $cartId
 	 *
 	 * @return bool
@@ -46,6 +47,28 @@ class BusinessEventsRepository
 		) );
 
 		if ($result === '0') {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * If cart ID was already converted to order.
+	 * @param int $cartId
+	 *
+	 * @return bool
+	 */
+	public function alreadyConverted(int $cartId): bool {
+		global $wpdb;
+		$table_name = $wpdb->prefix . BusinessEventsService::ALMA_BUSINESS_EVENT_TABLE;
+
+		$result = $wpdb->get_var( $wpdb->prepare(
+			"SELECT order_id FROM $table_name WHERE cart_id = %d",
+			$cartId
+		) );
+
+		if ($result === null) {
 			return false;
 		}
 

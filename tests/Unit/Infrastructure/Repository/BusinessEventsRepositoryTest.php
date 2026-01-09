@@ -54,6 +54,46 @@ class BusinessEventsRepositoryTest extends TestCase
 		$this->assertTrue($this->businessEventsRepository->alreadyExist(456));
 	}
 
+	public function testAlreadyConvertedIfCartNotConverted() {
+		global $wpdb;
+
+		$wpdb = $this->getMockBuilder(\stdClass::class)
+		             ->addMethods(['get_var', 'prepare'])
+		             ->getMock();
+
+		$wpdb->prefix = 'wp_';
+
+		$wpdb->expects($this->once())
+		     ->method('prepare')
+		     ->willReturn('SELECT order_id FROM wp_alma_business_events WHERE cart_id = 123');
+
+		$wpdb->expects($this->once())
+		     ->method('get_var')
+		     ->willReturn(null);
+
+		$this->assertFalse($this->businessEventsRepository->alreadyConverted(123));
+	}
+
+	public function testAlreadyConvertedIfCartConverted() {
+		global $wpdb;
+
+		$wpdb = $this->getMockBuilder(\stdClass::class)
+		             ->addMethods(['get_var', 'prepare'])
+		             ->getMock();
+
+		$wpdb->prefix = 'wp_';
+
+		$wpdb->expects($this->once())
+		     ->method('prepare')
+		     ->willReturn('SELECT order_id FROM wp_alma_business_events WHERE cart_id = 123');
+
+		$wpdb->expects($this->once())
+		     ->method('get_var')
+		     ->willReturn(42);
+
+		$this->assertTrue($this->businessEventsRepository->alreadyConverted(123));
+	}
+
 	public function testSaveEligibility() {
 		global $wpdb;
 

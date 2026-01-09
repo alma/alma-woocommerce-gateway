@@ -43,6 +43,9 @@ class BusinessEventsService
 	public function onCartInitiated(): void {
 		$this->getMerchantProvider();
 		$almaCartId = $this->getCartId();
+		if ($this->businessEventsRepository->alreadyExist( $almaCartId ) && $this->businessEventsRepository->alreadyConverted( $almaCartId )) {
+			$almaCartId = $this->resetCartId();
+		}
 		if ( ! $this->businessEventsRepository->alreadyExist( $almaCartId ) ) {
 			$this->businessEventsRepository->saveCartId( $almaCartId );
 			try {
@@ -140,6 +143,18 @@ class BusinessEventsService
 			$almaCartId = CartHelper::generateUniqueCartId();
 			$this->sessionHelper->setSession( self::ALMA_CART_ID, $almaCartId );
 		}
+
+		return $almaCartId;
+	}
+
+	/**
+	 * Reset cart ID if already converted to order.
+	 * @return int
+	 */
+	protected function resetCartId(): int {
+		$this->sessionHelper->unsetSession( self::ALMA_CART_ID );
+		$almaCartId =  CartHelper::generateUniqueCartId();
+		$this->sessionHelper->setSession( self::ALMA_CART_ID, $almaCartId );
 
 		return $almaCartId;
 	}

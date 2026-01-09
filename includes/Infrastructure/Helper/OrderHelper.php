@@ -9,7 +9,7 @@ class OrderHelper
 	 *
 	 * @return array
 	 */
-	public static function wcGetIsPaidStatuses(): int {
+	public static function wcGetIsPaidStatuses(): array {
 		return wc_get_is_paid_statuses();
 	}
 }
