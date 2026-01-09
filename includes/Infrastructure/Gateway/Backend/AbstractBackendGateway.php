@@ -75,8 +75,8 @@ class AbstractBackendGateway extends AbstractGateway {
 	 */
 	public function get_field_decorator( array $field ): string {
 		if ( ! empty( $field['decorator'] )
-		     && is_string( $field['decorator'] )
-		     && strpos( $field['decorator'], '%s' ) !== false
+			&& is_string( $field['decorator'] )
+			&& strpos( $field['decorator'], '%s' ) !== false
 		) {
 			return $field['decorator'];
 		}
@@ -112,8 +112,10 @@ class AbstractBackendGateway extends AbstractGateway {
 			'keys_section'                               => array(
 				'title'       => '<hr>' . __( '→ Start by filling in your API keys', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'title',
-				'description' => __( 'You can find your API keys on your Alma dashboard',
-					'alma-gateway-for-woocommerce' ),
+				'description' => __(
+					'You can find your API keys on your Alma dashboard',
+					'alma-gateway-for-woocommerce'
+				),
 				'desc_tip'    => false,
 			),
 			GatewayConfigurationForm::FIELD_LIVE_API_KEY => array(
@@ -135,8 +137,10 @@ class AbstractBackendGateway extends AbstractGateway {
 			'environment'                                => array(
 				'title'       => __( 'API Mode', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'select',
-				'description' => __( 'Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In Test mode, only admins can see Alma on cart/checkout pages.',
-					'alma-gateway-for-woocommerce' ),
+				'description' => __(
+					'Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In Test mode, only admins can see Alma on cart/checkout pages.',
+					'alma-gateway-for-woocommerce'
+				),
 				'desc_tip'    => true,
 				'default'     => 'test',
 				'options'     => array(
@@ -148,8 +152,10 @@ class AbstractBackendGateway extends AbstractGateway {
 			'in_page_enabled'                            => array(
 				'title'    => __( 'Activate In-Page Checkout', 'alma-gateway-for-woocommerce' ),
 				'type'     => 'checkbox',
-				'label'    => __( 'Let your customers pay with Alma in a secure pop-up, without leaving your site.',
-					'alma-gateway-for-woocommerce' ),
+				'label'    => __(
+					'Let your customers pay with Alma in a secure pop-up, without leaving your site.',
+					'alma-gateway-for-woocommerce'
+				),
 				'default'  => 'yes',
 				'desc_tip' => false,
 			),
@@ -167,8 +173,10 @@ class AbstractBackendGateway extends AbstractGateway {
 			'widgets_section'        => array(
 				'title'       => '<hr>' . __( '→ Display Alma widgets', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'title',
-				'description' => __( 'Display Alma widget on cart and product page.',
-					'alma-gateway-for-woocommerce' ),
+				'description' => __(
+					'Display Alma widget on cart and product page.',
+					'alma-gateway-for-woocommerce'
+				),
 				'desc_tip'    => false,
 			),
 			'widget_cart_enabled'    => array(
@@ -305,26 +313,26 @@ class AbstractBackendGateway extends AbstractGateway {
 	public function generate_table_order_html( string $key, array $data ): string {
 
 		return '<td class="sort ui-sortable-handle" width="1%">'
-		       . '<div class="wc-item-reorder-nav">'
-		       . '<button type="button" class="wc-move-up" tabindex="0" aria-hidden="false" aria-label="Move the &quot;Payment method up">Move up</button>'
-		       . '<button type="button" class="wc-move-down" tabindex="0" aria-hidden="false" aria-label="Move the &quot;Payment method down">Move down</button>'
-		       . '<input type="hidden" name="gateway_order[]" value="alma_config_gateway">'
-		       . '</div>'
-		       . '</td>';
+				. '<div class="wc-item-reorder-nav">'
+				. '<button type="button" class="wc-move-up" tabindex="0" aria-hidden="false" aria-label="Move the &quot;Payment method up">Move up</button>'
+				. '<button type="button" class="wc-move-down" tabindex="0" aria-hidden="false" aria-label="Move the &quot;Payment method down">Move down</button>'
+				. '<input type="hidden" name="gateway_order[]" value="alma_config_gateway">'
+				. '</div>'
+				. '</td>';
 	}
 
 	public function generate_table_description_html( string $key, array $data ): string {
 
 		return '<td width="1%" class="wc-email-settings-table-name">'
-		       . $data['description']
-		       . '</td>';
+				. $data['description']
+				. '</td>';
 	}
 
 	public function generate_table_title_html( string $key, array $data ): string {
 
 		return '<td width="1%" class="wc-email-settings-table-name">'
-		       . $data['title']
-		       . '</td>';
+				. $data['title']
+				. '</td>';
 	}
 
 	/**
@@ -362,7 +370,7 @@ class AbstractBackendGateway extends AbstractGateway {
 		}
 
 		// Begin building the HTML string
-		$html = '<td width="1%">';
+		$html  = '<td width="1%">';
 		$html .= '<input type="hidden" name="' . esc_attr( $field_key ) . '" value="' . esc_attr( $data['enabled'] ) . '">';
 		$html .= '<label for="' . esc_attr( $field_key ) . '">';
 		$html .= '<a class="wc-alma-toggle-fee-plan-enabled" href="#' . esc_attr( $field_key ) . '" aria-label="' . $data['description'] . '" title="' . $data['description'] . '">';
@@ -396,18 +404,18 @@ class AbstractBackendGateway extends AbstractGateway {
 		$field_key = $this->get_field_key( $key );
 
 		return '<td width="1%">'
-		       . '<input type="number" name="' . esc_attr( $field_key ) . '" id="' . esc_attr( $field_key ) . '" value="' . esc_attr( $data['value'] ) . '" style="width: 80px;" step="0.01" min="' . $data['default'] . '">'
-		       . '&nbsp;<span>' . DisplayHelper::amount( $data['default'] ) . '</span>'
-		       . '</td>';
+				. '<input type="number" name="' . esc_attr( $field_key ) . '" id="' . esc_attr( $field_key ) . '" value="' . esc_attr( $data['value'] ) . '" style="width: 80px;" step="0.01" min="' . $data['default'] . '">'
+				. '&nbsp;<span>' . DisplayHelper::amount( $data['default'] ) . '</span>'
+				. '</td>';
 	}
 
 	public function generate_table_max_amount_html( string $key, array $data ): string {
 		$field_key = $this->get_field_key( $key );
 
 		return '<td width="1%">'
-		       . '<input type="number" name="' . esc_attr( $field_key ) . '" id="' . esc_attr( $field_key ) . '" value="' . esc_attr( $data['value'] ) . '" style="width: 80px;" step="0.01" max="' . $data['default'] . '">'
-		       . '&nbsp;<span>' . DisplayHelper::amount( $data['default'] ) . '</span>'
-		       . '</td>';
+				. '<input type="number" name="' . esc_attr( $field_key ) . '" id="' . esc_attr( $field_key ) . '" value="' . esc_attr( $data['value'] ) . '" style="width: 80px;" step="0.01" max="' . $data['default'] . '">'
+				. '&nbsp;<span>' . DisplayHelper::amount( $data['default'] ) . '</span>'
+				. '</td>';
 	}
 
 	public function debug_fieldset(): array {
@@ -421,11 +429,12 @@ class AbstractBackendGateway extends AbstractGateway {
 				'type'        => 'checkbox',
 				// translators: %s: Admin logs url.
 				'label'       => __(
-					                 'Activate debug mode', Plugin::ALMA_GATEWAY_PLUGIN_NAME
-				                 ) . sprintf(
-					                 __( '(<a href="%s">Go to logs</a>)' ),
-					                 UrlHelper::getAdminLogsUrl()
-				                 ),
+					'Activate debug mode',
+					Plugin::ALMA_GATEWAY_PLUGIN_NAME
+				) . sprintf(
+					__( '(<a href="%s">Go to logs</a>)' ),
+					UrlHelper::getAdminLogsUrl()
+				),
 				// translators: %s: The previous plugin version if exists.
 				'description' => __(
 					'Enable logging info and errors to help debug any issue with the plugin (previous Alma version)',
@@ -445,28 +454,38 @@ class AbstractBackendGateway extends AbstractGateway {
 			'excluded_categories_section' => array(
 				'title'       => '<hr>' . __( '→ Excluded Categories', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'title',
-				'description' => __( 'Define the categories on which Alma doesn\'t apply',
-					'alma-gateway-for-woocommerce' ),
+				'description' => __(
+					'Define the categories on which Alma doesn\'t apply',
+					'alma-gateway-for-woocommerce'
+				),
 				'desc_tip'    => false,
 			),
 			'excluded_products_list'      => array(
 				'title'       => __( 'Excluded product categories', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'multiselect',
-				'description' => __( 'Exclude all virtual/downloadable product categories, as you cannot sell them with Alma',
-					'alma-gateway-for-woocommerce' ),
+				'description' => __(
+					'Exclude all virtual/downloadable product categories, as you cannot sell them with Alma',
+					'alma-gateway-for-woocommerce'
+				),
 				'desc_tip'    => true,
 				'css'         => 'height: 150px;',
 				'options'     => $product_category_repository->getAll(),
 			),
 			'excluded_products_message'   => array(
-				'title'       => __( 'Non-eligibility message for excluded products',
-					'alma-gateway-for-woocommerce' ),
+				'title'       => __(
+					'Non-eligibility message for excluded products',
+					'alma-gateway-for-woocommerce'
+				),
 				'type'        => 'text',
-				'description' => __( 'Message displayed below the cart totals when it contains excluded products',
-					'alma-gateway-for-woocommerce' ),
+				'description' => __(
+					'Message displayed below the cart totals when it contains excluded products',
+					'alma-gateway-for-woocommerce'
+				),
 				'desc_tip'    => true,
-				'default'     => __( 'Some products cannot be paid with monthly or deferred installments',
-					'alma-gateway-for-woocommerce' ),
+				'default'     => __(
+					'Some products cannot be paid with monthly or deferred installments',
+					'alma-gateway-for-woocommerce'
+				),
 			),
 		);
 	}
@@ -507,8 +526,10 @@ class AbstractBackendGateway extends AbstractGateway {
 			'customize_payment_buttons_text_section' => array(
 				'title'       => '<hr>' . __( '→ Customize payment button text', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'title',
-				'description' => __( 'Customize the text displayed on the Alma payment button on the checkout page',
-					'alma-gateway-for-woocommerce' ),
+				'description' => __(
+					'Customize the text displayed on the Alma payment button on the checkout page',
+					'alma-gateway-for-woocommerce'
+				),
 				'desc_tip'    => false,
 			),
 		);
@@ -546,16 +567,20 @@ class AbstractBackendGateway extends AbstractGateway {
 			'paynow_title_field'       => array(
 				'title'       => __( 'Title', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'text',
-				'description' => __( 'This controls the payment method name which the user sees during checkout.',
-					'alma-gateway-for-woocommerce' ),
+				'description' => __(
+					'This controls the payment method name which the user sees during checkout.',
+					'alma-gateway-for-woocommerce'
+				),
 				'desc_tip'    => true,
 				'default'     => __( 'Pay by credit card', 'alma-gateway-for-woocommerce' ),
 			),
 			'paynow_description_field' => array(
 				'title'       => __( 'Description', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'text',
-				'description' => __( 'This controls the payment method description which the user sees during checkout.',
-					'alma-gateway-for-woocommerce' ),
+				'description' => __(
+					'This controls the payment method description which the user sees during checkout.',
+					'alma-gateway-for-woocommerce'
+				),
 				'desc_tip'    => true,
 				'default'     => __( 'Fast and secured payments', 'alma-gateway-for-woocommerce' ),
 			),
@@ -570,23 +595,29 @@ class AbstractBackendGateway extends AbstractGateway {
 	public function get_pnx_fields(): array {
 		return array(
 			'pnx_title'                   => array(
-				'title' => sprintf( '<h3>%s:</h3>',
-					__( 'Payments in 2, 3 and 4 installments', 'alma-gateway-for-woocommerce' ) ),
+				'title' => sprintf(
+					'<h3>%s:</h3>',
+					__( 'Payments in 2, 3 and 4 installments', 'alma-gateway-for-woocommerce' )
+				),
 				'type'  => 'title',
 			),
 			PnxGateway::TITLE_FIELD       => array(
 				'title'       => __( 'Title', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'text',
-				'description' => __( 'This controls the payment method name which the user sees during checkout.',
-					'alma-gateway-for-woocommerce' ),
+				'description' => __(
+					'This controls the payment method name which the user sees during checkout.',
+					'alma-gateway-for-woocommerce'
+				),
 				'desc_tip'    => true,
 				'default'     => __( 'Pay in installments', 'alma-gateway-for-woocommerce' ),
 			),
 			PnxGateway::DESCRIPTION_FIELD => array(
 				'title'       => __( 'Description', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'text',
-				'description' => __( 'This controls the payment method description which the user sees during checkout.',
-					'alma-gateway-for-woocommerce' ),
+				'description' => __(
+					'This controls the payment method description which the user sees during checkout.',
+					'alma-gateway-for-woocommerce'
+				),
 				'desc_tip'    => true,
 				'default'     => __( 'Fast and secure payment by credit card', 'alma-gateway-for-woocommerce' ),
 			),
@@ -607,16 +638,20 @@ class AbstractBackendGateway extends AbstractGateway {
 			'paylater_title_field'       => array(
 				'title'       => __( 'Title', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'text',
-				'description' => __( 'This controls the payment method name which the user sees during checkout.',
-					'alma-gateway-for-woocommerce' ),
+				'description' => __(
+					'This controls the payment method name which the user sees during checkout.',
+					'alma-gateway-for-woocommerce'
+				),
 				'desc_tip'    => true,
 				'default'     => __( 'Pay later', 'alma-gateway-for-woocommerce' ),
 			),
 			'paylater_description_field' => array(
 				'title'       => __( 'Description', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'text',
-				'description' => __( 'This controls the payment method description which the user sees during checkout.',
-					'alma-gateway-for-woocommerce' ),
+				'description' => __(
+					'This controls the payment method description which the user sees during checkout.',
+					'alma-gateway-for-woocommerce'
+				),
 				'desc_tip'    => true,
 				'default'     => __( 'Fast and secure payment by credit card', 'alma-gateway-for-woocommerce' ),
 			),
@@ -631,23 +666,29 @@ class AbstractBackendGateway extends AbstractGateway {
 	public function get_credit_fields(): array {
 		return array(
 			'credit_title'             => array(
-				'title' => sprintf( '<h3>%s:</h3>',
-					__( 'Payments in more than 4 installments', 'alma-gateway-for-woocommerce' ) ),
+				'title' => sprintf(
+					'<h3>%s:</h3>',
+					__( 'Payments in more than 4 installments', 'alma-gateway-for-woocommerce' )
+				),
 				'type'  => 'title',
 			),
 			'credit_title_field'       => array(
 				'title'       => __( 'Title', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'text',
-				'description' => __( 'This controls the payment method name which the user sees during checkout.',
-					'alma-gateway-for-woocommerce' ),
+				'description' => __(
+					'This controls the payment method name which the user sees during checkout.',
+					'alma-gateway-for-woocommerce'
+				),
 				'desc_tip'    => true,
 				'default'     => __( 'Pay with financing', 'alma-gateway-for-woocommerce' ),
 			),
 			'credit_description_field' => array(
 				'title'       => __( 'Description', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'text',
-				'description' => __( 'This controls the payment method description which the user sees during checkout.',
-					'alma-gateway-for-woocommerce' ),
+				'description' => __(
+					'This controls the payment method description which the user sees during checkout.',
+					'alma-gateway-for-woocommerce'
+				),
 				'desc_tip'    => true,
 				'default'     => __( 'Fast and secure payment by credit card', 'alma-gateway-for-woocommerce' ),
 			),

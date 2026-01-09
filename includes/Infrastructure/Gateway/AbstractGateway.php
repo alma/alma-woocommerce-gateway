@@ -45,8 +45,10 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		$this->fee_plan_repository = $fee_plan_repository ?? Plugin::get_container()->get( FeePlanRepository::class );
 
 		$this->id                 = sprintf( 'alma_%s_gateway', $this->get_payment_method() );
-		$this->method_description = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.',
-			'alma-gateway-for-woocommerce' );
+		$this->method_description = __(
+			'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.',
+			'alma-gateway-for-woocommerce'
+		);
 		$this->has_fields         = true;
 		$this->supports           = array( 'products', 'refunds' );
 		$this->icon               = $this->get_icon_url();

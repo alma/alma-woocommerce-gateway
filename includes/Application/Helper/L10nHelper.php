@@ -76,50 +76,50 @@ class L10nHelper {
 		$description   = '';
 
 		if ( $fee_plan_adapter->isPayNow() ) {
-			$section_title = self::__( '→ Pay Now' );
+			$section_title = __( '→ Pay Now' );
 			$toggle_label  = sprintf(
-				self::__( 'Enable %d-installment payments with Alma' ),
+				__( 'Enable %d-installment payments with Alma' ),
 				$installments
 			);
 			$description   = sprintf(
-				self::__( 'You can offer instant payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.' ),
+				__( 'You can offer instant payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.' ),
 				$installments,
 				$min,
 				$max
 			);
 		} elseif ( $fee_plan_adapter->isPnXOnly() || $fee_plan_adapter->isCredit() ) {
 			$section_title = sprintf(
-				self::__( '→ %d-installment payment' ),
+				__( '→ %d-installment payment' ),
 				$installments
 			);
 			$toggle_label  = sprintf(
-				self::__( 'Enable %d-installment payments with Alma' ),
+				__( 'Enable %d-installment payments with Alma' ),
 				$installments
 			);
 			$description   = sprintf(
-				self::__( 'You can offer %1$d-installment payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.' ),
+				__( 'You can offer %1$d-installment payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.' ),
 				$installments,
 				$min,
 				$max
 			);
 		} elseif ( $fee_plan_adapter->isPayLaterOnly() ) {
 			if ( $deferred_days > 0 ) {
-				$section_title = sprintf( self::__( '→ D+%d-deferred payment' ), $deferred_days );
-				$toggle_label  = sprintf( self::__( 'Enable D+%d-deferred payments with Alma' ), $deferred_days );
+				$section_title = sprintf( __( '→ D+%d-deferred payment' ), $deferred_days );
+				$toggle_label  = sprintf( __( 'Enable D+%d-deferred payments with Alma' ), $deferred_days );
 				$description   = sprintf(
-					self::__( 'You can offer D+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.' ),
+					__( 'You can offer D+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.' ),
 					$deferred_days,
 					$min,
 					$max
 				);
 			} elseif ( $deferred_months > 0 ) {
-				$section_title = sprintf( self::__( '→ M+%d-deferred payment' ), $deferred_months );
+				$section_title = sprintf( __( '→ M+%d-deferred payment' ), $deferred_months );
 				$toggle_label  = sprintf(
-					self::__( 'Enable M+%d-deferred payments with Alma' ),
+					__( 'Enable M+%d-deferred payments with Alma' ),
 					$deferred_months
 				);
 				$description   = sprintf(
-					self::__( 'You can offer M+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.' ),
+					__( 'You can offer M+%1$d-deferred payments for amounts between <b>%2$d€</b> and <b>%3$d€</b>.' ),
 					$deferred_months,
 					$min,
 					$max

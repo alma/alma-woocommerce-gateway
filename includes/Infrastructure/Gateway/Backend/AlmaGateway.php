@@ -27,10 +27,14 @@ class AlmaGateway extends AbstractBackendGateway {
 	 * @throws AlmaGatewayException
 	 */
 	public function __construct() {
-		$this->method_title       = __( 'Payment in installments and deferred with Alma',
-			'alma-gateway-for-woocommerce' );
-		$this->method_description = __( 'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.',
-			'alma-gateway-for-woocommerce' );
+		$this->method_title       = __(
+			'Payment in installments and deferred with Alma',
+			'alma-gateway-for-woocommerce'
+		);
+		$this->method_description = __(
+			'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.',
+			'alma-gateway-for-woocommerce'
+		);
 		$this->has_fields         = true;
 		parent::__construct();
 		$this->init_form_fields();
@@ -75,7 +79,7 @@ class AlmaGateway extends AbstractBackendGateway {
 					$this->customize_payment_buttons_text_fieldset(),
 					$this->fee_plan_fieldset()
 				);
-			} catch ( FeePlanRepositoryException|AbstractGatewayException $e ) {
+			} catch ( FeePlanRepositoryException | AbstractGatewayException $e ) {
 				almalog( $e->getMessage() );
 				throw new AlmaGatewayException( 'Can\'t initialize Alma Gateway', 0, $e );
 			}
@@ -135,8 +139,10 @@ class AlmaGateway extends AbstractBackendGateway {
 			// If an error occurs during validation, we display a generic error message
 			// and return the previous settings to avoid losing data.
 			$this->errors = array(
-				__( 'An error occurred while validating the configuration. Please try again.',
-					'alma-gateway-for-woocommerce' )
+				__(
+					'An error occurred while validating the configuration. Please try again.',
+					'alma-gateway-for-woocommerce'
+				),
 			);
 
 			/** @var ConfigService $config_service */
