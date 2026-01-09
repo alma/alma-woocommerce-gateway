@@ -2,8 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Controller;
 
+use Alma\Gateway\Application\Service\PluginService;
 use Alma\Gateway\Infrastructure\Helper\BackendHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
+use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
 use Alma\Gateway\Infrastructure\Service\AssetsService;
 
 class AdminController {
@@ -11,17 +13,22 @@ class AdminController {
 	/** @var AssetsService */
 	private AssetsService $assetsService;
 
+	/** @var PluginService */
+	private PluginService $pluginService;
+
 	/**
 	 * AdminController constructor.
 	 */
 	public function __construct(
-		AssetsService $assetsService
+		AssetsService $assetsService,
+		PluginService $pluginService
 	) {
 		$this->assetsService = $assetsService;
+		$this->pluginService = $pluginService;
 	}
 
 	/**
-	 * Display services on admin init.
+	 * Display services on admin init
 	 */
 	public function display() {
 		BackendHelper::runBackendServices(
@@ -40,6 +47,9 @@ class AdminController {
 					almaLogConsole( '3 - Display - Load Admin Assets' );
 					$this->assetsService->displayWidgetAssets();
 					almaLogConsole( '3 - Display - Load Widget Assets' );
+
+					// Add Admin Notifications
+					$this->pluginService->addAlmaAdminNotifications();
 				}
 			}
 		);

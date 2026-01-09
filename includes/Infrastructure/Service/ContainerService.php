@@ -10,7 +10,6 @@ use Alma\API\Domain\Helper\EventHelperInterface;
 use Alma\API\Domain\Helper\ExcludedProductsHelperInterface;
 use Alma\API\Domain\Helper\FormHelperInterface;
 use Alma\API\Domain\Helper\NavigationHelperInterface;
-use Alma\API\Domain\Helper\NotificationHelperInterface;
 use Alma\API\Domain\Helper\SecurityHelperInterface;
 use Alma\API\Domain\Helper\SessionHelperInterface;
 use Alma\API\Domain\Repository\ConfigRepositoryInterface;
@@ -55,7 +54,6 @@ use Alma\Gateway\Infrastructure\Helper\CoreHelper;
 use Alma\Gateway\Infrastructure\Helper\EventHelper;
 use Alma\Gateway\Infrastructure\Helper\FormHelper;
 use Alma\Gateway\Infrastructure\Helper\NavigationHelper;
-use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
 use Alma\Gateway\Infrastructure\Helper\SecurityHelper;
 use Alma\Gateway\Infrastructure\Helper\SessionHelper;
 use Alma\Gateway\Infrastructure\Repository\ConfigRepository;
@@ -139,10 +137,10 @@ class ContainerService {
 					$configService->getEnvironment()
 				),
 				'shared'          => true,
-				'call' => [
-					['addUserAgentComponent', CmsHelper::getCmsVersion()],
-					['addUserAgentComponent', CmsHelper::getShopVersion()],
-					['addUserAgentComponent', ['Alma for WooCommerce', Plugin::ALMA_GATEWAY_PLUGIN_VERSION]]
+				'call'            => [
+					[ 'addUserAgentComponent', CmsHelper::getCmsVersion() ],
+					[ 'addUserAgentComponent', CmsHelper::getShopVersion() ],
+					[ 'addUserAgentComponent', [ 'Alma for WooCommerce', Plugin::ALMA_GATEWAY_PLUGIN_VERSION ] ]
 				]
 			)
 		);
@@ -180,7 +178,6 @@ class ContainerService {
 					ExcludedProductsHelperInterface::class    => ExcludedProductsHelper::class,
 					FormHelperInterface::class                => FormHelper::class,
 					NavigationHelperInterface::class          => NavigationHelper::class,
-					NotificationHelperInterface::class        => NotificationHelper::class,
 					SecurityHelperInterface::class            => SecurityHelper::class,
 					SessionHelperInterface::class             => SessionHelper::class,
 
