@@ -91,6 +91,12 @@ import {fetchAlmaSettings} from "./hooks/almaSettings";
     const {CART_STORE_KEY, CHECKOUT_STORE_KEY} = window.wc.wcBlocksData
 
     /**
+     * Track registered gateways to avoid duplicate registrations
+     * @type {Set<string>}
+     */
+    const registeredGateways = new Set();
+
+    /**
      * Check if the Gateway can make payment
      *
      * @param gatewaySettings
@@ -169,10 +175,10 @@ import {fetchAlmaSettings} from "./hooks/almaSettings";
      * @param almaSettings All AlmaSettings
      * @param allGatewaysSettings
      * @param storeKey
+     * @param cartTotal
      * @param inPageInstance
      * @param setInPageInstance
      * @param init
-     * @param cartTotal
      */
     const registerPaymentGateway = (almaSettings, allGatewaysSettings, storeKey, cartTotal, inPageInstance, setInPageInstance, init = false) => {
 
@@ -180,14 +186,20 @@ import {fetchAlmaSettings} from "./hooks/almaSettings";
 
             const gatewaySettings = allGatewaysSettings?.[gatewayName] ?? {};
 
+            // Skip if already registered
+            if (registeredGateways.has(gatewaySettings.gateway_name)) {
+                continue;
+            }
+
             // If gateway Block is available, we register it
             if (gatewaySettings) {
                 const blockContent = getContentBlock(almaSettings, gatewayName, storeKey, cartTotal, inPageInstance, setInPageInstance)
                 const AlmaGatewayBlock = generateGatewayBlock(gatewaySettings, blockContent, init ? true : gatewayCanMakePayment(gatewaySettings));
                 if (gatewayCanMakePayment(gatewaySettings)) {
                     window.wc.wcBlocksRegistry.registerPaymentMethod(AlmaGatewayBlock);
+                    registeredGateways.add(gatewaySettings.gateway_name);
+                    console.log('Registered gateway:', gatewaySettings.gateway_name);
                 }
-                console.log('register: ' + gatewayName);
             }
         }
     }
