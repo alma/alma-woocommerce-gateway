@@ -12,14 +12,12 @@ use Alma\Gateway\Application\Provider\MerchantProviderAwareTrait;
 use Alma\Gateway\Application\Provider\MerchantProviderFactory;
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
-use Alma\Gateway\Infrastructure\Gateway\Frontend\AbstractFrontendGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Infrastructure\Helper\CartHelper;
-use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\OrderHelper;
 use Alma\Gateway\Infrastructure\Helper\SessionHelper;
 use Alma\Gateway\Infrastructure\Repository\BusinessEventsRepository;
-use Automattic\WooCommerce\Admin\Overrides\Order;
+use WC_Order;
 
 class BusinessEventsService
 {
@@ -119,11 +117,11 @@ class BusinessEventsService
 
 	/**
 	 * Save the order ID when the order is created from the block
-	 * @param Order $order
+	 * @param WC_Order $order
 	 *
 	 * @return void
 	 */
-	public function onCreateOrderBlock(Order $order): void {
+	public function onCreateOrderBlock(\WC_Order $order): void {
 		$almaCartId = $this->sessionCartId();
 		$this->businessEventsRepository->saveOrderId($almaCartId, $order->get_id());
 	}
