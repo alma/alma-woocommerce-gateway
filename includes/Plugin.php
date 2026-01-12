@@ -10,6 +10,8 @@ use Alma\Gateway\Infrastructure\Controller\GatewayController;
 use Alma\Gateway\Infrastructure\Controller\ShopController;
 use Alma\Gateway\Infrastructure\Exception\CmsException;
 use Alma\Gateway\Infrastructure\Exception\Controller\GatewayControllerException;
+use Alma\Gateway\Infrastructure\Helper\ContextHelper;
+use Alma\Gateway\Infrastructure\Repository\BusinessEventsRepository;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Alma\Gateway\Infrastructure\Service\MigrationService;
@@ -124,6 +126,10 @@ final class Plugin extends AbstractPlugin {
 		/** @var ConfigService $config_service */
 		$config_service = self::get_container()->get( ConfigService::class );
 		$this->set_is_configured( $config_service->isConfigured() );
+
+		/** @var BusinessEventsRepository  $business_event */
+		$business_event = self::get_container()->get( BusinessEventsRepository::class, $suffix );
+		$business_event->createTableIfNotExists();
 	}
 
 	/**
