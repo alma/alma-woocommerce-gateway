@@ -545,18 +545,18 @@ class AbstractBackendGateway extends AbstractGateway {
 	 */
 	public function get_paynow_fields(): array {
 		return array(
-			'paynow_title'             => array(
+			'paynow_title'                   => array(
 				'title' => sprintf( '<h3>%s:</h3>', L10nHelper::__( 'Pay now' ) ),
 				'type'  => 'title',
 			),
-			'paynow_title_field'       => array(
+			PayNowGateway::TITLE_FIELD       => array(
 				'title'       => L10nHelper::__( 'Title' ),
 				'type'        => 'text',
 				'description' => L10nHelper::__( 'This controls the payment method name which the user sees during checkout.' ),
 				'desc_tip'    => true,
 				'default'     => L10nHelper::__( 'Pay by credit card', 'alma-gateway-for-woocommerce' ),
 			),
-			'paynow_description_field' => array(
+			PayNowGateway::DESCRIPTION_FIELD => array(
 				'title'       => L10nHelper::__( 'Description' ),
 				'type'        => 'text',
 				'description' => L10nHelper::__( 'This controls the payment method description which the user sees during checkout.' ),
@@ -601,18 +601,18 @@ class AbstractBackendGateway extends AbstractGateway {
 	 */
 	public function get_paylater_fields(): array {
 		return array(
-			'paylater_title'             => array(
+			'paylater_title'                   => array(
 				'title' => sprintf( '<h3>%s:</h3>', L10nHelper::__( 'Deferred Payments' ) ),
 				'type'  => 'title',
 			),
-			'paylater_title_field'       => array(
+			PayLaterGateway::TITLE_FIELD       => array(
 				'title'       => L10nHelper::__( 'Title' ),
 				'type'        => 'text',
 				'description' => L10nHelper::__( 'This controls the payment method name which the user sees during checkout.' ),
 				'desc_tip'    => true,
 				'default'     => L10nHelper::__( 'Pay later', 'alma-gateway-for-woocommerce' ),
 			),
-			'paylater_description_field' => array(
+			PayLaterGateway::DESCRIPTION_FIELD => array(
 				'title'       => L10nHelper::__( 'Description' ),
 				'type'        => 'text',
 				'description' => L10nHelper::__( 'This controls the payment method description which the user sees during checkout.' ),
@@ -629,18 +629,18 @@ class AbstractBackendGateway extends AbstractGateway {
 	 */
 	public function get_credit_fields(): array {
 		return array(
-			'credit_title'             => array(
+			'credit_title'                   => array(
 				'title' => sprintf( '<h3>%s:</h3>', L10nHelper::__( 'Payments in more than 4 installments' ) ),
 				'type'  => 'title',
 			),
-			'credit_title_field'       => array(
+			CreditGateway::TITLE_FIELD       => array(
 				'title'       => L10nHelper::__( 'Title' ),
 				'type'        => 'text',
 				'description' => L10nHelper::__( 'This controls the payment method name which the user sees during checkout.' ),
 				'desc_tip'    => true,
 				'default'     => L10nHelper::__( 'Pay with financing', 'alma-gateway-for-woocommerce' ),
 			),
-			'credit_description_field' => array(
+			CreditGateway::DESCRIPTION_FIELD => array(
 				'title'       => L10nHelper::__( 'Description' ),
 				'type'        => 'text',
 				'description' => L10nHelper::__( 'This controls the payment method description which the user sees during checkout.' ),
