@@ -13,6 +13,7 @@ namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
 use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
 use Alma\Gateway\Application\Helper\L10nHelper;
+use Alma\Gateway\Application\Service\BusinessEventsService;
 use Alma\Gateway\Application\Service\PaymentService;
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
 use Alma\Gateway\Infrastructure\Exception\Block\CheckoutBlockException;
@@ -152,6 +153,10 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 			$order->updateStatus( 'pending', L10nHelper::__( 'En attente de paiement via Alma' ) );
 			$order->update_meta_data( '_alma_payment_id', $payment->getId() );
 			$order->save();
+
+			/** @var BusinessEventsService $business_event_service */
+			$business_event_service = Plugin::get_container()->get( BusinessEventsService::class );
+			$business_event_service->saveAlmaPaymentId( $payment->getId() );
 
 			try {
 				$result->set_status( 'success' );

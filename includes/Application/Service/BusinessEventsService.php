@@ -15,6 +15,7 @@ use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\AbstractFrontendGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Infrastructure\Helper\CartHelper;
+use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\OrderHelper;
 use Alma\Gateway\Infrastructure\Helper\SessionHelper;
 use Alma\Gateway\Infrastructure\Repository\BusinessEventsRepository;
@@ -106,6 +107,7 @@ class BusinessEventsService
 	}
 
 	/**
+	 * Save the order ID when the order is created on classic checkout
 	 * @param int $orderId
 	 *
 	 * @return void
@@ -113,6 +115,17 @@ class BusinessEventsService
 	public function onCreateOrder(int $orderId): void {
 		$almaCartId = $this->sessionCartId();
 		$this->businessEventsRepository->saveOrderId($almaCartId, $orderId);
+	}
+
+	/**
+	 * Save the order ID when the order is created from the block
+	 * @param Order $order
+	 *
+	 * @return void
+	 */
+	public function onCreateOrderBlock(Order $order): void {
+		$almaCartId = $this->sessionCartId();
+		$this->businessEventsRepository->saveOrderId($almaCartId, $order->get_id());
 	}
 
 	/**
