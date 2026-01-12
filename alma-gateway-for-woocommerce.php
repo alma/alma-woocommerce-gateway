@@ -78,4 +78,3 @@ add_action(
 	'woocommerce_init',
 	array( $alma_gateway_plugin, 'plugin_setup' ),
 );
-

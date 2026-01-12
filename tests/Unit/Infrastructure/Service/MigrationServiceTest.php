@@ -12,7 +12,7 @@ class MigrationServiceTest extends TestCase {
 
 	public static function migrationDataProvider(): array {
 		return [
-			'empty keys'      => [
+			'empty keys'                            => [
 				[],
 				[
 					'debug'                  => 'no',
@@ -23,7 +23,7 @@ class MigrationServiceTest extends TestCase {
 					'widget_product_enabled' => 'yes',
 				]
 			],
-			'deprecated keys' => [
+			'deprecated keys'                       => [
 				[
 					'allowed_fee_plans',
 					'deferred_days_general_10_0_0'               => 0,
@@ -89,7 +89,7 @@ class MigrationServiceTest extends TestCase {
 					'widget_product_enabled' => 'yes',
 				]
 			],
-			'good keys'       => [
+			'good keys'                             => [
 				[
 					'debug'        => 'no',
 					'enabled'      => 'yes',
@@ -108,7 +108,7 @@ class MigrationServiceTest extends TestCase {
 					'widget_product_enabled' => 'yes',
 				]
 			],
-			'changed keys'    => [
+			'changed keys'                          => [
 				[
 					'cart_not_eligible_message_gift_cards' => 'A cart not eligible message',
 					'description_alma'                     => 'Some description',
@@ -188,37 +188,61 @@ class MigrationServiceTest extends TestCase {
 					'paynow_title_field'         => 'A third title',
 					'credit_title_field'         => 'A fourth title',
 				],
-				'merchant keys - only live key defined' => [
-					[
-						'live_merchant_id' => 'merchant_123',
-					],
-					[
-						'merchant_id' => 'merchant_123',
-					]
+			],
+			'merchant keys - only live key defined' => [
+				[
+					'live_merchant_id' => 'merchant_123',
 				],
-				'merchant keys - only test key defined' => [
-					[
-						'test_merchant_id' => 'merchant_123',
-					],
-					[
-						'merchant_id' => 'merchant_123',
-					]
+				[
+					'debug'                  => 'no',
+					'enabled'                => 'no',
+					'environment'            => 'test',
+					'widget_cart_enabled'    => 'yes',
+					'in_page_enabled'        => 'yes',
+					'widget_product_enabled' => 'yes',
+					'merchant_id'            => 'merchant_123'
+				]
+			],
+			'merchant keys - only test key defined' => [
+				[
+					'test_merchant_id' => 'merchant_123',
 				],
-				'merchant keys - two keys defined'      => [
-					[
-						'test_merchant_id' => 'merchant_456',
-						'live_merchant_id' => 'merchant_123',
-					],
-					[
-						'merchant_id' => 'merchant_123',
-					]
+				[
+					'debug'                  => 'no',
+					'enabled'                => 'no',
+					'environment'            => 'test',
+					'widget_cart_enabled'    => 'yes',
+					'in_page_enabled'        => 'yes',
+					'widget_product_enabled' => 'yes',
+					'merchant_id'            => 'merchant_123'
+				]
+			],
+			'merchant keys - two keys defined'      => [
+				[
+					'test_merchant_id' => 'merchant_456',
+					'live_merchant_id' => 'merchant_123',
 				],
-				'merchant keys - no keys defined'       => [
-					[
-					],
-					[
-					]
+				[
+					'debug'                  => 'no',
+					'enabled'                => 'no',
+					'environment'            => 'test',
+					'widget_cart_enabled'    => 'yes',
+					'in_page_enabled'        => 'yes',
+					'widget_product_enabled' => 'yes',
+					'merchant_id'            => 'merchant_123'
+				]
+			],
+			'merchant keys - no keys defined'       => [
+				[
 				],
+				[
+					'debug'                  => 'no',
+					'enabled'                => 'no',
+					'environment'            => 'test',
+					'widget_cart_enabled'    => 'yes',
+					'in_page_enabled'        => 'yes',
+					'widget_product_enabled' => 'yes',
+				]
 			],
 		];
 	}

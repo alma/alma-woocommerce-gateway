@@ -2,6 +2,7 @@
 #TODO: svn checkout, svn commit (if needed) after svn sync
 QUIET=1
 SYNC_SVN=0
+DEBUG=0
 # Define the path to Composer and PHP
 PHP_PATH=$(which php 2>/dev/null)
 COMPOSER_PATH=$(which composer 2>/dev/null)
@@ -54,6 +55,7 @@ usage() {
     echo "    --help | -h)        Prints this message and exit without error."
     echo "    --sync-svn | -s)    Activates sync Action between freshly built release and wordpress subversion working copy. (very simple for the moment)"
     echo "    --verbose | -v)     Prints all outputs (this script is pretty quiet by default)"
+    echo "    --debug | -d)       Enable debug mode with detailed error information."
     echo
 }
 export -f usage
@@ -121,7 +123,25 @@ export -f is_that_ok
 # {{{ function failure
 #
 failure() {
-    echo -n "UNCAUGHT FAILURE"
+    local exit_code=$?
+    local line_number=${1:-unknown}
+
+    if [[ $DEBUG -eq 1 ]]; then
+        echo
+        echo "=========================================="
+        echo "ERROR: Script failed at line $line_number"
+        echo "Exit code: $exit_code"
+        echo "Last command: $BASH_COMMAND"
+        echo "=========================================="
+        echo
+        # Print call stack for better debugging
+        local frame=0
+        while caller $frame; do
+            ((frame++))
+        done
+    else
+        echo "UNCAUGHT FAILURE (use --debug for details)"
+    fi
 }
 export -f failure
 # }}}
@@ -141,7 +161,7 @@ execute() {
 export -f execute
 # }}}
 
-trap "failure" ERR EXIT
+trap 'failure ${LINENO}' ERR EXIT
 
 # {{{ function preparing_folders
 #
