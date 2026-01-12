@@ -13,16 +13,19 @@ use Alma\Gateway\Application\Provider\MerchantProvider;
 use Alma\Gateway\Application\Provider\MerchantProviderFactory;
 use Alma\Gateway\Application\Service\BusinessEventsService;
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
-use Alma\Gateway\Infrastructure\Helper\OrderHelper;
 use Alma\Gateway\Infrastructure\Helper\SessionHelper;
 use Alma\Gateway\Infrastructure\Repository\BusinessEventsRepository;
-use Automattic\WooCommerce\Admin\Overrides\Order;
-use Mockery;
+use Automattic\WooCommerce\Admin\Notes\StartDropshippingBusiness;
+use Brain\Monkey;
+use Brain\Monkey\Functions;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 class BusinessEventsServiceTest extends TestCase
 {
 	public function setUp(): void {
+		Monkey\setUp();
+
 		$this->sessionHelper = $this->createMock(SessionHelper::class);
 		$this->businessEventsRepository = $this->createMock(BusinessEventsRepository::class);
 		$this->merchantProvider = $this->createMock( MerchantProvider::class);
@@ -38,24 +41,31 @@ class BusinessEventsServiceTest extends TestCase
 		);
 	}
 
+	public function tearDown(): void {
+		Monkey\tearDown();
+		parent::tearDown();
+		$this->sessionHelper = null;
+		$this->businessEventsRepository = null;
+		$this->merchantProvider = null;
+		$this->merchantProviderFactory = null;
+		$this->businessEventsService = null;
+	}
+
 	/**
 	 * @throws BusinessEventsServiceException
 	 */
 	public function testOnCartInitiatedWithoutCartExistAndCartNotConverted(): void {
 		$cartId = 12345;
+		$cartRow = null;
 
 		$this->sessionHelper->expects($this->once())
 			->method('getSession')
 			->with('alma_cart_id')
 			->willReturn($cartId);
 
-		$this->businessEventsRepository->method( 'alreadyExist' )
+		$this->businessEventsRepository->method( 'getCartRowIfExist' )
 			->with($cartId)
-			->willReturn(false);
-
-		$this->businessEventsRepository->method( 'alreadyConverted' )
-			->with($cartId)
-			->willReturn(false);
+			->willReturn($cartRow);
 
 		$this->businessEventsRepository->expects($this->once())
 			->method('saveCartId')
@@ -73,19 +83,18 @@ class BusinessEventsServiceTest extends TestCase
 	 */
 	public function testOnCartInitiatedWithCartExistAndCartNotConverted(): void {
 		$cartId = 12345;
+		$cartRow = new Stdclass();
+		$cartRow->cart_id = $cartId;
+		$cartRow->order_id = null;
 
 		$this->sessionHelper->expects($this->once())
 	        ->method('getSession')
 	        ->with('alma_cart_id')
 	        ->willReturn($cartId);
 
-		$this->businessEventsRepository->method( 'alreadyExist' )
+		$this->businessEventsRepository->method( 'getCartRowIfExist' )
            ->with($cartId)
-           ->willReturn(true);
-
-		$this->businessEventsRepository->method( 'alreadyConverted' )
-           ->with($cartId)
-           ->willReturn(false);
+           ->willReturn($cartRow);
 
 		$this->businessEventsRepository->expects($this->never())
            ->method('saveCartId')
@@ -103,7 +112,10 @@ class BusinessEventsServiceTest extends TestCase
 	 */
 	public function testOnCartInitiatedWithCartExistAndCartConverted(): void {
 		$oldCartId = 12345;
-		$newCartId = 6789;
+
+		$cartRow = new Stdclass();
+		$cartRow->cart_id = $oldCartId;
+		$cartRow->order_id = 42;
 
 		$this->sessionHelper->expects($this->once())
             ->method('getSession')
@@ -111,23 +123,11 @@ class BusinessEventsServiceTest extends TestCase
             ->willReturn($oldCartId);
 
 		$this->businessEventsRepository->expects($this->exactly(2))
-		   ->method( 'alreadyExist' )
-			->willReturnCallback(function($cartId) use ($oldCartId, $newCartId) {
-				if ($cartId === $oldCartId) {
-					return true;
-				}
-				if ($cartId === $newCartId) {
-					return false;
-				}
-				return false;
-			});
-
-		$this->businessEventsRepository->method( 'alreadyConverted' )
-           ->with($oldCartId)
-           ->willReturn(true);
+		   ->method( 'getCartRowIfExist' )
+			->willReturnOnConsecutiveCalls($cartRow, null);
 
 		$this->sessionHelper->expects($this->once())
-            ->method('unsetSession')
+            ->method( 'unsetKeySession' )
             ->with('alma_cart_id');
 
 		$this->sessionHelper->expects($this->once())
@@ -156,11 +156,11 @@ class BusinessEventsServiceTest extends TestCase
                  $this->businessEventsRepository,
                  $this->merchantProviderFactory
              ])
-             ->onlyMethods(['getCartId'])
+             ->onlyMethods([ 'sessionCartId' ])
              ->getMock();
 
 		$this->businessEventsService->expects($this->once())
-             ->method('getCartId')
+             ->method( 'sessionCartId' )
              ->willReturn($cartId);
 
 		$this->businessEventsRepository->expects($this->once())
@@ -190,9 +190,8 @@ class BusinessEventsServiceTest extends TestCase
 		$orderMock = $this->createMock(OrderAdapter::class);
 		$orderMock->method('getId')->willReturn(42);
 
-		$orderHelperMock = Mockery::mock('alias:' . OrderHelper::class);
-		$orderHelperMock->shouldReceive('wcGetIsPaidStatuses')
-		                ->andReturn(['processing', 'completed']);
+		Functions\when('wc_get_is_paid_statuses')
+			->justReturn(['processing', 'completed']);
 
 		$this->merchantProvider->expects($this->never())->method('sendCartInitiatedBusinessEvent');
 		$this->businessEventsService->onOrderConfirmed('pending', 'not_paid', $orderMock);
@@ -215,9 +214,8 @@ class BusinessEventsServiceTest extends TestCase
 		$orderMock->method('getId')->willReturn(42);
 		$orderMock->method('getPaymentMethod')->willReturn('paypal');
 
-		$orderHelperMock = Mockery::mock('alias:' . OrderHelper::class);
-		$orderHelperMock->shouldReceive('wcGetIsPaidStatuses')
-		                ->andReturn(['processing', 'completed']);
+		Functions\when('wc_get_is_paid_statuses')
+			->justReturn(['processing', 'completed']);
 
 		$orderConfirmedBusinessEvent = new OrderConfirmedBusinessEventDto(
 			false,
@@ -251,9 +249,8 @@ class BusinessEventsServiceTest extends TestCase
 		$orderMock->method('getId')->willReturn(42);
 		$orderMock->method('getPaymentMethod')->willReturn('alma_pnx_gateway');
 
-		$orderHelperMock = Mockery::mock('alias:' . OrderHelper::class);
-		$orderHelperMock->shouldReceive('wcGetIsPaidStatuses')
-            ->andReturn(['processing', 'completed']);
+		Functions\when('wc_get_is_paid_statuses')
+			->justReturn(['processing', 'completed']);
 
 		$orderConfirmedBusinessEvent = new OrderConfirmedBusinessEventDto(
 			false,
@@ -286,9 +283,8 @@ class BusinessEventsServiceTest extends TestCase
 		$orderMock->method('getId')->willReturn(42);
 		$orderMock->method('getPaymentMethod')->willReturn('alma_pnx_gateway');
 
-		$orderHelperMock = Mockery::mock('alias:' . OrderHelper::class);
-		$orderHelperMock->shouldReceive('wcGetIsPaidStatuses')
-		                ->andReturn(['processing', 'completed']);
+		Functions\when('wc_get_is_paid_statuses')
+			->justReturn(['processing', 'completed']);
 
 		$orderConfirmedBusinessEvent = new OrderConfirmedBusinessEventDto(
 			false,
@@ -316,7 +312,7 @@ class BusinessEventsServiceTest extends TestCase
                 ->willReturn($cartId);
 
 		$this->businessEventsRepository->expects($this->once())
-            ->method('updateOrderId')
+            ->method( 'saveOrderId' )
 			->with($cartId, 42);
 		$this->businessEventsService->onCreateOrder(42);
 	}

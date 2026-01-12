@@ -31,6 +31,27 @@ class BusinessEventsRepository implements BusinessEventsRepositoryInterface
 	}
 
 	/**
+	 * Return cart row with order_id if exist in the database or return null.
+	 * object(stdClass)#4815 (1) { ["order_id"]=> string(3) "278" } => if order converted
+	 * object(stdClass)#4736 (1) { ["order_id"]=> NULL } => if cart exist and order not yet converted
+	 * NULL => if cart ID does not exist
+	 * @param int $cartId
+	 *
+	 * @return object|null
+	 */
+	public function getCartRowIfExist(int $cartId): ?object {
+		global $wpdb;
+		$table_name = $wpdb->prefix . BusinessEventsService::ALMA_BUSINESS_EVENT_TABLE;
+
+		$result = $wpdb->get_row( $wpdb->prepare(
+			"SELECT order_id FROM $table_name WHERE cart_id = %d",
+			$cartId
+		) );
+
+		return $result ?: null;
+	}
+
+	/**
 	 * If cart ID already exists in the database.
 	 * @param int $cartId
 	 *
@@ -144,7 +165,7 @@ class BusinessEventsRepository implements BusinessEventsRepositoryInterface
 	 *
 	 * @return void
 	 */
-	public function updateOrderId(int $cartId, int $orderId): void {
+	public function saveOrderId(int $cartId, int $orderId): void {
 		global $wpdb;
 		$table_name = $wpdb->prefix . BusinessEventsService::ALMA_BUSINESS_EVENT_TABLE;
 

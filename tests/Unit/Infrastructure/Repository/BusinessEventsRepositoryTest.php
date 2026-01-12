@@ -14,6 +14,40 @@ class BusinessEventsRepositoryTest extends TestCase
 		$this->businessEventsRepository = new BusinessEventsRepository();
 	}
 
+	public function testGetCartRowIfExistWithRow() {
+		global $wpdb;
+		$row           = new Stdclass();
+		$row->cart_id  = 123;
+		$wpdb          = $this->getMockBuilder( \stdClass::class )
+		                      ->addMethods( [ 'get_row', 'prepare' ] )
+		                      ->getMock();
+		$wpdb->prefix  = 'wp_';
+		$wpdb->expects( $this->once() )
+		     ->method( 'prepare' )
+		     ->willReturn('SELECT order_id FROM wp_alma_business_events WHERE cart_id = 123');
+		$wpdb->expects( $this->once() )
+		     ->method( 'get_row' )
+		     ->willReturn( $row );
+
+		$this->assertEquals( $row, $this->businessEventsRepository->getCartRowIfExist( 123 ) );
+	}
+
+	public function testGetCartRowIfExistWithoutRow() {
+		global $wpdb;
+		$wpdb          = $this->getMockBuilder( \stdClass::class )
+		                      ->addMethods( [ 'get_row', 'prepare' ] )
+		                      ->getMock();
+		$wpdb->prefix  = 'wp_';
+		$wpdb->expects( $this->once() )
+		     ->method( 'prepare' )
+		     ->willReturn('SELECT order_id FROM wp_alma_business_events WHERE cart_id = 456');
+		$wpdb->expects( $this->once() )
+		     ->method( 'get_row' )
+		     ->willReturn( null );
+
+		$this->assertEquals( null, $this->businessEventsRepository->getCartRowIfExist( 456 ) );
+	}
+
 	public function testAlreadyExistIfNotExist() {
 		global $wpdb;
 
@@ -176,7 +210,7 @@ class BusinessEventsRepositoryTest extends TestCase
 			     ['cart_id' => '%d']
 		     );
 
-		$this->businessEventsRepository->updateOrderId(202, 101);
+		$this->businessEventsRepository->saveOrderId(202, 101);
 	}
 
 	public function testSaveAlmaPaymentId() {

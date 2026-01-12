@@ -11,6 +11,8 @@ use Alma\Gateway\Application\Exception\Service\BusinessEventsServiceException;
 use Alma\Gateway\Application\Provider\MerchantProviderAwareTrait;
 use Alma\Gateway\Application\Provider\MerchantProviderFactory;
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
+use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
+use Alma\Gateway\Infrastructure\Gateway\Frontend\AbstractFrontendGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Infrastructure\Helper\CartHelper;
 use Alma\Gateway\Infrastructure\Helper\OrderHelper;
@@ -38,15 +40,17 @@ class BusinessEventsService
 	}
 
 	/**
+	 * When a product is added to the cart we create a row in the business events table if not exists
+	 * And we send the cart_initiated business event to Alma if not already sent for this cart ID
 	 * @throws BusinessEventsServiceException
 	 */
 	public function onCartInitiated(): void {
 		$this->getMerchantProvider();
-		$almaCartId = $this->getCartId();
-		if ($this->businessEventsRepository->alreadyExist( $almaCartId ) && $this->businessEventsRepository->alreadyConverted( $almaCartId )) {
-			$almaCartId = $this->resetCartId();
+		$almaCartId = $this->sessionCartId();
+		if ($this->alreadyConverted( $almaCartId )) {
+			$almaCartId = $this->resetSessionCartId();
 		}
-		if ( ! $this->businessEventsRepository->alreadyExist( $almaCartId ) ) {
+		if ( ! $this->alreadyExist( $almaCartId ) ) {
 			$this->businessEventsRepository->saveCartId( $almaCartId );
 			try {
 				$cartInitiated = new CartInitiatedBusinessEventDto( $almaCartId );
@@ -60,6 +64,7 @@ class BusinessEventsService
 	}
 
 	/**
+	 * When an order status changed we send the order_confirmed business event to Alma
 	 * @param string $oldStatus
 	 * @param string $newStatus
 	 * @param OrderAdapter $order
@@ -74,7 +79,9 @@ class BusinessEventsService
 		if ( 'pending' === $oldStatus && in_array( $newStatus, array_merge( OrderHelper::wcGetIsPaidStatuses(), array( 'on-hold' ) ) ) ) {
 			$almaBusinessData = $this->businessEventsRepository->getRowByOrderId($order->getId());
 			if ( strpos( $order->getPaymentMethod(), 'alma' ) !== false ) {
-				$isPayNow = $order->getPaymentMethod() === 'alma_' . PayNowGateway::PAYMENT_METHOD . '_gateway';
+				$isPayNow = $order->getPaymentMethod() === sprintf(
+					AbstractGateway::NAME_ALMA_GATEWAYS, PayNowGateway::PAYMENT_METHOD
+					);
 				$isBnpl    = ! $isPayNow;
 				$paymentId = $almaBusinessData->alma_payment_id;
 			}
@@ -104,8 +111,8 @@ class BusinessEventsService
 	 * @return void
 	 */
 	public function onCreateOrder(int $orderId): void {
-		$almaCartId = $this->getCartId();
-		$this->businessEventsRepository->updateOrderId($almaCartId, $orderId);
+		$almaCartId = $this->sessionCartId();
+		$this->businessEventsRepository->saveOrderId($almaCartId, $orderId);
 	}
 
 	/**
@@ -114,7 +121,7 @@ class BusinessEventsService
 	 * @return void
 	 */
 	public function saveAlmaPaymentId(string $almaPaymentId): void {
-		$almaCartId = $this->getCartId();
+		$almaCartId = $this->sessionCartId();
 		$this->businessEventsRepository->saveAlmaPaymentId($almaCartId, $almaPaymentId);
 	}
 
@@ -131,13 +138,13 @@ class BusinessEventsService
 				break;
 			}
 		}
-		$this->businessEventsRepository->saveEligibility($this->getCartId(), $isEligible);
+		$this->businessEventsRepository->saveEligibility($this->sessionCartId(), $isEligible);
 	}
 
 	/**
 	 * @return int
 	 */
-	protected function getCartId(): int {
+	protected function sessionCartId(): int {
 		$almaCartId = $this->sessionHelper->getSession( self::ALMA_CART_ID );
 		if ( empty($almaCartId) ) {
 			$almaCartId = CartHelper::generateUniqueCartId();
@@ -148,11 +155,35 @@ class BusinessEventsService
 	}
 
 	/**
+	 * Check if cart ID already exists in the business events table.
+	 * @param $almaCartId
+	 *
+	 * @return bool
+	 */
+	protected function alreadyExist($almaCartId): bool {
+		$result = $this->businessEventsRepository->getCartRowIfExist( $almaCartId );
+
+		return $result !== null;
+	}
+
+	/**
+	 * Check if cart ID already converted in the business events table.
+	 * @param $almaCartId
+	 *
+	 * @return bool
+	 */
+	protected function alreadyConverted($almaCartId): bool {
+		$result = $this->businessEventsRepository->getCartRowIfExist( $almaCartId );
+
+		return $result !== null && $result->order_id !== null;
+	}
+
+	/**
 	 * Reset cart ID if already converted to order.
 	 * @return int
 	 */
-	protected function resetCartId(): int {
-		$this->sessionHelper->unsetSession( self::ALMA_CART_ID );
+	protected function resetSessionCartId(): int {
+		$this->sessionHelper->unsetKeySession( self::ALMA_CART_ID );
 		$almaCartId =  CartHelper::generateUniqueCartId();
 		$this->sessionHelper->setSession( self::ALMA_CART_ID, $almaCartId );
 

@@ -33,6 +33,7 @@ use WC_Payment_Gateway;
  * Should extend WC_Payment_Gateway
  */
 abstract class AbstractGateway extends WC_Payment_Gateway {
+	const NAME_ALMA_GATEWAYS = 'alma_%s_gateway';
 
 	protected const PAYMENT_METHOD = 'abstract';
 

@@ -39,7 +39,7 @@ class SessionHelper implements SessionHelperInterface {
 	 *
 	 * @param string $key
 	 */
-	public function unsetSession( string $key ): void {
+	public function unsetKeySession( string $key ): void {
 		if ( function_exists( 'WC' ) && WC()->session ) {
 			WC()->session->__unset( $key );
 		}
