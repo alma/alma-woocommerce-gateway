@@ -77,7 +77,7 @@
 
 // phpcs:ignoreFile
 import {storeKey} from "../stores/alma-store";
-import {createRoot, useEffect, useRef, useState} from '@wordpress/element';
+import {createRoot, useEffect, useRef} from '@wordpress/element';
 import {useSelect} from '@wordpress/data';
 import {Label} from "./components/Label";
 import './alma-gateway-block.css';
@@ -139,8 +139,6 @@ import {fetchAlmaSettings} from "./hooks/almaSettings";
         });
         const isFetching = useRef(false);
 
-        const [inPageInstance, setInPageInstance] = useState(undefined)
-
         // Use the cart total and addresses to fetch the new eligibility
         useEffect(() => {
             console.log('CartObserver useEffect triggered with cartTotal:', cartTotal, 'shippingRates:', shippingRates);
@@ -162,10 +160,9 @@ import {fetchAlmaSettings} from "./hooks/almaSettings";
             }
         }, [cartTotal, shippingRates, isLoading]);
 
-        // Register the payment gateway block
+        // Register the payment gateway blocks
         if (!isCalculating && !isLoading) {
-            // For each gateway in eligibility result, we register a block
-            registerPaymentGateway(almaSettings, allGatewaysSettings, storeKey, parseInt(cartTotal), inPageInstance, setInPageInstance)
+            registerPaymentGateway(almaSettings, allGatewaysSettings, storeKey);
         }
     };
 
@@ -175,12 +172,8 @@ import {fetchAlmaSettings} from "./hooks/almaSettings";
      * @param almaSettings All AlmaSettings
      * @param allGatewaysSettings
      * @param storeKey
-     * @param cartTotal
-     * @param inPageInstance
-     * @param setInPageInstance
-     * @param init
      */
-    const registerPaymentGateway = (almaSettings, allGatewaysSettings, storeKey, cartTotal, inPageInstance, setInPageInstance, init = false) => {
+    const registerPaymentGateway = (almaSettings, allGatewaysSettings, storeKey) => {
 
         for (const gatewayName in allGatewaysSettings) {
 
@@ -191,72 +184,48 @@ import {fetchAlmaSettings} from "./hooks/almaSettings";
                 continue;
             }
 
-            // If gateway Block is available, we register it
-            if (gatewaySettings) {
-                const blockContent = getContentBlock(almaSettings, gatewayName, storeKey, cartTotal, inPageInstance, setInPageInstance)
-                const AlmaGatewayBlock = generateGatewayBlock(gatewaySettings, blockContent, init ? true : gatewayCanMakePayment(gatewaySettings));
-                if (gatewayCanMakePayment(gatewaySettings)) {
-                    window.wc.wcBlocksRegistry.registerPaymentMethod(AlmaGatewayBlock);
-                    registeredGateways.add(gatewaySettings.gateway_name);
-                    console.log('Registered gateway:', gatewaySettings.gateway_name);
-                }
+            // Check if gateway can make payment
+            if (gatewaySettings && gatewayCanMakePayment(gatewaySettings)) {
+                // Create block directly
+                const AlmaGatewayBlock = {
+                    name: gatewaySettings.gateway_name,
+                    label: (
+                        <Label
+                            title={window.wp.htmlEntities.decodeEntities(gatewaySettings.title)}
+                        />
+                    ),
+                    content: almaSettings.is_in_page ? (
+                        <DisplayAlmaInPageBlock
+                            gateway={gatewayName}
+                            storeKey={storeKey}
+                        />
+                    ) : (
+                        <DisplayAlmaBlock
+                            gateway={gatewayName}
+                            storeKey={storeKey}
+                        />
+                    ),
+                    edit: almaSettings.is_in_page ? (
+                        <DisplayAlmaInPageBlock
+                            gateway={gatewayName}
+                            storeKey={storeKey}
+                        />
+                    ) : (
+                        <DisplayAlmaBlock
+                            gateway={gatewayName}
+                            storeKey={storeKey}
+                        />
+                    ),
+                    placeOrderButtonLabel: gatewaySettings.label_button,
+                    canMakePayment: () => gatewayCanMakePayment(gatewaySettings),
+                    ariaLabel: gatewaySettings.title,
+                };
+
+                window.wc.wcBlocksRegistry.registerPaymentMethod(AlmaGatewayBlock);
+                registeredGateways.add(gatewaySettings.gateway_name);
+                console.log('Registered gateway:', gatewaySettings.gateway_name);
             }
         }
-    }
-
-    /**
-     * Generate Gateway Block
-     *
-     * @param gatewaySettings
-     * @param blockContent
-     * @param canMakePayment
-     * @returns {{name: *, label, content: *, edit: *, placeOrderButtonLabel: *, canMakePayment: function(): *, ariaLabel: *}}
-     */
-    const generateGatewayBlock = (gatewaySettings, blockContent, canMakePayment) => {
-        console.log("Generating Gateway block " + blockContent);
-        return {
-            name: gatewaySettings.gateway_name,
-            label: (
-                <Label
-                    title={window.wp.htmlEntities.decodeEntities(gatewaySettings.title)}
-                />
-            ),
-            content: blockContent,
-            edit: blockContent,
-            placeOrderButtonLabel: gatewaySettings.label_button,
-            canMakePayment: () => canMakePayment,
-            ariaLabel: gatewaySettings.title,
-        }
-    }
-
-    /**
-     * Get Content Block
-     *
-     * @param almaSettings
-     * @param gateway
-     * @param storeKey
-     * @param cartTotal
-     * @param inPageInstance
-     * @param setInPageInstance
-     * @returns {JSX.Element}
-     */
-    const getContentBlock = (almaSettings, gateway, storeKey, cartTotal, inPageInstance, setInPageInstance) => {
-
-        return almaSettings.is_in_page ? (
-            <DisplayAlmaInPageBlock
-                gateway={gateway}
-                storeKey={storeKey}
-                setInPage={setInPageInstance}
-                inPage={inPageInstance}
-                cartTotal={cartTotal}
-            />
-        ) : (
-            <DisplayAlmaBlock
-                gateway={gateway}
-                storeKey={storeKey}
-                cartTotal={cartTotal}
-            />
-        )
     }
 
     /**

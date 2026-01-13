@@ -13,13 +13,8 @@ use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\PaymentService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Exception\Gateway\AbstractGatewayException;
-use Alma\Gateway\Infrastructure\Exception\Gateway\Backend\AlmaGatewayException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
-use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
-use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
-use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
-use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\InPageHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
@@ -44,6 +39,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * Gateway constructor.
 	 * All parameters are injected here are used for unit test
 	 * Let the fallback to the container for production use
+	 *
 	 * @param FeePlanRepository|null $fee_plan_repository
 	 */
 	public function __construct( ?FeePlanRepository $fee_plan_repository = null ) {
@@ -127,6 +123,28 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		} catch ( ProductRepositoryException $e ) {
 			throw new GatewayServiceException( 'Can not find Order' );
 		}
+
+		// Check if payment was already created by Block gateway (in InPage mode)
+		// If so, this is a fallback call and we should NOT redirect to prevent React from losing control
+		$existing_payment_id = $order->get_meta( '_alma_payment_id' );
+		if ( ! empty( $existing_payment_id ) && $config_service->isInPageEnabled() ) {
+			error_log(
+				sprintf(
+					'[ALMA] Payment already exists (from Block), skipping redirect. payment_id=%s',
+					$existing_payment_id
+				)
+			);
+			// Payment already created by Block gateway, return success without redirect
+			// This allows React/JavaScript to handle the InPage modal
+			return array(
+				'result'          => 'success',
+				'alma_payment_id' => $existing_payment_id,
+				// No 'redirect' key - this prevents WooCommerce from redirecting
+			);
+		}
+
+		error_log( '[ALMA] No existing payment found, creating new payment' );
+
 		$fields = $this->process_payment_fields( $order );
 		try {
 			$fee_plan_adapter = $fee_plan_repository->getByPlanKey( $fields['alma_plan_key'] );

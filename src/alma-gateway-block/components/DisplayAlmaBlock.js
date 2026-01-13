@@ -8,9 +8,16 @@ export const DisplayAlmaBlock = (props) => {
         emitResponse,
         gateway,
         storeKey,
-        cartTotal,
     } = props;
     const {onPaymentSetup} = eventRegistration;
+
+    // Get the Cart Store Key
+    const {CART_STORE_KEY} = window.wc.wcBlocksData;
+
+    // Get cart total from Redux store
+    const {cartTotal} = useSelect((select) => ({
+        cartTotal: select(CART_STORE_KEY).getCartTotals().total_price,
+    }), []);
 
     const {almaSettings, gatewaySettings, isLoading} = useSelect(
         (select) => ({
