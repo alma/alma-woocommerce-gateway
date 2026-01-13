@@ -35,6 +35,6 @@ class LanguageHelper {
 	 * @phpcs We pass a variable to __() call because it's a proxy!
 	 */
 	public static function __( string $text, string $domain = 'default' ): string /* NOSONAR */ {
-		return __( $text, $domain ); // phpcs:ignore
+		return __( $text, $domain ) ?? ''; // phpcs:ignore
 	}
 }

@@ -77,6 +77,12 @@ class WidgetService {
 
 		$environment = $this->configService->getEnvironment();
 		$merchantId  = $this->configService->getMerchantId();
+
+		// If merchant ID is not defined yet, do not display the widget
+		if ( ! $merchantId ) {
+			return;
+		}
+
 		try {
 			$feePlanListAdapter = $this->feePlanRepository->getAll()->filterEnabled()->orderBy( $this->gatewayRepository->findOrderedAlmaGateways() );
 

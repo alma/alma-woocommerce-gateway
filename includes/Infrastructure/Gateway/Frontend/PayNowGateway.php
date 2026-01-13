@@ -5,17 +5,17 @@ namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
 use Alma\API\Domain\ValueObject\PaymentMethod;
 use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
-use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
+use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Plugin;
 
 /**
  * Class Gateway
  * Should extend WC_Payment_Gateway
- * @see public/templates/partials/pay-now-gateway-options.php for rendering
+ * @see public/templates/partials/gateway-options.php for rendering
  */
 class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayInterface {
 
@@ -31,7 +31,7 @@ class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 		$config_service     = Plugin::get_container()->get( ConfigService::class );
 		$this->title        = $config_service->hasSetting( self::TITLE_FIELD ) ? $config_service->getSetting( self::TITLE_FIELD ) : __( 'Pay by credit card', 'alma-gateway-for-woocommerce' );
 		$this->description  = $config_service->hasSetting( self::DESCRIPTION_FIELD ) ? $config_service->getSetting( self::DESCRIPTION_FIELD ) : __( 'Fast and secured payments', 'alma-gateway-for-woocommerce' );
-		$this->method_title = L10nHelper::__( 'Payment with Alma' );
+		$this->method_title = __( 'Payment with Alma', 'alma-gateway-for-woocommerce' );
 
 		parent::__construct();
 	}
@@ -49,7 +49,7 @@ class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 	 * Expose the payment fields to the frontend.
 	 *
 	 * @return void
-	 * @throws TemplateHelperException
+	 * @throws TemplateHelperException|FeePlanRepositoryException
 	 */
 	public function payment_fields() {
 
@@ -60,16 +60,23 @@ class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 		$template_helper = Plugin::get_container()->get( TemplateHelper::class );
 		$feePlanList     = $this->getFeePlanList();
 
+		$template_helper->getTemplate(
+			'gateway-description.php',
+			array(
+				'alma_woocommerce_gateway_description' => $this->description,
+			),
+			'partials'
+		);
+
 		/** @var FeePlanAdapter $fee_plan_adapter */
 		foreach ( $feePlanList as $fee_plan_adapter ) {
 			$template_helper->getTemplate(
 				'gateway-options.php',
 				array(
 					'alma_woocommerce_gateway_payment_method' => $this->get_payment_method(),
-					'alma_woocommerce_gateway_plan_key'    => $fee_plan_adapter->getPlanKey(),
-					'alma_woocommerce_gateway_logo_url'    => AssetsHelper::getImage( 'images/alma_card_logo.svg' ),
+					'alma_woocommerce_gateway_plan_key' => $fee_plan_adapter->getPlanKey(),
+					'alma_woocommerce_gateway_logo_url' => AssetsHelper::getImage( 'images/alma_card_logo.svg' ),
 					'alma_woocommerce_gateway_fee_plan_label' => $fee_plan_adapter->getLabel(),
-					'alma_woocommerce_gateway_description' => $this->description,
 				),
 				'partials'
 			);

@@ -11,16 +11,14 @@ class ExcludedProductsHelperTest extends TestCase {
 
 	private $excludedProductsHelper;
 
-	protected function setUp(): void {
-		parent::setUp();
-		$this->excludedProductsHelper = new ExcludedProductsHelper();
-
-	}
-
-	protected function tearDown(): void {
-		parent::tearDown();
-
-		$this->excludedProductsHelper = null;
+	public static function canDisplayProvider() {
+		return [
+			'empty excluded categories' => [ [], [ 1, 2, 3 ], true ],
+			'no match'                  => [ [ 4, 5 ], [ 1, 2, 3 ], true ],
+			'match one category'        => [ [ 3, 4 ], [ 1, 2, 3 ], false ],
+			'match all categories'      => [ [ 1, 2, 3 ], [ 1, 2, 3 ], false ],
+			'match some categories'     => [ [ 2, 3, 4 ], [ 1, 2, 3 ], false ],
+		];
 	}
 
 	/**
@@ -55,15 +53,16 @@ class ExcludedProductsHelperTest extends TestCase {
 		);
 	}
 
+	protected function setUp(): void {
+		parent::setUp();
+		$this->excludedProductsHelper = new ExcludedProductsHelper();
 
-	public function canDisplayProvider() {
-		return [
-			'empty excluded categories' => [ [], [ 1, 2, 3 ], true ],
-			'no match'                  => [ [ 4, 5 ], [ 1, 2, 3 ], true ],
-			'match one category'        => [ [ 3, 4 ], [ 1, 2, 3 ], false ],
-			'match all categories'      => [ [ 1, 2, 3 ], [ 1, 2, 3 ], false ],
-			'match some categories'     => [ [ 2, 3, 4 ], [ 1, 2, 3 ], false ],
-		];
+	}
+
+	protected function tearDown(): void {
+		parent::tearDown();
+
+		$this->excludedProductsHelper = null;
 	}
 
 }

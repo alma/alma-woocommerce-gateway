@@ -2,6 +2,8 @@
 
 namespace Alma\Gateway;
 
+use Alma\Gateway\Application\Exception\Helper\RequirementsHelperException;
+use Alma\Gateway\Application\Helper\RequirementsHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -10,14 +12,55 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AbstractPlugin {
 
+	/** @var bool The plugin prerequisites status. */
+	private static bool $plugin_prerequisites = false;
+
 	/** @var string The plugin url. */
 	private static string $plugin_url;
+
 	/** @var string The plugin path. */
 	private static string $plugin_path;
+
 	/** @var string The plugin filename. */
 	private static string $plugin_file;
 
+	/** @var bool Whether the plugin is configured or not. */
 	private bool $is_configured = false;
+
+	/**
+	 * Return true if the plugin prerequisites are ok.
+	 * @return bool True if the plugin prerequisites are ok.
+	 */
+	public static function are_prerequisites_ok(): bool {
+		return self::$plugin_prerequisites;
+	}
+
+	/**
+	 * Check if the plugin can load. Is woocommerce installed? It's mandatory.
+	 * We don't use Dice because it's not loaded yet.
+	 *
+	 * @return bool
+	 * @throws RequirementsHelperException
+	 */
+	public function check_prerequisites(): bool {
+		// Check if WooCommerce is active
+		if ( ! ContextHelper::isCmsLoaded() ) {
+			self::$plugin_prerequisites = false;
+
+			return false;
+		}
+
+		// Check if all dependencies are met
+		if ( ! RequirementsHelper::check_dependencies( ContextHelper::getCmsVersion() ) ) {
+			self::$plugin_prerequisites = false;
+
+			return false;
+		}
+
+		self::$plugin_prerequisites = true;
+
+		return true;
+	}
 
 	/**
 	 * Define if we can load the plugin.
