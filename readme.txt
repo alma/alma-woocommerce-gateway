@@ -56,7 +56,7 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 ### 🐛 Bug Fixes
 
-Avoid order deletion when closing popin
+Fixed broken access control when cancelling an order (wc_ajax API)
 
 ## v5.16.0 - 2025-09-30
 

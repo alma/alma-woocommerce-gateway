@@ -4,7 +4,7 @@
 
 ### 🐛 Bug Fixes
 
-Avoid order deletion when closing popin
+Fixed broken access control when cancelling an order (wc_ajax API)
 
 ## v5.16.0 - 2025-09-30
 
