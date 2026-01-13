@@ -427,18 +427,18 @@ class AbstractBackendGateway extends AbstractGateway {
 			'debug'         => array(
 				'title'       => __( 'Debug mode', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'checkbox',
-				// translators: %s: Admin logs url.
 				'label'       => __(
 					'Activate debug mode',
-					Plugin::ALMA_GATEWAY_PLUGIN_NAME
+					'alma-gateway-for-woocommerce'
 				) . sprintf(
-					__( '(<a href="%s">Go to logs</a>)' ),
+								// translators: %s: Admin logs url.
+					__( '(<a href="%s">Go to logs</a>)', 'alma-gateway-for-woocommerce' ),
 					UrlHelper::getAdminLogsUrl()
 				),
 				// translators: %s: The previous plugin version if exists.
 				'description' => __(
 					'Enable logging info and errors to help debug any issue with the plugin (previous Alma version)',
-					Plugin::ALMA_GATEWAY_PLUGIN_NAME
+					'alma-gateway-for-woocommerce'
 				),
 				'desc_tip'    => true,
 				'default'     => 'yes',
@@ -666,7 +666,10 @@ class AbstractBackendGateway extends AbstractGateway {
 	public function get_credit_fields(): array {
 		return array(
 			'credit_title'                   => array(
-				'title' => sprintf( '<h3>%s:</h3>', __( 'Payments in more than 4 installments', 'alma-gateway-for-woocommerce' ) ),
+				'title' => sprintf(
+					'<h3>%s:</h3>',
+					__( 'Payments in more than 4 installments', 'alma-gateway-for-woocommerce' )
+				),
 				'type'  => 'title',
 			),
 			CreditGateway::TITLE_FIELD       => array(

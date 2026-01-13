@@ -34,7 +34,6 @@
  */
 
 require_once 'vendor/autoload.php';
-require_once 'includes/functions.php';
 require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
 use Alma\Gateway\Plugin;
