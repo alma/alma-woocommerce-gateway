@@ -354,9 +354,9 @@ class OrderHelper {
 			$order_id     = sanitize_text_field( $_POST['order_id'] ); // phpcs:ignore WordPress.Security.NonceVerification
 			$order_helper = new OrderHelper();
 			$order        = $order_helper->get_order( $order_id );
-			$order->update_status( 'cancelled', 'Cancelled by customer' );
-			if ($this->alma_settings->is_removed_order_on_close_inpage()) {
-				$order->delete( true );
+
+			if ( in_array( $order->get_status(), array( 'pending', 'draft' ) )) {
+				$order->update_status( 'cancelled', 'Cancelled by customer' );
 			}
 			wp_send_json_success();
 		} catch ( Exception $e ) {
