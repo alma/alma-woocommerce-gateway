@@ -1,5 +1,11 @@
 # Changelog
 
+## v5.16.1 - 2026-01-13
+
+### 🐛 Bug Fixes
+
+Avoid order deletion when closing popin
+
 ## v5.16.0 - 2025-09-30
 
 ### Changes
