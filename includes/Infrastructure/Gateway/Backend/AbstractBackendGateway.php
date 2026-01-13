@@ -560,11 +560,11 @@ class AbstractBackendGateway extends AbstractGateway {
 	 */
 	public function get_paynow_fields(): array {
 		return array(
-			'paynow_title'             => array(
+			'paynow_title'                   => array(
 				'title' => sprintf( '<h3>%s:</h3>', __( 'Pay now', 'alma-gateway-for-woocommerce' ) ),
 				'type'  => 'title',
 			),
-			'paynow_title_field'       => array(
+			PayNowGateway::TITLE_FIELD       => array(
 				'title'       => __( 'Title', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'text',
 				'description' => __(
@@ -574,7 +574,7 @@ class AbstractBackendGateway extends AbstractGateway {
 				'desc_tip'    => true,
 				'default'     => __( 'Pay by credit card', 'alma-gateway-for-woocommerce' ),
 			),
-			'paynow_description_field' => array(
+			PayNowGateway::DESCRIPTION_FIELD => array(
 				'title'       => __( 'Description', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'text',
 				'description' => __(
@@ -631,11 +631,11 @@ class AbstractBackendGateway extends AbstractGateway {
 	 */
 	public function get_paylater_fields(): array {
 		return array(
-			'paylater_title'             => array(
+			'paylater_title'                   => array(
 				'title' => sprintf( '<h3>%s:</h3>', __( 'Deferred Payments', 'alma-gateway-for-woocommerce' ) ),
 				'type'  => 'title',
 			),
-			'paylater_title_field'       => array(
+			PayLaterGateway::TITLE_FIELD       => array(
 				'title'       => __( 'Title', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'text',
 				'description' => __(
@@ -645,7 +645,7 @@ class AbstractBackendGateway extends AbstractGateway {
 				'desc_tip'    => true,
 				'default'     => __( 'Pay later', 'alma-gateway-for-woocommerce' ),
 			),
-			'paylater_description_field' => array(
+			PayLaterGateway::DESCRIPTION_FIELD => array(
 				'title'       => __( 'Description', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'text',
 				'description' => __(
@@ -665,14 +665,11 @@ class AbstractBackendGateway extends AbstractGateway {
 	 */
 	public function get_credit_fields(): array {
 		return array(
-			'credit_title'             => array(
-				'title' => sprintf(
-					'<h3>%s:</h3>',
-					__( 'Payments in more than 4 installments', 'alma-gateway-for-woocommerce' )
-				),
+			'credit_title'                   => array(
+				'title' => sprintf( '<h3>%s:</h3>', __( 'Payments in more than 4 installments', 'alma-gateway-for-woocommerce' ) ),
 				'type'  => 'title',
 			),
-			'credit_title_field'       => array(
+			CreditGateway::TITLE_FIELD       => array(
 				'title'       => __( 'Title', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'text',
 				'description' => __(
@@ -682,7 +679,7 @@ class AbstractBackendGateway extends AbstractGateway {
 				'desc_tip'    => true,
 				'default'     => __( 'Pay with financing', 'alma-gateway-for-woocommerce' ),
 			),
-			'credit_description_field' => array(
+			CreditGateway::DESCRIPTION_FIELD => array(
 				'title'       => __( 'Description', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'text',
 				'description' => __(

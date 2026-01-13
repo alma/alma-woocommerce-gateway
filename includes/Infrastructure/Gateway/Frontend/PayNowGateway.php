@@ -29,8 +29,8 @@ class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 	public function __construct() {
 		/** @var ConfigService $config_service */
 		$config_service     = Plugin::get_container()->get( ConfigService::class );
-		$this->title        = $config_service->getSetting( self::TITLE_FIELD );
-		$this->description  = $config_service->getSetting( self::DESCRIPTION_FIELD );
+		$this->title        = $config_service->hasSetting( self::TITLE_FIELD ) ? $config_service->getSetting( self::TITLE_FIELD ) : __( 'Pay by credit card', 'alma-gateway-for-woocommerce' );
+		$this->description  = $config_service->hasSetting( self::DESCRIPTION_FIELD ) ? $config_service->getSetting( self::DESCRIPTION_FIELD ) : __( 'Fast and secured payments', 'alma-gateway-for-woocommerce' );
 		$this->method_title = __( 'Payment with Alma', 'alma-gateway-for-woocommerce' );
 
 		parent::__construct();

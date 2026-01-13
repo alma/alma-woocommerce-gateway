@@ -30,8 +30,8 @@ class CreditGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 	public function __construct() {
 		/** @var ConfigService $config_service */
 		$config_service     = Plugin::get_container()->get( ConfigService::class );
-		$this->title        = $config_service->getSetting( self::TITLE_FIELD );
-		$this->description  = $config_service->getSetting( self::DESCRIPTION_FIELD );
+		$this->title        = $config_service->hasSetting( self::TITLE_FIELD ) ? $config_service->getSetting( self::TITLE_FIELD ) : __( 'Pay with financing', 'alma-gateway-for-woocommerce' );
+		$this->description  = $config_service->hasSetting( self::DESCRIPTION_FIELD ) ? $config_service->getSetting( self::DESCRIPTION_FIELD ) : __( 'Fast and secure payment by credit card', 'alma-gateway-for-woocommerce' );
 		$this->method_title = __( 'Payment in installments with Alma - 10x 12x', 'alma-gateway-for-woocommerce' );
 
 		parent::__construct();
