@@ -4,7 +4,6 @@ namespace Alma\Gateway;
 
 use Alma\Gateway\Application\Exception\Helper\RequirementsHelperException;
 use Alma\Gateway\Application\Helper\L10nHelper;
-use Alma\Gateway\Application\Helper\RequirementsHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Controller\AdminController;
 use Alma\Gateway\Infrastructure\Controller\GatewayController;
@@ -15,6 +14,7 @@ use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Repository\BusinessEventsRepository;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
+use Alma\Gateway\Infrastructure\Service\MigrationService;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * AlmaPlugin.
  */
-final class Plugin extends abstractPlugin {
+final class Plugin extends AbstractPlugin {
 
 	const ALMA_GATEWAY_PLUGIN_VERSION = '6.0.0-poc';
 
@@ -89,6 +89,10 @@ final class Plugin extends abstractPlugin {
 	 */
 	public function plugin_warmup(): void {
 
+		if ( ! $this->check_prerequisites() ) {
+			return;
+		}
+
 		// Configure Languages
 		L10nHelper::load_language( $this->get_plugin_path() );
 
@@ -129,9 +133,25 @@ final class Plugin extends abstractPlugin {
 	}
 
 	/**
+	 * Used for plugin migration.
+	 *
+	 * @return void
+	 */
+	public function plugin_migration(): void {
+
+		if ( ! $this->are_prerequisites_ok() ) {
+			return;
+		}
+
+		/** @var MigrationService $migration_service */
+		$migration_service = self::get_container()->get( MigrationService::class );
+		$migration_service->runMigrationsIfNeeded();
+	}
+
+	/**
 	 * Used for regular plugin work.
 	 *
-	 * @throws GatewayControllerException|RequirementsHelperException
+	 * @throws GatewayControllerException
 	 */
 	public function plugin_setup(): void {
 
@@ -172,27 +192,6 @@ final class Plugin extends abstractPlugin {
 			$gatewayController = self::get_container()->get( GatewayController::class );
 			$gatewayController->configure();
 		}
-	}
-
-	/**
-	 * Check if the plugin can load. Is woocommerce installed? It's mandatory.
-	 * We don't use Dice because it's not loaded yet.
-	 *
-	 * @return bool
-	 * @throws RequirementsHelperException
-	 */
-	public function are_prerequisites_ok(): bool {
-		// Check if WooCommerce is active
-		if ( ! ContextHelper::isCmsLoaded() ) {
-			return false;
-		}
-
-		// Check if all dependencies are met
-		if ( ! RequirementsHelper::check_dependencies( ContextHelper::getCmsVersion() ) ) {
-			return false;
-		}
-
-		return true;
 	}
 
 	/**

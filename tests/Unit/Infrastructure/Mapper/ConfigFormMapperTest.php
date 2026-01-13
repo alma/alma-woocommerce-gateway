@@ -34,10 +34,12 @@ class ConfigFormMapperTest extends TestCase {
 	 */
 	private array $additionalSettingsWithFeePlan;
 
+	private array $finalSettings;
+
 	public function setUp(): void {
 
 		$authenticationServiceMock = $this->createMock( AuthenticationService::class );
-		$this->configServiceMock         = $this->createMock( ConfigService::class );
+		$this->configServiceMock   = $this->createMock( ConfigService::class );
 		$this->configFormMapper    = new ConfigFormMapper( $this->configServiceMock, $authenticationServiceMock );
 
 		$this->keySettings        = [
@@ -64,7 +66,7 @@ class ConfigFormMapperTest extends TestCase {
 		$this->settings           = array_merge( $this->keySettings, $this->feePlanSettings,
 			$this->additionalSettings );
 
-		$this->additionalSettingsWithFeePlan           = array_merge( $this->feePlanSettings,
+		$this->additionalSettingsWithFeePlan = array_merge( $this->feePlanSettings,
 			$this->additionalSettings );
 
 		$this->finalSettings = array_merge( $this->settings, [ 'merchant_id' => 'merchant_xxxxxxxxxxxxxxx' ] );
@@ -75,7 +77,7 @@ class ConfigFormMapperTest extends TestCase {
 	 */
 	public function testFromCmsFormIsConfigured(): void {
 
-		$this->configServiceMock->expects( $this->once() )->method('isConfigured')->willReturn( true );
+		$this->configServiceMock->expects( $this->once() )->method( 'isConfigured' )->willReturn( true );
 		$gatewayConfig = $this->configFormMapper->from_cms_form( $this->settings );
 
 		$this->assertEquals( $this->additionalSettings, $gatewayConfig->getAdditionalSettings() );
@@ -86,7 +88,7 @@ class ConfigFormMapperTest extends TestCase {
 	 */
 	public function testFromCmsFormIsNotConfigured(): void {
 
-		$this->configServiceMock->expects( $this->once() )->method('isConfigured')->willReturn( false );
+		$this->configServiceMock->expects( $this->once() )->method( 'isConfigured' )->willReturn( false );
 		$gatewayConfig = $this->configFormMapper->from_cms_form( $this->settings );
 
 		$this->assertEquals( $this->additionalSettingsWithFeePlan, $gatewayConfig->getAdditionalSettings() );

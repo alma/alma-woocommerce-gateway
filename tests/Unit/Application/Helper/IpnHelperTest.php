@@ -16,20 +16,24 @@ class IpnHelperTest extends TestCase {
 
 	private $ipnHelper;
 
-	protected function setUp(): void {
-		parent::setUp();
-		Monkey\setUp();
-
-		$this->ipnHelper = new IpnHelper();
-	}
-
-	protected function tearDown(): void {
-		Mockery::resetContainer();
-		Mockery::close();
-		Monkey\tearDown();
-		parent::tearDown();
-
-		$this->ipnHelper = null;
+	public static function validateSignatureExceptionDataProvider(): array {
+		return [
+			[
+				'paymentId' => '',
+				'apiKey'    => 'validApiKey',
+				'signature' => 'validSignature'
+			],
+			[
+				'paymentId' => 'validPaymentId',
+				'apiKey'    => '',
+				'signature' => 'validSignature'
+			],
+			[
+				'paymentId' => 'validPaymentId',
+				'apiKey'    => 'validApiKey',
+				'signature' => ''
+			]
+		];
 	}
 
 	/**
@@ -252,23 +256,19 @@ class IpnHelperTest extends TestCase {
 		$this->ipnHelper->success();
 	}
 
-	public function validateSignatureExceptionDataProvider(): array {
-		return [
-			[
-				'paymentId' => '',
-				'apiKey'    => 'validApiKey',
-				'signature' => 'validSignature'
-			],
-			[
-				'paymentId' => 'validPaymentId',
-				'apiKey'    => '',
-				'signature' => 'validSignature'
-			],
-			[
-				'paymentId' => 'validPaymentId',
-				'apiKey'    => 'validApiKey',
-				'signature' => ''
-			]
-		];
+	protected function setUp(): void {
+		parent::setUp();
+		Monkey\setUp();
+
+		$this->ipnHelper = new IpnHelper();
+	}
+
+	protected function tearDown(): void {
+		Mockery::resetContainer();
+		Mockery::close();
+		Monkey\tearDown();
+		parent::tearDown();
+
+		$this->ipnHelper = null;
 	}
 }

@@ -44,6 +44,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
+if ( ! defined( 'ALMA_VERSION' ) ) {
+	define( 'ALMA_VERSION', '6.0.0' );
+}
+
 $alma_gateway_plugin = Plugin::get_instance();
 
 /**
@@ -57,13 +61,21 @@ add_action(
 	}
 );
 
+// Plugin warmup: check prerequisites and init the DI container.
 add_action(
 	'plugins_loaded',
 	array( $alma_gateway_plugin, 'plugin_warmup' ),
 	0
 );
 
+// Plugin migration: run migrations if needed.
+add_action(
+	'init',
+	array( $alma_gateway_plugin, 'plugin_migration' ),
+);
+
+// Plugin setup: set up the plugin (register payment gateways, hooks, etc.) once WooCommerce is initialized.
 add_action(
 	'woocommerce_init',
-	array( $alma_gateway_plugin, 'plugin_setup' )
+	array( $alma_gateway_plugin, 'plugin_setup' ),
 );

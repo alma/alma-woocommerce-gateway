@@ -15,14 +15,14 @@ class FeePlanMock {
 			[
 				'allowed'               => true,
 				'available_online'      => true,
-				'customer_fee_variable' => 1.6,
+				'customer_fee_variable' => 160,
 				'deferred_days'         => 0,
 				'deferred_months'       => 0,
 				'installments_count'    => 3,
 				'kind'                  => 'general',
 				'max_purchase_amount'   => 100000,
-				'merchant_fee_variable' => 1.3,
-				'merchant_fee_fixed'    => 2.1,
+				'merchant_fee_variable' => 130,
+				'merchant_fee_fixed'    => 210,
 				'min_purchase_amount'   => 5000,
 			]
 		);

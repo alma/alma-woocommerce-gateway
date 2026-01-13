@@ -11,6 +11,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt update && \
     apt install -y --no-install-recommends \
     git \
+    rsync \
     zip \
     unzip \
     libicu-dev \
