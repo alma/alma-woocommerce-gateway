@@ -9,9 +9,7 @@ use Alma\API\Domain\Helper\NavigationHelperInterface;
 use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
 use Alma\Gateway\Application\Exception\Service\IpnServiceException;
 use Alma\Gateway\Application\Helper\IpnHelper;
-use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Provider\PaymentProvider;
-use Alma\Gateway\Application\Provider\PaymentProviderFactory;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\ParameterHelper;
 use Alma\Gateway\Infrastructure\Helper\ShopNotificationHelper;
@@ -19,7 +17,6 @@ use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Plugin;
 
 class IpnService {
-
 	public const IPN_CALLBACK = 'alma_ipn_callback';
 	public const CUSTOMER_RETURN = 'alma_customer_return';
 
@@ -38,24 +35,20 @@ class IpnService {
 	/** @var NavigationHelperInterface */
 	private NavigationHelperInterface $navigationHelper;
 
-	private PaymentProviderFactory $paymentProviderFactory;
-
 	private ?PaymentProvider $paymentProvider;
 
 	public function __construct(
-		PaymentProviderFactory $paymentProviderFactory,
 		ConfigService $configService,
 		PaymentProvider $paymentService,
 		CartAdapterInterface $cartAdapter,
 		NavigationHelperInterface $navigationHelper,
 		IpnHelper $ipnHelper
 	) {
-		$this->paymentProviderFactory = $paymentProviderFactory;
-		$this->configService          = $configService;
-		$this->paymentService         = $paymentService;
-		$this->cartAdapter            = $cartAdapter;
-		$this->navigationHelper       = $navigationHelper;
-		$this->ipnHelper              = $ipnHelper;
+		$this->configService    = $configService;
+		$this->paymentService   = $paymentService;
+		$this->cartAdapter      = $cartAdapter;
+		$this->navigationHelper = $navigationHelper;
+		$this->ipnHelper        = $ipnHelper;
 	}
 
 	/**
@@ -70,7 +63,8 @@ class IpnService {
 		$paymentId = ParameterHelper::checkAndCleanParam( $_GET['pid'] );
 
 		if ( ! $paymentId ) {
-			$this->navigationHelper->redirectToCart( L10nHelper::__( 'Payment validation error: no ID provided.<br>Please try again or contact us if the problem persists.' ) );
+			$this->navigationHelper->redirectToCart( __( 'Payment validation error: no ID provided.<br>Please try again or contact us if the problem persists.',
+				'alma-gateway-for-woocommerce' ) );
 			exit();
 		}
 
@@ -91,19 +85,19 @@ class IpnService {
 			}
 
 			if ( ! $order->paymentComplete( $paymentId ) ) {
-				$this->navigationHelper->redirectToCart( L10nHelper::__( 'Payment validation error: order not found.<br>Please try again or contact us if the problem persists.' ) );
+				$this->navigationHelper->redirectToCart( __( 'Payment validation error: order not found.<br>Please try again or contact us if the problem persists.',
+					'alma-gateway-for-woocommerce' ) );
 				exit();
 			}
 
 			$this->cartAdapter->emptyCart();
-			ShopNotificationHelper::notifySuccess( L10nHelper::__( 'Payment validation done' ) );
+			ShopNotificationHelper::notifySuccess( __( 'Payment validation done',
+				'alma-gateway-for-woocommerce' ) );
 
 		} catch ( IpnServiceException|PaymentServiceException|ProductRepositoryException $e ) {
 			ShopNotificationHelper::notifyError(
-				sprintf(
-					L10nHelper::__( 'Payment validation error: %s<br>Please try again or contact us if the problem persists.' ),
-					$e->getMessage()
-				)
+				__( 'Payment validation error<br>Please try again or contact us if the problem persists.',
+					'alma-gateway-for-woocommerce' ),
 			);
 		} finally {
 			/** @todo The good way is redirect to $gateway->get_return_url() */

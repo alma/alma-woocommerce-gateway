@@ -5,7 +5,6 @@ namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 use Alma\API\Domain\Adapter\OrderAdapterInterface;
 use Alma\API\Domain\ValueObject\PaymentMethod;
 use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
-use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Helper\TemplateHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
@@ -17,7 +16,7 @@ use Alma\Gateway\Plugin;
 /**
  * Class Gateway
  * Should extend WC_Payment_Gateway
- * @see public/templates/partials/pnx-gateway-options.php for rendering
+ * @see public/templates/partials/gateway-options.php for rendering
  */
 class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInterface {
 	public const PAYMENT_METHOD    = PaymentMethod::PNX;
@@ -32,7 +31,7 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 		$config_service     = Plugin::get_container()->get( ConfigService::class );
 		$this->title        = $config_service->getSetting( self::TITLE_FIELD );
 		$this->description  = $config_service->getSetting( self::DESCRIPTION_FIELD );
-		$this->method_title = L10nHelper::__( 'Payment in installments with Alma - 2x 3x 4x' );
+		$this->method_title = __( 'Payment in installments with Alma - 2x 3x 4x', 'alma-gateway-for-woocommerce' );
 
 		parent::__construct();
 	}
@@ -54,7 +53,12 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 		if ( $_POST['alma_plan_key'] && ! $this->check_values( $_POST['alma_plan_key'],
 			array( 'general_2_0_0', 'general_3_0_0', 'general_4_0_0' )
 		) ) {
-			ShopNotificationHelper::notifyError( L10nHelper::__( 'Please choose a valid option.' ) );
+			ShopNotificationHelper::notifyError(
+				__(
+					'Please choose a valid option.',
+					'alma-gateway-for-woocommerce'
+				)
+			);
 
 			return false;
 		}
@@ -77,16 +81,23 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 		$template_helper = Plugin::get_container()->get( TemplateHelper::class );
 		$feePlanList     = $this->getFeePlanList();
 
+		$template_helper->getTemplate(
+			'gateway-description.php',
+			array(
+				'alma_woocommerce_gateway_description' => $this->description,
+			),
+			'partials'
+		);
+
 		/** @var FeePlanAdapter $fee_plan_adapter */
 		foreach ( $feePlanList as $fee_plan_adapter ) {
 			$template_helper->getTemplate(
 				'gateway-options.php',
 				array(
 					'alma_woocommerce_gateway_payment_method' => $this->get_payment_method(),
-					'alma_woocommerce_gateway_plan_key'    => $fee_plan_adapter->getPlanKey(),
-					'alma_woocommerce_gateway_logo_url'    => AssetsHelper::getImage( 'images/alma_card_logo.svg' ),
+					'alma_woocommerce_gateway_plan_key' => $fee_plan_adapter->getPlanKey(),
+					'alma_woocommerce_gateway_logo_url' => AssetsHelper::getImage( 'images/alma_card_logo.svg' ),
 					'alma_woocommerce_gateway_fee_plan_label' => $fee_plan_adapter->getLabel(),
-					'alma_woocommerce_gateway_description' => $this->description,
 				),
 				'partials'
 			);

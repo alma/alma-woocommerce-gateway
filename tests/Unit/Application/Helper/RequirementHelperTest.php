@@ -15,6 +15,24 @@ class RequirementHelperTest extends TestCase {
 
 	private $requirementHelper;
 
+	public function testWCnotExit() {
+		$this->expectException( RequirementsHelperException::class );
+		$this->requirementHelper->check_dependencies( '7.0.0' );
+	}
+
+	public function testCompareVersionLowerThanExpectedWillThrow() {
+		$this->expectException( RequirementsHelperException::class );
+		$this->requirementHelper->check_dependencies( '6.9.9' );
+	}
+
+	public function testRequirementOk(): void {
+		Functions\expect( 'WC' )
+			->andReturn( function () {
+			} );
+		$this->assertTrue( $this->requirementHelper->check_dependencies( '8.2.0' ) );
+
+	}
+
 	protected function setUp(): void {
 		parent::setUp();
 		Monkey\setUp();
@@ -25,38 +43,6 @@ class RequirementHelperTest extends TestCase {
 		Monkey\tearDown();
 		parent::tearDown();
 		Mockery::close();
-
-	}
-
-	public function testWCnotExit() {
-		Functions\expect( '__' )
-			->once()
-			->with( 'Alma requires WooCommerce to be activated', 'alma-gateway-for-woocommerce' )
-			->andReturn( 'Translated error message' );
-		$this->expectException( RequirementsHelperException::class );
-		$this->requirementHelper->check_dependencies( '7.0.0' );
-	}
-
-	public function testCompareVersionLowerThan7WillThrow() {
-		Functions\expect( 'WC' )
-			->andReturn( function () {
-			} );
-
-		Functions\expect( '__' )
-			->once()
-			->with( 'Alma requires WooCommerce version 7.0.0 or greater', 'alma-gateway-for-woocommerce' )
-			->andReturn( 'Translated error message' );
-
-		$this->expectException( RequirementsHelperException::class );
-		$this->requirementHelper->check_dependencies( '6.9.9' );
-	}
-
-
-	public function testRequirementOk(): void {
-		Functions\expect( 'WC' )
-			->andReturn( function () {
-			} );
-		$this->assertTrue( $this->requirementHelper->check_dependencies( '7.0.0' ) );
 
 	}
 

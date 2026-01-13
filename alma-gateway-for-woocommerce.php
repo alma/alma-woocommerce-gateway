@@ -10,7 +10,7 @@
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: alma-gateway-for-woocommerce
  * Domain Path: /languages
- * Requires at least: 6.2.0
+ * Requires at least: 6.2
  * Requires PHP: 7.4
  * Tested up to: 6.8.1
  *

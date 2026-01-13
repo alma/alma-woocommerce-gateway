@@ -13,6 +13,8 @@ RUN apt update && \
     git \
     zip \
     unzip \
+    libicu-dev \
+    pkg-config \
     && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
@@ -21,6 +23,9 @@ RUN case ${PHP_VERSION} in \
         8.0|8.1|8.2|8.3 ) pecl install xdebug-3.3.2 && docker-php-ext-enable xdebug;; \
         *) pecl install xdebug-2.9.8 && docker-php-ext-enable xdebug;; \
     esac
+
+# Install PHP extensions
+RUN docker-php-ext-install intl
 
 RUN usermod -u 1000 www-data
 RUN groupmod -g 1000 www-data
