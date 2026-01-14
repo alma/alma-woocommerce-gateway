@@ -14,6 +14,10 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 
 class CartMapperTest extends TestCase {
+
+	/**@var ?CartMapper */
+	private ?CartMapper $cartMapper = null;
+
 	public function testBuildCartDetailsWithoutItems(): void {
 		$orderAdapterMock = $this->createMock( OrderAdapterInterface::class );
 		$orderAdapterMock->method( 'getOrderLines' )->willReturn( [] );

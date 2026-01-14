@@ -19,7 +19,8 @@
     "ext-json": "*",
     "alma/alma-php-client": "3.0.*|dev-feature/3.0",
     "psr/http-client": "^1",
-    "level-2/dice": "^4.0"
+    "level-2/dice": "^4.0",
+    "ext-intl": "*"
   },
   "require-dev": {
     "brain/monkey": "^2.0@dev",

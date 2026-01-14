@@ -2,7 +2,6 @@
 
 namespace Alma\Gateway\Application\Service;
 
-use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Infrastructure\Helper\AdminNotificationHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\EventHelper;
@@ -45,11 +44,11 @@ class PluginService {
 	public function remindToEnableAlma(): void {
 		if ( ! $this->configService->isEnabled() ) {
 			AdminNotificationHelper::notifyInfo(
-				L10nHelper::__(
-					sprintf(
-						'Thanks for installing Alma! Start by <a href="%s">activating Alma\'s payment method</a>, then set it up to get started.',
-						ContextHelper::getAdminUrl( 'admin.php?page=wc-settings&tab=checkout&section=alma_config_gateway' )
-					)
+				sprintf(
+				// translators: %s: url for activating alma
+					__( 'Thanks for installing Alma! Start by <a href="%s">activating Alma\'s payment method</a>, then set it up to get started.',
+						'alma-gateway-for-woocommerce' ),
+					ContextHelper::getAdminUrl( 'admin.php?page=wc-settings&tab=checkout&section=alma_config_gateway' )
 				)
 			);
 		}
@@ -62,11 +61,11 @@ class PluginService {
 	public function remindToConfigureAlma(): void {
 		if ( ! $this->configService->hasKeys() ) {
 			AdminNotificationHelper::notifyInfo(
-				L10nHelper::__(
-					sprintf(
-						'Alma is almost ready. To get started, <a href="%s">fill in your API keys</a>.',
-						ContextHelper::getAdminUrl( 'admin.php?page=wc-settings&tab=checkout&section=alma_config_gateway' )
-					)
+				sprintf(
+				// translators: %s: The url of the config page
+					__( 'Alma is almost ready. To get started, <a href="%s">fill in your API keys</a>.',
+						'alma-gateway-for-woocommerce' ),
+					ContextHelper::getAdminUrl( 'admin.php?page=wc-settings&tab=checkout&section=alma_config_gateway' )
 				)
 			);
 		}
