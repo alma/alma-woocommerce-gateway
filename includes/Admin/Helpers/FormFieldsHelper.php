@@ -221,23 +221,16 @@ class FormFieldsHelper {
 	 */
 	public function init_inpage_fields( $default_settings ) {
 		return array(
-			'display_section'               => array(
+			'display_section' => array(
 				'title' => '<hr>' . __( '→ Display options', 'alma-gateway-for-woocommerce' ),
 				'type'  => 'title',
 			),
-			'display_in_page'               => array(
+			'display_in_page' => array(
 				'title'   => __( 'Activate in-page checkout', 'alma-gateway-for-woocommerce' ),
 				'type'    => 'checkbox',
 				/* translators: %s: Alma in page doc URL */
 				'label'   => __( 'Let your customers pay with Alma in a secure pop-up, without leaving your site.', 'alma-gateway-for-woocommerce' ) . '<br>' . sprintf( __( '<a href="%s" title="Learn more" target="_blank">Learn more</a>.', 'alma-gateway-for-woocommerce' ), AssetsHelper::get_in_page_doc_link() ),
 				'default' => $default_settings['display_in_page'],
-			),
-			'remove_order_on_close_in_page' => array(
-				'title'   => __( 'Remove order when closing in-page pop-up', 'alma-gateway-for-woocommerce' ),
-				'type'    => 'checkbox',
-				/* translators: %s: Alma in page doc URL */
-				'label'   => __( 'On close the in-page pop up, the order will be removed to avoid any order cancelled', 'alma-gateway-for-woocommerce' ),
-				'default' => $default_settings['remove_order_on_close_in_page'],
 			),
 		);
 	}
