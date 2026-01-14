@@ -211,6 +211,9 @@ class FeePlanRepository {
 	}
 
 	private function setInstallmentPlanList( FeePlanListAdapter $feePlanListAdapter, EligibilityList $eligibilityList ): FeePlanListAdapter {
+		if ($eligibilityList->count() === 0) {
+			return new FeePlanListAdapter( [] );
+		}
 
 		/** @var Eligibility $eligibility */
 		foreach ( $eligibilityList as $eligibility ) {
