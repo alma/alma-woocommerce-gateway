@@ -270,7 +270,7 @@ class AbstractBackendGateway extends AbstractGateway {
 				'description' => sprintf(
 				/* translators: %s: The maximum purchase amount */
 					__( 'The minimum purchase amount allowed is %s€', 'alma-gateway-for-woocommerce' ),
-					DisplayHelper::price_to_euro( $fee_plan_adapter->getMaxPurchaseAmount() )
+					DisplayHelper::price_to_euro( $fee_plan_adapter->getMinPurchaseAmount() )
 				),
 				'default'     => DisplayHelper::price_to_euro( $fee_plan_adapter->getMinPurchaseAmount() ),
 				'value'       => DisplayHelper::price_to_euro( $fee_plan_adapter->getOverrideMinPurchaseAmount() ),
