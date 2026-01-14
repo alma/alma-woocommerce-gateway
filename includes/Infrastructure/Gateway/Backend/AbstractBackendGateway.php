@@ -120,12 +120,12 @@ class AbstractBackendGateway extends AbstractGateway {
 			),
 			GatewayConfigurationForm::FIELD_LIVE_API_KEY => array(
 				'title'    => __( 'Live API key', 'alma-gateway-for-woocommerce' ),
-				'type'     => 'text',
+				'type'     => 'password',
 				'desc_tip' => true,
 			),
 			GatewayConfigurationForm::FIELD_TEST_API_KEY => array(
 				'title'    => __( 'Test API key', 'alma-gateway-for-woocommerce' ),
-				'type'     => 'text',
+				'type'     => 'password',
 				'desc_tip' => true,
 			),
 			GatewayConfigurationForm::FIELD_MERCHANT_ID  => array(
