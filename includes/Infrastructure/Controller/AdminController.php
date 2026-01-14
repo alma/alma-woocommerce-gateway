@@ -28,6 +28,16 @@ class AdminController {
 	}
 
 	/**
+	 * Prepare services.
+	 * @return void
+	 */
+	public function prepare() {
+		// Add Admin Notifications
+		$this->pluginService->addAlmaAdminNotifications();
+		$this->pluginService->addAlmaLinksOnAdmin();
+	}
+
+	/**
 	 * Display services on admin init
 	 */
 	public function display() {
@@ -37,19 +47,12 @@ class AdminController {
 				if ( ContextHelper::isAdmin() ) {
 					// Register Admin Assets
 					$this->assetsService->registerAdminAssets();
-					almaLogConsole( '2 - RUN - Register Admin Assets' );
 					$this->assetsService->registerWidgetAssets();
-					almaLogConsole( '2 - RUN - Register Widget Assets' );
 					$this->assetsService->registerWidgetBlockEditorAssets();
-					almaLogConsole( '2 - RUN - Register Block Widget Editor Assets' );
+
 					// Display Admin Assets
 					$this->assetsService->displayAdminAssets();
-					almaLogConsole( '3 - Display - Load Admin Assets' );
 					$this->assetsService->displayWidgetAssets();
-					almaLogConsole( '3 - Display - Load Widget Assets' );
-
-					// Add Admin Notifications
-					$this->pluginService->addAlmaAdminNotifications();
 				}
 			}
 		);

@@ -8,6 +8,15 @@ use Alma\API\Domain\Helper\NavigationHelperInterface;
 class NavigationHelper implements NavigationHelperInterface {
 
 	/**
+	 * Redirect to Alma gateway settings page.
+	 */
+	public function alma_redirect_to_gateway_settings() {
+		$url = admin_url( 'admin.php?page=wc-settings&tab=checkout&section=alma_config_gateway' );
+		wp_safe_redirect( $url );
+		exit;
+	}
+
+	/**
 	 * Redirects to the return URL after payment.
 	 * This method is used to redirect the user to the return URL after a successful payment.
 	 * It retrieves the return URL from the payment method and redirects the user to that URL.

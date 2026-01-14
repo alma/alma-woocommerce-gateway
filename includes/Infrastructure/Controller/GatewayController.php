@@ -10,7 +10,6 @@ use Alma\Gateway\Infrastructure\Helper\BackendHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\EventHelper;
 use Alma\Gateway\Infrastructure\Helper\FrontendHelper;
-use Alma\Gateway\Infrastructure\Helper\GatewayHelper;
 use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
 use Alma\Gateway\Infrastructure\Service\AssetsService;
 use Alma\Gateway\Infrastructure\Service\GatewayService;
@@ -20,19 +19,16 @@ class GatewayController {
 
 	private GatewayService $gatewayService;
 	private AssetsService $assetsService;
-	private GatewayHelper $gatewayHelper;
 	private GatewayRepository $gatewayRepository;
 
 	public function __construct(
 		GatewayService $gatewayService,
 		AssetsService $assetsService,
-		GatewayRepository $gatewayRepository,
-		GatewayHelper $gatewayHelper
+		GatewayRepository $gatewayRepository
 	) {
 		$this->gatewayService    = $gatewayService;
 		$this->assetsService     = $assetsService;
 		$this->gatewayRepository = $gatewayRepository;
-		$this->gatewayHelper     = $gatewayHelper;
 	}
 
 	/**
@@ -41,12 +37,10 @@ class GatewayController {
 	public function prepare() {
 
 		$this->gatewayService->configureReturns();
-		almaLogConsole( '1 - PREPARE - Configure Returns' );
 
 		// Register Gateway Block
 		if ( ContextHelper::isCheckoutPageUseBlocks() ) {
 			$this->gatewayService->initGatewayBlocks();
-			almaLogConsole( '1 - PREPARE - Register Gateway Block' );
 		}
 	}
 
@@ -60,7 +54,6 @@ class GatewayController {
 		$this->loadGateway();
 		try {
 			$this->gatewayService->runGatewayBlocks();
-			almaLogConsole( '2 - RUN - Register Gateway Block Assets' );
 		} catch ( GatewayServiceException $e ) {
 			throw new GatewayControllerException();
 		}
@@ -74,7 +67,6 @@ class GatewayController {
 		if ( ContextHelper::isAdmin() ) {
 			if ( ContextHelper::isGatewaySettingsPage() ) {
 				BackendHelper::loadBackendGateway();
-				almaLogConsole( '0 - CONFIGURE - Load Backend Gateway' );
 			}
 		}
 	}
@@ -93,28 +85,18 @@ class GatewayController {
 		if ( ContextHelper::isAdmin() ) {
 			if ( ContextHelper::isGatewaySettingsPage() ) {
 				BackendHelper::loadBackendGateway();
-				almaLogConsole( '2 - RUN - Load Backend Gateways' );
 			} else {
 				FrontendHelper::loadFrontendGateways( $this->gatewayRepository->findOrderedAlmaGateways() );
-				almaLogConsole( '2 - RUN - Load Gateways' );
 			}
-			// Add links to gateway.
-			$this->gatewayHelper->addGatewayLinks(
-				Plugin::get_instance()->get_plugin_file(),
-				array( $this->gatewayService, 'pluginActionLinks' )
-			);
 		} else {
 			try {
 				$this->assetsService->registerClassicCheckoutAssets();
-				almaLogConsole( '2 - RUN - Register Classic Checkout Assets' );
 				$this->assetsService->displayClassicCheckoutAssets();
-				almaLogConsole( '3 - DISPLAY - Load Classic Checkout Assets' );
 			} catch ( AssetsServiceException $e ) {
 				throw new GatewayControllerException();
 			}
 
 			FrontendHelper::loadFrontendGateways( $this->gatewayRepository->findOrderedAlmaGateways() );
-			almaLogConsole( '2 - RUN - Load Frontend Gateways' );
 
 			EventHelper::addEvent(
 				'woocommerce_add_to_cart',

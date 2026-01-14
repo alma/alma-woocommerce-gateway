@@ -10,7 +10,6 @@ use Alma\Gateway\Infrastructure\Controller\GatewayController;
 use Alma\Gateway\Infrastructure\Controller\ShopController;
 use Alma\Gateway\Infrastructure\Exception\CmsException;
 use Alma\Gateway\Infrastructure\Exception\Controller\GatewayControllerException;
-use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Repository\BusinessEventsRepository;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
@@ -127,7 +126,7 @@ final class Plugin extends AbstractPlugin {
 		$config_service = self::get_container()->get( ConfigService::class );
 		$this->set_is_configured( $config_service->isConfigured() );
 
-		/** @var BusinessEventsRepository  $business_event */
+		/** @var BusinessEventsRepository $business_event */
 		$business_event = self::get_container()->get( BusinessEventsRepository::class, $suffix );
 		$business_event->createTableIfNotExists();
 	}
@@ -159,17 +158,25 @@ final class Plugin extends AbstractPlugin {
 			return;
 		}
 
+		// Run Admin Controller only when WordPress admin is ready.
+		/** @var AdminController $adminController */
+		$adminController = self::get_container()->get( AdminController::class );
+
+		/** @var GatewayController $gatewayController */
+		$gatewayController = self::get_container()->get( GatewayController::class );
+
+		/** @var ShopController $shopController */
+		$shopController = self::get_container()->get( ShopController::class );
+		
+		$adminController->prepare();
+
 		if ( $this->is_configured() ) {
 
 			$this->get_container()->setApiConfig();
 
-			/** @var GatewayController $gatewayController */
-			$gatewayController = self::get_container()->get( GatewayController::class );
 			$gatewayController->prepare();
 
 			// Register widgets
-			/** @var ShopController $shopController */
-			$shopController = self::get_container()->get( ShopController::class );
 			$shopController->prepare();
 
 			// Plugin fully configured, let's run the services
@@ -179,8 +186,6 @@ final class Plugin extends AbstractPlugin {
 			$shopController->run();
 
 			// Run Admin Controller only when WordPress admin is ready.
-			/** @var AdminController $adminController */
-			$adminController = self::get_container()->get( AdminController::class );
 			$adminController->display();
 
 			// Display services only when WordPress frontend is ready.
@@ -188,8 +193,6 @@ final class Plugin extends AbstractPlugin {
 
 		} else {
 			// Plugin not yet configured, load only backend gateway to help in configuration.
-			/** @var GatewayController $gatewayController */
-			$gatewayController = self::get_container()->get( GatewayController::class );
 			$gatewayController->configure();
 		}
 	}
