@@ -28,6 +28,7 @@ use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Gateways\Standard\StandardGateway;
 use Alma\Woocommerce\Services\AlmaBusinessEventService;
 use Alma\Woocommerce\Services\CheckoutService;
+use Automattic\WooCommerce\Enums\OrderStatus;
 use Exception;
 use WC_Data_Exception;
 use WC_Order;
@@ -354,9 +355,9 @@ class OrderHelper {
 			$order_id     = sanitize_text_field( $_POST['order_id'] ); // phpcs:ignore WordPress.Security.NonceVerification
 			$order_helper = new OrderHelper();
 			$order        = $order_helper->get_order( $order_id );
-			$order->update_status( 'cancelled', 'Cancelled by customer' );
-			if ($this->alma_settings->is_removed_order_on_close_inpage()) {
-				$order->delete( true );
+
+			if ( in_array( $order->get_status(), array( OrderStatus::PENDING, OrderStatus::DRAFT ) )) {
+				$order->update_status( 'cancelled', 'Cancelled by customer' );
 			}
 			wp_send_json_success();
 		} catch ( Exception $e ) {

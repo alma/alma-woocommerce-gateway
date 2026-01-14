@@ -1,5 +1,11 @@
 # Changelog
 
+## v5.16.1 - 2026-01-13
+
+### 🐛 Bug Fixes
+
+Fixed broken access control when cancelling an order (wc_ajax API)
+
 ## v5.16.0 - 2025-09-30
 
 ### Changes

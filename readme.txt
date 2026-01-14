@@ -6,7 +6,7 @@ Requires at least: 4.4
 Tested up to Wordpress: 6.8.2
 Tested up to Woocommerce: 10.2.2
 Requires PHP: 5.6
-Stable tag: 5.16.0
+Stable tag: 5.16.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -51,6 +51,12 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+## v5.16.1 - 2026-01-13
+
+### 🐛 Bug Fixes
+
+Fixed broken access control when cancelling an order (wc_ajax API)
 
 ## v5.16.0 - 2025-09-30
 
