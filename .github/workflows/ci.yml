@@ -18,11 +18,11 @@ jobs:
     name: SonarQube Cloud
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: SonarQube Cloud Scan
-        uses: SonarSource/sonarqube-scan-action@1a6d90ebcb0e6a6b1d87e37ba693fe453195ae25  # v5.3.1
+        uses: SonarSource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9  # v7.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -35,13 +35,13 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           persist-credentials: false
           show-progress: false
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@ec406be512d7077f68eed36e63f4d91bc006edc4 # 2.35.4
+        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # 2.36.0
         with:
           php-version: "7.4"
           tools: composer:v2
@@ -75,16 +75,16 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           persist-credentials: false
           show-progress: false
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
 
       - name: Build test container
-        uses: docker/bake-action@3acf805d94d93a86cce4ca44798a76464a75b88c # v6.9.0
+        uses: docker/bake-action@5be5f02ff8819ecd3092ea6b2e6261c31774f2b4 # v6.10.0
         with:
           files: compose.yml
           load: true

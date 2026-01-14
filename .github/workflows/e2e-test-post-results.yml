@@ -28,7 +28,7 @@ jobs:
     steps:
 
       - name: Add a comment with E2E tests results in the Pull Request
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
         with:
             script: |
               let commentBody = '❌ E2E tests have failed. \n';
@@ -47,7 +47,7 @@ jobs:
 
       - name: Generate Github token for PR checks
         id: github-token-checks
-        uses: actions/create-github-app-token@a8d616148505b5069dccd32f177bb87d7f39123b # v2.1.1
+        uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
         continue-on-error: true
         with:
           app-id: ${{ secrets.ALMA_UPDATE_CHECKS_APP_ID }}
@@ -55,7 +55,7 @@ jobs:
           repositories: alma-woocommerce-gateway
 
       - name: Update check in PR with E2E tests results
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
         with:
           github-token: ${{ steps.github-token-checks.outputs.token }}
           script: |
