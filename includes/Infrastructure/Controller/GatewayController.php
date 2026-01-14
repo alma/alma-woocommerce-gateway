@@ -26,7 +26,7 @@ class GatewayController {
 		GatewayService $gatewayService,
 		AssetsService $assetsService,
 		BusinessEventsService $businessEventsService,
-		GatewayRepository $gatewayRepository,
+		GatewayRepository $gatewayRepository
 	) {
 		$this->gatewayService    = $gatewayService;
 		$this->assetsService     = $assetsService;
