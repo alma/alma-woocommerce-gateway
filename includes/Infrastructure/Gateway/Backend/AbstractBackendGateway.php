@@ -561,7 +561,7 @@ class AbstractBackendGateway extends AbstractGateway {
 	public function get_paynow_fields(): array {
 		return array(
 			'paynow_title'                   => array(
-				'title' => sprintf( '<h3>%s:</h3>', __( 'Pay now', 'alma-gateway-for-woocommerce' ) ),
+				'title' => sprintf( '<h2>%s:</h2>', __( 'Pay now', 'alma-gateway-for-woocommerce' ) ),
 				'type'  => 'title',
 			),
 			PayNowGateway::TITLE_FIELD       => array(
@@ -596,7 +596,7 @@ class AbstractBackendGateway extends AbstractGateway {
 		return array(
 			'pnx_title'                   => array(
 				'title' => sprintf(
-					'<h3>%s:</h3>',
+					'<h2>%s:</h2>',
 					__( 'Payments in 2, 3 and 4 installments', 'alma-gateway-for-woocommerce' )
 				),
 				'type'  => 'title',
@@ -632,7 +632,7 @@ class AbstractBackendGateway extends AbstractGateway {
 	public function get_paylater_fields(): array {
 		return array(
 			'paylater_title'                   => array(
-				'title' => sprintf( '<h3>%s:</h3>', __( 'Deferred Payments', 'alma-gateway-for-woocommerce' ) ),
+				'title' => sprintf( '<h2>%s:</h2>', __( 'Deferred Payments', 'alma-gateway-for-woocommerce' ) ),
 				'type'  => 'title',
 			),
 			PayLaterGateway::TITLE_FIELD       => array(
@@ -667,7 +667,7 @@ class AbstractBackendGateway extends AbstractGateway {
 		return array(
 			'credit_title'                   => array(
 				'title' => sprintf(
-					'<h3>%s:</h3>',
+					'<h2>%s:</h2>',
 					__( 'Payments in more than 4 installments', 'alma-gateway-for-woocommerce' )
 				),
 				'type'  => 'title',
