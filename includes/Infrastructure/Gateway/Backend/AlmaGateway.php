@@ -70,7 +70,7 @@ class AlmaGateway extends AbstractBackendGateway {
 		);
 
 		// If the plugin is configured, add the gateway and fee plan fields
-		if ( Plugin::get_instance()->is_configured() ) {
+		if ( Plugin::get_instance()->is_configured( true ) ) {
 			try {
 				$this->form_fields = array_merge(
 					$this->form_fields,
@@ -80,7 +80,6 @@ class AlmaGateway extends AbstractBackendGateway {
 					$this->fee_plan_fieldset()
 				);
 			} catch ( FeePlanRepositoryException | AbstractGatewayException $e ) {
-				almalog( $e->getMessage() );
 				throw new AlmaGatewayException( 'Can\'t initialize Alma Gateway', 0, $e );
 			}
 		}

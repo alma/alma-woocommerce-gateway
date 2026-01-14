@@ -53,10 +53,8 @@ class FeePlanRepository {
 	public function getAll( bool $forceRefresh = false ): FeePlanListAdapter {
 
 		if ( $forceRefresh || ! isset( $this->feePlanListAdapter['all'][0] ) ) {
-			almalog( 'NO CACHE' );
 			$this->feePlanListAdapter['all'][0] = $this->retrieveFeePlans();
 		}
-		almalog( 'CACHE' );
 
 		return $this->feePlanListAdapter['all'][0];
 	}

@@ -4,6 +4,7 @@ namespace Alma\Gateway;
 
 use Alma\Gateway\Application\Exception\Helper\RequirementsHelperException;
 use Alma\Gateway\Application\Helper\RequirementsHelper;
+use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -90,9 +91,19 @@ class AbstractPlugin {
 
 	/**
 	 * Return the config state of the Plugin
+	 *
+	 * @param bool $force_refresh If true, re-evaluate the configuration state.
+	 *
 	 * @return bool
 	 */
-	public function is_configured(): bool {
+	public function is_configured( bool $force_refresh = false ): bool {
+		if ( $force_refresh ) {
+			// Re-evaluate the configuration state
+			/** @var ConfigService $config_service */
+			$config_service = Plugin::get_container()->get( ConfigService::class );
+			$this->set_is_configured( $config_service->isConfigured() );
+		}
+
 		return $this->is_configured;
 	}
 
