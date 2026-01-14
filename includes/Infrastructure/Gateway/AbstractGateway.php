@@ -8,6 +8,7 @@ use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Mapper\RefundMapper;
 use Alma\Gateway\Application\Provider\PaymentProvider;
+use Alma\Gateway\Application\Service\BusinessEventsService;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\PaymentService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
@@ -26,6 +27,7 @@ use WC_Payment_Gateway;
  * Should extend WC_Payment_Gateway
  */
 abstract class AbstractGateway extends WC_Payment_Gateway {
+	const NAME_ALMA_GATEWAYS = 'alma_%s_gateway';
 
 	protected const PAYMENT_METHOD = 'abstract';
 
@@ -152,6 +154,10 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 
 		// Update order status to pending
 		$order->updateStatus( 'pending', __( 'Awaiting payment via Alma', 'alma-gateway-for-woocommerce' ) );
+
+		/** @var BusinessEventsService $business_event_service */
+		$business_event_service = Plugin::get_container()->get( BusinessEventsService::class );
+		$business_event_service->saveAlmaPaymentId( $payment->getId() );
 
 		$result = array();
 		if ( $config_service->isInPageEnabled() ) {
