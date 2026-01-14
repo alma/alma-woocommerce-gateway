@@ -265,18 +265,28 @@ class AbstractBackendGateway extends AbstractGateway {
 			);
 			/** @uses self::generate_table_min_amount_html() */
 			$field_list[ $fee_plan_adapter->getPlanKey() . '_min_amount' ] = array(
-				'type'     => 'table_min_amount',
-				'desc_tip' => true,
-				'default'  => DisplayHelper::price_to_euro( $fee_plan_adapter->getMinPurchaseAmount() ),
-				'value'    => DisplayHelper::price_to_euro( $fee_plan_adapter->getOverrideMinPurchaseAmount() ),
+				'type'        => 'table_min_amount',
+				'desc_tip'    => true,
+				'description' => sprintf(
+				/* translators: %s: The maximum purchase amount */
+					__( 'The minimum purchase amount allowed is %s€', 'alma-gateway-for-woocommerce' ),
+					DisplayHelper::price_to_euro( $fee_plan_adapter->getMaxPurchaseAmount() )
+				),
+				'default'     => DisplayHelper::price_to_euro( $fee_plan_adapter->getMinPurchaseAmount() ),
+				'value'       => DisplayHelper::price_to_euro( $fee_plan_adapter->getOverrideMinPurchaseAmount() ),
 			);
 			/** @uses self::generate_table_max_amount_html() */
 			$field_list[ $fee_plan_adapter->getPlanKey() . '_max_amount' ] = array(
-				'type'      => 'table_max_amount',
-				'desc_tip'  => true,
-				'default'   => DisplayHelper::price_to_euro( $fee_plan_adapter->getMaxPurchaseAmount() ),
-				'value'     => DisplayHelper::price_to_euro( $fee_plan_adapter->getOverrideMaxPurchaseAmount() ),
-				'decorator' => '%s</tr>',
+				'type'        => 'table_max_amount',
+				'desc_tip'    => true,
+				'description' => sprintf(
+				/* translators: %s: The maximum purchase amount */
+					__( 'The maximum purchase amount allowed is %s€', 'alma-gateway-for-woocommerce' ),
+					DisplayHelper::price_to_euro( $fee_plan_adapter->getMaxPurchaseAmount() )
+				),
+				'default'     => DisplayHelper::price_to_euro( $fee_plan_adapter->getMaxPurchaseAmount() ),
+				'value'       => DisplayHelper::price_to_euro( $fee_plan_adapter->getOverrideMaxPurchaseAmount() ),
+				'decorator'   => '%s</tr>',
 			);
 		}
 
@@ -405,7 +415,7 @@ class AbstractBackendGateway extends AbstractGateway {
 
 		return '<td width="1%">'
 				. '<input type="number" name="' . esc_attr( $field_key ) . '" id="' . esc_attr( $field_key ) . '" value="' . esc_attr( $data['value'] ) . '" style="width: 80px;" step="0.01" min="' . $data['default'] . '">'
-				. '&nbsp;<span>' . DisplayHelper::amount( $data['default'] ) . '</span>'
+				. $this->get_tooltip_html( $data )
 				. '</td>';
 	}
 
@@ -414,7 +424,7 @@ class AbstractBackendGateway extends AbstractGateway {
 
 		return '<td width="1%">'
 				. '<input type="number" name="' . esc_attr( $field_key ) . '" id="' . esc_attr( $field_key ) . '" value="' . esc_attr( $data['value'] ) . '" style="width: 80px;" step="0.01" max="' . $data['default'] . '">'
-				. '&nbsp;<span>' . DisplayHelper::amount( $data['default'] ) . '</span>'
+				. $this->get_tooltip_html( $data )
 				. '</td>';
 	}
 

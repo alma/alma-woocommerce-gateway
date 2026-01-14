@@ -9,8 +9,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-01-09T15:58:09+00:00\n"
-"PO-Revision-Date: 2026-01-09 16:05\n"
+"POT-Creation-Date: 2026-01-14T08:54:23+00:00\n"
+"PO-Revision-Date: 2026-01-14 08:55\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: alma-gateway-for-woocommerce\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -34,13 +34,13 @@ msgstr "https://docs.almapay.com/docs/woocommerce"
 #. Description of the plugin
 #: alma-gateway-for-woocommerce.php
 #: includes/Infrastructure/Gateway/AbstractGateway.php:48
-#: includes/Infrastructure/Gateway/Backend/AlmaGateway.php:32
+#: includes/Infrastructure/Gateway/Backend/AlmaGateway.php:34
 msgid "Install Alma and boost your sales! It's simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk."
 msgstr "Installeer Alma en stimuleer uw verkopen! Het is eenvoudig en gegarandeerd, uw cashflow is beveiligd. geen verplichtingen, geen abonnement, geen risico."
 
 #. Author of the plugin
 #: alma-gateway-for-woocommerce.php
-#: includes/functions.php:163
+#: includes/Infrastructure/Helper/AdminMenuHelper.php:15
 msgid "Alma"
 msgstr "Alma"
 
@@ -70,18 +70,14 @@ msgid "An error occurred while creating the payment. Please try again."
 msgstr "Er is een fout opgetreden tijdens het aanmaken van de betaling. Probeer het opnieuw."
 
 #. translators: %s: url for activating alma
-#: includes/Application/Service/PluginService.php:49
+#: includes/Application/Service/PluginService.php:50
 msgid "Thanks for installing Alma! Start by <a href=\"%s\">activating Alma's payment method</a>, then set it up to get started."
 msgstr "Bedankt voor het installeren van Alma! Begin met <a href=\"%s\">het activeren van de betalingsmethode van Alma</a>."
 
 #. translators: %s: The url of the config page
-#: includes/Application/Service/PluginService.php:66
+#: includes/Application/Service/PluginService.php:67
 msgid "Alma is almost ready. To get started, <a href=\"%s\">fill in your API keys</a>."
 msgstr "Alma is bijna klaar. <a href=\"%s\">Voer uw API-sleutels in</a> om te kunnen beginnen."
-
-#: includes/functions.php:162
-msgid "Alma - Settings"
-msgstr "Alma - Instellingen"
 
 #: includes/Infrastructure/Block/Gateway/AbstractGatewayBlock.php:89
 #: includes/Infrastructure/Service/CheckoutService.php:154
@@ -93,27 +89,27 @@ msgid "Payment processing failed. Please try again."
 msgstr "Verwerking betaling mislukt. Probeer het opnieuw."
 
 #: includes/Infrastructure/Block/Gateway/AbstractGatewayBlock.php:151
-#: includes/Infrastructure/Gateway/AbstractGateway.php:152
+#: includes/Infrastructure/Gateway/AbstractGateway.php:154
 msgid "Awaiting payment via Alma"
 msgstr "In afwachting van betaling via Alma"
 
 #. translators: %s: Selected payment method.
-#: includes/Infrastructure/Gateway/AbstractGateway.php:135
+#: includes/Infrastructure/Gateway/AbstractGateway.php:137
 msgid "Selected payment method : %s"
 msgstr "Geselecteerde betaalmethode : %s"
 
-#: includes/Infrastructure/Gateway/AbstractGateway.php:199
+#: includes/Infrastructure/Gateway/AbstractGateway.php:201
 msgid "Refund failed."
 msgstr "Terugbetaling mislukt."
 
 #. translators: %1$d: Amount refunded / %2$s: Refunded by.
-#: includes/Infrastructure/Gateway/AbstractGateway.php:205
+#: includes/Infrastructure/Gateway/AbstractGateway.php:207
 msgid "Order partially refunded (%1$d via Alma) by %2$s."
 msgstr "Bestelling gedeeltelijk terugbetaald (%1$d via Alma) door %2$s."
 
 #: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:100
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:175
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:182
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:183
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:190
 msgid "Enable/Disable"
 msgstr "Activeren/Deactiveren"
 
@@ -129,173 +125,205 @@ msgstr "→ Begin met het invullen van uw API-sleutels"
 msgid "You can find your API keys on your Alma dashboard"
 msgstr "Je kunt je API-sleutels vinden op je Alma-dashboard"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:120
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:122
 msgid "Live API key"
 msgstr "API key live"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:125
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:127
 msgid "Test API key"
 msgstr "API key test"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:130
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:132
 msgid "Merchant Id"
 msgstr "Handelaar Id"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:136
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:138
 msgid "API Mode"
 msgstr "Modus van API"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:138
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:140
 msgid "Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In Test mode, only admins can see Alma on cart/checkout pages."
 msgstr "Gebruik de <b>Testmodus</b> totdat je klaar bent om echte bestellingen te doen met Alma<br>In de Testmodus kunnen alleen beheerders Alma zien op de winkelwagen-/kassa-pagina's."
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:143
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:147
 msgid "Test"
 msgstr "Test"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:144
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:148
 msgid "Live"
 msgstr "Live"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:149
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:153
 msgid "Activate In-Page Checkout"
 msgstr "In-pagina afrekenen activeren"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:151
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:155
 msgid "Let your customers pay with Alma in a secure pop-up, without leaving your site."
 msgstr "Laat uw klanten betalen met Alma in een beveiligde pop-up, zonder uw site te verlaten."
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:168
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:174
 msgid "→ Display Alma widgets"
 msgstr "→ Alma-widgets weergeven"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:170
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:176
 msgid "Display Alma widget on cart and product page."
 msgstr "Alma-widget weergeven op winkelwagen- en productpagina."
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:177
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:185
 msgid "Enable widget on cart page"
 msgstr "Widget inschakelen op winkelwagenpagina"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:184
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:192
 msgid "Enable widget on product page"
 msgstr "Widget inschakelen op productpagina"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:206
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:214
 msgid "→ Fee plans configuration"
 msgstr "→ Configuratie tariefplan"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:416
+#. translators: %s: The maximum purchase amount
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:272
+msgid "The minimum purchase amount allowed is %s€"
+msgstr "Het minimaal toegestane aankoopbedrag is %s€."
+
+#. translators: %s: The maximum purchase amount
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:284
+msgid "The maximum purchase amount allowed is %s€"
+msgstr "Het maximaal toegestane aankoopbedrag is %s€."
+
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:434
 msgid "→ Debug options"
 msgstr "→ Opties voor foutopsporing"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:420
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:438
 msgid "Debug mode"
 msgstr "Debug modus"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:446
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:440
+msgid "Activate debug mode"
+msgstr "Debugmodus activeren"
+
+#. translators: %s: Admin logs url.
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:445
+msgid "(<a href=\"%s\">Go to logs</a>)"
+msgstr "<a href=\"%s\">(Ga naar logs</a>)"
+
+#. translators: %s: The previous plugin version if exists.
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:449
+msgid "Enable logging info and errors to help debug any issue with the plugin (previous Alma version)"
+msgstr "Loggen van info en fouten inschakelen om problemen met de plugin op te lossen (vorige Alma-versie)"
+
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:465
 msgid "→ Excluded Categories"
 msgstr "→ Uitgesloten categorieën"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:448
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:467
 msgid "Define the categories on which Alma doesn't apply"
 msgstr "Definieer de categorieën waarop Alma niet van toepassing is"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:453
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:474
 msgid "Excluded product categories"
 msgstr "Categorieën van uitgesloten producten"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:455
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:476
 msgid "Exclude all virtual/downloadable product categories, as you cannot sell them with Alma"
 msgstr "Sluit alle categorieën uit van virtuele/downloadbare producten die niet met Alma verkocht kunnen worden"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:462
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:485
 msgid "Non-eligibility message for excluded products"
 msgstr "Bericht niet-geschiktheid voor uitgesloten product"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:465
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:490
 msgid "Message displayed below the cart totals when it contains excluded products"
 msgstr "Bericht dat wordt getoond onder het totaal van de winkelmand wanneer deze uitgesloten producten bevat"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:468
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:495
 msgid "Some products cannot be paid with monthly or deferred installments"
 msgstr "Sommige producten kunnen niet met maandelijkse of uitgestelde termijnen worden betaald"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:508
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:537
 msgid "→ Customize payment button text"
 msgstr "→ Tekst voor betaalknop aanpassen"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:510
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:539
 msgid "Customize the text displayed on the Alma payment button on the checkout page"
 msgstr "Pas de tekst aan die wordt weergegeven op de Alma-betaalknop op de afrekenpagina"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:543
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:574
 msgid "Pay now"
 msgstr "Nu betalen"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:547
 #: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:578
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:608
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:639
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:615
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:649
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:686
 msgid "Title"
 msgstr "Titel"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:549
 #: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:580
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:610
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:641
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:617
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:651
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:688
 msgid "This controls the payment method name which the user sees during checkout."
 msgstr "Kies de naam van de betalingsmethode die de gebruiker ziet bij de bevestiging van de bestelling."
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:552
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:585
+#: includes/Infrastructure/Gateway/Frontend/PayNowGateway.php:32
 msgid "Pay by credit card"
 msgstr "Betalen met creditcard"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:555
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:586
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:616
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:647
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:588
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:625
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:659
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:696
 msgid "Description"
 msgstr "Beschrijving"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:557
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:588
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:618
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:649
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:590
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:627
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:661
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:698
 msgid "This controls the payment method description which the user sees during checkout."
 msgstr "Kies de beschrijving van de betalingsmethode op de bevestigingspagina van de bestelling."
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:560
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:595
+#: includes/Infrastructure/Gateway/Frontend/PayNowGateway.php:33
 msgid "Fast and secured payments"
 msgstr "Snelle en veilige betalingen"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:574
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:610
 msgid "Payments in 2, 3 and 4 installments"
 msgstr "Betalingen in 2, 3 en 4 termijnen"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:583
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:622
+#: includes/Infrastructure/Gateway/Frontend/PnxGateway.php:32
 msgid "Pay in installments"
 msgstr "In termijnen betalen"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:591
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:621
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:652
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:632
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:666
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:703
+#: includes/Infrastructure/Gateway/Frontend/CreditGateway.php:34
+#: includes/Infrastructure/Gateway/Frontend/PayLaterGateway.php:34
+#: includes/Infrastructure/Gateway/Frontend/PnxGateway.php:33
 msgid "Fast and secure payment by credit card"
 msgstr "Betaal later of in meerdere maandelijkse termijnen met uw creditcard."
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:604
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:645
 msgid "Deferred Payments"
 msgstr "Uitgestelde betalingen"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:613
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:656
+#: includes/Infrastructure/Gateway/Frontend/PayLaterGateway.php:33
 msgid "Pay later"
 msgstr "Betaal later"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:635
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:681
 msgid "Payments in more than 4 installments"
 msgstr "Betalingen in meer dan 4 termijnen"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:644
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:693
+#: includes/Infrastructure/Gateway/Frontend/CreditGateway.php:33
 msgid "Pay with financing"
 msgstr "Betaal met financiering"
 
@@ -303,7 +331,7 @@ msgstr "Betaal met financiering"
 msgid "Payment in installments and deferred with Alma"
 msgstr "Betaling in termijnen en uitgesteld met Alma"
 
-#: includes/Infrastructure/Gateway/Backend/AlmaGateway.php:138
+#: includes/Infrastructure/Gateway/Backend/AlmaGateway.php:141
 msgid "An error occurred while validating the configuration. Please try again."
 msgstr "Er is een fout opgetreden tijdens het valideren van de configuratie. Probeer het opnieuw."
 
@@ -311,9 +339,9 @@ msgstr "Er is een fout opgetreden tijdens het valideren van de configuratie. Pro
 msgid "Payment in installments with Alma - 10x 12x"
 msgstr "Betaling in termijnen met Alma - 10x 12x"
 
-#: includes/Infrastructure/Gateway/Frontend/CreditGateway.php:58
-#: includes/Infrastructure/Gateway/Frontend/PayLaterGateway.php:74
-#: includes/Infrastructure/Gateway/Frontend/PnxGateway.php:56
+#: includes/Infrastructure/Gateway/Frontend/CreditGateway.php:59
+#: includes/Infrastructure/Gateway/Frontend/PayLaterGateway.php:75
+#: includes/Infrastructure/Gateway/Frontend/PnxGateway.php:57
 msgid "Please choose a valid option."
 msgstr "Kies een geldige optie."
 
@@ -329,6 +357,14 @@ msgstr "Betaling met Alma"
 msgid "Payment in installments with Alma - 2x 3x 4x"
 msgstr "Betaling in termijnen met Alma - 2x 3x 4x"
 
+#: includes/Infrastructure/Helper/AdminMenuHelper.php:14
+msgid "Alma - Settings"
+msgstr "Alma - Instellingen"
+
+#: includes/Infrastructure/Helper/AdminMenuHelper.php:42
+msgid "Settings"
+msgstr "Configuratie"
+
 #: includes/Infrastructure/Service/GatewayService.php:76
 msgid "Full refund requested by the merchant"
 msgstr "Volledige terugbetaling aangevraagd door de verkoper"
@@ -337,10 +373,6 @@ msgstr "Volledige terugbetaling aangevraagd door de verkoper"
 #: includes/Infrastructure/Service/GatewayService.php:86
 msgid "Order fully refunded by %s."
 msgstr "Bestelling volledig terugbetaald door %s."
-
-#: includes/Infrastructure/Service/GatewayService.php:115
-msgid "Settings"
-msgstr "Configuratie"
 
 #. translators: %s => Installments count
 #: public/templates/partials/gateway-options.php:38
