@@ -28,6 +28,7 @@ use Alma\Woocommerce\Factories\VersionFactory;
 use Alma\Woocommerce\Gateways\Standard\StandardGateway;
 use Alma\Woocommerce\Services\AlmaBusinessEventService;
 use Alma\Woocommerce\Services\CheckoutService;
+use Automattic\WooCommerce\Enums\OrderStatus;
 use Exception;
 use WC_Data_Exception;
 use WC_Order;
@@ -355,7 +356,7 @@ class OrderHelper {
 			$order_helper = new OrderHelper();
 			$order        = $order_helper->get_order( $order_id );
 
-			if ( in_array( $order->get_status(), array( 'pending', 'draft' ) )) {
+			if ( in_array( $order->get_status(), array( OrderStatus::PENDING, OrderStatus::DRAFT ) )) {
 				$order->update_status( 'cancelled', 'Cancelled by customer' );
 			}
 			wp_send_json_success();
