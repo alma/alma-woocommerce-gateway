@@ -24,10 +24,10 @@ class L10nHelper {
 	 * @param string $domain
 	 *
 	 * @return string
-	 * @sonar It's a convention to use __() for translations
+	 * It's a convention to use __() for translations
 	 * @phpcs We pass a variable to __() call because it's a proxy!
 	 */
-	public static function __( string $translation, string $domain = self::ALMA_L10N_DOMAIN ): string /* NOSONAR */ {
+	public static function __( string $translation, string $domain = self::ALMA_L10N_DOMAIN ): string {
 		return LanguageHelper::__( $translation, $domain );// phpcs:ignore
 	}
 
