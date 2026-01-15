@@ -80,7 +80,7 @@ class AbstractBackendGatewayTest extends TestCase {
 				'desc_tip'    => false,
 			],
 			'paynow_title' => [
-				'title' => '<h3>Pay now:</h3>',
+				'title' => '<h2>Pay now:</h2>',
 				'type'  => 'title',
 			],
 			'paynow_title_field' => [
@@ -98,7 +98,7 @@ class AbstractBackendGatewayTest extends TestCase {
 				'default'     => 'Fast and secured payments',
 			],
 			'pnx_title' => [
-				'title' => '<h3>Payments in 2, 3 and 4 installments:</h3>',
+				'title' => '<h2>Payments in 2, 3 and 4 installments:</h2>',
 				'type'  => 'title',
 			],
 			'pnx_title_field' => [

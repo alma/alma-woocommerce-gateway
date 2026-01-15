@@ -26,6 +26,22 @@ class BusinessEventsServiceTest extends TestCase
 	public function setUp(): void {
 		Monkey\setUp();
 
+		// Mock de la classe OrderStatus de WooCommerce
+		if (!class_exists('\Automattic\WooCommerce\Enums\OrderStatus')) {
+			eval('
+            namespace Automattic\WooCommerce\Enums;
+            class OrderStatus {
+                const PENDING = "pending";
+                const PROCESSING = "processing";
+                const ON_HOLD = "on-hold";
+                const COMPLETED = "completed";
+                const CANCELLED = "cancelled";
+                const REFUNDED = "refunded";
+                const FAILED = "failed";
+            }
+        ');
+		}
+
 		$this->sessionHelper = $this->createMock(SessionHelper::class);
 		$this->businessEventsRepository = $this->createMock(BusinessEventsRepository::class);
 		$this->merchantProvider = $this->createMock( MerchantProvider::class);
