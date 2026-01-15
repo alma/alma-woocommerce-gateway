@@ -31,6 +31,7 @@ export const DisplayAlmaInPageBlock = (props) => {
     const inPageRef = useRef(null);
     const [isInPageReady, setIsInPageReady] = useState(false);
     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+    const [modalClosed, setModalClosed] = useState(false);
 
     // Define default plan and selected plan
     const availableFeePlans = gatewaySettings.fee_plans_settings || {};
@@ -172,7 +173,7 @@ export const DisplayAlmaInPageBlock = (props) => {
      */
     useEffect(() => {
         const unsubscribeSuccess = onCheckoutSuccess(async (checkoutResponse) => {
-            console.log('Checkout API call successful:', checkoutResponse);
+            setModalClosed(false);
 
             try {
                 // Get payment details from response
@@ -180,7 +181,6 @@ export const DisplayAlmaInPageBlock = (props) => {
                 const almaPaymentId = paymentDetails?.alma_payment_id;
 
                 if (!almaPaymentId) {
-                    console.error('No Alma payment ID in response');
                     resetCheckoutState();
                     return {
                         type: emitResponse.responseTypes.ERROR,
@@ -189,7 +189,6 @@ export const DisplayAlmaInPageBlock = (props) => {
                 }
 
                 if (!inPage || !isInPageReady) {
-                    console.error('In-Page not ready');
                     resetCheckoutState();
                     return {
                         type: emitResponse.responseTypes.ERROR,
@@ -197,52 +196,52 @@ export const DisplayAlmaInPageBlock = (props) => {
                     };
                 }
 
-                console.log('Opening Alma In-Page payment modal...');
+                const paymentResult = await new Promise((resolve) => {
+                    let settled = false;
 
-                try {
-                    const paymentResult = await inPage.startPayment({
+                    inPage.startPayment({
                         paymentId: almaPaymentId,
                         onUserCloseModal: () => {
-                            console.log('Payment modal closed by user');
-                            resetCheckoutState();
+                            if (!settled) {
+                                settled = true;
+                                resetCheckoutState();
+                                resolve({ status: 'cancelled' });
+                            }
                         }
                     });
+                });
 
-                    // Check payment result status
-                    if (paymentResult && paymentResult.status === 'success') {
-                        console.log('Payment completed successfully');
-                        setIsProcessingPayment(false);
+                if (paymentResult.status === 'cancelled') {
+                    return {
+                        type: emitResponse.responseTypes.ERROR,
+                        message: 'Payment cancelled',
+                    };
+                }
 
-                        // Redirect to order received page
-                        if (!inPage && checkoutResponse.redirectUrl) {
-                            window.location.href = checkoutResponse.redirectUrl;
-                        } else {
-                            const orderId = checkoutResponse.orderId || paymentResult.orderId;
-                            const orderKey = checkoutResponse.orderKey || '';
-                            window.location.href = `/checkout/order-received/${orderId}/?key=${orderKey}`;
-                        }
-                    } else if (paymentResult && paymentResult.status === 'error') {
-                        console.error('Payment error:', paymentResult.error);
-                        resetCheckoutState();
-                        alert(paymentResult.error?.message || 'Payment failed. Please try again.');
-                    } else if (paymentResult && paymentResult.status === 'cancelled') {
-                        console.log('⚠Payment cancelled by user');
-                        resetCheckoutState();
-                    }
+                if (paymentResult.status === 'success') {
+                    setIsProcessingPayment(false);
 
-                } catch (paymentError) {
-                    console.error('Payment modal error:', paymentError);
-                    resetCheckoutState();
-
-                    if (paymentError.code === 'user_cancelled') {
-                        console.log('User cancelled payment');
+                    if (checkoutResponse.redirectUrl) {
+                        window.location.href = checkoutResponse.redirectUrl;
                     } else {
-                        alert(paymentError.message || 'Payment failed. Please try again.');
+                        const orderId = checkoutResponse.orderId;
+                        const orderKey = checkoutResponse.orderKey || '';
+                        window.location.href = `/checkout/order-received/${orderId}/?key=${orderKey}`;
                     }
+                    return {
+                        type: emitResponse.responseTypes.SUCCESS,
+                    };
+                }
+
+                if (paymentResult.status === 'error') {
+                    resetCheckoutState();
+                    return {
+                        type: emitResponse.responseTypes.ERROR,
+                        message: paymentResult.error?.message || 'Payment failed',
+                    };
                 }
 
             } catch (error) {
-                console.error('Failed to open payment modal:', error);
                 resetCheckoutState();
                 return {
                     type: emitResponse.responseTypes.ERROR,
@@ -259,8 +258,6 @@ export const DisplayAlmaInPageBlock = (props) => {
      */
     useEffect(() => {
         const unsubscribeFail = onCheckoutFail((error) => {
-            console.error('Checkout failed:', error);
-
             // Unmount the In-Page instance if it exists
             if (inPage && typeof inPage.unmount === 'function') {
                 try {
