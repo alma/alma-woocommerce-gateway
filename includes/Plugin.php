@@ -167,31 +167,34 @@ final class Plugin extends AbstractPlugin {
 
 		/** @var ShopController $shopController */
 		$shopController = self::get_container()->get( ShopController::class );
-		
+
 		$adminController->prepare();
 
 		if ( $this->is_configured() ) {
 
 			$this->get_container()->setApiConfig();
-
 			$gatewayController->prepare();
-
-			// Register widgets
-			$shopController->prepare();
 
 			// Plugin fully configured, let's run the services
 			$gatewayController->run();
+			
+			if ( $this->is_enabled( true ) ) {
 
-			// Run services only when WordPress frontend is ready.
-			$shopController->run();
+				// Register widgets
+				$shopController->prepare();
+
+				// Run services only when WordPress frontend is ready.
+				$shopController->run();
+
+				// Display services only when WordPress frontend is ready.
+				$shopController->display();
+			}
 
 			// Run Admin Controller only when WordPress admin is ready.
 			$adminController->display();
 
-			// Display services only when WordPress frontend is ready.
-			$shopController->display();
-
 		} else {
+
 			// Plugin not yet configured, load only backend gateway to help in configuration.
 			$gatewayController->configure();
 		}

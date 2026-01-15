@@ -7,6 +7,7 @@ use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
+use Alma\Gateway\Infrastructure\Exception\Gateway\AbstractGatewayException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
@@ -33,6 +34,9 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 		$form_helper       = Plugin::get_container()->get( FormHelper::class );
 		$this->form_helper = $form_helper;
 		parent::__construct();
+		/** @var ConfigService $config_service */
+		$config_service = Plugin::get_instance()->get_container()->get( ConfigService::class );
+		$this->enabled  = $config_service->isEnabled() ? 'yes' : 'no';
 	}
 
 	public function setFormHelper( $formHelper ) {
@@ -99,9 +103,12 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	 * It calls the parent method to check the availability.
 	 *
 	 * @return bool
-	 * @throws FeePlanRepositoryException
+	 * @throws FeePlanRepositoryException|AbstractGatewayException
 	 */
 	public function is_available(): bool {
+		if ( ! parent::is_available() ) {
+			return false;
+		}
 
 		// Check Fee Plans availability
 		$available = false;

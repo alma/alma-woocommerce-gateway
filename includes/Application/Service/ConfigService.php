@@ -126,7 +126,7 @@ class ConfigService {
 	 *
 	 * @return string
 	 */
-	public function getOrigin() {
+	public function getOrigin(): string {
 		if ( $this->isInPageEnabled() ) {
 			return PaymentDto::ORIGIN_ONLINE_IN_PAGE;
 		}

@@ -76,16 +76,10 @@ class AlmaGateway extends AbstractBackendGateway {
 		/** @var ConfigService $config_service */
 		$config_service = Plugin::get_container()->get( ConfigService::class );
 
-		// If the plugin is configured, add the gateway and fee plan fields
-		if ( Plugin::get_instance()->is_configured() ) {
-			$this->form_fields = array_merge(
-				$this->enabled_field(),
-			);
-		}
-
 		// Initialize minimum form fields
 		$this->form_fields = array_merge(
 			$this->form_fields,
+			$this->enabled_field(),
 			$this->api_key_fieldset(),
 		);
 
