@@ -49,7 +49,7 @@ class TemplateHelper {
 	 * @throws TemplateHelperException
 	 * @see locate_template()
 	 *
-	 * @sonar It's mandatory to use include_once method here.
+	 * It's mandatory to use include_once method here.
 	 * @phpcs We use extract to pass variables to the template.
 	 */
 	public function getTemplate( string $template_name, array $args = array(), string $subpath = '' ) {
@@ -67,6 +67,6 @@ class TemplateHelper {
 			);
 		}
 
-		include $template_file;// NOSONAR -- It's mandatory to use include_once method here.
+		include $template_file;// It's mandatory to use include_once method here.
 	}
 }

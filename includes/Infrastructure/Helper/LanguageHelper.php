@@ -31,10 +31,10 @@ class LanguageHelper {
 	 * @param string $domain
 	 *
 	 * @return string
-	 * @sonar It's a convention to use __() for translations
+	 * It's a convention to use __() for translations
 	 * @phpcs We pass a variable to __() call because it's a proxy!
 	 */
-	public static function __( string $text, string $domain = 'default' ): string /* NOSONAR */ {
+	public static function __( string $text, string $domain = 'default' ): string {
 		return __( $text, $domain ) ?? ''; // phpcs:ignore
 	}
 }
