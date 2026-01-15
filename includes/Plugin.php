@@ -168,7 +168,9 @@ final class Plugin extends AbstractPlugin {
 		/** @var ShopController $shopController */
 		$shopController = self::get_container()->get( ShopController::class );
 
+		// Run Admin Controller only when WordPress admin is ready.
 		$adminController->prepare();
+		$adminController->display();
 
 		if ( $this->is_configured() ) {
 
@@ -177,7 +179,7 @@ final class Plugin extends AbstractPlugin {
 
 			// Plugin fully configured, let's run the services
 			$gatewayController->run();
-			
+
 			if ( $this->is_enabled( true ) ) {
 
 				// Register widgets
@@ -189,9 +191,6 @@ final class Plugin extends AbstractPlugin {
 				// Display services only when WordPress frontend is ready.
 				$shopController->display();
 			}
-
-			// Run Admin Controller only when WordPress admin is ready.
-			$adminController->display();
 
 		} else {
 

@@ -3,6 +3,8 @@
 namespace Alma\Gateway\Infrastructure\Controller;
 
 use Alma\Gateway\Application\Service\PluginService;
+use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
+use Alma\Gateway\Infrastructure\Exception\Controller\AdminControllerException;
 use Alma\Gateway\Infrastructure\Helper\BackendHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
@@ -30,11 +32,21 @@ class AdminController {
 	/**
 	 * Prepare services.
 	 * @return void
+	 * @throws AdminControllerException
 	 */
 	public function prepare() {
 		// Add Admin Notifications
 		$this->pluginService->addAlmaAdminNotifications();
 		$this->pluginService->addAlmaLinksOnAdmin();
+
+		// Register Admin Assets
+		try {
+			$this->assetsService->registerAdminAssets();
+			$this->assetsService->registerWidgetAssets();
+			$this->assetsService->registerWidgetBlockEditorAssets();
+		} catch ( AssetsServiceException $e ) {
+			throw new AdminControllerException( $e->getMessage() );
+		}
 	}
 
 	/**
@@ -45,10 +57,6 @@ class AdminController {
 			function () {
 				// Init Backend Services
 				if ( ContextHelper::isAdmin() ) {
-					// Register Admin Assets
-					$this->assetsService->registerAdminAssets();
-					$this->assetsService->registerWidgetAssets();
-					$this->assetsService->registerWidgetBlockEditorAssets();
 
 					// Display Admin Assets
 					$this->assetsService->displayAdminAssets();
