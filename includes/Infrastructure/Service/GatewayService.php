@@ -3,11 +3,13 @@
 namespace Alma\Gateway\Infrastructure\Service;
 
 use Alma\API\Infrastructure\Exception\ParametersException;
+use Alma\Gateway\Application\Exception\Service\BusinessEventsServiceException;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Application\Mapper\RefundMapper;
 use Alma\Gateway\Application\Provider\PaymentProviderAwareTrait;
 use Alma\Gateway\Application\Provider\PaymentProviderFactory;
+use Alma\Gateway\Application\Service\BusinessEventsService;
 use Alma\Gateway\Infrastructure\Block\Gateway\AbstractGatewayBlock;
 use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Exception\CheckoutServiceException;
@@ -17,6 +19,7 @@ use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Infrastructure\Repository\UserRepository;
 use Alma\Gateway\Plugin;
+use Automattic\WooCommerce\Admin\Overrides\Order;
 use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
 
 class GatewayService {
@@ -28,14 +31,18 @@ class GatewayService {
 
 	private GatewayRepository $gatewayRepository;
 
+	private BusinessEventsService $businessEventsService;
+
 	public function __construct(
 		PaymentProviderFactory $paymentProviderFactory,
 		GatewayRepository $gatewayRepository,
-		AssetsService $assetsService
+		AssetsService $assetsService,
+		BusinessEventsService $businessEventsService
 	) {
 		$this->paymentProviderFactory = $paymentProviderFactory;
 		$this->gatewayRepository      = $gatewayRepository;
 		$this->assetsService          = $assetsService;
+		$this->businessEventsService = $businessEventsService;
 	}
 
 	/**
@@ -43,7 +50,7 @@ class GatewayService {
 	 * This method will make full refund if possible.
 	 *
 	 * @param int    $orderId Order id.
-	 * @param string $old_status Old status (not used but necessary for the callback).
+	 * @param string $oldStatus Old status.
 	 * @param string $newStatus New status.
 	 *
 	 * @sonar We need to keep $old_status on the signature for the hook
@@ -54,7 +61,7 @@ class GatewayService {
 	 */
 	public function woocommerceOrderStatusChanged(
 		int $orderId,
-		string $old_status,// NOSONAR -- We need to keep this signature for the hook
+		string $oldStatus,
 		string $newStatus
 	): void {
 
@@ -88,6 +95,12 @@ class GatewayService {
 					)
 				);
 			}
+		}
+
+		try {
+			$this->businessEventsService->onOrderConfirmed( $oldStatus, $newStatus, $order );
+		} catch ( BusinessEventsServiceException $e ) {
+			throw new GatewayServiceException( 'Order confirmed does not sent:' . $e->getMessage() );
 		}
 	}
 

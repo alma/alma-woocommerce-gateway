@@ -80,7 +80,7 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	 * @return string
 	 */
 	public function get_name(): string {
-		return sprintf( 'alma_%s_gateway', $this->get_payment_method() );
+		return sprintf( AbstractGateway::NAME_ALMA_GATEWAYS, $this->get_payment_method() );
 	}
 
 	/**

@@ -12,6 +12,7 @@ use Alma\Gateway\Application\Provider\EligibilityProviderAwareTrait;
 use Alma\Gateway\Application\Provider\EligibilityProviderFactory;
 use Alma\Gateway\Application\Provider\FeePlanProviderAwareTrait;
 use Alma\Gateway\Application\Provider\FeePlanProviderFactory;
+use Alma\Gateway\Application\Service\BusinessEventsService;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
@@ -28,16 +29,25 @@ class FeePlanRepository {
 
 	/** @var ConfigService */
 	private ConfigService $configService;
+	/** @var BusinessEventsService */
+	private BusinessEventsService $businessEventsService;
 
 	/**
 	 * FeePlanRepository constructor.
 	 *
 	 * @param ConfigService              $configService
+	 * @param BusinessEventsService      $businessEventsService
 	 * @param FeePlanProviderFactory     $feePlanProviderFactory
 	 * @param EligibilityProviderFactory $eligibilityProviderFactory
 	 */
-	public function __construct( ConfigService $configService, FeePlanProviderFactory $feePlanProviderFactory, EligibilityProviderFactory $eligibilityProviderFactory ) {
+	public function __construct(
+		ConfigService $configService,
+		BusinessEventsService $businessEventsService,
+		FeePlanProviderFactory $feePlanProviderFactory,
+		EligibilityProviderFactory $eligibilityProviderFactory
+	) {
 		$this->configService              = $configService;
+		$this->businessEventsService      = $businessEventsService;
 		$this->feePlanProviderFactory     = $feePlanProviderFactory;
 		$this->eligibilityProviderFactory = $eligibilityProviderFactory;
 	}
@@ -133,6 +143,7 @@ class FeePlanRepository {
 						$feePlanListAdapter->filterEnabled()
 					);
 				$installmentPlanList = $this->eligibilityProvider->getEligibilityList( $eligibilityDto );
+				$this->businessEventsService->updateEligibility($installmentPlanList);
 				$feePlanListAdapter  = $this->setInstallmentPlanList( $feePlanListAdapter, $installmentPlanList );
 			}
 
@@ -200,6 +211,9 @@ class FeePlanRepository {
 	}
 
 	private function setInstallmentPlanList( FeePlanListAdapter $feePlanListAdapter, EligibilityList $eligibilityList ): FeePlanListAdapter {
+		if ($eligibilityList->count() === 0) {
+			return new FeePlanListAdapter( [] );
+		}
 
 		/** @var Eligibility $eligibility */
 		foreach ( $eligibilityList as $eligibility ) {

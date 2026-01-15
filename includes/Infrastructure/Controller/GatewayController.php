@@ -19,15 +19,18 @@ class GatewayController {
 
 	private GatewayService $gatewayService;
 	private AssetsService $assetsService;
+	private BusinessEventsService $businessEventsService;
 	private GatewayRepository $gatewayRepository;
 
 	public function __construct(
 		GatewayService $gatewayService,
 		AssetsService $assetsService,
+		BusinessEventsService $businessEventsService,
 		GatewayRepository $gatewayRepository
 	) {
 		$this->gatewayService    = $gatewayService;
 		$this->assetsService     = $assetsService;
+		$this->businessEventsService = $businessEventsService;
 		$this->gatewayRepository = $gatewayRepository;
 	}
 
@@ -103,6 +106,22 @@ class GatewayController {
 				array( Plugin::get_container()->get( BusinessEventsService::class ), 'onCartInitiated' )
 			);
 		}
+
+		// For Business event on create order to set the order id on classic checkout
+		EventHelper::addEvent(
+			'woocommerce_checkout_update_order_meta',
+			array( $this->businessEventsService, 'onCreateOrder' ),
+			10,
+			1
+		);
+
+		// For Business event on create order to set the order id on Block checkout
+		EventHelper::addEvent(
+			'woocommerce_store_api_checkout_update_order_meta',
+			array( $this->businessEventsService, 'onCreateOrderBlock' ),
+			10,
+			1
+		);
 
 		// Configure the hooks linked to the gateways
 		EventHelper::addEvent(
