@@ -19,7 +19,6 @@ use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Infrastructure\Repository\UserRepository;
 use Alma\Gateway\Plugin;
-use Automattic\WooCommerce\Admin\Overrides\Order;
 use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
 
 class GatewayService {
@@ -42,7 +41,7 @@ class GatewayService {
 		$this->paymentProviderFactory = $paymentProviderFactory;
 		$this->gatewayRepository      = $gatewayRepository;
 		$this->assetsService          = $assetsService;
-		$this->businessEventsService = $businessEventsService;
+		$this->businessEventsService  = $businessEventsService;
 	}
 
 	/**
@@ -53,7 +52,7 @@ class GatewayService {
 	 * @param string $oldStatus Old status.
 	 * @param string $newStatus New status.
 	 *
-	 * @sonar We need to keep $old_status on the signature for the hook
+	 * We need to keep $old_status on the signature for the hook
 	 *
 	 * @throws GatewayServiceException|ParametersException
 	 * @todo move this in a more appropriated service

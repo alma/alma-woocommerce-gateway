@@ -2,6 +2,7 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
+use Alma\Gateway\Infrastructure\Exception\Gateway\AbstractGatewayException;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
@@ -38,7 +39,8 @@ class FrontendHelper {
 	 *
 	 * @return void
 	 *
-	 * @sonar Easier to understand with two if statements.
+	 * Easier to understand with two if statements.
+	 * @throws AbstractGatewayException
 	 */
 	public static function loadFrontendGateways( array $almaGatewayList ) {
 		add_filter(
@@ -51,7 +53,7 @@ class FrontendHelper {
 					if ( ! in_array( $gatewayClass, $gateways, true ) && class_exists( $gatewayClass ) ) {
 						// Check if the gateway is enabled before adding it to the list.
 						$gateway = $container->get( $gatewayClass );
-						if ( $gateway->is_enabled() ) { // NOSONAR -- Easier to understand with two if statements.
+						if ( $gateway->is_enabled() ) { // Easier to understand with two if statements.
 							array_unshift( $gateways, $gateway );
 						}
 					}
