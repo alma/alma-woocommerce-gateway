@@ -14,6 +14,7 @@ use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\FormHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Plugin;
+use WC_Order;
 
 /**
  * Class Gateway
@@ -151,6 +152,17 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 		$fee_plan_repository = Plugin::get_instance()->get_container()->get( FeePlanRepository::class );
 
 		return $fee_plan_repository->getAllWithEligibility( ContextHelper::getCart()->getCartTotal() )->filterFeePlanList( array( $this->get_payment_method() ) )->filterEnabled();
+	}
+
+	/**
+	 * Get the transaction URL from the order meta.
+	 *
+	 * @param WC_Order $order The order object.
+	 *
+	 * @return string|null The transaction URL.
+	 */
+	public function get_transaction_url( $order ) {
+		return $order->get_meta( '_alma_payment_url' );
 	}
 
 	/**

@@ -160,6 +160,8 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 
 		// Update order status to pending
 		$order->updateStatus( 'pending', __( 'Awaiting payment via Alma', 'alma-gateway-for-woocommerce' ) );
+		$order->update_meta_data( '_alma_payment_id', $payment->getId() );
+		$order->update_meta_data( '_alma_payment_url', $payment->getUrl() );
 
 		/** @var BusinessEventsService $business_event_service */
 		$business_event_service = Plugin::get_container()->get( BusinessEventsService::class );
