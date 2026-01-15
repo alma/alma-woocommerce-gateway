@@ -31,7 +31,6 @@ export const DisplayAlmaInPageBlock = (props) => {
     const inPageRef = useRef(null);
     const [isInPageReady, setIsInPageReady] = useState(false);
     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
-    const [modalClosed, setModalClosed] = useState(false);
 
     // Define default plan and selected plan
     const availableFeePlans = gatewaySettings.fee_plans_settings || {};
@@ -57,16 +56,12 @@ export const DisplayAlmaInPageBlock = (props) => {
      * Reset checkout state after payment modal is closed
      */
     const resetCheckoutState = useCallback(() => {
-        console.log(gatewaySettings.name + ': Resetting checkout state...');
-
         try {
             // Reinit "processing" state of checkout
             dispatch(CHECKOUT_STORE_KEY).__internalSetProcessing(false);
 
             // Reinit "idle" state of checkout
             dispatch(CHECKOUT_STORE_KEY).__internalSetIdle();
-
-            console.log(gatewaySettings.name + ': Checkout state reset successfully');
         } catch (error) {
             console.warn('Could not reset checkout state:', error);
         }
@@ -78,18 +73,14 @@ export const DisplayAlmaInPageBlock = (props) => {
      * Initialize Alma In-Page Iframe
      */
     const initializeInPage = useCallback((total_price) => {
-        console.log('Initializing Alma In-Page Iframe...');
-
         // Don't re-initialize if a payment is in progress
         if (isProcessingPayment) {
-            console.log('Payment in progress, skipping re-initialization');
             return;
         }
 
         // Clean up previous instance if exists
         if (inPage && typeof inPage.unmount === 'function') {
             try {
-                console.log('Unmounting previous instance');
                 inPage.unmount();
             } catch (e) {
                 console.info('Unmounting previous instance');
@@ -117,7 +108,6 @@ export const DisplayAlmaInPageBlock = (props) => {
             // Store and share the instance in parent component state
             setInPage(inPageRef.current);
             setIsInPageReady(true);
-            console.log('In-Page initialized');
         } catch (error) {
             console.error('Failed to initialize:', error);
             setIsInPageReady(false);
@@ -129,10 +119,7 @@ export const DisplayAlmaInPageBlock = (props) => {
      */
     useEffect(() => {
         const unsubscribe = onPaymentSetup(async () => {
-            console.log(gatewaySettings.name + ': In-Page Payment Setup starting...');
-
             if (isProcessingPayment) {
-                console.log(gatewaySettings.name + ': Payment already processing, skipping...');
                 return {
                     type: emitResponse.responseTypes.SUCCESS,
                 };
@@ -173,7 +160,6 @@ export const DisplayAlmaInPageBlock = (props) => {
      */
     useEffect(() => {
         const unsubscribeSuccess = onCheckoutSuccess(async (checkoutResponse) => {
-            setModalClosed(false);
 
             try {
                 // Get payment details from response
@@ -197,13 +183,13 @@ export const DisplayAlmaInPageBlock = (props) => {
                 }
 
                 const paymentResult = await new Promise((resolve) => {
-                    let settled = false;
+                    let resolvedPromisePaymentResult = false;
 
                     inPage.startPayment({
                         paymentId: almaPaymentId,
                         onUserCloseModal: () => {
-                            if (!settled) {
-                                settled = true;
+                            if (!resolvedPromisePaymentResult) {
+                                resolvedPromisePaymentResult = true;
                                 resetCheckoutState();
                                 resolve({ status: 'cancelled' });
                             }
@@ -288,7 +274,6 @@ export const DisplayAlmaInPageBlock = (props) => {
             const planKey = plan.planKey;
 
             if (lastInitRef.current.planKey !== planKey || lastInitRef.current.cartTotal !== cartTotal) {
-                console.log('Plan or cart changed, reinitializing In-Page widget');
                 lastInitRef.current = {planKey, cartTotal};
                 initializeInPage(cartTotal);
             }
