@@ -53,6 +53,20 @@ class AlmaGateway extends AbstractBackendGateway {
 		return true;
 	}
 
+	public function is_enabled(): bool {
+		return true;
+	}
+
+	/**
+	 * Check if the gateway needs setup.
+	 * This will display the "Action needed" flag in WooCommerce payment methods list.
+	 *
+	 * @return bool
+	 */
+	public function needs_setup(): bool {
+		return ! Plugin::get_instance()->is_configured();
+	}
+
 	/**
 	 * Initialize form fields.
 	 * @throws AlmaGatewayException
@@ -62,10 +76,16 @@ class AlmaGateway extends AbstractBackendGateway {
 		/** @var ConfigService $config_service */
 		$config_service = Plugin::get_container()->get( ConfigService::class );
 
+		// If the plugin is configured, add the gateway and fee plan fields
+		if ( Plugin::get_instance()->is_configured() ) {
+			$this->form_fields = array_merge(
+				$this->enabled_field(),
+			);
+		}
+
 		// Initialize minimum form fields
 		$this->form_fields = array_merge(
 			$this->form_fields,
-			$this->enabled_field(),
 			$this->api_key_fieldset(),
 		);
 

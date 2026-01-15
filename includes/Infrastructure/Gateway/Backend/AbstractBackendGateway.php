@@ -100,7 +100,7 @@ class AbstractBackendGateway extends AbstractGateway {
 				'title'    => __( 'Enable/Disable', 'alma-gateway-for-woocommerce' ),
 				'type'     => 'checkbox',
 				'label'    => __( 'Enable monthly payments with Alma', 'alma-gateway-for-woocommerce' ),
-				'default'  => 'yes',
+				'default'  => 'no',
 				'desc_tip' => false,
 			),
 		);
@@ -108,7 +108,7 @@ class AbstractBackendGateway extends AbstractGateway {
 
 	public function api_key_fieldset(): array {
 
-		return array(
+		$api_key_fieldset = array(
 			'keys_section'                               => array(
 				'title'       => '<hr>' . __( '→ Start by filling in your API keys', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'title',
@@ -149,7 +149,10 @@ class AbstractBackendGateway extends AbstractGateway {
 				),
 				'class'       => 'wc-enhanced-select',
 			),
-			'in_page_enabled'                            => array(
+		);
+
+		if ( Plugin::get_instance()->is_configured() ) {
+			$api_key_fieldset['in_page_enabled'] = array(
 				'title'    => __( 'Activate In-Page Checkout', 'alma-gateway-for-woocommerce' ),
 				'type'     => 'checkbox',
 				'label'    => __(
@@ -158,8 +161,10 @@ class AbstractBackendGateway extends AbstractGateway {
 				),
 				'default'  => 'yes',
 				'desc_tip' => false,
-			),
-		);
+			);
+		}
+
+		return $api_key_fieldset;
 	}
 
 	/**
