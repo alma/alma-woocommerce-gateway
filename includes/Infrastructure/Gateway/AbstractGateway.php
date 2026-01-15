@@ -92,6 +92,12 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * @throws AbstractGatewayException
 	 */
 	public function is_enabled(): bool {
+
+		if ( 'yes' !== $this->enabled ) {
+			return false;
+		}
+
+		// Check Fee Plans availability
 		try {
 			$enabledFeePlans = $this->fee_plan_repository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) )->filterEnabled();
 		} catch ( FeePlanRepositoryException $e ) {

@@ -115,23 +115,6 @@ class GatewayService {
 	}
 
 	/**
-	 * Add links to gateway.
-	 *
-	 * @param $links
-	 *
-	 * @return array
-	 */
-	public function pluginActionLinks( $links ): array {
-		$setting_link = ContextHelper::getAdminUrl( 'admin.php?page=wc-settings&tab=checkout&section=alma_config_gateway' );
-		$plugin_links = array(
-			sprintf( '<a href="%s">%s</a>', $setting_link,
-				__( 'Settings', 'alma-gateway-for-woocommerce' ) ),
-		);
-
-		return array_merge( $plugin_links, $links );
-	}
-
-	/**
 	 * Init the gateway blocks if the blocks are enabled
 	 * They're registered on every page but will be displayed only on checkout page
 	 * (see AbstractGatewayBlock::is_active())

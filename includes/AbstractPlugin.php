@@ -4,6 +4,7 @@ namespace Alma\Gateway;
 
 use Alma\Gateway\Application\Exception\Helper\RequirementsHelperException;
 use Alma\Gateway\Application\Helper\RequirementsHelper;
+use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -26,6 +27,9 @@ class AbstractPlugin {
 
 	/** @var bool Whether the plugin is configured or not. */
 	private bool $is_configured = false;
+
+	/** @var bool Whether the plugin is enabled or not. */
+	private bool $is_enabled = false;
 
 	/**
 	 * Return true if the plugin prerequisites are ok.
@@ -90,10 +94,49 @@ class AbstractPlugin {
 
 	/**
 	 * Return the config state of the Plugin
+	 *
+	 * @param bool $force_refresh If true, re-evaluate the configuration state.
+	 *
 	 * @return bool
 	 */
-	public function is_configured(): bool {
+	public function is_configured( bool $force_refresh = false ): bool {
+		if ( $force_refresh ) {
+			// Re-evaluate the configuration state
+			/** @var ConfigService $config_service */
+			$config_service = Plugin::get_container()->get( ConfigService::class );
+			$this->set_is_configured( $config_service->isConfigured() );
+		}
+
 		return $this->is_configured;
+	}
+
+	/**
+	 * Set true if the Plugin is enabled
+	 *
+	 * @param bool $is_enabled
+	 *
+	 * @return void
+	 */
+	public function set_is_enabled( bool $is_enabled ) {
+		$this->is_enabled = $is_enabled;
+	}
+
+	/**
+	 * Return the enabled state of the Plugin
+	 *
+	 * @param bool $force_refresh If true, re-evaluate the configuration state.
+	 *
+	 * @return bool
+	 */
+	public function is_enabled( bool $force_refresh = false ): bool {
+		if ( $force_refresh ) {
+			// Re-evaluate the configuration state
+			/** @var ConfigService $config_service */
+			$config_service = Plugin::get_container()->get( ConfigService::class );
+			$this->set_is_enabled( $config_service->isEnabled() );
+		}
+
+		return $this->is_enabled;
 	}
 
 	/**

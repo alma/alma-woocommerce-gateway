@@ -31,6 +31,12 @@ class AbstractGatewayTest extends TestCase {
 		$this->feePlanRepositoryMock = $this->createMock( FeePlanRepository::class );
 		$this->gateway               = new class( $this->feePlanRepositoryMock ) extends AbstractGateway {
 			protected const PAYMENT_METHOD = 'test';
+
+			public function __construct( $feePlanRepository ) {
+				$this->enabled = 'yes';
+				$this->id = 'test';
+				parent::__construct( $feePlanRepository );
+			}
 		};
 	}
 

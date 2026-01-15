@@ -63,10 +63,8 @@ class FeePlanRepository {
 	public function getAll( bool $forceRefresh = false ): FeePlanListAdapter {
 
 		if ( $forceRefresh || ! isset( $this->feePlanListAdapter['all'][0] ) ) {
-			almalog( 'NO CACHE' );
 			$this->feePlanListAdapter['all'][0] = $this->retrieveFeePlans();
 		}
-		almalog( 'CACHE' );
 
 		return $this->feePlanListAdapter['all'][0];
 	}
@@ -83,10 +81,8 @@ class FeePlanRepository {
 	public function getAllWithEligibility( int $cartTotal = 0, bool $forceRefresh = false ): FeePlanListAdapter {
 
 		if ( $forceRefresh || ! isset( $this->feePlanListAdapter['all-with-eligibility'][ $cartTotal ] ) ) {
-			almalogConsole( 'NO CACHE - WITH ELIGIBILITY - ' . $cartTotal );
 			$this->feePlanListAdapter['all-with-eligibility'][ $cartTotal ] = $this->retrieveFeePlans( $cartTotal );
 		}
-		almalogConsole( 'CACHE - WITH ELIGIBILITY - ' . $cartTotal );
 
 		return $this->feePlanListAdapter['all-with-eligibility'][ $cartTotal ];
 	}
@@ -215,6 +211,9 @@ class FeePlanRepository {
 	}
 
 	private function setInstallmentPlanList( FeePlanListAdapter $feePlanListAdapter, EligibilityList $eligibilityList ): FeePlanListAdapter {
+		if ($eligibilityList->count() === 0) {
+			return new FeePlanListAdapter( [] );
+		}
 
 		/** @var Eligibility $eligibility */
 		foreach ( $eligibilityList as $eligibility ) {

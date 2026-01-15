@@ -2,6 +2,7 @@
 
 namespace Alma\Gateway\Application\Service;
 
+use Alma\Gateway\Infrastructure\Helper\AdminMenuHelper;
 use Alma\Gateway\Infrastructure\Helper\AdminNotificationHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\EventHelper;
@@ -69,5 +70,16 @@ class PluginService {
 				)
 			);
 		}
+	}
+
+	/**
+	 * Add Alma links on WordPress admin menu.
+	 *
+	 * @return void
+	 */
+	public function addAlmaLinksOnAdmin() {
+
+		AdminMenuHelper::almaAddGatewayTopMenu();
+		AdminMenuHelper::addGatewayLinks();
 	}
 }

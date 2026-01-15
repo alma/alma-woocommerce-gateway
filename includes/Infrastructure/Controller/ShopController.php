@@ -38,7 +38,6 @@ class ShopController {
 	public function prepare() {
 		if ( ContextHelper::isCartPageUseBlocks() ) {
 			BlocksWidgetHelper::registerWidget();
-			almaLogConsole( '1 - PREPARE - Register Widget Block' );
 		}
 	}
 
@@ -55,15 +54,12 @@ class ShopController {
 				}
 
 				BlocksWidgetHelper::prepareWidgetAssets();
-				almaLogConsole( '2 - RUN - Register Widget Blocks Assets' );
 
 				$this->widgetService->runWidget();
-				almaLogConsole( '2 - RUN - Run Widget' );
 
 				// Enabled In-Page
 				if ( ContextHelper::isCheckoutPage() && $this->configService->isInPageEnabled() ) {
 					$this->inPageService->runInPage();
-					almaLogConsole( '2 - RUN - Run In-Page' );
 				}
 			}
 		);
@@ -75,7 +71,6 @@ class ShopController {
 				}
 
 				$this->widgetService->runWidget();
-				almaLogConsole( '2 - RUN - Widget for backend' );
 			}
 		);
 	}
@@ -89,12 +84,10 @@ class ShopController {
 			function () {
 				if ( ContextHelper::isCartPage() || ContextHelper::isProductPage() ) {
 					$this->assetsService->displayWidgetAssets();
-					almaLogConsole( '3 - DISPLAY - Load Widget Assets' );
 				}
 
 				if ( ContextHelper::isCheckoutPage() && $this->configService->isInPageEnabled() ) {
 					$this->assetsService->displayInPageAssets();
-					almaLogConsole( '3 - DISPLAY - Load In-Page Assets' );
 				}
 			}
 		);
