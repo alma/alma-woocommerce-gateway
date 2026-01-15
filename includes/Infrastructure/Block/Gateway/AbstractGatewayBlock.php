@@ -12,7 +12,6 @@
 namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
 use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
-use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\BusinessEventsService;
 use Alma\Gateway\Application\Service\PaymentService;
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
@@ -152,6 +151,7 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 
 			$order->updateStatus( 'pending', __( 'Awaiting payment via Alma', 'alma-gateway-for-woocommerce' ) );
 			$order->update_meta_data( '_alma_payment_id', $payment->getId() );
+			$order->update_meta_data( '_alma_payment_url', $payment->getUrl() );
 			$order->save();
 
 			/** @var BusinessEventsService $business_event_service */
