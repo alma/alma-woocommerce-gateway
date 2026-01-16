@@ -4,8 +4,15 @@ namespace Alma\Gateway\Infrastructure\Adapter;
 
 use Alma\API\Domain\Adapter\CartAdapterInterface;
 use Alma\Gateway\Application\Helper\DisplayHelper;
+use WC_Cart;
 
 class CartAdapter implements CartAdapterInterface {
+
+	private ?WC_Cart $cart = null;
+
+	public function __construct( ?WC_Cart $cart) {
+		$this->cart = $cart;
+	}
 
 	/**
 	 * Get the cart total in cents.
@@ -13,11 +20,11 @@ class CartAdapter implements CartAdapterInterface {
 	 * @return int
 	 */
 	public function getCartTotal(): int {
-		if ( ! WC()->cart ) {
+		if ( ! $this->cart ) {
 			return 0;
 		}
 
-		return DisplayHelper::price_to_cent( WC()->cart->get_total( null ) );
+		return DisplayHelper::price_to_cent( $this->cart->get_total( null ) );
 	}
 
 	/**
@@ -26,10 +33,10 @@ class CartAdapter implements CartAdapterInterface {
 	 * @return void
 	 */
 	public function emptyCart(): void {
-		if ( ! WC()->cart ) {
+		if ( ! $this->cart ) {
 			return;
 		}
-		wc()->cart->empty_cart();
+		$this->cart->empty_cart();
 	}
 
 	/**
@@ -39,13 +46,13 @@ class CartAdapter implements CartAdapterInterface {
 	 */
 	public function getCartItemsCategories(): array {
 
-		if ( ! WC()->cart ) {
+		if ( ! $this->cart ) {
 			return [];
 		}
 
 		$category_ids = array();
 
-		foreach ( WC()->cart->get_cart() as $cart_item ) {
+		foreach ( $this->cart->get_cart() as $cart_item ) {
 			$product = $cart_item['data'];
 
 			if ( ! $product || ! $product->get_id() ) {
