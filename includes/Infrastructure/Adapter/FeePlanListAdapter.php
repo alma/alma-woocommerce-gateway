@@ -145,13 +145,10 @@ class FeePlanListAdapter extends ArrayObject implements FeePlanListAdapterInterf
 	 * @return FeePlanListAdapterInterface
 	 */
 	public function filterEligible(): FeePlanListAdapterInterface {
-		$feePlanListAdapter = new FeePlanListAdapter( [] );
-		$feePlanListAdapter->addList( new FeePlanListAdapter( array_values( array_filter( $this->getArrayCopy(),
+		return new FeePlanListAdapter( array_values( array_filter( $this->getArrayCopy(),
 			function ( FeePlanAdapter $feePlanAdapter ) {
 				return $feePlanAdapter->isEligible();
-			} ) ) ) );
-
-		return $feePlanListAdapter;
+			} ) ) );
 	}
 
 	/**
