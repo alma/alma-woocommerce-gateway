@@ -140,6 +140,18 @@ class FeePlanListAdapter extends ArrayObject implements FeePlanListAdapterInterf
 	}
 
 	/**
+	 * Returns a list of Fee Plans that are eligible.
+	 *
+	 * @return FeePlanListAdapterInterface
+	 */
+	public function filterEligible(): FeePlanListAdapterInterface {
+		return new FeePlanListAdapter( array_values( array_filter( $this->getArrayCopy(),
+			function ( FeePlanAdapter $feePlanAdapter ) {
+				return $feePlanAdapter->isEligible();
+			} ) ) );
+	}
+
+	/**
 	 * Orders the Fee Plans based on the given payment method order,
 	 * then by installments count (ascending), then by deferred days (ascending).
 	 *

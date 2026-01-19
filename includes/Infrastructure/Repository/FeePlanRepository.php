@@ -70,7 +70,7 @@ class FeePlanRepository {
 	}
 
 	/**
-	 * Get all Fee Plans with their local configuration and Eligibility
+	 * Get all Fee Plans with their local configuration and Eligibility but doesn't filter them.
 	 *
 	 * @param int  $cartTotal
 	 * @param bool $forceRefresh Whether to force a refresh of the fee plan list.
