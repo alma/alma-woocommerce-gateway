@@ -356,7 +356,25 @@ class OrderHelper {
 			$order_helper = new OrderHelper();
 			$order        = $order_helper->get_order( $order_id );
 
-			if ( in_array( $order->get_status(), array( OrderStatus::PENDING, OrderStatus::DRAFT ) )) {
+			if (is_user_logged_in()) {
+				if (
+					(int) $order->get_user_id() !== get_current_user_id() &&
+					! current_user_can( 'manage_woocommerce' )
+				) {
+					wp_send_json_error( 'Forbidden to cancel the order', 403 );
+				}
+			} else {
+				$order_key = sanitize_text_field( $_POST['order_key'] ? $_POST['order_key'] : '' ); // phpcs:ignore WordPress.Security.NonceVerification
+
+				if ( ! hash_equals( $order->get_order_key(), $order_key )) {
+					wp_send_json_error( 'Forbidden to cancel the order', 403 );
+				}
+			}
+
+			if (
+				strpos( $order->get_payment_method(), 'alma' ) !== false &&
+				in_array( $order->get_status(), array( OrderStatus::PENDING, OrderStatus::DRAFT ) )
+			) {
 				$order->update_status( 'cancelled', 'Cancelled by customer' );
 			}
 			wp_send_json_success();
