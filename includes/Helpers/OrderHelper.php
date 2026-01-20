@@ -258,12 +258,13 @@ class OrderHelper {
 				&& ! empty( $_POST['fields'] ) // phpcs:ignore WordPress.Security.NonceVerification
 			) {
 
-				list( $payment_id, $order_id ) = $this->create_inpage_order( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification
+				list( $payment_id, $order_id, $order_key ) = $this->create_inpage_order( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification
 
 				wp_send_json_success(
 					array(
 						'payment_id' => $payment_id,
 						'order_id'   => $order_id,
+						'order_key'  => $order_key,
 					)
 				);
 			}
@@ -315,6 +316,7 @@ class OrderHelper {
 		return array(
 			$payment->id,
 			$order->get_id(),
+			$order->get_order_key(),
 		);
 	}
 
@@ -361,13 +363,13 @@ class OrderHelper {
 					(int) $order->get_user_id() !== get_current_user_id() &&
 					! current_user_can( 'manage_woocommerce' )
 				) {
-					wp_send_json_error( 'Forbidden to cancel the order', 403 );
+					wp_send_json_error( 'Logged: Forbidden to cancel the order', 403 );
 				}
 			} else {
 				$order_key = sanitize_text_field( $_POST['order_key'] ? $_POST['order_key'] : '' ); // phpcs:ignore WordPress.Security.NonceVerification
 
 				if ( ! hash_equals( $order->get_order_key(), $order_key )) {
-					wp_send_json_error( 'Forbidden to cancel the order', 403 );
+					wp_send_json_error( 'Not Logged: Forbidden to cancel the order', 403 );
 				}
 			}
 
