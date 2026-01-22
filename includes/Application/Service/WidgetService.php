@@ -50,7 +50,6 @@ class WidgetService {
 		FeePlanRepository $feePlanRepository,
 		ProductRepository $productRepository,
 		GatewayRepository $gatewayRepository,
-		CartAdapterInterface $cartAdapter,
 		ExcludedProductsHelper $excludedProductsHelper,
 		AssetsService $assetsService
 	) {
@@ -58,7 +57,7 @@ class WidgetService {
 		$this->feePlanRepository      = $feePlanRepository;
 		$this->productRepository      = $productRepository;
 		$this->gatewayRepository      = $gatewayRepository;
-		$this->cartAdapter            = $cartAdapter;
+		$this->cartAdapter            = ContextHelper::getCart();
 		$this->excludedProductsHelper = $excludedProductsHelper;
 		$this->assetsService          = $assetsService;
 	}
