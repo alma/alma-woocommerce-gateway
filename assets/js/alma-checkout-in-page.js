@@ -134,13 +134,14 @@
 							paymentId = response.data.payment_id;
 							orderId   = response.data.order_id;
                             orderKey   = response.data.order_key;
+                            nonce   = ajax_object.nonce;
 
 							// Start the payment.
 							inPage.startPayment(
 								{
 									paymentId:paymentId,
 									onUserCloseModal: () => {
-										cancel_order( orderId, orderKey );
+										cancel_order( orderId, orderKey, nonce );
 										$( '.alma-loader-wrapper' ).remove();
 									}
 								}
@@ -163,12 +164,13 @@
 		$( "body" ).append( "<div class='alma-loader-wrapper'>" + loading + "</div>" );
 	}
 
-	function cancel_order(orderId, orderKey)
+	function cancel_order(orderId, orderKey, nonce)
 	{
 		var data = {
 			'action': 'alma_cancel_order_in_page',
 			'order_id': orderId,
-            'order_key': orderKey
+            'order_key': orderKey,
+            'nonce': nonce
 		};
 
 		jQuery.post( ajax_object.ajax_url, data )

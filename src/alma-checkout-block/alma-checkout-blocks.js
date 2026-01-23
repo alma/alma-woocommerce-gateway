@@ -211,16 +211,19 @@ import './alma-checkout-blocks.css';
             jQuery.post(ajax_object.ajax_url, data)
                 .done(
                     function (response) {
+                        console.log(response);
+                        console.log(ajax_object.nonce);
                         var paymentId = response.data.payment_id;
                         var orderId = response.data.order_id;
                         var orderKey = response.data.order_key;
+                        var nonce = ajax_object.nonce;
 
                         // Start the payment.
                         inPage.startPayment(
                             {
                                 paymentId: paymentId,
                                 onUserCloseModal: () => {
-                                    cancel_order(orderId, orderKey);
+                                    cancel_order(orderId, orderKey, nonce);
                                     $('.alma-loader-wrapper').remove();
                                 }
                             }
@@ -236,9 +239,10 @@ import './alma-checkout-blocks.css';
 
         }
     };
-    function cancel_order(orderId, orderKey) {
+    function cancel_order(orderId, orderKey, nonce) {
         var data = {
             'action': 'alma_cancel_order_in_page',
+            'nonce': nonce,
             'order_id': orderId,
             'order_key': orderKey
         };

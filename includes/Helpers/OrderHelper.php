@@ -354,7 +354,12 @@ class OrderHelper {
 	 */
 	public function alma_cancel_order_in_page() {
 		try {
-			$order_id     = sanitize_text_field( $_POST['order_id'] ); // phpcs:ignore WordPress.Security.NonceVerification
+			// Vérification du nonce
+			if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'alma_cancel_order_in_page' ) ) {
+				wp_send_json_error( 'Invalid security token', 403 );
+			}
+
+			$order_id     = sanitize_text_field( $_POST['order_id'] );
 			$order_helper = new OrderHelper();
 			$order        = $order_helper->get_order( $order_id );
 
@@ -366,7 +371,7 @@ class OrderHelper {
 					wp_send_json_error( 'Logged: Forbidden to cancel the order', 403 );
 				}
 			} else {
-				$order_key = sanitize_text_field( $_POST['order_key'] ? $_POST['order_key'] : '' ); // phpcs:ignore WordPress.Security.NonceVerification
+				$order_key = sanitize_text_field( $_POST['order_key'] ? $_POST['order_key'] : '' );
 
 				if ( ! hash_equals( $order->get_order_key(), $order_key )) {
 					wp_send_json_error( 'Not Logged: Forbidden to cancel the order', 403 );
