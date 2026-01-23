@@ -108,7 +108,7 @@ class AbstractBackendGateway extends AbstractGateway {
 
 	public function api_key_fieldset(): array {
 
-		$api_key_fieldset = array(
+		return array(
 			'keys_section'                               => array(
 				'title'       => '<hr>' . __( '→ Start by filling in your API keys', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'title',
@@ -150,9 +150,12 @@ class AbstractBackendGateway extends AbstractGateway {
 				'class'       => 'wc-enhanced-select',
 			),
 		);
+	}
 
-		if ( Plugin::get_instance()->is_configured() ) {
-			$api_key_fieldset['in_page_enabled'] = array(
+	public function inpage_fieldset(): array {
+
+		return array(
+			'in_page_enabled' => array(
 				'title'    => __( 'Activate In-Page Checkout', 'alma-gateway-for-woocommerce' ),
 				'type'     => 'checkbox',
 				'label'    => __(
@@ -161,10 +164,8 @@ class AbstractBackendGateway extends AbstractGateway {
 				),
 				'default'  => 'yes',
 				'desc_tip' => false,
-			);
-		}
-
-		return $api_key_fieldset;
+			),
+		);
 	}
 
 	/**

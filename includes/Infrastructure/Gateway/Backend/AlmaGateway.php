@@ -88,6 +88,7 @@ class AlmaGateway extends AbstractBackendGateway {
 			try {
 				$this->form_fields = array_merge(
 					$this->form_fields,
+					$this->inpage_fieldset(),
 					$this->widget_fieldset(),
 					$this->excluded_categories_fieldset(),
 					$this->customize_payment_buttons_text_fieldset(),
