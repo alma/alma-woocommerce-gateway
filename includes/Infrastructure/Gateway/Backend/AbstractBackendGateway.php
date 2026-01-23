@@ -184,17 +184,17 @@ class AbstractBackendGateway extends AbstractGateway {
 				),
 				'desc_tip'    => false,
 			),
-			'widget_cart_enabled'    => array(
-				'title'    => __( 'Enable/Disable', 'alma-gateway-for-woocommerce' ),
+			'widget_product_enabled' => array(
+				'title'    => __( 'Product eligibility', 'alma-gateway-for-woocommerce' ),
 				'type'     => 'checkbox',
-				'label'    => __( 'Enable widget on cart page', 'alma-gateway-for-woocommerce' ),
+				'label'    => __( 'Display widget on product page', 'alma-gateway-for-woocommerce' ),
 				'default'  => 'yes',
 				'desc_tip' => false,
 			),
-			'widget_product_enabled' => array(
-				'title'    => __( 'Enable/Disable', 'alma-gateway-for-woocommerce' ),
+			'widget_cart_enabled'    => array(
+				'title'    => __( 'Cart eligibility', 'alma-gateway-for-woocommerce' ),
 				'type'     => 'checkbox',
-				'label'    => __( 'Enable widget on product page', 'alma-gateway-for-woocommerce' ),
+				'label'    => __( 'Display widget on cart page', 'alma-gateway-for-woocommerce' ),
 				'default'  => 'yes',
 				'desc_tip' => false,
 			),
