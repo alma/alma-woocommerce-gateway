@@ -366,7 +366,7 @@ class OrderHelper {
 					wp_send_json_error( 'Logged: Forbidden to cancel the order', 403 );
 				}
 			} else {
-				$order_key = sanitize_text_field( $_POST['order_key'] ? $_POST['order_key'] : '' ); // phpcs:ignore WordPress.Security.NonceVerification 
+				$order_key = sanitize_text_field( $_POST['order_key'] ? $_POST['order_key'] : '' ); // phpcs:ignore WordPress.Security.NonceVerification
 
 				if ( ! hash_equals( $order->get_order_key(), $order_key )) {
 					wp_send_json_error( 'Not Logged: Forbidden to cancel the order', 403 );
