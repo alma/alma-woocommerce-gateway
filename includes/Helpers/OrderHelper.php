@@ -354,9 +354,14 @@ class OrderHelper {
 	 */
 	public function alma_cancel_order_in_page() {
 		try {
-			// Vérification du nonce
-			if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'alma_cancel_order_in_page' ) ) {
-				wp_send_json_error( 'Invalid security token', 403 );
+			// Verification of nonce
+			// If Payment method is set, we are in blocks context.
+			if ( isset( $_POST['payment_method'] ) ) {
+				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'alma_checkout_nonce' . $_POST['payment_method'] ) ) {
+					wp_send_json_error( 'Blocks: Invalid security token', 403 );
+				}
+			} elseif ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'alma_cancel_order_in_page' ) ) {
+					wp_send_json_error( 'Invalid security token', 403 );
 			}
 
 			$order_id     = sanitize_text_field( $_POST['order_id'] );
