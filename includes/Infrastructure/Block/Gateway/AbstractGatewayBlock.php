@@ -45,6 +45,13 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 		$this->assets_handle      = $assets_handle;
 		$this->name               = $this->gateway->get_name() . '_block';
 		$this->initialize();
+
+		add_action(
+			'woocommerce_rest_checkout_process_payment_with_context',
+			array( $this, 'process_payment_with_context' ),
+			10,
+			2
+		);
 	}
 
 	/**
@@ -103,7 +110,7 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 	 * Non-Blocks payments use AbstractFrontendGateway::process_payment()
 	 * @throws CheckoutBlockException|FeePlanRepositoryException
 	 */
-	public function process_payment_with_context( PaymentContext $context, PaymentResult $result ) {
+	public function process_payment_with_context( PaymentContext $context, PaymentResult &$result ) {
 
 		if ( $context->payment_method === $this->gateway->get_name() ) {
 
