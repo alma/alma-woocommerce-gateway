@@ -260,7 +260,7 @@ class AbstractBackendGateway extends AbstractGateway {
 				'fee_plan'    => $fee_plan_adapter,
 				'description' => $fee_plan_display_data['toggle_label'],
 				'desc_tip'    => true,
-				'enabled'     => $fee_plan_adapter->isEnabled() ? '1' : '0',
+				'enabled'     => $fee_plan_adapter->isEnabled() || $fee_plan_adapter->getPlanKey() === 'general_3_0_0' ? '1' : '0',
 			);
 			/** @uses self::generate_table_description_html() */
 			$field_list[ $fee_plan_adapter->getPlanKey() . '_description' ] = array(
