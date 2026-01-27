@@ -131,12 +131,12 @@
 								'alma_fee_plan_in_page': feePlanChecked
 							};
 
-							paymentId = response.data.payment_id;
-							orderId   = response.data.order_id;
-                            orderKey   = response.data.order_key;
-                            nonce   = ajax_object.nonce;
+							let paymentId = response.data.payment_id;
+							let orderId   = response.data.order_id;
+                            let orderKey   = response.data.order_key;
+                            let nonce = ajax_object.nonce;
 
-							// Start the payment.
+                            // Start the payment.
 							inPage.startPayment(
 								{
 									paymentId:paymentId,
