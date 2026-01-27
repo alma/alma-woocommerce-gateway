@@ -184,17 +184,17 @@ class AbstractBackendGateway extends AbstractGateway {
 				),
 				'desc_tip'    => false,
 			),
-			'widget_cart_enabled'    => array(
-				'title'    => __( 'Enable/Disable', 'alma-gateway-for-woocommerce' ),
+			'widget_product_enabled' => array(
+				'title'    => __( 'Product eligibility', 'alma-gateway-for-woocommerce' ),
 				'type'     => 'checkbox',
-				'label'    => __( 'Enable widget on cart page', 'alma-gateway-for-woocommerce' ),
+				'label'    => __( 'Display widget on product page', 'alma-gateway-for-woocommerce' ),
 				'default'  => 'yes',
 				'desc_tip' => false,
 			),
-			'widget_product_enabled' => array(
-				'title'    => __( 'Enable/Disable', 'alma-gateway-for-woocommerce' ),
+			'widget_cart_enabled'    => array(
+				'title'    => __( 'Cart eligibility', 'alma-gateway-for-woocommerce' ),
 				'type'     => 'checkbox',
-				'label'    => __( 'Enable widget on product page', 'alma-gateway-for-woocommerce' ),
+				'label'    => __( 'Display widget on cart page', 'alma-gateway-for-woocommerce' ),
 				'default'  => 'yes',
 				'desc_tip' => false,
 			),
@@ -260,7 +260,7 @@ class AbstractBackendGateway extends AbstractGateway {
 				'fee_plan'    => $fee_plan_adapter,
 				'description' => $fee_plan_display_data['toggle_label'],
 				'desc_tip'    => true,
-				'enabled'     => $fee_plan_adapter->isEnabled() ? '1' : '0',
+				'enabled'     => $fee_plan_adapter->isEnabled() || $fee_plan_adapter->getPlanKey() === 'general_3_0_0' ? '1' : '0',
 			);
 			/** @uses self::generate_table_description_html() */
 			$field_list[ $fee_plan_adapter->getPlanKey() . '_description' ] = array(
