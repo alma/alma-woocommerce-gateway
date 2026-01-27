@@ -35,9 +35,6 @@ class WidgetService {
 	/** @var GatewayRepository Fee Plan Repository */
 	private GatewayRepository $gatewayRepository;
 
-	/** @var CartAdapterInterface Adapter to manage the cart. */
-	private CartAdapterInterface $cartAdapter;
-
 	/** @var ExcludedProductsHelper */
 	private ExcludedProductsHelper $excludedProductsHelper;
 
@@ -50,7 +47,6 @@ class WidgetService {
 		FeePlanRepository $feePlanRepository,
 		ProductRepository $productRepository,
 		GatewayRepository $gatewayRepository,
-		CartAdapterInterface $cartAdapter,
 		ExcludedProductsHelper $excludedProductsHelper,
 		AssetsService $assetsService
 	) {
@@ -58,7 +54,6 @@ class WidgetService {
 		$this->feePlanRepository      = $feePlanRepository;
 		$this->productRepository      = $productRepository;
 		$this->gatewayRepository      = $gatewayRepository;
-		$this->cartAdapter            = $cartAdapter;
 		$this->excludedProductsHelper = $excludedProductsHelper;
 		$this->assetsService          = $assetsService;
 	}
@@ -110,14 +105,15 @@ class WidgetService {
 	public function displayCartWidget( array $excludedCategories, FeePlanListAdapter $feePlanListAdapter, Environment $environment, string $merchantId, string $language ): WidgetInterface {
 
 		// Display widget if widget is enabled and there are no excluded categories.
-		$hasExcludedCategories = ! $this->excludedProductsHelper->canDisplayOnCartPage( $this->cartAdapter,
+		$cartAdapter		   = ContextHelper::getCart();
+		$hasExcludedCategories = ! $this->excludedProductsHelper->canDisplayOnCartPage( $cartAdapter,
 			$excludedCategories );
 		$displayWidget         = $this->shouldDisplayWidget(
 			$this->configService->getWidgetCartEnabled(),
 			$hasExcludedCategories,
 			$feePlanListAdapter
 		);
-		$price                 = $this->cartAdapter->getCartTotal();
+		$price                 = $cartAdapter->getCartTotal();
 
 		// Configure the widget
 		/** @var CartWidget $widget */
