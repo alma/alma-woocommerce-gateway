@@ -99,10 +99,30 @@ class MigrationService {
 	private function migrateDescriptions( array $originData ): array {
 		return [
 			'excluded_products_message'  => $originData['cart_not_eligible_message_gift_cards'] ?? null,
-			'pnx_description_field'      => $originData['description_alma'] ?? null,
-			'paylater_description_field' => $originData['description_alma_pay_later'] ?? null,
-			'paynow_description_field'   => $originData['description_alma_pay_now'] ?? null,
-			'credit_description_field'   => $originData['description_alma_pnx_plus_4'] ?? null,
+			'pnx_description_field'      => $this->getFirstAvailableValue( $originData, [
+				'description_alma',
+				'description_alma_in_page',
+				'description_blocks_alma',
+				'description_blocks_alma_in_page'
+			] ),
+			'paylater_description_field' => $this->getFirstAvailableValue( $originData, [
+				'description_alma_pay_later',
+				'description_alma_in_page_pay_later',
+				'description_blocks_alma_pay_later',
+				'description_blocks_alma_in_page_pay_later'
+			] ),
+			'paynow_description_field'   => $this->getFirstAvailableValue( $originData, [
+				'description_alma_pay_now',
+				'description_alma_in_page_pay_now',
+				'description_blocks_alma_pay_now',
+				'description_blocks_alma_in_page_pay_now'
+			] ),
+			'credit_description_field'   => $this->getFirstAvailableValue( $originData, [
+				'description_alma_pnx_plus_4',
+				'description_alma_in_page_pnx_plus_4',
+				'description_blocks_alma_pnx_plus_4',
+				'description_blocks_alma_in_page_pnx_plus_4'
+			] ),
 		];
 	}
 
@@ -115,10 +135,30 @@ class MigrationService {
 	 */
 	private function migrateTitles( array $originData ): array {
 		return [
-			'pnx_title_field'      => $originData['title_alma'] ?? null,
-			'paylater_title_field' => $originData['title_alma_pay_later'] ?? null,
-			'paynow_title_field'   => $originData['title_alma_pay_now'] ?? null,
-			'credit_title_field'   => $originData['title_alma_pnx_plus_4'] ?? null,
+			'pnx_title_field'      => $this->getFirstAvailableValue( $originData, [
+				'title_alma',
+				'title_alma_in_page',
+				'title_blocks_alma',
+				'title_blocks_alma_in_page'
+			] ),
+			'paylater_title_field' => $this->getFirstAvailableValue( $originData, [
+				'title_alma_pay_later',
+				'title_alma_in_page_pay_later',
+				'title_blocks_alma_pay_later',
+				'title_blocks_alma_in_page_pay_later'
+			] ),
+			'paynow_title_field'   => $this->getFirstAvailableValue( $originData, [
+				'title_alma_pay_now',
+				'title_alma_in_page_pay_now',
+				'title_blocks_alma_pay_now',
+				'title_blocks_alma_in_page_pay_now'
+			] ),
+			'credit_title_field'   => $this->getFirstAvailableValue( $originData, [
+				'title_alma_pnx_plus_4',
+				'title_alma_in_page_pnx_plus_4',
+				'title_blocks_alma_pnx_plus_4',
+				'title_blocks_alma_in_page_pnx_plus_4'
+			] ),
 		];
 	}
 
@@ -223,5 +263,23 @@ class MigrationService {
 		}
 
 		return empty( $termIds ) ? null : $termIds;
+	}
+
+	/**
+	 * Get the first available value from the data array based on the provided keys.
+	 *
+	 * @param array $data The data array to search.
+	 * @param array $keys The list of keys to check in order.
+	 *
+	 * @return ?string The first available value or null if none found.
+	 */
+	private function getFirstAvailableValue( array $data, array $keys ): ?string {
+		foreach ( $keys as $key ) {
+			if ( isset( $data[ $key ] ) ) {
+				return $data[ $key ];
+			}
+		}
+
+		return null;
 	}
 }
