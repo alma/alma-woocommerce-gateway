@@ -44,8 +44,12 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 		$this->is_in_page_enabled = $is_in_page_enabled;
 		$this->assets_handle      = $assets_handle;
 		$this->name               = $this->gateway->get_name() . '_block';
-		$this->initialize();
+	}
 
+	/**
+	 * Initialize the block by adding necessary actions.
+	 */
+	public function initialize() {
 		add_action(
 			'woocommerce_rest_checkout_process_payment_with_context',
 			array( $this, 'process_payment_with_context' ),

@@ -11,7 +11,6 @@
 
 namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
-use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
 
@@ -27,12 +26,5 @@ final class PayLaterGatewayBlock extends AbstractGatewayBlock implements Integra
 	public function __construct( bool $is_in_page_enabled, string $assets_handle ) {
 		$this->gateway = new PayLaterGateway();
 		parent::__construct( $is_in_page_enabled, $assets_handle );
-	}
-
-	/**
-	 * When called invokes any initialization/setup for the integration.
-	 * @todo implements https://developer.woocommerce.com/docs/block-development/extensible-blocks/cart-and-checkout-blocks/checkout-payment-methods/payment-method-integration/#processing-payments-via-the-store-api
-	 */
-	public function initialize() {
 	}
 }

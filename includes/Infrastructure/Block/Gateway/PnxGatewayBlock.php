@@ -11,10 +11,7 @@
 
 namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
-use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
-use Alma\Gateway\Infrastructure\Helper\FormHelper;
-use Alma\Gateway\Plugin;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -29,12 +26,5 @@ final class PnxGatewayBlock extends AbstractGatewayBlock implements IntegrationI
 	public function __construct( bool $is_in_page_enabled, string $assets_handle ) {
 		$this->gateway = new PnxGateway();
 		parent::__construct( $is_in_page_enabled, $assets_handle );
-	}
-
-	/**
-	 * When called invokes any initialization/setup for the integration.
-	 * @todo implements https://developer.woocommerce.com/docs/block-development/extensible-blocks/cart-and-checkout-blocks/checkout-payment-methods/payment-method-integration/#processing-payments-via-the-store-api
-	 */
-	public function initialize() {
 	}
 }
