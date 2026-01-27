@@ -104,6 +104,7 @@ class AbstractBackendGateway extends AbstractGateway {
 				'label'    => __( 'Enable monthly payments with Alma', 'alma-gateway-for-woocommerce' ),
 				'default'  => 'no',
 				'desc_tip' => false,
+				'class'    => 'wc-alma-toggle-enabled',
 			),
 		);
 	}
@@ -172,6 +173,7 @@ class AbstractBackendGateway extends AbstractGateway {
 						),
 						'default'  => 'yes',
 						'desc_tip' => false,
+						'class'    => 'wc-alma-toggle-enabled',
 					),
 			);
 		}
@@ -202,6 +204,7 @@ class AbstractBackendGateway extends AbstractGateway {
 				'label'    => __( 'Display widget on product page', 'alma-gateway-for-woocommerce' ),
 				'default'  => 'yes',
 				'desc_tip' => false,
+				'class'    => 'wc-alma-toggle-enabled',
 			),
 			'widget_cart_enabled'    => array(
 				'title'    => __( 'Cart eligibility', 'alma-gateway-for-woocommerce' ),
@@ -209,6 +212,7 @@ class AbstractBackendGateway extends AbstractGateway {
 				'label'    => __( 'Display widget on cart page', 'alma-gateway-for-woocommerce' ),
 				'default'  => 'yes',
 				'desc_tip' => false,
+				'class'    => 'wc-alma-toggle-enabled',
 			),
 		);
 	}
@@ -501,6 +505,7 @@ class AbstractBackendGateway extends AbstractGateway {
 			'excluded_products_list'      => array(
 				'title'       => __( 'Excluded product categories', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'multiselect',
+				'class'       => 'wc-enhanced-select',
 				'description' => __(
 					'Exclude all virtual/downloadable product categories, as you cannot sell them with Alma',
 					'alma-gateway-for-woocommerce'
