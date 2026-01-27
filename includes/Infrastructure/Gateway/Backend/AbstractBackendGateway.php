@@ -483,7 +483,8 @@ class AbstractBackendGateway extends AbstractGateway {
 					'alma-gateway-for-woocommerce'
 				),
 				'desc_tip'    => true,
-				'default'     => 'yes',
+				'default'     => 'no',
+				'class'       => 'wc-alma-toggle-enabled',
 			),
 		);
 	}
