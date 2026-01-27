@@ -18,6 +18,7 @@ use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
 use Alma\Gateway\Infrastructure\Helper\UrlHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
+use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
 use Alma\Gateway\Plugin;
 
@@ -222,9 +223,12 @@ class AbstractBackendGateway extends AbstractGateway {
 		$options_service = Plugin::get_container()->get( ConfigService::class );
 		$environment     = $options_service->getEnvironment();
 
+		/** @var GatewayRepository $gateway_repository */
+		$gateway_repository = Plugin::get_container()->get( GatewayRepository::class );
+
 		/** @var FeePlanRepository $fee_plan_repository */
 		$fee_plan_repository   = Plugin::get_container()->get( FeePlanRepository::class );
-		$fee_plan_list_adapter = $fee_plan_repository->getAll( true );
+		$fee_plan_list_adapter = $fee_plan_repository->getAll( true )->orderBy( $gateway_repository->findOrderedAlmaGateways() );
 
 		$field_list['fee_plan_section'] = array(
 			'title'       => '<hr>' . __( '→ Fee plans configuration', 'alma-gateway-for-woocommerce' ),
