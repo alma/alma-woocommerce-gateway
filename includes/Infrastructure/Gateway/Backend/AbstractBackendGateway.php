@@ -151,7 +151,7 @@ class AbstractBackendGateway extends AbstractGateway {
 			),
 		);
 
-		if ( Plugin::get_instance()->is_configured() ) {
+		if ( Plugin::get_instance()->is_configured( true ) ) {
 			$api_key_fieldset['in_page_enabled'] = array(
 				'title'    => __( 'Activate In-Page Checkout', 'alma-gateway-for-woocommerce' ),
 				'type'     => 'checkbox',
