@@ -125,13 +125,13 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 		}
 
 		// Check if there are products in the cart that are in excluded categories.
+		/** @var ConfigService $config_service */
 		$config_service      = Plugin::get_instance()->get_container()->get( ConfigService::class );
 		$excluded_categories = $config_service->getExcludedCategories();
 
-		/** @var CartAdapter $cart_adapter */
-		$cart_adapter = Plugin::get_container()->get( CartAdapter::class );
+		$cart_adapter = ContextHelper::getCart();
 
-		/** @var ExcludedProductsHelper $form_helper */
+		/** @var ExcludedProductsHelper $excluded_products_helper */
 		$excluded_products_helper = Plugin::get_container()->get( ExcludedProductsHelper::class );
 		if ( ! $excluded_products_helper->canDisplayOnCheckoutPage( $cart_adapter, $excluded_categories ) ) {
 			return false;
