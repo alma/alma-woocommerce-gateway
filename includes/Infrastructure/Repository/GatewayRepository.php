@@ -19,6 +19,8 @@ use Alma\Gateway\Plugin;
 
 class GatewayRepository implements GatewayRepositoryInterface {
 
+	private static ?array $gatewayBlocksCache = null;
+
 	/**
 	 * Ordered list of Alma gateways.
 	 *
@@ -91,20 +93,24 @@ class GatewayRepository implements GatewayRepositoryInterface {
 	 */
 	public function findAllAlmaGatewayBlocks(): array {
 
+		// Return cached blocks if already loaded.
+		if ( self::$gatewayBlocksCache !== null ) {
+			return self::$gatewayBlocksCache;
+		}
+
 		/** @var GatewayBlockFactory $gatewayBlockFactory */
 		$gatewayBlockFactory = Plugin::get_container()->get( GatewayBlockFactory::class );
 
-		$blocks = array();
 		foreach ( $this->gatewayOrderedBlocksList as $gatewayBlock ) {
 			try {
-				$block                        = $gatewayBlockFactory->create_gateway_block( $gatewayBlock );
-				$blocks[ $block->get_name() ] = $block;
+				$block                                          = $gatewayBlockFactory->create_gateway_block( $gatewayBlock );
+				self::$gatewayBlocksCache[ $block->get_name() ] = $block;
 			} catch ( CheckoutBlockException $e ) {
 				// If any block cannot be created, skip it.
 				continue;
 			}
 		}
 
-		return $blocks;
+		return self::$gatewayBlocksCache;
 	}
 }
