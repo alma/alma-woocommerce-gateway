@@ -3,6 +3,7 @@
 namespace Alma\Gateway\Infrastructure\Gateway\Backend;
 
 use Alma\Gateway\Application\Entity\Form\GatewayConfigurationForm;
+use Alma\Gateway\Application\Helper\AlmaHelper;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\ConfigService;
@@ -216,9 +217,16 @@ class AbstractBackendGateway extends AbstractGateway {
 		$fee_plan_list_adapter = $fee_plan_repository->getAll( true );
 
 		$field_list['fee_plan_section'] = array(
-			'title'    => '<hr>' . __( '→ Fee plans configuration', 'alma-gateway-for-woocommerce' ),
-			'type'     => 'title',
-			'desc_tip' => false,
+			'title'       => '<hr>' . __( '→ Fee plans configuration', 'alma-gateway-for-woocommerce' ),
+			'description' => sprintf(
+				__(
+					'only your <a href="%s" target="_blank">Alma dashboard</a> available fee plans are shown here.',
+					'alma-gateway-for-woocommerce'
+				),
+				AlmaHelper::getAlmaDashboardUrl( $environment, 'conditions' )
+			),
+			'type'        => 'title',
+			'desc_tip'    => false,
 		);
 		/** @uses self::generate_custom_html() */
 		$field_list['fee_plan_header'] = array(
