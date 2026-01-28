@@ -50,6 +50,35 @@
 
 })(jQuery);
 
+jQuery(document).ready(function ($) {
+    // Transform checkboxes with class 'wc-alma-toggle-enabled' into toggles
+    $('.wc-alma-toggle-enabled').each(function () {
+        const $checkbox = $(this);
+        const isChecked = $checkbox.is(':checked');
+
+        // Create toggle wrapper
+        const $label = $checkbox.closest('label');
+        $checkbox.hide();
+
+        // Create toggle element
+        const toggleClass = isChecked
+            ? 'woocommerce-input-toggle woocommerce-input-toggle--enabled'
+            : 'woocommerce-input-toggle woocommerce-input-toggle--disabled';
+
+        const $toggle = $('<span class="' + toggleClass + '"></span>');
+
+        // Insert toggle before label text
+        $label.prepend($toggle);
+
+        // Handle click on toggle
+        $toggle.on('click', function (e) {
+            e.preventDefault();
+            const currentState = $checkbox.is(':checked');
+            $checkbox.prop('checked', !currentState).trigger('change');
+            $toggle.toggleClass('woocommerce-input-toggle--enabled woocommerce-input-toggle--disabled');
+        });
+    });
+});
 
 add_button_show_pwd('woocommerce_alma_config_gateway_live_api_key');
 add_button_show_pwd('woocommerce_alma_config_gateway_test_api_key');
@@ -69,3 +98,5 @@ function toggle_pwd_field(field) {
         x.type = "password";
     }
 }
+
+$(".excluded_products_list").select2();

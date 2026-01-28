@@ -80,7 +80,6 @@ class AlmaGateway extends AbstractBackendGateway {
 		$this->form_fields = array_merge(
 			$this->form_fields,
 			$this->enabled_field(),
-			$this->api_key_fieldset(),
 		);
 
 		// If the plugin is configured, add the gateway and fee plan fields
@@ -88,10 +87,11 @@ class AlmaGateway extends AbstractBackendGateway {
 			try {
 				$this->form_fields = array_merge(
 					$this->form_fields,
+					$this->display_fieldset(),
+					$this->fee_plan_fieldset(),
+					$this->customize_payment_buttons_text_fieldset(),
 					$this->widget_fieldset(),
 					$this->excluded_categories_fieldset(),
-					$this->customize_payment_buttons_text_fieldset(),
-					$this->fee_plan_fieldset()
 				);
 			} catch ( FeePlanRepositoryException | AbstractGatewayException $e ) {
 				throw new AlmaGatewayException( 'Can\'t initialize Alma Gateway', 0, $e );
@@ -100,6 +100,7 @@ class AlmaGateway extends AbstractBackendGateway {
 
 		$this->form_fields = array_merge(
 			$this->form_fields,
+			$this->api_key_fieldset(),
 			$this->debug_fieldset(),
 		);
 

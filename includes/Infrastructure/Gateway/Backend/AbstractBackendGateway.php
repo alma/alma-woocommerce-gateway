@@ -18,6 +18,7 @@ use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
 use Alma\Gateway\Infrastructure\Helper\UrlHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
+use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
 use Alma\Gateway\Plugin;
 
@@ -103,13 +104,14 @@ class AbstractBackendGateway extends AbstractGateway {
 				'label'    => __( 'Enable monthly payments with Alma', 'alma-gateway-for-woocommerce' ),
 				'default'  => 'no',
 				'desc_tip' => false,
+				'class'    => 'wc-alma-toggle-enabled',
 			),
 		);
 	}
 
 	public function api_key_fieldset(): array {
 
-		$api_key_fieldset = array(
+		return array(
 			'keys_section'                               => array(
 				'title'       => '<hr>' . __( '→ Start by filling in your API keys', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'title',
@@ -151,21 +153,32 @@ class AbstractBackendGateway extends AbstractGateway {
 				'class'       => 'wc-enhanced-select',
 			),
 		);
+	}
+
+	public function display_fieldset() {
 
 		if ( Plugin::get_instance()->is_configured( true ) ) {
-			$api_key_fieldset['in_page_enabled'] = array(
-				'title'    => __( 'Activate In-Page Checkout', 'alma-gateway-for-woocommerce' ),
-				'type'     => 'checkbox',
-				'label'    => __(
-					'Let your customers pay with Alma in a secure pop-up, without leaving your site.',
-					'alma-gateway-for-woocommerce'
+			return array(
+				'display_section' => array(
+					'title' => '<hr>' . __( '→ Display options', 'alma-gateway-for-woocommerce' ),
+					'type'  => 'title',
 				),
-				'default'  => 'yes',
-				'desc_tip' => false,
+				'in_page_enabled' =>
+					array(
+						'title'    => __( 'Activate In-Page Checkout', 'alma-gateway-for-woocommerce' ),
+						'type'     => 'checkbox',
+						'label'    => __(
+							'Let your customers pay with Alma in a secure pop-up, without leaving your site.',
+							'alma-gateway-for-woocommerce'
+						),
+						'default'  => 'yes',
+						'desc_tip' => false,
+						'class'    => 'wc-alma-toggle-enabled',
+					),
 			);
 		}
 
-		return $api_key_fieldset;
+		return array();
 	}
 
 	/**
@@ -191,6 +204,7 @@ class AbstractBackendGateway extends AbstractGateway {
 				'label'    => __( 'Display widget on product page', 'alma-gateway-for-woocommerce' ),
 				'default'  => 'yes',
 				'desc_tip' => false,
+				'class'    => 'wc-alma-toggle-enabled',
 			),
 			'widget_cart_enabled'    => array(
 				'title'    => __( 'Cart eligibility', 'alma-gateway-for-woocommerce' ),
@@ -198,6 +212,7 @@ class AbstractBackendGateway extends AbstractGateway {
 				'label'    => __( 'Display widget on cart page', 'alma-gateway-for-woocommerce' ),
 				'default'  => 'yes',
 				'desc_tip' => false,
+				'class'    => 'wc-alma-toggle-enabled',
 			),
 		);
 	}
@@ -212,14 +227,17 @@ class AbstractBackendGateway extends AbstractGateway {
 		$options_service = Plugin::get_container()->get( ConfigService::class );
 		$environment     = $options_service->getEnvironment();
 
+		/** @var GatewayRepository $gateway_repository */
+		$gateway_repository = Plugin::get_container()->get( GatewayRepository::class );
+
 		/** @var FeePlanRepository $fee_plan_repository */
 		$fee_plan_repository   = Plugin::get_container()->get( FeePlanRepository::class );
-		$fee_plan_list_adapter = $fee_plan_repository->getAll( true );
+		$fee_plan_list_adapter = $fee_plan_repository->getAll( true )->orderBy( $gateway_repository->findOrderedAlmaGateways() );
 
 		$field_list['fee_plan_section'] = array(
 			'title'       => '<hr>' . __( '→ Fee plans configuration', 'alma-gateway-for-woocommerce' ),
 			'description' => sprintf(
-			/* translators: %s: Alma dashboard URL */
+			// translators: %s: Alma dashboard URL.
 				__(
 					'only your <a href="%s" target="_blank">Alma dashboard</a> available fee plans are shown here.',
 					'alma-gateway-for-woocommerce'
@@ -465,7 +483,8 @@ class AbstractBackendGateway extends AbstractGateway {
 					'alma-gateway-for-woocommerce'
 				),
 				'desc_tip'    => true,
-				'default'     => 'yes',
+				'default'     => 'no',
+				'class'       => 'wc-alma-toggle-enabled',
 			),
 		);
 	}
@@ -487,6 +506,7 @@ class AbstractBackendGateway extends AbstractGateway {
 			'excluded_products_list'      => array(
 				'title'       => __( 'Excluded product categories', 'alma-gateway-for-woocommerce' ),
 				'type'        => 'multiselect',
+				'class'       => 'wc-enhanced-select',
 				'description' => __(
 					'Exclude all virtual/downloadable product categories, as you cannot sell them with Alma',
 					'alma-gateway-for-woocommerce'
