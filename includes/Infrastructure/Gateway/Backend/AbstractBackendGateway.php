@@ -219,6 +219,7 @@ class AbstractBackendGateway extends AbstractGateway {
 		$field_list['fee_plan_section'] = array(
 			'title'       => '<hr>' . __( '→ Fee plans configuration', 'alma-gateway-for-woocommerce' ),
 			'description' => sprintf(
+			/* translators: %s: Alma dashboard URL */
 				__(
 					'only your <a href="%s" target="_blank">Alma dashboard</a> available fee plans are shown here.',
 					'alma-gateway-for-woocommerce'

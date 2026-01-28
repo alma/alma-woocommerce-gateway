@@ -181,6 +181,7 @@ class AssetsConfig {
 								'transition_delay',
 								'monochrome',
 								'hide_border',
+								'language',
 							),
 						),
 					),
