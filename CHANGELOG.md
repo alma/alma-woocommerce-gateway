@@ -1,5 +1,11 @@
 # Changelog
 
+## v5.16.2 - 2026-01-29
+
+### 🐛 Bug Fixes
+
+Add user and nonce verification broken access control when cancelling an order
+
 ## v5.16.1 - 2026-01-13
 
 ### 🐛 Bug Fixes
