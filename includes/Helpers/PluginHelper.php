@@ -358,7 +358,10 @@ class PluginHelper {
 			wp_localize_script(
 				'alma-checkout-in-page',
 				'ajax_object',
-				array( 'ajax_url' => admin_url( 'admin-ajax.php' ) )
+				array(
+					'ajax_url' => admin_url( 'admin-ajax.php' ),
+					'nonce'    => wp_create_nonce( 'alma_cancel_order_in_page' ),
+				)
 			);
 		}
 

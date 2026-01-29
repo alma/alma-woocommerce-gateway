@@ -213,13 +213,16 @@ import './alma-checkout-blocks.css';
                     function (response) {
                         var paymentId = response.data.payment_id;
                         var orderId = response.data.order_id;
+                        var orderKey = response.data.order_key;
+                        var nonce = settings.nonce_value;
+                        var payment_method = settings.gateway_name;
 
                         // Start the payment.
                         inPage.startPayment(
                             {
                                 paymentId: paymentId,
                                 onUserCloseModal: () => {
-                                    cancel_order(orderId);
+                                    cancel_order(orderId, orderKey, nonce, payment_method);
                                     $('.alma-loader-wrapper').remove();
                                 }
                             }
@@ -235,10 +238,13 @@ import './alma-checkout-blocks.css';
 
         }
     };
-    function cancel_order(orderId) {
+    function cancel_order(orderId, orderKey, nonce, payment_method) {
         var data = {
             'action': 'alma_cancel_order_in_page',
-            'order_id': orderId
+            'nonce': nonce,
+            'order_id': orderId,
+            'order_key': orderKey,
+            'payment_method': payment_method
         };
 
         jQuery.post(ajax_object.ajax_url, data)
