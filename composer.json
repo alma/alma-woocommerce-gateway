@@ -15,12 +15,12 @@
   ],
   "require": {
     "php": "~7.4 || ~8.0 || ~8.1 || ~8.2 || ~8.3 || ~8.4",
-    "ext-openssl": "*",
+    "ext-intl": "*",
     "ext-json": "*",
+    "ext-openssl": "*",
     "alma/alma-php-client": "3.0.*|dev-feature/3.0",
-    "psr/http-client": "^1",
     "level-2/dice": "^4.0",
-    "ext-intl": "*"
+    "psr/http-client": "^1"
   },
   "require-dev": {
     "brain/monkey": "^2.0@dev",
@@ -34,8 +34,8 @@
     "phpunit/phpunit": "*",
     "squizlabs/php_codesniffer": "^3.7",
     "symfony/var-dumper": "*",
-    "wpackagist-plugin/woocommerce": "^10.0.4",
     "wp-coding-standards/wpcs": "dev-develop",
+    "wpackagist-plugin/woocommerce": "^10.0.4",
     "yoast/phpunit-polyfills": "*"
   },
   "autoload": {
@@ -51,7 +51,17 @@
   "extra": {
     "installer-disable": [
       "wordpress"
-    ]
+    ],
+    "strauss": {
+      "target_directory": "vendor-prefixed",
+      "namespace_prefix": "Alma\\Vendor",
+      "packages": [
+        "alma/alma-php-client",
+        "level-2/dice"
+      ],
+      "include_root_autoload": true,
+      "delete_vendor_packages": false
+    }
   },
   "license": "GPL-3.0-only",
   "authors": [
