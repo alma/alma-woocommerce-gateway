@@ -21,3 +21,4 @@ package-lock.json
 .coverage-report
 phpstan.log
 build/*
+/vendor-prefixed/*

@@ -4,6 +4,7 @@ namespace Alma\Gateway\Infrastructure\Controller;
 
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Application\Service\BusinessEventsService;
+use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Exception\Controller\GatewayControllerException;
 use Alma\Gateway\Infrastructure\Helper\BackendHelper;
@@ -19,17 +20,20 @@ class GatewayController {
 
 	private GatewayService $gatewayService;
 	private AssetsService $assetsService;
+	private ConfigService $configService;
 	private BusinessEventsService $businessEventsService;
 	private GatewayRepository $gatewayRepository;
 
 	public function __construct(
 		GatewayService $gatewayService,
 		AssetsService $assetsService,
+		ConfigService $configService,
 		BusinessEventsService $businessEventsService,
 		GatewayRepository $gatewayRepository
 	) {
 		$this->gatewayService    = $gatewayService;
 		$this->assetsService     = $assetsService;
+		$this->configService     = $configService;
 		$this->businessEventsService = $businessEventsService;
 		$this->gatewayRepository = $gatewayRepository;
 	}
@@ -68,6 +72,8 @@ class GatewayController {
 	 */
 	public function configure() {
 		if ( ContextHelper::isAdmin() ) {
+			// Define default value for the Gateway
+			$this->configService->createSetting('general_3_0_0_enabled', true);
 			if ( ContextHelper::isGatewaySettingsPage() ) {
 				BackendHelper::loadBackendGateway();
 			}

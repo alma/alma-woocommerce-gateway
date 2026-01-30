@@ -35,7 +35,7 @@ class AdminMenuHelper {
 	 *
 	 * @return array
 	 */
-	public function pluginActionLinks( $links ): array {
+	public static function pluginActionLinks( $links ): array {
 		$setting_link = ContextHelper::getAdminUrl( 'admin.php?page=wc-settings&tab=checkout&section=alma_config_gateway' );
 		$plugin_links = array(
 			sprintf( '<a href="%s">%s</a>', $setting_link,

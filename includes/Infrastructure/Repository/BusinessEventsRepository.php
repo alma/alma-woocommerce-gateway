@@ -17,7 +17,13 @@ class BusinessEventsRepository implements BusinessEventsRepositoryInterface {
 		$table_name      = $wpdb->prefix . BusinessEventsService::ALMA_BUSINESS_EVENT_TABLE;
 		$charset_collate = $wpdb->get_charset_collate();
 
-		$sql = "CREATE TABLE IF NOT EXISTS $table_name (
+		$table_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_name'");
+
+		if ($table_exists) {
+			return;
+		}
+
+		$sql = "CREATE TABLE $table_name (
 			`cart_id` BIGINT(20) NOT NULL,
 			`order_id` BIGINT(20) UNSIGNED DEFAULT NULL,
 			`alma_payment_id` VARCHAR(255) DEFAULT NULL,
