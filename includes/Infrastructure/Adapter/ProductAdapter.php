@@ -2,8 +2,8 @@
 
 namespace Alma\Gateway\Infrastructure\Adapter;
 
-use Alma\API\Domain\Adapter\ProductAdapterInterface;
 use Alma\Gateway\Application\Helper\DisplayHelper;
+use Alma\Plugin\Infrastructure\Adapter\ProductAdapterInterface;
 use BadMethodCallException;
 use WC_Product;
 

@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Infrastructure\Adapter;
 
-use Alma\API\Domain\Adapter\BillingAddressAdapterInterface;
+use Alma\Plugin\Infrastructure\Adapter\BillingAddressAdapterInterface;
 use WC_Customer;
 
 class BillingAddressAdapter implements BillingAddressAdapterInterface {

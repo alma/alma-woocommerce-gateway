@@ -2,8 +2,8 @@
 
 namespace Alma\Gateway\Tests\Unit\Mocks;
 
-use Alma\API\Domain\Entity\FeePlan;
-use Alma\API\Infrastructure\Exception\ParametersException;
+use Alma\Client\Application\Exception\ParametersException;
+use Alma\Client\Domain\Entity\FeePlan;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 
 class FeePlanMock {

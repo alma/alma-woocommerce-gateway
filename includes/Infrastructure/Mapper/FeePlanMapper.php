@@ -2,8 +2,8 @@
 
 namespace Alma\Gateway\Infrastructure\Mapper;
 
-use Alma\API\Domain\Adapter\FeePlanInterface;
 use Alma\Gateway\Infrastructure\Dto\FeePlanDto;
+use Alma\Plugin\Infrastructure\Adapter\FeePlanInterface;
 
 class FeePlanMapper {
 

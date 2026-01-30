@@ -2,12 +2,12 @@
 
 namespace Alma\Gateway\Tests\Unit\Application\Provider;
 
-use Alma\API\Application\DTO\CustomerDto;
-use Alma\API\Application\DTO\OrderDto;
-use Alma\API\Application\DTO\PaymentDto;
-use Alma\API\Domain\Entity\Payment;
-use Alma\API\Infrastructure\Endpoint\PaymentEndpoint;
-use Alma\API\Infrastructure\Exception\Endpoint\PaymentEndpointException;
+use Alma\Client\Application\DTO\CustomerDto;
+use Alma\Client\Application\DTO\OrderDto;
+use Alma\Client\Application\DTO\PaymentDto;
+use Alma\Client\Application\Endpoint\PaymentEndpoint;
+use Alma\Client\Application\Exception\Endpoint\PaymentEndpointException;
+use Alma\Client\Domain\Entity\Payment;
 use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
 use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Infrastructure\Service\LoggerService;

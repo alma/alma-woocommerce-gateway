@@ -2,12 +2,12 @@
 
 namespace Alma\Gateway\Application\Provider;
 
-use Alma\API\Application\DTO\EligibilityDto;
-use Alma\API\Domain\Entity\EligibilityList;
-use Alma\API\Domain\Port\EligibilityProviderInterface;
-use Alma\API\Infrastructure\Endpoint\EligibilityEndpoint;
-use Alma\API\Infrastructure\Exception\Endpoint\EligibilityEndpointException;
+use Alma\Client\Application\DTO\EligibilityDto;
+use Alma\Client\Application\Endpoint\EligibilityEndpoint;
+use Alma\Client\Application\Exception\Endpoint\EligibilityEndpointException;
+use Alma\Client\Domain\Entity\EligibilityList;
 use Alma\Gateway\Application\Exception\Service\API\EligibilityServiceException;
+use Alma\Plugin\Application\Port\EligibilityProviderInterface;
 
 class EligibilityProvider implements EligibilityProviderInterface, ProviderInterface {
 

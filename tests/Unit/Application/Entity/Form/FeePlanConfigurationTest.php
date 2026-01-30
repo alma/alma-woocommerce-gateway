@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Tests\Unit\Application\Entity\Form;
 
-use Alma\API\Infrastructure\Exception\ParametersException;
+use Alma\Client\Application\Exception\ParametersException;
 use Alma\Gateway\Application\Entity\Form\FeePlanConfiguration;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use PHPUnit\Framework\TestCase;

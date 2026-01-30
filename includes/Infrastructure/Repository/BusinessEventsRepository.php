@@ -2,11 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Repository;
 
-use Alma\API\Domain\Repository\BusinessEventsRepositoryInterface;
 use Alma\Gateway\Application\Service\BusinessEventsService;
+use Alma\Plugin\Infrastructure\Repository\BusinessEventsRepositoryInterface;
 
-class BusinessEventsRepository implements BusinessEventsRepositoryInterface
-{
+class BusinessEventsRepository implements BusinessEventsRepositoryInterface {
 	/**
 	 * Create the necessary table in the database for Business Event.
 	 *
@@ -41,11 +40,12 @@ class BusinessEventsRepository implements BusinessEventsRepositoryInterface
 	 * object(stdClass)#4815 (1) { ["order_id"]=> string(3) "278" } => if order converted
 	 * object(stdClass)#4736 (1) { ["order_id"]=> NULL } => if cart exist and order not yet converted
 	 * NULL => if cart ID does not exist
+	 *
 	 * @param int $cartId
 	 *
 	 * @return object|null
 	 */
-	public function getCartRowIfExist(int $cartId): ?object {
+	public function getCartRowIfExist( int $cartId ): ?object {
 		global $wpdb;
 		$table_name = $wpdb->prefix . BusinessEventsService::ALMA_BUSINESS_EVENT_TABLE;
 
@@ -59,11 +59,12 @@ class BusinessEventsRepository implements BusinessEventsRepositoryInterface
 
 	/**
 	 * If cart ID already exists in the database.
+	 *
 	 * @param int $cartId
 	 *
 	 * @return bool
 	 */
-	public function alreadyExist(int $cartId): bool {
+	public function alreadyExist( int $cartId ): bool {
 		global $wpdb;
 		$table_name = $wpdb->prefix . BusinessEventsService::ALMA_BUSINESS_EVENT_TABLE;
 
@@ -72,7 +73,7 @@ class BusinessEventsRepository implements BusinessEventsRepositoryInterface
 			$cartId
 		) );
 
-		if ($result === '0') {
+		if ( $result === '0' ) {
 			return false;
 		}
 
@@ -81,11 +82,12 @@ class BusinessEventsRepository implements BusinessEventsRepositoryInterface
 
 	/**
 	 * If cart ID was already converted to order.
+	 *
 	 * @param int $cartId
 	 *
 	 * @return bool
 	 */
-	public function alreadyConverted(int $cartId): bool {
+	public function alreadyConverted( int $cartId ): bool {
 		global $wpdb;
 		$table_name = $wpdb->prefix . BusinessEventsService::ALMA_BUSINESS_EVENT_TABLE;
 
@@ -94,7 +96,7 @@ class BusinessEventsRepository implements BusinessEventsRepositoryInterface
 			$cartId
 		) );
 
-		if ($result === null) {
+		if ( $result === null ) {
 			return false;
 		}
 
@@ -106,7 +108,7 @@ class BusinessEventsRepository implements BusinessEventsRepositoryInterface
 	 *
 	 * @return void
 	 */
-	public function saveCartId(int $cartId): void {
+	public function saveCartId( int $cartId ): void {
 		global $wpdb;
 		$table_name = $wpdb->prefix . BusinessEventsService::ALMA_BUSINESS_EVENT_TABLE;
 
@@ -127,7 +129,7 @@ class BusinessEventsRepository implements BusinessEventsRepositoryInterface
 	 *
 	 * @return void
 	 */
-	public function saveEligibility(int $cartId, bool $isEligible): void {
+	public function saveEligibility( int $cartId, bool $isEligible ): void {
 		global $wpdb;
 		$table_name = $wpdb->prefix . BusinessEventsService::ALMA_BUSINESS_EVENT_TABLE;
 
@@ -153,7 +155,7 @@ class BusinessEventsRepository implements BusinessEventsRepositoryInterface
 	 *
 	 * @return object|null
 	 */
-	public function getRowByOrderId(int $orderId): ?object {
+	public function getRowByOrderId( int $orderId ): ?object {
 		global $wpdb;
 		$table_name = $wpdb->prefix . BusinessEventsService::ALMA_BUSINESS_EVENT_TABLE;
 
@@ -171,7 +173,7 @@ class BusinessEventsRepository implements BusinessEventsRepositoryInterface
 	 *
 	 * @return void
 	 */
-	public function saveOrderId(int $cartId, int $orderId): void {
+	public function saveOrderId( int $cartId, int $orderId ): void {
 		global $wpdb;
 		$table_name = $wpdb->prefix . BusinessEventsService::ALMA_BUSINESS_EVENT_TABLE;
 
@@ -198,7 +200,7 @@ class BusinessEventsRepository implements BusinessEventsRepositoryInterface
 	 *
 	 * @return void
 	 */
-	public function saveAlmaPaymentId(int $cartId, string $almaPaymentId): void {
+	public function saveAlmaPaymentId( int $cartId, string $almaPaymentId ): void {
 		global $wpdb;
 		$table_name = $wpdb->prefix . BusinessEventsService::ALMA_BUSINESS_EVENT_TABLE;
 

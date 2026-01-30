@@ -2,9 +2,9 @@
 
 namespace Alma\Gateway\Tests\Unit\Application\Helper;
 
-use Alma\API\Domain\Adapter\CartAdapterInterface;
-use Alma\API\Domain\Adapter\ProductAdapterInterface;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
+use Alma\Plugin\Infrastructure\Adapter\CartAdapterInterface;
+use Alma\Plugin\Infrastructure\Adapter\ProductAdapterInterface;
 use PHPUnit\Framework\TestCase;
 
 class ExcludedProductsHelperTest extends TestCase {

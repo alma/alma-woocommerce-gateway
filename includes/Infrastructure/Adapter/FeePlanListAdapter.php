@@ -2,11 +2,11 @@
 
 namespace Alma\Gateway\Infrastructure\Adapter;
 
-use Alma\API\Domain\Adapter\FeePlanAdapterInterface;
-use Alma\API\Domain\Adapter\FeePlanListAdapterInterface;
-use Alma\API\Domain\Adapter\FeePlanListInterface;
-use Alma\API\Domain\Entity\FeePlanList;
-use Alma\API\Domain\ValueObject\PaymentMethod;
+use Alma\Client\Domain\Entity\FeePlanList;
+use Alma\Client\Domain\ValueObject\PaymentMethod;
+use Alma\Plugin\Infrastructure\Adapter\FeePlanAdapterInterface;
+use Alma\Plugin\Infrastructure\Adapter\FeePlanListAdapterInterface;
+use Alma\Plugin\Infrastructure\Adapter\FeePlanListInterface;
 use ArrayObject;
 use OutOfBoundsException;
 

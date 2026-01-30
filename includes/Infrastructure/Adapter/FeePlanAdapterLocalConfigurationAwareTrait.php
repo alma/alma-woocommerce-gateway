@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Infrastructure\Adapter;
 
-use Alma\API\Infrastructure\Exception\ParametersException;
+use Alma\Client\Application\Exception\ParametersException;
 
 trait FeePlanAdapterLocalConfigurationAwareTrait {
 
@@ -20,7 +20,7 @@ trait FeePlanAdapterLocalConfigurationAwareTrait {
 
 	/** @var bool Is this fee plan enabled by merchant? False by default */
 	private bool $enabled = false;
-	
+
 	/**
 	 * Enable this fee plan.
 	 * @return void

@@ -2,9 +2,8 @@
 
 namespace Alma\Gateway\Application\Mapper;
 
-use Alma\API\Application\DTO\RefundDto;
-use Alma\API\Domain\Adapter\OrderAdapterInterface;
-use Alma\API\Infrastructure\Exception\ParametersException;
+use Alma\Client\Application\DTO\RefundDto;
+use Alma\Plugin\Infrastructure\Adapter\OrderAdapterInterface;
 
 class RefundMapper {
 
@@ -16,7 +15,6 @@ class RefundMapper {
 	 * @param int|null              $amount The amount to refund in cents. Must be a positive integer.
 	 *
 	 * @return RefundDto The constructed RefundDto.
-	 * @throws ParametersException
 	 */
 	public function buildRefundDto( OrderAdapterInterface $order, ?string $comment = null, ?int $amount = null ): RefundDto {
 

@@ -2,8 +2,8 @@
 
 namespace Alma\Gateway\Application\Helper;
 
-use Alma\API\Domain\Helper\AdminHelperInterface;
 use Alma\Gateway\Infrastructure\Helper\AjaxHelper;
+use Alma\Plugin\Application\Helper\AdminHelperInterface;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.

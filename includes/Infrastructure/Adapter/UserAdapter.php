@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Infrastructure\Adapter;
 
-use Alma\API\Domain\Adapter\UserAdapterInterface;
+use Alma\Plugin\Infrastructure\Adapter\UserAdapterInterface;
 use BadMethodCallException;
 use WP_User;
 

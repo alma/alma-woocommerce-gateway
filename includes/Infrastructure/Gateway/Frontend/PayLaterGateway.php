@@ -2,8 +2,7 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 
-use Alma\API\Domain\Adapter\OrderAdapterInterface;
-use Alma\API\Domain\ValueObject\PaymentMethod;
+use Alma\Client\Domain\ValueObject\PaymentMethod;
 use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
 use Alma\Gateway\Application\Helper\TemplateHelper;
 use Alma\Gateway\Application\Service\ConfigService;
@@ -12,6 +11,7 @@ use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\ShopNotificationHelper;
 use Alma\Gateway\Plugin;
+use Alma\Plugin\Infrastructure\Adapter\OrderAdapterInterface;
 
 /**
  * Class Gateway
@@ -30,8 +30,14 @@ class PayLaterGateway extends AbstractFrontendGateway implements FrontendGateway
 	public function __construct() {
 		/** @var ConfigService $config_service */
 		$config_service     = Plugin::get_container()->get( ConfigService::class );
-		$this->title        = $config_service->hasSetting( self::TITLE_FIELD ) ? $config_service->getSetting( self::TITLE_FIELD ) : __( 'Pay later', 'alma-gateway-for-woocommerce' );
-		$this->description  = $config_service->hasSetting( self::DESCRIPTION_FIELD ) ? $config_service->getSetting( self::DESCRIPTION_FIELD ) : __( 'Fast and secure payment by credit card', 'alma-gateway-for-woocommerce' );
+		$this->title        = $config_service->hasSetting( self::TITLE_FIELD ) ? $config_service->getSetting( self::TITLE_FIELD ) : __(
+			'Pay later',
+			'alma-gateway-for-woocommerce'
+		);
+		$this->description  = $config_service->hasSetting( self::DESCRIPTION_FIELD ) ? $config_service->getSetting( self::DESCRIPTION_FIELD ) : __(
+			'Fast and secure payment by credit card',
+			'alma-gateway-for-woocommerce'
+		);
 		$this->method_title = __( 'Payment deferred with Alma', 'alma-gateway-for-woocommerce' );
 
 		parent::__construct();

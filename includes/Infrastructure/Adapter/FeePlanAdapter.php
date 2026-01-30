@@ -2,17 +2,17 @@
 
 namespace Alma\Gateway\Infrastructure\Adapter;
 
-use Alma\API\Domain\Adapter\FeePlanAdapterEligibilityAwareInterface;
-use Alma\API\Domain\Adapter\FeePlanAdapterInterface;
-use Alma\API\Domain\Adapter\FeePlanAdapterLocalConfigurationAwareInterface;
-use Alma\API\Domain\Adapter\FeePlanInterface;
-use Alma\API\Domain\Entity\FeePlan;
-use Alma\API\Domain\Entity\PaymentPlanTrait;
+use Alma\Client\Domain\Entity\FeePlan;
+use Alma\Client\Domain\Entity\PaymentPlanTrait;
+use Alma\Plugin\Infrastructure\Adapter\FeePlanAdapterEligibilityAwareInterface;
+use Alma\Plugin\Infrastructure\Adapter\FeePlanAdapterInterface;
+use Alma\Plugin\Infrastructure\Adapter\FeePlanAdapterLocalConfigurationAwareInterface;
+use Alma\Plugin\Infrastructure\Adapter\FeePlanInterface;
 
 /**
  * Adapter for Alma's FeePlan to implement FeePlanAdapterInterface.
  *
- * This class wraps around an instance of Alma\API\Domain\Entity\FeePlan
+ * This class wraps around an instance of Alma\Client\Domain\Entity\FeePlan
  *
  * @see FeePlanAdapterInterface
  *

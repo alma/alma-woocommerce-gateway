@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
-use Alma\API\Domain\Helper\AdminNotificationHelperInterface;
+use Alma\Plugin\Infrastructure\Helper\AdminNotificationHelperInterface;
 
 class AdminNotificationHelper implements AdminNotificationHelperInterface {
 

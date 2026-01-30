@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Application\Mapper;
 
-use Alma\API\Application\DTO\EligibilityQueryDto;
+use Alma\Client\Application\DTO\EligibilityQueryDto;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 
 class EligibilityQueryMapper {

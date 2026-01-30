@@ -2,14 +2,14 @@
 
 namespace Alma\Gateway\Application\Provider;
 
-use Alma\API\Domain\Adapter\FeePlanListInterface;
-use Alma\API\Domain\Entity\FeePlan;
-use Alma\API\Domain\Entity\FeePlanList;
-use Alma\API\Domain\Port\FeePlanProviderInterface;
-use Alma\API\Domain\ValueObject\PaymentMethod;
-use Alma\API\Infrastructure\Endpoint\MerchantEndpoint;
-use Alma\API\Infrastructure\Exception\Endpoint\MerchantEndpointException;
+use Alma\Client\Application\Endpoint\MerchantEndpoint;
+use Alma\Client\Application\Exception\Endpoint\MerchantEndpointException;
+use Alma\Client\Domain\Entity\FeePlan;
+use Alma\Client\Domain\Entity\FeePlanList;
+use Alma\Client\Domain\ValueObject\PaymentMethod;
 use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
+use Alma\Plugin\Application\Port\FeePlanProviderInterface;
+use Alma\Plugin\Infrastructure\Adapter\FeePlanListInterface;
 
 class FeePlanProvider implements FeePlanProviderInterface, ProviderInterface {
 

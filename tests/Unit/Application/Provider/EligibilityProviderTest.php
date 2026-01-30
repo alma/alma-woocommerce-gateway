@@ -2,11 +2,11 @@
 
 namespace Alma\Gateway\Tests\Unit\Application\Provider;
 
-use Alma\API\Application\DTO\EligibilityDto;
-use Alma\API\Domain\Entity\Eligibility;
-use Alma\API\Domain\Entity\EligibilityList;
-use Alma\API\Infrastructure\Endpoint\EligibilityEndpoint;
-use Alma\API\Infrastructure\Exception\Endpoint\EligibilityEndpointException;
+use Alma\Client\Application\DTO\EligibilityDto;
+use Alma\Client\Application\Endpoint\EligibilityEndpoint;
+use Alma\Client\Application\Exception\Endpoint\EligibilityEndpointException;
+use Alma\Client\Domain\Entity\Eligibility;
+use Alma\Client\Domain\Entity\EligibilityList;
 use Alma\Gateway\Application\Exception\Service\API\EligibilityServiceException;
 use Alma\Gateway\Application\Provider\EligibilityProvider;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
@@ -65,8 +65,8 @@ class EligibilityProviderTest extends TestCase {
 		$this->eligibilityEndpointMock->expects( $this->once() )->method( 'getEligibilityList' )->willReturn( $eligibilityList );
 		$eligibilityDto = new EligibilityDto( 10000 );
 
-		$this->assertNull( $this->eligibilityProvider->retrieveEligibility($eligibilityDto) );
-		$this->assertEquals( 1, $this->eligibilityProvider->getEligibilityList($eligibilityDto)->count() );
+		$this->assertNull( $this->eligibilityProvider->retrieveEligibility( $eligibilityDto ) );
+		$this->assertEquals( 1, $this->eligibilityProvider->getEligibilityList( $eligibilityDto )->count() );
 
 	}
 
@@ -75,8 +75,8 @@ class EligibilityProviderTest extends TestCase {
 		$eligibilityList = new EligibilityList();
 		$eligibilityList->add( $eligibility );
 		$this->eligibilityEndpointMock->expects( $this->once() )->method( 'getEligibilityList' )->willReturn( $eligibilityList );
-		$eligibilityDto = new EligibilityDto( 10000 );
-		$eligibilityListResult = $this->eligibilityProvider->getEligibilityList($eligibilityDto);
+		$eligibilityDto        = new EligibilityDto( 10000 );
+		$eligibilityListResult = $this->eligibilityProvider->getEligibilityList( $eligibilityDto );
 		$this->assertInstanceOf( EligibilityList::class, $eligibilityListResult );
 		$this->assertEquals( 1, $eligibilityListResult->count() );
 	}
@@ -86,11 +86,11 @@ class EligibilityProviderTest extends TestCase {
 		$eligibilityList = new EligibilityList();
 		$eligibilityList->add( $eligibility );
 		$this->eligibilityEndpointMock->expects( $this->once() )->method( 'getEligibilityList' )->willReturn( $eligibilityList );
-		$eligibilityDto = new EligibilityDto( 10000 );
-		$eligibilityListResult1 = $this->eligibilityProvider->getEligibilityList($eligibilityDto);
+		$eligibilityDto         = new EligibilityDto( 10000 );
+		$eligibilityListResult1 = $this->eligibilityProvider->getEligibilityList( $eligibilityDto );
 		$this->assertInstanceOf( EligibilityList::class, $eligibilityListResult1 );
 		$this->assertEquals( 1, $eligibilityListResult1->count() );
-		$eligibilityListResult2 = $this->eligibilityProvider->getEligibilityList($eligibilityDto);
+		$eligibilityListResult2 = $this->eligibilityProvider->getEligibilityList( $eligibilityDto );
 		$this->assertInstanceOf( EligibilityList::class, $eligibilityListResult2 );
 		$this->assertEquals( 1, $eligibilityListResult2->count() );
 	}

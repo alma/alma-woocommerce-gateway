@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Application\Helper;
 
-use Alma\API\Domain\ValueObject\Environment;
+use Alma\Client\Domain\ValueObject\Environment;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\LanguageHelper;

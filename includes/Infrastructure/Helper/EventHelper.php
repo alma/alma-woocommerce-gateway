@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
-use Alma\API\Domain\Helper\EventHelperInterface;
+use Alma\Plugin\Infrastructure\Helper\EventHelperInterface;
 
 class EventHelper implements EventHelperInterface {
 

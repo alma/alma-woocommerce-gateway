@@ -2,9 +2,9 @@
 
 namespace Alma\Gateway\Infrastructure\Repository;
 
-use Alma\API\Domain\Entity\Eligibility;
-use Alma\API\Domain\Entity\EligibilityList;
-use Alma\API\Infrastructure\Exception\ParametersException;
+use Alma\Client\Application\Exception\ParametersException;
+use Alma\Client\Domain\Entity\Eligibility;
+use Alma\Client\Domain\Entity\EligibilityList;
 use Alma\Gateway\Application\Exception\Service\API\EligibilityServiceException;
 use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
 use Alma\Gateway\Application\Mapper\EligibilityMapper;
@@ -143,8 +143,8 @@ class FeePlanRepository {
 						$feePlanListAdapter->filterEnabled()
 					);
 				$installmentPlanList = $this->eligibilityProvider->getEligibilityList( $eligibilityDto );
-				$this->businessEventsService->updateEligibility($installmentPlanList);
-				$feePlanListAdapter  = $this->setInstallmentPlanList( $feePlanListAdapter, $installmentPlanList );
+				$this->businessEventsService->updateEligibility( $installmentPlanList );
+				$feePlanListAdapter = $this->setInstallmentPlanList( $feePlanListAdapter, $installmentPlanList );
 			}
 
 			return $feePlanListAdapter;
@@ -211,7 +211,7 @@ class FeePlanRepository {
 	}
 
 	private function setInstallmentPlanList( FeePlanListAdapter $feePlanListAdapter, EligibilityList $eligibilityList ): FeePlanListAdapter {
-		if ($eligibilityList->count() === 0) {
+		if ( $eligibilityList->count() === 0 ) {
 			return new FeePlanListAdapter( [] );
 		}
 

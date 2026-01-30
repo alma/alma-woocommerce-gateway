@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
-use Alma\API\Domain\Helper\ShopNotificationHelperInterface;
+use Alma\Plugin\Infrastructure\Helper\ShopNotificationHelperInterface;
 
 class ShopNotificationHelper implements ShopNotificationHelperInterface {
 

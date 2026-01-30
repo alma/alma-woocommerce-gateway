@@ -2,11 +2,11 @@
 
 namespace Alma\Gateway\Infrastructure\Entity;
 
-use Alma\API\Domain\Adapter\FeePlanListAdapterInterface;
-use Alma\API\Domain\Entity\WidgetInterface;
-use Alma\API\Domain\ValueObject\Environment;
+use Alma\Client\Domain\Entity\WidgetInterface;
+use Alma\Client\Domain\ValueObject\Environment;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
+use Alma\Plugin\Infrastructure\Adapter\FeePlanListAdapterInterface;
 
 abstract class AbstractWidget implements WidgetInterface {
 

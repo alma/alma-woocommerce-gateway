@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Infrastructure\Repository;
 
-use Alma\API\Domain\Repository\ProductCategoryRepositoryInterface;
+use Alma\Plugin\Infrastructure\Repository\ProductCategoryRepositoryInterface;
 
 class ProductCategoryRepository implements ProductCategoryRepositoryInterface {
 
