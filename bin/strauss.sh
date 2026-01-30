@@ -66,7 +66,7 @@ bash -c "sed $SED_I -e 's/Alma\\\\API\\\\/${NAMESPACE_PREFIX}\\\\Alma\\\\API\\\\
 echo "=> Creating distribution zip..."
 mkdir -p dist
 # Create the zip from the contents of the build directory
-(cd "$BUILD_DIR" && zip -r ../dist/alma-woocommerce-gateway.zip .)
+(cd "$BUILD_DIR" && zip -r ../dist/alma-gateway-for-woocommerce.zip .)
 
 echo "=> Cleaning up temporary build directory..."
 rm -rf "$BUILD_DIR"
