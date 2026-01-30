@@ -2,10 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Repository;
 
-use Alma\API\Domain\Adapter\ProductAdapterInterface;
-use Alma\API\Domain\Repository\ProductRepositoryInterface;
 use Alma\Gateway\Infrastructure\Adapter\ProductAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
+use Alma\Plugin\Infrastructure\Adapter\ProductAdapterInterface;
+use Alma\Plugin\Infrastructure\Repository\ProductRepositoryInterface;
 
 class ProductRepository implements ProductRepositoryInterface {
 

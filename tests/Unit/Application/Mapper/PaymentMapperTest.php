@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Tests\Unit\Application\Mapper;
 
-use Alma\API\Application\DTO\PaymentDto;
+use Alma\Client\Application\DTO\PaymentDto;
 use Alma\Gateway\Application\Mapper\PaymentMapper;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Tests\Unit\Mocks\OrderAdapterMockFactory;

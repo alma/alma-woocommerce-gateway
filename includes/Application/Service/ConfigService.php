@@ -2,12 +2,12 @@
 
 namespace Alma\Gateway\Application\Service;
 
-use Alma\API\Application\DTO\PaymentDto;
-use Alma\API\Domain\Repository\ConfigRepositoryInterface;
-use Alma\API\Domain\ValueObject\Environment;
+use Alma\Client\Application\DTO\PaymentDto;
+use Alma\Client\Domain\ValueObject\Environment;
 use Alma\Gateway\Application\Helper\EncryptorHelper;
 use Alma\Gateway\Infrastructure\Helper\WordPressHelper;
 use Alma\Gateway\Plugin;
+use Alma\Plugin\Infrastructure\Repository\ConfigRepositoryInterface;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore

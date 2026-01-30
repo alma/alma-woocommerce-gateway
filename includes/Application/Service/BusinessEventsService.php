@@ -2,10 +2,10 @@
 
 namespace Alma\Gateway\Application\Service;
 
-use Alma\API\Application\DTO\MerchantBusinessEvent\CartInitiatedBusinessEventDto;
-use Alma\API\Application\DTO\MerchantBusinessEvent\OrderConfirmedBusinessEventDto;
-use Alma\API\Domain\Entity\EligibilityList;
-use Alma\API\Infrastructure\Exception\ParametersException;
+use Alma\Client\Application\DTO\MerchantBusinessEvent\CartInitiatedBusinessEventDto;
+use Alma\Client\Application\DTO\MerchantBusinessEvent\OrderConfirmedBusinessEventDto;
+use Alma\Client\Application\Exception\ParametersException;
+use Alma\Client\Domain\Entity\EligibilityList;
 use Alma\Gateway\Application\Exception\Service\API\MerchantServiceException;
 use Alma\Gateway\Application\Exception\Service\BusinessEventsServiceException;
 use Alma\Gateway\Application\Provider\MerchantProviderAwareTrait;
@@ -20,12 +20,11 @@ use Alma\Gateway\Infrastructure\Repository\BusinessEventsRepository;
 use Automattic\WooCommerce\Enums\OrderStatus;
 use WC_Order;
 
-class BusinessEventsService
-{
+class BusinessEventsService {
 	use MerchantProviderAwareTrait;
 
 	const ALMA_BUSINESS_EVENT_TABLE = 'alma_business_data';
-	const ALMA_CART_ID       = 'alma_cart_id';
+	const ALMA_CART_ID = 'alma_cart_id';
 	private SessionHelper $sessionHelper;
 	private BusinessEventsRepository $businessEventsRepository;
 
@@ -36,7 +35,7 @@ class BusinessEventsService
 	) {
 		$this->sessionHelper            = $sessionHelper;
 		$this->businessEventsRepository = $businessEventsRepository;
-		$this->merchantProviderFactory = $merchantProviderFactory;
+		$this->merchantProviderFactory  = $merchantProviderFactory;
 	}
 
 	/**
@@ -47,7 +46,7 @@ class BusinessEventsService
 	public function onCartInitiated(): void {
 		$this->getMerchantProvider();
 		$almaCartId = $this->sessionCartId();
-		if ($this->alreadyConverted( $almaCartId )) {
+		if ( $this->alreadyConverted( $almaCartId ) ) {
 			$almaCartId = $this->resetSessionCartId();
 		}
 		if ( ! $this->alreadyExist( $almaCartId ) ) {
@@ -65,22 +64,24 @@ class BusinessEventsService
 
 	/**
 	 * When an order status changed we send the order_confirmed business event to Alma
-	 * @param string $oldStatus
-	 * @param string $newStatus
+	 *
+	 * @param string       $oldStatus
+	 * @param string       $newStatus
 	 * @param OrderAdapter $order
 	 *
 	 * @return void
 	 * @throws BusinessEventsServiceException
 	 */
-	public function onOrderConfirmed(string $oldStatus, string $newStatus, OrderAdapter $order): void {
-		$isPayNow = false;
+	public function onOrderConfirmed( string $oldStatus, string $newStatus, OrderAdapter $order ): void {
+		$isPayNow  = false;
 		$isBnpl    = false;
 		$paymentId = '';
-		if ( OrderStatus::PENDING === $oldStatus && in_array( $newStatus, array_merge( OrderHelper::wcGetIsPaidStatuses(), array( OrderStatus::ON_HOLD ) ) ) ) {
-			$almaBusinessData = $this->businessEventsRepository->getRowByOrderId($order->getId());
+		if ( OrderStatus::PENDING === $oldStatus && in_array( $newStatus,
+				array_merge( OrderHelper::wcGetIsPaidStatuses(), array( OrderStatus::ON_HOLD ) ) ) ) {
+			$almaBusinessData = $this->businessEventsRepository->getRowByOrderId( $order->getId() );
 			if ( strpos( $order->getPaymentMethod(), 'alma' ) !== false ) {
-				$isPayNow = $order->getPaymentMethod() === sprintf(
-					AbstractGateway::NAME_ALMA_GATEWAYS, PayNowGateway::PAYMENT_METHOD
+				$isPayNow  = $order->getPaymentMethod() === sprintf(
+						AbstractGateway::NAME_ALMA_GATEWAYS, PayNowGateway::PAYMENT_METHOD
 					);
 				$isBnpl    = ! $isPayNow;
 				$paymentId = $almaBusinessData->alma_payment_id;
@@ -107,24 +108,26 @@ class BusinessEventsService
 
 	/**
 	 * Save the order ID when the order is created on classic checkout
+	 *
 	 * @param int $orderId
 	 *
 	 * @return void
 	 */
-	public function onCreateOrder(int $orderId): void {
+	public function onCreateOrder( int $orderId ): void {
 		$almaCartId = $this->sessionCartId();
-		$this->businessEventsRepository->saveOrderId($almaCartId, $orderId);
+		$this->businessEventsRepository->saveOrderId( $almaCartId, $orderId );
 	}
 
 	/**
 	 * Save the order ID when the order is created from the block
+	 *
 	 * @param WC_Order $order
 	 *
 	 * @return void
 	 */
-	public function onCreateOrderBlock(\WC_Order $order): void {
+	public function onCreateOrderBlock( WC_Order $order ): void {
 		$almaCartId = $this->sessionCartId();
-		$this->businessEventsRepository->saveOrderId($almaCartId, $order->get_id());
+		$this->businessEventsRepository->saveOrderId( $almaCartId, $order->get_id() );
 	}
 
 	/**
@@ -132,9 +135,9 @@ class BusinessEventsService
 	 *
 	 * @return void
 	 */
-	public function saveAlmaPaymentId(string $almaPaymentId): void {
+	public function saveAlmaPaymentId( string $almaPaymentId ): void {
 		$almaCartId = $this->sessionCartId();
-		$this->businessEventsRepository->saveAlmaPaymentId($almaCartId, $almaPaymentId);
+		$this->businessEventsRepository->saveAlmaPaymentId( $almaCartId, $almaPaymentId );
 	}
 
 	/**
@@ -142,7 +145,7 @@ class BusinessEventsService
 	 *
 	 * @return void
 	 */
-	public function updateEligibility(EligibilityList $eligibilityList): void {
+	public function updateEligibility( EligibilityList $eligibilityList ): void {
 		$isEligible = false;
 		foreach ( $eligibilityList as $eligibility ) {
 			if ( $eligibility->isEligible() ) {
@@ -150,7 +153,7 @@ class BusinessEventsService
 				break;
 			}
 		}
-		$this->businessEventsRepository->saveEligibility($this->sessionCartId(), $isEligible);
+		$this->businessEventsRepository->saveEligibility( $this->sessionCartId(), $isEligible );
 	}
 
 	/**
@@ -158,7 +161,7 @@ class BusinessEventsService
 	 */
 	protected function sessionCartId(): int {
 		$almaCartId = $this->sessionHelper->getSession( self::ALMA_CART_ID );
-		if ( empty($almaCartId) ) {
+		if ( empty( $almaCartId ) ) {
 			$almaCartId = CartHelper::generateUniqueCartId();
 			$this->sessionHelper->setSession( self::ALMA_CART_ID, $almaCartId );
 		}
@@ -168,11 +171,12 @@ class BusinessEventsService
 
 	/**
 	 * Check if cart ID already exists in the business events table.
+	 *
 	 * @param $almaCartId
 	 *
 	 * @return bool
 	 */
-	protected function alreadyExist($almaCartId): bool {
+	protected function alreadyExist( $almaCartId ): bool {
 		$result = $this->businessEventsRepository->getCartRowIfExist( $almaCartId );
 
 		return $result !== null;
@@ -180,11 +184,12 @@ class BusinessEventsService
 
 	/**
 	 * Check if cart ID already converted in the business events table.
+	 *
 	 * @param $almaCartId
 	 *
 	 * @return bool
 	 */
-	protected function alreadyConverted($almaCartId): bool {
+	protected function alreadyConverted( $almaCartId ): bool {
 		$result = $this->businessEventsRepository->getCartRowIfExist( $almaCartId );
 
 		return $result !== null && $result->order_id !== null;
@@ -196,7 +201,7 @@ class BusinessEventsService
 	 */
 	protected function resetSessionCartId(): int {
 		$this->sessionHelper->unsetKeySession( self::ALMA_CART_ID );
-		$almaCartId =  CartHelper::generateUniqueCartId();
+		$almaCartId = CartHelper::generateUniqueCartId();
 		$this->sessionHelper->setSession( self::ALMA_CART_ID, $almaCartId );
 
 		return $almaCartId;

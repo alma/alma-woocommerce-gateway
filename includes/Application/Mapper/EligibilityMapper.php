@@ -2,8 +2,8 @@
 
 namespace Alma\Gateway\Application\Mapper;
 
-use Alma\API\Application\DTO\AddressDto;
-use Alma\API\Application\DTO\EligibilityDto;
+use Alma\Client\Application\DTO\AddressDto;
+use Alma\Client\Application\DTO\EligibilityDto;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\CustomerAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;

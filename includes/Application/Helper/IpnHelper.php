@@ -3,13 +3,13 @@
 namespace Alma\Gateway\Application\Helper;
 
 
-use Alma\API\Domain\Helper\IpnHelperInterface;
-use Alma\API\Infrastructure\Helper\RequestHelper;
+use Alma\Client\Application\Helper\RequestHelper;
 use Alma\Gateway\Application\Exception\Service\IpnServiceException;
 use Alma\Gateway\Application\Service\IpnService;
 use Alma\Gateway\Infrastructure\Helper\AjaxHelper;
 use Alma\Gateway\Infrastructure\Helper\EventHelper;
 use Alma\Gateway\Plugin;
+use Alma\Plugin\Application\Helper\IpnHelperInterface;
 
 class IpnHelper implements IpnHelperInterface {
 

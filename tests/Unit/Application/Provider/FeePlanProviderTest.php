@@ -2,9 +2,9 @@
 
 namespace Alma\Gateway\Tests\Unit\Application\Provider;
 
-use Alma\API\Domain\Entity\FeePlanList;
-use Alma\API\Infrastructure\Endpoint\MerchantEndpoint;
-use Alma\API\Infrastructure\Exception\Endpoint\MerchantEndpointException;
+use Alma\Client\Application\Endpoint\MerchantEndpoint;
+use Alma\Client\Application\Exception\Endpoint\MerchantEndpointException;
+use Alma\Client\Domain\Entity\FeePlanList;
 use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
 use Alma\Gateway\Application\Provider\FeePlanProvider;
 use PHPUnit\Framework\TestCase;

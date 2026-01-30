@@ -2,13 +2,14 @@
 
 namespace Alma\Gateway\Tests\Unit\Application\Entity\Form;
 
-use Alma\API\Domain\Entity\FeePlan;
-use Alma\API\Domain\Entity\FeePlanList;
+use Alma\Client\Domain\Entity\FeePlan;
+use Alma\Client\Domain\Entity\FeePlanList;
 use Alma\Gateway\Application\Entity\Form\FeePlanConfiguration;
 use Alma\Gateway\Application\Entity\Form\FeePlanConfigurationList;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 class FeePlanConfigurationListTest extends TestCase {
 
@@ -29,7 +30,7 @@ class FeePlanConfigurationListTest extends TestCase {
 		$feePlanConfigurationArray      = [
 			$firstFeePlanConfigurationMock,
 			$secondFeePlanConfigurationMock,
-			new \stdClass(), // This should be filtered out
+			new stdClass(), // This should be filtered out
 		];
 		$this->feePlanConfigurationList = new FeePlanConfigurationList( $feePlanConfigurationArray );
 
@@ -59,40 +60,38 @@ class FeePlanConfigurationListTest extends TestCase {
 		$this->assertCount( 2, $this->feePlanConfigurationList );
 	}
 
-	public function testValidateWithMatchingPlanKeyAddsErrors()
-	{
-		$feePlanAdapter = $this->createMock(FeePlanAdapter::class);
-		$feePlanAdapter->method('getPlanKey')->willReturn('general_2_0_0');
+	public function testValidateWithMatchingPlanKeyAddsErrors() {
+		$feePlanAdapter = $this->createMock( FeePlanAdapter::class );
+		$feePlanAdapter->method( 'getPlanKey' )->willReturn( 'general_2_0_0' );
 
-		$feePlanListAdapter = new FeePlanListAdapter([$feePlanAdapter]);
+		$feePlanListAdapter = new FeePlanListAdapter( [ $feePlanAdapter ] );
 
-		$feePlan = $this->createMock(FeePlanConfiguration::class);
-		$feePlan->method('getPlanKey')->willReturn('general_2_0_0');
-		$feePlan->method('getErrors')->willReturn(['error1']);
-		$feePlan->expects($this->once())->method('validate')->with($feePlanAdapter);
+		$feePlan = $this->createMock( FeePlanConfiguration::class );
+		$feePlan->method( 'getPlanKey' )->willReturn( 'general_2_0_0' );
+		$feePlan->method( 'getErrors' )->willReturn( [ 'error1' ] );
+		$feePlan->expects( $this->once() )->method( 'validate' )->with( $feePlanAdapter );
 
-		$feePlanList = new FeePlanConfigurationList([$feePlan]);
-		$feePlanList->validate($feePlanListAdapter);
+		$feePlanList = new FeePlanConfigurationList( [ $feePlan ] );
+		$feePlanList->validate( $feePlanListAdapter );
 
-		$this->assertEquals(['error1'], $feePlanList->getErrors());
+		$this->assertEquals( [ 'error1' ], $feePlanList->getErrors() );
 	}
 
-	public function testValidateWithNoMatchingPlanKeyDoesNotAddErrors()
-	{
-		$feePlanAdapter = $this->createMock(FeePlanAdapter::class);
-		$feePlanAdapter->method('getPlanKey')->willReturn('general_3_0_0');
+	public function testValidateWithNoMatchingPlanKeyDoesNotAddErrors() {
+		$feePlanAdapter = $this->createMock( FeePlanAdapter::class );
+		$feePlanAdapter->method( 'getPlanKey' )->willReturn( 'general_3_0_0' );
 
-		$feePlanListAdapter = new FeePlanListAdapter([$feePlanAdapter]);
+		$feePlanListAdapter = new FeePlanListAdapter( [ $feePlanAdapter ] );
 
-		$feePlan = $this->createMock(FeePlanConfiguration::class);
-		$feePlan->method('getPlanKey')->willReturn('general_2_0_0');
-		$feePlan->method('getErrors')->willReturn([]);
-		$feePlan->expects($this->never())->method('validate');
+		$feePlan = $this->createMock( FeePlanConfiguration::class );
+		$feePlan->method( 'getPlanKey' )->willReturn( 'general_2_0_0' );
+		$feePlan->method( 'getErrors' )->willReturn( [] );
+		$feePlan->expects( $this->never() )->method( 'validate' );
 
-		$feePlanList = new FeePlanConfigurationList([$feePlan]);
-		$feePlanList->validate($feePlanListAdapter);
+		$feePlanList = new FeePlanConfigurationList( [ $feePlan ] );
+		$feePlanList->validate( $feePlanListAdapter );
 
-		$this->assertEquals([], $feePlanList->getErrors());
+		$this->assertEquals( [], $feePlanList->getErrors() );
 	}
 
 	/**

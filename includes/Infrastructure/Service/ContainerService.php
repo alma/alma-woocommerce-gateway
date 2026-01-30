@@ -2,31 +2,16 @@
 
 namespace Alma\Gateway\Infrastructure\Service;
 
-use Alma\API\Domain\Adapter\CartAdapterInterface;
-use Alma\API\Domain\Adapter\OrderAdapterInterface;
-use Alma\API\Domain\Adapter\ProductAdapterInterface;
-use Alma\API\Domain\Helper\ContextHelperInterface;
-use Alma\API\Domain\Helper\EventHelperInterface;
-use Alma\API\Domain\Helper\ExcludedProductsHelperInterface;
-use Alma\API\Domain\Helper\FormHelperInterface;
-use Alma\API\Domain\Helper\NavigationHelperInterface;
-use Alma\API\Domain\Helper\SecurityHelperInterface;
-use Alma\API\Domain\Helper\SessionHelperInterface;
-use Alma\API\Domain\Repository\ConfigRepositoryInterface;
-use Alma\API\Domain\Repository\GatewayRepositoryInterface;
-use Alma\API\Domain\Repository\OrderRepositoryInterface;
-use Alma\API\Domain\Repository\ProductCategoryRepositoryInterface;
-use Alma\API\Domain\Repository\ProductRepositoryInterface;
-use Alma\API\Infrastructure\ClientConfiguration;
-use Alma\API\Infrastructure\CurlClient;
-use Alma\API\Infrastructure\Endpoint\ConfigurationEndpoint;
-use Alma\API\Infrastructure\Endpoint\DataExportEndpoint;
-use Alma\API\Infrastructure\Endpoint\EligibilityEndpoint;
-use Alma\API\Infrastructure\Endpoint\MerchantEndpoint;
-use Alma\API\Infrastructure\Endpoint\OrderEndpoint;
-use Alma\API\Infrastructure\Endpoint\PaymentEndpoint;
-use Alma\API\Infrastructure\Endpoint\ShareOfCheckoutEndpoint;
-use Alma\API\Infrastructure\Endpoint\WebhookEndpoint;
+use Alma\Client\Application\ClientConfiguration;
+use Alma\Client\Application\CurlClient;
+use Alma\Client\Application\Endpoint\ConfigurationEndpoint;
+use Alma\Client\Application\Endpoint\DataExportEndpoint;
+use Alma\Client\Application\Endpoint\EligibilityEndpoint;
+use Alma\Client\Application\Endpoint\MerchantEndpoint;
+use Alma\Client\Application\Endpoint\OrderEndpoint;
+use Alma\Client\Application\Endpoint\PaymentEndpoint;
+use Alma\Client\Application\Endpoint\ShareOfCheckoutEndpoint;
+use Alma\Client\Application\Endpoint\WebhookEndpoint;
 use Alma\Gateway\Application\Helper\EncryptorHelper;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Helper\IpnHelper;
@@ -43,7 +28,6 @@ use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
 use Alma\Gateway\Infrastructure\Adapter\ProductAdapter;
 use Alma\Gateway\Infrastructure\Controller\AdminController;
-use Alma\Gateway\Infrastructure\Controller\AssetsController;
 use Alma\Gateway\Infrastructure\Gateway\Backend\AlmaGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
@@ -66,6 +50,21 @@ use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
 use Alma\Gateway\Infrastructure\Repository\ProductRepository;
 use Alma\Gateway\Infrastructure\Repository\UserRepository;
 use Alma\Gateway\Plugin;
+use Alma\Plugin\Application\Helper\ExcludedProductsHelperInterface;
+use Alma\Plugin\Infrastructure\Adapter\CartAdapterInterface;
+use Alma\Plugin\Infrastructure\Adapter\OrderAdapterInterface;
+use Alma\Plugin\Infrastructure\Adapter\ProductAdapterInterface;
+use Alma\Plugin\Infrastructure\Helper\ContextHelperInterface;
+use Alma\Plugin\Infrastructure\Helper\EventHelperInterface;
+use Alma\Plugin\Infrastructure\Helper\FormHelperInterface;
+use Alma\Plugin\Infrastructure\Helper\NavigationHelperInterface;
+use Alma\Plugin\Infrastructure\Helper\SecurityHelperInterface;
+use Alma\Plugin\Infrastructure\Helper\SessionHelperInterface;
+use Alma\Plugin\Infrastructure\Repository\ConfigRepositoryInterface;
+use Alma\Plugin\Infrastructure\Repository\GatewayRepositoryInterface;
+use Alma\Plugin\Infrastructure\Repository\OrderRepositoryInterface;
+use Alma\Plugin\Infrastructure\Repository\ProductCategoryRepositoryInterface;
+use Alma\Plugin\Infrastructure\Repository\ProductRepositoryInterface;
 use Dice\Dice;
 use Psr\Http\Client\ClientInterface;
 
@@ -201,12 +200,12 @@ class ContainerService {
 		// Business Layer
 		$this->dice = $this->dice->addRules(
 			array(
-				AdminController::class => array( 'shared' => true ),
+				AdminController::class       => array( 'shared' => true ),
 				BusinessEventsService::class => array( 'shared' => true ),
-				ConfigService::class   => array( 'shared' => true ),
-				GatewayService::class  => array( 'shared' => true ),
-				LoggerService::class   => array( 'shared' => true ),
-				IpnService::class      => array( 'shared' => true ),
+				ConfigService::class         => array( 'shared' => true ),
+				GatewayService::class        => array( 'shared' => true ),
+				LoggerService::class         => array( 'shared' => true ),
+				IpnService::class            => array( 'shared' => true ),
 			)
 		);
 

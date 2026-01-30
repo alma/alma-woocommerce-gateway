@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
-use Alma\API\Domain\Helper\SessionHelperInterface;
+use Alma\Plugin\Infrastructure\Helper\SessionHelperInterface;
 
 class SessionHelper implements SessionHelperInterface {
 

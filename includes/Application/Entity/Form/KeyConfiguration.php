@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Application\Entity\Form;
 
-use Alma\API\Domain\ValueObject\Environment;
+use Alma\Client\Domain\ValueObject\Environment;
 use Alma\Gateway\Application\Service\AuthenticationService;
 use Alma\Gateway\Application\Service\ConfigService;
 

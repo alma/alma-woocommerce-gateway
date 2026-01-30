@@ -2,10 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Adapter;
 
-use Alma\API\Domain\Adapter\OrderAdapterInterface;
-use Alma\API\Domain\Adapter\OrderLineAdapterInterface;
 use Alma\Gateway\Application\Helper\DisplayHelper;
-use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
+use Alma\Plugin\Infrastructure\Adapter\OrderAdapterInterface;
+use Alma\Plugin\Infrastructure\Adapter\OrderLineAdapterInterface;
+use BadMethodCallException;
 use WC_Order;
 
 /**

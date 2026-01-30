@@ -2,10 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Repository;
 
-use Alma\API\Domain\Adapter\UserAdapterInterface;
-use Alma\API\Domain\Repository\UserRepositoryInterface;
 use Alma\Gateway\Infrastructure\Adapter\UserAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\UserRepositoryException;
+use Alma\Plugin\Infrastructure\Adapter\UserAdapterInterface;
+use Alma\Plugin\Infrastructure\Repository\UserRepositoryInterface;
 
 class UserRepository implements UserRepositoryInterface {
 

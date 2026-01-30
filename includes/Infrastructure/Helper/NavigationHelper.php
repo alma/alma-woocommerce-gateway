@@ -2,8 +2,8 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
-use Alma\API\Domain\Adapter\OrderAdapterInterface;
-use Alma\API\Domain\Helper\NavigationHelperInterface;
+use Alma\Plugin\Infrastructure\Adapter\OrderAdapterInterface;
+use Alma\Plugin\Infrastructure\Helper\NavigationHelperInterface;
 
 class NavigationHelper implements NavigationHelperInterface {
 

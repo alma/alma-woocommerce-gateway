@@ -2,8 +2,8 @@
 
 namespace Alma\Gateway\Tests\Unit\Application\Helper;
 
-use Alma\API\Domain\ValueObject\Environment;
-use Alma\API\Infrastructure\Exception\ParametersException;
+use Alma\Client\Application\Exception\ParametersException;
+use Alma\Client\Domain\ValueObject\Environment;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Tests\Unit\Mocks\FeePlanMock;
 use Brain\Monkey;

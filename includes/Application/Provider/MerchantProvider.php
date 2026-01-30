@@ -2,13 +2,13 @@
 
 namespace Alma\Gateway\Application\Provider;
 
-use Alma\API\Application\DTO\MerchantBusinessEvent\CartInitiatedBusinessEventDto;
-use Alma\API\Application\DTO\MerchantBusinessEvent\OrderConfirmedBusinessEventDto;
-use Alma\API\Domain\Port\MerchantProviderInterface;
-use Alma\API\Infrastructure\Endpoint\MerchantEndpoint;
-use Alma\API\Infrastructure\Exception\Endpoint\MerchantEndpointException;
+use Alma\Client\Application\DTO\MerchantBusinessEvent\CartInitiatedBusinessEventDto;
+use Alma\Client\Application\DTO\MerchantBusinessEvent\OrderConfirmedBusinessEventDto;
+use Alma\Client\Application\Endpoint\MerchantEndpoint;
+use Alma\Client\Application\Exception\Endpoint\MerchantEndpointException;
 use Alma\Gateway\Application\Exception\Service\API\MerchantServiceException;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
+use Alma\Plugin\Application\Port\MerchantProviderInterface;
 
 class MerchantProvider implements MerchantProviderInterface, ProviderInterface {
 
@@ -25,7 +25,7 @@ class MerchantProvider implements MerchantProviderInterface, ProviderInterface {
 	 */
 	public function __construct( MerchantEndpoint $merchantEndpoint, LoggerService $loggerService ) {
 		$this->merchantEndpoint = $merchantEndpoint;
-		$this->loggerService   = $loggerService;
+		$this->loggerService    = $loggerService;
 	}
 
 	/**
@@ -34,7 +34,7 @@ class MerchantProvider implements MerchantProviderInterface, ProviderInterface {
 	 * @return void
 	 * @throws MerchantServiceException
 	 */
-	public function sendCartInitiatedBusinessEvent(CartInitiatedBusinessEventDto $cartEventData): void {
+	public function sendCartInitiatedBusinessEvent( CartInitiatedBusinessEventDto $cartEventData ): void {
 		try {
 			$this->merchantEndpoint->sendCartInitiatedBusinessEvent( $cartEventData );
 		} catch ( MerchantEndpointException $e ) {

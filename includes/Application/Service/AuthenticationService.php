@@ -2,11 +2,11 @@
 
 namespace Alma\Gateway\Application\Service;
 
-use Alma\API\Domain\ValueObject\Environment;
-use Alma\API\Infrastructure\ClientConfiguration;
-use Alma\API\Infrastructure\CurlClient;
-use Alma\API\Infrastructure\Endpoint\MerchantEndpoint;
-use Alma\API\Infrastructure\Exception\Endpoint\MerchantEndpointException;
+use Alma\Client\Application\ClientConfiguration;
+use Alma\Client\Application\CurlClient;
+use Alma\Client\Application\Endpoint\MerchantEndpoint;
+use Alma\Client\Application\Exception\Endpoint\MerchantEndpointException;
+use Alma\Client\Domain\ValueObject\Environment;
 
 class AuthenticationService {
 

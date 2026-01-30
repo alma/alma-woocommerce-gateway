@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Infrastructure\Adapter;
 
-use Alma\API\Domain\Adapter\ShippingAddressAdapterInterface;
+use Alma\Plugin\Infrastructure\Adapter\ShippingAddressAdapterInterface;
 use WC_Customer;
 
 class ShippingAddressAdapter implements ShippingAddressAdapterInterface {

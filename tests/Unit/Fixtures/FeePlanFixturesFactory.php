@@ -2,8 +2,8 @@
 
 namespace Alma\Gateway\Tests\Unit\Fixtures;
 
-use Alma\API\Domain\Entity\FeePlan;
-use Alma\API\Infrastructure\Exception\ParametersException;
+use Alma\Client\Application\Exception\ParametersException;
+use Alma\Client\Domain\Entity\FeePlan;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 
 class FeePlanFixturesFactory {
@@ -19,7 +19,7 @@ class FeePlanFixturesFactory {
 	 *
 	 * @throws ParametersException
 	 */
-	public function getP2x(bool $enabled = true, int $minAmount = 5000, int $maxAmount = 200000): FeePlanAdapter {
+	public function getP2x( bool $enabled = true, int $minAmount = 5000, int $maxAmount = 200000 ): FeePlanAdapter {
 
 		$feePlan = new FeePlan( [
 			'allowed'               => true,
@@ -35,7 +35,7 @@ class FeePlanFixturesFactory {
 			'min_purchase_amount'   => 5000,
 		] );
 
-		return $this->getFeePlanAdapter($feePlan, $enabled, $minAmount, $maxAmount);
+		return $this->getFeePlanAdapter( $feePlan, $enabled, $minAmount, $maxAmount );
 	}
 
 	/**
@@ -49,7 +49,7 @@ class FeePlanFixturesFactory {
 	 *
 	 * @throws ParametersException
 	 */
-	public function getP3x(bool $enabled = true, int $minAmount = 5000, int $maxAmount = 200000): FeePlanAdapter {
+	public function getP3x( bool $enabled = true, int $minAmount = 5000, int $maxAmount = 200000 ): FeePlanAdapter {
 
 		$feePlan = new FeePlan( [
 			'allowed'               => false,
@@ -65,7 +65,7 @@ class FeePlanFixturesFactory {
 			'min_purchase_amount'   => 5000,
 		] );
 
-		return $this->getFeePlanAdapter($feePlan, $enabled, $minAmount, $maxAmount);
+		return $this->getFeePlanAdapter( $feePlan, $enabled, $minAmount, $maxAmount );
 	}
 
 	/**
@@ -73,7 +73,7 @@ class FeePlanFixturesFactory {
 	 *
 	 * @throws ParametersException
 	 */
-	private function getFeePlanAdapter(FeePlan $feePlan, bool $enabled = true, int $minAmount = 5000, int $maxAmount = 200000): FeePlanAdapter {
+	private function getFeePlanAdapter( FeePlan $feePlan, bool $enabled = true, int $minAmount = 5000, int $maxAmount = 200000 ): FeePlanAdapter {
 		$feePlanAdapter = new FeePlanAdapter( $feePlan );
 		if ( $enabled ) {
 			$feePlanAdapter->enable();
@@ -84,6 +84,7 @@ class FeePlanFixturesFactory {
 		if ( $maxAmount ) {
 			$feePlanAdapter->setOverrideMaxPurchaseAmount( $maxAmount );
 		}
+
 		return $feePlanAdapter;
 	}
 }

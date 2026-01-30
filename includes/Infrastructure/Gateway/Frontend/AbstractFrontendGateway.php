@@ -2,7 +2,6 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 
-use Alma\API\Domain\Helper\FormHelperInterface;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
@@ -14,6 +13,7 @@ use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\FormHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Plugin;
+use Alma\Plugin\Infrastructure\Helper\FormHelperInterface;
 use WC_Order;
 
 /**

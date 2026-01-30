@@ -2,15 +2,15 @@
 
 namespace Alma\Gateway\Infrastructure\Adapter;
 
-use Alma\API\Domain\Adapter\CartAdapterInterface;
 use Alma\Gateway\Application\Helper\DisplayHelper;
+use Alma\Plugin\Infrastructure\Adapter\CartAdapterInterface;
 use WC_Cart;
 
 class CartAdapter implements CartAdapterInterface {
 
 	private ?WC_Cart $cart = null;
 
-	public function __construct( ?WC_Cart $cart) {
+	public function __construct( ?WC_Cart $cart ) {
 		$this->cart = $cart;
 	}
 

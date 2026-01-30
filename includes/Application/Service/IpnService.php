@@ -2,10 +2,7 @@
 
 namespace Alma\Gateway\Application\Service;
 
-use Alma\API\Domain\Adapter\CartAdapterInterface;
-use Alma\API\Domain\Adapter\OrderAdapterInterface;
-use Alma\API\Domain\Entity\Payment;
-use Alma\API\Domain\Helper\NavigationHelperInterface;
+use Alma\Client\Domain\Entity\Payment;
 use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
 use Alma\Gateway\Application\Exception\Service\IpnServiceException;
 use Alma\Gateway\Application\Helper\IpnHelper;
@@ -15,6 +12,9 @@ use Alma\Gateway\Infrastructure\Helper\ParameterHelper;
 use Alma\Gateway\Infrastructure\Helper\ShopNotificationHelper;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Plugin;
+use Alma\Plugin\Infrastructure\Adapter\CartAdapterInterface;
+use Alma\Plugin\Infrastructure\Adapter\OrderAdapterInterface;
+use Alma\Plugin\Infrastructure\Helper\NavigationHelperInterface;
 
 class IpnService {
 	public const IPN_CALLBACK = 'alma_ipn_callback';

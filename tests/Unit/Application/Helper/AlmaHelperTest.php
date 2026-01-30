@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Tests\Unit\Application\Helper;
 
-use Alma\API\Domain\ValueObject\Environment;
+use Alma\Client\Domain\ValueObject\Environment;
 use Alma\Gateway\Application\Helper\AlmaHelper;
 use Brain\Monkey;
 use Brain\Monkey\Functions;

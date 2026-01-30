@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Infrastructure\Dto;
 
-use Alma\API\Application\DTO\DtoInterface;
+use Alma\Client\Application\DTO\DtoInterface;
 
 class FeePlanDto implements DtoInterface {
 	private int $installmentsCount;

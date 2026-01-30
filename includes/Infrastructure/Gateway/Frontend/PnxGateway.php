@@ -2,8 +2,7 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 
-use Alma\API\Domain\Adapter\OrderAdapterInterface;
-use Alma\API\Domain\ValueObject\PaymentMethod;
+use Alma\Client\Domain\ValueObject\PaymentMethod;
 use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
 use Alma\Gateway\Application\Helper\TemplateHelper;
 use Alma\Gateway\Application\Service\ConfigService;
@@ -12,6 +11,7 @@ use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\ShopNotificationHelper;
 use Alma\Gateway\Plugin;
+use Alma\Plugin\Infrastructure\Adapter\OrderAdapterInterface;
 
 /**
  * Class Gateway
@@ -29,8 +29,14 @@ class PnxGateway extends AbstractFrontendGateway implements FrontendGatewayInter
 	public function __construct() {
 		/** @var ConfigService $config_service */
 		$config_service     = Plugin::get_container()->get( ConfigService::class );
-		$this->title        = $config_service->hasSetting( self::TITLE_FIELD ) ? $config_service->getSetting( self::TITLE_FIELD ) : __( 'Pay in installments', 'alma-gateway-for-woocommerce' );
-		$this->description  = $config_service->hasSetting( self::DESCRIPTION_FIELD ) ? $config_service->getSetting( self::DESCRIPTION_FIELD ) : __( 'Fast and secure payment by credit card', 'alma-gateway-for-woocommerce' );
+		$this->title        = $config_service->hasSetting( self::TITLE_FIELD ) ? $config_service->getSetting( self::TITLE_FIELD ) : __(
+			'Pay in installments',
+			'alma-gateway-for-woocommerce'
+		);
+		$this->description  = $config_service->hasSetting( self::DESCRIPTION_FIELD ) ? $config_service->getSetting( self::DESCRIPTION_FIELD ) : __(
+			'Fast and secure payment by credit card',
+			'alma-gateway-for-woocommerce'
+		);
 		$this->method_title = __( 'Payment in installments with Alma - 2x 3x 4x', 'alma-gateway-for-woocommerce' );
 
 		parent::__construct();

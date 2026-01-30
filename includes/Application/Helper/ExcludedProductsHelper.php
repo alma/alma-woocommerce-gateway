@@ -2,9 +2,9 @@
 
 namespace Alma\Gateway\Application\Helper;
 
-use Alma\API\Domain\Adapter\CartAdapterInterface;
-use Alma\API\Domain\Adapter\ProductAdapterInterface;
-use Alma\API\Domain\Helper\ExcludedProductsHelperInterface;
+use Alma\Plugin\Application\Helper\ExcludedProductsHelperInterface;
+use Alma\Plugin\Infrastructure\Adapter\CartAdapterInterface;
+use Alma\Plugin\Infrastructure\Adapter\ProductAdapterInterface;
 
 class ExcludedProductsHelper implements ExcludedProductsHelperInterface {
 

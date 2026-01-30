@@ -2,7 +2,6 @@
 
 namespace Alma\Gateway\Infrastructure\Repository;
 
-use Alma\API\Domain\Repository\GatewayRepositoryInterface;
 use Alma\Gateway\Infrastructure\Block\Gateway\CreditGatewayBlock;
 use Alma\Gateway\Infrastructure\Block\Gateway\GatewayBlockFactory;
 use Alma\Gateway\Infrastructure\Block\Gateway\PayLaterGatewayBlock;
@@ -16,6 +15,7 @@ use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
 use Alma\Gateway\Plugin;
+use Alma\Plugin\Infrastructure\Repository\GatewayRepositoryInterface;
 
 class GatewayRepository implements GatewayRepositoryInterface {
 

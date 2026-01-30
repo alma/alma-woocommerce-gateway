@@ -2,8 +2,8 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
-use Alma\API\Domain\Helper\SecurityHelperInterface;
 use Alma\Gateway\Infrastructure\Exception\CmsException;
+use Alma\Plugin\Infrastructure\Helper\SecurityHelperInterface;
 
 class SecurityHelper implements SecurityHelperInterface {
 

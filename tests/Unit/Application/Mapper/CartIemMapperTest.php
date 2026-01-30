@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Tests\Unit\Application\Mapper;
 
-use Alma\API\Application\DTO\CartItemDto;
+use Alma\Client\Application\DTO\CartItemDto;
 use Alma\Gateway\Application\Mapper\CartItemMapper;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
 use Alma\Gateway\Infrastructure\Service\ContainerService;

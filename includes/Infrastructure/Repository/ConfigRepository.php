@@ -6,7 +6,7 @@
 
 namespace Alma\Gateway\Infrastructure\Repository;
 
-use Alma\API\Domain\Repository\ConfigRepositoryInterface;
+use Alma\Plugin\Infrastructure\Repository\ConfigRepositoryInterface;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore

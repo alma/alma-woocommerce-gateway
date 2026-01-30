@@ -2,12 +2,12 @@
 
 namespace Alma\Gateway\Tests\Unit\Application\Mapper;
 
-use Alma\API\Application\DTO\CartDto;
-use Alma\API\Domain\Adapter\OrderAdapterInterface;
+use Alma\Client\Application\DTO\CartDto;
 use Alma\Gateway\Application\Mapper\CartMapper;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
 use Alma\Gateway\Tests\Unit\Mocks\OrderLineMockFactory;
+use Alma\Plugin\Infrastructure\Adapter\OrderAdapterInterface;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
 use Mockery;

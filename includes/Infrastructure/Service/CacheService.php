@@ -3,7 +3,7 @@
 namespace Alma\Gateway\Infrastructure\Service;
 
 
-use Alma\API\Domain\Helper\SessionHelperInterface;
+use Alma\Plugin\Infrastructure\Helper\SessionHelperInterface;
 
 /**
  * Class CacheService

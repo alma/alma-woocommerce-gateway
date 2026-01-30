@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 
-use Alma\API\Domain\Adapter\OrderAdapterInterface;
+use Alma\Plugin\Infrastructure\Adapter\OrderAdapterInterface;
 
 interface FrontendGatewayInterface {
 

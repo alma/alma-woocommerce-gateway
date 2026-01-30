@@ -2,11 +2,11 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
-use Alma\API\Domain\Adapter\CartAdapterInterface;
-use Alma\API\Domain\Adapter\CustomerAdapterInterface;
-use Alma\API\Domain\Helper\ContextHelperInterface;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\CustomerAdapter;
+use Alma\Plugin\Infrastructure\Adapter\CartAdapterInterface;
+use Alma\Plugin\Infrastructure\Adapter\CustomerAdapterInterface;
+use Alma\Plugin\Infrastructure\Helper\ContextHelperInterface;
 use Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils;
 
 class ContextHelper implements ContextHelperInterface {

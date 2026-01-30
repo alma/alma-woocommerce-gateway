@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Tests\Unit\Application\Mapper;
 
-use Alma\API\Application\DTO\OrderDto;
+use Alma\Client\Application\DTO\OrderDto;
 use Alma\Gateway\Application\Mapper\OrderMapper;
 use Alma\Gateway\Tests\Unit\Mocks\OrderAdapterMockFactory;
 use PHPUnit\Framework\TestCase;
@@ -10,14 +10,6 @@ use PHPUnit\Framework\TestCase;
 class OrderMapperTest extends TestCase {
 
 	private $orderMapper;
-
-	protected function setUp(): void {
-		$this->orderMapper = new OrderMapper();
-	}
-
-	protected function tearDown(): void {
-		$this->orderMapper = null;
-	}
 
 	public function testOrderMapper() {
 		$orderAdapterMock = OrderAdapterMockFactory::createMock( $this );
@@ -35,6 +27,14 @@ class OrderMapperTest extends TestCase {
 			],
 			$orderDto->toArray()
 		);
+	}
+
+	protected function setUp(): void {
+		$this->orderMapper = new OrderMapper();
+	}
+
+	protected function tearDown(): void {
+		$this->orderMapper = null;
 	}
 
 }

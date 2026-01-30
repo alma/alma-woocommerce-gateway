@@ -2,10 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Repository;
 
-use Alma\API\Domain\Adapter\OrderAdapterInterface;
-use Alma\API\Domain\Repository\OrderRepositoryInterface;
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
+use Alma\Plugin\Infrastructure\Adapter\OrderAdapterInterface;
+use Alma\Plugin\Infrastructure\Repository\OrderRepositoryInterface;
 
 class OrderRepository implements OrderRepositoryInterface {
 

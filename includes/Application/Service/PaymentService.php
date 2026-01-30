@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Application\Service;
 
-use Alma\API\Domain\Entity\Payment;
+use Alma\Client\Domain\Entity\Payment;
 use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
 use Alma\Gateway\Application\Mapper\CustomerMapper;
 use Alma\Gateway\Application\Mapper\OrderMapper;

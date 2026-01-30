@@ -2,12 +2,12 @@
 
 namespace Alma\Gateway\Application\Mapper;
 
-use Alma\API\Application\DTO\AddressDto;
-use Alma\API\Application\DTO\PaymentDto;
-use Alma\API\Domain\Adapter\FeePlanAdapterInterface;
-use Alma\API\Domain\Adapter\OrderAdapterInterface;
+use Alma\Client\Application\DTO\AddressDto;
+use Alma\Client\Application\DTO\PaymentDto;
 use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
+use Alma\Plugin\Infrastructure\Adapter\FeePlanAdapterInterface;
+use Alma\Plugin\Infrastructure\Adapter\OrderAdapterInterface;
 
 class PaymentMapper {
 

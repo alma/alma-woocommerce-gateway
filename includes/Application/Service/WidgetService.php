@@ -2,9 +2,8 @@
 
 namespace Alma\Gateway\Application\Service;
 
-use Alma\API\Domain\Adapter\CartAdapterInterface;
-use Alma\API\Domain\Entity\WidgetInterface;
-use Alma\API\Domain\ValueObject\Environment;
+use Alma\Client\Domain\Entity\WidgetInterface;
+use Alma\Client\Domain\ValueObject\Environment;
 use Alma\Gateway\Application\Exception\Service\WidgetServiceException;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
@@ -105,7 +104,7 @@ class WidgetService {
 	public function displayCartWidget( array $excludedCategories, FeePlanListAdapter $feePlanListAdapter, Environment $environment, string $merchantId, string $language ): WidgetInterface {
 
 		// Display widget if widget is enabled and there are no excluded categories.
-		$cartAdapter		   = ContextHelper::getCart();
+		$cartAdapter           = ContextHelper::getCart();
 		$hasExcludedCategories = ! $this->excludedProductsHelper->canDisplayOnCartPage( $cartAdapter,
 			$excludedCategories );
 		$displayWidget         = $this->shouldDisplayWidget(
