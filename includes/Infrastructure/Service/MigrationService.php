@@ -11,16 +11,21 @@ class MigrationService {
 
 	const VERSION_6_0_0 = '6.0.0';
 
-	public function runMigrationsIfNeeded() {
+	/**
+	 * Run migrations if needed.
+	 *
+	 * @return bool True if migrations were run, false otherwise.
+	 */
+	public function runMigrationsIfNeeded(): bool {
 		$lock = get_option( self::MIGRATION_LOCK, null );
 		if ( $lock ) {
-			return; // Another migration is in progress
+			return false; // Another migration is in progress
 		}
 
 		// Check if a version number exists in the database
 		$version = get_option( self::VERSION_KEY, null );
 		if ( ! $version ) {
-			return; // Fresh install, no migrations needed
+			return false; // Fresh install, no migrations needed
 		}
 
 		// Compare to the current plugin version. If different, run necessary migrations
@@ -46,7 +51,11 @@ class MigrationService {
 				// Delete the migration lock
 				delete_option( self::MIGRATION_LOCK );
 			}
+
+			return true;
 		}
+
+		return false;
 	}
 
 	/**

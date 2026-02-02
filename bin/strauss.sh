@@ -61,7 +61,7 @@ eval "sed $SED_I \"s/require_once 'vendor\/autoload.php';/require_once 'vendor\/
 echo "=> Prefixing namespaces in source files..."
 # Find all .php files in the copied sources and replace namespaces.
 find "$BUILD_DIR/includes" "$BUILD_DIR/public" "$BUILD_DIR/alma-gateway-for-woocommerce.php" -type f -name "*.php" -exec \
-bash -c "sed $SED_I -e 's/Alma\\\\API\\\\/${NAMESPACE_PREFIX}\\\\Alma\\\\API\\\\/g' -e 's/Psr\\\\Log\\\\/${NAMESPACE_PREFIX}\\\\Psr\\\\Log\\\\/g' -e 's/Psr\\\\Http\\\\/${NAMESPACE_PREFIX}\\\\Psr\\\\Http\\\\/g' -e 's/Dice\\\\/${NAMESPACE_PREFIX}\\\\Dice\\\\/g' {}" \;
+bash -c "sed $SED_I -e 's/Alma\\\\Plugin\\\\/${NAMESPACE_PREFIX}\\\\Alma\\\\Plugin\\\\/g' -e 's/Alma\\\\Client\\\\/${NAMESPACE_PREFIX}\\\\Alma\\\\Client\\\\/g' -e 's/Psr\\\\Log\\\\/${NAMESPACE_PREFIX}\\\\Psr\\\\Log\\\\/g' -e 's/Psr\\\\Http\\\\/${NAMESPACE_PREFIX}\\\\Psr\\\\Http\\\\/g' -e 's/Dice\\\\/${NAMESPACE_PREFIX}\\\\Dice\\\\/g' {}" \;
 
 echo "=> Creating distribution zip..."
 mkdir -p dist
