@@ -69,8 +69,9 @@ add_action(
 
 // Plugin migration: run migrations if needed.
 add_action(
-	'init',
+	'plugins_loaded',
 	array( $alma_gateway_plugin, 'plugin_migration' ),
+	1
 );
 
 // Plugin setup: set up the plugin (register payment gateways, hooks, etc.) once WooCommerce is initialized.
