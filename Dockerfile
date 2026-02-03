@@ -16,7 +16,11 @@ RUN apt update && \
     unzip \
     libicu-dev \
     pkg-config \
+    curl \
     && \
+    # Add Node.js repository and install Node.js 20.x and npm
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 

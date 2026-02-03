@@ -14,6 +14,13 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   SED_I="-i ''"
 fi
 
+echo "=> Building JS assets..."
+# Run npm install and build using the node installed in the container
+npm install
+# Force a compatible version of ajv to fix webpack build issue
+npm install --save-dev ajv@^7
+npm run build
+
 echo "=> Cleaning up previous build artifacts..."
 rm -rf ./dist ./vendor-prefixed "$BUILD_DIR"
 
