@@ -56,7 +56,7 @@ class FeePlanProvider implements FeePlanProviderInterface, ProviderInterface {
 			                              ) );
 
 		} catch ( MerchantEndpointException $e ) {
-			throw new FeePlanServiceException( 'Error retrieving fee plans: ' . $e->getMessage() );
+			return new FeePlanList();
 		}
 	}
 }

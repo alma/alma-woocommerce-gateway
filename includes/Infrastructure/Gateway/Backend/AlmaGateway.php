@@ -139,6 +139,13 @@ class AlmaGateway extends AbstractBackendGateway {
 		// Clean settings
 		$settings = $this->clean_decoration_fields( $settings );
 
+		// Check mandatory fields
+		if ( empty( $settings[ GatewayConfigurationForm::FIELD_LIVE_API_KEY ] ) || empty( $settings[ GatewayConfigurationForm::FIELD_TEST_API_KEY ] ) ) {
+			$this->errors[] = __( 'The API keys are mandatory.', 'alma-gateway-for-woocommerce' );
+
+			return $settings;
+		}
+
 		// Transform settings to GatewayConfiguration
 		/** @var ConfigFormMapper $config_form_mapper */
 		$config_form_mapper    = Plugin::get_container()->get( ConfigFormMapper::class );
