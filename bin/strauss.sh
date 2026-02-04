@@ -4,6 +4,7 @@
 set -e
 
 # Define a temporary directory for the build
+PLUGIN_DIR_NAME="alma-gateway-for-woocommerce"
 BUILD_DIR="tmp-zip-export"
 # Define the namespace prefix. Adjust if your strauss config is different.
 NAMESPACE_PREFIX="Alma\\\\Vendor"
@@ -39,41 +40,41 @@ rm strauss.phar
 
 echo "=> Preparing files for packaging..."
 # Create the temporary build directory
-mkdir -p "$BUILD_DIR"
+mkdir -p "$BUILD_DIR/$PLUGIN_DIR_NAME"
 # Copy necessary files and directories to the build directory
-cp alma-gateway-for-woocommerce.php "$BUILD_DIR/"
-cp readme.txt "$BUILD_DIR/"
-cp composer.json "$BUILD_DIR/"
-cp -r build "$BUILD_DIR/"
-cp -r includes "$BUILD_DIR/"
-cp -r languages "$BUILD_DIR/"
-cp -r public "$BUILD_DIR/"
-cp -r assets "$BUILD_DIR/"
+cp alma-gateway-for-woocommerce.php "$BUILD_DIR/$PLUGIN_DIR_NAME/"
+cp readme.txt "$BUILD_DIR/$PLUGIN_DIR_NAME/"
+cp composer.json "$BUILD_DIR/$PLUGIN_DIR_NAME/"
+cp -r build "$BUILD_DIR/$PLUGIN_DIR_NAME/"
+cp -r includes "$BUILD_DIR/$PLUGIN_DIR_NAME/"
+cp -r languages "$BUILD_DIR/$PLUGIN_DIR_NAME/"
+cp -r public "$BUILD_DIR/$PLUGIN_DIR_NAME/"
+cp -r assets "$BUILD_DIR/$PLUGIN_DIR_NAME/"
 
 # Move the prefixed vendor directory into the build directory
-mv vendor-prefixed "$BUILD_DIR/"
+mv vendor-prefixed "$BUILD_DIR/$PLUGIN_DIR_NAME/"
 
 echo "=> Preparing composer.json for production..."
 # Remove require and require-dev sections from the composer.json in the build directory
-eval "sed $SED_I -e '/\"require\": {/,/}/d' -e '/\"require-dev\": {/,/}/d' \"$BUILD_DIR/composer.json\""
+eval "sed $SED_I -e '/\"require\": {/,/}/d' -e '/\"require-dev\": {/,/}/d' \"$BUILD_DIR/$PLUGIN_DIR_NAME/composer.json\""
 
 echo "=> Installing production autoloader..."
 # Run composer install in the build directory to generate a clean vendor directory
-(cd "$BUILD_DIR" && composer install --no-dev --optimize-autoloader)
+(cd "$BUILD_DIR/$PLUGIN_DIR_NAME" && composer install --no-dev --optimize-autoloader)
 
 echo "=> Patching autoloader path..."
 # Modify the main plugin file to require both autoloaders.
-eval "sed $SED_I \"s/require_once 'vendor\/autoload.php';/require_once 'vendor\/autoload.php';\\\nrequire_once 'vendor-prefixed\/autoload.php';/g\" \"$BUILD_DIR/alma-gateway-for-woocommerce.php\""
+eval "sed $SED_I \"s/require_once 'vendor\/autoload.php';/require_once 'vendor\/autoload.php';\\\nrequire_once 'vendor-prefixed\/autoload.php';/g\" \"$BUILD_DIR/$PLUGIN_DIR_NAME/alma-gateway-for-woocommerce.php\""
 
 echo "=> Prefixing namespaces in source files..."
 # Find all .php files in the copied sources and replace namespaces.
-find "$BUILD_DIR/includes" "$BUILD_DIR/public" "$BUILD_DIR/alma-gateway-for-woocommerce.php" -type f -name "*.php" -exec \
+find "$BUILD_DIR/$PLUGIN_DIR_NAME/includes" "$BUILD_DIR/$PLUGIN_DIR_NAME/public" "$BUILD_DIR/$PLUGIN_DIR_NAME/alma-gateway-for-woocommerce.php" -type f -name "*.php" -exec \
 bash -c "sed $SED_I -e 's/Alma\\\\Plugin\\\\/${NAMESPACE_PREFIX}\\\\Alma\\\\Plugin\\\\/g' -e 's/Alma\\\\Client\\\\/${NAMESPACE_PREFIX}\\\\Alma\\\\Client\\\\/g' -e 's/Psr\\\\Log\\\\/${NAMESPACE_PREFIX}\\\\Psr\\\\Log\\\\/g' -e 's/Psr\\\\Http\\\\/${NAMESPACE_PREFIX}\\\\Psr\\\\Http\\\\/g' -e 's/Dice\\\\/${NAMESPACE_PREFIX}\\\\Dice\\\\/g' {}" \;
 
 echo "=> Creating distribution zip..."
 mkdir -p dist
 # Create the zip from the contents of the build directory
-(cd "$BUILD_DIR" && zip -r ../dist/alma-gateway-for-woocommerce.zip .)
+(cd "$BUILD_DIR" && zip -r "../dist/$PLUGIN_DIR_NAME.zip" "$PLUGIN_DIR_NAME")
 
 echo "=> Cleaning up temporary build directory..."
 rm -rf "$BUILD_DIR"
