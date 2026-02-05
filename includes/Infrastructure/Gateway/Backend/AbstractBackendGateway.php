@@ -232,7 +232,7 @@ class AbstractBackendGateway extends AbstractGateway {
 
 		/** @var FeePlanRepository $fee_plan_repository */
 		$fee_plan_repository   = Plugin::get_container()->get( FeePlanRepository::class );
-		$fee_plan_list_adapter = $fee_plan_repository->getAll( true )->orderBy( $gateway_repository->findOrderedAlmaGateways() );
+		$fee_plan_list_adapter = $fee_plan_repository->getAll( true )->orderBy( $gateway_repository->findOrderedAlmaGateways() )->filterAvailable();
 
 		$field_list['fee_plan_section'] = array(
 			'title'       => '<hr>' . __( '→ Fee plans configuration', 'alma-gateway-for-woocommerce' ),

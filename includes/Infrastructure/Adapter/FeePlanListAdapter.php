@@ -133,7 +133,22 @@ class FeePlanListAdapter extends ArrayObject implements FeePlanListAdapterInterf
 		$feePlanListAdapter = new FeePlanListAdapter( [] );
 		$feePlanListAdapter->addList( new FeePlanListAdapter( array_values( array_filter( $this->getArrayCopy(),
 			function ( FeePlanAdapter $feePlanAdapter ) {
-				return $feePlanAdapter->isEnabled();
+				return $feePlanAdapter->isEnabled() && $feePlanAdapter->isAvailable();
+			} ) ) ) );
+
+		return $feePlanListAdapter;
+	}
+
+	/**
+	 * Returns a list of Fee Plans that are available (allowed by Alma).
+	 *
+	 * @return FeePlanListAdapterInterface
+	 */
+	public function filterAvailable(): FeePlanListAdapterInterface {
+		$feePlanListAdapter = new FeePlanListAdapter( [] );
+		$feePlanListAdapter->addList( new FeePlanListAdapter( array_values( array_filter( $this->getArrayCopy(),
+			function ( FeePlanAdapter $feePlanAdapter ) {
+				return $feePlanAdapter->isAvailable();
 			} ) ) ) );
 
 		return $feePlanListAdapter;
@@ -142,12 +157,14 @@ class FeePlanListAdapter extends ArrayObject implements FeePlanListAdapterInterf
 	/**
 	 * Returns a list of Fee Plans that are eligible.
 	 *
+	 * @param int $cartTotal
+	 *
 	 * @return FeePlanListAdapterInterface
 	 */
-	public function filterEligible(): FeePlanListAdapterInterface {
+	public function filterEligible( int $cartTotal ): FeePlanListAdapterInterface {
 		return new FeePlanListAdapter( array_values( array_filter( $this->getArrayCopy(),
-			function ( FeePlanAdapter $feePlanAdapter ) {
-				return $feePlanAdapter->isEligible();
+			function ( FeePlanAdapter $feePlanAdapter ) use ( $cartTotal ) {
+				return $feePlanAdapter->isEligible( $cartTotal );
 			} ) ) );
 	}
 

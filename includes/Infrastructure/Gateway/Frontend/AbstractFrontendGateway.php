@@ -151,7 +151,7 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 		/** @var FeePlanRepository $fee_plan_repository */
 		$fee_plan_repository = Plugin::get_instance()->get_container()->get( FeePlanRepository::class );
 
-		return $fee_plan_repository->getAllWithEligibility( ContextHelper::getCart()->getCartTotal() )->filterFeePlanList( array( $this->get_payment_method() ) )->filterEligible();
+		return $fee_plan_repository->getAllWithEligibility( ContextHelper::getCart()->getCartTotal() )->filterFeePlanList( array( $this->get_payment_method() ) )->filterEligible( ContextHelper::getCart()->getCartTotal() );
 	}
 
 	/**
@@ -161,7 +161,7 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	 *
 	 * @return string|null The transaction URL.
 	 */
-	public function get_transaction_url( $order ) {
+	public function get_transaction_url( $order ): ?string {
 		return $order->get_meta( '_alma_payment_url' );
 	}
 
