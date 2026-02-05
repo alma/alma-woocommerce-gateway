@@ -24,6 +24,7 @@ use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Application\Service\BusinessEventsService;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\IpnService;
+use Alma\Gateway\Application\Service\OrderStatusService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
 use Alma\Gateway\Infrastructure\Adapter\ProductAdapter;
@@ -206,6 +207,7 @@ class ContainerService {
 				GatewayService::class        => array( 'shared' => true ),
 				LoggerService::class         => array( 'shared' => true ),
 				IpnService::class            => array( 'shared' => true ),
+				OrderStatusService::class    => array( 'shared' => true ),
 			)
 		);
 

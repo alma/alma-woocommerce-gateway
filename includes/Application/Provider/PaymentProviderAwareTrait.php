@@ -11,7 +11,7 @@ trait PaymentProviderAwareTrait {
 	private PaymentProviderFactory $paymentProviderFactory;
 
 	/** @var PaymentProvider|null The Payment Provider */
-	private ?PaymentProvider $paymentProvider = null;
+	protected ?PaymentProvider $paymentProvider = null;
 
 	/**
 	 * Load the Payment Provider only when needed
@@ -19,6 +19,7 @@ trait PaymentProviderAwareTrait {
 	 */
 	private function getPaymentProvider(): PaymentProvider {
 		if ( $this->paymentProvider === null ) {
+
 			$this->paymentProvider = call_user_func( $this->paymentProviderFactory );
 		}
 
