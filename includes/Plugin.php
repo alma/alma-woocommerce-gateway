@@ -144,8 +144,6 @@ final class Plugin extends AbstractPlugin {
 
 		/** @var MigrationService $migration_service */
 		$migration_service = self::get_container()->get( MigrationService::class );
-		/** @var MigrationService $migration_service */
-		$migration_service = self::get_container()->get( MigrationService::class );
 		if ( $migration_service->runMigrationsIfNeeded() ) {
 			$this->set_is_configured( true );
 		}
