@@ -149,13 +149,14 @@ class ShortcodeWidgetHelper {
 
 	/**
 	 * Add the shortcode for excluded categories message.
+	 *
 	 * @param string $tag
 	 *
 	 * @return void
 	 */
 	private function addExcludedCategoriesShortcode( string $tag ) {
 		/** @var ConfigService $configService */
-		$configService = Plugin::get_container()->get( ConfigService::class );
+		$configService             = Plugin::get_container()->get( ConfigService::class );
 		$excludedCategoriesMessage = $configService->getExcludedCategoriesMessage();
 		add_shortcode(
 			$tag,

@@ -71,7 +71,7 @@ abstract class AbstractWidget implements WidgetInterface {
 				},
 				$this->feePlanListAdapter->getArrayCopy()
 			),
-			'hide_if_not_eligible'    => false,
+			'hide_if_not_eligible'    => $this->hasExcludedCategories,
 			'transition_delay'        => 5500,
 			'monochrome'              => true,
 			'hide_border'             => false,

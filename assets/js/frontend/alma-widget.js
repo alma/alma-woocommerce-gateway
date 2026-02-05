@@ -22,11 +22,40 @@
             if ($(containerSelector).length === 0) {
                 containerSelector = alma_widget_settings.widget_default_selector;
             }
-            if ($(containerSelector).length === 0) {
-                console.warn('Alma widget container not found!');
+
+            if ($(containerSelector).length > 0) {
+                initWidget(containerSelector, price);
                 return;
             }
 
+            // Use a MutationObserver to wait for the element to be added to the DOM
+            const observer = new MutationObserver(function (mutations, obs) {
+                const primarySelector = alma_widget_settings.widget_selector;
+                const defaultSelector = alma_widget_settings.widget_default_selector;
+                let foundSelector = null;
+                console.log('CHECK SELECTORS', primarySelector, defaultSelector);
+                if ($(primarySelector).length) {
+                    foundSelector = primarySelector;
+                } else if ($(defaultSelector).length) {
+                    foundSelector = defaultSelector;
+                }
+
+                if (foundSelector) {
+                    console.log('FOUND SELECTORS', foundSelector);
+                    obs.disconnect(); // Stop observing once the element is found
+                    initWidget(foundSelector, price);
+                }
+            });
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        }
+
+        /**
+         * The actual widget initialization logic.
+         */
+        function initWidget(containerSelector, price) {
             // Init Alma widgets
             const widgets = Alma.Widgets.initialize(
                 alma_widget_settings.merchant_id,
@@ -43,8 +72,7 @@
                 monochrome: alma_widget_settings.monochrome,
                 hideBorder: alma_widget_settings.hide_border,
                 plans: alma_widget_settings.fee_plan_list
-            })
-
+            });
         }
 
         /**
@@ -66,9 +94,7 @@
             });
         }
 
-        $(function () {
-            initializeAlmaWidget();
-            listenToChanges();
-        });
-    })
+        initializeAlmaWidget();
+        listenToChanges();
+    });
 })(jQuery);
