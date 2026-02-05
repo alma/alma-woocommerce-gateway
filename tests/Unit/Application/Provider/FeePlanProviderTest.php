@@ -5,7 +5,6 @@ namespace Alma\Gateway\Tests\Unit\Application\Provider;
 use Alma\Client\Application\Endpoint\MerchantEndpoint;
 use Alma\Client\Application\Exception\Endpoint\MerchantEndpointException;
 use Alma\Client\Domain\Entity\FeePlanList;
-use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
 use Alma\Gateway\Application\Provider\FeePlanProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -42,14 +41,14 @@ class FeePlanProviderTest extends TestCase {
 	}
 
 	public function testGetFeePlanListCallsMerchantEndpointThrowException() {
-		$this->expectException( FeePlanServiceException::class );
-		$this->expectExceptionMessage( 'Error retrieving fee plans: API error' );
 
 		$this->merchantEndpoint->expects( $this->once() )
 		                       ->method( 'getFeePlanList' )
 		                       ->willThrowException( new MerchantEndpointException( 'API error' ) );
 
-		$this->feePlanProvider->getFeePlanList();
+		$feePlanList = $this->feePlanProvider->getFeePlanList();
+
+		$this->assertEquals( $feePlanList, new FeePlanList() );
 	}
 
 	protected function setUp(): void {
