@@ -1,1 +1,100 @@
 /* Source: src/alma-widget-block/alma-widget-block.css */
+#alma-widget-payment-plans-main-container {
+	width: 100%;
+	max-width: 100%;
+	background-color: #fff;
+	border: 1px solid #f0f0f0;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: 12px;
+	gap: 8px;
+	box-sizing: border-box;
+}
+
+#alma-payment-plans-eligibility-line {
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+}
+
+#payment-plans-title {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+#alma-payment-plans-eligibility-options {
+	display: flex;
+	flex-direction: row;
+	gap: 8px;
+	align-items: flex-start;
+	max-width: 310px;
+	flex-wrap: wrap;
+}
+
+#alma-payment-plans-eligibility-line button {
+	display: flex;
+	gap: 6px;
+	align-items: center;
+	background-color: transparent;
+	border: none;
+	margin: 0 12px 0 0;
+	padding: 3px;
+	font-family: inherit;
+	font-size: inherit;
+	color: inherit;
+	box-shadow: none;
+	border-radius: 0;
+	cursor: pointer;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#alma-payment-plans-eligibility-line button#active {
+	display: flex;
+	gap: 6px;
+	align-items: center;
+	background: #000;
+	border: none;
+	margin: 0 12px 0 0;
+	padding: 3px;
+	font-family: inherit;
+	font-size: inherit;
+	color: #fff;
+	box-shadow: none;
+	border-radius: 0;
+	cursor: pointer;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border-radius: 4px;
+}
+
+#payment-info-text {
+	font-family: Venn, sans-serif;
+	font-size: 12px;
+	line-height: 16px;
+	color: #6c6c6c;
+	text-align: center;
+}
+
+#payment-info-text p {
+	margin: 0;
+	padding: 0;
+	border: none;
+	background-color: transparent;
+	color: #000;
+	font-family: Venn, sans-serif;
+	font-size: 12px;
+	line-height: 16px;
+	color: #1a1a1a;
+	text-align: center;
+}

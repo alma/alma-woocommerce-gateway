@@ -19,9 +19,9 @@ const AlmaWidget = () => {
         let message = almaSettings.excluded_categories_message;
         let logoUrl = almaSettings.url_alma_logo;
         return <div id="alma-widget-excluded" className="alma-widget-excluded">
-                    <img src={logoUrl} alt="Alma Logo" className="alma-logo-excluded-categories" />
-                    {message}
-                </div>;
+            <img src={logoUrl} alt="Alma Logo" className="alma-logo-excluded-categories"/>
+            {message}
+        </div>;
     }
     const {CART_STORE_KEY} = window.wc.wcBlocksData
 
@@ -46,7 +46,7 @@ const AlmaWidget = () => {
             );
 
             widget.add(Alma.Widgets.PaymentPlans, {
-                container: '#' + almaWidgetDivId,
+                container: '.' + almaWidgetDivId,
                 purchaseAmount: total,
                 locale: almaSettings.locale,
                 hideIfNotEligible: false,
@@ -65,7 +65,7 @@ const AlmaWidget = () => {
         }
     }, [total]);
 
-    return <div id="alma-widget"></div>;
+    return <div class="alma-widget"></div>;
 };
 
 export default AlmaWidget;
