@@ -99,4 +99,6 @@ function toggle_pwd_field(field) {
     }
 }
 
-$(".excluded_products_list").select2();
+if ($(".excluded_products_list").length) {
+    $(".excluded_products_list").select2();
+}
