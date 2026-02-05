@@ -33,7 +33,7 @@
                 const primarySelector = alma_widget_settings.widget_selector;
                 const defaultSelector = alma_widget_settings.widget_default_selector;
                 let foundSelector = null;
-                console.log('CHECK SELECTORS', primarySelector, defaultSelector);
+
                 if ($(primarySelector).length) {
                     foundSelector = primarySelector;
                 } else if ($(defaultSelector).length) {
@@ -41,7 +41,6 @@
                 }
 
                 if (foundSelector) {
-                    console.log('FOUND SELECTORS', foundSelector);
                     obs.disconnect(); // Stop observing once the element is found
                     initWidget(foundSelector, price);
                 }
