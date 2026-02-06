@@ -5,18 +5,18 @@ namespace Alma\Gateway\Application\Service;
 use Alma\Client\Domain\Entity\Payment;
 use Alma\Gateway\Application\Exception\Provider\PaymentProviderException;
 use Alma\Gateway\Application\Exception\Service\FraudServiceException;
-use Alma\Gateway\Application\Provider\PaymentProvider;
+use Alma\Gateway\Application\Provider\PaymentProviderAwareTrait;
+use Alma\Gateway\Application\Provider\PaymentProviderFactory;
 use Alma\Plugin\Infrastructure\Adapter\OrderAdapterInterface;
 
 class FraudService {
 
-	/** @var PaymentProvider */
-	private PaymentProvider $paymentService;
+	use PaymentProviderAwareTrait;
 
 	public function __construct(
-		PaymentProvider $paymentService
+		PaymentProviderFactory $paymentProviderFactory
 	) {
-		$this->paymentService = $paymentService;
+		$this->paymentProviderFactory = $paymentProviderFactory;
 	}
 
 	/**
@@ -27,7 +27,7 @@ class FraudService {
 		$order_total = $order->getTotal();
 		if ( $order_total !== $payment->getPurchaseAmount() ) {
 			try {
-				$this->paymentService->flagAsFraud( $payment->getId(), Payment::FRAUD_AMOUNT_MISMATCH );
+				$this->getPaymentProvider()->flagAsFraud( $payment->getId(), Payment::FRAUD_AMOUNT_MISMATCH );
 			} catch ( PaymentProviderException $e ) {
 				throw new FraudServiceException( $e->getMessage() );
 			}
@@ -43,7 +43,7 @@ class FraudService {
 	public function managePotentialFraud( OrderAdapterInterface $order, Payment $payment ): void {
 		if ( ! in_array( $payment->getState(), array( Payment::STATE_IN_PROGRESS, Payment::STATE_PAID ), true ) ) {
 			try {
-				$this->paymentService->flagAsFraud( $payment->getId(), Payment::FRAUD_STATE_ERROR );
+				$this->getPaymentProvider()->flagAsFraud( $payment->getId(), Payment::FRAUD_STATE_ERROR );
 			} catch ( PaymentProviderException $e ) {
 				throw new FraudServiceException( $e->getMessage() );
 			}
