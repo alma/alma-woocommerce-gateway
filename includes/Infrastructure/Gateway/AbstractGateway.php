@@ -18,7 +18,9 @@ use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\InPageHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
+use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Alma\Gateway\Plugin;
+use Psr\Log\LoggerInterface;
 use WC_Payment_Gateway;
 
 /**
@@ -33,6 +35,11 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	protected const CACHE_ENABLED = false;
 
 	protected bool $is_eligible = false;
+
+	/** @var object|LoggerInterface */
+	protected $logger;
+
+	/** @var FeePlanRepository|object $fee_plan_repository */
 	private FeePlanRepository $fee_plan_repository;
 
 	/**
@@ -41,9 +48,11 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * Let the fallback to the container for production use
 	 *
 	 * @param FeePlanRepository|null $fee_plan_repository
+	 * @param LoggerInterface|null   $logger
 	 */
-	public function __construct( ?FeePlanRepository $fee_plan_repository = null ) {
+	public function __construct( ?FeePlanRepository $fee_plan_repository = null, LoggerInterface $logger = null ) {
 		$this->fee_plan_repository = $fee_plan_repository ?? Plugin::get_container()->get( FeePlanRepository::class );
+		$this->logger              = $logger ?? Plugin::get_container()->get( LoggerService::class );
 
 		$this->id                 = sprintf( 'alma_%s_gateway', $this->get_payment_method() );
 		$this->method_description = __(

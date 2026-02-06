@@ -10,10 +10,12 @@ use Alma\Gateway\Infrastructure\Controller\ShopController;
 use Alma\Gateway\Infrastructure\Exception\Controller\AdminControllerException;
 use Alma\Gateway\Infrastructure\Exception\Controller\GatewayControllerException;
 use Alma\Gateway\Infrastructure\Exception\PluginException;
+use Alma\Gateway\Infrastructure\Helper\AdminNotificationHelper;
 use Alma\Gateway\Infrastructure\Repository\BusinessEventsRepository;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Alma\Gateway\Infrastructure\Service\MigrationService;
+use Exception;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
@@ -84,55 +86,55 @@ final class Plugin extends AbstractPlugin {
 	 * Used for plugin warmup.
 	 *
 	 * @return void
-	 * @throws PluginException
 	 */
 	public function plugin_warmup(): void {
 
 		try {
-			if ( ! $this->check_prerequisites() ) {
+			try {
+				if ( ! $this->check_prerequisites() ) {
+					return;
+				}
+			} catch ( PluginException $e ) {
+				AdminNotificationHelper::notifyError( $e->getMessage() );
+			}
+
+			// Configure Languages
+			L10nHelper::load_language( $this->get_plugin_path() );
+
+			// Check mandatory prerequisites
+			if ( ! $this->are_prerequisites_ok() ) {
 				return;
 			}
-		} catch ( Infrastructure\Exception\PluginException $e ) {
-			throw new PluginException();
+
+			// Set the DI container
+			self::get_container( true );
+
+			// Set the plugin helper and logger service
+			$suffix = [];
+			if ( isset( $_GET['rest_route'] ) && $_GET['rest_route'] === '/wc/store/v1/checkout' ) {
+				$suffix = [ sprintf( 'alma-%s', 'rest' ) ];
+			}
+			if ( isset( $_GET['page_id'] ) && $_GET['page_id'] === '6' ) {
+				$suffix = [ sprintf( 'alma-%s', 'cart' ) ];
+			}
+			if ( isset( $_GET['page_id'] ) && $_GET['page_id'] === '7' ) {
+				$suffix = [ sprintf( 'alma-%s', 'checkout' ) ];
+			}
+
+			// Configure the logger service
+			/** @var LoggerService $logger_service */
+			self::get_container()->get( LoggerService::class, $suffix );
+
+			/** @var ConfigService $config_service */
+			$config_service = self::get_container()->get( ConfigService::class );
+			$this->set_is_configured( $config_service->isConfigured() );
+
+			/** @var BusinessEventsRepository $business_event */
+			$business_event = self::get_container()->get( BusinessEventsRepository::class, $suffix );
+			$business_event->createTableIfNotExists();
+		} catch ( Exception $e ) {
+			AdminNotificationHelper::notifyError( __( 'The Alma plugin does not appear to be compatible with your version of WooCommerce. Please contact support for more information.' ) );
 		}
-
-		// Configure Languages
-		L10nHelper::load_language( $this->get_plugin_path() );
-
-		// Check mandatory prerequisites
-		if ( ! $this->are_prerequisites_ok() ) {
-			return;
-		}
-
-		// Set the DI container
-		self::get_container( true );
-
-		// Set the plugin helper and logger service
-		$suffix = [];
-		if ( isset( $_GET['rest_route'] ) && $_GET['rest_route'] === '/wc/store/v1/checkout' ) {
-			$suffix = [ sprintf( 'alma-%s', 'rest' ) ];
-		}
-		if ( isset( $_GET['page_id'] ) && $_GET['page_id'] === '6' ) {
-			$suffix = [ sprintf( 'alma-%s', 'cart' ) ];
-		}
-		if ( isset( $_GET['page_id'] ) && $_GET['page_id'] === '7' ) {
-			$suffix = [ sprintf( 'alma-%s', 'checkout' ) ];
-		}
-		if ( isset( $_GET['product'] ) ) {
-			$suffix = [ sprintf( 'alma-%s', 'product' ) ];
-		}
-
-		// Configure the logger service
-		/** @var LoggerService $logger_service */
-		self::get_container()->get( LoggerService::class, $suffix );
-
-		/** @var ConfigService $config_service */
-		$config_service = self::get_container()->get( ConfigService::class );
-		$this->set_is_configured( $config_service->isConfigured() );
-
-		/** @var BusinessEventsRepository $business_event */
-		$business_event = self::get_container()->get( BusinessEventsRepository::class, $suffix );
-		$business_event->createTableIfNotExists();
 	}
 
 	/**
@@ -142,14 +144,18 @@ final class Plugin extends AbstractPlugin {
 	 */
 	public function plugin_migration(): void {
 
-		if ( ! $this->are_prerequisites_ok() ) {
-			return;
-		}
+		try {
+			if ( ! $this->are_prerequisites_ok() ) {
+				return;
+			}
 
-		/** @var MigrationService $migration_service */
-		$migration_service = self::get_container()->get( MigrationService::class );
-		if ( $migration_service->runMigrationsIfNeeded() ) {
-			$this->set_is_configured( true );
+			/** @var MigrationService $migration_service */
+			$migration_service = self::get_container()->get( MigrationService::class );
+			if ( $migration_service->runMigrationsIfNeeded() ) {
+				$this->set_is_configured( true );
+			}
+		} catch ( Exception $e ) {
+			AdminNotificationHelper::notifyError( __( 'The Alma plugin does not appear to be compatible with your version of WooCommerce. Please contact support for more information.' ) );
 		}
 	}
 
@@ -158,56 +164,60 @@ final class Plugin extends AbstractPlugin {
 	 */
 	public function plugin_setup(): void {
 
-		if ( ! $this->are_prerequisites_ok() ) {
-			return;
-		}
-
-		// Run Admin Controller only when WordPress admin is ready.
-		/** @var AdminController $adminController */
-		$adminController = self::get_container()->get( AdminController::class );
-
-		/** @var GatewayController $gatewayController */
-		$gatewayController = self::get_container()->get( GatewayController::class );
-
-		/** @var ShopController $shopController */
-		$shopController = self::get_container()->get( ShopController::class );
-
-		// Run Admin Controller only when WordPress admin is ready.
 		try {
-			$adminController->prepare();
-		} catch ( AdminControllerException $e ) {
-			// @todo Add a notice to inform the user that the admin controller could not be loaded and that the plugin configuration page is not available.
-		}
-		$adminController->display();
+			if ( ! $this->are_prerequisites_ok() ) {
+				return;
+			}
 
-		if ( $this->is_configured() ) {
+			// Run Admin Controller only when WordPress admin is ready.
+			/** @var AdminController $adminController */
+			$adminController = self::get_container()->get( AdminController::class );
 
-			$this->get_container()->setApiConfig();
-			$gatewayController->prepare();
+			/** @var GatewayController $gatewayController */
+			$gatewayController = self::get_container()->get( GatewayController::class );
 
-			// Plugin fully configured, let's run the services
+			/** @var ShopController $shopController */
+			$shopController = self::get_container()->get( ShopController::class );
+
+			// Run Admin Controller only when WordPress admin is ready.
 			try {
-				$gatewayController->run();
-			} catch ( GatewayControllerException $e ) {
+				$adminController->prepare();
+			} catch ( AdminControllerException $e ) {
 				// @todo Add a notice to inform the user that the admin controller could not be loaded and that the plugin configuration page is not available.
 			}
+			$adminController->display();
 
-			if ( $this->is_enabled( true ) ) {
+			if ( $this->is_configured() ) {
 
-				// Register widgets
-				$shopController->prepare();
+				$this->get_container()->setApiConfig();
+				$gatewayController->prepare();
 
-				// Run services only when WordPress frontend is ready.
-				$shopController->run();
+				// Plugin fully configured, let's run the services
+				try {
+					$gatewayController->run();
+				} catch ( GatewayControllerException $e ) {
+					// @todo Add a notice to inform the user that the admin controller could not be loaded and that the plugin configuration page is not available.
+				}
 
-				// Display services only when WordPress frontend is ready.
-				$shopController->display();
+				if ( $this->is_enabled( true ) ) {
+
+					// Register widgets
+					$shopController->prepare();
+
+					// Run services only when WordPress frontend is ready.
+					$shopController->run();
+
+					// Display services only when WordPress frontend is ready.
+					$shopController->display();
+				}
+
+			} else {
+
+				// Plugin not yet configured, load only backend gateway to help in configuration.
+				$gatewayController->configure();
 			}
-
-		} else {
-
-			// Plugin not yet configured, load only backend gateway to help in configuration.
-			$gatewayController->configure();
+		} catch ( Exception $e ) {
+			AdminNotificationHelper::notifyError( __( 'The Alma plugin does not appear to be compatible with your version of WooCommerce. Please contact support for more information.' ) );
 		}
 	}
 

@@ -67,6 +67,7 @@ use Alma\Plugin\Infrastructure\Repository\ProductCategoryRepositoryInterface;
 use Alma\Plugin\Infrastructure\Repository\ProductRepositoryInterface;
 use Dice\Dice;
 use Psr\Http\Client\ClientInterface;
+use Psr\Log\NullLogger;
 
 /**
  * This DI Container is a wrapper around Dice
@@ -146,12 +147,16 @@ class ContainerService {
 			)
 		);
 
+		$phpClientLogger = new NullLogger();
+		if ( $configService->isDebug() ) {
+			$phpClientLogger = $this->get( self::PHP_CLIENT_LOGGER );
+		}
 		$this->dice = $this->dice->addRule(
 			CurlClient::class,
 			array(
 				'constructParams' => array(
 					$this->get( ClientConfiguration::class ),
-					$this->get( self::PHP_CLIENT_LOGGER )
+					$phpClientLogger
 				),
 				'shared'          => true
 			)
