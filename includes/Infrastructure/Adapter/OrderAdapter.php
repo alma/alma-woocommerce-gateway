@@ -3,6 +3,7 @@
 namespace Alma\Gateway\Infrastructure\Adapter;
 
 use Alma\Gateway\Application\Helper\DisplayHelper;
+use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Plugin\Infrastructure\Adapter\OrderAdapterInterface;
 use Alma\Plugin\Infrastructure\Adapter\OrderLineAdapterInterface;
 use BadMethodCallException;

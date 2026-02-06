@@ -104,4 +104,34 @@ class PaymentProvider implements PaymentProviderInterface, ProviderInterface {
 
 		return true;
 	}
+
+	/**
+	 * Send order status to Alma by merchant order reference.
+	 *
+	 * @param string $paymentId
+	 * @param string $merchantOrderReference
+	 * @param string $status
+	 * @param bool   $isShipped
+	 *
+	 * @return void
+	 */
+	public function addOrderStatusByMerchantOrderReference(
+		string $paymentId,
+		string $merchantOrderReference,
+		string $status,
+		bool $isShipped
+	): void {
+		try {
+			$this->paymentEndpoint->addOrderStatusByMerchantOrderReference(
+				$paymentId,
+				$merchantOrderReference,
+				$status,
+				$isShipped
+			);
+		} catch ( PaymentEndpointException $e ) {
+			// We log the error but we don't throw an exception because this is not a critical operation
+			// we don't want to break the order flow if it fails.
+			$this->loggerService->error( $e->getMessage() );
+		}
+	}
 }
