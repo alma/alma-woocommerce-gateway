@@ -38,8 +38,8 @@ class OrderStatusService {
 			return;
 		}
 
-		// Check if the order is paid with Alma
-		if ( ! $order->isPaidWithAlma() ) {
+		// Check if the order is paid with Alma and has a transaction ID, if not return
+		if ( ! $order->isPaidWithAlma() || ! $order->hasATransactionId() ) {
 			return;
 		}
 		// Get the payment ID associated with the order ID

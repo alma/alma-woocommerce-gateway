@@ -70,9 +70,36 @@ class OrderStatusServiceTest extends TestCase {
 		$this->assertNull( $orderStatusService->sendOrderStatus( 1, 'pending', 'completed' ) );
 	}
 
+	public function testSendOrderStatusDirectReturnForNoTransactionID() {
+		$almaOrder = $this->createMock( OrderAdapter::class );
+		$almaOrder->expects( $this->once() )->method( 'isPaidWithAlma' )->willReturn( true );
+		$almaOrder->expects( $this->once() )->method( 'hasATransactionId' )->willReturn( false );
+
+		$paymentProvider = $this->createMock( PaymentProvider::class );
+		$paymentProvider->expects( $this->never() )->method( 'addOrderStatusByMerchantOrderReference' );
+
+		$paymentProviderFactoryMock = $this->createMock( PaymentProviderFactory::class );
+
+		$orderRepositoryMock = $this->createMock( OrderRepository::class );
+		$orderRepositoryMock->expects( $this->once() )->method( 'getById' )->willReturn( $almaOrder );
+
+
+		$orderStatusService = \Mockery::mock(
+			OrderStatusService::class,
+			[ $paymentProviderFactoryMock, $orderRepositoryMock ]
+		)->makePartial();
+		$ref                = new \ReflectionProperty( OrderStatusService::class, 'paymentProvider' );
+		$ref->setAccessible( true );
+		$ref->setValue( $orderStatusService, $paymentProvider );
+
+		$this->assertNull( $orderStatusService->sendOrderStatus( 1, 'pending', 'completed' ) );
+	}
+	
+
 	public function testSendOrderStatusNotCallSendForNonAlmaOrder() {
 		$nonAlmaOrderMock = $this->createMock( OrderAdapter::class );
 		$nonAlmaOrderMock->expects( $this->once() )->method( 'isPaidWithAlma' )->willReturn( false );
+		$nonAlmaOrderMock->expects( $this->never() )->method( 'hasATransactionId' );
 
 		$paymentProvider = $this->createMock( PaymentProvider::class );
 		$paymentProvider->expects( $this->never() )->method( 'addOrderStatusByMerchantOrderReference' );
@@ -97,6 +124,8 @@ class OrderStatusServiceTest extends TestCase {
 	public function testSendOrderStatusCallSendForAlmaOrderComplete() {
 		$almaOrder = $this->createMock( OrderAdapter::class );
 		$almaOrder->expects( $this->once() )->method( 'isPaidWithAlma' )->willReturn( true );
+		$almaOrder->expects( $this->once() )->method( 'hasATransactionId' )->willReturn( true );
+
 		$almaOrder->expects( $this->once() )->method( 'getPaymentId' )->willReturn( 'payment_123' );
 
 		$paymentProvider = $this->createMock( PaymentProvider::class );
@@ -127,6 +156,8 @@ class OrderStatusServiceTest extends TestCase {
 	public function testSendOrderStatusCallSendForAlmaOrderProcessing() {
 		$almaOrder = $this->createMock( OrderAdapter::class );
 		$almaOrder->expects( $this->once() )->method( 'isPaidWithAlma' )->willReturn( true );
+		$almaOrder->expects( $this->once() )->method( 'hasATransactionId' )->willReturn( true );
+
 		$almaOrder->expects( $this->once() )->method( 'getPaymentId' )->willReturn( 'payment_123' );
 
 		$paymentProvider = $this->createMock( PaymentProvider::class );
