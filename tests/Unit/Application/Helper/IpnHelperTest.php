@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Tests\Unit\Application\Helper;
 
-use Alma\Gateway\Application\Exception\Service\IpnServiceException;
+use Alma\Gateway\Application\Exception\Helper\IpnHelperException;
 use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Application\Service\IpnService;
 use Brain\Monkey;
@@ -116,14 +116,14 @@ class IpnHelperTest extends TestCase {
 	 * @dataProvider validateSignatureExceptionDataProvider
 	 */
 	public function testValidateSignatureException( $paymentId, $apiKey, $signature ) {
-		$this->expectException( IpnServiceException::class );
+		$this->expectException( IpnHelperException::class );
 		$this->expectExceptionMessage( '[ALMA] Missing required parameters' );
 		$this->ipnHelper->validateIpnSignature( $paymentId, $apiKey, $signature );
 
 	}
 
 	public function testValidateSignatureInvalid() {
-		$this->expectException( IpnServiceException::class );
+		$this->expectException( IpnHelperException::class );
 		$this->expectExceptionMessage( '[ALMA] Invalid signature' );
 		$this->ipnHelper->validateIpnSignature( 'validPaymentId', 'validApiKey', 'invalidSignature' );
 	}

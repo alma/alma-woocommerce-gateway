@@ -5,8 +5,7 @@ namespace Alma\Gateway\Infrastructure\Repository;
 use Alma\Client\Application\Exception\ParametersException;
 use Alma\Client\Domain\Entity\Eligibility;
 use Alma\Client\Domain\Entity\EligibilityList;
-use Alma\Gateway\Application\Exception\Service\API\EligibilityServiceException;
-use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
+use Alma\Gateway\Application\Exception\Provider\EligibilityProviderException;
 use Alma\Gateway\Application\Mapper\EligibilityMapper;
 use Alma\Gateway\Application\Provider\EligibilityProviderAwareTrait;
 use Alma\Gateway\Application\Provider\EligibilityProviderFactory;
@@ -149,7 +148,7 @@ class FeePlanRepository {
 
 			return $feePlanListAdapter;
 
-		} catch ( FeePlanServiceException|EligibilityServiceException $e ) {
+		} catch ( EligibilityProviderException $e ) {
 			throw new FeePlanRepositoryException( $e->getMessage() );
 		}
 	}

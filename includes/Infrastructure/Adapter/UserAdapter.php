@@ -19,6 +19,8 @@ class UserAdapter implements UserAdapterInterface {
 
 	/**
 	 * Dynamic call to all WP_User methods
+	 *
+	 * @throws BadMethodCallException if the method does not exist on WP_User
 	 */
 	public function __call( string $name, array $arguments ) {
 		// Convert camelCase to snake_case

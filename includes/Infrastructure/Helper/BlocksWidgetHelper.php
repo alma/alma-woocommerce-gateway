@@ -3,6 +3,8 @@
 namespace Alma\Gateway\Infrastructure\Helper;
 
 use Alma\Gateway\Infrastructure\Entity\CartWidget;
+use Alma\Gateway\Infrastructure\Exception\Entity\CartWidgetException;
+use Alma\Gateway\Infrastructure\Exception\Helper\HelperException;
 use Alma\Gateway\Plugin;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -21,9 +23,18 @@ class BlocksWidgetHelper {
 		$cartWidget->register();
 	}
 
+	/**
+	 * Prepare assets for the widget
+	 *
+	 * @throws HelperException
+	 */
 	public static function prepareWidgetAssets() {
 		/** @var CartWidget $cartWidget */
 		$cartWidget = Plugin::get_container()->get( CartWidget::class );
-		$cartWidget->prepareAssets();
+		try {
+			$cartWidget->prepareAssets();
+		} catch ( CartWidgetException $e ) {
+			throw new HelperException( 'Can not prepare assets' );
+		}
 	}
 }

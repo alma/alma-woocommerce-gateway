@@ -7,7 +7,7 @@ use Alma\Client\Application\DTO\MerchantBusinessEvent\OrderConfirmedBusinessEven
 use Alma\Client\Application\Exception\ParametersException;
 use Alma\Client\Domain\Entity\Eligibility;
 use Alma\Client\Domain\Entity\EligibilityList;
-use Alma\Gateway\Application\Exception\Service\API\MerchantServiceException;
+use Alma\Gateway\Application\Exception\Provider\MerchantProviderException;
 use Alma\Gateway\Application\Exception\Service\BusinessEventsServiceException;
 use Alma\Gateway\Application\Provider\MerchantProvider;
 use Alma\Gateway\Application\Provider\MerchantProviderFactory;
@@ -313,7 +313,7 @@ class BusinessEventsServiceTest extends TestCase {
 		$this->merchantProvider->expects( $this->once() )
 		                       ->method( 'sendOrderConfirmedBusinessEvent' )
 		                       ->with( $orderConfirmedBusinessEvent )
-		                       ->willThrowException( new MerchantServiceException() );
+		                       ->willThrowException( new MerchantProviderException() );
 		$this->expectException( BusinessEventsServiceException::class );
 		$this->businessEventsService->onOrderConfirmed( 'pending', 'processing', $orderMock );
 	}
@@ -346,6 +346,9 @@ class BusinessEventsServiceTest extends TestCase {
 		$this->businessEventsService->saveAlmaPaymentId( 'payment_alma_id' );
 	}
 
+	/**
+	 * @throws ParametersException
+	 */
 	public function eligibleListProvider(): array {
 		return [
 			'Eligible List'     => [

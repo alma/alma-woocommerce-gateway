@@ -147,7 +147,6 @@ class GatewayConfigurationFormValidatorServiceTest extends TestCase {
 		$this->gatewayConfigurationFormValidatorService = new GatewayConfigurationFormValidatorService(
 			$this->feePlanRepository
 		);
-		$this->gatewayConfigurationFormValidatorService->setConfigService( $this->configService );
 	}
 
 	protected function tearDown(): void {

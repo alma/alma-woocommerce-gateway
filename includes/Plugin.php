@@ -2,14 +2,14 @@
 
 namespace Alma\Gateway;
 
-use Alma\Gateway\Application\Exception\Helper\RequirementsHelperException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Controller\AdminController;
 use Alma\Gateway\Infrastructure\Controller\GatewayController;
 use Alma\Gateway\Infrastructure\Controller\ShopController;
-use Alma\Gateway\Infrastructure\Exception\CmsException;
+use Alma\Gateway\Infrastructure\Exception\Controller\AdminControllerException;
 use Alma\Gateway\Infrastructure\Exception\Controller\GatewayControllerException;
+use Alma\Gateway\Infrastructure\Exception\PluginException;
 use Alma\Gateway\Infrastructure\Repository\BusinessEventsRepository;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
@@ -84,12 +84,16 @@ final class Plugin extends AbstractPlugin {
 	 * Used for plugin warmup.
 	 *
 	 * @return void
-	 * @throws RequirementsHelperException
+	 * @throws PluginException
 	 */
 	public function plugin_warmup(): void {
 
-		if ( ! $this->check_prerequisites() ) {
-			return;
+		try {
+			if ( ! $this->check_prerequisites() ) {
+				return;
+			}
+		} catch ( Infrastructure\Exception\PluginException $e ) {
+			throw new PluginException();
 		}
 
 		// Configure Languages
@@ -151,8 +155,6 @@ final class Plugin extends AbstractPlugin {
 
 	/**
 	 * Used for regular plugin work.
-	 *
-	 * @throws GatewayControllerException
 	 */
 	public function plugin_setup(): void {
 
@@ -171,7 +173,11 @@ final class Plugin extends AbstractPlugin {
 		$shopController = self::get_container()->get( ShopController::class );
 
 		// Run Admin Controller only when WordPress admin is ready.
-		$adminController->prepare();
+		try {
+			$adminController->prepare();
+		} catch ( AdminControllerException $e ) {
+			// @todo Add a notice to inform the user that the admin controller could not be loaded and that the plugin configuration page is not available.
+		}
 		$adminController->display();
 
 		if ( $this->is_configured() ) {
@@ -180,7 +186,11 @@ final class Plugin extends AbstractPlugin {
 			$gatewayController->prepare();
 
 			// Plugin fully configured, let's run the services
-			$gatewayController->run();
+			try {
+				$gatewayController->run();
+			} catch ( GatewayControllerException $e ) {
+				// @todo Add a notice to inform the user that the admin controller could not be loaded and that the plugin configuration page is not available.
+			}
 
 			if ( $this->is_enabled( true ) ) {
 
@@ -205,19 +215,19 @@ final class Plugin extends AbstractPlugin {
 	 * Singletons should not be restored from strings.
 	 *
 	 * @return void
-	 * @throws CmsException if called
+	 * @throws PluginException if called
 	 */
 	public function __wakeup() {
-		throw new CmsException( 'Cannot serialize or unserialize a plugin!' );
+		throw new PluginException( 'Cannot serialize or unserialize a plugin!' );
 	}
 
 	/**
 	 * Clone is not allowed.
 	 *
 	 * @return void
-	 * @throws CmsException
+	 * @throws PluginException
 	 */
 	private function __clone() {
-		throw new CmsException( 'Cannot clone the plugin!' );
+		throw new PluginException( 'Cannot clone the plugin!' );
 	}
 }

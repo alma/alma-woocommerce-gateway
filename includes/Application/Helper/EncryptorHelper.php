@@ -12,7 +12,7 @@
 namespace Alma\Gateway\Application\Helper;
 
 use Alma\Gateway\Application\Exception\Helper\EncryptorHelperException;
-use Alma\Gateway\Infrastructure\Exception\CmsException;
+use Alma\Gateway\Infrastructure\Exception\Helper\HelperException;
 use Alma\Gateway\Infrastructure\Helper\SecurityHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -58,13 +58,13 @@ class EncryptorHelper {
 	 * @param string $method The method.
 	 *
 	 * @throws EncryptorHelperException
-	 * @todo check with security if we need to change algorythm
+	 * @todo check with security if we need to change algorithm
 	 */
 	public function __construct( string $method = 'AES-256-CTR' ) {
 
 		try {
 			$key_salt = SecurityHelper::getKeySalt();
-		} catch ( CmsException $e ) {
+		} catch ( HelperException $e ) {
 			throw new EncryptorHelperException( 'The constant NONCE_SALT is not defined' );
 		}
 

@@ -5,6 +5,7 @@ namespace Alma\Gateway\Tests\Unit\Application\Helper;
 use Alma\Gateway\Application\Exception\Helper\EncryptorHelperException;
 use Alma\Gateway\Application\Helper\EncryptorHelper;
 use Alma\Gateway\Infrastructure\Exception\CmsException;
+use Alma\Gateway\Infrastructure\Exception\Helper\HelperException;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
@@ -30,7 +31,7 @@ class EncryptorHelperTest extends TestCase {
 	public function testConstructException() {
 		Mockery::mock( 'alias:Alma\Gateway\Infrastructure\Helper\SecurityHelper' )
 		       ->shouldReceive( 'getKeySalt' )
-		       ->andThrow( new CmsException( 'no NONCE_SALT' ) );
+		       ->andThrow( new HelperException( 'no NONCE_SALT' ) );
 		$this->expectException( EncryptorHelperException::class );
 		new EncryptorHelper();
 

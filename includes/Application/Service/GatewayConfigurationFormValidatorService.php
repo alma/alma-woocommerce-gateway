@@ -10,21 +10,10 @@ use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Plugin;
 
 class GatewayConfigurationFormValidatorService {
-
-	private ?ConfigService $configService;
 	private FeePlanRepository $feePlanRepository;
 
 	public function __construct( FeePlanRepository $feePlanRepository ) {
 		$this->feePlanRepository = $feePlanRepository;
-	}
-
-	/**
-	 * Setter for Unit Test
-	 *
-	 * @param ConfigService $configService
-	 */
-	public function setConfigService( ConfigService $configService ): void {
-		$this->configService = $configService;
 	}
 
 	/**

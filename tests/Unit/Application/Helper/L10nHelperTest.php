@@ -3,7 +3,6 @@
 namespace Alma\Gateway\Tests\Unit\Application\Helper;
 
 use Alma\Client\Application\Exception\ParametersException;
-use Alma\Client\Domain\ValueObject\Environment;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Tests\Unit\Mocks\FeePlanMock;
 use Brain\Monkey;
@@ -76,8 +75,7 @@ class L10nHelperTest extends TestCase {
 
 		$feePlan     = FeePlanMock::getFeePlanAdapter();
 		$displayData = L10nHelper::generate_fee_plan_display_data(
-			$feePlan,
-			new Environment( Environment::TEST_MODE )
+			$feePlan
 		);
 
 		$this->assertIsArray( $displayData );

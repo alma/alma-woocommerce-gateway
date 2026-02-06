@@ -2,7 +2,6 @@
 
 namespace Alma\Gateway\Application\Helper;
 
-use Alma\Client\Domain\ValueObject\Environment;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\LanguageHelper;
@@ -59,12 +58,11 @@ class L10nHelper {
 	 * Generate a title and a toggle description for the fee plan.
 	 *
 	 * @param FeePlanAdapter $fee_plan_adapter
-	 * @param Environment    $environment
 	 *
 	 * @return array
 	 * @todo should we move this to FeePlanAdapter Object?
 	 */
-	public static function generate_fee_plan_display_data( FeePlanAdapter $fee_plan_adapter, Environment $environment ): array {
+	public static function generate_fee_plan_display_data( FeePlanAdapter $fee_plan_adapter ): array {
 		$installments    = $fee_plan_adapter->getInstallmentsCount();
 		$deferred_days   = $fee_plan_adapter->getDeferredDays();
 		$deferred_months = $fee_plan_adapter->getDeferredMonths();

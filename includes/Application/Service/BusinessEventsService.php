@@ -6,7 +6,7 @@ use Alma\Client\Application\DTO\MerchantBusinessEvent\CartInitiatedBusinessEvent
 use Alma\Client\Application\DTO\MerchantBusinessEvent\OrderConfirmedBusinessEventDto;
 use Alma\Client\Application\Exception\ParametersException;
 use Alma\Client\Domain\Entity\EligibilityList;
-use Alma\Gateway\Application\Exception\Service\API\MerchantServiceException;
+use Alma\Gateway\Application\Exception\Provider\MerchantProviderException;
 use Alma\Gateway\Application\Exception\Service\BusinessEventsServiceException;
 use Alma\Gateway\Application\Provider\MerchantProviderAwareTrait;
 use Alma\Gateway\Application\Provider\MerchantProviderFactory;
@@ -56,7 +56,7 @@ class BusinessEventsService {
 				$this->merchantProvider->sendCartInitiatedBusinessEvent( $cartInitiated );
 			} catch ( ParametersException $e ) {
 				throw new BusinessEventsServiceException( 'Failed to create CartInitiatedBusinessEventDto: ' . $e->getMessage() );
-			} catch ( MerchantServiceException $e ) {
+			} catch ( MerchantProviderException $e ) {
 				throw new BusinessEventsServiceException( 'Error sending cart initiated business event: ' . $e->getMessage() );
 			}
 		}
@@ -100,7 +100,7 @@ class BusinessEventsService {
 				$this->merchantProvider->sendOrderConfirmedBusinessEvent( $orderConfirmedBusinessEvent );
 			} catch ( ParametersException $e ) {
 				throw new BusinessEventsServiceException( 'Failed to create OrderConfirmedBusinessEventDto: ' . $e->getMessage() );
-			} catch ( MerchantServiceException $e ) {
+			} catch ( MerchantProviderException $e ) {
 				throw new BusinessEventsServiceException( 'Error sending order confirmed business event: ' . $e->getMessage() );
 			}
 		}

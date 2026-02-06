@@ -18,7 +18,7 @@ class ForbiddenHelperDependencySniff implements Sniff {
 	 *
 	 * @var string[]
 	 */
-	private $forbiddenSuffixes = [ 'Controller', 'Service', 'Repository', 'Provider', 'Gateway' ];
+	private array $forbiddenSuffixes = [ 'Controller', 'Service', 'Repository', 'Provider', 'Gateway' ];
 
 	/**
 	 * Register the tokens to listen for.
@@ -59,7 +59,7 @@ class ForbiddenHelperDependencySniff implements Sniff {
 	/**
 	 * Get the enclosing class/interface/trait name.
 	 */
-	private function getEnclosingClassName( File $phpcsFile, int $stackPtr ): ?string {
+	private function getEnclosingClassName( File $phpcsFile, $stackPtr ): ?string {
 		$prevClassPtr = $phpcsFile->findPrevious( [ T_CLASS, T_INTERFACE, T_TRAIT ], $stackPtr );
 		if ( $prevClassPtr === false ) {
 			return null;
@@ -71,7 +71,7 @@ class ForbiddenHelperDependencySniff implements Sniff {
 	/**
 	 * Get the fully qualified class name after 'new'.
 	 */
-	private function getClassNameAfterNew( File $phpcsFile, int $stackPtr ): ?string {
+	private function getClassNameAfterNew( File $phpcsFile, $stackPtr ): ?string {
 		$next = $phpcsFile->findNext( [ T_STRING, T_NS_SEPARATOR ], $stackPtr + 1 );
 		if ( $next === false ) {
 			return null;
@@ -90,7 +90,7 @@ class ForbiddenHelperDependencySniff implements Sniff {
 	 * Get the fully qualified class name before '::'.
 	 * Ignores ::class references and constants (all uppercase).
 	 */
-	private function getClassNameBeforeDoubleColon( File $phpcsFile, int $stackPtr ): ?string {
+	private function getClassNameBeforeDoubleColon( File $phpcsFile, $stackPtr ): ?string {
 		$tokens = $phpcsFile->getTokens();
 		$next   = $phpcsFile->findNext( [ T_STRING ], $stackPtr + 1 );
 		if ( $next === false ) {
@@ -120,7 +120,7 @@ class ForbiddenHelperDependencySniff implements Sniff {
 	/**
 	 * Check if the called class has a forbidden suffix.
 	 */
-	private function checkForbiddenSuffix( File $phpcsFile, int $stackPtr, string $calledClass ): void {
+	private function checkForbiddenSuffix( File $phpcsFile, $stackPtr, string $calledClass ): void {
 		foreach ( $this->forbiddenSuffixes as $suffix ) {
 			if ( preg_match( '/' . preg_quote( $suffix, '/' ) . '$/', $calledClass ) ) {
 				$phpcsFile->addError(

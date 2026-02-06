@@ -5,7 +5,7 @@ namespace Alma\Gateway\Infrastructure\Exception;
 use Alma\Gateway\Domain\Exception\AlmaException;
 
 /**
- * Class CheckoutServiceException
+ * Class PluginException
  */
-class CheckoutServiceException extends AlmaException {
+class PluginException extends AlmaException {
 }

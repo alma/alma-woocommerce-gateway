@@ -11,12 +11,12 @@
 
 namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
-use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
+use Alma\Gateway\Application\Exception\Service\PaymentServiceException;
 use Alma\Gateway\Application\Service\BusinessEventsService;
 use Alma\Gateway\Application\Service\PaymentService;
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
 use Alma\Gateway\Infrastructure\Exception\Block\CheckoutBlockException;
-use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
+use Alma\Gateway\Infrastructure\Exception\Gateway\GatewayException;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\AbstractFrontendGateway;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Plugin;
@@ -71,10 +71,14 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 	 * Returns if this payment method should be active. If false, the scripts will not be enqueued.
 	 *
 	 * @return boolean
-	 * @throws FeePlanRepositoryException
+	 * @throws CheckoutBlockException
 	 */
 	public function is_active(): bool {
-		return ContextHelper::isCheckoutPageUseBlocks() && $this->gateway->is_enabled() && $this->gateway->is_available();
+		try {
+			return ContextHelper::isCheckoutPageUseBlocks() && $this->gateway->is_enabled() && $this->gateway->is_available();
+		} catch ( GatewayException $e ) {
+			throw new CheckoutBlockException( $e->getMessage() );
+		}
 	}
 
 	/**
@@ -112,7 +116,7 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 	 * use StoreApi to create the payment
 	 *
 	 * Non-Blocks payments use AbstractFrontendGateway::process_payment()
-	 * @throws CheckoutBlockException|FeePlanRepositoryException
+	 * @throws CheckoutBlockException
 	 * @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection The parameter is passed by reference by WooCommerce
 	 */
 	public function process_payment_with_context( PaymentContext $context, PaymentResult &$result ) {
@@ -134,7 +138,11 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 				return;
 			}
 
-			$fee_plan_adapter = $this->gateway->get_fee_plan_list_adapter()->getByPlanKey( $payment_data['alma_plan_key'] );
+			try {
+				$fee_plan_adapter = $this->gateway->get_fee_plan_list_adapter()->getByPlanKey( $payment_data['alma_plan_key'] );
+			} catch ( GatewayException $e ) {
+				throw new CheckoutBlockException();
+			}
 
 			/** @var PaymentService $payment_service */
 			$payment_service = Plugin::get_container()->get( PaymentService::class );

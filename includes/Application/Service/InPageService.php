@@ -3,7 +3,7 @@
 namespace Alma\Gateway\Application\Service;
 
 use Alma\Gateway\Application\Exception\Service\InPageServiceException;
-use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
+use Alma\Gateway\Infrastructure\Exception\Service\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Service\AssetsService;
 
 if ( ! defined( 'ABSPATH' ) ) {

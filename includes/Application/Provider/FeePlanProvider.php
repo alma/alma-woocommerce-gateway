@@ -7,7 +7,6 @@ use Alma\Client\Application\Exception\Endpoint\MerchantEndpointException;
 use Alma\Client\Domain\Entity\FeePlan;
 use Alma\Client\Domain\Entity\FeePlanList;
 use Alma\Client\Domain\ValueObject\PaymentMethod;
-use Alma\Gateway\Application\Exception\Service\API\FeePlanServiceException;
 use Alma\Plugin\Application\Port\FeePlanProviderInterface;
 use Alma\Plugin\Infrastructure\Adapter\FeePlanListInterface;
 
@@ -30,7 +29,6 @@ class FeePlanProvider implements FeePlanProviderInterface, ProviderInterface {
 	 * @param bool $forceRefresh Whether to force a refresh of the fee plan list.
 	 *
 	 * @return FeePlanList
-	 * @throws FeePlanServiceException
 	 */
 	public function getFeePlanList( bool $forceRefresh = false ): FeePlanList {
 		if ( ! isset( $this->feePlanList ) || $forceRefresh ) {
@@ -42,7 +40,6 @@ class FeePlanProvider implements FeePlanProviderInterface, ProviderInterface {
 
 	/**
 	 * Retrieve the fee plan list from the merchant endpoint.
-	 * @throws FeePlanServiceException
 	 */
 	private function retrieveFeePlanList(): FeePlanListInterface {
 

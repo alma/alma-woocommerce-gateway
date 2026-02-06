@@ -1,6 +1,6 @@
 <?php
 
-namespace Alma\Gateway\Infrastructure\Exception;
+namespace Alma\Gateway\Infrastructure\Exception\Service;
 
 use Alma\Gateway\Domain\Exception\AlmaException;
 

@@ -6,7 +6,7 @@ use Alma\Client\Application\DTO\MerchantBusinessEvent\CartInitiatedBusinessEvent
 use Alma\Client\Application\DTO\MerchantBusinessEvent\OrderConfirmedBusinessEventDto;
 use Alma\Client\Application\Endpoint\MerchantEndpoint;
 use Alma\Client\Application\Exception\Endpoint\MerchantEndpointException;
-use Alma\Gateway\Application\Exception\Service\API\MerchantServiceException;
+use Alma\Gateway\Application\Exception\Provider\MerchantProviderException;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Alma\Plugin\Application\Port\MerchantProviderInterface;
 
@@ -32,13 +32,13 @@ class MerchantProvider implements MerchantProviderInterface, ProviderInterface {
 	 * @param CartInitiatedBusinessEventDto $cartEventData
 	 *
 	 * @return void
-	 * @throws MerchantServiceException
+	 * @throws MerchantProviderException
 	 */
 	public function sendCartInitiatedBusinessEvent( CartInitiatedBusinessEventDto $cartEventData ): void {
 		try {
 			$this->merchantEndpoint->sendCartInitiatedBusinessEvent( $cartEventData );
 		} catch ( MerchantEndpointException $e ) {
-			throw new MerchantServiceException( 'Error sending cart initiated business event: ' . $e->getMessage() );
+			throw new MerchantProviderException( 'Error sending cart initiated business event: ' . $e->getMessage() );
 		}
 	}
 
@@ -46,13 +46,13 @@ class MerchantProvider implements MerchantProviderInterface, ProviderInterface {
 	 * @param OrderConfirmedBusinessEventDto $orderConfirmedBusinessEvent
 	 *
 	 * @return void
-	 * @throws MerchantServiceException
+	 * @throws MerchantProviderException
 	 */
 	public function sendOrderConfirmedBusinessEvent( OrderConfirmedBusinessEventDto $orderConfirmedBusinessEvent ): void {
 		try {
 			$this->merchantEndpoint->sendOrderConfirmedBusinessEvent( $orderConfirmedBusinessEvent );
 		} catch ( MerchantEndpointException $e ) {
-			throw new MerchantServiceException( 'Error sending order confirmed business event: ' . $e->getMessage() );
+			throw new MerchantProviderException( 'Error sending order confirmed business event: ' . $e->getMessage() );
 		}
 	}
 }

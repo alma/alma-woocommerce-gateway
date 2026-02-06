@@ -18,7 +18,7 @@ class AssetsConfig {
 	public const CDN_WIDGET_VERSION = '4.x.x';
 	public const CDN_IN_PAGE_VERSION = '2.x';
 
-	public static function getAll() {
+	public static function getAll(): array {
 		return array_merge(
 			self::assetsConfigCdn(),
 			self::assetsConfigAdmin(),
@@ -249,7 +249,7 @@ class AssetsConfig {
 		return [
 			self::ASSETS_CONFIG_CLASSIC_CHECKOUT => array(
 				'styles'  => array(
-					'alma-classic-checkout'                 => array(
+					'alma-classic-checkout' => array(
 						'src'  => AssetsHelper::getAssetUrl( 'css/frontend/alma-checkout.css' ),
 						'deps' => array(),
 					),

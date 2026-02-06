@@ -25,6 +25,8 @@ class OrderLineAdapter implements OrderLineAdapterInterface {
 
 	/**
 	 * Dynamic call to all WC_Order_Item methods
+	 *
+	 * @throws BadMethodCallException if the method does not exist on WC_Order_Item
 	 */
 	public function __call( $name, $arguments ) {
 		// Convert camelCase to snake_case

@@ -14,7 +14,7 @@ class ForbiddenPrefixSniff implements Sniff {
 	 *
 	 * @var string[]
 	 */
-	private $forbiddenPrefixes = array( 'wp_', 'wc_' );
+	private array $forbiddenPrefixes = array( 'wp_', 'wc_' );
 
 	/**
 	 * Token recorder

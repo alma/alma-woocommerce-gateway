@@ -5,6 +5,7 @@ namespace Alma\Gateway;
 use Alma\Gateway\Application\Exception\Helper\RequirementsHelperException;
 use Alma\Gateway\Application\Helper\RequirementsHelper;
 use Alma\Gateway\Application\Service\ConfigService;
+use Alma\Gateway\Infrastructure\Exception\PluginException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -44,7 +45,7 @@ class AbstractPlugin {
 	 * We don't use Dice because it's not loaded yet.
 	 *
 	 * @return bool
-	 * @throws RequirementsHelperException
+	 * @throws PluginException
 	 */
 	public function check_prerequisites(): bool {
 		// Check if WooCommerce is active
@@ -55,10 +56,14 @@ class AbstractPlugin {
 		}
 
 		// Check if all dependencies are met
-		if ( ! RequirementsHelper::check_dependencies( ContextHelper::getCmsVersion() ) ) {
-			self::$plugin_prerequisites = false;
+		try {
+			if ( ! RequirementsHelper::check_dependencies( ContextHelper::getCmsVersion() ) ) {
+				self::$plugin_prerequisites = false;
 
-			return false;
+				return false;
+			}
+		} catch ( RequirementsHelperException $e ) {
+			throw new PluginException();
 		}
 
 		self::$plugin_prerequisites = true;

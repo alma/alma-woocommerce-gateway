@@ -3,7 +3,7 @@
 namespace Alma\Gateway\Infrastructure\Repository;
 
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
-use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
+use Alma\Gateway\Infrastructure\Exception\Repository\OrderRepositoryException;
 use Alma\Plugin\Infrastructure\Adapter\OrderAdapterInterface;
 use Alma\Plugin\Infrastructure\Repository\OrderRepositoryInterface;
 
@@ -18,7 +18,7 @@ class OrderRepository implements OrderRepositoryInterface {
 	 *
 	 * @return OrderAdapterInterface The order object.
 	 *
-	 * @throws ProductRepositoryException
+	 * @throws OrderRepositoryException
 	 */
 	public function getById( int $orderId, string $order_key = null, string $payment_id = null ): OrderAdapter {
 		$wc_order = wc_get_order( $orderId );
@@ -32,7 +32,7 @@ class OrderRepository implements OrderRepositoryInterface {
 			$order    = wc_get_order( $order_id );
 
 			if ( ! $order || ! hash_equals( $order->get_order_key(), $order_key ) ) {
-				throw new ProductRepositoryException(
+				throw new OrderRepositoryException(
 					sprintf(
 						'Undefined Order id: %d (%s / %s)',
 						$orderId,
@@ -45,7 +45,7 @@ class OrderRepository implements OrderRepositoryInterface {
 			return new OrderAdapter( $order );
 		}
 
-		throw new ProductRepositoryException( sprintf( 'Undefined Order id: %d (%s / %s)', $orderId, $order_key,
+		throw new OrderRepositoryException( sprintf( 'Undefined Order id: %d (%s / %s)', $orderId, $order_key,
 			$payment_id ) );
 	}
 }

@@ -14,13 +14,13 @@ namespace Alma\Gateway\Infrastructure\Block\Widget;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
+use Alma\Gateway\Infrastructure\Exception\Block\WidgetBlockException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Mapper\FeePlanListMapper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
-use Alma\Gateway\Infrastructure\Service\AssetsService;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
 
 
@@ -48,8 +48,6 @@ class WidgetBlock implements IntegrationInterface {
 	/** @var GatewayRepository The Gateway Repository */
 	private GatewayRepository $gateway_repository;
 
-	/** @var AssetsService */
-	private AssetsService $assets_service;
 	/** @var ExcludedProductsHelper */
 	private ExcludedProductsHelper $excluded_products_helper;
 
@@ -59,7 +57,6 @@ class WidgetBlock implements IntegrationInterface {
 		FeePlanRepository $fee_plan_repository,
 		GatewayRepository $gateway_repository,
 		ContextHelper $context_helper,
-		AssetsService $assets_service,
 		ExcludedProductsHelper $excluded_products_helper
 	) {
 		$this->config_service           = $config_service;
@@ -67,7 +64,6 @@ class WidgetBlock implements IntegrationInterface {
 		$this->fee_plan_repository      = $fee_plan_repository;
 		$this->gateway_repository       = $gateway_repository;
 		$this->context_helper           = $context_helper;
-		$this->assets_service           = $assets_service;
 		$this->excluded_products_helper = $excluded_products_helper;
 	}
 
@@ -91,7 +87,8 @@ class WidgetBlock implements IntegrationInterface {
 	 * Create new scratch file from selection
 	 * const settings = window.wc.wcSettings.getSetting(`alma-widget-block_data`, null);
 	 * @return array
-	 * @throws FeePlanRepositoryException
+	 *
+	 * @throws WidgetBlockException
 	 * @see src/alma-widget-block/AlmaWidget.js
 	 */
 	public function get_script_data(): array {
@@ -101,7 +98,11 @@ class WidgetBlock implements IntegrationInterface {
 			$this->cart_adapter,
 			$excludedCategories
 		);
-		$feePlanList            = $this->fee_plan_repository->getAllWithEligibility()->filterEnabled()->orderBy( $this->gateway_repository->findOrderedAlmaGateways() );
+		try {
+			$feePlanList = $this->fee_plan_repository->getAllWithEligibility()->filterEnabled()->orderBy( $this->gateway_repository->findOrderedAlmaGateways() );
+		} catch ( FeePlanRepositoryException $e ) {
+			throw new WidgetBlockException( $e );
+		}
 
 		return array(
 			'merchant_id'                 => $this->config_service->getMerchantId(),

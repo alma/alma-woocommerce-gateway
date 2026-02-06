@@ -9,7 +9,7 @@ use Alma\Client\Application\DTO\RefundDto;
 use Alma\Client\Application\Endpoint\PaymentEndpoint;
 use Alma\Client\Application\Exception\Endpoint\PaymentEndpointException;
 use Alma\Client\Domain\Entity\Payment;
-use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
+use Alma\Gateway\Application\Exception\Provider\PaymentProviderException;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Alma\Plugin\Application\Port\PaymentProviderInterface;
 
@@ -40,7 +40,7 @@ class PaymentProvider implements PaymentProviderInterface, ProviderInterface {
 	 *
 	 * @return Payment The created payment.
 	 *
-	 * @throws PaymentServiceException
+	 * @throws PaymentProviderException
 	 */
 	public function createPayment(
 		PaymentDto $paymentDto,
@@ -50,38 +50,40 @@ class PaymentProvider implements PaymentProviderInterface, ProviderInterface {
 		try {
 			return $this->paymentEndpoint->create( $paymentDto, $orderDto, $customerDto );
 		} catch ( PaymentEndpointException $e ) {
-			throw new PaymentServiceException( 'Error creating payment: ' . $e->getMessage() );
+			throw new PaymentProviderException( 'Error creating payment: ' . $e->getMessage() );
 		}
 	}
 
 	/**
 	 * Fetch a payment by its ID.
 	 *
-	 * @param string $paymentId The ID of the payment to fetch.
+	 * @param ?string $paymentId The ID of the payment to fetch.
 	 *
 	 * @return Payment The fetched payment.
 	 *
-	 * @throws PaymentServiceException
+	 * @throws PaymentProviderException
 	 */
 	//TODO REPLACE INTERFACE REMOVE NULL
 	public function fetchPayment( ?string $paymentId ): Payment {
 		try {
 			return $this->paymentEndpoint->fetch( $paymentId );
 		} catch ( PaymentEndpointException $e ) {
-			throw new PaymentServiceException( 'Error fetching payment: ' . $e->getMessage() );
+			throw new PaymentProviderException( 'Error fetching payment: ' . $e->getMessage() );
 		}
 	}
 
 	/**
 	 * Flag a payment as potential fraud.
 	 *
-	 * @throws PaymentServiceException
+	 * @throws PaymentProviderException
 	 */
 	public function flagAsFraud( string $id, string $reason ): bool {
 		try {
-			return $this->paymentEndpoint->flagAsPotentialFraud( $id, $reason );
+			$this->paymentEndpoint->flagAsPotentialFraud( $id, $reason );
+
+			return true;
 		} catch ( PaymentEndpointException $e ) {
-			throw new PaymentServiceException( 'Error flagging payment as fraud: ' . $e->getMessage() );
+			throw new PaymentProviderException( 'Error flagging payment as fraud: ' . $e->getMessage() );
 		}
 	}
 

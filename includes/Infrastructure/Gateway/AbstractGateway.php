@@ -2,9 +2,8 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway;
 
-use Alma\Client\Application\Exception\ParametersException;
-use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
-use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
+use Alma\API\Domain\Entity\FeePlanList;
+use Alma\Gateway\Application\Exception\Service\PaymentServiceException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Mapper\RefundMapper;
 use Alma\Gateway\Application\Provider\PaymentProvider;
@@ -12,9 +11,9 @@ use Alma\Gateway\Application\Service\BusinessEventsService;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\PaymentService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
-use Alma\Gateway\Infrastructure\Exception\Gateway\AbstractGatewayException;
+use Alma\Gateway\Infrastructure\Exception\Gateway\GatewayException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
-use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
+use Alma\Gateway\Infrastructure\Exception\Repository\OrderRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\InPageHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
@@ -66,14 +65,18 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * Get FeePlanListAdapter.
 	 *
 	 * @return FeePlanListAdapter|null
-	 * @throws FeePlanRepositoryException
+	 * @throws GatewayException
 	 */
 	public function get_fee_plan_list_adapter(): ?FeePlanListAdapter {
 
 		/** @var FeePlanRepository $fee_plan_repository */
 		$fee_plan_repository = Plugin::get_container()->get( FeePlanRepository::class );
 
-		return $fee_plan_repository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) );
+		try {
+			return $fee_plan_repository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) );
+		} catch ( FeePlanRepositoryException $e ) {
+			throw new GatewayException();
+		}
 	}
 
 	/**
@@ -89,7 +92,6 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * Is gateway enabled?
 	 *
 	 * @return bool
-	 * @throws AbstractGatewayException
 	 */
 	public function is_enabled(): bool {
 
@@ -101,7 +103,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		try {
 			$enabledFeePlans = $this->fee_plan_repository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) )->filterEnabled();
 		} catch ( FeePlanRepositoryException $e ) {
-			throw new AbstractGatewayException( 'Can not get Fee Plans' );
+			$enabledFeePlans = new FeePlanListAdapter( new FeePlanList() );
 		}
 
 		return count( $enabledFeePlans ) > 0;
@@ -118,7 +120,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 *
 	 * @return array|string[] The result of the payment processing.
 	 *
-	 * @throws GatewayServiceException
+	 * @throws GatewayException
 	 */
 	public function process_payment( $order_id ): array {
 
@@ -130,14 +132,14 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		$config_service = Plugin::get_container()->get( ConfigService::class );
 		try {
 			$order = $order_repository->getById( $order_id );
-		} catch ( ProductRepositoryException $e ) {
-			throw new GatewayServiceException( 'Can not find Order' );
+		} catch ( OrderRepositoryException $e ) {
+			throw new GatewayException( 'Can not find Order' );
 		}
 		$fields = $this->process_payment_fields( $order );
 		try {
 			$fee_plan_adapter = $fee_plan_repository->getByPlanKey( $fields['alma_plan_key'] );
 		} catch ( FeePlanRepositoryException $e ) {
-			throw new GatewayServiceException( 'Can not find Fee Plan' );
+			throw new GatewayException( 'Can not find Fee Plan' );
 		}
 		$order->addOrderNote(
 			sprintf(
@@ -155,7 +157,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 				$fee_plan_adapter
 			);
 		} catch ( PaymentServiceException $e ) {
-			throw new GatewayServiceException( $e->getMessage() );
+			throw new GatewayException( $e->getMessage() );
 		}
 
 		// Update order status to pending
@@ -192,13 +194,17 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * @param float|null $amount The amount to refund. If null, the full order amount will be refunded.
 	 * @param string     $reason The reason for the refund.
 	 *
-	 * @throws ProductRepositoryException|ParametersException
+	 * @throws GatewayException
 	 */
 	public function process_refund( $order_id, $amount = null, $reason = '' ) {
 
 		/** @var OrderRepository $order_repository */
 		$order_repository = Plugin::get_container()->get( OrderRepository::class );
-		$order            = $order_repository->getById( $order_id );
+		try {
+			$order = $order_repository->getById( $order_id );
+		} catch ( OrderRepositoryException $e ) {
+			throw new GatewayException();
+		}
 
 		/** @var PaymentProvider $payment_service */
 		$payment_service = Plugin::get_container()->get( PaymentProvider::class );

@@ -54,7 +54,7 @@ class AssetsHelper {
 	 *
 	 * @return string
 	 */
-	public static function getBuildPath( $resourcePath = '' ): string {
+	public static function getBuildPath( string $resourcePath = '' ): string {
 
 		$pluginPath = Plugin::get_instance()->get_plugin_path();
 

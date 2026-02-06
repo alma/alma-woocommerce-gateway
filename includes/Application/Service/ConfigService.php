@@ -257,7 +257,7 @@ class ConfigService {
 	 *
 	 * @return bool True on success, false on failure.
 	 */
-	public function deleteSetting( $key ): bool {
+	public function deleteSetting( string $key ): bool {
 		return $this->configRepository->deleteSetting( $key );
 	}
 

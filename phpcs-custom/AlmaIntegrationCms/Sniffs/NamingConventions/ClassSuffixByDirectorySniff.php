@@ -21,7 +21,7 @@ class ClassSuffixByDirectorySniff implements Sniff {
 	 *
 	 * @var array<string, string[]>
 	 */
-	private $directorySuffixMap = [
+	private array $directorySuffixMap = [
 		'Adapter'    => [ 'Adapter', 'AdapterInterface', 'AdapterException' ],
 		'Block'      => [ 'Block', 'BlockInterface', 'BlockException', 'BlockFactory' ],
 		'Config'     => [ 'Config', 'ConfigException' ],

@@ -4,16 +4,13 @@ namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Exception\Block\CheckoutBlockException;
-use Alma\Gateway\Infrastructure\Service\AssetsService;
 
 class GatewayBlockFactory {
 
 	private ConfigService $config_service;
-	private AssetsService $assets_service;
 
-	public function __construct( ConfigService $config_service, AssetsService $assets_service ) {
+	public function __construct( ConfigService $config_service ) {
 		$this->config_service = $config_service;
-		$this->assets_service = $assets_service;
 	}
 
 	/**

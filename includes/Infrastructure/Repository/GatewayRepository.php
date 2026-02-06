@@ -8,7 +8,6 @@ use Alma\Gateway\Infrastructure\Block\Gateway\PayLaterGatewayBlock;
 use Alma\Gateway\Infrastructure\Block\Gateway\PayNowGatewayBlock;
 use Alma\Gateway\Infrastructure\Block\Gateway\PnxGatewayBlock;
 use Alma\Gateway\Infrastructure\Exception\Block\CheckoutBlockException;
-use Alma\Gateway\Infrastructure\Exception\Gateway\AbstractGatewayException;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
@@ -74,7 +73,6 @@ class GatewayRepository implements GatewayRepositoryInterface {
 	 * Get all enabled Alma gateways.
 	 *
 	 * @return array
-	 * @throws AbstractGatewayException
 	 */
 	public function findAllEnabledAlmaGateways(): array {
 		return array_filter(
@@ -83,6 +81,8 @@ class GatewayRepository implements GatewayRepositoryInterface {
 				if ( $gateway instanceof AbstractGateway ) {
 					return $gateway->is_enabled();
 				}
+
+				return false;
 			}
 		);
 	}
