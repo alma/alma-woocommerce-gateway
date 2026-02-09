@@ -61,7 +61,16 @@ class ContextHelper implements ContextHelperInterface {
 			_doing_it_wrong( 'ContextHelper::isCartPage', 'We don\'t know yet the typ of page we are on.', '*' );
 		}
 
-		return CartCheckoutUtils::is_cart_page();
+		if ( class_exists( '\Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils' ) &&
+		     method_exists( '\Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils', 'is_cart_page' ) ) {
+
+			if ( CartCheckoutUtils::is_cart_page() ) {
+				return true;
+			}
+		}
+
+		// 2. Repli sur la fonction standard de WooCommerce (Compatibilité Shortcodes/Anciennes versions)
+		return function_exists( 'is_cart' ) && is_cart();
 	}
 
 	/**
@@ -73,7 +82,15 @@ class ContextHelper implements ContextHelperInterface {
 			_doing_it_wrong( 'ContextHelper::isCheckoutPage', 'We don\'t know yet the typ of page we are on.', '*' );
 		}
 
-		return CartCheckoutUtils::is_checkout_page();
+		if ( class_exists( '\Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils' ) &&
+		     method_exists( '\Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils', 'is_checkout_page' ) ) {
+
+			if ( CartCheckoutUtils::is_checkout_page() ) {
+				return true;
+			}
+		}
+
+		return function_exists( 'is_checkout' ) && is_checkout();
 	}
 
 	/**
@@ -258,8 +275,18 @@ class ContextHelper implements ContextHelperInterface {
 	 * @return bool True if the checkout page is using blocks, false otherwise.
 	 */
 	public static function isCheckoutPageUseBlocks(): bool {
+		if ( class_exists( '\Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils' ) &&
+		     method_exists( '\Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils', 'is_checkout_block_default' ) ) {
+			return CartCheckoutUtils::is_checkout_block_default();
+		}
 
-		return CartCheckoutUtils::is_checkout_block_default();
+		// Fallback: check if the checkout page has the checkout block
+		$checkout_page_id = wc_get_page_id( 'checkout' );
+		if ( $checkout_page_id ) {
+			return has_block( 'woocommerce/checkout', $checkout_page_id );
+		}
+
+		return false;
 	}
 
 	/**
@@ -268,7 +295,17 @@ class ContextHelper implements ContextHelperInterface {
 	 * @return bool True if the cart page is using blocks, false otherwise.
 	 */
 	public static function isCartPageUseBlocks(): bool {
+		if ( class_exists( '\Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils' ) &&
+		     method_exists( '\Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils', 'is_cart_block_default' ) ) {
+			return CartCheckoutUtils::is_cart_block_default();
+		}
 
-		return CartCheckoutUtils::is_cart_block_default();
+		// Fallback: check if the cart page has the cart block
+		$cart_page_id = wc_get_page_id( 'cart' );
+		if ( $cart_page_id ) {
+			return has_block( 'woocommerce/cart', $cart_page_id );
+		}
+
+		return false;
 	}
 }
