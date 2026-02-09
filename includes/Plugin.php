@@ -127,6 +127,10 @@ final class Plugin extends AbstractPlugin {
 			$business_event = self::get_container()->get( BusinessEventsRepository::class, $suffix );
 			$business_event->createTableIfNotExists();
 		} catch ( Exception $e ) {
+			self::get_container()->get( LoggerService::class )->debug(
+				'Warmup failed with error: ' . $e->getMessage(),
+				[ 'exception' => $e ]
+			);
 			self::enable_failsafe_mode( __( 'The Alma plugin does not appear to be compatible with your version of WooCommerce. Please contact support for more information.' ) );
 		}
 	}
@@ -149,6 +153,10 @@ final class Plugin extends AbstractPlugin {
 				$this->set_is_configured( true );
 			}
 		} catch ( Exception $e ) {
+			self::get_container()->get( LoggerService::class )->debug(
+				'Migration failed with error: ' . $e->getMessage(),
+				[ 'exception' => $e ]
+			);
 			self::enable_failsafe_mode( __( 'The Alma plugin does not appear to be compatible with your version of WooCommerce. Please contact support for more information.' ) );
 		}
 	}
@@ -156,7 +164,6 @@ final class Plugin extends AbstractPlugin {
 	/**
 	 * Used for regular plugin work.
 	 *
-	 * @throws GatewayControllerException
 	 */
 	public function plugin_setup(): void {
 
@@ -209,6 +216,10 @@ final class Plugin extends AbstractPlugin {
 				$gatewayController->configure();
 			}
 		} catch ( Exception $e ) {
+			self::get_container()->get( LoggerService::class )->debug(
+				'Setup failed with error: ' . $e->getMessage(),
+				[ 'exception' => $e ]
+			);
 			self::enable_failsafe_mode( __( 'The Alma plugin does not appear to be compatible with your version of WooCommerce. Please contact support for more information.' ) );
 		}
 	}
