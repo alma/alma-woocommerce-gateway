@@ -108,7 +108,7 @@ class WidgetBlock implements IntegrationInterface {
 			'amount'                      => $cart_adapter->getCartTotal(),
 			'locale'                      => $this->context_helper->getLanguage(),
 			'can_be_displayed'            => count( $feePlanList ) > 0 && $this->config_service->getWidgetCartEnabled(),
-			'is_excluded_categories'      => ! $canDisplayWidgetOnCart,
+			'is_excluded_categories'      => $canDisplayWidgetOnCart,
 			'excluded_categories_message' => $this->config_service->getExcludedCategoriesMessage(),
 			'url_alma_logo'               => esc_url( AssetsHelper::getImage( 'images/alma_logo.svg' ) ),
 		);
