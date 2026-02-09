@@ -8,7 +8,6 @@ use Alma\Plugin\Infrastructure\Adapter\FeePlanAdapterInterface;
 use Alma\Plugin\Infrastructure\Adapter\FeePlanListAdapterInterface;
 use Alma\Plugin\Infrastructure\Adapter\FeePlanListInterface;
 use ArrayObject;
-use OutOfBoundsException;
 
 /**
  * Adapter for Alma's FeePlanList
@@ -76,8 +75,6 @@ class FeePlanListAdapter extends ArrayObject implements FeePlanListAdapterInterf
 	 * @param string $planKey
 	 *
 	 * @return FeePlanAdapterInterface
-	 *
-	 * @throws OutOfBoundsException if the plan key does not exist in the list.
 	 */
 	public function getByPlanKey( string $planKey ): FeePlanAdapterInterface {
 		$filter = array_values( array_filter( $this->getArrayCopy(), function ( $feePlanAdapter ) use ( $planKey ) {

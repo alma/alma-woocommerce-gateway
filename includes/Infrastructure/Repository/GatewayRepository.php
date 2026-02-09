@@ -8,19 +8,22 @@ use Alma\Gateway\Infrastructure\Block\Gateway\PayLaterGatewayBlock;
 use Alma\Gateway\Infrastructure\Block\Gateway\PayNowGatewayBlock;
 use Alma\Gateway\Infrastructure\Block\Gateway\PnxGatewayBlock;
 use Alma\Gateway\Infrastructure\Exception\Block\CheckoutBlockException;
-use Alma\Gateway\Infrastructure\Exception\Gateway\AbstractGatewayException;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
+use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Alma\Gateway\Plugin;
 use Alma\Plugin\Infrastructure\Repository\GatewayRepositoryInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 class GatewayRepository implements GatewayRepositoryInterface {
 
 	private static ?array $gatewayBlocksCache = null;
-
+	/**  @var LoggerInterface */
+	private $loggerService;
 	/**
 	 * Ordered list of Alma gateways.
 	 *
@@ -34,7 +37,6 @@ class GatewayRepository implements GatewayRepositoryInterface {
 		PnxGateway::class,
 		PayNowGateway::class,
 	];
-
 	/**
 	 * Ordered list of Alma gateway blocks.
 	 *
@@ -46,6 +48,10 @@ class GatewayRepository implements GatewayRepositoryInterface {
 		PayLaterGatewayBlock::class,
 		CreditGatewayBlock::class,
 	];
+
+	public function __construct( LoggerService $loggerService = null ) {
+		$this->loggerService = $loggerService ?? new NullLogger();
+	}
 
 	/**
 	 * Get all available Alma gateways
@@ -74,7 +80,6 @@ class GatewayRepository implements GatewayRepositoryInterface {
 	 * Get all enabled Alma gateways.
 	 *
 	 * @return array
-	 * @throws AbstractGatewayException
 	 */
 	public function findAllEnabledAlmaGateways(): array {
 		return array_filter(
@@ -83,6 +88,8 @@ class GatewayRepository implements GatewayRepositoryInterface {
 				if ( $gateway instanceof AbstractGateway ) {
 					return $gateway->is_enabled();
 				}
+
+				return false;
 			}
 		);
 	}
@@ -106,6 +113,7 @@ class GatewayRepository implements GatewayRepositoryInterface {
 				$block                                          = $gatewayBlockFactory->create_gateway_block( $gatewayBlock );
 				self::$gatewayBlocksCache[ $block->get_name() ] = $block;
 			} catch ( CheckoutBlockException $e ) {
+				$this->loggerService->debug( 'Can not create Gateway Block', [ 'exception' => $e->getMessage() ] );
 				// If any block cannot be created, skip it.
 				continue;
 			}

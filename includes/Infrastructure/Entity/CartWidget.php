@@ -3,8 +3,8 @@
 namespace Alma\Gateway\Infrastructure\Entity;
 
 use Alma\Gateway\Infrastructure\Block\Widget\WidgetBlock;
-use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
-use Alma\Gateway\Infrastructure\Exception\Block\WidgetBlockException;
+use Alma\Gateway\Infrastructure\Exception\Entity\CartWidgetException;
+use Alma\Gateway\Infrastructure\Exception\Service\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\ShortcodeWidgetHelper;
@@ -45,19 +45,19 @@ class CartWidget extends AbstractWidget {
 	 * Load widget assets.
 	 *
 	 * @return void
-	 * @throws WidgetBlockException
+	 * @throws CartWidgetException
 	 */
 	public function prepareAssets() {
 		try {
 			$this->assetsService->registerWidgetBlockAssets();
 		} catch ( AssetsServiceException $e ) {
-			throw new WidgetBlockException( $e->getMessage() );
+			throw new CartWidgetException( 'Can not prepare assets', 0, $e );
 		}
 		if ( ContextHelper::isAdmin() ) {
 			try {
 				$this->assetsService->registerWidgetBlockEditorAssets();
 			} catch ( AssetsServiceException $e ) {
-				throw new WidgetBlockException( $e->getMessage() );
+				throw new CartWidgetException( 'Can not prepare assets', 0, $e );
 			}
 		}
 	}
@@ -78,7 +78,8 @@ class CartWidget extends AbstractWidget {
 	public function displayShortcodeWidget() {
 		/** @var ShortcodeWidgetHelper $shortcodeWidgetHelper */
 		$shortcodeWidgetHelper = Plugin::get_container()->get( ShortcodeWidgetHelper::class );
-		$shortcodeWidgetHelper->initCartShortcode( self::WIDGET_CLASS, $this->displayWidget, $this->hasExcludedCategories );
+		$shortcodeWidgetHelper->initCartShortcode( self::WIDGET_CLASS, $this->displayWidget,
+			$this->hasExcludedCategories );
 		$shortcodeWidgetHelper->displayDefaultCartWidget( self::WIDGET_DEFAULT_CLASS );
 	}
 }

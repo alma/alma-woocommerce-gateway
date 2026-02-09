@@ -23,6 +23,8 @@ class ProductAdapter implements ProductAdapterInterface {
 
 	/**
 	 * Dynamic call to all WC_Order methods
+	 *
+	 * @throws BadMethodCallException if the method does not exist on WC_Product
 	 */
 	public function __call( string $name, array $arguments ) {
 		// Convert camelCase to snake_case

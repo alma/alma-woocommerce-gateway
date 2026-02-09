@@ -30,6 +30,8 @@ class OrderAdapter implements OrderAdapterInterface {
 
 	/**
 	 * Dynamic call to all WC_Order methods
+	 *
+	 * @throws BadMethodCallException if the method does not exist on WC_Order
 	 */
 	public function __call( string $name, array $arguments ) {
 		// Convert camelCase to snake_case
@@ -106,7 +108,7 @@ class OrderAdapter implements OrderAdapterInterface {
 	 *
 	 * @return string|null
 	 */
-	public function getBillingState() {
+	public function getBillingState(): ?string {
 		return $this->wcOrder->get_billing_state();
 	}
 
@@ -410,7 +412,7 @@ class OrderAdapter implements OrderAdapterInterface {
 		return $this->wcOrder->update_meta_data( $key, $value, $meta_id );
 	}
 
-	public function save() {
+	public function save(): int {
 		return $this->wcOrder->save();
 	}
 }

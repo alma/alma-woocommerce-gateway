@@ -2,7 +2,6 @@
 
 namespace Alma\Gateway\Infrastructure\Service;
 
-use Alma\Client\Application\Exception\ParametersException;
 use Alma\Gateway\Application\Exception\Service\BusinessEventsServiceException;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Application\Helper\IpnHelper;
@@ -11,9 +10,9 @@ use Alma\Gateway\Application\Provider\PaymentProviderAwareTrait;
 use Alma\Gateway\Application\Provider\PaymentProviderFactory;
 use Alma\Gateway\Application\Service\BusinessEventsService;
 use Alma\Gateway\Infrastructure\Block\Gateway\AbstractGatewayBlock;
-use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
-use Alma\Gateway\Infrastructure\Exception\CheckoutServiceException;
-use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
+use Alma\Gateway\Infrastructure\Exception\Repository\OrderRepositoryException;
+use Alma\Gateway\Infrastructure\Exception\Service\AssetsServiceException;
+use Alma\Gateway\Infrastructure\Exception\Service\CheckoutServiceException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
@@ -54,7 +53,7 @@ class GatewayService {
 	 *
 	 * We need to keep $old_status on the signature for the hook
 	 *
-	 * @throws GatewayServiceException|ParametersException
+	 * @throws GatewayServiceException
 	 * @todo move this in a more appropriated service
 	 *
 	 */
@@ -68,8 +67,8 @@ class GatewayService {
 		$orderRepository = Plugin::get_container()->get( OrderRepository::class );
 		try {
 			$order = $orderRepository->getById( $orderId );
-		} catch ( ProductRepositoryException $e ) {
-			throw new GatewayServiceException( 'Order not found' );
+		} catch ( OrderRepositoryException $e ) {
+			throw new GatewayServiceException( 'Order not found', 0, $e );
 		}
 
 		if ( 'refunded' === $newStatus || 'cancelled' === $newStatus ) {
@@ -99,7 +98,7 @@ class GatewayService {
 		try {
 			$this->businessEventsService->onOrderConfirmed( $oldStatus, $newStatus, $order );
 		} catch ( BusinessEventsServiceException $e ) {
-			throw new GatewayServiceException( 'Order confirmed does not sent:' . $e->getMessage() );
+			throw new GatewayServiceException( 'Order confirmed does not sent', 0, $e );
 		}
 	}
 
@@ -159,7 +158,7 @@ class GatewayService {
 			$params['checkout_url'] = ContextHelper::getWebhookUrl( 'alma_checkout_data' );
 			$this->assetsService->registerGatewayBlockAssets( $params );
 		} catch ( CheckoutServiceException|AssetsServiceException $e ) {
-			throw new GatewayServiceException( 'Unable to load block assets', 0, $e );
+			throw new GatewayServiceException( 'Unable to run Gateway Blocks', 0, $e );
 		}
 	}
 }

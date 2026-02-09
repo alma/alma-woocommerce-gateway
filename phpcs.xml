@@ -133,6 +133,11 @@
         <exclude-pattern>includes/Infrastructure/*</exclude-pattern>
         <exclude-pattern>includes/functions.php</exclude-pattern>
     </rule>
+    <rule ref="AlmaIntegrationCms.Architecture.ClassSpecificException"/>
+
+    <rule ref="AlmaIntegrationCms.Documentation.MethodThrowsDocumentation"/>
+    <rule ref="AlmaIntegrationCms.Documentation.MethodThrowsException"/>
+
     <rule ref="AlmaIntegrationCms.NamingConventions.ClassSuffixByDirectory"/>
     <rule ref="AlmaIntegrationCms.NamingConventions.ForbiddenHelperDependency"/>
     <rule ref="AlmaIntegrationCms.Scope.NoPublicMemberVar"/>

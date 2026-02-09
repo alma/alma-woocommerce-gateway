@@ -9,13 +9,13 @@
  * @namespace Alma\Gateway\Business\Exception
  */
 
-namespace Alma\Gateway\Infrastructure\Exception\Service;
+namespace Alma\Gateway\Application\Exception\Service;
 
 use Alma\Gateway\Domain\Exception\AlmaException;
 
 /**
- * LoggerServiceServiceException
+ * PaymentServiceException
  */
-class LoggerServiceServiceException extends AlmaException {
+class PaymentServiceException extends AlmaException {
 
 }

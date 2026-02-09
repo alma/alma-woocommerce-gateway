@@ -2,14 +2,15 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway\Backend;
 
+use Alma\API\Domain\Entity\FeePlanList;
 use Alma\Gateway\Application\Entity\Form\GatewayConfigurationForm;
 use Alma\Gateway\Application\Helper\AlmaHelper;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\ConfigService;
-use Alma\Gateway\Domain\Exception\AlmaException;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
-use Alma\Gateway\Infrastructure\Exception\Gateway\AbstractGatewayException;
+use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
+use Alma\Gateway\Infrastructure\Exception\Gateway\GatewayException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
@@ -28,10 +29,10 @@ class AbstractBackendGateway extends AbstractGateway {
 	/**
 	 * This gateway is not meant to process payments and throws an exception if called.
 	 *
-	 * @throws AlmaException
+	 * @throws GatewayException
 	 */
 	public function process_payment( $order_id ): array {
-		throw new AlmaException( 'This gateway is not meant to process payments.' );
+		throw new GatewayException( 'This gateway is not meant to process payments.' );
 	}
 
 	/**
@@ -163,7 +164,7 @@ class AbstractBackendGateway extends AbstractGateway {
 		);
 	}
 
-	public function display_fieldset() {
+	public function display_fieldset(): array {
 
 		if ( Plugin::get_instance()->is_configured( true ) ) {
 			return array(
@@ -227,7 +228,6 @@ class AbstractBackendGateway extends AbstractGateway {
 
 	/**
 	 * Define the fee plan section.
-	 * @throws FeePlanRepositoryException
 	 */
 	public function fee_plan_fieldset(): array {
 
@@ -239,8 +239,17 @@ class AbstractBackendGateway extends AbstractGateway {
 		$gateway_repository = Plugin::get_container()->get( GatewayRepository::class );
 
 		/** @var FeePlanRepository $fee_plan_repository */
-		$fee_plan_repository   = Plugin::get_container()->get( FeePlanRepository::class );
-		$fee_plan_list_adapter = $fee_plan_repository->getAll( true )->orderBy( $gateway_repository->findOrderedAlmaGateways() )->filterAvailable();
+		$fee_plan_repository = Plugin::get_container()->get( FeePlanRepository::class );
+		try {
+			$fee_plan_list_adapter = $fee_plan_repository->getAll( true )->orderBy( $gateway_repository->findOrderedAlmaGateways() )->filterAvailable();
+		} catch ( FeePlanRepositoryException $e ) {
+			// No exception, just an empty list
+			$this->logger_service->debug(
+				'Can not get Fee Plans for gateway ' . $this->get_id(),
+				array( 'exception' => $e )
+			);
+			$fee_plan_list_adapter = new FeePlanListAdapter( new FeePlanList() );
+		}
 
 		$field_list['fee_plan_section'] = array(
 			'title'       => '<hr>' . __( '→ Fee plans configuration', 'alma-gateway-for-woocommerce' ),
@@ -279,7 +288,7 @@ class AbstractBackendGateway extends AbstractGateway {
 
 		/** @var FeePlanAdapter $fee_plan_adapter */
 		foreach ( $fee_plan_list_adapter as $fee_plan_adapter ) {
-			$fee_plan_display_data = L10nHelper::generate_fee_plan_display_data( $fee_plan_adapter, $environment );
+			$fee_plan_display_data = L10nHelper::generate_fee_plan_display_data( $fee_plan_adapter );
 			/** @uses self::generate_table_title_html() */
 			$field_list[ $fee_plan_adapter->getPlanKey() . '_title' ] = array(
 				'type'      => 'table_title',
@@ -442,7 +451,7 @@ class AbstractBackendGateway extends AbstractGateway {
 	 *
 	 * @return bool True if the toggle is enabled, false otherwise.
 	 */
-	public function validate_table_toggle_field( $key, $value ): bool {
+	public function validate_table_toggle_field( string $key, string $value ): bool {
 		if ( ! empty( $value ) && '1' === $value ) {
 			return true;
 		}
@@ -548,7 +557,6 @@ class AbstractBackendGateway extends AbstractGateway {
 	 *  Let the fallback to the container for production use
 	 *
 	 * @return array[]
-	 * @throws AbstractGatewayException
 	 */
 	public function customize_payment_buttons_text_fieldset(
 		?PayNowGateway $payNowGateway = null,

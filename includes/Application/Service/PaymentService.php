@@ -3,7 +3,8 @@
 namespace Alma\Gateway\Application\Service;
 
 use Alma\Client\Domain\Entity\Payment;
-use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
+use Alma\Gateway\Application\Exception\Provider\PaymentProviderException;
+use Alma\Gateway\Application\Exception\Service\PaymentServiceException;
 use Alma\Gateway\Application\Mapper\CustomerMapper;
 use Alma\Gateway\Application\Mapper\OrderMapper;
 use Alma\Gateway\Application\Mapper\PaymentMapper;
@@ -52,7 +53,7 @@ class PaymentService {
 				( new OrderMapper() )->buildOrderDto( $order ),
 				( new CustomerMapper() )->buildCustomerDto( $order ),
 			);
-		} catch ( PaymentServiceException $e ) {
+		} catch ( PaymentProviderException $e ) {
 			ShopNotificationHelper::notifyError(
 				__( 'An error occurred while creating the payment. Please try again.',
 					'alma-gateway-for-woocommerce' ),

@@ -2,11 +2,12 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 
+use Alma\API\Domain\Entity\FeePlanList;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
-use Alma\Gateway\Infrastructure\Exception\Gateway\AbstractGatewayException;
+use Alma\Gateway\Infrastructure\Exception\Gateway\GatewayException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
@@ -104,7 +105,7 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	 * It calls the parent method to check the availability.
 	 *
 	 * @return bool
-	 * @throws FeePlanRepositoryException|AbstractGatewayException
+	 * @throws GatewayException
 	 */
 	public function is_available(): bool {
 		if ( ! parent::is_available() ) {
@@ -112,11 +113,20 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 		}
 
 		// Check Fee Plans availability
-		$available = false;
-		foreach ( $this->getFeePlanList() as $fee_plan ) {
-			if ( $fee_plan->isEnabled() ) {
-				$available = true;
+		try {
+			$available = false;
+			foreach ( $this->getFeePlanList() as $fee_plan ) {
+				if ( $fee_plan->isEnabled() ) {
+					$available = true;
+				}
 			}
+		} catch ( FeePlanRepositoryException $e ) {
+			$this->logger_service->debug(
+				'Error while fetching Fee Plans for gateway ' . $this->get_id(),
+				array( 'exception' => $e )
+			);
+
+			return false;
 		}
 
 		// If no fee plan is enabled, the gateway is not available
@@ -145,13 +155,21 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	 * This method retrieves the fee plans from the FeePlanService and filters them based on the gateway type.
 	 *
 	 * @return FeePlanListAdapter
-	 * @throws FeePlanRepositoryException
 	 */
 	public function getFeePlanList(): FeePlanListAdapter {
 		/** @var FeePlanRepository $fee_plan_repository */
 		$fee_plan_repository = Plugin::get_instance()->get_container()->get( FeePlanRepository::class );
 
-		return $fee_plan_repository->getAllWithEligibility( ContextHelper::getCart()->getCartTotal() )->filterFeePlanList( array( $this->get_payment_method() ) )->filterEligible( ContextHelper::getCart()->getCartTotal() );
+		try {
+			return $fee_plan_repository->getAllWithEligibility( ContextHelper::getCart()->getCartTotal() )->filterFeePlanList( array( $this->get_payment_method() ) )->filterEligible( ContextHelper::getCart()->getCartTotal() );
+		} catch ( FeePlanRepositoryException $e ) {
+			$this->logger_service->debug(
+				'Error while fetching Fee Plans for gateway ' . $this->get_id(),
+				array( 'exception' => $e )
+			);
+
+			return new FeePlanListAdapter( new FeePlanList() );
+		}
 	}
 
 	/**

@@ -5,8 +5,8 @@ namespace Alma\Gateway\Infrastructure\Exception\Gateway;
 use Alma\Gateway\Domain\Exception\AlmaException;
 
 /**
- * Class AbstractGatewayException
+ * Class GatewayException
  */
-class AbstractGatewayException extends AlmaException {
+class GatewayException extends AlmaException {
 
 }

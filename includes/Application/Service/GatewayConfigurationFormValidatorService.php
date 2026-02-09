@@ -10,21 +10,10 @@ use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Plugin;
 
 class GatewayConfigurationFormValidatorService {
-
-	private ?ConfigService $configService;
 	private FeePlanRepository $feePlanRepository;
 
 	public function __construct( FeePlanRepository $feePlanRepository ) {
 		$this->feePlanRepository = $feePlanRepository;
-	}
-
-	/**
-	 * Setter for Unit Test
-	 *
-	 * @param ConfigService $configService
-	 */
-	public function setConfigService( ConfigService $configService ): void {
-		$this->configService = $configService;
 	}
 
 	/**
@@ -52,7 +41,8 @@ class GatewayConfigurationFormValidatorService {
 			try {
 				$feePlanConfigurationList->validate( $this->feePlanRepository->getAll() );
 			} catch ( FeePlanRepositoryException $e ) {
-				throw new GatewayConfigurationFormValidatorServiceException( 'Les fee plans n\'ont pas pu être récupérés. Veuillez réessayer plus tard.' );
+				throw new GatewayConfigurationFormValidatorServiceException( 'Can not get Fee Plans.',
+					0, $e );
 			}
 		}
 

@@ -4,6 +4,9 @@ namespace Alma\Gateway\Application\Entity\Form;
 
 use Alma\Client\Application\Exception\ParametersException;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
+use Alma\Gateway\Infrastructure\Service\LoggerService;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 /**
  * Class FeePlanDataForm
@@ -31,19 +34,24 @@ class FeePlanConfiguration {
 	/** @var bool */
 	private bool $enabled;
 
+	/** @var LoggerInterface */
+	private LoggerInterface $loggerService;
+
 	/**
 	 * FeePlanDataForm constructor.
 	 *
-	 * @param string $planKey
-	 * @param int    $minAmount
-	 * @param int    $maxAmount
-	 * @param bool   $enabled
+	 * @param string             $planKey
+	 * @param int                $minAmount
+	 * @param int                $maxAmount
+	 * @param bool               $enabled
+	 * @param LoggerService|null $loggerService
 	 */
-	public function __construct( string $planKey, int $minAmount, int $maxAmount, bool $enabled ) {
-		$this->planKey   = $planKey;
-		$this->minAmount = $minAmount;
-		$this->maxAmount = $maxAmount;
-		$this->enabled   = $enabled;
+	public function __construct( string $planKey, int $minAmount, int $maxAmount, bool $enabled, LoggerService $loggerService = null ) {
+		$this->planKey       = $planKey;
+		$this->minAmount     = $minAmount;
+		$this->maxAmount     = $maxAmount;
+		$this->enabled       = $enabled;
+		$this->loggerService = $loggerService ?? new NullLogger();
 	}
 
 	/**
@@ -95,6 +103,11 @@ class FeePlanConfiguration {
 			try {
 				$feePlanAdapter->setOverrideMinPurchaseAmount( $this->getMinAmount() );
 			} catch ( ParametersException $e ) {
+				$this->loggerService->error( 'Invalid minimum purchase amount for fee plan', [
+					'planKey'   => $this->getPlanKey(),
+					'minAmount' => $this->getMinAmount(),
+					'exception' => $e,
+				] );
 				$this->addError( $e->getMessage() );
 				$feePlanAdapter->resetOverrideMinPurchaseAmount();
 			}
@@ -102,6 +115,11 @@ class FeePlanConfiguration {
 			try {
 				$feePlanAdapter->setOverrideMaxPurchaseAmount( $this->getMaxAmount() );
 			} catch ( ParametersException $e ) {
+				$this->loggerService->error( 'Invalid maximum purchase amount for fee plan', [
+					'planKey'   => $this->getPlanKey(),
+					'maxAmount' => $this->getMaxAmount(),
+					'exception' => $e,
+				] );
 				$this->addError( $e->getMessage() );
 				$feePlanAdapter->resetOverrideMaxPurchaseAmount();
 			}

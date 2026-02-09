@@ -2,7 +2,6 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
-use Alma\Gateway\Infrastructure\Exception\Gateway\AbstractGatewayException;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
@@ -40,7 +39,6 @@ class FrontendHelper {
 	 * @return void
 	 *
 	 * Easier to understand with two if statements.
-	 * @throws AbstractGatewayException
 	 */
 	public static function loadFrontendGateways( array $almaGatewayList ) {
 		add_filter(

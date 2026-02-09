@@ -14,7 +14,7 @@ namespace Alma\Gateway\Infrastructure\Block\Widget;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Exception\Block\WidgetBlockException;
-use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
+use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Mapper\FeePlanListMapper;
@@ -49,7 +49,6 @@ class WidgetBlock implements IntegrationInterface {
 
 	public function __construct(
 		ConfigService $config_service,
-		CartAdapter $cart_adapter,
 		FeePlanRepository $fee_plan_repository,
 		GatewayRepository $gateway_repository,
 		ContextHelper $context_helper,
@@ -96,7 +95,11 @@ class WidgetBlock implements IntegrationInterface {
 			$cart_adapter,
 			$excludedCategories
 		);
-		$feePlanList            = $this->fee_plan_repository->getAllWithEligibility()->filterEnabled()->orderBy( $this->gateway_repository->findOrderedAlmaGateways() );
+		try {
+			$feePlanList = $this->fee_plan_repository->getAllWithEligibility()->filterEnabled()->orderBy( $this->gateway_repository->findOrderedAlmaGateways() );
+		} catch ( FeePlanRepositoryException $e ) {
+			throw new WidgetBlockException( 'Can not send data to JS', 0, $e );
+		}
 
 		return array(
 			'merchant_id'                 => $this->config_service->getMerchantId(),

@@ -8,7 +8,7 @@ use Alma\Client\Application\DTO\PaymentDto;
 use Alma\Client\Application\Endpoint\PaymentEndpoint;
 use Alma\Client\Application\Exception\Endpoint\PaymentEndpointException;
 use Alma\Client\Domain\Entity\Payment;
-use Alma\Gateway\Application\Exception\Service\API\PaymentServiceException;
+use Alma\Gateway\Application\Exception\Provider\PaymentProviderException;
 use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
 use PHPUnit\Framework\TestCase;
@@ -21,8 +21,8 @@ class PaymentProviderTest extends TestCase {
 
 
 	public function testCreatePaymentApiThrowsException(): void {
-		$this->expectException( PaymentServiceException::class );
-		$this->expectExceptionMessage( 'Error creating payment: API error' );
+		$this->expectException( PaymentProviderException::class );
+		$this->expectExceptionMessage( 'Error creating payment' );
 		$paymentDto  = $this->createMock( PaymentDto::class );
 		$orderDto    = $this->createMock( OrderDto::class );
 		$customerDto = $this->createMock( CustomerDto::class );
@@ -39,6 +39,9 @@ class PaymentProviderTest extends TestCase {
 		);
 	}
 
+	/**
+	 * @throws PaymentProviderException
+	 */
 	public function testCreatePaymentApiSuccess(): void {
 		$paymentMock = $this->createMock( Payment::class );
 		$paymentDto  = $this->createMock( PaymentDto::class );
@@ -58,8 +61,8 @@ class PaymentProviderTest extends TestCase {
 	}
 
 	public function testFetchPaymentApiThrowsException(): void {
-		$this->expectException( PaymentServiceException::class );
-		$this->expectExceptionMessage( 'Error fetching payment: API error' );
+		$this->expectException( PaymentProviderException::class );
+		$this->expectExceptionMessage( 'Error fetching payment' );
 		$paymentId = 'payment_123';
 
 		$this->paymentEndpointMock->expects( $this->once() )
@@ -70,6 +73,9 @@ class PaymentProviderTest extends TestCase {
 		$this->paymentProvider->fetchPayment( $paymentId );
 	}
 
+	/**
+	 * @throws PaymentProviderException
+	 */
 	public function testFetchPaymentApiSuccess(): void {
 		$paymentMock = $this->createMock( Payment::class );
 		$paymentId   = 'payment_123';

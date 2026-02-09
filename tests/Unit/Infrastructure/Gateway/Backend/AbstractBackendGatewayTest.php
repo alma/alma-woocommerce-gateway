@@ -7,6 +7,8 @@ use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
+use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
+use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
 use PHPUnit\Framework\TestCase;
@@ -33,19 +35,23 @@ class AbstractBackendGatewayTest extends TestCase {
 	public function setUp(): void {
 		Monkey\setUp();
 
-		Functions\when('__')->returnArg();
+		Functions\when( '__' )->returnArg();
 
 		// Mock les hooks WordPress pour éviter l'erreur
-		Functions\when('add_filter')->justReturn(true);
-		Functions\when('add_action')->justReturn(true);
-		Functions\when('get_option')->justReturn(true);
-		Functions\when('almalog')->justReturn(true);
+		Functions\when( 'add_filter' )->justReturn( true );
+		Functions\when( 'add_action' )->justReturn( true );
+		Functions\when( 'get_option' )->justReturn( true );
 
-		$this->payNowGatewayMock = $this->createMock(PayNowGateway::class);
-		$this->pnxGatewayMock = $this->createMock(PnxGateway::class);
-		$this->payLaterGatewayMock = $this->createMock(PayLaterGateway::class);
-		$this->creditGatewayMock = $this->createMock(CreditGateway::class);
-		$this->abstractBackendGateway = new AbstractBackendGateway();
+		$this->payNowGatewayMock      = $this->createMock( PayNowGateway::class );
+		$this->pnxGatewayMock         = $this->createMock( PnxGateway::class );
+		$this->payLaterGatewayMock    = $this->createMock( PayLaterGateway::class );
+		$this->creditGatewayMock      = $this->createMock( CreditGateway::class );
+		$this->feePlanRepositoryMock  = $this->createMock( FeePlanRepository::class );
+		$this->loggerServiceMock      = $this->createMock( LoggerService::class );
+		$this->abstractBackendGateway = new AbstractBackendGateway(
+			$this->feePlanRepositoryMock,
+			$this->loggerServiceMock
+		);
 	}
 
 	public function tearDown(): void {
@@ -54,24 +60,24 @@ class AbstractBackendGatewayTest extends TestCase {
 	}
 
 	public function testCustomizePaymentButtonsTextFieldsetWithoutGatewaysEnabled(): void {
-		$this->payNowGatewayMock->expects( $this->once() )->method('is_enabled')->willReturn(false);
-		$this->pnxGatewayMock->expects( $this->once() )->method('is_enabled')->willReturn(false);
-		$this->payLaterGatewayMock->expects( $this->once() )->method('is_enabled')->willReturn(false);
-		$this->creditGatewayMock->expects( $this->once() )->method('is_enabled')->willReturn(false);
+		$this->payNowGatewayMock->expects( $this->once() )->method( 'is_enabled' )->willReturn( false );
+		$this->pnxGatewayMock->expects( $this->once() )->method( 'is_enabled' )->willReturn( false );
+		$this->payLaterGatewayMock->expects( $this->once() )->method( 'is_enabled' )->willReturn( false );
+		$this->creditGatewayMock->expects( $this->once() )->method( 'is_enabled' )->willReturn( false );
 		$expected = [];
-		$this->assertEquals($expected, $this->abstractBackendGateway->customize_payment_buttons_text_fieldset(
+		$this->assertEquals( $expected, $this->abstractBackendGateway->customize_payment_buttons_text_fieldset(
 			$this->payNowGatewayMock,
 			$this->pnxGatewayMock,
 			$this->payLaterGatewayMock,
 			$this->creditGatewayMock
-		));
+		) );
 	}
 
 	public function testCustomizePaymentButtonsTextFieldsetWithPayNowAndPnxEnabled(): void {
-		$this->payNowGatewayMock->method('is_enabled')->willReturn(true);
-		$this->pnxGatewayMock->method('is_enabled')->willReturn(true);
-		$this->payLaterGatewayMock->method('is_enabled')->willReturn(false);
-		$this->creditGatewayMock->method('is_enabled')->willReturn(false);
+		$this->payNowGatewayMock->method( 'is_enabled' )->willReturn( true );
+		$this->pnxGatewayMock->method( 'is_enabled' )->willReturn( true );
+		$this->payLaterGatewayMock->method( 'is_enabled' )->willReturn( false );
+		$this->creditGatewayMock->method( 'is_enabled' )->willReturn( false );
 		$expected = [
 			'customize_payment_buttons_text_section' => [
 				'title'       => '<hr>→ Customize payment button text',
@@ -79,36 +85,36 @@ class AbstractBackendGatewayTest extends TestCase {
 				'description' => 'Customize the text displayed on the Alma payment button on the checkout page',
 				'desc_tip'    => false,
 			],
-			'paynow_title' => [
+			'paynow_title'                           => [
 				'title' => '<h2>Pay now:</h2>',
 				'type'  => 'title',
 			],
-			'paynow_title_field' => [
+			'paynow_title_field'                     => [
 				'title'       => 'Title',
 				'type'        => 'text',
 				'description' => 'This controls the payment method name which the user sees during checkout.',
 				'desc_tip'    => true,
 				'default'     => 'Pay by credit card',
 			],
-			'paynow_description_field' => [
+			'paynow_description_field'               => [
 				'title'       => 'Description',
 				'type'        => 'text',
 				'description' => 'This controls the payment method description which the user sees during checkout.',
 				'desc_tip'    => true,
 				'default'     => 'Fast and secured payments',
 			],
-			'pnx_title' => [
+			'pnx_title'                              => [
 				'title' => '<h2>Payments in 2, 3 and 4 installments:</h2>',
 				'type'  => 'title',
 			],
-			'pnx_title_field' => [
+			'pnx_title_field'                        => [
 				'title'       => 'Title',
 				'type'        => 'text',
 				'description' => 'This controls the payment method name which the user sees during checkout.',
 				'desc_tip'    => true,
 				'default'     => 'Pay in installments',
 			],
-			'pnx_description_field' => [
+			'pnx_description_field'                  => [
 				'title'       => 'Description',
 				'type'        => 'text',
 				'description' => 'This controls the payment method description which the user sees during checkout.',
@@ -116,11 +122,11 @@ class AbstractBackendGatewayTest extends TestCase {
 				'default'     => 'Fast and secure payment by credit card',
 			],
 		];
-		$this->assertEquals($expected, $this->abstractBackendGateway->customize_payment_buttons_text_fieldset(
+		$this->assertEquals( $expected, $this->abstractBackendGateway->customize_payment_buttons_text_fieldset(
 			$this->payNowGatewayMock,
 			$this->pnxGatewayMock,
 			$this->payLaterGatewayMock,
 			$this->creditGatewayMock
-		));
+		) );
 	}
 }

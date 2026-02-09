@@ -3,7 +3,7 @@
 namespace Alma\Gateway\Infrastructure\Service;
 
 use Alma\Gateway\Infrastructure\Config\AssetsConfig;
-use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
+use Alma\Gateway\Infrastructure\Exception\Service\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 
 class AssetsService {

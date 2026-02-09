@@ -4,7 +4,7 @@ namespace Alma\Gateway\Application\Helper;
 
 
 use Alma\Client\Application\Helper\RequestHelper;
-use Alma\Gateway\Application\Exception\Service\IpnServiceException;
+use Alma\Gateway\Application\Exception\Helper\IpnHelperException;
 use Alma\Gateway\Application\Service\IpnService;
 use Alma\Gateway\Infrastructure\Helper\AjaxHelper;
 use Alma\Gateway\Infrastructure\Helper\EventHelper;
@@ -37,14 +37,14 @@ class IpnHelper implements IpnHelperInterface {
 	 * @param string $apiKey The API key used to generate the HMAC signature
 	 * @param string $signature The HMAC signature to validate
 	 *
-	 * @throws IpnServiceException
+	 * @throws IpnHelperException
 	 */
 	public function validateIpnSignature( string $paymentId, string $apiKey, string $signature ): void {
 		if ( empty( $paymentId ) || empty( $apiKey ) || empty( $signature ) ) {
-			throw new IpnServiceException( '[ALMA] Missing required parameters' );
+			throw new IpnHelperException( 'Can not validate IPN Signature. Missing required parameters' );
 		}
 		if ( ! RequestHelper::isHmacValidated( $paymentId, $apiKey, $signature ) ) {
-			throw new IpnServiceException( '[ALMA] Invalid signature' );
+			throw new IpnHelperException( 'Can not validate IPN Signature. Invalid signature' );
 		}
 	}
 

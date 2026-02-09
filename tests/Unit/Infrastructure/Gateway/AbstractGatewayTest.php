@@ -5,6 +5,7 @@ namespace Alma\Gateway\Tests\Unit\Infrastructure\Gateway;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
+use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
 use Mockery;
@@ -26,16 +27,16 @@ class AbstractGatewayTest extends TestCase {
 		Functions\when( 'add_filter' )->justReturn( true );
 		Functions\when( 'add_action' )->justReturn( true );
 		Functions\when( 'get_option' )->justReturn( true );
-		Functions\when( 'almalog' )->justReturn( true );
 
 		$this->feePlanRepositoryMock = $this->createMock( FeePlanRepository::class );
-		$this->gateway               = new class( $this->feePlanRepositoryMock ) extends AbstractGateway {
+		$this->loggerServiceMock     = $this->createMock( LoggerService::class );
+		$this->gateway               = new class( $this->feePlanRepositoryMock, $this->loggerServiceMock ) extends AbstractGateway {
 			protected const PAYMENT_METHOD = 'test';
 
-			public function __construct( $feePlanRepository ) {
+			public function __construct( $feePlanRepository, $logger ) {
 				$this->enabled = 'yes';
-				$this->id = 'test';
-				parent::__construct( $feePlanRepository );
+				$this->id      = 'test';
+				parent::__construct( $feePlanRepository, $logger );
 			}
 		};
 	}

@@ -7,7 +7,8 @@ use Alma\Client\Application\Endpoint\EligibilityEndpoint;
 use Alma\Client\Application\Exception\Endpoint\EligibilityEndpointException;
 use Alma\Client\Domain\Entity\Eligibility;
 use Alma\Client\Domain\Entity\EligibilityList;
-use Alma\Gateway\Application\Exception\Service\API\EligibilityServiceException;
+use Alma\Gateway\Application\Exception\Provider\EligibilityProviderException;
+use Alma\Gateway\Application\Exception\Provider\EligibilityServiceException;
 use Alma\Gateway\Application\Provider\EligibilityProvider;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use PHPUnit\Framework\TestCase;
@@ -38,11 +39,11 @@ class EligibilityProviderTest extends TestCase {
 	 * then an exception is thrown .
 	 *
 	 * @return void
-	 * @throws EligibilityServiceException
+	 * @throws EligibilityProviderException
 	 */
 	public function testRetrieveEligibilityApiThrowsException() {
-		$this->expectException( EligibilityServiceException::class );
-		$this->expectExceptionMessage( 'Error retrieving eligibility: API error' );
+		$this->expectException( EligibilityProviderException::class );
+		$this->expectExceptionMessage( 'Error retrieving eligibility' );
 
 		$eligibilityDto = new EligibilityDto( 10000 );
 		$this->eligibilityEndpointMock->expects( $this->once() )->method( 'getEligibilityList' )->willThrowException( new EligibilityEndpointException( 'API error' ) );
@@ -56,7 +57,7 @@ class EligibilityProviderTest extends TestCase {
 	 * then the eligibility list should be populated.
 	 *
 	 * @return void
-	 * @throws EligibilityServiceException
+	 * @throws EligibilityProviderException
 	 */
 	public function testRetrieveEligibilityApiReturnsValidResponse() {
 		$eligibility     = $this->createMock( Eligibility::class );
@@ -70,6 +71,9 @@ class EligibilityProviderTest extends TestCase {
 
 	}
 
+	/**
+	 * @throws EligibilityProviderException
+	 */
 	public function testGetEligibilityListCallApiInRetrieve() {
 		$eligibility     = $this->createMock( Eligibility::class );
 		$eligibilityList = new EligibilityList();
@@ -81,6 +85,9 @@ class EligibilityProviderTest extends TestCase {
 		$this->assertEquals( 1, $eligibilityListResult->count() );
 	}
 
+	/**
+	 * @throws EligibilityProviderException
+	 */
 	public function testGetEligibilityListDoesNotCallApiIfAlreadyCalled() {
 		$eligibility     = $this->createMock( Eligibility::class );
 		$eligibilityList = new EligibilityList();

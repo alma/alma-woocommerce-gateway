@@ -5,8 +5,8 @@ namespace Alma\Gateway\Infrastructure\Controller;
 use Alma\Gateway\Application\Exception\Service\GatewayServiceException;
 use Alma\Gateway\Application\Service\BusinessEventsService;
 use Alma\Gateway\Application\Service\ConfigService;
-use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Exception\Controller\GatewayControllerException;
+use Alma\Gateway\Infrastructure\Exception\Service\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Helper\BackendHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\EventHelper;
@@ -31,11 +31,11 @@ class GatewayController {
 		BusinessEventsService $businessEventsService,
 		GatewayRepository $gatewayRepository
 	) {
-		$this->gatewayService    = $gatewayService;
-		$this->assetsService     = $assetsService;
-		$this->configService     = $configService;
+		$this->gatewayService        = $gatewayService;
+		$this->assetsService         = $assetsService;
+		$this->configService         = $configService;
 		$this->businessEventsService = $businessEventsService;
-		$this->gatewayRepository = $gatewayRepository;
+		$this->gatewayRepository     = $gatewayRepository;
 	}
 
 	/**
@@ -62,7 +62,7 @@ class GatewayController {
 		try {
 			$this->gatewayService->runGatewayBlocks();
 		} catch ( GatewayServiceException $e ) {
-			throw new GatewayControllerException();
+			throw new GatewayControllerException( 'Can not run Gateways', 0, $e );
 		}
 	}
 
@@ -73,7 +73,7 @@ class GatewayController {
 	public function configure() {
 		if ( ContextHelper::isAdmin() ) {
 			// Define default value for the Gateway
-			$this->configService->createSetting('general_3_0_0_enabled', true);
+			$this->configService->createSetting( 'general_3_0_0_enabled', true );
 			if ( ContextHelper::isGatewaySettingsPage() ) {
 				BackendHelper::loadBackendGateway();
 			}
@@ -102,7 +102,7 @@ class GatewayController {
 				$this->assetsService->registerClassicCheckoutAssets();
 				$this->assetsService->displayClassicCheckoutAssets();
 			} catch ( AssetsServiceException $e ) {
-				throw new GatewayControllerException();
+				throw new GatewayControllerException( 'Can not load Gateway', 0, $e );
 			}
 
 			FrontendHelper::loadFrontendGateways( $this->gatewayRepository->findOrderedAlmaGateways() );

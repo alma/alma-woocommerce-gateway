@@ -6,7 +6,7 @@ use Alma\Gateway\Plugin;
 
 class EligibilityProviderFactory {
 
-	public function __invoke() {
+	public function __invoke(): EligibilityProvider {
 		/** @var EligibilityProvider $eligibilityProvider */
 		$eligibilityProvider = Plugin::get_container()->get( EligibilityProvider::class );
 

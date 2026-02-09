@@ -2,7 +2,7 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
-use Alma\Gateway\Infrastructure\Exception\CmsException;
+use Alma\Gateway\Infrastructure\Exception\Helper\HelperException;
 use Alma\Plugin\Infrastructure\Helper\SecurityHelperInterface;
 
 class SecurityHelper implements SecurityHelperInterface {
@@ -12,14 +12,14 @@ class SecurityHelper implements SecurityHelperInterface {
 	 *
 	 * @return string The salt.
 	 *
-	 * @throws CmsException If the NONCE_SALT constant is not defined.
+	 * @throws HelperException If the NONCE_SALT constant is not defined.
 	 */
 	public static function getKeySalt(): string {
 		if ( defined( 'NONCE_SALT' ) ) {
 			return NONCE_SALT;
 		}
 
-		throw new CmsException( 'The constant NONCE_SALT must to be defined in wp-config.php' );
+		throw new HelperException( 'The constant NONCE_SALT must to be defined in wp-config.php' );
 	}
 
 	/**

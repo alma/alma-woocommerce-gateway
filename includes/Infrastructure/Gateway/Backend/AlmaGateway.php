@@ -7,9 +7,6 @@ use Alma\Gateway\Application\Exception\Service\GatewayConfigurationFormValidator
 use Alma\Gateway\Application\Helper\EncryptorHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\GatewayConfigurationFormValidatorService;
-use Alma\Gateway\Infrastructure\Exception\Gateway\AbstractGatewayException;
-use Alma\Gateway\Infrastructure\Exception\Gateway\Backend\AlmaGatewayException;
-use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Mapper\ConfigFormMapper;
 use Alma\Gateway\Plugin;
 
@@ -24,7 +21,6 @@ class AlmaGateway extends AbstractBackendGateway {
 
 	/**
 	 * Gateway constructor.
-	 * @throws AlmaGatewayException
 	 */
 	public function __construct() {
 		$this->method_title       = __(
@@ -69,12 +65,8 @@ class AlmaGateway extends AbstractBackendGateway {
 
 	/**
 	 * Initialize form fields.
-	 * @throws AlmaGatewayException
 	 */
 	public function init_form_fields() {
-
-		/** @var ConfigService $config_service */
-		$config_service = Plugin::get_container()->get( ConfigService::class );
 
 		// Initialize minimum form fields
 		$this->form_fields = array_merge(
@@ -84,18 +76,14 @@ class AlmaGateway extends AbstractBackendGateway {
 
 		// If the plugin is configured, add the gateway and fee plan fields
 		if ( Plugin::get_instance()->is_configured( true ) ) {
-			try {
-				$this->form_fields = array_merge(
-					$this->form_fields,
-					$this->display_fieldset(),
-					$this->fee_plan_fieldset(),
-					$this->customize_payment_buttons_text_fieldset(),
-					$this->widget_fieldset(),
-					$this->excluded_categories_fieldset(),
-				);
-			} catch ( FeePlanRepositoryException | AbstractGatewayException $e ) {
-				throw new AlmaGatewayException( 'Can\'t initialize Alma Gateway', 0, $e );
-			}
+			$this->form_fields = array_merge(
+				$this->form_fields,
+				$this->display_fieldset(),
+				$this->fee_plan_fieldset(),
+				$this->customize_payment_buttons_text_fieldset(),
+				$this->widget_fieldset(),
+				$this->excluded_categories_fieldset(),
+			);
 		}
 
 		$this->form_fields = array_merge(
@@ -159,6 +147,12 @@ class AlmaGateway extends AbstractBackendGateway {
 		} catch ( GatewayConfigurationFormValidatorServiceException $e ) {
 			// If an error occurs during validation, we display a generic error message
 			// and return the previous settings to avoid losing data.
+			$this->logger_service->debug(
+				'can not validate gateway configuration',
+				array(
+					'exception' => $e,
+				)
+			);
 			$this->errors = array(
 				__(
 					'An error occurred while validating the configuration. Please try again.',

@@ -3,11 +3,10 @@
 namespace Alma\Gateway\Infrastructure\Controller;
 
 use Alma\Gateway\Application\Service\PluginService;
-use Alma\Gateway\Infrastructure\Exception\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Exception\Controller\AdminControllerException;
+use Alma\Gateway\Infrastructure\Exception\Service\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Helper\BackendHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
-use Alma\Gateway\Infrastructure\Helper\NotificationHelper;
 use Alma\Gateway\Infrastructure\Service\AssetsService;
 
 class AdminController {
@@ -45,7 +44,7 @@ class AdminController {
 			$this->assetsService->registerWidgetAssets();
 			$this->assetsService->registerWidgetBlockEditorAssets();
 		} catch ( AssetsServiceException $e ) {
-			throw new AdminControllerException( $e->getMessage() );
+			throw new AdminControllerException( 'Can not register Admin assets', 0, $e );
 		}
 	}
 

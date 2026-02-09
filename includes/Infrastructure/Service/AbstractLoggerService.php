@@ -24,9 +24,20 @@ abstract class AbstractLoggerService implements LoggerInterface {
 		$this->source     = $source;
 	}
 
+	/**
+	 * Logs with an arbitrary level.
+	 *
+	 * @param string $level One of the PSR-3 log levels.
+	 * @param string $message The log message, which may contain placeholders in the form {placeholder}.
+	 * @param array  $context An array of context values to replace placeholders in the message. The keys should correspond to the placeholder names without the curly braces.
+	 *
+	 * @return void
+	 * @throws InvalidArgumentException
+	 *
+	 */
 	public function log( $level, $message, array $context = array() ): void {
 		if ( ! in_array( $level, $this->get_psr_levels(), true ) ) {
-			throw new InvalidArgumentException( "Invalid log level: {$level}" );
+			throw new InvalidArgumentException( "Invalid log level: $level" );
 		}
 
 		$message = $this->interpolate( (string) $message, $context );

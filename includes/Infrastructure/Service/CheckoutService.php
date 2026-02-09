@@ -6,8 +6,8 @@ use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Block\Gateway\AbstractGatewayBlock;
-use Alma\Gateway\Infrastructure\Exception\CheckoutServiceException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
+use Alma\Gateway\Infrastructure\Exception\Service\CheckoutServiceException;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\AbstractFrontendGateway;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\SecurityHelper;
@@ -72,7 +72,7 @@ class CheckoutService {
 			$feePlanListAdapter = $this->feePlanRepository->getAllWithEligibility( ContextHelper::getCart()->getCartTotal(),
 				true )->filterEnabled();
 		} catch ( FeePlanRepositoryException $e ) {
-			throw new CheckoutServiceException( $e->getMessage(), 0, $e );
+			throw new CheckoutServiceException( 'Can not get Checkout params', 0, $e );
 		}
 
 
