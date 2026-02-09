@@ -88,6 +88,24 @@ class PaymentProviderTest extends TestCase {
 		$this->assertSame( $paymentMock, $payment );
 	}
 
+	public function testAddOrderStatusByMerchantOrderReferenceFailWithoutException(): void {
+		$paymentId              = 'payment_123';
+		$merchantOrderReference = 'merchant_order_456';
+		$status                 = 'paid';
+		$isShipped              = true;
+
+		$this->paymentEndpointMock->expects( $this->once() )
+		                          ->method( 'addOrderStatusByMerchantOrderReference' )
+		                          ->with( $paymentId, $merchantOrderReference, $status, $isShipped )
+		                          ->willThrowException( new PaymentEndpointException( 'API error' ) );
+
+		// We expect no exception to be thrown and the method to return null
+		$this->assertNull(
+			$this->paymentProvider->addOrderStatusByMerchantOrderReference( $paymentId, $merchantOrderReference,
+				$status, $isShipped )
+		);
+	}
+
 	protected function setUp(): void {
 		$this->paymentEndpointMock = $this->createMock( PaymentEndpoint::class );
 		$this->loggerServiceMock   = $this->createMock( LoggerService::class );

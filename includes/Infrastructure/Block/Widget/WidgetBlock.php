@@ -13,7 +13,6 @@ namespace Alma\Gateway\Infrastructure\Block\Widget;
 
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Service\ConfigService;
-use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Exception\Block\WidgetBlockException;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
@@ -36,9 +35,6 @@ class WidgetBlock implements IntegrationInterface {
 	/** @var ConfigService The settings. */
 	protected ConfigService $config_service;
 
-	/** @var CartAdapter The Cart. */
-	private CartAdapter $cart_adapter;
-
 	/** @var ContextHelper */
 	private ContextHelper $context_helper;
 
@@ -53,14 +49,12 @@ class WidgetBlock implements IntegrationInterface {
 
 	public function __construct(
 		ConfigService $config_service,
-		CartAdapter $cart_adapter,
 		FeePlanRepository $fee_plan_repository,
 		GatewayRepository $gateway_repository,
 		ContextHelper $context_helper,
 		ExcludedProductsHelper $excluded_products_helper
 	) {
 		$this->config_service           = $config_service;
-		$this->cart_adapter             = $cart_adapter;
 		$this->fee_plan_repository      = $fee_plan_repository;
 		$this->gateway_repository       = $gateway_repository;
 		$this->context_helper           = $context_helper;
@@ -93,9 +87,12 @@ class WidgetBlock implements IntegrationInterface {
 	 */
 	public function get_script_data(): array {
 
-		$excludedCategories     = $this->config_service->getExcludedCategories();
+		$excludedCategories = $this->config_service->getExcludedCategories();
+
+		$cart_adapter = ContextHelper::getCart();
+
 		$canDisplayWidgetOnCart = $this->excluded_products_helper->canDisplayOnCartPage(
-			$this->cart_adapter,
+			$cart_adapter,
 			$excludedCategories
 		);
 		try {
@@ -108,10 +105,10 @@ class WidgetBlock implements IntegrationInterface {
 			'merchant_id'                 => $this->config_service->getMerchantId(),
 			'environment'                 => strtoupper( $this->config_service->getEnvironment()->getMode() ),
 			'plans'                       => ( new FeePlanListMapper() )->buildFeePlanListDto( $feePlanList )->toArray()['plans'],
-			'amount'                      => $this->cart_adapter->getCartTotal(),
+			'amount'                      => $cart_adapter->getCartTotal(),
 			'locale'                      => $this->context_helper->getLanguage(),
 			'can_be_displayed'            => count( $feePlanList ) > 0 && $this->config_service->getWidgetCartEnabled(),
-			'is_excluded_categories'      => $canDisplayWidgetOnCart,
+			'is_excluded_categories'      => ! $canDisplayWidgetOnCart,
 			'excluded_categories_message' => $this->config_service->getExcludedCategoriesMessage(),
 			'url_alma_logo'               => esc_url( AssetsHelper::getImage( 'images/alma_logo.svg' ) ),
 		);

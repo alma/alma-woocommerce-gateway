@@ -2,6 +2,7 @@
 
 namespace Alma\Gateway;
 
+use Alma\Gateway\Application\Exception\Helper\RequirementsHelperException;
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Controller\AdminController;
@@ -154,6 +155,8 @@ final class Plugin extends AbstractPlugin {
 
 	/**
 	 * Used for regular plugin work.
+	 *
+	 * @throws GatewayControllerException
 	 */
 	public function plugin_setup(): void {
 
@@ -177,6 +180,10 @@ final class Plugin extends AbstractPlugin {
 			$adminController->display();
 
 			if ( $this->is_configured() ) {
+
+				/** @var OrderStatusService $orderStatusService */
+				$orderStatusService = self::get_container()->get( OrderStatusService::class );
+				$orderStatusService->initSendOrderStatusHook();
 
 				$this->get_container()->setApiConfig();
 				$gatewayController->prepare();
