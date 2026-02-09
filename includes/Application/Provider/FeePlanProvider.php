@@ -7,8 +7,11 @@ use Alma\Client\Application\Exception\Endpoint\MerchantEndpointException;
 use Alma\Client\Domain\Entity\FeePlan;
 use Alma\Client\Domain\Entity\FeePlanList;
 use Alma\Client\Domain\ValueObject\PaymentMethod;
+use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Alma\Plugin\Application\Port\FeePlanProviderInterface;
 use Alma\Plugin\Infrastructure\Adapter\FeePlanListInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 class FeePlanProvider implements FeePlanProviderInterface, ProviderInterface {
 
@@ -18,9 +21,18 @@ class FeePlanProvider implements FeePlanProviderInterface, ProviderInterface {
 	/** @var FeePlanList */
 	private FeePlanList $feePlanList;
 
+	/** @var LoggerInterface */
+	private LoggerInterface $loggerService;
 
-	public function __construct( MerchantEndpoint $merchantEndpoint ) {
+	/**
+	 * FeePlanProvider constructor.
+	 *
+	 * @param MerchantEndpoint   $merchantEndpoint
+	 * @param LoggerService|null $loggerService
+	 */
+	public function __construct( MerchantEndpoint $merchantEndpoint, LoggerService $loggerService = null ) {
 		$this->merchantEndpoint = $merchantEndpoint;
+		$this->loggerService    = $loggerService ?? new NullLogger();
 	}
 
 	/**
@@ -53,6 +65,10 @@ class FeePlanProvider implements FeePlanProviderInterface, ProviderInterface {
 			                              ) );
 
 		} catch ( MerchantEndpointException $e ) {
+			$this->loggerService->error( 'Failed to retrieve fee plan list from merchant endpoint', [
+				'exception' => $e,
+			] );
+
 			return new FeePlanList();
 		}
 	}

@@ -151,7 +151,7 @@ class PayLaterGateway extends AbstractFrontendGateway implements FrontendGateway
 				);
 			}
 		} catch ( TemplateHelperException $e ) {
-			throw new GatewayException( 'Can not get Templates' );
+			throw new GatewayException( 'Can not display Gateway form', 0, $e );
 		}
 
 		// @todo proxy that!

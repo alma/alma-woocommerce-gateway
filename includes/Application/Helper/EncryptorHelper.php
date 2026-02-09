@@ -65,7 +65,7 @@ class EncryptorHelper {
 		try {
 			$key_salt = SecurityHelper::getKeySalt();
 		} catch ( HelperException $e ) {
-			throw new EncryptorHelperException( 'The constant NONCE_SALT is not defined' );
+			throw new EncryptorHelperException( 'The constant NONCE_SALT is not defined', 0, $e );
 		}
 
 		$methods = openssl_get_cipher_methods();

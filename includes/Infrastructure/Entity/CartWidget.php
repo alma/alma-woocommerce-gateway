@@ -51,13 +51,13 @@ class CartWidget extends AbstractWidget {
 		try {
 			$this->assetsService->registerWidgetBlockAssets();
 		} catch ( AssetsServiceException $e ) {
-			throw new CartWidgetException( $e->getMessage() );
+			throw new CartWidgetException( 'Can not prepare assets', 0, $e );
 		}
 		if ( ContextHelper::isAdmin() ) {
 			try {
 				$this->assetsService->registerWidgetBlockEditorAssets();
 			} catch ( AssetsServiceException $e ) {
-				throw new CartWidgetException( $e->getMessage() );
+				throw new CartWidgetException( 'Can not prepare assets', 0, $e );
 			}
 		}
 	}

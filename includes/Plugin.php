@@ -7,10 +7,7 @@ use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Controller\AdminController;
 use Alma\Gateway\Infrastructure\Controller\GatewayController;
 use Alma\Gateway\Infrastructure\Controller\ShopController;
-use Alma\Gateway\Infrastructure\Exception\Controller\AdminControllerException;
-use Alma\Gateway\Infrastructure\Exception\Controller\GatewayControllerException;
 use Alma\Gateway\Infrastructure\Exception\PluginException;
-use Alma\Gateway\Infrastructure\Helper\AdminNotificationHelper;
 use Alma\Gateway\Infrastructure\Repository\BusinessEventsRepository;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
@@ -90,19 +87,15 @@ final class Plugin extends AbstractPlugin {
 	public function plugin_warmup(): void {
 
 		try {
-			try {
-				if ( ! $this->check_prerequisites() ) {
-					return;
-				}
-			} catch ( PluginException $e ) {
-				AdminNotificationHelper::notifyError( $e->getMessage() );
+			if ( ! $this->check_prerequisites() || self::is_failsafe_mode() ) {
+				return;
 			}
 
 			// Configure Languages
 			L10nHelper::load_language( $this->get_plugin_path() );
 
 			// Check mandatory prerequisites
-			if ( ! $this->are_prerequisites_ok() ) {
+			if ( ! self::are_prerequisites_ok() ) {
 				return;
 			}
 
@@ -133,7 +126,7 @@ final class Plugin extends AbstractPlugin {
 			$business_event = self::get_container()->get( BusinessEventsRepository::class, $suffix );
 			$business_event->createTableIfNotExists();
 		} catch ( Exception $e ) {
-			AdminNotificationHelper::notifyError( __( 'The Alma plugin does not appear to be compatible with your version of WooCommerce. Please contact support for more information.' ) );
+			self::enable_failsafe_mode( __( 'The Alma plugin does not appear to be compatible with your version of WooCommerce. Please contact support for more information.' ) );
 		}
 	}
 
@@ -145,7 +138,7 @@ final class Plugin extends AbstractPlugin {
 	public function plugin_migration(): void {
 
 		try {
-			if ( ! $this->are_prerequisites_ok() ) {
+			if ( ! self::are_prerequisites_ok() || self::is_failsafe_mode() ) {
 				return;
 			}
 
@@ -155,7 +148,7 @@ final class Plugin extends AbstractPlugin {
 				$this->set_is_configured( true );
 			}
 		} catch ( Exception $e ) {
-			AdminNotificationHelper::notifyError( __( 'The Alma plugin does not appear to be compatible with your version of WooCommerce. Please contact support for more information.' ) );
+			self::enable_failsafe_mode( __( 'The Alma plugin does not appear to be compatible with your version of WooCommerce. Please contact support for more information.' ) );
 		}
 	}
 
@@ -165,7 +158,7 @@ final class Plugin extends AbstractPlugin {
 	public function plugin_setup(): void {
 
 		try {
-			if ( ! $this->are_prerequisites_ok() ) {
+			if ( ! self::are_prerequisites_ok() || self::is_failsafe_mode() ) {
 				return;
 			}
 
@@ -180,11 +173,7 @@ final class Plugin extends AbstractPlugin {
 			$shopController = self::get_container()->get( ShopController::class );
 
 			// Run Admin Controller only when WordPress admin is ready.
-			try {
-				$adminController->prepare();
-			} catch ( AdminControllerException $e ) {
-				// @todo Add a notice to inform the user that the admin controller could not be loaded and that the plugin configuration page is not available.
-			}
+			$adminController->prepare();
 			$adminController->display();
 
 			if ( $this->is_configured() ) {
@@ -193,11 +182,7 @@ final class Plugin extends AbstractPlugin {
 				$gatewayController->prepare();
 
 				// Plugin fully configured, let's run the services
-				try {
-					$gatewayController->run();
-				} catch ( GatewayControllerException $e ) {
-					// @todo Add a notice to inform the user that the admin controller could not be loaded and that the plugin configuration page is not available.
-				}
+				$gatewayController->run();
 
 				if ( $this->is_enabled( true ) ) {
 
@@ -217,7 +202,7 @@ final class Plugin extends AbstractPlugin {
 				$gatewayController->configure();
 			}
 		} catch ( Exception $e ) {
-			AdminNotificationHelper::notifyError( __( 'The Alma plugin does not appear to be compatible with your version of WooCommerce. Please contact support for more information.' ) );
+			self::enable_failsafe_mode( __( 'The Alma plugin does not appear to be compatible with your version of WooCommerce. Please contact support for more information.' ) );
 		}
 	}
 

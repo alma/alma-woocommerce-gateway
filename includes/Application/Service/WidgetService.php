@@ -81,7 +81,7 @@ class WidgetService {
 			$feePlanListAdapter = $this->feePlanRepository->getAll()->filterEnabled()->orderBy( $this->gatewayRepository->findOrderedAlmaGateways() );
 
 		} catch ( FeePlanRepositoryException $e ) {
-			throw new WidgetServiceException( $e->getMessage() );
+			throw new WidgetServiceException( 'Can not get Fee Plans', 0, $e );
 		}
 		$excludedCategories = $this->configService->getExcludedCategories();
 		$language           = ContextHelper::getLanguage();
@@ -131,7 +131,7 @@ class WidgetService {
 		try {
 			$this->assetsService->registerWidgetAssets( $widget->getConfiguration() );
 		} catch ( AssetsServiceException $e ) {
-			throw new WidgetServiceException( $e->getMessage() );
+			throw new WidgetServiceException( 'Can not load assets', 0, $e );
 		}
 
 		return $widget;
@@ -149,7 +149,7 @@ class WidgetService {
 		try {
 			$product = $this->productRepository->getById( ContextHelper::getCurrentProductId() );
 		} catch ( ProductRepositoryException $e ) {
-			throw new WidgetServiceException( $e->getMessage() );
+			throw new WidgetServiceException( 'Can not find Product', 0, $e );
 		}
 
 		// Display widget if widget is enabled and there are no excluded categories.
@@ -179,7 +179,7 @@ class WidgetService {
 		try {
 			$this->assetsService->registerWidgetAssets( $widget->getConfiguration() );
 		} catch ( AssetsServiceException $e ) {
-			throw new WidgetServiceException( $e->getMessage() );
+			throw new WidgetServiceException( 'Can not register Widget', 0, $e );
 		}
 
 		return $widget;

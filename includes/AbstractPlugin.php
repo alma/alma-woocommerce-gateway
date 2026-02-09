@@ -6,6 +6,7 @@ use Alma\Gateway\Application\Exception\Helper\RequirementsHelperException;
 use Alma\Gateway\Application\Helper\RequirementsHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Exception\PluginException;
+use Alma\Gateway\Infrastructure\Helper\AdminNotificationHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -13,6 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class AbstractPlugin {
+
+	/** @var bool $failsafe_mode */
+	protected static $failsafe_mode = false;
 
 	/** @var bool The plugin prerequisites status. */
 	private static bool $plugin_prerequisites = false;
@@ -41,6 +45,25 @@ class AbstractPlugin {
 	}
 
 	/**
+	 * Return true if the plugin is in failsafe mode.
+	 *
+	 * @return bool
+	 */
+	public static function is_failsafe_mode(): bool {
+		return self::$failsafe_mode;
+	}
+
+	/**
+	 * Enable the failsafe mode and notify the admin.
+	 *
+	 * @param string $message The message to display in the notification.
+	 */
+	protected static function enable_failsafe_mode( string $message ): void {
+		self::$failsafe_mode = true;
+		AdminNotificationHelper::notifyError( $message );
+	}
+
+	/**
 	 * Check if the plugin can load. Is woocommerce installed? It's mandatory.
 	 * We don't use Dice because it's not loaded yet.
 	 *
@@ -63,7 +86,7 @@ class AbstractPlugin {
 				return false;
 			}
 		} catch ( RequirementsHelperException $e ) {
-			throw new PluginException();
+			throw new PluginException( 'Plugin requirements are not met', 0, $e );
 		}
 
 		self::$plugin_prerequisites = true;

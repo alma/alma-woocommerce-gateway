@@ -62,7 +62,7 @@ class GatewayController {
 		try {
 			$this->gatewayService->runGatewayBlocks();
 		} catch ( GatewayServiceException $e ) {
-			throw new GatewayControllerException();
+			throw new GatewayControllerException( 'Can not run Gateways', 0, $e );
 		}
 	}
 
@@ -102,7 +102,7 @@ class GatewayController {
 				$this->assetsService->registerClassicCheckoutAssets();
 				$this->assetsService->displayClassicCheckoutAssets();
 			} catch ( AssetsServiceException $e ) {
-				throw new GatewayControllerException();
+				throw new GatewayControllerException( 'Can not load Gateway', 0, $e );
 			}
 
 			FrontendHelper::loadFrontendGateways( $this->gatewayRepository->findOrderedAlmaGateways() );

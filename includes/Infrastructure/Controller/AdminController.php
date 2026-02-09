@@ -44,7 +44,7 @@ class AdminController {
 			$this->assetsService->registerWidgetAssets();
 			$this->assetsService->registerWidgetBlockEditorAssets();
 		} catch ( AssetsServiceException $e ) {
-			throw new AdminControllerException( $e->getMessage() );
+			throw new AdminControllerException( 'Can not register Admin assets', 0, $e );
 		}
 	}
 

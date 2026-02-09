@@ -38,7 +38,8 @@ class MerchantProvider implements MerchantProviderInterface, ProviderInterface {
 		try {
 			$this->merchantEndpoint->sendCartInitiatedBusinessEvent( $cartEventData );
 		} catch ( MerchantEndpointException $e ) {
-			throw new MerchantProviderException( 'Error sending cart initiated business event: ' . $e->getMessage() );
+			throw new MerchantProviderException( 'Error sending cart initiated business event', 0,
+				$e );
 		}
 	}
 
@@ -52,7 +53,8 @@ class MerchantProvider implements MerchantProviderInterface, ProviderInterface {
 		try {
 			$this->merchantEndpoint->sendOrderConfirmedBusinessEvent( $orderConfirmedBusinessEvent );
 		} catch ( MerchantEndpointException $e ) {
-			throw new MerchantProviderException( 'Error sending order confirmed business event: ' . $e->getMessage() );
+			throw new MerchantProviderException( 'Error sending order confirmed business event',
+				0, $e );
 		}
 	}
 }

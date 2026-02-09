@@ -117,14 +117,14 @@ class IpnHelperTest extends TestCase {
 	 */
 	public function testValidateSignatureException( $paymentId, $apiKey, $signature ) {
 		$this->expectException( IpnHelperException::class );
-		$this->expectExceptionMessage( '[ALMA] Missing required parameters' );
+		$this->expectExceptionMessage( 'Can not validate IPN Signature. Missing required parameters' );
 		$this->ipnHelper->validateIpnSignature( $paymentId, $apiKey, $signature );
 
 	}
 
 	public function testValidateSignatureInvalid() {
 		$this->expectException( IpnHelperException::class );
-		$this->expectExceptionMessage( '[ALMA] Invalid signature' );
+		$this->expectExceptionMessage( 'Can not validate IPN Signature. Invalid signature' );
 		$this->ipnHelper->validateIpnSignature( 'validPaymentId', 'validApiKey', 'invalidSignature' );
 	}
 

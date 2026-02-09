@@ -68,7 +68,7 @@ class GatewayService {
 		try {
 			$order = $orderRepository->getById( $orderId );
 		} catch ( OrderRepositoryException $e ) {
-			throw new GatewayServiceException( 'Order not found' );
+			throw new GatewayServiceException( 'Order not found', 0, $e );
 		}
 
 		if ( 'refunded' === $newStatus || 'cancelled' === $newStatus ) {
@@ -98,7 +98,7 @@ class GatewayService {
 		try {
 			$this->businessEventsService->onOrderConfirmed( $oldStatus, $newStatus, $order );
 		} catch ( BusinessEventsServiceException $e ) {
-			throw new GatewayServiceException( 'Order confirmed does not sent:' . $e->getMessage() );
+			throw new GatewayServiceException( 'Order confirmed does not sent', 0, $e );
 		}
 	}
 
@@ -158,7 +158,7 @@ class GatewayService {
 			$params['checkout_url'] = ContextHelper::getWebhookUrl( 'alma_checkout_data' );
 			$this->assetsService->registerGatewayBlockAssets( $params );
 		} catch ( CheckoutServiceException|AssetsServiceException $e ) {
-			throw new GatewayServiceException( 'Unable to load block assets', 0, $e );
+			throw new GatewayServiceException( 'Unable to run Gateway Blocks', 0, $e );
 		}
 	}
 }

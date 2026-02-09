@@ -55,9 +55,11 @@ class BusinessEventsService {
 				$cartInitiated = new CartInitiatedBusinessEventDto( $almaCartId );
 				$this->merchantProvider->sendCartInitiatedBusinessEvent( $cartInitiated );
 			} catch ( ParametersException $e ) {
-				throw new BusinessEventsServiceException( 'Failed to create CartInitiatedBusinessEventDto: ' . $e->getMessage() );
+				throw new BusinessEventsServiceException( 'Failed to create CartInitiatedBusinessEventDto',
+					0, $e );
 			} catch ( MerchantProviderException $e ) {
-				throw new BusinessEventsServiceException( 'Error sending cart initiated business event: ' . $e->getMessage() );
+				throw new BusinessEventsServiceException( 'Error sending cart initiated business event',
+					0, $e );
 			}
 		}
 	}
@@ -99,9 +101,11 @@ class BusinessEventsService {
 				);
 				$this->merchantProvider->sendOrderConfirmedBusinessEvent( $orderConfirmedBusinessEvent );
 			} catch ( ParametersException $e ) {
-				throw new BusinessEventsServiceException( 'Failed to create OrderConfirmedBusinessEventDto: ' . $e->getMessage() );
+				throw new BusinessEventsServiceException( 'Failed to create OrderConfirmedBusinessEventDto',
+					0, $e );
 			} catch ( MerchantProviderException $e ) {
-				throw new BusinessEventsServiceException( 'Error sending order confirmed business event: ' . $e->getMessage() );
+				throw new BusinessEventsServiceException( 'Error sending order confirmed business event',
+					0, $e );
 			}
 		}
 	}

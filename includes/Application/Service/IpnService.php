@@ -9,12 +9,14 @@ use Alma\Gateway\Application\Exception\Service\IpnServiceException;
 use Alma\Gateway\Application\Helper\IpnHelper;
 use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Infrastructure\Exception\Repository\OrderRepositoryException;
+use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\ParameterHelper;
 use Alma\Gateway\Infrastructure\Helper\ShopNotificationHelper;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Plugin;
-use Alma\Plugin\Infrastructure\Adapter\CartAdapterInterface;
 use Alma\Plugin\Infrastructure\Helper\NavigationHelperInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 class IpnService {
 	public const IPN_CALLBACK = 'alma_ipn_callback';
@@ -29,29 +31,29 @@ class IpnService {
 	/** @var PaymentProvider */
 	private PaymentProvider $paymentService;
 
-	/** @var CartAdapterInterface */
-	private CartAdapterInterface $cartAdapter;
-
 	/** @var NavigationHelperInterface */
 	private NavigationHelperInterface $navigationHelper;
 
 	/** @var FraudService */
 	private FraudService $fraudService;
 
+	/** @var LoggerInterface */
+	private LoggerInterface $loggerService;
+
 	public function __construct(
 		ConfigService $configService,
 		FraudService $fraudService,
 		PaymentProvider $paymentService,
-		CartAdapterInterface $cartAdapter,
 		NavigationHelperInterface $navigationHelper,
-		IpnHelper $ipnHelper
+		IpnHelper $ipnHelper,
+		$loggerService = null
 	) {
 		$this->configService    = $configService;
 		$this->fraudService     = $fraudService;
 		$this->paymentService   = $paymentService;
-		$this->cartAdapter      = $cartAdapter;
 		$this->navigationHelper = $navigationHelper;
 		$this->ipnHelper        = $ipnHelper;
+		$this->loggerService    = $loggerService ?? new NullLogger();
 	}
 
 	/**
@@ -84,6 +86,11 @@ class IpnService {
 					$paymentId
 				);
 			} catch ( OrderRepositoryException $e ) {
+				$this->loggerService->debug( 'Payment validation error: order not found',
+					[
+						'payment_id' => $paymentId,
+						'error'      => $e->getMessage(),
+					] );
 				ShopNotificationHelper::notifyError(
 					__( 'Payment validation error<br>Please try again or contact us if the problem persists.',
 						'alma-gateway-for-woocommerce' ),
@@ -95,7 +102,7 @@ class IpnService {
 					$this->fraudService->manageMismatch( $order, $payment );
 					$this->fraudService->managePotentialFraud( $order, $payment );
 				} catch ( FraudServiceException $e ) {
-					throw new IpnServiceException( $e );
+					throw new IpnServiceException( 'Can not process potential fraud', 0, $e );
 				}
 			}
 
@@ -105,11 +112,19 @@ class IpnService {
 				exit();
 			}
 
-			$this->cartAdapter->emptyCart();
+			$cartAdapter = ContextHelper::getCart();
+			$cartAdapter->emptyCart();
 			ShopNotificationHelper::notifySuccess( __( 'Payment validation done',
 				'alma-gateway-for-woocommerce' ) );
 
 		} catch ( PaymentProviderException $e ) {
+			$this->loggerService->debug(
+				'Payment validation error: can not fetch payment',
+				[
+					'payment_id' => $paymentId,
+					'error'      => $e->getMessage(),
+				]
+			);
 			ShopNotificationHelper::notifyError(
 				__( 'Payment validation error<br>Please try again or contact us if the problem persists.',
 					'alma-gateway-for-woocommerce' ),
@@ -145,6 +160,13 @@ class IpnService {
 				$_SERVER['HTTP_X_ALMA_SIGNATURE']
 			);
 		} catch ( IpnHelperException $e ) {
+			$this->loggerService->debug(
+				'IPN callback signature validation failed',
+				[
+					'payment_id' => $paymentId,
+					'error'      => $e->getMessage(),
+				]
+			);
 			$this->ipnHelper->unauthorizedError( $e->getMessage() );
 		}
 
@@ -163,7 +185,14 @@ class IpnService {
 			);
 
 		} catch ( PaymentProviderException|OrderRepositoryException $e ) {
-			$this->ipnHelper->parameterError( 'Payment validation error: ' . $e->getMessage() );
+			$this->loggerService->debug(
+				'Payment validation error: can not fetch payment or order',
+				[
+					'payment_id' => $paymentId,
+					'error'      => $e->getMessage(),
+				]
+			);
+			$this->ipnHelper->parameterError( 'Payment validation error' );
 		}
 
 		try {
@@ -172,6 +201,14 @@ class IpnService {
 				$this->fraudService->managePotentialFraud( $order, $payment );
 			}
 		} catch ( FraudServiceException $e ) {
+			$this->loggerService->debug(
+				'Can not process potential fraud',
+				[
+					'payment_id' => $paymentId,
+					'order_id'   => $order->getId(),
+					'error'      => $e->getMessage(),
+				]
+			);
 			$this->ipnHelper->potentialFraudError( $e->getMessage() );
 		}
 

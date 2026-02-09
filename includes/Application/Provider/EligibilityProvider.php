@@ -48,7 +48,7 @@ class EligibilityProvider implements EligibilityProviderInterface, ProviderInter
 			$this->eligibilityList = $this->eligibilityEndpoint->getEligibilityList( $eligibilityDto );
 
 		} catch ( EligibilityEndpointException $e ) {
-			throw new EligibilityProviderException( 'Error retrieving eligibility: ' . $e->getMessage(), 0, $e );
+			throw new EligibilityProviderException( 'Error retrieving eligibility', 0, $e );
 		}
 	}
 }

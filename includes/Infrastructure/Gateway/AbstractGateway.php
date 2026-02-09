@@ -28,6 +28,7 @@ use WC_Payment_Gateway;
  * Should extend WC_Payment_Gateway
  */
 abstract class AbstractGateway extends WC_Payment_Gateway {
+
 	const NAME_ALMA_GATEWAYS = 'alma_%s_gateway';
 
 	protected const PAYMENT_METHOD = 'abstract';
@@ -36,23 +37,26 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 
 	protected bool $is_eligible = false;
 
-	/** @var object|LoggerInterface */
-	protected $logger;
+	/** @var LoggerInterface */
+	protected $logger_service;
 
 	/** @var FeePlanRepository|object $fee_plan_repository */
 	private FeePlanRepository $fee_plan_repository;
 
 	/**
 	 * Gateway constructor.
+	 * This Gateway is used by WooCommerce, but no parameter is injected by WooCommerce,
+	 * so we need to get all the dependencies by ourselves.
+	 *
 	 * All parameters are injected here are used for unit test
 	 * Let the fallback to the container for production use
 	 *
 	 * @param FeePlanRepository|null $fee_plan_repository
-	 * @param LoggerInterface|null   $logger
+	 * @param LoggerInterface|null   $logger_service
 	 */
-	public function __construct( ?FeePlanRepository $fee_plan_repository = null, LoggerInterface $logger = null ) {
+	public function __construct( ?FeePlanRepository $fee_plan_repository = null, LoggerInterface $logger_service = null ) {
 		$this->fee_plan_repository = $fee_plan_repository ?? Plugin::get_container()->get( FeePlanRepository::class );
-		$this->logger              = $logger ?? Plugin::get_container()->get( LoggerService::class );
+		$this->logger_service      = $logger_service ?? Plugin::get_container()->get( LoggerService::class );
 
 		$this->id                 = sprintf( 'alma_%s_gateway', $this->get_payment_method() );
 		$this->method_description = __(
@@ -84,7 +88,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		try {
 			return $fee_plan_repository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) );
 		} catch ( FeePlanRepositoryException $e ) {
-			throw new GatewayException();
+			throw new GatewayException( 'Can not get Fee Plans', 0, $e );
 		}
 	}
 
@@ -113,6 +117,11 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 			$enabledFeePlans = $this->fee_plan_repository->getAll()->filterFeePlanList( array( $this->get_payment_method() ) )->filterEnabled();
 		} catch ( FeePlanRepositoryException $e ) {
 			$enabledFeePlans = new FeePlanListAdapter( new FeePlanList() );
+
+			$this->logger_service->debug(
+				'Error while fetching Fee Plans for gateway ' . $this->get_id(),
+				array( 'exception' => $e )
+			);
 		}
 
 		return count( $enabledFeePlans ) > 0;
@@ -142,13 +151,13 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		try {
 			$order = $order_repository->getById( $order_id );
 		} catch ( OrderRepositoryException $e ) {
-			throw new GatewayException( 'Can not find Order' );
+			throw new GatewayException( 'Can not process payment', 0, $e );
 		}
 		$fields = $this->process_payment_fields( $order );
 		try {
 			$fee_plan_adapter = $fee_plan_repository->getByPlanKey( $fields['alma_plan_key'] );
 		} catch ( FeePlanRepositoryException $e ) {
-			throw new GatewayException( 'Can not find Fee Plan' );
+			throw new GatewayException( 'Can not process payment', 0, $e );
 		}
 		$order->addOrderNote(
 			sprintf(
@@ -166,7 +175,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 				$fee_plan_adapter
 			);
 		} catch ( PaymentServiceException $e ) {
-			throw new GatewayException( $e->getMessage() );
+			throw new GatewayException( 'Can not process payment', 0, $e );
 		}
 
 		// Update order status to pending
@@ -212,7 +221,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 		try {
 			$order = $order_repository->getById( $order_id );
 		} catch ( OrderRepositoryException $e ) {
-			throw new GatewayException();
+			throw new GatewayException( 'Can not process Refund', 0, $e );
 		}
 
 		/** @var PaymentProvider $payment_service */

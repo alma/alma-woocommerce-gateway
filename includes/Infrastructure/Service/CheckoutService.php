@@ -72,7 +72,7 @@ class CheckoutService {
 			$feePlanListAdapter = $this->feePlanRepository->getAllWithEligibility( ContextHelper::getCart()->getCartTotal(),
 				true )->filterEnabled();
 		} catch ( FeePlanRepositoryException $e ) {
-			throw new CheckoutServiceException( $e->getMessage(), 0, $e );
+			throw new CheckoutServiceException( 'Can not get Checkout params', 0, $e );
 		}
 
 

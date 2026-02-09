@@ -101,7 +101,7 @@ class WidgetBlock implements IntegrationInterface {
 		try {
 			$feePlanList = $this->fee_plan_repository->getAllWithEligibility()->filterEnabled()->orderBy( $this->gateway_repository->findOrderedAlmaGateways() );
 		} catch ( FeePlanRepositoryException $e ) {
-			throw new WidgetBlockException( $e );
+			throw new WidgetBlockException( 'Can not send data to JS', 0, $e );
 		}
 
 		return array(

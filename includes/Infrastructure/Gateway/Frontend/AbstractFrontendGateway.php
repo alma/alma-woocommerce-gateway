@@ -121,6 +121,11 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 				}
 			}
 		} catch ( FeePlanRepositoryException $e ) {
+			$this->logger_service->debug(
+				'Error while fetching Fee Plans for gateway ' . $this->get_id(),
+				array( 'exception' => $e )
+			);
+
 			return false;
 		}
 
@@ -158,6 +163,11 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 		try {
 			return $fee_plan_repository->getAllWithEligibility( ContextHelper::getCart()->getCartTotal() )->filterFeePlanList( array( $this->get_payment_method() ) )->filterEligible( ContextHelper::getCart()->getCartTotal() );
 		} catch ( FeePlanRepositoryException $e ) {
+			$this->logger_service->debug(
+				'Error while fetching Fee Plans for gateway ' . $this->get_id(),
+				array( 'exception' => $e )
+			);
+
 			return new FeePlanListAdapter( new FeePlanList() );
 		}
 	}

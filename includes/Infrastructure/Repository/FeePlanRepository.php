@@ -17,6 +17,9 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
+use Alma\Gateway\Infrastructure\Service\LoggerService;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 class FeePlanRepository {
 
@@ -31,6 +34,9 @@ class FeePlanRepository {
 	/** @var BusinessEventsService */
 	private BusinessEventsService $businessEventsService;
 
+	/** @var LoggerInterface */
+	private $loggerService;
+
 	/**
 	 * FeePlanRepository constructor.
 	 *
@@ -38,17 +44,20 @@ class FeePlanRepository {
 	 * @param BusinessEventsService      $businessEventsService
 	 * @param FeePlanProviderFactory     $feePlanProviderFactory
 	 * @param EligibilityProviderFactory $eligibilityProviderFactory
+	 * @param LoggerService|null         $loggerService
 	 */
 	public function __construct(
 		ConfigService $configService,
 		BusinessEventsService $businessEventsService,
 		FeePlanProviderFactory $feePlanProviderFactory,
-		EligibilityProviderFactory $eligibilityProviderFactory
+		EligibilityProviderFactory $eligibilityProviderFactory,
+		LoggerService $loggerService = null
 	) {
 		$this->configService              = $configService;
 		$this->businessEventsService      = $businessEventsService;
 		$this->feePlanProviderFactory     = $feePlanProviderFactory;
 		$this->eligibilityProviderFactory = $eligibilityProviderFactory;
+		$this->loggerService              = $loggerService ?? new NullLogger();
 	}
 
 	/**
@@ -149,7 +158,7 @@ class FeePlanRepository {
 			return $feePlanListAdapter;
 
 		} catch ( EligibilityProviderException $e ) {
-			throw new FeePlanRepositoryException( $e->getMessage() );
+			throw new FeePlanRepositoryException( 'Can not retrieve Fee Plans', 0, $e );
 		}
 	}
 
@@ -201,6 +210,13 @@ class FeePlanRepository {
 				$feePlanAdapter->setOverrideMinPurchaseAmount( $this->configService->getMinPurchaseAmount( $feePlanAdapter->getPlanKey() ) );
 				$feePlanAdapter->setOverrideMaxPurchaseAmount( $this->configService->getMaxPurchaseAmount( $feePlanAdapter->getPlanKey() ) );
 			} catch ( ParametersException $e ) {
+				$this->loggerService->debug(
+					'Invalid min/max purchase amount for fee plan ' . $feePlanAdapter->getPlanKey(),
+					[
+						'exception' => $e,
+						'planKey'   => $feePlanAdapter->getPlanKey(),
+					]
+				);
 				$feePlanAdapter->resetOverrideMaxPurchaseAmount();
 				$feePlanAdapter->resetOverrideMinPurchaseAmount();
 			}

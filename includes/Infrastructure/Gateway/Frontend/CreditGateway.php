@@ -135,7 +135,7 @@ class CreditGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 				);
 			}
 		} catch ( TemplateHelperException $e ) {
-			throw new GatewayException( 'Can not get Templates' );
+			throw new GatewayException( 'Can not display Gateway form', 0, $e );
 		}
 
 		wp_localize_script(

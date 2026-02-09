@@ -14,8 +14,8 @@ namespace Alma\Gateway\Infrastructure\Exception\Service;
 use Alma\Gateway\Domain\Exception\AlmaException;
 
 /**
- * LoggerServiceServiceException
+ * LoggerServiceException
  */
-class LoggerServiceServiceException extends AlmaException {
+class LoggerServiceException extends AlmaException {
 
 }

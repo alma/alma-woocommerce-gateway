@@ -43,7 +43,7 @@ class EligibilityProviderTest extends TestCase {
 	 */
 	public function testRetrieveEligibilityApiThrowsException() {
 		$this->expectException( EligibilityProviderException::class );
-		$this->expectExceptionMessage( 'Error retrieving eligibility: API error' );
+		$this->expectExceptionMessage( 'Error retrieving eligibility' );
 
 		$eligibilityDto = new EligibilityDto( 10000 );
 		$this->eligibilityEndpointMock->expects( $this->once() )->method( 'getEligibilityList' )->willThrowException( new EligibilityEndpointException( 'API error' ) );

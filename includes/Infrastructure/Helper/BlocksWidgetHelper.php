@@ -34,7 +34,7 @@ class BlocksWidgetHelper {
 		try {
 			$cartWidget->prepareAssets();
 		} catch ( CartWidgetException $e ) {
-			throw new HelperException( 'Can not prepare assets' );
+			throw new HelperException( 'Can not prepare Widget Assets', 0, $e );
 		}
 	}
 }

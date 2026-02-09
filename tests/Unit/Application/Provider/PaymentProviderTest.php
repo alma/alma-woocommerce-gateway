@@ -22,7 +22,7 @@ class PaymentProviderTest extends TestCase {
 
 	public function testCreatePaymentApiThrowsException(): void {
 		$this->expectException( PaymentProviderException::class );
-		$this->expectExceptionMessage( 'Error creating payment: API error' );
+		$this->expectExceptionMessage( 'Error creating payment' );
 		$paymentDto  = $this->createMock( PaymentDto::class );
 		$orderDto    = $this->createMock( OrderDto::class );
 		$customerDto = $this->createMock( CustomerDto::class );
@@ -62,7 +62,7 @@ class PaymentProviderTest extends TestCase {
 
 	public function testFetchPaymentApiThrowsException(): void {
 		$this->expectException( PaymentProviderException::class );
-		$this->expectExceptionMessage( 'Error fetching payment: API error' );
+		$this->expectExceptionMessage( 'Error fetching payment' );
 		$paymentId = 'payment_123';
 
 		$this->paymentEndpointMock->expects( $this->once() )

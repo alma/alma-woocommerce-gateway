@@ -244,6 +244,10 @@ class AbstractBackendGateway extends AbstractGateway {
 			$fee_plan_list_adapter = $fee_plan_repository->getAll( true )->orderBy( $gateway_repository->findOrderedAlmaGateways() )->filterAvailable();
 		} catch ( FeePlanRepositoryException $e ) {
 			// No exception, just an empty list
+			$this->logger_service->debug(
+				'Can not get Fee Plans for gateway ' . $this->get_id(),
+				array( 'exception' => $e )
+			);
 			$fee_plan_list_adapter = new FeePlanListAdapter( new FeePlanList() );
 		}
 

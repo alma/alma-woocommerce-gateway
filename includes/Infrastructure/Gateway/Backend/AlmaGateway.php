@@ -147,6 +147,12 @@ class AlmaGateway extends AbstractBackendGateway {
 		} catch ( GatewayConfigurationFormValidatorServiceException $e ) {
 			// If an error occurs during validation, we display a generic error message
 			// and return the previous settings to avoid losing data.
+			$this->logger_service->debug(
+				'can not validate gateway configuration',
+				array(
+					'exception' => $e,
+				)
+			);
 			$this->errors = array(
 				__(
 					'An error occurred while validating the configuration. Please try again.',

@@ -41,7 +41,8 @@ class GatewayConfigurationFormValidatorService {
 			try {
 				$feePlanConfigurationList->validate( $this->feePlanRepository->getAll() );
 			} catch ( FeePlanRepositoryException $e ) {
-				throw new GatewayConfigurationFormValidatorServiceException( 'Les fee plans n\'ont pas pu être récupérés. Veuillez réessayer plus tard.' );
+				throw new GatewayConfigurationFormValidatorServiceException( 'Can not get Fee Plans.',
+					0, $e );
 			}
 		}
 

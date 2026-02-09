@@ -29,7 +29,7 @@ class FraudService {
 			try {
 				$this->getPaymentProvider()->flagAsFraud( $payment->getId(), Payment::FRAUD_AMOUNT_MISMATCH );
 			} catch ( PaymentProviderException $e ) {
-				throw new FraudServiceException( $e->getMessage() );
+				throw new FraudServiceException( 'Can not flag the payment as potential fraud', 0, $e );
 			}
 			$order->updateStatus( 'failed', Payment::FRAUD_AMOUNT_MISMATCH );
 			throw new FraudServiceException( 'Potential fraud detected: order total does not match payment amount.' );
@@ -45,7 +45,7 @@ class FraudService {
 			try {
 				$this->getPaymentProvider()->flagAsFraud( $payment->getId(), Payment::FRAUD_STATE_ERROR );
 			} catch ( PaymentProviderException $e ) {
-				throw new FraudServiceException( $e->getMessage() );
+				throw new FraudServiceException( 'Can not flag the payment as potential fraud', 0, $e );
 			}
 			$order->updateStatus( 'failed', Payment::FRAUD_STATE_ERROR );
 

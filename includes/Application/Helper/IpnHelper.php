@@ -41,10 +41,10 @@ class IpnHelper implements IpnHelperInterface {
 	 */
 	public function validateIpnSignature( string $paymentId, string $apiKey, string $signature ): void {
 		if ( empty( $paymentId ) || empty( $apiKey ) || empty( $signature ) ) {
-			throw new IpnHelperException( '[ALMA] Missing required parameters' );
+			throw new IpnHelperException( 'Can not validate IPN Signature. Missing required parameters' );
 		}
 		if ( ! RequestHelper::isHmacValidated( $paymentId, $apiKey, $signature ) ) {
-			throw new IpnHelperException( '[ALMA] Invalid signature' );
+			throw new IpnHelperException( 'Can not validate IPN Signature. Invalid signature' );
 		}
 	}
 

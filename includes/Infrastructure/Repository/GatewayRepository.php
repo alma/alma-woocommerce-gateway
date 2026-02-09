@@ -13,13 +13,17 @@ use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
+use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Alma\Gateway\Plugin;
 use Alma\Plugin\Infrastructure\Repository\GatewayRepositoryInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 class GatewayRepository implements GatewayRepositoryInterface {
 
 	private static ?array $gatewayBlocksCache = null;
-
+	/**  @var LoggerInterface */
+	private $loggerService;
 	/**
 	 * Ordered list of Alma gateways.
 	 *
@@ -33,7 +37,6 @@ class GatewayRepository implements GatewayRepositoryInterface {
 		PnxGateway::class,
 		PayNowGateway::class,
 	];
-
 	/**
 	 * Ordered list of Alma gateway blocks.
 	 *
@@ -45,6 +48,10 @@ class GatewayRepository implements GatewayRepositoryInterface {
 		PayLaterGatewayBlock::class,
 		CreditGatewayBlock::class,
 	];
+
+	public function __construct( LoggerService $loggerService = null ) {
+		$this->loggerService = $loggerService ?? new NullLogger();
+	}
 
 	/**
 	 * Get all available Alma gateways
@@ -106,6 +113,7 @@ class GatewayRepository implements GatewayRepositoryInterface {
 				$block                                          = $gatewayBlockFactory->create_gateway_block( $gatewayBlock );
 				self::$gatewayBlocksCache[ $block->get_name() ] = $block;
 			} catch ( CheckoutBlockException $e ) {
+				$this->loggerService->debug( 'Can not create Gateway Block', [ 'exception' => $e->getMessage() ] );
 				// If any block cannot be created, skip it.
 				continue;
 			}
