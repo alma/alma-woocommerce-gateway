@@ -9,6 +9,7 @@ use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\GatewayConfigurationFormValidatorService;
 use Alma\Gateway\Infrastructure\Mapper\ConfigFormMapper;
 use Alma\Gateway\Plugin;
+use WC_Admin_Settings;
 
 /**
  * Class Gateway
@@ -169,27 +170,22 @@ class AlmaGateway extends AbstractBackendGateway {
 		// Transform back to settings array
 		$settings = $config_form_mapper->to_cms_form( $gateway_configuration );
 
-		// Add errors to the gateway
-		$this->errors = array_merge(
-			$this->errors,
-			$gateway_configuration->getErrors()
-		);
+		// Add errors to the gateway if there are any
+		foreach ( $gateway_configuration->getErrors() as $error ) {
+			WC_Admin_Settings::add_error( $error );
+		}
 
 		return $settings;
 	}
 
 	/**
-	 * Process admin Options and display errors
+	 * Process admin Options
 	 *
 	 * @return bool
 	 */
 	public function process_admin_options(): bool {
 
-		$saved = parent::process_admin_options();
-
-		$this->display_errors();
-
-		return $saved;
+		return parent::process_admin_options();
 	}
 
 	/**
