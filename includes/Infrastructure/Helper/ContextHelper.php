@@ -64,12 +64,10 @@ class ContextHelper implements ContextHelperInterface {
 		if ( class_exists( '\Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils' ) &&
 		     method_exists( '\Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils', 'is_cart_page' ) ) {
 
-			if ( CartCheckoutUtils::is_cart_page() ) {
-				return true;
-			}
+			return CartCheckoutUtils::is_cart_page();
+
 		}
 
-		// 2. Repli sur la fonction standard de WooCommerce (Compatibilité Shortcodes/Anciennes versions)
 		return function_exists( 'is_cart' ) && is_cart();
 	}
 
@@ -85,9 +83,7 @@ class ContextHelper implements ContextHelperInterface {
 		if ( class_exists( '\Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils' ) &&
 		     method_exists( '\Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils', 'is_checkout_page' ) ) {
 
-			if ( CartCheckoutUtils::is_checkout_page() ) {
-				return true;
-			}
+			return CartCheckoutUtils::is_checkout_page();
 		}
 
 		return function_exists( 'is_checkout' ) && is_checkout();
