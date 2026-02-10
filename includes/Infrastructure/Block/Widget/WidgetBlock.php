@@ -81,7 +81,6 @@ class WidgetBlock implements IntegrationInterface {
 	 * Create new scratch file from selection
 	 * const settings = window.wc.wcSettings.getSetting(`alma-widget-block_data`, null);
 	 * @return array
-	 *
 	 * @throws WidgetBlockException
 	 * @see src/alma-widget-block/AlmaWidget.js
 	 */
@@ -96,7 +95,8 @@ class WidgetBlock implements IntegrationInterface {
 			$excludedCategories
 		);
 		try {
-			$feePlanList = $this->fee_plan_repository->getAllWithEligibility()->filterEnabled()->orderBy( $this->gateway_repository->findOrderedAlmaGateways() );
+			$feePlanList = $this->fee_plan_repository->getAllWithEligibility( ContextHelper::getCart()->getCartTotal() )->filterEnabled()->orderBy( $this->gateway_repository->findOrderedAlmaGateways() );
+
 		} catch ( FeePlanRepositoryException $e ) {
 			throw new WidgetBlockException( 'Can not send data to JS', 0, $e );
 		}

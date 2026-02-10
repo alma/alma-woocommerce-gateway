@@ -11,8 +11,8 @@ class FeePlanMapper {
 
 		return new FeePlanDto(
 			$feePlanAdapter->getInstallmentsCount(),
-			$feePlanAdapter->getMinPurchaseAmount(),
-			$feePlanAdapter->getMaxPurchaseAmount(),
+			$feePlanAdapter->getOverrideMinPurchaseAmount(),
+			$feePlanAdapter->getOverrideMaxPurchaseAmount(),
 			$feePlanAdapter->getDeferredDays(),
 			$feePlanAdapter->getDeferredMonths(),
 		);

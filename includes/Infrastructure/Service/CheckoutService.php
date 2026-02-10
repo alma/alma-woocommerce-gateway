@@ -70,7 +70,7 @@ class CheckoutService {
 		$isInPage = $this->configService->isInPageEnabled();
 		try {
 			$feePlanListAdapter = $this->feePlanRepository->getAllWithEligibility( ContextHelper::getCart()->getCartTotal(),
-				true )->filterEnabled();
+				true )->filterEnabled()->filterEligible( ContextHelper::getCart()->getCartTotal() );
 		} catch ( FeePlanRepositoryException $e ) {
 			throw new CheckoutServiceException( 'Can not get Checkout params', 0, $e );
 		}
