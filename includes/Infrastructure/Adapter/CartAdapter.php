@@ -40,17 +40,17 @@ class CartAdapter implements CartAdapterInterface {
 	}
 
 	/**
-	 * Get the cart items categories.
+	 * Get the cart items categories slugs.
 	 *
 	 * @return array An array of cart items categories.
 	 */
-	public function getCartItemsCategories(): array {
+	public function getCartItemsCategoriesSlugs(): array {
 
 		if ( ! $this->cart ) {
 			return [];
 		}
 
-		$category_ids = array();
+		$category_slugs = array();
 
 		foreach ( $this->cart->get_cart() as $cart_item ) {
 			$product = $cart_item['data'];
@@ -62,10 +62,10 @@ class CartAdapter implements CartAdapterInterface {
 			$terms = get_the_terms( $product->get_id(), 'product_cat' );
 
 			if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-				$category_ids = array_merge( $category_ids, wp_list_pluck( $terms, 'term_id' ) );
+				$category_slugs = array_merge( $category_slugs, wp_list_pluck( $terms, 'slug' ) );
 			}
 		}
 
-		return array_values( array_unique( $category_ids ) );
+		return array_values( array_unique( $category_slugs ) );
 	}
 }

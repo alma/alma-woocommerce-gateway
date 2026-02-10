@@ -3,8 +3,8 @@
 namespace Alma\Gateway\Tests\Unit\Application\Helper;
 
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
-use Alma\Plugin\Infrastructure\Adapter\CartAdapterInterface;
-use Alma\Plugin\Infrastructure\Adapter\ProductAdapterInterface;
+use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
+use Alma\Gateway\Infrastructure\Adapter\ProductAdapter;
 use PHPUnit\Framework\TestCase;
 
 class ExcludedProductsHelperTest extends TestCase {
@@ -13,11 +13,11 @@ class ExcludedProductsHelperTest extends TestCase {
 
 	public static function canDisplayProvider() {
 		return [
-			'empty excluded categories' => [ [], [ 1, 2, 3 ], true ],
-			'no match'                  => [ [ 4, 5 ], [ 1, 2, 3 ], true ],
-			'match one category'        => [ [ 3, 4 ], [ 1, 2, 3 ], false ],
-			'match all categories'      => [ [ 1, 2, 3 ], [ 1, 2, 3 ], false ],
-			'match some categories'     => [ [ 2, 3, 4 ], [ 1, 2, 3 ], false ],
+			'empty excluded categories' => [ [], [ 'A', 'B', 'C' ], true ],
+			'no match'                  => [ [ 'D', 'E' ], [ 'A', 'B', 'C' ], true ],
+			'match one category'        => [ [ 'C', 'D' ], [ 'A', 'B', 'C' ], false ],
+			'match all categories'      => [ [ 'A', 'B', 'C' ], [ 'A', 'B', 'C' ], false ],
+			'match some categories'     => [ [ 'B', 'C', 'D' ], [ 'A', 'B', 'C' ], false ],
 		];
 	}
 
@@ -25,8 +25,8 @@ class ExcludedProductsHelperTest extends TestCase {
 	 * @dataProvider canDisplayProvider
 	 */
 	public function testCanDisplayOnProductPage( $excludedCategories, $productCategories, $expected ) {
-		$productInterface = $this->createMock( ProductAdapterInterface::class );
-		$productInterface->method( 'getCategoryIds' )->willReturn( $productCategories );
+		$productInterface = $this->createMock( ProductAdapter::class );
+		$productInterface->method( 'getCategorySlugs' )->willReturn( $productCategories );
 		$this->assertSame( $expected,
 			$this->excludedProductsHelper->canDisplayOnProductPage( $productInterface, $excludedCategories ) );
 	}
@@ -35,8 +35,8 @@ class ExcludedProductsHelperTest extends TestCase {
 	 * @dataProvider canDisplayProvider
 	 */
 	public function testCanDisplayCartPage( $excludedCategories, $productCategories, $expected ) {
-		$cartAdapterInterface = $this->createMock( CartAdapterInterface::class );
-		$cartAdapterInterface->method( 'getCartItemsCategories' )->willReturn( $productCategories );
+		$cartAdapterInterface = $this->createMock( CartAdapter::class );
+		$cartAdapterInterface->method( 'getCartItemsCategoriesSlugs' )->willReturn( $productCategories );
 		$this->assertSame( $expected,
 			$this->excludedProductsHelper->canDisplayOnCartPage( $cartAdapterInterface, $excludedCategories )
 		);
@@ -46,8 +46,8 @@ class ExcludedProductsHelperTest extends TestCase {
 	 * @dataProvider canDisplayProvider
 	 */
 	public function testCanDisplayOnCheckoutPage( $excludedCategories, $productCategories, $expected ) {
-		$cartAdapterInterface = $this->createMock( CartAdapterInterface::class );
-		$cartAdapterInterface->method( 'getCartItemsCategories' )->willReturn( $productCategories );
+		$cartAdapterInterface = $this->createMock( CartAdapter::class );
+		$cartAdapterInterface->method( 'getCartItemsCategoriesSlugs' )->willReturn( $productCategories );
 		$this->assertSame( $expected,
 			$this->excludedProductsHelper->canDisplayOnCheckoutPage( $cartAdapterInterface, $excludedCategories )
 		);

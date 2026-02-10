@@ -27,6 +27,7 @@ class MigrationService {
 		// Check if a version number exists in the database
 		$version = get_option( self::VERSION_KEY, null );
 		if ( ! $version ) {
+			add_option( self::VERSION_KEY, self::VERSION_6_0_0 );
 			return false; // Fresh install, no migrations needed
 		}
 
@@ -82,7 +83,7 @@ class MigrationService {
 		);
 
 		$migratedData['merchant_id']            = $originData['live_merchant_id'] ?? $originData['test_merchant_id'] ?? null;
-		$migratedData['excluded_products_list'] = $this->migrateExcludedProducts( $originData );
+		$migratedData['excluded_products_list'] = $originData['excluded_products_list'] ?? null;
 
 		return array_filter( $migratedData, fn( $value ) => $value !== null );
 	}
@@ -254,30 +255,5 @@ class MigrationService {
 		}
 
 		return $result;
-	}
-
-	/**
-	 * Migrate excluded products list from slugs to term IDs.
-	 *
-	 * @param array $originData The original data from version 5.
-	 *
-	 * @return array|null The migrated excluded products list or null.
-	 */
-	private function migrateExcludedProducts( array $originData ): ?array {
-		$excludedProducts = $originData['excluded_products_list'] ?? null;
-
-		if ( ! is_array( $excludedProducts ) || empty( $excludedProducts ) ) {
-			return null;
-		}
-
-		$termIds = [];
-		foreach ( $excludedProducts as $slug ) {
-			$term = get_term_by( 'slug', $slug, 'product_cat' );
-			if ( $term && ! is_wp_error( $term ) ) {
-				$termIds[] = (string) $term->term_id;
-			}
-		}
-
-		return empty( $termIds ) ? null : $termIds;
 	}
 }
