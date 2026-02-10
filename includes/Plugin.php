@@ -124,7 +124,7 @@ final class Plugin extends AbstractPlugin {
 			$this->set_is_configured( $config_service->isConfigured() );
 
 			/** @var BusinessEventsRepository $business_event */
-			$business_event = self::get_container()->get( BusinessEventsRepository::class, $suffix );
+			$business_event = self::get_container()->get( BusinessEventsRepository::class );
 			$business_event->createTableIfNotExists();
 		} catch ( Exception $e ) {
 			self::get_container()->get( LoggerService::class )->debug(
