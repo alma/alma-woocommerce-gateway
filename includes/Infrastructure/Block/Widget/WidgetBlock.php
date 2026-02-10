@@ -81,7 +81,6 @@ class WidgetBlock implements IntegrationInterface {
 	 * Create new scratch file from selection
 	 * const settings = window.wc.wcSettings.getSetting(`alma-widget-block_data`, null);
 	 * @return array
-	 *
 	 * @throws WidgetBlockException
 	 * @see src/alma-widget-block/AlmaWidget.js
 	 */
