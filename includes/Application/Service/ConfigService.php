@@ -325,9 +325,6 @@ class ConfigService {
 		if ( ! is_array( $excluded_categories ) ) {
 			$excluded_categories = array();
 		}
-		if ( ! empty( $excluded_categories ) ) {
-			$excluded_categories = array_map( 'intval', $excluded_categories );
-		}
 
 		return $excluded_categories;
 	}

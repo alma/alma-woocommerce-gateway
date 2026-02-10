@@ -45,6 +45,19 @@ class ProductAdapter implements ProductAdapterInterface {
 		return $this->wc_product->get_category_ids();
 	}
 
+	public function getCategorySlugs(): array {
+		$category_ids = $this->wc_product->get_category_ids();
+		$slugs        = [];
+		foreach ( $category_ids as $category_id ) {
+			$term = get_term( $category_id, 'product_cat' );
+			if ( $term && ! is_wp_error( $term ) ) {
+				$slugs[] = $term->slug;
+			}
+		}
+
+		return $slugs;
+	}
+
 	public function getId(): int {
 		return $this->wc_product->get_id();
 	}

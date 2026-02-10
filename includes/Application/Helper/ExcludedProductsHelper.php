@@ -17,9 +17,10 @@ class ExcludedProductsHelper implements ExcludedProductsHelperInterface {
 	 * @return bool True if the widget can be displayed, false otherwise.
 	 */
 	public function canDisplayOnProductPage( ProductAdapterInterface $product, array $excludedCategories = array() ): bool {
+
 		$exclusions = array_intersect(
 			$excludedCategories,
-			$product->getCategoryIds()
+			$product->getCategorySlugs()
 		);
 
 		return empty( $exclusions );
@@ -36,7 +37,7 @@ class ExcludedProductsHelper implements ExcludedProductsHelperInterface {
 	public function canDisplayOnCartPage( CartAdapterInterface $cartAdapter, array $excludedCategories = array() ): bool {
 		$exclusions = array_intersect(
 			$excludedCategories,
-			$cartAdapter->getCartItemsCategories()
+			$cartAdapter->getCartItemsCategoriesSlugs()
 		);
 
 		return empty( $exclusions );

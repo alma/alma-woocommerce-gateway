@@ -3,10 +3,7 @@
 namespace Alma\Gateway\Tests\Unit\Infrastructure\Service;
 
 use Alma\Gateway\Infrastructure\Service\MigrationService;
-use Brain\Monkey;
-use Brain\Monkey\Functions;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 
 class MigrationServiceTest extends TestCase {
 
@@ -129,7 +126,7 @@ class MigrationServiceTest extends TestCase {
 					'general_1_15_0_enabled'    => 1,
 					'general_2_0_0_enabled'     => 1,
 					'general_3_0_0_enabled'     => 1,
-					'excluded_products_list'    => [ 0 => 19 ],
+					'excluded_products_list'    => [ 0 => "music" ],
 					'merchant_id'               => 'merchant_123',
 					'general_10_0_0_max_amount' => 21000,
 					'general_12_0_0_max_amount' => 21200,
@@ -292,22 +289,6 @@ class MigrationServiceTest extends TestCase {
 				]
 			],
 		];
-	}
-
-	public function setUp(): void {
-		Monkey\setUp();
-
-		// Mock les hooks WordPress pour éviter l'erreur
-		$term          = new stdClass();
-		$term->term_id = 19;
-		$term->name    = 'Music';
-		$term->slug    = 'music';
-		Functions\when( 'get_term_by' )->justReturn( $term );
-	}
-
-	public function tearDown(): void {
-		Monkey\tearDown();
-		parent::tearDown();
 	}
 
 	/**

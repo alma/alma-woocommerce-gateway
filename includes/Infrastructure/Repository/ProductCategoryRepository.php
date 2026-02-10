@@ -22,7 +22,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface {
 		);
 
 		return array_combine(
-			array_column( $product_categories, 'term_id' ),
+			array_column( $product_categories, 'slug' ),
 			array_column( $product_categories, 'name' )
 		);
 	}
