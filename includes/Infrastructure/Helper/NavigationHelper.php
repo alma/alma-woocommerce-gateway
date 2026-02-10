@@ -10,7 +10,7 @@ class NavigationHelper implements NavigationHelperInterface {
 	/**
 	 * Redirect to Alma gateway settings page.
 	 */
-	public function alma_redirect_to_gateway_settings() {
+	public static function alma_redirect_to_gateway_settings() {
 		$url = admin_url( 'admin.php?page=wc-settings&tab=checkout&section=alma_config_gateway' );
 		wp_safe_redirect( $url );
 		exit;
