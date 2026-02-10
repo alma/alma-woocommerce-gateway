@@ -134,7 +134,7 @@ class FeePlanRepository {
 		try {
 			// Get Fee Plans. (From API)
 			$this->getFeePlanProvider();
-			$feePlanListAdapter = new FeePlanListAdapter( $this->feePlanProvider->getFeePlanList() );
+			$feePlanListAdapter = ( new FeePlanListAdapter( $this->feePlanProvider->getFeePlanList() ) )->filterAvailable();
 			$this->saveKeysToConfig( $feePlanListAdapter );
 
 			// Add local configuration to Fee Plans. (local min and max amount set in the plugin form)
