@@ -93,7 +93,7 @@ final class Plugin extends AbstractPlugin {
 			}
 
 			// Configure Languages
-			L10nHelper::load_language( $this->get_plugin_path() );
+			L10nHelper::load_language( self::ALMA_GATEWAY_PLUGIN_NAME );
 
 			// Check mandatory prerequisites
 			if ( ! self::are_prerequisites_ok() ) {
