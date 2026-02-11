@@ -17,7 +17,6 @@ use Alma\Gateway\Infrastructure\Helper\CartHelper;
 use Alma\Gateway\Infrastructure\Helper\OrderHelper;
 use Alma\Gateway\Infrastructure\Helper\SessionHelper;
 use Alma\Gateway\Infrastructure\Repository\BusinessEventsRepository;
-use Automattic\WooCommerce\Enums\OrderStatus;
 use WC_Order;
 
 class BusinessEventsService {
@@ -78,8 +77,8 @@ class BusinessEventsService {
 		$isPayNow  = false;
 		$isBnpl    = false;
 		$paymentId = '';
-		if ( OrderStatus::PENDING === $oldStatus && in_array( $newStatus,
-				array_merge( OrderHelper::wcGetIsPaidStatuses(), array( OrderStatus::ON_HOLD ) ) ) ) {
+		if ( 'pending' === $oldStatus && in_array( $newStatus,
+				array_merge( OrderHelper::wcGetIsPaidStatuses(), array( 'on-hold' ) ) ) ) {
 			$almaBusinessData = $this->businessEventsRepository->getRowByOrderId( $order->getId() );
 			if ( strpos( $order->getPaymentMethod(), 'alma' ) !== false ) {
 				$isPayNow  = $order->getPaymentMethod() === sprintf(
