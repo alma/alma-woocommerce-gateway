@@ -21,7 +21,7 @@ class AuthenticationService {
 	 *
 	 * @param LoggerService|null $loggerService
 	 */
-	public function __construct( LoggerService $loggerService = null ) {
+	public function __construct( ?LoggerService $loggerService = null ) {
 		$this->loggerService = $loggerService ?? new NullLogger();
 	}
 

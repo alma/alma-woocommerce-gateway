@@ -51,7 +51,7 @@ class FeePlanRepository {
 		BusinessEventsService $businessEventsService,
 		FeePlanProviderFactory $feePlanProviderFactory,
 		EligibilityProviderFactory $eligibilityProviderFactory,
-		LoggerService $loggerService = null
+		?LoggerService $loggerService = null
 	) {
 		$this->configService              = $configService;
 		$this->businessEventsService      = $businessEventsService;

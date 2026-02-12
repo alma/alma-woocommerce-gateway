@@ -30,7 +30,7 @@ class FeePlanProvider implements FeePlanProviderInterface, ProviderInterface {
 	 * @param MerchantEndpoint   $merchantEndpoint
 	 * @param LoggerService|null $loggerService
 	 */
-	public function __construct( MerchantEndpoint $merchantEndpoint, LoggerService $loggerService = null ) {
+	public function __construct( MerchantEndpoint $merchantEndpoint, ?LoggerService $loggerService = null ) {
 		$this->merchantEndpoint = $merchantEndpoint;
 		$this->loggerService    = $loggerService ?? new NullLogger();
 	}
