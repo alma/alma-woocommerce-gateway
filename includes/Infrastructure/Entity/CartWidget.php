@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Entity;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Infrastructure\Block\Widget\WidgetBlock;
 use Alma\Gateway\Infrastructure\Exception\Entity\CartWidgetException;
 use Alma\Gateway\Infrastructure\Exception\Service\AssetsServiceException;

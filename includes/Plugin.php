@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\OrderStatusService;
@@ -14,10 +18,6 @@ use Alma\Gateway\Infrastructure\Service\ContainerService;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Alma\Gateway\Infrastructure\Service\MigrationService;
 use Exception;
-
-if ( ! defined( 'ABSPATH' ) ) {
-	die( 'Not allowed' ); // Exit if accessed directly.
-}
 
 /**
  * AlmaPlugin.

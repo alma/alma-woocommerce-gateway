@@ -2,11 +2,11 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
-use Alma\Gateway\Plugin;
-
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // @codeCoverageIgnore
+	die( 'Not allowed' ); // Exit if accessed directly.
 }
+
+use Alma\Gateway\Plugin;
 
 /**
  * Class CoreHelper.

@@ -11,6 +11,10 @@
 
 namespace Alma\Gateway\Infrastructure\Block\Widget;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Exception\Block\WidgetBlockException;
@@ -21,11 +25,6 @@ use Alma\Gateway\Infrastructure\Mapper\FeePlanListMapper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
-
-
-if ( ! defined( 'ABSPATH' ) ) {
-	die( 'Not allowed' ); // Exit if accessed directly.
-}
 
 /**
  * Alma_Blocks

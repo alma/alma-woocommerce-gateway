@@ -11,12 +11,12 @@
 
 namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
-use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
-use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
+
+use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
+use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
 
 /**
  * StandardBlock

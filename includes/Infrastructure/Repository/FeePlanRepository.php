@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Repository;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Client\Application\Exception\ParametersException;
 use Alma\Client\Domain\Entity\Eligibility;
 use Alma\Client\Domain\Entity\EligibilityList;

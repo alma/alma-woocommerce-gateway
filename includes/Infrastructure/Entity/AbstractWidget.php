@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Entity;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Client\Domain\Entity\WidgetInterface;
 use Alma\Client\Domain\ValueObject\Environment;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;

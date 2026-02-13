@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Application\Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Plugin\Application\Helper\ExcludedProductsHelperInterface;
 use Alma\Plugin\Infrastructure\Adapter\CartAdapterInterface;
 use Alma\Plugin\Infrastructure\Adapter\ProductAdapterInterface;

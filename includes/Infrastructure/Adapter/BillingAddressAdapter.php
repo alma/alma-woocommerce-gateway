@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Adapter;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Plugin\Infrastructure\Adapter\BillingAddressAdapterInterface;
 use WC_Customer;
 

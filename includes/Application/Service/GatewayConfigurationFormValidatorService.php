@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Application\Service;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Application\Entity\Form\FeePlanConfigurationList;
 use Alma\Gateway\Application\Entity\Form\GatewayConfigurationForm;
 use Alma\Gateway\Application\Exception\Service\GatewayConfigurationFormValidatorServiceException;

@@ -2,12 +2,12 @@
 
 namespace Alma\Gateway\Application\Helper;
 
-use Alma\Gateway\Infrastructure\Helper\AjaxHelper;
-use Alma\Plugin\Application\Helper\AdminHelperInterface;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
+
+use Alma\Gateway\Infrastructure\Helper\AjaxHelper;
+use Alma\Plugin\Application\Helper\AdminHelperInterface;
 
 class AdminHelper implements AdminHelperInterface {
 	/**

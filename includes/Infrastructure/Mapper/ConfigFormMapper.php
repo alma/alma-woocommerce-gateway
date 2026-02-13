@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Mapper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Application\Entity\Form\FeePlanConfiguration;
 use Alma\Gateway\Application\Entity\Form\FeePlanConfigurationList;
 use Alma\Gateway\Application\Entity\Form\GatewayConfigurationForm;

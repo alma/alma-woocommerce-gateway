@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Application\Entity\Form;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 class GatewayConfigurationForm {
 
 	/** @var string Field name for Live API key */

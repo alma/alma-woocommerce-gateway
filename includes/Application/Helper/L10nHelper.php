@@ -2,14 +2,14 @@
 
 namespace Alma\Gateway\Application\Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\LanguageHelper;
 use NumberFormatter;
-
-if ( ! defined( 'ABSPATH' ) ) {
-	die( 'Not allowed' ); // Exit if accessed directly.
-}
 
 class L10nHelper {
 

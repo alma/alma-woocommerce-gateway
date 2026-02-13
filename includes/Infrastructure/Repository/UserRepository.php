@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Repository;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Infrastructure\Adapter\UserAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\UserRepositoryException;
 use Alma\Plugin\Infrastructure\Adapter\UserAdapterInterface;

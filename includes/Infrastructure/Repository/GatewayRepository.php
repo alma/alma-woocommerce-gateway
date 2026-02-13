@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Repository;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Infrastructure\Block\Gateway\CreditGatewayBlock;
 use Alma\Gateway\Infrastructure\Block\Gateway\GatewayBlockFactory;
 use Alma\Gateway\Infrastructure\Block\Gateway\PayLaterGatewayBlock;

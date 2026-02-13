@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Exception\Block\CheckoutBlockException;
 

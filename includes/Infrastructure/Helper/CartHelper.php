@@ -2,8 +2,11 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
-class CartHelper
-{
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
+class CartHelper {
 	/**
 	 * Generate a unique cart ID suitable for BIGINT(20) unsigned storage.
 	 *

@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Application\Provider;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Client\Application\DTO\EligibilityDto;
 use Alma\Client\Application\Endpoint\EligibilityEndpoint;
 use Alma\Client\Application\Exception\Endpoint\EligibilityEndpointException;

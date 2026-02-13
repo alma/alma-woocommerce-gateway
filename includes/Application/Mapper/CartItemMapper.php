@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Application\Mapper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Client\Application\DTO\CartItemDto;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;

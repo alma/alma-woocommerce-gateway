@@ -2,12 +2,12 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Plugin;
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // @codeCoverageIgnore
-}
 
 /**
  * Helper class to display the cart and product widgets with a shortcode.
@@ -52,7 +52,7 @@ class ShortcodeWidgetHelper {
 	 */
 	public function initCartShortcode( string $widgetClass, bool $displayWidget = false, bool $hasExcludedCategories = false ) {
 		if ( $hasExcludedCategories ) {
-			$this->addExcludedCategoriesShortcode(self::CART_SHORTCODE_TAG);
+			$this->addExcludedCategoriesShortcode( self::CART_SHORTCODE_TAG );
 		} else {
 			if ( $displayWidget ) {
 				$this->addShortcode( self::CART_SHORTCODE_TAG, $widgetClass );
@@ -92,7 +92,7 @@ class ShortcodeWidgetHelper {
 	 */
 	public function initProductShortcode( string $widgetClass, bool $displayWidget = false, bool $hasExcludedCategories = false ) {
 		if ( $hasExcludedCategories ) {
-			$this->addExcludedCategoriesShortcode(self::PRODUCT_SHORTCODE_TAG);
+			$this->addExcludedCategoriesShortcode( self::PRODUCT_SHORTCODE_TAG );
 		} else {
 			if ( $displayWidget ) {
 				$this->addShortcode( self::PRODUCT_SHORTCODE_TAG, $widgetClass );

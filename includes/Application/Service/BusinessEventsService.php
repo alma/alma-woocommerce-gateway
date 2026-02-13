@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Application\Service;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Client\Application\DTO\MerchantBusinessEvent\CartInitiatedBusinessEventDto;
 use Alma\Client\Application\DTO\MerchantBusinessEvent\OrderConfirmedBusinessEventDto;
 use Alma\Client\Application\Exception\ParametersException;

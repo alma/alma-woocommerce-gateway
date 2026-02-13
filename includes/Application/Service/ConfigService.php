@@ -2,16 +2,16 @@
 
 namespace Alma\Gateway\Application\Service;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Client\Application\DTO\PaymentDto;
 use Alma\Client\Domain\ValueObject\Environment;
 use Alma\Gateway\Application\Helper\EncryptorHelper;
 use Alma\Gateway\Infrastructure\Helper\WordPressHelper;
 use Alma\Gateway\Plugin;
 use Alma\Plugin\Infrastructure\Repository\ConfigRepositoryInterface;
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // @codeCoverageIgnore
-}
 
 class ConfigService {
 

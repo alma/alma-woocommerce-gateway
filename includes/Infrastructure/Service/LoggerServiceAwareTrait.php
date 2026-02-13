@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Service;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Plugin;
 use Psr\Log\LoggerInterface;
 

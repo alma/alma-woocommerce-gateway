@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Application\Service;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Application\Provider\PaymentProviderAwareTrait;
 use Alma\Gateway\Application\Provider\PaymentProviderFactory;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;

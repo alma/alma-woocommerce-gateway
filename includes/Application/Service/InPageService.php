@@ -2,13 +2,13 @@
 
 namespace Alma\Gateway\Application\Service;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Application\Exception\Service\InPageServiceException;
 use Alma\Gateway\Infrastructure\Exception\Service\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Service\AssetsService;
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // @codeCoverageIgnore
-}
 
 class InPageService {
 

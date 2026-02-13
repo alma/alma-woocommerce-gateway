@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Config;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 

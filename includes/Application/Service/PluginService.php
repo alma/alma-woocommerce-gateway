@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Application\Service;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Infrastructure\Helper\AdminMenuHelper;
 use Alma\Gateway\Infrastructure\Helper\AdminNotificationHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;

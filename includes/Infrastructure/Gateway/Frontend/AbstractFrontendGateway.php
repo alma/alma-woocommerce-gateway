@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\API\Domain\Entity\FeePlanList;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Service\ConfigService;

@@ -138,7 +138,7 @@
 
     <!-- Interdire la balise de fermeture PHP `?>` dans les fichiers purement PHP -->
     <rule ref="PSR2.Files.ClosingTag"/>
-    
+
     <!-- Include custom sniff -->
     <rule ref="AlmaIntegrationCms.Architecture.ForbiddenPrefix">
         <exclude-pattern>includes/Infrastructure/*</exclude-pattern>
@@ -152,4 +152,6 @@
     <rule ref="AlmaIntegrationCms.NamingConventions.ClassSuffixByDirectory"/>
     <rule ref="AlmaIntegrationCms.NamingConventions.ForbiddenHelperDependency"/>
     <rule ref="AlmaIntegrationCms.Scope.NoPublicMemberVar"/>
+
+    <rule ref="AlmaIntegrationCms.Security.AbspathCheck"/>
 </ruleset>

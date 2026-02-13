@@ -2,8 +2,11 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
-class OrderHelper
-{
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
+class OrderHelper {
 	/**
 	 * Get array of paid statuses from WooCommerce, 'processing' and 'completed' by default.
 	 *

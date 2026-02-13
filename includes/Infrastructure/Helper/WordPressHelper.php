@@ -2,12 +2,12 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Repository\ConfigRepository;
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // @codeCoverageIgnore
-}
 
 /**
  * Class WordPressHelper.

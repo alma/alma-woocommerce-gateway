@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Plugin\Infrastructure\Helper\SessionHelperInterface;
 
 class SessionHelper implements SessionHelperInterface {
