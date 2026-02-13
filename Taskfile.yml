@@ -84,6 +84,11 @@ tasks:
       - pre-commit install --hook-type commit-msg
       - pre-commit install
 
+  translate:
+    desc: Get translations from code and prepare them for Crowdin
+    cmds:
+      - php -d memory_limit=512M $(which wp) i18n make-pot . languages/alma-gateway-for-woocommerce.pot
+
   crowdin:
     internal: true
     preconditions:

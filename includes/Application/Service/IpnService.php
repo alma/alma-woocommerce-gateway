@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Application\Service;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Application\Exception\Helper\IpnHelperException;
 use Alma\Gateway\Application\Exception\Provider\PaymentProviderException;
 use Alma\Gateway\Application\Exception\Service\FraudServiceException;
@@ -19,6 +23,12 @@ use Alma\Plugin\Infrastructure\Helper\NavigationHelperInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
+/**
+ * Class IpnService
+ * @package Alma\Gateway\Application\Service
+ *
+ * To test IPN call a url like https://domain.ext/wc-api/alma_ipn_callback/?pid=payment_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ */
 class IpnService {
 	public const IPN_CALLBACK = 'alma_ipn_callback';
 	public const CUSTOMER_RETURN = 'alma_customer_return';

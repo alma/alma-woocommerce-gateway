@@ -2,11 +2,16 @@
 
 namespace Alma\Gateway\Application\Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Application\Exception\Helper\RequirementsHelperException;
 
 class RequirementsHelper {
 
-	const MIN_WOOCOMMERCE_VERSION = '8.2.0';
+	const MIN_WOOCOMMERCE_VERSION = '10.1.0';
+	const MIN_WORDPRESS_VERSION = '6.6';
 
 	/**
 	 * Check if we met dependencies.
@@ -18,33 +23,56 @@ class RequirementsHelper {
 	 */
 	public static function check_dependencies( string $cmsVersion ): bool {
 		if ( ! function_exists( 'WC' ) ) {
-			throw new RequirementsHelperException( 'Alma requires WooCommerce to be activated' );
+			throw new RequirementsHelperException(
+				__( 'Alma requires WooCommerce to be activated' )
+			);
+		}
+
+		// Check WordPress version
+		global $wp_version;
+		if ( version_compare( $wp_version, self::MIN_WORDPRESS_VERSION, '<' ) ) {
+			throw new RequirementsHelperException(
+				sprintf(
+				// translators: %s is the minimum WordPress version required to run the plugin.
+					__( 'Alma requires WordPress version %s or greater' ),
+					self::MIN_WORDPRESS_VERSION
+				)
+			);
 		}
 
 		if ( version_compare( $cmsVersion, self::MIN_WOOCOMMERCE_VERSION, '<' ) ) {
 			throw new RequirementsHelperException(
 				sprintf(
-					'Alma requires WooCommerce version %s or greater',
+				// translators: %s is the minimum WooCommerce version required to run the plugin.
+					__( 'Alma requires WooCommerce version %s or greater' ),
 					self::MIN_WOOCOMMERCE_VERSION
 				)
 			);
 		}
 
 		if ( ! function_exists( 'curl_init' ) ) {
-			throw new RequirementsHelperException( 'Alma requires the cURL PHP extension to be installed on your server' );
+			throw new RequirementsHelperException(
+				__( 'Alma requires the cURL PHP extension to be installed on your server' )
+			);
 		}
 
 		if ( ! function_exists( 'json_decode' ) ) {
-			throw new RequirementsHelperException( 'Alma requires the JSON PHP extension to be installed on your server' );
+			throw new RequirementsHelperException(
+				__( 'Alma requires the JSON PHP extension to be installed on your server' )
+			);
 		}
 
 		if ( ! defined( 'OPENSSL_VERSION_TEXT' ) ) {
-			throw new RequirementsHelperException( 'Alma requires OpenSSL to be installed on your server' );
+			throw new RequirementsHelperException(
+				__( 'Alma requires OpenSSL to be installed on your server' )
+			);
 		}
 
 		preg_match( '/^(?:Libre|Open)SSL ([\d.]+)/', OPENSSL_VERSION_TEXT, $matches );
 		if ( empty( $matches[1] ) ) {
-			throw new RequirementsHelperException( 'Alma requires OpenSSL to be installed on your server' );
+			throw new RequirementsHelperException(
+				__( 'Alma requires OpenSSL to be installed on your server' )
+			);
 		}
 
 		return true;

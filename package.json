@@ -27,7 +27,7 @@
     "@wordpress/blocks": "^14.5.0",
     "@wordpress/data": "^10.16.0",
     "@wordpress/element": "^6.16.0",
-    "@wordpress/scripts": "^30.9.0",
+    "@wordpress/scripts": "^27",
     "ajv": "^7.2.4",
     "css-loader": "^6.10.0",
     "style-loader": "^3.3.4"
