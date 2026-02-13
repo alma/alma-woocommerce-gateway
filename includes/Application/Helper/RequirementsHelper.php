@@ -16,12 +16,13 @@ class RequirementsHelper {
 	/**
 	 * Check if we met dependencies.
 	 *
+	 * @param string $platformVersion The current version of WordPress
 	 * @param string $cmsVersion The current version of WooCommerce
 	 *
 	 * @return true
 	 * @throws RequirementsHelperException
 	 */
-	public static function check_dependencies( string $cmsVersion ): bool {
+	public static function check_dependencies( string $platformVersion, string $cmsVersion ): bool {
 		if ( ! function_exists( 'WC' ) ) {
 			throw new RequirementsHelperException(
 				__( 'Alma requires WooCommerce to be activated' )
@@ -29,8 +30,7 @@ class RequirementsHelper {
 		}
 
 		// Check WordPress version
-		global $wp_version;
-		if ( version_compare( $wp_version, self::MIN_WORDPRESS_VERSION, '<' ) ) {
+		if ( version_compare( $platformVersion, self::MIN_WORDPRESS_VERSION, '<' ) ) {
 			throw new RequirementsHelperException(
 				sprintf(
 				// translators: %s is the minimum WordPress version required to run the plugin.

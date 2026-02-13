@@ -17,20 +17,19 @@ class RequirementHelperTest extends TestCase {
 
 	public function testWCnotExit() {
 		$this->expectException( RequirementsHelperException::class );
-		$this->requirementHelper->check_dependencies( '7.0.0' );
+		$this->requirementHelper::check_dependencies( '5.0.0', '7.0.0' );
 	}
 
 	public function testCompareVersionLowerThanExpectedWillThrow() {
 		$this->expectException( RequirementsHelperException::class );
-		$this->requirementHelper->check_dependencies( '6.9.9' );
+		$this->requirementHelper::check_dependencies( '5.0.0', '6.9.9' );
 	}
 
 	public function testRequirementOk(): void {
 		Functions\expect( 'WC' )
 			->andReturn( function () {
 			} );
-		$this->assertTrue( $this->requirementHelper->check_dependencies( '8.2.0' ) );
-
+		$this->assertTrue( $this->requirementHelper::check_dependencies( '6.6', '10.1.0' ) );
 	}
 
 	protected function setUp(): void {

@@ -147,6 +147,17 @@ class ContextHelper implements ContextHelperInterface {
 	}
 
 	/**
+	 * Returns the current WordPress version.
+	 *
+	 * @return string
+	 */
+	public static function getPlatformVersion(): string {
+		global $wp_version;
+
+		return $wp_version;
+	}
+
+	/**
 	 * Returns the current WooCommerce version.
 	 *
 	 * @return string

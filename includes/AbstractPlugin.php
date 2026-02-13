@@ -9,7 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 use Alma\Gateway\Application\Exception\Helper\RequirementsHelperException;
 use Alma\Gateway\Application\Helper\RequirementsHelper;
 use Alma\Gateway\Application\Service\ConfigService;
-use Alma\Gateway\Infrastructure\Exception\PluginException;
 use Alma\Gateway\Infrastructure\Helper\AdminNotificationHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 
@@ -68,7 +67,6 @@ class AbstractPlugin {
 	 * We don't use Dice because it's not loaded yet.
 	 *
 	 * @return bool
-	 * @throws PluginException
 	 */
 	public function check_prerequisites(): bool {
 		// Check if WooCommerce is active
@@ -80,7 +78,10 @@ class AbstractPlugin {
 
 		// Check if all dependencies are met
 		try {
-			if ( ! RequirementsHelper::check_dependencies( ContextHelper::getCmsVersion() ) ) {
+			if ( ! RequirementsHelper::check_dependencies(
+				ContextHelper::getPlatformVersion(),
+				ContextHelper::getCmsVersion()
+			) ) {
 				self::$plugin_prerequisites = false;
 
 				return false;
