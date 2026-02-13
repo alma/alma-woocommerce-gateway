@@ -2,6 +2,7 @@
 
 namespace Alma\Gateway\Tests\Unit\Infrastructure\Mapper;
 
+use Alma\Client\Domain\ValueObject\Environment;
 use Alma\Gateway\Application\Entity\Form\FeePlanConfiguration;
 use Alma\Gateway\Application\Entity\Form\FeePlanConfigurationList;
 use Alma\Gateway\Application\Entity\Form\GatewayConfigurationForm;
@@ -40,11 +41,14 @@ class ConfigFormMapperTest extends TestCase {
 
 		$authenticationServiceMock = $this->createMock( AuthenticationService::class );
 		$this->configServiceMock   = $this->createMock( ConfigService::class );
-		$this->configFormMapper    = new ConfigFormMapper( $this->configServiceMock, $authenticationServiceMock );
+		$env                       = new Environment( Environment::LIVE_MODE );
+		$this->configServiceMock->method( 'getEnvironment' )->willReturn( $env );
+		$this->configFormMapper = new ConfigFormMapper( $this->configServiceMock, $authenticationServiceMock );
 
 		$this->keySettings        = [
 			'test_api_key' => 'test_key_123',
 			'live_api_key' => 'live_key_456',
+			'environment'  => 'live',
 		];
 		$this->feePlanSettings    = [
 			'general_2_0_0_min_amount' => 100,
@@ -57,7 +61,6 @@ class ConfigFormMapperTest extends TestCase {
 		$this->additionalSettings = [
 			'debug'                     => 'yes',
 			'enabled'                   => true,
-			'environment'               => 'test',
 			'excluded_products_list'    => '',
 			'excluded_products_message' => '',
 			'widget_cart_enabled'       => true,
@@ -103,6 +106,7 @@ class ConfigFormMapperTest extends TestCase {
 		$keyConfigurationMock->method( 'getNewTestKey' )->willReturn( $this->keySettings['test_api_key'] );
 		$keyConfigurationMock->method( 'getNewLiveKey' )->willReturn( $this->keySettings['live_api_key'] );
 		$keyConfigurationMock->method( 'getNewMerchantId' )->willReturn( 'merchant_xxxxxxxxxxxxxxx' );
+		$keyConfigurationMock->method( 'getNewEnvironment' )->willReturn( 'live' );
 
 		$feePlanConfigurationMock2 = $this->createMock( FeePlanConfiguration::class );
 		$feePlanConfigurationMock2->method( 'getPlanKey' )->willReturn( 'general_2_0_0' );

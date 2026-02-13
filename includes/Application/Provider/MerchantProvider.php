@@ -9,23 +9,25 @@ use Alma\Client\Application\Exception\Endpoint\MerchantEndpointException;
 use Alma\Gateway\Application\Exception\Provider\MerchantProviderException;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Alma\Plugin\Application\Port\MerchantProviderInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 class MerchantProvider implements MerchantProviderInterface, ProviderInterface {
 
 	/** @var MerchantEndpoint $merchantEndpoint */
 	private MerchantEndpoint $merchantEndpoint;
 
-	/** @var LoggerService $loggerService */
-	private LoggerService $loggerService;
+	/** @var LoggerInterface $loggerService */
+	private LoggerInterface $loggerService;
 
 	/**
 	 * MerchantProvider constructor.
 	 *
 	 * @param MerchantEndpoint $merchantEndpoint The merchant endpoint to use for API calls.
 	 */
-	public function __construct( MerchantEndpoint $merchantEndpoint, LoggerService $loggerService ) {
+	public function __construct( MerchantEndpoint $merchantEndpoint, ?LoggerService $loggerService = null ) {
 		$this->merchantEndpoint = $merchantEndpoint;
-		$this->loggerService    = $loggerService;
+		$this->loggerService    = $loggerService ?? new NullLogger();
 	}
 
 	/**

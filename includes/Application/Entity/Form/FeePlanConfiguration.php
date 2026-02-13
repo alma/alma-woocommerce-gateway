@@ -46,7 +46,7 @@ class FeePlanConfiguration {
 	 * @param bool               $enabled
 	 * @param LoggerService|null $loggerService
 	 */
-	public function __construct( string $planKey, int $minAmount, int $maxAmount, bool $enabled, LoggerService $loggerService = null ) {
+	public function __construct( string $planKey, int $minAmount, int $maxAmount, bool $enabled, ?LoggerService $loggerService = null ) {
 		$this->planKey       = $planKey;
 		$this->minAmount     = $minAmount;
 		$this->maxAmount     = $maxAmount;

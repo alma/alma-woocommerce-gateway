@@ -49,7 +49,7 @@ class GatewayRepository implements GatewayRepositoryInterface {
 		CreditGatewayBlock::class,
 	];
 
-	public function __construct( LoggerService $loggerService = null ) {
+	public function __construct( ?LoggerService $loggerService = null ) {
 		$this->loggerService = $loggerService ?? new NullLogger();
 	}
 

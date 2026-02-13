@@ -64,6 +64,7 @@ class ConfigFormMapper {
 		$settings[ GatewayConfigurationForm::FIELD_TEST_API_KEY ] = $config->getKeyConfiguration()->getNewTestKey();
 		$settings[ GatewayConfigurationForm::FIELD_LIVE_API_KEY ] = $config->getKeyConfiguration()->getNewLiveKey();
 		$settings[ GatewayConfigurationForm::FIELD_MERCHANT_ID ]  = $config->getKeyConfiguration()->getNewMerchantId();
+		$settings[ GatewayConfigurationForm::FIELD_ENVIRONMENT ]  = $config->getKeyConfiguration()->getNewEnvironment();
 
 		// Fee Plans
 		/** @var FeePlanConfiguration $fee_plan_configuration */
@@ -86,11 +87,13 @@ class ConfigFormMapper {
 			$this->config_service,
 			$this->authentication_service,
 			$this->settings[ GatewayConfigurationForm::FIELD_TEST_API_KEY ],
-			$this->settings[ GatewayConfigurationForm::FIELD_LIVE_API_KEY ]
+			$this->settings[ GatewayConfigurationForm::FIELD_LIVE_API_KEY ],
+			$this->settings[ GatewayConfigurationForm::FIELD_ENVIRONMENT ]
 		);
 		// Remove keys from additional settings to not save them twice
 		unset( $this->settings[ GatewayConfigurationForm::FIELD_TEST_API_KEY ] );
 		unset( $this->settings[ GatewayConfigurationForm::FIELD_LIVE_API_KEY ] );
+		unset( $this->settings[ GatewayConfigurationForm::FIELD_ENVIRONMENT ] );
 
 		return $key_configuration;
 	}

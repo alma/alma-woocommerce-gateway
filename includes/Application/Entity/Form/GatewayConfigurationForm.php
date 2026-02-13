@@ -10,6 +10,9 @@ class GatewayConfigurationForm {
 	/** @var string Field name for Test API key */
 	public const FIELD_TEST_API_KEY = 'test_api_key';
 
+	/** @var string Field name for Environment */
+	public const FIELD_ENVIRONMENT = 'environment';
+
 	/** @var string Field name for Merchant id */
 	public const FIELD_MERCHANT_ID = 'merchant_id';
 

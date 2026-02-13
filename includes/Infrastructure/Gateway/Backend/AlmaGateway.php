@@ -129,8 +129,8 @@ class AlmaGateway extends AbstractBackendGateway {
 		$settings = $this->clean_decoration_fields( $settings );
 
 		// Check mandatory fields
-		if ( empty( $settings[ GatewayConfigurationForm::FIELD_LIVE_API_KEY ] ) || empty( $settings[ GatewayConfigurationForm::FIELD_TEST_API_KEY ] ) ) {
-			$this->errors[] = __( 'The API keys are mandatory.', 'alma-gateway-for-woocommerce' );
+		if ( empty( $settings[ GatewayConfigurationForm::FIELD_LIVE_API_KEY ] ) && empty( $settings[ GatewayConfigurationForm::FIELD_TEST_API_KEY ] ) ) {
+			WC_Admin_Settings::add_error( __( 'The API keys are mandatory.', 'alma-gateway-for-woocommerce' ) );
 
 			return $settings;
 		}
@@ -154,7 +154,7 @@ class AlmaGateway extends AbstractBackendGateway {
 					'exception' => $e,
 				)
 			);
-			$this->errors = array(
+			WC_Admin_Settings::add_error(
 				__(
 					'An error occurred while validating the configuration. Please try again.',
 					'alma-gateway-for-woocommerce'

@@ -20,7 +20,8 @@
     "ext-openssl": "*",
     "alma/alma-php-client": "3.0.*|dev-feature/3.0",
     "level-2/dice": "^4.0",
-    "psr/http-client": "^1"
+    "psr/http-client": "^1",
+    "psr/log": "^1"
   },
   "require-dev": {
     "brain/monkey": "^2.0@dev",

@@ -114,14 +114,10 @@ class AbstractBackendGateway extends AbstractGateway {
 
 		// Available options for the environment select field
 		/** @var ConfigService $options_service */
-		$options_service     = Plugin::get_container()->get( ConfigService::class );
-		$environment_options = array();
-		if ( ! empty( $options_service->getTestApiKey() ) ) {
-			$environment_options['test'] = __( 'Test', 'alma-gateway-for-woocommerce' );
-		}
-		if ( ! empty( $options_service->getLiveApiKey() ) ) {
-			$environment_options['live'] = __( 'Live', 'alma-gateway-for-woocommerce' );
-		}
+		$options_service             = Plugin::get_container()->get( ConfigService::class );
+		$environment_options         = array();
+		$environment_options['test'] = __( 'Test', 'alma-gateway-for-woocommerce' );
+		$environment_options['live'] = __( 'Live', 'alma-gateway-for-woocommerce' );
 
 		return array(
 			'keys_section'                               => array(

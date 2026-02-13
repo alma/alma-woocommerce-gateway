@@ -13,6 +13,7 @@ use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\ParameterHelper;
 use Alma\Gateway\Infrastructure\Helper\ShopNotificationHelper;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
+use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Alma\Gateway\Plugin;
 use Alma\Plugin\Infrastructure\Helper\NavigationHelperInterface;
 use Psr\Log\LoggerInterface;
@@ -46,7 +47,7 @@ class IpnService {
 		PaymentProvider $paymentService,
 		NavigationHelperInterface $navigationHelper,
 		IpnHelper $ipnHelper,
-		$loggerService = null
+		?LoggerService $loggerService = null
 	) {
 		$this->configService    = $configService;
 		$this->fraudService     = $fraudService;

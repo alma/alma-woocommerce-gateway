@@ -54,7 +54,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 	 * @param FeePlanRepository|null $fee_plan_repository
 	 * @param LoggerInterface|null   $logger_service
 	 */
-	public function __construct( ?FeePlanRepository $fee_plan_repository = null, LoggerInterface $logger_service = null ) {
+	public function __construct( ?FeePlanRepository $fee_plan_repository = null, ?LoggerInterface $logger_service = null ) {
 		$this->fee_plan_repository = $fee_plan_repository ?? Plugin::get_container()->get( FeePlanRepository::class );
 		$this->logger_service      = $logger_service ?? Plugin::get_container()->get( LoggerService::class );
 

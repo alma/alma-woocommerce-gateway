@@ -2,6 +2,7 @@
 
 namespace Alma\Gateway\Tests\Unit\Application\Entity\Form;
 
+use Alma\Client\Domain\ValueObject\Environment;
 use Alma\Gateway\Application\Entity\Form\KeyConfiguration;
 use Alma\Gateway\Application\Service\AuthenticationService;
 use Alma\Gateway\Application\Service\ConfigService;
@@ -19,6 +20,7 @@ class KeysConfigFormTest extends TestCase {
 				'before' => [
 					'newTestKey'              => '',
 					'newLiveKey'              => '',
+					'newEnvironment'          => 'test',
 					'expectedTestChanged'     => false,
 					'expectedLiveChanged'     => false,
 					'expectedTestEmpty'       => true,
@@ -30,6 +32,7 @@ class KeysConfigFormTest extends TestCase {
 				'after'  => [
 					'newTestKey'              => '',
 					'newLiveKey'              => '',
+					'newEnvironment'          => 'test',
 					'expectedTestChanged'     => false,
 					'expectedLiveChanged'     => false,
 					'expectedTestEmpty'       => true,
@@ -44,6 +47,7 @@ class KeysConfigFormTest extends TestCase {
 				'before' => [
 					'newTestKey'              => 'good_key',
 					'newLiveKey'              => 'good_key',
+					'newEnvironment'          => 'test',
 					'expectedTestChanged'     => true,
 					'expectedLiveChanged'     => true,
 					'expectedTestEmpty'       => false,
@@ -55,6 +59,7 @@ class KeysConfigFormTest extends TestCase {
 				'after'  => [
 					'newTestKey'              => 'good_key',
 					'newLiveKey'              => 'good_key',
+					'newEnvironment'          => 'test',
 					'expectedTestChanged'     => true,
 					'expectedLiveChanged'     => true,
 					'expectedTestEmpty'       => false,
@@ -69,6 +74,7 @@ class KeysConfigFormTest extends TestCase {
 				'before' => [
 					'newTestKey'              => 'good_key',
 					'newLiveKey'              => '',
+					'newEnvironment'          => 'live',
 					'expectedTestChanged'     => true,
 					'expectedLiveChanged'     => false,
 					'expectedTestEmpty'       => false,
@@ -80,11 +86,12 @@ class KeysConfigFormTest extends TestCase {
 				'after'  => [
 					'newTestKey'              => 'good_key',
 					'newLiveKey'              => '',
+					'newEnvironment'          => 'test',
 					'expectedTestChanged'     => true,
 					'expectedLiveChanged'     => false,
 					'expectedTestEmpty'       => false,
 					'expectedLiveEmpty'       => true,
-					'expectedErrorCount'      => 0,
+					'expectedErrorCount'      => 1,
 					'expectedMerchantId'      => 'merchant_xxxxxxxxxxxxxxx',
 					'expectedMerchantChanged' => true,
 				],
@@ -94,6 +101,7 @@ class KeysConfigFormTest extends TestCase {
 				'before' => [
 					'newTestKey'              => '',
 					'newLiveKey'              => 'good_key',
+					'newEnvironment'          => 'live',
 					'expectedTestChanged'     => false,
 					'expectedLiveChanged'     => true,
 					'expectedTestEmpty'       => true,
@@ -105,6 +113,7 @@ class KeysConfigFormTest extends TestCase {
 				'after'  => [
 					'newTestKey'              => '',
 					'newLiveKey'              => 'good_key',
+					'newEnvironment'          => 'live',
 					'expectedTestChanged'     => false,
 					'expectedLiveChanged'     => true,
 					'expectedTestEmpty'       => true,
@@ -124,6 +133,7 @@ class KeysConfigFormTest extends TestCase {
 				'before' => [
 					'newTestKey'              => 'good_key',
 					'newLiveKey'              => 'good_key',
+					'newEnvironment'          => 'live',
 					'expectedTestChanged'     => true,
 					'expectedLiveChanged'     => true,
 					'expectedTestEmpty'       => false,
@@ -135,6 +145,7 @@ class KeysConfigFormTest extends TestCase {
 				'after'  => [
 					'newTestKey'              => 'good_key',
 					'newLiveKey'              => 'good_key',
+					'newEnvironment'          => 'live',
 					'expectedTestChanged'     => true,
 					'expectedLiveChanged'     => true,
 					'expectedTestEmpty'       => false,
@@ -149,6 +160,7 @@ class KeysConfigFormTest extends TestCase {
 				'before' => [
 					'newTestKey'              => 'good_key',
 					'newLiveKey'              => 'good_key_from_another_account',
+					'newEnvironment'          => 'live',
 					'expectedTestChanged'     => true,
 					'expectedLiveChanged'     => true,
 					'expectedTestEmpty'       => false,
@@ -160,6 +172,7 @@ class KeysConfigFormTest extends TestCase {
 				'after'  => [
 					'newTestKey'              => 'old_good_test_key',
 					'newLiveKey'              => 'old_good_live_key',
+					'newEnvironment'          => 'live',
 					'expectedTestChanged'     => false,
 					'expectedLiveChanged'     => false,
 					'expectedTestEmpty'       => false,
@@ -181,12 +194,15 @@ class KeysConfigFormTest extends TestCase {
 		$brandNewConfigServiceMock->method( 'getTestApiKey' )->willReturn( '' );
 		$brandNewConfigServiceMock->method( 'getLiveApiKey' )->willReturn( '' );
 		$brandNewConfigServiceMock->method( 'getMerchantId' )->willReturn( '' );
+		$env = new Environment( $before['newEnvironment'] );
+		$brandNewConfigServiceMock->method( 'getEnvironment' )->willReturn( $env );
 
 		$keyConfiguration = new KeyConfiguration(
 			$brandNewConfigServiceMock,
 			$this->authenticationServiceMock,
 			$before['newTestKey'],
-			$before['newLiveKey']
+			$before['newLiveKey'],
+			$before['newEnvironment']
 		);
 
 		// Before check
@@ -223,12 +239,15 @@ class KeysConfigFormTest extends TestCase {
 		$configServiceMock->method( 'getTestApiKey' )->willReturn( 'old_good_test_key' );
 		$configServiceMock->method( 'getLiveApiKey' )->willReturn( 'old_good_live_key' );
 		$configServiceMock->method( 'getMerchantId' )->willReturn( 'merchant_oldxxxxxxxxxxxx' );
+		$env = new Environment( $before['newEnvironment'] );
+		$configServiceMock->method( 'getEnvironment' )->willReturn( $env );
 
 		$keyConfiguration = new KeyConfiguration(
 			$configServiceMock,
 			$this->authenticationServiceMock,
 			$before['newTestKey'],
-			$before['newLiveKey']
+			$before['newLiveKey'],
+			$before['newEnvironment']
 		);
 
 		// Before check
@@ -267,5 +286,9 @@ class KeysConfigFormTest extends TestCase {
 					                                return '';
 			                                }
 		                                } );
+	}
+
+	protected function tearDown(): void {
+		parent::tearDown();
 	}
 }
