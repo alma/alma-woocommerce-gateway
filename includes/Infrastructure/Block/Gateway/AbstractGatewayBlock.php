@@ -11,6 +11,10 @@
 
 namespace Alma\Gateway\Infrastructure\Block\Gateway;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Application\Exception\Service\PaymentServiceException;
 use Alma\Gateway\Application\Service\BusinessEventsService;
 use Alma\Gateway\Application\Service\PaymentService;
@@ -25,10 +29,6 @@ use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodTyp
 use Automattic\WooCommerce\StoreApi\Payments\PaymentContext;
 use Automattic\WooCommerce\StoreApi\Payments\PaymentResult;
 use Exception;
-
-if ( ! defined( 'ABSPATH' ) ) {
-	die( 'Not allowed' ); // Exit if accessed directly.
-}
 
 /**
  * Alma_Blocks

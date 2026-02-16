@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 class UrlHelper {
 
 	/**
@@ -16,7 +20,7 @@ class UrlHelper {
 	public static function checkAndCleanUrl( string $url, ?array $protocols = null, string $_context = 'display' ): ?string {
 		return esc_url( $url, $protocols, $_context );
 	}
-	
+
 	/**
 	 * Get the admin logs URL
 	 *

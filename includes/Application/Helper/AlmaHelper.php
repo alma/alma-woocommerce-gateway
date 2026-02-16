@@ -2,12 +2,12 @@
 
 namespace Alma\Gateway\Application\Helper;
 
-use Alma\Client\Domain\ValueObject\Environment;
-use Alma\Gateway\Infrastructure\Helper\UrlHelper;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
+
+use Alma\Client\Domain\ValueObject\Environment;
+use Alma\Gateway\Infrastructure\Helper\UrlHelper;
 
 class AlmaHelper {
 

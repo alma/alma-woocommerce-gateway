@@ -6,11 +6,11 @@
 
 namespace Alma\Gateway\Infrastructure\Repository;
 
-use Alma\Plugin\Infrastructure\Repository\ConfigRepositoryInterface;
-
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // @codeCoverageIgnore
+	die( 'Not allowed' ); // Exit if accessed directly.
 }
+
+use Alma\Plugin\Infrastructure\Repository\ConfigRepositoryInterface;
 
 /**
  * Class ConfigAdapter to manage WordPress/WooCommerce options.

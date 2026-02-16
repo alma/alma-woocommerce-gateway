@@ -2,14 +2,14 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Infrastructure\Entity\CartWidget;
 use Alma\Gateway\Infrastructure\Exception\Entity\CartWidgetException;
 use Alma\Gateway\Infrastructure\Exception\Helper\HelperException;
 use Alma\Gateway\Plugin;
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // @codeCoverageIgnore
-}
 
 /**
  * Helper class to display the cart and product widgets with a shortcode.

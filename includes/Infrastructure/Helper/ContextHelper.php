@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\CustomerAdapter;
 use Alma\Plugin\Infrastructure\Adapter\CartAdapterInterface;
@@ -140,6 +144,17 @@ class ContextHelper implements ContextHelperInterface {
 	 */
 	public static function getWebhookUrl( string $webhook ): string {
 		return wc()->api_request_url( $webhook );
+	}
+
+	/**
+	 * Returns the current WordPress version.
+	 *
+	 * @return string
+	 */
+	public static function getPlatformVersion(): string {
+		global $wp_version;
+
+		return $wp_version;
 	}
 
 	/**

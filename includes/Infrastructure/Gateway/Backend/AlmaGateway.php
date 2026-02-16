@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway\Backend;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Application\Entity\Form\GatewayConfigurationForm;
 use Alma\Gateway\Application\Exception\Service\GatewayConfigurationFormValidatorServiceException;
 use Alma\Gateway\Application\Helper\EncryptorHelper;
@@ -18,7 +22,6 @@ use WC_Admin_Settings;
 class AlmaGateway extends AbstractBackendGateway {
 
 	public const PAYMENT_METHOD = 'config';
-
 
 	/**
 	 * Gateway constructor.
@@ -176,16 +179,6 @@ class AlmaGateway extends AbstractBackendGateway {
 		}
 
 		return $settings;
-	}
-
-	/**
-	 * Process admin Options
-	 *
-	 * @return bool
-	 */
-	public function process_admin_options(): bool {
-
-		return parent::process_admin_options();
 	}
 
 	/**

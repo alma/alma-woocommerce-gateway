@@ -2,6 +2,9 @@
 
 namespace Alma\Gateway\Application\Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
 
 use Alma\Client\Application\Helper\RequestHelper;
 use Alma\Gateway\Application\Exception\Helper\IpnHelperException;

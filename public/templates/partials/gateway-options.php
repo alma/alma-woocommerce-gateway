@@ -14,6 +14,9 @@
 /** @var string $alma_woocommerce_gateway_payment_method */
 /** @var int $alma_woocommerce_gateway_fee_plan_count */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
 ?>
 <div
 	class="alma_woocommerce_gateway_fieldset alma_woocommerce_gateway_<?php echo esc_attr( $alma_woocommerce_gateway_payment_method ); ?>">

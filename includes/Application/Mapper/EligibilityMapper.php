@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Application\Mapper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Client\Application\DTO\AddressDto;
 use Alma\Client\Application\DTO\EligibilityDto;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;

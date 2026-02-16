@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Controller;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Application\Service\PluginService;
 use Alma\Gateway\Infrastructure\Exception\Controller\AdminControllerException;
 use Alma\Gateway\Infrastructure\Exception\Service\AssetsServiceException;

@@ -2,13 +2,13 @@
 
 namespace Alma\Gateway\Application\Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
 use Alma\Gateway\Infrastructure\Helper\RenderHelper;
 use Alma\Gateway\Plugin;
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // @codeCoverageIgnore
-}
 
 /**
  * TemplateLoaderHelper

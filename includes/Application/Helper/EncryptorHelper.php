@@ -11,13 +11,13 @@
 
 namespace Alma\Gateway\Application\Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Application\Exception\Helper\EncryptorHelperException;
 use Alma\Gateway\Infrastructure\Exception\Helper\HelperException;
 use Alma\Gateway\Infrastructure\Helper\SecurityHelper;
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // @codeCoverageIgnore
-}
 
 /**
  * EncryptorHelper

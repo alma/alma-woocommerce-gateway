@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Repository;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Plugin\Infrastructure\Repository\ProductCategoryRepositoryInterface;
 
 class ProductCategoryRepository implements ProductCategoryRepositoryInterface {

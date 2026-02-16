@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Adapter;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Plugin\Infrastructure\Adapter\CartAdapterInterface;
 use WC_Cart;

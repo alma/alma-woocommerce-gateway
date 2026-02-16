@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Controller;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\InPageService;
 use Alma\Gateway\Application\Service\WidgetService;

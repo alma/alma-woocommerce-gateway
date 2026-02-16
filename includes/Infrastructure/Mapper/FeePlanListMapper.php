@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Mapper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Infrastructure\Dto\FeePlanListDto;
 use Alma\Plugin\Infrastructure\Adapter\FeePlanListAdapterInterface;
 

@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Service;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Infrastructure\Config\AssetsConfig;
 use Alma\Gateway\Infrastructure\Exception\Service\AssetsServiceException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;

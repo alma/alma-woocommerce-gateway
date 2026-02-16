@@ -2,14 +2,18 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 class CmsHelper {
 
 	public static function getCmsVersion(): array {
-		return ['WordPress', get_bloginfo( 'version' )];
+		return [ 'WordPress', get_bloginfo( 'version' ) ];
 	}
 
 	public static function getShopVersion(): array {
-		return ['WooCommerce', WC()->version];
+		return [ 'WooCommerce', WC()->version ];
 	}
 
 }

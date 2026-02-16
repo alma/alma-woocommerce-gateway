@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Adapter;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Client\Domain\Entity\FeePlan;
 use Alma\Client\Domain\Entity\PaymentPlanTrait;
 use Alma\Plugin\Infrastructure\Adapter\FeePlanAdapterEligibilityAwareInterface;

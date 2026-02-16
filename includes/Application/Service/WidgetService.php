@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Application\Service;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Client\Domain\Entity\WidgetInterface;
 use Alma\Client\Domain\ValueObject\Environment;
 use Alma\Gateway\Application\Exception\Service\WidgetServiceException;
@@ -18,10 +22,6 @@ use Alma\Gateway\Infrastructure\Repository\GatewayRepository;
 use Alma\Gateway\Infrastructure\Repository\ProductRepository;
 use Alma\Gateway\Infrastructure\Service\AssetsService;
 use Alma\Gateway\Plugin;
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // @codeCoverageIgnore
-}
 
 class WidgetService {
 

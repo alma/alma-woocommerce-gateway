@@ -14,6 +14,9 @@
 use Alma\Gateway\Application\Helper\L10nHelper;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
 ?>
 <div
 	id="alma-checkout-plan-<?php echo esc_attr( $alma_woocommerce_gateway_plan_key ); ?>"

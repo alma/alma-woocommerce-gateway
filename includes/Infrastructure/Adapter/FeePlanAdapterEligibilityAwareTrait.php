@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Adapter;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 trait FeePlanAdapterEligibilityAwareTrait {
 
 	private int $customerTotalCostAmount = 0;

@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Application\Entity\Form;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Client\Domain\ValueObject\Environment;
 use Alma\Gateway\Application\Service\AuthenticationService;
 use Alma\Gateway\Application\Service\ConfigService;

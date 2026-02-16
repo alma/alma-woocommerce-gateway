@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Gateway\Frontend;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Client\Domain\ValueObject\PaymentMethod;
 use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
 use Alma\Gateway\Application\Helper\TemplateHelper;

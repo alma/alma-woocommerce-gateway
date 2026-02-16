@@ -128,7 +128,7 @@
         <include-pattern>src/Application/*</include-pattern>
     </rule-->
 
-    <!-- Interdire les espaces vides au début ou à la fin d'un fichier -->
+    <!-- Disallow blank spaces at the beginning or end of a file -->
     <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace">
         <properties>
             <!-- Vérifie aussi le début et la fin des fichiers -->
@@ -136,9 +136,9 @@
         </properties>
     </rule>
 
-    <!-- Interdire la balise de fermeture PHP `?>` dans les fichiers purement PHP -->
+    <!-- Disable the PHP closing tag `?>` in purely PHP files -->
     <rule ref="PSR2.Files.ClosingTag"/>
-    
+
     <!-- Include custom sniff -->
     <rule ref="AlmaIntegrationCms.Architecture.ForbiddenPrefix">
         <exclude-pattern>includes/Infrastructure/*</exclude-pattern>
@@ -152,4 +152,6 @@
     <rule ref="AlmaIntegrationCms.NamingConventions.ClassSuffixByDirectory"/>
     <rule ref="AlmaIntegrationCms.NamingConventions.ForbiddenHelperDependency"/>
     <rule ref="AlmaIntegrationCms.Scope.NoPublicMemberVar"/>
+
+    <rule ref="AlmaIntegrationCms.Security.AbspathCheck"/>
 </ruleset>

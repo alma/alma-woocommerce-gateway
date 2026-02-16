@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Service;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Client\Application\ClientConfiguration;
 use Alma\Client\Application\CurlClient;
 use Alma\Client\Application\Endpoint\ConfigurationEndpoint;
@@ -69,6 +73,7 @@ use Alma\Plugin\Infrastructure\Repository\ProductRepositoryInterface;
 use Dice\Dice;
 use Psr\Http\Client\ClientInterface;
 use Psr\Log\NullLogger;
+
 
 /**
  * This DI Container is a wrapper around Dice

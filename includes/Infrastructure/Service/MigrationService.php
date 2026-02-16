@@ -2,6 +2,10 @@
 
 namespace Alma\Gateway\Infrastructure\Service;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 
 class MigrationService {
@@ -28,6 +32,7 @@ class MigrationService {
 		$version = get_option( self::VERSION_KEY, null );
 		if ( ! $version ) {
 			add_option( self::VERSION_KEY, self::VERSION_6_0_0 );
+
 			return false; // Fresh install, no migrations needed
 		}
 

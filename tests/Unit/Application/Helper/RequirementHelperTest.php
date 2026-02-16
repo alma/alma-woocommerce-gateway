@@ -13,30 +13,25 @@ use PHPUnit\Framework\TestCase;
 class RequirementHelperTest extends TestCase {
 	use MockeryPHPUnitIntegration;
 
-	private $requirementHelper;
-
 	public function testWCnotExit() {
 		$this->expectException( RequirementsHelperException::class );
-		$this->requirementHelper->check_dependencies( '7.0.0' );
+		RequirementsHelper::check_dependencies( '5.0.0', '7.0.0' );
 	}
 
 	public function testCompareVersionLowerThanExpectedWillThrow() {
 		$this->expectException( RequirementsHelperException::class );
-		$this->requirementHelper->check_dependencies( '6.9.9' );
+		RequirementsHelper::check_dependencies( '5.0.0', '6.9.9' );
 	}
 
 	public function testRequirementOk(): void {
-		Functions\expect( 'WC' )
-			->andReturn( function () {
-			} );
-		$this->assertTrue( $this->requirementHelper->check_dependencies( '8.2.0' ) );
-
+		define( 'WC_VERSION', 'ok' );
+		$this->assertTrue( RequirementsHelper::check_dependencies( '6.6', '10.1.0' ) );
 	}
 
 	protected function setUp(): void {
 		parent::setUp();
 		Monkey\setUp();
-		$this->requirementHelper = new RequirementsHelper();
+		Functions\when( '__' )->returnArg();
 	}
 
 	protected function tearDown(): void {
