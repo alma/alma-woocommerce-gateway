@@ -56,63 +56,27 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 						echo '<td class="alma_woocommerce_gateway_amount">' . L10nHelper::format_currency( $alma_woocommerce_gateway_installment['total_amount'] ) . '</td>';
 					}
 					?>
-					<?php if ( $alma_woocommerce_gateway_fee_plan->getCustomerFee() ) { ?>
-						<td colspan="2" class="alma_woocommerce_gateway_fees">
+				</tr>
+				<?php if ( $alma_woocommerce_gateway_fee_plan->getCustomerFee() ) { ?>
+					<tr>
+						<td>
 							<?php
 							echo esc_html__(
 								'Included fees:',
 								'alma-gateway-for-woocommerce'
 							);
 							?>
-
-							<?php echo $alma_woocommerce_gateway_fee_plan->getCustomerFee(); ?>
 						</td>
-						<?php
-					}
-					?>
-				</tr>
-				<?php
+						<td class="alma_woocommerce_gateway_amount">
+							<?php echo L10nHelper::format_currency( $alma_woocommerce_gateway_fee_plan->getCustomerFee() ); ?>
+					</tr>
+					<?php
+
+				}
 			} // end foreach
 			?>
 		</table>
-
 		<?php
-		if ( $alma_woocommerce_gateway_fee_plan->isCredit() ) {
-			?>
-			<h3><?php echo esc_html__( 'Your credit', 'alma-gateway-for-woocommerce' ); ?></h3>
-
-			<table class="alma_woocommerce_gateway_installments">
-				<tr>
-					<td><?php echo esc_html__( 'Your cart:', 'alma-gateway-for-woocommerce' ); ?></td>
-					<td class="alma_woocommerce_gateway_credit alma_woocommerce_gateway_amount"><?php echo L10nHelper::format_currency( $alma_woocommerce_gateway_fee_plan->getCustomerTotalCostAmount() ); ?></td>
-				</tr>
-				<tr>
-					<td><?php echo esc_html__( 'Credit cost:', 'alma-gateway-for-woocommerce' ); ?></td>
-					<td class="alma_woocommerce_gateway_credit alma_woocommerce_gateway_amount"><?php echo L10nHelper::format_currency( $alma_woocommerce_gateway_fee_plan->getCustomerTotalCostBps() ); ?></td>
-				</tr>
-				<?php
-				$alma_annual_interest_rate = $alma_woocommerce_gateway_fee_plan->getAnnualInterestRate();
-				if ( ! is_null( $alma_annual_interest_rate ) && $alma_annual_interest_rate > 0 ) {
-					?>
-					<tr>
-						<td>
-							<?php
-							echo esc_html__(
-								'Annual Interest Rate:',
-								'alma-gateway-for-woocommerce'
-							);
-							?>
-						</td>
-						<td class="alma_woocommerce_gateway_credit alma_woocommerce_gateway_amount"><?php echo $alma_annual_interest_rate; ?></td>
-					</tr>
-				<?php } ?>
-				<tr class="alma_woocommerce_gateway_installments_total">
-					<td><?php echo esc_html__( 'Total:', 'alma-gateway-for-woocommerce' ); ?></td>
-					<td class="alma_woocommerce_gateway_credit alma_woocommerce_gateway_amount"><?php echo L10nHelper::format_currency( $alma_woocommerce_gateway_fee_plan->getCustomerTotalCostAmount() ); ?></td>
-				</tr>
-			</table>
-			<?php
-		}
 	}
 	?>
 	<?php

@@ -15,7 +15,7 @@
 .alma_woocommerce_gateway_checkout_plan {
 	flex: 0 0 100%;
 	box-sizing: border-box;
-	margin: 5px auto;
+	margin: 10px auto 0;
 }
 
 .alma_woocommerce_gateway_logo {
@@ -46,10 +46,18 @@
 	font-size: 10px;
 }
 
+.alma_woocommerce_gateway_checkout_plan .alma_woocommerce_gateway_installments tr.alma_woocommerce_gateway_installment td {
+	border-top: 1px solid lightgrey;
+}
+
 .alma_woocommerce_gateway_checkout_plan .alma_woocommerce_gateway_installments tr td {
 	padding: 4px 0;
 	margin: 4px 0;
-	border-bottom: 1px solid lightgrey;
+	text-align: left;
+}
+
+.alma_woocommerce_gateway_checkout_plan .alma_woocommerce_gateway_installments tr td.alma_woocommerce_gateway_amount {
+	text-align: right;
 }
 
 .alma_woocommerce_gateway_checkout_plan .alma_woocommerce_gateway_installments .alma_woocommerce_gateway_fees {
