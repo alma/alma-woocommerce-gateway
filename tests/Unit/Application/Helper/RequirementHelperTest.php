@@ -26,15 +26,14 @@ class RequirementHelperTest extends TestCase {
 	}
 
 	public function testRequirementOk(): void {
-		Functions\expect( 'WC' )
-			->andReturn( function () {
-			} );
+		define( 'WC_VERSION', 'ok' );
 		$this->assertTrue( $this->requirementHelper::check_dependencies( '6.6', '10.1.0' ) );
 	}
 
 	protected function setUp(): void {
 		parent::setUp();
 		Monkey\setUp();
+		Functions\when( '__' )->returnArg();
 		$this->requirementHelper = new RequirementsHelper();
 	}
 
