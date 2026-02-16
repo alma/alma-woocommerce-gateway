@@ -78,6 +78,12 @@ class AbstractPlugin {
 
 		// Check if all dependencies are met
 		try {
+			if ( ! RequirementsHelper::check_requirements() ) {
+				self::$plugin_prerequisites = false;
+
+				return false;
+			}
+
 			if ( ! RequirementsHelper::check_dependencies(
 				ContextHelper::getPlatformVersion(),
 				ContextHelper::getCmsVersion()

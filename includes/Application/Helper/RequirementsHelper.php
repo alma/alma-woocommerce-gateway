@@ -14,41 +14,12 @@ class RequirementsHelper {
 	const MIN_WORDPRESS_VERSION = '6.6';
 
 	/**
-	 * Check if we met dependencies.
-	 *
-	 * @param string $platformVersion The current version of WordPress
-	 * @param string $cmsVersion The current version of WooCommerce
+	 * Check if we met requirements.
 	 *
 	 * @return true
 	 * @throws RequirementsHelperException
 	 */
-	public static function check_dependencies( string $platformVersion, string $cmsVersion ): bool {
-		if ( ! function_exists( 'WC' ) ) {
-			throw new RequirementsHelperException(
-				__( 'Alma requires WooCommerce to be activated' )
-			);
-		}
-
-		// Check WordPress version
-		if ( version_compare( $platformVersion, self::MIN_WORDPRESS_VERSION, '<' ) ) {
-			throw new RequirementsHelperException(
-				sprintf(
-				// translators: %s is the minimum WordPress version required to run the plugin.
-					__( 'Alma requires WordPress version %s or greater' ),
-					self::MIN_WORDPRESS_VERSION
-				)
-			);
-		}
-
-		if ( version_compare( $cmsVersion, self::MIN_WOOCOMMERCE_VERSION, '<' ) ) {
-			throw new RequirementsHelperException(
-				sprintf(
-				// translators: %s is the minimum WooCommerce version required to run the plugin.
-					__( 'Alma requires WooCommerce version %s or greater' ),
-					self::MIN_WOOCOMMERCE_VERSION
-				)
-			);
-		}
+	public static function check_requirements(): bool {
 
 		if ( ! function_exists( 'curl_init' ) ) {
 			throw new RequirementsHelperException(
@@ -72,6 +43,46 @@ class RequirementsHelper {
 		if ( empty( $matches[1] ) ) {
 			throw new RequirementsHelperException(
 				__( 'Alma requires OpenSSL to be installed on your server' )
+			);
+		}
+
+		return true;
+	}
+
+	/**
+	 * Check if we met dependencies.
+	 *
+	 * @param string $platformVersion The current version of WordPress
+	 * @param string $cmsVersion The current version of WooCommerce
+	 *
+	 * @return true
+	 * @throws RequirementsHelperException
+	 */
+	public static function check_dependencies( string $platformVersion, string $cmsVersion ): bool {
+		if ( ! defined( 'WC_VERSION' ) ) {
+			throw new RequirementsHelperException(
+				__( 'Alma requires WooCommerce to be activated' )
+			);
+		}
+
+		// Check WordPress version
+		if ( version_compare( $platformVersion, self::MIN_WORDPRESS_VERSION, '<' ) ) {
+			throw new RequirementsHelperException(
+				sprintf(
+				// translators: %s is the minimum WordPress version required to run the plugin.
+					__( 'Alma requires WordPress version %s or greater' ),
+					self::MIN_WORDPRESS_VERSION
+				)
+			);
+		}
+
+		if ( version_compare( $cmsVersion, self::MIN_WOOCOMMERCE_VERSION, '<' ) ) {
+			throw new RequirementsHelperException(
+				sprintf(
+				// translators: %s is the minimum WooCommerce version required to run the plugin.
+					__( 'Alma requires WooCommerce version %s or greater' ),
+					self::MIN_WOOCOMMERCE_VERSION
+				)
 			);
 		}
 
