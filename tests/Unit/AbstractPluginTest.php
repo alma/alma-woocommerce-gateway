@@ -51,6 +51,9 @@ class AbstractPluginTest extends TestCase {
 		                       ->with( '5.0.0', '8.0.0' )
 		                       ->once()
 		                       ->andThrow( new RequirementsHelperException( 'Version too low' ) );
+		$requirementsHelperMock->shouldReceive( 'check_requirements' )
+		                       ->once()
+		                       ->andReturn( true );
 
 		// Mock AdminNotificationHelper
 		$adminNotificationHelperMock = Mockery::mock( 'alias:' . AdminNotificationHelper::class );
@@ -96,6 +99,9 @@ class AbstractPluginTest extends TestCase {
 		                       ->with( '6.6.0', '10.1.0' )
 		                       ->once()
 		                       ->andReturn( true );
+		$requirementsHelperMock->shouldReceive( 'check_requirements' )
+		                       ->once()
+		                       ->andReturn( true );
 
 		$plugin = new Plugin();
 
@@ -139,6 +145,9 @@ class AbstractPluginTest extends TestCase {
 		$adminNotificationHelperMock->shouldReceive( 'notifyError' )
 		                            ->once()
 		                            ->with( 'WordPress version 6.6 or greater is required' );
+		$requirementsHelperMock->shouldReceive( 'check_requirements' )
+		                       ->once()
+		                       ->andReturn( true );
 
 		$plugin = new Plugin();
 
