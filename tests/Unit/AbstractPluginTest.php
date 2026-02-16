@@ -17,6 +17,10 @@ use function Brain\Monkey\tearDown;
 
 class AbstractPluginTest extends TestCase {
 
+	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
 	public function testCheckPrerequisitesReturnsFalseWhenCmsNotLoaded() {
 		// Mock ContextHelper
 		$contextHelperMock = Mockery::mock( 'alias:' . ContextHelper::class );
@@ -32,6 +36,10 @@ class AbstractPluginTest extends TestCase {
 		$this->assertFalse( AbstractPlugin::are_prerequisites_ok() );
 	}
 
+	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
 	public function testCheckPrerequisitesReturnsFalseWhenDependenciesNotMet() {
 		// Mock ContextHelper
 		$contextHelperMock = Mockery::mock( 'alias:' . ContextHelper::class );
@@ -80,6 +88,10 @@ class AbstractPluginTest extends TestCase {
 		$this->assertTrue( AbstractPlugin::are_prerequisites_ok() );
 	}
 
+	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
 	public function testCheckPrerequisitesReturnsTrueWhenAllChecksPassed() {
 		// Mock ContextHelper
 		$contextHelperMock = Mockery::mock( 'alias:' . ContextHelper::class );
@@ -111,6 +123,10 @@ class AbstractPluginTest extends TestCase {
 		$this->assertTrue( AbstractPlugin::are_prerequisites_ok() );
 	}
 
+	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
 	public function testCheckPrerequisitesDeactivatesPluginOnException() {
 		// Mock ContextHelper
 		$contextHelperMock = Mockery::mock( 'alias:' . ContextHelper::class );
@@ -156,6 +172,10 @@ class AbstractPluginTest extends TestCase {
 		$this->assertTrue( $result );
 	}
 
+	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
 	public function testIsPluginNeededReturnsTrueWhenConfiguredAndOnShop() {
 		// Mock ContextHelper
 		$contextHelperMock = Mockery::mock( 'alias:' . ContextHelper::class );
@@ -183,6 +203,10 @@ class AbstractPluginTest extends TestCase {
 		$this->assertFalse( $result );
 	}
 
+	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
 	public function testIsPluginNeededReturnsFalseWhenNotOnShop() {
 		// Mock ContextHelper
 		$contextHelperMock = Mockery::mock( 'alias:' . ContextHelper::class );
@@ -198,6 +222,10 @@ class AbstractPluginTest extends TestCase {
 		$this->assertFalse( $result );
 	}
 
+	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
 	public function testEnableFailsafeMode() {
 		// Mock AdminNotificationHelper
 		$adminNotificationHelperMock = Mockery::mock( 'alias:' . AdminNotificationHelper::class );
