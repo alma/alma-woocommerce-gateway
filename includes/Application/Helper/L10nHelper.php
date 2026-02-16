@@ -7,9 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
-use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\LanguageHelper;
-use NumberFormatter;
 
 class L10nHelper {
 
@@ -49,9 +47,13 @@ class L10nHelper {
 	 * @return string
 	 */
 	public static function format_currency( int $amountInCents ): string {
-		$formatter = new NumberFormatter( ContextHelper::getLocale(), NumberFormatter::CURRENCY );
+		$amount = $amountInCents / 100;
 
-		return $formatter->formatCurrency( $amountInCents / 100, 'EUR' );
+		// Format like WordPress/WooCommerce: amount with comma as decimal separator
+		$formatted_amount = number_format( $amount, 2, ',', ' ' );
+
+		// Return with currency symbol after the amount, with a non-breaking space (U+00A0)
+		return $formatted_amount . '€';
 	}
 
 	/**

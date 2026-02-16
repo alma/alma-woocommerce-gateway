@@ -57,7 +57,7 @@ class ContextHelper implements ContextHelperInterface {
 	}
 
 	/**
-	 * Check if we are on the cart page.
+	 * Check if we are on the cart page (with or without blocks).
 	 * @return bool
 	 */
 	public static function isCartPage(): bool {
@@ -65,18 +65,12 @@ class ContextHelper implements ContextHelperInterface {
 			_doing_it_wrong( 'ContextHelper::isCartPage', 'We don\'t know yet the typ of page we are on.', '*' );
 		}
 
-		if ( class_exists( '\Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils' ) &&
-		     method_exists( '\Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils', 'is_cart_page' ) ) {
-
-			return CartCheckoutUtils::is_cart_page();
-
-		}
-
+		// Always use the standard is_cart() function which works for both blocks and shortcode
 		return function_exists( 'is_cart' ) && is_cart();
 	}
 
 	/**
-	 * Check if we are on the checkout page.
+	 * Check if we are on the checkout page (with or without blocks).
 	 * @return bool
 	 */
 	public static function isCheckoutPage(): bool {
@@ -84,12 +78,7 @@ class ContextHelper implements ContextHelperInterface {
 			_doing_it_wrong( 'ContextHelper::isCheckoutPage', 'We don\'t know yet the typ of page we are on.', '*' );
 		}
 
-		if ( class_exists( '\Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils' ) &&
-		     method_exists( '\Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils', 'is_checkout_page' ) ) {
-
-			return CartCheckoutUtils::is_checkout_page();
-		}
-
+		// Always use the standard is_checkout() function which works for both blocks and shortcode
 		return function_exists( 'is_checkout' ) && is_checkout();
 	}
 
@@ -288,6 +277,7 @@ class ContextHelper implements ContextHelperInterface {
 	public static function isCheckoutPageUseBlocks(): bool {
 		if ( class_exists( '\Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils' ) &&
 		     method_exists( '\Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils', 'is_checkout_block_default' ) ) {
+
 			return CartCheckoutUtils::is_checkout_block_default();
 		}
 
