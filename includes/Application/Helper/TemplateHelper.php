@@ -40,25 +40,15 @@ class TemplateHelper {
 
 	/**
 	 * Get template.
-	 * @TODO need refactor for test file_exists need a test
 	 *
 	 * @param string $template_name Template to load.
 	 * @param array  $args Args passed for the template file.
 	 * @param string $subpath Path to template files.
 	 *
 	 * @throws TemplateHelperException
-	 * @see locate_template()
-	 *
-	 * It's mandatory to use include_once method here.
-	 * @phpcs We use extract to pass variables to the template.
+	 * @see locateTemplate()
 	 */
 	public function getTemplate( string $template_name, array $args = array(), string $subpath = '' ) {
-
-		if ( is_array( $args ) ) {
-			// We master our data. It's not get or post.
-			extract( $args );// phpcs:ignore
-		}
-
 		$template_file = $this->locateTemplate( $template_name, $subpath );
 
 		if ( ! file_exists( $template_file ) ) {

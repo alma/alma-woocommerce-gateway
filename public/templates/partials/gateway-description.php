@@ -6,10 +6,13 @@
  * @subpackage Alma_Gateway_For_Woocommerce/public/templates/partials
  */
 
-/** @var string $alma_woocommerce_gateway_description */
+/**
+ * @var array  $args Template arguments
+ * @var string $args ['alma_woocommerce_gateway_description'] Gateway description
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 ?>
-<div style="flex-basis: 100%;"><p><?php echo $alma_woocommerce_gateway_description; ?></p></div>
+<div style="flex-basis: 100%;"><p><?php echo $args['alma_woocommerce_gateway_description']; ?></p></div>

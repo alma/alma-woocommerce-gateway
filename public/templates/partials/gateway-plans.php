@@ -6,9 +6,16 @@
  *
  * @package Alma_Gateway_For_Woocommerce
  * @subpackage Alma_Gateway_For_Woocommerce/public/templates/partials
- * @var string         $alma_woocommerce_gateway_plan_key
- * @var string         $alma_woocommerce_gateway_name
- * @var FeePlanAdapter $alma_woocommerce_gateway_fee_plan
+ */
+
+/**
+ * @var array          $args Template arguments
+ * @var string         $args ['alma_woocommerce_gateway_plan_key'] Plan key
+ * @var string         $args ['alma_woocommerce_gateway_name'] Gateway name
+ * @var FeePlanAdapter $args ['alma_woocommerce_gateway_fee_plan'] Fee plan
+ * @var bool           $args ['alma_woocommerce_gateway_in_page_enabled'] In-page enabled
+ * @var string         $args ['alma_woocommerce_gateway_in_page_iframe_selector'] Iframe selector
+ * @var string         $args ['alma_woocommerce_gateway_nonce'] Nonce
  */
 
 use Alma\Gateway\Application\Helper\L10nHelper;
@@ -19,17 +26,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <div
-	id="alma-checkout-plan-<?php echo esc_attr( $alma_woocommerce_gateway_plan_key ); ?>"
+	id="alma-checkout-plan-<?php echo esc_attr( $args['alma_woocommerce_gateway_plan_key'] ); ?>"
 	class="alma_woocommerce_gateway_checkout_plan"
-	data-gateway-id="<?php echo esc_attr( $alma_woocommerce_gateway_name ); ?>"
+	data-gateway-id="<?php echo esc_attr( $args['alma_woocommerce_gateway_name'] ); ?>"
 	style="display: none"
 >
 	<?php
-	/** @var bool $alma_woocommerce_gateway_in_page_enabled */
-	/** @var string $alma_woocommerce_gateway_in_page_iframe_selector */
-	if ( $alma_woocommerce_gateway_in_page_enabled ) {
+	if ( $args['alma_woocommerce_gateway_in_page_enabled'] ) {
 		?>
-		<div id="<?php echo $alma_woocommerce_gateway_in_page_iframe_selector; ?>"></div>
+		<div id="<?php echo $args['alma_woocommerce_gateway_in_page_iframe_selector']; ?>"></div>
 		<?php
 	} else {
 		?>
@@ -37,11 +42,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php
 			$alma_plan_index = 1;
 
-			foreach ( $alma_woocommerce_gateway_fee_plan->getPaymentPlan() as $alma_woocommerce_gateway_installment ) {
+			foreach ( $args['alma_woocommerce_gateway_fee_plan']->getPaymentPlan() as $alma_woocommerce_gateway_installment ) {
 				?>
 				<tr class="alma_woocommerce_gateway_installment">
 					<?php
-					if ( $alma_woocommerce_gateway_fee_plan->isPayLaterOnly() ) {
+					if ( $args['alma_woocommerce_gateway_fee_plan']->isPayLaterOnly() ) {
 						printf(
 						// translators: %1$s => today_amount (0), %2$s => total_amount, %3$s => i18n formatted due_date.
 							__( '%1$s today then %2$s on %3$s', 'alma-gateway-for-woocommerce' ),
@@ -60,7 +65,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					}
 					?>
 				</tr>
-				<?php if ( $alma_woocommerce_gateway_fee_plan->getCustomerFee() ) { ?>
+				<?php if ( $args['alma_woocommerce_gateway_fee_plan']->getCustomerFee() ) { ?>
 					<tr>
 						<td>
 							<?php
@@ -71,7 +76,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 							?>
 						</td>
 						<td class="alma_woocommerce_gateway_amount">
-							<?php echo L10nHelper::format_currency( $alma_woocommerce_gateway_fee_plan->getCustomerFee() ); ?>
+							<?php echo L10nHelper::format_currency( $args['alma_woocommerce_gateway_fee_plan']->getCustomerFee() ); ?>
 					</tr>
 					<?php
 
@@ -83,7 +88,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	}
 	?>
 	<?php
-	/** @var string $alma_woocommerce_gateway_nonce */
-	echo $alma_woocommerce_gateway_nonce;
+	echo $args['alma_woocommerce_gateway_nonce'];
 	?>
 </div>
