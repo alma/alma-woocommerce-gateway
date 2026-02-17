@@ -9,8 +9,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-13T10:14:37+00:00\n"
-"PO-Revision-Date: 2026-02-13 10:18\n"
+"POT-Creation-Date: 2026-02-17T13:19:48+00:00\n"
+"PO-Revision-Date: 2026-02-17 13:20\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: alma-gateway-for-woocommerce\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -38,7 +38,7 @@ msgstr "Installez Alma et boostez vos ventes ! C'est simple et garanti, votre tr
 
 #. Author of the plugin
 #: alma-gateway-for-woocommerce.php
-#: includes/Infrastructure/Helper/AdminMenuHelper.php:15
+#: includes/Infrastructure/Helper/AdminMenuHelper.php:19
 msgid "Alma"
 msgstr "Alma"
 
@@ -47,39 +47,39 @@ msgstr "Alma"
 msgid "https://almapay.com"
 msgstr "https://almapay.com"
 
-#: includes/Application/Service/IpnService.php:73
+#: includes/Application/Service/IpnService.php:83
 msgid "Payment validation error: no ID provided.<br>Please try again or contact us if the problem persists."
 msgstr "Une erreur est survenue lors de la validation de votre paiement (ID non transmis).<br>Réessayez ou contactez-nous si le problème persiste."
 
-#: includes/Application/Service/IpnService.php:96
-#: includes/Application/Service/IpnService.php:130
+#: includes/Application/Service/IpnService.php:106
+#: includes/Application/Service/IpnService.php:140
 msgid "Payment validation error<br>Please try again or contact us if the problem persists."
 msgstr "Erreur de validation du paiement<br>Veuillez réessayer ou nous contacter si le problème persiste."
 
-#: includes/Application/Service/IpnService.php:111
+#: includes/Application/Service/IpnService.php:121
 msgid "Payment validation error: order not found.<br>Please try again or contact us if the problem persists."
 msgstr "Erreur de validation du paiement : commande non trouvée.<br>Veuillez réessayer ou nous contacter si le problème persiste."
 
-#: includes/Application/Service/IpnService.php:118
+#: includes/Application/Service/IpnService.php:128
 msgid "Payment validation done"
 msgstr "Validation du paiement effectuée"
 
-#: includes/Application/Service/PaymentService.php:58
+#: includes/Application/Service/PaymentService.php:62
 msgid "An error occurred while creating the payment. Please try again."
 msgstr "Une erreur s'est produite lors de la création du paiement. Veuillez réessayer."
 
 #. translators: %s: url for activating alma
-#: includes/Application/Service/PluginService.php:50
+#: includes/Application/Service/PluginService.php:54
 msgid "Thanks for installing Alma! Start by <a href=\"%s\">activating Alma's payment method</a>, then set it up to get started."
 msgstr "Merci d'avoir installé Alma ! Commence par <a href=\"%s\">activer le mode de paiement d'Alma</a>, puis configure-le pour commencer."
 
 #. translators: %s: The url of the config page
-#: includes/Application/Service/PluginService.php:67
+#: includes/Application/Service/PluginService.php:71
 msgid "Alma is almost ready. To get started, <a href=\"%s\">fill in your API keys</a>."
 msgstr "Alma est presque prêt. Pour démarrer, <a href=\"%s\">renseignez vos clefs d’API</a>."
 
 #: includes/Infrastructure/Block/Gateway/AbstractGatewayBlock.php:105
-#: includes/Infrastructure/Service/CheckoutService.php:154
+#: includes/Infrastructure/Service/CheckoutService.php:158
 msgid "Pay With Alma"
 msgstr "Payer avec Alma"
 
@@ -88,360 +88,339 @@ msgid "Payment processing failed. Please try again."
 msgstr "Le traitement du paiement a échoué. Veuillez réessayer."
 
 #: includes/Infrastructure/Block/Gateway/AbstractGatewayBlock.php:178
-#: includes/Infrastructure/Gateway/AbstractGateway.php:182
+#: includes/Infrastructure/Gateway/AbstractGateway.php:186
 msgid "Awaiting payment via Alma"
 msgstr "En attente de paiement via Alma"
 
-#: includes/Infrastructure/Gateway/AbstractGateway.php:62
-#: includes/Infrastructure/Gateway/Backend/AlmaGateway.php:31
+#: includes/Infrastructure/Gateway/AbstractGateway.php:66
+#: includes/Infrastructure/Gateway/Backend/AlmaGateway.php:34
 msgid "Install Alma and boost your sales! It's simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk."
 msgstr "Boostez vos ventes en installant Alma ! C'est simple et garanti, votre trésorerie est sécurisée. 0 engagement, 0 abonnement, 0 risque."
 
 #. translators: %s: Selected payment method.
-#: includes/Infrastructure/Gateway/AbstractGateway.php:165
+#: includes/Infrastructure/Gateway/AbstractGateway.php:169
 msgid "Selected payment method : %s"
 msgstr "Mode de paiement sélectionné : %s"
 
-#: includes/Infrastructure/Gateway/AbstractGateway.php:239
+#: includes/Infrastructure/Gateway/AbstractGateway.php:243
 msgid "Refund failed."
 msgstr "Le remboursement a échoué."
 
 #. translators: %1$d: Amount refunded / %2$s: Refunded by.
-#: includes/Infrastructure/Gateway/AbstractGateway.php:245
+#: includes/Infrastructure/Gateway/AbstractGateway.php:249
 msgid "Order partially refunded (%1$d via Alma) by %2$s."
 msgstr "Commande partiellement remboursée (%1$d via Alma) par %2$s."
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:103
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:107
 msgid "Enable/Disable"
 msgstr "Activer/Désactiver"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:105
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:109
 msgid "Enable monthly payments with Alma"
 msgstr "Activer le paiement en plusieurs fois avec Alma"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:119
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:123
 msgid "Test"
 msgstr "Test"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:120
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:124
 msgid "Live"
 msgstr "Live"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:124
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:128
 msgid "→ Start by filling in your API keys"
 msgstr "→ Commencez par renseigner vos clefs d’API"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:126
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:130
 msgid "You can find your API keys on your Alma dashboard"
 msgstr "Vous trouverez vos clés API sur votre tableau de bord Alma."
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:133
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:137
 msgid "Live API key"
 msgstr "API key live"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:138
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:142
 msgid "Test API key"
 msgstr "API key de test"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:143
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:147
 msgid "Merchant Id"
 msgstr "Identité du commerçant"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:149
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:153
 msgid "API Mode"
 msgstr "Mode de l’API"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:151
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:155
 msgid "Use <b>Test</b> mode until you are ready to take real orders with Alma<br>In Test mode, only admins can see Alma on cart/checkout pages."
 msgstr "Utilisez le mode <b>test</b> jusqu'à ce que vous soyez prêt à prendre de vraies commandes avec Alma<br>En mode test, seuls les administrateurs peuvent voir Alma sur les pages de paiement."
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:168
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:172
 msgid "→ Display options"
 msgstr "→ Options d'affichage"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:173
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:177
 msgid "Activate In-Page Checkout"
 msgstr "Activer le paiement en ligne (In-Page Checkout)"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:175
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:179
 msgid "Let your customers pay with Alma in a secure pop-up, without leaving your site."
 msgstr "Permettez à vos clients de payer avec Alma via une pop-up sécurisée, sans quitter votre site."
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:198
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:202
 msgid "→ Display Alma widgets"
 msgstr "→ Afficher les widgets Alma"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:200
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:204
 msgid "Display Alma widget on cart and product page."
 msgstr "Afficher le widget Alma sur le panier et la page produit."
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:207
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:211
 msgid "Product eligibility"
 msgstr "Éligibilité du produit"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:209
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:213
 msgid "Display widget on product page"
 msgstr "Afficher le widget sur la page produit"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:215
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:219
 msgid "Cart eligibility"
 msgstr "Éligibilité du panier"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:217
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:221
 msgid "Display widget on cart page"
 msgstr "Afficher le widget sur la page du panier"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:251
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:255
 msgid "→ Fee plans configuration"
 msgstr "→ Configuration des conditions de paiement"
 
 #. translators: %s: Alma dashboard URL.
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:254
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:258
 msgid "only your <a href=\"%s\" target=\"_blank\">Alma dashboard</a> available fee plans are shown here."
 msgstr "Seuls les plans d'honoraires disponibles dans votre <a href=\"%s\" target=\"_blank\">tableau de bord Alma</a> sont affichés ici."
 
 #. translators: %s: The maximum purchase amount
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:317
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:321
 msgid "The minimum purchase amount allowed is %s€"
 msgstr "Le montant minimum d'achat autorisé est de %s€"
 
 #. translators: %s: The maximum purchase amount
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:329
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:333
 msgid "The maximum purchase amount allowed is %s€"
 msgstr "Le montant maximum d'achat autorisé est de %s€"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:479
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:483
 msgid "→ Debug options"
 msgstr "→ Options de déboggage"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:483
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:487
 msgid "Debug mode"
 msgstr "Mode debug"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:485
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:489
 msgid "Activate debug mode"
 msgstr "Activer le mode débogage"
 
 #. translators: %s: Admin logs url.
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:490
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:494
 msgid "(<a href=\"%s\">Go to logs</a>)"
 msgstr "<a href=\"%s\">(Aller aux journaux</a>)"
 
 #. translators: %s: The previous plugin version if exists.
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:494
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:498
 msgid "Enable logging info and errors to help debug any issue with the plugin (previous Alma version)"
 msgstr "Activer la journalisation des informations et des erreurs pour aider à déboguer tout problème avec le plugin (version précédente d'Alma)"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:511
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:515
 msgid "→ Excluded Categories"
 msgstr "→ Catégories exclues"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:513
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:517
 msgid "Define the categories on which Alma doesn't apply"
 msgstr "Définir les catégories pour lesquelles l'Alma ne s'applique pas"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:520
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:524
 msgid "Excluded product categories"
 msgstr "Catégories de produits exclues"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:523
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:527
 msgid "Exclude all virtual/downloadable product categories, as you cannot sell them with Alma"
 msgstr "Excluez toutes les catégories de produits virtuels/téléchargeables, qui ne peuvent être vendus avec Alma"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:532
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:536
 msgid "Non-eligibility message for excluded products"
 msgstr "Message de non-éligibilité pour les produits exclus"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:537
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:541
 msgid "Message displayed below the cart totals when it contains excluded products"
 msgstr "Message affiché en-dessous du total du panier lorsqu’il contient des produits exclus"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:542
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:546
 msgid "Some products cannot be paid with monthly or deferred installments"
 msgstr "Certains produits ne sont pas payables en plusieurs fois ou en différé"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:583
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:587
 msgid "→ Customize payment button text"
 msgstr "→ Personnaliser le texte du bouton de paiement"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:585
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:589
 msgid "Customize the text displayed on the Alma payment button on the checkout page"
 msgstr "Personnaliser le texte affiché sur le bouton de paiement Alma sur la page de paiement"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:620
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:624
 msgid "Pay now"
 msgstr "Payer maintenant"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:624
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:661
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:695
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:732
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:628
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:665
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:699
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:736
 msgid "Title"
 msgstr "Titre"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:626
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:663
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:697
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:734
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:630
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:667
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:701
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:738
 msgid "This controls the payment method name which the user sees during checkout."
 msgstr "Choisissez le nom de la méthode de paiement que l'utilisateur voit pendant la validation de commande."
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:631
-#: includes/Infrastructure/Gateway/Frontend/PayNowGateway.php:32
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:635
+#: includes/Infrastructure/Gateway/Frontend/PayNowGateway.php:36
 msgid "Pay by credit card"
 msgstr "Payer maintenant par carte bancaire"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:634
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:671
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:705
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:742
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:638
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:675
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:709
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:746
 msgid "Description"
 msgstr "Description"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:636
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:673
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:707
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:744
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:640
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:677
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:711
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:748
 msgid "This controls the payment method description which the user sees during checkout."
 msgstr "Choisissez la description de la méthode de paiement sur la page de validation de commande."
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:641
-#: includes/Infrastructure/Gateway/Frontend/PayNowGateway.php:36
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:645
+#: includes/Infrastructure/Gateway/Frontend/PayNowGateway.php:40
 msgid "Fast and secured payments"
 msgstr "Paiements rapides et sécurisés"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:656
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:660
 msgid "Payments in 2, 3 and 4 installments"
 msgstr "Paiements en 2, 3 et 4 fois"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:668
-#: includes/Infrastructure/Gateway/Frontend/PnxGateway.php:32
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:672
+#: includes/Infrastructure/Gateway/Frontend/PnxGateway.php:36
 msgid "Pay in installments"
 msgstr "Payer en plusieurs fois"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:678
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:712
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:749
-#: includes/Infrastructure/Gateway/Frontend/CreditGateway.php:37
-#: includes/Infrastructure/Gateway/Frontend/PayLaterGateway.php:37
-#: includes/Infrastructure/Gateway/Frontend/PnxGateway.php:36
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:682
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:716
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:753
+#: includes/Infrastructure/Gateway/Frontend/CreditGateway.php:41
+#: includes/Infrastructure/Gateway/Frontend/PayLaterGateway.php:41
+#: includes/Infrastructure/Gateway/Frontend/PnxGateway.php:40
 msgid "Fast and secure payment by credit card"
 msgstr "Payez en plusieurs fois ou en différé avec votre carte bancaire"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:691
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:695
 msgid "Deferred Payments"
 msgstr "Paiements différés"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:702
-#: includes/Infrastructure/Gateway/Frontend/PayLaterGateway.php:33
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:706
+#: includes/Infrastructure/Gateway/Frontend/PayLaterGateway.php:37
 msgid "Pay later"
 msgstr "Payer plus tard"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:727
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:731
 msgid "Payments in more than 4 installments"
 msgstr "Paiements en plus de 4 versements"
 
-#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:739
-#: includes/Infrastructure/Gateway/Frontend/CreditGateway.php:33
+#: includes/Infrastructure/Gateway/Backend/AbstractBackendGateway.php:743
+#: includes/Infrastructure/Gateway/Frontend/CreditGateway.php:37
 msgid "Pay with financing"
 msgstr "Payer par financement"
 
-#: includes/Infrastructure/Gateway/Backend/AlmaGateway.php:27
+#: includes/Infrastructure/Gateway/Backend/AlmaGateway.php:30
 msgid "Payment in installments and deferred with Alma"
 msgstr "Paiement échelonné et différé avec Alma"
 
-#: includes/Infrastructure/Gateway/Backend/AlmaGateway.php:133
+#: includes/Infrastructure/Gateway/Backend/AlmaGateway.php:136
 msgid "The API keys are mandatory."
 msgstr "Les clés API sont obligatoires."
 
-#: includes/Infrastructure/Gateway/Backend/AlmaGateway.php:158
+#: includes/Infrastructure/Gateway/Backend/AlmaGateway.php:161
 msgid "An error occurred while validating the configuration. Please try again."
 msgstr "Une erreur s'est produite lors de la validation de la configuration. Veuillez réessayer."
 
-#: includes/Infrastructure/Gateway/Frontend/CreditGateway.php:41
+#: includes/Infrastructure/Gateway/Frontend/CreditGateway.php:45
 msgid "Payment in installments with Alma - 10x 12x"
 msgstr "Paiement en plusieurs fois avec Alma - 10x 12x"
 
-#: includes/Infrastructure/Gateway/Frontend/CreditGateway.php:65
-#: includes/Infrastructure/Gateway/Frontend/PayLaterGateway.php:81
-#: includes/Infrastructure/Gateway/Frontend/PnxGateway.php:63
+#: includes/Infrastructure/Gateway/Frontend/CreditGateway.php:69
+#: includes/Infrastructure/Gateway/Frontend/PayLaterGateway.php:85
+#: includes/Infrastructure/Gateway/Frontend/PnxGateway.php:67
 msgid "Please choose a valid option."
 msgstr "Veuillez choisir une option valide."
 
-#: includes/Infrastructure/Gateway/Frontend/PayLaterGateway.php:41
+#: includes/Infrastructure/Gateway/Frontend/PayLaterGateway.php:45
 msgid "Payment deferred with Alma"
 msgstr "Paiement différé avec Alma"
 
-#: includes/Infrastructure/Gateway/Frontend/PayNowGateway.php:40
+#: includes/Infrastructure/Gateway/Frontend/PayNowGateway.php:44
 msgid "Payment with Alma"
 msgstr "Paiement avec Alma"
 
-#: includes/Infrastructure/Gateway/Frontend/PnxGateway.php:40
+#: includes/Infrastructure/Gateway/Frontend/PnxGateway.php:44
 msgid "Payment in installments with Alma - 2x 3x 4x"
 msgstr "Paiement en plusieurs fois avec Alma - 2x 3x 4x"
 
-#: includes/Infrastructure/Helper/AdminMenuHelper.php:14
+#: includes/Infrastructure/Helper/AdminMenuHelper.php:18
 msgid "Alma - Settings"
 msgstr "Alma - Paramètres"
 
-#: includes/Infrastructure/Helper/AdminMenuHelper.php:42
+#: includes/Infrastructure/Helper/AdminMenuHelper.php:46
 msgid "Settings"
 msgstr "Configuration"
 
-#: includes/Infrastructure/Service/GatewayService.php:81
+#: includes/Infrastructure/Service/GatewayService.php:85
 msgid "Full refund requested by the merchant"
 msgstr "Remboursement intégral demandé par le commerçant"
 
 #. translators: %s: Refunded by.
-#: includes/Infrastructure/Service/GatewayService.php:91
+#: includes/Infrastructure/Service/GatewayService.php:95
 msgid "Order fully refunded by %s."
 msgstr "Commande entièrement remboursée par %s."
 
 #. translators: %s => Installments count
-#: public/templates/partials/gateway-options.php:38
+#: public/templates/partials/gateway-options.php:41
 msgid "%s installments"
 msgstr "Plan de paiement %s"
 
 #. translators: %1$s => today_amount (0), %2$s => total_amount, %3$s => i18n formatted due_date.
-#: public/templates/partials/gateway-plans.php:44
+#: public/templates/partials/gateway-plans.php:47
 msgid "%1$s today then %2$s on %3$s"
 msgstr "%1$s aujourd’hui puis %2$s le %3$s"
 
-#: public/templates/partials/gateway-plans.php:62
+#: public/templates/partials/gateway-plans.php:67
 msgid "Included fees:"
 msgstr "Dont frais :"
 
-#: public/templates/partials/gateway-plans.php:82
-msgid "Your credit"
-msgstr "Votre crédit"
-
-#: public/templates/partials/gateway-plans.php:86
-msgid "Your cart:"
-msgstr "Votre panier :"
-
-#: public/templates/partials/gateway-plans.php:90
-msgid "Credit cost:"
-msgstr "Coût du crédit :"
-
-#: public/templates/partials/gateway-plans.php:100
-msgid "Annual Interest Rate:"
-msgstr "TAEG fixe :"
-
-#: public/templates/partials/gateway-plans.php:110
-msgid "Total:"
-msgstr "Total :"
-
-#: build/alma-gateway-block/alma-gateway-block.js:48487
+#: build/alma-gateway-block/alma-gateway-block.js:171
 msgid "Total TTC"
 msgstr "Total TTC"
 
-#: build/alma-gateway-block/alma-gateway-block.js:48522
+#: build/alma-gateway-block/alma-gateway-block.js:171
 msgid "Payment costs"
 msgstr "Frais de paiement"
 
-#: build/alma-widget-block/alma-widget-block.js:104
+#: build/alma-widget-block/alma-widget-block.js:1
 #: src/alma-widget-block/edit.js:49
-#: build/alma-widget-block/alma-widget-block.js:51
 msgid "Without fees"
 msgstr "Sans frais"
 

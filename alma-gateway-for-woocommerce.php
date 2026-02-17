@@ -12,6 +12,7 @@
  * Domain Path: /languages
  * Requires at least: 6.6.0
  * Requires PHP: 7.4
+ * Requires Plugins: woocommerce
  * Tested up to: 6.9.1
  *
  * @package Alma_Gateway_For_Woocommerce
