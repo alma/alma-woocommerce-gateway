@@ -5,29 +5,31 @@ on:
     branches:
       - main
       - develop
+      - feature/6.0
   pull_request:
     branches:
       - main
       - develop
+      - feature/6.0
   workflow_dispatch: ~
 
 jobs:
   lint:
     name: Lint code
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: .
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
           show-progress: false
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # 2.36.0
         with:
           php-version: "7.4"
           tools: composer:v2
@@ -43,16 +45,16 @@ jobs:
 
   test:
     name: Run tests
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     strategy:
       fail-fast: false
       # We are using only the latest supported version as a first step
       matrix:
         include:
-          - wc_version: "8.2.2"
-            wp_version: "6.4.1"
-            php_version: "7.4"
+          - wc_version: "9.6.2"
+            wp_version: "6.7.2"
+            php_version: "8.1"
 
     env:
       PHP_VERSION: ${{ matrix.php_version }}
@@ -61,16 +63,16 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
           show-progress: false
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
 
       - name: Build test container
-        uses: docker/bake-action@v5
+        uses: docker/bake-action@5be5f02ff8819ecd3092ea6b2e6261c31774f2b4 # v6.10.0
         with:
           files: compose.yml
           load: true
@@ -81,4 +83,3 @@ jobs:
 
       - name: Run tests
         run: docker compose run test
-

@@ -57,7 +57,5 @@ install_test_suite() {
 	unzip $TMPDIR/woocommerce.zip  -d $WP_TESTS_DIR
 }
 
-
-
 install_wp
 install_test_suite

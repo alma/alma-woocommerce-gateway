@@ -33,7 +33,7 @@ install_db() {
 	local DB_PASS=${WP_TEST_DATABASE_PASSWORD}
 	local DB_HOST=${WP_TEST_DATABASE_HOST}
 
-	local EXTRA=" --host=$DB_HOST --port=$DB_PORT --protocol=tcp"
+	local EXTRA=" --host=$DB_HOST --port=$DB_PORT --protocol=tcp --skip-ssl"
 
 	# create database
 	if [ $(mysql --user="$DB_USER" --password="$DB_PASS"$EXTRA --execute='show databases;' | grep ^$DB_NAME$) ]

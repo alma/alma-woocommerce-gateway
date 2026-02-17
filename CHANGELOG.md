@@ -1,5 +1,130 @@
 # Changelog
 
+## v5.16.2 - 2026-01-29
+
+### 🐛 Bug Fixes
+
+Add user and nonce verification broken access control when cancelling an order
+
+## v5.16.1 - 2026-01-13
+
+### 🐛 Bug Fixes
+
+Fixed broken access control when cancelling an order (wc_ajax API)
+
+## v5.16.0 - 2025-09-30
+
+### Changes
+
+### 🚀 New Features
+
+- feat: add payment_methods_list in cms_features (#422)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @Francois-Gomis, @joyet-simon and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+
+## v5.15.0 - 2025-09-15
+
+### Changes
+
+### 🚀 New Features
+
+- fix: remove overwrite widget css from our module (#417)
+
+### 🐛 Bug Fixes
+
+- fix: global css in our installement block element (#415)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @alma-renovate-bot[bot], @gdraynz, @hyahiaoui, @joyet-simon, @remi-zuffinetti, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
+
+## v5.14.2 - 2025-08-28
+
+### Changes
+
+### 🐛 Bug Fixes
+
+- fix: change the variation update event on product page (#406)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @Francois-Gomis, @alma-renovate-bot[bot], @joyet-simon, @remi-zuffinetti, @webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
+
+## v5.14.1 - 2025-07-31
+
+### Changes
+
+- Backport 5.14.0 (#397)
+
+### 🐛 Bug Fixes
+
+- Fix: Update translations (#398)
+
+#### Contributors
+
+@simon-previdente and @webaaz
+
+## v5.14.0 - 2025-07-30
+
+### Changes
+
+### 🚀 New Features
+
+- feat: option to remove order on close in page pop-up (#383)
+- feat: update for wc 9.9.x/10.0.x compatibility (#382)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @alma-renovate-bot[bot], @gdraynz, @remi-zuffinetti, @webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
+
+## v5.13.1 - 2025-04-24
+
+### Changes
+
+### 🐛 Bug Fixes
+
+- fix: in-page loading in certain event loading cases (#361)
+- fix: error on change order status (#350)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @webaaz and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+
+## v5.13.0 - 2025-04-16
+
+### Changes
+
+### 🚀 New Features
+
+- Merchant business event (#345)
+- Set in page settings to yes by default (#342)
+
+### 🐛 Bug Fixes
+
+- Global style css in dashboard (#343)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @joyet-simon, @webaaz and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+
+## v5.12.0 - 2025-03-14
+
+### Changes
+
+### 🐛 Bug Fixes
+
+- Fix: event listener blocks checkout (#337)
+- Fix: get_terms function to be compatible with Wordpress 4.4 (#333)
+- Fix: fix and improve linter on woocommerce (#331)
+- Fix: checkout blocks get cart total price (#329)
+- Fix: pre commit (#325)
+
+#### Contributors
+
+@joyet-simon, @webaaz and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+
 ## v5.11.0 - 2025-02-18
 
 ### Changes
