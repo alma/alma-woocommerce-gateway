@@ -1,0 +1,72 @@
+<?php
+
+namespace Alma\Gateway\Application\Mapper;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
+use Alma\Client\Application\DTO\AddressDto;
+use Alma\Client\Application\DTO\PaymentDto;
+use Alma\Gateway\Application\Helper\IpnHelper;
+use Alma\Gateway\Infrastructure\Helper\ContextHelper;
+use Alma\Plugin\Infrastructure\Adapter\FeePlanAdapterInterface;
+use Alma\Plugin\Infrastructure\Adapter\OrderAdapterInterface;
+
+class PaymentMapper {
+
+	/**
+	 * Builds a PaymentDto from a WC_Order and FeePlan.
+	 *
+	 * @param string                  $paymentOrigin The payment origin (e.g., 'online').
+	 * @param OrderAdapterInterface   $order The Order.
+	 * @param FeePlanAdapterInterface $feePlanAdapter The Fee Plan to apply.
+	 *
+	 * @return PaymentDto The constructed PaymentDto.
+	 */
+	public function buildPaymentDto( string $paymentOrigin, OrderAdapterInterface $order, FeePlanAdapterInterface $feePlanAdapter ): PaymentDto {
+
+		return ( new PaymentDto( $order->getTotal() ) )
+			->setInstallmentsCount( $feePlanAdapter->getInstallmentsCount() )
+			->setDeferredMonths( $feePlanAdapter->getDeferredMonths() )
+			->setDeferredDays( $feePlanAdapter->getDeferredDays() )
+			->setCustomData(
+				array(
+					'order_id'  => $order->getId(),
+					'order_key' => $order->getOrderKey(),
+				)
+			)
+			->setIpnCallbackUrl( ContextHelper::getWebhookUrl( IpnHelper::IPN_CALLBACK ) )
+			->setReturnUrl( ContextHelper::getWebhookUrl( IpnHelper::CUSTOMER_RETURN ) )
+			->setLocale( ContextHelper::getLocale() )
+			->setCart(
+				( ( new CartMapper() )->buildCartDto( $order ) )
+			)
+			->setBillingAddress(
+				( new AddressDto() )
+					->setFirstName( $order->getBillingFirstName() )
+					->setLastName( $order->getBillingLastName() )
+					->setCompany( $order->getBillingCompany() )
+					->setLine1( $order->getBillingAddress1() )
+					->setLine2( $order->getBillingAddress2() )
+					->setPostalCode( $order->getBillingPostcode() )
+					->setCity( $order->getBillingCity() )
+					->setStateProvince( $order->getBillingState() )
+					->setCountry( $order->getBillingCountry() )
+					->setEmail( $order->getBillingEmail() )
+			)
+			->setShippingAddress(
+				( new AddressDto() )
+					->setFirstName( $order->getShippingFirstName() )
+					->setLastName( $order->getShippingLastName() )
+					->setCompany( $order->getShippingCompany() )
+					->setLine1( $order->getShippingAddress1() )
+					->setLine2( $order->getShippingAddress2() )
+					->setPostalCode( $order->getShippingPostcode() )
+					->setCity( $order->getShippingCity() )
+					->setStateProvince( $order->getShippingState() )
+					->setCountry( $order->getShippingCountry() )
+			)
+			->setOrigin( $paymentOrigin );
+	}
+}

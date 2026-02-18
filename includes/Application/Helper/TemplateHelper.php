@@ -1,0 +1,62 @@
+<?php
+
+namespace Alma\Gateway\Application\Helper;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
+use Alma\Gateway\Application\Exception\Helper\TemplateHelperException;
+use Alma\Gateway\Infrastructure\Helper\RenderHelper;
+use Alma\Gateway\Plugin;
+
+/**
+ * TemplateLoaderHelper
+ */
+class TemplateHelper {
+
+	/**
+	 * Locate template.
+	 *
+	 * Locate the called template.
+	 * Search Order:
+	 * 1. /themes/theme/woocommerce-plugin-templates/$templateName
+	 * 2. /themes/theme/$templateName
+	 * 3. /plugins/woocommerce-plugin-templates/templates/$templateName.
+	 *
+	 * @param string $templateName Template to load.
+	 * @param string $subpath Subdirectories.
+	 */
+	public function locateTemplate( string $templateName, string $subpath = '' ): string {
+
+		if ( $subpath ) {
+			$templatePath = Plugin::get_instance()->get_plugin_path() . 'public/templates/' . $subpath . '/' . $templateName;
+		} else {
+			$templatePath = Plugin::get_instance()->get_plugin_path() . 'public/templates/' . $templateName;
+		}
+
+		return RenderHelper::locate( $templatePath, $templateName );
+	}
+
+	/**
+	 * Get template.
+	 *
+	 * @param string $template_name Template to load.
+	 * @param array  $args Args passed for the template file.
+	 * @param string $subpath Path to template files.
+	 *
+	 * @throws TemplateHelperException
+	 * @see locateTemplate()
+	 */
+	public function getTemplate( string $template_name, array $args = array(), string $subpath = '' ) {
+		$template_file = $this->locateTemplate( $template_name, $subpath );
+
+		if ( ! file_exists( $template_file ) ) {
+			throw new TemplateHelperException(
+				sprintf( 'Template file %s does not exist.', esc_html( $template_file ) )
+			);
+		}
+
+		include $template_file;// It's mandatory to use include_once method here.
+	}
+}

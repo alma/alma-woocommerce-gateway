@@ -3,12 +3,12 @@
 - Contributors: almapayments, olance, francois-gomis, clairealma
 - Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo commerce, alma, monthly payments, split
   payments
-- Requires at least Wordpress: 4.4
-- Requires at least Woocommerce: 3.0.0
-- Tested up to Wordpress: 6.8.2
-- Tested up to Woocommerce: 10.2.2
-- Requires PHP: 5.6
-- Stable tag: 5.16.2
+- Requires at least Wordpress: 6.2
+- Requires at least Woocommerce: 8.2.0
+- Tested up to Wordpress: 6.8.1
+- Tested up to Woocommerce: 9.8.5
+- Requires PHP: 7.4
+- Stable tag: 5.11.0
 - License: GPLv3
 - License URI: https://www.gnu.org/licenses/gpl-3.0.html
 - Support: support@getalma.eu
@@ -125,7 +125,7 @@ function inject_alma_cart_eligibility_into_cart() {
    ```txt
    [alma-cart-eligibility class=my-website-amazing-content-style-class]
    ```
-1. Content
+2. Content
 
    You can add a content between opening & closing shortcode tags. This content will be displayed into a
    `div.alma_wc_content`
@@ -138,7 +138,7 @@ function inject_alma_cart_eligibility_into_cart() {
    ```txt
    [alma-product-eligibility id=10][product id=10][/alma-product-eligibility ]
    ```
-1. Debug
+3. Debug
 
    Each shortcode can be debugged with a `debug=on` attribute. This will display a visual container with a message that
    will explain why the badge is not displayed. Use this option if you don't see the widget on a page you added the

@@ -1,23 +1,41 @@
 version: 3
 
 env:
-  PHP_VERSION: '{{ .PHP_VERSION | default "8.1" }}'
-  WC_VERSION: '{{ .WC_VERSION | default "9.6.2" }}'
-  WP_VERSION: '{{ .WP_VERSION | default "6.7.2" }}'
   REPOSITORY: alma-woocommerce-gateway
+  UID:
+    sh: id -u
+  GID:
+    sh: id -g
+  WC_VERSION: '{{ .WC_VERSION | default "9.8.5" }}'
+  WP_VERSION: '{{ .WP_VERSION | default "6.8.1" }}'
+
+includes:
+  "7.4":
+    taskfile: Taskfile.php.yml
+    vars:
+      PHP_VERSION: "7.4"
+      COMPOSER_VERSION: "2.2"
+  "8.0":
+    taskfile: Taskfile.php.yml
+    vars:
+      PHP_VERSION: "8.0"
+  "8.1":
+    taskfile: Taskfile.php.yml
+    vars:
+      PHP_VERSION: "8.1"
+      PHPUNIT_FILE: phpunit.dist.8.xml
+  "8.2":
+    taskfile: Taskfile.php.yml
+    vars:
+      PHP_VERSION: "8.2"
+      PHPUNIT_FILE: phpunit.dist.8.xml
+  "8.3":
+    taskfile: Taskfile.php.yml
+    vars:
+      PHP_VERSION: "8.3"
+      PHPUNIT_FILE: phpunit.dist.8.xml
 
 tasks:
-
-  build:test:
-    desc: Build test container (PHP 8.x)
-    cmds:
-      - docker compose build test
-
-  build:php5-6:
-    desc: Build test container (PHP 5.6)
-    cmds:
-      - docker compose build --build-arg UID="$(id -u)" php5-6
-
   lint:build:
     desc: Build lint container (phpcs)
     cmds:
@@ -27,7 +45,6 @@ tasks:
         else
           echo "Image already exists"
         fi
-
   lint:
     desc: Run lint container
     deps:
@@ -54,13 +71,12 @@ tasks:
     cmds:
       - ./bin/php-compatibility.sh
 
-  test:
-    desc: Run tests
+  php-static-analysis:
+    desc: Run PHPStan analysis
     deps:
-      - build:test
+      - lint:build
     cmds:
-      - docker compose run --rm test
-      - docker compose down --remove-orphans
+      - ./bin/php-static-analysis.sh
 
   pre-commit:install:
     desc: Install pre-commit hooks
@@ -68,13 +84,10 @@ tasks:
       - pre-commit install --hook-type commit-msg
       - pre-commit install
 
-  dist:
-    desc: Build zip file
-    deps:
-      - build:php5-6
+  translate:
+    desc: Get translations from code and prepare them for Crowdin
     cmds:
-      - rm -rf ./dist
-      - docker compose run --rm php5-6 ./bin/build.sh
+      - php -d memory_limit=512M $(which wp) i18n make-pot . languages/alma-gateway-for-woocommerce.pot
 
   crowdin:
     internal: true
@@ -107,14 +120,6 @@ tasks:
           You'll need a personal access token to authenticate with `gh`.
           Please check out: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic
           Then, run `gh auth login` or set the GITHUB_TOKEN environment variable with your personal access token.
-
-  pull-request:
-    aliases:
-      - pr
-    deps:
-      - gh-cli
-    cmds:
-      - ./bin/create-pull-request.sh
 
   release:
     deps:

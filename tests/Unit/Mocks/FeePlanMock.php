@@ -1,0 +1,32 @@
+<?php
+
+namespace Alma\Gateway\Tests\Unit\Mocks;
+
+use Alma\Client\Application\Exception\ParametersException;
+use Alma\Client\Domain\Entity\FeePlan;
+use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
+
+class FeePlanMock {
+	/**
+	 * @throws ParametersException
+	 */
+	public static function getFeePlanAdapter(): FeePlanAdapter {
+		$feePlan = new FeePlan(
+			[
+				'allowed'               => true,
+				'available_online'      => true,
+				'customer_fee_variable' => 160,
+				'deferred_days'         => 0,
+				'deferred_months'       => 0,
+				'installments_count'    => 3,
+				'kind'                  => 'general',
+				'max_purchase_amount'   => 100000,
+				'merchant_fee_variable' => 130,
+				'merchant_fee_fixed'    => 210,
+				'min_purchase_amount'   => 5000,
+			]
+		);
+
+		return new FeePlanAdapter( $feePlan );
+	}
+}
