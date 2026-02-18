@@ -42,10 +42,25 @@
         The below two examples just show how you can exclude rules.
         They are not intended as advice about which sniffs to exclude.
         -->
-        <exclude name="WordPress.WhiteSpace.ControlStructureSpacing"/>
         <exclude name="WordPress.Security.EscapeOutput"/>
-        <exclude name="WordPress.DB.PreparedSQL.InterpolatedNotPrepared"/>
         <exclude name="WordPress.Files.FileName"/>
+        <exclude name="Generic.Functions.CallTimePassByReference"/>
+        <exclude name="WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase"/>
+        <exclude name="WordPress.Security.NonceVerification.Recommended"/>
+        <exclude-pattern>includes/Plugin.php</exclude-pattern>
+        <exclude-pattern>includes/Application/*</exclude-pattern>
+        <exclude-pattern>includes/Domain/*</exclude-pattern>
+        <exclude-pattern>includes/Infrastructure/Adapter/*</exclude-pattern>
+        <exclude-pattern>includes/Infrastructure/Config/*</exclude-pattern>
+        <exclude-pattern>includes/Infrastructure/Controller/*</exclude-pattern>
+        <exclude-pattern>includes/Infrastructure/Dto/*</exclude-pattern>
+        <exclude-pattern>includes/Infrastructure/Entity/*</exclude-pattern>
+        <exclude-pattern>includes/Infrastructure/Helper/*</exclude-pattern>
+        <exclude-pattern>includes/Infrastructure/Mapper/*</exclude-pattern>
+        <exclude-pattern>includes/Infrastructure/Repository/*</exclude-pattern>
+        <exclude-pattern>includes/Infrastructure/Service/*</exclude-pattern>
+        <exclude-pattern>includes/functions.php</exclude-pattern>
+        <exclude-pattern>phpcs-custom/*</exclude-pattern>
     </rule>
 
     <!-- Let's also check that everything is properly documented. -->
@@ -53,7 +68,9 @@
 
     <!-- Add in some extra rules from other standards. -->
     <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
-    <rule ref="Generic.Commenting.Todo"/>
+    <!--rule ref="Generic.Commenting.Todo"/-->
+
+    <rule ref="Generic.Files.EndFileNewline"/>
 
     <!-- Check for PHP cross-version compatibility. -->
     <!--
@@ -64,8 +81,8 @@
     For more information, also see:
     https://github.com/PHPCompatibility/PHPCompatibility
     -->
-    <config name="testVersion" value="5.6-"/>
-    <rule ref="PHPCompatibilityWP"/>
+    <config name="testVersion" value="7.4-"/>
+    <rule ref="PHPCompatibility"/>
 
     <!--
     To get the optimal benefits of using WPCS, we should add a couple of
@@ -75,7 +92,7 @@
     the wiki:
     https://github.com/WordPress/WordPress-Coding-Standards/wiki/Customizable-sniff-properties
     -->
-    <config name="minimum_supported_wp_version" value="4.4"/>
+    <config name="minimum_supported_wp_version" value="5.3"/>
 
     <rule ref="WordPress.WP.I18n">
         <properties>
@@ -88,16 +105,53 @@
     <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
         <properties>
             <property name="prefixes" type="array">
-                <element value="Alma\Woocommerce"/>
+                <element value="Alma\Gateway"/>
                 <element value="alma"/>
             </property>
 
         </properties>
     </rule>
 
-    <rule ref="Squiz.Commenting.FunctionCommentThrowTag">
-        <exclude name="Squiz.Commenting.FunctionCommentThrowTag.WrongNumber"/>
+    <rule ref="Generic.Metrics.CyclomaticComplexity">
+        <type>error</type>
     </rule>
 
     <config name="ignore_warnings_on_exit" value="1"/>
+
+    <!--rule ref="WordPress">
+        <exclude-pattern>includes/Domain/*</exclude-pattern>
+        <exclude-pattern>includes/Application/*</exclude-pattern>
+    </rule-->
+
+    <!--rule ref="PSR12">
+        <include-pattern>src/Domain/*</include-pattern>
+        <include-pattern>src/Application/*</include-pattern>
+    </rule-->
+
+    <!-- Disallow blank spaces at the beginning or end of a file -->
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace">
+        <properties>
+            <!-- Vérifie aussi le début et la fin des fichiers -->
+            <property name="ignoreBlankLines" value="false"/>
+        </properties>
+    </rule>
+
+    <!-- Disable the PHP closing tag `?>` in purely PHP files -->
+    <rule ref="PSR2.Files.ClosingTag"/>
+
+    <!-- Include custom sniff -->
+    <rule ref="AlmaIntegrationCms.Architecture.ForbiddenPrefix">
+        <exclude-pattern>includes/Infrastructure/*</exclude-pattern>
+        <exclude-pattern>includes/functions.php</exclude-pattern>
+    </rule>
+    <rule ref="AlmaIntegrationCms.Architecture.ClassSpecificException"/>
+
+    <rule ref="AlmaIntegrationCms.Documentation.MethodThrowsDocumentation"/>
+    <rule ref="AlmaIntegrationCms.Documentation.MethodThrowsException"/>
+
+    <rule ref="AlmaIntegrationCms.NamingConventions.ClassSuffixByDirectory"/>
+    <rule ref="AlmaIntegrationCms.NamingConventions.ForbiddenHelperDependency"/>
+    <rule ref="AlmaIntegrationCms.Scope.NoPublicMemberVar"/>
+
+    <rule ref="AlmaIntegrationCms.Security.AbspathCheck"/>
 </ruleset>

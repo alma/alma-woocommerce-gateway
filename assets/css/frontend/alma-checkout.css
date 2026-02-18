@@ -1,0 +1,77 @@
+/* Checkout no blocks styles */
+.payment_box.payment_method_alma_pnx_gateway,
+.payment_box.payment_method_alma_credit_gateway,
+.payment_box.payment_method_alma_paynow_gateway,
+.payment_box.payment_method_alma_paylater_gateway {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.alma_woocommerce_gateway_fieldset {
+	flex: 1 1 0;
+	box-sizing: border-box;
+}
+
+.alma_woocommerce_gateway_checkout_plan {
+	flex: 0 0 100%;
+	box-sizing: border-box;
+	margin: 10px auto 0;
+}
+
+.alma_woocommerce_gateway_logo {
+	background-color: #FFFFFF;
+	padding: 0 2px 4px 2px;
+	width: fit-content;
+	border: 1px solid #E1E4E6;
+	border-radius: 7px;
+}
+
+#payment .payment_methods li .alma_woocommerce_gateway_logo img {
+	float: unset;
+	width: auto;
+	height: 15px;
+	border: none;
+	vertical-align: middle;
+	display: inline-block;
+	margin-left: 2px;
+}
+
+.alma_woocommerce_gateway_label {
+	background-color: #1A1A1A;
+	color: #FFFFFF;
+	margin: 2px 2px;
+	border: 1px solid #1A1A1A;
+	border-radius: 4px;
+	padding: 2px 7px;
+	font-size: 10px;
+}
+
+.alma_woocommerce_gateway_checkout_plan .alma_woocommerce_gateway_installments tr.alma_woocommerce_gateway_installment td {
+	border-top: 1px solid lightgrey;
+}
+
+.alma_woocommerce_gateway_checkout_plan .alma_woocommerce_gateway_installments tr td {
+	padding: 4px 0;
+	margin: 4px 0;
+	text-align: left;
+}
+
+.alma_woocommerce_gateway_checkout_plan .alma_woocommerce_gateway_installments tr td.alma_woocommerce_gateway_amount {
+	text-align: right;
+}
+
+.alma_woocommerce_gateway_checkout_plan .alma_woocommerce_gateway_installments .alma_woocommerce_gateway_fees {
+	padding: 4px 0;
+}
+
+.alma_woocommerce_gateway_checkout_plan .alma_woocommerce_gateway_installments th {
+	padding: 20px 0 4px 0;
+	margin: 4px 0;
+	font-size: 1.8rem;
+	font-weight: bold;
+	border-top: 1px solid lightgrey;
+}
+
+.alma_woocommerce_gateway_checkout_plan .alma_woocommerce_gateway_installments .alma_woocommerce_gateway_installments_total {
+	font-weight: bold;
+}

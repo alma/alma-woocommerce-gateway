@@ -23,25 +23,16 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
           show-progress: false
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@ec406be512d7077f68eed36e63f4d91bc006edc4 # 2.35.4
-        with:
-          php-version: "7.4"
-          tools: composer:v2
-
-      - name: Validate composer.json and composer.lock
-        run: composer validate
-
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress
+      - name: Install taskfile
+        uses: arduino/setup-task@b91d5d2c96a56797b48ac1e0e89220bf64044611
 
       - name: Lint code
-        run: composer phpcs
+        run: task lint
 
   test:
     name: Run tests
@@ -52,34 +43,20 @@ jobs:
       # We are using only the latest supported version as a first step
       matrix:
         include:
-          - wc_version: "9.6.2"
-            wp_version: "6.7.2"
-            php_version: "8.1"
+          - php_version: "7.4"
 
     env:
       PHP_VERSION: ${{ matrix.php_version }}
-      WC_VERSION: ${{ matrix.wc_version }}
-      WP_VERSION: ${{ matrix.wp_version }}
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
           show-progress: false
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
-
-      - name: Build test container
-        uses: docker/bake-action@3acf805d94d93a86cce4ca44798a76464a75b88c # v6.9.0
-        with:
-          files: compose.yml
-          load: true
-          targets: test
-          set: |
-            test.cache-from=type=gha
-            test.cache-to=type=gha
+      - name: Install taskfile
+        uses: arduino/setup-task@v2.0.0
 
       - name: Run tests
-        run: docker compose run test
+        run: task ${{ matrix.php_version }}:tests

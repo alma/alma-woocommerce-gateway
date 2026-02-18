@@ -1,0 +1,34 @@
+<?php
+
+namespace Alma\Gateway\Infrastructure\Helper;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
+use Alma\Plugin\Infrastructure\Helper\EventHelperInterface;
+
+class EventHelper implements EventHelperInterface {
+
+	/**
+	 * Add an event to the event listener
+	 *
+	 * @param string   $event The event name
+	 * @param callable $callback The callback function
+	 * @param int      $priority The priority of the callback
+	 * @param int      $acceptedArgs The number of arguments the callback accepts
+	 *
+	 * @return void
+	 */
+	public static function addEvent( string $event, callable $callback, int $priority = 10, int $acceptedArgs = 1 ): void {
+		if ( did_action( $event ) ) {
+			_doing_it_wrong( 'EventHelper::addEvent', sprintf( 'Too late! %s Event is already triggered.', $event ),
+				'*' );
+		}
+		add_action( $event, $callback, $priority, $acceptedArgs );
+	}
+
+	public function addFilter( string $event, callable $callback, int $priority = 10, int $acceptedArgs = 1 ): void {
+		add_filter( $event, $callback, $priority, $acceptedArgs );
+	}
+}

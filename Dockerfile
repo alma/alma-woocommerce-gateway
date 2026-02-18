@@ -1,59 +1,47 @@
-ARG PHP_VERSION=latest
+ARG PHP_VERSION
+ARG COMPOSER_VERSION
 
-FROM composer:2 AS composer
-FROM php:${PHP_VERSION}
+FROM composer:${COMPOSER_VERSION} as composer
+FROM php:${PHP_VERSION}-fpm
+ARG PHP_VERSION
 
-ENV PHP_MEMORY_LIMIT=1024M
-ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND noninteractive
 
 # Install dependencies
 RUN apt update && \
     apt install -y --no-install-recommends \
-    libicu-dev \
-    libpng-dev \
-    libxml2-dev \
-    libxslt-dev \
-    libzip-dev \
-    mariadb-client \
-    subversion \
-    unzip \
+    git \
+    rsync \
     zip \
-    zlib1g-dev \
+    unzip \
+    libicu-dev \
+    pkg-config \
+    curl \
     && \
-    # Cleanup APT
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/* && \
-    # Install PHP extensions
-    docker-php-ext-install -j$(nproc) \
-    bcmath \
-    gd \
-    intl \
-    mysqli \
-    pdo_mysql \
-    soap \
-    sockets \
-    xsl \
-    zip
+    # Add Node.js repository and install Node.js 20.x and npm
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
-RUN pecl install xdebug-3.1.3 \
-    && docker-php-ext-enable xdebug \
-    && echo "xdebug.mode=coverage" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+RUN case ${PHP_VERSION} in \
+        8.0|8.1|8.2|8.3 ) pecl install xdebug-3.3.2 && docker-php-ext-enable xdebug;; \
+        *) pecl install xdebug-2.9.8 && docker-php-ext-enable xdebug;; \
+    esac
 
-# Create non-root user
-RUN useradd -ms /bin/bash phpuser
-WORKDIR /home/phpuser
-USER phpuser
+# Install PHP extensions
+RUN docker-php-ext-install intl
 
-COPY --chown=phpuser ./composer.json ./
+RUN usermod -u 1000 www-data
+RUN groupmod -g 1000 www-data
+
+RUN mkdir -p /app/vendor && chown -R www-data:www-data /app
+
+USER www-data
+WORKDIR /app
+
+COPY --link .docker/php.ini /usr/local/etc/php/php.ini
+
 COPY --from=composer /usr/bin/composer /usr/bin/composer
-
-COPY --chown=phpuser ./ ./
-RUN composer install --prefer-dist --no-progress
-
-ARG WP_VERSION
-ARG WC_VERSION
-
-RUN bash ./bin/install-wp-tests.sh ${WP_VERSION} ${WC_VERSION}
-
-ENTRYPOINT ["./bin/entrypoint.sh"]
-CMD [ "php", "-S", "0.0.0.0:8000"]
+COPY --link composer.json ./
+RUN composer install --prefer-dist --no-progress --no-cache

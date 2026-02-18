@@ -1,0 +1,207 @@
+<?php
+
+namespace Alma\Gateway\Infrastructure\Gateway\Backend;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
+use Alma\Gateway\Application\Entity\Form\GatewayConfigurationForm;
+use Alma\Gateway\Application\Exception\Service\GatewayConfigurationFormValidatorServiceException;
+use Alma\Gateway\Application\Helper\EncryptorHelper;
+use Alma\Gateway\Application\Service\ConfigService;
+use Alma\Gateway\Application\Service\GatewayConfigurationFormValidatorService;
+use Alma\Gateway\Infrastructure\Mapper\ConfigFormMapper;
+use Alma\Gateway\Plugin;
+use WC_Admin_Settings;
+
+/**
+ * Class Gateway
+ * It's a fake gateway that is used to configure the plugin.
+ */
+class AlmaGateway extends AbstractBackendGateway {
+
+	public const PAYMENT_METHOD = 'config';
+
+	/**
+	 * Gateway constructor.
+	 */
+	public function __construct() {
+		$this->method_title       = __(
+			'Payment in installments and deferred with Alma',
+			'alma-gateway-for-woocommerce'
+		);
+		$this->method_description = __(
+			'Install Alma and boost your sales! It\'s simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk.',
+			'alma-gateway-for-woocommerce'
+		);
+		$this->has_fields         = true;
+		parent::__construct();
+		$this->init_form_fields();
+		$this->init_settings();
+
+		// Define filters for sanitizing settings
+		add_filter( 'woocommerce_settings_api_sanitized_fields_' . $this->id, array( $this, 'sanitize_settings' ) );
+	}
+
+	/**
+	 * Is gateway available?
+	 *
+	 * @return bool
+	 */
+	public function is_available(): bool {
+		return true;
+	}
+
+	public function is_enabled(): bool {
+		return true;
+	}
+
+	/**
+	 * Check if the gateway needs setup.
+	 * This will display the "Action needed" flag in WooCommerce payment methods list.
+	 *
+	 * @return bool
+	 */
+	public function needs_setup(): bool {
+		return ! Plugin::get_instance()->is_configured();
+	}
+
+	/**
+	 * Initialize form fields.
+	 */
+	public function init_form_fields() {
+
+		// Initialize minimum form fields
+		$this->form_fields = array_merge(
+			$this->form_fields,
+			$this->enabled_field(),
+		);
+
+		// If the plugin is configured, add the gateway and fee plan fields
+		if ( Plugin::get_instance()->is_configured( true ) ) {
+			$this->form_fields = array_merge(
+				$this->form_fields,
+				$this->display_fieldset(),
+				$this->fee_plan_fieldset(),
+				$this->customize_payment_buttons_text_fieldset(),
+				$this->widget_fieldset(),
+				$this->excluded_categories_fieldset(),
+			);
+		}
+
+		$this->form_fields = array_merge(
+			$this->form_fields,
+			$this->api_key_fieldset(),
+			$this->debug_fieldset(),
+		);
+
+		return $this->form_fields;
+	}
+
+	/**
+	 * Init settings for gateways.
+	 */
+	public function init_settings() {
+		parent::init_settings();
+
+		/** @var EncryptorHelper $encryptor_helper */
+		$encryptor_helper = Plugin::get_container()->get( EncryptorHelper::class );
+
+		if ( ! empty( $this->settings[ GatewayConfigurationForm::FIELD_LIVE_API_KEY ] ) ) {
+			$this->settings[ GatewayConfigurationForm::FIELD_LIVE_API_KEY ] = $encryptor_helper->decrypt( $this->settings[ GatewayConfigurationForm::FIELD_LIVE_API_KEY ] );
+		}
+
+		if ( ! empty( $this->settings[ GatewayConfigurationForm::FIELD_TEST_API_KEY ] ) ) {
+			$this->settings[ GatewayConfigurationForm::FIELD_TEST_API_KEY ] = $encryptor_helper->decrypt( $this->settings[ GatewayConfigurationForm::FIELD_TEST_API_KEY ] );
+		}
+	}
+
+	/**
+	 * Sanitize our settings
+	 * This method is called by WooCommerce when saving the settings.
+	 * It allows us to sanitize the settings before they are saved in the database.
+	 *
+	 * @param array $settings The settings to sanitize.
+	 *
+	 * @return array The sanitized settings.
+	 */
+	public function sanitize_settings( array $settings ): array {
+
+		// Clean settings
+		$settings = $this->clean_decoration_fields( $settings );
+
+		// Check mandatory fields
+		if ( empty( $settings[ GatewayConfigurationForm::FIELD_LIVE_API_KEY ] ) && empty( $settings[ GatewayConfigurationForm::FIELD_TEST_API_KEY ] ) ) {
+			WC_Admin_Settings::add_error( __( 'The API keys are mandatory.', 'alma-gateway-for-woocommerce' ) );
+
+			return $settings;
+		}
+
+		// Transform settings to GatewayConfiguration
+		/** @var ConfigFormMapper $config_form_mapper */
+		$config_form_mapper    = Plugin::get_container()->get( ConfigFormMapper::class );
+		$gateway_configuration = $config_form_mapper->from_cms_form( $settings );
+
+		// Validate settings
+		try {
+			/** @var GatewayConfigurationFormValidatorService $config_form_validator_service */
+			$config_form_validator_service = Plugin::get_container()->get( GatewayConfigurationFormValidatorService::class );
+			$gateway_configuration         = $config_form_validator_service->validate( $gateway_configuration );
+		} catch ( GatewayConfigurationFormValidatorServiceException $e ) {
+			// If an error occurs during validation, we display a generic error message
+			// and return the previous settings to avoid losing data.
+			$this->logger_service->debug(
+				'can not validate gateway configuration',
+				array(
+					'exception' => $e,
+				)
+			);
+			WC_Admin_Settings::add_error(
+				__(
+					'An error occurred while validating the configuration. Please try again.',
+					'alma-gateway-for-woocommerce'
+				),
+			);
+
+			/** @var ConfigService $config_service */
+			$config_service = Plugin::get_container()->get( ConfigService::class );
+
+			return $config_service->getSettings();
+		}
+
+		// Transform back to settings array
+		$settings = $config_form_mapper->to_cms_form( $gateway_configuration );
+
+		// Add errors to the gateway if there are any
+		foreach ( $gateway_configuration->getErrors() as $error ) {
+			WC_Admin_Settings::add_error( $error );
+		}
+
+		return $settings;
+	}
+
+	/**
+	 * Remove decoration fields from settings.
+	 * This is used to avoid saving unnecessary fields in the database.
+	 * Natively, WooCommerce saves all fields but titles, including those that are not used.
+	 *
+	 * @param array $settings
+	 *
+	 * @return array
+	 */
+	private function clean_decoration_fields( array $settings ): array {
+		// Remove decoration fields
+		unset(
+			$settings['gateway_footer'],
+			$settings['gateway_header'],
+			$settings['fee_plan_footer'],
+			$settings['fee_plan_header'],
+			$settings['debug_section'],
+			$settings['keys_section'],
+			$settings['l10n_section'],
+		);
+
+		return $settings;
+	}
+}

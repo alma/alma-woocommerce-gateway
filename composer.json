@@ -2,6 +2,7 @@
   "name": "alma/alma-gateway-for-woocommerce",
   "description": "Alma - Pay in installments or later for WooCommerce",
   "type": "library",
+  "version": "6.0.0-alpha",
   "repositories": [
     {
       "type": "composer",
@@ -13,39 +14,55 @@
     }
   ],
   "require": {
-    "php": "^5.6 || ~7.0 || ~7.1 || ~7.2 || ~7.3 || ~7.4 || ~8.0 || ~8.1",
-    "alma/alma-php-client": ">=2.6.0",
+    "php": "~7.4 || ~8.0 || ~8.1 || ~8.2 || ~8.3 || ~8.4",
+    "ext-intl": "*",
+    "ext-json": "*",
     "ext-openssl": "*",
-    "psr/log": "^1 || ^2"
+    "alma/alma-php-client": "3.0.*|dev-feature/3.0",
+    "level-2/dice": "^4.0",
+    "psr/http-client": "^1",
+    "psr/log": "^1"
   },
   "require-dev": {
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+    "brain/monkey": "^2.0@dev",
     "johnpbloch/wordpress-core": "*",
-    "mockery/mockery": "^1.3",
+    "mockery/mockery": "^1.6",
+    "php-stubs/woocommerce-stubs": "*",
+    "php-stubs/wordpress-stubs": "*",
     "phpcompatibility/php-compatibility": "^9.3",
-    "phpcompatibility/phpcompatibility-wp": "^2.1",
-    "phpunit/phpunit": "^5 || ^6 || ^7 || ^8 || ^9",
-    "squizlabs/php_codesniffer": "^3.5",
+    "phpstan/extension-installer": "^1.4",
+    "phpstan/phpstan": "^1.10",
+    "phpunit/phpunit": "*",
+    "squizlabs/php_codesniffer": "^3.7",
     "symfony/var-dumper": "*",
+    "wp-coding-standards/wpcs": "dev-develop",
     "wpackagist-plugin/woocommerce": "^10.0.4",
-    "wp-coding-standards/wpcs": "^2.3",
-    "yoast/phpunit-polyfills": "*",
-    "ext-simplexml": "*"
+    "yoast/phpunit-polyfills": "*"
   },
   "autoload": {
     "psr-4": {
-      "Alma\\Woocommerce\\": "includes/"
+      "Alma\\Gateway\\": "includes/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Alma\\Woocommerce\\Tests\\": "tests/"
+      "Alma\\Gateway\\Tests\\": "tests/"
     }
   },
   "extra": {
     "installer-disable": [
       "wordpress"
-    ]
+    ],
+    "strauss": {
+      "target_directory": "vendor-prefixed",
+      "namespace_prefix": "Alma\\Vendor",
+      "packages": [
+        "alma/alma-php-client",
+        "level-2/dice"
+      ],
+      "include_root_autoload": true,
+      "delete_vendor_packages": false
+    }
   },
   "license": "GPL-3.0-only",
   "authors": [
@@ -57,16 +74,17 @@
   "scripts": {
     "phpcs": "vendor/bin/phpcs --standard=phpcs.xml .",
     "phpcbf": "vendor/bin/phpcbf --standard=phpcs.xml .",
-    "php-compatibility": "vendor/bin/phpcs -p src --standard=PHPCompatibility -s --runtime-set testVersion 5.6-8.1 --ignore=\\*/vendor/\\*"
+    "php-compatibility": "vendor/bin/phpcs -p src --standard=PHPCompatibility -s --runtime-set testVersion 7.4-8.4 --ignore=\\*/vendor/\\*"
   },
   "config": {
     "sort-packages": true,
     "allow-plugins": {
+      "automattic/jetpack-autoloader": true,
       "composer/installers": true,
       "dealerdirect/phpcodesniffer-composer-installer": true,
-      "automattic/jetpack-autoloader": true,
       "phpstan/extension-installer": true
     },
     "lock": false
-  }
+  },
+  "minimum-stability": "dev"
 }

@@ -1,0 +1,64 @@
+<?php
+
+namespace Alma\Gateway\Application\Mapper;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Not allowed' ); // Exit if accessed directly.
+}
+
+use Alma\Client\Application\DTO\AddressDto;
+use Alma\Client\Application\DTO\CustomerDto;
+use Alma\Plugin\Infrastructure\Adapter\OrderAdapterInterface;
+
+class CustomerMapper {
+
+	/**
+	 * Builds a CustomerDto from an Order.
+	 *
+	 * @param OrderAdapterInterface $order The Order object.
+	 *
+	 * @return CustomerDto The constructed CustomerDto.
+	 */
+	public function buildCustomerDto( OrderAdapterInterface $order ): CustomerDto {
+
+		$customerDto = ( new CustomerDto() )
+			->setFirstName( $order->getBillingFirstName() )
+			->setLastName( $order->getBillingLastName() )
+			->setEmail( $order->getBillingEmail() )
+			->setPhone( $order->getBillingPhone() );
+
+		if ( $order->getBillingCompany() ) {
+			$customerDto->setIsBusiness( true );
+			$customerDto->setBusinessName( $order->getBillingCompany() );
+		}
+		if ( $order->hasBillingAddress() ) {
+			$customerDto->addAddress(
+				( new AddressDto() )
+					->setFirstName( $order->getBillingFirstName() )
+					->setLastName( $order->getBillingLastName() )
+					->setCompany( $order->getBillingCompany() )
+					->setLine1( $order->getBillingAddress1() )
+					->setLine2( $order->getBillingAddress2() )
+					->setPostalCode( $order->getBillingPostcode() )
+					->setCity( $order->getBillingCity() )
+					->setCountry( $order->getBillingCountry() )
+					->setEmail( $order->getBillingEmail() )
+			);
+		}
+		if ( $order->hasShippingAddress() ) {
+			$customerDto->addAddress(
+				( new AddressDto() )
+					->setFirstName( $order->getShippingFirstName() )
+					->setLastName( $order->getShippingLastName() )
+					->setCompany( $order->getShippingCompany() )
+					->setLine1( $order->getShippingAddress1() )
+					->setLine2( $order->getShippingAddress2() )
+					->setPostalCode( $order->getShippingPostcode() )
+					->setCity( $order->getShippingCity() )
+					->setCountry( $order->getShippingCountry() )
+			);
+		}
+
+		return $customerDto;
+	}
+}
