@@ -1,5 +1,17 @@
 # Changelog
 
+## v5.17.0 - 2026-02-18
+
+### Changes
+
+### 🚀 New Features
+
+- Feature/6.0 (#516)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @alma-renovate-bot[bot], @joyet-simon, @remi-zuffinetti, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
+
 ## v5.16.2 - 2026-01-29
 
 ### 🐛 Bug Fixes
