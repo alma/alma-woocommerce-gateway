@@ -1,16 +1,19 @@
 # Changelog
 
-## v5.17.0 - 2026-02-18
+## v6.0.0 - 2026-02-18
 
 ### Changes
 
-### 🚀 New Features
-
-- Feature/6.0 (#516)
+- API refactoring
+- Native Blocks Management
+- Remove technical fields
+- Full alignment with WooCommerce guidelines
 
 #### Contributors
 
-@Benjamin-Freoua-Alma, @alma-renovate-bot[bot], @joyet-simon, @remi-zuffinetti, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
+@Benjamin-Freoua-Alma, @alma-renovate-bot[bot], @joyet-simon,
+@remi-zuffinetti, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
 
 ## v5.16.2 - 2026-01-29
 
@@ -34,7 +37,8 @@ Fixed broken access control when cancelling an order (wc_ajax API)
 
 #### Contributors
 
-@Benjamin-Freoua-Alma, @Francois-Gomis, @joyet-simon and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+@Benjamin-Freoua-Alma, @Francois-Gomis, @joyet-simon
+and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
 
 ## v5.15.0 - 2025-09-15
 
@@ -50,7 +54,9 @@ Fixed broken access control when cancelling an order (wc_ajax API)
 
 #### Contributors
 
-@Benjamin-Freoua-Alma, @alma-renovate-bot[bot], @gdraynz, @hyahiaoui, @joyet-simon, @remi-zuffinetti, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
+@Benjamin-Freoua-Alma, @alma-renovate-bot[bot], @gdraynz, @hyahiaoui, @joyet-simon,
+@remi-zuffinetti, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
 
 ## v5.14.2 - 2025-08-28
 
@@ -62,7 +68,9 @@ Fixed broken access control when cancelling an order (wc_ajax API)
 
 #### Contributors
 
-@Benjamin-Freoua-Alma, @Francois-Gomis, @alma-renovate-bot[bot], @joyet-simon, @remi-zuffinetti, @webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
+@Benjamin-Freoua-Alma, @Francois-Gomis, @alma-renovate-bot[bot], @joyet-simon, @remi-zuffinetti,
+@webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
 
 ## v5.14.1 - 2025-07-31
 
@@ -89,7 +97,9 @@ Fixed broken access control when cancelling an order (wc_ajax API)
 
 #### Contributors
 
-@Benjamin-Freoua-Alma, @alma-renovate-bot[bot], @gdraynz, @remi-zuffinetti, @webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
+@Benjamin-Freoua-Alma, @alma-renovate-bot[bot], @gdraynz, @remi-zuffinetti,
+@webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
 
 ## v5.13.1 - 2025-04-24
 
@@ -102,7 +112,8 @@ Fixed broken access control when cancelling an order (wc_ajax API)
 
 #### Contributors
 
-@Benjamin-Freoua-Alma, @webaaz and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+@Benjamin-Freoua-Alma, @webaaz
+and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
 
 ## v5.13.0 - 2025-04-16
 
@@ -119,7 +130,8 @@ Fixed broken access control when cancelling an order (wc_ajax API)
 
 #### Contributors
 
-@Benjamin-Freoua-Alma, @joyet-simon, @webaaz and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+@Benjamin-Freoua-Alma, @joyet-simon, @webaaz
+and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
 
 ## v5.12.0 - 2025-03-14
 
@@ -135,7 +147,8 @@ Fixed broken access control when cancelling an order (wc_ajax API)
 
 #### Contributors
 
-@joyet-simon, @webaaz and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+@joyet-simon, @webaaz
+and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
 
 ## v5.11.0 - 2025-02-18
 
@@ -178,7 +191,8 @@ Fixed broken access control when cancelling an order (wc_ajax API)
 
 #### Contributors
 
-@Benjamin-Freoua-Alma, @Francois-Gomis, @carine-bonnafous, @joyet-simon, @webaaz and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+@Benjamin-Freoua-Alma, @Francois-Gomis, @carine-bonnafous, @joyet-simon, @webaaz
+and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
 
 ## v5.8.1 - 2024-12-16
 
@@ -209,7 +223,8 @@ Hotfix: compatibility for Woocommerce version under 6.1.0
 
 #### Contributors
 
-@Benjamin-Freoua-Alma, @CamilleFljt, @Francois-Gomis, @alma-create-pr-with-team-review, @gdraynz, @joyet-simon, @webaaz and Martin Supiot
+@Benjamin-Freoua-Alma, @CamilleFljt, @Francois-Gomis, @alma-create-pr-with-team-review, @gdraynz, @joyet-simon, @webaaz
+and Martin Supiot
 
 ## v5.7.0 - 2024-10-07
 
@@ -655,4 +670,5 @@ Features in the latest push to this release:
   administrators of the shop
 * A message displays below the cart to indicate whether the purchase is eligible to monthly installments
 * The module adds a payment method to the checkout, which redirects the user to Alma's payment page.
-  If everything goes right (i.e. Customer doesn't cancel, pays the right amount, ... ), the order is validated upon customer return.
+  If everything goes right (i.e. Customer doesn't cancel, pays the right amount, ... ), the order is validated upon
+  customer return.
