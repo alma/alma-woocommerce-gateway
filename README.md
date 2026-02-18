@@ -3,12 +3,12 @@
 - Contributors: almapayments, olance, francois-gomis, clairealma
 - Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo commerce, alma, monthly payments, split
   payments
-- Requires at least Wordpress: 6.2
-- Requires at least Woocommerce: 8.2.0
-- Tested up to Wordpress: 6.8.1
-- Tested up to Woocommerce: 9.8.5
+- Requires at least Wordpress: 6.6
+- Requires at least Woocommerce: 10.1.0
+- Tested up to Wordpress: 6.9.1
+- Tested up to Woocommerce: 10.5.0
 - Requires PHP: 7.4
-- Stable tag: 5.11.0
+- Stable tag: 6.0.0
 - License: GPLv3
 - License URI: https://www.gnu.org/licenses/gpl-3.0.html
 - Support: support@getalma.eu

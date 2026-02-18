@@ -2,10 +2,10 @@
 
 Contributors: almapayments, francois-gomis
 Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell, woo commerce, alma, monthly payments, split payments
-Requires at least: 6.2
-Tested up to: 9.8.5
+Requires at least: 6.6
+Tested up to: 6.9.1
 Requires PHP: 7.4
-Stable tag: 5.11.0
+Stable tag: 6.0.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,19 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+## v6.0.0 - 2026-02-18
+
+### Changes
+
+- API refactoring
+- Native Blocks Management
+- Remove technical fields
+- Full alignment with WooCommerce guidelines
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @alma-renovate-bot[bot], @joyet-simon, @remi-zuffinetti, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
 
 ## v5.11.0 - 2025-02-18
 
