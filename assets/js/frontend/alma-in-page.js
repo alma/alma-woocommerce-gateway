@@ -6,13 +6,36 @@
 (function ($) {
     $(function () {
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const isInPagePayment = urlParams.has('alma') && urlParams.get('alma') === 'inPage' && urlParams.has('pid');
-
-        // Add overlay if it's an inPage payment to prevent user interactions while the payment modal is loading
-        if (isInPagePayment) {
-            addLoadingOverlay();
+        // ==================== PROTECTION CONTRE L'EXÉCUTION MULTIPLE ====================
+        // Si le script a déjà été initialisé, ne pas le réexécuter
+        if (window.almaInPageInitialized) {
+            return;
         }
+
+        // Marquer comme initialisé
+        window.almaInPageInitialized = true;
+        // ===============================================================================
+
+        // ==================== MODE TEST - SIMULATION CONDITIONS PRODUCTION ====================
+        // Simule un chargement lent du SDK (comme en production avec beaucoup de JS)
+        const SDK_DELAY = 3000; // 3 secondes de délai
+        const TEST_MODE = false; // Mode test activé
+
+        if (TEST_MODE) {
+            console.warn('⚠️ MODE TEST ACTIVÉ: SDK Alma retardé de ' + SDK_DELAY + 'ms (simulation production)');
+
+            if (typeof Alma !== 'undefined') {
+                const realAlma = window.Alma;
+                delete window.Alma; // Cacher temporairement le SDK
+
+                setTimeout(function () {
+                    window.Alma = realAlma; // Restaurer après le délai
+                    console.log('✅ SDK Alma disponible (après délai simulé de ' + SDK_DELAY + 'ms)');
+                }, SDK_DELAY);
+            }
+        }
+        // ==================================================================================
+
         /**
          * @typedef {Object} alma_in_page_settings
          * @typedef {Object} alma_woocommerce_gateway_credit_gateway
@@ -29,8 +52,30 @@
 
         let inPage;
         let totalAmount = 0;
+        let isAlmaSDKReady = false;
+
+        // Use a global variable to track overlay state across all script instances
+        if (typeof window.almaOverlayAdded === 'undefined') {
+            window.almaOverlayAdded = false;
+        }
+
+        // Track if payment has been started to prevent multiple calls
+        if (typeof window.almaPaymentStarted === 'undefined') {
+            window.almaPaymentStarted = false;
+        }
+
         const merchantId = alma_in_page_settings.merchant_id;
         const environment = alma_in_page_settings.environment.toUpperCase();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const isInPagePayment = urlParams.has('alma') && urlParams.get('alma') === 'inPage' && urlParams.has('pid');
+
+        // Reset payment flag if we're landing on the page with inPage payment parameters
+        // This ensures a fresh payment cycle
+        if (isInPagePayment) {
+            window.almaPaymentStarted = false;
+            console.log('[Init] Detected inPage payment URL, reset almaPaymentStarted flag');
+        }
 
         // Get all defined gateway names
         // Some of them may be undefined if the corresponding gateway is not available
@@ -52,22 +97,95 @@
             return acc;
         }, {});
 
+        /**
+         * Wait for Alma SDK to be loaded before initializing
+         * This prevents race conditions in production environments where SDK loads slowly
+         * @param {Function} callback - Function to call when SDK is ready
+         * @param {Function} onError - Function to call if SDK fails to load (optional)
+         * @param {Number} maxAttempts - Maximum number of attempts (default: 50)
+         */
+        function waitForAlmaSDK(callback, onError, maxAttempts = 50) {
+            let attempts = 0;
+
+            const checkSDK = function () {
+                attempts++;
+
+                if (typeof Alma !== 'undefined' && typeof Alma.InPage !== 'undefined') {
+                    isAlmaSDKReady = true;
+                    callback();
+                    return;
+                }
+
+                if (attempts < maxAttempts) {
+                    setTimeout(checkSDK, 100); // Check every 100ms
+                } else {
+                    const errorMsg = '[Alma] SDK failed to load after ' + (maxAttempts * 100) + 'ms';
+                    console.error(errorMsg);
+
+                    if (typeof onError === 'function') {
+                        onError(errorMsg);
+                    }
+                }
+            };
+
+            checkSDK();
+        }
+
         // Show the Alma In-Page iframe if the selected gateway is an Alma gateway
         // Otherwise, remove the iframe
         function mountIframe() {
             const selectedMethod = $('input[name="payment_method"]:checked').val();
             const almaPlanSelected = $('.alma_woocommerce_gateway_fieldset input[name="alma_plan_key"]:checked').val();
+
+            console.log('[mountIframe] Called - selectedMethod:', selectedMethod, 'almaPlanSelected:', almaPlanSelected, 'totalAmount:', totalAmount);
+
             if (almaMethods[selectedMethod] && almaPlanSelected && totalAmount > 0) {
-                const [installmentsCount, deferredDays, deferredMonths] = almaPlanSelected.match(/\d+/g).map(Number);
-                inPage = Alma.InPage.initialize({
-                    merchantId: merchantId,
-                    amountInCents: totalAmount,
-                    installmentsCount: installmentsCount,
-                    deferredDays: deferredDays,
-                    deferredMonths: deferredMonths,
-                    selector: almaMethods[selectedMethod].inPageSelector,
-                    environment: environment,
-                });
+                // Check if Alma SDK is loaded
+                if (!isAlmaSDKReady) {
+                    console.log('[mountIframe] SDK not ready, waiting...');
+                    waitForAlmaSDK(
+                        function () {
+                            console.log('[mountIframe] SDK ready, retrying mount');
+                            mountIframe(); // Retry mounting after SDK is loaded
+                        },
+                        function (error) {
+                            console.error('[Alma] Cannot mount iframe: ' + error);
+                        }
+                    );
+                    return;
+                }
+
+                // Check if inPage is already initialized with the same configuration
+                // If yes, don't recreate it to avoid breaking the payment flow
+                if (inPage !== undefined) {
+                    console.log('[mountIframe] ⚠️ InPage already initialized, skipping re-initialization');
+                    return;
+                }
+
+                try {
+                    console.log('[mountIframe] Initializing Alma InPage...');
+                    const [installmentsCount, deferredDays, deferredMonths] = almaPlanSelected.match(/\d+/g).map(Number);
+                    console.log('[mountIframe] Plan details - installments:', installmentsCount, 'deferredDays:', deferredDays, 'deferredMonths:', deferredMonths);
+
+                    inPage = Alma.InPage.initialize({
+                        merchantId: merchantId,
+                        amountInCents: totalAmount,
+                        installmentsCount: installmentsCount,
+                        deferredDays: deferredDays,
+                        deferredMonths: deferredMonths,
+                        selector: almaMethods[selectedMethod].inPageSelector,
+                        environment: environment,
+                    });
+
+                    console.log('[mountIframe] ✅ InPage initialized successfully:', inPage);
+                    console.log('[mountIframe] InPage methods available:', Object.keys(inPage || {}));
+                } catch (error) {
+                    console.error('[Alma] Error initializing InPage:', error);
+                    console.error('[Alma] Error stack:', error.stack);
+                    inPage = undefined;
+                }
+            } else {
+                console.log('[mountIframe] Conditions not met - skipping mount');
             }
         }
 
@@ -76,7 +194,13 @@
         // If the iframe is not removed, it may cause issues with the payment process
         function unmountIframe() {
             if (inPage !== undefined) {
-                inPage.unmount()
+                try {
+                    inPage.unmount();
+                } catch (error) {
+                    // Ignore errors if iframe is already removed or doesn't exist
+                    // This can happen during checkout updates when the DOM is being refreshed
+                }
+                inPage = undefined;
             }
         }
 
@@ -102,8 +226,20 @@
         // The amount is in the format "12,34 €" or "$12.34"
         // We need to extract the numeric value and convert it to cents
         function getAmount() {
-            const totalText = $('.order-total .woocommerce-Price-amount').text().trim();
-            return parseFloat(totalText.replace(/[^0-9.,]/g, '').replace(',', '.') * 100);
+            try {
+                const totalText = $('.order-total .woocommerce-Price-amount').text().trim();
+                const amount = parseFloat(totalText.replace(/[^0-9.,]/g, '').replace(',', '.') * 100);
+
+                if (isNaN(amount) || amount <= 0) {
+                    console.warn('[Alma] Invalid amount detected:', totalText, '-> parsed as:', amount);
+                    return 0;
+                }
+
+                return Math.round(amount); // Ensure it's an integer
+            } catch (error) {
+                console.error('[Alma] Error parsing amount:', error);
+                return 0;
+            }
         }
 
 
@@ -113,6 +249,8 @@
             const url = new URL(window.location.href);
             const params = url.searchParams;
             $('#alma-overlay').remove();
+            window.almaOverlayAdded = false; // Reset flag when overlay is removed
+            window.almaPaymentStarted = false; // Reset payment flag
 
             params.delete('alma');
             params.delete('pid');
@@ -122,6 +260,17 @@
         // Generate and add the loading overlay to the page
         // This overlay is removed when the inPage modal is closed
         function addLoadingOverlay() {
+            // Check global flag first - most reliable check
+            if (window.almaOverlayAdded) {
+                return; // Already added, don't add again
+            }
+
+            // Double check in DOM as safety
+            if ($('#alma-overlay').length > 0) {
+                window.almaOverlayAdded = true;
+                return; // Overlay already exists, don't create a new one
+            }
+
             const $overlay = $('<div>', {
                 id: 'alma-overlay',
                 css: {
@@ -148,6 +297,78 @@
 
             $overlay.append($image);
             $('body').append($overlay);
+            window.almaOverlayAdded = true;
+
+            // Debug: Log all Alma-related elements in the DOM
+            setTimeout(function () {
+                console.log('[Alma Debug] DOM Analysis:');
+                console.log('  - #alma-overlay count:', $('#alma-overlay').length);
+                console.log('  - All divs with "alma" in id:', $('div[id*="alma"]').length);
+                console.log('  - All iframes in body:', $('body iframe').length);
+                console.log('  - Alma SDK iframes:', $('iframe[src*="almapay"], iframe[id*="alma"]').length);
+
+                // List all Alma-related elements
+                $('div[id*="alma"], iframe[id*="alma"], iframe[src*="almapay"]').each(function (index) {
+                    console.log('  - Element ' + (index + 1) + ':', this.tagName, 'id:', this.id, 'src:', this.src || 'N/A');
+                });
+            }, 500); // Wait 500ms to let SDK finish loading
+        }
+
+        /**
+         * Safely start the payment with the InPage instance
+         * Handles errors and cleanup
+         * @param {String} paymentId - The payment ID to start
+         */
+        function safeStartPayment(paymentId) {
+            console.log('[safeStartPayment] Called with paymentId:', paymentId, 'almaPaymentStarted:', window.almaPaymentStarted);
+            console.log('[safeStartPayment] inPage state:', inPage);
+            console.log('[safeStartPayment] inPage type:', typeof inPage);
+
+            // Check if payment already started
+            if (window.almaPaymentStarted) {
+                console.warn('[safeStartPayment] ⚠️ Payment already started, ignoring duplicate call');
+                return;
+            }
+
+            if (inPage === undefined) {
+                console.error('[Alma] Cannot start payment: InPage instance is not initialized');
+                cleanInPageUrlParams();
+                return;
+            }
+
+            if (!paymentId) {
+                console.error('[Alma] Cannot start payment: Payment ID is missing');
+                cleanInPageUrlParams();
+                return;
+            }
+
+            // Mark payment as started BEFORE adding overlay and starting payment
+            window.almaPaymentStarted = true;
+            console.log('[safeStartPayment] ✅ Starting payment, flag set to true');
+
+            // Add overlay only when actually starting payment
+            addLoadingOverlay();
+
+            console.log('[safeStartPayment] About to call inPage.startPayment()');
+            console.log('[safeStartPayment] inPage.startPayment exists?', typeof inPage.startPayment);
+
+            try {
+                const result = inPage.startPayment({
+                    paymentId: paymentId,
+                    onUserCloseModal: function () {
+                        // Reset flag when modal is closed
+                        window.almaPaymentStarted = false;
+                        console.log('[safeStartPayment] Modal closed, flag reset to false');
+                        cleanInPageUrlParams();
+                    }
+                });
+                console.log('[safeStartPayment] startPayment() returned:', result);
+            } catch (error) {
+                console.error('[Alma] Error starting payment:', error);
+                console.error('[Alma] Error stack:', error.stack);
+                window.almaPaymentStarted = false; // Reset flag on error
+                cleanInPageUrlParams();
+            }
         }
 
 
@@ -155,18 +376,46 @@
         // We need to remount the iframe after the update
         // We also reset the inPage instance to ensure a fresh initialization with the updated amount
         $(document.body).on('updated_checkout', function () {
-            totalAmount = getAmount()
-            inPage = undefined; // Reset inPage instance after partial reload
+            totalAmount = getAmount();
+            unmountIframe(); // Properly unmount before resetting
             checkPlan();
-            mountIframe();
 
             // Start payment for inPage if URL contains alma=inPage&pid=PAYMENT_ID
             // This is used to handle the case where the user is redirected back to the checkout page after place order
             if (isInPagePayment) {
-                inPage.startPayment({
-                    paymentId: urlParams.get('pid'),
-                    onUserCloseModal: cleanInPageUrlParams
-                });
+                // Wait for SDK to be ready before mounting and starting payment
+                waitForAlmaSDK(
+                    function () {
+                        mountIframe();
+
+                        // Wait for inPage to be initialized by mountIframe
+                        // Use a more robust check with multiple attempts
+                        let checkAttempts = 0;
+                        const maxCheckAttempts = 10;
+
+                        const checkAndStartPayment = function () {
+                            checkAttempts++;
+
+                            if (inPage !== undefined) {
+                                safeStartPayment(urlParams.get('pid'));
+                            } else if (checkAttempts < maxCheckAttempts) {
+                                setTimeout(checkAndStartPayment, 100);
+                            } else {
+                                console.error('[Alma] InPage instance not initialized after ' + (maxCheckAttempts * 100) + 'ms');
+                                cleanInPageUrlParams();
+                            }
+                        };
+
+                        checkAndStartPayment();
+                    },
+                    function (error) {
+                        console.error('[Alma] Cannot start payment: ' + error);
+                        cleanInPageUrlParams();
+                    }
+                );
+            } else {
+                // Normal case: just mount the iframe
+                mountIframe();
             }
         });
 
@@ -181,5 +430,27 @@
             unmountIframe();
             mountIframe();
         });
+
+        // Initialize: Wait for Alma SDK to be loaded, then setup the initial state
+        waitForAlmaSDK(
+            function () {
+                totalAmount = getAmount();
+                checkPlan();
+                mountIframe();
+
+                // Note: If this is an inPage payment redirect (URL contains ?alma=inPage&pid=XXX),
+                // the payment will be started in the 'updated_checkout' event handler
+                // which is triggered automatically after the page loads
+                if (isInPagePayment) {
+                    console.log('[Init] InPage payment detected, will start payment in updated_checkout event');
+                }
+            },
+            function (error) {
+                console.error('[Alma] Cannot initialize plugin: ' + error);
+                if (isInPagePayment) {
+                    cleanInPageUrlParams();
+                }
+            }
+        );
     })
 })(jQuery);

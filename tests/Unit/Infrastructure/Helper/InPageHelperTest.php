@@ -3,25 +3,14 @@
 namespace Alma\Gateway\Tests\Unit\Infrastructure\Helper;
 
 use Alma\Gateway\Infrastructure\Helper\InPageHelper;
-use PHPUnit\Framework\TestCase;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
+use PHPUnit\Framework\TestCase;
 
 class InPageHelperTest extends TestCase {
 
 	/** @var InPageHelper | null $inPageHelper */
 	public ?InPageHelper $inPageHelper;
-
-	protected function setUp(): void {
-		Monkey\setUp();
-		$this->inPageHelper = new InPageHelper();
-	}
-
-	protected function tearDown(): void {
-		Monkey\tearDown();
-		$this->inPageHelper = null;
-	}
-
 
 	public function testGetInPageRedirectionUrl() {
 
@@ -47,7 +36,17 @@ class InPageHelperTest extends TestCase {
 
 		$this->assertEquals(
 			'https://woocommerce.com/?page_id=6&alma=inPage&pid=payment_123',
-			$this->inPageHelper->getInPageRedirectionFallbackUrl( 'payment_123' ) );
+			$this->inPageHelper->getInPageRedirectionUrl( 'payment_123' ) );
+	}
+
+	protected function setUp(): void {
+		Monkey\setUp();
+		$this->inPageHelper = new InPageHelper();
+	}
+
+	protected function tearDown(): void {
+		Monkey\tearDown();
+		$this->inPageHelper = null;
 	}
 
 }
