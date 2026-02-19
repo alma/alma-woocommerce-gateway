@@ -193,10 +193,10 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 
 		$result = array();
 		if ( $config_service->isInPageEnabled() ) {
-			// In-page checkout with fallback redirection
+			// In-page checkout with redirection
 			$result['alma_payment_id'] = $payment->getId();
 			$result['result']          = 'success';
-			$result['redirect']        = InPageHelper::getInPageRedirectionFallbackUrl( $payment->getId() );
+			$result['redirect']        = InPageHelper::getInPageRedirectionUrl( $payment->getId() );
 		} else {
 			// Classic checkout redirection
 			$result['result']   = 'success';
