@@ -94,11 +94,10 @@
         ].filter(Boolean);
 
         // Associate gateway names with their types and selectors
-        // e.g. { 'alma_credit_gateway': { type: 'credit', inPageSelector: '#alma_credit_in_page' , fieldsetSelector: '.alma_woocommerce_gateway_credit' }, ... }
+        // e.g. { 'alma_credit_gateway': { type: 'credit', fieldsetSelector: '.alma_woocommerce_gateway_credit' }, ... }
         const almaMethods = gatewayVars.reduce((acc, gw) => {
             acc[gw.gateway_name] = {
                 type: gw.type,
-                inPageSelector: `#${gw.gateway_name}_in_page`,
                 fieldsetSelector: `.alma_woocommerce_gateway_${gw.type}`,
             };
             return acc;
@@ -202,13 +201,18 @@
                     const [installmentsCount, deferredDays, deferredMonths] = almaPlanSelected.match(/\d+/g).map(Number);
                     console.log('[mountIframe] Plan details - installments:', installmentsCount, 'deferredDays:', deferredDays, 'deferredMonths:', deferredMonths);
 
+                    // Generate the selector based on the selected plan
+                    // Format: #alma_{payment_method}_gateway_in_page_{plan_key}
+                    const planSelector = '#alma_' + almaMethods[selectedMethod].type + '_gateway_in_page_' + almaPlanSelected;
+                    console.log('[mountIframe] Using selector:', planSelector);
+
                     inPage = Alma.InPage.initialize({
                         merchantId: merchantId,
                         amountInCents: totalAmount,
                         installmentsCount: installmentsCount,
                         deferredDays: deferredDays,
                         deferredMonths: deferredMonths,
-                        selector: almaMethods[selectedMethod].inPageSelector,
+                        selector: planSelector,
                         environment: environment,
                     });
 
@@ -636,6 +640,16 @@
 
         // Change plan
         $(document).on('change', '.alma_woocommerce_gateway_fieldset input[name="alma_plan_key"]', function () {
+            const selectedPlanKey = $(this).val();
+            console.log('[change plan] Selected plan:', selectedPlanKey);
+
+            // Hide all plan divs for this gateway
+            $('.alma_woocommerce_gateway_checkout_plan').hide();
+
+            // Show only the selected plan div
+            $('#alma-checkout-plan-' + selectedPlanKey).show();
+
+            // Unmount and remount iframe with new plan
             unmountIframe();
             mountIframe();
         });
