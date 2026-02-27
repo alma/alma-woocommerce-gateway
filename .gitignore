@@ -22,3 +22,5 @@ package-lock.json
 phpstan.log
 build/*
 /vendor-prefixed/*
+coverage/
+*.lcov

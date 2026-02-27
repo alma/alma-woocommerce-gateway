@@ -166,3 +166,54 @@ the second and following will not be displayed.
 ## Documentation
 
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
+
+## Development
+
+### Running Tests
+
+This project includes comprehensive JavaScript unit tests for frontend components.
+
+#### Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Run all tests
+npm test
+
+# Run tests in watch mode (auto-reload on file change)
+npm run test:watch
+
+# Generate coverage report
+npm run test:coverage
+```
+
+#### Test Files
+
+- `tests/js/alma-in-page.test.js` - Core functionality tests (45+ tests)
+- `tests/js/alma-in-page-advanced.test.js` - Advanced scenarios and edge cases (30+ tests)
+
+#### Documentation
+
+- [Quick Start Guide](./tests/js/GETTING_STARTED.md) - Get started with testing
+- [Complete Documentation](./tests/js/README.md) - In-depth testing guide
+- [Test Summary](./TESTS_JS.md) - Overview and metrics
+
+#### Coverage Goals
+
+- Overall: > 80%
+- Critical functions: 100%
+- Branches: > 75%
+
+See [TESTS_JS.md](./TESTS_JS.md) for detailed information about the test suite.
+
+### PHP Tests
+
+PHP unit tests are located in the `tests/` directory and use PHPUnit.
+
+```bash
+# Run PHP tests
+composer test
+```
+

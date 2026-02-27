@@ -8,7 +8,10 @@
     "build": "wp-scripts build",
     "format": "wp-scripts format",
     "lint:css": "wp-scripts lint-style",
-    "lint:js": "wp-scripts lint-js"
+    "lint:js": "wp-scripts lint-js",
+    "test": "wp-scripts test-unit-js",
+    "test:watch": "wp-scripts test-unit-js --watch",
+    "test:coverage": "wp-scripts test-unit-js --coverage"
   },
   "repository": {
     "type": "git",
@@ -30,6 +33,7 @@
     "@wordpress/scripts": "^27",
     "ajv": "^7.2.4",
     "css-loader": "^6.10.0",
+    "jquery": "^3.7.1",
     "style-loader": "^3.3.4"
   },
   "dependencies": {

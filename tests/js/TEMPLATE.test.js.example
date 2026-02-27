@@ -1,0 +1,292 @@
+/**
+ * Template for new test files
+ *
+ * Copy this file and adapt it for your needs.
+ * File naming: [component-name].test.js
+ */
+
+describe('My Component', () => {
+
+    // Setup before each test
+    beforeEach(() => {
+        // Reset DOM to a known state
+        document.body.innerHTML = `
+			<!-- Your HTML here -->
+		`;
+
+        // Reset mocks
+        jest.clearAllMocks();
+
+        // Reset global state if needed
+        window.myGlobalVariable = null;
+    });
+
+    // Cleanup after each test (optional)
+    afterEach(() => {
+        // Clean up if needed
+        jest.restoreAllMocks();
+    });
+
+    // Group related tests
+    describe('Feature A', () => {
+
+        test('should do something when condition is met', () => {
+            // Arrange: Set up test data
+            const input = 'test';
+            const expected = 'expected result';
+
+            // Act: Execute the code under test
+            const result = myFunction(input);
+
+            // Assert: Verify the result
+            expect(result).toBe(expected);
+        });
+
+        test('should handle edge case', () => {
+            // Test edge cases
+            const result = myFunction(null);
+            expect(result).toBe(null);
+        });
+
+        test('should throw error for invalid input', () => {
+            // Test error handling
+            expect(() => {
+                myFunction('invalid');
+            }).toThrow('Invalid input');
+        });
+    });
+
+    describe('Feature B with async', () => {
+
+        test('should handle async operation', async () => {
+            // For async/await
+            const result = await myAsyncFunction();
+            expect(result).toBeDefined();
+        });
+
+        test('should handle promise', () => {
+            // For promises
+            return myPromiseFunction().then(result => {
+                expect(result).toBe('success');
+            });
+        });
+
+        test('should handle callback', (done) => {
+            // For callbacks
+            myCallbackFunction((error, result) => {
+                expect(error).toBeNull();
+                expect(result).toBe('success');
+                done(); // Important: call done() when test is finished
+            });
+        });
+    });
+
+    describe('Feature C with timers', () => {
+
+        beforeEach(() => {
+            jest.useFakeTimers();
+        });
+
+        afterEach(() => {
+            jest.useRealTimers();
+        });
+
+        test('should execute after timeout', () => {
+            const callback = jest.fn();
+
+            setTimeout(() => {
+                callback();
+            }, 1000);
+
+            // Advance time
+            jest.advanceTimersByTime(1000);
+
+            expect(callback).toHaveBeenCalled();
+        });
+
+        test('should execute interval multiple times', () => {
+            const callback = jest.fn();
+
+            setInterval(() => {
+                callback();
+            }, 100);
+
+            // Advance by 500ms (should call 5 times)
+            jest.advanceTimersByTime(500);
+
+            expect(callback).toHaveBeenCalledTimes(5);
+        });
+    });
+
+    describe('Feature D with DOM manipulation', () => {
+
+        test('should add element to DOM', () => {
+            const $element = $('<div>', {id: 'test', class: 'my-class'});
+            $('body').append($element);
+
+            expect($('#test').length).toBe(1);
+            expect($('#test').hasClass('my-class')).toBe(true);
+        });
+
+        test('should remove element from DOM', () => {
+            $('body').append('<div id="to-remove"></div>');
+            expect($('#to-remove').length).toBe(1);
+
+            $('#to-remove').remove();
+            expect($('#to-remove').length).toBe(0);
+        });
+
+        test('should handle events', () => {
+            const clickHandler = jest.fn();
+            $('body').append('<button id="my-button">Click</button>');
+
+            $('#my-button').on('click', clickHandler);
+            $('#my-button').trigger('click');
+
+            expect(clickHandler).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    describe('Feature E with mocking', () => {
+
+        test('should mock function', () => {
+            const mockFn = jest.fn();
+            mockFn.mockReturnValue('mocked value');
+
+            const result = mockFn();
+
+            expect(result).toBe('mocked value');
+            expect(mockFn).toHaveBeenCalled();
+        });
+
+        test('should mock object method', () => {
+            const myObject = {
+                getData: jest.fn()
+            };
+
+            myObject.getData.mockResolvedValue({data: 'test'});
+
+            return myObject.getData().then(result => {
+                expect(result.data).toBe('test');
+            });
+        });
+
+        test('should spy on existing method', () => {
+            const myObject = {
+                method: () => 'original'
+            };
+
+            const spy = jest.spyOn(myObject, 'method');
+            spy.mockReturnValue('mocked');
+
+            const result = myObject.method();
+
+            expect(result).toBe('mocked');
+            expect(spy).toHaveBeenCalled();
+
+            spy.mockRestore(); // Restore original implementation
+        });
+    });
+
+    describe('Feature F with external dependencies', () => {
+
+        test('should mock external library', () => {
+            // Mock a global object
+            global.MyExternalLib = {
+                doSomething: jest.fn().mockReturnValue('external result')
+            };
+
+            const result = global.MyExternalLib.doSomething();
+
+            expect(result).toBe('external result');
+            expect(global.MyExternalLib.doSomething).toHaveBeenCalled();
+        });
+
+        test('should mock AJAX call', () => {
+            $.ajax = jest.fn().mockResolvedValue({
+                success: true,
+                data: 'server data'
+            });
+
+            return $.ajax({
+                url: '/api/endpoint',
+                method: 'GET'
+            }).then(response => {
+                expect(response.success).toBe(true);
+                expect($.ajax).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        url: '/api/endpoint'
+                    })
+                );
+            });
+        });
+    });
+});
+
+// Example of parametrized tests (test the same logic with different data)
+describe.each([
+    ['input1', 'expected1'],
+    ['input2', 'expected2'],
+    ['input3', 'expected3'],
+])('Parametrized test with %s', (input, expected) => {
+
+    test(`should return ${expected} for ${input}`, () => {
+        const result = myFunction(input);
+        expect(result).toBe(expected);
+    });
+});
+
+// Example of test.each for table-driven tests
+describe('Table-driven tests', () => {
+
+    test.each([
+        [1, 2, 3],
+        [2, 3, 5],
+        [5, 5, 10],
+    ])('should add %i + %i to equal %i', (a, b, expected) => {
+        expect(a + b).toBe(expected);
+    });
+});
+
+// Example of snapshot testing (useful for React components or HTML output)
+describe('Snapshot tests', () => {
+
+    test('should match snapshot', () => {
+        const output = {
+            id: 1,
+            name: 'Test',
+            nested: {
+                value: 'nested value'
+            }
+        };
+
+        expect(output).toMatchSnapshot();
+    });
+});
+
+// Tips and best practices:
+//
+// 1. Test behavior, not implementation
+//    ✅ test('should show error when input is invalid')
+//    ❌ test('should call validateInput function')
+//
+// 2. Use descriptive test names
+//    ✅ test('should display error message when Alma SDK fails to load')
+//    ❌ test('error message')
+//
+// 3. Follow AAA pattern: Arrange, Act, Assert
+//
+// 4. Keep tests isolated (no dependencies between tests)
+//
+// 5. One assertion per test when possible
+//
+// 6. Test edge cases and error conditions
+//
+// 7. Mock external dependencies
+//
+// 8. Use beforeEach for common setup
+//
+// 9. Clean up after tests (afterEach)
+//
+// 10. Run tests before committing
+
