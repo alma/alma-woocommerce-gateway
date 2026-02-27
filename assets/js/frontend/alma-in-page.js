@@ -82,6 +82,11 @@
             window.almaSDKPollingActive = false; // Reset polling flag for new page
             window.almaHiddenDueToTimeout = false; // Reset timeout flag
             console.log('[Init] Detected inPage payment URL, reset almaPaymentStarted flag');
+
+            // Show loading overlay immediately when landing on inPage payment URL
+            // This provides visual feedback during SDK loading and prevents user confusion
+            addLoadingOverlay();
+            console.log('[Init] Loading overlay displayed for inPage payment');
         }
 
         // Get all defined gateway names
@@ -272,6 +277,13 @@
             if (almaMethods[selectedMethod]) {
                 const firstPlan = $(`${almaMethods[selectedMethod].fieldsetSelector} input[name="alma_plan_key"]`).first();
                 firstPlan.trigger('click');
+
+                // Ensure the corresponding plan div is visible
+                const planKey = firstPlan.val();
+                if (planKey) {
+                    $('.alma_woocommerce_gateway_checkout_plan').hide();
+                    $('#alma-checkout-plan-' + planKey).show();
+                }
             }
         }
 
