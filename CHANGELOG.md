@@ -1,5 +1,7 @@
 # Changelog
 
+## New develop
+
 ## v6.0.0 - 2026-02-18
 
 ### Changes
