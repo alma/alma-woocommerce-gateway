@@ -6,35 +6,35 @@
 (function ($) {
     $(function () {
 
-        // ==================== PROTECTION CONTRE L'EXÉCUTION MULTIPLE ====================
-        // Si le script a déjà été initialisé, ne pas le réexécuter
+        // ==================== PROTECTION AGAINST MULTIPLE EXECUTIONS ====================
+        // If the script has already been initialized, do not re-execute it
         if (window.almaInPageInitialized) {
             return;
         }
 
-        // Marquer comme initialisé
+        // Mark as initialized
         window.almaInPageInitialized = true;
         // ===============================================================================
 
-        // ==================== MODE TEST - SIMULATION CONDITIONS PRODUCTION ====================
-        // Simule un chargement lent du SDK (comme en production avec beaucoup de JS)
-        const SDK_DELAY = 3000; // 3 secondes de délai
-        const TEST_MODE = false; // Mode test désactivé
+        // ==================== TEST MODE - PRODUCTION CONDITIONS SIMULATION ====================
+        // Simulates a slow SDK load (as in production with many JS files)
+        const SDK_DELAY = 3000; // 3 seconds delay
+        const TEST_MODE = true; // Test mode enabled
 
         if (TEST_MODE) {
-            console.warn('⚠️ MODE TEST ACTIVÉ: SDK Alma retardé de ' + SDK_DELAY + 'ms (simulation production)');
+            console.warn('⚠️ TEST MODE ENABLED: Alma SDK delayed by ' + SDK_DELAY + 'ms (production simulation)');
 
             if (typeof Alma !== 'undefined') {
                 const realAlma = window.Alma;
-                delete window.Alma; // Cacher temporairement le SDK
+                delete window.Alma; // Temporarily hide the SDK
 
                 setTimeout(function () {
-                    window.Alma = realAlma; // Restaurer après le délai
-                    console.log('✅ SDK Alma disponible (après délai simulé de ' + SDK_DELAY + 'ms)');
+                    window.Alma = realAlma; // Restore after delay
+                    console.log('✅ Alma SDK available (after simulated delay of ' + SDK_DELAY + 'ms)');
                 }, SDK_DELAY);
             }
         }
-        // ==================================================================================
+        // ===================================================================================
 
         /**
          * @typedef {Object} alma_in_page_settings
@@ -68,6 +68,151 @@
         if (typeof window.almaHiddenDueToTimeout === 'undefined') {
             window.almaHiddenDueToTimeout = false;
         }
+
+        // Track if Alma methods should be kept hidden across DOM re-renders (updated_checkout)
+        if (typeof window.almaMethodsShouldBeHidden === 'undefined') {
+            window.almaMethodsShouldBeHidden = false;
+        }
+
+        // ==================== SDK POLLING SINGLETON ====================
+        // A single polling loop shared across all callers.
+        // This prevents multiple concurrent waitForAlmaSDK() instances from
+        // triggering their callbacks simultaneously when the SDK finally loads.
+        if (typeof window.almaSDKPoller === 'undefined') {
+            window.almaSDKPoller = {
+                running: false,       // Is the polling loop active?
+                resolved: false,      // Has the SDK been detected at least once?
+                callbacks: [],        // Success callbacks queued by callers
+                errorCallbacks: [],   // Error callbacks queued by callers
+                attempts: 0,
+                maxAttempts: 100,     // 100 × 100ms = 10s timeout
+                timeoutFired: false,
+
+                /**
+                 * Register a callback to run when the SDK is ready (or immediately if already ready).
+                 * @param {Function} onReady
+                 * @param {Function} onError
+                 */
+                onReady: function (onReady, onError) {
+                    if (this.resolved) {
+                        // SDK already available — run immediately
+                        if (typeof onReady === 'function') {
+                            onReady();
+                        }
+                        return;
+                    }
+                    if (typeof onReady === 'function') {
+                        this.callbacks.push(onReady);
+                    }
+                    if (typeof onError === 'function') {
+                        this.errorCallbacks.push(onError);
+                    }
+                    this.start();
+                },
+
+                /** Start the polling loop (idempotent). */
+                start: function () {
+                    if (this.running) {
+                        return;
+                    }
+                    this.running = true;
+                    this._tick();
+                },
+
+                _tick: function () {
+                    var self = this;
+                    self.attempts++;
+
+                    if (typeof Alma !== 'undefined' && typeof Alma.InPage !== 'undefined') {
+                        // SDK is ready
+                        self.running = false;
+                        self.resolved = true;
+                        isAlmaSDKReady = true;
+
+                        // Capture whether we were in a "hidden due to timeout" state
+                        // before we start modifying any flags
+                        var wasHiddenDueToTimeout = window.almaHiddenDueToTimeout;
+
+                        // Restore Alma methods if they were hidden due to timeout.
+                        // Use setTimeout(0) to defer until after any pending updated_checkout
+                        // events already in the event loop have finished processing —
+                        // otherwise they would immediately re-hide the methods.
+                        if (wasHiddenDueToTimeout) {
+                            window.almaHiddenDueToTimeout = false;
+                            window.almaPaymentMethodBeforeHiding = null;
+
+                            setTimeout(function () {
+                                // Clear the flag only now, after pending DOM operations have settled
+                                window.almaMethodsShouldBeHidden = false;
+
+                                $('.woocommerce-notices-wrapper .alma-error-notice').remove();
+                                $('.wc_payment_method[class*="payment_method_alma_"]').show();
+                                console.log('[Alma] ✅ SDK loaded after delay – Alma methods restored (customer keeps their current selection)');
+                            }, 0);
+                        }
+
+                        // Fire all queued success callbacks — consume the list once.
+                        // If SDK loaded after a timeout (methods were hidden), only run
+                        // the LAST registered callback — all earlier ones are stale
+                        // accumulated updated_checkout calls that would cause duplicate mounts.
+                        var cbs = self.callbacks.slice();
+                        self.callbacks = [];
+                        self.errorCallbacks = [];
+
+                        if (wasHiddenDueToTimeout && cbs.length > 1) {
+                            console.log('[Alma] SDK ready after timeout — discarding', (cbs.length - 1), 'stale callbacks, running only the latest');
+                            cbs = [cbs[cbs.length - 1]];
+                        }
+
+                        cbs.forEach(function (cb) {
+                            try {
+                                cb();
+                            } catch (e) {
+                                console.error('[Alma] SDK-ready callback error:', e);
+                            }
+                        });
+                        return;
+                    }
+
+                    // Timeout reached — fire error callbacks once
+                    if (self.attempts >= self.maxAttempts && !self.timeoutFired) {
+                        self.timeoutFired = true;
+                        window.almaHiddenDueToTimeout = true;
+                        window.almaMethodsShouldBeHidden = true;
+
+                        var errMsg = '[Alma] SDK failed to load after ' + (self.maxAttempts * 100) + 'ms';
+                        console.error(errMsg);
+
+                        var isAlmaSelected = $('input[name="payment_method"][value^="alma_"]:checked').length > 0;
+                        if (isAlmaSelected) {
+                            displayErrorMessage(
+                                'The Alma payment system could not be loaded. ' +
+                                'Please refresh the page or choose another payment method.'
+                            );
+                        } else {
+                            hideAlmaPaymentMethods();
+                        }
+
+                        var ecbs = self.errorCallbacks.slice();
+                        self.errorCallbacks = [];
+                        self.callbacks = [];
+                        ecbs.forEach(function (cb) {
+                            try {
+                                cb(errMsg);
+                            } catch (e) {
+                            }
+                        });
+                        // Keep polling — SDK may still arrive later
+                    }
+
+                    // Continue polling
+                    setTimeout(function () {
+                        self._tick();
+                    }, 100);
+                }
+            };
+        }
+        // ==============================================================
 
         const merchantId = alma_in_page_settings.merchant_id;
         const environment = alma_in_page_settings.environment.toUpperCase();
@@ -109,70 +254,25 @@
         }, {});
 
         /**
-         * Wait for Alma SDK to be loaded before initializing
-         * This prevents race conditions in production environments where SDK loads slowly
-         * @param {Function} callback - Function to call when SDK is ready
-         * @param {Function} onError - Function to call if SDK fails to load (optional)
-         * @param {Number} maxAttempts - Maximum number of attempts (default: 50)
+         * Wait for Alma SDK to be loaded before initializing.
+         * Delegates to the global singleton poller so only one polling loop
+         * ever runs, regardless of how many times this is called.
+         * @param {Function} callback  - Called when SDK is ready
+         * @param {Function} onError   - Called if SDK fails to load within timeout
          */
-        function waitForAlmaSDK(callback, onError, maxAttempts = 50) {
-            let attempts = 0;
-            let timeoutReached = false;
-
-            const checkSDK = function () {
-                attempts++;
-
-                if (typeof Alma !== 'undefined' && typeof Alma.InPage !== 'undefined') {
-                    isAlmaSDKReady = true;
-
-                    // If we had previously hidden Alma due to delay, restore it now
-                    if (window.almaHiddenDueToTimeout) {
-                        showAlmaPaymentMethods();
-                        window.almaHiddenDueToTimeout = false; // Reset flag
-                        console.log('[Alma] ✅ SDK loaded successfully after delay, payment methods restored');
-                    }
-
-                    callback();
-                    return;
-                }
-
-                // If timeout reached but SDK still not loaded, show error once
-                if (attempts >= maxAttempts && !timeoutReached) {
-                    timeoutReached = true;
-                    window.almaHiddenDueToTimeout = true; // Mark as hidden
-                    const errorMsg = '[Alma] SDK failed to load after ' + (maxAttempts * 100) + 'ms';
-                    console.error(errorMsg);
-
-                    // Check if an Alma payment method is currently selected
-                    const isAlmaSelected = $('input[name="payment_method"][value^="alma_"]:checked').length > 0;
-
-                    if (isAlmaSelected) {
-                        // User has selected Alma: display error message
-                        displayErrorMessage(
-                            'Le système de paiement Alma n\'a pas pu se charger. ' +
-                            'Veuillez rafraîchir la page ou choisir un autre mode de paiement.'
-                        );
-                    } else {
-                        // User has NOT selected Alma: hide silently without message
-                        hideAlmaPaymentMethods();
-                    }
-
-                    if (typeof onError === 'function') {
-                        onError(errorMsg);
-                    }
-                }
-
-                // IMPORTANT: Continue polling even after timeout
-                // The SDK might still load later (e.g., in TEST mode with long delay)
-                setTimeout(checkSDK, 100);
-            };
-
-            checkSDK();
+        function waitForAlmaSDK(callback, onError) {
+            window.almaSDKPoller.onReady(callback, onError);
         }
 
         // Show the Alma In-Page iframe if the selected gateway is an Alma gateway
         // Otherwise, remove the iframe
         function mountIframe() {
+            // Do not mount while Alma methods are intentionally hidden (SDK timeout)
+            if (window.almaMethodsShouldBeHidden) {
+                console.log('[mountIframe] Skipping — Alma methods are currently hidden');
+                return;
+            }
+
             const selectedMethod = $('input[name="payment_method"]:checked').val();
             const almaPlanSelected = $('.alma_woocommerce_gateway_fieldset input[name="alma_plan_key"]:checked').val();
 
@@ -234,8 +334,8 @@
                     if (isAlmaSelected) {
                         // User has selected Alma: display error message
                         displayErrorMessage(
-                            'Impossible d\'initialiser le paiement Alma. ' +
-                            'Veuillez réessayer ou choisir un autre mode de paiement.'
+                            'Unable to initialize Alma payment. ' +
+                            'Please try again or choose another payment method.'
                         );
                     } else {
                         // User has NOT selected Alma: hide silently without message
@@ -323,19 +423,17 @@
         }
 
         /**
-         * Hide Alma payment methods without displaying an error message
-         * Used when an error occurs before the user has selected Alma
+         * Hide Alma payment methods.
+         * Sets a persistent flag so they stay hidden even after WooCommerce DOM re-renders
+         * (updated_checkout recreates the payment list, which would otherwise undo a CSS hide).
          */
         function hideAlmaPaymentMethods() {
-            // Uncheck Alma payment method if it's selected
-            const $almaPaymentMethod = $('input[name="payment_method"][value^="alma_"]');
-            if ($almaPaymentMethod.is(':checked')) {
-                // Save which Alma method was selected before hiding (only if not already saved)
-                if (!window.almaPaymentMethodBeforeHiding) {
-                    window.almaPaymentMethodBeforeHiding = $almaPaymentMethod.val();
-                    console.log('[hideAlmaPaymentMethods] Saved payment method for restoration:', window.almaPaymentMethodBeforeHiding);
-                }
+            // Set persistent flag FIRST — updated_checkout will honour it on re-render
+            window.almaMethodsShouldBeHidden = true;
 
+            // Uncheck Alma payment method if it's selected
+            const $almaPaymentMethod = $('input[name="payment_method"][value^="alma_"]:checked');
+            if ($almaPaymentMethod.length) {
                 $almaPaymentMethod.prop('checked', false);
 
                 // Hide all Alma payment boxes
@@ -349,51 +447,27 @@
             }
 
             // Hide all Alma payment methods from the list
-            $('.wc_payment_method[class*="payment_method_alma_"]').fadeOut(300);
+            $('.wc_payment_method[class*="payment_method_alma_"]').hide();
 
-            console.log('[Alma] Payment methods hidden silently (no error message displayed)');
+            console.log('[Alma] Payment methods hidden (flag set to persist across DOM re-renders)');
         }
 
         /**
-         * Show Alma payment methods and remove error messages
-         * Used when SDK loads successfully after being delayed
+         * Show Alma payment methods and remove error messages.
+         * Clears the persistent hidden flag so updated_checkout renders Alma normally again.
          */
         function showAlmaPaymentMethods() {
-            console.log('[showAlmaPaymentMethods] Called - almaPaymentMethodBeforeHiding:', window.almaPaymentMethodBeforeHiding);
+            // Clear persistent flag FIRST — updated_checkout will render Alma normally on next re-render
+            window.almaMethodsShouldBeHidden = false;
+            window.almaPaymentMethodBeforeHiding = null;
 
             // Remove any Alma error messages
             $('.woocommerce-notices-wrapper .alma-error-notice').remove();
 
-            // Show all Alma payment methods in the list
-            $('.wc_payment_method[class*="payment_method_alma_"]').fadeIn(300);
+            // Show all Alma payment methods currently in the DOM
+            $('.wc_payment_method[class*="payment_method_alma_"]').show();
 
             console.log('[Alma] Payment methods restored and error messages removed');
-
-            // After fadeIn, wait a bit for DOM to stabilize then re-select Alma if needed
-            if (window.almaPaymentMethodBeforeHiding) {
-                const previousMethod = window.almaPaymentMethodBeforeHiding;
-                console.log('[showAlmaPaymentMethods] Will re-select in 500ms:', previousMethod);
-
-                // Wait for DOM to stabilize and updated_checkout to complete
-                setTimeout(function () {
-                    const $previousAlmaMethod = $('input[name="payment_method"][value="' + previousMethod + '"]');
-                    console.log('[showAlmaPaymentMethods] Found previous method element:', $previousAlmaMethod.length);
-                    console.log('[showAlmaPaymentMethods] Is it checked?', $previousAlmaMethod.is(':checked'));
-
-                    if ($previousAlmaMethod.length > 0 && !$previousAlmaMethod.is(':checked')) {
-                        console.log('[Alma] Re-selecting previous payment method:', previousMethod);
-                        $previousAlmaMethod.prop('checked', true).trigger('change');
-
-                        // Trigger WooCommerce update to remount iframe
-                        $(document.body).trigger('update_checkout');
-                    } else {
-                        console.log('[showAlmaPaymentMethods] Not re-selecting - element not found or already checked');
-                    }
-                    window.almaPaymentMethodBeforeHiding = null; // Reset
-                }, 500); // Wait 500ms for DOM stabilization
-            } else {
-                console.log('[showAlmaPaymentMethods] No previous method to restore');
-            }
         }
 
         /**
@@ -494,7 +568,7 @@
             });
             const $image = $('<img>', {
                 src: 'https://cdn.almapay.com/img/animated-logo-a.svg',
-                alt: 'Chargement Alma',
+                alt: 'Loading Alma',
                 css: {
                     width: '100px',
                     height: '100px'
@@ -539,8 +613,8 @@
             if (inPage === undefined) {
                 console.error('[Alma] Cannot start payment: InPage instance is not initialized');
                 displayErrorMessage(
-                    'Le paiement Alma ne peut pas être démarré. ' +
-                    'Veuillez rafraîchir la page ou choisir un autre mode de paiement.'
+                    'Alma payment cannot be started. ' +
+                    'Please refresh the page or choose another payment method.'
                 );
                 cleanInPageUrlParams();
                 return;
@@ -549,8 +623,8 @@
             if (!paymentId) {
                 console.error('[Alma] Cannot start payment: Payment ID is missing');
                 displayErrorMessage(
-                    'Erreur lors de l\'initialisation du paiement. ' +
-                    'Veuillez réessayer ou contacter le support.'
+                    'Error initializing payment. ' +
+                    'Please try again or contact support.'
                 );
                 cleanInPageUrlParams();
                 return;
@@ -584,8 +658,8 @@
 
                 // Display user-friendly error message
                 displayErrorMessage(
-                    'Une erreur est survenue lors du démarrage du paiement Alma. ' +
-                    'Veuillez réessayer ou choisir un autre mode de paiement.'
+                    'An error occurred while starting the Alma payment. ' +
+                    'Please try again or choose another payment method.'
                 );
 
                 cleanInPageUrlParams();
@@ -599,6 +673,15 @@
         $(document.body).on('updated_checkout', function () {
             totalAmount = getAmount();
             unmountIframe(); // Properly unmount before resetting
+
+            // If Alma methods should stay hidden (SDK timed out), re-apply the hide
+            // because WooCommerce just re-rendered the entire payment list
+            if (window.almaMethodsShouldBeHidden) {
+                $('.wc_payment_method[class*="payment_method_alma_"]').hide();
+                console.log('[updated_checkout] Alma methods kept hidden (SDK not yet ready)');
+                return; // Don't mount iframe or check plans while Alma is hidden
+            }
+
             checkPlan();
 
             // Start payment for inPage if URL contains alma=inPage&pid=PAYMENT_ID
@@ -624,8 +707,8 @@
                             } else {
                                 console.error('[Alma] InPage instance not initialized after ' + (maxCheckAttempts * 100) + 'ms');
                                 displayErrorMessage(
-                                    'Le système de paiement Alma n\'a pas pu s\'initialiser correctement. ' +
-                                    'Veuillez rafraîchir la page ou choisir un autre mode de paiement.'
+                                    'The Alma payment system could not initialize correctly. ' +
+                                    'Please refresh the page or choose another payment method.'
                                 );
                                 cleanInPageUrlParams();
                             }
