@@ -46,7 +46,6 @@
         const almaMethods = gatewayVars.reduce((acc, gw) => {
             acc[gw.gateway_name] = {
                 type: gw.type,
-                inPageSelector: `#${gw.gateway_name}_in_page`,
                 fieldsetSelector: `.alma_woocommerce_gateway_${gw.type}`,
             };
             return acc;
@@ -59,14 +58,24 @@
             const almaPlanSelected = $('.alma_woocommerce_gateway_fieldset input[name="alma_plan_key"]:checked').val();
             if (almaMethods[selectedMethod] && almaPlanSelected && totalAmount > 0) {
                 const [installmentsCount, deferredDays, deferredMonths] = almaPlanSelected.match(/\d+/g).map(Number);
-                inPage = Alma.InPage.initialize({
-                    merchantId: merchantId,
-                    amountInCents: totalAmount,
-                    installmentsCount: installmentsCount,
-                    deferredDays: deferredDays,
-                    deferredMonths: deferredMonths,
-                    selector: almaMethods[selectedMethod].inPageSelector,
-                    environment: environment,
+
+                // Generate the selector based on the selected plan
+                // Format: #alma_{payment_method}_gateway_in_page_{plan_key}
+                const planSelector = '#alma_' + almaMethods[selectedMethod].type + '_gateway_in_page_' + almaPlanSelected;
+                console.log('[mountIframe] Using selector:', planSelector);
+
+                // Wait for the element to be available in the DOM before mounting
+                // This is necessary because WooCommerce updates the checkout asynchronously
+                waitForElement(planSelector, function () {
+                    inPage = Alma.InPage.initialize({
+                        merchantId: merchantId,
+                        amountInCents: totalAmount,
+                        installmentsCount: installmentsCount,
+                        deferredDays: deferredDays,
+                        deferredMonths: deferredMonths,
+                        selector: planSelector,
+                        environment: environment,
+                    });
                 });
             }
         }
@@ -104,6 +113,32 @@
         function getAmount() {
             const totalText = $('.order-total .woocommerce-Price-amount').text().trim();
             return parseFloat(totalText.replace(/[^0-9.,]/g, '').replace(',', '.') * 100);
+        }
+
+        // Wait for an element to be available in the DOM
+        // Uses polling with a timeout to avoid infinite loops
+        // @param {string} selector - The CSS selector to wait for
+        // @param {function} callback - The function to call when the element is found
+        // @param {number} maxAttempts - Maximum number of attempts (default: 20)
+        // @param {number} interval - Interval between attempts in ms (default: 50)
+        function waitForElement(selector, callback, maxAttempts = 20, interval = 50) {
+            let attempts = 0;
+
+            const checkElement = function () {
+                attempts++;
+                const element = $(selector);
+
+                if (element.length > 0) {
+                    console.log('[waitForElement] Element found:', selector, 'after', attempts, 'attempts');
+                    callback();
+                } else if (attempts >= maxAttempts) {
+                    console.error('[waitForElement] Element not found after', maxAttempts, 'attempts:', selector);
+                } else {
+                    setTimeout(checkElement, interval);
+                }
+            };
+
+            checkElement();
         }
 
 
