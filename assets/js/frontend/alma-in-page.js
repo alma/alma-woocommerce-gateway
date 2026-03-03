@@ -19,7 +19,7 @@
         // ==================== TEST MODE - PRODUCTION CONDITIONS SIMULATION ====================
         // Simulates a slow SDK load (as in production with many JS files)
         const SDK_DELAY = 3000; // 3 seconds delay
-        const TEST_MODE = true; // Test mode enabled
+        const TEST_MODE = false; // Test mode enabled
 
         if (TEST_MODE) {
             console.warn('⚠️ TEST MODE ENABLED: Alma SDK delayed by ' + SDK_DELAY + 'ms (production simulation)');
@@ -152,16 +152,16 @@
                         }
 
                         // Fire all queued success callbacks — consume the list once.
-                        // If SDK loaded after a timeout (methods were hidden), only run
-                        // the LAST registered callback — all earlier ones are stale
-                        // accumulated updated_checkout calls that would cause duplicate mounts.
-                        var cbs = self.callbacks.slice();
+                        // If the SDK loaded after a timeout (Alma methods were hidden),
+                        // do NOT run any callbacks: we only restore the visibility of Alma
+                        // in the payment list. The customer keeps their current payment selection
+                        // and the iframe / popup is never triggered automatically.
+                        var cbs = wasHiddenDueToTimeout ? [] : self.callbacks.slice();
                         self.callbacks = [];
                         self.errorCallbacks = [];
 
-                        if (wasHiddenDueToTimeout && cbs.length > 1) {
-                            console.log('[Alma] SDK ready after timeout — discarding', (cbs.length - 1), 'stale callbacks, running only the latest');
-                            cbs = [cbs[cbs.length - 1]];
+                        if (wasHiddenDueToTimeout) {
+                            console.log('[Alma] SDK ready after timeout — all stale callbacks discarded, no popup triggered');
                         }
 
                         cbs.forEach(function (cb) {
@@ -452,23 +452,6 @@
             console.log('[Alma] Payment methods hidden (flag set to persist across DOM re-renders)');
         }
 
-        /**
-         * Show Alma payment methods and remove error messages.
-         * Clears the persistent hidden flag so updated_checkout renders Alma normally again.
-         */
-        function showAlmaPaymentMethods() {
-            // Clear persistent flag FIRST — updated_checkout will render Alma normally on next re-render
-            window.almaMethodsShouldBeHidden = false;
-            window.almaPaymentMethodBeforeHiding = null;
-
-            // Remove any Alma error messages
-            $('.woocommerce-notices-wrapper .alma-error-notice').remove();
-
-            // Show all Alma payment methods currently in the DOM
-            $('.wc_payment_method[class*="payment_method_alma_"]').show();
-
-            console.log('[Alma] Payment methods restored and error messages removed');
-        }
 
         /**
          * Display an error message to the user

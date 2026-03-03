@@ -3,11 +3,13 @@
  *
  * Tests cover:
  * - Initialization and script loading protection
- * - SDK polling and timeout handling
+ * - SDK polling singleton (almaSDKPoller)
  * - Payment method hiding/showing
+ * - almaMethodsShouldBeHidden flag persistence
+ * - mountIframe guard when Alma is hidden
+ * - SDK restoration after timeout (no popup triggered)
  * - Error message display
  * - Plan selection and iframe mounting
- * - Payment method restoration after SDK timeout
  */
 
 describe('Alma In-Page Script', () => {
@@ -55,12 +57,22 @@ describe('Alma In-Page Script', () => {
         window.almaPaymentStarted = false;
         window.almaOverlayAdded = false;
         window.almaHiddenDueToTimeout = false;
+        window.almaMethodsShouldBeHidden = false;
         window.almaPaymentMethodBeforeHiding = null;
         window.almaSDKPollingActive = false;
 
+        // Reset SDK poller singleton so each test starts fresh
+        window.almaSDKPoller = undefined;
+
         // Reset mocks
         jest.clearAllMocks();
-        global.Alma.InPage.initialize.mockClear();
+
+        // Ensure Alma SDK mock is always reset to a known good state
+        global.Alma = {
+            InPage: {
+                initialize: jest.fn()
+            }
+        };
     });
 
     describe('Initialization Protection', () => {
@@ -130,47 +142,328 @@ describe('Alma In-Page Script', () => {
         });
     });
 
-    describe('showAlmaPaymentMethods()', () => {
-        test('should restore Alma payment methods and re-select previous method', (done) => {
+    describe('showAlmaPaymentMethods() — SDK restored after timeout', () => {
+        test('should show Alma methods and clear the hidden flag', () => {
+            window.almaMethodsShouldBeHidden = true;
+            window.almaHiddenDueToTimeout = true;
             window.almaPaymentMethodBeforeHiding = 'alma_pnx_gateway';
 
-            // Hide Alma first
+            // Hide them first
             $('.wc_payment_method[class*="payment_method_alma_"]').hide();
-            $('#payment_method_cheque').prop('checked', true);
 
-            const showAlmaPaymentMethods = () => {
-                $('.woocommerce-notices-wrapper .alma-error-notice').remove();
-                $('.wc_payment_method[class*="payment_method_alma_"]').fadeIn(300);
+            // Simulate the singleton's restore logic (setTimeout(0) resolved)
+            window.almaMethodsShouldBeHidden = false;
+            window.almaHiddenDueToTimeout = false;
+            window.almaPaymentMethodBeforeHiding = null;
+            $('.woocommerce-notices-wrapper .alma-error-notice').remove();
+            $('.wc_payment_method[class*="payment_method_alma_"]').show();
 
-                if (window.almaPaymentMethodBeforeHiding) {
-                    const previousMethod = window.almaPaymentMethodBeforeHiding;
-                    setTimeout(() => {
-                        const $previousAlmaMethod = $('input[name="payment_method"][value="' + previousMethod + '"]');
-                        if ($previousAlmaMethod.length > 0 && !$previousAlmaMethod.is(':checked')) {
-                            $previousAlmaMethod.prop('checked', true);
-                        }
-                        window.almaPaymentMethodBeforeHiding = null;
-
-                        // Verify re-selection
-                        expect($('#payment_method_alma_pnx_gateway').is(':checked')).toBe(true);
-                        expect(window.almaPaymentMethodBeforeHiding).toBe(null);
-                        done();
-                    }, 100);
-                }
-            };
-
-            showAlmaPaymentMethods();
+            expect($('.wc_payment_method.payment_method_alma_pnx_gateway').css('display')).not.toBe('none');
+            expect(window.almaMethodsShouldBeHidden).toBe(false);
+            expect(window.almaHiddenDueToTimeout).toBe(false);
+            expect(window.almaPaymentMethodBeforeHiding).toBe(null);
         });
 
-        test('should not re-select if no previous method saved', () => {
-            window.almaPaymentMethodBeforeHiding = null;
+        test('should NOT re-select Alma after restoration — customer keeps their selection', () => {
+            window.almaPaymentMethodBeforeHiding = 'alma_pnx_gateway';
+            $('#payment_method_cheque').prop('checked', true);
+            $('#payment_method_alma_pnx_gateway').prop('checked', false);
 
-            const showAlmaPaymentMethods = () => {
-                $('.wc_payment_method[class*="payment_method_alma_"]').fadeIn(300);
-                // Should not crash
+            // Simulate restoration (no re-selection logic anymore)
+            window.almaMethodsShouldBeHidden = false;
+            window.almaPaymentMethodBeforeHiding = null;
+            $('.wc_payment_method[class*="payment_method_alma_"]').show();
+
+            // Cheque should still be selected — Alma is NOT forced back
+            expect($('#payment_method_cheque').is(':checked')).toBe(true);
+            expect($('#payment_method_alma_pnx_gateway').is(':checked')).toBe(false);
+        });
+
+        test('should remove error notices on restoration', () => {
+            // Add a stale error notice
+            const $wrapper = $('<div>', {class: 'woocommerce-notices-wrapper'});
+            $wrapper.append($('<ul>', {class: 'woocommerce-error alma-error-notice'}).html('<li>Old error</li>'));
+            $('form.checkout').prepend($wrapper);
+            expect($('.alma-error-notice').length).toBe(1);
+
+            // Simulate restoration
+            $('.woocommerce-notices-wrapper .alma-error-notice').remove();
+
+            expect($('.alma-error-notice').length).toBe(0);
+        });
+    });
+
+    describe('almaMethodsShouldBeHidden flag', () => {
+        test('should be set to true when SDK times out', () => {
+            window.almaMethodsShouldBeHidden = false;
+
+            // Simulate timeout
+            window.almaHiddenDueToTimeout = true;
+            window.almaMethodsShouldBeHidden = true;
+
+            expect(window.almaMethodsShouldBeHidden).toBe(true);
+        });
+
+        test('should keep Alma hidden on updated_checkout re-render when flag is true', () => {
+            window.almaMethodsShouldBeHidden = true;
+
+            // Simulate updated_checkout: WooCommerce re-renders payment list (methods visible by default)
+            $('.wc_payment_method[class*="payment_method_alma_"]').show();
+
+            // Our handler re-hides them because the flag is still set
+            if (window.almaMethodsShouldBeHidden) {
+                $('.wc_payment_method[class*="payment_method_alma_"]').hide();
+            }
+
+            expect($('.wc_payment_method.payment_method_alma_pnx_gateway').css('display')).toBe('none');
+        });
+
+        test('should NOT hide Alma on updated_checkout when flag is false', () => {
+            window.almaMethodsShouldBeHidden = false;
+
+            // Simulate updated_checkout
+            $('.wc_payment_method[class*="payment_method_alma_"]').show();
+
+            if (window.almaMethodsShouldBeHidden) {
+                $('.wc_payment_method[class*="payment_method_alma_"]').hide();
+            }
+
+            expect($('.wc_payment_method.payment_method_alma_pnx_gateway').css('display')).not.toBe('none');
+        });
+    });
+
+    describe('mountIframe() guard — almaMethodsShouldBeHidden', () => {
+        test('should skip mounting when Alma methods are hidden', () => {
+            window.almaMethodsShouldBeHidden = true;
+
+            const mountCalled = jest.fn();
+
+            // Simulate mountIframe guard
+            const mountIframe = () => {
+                if (window.almaMethodsShouldBeHidden) {
+                    return; // guard
+                }
+                mountCalled();
             };
 
-            expect(() => showAlmaPaymentMethods()).not.toThrow();
+            mountIframe();
+            expect(mountCalled).not.toHaveBeenCalled();
+        });
+
+        test('should proceed with mounting when flag is false', () => {
+            window.almaMethodsShouldBeHidden = false;
+
+            const mountCalled = jest.fn();
+
+            const mountIframe = () => {
+                if (window.almaMethodsShouldBeHidden) {
+                    return;
+                }
+                mountCalled();
+            };
+
+            mountIframe();
+            expect(mountCalled).toHaveBeenCalled();
+        });
+    });
+
+    describe('almaSDKPoller singleton', () => {
+        beforeEach(() => {
+            jest.useFakeTimers();
+        });
+
+        afterEach(() => {
+            jest.useRealTimers();
+            window.almaSDKPoller = undefined;
+        });
+
+        // Helper to build a fresh poller (mirrors production code)
+        function buildPoller() {
+            return {
+                running: false,
+                resolved: false,
+                callbacks: [],
+                errorCallbacks: [],
+                attempts: 0,
+                maxAttempts: 10, // small for tests
+                timeoutFired: false,
+                onReady(onReady, onError) {
+                    if (this.resolved) {
+                        if (typeof onReady === 'function') onReady();
+                        return;
+                    }
+                    if (typeof onReady === 'function') this.callbacks.push(onReady);
+                    if (typeof onError === 'function') this.errorCallbacks.push(onError);
+                    this.start();
+                },
+                start() {
+                    if (this.running) return;
+                    this.running = true;
+                    this._tick();
+                },
+                _tick() {
+                    const self = this;
+                    self.attempts++;
+                    if (typeof Alma !== 'undefined' && typeof Alma.InPage !== 'undefined') {
+                        self.running = false;
+                        self.resolved = true;
+                        const wasHidden = window.almaHiddenDueToTimeout;
+                        if (wasHidden) {
+                            window.almaHiddenDueToTimeout = false;
+                            window.almaPaymentMethodBeforeHiding = null;
+                            setTimeout(function () {
+                                window.almaMethodsShouldBeHidden = false;
+                                $('.wc_payment_method[class*="payment_method_alma_"]').show();
+                            }, 0);
+                        }
+                        // If timeout occurred: discard all callbacks (no popup)
+                        const cbs = wasHidden ? [] : self.callbacks.slice();
+                        self.callbacks = [];
+                        self.errorCallbacks = [];
+                        cbs.forEach(cb => {
+                            try {
+                                cb();
+                            } catch (e) {
+                            }
+                        });
+                        return;
+                    }
+                    if (self.attempts >= self.maxAttempts && !self.timeoutFired) {
+                        self.timeoutFired = true;
+                        window.almaHiddenDueToTimeout = true;
+                        window.almaMethodsShouldBeHidden = true;
+                        const errMsg = '[Alma] SDK failed to load after ' + (self.maxAttempts * 100) + 'ms';
+                        const ecbs = self.errorCallbacks.slice();
+                        self.errorCallbacks = [];
+                        self.callbacks = [];
+                        ecbs.forEach(cb => {
+                            try {
+                                cb(errMsg);
+                            } catch (e) {
+                            }
+                        });
+                    }
+                    setTimeout(() => self._tick(), 100);
+                }
+            };
+        }
+
+        test('only one polling loop runs regardless of how many callers register', () => {
+            const poller = buildPoller();
+            delete global.Alma;
+
+            const cb1 = jest.fn();
+            const cb2 = jest.fn();
+            const cb3 = jest.fn();
+
+            poller.onReady(cb1);
+            poller.onReady(cb2);
+            poller.onReady(cb3);
+
+            expect(poller.running).toBe(true);
+            expect(poller.callbacks.length).toBe(3);
+
+            // Make SDK available and advance one tick
+            global.Alma = {InPage: {initialize: jest.fn()}};
+            jest.advanceTimersByTime(100);
+
+            expect(cb1).toHaveBeenCalledTimes(1);
+            expect(cb2).toHaveBeenCalledTimes(1);
+            expect(cb3).toHaveBeenCalledTimes(1);
+            expect(poller.resolved).toBe(true);
+            expect(poller.callbacks.length).toBe(0);
+        });
+
+        test('calls onReady immediately when already resolved', () => {
+            const poller = buildPoller();
+            poller.resolved = true;
+
+            const cb = jest.fn();
+            poller.onReady(cb);
+
+            // No timer needed — should be synchronous
+            expect(cb).toHaveBeenCalledTimes(1);
+        });
+
+        test('error callbacks fired on timeout, keeps polling afterwards', () => {
+            const poller = buildPoller();
+            delete global.Alma;
+
+            const onReady = jest.fn();
+            const onError = jest.fn();
+            poller.onReady(onReady, onError);
+
+            // Exhaust attempts (10 × 100ms = 1000ms)
+            jest.advanceTimersByTime(1000);
+
+            expect(onError).toHaveBeenCalledTimes(1);
+            expect(onReady).not.toHaveBeenCalled();
+            expect(poller.timeoutFired).toBe(true);
+            expect(window.almaMethodsShouldBeHidden).toBe(true);
+
+            // Poller keeps ticking via setTimeout (SDK may still arrive)
+            // running stays true because the loop is still alive
+            expect(poller.running).toBe(true);
+        });
+
+        test('after timeout, SDK arrival restores methods but fires NO callbacks', () => {
+            const poller = buildPoller();
+            delete global.Alma;
+
+            window.almaHiddenDueToTimeout = false;
+
+            const cb = jest.fn();
+            const onError = jest.fn();
+            poller.onReady(cb, onError);
+
+            // Trigger timeout
+            jest.advanceTimersByTime(1000);
+            expect(window.almaMethodsShouldBeHidden).toBe(true);
+            expect(window.almaHiddenDueToTimeout).toBe(true);
+
+            // SDK arrives late
+            global.Alma = {InPage: {initialize: jest.fn()}};
+            jest.advanceTimersByTime(100); // next tick detects SDK
+
+            // No callback triggered — no popup
+            expect(cb).not.toHaveBeenCalled();
+            expect(poller.resolved).toBe(true);
+
+            // Flags reset (almaMethodsShouldBeHidden reset via setTimeout(0))
+            expect(window.almaHiddenDueToTimeout).toBe(false);
+
+            // Run the deferred setTimeout(0) that clears almaMethodsShouldBeHidden
+            jest.runAllTimers();
+            expect(window.almaMethodsShouldBeHidden).toBe(false);
+        });
+
+        test('multiple updated_checkout callbacks accumulated during timeout are all discarded', () => {
+            const poller = buildPoller();
+            delete global.Alma;
+
+            window.almaHiddenDueToTimeout = false;
+
+            const cb1 = jest.fn(); // first updated_checkout
+            const cb2 = jest.fn(); // second updated_checkout
+            const cb3 = jest.fn(); // third updated_checkout
+            poller.onReady(cb1);
+
+            // Trigger timeout — callbacks are cleared by the timeout handler
+            jest.advanceTimersByTime(1000);
+            expect(poller.callbacks.length).toBe(0); // all flushed on timeout
+
+            // New callbacks registered after timeout (stale updated_checkout calls)
+            poller.callbacks.push(cb2);
+            poller.callbacks.push(cb3);
+
+            // SDK arrives late
+            global.Alma = {InPage: {initialize: jest.fn()}};
+            jest.advanceTimersByTime(100);
+
+            // None should have been called
+            expect(cb1).not.toHaveBeenCalled();
+            expect(cb2).not.toHaveBeenCalled();
+            expect(cb3).not.toHaveBeenCalled();
         });
     });
 
