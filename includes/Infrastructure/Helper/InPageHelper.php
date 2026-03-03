@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // @codeCoverageIgnore
 }
 
+use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
+
 class InPageHelper {
 
 	/**
@@ -13,13 +15,16 @@ class InPageHelper {
 	 *
 	 * @return string
 	 */
-	public static function getInPageRedirectionFallbackUrl( string $paymentId ): string {
+	public static function getInPageRedirectionFallbackUrl( string $paymentId, FeePlanAdapter $feePlanAdapter ): string {
 		$redirectionUrl = wc_get_checkout_url();
 
 		return add_query_arg(
 			array(
-				'alma' => 'inPage',
-				'pid'  => $paymentId,
+				'alma'              => 'inPage',
+				'pid'               => $paymentId,
+				'deferredDays'      => $feePlanAdapter->getDeferredDays(),
+				'deferredMonths'    => $feePlanAdapter->getDeferredMonths(),
+				'installmentsCount' => $feePlanAdapter->getInstallmentsCount(),
 			),
 			$redirectionUrl
 		);

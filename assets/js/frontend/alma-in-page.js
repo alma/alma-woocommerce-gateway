@@ -56,9 +56,24 @@
         // Otherwise, remove the iframe
         function mountIframe() {
             const selectedMethod = $('input[name="payment_method"]:checked').val();
-            const almaPlanSelected = $('.alma_woocommerce_gateway_fieldset input[name="alma_plan_key"]:checked').val();
-            if (almaMethods[selectedMethod] && almaPlanSelected && totalAmount > 0) {
-                const [installmentsCount, deferredDays, deferredMonths] = almaPlanSelected.match(/\d+/g).map(Number);
+
+            // Get parameters from URL if available (when redirected back to checkout with payment)
+            let installmentsCount, deferredDays, deferredMonths;
+
+            if (urlParams.has('installmentsCount') && urlParams.has('deferredDays') && urlParams.has('deferredMonths')) {
+                installmentsCount = parseInt(urlParams.get('installmentsCount'));
+                deferredDays = parseInt(urlParams.get('deferredDays'));
+                deferredMonths = parseInt(urlParams.get('deferredMonths'));
+            } else {
+                // Fallback to DOM when no URL parameters (normal selection)
+                const almaPlanSelected = $('.alma_woocommerce_gateway_fieldset input[name="alma_plan_key"]:checked').val();
+                if (!almaPlanSelected) {
+                    return;
+                }
+                [installmentsCount, deferredDays, deferredMonths] = almaPlanSelected.match(/\d+/g).map(Number);
+            }
+
+            if (almaMethods[selectedMethod] && totalAmount > 0) {
                 inPage = Alma.InPage.initialize({
                     merchantId: merchantId,
                     amountInCents: totalAmount,
