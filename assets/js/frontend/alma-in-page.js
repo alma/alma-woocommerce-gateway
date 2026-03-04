@@ -46,7 +46,6 @@
         const almaMethods = gatewayVars.reduce((acc, gw) => {
             acc[gw.gateway_name] = {
                 type: gw.type,
-                inPageSelector: `#${gw.gateway_name}_in_page`,
                 fieldsetSelector: `.alma_woocommerce_gateway_${gw.type}`,
             };
             return acc;
@@ -58,20 +57,25 @@
             const selectedMethod = $('input[name="payment_method"]:checked').val();
 
             // Get parameters from URL if available (when redirected back to checkout with payment)
-            let installmentsCount, deferredDays, deferredMonths;
+            let installmentsCount, deferredDays, deferredMonths, almaPlanSelected;
 
             if (urlParams.has('installmentsCount') && urlParams.has('deferredDays') && urlParams.has('deferredMonths')) {
                 installmentsCount = parseInt(urlParams.get('installmentsCount'));
                 deferredDays = parseInt(urlParams.get('deferredDays'));
                 deferredMonths = parseInt(urlParams.get('deferredMonths'));
+                almaPlanSelected = "general_" + installmentsCount + '_' + deferredDays + "_" + deferredMonths;
             } else {
                 // Fallback to DOM when no URL parameters (normal selection)
-                const almaPlanSelected = $('.alma_woocommerce_gateway_fieldset input[name="alma_plan_key"]:checked').val();
+                almaPlanSelected = $('.alma_woocommerce_gateway_fieldset input[name="alma_plan_key"]:checked').val();
                 if (!almaPlanSelected) {
                     return;
                 }
                 [installmentsCount, deferredDays, deferredMonths] = almaPlanSelected.match(/\d+/g).map(Number);
             }
+
+            // Generate the selector based on the selected plan
+            // Format: #alma_{payment_method}_gateway_in_page_{plan_key}
+            const planSelector = '#alma_' + almaMethods[selectedMethod].type + '_gateway_in_page_' + almaPlanSelected;
 
             if (almaMethods[selectedMethod] && totalAmount > 0) {
                 inPage = Alma.InPage.initialize({
@@ -80,7 +84,7 @@
                     installmentsCount: installmentsCount,
                     deferredDays: deferredDays,
                     deferredMonths: deferredMonths,
-                    selector: almaMethods[selectedMethod].inPageSelector,
+                    selector: planSelector,
                     environment: environment,
                 });
             }

@@ -11,7 +11,8 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 class InPageHelper {
 
 	/**
-	 * @param string $paymentId
+	 * @param string         $paymentId
+	 * @param FeePlanAdapter $feePlanAdapter
 	 *
 	 * @return string
 	 */
