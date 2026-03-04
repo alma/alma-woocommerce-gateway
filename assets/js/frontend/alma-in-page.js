@@ -46,7 +46,6 @@
         const almaMethods = gatewayVars.reduce((acc, gw) => {
             acc[gw.gateway_name] = {
                 type: gw.type,
-                inPageSelector: `#${gw.gateway_name}_in_page`,
                 fieldsetSelector: `.alma_woocommerce_gateway_${gw.type}`,
             };
             return acc;
@@ -59,13 +58,19 @@
             const almaPlanSelected = $('.alma_woocommerce_gateway_fieldset input[name="alma_plan_key"]:checked').val();
             if (almaMethods[selectedMethod] && almaPlanSelected && totalAmount > 0) {
                 const [installmentsCount, deferredDays, deferredMonths] = almaPlanSelected.match(/\d+/g).map(Number);
+
+                // Generate the selector based on the selected plan
+                // Format: #alma_{payment_method}_gateway_in_page_{plan_key}
+                const planSelector = '#alma_' + almaMethods[selectedMethod].type + '_gateway_in_page_' + almaPlanSelected;
+                console.log('[mountIframe] Using selector:', planSelector);
+
                 inPage = Alma.InPage.initialize({
                     merchantId: merchantId,
                     amountInCents: totalAmount,
                     installmentsCount: installmentsCount,
                     deferredDays: deferredDays,
                     deferredMonths: deferredMonths,
-                    selector: almaMethods[selectedMethod].inPageSelector,
+                    selector: planSelector,
                     environment: environment,
                 });
             }
