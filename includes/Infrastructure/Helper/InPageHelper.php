@@ -21,11 +21,9 @@ class InPageHelper {
 
 		return add_query_arg(
 			array(
-				'alma'              => 'inPage',
-				'pid'               => $paymentId,
-				'deferredDays'      => $feePlanAdapter->getDeferredDays(),
-				'deferredMonths'    => $feePlanAdapter->getDeferredMonths(),
-				'installmentsCount' => $feePlanAdapter->getInstallmentsCount(),
+				'alma'    => 'inPage',
+				'pid'     => $paymentId,
+				'planKey' => $feePlanAdapter->getPlanKey(),
 			),
 			$redirectionUrl
 		);
