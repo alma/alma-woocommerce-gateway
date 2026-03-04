@@ -34,14 +34,9 @@ class FeePlanRepository {
 	/** Transient key prefix for caching fee plans from API */
 	const TRANSIENT_FEE_PLANS_PREFIX = 'alma_fee_plans_';
 
-	/** Transient key prefix for caching eligibility from API */
-	const TRANSIENT_ELIGIBILITY_PREFIX = 'alma_eligibility_';
-
 	/** Cache TTL for fee plans: 1 hour */
 	const TRANSIENT_FEE_PLANS_TTL = 3600;
 
-	/** Cache TTL for eligibility: 5 minutes */
-	const TRANSIENT_ELIGIBILITY_TTL = 300;
 
 	/**
 	 * In-process static cache to avoid multiple API calls within the same PHP process.
@@ -88,11 +83,9 @@ class FeePlanRepository {
 		global $wpdb;
 		$wpdb->query(
 			$wpdb->prepare(
-				"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s OR option_name LIKE %s OR option_name LIKE %s",
+				"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
 				'_transient_' . self::TRANSIENT_FEE_PLANS_PREFIX . '%',
-				'_transient_timeout_' . self::TRANSIENT_FEE_PLANS_PREFIX . '%',
-				'_transient_' . self::TRANSIENT_ELIGIBILITY_PREFIX . '%',
-				'_transient_timeout_' . self::TRANSIENT_ELIGIBILITY_PREFIX . '%'
+				'_transient_timeout_' . self::TRANSIENT_FEE_PLANS_PREFIX . '%'
 			)
 		);
 	}
@@ -198,18 +191,7 @@ class FeePlanRepository {
 						$feePlanListAdapter->filterEnabled()
 					);
 
-				$cacheKey            = $this->getEligibilityCacheKey( $eligibilityDto->toArray() );
-				$cachedEligibility   = get_transient( $cacheKey );
-				$installmentPlanList = is_string( $cachedEligibility ) ? unserialize( $cachedEligibility ) : null; // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions
-
-				if ( ! $installmentPlanList instanceof EligibilityList ) {
-					$installmentPlanList = $this->eligibilityProvider->getEligibilityList( $eligibilityDto );
-					set_transient( $cacheKey, serialize( $installmentPlanList ),
-						self::TRANSIENT_ELIGIBILITY_TTL ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions
-					$this->getLogger()->debug( 'Eligibility fetched from API and cached.' );
-				} else {
-					$this->getLogger()->debug( 'Eligibility loaded from cache.' );
-				}
+				$installmentPlanList = $this->eligibilityProvider->getEligibilityList( $eligibilityDto );
 
 				$this->businessEventsService->updateEligibility( $installmentPlanList );
 				$feePlanListAdapter = $this->setInstallmentPlanList( $feePlanListAdapter, $installmentPlanList );
@@ -236,20 +218,6 @@ class FeePlanRepository {
 		return self::TRANSIENT_FEE_PLANS_PREFIX . md5( $merchantId . '_' . $environment );
 	}
 
-	/**
-	 * Build the transient key for eligibility cache.
-	 * Includes merchant_id, environment and a hash of the eligibility DTO.
-	 *
-	 * @param array $eligibilityDtoArray
-	 *
-	 * @return string
-	 */
-	private function getEligibilityCacheKey( array $eligibilityDtoArray ): string {
-		$merchantId  = $this->configService->getMerchantId() ?? 'unknown';
-		$environment = $this->configService->isLive() ? 'live' : 'test';
-
-		return self::TRANSIENT_ELIGIBILITY_PREFIX . md5( $merchantId . '_' . $environment . '_' . wp_json_encode( $eligibilityDtoArray ) );
-	}
 
 	/**
 	 * Get FeePlanList from cache (static first, then transient).
