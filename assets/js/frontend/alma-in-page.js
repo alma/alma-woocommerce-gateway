@@ -8,7 +8,7 @@
 
         // Check if it's an inPage payment on initial load
         const initialUrlParams = new URLSearchParams(window.location.search);
-        const isInPagePayment = initialUrlParams.has('alma') && initialUrlParams.get('alma') === 'inPage' && initialUrlParams.has('pid');
+        const isInPagePayment = initialUrlParams.has('alma') && initialUrlParams.get('alma') === 'inPage' && initialUrlParams.has('pid') && initialUrlParams.has('planKey');
 
         // Add overlay if it's an inPage payment to prevent user interactions while the payment modal is loading
         if (isInPagePayment) {
@@ -70,7 +70,6 @@
                 if (!almaPlanSelected) {
                     return;
                 }
-
             }
 
             // Generate the selector based on the selected plan
@@ -109,9 +108,9 @@
             $('.alma_woocommerce_gateway_fieldset input[name="alma_plan_key"]').prop('checked', false);
         }
 
-        // Select the first plan of the selected Alma gateway
-        // This is to ensure that a plan is always selected when switching between Alma gateways
-        // If no plan is selected, the iframe will not be displayed
+        // Check the selected plan of the selected Alma gateway
+        // If no plan is selected, the first plan will be selected by default
+        // If a plan is selected, the iframe will be displayed with the corresponding selector
         function checkPlan() {
             let selectedMethod = $('input[name="payment_method"]:checked').val();
             if (almaMethods[selectedMethod]) {
