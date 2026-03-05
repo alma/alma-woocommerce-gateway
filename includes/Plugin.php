@@ -81,6 +81,15 @@ final class Plugin extends AbstractPlugin {
 	}
 
 	/**
+	 * Configure native WordPress/WooCommerce features, such as translations.
+	 *
+	 * @return void
+	 */
+	public function plugin_init(): void {
+		L10nHelper::load_language( self::ALMA_GATEWAY_PLUGIN_NAME );
+	}
+
+	/**
 	 * Used for plugin warmup.
 	 *
 	 * @return void
@@ -91,9 +100,6 @@ final class Plugin extends AbstractPlugin {
 			if ( ! $this->check_prerequisites() || self::is_failsafe_mode() ) {
 				return;
 			}
-
-			// Configure Languages
-			L10nHelper::load_language( self::ALMA_GATEWAY_PLUGIN_NAME );
 
 			// Check mandatory prerequisites
 			if ( ! self::are_prerequisites_ok() ) {
