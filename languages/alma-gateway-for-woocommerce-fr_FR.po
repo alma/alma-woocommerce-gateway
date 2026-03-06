@@ -9,8 +9,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-17T13:19:48+00:00\n"
-"PO-Revision-Date: 2026-02-17 13:20\n"
+"POT-Creation-Date: 2026-03-06T15:46:30+00:00\n"
+"PO-Revision-Date: 2026-03-06 15:47\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: alma-gateway-for-woocommerce\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -93,7 +93,7 @@ msgid "Awaiting payment via Alma"
 msgstr "En attente de paiement via Alma"
 
 #: includes/Infrastructure/Gateway/AbstractGateway.php:66
-#: includes/Infrastructure/Gateway/Backend/AlmaGateway.php:34
+#: includes/Infrastructure/Gateway/Backend/AlmaGateway.php:35
 msgid "Install Alma and boost your sales! It's simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk."
 msgstr "Boostez vos ventes en installant Alma ! C'est simple et garanti, votre trésorerie est sécurisée. 0 engagement, 0 abonnement, 0 risque."
 
@@ -102,12 +102,12 @@ msgstr "Boostez vos ventes en installant Alma ! C'est simple et garanti, votre t
 msgid "Selected payment method : %s"
 msgstr "Mode de paiement sélectionné : %s"
 
-#: includes/Infrastructure/Gateway/AbstractGateway.php:243
+#: includes/Infrastructure/Gateway/AbstractGateway.php:246
 msgid "Refund failed."
 msgstr "Le remboursement a échoué."
 
 #. translators: %1$d: Amount refunded / %2$s: Refunded by.
-#: includes/Infrastructure/Gateway/AbstractGateway.php:249
+#: includes/Infrastructure/Gateway/AbstractGateway.php:252
 msgid "Order partially refunded (%1$d via Alma) by %2$s."
 msgstr "Commande partiellement remboursée (%1$d via Alma) par %2$s."
 
@@ -346,15 +346,15 @@ msgstr "Paiements en plus de 4 versements"
 msgid "Pay with financing"
 msgstr "Payer par financement"
 
-#: includes/Infrastructure/Gateway/Backend/AlmaGateway.php:30
+#: includes/Infrastructure/Gateway/Backend/AlmaGateway.php:31
 msgid "Payment in installments and deferred with Alma"
 msgstr "Paiement échelonné et différé avec Alma"
 
-#: includes/Infrastructure/Gateway/Backend/AlmaGateway.php:136
+#: includes/Infrastructure/Gateway/Backend/AlmaGateway.php:140
 msgid "The API keys are mandatory."
 msgstr "Les clés API sont obligatoires."
 
-#: includes/Infrastructure/Gateway/Backend/AlmaGateway.php:161
+#: includes/Infrastructure/Gateway/Backend/AlmaGateway.php:165
 msgid "An error occurred while validating the configuration. Please try again."
 msgstr "Une erreur s'est produite lors de la validation de la configuration. Veuillez réessayer."
 
@@ -398,29 +398,30 @@ msgid "Order fully refunded by %s."
 msgstr "Commande entièrement remboursée par %s."
 
 #. translators: %s => Installments count
-#: public/templates/partials/gateway-options.php:41
+#: public/templates/partials/gateway-options.php:44
 msgid "%s installments"
 msgstr "Plan de paiement %s"
 
 #. translators: %1$s => today_amount (0), %2$s => total_amount, %3$s => i18n formatted due_date.
-#: public/templates/partials/gateway-plans.php:47
+#: public/templates/partials/gateway-plans.php:52
 msgid "%1$s today then %2$s on %3$s"
 msgstr "%1$s aujourd’hui puis %2$s le %3$s"
 
-#: public/templates/partials/gateway-plans.php:67
+#: public/templates/partials/gateway-plans.php:72
 msgid "Included fees:"
 msgstr "Dont frais :"
 
-#: build/alma-gateway-block/alma-gateway-block.js:171
+#: build/alma-gateway-block/alma-gateway-block.js:48487
 msgid "Total TTC"
 msgstr "Total TTC"
 
-#: build/alma-gateway-block/alma-gateway-block.js:171
+#: build/alma-gateway-block/alma-gateway-block.js:48522
 msgid "Payment costs"
 msgstr "Frais de paiement"
 
-#: build/alma-widget-block/alma-widget-block.js:1
+#: build/alma-widget-block/alma-widget-block.js:104
 #: src/alma-widget-block/edit.js:49
+#: build/alma-widget-block/alma-widget-block.js:51
 msgid "Without fees"
 msgstr "Sans frais"
 
