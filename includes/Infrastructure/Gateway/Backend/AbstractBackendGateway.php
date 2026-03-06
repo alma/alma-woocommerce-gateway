@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-use Alma\API\Domain\Entity\FeePlanList;
+use Alma\Client\Domain\Entity\FeePlanList;
 use Alma\Gateway\Application\Entity\Form\GatewayConfigurationForm;
 use Alma\Gateway\Application\Helper\AlmaHelper;
 use Alma\Gateway\Application\Helper\DisplayHelper;
