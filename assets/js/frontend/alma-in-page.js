@@ -6,8 +6,9 @@
 (function ($) {
     $(function () {
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const isInPagePayment = urlParams.has('alma') && urlParams.get('alma') === 'inPage' && urlParams.has('pid');
+        // Check if it's an inPage payment on initial load
+        const initialUrlParams = new URLSearchParams(window.location.search);
+        const isInPagePayment = initialUrlParams.has('alma') && initialUrlParams.get('alma') === 'inPage' && initialUrlParams.has('pid') && initialUrlParams.has('planKey');
 
         // Add overlay if it's an inPage payment to prevent user interactions while the payment modal is loading
         if (isInPagePayment) {
@@ -54,16 +55,31 @@
         // Show the Alma In-Page iframe if the selected gateway is an Alma gateway
         // Otherwise, remove the iframe
         function mountIframe() {
+
+            let installmentsCount, deferredDays, deferredMonths, almaPlanSelected;
+
+            // Get current URL parameters (dynamically, not cached)
+            const currentUrlParams = new URLSearchParams(window.location.search);
+
+            // Get parameters from URL if available (when redirected back to checkout with payment)
+            if (currentUrlParams.has('planKey')) {
+                almaPlanSelected = currentUrlParams.get('planKey');
+            } else {
+                // Fallback to DOM when no URL parameters (normal selection)
+                almaPlanSelected = $('.alma_woocommerce_gateway_fieldset input[name="alma_plan_key"]:checked').val();
+                if (!almaPlanSelected) {
+                    return;
+                }
+            }
+
+            // Generate the selector based on the selected plan
+            // Format: #alma_{payment_method}_gateway_in_page_{plan_key}
             const selectedMethod = $('input[name="payment_method"]:checked').val();
-            const almaPlanSelected = $('.alma_woocommerce_gateway_fieldset input[name="alma_plan_key"]:checked').val();
-            if (almaMethods[selectedMethod] && almaPlanSelected && totalAmount > 0) {
-                const [installmentsCount, deferredDays, deferredMonths] = almaPlanSelected.match(/\d+/g).map(Number);
+            const planSelector = '#alma_' + almaMethods[selectedMethod].type + '_gateway_in_page_' + almaPlanSelected;
+            [installmentsCount, deferredDays, deferredMonths] = almaPlanSelected.match(/\d+/g).map(Number);
 
-                // Generate the selector based on the selected plan
-                // Format: #alma_{payment_method}_gateway_in_page_{plan_key}
-                const planSelector = '#alma_' + almaMethods[selectedMethod].type + '_gateway_in_page_' + almaPlanSelected;
-                console.log('[mountIframe] Using selector:', planSelector);
-
+            // Initialize the Alma In-Page iframe
+            if (almaMethods[selectedMethod] && totalAmount > 0) {
                 inPage = Alma.InPage.initialize({
                     merchantId: merchantId,
                     amountInCents: totalAmount,
@@ -92,14 +108,28 @@
             $('.alma_woocommerce_gateway_fieldset input[name="alma_plan_key"]').prop('checked', false);
         }
 
-        // Select the first plan of the selected Alma gateway
-        // This is to ensure that a plan is always selected when switching between Alma gateways
-        // If no plan is selected, the iframe will not be displayed
+        // Check the selected plan of the selected Alma gateway
+        // If no plan is selected, the first plan will be selected by default
+        // If a plan is selected, the iframe will be displayed with the corresponding selector
         function checkPlan() {
             let selectedMethod = $('input[name="payment_method"]:checked').val();
             if (almaMethods[selectedMethod]) {
-                const firstPlan = $(`${almaMethods[selectedMethod].fieldsetSelector} input[name="alma_plan_key"]`).first();
-                firstPlan.trigger('click');
+                // Check if there's a planKey in URL (when redirected back from payment)
+                const currentUrlParams = new URLSearchParams(window.location.search);
+                const planKeyFromUrl = currentUrlParams.get('planKey');
+
+                let planToSelect;
+                if (planKeyFromUrl) {
+                    // Select the plan specified in URL
+                    planToSelect = $(`${almaMethods[selectedMethod].fieldsetSelector} input[name="alma_plan_key"][value="${planKeyFromUrl}"]`);
+                } else {
+                    // Select the first plan by default
+                    planToSelect = $(`${almaMethods[selectedMethod].fieldsetSelector} input[name="alma_plan_key"]`).first();
+                }
+
+                if (planToSelect.length > 0) {
+                    planToSelect.trigger('click');
+                }
             }
         }
 
@@ -121,6 +151,7 @@
 
             params.delete('alma');
             params.delete('pid');
+            params.delete('planKey');
             window.history.replaceState({}, document.title, url.pathname + '?' + params.toString());
         }
 
@@ -169,7 +200,7 @@
             // This is used to handle the case where the user is redirected back to the checkout page after place order
             if (isInPagePayment) {
                 inPage.startPayment({
-                    paymentId: urlParams.get('pid'),
+                    paymentId: initialUrlParams.get('pid'),
                     onUserCloseModal: cleanInPageUrlParams
                 });
             }
