@@ -10,7 +10,6 @@ export const DisplayAlmaBlock = (props) => {
         storeKey,
         cartTotal,
     } = props;
-    const {onPaymentSetup} = eventRegistration;
 
     const {almaSettings, gatewaySettings, isLoading} = useSelect(
         (select) => ({
@@ -29,6 +28,14 @@ export const DisplayAlmaBlock = (props) => {
     }
     const [selectedFeePlan, setSelectedFeePlan] = useState(default_plan);
 
+    // Update selectedFeePlan when availableFeePlans changes (WC 9.7 compatibility)
+    useEffect(() => {
+        if (!isLoading && Object.keys(availableFeePlans).length > 0 && !selectedFeePlan) {
+            const firstPlan = Object.keys(availableFeePlans)[0];
+            setSelectedFeePlan(firstPlan);
+        }
+    }, [availableFeePlans, isLoading, selectedFeePlan]);
+
     const plan = !isLoading
         ? availableFeePlans?.[selectedFeePlan] ?? availableFeePlans?.[default_plan]
         : null;
@@ -36,9 +43,6 @@ export const DisplayAlmaBlock = (props) => {
     // Define onPaymentProcessing effect
     const {onPaymentProcessing} = eventRegistration;
 
-    useEffect(() => {
-        console.log('Special use effect selectedFeePlan changed:', selectedFeePlan);
-    }, [selectedFeePlan]);
 
     useEffect(() => {
         console.log('selectedFeePlan changed:', selectedFeePlan);

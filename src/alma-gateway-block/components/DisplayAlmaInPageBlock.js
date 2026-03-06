@@ -41,6 +41,15 @@ export const DisplayAlmaInPageBlock = (props) => {
         default_plan = Object.keys(availableFeePlans)[0];
     }
     const [selectedFeePlan, setSelectedFeePlan] = useState(default_plan);
+
+    // Update selectedFeePlan when availableFeePlans changes (WC 9.7 compatibility)
+    useEffect(() => {
+        if (!isLoading && Object.keys(availableFeePlans).length > 0 && !selectedFeePlan) {
+            const firstPlan = Object.keys(availableFeePlans)[0];
+            setSelectedFeePlan(firstPlan);
+        }
+    }, [availableFeePlans, isLoading, selectedFeePlan]);
+
     const plan = !isLoading
         ? availableFeePlans?.[selectedFeePlan] ?? availableFeePlans?.[default_plan]
         : null;
@@ -112,7 +121,7 @@ export const DisplayAlmaInPageBlock = (props) => {
             console.error('Failed to initialize:', error);
             setIsInPageReady(false);
         }
-    }, [plan, almaSettings, inPage, setInPage, isProcessingPayment]);
+    }, [plan, almaSettings, inPage, setInPage, isProcessingPayment, selectedFeePlan]);
 
     /**
      * Prepare payment data onPaymentSetup
@@ -191,7 +200,7 @@ export const DisplayAlmaInPageBlock = (props) => {
                             if (!resolvedPromisePaymentResult) {
                                 resolvedPromisePaymentResult = true;
                                 resetCheckoutState();
-                                resolve({ status: 'cancelled' });
+                                resolve({status: 'cancelled'});
                             }
                         }
                     });
@@ -278,9 +287,10 @@ export const DisplayAlmaInPageBlock = (props) => {
                 initializeInPage(cartTotal);
             }
         }
-    }, [plan?.planKey, cartTotal, isLoading, initializeInPage]);
+    }, [plan?.planKey, cartTotal, isLoading, initializeInPage, selectedFeePlan]);
 
     const displayInstallments = gatewaySettings.is_pay_now ? 'none' : 'block';
+
 
     // Render loading state or Alma In-Page block
     return isLoading ? (
@@ -292,7 +302,7 @@ export const DisplayAlmaInPageBlock = (props) => {
                 isPayNow={gatewaySettings.is_pay_now}
                 totalPrice={cartTotal}
                 gatewaySettings={gatewaySettings}
-                selectedFeePlan={plan.planKey}
+                selectedFeePlan={plan?.planKey || ''}
                 setSelectedFeePlan={setSelectedFeePlan}
                 plans={availableFeePlans}
             />

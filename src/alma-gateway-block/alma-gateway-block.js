@@ -97,11 +97,7 @@ import {fetchAlmaSettings} from "./hooks/almaSettings";
      * @returns {boolean}
      */
     const gatewayCanMakePayment = (gatewaySettings) => {
-        let canMakePayment = true
-        if (!gatewaySettings?.fee_plans_settings || Object.keys(gatewaySettings.fee_plans_settings).length === 0) {
-            canMakePayment = false;
-        }
-        return canMakePayment
+        return !(!gatewaySettings?.fee_plans_settings || Object.keys(gatewaySettings.fee_plans_settings).length === 0);
     }
 
     /**
@@ -131,19 +127,33 @@ import {fetchAlmaSettings} from "./hooks/almaSettings";
             cartTotal: null,
             shippingRates: null,
         });
+        const previousGatewaySettings = useRef(null);
         const isFetching = useRef(false);
+        const hasEagerRegistered = useRef(false);
+        const isFirstRender = useRef(true);
 
         const [inPageInstance, setInPageInstance] = useState(undefined)
 
+        // Reset registration flag only when gateway settings actually change
+        useEffect(() => {
+            const currentSettings = JSON.stringify(allGatewaysSettings);
+            previousGatewaySettings.current = currentSettings;
+        }, [allGatewaysSettings]);
+
         // Use the cart total and addresses to fetch the new eligibility
         useEffect(() => {
-            console.log('CartObserver useEffect triggered with cartTotal:', cartTotal, 'shippingRates:', shippingRates);
             // Check if cart state has actually changed
             const cartStateChanged =
                 previousCartState.current.cartTotal !== cartTotal ||
                 JSON.stringify(previousCartState.current.shippingRates) !== JSON.stringify(shippingRates);
 
-            if (cartStateChanged && !isFetching.current && !isLoading) {
+            // Force fetch on first render if we don't have settings yet
+            const shouldFetch = (cartStateChanged || (isFirstRender.current && Object.keys(allGatewaysSettings).length === 0))
+                && !isFetching.current
+                && !isLoading;
+
+            if (shouldFetch) {
+                isFirstRender.current = false;
                 isFetching.current = true;
                 previousCartState.current = {
                     cartTotal,
@@ -153,13 +163,61 @@ import {fetchAlmaSettings} from "./hooks/almaSettings";
                 fetchAlmaSettings(storeKey, AlmaInitSettings.checkout_url).finally(() => {
                     isFetching.current = false;
                 });
+            } else {
+                if (isFirstRender.current) {
+                    isFirstRender.current = false;
+                }
             }
-        }, [cartTotal, shippingRates, isLoading]);
+        }, [cartTotal, shippingRates, isLoading, allGatewaysSettings]);
 
-        // Register the payment gateway block
-        if (!isCalculating && !isLoading) {
-            // For each gateway in eligibility result, we register a block
-            registerPaymentGateway(almaSettings, allGatewaysSettings, storeKey, parseInt(cartTotal), inPageInstance, setInPageInstance)
+        // EAGER REGISTRATION: Register gateways immediately on first render for WC 9.7 compatibility
+        // This ensures gateways are available before WooCommerce collects payment methods
+        if (!hasEagerRegistered.current) {
+            // Register ALL possible Alma gateways with init=true (bypasses canMakePayment check)
+            // This will be updated later when settings are loaded
+            const eagerGateways = {
+                alma_paynow_gateway: {
+                    gateway_name: 'alma_paynow_gateway',
+                    title: 'Pay by credit card',
+                    label_button: 'Pay With Alma',
+                    description: 'Fast and secured payments',
+                    is_pay_now: true,
+                    is_pay_later: false
+                },
+                alma_pnx_gateway: {
+                    gateway_name: 'alma_pnx_gateway',
+                    title: 'Pay in installments',
+                    label_button: 'Pay With Alma',
+                    description: 'Fast and secure payment by credit card',
+                    is_pay_now: false,
+                    is_pay_later: false
+                },
+                alma_paylater_gateway: {
+                    gateway_name: 'alma_paylater_gateway',
+                    title: 'Pay later',
+                    label_button: 'Pay With Alma',
+                    description: 'Fast and secure payment by credit card',
+                    is_pay_now: false,
+                    is_pay_later: true
+                },
+                alma_credit_gateway: {
+                    gateway_name: 'alma_credit_gateway',
+                    title: 'Pay with financing',
+                    label_button: 'Pay With Alma',
+                    description: 'Fast and secure payment by credit card',
+                    is_pay_now: false,
+                    is_pay_later: false
+                }
+            };
+            registerPaymentGateway(almaSettings, eagerGateways, storeKey, parseInt(cartTotal), inPageInstance, setInPageInstance, true);
+            hasEagerRegistered.current = true;
+        }
+
+        // UPDATE REGISTRATION: When settings are loaded, re-register with actual eligibility data
+        // WooCommerce Blocks will use the updated canMakePayment() result
+        if (!isCalculating && !isLoading && Object.keys(allGatewaysSettings).length > 0) {
+            // Re-register with actual settings (init=false, will use canMakePayment check)
+            registerPaymentGateway(almaSettings, allGatewaysSettings, storeKey, parseInt(cartTotal), inPageInstance, setInPageInstance, false);
         }
     };
 
@@ -175,19 +233,19 @@ import {fetchAlmaSettings} from "./hooks/almaSettings";
      * @param cartTotal
      */
     const registerPaymentGateway = (almaSettings, allGatewaysSettings, storeKey, cartTotal, inPageInstance, setInPageInstance, init = false) => {
-
         for (const gatewayName in allGatewaysSettings) {
-
             const gatewaySettings = allGatewaysSettings?.[gatewayName] ?? {};
 
             // If gateway Block is available, we register it
             if (gatewaySettings) {
+                const canMakePaymentResult = init ? true : gatewayCanMakePayment(gatewaySettings);
+
                 const blockContent = getContentBlock(almaSettings, gatewayName, storeKey, cartTotal, inPageInstance, setInPageInstance)
-                const AlmaGatewayBlock = generateGatewayBlock(gatewaySettings, blockContent, init ? true : gatewayCanMakePayment(gatewaySettings));
-                if (gatewayCanMakePayment(gatewaySettings)) {
+                const AlmaGatewayBlock = generateGatewayBlock(gatewaySettings, blockContent, canMakePaymentResult);
+
+                if (canMakePaymentResult) {
                     window.wc.wcBlocksRegistry.registerPaymentMethod(AlmaGatewayBlock);
                 }
-                console.log('register: ' + gatewayName);
             }
         }
     }
@@ -201,7 +259,21 @@ import {fetchAlmaSettings} from "./hooks/almaSettings";
      * @returns {{name: *, label, content: *, edit: *, placeOrderButtonLabel: *, canMakePayment: function(): *, ariaLabel: *}}
      */
     const generateGatewayBlock = (gatewaySettings, blockContent, canMakePayment) => {
-        console.log("Generating Gateway block " + blockContent);
+
+        // Create a dynamic canMakePayment function that reads from the store
+        // This allows the eligibility to be updated without re-registering the gateway
+        const dynamicCanMakePayment = () => {
+            const currentSettings = window.wp.data.select(storeKey).getAllGatewaysSettings();
+            const currentGatewaySettings = currentSettings?.[gatewaySettings.gateway_name];
+
+            if (!currentGatewaySettings) {
+                // Settings not loaded yet, allow payment during eager registration
+                return true;
+            }
+
+            return gatewayCanMakePayment(currentGatewaySettings);
+        };
+
         return {
             name: gatewaySettings.gateway_name,
             label: (
@@ -212,7 +284,7 @@ import {fetchAlmaSettings} from "./hooks/almaSettings";
             content: blockContent,
             edit: blockContent,
             placeOrderButtonLabel: gatewaySettings.label_button,
-            canMakePayment: () => canMakePayment,
+            canMakePayment: dynamicCanMakePayment,
             ariaLabel: gatewaySettings.title,
         }
     }
