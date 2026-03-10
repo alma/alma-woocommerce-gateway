@@ -1,5 +1,17 @@
 # Changelog
 
+## v6.0.3 - 2026-03-10
+
+### Changes
+
+### 🐛 Bug Fixes
+
+- fix: get first element of order total (#533)
+
+#### Contributors
+
+@joyet-simon
+
 ## v6.0.2- 2026-03-10
 
 ### Changes
