@@ -137,7 +137,7 @@
         // The amount is in the format "12,34 €" or "$12.34"
         // We need to extract the numeric value and convert it to cents
         function getAmount() {
-            const totalText = $('.order-total .woocommerce-Price-amount').text().trim();
+            const totalText = $('.order-total .woocommerce-Price-amount').first().text().trim();
             return parseFloat(totalText.replace(/[^0-9.,]/g, '').replace(',', '.') * 100);
         }
 
