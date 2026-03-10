@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 6.6
 Tested up to: 6.9.1
 Requires PHP: 7.4
-Stable tag: 5.17.0
+Stable tag: 6.0.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -51,7 +51,7 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 == Changelog ==
 
-## v5.17.0 - 2026-03-10
+## v6.0.2 - 2026-03-10
 
 ### Changes
 
