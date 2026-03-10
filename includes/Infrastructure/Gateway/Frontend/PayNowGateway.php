@@ -104,8 +104,9 @@ class PayNowGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 						'alma_woocommerce_gateway_fee_plan' => $fee_plan_adapter,
 						'alma_woocommerce_gateway_in_page_enabled' => $config_service->isInPageEnabled(),
 						'alma_woocommerce_gateway_in_page_iframe_selector' => sprintf(
-							'alma_%s_gateway_in_page',
-							$this->get_payment_method()
+							'alma_%s_gateway_in_page_%s',
+							$this->get_payment_method(),
+							$fee_plan_adapter->getPlanKey()
 						),
 						'alma_woocommerce_gateway_nonce' => $this->form_helper->generateTokenField(
 							sprintf( '%s_nonce_action', $this->get_name() ),

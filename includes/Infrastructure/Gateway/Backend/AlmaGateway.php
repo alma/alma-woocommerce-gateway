@@ -12,6 +12,7 @@ use Alma\Gateway\Application\Helper\EncryptorHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\GatewayConfigurationFormValidatorService;
 use Alma\Gateway\Infrastructure\Mapper\ConfigFormMapper;
+use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Plugin;
 use WC_Admin_Settings;
 
@@ -127,6 +128,9 @@ class AlmaGateway extends AbstractBackendGateway {
 	 * @return array The sanitized settings.
 	 */
 	public function sanitize_settings( array $settings ): array {
+
+		// Clear Fee Plan cache
+		FeePlanRepository::clearTransientCache();
 
 		// Clean settings
 		$settings = $this->clean_decoration_fields( $settings );

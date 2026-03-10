@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-use Alma\API\Domain\Entity\FeePlanList;
+use Alma\Client\Domain\Entity\FeePlanList;
 use Alma\Gateway\Application\Entity\Form\GatewayConfigurationForm;
 use Alma\Gateway\Application\Helper\AlmaHelper;
 use Alma\Gateway\Application\Helper\DisplayHelper;
@@ -241,7 +241,7 @@ class AbstractBackendGateway extends AbstractGateway {
 		/** @var FeePlanRepository $fee_plan_repository */
 		$fee_plan_repository = Plugin::get_container()->get( FeePlanRepository::class );
 		try {
-			$fee_plan_list_adapter = $fee_plan_repository->getAll( true )->orderBy( $gateway_repository->findOrderedAlmaGateways() )->filterAvailable();
+			$fee_plan_list_adapter = $fee_plan_repository->getAll()->orderBy( $gateway_repository->findOrderedAlmaGateways() )->filterAvailable();
 		} catch ( FeePlanRepositoryException $e ) {
 			// No exception, just an empty list
 			$this->logger_service->debug(

@@ -9,6 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 use Alma\Client\Application\Exception\ParametersException;
 use Alma\Client\Domain\Entity\Eligibility;
 use Alma\Client\Domain\Entity\EligibilityList;
+use Alma\Client\Domain\Entity\FeePlanList;
 use Alma\Gateway\Application\Exception\Provider\EligibilityProviderException;
 use Alma\Gateway\Application\Mapper\EligibilityMapper;
 use Alma\Gateway\Application\Provider\EligibilityProviderAwareTrait;
@@ -21,25 +22,36 @@ use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
-use Alma\Gateway\Infrastructure\Service\LoggerService;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
+use Alma\Gateway\Infrastructure\Service\LoggerServiceAwareTrait;
+use Throwable;
 
 class FeePlanRepository {
 
 	use FeePlanProviderAwareTrait;
 	use EligibilityProviderAwareTrait;
+	use LoggerServiceAwareTrait;
+
+	/** Transient key prefix for caching fee plans from API */
+	const TRANSIENT_FEE_PLANS_PREFIX = 'alma_fee_plans_';
+
+	/** Cache TTL for fee plans: 1 hour */
+	const TRANSIENT_FEE_PLANS_TTL = 3600;
+
+
+	/**
+	 * In-process static cache to avoid multiple API calls within the same PHP process.
+	 * @var FeePlanList|null
+	 */
+	private static ?FeePlanList $staticFeePlanCache = null;
 
 	/** @var array */
 	private array $feePlanListAdapter;
 
 	/** @var ConfigService */
 	private ConfigService $configService;
+
 	/** @var BusinessEventsService */
 	private BusinessEventsService $businessEventsService;
-
-	/** @var LoggerInterface */
-	private $loggerService;
 
 	/**
 	 * FeePlanRepository constructor.
@@ -48,20 +60,34 @@ class FeePlanRepository {
 	 * @param BusinessEventsService      $businessEventsService
 	 * @param FeePlanProviderFactory     $feePlanProviderFactory
 	 * @param EligibilityProviderFactory $eligibilityProviderFactory
-	 * @param LoggerService|null         $loggerService
 	 */
 	public function __construct(
 		ConfigService $configService,
 		BusinessEventsService $businessEventsService,
 		FeePlanProviderFactory $feePlanProviderFactory,
-		EligibilityProviderFactory $eligibilityProviderFactory,
-		?LoggerService $loggerService = null
+		EligibilityProviderFactory $eligibilityProviderFactory
 	) {
 		$this->configService              = $configService;
 		$this->businessEventsService      = $businessEventsService;
 		$this->feePlanProviderFactory     = $feePlanProviderFactory;
 		$this->eligibilityProviderFactory = $eligibilityProviderFactory;
-		$this->loggerService              = $loggerService ?? new NullLogger();
+	}
+
+	/**
+	 * Clear all transient and static caches.
+	 * Should be called when merchant settings are updated.
+	 */
+	public static function clearTransientCache(): void {
+		self::$staticFeePlanCache = null;
+
+		global $wpdb;
+		$wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
+				'_transient_' . self::TRANSIENT_FEE_PLANS_PREFIX . '%',
+				'_transient_timeout_' . self::TRANSIENT_FEE_PLANS_PREFIX . '%'
+			)
+		);
 	}
 
 	/**
@@ -75,7 +101,7 @@ class FeePlanRepository {
 	public function getAll( bool $forceRefresh = false ): FeePlanListAdapter {
 
 		if ( $forceRefresh || ! isset( $this->feePlanListAdapter['all'][0] ) ) {
-			$this->feePlanListAdapter['all'][0] = $this->retrieveFeePlans();
+			$this->feePlanListAdapter['all'][0] = $this->retrieveFeePlans( 0, $forceRefresh );
 		}
 
 		return $this->feePlanListAdapter['all'][0];
@@ -93,7 +119,8 @@ class FeePlanRepository {
 	public function getAllWithEligibility( int $cartTotal = 0, bool $forceRefresh = false ): FeePlanListAdapter {
 
 		if ( $forceRefresh || ! isset( $this->feePlanListAdapter['all-with-eligibility'][ $cartTotal ] ) ) {
-			$this->feePlanListAdapter['all-with-eligibility'][ $cartTotal ] = $this->retrieveFeePlans( $cartTotal );
+			$this->feePlanListAdapter['all-with-eligibility'][ $cartTotal ] = $this->retrieveFeePlans( $cartTotal,
+				$forceRefresh );
 		}
 
 		return $this->feePlanListAdapter['all-with-eligibility'][ $cartTotal ];
@@ -111,7 +138,7 @@ class FeePlanRepository {
 	public function getByPlanKey( string $planKey, bool $forceRefresh = false ): ?FeePlanAdapter {
 
 		if ( $forceRefresh || ! isset( $this->feePlanListAdapter['all'][0] ) ) {
-			$this->feePlanListAdapter['all'][0] = $this->retrieveFeePlans();
+			$this->feePlanListAdapter['all'][0] = $this->retrieveFeePlans( 0, $forceRefresh );
 		}
 
 		/** @var FeePlanAdapter $feePlanAdapter */
@@ -126,44 +153,113 @@ class FeePlanRepository {
 
 	public function deleteAll() {
 		$this->configService->deleteFeePlansConfiguration();
+		$this->clearTransientCache();
 	}
 
 	/**
 	 * Retrieve Fee Plans from Alma and set their local configuration.
+	 * Uses a two-level cache: static (in-process) + transient (cross-process).
 	 *
-	 * @return void
+	 * @param int  $cartTotal
+	 * @param bool $forceRefresh
+	 *
+	 * @return FeePlanListAdapter
 	 * @throws FeePlanRepositoryException
 	 */
-	protected function retrieveFeePlans( $cartTotal = 0 ): FeePlanListAdapter {
+	protected function retrieveFeePlans( int $cartTotal = 0, bool $forceRefresh = false ): FeePlanListAdapter {
 		try {
-			// Get Fee Plans. (From API)
-			$this->getFeePlanProvider();
-			$feePlanListAdapter = ( new FeePlanListAdapter( $this->feePlanProvider->getFeePlanList() ) )->filterAvailable();
-			$this->saveKeysToConfig( $feePlanListAdapter );
+			$feePlanList = $forceRefresh ? null : $this->getFeePlanListFromCache();
 
-			// Add local configuration to Fee Plans. (local min and max amount set in the plugin form)
+			if ( null === $feePlanList ) {
+				$this->getFeePlanProvider();
+				$feePlanList = $this->feePlanProvider->getFeePlanList();
+				$this->storeFeePlanListInCache( $feePlanList );
+				$this->getLogger()->debug( 'Fee plans fetched from API and cached.' );
+			}
+
+			$feePlanListAdapter = ( new FeePlanListAdapter( $feePlanList ) )->filterAvailable();
+			$this->saveKeysToConfig( $feePlanListAdapter );
 			$feePlanListAdapter = $this->setLocalConfiguration( $feePlanListAdapter );
 
 			// Get Eligibility only on shop
 			if ( ! ContextHelper::isAdmin() && $cartTotal > 0 ) {
-				// Add Eligibility to Fee Plans. (Installment Plans from API)
 				$this->getEligibilityProvider();
-				$eligibilityDto      = ( new EligibilityMapper() )
+				$eligibilityDto = ( new EligibilityMapper() )
 					->buildEligibilityDto(
 						ContextHelper::getCart(),
 						ContextHelper::getCustomer(),
 						$feePlanListAdapter->filterEnabled()
 					);
+
 				$installmentPlanList = $this->eligibilityProvider->getEligibilityList( $eligibilityDto );
+
 				$this->businessEventsService->updateEligibility( $installmentPlanList );
 				$feePlanListAdapter = $this->setInstallmentPlanList( $feePlanListAdapter, $installmentPlanList );
 			}
 
 			return $feePlanListAdapter;
 
-		} catch ( EligibilityProviderException $e ) {
+		} catch ( EligibilityProviderException|Throwable $e ) {
 			throw new FeePlanRepositoryException( 'Can not retrieve Fee Plans', 0, $e );
 		}
+	}
+
+	/**
+	 * Build the transient key for fee plans cache.
+	 * Includes merchant_id and environment to avoid cache collisions
+	 * between merchants or between sandbox/live environments.
+	 *
+	 * @return string
+	 */
+	protected function getFeePlansCacheKey(): string {
+		$merchantId  = $this->configService->getMerchantId() ?? 'unknown';
+		$environment = $this->configService->isLive() ? 'live' : 'test';
+
+		return self::TRANSIENT_FEE_PLANS_PREFIX . md5( $merchantId . '_' . $environment );
+	}
+
+
+	/**
+	 * Get FeePlanList from cache (static first, then transient).
+	 *
+	 * @return FeePlanList|null
+	 */
+	private function getFeePlanListFromCache(): ?FeePlanList {
+		// Level 1: in-process static cache (free, instant)
+		if ( self::$staticFeePlanCache instanceof FeePlanList ) {
+			$this->getLogger()->debug( 'Fee plans loaded from static (in-process) cache.' );
+
+			return self::$staticFeePlanCache;
+		}
+
+		// Level 2: transient cache (cross-process, database)
+		$raw = get_transient( $this->getFeePlansCacheKey() );
+
+		if ( ! is_string( $raw ) ) {
+			return null;
+		}
+
+		$feePlanList = @unserialize( $raw ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions
+
+		if ( $feePlanList instanceof FeePlanList ) {
+			self::$staticFeePlanCache = $feePlanList;
+			$this->getLogger()->debug( 'Fee plans loaded from transient cache.' );
+
+			return $feePlanList;
+		}
+
+		return null;
+	}
+
+	/**
+	 * Store FeePlanList in both caches.
+	 *
+	 * @param FeePlanList $feePlanList
+	 */
+	private function storeFeePlanListInCache( FeePlanList $feePlanList ): void {
+		self::$staticFeePlanCache = $feePlanList;
+		set_transient( $this->getFeePlansCacheKey(), serialize( $feePlanList ),
+			self::TRANSIENT_FEE_PLANS_TTL ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions
 	}
 
 	/**
@@ -172,7 +268,6 @@ class FeePlanRepository {
 	 * @param FeePlanListAdapter $feePlanListAdapter The given Fee Plan list to initialize.
 	 *
 	 * @return void
-	 * @todo move to configRepository?
 	 */
 	private function saveKeysToConfig( FeePlanListAdapter $feePlanListAdapter ) {
 
@@ -197,7 +292,6 @@ class FeePlanRepository {
 	/**
 	 * We get Fee Plans from Alma with their allowed status and min/max amounts.
 	 * Then we add merchant configurations to the fee plans.
-	 * This includes enabling/disabling plans and setting the min/max purchase amounts
 	 *
 	 * @param FeePlanListAdapter $feePlanListAdapter
 	 *
@@ -214,7 +308,7 @@ class FeePlanRepository {
 				$feePlanAdapter->setOverrideMinPurchaseAmount( $this->configService->getMinPurchaseAmount( $feePlanAdapter->getPlanKey() ) );
 				$feePlanAdapter->setOverrideMaxPurchaseAmount( $this->configService->getMaxPurchaseAmount( $feePlanAdapter->getPlanKey() ) );
 			} catch ( ParametersException $e ) {
-				$this->loggerService->debug(
+				$this->getLogger()->debug(
 					'Invalid min/max purchase amount for fee plan ' . $feePlanAdapter->getPlanKey(),
 					[
 						'exception' => $e,

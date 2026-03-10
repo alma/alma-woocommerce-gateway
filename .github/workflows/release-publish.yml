@@ -25,7 +25,7 @@ jobs:
 
       - name: Create release zip file
         shell: bash
-        run: task dist
+        run: task 7.4:dist
 
       - name: Fetch last draft release
         id: fetch-release-draft

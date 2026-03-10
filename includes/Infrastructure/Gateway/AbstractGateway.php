@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-use Alma\API\Domain\Entity\FeePlanList;
+use Alma\Client\Domain\Entity\FeePlanList;
 use Alma\Gateway\Application\Exception\Service\PaymentServiceException;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Mapper\RefundMapper;
@@ -196,7 +196,10 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 			// In-page checkout with fallback redirection
 			$result['alma_payment_id'] = $payment->getId();
 			$result['result']          = 'success';
-			$result['redirect']        = InPageHelper::getInPageRedirectionFallbackUrl( $payment->getId() );
+			$result['redirect']        = InPageHelper::getInPageRedirectionFallbackUrl(
+				$payment->getId(),
+				$fee_plan_adapter
+			);
 		} else {
 			// Classic checkout redirection
 			$result['result']   = 'success';
