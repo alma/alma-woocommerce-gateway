@@ -1,5 +1,23 @@
 # Changelog
 
+## v5.17.0 - 2026-03-10
+
+### Changes
+
+- Feature/ecom 3898 wrong error message (#530)
+- Feature/ecom 3858 classic checkout in page bug when cdn is too long to load (#526)
+
+### 🚀 New Features
+
+- fix: fix namespaces (#529)
+- feat: add cache on Fee Plan Repository (#524)
+- fix: installments display (#527)
+- Feature/6.0 (#516)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @alma-create-pr-with-team-review[bot], @alma-renovate-bot[bot], @joyet-simon, @remi-zuffinetti, @webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
+
 ## v6.0.0 - 2026-02-18
 
 ### Changes

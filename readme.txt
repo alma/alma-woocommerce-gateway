@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 6.6
 Tested up to: 6.9.1
 Requires PHP: 7.4
-Stable tag: 6.0.0
+Stable tag: 5.17.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,24 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+## v5.17.0 - 2026-03-10
+
+### Changes
+
+- Feature/ecom 3898 wrong error message (#530)
+- Feature/ecom 3858 classic checkout in page bug when cdn is too long to load (#526)
+
+### 🚀 New Features
+
+- fix: fix namespaces (#529)
+- feat: add cache on Fee Plan Repository (#524)
+- fix: installments display (#527)
+- Feature/6.0 (#516)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @alma-create-pr-with-team-review[bot], @alma-renovate-bot[bot], @joyet-simon, @remi-zuffinetti, @webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
 
 ## v6.0.0 - 2026-02-18
 
