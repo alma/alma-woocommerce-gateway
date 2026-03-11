@@ -14,7 +14,7 @@ repos:
     rev: v6.0.0
     hooks:
       - id: check-added-large-files
-        args: [ "--maxkb=1280" ]
+        args: [ "--maxkb=1024" ]
       - id: detect-private-key
       - id: check-merge-conflict
 
