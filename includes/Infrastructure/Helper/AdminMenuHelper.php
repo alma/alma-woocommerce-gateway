@@ -20,7 +20,7 @@ class AdminMenuHelper {
 			'manage_options',
 			'alma-gateway-settings',
 			[ NavigationHelper::class, 'alma_redirect_to_gateway_settings' ],
-			AssetsHelper::getAssetUrl( 'images/alma_short_logo.svg' ),
+			AssetsHelper::getAssetUrl( 'images/alma_logo_icon.svg' ),
 			54
 		);
 	}
