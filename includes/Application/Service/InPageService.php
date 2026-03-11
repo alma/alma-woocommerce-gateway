@@ -8,6 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\Gateway\Application\Exception\Service\InPageServiceException;
 use Alma\Gateway\Infrastructure\Exception\Service\AssetsServiceException;
+use Alma\Gateway\Infrastructure\Helper\CartHelper;
 use Alma\Gateway\Infrastructure\Service\AssetsService;
 
 class InPageService {
@@ -34,7 +35,8 @@ class InPageService {
 		try {
 			$this->assetsService->registerInPageAssets( [
 				'environment' => $this->configService->getEnvironment()->getMode(),
-				'merchant_id' => $this->configService->getMerchantId()
+				'merchant_id' => $this->configService->getMerchantId(),
+				'number_decimals' => CartHelper::getCartPriceDecimalsNumber(),
 			] );
 		} catch ( AssetsServiceException $e ) {
 			throw new InPageServiceException( 'Unable to load In-Page assets.', 0, $e );
