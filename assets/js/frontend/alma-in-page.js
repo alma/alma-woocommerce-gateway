@@ -138,7 +138,11 @@
         // We need to extract the numeric value and convert it to cents
         function getAmount() {
             const totalText = $('.order-total .woocommerce-Price-amount').first().text().trim();
-            return parseFloat(totalText.replace(/[^0-9.,]/g, '').replace(',', '.') * 100);
+
+            const number_decimals = parseInt(alma_in_page_settings.number_decimals);
+
+            let cleanedText = totalText.replace(/[^0-9]/g, '');
+            return parseInt(cleanedText) * Math.pow(10, 2 - number_decimals);
         }
 
 

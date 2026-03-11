@@ -111,8 +111,9 @@ import {fetchAlmaSettings} from "./hooks/almaSettings";
      */
     const CartObserver = () => {
         // Subscribe to the cart total
-        const {cartTotal, shippingRates} = useSelect((select) => ({
-            cartTotal: select(CART_STORE_KEY).getCartTotals().total_price,
+        const {cartTotal, shippingRates, currencyMinorUnit} = useSelect((select) => ({
+            cartTotal: select(CART_STORE_KEY).getCartTotals().total_price, // Total price is in minor unit depending on the currency_minor_unit
+            currencyMinorUnit: select(CART_STORE_KEY).getCartTotals().currency_minor_unit,
             shippingRates: select(CART_STORE_KEY).getShippingRates()
         }), []);
         // Subscribe to the eligibility
@@ -159,7 +160,8 @@ import {fetchAlmaSettings} from "./hooks/almaSettings";
         // Register the payment gateway block
         if (!isCalculating && !isLoading) {
             // For each gateway in eligibility result, we register a block
-            registerPaymentGateway(almaSettings, allGatewaysSettings, storeKey, parseInt(cartTotal), inPageInstance, setInPageInstance)
+            const totalInCent = parseInt(cartTotal) * Math.pow(10, 2 - currencyMinorUnit)
+            registerPaymentGateway(almaSettings, allGatewaysSettings, storeKey, totalInCent, inPageInstance, setInPageInstance)
         }
     };
 

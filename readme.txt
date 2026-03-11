@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 6.6
 Tested up to: 6.9.1
 Requires PHP: 7.4
-Stable tag: 6.0.3
+Stable tag: 6.0.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,21 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+## v6.0.4 - 2026-03-11
+
+### Changes
+
+### 🐛 Bug Fixes
+
+- fix: Widget Eligibility get sandbox on live mode (#540)
+- fix: Change asset name for changing asset (#538)
+- fix: Price in page block without cent error (#537)
+- fix: Price regex in classic inpage checkout nor support Thousands sep… (#536)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @joyet-simon and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
 
 ## v6.0.3 - 2026-03-10
 

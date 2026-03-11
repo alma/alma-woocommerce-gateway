@@ -55,9 +55,8 @@ abstract class AbstractWidget implements WidgetInterface {
 	 * @see assets/js/frontend/alma-frontend-widget-implementation.js
 	 */
 	public function getConfiguration(): array {
-
 		return array(
-			'environment'             => $this->environment,
+			'environment'             => $this->environment->getMode(),
 			'widget_selector'         => sprintf( '.%s', self::WIDGET_CLASS ),
 			'widget_default_selector' => sprintf( '.%s', self::WIDGET_DEFAULT_CLASS ),
 			'merchant_id'             => $this->merchantId,
