@@ -28,7 +28,7 @@ class CartAdapter implements CartAdapterInterface {
 			return 0;
 		}
 
-		return DisplayHelper::price_to_cent( $this->cart->get_total( null ) );
+		return DisplayHelper::price_to_cent( (float) $this->cart->get_total( null ) );
 	}
 
 	/**

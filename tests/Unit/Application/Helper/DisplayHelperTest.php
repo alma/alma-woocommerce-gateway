@@ -19,6 +19,10 @@ class DisplayHelperTest extends TestCase {
 		$this->assertSame( 1013, DisplayHelper::price_to_cent( 10.13 ) );
 	}
 
+	public function testFormatPriceToCentWithNumericString() {
+		$this->assertSame( 1013, DisplayHelper::price_to_cent( '10.13' ) );
+	}
+
 	public function testFormatPriceToDecimal() {
 		$this->assertSame( 13.00, DisplayHelper::price_to_euro( 1300 ) );
 		$this->assertSame( 10.30, DisplayHelper::price_to_euro( 1030 ) );
