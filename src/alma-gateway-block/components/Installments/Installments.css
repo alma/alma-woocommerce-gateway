@@ -83,10 +83,6 @@
 	margin-top: var(--spacing-4);
 }
 
-.logo {
-	width: 50px;
-}
-
 .footer {
 	/* important needed for chrome 49 */
 	margin: 0 !important;
