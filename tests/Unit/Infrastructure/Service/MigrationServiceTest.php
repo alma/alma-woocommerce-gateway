@@ -12,34 +12,12 @@ class MigrationServiceTest extends TestCase {
 			'empty keys'                            => [
 				[],
 				[
-					'debug'                     => 'no',
-					'enabled'                   => 'no',
-					'environment'               => 'test',
-					'widget_cart_enabled'        => 'yes',
-					'in_page_enabled'            => 'yes',
-					'widget_product_enabled'     => 'yes',
-					'general_6_0_0_min_amount'   => 0,
-					'general_6_0_0_max_amount'   => 0,
-					'general_10_0_0_min_amount'  => 0,
-					'general_10_0_0_max_amount'  => 0,
-					'general_12_0_0_min_amount'  => 0,
-					'general_12_0_0_max_amount'  => 0,
-					'general_24_0_0_min_amount'  => 0,
-					'general_24_0_0_max_amount'  => 0,
-					'general_1_0_0_min_amount'   => 0,
-					'general_1_0_0_max_amount'   => 0,
-					'general_1_15_0_min_amount'  => 0,
-					'general_1_15_0_max_amount'  => 0,
-					'general_1_30_0_min_amount'  => 0,
-					'general_1_30_0_max_amount'  => 0,
-					'general_1_45_0_min_amount'  => 0,
-					'general_1_45_0_max_amount'  => 0,
-					'general_2_0_0_min_amount'   => 0,
-					'general_2_0_0_max_amount'   => 0,
-					'general_3_0_0_min_amount'   => 0,
-					'general_3_0_0_max_amount'   => 0,
-					'general_4_0_0_min_amount'   => 0,
-					'general_4_0_0_max_amount'   => 0,
+					'debug'                  => 'no',
+					'enabled'                => 'no',
+					'environment'            => 'test',
+					'widget_cart_enabled'    => 'yes',
+					'in_page_enabled'        => 'yes',
+					'widget_product_enabled' => 'yes',
 				]
 			],
 			'deprecated keys'                       => [
@@ -76,34 +54,12 @@ class MigrationServiceTest extends TestCase {
 					'woocommerce_alma_share_of_checkout_enabled' => 'no',
 				],
 				[
-					'debug'                      => 'no',
-					'enabled'                    => 'no',
-					'environment'                => 'test',
-					'widget_cart_enabled'         => 'yes',
-					'in_page_enabled'             => 'yes',
-					'widget_product_enabled'      => 'yes',
-					'general_6_0_0_min_amount'   => 0,
-					'general_6_0_0_max_amount'   => 0,
-					'general_10_0_0_min_amount'  => 0,
-					'general_10_0_0_max_amount'  => 0,
-					'general_12_0_0_min_amount'  => 0,
-					'general_12_0_0_max_amount'  => 0,
-					'general_24_0_0_min_amount'  => 0,
-					'general_24_0_0_max_amount'  => 0,
-					'general_1_0_0_min_amount'   => 0,
-					'general_1_0_0_max_amount'   => 0,
-					'general_1_15_0_min_amount'  => 0,
-					'general_1_15_0_max_amount'  => 0,
-					'general_1_30_0_min_amount'  => 0,
-					'general_1_30_0_max_amount'  => 0,
-					'general_1_45_0_min_amount'  => 0,
-					'general_1_45_0_max_amount'  => 0,
-					'general_2_0_0_min_amount'   => 0,
-					'general_2_0_0_max_amount'   => 0,
-					'general_3_0_0_min_amount'   => 0,
-					'general_3_0_0_max_amount'   => 0,
-					'general_4_0_0_min_amount'   => 0,
-					'general_4_0_0_max_amount'   => 0,
+					'debug'                  => 'no',
+					'enabled'                => 'no',
+					'environment'            => 'test',
+					'widget_cart_enabled'    => 'yes',
+					'in_page_enabled'        => 'yes',
+					'widget_product_enabled' => 'yes',
 				]
 			],
 			'good keys'                             => [
@@ -115,36 +71,14 @@ class MigrationServiceTest extends TestCase {
 					'environment'  => 'test',
 				],
 				[
-					'debug'                      => 'no',
-					'enabled'                    => 'yes',
-					'live_api_key'               => 'encrypted_live_key',
-					'test_api_key'               => 'encrypted_test_key',
-					'environment'                => 'test',
-					'widget_cart_enabled'         => 'yes',
-					'in_page_enabled'             => 'yes',
-					'widget_product_enabled'      => 'yes',
-					'general_6_0_0_min_amount'   => 0,
-					'general_6_0_0_max_amount'   => 0,
-					'general_10_0_0_min_amount'  => 0,
-					'general_10_0_0_max_amount'  => 0,
-					'general_12_0_0_min_amount'  => 0,
-					'general_12_0_0_max_amount'  => 0,
-					'general_24_0_0_min_amount'  => 0,
-					'general_24_0_0_max_amount'  => 0,
-					'general_1_0_0_min_amount'   => 0,
-					'general_1_0_0_max_amount'   => 0,
-					'general_1_15_0_min_amount'  => 0,
-					'general_1_15_0_max_amount'  => 0,
-					'general_1_30_0_min_amount'  => 0,
-					'general_1_30_0_max_amount'  => 0,
-					'general_1_45_0_min_amount'  => 0,
-					'general_1_45_0_max_amount'  => 0,
-					'general_2_0_0_min_amount'   => 0,
-					'general_2_0_0_max_amount'   => 0,
-					'general_3_0_0_min_amount'   => 0,
-					'general_3_0_0_max_amount'   => 0,
-					'general_4_0_0_min_amount'   => 0,
-					'general_4_0_0_max_amount'   => 0,
+					'debug'                  => 'no',
+					'enabled'                => 'yes',
+					'live_api_key'           => 'encrypted_live_key',
+					'test_api_key'           => 'encrypted_test_key',
+					'environment'            => 'test',
+					'widget_cart_enabled'    => 'yes',
+					'in_page_enabled'        => 'yes',
+					'widget_product_enabled' => 'yes',
 				]
 			],
 			'changed keys'                          => [
@@ -194,28 +128,22 @@ class MigrationServiceTest extends TestCase {
 					'general_3_0_0_enabled'     => 1,
 					'excluded_products_list'    => [ 0 => "music" ],
 					'merchant_id'               => 'merchant_123',
-					'general_6_0_0_min_amount'  => 0,
-					'general_6_0_0_max_amount'  => 0,
-					'general_10_0_0_min_amount' => 11000,
 					'general_10_0_0_max_amount' => 21000,
-					'general_12_0_0_min_amount' => 11200,
 					'general_12_0_0_max_amount' => 21200,
-					'general_24_0_0_min_amount' => 0,
-					'general_24_0_0_max_amount' => 0,
-					'general_1_0_0_min_amount'  => 10100,
 					'general_1_0_0_max_amount'  => 20100,
-					'general_1_15_0_min_amount' => 11150,
 					'general_1_15_0_max_amount' => 21150,
-					'general_1_30_0_min_amount' => 11300,
 					'general_1_30_0_max_amount' => 21300,
-					'general_1_45_0_min_amount' => 0,
-					'general_1_45_0_max_amount' => 0,
-					'general_2_0_0_min_amount'  => 10200,
 					'general_2_0_0_max_amount'  => 20200,
-					'general_3_0_0_min_amount'  => 10300,
 					'general_3_0_0_max_amount'  => 20300,
-					'general_4_0_0_min_amount'  => 10400,
 					'general_4_0_0_max_amount'  => 20400,
+					'general_10_0_0_min_amount' => 11000,
+					'general_12_0_0_min_amount' => 11200,
+					'general_1_0_0_min_amount'  => 10100,
+					'general_1_15_0_min_amount' => 11150,
+					'general_1_30_0_min_amount' => 11300,
+					'general_2_0_0_min_amount'  => 10200,
+					'general_3_0_0_min_amount'  => 10300,
+					'general_4_0_0_min_amount'  => 10400,
 				],
 			],
 			'another changed keys'                  => [
@@ -225,34 +153,12 @@ class MigrationServiceTest extends TestCase {
 					'display_product_eligibility' => 'no',
 				],
 				[
-					'debug'                      => 'no',
-					'enabled'                    => 'no',
-					'environment'                => 'test',
-					'widget_cart_enabled'         => 'no',
-					'in_page_enabled'             => 'no',
-					'widget_product_enabled'      => 'no',
-					'general_6_0_0_min_amount'   => 0,
-					'general_6_0_0_max_amount'   => 0,
-					'general_10_0_0_min_amount'  => 0,
-					'general_10_0_0_max_amount'  => 0,
-					'general_12_0_0_min_amount'  => 0,
-					'general_12_0_0_max_amount'  => 0,
-					'general_24_0_0_min_amount'  => 0,
-					'general_24_0_0_max_amount'  => 0,
-					'general_1_0_0_min_amount'   => 0,
-					'general_1_0_0_max_amount'   => 0,
-					'general_1_15_0_min_amount'  => 0,
-					'general_1_15_0_max_amount'  => 0,
-					'general_1_30_0_min_amount'  => 0,
-					'general_1_30_0_max_amount'  => 0,
-					'general_1_45_0_min_amount'  => 0,
-					'general_1_45_0_max_amount'  => 0,
-					'general_2_0_0_min_amount'   => 0,
-					'general_2_0_0_max_amount'   => 0,
-					'general_3_0_0_min_amount'   => 0,
-					'general_3_0_0_max_amount'   => 0,
-					'general_4_0_0_min_amount'   => 0,
-					'general_4_0_0_max_amount'   => 0,
+					'debug'                  => 'no',
+					'enabled'                => 'no',
+					'environment'            => 'test',
+					'widget_cart_enabled'    => 'no',
+					'in_page_enabled'        => 'no',
+					'widget_product_enabled' => 'no',
 				],
 			],
 			'merchant keys - only live key defined' => [
@@ -260,35 +166,13 @@ class MigrationServiceTest extends TestCase {
 					'live_merchant_id' => 'merchant_123',
 				],
 				[
-					'debug'                      => 'no',
-					'enabled'                    => 'no',
-					'environment'                => 'test',
-					'widget_cart_enabled'         => 'yes',
-					'in_page_enabled'             => 'yes',
-					'widget_product_enabled'      => 'yes',
-					'merchant_id'                 => 'merchant_123',
-					'general_6_0_0_min_amount'   => 0,
-					'general_6_0_0_max_amount'   => 0,
-					'general_10_0_0_min_amount'  => 0,
-					'general_10_0_0_max_amount'  => 0,
-					'general_12_0_0_min_amount'  => 0,
-					'general_12_0_0_max_amount'  => 0,
-					'general_24_0_0_min_amount'  => 0,
-					'general_24_0_0_max_amount'  => 0,
-					'general_1_0_0_min_amount'   => 0,
-					'general_1_0_0_max_amount'   => 0,
-					'general_1_15_0_min_amount'  => 0,
-					'general_1_15_0_max_amount'  => 0,
-					'general_1_30_0_min_amount'  => 0,
-					'general_1_30_0_max_amount'  => 0,
-					'general_1_45_0_min_amount'  => 0,
-					'general_1_45_0_max_amount'  => 0,
-					'general_2_0_0_min_amount'   => 0,
-					'general_2_0_0_max_amount'   => 0,
-					'general_3_0_0_min_amount'   => 0,
-					'general_3_0_0_max_amount'   => 0,
-					'general_4_0_0_min_amount'   => 0,
-					'general_4_0_0_max_amount'   => 0,
+					'debug'                  => 'no',
+					'enabled'                => 'no',
+					'environment'            => 'test',
+					'widget_cart_enabled'    => 'yes',
+					'in_page_enabled'        => 'yes',
+					'widget_product_enabled' => 'yes',
+					'merchant_id'            => 'merchant_123'
 				]
 			],
 			'merchant keys - only test key defined' => [
@@ -296,35 +180,13 @@ class MigrationServiceTest extends TestCase {
 					'test_merchant_id' => 'merchant_123',
 				],
 				[
-					'debug'                      => 'no',
-					'enabled'                    => 'no',
-					'environment'                => 'test',
-					'widget_cart_enabled'         => 'yes',
-					'in_page_enabled'             => 'yes',
-					'widget_product_enabled'      => 'yes',
-					'merchant_id'                 => 'merchant_123',
-					'general_6_0_0_min_amount'   => 0,
-					'general_6_0_0_max_amount'   => 0,
-					'general_10_0_0_min_amount'  => 0,
-					'general_10_0_0_max_amount'  => 0,
-					'general_12_0_0_min_amount'  => 0,
-					'general_12_0_0_max_amount'  => 0,
-					'general_24_0_0_min_amount'  => 0,
-					'general_24_0_0_max_amount'  => 0,
-					'general_1_0_0_min_amount'   => 0,
-					'general_1_0_0_max_amount'   => 0,
-					'general_1_15_0_min_amount'  => 0,
-					'general_1_15_0_max_amount'  => 0,
-					'general_1_30_0_min_amount'  => 0,
-					'general_1_30_0_max_amount'  => 0,
-					'general_1_45_0_min_amount'  => 0,
-					'general_1_45_0_max_amount'  => 0,
-					'general_2_0_0_min_amount'   => 0,
-					'general_2_0_0_max_amount'   => 0,
-					'general_3_0_0_min_amount'   => 0,
-					'general_3_0_0_max_amount'   => 0,
-					'general_4_0_0_min_amount'   => 0,
-					'general_4_0_0_max_amount'   => 0,
+					'debug'                  => 'no',
+					'enabled'                => 'no',
+					'environment'            => 'test',
+					'widget_cart_enabled'    => 'yes',
+					'in_page_enabled'        => 'yes',
+					'widget_product_enabled' => 'yes',
+					'merchant_id'            => 'merchant_123'
 				]
 			],
 			'merchant keys - two keys defined'      => [
@@ -333,69 +195,25 @@ class MigrationServiceTest extends TestCase {
 					'live_merchant_id' => 'merchant_123',
 				],
 				[
-					'debug'                      => 'no',
-					'enabled'                    => 'no',
-					'environment'                => 'test',
-					'widget_cart_enabled'         => 'yes',
-					'in_page_enabled'             => 'yes',
-					'widget_product_enabled'      => 'yes',
-					'merchant_id'                 => 'merchant_123',
-					'general_6_0_0_min_amount'   => 0,
-					'general_6_0_0_max_amount'   => 0,
-					'general_10_0_0_min_amount'  => 0,
-					'general_10_0_0_max_amount'  => 0,
-					'general_12_0_0_min_amount'  => 0,
-					'general_12_0_0_max_amount'  => 0,
-					'general_24_0_0_min_amount'  => 0,
-					'general_24_0_0_max_amount'  => 0,
-					'general_1_0_0_min_amount'   => 0,
-					'general_1_0_0_max_amount'   => 0,
-					'general_1_15_0_min_amount'  => 0,
-					'general_1_15_0_max_amount'  => 0,
-					'general_1_30_0_min_amount'  => 0,
-					'general_1_30_0_max_amount'  => 0,
-					'general_1_45_0_min_amount'  => 0,
-					'general_1_45_0_max_amount'  => 0,
-					'general_2_0_0_min_amount'   => 0,
-					'general_2_0_0_max_amount'   => 0,
-					'general_3_0_0_min_amount'   => 0,
-					'general_3_0_0_max_amount'   => 0,
-					'general_4_0_0_min_amount'   => 0,
-					'general_4_0_0_max_amount'   => 0,
+					'debug'                  => 'no',
+					'enabled'                => 'no',
+					'environment'            => 'test',
+					'widget_cart_enabled'    => 'yes',
+					'in_page_enabled'        => 'yes',
+					'widget_product_enabled' => 'yes',
+					'merchant_id'            => 'merchant_123'
 				]
 			],
 			'merchant keys - no keys defined'       => [
 				[
 				],
 				[
-					'debug'                      => 'no',
-					'enabled'                    => 'no',
-					'environment'                => 'test',
-					'widget_cart_enabled'         => 'yes',
-					'in_page_enabled'             => 'yes',
-					'widget_product_enabled'      => 'yes',
-					'general_6_0_0_min_amount'   => 0,
-					'general_6_0_0_max_amount'   => 0,
-					'general_10_0_0_min_amount'  => 0,
-					'general_10_0_0_max_amount'  => 0,
-					'general_12_0_0_min_amount'  => 0,
-					'general_12_0_0_max_amount'  => 0,
-					'general_24_0_0_min_amount'  => 0,
-					'general_24_0_0_max_amount'  => 0,
-					'general_1_0_0_min_amount'   => 0,
-					'general_1_0_0_max_amount'   => 0,
-					'general_1_15_0_min_amount'  => 0,
-					'general_1_15_0_max_amount'  => 0,
-					'general_1_30_0_min_amount'  => 0,
-					'general_1_30_0_max_amount'  => 0,
-					'general_1_45_0_min_amount'  => 0,
-					'general_1_45_0_max_amount'  => 0,
-					'general_2_0_0_min_amount'   => 0,
-					'general_2_0_0_max_amount'   => 0,
-					'general_3_0_0_min_amount'   => 0,
-					'general_3_0_0_max_amount'   => 0,
-					'general_4_0_0_min_amount'   => 0,
-					'general_4_0_0_max_amount'   => 0,
+					'debug'                  => 'no',
+					'enabled'                => 'no',
+					'environment'            => 'test',
+					'widget_cart_enabled'    => 'yes',
+					'in_page_enabled'        => 'yes',
+					'widget_product_enabled' => 'yes',
 				]
 			],
 			'descriptions'                          => [
@@ -429,31 +247,9 @@ class MigrationServiceTest extends TestCase {
 					'debug'                      => 'no',
 					'enabled'                    => 'no',
 					'environment'                => 'test',
-					'widget_cart_enabled'         => 'yes',
-					'in_page_enabled'             => 'no',
-					'widget_product_enabled'      => 'yes',
-					'general_6_0_0_min_amount'   => 0,
-					'general_6_0_0_max_amount'   => 0,
-					'general_10_0_0_min_amount'  => 0,
-					'general_10_0_0_max_amount'  => 0,
-					'general_12_0_0_min_amount'  => 0,
-					'general_12_0_0_max_amount'  => 0,
-					'general_24_0_0_min_amount'  => 0,
-					'general_24_0_0_max_amount'  => 0,
-					'general_1_0_0_min_amount'   => 0,
-					'general_1_0_0_max_amount'   => 0,
-					'general_1_15_0_min_amount'  => 0,
-					'general_1_15_0_max_amount'  => 0,
-					'general_1_30_0_min_amount'  => 0,
-					'general_1_30_0_max_amount'  => 0,
-					'general_1_45_0_min_amount'  => 0,
-					'general_1_45_0_max_amount'  => 0,
-					'general_2_0_0_min_amount'   => 0,
-					'general_2_0_0_max_amount'   => 0,
-					'general_3_0_0_min_amount'   => 0,
-					'general_3_0_0_max_amount'   => 0,
-					'general_4_0_0_min_amount'   => 0,
-					'general_4_0_0_max_amount'   => 0,
+					'widget_cart_enabled'        => 'yes',
+					'in_page_enabled'            => 'no',
+					'widget_product_enabled'     => 'yes',
 				]
 			],
 			'titles'                                => [
@@ -480,38 +276,16 @@ class MigrationServiceTest extends TestCase {
 					'title_alma_pnx_plus_4'                => 'A fourth title',
 				],
 				[
-					'pnx_title_field'            => 'A title for in page blocks',
-					'paylater_title_field'       => 'A second title for in page blocks',
-					'paynow_title_field'         => 'A third title for in page blocks',
-					'credit_title_field'         => 'A fourth title for in page blocks',
-					'debug'                      => 'no',
-					'enabled'                    => 'no',
-					'environment'                => 'test',
-					'widget_cart_enabled'         => 'yes',
-					'in_page_enabled'             => 'yes',
-					'widget_product_enabled'      => 'yes',
-					'general_6_0_0_min_amount'   => 0,
-					'general_6_0_0_max_amount'   => 0,
-					'general_10_0_0_min_amount'  => 0,
-					'general_10_0_0_max_amount'  => 0,
-					'general_12_0_0_min_amount'  => 0,
-					'general_12_0_0_max_amount'  => 0,
-					'general_24_0_0_min_amount'  => 0,
-					'general_24_0_0_max_amount'  => 0,
-					'general_1_0_0_min_amount'   => 0,
-					'general_1_0_0_max_amount'   => 0,
-					'general_1_15_0_min_amount'  => 0,
-					'general_1_15_0_max_amount'  => 0,
-					'general_1_30_0_min_amount'  => 0,
-					'general_1_30_0_max_amount'  => 0,
-					'general_1_45_0_min_amount'  => 0,
-					'general_1_45_0_max_amount'  => 0,
-					'general_2_0_0_min_amount'   => 0,
-					'general_2_0_0_max_amount'   => 0,
-					'general_3_0_0_min_amount'   => 0,
-					'general_3_0_0_max_amount'   => 0,
-					'general_4_0_0_min_amount'   => 0,
-					'general_4_0_0_max_amount'   => 0,
+					'pnx_title_field'        => 'A title for in page blocks',
+					'paylater_title_field'   => 'A second title for in page blocks',
+					'paynow_title_field'     => 'A third title for in page blocks',
+					'credit_title_field'     => 'A fourth title for in page blocks',
+					'debug'                  => 'no',
+					'enabled'                => 'no',
+					'environment'            => 'test',
+					'widget_cart_enabled'    => 'yes',
+					'in_page_enabled'        => 'yes',
+					'widget_product_enabled' => 'yes',
 				]
 			],
 		];
@@ -525,6 +299,63 @@ class MigrationServiceTest extends TestCase {
 		$migrationService = new MigrationService();
 		$migratedData     = $migrationService->migrateFromV5ToV6( $originData );
 
-		$this->assertEquals( $migratedData, $expectedData );
+		// Check that all expected keys are present with the correct values
+		foreach ( $expectedData as $key => $value ) {
+			$this->assertArrayHasKey( $key, $migratedData, "Missing key: $key" );
+			$this->assertEquals( $value, $migratedData[ $key ], "Wrong value for key: $key" );
+		}
+
+		// Check that no unexpected non-amount keys are present
+		foreach ( $migratedData as $key => $value ) {
+			if ( preg_match( '/_min_amount$|_max_amount$/', $key ) ) {
+				continue; // Amount keys are tested separately in testMigrateAmountLimitsDefaultToZero
+			}
+			$this->assertArrayHasKey( $key, $expectedData, "Unexpected key in migrated data: $key" );
+		}
+	}
+
+	/**
+	 * Test that amount limits default to 0 instead of null when not present in v5 settings.
+	 * This prevents incomplete fee plan groups that would crash FeePlanConfiguration::__construct().
+	 */
+	public function testMigrateAmountLimitsDefaultToZero(): void {
+		$migrationService = new MigrationService();
+
+		// v5 settings with Pay Now enabled but NO min/max amounts customized
+		$v5Settings   = [
+			'enabled_general_1_0_0' => 'yes',
+		];
+		$migratedData = $migrationService->migrateFromV5ToV6( $v5Settings );
+
+		// All plans should have min/max amount entries with 0 as default
+		$plans = [ '6_0_0', '10_0_0', '12_0_0', '24_0_0', '1_0_0', '1_15_0', '1_30_0', '1_45_0', '2_0_0', '3_0_0', '4_0_0' ];
+		foreach ( $plans as $plan ) {
+			$this->assertArrayHasKey( "general_{$plan}_min_amount", $migratedData );
+			$this->assertArrayHasKey( "general_{$plan}_max_amount", $migratedData );
+			$this->assertSame( 0, $migratedData["general_{$plan}_min_amount"],
+				"Plan {$plan} min_amount should default to 0" );
+			$this->assertSame( 0, $migratedData["general_{$plan}_max_amount"],
+				"Plan {$plan} max_amount should default to 0" );
+		}
+	}
+
+	/**
+	 * Test that existing v5 amount limits are properly migrated (not overwritten by default).
+	 */
+	public function testMigrateAmountLimitsPreservesExistingValues(): void {
+		$migrationService = new MigrationService();
+
+		$v5Settings   = [
+			'min_amount_general_1_0_0' => 5000,
+			'max_amount_general_1_0_0' => 200000,
+		];
+		$migratedData = $migrationService->migrateFromV5ToV6( $v5Settings );
+
+		$this->assertSame( 5000, $migratedData['general_1_0_0_min_amount'] );
+		$this->assertSame( 200000, $migratedData['general_1_0_0_max_amount'] );
+
+		// Other plans should still get 0
+		$this->assertSame( 0, $migratedData['general_3_0_0_min_amount'] );
+		$this->assertSame( 0, $migratedData['general_3_0_0_max_amount'] );
 	}
 }
