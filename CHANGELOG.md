@@ -1,5 +1,22 @@
 # Changelog
 
+## v6.0.5 - 2026-03-17
+
+### Changes
+
+### 🐛 Bug Fixes
+
+- feat: Add .wordpress.org folder to fix the sync SVN (#543)
+- Fix: fee plan migration error (#547)
+- Fix: ordering gateways on checkout page (#546)
+- Fix: rename css class (#548)
+- fix: force type float for price_to_cents call (#545)
+- Fix: remove unused css class (#544)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @joyet-simon and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+
 ## v6.0.4 - 2026-03-11
 
 ### Changes
