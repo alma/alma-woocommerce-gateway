@@ -24,7 +24,7 @@ export const InstallmentsContent: React.FC<InstallmentsContentProps> = ({
 
     return (
             <>
-                <div className={"separator"}/>
+                <div className={"alma-separator"}/>
                 <div className={"installments"}>
                     {feePlan.paymentPlan.map((installment: PaymentPlan, index: number) => (
                             <Installment
