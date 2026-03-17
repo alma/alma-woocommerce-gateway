@@ -28,7 +28,7 @@
 	color: var(--off-black);
 }
 
-.separator {
+.alma-separator {
 	position: absolute;
 	width: 2px;
 
@@ -118,7 +118,7 @@
 		margin-bottom: 0;
 	}
 
-	.separator {
+	.alma-separator {
 		/* half pixel is used because the separator should be centered with the bullet
 		*  And the bullet's width is 4px, and the separator width is 2px. */
 		left: 35.5px;
