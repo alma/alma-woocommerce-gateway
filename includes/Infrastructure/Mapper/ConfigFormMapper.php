@@ -112,6 +112,14 @@ class ConfigFormMapper {
 		$fee_plan_configuration_array = array();
 		// Otherwise, we check the form
 		foreach ( $this->extract_fee_plan_from_form() as $key => $value ) {
+			// Skip incomplete fee plan groups (missing min_amount, max_amount or enabled)
+			if (
+				! isset( $value[ GatewayConfigurationForm::MIN_AMOUNT_SUFFIX ] )
+				|| ! isset( $value[ GatewayConfigurationForm::MAX_AMOUNT_SUFFIX ] )
+				|| ! isset( $value[ GatewayConfigurationForm::ENABLED_SUFFIX ] )
+			) {
+				continue;
+			}
 			$feePlanConfiguration           = new FeePlanConfiguration(
 				$key,
 				$value[ GatewayConfigurationForm::MIN_AMOUNT_SUFFIX ],

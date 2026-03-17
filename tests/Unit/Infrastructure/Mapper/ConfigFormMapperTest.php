@@ -131,4 +131,54 @@ class ConfigFormMapperTest extends TestCase {
 		$this->assertEquals( $this->finalSettings, $validatedSettings );
 	}
 
+	/**
+	 * Test that incomplete fee plan groups (missing min_amount or max_amount) are skipped.
+	 * This prevents a TypeError when the mapper encounters legacy settings with only the enabled flag.
+	 */
+	public function testFromCmsFormSkipsIncompleteFeePlanGroups(): void {
+
+		$this->configServiceMock->expects( $this->once() )->method( 'isConfigured' )->willReturn( true );
+
+		// Settings with an incomplete fee plan group: enabled exists but min/max amounts are missing
+		$incompleteSettings = array_merge(
+			$this->keySettings,
+			$this->additionalSettings,
+			[
+				'general_1_0_0_enabled' => true,
+				// No general_1_0_0_min_amount or general_1_0_0_max_amount
+			]
+		);
+
+		$gatewayConfig = $this->configFormMapper->from_cms_form( $incompleteSettings );
+
+		// The incomplete fee plan should be skipped, so the list should be empty
+		$this->assertCount( 0, $gatewayConfig->getFeePlanConfigurationList() );
+	}
+
+	/**
+	 * Test that complete fee plan groups are properly processed alongside incomplete ones.
+	 */
+	public function testFromCmsFormKeepsCompleteFeePlanGroupsAndSkipsIncomplete(): void {
+
+		$this->configServiceMock->expects( $this->once() )->method( 'isConfigured' )->willReturn( true );
+
+		$mixedSettings = array_merge(
+			$this->keySettings,
+			$this->additionalSettings,
+			[
+				// Complete group
+				'general_2_0_0_min_amount' => 100,
+				'general_2_0_0_max_amount' => 1000,
+				'general_2_0_0_enabled'    => true,
+				// Incomplete group: only enabled
+				'general_1_0_0_enabled'    => true,
+			]
+		);
+
+		$gatewayConfig = $this->configFormMapper->from_cms_form( $mixedSettings );
+
+		// Only the complete fee plan should be in the list
+		$this->assertCount( 1, $gatewayConfig->getFeePlanConfigurationList() );
+	}
+
 }

@@ -255,8 +255,8 @@ class MigrationService {
 		$result = [];
 
 		foreach ( $plans as $plan ) {
-			$result["general_{$plan}_min_amount"] = $originData["min_amount_general_{$plan}"] ?? null;
-			$result["general_{$plan}_max_amount"] = $originData["max_amount_general_{$plan}"] ?? null;
+			$result["general_{$plan}_min_amount"] = $originData["min_amount_general_{$plan}"] ?? 0;
+			$result["general_{$plan}_max_amount"] = $originData["max_amount_general_{$plan}"] ?? 0;
 		}
 
 		return $result;
