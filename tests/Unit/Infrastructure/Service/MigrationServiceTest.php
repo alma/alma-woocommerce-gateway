@@ -299,6 +299,63 @@ class MigrationServiceTest extends TestCase {
 		$migrationService = new MigrationService();
 		$migratedData     = $migrationService->migrateFromV5ToV6( $originData );
 
-		$this->assertEquals( $migratedData, $expectedData );
+		// Check that all expected keys are present with the correct values
+		foreach ( $expectedData as $key => $value ) {
+			$this->assertArrayHasKey( $key, $migratedData, "Missing key: $key" );
+			$this->assertEquals( $value, $migratedData[ $key ], "Wrong value for key: $key" );
+		}
+
+		// Check that no unexpected non-amount keys are present
+		foreach ( $migratedData as $key => $value ) {
+			if ( preg_match( '/_min_amount$|_max_amount$/', $key ) ) {
+				continue; // Amount keys are tested separately in testMigrateAmountLimitsDefaultToZero
+			}
+			$this->assertArrayHasKey( $key, $expectedData, "Unexpected key in migrated data: $key" );
+		}
+	}
+
+	/**
+	 * Test that amount limits default to 0 instead of null when not present in v5 settings.
+	 * This prevents incomplete fee plan groups that would crash FeePlanConfiguration::__construct().
+	 */
+	public function testMigrateAmountLimitsDefaultToZero(): void {
+		$migrationService = new MigrationService();
+
+		// v5 settings with Pay Now enabled but NO min/max amounts customized
+		$v5Settings   = [
+			'enabled_general_1_0_0' => 'yes',
+		];
+		$migratedData = $migrationService->migrateFromV5ToV6( $v5Settings );
+
+		// All plans should have min/max amount entries with 0 as default
+		$plans = [ '6_0_0', '10_0_0', '12_0_0', '24_0_0', '1_0_0', '1_15_0', '1_30_0', '1_45_0', '2_0_0', '3_0_0', '4_0_0' ];
+		foreach ( $plans as $plan ) {
+			$this->assertArrayHasKey( "general_{$plan}_min_amount", $migratedData );
+			$this->assertArrayHasKey( "general_{$plan}_max_amount", $migratedData );
+			$this->assertSame( 0, $migratedData["general_{$plan}_min_amount"],
+				"Plan {$plan} min_amount should default to 0" );
+			$this->assertSame( 0, $migratedData["general_{$plan}_max_amount"],
+				"Plan {$plan} max_amount should default to 0" );
+		}
+	}
+
+	/**
+	 * Test that existing v5 amount limits are properly migrated (not overwritten by default).
+	 */
+	public function testMigrateAmountLimitsPreservesExistingValues(): void {
+		$migrationService = new MigrationService();
+
+		$v5Settings   = [
+			'min_amount_general_1_0_0' => 5000,
+			'max_amount_general_1_0_0' => 200000,
+		];
+		$migratedData = $migrationService->migrateFromV5ToV6( $v5Settings );
+
+		$this->assertSame( 5000, $migratedData['general_1_0_0_min_amount'] );
+		$this->assertSame( 200000, $migratedData['general_1_0_0_max_amount'] );
+
+		// Other plans should still get 0
+		$this->assertSame( 0, $migratedData['general_3_0_0_min_amount'] );
+		$this->assertSame( 0, $migratedData['general_3_0_0_max_amount'] );
 	}
 }
