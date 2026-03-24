@@ -91,6 +91,10 @@ class BusinessEventsService {
 				$isBnpl    = ! $isPayNow;
 				$paymentId = $almaBusinessData->alma_payment_id;
 			}
+			$cart_id = (string) $almaBusinessData->cart_id ?? '';
+			if ( empty( $cart_id ) ) {
+				return;
+			}
 
 			try {
 				$this->getMerchantProvider();
@@ -99,7 +103,7 @@ class BusinessEventsService {
 					$isBnpl,
 					(bool) $almaBusinessData->is_bnpl_eligible,
 					(string) $order->getId(),
-					$almaBusinessData->cart_id,
+					$cart_id,
 					$paymentId
 				);
 				$this->merchantProvider->sendOrderConfirmedBusinessEvent( $orderConfirmedBusinessEvent );
