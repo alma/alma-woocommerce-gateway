@@ -115,6 +115,7 @@ class AssetsConfig {
 								'environment',
 								'merchant_id',
 								'number_decimals',
+								'language',
 							),
 						),
 					),
