@@ -55,6 +55,7 @@
  * @property {FeePlan} general_6_0_0 - Credit 6-installment plan configuration.
  * @property {FeePlan} general_10_0_0 - Credit 10-installment plan configuration.
  * @property {FeePlan} general_12_0_0 - Credit 12-installment plan configuration.
+ * @property {FeePlan} general_24_0_0 - Credit 24-installment plan configuration.
  * @property {FeePlan} general_1_30_0 - Pay later 30-days plan configuration.
  *
  * @typedef {object} FeePlan
