@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 6.6
 Tested up to: 6.9.1
 Requires PHP: 7.4
-Stable tag: 6.0.5
+Stable tag: 6.0.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,22 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+## v6.0.6 - 2026-03-25
+
+### Changes
+
+### 🐛 Bug Fixes
+
+- fix: build.sh for svn release (#553)
+- fix: Add language support to In-Page for classic checkout (#556)
+- fix: Return early if cart_id is empty in onOrderConfirmed method (#554)
+- Fix: woocommerce merchant cms p24x activation impossible (#552)
+- fix: gateway ordering for Alma gateways to ensure unique incremental … (#551)
+
+#### Contributors
+
+@Francois-Gomis and @joyet-simon
 
 ## v6.0.5 - 2026-03-17
 

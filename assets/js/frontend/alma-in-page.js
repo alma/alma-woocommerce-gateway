@@ -88,6 +88,7 @@
                     deferredMonths: deferredMonths,
                     selector: planSelector,
                     environment: environment,
+                    locale: alma_in_page_settings.language,
                 });
             }
         }

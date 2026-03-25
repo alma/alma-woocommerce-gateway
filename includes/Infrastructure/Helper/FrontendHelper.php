@@ -130,13 +130,29 @@ class FrontendHelper {
 			$ordering = [];
 		}
 
+		// Remove any existing Alma frontend gateway entries to avoid duplicates.
+		foreach ( self::$alma_gateway_ids as $id ) {
+			unset( $ordering[ $id ] );
+		}
+
 		$base_order = isset( $ordering[ self::$config_gateway_id ] )
 			? absint( $ordering[ self::$config_gateway_id ] )
 			: 0;
 
-		foreach ( self::$alma_gateway_ids as $id ) {
-			$ordering[ $id ] = $base_order;
+		$alma_count = count( self::$alma_gateway_ids );
+
+		// Shift all non-Alma gateways with order >= base_order to make room.
+		foreach ( $ordering as $id => $order ) {
+			if ( $id !== self::$config_gateway_id && absint( $order ) >= $base_order ) {
+				$ordering[ $id ] = absint( $order ) + $alma_count;
+			}
 		}
+
+		// Insert Alma frontend gateways at the base position.
+		$ordering += array_combine(
+			self::$alma_gateway_ids,
+			range( $base_order, $base_order + $alma_count - 1 )
+		);
 
 		return $ordering;
 	}
@@ -169,9 +185,7 @@ class FrontendHelper {
 		foreach ( $gateways as $id => $gateway ) {
 			if ( isset( $alma_gateways[ $id ] ) ) {
 				if ( ! $alma_inserted ) {
-					foreach ( $alma_gateways as $alma_id => $alma_gw ) {
-						$result[ $alma_id ] = $alma_gw;
-					}
+					$result       += $alma_gateways;
 					$alma_inserted = true;
 				}
 				continue;
