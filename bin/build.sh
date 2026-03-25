@@ -3,6 +3,49 @@
 QUIET=1
 SYNC_SVN=0
 DEBUG=0
+
+# {{{ function usage
+#
+usage() {
+    echo
+    echo "This script builds an Alma woocommerce plugin ZIP archive and (optionally) sync files with subversion wordpress marketplace working copy."
+    echo
+    echo "USAGE: $0 [OPTIONS]"
+    echo
+    echo "WHERE available OPTIONS are:"
+    echo "    --help | -h)        Prints this message and exit without error."
+    echo "    --sync-svn | -s)    Activates sync Action between freshly built release and wordpress subversion working copy. (very simple for the moment)"
+    echo "    --verbose | -v)     Prints all outputs (this script is pretty quiet by default)"
+    echo "    --debug | -d)       Enable debug mode with detailed error information."
+    echo
+}
+export -f usage
+# }}}
+
+
+# {{{ function quit
+#
+quit() {
+    echo -e "$@"
+    exit 1
+}
+export -f quit
+# }}}
+
+
+# {{{ shopt args
+while [[ -n "${1:-}" ]] ; do
+    case "$1" in
+        --sync-svn|-s) SYNC_SVN=1 ;;
+        --verbose|-v)  QUIET=0;;
+        --debug|-d)    DEBUG=1;;
+        --help|-h)     usage ; exit 0;;
+        *) echo "'$1': unmanaged parameter" ; exit 1 ;;
+    esac
+    shift
+done
+# }}}
+
 # Define the path to Composer and PHP
 PHP_PATH=$(which php 2>/dev/null)
 COMPOSER_PATH=$(which composer 2>/dev/null)
@@ -43,47 +86,6 @@ fi
 PATH_TO_COMPOSER="$PHP_PATH $COMPOSER_PATH"
 echo "PATH_TO_COMPOSER is: $PATH_TO_COMPOSER"
 
-# {{{ function usage
-#
-usage() {
-    echo
-    echo "This script builds an Alma woocommerce plugin ZIP archive and (optionally) sync files with subversion wordpress marketplace working copy."
-    echo
-    echo "USAGE: $0 [OPTIONS]"
-    echo
-    echo "WHERE available OPTIONS are:"
-    echo "    --help | -h)        Prints this message and exit without error."
-    echo "    --sync-svn | -s)    Activates sync Action between freshly built release and wordpress subversion working copy. (very simple for the moment)"
-    echo "    --verbose | -v)     Prints all outputs (this script is pretty quiet by default)"
-    echo "    --debug | -d)       Enable debug mode with detailed error information."
-    echo
-}
-export -f usage
-# }}}
-
-
-# {{{ function quit
-#
-quit() {
-    echo -e "$@"
-    exit 1
-}
-export -f quit
-# }}}
-
-
-# {{{ shopt args
-while [[ ! -z "$1" ]] ; do
-    case "$1" in
-        --sync-svn|-s) SYNC_SVN=1 ;;
-        --verbose|-v)  QUIET=0;;
-        --help|-h)     usage ; exit 0;;
-        *) echo "'$1': unmanaged parameter" ; exit 1 ;;
-    esac
-    shift
-done
-# }}}
-
 set -Eeuo pipefail
 
 # {{{ CONSTANTS (working folders & files to sync)
@@ -105,7 +107,7 @@ LICENSE  \
 ./alma-gateway-for-woocommerce.php \
 ./uninstall.php \
 "
-RSYNC_EXCLUDE="--exclude=*.orig --exclude=.DS_Store"
+RSYNC_EXCLUDE="--exclude=\*.orig --exclude=.DS_Store"
 # }}}
 
 # {{{ function is_that_ok
@@ -161,7 +163,7 @@ execute() {
 export -f execute
 # }}}
 
-trap 'failure ${LINENO}' ERR EXIT
+trap 'failure ${LINENO}' ERR
 
 # {{{ function preparing_folders
 #
@@ -188,7 +190,7 @@ export -f building_release
 #
 syncing_subversion() {
     if [[ ! -d "$SUBVERSION_DIR" ]] ; then
-        trap - ERR EXIT
+        trap - ERR
         is_that_ok 1
         echo "'$SUBVERSION_DIR': Subversion's folder not found!"
         echo "Please clone subversion repository with valid wordpress credentials (\`svn checkout https://plugins.svn.wordpress.org/alma-gateway-for-woocommerce $SUBVERSION_DIR\`)"
@@ -233,4 +235,3 @@ if [[ $SYNC_SVN -eq 1 ]] ; then
     echo
 fi
 
-trap - EXIT
