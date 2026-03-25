@@ -1,5 +1,21 @@
 # Changelog
 
+## v6.0.6 - 2026-03-25
+
+### Changes
+
+### 🐛 Bug Fixes
+
+- fix: build.sh for svn release (#553)
+- fix: Add language support to In-Page for classic checkout (#556)
+- fix: Return early if cart_id is empty in onOrderConfirmed method (#554)
+- Fix: woocommerce merchant cms p24x activation impossible (#552)
+- fix: gateway ordering for Alma gateways to ensure unique incremental … (#551)
+
+#### Contributors
+
+@Francois-Gomis and @joyet-simon
+
 ## v6.0.5 - 2026-03-17
 
 ### Changes
