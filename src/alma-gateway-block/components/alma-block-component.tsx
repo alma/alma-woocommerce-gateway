@@ -90,15 +90,15 @@ export const AlmaBlock: React.FC<AlmaBlockProps> = (
     };
 
     const label = (
-            <div className="toggleButtonFieldLabel">{gatewaySettings.description}</div>
+            <div className="alma-toggleButtonFieldLabel">{gatewaySettings.description}</div>
     );
     return (
             <IntlProvider locale="fr">
-                {gatewaySettings.is_pay_now && <div className={"payNowLabel"}>{label}</div>}
-                <div className={"buttonsContainer"}>
+                {gatewaySettings.is_pay_now && <div className={"alma-payNowLabel"}>{label}</div>}
+                <div className={"alma-buttonsContainer"}>
                     <div className={classNames({payNow: gatewaySettings.is_pay_now})}>
                         <ToggleButtonsField
-                                className={"toggleButtonField"}
+                                className={"alma-toggleButtonField"}
                                 options={values}
                                 optionLabel={(key) => labels[key]}
                                 optionKey={(key) => key}
