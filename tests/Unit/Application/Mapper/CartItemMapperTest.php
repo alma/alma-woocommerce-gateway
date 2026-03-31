@@ -12,7 +12,7 @@ use Brain\Monkey\Functions;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-class CartIemMapperTest extends TestCase {
+class CartItemMapperTest extends TestCase {
 
 	private $cartIemMapper;
 
