@@ -25,13 +25,10 @@ class CartItemMapper {
 		return ( new CartItemDto(
 			$orderLine->getQuantity(),
 			DisplayHelper::price_to_cent( $orderLine->getTotal() ),
-			ContextHelper::getAttachmentUrl( $product->getImageId() )
+			$orderLine->getName()
 		) )
 			->setSku( $product->getSku() )
-			->setTitle( $orderLine->getName() )
-			->setQuantity( $orderLine->getQuantity() )
-			->setUnitPrice( $product->getPrice() )
-			->setLinePrice( $orderLine->getTotal() )
+			->setUnitPrice( DisplayHelper::price_to_cent($product->getPrice()) )
 			->setCategories( $categories )
 			->setUrl( $product->getPermalink() )
 			->setPictureUrl( ContextHelper::getAttachmentUrl( $product->getImageId() ) )
