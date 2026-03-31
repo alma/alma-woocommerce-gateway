@@ -24,8 +24,7 @@ class CartItemMapper {
 
 		return ( new CartItemDto(
 			$orderLine->getQuantity(),
-			DisplayHelper::price_to_cent( $orderLine->getTotal() ),
-			ContextHelper::getAttachmentUrl( $product->getImageId() )
+			DisplayHelper::price_to_cent( $orderLine->getTotal() )
 		) )
 			->setSku( $product->getSku() )
 			->setTitle( $orderLine->getName() )
