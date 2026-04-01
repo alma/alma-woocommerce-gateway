@@ -3,9 +3,24 @@
 namespace Alma\Gateway\Tests\Unit\Infrastructure\Service;
 
 use Alma\Gateway\Infrastructure\Service\MigrationService;
+use Brain\Monkey;
+use Brain\Monkey\Functions;
+use Mockery;
 use PHPUnit\Framework\TestCase;
 
 class MigrationServiceTest extends TestCase {
+
+	protected function setUp(): void {
+		parent::setUp();
+		Monkey\setUp();
+	}
+
+	protected function tearDown(): void {
+		Monkey\tearDown();
+		Mockery::close();
+		parent::tearDown();
+	}
+
 
 	public static function migrationDataProvider(): array {
 		return [
@@ -337,6 +352,34 @@ class MigrationServiceTest extends TestCase {
 			$this->assertSame( 0, $migratedData["general_{$plan}_max_amount"],
 				"Plan {$plan} max_amount should default to 0" );
 		}
+	}
+
+	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function testRunMigrationsFrom600CleansUpSocAndBumpsVersion(): void {
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'alma_migration_lock', null )
+			->andReturn( false );
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'alma_version', null )
+			->andReturn( '6.0.0' );
+
+		Functions\expect( 'delete_option' )
+			->once()
+			->with( 'alma_soc_ongoing' );
+
+		Functions\expect( 'update_option' )
+			->once()
+			->with( 'alma_version', '6.0.7' );
+
+		$migrationService = new MigrationService();
+		$result           = $migrationService->runMigrationsIfNeeded();
+
+		$this->assertTrue( $result );
 	}
 
 	/**
