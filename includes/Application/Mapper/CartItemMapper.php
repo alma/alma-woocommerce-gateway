@@ -7,7 +7,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Alma\Client\Application\DTO\CartItemDto;
-use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
 use Alma\Gateway\Plugin;
