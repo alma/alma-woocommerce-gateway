@@ -16,6 +16,9 @@ class MigrationService {
 	const MIGRATION_LOCK = 'alma_migration_lock';
 
 	const VERSION_6_0_0 = '6.0.0';
+	const VERSION_6_0_7 = '6.0.7';
+
+	const SOC_OPTION_ONGOING = 'alma_soc_ongoing';
 
 	/**
 	 * Run migrations if needed.
@@ -31,10 +34,12 @@ class MigrationService {
 		// Check if a version number exists in the database
 		$version = get_option( self::VERSION_KEY, null );
 		if ( ! $version ) {
-			add_option( self::VERSION_KEY, self::VERSION_6_0_0 );
+			add_option( self::VERSION_KEY, self::VERSION_6_0_7 );
 
 			return false; // Fresh install, no migrations needed
 		}
+
+		$migrated = false;
 
 		// Compare to the current plugin version. If different, run necessary migrations
 		if ( version_compare( $version, self::VERSION_6_0_0, '<' ) ) {
@@ -57,15 +62,24 @@ class MigrationService {
 
 				// Update the version in the database
 				update_option( self::VERSION_KEY, self::VERSION_6_0_0 );
+				$version  = self::VERSION_6_0_0;
+				$migrated = true;
 			} finally {
 				// Delete the migration lock
 				delete_option( self::MIGRATION_LOCK );
 			}
-
-			return true;
 		}
 
-		return false;
+		if ( version_compare( $version, self::VERSION_6_0_7, '<' ) ) {
+			// Clean up the alma_soc_ongoing lock flag from wp_options (used by ShareOfCheckoutService in v5.3.0 to v5.16.2).
+			// It may remain stuck if send_soc_data() crashed before the delete_option call.
+			delete_option( self::SOC_OPTION_ONGOING );
+
+			update_option( self::VERSION_KEY, self::VERSION_6_0_7 );
+			$migrated = true;
+		}
+
+		return $migrated;
 	}
 
 	/**
