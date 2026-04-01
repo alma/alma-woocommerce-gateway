@@ -34,7 +34,7 @@ class MigrationService {
 		// Check if a version number exists in the database
 		$version = get_option( self::VERSION_KEY, null );
 		if ( ! $version ) {
-			add_option( self::VERSION_KEY, self::VERSION_6_0_0 );
+			add_option( self::VERSION_KEY, self::VERSION_6_0_7 );
 
 			return false; // Fresh install, no migrations needed
 		}
