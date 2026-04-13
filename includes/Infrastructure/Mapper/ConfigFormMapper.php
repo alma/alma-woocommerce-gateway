@@ -13,6 +13,7 @@ use Alma\Gateway\Application\Entity\Form\KeyConfiguration;
 use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Application\Service\AuthenticationService;
 use Alma\Gateway\Application\Service\ConfigService;
+use Alma\Gateway\Infrastructure\Service\LoggerService;
 
 class ConfigFormMapper {
 
@@ -22,10 +23,13 @@ class ConfigFormMapper {
 	private array $settings;
 	/** @var AuthenticationService */
 	private AuthenticationService $authentication_service;
+	/** @var LoggerService */
+	private LoggerService $logger_service;
 
-	public function __construct( ConfigService $config_service, AuthenticationService $authentication_service ) {
+	public function __construct( ConfigService $config_service, AuthenticationService $authentication_service, LoggerService $logger_service ) {
 		$this->config_service         = $config_service;
 		$this->authentication_service = $authentication_service;
+		$this->logger_service         = $logger_service;
 	}
 
 	/**
@@ -124,7 +128,8 @@ class ConfigFormMapper {
 				$key,
 				$value[ GatewayConfigurationForm::MIN_AMOUNT_SUFFIX ],
 				$value[ GatewayConfigurationForm::MAX_AMOUNT_SUFFIX ],
-				$value[ GatewayConfigurationForm::ENABLED_SUFFIX ]
+				$value[ GatewayConfigurationForm::ENABLED_SUFFIX ],
+				$this->logger_service
 			);
 			$fee_plan_configuration_array[] = $feePlanConfiguration;
 		}
