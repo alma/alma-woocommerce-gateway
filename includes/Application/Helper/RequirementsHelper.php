@@ -10,7 +10,7 @@ use Alma\Gateway\Application\Exception\Helper\RequirementsHelperException;
 
 class RequirementsHelper {
 
-	const MIN_WOOCOMMERCE_VERSION = '9.5.0';
+	const MIN_WOOCOMMERCE_VERSION = '9.0.0';
 	const MIN_WORDPRESS_VERSION = '6.6';
 
 	/**
