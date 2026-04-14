@@ -30,6 +30,7 @@ class PaymentProvider implements PaymentProviderInterface, ProviderInterface {
 	 * PaymentService constructor.
 	 *
 	 * @param PaymentEndpoint $paymentEndpoint The payment endpoint to use for API calls.
+	 * @param LoggerService   $loggerService
 	 */
 	public function __construct( PaymentEndpoint $paymentEndpoint, LoggerService $loggerService ) {
 		$this->paymentEndpoint = $paymentEndpoint;

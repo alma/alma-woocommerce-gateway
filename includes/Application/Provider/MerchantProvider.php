@@ -27,6 +27,7 @@ class MerchantProvider implements MerchantProviderInterface, ProviderInterface {
 	 * MerchantProvider constructor.
 	 *
 	 * @param MerchantEndpoint $merchantEndpoint The merchant endpoint to use for API calls.
+	 * @param LoggerService    $loggerService
 	 */
 	public function __construct( MerchantEndpoint $merchantEndpoint, LoggerService $loggerService ) {
 		$this->merchantEndpoint = $merchantEndpoint;
