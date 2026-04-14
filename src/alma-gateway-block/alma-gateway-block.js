@@ -79,12 +79,19 @@
 // phpcs:ignoreFile
 import {storeKey} from "../stores/alma-store";
 import {createRoot, useEffect, useRef, useState} from '@wordpress/element';
-import {useSelect} from '@wordpress/data';
+import {dispatch, select, useSelect} from '@wordpress/data';
 import {Label} from "./components/Label";
 import './alma-gateway-block.css';
 import {DisplayAlmaInPageBlock} from "./components/DisplayAlmaInPageBlock";
 import {DisplayAlmaBlock} from "./components/DisplayAlmaBlock";
 import {fetchAlmaSettings} from "./hooks/almaSettings";
+
+// Hydrate the store synchronously from server-rendered eligibility so payment
+// methods register on the first React render (WC 9.7 finalizes payment methods
+// before the async fetch of /alma_checkout_data can complete).
+if (window.AlmaInitSettings?.gateway_settings) {
+    dispatch(storeKey).setAlmaSettings(window.AlmaInitSettings);
+}
 
 (function ($) {
 
@@ -265,6 +272,40 @@ import {fetchAlmaSettings} from "./hooks/almaSettings";
             ReactDOM.render(<CartObserver/>, rootDiv);
         }
     };
+
+    /**
+     * Synchronous initial registration from server-rendered eligibility.
+     * WC 9.7 reads the payment method registry before DOMContentLoaded,
+     * so we must register before React mounts CartObserver.
+     * Wrapped in try/catch to protect the DOMContentLoaded listener below.
+     */
+    try {
+        const initGwSettings = select(storeKey).getAllGatewaysSettings();
+        const initAlmaSettings = select(storeKey).getAlmaSettings();
+        if (Object.keys(initGwSettings).length > 0) {
+            const cartTotals = select(CART_STORE_KEY).getCartTotals() || {};
+            const cartTotal = parseInt(cartTotals.total_price || 0) * Math.pow(10, 2 - (cartTotals.currency_minor_unit || 0));
+
+            for (const gatewayName in initGwSettings) {
+                const gw = initGwSettings[gatewayName];
+                if (gw?.gateway_name) {
+                    const blockContent = getContentBlock(initAlmaSettings, gatewayName, storeKey, cartTotal, undefined, () => {});
+                    // canMakePayment reads from the store dynamically so it reflects
+                    // the async eligibility fetch once it completes.
+                    const dynamicCanMakePayment = () => {
+                        const current = select(storeKey).getGatewaySettings(gatewayName);
+                        if (!current || !('fee_plans_settings' in current)) return true;
+                        return Object.keys(current.fee_plans_settings).length > 0;
+                    };
+                    const block = generateGatewayBlock(gw, blockContent, true);
+                    block.canMakePayment = dynamicCanMakePayment;
+                    window.wc.wcBlocksRegistry.registerPaymentMethod(block);
+                }
+            }
+        }
+    } catch (e) {
+        console.error('Alma: synchronous gateway registration failed', e);
+    }
 
     /**
      * Init Alma Gateway Blocks on DOMContentLoaded

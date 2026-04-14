@@ -157,8 +157,9 @@ class GatewayService {
 		$almaGatewayBlocks = $this->gatewayRepository->findAllAlmaGatewayBlocks();
 		try {
 			/** @var CheckoutService $checkoutService */
-			$checkoutService        = Plugin::get_container()->get( CheckoutService::class );
-			$params                 = $checkoutService->getCheckoutParams( $almaGatewayBlocks );
+			$checkoutService = Plugin::get_container()->get( CheckoutService::class );
+			$params          = $checkoutService->getCheckoutParams( $almaGatewayBlocks );
+
 			$params['checkout_url'] = ContextHelper::getWebhookUrl( 'alma_checkout_data' );
 			$this->assetsService->registerGatewayBlockAssets( $params );
 		} catch ( CheckoutServiceException|AssetsServiceException $e ) {

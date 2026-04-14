@@ -230,7 +230,7 @@ class AssetsConfig {
 							'object_name' => 'AlmaInitSettings',
 							'keys'        => array(
 								'checkout_url',
-								'init_eligibility',
+								'gateway_settings',
 								'cart_total',
 								'nonce_value',
 								'label_button',
