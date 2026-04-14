@@ -82,7 +82,11 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 	 */
 	public function is_active(): bool {
 		try {
-			return ContextHelper::isCheckoutPageUseBlocks() && $this->gateway->is_enabled() && $this->gateway->is_available();
+			// Only check settings-based conditions here (no cart/checkout context).
+			// Cart-dependent checks (excluded products, eligibility) are handled
+			// in CheckoutService::getCheckoutParams() and sent to the JS frontend,
+			// which manages visibility via canMakePayment().
+			return ContextHelper::isCheckoutPageUseBlocks() && $this->gateway->is_enabled();
 		} catch ( GatewayException $e ) {
 			throw new CheckoutBlockException( 'Can not determine if Block is active or not', 0, $e );
 		}

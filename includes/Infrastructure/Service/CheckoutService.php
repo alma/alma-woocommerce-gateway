@@ -6,6 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
+use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
@@ -62,7 +63,26 @@ class CheckoutService {
 
 		/** @var GatewayRepository $gatewayRepository */
 		$gatewayRepository = Plugin::get_container()->get( GatewayRepository::class );
-		wp_send_json( $this->getCheckoutParams( $gatewayRepository->findAllAlmaGatewayBlocks() ) );
+		$params            = $this->getCheckoutParams( $gatewayRepository->findAllAlmaGatewayBlocks() );
+
+		// Check excluded products — only here (AJAX context) where the cart is
+		// fully initialized. Running this in getCheckoutParams() would also execute
+		// during wp_localize_script on every page, which can interfere with the
+		// cart session on some WC versions (9.0 to 9.5)
+		$excluded_categories = $this->configService->getExcludedCategories();
+		if ( ! empty( $excluded_categories ) ) {
+			/** @var ExcludedProductsHelper $excluded_products_helper */
+			$excluded_products_helper = Plugin::get_container()->get( ExcludedProductsHelper::class );
+			if ( ! $excluded_products_helper->canDisplayOnCheckoutPage( ContextHelper::getCart(),
+				$excluded_categories ) ) {
+				// Empty all fee_plans_settings so JS canMakePayment() hides all gateways.
+				foreach ( $params['gateway_settings'] as $gateway_name => &$gw ) {
+					unset( $gw['fee_plans_settings'] );
+				}
+			}
+		}
+
+		wp_send_json( $params );
 	}
 
 	/**
