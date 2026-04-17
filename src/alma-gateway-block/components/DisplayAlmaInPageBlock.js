@@ -13,7 +13,12 @@ export const DisplayAlmaInPageBlock = (props) => {
         inPage,
     } = props;
 
-    const {onPaymentSetup, onCheckoutSuccess, onCheckoutFail} = eventRegistration;
+    // WC Blocks API compatibility:
+    // WC 10+ (Blocks 9+): onPaymentSetup, onCheckoutSuccess, onCheckoutFail
+    // WC 9.x (Blocks 7-8): onPaymentProcessing, onCheckoutAfterProcessingWithSuccess, onCheckoutAfterProcessingWithError
+    const onPaymentSetup = eventRegistration.onPaymentSetup || eventRegistration.onPaymentProcessing;
+    const onCheckoutSuccess = eventRegistration.onCheckoutSuccess || eventRegistration.onCheckoutAfterProcessingWithSuccess;
+    const onCheckoutFail = eventRegistration.onCheckoutFail || eventRegistration.onCheckoutAfterProcessingWithError;
 
     // Get the Checkout Store Key
     const {CHECKOUT_STORE_KEY} = window.wc.wcBlocksData;
@@ -41,6 +46,14 @@ export const DisplayAlmaInPageBlock = (props) => {
         default_plan = Object.keys(availableFeePlans)[0];
     }
     const [selectedFeePlan, setSelectedFeePlan] = useState(default_plan);
+
+    // Sync selectedFeePlan when default_plan becomes available after loading
+    useEffect(() => {
+        if (default_plan && !selectedFeePlan) {
+            setSelectedFeePlan(default_plan);
+        }
+    }, [default_plan]);
+
     const plan = !isLoading
         ? availableFeePlans?.[selectedFeePlan] ?? availableFeePlans?.[default_plan]
         : null;
@@ -57,11 +70,15 @@ export const DisplayAlmaInPageBlock = (props) => {
      */
     const resetCheckoutState = useCallback(() => {
         try {
-            // Reinit "processing" state of checkout
-            dispatch(CHECKOUT_STORE_KEY).__internalSetProcessing(false);
-
-            // Reinit "idle" state of checkout
-            dispatch(CHECKOUT_STORE_KEY).__internalSetIdle();
+            const store = dispatch(CHECKOUT_STORE_KEY);
+            // WC 10+ (Blocks 9+): __internalSetProcessing / __internalSetIdle
+            // WC 9.x (Blocks 7-8): setComplete / setIdle (or no equivalent)
+            if (typeof store.__internalSetProcessing === 'function') {
+                store.__internalSetProcessing(false);
+                store.__internalSetIdle();
+            } else if (typeof store.setIdle === 'function') {
+                store.setIdle();
+            }
         } catch (error) {
             console.warn('Could not reset checkout state:', error);
         }
