@@ -65,22 +65,21 @@ class CheckoutService {
 		$gatewayRepository = Plugin::get_container()->get( GatewayRepository::class );
 		$params            = $this->getCheckoutParams( $gatewayRepository->findAllAlmaGatewayBlocks() );
 
-		// Check excluded products — only here (AJAX context) where the cart is
-		// fully initialized. Running this in getCheckoutParams() would also execute
-		// during wp_localize_script on every page, which can interfere with the
-		// cart session on some WC versions (9.0 to 9.5)
+		// [WC-COMPAT 9.0-9.7] Start — Excluded products check moved here from is_active()
+		// @see docs/WC97-SYNC-REGISTRATION-PATCH.md
+		// Move back to AbstractGatewayBlock::is_active() when MIN_WOOCOMMERCE_VERSION >= 9.8
 		$excluded_categories = $this->configService->getExcludedCategories();
 		if ( ! empty( $excluded_categories ) ) {
 			/** @var ExcludedProductsHelper $excluded_products_helper */
 			$excluded_products_helper = Plugin::get_container()->get( ExcludedProductsHelper::class );
 			if ( ! $excluded_products_helper->canDisplayOnCheckoutPage( ContextHelper::getCart(),
 				$excluded_categories ) ) {
-				// Empty all fee_plans_settings so JS canMakePayment() hides all gateways.
 				foreach ( $params['gateway_settings'] as $gateway_name => &$gw ) {
 					unset( $gw['fee_plans_settings'] );
 				}
 			}
 		}
+		// [WC-COMPAT 9.0-9.7] End
 
 		wp_send_json( $params );
 	}

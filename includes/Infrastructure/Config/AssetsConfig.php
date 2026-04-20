@@ -230,7 +230,7 @@ class AssetsConfig {
 							'object_name' => 'AlmaInitSettings',
 							'keys'        => array(
 								'checkout_url',
-								'gateway_settings',
+								'gateway_settings', // [WC-COMPAT 9.0-9.7] revert to 'init_eligibility' when MIN_WOOCOMMERCE_VERSION >= 9.8
 								'cart_total',
 								'nonce_value',
 								'label_button',

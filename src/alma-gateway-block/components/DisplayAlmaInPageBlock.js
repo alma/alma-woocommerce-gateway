@@ -71,13 +71,19 @@ export const DisplayAlmaInPageBlock = (props) => {
     const resetCheckoutState = useCallback(() => {
         try {
             const store = dispatch(CHECKOUT_STORE_KEY);
-            // WC 10+ (Blocks 9+): __internalSetProcessing / __internalSetIdle
-            // WC 9.x (Blocks 7-8): setComplete / setIdle (or no equivalent)
             if (typeof store.__internalSetProcessing === 'function') {
+                // WC 10+ (Blocks 9+)
                 store.__internalSetProcessing(false);
                 store.__internalSetIdle();
             } else if (typeof store.setIdle === 'function') {
+                // [WC-COMPAT 9.0-9.7] Start — Reset checkout state for WC 9.x
+                // @see docs/WC97-SYNC-REGISTRATION-PATCH.md
+                // Remove this branch when MIN_WOOCOMMERCE_VERSION >= 9.8
+                if (typeof store.setComplete === 'function') {
+                    store.setComplete(false);
+                }
                 store.setIdle();
+                // [WC-COMPAT 9.0-9.7] End
             }
         } catch (error) {
             console.warn('Could not reset checkout state:', error);

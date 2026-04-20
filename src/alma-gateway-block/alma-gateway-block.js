@@ -79,19 +79,20 @@
 // phpcs:ignoreFile
 import {storeKey} from "../stores/alma-store";
 import {createRoot, useEffect, useRef, useState} from '@wordpress/element';
-import {dispatch, select, useSelect} from '@wordpress/data';
+import {dispatch, select, useSelect} from '@wordpress/data'; // select: [WC-COMPAT 9.0-9.7] remove when MIN_WOOCOMMERCE_VERSION >= 9.8
 import {Label} from "./components/Label";
 import './alma-gateway-block.css';
 import {DisplayAlmaInPageBlock} from "./components/DisplayAlmaInPageBlock";
 import {DisplayAlmaBlock} from "./components/DisplayAlmaBlock";
 import {fetchAlmaSettings} from "./hooks/almaSettings";
 
-// Hydrate the store synchronously from server-rendered eligibility so payment
-// methods register on the first React render (WC 9.7 finalizes payment methods
-// before the async fetch of /alma_checkout_data can complete).
+// [WC-COMPAT 9.0-9.7] Start — Synchronous store hydration
+// @see docs/WC97-SYNC-REGISTRATION-PATCH.md
+// Remove when MIN_WOOCOMMERCE_VERSION >= 9.8
 if (window.AlmaInitSettings?.gateway_settings) {
     dispatch(storeKey).setAlmaSettings(window.AlmaInitSettings);
 }
+// [WC-COMPAT 9.0-9.7] End
 
 (function ($) {
 
@@ -273,12 +274,9 @@ if (window.AlmaInitSettings?.gateway_settings) {
         }
     };
 
-    /**
-     * Synchronous initial registration from server-rendered eligibility.
-     * WC 9.7 reads the payment method registry before DOMContentLoaded,
-     * so we must register before React mounts CartObserver.
-     * Wrapped in try/catch to protect the DOMContentLoaded listener below.
-     */
+    // [WC-COMPAT 9.0-9.7] Start — Synchronous gateway registration
+    // @see docs/WC97-SYNC-REGISTRATION-PATCH.md
+    // Remove when MIN_WOOCOMMERCE_VERSION >= 9.8
     try {
         const initGwSettings = select(storeKey).getAllGatewaysSettings();
         const initAlmaSettings = select(storeKey).getAlmaSettings();
@@ -290,8 +288,6 @@ if (window.AlmaInitSettings?.gateway_settings) {
                 const gw = initGwSettings[gatewayName];
                 if (gw?.gateway_name) {
                     const blockContent = getContentBlock(initAlmaSettings, gatewayName, storeKey, cartTotal, undefined, () => {});
-                    // canMakePayment reads from the store dynamically so it reflects
-                    // the async eligibility fetch once it completes.
                     const dynamicCanMakePayment = () => {
                         const current = select(storeKey).getGatewaySettings(gatewayName);
                         if (!current || !('fee_plans_settings' in current)) return true;
@@ -306,6 +302,7 @@ if (window.AlmaInitSettings?.gateway_settings) {
     } catch (e) {
         console.error('Alma: synchronous gateway registration failed', e);
     }
+    // [WC-COMPAT 9.0-9.7] End
 
     /**
      * Init Alma Gateway Blocks on DOMContentLoaded
