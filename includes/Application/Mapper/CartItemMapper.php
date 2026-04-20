@@ -7,7 +7,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Alma\Client\Application\DTO\CartItemDto;
-use Alma\Gateway\Application\Helper\DisplayHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
 use Alma\Gateway\Plugin;
@@ -24,14 +23,11 @@ class CartItemMapper {
 
 		return ( new CartItemDto(
 			$orderLine->getQuantity(),
-			DisplayHelper::price_to_cent( $orderLine->getTotal() ),
-			ContextHelper::getAttachmentUrl( $product->getImageId() )
+			$orderLine->getTotal(),
+			$orderLine->getName()
 		) )
 			->setSku( $product->getSku() )
-			->setTitle( $orderLine->getName() )
-			->setQuantity( $orderLine->getQuantity() )
 			->setUnitPrice( $product->getPrice() )
-			->setLinePrice( $orderLine->getTotal() )
 			->setCategories( $categories )
 			->setUrl( $product->getPermalink() )
 			->setPictureUrl( ContextHelper::getAttachmentUrl( $product->getImageId() ) )
