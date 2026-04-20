@@ -94,13 +94,13 @@ class GatewayController {
 	 * @throws GatewayControllerException
 	 */
 	private function loadGateway() {
-		// Init Gateway
-		if ( ContextHelper::isAdmin() ) {
-			if ( ContextHelper::isGatewaySettingsPage() ) {
-				BackendHelper::loadBackendGateway();
-			} else {
-				FrontendHelper::loadFrontendGateways( $this->gatewayRepository->findOrderedAlmaGateways() );
-			}
+		// Check gateway settings page first (most specific), then admin, then frontend.
+		// This order ensures correct behavior even with pretty permalinks,
+		// where isAdmin() might not detect REST admin requests early enough.
+		if ( ContextHelper::isGatewaySettingsPage() ) {
+			BackendHelper::loadBackendGateway();
+		} elseif ( ContextHelper::isAdmin() ) {
+			FrontendHelper::loadFrontendGateways( $this->gatewayRepository->findOrderedAlmaGateways() );
 		} else {
 			try {
 				$this->assetsService->registerClassicCheckoutAssets();

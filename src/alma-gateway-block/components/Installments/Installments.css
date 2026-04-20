@@ -1,4 +1,4 @@
-.bullet {
+.alma-installment-bullet {
 	margin-top: 6px;
 	margin-right: 6px;
 	width: 10px;
@@ -9,7 +9,7 @@
 	z-index: 1;
 }
 
-.installmentContent {
+.alma-installment-installmentContent {
 	display: flex;
 	flex-shrink: 0;
 }
@@ -18,12 +18,12 @@
 	margin-top: 10px;
 }
 
-.firstBullet {
+.alma-installment-firstBullet {
 	background-color: var(--alma-orange);
 	z-index: 1;
 }
 
-.firstInstallmentContent {
+.alma-installment-firstInstallmentContent {
 	font-weight: 700;
 	color: var(--off-black);
 }
@@ -44,7 +44,7 @@
 	background-color: var(--off-white);
 }
 
-.installments {
+.alma-installment-installments {
 	margin-bottom: var(--spacing-4);
 	display: flex;
 	flex-direction: column;
@@ -52,7 +52,7 @@
 	@mixin row-gap var(--spacing-1);
 }
 
-.installment {
+.alma-installment-installment {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -61,17 +61,17 @@
 	width: 100%;
 }
 
-.hasBreadcrumb {
+.alma-installment-hasBreadcrumb {
 	margin-left: calc(var(--spacing-4));
 }
 
-.firstInstallment {
+.alma-installment-firstInstallment {
 	font-weight: var(--weight-semi-bold);
 	font-family: var(--font-family-venn), var(--font-family-sans-serif);
 	font-size: var(--font-base);
 }
 
-.errorMessage {
+.alma-installment-errorMessage {
 	display: flex;
 	font-size: var(--font-sm);
 	flex-direction: column;
@@ -79,11 +79,11 @@
 	@mixin row-gap var(--spacing-4);
 }
 
-.errorMessage > button {
+.alma-installment-errorMessage > button {
 	margin-top: var(--spacing-4);
 }
 
-.footer {
+.alma-installment-footer {
 	/* important needed for chrome 49 */
 	margin: 0 !important;
 	width: auto;
@@ -96,7 +96,7 @@
 	@mixin row-gap var(--spacing-1);
 }
 
-.footerCard {
+.alma-installment-footerCard {
 	display: flex;
 	flex-direction: column;
 
@@ -104,7 +104,7 @@
 }
 
 @media screen and (--min-w-sm) {
-	.errorMessage {
+	.alma-installment-errorMessage {
 		font-size: var(--font-base);
 	}
 
@@ -114,7 +114,7 @@
 		padding-right: var(--spacing-4);
 	}
 
-	.installments.shortenHugePlan {
+	.alma-installment-installments.shortenHugePlan {
 		margin-bottom: 0;
 	}
 
