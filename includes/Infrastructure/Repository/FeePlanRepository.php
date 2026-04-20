@@ -174,7 +174,6 @@ class FeePlanRepository {
 				$this->getFeePlanProvider();
 				$feePlanList = $this->feePlanProvider->getFeePlanList();
 				$this->storeFeePlanListInCache( $feePlanList );
-				$this->getLogger()->debug( 'Fee plans fetched from API and cached.' );
 			}
 
 			$feePlanListAdapter = ( new FeePlanListAdapter( $feePlanList ) )->filterAvailable();
@@ -227,7 +226,6 @@ class FeePlanRepository {
 	private function getFeePlanListFromCache(): ?FeePlanList {
 		// Level 1: in-process static cache (free, instant)
 		if ( self::$staticFeePlanCache instanceof FeePlanList ) {
-			$this->getLogger()->debug( 'Fee plans loaded from static (in-process) cache.' );
 
 			return self::$staticFeePlanCache;
 		}
@@ -243,7 +241,6 @@ class FeePlanRepository {
 
 		if ( $feePlanList instanceof FeePlanList ) {
 			self::$staticFeePlanCache = $feePlanList;
-			$this->getLogger()->debug( 'Fee plans loaded from transient cache.' );
 
 			return $feePlanList;
 		}

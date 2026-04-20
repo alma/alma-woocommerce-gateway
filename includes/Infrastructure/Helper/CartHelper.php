@@ -2,34 +2,34 @@
 
 namespace Alma\Gateway\Infrastructure\Helper;
 
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
 class CartHelper {
 	/**
+	 * Number of bits reserved for the random component.
+	 */
+	private const RANDOM_BITS = 20;
+
+	/**
 	 * Generate a unique cart ID suitable for BIGINT(20) unsigned storage.
+	 *
+	 * Uses bit-shifting to combine a Unix timestamp (seconds) in the upper
+	 * bits with a cryptographically random value in the lower 20 bits.
+	 * This produces a 64-bit positive integer (~16 digits) that is:
+	 * - naturally sortable by creation time,
+	 * - unique enough for concurrent carts (1 048 576 possible values per second),
+	 * - safe for PHP 64-bit int (max 9.2 × 10^18) and MySQL BIGINT(20) unsigned.
 	 *
 	 * @return int
 	 */
 	public static function generateUniqueCartId(): int {
-		// Get current timestamp (milliseconds)
-		$timestamp = round( microtime( true ) * 1000 );
+		$timestamp = time();
+		$random    = random_int( 0, ( 1 << self::RANDOM_BITS ) - 1 );
 
-		// Add random component (5 digits)
-		$random = mt_rand( 10000, 99999 );
-
-		// Combine timestamp + random to ensure uniqueness
-		// Format: TTTTTTTTTTTTTRRRR
-		$id = $timestamp . $random;
-
-		// Ensure it fits in BIGINT(20) unsigned max value
-		$max_bigint = '18446744073709551615';
-		if ( strlen( $id ) > strlen( $max_bigint ) ) {
-			$id = substr( $id, 0, strlen( $max_bigint ) );
-		}
-
-		return $id;
+		return ( $timestamp << self::RANDOM_BITS ) | $random;
 	}
 
 	/**
