@@ -202,6 +202,13 @@ class FrontendHelperTest extends TestCase {
 		], array_keys( $result ) );
 	}
 
+
+	public function testSortAlmaGatewaysReturnsInputWhenNotArray() {
+		$this->assertFalse( FrontendHelper::sortAlmaGateways( false ) );
+		$this->assertNull( FrontendHelper::sortAlmaGateways( null ) );
+		$this->assertSame( 'string', FrontendHelper::sortAlmaGateways( 'string' ) );
+	}
+
 	public function testSortAlmaGatewaysReturnsUnchangedWhenNoAlmaGateways() {
 		$gateways = [
 			'paypal' => 'paypal_gw',
