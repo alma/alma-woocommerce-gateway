@@ -25,7 +25,7 @@ export const InstallmentsContent: React.FC<InstallmentsContentProps> = ({
     return (
             <>
                 <div className={"alma-separator"}/>
-                <div className={"installments"}>
+                <div className={"alma-installment-installments"}>
                     {feePlan.paymentPlan.map((installment: PaymentPlan, index: number) => (
                             <Installment
                                     key={index}
@@ -35,8 +35,8 @@ export const InstallmentsContent: React.FC<InstallmentsContentProps> = ({
                             />
                     ))}
                 </div>
-                <div className={"footerCard"}>
-                    <CardFooter className={"footer"}>
+                <div className={"alma-installment-footerCard"}>
+                    <CardFooter className={"alma-installment-footer"}>
                         <InstallmentsTotal
                                 totalAmount={amount}
                                 customerFees={customerFees}

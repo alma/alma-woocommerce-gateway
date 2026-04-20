@@ -5,42 +5,42 @@
  * @since v4.2.5
  **/
 
-.buttonsContainer {
+.alma-buttonsContainer {
 	margin-bottom: 10px;
 }
 
-.paymentMethodLabel span {
+.alma-paymentMethodLabel span {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	margin-bottom: 0;
 }
 
-.paymentMethodLabel span div {
+.alma-paymentMethodLabel span div {
 	font-weight: 700;
 	color: var(--off-black);
 }
 
-.toggleButtonFieldLabel {
+.alma-toggleButtonFieldLabel {
 	margin-bottom: 17px;
 }
 
-.payNowLabel {
+.alma-payNowLabel {
 	margin-bottom: -17px;
 	color: var(--off-black);
 }
 
-.toggleButtonField > div:nth-of-type(2) {
+.alma-toggleButtonField > div:nth-of-type(2) {
 	display: flex;
 	gap: var(--spacing-2);
 }
 
-.toggleButtonField > div:nth-of-type(2) > button {
+.alma-toggleButtonField > div:nth-of-type(2) > button {
 	width: 45px;
 	height: 45px;
 	font-size: var(--font-base);
 }
 
-.payNow {
+.alma-payNow {
 	display: none;
 }
