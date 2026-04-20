@@ -14,15 +14,15 @@ export const Installment: React.FC<Props> = ({
 
     return (
             <div
-                    className={classNames("installmentContent", {
-                        firstInstallmentContent: firstInstallment,
+                    className={classNames("alma-installment-installmentContent", {
+                        "alma-installment-firstInstallmentContent": firstInstallment,
                     })}
             >
-                <div className={classNames("bullet", {firstBullet: firstInstallment})}/>
-                <div className={"installment"} data-testid="installment">
+                <div className={classNames("alma-installment-bullet", {"alma-installment-firstBullet": firstInstallment})}/>
+                <div className={"alma-installment-installment"} data-testid="installment">
                     {firstInstallment ? (
                             <FormattedMessage id="installments.today"
-                                    defaultMessage={localized_due_date.charAt(0).toUpperCase() + localized_due_date.slice(1)}/>
+                                              defaultMessage={localized_due_date.charAt(0).toUpperCase() + localized_due_date.slice(1)}/>
                     ) : (
                             <div>{localized_due_date}</div>
                     )}
