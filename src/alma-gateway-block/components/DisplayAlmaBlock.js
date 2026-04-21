@@ -77,7 +77,7 @@ export const DisplayAlmaBlock = (props) => {
         };
     };
 
-    return isLoading ? <div></div> : <AlmaBlock
+    return isLoading || !plan ? <div></div> : <AlmaBlock
         hasInPage={almaSettings.is_in_page}
         totalPrice={cartTotal}
         gatewaySettings={gatewaySettings}

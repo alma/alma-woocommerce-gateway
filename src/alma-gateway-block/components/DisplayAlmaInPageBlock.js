@@ -306,7 +306,7 @@ export const DisplayAlmaInPageBlock = (props) => {
     const displayInstallments = gatewaySettings.is_pay_now ? 'none' : 'block';
 
     // Render loading state or Alma In-Page block
-    return isLoading ? (
+    return isLoading || !plan ? (
         <div>Loading payment options...</div>
     ) : (
         <>
