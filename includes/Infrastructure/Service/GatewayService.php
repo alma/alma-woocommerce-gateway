@@ -23,6 +23,7 @@ use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Infrastructure\Repository\UserRepository;
 use Alma\Gateway\Plugin;
 use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
+use Psr\Log\LoggerInterface;
 
 class GatewayService {
 
@@ -35,16 +36,21 @@ class GatewayService {
 
 	private BusinessEventsService $businessEventsService;
 
+	/** @var LoggerInterface */
+	private LoggerInterface $loggerService;
+
 	public function __construct(
 		PaymentProviderFactory $paymentProviderFactory,
 		GatewayRepository $gatewayRepository,
 		AssetsService $assetsService,
-		BusinessEventsService $businessEventsService
+		BusinessEventsService $businessEventsService,
+		LoggerService $loggerService
 	) {
 		$this->paymentProviderFactory = $paymentProviderFactory;
 		$this->gatewayRepository      = $gatewayRepository;
 		$this->assetsService          = $assetsService;
 		$this->businessEventsService  = $businessEventsService;
+		$this->loggerService    = $loggerService ;
 	}
 
 	/**
@@ -102,7 +108,7 @@ class GatewayService {
 		try {
 			$this->businessEventsService->onOrderConfirmed( $oldStatus, $newStatus, $order );
 		} catch ( BusinessEventsServiceException $e ) {
-			throw new GatewayServiceException( 'Order confirmed does not sent', 0, $e );
+			$this->loggerService->debug($e->getMessage());
 		}
 	}
 
