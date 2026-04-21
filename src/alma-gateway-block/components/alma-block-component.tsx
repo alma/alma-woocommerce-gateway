@@ -13,7 +13,6 @@ import {ToggleButtonsField} from "@alma/react-components";
 import * as React from "react";
 import {Installments} from "./Installments/Installments";
 import {IntlProvider} from "react-intl";
-import classNames from "classnames";
 
 export type PaymentPlan = {
     customer_fee: number;
@@ -94,9 +93,8 @@ export const AlmaBlock: React.FC<AlmaBlockProps> = (
     );
     return (
             <IntlProvider locale="fr">
-                {gatewaySettings.is_pay_now && <div className={"alma-payNowLabel"}>{label}</div>}
                 <div className={"alma-buttonsContainer"}>
-                    <div className={classNames({payNow: gatewaySettings.is_pay_now})}>
+                    <div>
                         <ToggleButtonsField
                                 className={"alma-toggleButtonField"}
                                 options={values}
