@@ -8,7 +8,7 @@ DEBUG=0
 #
 usage() {
     echo
-    echo "This script builds an Alma woocommerce plugin ZIP archive and (optionally) sync files with subversion wordpress marketplace working copy."
+    echo "This script uses an existing Alma woocommerce plugin ZIP archive (built by 'task 7.4:dist') and (optionally) syncs files with subversion wordpress marketplace working copy."
     echo
     echo "USAGE: $0 [OPTIONS]"
     echo
@@ -46,46 +46,6 @@ while [[ -n "${1:-}" ]] ; do
 done
 # }}}
 
-# Define the path to Composer and PHP
-PHP_PATH=$(which php 2>/dev/null)
-COMPOSER_PATH=$(which composer 2>/dev/null)
-if [ ! -x "$PHP_PATH" ]; then
-    echo "Can't find or execute PHP on: $PHP_PATH"
-    exit 1
-fi
-
-# Get PHP version
-PHP_VERSION=$($PHP_PATH -v | head -n 1 | awk '{print $2}')
-PHP_MAJOR=$(echo "$PHP_VERSION" | cut -d. -f1) # Extract major version
-PHP_MINOR=$(echo "$PHP_VERSION" | cut -d. -f2) # Extract minor version
-
-# Check if PHP version is exactly 7.4.x
-if [[ "$PHP_MAJOR" -eq 7 && "$PHP_MINOR" -eq 4 ]]; then
-    echo "PHP version is $PHP_VERSION (compatible)."
-else
-    echo "PHP version is $PHP_VERSION. Only PHP 7.4.x is supported."
-    exit 1
-fi
-
-if [ ! -x "$COMPOSER_PATH" ]; then
-    echo "Can't find or execute Composer on : $PHP_PATH $COMPOSER_PATH"
-    exit 1
-fi
-
-# Get Composer version
-COMPOSER_VERSION=$($COMPOSER_PATH --version | awk '{print $3}' | cut -d. -f1,2) # Extract major.minor version
-
-# Check if Composer version is exactly 2.2.x
-if [[ "$COMPOSER_VERSION" == "2.2" ]]; then
-    echo "Composer version is $COMPOSER_VERSION (compatible)."
-else
-    echo "Composer version is $COMPOSER_VERSION. Only Composer 2.2.x (LTS) is supported."
-    exit 1
-fi
-
-PATH_TO_COMPOSER="$PHP_PATH $COMPOSER_PATH"
-echo "PATH_TO_COMPOSER is: $PATH_TO_COMPOSER"
-
 set -Eeuo pipefail
 
 # {{{ CONSTANTS (working folders & files to sync)
@@ -93,20 +53,7 @@ HERE="`pwd`" # You should be in GIT root folder
 SUBVERSION_DIR="$HERE/../alma_gateway_for_woocommerce_svn" # should be in the same parent folder and called alma_gateway_for_woocommerce_svn/
 TMP_TARGET_DIR="/tmp/alma-build/alma-gateway-for-woocommerce"
 DIST="$HERE/dist/"
-TO_SYNC=" \
-readme.txt \
-LICENSE  \
-./assets \
-./build \
-./includes \
-./languages \
-./public \
-./tests \
-./composer.json \
-./phpcs.xml \
-./alma-gateway-for-woocommerce.php \
-./uninstall.php \
-"
+ZIP_FILE="${DIST}alma-gateway-for-woocommerce.zip"
 RSYNC_EXCLUDE="--exclude=\*.orig --exclude=.DS_Store"
 # }}}
 
@@ -168,21 +115,19 @@ trap 'failure ${LINENO}' ERR
 # {{{ function preparing_folders
 #
 preparing_folders() {
-    [[ -d $DIST ]] && rm -rf $DIST
-    mkdir -p $DIST
     [[ -d $TMP_TARGET_DIR ]] && rm -rf $TMP_TARGET_DIR
-    mkdir -p $TMP_TARGET_DIR
+    mkdir -p /tmp/alma-build
 }
 export -f preparing_folders
 # }}}
 # {{{ function building_release
 #
 building_release() {
-    rsync -au $TO_SYNC $RSYNC_EXCLUDE $TMP_TARGET_DIR/ \
-        && cd $TMP_TARGET_DIR \
-        && $PATH_TO_COMPOSER install --no-dev \
-        && cd .. \
-        && zip -9 -r "$DIST/alma-gateway-for-woocommerce.zip" alma-gateway-for-woocommerce
+    if [[ ! -f "$ZIP_FILE" ]]; then
+        quit "ZIP archive not found at '$ZIP_FILE'. Please run 'task 7.4:dist' first."
+    fi
+    echo "Using existing ZIP archive: $ZIP_FILE"
+    unzip -o "$ZIP_FILE" -d /tmp/alma-build/
 }
 export -f building_release
 # }}}
@@ -229,7 +174,7 @@ if [[ $SYNC_SVN -eq 1 ]] ; then
     execute syncing_subversion $QUIET
     echo
     echo "You can now go on GitHub to create a new release called 'v$VERSION' (https://github.com/alma/alma-woocommerce-gateway/releases/new)"
-    echo "and add it the archive just created ($DIST/alma-gateway-for-woocommerce.zip)."
+    echo "and add it the archive just created ($ZIP_FILE)."
     echo
     echo "Then, you can now go into '$SUBVERSION_DIR' folder to finalize deployment on marketplace"
     echo
