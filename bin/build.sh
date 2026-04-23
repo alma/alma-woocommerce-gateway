@@ -116,7 +116,7 @@ trap 'failure ${LINENO}' ERR
 #
 preparing_folders() {
     [[ -d $TMP_TARGET_DIR ]] && rm -rf $TMP_TARGET_DIR
-    mkdir -p /tmp/alma-build
+    mkdir -p $(dirname "$TMP_TARGET_DIR")
 }
 export -f preparing_folders
 # }}}
@@ -127,7 +127,10 @@ building_release() {
         quit "ZIP archive not found at '$ZIP_FILE'. Please run 'task 7.4:dist' first."
     fi
     echo "Using existing ZIP archive: $ZIP_FILE"
-    unzip -o "$ZIP_FILE" -d /tmp/alma-build/
+    unzip -o "$ZIP_FILE" -d $(dirname "$TMP_TARGET_DIR")
+    if [[ ! -d "$TMP_TARGET_DIR" ]]; then
+         quit "Expected directory '$TMP_TARGET_DIR' not found after unzip. Check the ZIP structure."
+    fi
 }
 export -f building_release
 # }}}
