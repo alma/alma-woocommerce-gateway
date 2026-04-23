@@ -1,5 +1,24 @@
 # Changelog
 
+## v6.1.0 - 2026-04-23
+
+### Changes
+
+### 🚀 New Features
+
+- Feature/ecom 3860 compatibility woocommerce v9 v100x (#586)
+
+### 🐛 Bug Fixes
+
+- fix: update condition for displaying customer fee in gateway plans (#589)
+- Fix: logger service injection (#581)
+- fix: category exclusion when not loaded yet (#587)
+- fix: handle non-array input in sortAlmaGateways method (#588)
+
+#### Contributors
+
+@joyet-simon and @webaaz
+
 ## v6.0.6 - 2026-03-25
 
 ### Changes
