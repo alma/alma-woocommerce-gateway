@@ -6,6 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
+use Alma\Gateway\Application\Service\ConfigService;
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -22,10 +23,12 @@ abstract class AbstractLoggerService implements LoggerInterface {
 	 * @var string
 	 */
 	private string $source;
+	private ConfigService $configService;
 
-	public function __construct( string $source = 'alma' ) {
+	public function __construct( ConfigService $configService, string $source = 'alma' ) {
 		$this->woo_logger = new WC_Logger();
 		$this->source     = $source;
+		$this->configService = $configService;
 	}
 
 	/**
@@ -40,6 +43,9 @@ abstract class AbstractLoggerService implements LoggerInterface {
 	 *
 	 */
 	public function log( $level, $message, array $context = array() ): void {
+		if (! $this->configService->isDebug() ) {
+			return;
+		}
 		if ( ! in_array( $level, $this->get_psr_levels(), true ) ) {
 			throw new InvalidArgumentException( "Invalid log level: $level" );
 		}
