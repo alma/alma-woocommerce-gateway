@@ -96,7 +96,7 @@ export const AlmaBlock: React.FC<AlmaBlockProps> = (
             <IntlProvider locale="fr">
                 {gatewaySettings.is_pay_now && <div className={"alma-payNowLabel"}>{label}</div>}
                 <div className={"alma-buttonsContainer"}>
-                    <div className={classNames({payNow: gatewaySettings.is_pay_now})}>
+                    <div className={classNames({"alma-payNow": gatewaySettings.is_pay_now})}>
                         <ToggleButtonsField
                                 className={"alma-toggleButtonField"}
                                 options={values}

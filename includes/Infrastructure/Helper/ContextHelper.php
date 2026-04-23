@@ -61,7 +61,7 @@ class ContextHelper implements ContextHelperInterface {
 		// REST API with pretty permalinks (e.g. /wp-json/wc-admin/...).
 		// $_SERVER['REQUEST_URI'] is always available from the very start of the request,
 		// unlike $GLOBALS['wp']->query_vars or REST_REQUEST which depend on parse_request timing.
-		if ( ! empty( $_SERVER['REQUEST_URI'] ) && stripos( $_SERVER['REQUEST_URI'], '/wc-admin' ) !== false ) {
+		if ( ! empty( $_SERVER['REQUEST_URI'] ) && stripos( $_SERVER['REQUEST_URI'], '/wc-admin/' ) !== false ) {
 			return true;
 		}
 
