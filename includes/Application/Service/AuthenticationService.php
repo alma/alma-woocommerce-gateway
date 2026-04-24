@@ -13,7 +13,6 @@ use Alma\Client\Application\Exception\Endpoint\MerchantEndpointException;
 use Alma\Client\Domain\ValueObject\Environment;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
 class AuthenticationService {
 
@@ -23,10 +22,10 @@ class AuthenticationService {
 	/**
 	 * AuthenticationService constructor.
 	 *
-	 * @param LoggerService|null $loggerService
+	 * @param LoggerService $loggerService
 	 */
-	public function __construct( ?LoggerService $loggerService = null ) {
-		$this->loggerService = $loggerService ?? new NullLogger();
+	public function __construct( LoggerService $loggerService ) {
+		$this->loggerService = $loggerService ;
 	}
 
 	/**
