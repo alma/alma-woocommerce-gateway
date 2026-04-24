@@ -79,12 +79,20 @@
 // phpcs:ignoreFile
 import {storeKey} from "../stores/alma-store";
 import {createRoot, useEffect, useRef, useState} from '@wordpress/element';
-import {useSelect} from '@wordpress/data';
+import {dispatch, select, useSelect} from '@wordpress/data'; // select: [WC-COMPAT 9.0-9.7] remove when MIN_WOOCOMMERCE_VERSION >= 9.8
 import {Label} from "./components/Label";
 import './alma-gateway-block.css';
 import {DisplayAlmaInPageBlock} from "./components/DisplayAlmaInPageBlock";
 import {DisplayAlmaBlock} from "./components/DisplayAlmaBlock";
 import {fetchAlmaSettings} from "./hooks/almaSettings";
+
+// [WC-COMPAT 9.0-9.7] Start — Synchronous store hydration
+// @see docs/WC97-SYNC-REGISTRATION-PATCH.md
+// Remove when MIN_WOOCOMMERCE_VERSION >= 9.8
+if (window.AlmaInitSettings?.gateway_settings) {
+    dispatch(storeKey).setAlmaSettings(window.AlmaInitSettings);
+}
+// [WC-COMPAT 9.0-9.7] End
 
 (function ($) {
 
@@ -265,6 +273,36 @@ import {fetchAlmaSettings} from "./hooks/almaSettings";
             ReactDOM.render(<CartObserver/>, rootDiv);
         }
     };
+
+    // [WC-COMPAT 9.0-9.7] Start — Synchronous gateway registration
+    // @see docs/WC97-SYNC-REGISTRATION-PATCH.md
+    // Remove when MIN_WOOCOMMERCE_VERSION >= 9.8
+    try {
+        const initGwSettings = select(storeKey).getAllGatewaysSettings();
+        const initAlmaSettings = select(storeKey).getAlmaSettings();
+        if (Object.keys(initGwSettings).length > 0) {
+            const cartTotals = select(CART_STORE_KEY).getCartTotals() || {};
+            const cartTotal = parseInt(cartTotals.total_price || 0) * Math.pow(10, 2 - (cartTotals.currency_minor_unit || 0));
+
+            for (const gatewayName in initGwSettings) {
+                const gw = initGwSettings[gatewayName];
+                if (gw?.gateway_name) {
+                    const blockContent = getContentBlock(initAlmaSettings, gatewayName, storeKey, cartTotal, undefined, () => {});
+                    const dynamicCanMakePayment = () => {
+                        const current = select(storeKey).getGatewaySettings(gatewayName);
+                        if (!current || !('fee_plans_settings' in current)) return true;
+                        return Object.keys(current.fee_plans_settings).length > 0;
+                    };
+                    const block = generateGatewayBlock(gw, blockContent, true);
+                    block.canMakePayment = dynamicCanMakePayment;
+                    window.wc.wcBlocksRegistry.registerPaymentMethod(block);
+                }
+            }
+        }
+    } catch (e) {
+        console.error('Alma: synchronous gateway registration failed', e);
+    }
+    // [WC-COMPAT 9.0-9.7] End
 
     /**
      * Init Alma Gateway Blocks on DOMContentLoaded
