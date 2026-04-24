@@ -21,7 +21,6 @@ use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Alma\Gateway\Plugin;
 use Alma\Plugin\Infrastructure\Repository\GatewayRepositoryInterface;
 use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
 class GatewayRepository implements GatewayRepositoryInterface {
 
@@ -53,8 +52,8 @@ class GatewayRepository implements GatewayRepositoryInterface {
 		CreditGatewayBlock::class,
 	];
 
-	public function __construct( ?LoggerService $loggerService = null ) {
-		$this->loggerService = $loggerService ?? new NullLogger();
+	public function __construct( LoggerService $loggerService ) {
+		$this->loggerService = $loggerService;
 	}
 
 	/**
