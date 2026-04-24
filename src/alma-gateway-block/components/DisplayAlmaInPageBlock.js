@@ -13,7 +13,12 @@ export const DisplayAlmaInPageBlock = (props) => {
         inPage,
     } = props;
 
-    const {onPaymentSetup, onCheckoutSuccess, onCheckoutFail} = eventRegistration;
+    // WC Blocks API compatibility:
+    // WC 10+ (Blocks 9+): onPaymentSetup, onCheckoutSuccess, onCheckoutFail
+    // WC 9.x (Blocks 7-8): onPaymentProcessing, onCheckoutAfterProcessingWithSuccess, onCheckoutAfterProcessingWithError
+    const onPaymentSetup = eventRegistration.onPaymentSetup || eventRegistration.onPaymentProcessing;
+    const onCheckoutSuccess = eventRegistration.onCheckoutSuccess || eventRegistration.onCheckoutAfterProcessingWithSuccess;
+    const onCheckoutFail = eventRegistration.onCheckoutFail || eventRegistration.onCheckoutAfterProcessingWithError;
 
     // Get the Checkout Store Key
     const {CHECKOUT_STORE_KEY} = window.wc.wcBlocksData;
@@ -41,6 +46,14 @@ export const DisplayAlmaInPageBlock = (props) => {
         default_plan = Object.keys(availableFeePlans)[0];
     }
     const [selectedFeePlan, setSelectedFeePlan] = useState(default_plan);
+
+    // Sync selectedFeePlan when default_plan becomes available after loading
+    useEffect(() => {
+        if (default_plan && !selectedFeePlan) {
+            setSelectedFeePlan(default_plan);
+        }
+    }, [default_plan]);
+
     const plan = !isLoading
         ? availableFeePlans?.[selectedFeePlan] ?? availableFeePlans?.[default_plan]
         : null;
@@ -57,11 +70,21 @@ export const DisplayAlmaInPageBlock = (props) => {
      */
     const resetCheckoutState = useCallback(() => {
         try {
-            // Reinit "processing" state of checkout
-            dispatch(CHECKOUT_STORE_KEY).__internalSetProcessing(false);
-
-            // Reinit "idle" state of checkout
-            dispatch(CHECKOUT_STORE_KEY).__internalSetIdle();
+            const store = dispatch(CHECKOUT_STORE_KEY);
+            if (typeof store.__internalSetProcessing === 'function') {
+                // WC 10+ (Blocks 9+)
+                store.__internalSetProcessing(false);
+                store.__internalSetIdle();
+            } else if (typeof store.setIdle === 'function') {
+                // [WC-COMPAT 9.0-9.7] Start — Reset checkout state for WC 9.x
+                // @see docs/WC97-SYNC-REGISTRATION-PATCH.md
+                // Remove this branch when MIN_WOOCOMMERCE_VERSION >= 9.8
+                if (typeof store.setComplete === 'function') {
+                    store.setComplete(false);
+                }
+                store.setIdle();
+                // [WC-COMPAT 9.0-9.7] End
+            }
         } catch (error) {
             console.warn('Could not reset checkout state:', error);
         }
