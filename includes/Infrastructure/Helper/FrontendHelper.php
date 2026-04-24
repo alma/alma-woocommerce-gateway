@@ -163,11 +163,15 @@ class FrontendHelper {
 	 * but their relative order is not guaranteed (uasort is unstable in PHP < 8.0).
 	 * This filter groups them in the desired order at their current position.
 	 *
-	 * @param array $gateways
+	 * @param $gateways
 	 *
-	 * @return array
+	 * @return mixed|array
 	 */
-	public static function sortAlmaGateways( array $gateways ): array {
+	public static function sortAlmaGateways( $gateways ) {
+		if ( ! is_array( $gateways ) ) {
+			return $gateways;
+		}
+
 		$alma_gateways = [];
 		foreach ( self::$alma_gateway_ids as $id ) {
 			if ( isset( $gateways[ $id ] ) ) {

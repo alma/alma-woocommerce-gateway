@@ -10,7 +10,10 @@ export const DisplayAlmaBlock = (props) => {
         storeKey,
         cartTotal,
     } = props;
-    const {onPaymentSetup} = eventRegistration;
+    // WC Blocks API compatibility:
+    // WC 10+ (Blocks 9+): onPaymentSetup
+    // WC 9.x (Blocks 7-8): onPaymentProcessing
+    const onPaymentSetup = eventRegistration.onPaymentSetup || eventRegistration.onPaymentProcessing;
 
     const {almaSettings, gatewaySettings, isLoading} = useSelect(
         (select) => ({
@@ -29,26 +32,24 @@ export const DisplayAlmaBlock = (props) => {
     }
     const [selectedFeePlan, setSelectedFeePlan] = useState(default_plan);
 
+    // Sync selectedFeePlan when default_plan becomes available after loading
+    useEffect(() => {
+        if (default_plan && !selectedFeePlan) {
+            setSelectedFeePlan(default_plan);
+        }
+    }, [default_plan]);
+
     const plan = !isLoading
         ? availableFeePlans?.[selectedFeePlan] ?? availableFeePlans?.[default_plan]
         : null;
 
-    // Define onPaymentProcessing effect
-    const {onPaymentProcessing} = eventRegistration;
-
     useEffect(() => {
-        console.log('Special use effect selectedFeePlan changed:', selectedFeePlan);
-    }, [selectedFeePlan]);
-
-    useEffect(() => {
-        console.log('selectedFeePlan changed:', selectedFeePlan);
-        const unsubscribe = onPaymentProcessing(async () => {
+        const unsubscribe = onPaymentSetup(async () => {
             return handleStandardPayment(gatewaySettings, emitResponse, selectedFeePlan);
-
         });
 
         return () => unsubscribe();
-    }, [onPaymentProcessing, selectedFeePlan]);
+    }, [onPaymentSetup, selectedFeePlan]);
 
     /**
      * Handle Classic Payment

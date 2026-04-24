@@ -10,6 +10,7 @@ use Alma\Gateway\Application\Entity\Form\KeyConfiguration;
 use Alma\Gateway\Application\Service\AuthenticationService;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Mapper\ConfigFormMapper;
+use Alma\Gateway\Infrastructure\Service\LoggerService;
 use PHPUnit\Framework\TestCase;
 
 class ConfigFormMapperTest extends TestCase {
@@ -40,10 +41,11 @@ class ConfigFormMapperTest extends TestCase {
 	public function setUp(): void {
 
 		$authenticationServiceMock = $this->createMock( AuthenticationService::class );
+		$loggerServiceMock         = $this->createMock( LoggerService::class );
 		$this->configServiceMock   = $this->createMock( ConfigService::class );
 		$env                       = new Environment( Environment::LIVE_MODE );
 		$this->configServiceMock->method( 'getEnvironment' )->willReturn( $env );
-		$this->configFormMapper = new ConfigFormMapper( $this->configServiceMock, $authenticationServiceMock );
+		$this->configFormMapper = new ConfigFormMapper( $this->configServiceMock, $authenticationServiceMock, $loggerServiceMock );
 
 		$this->keySettings        = [
 			'test_api_key' => 'test_key_123',

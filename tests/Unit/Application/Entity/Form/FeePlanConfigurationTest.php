@@ -5,6 +5,7 @@ namespace Alma\Gateway\Tests\Unit\Application\Entity\Form;
 use Alma\Client\Application\Exception\ParametersException;
 use Alma\Gateway\Application\Entity\Form\FeePlanConfiguration;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
+use Alma\Gateway\Infrastructure\Service\LoggerService;
 use PHPUnit\Framework\TestCase;
 
 class FeePlanConfigurationTest extends TestCase {
@@ -16,18 +17,22 @@ class FeePlanConfigurationTest extends TestCase {
 	private FeePlanConfiguration $badFeePlanConfiguration;
 
 	public function setUp(): void {
+		$loggerServiceMock = $this->createMock( LoggerService::class );
+
 		$this->feePlanConfiguration = new FeePlanConfiguration(
 			'general_2_0_0',
 			self::MIN_PURCHASE_AMOUNT,
 			self::MAX_PURCHASE_AMOUNT,
-			true
+			true,
+			$loggerServiceMock
 		);
 
 		$this->badFeePlanConfiguration = new FeePlanConfiguration(
 			'general_2_0_0',
 			190000,
 			6000,
-			true
+			true,
+			$loggerServiceMock
 		);
 	}
 
