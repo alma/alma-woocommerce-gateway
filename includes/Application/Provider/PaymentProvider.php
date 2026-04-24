@@ -17,7 +17,6 @@ use Alma\Gateway\Application\Exception\Provider\PaymentProviderException;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Alma\Plugin\Application\Port\PaymentProviderInterface;
 use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
 class PaymentProvider implements PaymentProviderInterface, ProviderInterface {
 
@@ -31,10 +30,11 @@ class PaymentProvider implements PaymentProviderInterface, ProviderInterface {
 	 * PaymentService constructor.
 	 *
 	 * @param PaymentEndpoint $paymentEndpoint The payment endpoint to use for API calls.
+	 * @param LoggerService   $loggerService
 	 */
-	public function __construct( PaymentEndpoint $paymentEndpoint, ?LoggerService $loggerService = null ) {
+	public function __construct( PaymentEndpoint $paymentEndpoint, LoggerService $loggerService ) {
 		$this->paymentEndpoint = $paymentEndpoint;
-		$this->loggerService   = $loggerService ?? new NullLogger();
+		$this->loggerService   = $loggerService;
 	}
 
 	/**

@@ -82,7 +82,13 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 	 */
 	public function is_active(): bool {
 		try {
-			return ContextHelper::isCheckoutPageUseBlocks() && $this->gateway->is_enabled() && $this->gateway->is_available();
+			// [WC-COMPAT 9.0-9.7] is_available() removed — it depends on cart context
+			// which is not initialized at hook time, causing is_active() to always
+			// return false on WC <= 9.4. Cart-dependent checks (excluded products)
+			// are handled in CheckoutService::getCheckoutData() instead.
+			// @see docs/WC97-SYNC-REGISTRATION-PATCH.md
+			// Restore is_available() when MIN_WOOCOMMERCE_VERSION >= 9.8
+			return ContextHelper::isCheckoutPageUseBlocks() && $this->gateway->is_enabled();
 		} catch ( GatewayException $e ) {
 			throw new CheckoutBlockException( 'Can not determine if Block is active or not', 0, $e );
 		}
