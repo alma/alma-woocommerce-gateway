@@ -21,7 +21,7 @@
     "alma/alma-php-client": "3.0.*|dev-feature/3.0",
     "level-2/dice": "^4.0",
     "psr/http-client": "^1",
-    "psr/log": "^1"
+    "psr/log": "^3"
   },
   "require-dev": {
     "brain/monkey": "^2.0@dev",
@@ -31,9 +31,9 @@
     "php-stubs/wordpress-stubs": "*",
     "phpcompatibility/php-compatibility": "^9.3",
     "phpstan/extension-installer": "^1.4",
-    "phpstan/phpstan": "^1.10",
+    "phpstan/phpstan": "^2.0",
     "phpunit/phpunit": "*",
-    "squizlabs/php_codesniffer": "^3.7",
+    "squizlabs/php_codesniffer": "^4.0",
     "symfony/var-dumper": "*",
     "wp-coding-standards/wpcs": "dev-develop",
     "wpackagist-plugin/woocommerce": "^10.0.4",
