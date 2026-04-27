@@ -75,6 +75,14 @@ class ContextHelperTest extends TestCase {
 		$this->assertFalse( ContextHelper::isAdmin() );
 	}
 
+	public function testIsAdminReturnsFalseWhenWcAdminInQueryString() {
+		Functions\expect( 'is_admin' )->once()->andReturn( false );
+
+		$_SERVER['REQUEST_URI'] = '/checkout/?ref=wc-admin-promo';
+
+		$this->assertFalse( ContextHelper::isAdmin() );
+	}
+
 	public function testIsAdminPrioritisesIsAdminOverSuperglobals() {
 		// is_admin() returns true, so superglobals should not matter.
 		Functions\expect( 'is_admin' )->once()->andReturn( true );

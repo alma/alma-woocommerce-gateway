@@ -1,5 +1,39 @@
 # Changelog
 
+## v6.1.0 - 2026-04-23
+
+### Changes
+
+### 🚀 New Features
+
+- Compatibility WooCommerce v9 to v10.0.x (#586)
+
+### 🐛 Bug Fixes
+
+- fix: update condition for displaying customer fee in gateway plans (#589)
+- Fix: logger service injection (#581)
+- fix: category exclusion when not loaded yet (#587)
+- fix: handle non-array input in sortAlmaGateways method (#588)
+
+#### Contributors
+
+@Francois-Gomis, @alma-create-pr-with-team-review[bot], @joyet-simon, @webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and joyet.simon
+
+## v6.0.7 - 2026-04-01
+
+### Changes
+
+### 🐛 Bug Fixes
+
+- Clean alma_soc_ongoing option in DB (#574)
+- fix: Remove picture url from CartItemDto constructor (#571)
+- Fix admin & gateway settings detection with pretty permalinks (#570)
+- fix: Update unique cart ID generation to prevent TypeError in PHP 8.0+ (#568)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @Francois-Gomis, @alma-renovate-bot[bot], @joyet-simon, @remi-zuffinetti, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
+
 ## v6.0.6 - 2026-03-25
 
 ### Changes
