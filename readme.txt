@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 6.6
 Tested up to: 6.9.1
 Requires PHP: 7.4
-Stable tag: 6.0.7
+Stable tag: 6.1.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,25 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+## v6.1.0 - 2026-04-23
+
+### Changes
+
+### 🚀 New Features
+
+- Compatibility WooCommerce v9 to v10.0.x (#586)
+
+### 🐛 Bug Fixes
+
+- fix: update condition for displaying customer fee in gateway plans (#589)
+- Fix: logger service injection (#581)
+- fix: category exclusion when not loaded yet (#587)
+- fix: handle non-array input in sortAlmaGateways method (#588)
+
+#### Contributors
+
+@Francois-Gomis, @alma-create-pr-with-team-review[bot], @joyet-simon, @webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and joyet.simon
 
 ## v6.0.7 - 2026-04-01
 
