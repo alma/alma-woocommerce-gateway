@@ -94,20 +94,18 @@ export const AlmaBlock: React.FC<AlmaBlockProps> = (
     return (
             <IntlProvider locale="fr">
                 <div className={"alma-buttonsContainer"}>
-                    <div>
-                        <ToggleButtonsField
-                                className={"alma-toggleButtonField"}
-                                options={values}
-                                optionLabel={(key) => labels[key]}
-                                optionKey={(key) => key}
-                                onChange={(key) => handleClick(key)}
-                                value={selectedFeePlan}
-                                label={label}
-                                wide={false}
-                                size={"sm"}
-                                error=""
+                    <ToggleButtonsField
+                            className={"alma-toggleButtonField"}
+                            options={values}
+                            optionLabel={(key) => labels[key]}
+                            optionKey={(key) => key}
+                            onChange={(key) => handleClick(key)}
+                            value={selectedFeePlan}
+                            label={label}
+                            wide={false}
+                            size={"sm"}
+                            error=""
                         />
-                    </div>
                 </div>
                 {!hasInPage && (
                         <div className="alma-card-installments">

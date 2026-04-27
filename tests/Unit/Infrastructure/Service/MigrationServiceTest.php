@@ -383,6 +383,99 @@ class MigrationServiceTest extends TestCase {
 	}
 
 	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function testRunMigrationsFrom607DoesNothing(): void {
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'alma_migration_lock', null )
+			->andReturn( false );
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'alma_version', null )
+			->andReturn( '6.0.7' );
+
+		$migrationService = new MigrationService();
+		$result           = $migrationService->runMigrationsIfNeeded();
+
+		$this->assertFalse( $result );
+	}
+
+	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function testRunMigrationsFromV5ChainsTo607(): void {
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'alma_migration_lock', null )
+			->andReturn( false );
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'alma_version', null )
+			->andReturn( '5.16.2' );
+
+		// v5 → v6.0.0 migration
+		Functions\expect( 'add_option' )
+			->once()
+			->with( 'alma_migration_lock', Mockery::type( 'int' ) );
+
+		$contextHelperMock = Mockery::mock( 'alias:Alma\Gateway\Infrastructure\Helper\ContextHelper' );
+		$contextHelperMock->shouldReceive( 'isCheckoutPageUseBlocks' )->once()->andReturn( true );
+
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'wc_alma_settings', [] )
+			->andReturn( [] );
+		Functions\expect( 'add_option' )
+			->once()
+			->with( 'woocommerce_alma_config_gateway_settings', Mockery::type( 'array' ) );
+		Functions\expect( 'update_option' )
+			->once()
+			->with( 'alma_version', '6.0.0' );
+		Functions\expect( 'delete_option' )
+			->once()
+			->with( 'alma_migration_lock' );
+
+		// v6.0.0 → v6.0.7 SOC cleanup
+		Functions\expect( 'delete_option' )
+			->once()
+			->with( 'alma_soc_ongoing' );
+		Functions\expect( 'update_option' )
+			->once()
+			->with( 'alma_version', '6.0.7' );
+
+		$migrationService = new MigrationService();
+		$result           = $migrationService->runMigrationsIfNeeded();
+
+		$this->assertTrue( $result );
+	}
+
+	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function testFreshInstallStampsLatestVersion(): void {
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'alma_migration_lock', null )
+			->andReturn( false );
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'alma_version', null )
+			->andReturn( null );
+		Functions\expect( 'add_option' )
+			->once()
+			->with( 'alma_version', '6.0.7' );
+
+		$migrationService = new MigrationService();
+		$result           = $migrationService->runMigrationsIfNeeded();
+
+		$this->assertFalse( $result );
+	}
+
+	/**
 	 * Test that existing v5 amount limits are properly migrated (not overwritten by default).
 	 */
 	public function testMigrateAmountLimitsPreservesExistingValues(): void {
