@@ -13,7 +13,12 @@ export const DisplayAlmaInPageBlock = (props) => {
         inPage,
     } = props;
 
-    const {onPaymentSetup, onCheckoutSuccess, onCheckoutFail} = eventRegistration;
+    // WC Blocks API compatibility:
+    // WC 10+ (Blocks 9+): onPaymentSetup, onCheckoutSuccess, onCheckoutFail
+    // WC 9.x (Blocks 7-8): onPaymentProcessing, onCheckoutAfterProcessingWithSuccess, onCheckoutAfterProcessingWithError
+    const onPaymentSetup = eventRegistration.onPaymentSetup || eventRegistration.onPaymentProcessing;
+    const onCheckoutSuccess = eventRegistration.onCheckoutSuccess || eventRegistration.onCheckoutAfterProcessingWithSuccess;
+    const onCheckoutFail = eventRegistration.onCheckoutFail || eventRegistration.onCheckoutAfterProcessingWithError;
 
     // Get the Checkout Store Key
     const {CHECKOUT_STORE_KEY} = window.wc.wcBlocksData;
@@ -41,6 +46,14 @@ export const DisplayAlmaInPageBlock = (props) => {
         default_plan = Object.keys(availableFeePlans)[0];
     }
     const [selectedFeePlan, setSelectedFeePlan] = useState(default_plan);
+
+    // Sync selectedFeePlan when default_plan becomes available after loading
+    useEffect(() => {
+        if (default_plan && !selectedFeePlan) {
+            setSelectedFeePlan(default_plan);
+        }
+    }, [default_plan]);
+
     const plan = !isLoading
         ? availableFeePlans?.[selectedFeePlan] ?? availableFeePlans?.[default_plan]
         : null;
@@ -57,11 +70,21 @@ export const DisplayAlmaInPageBlock = (props) => {
      */
     const resetCheckoutState = useCallback(() => {
         try {
-            // Reinit "processing" state of checkout
-            dispatch(CHECKOUT_STORE_KEY).__internalSetProcessing(false);
-
-            // Reinit "idle" state of checkout
-            dispatch(CHECKOUT_STORE_KEY).__internalSetIdle();
+            const store = dispatch(CHECKOUT_STORE_KEY);
+            if (typeof store.__internalSetProcessing === 'function') {
+                // WC 10+ (Blocks 9+)
+                store.__internalSetProcessing(false);
+                store.__internalSetIdle();
+            } else if (typeof store.setIdle === 'function') {
+                // [WC-COMPAT 9.0-9.7] Start — Reset checkout state for WC 9.x
+                // @see docs/WC97-SYNC-REGISTRATION-PATCH.md
+                // Remove this branch when MIN_WOOCOMMERCE_VERSION >= 9.8
+                if (typeof store.setComplete === 'function') {
+                    store.setComplete(false);
+                }
+                store.setIdle();
+                // [WC-COMPAT 9.0-9.7] End
+            }
         } catch (error) {
             console.warn('Could not reset checkout state:', error);
         }
@@ -79,7 +102,7 @@ export const DisplayAlmaInPageBlock = (props) => {
         }
 
         // Clean up previous instance if exists
-        if (inPage && typeof inPage.unmount === 'function') {
+        if (inPageRef.current && typeof inPageRef.current.unmount === 'function') {
             try {
                 inPage.unmount();
             } catch (e) {
@@ -162,8 +185,13 @@ export const DisplayAlmaInPageBlock = (props) => {
         const unsubscribeSuccess = onCheckoutSuccess(async (checkoutResponse) => {
 
             try {
-                // Get payment details from response
-                const paymentDetails = checkoutResponse.processingResponse?.paymentDetails;
+                // Get payment details from response.
+                // WC 10+/Blocks 9+ serializes paymentDetails as [{key, value}] array
+                // instead of the flat object used by WC 9.x/Blocks 7-8.
+                const rawPaymentDetails = checkoutResponse.processingResponse?.paymentDetails;
+                const paymentDetails = Array.isArray(rawPaymentDetails)
+                    ? Object.fromEntries(rawPaymentDetails.map(({ key, value }) => [key, value]))
+                    : rawPaymentDetails;
                 const almaPaymentId = paymentDetails?.alma_payment_id;
 
                 if (!almaPaymentId) {
@@ -174,7 +202,7 @@ export const DisplayAlmaInPageBlock = (props) => {
                     };
                 }
 
-                if (!inPage || !isInPageReady) {
+                if (!inPageRef.current || !isInPageReady) {
                     resetCheckoutState();
                     return {
                         type: emitResponse.responseTypes.ERROR,
@@ -185,7 +213,7 @@ export const DisplayAlmaInPageBlock = (props) => {
                 const paymentResult = await new Promise((resolve) => {
                     let resolvedPromisePaymentResult = false;
 
-                    inPage.startPayment({
+                    inPageRef.current.startPayment({
                         paymentId: almaPaymentId,
                         onUserCloseModal: () => {
                             if (!resolvedPromisePaymentResult) {
@@ -237,7 +265,7 @@ export const DisplayAlmaInPageBlock = (props) => {
         });
 
         return () => unsubscribeSuccess();
-    }, [onCheckoutSuccess, isInPageReady, emitResponse.responseTypes, resetCheckoutState, inPage]);
+    }, [onCheckoutSuccess, isInPageReady, emitResponse.responseTypes, resetCheckoutState]);
 
     /**
      * Handle checkout failure onCheckoutFail
@@ -245,9 +273,9 @@ export const DisplayAlmaInPageBlock = (props) => {
     useEffect(() => {
         const unsubscribeFail = onCheckoutFail((error) => {
             // Unmount the In-Page instance if it exists
-            if (inPage && typeof inPage.unmount === 'function') {
+            if (inPageRef.current && typeof inPageRef.current.unmount === 'function') {
                 try {
-                    inPage.unmount();
+                    inPageRef.current.unmount();
                 } catch (e) {
                     console.warn('Failed to unmount In-Page instance on fail:', e);
                 }
@@ -261,7 +289,7 @@ export const DisplayAlmaInPageBlock = (props) => {
         });
 
         return () => unsubscribeFail();
-    }, [onCheckoutFail, inPage, resetCheckoutState]);
+    }, [onCheckoutFail, resetCheckoutState]);
 
     /**
      * Initialize or re-initialize In-Page when plan or cart total changes
