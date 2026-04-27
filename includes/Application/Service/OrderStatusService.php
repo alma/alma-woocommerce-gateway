@@ -60,22 +60,14 @@ class OrderStatusService {
 	 *
 	 * @param string $status Order status.
 	 *
-	 * @return bool | null
+	 * @return bool
 	 */
 	private function getShipmentByStatus( $status ) {
 		switch ( $status ) {
-			case 'pending':
-			case 'on-hold':
-			case 'processing':
-			case 'failed':
-			case 'refunded':
-			case 'cancelled':
-			case 'checkout-draft':
-				return false;
 			case 'completed':
 				return true;
 			default:
-				return null;
+				return false;
 		}
 	}
 }
