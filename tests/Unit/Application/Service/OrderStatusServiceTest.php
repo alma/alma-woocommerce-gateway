@@ -127,11 +127,12 @@ class OrderStatusServiceTest extends TestCase {
 		$almaOrder->expects( $this->once() )->method( 'hasATransactionId' )->willReturn( true );
 
 		$almaOrder->expects( $this->once() )->method( 'getPaymentId' )->willReturn( 'payment_123' );
+		$almaOrder->expects( $this->once() )->method( 'getOrderNumber' )->willReturn( '1' );
 
 		$paymentProvider = $this->createMock( PaymentProvider::class );
 		$paymentProvider->expects( $this->once() )->method( 'addOrderStatusByMerchantOrderReference' )->with(
 			'payment_123',
-			1,
+			'1',
 			'completed',
 			true
 		);
@@ -159,11 +160,12 @@ class OrderStatusServiceTest extends TestCase {
 		$almaOrder->expects( $this->once() )->method( 'hasATransactionId' )->willReturn( true );
 
 		$almaOrder->expects( $this->once() )->method( 'getPaymentId' )->willReturn( 'payment_123' );
+		$almaOrder->expects( $this->once() )->method( 'getOrderNumber' )->willReturn( '1' );
 
 		$paymentProvider = $this->createMock( PaymentProvider::class );
 		$paymentProvider->expects( $this->once() )->method( 'addOrderStatusByMerchantOrderReference' )->with(
 			'payment_123',
-			1,
+			'1',
 			'processing',
 			false
 		);
@@ -183,6 +185,44 @@ class OrderStatusServiceTest extends TestCase {
 		$ref->setValue( $orderStatusService, $paymentProvider );
 
 		$this->assertNull( $orderStatusService->sendOrderStatus( 1, 'pending', 'processing' ) );
+	}
+
+	/**
+	 * Regression test: the merchant order reference sent to Alma when a status changes
+	 * MUST be the formatted order number (the same one used at payment creation by
+	 * OrderMapper) and NOT the raw post ID. Otherwise plugins that customize the order
+	 * number (e.g. Sequential Order Numbers) cause Alma to receive a different reference,
+	 * which creates a duplicate order on the payment instead of updating the existing one.
+	 */
+	public function testSendOrderStatusUsesFormattedOrderNumberAsMerchantReference() {
+		$almaOrder = $this->createMock( OrderAdapter::class );
+		$almaOrder->expects( $this->once() )->method( 'isPaidWithAlma' )->willReturn( true );
+		$almaOrder->expects( $this->once() )->method( 'hasATransactionId' )->willReturn( true );
+		$almaOrder->expects( $this->once() )->method( 'getPaymentId' )->willReturn( 'payment_123' );
+		$almaOrder->expects( $this->once() )->method( 'getOrderNumber' )->willReturn( 'FR-296288' );
+
+		$paymentProvider = $this->createMock( PaymentProvider::class );
+		$paymentProvider->expects( $this->once() )->method( 'addOrderStatusByMerchantOrderReference' )->with(
+			'payment_123',
+			'FR-296288',
+			'completed',
+			true
+		);
+
+		$paymentProviderFactoryMock = $this->createMock( PaymentProviderFactory::class );
+
+		$orderRepositoryMock = $this->createMock( OrderRepository::class );
+		$orderRepositoryMock->expects( $this->once() )->method( 'getById' )->willReturn( $almaOrder );
+
+		$orderStatusService = \Mockery::mock(
+			OrderStatusService::class,
+			[ $paymentProviderFactoryMock, $orderRepositoryMock ]
+		)->makePartial();
+		$ref = new \ReflectionProperty( OrderStatusService::class, 'paymentProvider' );
+		$ref->setAccessible( true );
+		$ref->setValue( $orderStatusService, $paymentProvider );
+
+		$this->assertNull( $orderStatusService->sendOrderStatus( 613799, 'pending', 'completed' ) );
 	}
 
 }
