@@ -177,9 +177,40 @@ class AlmaGateway extends AbstractBackendGateway {
 		// Transform back to settings array
 		$settings = $config_form_mapper->to_cms_form( $gateway_configuration );
 
+		// Backfill defaults for fieldsets gated by `is_configured`. On the very first
+		// save, those fieldsets are absent from `form_fields`, so their declared
+		// defaults (e.g. `in_page_enabled => yes`) would otherwise never reach the DB.
+		$settings = $this->apply_post_configured_defaults( $settings );
+
 		// Add errors to the gateway if there are any
 		foreach ( $gateway_configuration->getErrors() as $error ) {
 			WC_Admin_Settings::add_error( $error );
+		}
+
+		return $settings;
+	}
+
+	/**
+	 * Fill in missing settings with the `default` declared on each post-configured
+	 * field. A key already present in `$settings` is never overwritten — including
+	 * `'no'` values produced by WooCommerce for unchecked checkboxes that did make
+	 * it into the form.
+	 *
+	 * @param array $settings
+	 *
+	 * @return array
+	 */
+	private function apply_post_configured_defaults( array $settings ): array {
+
+		$default_fields = array_merge(
+			$this->display_fieldset_definitions(),
+			$this->widget_fieldset()
+		);
+
+		foreach ( $default_fields as $key => $field ) {
+			if ( ! isset( $settings[ $key ] ) && isset( $field['default'] ) ) {
+				$settings[ $key ] = $field['default'];
+			}
 		}
 
 		return $settings;
