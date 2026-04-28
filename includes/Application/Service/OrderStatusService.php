@@ -51,7 +51,7 @@ class OrderStatusService {
 		$isShipped = $this->getShipmentByStatus( $newStatus );
 
 		$this->getPaymentProvider();
-		$this->paymentProvider->addOrderStatusByMerchantOrderReference( $paymentId, $orderId, $newStatus, $isShipped );
+		$this->paymentProvider->addOrderStatusByMerchantOrderReference( $paymentId, $order->getOrderNumber(), $newStatus, $isShipped );
 
 	}
 
