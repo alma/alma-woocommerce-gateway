@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\Gateway\Application\Exception\Service\PaymentServiceException;
 use Alma\Gateway\Application\Service\BusinessEventsService;
+use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\PaymentService;
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
 use Alma\Gateway\Infrastructure\Exception\Block\CheckoutBlockException;
@@ -82,6 +83,13 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 	 */
 	public function is_active(): bool {
 		try {
+			// In test mode, Alma is only visible to admin/shop manager users.
+			/** @var ConfigService $config_service */
+			$config_service = Plugin::get_container()->get( ConfigService::class );
+			if ( $config_service->isTest() && ! current_user_can( 'manage_woocommerce' ) ) {
+				return false;
+			}
+
 			// [WC-COMPAT 9.0-9.7] is_available() removed — it depends on cart context
 			// which is not initialized at hook time, causing is_active() to always
 			// return false on WC <= 9.4. Cart-dependent checks (excluded products)
