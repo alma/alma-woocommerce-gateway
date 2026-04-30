@@ -57,6 +57,11 @@ class ShopController {
 					return;
 				}
 
+				// In test mode, Alma is only visible to admin/shop manager users.
+				if ( $this->configService->isTest() && ! current_user_can( 'manage_woocommerce' ) ) {
+					return;
+				}
+
 				BlocksWidgetHelper::prepareWidgetAssets();
 
 				$this->widgetService->runWidget();

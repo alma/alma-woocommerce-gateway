@@ -116,6 +116,13 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 			return false;
 		}
 
+		// In test mode, Alma is only available to admin/shop manager users.
+		/** @var ConfigService $config_service */
+		$config_service = Plugin::get_instance()->get_container()->get( ConfigService::class );
+		if ( $config_service->isTest() && ! current_user_can( 'manage_woocommerce' ) ) {
+			return false;
+		}
+
 		// Check Fee Plans availability
 		try {
 			$available = false;
