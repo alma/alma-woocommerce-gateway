@@ -10,7 +10,6 @@ export const DisplayAlmaInPageBlock = (props) => {
         storeKey,
         cartTotal,
         setInPage,
-        inPage,
     } = props;
 
     // WC Blocks API compatibility:
@@ -104,7 +103,7 @@ export const DisplayAlmaInPageBlock = (props) => {
         // Clean up previous instance if exists
         if (inPageRef.current && typeof inPageRef.current.unmount === 'function') {
             try {
-                inPage.unmount();
+                inPageRef.current.unmount();
             } catch (e) {
                 console.info('Unmounting previous instance');
             }
@@ -135,7 +134,7 @@ export const DisplayAlmaInPageBlock = (props) => {
             console.error('Failed to initialize:', error);
             setIsInPageReady(false);
         }
-    }, [plan, almaSettings, inPage, setInPage, isProcessingPayment]);
+    }, [plan, almaSettings, setInPage, isProcessingPayment]);
 
     /**
      * Prepare payment data onPaymentSetup
