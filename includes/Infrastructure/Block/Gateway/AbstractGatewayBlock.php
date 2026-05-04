@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\Gateway\Application\Exception\Service\PaymentServiceException;
 use Alma\Gateway\Application\Service\BusinessEventsService;
+use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\PaymentService;
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
 use Alma\Gateway\Infrastructure\Exception\Block\CheckoutBlockException;
@@ -81,6 +82,12 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 	 * @throws CheckoutBlockException
 	 */
 	public function is_active(): bool {
+		/** @var ConfigService $config_service */
+		$config_service = Plugin::get_container()->get( ConfigService::class );
+		if ( ContextHelper::shouldHideForTestMode( $config_service ) ) {
+			return false;
+		}
+
 		try {
 			// [WC-COMPAT 9.0-9.7] is_available() removed — it depends on cart context
 			// which is not initialized at hook time, causing is_active() to always
