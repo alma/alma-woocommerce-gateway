@@ -82,14 +82,13 @@ abstract class AbstractGatewayBlock extends AbstractPaymentMethodType {
 	 * @throws CheckoutBlockException
 	 */
 	public function is_active(): bool {
-		try {
-			// In test mode, Alma is only visible to admin/shop manager users.
-			/** @var ConfigService $config_service */
-			$config_service = Plugin::get_container()->get( ConfigService::class );
-			if ( $config_service->isTest() && ! current_user_can( 'manage_woocommerce' ) ) {
-				return false;
-			}
+		/** @var ConfigService $config_service */
+		$config_service = Plugin::get_container()->get( ConfigService::class );
+		if ( ContextHelper::shouldHideForTestMode( $config_service ) ) {
+			return false;
+		}
 
+		try {
 			// [WC-COMPAT 9.0-9.7] is_available() removed — it depends on cart context
 			// which is not initialized at hook time, causing is_active() to always
 			// return false on WC <= 9.4. Cart-dependent checks (excluded products)

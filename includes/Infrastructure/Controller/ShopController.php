@@ -57,8 +57,7 @@ class ShopController {
 					return;
 				}
 
-				// In test mode, Alma is only visible to admin/shop manager users.
-				if ( $this->configService->isTest() && ! current_user_can( 'manage_woocommerce' ) ) {
+				if ( ContextHelper::shouldHideForTestMode( $this->configService ) ) {
 					return;
 				}
 

@@ -6,6 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
+use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\CustomerAdapter;
 use Alma\Plugin\Infrastructure\Adapter\CartAdapterInterface;
@@ -309,6 +310,17 @@ class ContextHelper implements ContextHelperInterface {
 		}
 
 		return false;
+	}
+
+	/**
+	 * In test mode, Alma is only visible to admin/shop manager users.
+	 *
+	 * @param ConfigService $configService The config service used to check the test mode.
+	 *
+	 * @return bool True when Alma must be hidden from the current user.
+	 */
+	public static function shouldHideForTestMode( ConfigService $configService ): bool {
+		return $configService->isTest() && ! current_user_can( 'manage_woocommerce' );
 	}
 
 	/**
