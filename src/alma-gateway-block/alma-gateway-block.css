@@ -25,11 +25,6 @@
 	margin-bottom: 17px;
 }
 
-.alma-payNowLabel {
-	margin-bottom: -17px;
-	color: var(--off-black);
-}
-
 .alma-toggleButtonField > div:nth-of-type(2) {
 	display: flex;
 	gap: var(--spacing-2);
@@ -39,8 +34,4 @@
 	width: 45px;
 	height: 45px;
 	font-size: var(--font-base);
-}
-
-.alma-payNow {
-	display: none;
 }
