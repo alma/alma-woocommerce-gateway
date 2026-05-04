@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 6.6
 Tested up to: 6.9.1
 Requires PHP: 7.4
-Stable tag: 6.1.0
+Stable tag: 6.2.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,26 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+## v6.2.0 - 2026-05-04
+
+### Changes
+
+- Feature/ecom 4093 different order references used on alma payment when wc (#605)
+- Feature/ecom 4077 double title on paynow (#591)
+- Feature/ecom 4083 fix security issues (#601)
+- Revert "Backport security update to develop" (#603)
+- Backport security update to develop (#600)
+
+### 🚀 New Features
+
+- feat: Hidden Alma for user not conected on test mode (#607)
+- fix: persist post-configured defaults on first save (ECOM-3924) (#606)
+- fix: use inPageRef instead of inPage prop and normalize paymentDetail… (#604)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @alma-renovate-bot[bot], @dependabot[bot], @joyet-simon, @remi-zuffinetti, @webaaz, [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot), [dependabot[bot]](https://github.com/apps/dependabot) and joyet.simon
 
 ## v6.1.0 - 2026-04-23
 

@@ -1,5 +1,25 @@
 # Changelog
 
+## v6.2.0 - 2026-05-04
+
+### Changes
+
+- Feature/ecom 4093 different order references used on alma payment when wc (#605)
+- Feature/ecom 4077 double title on paynow (#591)
+- Feature/ecom 4083 fix security issues (#601)
+- Revert "Backport security update to develop" (#603)
+- Backport security update to develop (#600)
+
+### 🚀 New Features
+
+- feat: Hidden Alma for user not conected on test mode (#607)
+- fix: persist post-configured defaults on first save (ECOM-3924) (#606)
+- fix: use inPageRef instead of inPage prop and normalize paymentDetail… (#604)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @alma-renovate-bot[bot], @dependabot[bot], @joyet-simon, @remi-zuffinetti, @webaaz, [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot), [dependabot[bot]](https://github.com/apps/dependabot) and joyet.simon
+
 ## v6.1.0 - 2026-04-23
 
 ### Changes
