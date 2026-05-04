@@ -73,6 +73,14 @@ class AbstractBackendGatewayTest extends TestCase {
 		) );
 	}
 
+	public function testDisplayFieldsetDefinitionsReturnsSchemaUngated(): void {
+		$definitions = $this->abstractBackendGateway->display_fieldset_definitions();
+
+		$this->assertArrayHasKey( 'in_page_enabled', $definitions );
+		$this->assertSame( 'yes', $definitions['in_page_enabled']['default'] );
+		$this->assertSame( 'checkbox', $definitions['in_page_enabled']['type'] );
+	}
+
 	public function testCustomizePaymentButtonsTextFieldsetWithPayNowAndPnxEnabled(): void {
 		$this->payNowGatewayMock->method( 'is_enabled' )->willReturn( true );
 		$this->pnxGatewayMock->method( 'is_enabled' )->willReturn( true );
