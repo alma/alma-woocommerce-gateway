@@ -6,13 +6,11 @@
 
 - Feature/ecom 4093 different order references used on alma payment when wc (#605)
 - Feature/ecom 4077 double title on paynow (#591)
-- Feature/ecom 4083 fix security issues (#601)
-- Revert "Backport security update to develop" (#603)
-- Backport security update to develop (#600)
+- Security updates (#600)
 
 ### 🚀 New Features
 
-- feat: Hidden Alma for user not conected on test mode (#607)
+- feat: Hidden Alma for user not connected on test mode (#607)
 - fix: persist post-configured defaults on first save (ECOM-3924) (#606)
 - fix: use inPageRef instead of inPage prop and normalize paymentDetail… (#604)
 
