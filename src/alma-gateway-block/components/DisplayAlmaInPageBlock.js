@@ -10,7 +10,6 @@ export const DisplayAlmaInPageBlock = (props) => {
         storeKey,
         cartTotal,
         setInPage,
-        inPage,
     } = props;
 
     // WC Blocks API compatibility:
@@ -102,9 +101,9 @@ export const DisplayAlmaInPageBlock = (props) => {
         }
 
         // Clean up previous instance if exists
-        if (inPage && typeof inPage.unmount === 'function') {
+        if (inPageRef.current && typeof inPageRef.current.unmount === 'function') {
             try {
-                inPage.unmount();
+                inPageRef.current.unmount();
             } catch (e) {
                 console.info('Unmounting previous instance');
             }
@@ -135,7 +134,7 @@ export const DisplayAlmaInPageBlock = (props) => {
             console.error('Failed to initialize:', error);
             setIsInPageReady(false);
         }
-    }, [plan, almaSettings, inPage, setInPage, isProcessingPayment]);
+    }, [plan, almaSettings, setInPage, isProcessingPayment]);
 
     /**
      * Prepare payment data onPaymentSetup
@@ -185,8 +184,13 @@ export const DisplayAlmaInPageBlock = (props) => {
         const unsubscribeSuccess = onCheckoutSuccess(async (checkoutResponse) => {
 
             try {
-                // Get payment details from response
-                const paymentDetails = checkoutResponse.processingResponse?.paymentDetails;
+                // Get payment details from response.
+                // WC 10+/Blocks 9+ serializes paymentDetails as [{key, value}] array
+                // instead of the flat object used by WC 9.x/Blocks 7-8.
+                const rawPaymentDetails = checkoutResponse.processingResponse?.paymentDetails;
+                const paymentDetails = Array.isArray(rawPaymentDetails)
+                    ? Object.fromEntries(rawPaymentDetails.map(({ key, value }) => [key, value]))
+                    : rawPaymentDetails;
                 const almaPaymentId = paymentDetails?.alma_payment_id;
 
                 if (!almaPaymentId) {
@@ -197,7 +201,7 @@ export const DisplayAlmaInPageBlock = (props) => {
                     };
                 }
 
-                if (!inPage || !isInPageReady) {
+                if (!inPageRef.current || !isInPageReady) {
                     resetCheckoutState();
                     return {
                         type: emitResponse.responseTypes.ERROR,
@@ -208,7 +212,7 @@ export const DisplayAlmaInPageBlock = (props) => {
                 const paymentResult = await new Promise((resolve) => {
                     let resolvedPromisePaymentResult = false;
 
-                    inPage.startPayment({
+                    inPageRef.current.startPayment({
                         paymentId: almaPaymentId,
                         onUserCloseModal: () => {
                             if (!resolvedPromisePaymentResult) {
@@ -260,7 +264,7 @@ export const DisplayAlmaInPageBlock = (props) => {
         });
 
         return () => unsubscribeSuccess();
-    }, [onCheckoutSuccess, isInPageReady, emitResponse.responseTypes, resetCheckoutState, inPage]);
+    }, [onCheckoutSuccess, isInPageReady, emitResponse.responseTypes, resetCheckoutState]);
 
     /**
      * Handle checkout failure onCheckoutFail
@@ -268,9 +272,9 @@ export const DisplayAlmaInPageBlock = (props) => {
     useEffect(() => {
         const unsubscribeFail = onCheckoutFail((error) => {
             // Unmount the In-Page instance if it exists
-            if (inPage && typeof inPage.unmount === 'function') {
+            if (inPageRef.current && typeof inPageRef.current.unmount === 'function') {
                 try {
-                    inPage.unmount();
+                    inPageRef.current.unmount();
                 } catch (e) {
                     console.warn('Failed to unmount In-Page instance on fail:', e);
                 }
@@ -284,7 +288,7 @@ export const DisplayAlmaInPageBlock = (props) => {
         });
 
         return () => unsubscribeFail();
-    }, [onCheckoutFail, inPage, resetCheckoutState]);
+    }, [onCheckoutFail, resetCheckoutState]);
 
     /**
      * Initialize or re-initialize In-Page when plan or cart total changes

@@ -167,27 +167,37 @@ class AbstractBackendGateway extends AbstractGateway {
 	public function display_fieldset(): array {
 
 		if ( Plugin::get_instance()->is_configured( true ) ) {
-			return array(
-				'display_section' => array(
-					'title' => '<hr>' . __( '→ Display options', 'alma-gateway-for-woocommerce' ),
-					'type'  => 'title',
-				),
-				'in_page_enabled' =>
-					array(
-						'title'    => __( 'Activate In-Page Checkout', 'alma-gateway-for-woocommerce' ),
-						'type'     => 'checkbox',
-						'label'    => __(
-							'Let your customers pay with Alma in a secure pop-up, without leaving your site.',
-							'alma-gateway-for-woocommerce'
-						),
-						'default'  => 'yes',
-						'desc_tip' => false,
-						'class'    => 'wc-alma-toggle-enabled',
-					),
-			);
+			return $this->display_fieldset_definitions();
 		}
 
 		return array();
+	}
+
+	/**
+	 * Raw display fieldset definitions, ungated.
+	 * Use this when you need the field schema regardless of the current
+	 * `is_configured` state (e.g. to backfill defaults during the first save).
+	 */
+	public function display_fieldset_definitions(): array {
+
+		return array(
+			'display_section' => array(
+				'title' => '<hr>' . __( '→ Display options', 'alma-gateway-for-woocommerce' ),
+				'type'  => 'title',
+			),
+			'in_page_enabled' =>
+				array(
+					'title'    => __( 'Activate In-Page Checkout', 'alma-gateway-for-woocommerce' ),
+					'type'     => 'checkbox',
+					'label'    => __(
+						'Let your customers pay with Alma in a secure pop-up, without leaving your site.',
+						'alma-gateway-for-woocommerce'
+					),
+					'default'  => 'yes',
+					'desc_tip' => false,
+					'class'    => 'wc-alma-toggle-enabled',
+				),
+		);
 	}
 
 	/**

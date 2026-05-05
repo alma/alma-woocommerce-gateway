@@ -116,6 +116,12 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 			return false;
 		}
 
+		/** @var ConfigService $config_service */
+		$config_service = Plugin::get_instance()->get_container()->get( ConfigService::class );
+		if ( ContextHelper::shouldHideForTestMode( $config_service ) ) {
+			return false;
+		}
+
 		// Check Fee Plans availability
 		try {
 			$available = false;

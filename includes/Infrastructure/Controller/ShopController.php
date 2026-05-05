@@ -57,6 +57,10 @@ class ShopController {
 					return;
 				}
 
+				if ( ContextHelper::shouldHideForTestMode( $this->configService ) ) {
+					return;
+				}
+
 				BlocksWidgetHelper::prepareWidgetAssets();
 
 				$this->widgetService->runWidget();
