@@ -225,4 +225,38 @@ class OrderStatusServiceTest extends TestCase {
 		$this->assertNull( $orderStatusService->sendOrderStatus( 613799, 'pending', 'completed' ) );
 	}
 
+	/**
+	 * Regression test for ECOM-4160: when WC transitions an Alma order to a
+	 * status outside the known set (custom statuses added by third-party
+	 * plugins like "Custom Order Status Manager"), getShipmentByStatus returns
+	 * null. Sending that null down the chain used to TypeError on the strict
+	 * `bool $isShipped` of PaymentProvider. We now skip the sync cleanly,
+	 * since "shipping state unknown" is not a value we can reliably send to
+	 * Alma.
+	 */
+	public function testSendOrderStatusSkipsForUnknownCustomStatus() {
+		$almaOrder = $this->createMock( OrderAdapter::class );
+		$almaOrder->expects( $this->once() )->method( 'isPaidWithAlma' )->willReturn( true );
+		$almaOrder->expects( $this->once() )->method( 'hasATransactionId' )->willReturn( true );
+		$almaOrder->expects( $this->once() )->method( 'getPaymentId' )->willReturn( 'payment_123' );
+
+		$paymentProvider = $this->createMock( PaymentProvider::class );
+		$paymentProvider->expects( $this->never() )->method( 'addOrderStatusByMerchantOrderReference' );
+
+		$paymentProviderFactoryMock = $this->createMock( PaymentProviderFactory::class );
+
+		$orderRepositoryMock = $this->createMock( OrderRepository::class );
+		$orderRepositoryMock->expects( $this->once() )->method( 'getById' )->willReturn( $almaOrder );
+
+		$orderStatusService = \Mockery::mock(
+			OrderStatusService::class,
+			[ $paymentProviderFactoryMock, $orderRepositoryMock ]
+		)->makePartial();
+		$ref = new \ReflectionProperty( OrderStatusService::class, 'paymentProvider' );
+		$ref->setAccessible( true );
+		$ref->setValue( $orderStatusService, $paymentProvider );
+
+		$this->assertNull( $orderStatusService->sendOrderStatus( 1, 'processing', 'shipped' ) );
+	}
+
 }
