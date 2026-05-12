@@ -75,11 +75,17 @@
             // Generate the selector based on the selected plan
             // Format: #alma_{payment_method}_gateway_in_page_{plan_key}
             const selectedMethod = $('input[name="payment_method"]:checked').val();
+            // Guard: when WooCommerce fires `updated_checkout` while a non-Alma
+            // method is selected (e.g. on a redirect-back with `?planKey=...`),
+            // selectedMethod is missing from almaMethods and `.type` would crash.
+            if (!almaMethods[selectedMethod]) {
+                return;
+            }
             const planSelector = '#alma_' + almaMethods[selectedMethod].type + '_gateway_in_page_' + almaPlanSelected;
             [installmentsCount, deferredDays, deferredMonths] = almaPlanSelected.match(/\d+/g).map(Number);
 
             // Initialize the Alma In-Page iframe
-            if (almaMethods[selectedMethod] && totalAmount > 0) {
+            if (totalAmount > 0) {
                 inPage = Alma.InPage.initialize({
                     merchantId: merchantId,
                     amountInCents: totalAmount,
