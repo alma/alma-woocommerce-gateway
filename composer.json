@@ -18,7 +18,7 @@
     "ext-intl": "*",
     "ext-json": "*",
     "ext-openssl": "*",
-    "alma/alma-php-client": "3.0.*|dev-feature/3.0",
+    "alma/alma-php-client": "^3.0.1",
     "level-2/dice": "^4.0",
     "psr/http-client": "^1",
     "psr/log": "^1"
