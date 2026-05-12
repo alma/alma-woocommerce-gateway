@@ -9,9 +9,11 @@ use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
 use Alma\Gateway\Infrastructure\Exception\Repository\ProductRepositoryException;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Plugin\Infrastructure\Repository\OrderRepositoryInterface;
-use PHPUnit\Framework\TestCase;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
+use Mockery;
+use PHPUnit\Framework\TestCase;
+use ReflectionProperty;
 
 class OrderStatusServiceTest extends TestCase {
 
@@ -21,7 +23,7 @@ class OrderStatusServiceTest extends TestCase {
 	}
 
 	public function tearDown(): void {
-		\Mockery::close();
+		Mockery::close();
 		Monkey\tearDown();
 		parent::tearDown();
 	}
@@ -62,7 +64,7 @@ class OrderStatusServiceTest extends TestCase {
 		$orderRepositoryMock->expects( $this->once() )->method( 'getById' )->willThrowException( new ProductRepositoryException( 'Order not found' ) );
 
 
-		$orderStatusService = \Mockery::mock(
+		$orderStatusService = Mockery::mock(
 			OrderStatusService::class,
 			[ $paymentProviderFactoryMock, $orderRepositoryMock ]
 		)->makePartial();
@@ -84,17 +86,17 @@ class OrderStatusServiceTest extends TestCase {
 		$orderRepositoryMock->expects( $this->once() )->method( 'getById' )->willReturn( $almaOrder );
 
 
-		$orderStatusService = \Mockery::mock(
+		$orderStatusService = Mockery::mock(
 			OrderStatusService::class,
 			[ $paymentProviderFactoryMock, $orderRepositoryMock ]
 		)->makePartial();
-		$ref                = new \ReflectionProperty( OrderStatusService::class, 'paymentProvider' );
+		$ref                = new ReflectionProperty( OrderStatusService::class, 'paymentProvider' );
 		$ref->setAccessible( true );
 		$ref->setValue( $orderStatusService, $paymentProvider );
 
 		$this->assertNull( $orderStatusService->sendOrderStatus( 1, 'pending', 'completed' ) );
 	}
-	
+
 
 	public function testSendOrderStatusNotCallSendForNonAlmaOrder() {
 		$nonAlmaOrderMock = $this->createMock( OrderAdapter::class );
@@ -110,11 +112,11 @@ class OrderStatusServiceTest extends TestCase {
 		$orderRepositoryMock->expects( $this->once() )->method( 'getById' )->willReturn( $nonAlmaOrderMock );
 
 
-		$orderStatusService = \Mockery::mock(
+		$orderStatusService = Mockery::mock(
 			OrderStatusService::class,
 			[ $paymentProviderFactoryMock, $orderRepositoryMock ]
 		)->makePartial();
-		$ref                = new \ReflectionProperty( OrderStatusService::class, 'paymentProvider' );
+		$ref                = new ReflectionProperty( OrderStatusService::class, 'paymentProvider' );
 		$ref->setAccessible( true );
 		$ref->setValue( $orderStatusService, $paymentProvider );
 
@@ -143,11 +145,11 @@ class OrderStatusServiceTest extends TestCase {
 		$orderRepositoryMock->expects( $this->once() )->method( 'getById' )->willReturn( $almaOrder );
 
 
-		$orderStatusService = \Mockery::mock(
+		$orderStatusService = Mockery::mock(
 			OrderStatusService::class,
 			[ $paymentProviderFactoryMock, $orderRepositoryMock ]
 		)->makePartial();
-		$ref                = new \ReflectionProperty( OrderStatusService::class, 'paymentProvider' );
+		$ref                = new ReflectionProperty( OrderStatusService::class, 'paymentProvider' );
 		$ref->setAccessible( true );
 		$ref->setValue( $orderStatusService, $paymentProvider );
 
@@ -176,11 +178,11 @@ class OrderStatusServiceTest extends TestCase {
 		$orderRepositoryMock->expects( $this->once() )->method( 'getById' )->willReturn( $almaOrder );
 
 
-		$orderStatusService = \Mockery::mock(
+		$orderStatusService = Mockery::mock(
 			OrderStatusService::class,
 			[ $paymentProviderFactoryMock, $orderRepositoryMock ]
 		)->makePartial();
-		$ref                = new \ReflectionProperty( OrderStatusService::class, 'paymentProvider' );
+		$ref                = new ReflectionProperty( OrderStatusService::class, 'paymentProvider' );
 		$ref->setAccessible( true );
 		$ref->setValue( $orderStatusService, $paymentProvider );
 
@@ -214,11 +216,11 @@ class OrderStatusServiceTest extends TestCase {
 		$orderRepositoryMock = $this->createMock( OrderRepository::class );
 		$orderRepositoryMock->expects( $this->once() )->method( 'getById' )->willReturn( $almaOrder );
 
-		$orderStatusService = \Mockery::mock(
+		$orderStatusService = Mockery::mock(
 			OrderStatusService::class,
 			[ $paymentProviderFactoryMock, $orderRepositoryMock ]
 		)->makePartial();
-		$ref = new \ReflectionProperty( OrderStatusService::class, 'paymentProvider' );
+		$ref                = new ReflectionProperty( OrderStatusService::class, 'paymentProvider' );
 		$ref->setAccessible( true );
 		$ref->setValue( $orderStatusService, $paymentProvider );
 
@@ -226,7 +228,7 @@ class OrderStatusServiceTest extends TestCase {
 	}
 
 	/**
-	 * Regression test for ECOM-4160: when WC transitions an Alma order to a
+	 * Regression test: when WC transitions an Alma order to a
 	 * status outside the known set (custom statuses added by third-party
 	 * plugins like "Custom Order Status Manager"), getShipmentByStatus returns
 	 * null. Sending that null down the chain used to TypeError on the strict
@@ -248,11 +250,11 @@ class OrderStatusServiceTest extends TestCase {
 		$orderRepositoryMock = $this->createMock( OrderRepository::class );
 		$orderRepositoryMock->expects( $this->once() )->method( 'getById' )->willReturn( $almaOrder );
 
-		$orderStatusService = \Mockery::mock(
+		$orderStatusService = Mockery::mock(
 			OrderStatusService::class,
 			[ $paymentProviderFactoryMock, $orderRepositoryMock ]
 		)->makePartial();
-		$ref = new \ReflectionProperty( OrderStatusService::class, 'paymentProvider' );
+		$ref                = new ReflectionProperty( OrderStatusService::class, 'paymentProvider' );
 		$ref->setAccessible( true );
 		$ref->setValue( $orderStatusService, $paymentProvider );
 
