@@ -116,10 +116,14 @@ class PaymentProvider implements PaymentProviderInterface, ProviderInterface {
 	/**
 	 * Send order status to Alma by merchant order reference.
 	 *
-	 * @param string $paymentId
-	 * @param string $merchantOrderReference
-	 * @param string $status
-	 * @param bool   $isShipped
+	 * @param string    $paymentId
+	 * @param string    $merchantOrderReference
+	 * @param string    $status
+	 * @param bool|null $isShipped Null when the WC status does not map to a known
+	 *                             shipping state (custom statuses from third-party
+	 *                             plugins). The Alma API and PaymentEndpoint accept
+	 *                             null — narrowing it here used to TypeError on
+	 *                             `woocommerce_order_status_changed`.
 	 *
 	 * @return void
 	 */
@@ -127,7 +131,7 @@ class PaymentProvider implements PaymentProviderInterface, ProviderInterface {
 		string $paymentId,
 		string $merchantOrderReference,
 		string $status,
-		bool $isShipped
+		?bool $isShipped = null
 	): void {
 		try {
 			$this->paymentEndpoint->addOrderStatusByMerchantOrderReference(
