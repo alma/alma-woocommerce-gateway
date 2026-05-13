@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 6.6
 Tested up to: 6.9.1
 Requires PHP: 7.4
-Stable tag: 6.2.0
+Stable tag: 6.2.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,20 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+## v6.2.1 - 2026-05-13
+
+### Changes
+
+### 🐛 Bug Fixes
+
+- fix: tolerate null isShipped on custom WC statuses (ECOM-4160) (#624)
+- fix: bump alma-php-client to ^3.0.1 to ship CartItemDto URL fix (ECOM-4155) (#623)
+- fix: guard mountIframe against non-Alma payment methods (ECOM-4049) (#615)
+
+#### Contributors
+
+@alma-create-pr-with-team-review[bot], @webaaz and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
 
 ## v6.2.0 - 2026-05-05
 
