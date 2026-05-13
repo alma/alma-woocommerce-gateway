@@ -1,5 +1,19 @@
 # Changelog
 
+## v6.3.0 - 2026-05-13
+
+### Changes
+
+### 🚀 New Features
+
+- fix: tolerate null isShipped on custom WC statuses (ECOM-4160) (#624)
+- fix: bump alma-php-client to ^3.0.1 to ship CartItemDto URL fix (ECOM-4155) (#623)
+- fix: guard mountIframe against non-Alma payment methods (ECOM-4049) (#615)
+
+#### Contributors
+
+@alma-create-pr-with-team-review[bot], @webaaz and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+
 ## v6.2.0 - 2026-05-05
 
 ### Changes
