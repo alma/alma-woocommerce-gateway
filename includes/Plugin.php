@@ -24,7 +24,7 @@ use Exception;
  */
 final class Plugin extends AbstractPlugin {
 
-	const ALMA_GATEWAY_PLUGIN_VERSION = '6.2.0';
+	const ALMA_GATEWAY_PLUGIN_VERSION = '6.2.1';
 
 	const ALMA_GATEWAY_PLUGIN_NAME = 'alma-gateway-for-woocommerce';
 
