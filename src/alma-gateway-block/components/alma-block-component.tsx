@@ -19,7 +19,8 @@ export type PaymentPlan = {
     due_date: number;
     purchase_amount: number;
     total_amount: number;
-    localized_due_date: string;
+    /** @deprecated The API now returns DD/MM/YYYY format. Use `due_date` (Unix timestamp) for formatting. */
+    localized_due_date?: string;
 };
 
 export type FeePlan = {
@@ -56,6 +57,7 @@ type AlmaBlockProps = {
     hasInPage: boolean;
     totalPrice: number;
     plans: Record<string, FeePlan>;
+    locale?: string;
 };
 
 export const AlmaBlock: React.FC<AlmaBlockProps> = (
@@ -66,6 +68,7 @@ export const AlmaBlock: React.FC<AlmaBlockProps> = (
             hasInPage,
             totalPrice,
             plans,
+            locale = 'fr',
         }
 ) => {
     const labels = {};
@@ -92,7 +95,7 @@ export const AlmaBlock: React.FC<AlmaBlockProps> = (
             <div className="alma-toggleButtonFieldLabel">{gatewaySettings.description}</div>
     );
     return (
-            <IntlProvider locale="fr">
+            <IntlProvider locale={locale}>
                 <div className={"alma-buttonsContainer"}>
                     <ToggleButtonsField
                             className={"alma-toggleButtonField"}
