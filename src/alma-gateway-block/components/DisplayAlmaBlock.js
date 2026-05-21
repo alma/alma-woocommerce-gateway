@@ -77,11 +77,17 @@ export const DisplayAlmaBlock = (props) => {
         };
     };
 
-    return isLoading ? <div></div> : <AlmaBlock
+    // WC 10.7+ mounts the gateway content earlier in the page lifecycle, so on
+    // first render the cart-update fetch has not yet populated `fee_plans_settings`
+    // and `plan` is undefined. Reading `plan.planKey` then crashes the React tree
+    // (`TypeError: Cannot read properties of undefined (reading 'planKey')`).
+    // Wait until at least one eligible plan is available before rendering AlmaBlock.
+    const hasPlans = Object.keys( availableFeePlans ).length > 0;
+    return ( isLoading || ! hasPlans ) ? <div></div> : <AlmaBlock
         hasInPage={almaSettings.is_in_page}
         totalPrice={cartTotal}
         gatewaySettings={gatewaySettings}
-        selectedFeePlan={plan.planKey}
+        selectedFeePlan={plan?.planKey ?? default_plan}
         setSelectedFeePlan={setSelectedFeePlan}
         plans={availableFeePlans}
     />
