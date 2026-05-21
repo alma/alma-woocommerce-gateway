@@ -110,11 +110,11 @@ class CheckoutService {
 			),
 			'nonce_key'        => $nonce_key,
 			'nonce_value'      => $this->securityHelper->generateToken( $nonce_key ),
+			'language'         => ContextHelper::getLanguage(),
 		);
 		if ( $isInPage ) {
 			$params['merchant_id'] = $this->configService->getMerchantId();
 			$params['environment'] = strtoupper( $this->configService->getEnvironment()->getMode() );
-			$params['language']    = ContextHelper::getLanguage();
 		}
 
 		return $params;
