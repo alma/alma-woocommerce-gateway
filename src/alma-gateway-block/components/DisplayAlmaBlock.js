@@ -90,6 +90,7 @@ export const DisplayAlmaBlock = (props) => {
         selectedFeePlan={plan?.planKey ?? default_plan}
         setSelectedFeePlan={setSelectedFeePlan}
         plans={availableFeePlans}
+        locale={almaSettings.language || 'fr'}
     />
 
 };

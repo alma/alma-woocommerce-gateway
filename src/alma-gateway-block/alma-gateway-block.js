@@ -69,7 +69,7 @@
  *
  * @typedef {object} PaymentSchedule
  * @property {number} due_date - UNIX timestamp of the due date.
- * @property {string} localized_due_date - Localized readable due date (e.g., "28 mai 2026").
+ * @property {string} [localized_due_date] - Deprecated: was a localized readable date; now returns DD/MM/YYYY. Use `due_date` for formatting.
  * @property {number} purchase_amount - Amount of the principal payment.
  * @property {number} customer_fee - Additional customer fees.
  * @property {number} customer_interest - Interest amount.

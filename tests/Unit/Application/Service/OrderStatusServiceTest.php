@@ -260,5 +260,4 @@ class OrderStatusServiceTest extends TestCase {
 
 		$this->assertNull( $orderStatusService->sendOrderStatus( 1, 'processing', 'shipped' ) );
 	}
-
 }
