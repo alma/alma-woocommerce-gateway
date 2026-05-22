@@ -309,8 +309,15 @@ export const DisplayAlmaInPageBlock = (props) => {
 
     const displayInstallments = gatewaySettings.is_pay_now ? 'none' : 'block';
 
-    // Render loading state or Alma In-Page block
-    return isLoading ? (
+    // Render loading state or Alma In-Page block.
+    // WC 10.7+ mounts the gateway content earlier in the page lifecycle, so on
+    // first render the cart-update fetch has not yet populated `fee_plans_settings`
+    // and `plan` is undefined. Reading `plan.planKey` then crashes the React tree
+    // (`TypeError: Cannot read properties of undefined (reading 'planKey')`), the
+    // toggle buttons never render and the user is stuck on an empty Alma block.
+    // Keep the loader visible until at least one eligible plan is available.
+    const hasPlans = Object.keys(availableFeePlans).length > 0;
+    return (isLoading || !hasPlans) ? (
         <div>Loading payment options...</div>
     ) : (
         <>
@@ -319,7 +326,7 @@ export const DisplayAlmaInPageBlock = (props) => {
                 isPayNow={gatewaySettings.is_pay_now}
                 totalPrice={cartTotal}
                 gatewaySettings={gatewaySettings}
-                selectedFeePlan={plan.planKey}
+                selectedFeePlan={plan?.planKey ?? default_plan}
                 setSelectedFeePlan={setSelectedFeePlan}
                 plans={availableFeePlans}
             />
