@@ -316,8 +316,8 @@ export const DisplayAlmaInPageBlock = (props) => {
     // (`TypeError: Cannot read properties of undefined (reading 'planKey')`), the
     // toggle buttons never render and the user is stuck on an empty Alma block.
     // Keep the loader visible until at least one eligible plan is available.
-    const hasPlans = Object.keys( availableFeePlans ).length > 0;
-    return ( isLoading || ! hasPlans ) ? (
+    const hasPlans = Object.keys(availableFeePlans).length > 0;
+    return (isLoading || !hasPlans) ? (
         <div>Loading payment options...</div>
     ) : (
         <>

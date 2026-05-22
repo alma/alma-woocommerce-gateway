@@ -82,8 +82,8 @@ export const DisplayAlmaBlock = (props) => {
     // and `plan` is undefined. Reading `plan.planKey` then crashes the React tree
     // (`TypeError: Cannot read properties of undefined (reading 'planKey')`).
     // Wait until at least one eligible plan is available before rendering AlmaBlock.
-    const hasPlans = Object.keys( availableFeePlans ).length > 0;
-    return ( isLoading || ! hasPlans ) ? <div></div> : <AlmaBlock
+    const hasPlans = Object.keys(availableFeePlans).length > 0;
+    return (isLoading || !hasPlans) ? <div></div> : <AlmaBlock
         hasInPage={almaSettings.is_in_page}
         totalPrice={cartTotal}
         gatewaySettings={gatewaySettings}
