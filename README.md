@@ -5,8 +5,8 @@
   payments
 - Requires at least Wordpress: 6.6
 - Requires at least Woocommerce: 10.1.0
-- Tested up to Wordpress: 6.9.1
-- Tested up to Woocommerce: 10.5.0
+- Tested up to Wordpress: 7.0
+- Tested up to Woocommerce: 10.8.0
 - Requires PHP: 7.4
 - Stable tag: 6.3.0
 - License: GPLv3
