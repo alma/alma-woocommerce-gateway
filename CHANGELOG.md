@@ -1,5 +1,22 @@
 # Changelog
 
+## v6.3.0 - 2026-05-25
+
+### Changes
+
+### 🚀 New Features
+
+- feat: Test the compatibility of the new WooCommerce 10.8.0-beta.1 Pre-Release with our Alma module (#631)
+- feat: Change the installment date instead of localized_due_date (#628)
+
+### 🐛 Bug Fixes
+
+- fix: In cart page block we displayed the demo product (#632)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @webaaz and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+
 ## v6.2.1 - 2026-05-13
 
 ### Changes
