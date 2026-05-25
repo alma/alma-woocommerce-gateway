@@ -39,7 +39,6 @@ const AlmaWidget = () => {
             const almaSettings = window.wc.wcSettings.getSetting(`alma-widget-block_data`, null);
             if (!almaSettings) return;
 
-            console.log(almaSettings);
             let widget = Alma.Widgets.initialize(
                 almaSettings.merchant_id,
                 Alma.ApiMode[almaSettings.environment],

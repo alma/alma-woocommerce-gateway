@@ -86,11 +86,7 @@ class AssetsConfig {
 						'deps' => array(
 							'alma-widget-cdn',
 							'wp-element',
-							'wp-blocks',
-							'wc-blocks-registry',
-							'wp-i18n',
-							'wp-components',
-							'wp-editor',
+							'wp-data',
 							'wc-blocks-data-store',
 						),
 					),
