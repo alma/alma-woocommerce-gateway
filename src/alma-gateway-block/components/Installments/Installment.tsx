@@ -1,6 +1,7 @@
 import * as React from "react";
-import {FormattedMessage, FormattedNumber} from "react-intl";
+import {FormattedDate, FormattedNumber} from "react-intl";
 import classNames from "classnames";
+import {__} from "@wordpress/i18n";
 
 type Props = {
     installment: any;
@@ -9,8 +10,10 @@ type Props = {
 };
 
 export const Installment: React.FC<Props> = ({
-                                                 installment: {localized_due_date}, totalAmountInEuros, firstInstallment
+                                                 installment: {due_date}, totalAmountInEuros, firstInstallment
                                              }: Props) => {
+
+    const dueDate = new Date(due_date * 1000);
 
     return (
             <div
@@ -21,10 +24,16 @@ export const Installment: React.FC<Props> = ({
                 <div className={classNames("alma-installment-bullet", {"alma-installment-firstBullet": firstInstallment})}/>
                 <div className={"alma-installment-installment"} data-testid="installment">
                     {firstInstallment ? (
-                            <FormattedMessage id="installments.today"
-                                              defaultMessage={localized_due_date.charAt(0).toUpperCase() + localized_due_date.slice(1)}/>
+                            <div>{__('Today', 'alma-gateway-for-woocommerce')}</div>
                     ) : (
-                            <div>{localized_due_date}</div>
+                            <div>
+                                <FormattedDate
+                                        value={dueDate}
+                                        day="numeric"
+                                        month="long"
+                                        year="numeric"
+                                />
+                            </div>
                     )}
                     <div>
                         <FormattedNumber

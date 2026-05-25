@@ -50,6 +50,14 @@ class OrderStatusService {
 		$paymentId = $order->getPaymentId();
 		$isShipped = $this->getShipmentByStatus( $newStatus );
 
+		// Custom WC statuses (added by third-party plugins) fall through to the
+		// `default` branch of getShipmentByStatus and return null. Sending an
+		// unknown shipping state to Alma would be misleading, and on the affected
+		// merchant it surfaced as a TypeError up the chain — skip cleanly instead.
+		if ( null === $isShipped ) {
+			return;
+		}
+
 		$this->getPaymentProvider();
 		$this->paymentProvider->addOrderStatusByMerchantOrderReference( $paymentId, $order->getOrderNumber(), $newStatus, $isShipped );
 

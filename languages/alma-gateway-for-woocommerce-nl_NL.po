@@ -418,6 +418,10 @@ msgstr "Totaal TTC"
 #: build/alma-gateway-block/alma-gateway-block.js:48522
 msgid "Payment costs"
 msgstr "Betalingskosten"
+#: build/alma-gateway-block/alma-gateway-block.js:171
+msgid "Today"
+msgstr "Vandaag"
+
 
 #: build/alma-widget-block/alma-widget-block.js:104
 #: src/alma-widget-block/edit.js:49
