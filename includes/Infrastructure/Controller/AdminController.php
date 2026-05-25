@@ -42,15 +42,13 @@ class AdminController {
 		$this->pluginService->addAlmaAdminNotifications();
 		$this->pluginService->addAlmaLinksOnAdmin();
 
-		if ( ! ContextHelper::isAdmin() ) {
-			return;
-		}
-
-		// Register Admin Assets (only in admin context)
+		// Register Admin Assets
 		try {
 			$this->assetsService->registerAdminAssets();
 			$this->assetsService->registerWidgetAssets();
-			$this->assetsService->registerWidgetBlockEditorAssets();
+			if ( ContextHelper::isAdmin() ) {
+				$this->assetsService->registerWidgetBlockEditorAssets();
+			}
 		} catch ( AssetsServiceException $e ) {
 			throw new AdminControllerException( 'Can not register Admin assets', 0, $e );
 		}
