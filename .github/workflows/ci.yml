@@ -29,7 +29,7 @@ jobs:
           show-progress: false
 
       - name: Install taskfile
-        uses: arduino/setup-task@ac45236a6c6be11fa7d6fd81ebbe1ed6d5df47a7
+        uses: arduino/setup-task@696ff8f0a858f16a3c205ee53d273290513aad95
 
       - name: Lint code
         run: task lint
