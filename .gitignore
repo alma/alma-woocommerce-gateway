@@ -22,3 +22,8 @@ phpstan.log
 build/*
 /vendor-prefixed/*
 /coverage/*
+.cache
+.config
+.local
+src/.*
+.github
