@@ -8,14 +8,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\Client\Application\Endpoint\ConfigurationEndpoint;
 use Alma\Client\Application\Exception\Endpoint\ConfigurationEndpointException;
+use Alma\Client\Application\Helper\RequestHelper;
+use Alma\Gateway\Infrastructure\Helper\AjaxHelper;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
 
 class CollectCmsDataService {
 
 	const COLLECT_DATA_URL_SENT_AT  = 'collect_data_url_sent_at';
 	const URL_REFRESH_INTERVAL_DAYS = 30;
-	const COLLECT_CMS_DATA_REST_NAMESPACE = 'alma/v1';
-	const COLLECT_CMS_DATA_REST_ROUTE     = '/collect-cms-data';
+	const WC_API_ENDPOINT           = 'alma_collect_cms_data';
 
 	private ConfigurationEndpoint $configurationEndpoint;
 	private ConfigService $configService;
@@ -40,7 +41,7 @@ class CollectCmsDataService {
 			return;
 		}
 
-		$url = rest_url( self::COLLECT_CMS_DATA_REST_NAMESPACE . self::COLLECT_CMS_DATA_REST_ROUTE );
+		$url = home_url( '/wc-api/' . self::WC_API_ENDPOINT );
 
 		try {
 			$this->configurationEndpoint->sendIntegrationsConfigurationsUrl( $url );
@@ -79,5 +80,32 @@ class CollectCmsDataService {
 	 */
 	private function saveSentDate(): void {
 		$this->configService->createSetting( self::COLLECT_DATA_URL_SENT_AT, gmdate( 'c' ) );
+	}
+
+	/**
+	 * Handle the CMS data collection request from Alma.
+	 * Validates the HMAC signature before returning any data.
+	 */
+	public function handle(): void {
+		if ( ! array_key_exists( 'HTTP_X_ALMA_SIGNATURE', $_SERVER ) ) {
+			AjaxHelper::sendUnauthorizedResponse( 'Header key X-Alma-Signature does not exist.' );
+			return;
+		}
+
+		$merchantId = $this->configService->getMerchantId();
+		$apiKey     = $this->configService->getActiveApiKey();
+
+		if ( empty( $merchantId ) || empty( $apiKey ) ) {
+			AjaxHelper::sendUnauthorizedResponse( 'Unauthorized request.' );
+			return;
+		}
+
+		if ( ! RequestHelper::isHmacValidated( $merchantId, $apiKey, $_SERVER['HTTP_X_ALMA_SIGNATURE'] ) ) {
+			$this->loggerService->warning( 'Collect CMS data: signature validation failed.' );
+			AjaxHelper::sendUnauthorizedResponse( 'Unauthorized request.' );
+			return;
+		}
+
+		AjaxHelper::sendOkResponse( 'Data Collection for CMS OK' );
 	}
 }

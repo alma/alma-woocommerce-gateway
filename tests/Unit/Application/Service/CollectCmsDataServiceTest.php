@@ -38,6 +38,7 @@ class CollectCmsDataServiceTest extends TestCase {
 	}
 
 	protected function tearDown(): void {
+		unset( $_SERVER['HTTP_X_ALMA_SIGNATURE'] );
 		Monkey\tearDown();
 		parent::tearDown();
 	}
@@ -46,8 +47,8 @@ class CollectCmsDataServiceTest extends TestCase {
 	 * When no date is stored, the URL must be sent and the date saved.
 	 */
 	public function testMaybeSendCollectDataUrlWhenNoSettingSendsUrlAndSavesDate(): void {
-		$url = 'https://example.com/wp-json/alma/v1/collect-cms-data';
-		Functions\when( 'rest_url' )->justReturn( $url );
+		$url = 'https://example.com/wc-api/alma_collect_cms_data';
+		Functions\when( 'home_url' )->justReturn( $url );
 
 		$this->configService->method( 'getSetting' )
 		                    ->with( CollectCmsDataService::COLLECT_DATA_URL_SENT_AT )
@@ -68,9 +69,9 @@ class CollectCmsDataServiceTest extends TestCase {
 	 * When the stored date is older than 30 days, the URL must be re-sent and the date updated.
 	 */
 	public function testMaybeSendCollectDataUrlWhenSentAtOlderThan30DaysSendsUrlAndSavesDate(): void {
-		$url     = 'https://example.com/wp-json/alma/v1/collect-cms-data';
+		$url     = 'https://example.com/wc-api/alma_collect_cms_data';
 		$oldDate = gmdate( 'c', strtotime( '-31 days' ) );
-		Functions\when( 'rest_url' )->justReturn( $url );
+		Functions\when( 'home_url' )->justReturn( $url );
 
 		$this->configService->method( 'getSetting' )
 		                    ->with( CollectCmsDataService::COLLECT_DATA_URL_SENT_AT )
@@ -110,8 +111,8 @@ class CollectCmsDataServiceTest extends TestCase {
 	 * When the stored value is not a valid date, it must be treated as missing and the URL sent.
 	 */
 	public function testMaybeSendCollectDataUrlWhenSentAtIsInvalidDateSendsUrl(): void {
-		$url = 'https://example.com/wp-json/alma/v1/collect-cms-data';
-		Functions\when( 'rest_url' )->justReturn( $url );
+		$url = 'https://example.com/wc-api/alma_collect_cms_data';
+		Functions\when( 'home_url' )->justReturn( $url );
 
 		$this->configService->method( 'getSetting' )
 		                    ->with( CollectCmsDataService::COLLECT_DATA_URL_SENT_AT )
@@ -131,8 +132,8 @@ class CollectCmsDataServiceTest extends TestCase {
 	 * When the endpoint throws an exception, the date must NOT be saved and the error must be logged.
 	 */
 	public function testMaybeSendCollectDataUrlWhenExceptionThrownDoesNotSaveDateAndLogsError(): void {
-		$url = 'https://example.com/wp-json/alma/v1/collect-cms-data';
-		Functions\when( 'rest_url' )->justReturn( $url );
+		$url = 'https://example.com/wc-api/alma_collect_cms_data';
+		Functions\when( 'home_url' )->justReturn( $url );
 
 		$this->configService->method( 'getSetting' )
 		                    ->willReturn( '' );
@@ -154,16 +155,107 @@ class CollectCmsDataServiceTest extends TestCase {
 	}
 
 	/**
-	 * Verify the setting key constant value to prevent accidental renames.
+	 * When the signature header is missing, handle() must return 401.
 	 */
-	public function testCollectDataUrlSentAtConstantValue(): void {
-		$this->assertSame( 'collect_data_url_sent_at', CollectCmsDataService::COLLECT_DATA_URL_SENT_AT );
+	public function testHandleMissingSignatureHeaderReturns401(): void {
+		unset( $_SERVER['HTTP_X_ALMA_SIGNATURE'] );
+
+		$capturedData   = null;
+		$capturedStatus = null;
+		Functions\when( 'wp_send_json' )->alias(
+			function ( $data, $status ) use ( &$capturedData, &$capturedStatus ) {
+				$capturedData   = $data;
+				$capturedStatus = $status;
+			}
+		);
+
+		$this->service->handle();
+
+		$this->assertSame( 401, $capturedStatus );
+		$this->assertArrayHasKey( 'error', $capturedData );
+		$this->assertStringContainsString( 'X-Alma-Signature', $capturedData['error'] );
 	}
 
 	/**
-	 * Verify the refresh interval constant value.
+	 * When the signature is invalid, handle() must return 401 and log a warning.
 	 */
-	public function testUrlRefreshIntervalDaysConstantValue(): void {
-		$this->assertSame( 30, CollectCmsDataService::URL_REFRESH_INTERVAL_DAYS );
+	public function testHandleInvalidSignatureReturns401AndLogsWarning(): void {
+		$_SERVER['HTTP_X_ALMA_SIGNATURE'] = 'invalid_signature';
+
+		$this->configService->method( 'getMerchantId' )->willReturn( 'merchant_123' );
+		$this->configService->method( 'getActiveApiKey' )->willReturn( 'test_api_key' );
+
+		$capturedStatus = null;
+		Functions\when( 'wp_send_json' )->alias(
+			function ( $data, $status ) use ( &$capturedStatus ) {
+				$capturedStatus = $status;
+			}
+		);
+
+		$this->loggerService->expects( $this->once() )
+		                    ->method( 'warning' )
+		                    ->with( $this->stringContains( 'signature validation failed' ) );
+
+		$this->service->handle();
+
+		$this->assertSame( 401, $capturedStatus );
+	}
+
+	/**
+	 * When credentials are missing, handle() must return 401 without attempting HMAC validation.
+	 */
+	public function testHandleEmptyCredentialsReturns401(): void {
+		$_SERVER['HTTP_X_ALMA_SIGNATURE'] = 'some_signature';
+
+		$this->configService->method( 'getMerchantId' )->willReturn( null );
+		$this->configService->method( 'getActiveApiKey' )->willReturn( null );
+
+		$capturedStatus = null;
+		Functions\when( 'wp_send_json' )->alias(
+			function ( $data, $status ) use ( &$capturedStatus ) {
+				$capturedStatus = $status;
+			}
+		);
+
+		$this->loggerService->expects( $this->never() )->method( 'warning' );
+
+		$this->service->handle();
+
+		$this->assertSame( 401, $capturedStatus );
+	}
+
+	/**
+	 * When the signature is valid, handle() must return 200 with the expected message.
+	 */
+	public function testHandleValidSignatureReturnsOk(): void {
+		$merchantId = 'merchant_123';
+		$apiKey     = 'test_api_key';
+		$signature  = hash_hmac( 'sha256', $merchantId, $apiKey );
+
+		$_SERVER['HTTP_X_ALMA_SIGNATURE'] = $signature;
+
+		$this->configService->method( 'getMerchantId' )->willReturn( $merchantId );
+		$this->configService->method( 'getActiveApiKey' )->willReturn( $apiKey );
+
+		$capturedData   = null;
+		$capturedStatus = null;
+		Functions\when( 'wp_send_json' )->alias(
+			function ( $data, $status ) use ( &$capturedData, &$capturedStatus ) {
+				$capturedData   = $data;
+				$capturedStatus = $status;
+			}
+		);
+
+		$this->service->handle();
+
+		$this->assertSame( 200, $capturedStatus );
+		$this->assertSame( 'Data Collection for CMS OK', $capturedData );
+	}
+
+	/**
+	 * Verify the WC API endpoint constant value.
+	 */
+	public function testWcApiEndpointConstantValue(): void {
+		$this->assertSame( 'alma_collect_cms_data', CollectCmsDataService::WC_API_ENDPOINT );
 	}
 }
