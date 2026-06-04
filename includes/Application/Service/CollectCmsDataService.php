@@ -8,6 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Alma\Client\Application\DTO\MerchantData\CmsFeaturesDto;
 use Alma\Client\Application\DTO\MerchantData\CmsInfoDto;
+use Alma\Client\Application\DTO\MerchantData\MerchantDataDto;
 use Alma\Client\Application\Endpoint\ConfigurationEndpoint;
 use Alma\Client\Application\Exception\Endpoint\ConfigurationEndpointException;
 use Alma\Client\Application\Helper\RequestHelper;
@@ -119,10 +120,7 @@ class CollectCmsDataService {
 		}
 
 		AjaxHelper::sendOkResponse(
-			array(
-				'cms_features' => $this->buildCmsFeatures()->toArray(),
-				'cms_info'     => $this->buildCmsInfo()->toArray(),
-			)
+			( new MerchantDataDto() )->toArray( $this->buildCmsInfo(), $this->buildCmsFeatures() )
 		);
 	}
 
