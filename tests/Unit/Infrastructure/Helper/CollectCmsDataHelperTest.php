@@ -113,4 +113,76 @@ class CollectCmsDataHelperTest extends TestCase {
 
 		$this->assertFalse( $this->helper->isMultisite() );
 	}
+
+	// ─── getCmsVersion ──────────────────────────────────────────────────
+
+	public function testGetCmsVersionReturnsWcVersion(): void {
+		$wc          = new \stdClass();
+		$wc->version = '9.0.0';
+		Functions\when( 'WC' )->justReturn( $wc );
+
+		$this->assertSame( '9.0.0', $this->helper->getCmsVersion() );
+	}
+
+	public function testGetCmsVersionReturnsEmptyStringWhenWcReturnsFalse(): void {
+		Functions\when( 'WC' )->justReturn( false );
+
+		$this->assertSame( '', $this->helper->getCmsVersion() );
+	}
+
+	// ─── getThirdPartiesPlugins ──────────────────────────────────────────
+
+	public function testGetThirdPartiesPluginsReturnsFormattedPluginsExcludingAlma(): void {
+		$almaBasename = 'alma-gateway-for-woocommerce/alma-gateway-for-woocommerce.php';
+
+		Functions\when( 'get_plugins' )->justReturn(
+			array(
+				'woocommerce/woocommerce.php'                                    => array( 'Name' => 'WooCommerce', 'Version' => '9.0.0' ),
+				$almaBasename                                                    => array( 'Name' => 'Alma', 'Version' => '6.3.0' ),
+				'query-monitor/query-monitor.php'                                => array( 'Name' => 'Query Monitor', 'Version' => '3.16.0' ),
+			)
+		);
+		Functions\when( 'get_option' )->justReturn(
+			array( 'woocommerce/woocommerce.php', $almaBasename, 'query-monitor/query-monitor.php' )
+		);
+		Functions\when( 'plugin_basename' )->justReturn( $almaBasename );
+
+		$result = $this->helper->getThirdPartiesPlugins();
+
+		$this->assertCount( 2, $result );
+		$this->assertSame( array( 'name' => 'WooCommerce', 'version' => '9.0.0' ), $result[0] );
+		$this->assertSame( array( 'name' => 'Query Monitor', 'version' => '3.16.0' ), $result[1] );
+	}
+
+	public function testGetThirdPartiesPluginsReturnsEmptyArrayWhenNoActivePlugins(): void {
+		Functions\when( 'get_plugins' )->justReturn( array() );
+		Functions\when( 'get_option' )->justReturn( array() );
+		Functions\when( 'plugin_basename' )->justReturn( 'alma-gateway-for-woocommerce/alma-gateway-for-woocommerce.php' );
+
+		$this->assertSame( array(), $this->helper->getThirdPartiesPlugins() );
+	}
+
+	// ─── getThemeName / getThemeVersion ─────────────────────────────────
+
+	public function testGetThemeNameReturnsActiveThemeName(): void {
+		$themeMock = new class {
+			public function get( string $key ): string {
+				return 'name' === strtolower( $key ) ? 'Storefront' : '';
+			}
+		};
+		Functions\when( 'wp_get_theme' )->justReturn( $themeMock );
+
+		$this->assertSame( 'Storefront', $this->helper->getThemeName() );
+	}
+
+	public function testGetThemeVersionReturnsActiveThemeVersion(): void {
+		$themeMock = new class {
+			public function get( string $key ): string {
+				return 'version' === strtolower( $key ) ? '4.2.0' : '';
+			}
+		};
+		Functions\when( 'wp_get_theme' )->justReturn( $themeMock );
+
+		$this->assertSame( '4.2.0', $this->helper->getThemeVersion() );
+	}
 }

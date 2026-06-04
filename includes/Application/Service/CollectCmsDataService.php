@@ -7,6 +7,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Alma\Client\Application\DTO\MerchantData\CmsFeaturesDto;
+use Alma\Client\Application\DTO\MerchantData\CmsInfoDto;
+use Alma\Client\Application\DTO\MerchantData\MerchantDataDto;
 use Alma\Client\Application\Endpoint\ConfigurationEndpoint;
 use Alma\Client\Application\Exception\Endpoint\ConfigurationEndpointException;
 use Alma\Client\Application\Helper\RequestHelper;
@@ -15,6 +17,7 @@ use Alma\Gateway\Infrastructure\Helper\AjaxHelper;
 use Alma\Gateway\Infrastructure\Helper\CollectCmsDataHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
+use Alma\Gateway\Plugin;
 
 class CollectCmsDataService {
 
@@ -116,7 +119,9 @@ class CollectCmsDataService {
 			return;
 		}
 
-		AjaxHelper::sendOkResponse( array( 'cms_features' => $this->buildCmsFeatures()->toArray() ) );
+		AjaxHelper::sendOkResponse(
+			( new MerchantDataDto() )->toArray( $this->buildCmsInfo(), $this->buildCmsFeatures() )
+		);
 	}
 
 	/**
@@ -173,5 +178,36 @@ class CollectCmsDataService {
 		ksort( $plans );
 
 		return empty( $plans ) ? null : $plans;
+	}
+
+	/**
+	 * Build the CmsInfoDto with current CMS and plugin metadata.
+	 */
+	private function buildCmsInfo(): CmsInfoDto {
+		return new CmsInfoDto(
+			array(
+				'cms_name'              => 'WooCommerce',
+				'cms_version'           => $this->collectCmsDataHelper->getCmsVersion(),
+				'third_parties_plugins' => $this->collectCmsDataHelper->getThirdPartiesPlugins(),
+				'theme_name'            => $this->collectCmsDataHelper->getThemeName(),
+				'theme_version'         => $this->collectCmsDataHelper->getThemeVersion(),
+				'language_name'         => 'PHP',
+				'language_version'      => phpversion(),
+				'alma_plugin_version'   => Plugin::ALMA_GATEWAY_PLUGIN_VERSION,
+				'alma_sdk_version'      => $this->getAlmaSdkVersion(),
+				'alma_sdk_name'         => 'alma/alma-php-client',
+			)
+		);
+	}
+
+	/**
+	 * Returns the version of the Alma PHP client SDK from Composer's installed packages.
+	 */
+	private function getAlmaSdkVersion(): string {
+		try {
+			return \Composer\InstalledVersions::getPrettyVersion( 'alma/alma-php-client' ) ?? '';
+		} catch ( \Throwable $e ) {
+			return '';
+		}
 	}
 }

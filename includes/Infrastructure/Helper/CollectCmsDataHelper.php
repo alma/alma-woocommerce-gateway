@@ -68,4 +68,61 @@ class CollectCmsDataHelper {
 	public function isMultisite(): bool {
 		return is_multisite();
 	}
+
+	/**
+	 * Returns the current WooCommerce version, or an empty string if WooCommerce is not available.
+	 */
+	public function getCmsVersion(): string {
+		if ( ! function_exists( 'WC' ) || ! WC() ) {
+			return '';
+		}
+
+		return WC()->version ?? '';
+	}
+
+	/**
+	 * Returns the list of active third-party plugins (excluding the Alma plugin),
+	 * each formatted as ['name' => ..., 'version' => ...].
+	 *
+	 * @return array<int, array{name: string, version: string}>
+	 */
+	public function getThirdPartiesPlugins(): array {
+		if ( ! function_exists( 'get_plugins' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		$allPlugins    = get_plugins();
+		$activePlugins = (array) get_option( 'active_plugins', array() );
+		$almaBasename  = plugin_basename( Plugin::get_instance()->get_plugin_file() );
+
+		$result = array();
+		foreach ( $activePlugins as $basename ) {
+			if ( $basename === $almaBasename ) {
+				continue;
+			}
+
+			if ( isset( $allPlugins[ $basename ] ) ) {
+				$result[] = array(
+					'name'    => $allPlugins[ $basename ]['Name'],
+					'version' => $allPlugins[ $basename ]['Version'],
+				);
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Returns the name of the currently active WordPress theme.
+	 */
+	public function getThemeName(): string {
+		return wp_get_theme()->get( 'Name' ) ?: '';
+	}
+
+	/**
+	 * Returns the version of the currently active WordPress theme.
+	 */
+	public function getThemeVersion(): string {
+		return wp_get_theme()->get( 'Version' ) ?: '';
+	}
 }
