@@ -384,6 +384,60 @@ class CollectCmsDataServiceTest extends TestCase {
 	}
 
 	/**
+	 * Verify that handle() returns a cms_info key with CMS and plugin metadata.
+	 */
+	public function testHandleValidSignatureReturnsCmsInfo(): void {
+		$merchantId = 'merchant_123';
+		$apiKey     = 'test_api_key';
+		$signature  = hash_hmac( 'sha256', $merchantId, $apiKey );
+
+		$_SERVER['HTTP_X_ALMA_SIGNATURE'] = $signature;
+
+		$this->configService->method( 'getMerchantId' )->willReturn( $merchantId );
+		$this->configService->method( 'getActiveApiKey' )->willReturn( $apiKey );
+		$this->configService->method( 'isEnabled' )->willReturn( false );
+		$this->configService->method( 'getWidgetCartEnabled' )->willReturn( false );
+		$this->configService->method( 'getWidgetProductEnabled' )->willReturn( false );
+		$this->configService->method( 'isInPageEnabled' )->willReturn( false );
+		$this->configService->method( 'isDebug' )->willReturn( false );
+		$this->configService->method( 'getExcludedCategories' )->willReturn( array() );
+
+		$this->feePlanRepository->method( 'getAll' )
+		                        ->willReturn( new FeePlanListAdapter( array() ) );
+
+		$this->collectCmsDataHelper->method( 'getPaymentMethodPosition' )->willReturn( 2 );
+		$this->collectCmsDataHelper->method( 'getSpecificFeatures' )->willReturn( array() );
+		$this->collectCmsDataHelper->method( 'isMultisite' )->willReturn( false );
+		$this->collectCmsDataHelper->method( 'getCmsVersion' )->willReturn( '9.0.0' );
+		$this->collectCmsDataHelper->method( 'getThirdPartiesPlugins' )->willReturn(
+			array( array( 'name' => 'WooCommerce', 'version' => '9.0.0' ) )
+		);
+		$this->collectCmsDataHelper->method( 'getThemeName' )->willReturn( 'Storefront' );
+		$this->collectCmsDataHelper->method( 'getThemeVersion' )->willReturn( '4.2.0' );
+
+		$capturedData = null;
+		Functions\when( 'wp_send_json' )->alias(
+			function ( $data, $status ) use ( &$capturedData ) {
+				$capturedData = $data;
+			}
+		);
+
+		$this->service->handle();
+
+		$this->assertArrayHasKey( 'cms_info', $capturedData );
+		$cmsInfo = $capturedData['cms_info'];
+		$this->assertSame( 'WooCommerce', $cmsInfo['cms_name'] );
+		$this->assertSame( '9.0.0', $cmsInfo['cms_version'] );
+		$this->assertSame( 'PHP', $cmsInfo['language_name'] );
+		$this->assertSame( phpversion(), $cmsInfo['language_version'] );
+		$this->assertSame( 'alma/alma-php-client', $cmsInfo['alma_sdk_name'] );
+		$this->assertSame( 'Storefront', $cmsInfo['theme_name'] );
+		$this->assertSame( '4.2.0', $cmsInfo['theme_version'] );
+		$this->assertArrayHasKey( 'alma_plugin_version', $cmsInfo );
+		$this->assertArrayHasKey( 'third_parties_plugins', $cmsInfo );
+	}
+
+	/**
 	 * Verify the WC API endpoint constant value.
 	 */
 	public function testWcApiEndpointConstantValue(): void {
