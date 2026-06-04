@@ -6,6 +6,11 @@ use Alma\Client\Application\Endpoint\ConfigurationEndpoint;
 use Alma\Client\Application\Exception\Endpoint\ConfigurationEndpointException;
 use Alma\Gateway\Application\Service\CollectCmsDataService;
 use Alma\Gateway\Application\Service\ConfigService;
+use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
+use Alma\Gateway\Infrastructure\Adapter\FeePlanListAdapter;
+use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
+use Alma\Gateway\Infrastructure\Helper\CollectCmsDataHelper;
+use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
@@ -16,6 +21,8 @@ class CollectCmsDataServiceTest extends TestCase {
 	private ConfigurationEndpoint $configurationEndpoint;
 	private ConfigService $configService;
 	private LoggerService $loggerService;
+	private FeePlanRepository $feePlanRepository;
+	private CollectCmsDataHelper $collectCmsDataHelper;
 	private CollectCmsDataService $service;
 
 	protected function setUp(): void {
@@ -29,11 +36,15 @@ class CollectCmsDataServiceTest extends TestCase {
 		$this->configurationEndpoint = $this->createMock( ConfigurationEndpoint::class );
 		$this->configService         = $this->createMock( ConfigService::class );
 		$this->loggerService         = $this->createMock( LoggerService::class );
+		$this->feePlanRepository     = $this->createMock( FeePlanRepository::class );
+		$this->collectCmsDataHelper  = $this->createMock( CollectCmsDataHelper::class );
 
 		$this->service = new CollectCmsDataService(
 			$this->configurationEndpoint,
 			$this->configService,
-			$this->loggerService
+			$this->loggerService,
+			$this->feePlanRepository,
+			$this->collectCmsDataHelper
 		);
 	}
 
@@ -225,9 +236,9 @@ class CollectCmsDataServiceTest extends TestCase {
 	}
 
 	/**
-	 * When the signature is valid, handle() must return 200 with the expected message.
+	 * When the signature is valid, handle() must return 200 with CMS features data.
 	 */
-	public function testHandleValidSignatureReturnsOk(): void {
+	public function testHandleValidSignatureReturnsOkWithCmsData(): void {
 		$merchantId = 'merchant_123';
 		$apiKey     = 'test_api_key';
 		$signature  = hash_hmac( 'sha256', $merchantId, $apiKey );
@@ -236,6 +247,19 @@ class CollectCmsDataServiceTest extends TestCase {
 
 		$this->configService->method( 'getMerchantId' )->willReturn( $merchantId );
 		$this->configService->method( 'getActiveApiKey' )->willReturn( $apiKey );
+		$this->configService->method( 'isEnabled' )->willReturn( true );
+		$this->configService->method( 'getWidgetCartEnabled' )->willReturn( true );
+		$this->configService->method( 'getWidgetProductEnabled' )->willReturn( false );
+		$this->configService->method( 'isInPageEnabled' )->willReturn( false );
+		$this->configService->method( 'isDebug' )->willReturn( false );
+		$this->configService->method( 'getExcludedCategories' )->willReturn( array() );
+
+		$this->feePlanRepository->method( 'getAll' )
+		                        ->willReturn( new FeePlanListAdapter( array() ) );
+
+		$this->collectCmsDataHelper->method( 'getPaymentMethodPosition' )->willReturn( 1 );
+		$this->collectCmsDataHelper->method( 'getSpecificFeatures' )->willReturn( array() );
+		$this->collectCmsDataHelper->method( 'isMultisite' )->willReturn( false );
 
 		$capturedData   = null;
 		$capturedStatus = null;
@@ -249,7 +273,114 @@ class CollectCmsDataServiceTest extends TestCase {
 		$this->service->handle();
 
 		$this->assertSame( 200, $capturedStatus );
-		$this->assertSame( 'Data Collection for CMS OK', $capturedData );
+		$this->assertIsArray( $capturedData );
+		$this->assertArrayHasKey( 'cms_features', $capturedData );
+		$this->assertTrue( $capturedData['cms_features']['alma_enabled'] );
+		$this->assertArrayHasKey( 'payment_method_position', $capturedData['cms_features'] );
+	}
+
+	/**
+	 * When the fee plan repository throws an exception, handle() should still return 200
+	 * with null for used_fee_plans and log a warning.
+	 */
+	public function testHandleValidSignatureWithFeePlanExceptionReturns200AndLogsWarning(): void {
+		$merchantId = 'merchant_123';
+		$apiKey     = 'test_api_key';
+		$signature  = hash_hmac( 'sha256', $merchantId, $apiKey );
+
+		$_SERVER['HTTP_X_ALMA_SIGNATURE'] = $signature;
+
+		$this->configService->method( 'getMerchantId' )->willReturn( $merchantId );
+		$this->configService->method( 'getActiveApiKey' )->willReturn( $apiKey );
+		$this->configService->method( 'isEnabled' )->willReturn( true );
+		$this->configService->method( 'getWidgetCartEnabled' )->willReturn( false );
+		$this->configService->method( 'getWidgetProductEnabled' )->willReturn( false );
+		$this->configService->method( 'isInPageEnabled' )->willReturn( false );
+		$this->configService->method( 'isDebug' )->willReturn( false );
+		$this->configService->method( 'getExcludedCategories' )->willReturn( array() );
+
+		$this->feePlanRepository->method( 'getAll' )
+		                        ->willThrowException( new FeePlanRepositoryException( 'API error' ) );
+
+		$this->collectCmsDataHelper->method( 'getPaymentMethodPosition' )->willReturn( 0 );
+		$this->collectCmsDataHelper->method( 'getSpecificFeatures' )->willReturn( array() );
+		$this->collectCmsDataHelper->method( 'isMultisite' )->willReturn( false );
+
+		$this->loggerService->expects( $this->once() )
+		                    ->method( 'warning' )
+		                    ->with( $this->stringContains( 'fee plans' ) );
+
+		$capturedStatus = null;
+		$capturedData   = null;
+		Functions\when( 'wp_send_json' )->alias(
+			function ( $data, $status ) use ( &$capturedData, &$capturedStatus ) {
+				$capturedData   = $data;
+				$capturedStatus = $status;
+			}
+		);
+
+		$this->service->handle();
+
+		$this->assertSame( 200, $capturedStatus );
+		$this->assertArrayNotHasKey( 'used_fee_plans', $capturedData['cms_features'] );
+	}
+
+	/**
+	 * When fee plans are available and some are locally enabled, handle() returns them in CMS data.
+	 */
+	public function testHandleValidSignatureReturnsCmsDataWithEnabledFeePlans(): void {
+		$merchantId = 'merchant_123';
+		$apiKey     = 'test_api_key';
+		$signature  = hash_hmac( 'sha256', $merchantId, $apiKey );
+
+		$_SERVER['HTTP_X_ALMA_SIGNATURE'] = $signature;
+
+		$this->configService->method( 'getMerchantId' )->willReturn( $merchantId );
+		$this->configService->method( 'getActiveApiKey' )->willReturn( $apiKey );
+		$this->configService->method( 'isEnabled' )->willReturn( true );
+		$this->configService->method( 'getWidgetCartEnabled' )->willReturn( false );
+		$this->configService->method( 'getWidgetProductEnabled' )->willReturn( false );
+		$this->configService->method( 'isInPageEnabled' )->willReturn( false );
+		$this->configService->method( 'isDebug' )->willReturn( false );
+		$this->configService->method( 'getExcludedCategories' )->willReturn( array() );
+
+		$mockPlan = $this->createMock( FeePlanAdapter::class );
+		$mockPlan->method( 'getPlanKey' )->willReturn( 'general_3_0_0' );
+
+		$this->configService->method( 'isFeePlanEnabled' )
+		                    ->with( 'general_3_0_0' )
+		                    ->willReturn( true );
+		$this->configService->method( 'getMinPurchaseAmount' )
+		                    ->with( 'general_3_0_0' )
+		                    ->willReturn( 5000 );
+		$this->configService->method( 'getMaxPurchaseAmount' )
+		                    ->with( 'general_3_0_0' )
+		                    ->willReturn( 200000 );
+
+		$this->feePlanRepository->method( 'getAll' )
+		                        ->willReturn( new FeePlanListAdapter( array( $mockPlan ) ) );
+
+		$this->collectCmsDataHelper->method( 'getPaymentMethodPosition' )->willReturn( 1 );
+		$this->collectCmsDataHelper->method( 'getSpecificFeatures' )->willReturn( array() );
+		$this->collectCmsDataHelper->method( 'isMultisite' )->willReturn( false );
+
+		$capturedData   = null;
+		$capturedStatus = null;
+		Functions\when( 'wp_send_json' )->alias(
+			function ( $data, $status ) use ( &$capturedData, &$capturedStatus ) {
+				$capturedData   = $data;
+				$capturedStatus = $status;
+			}
+		);
+
+		$this->service->handle();
+
+		$this->assertSame( 200, $capturedStatus );
+		$this->assertArrayHasKey( 'used_fee_plans', $capturedData['cms_features'] );
+		$this->assertArrayHasKey( 'general_3_0_0', $capturedData['cms_features']['used_fee_plans'] );
+		$this->assertTrue( $capturedData['cms_features']['used_fee_plans']['general_3_0_0']['enabled'] );
+		$this->assertSame( 5000, $capturedData['cms_features']['used_fee_plans']['general_3_0_0']['min_amount'] );
+		$this->assertSame( 200000, $capturedData['cms_features']['used_fee_plans']['general_3_0_0']['max_amount'] );
 	}
 
 	/**
