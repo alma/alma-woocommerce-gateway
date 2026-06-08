@@ -76,6 +76,7 @@ class IpnService {
 	 */
 	public function handleCustomerReturn(): void {
 
+		// We send the collect data url here to avoid any chance to skip the url in our data
 		$this->sendCollectDataUrlOnlyForLiveMode();
 		$paymentId = ParameterHelper::checkAndCleanParam( $_GET['pid'] );
 
@@ -154,6 +155,7 @@ class IpnService {
 	 */
 	public function handleIpnCallback(): void {
 
+		// We send the collect data url here to avoid any chance to skip the url in our data
 		$this->sendCollectDataUrlOnlyForLiveMode();
 		$paymentId = ParameterHelper::checkAndCleanParam( $_GET['pid'] );
 
@@ -228,6 +230,7 @@ class IpnService {
 	}
 
 	/**
+	 * Send the collect data url on live mode
 	 * @return void
 	 */
 	public function sendCollectDataUrlOnlyForLiveMode(): void
