@@ -62,7 +62,7 @@ class IpnServiceTest extends TestCase {
 	 */
 	public function testSendCollectDataUrlOnlyForLiveModeDoesNothingWhenNotLive(): void {
 		$configServiceMock = Mockery::mock( ConfigService::class );
-		$configServiceMock->shouldReceive( 'isLiveMode' )
+		$configServiceMock->shouldReceive( 'isLive' )
 		                  ->once()
 		                  ->andReturn( false );
 
@@ -89,7 +89,7 @@ class IpnServiceTest extends TestCase {
 	 */
 	public function testSendCollectDataUrlOnlyForLiveModeCallsSendCollectDataUrlWhenLive(): void {
 		$configServiceMock = Mockery::mock( ConfigService::class );
-		$configServiceMock->shouldReceive( 'isLiveMode' )
+		$configServiceMock->shouldReceive( 'isLive' )
 		                  ->once()
 		                  ->andReturn( true );
 
