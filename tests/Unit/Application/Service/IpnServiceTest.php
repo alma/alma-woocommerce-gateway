@@ -24,6 +24,7 @@ class IpnServiceTest extends TestCase {
 	private NavigationHelperInterface $navigationHelper;
 	private IpnHelper $ipnHelper;
 	private LoggerService $loggerService;
+	private IpnService $ipnService;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -35,16 +36,7 @@ class IpnServiceTest extends TestCase {
 		$this->navigationHelper = $this->createMock( NavigationHelperInterface::class );
 		$this->ipnHelper        = $this->createMock( IpnHelper::class );
 		$this->loggerService    = $this->createMock( LoggerService::class );
-	}
-
-	protected function tearDown(): void {
-		Monkey\tearDown();
-		Mockery::close();
-		parent::tearDown();
-	}
-
-	private function buildService(): IpnService {
-		return new IpnService(
+		$this->ipnService = new IpnService(
 			$this->configService,
 			$this->fraudService,
 			$this->paymentProvider,
@@ -52,6 +44,12 @@ class IpnServiceTest extends TestCase {
 			$this->ipnHelper,
 			$this->loggerService
 		);
+	}
+
+	protected function tearDown(): void {
+		Monkey\tearDown();
+		Mockery::close();
+		parent::tearDown();
 	}
 
 	/**
@@ -78,7 +76,7 @@ class IpnServiceTest extends TestCase {
 		$pluginMock->shouldReceive( 'get_container' )
 		           ->andReturn( $containerMock );
 
-		$this->buildService()->sendCollectDataUrlOnlyForLiveMode();
+		$this->ipnService->sendCollectDataUrlOnlyForLiveMode();
 	}
 
 	/**
@@ -109,6 +107,6 @@ class IpnServiceTest extends TestCase {
 		$pluginMock->shouldReceive( 'get_container' )
 		           ->andReturn( $containerMock );
 
-		$this->buildService()->sendCollectDataUrlOnlyForLiveMode();
+		$this->ipnService->sendCollectDataUrlOnlyForLiveMode();
 	}
 }
