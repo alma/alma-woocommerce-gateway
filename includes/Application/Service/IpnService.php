@@ -230,7 +230,7 @@ class IpnService {
 	/**
 	 * @return void
 	 */
-	private function sendCollectDataUrlOnlyForLiveMode(): void
+	public function sendCollectDataUrlOnlyForLiveMode(): void
 	{
 		$configService = Plugin::get_container()->get( ConfigService::class );
 		if ( ! $configService->isLiveMode() ) {
