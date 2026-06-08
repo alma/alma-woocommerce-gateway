@@ -26,6 +26,7 @@ use Alma\Gateway\Application\Provider\EligibilityProvider;
 use Alma\Gateway\Application\Provider\FeePlanProvider;
 use Alma\Gateway\Application\Provider\PaymentProvider;
 use Alma\Gateway\Application\Service\BusinessEventsService;
+use Alma\Gateway\Application\Service\CollectCmsDataService;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\IpnService;
 use Alma\Gateway\Application\Service\OrderStatusService;
@@ -213,6 +214,7 @@ class ContainerService {
 			array(
 				AdminController::class       => array( 'shared' => true ),
 				BusinessEventsService::class => array( 'shared' => true ),
+				CollectCmsDataService::class => array( 'shared' => true ),
 				ConfigService::class         => array( 'shared' => true ),
 				GatewayService::class        => array( 'shared' => true ),
 				LoggerService::class         => array( 'shared' => true ),

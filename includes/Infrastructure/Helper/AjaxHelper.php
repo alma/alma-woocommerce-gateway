@@ -9,6 +9,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 class AjaxHelper {
 
 	/**
+	 * Send a JSON response with a 200 OK status code and arbitrary data.
+	 *
+	 * @param mixed $data The data to send.
+	 */
+	public static function sendOkResponse( $data ): void {
+		wp_send_json( $data, 200 );
+	}
+
+	/**
 	 * Send a JSON response indicating success with a 200 OK status code.
 	 *
 	 * @param bool|null $data

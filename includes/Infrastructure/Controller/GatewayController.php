@@ -48,6 +48,7 @@ class GatewayController {
 	public function prepare() {
 
 		$this->gatewayService->configureReturns();
+		CollectCmsDataController::configure();
 
 		// Register Gateway Block
 		if ( ContextHelper::isCheckoutPageUseBlocks() ) {
