@@ -196,12 +196,6 @@ final class Plugin extends AbstractPlugin {
 
 				$this->get_container()->setApiConfig();
 
-				if ( ContextHelper::isAdmin() ) {
-					/** @var CollectCmsDataService $collectCmsDataService */
-					$collectCmsDataService = self::get_container()->get( CollectCmsDataService::class );
-					$collectCmsDataService->sendCollectDataUrl();
-				}
-
 				$gatewayController->prepare();
 
 				// Plugin fully configured, let's run the services
