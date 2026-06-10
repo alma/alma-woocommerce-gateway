@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 6.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 6.3.0
+Stable tag: 6.4.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,23 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+## v6.4.0 - 2026-06-10
+
+### Changes
+
+### 🚀 New Features
+
+- feat: send url collectCmsData on adminController (#638)
+- feat: Move send url on the payment return (#643)
+- feat: Create collectCmsDataController (#639)
+- feat: Implement DTO CMS Features (#640)
+- feat: Implement DTO Cms Info (#641)
+- feat: Implement DTO Merchant Data (#642)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @alma-renovate-bot[bot], @remi-zuffinetti, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
 
 ## v6.3.0 - 2026-05-25
 
