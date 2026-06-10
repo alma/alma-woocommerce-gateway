@@ -9,7 +9,7 @@ if ( ! defined( 'NONCE_SALT' ) ) {
 	define( 'NONCE_SALT', 'youhou! this is super key!' );
 }
 
-if (!class_exists('WC_Payment_Gateway')) {
+if ( ! class_exists( 'WC_Payment_Gateway' ) ) {
 	class WC_Payment_Gateway {}
 }
 
