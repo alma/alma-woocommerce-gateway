@@ -3,7 +3,7 @@
   "extends": [ "github>alma/renovate:defaults.json5" ],
   "enabledManagers": [ "github-actions", "pre-commit", "composer", "dockerfile", "docker-compose" ],
   "reviewers": [ "team:squad-e-commerce-integrations" ],
-  "baseBranches": [ "develop" ],
+  "baseBranchPatterns": [ "develop" ],
   "packageRules": [
     {
       "matchManagers": [ "composer" ],
