@@ -139,14 +139,27 @@ jobs:
         shell: bash
         run: unzip -q dist/alma-gateway-for-woocommerce.zip -d dist/svn
 
+      # SVN credentials are pulled from 1Password, not stored as GitHub secrets.
+      # Only OP_SERVICE_ACCOUNT_TOKEN lives in GitHub; this step resolves the
+      # op:// references and exports SVN_USERNAME / SVN_PASSWORD to the job env.
+      # TODO(devx): confirm the vault/item/field path of the WordPress.org SVN credentials.
+      - name: Load WordPress.org SVN credentials from 1Password
+        uses: 1password/load-secrets-action@92467eb28f72e8255933372f1e0707c567ce2259 # v4.0.0
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          SVN_USERNAME: op://DevX/wordpress-org-svn/username
+          SVN_PASSWORD: op://DevX/wordpress-org-svn/password
+
       - name: Deploy to WordPress.org
         uses: 10up/action-wordpress-plugin-deploy@54bd289b8525fd23a5c365ec369185f2966529c2 # 2.3.0
         with:
           # TODO: remove dry-run once a first release validated the SVN payload
           dry-run: true
         env:
-          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
-          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SVN_USERNAME: ${{ env.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ env.SVN_PASSWORD }}
           SLUG: alma-gateway-for-woocommerce
           VERSION: ${{ steps.wporg-version.outputs.version }}
           BUILD_DIR: dist/svn/alma-gateway-for-woocommerce
