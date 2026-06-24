@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2026-03-06T15:46:30+00:00\n"
-"PO-Revision-Date: 2026-03-06 15:47\n"
+"PO-Revision-Date: 2026-06-24 08:37\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: alma-gateway-for-woocommerce\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -418,10 +418,6 @@ msgstr "Total TTC"
 #: build/alma-gateway-block/alma-gateway-block.js:48522
 msgid "Payment costs"
 msgstr "Gastos de pago"
-#: build/alma-gateway-block/alma-gateway-block.js:171
-msgid "Today"
-msgstr "Hoy"
-
 
 #: build/alma-widget-block/alma-widget-block.js:104
 #: src/alma-widget-block/edit.js:49
