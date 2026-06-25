@@ -49,3 +49,10 @@ filepath="./alma-gateway-for-woocommerce.php"
 sed -i -E "s/'ALMA_VERSION', '[0-9\.]+'/'ALMA_VERSION', '$version'/g" $filepath
 # Update "Version" info
 sed -i -E "s/\* Version: [0-9\.]+/* Version: $version/g" $filepath
+
+####################
+# Update file ./includes/Plugin.php
+####################
+filepath="./includes/Plugin.php"
+# Update "ALMA_GATEWAY_PLUGIN_VERSION" constant
+sed -i -E "s/'ALMA_GATEWAY_PLUGIN_VERSION', '[0-9\.]+'/'ALMA_GATEWAY_PLUGIN_VERSION', '$version'/g" $filepath
