@@ -1,5 +1,17 @@
 # Changelog
 
+## v6.4.1 - 2026-06-25
+
+### Changes
+
+### 🐛 Bug Fixes
+
+- feat: update translation files (#647)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @alma-create-pr-with-team-review[bot], @joyet-simon, @remi-zuffinetti and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+
 ## v6.4.0 - 2026-06-10
 
 ### Changes
