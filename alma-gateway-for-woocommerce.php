@@ -45,7 +45,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'ALMA_VERSION' ) ) {
-	define( 'ALMA_VERSION', '6.4.1' );
+	// Single source of truth: the plugin header "Version:" above. get_file_data()
+	// is available as soon as plugins are loaded, so the version is never written
+	// by hand more than once (see ECOM-4303).
+	$alma_plugin_data = get_file_data( __FILE__, array( 'Version' => 'Version' ) );
+	define( 'ALMA_VERSION', $alma_plugin_data['Version'] );
 }
 
 $alma_gateway_plugin = Plugin::get_instance();
