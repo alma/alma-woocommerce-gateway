@@ -2,7 +2,9 @@
 
 namespace Alma\Gateway\Tests\Unit\Infrastructure\Repository;
 
+use Alma\Client\Domain\Entity\EligibilityList;
 use Alma\Client\Domain\Entity\FeePlanList;
+use Alma\Gateway\Application\Provider\EligibilityProvider;
 use Alma\Gateway\Application\Provider\EligibilityProviderFactory;
 use Alma\Gateway\Application\Provider\FeePlanProvider;
 use Alma\Gateway\Application\Provider\FeePlanProviderFactory;
@@ -266,6 +268,113 @@ class FeePlanRepositoryTest extends TestCase {
 	}
 
 	// -------------------------------------------------------------------------
+	// Eligibility transient cache tests
+	// -------------------------------------------------------------------------
+
+	public function testEligibilityApiIsNotCalledWhenTransientCacheIsHit(): void {
+		$eligibilityProvider = $this->arrangeShopContext();
+
+		$serializedEligibility = serialize( new EligibilityList() );
+		// Eligibility transient hits; fee-plan transient misses (so fee plans still resolve).
+		Functions\when( 'get_transient' )->alias(
+			fn( $key ) => strpos( $key, FeePlanRepository::TRANSIENT_ELIGIBILITY_PREFIX ) === 0
+				? $serializedEligibility
+				: false
+		);
+		Functions\when( 'set_transient' )->justReturn( true );
+
+		// Cache hit: the eligibility API must NOT be called.
+		$eligibilityProvider->expects( 'getEligibilityList' )->never();
+
+		$this->repository->callRetrieveFeePlans( 10000 );
+	}
+
+	public function testEligibilityApiIsCalledAndStoredWithEligibilityTtlOnCacheMiss(): void {
+		$eligibilityProvider = $this->arrangeShopContext();
+
+		Functions\when( 'get_transient' )->justReturn( false );
+
+		$sets = [];
+		Functions\when( 'set_transient' )->alias(
+			function ( $key, $value, $ttl ) use ( &$sets ) {
+				$sets[] = [ 'key' => $key, 'ttl' => $ttl ];
+
+				return true;
+			}
+		);
+
+		$eligibilityProvider->expects( 'getEligibilityList' )->once()->andReturn( new EligibilityList() );
+
+		$this->repository->callRetrieveFeePlans( 10000 );
+
+		$eligibilitySets = array_values(
+			array_filter(
+				$sets,
+				fn( $s ) => strpos( $s['key'], FeePlanRepository::TRANSIENT_ELIGIBILITY_PREFIX ) === 0
+			)
+		);
+
+		$this->assertCount( 1, $eligibilitySets, 'Eligibility result must be stored once on cache miss.' );
+		$this->assertSame( FeePlanRepository::TRANSIENT_ELIGIBILITY_TTL, $eligibilitySets[0]['ttl'] );
+	}
+
+	public function testEligibilityTransientWithWrongTypeFallsBackToApi(): void {
+		$eligibilityProvider = $this->arrangeShopContext();
+
+		// A valid serialized object of the WRONG type (not an EligibilityList): it
+		// unserializes cleanly but must fail the instanceof guard and trigger a refetch.
+		$wrongType = serialize( new FeePlanList() );
+		Functions\when( 'get_transient' )->alias(
+			fn( $key ) => strpos( $key, FeePlanRepository::TRANSIENT_ELIGIBILITY_PREFIX ) === 0
+				? $wrongType
+				: false
+		);
+		Functions\when( 'set_transient' )->justReturn( true );
+
+		$eligibilityProvider->expects( 'getEligibilityList' )->once()->andReturn( new EligibilityList() );
+
+		$this->repository->callRetrieveFeePlans( 10000 );
+	}
+
+	public function testEligibilityCacheKeyDiffersBetweenEnvironments(): void {
+		$keys = $this->captureEligibilityKeysForConfigs(
+			[
+				$this->makeConfigMock( 'merchant_x', true ),
+				$this->makeConfigMock( 'merchant_x', false ),
+			]
+		);
+
+		$this->assertCount( 2, $keys );
+		$this->assertNotEquals( $keys[0], $keys[1] );
+		$this->assertStringStartsWith( FeePlanRepository::TRANSIENT_ELIGIBILITY_PREFIX, $keys[0] );
+	}
+
+	public function testEligibilityCacheKeyDiffersBetweenMerchants(): void {
+		$keys = $this->captureEligibilityKeysForConfigs(
+			[
+				$this->makeConfigMock( 'merchant_A', false ),
+				$this->makeConfigMock( 'merchant_B', false ),
+			]
+		);
+
+		$this->assertCount( 2, $keys );
+		$this->assertNotEquals( $keys[0], $keys[1] );
+	}
+
+	public function testEligibilityCacheKeyIsStableForSameInputs(): void {
+		// Same merchant, same environment, same (empty) cart context -> identical key.
+		$keys = $this->captureEligibilityKeysForConfigs(
+			[
+				$this->makeConfigMock( 'merchant_x', false ),
+				$this->makeConfigMock( 'merchant_x', false ),
+			]
+		);
+
+		$this->assertCount( 2, $keys );
+		$this->assertSame( $keys[0], $keys[1] );
+	}
+
+	// -------------------------------------------------------------------------
 	// getAll() / getAllWithEligibility() internal adapter cache tests
 	// -------------------------------------------------------------------------
 
@@ -436,6 +545,68 @@ class FeePlanRepositoryTest extends TestCase {
 	 */
 	private function makeFeePlanList(): FeePlanList {
 		return new FeePlanList();
+	}
+
+	/**
+	 * Put the repository in a shop (non-admin) context with a cart total > 0 so that
+	 * retrieveFeePlans() exercises the eligibility branch. WC()->cart / ->customer are
+	 * left null: CartAdapter / CustomerAdapter null-guard, so EligibilityMapper builds a
+	 * clean DTO without touching a real WooCommerce cart.
+	 *
+	 * @return EligibilityProvider|Mockery\MockInterface The mocked eligibility provider.
+	 */
+	private function arrangeShopContext() {
+		Functions\when( 'is_admin' )->justReturn( false );
+		unset( $_GET['rest_route'] );
+		$_SERVER['REQUEST_URI'] = '/';
+		Functions\when( 'wp_json_encode' )->alias( 'json_encode' );
+
+		$wc           = new \stdClass();
+		$wc->cart     = null;
+		$wc->customer = null;
+		Functions\when( 'WC' )->justReturn( $wc );
+
+		// Fee plans are not the subject of these tests: let them resolve from the API.
+		$this->feePlanProvider->allows( 'getFeePlanList' )->andReturn( $this->makeFeePlanList() );
+		$this->businessEventsService->allows( 'updateEligibility' );
+
+		$eligibilityProvider = Mockery::mock( EligibilityProvider::class );
+		$this->eligibilityProviderFactory->allows( '__invoke' )->andReturn( $eligibilityProvider );
+
+		return $eligibilityProvider;
+	}
+
+	/**
+	 * Drive retrieveFeePlans() in a shop context once per config and return the eligibility
+	 * transient keys passed to set_transient (one per config, in call order).
+	 *
+	 * @param ConfigService[] $configs
+	 *
+	 * @return string[]
+	 */
+	private function captureEligibilityKeysForConfigs( array $configs ): array {
+		$eligibilityProvider = $this->arrangeShopContext();
+		$eligibilityProvider->allows( 'getEligibilityList' )->andReturn( new EligibilityList() );
+
+		Functions\when( 'get_transient' )->justReturn( false );
+
+		$keys = [];
+		Functions\when( 'set_transient' )->alias(
+			function ( $key, $value, $ttl ) use ( &$keys ) {
+				if ( strpos( $key, FeePlanRepository::TRANSIENT_ELIGIBILITY_PREFIX ) === 0 ) {
+					$keys[] = $key;
+				}
+
+				return true;
+			}
+		);
+
+		foreach ( $configs as $config ) {
+			FeePlanRepository::clearTransientCache();
+			$this->makeRepository( $config )->callRetrieveFeePlans( 10000 );
+		}
+
+		return $keys;
 	}
 }
 
