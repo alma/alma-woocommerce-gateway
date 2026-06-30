@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
-use Alma\API\Domain\Entity\FeePlanList;
+use Alma\Client\Domain\Entity\FeePlanList;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
@@ -113,6 +113,12 @@ abstract class AbstractFrontendGateway extends AbstractGateway {
 	 */
 	public function is_available(): bool {
 		if ( ! parent::is_available() ) {
+			return false;
+		}
+
+		/** @var ConfigService $config_service */
+		$config_service = Plugin::get_instance()->get_container()->get( ConfigService::class );
+		if ( ContextHelper::shouldHideForTestMode( $config_service ) ) {
 			return false;
 		}
 

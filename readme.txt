@@ -3,9 +3,9 @@
 Contributors: almapayments, francois-gomis
 Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell, woo commerce, alma, monthly payments, split payments
 Requires at least: 6.6
-Tested up to: 6.9.1
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 6.0.0
+Stable tag: 6.4.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,202 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+## v6.4.1 - 2026-06-25
+
+### Changes
+
+### 🐛 Bug Fixes
+
+- feat: update translation files (#647)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @alma-create-pr-with-team-review[bot], @joyet-simon, @remi-zuffinetti and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+
+## v6.4.0 - 2026-06-10
+
+### Changes
+
+### 🚀 New Features
+
+- feat: send url collectCmsData on adminController (#638)
+- feat: Move send url on the payment return (#643)
+- feat: Create collectCmsDataController (#639)
+- feat: Implement DTO CMS Features (#640)
+- feat: Implement DTO Cms Info (#641)
+- feat: Implement DTO Merchant Data (#642)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @alma-renovate-bot[bot], @remi-zuffinetti, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
+
+## v6.3.0 - 2026-05-25
+
+### Changes
+
+### 🚀 New Features
+
+- feat: Test the compatibility of the new WooCommerce 10.8.0-beta.1 Pre-Release with our Alma module (#631)
+- feat: Change the installment date instead of localized_due_date (#628)
+
+### 🐛 Bug Fixes
+
+- fix: In cart page block we displayed the demo product (#632)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @webaaz and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+
+## v6.2.1 - 2026-05-13
+
+### Changes
+
+### 🐛 Bug Fixes
+
+- fix: tolerate null isShipped on custom WC statuses (ECOM-4160) (#624)
+- fix: bump alma-php-client to ^3.0.1 to ship CartItemDto URL fix (ECOM-4155) (#623)
+- fix: guard mountIframe against non-Alma payment methods (ECOM-4049) (#615)
+
+#### Contributors
+
+@alma-create-pr-with-team-review[bot], @webaaz and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+
+## v6.2.0 - 2026-05-05
+
+### Changes
+
+- Feature/ecom 4093 different order references used on alma payment when wc (#605)
+- Feature/ecom 4077 double title on paynow (#591)
+- Feature/ecom 4083 fix security issues (#601)
+- Revert "Backport security update to develop" (#603)
+- Backport security update to develop (#600)
+
+### 🚀 New Features
+
+- feat: Hidden Alma for user not conected on test mode (#607)
+- fix: persist post-configured defaults on first save (ECOM-3924) (#606)
+- fix: use inPageRef instead of inPage prop and normalize paymentDetail… (#604)
+
+### 🐛 Bug Fixes
+
+- fix: unmount In-Page using ref to avoid stale closure (#612)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @alma-renovate-bot[bot], @dependabot[bot], @joyet-simon, @remi-zuffinetti, @webaaz, [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot), [dependabot[bot]](https://github.com/apps/dependabot) and joyet.simon
+
+## v6.1.0 - 2026-04-23
+
+### Changes
+
+### 🚀 New Features
+
+- Compatibility WooCommerce v9 to v10.0.x (#586)
+
+### 🐛 Bug Fixes
+
+- fix: update condition for displaying customer fee in gateway plans (#589)
+- Fix: logger service injection (#581)
+- fix: category exclusion when not loaded yet (#587)
+- fix: handle non-array input in sortAlmaGateways method (#588)
+
+#### Contributors
+
+@Francois-Gomis, @alma-create-pr-with-team-review[bot], @joyet-simon, @webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and joyet.simon
+
+## v6.0.7 - 2026-04-01
+
+### Changes
+
+### 🐛 Bug Fixes
+
+- Clean alma_soc_ongoing option in DB (#574)
+- fix: Remove picture url from CartItemDto constructor (#571)
+- Fix admin & gateway settings detection with pretty permalinks (#570)
+- fix: Update unique cart ID generation to prevent TypeError in PHP 8.0+ (#568)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @Francois-Gomis, @alma-renovate-bot[bot], @joyet-simon, @remi-zuffinetti, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
+
+## v6.0.6 - 2026-03-25
+
+### Changes
+
+### 🐛 Bug Fixes
+
+- fix: build.sh for svn release (#553)
+- fix: Add language support to In-Page for classic checkout (#556)
+- fix: Return early if cart_id is empty in onOrderConfirmed method (#554)
+- Fix: woocommerce merchant cms p24x activation impossible (#552)
+- fix: gateway ordering for Alma gateways to ensure unique incremental … (#551)
+
+#### Contributors
+
+@Francois-Gomis and @joyet-simon
+
+## v6.0.5 - 2026-03-17
+
+### Changes
+
+### 🐛 Bug Fixes
+
+- feat: Add .wordpress.org folder to fix the sync SVN (#543)
+- Fix: fee plan migration error (#547)
+- Fix: ordering gateways on checkout page (#546)
+- Fix: rename css class (#548)
+- fix: force type float for price_to_cents call (#545)
+- Fix: remove unused css class (#544)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @joyet-simon and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+
+## v6.0.4 - 2026-03-11
+
+### Changes
+
+### 🐛 Bug Fixes
+
+- fix: Widget Eligibility get sandbox on live mode (#540)
+- fix: Change asset name for changing asset (#538)
+- fix: Price in page block without cent error (#537)
+- fix: Price regex in classic inpage checkout nor support Thousands sep… (#536)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @joyet-simon and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+
+## v6.0.3 - 2026-03-10
+
+### Changes
+
+### 🐛 Bug Fixes
+
+- fix: get first element of order total (#533)
+
+#### Contributors
+
+@joyet-simon
+
+## v6.0.2 - 2026-03-10
+
+### Changes
+
+- Feature/ecom 3898 wrong error message (#530)
+- Feature/ecom 3858 classic checkout in page bug when cdn is too long to load (#526)
+
+### 🚀 New Features
+
+- fix: fix namespaces (#529)
+- feat: add cache on Fee Plan Repository (#524)
+- fix: installments display (#527)
+- Feature/6.0 (#516)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @alma-create-pr-with-team-review[bot], @alma-renovate-bot[bot], @joyet-simon, @remi-zuffinetti, @webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
 
 ## v6.0.0 - 2026-02-18
 

@@ -1,4 +1,4 @@
-.total {
+.alma-installmentsTotal-total {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -9,7 +9,7 @@
 	color: var(--off-black);
 }
 
-.fees {
+.alma-installmentsTotal-fees {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -19,24 +19,24 @@
 	line-height: 14px;
 }
 
-.feesNumbers {
+.alma-installmentsTotal-feesNumbers {
 	display: flex;
 	flex-direction: row;
 
 	@mixin column-gap var(--spacing-1);
 }
 
-.discountedFees {
+.alma-installmentsTotal-discountedFees {
 	text-decoration: line-through;
 	color: #819098;
 }
 
 @media screen and (--min-w-sm) {
-	.total {
+	.alma-installmentsTotal-total {
 		font-size: var(--font-lg);
 	}
 
-	.fees {
+	.alma-installmentsTotal-fees {
 		font-size: var(--font-sm);
 	}
 }

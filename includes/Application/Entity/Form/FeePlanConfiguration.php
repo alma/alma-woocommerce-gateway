@@ -10,7 +10,6 @@ use Alma\Client\Application\Exception\ParametersException;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
 /**
  * Class FeePlanDataForm
@@ -48,14 +47,14 @@ class FeePlanConfiguration {
 	 * @param int                $minAmount
 	 * @param int                $maxAmount
 	 * @param bool               $enabled
-	 * @param LoggerService|null $loggerService
+	 * @param LoggerService $loggerService
 	 */
-	public function __construct( string $planKey, int $minAmount, int $maxAmount, bool $enabled, ?LoggerService $loggerService = null ) {
+	public function __construct( string $planKey, int $minAmount, int $maxAmount, bool $enabled, LoggerService $loggerService ) {
 		$this->planKey       = $planKey;
 		$this->minAmount     = $minAmount;
 		$this->maxAmount     = $maxAmount;
 		$this->enabled       = $enabled;
-		$this->loggerService = $loggerService ?? new NullLogger();
+		$this->loggerService = $loggerService;
 	}
 
 	/**

@@ -6,12 +6,14 @@ use Alma\Client\Application\Endpoint\MerchantEndpoint;
 use Alma\Client\Application\Exception\Endpoint\MerchantEndpointException;
 use Alma\Client\Domain\Entity\FeePlanList;
 use Alma\Gateway\Application\Provider\FeePlanProvider;
+use Alma\Gateway\Infrastructure\Service\LoggerService;
 use PHPUnit\Framework\TestCase;
 
 class FeePlanProviderTest extends TestCase {
 
 	private $feePlanProvider;
 	private $merchantEndpoint;
+	private $loggerServiceMock;
 
 
 	public function testGetFeePlanListCallsMerchantEndpointOnlyOnce() {
@@ -52,13 +54,15 @@ class FeePlanProviderTest extends TestCase {
 	}
 
 	protected function setUp(): void {
-		$this->merchantEndpoint = $this->createMock( MerchantEndpoint::class );
-		$this->feePlanProvider  = new FeePlanProvider( $this->merchantEndpoint );
+		$this->merchantEndpoint  = $this->createMock( MerchantEndpoint::class );
+		$this->loggerServiceMock = $this->createMock( LoggerService::class );
+		$this->feePlanProvider   = new FeePlanProvider( $this->merchantEndpoint, $this->loggerServiceMock );
 	}
 
 	protected function tearDown(): void {
-		$this->merchantEndpoint = null;
-		$this->feePlanProvider  = null;
+		$this->merchantEndpoint  = null;
+		$this->loggerServiceMock = null;
+		$this->feePlanProvider   = null;
 	}
 
 }

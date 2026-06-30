@@ -404,7 +404,7 @@ class OrderAdapter implements OrderAdapterInterface {
 	}
 
 	public function getTotalRefunded(): int {
-		return DisplayHelper::price_to_cent( $this->wcOrder->get_total_refunded() );
+		return DisplayHelper::price_to_cent( (float) $this->wcOrder->get_total_refunded() );
 	}
 
 	public function paymentComplete( $paymentId ): bool {

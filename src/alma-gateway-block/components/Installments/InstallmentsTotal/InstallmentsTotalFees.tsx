@@ -9,9 +9,9 @@ type Props = {
 };
 
 export const InstallmentsTotalFees: React.FC<Props> = ({customerFees}) => (
-        <div className={"fees"}>
+        <div className={"alma-installmentsTotal-fees"}>
             <div>{__('Payment costs', 'alma-gateway-for-woocommerce')}</div>
-            <div className={"feesNumbers"}><FormattedNumber
+            <div className={"alma-installmentsTotal-feesNumbers"}><FormattedNumber
                     value={customerFees / 100}
                     style="currency"
                     currency="EUR"

@@ -10,7 +10,10 @@ export const DisplayAlmaBlock = (props) => {
         storeKey,
         cartTotal,
     } = props;
-    const {onPaymentSetup} = eventRegistration;
+    // WC Blocks API compatibility:
+    // WC 10+ (Blocks 9+): onPaymentSetup
+    // WC 9.x (Blocks 7-8): onPaymentProcessing
+    const onPaymentSetup = eventRegistration.onPaymentSetup || eventRegistration.onPaymentProcessing;
 
     const {almaSettings, gatewaySettings, isLoading} = useSelect(
         (select) => ({
@@ -29,26 +32,24 @@ export const DisplayAlmaBlock = (props) => {
     }
     const [selectedFeePlan, setSelectedFeePlan] = useState(default_plan);
 
+    // Sync selectedFeePlan when default_plan becomes available after loading
+    useEffect(() => {
+        if (default_plan && !selectedFeePlan) {
+            setSelectedFeePlan(default_plan);
+        }
+    }, [default_plan]);
+
     const plan = !isLoading
         ? availableFeePlans?.[selectedFeePlan] ?? availableFeePlans?.[default_plan]
         : null;
 
-    // Define onPaymentProcessing effect
-    const {onPaymentProcessing} = eventRegistration;
-
     useEffect(() => {
-        console.log('Special use effect selectedFeePlan changed:', selectedFeePlan);
-    }, [selectedFeePlan]);
-
-    useEffect(() => {
-        console.log('selectedFeePlan changed:', selectedFeePlan);
-        const unsubscribe = onPaymentProcessing(async () => {
+        const unsubscribe = onPaymentSetup(async () => {
             return handleStandardPayment(gatewaySettings, emitResponse, selectedFeePlan);
-
         });
 
         return () => unsubscribe();
-    }, [onPaymentProcessing, selectedFeePlan]);
+    }, [onPaymentSetup, selectedFeePlan]);
 
     /**
      * Handle Classic Payment
@@ -76,13 +77,20 @@ export const DisplayAlmaBlock = (props) => {
         };
     };
 
-    return isLoading ? <div></div> : <AlmaBlock
+    // WC 10.7+ mounts the gateway content earlier in the page lifecycle, so on
+    // first render the cart-update fetch has not yet populated `fee_plans_settings`
+    // and `plan` is undefined. Reading `plan.planKey` then crashes the React tree
+    // (`TypeError: Cannot read properties of undefined (reading 'planKey')`).
+    // Wait until at least one eligible plan is available before rendering AlmaBlock.
+    const hasPlans = Object.keys(availableFeePlans).length > 0;
+    return (isLoading || !hasPlans) ? <div></div> : <AlmaBlock
         hasInPage={almaSettings.is_in_page}
         totalPrice={cartTotal}
         gatewaySettings={gatewaySettings}
-        selectedFeePlan={plan.planKey}
+        selectedFeePlan={plan?.planKey ?? default_plan}
         setSelectedFeePlan={setSelectedFeePlan}
         plans={availableFeePlans}
+        locale={almaSettings.language || 'fr'}
     />
 
 };

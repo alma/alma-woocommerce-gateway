@@ -3,9 +3,24 @@
 namespace Alma\Gateway\Tests\Unit\Infrastructure\Service;
 
 use Alma\Gateway\Infrastructure\Service\MigrationService;
+use Brain\Monkey;
+use Brain\Monkey\Functions;
+use Mockery;
 use PHPUnit\Framework\TestCase;
 
 class MigrationServiceTest extends TestCase {
+
+	protected function setUp(): void {
+		parent::setUp();
+		Monkey\setUp();
+	}
+
+	protected function tearDown(): void {
+		Monkey\tearDown();
+		Mockery::close();
+		parent::tearDown();
+	}
+
 
 	public static function migrationDataProvider(): array {
 		return [
@@ -299,6 +314,184 @@ class MigrationServiceTest extends TestCase {
 		$migrationService = new MigrationService();
 		$migratedData     = $migrationService->migrateFromV5ToV6( $originData );
 
-		$this->assertEquals( $migratedData, $expectedData );
+		// Check that all expected keys are present with the correct values
+		foreach ( $expectedData as $key => $value ) {
+			$this->assertArrayHasKey( $key, $migratedData, "Missing key: $key" );
+			$this->assertEquals( $value, $migratedData[ $key ], "Wrong value for key: $key" );
+		}
+
+		// Check that no unexpected non-amount keys are present
+		foreach ( $migratedData as $key => $value ) {
+			if ( preg_match( '/_min_amount$|_max_amount$/', $key ) ) {
+				continue; // Amount keys are tested separately in testMigrateAmountLimitsDefaultToZero
+			}
+			$this->assertArrayHasKey( $key, $expectedData, "Unexpected key in migrated data: $key" );
+		}
+	}
+
+	/**
+	 * Test that amount limits default to 0 instead of null when not present in v5 settings.
+	 * This prevents incomplete fee plan groups that would crash FeePlanConfiguration::__construct().
+	 */
+	public function testMigrateAmountLimitsDefaultToZero(): void {
+		$migrationService = new MigrationService();
+
+		// v5 settings with Pay Now enabled but NO min/max amounts customized
+		$v5Settings   = [
+			'enabled_general_1_0_0' => 'yes',
+		];
+		$migratedData = $migrationService->migrateFromV5ToV6( $v5Settings );
+
+		// All plans should have min/max amount entries with 0 as default
+		$plans = [ '6_0_0', '10_0_0', '12_0_0', '24_0_0', '1_0_0', '1_15_0', '1_30_0', '1_45_0', '2_0_0', '3_0_0', '4_0_0' ];
+		foreach ( $plans as $plan ) {
+			$this->assertArrayHasKey( "general_{$plan}_min_amount", $migratedData );
+			$this->assertArrayHasKey( "general_{$plan}_max_amount", $migratedData );
+			$this->assertSame( 0, $migratedData["general_{$plan}_min_amount"],
+				"Plan {$plan} min_amount should default to 0" );
+			$this->assertSame( 0, $migratedData["general_{$plan}_max_amount"],
+				"Plan {$plan} max_amount should default to 0" );
+		}
+	}
+
+	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function testRunMigrationsFrom600CleansUpSocAndBumpsVersion(): void {
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'alma_migration_lock', null )
+			->andReturn( false );
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'alma_version', null )
+			->andReturn( '6.0.0' );
+
+		Functions\expect( 'delete_option' )
+			->once()
+			->with( 'alma_soc_ongoing' );
+
+		Functions\expect( 'update_option' )
+			->once()
+			->with( 'alma_version', '6.0.7' );
+
+		$migrationService = new MigrationService();
+		$result           = $migrationService->runMigrationsIfNeeded();
+
+		$this->assertTrue( $result );
+	}
+
+	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function testRunMigrationsFrom607DoesNothing(): void {
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'alma_migration_lock', null )
+			->andReturn( false );
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'alma_version', null )
+			->andReturn( '6.0.7' );
+
+		$migrationService = new MigrationService();
+		$result           = $migrationService->runMigrationsIfNeeded();
+
+		$this->assertFalse( $result );
+	}
+
+	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function testRunMigrationsFromV5ChainsTo607(): void {
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'alma_migration_lock', null )
+			->andReturn( false );
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'alma_version', null )
+			->andReturn( '5.16.2' );
+
+		// v5 → v6.0.0 migration
+		Functions\expect( 'add_option' )
+			->once()
+			->with( 'alma_migration_lock', Mockery::type( 'int' ) );
+
+		$contextHelperMock = Mockery::mock( 'alias:Alma\Gateway\Infrastructure\Helper\ContextHelper' );
+		$contextHelperMock->shouldReceive( 'isCheckoutPageUseBlocks' )->once()->andReturn( true );
+
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'wc_alma_settings', [] )
+			->andReturn( [] );
+		Functions\expect( 'add_option' )
+			->once()
+			->with( 'woocommerce_alma_config_gateway_settings', Mockery::type( 'array' ) );
+		Functions\expect( 'update_option' )
+			->once()
+			->with( 'alma_version', '6.0.0' );
+		Functions\expect( 'delete_option' )
+			->once()
+			->with( 'alma_migration_lock' );
+
+		// v6.0.0 → v6.0.7 SOC cleanup
+		Functions\expect( 'delete_option' )
+			->once()
+			->with( 'alma_soc_ongoing' );
+		Functions\expect( 'update_option' )
+			->once()
+			->with( 'alma_version', '6.0.7' );
+
+		$migrationService = new MigrationService();
+		$result           = $migrationService->runMigrationsIfNeeded();
+
+		$this->assertTrue( $result );
+	}
+
+	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function testFreshInstallStampsLatestVersion(): void {
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'alma_migration_lock', null )
+			->andReturn( false );
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'alma_version', null )
+			->andReturn( null );
+		Functions\expect( 'add_option' )
+			->once()
+			->with( 'alma_version', '6.0.7' );
+
+		$migrationService = new MigrationService();
+		$result           = $migrationService->runMigrationsIfNeeded();
+
+		$this->assertFalse( $result );
+	}
+
+	/**
+	 * Test that existing v5 amount limits are properly migrated (not overwritten by default).
+	 */
+	public function testMigrateAmountLimitsPreservesExistingValues(): void {
+		$migrationService = new MigrationService();
+
+		$v5Settings   = [
+			'min_amount_general_1_0_0' => 5000,
+			'max_amount_general_1_0_0' => 200000,
+		];
+		$migratedData = $migrationService->migrateFromV5ToV6( $v5Settings );
+
+		$this->assertSame( 5000, $migratedData['general_1_0_0_min_amount'] );
+		$this->assertSame( 200000, $migratedData['general_1_0_0_max_amount'] );
+
+		// Other plans should still get 0
+		$this->assertSame( 0, $migratedData['general_3_0_0_min_amount'] );
+		$this->assertSame( 0, $migratedData['general_3_0_0_max_amount'] );
 	}
 }

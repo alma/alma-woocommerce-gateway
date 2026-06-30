@@ -86,11 +86,7 @@ class AssetsConfig {
 						'deps' => array(
 							'alma-widget-cdn',
 							'wp-element',
-							'wp-blocks',
-							'wc-blocks-registry',
-							'wp-i18n',
-							'wp-components',
-							'wp-editor',
+							'wp-data',
 							'wc-blocks-data-store',
 						),
 					),
@@ -114,6 +110,8 @@ class AssetsConfig {
 							'keys'        => array(
 								'environment',
 								'merchant_id',
+								'number_decimals',
+								'language',
 							),
 						),
 					),
@@ -228,7 +226,7 @@ class AssetsConfig {
 							'object_name' => 'AlmaInitSettings',
 							'keys'        => array(
 								'checkout_url',
-								'init_eligibility',
+								'gateway_settings', // [WC-COMPAT 9.0-9.7] revert to 'init_eligibility' when MIN_WOOCOMMERCE_VERSION >= 9.8
 								'cart_total',
 								'nonce_value',
 								'label_button',

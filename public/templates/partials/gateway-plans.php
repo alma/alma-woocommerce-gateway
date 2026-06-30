@@ -65,7 +65,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					}
 					?>
 				</tr>
-				<?php if ( $args['alma_woocommerce_gateway_fee_plan']->getCustomerFee() ) { ?>
+				<?php if ( 1 === $alma_plan_index && $args['alma_woocommerce_gateway_fee_plan']->getCustomerFee() ) { ?>
 					<tr>
 						<td>
 							<?php
@@ -81,6 +81,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<?php
 
 				}
+				++$alma_plan_index;
 			} // end foreach
 			?>
 		</table>

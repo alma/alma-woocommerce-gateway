@@ -7,12 +7,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Alma\Gateway\Application\Helper\L10nHelper;
+use Alma\Gateway\Application\Service\CollectCmsDataService;
 use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Application\Service\OrderStatusService;
 use Alma\Gateway\Infrastructure\Controller\AdminController;
 use Alma\Gateway\Infrastructure\Controller\GatewayController;
 use Alma\Gateway\Infrastructure\Controller\ShopController;
 use Alma\Gateway\Infrastructure\Exception\PluginException;
+use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Repository\BusinessEventsRepository;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
@@ -24,7 +26,8 @@ use Exception;
  */
 final class Plugin extends AbstractPlugin {
 
-	const ALMA_GATEWAY_PLUGIN_VERSION = '6.0.0-poc';
+	// Derived from ALMA_VERSION, itself read from the plugin header (see ECOM-4303).
+	const ALMA_GATEWAY_PLUGIN_VERSION = ALMA_VERSION;
 
 	const ALMA_GATEWAY_PLUGIN_NAME = 'alma-gateway-for-woocommerce';
 
@@ -193,6 +196,7 @@ final class Plugin extends AbstractPlugin {
 				$orderStatusService->initSendOrderStatusHook();
 
 				$this->get_container()->setApiConfig();
+
 				$gatewayController->prepare();
 
 				// Plugin fully configured, let's run the services

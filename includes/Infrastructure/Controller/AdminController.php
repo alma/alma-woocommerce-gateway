@@ -46,7 +46,9 @@ class AdminController {
 		try {
 			$this->assetsService->registerAdminAssets();
 			$this->assetsService->registerWidgetAssets();
-			$this->assetsService->registerWidgetBlockEditorAssets();
+			if ( ContextHelper::isAdmin() ) {
+				$this->assetsService->registerWidgetBlockEditorAssets();
+			}
 		} catch ( AssetsServiceException $e ) {
 			throw new AdminControllerException( 'Can not register Admin assets', 0, $e );
 		}

@@ -25,6 +25,13 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface {
 			)
 		);
 
+		// get_terms() returns WP_Error when the taxonomy is not yet registered
+		// (e.g. when another plugin triggers gateway loading before WooCommerce
+		// has fully initialized).
+		if ( is_wp_error( $product_categories ) || ! is_array( $product_categories ) ) {
+			return array();
+		}
+
 		return array_combine(
 			array_column( $product_categories, 'slug' ),
 			array_column( $product_categories, 'name' )

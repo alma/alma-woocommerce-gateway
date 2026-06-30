@@ -12,7 +12,6 @@ crowdin.yml
 node_modules/
 .npmrc
 .phpunit.result.cache
-package-lock.json
 .task/
 /build/*/*.map
 /.subversion/*
@@ -23,3 +22,8 @@ phpstan.log
 build/*
 /vendor-prefixed/*
 /coverage/*
+.cache
+.config
+.local
+src/.*
+.github

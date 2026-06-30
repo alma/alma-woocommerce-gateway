@@ -6,6 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
+use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\CustomerAdapter;
 use Alma\Plugin\Infrastructure\Adapter\CartAdapterInterface;
@@ -42,18 +43,30 @@ class ContextHelper implements ContextHelperInterface {
 	 * Defines if the current request is an admin request.
 	 * is_admin is not accurate for REST API requests.
 	 * So we look for the 'rest_route' parameter in the $_GET superglobal to determine if it's an admin REST API request.
+	 * For pretty permalinks, we check $_SERVER['REQUEST_URI'] which is always available from the start of the request.
 	 * @return bool True if the current request is an admin request, false otherwise.
 	 * @phpcs We don't need to check nonce here. We only check the url, and we don't use parameters.
-	 * @todo Can we check wp_is_serving_rest_request() instead?
 	 *
 	 */
 	public static function isAdmin(): bool {
-		// phpcs:ignore
+		// Classic admin pages (most common case).
+		if ( is_admin() ) {
+			return true;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- We only inspect the URL, no data is used.
 		if ( array_key_exists( 'rest_route', $_GET ) && stripos( $_GET['rest_route'], '/wc-admin' ) !== false ) {
 			return true;
-		} else {
-			return is_admin();
 		}
+
+		// REST API with pretty permalinks (e.g. /wp-json/wc-admin/...).
+		// $_SERVER['REQUEST_URI'] is always available from the very start of the request,
+		// unlike $GLOBALS['wp']->query_vars or REST_REQUEST which depend on parse_request timing.
+		if ( ! empty( $_SERVER['REQUEST_URI'] ) && stripos( $_SERVER['REQUEST_URI'], '/wc-admin/' ) !== false ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -196,10 +209,19 @@ class ContextHelper implements ContextHelperInterface {
 	 * @return bool True if we are on the gateway settings page, false otherwise.
 	 */
 	public static function isGatewaySettingsPage( bool $isAlmaGatewaySettingPage = false ): bool {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- We only inspect the URL, no data is used.
 		if ( isset( $_GET['rest_route'] ) && stripos( $_GET['rest_route'], '/wc-admin' ) !== false ) {
 			return true;
 		}
 
+		// REST API request with pretty permalinks (e.g. /wp-json/wc-admin/settings/payments/...).
+		// We don't gate on wp_is_serving_rest_request() because it depends on REST_REQUEST
+		// which may not be defined yet when this function is called early.
+		if ( ! empty( $_SERVER['REQUEST_URI'] ) && stripos( $_SERVER['REQUEST_URI'], '/wc-admin/' ) !== false ) {
+			return true;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- We only inspect the URL, no data is used.
 		if ( ! isset( $_GET['page'] ) || stripos( $_GET['page'], 'wc-settings' ) === false ) {
 			return false;
 		}
@@ -288,6 +310,17 @@ class ContextHelper implements ContextHelperInterface {
 		}
 
 		return false;
+	}
+
+	/**
+	 * In test mode, Alma is only visible to admin/shop manager users.
+	 *
+	 * @param ConfigService $configService The config service used to check the test mode.
+	 *
+	 * @return bool True when Alma must be hidden from the current user.
+	 */
+	public static function shouldHideForTestMode( ConfigService $configService ): bool {
+		return $configService->isTest() && ! current_user_can( 'manage_woocommerce' );
 	}
 
 	/**

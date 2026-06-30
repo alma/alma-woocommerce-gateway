@@ -29,7 +29,7 @@
  *           paymentPlan: [
  *             {
  *               due_date,
- *               localized_due_date,
+ *               localized_due_date, // Deprecated: now returns DD/MM/YYYY. Use due_date for formatting.
  *               purchase_amount,
  *               customer_fee,
  *               customer_interest,
@@ -48,7 +48,7 @@
  *           paymentPlan: [
  *             {
  *               due_date,
- *               localized_due_date,
+ *               localized_due_date, // Deprecated: now returns DD/MM/YYYY. Use due_date for formatting.
  *               purchase_amount,
  *               customer_fee,
  *               customer_interest,

@@ -42,7 +42,7 @@ class ProductAdapter implements ProductAdapterInterface {
 	}
 
 	public function getPrice(): int {
-		return DisplayHelper::price_to_cent( $this->wc_product->get_price() );
+		return DisplayHelper::price_to_cent( (float) $this->wc_product->get_price() );
 	}
 
 	public function getCategoryIds(): array {

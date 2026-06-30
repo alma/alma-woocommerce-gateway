@@ -5,10 +5,10 @@
   payments
 - Requires at least Wordpress: 6.6
 - Requires at least Woocommerce: 10.1.0
-- Tested up to Wordpress: 6.9.1
-- Tested up to Woocommerce: 10.5.0
+- Tested up to Wordpress: 7.0
+- Tested up to Woocommerce: 10.8.0
 - Requires PHP: 7.4
-- Stable tag: 6.0.0
+- Stable tag: 6.4.1
 - License: GPLv3
 - License URI: https://www.gnu.org/licenses/gpl-3.0.html
 - Support: support@getalma.eu

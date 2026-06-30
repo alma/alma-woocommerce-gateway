@@ -7,6 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
+use Alma\Gateway\Infrastructure\Gateway\Backend\AlmaGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\CreditGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayLaterGateway;
 use Alma\Gateway\Infrastructure\Gateway\Frontend\PayNowGateway;
@@ -14,6 +15,20 @@ use Alma\Gateway\Infrastructure\Gateway\Frontend\PnxGateway;
 use Alma\Gateway\Plugin;
 
 class FrontendHelper {
+
+	/**
+	 * Alma frontend gateway IDs in desired display order.
+	 *
+	 * @var string[]
+	 */
+	private static array $alma_gateway_ids = [];
+
+	/**
+	 * The backend config gateway ID used by WooCommerce admin ordering.
+	 *
+	 * @var string
+	 */
+	private static string $config_gateway_id = '';
 
 	/**
 	 * Run services on template redirect.
@@ -41,58 +56,147 @@ class FrontendHelper {
 	 * @param array $almaGatewayList
 	 *
 	 * @return void
-	 *
-	 * Easier to understand with two if statements.
 	 */
 	public static function loadFrontendGateways( array $almaGatewayList ) {
-		add_filter(
-			'woocommerce_payment_gateways',
-			function ( $gateways ) use ( $almaGatewayList ) {
-				$container = Plugin::get_container();
+		self::initGatewayIds();
 
-				/** @var AbstractGateway $gateway */
-				foreach ( $almaGatewayList as $gatewayClass ) {
-					if ( ! in_array( $gatewayClass, $gateways, true ) && class_exists( $gatewayClass ) ) {
-						// Check if the gateway is enabled before adding it to the list.
-						$gateway = $container->get( $gatewayClass );
-						if ( $gateway->is_enabled() ) { // Easier to understand with two if statements.
-							array_unshift( $gateways, $gateway );
-						}
-					}
+		add_filter( 'woocommerce_payment_gateways', [ self::class, 'registerGateways' ] );
+		add_filter( 'option_woocommerce_gateway_order', [ self::class, 'syncGatewayOrder' ] );
+		add_filter( 'woocommerce_available_payment_gateways', [ self::class, 'sortAlmaGateways' ] );
+
+		// Store the list for the registration callback.
+		self::$almaGatewayList = $almaGatewayList;
+	}
+
+	/**
+	 * Initialize the gateway ID arrays once.
+	 *
+	 * @return void
+	 */
+	private static function initGatewayIds(): void {
+		if ( ! empty( self::$alma_gateway_ids ) ) {
+			return;
+		}
+
+		self::$alma_gateway_ids = [
+			sprintf( AbstractGateway::NAME_ALMA_GATEWAYS, PayNowGateway::PAYMENT_METHOD ),
+			sprintf( AbstractGateway::NAME_ALMA_GATEWAYS, PnxGateway::PAYMENT_METHOD ),
+			sprintf( AbstractGateway::NAME_ALMA_GATEWAYS, PayLaterGateway::PAYMENT_METHOD ),
+			sprintf( AbstractGateway::NAME_ALMA_GATEWAYS, CreditGateway::PAYMENT_METHOD ),
+		];
+
+		self::$config_gateway_id = sprintf( AbstractGateway::NAME_ALMA_GATEWAYS, AlmaGateway::PAYMENT_METHOD );
+	}
+
+	/**
+	 * @var array Gateway class list passed from loadFrontendGateways.
+	 */
+	private static array $almaGatewayList = [];
+
+	/**
+	 * Register enabled Alma gateways in WooCommerce.
+	 *
+	 * @param array $gateways
+	 *
+	 * @return array
+	 */
+	public static function registerGateways( array $gateways ): array {
+		$container = Plugin::get_container();
+
+		/** @var AbstractGateway $gateway */
+		foreach ( self::$almaGatewayList as $gatewayClass ) {
+			if ( ! in_array( $gatewayClass, $gateways, true ) && class_exists( $gatewayClass ) ) {
+				$gateway = $container->get( $gatewayClass );
+				if ( $gateway->is_enabled() ) {
+					$gateways[] = $gateway;
 				}
-
-				return $gateways;
 			}
+		}
+
+		return $gateways;
+	}
+
+	/**
+	 * Inject Alma frontend gateway IDs into WooCommerce's gateway ordering
+	 * so that sort_gateways() positions them at the same place as alma_config_gateway.
+	 * Without this, frontend IDs are unknown to WooCommerce and get order 999+.
+	 *
+	 * @param mixed $ordering
+	 *
+	 * @return array
+	 */
+	public static function syncGatewayOrder( $ordering ): array {
+		if ( ! is_array( $ordering ) ) {
+			$ordering = [];
+		}
+
+		// Remove any existing Alma frontend gateway entries to avoid duplicates.
+		foreach ( self::$alma_gateway_ids as $id ) {
+			unset( $ordering[ $id ] );
+		}
+
+		$base_order = isset( $ordering[ self::$config_gateway_id ] )
+			? absint( $ordering[ self::$config_gateway_id ] )
+			: 0;
+
+		$alma_count = count( self::$alma_gateway_ids );
+
+		// Shift all non-Alma gateways with order >= base_order to make room.
+		foreach ( $ordering as $id => $order ) {
+			if ( $id !== self::$config_gateway_id && absint( $order ) >= $base_order ) {
+				$ordering[ $id ] = absint( $order ) + $alma_count;
+			}
+		}
+
+		// Insert Alma frontend gateways at the base position.
+		$ordering += array_combine(
+			self::$alma_gateway_ids,
+			range( $base_order, $base_order + $alma_count - 1 )
 		);
 
-		// Sort gateways order (not Blocks).
-		add_filter( 'woocommerce_available_payment_gateways', function ( $gateways ) {
-			$order = [
-				Plugin::get_container()->get( PayNowGateway::class )->get_name(),   // first
-				Plugin::get_container()->get( PayNowGateway::class )->get_name() . '_block',   // first
-				Plugin::get_container()->get( PnxGateway::class )->get_name(),      // second
-				Plugin::get_container()->get( PnxGateway::class )->get_name() . '_block',      // second
-				Plugin::get_container()->get( PayLaterGateway::class )->get_name(), // third
-				Plugin::get_container()->get( PayLaterGateway::class )->get_name() . '_block', // third
-				Plugin::get_container()->get( CreditGateway::class )->get_name(),   // fourth
-				Plugin::get_container()->get( CreditGateway::class )->get_name() . '_block',   // fourth
-			];
+		return $ordering;
+	}
 
-			$sorted = [];
-			foreach ( $order as $id ) {
-				if ( isset( $gateways[ $id ] ) ) {
-					$sorted[ $id ] = $gateways[ $id ];
-				}
+	/**
+	 * Ensure correct relative order among Alma gateways.
+	 * After sort_gateways(), all Alma gateways share the same order value,
+	 * but their relative order is not guaranteed (uasort is unstable in PHP < 8.0).
+	 * This filter groups them in the desired order at their current position.
+	 *
+	 * @param $gateways
+	 *
+	 * @return mixed|array
+	 */
+	public static function sortAlmaGateways( $gateways ) {
+		if ( ! is_array( $gateways ) ) {
+			return $gateways;
+		}
+
+		$alma_gateways = [];
+		foreach ( self::$alma_gateway_ids as $id ) {
+			if ( isset( $gateways[ $id ] ) ) {
+				$alma_gateways[ $id ] = $gateways[ $id ];
 			}
+		}
 
-			// We keep other gateways that could be registered by other plugins at the end of the list
-			foreach ( $gateways as $id => $gateway ) {
-				if ( ! isset( $sorted[ $id ] ) ) {
-					$sorted[ $id ] = $gateway;
+		if ( empty( $alma_gateways ) ) {
+			return $gateways;
+		}
+
+		$result        = [];
+		$alma_inserted = false;
+
+		foreach ( $gateways as $id => $gateway ) {
+			if ( isset( $alma_gateways[ $id ] ) ) {
+				if ( ! $alma_inserted ) {
+					$result       += $alma_gateways;
+					$alma_inserted = true;
 				}
+				continue;
 			}
+			$result[ $id ] = $gateway;
+		}
 
-			return $sorted;
-		} );
+		return $result;
 	}
 }

@@ -318,6 +318,40 @@ class BusinessEventsServiceTest extends TestCase {
 		$this->businessEventsService->onOrderConfirmed( 'pending', 'processing', $orderMock );
 	}
 
+	/**
+	 * @dataProvider emptyCartIdProvider
+	 * @throws BusinessEventsServiceException
+	 */
+	public function testOnOrderConfirmedWithEmptyCartIdReturnsEarly( $cartId ): void {
+		$this->businessEventsRepository->method( 'getRowByOrderId' )
+		                               ->with( 42 )
+		                               ->willReturn( (object) [
+			                               'cart_id'          => $cartId,
+			                               'alma_payment_id'  => '',
+			                               'is_bnpl_eligible' => 0,
+		                               ] );
+
+		$orderMock = $this->createMock( OrderAdapter::class );
+		$orderMock->method( 'getId' )->willReturn( 42 );
+		$orderMock->method( 'getPaymentMethod' )->willReturn( 'paypal' );
+
+		Functions\when( 'wc_get_is_paid_statuses' )
+			->justReturn( [ 'processing', 'completed' ] );
+
+		$this->merchantProvider->expects( $this->never() )
+		                       ->method( 'sendOrderConfirmedBusinessEvent' );
+
+		$this->businessEventsService->onOrderConfirmed( 'pending', 'processing', $orderMock );
+	}
+
+	public function emptyCartIdProvider(): array {
+		return [
+			'cart_id is null'         => [ null ],
+			'cart_id is empty string' => [ '' ],
+			'cart_id is 0'            => [ 0 ],
+		];
+	}
+
 	public function testOnCreateOrder(): void {
 		$cartId = 12345;
 

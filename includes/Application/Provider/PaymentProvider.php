@@ -17,7 +17,6 @@ use Alma\Gateway\Application\Exception\Provider\PaymentProviderException;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Alma\Plugin\Application\Port\PaymentProviderInterface;
 use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
 class PaymentProvider implements PaymentProviderInterface, ProviderInterface {
 
@@ -31,10 +30,11 @@ class PaymentProvider implements PaymentProviderInterface, ProviderInterface {
 	 * PaymentService constructor.
 	 *
 	 * @param PaymentEndpoint $paymentEndpoint The payment endpoint to use for API calls.
+	 * @param LoggerService   $loggerService
 	 */
-	public function __construct( PaymentEndpoint $paymentEndpoint, ?LoggerService $loggerService = null ) {
+	public function __construct( PaymentEndpoint $paymentEndpoint, LoggerService $loggerService ) {
 		$this->paymentEndpoint = $paymentEndpoint;
-		$this->loggerService   = $loggerService ?? new NullLogger();
+		$this->loggerService   = $loggerService;
 	}
 
 	/**
@@ -116,10 +116,14 @@ class PaymentProvider implements PaymentProviderInterface, ProviderInterface {
 	/**
 	 * Send order status to Alma by merchant order reference.
 	 *
-	 * @param string $paymentId
-	 * @param string $merchantOrderReference
-	 * @param string $status
-	 * @param bool   $isShipped
+	 * @param string    $paymentId
+	 * @param string    $merchantOrderReference
+	 * @param string    $status
+	 * @param bool|null $isShipped Null when the WC status does not map to a known
+	 *                             shipping state (custom statuses from third-party
+	 *                             plugins). The Alma API and PaymentEndpoint accept
+	 *                             null — narrowing it here used to TypeError on
+	 *                             `woocommerce_order_status_changed`.
 	 *
 	 * @return void
 	 */
@@ -127,7 +131,7 @@ class PaymentProvider implements PaymentProviderInterface, ProviderInterface {
 		string $paymentId,
 		string $merchantOrderReference,
 		string $status,
-		bool $isShipped
+		?bool $isShipped = null
 	): void {
 		try {
 			$this->paymentEndpoint->addOrderStatusByMerchantOrderReference(

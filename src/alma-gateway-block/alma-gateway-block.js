@@ -55,6 +55,7 @@
  * @property {FeePlan} general_6_0_0 - Credit 6-installment plan configuration.
  * @property {FeePlan} general_10_0_0 - Credit 10-installment plan configuration.
  * @property {FeePlan} general_12_0_0 - Credit 12-installment plan configuration.
+ * @property {FeePlan} general_24_0_0 - Credit 24-installment plan configuration.
  * @property {FeePlan} general_1_30_0 - Pay later 30-days plan configuration.
  *
  * @typedef {object} FeePlan
@@ -68,7 +69,7 @@
  *
  * @typedef {object} PaymentSchedule
  * @property {number} due_date - UNIX timestamp of the due date.
- * @property {string} localized_due_date - Localized readable due date (e.g., "28 mai 2026").
+ * @property {string} [localized_due_date] - Deprecated: was a localized readable date; now returns DD/MM/YYYY. Use `due_date` for formatting.
  * @property {number} purchase_amount - Amount of the principal payment.
  * @property {number} customer_fee - Additional customer fees.
  * @property {number} customer_interest - Interest amount.
@@ -78,12 +79,20 @@
 // phpcs:ignoreFile
 import {storeKey} from "../stores/alma-store";
 import {createRoot, useEffect, useRef, useState} from '@wordpress/element';
-import {useSelect} from '@wordpress/data';
+import {dispatch, select, useSelect} from '@wordpress/data'; // select: [WC-COMPAT 9.0-9.7] remove when MIN_WOOCOMMERCE_VERSION >= 9.8
 import {Label} from "./components/Label";
 import './alma-gateway-block.css';
 import {DisplayAlmaInPageBlock} from "./components/DisplayAlmaInPageBlock";
 import {DisplayAlmaBlock} from "./components/DisplayAlmaBlock";
 import {fetchAlmaSettings} from "./hooks/almaSettings";
+
+// [WC-COMPAT 9.0-9.7] Start — Synchronous store hydration
+// @see docs/WC97-SYNC-REGISTRATION-PATCH.md
+// Remove when MIN_WOOCOMMERCE_VERSION >= 9.8
+if (window.AlmaInitSettings?.gateway_settings) {
+    dispatch(storeKey).setAlmaSettings(window.AlmaInitSettings);
+}
+// [WC-COMPAT 9.0-9.7] End
 
 (function ($) {
 
@@ -111,8 +120,9 @@ import {fetchAlmaSettings} from "./hooks/almaSettings";
      */
     const CartObserver = () => {
         // Subscribe to the cart total
-        const {cartTotal, shippingRates} = useSelect((select) => ({
-            cartTotal: select(CART_STORE_KEY).getCartTotals().total_price,
+        const {cartTotal, shippingRates, currencyMinorUnit} = useSelect((select) => ({
+            cartTotal: select(CART_STORE_KEY).getCartTotals().total_price, // Total price is in minor unit depending on the currency_minor_unit
+            currencyMinorUnit: select(CART_STORE_KEY).getCartTotals().currency_minor_unit,
             shippingRates: select(CART_STORE_KEY).getShippingRates()
         }), []);
         // Subscribe to the eligibility
@@ -159,7 +169,8 @@ import {fetchAlmaSettings} from "./hooks/almaSettings";
         // Register the payment gateway block
         if (!isCalculating && !isLoading) {
             // For each gateway in eligibility result, we register a block
-            registerPaymentGateway(almaSettings, allGatewaysSettings, storeKey, parseInt(cartTotal), inPageInstance, setInPageInstance)
+            const totalInCent = parseInt(cartTotal) * Math.pow(10, 2 - currencyMinorUnit)
+            registerPaymentGateway(almaSettings, allGatewaysSettings, storeKey, totalInCent, inPageInstance, setInPageInstance)
         }
     };
 
@@ -262,6 +273,36 @@ import {fetchAlmaSettings} from "./hooks/almaSettings";
             ReactDOM.render(<CartObserver/>, rootDiv);
         }
     };
+
+    // [WC-COMPAT 9.0-9.7] Start — Synchronous gateway registration
+    // @see docs/WC97-SYNC-REGISTRATION-PATCH.md
+    // Remove when MIN_WOOCOMMERCE_VERSION >= 9.8
+    try {
+        const initGwSettings = select(storeKey).getAllGatewaysSettings();
+        const initAlmaSettings = select(storeKey).getAlmaSettings();
+        if (Object.keys(initGwSettings).length > 0) {
+            const cartTotals = select(CART_STORE_KEY).getCartTotals() || {};
+            const cartTotal = parseInt(cartTotals.total_price || 0) * Math.pow(10, 2 - (cartTotals.currency_minor_unit || 0));
+
+            for (const gatewayName in initGwSettings) {
+                const gw = initGwSettings[gatewayName];
+                if (gw?.gateway_name) {
+                    const blockContent = getContentBlock(initAlmaSettings, gatewayName, storeKey, cartTotal, undefined, () => {});
+                    const dynamicCanMakePayment = () => {
+                        const current = select(storeKey).getGatewaySettings(gatewayName);
+                        if (!current || !('fee_plans_settings' in current)) return true;
+                        return Object.keys(current.fee_plans_settings).length > 0;
+                    };
+                    const block = generateGatewayBlock(gw, blockContent, true);
+                    block.canMakePayment = dynamicCanMakePayment;
+                    window.wc.wcBlocksRegistry.registerPaymentMethod(block);
+                }
+            }
+        }
+    } catch (e) {
+        console.error('Alma: synchronous gateway registration failed', e);
+    }
+    // [WC-COMPAT 9.0-9.7] End
 
     /**
      * Init Alma Gateway Blocks on DOMContentLoaded

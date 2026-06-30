@@ -62,9 +62,11 @@ class CreditGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 		);
 
 		// phpcs:ignore
-		if ( $_POST['alma_plan_key'] && ! $this->check_values( $_POST['alma_plan_key'],
-			array( 'general_6_0_0', 'general_10_0_0', 'general_12_0_0' )
-		) ) {
+		$plan_key = $_POST['alma_plan_key'];
+		if ( $plan_key
+			&& ( ! preg_match( '/^general_(\d+)_0_0$/', $plan_key, $matches )
+				|| (int) $matches[1] < 6 )
+		) {
 			ShopNotificationHelper::notifyError(
 				__(
 					'Please choose a valid option.',

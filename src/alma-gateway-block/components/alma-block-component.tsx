@@ -13,14 +13,14 @@ import {ToggleButtonsField} from "@alma/react-components";
 import * as React from "react";
 import {Installments} from "./Installments/Installments";
 import {IntlProvider} from "react-intl";
-import classNames from "classnames";
 
 export type PaymentPlan = {
     customer_fee: number;
     due_date: number;
     purchase_amount: number;
     total_amount: number;
-    localized_due_date: string;
+    /** @deprecated The API now returns DD/MM/YYYY format. Use `due_date` (Unix timestamp) for formatting. */
+    localized_due_date?: string;
 };
 
 export type FeePlan = {
@@ -57,6 +57,7 @@ type AlmaBlockProps = {
     hasInPage: boolean;
     totalPrice: number;
     plans: Record<string, FeePlan>;
+    locale?: string;
 };
 
 export const AlmaBlock: React.FC<AlmaBlockProps> = (
@@ -67,6 +68,7 @@ export const AlmaBlock: React.FC<AlmaBlockProps> = (
             hasInPage,
             totalPrice,
             plans,
+            locale = 'fr',
         }
 ) => {
     const labels = {};
@@ -90,26 +92,23 @@ export const AlmaBlock: React.FC<AlmaBlockProps> = (
     };
 
     const label = (
-            <div className="toggleButtonFieldLabel">{gatewaySettings.description}</div>
+            <div className="alma-toggleButtonFieldLabel">{gatewaySettings.description}</div>
     );
     return (
-            <IntlProvider locale="fr">
-                {gatewaySettings.is_pay_now && <div className={"payNowLabel"}>{label}</div>}
-                <div className={"buttonsContainer"}>
-                    <div className={classNames({payNow: gatewaySettings.is_pay_now})}>
-                        <ToggleButtonsField
-                                className={"toggleButtonField"}
-                                options={values}
-                                optionLabel={(key) => labels[key]}
-                                optionKey={(key) => key}
-                                onChange={(key) => handleClick(key)}
-                                value={selectedFeePlan}
-                                label={label}
-                                wide={false}
-                                size={"sm"}
-                                error=""
+            <IntlProvider locale={locale}>
+                <div className={"alma-buttonsContainer"}>
+                    <ToggleButtonsField
+                            className={"alma-toggleButtonField"}
+                            options={values}
+                            optionLabel={(key) => labels[key]}
+                            optionKey={(key) => key}
+                            onChange={(key) => handleClick(key)}
+                            value={selectedFeePlan}
+                            label={label}
+                            wide={false}
+                            size={"sm"}
+                            error=""
                         />
-                    </div>
                 </div>
                 {!hasInPage && (
                         <div className="alma-card-installments">

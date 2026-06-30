@@ -27,7 +27,7 @@ rm -rf ./dist ./vendor-prefixed "$BUILD_DIR"
 
 echo "=> Downloading Strauss phar..."
 # Download the latest strauss.phar
-curl -L -o strauss.phar https://github.com/BrianHenryIE/strauss/releases/latest/download/strauss.phar
+curl -L -o strauss.phar https://github.com/BrianHenryIE/strauss/releases/download/0.27.0/strauss.phar
 chmod +x strauss.phar
 
 echo "=> Prefixing dependencies and project source..."
@@ -45,6 +45,7 @@ mkdir -p "$BUILD_DIR/$PLUGIN_DIR_NAME"
 cp alma-gateway-for-woocommerce.php "$BUILD_DIR/$PLUGIN_DIR_NAME/"
 cp readme.txt "$BUILD_DIR/$PLUGIN_DIR_NAME/"
 cp composer.json "$BUILD_DIR/$PLUGIN_DIR_NAME/"
+cp uninstall.php "$BUILD_DIR/$PLUGIN_DIR_NAME/"
 cp -r build "$BUILD_DIR/$PLUGIN_DIR_NAME/"
 cp -r includes "$BUILD_DIR/$PLUGIN_DIR_NAME/"
 cp -r languages "$BUILD_DIR/$PLUGIN_DIR_NAME/"

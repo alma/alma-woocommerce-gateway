@@ -209,7 +209,7 @@ class KeyConfiguration {
 	private function validateTestKey(): void {
 		if ( $this->newEnvironment !== Environment::TEST_MODE ) {
 			$this->setTestMode();
-			$this->addError( 'You can not use Live mode without test key.' );
+			$this->addError( 'You can not use Live mode without live API key.' );
 		}
 		$this->newMerchantId = $this->testMerchantId;
 	}
@@ -220,7 +220,7 @@ class KeyConfiguration {
 	private function validateLiveKey(): void {
 		if ( $this->newEnvironment !== Environment::LIVE_MODE ) {
 			$this->setLiveMode();
-			$this->addError( 'You can not use Test mode without test key.' );
+			$this->addError( 'You can not use Test mode without test API key.' );
 		}
 		$this->newMerchantId = $this->liveMerchantId;
 	}
