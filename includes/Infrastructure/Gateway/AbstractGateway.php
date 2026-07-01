@@ -167,7 +167,7 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 			sprintf(
 			// translators: %s: Selected payment method.
 				__( 'Selected payment method : %s', 'alma-gateway-for-woocommerce' ),
-				$fee_plan_adapter->getLabel(),
+				$fee_plan_adapter->getLabel()
 			)
 		);
 
