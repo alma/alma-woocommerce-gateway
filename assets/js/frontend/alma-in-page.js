@@ -152,28 +152,43 @@
             return parseInt(cleanedText) * Math.pow(10, 2 - number_decimals);
         }
 
-
-        // Remove alma=inPage&pid=PAYMENT_ID from URL without reloading the page
         // This is to prevent starting the payment again if the user close the modal and refresh the page
-        function cleanInPageUrlParams() {
+        function handleInPageModalClose() {
             const url = new URL(window.location.href);
             const params = url.searchParams;
 
+            removeAlmaUrlParams(params);
+
+            const isEventCanceled = dispatchRedirectEvent(url);
+
+            $('#alma-overlay').remove();
+
+            if (isEventCanceled) {
+                return;
+            }
+
+            window.history.replaceState({}, document.title, url.pathname + '?' + params.toString());
+        }
+
+        // Remove alma=inPage&pid=PAYMENT_ID from URL without reloading the page
+        function removeAlmaUrlParams(params) {
             params.delete('alma');
             params.delete('pid');
             params.delete('planKey');
+        }
 
+        // Dispatch Redirect Event
+        function dispatchRedirectEvent(url) {
             const event = new CustomEvent('alma_inpage_redirect_after_close_modal', {
                 detail: {
-                    url
-                }
+                    url: url
+                },
+                cancelable: true
             });
 
             document.dispatchEvent(event);
 
-            $('#alma-overlay').remove();
-
-            window.history.replaceState({}, document.title, url.pathname + '?' + params.toString());
+            return event.defaultPrevented;
         }
 
         // Generate and add the loading overlay to the page
@@ -222,7 +237,7 @@
             if (isInPagePayment) {
                 inPage.startPayment({
                     paymentId: initialUrlParams.get('pid'),
-                    onUserCloseModal: cleanInPageUrlParams
+                    onUserCloseModal: handleInPageModalClose
                 });
             }
         });
