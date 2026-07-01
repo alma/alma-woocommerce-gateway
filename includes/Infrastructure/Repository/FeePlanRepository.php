@@ -200,7 +200,7 @@ class FeePlanRepository {
 
 				$cacheKey            = $this->getEligibilityCacheKey( $eligibilityDto->toArray() );
 				$cachedEligibility   = get_transient( $cacheKey );
-				$installmentPlanList = is_string( $cachedEligibility ) ? unserialize( $cachedEligibility ) : null; // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions
+				$installmentPlanList = is_string( $cachedEligibility ) ? @unserialize( $cachedEligibility ) : null; // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions
 
 				if ( ! $installmentPlanList instanceof EligibilityList ) {
 					$installmentPlanList = $this->eligibilityProvider->getEligibilityList( $eligibilityDto );
@@ -244,7 +244,7 @@ class FeePlanRepository {
 	 *
 	 * @return string
 	 */
-	private function getEligibilityCacheKey( array $eligibilityDtoArray ): string {
+	protected function getEligibilityCacheKey( array $eligibilityDtoArray ): string {
 		$merchantId  = $this->configService->getMerchantId() ?? 'unknown';
 		$environment = $this->configService->isLive() ? 'live' : 'test';
 

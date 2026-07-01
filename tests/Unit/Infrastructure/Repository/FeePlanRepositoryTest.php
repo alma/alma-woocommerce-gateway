@@ -36,6 +36,10 @@ class TestableFeePlanRepository extends FeePlanRepository {
 		return $this->getFeePlansCacheKey();
 	}
 
+	public function exposeEligibilityCacheKey( array $eligibilityDtoArray ): string {
+		return $this->getEligibilityCacheKey( $eligibilityDtoArray );
+	}
+
 	protected function getLogger(): LoggerInterface {
 		if ( $this->injectedLogger !== null ) {
 			return $this->injectedLogger;
@@ -336,6 +340,99 @@ class FeePlanRepositoryTest extends TestCase {
 		$this->repository->callRetrieveFeePlans( 10000 );
 	}
 
+	public function testEligibilityTransientWithCorruptStringFallsBackToApi(): void {
+		$eligibilityProvider = $this->arrangeShopContext();
+
+		// A corrupt (non-unserializable) string must be swallowed silently by
+		// @unserialize and trigger a refetch — never surface a PHP notice/warning
+		// (which PHPUnit would convert to an exception and rethrow as a
+		// FeePlanRepositoryException). Mirrors testTransientWithInvalidDataFallsBackToApi.
+		Functions\when( 'get_transient' )->alias(
+			fn( $key ) => strpos( $key, FeePlanRepository::TRANSIENT_ELIGIBILITY_PREFIX ) === 0
+				? 'not-valid-serialized-data'
+				: false
+		);
+		Functions\when( 'set_transient' )->justReturn( true );
+
+		$eligibilityProvider->expects( 'getEligibilityList' )->once()->andReturn( new EligibilityList() );
+
+		$this->repository->callRetrieveFeePlans( 10000 );
+	}
+
+	public function testBusinessEventIsUpdatedOnEligibilityCacheHit(): void {
+		// Shop context (non-admin, cart total > 0) built inline rather than via
+		// arrangeShopContext(), because we need a strict expectation on
+		// updateEligibility() instead of the loose allows() it sets.
+		Functions\when( 'is_admin' )->justReturn( false );
+		unset( $_GET['rest_route'] );
+		$_SERVER['REQUEST_URI'] = '/';
+		Functions\when( 'wp_json_encode' )->alias( 'json_encode' );
+
+		$wc           = new \stdClass();
+		$wc->cart     = null;
+		$wc->customer = null;
+		Functions\when( 'WC' )->justReturn( $wc );
+
+		$this->feePlanProvider->allows( 'getFeePlanList' )->andReturn( $this->makeFeePlanList() );
+
+		$eligibilityProvider = Mockery::mock( EligibilityProvider::class );
+		$this->eligibilityProviderFactory->allows( '__invoke' )->andReturn( $eligibilityProvider );
+
+		// Eligibility served from cache: the API must NOT be called...
+		$serializedEligibility = serialize( new EligibilityList() );
+		Functions\when( 'get_transient' )->alias(
+			fn( $key ) => strpos( $key, FeePlanRepository::TRANSIENT_ELIGIBILITY_PREFIX ) === 0
+				? $serializedEligibility
+				: false
+		);
+		Functions\when( 'set_transient' )->justReturn( true );
+		$eligibilityProvider->expects( 'getEligibilityList' )->never();
+
+		// ...but the business event MUST still fire, with the cached EligibilityList,
+		// so analytics are not silently dropped on cached reads.
+		$this->businessEventsService
+			->expects( 'updateEligibility' )
+			->once()
+			->with( Mockery::type( EligibilityList::class ) );
+
+		$this->repository->callRetrieveFeePlans( 10000 );
+	}
+
+	// -------------------------------------------------------------------------
+	// Eligibility branch guard tests
+	// -------------------------------------------------------------------------
+
+	public function testEligibilityIsNotFetchedInAdminContext(): void {
+		Functions\when( 'wp_json_encode' )->alias( 'json_encode' );
+		Functions\when( 'get_transient' )->justReturn( false );
+		Functions\when( 'set_transient' )->justReturn( true );
+
+		$this->feePlanProvider->allows( 'getFeePlanList' )->andReturn( $this->makeFeePlanList() );
+
+		// is_admin() defaults to true in setUp(): even with cartTotal > 0 the eligibility
+		// branch must be skipped entirely — no provider, no API, no business event.
+		$this->eligibilityProviderFactory->expects( '__invoke' )->never();
+		$this->businessEventsService->expects( 'updateEligibility' )->never();
+
+		$this->repository->callRetrieveFeePlans( 10000 );
+	}
+
+	public function testEligibilityIsNotFetchedWhenCartTotalIsZero(): void {
+		Functions\when( 'is_admin' )->justReturn( false );
+		Functions\when( 'wp_json_encode' )->alias( 'json_encode' );
+		Functions\when( 'get_transient' )->justReturn( false );
+		Functions\when( 'set_transient' )->justReturn( true );
+
+		$this->feePlanProvider->allows( 'getFeePlanList' )->andReturn( $this->makeFeePlanList() );
+
+		// Non-admin, but cartTotal = 0: the cart-total half of the guard must skip the
+		// eligibility branch on its own.
+		$this->eligibilityProviderFactory->expects( '__invoke' )->never();
+		$this->businessEventsService->expects( 'updateEligibility' )->never();
+
+		$this->repository->callRetrieveFeePlans( 0 );
+	}
+
 	public function testEligibilityCacheKeyDiffersBetweenEnvironments(): void {
 		$keys = $this->captureEligibilityKeysForConfigs(
 			[
@@ -372,6 +469,25 @@ class FeePlanRepositoryTest extends TestCase {
 
 		$this->assertCount( 2, $keys );
 		$this->assertSame( $keys[0], $keys[1] );
+	}
+
+	public function testEligibilityCacheKeyVariesWithCartContent(): void {
+		Functions\when( 'wp_json_encode' )->alias( 'json_encode' );
+
+		// The key hashes the eligibility DTO, so two different carts (here: different
+		// purchase amounts) MUST resolve to two different cache entries — otherwise a
+		// cart would be served another cart's cached eligibility. This locks the DTO
+		// into the key: dropping it from the hash would make this test fail.
+		$cartA = [ 'purchase_amount' => 10000, 'queries' => [] ];
+		$cartB = [ 'purchase_amount' => 50000, 'queries' => [] ];
+
+		$keyA  = $this->repository->exposeEligibilityCacheKey( $cartA );
+		$keyB  = $this->repository->exposeEligibilityCacheKey( $cartB );
+		$keyA2 = $this->repository->exposeEligibilityCacheKey( $cartA );
+
+		$this->assertStringStartsWith( FeePlanRepository::TRANSIENT_ELIGIBILITY_PREFIX, $keyA );
+		$this->assertNotEquals( $keyA, $keyB, 'Different cart content must produce different eligibility cache keys.' );
+		$this->assertSame( $keyA, $keyA2, 'Identical cart content must produce a stable eligibility cache key.' );
 	}
 
 	// -------------------------------------------------------------------------
