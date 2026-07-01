@@ -158,11 +158,21 @@
         function cleanInPageUrlParams() {
             const url = new URL(window.location.href);
             const params = url.searchParams;
-            $('#alma-overlay').remove();
 
             params.delete('alma');
             params.delete('pid');
             params.delete('planKey');
+
+            const event = new CustomEvent('alma_inpage_redirect_after_close_modal', {
+                detail: {
+                    url
+                }
+            });
+
+            document.dispatchEvent(event);
+
+            $('#alma-overlay').remove();
+
             window.history.replaceState({}, document.title, url.pathname + '?' + params.toString());
         }
 
