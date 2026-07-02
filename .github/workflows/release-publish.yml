@@ -13,6 +13,10 @@ jobs:
     if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'release')
     runs-on: ubuntu-24.04
 
+    permissions:
+      contents: write
+      id-token: write
+
     steps:
 
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
@@ -22,6 +26,25 @@ jobs:
         with:
           version: 3.x
           repo-token: ${{ github.token }}
+
+      # @alma/react-components is served from the private GCP Artifact Registry
+      # (see .npmrc). The dist build runs `npm install` inside the container, so
+      # we authenticate here and inject the token into .npmrc before building.
+      - name: Authenticate to Google Cloud
+        id: gcloud-auth
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
+        with:
+          token_format: access_token
+          workload_identity_provider: projects/699052769907/locations/global/workloadIdentityPools/github-identity-pool-shared/providers/github-identity-provider-shared  # yamllint disable-line
+          service_account: github-gar-alma-woocommerce-ga@lyrical-carver-335213.iam.gserviceaccount.com
+
+      - name: Configure npm auth for Artifact Registry
+        shell: bash
+        run: |
+          {
+            echo "//europe-npm.pkg.dev/lyrical-carver-335213/node-packages/:always-auth=true"
+            echo "//europe-npm.pkg.dev/lyrical-carver-335213/node-packages/:_authToken=${{ steps.gcloud-auth.outputs.access_token }}"
+          } >> .npmrc
 
       - name: Create release zip file
         shell: bash
@@ -99,6 +122,49 @@ jobs:
               tag_name: "${{ steps.fetch-release-draft.outputs.name }}",
               target_commitish: "refs/heads/main"
             });
+
+      # WordPress.org SVN tags have no "v" prefix (e.g. 6.4.0), whereas the
+      # GitHub release/tag name does (e.g. v6.4.0), so we strip it here.
+      - name: Resolve WordPress.org version
+        id: wporg-version
+        shell: bash
+        env:
+          NAME: ${{ steps.fetch-release-draft.outputs.name }}
+        run: echo "version=${NAME#v}" >> "$GITHUB_OUTPUT"
+
+      # task 7.4:dist only leaves the zip in dist/, so we unzip it to provide
+      # a BUILD_DIR to the deploy action. The zip contains the plugin folder
+      # at its root (alma-gateway-for-woocommerce/).
+      - name: Unzip plugin build for WordPress.org
+        shell: bash
+        run: unzip -q dist/alma-gateway-for-woocommerce.zip -d dist/svn
+
+      # SVN credentials are pulled from 1Password, not stored as GitHub secrets.
+      # Only OP_SERVICE_ACCOUNT_TOKEN lives in GitHub; this step resolves the
+      # op:// references and exports SVN_USERNAME / SVN_PASSWORD to the job env.
+      # Item: "WordPress.org (marketplace + subversion svn)" in the
+      # "Shared - Integrations" vault, referenced by its UUID below.
+      - name: Load WordPress.org SVN credentials from 1Password
+        uses: 1password/load-secrets-action@92467eb28f72e8255933372f1e0707c567ce2259 # v4.0.0
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          SVN_USERNAME: op://Shared - Integrations/b4fkyx4v55fjbce3rvfacntyzi/username
+          SVN_PASSWORD: op://Shared - Integrations/b4fkyx4v55fjbce3rvfacntyzi/password
+
+      - name: Deploy to WordPress.org
+        uses: 10up/action-wordpress-plugin-deploy@54bd289b8525fd23a5c365ec369185f2966529c2 # 2.3.0
+        with:
+          # TODO: remove dry-run once a first release validated the SVN payload
+          dry-run: true
+        env:
+          SVN_USERNAME: ${{ env.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ env.SVN_PASSWORD }}
+          SLUG: alma-gateway-for-woocommerce
+          VERSION: ${{ steps.wporg-version.outputs.version }}
+          BUILD_DIR: dist/svn/alma-gateway-for-woocommerce
+          ASSETS_DIR: .wordpress.org
 
       - name: Format release notes for Slack
         uses: LoveToKnow/slackify-markdown-action@698a1d4d0ff1794152a93c03ee8ca5e03a310d4e # v1.1.1
