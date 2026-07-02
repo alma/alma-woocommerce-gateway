@@ -5,20 +5,22 @@
 ### Changes
 
 - Feature/ecom 3883 improve Eligibility cache performance (#528)
-- Feature/ecom 4442 add an event when alma in page modal is closed (#656)
+- Surface the real cause of API key validation failures (#652)
+-
 
 ### 🚀 New Features
 
-- Surface the real cause of API key validation failures (#652)
-- Fix incorrect plugin version reported at runtime (#651)
+- Feature/ecom 4442 add an event when alma in page modal is closed (#656)
 
 ### 🐛 Bug Fixes
 
-- fix(ci): authenticate npm to Google Artifact Registry in release-publish (#657)
+- Fix incorrect plugin version reported at runtime (#651)
 
 #### Contributors
 
-@Benjamin-Freoua-Alma, @alma-renovate-bot[bot], @dependabot[bot], @jimmycarricart-ext-collab, @webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review), [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot) and [dependabot[bot]](https://github.com/apps/dependabot)
+@Benjamin-Freoua-Alma, @alma-renovate-bot[bot], @dependabot[bot], @jimmycarricart-ext-collab,
+@webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review), [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
+and [dependabot[bot]](https://github.com/apps/dependabot)
 
 ## v6.4.1 - 2026-06-25
 
@@ -30,7 +32,8 @@
 
 #### Contributors
 
-@Benjamin-Freoua-Alma, @alma-create-pr-with-team-review[bot], @joyet-simon, @remi-zuffinetti and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+@Benjamin-Freoua-Alma, @alma-create-pr-with-team-review[bot], @joyet-simon, @remi-zuffinetti
+and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
 
 ## v6.4.0 - 2026-06-10
 
@@ -47,7 +50,9 @@
 
 #### Contributors
 
-@Benjamin-Freoua-Alma, @alma-renovate-bot[bot], @remi-zuffinetti, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
+@Benjamin-Freoua-Alma, @alma-renovate-bot[bot],
+@remi-zuffinetti, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
 
 ## v6.3.0 - 2026-05-25
 
@@ -64,7 +69,8 @@
 
 #### Contributors
 
-@Benjamin-Freoua-Alma, @webaaz and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+@Benjamin-Freoua-Alma, @webaaz
+and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
 
 ## v6.2.1 - 2026-05-13
 
@@ -78,7 +84,8 @@
 
 #### Contributors
 
-@alma-create-pr-with-team-review[bot], @webaaz and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+@alma-create-pr-with-team-review[bot], @webaaz
+and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
 
 ## v6.2.0 - 2026-05-05
 
@@ -100,7 +107,9 @@
 
 #### Contributors
 
-@Benjamin-Freoua-Alma, @alma-renovate-bot[bot], @dependabot[bot], @joyet-simon, @remi-zuffinetti, @webaaz, [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot), [dependabot[bot]](https://github.com/apps/dependabot) and joyet.simon
+@Benjamin-Freoua-Alma, @alma-renovate-bot[bot], @dependabot[bot], @joyet-simon, @remi-zuffinetti,
+@webaaz, [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot), [dependabot[bot]](https://github.com/apps/dependabot)
+and joyet.simon
 
 ## v6.1.0 - 2026-04-23
 
@@ -119,7 +128,8 @@
 
 #### Contributors
 
-@Francois-Gomis, @alma-create-pr-with-team-review[bot], @joyet-simon, @webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and joyet.simon
+@Francois-Gomis, @alma-create-pr-with-team-review[bot], @joyet-simon,
+@webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and joyet.simon
 
 ## v6.0.7 - 2026-04-01
 
@@ -134,7 +144,9 @@
 
 #### Contributors
 
-@Benjamin-Freoua-Alma, @Francois-Gomis, @alma-renovate-bot[bot], @joyet-simon, @remi-zuffinetti, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
+@Benjamin-Freoua-Alma, @Francois-Gomis, @alma-renovate-bot[bot], @joyet-simon,
+@remi-zuffinetti, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
 
 ## v6.0.6 - 2026-03-25
 
@@ -167,7 +179,8 @@
 
 #### Contributors
 
-@Benjamin-Freoua-Alma, @joyet-simon and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+@Benjamin-Freoua-Alma, @joyet-simon
+and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
 
 ## v6.0.4 - 2026-03-11
 
@@ -182,7 +195,8 @@
 
 #### Contributors
 
-@Benjamin-Freoua-Alma, @joyet-simon and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+@Benjamin-Freoua-Alma, @joyet-simon
+and [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
 
 ## v6.0.3 - 2026-03-10
 
@@ -212,7 +226,9 @@
 
 #### Contributors
 
-@Benjamin-Freoua-Alma, @alma-create-pr-with-team-review[bot], @alma-renovate-bot[bot], @joyet-simon, @remi-zuffinetti, @webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review) and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
+@Benjamin-Freoua-Alma, @alma-create-pr-with-team-review[bot], @alma-renovate-bot[bot], @joyet-simon, @remi-zuffinetti,
+@webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review)
+and [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
 
 ## v6.0.0 - 2026-02-18
 
