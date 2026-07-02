@@ -26,7 +26,8 @@ use Exception;
  */
 final class Plugin extends AbstractPlugin {
 
-	const ALMA_GATEWAY_PLUGIN_VERSION = '6.4.1';
+	// Derived from ALMA_VERSION, itself read from the plugin header (see ECOM-4303).
+	const ALMA_GATEWAY_PLUGIN_VERSION = ALMA_VERSION;
 
 	const ALMA_GATEWAY_PLUGIN_NAME = 'alma-gateway-for-woocommerce';
 

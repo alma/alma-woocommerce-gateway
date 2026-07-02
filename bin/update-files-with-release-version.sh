@@ -45,14 +45,7 @@ sed -i -E "/== Changelog ==/a \\\n$changelog" $filepath
 # Update file ./alma-gateway-for-woocommerce.php
 ####################
 filepath="./alma-gateway-for-woocommerce.php"
-# Update "ALMA_VERSION" constant
-sed -i -E "s/'ALMA_VERSION', '[0-9\.]+'/'ALMA_VERSION', '$version'/g" $filepath
-# Update "Version" info
+# Update "Version" info. This header is the single source of truth: ALMA_VERSION
+# and Plugin::ALMA_GATEWAY_PLUGIN_VERSION both derive from it at runtime, so they
+# do not need to be bumped here.
 sed -i -E "s/\* Version: [0-9\.]+/* Version: $version/g" $filepath
-
-####################
-# Update file ./includes/Plugin.php
-####################
-filepath="./includes/Plugin.php"
-# Update "ALMA_GATEWAY_PLUGIN_VERSION" constant
-sed -i -E "s/'ALMA_GATEWAY_PLUGIN_VERSION', '[0-9\.]+'/'ALMA_GATEWAY_PLUGIN_VERSION', '$version'/g" $filepath

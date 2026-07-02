@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 6.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 6.4.1
+Stable tag: 6.5.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,26 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+## v6.5.0 - 2026-07-02
+
+### Changes
+
+- Feature/ecom 3883 improve Eligibility cache performance (#528)
+- Feature/ecom 4442 add an event when alma in page modal is closed (#656)
+
+### 🚀 New Features
+
+- Surface the real cause of API key validation failures (#652)
+- Fix incorrect plugin version reported at runtime (#651)
+
+### 🐛 Bug Fixes
+
+- fix(ci): authenticate npm to Google Artifact Registry in release-publish (#657)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @alma-renovate-bot[bot], @dependabot[bot], @jimmycarricart-ext-collab, @webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review), [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot) and [dependabot[bot]](https://github.com/apps/dependabot)
 
 ## v6.4.1 - 2026-06-25
 

@@ -4,7 +4,7 @@
  * Plugin URI: https://docs.almapay.com/docs/woocommerce
  * Description: Install Alma and boost your sales! It's simple and guaranteed, your cash flow is secured. 0 commitment, 0 subscription, 0 risk. This version of the plugin is compatible with WooCommerce 10.1.0 and above, and WordPress 6.6 and above. For older versions, please use <a href="https://github.com/alma/alma-woocommerce-gateway/releases/tag/v5.16.2" target="_blank">version 5 of the plugin</a>.
  * Author: Alma
- * Version: 6.4.1
+ * Version: 6.5.0
  * Author URI: https://almapay.com
  * License: GNU General Public License v3.0
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -17,8 +17,8 @@
  *
  * @package Alma_Gateway_For_Woocommerce
  *
- * WC requires at least: 10.1.0
- * WC tested up to: 10.8.0
+ * WC requires at least: 9.0.0
+ * WC tested up to: 10.9.1
  *
  * Alma Payment Gateway for WooCommerce is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'ALMA_VERSION' ) ) {
-	define( 'ALMA_VERSION', '6.4.1' );
+	// Single source of truth: the plugin header "Version:" above. get_file_data()
+	// is available as soon as plugins are loaded, so the version is never written
+	// by hand more than once (see ECOM-4303).
+	$alma_plugin_data = get_file_data( __FILE__, array( 'Version' => 'Version' ) );
+	define( 'ALMA_VERSION', $alma_plugin_data['Version'] );
 }
 
 $alma_gateway_plugin = Plugin::get_instance();
