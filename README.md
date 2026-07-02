@@ -4,9 +4,9 @@
 - Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo commerce, alma, monthly payments, split
   payments
 - Requires at least Wordpress: 6.6
-- Requires at least Woocommerce: 10.1.0
+- Requires at least Woocommerce: 9.0.0
 - Tested up to Wordpress: 7.0
-- Tested up to Woocommerce: 10.8.0
+- Tested up to Woocommerce: 10.9.1
 - Requires PHP: 7.4
 - Stable tag: 6.5.0
 - License: GPLv3
