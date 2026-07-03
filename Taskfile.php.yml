@@ -25,6 +25,9 @@ tasks:
       - build:php
     cmds:
       - rm -rf ./dist
+      # Refresh the .npmrc token so the npm install in bin/strauss.sh can resolve
+      # the private @alma packages from Google Artifact Registry.
+      - ./bin/npm-auth.sh
       - docker compose run --rm --user root {{ .COMPOSE_SERVICE }} ./bin/strauss.sh
 
   build:test:

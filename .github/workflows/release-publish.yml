@@ -32,21 +32,20 @@ jobs:
       # We inline its public building blocks instead (google-github-actions/auth
       # + google-artifactregistry-auth). Both are public.
       - name: Authenticate to Google Cloud
+        id: auth
         uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
         with:
           token_format: access_token
           workload_identity_provider: projects/699052769907/locations/global/workloadIdentityPools/github-identity-pool-shared/providers/github-identity-provider-shared
           service_account: github-gar-alma-woocommerce-gate@lyrical-carver-335213.iam.gserviceaccount.com
 
-      - name: Authenticate npm to Google Artifact Registry
-        shell: bash
-        # Writes a short-lived _authToken into the project .npmrc, which is
-        # mounted into the PHP container (./:/app) so the npm install run by
-        # bin/strauss.sh can resolve the private @alma packages.
-        run: npx google-artifactregistry-auth
-
       - name: Create release zip file
         shell: bash
+        # bin/npm-auth.sh consumes NPM_TOKEN to write the project .npmrc, which is
+        # mounted into the PHP container (./:/app) so the npm install run by
+        # bin/strauss.sh can resolve the private @alma packages.
+        env:
+          NPM_TOKEN: ${{ steps.auth.outputs.access_token }}
         run: task 7.4:dist
 
       - name: Fetch last draft release
