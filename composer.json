@@ -14,7 +14,7 @@
     }
   ],
   "require": {
-    "php": "~7.4 || ~8.0 || ~8.1 || ~8.2 || ~8.3 || ~8.4",
+    "php": "~7.4 || ~8.0 || ~8.1 || ~8.2 || ~8.3 || ~8.4 || ~8.5",
     "ext-intl": "*",
     "ext-json": "*",
     "ext-openssl": "*",
@@ -29,7 +29,7 @@
     "mockery/mockery": "^1.6",
     "php-stubs/woocommerce-stubs": "*",
     "php-stubs/wordpress-stubs": "*",
-    "phpcompatibility/php-compatibility": "^9.3",
+    "phpcompatibility/php-compatibility": "^10.0@alpha",
     "phpstan/extension-installer": "^1.4",
     "phpstan/phpstan": "^1.10",
     "phpunit/phpunit": "*",
@@ -74,7 +74,7 @@
   "scripts": {
     "phpcs": "vendor/bin/phpcs --standard=phpcs.xml .",
     "phpcbf": "vendor/bin/phpcbf --standard=phpcs.xml .",
-    "php-compatibility": "vendor/bin/phpcs -p src --standard=PHPCompatibility -s --runtime-set testVersion 7.4-8.4 --ignore=\\*/vendor/\\*"
+    "php-compatibility": "vendor/bin/phpcs -p src --standard=PHPCompatibility -s --runtime-set testVersion 7.4- --ignore=\\*/vendor/\\*"
   },
   "config": {
     "sort-packages": true,
