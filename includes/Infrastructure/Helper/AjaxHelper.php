@@ -22,7 +22,7 @@ class AjaxHelper {
 	 *
 	 * @param bool|null $data
 	 */
-	public static function sendSuccessResponse( bool $data = null ): void {
+	public static function sendSuccessResponse( ?bool $data = null ): void {
 		$response = array( 'success' => true );
 
 		if ( isset( $data ) ) {
