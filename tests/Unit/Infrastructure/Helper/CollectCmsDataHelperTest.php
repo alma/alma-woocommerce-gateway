@@ -185,4 +185,20 @@ class CollectCmsDataHelperTest extends TestCase {
 
 		$this->assertSame( '4.2.0', $this->helper->getThemeVersion() );
 	}
+
+	// ─── getCollectCmsDataUrl ───────────────────────────────────────────
+
+	public function testGetCollectCmsDataUrlBuildsWcApiUrlFromHomeUrl(): void {
+		Functions\when( 'home_url' )->justReturn( 'https://example.com/' );
+		Functions\when( 'add_query_arg' )->alias(
+			function ( $key, $value, $url ) {
+				return $url . '?' . $key . '=' . $value;
+			}
+		);
+
+		$this->assertSame(
+			'https://example.com/?wc-api=alma_collect_cms_data',
+			$this->helper->getCollectCmsDataUrl()
+		);
+	}
 }

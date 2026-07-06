@@ -58,8 +58,8 @@ class CollectCmsDataServiceTest extends TestCase {
 	 * When no date is stored, the URL must be sent and the date saved.
 	 */
 	public function testMaybeSendCollectDataUrlWhenNoSettingSendsUrlAndSavesDate(): void {
-		$url = 'https://example.com/wc-api/alma_collect_cms_data';
-		Functions\when( 'home_url' )->justReturn( $url );
+		$url = 'https://example.com/?wc-api=alma_collect_cms_data';
+		$this->collectCmsDataHelper->method( 'getCollectCmsDataUrl' )->willReturn( $url );
 
 		$this->configService->method( 'getSetting' )
 		                    ->with( CollectCmsDataService::COLLECT_DATA_URL_SENT_AT )
@@ -80,9 +80,9 @@ class CollectCmsDataServiceTest extends TestCase {
 	 * When the stored date is older than 30 days, the URL must be re-sent and the date updated.
 	 */
 	public function testMaybeSendCollectDataUrlWhenSentAtOlderThan30DaysSendsUrlAndSavesDate(): void {
-		$url     = 'https://example.com/wc-api/alma_collect_cms_data';
+		$url     = 'https://example.com/?wc-api=alma_collect_cms_data';
 		$oldDate = gmdate( 'c', strtotime( '-31 days' ) );
-		Functions\when( 'home_url' )->justReturn( $url );
+		$this->collectCmsDataHelper->method( 'getCollectCmsDataUrl' )->willReturn( $url );
 
 		$this->configService->method( 'getSetting' )
 		                    ->with( CollectCmsDataService::COLLECT_DATA_URL_SENT_AT )
@@ -122,8 +122,8 @@ class CollectCmsDataServiceTest extends TestCase {
 	 * When the stored value is not a valid date, it must be treated as missing and the URL sent.
 	 */
 	public function testMaybeSendCollectDataUrlWhenSentAtIsInvalidDateSendsUrl(): void {
-		$url = 'https://example.com/wc-api/alma_collect_cms_data';
-		Functions\when( 'home_url' )->justReturn( $url );
+		$url = 'https://example.com/?wc-api=alma_collect_cms_data';
+		$this->collectCmsDataHelper->method( 'getCollectCmsDataUrl' )->willReturn( $url );
 
 		$this->configService->method( 'getSetting' )
 		                    ->with( CollectCmsDataService::COLLECT_DATA_URL_SENT_AT )
@@ -143,8 +143,8 @@ class CollectCmsDataServiceTest extends TestCase {
 	 * When the endpoint throws an exception, the date must NOT be saved and the error must be logged.
 	 */
 	public function testMaybeSendCollectDataUrlWhenExceptionThrownDoesNotSaveDateAndLogsError(): void {
-		$url = 'https://example.com/wc-api/alma_collect_cms_data';
-		Functions\when( 'home_url' )->justReturn( $url );
+		$this->collectCmsDataHelper->method( 'getCollectCmsDataUrl' )
+		                           ->willReturn( 'https://example.com/?wc-api=alma_collect_cms_data' );
 
 		$this->configService->method( 'getSetting' )
 		                    ->willReturn( '' );
