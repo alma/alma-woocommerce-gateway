@@ -6,6 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Not allowed' ); // Exit if accessed directly.
 }
 
+use Alma\Gateway\Application\Service\CollectCmsDataService;
 use Alma\Gateway\Infrastructure\Gateway\AbstractGateway;
 use Alma\Gateway\Infrastructure\Gateway\Backend\AlmaGateway;
 use Alma\Gateway\Plugin;
@@ -124,5 +125,18 @@ class CollectCmsDataHelper {
 	 */
 	public function getThemeVersion(): string {
 		return wp_get_theme()->get( 'Version' ) ?: '';
+	}
+
+	/**
+	 * Get url to collect CMS data in Alma
+	 *
+	 * @return string
+	 */
+	public function getCollectCmsDataUrl(): string {
+		return add_query_arg(
+			'wc-api',
+			CollectCmsDataService::WC_API_ENDPOINT,
+			home_url( '/' )
+		);
 	}
 }

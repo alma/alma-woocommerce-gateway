@@ -54,11 +54,7 @@ class CollectCmsDataService {
 			return;
 		}
 
-		$url = add_query_arg(
-			'wc-api',
-			self::WC_API_ENDPOINT,
-			home_url( '/' )
-		);
+		$url = $this->collectCmsDataHelper->getCollectCmsDataUrl();
 
 		try {
 			$this->configurationEndpoint->sendIntegrationsConfigurationsUrl( $url );
