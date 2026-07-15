@@ -1,12 +1,35 @@
 # Changelog
 
+## v6.6.0 - 2026-07-15
+
+### Changes
+
+- Feature/ecom 3883 improve Eligibility cache performance (#528)
+- Feature/ecom 4442 add an event when alma in page modal is closed (#656)
+
+### 🚀 New Features
+
+- fix: keep the plugin PHP 7.4–8.5 compatible and repair the compatibility check (ECOM-4307) (#662)
+- fix: Ensure to send the right url for Gather CMS Data (Send an url wi… (#664)
+- Surface the real cause of API key validation failures (#652)
+- Fix incorrect plugin version reported at runtime (#651)
+
+### 🐛 Bug Fixes
+
+- fix(deps): sync package-lock.json with @<!---->wordpress/scripts@<!---->31 transitive deps (#665)
+- fix(ci): authenticate npm to Google Artifact Registry in release-publish (#657)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @alma-create-pr-with-team-review[bot], @alma-renovate-bot[bot], @dependabot[bot], @jimmycarricart-ext-collab, @webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review), [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot) and [dependabot[bot]](https://github.com/apps/dependabot)
+
 ## v6.5.0 - 2026-07-02
 
 ### Changes
 
 - Feature/ecom 3883 improve Eligibility cache performance (#528)
 - Surface the real cause of API key validation failures (#652)
--
+- 
 
 ### 🚀 New Features
 
