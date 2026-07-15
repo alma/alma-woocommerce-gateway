@@ -21,18 +21,11 @@ package, hosted on Google Artifact Registry (`europe-npm.pkg.dev`). The
 task 7.4:dist
 ```
 
-The registry itself is declared in the committed `.npmrc`, which references the
-auth token as `${NPM_TOKEN}` — no secret is stored in the repo. `task 7.4:dist`
-runs `bin/npm-auth.sh` to mint a **short-lived** token (from your `gcloud` login,
-valid ~1h), forwards it into the PHP container as `NPM_TOKEN`, and builds the zip
-into `dist/`. npm substitutes `${NPM_TOKEN}` at install time.
+The private registry is declared in the committed `.npmrc` (registry only, no
+secret). `task 7.4:dist` runs `npx google-artifactregistry-auth`, which mints a
+**short-lived** token from your `gcloud` login and writes it to `$HOME/.npmrc`;
+that file is mounted read-only into the PHP container so the `npm install` in
+`bin/strauss.sh` can resolve `@alma` packages. The zip is built into `dist/`.
 
-If you see `❌ Could not obtain a GCP access token`, run `gcloud auth login` and
-retry. This replaces the previous cryptic `npm error code E401` failure.
-
-## CI
-
-The release workflow (`.github/workflows/release-publish.yml`) authenticates via
-Workload Identity Federation and passes the access token as `NPM_TOKEN`, which
-`bin/npm-auth.sh` echoes back into the build — so local and CI builds share one
-code path and the same committed `.npmrc`.
+If `npm install` fails with `npm error code E401`, refresh your login with
+`gcloud auth login` and retry.
