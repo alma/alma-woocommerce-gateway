@@ -25,10 +25,14 @@ tasks:
       - build:php
     cmds:
       - rm -rf ./dist
-      # Refresh the .npmrc token so the npm install in bin/strauss.sh can resolve
-      # the private @alma packages from Google Artifact Registry.
-      - ./bin/npm-auth.sh
-      - docker compose run --rm --user root {{ .COMPOSE_SERVICE }} ./bin/strauss.sh
+      # The committed .npmrc references the private @alma registry token as
+      # ${NPM_TOKEN}. Mint a short-lived token on the host and forward it into
+      # the container, where npm (run by bin/strauss.sh) substitutes it.
+      - |
+        set -e
+        NPM_TOKEN="$(./bin/npm-auth.sh)"
+        export NPM_TOKEN
+        docker compose run --rm --user root -e NPM_TOKEN {{ .COMPOSE_SERVICE }} ./bin/strauss.sh
 
   build:test:
     internal: true

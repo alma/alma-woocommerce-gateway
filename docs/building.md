@@ -21,9 +21,11 @@ package, hosted on Google Artifact Registry (`europe-npm.pkg.dev`). The
 task 7.4:dist
 ```
 
-This runs `bin/npm-auth.sh`, which writes a project-local `.npmrc` with a
-**short-lived** token (minted from your `gcloud` login, valid ~1h and never
-committed — `.npmrc` is git-ignored), then builds the zip into `dist/`.
+The registry itself is declared in the committed `.npmrc`, which references the
+auth token as `${NPM_TOKEN}` — no secret is stored in the repo. `task 7.4:dist`
+runs `bin/npm-auth.sh` to mint a **short-lived** token (from your `gcloud` login,
+valid ~1h), forwards it into the PHP container as `NPM_TOKEN`, and builds the zip
+into `dist/`. npm substitutes `${NPM_TOKEN}` at install time.
 
 If you see `❌ Could not obtain a GCP access token`, run `gcloud auth login` and
 retry. This replaces the previous cryptic `npm error code E401` failure.
@@ -31,6 +33,6 @@ retry. This replaces the previous cryptic `npm error code E401` failure.
 ## CI
 
 The release workflow (`.github/workflows/release-publish.yml`) authenticates via
-Workload Identity Federation and passes the token to the same `bin/npm-auth.sh`
-through the `NPM_TOKEN` environment variable, so local and CI builds share one
-code path.
+Workload Identity Federation and passes the access token as `NPM_TOKEN`, which
+`bin/npm-auth.sh` echoes back into the build — so local and CI builds share one
+code path and the same committed `.npmrc`.

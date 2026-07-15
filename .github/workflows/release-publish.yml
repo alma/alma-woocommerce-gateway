@@ -41,9 +41,10 @@ jobs:
 
       - name: Create release zip file
         shell: bash
-        # bin/npm-auth.sh consumes NPM_TOKEN to write the project .npmrc, which is
-        # mounted into the PHP container (./:/app) so the npm install run by
-        # bin/strauss.sh can resolve the private @alma packages.
+        # The committed .npmrc references the private @alma registry token as
+        # ${NPM_TOKEN}. We feed the Workload-Identity access token through that
+        # variable; the dist task forwards it into the PHP container where the
+        # npm install run by bin/strauss.sh substitutes it.
         env:
           NPM_TOKEN: ${{ steps.auth.outputs.access_token }}
         run: task 7.4:dist
