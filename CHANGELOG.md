@@ -1,12 +1,30 @@
 # Changelog
 
+## v6.6.0 - 2026-07-16
+
+### Changes
+
+- Keep the plugin PHP 7.4–8.5 compatible and repair the compatibility check (ECOM-4307) (#662)
+
+### 🐛 Bug Fixes
+
+- fix: Ensure to send the right url for Gather CMS Data (Send an url wi… (#664)
+- fix(tests): de-flake CartHelper unique cart ID uniqueness test (#671)
+- fix(ci): authenticate npm to Google Artifact Registry in release-publish (#657)
+
+#### Contributors
+
+@Benjamin-Freoua-Alma, @alma-create-pr-with-team-review[bot], @alma-renovate-bot[bot], @dependabot[bot],
+@jimmycarricart-ext-collab,
+@webaaz, [alma-create-pr-with-team-review[bot]](https://github.com/apps/alma-create-pr-with-team-review), [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot)
+and [dependabot[bot]](https://github.com/apps/dependabot)
+
 ## v6.5.0 - 2026-07-02
 
 ### Changes
 
 - Feature/ecom 3883 improve Eligibility cache performance (#528)
 - Surface the real cause of API key validation failures (#652)
--
 
 ### 🚀 New Features
 
