@@ -31,7 +31,7 @@
 
 - Feature/ecom 3883 improve Eligibility cache performance (#528)
 - Surface the real cause of API key validation failures (#652)
-- 
+-
 
 ### 🚀 New Features
 
