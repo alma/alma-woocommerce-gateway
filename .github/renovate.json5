@@ -10,6 +10,12 @@
       "groupName": "composer updates"
     },
     {
+      "description": "psr/log must stay on v1 for PHP 7.4 compatibility (v2+ requires PHP 8.0+)",
+      "matchManagers": [ "composer" ],
+      "matchDepNames": [ "psr/log" ],
+      "allowedVersions": "<2"
+    },
+    {
       "matchManagers": [ "dockerfile", "docker-compose" ],
       "groupName": "docker updates"
     },

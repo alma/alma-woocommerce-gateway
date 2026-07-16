@@ -24,7 +24,7 @@ class OrderRepository implements OrderRepositoryInterface {
 	 *
 	 * @throws OrderRepositoryException
 	 */
-	public function getById( int $orderId, string $order_key = null, string $payment_id = null ): OrderAdapter {
+	public function getById( int $orderId, ?string $order_key = null, ?string $payment_id = null ): OrderAdapter {
 		$wc_order = wc_get_order( $orderId );
 
 		if ( $wc_order ) {

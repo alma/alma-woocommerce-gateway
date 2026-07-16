@@ -10,7 +10,6 @@ src/composer.lock
 node_modules/
 crowdin.yml
 node_modules/
-.npmrc
 .phpunit.result.cache
 .task/
 /build/*/*.map

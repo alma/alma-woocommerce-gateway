@@ -25,7 +25,12 @@ tasks:
       - build:php
     cmds:
       - rm -rf ./dist
-      - docker compose run --rm --user root {{ .COMPOSE_SERVICE }} ./bin/strauss.sh
+      # The committed .npmrc declares the private @alma registry. Mint a
+      # short-lived token into $HOME/.npmrc (same tool the monolith uses), then
+      # mount it into the container so the npm install in bin/strauss.sh can
+      # resolve @alma packages.
+      - npx --yes google-artifactregistry-auth
+      - docker compose run --rm --user root -v "$HOME/.npmrc:/root/.npmrc:ro" {{ .COMPOSE_SERVICE }} ./bin/strauss.sh
 
   build:test:
     internal: true
