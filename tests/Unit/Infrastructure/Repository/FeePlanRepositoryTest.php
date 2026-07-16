@@ -234,7 +234,7 @@ class FeePlanRepositoryTest extends TestCase {
 		Functions\expect( 'set_transient' )
 			->once()
 			->with(
-				Mockery::on( fn( $key ) => str_starts_with( $key, FeePlanRepository::TRANSIENT_FEE_PLANS_PREFIX ) ),
+				Mockery::on( fn( $key ) => 0 === strpos( $key, FeePlanRepository::TRANSIENT_FEE_PLANS_PREFIX ) ),
 				Mockery::type( 'string' ),
 				FeePlanRepository::TRANSIENT_FEE_PLANS_TTL
 			)

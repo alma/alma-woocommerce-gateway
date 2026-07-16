@@ -114,7 +114,7 @@ class ShortcodeWidgetHelper {
 			$tag,
 			function ( $atts ) use ( $tag, $widgetClass ) {
 
-				$class = isset( $atts['class'] ) ? htmlspecialchars( $atts['class'] ) : $widgetClass;
+				$class = isset( $atts['class'] ) ? htmlspecialchars( $atts['class'], ENT_QUOTES ) : $widgetClass;
 				$style = '';
 
 				return sprintf(

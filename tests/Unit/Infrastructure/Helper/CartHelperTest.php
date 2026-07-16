@@ -63,15 +63,20 @@ class CartHelperTest extends TestCase {
 	}
 
 	public function testGenerateUniqueCartIdProducesDifferentValues() {
-		$ids = [];
-		for ( $i = 0; $i < 100; $i++ ) {
+		$sample_size = 100;
+		$ids         = [];
+		for ( $i = 0; $i < $sample_size; $i++ ) {
 			$ids[] = CartHelper::generateUniqueCartId();
 		}
 
-		// With 2^20 random possibilities per second, 100 consecutive calls
-		// should virtually never collide.
-		$unique = array_unique( $ids );
-		$this->assertCount( count( $ids ), $unique, 'Expected all generated IDs to be unique.' );
+		// All calls land in the same second, so uniqueness relies solely on the
+		// 20-bit random component (2^20 values). By the birthday paradox a single
+		// collision among 100 draws is expected in ~0.5% of runs, so asserting a
+		// strict 100/100 uniqueness would be flaky. A near-perfect ratio still
+		// proves the random component varies; a broken generator (e.g. constant
+		// random or dropped bits) would collapse the ratio far below this bound.
+		$unique_ratio = count( array_unique( $ids ) ) / $sample_size;
+		$this->assertGreaterThanOrEqual( 0.95, $unique_ratio, 'Generated cart IDs should be almost entirely unique.' );
 	}
 
 	public function testGenerateUniqueCartIdIsRoughlyChronological() {
