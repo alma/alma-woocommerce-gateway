@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 6.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 6.6.0
+Stable tag: 6.7.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,18 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+## v6.7.0 - 2026-08-06
+
+### Changes
+
+### 🚀 New Features
+
+- fix: complete order payment after IPN fraud checks (ECOM-4514) (#680)
+
+#### Contributors
+
+@alma-renovate-bot[bot], @joyet-simon, @mgu, @remi-zuffinetti, [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot) and joyet.simon
 
 ## v6.6.0 - 2026-07-16
 

@@ -1,5 +1,17 @@
 # Changelog
 
+## v6.7.0 - 2026-08-06
+
+### Changes
+
+### 🚀 New Features
+
+- fix: complete order payment after IPN fraud checks (ECOM-4514) (#680)
+
+#### Contributors
+
+@alma-renovate-bot[bot], @joyet-simon, @mgu, @remi-zuffinetti, [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot) and joyet.simon
+
 ## v6.6.0 - 2026-07-16
 
 ### Changes
