@@ -199,7 +199,7 @@ class IpnService {
 					$paymentId
 				);
 			} catch ( OrderRepositoryException $e ) {
-				$this->loggerService->debug( 'Payment validation error: order not found',
+				$this->loggerService->error( 'Payment validation error: order not found',
 					[
 						'payment_id' => $paymentId,
 						'error'      => $e->getMessage(),
@@ -214,7 +214,7 @@ class IpnService {
 					$this->fraudService->managePotentialFraud( $order, $payment );
 				}
 			} catch ( FraudServiceException $e ) {
-				$this->loggerService->debug(
+				$this->loggerService->error(
 					'Can not process potential fraud',
 					[
 						'payment_id' => $paymentId,
@@ -226,7 +226,7 @@ class IpnService {
 			}
 
 			if ( ! $order->paymentComplete( $paymentId ) ) {
-				$this->loggerService->debug(
+				$this->loggerService->error(
 					'Payment validation error: unable to complete payment',
 					[
 						'payment_id' => $paymentId,
@@ -237,7 +237,7 @@ class IpnService {
 			}
 
 		} catch ( PaymentProviderException $e ) {
-			$this->loggerService->debug(
+			$this->loggerService->error(
 				'Payment validation error: can not fetch payment',
 				[
 					'payment_id' => $paymentId,
