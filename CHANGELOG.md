@@ -6,7 +6,7 @@
 
 ### 🚀 New Features
 
-- fix: complete order payment after IPN fraud checks (ECOM-4514) (#680)
+- Complete order payment after IPN fraud checks (ECOM-4514) (#680)
 
 #### Contributors
 
