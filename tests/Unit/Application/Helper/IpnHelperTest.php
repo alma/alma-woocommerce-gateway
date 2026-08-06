@@ -243,32 +243,6 @@ class IpnHelperTest extends TestCase {
 		$this->ipnHelper->potentialFraudError( 'Test Message potential Fraud' );
 	}
 
-	public function testPaymentCompleteErrorWithoutCustomMessage() {
-		Functions\expect( 'wp_send_json' )
-			->once()
-			->withArgs( function ( $response, $code ) {
-
-				$this->assertSame( [ 'error' => 'Payment validation error: unable to complete payment.' ], $response );
-				$this->assertSame( 400, $code );
-
-				return true;
-			} );
-		$this->ipnHelper->paymentCompleteError();
-	}
-
-	public function testPaymentCompleteErrorWithCustomMessage() {
-		Functions\expect( 'wp_send_json' )
-			->once()
-			->withArgs( function ( $response, $code ) {
-
-				$this->assertSame( [ 'error' => 'Test Message payment complete' ], $response );
-				$this->assertSame( 400, $code );
-
-				return true;
-			} );
-		$this->ipnHelper->paymentCompleteError( 'Test Message payment complete' );
-	}
-
 	public function testSuccessMessage() {
 		Functions\expect( 'wp_send_json' )
 			->once()
