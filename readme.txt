@@ -57,7 +57,7 @@ You can find more documentation on our [website](https://docs.almapay.com/docs/w
 
 ### 🚀 New Features
 
-- fix: complete order payment after IPN fraud checks (ECOM-4514) (#680)
+- Complete order payment after IPN fraud checks (ECOM-4514) (#680)
 
 #### Contributors
 
