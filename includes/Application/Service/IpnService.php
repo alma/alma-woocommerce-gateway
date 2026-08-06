@@ -192,59 +192,38 @@ class IpnService {
 			/** @var OrderRepository $orderRepository */
 			$orderRepository = Plugin::get_container()->get( OrderRepository::class );
 
-			try {
-				$order = $orderRepository->getById(
-					$payment->getCustomData()['order_id'],
-					$payment->getCustomData()['order_key'],
-					$paymentId
-				);
-			} catch ( OrderRepositoryException $e ) {
-				$this->loggerService->warning( 'Payment validation error: order not found',
-					[
-						'payment_id' => $paymentId,
-						'error'      => $e->getMessage(),
-					]
-				);
-				$this->ipnHelper->parameterError( 'Payment validation error' );
-			}
+			$order = $orderRepository->getById(
+				$payment->getCustomData()['order_id'],
+				$payment->getCustomData()['order_key'],
+				$paymentId
+			);
 
-			try {
-				if ( $order->hasStatus( array( 'on-hold', 'pending', 'failed' ) ) ) {
-					$this->fraudService->manageMismatch( $order, $payment );
-					$this->fraudService->managePotentialFraud( $order, $payment );
-				}
-			} catch ( FraudServiceException $e ) {
-				$this->loggerService->error(
-					'Can not process potential fraud',
-					[
-						'payment_id' => $paymentId,
-						'order_id'   => $order->getId(),
-						'error'      => $e->getMessage(),
-					]
-				);
-				$this->ipnHelper->potentialFraudError( $e->getMessage() );
-			}
-
-			if ( ! $order->paymentComplete( $paymentId ) ) {
-				$this->loggerService->error(
-					'Payment validation error: unable to complete payment',
-					[
-						'payment_id' => $paymentId,
-						'order_id'   => $order->getId(),
-					]
-				);
-				$this->ipnHelper->paymentCompleteError();
-			}
-
-		} catch ( PaymentProviderException $e ) {
-			$this->loggerService->warning(
-				'Payment validation error: can not fetch payment',
+		} catch ( PaymentProviderException|OrderRepositoryException $e ) {
+			$this->loggerService->debug(
+				'Payment validation error: can not fetch payment or order',
 				[
 					'payment_id' => $paymentId,
 					'error'      => $e->getMessage(),
 				]
 			);
 			$this->ipnHelper->parameterError( 'Payment validation error' );
+		}
+
+		try {
+			if ( $order->hasStatus( array( 'on-hold', 'pending', 'failed' ) ) ) {
+				$this->fraudService->manageMismatch( $order, $payment );
+				$this->fraudService->managePotentialFraud( $order, $payment );
+			}
+		} catch ( FraudServiceException $e ) {
+			$this->loggerService->debug(
+				'Can not process potential fraud',
+				[
+					'payment_id' => $paymentId,
+					'order_id'   => $order->getId(),
+					'error'      => $e->getMessage(),
+				]
+			);
+			$this->ipnHelper->potentialFraudError( $e->getMessage() );
 		}
 
 		$this->ipnHelper->success();
@@ -254,7 +233,8 @@ class IpnService {
 	 * Send the collect data url on live mode
 	 * @return void
 	 */
-	public function sendCollectDataUrlOnlyForLiveMode(): void {
+	public function sendCollectDataUrlOnlyForLiveMode(): void
+	{
 		/** @var ConfigService $configService */
 		$configService = Plugin::get_container()->get( ConfigService::class );
 		if ( ! $configService->isLive() ) {

@@ -104,19 +104,6 @@ class IpnHelper implements IpnHelperInterface {
 	}
 
 	/**
-	 * Send a payment complete error response.
-	 *
-	 * This function is used to handle cases where the order could not be marked
-	 * as paid (payment complete failed). It sends a standardized bad request
-	 * response using the AjaxHelper with the provided message.
-	 *
-	 * @param string $customMessage The custom message to include in the bad request response.
-	 */
-	public function paymentCompleteError( string $customMessage = 'Payment validation error: unable to complete payment.' ): void {
-		AjaxHelper::sendBadRequestResponse( $customMessage );
-	}
-
-	/**
 	 * Send a success response.
 	 *
 	 * This function is used to indicate that the request was processed successfully.
