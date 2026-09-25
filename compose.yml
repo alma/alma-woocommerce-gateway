@@ -8,7 +8,8 @@ services:
         PHP_VERSION: ${PHP_VERSION}
         COMPOSER_VERSION: ${COMPOSER_VERSION:-2}
     ports:
-      - "8080:80"
+      # We MUST bind the published ports to 127.0.0.1, to prevent the services from being accessible from outside the host machine.
+      - "127.0.0.1:8080:80"
     volumes:
       - ./:/app
       - /app/vendor
