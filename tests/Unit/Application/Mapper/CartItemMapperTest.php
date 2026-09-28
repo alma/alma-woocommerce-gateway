@@ -94,7 +94,7 @@ class CartItemMapperTest extends TestCase {
 
 		$cartItemDetail = $this->cartIemMapper->buildCartItemDto( $orderLineMock );
 		$this->assertInstanceOf( CartItemDto::class, $cartItemDetail );
-		$this->assertNull( $cartItemDetail->toArray()['picture_url'] );
+		$this->assertArrayNotHasKey( 'picture_url', $cartItemDetail->toArray() );
 		$this->assertSame( 'TESTNAME', $cartItemDetail->toArray()['title'] );
 	}
 
