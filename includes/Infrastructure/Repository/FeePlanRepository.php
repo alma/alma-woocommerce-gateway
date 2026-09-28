@@ -191,7 +191,7 @@ class FeePlanRepository {
 			// Get Eligibility only on shop
 			if ( ! ContextHelper::isAdmin() && $cartTotal > 0 ) {
 				$this->getEligibilityProvider();
-				$eligibilityDto = ( new EligibilityMapper() )
+				$eligibilityDto = ( new EligibilityMapper( $this->getLogger() ) )
 					->buildEligibilityDto(
 						ContextHelper::getCart(),
 						ContextHelper::getCustomer(),
