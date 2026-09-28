@@ -6,6 +6,14 @@ FROM php:${PHP_VERSION}
 ENV PHP_MEMORY_LIMIT=1024M
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Debian 11 (bullseye) reached end of LTS in August 2026: its security suite still
+# publishes an index on deb.debian.org but the matching .deb files are gone from the
+# pool, so any apt install resolving to a *-security version fails with a 404.
+# Drop that suite and stay on the regular bullseye archive, which is still served.
+RUN if grep -q bullseye /etc/apt/sources.list 2>/dev/null; then \
+        sed -i '/debian-security/d' /etc/apt/sources.list; \
+    fi
+
 # Install dependencies
 RUN apt update && \
     apt install -y --no-install-recommends \
