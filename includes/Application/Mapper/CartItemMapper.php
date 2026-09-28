@@ -21,7 +21,7 @@ class CartItemMapper {
 		$productCategoryRepository = Plugin::get_container()->get( ProductCategoryRepository::class );
 		$categories                = $productCategoryRepository->findByProductId( $product->getId() );
 
-		return ( new CartItemDto(
+		$cartItem = ( new CartItemDto(
 			$orderLine->getQuantity(),
 			$orderLine->getTotal(),
 			$orderLine->getName()
@@ -29,8 +29,19 @@ class CartItemMapper {
 			->setSku( $product->getSku() )
 			->setUnitPrice( $product->getPrice() )
 			->setCategories( $categories )
-			->setUrl( $product->getPermalink() )
-			->setPictureUrl( ContextHelper::getAttachmentUrl( $product->getImageId() ) )
-			->setRequiresShipping( $product->needsShipping() );
+			->setUrl( $product->getPermalink() );
+
+		/*
+		 * Products without an image leave picture_url unset. The prefixed
+		 * client drops empty values since 3.0.1, but the copy bundled in
+		 * 6.2.0 validated them and aborted payment creation (issue #618):
+		 * keep the guard here instead of relying on the bundled version.
+		 */
+		$pictureUrl = ContextHelper::getAttachmentUrl( $product->getImageId() );
+		if ( '' !== $pictureUrl ) {
+			$cartItem->setPictureUrl( $pictureUrl );
+		}
+
+		return $cartItem->setRequiresShipping( $product->needsShipping() );
 	}
 }

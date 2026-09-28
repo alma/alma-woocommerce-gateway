@@ -62,6 +62,42 @@ class CartItemMapperTest extends TestCase {
 
 	}
 
+	/**
+	 * A product without an image must not break payment creation (issue #618):
+	 * picture_url stays unset instead of being validated as an empty URL.
+	 *
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function testBuildCartItemDtoWithoutProductImage(): void {
+		Functions\expect( 'wp_get_attachment_url' )
+			->once()
+			->with( 456 )
+			->andReturn( '' );
+
+		$pluginMock                = Mockery::mock( 'alias:Alma\Gateway\Plugin' );
+		$containerMock             = Mockery::mock( ContainerService::class );
+		$productCategoryRepository = Mockery::mock( ProductCategoryRepository::class );
+		$productCategoryRepository->shouldReceive( 'findByProductId' )
+		                          ->with( 123 )
+		                          ->andReturn( [] );
+
+		$containerMock->shouldReceive( 'get' )
+		              ->with( ProductCategoryRepository::class )
+		              ->andReturn( $productCategoryRepository );
+
+		$pluginMock->shouldReceive( 'get_container' )
+		           ->once()
+		           ->andReturn( $containerMock );
+
+		$orderLineMock = OrderLineMockFactory::create( $this );
+
+		$cartItemDetail = $this->cartIemMapper->buildCartItemDto( $orderLineMock );
+		$this->assertInstanceOf( CartItemDto::class, $cartItemDetail );
+		$this->assertNull( $cartItemDetail->toArray()['picture_url'] );
+		$this->assertSame( 'TESTNAME', $cartItemDetail->toArray()['title'] );
+	}
+
 	protected function setUp(): void {
 		Monkey\setUp();
 		$this->cartIemMapper = new CartItemMapper();

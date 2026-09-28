@@ -36,7 +36,9 @@ class ContextHelper implements ContextHelperInterface {
 	 * @return false|string
 	 */
 	public static function getAttachmentUrl( int $attachment_id = 0 ) {
-		return wp_get_attachment_url( $attachment_id ) ? wp_get_attachment_url( $attachment_id ) : '';
+		$url = wp_get_attachment_url( $attachment_id );
+
+		return $url ? $url : '';
 	}
 
 	/**
