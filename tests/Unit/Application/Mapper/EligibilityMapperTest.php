@@ -32,12 +32,14 @@ class EligibilityMapperTest extends TestCase {
 		$this->assertSame( 3, $eligibilityDto->toArray()['queries'][0]['installments_count'] );
 	}
 
-	public function testSkippedFeePlanIsReportedToTheLogger() {
+	public function testSkippedFeePlanIsReportedToTheLoggerWithItsPlanKey() {
 		$logger = Mockery::mock( LoggerInterface::class );
 		$logger->shouldReceive( 'warning' )->once()->with(
 			'Skipped an invalid fee plan when building the eligibility query.',
 			Mockery::on( function ( $context ) {
-				return isset( $context['error'] ) && is_string( $context['error'] ) && $context['error'] !== '';
+				return isset( $context['error'], $context['plan_key'] )
+					&& is_string( $context['error'] ) && '' !== $context['error']
+					&& 'general_0_0_0' === $context['plan_key'];
 			} )
 		);
 
@@ -46,10 +48,30 @@ class EligibilityMapperTest extends TestCase {
 		$eligibilityDto = $mapper->buildEligibilityDto(
 			$this->getCartAdapterMock(),
 			$this->getCustomerAdapterMock(),
-			new FeePlanListAdapter( array( $this->getFeePlanAdapterMock( 0 ) ) )
+			new FeePlanListAdapter( array( $this->getFeePlanAdapterMock( 3 ), $this->getFeePlanAdapterMock( 0 ) ) )
 		);
 
-		$this->assertSame( array(), $eligibilityDto->toArray()['queries'] ?? array() );
+		$this->assertCount( 1, $eligibilityDto->toArray()['queries'] );
+	}
+
+	/**
+	 * When every fee plan is skipped, no query is left: the mapper reports
+	 * null so the caller skips the API call — a query-less DTO means "no
+	 * filter" and would return eligibility for every plan (#617).
+	 */
+	public function testReturnsNullWhenEveryFeePlanIsSkipped() {
+		$logger = Mockery::mock( LoggerInterface::class );
+		$logger->shouldReceive( 'warning' )->twice();
+
+		$mapper = new EligibilityMapper( $logger );
+
+		$eligibilityDto = $mapper->buildEligibilityDto(
+			$this->getCartAdapterMock(),
+			$this->getCustomerAdapterMock(),
+			new FeePlanListAdapter( array( $this->getFeePlanAdapterMock( 0 ), $this->getFeePlanAdapterMock( 0 ) ) )
+		);
+
+		$this->assertNull( $eligibilityDto );
 	}
 
 	private function getFeePlanAdapterMock( $installmentsCount ) {
@@ -59,6 +81,7 @@ class EligibilityMapperTest extends TestCase {
 		$feePlanAdapter->method( 'getInstallmentsCount' )->willReturn( $installmentsCount );
 		$feePlanAdapter->method( 'getDeferredDays' )->willReturn( 0 );
 		$feePlanAdapter->method( 'getDeferredMonths' )->willReturn( 0 );
+		$feePlanAdapter->method( 'getPlanKey' )->willReturn( 'general_' . $installmentsCount . '_0_0' );
 
 		return $feePlanAdapter;
 	}

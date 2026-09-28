@@ -33,9 +33,12 @@ class EligibilityMapper {
 	 * @param CustomerAdapter    $customerAdapter The customer adapter.
 	 * @param FeePlanListAdapter $feePlanListAdapter The fee plan list adapter to filter eligibilities.
 	 *
-	 * @return EligibilityDto The constructed EligibilityDto.
+	 * @return EligibilityDto|null The constructed EligibilityDto, or null when every
+	 *                             fee plan was skipped: the caller must then not call
+	 *                             the eligibility API, as a query-less DTO means "no
+	 *                             filter" and would return eligibility for every plan.
 	 */
-	public function buildEligibilityDto( CartAdapter $cartAdapter, CustomerAdapter $customerAdapter, FeePlanListAdapter $feePlanListAdapter ): EligibilityDto {
+	public function buildEligibilityDto( CartAdapter $cartAdapter, CustomerAdapter $customerAdapter, FeePlanListAdapter $feePlanListAdapter ): ?EligibilityDto {
 
 		$customerBillingAddress  = $customerAdapter->getCustomerBillingAddress();
 		$customerShippingAddress = $customerAdapter->getCustomerShippingAddress();
@@ -75,21 +78,36 @@ class EligibilityMapper {
 			->setBillingAddress( $billingAddressDto )
 			->setShippingAddress( $shippingAddressDto );
 
-		// Add queries to EligibilityDto. A single misconfigured fee plan must
+		// Add queries to EligibilityDto. A single invalid fee plan must
 		// not disable every Alma gateway at checkout (#617): the client DTO
 		// validates each query, so skip the broken plan and keep the others
 		// queryable instead of aborting the whole eligibility call.
+		$queryCount = 0;
+		$planCount  = 0;
 		foreach ( $feePlanListAdapter as $feePlanAdapter ) {
+			$planCount++;
 			try {
 				$eligibilityDto->addQuery( ( new EligibilityQueryMapper() )->buildEligibilityQueryDto( $feePlanAdapter ) );
+				$queryCount++;
 			} catch ( InvalidArgumentException $exception ) {
 				if ( null !== $this->logger ) {
 					$this->logger->warning(
 						'Skipped an invalid fee plan when building the eligibility query.',
-						array( 'error' => $exception->getMessage() )
+						array(
+							'error'    => $exception->getMessage(),
+							'plan_key' => $feePlanAdapter->getPlanKey(),
+						)
 					);
 				}
 			}
+		}
+
+		// Every processed plan was skipped: a query-less EligibilityDto means
+		// "no filter" for the API, which would return eligibility for every
+		// plan — tell the caller to skip the API call entirely (#617). An
+		// empty plan list is left untouched.
+		if ( $planCount > 0 && 0 === $queryCount ) {
+			return null;
 		}
 
 		return $eligibilityDto;
