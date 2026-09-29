@@ -33,10 +33,12 @@ class ContextHelper implements ContextHelperInterface {
 	 *
 	 * @param int $attachment_id The ID of the attachment.
 	 *
-	 * @return false|string
+	 * @return string The attachment URL, or an empty string when the attachment has none.
 	 */
 	public static function getAttachmentUrl( int $attachment_id = 0 ) {
-		return wp_get_attachment_url( $attachment_id ) ? wp_get_attachment_url( $attachment_id ) : '';
+		$url = wp_get_attachment_url( $attachment_id );
+
+		return $url ? $url : '';
 	}
 
 	/**
