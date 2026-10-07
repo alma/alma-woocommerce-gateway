@@ -20,6 +20,7 @@ use Alma\Gateway\Infrastructure\Exception\Repository\FeePlanRepositoryException;
 use Alma\Gateway\Infrastructure\Exception\Repository\OrderRepositoryException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
 use Alma\Gateway\Infrastructure\Helper\InPageHelper;
+use Alma\Gateway\Infrastructure\Helper\SessionHelper;
 use Alma\Gateway\Infrastructure\Repository\FeePlanRepository;
 use Alma\Gateway\Infrastructure\Repository\OrderRepository;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
@@ -193,6 +194,13 @@ abstract class AbstractGateway extends WC_Payment_Gateway {
 
 		$result = array();
 		if ( $config_service->isInPageEnabled() ) {
+			// When an account is created at checkout, WooCommerce reloads the guest session from the database
+			// (WC_Checkout::process_customer), losing the chosen_payment_method set in memory for this request.
+			// Force it so the in-page checkout reload preselects this gateway.
+			/** @var SessionHelper $session_helper */
+			$session_helper = Plugin::get_container()->get( SessionHelper::class );
+			$session_helper->setSession( 'chosen_payment_method', $this->id );
+
 			// In-page checkout with fallback redirection
 			$result['alma_payment_id'] = $payment->getId();
 			$result['result']          = 'success';
