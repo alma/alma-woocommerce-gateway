@@ -4,12 +4,15 @@ namespace Alma\Gateway\Tests\Unit\Mocks;
 
 use Alma\Gateway\Infrastructure\Adapter\OrderLineAdapter;
 use Alma\Gateway\Infrastructure\Adapter\ProductAdapter;
+use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\TestCase;
 
 class OrderLineMockFactory {
 	public static function create( TestCase $testCase ): OrderLineAdapter {
-		$productAdapterMock = $testCase
-			->getMockBuilder( ProductAdapter::class )
+		// MockBuilder is instantiated directly: TestCase::getMockBuilder() and
+		// TestCase::createMock() are not callable from outside a TestCase
+		// subclass on recent PHPUnit releases (11.5+/12).
+		$productAdapterMock = ( new MockBuilder( $testCase, ProductAdapter::class ) )
 			->disableOriginalConstructor()
 			->getMock();
 		$productAdapterMock->method( 'getSku' )->willReturn( 'TESTSKU' );
@@ -19,8 +22,7 @@ class OrderLineMockFactory {
 		$productAdapterMock->method( 'getPermalink' )->willReturn( 'http://example.com/product/test-product' );
 		$productAdapterMock->method( 'needsShipping' )->willReturn( true );
 
-		$orderLineMock = $testCase
-			->getMockBuilder( OrderLineAdapter::class )
+		$orderLineMock = ( new MockBuilder( $testCase, OrderLineAdapter::class ) )
 			->disableOriginalConstructor()
 			->getMock();
 		$orderLineMock->method( 'getName' )->willReturn( 'TESTNAME' );

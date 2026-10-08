@@ -37,7 +37,7 @@ class VersionConsistencyTest extends TestCase {
 		);
 	}
 
-	public function versionSourceProvider() {
+	public static function versionSourceProvider() {
 		return array(
 			'plugin header "Version:"'  => array(
 				'plugin header "Version:"',
