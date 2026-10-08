@@ -190,14 +190,24 @@ class FeePlanRepository {
 
 			// Get Eligibility only on shop
 			if ( ! ContextHelper::isAdmin() && $cartTotal > 0 ) {
-				$this->getEligibilityProvider();
-				$eligibilityDto = ( new EligibilityMapper() )
+				$eligibilityDto = ( new EligibilityMapper( $this->getLogger() ) )
 					->buildEligibilityDto(
 						ContextHelper::getCart(),
 						ContextHelper::getCustomer(),
 						$feePlanListAdapter->filterEnabled()
 					);
 
+				if ( null === $eligibilityDto ) {
+					// Every enabled fee plan was skipped as invalid. A query-less
+					// DTO means "no filter" for the API, which would return
+					// eligibility for every plan: skip the call entirely, leaving
+					// the fee plans without eligibility data (#617).
+					$this->getLogger()->warning( 'Every enabled fee plan was skipped as invalid: skipping the eligibility call.' );
+
+					return $feePlanListAdapter;
+				}
+
+				$this->getEligibilityProvider();
 				$cacheKey            = $this->getEligibilityCacheKey( $eligibilityDto->toArray() );
 				$cachedEligibility   = get_transient( $cacheKey );
 				$installmentPlanList = is_string( $cachedEligibility ) ? @unserialize( $cachedEligibility ) : null; // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions
