@@ -2,11 +2,12 @@
 
 ## v6.8.0 - 2026-10-13
 
-### Changes
-
-### 🚀 New Features
+### 🐛 Bug Fixes
 
 - fix: open In-Page payment when a customer account is created at checkout (ECOM-4679) (#696)
+
+### Changes
+
 - security: bind published container ports to 127.0.0.1 (#687)
 
 #### Contributors
@@ -23,7 +24,8 @@
 
 #### Contributors
 
-@alma-renovate-bot[bot], @joyet-simon, @mgu, @remi-zuffinetti, [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot) and joyet.simon
+@alma-renovate-bot[bot], @joyet-simon, @mgu,
+@remi-zuffinetti, [alma-renovate-bot[bot]](https://github.com/apps/alma-renovate-bot) and joyet.simon
 
 ## v6.6.0 - 2026-07-16
 
