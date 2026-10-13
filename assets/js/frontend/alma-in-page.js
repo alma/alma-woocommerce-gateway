@@ -170,6 +170,34 @@
             window.history.replaceState({}, document.title, url.pathname + '?' + params.toString());
         }
 
+        // Back to the checkout after place order, WooCommerce may preselect another gateway
+        // (e.g. its session was reloaded when a customer account was created at checkout).
+        // Select the Alma gateway offering the plan from the URL, so the In-Page payment can start.
+        function selectInPagePaymentGateway() {
+            const planKey = initialUrlParams.get('planKey');
+            const hasPlan = (gatewayName) => $(`${almaMethods[gatewayName].fieldsetSelector} input[name="alma_plan_key"][value="${planKey}"]`).length > 0;
+
+            const selectedMethod = $('input[name="payment_method"]:checked').val();
+            if (almaMethods[selectedMethod] && hasPlan(selectedMethod)) {
+                return;
+            }
+
+            const gatewayName = Object.keys(almaMethods).find(hasPlan);
+            if (gatewayName) {
+                $(`#payment_method_${gatewayName}`).trigger('click');
+            }
+        }
+
+        // Remove the overlay and the In-Page parameters from the URL, so the customer can place the order again
+        function releaseCheckout() {
+            const url = new URL(window.location.href);
+            const params = url.searchParams;
+
+            removeAlmaUrlParams(params);
+            $('#alma-overlay').remove();
+            window.history.replaceState({}, document.title, url.pathname + '?' + params.toString());
+        }
+
         // Remove alma=inPage&pid=PAYMENT_ID from URL without reloading the page
         function removeAlmaUrlParams(params) {
             params.delete('alma');
@@ -227,14 +255,26 @@
         // We need to remount the iframe after the update
         // We also reset the inPage instance to ensure a fresh initialization with the updated amount
         $(document.body).on('updated_checkout', function () {
+            // In-Page parameters are removed from the URL once the modal is closed or the checkout released
+            const isPendingInPagePayment = isInPagePayment && new URLSearchParams(window.location.search).has('pid');
+
             totalAmount = getAmount()
             inPage = undefined; // Reset inPage instance after partial reload
+            if (isPendingInPagePayment) {
+                selectInPagePaymentGateway();
+            }
             checkPlan();
             mountIframe();
 
             // Start payment for inPage if URL contains alma=inPage&pid=PAYMENT_ID
             // This is used to handle the case where the user is redirected back to the checkout page after place order
-            if (isInPagePayment) {
+            if (isPendingInPagePayment) {
+                // Never leave the customer stuck behind the overlay: release the checkout so the order can be placed again
+                if (inPage === undefined) {
+                    console.error('Alma In-Page payment could not be initialized');
+                    releaseCheckout();
+                    return;
+                }
                 inPage.startPayment({
                     paymentId: initialUrlParams.get('pid'),
                     onUserCloseModal: handleInPageModalClose
