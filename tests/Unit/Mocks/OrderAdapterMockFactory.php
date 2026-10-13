@@ -3,13 +3,16 @@
 namespace Alma\Gateway\Tests\Unit\Mocks;
 
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
+use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\TestCase;
 
 class OrderAdapterMockFactory {
 
 	public static function createMock( TestCase $testCase ) {
-		$orderInterface = $testCase
-			->getMockBuilder( OrderAdapter::class )
+		// MockBuilder is instantiated directly: TestCase::getMockBuilder() and
+		// TestCase::createMock() are not callable from outside a TestCase
+		// subclass on recent PHPUnit releases (11.5+/12).
+		$orderInterface = ( new MockBuilder( $testCase, OrderAdapter::class ) )
 			->disableOriginalConstructor()
 			->getMock();
 		$orderInterface->method( 'getId' )->willReturn( 123456 );

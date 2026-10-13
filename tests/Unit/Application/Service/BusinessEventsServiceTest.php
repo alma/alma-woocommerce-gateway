@@ -344,7 +344,7 @@ class BusinessEventsServiceTest extends TestCase {
 		$this->businessEventsService->onOrderConfirmed( 'pending', 'processing', $orderMock );
 	}
 
-	public function emptyCartIdProvider(): array {
+	public static function emptyCartIdProvider(): array {
 		return [
 			'cart_id is null'         => [ null ],
 			'cart_id is empty string' => [ '' ],
@@ -383,7 +383,7 @@ class BusinessEventsServiceTest extends TestCase {
 	/**
 	 * @throws ParametersException
 	 */
-	public function eligibleListProvider(): array {
+	public static function eligibleListProvider(): array {
 		return [
 			'Eligible List'     => [
 				new EligibilityList( [
