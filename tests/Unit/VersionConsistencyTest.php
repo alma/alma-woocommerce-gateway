@@ -3,6 +3,7 @@
 namespace Alma\Gateway\Tests\Unit;
 
 use Alma\Gateway\Plugin;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,6 +20,7 @@ class VersionConsistencyTest extends TestCase {
 	/**
 	 * @dataProvider versionSourceProvider
 	 */
+	#[DataProvider( 'versionSourceProvider' )]
 	public function testAllVersionSourcesMatchTheRuntimeVersion( $label, $relative_path, $pattern ) {
 		$contents = file_get_contents( ABSPATH . $relative_path );
 		$this->assertIsString( $contents, "Cannot read $relative_path" );
@@ -37,7 +39,7 @@ class VersionConsistencyTest extends TestCase {
 		);
 	}
 
-	public function versionSourceProvider() {
+	public static function versionSourceProvider() {
 		return array(
 			'plugin header "Version:"'  => array(
 				'plugin header "Version:"',

@@ -7,6 +7,7 @@ use Brain\Monkey;
 use Brain\Monkey\Functions;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\TestCase;
 use function Brain\Monkey\Functions\when;
 
@@ -16,6 +17,7 @@ use function Brain\Monkey\Functions\when;
  *
  * @preserveGlobalState disabled
  */
+#[PreserveGlobalState( false )]
 class TemplateHelperTest extends TestCase {
 	use MockeryPHPUnitIntegration;
 

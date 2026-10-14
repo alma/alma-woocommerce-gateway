@@ -18,6 +18,7 @@ use Alma\Gateway\Infrastructure\Repository\BusinessEventsRepository;
 use Automattic\WooCommerce\Admin\Notes\StartDropshippingBusiness;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -162,6 +163,7 @@ class BusinessEventsServiceTest extends TestCase {
 	/**
 	 * @dataProvider eligibleListProvider
 	 */
+	#[DataProvider( 'eligibleListProvider' )]
 	public function testUpdateEligibilityWithEligibleList( $eligibleList, $isEligible ): void {
 		$cartId = 12345;
 
@@ -322,6 +324,7 @@ class BusinessEventsServiceTest extends TestCase {
 	 * @dataProvider emptyCartIdProvider
 	 * @throws BusinessEventsServiceException
 	 */
+	#[DataProvider( 'emptyCartIdProvider' )]
 	public function testOnOrderConfirmedWithEmptyCartIdReturnsEarly( $cartId ): void {
 		$this->businessEventsRepository->method( 'getRowByOrderId' )
 		                               ->with( 42 )
@@ -344,7 +347,7 @@ class BusinessEventsServiceTest extends TestCase {
 		$this->businessEventsService->onOrderConfirmed( 'pending', 'processing', $orderMock );
 	}
 
-	public function emptyCartIdProvider(): array {
+	public static function emptyCartIdProvider(): array {
 		return [
 			'cart_id is null'         => [ null ],
 			'cart_id is empty string' => [ '' ],
@@ -383,7 +386,7 @@ class BusinessEventsServiceTest extends TestCase {
 	/**
 	 * @throws ParametersException
 	 */
-	public function eligibleListProvider(): array {
+	public static function eligibleListProvider(): array {
 		return [
 			'Eligible List'     => [
 				new EligibilityList( [

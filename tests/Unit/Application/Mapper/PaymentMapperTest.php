@@ -5,16 +5,21 @@ namespace Alma\Gateway\Tests\Unit\Application\Mapper;
 use Alma\Client\Application\DTO\PaymentDto;
 use Alma\Gateway\Application\Mapper\PaymentMapper;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
-use Alma\Gateway\Tests\Unit\Mocks\OrderAdapterMockFactory;
+use Alma\Gateway\Tests\Unit\Mocks\OrderAdapterMockTrait;
 use Mockery;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
 class PaymentMapperTest extends TestCase {
+	use OrderAdapterMockTrait;
 
 	/**
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testBuildPaymentDto(): void {
 		$contextHelperMock = Mockery::mock( 'alias:Alma\Gateway\Infrastructure\Helper\ContextHelper' );
 		$contextHelperMock->shouldReceive( 'getWebhookUrl' )
@@ -30,7 +35,7 @@ class PaymentMapperTest extends TestCase {
 
 		$paymentMapper = new PaymentMapper();
 
-		$orderAdapterMock   = OrderAdapterMockFactory::createMock( $this );
+		$orderAdapterMock   = $this->createOrderAdapterMock();
 		$feePlanAdapterMock = $this->createMock( FeePlanAdapter::class );
 		$feePlanAdapterMock->method( 'getInstallmentsCount' )->willReturn( 3 );
 		$feePlanAdapterMock->method( 'getDeferredMonths' )->willReturn( 2 );
@@ -51,8 +56,8 @@ class PaymentMapperTest extends TestCase {
 				'ipn_callback_url'   => 'https://example.com/ipn-webhook-url',
 				'origin'             => PaymentDto::ORIGIN_ONLINE,
 				'return_url'         => 'https://example.com/customer-webhook-url',
-				'billing_address'    => OrderAdapterMockFactory::resultArray()['addresses'][0],
-				'shipping_address'   => OrderAdapterMockFactory::resultArray()['addresses'][1],
+				'billing_address'    => self::orderAdapterResultArray()['addresses'][0],
+				'shipping_address'   => self::orderAdapterResultArray()['addresses'][1],
 				'cart'               => [ 'items' => [] ],
 				'custom_data'        => [
 					'order_id'  => 123456,
