@@ -15,6 +15,8 @@ use Alma\Gateway\Plugin;
 use Brain\Monkey;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 use function Brain\Monkey\Functions\when;
 
@@ -22,6 +24,7 @@ use function Brain\Monkey\Functions\when;
  * @runInSeparateProcess
  * @preserveGlobalState disabled
  */
+#[PreserveGlobalState( false )]
 class GatewayConfigurationFormValidatorServiceTest extends TestCase {
 	use MockeryPHPUnitIntegration;
 
@@ -34,6 +37,8 @@ class GatewayConfigurationFormValidatorServiceTest extends TestCase {
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testValidateWithSameMerchantIdWithoutPlan(): void {
 		$feePlanConfigurationList = $this->createMock( FeePlanConfigurationList::class );
 		$feePlanConfigurationList->method( 'count' )->willReturn( 0 );
@@ -60,6 +65,8 @@ class GatewayConfigurationFormValidatorServiceTest extends TestCase {
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testValidateWithSameMerchantId(): void {
 		$feePlanConfigurationList = $this->createMock( FeePlanConfigurationList::class );
 		$feePlanConfigurationList->method( 'count' )->willReturn( 3 );
@@ -86,6 +93,8 @@ class GatewayConfigurationFormValidatorServiceTest extends TestCase {
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testValidateWithNewMerchantId(): void {
 		$feePlanConfigurationList = $this->createMock( FeePlanConfigurationList::class );
 		$feePlanConfigurationList->method( 'count' )->willReturn( 3 );
@@ -115,6 +124,8 @@ class GatewayConfigurationFormValidatorServiceTest extends TestCase {
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testValidateApiResponseError(): void {
 		$this->expectException( GatewayConfigurationFormValidatorServiceException::class );
 		$this->feePlanRepository->method( 'getAll' )->willThrowException( new FeePlanRepositoryException( 'API error' ) );

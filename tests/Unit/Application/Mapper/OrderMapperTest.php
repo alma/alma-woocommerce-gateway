@@ -4,15 +4,16 @@ namespace Alma\Gateway\Tests\Unit\Application\Mapper;
 
 use Alma\Client\Application\DTO\OrderDto;
 use Alma\Gateway\Application\Mapper\OrderMapper;
-use Alma\Gateway\Tests\Unit\Mocks\OrderAdapterMockFactory;
+use Alma\Gateway\Tests\Unit\Mocks\OrderAdapterMockTrait;
 use PHPUnit\Framework\TestCase;
 
 class OrderMapperTest extends TestCase {
+	use OrderAdapterMockTrait;
 
 	private $orderMapper;
 
 	public function testOrderMapper() {
-		$orderAdapterMock = OrderAdapterMockFactory::createMock( $this );
+		$orderAdapterMock = $this->createOrderAdapterMock();
 		$orderDto         = $this->orderMapper->buildOrderDto( $orderAdapterMock );
 		$this->assertInstanceOf(
 			OrderDto::class,
