@@ -6,13 +6,16 @@ use Alma\Client\Application\DTO\CartItemDto;
 use Alma\Gateway\Application\Mapper\CartItemMapper;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
-use Alma\Gateway\Tests\Unit\Mocks\OrderLineMockFactory;
+use Alma\Gateway\Tests\Unit\Mocks\OrderLineMockTrait;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
 use Mockery;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
 class CartItemMapperTest extends TestCase {
+	use OrderLineMockTrait;
 
 	private $cartIemMapper;
 
@@ -20,6 +23,8 @@ class CartItemMapperTest extends TestCase {
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testBuildCartItemDto(): void {
 		Functions\expect( 'wp_get_attachment_url' )
 			->once()
@@ -41,7 +46,7 @@ class CartItemMapperTest extends TestCase {
 		           ->once()
 		           ->andReturn( $containerMock );
 
-		$orderLineMock = OrderLineMockFactory::create( $this );
+		$orderLineMock = $this->createOrderLineMock();
 
 		$cartItemDetail = $this->cartIemMapper->buildCartItemDto( $orderLineMock );
 		$this->assertInstanceOf( CartItemDto::class, $cartItemDetail );

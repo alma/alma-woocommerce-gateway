@@ -3,13 +3,15 @@
 namespace Alma\Gateway\Tests\Unit\Mocks;
 
 use Alma\Gateway\Infrastructure\Adapter\OrderAdapter;
-use PHPUnit\Framework\TestCase;
 
-class OrderAdapterMockFactory {
+/**
+ * To be used in a TestCase: getMockBuilder() is protected since PHPUnit 10,
+ * so it can only be called from inside a TestCase subclass.
+ */
+trait OrderAdapterMockTrait {
 
-	public static function createMock( TestCase $testCase ) {
-		$orderInterface = $testCase
-			->getMockBuilder( OrderAdapter::class )
+	protected function createOrderAdapterMock() {
+		$orderInterface = $this->getMockBuilder( OrderAdapter::class )
 			->disableOriginalConstructor()
 			->getMock();
 		$orderInterface->method( 'getId' )->willReturn( 123456 );
@@ -43,7 +45,7 @@ class OrderAdapterMockFactory {
 		return $orderInterface;
 	}
 
-	public static function resultArray(): array {
+	protected static function orderAdapterResultArray(): array {
 		return [
 			'is_business'            => true,
 			'business_name'          => 'Acme Corp',

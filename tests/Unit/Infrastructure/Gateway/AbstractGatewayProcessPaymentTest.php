@@ -18,6 +18,8 @@ use Brain\Monkey;
 use Brain\Monkey\Functions;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -63,6 +65,8 @@ class AbstractGatewayProcessPaymentTest extends TestCase {
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testProcessPaymentInPageForcesChosenPaymentMethodInSession(): void {
 		$gateway = $this->buildGateway( true );
 
@@ -81,6 +85,8 @@ class AbstractGatewayProcessPaymentTest extends TestCase {
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testProcessPaymentRedirectDoesNotTouchSession(): void {
 		$gateway = $this->buildGateway( false );
 
