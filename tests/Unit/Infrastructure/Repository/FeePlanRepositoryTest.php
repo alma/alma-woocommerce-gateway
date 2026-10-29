@@ -3,6 +3,7 @@
 namespace Alma\Gateway\Tests\Unit\Infrastructure\Repository;
 
 use Alma\Client\Domain\Entity\EligibilityList;
+use Alma\Client\Domain\Entity\FeePlan;
 use Alma\Client\Domain\Entity\FeePlanList;
 use Alma\Gateway\Application\Provider\EligibilityProvider;
 use Alma\Gateway\Application\Provider\EligibilityProviderFactory;
@@ -288,6 +289,52 @@ class FeePlanRepositoryTest extends TestCase {
 		Functions\when( 'set_transient' )->justReturn( true );
 
 		// Cache hit: the eligibility API must NOT be called.
+		$eligibilityProvider->expects( 'getEligibilityList' )->never();
+
+		$this->repository->callRetrieveFeePlans( 10000 );
+	}
+
+	public function testEligibilityApiIsNotCalledWhenEveryEnabledFeePlanIsSkipped(): void {
+		// Shop context built inline (rather than via arrangeShopContext()) so the
+		// fee plan list carries a real, enabled plan instead of the empty default.
+		Functions\when( 'is_admin' )->justReturn( false );
+		unset( $_GET['rest_route'] );
+		$_SERVER['REQUEST_URI'] = '/';
+		Functions\when( 'wp_json_encode' )->alias( 'json_encode' );
+
+		$wc           = new \stdClass();
+		$wc->cart     = null;
+		$wc->customer = null;
+		Functions\when( 'WC' )->justReturn( $wc );
+
+		// One enabled fee plan, invalid for the eligibility query DTO
+		// (installments_count = 0): the mapper skips it and no query is left.
+		$invalidPlan = new FeePlan(
+			array(
+				'allowed'               => true,
+				'available_online'      => true,
+				'customer_fee_variable' => 0,
+				'deferred_days'         => 0,
+				'deferred_months'       => 0,
+				'installments_count'    => 0,
+				'kind'                  => 'general',
+				'max_purchase_amount'   => 500000,
+				'merchant_fee_variable' => 0,
+				'merchant_fee_fixed'    => 0,
+				'min_purchase_amount'   => 0,
+			)
+		);
+		$this->feePlanProvider->expects( 'getFeePlanList' )->once()->andReturn( new FeePlanList( array( $invalidPlan ) ) );
+
+		$this->configService->allows( 'isFeePlanEnabled' )->andReturn( true );
+
+		$eligibilityProvider = Mockery::mock( EligibilityProvider::class );
+		$this->eligibilityProviderFactory->allows( '__invoke' )->andReturn( $eligibilityProvider );
+
+		Functions\when( 'get_transient' )->justReturn( false );
+		Functions\when( 'set_transient' )->justReturn( true );
+
+		// A query-less DTO means "no filter": the API must NOT be called (#617).
 		$eligibilityProvider->expects( 'getEligibilityList' )->never();
 
 		$this->repository->callRetrieveFeePlans( 10000 );
