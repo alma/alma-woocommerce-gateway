@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<ruleset name="PHP compatibility">
+    <rule ref="PHPCompatibility"/>
+
+    <!-- PHPUnit 10+ attributes sit next to annotations: older PHP versions read them as comments -->
+    <rule ref="PHPCompatibility.Attributes.NewAttributes.PHPUnitAttributeFound">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+</ruleset>
