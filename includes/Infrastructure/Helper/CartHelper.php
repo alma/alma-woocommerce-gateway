@@ -31,13 +31,4 @@ class CartHelper {
 
 		return ( $timestamp << self::RANDOM_BITS ) | $random;
 	}
-
-	/**
-	 * Get the number of decimals used for cart prices.
-	 *
-	 * @return int The number of decimals for cart prices.
-	 */
-	public static function getCartPriceDecimalsNumber(): int {
-		return wc_get_price_decimals();
-	}
 }
