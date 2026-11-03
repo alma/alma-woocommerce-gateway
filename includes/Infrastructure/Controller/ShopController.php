@@ -13,6 +13,7 @@ use Alma\Gateway\Infrastructure\Helper\BackendHelper;
 use Alma\Gateway\Infrastructure\Helper\BlocksWidgetHelper;
 use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\FrontendHelper;
+use Alma\Gateway\Infrastructure\Helper\ShortcodeWidgetHelper;
 use Alma\Gateway\Infrastructure\Service\AssetsService;
 use Alma\Gateway\Plugin;
 
@@ -42,6 +43,10 @@ class ShopController {
 	public function prepare() {
 		if ( ContextHelper::isCartPageUseBlocks() ) {
 			BlocksWidgetHelper::registerWidget();
+		} else {
+			/** @var ShortcodeWidgetHelper $shortcodeWidgetHelper */
+			$shortcodeWidgetHelper = Plugin::get_container()->get( ShortcodeWidgetHelper::class );
+			$shortcodeWidgetHelper->displayCartAmount();
 		}
 	}
 
