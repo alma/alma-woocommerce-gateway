@@ -28,7 +28,7 @@ const AlmaWidget = () => {
     const total = useSelect((select) => {
         const cartTotals = select(CART_STORE_KEY)?.getCartTotals();
         if (!cartTotals) return 0;
-        return Math.round(parseInt(cartTotals.total_price || 0) * Math.pow(10, 2 - (cartTotals.currency_minor_unit || 0)));
+        return Math.round(parseInt(cartTotals.total_price || 0, 10) * Math.pow(10, 2 - (cartTotals.currency_minor_unit || 0)));
     }, []);
 
     useEffect(() => {
