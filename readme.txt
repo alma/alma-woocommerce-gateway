@@ -13,6 +13,8 @@ This plugin adds a new payment method to WooCommerce, which allows you to offer 
 
 == Description ==
 
+> **PHP 8.1 and earlier versions are no longer supported by the PHP project and are not recommended by Alma. These versions may contain unpatched security vulnerabilities.**
+
 [Alma](https://almapay.com) is a service to provide merchants with an **easy** and **safe** monthly payments solution.
 Let your customers pay for their purchases at their own pace! You'll receive the funds instantly, and your customer will pay later over a few monthly instalments.
 
