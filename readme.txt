@@ -5,7 +5,7 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 6.6
 Tested up to: 7.1.3
 Requires PHP: 7.4
-Stable tag: 6.8.0
+Stable tag: 6.9.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -52,6 +52,25 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+## v6.9.0 - 2026-11-04
+
+### Changes
+
+- docs(readme): warn about unsupported PHP versions [ECOM-4798] (#711)
+
+### 🚀 New Features
+
+- Unit tests run on every supported PHP version (PHPUnit 9 to 12) (#701)
+
+### 🐛 Bug Fixes
+
+- Fix the In-Page amount when the rendered price has fewer decimals than the WooCommerce setting (ECOM-4796) (#709)
+- fix(widget): wrong cart widget amount or greyed-out plans depending on the price format (ECOM-4797) (#710)
+
+#### Contributors
+
+@webaaz, @Benjamin-Freoua-Alma, @claude and @slabbdev
 
 ## v6.8.0 - 2026-10-13
 
