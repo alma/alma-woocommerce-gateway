@@ -143,7 +143,11 @@
         // Read from the payment fields, which WooCommerce re-renders on each checkout update:
         // the rendered order total may not match the decimals setting (theme, currency switcher...).
         function getAmount() {
-            return parseInt($('[data-alma-in-page-amount]').first().attr('data-alma-in-page-amount')) || 0;
+            const amount = parseInt($('[data-alma-in-page-amount]').first().attr('data-alma-in-page-amount'), 10) || 0;
+            if (amount <= 0) {
+                console.warn('Alma In-Page: cart amount not found');
+            }
+            return amount;
         }
 
         // This is to prevent starting the payment again if the user close the modal and refresh the page
