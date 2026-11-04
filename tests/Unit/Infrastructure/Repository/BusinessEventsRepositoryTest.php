@@ -3,6 +3,7 @@
 namespace Alma\Gateway\Tests\Unit\Infrastructure\Repository;
 
 use Alma\Gateway\Infrastructure\Repository\BusinessEventsRepository;
+use Alma\Gateway\Tests\Unit\Mocks\WpdbStub;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -17,8 +18,8 @@ class BusinessEventsRepositoryTest extends TestCase {
 		global $wpdb;
 		$row          = new Stdclass();
 		$row->cart_id = 123;
-		$wpdb         = $this->getMockBuilder( stdClass::class )
-		                     ->addMethods( [ 'get_row', 'prepare' ] )
+		$wpdb         = $this->getMockBuilder( WpdbStub::class )
+		                     ->onlyMethods( [ 'get_row', 'prepare' ] )
 		                     ->getMock();
 		$wpdb->prefix = 'wp_';
 		$wpdb->expects( $this->once() )
@@ -33,8 +34,8 @@ class BusinessEventsRepositoryTest extends TestCase {
 
 	public function testGetCartRowIfExistWithoutRow() {
 		global $wpdb;
-		$wpdb         = $this->getMockBuilder( stdClass::class )
-		                     ->addMethods( [ 'get_row', 'prepare' ] )
+		$wpdb         = $this->getMockBuilder( WpdbStub::class )
+		                     ->onlyMethods( [ 'get_row', 'prepare' ] )
 		                     ->getMock();
 		$wpdb->prefix = 'wp_';
 		$wpdb->expects( $this->once() )
@@ -50,8 +51,8 @@ class BusinessEventsRepositoryTest extends TestCase {
 	public function testAlreadyExistIfNotExist() {
 		global $wpdb;
 
-		$wpdb = $this->getMockBuilder( stdClass::class )
-		             ->addMethods( [ 'get_var', 'prepare' ] )
+		$wpdb = $this->getMockBuilder( WpdbStub::class )
+		             ->onlyMethods( [ 'get_var', 'prepare' ] )
 		             ->getMock();
 
 		$wpdb->prefix = 'wp_';
@@ -70,8 +71,8 @@ class BusinessEventsRepositoryTest extends TestCase {
 	public function testAlreadyExistIfExist() {
 		global $wpdb;
 
-		$wpdb = $this->getMockBuilder( stdClass::class )
-		             ->addMethods( [ 'get_var', 'prepare' ] )
+		$wpdb = $this->getMockBuilder( WpdbStub::class )
+		             ->onlyMethods( [ 'get_var', 'prepare' ] )
 		             ->getMock();
 
 		$wpdb->prefix = 'wp_';
@@ -90,8 +91,8 @@ class BusinessEventsRepositoryTest extends TestCase {
 	public function testAlreadyConvertedIfCartNotConverted() {
 		global $wpdb;
 
-		$wpdb = $this->getMockBuilder( stdClass::class )
-		             ->addMethods( [ 'get_var', 'prepare' ] )
+		$wpdb = $this->getMockBuilder( WpdbStub::class )
+		             ->onlyMethods( [ 'get_var', 'prepare' ] )
 		             ->getMock();
 
 		$wpdb->prefix = 'wp_';
@@ -110,8 +111,8 @@ class BusinessEventsRepositoryTest extends TestCase {
 	public function testAlreadyConvertedIfCartConverted() {
 		global $wpdb;
 
-		$wpdb = $this->getMockBuilder( stdClass::class )
-		             ->addMethods( [ 'get_var', 'prepare' ] )
+		$wpdb = $this->getMockBuilder( WpdbStub::class )
+		             ->onlyMethods( [ 'get_var', 'prepare' ] )
 		             ->getMock();
 
 		$wpdb->prefix = 'wp_';
@@ -130,8 +131,8 @@ class BusinessEventsRepositoryTest extends TestCase {
 	public function testSaveEligibility() {
 		global $wpdb;
 
-		$wpdb = $this->getMockBuilder( stdClass::class )
-		             ->addMethods( [ 'update' ] )
+		$wpdb = $this->getMockBuilder( WpdbStub::class )
+		             ->onlyMethods( [ 'update' ] )
 		             ->getMock();
 
 		$wpdb->prefix = 'wp_';
@@ -154,8 +155,8 @@ class BusinessEventsRepositoryTest extends TestCase {
 		global $wpdb;
 		$row           = new Stdclass();
 		$row->order_id = 42;
-		$wpdb          = $this->getMockBuilder( stdClass::class )
-		                      ->addMethods( [ 'get_row', 'prepare' ] )
+		$wpdb          = $this->getMockBuilder( WpdbStub::class )
+		                      ->onlyMethods( [ 'get_row', 'prepare' ] )
 		                      ->getMock();
 		$wpdb->prefix  = 'wp_';
 		$wpdb->expects( $this->once() )
@@ -173,8 +174,8 @@ class BusinessEventsRepositoryTest extends TestCase {
 
 	public function testGetRowByOrderIdNoRow() {
 		global $wpdb;
-		$wpdb         = $this->getMockBuilder( stdClass::class )
-		                     ->addMethods( [ 'get_row', 'prepare' ] )
+		$wpdb         = $this->getMockBuilder( WpdbStub::class )
+		                     ->onlyMethods( [ 'get_row', 'prepare' ] )
 		                     ->getMock();
 		$wpdb->prefix = 'wp_';
 		$wpdb->expects( $this->once() )
@@ -193,8 +194,8 @@ class BusinessEventsRepositoryTest extends TestCase {
 	public function testUpdateOrderId() {
 		global $wpdb;
 
-		$wpdb = $this->getMockBuilder( stdClass::class )
-		             ->addMethods( [ 'update' ] )
+		$wpdb = $this->getMockBuilder( WpdbStub::class )
+		             ->onlyMethods( [ 'update' ] )
 		             ->getMock();
 
 		$wpdb->prefix = 'wp_';
@@ -215,8 +216,8 @@ class BusinessEventsRepositoryTest extends TestCase {
 	public function testSaveAlmaPaymentId() {
 		global $wpdb;
 
-		$wpdb = $this->getMockBuilder( stdClass::class )
-		             ->addMethods( [ 'update' ] )
+		$wpdb = $this->getMockBuilder( WpdbStub::class )
+		             ->onlyMethods( [ 'update' ] )
 		             ->getMock();
 
 		$wpdb->prefix = 'wp_';

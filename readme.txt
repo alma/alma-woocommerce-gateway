@@ -5,13 +5,15 @@ Tags: payments, BNPL, woocommerce, ecommerce, e-commerce, payment gateway, sell,
 Requires at least: 6.6
 Tested up to: 7.1.3
 Requires PHP: 7.4
-Stable tag: 6.8.0
+Stable tag: 6.9.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 This plugin adds a new payment method to WooCommerce, which allows you to offer monthly payments to your customer using Alma.
 
 == Description ==
+
+> **PHP 8.1 and earlier versions are no longer supported by the PHP project and are not recommended by Alma. These versions may contain unpatched security vulnerabilities.**
 
 [Alma](https://almapay.com) is a service to provide merchants with an **easy** and **safe** monthly payments solution.
 Let your customers pay for their purchases at their own pace! You'll receive the funds instantly, and your customer will pay later over a few monthly instalments.
@@ -50,6 +52,25 @@ Once everything is properly set up, go ahead and switch to "Live" mode!
 You can find more documentation on our [website](https://docs.almapay.com/docs/woocommerce)
 
 == Changelog ==
+
+## v6.9.0 - 2026-11-04
+
+### Changes
+
+- docs(readme): warn about unsupported PHP versions [ECOM-4798] (#711)
+
+### 🚀 New Features
+
+- Unit tests run on every supported PHP version (PHPUnit 9 to 12) (#701)
+
+### 🐛 Bug Fixes
+
+- Fix the In-Page amount when the rendered price has fewer decimals than the WooCommerce setting (ECOM-4796) (#709)
+- fix(widget): wrong cart widget amount or greyed-out plans depending on the price format (ECOM-4797) (#710)
+
+#### Contributors
+
+@webaaz, @Benjamin-Freoua-Alma, @claude and @slabbdev
 
 ## v6.8.0 - 2026-10-13
 

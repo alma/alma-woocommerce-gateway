@@ -110,7 +110,6 @@ class AssetsConfig {
 							'keys'        => array(
 								'environment',
 								'merchant_id',
-								'number_decimals',
 								'language',
 							),
 						),

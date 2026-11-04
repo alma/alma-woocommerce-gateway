@@ -11,7 +11,7 @@ jobs:
 
   release:
     if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'release')
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     permissions:
       contents: write # Publish the GitHub release and upload the zip asset
@@ -126,8 +126,6 @@ jobs:
             New release of ${{ github.repository }}, **[${{ steps.fetch-release-draft.outputs.name }}](https://github.com/${{ github.repository }}/releases/tag/${{ steps.fetch-release-draft.outputs.name }})**:
 
             ${{ steps.fetch-release-draft.outputs.body }}
-
-            cc <@khadija.cherif>
 
       - name: Send changelog to Slack
         uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0

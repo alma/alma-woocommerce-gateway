@@ -6,14 +6,17 @@ use Alma\Client\Application\DTO\CartDto;
 use Alma\Gateway\Application\Mapper\CartMapper;
 use Alma\Gateway\Infrastructure\Repository\ProductCategoryRepository;
 use Alma\Gateway\Infrastructure\Service\ContainerService;
-use Alma\Gateway\Tests\Unit\Mocks\OrderLineMockFactory;
+use Alma\Gateway\Tests\Unit\Mocks\OrderLineMockTrait;
 use Alma\Plugin\Infrastructure\Adapter\OrderAdapterInterface;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
 use Mockery;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
 class CartMapperTest extends TestCase {
+	use OrderLineMockTrait;
 
 	/**@var ?CartMapper */
 	private ?CartMapper $cartMapper = null;
@@ -30,6 +33,8 @@ class CartMapperTest extends TestCase {
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testBuildCartDetailsWithItems(): void {
 		Functions\expect( 'wp_get_attachment_url' )
 			->once()
@@ -52,7 +57,7 @@ class CartMapperTest extends TestCase {
 		           ->andReturn( $containerMock );
 
 		$orderAdapterMock = $this->createMock( OrderAdapterInterface::class );
-		$orderAdapterMock->method( 'getOrderLines' )->willReturn( [ OrderLineMockFactory::create( $this ) ] );
+		$orderAdapterMock->method( 'getOrderLines' )->willReturn( [ $this->createOrderLineMock() ] );
 		$cartDto = $this->cartMapper->buildCartDto( $orderAdapterMock );
 		$this->assertInstanceOf( CartDto::class, $cartDto );
 		$this->assertEquals(

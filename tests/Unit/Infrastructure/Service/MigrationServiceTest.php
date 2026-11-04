@@ -6,6 +6,9 @@ use Alma\Gateway\Infrastructure\Service\MigrationService;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
 class MigrationServiceTest extends TestCase {
@@ -309,6 +312,7 @@ class MigrationServiceTest extends TestCase {
 	/**
 	 * @dataProvider migrationDataProvider
 	 */
+	#[DataProvider( 'migrationDataProvider' )]
 	public function testMigrateFromV5ToV6( $originData, $expectedData ): void {
 
 		$migrationService = new MigrationService();
@@ -358,6 +362,8 @@ class MigrationServiceTest extends TestCase {
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testRunMigrationsFrom600CleansUpSocAndBumpsVersion(): void {
 		Functions\expect( 'get_option' )
 			->once()
@@ -386,6 +392,8 @@ class MigrationServiceTest extends TestCase {
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testRunMigrationsFrom607DoesNothing(): void {
 		Functions\expect( 'get_option' )
 			->once()
@@ -406,6 +414,8 @@ class MigrationServiceTest extends TestCase {
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testRunMigrationsFromV5ChainsTo607(): void {
 		Functions\expect( 'get_option' )
 			->once()
@@ -456,6 +466,8 @@ class MigrationServiceTest extends TestCase {
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testFreshInstallStampsLatestVersion(): void {
 		Functions\expect( 'get_option' )
 			->once()

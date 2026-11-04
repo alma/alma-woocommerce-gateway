@@ -12,6 +12,8 @@ use Alma\Gateway\Application\Service\AuthenticationService;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
 class AuthenticationServiceTest extends TestCase {
@@ -29,6 +31,8 @@ class AuthenticationServiceTest extends TestCase {
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testCheckAuthenticationReturnsMerchantIdOnSuccess(): void {
 		$merchant = Mockery::mock();
 		$merchant->shouldReceive( 'getId' )->andReturn( 'merchant_123' );
@@ -56,6 +60,8 @@ class AuthenticationServiceTest extends TestCase {
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testCheckAuthenticationLogsRealCauseAndReturnsEmptyOnFailure(): void {
 		$exception = new MerchantEndpointException( 'Unauthorized', null, new Response( 401 ) );
 
@@ -92,6 +98,8 @@ class AuthenticationServiceTest extends TestCase {
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testCheckAuthenticationLogsTransportErrorWithoutResponse(): void {
 		$exception = new MerchantEndpointException( 'cURL error 28: Connection timed out' );
 

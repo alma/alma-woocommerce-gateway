@@ -40,6 +40,16 @@ class ShortcodeWidgetHelper {
 		);
 	}
 
+	// Registered before template_redirect: WooCommerce also renders the cart totals in its get_cart_totals AJAX call.
+	public function displayCartAmount() {
+		add_action(
+			'woocommerce_after_cart_totals',
+			function () {
+				printf( '<div data-alma-cart-amount="%d" hidden></div>', ContextHelper::getCart()->getCartTotal() );
+			}
+		);
+	}
+
 	/**
 	 * Create the Alma cart widget shortcode.
 	 * This shortcode can be used to display the Alma cart widget

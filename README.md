@@ -1,5 +1,7 @@
 # Alma - Pay in installments or later for WooCommerce
 
+> **PHP 8.1 and earlier versions are no longer supported by the PHP project and are not recommended by Alma. These versions may contain unpatched security vulnerabilities.**
+
 - Contributors: almapayments, olance, francois-gomis, clairealma
 - Tags: payments, payment gateway, woocommerce, ecommerce, e-commerce, sell, woo commerce, alma, monthly payments, split
   payments
@@ -8,7 +10,7 @@
 - Tested up to Wordpress: 7.1.3
 - Tested up to Woocommerce: 11.2.1
 - Requires PHP: 7.4
-- Stable tag: 6.8.0
+- Stable tag: 6.9.0
 - License: GPLv3
 - License URI: https://www.gnu.org/licenses/gpl-3.0.html
 - Support: support@getalma.eu

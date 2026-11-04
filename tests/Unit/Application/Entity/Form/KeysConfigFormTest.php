@@ -6,6 +6,7 @@ use Alma\Client\Domain\ValueObject\Environment;
 use Alma\Gateway\Application\Entity\Form\KeyConfiguration;
 use Alma\Gateway\Application\Service\AuthenticationService;
 use Alma\Gateway\Application\Service\ConfigService;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class KeysConfigFormTest extends TestCase {
@@ -188,6 +189,7 @@ class KeysConfigFormTest extends TestCase {
 	/**
 	 * @dataProvider fromEmptyConfigurationProvider
 	 */
+	#[DataProvider( 'fromEmptyConfigurationProvider' )]
 	public function testFromEmptyConfiguration( $before, $after ) {
 
 		$brandNewConfigServiceMock = $this->createMock( ConfigService::class );
@@ -233,6 +235,7 @@ class KeysConfigFormTest extends TestCase {
 	/**
 	 * @dataProvider fromExistingConfigurationProvider
 	 */
+	#[DataProvider( 'fromExistingConfigurationProvider' )]
 	public function testFromExistingConfiguration( $before, $after ) {
 
 		$configServiceMock = $this->createMock( ConfigService::class );

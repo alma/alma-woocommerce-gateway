@@ -15,6 +15,8 @@ use Alma\Gateway\Infrastructure\Service\GatewayService;
 use Alma\Gateway\Infrastructure\Service\LoggerService;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
 class GatewayServiceTest extends TestCase {
@@ -58,6 +60,8 @@ class GatewayServiceTest extends TestCase {
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testWoocommerceOrderStatusChangedLogsDebugOnBusinessEventsServiceException(): void {
 		$orderId   = 42;
 		$oldStatus = 'pending';
@@ -100,6 +104,8 @@ class GatewayServiceTest extends TestCase {
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testWoocommerceOrderStatusChangedDoesNotLogOnSuccess(): void {
 		$orderId   = 42;
 		$oldStatus = 'pending';
@@ -138,6 +144,8 @@ class GatewayServiceTest extends TestCase {
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testWoocommerceOrderStatusChangedThrowsGatewayServiceExceptionOnOrderNotFound(): void {
 		$orderId   = 999;
 		$oldStatus = 'pending';

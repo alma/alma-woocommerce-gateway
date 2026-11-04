@@ -140,16 +140,14 @@
             }
         }
 
-        // Get the total amount from the order total element
-        // The amount is in the format "12,34 €" or "$12.34"
-        // We need to extract the numeric value and convert it to cents
+        // Read from the payment fields, which WooCommerce re-renders on each checkout update:
+        // the rendered order total may not match the decimals setting (theme, currency switcher...).
         function getAmount() {
-            const totalText = $('.order-total .woocommerce-Price-amount').first().text().trim();
-
-            const number_decimals = parseInt(alma_in_page_settings.number_decimals);
-
-            let cleanedText = totalText.replace(/[^0-9]/g, '');
-            return parseInt(cleanedText) * Math.pow(10, 2 - number_decimals);
+            const amount = parseInt($('[data-alma-in-page-amount]').first().attr('data-alma-in-page-amount'), 10) || 0;
+            if (amount <= 0) {
+                console.warn('Alma In-Page: cart amount not found');
+            }
+            return amount;
         }
 
         // This is to prevent starting the payment again if the user close the modal and refresh the page

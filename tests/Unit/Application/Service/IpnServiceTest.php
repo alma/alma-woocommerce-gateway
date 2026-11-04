@@ -13,6 +13,8 @@ use Alma\Plugin\Infrastructure\Helper\NavigationHelperInterface;
 use Brain\Monkey;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
 class IpnServiceTest extends TestCase {
@@ -58,6 +60,8 @@ class IpnServiceTest extends TestCase {
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testSendCollectDataUrlOnlyForLiveModeDoesNothingWhenNotLive(): void {
 		$configServiceMock = Mockery::mock( ConfigService::class );
 		$configServiceMock->shouldReceive( 'isLive' )
@@ -85,6 +89,8 @@ class IpnServiceTest extends TestCase {
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testSendCollectDataUrlOnlyForLiveModeCallsSendCollectDataUrlWhenLive(): void {
 		$configServiceMock = Mockery::mock( ConfigService::class );
 		$configServiceMock->shouldReceive( 'isLive' )

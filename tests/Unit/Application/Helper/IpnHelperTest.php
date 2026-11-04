@@ -9,6 +9,9 @@ use Brain\Monkey;
 use Brain\Monkey\Functions;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
 class IpnHelperTest extends TestCase {
@@ -40,6 +43,8 @@ class IpnHelperTest extends TestCase {
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testConfigureIpnCallback() {
 		$pluginMock = Mockery::mock( 'alias:Alma\Gateway\Plugin' );
 
@@ -78,6 +83,8 @@ class IpnHelperTest extends TestCase {
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testConfigureCustomerReturn() {
 		$pluginMock = Mockery::mock( 'alias:Alma\Gateway\Plugin' );
 
@@ -115,6 +122,7 @@ class IpnHelperTest extends TestCase {
 	/**
 	 * @dataProvider validateSignatureExceptionDataProvider
 	 */
+	#[DataProvider( 'validateSignatureExceptionDataProvider' )]
 	public function testValidateSignatureException( $paymentId, $apiKey, $signature ) {
 		$this->expectException( IpnHelperException::class );
 		$this->expectExceptionMessage( 'Can not validate IPN Signature. Missing required parameters' );

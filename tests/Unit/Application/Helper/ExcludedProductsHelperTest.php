@@ -5,6 +5,7 @@ namespace Alma\Gateway\Tests\Unit\Application\Helper;
 use Alma\Gateway\Application\Helper\ExcludedProductsHelper;
 use Alma\Gateway\Infrastructure\Adapter\CartAdapter;
 use Alma\Gateway\Infrastructure\Adapter\ProductAdapter;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class ExcludedProductsHelperTest extends TestCase {
@@ -24,6 +25,7 @@ class ExcludedProductsHelperTest extends TestCase {
 	/**
 	 * @dataProvider canDisplayProvider
 	 */
+	#[DataProvider( 'canDisplayProvider' )]
 	public function testCanDisplayOnProductPage( $excludedCategories, $productCategories, $expected ) {
 		$productInterface = $this->createMock( ProductAdapter::class );
 		$productInterface->method( 'getCategorySlugs' )->willReturn( $productCategories );
@@ -34,6 +36,7 @@ class ExcludedProductsHelperTest extends TestCase {
 	/**
 	 * @dataProvider canDisplayProvider
 	 */
+	#[DataProvider( 'canDisplayProvider' )]
 	public function testCanDisplayCartPage( $excludedCategories, $productCategories, $expected ) {
 		$cartAdapterInterface = $this->createMock( CartAdapter::class );
 		$cartAdapterInterface->method( 'getCartItemsCategoriesSlugs' )->willReturn( $productCategories );
@@ -45,6 +48,7 @@ class ExcludedProductsHelperTest extends TestCase {
 	/**
 	 * @dataProvider canDisplayProvider
 	 */
+	#[DataProvider( 'canDisplayProvider' )]
 	public function testCanDisplayOnCheckoutPage( $excludedCategories, $productCategories, $expected ) {
 		$cartAdapterInterface = $this->createMock( CartAdapter::class );
 		$cartAdapterInterface->method( 'getCartItemsCategoriesSlugs' )->willReturn( $productCategories );

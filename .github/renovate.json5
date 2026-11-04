@@ -16,6 +16,12 @@
       "allowedVersions": "<2"
     },
     {
+      "description": "PHPCS must stay on v3 until WPCS supports v4 (wpcs requires php_codesniffer ^3.13)",
+      "matchManagers": [ "composer" ],
+      "matchDepNames": [ "squizlabs/php_codesniffer" ],
+      "allowedVersions": "<4"
+    },
+    {
       "matchManagers": [ "dockerfile", "docker-compose" ],
       "groupName": "docker updates"
     },

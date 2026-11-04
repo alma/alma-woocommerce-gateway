@@ -8,6 +8,8 @@ use Alma\Gateway\Infrastructure\Exception\CmsException;
 use Alma\Gateway\Infrastructure\Exception\Helper\HelperException;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
 class EncryptorHelperTest extends TestCase {
@@ -28,6 +30,8 @@ class EncryptorHelperTest extends TestCase {
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function testConstructException() {
 		Mockery::mock( 'alias:Alma\Gateway\Infrastructure\Helper\SecurityHelper' )
 		       ->shouldReceive( 'getKeySalt' )
