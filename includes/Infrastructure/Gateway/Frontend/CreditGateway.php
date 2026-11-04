@@ -13,6 +13,7 @@ use Alma\Gateway\Application\Service\ConfigService;
 use Alma\Gateway\Infrastructure\Adapter\FeePlanAdapter;
 use Alma\Gateway\Infrastructure\Exception\Gateway\GatewayException;
 use Alma\Gateway\Infrastructure\Helper\AssetsHelper;
+use Alma\Gateway\Infrastructure\Helper\ContextHelper;
 use Alma\Gateway\Infrastructure\Helper\ShopNotificationHelper;
 use Alma\Gateway\Plugin;
 use Alma\Plugin\Infrastructure\Adapter\OrderAdapterInterface;
@@ -125,15 +126,16 @@ class CreditGateway extends AbstractFrontendGateway implements FrontendGatewayIn
 					array(
 						'alma_woocommerce_gateway_payment_method' => $this->get_payment_method(),
 						'alma_woocommerce_gateway_plan_key' => $fee_plan_adapter->getPlanKey(),
-						'alma_woocommerce_gateway_name'  => $this->get_name(),
+						'alma_woocommerce_gateway_name'   => $this->get_name(),
 						'alma_woocommerce_gateway_fee_plan' => $fee_plan_adapter,
 						'alma_woocommerce_gateway_in_page_enabled' => $config_service->isInPageEnabled(),
+						'alma_woocommerce_gateway_amount' => ContextHelper::getCart()->getCartTotal(),
 						'alma_woocommerce_gateway_in_page_iframe_selector' => sprintf(
 							'alma_%s_gateway_in_page_%s',
 							$this->get_payment_method(),
 							$fee_plan_adapter->getPlanKey()
 						),
-						'alma_woocommerce_gateway_nonce' => $this->form_helper->generateTokenField(
+						'alma_woocommerce_gateway_nonce'  => $this->form_helper->generateTokenField(
 							sprintf( '%s_nonce_action', $this->get_name() ),
 							sprintf( '%s_nonce_field', $this->get_name() ),
 						),

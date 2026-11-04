@@ -14,6 +14,7 @@
  * @var string         $args ['alma_woocommerce_gateway_name'] Gateway name
  * @var FeePlanAdapter $args ['alma_woocommerce_gateway_fee_plan'] Fee plan
  * @var bool           $args ['alma_woocommerce_gateway_in_page_enabled'] In-page enabled
+ * @var int            $args ['alma_woocommerce_gateway_amount'] Cart total in cents
  * @var string         $args ['alma_woocommerce_gateway_in_page_iframe_selector'] Iframe selector
  * @var string         $args ['alma_woocommerce_gateway_nonce'] Nonce
  */
@@ -34,7 +35,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php
 	if ( $args['alma_woocommerce_gateway_in_page_enabled'] ) {
 		?>
-		<div id="<?php echo $args['alma_woocommerce_gateway_in_page_iframe_selector']; ?>"></div>
+		<div
+			id="<?php echo $args['alma_woocommerce_gateway_in_page_iframe_selector']; ?>"
+			data-alma-in-page-amount="<?php echo esc_attr( $args['alma_woocommerce_gateway_amount'] ); ?>"
+		></div>
 		<?php
 	} else {
 		?>
