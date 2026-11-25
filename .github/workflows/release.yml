@@ -1,0 +1,63 @@
+# When a release PR synced from the private repository is merged, publishes
+# the release the private repository drafted with the plugin zip, then
+# announces it on Slack.
+name: Release
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+permissions: {}
+
+jobs:
+
+  release:
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
+    runs-on: ubuntu-26.04
+
+    permissions:
+      contents: write # Publish the release and create its tag
+
+    steps:
+      # The tag goes on the merge commit
+      - name: Publish the drafted release
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          TARGET: ${{ github.event.pull_request.merge_commit_sha }}
+        run: |
+          tag="${PR_HEAD_REF#release/}"
+          gh release edit "$tag" --repo "$GITHUB_REPOSITORY" \
+            --target "$TARGET" \
+            --draft=false \
+            --latest
+          {
+            echo "tag=$tag"
+            echo "body<<EOF"
+            gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json body --jq .body
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Format release notes for Slack
+        uses: LoveToKnow/slackify-markdown-action@698a1d4d0ff1794152a93c03ee8ca5e03a310d4e # v1.1.1
+        id: slack-markdown-release-notes
+        with:
+          text: |
+            New release of WooCommerce, **[${{ steps.release.outputs.tag }}](https://github.com/${{ github.repository }}/releases/tag/${{ steps.release.outputs.tag }})**:
+
+            ${{ steps.release.outputs.body }}
+
+      - name: Send changelog to Slack
+        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_RELEASE_CHANGELOG_BOT_TOKEN }}
+          payload: |
+            channel: CR9C57YM6
+            username: "${{ github.event.sender.login }}"
+            icon_url: "${{ github.event.sender.avatar_url }}"
+            text: ${{ toJson(steps.slack-markdown-release-notes.outputs.text) }}
