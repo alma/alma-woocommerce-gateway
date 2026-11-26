@@ -1,35 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [ "github>alma/renovate:defaults.json5" ],
-  "enabledManagers": [ "github-actions", "pre-commit", "composer", "dockerfile", "docker-compose" ],
   "reviewers": [ "team:squad-e-commerce-integrations" ],
-  "baseBranchPatterns": [ "develop" ],
-  "packageRules": [
-    {
-      "matchManagers": [ "composer" ],
-      "groupName": "composer updates"
-    },
-    {
-      "description": "psr/log must stay on v1 for PHP 7.4 compatibility (v2+ requires PHP 8.0+)",
-      "matchManagers": [ "composer" ],
-      "matchDepNames": [ "psr/log" ],
-      "allowedVersions": "<2"
-    },
-    {
-      "description": "PHPCS must stay on v3 until WPCS supports v4 (wpcs requires php_codesniffer ^3.13)",
-      "matchManagers": [ "composer" ],
-      "matchDepNames": [ "squizlabs/php_codesniffer" ],
-      "allowedVersions": "<4"
-    },
-    {
-      "matchManagers": [ "dockerfile", "docker-compose" ],
-      "groupName": "docker updates"
-    },
-    {
-      "description": "PHP and composer versions in Dockerfiles must be freezed",
-      "matchManagers": [ "dockerfile" ],
-      "matchDepNames": [ "php", "composer" ],
-      "enabled": false
-    }
-  ]
+  "baseBranchPatterns": [ "main" ],
+  // The plugin's dependencies are updated in the private repository, then synced here
+  "enabledManagers": [ "github-actions" ]
 }
