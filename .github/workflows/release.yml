@@ -1,5 +1,6 @@
-# When a release PR synced from the private repository is merged, publishes
-# the release the private repository drafted with the plugin zip.
+# When a release PR synced from the private repository is merged, pins the
+# release the private repository drafted with the plugin zip to the merge commit.
+# The draft is published by hand, once its zip is tested.
 name: Release
 
 on:
@@ -18,11 +19,12 @@ jobs:
     runs-on: ubuntu-26.04
 
     permissions:
-      contents: write # Publish the release and create its tag
+      contents: write # Edit the draft release
 
     steps:
-      # The tag goes on the merge commit
-      - name: Publish the drafted release
+      # The tag is only created at publish time: pin it to the merge commit,
+      # so it matches the zip even if main moves before publication
+      - name: Pin the drafted release to the merge commit
         env:
           GH_TOKEN: ${{ github.token }}
           PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
@@ -30,7 +32,5 @@ jobs:
         run: |
           tag="${PR_HEAD_REF#release/}"
           gh release edit "$tag" --repo "$GITHUB_REPOSITORY" \
-            --target "$TARGET" \
-            --draft=false \
-            --latest
+            --target "$TARGET"
 
